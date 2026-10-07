@@ -760,7 +760,481 @@ window.addEventListener('keydown', (e) => {
     }
 
     /* ==========================================================================
-       SECTION 2: 3-STAGE NATURAL HERBAL EFFICACY INTERACTIVE SHOWCASE
+       SECTION 2: WOMEN'S REAL EMPATHY & SITUATIONS (여성 리얼 공감 & 맞춤 처방 상황실)
+       Design Persona: "아트" (Art) — World-Class High-End Luxury Aesthetic
+       ========================================================================== */
+    .empathy-section {
+      padding: 100px 0 110px;
+      background: linear-gradient(180deg, var(--bg-porcelain) 0%, #FFF7F8 50%, var(--bg-porcelain) 100%);
+      position: relative;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    /* 5초 자가진단 인터랙티브 카드 */
+    .empathy-self-check-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1.5px solid var(--border-hairline);
+      border-radius: 28px;
+      padding: 40px 45px;
+      margin-bottom: 70px;
+      box-shadow: 0 16px 40px rgba(223, 126, 142, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    .empathy-self-check-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--baby-pink-prime), var(--rose-gold-champagne), var(--baby-pink-deep));
+    }
+    .self-check-header {
+      margin-bottom: 28px;
+    }
+    .self-check-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--baby-pink-deep);
+      background: rgba(223, 126, 142, 0.12);
+      padding: 5px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .self-check-title {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.8vw, 30px);
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .self-check-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+    .checklist-items-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 20px;
+      background: #FFFDFC;
+      border: 1px solid rgba(223, 126, 142, 0.2);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.25s var(--transition-smooth);
+      user-select: none;
+    }
+    .check-item:hover {
+      background: #FFF5F7;
+      border-color: var(--baby-pink-prime);
+      transform: translateX(4px);
+    }
+    .check-item input[type="checkbox"] {
+      display: none;
+    }
+    .chk-box {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border: 2px solid rgba(223, 126, 142, 0.4);
+      border-radius: 6px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      transition: all 0.2s ease;
+    }
+    .check-item input[type="checkbox"]:checked + .chk-box {
+      background: var(--baby-pink-prime);
+      border-color: var(--baby-pink-prime);
+      box-shadow: 0 0 10px rgba(223, 126, 142, 0.4);
+    }
+    .check-item input[type="checkbox"]:checked + .chk-box::after {
+      content: "✓";
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .chk-text {
+      font-size: 14.5px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+    .chk-text strong {
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+    .check-item input[type="checkbox"]:checked ~ .chk-text strong {
+      color: var(--baby-pink-deep);
+    }
+
+    /* 실시간 진단 결과 패널 */
+    .self-check-result {
+      background: linear-gradient(135deg, #FFF0F3 0%, #FDF7F4 100%);
+      border: 1px solid var(--border-hairline);
+      border-radius: 18px;
+      padding: 20px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+    .result-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .result-count-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .result-count-label strong {
+      color: var(--baby-pink-prime);
+      font-size: 18px;
+      font-family: var(--font-mono);
+    }
+    .result-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #1E1618, #3A2328);
+      padding: 5px 14px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+    .result-advice {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* 5대 리얼 공감 카드 그리드 (에디토리얼 & 매거진 레이아웃) */
+    .empathy-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 55px;
+    }
+    .empathy-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-hairline);
+      border-radius: 30px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      box-shadow: 0 20px 50px rgba(223, 126, 142, 0.08);
+      transition: all 0.4s var(--transition-smooth);
+      position: relative;
+    }
+    .empathy-card:nth-child(even) {
+      grid-template-columns: 1.05fr 1fr;
+    }
+    .empathy-card:nth-child(even) .empathy-card-visual {
+      order: 2;
+    }
+    .empathy-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 28px 60px rgba(223, 126, 142, 0.16);
+      border-color: rgba(223, 126, 142, 0.45);
+    }
+
+    /* 카드 좌측/우측 텍스트 콘텐츠 */
+    .empathy-card-body {
+      padding: 45px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .empathy-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .situation-num-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--baby-pink-deep);
+      background: rgba(223, 126, 142, 0.14);
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+    }
+    .situation-tag {
+      font-size: 12px;
+      color: var(--rose-gold-prime);
+      font-weight: 600;
+    }
+    .empathy-card-title {
+      font-family: var(--font-serif);
+      font-size: clamp(24px, 2.5vw, 32px);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.3;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    /* 리얼 보이스 인용구 (공감의 극대화) */
+    .real-voice-quote {
+      position: relative;
+      background: linear-gradient(135deg, #FFF6F8 0%, #FFF9FA 100%);
+      border-left: 4px solid var(--baby-pink-prime);
+      border-radius: 0 16px 16px 0;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+    }
+    .quote-icon {
+      font-size: 20px;
+      line-height: 1;
+      color: var(--baby-pink-prime);
+      margin-bottom: 6px;
+      font-family: Georgia, serif;
+    }
+    .voice-text {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: #382529;
+      font-style: italic;
+    }
+
+    /* 이런 분께 강력 권장 & 바른 솔루션 */
+    .empathy-detail-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .detail-icon-badge {
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--baby-pink-soft), #FFFFFF);
+      border: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--baby-pink-deep);
+      margin-top: 2px;
+    }
+    .detail-content h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+    }
+    .detail-content p {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* 카드 내 CTA 링크 */
+    .empathy-card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--baby-pink-deep);
+      text-decoration: none;
+      padding: 10px 0;
+      transition: all 0.25s ease;
+      align-self: flex-start;
+    }
+    .empathy-card-cta:hover {
+      color: var(--text-dark);
+      transform: translateX(4px);
+    }
+
+    /* 카드 비주얼 (고화질 한국인 모델 포토 & 시네마틱 애니메이션) */
+    .empathy-card-visual {
+      position: relative;
+      min-height: 380px;
+      overflow: hidden;
+      background: #FDF4F6;
+    }
+    .model-photo-wrapper {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    .korean-model-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .empathy-card:hover .korean-model-photo {
+      transform: scale(1.05);
+    }
+    .visual-photo-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 50%, rgba(30, 22, 24, 0.45) 100%);
+      pointer-events: none;
+    }
+
+    /* 한국인 모델 비주얼 위 플로팅 럭셔리 뱃지 & 애니메이션 */
+    .model-floating-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(223, 126, 142, 0.35);
+      border-radius: 18px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+      z-index: 3;
+      animation: badgeGlowPulse 4s ease-in-out infinite alternate;
+    }
+    @keyframes badgeGlowPulse {
+      0% { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12); }
+      100% { box-shadow: 0 12px 32px rgba(223, 126, 142, 0.28); }
+    }
+    .floating-badge-icon {
+      font-size: 20px;
+      animation: sparkleRotate 6s linear infinite;
+    }
+    @keyframes sparkleRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .floating-badge-text strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+    .floating-badge-text span {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* 하단 감성 브릿지 배너 */
+    .empathy-bridge-banner {
+      margin-top: 80px;
+      background: linear-gradient(135deg, #22181B 0%, #3B2126 100%);
+      border: 1.5px solid rgba(212, 157, 126, 0.5);
+      border-radius: 28px;
+      padding: 45px 50px;
+      text-align: center;
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(30, 22, 24, 0.25);
+    }
+    .empathy-bridge-banner::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(223, 126, 142, 0.2) 0%, transparent 60%);
+      pointer-events: none;
+      animation: auraBreathe 6s ease-in-out infinite alternate;
+    }
+    .bridge-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--rose-gold-champagne);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .bridge-title {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+    .bridge-desc {
+      font-size: 15.5px;
+      color: #E2D5D8;
+      max-width: 680px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+    .bridge-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--baby-pink-prime) 0%, var(--rose-gold-prime) 100%);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 40px;
+      text-decoration: none;
+      box-shadow: 0 12px 30px rgba(223, 126, 142, 0.4);
+      transition: all 0.3s var(--transition-smooth);
+    }
+    .bridge-cta-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 16px 36px rgba(223, 126, 142, 0.55);
+    }
+
+    /* 반응형 모바일 브레이크포인트 */
+    @media (max-width: 900px) {
+      .empathy-card, .empathy-card:nth-child(even) {
+        grid-template-columns: 1fr;
+      }
+      .empathy-card:nth-child(even) .empathy-card-visual {
+        order: 1;
+      }
+      .empathy-card-visual {
+        height: 300px;
+        min-height: 300px;
+      }
+      .empathy-card-body {
+        padding: 32px 24px;
+      }
+      .empathy-self-check-card {
+        padding: 30px 20px;
+      }
+      .empathy-bridge-banner {
+        padding: 35px 22px;
+      }
+    }
+
+    /* ==========================================================================
+       SECTION 3: 3-STAGE NATURAL HERBAL EFFICACY INTERACTIVE SHOWCASE
        순수 천연 한약재(식욕 중추 안정, 심부 체지방 분해, 붓기 완화) 입자 확산 & 효능 3단계
        ========================================================================== */
     .efficacy-section {
@@ -3507,7 +3981,384 @@ window.addEventListener('keydown', (e) => {
   </section>
 
   <!-- =========================================================================
-       2. 3-STAGE NATURAL HERBAL EFFICACY INTERACTIVE SECTION
+       2. WOMEN'S REAL EMPATHY & WHO NEEDS THIS SECTION (여성 리얼 공감 & 맞춤 처방 상황실)
+       여자들이 겪는 현실적인 다이어트 고민과 맞춤 복용 페르소나를 극도로 공감되게 조명합니다.
+       ========================================================================= -->
+  <section class="empathy-section" id="empathy-zone">
+    <div class="content-container">
+      
+      <div class="section-header-center">
+        <span class="section-kicker">✦ WOMEN'S REAL LIFE DILEMMA</span>
+        <h2 class="section-title">“왜 나만 다이어트가 힘들까?” 자책하던 당신에게,<br>바른한의원이 건네는 가장 깊은 공감</h2>
+        <p class="section-subtitle">
+          의지가 부족해서가 아닙니다. 호르몬, 만성 스트레스, 떨어진 기초대사가 보내는 구조 신호입니다.<br>
+          지금 당신이 서 있는 그 순간, 가장 필요한 맞춤 처방을 확인해 보세요.
+        </p>
+      </div>
+
+      <!-- 5초 인터랙티브 공감 자가진단 모니터 -->
+      <div class="empathy-self-check-card">
+        <div class="self-check-header">
+          <div class="self-check-badge">
+            <span class="pulse-dot-pink"></span>
+            <span>5-SECOND SELF-CHECK DIAGNOSIS</span>
+          </div>
+          <h3 class="self-check-title">혹시 지금, 이런 순간을 겪고 계신가요?</h3>
+          <p class="self-check-desc">해당되는 항목을 체크해 보세요. 2개 이상 해당된다면 단순한 식이조절이 아닌 체질적 대사 리셋이 필요합니다.</p>
+        </div>
+
+        <div class="checklist-items-grid" id="empathyChecklist">
+          <label class="check-item">
+            <input type="checkbox" class="empathy-chk" onchange="calcEmpathyScore()">
+            <span class="chk-box"></span>
+            <span class="chk-text"><strong>밤 10시 야식의 늪:</strong> 낮에는 샐러드로 잘 버텼는데, 퇴근 후나 육퇴 후 보상 심리로 빵·떡볶이·배달음식이 걷잡을 수 없이 당긴다.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="empathy-chk" onchange="calcEmpathyScore()">
+            <span class="chk-box"></span>
+            <span class="chk-text"><strong>무너진 3040 나잇살:</strong> 20대 때와 달리 며칠을 굶어도 100g도 안 빠지고, 복부와 팔뚝 군살이 단단하게 굳어 옷이 안 맞는다.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="empathy-chk" onchange="calcEmpathyScore()">
+            <span class="chk-box"></span>
+            <span class="chk-text"><strong>긴급 D-DAY 앞둔 절박함:</strong> 결혼식, 웨딩 촬영, 출산 후 백일, 중요한 모임을 앞두고 얼굴살 꺼짐 없이 라인만 쏙 빼야 한다.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="empathy-chk" onchange="calcEmpathyScore()">
+            <span class="chk-box"></span>
+            <span class="chk-text"><strong>양약 부작용 & 요요 트라우마:</strong> 가슴 두근거림, 손 떨림, 불면증, 우울감 등 독한 약의 부작용을 겪었거나 끊자마자 요요가 온 경험이 있다.</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="empathy-chk" onchange="calcEmpathyScore()">
+            <span class="chk-box"></span>
+            <span class="chk-text"><strong>만성 부종 & 수독(水毒) 정체:</strong> 아침엔 얼굴이 퉁퉁 붓고 저녁엔 다리가 무거워 부츠가 끼며, 온몸이 물먹은 솜처럼 피곤하다.</span>
+          </label>
+        </div>
+
+        <!-- 실시간 진단 결과 뱃지 -->
+        <div class="self-check-result" id="selfCheckResult">
+          <div class="result-indicator">
+            <span class="result-count-label">현재 공감 체크: <strong id="chkCount">0</strong>개 선택</span>
+            <span class="result-tag" id="chkTag">체크박스를 선택해보세요</span>
+          </div>
+          <p class="result-advice" id="chkAdvice">고객님의 라이프스타일과 체질에 가장 적합한 1:1 맞춤 감비환 솔루션을 확인해보세요.</p>
+        </div>
+      </div>
+
+      <!-- 5대 리얼 공감 시츄에이션 & 페르소나 카드들 -->
+      <div class="empathy-cards-container">
+
+        <!-- Situation 1: 야식 & 퇴근 후 가짜 식탐 공감 -->
+        <article class="empathy-card">
+          <div class="empathy-card-body">
+            <div class="empathy-card-meta">
+              <span class="situation-num-pill">SITUATION 01</span>
+              <span class="situation-tag">#가짜배고픔 #퇴근후폭식 #야식탈출</span>
+            </div>
+            <h3 class="empathy-card-title">“밤 10시만 되면 배달 앱을 켜는 나,<br>의지가 약한 걸까요?”</h3>
+            
+            <div class="real-voice-quote">
+              <div class="quote-icon">“</div>
+              <p class="voice-text">
+                낮에는 회사에서 샐러드로 꿋꿋하게 잘 버텼는데... 퇴근 후나 아이 재운 고요한 밤만 되면 빵, 떡볶이, 매운 야식이 걷잡을 수 없이 당겨요. 먹고 나면 밀려오는 자괴감과 후회에 밤새 뒤척여요.
+              </p>
+            </div>
+
+            <div class="empathy-detail-block">
+              <div class="detail-row">
+                <div class="detail-icon-badge">✦</div>
+                <div class="detail-content">
+                  <h4>이런 분이 복용하시면 가장 좋습니다</h4>
+                  <p>퇴근 후 공허함과 육아 피로를 음식의 단맛·매운맛으로 보상받던 직장인 & 육아맘, 배가 고프지 않은데도 입이 심심한 '가짜 식탐'에 시달리는 분</p>
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-icon-badge">🌸</div>
+                <div class="detail-content">
+                  <h4>바른한의원 핑크 시크릿 솔루션</h4>
+                  <p>억지로 참는 고통 없이, 뇌 시상하부의 식욕 중추를 편안하게 진정시켜 저녁 복용 후 자연스러운 포만감으로 야식 충동을 부드럽게 잠재웁니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#checkout-zone" class="empathy-card-cta">
+              <span>나에게 맞는 1:1 처방 상담 신청하기</span>
+              <span>➔</span>
+            </a>
+          </div>
+
+          <div class="empathy-card-visual">
+            <div class="model-photo-wrapper">
+              <img src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-@main/homepage/empathy-night-calm.jpg" 
+                   onerror="this.onerror=null; this.src='empathy-night-calm.jpg';"
+                   alt="퇴근 후 야식 충동을 이겨내고 따뜻한 차와 함께 저녁의 평온을 찾은 한국인 여성 모델" 
+                   class="korean-model-photo" 
+                   loading="lazy">
+              <div class="visual-photo-overlay"></div>
+            </div>
+            <div class="model-floating-badge">
+              <div class="floating-badge-icon">🌙</div>
+              <div class="floating-badge-text">
+                <strong>뇌 식욕 중추 안정 · 야식 충동 OFF</strong>
+                <span>억지로 굶지 않는 평온한 저녁 시간</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Situation 2: 3040 나잇살 & 대사 저하 공감 -->
+        <article class="empathy-card">
+          <div class="empathy-card-body">
+            <div class="empathy-card-meta">
+              <span class="situation-num-pill">SITUATION 02</span>
+              <span class="situation-tag">#기초대사저하 #3040나잇살 #군살고착화</span>
+            </div>
+            <h3 class="empathy-card-title">“20대 땐 굶으면 빠졌는데,<br>30대부턴 물만 마셔도 왜 찔까요?”</h3>
+            
+            <div class="real-voice-quote">
+              <div class="quote-icon">“</div>
+              <p class="voice-text">
+                20대 때는 며칠 덜 먹으면 청바지가 헐렁해졌는데... 30대 후반이 되니 샐러드만 먹어도 100g도 안 빠져요. 아랫배, 옆구리 러브핸들, 팔뚝살만 두꺼워져서 예전 옷이 하나도 안 맞아요.
+              </p>
+            </div>
+
+            <div class="empathy-detail-block">
+              <div class="detail-row">
+                <div class="detail-icon-badge">✦</div>
+                <div class="detail-content">
+                  <h4>이런 분이 복용하시면 가장 좋습니다</h4>
+                  <p>식사량을 줄여도 체중 변화가 없고 나잇살로 고민하는 30~50대 여성, 바쁜 업무와 살림으로 헬스장에서 매일 2시간씩 운동할 여유가 없는 분</p>
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-icon-badge">🔥</div>
+                <div class="detail-content">
+                  <h4>바른한의원 핑크 시크릿 솔루션</h4>
+                  <p>나이 들며 꺼져가는 신진대사 엔진을 다시 활성화하여, 일상생활과 가벼운 보행, 수면 중에도 체지방을 24시간 능동적으로 연소시킵니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#checkout-zone" class="empathy-card-cta">
+              <span>나에게 맞는 1:1 처방 상담 신청하기</span>
+              <span>➔</span>
+            </a>
+          </div>
+
+          <div class="empathy-card-visual">
+            <div class="model-photo-wrapper">
+              <img src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-@main/homepage/empathy-metabolism-waist.jpg" 
+                   onerror="this.onerror=null; this.src='empathy-metabolism-waist.jpg';"
+                   alt="거울 앞에서 나잇살을 극복하고 쏙 들어간 허리선에 감탄하는 30대 한국인 여성 모델" 
+                   class="korean-model-photo" 
+                   loading="lazy">
+              <div class="visual-photo-overlay"></div>
+            </div>
+            <div class="model-floating-badge">
+              <div class="floating-badge-icon">⚡</div>
+              <div class="floating-badge-text">
+                <strong>심부 체온 상승 · 24시간 체지방 자동 연소</strong>
+                <span>가만히 앉아 일할 때도 대사 엔진 가동</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Situation 3: 웨딩 & 프로필 촬영 & 출산 후 D-DAY 집중 감량 -->
+        <article class="empathy-card">
+          <div class="empathy-card-body">
+            <div class="empathy-card-meta">
+              <span class="situation-num-pill">SITUATION 03</span>
+              <span class="situation-tag">#웨딩드레스핏 #촬영D-DAY #산후붓기탈출</span>
+            </div>
+            <h3 class="empathy-card-title">“인생에서 가장 빛나야 할 D-DAY,<br>얼굴 탄력 꺼짐 없이 라인만 뺄 수 없을까요?”</h3>
+            
+            <div class="real-voice-quote">
+              <div class="quote-icon">“</div>
+              <p class="voice-text">
+                결혼식 본식 가봉과 웨딩 촬영이 두 달밖에 안 남았는데 드레스 라인이 도무지 안 나와요. 무작정 굶어서 빼면 팔자주름 생기고 얼굴 탄력만 축 처질까 봐 너무 불안해요.
+              </p>
+            </div>
+
+            <div class="empathy-detail-block">
+              <div class="detail-row">
+                <div class="detail-icon-badge">✦</div>
+                <div class="detail-content">
+                  <h4>이런 분이 복용하시면 가장 좋습니다</h4>
+                  <p>결혼식, 웨딩 촬영, 바디프로필, 출산 후 백일·돌잔치, 중요한 면접을 앞두고 빠르고 안전하게 라인을 정돈해야 하는 예비신부 & 워킹맘</p>
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-icon-badge">👰</div>
+                <div class="detail-content">
+                  <h4>바른한의원 핑크 시크릿 솔루션</h4>
+                  <p>기력 보강 한약재가 기혈을 돋워 피부 탄력과 근육량을 지켜주며, 쇄골·팔뚝·복부·허벅지 중심의 군살을 집중 감량하여 드라마틱한 실루엣을 완성합니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#checkout-zone" class="empathy-card-cta">
+              <span>나에게 맞는 1:1 처방 상담 신청하기</span>
+              <span>➔</span>
+            </a>
+          </div>
+
+          <div class="empathy-card-visual">
+            <div class="model-photo-wrapper">
+              <img src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-@main/homepage/empathy-wedding-dress.jpg" 
+                   onerror="this.onerror=null; this.src='empathy-wedding-dress.jpg';"
+                   alt="부티크 거울 앞에서 완벽한 드레스 라인과 부케를 들고 환하게 미소 짓는 한국인 예비신부 모델" 
+                   class="korean-model-photo" 
+                   loading="lazy">
+              <div class="visual-photo-overlay"></div>
+            </div>
+            <div class="model-floating-badge">
+              <div class="floating-badge-icon">✨</div>
+              <div class="floating-badge-text">
+                <strong>피부 탄력 보존 · 드레스 라인 집중 조각</strong>
+                <span>얼굴 꺼짐 없는 럭셔리 실루엣 완성</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Situation 4: 독한 약 부작용 & 요요 트라우마 공감 -->
+        <article class="empathy-card">
+          <div class="empathy-card-body">
+            <div class="empathy-card-meta">
+              <span class="situation-num-pill">SITUATION 04</span>
+              <span class="situation-tag">#두근거림ZERO #불면증NO #순수천연한약</span>
+            </div>
+            <h3 class="empathy-card-title">“양약 먹고 가슴 두근거림과 불면증으로<br>고생했어요. 한약은 다를까요?”</h3>
+            
+            <div class="real-voice-quote">
+              <div class="quote-icon">“</div>
+              <p class="voice-text">
+                병원에서 처방받은 양약 식욕억제제 먹고 심장이 터질 듯 뛰고 손이 덜덜 떨렸어요. 밤에는 잠이 안 오고 감정이 롤러코스터처럼 요동쳐서 끊었더니 요요로 5kg가 더 쪘어요... 독한 약은 이제 무서워요.
+              </p>
+            </div>
+
+            <div class="empathy-detail-block">
+              <div class="detail-row">
+                <div class="detail-icon-badge">✦</div>
+                <div class="detail-content">
+                  <h4>이런 분이 복용하시면 가장 좋습니다</h4>
+                  <p>중추신경계 화학 약품(향정신성 억제제 등)의 부작용으로 두려움을 겪으신 분, 일상 업무나 육아, 수면에 지장 없이 몸에 무리가 안 가는 순하고 편안한 다이어트를 원하시는 분</p>
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-icon-badge">🌿</div>
+                <div class="detail-content">
+                  <h4>바른한의원 핑크 시크릿 솔루션</h4>
+                  <p>식약처(GMP) 인증 100% 천연 규격 한약재로 원내 조제되어 가슴 두근거림, 손 떨림, 불면 없이 은은하게 작용하며, 1:1 맞춤 농도로 처방되어 끊은 후에도 요요 없이 유지됩니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#checkout-zone" class="empathy-card-cta">
+              <span>나에게 맞는 1:1 처방 상담 신청하기</span>
+              <span>➔</span>
+            </a>
+          </div>
+
+          <div class="empathy-card-visual">
+            <div class="model-photo-wrapper">
+              <img src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-@main/homepage/empathy-safe-herbal.jpg" 
+                   onerror="this.onerror=null; this.src='empathy-safe-herbal.jpg';"
+                   alt="가슴에 손을 얹고 두근거림 없이 편안하게 호흡하는 맑은 피부의 한국인 여성 모델" 
+                   class="korean-model-photo" 
+                   loading="lazy">
+              <div class="visual-photo-overlay"></div>
+            </div>
+            <div class="model-floating-badge">
+              <div class="floating-badge-icon">🌿</div>
+              <div class="floating-badge-text">
+                <strong>식약처 GMP 인증 · 두근거림·불면 ZERO</strong>
+                <span>인위적 화학 성분 없는 100% 천연 안심 조제</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Situation 5: 만성 부종 & 수독 정체 순환 공감 -->
+        <article class="empathy-card">
+          <div class="empathy-card-body">
+            <div class="empathy-card-meta">
+              <span class="situation-num-pill">SITUATION 05</span>
+              <span class="situation-tag">#만성수독배출 #하체부종해결 #가벼운아침</span>
+            </div>
+            <h3 class="empathy-card-title">“아침엔 얼굴이 붓고 저녁엔 다리가 퉁퉁...<br>살인지 부종인지 모르겠어요.”</h3>
+            
+            <div class="real-voice-quote">
+              <div class="quote-icon">“</div>
+              <p class="voice-text">
+                조금만 짜게 먹거나 피곤하면 다음 날 얼굴과 눈이 퉁퉁 부어요. 오후만 되면 종아리가 단단하게 부어올라 부츠가 안 잠기고, 온몸이 물먹은 솜처럼 무겁고 손발이 차가워요.
+              </p>
+            </div>
+
+            <div class="empathy-detail-block">
+              <div class="detail-row">
+                <div class="detail-icon-badge">✦</div>
+                <div class="detail-content">
+                  <h4>이런 분이 복용하시면 가장 좋습니다</h4>
+                  <p>하루 종일 서 있거나 앉아서 근무하여 혈액순환과 하체 림프가 꽉 막힌 직장인, 체내 수분 노폐물(수독/습담)이 축적되어 만성 부종과 냉증, 피로에 시달리는 분</p>
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-icon-badge">💧</div>
+                <div class="detail-content">
+                  <h4>바른한의원 핑크 시크릿 솔루션</h4>
+                  <p>신장과 림프 순환을돕는 이수삼습(利水渗濕) 천연 약재가 체내 정체된 수독을 소변과 땀으로 말끔히 배출시켜, 아침마다 가볍고 상쾌한 V라인과 발목 라인을 되찾아 드립니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#checkout-zone" class="empathy-card-cta">
+              <span>나에게 맞는 1:1 처방 상담 신청하기</span>
+              <span>➔</span>
+            </a>
+          </div>
+
+          <div class="empathy-card-visual">
+            <div class="model-photo-wrapper">
+              <img src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-@main/homepage/empathy-leg-edema.jpg" 
+                   onerror="this.onerror=null; this.src='empathy-leg-edema.jpg';"
+                   alt="부종이 싹 빠져 슬림하고 가벼워진 종아리와 발목 라인을 만지며 기뻐하는 한국인 여성 모델" 
+                   class="korean-model-photo" 
+                   loading="lazy">
+              <div class="visual-photo-overlay"></div>
+            </div>
+            <div class="model-floating-badge">
+              <div class="floating-badge-icon">💧</div>
+              <div class="floating-badge-text">
+                <strong>림프 수독 배출 · 매일 아침 가벼운 바디</strong>
+                <span>붓기가 살이 되지 않는 건강한 순환 리셋</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- 하단 감성 브릿지 배너 -->
+      <div class="empathy-bridge-banner">
+        <span class="bridge-kicker">✦ ONLY ONE PRESCRIPTION FOR YOU</span>
+        <h3 class="bridge-title">“당신의 몸은 그동안 충분히 애써왔습니다.<br>이제 자책하지 마세요.”</h3>
+        <p class="bridge-desc">
+          남들의 다이어트를 무작정 따라 하지 마세요. 당신의 체질과 살아온 라이프스타일은 단 하나뿐입니다.<br>
+          바른한의원 대표원장이 1:1 비대면 문진을 통해 당신의 몸에 가장 편안하고 안전한 맞춤 단계를 설계해 드립니다.
+        </p>
+        <a href="#checkout-zone" class="bridge-cta-btn">
+          <span>🌸 지금 나에게 꼭 맞는 1:1 비대면 처방 신청하기</span>
+          <span>➔</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       3. 3-STAGE NATURAL HERBAL EFFICACY INTERACTIVE SECTION
        스틱 안에서 순수 천연 한약재 입자들이 퍼지며 효능이 3단계 인터랙티브로 펼쳐집니다.
        ========================================================================= -->
   <section class="efficacy-section" id="efficacy-zone">
@@ -5188,6 +6039,33 @@ window.addEventListener('keydown', (e) => {
         card.classList.add('mode-all');
         panelInfo.style.display = 'block';
         panelPolicy.style.display = 'block';
+      }
+    }
+
+    /* =========================================================================
+       여성 공감 5초 자가진단 인터랙티브 계산 엔진
+       ========================================================================= */
+    function calcEmpathyScore() {
+      const chks = document.querySelectorAll('.empathy-chk:checked');
+      const count = chks.length;
+      const countDisplay = document.getElementById('chkCount');
+      const tagDisplay = document.getElementById('chkTag');
+      const adviceDisplay = document.getElementById('chkAdvice');
+      
+      if (countDisplay) countDisplay.textContent = count;
+      
+      if (count === 0) {
+        if (tagDisplay) tagDisplay.textContent = '체크박스를 선택해보세요';
+        if (adviceDisplay) adviceDisplay.innerHTML = '고객님의 라이프스타일과 체질에 가장 적합한 1:1 맞춤 감비환 솔루션을 확인해보세요.';
+      } else if (count === 1) {
+        if (tagDisplay) tagDisplay.textContent = '초기 대사 불균형 단계';
+        if (adviceDisplay) adviceDisplay.innerHTML = '⚡ <strong>[2주 스타터 플랜 권장]</strong> 신진대사 균형이 흔들리기 시작한 시점입니다. 가벼운 맞춤 감비환 복용으로 식욕을 다잡고 건강한 대사를 회복하세요.';
+      } else if (count === 2 || count === 3) {
+        if (tagDisplay) tagDisplay.textContent = '집중 체질 개선 권장 단계';
+        if (adviceDisplay) adviceDisplay.innerHTML = '🔥 <strong>[4주 시그니처 플랜 강력 추천]</strong> 단순 식이조절로는 빠지지 않는 가짜 식탐과 나잇살이 정체되어 있습니다. 1:1 집중 처방으로 심부 체지방을 연소시킬 타이밍입니다.';
+      } else {
+        if (tagDisplay) tagDisplay.textContent = '복합 정체 & 전신 대사 리셋 단계';
+        if (adviceDisplay) adviceDisplay.innerHTML = '💎 <strong>[8주 퍼펙트 리셋 플랜 추천]</strong> 만성 붓기, 요요 트라우마, 호르몬 저하가 겹쳐 있습니다. 대표원장 1:1 정밀 전화 진료로 근본적인 체질 개선이 꼭 필요합니다.';
       }
     }
   </script>
