@@ -30,12 +30,38 @@ try {
       { src: 'empathy_metabolism_waist_1791334650179.jpg', dest: 'empathy_metabolism_waist_1791280801259.jpg' },
       { src: 'empathy_wedding_dress_1791334665831.jpg', dest: 'empathy_wedding_dress_1791280824774.jpg' },
       { src: 'empathy_safe_herbal_1791334680080.jpg', dest: 'empathy_safe_herbal_1791280846992.jpg' },
-      { src: 'empathy_leg_edema_1791334697534.jpg', dest: 'empathy_leg_edema_1791280868415.jpg' }
+      { src: '.user_uploaded/media_1791337509933.png', dest: 'growth-director-son.png' },
+      { src: '.user_uploaded/media_1791337509933.png', dest: 'growth-director-son-comparison.png' },
+      { src: 'growth_ultrasound_scan_1791337687963.jpg', dest: 'growth-ultrasound-scan.jpg' },
+      { src: 'growth_happy_family_1791337703590.jpg', dest: 'growth-happy-family.jpg' },
+      { src: 'growth_herbal_immune_1791337718281.jpg', dest: 'growth-herbal-immune.jpg' },
+      { src: 'growth_male_director_ultrasound_1791351314809.jpg', dest: 'growth_male_director_ultrasound_1791351314809.jpg', overwrite: true },
+      { src: 'growth_male_director_ultrasound_1791351314809.jpg', dest: 'growth-ultrasound-metrics.jpg', overwrite: true },
+      { src: 'growth_two_types_clean_1791356622105.jpg', dest: 'growth_two_types_clean_1791356622105.jpg', overwrite: true },
+      { src: 'growth_two_types_clean_1791356622105.jpg', dest: 'growth_two_types_director_1791351534797.jpg', overwrite: true },
+      { src: 'growth_two_types_clean_1791356622105.jpg', dest: 'growth-two-types-director.jpg', overwrite: true },
+      { src: 'growth_family_four_1791352505570.jpg', dest: 'growth_family_four_1791352505570.jpg', overwrite: true },
+      { src: 'growth_family_four_1791352505570.jpg', dest: 'growth-family-four.jpg', overwrite: true },
+      { src: 'growth_family_four_1791352505570.jpg', dest: 'growth-happy-family.jpg', overwrite: true },
+      { src: 'growth_family_four_1791352505570.jpg', dest: 'growth_happy_family_1791337703590.jpg', overwrite: true },
+      { src: 'growth_ultrasound_metrics_1791339569842.jpg', dest: 'growth_ultrasound_metrics.jpg' },
+      { src: 'growth_diag_thermography_clean_1791356919996.jpg', dest: 'growth_diag_thermography_clean_1791356919996.jpg', overwrite: true },
+      { src: 'growth_diag_thermography_clean_1791356919996.jpg', dest: 'growth_diag_thermography_1791342626193.jpg', overwrite: true },
+      { src: 'growth_diag_thermography_clean_1791356919996.jpg', dest: 'growth-diag-thermography.jpg', overwrite: true },
+      { src: 'growth_diag_hrv_clean_1791356955111.jpg', dest: 'growth_diag_hrv_clean_1791356955111.jpg', overwrite: true },
+      { src: 'growth_diag_hrv_clean_1791356955111.jpg', dest: 'growth_diag_autonomic_hrv_1791342641409.jpg', overwrite: true },
+      { src: 'growth_diag_hrv_clean_1791356955111.jpg', dest: 'growth-diag-autonomic.jpg', overwrite: true },
+      { src: 'growth_diag_rhinitis_pure_1791357007072.jpg', dest: 'growth_diag_rhinitis_pure_1791357007072.jpg', overwrite: true },
+      { src: 'growth_diag_rhinitis_pure_1791357007072.jpg', dest: 'growth_diag_rhinitis_airway_1791342656923.jpg', overwrite: true },
+      { src: 'growth_diag_rhinitis_pure_1791357007072.jpg', dest: 'growth-diag-airway.jpg', overwrite: true },
+      { src: 'growth_diag_sasang_models_1791357224460.jpg', dest: 'growth_diag_sasang_models_1791357224460.jpg', overwrite: true },
+      { src: 'growth_diag_sasang_models_1791357224460.jpg', dest: 'growth_diag_gut_metabolism_1791342672959.jpg', overwrite: true },
+      { src: 'growth_diag_sasang_models_1791357224460.jpg', dest: 'growth-diag-gut.jpg', overwrite: true }
     ];
     syncFiles.forEach(f => {
       const srcP = path.join(brainDir, f.src);
       const destP = path.join(__dirname, f.dest);
-      if (fs.existsSync(srcP) && !fs.existsSync(destP)) {
+      if (fs.existsSync(srcP) && (!fs.existsSync(destP) || f.overwrite)) {
         fs.copyFileSync(srcP, destP);
         console.log(`[Auto-Sync] Copied image: ${f.dest}`);
       }
@@ -51,8 +77,47 @@ const server = http.createServer((req, res) => {
     reqPath = '/index.html';
   } else if (reqPath === '/diet-zero' || reqPath === '/diet-zero/') {
     reqPath = '/diet-zero.html';
+  } else if (reqPath === '/growth' || reqPath === '/growth/') {
+    reqPath = '/growth.html';
   } else if (reqPath === '/gongjindan' || reqPath === '/gongjindan/' || reqPath === '/gongjindan-2' || reqPath === '/gongjindan-2/') {
     reqPath = '/gongjindan.html';
+  }
+
+  // Intercept ultrasound consultation image to male director photo
+  if (reqPath.includes('growth_ultrasound_metrics') || reqPath.includes('growth-ultrasound-metrics') || reqPath.includes('growth_male_director')) {
+    const maleImg = path.join(brainDir, 'growth_male_director_ultrasound_1791351314809.jpg');
+    if (fs.existsSync(maleImg)) {
+      try {
+        fs.copyFileSync(maleImg, path.join(__dirname, 'growth_male_director_ultrasound_1791351314809.jpg'));
+        fs.copyFileSync(maleImg, path.join(__dirname, 'growth-ultrasound-metrics.jpg'));
+        fs.copyFileSync(maleImg, path.join(__dirname, 'growth_ultrasound_metrics_1791339569842.jpg'));
+      } catch (err) {}
+    }
+  }
+
+  // Intercept two growth types image
+  if (reqPath.includes('growth_two_types') || reqPath.includes('growth-two-types')) {
+    const twoTypesImg = path.join(brainDir, 'growth_two_types_clean_1791356622105.jpg');
+    if (fs.existsSync(twoTypesImg)) {
+      try {
+        fs.copyFileSync(twoTypesImg, path.join(__dirname, 'growth_two_types_clean_1791356622105.jpg'));
+        fs.copyFileSync(twoTypesImg, path.join(__dirname, 'growth_two_types_director_1791351534797.jpg'));
+        fs.copyFileSync(twoTypesImg, path.join(__dirname, 'growth-two-types-director.jpg'));
+      } catch (err) {}
+    }
+  }
+
+  // Intercept family four / happy family image
+  if (reqPath.includes('growth_family_four') || reqPath.includes('growth-family-four') || reqPath.includes('growth-happy-family') || reqPath.includes('growth_happy_family')) {
+    const familyImg = path.join(brainDir, 'growth_family_four_1791352505570.jpg');
+    if (fs.existsSync(familyImg)) {
+      try {
+        fs.copyFileSync(familyImg, path.join(__dirname, 'growth_family_four_1791352505570.jpg'));
+        fs.copyFileSync(familyImg, path.join(__dirname, 'growth-family-four.jpg'));
+        fs.copyFileSync(familyImg, path.join(__dirname, 'growth-happy-family.jpg'));
+        fs.copyFileSync(familyImg, path.join(__dirname, 'growth_happy_family_1791337703590.jpg'));
+      } catch (err) {}
+    }
   }
 
   let filePath = path.join(__dirname, reqPath);
@@ -65,11 +130,13 @@ const server = http.createServer((req, res) => {
       filePath = directFile;
     } else {
       const brainFile = path.join(brainDir, baseName);
+      const brainUploadFile = path.join(brainDir, '.user_uploaded', baseName);
       if (fs.existsSync(brainFile)) {
         filePath = brainFile;
-        try {
-          fs.copyFileSync(brainFile, directFile);
-        } catch (err) {}
+        try { fs.copyFileSync(brainFile, directFile); } catch (err) {}
+      } else if (fs.existsSync(brainUploadFile)) {
+        filePath = brainUploadFile;
+        try { fs.copyFileSync(brainUploadFile, directFile); } catch (err) {}
       }
     }
   }

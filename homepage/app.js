@@ -15,6 +15,12 @@ const GET_GONGJINDAN_URL = () => {
     : '/gongjindan-2/';
 };
 
+const GET_GROWTH_URL = () => {
+  return (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html'))
+    ? 'growth.html'
+    : '/growth/';
+};
+
 
 const CLINIC_PROGRAMS = [
   {
@@ -105,6 +111,30 @@ const CLINIC_PROGRAMS = [
     primaryText: "📍 네이버 플레이스 1:1 진료 예약",
     secondaryLink: "https://pf.kakao.com/_ykxcLK",
     secondaryText: "💬 카카오톡 실시간 상담 문의"
+  },
+  {
+    id: "04",
+    slug: "pediatric-growth",
+    title: "키성장 · 성조숙증 클리닉",
+    badge: "무방사선 초음파 성장판 검사",
+    subtitle: "15년 임상경력 대표원장 친아들 직접 처방 입증 · 초음파 & 8대 전신 기능 검진",
+    client: "소아청소년 성장 & 성조숙증 안심 클리닉",
+    role: "무방사선 초음파 진단 · 8대 전신 기능검진(체열·스트레스·자율신경·비염·체질·면역·혈류·장내GAS) · 맞춤 성장 한약",
+    year: "GROWTH CLINIC",
+    awards: "🌿 15년 임상경력 대표원장 직접 진료 · 초음파 4대 지표 · 8대 전신 정밀 기능 검진 체계",
+    description: "15년 임상경력으로 대표원장님이 직접 친아들에게 처방하며 입증한 100% 천연 안심 성장 한약까지. 무방사선 정밀 초음파와 8대 전신 기능 검진(체열·스트레스·자율신경·비염·체질·면역·혈류·장내가스)으로 우리 아이의 숨겨진 잠재 키를 찾아드립니다.",
+    image: "growth-happy-family.jpg",
+    details: [
+      "✓ 15년 임상경력 대표원장이 자신의 친아들에게 직접 처방하며 입증한 정직한 치료",
+      "✓ [네이버 블로그 공개] 대표원장 친아들 3개년 키성장 치료 수기 및 사진 전문 (https://blog.naver.com/wei0508/223437892490)",
+      "✓ 방사선 피폭 걱정 없는 무방사선 정밀 초음파 4대 지표 (골연령·백분위·뼈길이·예측키) 판독",
+      "✓ 성장판 너머 8대 전신 정밀 기능 검진 (체열·스트레스·자율신경·비염·사상체질·면역력·혈류·장내GAS)",
+      "✓ 성조숙증 성장판 조기 폐쇄 예방 및 오장육부 면역 균형 1:1 맞춤 성장 탕전"
+    ],
+    primaryLink: "growth.html",
+    primaryText: "🌱 키성장 · 성조숙증 클리닉 보기",
+    secondaryLink: "https://blog.naver.com/wei0508/223437892490",
+    secondaryText: "📝 원장님 아들 성장 후기 블로그 보기 ↗"
   }
 ];
 
@@ -455,7 +485,13 @@ class BareunClinicApp {
           <span class="cue-text">황제공진단 상세</span>
           <span class="cue-arrow">➔</span>
         </div>
-      ` : '');
+      ` : (item.slug === 'pediatric-growth' ? `
+        <div class="card-hover-cue growth-cue" aria-label="키성장 클리닉 상세" style="background: rgba(28, 61, 43, 0.92); border-color: rgba(196, 151, 85, 0.6);">
+          <span class="cue-sparkle">🌱</span>
+          <span class="cue-text">키성장 클리닉 상세</span>
+          <span class="cue-arrow">➔</span>
+        </div>
+      ` : ''));
 
       card.innerHTML = `
         <div class="${wrapClass}">
@@ -488,6 +524,12 @@ class BareunClinicApp {
           this.triggerGongjindanCraftAnimation(() => {
             window.location.href = GET_GONGJINDAN_URL();
           });
+          return;
+        } else if (item.slug === 'pediatric-growth') {
+          e.preventDefault();
+          e.stopPropagation();
+          this.playClick();
+          window.location.href = GET_GROWTH_URL();
           return;
         }
         this.updateProjectView(index);
@@ -773,6 +815,7 @@ class BareunClinicApp {
 
     const isZero = item.slug === 'appetite-zero';
     const isGongjin = item.slug === 'gongjindan';
+    const isGrowth = item.slug === 'pediatric-growth';
     const landingBtnHtml = isZero ? `
       <a href="${GET_DIET_ZERO_URL()}" class="modal-cta-btn modal-cta-accent" style="background: linear-gradient(135deg, #1C1917 0%, #382A24 100%); color: #F5EFEB; font-weight: 700; border: 1px solid rgba(197, 160, 89, 0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; text-decoration: none; width: 100%;">
         <span>✨ 식욕 ZERO 시네마틱 상세페이지 & 결제창 바로가기</span>
@@ -783,7 +826,12 @@ class BareunClinicApp {
         <span>👑 황제공진단 10대 특허 브로셔 & 1:1 수제 제환 상세페이지</span>
         <span style="color: var(--accent-gold);">➔</span>
       </a>
-    ` : '');
+    ` : (isGrowth ? `
+      <a href="${GET_GROWTH_URL()}" class="modal-cta-btn modal-cta-accent" style="background: linear-gradient(135deg, #12281D 0%, #2A5A3F 100%); color: #F5EFEB; font-weight: 700; border: 1px solid rgba(196, 151, 85, 0.5); box-shadow: 0 4px 20px rgba(18, 40, 29, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; text-decoration: none; width: 100%;">
+        <span>🌱 키성장 · 성조숙증 안심 클리닉 상세페이지 보기</span>
+        <span style="color: #6EE7B7;">➔</span>
+      </a>
+    ` : ''));
 
     this.modalContent.innerHTML = `
       <div style="background: ${heroBg}; display: flex; justify-content: center; align-items: center; overflow: hidden; height: 380px;">
@@ -808,7 +856,7 @@ class BareunClinicApp {
           </ul>
         </div>
 
-        <div class="modal-cta-group" style="${(isZero || isGongjin) ? 'flex-direction: column; gap: 10px;' : ''}">
+        <div class="modal-cta-group" style="${(isZero || isGongjin || isGrowth) ? 'flex-direction: column; gap: 10px;' : ''}">
           ${landingBtnHtml}
           <div style="display: flex; gap: 12px; width: 100%;">
             <a href="${item.primaryLink}" target="_blank" rel="noopener noreferrer" class="modal-cta-btn modal-cta-primary" style="flex: 1;">

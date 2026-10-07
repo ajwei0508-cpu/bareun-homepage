@@ -2709,6 +2709,19 @@ window.addEventListener('keydown', (e) => {
             </a>
           </div>
 
+          <div class="contact-section" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,0.12);">
+            <span class="contact-sublabel" style="color: #6EE7B7;">소아청소년 성장 특화 클리닉</span>
+            <a href="growth.html" onclick="if(location.protocol!=='file:'&&!location.pathname.endsWith('.html')){this.href='/growth/';}" class="huge-email" style="font-size: 18px; color: #34D399; text-decoration: none; font-weight: 700; display: block; margin-bottom: 6px;">
+              🌱 키성장 · 성조숙증 클리닉 ↗
+            </a>
+            <p style="font-size: 12.5px; color: #A7F3D0; margin: 0 0 6px 0; line-height: 1.5; opacity: 0.85;">
+              15년 임상경력 대표원장 친아들 직접 처방 입증 · 무방사선 정밀 초음파
+            </p>
+            <a href="https://blog.naver.com/wei0508/223437892490" target="_blank" rel="noreferrer" style="font-size: 12px; color: #FBBF24; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
+              <span>📝 원장님이 직접 쓴 친아들 3개년 성장 후기 블로그 전문 ↗</span>
+            </a>
+          </div>
+
           <div class="social-links-grid">
             <div class="social-group">
               <span class="group-title">공식 온라인 채널</span>
@@ -2843,6 +2856,12 @@ const GET_GONGJINDAN_URL = () => {
     : '/gongjindan-2/';
 };
 
+const GET_GROWTH_URL = () => {
+  return (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html'))
+    ? 'growth.html'
+    : '/growth/';
+};
+
 
 const CLINIC_PROGRAMS = [
   {
@@ -2933,6 +2952,30 @@ const CLINIC_PROGRAMS = [
     primaryText: "📍 네이버 플레이스 1:1 진료 예약",
     secondaryLink: "https://pf.kakao.com/_ykxcLK",
     secondaryText: "💬 카카오톡 실시간 상담 문의"
+  },
+  {
+    id: "04",
+    slug: "pediatric-growth",
+    title: "키성장 · 성조숙증 클리닉",
+    badge: "무방사선 초음파 성장판 검사",
+    subtitle: "15년 임상경력 대표원장 친아들 직접 처방 입증 · 초음파 & 8대 전신 기능 검진",
+    client: "소아청소년 성장 & 성조숙증 안심 클리닉",
+    role: "무방사선 초음파 진단 · 8대 전신 기능검진(체열·스트레스·자율신경·비염·체질·면역·혈류·장내GAS) · 맞춤 성장 한약",
+    year: "GROWTH CLINIC",
+    awards: "🌿 15년 임상경력 대표원장 직접 진료 · 초음파 4대 지표 · 8대 전신 정밀 기능 검진 체계",
+    description: "15년 임상경력으로 대표원장님이 직접 친아들에게 처방하며 입증한 100% 천연 안심 성장 한약까지. 무방사선 정밀 초음파와 8대 전신 기능 검진(체열·스트레스·자율신경·비염·체질·면역·혈류·장내가스)으로 우리 아이의 숨겨진 잠재 키를 찾아드립니다.",
+    image: "https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-homepage@main/homepage/growth_family_four_1791352505570.jpg",
+    details: [
+      "✓ 15년 임상경력 대표원장이 자신의 친아들에게 직접 처방하며 입증한 정직한 치료",
+      "✓ [네이버 블로그 공개] 대표원장 친아들 3개년 키성장 치료 수기 및 사진 전문 (https://blog.naver.com/wei0508/223437892490)",
+      "✓ 방사선 피폭 걱정 없는 무방사선 정밀 초음파 4대 지표 (골연령·백분위·뼈길이·예측키) 판독",
+      "✓ 성장판 너머 8대 전신 정밀 기능 검진 (체열·스트레스·자율신경·비염·사상체질·면역력·혈류·장내GAS)",
+      "✓ 성조숙증 성장판 조기 폐쇄 예방 및 오장육부 면역 균형 1:1 맞춤 성장 탕전"
+    ],
+    primaryLink: "growth.html",
+    primaryText: "🌱 키성장 · 성조숙증 클리닉 보기",
+    secondaryLink: "https://blog.naver.com/wei0508/223437892490",
+    secondaryText: "📝 원장님 아들 성장 후기 블로그 보기 ↗"
   }
 ];
 
@@ -3283,7 +3326,13 @@ class BareunClinicApp {
           <span class="cue-text">황제공진단 상세</span>
           <span class="cue-arrow">➔</span>
         </div>
-      ` : '');
+      ` : (item.slug === 'pediatric-growth' ? `
+        <div class="card-hover-cue growth-cue" aria-label="키성장 클리닉 상세" style="background: rgba(28, 61, 43, 0.92); border-color: rgba(196, 151, 85, 0.6);">
+          <span class="cue-sparkle">🌱</span>
+          <span class="cue-text">키성장 클리닉 상세</span>
+          <span class="cue-arrow">➔</span>
+        </div>
+      ` : ''));
 
       card.innerHTML = `
         <div class="${wrapClass}">
@@ -3316,6 +3365,12 @@ class BareunClinicApp {
           this.triggerGongjindanCraftAnimation(() => {
             window.location.href = GET_GONGJINDAN_URL();
           });
+          return;
+        } else if (item.slug === 'pediatric-growth') {
+          e.preventDefault();
+          e.stopPropagation();
+          this.playClick();
+          window.location.href = GET_GROWTH_URL();
           return;
         }
         this.updateProjectView(index);
