@@ -36,7 +36,7 @@ function bareun_send_alimtalk_handler($request) {
     $aligo_apikey    = 'YOUR_API_KEY';
     $aligo_userid    = 'YOUR_ALIGO_ID';
     $aligo_senderkey = 'YOUR_SENDER_KEY';
-    $aligo_sender    = '0424881075';
+    $aligo_sender    = '01056311275';
     $aligo_tpl_code  = 'YOUR_TEMPLATE_CODE';
     $doctor_phone    = '010-0000-0000'; // 원장님 수신 번호
 

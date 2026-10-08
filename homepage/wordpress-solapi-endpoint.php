@@ -37,7 +37,7 @@ function bareun_solapi_alimtalk_handler($request) {
     $apiSecret    = 'YOUR_SOLAPI_API_SECRET';    // 솔라피 API Secret
     $pfId         = 'YOUR_KAKAO_PFID';           // 카카오채널 연동 PFID
     $templateId   = 'YOUR_TEMPLATE_ID';          // 승인된 템플릿 ID
-    $senderNumber = '0424881075';                // 바른한의원 등록 발신번호
+    $senderNumber = '01056311275';               // 바른한의원 등록 발신번호 (원장님 휴대전화)
     $doctorPhone  = '01056311275';               // 대표원장님 수신 번호
 
     if ($apiKey === 'YOUR_SOLAPI_API_KEY') {
