@@ -1,6 +1,8 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const querystring = require('querystring');
 
 const PORT = 3000;
 const MIME_TYPES = {
@@ -129,6 +131,18 @@ const server = http.createServer((req, res) => {
         console.log(`• 알림톡 상태 : 정상 전송 완료 (대표원장실 & 보호자 동시 수신)`);
         console.log(`======================================================\n`);
 
+        // Dispatch real Alimtalk if keys are configured
+        let alimtalkKeys = null;
+        const keysPath = path.join(__dirname, 'alimtalk-keys.json');
+        if (fs.existsSync(keysPath)) {
+          try {
+            alimtalkKeys = JSON.parse(fs.readFileSync(keysPath, 'utf8') || '{}');
+          } catch (e) {}
+        }
+        if (alimtalkKeys && alimtalkKeys.apikey && !alimtalkKeys.apikey.includes('입력')) {
+          dispatchAligoAlimtalk(alimtalkKeys, newRecord);
+        }
+
         res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
         res.end(JSON.stringify({
           success: true,
@@ -143,6 +157,120 @@ const server = http.createServer((req, res) => {
       }
     });
     return;
+  }
+
+  // Real Aligo Alimtalk Dispatch Function
+  function dispatchAligoAlimtalk(keys, record) {
+    if (!keys || !keys.apikey || keys.apikey.includes('입력')) return;
+
+    const msg = 
+`[바른한의원] 키성장 클리닉 진료예약 접수 안내
+
+${record.parentName} 님, 바른한의원 키성장·성조숙증 클리닉 진료예약 신청서가 정상적으로 접수되었습니다.
+
+15년 임상경력의 대표원장실에서 남겨주신 사전 진료 차트를 직접 면밀히 검토한 후, 배정 가능한 진료 일정 및 맞춤 상담 안내를 위해 순차적으로 연락을 드립니다.
+
+■ 진료예약 접수 상세 내역
+• 접수 번호 : ${record.id}
+• 보호자 성함 : ${record.parentName} 님
+• 자녀 정보 : ${record.childInfo}
+• 희망 진료 : ${record.consultType}
+• 주요 고민 증상 : ${record.symptoms.join(', ') || '전반적 키성장 상담'}
+• 접수 일시 : ${new Date(record.receivedAt).toLocaleString('ko-KR')}
+
+※ 긴급 일정 변경 또는 문의 사항은 바른한의원 카카오 채널 1:1 채팅이나 원내 유선(042-488-1075)으로 문의해 주시기 바랍니다.
+
+감사합니다.
+바른 마음, 정직한 처방 · 바른한의원`;
+
+    const btnJson = JSON.stringify({
+      button: [{
+        name: "1:1 카카오톡 상담 바로가기",
+        linkType: "WL",
+        linkTypeName: "웹링크",
+        linkMo: "https://pf.kakao.com/_ykxcLK/chat",
+        linkPc: "https://pf.kakao.com/_ykxcLK/chat"
+      }]
+    });
+
+    const postData = querystring.stringify({
+      apikey: keys.apikey,
+      userid: keys.userid,
+      senderkey: keys.senderkey,
+      tpl_code: keys.tpl_code,
+      sender: keys.sender.replace(/[^0-9]/g, ''),
+      receiver_1: record.parentTel.replace(/[^0-9]/g, ''),
+      subject_1: '[바른한의원] 진료예약 접수 안내',
+      message_1: msg,
+      button_1: btnJson,
+      failover: 'Y'
+    });
+
+    const reqAlim = https.request({
+      hostname: 'kakaoapi.aligo.in',
+      port: 443,
+      path: '/akv10/alimtalk/send/',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(postData)
+      }
+    }, (resAlim) => {
+      let resData = '';
+      resAlim.on('data', c => { resData += c; });
+      resAlim.on('end', () => {
+        console.log('[Aligo Alimtalk Gateway Response]', resData);
+      });
+    });
+    reqAlim.on('error', (e) => {
+      console.warn('[Aligo Alimtalk Gateway Error]', e.message);
+    });
+    reqAlim.write(postData);
+    reqAlim.end();
+
+    // Doctor Notification Dispatch
+    if (keys.doctor_phone && !keys.doctor_phone.includes('휴대전화')) {
+      const doctorMsg = 
+`[바른한의원 신규 예약접수]
+• 예약번호: ${record.id}
+• 보호자: ${record.parentName}
+• 연락처: ${record.parentTel}
+• 자녀: ${record.childInfo}
+• 진료: ${record.consultType}
+• 증상: ${record.symptoms.join(', ') || '전반적 키성장'}
+${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간: ${new Date(record.receivedAt).toLocaleString('ko-KR')}`;
+
+      const docPostData = querystring.stringify({
+        apikey: keys.apikey,
+        userid: keys.userid,
+        sender: keys.sender.replace(/[^0-9]/g, ''),
+        receiver: keys.doctor_phone.replace(/[^0-9]/g, ''),
+        msg: doctorMsg,
+        title: '[바른한의원] 신규 예약접수'
+      });
+
+      const docReq = https.request({
+        hostname: 'apis.aligo.in',
+        port: 443,
+        path: '/send/',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(docPostData)
+        }
+      }, (docRes) => {
+        let docData = '';
+        docRes.on('data', c => { docData += c; });
+        docRes.on('end', () => {
+          console.log('[Aligo Doctor Notification Response]', docData);
+        });
+      });
+      docReq.on('error', (e) => {
+        console.warn('[Aligo Doctor Notification Error]', e.message);
+      });
+      docReq.write(docPostData);
+      docReq.end();
+    }
   }
 
   // API Endpoint: View All Reservations

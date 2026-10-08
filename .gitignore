@@ -1,0 +1,6 @@
+# Security: Do not expose secret API keys
+alimtalk-keys.json
+homepage/alimtalk-keys.json
+.env
+*.log
+node_modules/

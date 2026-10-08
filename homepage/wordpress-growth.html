@@ -2729,7 +2729,7 @@
           } catch(err) {}
 
           // Execute Alimtalk API Dispatch (with graceful fallback)
-          const endpoint = window.BAREUN_ALIMTALK_ENDPOINT || '/api/send-alimtalk';
+          const endpoint = window.BAREUN_ALIMTALK_ENDPOINT || (window.location.origin && window.location.origin.includes('localhost') ? '/api/send-alimtalk' : '/wp-json/bareun/v1/send-alimtalk');
           fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
