@@ -2846,6 +2846,103 @@ ${parentMemo ? `• 추가 메모 : ${parentMemo}\n` : ''}• 접수 일시 : ${
         }
       } catch(err) {}
 
+      // =========================================================================
+      // FAILPROOF DUAL DISPATCH ENGINE: Direct Solapi v4 + Local Server Endpoint
+      // =========================================================================
+      async function sendDirectSolapi(p) {
+        try {
+          const apiKey = 'NCSGZXQKB2DDI8AU';
+          const apiSecret = 'DXYGBFMQ78X1RVWBHF1TJDUD3E03B78N';
+          const pfId = 'KA01PF261008035644243PEfYT3EfpO7';
+          const templateId = 'KA01TP261008040405400VPBhtpxq0im';
+          const sender = '01056311275';
+          const doctorPhone = '01056311275';
+
+          const date = new Date().toISOString();
+          const saltArr = new Uint8Array(16);
+          (window.crypto || window.msCrypto).getRandomValues(saltArr);
+          const salt = Array.from(saltArr).map(b => b.toString(16).padStart(2, '0')).join('');
+
+          const enc = new TextEncoder();
+          const cryptoObj = window.crypto || window.msCrypto;
+          if (cryptoObj && cryptoObj.subtle) {
+            const key = await cryptoObj.subtle.importKey(
+              'raw',
+              enc.encode(apiSecret),
+              { name: 'HMAC', hash: 'SHA-256' },
+              false,
+              ['sign']
+            );
+            const sigBuf = await cryptoObj.subtle.sign('HMAC', key, enc.encode(date + salt));
+            const signature = Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            const authHeader = `HMAC-SHA256 apiKey=${apiKey}, date=${date}, salt=${salt}, signature=${signature}`;
+
+            // 1. Patient Kakao Alimtalk
+            fetch('https://api.solapi.com/messages/v4/send', {
+              method: 'POST',
+              headers: {
+                'Authorization': authHeader,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                message: {
+                  to: p.parentTel.replace(/[^0-9]/g, ''),
+                  from: sender,
+                  kakaoOptions: {
+                    pfId: pfId,
+                    templateId: templateId,
+                    variables: {
+                      '#{예약번호}': p.reservationId,
+                      '#{보호자명}': p.parentName,
+                      '#{자녀정보}': p.childInfo,
+                      '#{진료형태}': p.consultType,
+                      '#{고민증상}': (p.symptoms || []).join(', ') || '전반적 키성장 상담',
+                      '#{접수일시}': p.submittedAt
+                    }
+                  }
+                }
+              })
+            }).then(r => r.json()).then(res => {
+              console.log('[Solapi Alimtalk Dispatched]', res);
+            }).catch(e => {
+              console.warn('[Solapi Direct Dispatch Catch]', e);
+            });
+
+            // 2. Doctor Alert SMS
+            if (doctorPhone) {
+              const dDate = new Date().toISOString();
+              const dSaltArr = new Uint8Array(16);
+              cryptoObj.getRandomValues(dSaltArr);
+              const dSalt = Array.from(dSaltArr).map(b => b.toString(16).padStart(2, '0')).join('');
+              const dSigBuf = await cryptoObj.subtle.sign('HMAC', key, enc.encode(dDate + dSalt));
+              const dSig = Array.from(new Uint8Array(dSigBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+              const dAuth = `HMAC-SHA256 apiKey=${apiKey}, date=${dDate}, salt=${dSalt}, signature=${dSig}`;
+
+              fetch('https://api.solapi.com/messages/v4/send', {
+                method: 'POST',
+                headers: {
+                  'Authorization': dAuth,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  message: {
+                    to: doctorPhone,
+                    from: sender,
+                    subject: '[바른한의원] 신규 키성장 예약접수',
+                    text: `[바른한의원 신규 키성장 예약]\n• 예약번호: ${p.reservationId}\n• 보호자: ${p.parentName} 님\n• 연락처: ${p.parentTel}\n• 자녀: ${p.childInfo}\n• 희망진료: ${p.consultType}\n• 증상: ${(p.symptoms || []).join(', ')}\n${p.parentMemo ? `• 메모: ${p.parentMemo}\n` : ''}• 접수시간: ${p.submittedAt}`
+                  }
+                })
+              }).catch(() => {});
+            }
+          }
+        } catch(e) {
+          console.warn('[Solapi Client Direct Engine Catch]', e);
+        }
+      }
+
+      // Trigger Direct Client Solapi Dispatch
+      sendDirectSolapi(alimtalkPayload);
+
       // 2. Dispatch to Server Alimtalk Endpoint
       fetch('/api/send-alimtalk', {
         method: 'POST',
@@ -2874,7 +2971,7 @@ ${parentMemo ? `• 추가 메모 : ${parentMemo}\n` : ''}• 접수 일시 : ${
 
           document.getElementById('growthBookingForm').reset();
           calcGrowthScore();
-        }, 350);
+        }, 500);
       });
     }
 
