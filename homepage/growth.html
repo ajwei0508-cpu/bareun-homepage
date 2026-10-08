@@ -2908,7 +2908,7 @@ ${parentMemo ? `• 추가 메모 : ${parentMemo}\n` : ''}• 접수 일시 : ${
               console.warn('[Solapi Direct Dispatch Catch]', e);
             });
 
-            // 2. Doctor Alert SMS
+            // 2. Doctor Alert - KakaoTalk Alimtalk & SMS Dual Notification
             if (doctorPhone) {
               const dDate = new Date().toISOString();
               const dSaltArr = new Uint8Array(16);
@@ -2918,6 +2918,38 @@ ${parentMemo ? `• 추가 메모 : ${parentMemo}\n` : ''}• 접수 일시 : ${
               const dSig = Array.from(new Uint8Array(dSigBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
               const dAuth = `HMAC-SHA256 apiKey=${apiKey}, date=${dDate}, salt=${dSalt}, signature=${dSig}`;
 
+              // 2-1. Hospital/Doctor KakaoTalk Alimtalk Dispatch
+              fetch('https://api.solapi.com/messages/v4/send', {
+                method: 'POST',
+                headers: {
+                  'Authorization': dAuth,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  message: {
+                    to: doctorPhone,
+                    from: sender,
+                    kakaoOptions: {
+                      pfId: pfId,
+                      templateId: templateId,
+                      variables: {
+                        '#{예약번호}': p.reservationId,
+                        '#{보호자명}': p.parentName + ' (' + p.parentTel + ')',
+                        '#{자녀정보}': p.childInfo,
+                        '#{진료형태}': p.consultType,
+                        '#{고민증상}': ((p.symptoms || []).join(', ') + (p.parentMemo ? ' [메모: ' + p.parentMemo + ']' : '')).slice(0, 100),
+                        '#{접수일시}': p.submittedAt
+                      }
+                    }
+                  }
+                })
+              }).then(r => r.json()).then(res => {
+                console.log('[Hospital Kakao Alimtalk Dispatched]', res);
+              }).catch(e => {
+                console.warn('[Hospital Kakao Alimtalk Catch]', e);
+              });
+
+              // 2-2. Hospital/Doctor Instant SMS Alert (Backup)
               fetch('https://api.solapi.com/messages/v4/send', {
                 method: 'POST',
                 headers: {
