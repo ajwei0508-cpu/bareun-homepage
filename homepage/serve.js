@@ -131,16 +131,28 @@ const server = http.createServer((req, res) => {
         console.log(`• 알림톡 상태 : 정상 전송 완료 (대표원장실 & 보호자 동시 수신)`);
         console.log(`======================================================\n`);
 
-        // Dispatch real Alimtalk if keys are configured
-        let alimtalkKeys = null;
-        const keysPath = path.join(__dirname, 'alimtalk-keys.json');
-        if (fs.existsSync(keysPath)) {
+        // Dispatch real Alimtalk if Solapi keys are configured
+        let solapiKeys = null;
+        const solapiPath = path.join(__dirname, 'solapi-keys.json');
+        if (fs.existsSync(solapiPath)) {
           try {
-            alimtalkKeys = JSON.parse(fs.readFileSync(keysPath, 'utf8') || '{}');
+            solapiKeys = JSON.parse(fs.readFileSync(solapiPath, 'utf8') || '{}');
           } catch (e) {}
         }
-        if (alimtalkKeys && alimtalkKeys.apikey && !alimtalkKeys.apikey.includes('입력')) {
-          dispatchAligoAlimtalk(alimtalkKeys, newRecord);
+        if (solapiKeys && solapiKeys.apiKey && solapiKeys.apiKey !== 'YOUR_SOLAPI_API_KEY') {
+          dispatchSolapiAlimtalk(solapiKeys, newRecord);
+        } else {
+          // Fallback to Aligo keys if configured
+          let alimtalkKeys = null;
+          const keysPath = path.join(__dirname, 'alimtalk-keys.json');
+          if (fs.existsSync(keysPath)) {
+            try {
+              alimtalkKeys = JSON.parse(fs.readFileSync(keysPath, 'utf8') || '{}');
+            } catch (e) {}
+          }
+          if (alimtalkKeys && alimtalkKeys.apikey && !alimtalkKeys.apikey.includes('입력')) {
+            dispatchAligoAlimtalk(alimtalkKeys, newRecord);
+          }
         }
 
         res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
@@ -157,6 +169,90 @@ const server = http.createServer((req, res) => {
       }
     });
     return;
+  }
+
+  // Real Solapi Alimtalk & Doctor SMS Dispatch Function
+  function dispatchSolapiAlimtalk(keys, record) {
+    if (!keys || !keys.apiKey || !keys.apiSecret) return;
+    const crypto = require('crypto');
+    const date = new Date().toISOString();
+    const salt = crypto.randomBytes(16).toString('hex');
+    const signature = crypto.createHmac('sha256', keys.apiSecret).update(date + salt).digest('hex');
+    const authHeader = `HMAC-SHA256 apiKey=${keys.apiKey}, date=${date}, salt=${salt}, signature=${signature}`;
+
+    const alimPayload = JSON.stringify({
+      message: {
+        to: record.parentTel.replace(/[^0-9]/g, ''),
+        from: keys.sender.replace(/[^0-9]/g, ''),
+        kakaoOptions: {
+          pfId: keys.pfId,
+          templateId: keys.templateId,
+          variables: {
+            "#{예약번호}": record.id,
+            "#{보호자명}": record.parentName,
+            "#{자녀정보}": record.childInfo,
+            "#{진료형태}": record.consultType,
+            "#{고민증상}": (record.symptoms || []).join(', ') || '전반적 키성장 상담',
+            "#{접수일시}": new Date(record.receivedAt).toLocaleString('ko-KR')
+          }
+        }
+      }
+    });
+
+    const req = https.request({
+      hostname: 'api.solapi.com',
+      port: 443,
+      path: '/messages/v4/send',
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(alimPayload)
+      }
+    }, res => {
+      let b = '';
+      res.on('data', c => b += c);
+      res.on('end', () => console.log('[Solapi Alimtalk Gateway Response]', b));
+    });
+    req.on('error', e => console.warn('[Solapi Gateway Error]', e.message));
+    req.write(alimPayload);
+    req.end();
+
+    // Doctor SMS Notification
+    if (keys.doctorPhone) {
+      const dDate = new Date().toISOString();
+      const dSalt = crypto.randomBytes(16).toString('hex');
+      const dSig = crypto.createHmac('sha256', keys.apiSecret).update(dDate + dSalt).digest('hex');
+      const dAuth = `HMAC-SHA256 apiKey=${keys.apiKey}, date=${dDate}, salt=${dSalt}, signature=${dSig}`;
+
+      const docPayload = JSON.stringify({
+        message: {
+          to: keys.doctorPhone.replace(/[^0-9]/g, ''),
+          from: keys.sender.replace(/[^0-9]/g, ''),
+          subject: '[바른한의원] 신규 키성장 예약접수',
+          text: `[바른한의원 신규 키성장 예약]\n• 예약번호: ${record.id}\n• 보호자: ${record.parentName} 님\n• 연락처: ${record.parentTel}\n• 자녀: ${record.childInfo}\n• 진료: ${record.consultType}\n• 증상: ${(record.symptoms || []).join(', ')}\n${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간: ${new Date(record.receivedAt).toLocaleString('ko-KR')}`
+        }
+      });
+
+      const dReq = https.request({
+        hostname: 'api.solapi.com',
+        port: 443,
+        path: '/messages/v4/send',
+        method: 'POST',
+        headers: {
+          'Authorization': dAuth,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(docPayload)
+        }
+      }, res => {
+        let b = '';
+        res.on('data', c => b += c);
+        res.on('end', () => console.log('[Solapi Doctor Alert Response]', b));
+      });
+      dReq.on('error', e => console.warn('[Solapi Doctor Alert Error]', e.message));
+      dReq.write(docPayload);
+      dReq.end();
+    }
   }
 
   // Real Aligo Alimtalk Dispatch Function

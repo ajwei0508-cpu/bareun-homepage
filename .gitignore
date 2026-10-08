@@ -2,6 +2,9 @@
 alimtalk-keys.json
 homepage/alimtalk-keys.json
 homepage/wordpress-alimtalk-ready.php
+solapi-keys.json
+homepage/solapi-keys.json
+homepage/wordpress-solapi-ready.php
 .env
 *.log
 node_modules/
