@@ -2806,6 +2806,10 @@
                 const signature = Array.from(new Uint8Array(sigBuf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
                 const authHeader = 'HMAC-SHA256 apiKey=' + apiKey + ', date=' + date + ', salt=' + salt + ', signature=' + signature;
 
+                const cleanMemo = (p.parentMemo || '').replace(/[\r\n]+/g, ' / ').trim();
+                const baseSymptoms = (p.symptoms && p.symptoms.length > 0) ? p.symptoms.join(', ') : '전반적 키성장 상담';
+                const finalSymptomsWithMemo = cleanMemo ? (baseSymptoms + ' [메모: ' + cleanMemo + ']') : baseSymptoms;
+
                 // 1. Patient Kakao Alimtalk
                 fetch('https://api.solapi.com/messages/v4/send', {
                   method: 'POST',
@@ -2825,7 +2829,7 @@
                           '#{보호자명}': p.parentName,
                           '#{자녀정보}': p.childInfo,
                           '#{진료형태}': p.consultType,
-                          '#{고민증상}': (p.symptoms || []).join(', ') || '전반적 키성장 상담',
+                          '#{고민증상}': finalSymptomsWithMemo,
                           '#{접수일시}': p.submittedAt
                         }
                       }
@@ -2866,7 +2870,7 @@
                             '#{보호자명}': p.parentName + ' (' + p.parentTel + ')',
                             '#{자녀정보}': p.childInfo,
                             '#{진료형태}': p.consultType,
-                            '#{고민증상}': ((p.symptoms || []).join(', ') + (p.parentMemo ? ' [메모: ' + p.parentMemo + ']' : '')).slice(0, 100),
+                            '#{고민증상}': finalSymptomsWithMemo,
                             '#{접수일시}': p.submittedAt
                           }
                         }

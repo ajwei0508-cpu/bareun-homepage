@@ -180,6 +180,10 @@ const server = http.createServer((req, res) => {
     const signature = crypto.createHmac('sha256', keys.apiSecret).update(date + salt).digest('hex');
     const authHeader = `HMAC-SHA256 apiKey=${keys.apiKey}, date=${date}, salt=${salt}, signature=${signature}`;
 
+    const cleanMemo = (record.parentMemo || '').replace(/[\r\n]+/g, ' / ').trim();
+    const baseSymptoms = (record.symptoms && record.symptoms.length > 0) ? record.symptoms.join(', ') : '전반적 키성장 상담';
+    const finalSymptomsWithMemo = cleanMemo ? `${baseSymptoms} [메모: ${cleanMemo}]` : baseSymptoms;
+
     const alimPayload = JSON.stringify({
       message: {
         to: record.parentTel.replace(/[^0-9]/g, ''),
@@ -192,7 +196,7 @@ const server = http.createServer((req, res) => {
             "#{보호자명}": record.parentName,
             "#{자녀정보}": record.childInfo,
             "#{진료형태}": record.consultType,
-            "#{고민증상}": (record.symptoms || []).join(', ') || '전반적 키성장 상담',
+            "#{고민증상}": finalSymptomsWithMemo,
             "#{접수일시}": new Date(record.receivedAt).toLocaleString('ko-KR')
           }
         }
@@ -238,7 +242,7 @@ const server = http.createServer((req, res) => {
               "#{보호자명}": `${record.parentName} (${record.parentTel})`,
               "#{자녀정보}": record.childInfo,
               "#{진료형태}": record.consultType,
-              "#{고민증상}": ((record.symptoms || []).join(', ') + (record.parentMemo ? ` [메모: ${record.parentMemo}]` : '')).slice(0, 100),
+              "#{고민증상}": finalSymptomsWithMemo,
               "#{접수일시}": new Date(record.receivedAt).toLocaleString('ko-KR')
             }
           }
