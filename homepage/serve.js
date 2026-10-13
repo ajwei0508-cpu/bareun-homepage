@@ -17,11 +17,36 @@ const MIME_TYPES = {
   '.woff2': 'font/woff2'
 };
 
-const brainDir = path.resolve('C:/Users/0508a/.gemini/antigravity/brain/27107abe-29bc-4aac-b3c8-075bf69cc1b3');
+const brainDir = path.resolve('C:/Users/0508a/.gemini/antigravity/brain/876cd643-a906-469f-8561-63b60bf0a819');
 
-// Auto-sync newly generated empathy images to homepage root on startup
+// Auto-sync newly generated images to homepage root on startup
 try {
   if (fs.existsSync(brainDir)) {
+    const files = fs.readdirSync(brainDir);
+    // Dynamic sync for bareun_step* files
+    files.forEach(f => {
+      if (f.startsWith('bareun_step1_') && f.endsWith('.jpg')) {
+        fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, 'bareun_step1_growth_spine.jpg'));
+        console.log('[Auto-Sync] Copied step 1 image');
+      }
+      if (f.startsWith('bareun_step2_') && f.endsWith('.jpg')) {
+        fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, 'bareun_step2_diet_slimming.jpg'));
+        console.log('[Auto-Sync] Copied step 2 image');
+      }
+      if (f.startsWith('bareun_step3_') && f.endsWith('.jpg')) {
+        fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, 'bareun_step3_scalp_hair_revival.jpg'));
+        console.log('[Auto-Sync] Copied step 3 image');
+      }
+      if (f.startsWith('bareun_step4_') && f.endsWith('.jpg')) {
+        fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, 'bareun_step4_pain_chuna_healing.jpg'));
+        console.log('[Auto-Sync] Copied step 4 image');
+      }
+      if (f.startsWith('bareun_step5_') && f.endsWith('.jpg')) {
+        fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, 'bareun_step5_gongjindan_emperor.jpg'));
+        console.log('[Auto-Sync] Copied step 5 image');
+      }
+    });
+
     const syncFiles = [
       { src: 'empathy_night_calm_1791334624634.jpg', dest: 'empathy-night-calm.jpg' },
       { src: 'empathy_metabolism_waist_1791334650179.jpg', dest: 'empathy-metabolism-waist.jpg' },

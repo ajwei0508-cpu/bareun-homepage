@@ -8,3 +8,5 @@ homepage/wordpress-solapi-ready.php
 .env
 *.log
 node_modules/
+homepage/reservations.json
+reservations.json

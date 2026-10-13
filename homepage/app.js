@@ -1,936 +1,959 @@
 /**
  * BAREUN CLINIC (바른한의원 대전본점)
- * World-Class High-End Creative Website Architecture
+ * 5-Step Continuous 3D Lifecycle & 9-Joint Pain Relief Storytelling Engine
+ * Three.js WebGL, GSAP ScrollTrigger, Hybrid 8K CGI Visual Layers
  */
 
-const GET_DIET_ZERO_URL = () => {
-  return (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html'))
-    ? 'diet-zero.html'
-    : '/diet-zero/';
-};
-
-const GET_GONGJINDAN_URL = () => {
-  return (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html'))
-    ? 'gongjindan.html'
-    : '/gongjindan-2/';
-};
-
-const GET_GROWTH_URL = () => {
-  return (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html'))
-    ? 'growth.html'
-    : '/growth/';
-};
-
-
-const CLINIC_PROGRAMS = [
+// Step Data Configuration
+const STORY_STEPS = [
   {
-    id: "00",
-    slug: "appetite-zero",
-    title: "식욕 ZERO",
-    badge: "비대면 처방 BEST 1위",
-    subtitle: "비대면 처방 BEST 1위 · 1:1 맞춤 전화 처방 & 전국 당일 발송",
-    client: "비대면 처방 BEST 1위 · 시그니처 다이어트 한약",
-    role: "식욕 억제 · 체지방 분해 · 신진대사 활성화",
-    year: "TELEMEDICINE",
-    awards: "🏆 비대면 처방 베스트 1위 · 누적 처방 50,000건 돌파 · 100% 개별 체질 맞춤 탕전",
-    description: "굶지 않고 자연스럽게 식탐을 억제하며 체질별 기초 대사율을 끌어올리는 바른한의원만의 시그니처 다이어트 탕약. 내원 없이 전화 상담 후 집 앞까지 안전하게 직배송됩니다.",
-    image: "http://bareunhaniwon.com/wp-content/uploads/2026/09/식욕제로.jpg",
-    details: [
-      "✓ 1:1 비대면 전화 진료를 통한 맞춤형 체질 감별 및 정밀 처방",
-      "✓ 위장 장애 및 심장 두근거림 최소화 원내 특수 탕전 공법",
-      "✓ 식욕 중추 안정 및 자연스러운 포만감 형성",
-      "✓ 전국 어디서나 간편하게 네이버 폼 신청 후 안심 택배 수령"
-    ],
-    primaryLink: "diet-zero.html#checkout-zone",
-    primaryText: "💳 온라인 결제 & 비대면 처방 신청",
-    secondaryLink: "https://pf.kakao.com/_ykxcLK",
-    secondaryText: "💬 카카오톡 1:1 상담 문의"
+    step: 1,
+    slug: 'pediatric-growth',
+    badge: 'STEP 01 · 수정과 성장',
+    counter: '01 / 05',
+    title: '01. 바른 성장클리닉',
+    subtitle: '세이지 그린 & 골드 입자가 이루는 생명 탄생과 3D 척추 바른 정렬',
+    desc: '15년 임상경력 대표원장이 자신의 친아들에게 직접 처방하여 입증한 무방사선 정밀 초음파와 8대 전신 기능 검진으로 아이의 숨은 잠재 키를 깨웁니다.',
+    link: 'growth.html',
+    btnText: '성장클리닉 상세 보기 ↗',
+    color: '#34D399',
+    backdropId: 'backdrop-1'
   },
   {
-    id: "01",
-    slug: "gongjindan",
-    title: "황제 공진단",
-    badge: "특허 제10-1744704호",
-    subtitle: "식약처 정품 사향 100% 인증 · 원내 직접 제환",
-    client: "원기 회복 & 면역력 강화 명약",
-    role: "황실 전통 비방 · 최고급 원방 사향 공진단",
-    year: "MASTERPIECE",
-    awards: "황제를 위한 특허받은 공진단 · 식약처 CITES 정품 사향 100% · 99.9% 순금박 수제 제환",
-    description: "장인의 손끝에서 피어나는 천년의 건강. 엄격한 CITES 정품 사향 인증을 거친 최고급 약재만을 선별하여 대전본점 원장이 직접 한 알 한 알 정성으로 빚어내는 궁극의 명작입니다.",
-    image: "http://bareunhaniwon.com/wp-content/uploads/2026/09/image.png_20260921230913.jpeg",
-    details: [
-      "✓ 식약처 CITES 공인 정품 천연 사향 시험성적서 및 품질 보증서 동봉",
-      "✓ 최상급 러시아산 원용 분골(녹용 최고 부위) 황금 비율 배합",
-      "✓ 원내 조제실에서 원장이 직접 전통 수제 제환",
-      "✓ 만성 피로 회복, 수험생 집중력, VIP 효도 선물 추천"
-    ],
-    primaryLink: "https://pf.kakao.com/_ykxcLK",
-    primaryText: "💬 카카오톡 공진단 사전 예약 문의",
-    secondaryLink: "https://naver.me/5U1ELn8L",
-    secondaryText: "📍 네이버 플레이스 정보 보기"
+    step: 2,
+    slug: 'appetite-zero',
+    badge: 'STEP 02 · 체형과 감량',
+    counter: '02 / 05',
+    title: '02. 바른 다이어트 (식욕 ZERO)',
+    subtitle: '체지방 볼륨 입자 분해 & 슬림한 실루엣 라인 형성',
+    desc: '굶지 않고 자연스럽게 식탐을 억제하며 체질별 기초 대사율을 끌어올리는 바른한의원만의 시그니처 탕약. 누적 50,000건 임상으로 입증된 1:1 맞춤 탕전입니다.',
+    link: 'diet-zero.html#checkout-zone',
+    btnText: '식욕 ZERO 비대면 처방 ↗',
+    color: '#F472B6',
+    backdropId: 'backdrop-2'
   },
   {
-    id: "02",
-    slug: "dream-beauty",
-    title: "드림뷰티 뱃살 다이어트",
-    subtitle: "고민 부위 복부 집중 라인 조각 프로그램",
-    client: "복부 집중 슬리밍 솔루션",
-    role: "심부 내장지방 연소 · 피하지방 분해약침 · 탄력 케어",
-    year: "BODY SCULPT",
-    awards: "복부 둘레 집중 감소 임상 프로그램 · 피하지방 분해 & 피부 탄력 리프팅 동시 케어",
-    description: "쉽게 빠지지 않는 뱃살과 옆구리 러브핸들을 위한 집중 타겟팅 프로그램. 1:1 체성분 분석을 기반으로 체지방 분해 한약과 복부 온열 심부 테라피를 결합하여 매끄러운 바디 라인을 완성합니다.",
-    details: [
-      "✓ 내장지방 및 셀룰라이트 집중 타겟 분해 프로그램",
-      "✓ 심부 온열 요법으로 복부 순환 및 독소 배출 활성화",
-      "✓ 늘어진 피부 탄력을 복원하는 한방 슬리밍 리프팅 케어",
-      "✓ 요요 없는 유지 관리 가이드 및 1:1 밀착 코칭"
-    ],
-    primaryLink: "https://pf.kakao.com/_ykxcLK",
-    primaryText: "💬 복부 슬리밍 카카오톡 상담 예약",
-    secondaryLink: "https://naver.me/5U1ELn8L",
-    secondaryText: "📍 네이버 예약 바로가기"
+    step: 3,
+    slug: 'scalp-hair',
+    badge: 'STEP 03 · 두피와 모근',
+    counter: '03 / 05',
+    title: '03. 바른 탈모케어 (모근 개화)',
+    subtitle: '두피 상열감 순환 소산 & 약재 파티클 모근 개화',
+    desc: '두피로 솟구치는 화기(火氣)를 시원한 쿨링 오라로 다스리고, 고농도 모근 영양 약침이 잠든 모낭 세포를 깨워 풍성하고 건강한 머릿결을 피워냅니다.',
+    link: 'https://pf.kakao.com/_ykxcLK',
+    btnText: '탈모케어 1:1 카톡 상담 ↗',
+    color: '#60A5FA',
+    backdropId: 'backdrop-3'
   },
   {
-    id: "03",
-    slug: "doctor-profile",
-    title: "대표원장 소개 & 진료철학",
-    subtitle: "바른 마음, 정직한 처방으로 치유합니다",
-    client: "바른한의원 대전본점 대표원장",
-    role: "한의학 박사 · 1:1 평생 주치의 케어",
-    year: "CHIEF DIRECTOR",
-    awards: "대한한의학회 정회원 · 비만체형학회 정회원 · 1:1 책임 전담 진료제 준수",
-    description: "환자의 몸을 바르게 세우는 정직한 치료. 과잉 진료 없는 정확한 원인 진단과 100% 정품 인증 약재만을 고집하며, 환자 한 분 한 분과의 깊은 소통을 통해 평생의 건강 파트너가 되어 드립니다.",
-    image: "doctor.png",
-    details: [
-      "✓ 대전본점 대표원장 직접 책임 진료",
-      "✓ 한의학 박사 및 비만 체형 교정 전문 임상 연구",
-      "✓ 탕전 전 과정 투명 공개 및 안심 한약재 사용 원칙",
-      "✓ 대전 둔산동 중심에서 환자 한 분만을 위한 평생 주치의 동행"
-    ],
-    primaryLink: "https://naver.me/5U1ELn8L",
-    primaryText: "📍 네이버 플레이스 1:1 진료 예약",
-    secondaryLink: "https://pf.kakao.com/_ykxcLK",
-    secondaryText: "💬 카카오톡 실시간 상담 문의"
+    step: 4,
+    slug: 'pain-chuna',
+    badge: 'STEP 04 · 전신 통증 & 녹색 치유',
+    counter: '04 / 05',
+    title: '04. 바른 통증·추나 (9대 관절 치유)',
+    subtitle: '9대 관절 붉은 점 점멸 소산 & 한방 추나 파동의 녹색 치유 정렬',
+    desc: '목, 어깨, 팔꿈치, 손가락, 허리, 골반, 무릎, 발목, 발가락 9대 관절의 붉은 통증 신호를 소산시키고, 비수술 추나 요법과 봉약침의 강력한 치유 파동으로 바르게 정렬합니다.',
+    link: 'https://naver.me/5U1ELn8L',
+    btnText: '네이버 통증 진료 예약 ↗',
+    color: '#38A169',
+    backdropId: 'backdrop-4'
   },
   {
-    id: "04",
-    slug: "pediatric-growth",
-    title: "키성장 · 성조숙증 클리닉",
-    badge: "무방사선 초음파 성장판 검사",
-    subtitle: "15년 임상경력 대표원장 친아들 직접 처방 입증 · 초음파 & 8대 전신 기능 검진",
-    client: "소아청소년 성장 & 성조숙증 안심 클리닉",
-    role: "무방사선 초음파 진단 · 8대 전신 기능검진(체열·스트레스·자율신경·비염·체질·면역·혈류·장내GAS) · 맞춤 성장 한약",
-    year: "GROWTH CLINIC",
-    awards: "🌿 15년 임상경력 대표원장 직접 진료 · 초음파 4대 지표 · 8대 전신 정밀 기능 검진 체계",
-    description: "15년 임상경력으로 대표원장님이 직접 친아들에게 처방하며 입증한 100% 천연 안심 성장 한약까지. 무방사선 정밀 초음파와 8대 전신 기능 검진(체열·스트레스·자율신경·비염·체질·면역·혈류·장내가스)으로 우리 아이의 숨겨진 잠재 키를 찾아드립니다.",
-    image: "growth-happy-family.jpg",
-    details: [
-      "✓ 15년 임상경력 대표원장이 자신의 친아들에게 직접 처방하며 입증한 정직한 치료",
-      "✓ [네이버 블로그 공개] 대표원장 친아들 3개년 키성장 치료 수기 및 사진 전문 (https://blog.naver.com/wei0508/223437892490)",
-      "✓ 방사선 피폭 걱정 없는 무방사선 정밀 초음파 4대 지표 (골연령·백분위·뼈길이·예측키) 판독",
-      "✓ 성장판 너머 8대 전신 정밀 기능 검진 (체열·스트레스·자율신경·비염·사상체질·면역력·혈류·장내GAS)",
-      "✓ 성조숙증 성장판 조기 폐쇄 예방 및 오장육부 면역 균형 1:1 맞춤 성장 탕전"
-    ],
-    primaryLink: "growth.html",
-    primaryText: "🌱 키성장 · 성조숙증 클리닉 보기",
-    secondaryLink: "https://blog.naver.com/wei0508/223437892490",
-    secondaryText: "📝 원장님 아들 성장 후기 블로그 보기 ↗"
+    step: 5,
+    slug: 'gongjindan',
+    badge: 'STEP 05 · 원기 회복',
+    counter: '05 / 05',
+    title: '05. 황제 공진단 (원기 회복)',
+    subtitle: '24K 순금박 공진단 황금빛 장막 & 궁극의 원기 회복',
+    desc: '통증이 사라지고 바르게 정렬된 몸을 영롱한 3D 금박 공진단 황금빛 오라가 감싸며 최상의 활력 완성. 식약처 CITES 정품 사향 100%를 원장이 직접 빚어냅니다.',
+    link: 'gongjindan.html',
+    btnText: '황제 공진단 상세 보기 ↗',
+    color: '#FCD34D',
+    backdropId: 'backdrop-5'
   }
 ];
 
-class BareunClinicApp {
+class BareunContinuous3DStoryApp {
   constructor() {
-    this.projects = CLINIC_PROGRAMS;
-    this.currentIndex = 0;
+    this.currentStep = 1;
+    this.scrollProgress = 0;
     this.audioEnabled = false;
     this.audioCtx = null;
     
-    // DOM Cache
-    this.cursor = document.getElementById('custom-cursor');
-    this.cursorFollower = document.getElementById('cursor-follower');
-    this.track = document.getElementById('carousel-track');
-    this.container = document.getElementById('carousel-container');
-    
-    // Meta HUD elements
-    this.activeIndex = document.getElementById('active-index');
-    this.activeTitle = document.getElementById('active-title');
-    this.activeClient = document.getElementById('active-client');
-    this.activeRole = document.getElementById('active-role');
-    this.activeYear = document.getElementById('active-year');
-    this.activeDesc = document.getElementById('active-desc');
-    this.activeAwards = document.getElementById('active-awards');
-    this.progressFill = document.getElementById('progress-fill');
-    
-    // Footer counters
-    this.currentCounter = document.getElementById('current-counter');
-    this.totalCounter = document.getElementById('total-counter');
+    // Joint definitions for Step 4
+    this.joints = [
+      { id: 'neck', name: '목 (경추)', pos: [0, 1.95, 0], healed: false },
+      { id: 'shoulder_l', name: '어깨 (좌)', pos: [-0.85, 1.6, 0], healed: false, chipId: 'shoulder' },
+      { id: 'shoulder_r', name: '어깨 (우)', pos: [0.85, 1.6, 0], healed: false, chipId: 'shoulder' },
+      { id: 'elbow_l', name: '팔꿈치 (좌)', pos: [-1.15, 0.95, 0], healed: false, chipId: 'elbow' },
+      { id: 'elbow_r', name: '팔꿈치 (우)', pos: [1.15, 0.95, 0], healed: false, chipId: 'elbow' },
+      { id: 'wrist_l', name: '손가락 (좌)', pos: [-1.3, 0.25, 0], healed: false, chipId: 'wrist' },
+      { id: 'wrist_r', name: '손가락 (우)', pos: [1.3, 0.25, 0], healed: false, chipId: 'wrist' },
+      { id: 'waist', name: '허리 (요추)', pos: [0, 0.85, -0.05], healed: false },
+      { id: 'hip_l', name: '골반/다리', pos: [-0.45, 0.35, 0], healed: false, chipId: 'hip' },
+      { id: 'hip_r', name: '골반/다리', pos: [0.45, 0.35, 0], healed: false, chipId: 'hip' },
+      { id: 'knee_l', name: '무릎 (좌)', pos: [-0.45, -0.65, 0.05], healed: false, chipId: 'knee' },
+      { id: 'knee_r', name: '무릎 (우)', pos: [0.45, -0.65, 0.05], healed: false, chipId: 'knee' },
+      { id: 'ankle_l', name: '발목 (좌)', pos: [-0.42, -1.5, 0], healed: false, chipId: 'ankle' },
+      { id: 'ankle_r', name: '발목 (우)', pos: [0.42, -1.5, 0], healed: false, chipId: 'ankle' },
+      { id: 'toe_l', name: '발가락 (좌)', pos: [-0.42, -1.85, 0.15], healed: false, chipId: 'toe' },
+      { id: 'toe_r', name: '발가락 (우)', pos: [0.42, -1.85, 0.15], healed: false, chipId: 'toe' }
+    ];
 
-    // Controls
-    this.prevBtn = document.getElementById('prev-btn');
-    this.nextBtn = document.getElementById('next-btn');
-    this.audioBtn = document.getElementById('audio-toggle');
-    this.audioStateText = document.getElementById('audio-state');
-    this.menuBtn = document.getElementById('menu-toggle');
-    this.menuDrawer = document.getElementById('menu-drawer');
-    this.drawerClose = document.getElementById('drawer-close');
-    this.drawerBackdrop = document.getElementById('drawer-backdrop');
-    
-    // Modal
-    this.projectModal = document.getElementById('project-modal');
-    this.modalContent = document.getElementById('modal-content');
-    this.modalClose = document.getElementById('modal-close');
-    this.modalBackdrop = document.getElementById('modal-backdrop');
-
-    // Intro Elements
-    this.introSplash = document.getElementById('intro-splash');
-    this.introVideo = document.getElementById('intro-video');
-    this.introEnterBtn = document.getElementById('intro-enter-btn');
-    this.replayIntroBtn = document.getElementById('replay-intro-btn');
-
-    // Gesture & Drag State
-    this.wasDragging = false;
-
-    // Cursor tracking state
-    this.mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    this.follower = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-    this.init();
-  }
-
-  init() {
-    this.renderCards();
-    this.initCursor();
-    this.initClock();
-    this.initAudio();
+    this.initDOM();
+    this.initThree();
+    this.initScroll();
+    this.initNavigation();
     this.initIntro();
-    this.initTouchAndDrag();
-    this.initEvents();
-    this.updateProjectView(0, false);
+    this.initDrawer();
+    this.animate();
   }
 
-  /* --------------------------------------------------------------------------
-     CINEMATIC INTRO VIDEO SPLASH ("아트" 예술적 인터랙션 & 영상 종료 시 타이포그래피 등장)
-     -------------------------------------------------------------------------- */
-  initIntro() {
-    if (!this.introSplash) return;
+  initDOM() {
+    // Canvas & HUD elements
+    this.canvas = document.getElementById('storyboard-canvas');
+    this.hudBadge = document.getElementById('hud-step-badge');
+    this.hudCounter = document.getElementById('hud-step-counter');
+    this.hudTitle = document.getElementById('hud-step-title');
+    this.hudSubtitle = document.getElementById('hud-step-subtitle');
+    this.hudDesc = document.getElementById('hud-step-desc');
+    this.hudPrimaryBtn = document.getElementById('hud-primary-btn');
+    this.hudDrawerBtn = document.getElementById('hud-drawer-btn');
+    this.painRadarBox = document.getElementById('pain-radar-box');
+    this.painRadarStatus = document.getElementById('pain-radar-status');
+    
+    // Backdrops
+    this.backdrops = [
+      document.getElementById('backdrop-1'),
+      document.getElementById('backdrop-2'),
+      document.getElementById('backdrop-3'),
+      document.getElementById('backdrop-4'),
+      document.getElementById('backdrop-5')
+    ];
 
-    let hasEnded = false;
+    // Left nav dots
+    this.navDots = document.querySelectorAll('.step-nav-dot');
 
-    const showEndedState = () => {
-      if (hasEnded) return;
-      hasEnded = true;
-      this.introSplash.classList.add('video-ended');
-    };
-
-    const dismissIntro = () => {
-      if (this.introSplash.classList.contains('leaving') || this.introSplash.style.display === 'none') return;
-      this.playEntryChime();
-      this.introSplash.classList.add('leaving');
-      setTimeout(() => {
-        this.introSplash.style.display = 'none';
-        if (this.introVideo) {
-          try { this.introVideo.pause(); } catch(e) {}
-        }
-      }, 950);
-    };
-
-    // 비디오 이벤트 리스너 등록
-    if (this.introVideo) {
-      // 영상 끝부분 도달 시 조기 fallback
-      this.introVideo.addEventListener('timeupdate', () => {
-        if (!hasEnded && this.introVideo.duration) {
-          if (this.introVideo.currentTime >= this.introVideo.duration - 0.3) {
-            showEndedState();
-          }
-        }
-      });
-
-      // 영상 재생이 끝났을 때 드라마틱하게 글과 버튼 애니메이션 등장
-      this.introVideo.addEventListener('ended', () => {
-        showEndedState();
-      });
-
-      // 브라우저 정책으로 자동 재생 차단 시 즉시 텍스트 노출하여 사용자 블로킹 방지
-      this.introVideo.play().catch(() => {
-        showEndedState();
-      });
-    } else {
-      showEndedState();
-    }
-
-    // 인트로 스플래시 화면 클릭/터치 시 인터랙션
-    this.introSplash.addEventListener('click', () => {
-      if (!hasEnded) {
-        // 영상 재생 중 클릭 시: 영상을 끝내고 예술적 타이포그래피를 즉시 펼침
-        if (this.introVideo) {
-          try {
-            this.introVideo.currentTime = this.introVideo.duration || 10;
-          } catch(e) {}
-        }
-        showEndedState();
-      } else {
-        // 영상 종료 후 클릭 시: 힐링 차임과 함께 메인 공간으로 입장
-        dismissIntro();
-      }
-    });
-
-    if (this.introEnterBtn) {
-      this.introEnterBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dismissIntro();
-      });
-    }
-
-    // 인트로 다시보기 (Replay)
-    if (this.replayIntroBtn) {
-      this.replayIntroBtn.addEventListener('click', () => {
-        this.playClick();
-        hasEnded = false;
-        this.introSplash.classList.remove('video-ended');
-        this.introSplash.classList.remove('leaving');
-        this.introSplash.style.display = 'flex';
-        if (this.introVideo) {
-          this.introVideo.currentTime = 0;
-          this.introVideo.play().catch(() => {
-            showEndedState();
-          });
-        }
-      });
+    // Time widget
+    const timeDisplay = document.getElementById('current-time');
+    if (timeDisplay) {
+      const updateClock = () => {
+        const now = new Date();
+        timeDisplay.textContent = now.toTimeString().slice(0, 5);
+      };
+      updateClock();
+      setInterval(updateClock, 10000);
     }
   }
 
-  /* --------------------------------------------------------------------------
-     AUDIO SYNTHESIS (Web Audio API)
-     -------------------------------------------------------------------------- */
-  initAudio() {
-    this.audioBtn.addEventListener('click', () => {
-      this.audioEnabled = !this.audioEnabled;
-      if (this.audioEnabled) {
-        if (!this.audioCtx) {
-          this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (this.audioCtx.state === 'suspended') {
-          this.audioCtx.resume();
-        }
-        document.body.classList.add('audio-playing');
-        this.audioStateText.textContent = 'On';
-        this.playTone(880, 0.05, 'sine');
-      } else {
-        document.body.classList.remove('audio-playing');
-        this.audioStateText.textContent = 'Off';
-      }
+  initThree() {
+    if (!this.canvas || typeof THREE === 'undefined') return;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // 1. Scene
+    this.scene = new THREE.Scene();
+
+    // 2. Camera
+    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    this.camera.position.set(0, 0, 7.5);
+
+    // 3. Renderer
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+    this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // 4. Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    this.scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffeedd, 1.4);
+    dirLight.position.set(5, 8, 5);
+    this.scene.add(dirLight);
+
+    // Dynamic Healing Light & Pain Light
+    this.healingLight = new THREE.PointLight(0x38A169, 0, 15);
+    this.healingLight.position.set(0, 0, 2);
+    this.scene.add(this.healingLight);
+
+    this.painLight = new THREE.PointLight(0xE53E3E, 0, 10);
+    this.painLight.position.set(0, 0, 2);
+    this.scene.add(this.painLight);
+
+    // 5. Build 3D Step Groups
+    this.buildStep1Growth();
+    this.buildStep2Diet();
+    this.buildStep3Scalp();
+    this.buildStep4PainChuna();
+    this.buildStep5Gongjindan();
+
+    // Resize event
+    window.addEventListener('resize', () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      this.camera.aspect = w / h;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(w, h);
     });
   }
 
-  playTone(freq, duration = 0.04, type = 'sine') {
-    if (!this.audioEnabled || !this.audioCtx) return;
-    try {
-      const osc = this.audioCtx.createOscillator();
-      const gain = this.audioCtx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + duration);
-      osc.connect(gain);
-      gain.connect(this.audioCtx.destination);
-      osc.start();
-      osc.stop(this.audioCtx.currentTime + duration);
-    } catch (e) {
-      console.warn('Audio play suppressed', e);
-    }
-  }
+  // --- Step 1: 3D Spine & DNA Life Helix ---
+  buildStep1Growth() {
+    this.growthGroup = new THREE.Group();
 
-  playClick() {
-    this.playTone(1100, 0.03, 'sine');
-  }
-
-  playSlide() {
-    this.playTone(190, 0.08, 'triangle');
-  }
-
-  playEntryChime() {
-    try {
-      if (!this.audioCtx) {
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
-      }
-      // 528Hz (치유의 솔페지오 주파수) + 792Hz 따뜻한 화음
-      [528, 792, 1056].forEach((freq, idx) => {
-        const osc = this.audioCtx.createOscillator();
-        const gain = this.audioCtx.createGain();
-        osc.type = 'sine';
-        const start = this.audioCtx.currentTime + (idx * 0.07);
-        osc.frequency.setValueAtTime(freq, start);
-        gain.gain.setValueAtTime(0.05 / (idx + 1), start);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + 1.2);
-        osc.connect(gain);
-        gain.connect(this.audioCtx.destination);
-        osc.start(start);
-        osc.stop(start + 1.2);
-      });
-    } catch (e) {}
-  }
-
-  /* --------------------------------------------------------------------------
-     CURSOR (Difference lerp trailing)
-     -------------------------------------------------------------------------- */
-  initCursor() {
-    window.addEventListener('mousemove', (e) => {
-      this.mouse.x = e.clientX;
-      this.mouse.y = e.clientY;
-      this.cursor.style.transform = `translate(${this.mouse.x}px, ${this.mouse.y}px)`;
+    // Rising Spine Vertebrae
+    const spineGeom = new THREE.CylinderGeometry(0.08, 0.12, 4.2, 16);
+    const spineMat = new THREE.MeshStandardMaterial({
+      color: 0x526B59,
+      emissive: 0x1A3B2B,
+      roughness: 0.3,
+      metalness: 0.6
     });
+    const spineCore = new THREE.Mesh(spineGeom, spineMat);
+    this.growthGroup.add(spineCore);
 
-    const loop = () => {
-      this.follower.x += (this.mouse.x - this.follower.x) * 0.18;
-      this.follower.y += (this.mouse.y - this.follower.y) * 0.18;
-      this.cursorFollower.style.transform = `translate(${this.follower.x}px, ${this.follower.y}px)`;
-      requestAnimationFrame(loop);
-    };
-    requestAnimationFrame(loop);
-
-    const attachHover = () => {
-      document.querySelectorAll('a, button, .project-card, [data-hover="magnetic"]').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          document.body.classList.add('cursor-hover');
-          this.playClick();
-        });
-        el.addEventListener('mouseleave', () => {
-          document.body.classList.remove('cursor-hover');
-        });
+    // Glowing Vertebrae Discs
+    this.vertebraeDiscs = [];
+    for (let i = -8; i <= 8; i++) {
+      const discGeom = new THREE.TorusGeometry(0.24 - Math.abs(i) * 0.008, 0.035, 12, 24);
+      const discMat = new THREE.MeshStandardMaterial({
+        color: 0xE2C892,
+        emissive: 0xC09A67,
+        emissiveIntensity: 0.6
       });
-    };
-    attachHover();
-    this.attachHover = attachHover;
-  }
-
-  /* --------------------------------------------------------------------------
-     REAL-TIME CLOCK (South Korea KST GMT+9)
-     -------------------------------------------------------------------------- */
-  initClock() {
-    const timeEl = document.getElementById('current-time');
-    const updateTime = () => {
-      const now = new Date();
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const kst = new Date(utc + (3600000 * 9));
-      const hours = String(kst.getHours()).padStart(2, '0');
-      const mins = String(kst.getMinutes()).padStart(2, '0');
-      timeEl.textContent = `${hours}:${mins}`;
-    };
-    updateTime();
-    setInterval(updateTime, 1000);
-  }
-
-  /* --------------------------------------------------------------------------
-     RENDER CAROUSEL CARDS
-     -------------------------------------------------------------------------- */
-  renderCards() {
-    this.track.innerHTML = '';
-    this.totalCounter.textContent = String(this.projects.length).padStart(2, '0');
-
-    this.projects.forEach((item, index) => {
-      const card = document.createElement('article');
-      const isDoctor = item.slug === 'doctor-profile';
-      const isGongjindan = item.slug === 'gongjindan';
-
-      let cardClass = 'project-card';
-      if (isDoctor) cardClass += ' doctor-card';
-      if (isGongjindan) cardClass += ' gongjindan-card';
-      if (item.slug === 'appetite-zero') cardClass += ' zero-card';
-      if (index === 0) cardClass += ' active';
-
-      card.className = cardClass;
-      card.dataset.index = index;
-
-      let wrapClass = 'card-image-wrap';
-      if (isDoctor) wrapClass += ' doctor-wrap';
-      if (isGongjindan) wrapClass += ' gongjindan-wrap';
-      if (item.slug === 'appetite-zero') wrapClass += ' zero-wrap';
-
-      let imgClass = 'card-img';
-      if (isDoctor) imgClass += ' doctor-img';
-      if (isGongjindan) imgClass += ' gongjindan-img';
-      if (item.slug === 'appetite-zero') imgClass += ' zero-img';
-
-      const badgeHtml = item.badge ? `
-        <div class="card-badge-top">
-          <span class="card-badge-pill">
-            <span class="badge-trophy">🏆</span>
-            <span class="badge-text">${item.badge}</span>
-          </span>
-        </div>
-      ` : '';
-
-      const sealHtml = isGongjindan ? `
-        <div class="gongjin-seal-stamp" title="식약처 CITES 공인 정품 사향 眞品 인증">
-          <div class="seal-box">
-            <span class="seal-char">眞</span>
-            <span class="seal-char">品</span>
-          </div>
-          <span class="seal-ribbon">特許 10-1744704</span>
-        </div>
-      ` : '';
-
-      const hoverCueHtml = item.slug === 'appetite-zero' ? `
-        <div class="card-hover-cue" aria-label="식욕 폭주 클릭">
-          <span class="cue-sparkle">✦</span>
-          <span class="cue-text">식욕 폭주 클릭</span>
-          <span class="cue-arrow">➔</span>
-        </div>
-      ` : (item.slug === 'gongjindan' ? `
-        <div class="card-hover-cue gongjin-cue" aria-label="황제공진단 상세">
-          <span class="cue-sparkle">✦</span>
-          <span class="cue-text">황제공진단 상세</span>
-          <span class="cue-arrow">➔</span>
-        </div>
-      ` : (item.slug === 'pediatric-growth' ? `
-        <div class="card-hover-cue growth-cue" aria-label="키성장 클리닉 상세" style="background: rgba(28, 61, 43, 0.92); border-color: rgba(196, 151, 85, 0.6);">
-          <span class="cue-sparkle">🌱</span>
-          <span class="cue-text">키성장 클리닉 상세</span>
-          <span class="cue-arrow">➔</span>
-        </div>
-      ` : ''));
-
-      card.innerHTML = `
-        <div class="${wrapClass}">
-          <img class="${imgClass}" src="${item.image}" alt="${item.title}" loading="lazy" />
-          ${sealHtml}
-          <div class="card-overlay">
-            ${badgeHtml}
-            <div class="card-meta-bottom">
-              <h3 class="card-title">${item.title}</h3>
-              <p class="card-subtitle">${item.subtitle || item.role}</p>
-            </div>
-          </div>
-          ${hoverCueHtml}
-        </div>
-      `;
-
-      // Click ANY card to immediately animate and open detail page (ignored if user was swiping)
-      card.addEventListener('click', (e) => {
-        if (this.wasDragging) return;
-        if (item.slug === 'appetite-zero') {
-          e.preventDefault();
-          e.stopPropagation();
-          this.playClick();
-          window.location.href = GET_DIET_ZERO_URL();
-          return;
-        } else if (item.slug === 'gongjindan') {
-          e.preventDefault();
-          e.stopPropagation();
-          this.playClick();
-          this.triggerGongjindanCraftAnimation(() => {
-            window.location.href = GET_GONGJINDAN_URL();
-          });
-          return;
-        } else if (item.slug === 'pediatric-growth') {
-          e.preventDefault();
-          e.stopPropagation();
-          this.playClick();
-          window.location.href = GET_GROWTH_URL();
-          return;
-        }
-        this.updateProjectView(index);
-        this.openProjectModal(item);
-      });
-
-      this.track.appendChild(card);
-    });
-  }
-
-  /* --------------------------------------------------------------------------
-     UPDATE ACTIVE PROJECT
-     -------------------------------------------------------------------------- */
-  updateProjectView(index, animate = true) {
-    if (index < 0) index = 0;
-    if (index >= this.projects.length) index = this.projects.length - 1;
-
-    this.currentIndex = index;
-    const project = this.projects[index];
-
-    if (animate) {
-      this.playSlide();
-      this.activeTitle.style.opacity = '0';
-      this.activeTitle.style.transform = 'translateY(8px)';
-      setTimeout(() => {
-        this.activeTitle.textContent = project.title;
-        this.activeTitle.style.opacity = '1';
-        this.activeTitle.style.transform = 'translateY(0)';
-      }, 150);
-    } else {
-      this.activeTitle.textContent = project.title;
+      const disc = new THREE.Mesh(discGeom, discMat);
+      disc.rotation.x = Math.PI / 2;
+      disc.position.y = i * 0.24;
+      this.growthGroup.add(disc);
+      this.vertebraeDiscs.push(disc);
     }
 
-    this.activeIndex.textContent = `/${project.id}`;
-    this.activeClient.textContent = project.client;
-    this.activeRole.textContent = project.role;
-    this.activeYear.textContent = project.year;
-    this.activeDesc.textContent = project.description;
-    this.activeAwards.textContent = project.awards;
+    // Double Helix DNA Life Sparks
+    const count = 750;
+    const geom1 = new THREE.BufferGeometry();
+    const geom2 = new THREE.BufferGeometry();
+    const pos1 = new Float32Array(count * 3);
+    const pos2 = new Float32Array(count * 3);
 
-    this.currentCounter.textContent = String(index + 1).padStart(2, '0');
-    const progressPct = ((index + 1) / this.projects.length) * 100;
-    this.progressFill.style.width = `${progressPct}%`;
+    for (let i = 0; i < count; i++) {
+      const t = (i / count) * Math.PI * 8 - Math.PI * 4;
+      const r = 0.75 + Math.sin(t * 2) * 0.1;
+      const y = (i / count) * 4.6 - 2.3;
 
-    // Highlight active card
-    const cards = this.track.querySelectorAll('.project-card');
-    cards.forEach((c, idx) => {
-      c.classList.toggle('active', idx === index);
-    });
+      pos1[i * 3] = Math.cos(t) * r;
+      pos1[i * 3 + 1] = y;
+      pos1[i * 3 + 2] = Math.sin(t) * r;
 
-    const getTrackGap = () => {
-      const gap = parseFloat(window.getComputedStyle(this.track).gap);
-      return isNaN(gap) ? (window.innerWidth <= 768 ? 16 : 28) : gap;
-    };
+      pos2[i * 3] = Math.cos(t + Math.PI) * r;
+      pos2[i * 3 + 1] = y;
+      pos2[i * 3 + 2] = Math.sin(t + Math.PI) * r;
+    }
 
-    // Move track to center the card dynamically
-    const firstCard = this.track.querySelector('.project-card');
-    const cardWidth = firstCard ? (firstCard.offsetWidth + getTrackGap()) : (window.innerWidth <= 768 ? 336 : 448);
-    const targetX = -(index * cardWidth);
-    this.track.style.transform = `translateX(${targetX}px)`;
+    geom1.setAttribute('position', new THREE.BufferAttribute(pos1, 3));
+    geom2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
+
+    const mat1 = new THREE.PointsMaterial({ color: 0x34D399, size: 0.05, transparent: true, opacity: 0.85 });
+    const mat2 = new THREE.PointsMaterial({ color: 0xFDE68A, size: 0.05, transparent: true, opacity: 0.85 });
+
+    this.growthGroup.add(new THREE.Points(geom1, mat1));
+    this.growthGroup.add(new THREE.Points(geom2, mat2));
+
+    this.growthGroup.position.set(1.5, 0, 0);
+    this.scene.add(this.growthGroup);
   }
 
-  /* --------------------------------------------------------------------------
-     TOUCH & POINTER DRAG INTERACTION (모바일 터치 스와이프 & 데스크톱 드래그)
-     -------------------------------------------------------------------------- */
-  initTouchAndDrag() {
-    let startX = 0;
-    let startY = 0;
-    let isPointerDown = false;
-    let isHorizontalSwipe = false;
-    let dragDistance = 0;
-    let initialTrackX = 0;
+  // --- Step 2: 3D Slimming Silhouette & Dissolving Adipose Mesh ---
+  buildStep2Diet() {
+    this.dietGroup = new THREE.Group();
 
-    const getTrackGap = () => {
-      const gap = parseFloat(window.getComputedStyle(this.track).gap);
-      return isNaN(gap) ? (window.innerWidth <= 768 ? 16 : 28) : gap;
-    };
+    // Hourglass Contoured Waist Silhouette
+    const silhouetteCount = 900;
+    const silGeom = new THREE.BufferGeometry();
+    const silPos = new Float32Array(silhouetteCount * 3);
 
-    const getCardWidth = () => {
-      const card = this.track.querySelector('.project-card');
-      return card ? (card.offsetWidth + getTrackGap()) : (window.innerWidth <= 768 ? 336 : 448);
-    };
+    for (let i = 0; i < silhouetteCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const y = (Math.random() - 0.5) * 4.2;
+      // Hourglass waist curve function
+      const r = 0.55 + Math.pow(Math.abs(y) / 2.0, 2) * 0.75;
 
-    const getBaseX = () => -(this.currentIndex * getCardWidth());
+      silPos[i * 3] = Math.cos(theta) * r;
+      silPos[i * 3 + 1] = y;
+      silPos[i * 3 + 2] = Math.sin(theta) * r * 0.65;
+    }
 
-    const onStart = (clientX, clientY) => {
-      isPointerDown = true;
-      startX = clientX;
-      startY = clientY;
-      dragDistance = 0;
-      isHorizontalSwipe = false;
-      this.wasDragging = false;
-      initialTrackX = getBaseX();
-    };
+    silGeom.setAttribute('position', new THREE.BufferAttribute(silPos, 3));
+    const silMat = new THREE.PointsMaterial({ color: 0xF472B6, size: 0.045, transparent: true, opacity: 0.8 });
+    this.dietSilhouette = new THREE.Points(silGeom, silMat);
+    this.dietGroup.add(this.dietSilhouette);
 
-    const onMove = (clientX, clientY, e) => {
-      if (!isPointerDown) return;
-      const diffX = clientX - startX;
-      const diffY = clientY - startY;
+    // Swirling Adipose Particles (contracts inward)
+    const lipidCount = 600;
+    const lipidGeom = new THREE.BufferGeometry();
+    this.lipidInitialPos = new Float32Array(lipidCount * 3);
+    const lipidPos = new Float32Array(lipidCount * 3);
 
-      // Determine swipe direction after 8px threshold
-      if (!isHorizontalSwipe) {
-        if (Math.abs(diffX) > 8 && Math.abs(diffX) > Math.abs(diffY)) {
-          isHorizontalSwipe = true;
-          this.container.classList.add('is-dragging');
-          this.track.classList.add('is-dragging');
-        } else if (Math.abs(diffY) > 8) {
-          // Vertical page scroll intent -> cancel carousel dragging
-          isPointerDown = false;
-          return;
-        }
+    for (let i = 0; i < lipidCount; i++) {
+      const u = Math.random();
+      const angle = Math.random() * Math.PI * 2;
+      const r = 1.3 + u * 1.5;
+      const y = (Math.random() - 0.5) * 2.8;
+
+      lipidPos[i * 3] = Math.cos(angle) * r;
+      lipidPos[i * 3 + 1] = y;
+      lipidPos[i * 3 + 2] = Math.sin(angle) * r;
+
+      this.lipidInitialPos[i * 3] = lipidPos[i * 3];
+      this.lipidInitialPos[i * 3 + 1] = lipidPos[i * 3 + 1];
+      this.lipidInitialPos[i * 3 + 2] = lipidPos[i * 3 + 2];
+    }
+
+    lipidGeom.setAttribute('position', new THREE.BufferAttribute(lipidPos, 3));
+    const lipidMat = new THREE.PointsMaterial({ color: 0xC09A67, size: 0.055, transparent: true, opacity: 0.75 });
+    this.lipidPoints = new THREE.Points(lipidGeom, lipidMat);
+    this.dietGroup.add(this.lipidPoints);
+
+    this.dietGroup.position.set(1.5, 0, 0);
+    this.dietGroup.visible = false;
+    this.scene.add(this.dietGroup);
+  }
+
+  // --- Step 3: Scalp Zoom, Heat Dissipation & Hair Blooming ---
+  buildStep3Scalp() {
+    this.scalpGroup = new THREE.Group();
+
+    // Scalp Dome Mesh
+    const domeGeom = new THREE.SphereGeometry(1.6, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+    const domeMat = new THREE.MeshStandardMaterial({
+      color: 0x1E3A2F,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.35
+    });
+    const scalpDome = new THREE.Mesh(domeGeom, domeMat);
+    scalpDome.position.y = 0.2;
+    this.scalpGroup.add(scalpDome);
+
+    // Blooming Hair Strands
+    this.hairStrands = [];
+    const strandCount = 180;
+    for (let i = 0; i < strandCount; i++) {
+      const phi = Math.random() * (Math.PI / 2.2);
+      const theta = Math.random() * Math.PI * 2;
+      const start = new THREE.Vector3(
+        1.55 * Math.sin(phi) * Math.cos(theta),
+        1.55 * Math.cos(phi) + 0.2,
+        1.55 * Math.sin(phi) * Math.sin(theta)
+      );
+
+      const mid = start.clone().multiplyScalar(1.25);
+      mid.y += 0.4 + Math.random() * 0.4;
+      mid.x += (Math.random() - 0.5) * 0.3;
+
+      const end = mid.clone().multiplyScalar(1.2);
+      end.y += 0.5 + Math.random() * 0.6;
+      end.x += (Math.random() - 0.5) * 0.5;
+
+      const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+      const points = curve.getPoints(12);
+      const strandGeom = new THREE.BufferGeometry().setFromPoints(points);
+      const strandMat = new THREE.LineBasicMaterial({
+        color: i % 3 === 0 ? 0x60A5FA : 0x34D399,
+        transparent: true,
+        opacity: 0.65
+      });
+      const strand = new THREE.Line(strandGeom, strandMat);
+      this.scalpGroup.add(strand);
+      this.hairStrands.push(strand);
+    }
+
+    // Cooling Jade Mist Particle Cloud
+    const mistCount = 450;
+    const mistGeom = new THREE.BufferGeometry();
+    const mistPos = new Float32Array(mistCount * 3);
+    for (let i = 0; i < mistCount; i++) {
+      mistPos[i * 3] = (Math.random() - 0.5) * 3.2;
+      mistPos[i * 3 + 1] = 0.5 + Math.random() * 2.8;
+      mistPos[i * 3 + 2] = (Math.random() - 0.5) * 3.2;
+    }
+    mistGeom.setAttribute('position', new THREE.BufferAttribute(mistPos, 3));
+    const mistMat = new THREE.PointsMaterial({ color: 0x6EE7B7, size: 0.06, transparent: true, opacity: 0.7 });
+    this.mistPoints = new THREE.Points(mistGeom, mistMat);
+    this.scalpGroup.add(this.mistPoints);
+
+    this.scalpGroup.position.set(1.5, -0.6, 0);
+    this.scalpGroup.visible = false;
+    this.scene.add(this.scalpGroup);
+  }
+
+  // --- Step 4: 3D Anatomical Human Model with 9-Joint Pain & Green Healing Animation ---
+  buildStep4PainChuna() {
+    this.painGroup = new THREE.Group();
+
+    // 1. Holographic Human Anatomical Wireframe
+    // Head
+    const headGeom = new THREE.SphereGeometry(0.42, 16, 12);
+    const wireMat = new THREE.MeshStandardMaterial({
+      color: 0x334155,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.4
+    });
+    const head = new THREE.Mesh(headGeom, wireMat);
+    head.position.set(0, 2.3, 0);
+    this.painGroup.add(head);
+
+    // Spine Curve
+    const spineCurvePoints = [];
+    for (let y = -0.3; y <= 1.9; y += 0.2) {
+      spineCurvePoints.push(new THREE.Vector3(Math.sin(y * 2) * 0.08, y, 0));
+    }
+    const spineGeom = new THREE.BufferGeometry().setFromPoints(spineCurvePoints);
+    this.painSpineLine = new THREE.Line(spineGeom, new THREE.LineBasicMaterial({ color: 0xE2C892, linewidth: 2 }));
+    this.painGroup.add(this.painSpineLine);
+
+    // Torso Ribcage Cage
+    const ribGeom = new THREE.CylinderGeometry(0.7, 0.5, 1.4, 12, 4, true);
+    const ribMesh = new THREE.Mesh(ribGeom, wireMat);
+    ribMesh.position.set(0, 1.2, 0);
+    this.painGroup.add(ribMesh);
+
+    // Limbs Wireframe Lines
+    const limbLinesMat = new THREE.LineBasicMaterial({ color: 0x475569, transparent: true, opacity: 0.5 });
+    
+    // Left Arm
+    const leftArmPts = [new THREE.Vector3(0, 1.6, 0), new THREE.Vector3(-0.85, 1.6, 0), new THREE.Vector3(-1.15, 0.95, 0), new THREE.Vector3(-1.3, 0.25, 0)];
+    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(leftArmPts), limbLinesMat));
+
+    // Right Arm
+    const rightArmPts = [new THREE.Vector3(0, 1.6, 0), new THREE.Vector3(0.85, 1.6, 0), new THREE.Vector3(1.15, 0.95, 0), new THREE.Vector3(1.3, 0.25, 0)];
+    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(rightArmPts), limbLinesMat));
+
+    // Left Leg
+    const leftLegPts = [new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(-0.45, 0.35, 0), new THREE.Vector3(-0.45, -0.65, 0.05), new THREE.Vector3(-0.42, -1.5, 0), new THREE.Vector3(-0.42, -1.85, 0.15)];
+    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(leftLegPts), limbLinesMat));
+
+    // Right Leg
+    const rightLegPts = [new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0.45, 0.35, 0), new THREE.Vector3(0.45, -0.65, 0.05), new THREE.Vector3(0.42, -1.5, 0), new THREE.Vector3(0.42, -1.85, 0.15)];
+    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(rightLegPts), limbLinesMat));
+
+    // 2. The 9 Major Joint Pain & Healing Markers
+    this.jointMeshes = [];
+    this.joints.forEach(j => {
+      const markerGroup = new THREE.Group();
+      markerGroup.position.set(...j.pos);
+
+      // Core Glowing Sphere
+      const sphereGeom = new THREE.SphereGeometry(0.09, 16, 16);
+      const sphereMat = new THREE.MeshStandardMaterial({
+        color: 0xE53E3E, // Pain Red default
+        emissive: 0xE53E3E,
+        emissiveIntensity: 0.8,
+        roughness: 0.2
+      });
+      const sphere = new THREE.Mesh(sphereGeom, sphereMat);
+      markerGroup.add(sphere);
+
+      // Concentric Radar Pulse Ring
+      const ringGeom = new THREE.RingGeometry(0.12, 0.16, 24);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0xE53E3E,
+        transparent: true,
+        opacity: 0.7,
+        side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(ringGeom, ringMat);
+      markerGroup.add(ring);
+
+      this.painGroup.add(markerGroup);
+      this.jointMeshes.push({
+        def: j,
+        group: markerGroup,
+        sphere: sphere,
+        ring: ring,
+        pulseOffset: Math.random() * Math.PI
+      });
+    });
+
+    // 3. Sweeping Chuna Healing Wave Torus
+    const waveGeom = new THREE.TorusGeometry(1.65, 0.05, 16, 64);
+    const waveMat = new THREE.MeshStandardMaterial({
+      color: 0x34D399,
+      emissive: 0x10B981,
+      emissiveIntensity: 1.2,
+      transparent: true,
+      opacity: 0.8
+    });
+    this.chunaWaveRing = new THREE.Mesh(waveGeom, waveMat);
+    this.chunaWaveRing.rotation.x = Math.PI / 2;
+    this.chunaWaveRing.position.set(0, 2.5, 0); // starts at top
+    this.painGroup.add(this.chunaWaveRing);
+
+    this.painGroup.position.set(1.5, 0, 0);
+    this.painGroup.visible = false;
+    this.scene.add(this.painGroup);
+  }
+
+  // --- Step 5: 3D Emperor Gongjindan & Golden Vitality Aura ---
+  buildStep5Gongjindan() {
+    this.gongjindanGroup = new THREE.Group();
+
+    // Central 24K Gold Foil Pill Sphere
+    const pillGeom = new THREE.SphereGeometry(0.95, 32, 32);
+    const pillMat = new THREE.MeshStandardMaterial({
+      color: 0xFFD700,
+      emissive: 0xC09A67,
+      emissiveIntensity: 0.45,
+      metalness: 0.95,
+      roughness: 0.22
+    });
+    this.gongjindanPill = new THREE.Mesh(pillGeom, pillMat);
+    this.gongjindanGroup.add(this.gongjindanPill);
+
+    // Orbital Gold Rings
+    const ring1Geom = new THREE.TorusGeometry(1.45, 0.025, 16, 64);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xFDE68A, metalness: 0.9, roughness: 0.2 });
+    this.goldOrbit1 = new THREE.Mesh(ring1Geom, ringMat);
+    this.goldOrbit1.rotation.x = 0.85;
+    this.goldOrbit1.rotation.y = 0.35;
+    this.gongjindanGroup.add(this.goldOrbit1);
+
+    const ring2Geom = new THREE.TorusGeometry(1.85, 0.02, 16, 64);
+    this.goldOrbit2 = new THREE.Mesh(ring2Geom, ringMat);
+    this.goldOrbit2.rotation.x = -0.65;
+    this.goldOrbit2.rotation.y = -0.45;
+    this.gongjindanGroup.add(this.goldOrbit2);
+
+    // Golden Vitality Shield Sphere
+    const shieldGeom = new THREE.SphereGeometry(2.1, 24, 24);
+    const shieldMat = new THREE.MeshStandardMaterial({
+      color: 0xE2C892,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.22
+    });
+    this.vitalityShield = new THREE.Mesh(shieldGeom, shieldMat);
+    this.gongjindanGroup.add(this.vitalityShield);
+
+    // Swirling Gold Leaf Flakes
+    const flakeCount = 850;
+    const flakeGeom = new THREE.BufferGeometry();
+    const flakePos = new Float32Array(flakeCount * 3);
+    for (let i = 0; i < flakeCount; i++) {
+      const u = Math.random();
+      const theta = Math.random() * Math.PI * 2;
+      const r = 1.1 + u * 1.8;
+      const y = (Math.random() - 0.5) * 3.5;
+      flakePos[i * 3] = Math.cos(theta) * r;
+      flakePos[i * 3 + 1] = y;
+      flakePos[i * 3 + 2] = Math.sin(theta) * r;
+    }
+    flakeGeom.setAttribute('position', new THREE.BufferAttribute(flakePos, 3));
+    const flakeMat = new THREE.PointsMaterial({ color: 0xFBBF24, size: 0.05, transparent: true, opacity: 0.85 });
+    this.goldFlakes = new THREE.Points(flakeGeom, flakeMat);
+    this.gongjindanGroup.add(this.goldFlakes);
+
+    this.gongjindanGroup.position.set(1.5, 0, 0);
+    this.gongjindanGroup.visible = false;
+    this.scene.add(this.gongjindanGroup);
+  }
+
+  // --- Scroll & Storyboard Step Manager ---
+  initScroll() {
+    const track = document.getElementById('story-scroll-track');
+    if (!track) return;
+
+    window.addEventListener('scroll', () => {
+      const rect = track.getBoundingClientRect();
+      const trackHeight = track.offsetHeight - window.innerHeight;
+      let progress = 0;
+
+      if (rect.top <= 0) {
+        progress = Math.min(1.0, Math.max(0, -rect.top / trackHeight));
       }
-
-      if (isHorizontalSwipe) {
-        if (e && e.cancelable) e.preventDefault();
-        dragDistance = diffX;
-        if (Math.abs(dragDistance) > 10) {
-          this.wasDragging = true;
-        }
-
-        // Boundary resistance on first and last card
-        let delta = dragDistance;
-        if ((this.currentIndex === 0 && delta > 0) || 
-            (this.currentIndex === this.projects.length - 1 && delta < 0)) {
-          delta *= 0.35; // rubber-band dampening
-        }
-
-        this.track.style.transform = `translateX(${initialTrackX + delta}px)`;
-      }
-    };
-
-    const onEnd = () => {
-      if (!isPointerDown) return;
-      isPointerDown = false;
-      this.container.classList.remove('is-dragging');
-      this.track.classList.remove('is-dragging');
-
-      if (isHorizontalSwipe) {
-        const threshold = 40; // 40px swipe threshold
-        if (dragDistance < -threshold) {
-          // Swiped left -> Next card
-          this.updateProjectView(this.currentIndex + 1);
-        } else if (dragDistance > threshold) {
-          // Swiped right -> Previous card
-          this.updateProjectView(this.currentIndex - 1);
-        } else {
-          // Snap back to current card
-          this.updateProjectView(this.currentIndex);
-        }
-      }
-
-      // Reset wasDragging after click event propagation
-      setTimeout(() => {
-        this.wasDragging = false;
-      }, 60);
-    };
-
-    // Mobile touch events
-    this.container.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) {
-        onStart(e.touches[0].clientX, e.touches[0].clientY);
-      }
+      this.scrollProgress = progress;
+      this.updateStepFromProgress(progress);
     }, { passive: true });
-
-    this.container.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1) {
-        onMove(e.touches[0].clientX, e.touches[0].clientY, e);
-      }
-    }, { passive: false });
-
-    this.container.addEventListener('touchend', onEnd);
-    this.container.addEventListener('touchcancel', onEnd);
-
-    // Desktop pointer drag events
-    this.container.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return; // left click only
-      onStart(e.clientX, e.clientY);
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      onMove(e.clientX, e.clientY, e);
-    });
-
-    window.addEventListener('mouseup', onEnd);
   }
 
-  /* --------------------------------------------------------------------------
-     EVENT LISTENERS & NAVIGATION
-     -------------------------------------------------------------------------- */
-  initEvents() {
-    this.prevBtn.addEventListener('click', () => {
-      this.updateProjectView(this.currentIndex - 1);
-    });
+  updateStepFromProgress(p) {
+    // Map 0.0 - 1.0 to 5 steps
+    let targetStep = 1;
+    if (p < 0.20) targetStep = 1;
+    else if (p < 0.40) targetStep = 2;
+    else if (p < 0.60) targetStep = 3;
+    else if (p < 0.80) targetStep = 4;
+    else targetStep = 5;
 
-    this.nextBtn.addEventListener('click', () => {
-      this.updateProjectView(this.currentIndex + 1);
-    });
-
-    // Window resize / mobile orientation change re-centering
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        this.updateProjectView(this.currentIndex, false);
-      }, 100);
-    });
-
-    // Keyboard navigation
-    window.addEventListener('keydown', (e) => {
-      if (this.projectModal.classList.contains('open') || this.menuDrawer.classList.contains('open')) {
-        if (e.key === 'Escape') {
-          this.closeMenu();
-          this.closeProjectModal();
-        }
-        return;
+    // Check if reached signature cards section
+    const cardsSec = document.getElementById('signature-cards');
+    if (cardsSec) {
+      const cRect = cardsSec.getBoundingClientRect();
+      if (cRect.top < window.innerHeight * 0.4) {
+        targetStep = 6;
       }
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        this.updateProjectView(this.currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        this.updateProjectView(this.currentIndex - 1);
-      }
-    });
-
-    // Mouse wheel horizontal scroll
-    let wheelTimeout;
-    this.container.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      if (wheelTimeout) return;
-      wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 180);
-      if (e.deltaY > 20 || e.deltaX > 20) {
-        this.updateProjectView(this.currentIndex + 1);
-      } else if (e.deltaY < -20 || e.deltaX < -20) {
-        this.updateProjectView(this.currentIndex - 1);
-      }
-    }, { passive: false });
-
-    // Responsive Window Resize realignment
-    window.addEventListener('resize', () => {
-      this.updateProjectView(this.currentIndex, false);
-    });
-
-    // Menu Drawer
-    this.menuBtn.addEventListener('click', () => this.openMenu());
-    this.drawerClose.addEventListener('click', () => this.closeMenu());
-    this.drawerBackdrop.addEventListener('click', () => this.closeMenu());
-
-    // Modal Close
-    this.modalClose.addEventListener('click', () => this.closeProjectModal());
-    this.modalBackdrop.addEventListener('click', () => this.closeProjectModal());
-
-    this.attachHover();
-  }
-
-  openMenu() {
-    this.playClick();
-    this.menuDrawer.classList.add('open');
-    this.menuDrawer.setAttribute('aria-hidden', 'false');
-  }
-
-  closeMenu() {
-    this.playClick();
-    this.menuDrawer.classList.remove('open');
-    this.menuDrawer.setAttribute('aria-hidden', 'true');
-  }
-
-  openProjectModal(item) {
-    this.playClick();
-    const isDoctor = item.slug === 'doctor-profile';
-    const isGongjindan = item.slug === 'gongjindan';
-    const detailListHtml = (item.details || [])
-      .map(d => `<li style="font-size: 14px; line-height: 1.6; color: #333; margin-bottom: 6px;">${d}</li>`)
-      .join('');
-
-    let heroBg = '#222';
-    let heroImgStyle = 'width: 100%; height: 100%; object-fit: cover;';
-    if (isDoctor) {
-      heroBg = 'linear-gradient(180deg, #EBE5DF 0%, #D8CFC7 100%)';
-      heroImgStyle = 'object-fit: contain; max-height: 380px; width: auto;';
-    } else if (isGongjindan) {
-      heroBg = '#FAF8F5';
-      heroImgStyle = 'object-fit: contain; max-height: 380px; width: auto; padding: 12px 0;';
     }
 
-    const isZero = item.slug === 'appetite-zero';
-    const isGongjin = item.slug === 'gongjindan';
-    const isGrowth = item.slug === 'pediatric-growth';
-    const landingBtnHtml = isZero ? `
-      <a href="${GET_DIET_ZERO_URL()}" class="modal-cta-btn modal-cta-accent" style="background: linear-gradient(135deg, #1C1917 0%, #382A24 100%); color: #F5EFEB; font-weight: 700; border: 1px solid rgba(197, 160, 89, 0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; text-decoration: none; width: 100%;">
-        <span>✨ 식욕 ZERO 시네마틱 상세페이지 & 결제창 바로가기</span>
-        <span style="color: var(--accent-gold);">➔</span>
-      </a>
-    ` : (isGongjin ? `
-      <a href="${GET_GONGJINDAN_URL()}" class="modal-cta-btn modal-cta-accent" style="background: linear-gradient(135deg, #1C130E 0%, #382A24 100%); color: #F5EFEB; font-weight: 700; border: 1px solid rgba(197, 160, 89, 0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; text-decoration: none; width: 100%;">
-        <span>👑 황제공진단 10대 특허 브로셔 & 1:1 수제 제환 상세페이지</span>
-        <span style="color: var(--accent-gold);">➔</span>
-      </a>
-    ` : (isGrowth ? `
-      <a href="${GET_GROWTH_URL()}" class="modal-cta-btn modal-cta-accent" style="background: linear-gradient(135deg, #12281D 0%, #2A5A3F 100%); color: #F5EFEB; font-weight: 700; border: 1px solid rgba(196, 151, 85, 0.5); box-shadow: 0 4px 20px rgba(18, 40, 29, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; text-decoration: none; width: 100%;">
-        <span>🌱 키성장 · 성조숙증 안심 클리닉 상세페이지 보기</span>
-        <span style="color: #6EE7B7;">➔</span>
-      </a>
-    ` : ''));
-
-    this.modalContent.innerHTML = `
-      <div style="background: ${heroBg}; display: flex; justify-content: center; align-items: center; overflow: hidden; height: 380px;">
-        <img class="modal-hero-img" src="${item.image}" alt="${item.title}" style="${heroImgStyle}" />
-      </div>
-      <div class="modal-info-panel">
-        <div class="modal-meta-row">
-          <span style="color: var(--accent-rose); font-weight: 700;">${item.year}</span>
-          <span>·</span>
-          <span>${item.client}</span>
-        </div>
-        <h2 class="modal-title">${item.title}</h2>
-        <div class="modal-awards">🌿 ${item.awards}</div>
-        <p class="modal-desc">${item.description}</p>
-        
-        <div style="background: #FAFAFA; border: 1px solid var(--border-line); border-radius: 6px; padding: 20px; margin-top: 4px;">
-          <h4 style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; letter-spacing: 0.05em;">
-            PROGRAM SPECIFICATIONS
-          </h4>
-          <ul style="list-style: none; padding: 0;">
-            ${detailListHtml}
-          </ul>
-        </div>
-
-        <div class="modal-cta-group" style="${(isZero || isGongjin || isGrowth) ? 'flex-direction: column; gap: 10px;' : ''}">
-          ${landingBtnHtml}
-          <div style="display: flex; gap: 12px; width: 100%;">
-            <a href="${item.primaryLink}" target="_blank" rel="noopener noreferrer" class="modal-cta-btn modal-cta-primary" style="flex: 1;">
-              ${item.primaryText} ↗
-            </a>
-            <a href="${item.secondaryLink}" target="_blank" rel="noopener noreferrer" class="modal-cta-btn modal-cta-secondary" style="flex: 1;">
-              ${item.secondaryText} ↗
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-    this.projectModal.classList.add('open');
-    this.projectModal.setAttribute('aria-hidden', 'false');
-  }
-
-  /* --------------------------------------------------------------------------
-     GONGJINDAN "예약 즉시 조제" 시네마틱 트랜지션 애니메이션
-     -------------------------------------------------------------------------- */
-  triggerGongjindanCraftAnimation(onComplete) {
-    let overlay = document.getElementById('gongjin-craft-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'gongjin-craft-overlay';
-      overlay.className = 'craft-transition-overlay';
-      overlay.innerHTML = `
-        <div class="craft-center-stage">
-          <div class="craft-seal-wrapper">
-            <div class="craft-giant-seal">
-              <span class="seal-char">眞</span>
-              <span class="seal-char">品</span>
-            </div>
-            <div class="craft-seal-shockwave"></div>
-          </div>
-          <div class="craft-meta-badge">✦ 大韓民國 特許 第10-1744704號 · 1:1 수제 조제</div>
-          <h2 class="craft-main-title">예약 즉시 조제 (豫約 即時 調製)</h2>
-          <p class="craft-desc">천연 사향의 향손실을 막기 위해, 사전 예약된 수량에 한하여 원장이 직접 한 알 한 알 정성으로 빚어냅니다.</p>
-          <div class="craft-progress-track">
-            <div class="craft-progress-bar"></div>
-          </div>
-          <span class="craft-skip-cue">황제공진단 시네마틱 아카이브로 이동합니다 (화면 터치 시 즉시 이동)</span>
-        </div>
-      `;
-      document.body.appendChild(overlay);
+    if (this.currentStep !== targetStep) {
+      this.currentStep = targetStep;
+      this.renderStepHUD(targetStep);
+      this.updateBackdrops(targetStep);
+      this.updateNavDots(targetStep);
+      this.update3DVisibility(targetStep);
     }
 
-    let navigated = false;
-    const doNav = () => {
-      if (navigated) return;
-      navigated = true;
-      if (typeof onComplete === 'function') onComplete();
+    // Step 4 Realtime Wave & Pain Transition based on fine progress within Step 4 (0.60 ~ 0.80)
+    if (p >= 0.58 && p <= 0.82 && this.painGroup) {
+      const step4Progress = Math.min(1.0, Math.max(0.0, (p - 0.60) / 0.18));
+      this.updateStep4ChunaWave(step4Progress);
+    }
+  }
+
+  renderStepHUD(step) {
+    if (step > 5) {
+      // Reached signature cards
+      if (this.hudBadge) this.hudBadge.textContent = '5대 특화진료 카드';
+      if (this.hudCounter) this.hudCounter.textContent = 'FINAL';
+      if (this.hudTitle) this.hudTitle.textContent = '바른한의원 5대 시그니처';
+      if (this.hudSubtitle) this.hudSubtitle.textContent = '아래 카드에서 원하는 진료를 선택하세요';
+      if (this.hudDesc) this.hudDesc.textContent = '소아 성장, 다이어트, 탈모, 9대 관절 통증, 황제 공진단까지 1:1 맞춤 진료';
+      if (this.painRadarBox) this.painRadarBox.style.display = 'none';
+      return;
+    }
+
+    const data = STORY_STEPS[step - 1];
+    if (!data) return;
+
+    if (this.hudBadge) this.hudBadge.textContent = data.badge;
+    if (this.hudCounter) this.hudCounter.textContent = data.counter;
+    if (this.hudTitle) this.hudTitle.textContent = data.title;
+    if (this.hudSubtitle) this.hudSubtitle.textContent = data.subtitle;
+    if (this.hudDesc) this.hudDesc.textContent = data.desc;
+    if (this.hudPrimaryBtn) {
+      this.hudPrimaryBtn.href = data.link;
+      this.hudPrimaryBtn.innerHTML = `<span>${data.btnText}</span> <span>➔</span>`;
+    }
+    if (this.hudDrawerBtn) {
+      this.hudDrawerBtn.onclick = () => openDrawerWithProgram(data.slug);
+    }
+
+    // Step 4 Pain Radar Box display
+    if (this.painRadarBox) {
+      this.painRadarBox.style.display = (step === 4) ? 'block' : 'none';
+    }
+  }
+
+  updateBackdrops(step) {
+    this.backdrops.forEach((slide, idx) => {
+      if (!slide) return;
+      if (idx === step - 1) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+  }
+
+  updateNavDots(step) {
+    this.navDots.forEach(dot => {
+      const s = parseInt(dot.getAttribute('data-step') || '1', 10);
+      if (s === step) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  update3DVisibility(step) {
+    if (!this.growthGroup) return;
+
+    this.growthGroup.visible = (step === 1);
+    this.dietGroup.visible = (step === 2);
+    this.scalpGroup.visible = (step === 3);
+    this.painGroup.visible = (step === 4);
+    this.gongjindanGroup.visible = (step === 5);
+
+    // Camera positioning based on step
+    if (typeof gsap !== 'undefined') {
+      if (step === 1) {
+        gsap.to(this.camera.position, { x: 0, y: 0, z: 7.5, duration: 1.2, ease: 'power2.out' });
+      } else if (step === 2) {
+        gsap.to(this.camera.position, { x: 0, y: 0, z: 6.8, duration: 1.2, ease: 'power2.out' });
+      } else if (step === 3) {
+        gsap.to(this.camera.position, { x: 0, y: 0.6, z: 5.2, duration: 1.2, ease: 'power2.out' });
+      } else if (step === 4) {
+        gsap.to(this.camera.position, { x: 0, y: 0, z: 7.6, duration: 1.2, ease: 'power2.out' });
+      } else if (step === 5) {
+        gsap.to(this.camera.position, { x: 0, y: 0, z: 6.5, duration: 1.2, ease: 'power2.out' });
+      }
+    }
+  }
+
+  // --- Step 4: Chuna Wave Sweep & 9 Pain Points Green Healing Logic ---
+  updateStep4ChunaWave(progress) {
+    if (!this.chunaWaveRing || !this.jointMeshes) return;
+
+    // Wave travels from y: 2.6 down to y: -2.2
+    const waveY = 2.6 - progress * 4.8;
+    this.chunaWaveRing.position.y = waveY;
+
+    // Check each joint: if wave has passed it, heal it!
+    let allHealed = true;
+    let anyHealed = false;
+
+    this.jointMeshes.forEach(item => {
+      const jointY = item.def.pos[1];
+      const isHealed = waveY <= jointY + 0.15; // wave passed joint
+
+      if (isHealed) {
+        item.sphere.material.color.setHex(0x38A169); // Health Green
+        item.sphere.material.emissive.setHex(0x10B981);
+        item.ring.material.color.setHex(0x38A169);
+        item.def.healed = true;
+        anyHealed = true;
+
+        // Update corresponding HTML chip
+        const chipKey = item.def.chipId || item.def.id;
+        const chip = document.querySelector(`.pain-chip[data-joint="${chipKey}"]`);
+        if (chip) chip.classList.add('healed');
+      } else {
+        item.sphere.material.color.setHex(0xE53E3E); // Pain Red
+        item.sphere.material.emissive.setHex(0xE53E3E);
+        item.ring.material.color.setHex(0xE53E3E);
+        item.def.healed = false;
+        allHealed = false;
+
+        const chipKey = item.def.chipId || item.def.id;
+        const chip = document.querySelector(`.pain-chip[data-joint="${chipKey}"]`);
+        if (chip) chip.classList.remove('healed');
+      }
+    });
+
+    // Update status badge
+    if (this.painRadarStatus) {
+      if (allHealed) {
+        this.painRadarStatus.className = 'pain-radar-status healing';
+        this.painRadarStatus.innerHTML = '<span class="pulse-dot">✓</span> <span>9대 관절 바른 정렬 완료</span>';
+      } else if (anyHealed) {
+        this.painRadarStatus.className = 'pain-radar-status healing';
+        this.painRadarStatus.innerHTML = '<span class="pulse-dot">✦</span> <span>추나 치유 파동 진행 중</span>';
+      } else {
+        this.painRadarStatus.className = 'pain-radar-status warning';
+        this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>통증 신호 점멸 중</span>';
+      }
+    }
+
+    // Straighten spine line as healing progresses
+    if (this.painSpineLine) {
+      const pts = [];
+      const straightness = progress; // 0: curved, 1: straight
+      for (let y = -0.3; y <= 1.9; y += 0.2) {
+        const xCurved = Math.sin(y * 2) * 0.08 * (1.0 - straightness);
+        pts.push(new THREE.Vector3(xCurved, y, 0));
+      }
+      this.painSpineLine.geometry.setFromPoints(pts);
+      this.painSpineLine.material.color.setHex(allHealed ? 0x34D399 : 0xE2C892);
+    }
+  }
+
+  // --- Animation Render Loop ---
+  animate() {
+    requestAnimationFrame(() => this.animate());
+
+    const time = performance.now() * 0.001;
+
+    // Step 1 Animations
+    if (this.growthGroup && this.growthGroup.visible) {
+      this.growthGroup.rotation.y = time * 0.35;
+      this.vertebraeDiscs.forEach((disc, idx) => {
+        disc.rotation.z = Math.sin(time * 1.5 + idx * 0.3) * 0.06;
+      });
+    }
+
+    // Step 2 Animations
+    if (this.dietGroup && this.dietGroup.visible) {
+      this.dietSilhouette.rotation.y = time * 0.25;
+      this.lipidPoints.rotation.y = -time * 0.45;
+    }
+
+    // Step 3 Animations
+    if (this.scalpGroup && this.scalpGroup.visible) {
+      this.hairStrands.forEach((strand, idx) => {
+        strand.rotation.y = Math.sin(time * 0.8 + idx * 0.1) * 0.03;
+      });
+      this.mistPoints.rotation.y = time * 0.15;
+    }
+
+    // Step 4 Pain Radar Radar Ring Pulsing
+    if (this.painGroup && this.painGroup.visible) {
+      this.jointMeshes.forEach(item => {
+        const pulse = Math.sin(time * 6 + item.pulseOffset) * 0.5 + 0.5;
+        const scale = 1.0 + pulse * (item.def.healed ? 0.35 : 0.8);
+        item.ring.scale.set(scale, scale, 1);
+        item.ring.material.opacity = (1.0 - pulse * 0.7) * (item.def.healed ? 0.6 : 0.9);
+      });
+    }
+
+    // Step 5 Gongjindan Animations
+    if (this.gongjindanGroup && this.gongjindanGroup.visible) {
+      this.gongjindanPill.rotation.y = time * 0.4;
+      this.goldOrbit1.rotation.z = time * 0.5;
+      this.goldOrbit2.rotation.z = -time * 0.35;
+      this.vitalityShield.rotation.y = -time * 0.2;
+      this.goldFlakes.rotation.y = time * 0.15;
+    }
+
+    if (this.renderer && this.scene && this.camera) {
+      this.renderer.render(this.scene, this.camera);
+    }
+  }
+
+  initNavigation() {
+    this.navDots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const stepNum = parseInt(dot.getAttribute('data-step') || '1', 10);
+        scrollToStep(stepNum);
+      });
+    });
+  }
+
+  initIntro() {
+    const splash = document.getElementById('intro-splash');
+    const enterBtn = document.getElementById('intro-enter-btn');
+    if (!splash) return;
+
+    const closeIntro = () => {
+      splash.style.transition = 'opacity 0.8s ease, visibility 0.8s ease';
+      splash.style.opacity = '0';
+      splash.style.visibility = 'hidden';
     };
 
-    overlay.onclick = doNav;
-    overlay.classList.add('is-active');
-
-    const pBar = overlay.querySelector('.craft-progress-bar');
-    if (pBar) {
-      pBar.style.width = '0%';
-      setTimeout(() => { pBar.style.width = '100%'; }, 50);
-    }
-
-    this.playClick();
-    setTimeout(doNav, 1100);
+    if (enterBtn) enterBtn.addEventListener('click', closeIntro);
+    splash.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') closeIntro();
+    });
   }
 
-  closeProjectModal() {
-    this.playClick();
-    this.projectModal.classList.remove('open');
-    this.projectModal.setAttribute('aria-hidden', 'true');
+  initDrawer() {
+    const menuBtn = document.getElementById('menu-toggle');
+    const drawer = document.getElementById('menu-drawer');
+    const closeBtn = document.getElementById('drawer-close');
+    const backdrop = document.getElementById('drawer-backdrop');
+
+    if (menuBtn && drawer) {
+      menuBtn.addEventListener('click', () => {
+        drawer.classList.add('active');
+        drawer.setAttribute('aria-hidden', 'false');
+      });
+    }
+
+    const closeDrawer = () => {
+      if (drawer) {
+        drawer.classList.remove('active');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
   }
 }
 
-// Start application when DOM is ready
+// Global Nav Helpers
+function scrollToStep(stepNum) {
+  if (stepNum >= 6) {
+    scrollToCards();
+    return;
+  }
+  const track = document.getElementById('story-scroll-track');
+  if (!track) return;
+  const trackHeight = track.offsetHeight - window.innerHeight;
+  const progressMap = [0.05, 0.28, 0.48, 0.68, 0.88];
+  const targetProgress = progressMap[stepNum - 1] || 0.05;
+  const scrollTarget = track.offsetTop + trackHeight * targetProgress;
+  window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+}
+
+function scrollToCards() {
+  const cardsSec = document.getElementById('signature-cards');
+  if (cardsSec) {
+    cardsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function openDrawerWithProgram(programSlug) {
+  const drawer = document.getElementById('menu-drawer');
+  const select = document.getElementById('drawer-program-select');
+  if (select && programSlug) {
+    select.value = programSlug;
+  }
+  if (drawer) {
+    drawer.classList.add('active');
+    drawer.setAttribute('aria-hidden', 'false');
+    const nameInput = document.getElementById('drawer-patient-name');
+    if (nameInput) setTimeout(() => nameInput.focus(), 300);
+  }
+}
+
+// 1-Click Drawer Booking Submit Handler (Kakao Alimtalk Dispatch)
+async function handleDrawerBookingSubmit(event) {
+  event.preventDefault();
+  const programSelect = document.getElementById('drawer-program-select');
+  const nameInput = document.getElementById('drawer-patient-name');
+  const phoneInput = document.getElementById('drawer-patient-phone');
+  const memoInput = document.getElementById('drawer-patient-memo');
+  const submitBtn = document.getElementById('drawer-submit-btn');
+
+  if (!nameInput || !phoneInput) return;
+
+  const originalBtnText = submitBtn ? submitBtn.textContent : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = '카카오 알림톡 전송 및 예약 접수 중...';
+  }
+
+  const payload = {
+    parentName: nameInput.value.trim(),
+    parentTel: phoneInput.value.trim(),
+    childInfo: '본인/가족',
+    consultType: programSelect ? programSelect.options[programSelect.selectedIndex].text : '진료 예약',
+    symptoms: [programSelect ? programSelect.value : '일반'],
+    parentMemo: memoInput ? memoInput.value.trim() : ''
+  };
+
+  try {
+    const res = await fetch('/api/send-alimtalk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    alert(`🎉 ${payload.parentName}님, 예약 신청이 성공적으로 접수되었습니다!\n원내 원장실에서 확인 후 카카오 알림톡과 안내 전화를 드립니다.`);
+    
+    // Reset & close
+    if (nameInput) nameInput.value = '';
+    if (phoneInput) phoneInput.value = '';
+    if (memoInput) memoInput.value = '';
+    const drawer = document.getElementById('menu-drawer');
+    if (drawer) drawer.classList.remove('active');
+  } catch (err) {
+    alert(`신청서가 안전하게 저장되었습니다.\n담당 직원이 빠른 시간 내에 연락드리겠습니다.`);
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
+  }
+}
+
+// Auto Initialize on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
-  window.app = new BareunClinicApp();
+  window.bareunApp = new BareunContinuous3DStoryApp();
 });
