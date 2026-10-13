@@ -1,116 +1,108 @@
 /**
  * BAREUN CLINIC (바른한의원 대전본점)
  * 5-Step Continuous 3D Lifecycle & 9-Joint Pain Relief Storytelling Engine
- * Three.js WebGL, GSAP ScrollTrigger, Hybrid 8K CGI Visual Layers
+ * Three.js WebGL (r128+) + GSAP ScrollTrigger
+ * Exact Spec Implementation (Step 01 ~ Step 05 with 9-Joint Real World Coordinates)
  */
 
-// Step Data Configuration
-const STORY_STEPS = [
+const CLINIC_SPECS = [
   {
     step: 1,
     slug: 'pediatric-growth',
-    badge: 'STEP 01 · 수정과 성장',
-    counter: '01 / 05',
     title: '01. 바른 성장클리닉',
-    subtitle: '세이지 그린 & 골드 입자가 이루는 생명 탄생과 3D 척추 바른 정렬',
-    desc: '15년 임상경력 대표원장이 자신의 친아들에게 직접 처방하여 입증한 무방사선 정밀 초음파와 8대 전신 기능 검진으로 아이의 숨은 잠재 키를 깨웁니다.',
+    badge: 'STEP 01 (0% ~ 20%) · 수정과 생명의 탄생',
+    mainCopy: '생명의 시작부터 바르게, 우리 아이 숨은 키를 찾는 골격 성장',
+    desc: '수정란의 세포 분열과 15,000개 유기적 파티클이 응집하며 32개 아동 척추 마디가 형성되고, 골드 광원과 함께 바르게 수직 정렬됩니다.',
+    drawerSteps: ['3D 골격 분석', '성장판 검사', '추나 교정'],
     link: 'growth.html',
-    btnText: '성장클리닉 상세 보기 ↗',
-    color: '#34D399',
-    backdropId: 'backdrop-1'
+    seqImg: 'bareun_seq_01_womb_spine.jpg',
+    color: '#34D399'
   },
   {
     step: 2,
     slug: 'appetite-zero',
-    badge: 'STEP 02 · 체형과 감량',
-    counter: '02 / 05',
     title: '02. 바른 다이어트 (식욕 ZERO)',
-    subtitle: '체지방 볼륨 입자 분해 & 슬림한 실루엣 라인 형성',
-    desc: '굶지 않고 자연스럽게 식탐을 억제하며 체질별 기초 대사율을 끌어올리는 바른한의원만의 시그니처 탕약. 누적 50,000건 임상으로 입증된 1:1 맞춤 탕전입니다.',
+    badge: 'STEP 02 (20% ~ 40%) · 체형 변화 & 감량',
+    mainCopy: '가벼워진 몸, 건강하게 되찾은 나만의 바른 라인',
+    desc: '인체를 둘러싼 불투명 젤리 형태의 체지방 메쉬가 20,000개의 골드 미세 가루 파티클로 산산이 부서져 마이크로 증발하고, 매끈한 S라인 바디 메쉬가 안착합니다.',
+    drawerSteps: ['1:1 체질 분석', '식욕 감퇴 & 독소 배출', '요요 방지 3단계'],
     link: 'diet-zero.html#checkout-zone',
-    btnText: '식욕 ZERO 비대면 처방 ↗',
-    color: '#F472B6',
-    backdropId: 'backdrop-2'
+    seqImg: 'bareun_seq_02_fat_dissolve.jpg',
+    color: '#F472B6'
   },
   {
     step: 3,
     slug: 'scalp-hair',
-    badge: 'STEP 03 · 두피와 모근',
-    counter: '03 / 05',
     title: '03. 바른 탈모케어 (모근 개화)',
-    subtitle: '두피 상열감 순환 소산 & 약재 파티클 모근 개화',
-    desc: '두피로 솟구치는 화기(火氣)를 시원한 쿨링 오라로 다스리고, 고농도 모근 영양 약침이 잠든 모낭 세포를 깨워 풍성하고 건강한 머릿결을 피워냅니다.',
+    badge: 'STEP 03 (40% ~ 60%) · 두피 열감 & 모근 개화',
+    mainCopy: '뿌리부터 굵고 풍성하게, 두피 속부터 채우는 모근 회복',
+    desc: '두피 표면에 일렁이던 붉은 열감 입자가 쿨링 에메랄드 한방 입자 침투로 완전 소멸되고, 5,000개 굵은 3D 모발 인스턴스가 모공에서 피어나듯 풍성하게 개화합니다.',
+    drawerSteps: ['3D 두피 진단', '한방 약침 주입', '열감 완화 케어'],
     link: 'https://pf.kakao.com/_ykxcLK',
-    btnText: '탈모케어 1:1 카톡 상담 ↗',
-    color: '#60A5FA',
-    backdropId: 'backdrop-3'
+    seqImg: 'bareun_seq_03_scalp_cooling.jpg',
+    color: '#60A5FA'
   },
   {
     step: 4,
     slug: 'pain-chuna',
-    badge: 'STEP 04 · 전신 통증 & 녹색 치유',
-    counter: '04 / 05',
     title: '04. 바른 통증·추나 (9대 관절 치유)',
-    subtitle: '9대 관절 붉은 점 점멸 소산 & 한방 추나 파동의 녹색 치유 정렬',
-    desc: '목, 어깨, 팔꿈치, 손가락, 허리, 골반, 무릎, 발목, 발가락 9대 관절의 붉은 통증 신호를 소산시키고, 비수술 추나 요법과 봉약침의 강력한 치유 파동으로 바르게 정렬합니다.',
+    badge: 'STEP 04 (60% ~ 80%) · 전신 통증 점멸 & 녹색 치유',
+    mainCopy: '통증의 붉은 신호를 지우고, 관절을 바르게 세우는 추나 케어',
+    desc: '목, 어깨, 팔꿈치, 손가락, 허리, 골반, 무릎, 발목, 발가락 9대 관절의 8Hz 붉은 통증 링이 추나 치유 파동 스캔을 통과하며 눈부신 초록색 치유점으로 전환되고 척추가 곧게 정렬됩니다.',
+    drawerSteps: ['3D 관절 교정 원리', '추나/약침 프로세스', '치료 케이스'],
     link: 'https://naver.me/5U1ELn8L',
-    btnText: '네이버 통증 진료 예약 ↗',
-    color: '#38A169',
-    backdropId: 'backdrop-4'
+    seqImg: 'bareun_seq_04_pain_chuna_9joints.jpg',
+    color: '#38A169'
   },
   {
     step: 5,
     slug: 'gongjindan',
-    badge: 'STEP 05 · 원기 회복',
-    counter: '05 / 05',
-    title: '05. 황제 공진단 (원기 회복)',
-    subtitle: '24K 순금박 공진단 황금빛 장막 & 궁극의 원기 회복',
-    desc: '통증이 사라지고 바르게 정렬된 몸을 영롱한 3D 금박 공진단 황금빛 오라가 감싸며 최상의 활력 완성. 식약처 CITES 정품 사향 100%를 원장이 직접 빚어냅니다.',
+    title: '05. 명품 공진단 (원기 회복)',
+    badge: 'STEP 05 (80% ~ 100%) · 황금빛 원기 회복',
+    mainCopy: '지친 몸에 불어넣는 최고의 활력, 원방 그대로의 명품 공진단',
+    desc: '치유된 인체 주위로 30,000개 샴페인 골드 오라가 회전하며, 인체 중앙에서 24K 순금박 공진단 메쉬가 떠올라 360도 회전하며 최고의 활력을 완성합니다.',
+    drawerSteps: ['100% 정품 사향/녹용 인증서', '당일 수제 제환 영상', '처방 문의'],
     link: 'gongjindan.html',
-    btnText: '황제 공진단 상세 보기 ↗',
-    color: '#FCD34D',
-    backdropId: 'backdrop-5'
+    seqImg: 'bareun_seq_05_gongjindan_aura.jpg',
+    color: '#FCD34D'
   }
 ];
 
 class BareunContinuous3DStoryApp {
   constructor() {
-    this.currentStep = 1;
     this.scrollProgress = 0;
-    this.audioEnabled = false;
-    this.audioCtx = null;
-    
-    // Joint definitions for Step 4
-    this.joints = [
-      { id: 'neck', name: '목 (경추)', pos: [0, 1.95, 0], healed: false },
-      { id: 'shoulder_l', name: '어깨 (좌)', pos: [-0.85, 1.6, 0], healed: false, chipId: 'shoulder' },
-      { id: 'shoulder_r', name: '어깨 (우)', pos: [0.85, 1.6, 0], healed: false, chipId: 'shoulder' },
-      { id: 'elbow_l', name: '팔꿈치 (좌)', pos: [-1.15, 0.95, 0], healed: false, chipId: 'elbow' },
-      { id: 'elbow_r', name: '팔꿈치 (우)', pos: [1.15, 0.95, 0], healed: false, chipId: 'elbow' },
-      { id: 'wrist_l', name: '손가락 (좌)', pos: [-1.3, 0.25, 0], healed: false, chipId: 'wrist' },
-      { id: 'wrist_r', name: '손가락 (우)', pos: [1.3, 0.25, 0], healed: false, chipId: 'wrist' },
-      { id: 'waist', name: '허리 (요추)', pos: [0, 0.85, -0.05], healed: false },
-      { id: 'hip_l', name: '골반/다리', pos: [-0.45, 0.35, 0], healed: false, chipId: 'hip' },
-      { id: 'hip_r', name: '골반/다리', pos: [0.45, 0.35, 0], healed: false, chipId: 'hip' },
-      { id: 'knee_l', name: '무릎 (좌)', pos: [-0.45, -0.65, 0.05], healed: false, chipId: 'knee' },
-      { id: 'knee_r', name: '무릎 (우)', pos: [0.45, -0.65, 0.05], healed: false, chipId: 'knee' },
-      { id: 'ankle_l', name: '발목 (좌)', pos: [-0.42, -1.5, 0], healed: false, chipId: 'ankle' },
-      { id: 'ankle_r', name: '발목 (우)', pos: [0.42, -1.5, 0], healed: false, chipId: 'ankle' },
-      { id: 'toe_l', name: '발가락 (좌)', pos: [-0.42, -1.85, 0.15], healed: false, chipId: 'toe' },
-      { id: 'toe_r', name: '발가락 (우)', pos: [0.42, -1.85, 0.15], healed: false, chipId: 'toe' }
+    this.currentStep = 1;
+    this.isMobile = window.innerWidth <= 768;
+
+    // Exact 9-Joint Anchors specified in production sheet
+    this.jointAnchors = [
+      { id: 'neck', name: '목 (Cervical Spine)', pos: [0.0, 38.0, 0.0], chipKey: 'neck' },
+      { id: 'shoulder_l', name: '어깨 (Shoulder L)', pos: [-12.0, 32.0, 0.0], chipKey: 'shoulder' },
+      { id: 'shoulder_r', name: '어깨 (Shoulder R)', pos: [12.0, 32.0, 0.0], chipKey: 'shoulder' },
+      { id: 'elbow_l', name: '팔꿈치 (Elbow L)', pos: [-18.0, 18.0, 0.0], chipKey: 'elbow' },
+      { id: 'elbow_r', name: '팔꿈치 (Elbow R)', pos: [18.0, 18.0, 0.0], chipKey: 'elbow' },
+      { id: 'finger_l', name: '손가락 (Finger L)', pos: [-22.0, 0.0, 0.0], chipKey: 'wrist' },
+      { id: 'finger_r', name: '손가락 (Finger R)', pos: [22.0, 0.0, 0.0], chipKey: 'wrist' },
+      { id: 'lumbar', name: '허리 (Lumbar Spine)', pos: [0.0, 10.0, -2.0], chipKey: 'waist' },
+      { id: 'hip_l', name: '다리/고관절 (Hip L)', pos: [-8.0, -5.0, 0.0], chipKey: 'hip' },
+      { id: 'hip_r', name: '다리/고관절 (Hip R)', pos: [8.0, -5.0, 0.0], chipKey: 'hip' },
+      { id: 'knee_l', name: '무릎 (Knee L)', pos: [-7.0, -25.0, 0.0], chipKey: 'knee' },
+      { id: 'knee_r', name: '무릎 (Knee R)', pos: [7.0, -25.0, 0.0], chipKey: 'knee' },
+      { id: 'ankle_l', name: '발목 (Ankle L)', pos: [-6.0, -45.0, 0.0], chipKey: 'ankle' },
+      { id: 'ankle_r', name: '발목 (Ankle R)', pos: [6.0, -45.0, 0.0], chipKey: 'ankle' },
+      { id: 'toe_l', name: '발가락 (Toe L)', pos: [-6.0, -52.0, 3.0], chipKey: 'toe' },
+      { id: 'toe_r', name: '발가락 (Toe R)', pos: [6.0, -52.0, 3.0], chipKey: 'toe' }
     ];
 
     this.initDOM();
     this.initThree();
-    this.initScroll();
-    this.initNavigation();
+    this.initScrollEngine();
     this.initIntro();
     this.initDrawer();
     this.animate();
   }
 
   initDOM() {
-    // Canvas & HUD elements
     this.canvas = document.getElementById('storyboard-canvas');
     this.hudBadge = document.getElementById('hud-step-badge');
     this.hudCounter = document.getElementById('hud-step-counter');
@@ -121,8 +113,7 @@ class BareunContinuous3DStoryApp {
     this.hudDrawerBtn = document.getElementById('hud-drawer-btn');
     this.painRadarBox = document.getElementById('pain-radar-box');
     this.painRadarStatus = document.getElementById('pain-radar-status');
-    
-    // Backdrops
+
     this.backdrops = [
       document.getElementById('backdrop-1'),
       document.getElementById('backdrop-2'),
@@ -131,19 +122,7 @@ class BareunContinuous3DStoryApp {
       document.getElementById('backdrop-5')
     ];
 
-    // Left nav dots
     this.navDots = document.querySelectorAll('.step-nav-dot');
-
-    // Time widget
-    const timeDisplay = document.getElementById('current-time');
-    if (timeDisplay) {
-      const updateClock = () => {
-        const now = new Date();
-        timeDisplay.textContent = now.toTimeString().slice(0, 5);
-      };
-      updateClock();
-      setInterval(updateClock, 10000);
-    }
   }
 
   initThree() {
@@ -155,11 +134,12 @@ class BareunContinuous3DStoryApp {
     // 1. Scene
     this.scene = new THREE.Scene();
 
-    // 2. Camera
-    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    this.camera.position.set(0, 0, 7.5);
+    // 2. Camera (Initial: Step 01 Macro Pos [0, 0, 50], FOV 45)
+    this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+    this.camera.position.set(0, 0, 50);
+    this.cameraTarget = new THREE.Vector3(0, 0, 0);
 
-    // 3. Renderer
+    // 3. Renderer with high performance & smooth alpha
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
@@ -169,455 +149,711 @@ class BareunContinuous3DStoryApp {
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 4. Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    // 4. Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     this.scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffeedd, 1.4);
-    dirLight.position.set(5, 8, 5);
-    this.scene.add(dirLight);
+    const dirLight1 = new THREE.DirectionalLight(0xffecc4, 1.5);
+    dirLight1.position.set(30, 50, 40);
+    this.scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0x2D4030, 1.0);
+    dirLight2.position.set(-30, -30, -20);
+    this.scene.add(dirLight2);
 
     // Dynamic Healing Light & Pain Light
-    this.healingLight = new THREE.PointLight(0x38A169, 0, 15);
-    this.healingLight.position.set(0, 0, 2);
-    this.scene.add(this.healingLight);
+    this.healingPointLight = new THREE.PointLight(0x38A169, 0, 100);
+    this.healingPointLight.position.set(0, 0, 30);
+    this.scene.add(this.healingPointLight);
 
-    this.painLight = new THREE.PointLight(0xE53E3E, 0, 10);
-    this.painLight.position.set(0, 0, 2);
-    this.scene.add(this.painLight);
+    this.painPointLight = new THREE.PointLight(0xE53E3E, 0, 80);
+    this.painPointLight.position.set(0, 0, 30);
+    this.scene.add(this.painPointLight);
 
-    // 5. Build 3D Step Groups
-    this.buildStep1Growth();
-    this.buildStep2Diet();
-    this.buildStep3Scalp();
-    this.buildStep4PainChuna();
-    this.buildStep5Gongjindan();
+    // 5. Build 3D Step Meshes according to specs
+    this.buildStep01();
+    this.buildStep02();
+    this.buildStep03();
+    this.buildStep04();
+    this.buildStep05();
 
-    // Resize event
     window.addEventListener('resize', () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
+      this.isMobile = w <= 768;
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);
     });
   }
 
-  // --- Step 1: 3D Spine & DNA Life Helix ---
-  buildStep1Growth() {
-    this.growthGroup = new THREE.Group();
+  // =========================================================================
+  // [Step 01] 수정과 생명의 탄생 (0% ~ 20%)
+  // Macro Center Pos [0, 0, 50] -> Full Shot Pos [0, 0, 120]
+  // 32개 척추 마디 메쉬 & 15,000개 유기적 파티클
+  // =========================================================================
+  buildStep01() {
+    this.step01Group = new THREE.Group();
 
-    // Rising Spine Vertebrae
-    const spineGeom = new THREE.CylinderGeometry(0.08, 0.12, 4.2, 16);
-    const spineMat = new THREE.MeshStandardMaterial({
-      color: 0x526B59,
-      emissive: 0x1A3B2B,
-      roughness: 0.3,
-      metalness: 0.6
-    });
-    const spineCore = new THREE.Mesh(spineGeom, spineMat);
-    this.growthGroup.add(spineCore);
-
-    // Glowing Vertebrae Discs
-    this.vertebraeDiscs = [];
-    for (let i = -8; i <= 8; i++) {
-      const discGeom = new THREE.TorusGeometry(0.24 - Math.abs(i) * 0.008, 0.035, 12, 24);
-      const discMat = new THREE.MeshStandardMaterial({
-        color: 0xE2C892,
-        emissive: 0xC09A67,
-        emissiveIntensity: 0.6
-      });
-      const disc = new THREE.Mesh(discGeom, discMat);
-      disc.rotation.x = Math.PI / 2;
-      disc.position.y = i * 0.24;
-      this.growthGroup.add(disc);
-      this.vertebraeDiscs.push(disc);
-    }
-
-    // Double Helix DNA Life Sparks
-    const count = 750;
-    const geom1 = new THREE.BufferGeometry();
-    const geom2 = new THREE.BufferGeometry();
-    const pos1 = new Float32Array(count * 3);
-    const pos2 = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      const t = (i / count) * Math.PI * 8 - Math.PI * 4;
-      const r = 0.75 + Math.sin(t * 2) * 0.1;
-      const y = (i / count) * 4.6 - 2.3;
-
-      pos1[i * 3] = Math.cos(t) * r;
-      pos1[i * 3 + 1] = y;
-      pos1[i * 3 + 2] = Math.sin(t) * r;
-
-      pos2[i * 3] = Math.cos(t + Math.PI) * r;
-      pos2[i * 3 + 1] = y;
-      pos2[i * 3 + 2] = Math.sin(t + Math.PI) * r;
-    }
-
-    geom1.setAttribute('position', new THREE.BufferAttribute(pos1, 3));
-    geom2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
-
-    const mat1 = new THREE.PointsMaterial({ color: 0x34D399, size: 0.05, transparent: true, opacity: 0.85 });
-    const mat2 = new THREE.PointsMaterial({ color: 0xFDE68A, size: 0.05, transparent: true, opacity: 0.85 });
-
-    this.growthGroup.add(new THREE.Points(geom1, mat1));
-    this.growthGroup.add(new THREE.Points(geom2, mat2));
-
-    this.growthGroup.position.set(1.5, 0, 0);
-    this.scene.add(this.growthGroup);
-  }
-
-  // --- Step 2: 3D Slimming Silhouette & Dissolving Adipose Mesh ---
-  buildStep2Diet() {
-    this.dietGroup = new THREE.Group();
-
-    // Hourglass Contoured Waist Silhouette
-    const silhouetteCount = 900;
-    const silGeom = new THREE.BufferGeometry();
-    const silPos = new Float32Array(silhouetteCount * 3);
-
-    for (let i = 0; i < silhouetteCount; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const y = (Math.random() - 0.5) * 4.2;
-      // Hourglass waist curve function
-      const r = 0.55 + Math.pow(Math.abs(y) / 2.0, 2) * 0.75;
-
-      silPos[i * 3] = Math.cos(theta) * r;
-      silPos[i * 3 + 1] = y;
-      silPos[i * 3 + 2] = Math.sin(theta) * r * 0.65;
-    }
-
-    silGeom.setAttribute('position', new THREE.BufferAttribute(silPos, 3));
-    const silMat = new THREE.PointsMaterial({ color: 0xF472B6, size: 0.045, transparent: true, opacity: 0.8 });
-    this.dietSilhouette = new THREE.Points(silGeom, silMat);
-    this.dietGroup.add(this.dietSilhouette);
-
-    // Swirling Adipose Particles (contracts inward)
-    const lipidCount = 600;
-    const lipidGeom = new THREE.BufferGeometry();
-    this.lipidInitialPos = new Float32Array(lipidCount * 3);
-    const lipidPos = new Float32Array(lipidCount * 3);
-
-    for (let i = 0; i < lipidCount; i++) {
-      const u = Math.random();
-      const angle = Math.random() * Math.PI * 2;
-      const r = 1.3 + u * 1.5;
-      const y = (Math.random() - 0.5) * 2.8;
-
-      lipidPos[i * 3] = Math.cos(angle) * r;
-      lipidPos[i * 3 + 1] = y;
-      lipidPos[i * 3 + 2] = Math.sin(angle) * r;
-
-      this.lipidInitialPos[i * 3] = lipidPos[i * 3];
-      this.lipidInitialPos[i * 3 + 1] = lipidPos[i * 3 + 1];
-      this.lipidInitialPos[i * 3 + 2] = lipidPos[i * 3 + 2];
-    }
-
-    lipidGeom.setAttribute('position', new THREE.BufferAttribute(lipidPos, 3));
-    const lipidMat = new THREE.PointsMaterial({ color: 0xC09A67, size: 0.055, transparent: true, opacity: 0.75 });
-    this.lipidPoints = new THREE.Points(lipidGeom, lipidMat);
-    this.dietGroup.add(this.lipidPoints);
-
-    this.dietGroup.position.set(1.5, 0, 0);
-    this.dietGroup.visible = false;
-    this.scene.add(this.dietGroup);
-  }
-
-  // --- Step 3: Scalp Zoom, Heat Dissipation & Hair Blooming ---
-  buildStep3Scalp() {
-    this.scalpGroup = new THREE.Group();
-
-    // Scalp Dome Mesh
-    const domeGeom = new THREE.SphereGeometry(1.6, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2);
-    const domeMat = new THREE.MeshStandardMaterial({
-      color: 0x1E3A2F,
-      wireframe: true,
+    // 1. 자궁/수정란 메쉬 (MeshPhysicalMaterial)
+    const eggGeom = new THREE.SphereGeometry(18, 32, 32);
+    const eggMat = new THREE.MeshPhysicalMaterial({
+      color: 0x2D4030,
+      emissive: 0xC5A059,
+      emissiveIntensity: 0.35,
+      roughness: 0.2,
+      transmission: 0.85,
+      ior: 1.4,
       transparent: true,
-      opacity: 0.35
+      opacity: 0.55
     });
-    const scalpDome = new THREE.Mesh(domeGeom, domeMat);
-    scalpDome.position.y = 0.2;
-    this.scalpGroup.add(scalpDome);
+    this.wombMesh = new THREE.Mesh(eggGeom, eggMat);
+    this.step01Group.add(this.wombMesh);
 
-    // Blooming Hair Strands
-    this.hairStrands = [];
-    const strandCount = 180;
-    for (let i = 0; i < strandCount; i++) {
-      const phi = Math.random() * (Math.PI / 2.2);
+    // 2. 15,000개 생명 탄생 유기적 파티클 (모바일은 3,000개로 최적화)
+    const pCount = this.isMobile ? 3000 : 15000;
+    const pGeom = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    this.pOriginalPos = new Float32Array(pCount * 3);
+
+    for (let i = 0; i < pCount; i++) {
+      const u = Math.random();
       const theta = Math.random() * Math.PI * 2;
-      const start = new THREE.Vector3(
-        1.55 * Math.sin(phi) * Math.cos(theta),
-        1.55 * Math.cos(phi) + 0.2,
-        1.55 * Math.sin(phi) * Math.sin(theta)
-      );
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 16 * Math.cbrt(u);
 
-      const mid = start.clone().multiplyScalar(1.25);
-      mid.y += 0.4 + Math.random() * 0.4;
-      mid.x += (Math.random() - 0.5) * 0.3;
+      const x = r * Math.sin(phi) * Math.cos(theta);
+      const y = r * Math.sin(phi) * Math.sin(theta);
+      const z = r * Math.cos(phi);
 
-      const end = mid.clone().multiplyScalar(1.2);
-      end.y += 0.5 + Math.random() * 0.6;
-      end.x += (Math.random() - 0.5) * 0.5;
+      pPos[i * 3] = x;
+      pPos[i * 3 + 1] = y;
+      pPos[i * 3 + 2] = z;
 
-      const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-      const points = curve.getPoints(12);
-      const strandGeom = new THREE.BufferGeometry().setFromPoints(points);
-      const strandMat = new THREE.LineBasicMaterial({
-        color: i % 3 === 0 ? 0x60A5FA : 0x34D399,
-        transparent: true,
-        opacity: 0.65
-      });
-      const strand = new THREE.Line(strandGeom, strandMat);
-      this.scalpGroup.add(strand);
-      this.hairStrands.push(strand);
+      this.pOriginalPos[i * 3] = x;
+      this.pOriginalPos[i * 3 + 1] = y;
+      this.pOriginalPos[i * 3 + 2] = z;
     }
 
-    // Cooling Jade Mist Particle Cloud
-    const mistCount = 450;
-    const mistGeom = new THREE.BufferGeometry();
-    const mistPos = new Float32Array(mistCount * 3);
-    for (let i = 0; i < mistCount; i++) {
-      mistPos[i * 3] = (Math.random() - 0.5) * 3.2;
-      mistPos[i * 3 + 1] = 0.5 + Math.random() * 2.8;
-      mistPos[i * 3 + 2] = (Math.random() - 0.5) * 3.2;
-    }
-    mistGeom.setAttribute('position', new THREE.BufferAttribute(mistPos, 3));
-    const mistMat = new THREE.PointsMaterial({ color: 0x6EE7B7, size: 0.06, transparent: true, opacity: 0.7 });
-    this.mistPoints = new THREE.Points(mistGeom, mistMat);
-    this.scalpGroup.add(this.mistPoints);
+    pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0xC5A059,
+      size: 0.65,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+    this.lifeParticles = new THREE.Points(pGeom, pMat);
+    this.step01Group.add(this.lifeParticles);
 
-    this.scalpGroup.position.set(1.5, -0.6, 0);
-    this.scalpGroup.visible = false;
-    this.scene.add(this.scalpGroup);
+    // 3. 아동 3D 척추 마디 메쉬 (정확히 32개 마디)
+    this.spineVertebrae = [];
+    this.spineGroup = new THREE.Group();
+    const vertGeom = new THREE.CylinderGeometry(1.6, 2.0, 1.4, 16);
+    const vertMat = new THREE.MeshStandardMaterial({
+      color: 0xC5A059,
+      emissive: 0x2D4030,
+      metalness: 0.6,
+      roughness: 0.25
+    });
+
+    for (let i = 0; i < 32; i++) {
+      const vert = new THREE.Mesh(vertGeom, vertMat);
+      // Height spans roughly y = -35 to +35
+      const baseSpacing = 2.1;
+      vert.position.y = (i - 16) * baseSpacing;
+      vert.scale.set(0.001, 0.001, 0.001); // starts invisible, expands on timeline
+      this.spineGroup.add(vert);
+      this.spineVertebrae.push(vert);
+    }
+    this.step01Group.add(this.spineGroup);
+
+    this.scene.add(this.step01Group);
   }
 
-  // --- Step 4: 3D Anatomical Human Model with 9-Joint Pain & Green Healing Animation ---
-  buildStep4PainChuna() {
-    this.painGroup = new THREE.Group();
+  // =========================================================================
+  // [Step 02] 체형 변화 & 감량 (20% ~ 40%)
+  // 3/4 Perspective View Pos [30, 10, 80]
+  // 3D 체지방 젤리 메쉬 -> 20,000개 골드 가루 파티클 디졸브 & 슬림 S라인 메쉬
+  // =========================================================================
+  buildStep02() {
+    this.step02Group = new THREE.Group();
 
-    // 1. Holographic Human Anatomical Wireframe
-    // Head
-    const headGeom = new THREE.SphereGeometry(0.42, 16, 12);
-    const wireMat = new THREE.MeshStandardMaterial({
-      color: 0x334155,
+    // 1. 슬림 바디 메쉬 (Pure White #FFFFFF, Opacity: 0.9)
+    const slimGeom = new THREE.CylinderGeometry(6.5, 9.5, 65, 24, 20);
+    // Mold vertices into S-line curve
+    const pos = slimGeom.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const y = pos.getY(i);
+      let rFactor = 1.0;
+      if (y > 10) rFactor = 1.1 + Math.sin(y * 0.1) * 0.15; // chest
+      else if (y > -10) rFactor = 0.72 + (Math.abs(y) / 10) * 0.2; // slim waist
+      else rFactor = 1.15 + Math.cos(y * 0.1) * 0.1; // hips
+      pos.setX(i, pos.getX(i) * rFactor);
+      pos.setZ(i, pos.getZ(i) * rFactor * 0.75);
+    }
+    slimGeom.computeVertexNormals();
+
+    const slimMat = new THREE.MeshStandardMaterial({
+      color: 0xFFFFFF,
+      roughness: 0.25,
+      metalness: 0.2,
+      transparent: true,
+      opacity: 0.92
+    });
+    this.slimBodyMesh = new THREE.Mesh(slimGeom, slimMat);
+    this.step02Group.add(this.slimBodyMesh);
+
+    // 2. 부풀어 오른 3D 체지방 젤리 메쉬 (외곽 레이어)
+    const fatGeom = slimGeom.clone();
+    const fatPos = fatGeom.attributes.position;
+    for (let i = 0; i < fatPos.count; i++) {
+      const y = fatPos.getY(i);
+      const fatFactor = (y > -15 && y < 15) ? 1.55 : 1.25;
+      fatPos.setX(i, fatPos.getX(i) * fatFactor);
+      fatPos.setZ(i, fatPos.getZ(i) * fatFactor);
+    }
+    fatGeom.computeVertexNormals();
+
+    const fatMat = new THREE.MeshPhysicalMaterial({
+      color: 0xC5A059,
+      transmission: 0.6,
+      roughness: 0.45,
+      transparent: true,
+      opacity: 0.75
+    });
+    this.fatJellyMesh = new THREE.Mesh(fatGeom, fatMat);
+    this.step02Group.add(this.fatJellyMesh);
+
+    // 3. 20,000개 골드빛 미세 가루 파티클 (디졸브 증발용)
+    const fCount = this.isMobile ? 4000 : 20000;
+    const fGeom = new THREE.BufferGeometry();
+    const fPositions = new Float32Array(fCount * 3);
+    this.dissolveVelocity = new Float32Array(fCount * 3);
+
+    for (let i = 0; i < fCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const y = (Math.random() - 0.5) * 60;
+      const r = 11 + Math.random() * 5;
+
+      fPositions[i * 3] = Math.cos(theta) * r;
+      fPositions[i * 3 + 1] = y;
+      fPositions[i * 3 + 2] = Math.sin(theta) * r;
+
+      this.dissolveVelocity[i * 3] = (Math.random() - 0.5) * 0.8;
+      this.dissolveVelocity[i * 3 + 1] = 0.5 + Math.random() * 1.5;
+      this.dissolveVelocity[i * 3 + 2] = (Math.random() - 0.5) * 0.8;
+    }
+
+    fGeom.setAttribute('position', new THREE.BufferAttribute(fPositions, 3));
+    const fMat = new THREE.PointsMaterial({
+      color: 0xFDE68A,
+      size: 0.85,
+      transparent: true,
+      opacity: 0.0,
+      blending: THREE.AdditiveBlending
+    });
+    this.dissolveDust = new THREE.Points(fGeom, fMat);
+    this.step02Group.add(this.dissolveDust);
+
+    this.step02Group.visible = false;
+    this.scene.add(this.step02Group);
+  }
+
+  // =========================================================================
+  // [Step 03] 두피 열감 & 모근 개화 (40% ~ 60%)
+  // Extreme Close-Up Pos [0, 45, 25], LookAt [0, 42, 0]
+  // 붉은 열감 파티클 -> 쿨링 에메랄드 입자 -> 5,000개 3D 모발 인스턴스 개화
+  // =========================================================================
+  buildStep03() {
+    this.step03Group = new THREE.Group();
+
+    // 1. 3D 두피 조직 & 모공 그리드 메쉬
+    const scalpGeom = new THREE.SphereGeometry(22, 32, 24, 0, Math.PI * 2, 0, Math.PI / 2.3);
+    const scalpMat = new THREE.MeshStandardMaterial({
+      color: 0x1A2E26,
       wireframe: true,
       transparent: true,
       opacity: 0.4
     });
-    const head = new THREE.Mesh(headGeom, wireMat);
-    head.position.set(0, 2.3, 0);
-    this.painGroup.add(head);
+    this.scalpDome = new THREE.Mesh(scalpGeom, scalpMat);
+    this.scalpDome.position.set(0, 36, 0);
+    this.step03Group.add(this.scalpDome);
 
-    // Spine Curve
-    const spineCurvePoints = [];
-    for (let y = -0.3; y <= 1.9; y += 0.2) {
-      spineCurvePoints.push(new THREE.Vector3(Math.sin(y * 2) * 0.08, y, 0));
+    // 2. 붉은 열감 파티클 (Color: #E53E3E Pain Red, Opacity: 0.8)
+    const heatCount = this.isMobile ? 800 : 3500;
+    const heatGeom = new THREE.BufferGeometry();
+    const heatPos = new Float32Array(heatCount * 3);
+    for (let i = 0; i < heatCount; i++) {
+      const u = Math.random();
+      const theta = Math.random() * Math.PI * 2;
+      const r = 21.5 * Math.sqrt(u);
+      heatPos[i * 3] = Math.cos(theta) * r;
+      heatPos[i * 3 + 1] = 42 + Math.random() * 4;
+      heatPos[i * 3 + 2] = Math.sin(theta) * r;
     }
-    const spineGeom = new THREE.BufferGeometry().setFromPoints(spineCurvePoints);
-    this.painSpineLine = new THREE.Line(spineGeom, new THREE.LineBasicMaterial({ color: 0xE2C892, linewidth: 2 }));
-    this.painGroup.add(this.painSpineLine);
+    heatGeom.setAttribute('position', new THREE.BufferAttribute(heatPos, 3));
+    this.heatMat = new THREE.PointsMaterial({
+      color: 0xE53E3E,
+      size: 1.1,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+    this.heatParticles = new THREE.Points(heatGeom, this.heatMat);
+    this.step03Group.add(this.heatParticles);
 
-    // Torso Ribcage Cage
-    const ribGeom = new THREE.CylinderGeometry(0.7, 0.5, 1.4, 12, 4, true);
-    const ribMesh = new THREE.Mesh(ribGeom, wireMat);
-    ribMesh.position.set(0, 1.2, 0);
-    this.painGroup.add(ribMesh);
+    // 3. 쿨링 에메랄드 한방 입자 (#2D4030 / #34D399)
+    const coolCount = this.isMobile ? 800 : 3500;
+    const coolGeom = new THREE.BufferGeometry();
+    const coolPos = new Float32Array(coolCount * 3);
+    for (let i = 0; i < coolCount; i++) {
+      coolPos[i * 3] = (Math.random() - 0.5) * 36;
+      coolPos[i * 3 + 1] = 40 + Math.random() * 12;
+      coolPos[i * 3 + 2] = (Math.random() - 0.5) * 36;
+    }
+    coolGeom.setAttribute('position', new THREE.BufferAttribute(coolPos, 3));
+    this.coolMat = new THREE.PointsMaterial({
+      color: 0x34D399,
+      size: 1.2,
+      transparent: true,
+      opacity: 0.0,
+      blending: THREE.AdditiveBlending
+    });
+    this.coolingParticles = new THREE.Points(coolGeom, this.coolMat);
+    this.step03Group.add(this.coolingParticles);
 
-    // Limbs Wireframe Lines
-    const limbLinesMat = new THREE.LineBasicMaterial({ color: 0x475569, transparent: true, opacity: 0.5 });
+    // 4. InstancedMesh 기반 5,000개 굵은 3D 모발 인스턴싱
+    const hairCount = this.isMobile ? 1200 : 5000;
+    const hairStrandGeom = new THREE.CylinderGeometry(0.08, 0.16, 7.5, 6);
+    hairStrandGeom.translate(0, 3.75, 0); // origin at bottom
+
+    const hairMat = new THREE.MeshStandardMaterial({
+      color: 0x050C09,
+      roughness: 0.2,
+      metalness: 0.4
+    });
+    this.hairInstanced = new THREE.InstancedMesh(hairStrandGeom, hairMat, hairCount);
+    const dummy = new THREE.Object3D();
+
+    for (let i = 0; i < hairCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.random() * (Math.PI / 2.5);
+      const r = 21.8;
+
+      const x = r * Math.sin(phi) * Math.cos(theta);
+      const y = 36 + r * Math.cos(phi);
+      const z = r * Math.sin(phi) * Math.sin(theta);
+
+      dummy.position.set(x, y, z);
+      // Align direction radially outward with slight organic curve
+      dummy.lookAt(x * 1.5, y + 10, z * 1.5);
+      dummy.scale.set(0.001, 0.001, 0.001); // initial hidden scale
+      dummy.updateMatrix();
+      this.hairInstanced.setMatrixAt(i, dummy.matrix);
+    }
+    this.hairInstanced.instanceMatrix.needsUpdate = true;
+    this.step03Group.add(this.hairInstanced);
+
+    this.step03Group.visible = false;
+    this.scene.add(this.step03Group);
+  }
+
+  // =========================================================================
+  // [Step 04] 전신 통증 점멸 & 녹색 치유 (60% ~ 80%)
+  // Full Body 360도 회전 샷 Pos [0, 0, 100], Rot Y: 0° -> 360°
+  // 9대 관절 정확한 좌표 & 8Hz 붉은 점멸 -> Y-axis 추나 치유 파동 스캔 & 초록 치유
+  // =========================================================================
+  buildStep04() {
+    this.step04Group = new THREE.Group();
+
+    // 1. 전신 3D 홀로그램 인체 와이어프레임 골격
+    const bodyWireMat = new THREE.LineBasicMaterial({ color: 0x334155, transparent: true, opacity: 0.5 });
     
-    // Left Arm
-    const leftArmPts = [new THREE.Vector3(0, 1.6, 0), new THREE.Vector3(-0.85, 1.6, 0), new THREE.Vector3(-1.15, 0.95, 0), new THREE.Vector3(-1.3, 0.25, 0)];
-    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(leftArmPts), limbLinesMat));
+    // Spine line with slight scoliosis/distortion (straightens on heal)
+    this.step4SpinePoints = [];
+    for (let y = -40; y <= 38; y += 2) {
+      this.step4SpinePoints.push(new THREE.Vector3(Math.sin(y * 0.15) * 1.8, y, 0));
+    }
+    const sGeom = new THREE.BufferGeometry().setFromPoints(this.step4SpinePoints);
+    this.step4SpineLine = new THREE.Line(sGeom, new THREE.LineBasicMaterial({ color: 0xE2C892, linewidth: 2 }));
+    this.step04Group.add(this.step4SpineLine);
 
-    // Right Arm
-    const rightArmPts = [new THREE.Vector3(0, 1.6, 0), new THREE.Vector3(0.85, 1.6, 0), new THREE.Vector3(1.15, 0.95, 0), new THREE.Vector3(1.3, 0.25, 0)];
-    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(rightArmPts), limbLinesMat));
+    // Human skeleton limbs connections
+    const limbsData = [
+      // Head to Neck
+      [ [0, 44, 0], [0, 38, 0] ],
+      // Neck to Shoulders
+      [ [0, 38, 0], [-12, 32, 0] ], [ [0, 38, 0], [12, 32, 0] ],
+      // Shoulders to Elbows
+      [ [-12, 32, 0], [-18, 18, 0] ], [ [12, 32, 0], [18, 18, 0] ],
+      // Elbows to Fingers
+      [ [-18, 18, 0], [-22, 0, 0] ], [ [18, 18, 0], [22, 0, 0] ],
+      // Lumbar to Hips
+      [ [0, 10, -2], [-8, -5, 0] ], [ [0, 10, -2], [8, -5, 0] ],
+      // Hips to Knees
+      [ [-8, -5, 0], [-7, -25, 0] ], [ [8, -5, 0], [7, -25, 0] ],
+      // Knees to Ankles
+      [ [-7, -25, 0], [-6, -45, 0] ], [ [7, -25, 0], [6, -45, 0] ],
+      // Ankles to Toes
+      [ [-6, -45, 0], [-6, -52, 3] ], [ [6, -45, 0], [6, -52, 3] ]
+    ];
 
-    // Left Leg
-    const leftLegPts = [new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(-0.45, 0.35, 0), new THREE.Vector3(-0.45, -0.65, 0.05), new THREE.Vector3(-0.42, -1.5, 0), new THREE.Vector3(-0.42, -1.85, 0.15)];
-    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(leftLegPts), limbLinesMat));
+    limbsData.forEach(pair => {
+      const lPts = [new THREE.Vector3(...pair[0]), new THREE.Vector3(...pair[1])];
+      const lGeom = new THREE.BufferGeometry().setFromPoints(lPts);
+      this.step04Group.add(new THREE.Line(lGeom, bodyWireMat));
+    });
 
-    // Right Leg
-    const rightLegPts = [new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0.45, 0.35, 0), new THREE.Vector3(0.45, -0.65, 0.05), new THREE.Vector3(0.42, -1.5, 0), new THREE.Vector3(0.42, -1.85, 0.15)];
-    this.painGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(rightLegPts), limbLinesMat));
+    // 2. 9대 관절 정확한 좌표 앵커 & 8Hz 붉은 펄스 링 셰이더 메쉬
+    this.jointMarkerMeshes = [];
+    this.jointAnchors.forEach(j => {
+      const g = new THREE.Group();
+      g.position.set(...j.pos);
 
-    // 2. The 9 Major Joint Pain & Healing Markers
-    this.jointMeshes = [];
-    this.joints.forEach(j => {
-      const markerGroup = new THREE.Group();
-      markerGroup.position.set(...j.pos);
-
-      // Core Glowing Sphere
-      const sphereGeom = new THREE.SphereGeometry(0.09, 16, 16);
-      const sphereMat = new THREE.MeshStandardMaterial({
-        color: 0xE53E3E, // Pain Red default
+      // Core Glowing Node
+      const sGeom = new THREE.SphereGeometry(1.6, 16, 16);
+      const sMat = new THREE.MeshStandardMaterial({
+        color: 0xE53E3E,
         emissive: 0xE53E3E,
-        emissiveIntensity: 0.8,
-        roughness: 0.2
+        emissiveIntensity: 1.0,
+        roughness: 0.1
       });
-      const sphere = new THREE.Mesh(sphereGeom, sphereMat);
-      markerGroup.add(sphere);
+      const sphere = new THREE.Mesh(sGeom, sMat);
+      g.add(sphere);
 
-      // Concentric Radar Pulse Ring
-      const ringGeom = new THREE.RingGeometry(0.12, 0.16, 24);
-      const ringMat = new THREE.MeshBasicMaterial({
+      // 8Hz Pulsating Ring
+      const rGeom = new THREE.RingGeometry(2.2, 3.0, 32);
+      const rMat = new THREE.MeshBasicMaterial({
         color: 0xE53E3E,
         transparent: true,
-        opacity: 0.7,
+        opacity: 0.85,
         side: THREE.DoubleSide
       });
-      const ring = new THREE.Mesh(ringGeom, ringMat);
-      markerGroup.add(ring);
+      const ring = new THREE.Mesh(rGeom, rMat);
+      g.add(ring);
 
-      this.painGroup.add(markerGroup);
-      this.jointMeshes.push({
+      this.step04Group.add(g);
+      this.jointMarkerMeshes.push({
         def: j,
-        group: markerGroup,
+        group: g,
         sphere: sphere,
         ring: ring,
+        healed: false,
         pulseOffset: Math.random() * Math.PI
       });
     });
 
-    // 3. Sweeping Chuna Healing Wave Torus
-    const waveGeom = new THREE.TorusGeometry(1.65, 0.05, 16, 64);
+    // 3. Y-axis 한방 추나 치유 파동 스캔 링 (Scan Wave)
+    const waveGeom = new THREE.TorusGeometry(32, 0.8, 16, 64);
     const waveMat = new THREE.MeshStandardMaterial({
-      color: 0x34D399,
+      color: 0x38A169,
       emissive: 0x10B981,
-      emissiveIntensity: 1.2,
+      emissiveIntensity: 1.5,
       transparent: true,
-      opacity: 0.8
+      opacity: 0.9
     });
-    this.chunaWaveRing = new THREE.Mesh(waveGeom, waveMat);
-    this.chunaWaveRing.rotation.x = Math.PI / 2;
-    this.chunaWaveRing.position.set(0, 2.5, 0); // starts at top
-    this.painGroup.add(this.chunaWaveRing);
+    this.chunaScanRing = new THREE.Mesh(waveGeom, waveMat);
+    this.chunaScanRing.rotation.x = Math.PI / 2;
+    this.chunaScanRing.position.y = 48; // Starts above head
+    this.step04Group.add(this.chunaScanRing);
 
-    this.painGroup.position.set(1.5, 0, 0);
-    this.painGroup.visible = false;
-    this.scene.add(this.painGroup);
+    this.step04Group.visible = false;
+    this.scene.add(this.step04Group);
   }
 
-  // --- Step 5: 3D Emperor Gongjindan & Golden Vitality Aura ---
-  buildStep5Gongjindan() {
-    this.gongjindanGroup = new THREE.Group();
+  // =========================================================================
+  // [Step 05] 황금빛 원기 회복 (80% ~ 100%)
+  // Hero Center Focus Pos [0, 0, 60]
+  // 30,000개 샴페인 골드 오라 파티클 & 3D 24K 금박 공진단 메쉬
+  // =========================================================================
+  buildStep05() {
+    this.step05Group = new THREE.Group();
 
-    // Central 24K Gold Foil Pill Sphere
-    const pillGeom = new THREE.SphereGeometry(0.95, 32, 32);
+    // 1. 3D 금박 공진단 메쉬 (MeshStandardMaterial, Metalness: 0.95, Roughness: 0.1)
+    const pillGeom = new THREE.SphereGeometry(14, 36, 36);
     const pillMat = new THREE.MeshStandardMaterial({
       color: 0xFFD700,
-      emissive: 0xC09A67,
-      emissiveIntensity: 0.45,
+      emissive: 0xC5A059,
+      emissiveIntensity: 0.5,
       metalness: 0.95,
-      roughness: 0.22
+      roughness: 0.12
     });
     this.gongjindanPill = new THREE.Mesh(pillGeom, pillMat);
-    this.gongjindanGroup.add(this.gongjindanPill);
+    this.step05Group.add(this.gongjindanPill);
 
     // Orbital Gold Rings
-    const ring1Geom = new THREE.TorusGeometry(1.45, 0.025, 16, 64);
-    const ringMat = new THREE.MeshStandardMaterial({ color: 0xFDE68A, metalness: 0.9, roughness: 0.2 });
-    this.goldOrbit1 = new THREE.Mesh(ring1Geom, ringMat);
-    this.goldOrbit1.rotation.x = 0.85;
-    this.goldOrbit1.rotation.y = 0.35;
-    this.gongjindanGroup.add(this.goldOrbit1);
+    const r1Geom = new THREE.TorusGeometry(20, 0.45, 16, 64);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xFDE68A, metalness: 0.9, roughness: 0.15 });
+    this.orbitRing1 = new THREE.Mesh(r1Geom, ringMat);
+    this.orbitRing1.rotation.x = 0.85;
+    this.orbitRing1.rotation.y = 0.35;
+    this.step05Group.add(this.orbitRing1);
 
-    const ring2Geom = new THREE.TorusGeometry(1.85, 0.02, 16, 64);
-    this.goldOrbit2 = new THREE.Mesh(ring2Geom, ringMat);
-    this.goldOrbit2.rotation.x = -0.65;
-    this.goldOrbit2.rotation.y = -0.45;
-    this.gongjindanGroup.add(this.goldOrbit2);
+    const r2Geom = new THREE.TorusGeometry(25, 0.35, 16, 64);
+    this.orbitRing2 = new THREE.Mesh(r2Geom, ringMat);
+    this.orbitRing2.rotation.x = -0.65;
+    this.orbitRing2.rotation.y = -0.45;
+    this.step05Group.add(this.orbitRing2);
 
-    // Golden Vitality Shield Sphere
-    const shieldGeom = new THREE.SphereGeometry(2.1, 24, 24);
-    const shieldMat = new THREE.MeshStandardMaterial({
-      color: 0xE2C892,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.22
-    });
-    this.vitalityShield = new THREE.Mesh(shieldGeom, shieldMat);
-    this.gongjindanGroup.add(this.vitalityShield);
+    // 2. 30,000개 샴페인 골드 (#C5A059) 및 에메랄드 오라 파티클
+    const aCount = this.isMobile ? 6000 : 30000;
+    const aGeom = new THREE.BufferGeometry();
+    const aPos = new Float32Array(aCount * 3);
 
-    // Swirling Gold Leaf Flakes
-    const flakeCount = 850;
-    const flakeGeom = new THREE.BufferGeometry();
-    const flakePos = new Float32Array(flakeCount * 3);
-    for (let i = 0; i < flakeCount; i++) {
+    for (let i = 0; i < aCount; i++) {
       const u = Math.random();
       const theta = Math.random() * Math.PI * 2;
-      const r = 1.1 + u * 1.8;
-      const y = (Math.random() - 0.5) * 3.5;
-      flakePos[i * 3] = Math.cos(theta) * r;
-      flakePos[i * 3 + 1] = y;
-      flakePos[i * 3 + 2] = Math.sin(theta) * r;
-    }
-    flakeGeom.setAttribute('position', new THREE.BufferAttribute(flakePos, 3));
-    const flakeMat = new THREE.PointsMaterial({ color: 0xFBBF24, size: 0.05, transparent: true, opacity: 0.85 });
-    this.goldFlakes = new THREE.Points(flakeGeom, flakeMat);
-    this.gongjindanGroup.add(this.goldFlakes);
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 18 + u * 28;
 
-    this.gongjindanGroup.position.set(1.5, 0, 0);
-    this.gongjindanGroup.visible = false;
-    this.scene.add(this.gongjindanGroup);
+      aPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      aPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      aPos[i * 3 + 2] = r * Math.cos(phi);
+    }
+
+    aGeom.setAttribute('position', new THREE.BufferAttribute(aPos, 3));
+    const aMat = new THREE.PointsMaterial({
+      color: 0xC5A059,
+      size: 0.75,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+    this.gongjindanAura = new THREE.Points(aGeom, aMat);
+    this.step05Group.add(this.gongjindanAura);
+
+    this.step05Group.visible = false;
+    this.scene.add(this.step05Group);
   }
 
-  // --- Scroll & Storyboard Step Manager ---
-  initScroll() {
+  // =========================================================================
+  // Scroll Timeline Engine & Keyframe Synchronization
+  // =========================================================================
+  initScrollEngine() {
     const track = document.getElementById('story-scroll-track');
     if (!track) return;
 
     window.addEventListener('scroll', () => {
       const rect = track.getBoundingClientRect();
-      const trackHeight = track.offsetHeight - window.innerHeight;
+      const totalScrollable = track.offsetHeight - window.innerHeight;
       let progress = 0;
 
       if (rect.top <= 0) {
-        progress = Math.min(1.0, Math.max(0, -rect.top / trackHeight));
+        progress = Math.min(1.0, Math.max(0, -rect.top / totalScrollable));
       }
       this.scrollProgress = progress;
-      this.updateStepFromProgress(progress);
+      this.evaluateTimeline(progress);
     }, { passive: true });
   }
 
-  updateStepFromProgress(p) {
-    // Map 0.0 - 1.0 to 5 steps
-    let targetStep = 1;
-    if (p < 0.20) targetStep = 1;
-    else if (p < 0.40) targetStep = 2;
-    else if (p < 0.60) targetStep = 3;
-    else if (p < 0.80) targetStep = 4;
-    else targetStep = 5;
+  evaluateTimeline(p) {
+    // Current Step index
+    let step = 1;
+    if (p < 0.20) step = 1;
+    else if (p < 0.40) step = 2;
+    else if (p < 0.60) step = 3;
+    else if (p < 0.80) step = 4;
+    else step = 5;
 
-    // Check if reached signature cards section
+    // Check if reached final signature cards section
     const cardsSec = document.getElementById('signature-cards');
     if (cardsSec) {
       const cRect = cardsSec.getBoundingClientRect();
-      if (cRect.top < window.innerHeight * 0.4) {
-        targetStep = 6;
+      if (cRect.top < window.innerHeight * 0.45) {
+        step = 6;
       }
     }
 
-    if (this.currentStep !== targetStep) {
-      this.currentStep = targetStep;
-      this.renderStepHUD(targetStep);
-      this.updateBackdrops(targetStep);
-      this.updateNavDots(targetStep);
-      this.update3DVisibility(targetStep);
+    if (this.currentStep !== step) {
+      this.currentStep = step;
+      this.updateHUD(step);
+      this.updateBackdrops(step);
+      this.updateNavDots(step);
     }
 
-    // Step 4 Realtime Wave & Pain Transition based on fine progress within Step 4 (0.60 ~ 0.80)
-    if (p >= 0.58 && p <= 0.82 && this.painGroup) {
-      const step4Progress = Math.min(1.0, Math.max(0.0, (p - 0.60) / 0.18));
-      this.updateStep4ChunaWave(step4Progress);
+    // --- Continuous 3D Keyframe Choreography ---
+
+    // [Step 01] 0.00 ~ 0.20
+    if (p <= 0.20) {
+      this.setGroupVisibility(1);
+      const subP = p / 0.20; // 0.0 ~ 1.0
+
+      // Camera: Pos [0, 0, 50] -> Pos [0, 0, 120]
+      const camZ = 50 + subP * 70;
+      this.camera.position.set(0, 0, camZ);
+      this.camera.lookAt(0, 0, 0);
+
+      // 0% ~ 8%: 자궁 세포 파티클 응집 및 미세 진동
+      if (subP <= 0.4) { // 0% ~ 8% relative
+        const vib = Math.sin(performance.now() * 0.02) * 0.5;
+        this.wombMesh.scale.set(1 + vib * 0.05, 1 + vib * 0.05, 1 + vib * 0.05);
+      }
+      // 8% ~ 15%: 아동 3D 척추 마디 메쉬 형성
+      if (subP > 0.4 && subP <= 0.75) {
+        const spineFactor = (subP - 0.4) / 0.35;
+        this.spineVertebrae.forEach((vert, idx) => {
+          if (idx / 32 <= spineFactor) {
+            vert.scale.set(1, 1, 1);
+          }
+        });
+      }
+      // 15% ~ 20%: 척추 마디 간격 수직 5% 연장 & 바른 정렬
+      if (subP > 0.75) {
+        const stretch = 1.0 + (subP - 0.75) * 0.2; // up to 5% ~ 7%
+        this.spineGroup.scale.set(1, stretch, 1);
+      }
+    }
+
+    // [Step 02] 0.20 ~ 0.40
+    else if (p > 0.20 && p <= 0.40) {
+      this.setGroupVisibility(2);
+      const subP = (p - 0.20) / 0.20; // 0.0 ~ 1.0
+
+      // Camera: 3/4 Perspective View Pos [30, 10, 80], LookAt Center
+      this.camera.position.set(30, 10, 80);
+      this.camera.lookAt(0, 0, 0);
+
+      // 20% ~ 28%: 부풀어 오른 3D 체지방 젤리 메쉬 등장
+      // 28% ~ 35%: 골드 가루 파티클로 미세 분해 및 증발
+      if (subP < 0.4) {
+        this.fatJellyMesh.material.opacity = 0.75;
+        this.dissolveDust.material.opacity = 0.0;
+      } else if (subP >= 0.4 && subP < 0.75) {
+        const dissolveProg = (subP - 0.4) / 0.35;
+        this.fatJellyMesh.material.opacity = 0.75 * (1.0 - dissolveProg);
+        this.dissolveDust.material.opacity = dissolveProg * 0.9;
+        this.fatJellyMesh.scale.set(1.0 + dissolveProg * 0.15, 1.0, 1.0 + dissolveProg * 0.15);
+      } else {
+        // 35% ~ 40%: 슬림 S라인 인체 메쉬 안착
+        this.fatJellyMesh.material.opacity = 0.0;
+        this.dissolveDust.material.opacity = 0.2;
+        this.slimBodyMesh.material.opacity = 0.95;
+      }
+    }
+
+    // [Step 03] 0.40 ~ 0.60
+    else if (p > 0.40 && p <= 0.60) {
+      this.setGroupVisibility(3);
+      const subP = (p - 0.40) / 0.20; // 0.0 ~ 1.0
+
+      // Camera: Extreme Close-Up Pos [0, 45, 25], LookAt 정수리 [0, 42, 0]
+      this.camera.position.set(0, 45, 25);
+      this.camera.lookAt(0, 42, 0);
+
+      // 40% ~ 48%: 붉은 열감 파티클 일렁임
+      // 48% ~ 55%: 쿨링 에메랄드 한방 파티클 침투로 붉은 기 완전 소멸
+      if (subP < 0.4) {
+        this.heatMat.opacity = 0.85;
+        this.coolMat.opacity = 0.0;
+      } else if (subP >= 0.4 && subP < 0.75) {
+        const coolProg = (subP - 0.4) / 0.35;
+        this.heatMat.opacity = 0.85 * (1.0 - coolProg);
+        this.coolMat.opacity = coolProg * 0.9;
+      } else {
+        // 55% ~ 60%: 5,000개 3D 모발 인스턴스 위로 피어나며 풍성한 모발 완성
+        this.heatMat.opacity = 0.0;
+        this.coolMat.opacity = 0.5;
+        const hairGrowth = Math.min(1.0, (subP - 0.75) / 0.25);
+        this.hairInstanced.scale.set(hairGrowth, hairGrowth, hairGrowth);
+      }
+    }
+
+    // [Step 04] 0.60 ~ 0.80
+    else if (p > 0.60 && p <= 0.80) {
+      this.setGroupVisibility(4);
+      const subP = (p - 0.60) / 0.20; // 0.0 ~ 1.0
+
+      // Camera: Full Body 360도 회전 샷 Pos [0, 0, 100], Rot Y: 0° -> 360°
+      const angle = subP * Math.PI * 2;
+      this.camera.position.set(Math.sin(angle) * 100, 0, Math.cos(angle) * 100);
+      this.camera.lookAt(0, 0, 0);
+
+      // Y-axis 추나 치유 파동 스캔: 위(y: 45)에서 아래(y: -55)로 통과
+      const scanY = 45 - subP * 100;
+      this.chunaScanRing.position.y = scanY;
+
+      // 9대 관절 치유 전환: 스캔 링이 관절 Y 좌표를 통과하면 즉시 초록색 치유점으로 전환!
+      let allHealed = true;
+      let anyHealed = false;
+
+      this.jointMarkerMeshes.forEach(item => {
+        const jY = item.def.pos[1];
+        const isHealed = scanY <= jY + 2.0;
+
+        if (isHealed) {
+          item.sphere.material.color.setHex(0x38A169); // Healing Green
+          item.sphere.material.emissive.setHex(0x10B981);
+          item.ring.material.color.setHex(0x38A169);
+          item.healed = true;
+          anyHealed = true;
+
+          const chip = document.querySelector(`.pain-chip[data-joint="${item.def.chipKey}"]`);
+          if (chip) chip.classList.add('healed');
+        } else {
+          item.sphere.material.color.setHex(0xE53E3E); // Pain Red
+          item.sphere.material.emissive.setHex(0xE53E3E);
+          item.ring.material.color.setHex(0xE53E3E);
+          item.healed = false;
+          allHealed = false;
+
+          const chip = document.querySelector(`.pain-chip[data-joint="${item.def.chipKey}"]`);
+          if (chip) chip.classList.remove('healed');
+        }
+      });
+
+      // Spine straightens on heal
+      const straightness = Math.min(1.0, subP * 1.3);
+      const pts = [];
+      for (let y = -40; y <= 38; y += 2) {
+        const curX = Math.sin(y * 0.15) * 1.8 * (1.0 - straightness);
+        pts.push(new THREE.Vector3(curX, y, 0));
+      }
+      this.step4SpineLine.geometry.setFromPoints(pts);
+
+      // Radar status text
+      if (this.painRadarStatus) {
+        if (allHealed) {
+          this.painRadarStatus.className = 'pain-radar-status healing';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✓</span> <span>9대 관절 바른 정렬 완료</span>';
+        } else if (anyHealed) {
+          this.painRadarStatus.className = 'pain-radar-status healing';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✦</span> <span>추나 치유 파동 스캔 중</span>';
+        } else {
+          this.painRadarStatus.className = 'pain-radar-status warning';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>8Hz 통증 링 점멸 중</span>';
+        }
+      }
+    }
+
+    // [Step 05] 0.80 ~ 1.00
+    else {
+      this.setGroupVisibility(5);
+      const subP = (p - 0.80) / 0.20; // 0.0 ~ 1.0
+
+      // Camera: Hero Center Focus Pos [0, 0, 60]
+      this.camera.position.set(0, 0, 60);
+      this.camera.lookAt(0, 0, 0);
+
+      // 80% ~ 90%: 샴페인 골드 오라 승화
+      // 90% ~ 100%: 3D 금박 공진단 메쉬 중앙 안착 & 회전
+      const scale = 0.5 + Math.min(0.5, subP * 0.5);
+      this.gongjindanPill.scale.set(scale, scale, scale);
+      this.gongjindanAura.rotation.y = subP * Math.PI * 2;
     }
   }
 
-  renderStepHUD(step) {
+  setGroupVisibility(step) {
+    if (!this.step01Group) return;
+    this.step01Group.visible = (step === 1);
+    this.step02Group.visible = (step === 2);
+    this.step03Group.visible = (step === 3);
+    this.step04Group.visible = (step === 4);
+    this.step05Group.visible = (step === 5);
+  }
+
+  updateHUD(step) {
     if (step > 5) {
-      // Reached signature cards
       if (this.hudBadge) this.hudBadge.textContent = '5대 특화진료 카드';
       if (this.hudCounter) this.hudCounter.textContent = 'FINAL';
       if (this.hudTitle) this.hudTitle.textContent = '바른한의원 5대 시그니처';
@@ -627,23 +863,22 @@ class BareunContinuous3DStoryApp {
       return;
     }
 
-    const data = STORY_STEPS[step - 1];
+    const data = CLINIC_SPECS[step - 1];
     if (!data) return;
 
     if (this.hudBadge) this.hudBadge.textContent = data.badge;
-    if (this.hudCounter) this.hudCounter.textContent = data.counter;
+    if (this.hudCounter) this.hudCounter.textContent = `0${data.step} / 05`;
     if (this.hudTitle) this.hudTitle.textContent = data.title;
-    if (this.hudSubtitle) this.hudSubtitle.textContent = data.subtitle;
+    if (this.hudSubtitle) this.hudSubtitle.textContent = data.mainCopy;
     if (this.hudDesc) this.hudDesc.textContent = data.desc;
     if (this.hudPrimaryBtn) {
       this.hudPrimaryBtn.href = data.link;
-      this.hudPrimaryBtn.innerHTML = `<span>${data.btnText}</span> <span>➔</span>`;
+      this.hudPrimaryBtn.innerHTML = `<span>프로그램 상세 보기</span> <span>➔</span>`;
     }
     if (this.hudDrawerBtn) {
       this.hudDrawerBtn.onclick = () => openDrawerWithProgram(data.slug);
     }
 
-    // Step 4 Pain Radar Box display
     if (this.painRadarBox) {
       this.painRadarBox.style.display = (step === 4) ? 'block' : 'none';
     }
@@ -663,165 +898,63 @@ class BareunContinuous3DStoryApp {
   updateNavDots(step) {
     this.navDots.forEach(dot => {
       const s = parseInt(dot.getAttribute('data-step') || '1', 10);
-      if (s === step) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
+      if (s === step) dot.classList.add('active');
+      else dot.classList.remove('active');
     });
   }
 
-  update3DVisibility(step) {
-    if (!this.growthGroup) return;
-
-    this.growthGroup.visible = (step === 1);
-    this.dietGroup.visible = (step === 2);
-    this.scalpGroup.visible = (step === 3);
-    this.painGroup.visible = (step === 4);
-    this.gongjindanGroup.visible = (step === 5);
-
-    // Camera positioning based on step
-    if (typeof gsap !== 'undefined') {
-      if (step === 1) {
-        gsap.to(this.camera.position, { x: 0, y: 0, z: 7.5, duration: 1.2, ease: 'power2.out' });
-      } else if (step === 2) {
-        gsap.to(this.camera.position, { x: 0, y: 0, z: 6.8, duration: 1.2, ease: 'power2.out' });
-      } else if (step === 3) {
-        gsap.to(this.camera.position, { x: 0, y: 0.6, z: 5.2, duration: 1.2, ease: 'power2.out' });
-      } else if (step === 4) {
-        gsap.to(this.camera.position, { x: 0, y: 0, z: 7.6, duration: 1.2, ease: 'power2.out' });
-      } else if (step === 5) {
-        gsap.to(this.camera.position, { x: 0, y: 0, z: 6.5, duration: 1.2, ease: 'power2.out' });
-      }
-    }
-  }
-
-  // --- Step 4: Chuna Wave Sweep & 9 Pain Points Green Healing Logic ---
-  updateStep4ChunaWave(progress) {
-    if (!this.chunaWaveRing || !this.jointMeshes) return;
-
-    // Wave travels from y: 2.6 down to y: -2.2
-    const waveY = 2.6 - progress * 4.8;
-    this.chunaWaveRing.position.y = waveY;
-
-    // Check each joint: if wave has passed it, heal it!
-    let allHealed = true;
-    let anyHealed = false;
-
-    this.jointMeshes.forEach(item => {
-      const jointY = item.def.pos[1];
-      const isHealed = waveY <= jointY + 0.15; // wave passed joint
-
-      if (isHealed) {
-        item.sphere.material.color.setHex(0x38A169); // Health Green
-        item.sphere.material.emissive.setHex(0x10B981);
-        item.ring.material.color.setHex(0x38A169);
-        item.def.healed = true;
-        anyHealed = true;
-
-        // Update corresponding HTML chip
-        const chipKey = item.def.chipId || item.def.id;
-        const chip = document.querySelector(`.pain-chip[data-joint="${chipKey}"]`);
-        if (chip) chip.classList.add('healed');
-      } else {
-        item.sphere.material.color.setHex(0xE53E3E); // Pain Red
-        item.sphere.material.emissive.setHex(0xE53E3E);
-        item.ring.material.color.setHex(0xE53E3E);
-        item.def.healed = false;
-        allHealed = false;
-
-        const chipKey = item.def.chipId || item.def.id;
-        const chip = document.querySelector(`.pain-chip[data-joint="${chipKey}"]`);
-        if (chip) chip.classList.remove('healed');
-      }
-    });
-
-    // Update status badge
-    if (this.painRadarStatus) {
-      if (allHealed) {
-        this.painRadarStatus.className = 'pain-radar-status healing';
-        this.painRadarStatus.innerHTML = '<span class="pulse-dot">✓</span> <span>9대 관절 바른 정렬 완료</span>';
-      } else if (anyHealed) {
-        this.painRadarStatus.className = 'pain-radar-status healing';
-        this.painRadarStatus.innerHTML = '<span class="pulse-dot">✦</span> <span>추나 치유 파동 진행 중</span>';
-      } else {
-        this.painRadarStatus.className = 'pain-radar-status warning';
-        this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>통증 신호 점멸 중</span>';
-      }
-    }
-
-    // Straighten spine line as healing progresses
-    if (this.painSpineLine) {
-      const pts = [];
-      const straightness = progress; // 0: curved, 1: straight
-      for (let y = -0.3; y <= 1.9; y += 0.2) {
-        const xCurved = Math.sin(y * 2) * 0.08 * (1.0 - straightness);
-        pts.push(new THREE.Vector3(xCurved, y, 0));
-      }
-      this.painSpineLine.geometry.setFromPoints(pts);
-      this.painSpineLine.material.color.setHex(allHealed ? 0x34D399 : 0xE2C892);
-    }
-  }
-
-  // --- Animation Render Loop ---
+  // Animation Loop (PC 60fps Target)
   animate() {
     requestAnimationFrame(() => this.animate());
 
     const time = performance.now() * 0.001;
 
-    // Step 1 Animations
-    if (this.growthGroup && this.growthGroup.visible) {
-      this.growthGroup.rotation.y = time * 0.35;
-      this.vertebraeDiscs.forEach((disc, idx) => {
-        disc.rotation.z = Math.sin(time * 1.5 + idx * 0.3) * 0.06;
+    // Step 01 Cell Vibration & Spine Spin
+    if (this.step01Group && this.step01Group.visible) {
+      this.wombMesh.rotation.y = time * 0.15;
+      this.lifeParticles.rotation.y = -time * 0.25;
+      this.spineGroup.rotation.y = time * 0.35;
+    }
+
+    // Step 02 Dissolve Dust Swirl
+    if (this.step02Group && this.step02Group.visible) {
+      this.dissolveDust.rotation.y = time * 0.4;
+      this.slimBodyMesh.rotation.y = Math.sin(time * 0.5) * 0.1;
+    }
+
+    // Step 03 Heat Flurry & Cooling
+    if (this.step03Group && this.step03Group.visible) {
+      this.heatParticles.rotation.y = time * 0.5;
+      this.coolingParticles.rotation.y = -time * 0.3;
+    }
+
+    // Step 04 8Hz Pulsating Ring on 9 Joints
+    if (this.step04Group && this.step04Group.visible) {
+      // 8Hz pulsating rate = Math.sin(time * 16 * Math.PI)
+      const pulse8Hz = Math.sin(time * 16 * Math.PI) * 0.5 + 0.5;
+      this.jointMarkerMeshes.forEach(item => {
+        if (!item.healed) {
+          const s = 1.0 + pulse8Hz * 0.75;
+          item.ring.scale.set(s, s, 1);
+          item.ring.material.opacity = (1.0 - pulse8Hz * 0.6) * 0.85;
+        } else {
+          item.ring.scale.set(1.15, 1.15, 1);
+          item.ring.material.opacity = 0.5;
+        }
       });
     }
 
-    // Step 2 Animations
-    if (this.dietGroup && this.dietGroup.visible) {
-      this.dietSilhouette.rotation.y = time * 0.25;
-      this.lipidPoints.rotation.y = -time * 0.45;
-    }
-
-    // Step 3 Animations
-    if (this.scalpGroup && this.scalpGroup.visible) {
-      this.hairStrands.forEach((strand, idx) => {
-        strand.rotation.y = Math.sin(time * 0.8 + idx * 0.1) * 0.03;
-      });
-      this.mistPoints.rotation.y = time * 0.15;
-    }
-
-    // Step 4 Pain Radar Radar Ring Pulsing
-    if (this.painGroup && this.painGroup.visible) {
-      this.jointMeshes.forEach(item => {
-        const pulse = Math.sin(time * 6 + item.pulseOffset) * 0.5 + 0.5;
-        const scale = 1.0 + pulse * (item.def.healed ? 0.35 : 0.8);
-        item.ring.scale.set(scale, scale, 1);
-        item.ring.material.opacity = (1.0 - pulse * 0.7) * (item.def.healed ? 0.6 : 0.9);
-      });
-    }
-
-    // Step 5 Gongjindan Animations
-    if (this.gongjindanGroup && this.gongjindanGroup.visible) {
-      this.gongjindanPill.rotation.y = time * 0.4;
-      this.goldOrbit1.rotation.z = time * 0.5;
-      this.goldOrbit2.rotation.z = -time * 0.35;
-      this.vitalityShield.rotation.y = -time * 0.2;
-      this.goldFlakes.rotation.y = time * 0.15;
+    // Step 05 Gongjindan 360-degree rotation & Aura Flakes
+    if (this.step05Group && this.step05Group.visible) {
+      this.gongjindanPill.rotation.y = time * 0.45;
+      this.orbitRing1.rotation.z = time * 0.6;
+      this.orbitRing2.rotation.z = -time * 0.4;
+      this.gongjindanAura.rotation.y = time * 0.25;
     }
 
     if (this.renderer && this.scene && this.camera) {
       this.renderer.render(this.scene, this.camera);
     }
-  }
-
-  initNavigation() {
-    this.navDots.forEach(dot => {
-      dot.addEventListener('click', () => {
-        const stepNum = parseInt(dot.getAttribute('data-step') || '1', 10);
-        scrollToStep(stepNum);
-      });
-    });
   }
 
   initIntro() {
@@ -937,7 +1070,6 @@ async function handleDrawerBookingSubmit(event) {
 
     alert(`🎉 ${payload.parentName}님, 예약 신청이 성공적으로 접수되었습니다!\n원내 원장실에서 확인 후 카카오 알림톡과 안내 전화를 드립니다.`);
     
-    // Reset & close
     if (nameInput) nameInput.value = '';
     if (phoneInput) phoneInput.value = '';
     if (memoInput) memoInput.value = '';
@@ -953,7 +1085,7 @@ async function handleDrawerBookingSubmit(event) {
   }
 }
 
-// Auto Initialize on DOM Ready
+// Auto Initialize
 document.addEventListener('DOMContentLoaded', () => {
   window.bareunApp = new BareunContinuous3DStoryApp();
 });

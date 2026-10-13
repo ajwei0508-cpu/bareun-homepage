@@ -45,6 +45,19 @@ try {
         fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, 'bareun_step5_gongjindan_emperor.jpg'));
         console.log('[Auto-Sync] Copied step 5 image');
       }
+      [1, 2, 3, 4, 5].forEach(i => {
+        if (f.startsWith('bareun_seq_0' + i + '_') && f.endsWith('.jpg')) {
+          const map = {
+            1: 'bareun_seq_01_womb_spine.jpg',
+            2: 'bareun_seq_02_fat_dissolve.jpg',
+            3: 'bareun_seq_03_scalp_cooling.jpg',
+            4: 'bareun_seq_04_pain_chuna_9joints.jpg',
+            5: 'bareun_seq_05_gongjindan_aura.jpg'
+          };
+          fs.copyFileSync(path.join(brainDir, f), path.join(__dirname, map[i]));
+          console.log('[Auto-Sync] Copied seq ' + i + ' image');
+        }
+      });
     });
 
     const syncFiles = [
