@@ -2383,13 +2383,7 @@ html.storyboard-active {
   background-repeat: no-repeat;
   opacity: 0;
   transform: scale(1.0);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s ease-out;
   will-change: opacity, transform;
-}
-
-.story-backdrop-slide.active {
-  opacity: 1 !important;
-  transform: scale(1.0) !important;
 }
 
 /* Subtle Cinematic Edge Vignette (Keeps 8K Images Crisp, Bright & Fully Visible) */

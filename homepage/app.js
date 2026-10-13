@@ -70,6 +70,140 @@ const CLINIC_SPECS = [
   }
 ];
 
+/**
+ * High-Resolution 2D Canvas Texture for 3D UI Card 01 [바른 성장클리닉]
+ */
+function createCard1Texture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 640;
+  const ctx = canvas.getContext('2d');
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  // Luxury Glassmorphic Gradient Background
+  const bgGrad = ctx.createLinearGradient(0, 0, 1024, 640);
+  bgGrad.addColorStop(0, 'rgba(255, 255, 255, 0.94)');
+  bgGrad.addColorStop(0.5, 'rgba(247, 245, 240, 0.90)');
+  bgGrad.addColorStop(1, 'rgba(235, 230, 220, 0.88)');
+
+  // Outer Border & Card Body
+  roundRect(ctx, 20, 20, 984, 600, 36);
+  ctx.fillStyle = bgGrad;
+  ctx.fill();
+
+  // Champagne Gold Border
+  ctx.lineWidth = 6;
+  const borderGrad = ctx.createLinearGradient(0, 0, 1024, 640);
+  borderGrad.addColorStop(0, '#C5A059');
+  borderGrad.addColorStop(0.5, '#FDE68A');
+  borderGrad.addColorStop(1, '#99732B');
+  ctx.strokeStyle = borderGrad;
+  ctx.stroke();
+
+  // Subtle Inner Frame
+  roundRect(ctx, 32, 32, 960, 576, 26);
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(197, 160, 89, 0.35)';
+  ctx.stroke();
+
+  // Top Badge: STEP 01 · 성장클리닉
+  roundRect(ctx, 60, 60, 300, 50, 25);
+  ctx.fillStyle = '#2D4030';
+  ctx.fill();
+  ctx.fillStyle = '#FDE68A';
+  ctx.font = 'bold 21px "Pretendard", -apple-system, sans-serif';
+  ctx.fillText('✦ 01. 바른 성장클리닉', 86, 93);
+
+  // Main Korean Typography Copy
+  ctx.fillStyle = '#1A291E';
+  ctx.font = 'bold 44px "Pretendard", "Noto Serif KR", serif';
+  ctx.fillText('생명의 시작부터 바르게,', 60, 175);
+  ctx.fillStyle = '#C5A059';
+  ctx.font = 'bold 44px "Pretendard", "Noto Serif KR", serif';
+  ctx.fillText('우리 아이 숨은 키를 찾는 골격 성장', 60, 235);
+
+  // Elegant Divider
+  ctx.strokeStyle = 'rgba(197, 160, 89, 0.4)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(60, 275);
+  ctx.lineTo(964, 275);
+  ctx.stroke();
+
+  // 3 Feature Cards
+  const features = [
+    { title: '무방사선 정밀 초음파', sub: '성장판 8대 관절 개폐 분석' },
+    { title: '1:1 맞춤 소아 추나', sub: '척추 32마디 바른 수직 정렬' },
+    { title: '원내 청정 맞춤 탕전', sub: '골밀도 촉진 녹용 성장단' }
+  ];
+
+  features.forEach((feat, idx) => {
+    const px = 60 + idx * 305;
+    roundRect(ctx, px, 310, 290, 160, 20);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(197, 160, 89, 0.3)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(px + 28, 345, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#C5A059';
+    ctx.fill();
+
+    ctx.fillStyle = '#1A291E';
+    ctx.font = 'bold 22px "Pretendard", sans-serif';
+    ctx.fillText(feat.title, px + 48, 352);
+
+    ctx.fillStyle = '#5A685D';
+    ctx.font = '17px "Pretendard", sans-serif';
+    ctx.fillText(feat.sub, px + 28, 410);
+  });
+
+  // Footer Tagline
+  ctx.fillStyle = '#2D4030';
+  ctx.font = 'bold 20px "Pretendard", sans-serif';
+  ctx.fillText('DAEJEON BAREUN KOREAN MEDICINE CLINIC · 15 YEARS CLINICAL TRUST', 60, 545);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.generateMipmaps = true;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Soft Circular Radial Particle Texture for Bloom & Points
+ */
+function createCircularParticleTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+  grad.addColorStop(0.35, 'rgba(253, 230, 138, 0.9)');
+  grad.addColorStop(0.7, 'rgba(197, 160, 89, 0.35)');
+  grad.addColorStop(1, 'rgba(197, 160, 89, 0.0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 64, 64);
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
+}
+
 class BareunMasterpieceStoryApp {
   constructor() {
     this.currentStep = 1;
@@ -133,7 +267,9 @@ class BareunMasterpieceStoryApp {
     this.painRadarStatus = document.getElementById('pain-radar-status');
 
     this.backdrops = [
-      document.getElementById('backdrop-1'),
+      document.getElementById('backdrop-1a'),
+      document.getElementById('backdrop-1b'),
+      document.getElementById('backdrop-1c'),
       document.getElementById('backdrop-2'),
       document.getElementById('backdrop-3'),
       document.getElementById('backdrop-4'),
@@ -170,23 +306,24 @@ class BareunMasterpieceStoryApp {
     });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setClearColor(0x2D4030, 0.0);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
 
-    // Post-Processing: UnrealBloomPass for subtle cinematic gold & emerald bloom
+    // Post-Processing: UnrealBloomPass for heavenly golden & emerald glow
     if (typeof THREE.EffectComposer !== 'undefined' && typeof THREE.UnrealBloomPass !== 'undefined') {
       try {
         this.composer = new THREE.EffectComposer(this.renderer);
         const renderPass = new THREE.RenderPass(this.scene, this.camera);
         this.composer.addPass(renderPass);
 
-        // UnrealBloomPass(resolution, strength: 0.45, radius: 0.4, threshold: 0.85)
+        // UnrealBloomPass(resolution, strength: 0.6, radius: 0.5, threshold: 0.8)
         this.bloomPass = new THREE.UnrealBloomPass(
           new THREE.Vector2(width, height),
-          0.45, // subtle glow strength
-          0.4,  // radius
-          0.85  // threshold: only bright highlights bloom
+          0.6, // strength: 0.6 for celestial glow
+          0.5, // radius: 0.5
+          0.8  // threshold: 0.8
         );
         this.composer.addPass(this.bloomPass);
       } catch (err) {
@@ -239,36 +376,356 @@ class BareunMasterpieceStoryApp {
   }
 
   // =========================================================================
-  // Step 01: Spinal Alignment Crystal Discs (100% Clear View of 8K Genesis Image)
+  // Step 01: Fertilization, Toddler Growth Morph & Card Enfolding Dissolve
   // =========================================================================
   buildStep1VFX() {
     this.step1Group = new THREE.Group();
+    const particleTex = createCircularParticleTexture();
 
-    // 32-Vertebrae Child Spine Crystal Discs (Aligns along spinal axis without blocking image)
+    // -----------------------------------------------------------------------
+    // [1] Sub-Phase 1 (0% ~ 5%): Glowing Opal Egg, 1000 Particles & Shockwave
+    // -----------------------------------------------------------------------
+    this.step1EggGroup = new THREE.Group();
+
+    // Glowing Opal Sphere (MeshPhysicalMaterial)
+    const eggGeom = new THREE.SphereGeometry(7.5, 48, 48);
+    eggGeom.scale(1.0, 1.24, 1.0); // Organic cellular ovum shape
+    this.step1EggMat = new THREE.MeshPhysicalMaterial({
+      color: 0xF7F5F0,
+      emissive: 0xC5A059,
+      emissiveIntensity: 0.95,
+      transmission: 0.9,
+      roughness: 0.1,
+      metalness: 0.08,
+      ior: 1.45,
+      transparent: true,
+      opacity: 0.95
+    });
+    this.step1EggMesh = new THREE.Mesh(eggGeom, this.step1EggMat);
+    this.step1EggGroup.add(this.step1EggMesh);
+
+    // Glowing Inner Nucleus Core
+    const coreGeom = new THREE.SphereGeometry(3.6, 24, 24);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: 0xFFFBEB,
+      transparent: true,
+      opacity: 0.85
+    });
+    this.step1EggCore = new THREE.Mesh(coreGeom, coreMat);
+    this.step1EggGroup.add(this.step1EggCore);
+
+    // Concentric Golden Orbital Rings (as in reference image)
+    this.step1EggRings = new THREE.Group();
+    for (let r = 0; r < 3; r++) {
+      const ringGeom = new THREE.TorusGeometry(11.5 + r * 4.2, 0.18, 16, 64);
+      const ringMat = new THREE.MeshStandardMaterial({
+        color: 0xFDE68A,
+        emissive: 0xC5A059,
+        emissiveIntensity: 1.3,
+        transparent: true,
+        opacity: 0.82 - r * 0.18
+      });
+      const ring = new THREE.Mesh(ringGeom, ringMat);
+      ring.rotation.x = Math.PI / 2.2 + r * 0.22;
+      ring.rotation.y = r * 0.35;
+      this.step1EggRings.add(ring);
+    }
+    this.step1EggGroup.add(this.step1EggRings);
+
+    // 1,000 Golden Converging Particles (Dispersed Sphere -> Converge to Egg)
+    const convergeCount = 1000;
+    this.step1ParticlePositions = new Float32Array(convergeCount * 3);
+    this.step1OriginPositions = new Float32Array(convergeCount * 3);
+    this.step1TargetPositions = new Float32Array(convergeCount * 3);
+
+    for (let i = 0; i < convergeCount; i++) {
+      const u = Math.random();
+      const v = Math.random();
+      const theta = u * 2.0 * Math.PI;
+      const phi = Math.acos(2.0 * v - 1.0);
+
+      // Origin: Dispersed cloud (radius 28 to 50)
+      const rOrig = 28 + Math.random() * 22;
+      const ox = rOrig * Math.sin(phi) * Math.cos(theta);
+      const oy = rOrig * Math.sin(phi) * Math.sin(theta) * 1.2;
+      const oz = rOrig * Math.cos(phi);
+
+      // Target: Surface of the egg (radius 7.5 to 9.5)
+      const rTarg = 7.5 + Math.random() * 2.0;
+      const tx = rTarg * Math.sin(phi) * Math.cos(theta);
+      const ty = rTarg * Math.sin(phi) * Math.sin(theta) * 1.2;
+      const tz = rTarg * Math.cos(phi);
+
+      this.step1OriginPositions[i * 3] = ox;
+      this.step1OriginPositions[i * 3 + 1] = oy;
+      this.step1OriginPositions[i * 3 + 2] = oz;
+
+      this.step1TargetPositions[i * 3] = tx;
+      this.step1TargetPositions[i * 3 + 1] = ty;
+      this.step1TargetPositions[i * 3 + 2] = tz;
+
+      this.step1ParticlePositions[i * 3] = ox;
+      this.step1ParticlePositions[i * 3 + 1] = oy;
+      this.step1ParticlePositions[i * 3 + 2] = oz;
+    }
+
+    const convergeGeom = new THREE.BufferGeometry();
+    convergeGeom.setAttribute('position', new THREE.BufferAttribute(this.step1ParticlePositions, 3));
+    const convergeMat = new THREE.PointsMaterial({
+      size: 1.8,
+      map: particleTex,
+      color: 0xFDE68A,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    this.step1ConvergePoints = new THREE.Points(convergeGeom, convergeMat);
+    this.step1EggGroup.add(this.step1ConvergePoints);
+
+    // Golden Radial Shockwave Ring (Triggers on touch or 4% scroll)
+    const shockGeom = new THREE.RingGeometry(0.5, 2.2, 64);
+    this.step1ShockwaveMat = new THREE.MeshBasicMaterial({
+      color: 0xC5A059,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.0,
+      blending: THREE.AdditiveBlending
+    });
+    this.step1Shockwave = new THREE.Mesh(shockGeom, this.step1ShockwaveMat);
+    this.step1EggGroup.add(this.step1Shockwave);
+    this.shockwaveActive = false;
+
+    this.step1Group.add(this.step1EggGroup);
+
+    // -----------------------------------------------------------------------
+    // [2] Sub-Phase 2 & 3 (5% ~ 20%): Toddler Light Silhouette & Growth Morph
+    // -----------------------------------------------------------------------
+    this.step1ToddlerGroup = new THREE.Group();
+
+    this.step1SilMat = new THREE.MeshPhysicalMaterial({
+      color: 0xF7F5F0,
+      emissive: 0xC5A059,
+      emissiveIntensity: 0.75,
+      transmission: 0.88,
+      roughness: 0.12,
+      metalness: 0.1,
+      ior: 1.45,
+      transparent: true,
+      opacity: 0.0
+    });
+
+    // Cute toddler head
+    const headGeom = new THREE.SphereGeometry(4.2, 32, 32);
+    this.step1Head = new THREE.Mesh(headGeom, this.step1SilMat.clone());
+    this.step1Head.position.set(0, 14, 0);
+    this.step1ToddlerGroup.add(this.step1Head);
+
+    // Golden Halo Aura
+    const haloGeom = new THREE.TorusGeometry(5.2, 0.18, 16, 48);
+    this.step1HaloMat = new THREE.MeshStandardMaterial({
+      color: 0xFDE68A,
+      emissive: 0xC5A059,
+      emissiveIntensity: 1.5,
+      transparent: true,
+      opacity: 0.0
+    });
+    this.step1Halo = new THREE.Mesh(haloGeom, this.step1HaloMat);
+    this.step1Halo.rotation.x = Math.PI / 2.3;
+    this.step1Halo.position.set(0, 16.5, 0);
+    this.step1ToddlerGroup.add(this.step1Halo);
+
+    // Cute toddler torso
+    const torsoGeom = new THREE.CylinderGeometry(2.6, 3.4, 11, 24);
+    this.step1Torso = new THREE.Mesh(torsoGeom, this.step1SilMat.clone());
+    this.step1Torso.position.set(0, 5, 0);
+    this.step1ToddlerGroup.add(this.step1Torso);
+
+    // Left & Right Arms
+    const armGeom = new THREE.CylinderGeometry(0.9, 0.8, 8, 16);
+    this.step1ArmL = new THREE.Mesh(armGeom, this.step1SilMat.clone());
+    this.step1ArmL.position.set(-4.4, 5, 0);
+    this.step1ArmL.rotation.z = 0.22;
+    this.step1ToddlerGroup.add(this.step1ArmL);
+
+    this.step1ArmR = new THREE.Mesh(armGeom, this.step1SilMat.clone());
+    this.step1ArmR.position.set(4.4, 5, 0);
+    this.step1ArmR.rotation.z = -0.22;
+    this.step1ToddlerGroup.add(this.step1ArmR);
+
+    // Left & Right Legs
+    const legGeom = new THREE.CylinderGeometry(1.1, 0.9, 10, 16);
+    this.step1LegL = new THREE.Mesh(legGeom, this.step1SilMat.clone());
+    this.step1LegL.position.set(-2.0, -5.5, 0);
+    this.step1ToddlerGroup.add(this.step1LegL);
+
+    this.step1LegR = new THREE.Mesh(legGeom, this.step1SilMat.clone());
+    this.step1LegR.position.set(2.0, -5.5, 0);
+    this.step1ToddlerGroup.add(this.step1LegR);
+
+    // 32-Vertebrae Child Spine Crystal Discs
     this.spineNodes = [];
-    const discGeom = new THREE.CylinderGeometry(1.4, 1.6, 0.45, 24);
+    const discGeom = new THREE.CylinderGeometry(1.2, 1.4, 0.35, 20);
     const discMat = new THREE.MeshPhysicalMaterial({
       color: 0xFDE68A,
       emissive: 0xC5A059,
-      emissiveIntensity: 0.6,
+      emissiveIntensity: 0.95,
       transmission: 0.85,
       roughness: 0.15,
       metalness: 0.2,
-      ior: 1.45,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.85
     });
 
     for (let i = 0; i < 32; i++) {
       const disc = new THREE.Mesh(discGeom, discMat.clone());
-      disc.position.set(0, (i - 16) * 2.2, 0);
+      disc.position.set(0, -6 + i * 0.72, 0.6);
       disc.rotation.x = Math.PI / 2;
       disc.scale.set(0.001, 0.001, 0.001);
-      this.step1Group.add(disc);
+      this.step1ToddlerGroup.add(disc);
       this.spineNodes.push(disc);
     }
 
+    // Vertical Golden Growth Height Ruler (as seen in user image 3)
+    this.step1GrowthRuler = new THREE.Group();
+    const rulerLineGeom = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(12.5, -12, 0),
+      new THREE.Vector3(12.5, 22, 0)
+    ]);
+    const rulerLine = new THREE.Line(rulerLineGeom, new THREE.LineBasicMaterial({
+      color: 0xC5A059,
+      transparent: true,
+      opacity: 0.75
+    }));
+    this.step1GrowthRuler.add(rulerLine);
+
+    for (let y = -10; y <= 20; y += 3) {
+      const tickGeom = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(11.8, y, 0),
+        new THREE.Vector3(13.2, y, 0)
+      ]);
+      const tickLine = new THREE.Line(tickGeom, new THREE.LineBasicMaterial({
+        color: 0xFDE68A,
+        transparent: true,
+        opacity: 0.85
+      }));
+      this.step1GrowthRuler.add(tickLine);
+    }
+    this.step1GrowthRuler.visible = false;
+    this.step1ToddlerGroup.add(this.step1GrowthRuler);
+
+    this.step1ToddlerGroup.visible = false;
+    this.step1ToddlerGroup.scale.set(0.55, 0.55, 0.55);
+    this.step1ToddlerGroup.position.set(0, -4, 0);
+    this.step1Group.add(this.step1ToddlerGroup);
+
+    // -----------------------------------------------------------------------
+    // [3] Sub-Phase 3 & 4 (12% ~ 20%): 3D Curved UI Card 01 & Dissolution Dust
+    // -----------------------------------------------------------------------
+    this.step1CardGroup = new THREE.Group();
+
+    // 3D Curved Cylindrical Card Mesh (Enfolds child naturally)
+    const cardGeom = new THREE.CylinderGeometry(23, 23, 15, 36, 1, true, -Math.PI / 3.4, (2 * Math.PI) / 3.4);
+    const cardTexture = createCard1Texture();
+    this.step1CardMat = new THREE.MeshPhysicalMaterial({
+      map: cardTexture,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.0,
+      transmission: 0.25,
+      roughness: 0.12,
+      metalness: 0.12,
+      ior: 1.4
+    });
+    this.step1CardMesh = new THREE.Mesh(cardGeom, this.step1CardMat);
+    this.step1CardMesh.position.set(0, 4, 0);
+    this.step1CardGroup.add(this.step1CardMesh);
+
+    // 1,200 Floating Champagne Gold Dust Particles for Dissolution (18% ~ 20%)
+    const dustCount = 1200;
+    const dustPositions = new Float32Array(dustCount * 3);
+    this.step1DustBasePos = new Float32Array(dustCount * 3);
+    this.step1DustVelocities = new Float32Array(dustCount * 3);
+
+    for (let i = 0; i < dustCount; i++) {
+      const theta = (Math.random() - 0.5) * (Math.PI * 0.7);
+      const dy = 4 + (Math.random() - 0.5) * 15;
+      const r = 23 + (Math.random() - 0.5) * 2;
+      const dx = r * Math.sin(theta);
+      const dz = r * Math.cos(theta);
+
+      dustPositions[i * 3] = dx;
+      dustPositions[i * 3 + 1] = dy;
+      dustPositions[i * 3 + 2] = dz;
+
+      this.step1DustBasePos[i * 3] = dx;
+      this.step1DustBasePos[i * 3 + 1] = dy;
+      this.step1DustBasePos[i * 3 + 2] = dz;
+
+      this.step1DustVelocities[i * 3] = (Math.random() - 0.5) * 10;
+      this.step1DustVelocities[i * 3 + 1] = 14 + Math.random() * 22; // upward float
+      this.step1DustVelocities[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    }
+
+    this.step1DustGeom = new THREE.BufferGeometry();
+    this.step1DustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+
+    this.step1CardDustMat = new THREE.PointsMaterial({
+      size: 1.6,
+      map: particleTex,
+      color: 0xC5A059,
+      transparent: true,
+      opacity: 0.0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    this.step1CardDustPoints = new THREE.Points(this.step1DustGeom, this.step1CardDustMat);
+    this.step1CardDustPoints.visible = false;
+    this.step1CardGroup.add(this.step1CardDustPoints);
+
+    this.step1CardGroup.visible = false;
+    this.step1Group.add(this.step1CardGroup);
+
     this.scene.add(this.step1Group);
+  }
+
+  // Update 1,000 Golden Converging Particles (0% ~ 5%)
+  updateConvergingParticles(t) {
+    if (!this.step1ConvergePoints) return;
+    const pos = this.step1ParticlePositions;
+    const orig = this.step1OriginPositions;
+    const targ = this.step1TargetPositions;
+    const count = pos.length / 3;
+
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = THREE.MathUtils.lerp(orig[i * 3], targ[i * 3], t);
+      pos[i * 3 + 1] = THREE.MathUtils.lerp(orig[i * 3 + 1], targ[i * 3 + 1], t);
+      pos[i * 3 + 2] = THREE.MathUtils.lerp(orig[i * 3 + 2], targ[i * 3 + 2], t);
+    }
+    this.step1ConvergePoints.geometry.attributes.position.needsUpdate = true;
+  }
+
+  // Update 1,200 Floating Champagne Gold Dust Particles (18% ~ 20%)
+  updateCardDust(t) {
+    if (!this.step1DustGeom) return;
+    const pos = this.step1DustGeom.attributes.position.array;
+    const base = this.step1DustBasePos;
+    const vel = this.step1DustVelocities;
+    const count = pos.length / 3;
+
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = base[i * 3] + vel[i * 3] * t;
+      pos[i * 3 + 1] = base[i * 3 + 1] + vel[i * 3 + 1] * t;
+      pos[i * 3 + 2] = base[i * 3 + 2] + vel[i * 3 + 2] * t;
+    }
+    this.step1DustGeom.attributes.position.needsUpdate = true;
+  }
+
+  // Trigger Golden Radial Shockwave (on touch or 4% scroll)
+  triggerShockwave() {
+    if (!this.step1Shockwave) return;
+    this.shockwaveActive = true;
+    this.shockwaveStartTime = performance.now();
   }
 
   // =========================================================================
@@ -506,30 +963,166 @@ class BareunMasterpieceStoryApp {
     // Continuous Backdrop Cross-fade & Ken Burns Zoom
     this.renderBackdropBlend(p);
 
-    // [Step 01] 0% ~ 20% (Macro Center Pos [0, 0, 50] -> Full Shot Pos [0, 0, 115])
+    // [Step 01] 0% ~ 20%: Fertilization, Toddler Growth Morph & Card Enfolding Dissolve
     if (p <= 0.20) {
       this.setGroupVisible(1);
       const sub = p / 0.20; // 0.0 ~ 1.0
 
-      // Camera lerp targets
-      this.targetCameraPos.set(0, 0, 50 + sub * 65);
-      this.targetLookAt.set(0, 0, 0);
+      // Sub-Phase 1: 0% ~ 5% (Egg & Fertilization)
+      if (sub <= 0.25) {
+        const subEgg = sub / 0.25; // 0.0 ~ 1.0
 
-      // Womb cell pulsation & spine straightening
-      if (this.step1Cell) {
-        const s = 1.0 + Math.sin(sub * Math.PI * 4) * 0.08;
-        this.step1Cell.scale.set(s, s, s);
-        this.step1Cell.rotation.y = sub * Math.PI * 0.5;
-      }
+        this.targetCameraPos.set(0, 0, 48 + subEgg * 8);
+        this.targetLookAt.set(0, 0, 0);
 
-      const activeNodesCount = Math.floor(sub * 32);
-      this.spineNodes.forEach((node, i) => {
-        if (i <= activeNodesCount) {
-          node.scale.set(1, 1, 1);
-        } else {
-          node.scale.set(0.001, 0.001, 0.001);
+        this.step1EggGroup.visible = true;
+        this.step1EggMesh.material.opacity = 0.95;
+        this.step1EggMesh.rotation.y = subEgg * Math.PI * 0.8;
+        this.step1EggCore.material.opacity = 0.85;
+
+        // 1,000 Golden particles converge inwards towards egg
+        this.updateConvergingParticles(subEgg);
+        this.step1ConvergePoints.material.opacity = 0.9;
+
+        // Golden radial shockwave near 4% ~ 5%
+        if (subEgg >= 0.80) {
+          const swP = (subEgg - 0.80) / 0.20;
+          const swScale = 1.0 + swP * 28.0;
+          this.step1Shockwave.scale.set(swScale, swScale, swScale);
+          this.step1Shockwave.material.opacity = (1.0 - swP) * 0.95;
+        } else if (!this.shockwaveActive) {
+          this.step1Shockwave.material.opacity = 0.0;
         }
-      });
+
+        this.step1ToddlerGroup.visible = false;
+        this.step1CardGroup.visible = false;
+      }
+      // Sub-Phase 2: 5% ~ 12% (Toddler Silhouette Formation)
+      else if (sub > 0.25 && sub <= 0.60) {
+        const subToddler = (sub - 0.25) / 0.35; // 0.0 ~ 1.0
+
+        this.targetCameraPos.set(0, 0, 56 + subToddler * 30);
+        this.targetLookAt.set(0, 0, 0);
+
+        // Egg smoothly dissolves into light
+        const eggFade = Math.max(0, 1.0 - subToddler * 2.2);
+        this.step1EggMesh.material.opacity = eggFade * 0.95;
+        this.step1EggCore.material.opacity = eggFade * 0.85;
+        if (eggFade <= 0.01) {
+          this.step1EggGroup.visible = false;
+        }
+
+        // Toddler light silhouette fades in at small cute scale
+        this.step1ToddlerGroup.visible = true;
+        const tOp = Math.min(0.92, subToddler * 1.5);
+        this.step1SilMat.opacity = tOp;
+        this.step1Head.material.opacity = tOp;
+        this.step1Torso.material.opacity = tOp;
+        this.step1ArmL.material.opacity = tOp;
+        this.step1ArmR.material.opacity = tOp;
+        this.step1LegL.material.opacity = tOp;
+        this.step1LegR.material.opacity = tOp;
+        this.step1HaloMat.opacity = tOp * 0.9;
+
+        this.step1ToddlerGroup.scale.set(0.55, 0.55, 0.55);
+        this.step1ToddlerGroup.position.set(0, -4, 0);
+        this.step1GrowthRuler.visible = false;
+
+        // Vertebrae 0..16 light up along toddler spine
+        const activeSpine = Math.floor(subToddler * 16);
+        this.spineNodes.forEach((node, i) => {
+          if (i <= activeSpine) {
+            node.scale.set(0.8, 0.8, 0.8);
+            node.position.y = -6 + i * 0.72;
+          } else {
+            node.scale.set(0.001, 0.001, 0.001);
+          }
+        });
+
+        this.step1CardGroup.visible = false;
+      }
+      // Sub-Phase 3: 12% ~ 18% (Height Growth & Card 01 Enfolding 360 Rotation)
+      else if (sub > 0.60 && sub <= 0.90) {
+        const subGrowth = (sub - 0.60) / 0.30; // 0.0 ~ 1.0
+
+        this.targetCameraPos.set(0, 0, 86 + subGrowth * 24);
+        this.targetLookAt.set(0, 0, 0);
+        this.step1EggGroup.visible = false;
+
+        // Toddler scales vertically into elementary school child
+        const scaleY = 0.55 + subGrowth * 0.65; // 0.55 -> 1.20!
+        const scaleXZ = 0.55 + subGrowth * 0.30; // 0.55 -> 0.85
+        this.step1ToddlerGroup.visible = true;
+        this.step1ToddlerGroup.scale.set(scaleXZ, scaleY, scaleXZ);
+        this.step1ToddlerGroup.position.set(0, -4 + subGrowth * 4, 0);
+
+        this.step1SilMat.opacity = 0.92;
+        this.step1Head.material.opacity = 0.92;
+        this.step1Torso.material.opacity = 0.92;
+        this.step1ArmL.material.opacity = 0.92;
+        this.step1ArmR.material.opacity = 0.92;
+        this.step1LegL.material.opacity = 0.92;
+        this.step1LegR.material.opacity = 0.92;
+        this.step1HaloMat.opacity = 0.9;
+        this.step1GrowthRuler.visible = true;
+
+        // All 32 vertebrae straightens and spaces out with golden light
+        const activeSpine = 16 + Math.floor(subGrowth * 16);
+        this.spineNodes.forEach((node, i) => {
+          if (i <= activeSpine) {
+            node.scale.set(1.0, 1.0, 1.0);
+            node.position.y = -6 + i * (0.72 + subGrowth * 0.35);
+          } else {
+            node.scale.set(0.001, 0.001, 0.001);
+          }
+        });
+
+        // 3D Card 01 lifts, orbits 360-degrees around child & warmly enfolds child
+        this.step1CardGroup.visible = true;
+        this.step1CardMesh.material.opacity = Math.min(0.95, subGrowth * 2.2);
+        this.step1CardGroup.rotation.y = subGrowth * Math.PI * 2;
+        this.step1CardMesh.position.y = 4 - Math.sin(subGrowth * Math.PI) * 1.5;
+        this.step1CardDustPoints.visible = false;
+      }
+      // Sub-Phase 4: 18% ~ 20% (Card Dissolution into Champagne Gold Dust)
+      else {
+        const subDissolve = (sub - 0.90) / 0.10; // 0.0 ~ 1.0
+
+        this.targetCameraPos.set(0, 0, 110);
+        this.targetLookAt.set(0, 0, 0);
+        this.step1EggGroup.visible = false;
+
+        // Tall, confident child stands proud in center focus
+        this.step1ToddlerGroup.visible = true;
+        this.step1ToddlerGroup.scale.set(0.85, 1.20, 0.85);
+        this.step1ToddlerGroup.position.set(0, 0, 0);
+        this.step1SilMat.opacity = 0.95;
+        this.step1Head.material.opacity = 0.95;
+        this.step1Torso.material.opacity = 0.95;
+        this.step1ArmL.material.opacity = 0.95;
+        this.step1ArmR.material.opacity = 0.95;
+        this.step1LegL.material.opacity = 0.95;
+        this.step1LegR.material.opacity = 0.95;
+        this.step1HaloMat.opacity = 0.9;
+        this.step1GrowthRuler.visible = true;
+
+        this.spineNodes.forEach((node, i) => {
+          node.scale.set(1.0, 1.0, 1.0);
+          node.position.y = -6 + i * 1.07;
+        });
+
+        // Card 01 smoothly dissolves into floating champagne gold dust
+        const cardOp = Math.max(0, 0.95 * (1.0 - subDissolve));
+        this.step1CardMesh.material.opacity = cardOp;
+        this.step1CardDustPoints.visible = true;
+        this.step1CardDustMat.opacity = Math.max(0, (1.0 - subDissolve * 0.85) * 0.95);
+        this.updateCardDust(subDissolve);
+
+        if (subDissolve >= 0.98) {
+          this.step1CardGroup.visible = false;
+          this.step1CardDustPoints.visible = false;
+        }
+      }
     }
 
     // [Step 02] 20% ~ 40% (3/4 Perspective View Pos [28, 8, 85] - 100% Crisp S-Line Body Visual)
@@ -633,31 +1226,66 @@ class BareunMasterpieceStoryApp {
     }
   }
 
-  // Smooth Film Cross-fade between 8K Continuous Visuals
+  // Smooth Film Cross-fade between 8K Continuous Visuals (7 Slides: 1a, 1b, 1c, 2, 3, 4, 5)
   renderBackdropBlend(p) {
-    // Exactly map p (0.0 to 1.0) into the 5 continuous images
-    const rawStep = Math.min(0.9999, Math.max(0, p)) * 4; // 0.0 to 4.0
-    const currentIdx = Math.floor(rawStep); // 0, 1, 2, 3
-    const nextIdx = Math.min(4, currentIdx + 1);
-    const blendFactor = rawStep - currentIdx; // 0.0 to 1.0
+    if (!this.backdrops || this.backdrops.length < 7) return;
 
-    this.backdrops.forEach((slide, idx) => {
-      if (!slide) return;
-      if (idx === currentIdx) {
-        // Current image: fully visible, gently fading as blendFactor approaches 1
-        const op = (1.0 - blendFactor * 0.75).toFixed(3);
-        slide.style.opacity = op;
-        slide.style.transform = `scale(${(1.0 + blendFactor * 0.03).toFixed(3)})`;
-        slide.style.zIndex = '2';
-      } else if (idx === nextIdx) {
-        // Next image: smoothly rising to full brilliance
-        const op = blendFactor.toFixed(3);
-        slide.style.opacity = op;
-        slide.style.transform = `scale(${(1.03 - blendFactor * 0.03).toFixed(3)})`;
-        slide.style.zIndex = '3';
+    const slides = [
+      { el: this.backdrops[0], start: 0.00, end: 0.05 }, // 1a: Egg
+      { el: this.backdrops[1], start: 0.05, end: 0.12 }, // 1b: Toddler
+      { el: this.backdrops[2], start: 0.12, end: 0.20 }, // 1c: Child & Card
+      { el: this.backdrops[3], start: 0.20, end: 0.40 }, // 2:  Diet S-line
+      { el: this.backdrops[4], start: 0.40, end: 0.60 }, // 3:  Scalp Hair
+      { el: this.backdrops[5], start: 0.60, end: 0.80 }, // 4:  9-Joint Pain
+      { el: this.backdrops[6], start: 0.80, end: 1.00 }  // 5:  Gongjindan
+    ];
+
+    const transDur = [0.012, 0.015, 0.02, 0.03, 0.03, 0.03]; // transition window width
+
+    let activeIdx = 0;
+    let nextIdx = -1;
+    let blend = 0;
+
+    for (let i = 0; i < slides.length; i++) {
+      if (i === slides.length - 1) {
+        if (p >= slides[i].start) {
+          activeIdx = i;
+          nextIdx = -1;
+          break;
+        }
       } else {
-        slide.style.opacity = '0';
-        slide.style.zIndex = '1';
+        const trans = transDur[i] || 0.02;
+        const boundary = slides[i + 1].start;
+        if (p >= slides[i].start && p < boundary - trans) {
+          activeIdx = i;
+          nextIdx = -1;
+          break;
+        } else if (p >= boundary - trans && p < boundary) {
+          activeIdx = i;
+          nextIdx = i + 1;
+          blend = (p - (boundary - trans)) / trans;
+          break;
+        }
+      }
+    }
+
+    slides.forEach((item, idx) => {
+      if (!item.el) return;
+      if (idx === activeIdx && nextIdx === -1) {
+        item.el.style.opacity = '1';
+        item.el.style.zIndex = '3';
+        item.el.style.transform = 'scale(1.0)';
+      } else if (idx === activeIdx && nextIdx !== -1) {
+        item.el.style.opacity = (1 - blend).toFixed(3);
+        item.el.style.zIndex = '2';
+        item.el.style.transform = `scale(${(1.0 + blend * 0.02).toFixed(3)})`;
+      } else if (idx === nextIdx) {
+        item.el.style.opacity = blend.toFixed(3);
+        item.el.style.zIndex = '3';
+        item.el.style.transform = `scale(${(1.02 - blend * 0.02).toFixed(3)})`;
+      } else {
+        item.el.style.opacity = '0';
+        item.el.style.zIndex = '1';
       }
     });
   }
@@ -704,17 +1332,7 @@ class BareunMasterpieceStoryApp {
   }
 
   updateBackdrops(step) {
-    const targetIdx = Math.min(4, Math.max(0, step - 1));
-    this.backdrops.forEach((slide, idx) => {
-      if (!slide) return;
-      if (idx === targetIdx) {
-        slide.classList.add('active');
-        slide.style.zIndex = '3';
-      } else {
-        slide.classList.remove('active');
-        slide.style.zIndex = '1';
-      }
-    });
+    this.renderBackdropBlend(this.scrollProgress);
   }
 
   updateNavDots(step) {
@@ -739,6 +1357,17 @@ class BareunMasterpieceStoryApp {
       this.mouseParallax.x = (e.clientX / window.innerWidth - 0.5) * 6;
       this.mouseParallax.y = (e.clientY / window.innerHeight - 0.5) * -4;
     }, { passive: true });
+
+    // Touch / Click triggers golden radial shockwave
+    if (this.stage) {
+      this.stage.addEventListener('pointerdown', (e) => {
+        if (!e.target.closest('button, a, input, select, textarea')) {
+          if (this.currentStep === 1) {
+            this.triggerShockwave();
+          }
+        }
+      });
+    }
 
     // Hover sync on SKT Dock cards
     this.sktCards.forEach(card => {
@@ -778,6 +1407,35 @@ class BareunMasterpieceStoryApp {
     this.currentLookAt.y = THREE.MathUtils.lerp(this.currentLookAt.y, this.targetLookAt.y, 0.07);
     this.currentLookAt.z = THREE.MathUtils.lerp(this.currentLookAt.z, this.targetLookAt.z, 0.07);
     this.camera.lookAt(this.currentLookAt);
+
+    // Step 01 Continuous Animations (Egg rings, Shockwave pulse, Halo float)
+    if (this.step1Group && this.step1Group.visible) {
+      if (this.step1EggRings && this.step1EggGroup.visible) {
+        this.step1EggRings.children.forEach((r, idx) => {
+          r.rotation.z = time * (0.3 + idx * 0.15) * (idx % 2 === 0 ? 1 : -1);
+        });
+      }
+
+      // Golden Shockwave Pulse on Touch/Trigger
+      if (this.shockwaveActive && this.step1Shockwave) {
+        const elapsed = (performance.now() - this.shockwaveStartTime) * 0.001;
+        if (elapsed < 0.75) {
+          const swNorm = elapsed / 0.75;
+          const swScale = 1.0 + swNorm * 36.0;
+          this.step1Shockwave.scale.set(swScale, swScale, swScale);
+          this.step1Shockwave.material.opacity = (1.0 - swNorm) * 0.95;
+        } else {
+          this.shockwaveActive = false;
+          this.step1Shockwave.material.opacity = 0.0;
+          this.step1Shockwave.scale.set(1, 1, 1);
+        }
+      }
+
+      // Toddler Halo Rotation
+      if (this.step1Halo && this.step1ToddlerGroup.visible) {
+        this.step1Halo.rotation.z = time * 0.4;
+      }
+    }
 
     // Step 02 Waist Ring Rotation
     if (this.step2Group && this.step2Group.visible && this.step2WaistRing) {
