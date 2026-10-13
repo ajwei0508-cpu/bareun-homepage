@@ -113,6 +113,8 @@ class BareunMasterpieceStoryApp {
     this.animate();
 
     window.currentAppStepSlug = CLINIC_SPECS[0].slug;
+    this.updateBackdrops(1);
+    this.renderBackdropBlend(0);
   }
 
   initDOM() {
@@ -857,23 +859,29 @@ class BareunMasterpieceStoryApp {
 
   // Smooth Film Cross-fade between 8K Continuous Visuals
   renderBackdropBlend(p) {
-    const rawStep = p * 5; // 0.0 to 5.0
-    const currentIdx = Math.min(4, Math.floor(rawStep));
+    // Exactly map p (0.0 to 1.0) into the 5 continuous images
+    const rawStep = Math.min(0.9999, Math.max(0, p)) * 4; // 0.0 to 4.0
+    const currentIdx = Math.floor(rawStep); // 0, 1, 2, 3
     const nextIdx = Math.min(4, currentIdx + 1);
-    const blendFactor = rawStep - currentIdx; // 0.0 to 1.0 within step
+    const blendFactor = rawStep - currentIdx; // 0.0 to 1.0
 
     this.backdrops.forEach((slide, idx) => {
       if (!slide) return;
       if (idx === currentIdx) {
-        slide.style.opacity = (1.0 - blendFactor * 0.85).toFixed(3);
-        slide.style.transform = `scale(${(1.0 + blendFactor * 0.06).toFixed(3)})`;
-      } else if (idx === nextIdx && blendFactor > 0.15) {
-        const fadeIn = (blendFactor - 0.15) / 0.85;
-        slide.style.opacity = fadeIn.toFixed(3);
-        slide.style.transform = `scale(${(1.06 - fadeIn * 0.06).toFixed(3)})`;
+        // Current image: fully visible, gently fading as blendFactor approaches 1
+        const op = (1.0 - blendFactor * 0.75).toFixed(3);
+        slide.style.opacity = op;
+        slide.style.transform = `scale(${(1.0 + blendFactor * 0.03).toFixed(3)})`;
+        slide.style.zIndex = '2';
+      } else if (idx === nextIdx) {
+        // Next image: smoothly rising to full brilliance
+        const op = blendFactor.toFixed(3);
+        slide.style.opacity = op;
+        slide.style.transform = `scale(${(1.03 - blendFactor * 0.03).toFixed(3)})`;
+        slide.style.zIndex = '3';
       } else {
         slide.style.opacity = '0';
-        slide.style.transform = 'scale(1.08)';
+        slide.style.zIndex = '1';
       }
     });
   }
@@ -920,10 +928,16 @@ class BareunMasterpieceStoryApp {
   }
 
   updateBackdrops(step) {
+    const targetIdx = Math.min(4, Math.max(0, step - 1));
     this.backdrops.forEach((slide, idx) => {
       if (!slide) return;
-      if (idx === step - 1) slide.classList.add('active');
-      else slide.classList.remove('active');
+      if (idx === targetIdx) {
+        slide.classList.add('active');
+        slide.style.zIndex = '3';
+      } else {
+        slide.classList.remove('active');
+        slide.style.zIndex = '1';
+      }
     });
   }
 
