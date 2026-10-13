@@ -12,8 +12,14 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   
-  <!-- Three.js & GSAP Engine via High-Speed CDN -->
+  <!-- Three.js & Post-Processing Suite via High-Speed CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
@@ -204,6 +210,52 @@
           </button>
         </div>
       </aside>
+
+      <!-- SK Telecom Style Floating 4+1 Glassmorphic Card Dock (Lower 1/3 Overlay) -->
+      <nav class="skt-floating-dock" id="skt-floating-dock" aria-label="5대 특화진료 3D 동기화 카드 덱">
+        <div class="skt-dock-container">
+          <button type="button" class="skt-dock-card active" data-step="1" onclick="navigateToStep(1)">
+            <span class="skt-card-step">01</span>
+            <div class="skt-card-info">
+              <span class="skt-card-badge">성장클리닉</span>
+              <h4 class="skt-card-title">생명 탄생 & 척추 정렬</h4>
+            </div>
+            <span class="skt-card-glow"></span>
+          </button>
+          <button type="button" class="skt-dock-card" data-step="2" onclick="navigateToStep(2)">
+            <span class="skt-card-step">02</span>
+            <div class="skt-card-info">
+              <span class="skt-card-badge">바른 다이어트</span>
+              <h4 class="skt-card-title">체지방 분해 & S라인</h4>
+            </div>
+            <span class="skt-card-glow"></span>
+          </button>
+          <button type="button" class="skt-dock-card" data-step="3" onclick="navigateToStep(3)">
+            <span class="skt-card-step">03</span>
+            <div class="skt-card-info">
+              <span class="skt-card-badge">바른 탈모케어</span>
+              <h4 class="skt-card-title">두피 열감 & 모근 개화</h4>
+            </div>
+            <span class="skt-card-glow"></span>
+          </button>
+          <button type="button" class="skt-dock-card" data-step="4" onclick="navigateToStep(4)">
+            <span class="skt-card-step">04</span>
+            <div class="skt-card-info">
+              <span class="skt-card-badge">바른 통증·추나</span>
+              <h4 class="skt-card-title">9대 관절 치유 & 교정</h4>
+            </div>
+            <span class="skt-card-glow"></span>
+          </button>
+          <button type="button" class="skt-dock-card" data-step="5" onclick="navigateToStep(5)">
+            <span class="skt-card-step">05</span>
+            <div class="skt-card-info">
+              <span class="skt-card-badge">황제 공진단</span>
+              <h4 class="skt-card-title">황금빛 원기 회복</h4>
+            </div>
+            <span class="skt-card-glow"></span>
+          </button>
+        </div>
+      </nav>
 
       <!-- Bottom Center Scroll Guidance & Skip Button -->
       <div class="story-scroll-prompt">
@@ -513,6 +565,35 @@
       </div>
     </div>
   </div>
+
+  <!-- BV Clinic Style Fixed Bottom Sticky Booking Bar -->
+  <nav class="bv-fixed-booking-bar" id="bv-fixed-booking-bar" aria-label="빠른 진료 예약 및 상담 바로가기">
+    <div class="bv-bar-container">
+      <div class="bv-bar-info">
+        <span class="bv-bar-dot"></span>
+        <span class="bv-bar-text"><strong>바른한의원 대전본점</strong> · 당일 비대면 처방 & 1:1 방문 예약 접수 중</span>
+      </div>
+      <div class="bv-bar-actions">
+        <a href="tel:042-488-1075" class="bv-action-btn bv-btn-call" title="전화 상담">
+          <span class="bv-btn-icon">📞</span>
+          <span class="bv-btn-label">042-488-1075 전화</span>
+        </a>
+        <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer" class="bv-action-btn bv-btn-kakao" title="카톡 문의">
+          <span class="bv-btn-icon">💬</span>
+          <span class="bv-btn-label">카카오톡 문의</span>
+        </a>
+        <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="bv-action-btn bv-btn-naver" title="오시는길 네이버 지도">
+          <span class="bv-btn-icon">📍</span>
+          <span class="bv-btn-label">오시는길</span>
+        </a>
+        <button type="button" class="bv-action-btn bv-btn-reserve" onclick="openDrawerWithProgram(window.currentAppStepSlug || 'pediatric-growth')" title="온라인 빠른예약">
+          <span class="bv-btn-icon">📅</span>
+          <span class="bv-btn-label">온라인 빠른예약</span>
+          <span class="bv-btn-arrow">➔</span>
+        </button>
+      </div>
+    </div>
+  </nav>
 
   <script src="app.js"></script>
 </body>

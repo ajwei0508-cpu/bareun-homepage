@@ -61,9 +61,12 @@
 
 html, body {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: var(--bg-primary);
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background-color: #031811;
   color: var(--text-main);
   font-family: var(--font-sans);
   font-size: 13px;
@@ -2382,15 +2385,14 @@ html.storyboard-active {
 }
 
 .story-backdrop-slide.active {
-  opacity: 0.42;
-  transform: scale(1);
+  opacity: 1 !important;
+  transform: scale(1.0);
 }
 
 .story-backdrop-scrim {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 65% 50%, rgba(3, 28, 19, 0.35) 0%, rgba(3, 28, 19, 0.88) 65%, #031C13 100%),
-              linear-gradient(to bottom, rgba(3, 28, 19, 0.7) 0%, transparent 20%, transparent 80%, #031C13 100%);
+  background: radial-gradient(ellipse at 65% 50%, rgba(3, 24, 17, 0.05) 0%, rgba(3, 24, 17, 0.45) 50%, rgba(3, 24, 17, 0.9) 100%), linear-gradient(to right, rgba(3, 24, 17, 0.92) 0%, rgba(3, 24, 17, 0.55) 35%, transparent 65%);
   z-index: 2;
   pointer-events: none;
 }
@@ -3090,3 +3092,293 @@ html.storyboard-active {
   background: #17E573;
   box-shadow: 0 8px 24px rgba(3, 199, 90, 0.35);
 }
+
+/* ==========================================================================
+   SK TELECOM STYLE: 4+1 FLOATING GLASSMORPHIC CARD DOCK (Lower 1/3 Overlay)
+   ========================================================================== */
+.skt-floating-dock {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  width: min(1040px, calc(100vw - 32px));
+  pointer-events: auto;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.skt-dock-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.skt-dock-card {
+  position: relative;
+  background: rgba(4, 30, 21, 0.72);
+  border: 1px solid rgba(197, 160, 89, 0.22);
+  border-radius: 16px;
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: #FFFFFF;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.skt-card-step {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  color: #C5A059;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.skt-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.skt-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skt-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skt-card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(197, 160, 89, 0.35) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.skt-dock-card:hover {
+  background: rgba(6, 42, 30, 0.85);
+  border-color: rgba(197, 160, 89, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.skt-dock-card:hover .skt-card-glow {
+  opacity: 0.6;
+}
+
+.skt-dock-card.active {
+  background: rgba(197, 160, 89, 0.16);
+  border-color: #C5A059;
+  box-shadow: 0 0 25px rgba(197, 160, 89, 0.38), inset 0 0 15px rgba(197, 160, 89, 0.12);
+  transform: translateY(-5px) scale(1.02);
+}
+
+.skt-dock-card.active .skt-card-badge {
+  color: #FCD34D;
+}
+
+.skt-dock-card.active .skt-card-title {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(197, 160, 89, 0.6);
+}
+
+.skt-dock-card.active .skt-card-glow {
+  opacity: 1;
+}
+
+@media (max-width: 960px) {
+  .skt-floating-dock {
+    bottom: 74px;
+    width: 100%;
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .skt-floating-dock::-webkit-scrollbar {
+    display: none;
+  }
+  .skt-dock-container {
+    display: flex;
+    width: max-content;
+    gap: 8px;
+  }
+  .skt-dock-card {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+  }
+}
+
+/* ==========================================================================
+   BV CLINIC STYLE: FIXED BOTTOM STICKY BOOKING BAR (Always Accessible)
+   ========================================================================== */
+.bv-fixed-booking-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 9999;
+  background: rgba(3, 24, 17, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(197, 160, 89, 0.28);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  font-family: var(--font-sans);
+}
+
+.bv-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.bv-bar-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.bv-bar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #38A169;
+  box-shadow: 0 0 10px #38A169;
+  animation: pulse-dot 2s infinite;
+}
+
+.bv-bar-info strong {
+  color: #C5A059;
+  font-weight: 700;
+}
+
+.bv-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bv-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.bv-btn-call {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+
+.bv-btn-call:hover {
+  background: rgba(197, 160, 89, 0.25);
+  border-color: #C5A059;
+  color: #FDE68A;
+}
+
+.bv-btn-kakao {
+  background: #FEE500;
+  color: #191919;
+  border: 1px solid #FEE500;
+}
+
+.bv-btn-kakao:hover {
+  background: #FFF066;
+  box-shadow: 0 4px 14px rgba(254, 229, 0, 0.4);
+}
+
+.bv-btn-naver {
+  background: #03C75A;
+  color: #FFFFFF;
+  border: 1px solid #03C75A;
+}
+
+.bv-btn-naver:hover {
+  background: #17E573;
+  box-shadow: 0 4px 14px rgba(3, 199, 90, 0.4);
+}
+
+.bv-btn-reserve {
+  background: linear-gradient(135deg, #2F855A 0%, #C5A059 100%);
+  color: #FFFFFF;
+  padding: 10px 20px;
+  box-shadow: 0 4px 20px rgba(47, 133, 90, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.bv-btn-reserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(197, 160, 89, 0.6);
+}
+
+.bv-btn-reserve .bv-btn-arrow {
+  transition: transform 0.25s ease;
+}
+
+.bv-btn-reserve:hover .bv-btn-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 900px) {
+  .bv-fixed-booking-bar {
+    height: 58px;
+    padding: 0 12px;
+  }
+  .bv-bar-info {
+    display: none;
+  }
+  .bv-bar-actions {
+    width: 100%;
+    justify-content: space-around;
+    gap: 6px;
+  }
+  .bv-action-btn {
+    padding: 8px 10px;
+    font-size: 11.5px;
+    gap: 4px;
+  }
+  .bv-btn-label {
+    font-size: 11px;
+  }
+}
+
