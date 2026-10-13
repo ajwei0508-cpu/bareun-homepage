@@ -239,75 +239,24 @@ class BareunMasterpieceStoryApp {
   }
 
   // =========================================================================
-  // Step 01: Warm Cellular Genesis & 3D Crystal Spine Straightening
+  // Step 01: Spinal Alignment Crystal Discs (100% Clear View of 8K Genesis Image)
   // =========================================================================
   buildStep1VFX() {
     this.step1Group = new THREE.Group();
 
-    // 1. 15,000 Organic Life Particles (Sage Green & Gold)
-    const count = this.isMobile ? 3500 : 15000;
-    const geom = new THREE.BufferGeometry();
-    const pos = new Float32Array(count * 3);
-    const originalPos = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      const u = Math.random();
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const r = 26 * Math.cbrt(u);
-
-      const x = r * Math.sin(phi) * Math.cos(theta);
-      const y = r * Math.sin(phi) * Math.sin(theta);
-      const z = r * Math.cos(phi);
-
-      pos[i * 3] = x;
-      pos[i * 3 + 1] = y;
-      pos[i * 3 + 2] = z;
-
-      originalPos[i * 3] = x;
-      originalPos[i * 3 + 1] = y;
-      originalPos[i * 3 + 2] = z;
-    }
-    geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    this.step1OriginalPositions = originalPos;
-
-    const particleMat = new THREE.PointsMaterial({
-      color: 0xC5A059,
-      size: 0.9,
-      transparent: true,
-      opacity: 0.9,
-      blending: THREE.AdditiveBlending
-    });
-    this.step1Particles = new THREE.Points(geom, particleMat);
-    this.step1Group.add(this.step1Particles);
-
-    // 2. Central Warm Cellular Womb Mesh (MeshPhysicalMaterial for glass/crystal luxury)
-    const cellGeom = new THREE.IcosahedronGeometry(14, 3);
-    const cellMat = new THREE.MeshPhysicalMaterial({
-      color: 0x2D4030,
-      emissive: 0xC5A059,
-      emissiveIntensity: 0.35,
-      transmission: 0.85,
-      roughness: 0.15,
-      metalness: 0.1,
-      ior: 1.4,
-      transparent: true,
-      opacity: 0.8
-    });
-    this.step1Cell = new THREE.Mesh(cellGeom, cellMat);
-    this.step1Group.add(this.step1Cell);
-
-    // 3. 32-Vertebrae Child Spine Crystal Discs
+    // 32-Vertebrae Child Spine Crystal Discs (Aligns along spinal axis without blocking image)
     this.spineNodes = [];
-    const discGeom = new THREE.CylinderGeometry(1.6, 1.8, 0.6, 24);
+    const discGeom = new THREE.CylinderGeometry(1.4, 1.6, 0.45, 24);
     const discMat = new THREE.MeshPhysicalMaterial({
       color: 0xFDE68A,
       emissive: 0xC5A059,
       emissiveIntensity: 0.6,
-      transmission: 0.8,
-      roughness: 0.12,
+      transmission: 0.85,
+      roughness: 0.15,
       metalness: 0.2,
-      ior: 1.45
+      ior: 1.45,
+      transparent: true,
+      opacity: 0.9
     });
 
     for (let i = 0; i < 32; i++) {
@@ -323,167 +272,53 @@ class BareunMasterpieceStoryApp {
   }
 
   // =========================================================================
-  // Step 02: 3D Body Volume Mesh Dissolve & Crystal S-Line Revelation
+  // Step 02: 100% Crystal-Clear View of 8K Luxury S-Line Body (NO SQUARE NOISE)
   // =========================================================================
   buildStep2VFX() {
     this.step2Group = new THREE.Group();
 
-    // 1. Sleek Crystal S-Line Body Mesh (MeshPhysicalMaterial)
-    // S-curve torso representation using lathe/curve geometry
-    const curvePoints = [];
-    for (let i = 0; i <= 24; i++) {
-      const y = (i / 24) * 60 - 30; // -30 to +30
-      const normY = (y + 30) / 60;
-      // Elegant S-curve radius: shoulder wider, waist slim, hips curvy
-      const r = 6.5 + Math.sin(normY * Math.PI) * 4.2 - Math.sin(normY * Math.PI * 2) * 2.2;
-      curvePoints.push(new THREE.Vector2(Math.max(2.8, r), y));
-    }
-    const sLineGeom = new THREE.LatheGeometry(curvePoints, 32);
-    const sLineMat = new THREE.MeshPhysicalMaterial({
-      color: 0xFFFFFF,
-      emissive: 0xC5A059,
-      emissiveIntensity: 0.15,
-      transmission: 0.88,
-      roughness: 0.14,
-      metalness: 0.08,
-      ior: 1.45,
-      transparent: true,
-      opacity: 0.92
-    });
-    this.step2Sline = new THREE.Mesh(sLineGeom, sLineMat);
-    this.step2Group.add(this.step2Sline);
-
-    // 2. 20,000 Swirling Gold Dust Particles (Dissolve Micro-Powder)
-    const count = this.isMobile ? 5000 : 20000;
-    const geom = new THREE.BufferGeometry();
-    const pos = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const y = (Math.random() - 0.5) * 68;
-      const r = 11 + Math.random() * 9;
-      pos[i * 3] = Math.cos(theta) * r;
-      pos[i * 3 + 1] = y;
-      pos[i * 3 + 2] = Math.sin(theta) * r;
-    }
-    geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-
-    const mat = new THREE.PointsMaterial({
+    // Sleek subtle holographic golden waist aura ring (Torus)
+    const waistRingGeom = new THREE.TorusGeometry(14, 0.35, 16, 64);
+    const waistRingMat = new THREE.MeshStandardMaterial({
       color: 0xFDE68A,
-      size: 0.85,
+      emissive: 0xC5A059,
+      emissiveIntensity: 0.8,
       transparent: true,
-      opacity: 0.0,
-      blending: THREE.AdditiveBlending
+      opacity: 0.0
     });
-    this.step2Dust = new THREE.Points(geom, mat);
-    this.step2Group.add(this.step2Dust);
+    this.step2WaistRing = new THREE.Mesh(waistRingGeom, waistRingMat);
+    this.step2WaistRing.rotation.x = Math.PI / 2;
+    this.step2Group.add(this.step2WaistRing);
 
     this.step2Group.visible = false;
     this.scene.add(this.step2Group);
   }
 
   // =========================================================================
-  // Step 03: Scalp Close-Up, Red Heat Fading & 5,000 3D Hair Strands Blooming
+  // Step 03: Scalp Cooling Hologram Ring (100% Clear View of 8K Scalp Image)
   // =========================================================================
   buildStep3VFX() {
     this.step3Group = new THREE.Group();
 
-    // 1. Scalp Dome Base Mesh
-    const scalpGeom = new THREE.SphereGeometry(22, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.45);
-    const scalpMat = new THREE.MeshPhysicalMaterial({
-      color: 0xE2C892,
-      emissive: 0x2D4030,
-      emissiveIntensity: 0.2,
-      roughness: 0.35,
-      metalness: 0.05
-    });
-    this.step3Scalp = new THREE.Mesh(scalpGeom, scalpMat);
-    this.step3Scalp.position.set(0, 24, 0);
-    this.step3Group.add(this.step3Scalp);
-
-    // 2. Red Heat Surface Particles
-    const heatCount = this.isMobile ? 800 : 2500;
-    const heatGeom = new THREE.BufferGeometry();
-    const heatPos = new Float32Array(heatCount * 3);
-    for (let i = 0; i < heatCount; i++) {
-      const u = Math.random();
-      const theta = Math.random() * Math.PI * 2;
-      const r = 21 * Math.sqrt(u);
-      heatPos[i * 3] = r * Math.cos(theta);
-      heatPos[i * 3 + 1] = 25 + Math.random() * 4;
-      heatPos[i * 3 + 2] = r * Math.sin(theta);
-    }
-    heatGeom.setAttribute('position', new THREE.BufferAttribute(heatPos, 3));
-    this.step3HeatMat = new THREE.PointsMaterial({
-      color: 0xE53E3E,
-      size: 1.2,
+    const coolRingGeom = new THREE.TorusGeometry(18, 0.45, 16, 64);
+    const coolRingMat = new THREE.MeshStandardMaterial({
+      color: 0x38A169,
+      emissive: 0x10B981,
+      emissiveIntensity: 1.2,
       transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending
+      opacity: 0.0
     });
-    this.step3HeatParticles = new THREE.Points(heatGeom, this.step3HeatMat);
-    this.step3Group.add(this.step3HeatParticles);
-
-    // 3. Cooling Emerald Herbal Particles (#2F855A / #34D399)
-    const coolCount = this.isMobile ? 1200 : 4500;
-    const coolGeom = new THREE.BufferGeometry();
-    const coolPos = new Float32Array(coolCount * 3);
-    for (let i = 0; i < coolCount; i++) {
-      coolPos[i * 3] = (Math.random() - 0.5) * 44;
-      coolPos[i * 3 + 1] = 22 + Math.random() * 26;
-      coolPos[i * 3 + 2] = (Math.random() - 0.5) * 44;
-    }
-    coolGeom.setAttribute('position', new THREE.BufferAttribute(coolPos, 3));
-    this.step3CoolMat = new THREE.PointsMaterial({
-      color: 0x2F855A,
-      size: 1.1,
-      transparent: true,
-      opacity: 0.0,
-      blending: THREE.AdditiveBlending
-    });
-    this.step3CoolParticles = new THREE.Points(coolGeom, this.step3CoolMat);
-    this.step3Group.add(this.step3CoolParticles);
-
-    // 4. InstancedMesh 3D Hair Strands Blooming Upward (5,000 strands)
-    const hairCount = this.isMobile ? 1500 : 5000;
-    const strandGeom = new THREE.CylinderGeometry(0.08, 0.22, 6.0, 6);
-    strandGeom.translate(0, 3.0, 0); // pivot at base
-    const strandMat = new THREE.MeshStandardMaterial({
-      color: 0x1A1A1A,
-      roughness: 0.25,
-      metalness: 0.4
-    });
-    this.hairInstanced = new THREE.InstancedMesh(strandGeom, strandMat, hairCount);
-    
-    // Store hair root transforms
-    this.hairTransforms = [];
-    const dummy = new THREE.Object3D();
-    for (let i = 0; i < hairCount; i++) {
-      const u = Math.random();
-      const theta = Math.random() * Math.PI * 2;
-      const r = 20 * Math.sqrt(u);
-      const x = r * Math.cos(theta);
-      const z = r * Math.sin(theta);
-      const y = 25 - (r * r) * 0.015;
-
-      dummy.position.set(x, y, z);
-      dummy.rotation.x = (Math.random() - 0.5) * 0.35;
-      dummy.rotation.z = (Math.random() - 0.5) * 0.35;
-      dummy.scale.set(0.001, 0.001, 0.001);
-      dummy.updateMatrix();
-
-      this.hairInstanced.setMatrixAt(i, dummy.matrix);
-      this.hairTransforms.push({ x, y, z, rx: dummy.rotation.x, rz: dummy.rotation.z });
-    }
-    this.hairInstanced.instanceMatrix.needsUpdate = true;
-    this.step3Group.add(this.hairInstanced);
+    this.step3CoolRing = new THREE.Mesh(coolRingGeom, coolRingMat);
+    this.step3CoolRing.rotation.x = Math.PI / 2;
+    this.step3CoolRing.position.y = 30;
+    this.step3Group.add(this.step3CoolRing);
 
     this.step3Group.visible = false;
     this.scene.add(this.step3Group);
   }
 
   // =========================================================================
-  // Step 04: Full Body 360 Rotation, 8Hz Pain Rings & Chuna Green Healing Scan
+  // Step 04: Full Body 360 Rotation, 8Hz Pain Torus Rings & Chuna Green Healing Scan
   // =========================================================================
   buildStep4Joints() {
     this.step4Group = new THREE.Group();
@@ -509,25 +344,26 @@ class BareunMasterpieceStoryApp {
       g.position.set(...j.pos);
 
       // Core Glowing Crystal Gem (MeshPhysicalMaterial)
-      const gemGeom = new THREE.SphereGeometry(1.6, 18, 18);
+      const gemGeom = new THREE.SphereGeometry(1.4, 20, 20);
       const gemMat = new THREE.MeshPhysicalMaterial({
         color: 0xE53E3E,
         emissive: 0xE53E3E,
         emissiveIntensity: 1.4,
-        transmission: 0.75,
+        transmission: 0.8,
         roughness: 0.1,
         metalness: 0.2
       });
       const gem = new THREE.Mesh(gemGeom, gemMat);
       g.add(gem);
 
-      // Radial Wave Pulsing Ring (8Hz)
-      const ringGeom = new THREE.RingGeometry(2.2, 3.4, 32);
-      const ringMat = new THREE.MeshBasicMaterial({
+      // 3D Smooth Torus Pulsing Ring (8Hz) - No pixelated square corners!
+      const ringGeom = new THREE.TorusGeometry(2.4, 0.25, 16, 48);
+      const ringMat = new THREE.MeshStandardMaterial({
         color: 0xE53E3E,
+        emissive: 0xE53E3E,
+        emissiveIntensity: 1.2,
         transparent: true,
-        opacity: 0.9,
-        side: THREE.DoubleSide
+        opacity: 0.85
       });
       const ring = new THREE.Mesh(ringGeom, ringMat);
       g.add(ring);
@@ -562,66 +398,30 @@ class BareunMasterpieceStoryApp {
   }
 
   // =========================================================================
-  // Step 05: 24K Gold-Leaf Gongjindan & 30,000 Champagne Gold Aura Particles
+  // Step 05: 24K Gold Orbital Rings (100% Clear View of 8K Gongjindan Image)
   // =========================================================================
   buildStep5Gongjindan() {
     this.step5Group = new THREE.Group();
 
-    // 1. 24K Pure Gold Foil Gongjindan Pill (MeshPhysicalMaterial with high metalness & clearcoat)
-    const pillGeom = new THREE.SphereGeometry(15, 48, 48);
-    const pillMat = new THREE.MeshPhysicalMaterial({
-      color: 0xD4AF37,
+    // Orbital Gold Energy Rings (Smooth 3D Torus)
+    const ring1Geom = new THREE.TorusGeometry(24, 0.5, 16, 64);
+    const rMat = new THREE.MeshStandardMaterial({
+      color: 0xFDE68A,
       emissive: 0xC5A059,
-      emissiveIntensity: 0.35,
+      emissiveIntensity: 0.9,
       metalness: 0.95,
-      roughness: 0.16,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      ior: 1.5
+      roughness: 0.1
     });
-    this.gongjindanPill = new THREE.Mesh(pillGeom, pillMat);
-    this.step5Group.add(this.gongjindanPill);
-
-    // Orbital Gold Energy Rings
-    const ring1Geom = new THREE.TorusGeometry(23, 0.5, 16, 64);
-    const rMat = new THREE.MeshStandardMaterial({ color: 0xFDE68A, metalness: 0.95, roughness: 0.1 });
     this.goldOrbit1 = new THREE.Mesh(ring1Geom, rMat);
     this.goldOrbit1.rotation.x = 0.85;
     this.goldOrbit1.rotation.y = 0.35;
     this.step5Group.add(this.goldOrbit1);
 
-    const ring2Geom = new THREE.TorusGeometry(28, 0.38, 16, 64);
+    const ring2Geom = new THREE.TorusGeometry(30, 0.38, 16, 64);
     this.goldOrbit2 = new THREE.Mesh(ring2Geom, rMat);
     this.goldOrbit2.rotation.x = -0.65;
     this.goldOrbit2.rotation.y = -0.45;
     this.step5Group.add(this.goldOrbit2);
-
-    // 2. 30,000 Swirling Champagne Gold Aura Particles
-    const aCount = this.isMobile ? 6500 : 30000;
-    const aGeom = new THREE.BufferGeometry();
-    const aPos = new Float32Array(aCount * 3);
-
-    for (let i = 0; i < aCount; i++) {
-      const u = Math.random();
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const r = 20 + u * 34;
-
-      aPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      aPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      aPos[i * 3 + 2] = r * Math.cos(phi);
-    }
-    aGeom.setAttribute('position', new THREE.BufferAttribute(aPos, 3));
-
-    const aMat = new THREE.PointsMaterial({
-      color: 0xC5A059,
-      size: 0.85,
-      transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending
-    });
-    this.goldAura = new THREE.Points(aGeom, aMat);
-    this.step5Group.add(this.goldAura);
 
     this.step5Group.visible = false;
     this.scene.add(this.step5Group);
@@ -732,7 +532,7 @@ class BareunMasterpieceStoryApp {
       });
     }
 
-    // [Step 02] 20% ~ 40% (3/4 Perspective View Pos [28, 8, 85])
+    // [Step 02] 20% ~ 40% (3/4 Perspective View Pos [28, 8, 85] - 100% Crisp S-Line Body Visual)
     else if (p > 0.20 && p <= 0.40) {
       this.setGroupVisible(2);
       const sub = (p - 0.20) / 0.20;
@@ -740,17 +540,13 @@ class BareunMasterpieceStoryApp {
       this.targetCameraPos.set(28, 8, 85);
       this.targetLookAt.set(0, 0, 0);
 
-      // Dissolve dust fades in then disperses
-      const dustOpacity = Math.sin(sub * Math.PI) * 0.95;
-      this.step2Dust.material.opacity = dustOpacity;
-
-      // S-line crystal emerges
-      if (this.step2Sline) {
-        this.step2Sline.rotation.y = sub * 0.8;
+      // Subtle golden waist aura ring smoothly highlights S-line curve
+      if (this.step2WaistRing) {
+        this.step2WaistRing.material.opacity = Math.sin(sub * Math.PI) * 0.75;
       }
     }
 
-    // [Step 03] 40% ~ 60% (Extreme Close-Up Scalp Pos [0, 42, 28], LookAt [0, 40, 0])
+    // [Step 03] 40% ~ 60% (Extreme Close-Up Scalp Pos [0, 42, 28], LookAt [0, 38, 0])
     else if (p > 0.40 && p <= 0.60) {
       this.setGroupVisible(3);
       const sub = (p - 0.40) / 0.20;
@@ -758,27 +554,9 @@ class BareunMasterpieceStoryApp {
       this.targetCameraPos.set(0, 42, 28);
       this.targetLookAt.set(0, 38, 0);
 
-      // Red heat particles fade from 0.85 to 0.0
-      this.step3HeatMat.opacity = Math.max(0.0, 0.85 * (1.0 - sub * 1.5));
-
-      // Cooling emerald particles infiltrate
-      this.step3CoolMat.opacity = Math.min(0.9, sub * 1.3);
-
-      // 5,000 3D Hair Strands bloom upward organically
-      if (this.hairInstanced && this.hairTransforms) {
-        const dummy = new THREE.Object3D();
-        const bloomScale = Math.min(1.0, Math.max(0.01, (sub - 0.2) * 1.25));
-
-        for (let i = 0; i < this.hairTransforms.length; i++) {
-          const t = this.hairTransforms[i];
-          dummy.position.set(t.x, t.y, t.z);
-          dummy.rotation.x = t.rx;
-          dummy.rotation.z = t.rz;
-          dummy.scale.set(bloomScale, bloomScale, bloomScale);
-          dummy.updateMatrix();
-          this.hairInstanced.setMatrixAt(i, dummy.matrix);
-        }
-        this.hairInstanced.instanceMatrix.needsUpdate = true;
+      // Subtle cooling ring highlight
+      if (this.step3CoolRing) {
+        this.step3CoolRing.material.opacity = Math.sin(sub * Math.PI) * 0.85;
       }
     }
 
@@ -809,6 +587,7 @@ class BareunMasterpieceStoryApp {
           item.gem.material.color.setHex(0x2F855A); // Emerald Healing Green
           item.gem.material.emissive.setHex(0x38A169);
           item.ring.material.color.setHex(0x2F855A);
+          item.ring.material.emissive.setHex(0x38A169);
           item.healed = true;
           anyHealed = true;
 
@@ -818,6 +597,7 @@ class BareunMasterpieceStoryApp {
           item.gem.material.color.setHex(0xE53E3E); // Pain Signal Red
           item.gem.material.emissive.setHex(0xE53E3E);
           item.ring.material.color.setHex(0xE53E3E);
+          item.ring.material.emissive.setHex(0xE53E3E);
           item.healed = false;
           allHealed = false;
 
@@ -850,10 +630,6 @@ class BareunMasterpieceStoryApp {
 
       this.targetCameraPos.set(0, 0, 85);
       this.targetLookAt.set(0, 0, 0);
-
-      const s = 0.6 + Math.min(0.4, sub * 0.4);
-      this.gongjindanPill.scale.set(s, s, s);
-      this.goldAura.rotation.y = sub * Math.PI * 2;
     }
   }
 
@@ -1003,26 +779,14 @@ class BareunMasterpieceStoryApp {
     this.currentLookAt.z = THREE.MathUtils.lerp(this.currentLookAt.z, this.targetLookAt.z, 0.07);
     this.camera.lookAt(this.currentLookAt);
 
-    // Step 01 Particle Breathing & Noise Movement
-    if (this.step1Group && this.step1Group.visible) {
-      this.step1Particles.rotation.y = time * 0.2;
-      if (this.step1Cell) {
-        this.step1Cell.rotation.x = Math.sin(time * 0.8) * 0.1;
-      }
+    // Step 02 Waist Ring Rotation
+    if (this.step2Group && this.step2Group.visible && this.step2WaistRing) {
+      this.step2WaistRing.rotation.z = time * 0.4;
     }
 
-    // Step 02 Dust Vortex & S-Line Shimmer
-    if (this.step2Group && this.step2Group.visible) {
-      this.step2Dust.rotation.y = -time * 0.35;
-      if (this.step2Sline) {
-        this.step2Sline.rotation.y = Math.sin(time * 0.5) * 0.2;
-      }
-    }
-
-    // Step 03 Cooling Mist
-    if (this.step3Group && this.step3Group.visible) {
-      this.step3CoolParticles.rotation.y = time * 0.18;
-      this.step3HeatParticles.rotation.y = -time * 0.12;
+    // Step 03 Cooling Ring Rotation
+    if (this.step3Group && this.step3Group.visible && this.step3CoolRing) {
+      this.step3CoolRing.rotation.z = -time * 0.3;
     }
 
     // Step 04 8Hz Pulsating Ring on 9 Joint Anchors
@@ -1030,22 +794,20 @@ class BareunMasterpieceStoryApp {
       const pulse8Hz = Math.sin(time * 16 * Math.PI) * 0.5 + 0.5;
       this.jointNodes.forEach(item => {
         if (!item.healed) {
-          const s = 1.0 + pulse8Hz * 0.7;
-          item.ring.scale.set(s, s, 1);
-          item.ring.material.opacity = (1.0 - pulse8Hz * 0.6) * 0.9;
+          const s = 1.0 + pulse8Hz * 0.6;
+          item.ring.scale.set(s, s, s);
+          item.ring.material.opacity = (1.0 - pulse8Hz * 0.5) * 0.9;
         } else {
-          item.ring.scale.set(1.15, 1.15, 1);
-          item.ring.material.opacity = 0.55;
+          item.ring.scale.set(1.15, 1.15, 1.15);
+          item.ring.material.opacity = 0.65;
         }
       });
     }
 
-    // Step 05 Gongjindan Planetary Rings & 360 Slow Rotation
+    // Step 05 Gongjindan Planetary Rings
     if (this.step5Group && this.step5Group.visible) {
-      this.gongjindanPill.rotation.y = time * 0.45;
-      this.goldOrbit1.rotation.z = time * 0.6;
-      this.goldOrbit2.rotation.z = -time * 0.4;
-      this.goldAura.rotation.y = time * 0.2;
+      if (this.goldOrbit1) this.goldOrbit1.rotation.z = time * 0.5;
+      if (this.goldOrbit2) this.goldOrbit2.rotation.z = -time * 0.35;
     }
 
     // Render with EffectComposer (Post-processing) or Fallback Renderer
