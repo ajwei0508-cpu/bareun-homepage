@@ -467,6 +467,8 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
 
   if (reqPath === '/') {
     reqPath = '/index.html';
+  } else if (reqPath === '/story-3d' || reqPath === '/story-3d/') {
+    reqPath = '/story-3d.html';
   } else if (reqPath === '/diet-zero' || reqPath === '/diet-zero/') {
     reqPath = '/diet-zero.html';
   } else if (reqPath === '/growth' || reqPath === '/growth/') {

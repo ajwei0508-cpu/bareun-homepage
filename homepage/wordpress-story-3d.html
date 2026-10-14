@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>바른한의원 3D 생애주기 시네마틱 전용관 — Z-Axis Spatial Scrollytelling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Three.js WebGL Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+/* WORDPRESS & ASTRA THEME CONTAINER RESET */
+.entry-content, .ast-container, .site-content, article.page, .ast-plain-container,
+.elementor, .elementor-section-wrap, .wp-block-group {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+    :root {
+      --bg-obsidian: #020D09;
+      --gold: #C5A059;
+      --gold-bright: #FDE68A;
+      --emerald: #10B981;
+      --emerald-bright: #6EE7B7;
+      --crimson: #EF4444;
+      --crimson-bright: #FCA5A5;
+      --font-serif: 'Noto Serif KR', Georgia, serif;
+      --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      width: 100%;
+      background-color: var(--bg-obsidian);
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) #020D09;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-obsidian);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      overflow: visible;
+      user-select: none;
+      word-break: keep-all;
+    }
+
+    body::-webkit-scrollbar {
+      width: 6px;
+    }
+    body::-webkit-scrollbar-track {
+      background: #020D09;
+    }
+    body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--emerald), var(--gold));
+      border-radius: 999px;
+    }
+
+    /* ==========================================================================
+       100% FULL-SCROLL VIRTUAL TRACK (1800vh)
+       The 3D Stage is position: fixed (inset: 0), so it NEVER disappears!
+       ========================================================================== */
+    .fullscroll-virtual-track {
+      position: relative;
+      width: 100%;
+      height: 1800vh;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT (NEVER SCROLLS OFF SCREEN)
+       ========================================================================== */
+    .spatial-fixed-viewport {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      z-index: 1;
+      background: radial-gradient(circle at 62% 50%, #07261B 0%, #020D09 100%);
+    }
+
+    /* Layer 1: Custom WebGL GLSL Fragment Shader Cinema Canvas (3D Portal & Morph) */
+    #glsl-portal-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 2;
+      display: block;
+    }
+
+    /* Layer 2: Three.js 3D Z-Axis Tunnel Rings, Warp Particles & 3D Gold Gongjindan */
+    #three-tunnel-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 4;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    /* Layer 3: Precision SVG Vector Anatomical & Biometric HUD Overlay */
+    #svg-spatial-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* Subtle Left Readability Scrim (Keeps Right-Center 3D Subject 100% Crisp) */
+    .spatial-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 64% 50%, transparent 48%, rgba(2, 13, 9, 0.72) 100%),
+        linear-gradient(90deg, rgba(2, 13, 9, 0.84) 0%, rgba(2, 13, 9, 0.42) 34%, transparent 56%),
+        linear-gradient(180deg, rgba(2, 13, 9, 0.65) 0%, transparent 16%, transparent 82%, rgba(2, 13, 9, 0.85) 100%);
+    }
+
+    /* ==========================================================================
+       TOP ARCHITECTURAL NAVIGATION BAR (LUSION / IGLOO MINIMAL HUD)
+       ========================================================================== */
+    .spatial-top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      background: linear-gradient(180deg, rgba(2, 13, 9, 0.85) 0%, rgba(2, 13, 9, 0) 100%);
+      pointer-events: auto;
+    }
+
+    .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-brand-logo {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 900;
+      color: #FFFFFF;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-brand-logo .logo-gem {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      box-shadow: 0 0 12px var(--gold);
+    }
+
+    .nav-mode-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      background: rgba(197, 160, 89, 0.14);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+    }
+
+    /* Center Z-Depth & Warp Telemetry Bar */
+    .nav-telemetry-center {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(3, 22, 15, 0.72);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      padding: 6px 18px;
+      border-radius: 999px;
+      backdrop-filter: blur(14px);
+    }
+
+    .telemetry-coord {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--emerald-bright);
+      letter-spacing: 0.06em;
+    }
+
+    .telemetry-divider {
+      width: 1px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .telemetry-phase-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid var(--emerald);
+      color: #A7F3D0;
+      transition: all 0.3s ease;
+    }
+
+    .telemetry-phase-badge.crisis {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: var(--crimson);
+      color: var(--crimson-bright);
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-auto-flight {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: var(--emerald-bright);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-auto-flight:hover {
+      background: rgba(16, 185, 129, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-auto-flight .flight-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulseGlow 1.4s infinite;
+    }
+
+    .btn-auto-flight.paused .flight-dot {
+      background: #F59E0B;
+      box-shadow: none;
+      animation: none;
+    }
+
+    .btn-return-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-return-home:hover {
+      background: var(--gold);
+      color: #020D09;
+      border-color: var(--gold);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       FRAMELESS 3D SPATIAL EDITORIAL TYPOGRAPHY (LEFT FLOATING LAYER)
+       Moves in 3D Z-space without any rectangular card frame!
+       ========================================================================== */
+    .spatial-editorial-stage {
+      position: fixed;
+      left: 56px;
+      top: 47%;
+      transform: translate3d(0, -50%, 0);
+      width: min(500px, calc(100vw - 110px));
+      z-index: 30;
+      pointer-events: auto;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
+    }
+
+    /* Giant Outlined Watermark Stage Number (Lusion Style) */
+    .spatial-watermark-num {
+      position: absolute;
+      top: -68px;
+      left: -8px;
+      font-family: var(--font-serif);
+      font-size: 120px;
+      font-weight: 900;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(197, 160, 89, 0.25);
+      pointer-events: none;
+      z-index: -1;
+      letter-spacing: -0.05em;
+      transition: all 0.4s ease;
+    }
+
+    .spatial-chapter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    }
+
+    .spatial-chapter-tag::before {
+      content: '';
+      width: 24px;
+      height: 1.5px;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    .spatial-main-title {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 900;
+      line-height: 1.22;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+      text-shadow: 0 6px 28px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .spatial-sub-copy {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      margin-bottom: 12px;
+      line-height: 1.45;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+    }
+
+    .spatial-narrative-desc {
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: rgba(241, 245, 249, 0.92);
+      margin-bottom: 18px;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+    }
+
+    /* Frameless 3-Phase Treatment Flow (Before ➔ Portal Treatment ➔ After) */
+    .spatial-phase-pipeline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .sp-node {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.45);
+      background: rgba(2, 13, 9, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .sp-node .sp-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .sp-node.active-before {
+      color: var(--crimson-bright);
+      border-color: rgba(239, 68, 68, 0.6);
+      background: rgba(239, 68, 68, 0.22);
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.35);
+    }
+    .sp-node.active-before .sp-dot {
+      background: var(--crimson);
+      box-shadow: 0 0 8px var(--crimson);
+    }
+
+    .sp-node.active-treating {
+      color: var(--emerald-bright);
+      border-color: rgba(16, 185, 129, 0.65);
+      background: rgba(16, 185, 129, 0.22);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
+    }
+    .sp-node.active-treating .sp-dot {
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    .sp-node.active-after {
+      color: var(--gold-bright);
+      border-color: rgba(253, 230, 138, 0.7);
+      background: linear-gradient(135deg, rgba(197, 160, 89, 0.32), rgba(16, 185, 129, 0.25));
+      box-shadow: 0 0 22px rgba(197, 160, 89, 0.45);
+    }
+    .sp-node.active-after .sp-dot {
+      background: var(--gold-bright);
+      box-shadow: 0 0 10px var(--gold-bright);
+    }
+
+    .sp-arrow {
+      color: rgba(197, 160, 89, 0.6);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    /* Frameless Live Biometric Metrics Strip */
+    .spatial-metrics-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(197, 160, 89, 0.28);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.28);
+    }
+
+    .sm-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .sm-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.02em;
+    }
+
+    .sm-val {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .sm-val.gold {
+      color: var(--gold-bright);
+    }
+    .sm-val.crimson {
+      color: var(--crimson-bright);
+    }
+
+    /* ==========================================================================
+       STAGE 04 DEDICATED 7-REGION FULL-BODY PAIN RECOVERY RADAR
+       (①목 · ②어깨 · ③팔/손목 · ④굽은척추 · ⑤허리/골반 · ⑥다리/무릎 · ⑦발/발목)
+       ========================================================================== */
+    .spatial-pain7-matrix {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      background: rgba(2, 15, 10, 0.62);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 14px 14px 0;
+      backdrop-filter: blur(12px);
+    }
+
+    .spatial-pain7-matrix.visible {
+      display: block;
+    }
+
+    .pain7-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #F8FAFC;
+    }
+
+    .pain7-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(239, 68, 68, 0.25);
+      border: 1px solid var(--crimson);
+      color: var(--crimson-bright);
+    }
+
+    .pain7-badge.healed {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: var(--emerald);
+      color: var(--emerald-bright);
+    }
+
+    .pain7-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pain7-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #FECACA;
+      transition: all 0.3s ease;
+    }
+
+    .pain7-chip .p-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--crimson);
+      box-shadow: 0 0 6px var(--crimson);
+    }
+
+    .pain7-chip.healing {
+      background: rgba(197, 160, 89, 0.24);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      transform: translateY(-1px);
+    }
+    .pain7-chip.healing .p-dot {
+      background: var(--gold-bright);
+      box-shadow: 0 0 8px var(--gold-bright);
+    }
+
+    .pain7-chip.healed {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(52, 211, 153, 0.6);
+      color: #A7F3D0;
+    }
+    .pain7-chip.healed .p-dot {
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    /* Editorial CTA Row */
+    .spatial-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-spatial-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      color: #FFFFFF;
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid rgba(167, 243, 208, 0.45);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn-spatial-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(16, 185, 129, 0.55);
+    }
+
+    .btn-spatial-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: var(--gold-bright);
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-spatial-secondary:hover {
+      background: rgba(197, 160, 89, 0.22);
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       IGLOO.INC STYLE RIGHT VERTICAL Z-DEPTH ALTMETER & SCENE RULER
+       ========================================================================== */
+    .igloo-depth-ruler {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 360px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .depth-readout-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 100%;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .depth-track-line {
+      position: relative;
+      width: 3px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+    }
+
+    .depth-track-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, var(--emerald), var(--gold));
+      border-radius: 999px;
+      box-shadow: 0 0 12px var(--gold);
+    }
+
+    .depth-playhead-marker {
+      position: absolute;
+      left: 50%;
+      top: 0%;
+      transform: translate(-50%, -50%);
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--gold-bright);
+      border: 2px solid #020D09;
+      box-shadow: 0 0 14px var(--gold-bright);
+    }
+
+    .depth-ticks-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .depth-tick {
+      width: 8px;
+      height: 1.5px;
+      background: rgba(255, 255, 255, 0.22);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .depth-tick.major {
+      width: 14px;
+      height: 2px;
+      background: rgba(197, 160, 89, 0.65);
+    }
+
+    .depth-tick.active {
+      width: 18px;
+      background: var(--emerald-bright);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    /* ==========================================================================
+       BOTTOM INTERACTIVE 5-STAGE DOCK & Z-TUNNEL SCRUBBER
+       ========================================================================== */
+    .spatial-bottom-console {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1080px, calc(100vw - 32px));
+      z-index: 45;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    /* Live Cinema Subtitle Ribbon */
+    .spatial-subtitle-ribbon {
+      align-self: center;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(2, 13, 9, 0.82);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      padding: 7px 20px;
+      border-radius: 999px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      max-width: 100%;
+    }
+
+    .ribbon-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #020D09;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .ribbon-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(12px, 1.3vw, 14px);
+      font-weight: 600;
+      color: #F8FAFC;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Interactive 18-Frame Scrubber Bar */
+    .spatial-scrubber-bar {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      cursor: pointer;
+      overflow: visible;
+    }
+
+    .scrubber-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--emerald), var(--gold), var(--gold-bright));
+      border-radius: 999px;
+      box-shadow: 0 0 14px rgba(197, 160, 89, 0.5);
+    }
+
+    /* 5-Stage Quick Jump Capsules */
+    .spatial-stage-dock {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .stage-capsule {
+      background: rgba(3, 22, 15, 0.74);
+      border: 1px solid rgba(197, 160, 89, 0.24);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      color: #FFFFFF;
+      text-align: left;
+      backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stage-capsule:hover {
+      background: rgba(8, 42, 29, 0.88);
+      border-color: rgba(197, 160, 89, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .stage-capsule.active {
+      background: linear-gradient(135deg, rgba(197, 160, 89, 0.24), rgba(16, 185, 129, 0.2));
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 24px rgba(197, 160, 89, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .sc-num {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .stage-capsule.active .sc-num {
+      color: var(--gold-bright);
+    }
+
+    .sc-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .sc-sub {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sc-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (max-width: 900px) {
+      .spatial-editorial-stage {
+        left: 16px;
+        right: 16px;
+        top: 72px;
+        transform: none;
+        width: auto;
+      }
+      .spatial-watermark-num {
+        font-size: 72px;
+        top: -30px;
+      }
+      .igloo-depth-ruler,
+      .nav-telemetry-center {
+        display: none;
+      }
+      .spatial-stage-dock {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .stage-capsule {
+        flex: 0 0 auto;
+      }
+      .ribbon-quote {
+        white-space: normal;
+        font-size: 11.5px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP ARCHITECTURAL NAVIGATION BAR (LUSION / IGLOO MINIMAL HUD)
+       ======================================================================== -->
+  <header class="spatial-top-nav">
+    <div class="nav-brand-group">
+      <a href="index.html" class="nav-brand-logo">
+        <span class="logo-gem"></span>
+        <span>바른한의원 3D 시네마틱 전용관</span>
+      </a>
+      <span class="nav-mode-badge">TYPE C · FULL-SCROLL 3D WEBGL TUNNEL</span>
+    </div>
+
+    <div class="nav-telemetry-center">
+      <span class="telemetry-coord" id="hud-z-coord">Z-DEPTH 0000m · SCENE 01/18</span>
+      <span class="telemetry-divider"></span>
+      <span class="telemetry-phase-badge" id="hud-phase-pill">✦ 바른 치료 포털 가동 중</span>
+    </div>
+
+    <div class="nav-right-actions">
+      <button type="button" class="btn-auto-flight" id="btn-auto-flight">
+        <span class="flight-dot"></span>
+        <span id="auto-flight-label">AUTO FLIGHT · ON</span>
+      </button>
+      <a href="index.html" class="btn-return-home">메인 홈페이지 ↗</a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT (NEVER SCROLLS OFF SCREEN!)
+       ======================================================================== -->
+  <div class="spatial-fixed-viewport" id="spatial-viewport">
+    <!-- Layer 1: Custom WebGL GLSL Fragment Shader Cinema Canvas (3D Portal Zoom-Through & Anatomical Morph) -->
+    <canvas id="glsl-portal-canvas"></canvas>
+
+    <!-- Layer 2: Three.js 3D Z-Axis Tunnel Rings, Warp Particles & 3D Gold Gongjindan -->
+    <canvas id="three-tunnel-canvas"></canvas>
+
+    <!-- Subtle Left Readability Vignette -->
+    <div class="spatial-vignette"></div>
+
+    <!-- Layer 3: Precision SVG Vector Anatomical & Biometric HUD Overlay -->
+    <svg id="svg-spatial-overlay" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+  </div>
+
+  <!-- ========================================================================
+       FRAMELESS 3D SPATIAL EDITORIAL TYPOGRAPHY (LEFT FLOATING LAYER)
+       ======================================================================== -->
+  <aside class="spatial-editorial-stage" id="editorial-stage">
+    <div class="spatial-watermark-num" id="ed-watermark">01</div>
+    <div class="spatial-chapter-tag" id="ed-chapter-tag">SPACE 01 · 난임치료 ➔ 탄생 ➔ 감기면역 ➔ 키성장</div>
+    <h1 class="spatial-main-title" id="ed-title">01. 생명 잉태부터 폭풍 키성장까지</h1>
+    <p class="spatial-sub-copy" id="ed-subcopy">난임 착상 치료 · 소아 감기 면역강화 · 또래 추월 키성장 치료</p>
+    <p class="spatial-narrative-desc" id="ed-desc">
+      마우스 휠을 스크롤하면 화면이 사라지지 않고, 3차원 Z축 터널을 따라 생명 잉태부터 소아 감기 면역치료, 또래보다 작았던 키가 쭈욱 길어지는 성장치료 공간까지 직접 관통(Zoom-Through)합니다.
+    </p>
+
+    <!-- 3-Phase Treatment Progression -->
+    <div class="spatial-phase-pipeline">
+      <div class="sp-node" id="sp-node-before"><span class="sp-dot"></span><span id="sp-label-before">① 치료 전 증상</span></div>
+      <span class="sp-arrow">➔</span>
+      <div class="sp-node active-treating" id="sp-node-treating"><span class="sp-dot"></span><span id="sp-label-treating">② 바른 한방치료 포털</span></div>
+      <span class="sp-arrow">➔</span>
+      <div class="sp-node" id="sp-node-after"><span class="sp-dot"></span><span id="sp-label-after">③ 치료 후 완치</span></div>
+    </div>
+
+    <!-- Live Biometric Telemetry Strip -->
+    <div class="spatial-metrics-strip">
+      <div class="sm-item">
+        <span class="sm-label" id="sm-title-1">적용된 바른 치료 처방</span>
+        <span class="sm-val" id="sm-val-1">자궁온열·착상보혈 한약</span>
+      </div>
+      <div class="sm-item">
+        <span class="sm-label" id="sm-title-2">치료를 통한 호전 변화</span>
+        <span class="sm-val gold" id="sm-val-2">자궁내막 착상률 98.4% ▲</span>
+      </div>
+    </div>
+
+    <!-- STAGE 04 Dedicated 7-Region Full-Body Pain Recovery Matrix -->
+    <div class="spatial-pain7-matrix" id="pain7-matrix">
+      <div class="pain7-header">
+        <span>🦴 머리부터 발끝 7대 부위 전신 추나·약침 치유 스캔</span>
+        <span class="pain7-badge" id="pain7-status">전신 통증 스캔 중</span>
+      </div>
+      <div class="pain7-grid" id="pain7-grid">
+        <span class="pain7-chip" data-joint="0"><span class="p-dot"></span>① 목(경추·거북목)</span>
+        <span class="pain7-chip" data-joint="1"><span class="p-dot"></span>② 어깨(승모근·회전근개)</span>
+        <span class="pain7-chip" data-joint="2"><span class="p-dot"></span>③ 팔·손목(엘보·터널)</span>
+        <span class="pain7-chip" data-joint="3"><span class="p-dot"></span>④ 굽은 척추(흉추·측만)</span>
+        <span class="pain7-chip" data-joint="4"><span class="p-dot"></span>⑤ 허리·골반(요추·협착)</span>
+        <span class="pain7-chip" data-joint="5"><span class="p-dot"></span>⑥ 다리·무릎(슬관절)</span>
+        <span class="pain7-chip" data-joint="6"><span class="p-dot"></span>⑦ 발·발목(족저근막)</span>
+      </div>
+    </div>
+
+    <div class="spatial-cta-row">
+      <a href="growth.html" class="btn-spatial-primary" id="ed-cta-primary">
+        <span id="ed-cta-text">성장·면역 클리닉 상세 보기</span>
+        <span>↗</span>
+      </a>
+      <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="btn-spatial-secondary">
+        네이버 빠른 진료예약 ↗
+      </a>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       IGLOO.INC STYLE RIGHT VERTICAL Z-DEPTH ALTMETER
+       ======================================================================== -->
+  <div class="igloo-depth-ruler">
+    <div class="depth-readout-col">
+      <span>0000m</span>
+      <span>-0450m</span>
+      <span>-0900m</span>
+      <span>-1350m</span>
+      <span>-1800m</span>
+    </div>
+    <div class="depth-track-line" id="depth-ruler-track">
+      <div class="depth-track-fill" id="depth-ruler-fill"></div>
+      <div class="depth-playhead-marker" id="depth-ruler-marker"></div>
+    </div>
+    <div class="depth-ticks-col" id="depth-ticks-col"></div>
+  </div>
+
+  <!-- ========================================================================
+       BOTTOM INTERACTIVE 5-STAGE DOCK & Z-TUNNEL SCRUBBER
+       ======================================================================== -->
+  <footer class="spatial-bottom-console">
+    <div class="spatial-subtitle-ribbon">
+      <span class="ribbon-tag" id="ribbon-tag">SPACE 01 · Z-DEPTH 000m</span>
+      <span class="ribbon-quote" id="ribbon-quote">“마우스 휠을 스크롤하면 3차원 치료 터널 속으로 전진(Zoom-Through)하며 전 생애 치유 과정을 경험합니다.”</span>
+    </div>
+
+    <div class="spatial-scrubber-bar" id="scrubber-bar" title="클릭하거나 드래그하여 원하는 3D 공간 좌표로 이동하세요">
+      <div class="scrubber-fill" id="scrubber-fill"></div>
+    </div>
+
+    <div class="spatial-stage-dock">
+      <button type="button" class="stage-capsule active" data-stage="1">
+        <span class="sc-num">01</span>
+        <div class="sc-text">
+          <span class="sc-sub">난임 ➔ 탄생 ➔ 면역 ➔ 성장</span>
+          <span class="sc-title">키가 쭈욱 자라는 성장치료</span>
+        </div>
+      </button>
+      <button type="button" class="stage-capsule" data-stage="2">
+        <span class="sc-num">02</span>
+        <div class="sc-text">
+          <span class="sc-sub">성인 체중증가·비만 ➔ 슬림화</span>
+          <span class="sc-title">날씬해지는 바른 비만치료</span>
+        </div>
+      </button>
+      <button type="button" class="stage-capsule" data-stage="3">
+        <span class="sc-num">03</span>
+        <div class="sc-text">
+          <span class="sc-sub">30대 스트레스 탈모 ➔ 발모</span>
+          <span class="sc-title">다시 풍성해지는 탈모치료</span>
+        </div>
+      </button>
+      <button type="button" class="stage-capsule" data-stage="4">
+        <span class="sc-num">04</span>
+        <div class="sc-text">
+          <span class="sc-sub">척추·목·어깨·팔·허리·다리·발</span>
+          <span class="sc-title">전신 7대 부위 추나 통증치료</span>
+        </div>
+      </button>
+      <button type="button" class="stage-capsule" data-stage="5">
+        <span class="sc-num">05</span>
+        <div class="sc-text">
+          <span class="sc-sub">노화·성인병 ➔ 황제공진단</span>
+          <span class="sc-title">기력 회복 & 아름다운 노년</span>
+        </div>
+      </button>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       1800vh VIRTUAL SCROLL TRACK (DRIVES 0% -> 100% 3D Z-AXIS FLIGHT)
+       ======================================================================== -->
+  <div class="fullscroll-virtual-track" id="virtual-scroll-track"></div>
+
+  <!-- ========================================================================
+       MASTER WEBGL GLSL SHADER + THREE.JS 3D TUNNEL + 7-JOINT ANATOMY ENGINE
+       ======================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. 5-STAGE CLINICAL SPECS
+      const STAGE_META = {
+        1: {
+          watermark: '01',
+          chapter: 'SPACE 01 · 난임치료 ➔ 아이 탄생 ➔ 감기면역 ➔ 키성장',
+          title: '01. 생명 잉태부터 폭풍 키성장까지',
+          subcopy: '난임 착상 치료 · 소아 감기 면역강화 · 또래 추월 키성장 치료',
+          desc: '자궁 온열·착상 치료로 생명이 수정되고 건강한 아이가 탄생한 뒤, 면역력 저하로 찾아온 감기를 면역보약으로 이겨내고 또래보다 작았던 키가 쭈욱 길어지는 과정을 3D 공간 돌진으로 체험합니다.',
+          ctaText: '성장·면역 클리닉 상세 보기',
+          ctaLink: 'growth.html',
+          tpLabels: ['① 난임·감기·작은키', '② 착상·면역·성장 포털', '③ 건강탄생 & +20.5cm 성장']
+        },
+        2: {
+          watermark: '02',
+          chapter: 'SPACE 02 · 성인 비만 ➔ 비만치료 한약 ➔ 날씬한 S라인',
+          title: '02. 성인 비만에서 날씬한 S라인으로',
+          subcopy: '바른 비만치료 한약 복용 · 심부 체지방 분해 & 체형 슬리밍',
+          desc: '아이가 자라 성인이 되면서 급격히 살이 찌고 비만이 된 상태에서, 바른 비만치료 한약을 통해 심부 체지방이 실시간으로 분해되며 날씬하고 건강한 체형으로 변하는 연속 과정을 담았습니다.',
+          ctaText: '바른 비만·다이어트 상세 보기',
+          ctaLink: 'diet-zero.html',
+          tpLabels: ['① 성인 비만·체지방 축적', '② 바른 비만탕약 포털', '③ -14.2kg 슬림 체형 완성']
+        },
+        3: {
+          watermark: '03',
+          chapter: 'SPACE 03 · 30대 탈모 발생 ➔ 탈모치료 ➔ 정상 모발 회복',
+          title: '03. 30대 탈모, 뿌리부터 다시 빽빽하게',
+          subcopy: '두피 상열감(熱) 청열 쿨링 · 고농도 모근 재생 약침 발모 치료',
+          desc: '30대에 접어들며 두피 열독과 스트레스로 머리카락이 빠지는 탈모 공간에서, 한의사의 정밀 두피 약침·청열 치료를 거쳐 다시 빽빽하고 윤기 나는 정상 모발로 회복됩니다.',
+          ctaText: '탈모·두피 클리닉 카톡 상담',
+          ctaLink: 'https://pf.kakao.com/_ykxcLK',
+          tpLabels: ['① 30대 두피열·탈모 발생', '② 발모약침·청열 포털', '③ 풍성한 정상 흑발 완치']
+        },
+        4: {
+          watermark: '04',
+          chapter: 'SPACE 04 · 굽은 척추 + 목·어깨·팔·허리·다리·발 전신 통증 ➔ 추나 완치',
+          title: '04. 굽은 척추와 목·어깨·팔·허리·다리·발 통증 회복',
+          subcopy: '대표원장 1:1 전신 추나 교정 · 머리부터 발끝 7대 부위 통증 완치',
+          desc: '근무 중 틀어지고 굽은 척추뿐만 아니라 ①목 ②어깨 ③팔·손목 ④굽은 척추 ⑤허리·골반 ⑥다리·무릎 ⑦발·발목까지 이어진 전신 통증이 1:1 추나·약침 치료를 통해 머리부터 발끝까지 시원하게 회복됩니다.',
+          ctaText: '추나·전신통증 클리닉 예약',
+          ctaLink: 'https://naver.me/5U1ELn8L',
+          tpLabels: ['① 척추·목·어깨·팔·허리·다리·발 통증', '② 1:1 전신 추나·약침 포털', '③ 전신 수직정렬 & 무통증 완치']
+        },
+        5: {
+          watermark: '05',
+          chapter: 'SPACE 05 · 노화·기력저하·성인병 ➔ 황제공진단 ➔ 아름다운 노년',
+          title: '05. 황제공진단으로 완성하는 아름다운 노년',
+          subcopy: '특허 24K 순금박 황제공진단 · 성인병 케어 및 백세 원기 회복',
+          desc: '나이가 들며 기력이 떨어지고 성인병이 찾아온 시기에 특허 받은 24K 황제공진단 치료로 전신 기력을 회복하고, 황금빛 노을 속에서 건강하고 아름답게 늙어가는 품격 있는 노년을 맞이합니다.',
+          ctaText: '황제공진단 VIP 처방 문의',
+          ctaLink: 'https://pf.kakao.com/_ykxcLK',
+          tpLabels: ['① 노화·기력저하·성인병', '② 특허 황제공진단 포털', '③ 기력 회복 & 아름다운 노년']
+        }
+      };
+
+      // 2. 18 SEQUENTIAL LIVE-ACTION FRAMES
+      // mode: 0 = 3D Portal Tunnel Zoom-Through, 1 = Growth Vertical Stretch, 2 = Slim Waist Pinch, 3 = Full-Body 7-Joint Chuna Laser Scan
+      const FRAMES = [
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a_fertilization.jpg?v=typec2',
+          stage: 1,
+          phase: 'treating',
+          mode: 0,
+          focal: [0.66, 0.50],
+          tag: 'SPACE 01 · Z-DEPTH 0000m (난임·착상 치료)',
+          stateText: '✦ 자궁 온열·착상 한약 치료 ➔ 생명 수정 성공',
+          quote: '“자궁 온열·착상 치료로 차가웠던 자궁에 온기가 돌며 생명이 경이롭게 수정됩니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '자궁온열·착상보혈 한약',
+          m2T: '치료를 통한 호전 변화', m2V: '자궁내막 착상률 98.4% ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1b_birth.jpg?v=typec2',
+          stage: 1,
+          phase: 'after',
+          mode: 0,
+          focal: [0.64, 0.52],
+          tag: 'SPACE 01 · Z-DEPTH -0105m (건강한 아이 탄생)',
+          stateText: '✦ 바른 안태(安胎) 케어 ➔ 건강한 아이 탄생',
+          quote: '“생명의 코어 포털을 관통하면 엄마의 손가락을 꼭 쥔 건강한 아이의 탄생 공간이 펼쳐집니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '바른 안태(安胎)·산후 보약',
+          m2T: '치료를 통한 호전 변화', m2V: '신생아 건강 활성도 99.8% ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_cold_before.jpg?v=typec2',
+          stage: 1,
+          phase: 'before',
+          mode: 0,
+          focal: [0.65, 0.48],
+          tag: 'SPACE 01 · Z-DEPTH -0210m (치료 전 · 면역저하 감기)',
+          stateText: '⚠️ 치료 전 · 호흡기 면역력 저하 & 감기 발열',
+          quote: '“아이가 자라며 면역력이 떨어져 잦은 감기와 발열로 코가 헐어 훌쩍이는 위기 공간입니다.”',
+          m1T: '치료 전 증상 진단', m1V: '호흡기·폐 면역력 41% 저하',
+          m2T: '현재 신체 상태', m2V: '잦은 감기·비염·발열 지속 ⚠️'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_immunity.jpg?v=typec2',
+          stage: 1,
+          phase: 'after',
+          mode: 0,
+          focal: [0.65, 0.48],
+          tag: 'SPACE 01 · Z-DEPTH -0315m (면역강화 치료 ➔ 감기 완치)',
+          stateText: '✦ 청정 녹용 면역보약 복용 ➔ 감기 완치·면역 회복',
+          quote: '“바른 면역강화 한약을 마시며 감기 기운이 씻은 듯이 사라지고 건강한 미소를 되찾습니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '소아 청정 녹용 면역보약',
+          m2T: '치료를 통한 호전 변화', m2V: '면역력 41% ➔ 98.5% 완치 ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_short.jpg?v=typec2',
+          stage: 1,
+          phase: 'before',
+          mode: 1, // Growth Stretch Mode into next frame!
+          focal: [0.635, 0.46],
+          tag: 'SPACE 01 · Z-DEPTH -0420m (치료 전 · 또래보다 작은 키)',
+          stateText: '⚠️ 치료 전 · 또래 친구들과 서 있을 때 유독 작은 키',
+          quote: '“양옆 또래 친구들 사이에 서 있을 때 유독 키가 작아(134cm) 주눅 들어 있는 모습입니다.”',
+          m1T: '치료 전 성장 진단', m1V: '현재 134.0cm (또래 하위 12%)',
+          m2T: '성장판·척추 상태', m2V: '하체 성장판 순환 정체 ⚠️'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_peers.jpg?v=typec2',
+          stage: 1,
+          phase: 'after',
+          mode: 0,
+          focal: [0.635, 0.38],
+          tag: 'SPACE 01 · Z-DEPTH -0525m (바른 성장치료 ➔ 키가 쭈욱 성장!)',
+          stateText: '✦ 바른 성장판 한약·추나 치료 ➔ +20.5cm 폭풍 키성장!',
+          quote: '“바른 성장치료가 시작되자 무릎 성장판과 척추가 열리며 가운데 아이의 키가 쭈욱 길어져 친구들을 훌쩍 추월합니다!”',
+          m1T: '적용된 바른 치료 처방', m1V: '성장판 녹용한약 + 성장추나',
+          m2T: '치료를 통한 신장 변화', m2V: '134cm ➔ 154.5cm (+20.5cm ▲)'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg?v=typec2',
+          stage: 2,
+          phase: 'before',
+          mode: 2, // Slimming Morph Mode!
+          focal: [0.65, 0.50],
+          tag: 'SPACE 02 · Z-DEPTH -0630m (치료 전 · 성인 비만 발생)',
+          stateText: '⚠️ 치료 전 · 성인이 되며 급격한 체중 증가 & 비만',
+          quote: '“성인이 되면서 대사가 떨어지고 급격히 살이 쪄 무거운 체중과 비만으로 힘들어하는 모습입니다.”',
+          m1T: '치료 전 체성분 진단', m1V: '체지방률 34.8% (내장비만)',
+          m2T: '현재 대사 상태', m2V: '기초대사 저하 · 부종 심화 ⚠️'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_treatment.jpg?v=typec2',
+          stage: 2,
+          phase: 'treating',
+          mode: 2, // Slimming Morph Mode!
+          focal: [0.65, 0.50],
+          tag: 'SPACE 02 · Z-DEPTH -0735m (바른 비만치료 한약 복용 중)',
+          stateText: '💊 바른 비만치료 한약 복용 ➔ 체지방 집중 분해 중',
+          quote: '“바른 비만치료 한약을 복용하자 황금빛 대사 에너지가 돌며 복부와 팔뚝의 체지방이 실시간으로 빠지기 시작합니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '바른 비만탕약 (식욕·지방분해)',
+          m2T: '실시간 치료 호전도', m2V: '체지방 34.8% ➔ 24.5% 연소 중 ▼'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg?v=typec2',
+          stage: 2,
+          phase: 'after',
+          mode: 0,
+          focal: [0.65, 0.46],
+          tag: 'SPACE 02 · Z-DEPTH -0840m (비만치료 완결 ➔ 날씬한 S라인)',
+          stateText: '✦ 바른 비만치료 완결 ➔ -14.2kg 감량 & 날씬한 S라인',
+          quote: '“비만치료 포털을 완전히 통과하며 총 14.2kg 체지방이 감량되어 날씬하고 우아한 S라인으로 변신했습니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '바른 비만탕약 + 순환 약침',
+          m2T: '치료를 통한 체형 변화', m2V: '체지방 -14.2kg 감량 성공 ▼'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_hairloss.jpg?v=typec2',
+          stage: 3,
+          phase: 'before',
+          mode: 0,
+          focal: [0.63, 0.42],
+          tag: 'SPACE 03 · Z-DEPTH -0945m (치료 전 · 30대 탈모 발생)',
+          stateText: '⚠️ 치료 전 · 30대 두피 열독(熱毒) 및 M자·정수리 탈모',
+          quote: '“30대가 되면서 과로와 두피 열독으로 머리카락이 힘없이 빠지고 M자 이마와 정수리가 비어갑니다.”',
+          m1T: '치료 전 두피 진단', m1V: '두피열 38.6°C · 모낭 약화',
+          m2T: '현재 모발 상태', m2V: 'M자 헤어라인·정수리 탈모 ⚠️'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_treatment.jpg?v=typec2',
+          stage: 3,
+          phase: 'treating',
+          mode: 0,
+          focal: [0.63, 0.42],
+          tag: 'SPACE 03 · Z-DEPTH -1050m (바른 탈모 약침·청열 치료 중)',
+          stateText: '💊 한의사 1:1 두피 발모약침 & 수승화강 청열 치료 중',
+          quote: '“한의사가 직접 달아오른 두피에 청열 쿨링과 고농도 발모 약침을 시술하자 모근이 깨어나 새 머리카락이 돋아납니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '두피 발모약침 + 수승화강 한약',
+          m2T: '실시간 치료 호전도', m2V: '두피열 -3.1°C 쿨링 · 발모 시작 ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3b_hair_restored.jpg?v=typec2',
+          stage: 3,
+          phase: 'after',
+          mode: 0,
+          focal: [0.63, 0.42],
+          tag: 'SPACE 03 · Z-DEPTH -1155m (탈모치료 완결 ➔ 정상 모발 회복)',
+          stateText: '✦ 바른 탈모치료 완료 ➔ 빽빽하고 풍성한 정상 모발 회복',
+          quote: '“탈모치료 결과 비어 있던 이마 라인과 정수리에 굵고 힘 있는 정상 모발이 다시 빽빽하게 차올랐습니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '모근재생 약침 + 발모 보혈탕',
+          m2T: '치료를 통한 모발 변화', m2V: '모발 밀도 +185% 정상 회복 ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_work_spine_pain.jpg?v=typec2',
+          stage: 4,
+          phase: 'before',
+          mode: 3, // Full-Body 7-Region Chuna Laser Scan!
+          focal: [0.54, 0.52],
+          tag: 'SPACE 04 · Z-DEPTH -1260m (치료 전 · 굽은 척추 & 7대 부위 전신 통증)',
+          stateText: '⚠️ 치료 전 · 굽은 척추 + 목·어깨·팔·허리·다리·발 전신 통증',
+          quote: '“근무 중 굽은 척추뿐만 아니라 ①목 ②어깨 ③팔·손목 ④등(척추) ⑤허리·골반 ⑥다리·무릎 ⑦발·발목까지 머리부터 발끝 전신에 통증이 발생했습니다.”',
+          m1T: '치료 전 전신 체형 진단', m1V: '굽은 척추 + 목·어깨·팔·허리·다리·발 통증',
+          m2T: '현재 통증 지수', m2V: '전신 7대 부위 급만성 통증 ⚠️'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_treatment.jpg?v=typec2',
+          stage: 4,
+          phase: 'treating',
+          mode: 3, // Full-Body 7-Region Chuna Laser Scan!
+          focal: [0.54, 0.52],
+          tag: 'SPACE 04 · Z-DEPTH -1365m (원장님 1:1 전신 추나·약침 교정 중)',
+          stateText: '💊 원장님 1:1 수기 추나 ➔ 목·어깨·팔·척추·허리·다리·발 교정 중',
+          quote: '“대표원장님이 직접 굽은 척추와 목·어깨·팔·허리·다리·발 관절을 1:1 추나 수기요법으로 정렬하며 머리부터 발끝까지 통증을 해소합니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '1:1 전신 추나교정 + 정품 봉약침',
+          m2T: '실시간 치료 호전도', m2V: '척추·목·어깨·팔·허리·다리·발 교정 중 ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_recovery.jpg?v=typec2',
+          stage: 4,
+          phase: 'after',
+          mode: 0,
+          focal: [0.54, 0.50],
+          tag: 'SPACE 04 · Z-DEPTH -1470m (전신 7대 부위 통증 완벽 회복)',
+          stateText: '✦ 굽은 척추 수직 정렬 & 목·어깨·팔·허리·다리·발 무통증 완치',
+          quote: '“추나·약침 치료 후 굽은 척추가 반듯하게 펴지고, 목·어깨·팔·허리·다리·발까지 전신 7대 부위 통증이 100% 사라졌습니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '전신 추나교정 + 신경재생 한약',
+          m2T: '치료를 통한 체형 변화', m2V: '척추·목·어깨·팔·허리·다리·발 완치 ✓'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5a_aging_fatigue.jpg?v=typec2',
+          stage: 5,
+          phase: 'before',
+          mode: 0,
+          focal: [0.64, 0.48],
+          tag: 'SPACE 05 · Z-DEPTH -1575m (치료 전 · 노화·기력저하·성인병)',
+          stateText: '⚠️ 치료 전 · 노화로 인한 기력 고갈 & 만성 성인병',
+          quote: '“세월이 흘러 나이가 들면서 기력이 급격히 쇠약해지고 성인병이 찾아와 지쳐 있는 노년의 공간입니다.”',
+          m1T: '치료 전 노년기 진단', m1V: '심폐 기력 36% · 성인병 위험',
+          m2T: '현재 신체 상태', m2V: '만성 무기력증 · 면역 저하 ⚠️'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5b_gongjindan_vitality.jpg?v=typec2',
+          stage: 5,
+          phase: 'treating',
+          mode: 0,
+          focal: [0.64, 0.48],
+          tag: 'SPACE 05 · Z-DEPTH -1680m (특허 24K 황제공진단 복용 치료 중)',
+          stateText: '💊 특허 24K 순금박 황제공진단 복용 ➔ 전신 기력·혈류 점화',
+          quote: '“특허 받은 24K 순금박 황제공진단을 복용하자 심장부터 12경락까지 황금빛 원기가 차오르며 기력이 살아납니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '특허 24K 황제공진단 (정품사향)',
+          m2T: '실시간 치료 호전도', m2V: '뇌혈류·심폐 활력 +210% 회복 ▲'
+        },
+        {
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5c_graceful_elder.jpg?v=typec2',
+          stage: 5,
+          phase: 'after',
+          mode: 0,
+          focal: [0.64, 0.46],
+          tag: 'SPACE 05 · Z-DEPTH -1800m (황제공진단 완결 ➔ 아름다운 노년)',
+          stateText: '✦ 황제공진단 기력 회복 완료 ➔ 아름답게 늙어가는 백세 노년',
+          quote: '“황제공진단으로 기력을 온전히 회복하고, 황금빛 노을 속에서 건강하고 아름답게 나이 들어가는 모습을 완성합니다.”',
+          m1T: '적용된 바른 치료 처방', m1V: '특허 황제공진단 + 백세보약',
+          m2T: '치료를 통한 생애 변화', m2V: '전신 기력 99.9% · 아름다운 노년 👑'
+        }
+      ];
+
+      // ======================================================================
+      // 3. CUSTOM GLSL SHADER ENGINE (Lusion / Igloo WebGL Portal & Morph)
+      // ======================================================================
+      const portalCanvas = document.getElementById('glsl-portal-canvas');
+      let glRenderer, glScene, glCamera, glMaterial, glTextures = [];
+      let loadedCount = 0;
+
+      const VERTEX_SHADER = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `;
+
+      // High-End Lusion / Igloo GLSL Fragment Shader:
+      // - Aspect-correct cover UV mapping
+      // - Pseudo-depth parallax from mouse + subtle breathing
+      // - Mode 0: 3D Z-Axis Portal Aperture Zoom-Through (Current zooms past camera 1.0 -> 1.85x, Next emerges from 3D portal ring 0.58 -> 1.0x with optical refraction & golden-emerald shockwave)
+      // - Mode 1: Stage 1 Height Growth Vertical Stretch Warp on central child + ascending golden growth laser
+      // - Mode 2: Stage 2 Obesity Waistline Inward Pinch Warp + metabolic golden aura
+      // - Mode 3: Stage 4 Full-Body 7-Region Chuna Laser Scan Plane sweeping head-to-toe (y: 0.88 -> 0.08 in UV)
+      const FRAGMENT_SHADER = `
+        precision highp float;
+        varying vec2 vUv;
+
+        uniform sampler2D uTexCurr;
+        uniform sampler2D uTexNext;
+        uniform float uMix;
+        uniform float uTime;
+        uniform float uVelocity;
+        uniform vec2 uResolution;
+        uniform vec2 uMouse;
+        uniform vec2 uFocal;
+        uniform int uMode;
+
+        // Hash & Smooth Noise for Organic Portal & Tissue Morphing
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+          return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+        }
+
+        float fbm(vec2 p) {
+          float v = 0.0;
+          float a = 0.5;
+          for (int i = 0; i < 4; i++) {
+            v += a * noise(p);
+            p *= 2.02;
+            a *= 0.5;
+          }
+          return v;
+        }
+
+        // Aspect-ratio preserving cover UV (16:9 base texture)
+        vec2 getCoverUv(vec2 uv) {
+          float screenAspect = uResolution.x / max(uResolution.y, 1.0);
+          float texAspect = 16.0 / 9.0;
+          vec2 s = vec2(1.0);
+          if (screenAspect > texAspect) {
+            s.y = texAspect / screenAspect;
+          } else {
+            s.x = screenAspect / texAspect;
+          }
+          return (uv - 0.5) * s + 0.5;
+        }
+
+        void main() {
+          vec2 baseUv = getCoverUv(vUv);
+          float aspect = uResolution.x / max(uResolution.y, 1.0);
+
+          // Smooth cubic easing
+          float t = smoothstep(0.0, 1.0, uMix);
+          // Flip focal Y for WebGL UV space (0 = bottom, 1 = top)
+          vec2 focal = vec2(uFocal.x, 1.0 - uFocal.y);
+
+          // Subtle 3D Mouse Parallax + Breathing
+          vec2 parallax = (uMouse - 0.5) * 0.018;
+          float breath = sin(uTime * 1.4) * 0.004;
+
+          vec4 finalColor = vec4(0.0);
+
+          if (uMode == 1) {
+            // ================================================================
+            // MODE 1: STAGE 01 HEIGHT GROWTH VERTICAL STRETCH (+20.5cm)
+            // ================================================================
+            float horizMask = exp(-pow((baseUv.x - 0.635) / 0.14, 2.0));
+            float vertMask = smoothstep(0.15, 0.55, baseUv.y) * (1.0 - smoothstep(0.82, 0.98, baseUv.y));
+            float stretchMask = horizMask * vertMask;
+
+            // Outgoing short child stretches upward as t increases
+            vec2 uvCurr = baseUv - parallax * (1.0 - t);
+            uvCurr.y -= stretchMask * t * 0.095;
+            // Incoming tall child settles into full stature
+            vec2 uvNext = baseUv - parallax * t;
+            uvNext.y += stretchMask * (1.0 - t) * 0.075;
+
+            // Slight forward Z-zoom during growth
+            uvCurr = (uvCurr - focal) / (1.0 + t * 0.08) + focal;
+            uvNext = (uvNext - focal) / (0.94 + t * 0.06) + focal;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            // Ascending golden growth-plate wave from bottom (0.15) to top (0.92)
+            float waveY = mix(0.12, 0.95, t);
+            float reveal = smoothstep(waveY - 0.14, waveY + 0.08, 1.0 - (baseUv.y - waveY));
+            float scanLine = exp(-pow((baseUv.y - waveY) / 0.025, 2.0)) * horizMask;
+
+            finalColor = mix(cCurr, cNext, t);
+            finalColor.rgb += vec3(0.98, 0.82, 0.35) * scanLine * sin(t * 3.14159) * 0.85;
+          }
+          else if (uMode == 2) {
+            // ================================================================
+            // MODE 2: STAGE 02 OBESITY SLIMMING WAIST PINCH MORPH (-14.2kg)
+            // ================================================================
+            float waistYMask = exp(-pow((baseUv.y - 0.45) / 0.26, 2.0));
+            float dx = baseUv.x - 0.65;
+            float waistXMask = exp(-pow(dx / 0.18, 2.0));
+            float pinch = dx * waistYMask * waistXMask;
+
+            // Outgoing heavy silhouette pinches inward horizontally
+            vec2 uvCurr = baseUv - parallax * (1.0 - t);
+            uvCurr.x += pinch * t * 0.38;
+            // Incoming slim silhouette unpinches smoothly
+            vec2 uvNext = baseUv - parallax * t;
+            uvNext.x -= pinch * (1.0 - t) * 0.32;
+
+            // Forward Z-camera push
+            uvCurr = (uvCurr - focal) / (1.0 + t * 0.12) + focal;
+            uvNext = (uvNext - focal) / (0.92 + t * 0.08) + focal;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            float ringDist = length((baseUv - vec2(0.65, 0.48)) * vec2(aspect, 1.0));
+            float burnRing = exp(-pow((ringDist - (1.0 - t) * 0.38) / 0.035, 2.0)) * sin(t * 3.14159);
+
+            finalColor = mix(cCurr, cNext, t);
+            finalColor.rgb += vec3(0.95, 0.72, 0.25) * burnRing * 0.7;
+          }
+          else if (uMode == 3) {
+            // ================================================================
+            // MODE 3: STAGE 04 FULL-BODY 7-REGION CHUNA LASER SCAN (HEAD TO TOE)
+            // ================================================================
+            // Laser sweeps from head (WebGL uv.y = 0.88) down to feet (uv.y = 0.06)
+            float laserY = mix(0.90, 0.04, t);
+            float bodyMask = exp(-pow((baseUv.x - 0.54) / 0.22, 2.0));
+            float n = fbm(baseUv * 8.0 + uTime * 0.6) * 0.015;
+
+            // Subtle posture straightening shift
+            vec2 uvCurr = (baseUv - focal) / (1.0 + t * 0.09) + focal - parallax;
+            vec2 uvNext = (baseUv - focal) / (0.93 + t * 0.07) + focal - parallax;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            // Above laserY (higher uv.y) is healed (cNext); below laserY is before/treating (cCurr)
+            float healedZone = smoothstep(laserY - 0.06, laserY + 0.06, baseUv.y + n);
+            float laserBeam = exp(-pow((baseUv.y - laserY) / 0.018, 2.0)) * (0.35 + 0.65 * bodyMask);
+            float laserHalo = exp(-pow((baseUv.y - laserY) / 0.065, 2.0)) * bodyMask;
+
+            finalColor = mix(cCurr, cNext, max(healedZone, t * 0.35));
+            // Emerald + Champagne Gold Chuna Scan Beam
+            vec3 beamCol = mix(vec3(0.06, 0.72, 0.50), vec3(0.99, 0.88, 0.45), laserBeam);
+            float activeScan = sin(t * 3.14159);
+            finalColor.rgb += beamCol * (laserBeam * 1.15 + laserHalo * 0.45) * activeScan;
+          }
+          else {
+            // ================================================================
+            // MODE 0: LUSION / IGLOO 3D Z-AXIS PORTAL ZOOM-THROUGH
+            // Outgoing scene flies PAST camera (scale 1.0 -> 1.88x);
+            // Incoming scene emerges through a 3D Refractive Portal Gate (scale 0.54 -> 1.0x)
+            // ================================================================
+            vec2 dVec = (baseUv - focal) * vec2(aspect, 1.0);
+            float dist = length(dVec);
+            float organicNoise = (fbm(baseUv * 5.5 + uTime * 0.35) - 0.5) * 0.09;
+
+            // Outgoing frame zooms toward & past viewer
+            float scaleOut = 1.0 + pow(t, 1.45) * 0.88 + breath;
+            // Incoming frame zooms from deep Z-tunnel up to 1.0x
+            float scaleIn = 0.54 + (1.0 - pow(1.0 - t, 1.65)) * 0.46 + breath;
+
+            // Portal aperture radius expands from 0.0 to 1.45
+            float portalRadius = mix(-0.05, 1.42, pow(t, 1.15));
+            float portalEdge = smoothstep(portalRadius + 0.14, portalRadius - 0.10, dist + organicNoise);
+
+            // Optical refraction along portal rim
+            float rimIntensity = exp(-pow((dist + organicNoise - portalRadius) / 0.055, 2.0)) * sin(t * 3.14159);
+            vec2 rimDir = normalize(dVec + vec2(0.0001));
+
+            vec2 uvCurr = (baseUv - focal) / scaleOut + focal - parallax * (1.0 + t * 0.8) + rimDir * rimIntensity * 0.025;
+            vec2 uvNext = (baseUv - focal) / scaleIn + focal - parallax * t - rimDir * rimIntensity * 0.02;
+
+            // Subtle chromatic aberration on portal rim & fast scroll
+            float chroma = (rimIntensity * 0.008 + min(abs(uVelocity), 1.0) * 0.006);
+            vec4 cCurr;
+            cCurr.r = texture2D(uTexCurr, clamp(uvCurr + rimDir * chroma, 0.002, 0.998)).r;
+            cCurr.g = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998)).g;
+            cCurr.b = texture2D(uTexCurr, clamp(uvCurr - rimDir * chroma, 0.002, 0.998)).b;
+            cCurr.a = 1.0;
+
+            vec4 cNext;
+            cNext.r = texture2D(uTexNext, clamp(uvNext + rimDir * chroma * 0.6, 0.002, 0.998)).r;
+            cNext.g = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998)).g;
+            cNext.b = texture2D(uTexNext, clamp(uvNext - rimDir * chroma * 0.6, 0.002, 0.998)).b;
+            cNext.a = 1.0;
+
+            // Blend via 3D portal aperture + smooth global crossfade safety
+            float blendFactor = clamp(mix(t, portalEdge, 0.68), 0.0, 1.0);
+            finalColor = mix(cCurr, cNext, blendFactor);
+
+            // Luminous Champagne Gold + Emerald 3D Portal Shockwave Ring
+            vec3 portalGlow = mix(vec3(0.06, 0.73, 0.51), vec3(0.98, 0.84, 0.48), 0.65);
+            finalColor.rgb += portalGlow * rimIntensity * 0.72;
+          }
+
+          gl_FragColor = finalColor;
+        }
+      `;
+
+      function initGLSLPortalStage() {
+        if (typeof THREE === 'undefined' || !portalCanvas) return;
+
+        glRenderer = new THREE.WebGLRenderer({
+          canvas: portalCanvas,
+          antialias: true,
+          powerPreference: 'high-performance'
+        });
+        glRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        glRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        glScene = new THREE.Scene();
+        glCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+        // Create placeholder dark emerald texture so shader works immediately before images finish loading
+        const placeholderData = new Uint8Array([3, 24, 17, 255]);
+        const placeholderTex = new THREE.DataTexture(placeholderData, 1, 1, THREE.RGBAFormat);
+        placeholderTex.needsUpdate = true;
+
+        const loader = new THREE.TextureLoader();
+        glTextures = FRAMES.map((f, idx) => {
+          const tex = loader.load(
+            f.src,
+            (loadedTex) => {
+              loadedTex.minFilter = THREE.LinearFilter;
+              loadedTex.magFilter = THREE.LinearFilter;
+              loadedTex.generateMipmaps = false;
+              loadedCount++;
+            }
+          );
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          return tex || placeholderTex;
+        });
+
+        glMaterial = new THREE.ShaderMaterial({
+          vertexShader: VERTEX_SHADER,
+          fragmentShader: FRAGMENT_SHADER,
+          uniforms: {
+            uTexCurr: { value: glTextures[0] || placeholderTex },
+            uTexNext: { value: glTextures[1] || placeholderTex },
+            uMix: { value: 0.0 },
+            uTime: { value: 0.0 },
+            uVelocity: { value: 0.0 },
+            uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+            uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+            uFocal: { value: new THREE.Vector2(0.65, 0.50) },
+            uMode: { value: 0 }
+          },
+          depthWrite: false,
+          depthTest: false
+        });
+
+        const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), glMaterial);
+        glScene.add(quad);
+      }
+
+      // ======================================================================
+      // 4. THREE.JS 3D Z-AXIS ARCHITECTURAL TUNNEL RINGS & WARP PARTICLES
+      // ======================================================================
+      const tunnelCanvas = document.getElementById('three-tunnel-canvas');
+      let tRenderer, tScene, tCamera, tPortalGates = [], tParticles, tGongjindanGroup;
+
+      function initThreeTunnelStage() {
+        if (typeof THREE === 'undefined' || !tunnelCanvas) return;
+
+        tRenderer = new THREE.WebGLRenderer({
+          canvas: tunnelCanvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: 'high-performance'
+        });
+        tRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        tRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        tScene = new THREE.Scene();
+        tCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.5, 450);
+        tCamera.position.set(0, 0, 0);
+
+        // Build 18 3D Architectural Portal Rings spaced every -24 units along Z (0 to -408)
+        const ringGeo = new THREE.RingGeometry(6.8, 6.92, 64);
+        const outerGeo = new THREE.RingGeometry(8.4, 8.44, 6);
+
+        for (let i = 0; i < 18; i++) {
+          const gateGroup = new THREE.Group();
+          const isMajorStage = (i === 0 || i === 6 || i === 9 || i === 12 || i === 15);
+          const color = isMajorStage ? 0xFDE68A : (i % 2 === 0 ? 0xC5A059 : 0x10B981);
+
+          const mat1 = new THREE.MeshBasicMaterial({
+            color: color,
+            transparent: true,
+            opacity: isMajorStage ? 0.28 : 0.14,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+          });
+          const ringMesh = new THREE.Mesh(ringGeo, mat1);
+          gateGroup.add(ringMesh);
+
+          const mat2 = new THREE.MeshBasicMaterial({
+            color: 0xC5A059,
+            transparent: true,
+            opacity: 0.08,
+            wireframe: true,
+            blending: THREE.AdditiveBlending
+          });
+          const hexMesh = new THREE.Mesh(outerGeo, mat2);
+          gateGroup.add(hexMesh);
+
+          // Offset slightly right-center to frame the human subject
+          gateGroup.position.set(1.8, 0.0, -i * 24);
+          tScene.add(gateGroup);
+          tPortalGates.push({ group: gateGroup, ring: ringMesh, hex: hexMesh, baseZ: -i * 24 });
+        }
+
+        // Build 3,500 3D Bioluminescent Warp Particles in the Z-Tunnel
+        const pCount = 3500;
+        const pGeo = new THREE.BufferGeometry();
+        const pPos = new Float32Array(pCount * 3);
+        const pCol = new Float32Array(pCount * 3);
+
+        const cGold = new THREE.Color(0xFDE68A);
+        const cEmerald = new THREE.Color(0x10B981);
+
+        for (let i = 0; i < pCount; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const radius = 2.5 + Math.random() * 18.0;
+          pPos[i * 3] = Math.cos(angle) * radius + 1.5;
+          pPos[i * 3 + 1] = Math.sin(angle) * radius * 0.65;
+          pPos[i * 3 + 2] = -Math.random() * 440 + 20;
+
+          const c = Math.random() > 0.35 ? cGold : cEmerald;
+          pCol[i * 3] = c.r;
+          pCol[i * 3 + 1] = c.g;
+          pCol[i * 3 + 2] = c.b;
+        }
+
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+        pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+
+        const pMat = new THREE.PointsMaterial({
+          size: 0.16,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.65,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+
+        tParticles = new THREE.Points(pGeo, pMat);
+        tScene.add(tParticles);
+
+        // Stage 5 3D 24K Emperor Gongjindan Celestial Orbital Ring Group (at z = -384)
+        tGongjindanGroup = new THREE.Group();
+        const orbMat = new THREE.MeshBasicMaterial({
+          color: 0xFBBF24,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.35,
+          blending: THREE.AdditiveBlending
+        });
+        const halo1 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.03, 16, 80), orbMat);
+        const halo2 = new THREE.Mesh(new THREE.TorusGeometry(4.1, 0.02, 16, 80), orbMat);
+        halo2.rotation.x = Math.PI / 3;
+        tGongjindanGroup.add(halo1, halo2);
+        tGongjindanGroup.position.set(2.4, 0.2, -384);
+        tScene.add(tGongjindanGroup);
+      }
+
+      // ======================================================================
+      // 5. PRECISION SVG VECTOR ANATOMICAL HUD (STAGE 4 7-JOINT SCANNER & MORE)
+      // ======================================================================
+      const svgOverlay = document.getElementById('svg-spatial-overlay');
+
+      // 7 Full-Body Regions mapped to 1920x1080 coordinate space on the right-center full-body subject
+      const PAIN_7_JOINTS = [
+        { id: 0, name: '① 목 (경추·거북목)',         bx: 1025, by: 225, lx: 810,  ly: 195, side: 'left',  painTxt: '거북목·경추통 ⚠️', healTxt: '경추 정렬 완치 ✓' },
+        { id: 1, name: '② 어깨 (승모근·회전근개)',    bx: 965,  by: 300, lx: 760,  ly: 280, side: 'left',  painTxt: '어깨 비대칭·결림 ⚠️', healTxt: '어깨 균형 회복 ✓' },
+        { id: 2, name: '③ 팔·손목 (엘보·터널증후군)', bx: 905,  by: 465, lx: 730,  ly: 455, side: 'left',  painTxt: '팔·손목 저림 ⚠️', healTxt: '팔·손목 무통증 ✓' },
+        { id: 3, name: '④ 굽은 척추 (흉추·측만증)',   bx: 1045, by: 385, lx: 1255, ly: 345, side: 'right', painTxt: '굽은 척추 변형 ⚠️', healTxt: '척추 수직 정렬 ✓' },
+        { id: 4, name: '⑤ 허리·골반 (요추·협착증)',   bx: 1030, by: 525, lx: 1255, ly: 505, side: 'right', painTxt: '허리·골반 틀어짐 ⚠️', healTxt: '요추·골반 교정 ✓' },
+        { id: 5, name: '⑥ 다리·무릎 (슬관절·방사통)', bx: 995,  by: 755, lx: 760,  ly: 745, side: 'left',  painTxt: '다리·무릎 관절통 ⚠️', healTxt: '다리·무릎 강화 ✓' },
+        { id: 6, name: '⑦ 발·발목 (족저근막·인대)',   bx: 1015, by: 955, lx: 1255, ly: 935, side: 'right', painTxt: '발·발목 통증 ⚠️', healTxt: '족부·발목 완치 ✓' }
+      ];
+
+      function renderSpatialSVGOverlay(frameFloat, timeSec) {
+        if (!svgOverlay) return;
+
+        // Stage 4: Frame 12.0 -> 14.4 (Crooked Spine + Neck/Shoulder/Arm/Waist/Leg/Foot 7-Region Scan)
+        if (frameFloat >= 11.65 && frameFloat <= 14.55) {
+          const stage4Progress = Math.max(0, Math.min(1, (frameFloat - 12.0) / 2.0));
+          // Scan Y sweeps from top of head (160) to below feet (1000)
+          const scanY = 160 + stage4Progress * 840;
+          const crookedFactor = Math.max(0, 1.0 - stage4Progress * 1.15);
+
+          // Spine S-Curve points from C1 (Neck 225) to Sacrum (540)
+          let spineD = '';
+          for (let s = 0; s <= 16; s++) {
+            const frac = s / 16;
+            const py = 220 + frac * 320;
+            const isAboveScan = py <= scanY;
+            const localCrook = isAboveScan ? crookedFactor * 0.12 : crookedFactor;
+            const px = 1030 + Math.sin(frac * Math.PI * 2.1) * 34 * localCrook;
+            spineD += (s === 0 ? `M ${px.toFixed(1)} ${py.toFixed(1)}` : ` L ${px.toFixed(1)} ${py.toFixed(1)}`);
+          }
+
+          let jointsSvg = '';
+          const chips = document.querySelectorAll('#pain7-grid .pain7-chip');
+          let healedCount = 0;
+
+          PAIN_7_JOINTS.forEach((j, idx) => {
+            const jx = j.bx + Math.sin(idx * 1.5) * 16 * crookedFactor;
+            const jy = j.by;
+            const distScan = scanY - jy;
+            const isHealed = distScan > 25 || stage4Progress >= 0.94;
+            const isScanning = Math.abs(distScan) <= 45 && stage4Progress > 0.01 && stage4Progress < 0.96;
+
+            if (isHealed) healedCount++;
+
+            // Sync Left HUD Pain Matrix Chip
+            if (chips[idx]) {
+              chips[idx].classList.toggle('healed', isHealed);
+              chips[idx].classList.toggle('healing', isScanning && !isHealed);
+            }
+
+            const strokeCol = isHealed ? '#10B981' : (isScanning ? '#FDE68A' : '#EF4444');
+            const badgeBg = isHealed ? 'rgba(4, 38, 26, 0.9)' : (isScanning ? 'rgba(65, 48, 10, 0.92)' : 'rgba(55, 12, 16, 0.9)');
+            const statusLabel = isHealed ? j.healTxt : (isScanning ? '추나·약침 교정 중 ⚡' : j.painTxt);
+            const pulseR = 12 + Math.sin(timeSec * 5 + idx) * 4;
+
+            const boxW = 215;
+            const boxH = 44;
+            const boxX = j.side === 'left' ? j.lx - boxW : j.lx;
+            const boxY = j.ly - boxH / 2;
+
+            jointsSvg += `
+              <g>
+                <!-- Pulsing Joint Target Ring -->
+                <circle cx="${jx}" cy="${jy}" r="${pulseR}" fill="none" stroke="${strokeCol}" stroke-width="2" opacity="0.75"/>
+                <circle cx="${jx}" cy="${jy}" r="5.5" fill="${strokeCol}"/>
+                <!-- Architectural Leader Line -->
+                <polyline points="${jx},${jy} ${(jx + j.lx) * 0.5},${j.ly} ${j.lx},${j.ly}"
+                  fill="none" stroke="${strokeCol}" stroke-width="1.6" stroke-dasharray="${isHealed ? 'none' : '4 3'}" opacity="0.85"/>
+                <!-- Callout Pill Box -->
+                <rect x="${boxX}" y="${boxY}" width="${boxW}" height="${boxH}" rx="10"
+                  fill="${badgeBg}" stroke="${strokeCol}" stroke-width="1.5"/>
+                <text x="${boxX + 12}" y="${boxY + 18}" fill="#FFFFFF" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="800">${j.name}</text>
+                <text x="${boxX + 12}" y="${boxY + 35}" fill="${isHealed ? '#6EE7B7' : (isScanning ? '#FDE68A' : '#FCA5A5')}" font-family="Pretendard, sans-serif" font-size="11" font-weight="700">${statusLabel}</text>
+              </g>
+            `;
+          });
+
+          const painStatusEl = document.getElementById('pain7-status');
+          if (painStatusEl) {
+            if (healedCount >= 7) {
+              painStatusEl.textContent = '✓ 전신 7대 부위 통증 완치';
+              painStatusEl.classList.add('healed');
+            } else if (healedCount > 0) {
+              painStatusEl.textContent = `⚡ ${healedCount}/7 부위 추나 치유 완료`;
+              painStatusEl.classList.remove('healed');
+            } else {
+              painStatusEl.textContent = '⚠️ 전신 7대 부위 통증 감지';
+              painStatusEl.classList.remove('healed');
+            }
+          }
+
+          svgOverlay.innerHTML = `
+            <defs>
+              <linearGradient id="scanBeamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#10B981" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#10B981" stop-opacity="0.85"/>
+                <stop offset="54%" stop-color="#FDE68A" stop-opacity="1"/>
+                <stop offset="75%" stop-color="#10B981" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Spine Alignment Curve -->
+            <path d="${spineD}" fill="none" stroke="${stage4Progress > 0.6 ? '#FDE68A' : '#EF4444'}" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+            <!-- Horizontal Chuna Laser Scan Bar -->
+            ${stage4Progress > 0.01 && stage4Progress < 0.97 ? `
+              <line x1="640" y1="${scanY}" x2="1420" y2="${scanY}" stroke="url(#scanBeamGrad)" stroke-width="3.5"/>
+              <rect x="940" y="${scanY - 26}" width="210" height="22" rx="11" fill="rgba(2, 18, 12, 0.9)" stroke="#FDE68A" stroke-width="1.2"/>
+              <text x="1045" y="${scanY - 11}" text-anchor="middle" fill="#FDE68A" font-family="Space Mono, Pretendard, sans-serif" font-size="11" font-weight="700">CHUNA 7-JOINT SCAN ${(stage4Progress * 100).toFixed(0)}%</text>
+            ` : ''}
+            ${jointsSvg}
+          `;
+        }
+        // Stage 1 Height Growth Laser Measurement (Frame 4.0 -> 5.4)
+        else if (frameFloat >= 3.85 && frameFloat <= 5.45) {
+          const gProg = Math.max(0, Math.min(1, frameFloat - 4.0));
+          const cmVal = (134.0 + gProg * 20.5).toFixed(1);
+          const crownY = 395 - gProg * 125;
+          const col = gProg > 0.5 ? '#6EE7B7' : '#FDE68A';
+
+          svgOverlay.innerHTML = `
+            <g>
+              <line x1="1080" y1="${crownY}" x2="1360" y2="${crownY}" stroke="${col}" stroke-width="2" stroke-dasharray="6 4"/>
+              <rect x="1115" y="${crownY - 40}" width="235" height="32" rx="16" fill="rgba(2, 16, 11, 0.88)" stroke="${col}" stroke-width="1.5"/>
+              <text x="1232" y="${crownY - 19}" text-anchor="middle" fill="${col}" font-family="Space Mono, Pretendard, sans-serif" font-size="13" font-weight="800">
+                HEIGHT: ${cmVal}cm ${gProg > 0.15 ? '(+' + (gProg * 20.5).toFixed(1) + 'cm ▲)' : ''}
+              </text>
+            </g>
+          `;
+        }
+        // Stage 2 Obesity Waistline Caliper (Frame 6.0 -> 8.3)
+        else if (frameFloat >= 5.85 && frameFloat <= 8.35) {
+          const sProg = Math.max(0, Math.min(1, (frameFloat - 6.0) / 2.0));
+          const gap = 165 - sProg * 52;
+          const kgLost = (sProg * 14.2).toFixed(1);
+          const cx = 1245, cy = 540;
+          const col = sProg > 0.5 ? '#6EE7B7' : '#FDE68A';
+
+          svgOverlay.innerHTML = `
+            <g>
+              <line x1="${cx - gap - 35}" y1="${cy}" x2="${cx - gap}" y2="${cy}" stroke="${col}" stroke-width="3"/>
+              <polygon points="${cx - gap},${cy} ${cx - gap - 10},${cy - 6} ${cx - gap - 10},${cy + 6}" fill="${col}"/>
+              <line x1="${cx + gap + 35}" y1="${cy}" x2="${cx + gap}" y2="${cy}" stroke="${col}" stroke-width="3"/>
+              <polygon points="${cx + gap},${cy} ${cx + gap + 10},${cy - 6} ${cx + gap + 10},${cy + 6}" fill="${col}"/>
+              <rect x="${cx - 115}" y="${cy + 36}" width="230" height="30" rx="15" fill="rgba(2, 16, 11, 0.88)" stroke="${col}" stroke-width="1.4"/>
+              <text x="${cx}" y="${cy + 56}" text-anchor="middle" fill="${col}" font-family="Space Mono, Pretendard, sans-serif" font-size="12.5" font-weight="800">
+                체지방 -${kgLost}kg 감량 진행 중 ▼
+              </text>
+            </g>
+          `;
+        } else {
+          if (svgOverlay.innerHTML !== '') svgOverlay.innerHTML = '';
+        }
+      }
+
+      // ======================================================================
+      // 6. SCROLL ENGINE, DEPTH RULER & REAL-TIME HUD SYNCHRONIZATION
+      // ======================================================================
+      let targetProgress = 0;
+      let smoothProgress = 0;
+      let prevProgress = 0;
+      let scrollVelocity = 0;
+      let isAutoFlight = false;
+      let lastUserInteract = 0;
+      let mouseNorm = { x: 0.5, y: 0.5 };
+      let currentStageId = -1;
+
+      // Build 18 ticks on right Igloo Z-Depth Ruler
+      const ticksCol = document.getElementById('depth-ticks-col');
+      const tickEls = [];
+      if (ticksCol) {
+        FRAMES.forEach((f, idx) => {
+          const tick = document.createElement('div');
+          const isMajor = (idx === 0 || idx === 6 || idx === 9 || idx === 12 || idx === 15 || idx === 17);
+          tick.className = 'depth-tick' + (isMajor ? ' major' : '');
+          tick.title = f.tag;
+          tick.addEventListener('click', () => scrollToNormalized(idx / (FRAMES.length - 1)));
+          ticksCol.appendChild(tick);
+          tickEls.push(tick);
+        });
+      }
+
+      function getScrollMax() {
+        const track = document.getElementById('virtual-scroll-track');
+        const h = track ? track.offsetHeight : document.documentElement.scrollHeight;
+        return Math.max(1, h - window.innerHeight);
+      }
+
+      function getCurrentScrollY() {
+        return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      }
+
+      function setAutoFlightUI(active) {
+        isAutoFlight = active;
+        const autoBtn = document.getElementById('btn-auto-flight');
+        const autoLabel = document.getElementById('auto-flight-label');
+        if (autoBtn) autoBtn.classList.toggle('paused', !isAutoFlight);
+        if (autoLabel) autoLabel.textContent = isAutoFlight ? 'AUTO FLIGHT · ON' : '▶ AUTO FLIGHT';
+      }
+
+      function scrollToNormalized(norm) {
+        const clamped = Math.max(0, Math.min(1, norm));
+        targetProgress = clamped;
+        window.scrollTo({ top: clamped * getScrollMax(), behavior: 'smooth' });
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!isAutoFlight) {
+          targetProgress = Math.max(0, Math.min(1, getCurrentScrollY() / getScrollMax()));
+        }
+      }, { passive: true });
+
+      window.addEventListener('wheel', (e) => {
+        lastUserInteract = performance.now();
+        if (isAutoFlight) setAutoFlightUI(false);
+        // Immediate delta responsiveness even before native scroll event fires
+        const maxS = getScrollMax();
+        const nextY = Math.max(0, Math.min(maxS, getCurrentScrollY() + e.deltaY));
+        targetProgress = nextY / maxS;
+      }, { passive: true });
+
+      window.addEventListener('touchstart', () => {
+        lastUserInteract = performance.now();
+        if (isAutoFlight) setAutoFlightUI(false);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', () => {
+        targetProgress = Math.max(0, Math.min(1, getCurrentScrollY() / getScrollMax()));
+      }, { passive: true });
+
+      window.addEventListener('mousemove', (e) => {
+        mouseNorm.x = e.clientX / Math.max(1, window.innerWidth);
+        mouseNorm.y = e.clientY / Math.max(1, window.innerHeight);
+      }, { passive: true });
+
+      // Auto-Flight Toggle
+      const autoBtn = document.getElementById('btn-auto-flight');
+      if (autoBtn) {
+        setAutoFlightUI(false);
+        autoBtn.addEventListener('click', () => {
+          setAutoFlightUI(!isAutoFlight);
+        });
+      }
+
+      // Bottom Scrubber Click / Drag
+      const scrubberBar = document.getElementById('scrubber-bar');
+      if (scrubberBar) {
+        scrubberBar.addEventListener('click', (e) => {
+          const rect = scrubberBar.getBoundingClientRect();
+          const norm = (e.clientX - rect.left) / Math.max(1, rect.width);
+          if (isAutoFlight) setAutoFlightUI(false);
+          scrollToNormalized(norm);
+        });
+      }
+
+      // Bottom 5 Stage Capsules
+      const stageStartIndices = { 1: 0, 2: 6, 3: 9, 4: 12, 5: 15 };
+      document.querySelectorAll('.stage-capsule').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const st = parseInt(btn.getAttribute('data-stage'), 10);
+          const idx = stageStartIndices[st] || 0;
+          if (isAutoFlight) setAutoFlightUI(false);
+          scrollToNormalized(idx / (FRAMES.length - 1));
+        });
+      });
+
+      function updateHUD(frameFloat, velocity) {
+        const total = FRAMES.length;
+        const idx = Math.min(total - 1, Math.max(0, Math.round(frameFloat)));
+        const frame = FRAMES[idx];
+        const stageMeta = STAGE_META[frame.stage];
+
+        // 1. Z-Depth & Top Telemetry
+        const zMeters = Math.round(smoothProgress * 1800);
+        const zCoordEl = document.getElementById('hud-z-coord');
+        if (zCoordEl) {
+          zCoordEl.textContent = `Z-DEPTH -${String(zMeters).padStart(4, '0')}m · SCENE ${String(idx + 1).padStart(2, '0')}/${total}`;
+        }
+
+        const phasePill = document.getElementById('hud-phase-pill');
+        if (phasePill) {
+          phasePill.textContent = frame.stateText;
+          phasePill.classList.toggle('crisis', frame.phase === 'before');
+        }
+
+        // 2. Right Igloo Depth Ruler
+        const pct = (smoothProgress * 100).toFixed(2) + '%';
+        const rFill = document.getElementById('depth-ruler-fill');
+        const rMark = document.getElementById('depth-ruler-marker');
+        if (rFill) rFill.style.height = pct;
+        if (rMark) rMark.style.top = pct;
+        tickEls.forEach((tEl, i) => tEl.classList.toggle('active', i === idx));
+
+        // 3. Bottom Scrubber & Ribbon
+        const sFill = document.getElementById('scrubber-fill');
+        if (sFill) sFill.style.width = pct;
+        const rTag = document.getElementById('ribbon-tag');
+        const rQuote = document.getElementById('ribbon-quote');
+        if (rTag) rTag.textContent = frame.tag;
+        if (rQuote) rQuote.textContent = frame.quote;
+
+        // 4. Frameless 3D Spatial Motion on Editorial Stage
+        const edStage = document.getElementById('editorial-stage');
+        if (edStage) {
+          const localMix = frameFloat - Math.floor(frameFloat);
+          const wave = Math.sin(localMix * Math.PI);
+          const zShift = wave * 28;
+          const yShift = (0.5 - localMix) * 10;
+          edStage.style.transform = `perspective(1200px) translate3d(0px, calc(-50% + ${yShift.toFixed(1)}px), ${zShift.toFixed(1)}px)`;
+        }
+
+        // 5. Update Stage Editorial Content if stage changed
+        if (currentStageId !== frame.stage && stageMeta) {
+          currentStageId = frame.stage;
+          document.getElementById('ed-watermark').textContent = stageMeta.watermark;
+          document.getElementById('ed-chapter-tag').textContent = stageMeta.chapter;
+          document.getElementById('ed-title').textContent = stageMeta.title;
+          document.getElementById('ed-subcopy').textContent = stageMeta.subcopy;
+          document.getElementById('ed-desc').textContent = stageMeta.desc;
+          document.getElementById('ed-cta-text').textContent = stageMeta.ctaText;
+          document.getElementById('ed-cta-primary').setAttribute('href', stageMeta.ctaLink);
+
+          document.getElementById('sp-label-before').textContent = stageMeta.tpLabels[0];
+          document.getElementById('sp-label-treating').textContent = stageMeta.tpLabels[1];
+          document.getElementById('sp-label-after').textContent = stageMeta.tpLabels[2];
+
+          // Toggle Stage 4 7-Joint Pain Matrix visibility
+          const painMatrix = document.getElementById('pain7-matrix');
+          if (painMatrix) painMatrix.classList.toggle('visible', frame.stage === 4);
+
+          // Highlight active bottom capsule
+          document.querySelectorAll('.stage-capsule').forEach((cap) => {
+            cap.classList.toggle('active', parseInt(cap.getAttribute('data-stage'), 10) === frame.stage);
+          });
+        }
+
+        // 6. Update 3-Phase Pipeline Nodes & Metrics
+        const nBefore = document.getElementById('sp-node-before');
+        const nTreat = document.getElementById('sp-node-treating');
+        const nAfter = document.getElementById('sp-node-after');
+        if (nBefore && nTreat && nAfter) {
+          nBefore.className = 'sp-node' + (frame.phase === 'before' ? ' active-before' : '');
+          nTreat.className = 'sp-node' + (frame.phase === 'treating' ? ' active-treating' : '');
+          nAfter.className = 'sp-node' + (frame.phase === 'after' ? ' active-after' : '');
+        }
+
+        document.getElementById('sm-title-1').textContent = frame.m1T;
+        document.getElementById('sm-val-1').textContent = frame.m1V;
+        document.getElementById('sm-title-2').textContent = frame.m2T;
+        const v2El = document.getElementById('sm-val-2');
+        v2El.textContent = frame.m2V;
+        v2El.className = 'sm-val ' + (frame.phase === 'before' ? 'crimson' : 'gold');
+      }
+
+      // ======================================================================
+      // 7. MASTER 60FPS RENDER LOOP
+      // ======================================================================
+      let lastTime = performance.now();
+
+      function animate(now) {
+        requestAnimationFrame(animate);
+        const dt = Math.min(0.05, (now - lastTime) / 1000);
+        lastTime = now;
+        const timeSec = now * 0.001;
+
+        if (isAutoFlight) {
+          targetProgress += dt * 0.014;
+          if (targetProgress > 1.0) targetProgress = 0.0;
+          window.scrollTo(0, targetProgress * getScrollMax());
+        } else {
+          // Continuously sync with actual scroll position every frame
+          const liveNorm = Math.max(0, Math.min(1, getCurrentScrollY() / getScrollMax()));
+          if (now - lastUserInteract > 120) {
+            targetProgress = liveNorm;
+          }
+        }
+
+        // Smooth inertia damping (Lusion / Igloo feel)
+        smoothProgress += (targetProgress - smoothProgress) * 0.085;
+        scrollVelocity = (smoothProgress - prevProgress) / Math.max(dt, 0.001);
+        prevProgress = smoothProgress;
+
+        const maxIdx = FRAMES.length - 1;
+        const frameFloat = Math.max(0, Math.min(maxIdx, smoothProgress * maxIdx));
+        const currIdx = Math.min(maxIdx, Math.floor(frameFloat));
+        const nextIdx = Math.min(maxIdx, currIdx + 1);
+        const localMix = frameFloat - currIdx;
+
+        // 1. Render Custom GLSL Portal & Anatomical Morph Shader
+        if (glRenderer && glMaterial && glTextures.length > 0) {
+          const currFrame = FRAMES[currIdx];
+          glMaterial.uniforms.uTexCurr.value = glTextures[currIdx];
+          glMaterial.uniforms.uTexNext.value = glTextures[nextIdx];
+          glMaterial.uniforms.uMix.value = localMix;
+          glMaterial.uniforms.uTime.value = timeSec;
+          glMaterial.uniforms.uVelocity.value = scrollVelocity;
+          glMaterial.uniforms.uMouse.value.set(mouseNorm.x, 1.0 - mouseNorm.y);
+          glMaterial.uniforms.uFocal.value.set(currFrame.focal[0], currFrame.focal[1]);
+          glMaterial.uniforms.uMode.value = currFrame.mode;
+          glRenderer.render(glScene, glCamera);
+        }
+
+        // 2. Render Three.js 3D Z-Axis Tunnel Rings & Warp Particles
+        if (tRenderer && tScene && tCamera) {
+          const camZ = -frameFloat * 24;
+          tCamera.position.z = camZ + 8;
+          tCamera.position.x = (mouseNorm.x - 0.5) * 1.4;
+          tCamera.position.y = (0.5 - mouseNorm.y) * 0.9;
+          // Velocity-reactive FOV warp
+          tCamera.fov = 50 + Math.min(14, Math.abs(scrollVelocity) * 45);
+          tCamera.updateProjectionMatrix();
+
+          tPortalGates.forEach((g, i) => {
+            g.ring.rotation.z = timeSec * (i % 2 === 0 ? 0.25 : -0.25);
+            g.hex.rotation.z = -timeSec * 0.15;
+          });
+
+          if (tGongjindanGroup) {
+            tGongjindanGroup.rotation.y = timeSec * 0.8;
+            tGongjindanGroup.rotation.z = timeSec * 0.4;
+          }
+
+          tRenderer.render(tScene, tCamera);
+        }
+
+        // 3. Render Precision SVG Anatomical Scanner & Update HUD
+        renderSpatialSVGOverlay(frameFloat, timeSec);
+        updateHUD(frameFloat, scrollVelocity);
+      }
+
+      window.addEventListener('resize', () => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        if (glRenderer && glMaterial) {
+          glRenderer.setSize(w, h);
+          glMaterial.uniforms.uResolution.value.set(w, h);
+        }
+        if (tRenderer && tCamera) {
+          tRenderer.setSize(w, h);
+          tCamera.aspect = w / h;
+          tCamera.updateProjectionMatrix();
+        }
+      });
+
+      initGLSLPortalStage();
+      initThreeTunnelStage();
+      requestAnimationFrame(animate);
+    })();
+  </script>
+</body>
+</html>

@@ -483,7 +483,7 @@ class BareunMasterpieceStoryApp {
     // Master continuous 3D Z-Axis playhead (0.000 to 1.000 across all 18 spatial depth layers)
     this.playheadP = 0;
     this.targetPlayheadP = 0;
-    this.isAutoPlaying = true;
+    this.isAutoPlaying = false;
     this.lastScrollTimestamp = 0;
     this.lastFrameTime = performance.now();
 
@@ -699,17 +699,31 @@ class BareunMasterpieceStoryApp {
     const track = document.getElementById('story-scroll-track');
     if (!track) return;
 
-    window.addEventListener('scroll', () => {
+    const updateFromScroll = () => {
       const rect = track.getBoundingClientRect();
-      const total = track.offsetHeight - window.innerHeight;
-      if (total <= 0) return;
-
-      if (rect.top <= 0 && rect.bottom >= window.innerHeight * 0.4) {
+      const total = Math.max(1, track.offsetHeight - window.innerHeight);
+      if (rect.top <= 10 && rect.bottom >= 0) {
         const p = Math.min(1.0, Math.max(0, -rect.top / total));
         this.scrollProgress = p;
-        this.targetPlayheadP = p;
-        this.lastScrollTimestamp = performance.now();
+        if (!this.isAutoPlaying) {
+          this.targetPlayheadP = p;
+        }
       }
+    };
+
+    window.addEventListener('scroll', () => {
+      this.lastScrollTimestamp = performance.now();
+      updateFromScroll();
+    }, { passive: true });
+
+    window.addEventListener('wheel', () => {
+      this.lastScrollTimestamp = performance.now();
+      if (this.isAutoPlaying) {
+        this.isAutoPlaying = false;
+        if (this.autoPlayBtn) this.autoPlayBtn.classList.add('paused');
+        if (this.autoPlayText) this.autoPlayText.textContent = '▶ 3D 자동 주행 켜기 (현재: 스크롤 연동)';
+      }
+      updateFromScroll();
     }, { passive: true });
   }
 
@@ -1511,19 +1525,29 @@ class BareunMasterpieceStoryApp {
     const timeSinceScroll = now - this.lastScrollTimestamp;
     const cardsSec = document.getElementById('signature-cards');
     const inCardsView = cardsSec && cardsSec.getBoundingClientRect().top < window.innerHeight * 0.5;
+    const track = document.getElementById('story-scroll-track');
 
-    if (timeSinceScroll < 1600) {
-      this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.08;
-    } else if (this.isAutoPlaying && !inCardsView) {
-      this.targetPlayheadP += dt * 0.022;
+    if (this.isAutoPlaying && !inCardsView) {
+      this.targetPlayheadP += dt * 0.018;
       if (this.targetPlayheadP > 1.0) {
         this.targetPlayheadP = 0.0;
         this.playheadP = 0.0;
       } else {
         this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.06;
       }
+      if (track) {
+        const total = Math.max(1, track.offsetHeight - window.innerHeight);
+        window.scrollTo(0, this.targetPlayheadP * total);
+      }
     } else {
-      this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.08;
+      if (track) {
+        const rect = track.getBoundingClientRect();
+        const total = Math.max(1, track.offsetHeight - window.innerHeight);
+        if (rect.top <= 10 && rect.bottom >= 0) {
+          this.targetPlayheadP = Math.min(1.0, Math.max(0, -rect.top / total));
+        }
+      }
+      this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.085;
     }
 
     // 1. Render 60fps Type-C 3D Z-Axis Zoom-Through Canvas

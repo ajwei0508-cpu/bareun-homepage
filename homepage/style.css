@@ -59,13 +59,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
+html {
   width: 100%;
   min-height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: #031811;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: visible !important;
   background-color: #031811;
   color: var(--text-main);
   font-family: var(--font-sans);
@@ -2322,29 +2331,34 @@ html, body {
    ========================================================================== */
 
 /* Main page allows vertical scroll for the 5-step journey */
-body.storyboard-active,
 html.storyboard-active {
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
   height: auto !important;
   scroll-behavior: smooth;
   background-color: #031C13;
 }
 
-/* 850vh Smooth Cinematic Scroll Track */
+body.storyboard-active {
+  overflow: visible !important;
+  height: auto !important;
+  background-color: #031C13;
+}
+
+/* 1100vh Smooth Cinematic Scroll Track */
 .story-scroll-track {
   position: relative;
   width: 100%;
-  height: 850vh;
-  background: #031C13;
+  height: 1100vh;
+  background: transparent;
 }
 
-/* Sticky Viewport Stage */
+/* Fixed Viewport Stage (Never Disappears When Scrolling!) */
 .story-stage-sticky {
-  position: sticky;
+  position: fixed !important;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
