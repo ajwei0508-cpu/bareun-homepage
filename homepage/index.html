@@ -162,53 +162,88 @@
   <div class="story-scroll-track" id="story-scroll-track">
     <div class="story-stage-sticky" id="story-stage-sticky">
       
-      <!-- 13-Scene 8K Cinematic Keyframe Backdrop Layers (Continuous Film Sequence) -->
+      <!-- 18-Frame Locked-Camera Continuous Live-Action Video Sequence & Synthesizer Canvas -->
       <div class="story-backdrop-wrap" id="story-backdrop-wrap">
-        <!-- Stage 1: 수정(난임치료) -> 아이 탄생 -> 감기(면역치료) -> 또래 키 비교(성장치료) -->
-        <div class="story-backdrop-slide" id="backdrop-1a" style="background-image: url('life_1a_fertilization.jpg?v=real1'); opacity: 1; z-index: 3;"></div>
-        <div class="story-backdrop-slide" id="backdrop-1b" style="background-image: url('life_1b_birth.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1c" style="background-image: url('life_1c_immunity.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1d" style="background-image: url('life_1d_growth_peers.jpg?v=real1');"></div>
+        <!-- Stage 1: 수정(난임치료) -> 아이 탄생 -> 감기 발생 -> 면역강화 한약 치료 -> 또래 대비 작은 키 -> 성장치료로 키가 쭈욱 자라는 연속 영상 -->
+        <div class="story-backdrop-slide" id="backdrop-1a" data-frame="0" style="background-image: url('life_1a_fertilization.jpg?v=vid2'); opacity: 1; z-index: 3;"></div>
+        <div class="story-backdrop-slide" id="backdrop-1b" data-frame="1" style="background-image: url('life_1b_birth.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-1c0" data-frame="2" style="background-image: url('life_1c_cold_before.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-1c" data-frame="3" style="background-image: url('life_1c_immunity.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-1d0" data-frame="4" style="background-image: url('life_1d_growth_short.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-1d" data-frame="5" style="background-image: url('life_1d_growth_peers.jpg?v=vid2');"></div>
         
-        <!-- Stage 2: 성인 비만 발생 -> 비만치료 후 날씬한 변신 -->
-        <div class="story-backdrop-slide" id="backdrop-2a" style="background-image: url('life_2a_obesity.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-2b" style="background-image: url('life_2b_slim_therapy.jpg?v=real1');"></div>
+        <!-- Stage 2: 성인 비만 발생(동일 인물) -> 바른 다이어트 한약 치료 과정 -> 날씬한 S라인 변신 완료 -->
+        <div class="story-backdrop-slide" id="backdrop-2a" data-frame="6" style="background-image: url('life_2a_obesity.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-2t" data-frame="7" style="background-image: url('life_2a_treatment.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-2b" data-frame="8" style="background-image: url('life_2b_slim_therapy.jpg?v=vid2');"></div>
         
-        <!-- Stage 3: 30대 탈모 발생 -> 탈모치료 후 정상 모발 회복 -->
-        <div class="story-backdrop-slide" id="backdrop-3a" style="background-image: url('life_3a_hairloss.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-3b" style="background-image: url('life_3b_hair_restored.jpg?v=real1');"></div>
+        <!-- Stage 3: 30대 탈모 발생(동일 인물) -> 바른 두피 약침·청열 치료 과정 -> 풍성한 정상 모발 회복 완료 -->
+        <div class="story-backdrop-slide" id="backdrop-3a" data-frame="9" style="background-image: url('life_3a_hairloss.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-3t" data-frame="10" style="background-image: url('life_3a_treatment.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-3b" data-frame="11" style="background-image: url('life_3b_hair_restored.jpg?v=vid2');"></div>
         
-        <!-- Stage 4: 근무 중 척추 틀어짐 & 관절 통증 -> 추나 치료 후 회복 -->
-        <div class="story-backdrop-slide" id="backdrop-4a" style="background-image: url('life_4a_work_spine_pain.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-4b" style="background-image: url('life_4b_chuna_recovery.jpg?v=real1');"></div>
+        <!-- Stage 4: 근무 중 척추 틀어짐·관절통(동일 인물) -> 대표원장 1:1 추나 교정 치료 과정 -> 척추 수직 정렬·통증 회복 완료 -->
+        <div class="story-backdrop-slide" id="backdrop-4a" data-frame="12" style="background-image: url('life_4a_work_spine_pain.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-4t" data-frame="13" style="background-image: url('life_4a_treatment.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-4b" data-frame="14" style="background-image: url('life_4b_chuna_recovery.jpg?v=vid2');"></div>
         
-        <!-- Stage 5: 노화·기력저하·성인병 -> 황제공진단 회복 -> 아름답게 늙어가는 모습 -->
-        <div class="story-backdrop-slide" id="backdrop-5a" style="background-image: url('life_5a_aging_fatigue.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-5b" style="background-image: url('life_5b_gongjindan_vitality.jpg?v=real1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-5c" style="background-image: url('life_5c_graceful_elder.jpg?v=real1');"></div>
+        <!-- Stage 5: 노화·기력저하·성인병(동일 인물) -> 특허 24K 황제공진단 치료 과정 -> 기력 회복 & 아름답게 늙어가는 모습 -->
+        <div class="story-backdrop-slide" id="backdrop-5a" data-frame="15" style="background-image: url('life_5a_aging_fatigue.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-5b" data-frame="16" style="background-image: url('life_5b_gongjindan_vitality.jpg?v=vid2');"></div>
+        <div class="story-backdrop-slide" id="backdrop-5c" data-frame="17" style="background-image: url('life_5c_graceful_elder.jpg?v=vid2');"></div>
         
+        <!-- 60fps Real-Time Continuous Video Morph & Anatomical Deformation Canvas -->
+        <canvas class="cinema-video-canvas" id="cinema-video-canvas"></canvas>
+
         <div class="story-backdrop-scrim"></div>
       </div>
 
-      <!-- 3D Interactive Three.js WebGL Canvas -->
+      <!-- 3D Interactive Three.js Optical Depth & Healing Aura Canvas -->
       <canvas class="story-webgl-canvas" id="storyboard-canvas"></canvas>
+
+      <!-- Top-Right Live Video Playback & Treatment Mode Badge -->
+      <div class="cinema-live-player-badge" id="cinema-live-player-badge">
+        <button type="button" class="cinema-autoplay-btn active" id="cinema-autoplay-btn" onclick="toggleCinemaAutoPlay()" title="연속 치유 영상 자동재생 토글">
+          <span class="rec-dot"></span>
+          <span id="cinema-autoplay-text">🎬 연속 치료과정 영상 재생 중</span>
+        </button>
+        <span class="cinema-timecode" id="cinema-timecode">FRAME 01 / 18 · LIVE</span>
+      </div>
 
       <!-- Floating Dynamic Step HUD Panel -->
       <aside class="story-hud-panel" id="story-hud-panel">
         <div class="hud-step-tag-row">
           <span class="hud-step-badge" id="hud-step-badge">STAGE 01 · 잉태·탄생·면역·성장</span>
-          <span class="hud-step-counter" id="hud-step-counter">SCENE 01 / 13</span>
+          <span class="hud-step-counter" id="hud-step-counter">SCENE 01 / 18</span>
+        </div>
+
+        <!-- 3-Phase Treatment Recovery Progression Pipeline (치료 전 -> 바른 치료 중 -> 치료 후 호전) -->
+        <div class="treatment-pipeline-bar" id="treatment-pipeline-bar">
+          <div class="tp-phase tp-before" id="tp-phase-before">
+            <span class="tp-dot"></span>
+            <span class="tp-label" id="tp-label-before">① 증상·원인 발생</span>
+          </div>
+          <div class="tp-connector"><div class="tp-connector-fill" id="tp-conn-1"></div></div>
+          <div class="tp-phase tp-treating" id="tp-phase-treating">
+            <span class="tp-dot"></span>
+            <span class="tp-label" id="tp-label-treating">② 바른 치료 개입</span>
+          </div>
+          <div class="tp-connector"><div class="tp-connector-fill" id="tp-conn-2"></div></div>
+          <div class="tp-phase tp-after" id="tp-phase-after">
+            <span class="tp-dot"></span>
+            <span class="tp-label" id="tp-label-after">③ 치료 후 호전·완치</span>
+          </div>
         </div>
 
         <!-- Sub-Scene Narrative Flow Pills (Shows current sub-step within the stage) -->
         <div class="hud-subscene-flow" id="hud-subscene-flow">
-          <span class="subscene-pill active">① 난임·수정</span>
+          <span class="subscene-pill active">① 난임·수정치료</span>
           <span class="subscene-arrow">▸</span>
           <span class="subscene-pill">② 아이 탄생</span>
           <span class="subscene-arrow">▸</span>
           <span class="subscene-pill">③ 감기·면역치료</span>
           <span class="subscene-arrow">▸</span>
-          <span class="subscene-pill">④ 또래 키성장</span>
+          <span class="subscene-pill">④ 성장치료 키성장</span>
         </div>
 
         <h2 class="hud-step-title" id="hud-step-title">01. 생명 잉태부터 폭풍 키성장까지</h2>
@@ -220,17 +255,17 @@
         <!-- Real-Time Biometric Telemetry Box (Live Animated Metrics per Scene) -->
         <div class="biometric-telemetry-box" id="biometric-telemetry-box">
           <div class="telemetry-header">
-            <span class="telemetry-label" id="telemetry-label">🧬 실시간 생애주기 바이오 지표</span>
-            <span class="telemetry-status" id="telemetry-status">✦ 바른 치유 활성</span>
+            <span class="telemetry-label" id="telemetry-label">💊 바른한의원 치료 호전도 모니터</span>
+            <span class="telemetry-status" id="telemetry-status">✦ 바른 치료 호전 중</span>
           </div>
           <div class="telemetry-metrics-grid">
             <div class="telemetry-metric-card">
-              <span class="metric-title" id="metric-1-title">생명·면역 활성도</span>
-              <span class="metric-value" id="metric-1-value">98.4%</span>
+              <span class="metric-title" id="metric-1-title">적용된 바른 치료 처방</span>
+              <span class="metric-value" id="metric-1-value">자궁온열·착상한약</span>
             </div>
             <div class="telemetry-metric-card">
-              <span class="metric-title" id="metric-2-title">성장판·신장 추이</span>
-              <span class="metric-value highlight" id="metric-2-value">132cm ➔ 181.5cm</span>
+              <span class="metric-title" id="metric-2-title">치료를 통한 신체 변화</span>
+              <span class="metric-value highlight" id="metric-2-value">착상률 98.4% ⬆</span>
             </div>
           </div>
           <div class="telemetry-bar-wrap">
@@ -241,7 +276,7 @@
         <!-- Step 04 Live 9-Pain Points Radar (Visible in Step 4) -->
         <div class="pain-radar-box" id="pain-radar-box" style="display: none;">
           <div class="pain-radar-header">
-            <span>⚡ 근무 중 척추 틀어짐 & 9대 관절 통증 모니터</span>
+            <span>⚡ 근무 중 척추 틀어짐 & 9대 관절 추나 치료 모니터</span>
             <span class="pain-radar-status warning" id="pain-radar-status">
               <span class="pulse-dot">●</span> <span>통증 신호 점멸 중</span>
             </span>

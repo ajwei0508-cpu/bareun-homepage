@@ -1,358 +1,464 @@
 /**
- * BAREUN CLINIC (바른한의원 대전본점)
- * 100% Photorealistic Live-Action 3D Cinema Scrollytelling Engine
+ * BAREUN KOREAN MEDICINE CLINIC - MASTERPIECE 5-STAGE 18-FRAME CONTINUOUS LIVE-ACTION VIDEO ENGINE
+ * (60fps Real-Time Canvas Video Synthesizer, Locked-Camera Treatment Morphing & Anatomical Recovery HUD)
  *
- * Shot-on-ARRI-Alexa-65 Live-Action Aesthetic:
- * - Zero artificial CGI wireframes, zero plastic mannequins, zero neon rings.
- * - Real-time 3D Perspective Dolly, Optical Rack-Focus (Depth-of-Field Blur),
- *   Volumetric Golden-Hour Sunlight Rays, and Anamorphic Lens Bokeh Dust Motes.
+ * Directed by Art (아트)
+ * - Focuses 100% on "Getting Better Through Treatment (치료를 통해 좋아지고 있다는 전달)"
+ * - Zero static image cuts: All 18 locked-camera live-action frames are synthesized on a 60fps
+ *   HTML5 Video Canvas (#cinema-video-canvas) with real-time anatomical strip-mesh deformation
+ *   (child stretching taller among peers, waist slimming, follicular hair regrowth scan,
+ *   Chuna spinal axis straightening, and 24K Emperor Gongjindan golden vitality wave)
+ *   plus continuous auto-play film progression & silky scroll scrubbing.
  */
 
+// ============================================================================
+// 1. 5-ACT MASTER LIFECYCLE STAGE SPECS (Left HUD & Navigation Cards)
+// ============================================================================
 const CLINIC_SPECS = [
   {
     step: 1,
     slug: 'pediatric-growth',
+    badge: 'STAGE 01 · 난임치료 ➔ 탄생 ➔ 감기면역 ➔ 키성장',
     title: '01. 생명 잉태부터 폭풍 키성장까지',
-    badge: 'STAGE 01 (0% ~ 25%) · 수정 ➔ 탄생 ➔ 감기면역 ➔ 키성장',
-    mainCopy: '난임 착상 치료 · 소아 감기 면역강화 · 또래를 뛰어넘는 골격 성장',
-    desc: '새 생명이 수정(난임치료)되어 세상에 태어나고, 면역력 저하로 찾아온 감기를 이겨내는 면역강화 한약부터 또래보다 작았던 키가 쭈욱 자라나는 성장치료까지 아이의 첫 생애를 바르게 세웁니다.',
-    subPills: ['① 난임·수정', '② 아이 탄생', '③ 감기·면역치료', '④ 또래 키성장'],
+    mainCopy: '난임 착상 치료 · 소아 감기 면역강화 · 또래 추월 키성장 치료',
+    desc: '자궁 온열·착상 한약으로 새 생명을 잉태하고, 면역력이 떨어져 찾아온 소아 감기를 녹용 면역보약으로 치료하며, 또래보다 작았던 키가 성장판·척추 성장치료를 통해 쭈욱 길어지는 전 과정을 연속 영상으로 담았습니다.',
     link: 'growth.html',
-    color: '#34D399'
+    subPills: ['① 난임·수정치료', '② 아이 탄생', '③ 감기➔면역치료', '④ 작은키➔성장치료'],
+    tpLabels: ['① 난임·감기·작은키', '② 착상·면역·성장치료', '③ 건강탄생 & +20cm 성장']
   },
   {
     step: 2,
     slug: 'appetite-zero',
-    title: '02. 성인 비만과 날씬한 슬림 변신',
-    badge: 'STAGE 02 (25% ~ 42%) · 성인 비만 발생 ➔ 바른 비만치료',
-    mainCopy: '성인이 되며 불어난 체지방을 비워내고 가볍고 날씬한 바른 라인으로',
-    desc: '아이가 성인이 되면서 대사 저하와 스트레스로 살이 찌고 비만이 된 체형을, 바른 다이어트(식욕 ZERO) 맞춤 한약으로 심부 체지방만 건강하게 감량하여 날씬하고 탄력 있는 모습으로 변화시킵니다.',
-    subPills: ['① 성인 체중증가·비만', '② 비만치료·슬림변신'],
-    link: 'diet-zero.html#checkout-zone',
-    color: '#F472B6'
+    badge: 'STAGE 02 · 성인 비만 ➔ 비만치료 슬림화',
+    title: '02. 성인 비만에서 날씬한 S라인으로',
+    mainCopy: '바른 비만치료 한약 복용 · 심부 체지방 분해 & 체형 슬리밍',
+    desc: '성인이 되면서 급격히 살이 찌고 무거워진 몸이 바른한의원의 맞춤 다이어트 한약 치료를 통해 심부 체지방부터 연소되며 날씬하고 탄탄한 S라인으로 변해가는 연속 치유 과정입니다.',
+    link: 'diet-zero.html',
+    subPills: ['① 성인 체중증가·비만', '② 바른 비만치료 한약 복용', '③ 날씬한 S라인 완치'],
+    tpLabels: ['① 성인 비만·체지방 축적', '② 바른 비만탕약 대사치료', '③ -14.2kg 슬림 체형 완성']
   },
   {
     step: 3,
     slug: 'scalp-hair',
-    title: '03. 30대 탈모 발생과 풍성한 모발 회복',
-    badge: 'STAGE 03 (42% ~ 60%) · 30대 탈모 발생 ➔ 바른 탈모치료',
-    mainCopy: '뜨거운 두피 열감을 식히고 약해진 모근을 깨워 다시 빽빽한 정상 모발로',
-    desc: '30대 과로와 상열감으로 머리카락이 가늘어지고 빠지는 탈모 위기에서, 두피의 열을 내리는 청열 한약과 고농도 모근 재생 약침으로 다시 굵고 풍성한 정상 모발을 되찾습니다.',
-    subPills: ['① 30대 두피열·탈모', '② 탈모치료·모발회복'],
+    badge: 'STAGE 03 · 30대 탈모 ➔ 탈모치료 모발 회복',
+    title: '03. 30대 탈모, 두피부터 다시 빽빽하게',
+    mainCopy: '두피 상열감(熱) 청열 쿨링 · 고농도 모근 재생 약침 발모 치료',
+    desc: '30대 스트레스와 두피 열독으로 M자 이마와 정수리 머리카락이 빠지던 남성이, 바른한의원의 정밀 두피 약침과 청열 한약 치료를 받으며 다시 빽빽하고 풍성한 정상 모발로 회복되는 연속 과정입니다.',
     link: 'https://pf.kakao.com/_ykxcLK',
-    color: '#60A5FA'
+    subPills: ['① 30대 M자·정수리 탈모', '② 두피 약침·청열 치료 중', '③ 풍성한 정상 모발 회복'],
+    tpLabels: ['① 30대 두피열·탈모 발생', '② 고농도 발모약침·청열치료', '③ 풍성한 정상 흑발 완치']
   },
   {
     step: 4,
     slug: 'pain-chuna',
-    title: '04. 근무 중 척추 틀어짐 & 추나 통증치료',
-    badge: 'STAGE 04 (60% ~ 78%) · 척추·관절 통증 ➔ 바른 추나 회복',
-    mainCopy: '격무로 틀어진 척추와 9대 관절 통증을 수기 추나와 봉약침으로 바르게 교정',
-    desc: '장시간 근무로 거북목과 척추가 틀어지고 전신 9대 관절에 발생한 극심한 통증을, 한의학 박사 대표원장의 1:1 정밀 추나요법과 정품 봉약침으로 곧고 편안하게 회복시킵니다.',
-    subPills: ['① 근무 척추틀어짐·통증', '② 추나교정·완전회복'],
+    badge: 'STAGE 04 · 근무 중 척추틀어짐 ➔ 추나 통증치료 회복',
+    title: '04. 틀어진 척추와 관절통의 바른 회복',
+    mainCopy: '대표원장 1:1 수기 추나 교정 · 고농도 봉약침 전신 관절 치료',
+    desc: '과로와 근무로 척추가 틀어지고 목·어깨·허리 등 전신 관절 통증에 시달리던 직장인이, 대표원장님의 1:1 추나 수기 교정 치료를 통해 굽은 등이 곧게 펴지고 통증에서 해방되는 연속 과정입니다.',
     link: 'https://naver.me/5U1ELn8L',
-    color: '#2F855A'
+    subPills: ['① 근무 중 척추틀어짐·통증', '② 원장님 1:1 추나 수기교정', '③ 척추 수직정렬·통증 완치'],
+    tpLabels: ['① 척추 틀어짐·9대 관절통', '② 대표원장 1:1 추나·약침', '③ 척추 수직정렬 & 무통증']
   },
   {
     step: 5,
     slug: 'gongjindan',
-    title: '05. 황제공진단 기력 회복 & 아름다운 노년',
-    badge: 'STAGE 05 (78% ~ 100%) · 노화·성인병 ➔ 황제공진단 ➔ 백세건강',
-    mainCopy: '꺼져가는 기력과 성인병을 다스리고 품격 있고 아름답게 나이 들어가는 삶',
-    desc: '나이가 들며 기력이 고갈되고 성인병이 찾아올 때, 식약처 CITES 인증 100% 정품 천연 사향과 녹용 분골로 빚은 24K 황제공진단으로 전신의 기력을 회복하고 건강하고 아름다운 노년을 완성합니다.',
-    subPills: ['① 노화·기력저하·성인병', '② 황제공진단 기력회복', '③ 아름다운 노년'],
-    link: 'gongjindan.html',
-    color: '#C5A059'
+    badge: 'STAGE 05 · 기력저하·성인병 ➔ 황제공진단 ➔ 아름다운 노년',
+    title: '05. 황제공진단으로 완성하는 아름다운 노년',
+    mainCopy: '특허 24K 순금박 황제공진단 · 성인병 케어 및 백세 원기 회복',
+    desc: '나이가 들며 기력이 고갈되고 성인병으로 지쳐가던 노년이, 특허 받은 황제공진단 치료를 통해 심폐 활력과 면역력을 되찾고 황금빛 노을 속에서 건강하고 아름답게 나이 들어가는 연속 과정입니다.',
+    link: 'https://pf.kakao.com/_ykxcLK',
+    subPills: ['① 노화·기력저하·성인병', '② 24K 황제공진단 복용 치료', '③ 아름답게 늙어가는 노년'],
+    tpLabels: ['① 노화·기력저하·성인병', '② 특허 황제공진단 원기충전', '③ 기력 회복 & 아름다운 노년']
   }
 ];
 
-/**
- * 13-Scene Live-Action Narrative & Biometric Telemetry Choreography
- */
-const SCENE_TIMELINE = [
+// ============================================================================
+// 2. 18-FRAME LOCKED-CAMERA CONTINUOUS VIDEO SEQUENCE DEFINITIONS
+// ============================================================================
+const VIDEO_FRAMES = [
+  // --- STAGE 1: 수정(난임치료) -> 탄생 -> 감기(Before) -> 면역치료(After) -> 작은키(Before) -> 성장치료 키성장(After) ---
   {
-    index: 1,
-    id: 'backdrop-1a',
+    frameIndex: 0,
+    domId: 'backdrop-1a',
     step: 1,
     subPillIndex: 0,
-    start: 0.00,
-    end: 0.06,
-    isCrisis: false,
-    actLabel: 'ACT 01 · 수정과 잉태',
-    stateText: '✦ 난임·착상 치료',
-    sceneTag: 'ACT I · SCENE 01 (난임·불임치료)',
-    subtitle: '“간절한 기다림 끝에 찾아온 생명의 수정 — 바른 난임·착상 치료가 기적의 첫 장을 엽니다.”',
-    metric1Title: '자궁 심부 착상 환경',
-    metric1Value: '36.8°C 최적 온열',
-    metric2Title: '수정·착상 활성도',
-    metric2Value: '99.4% 건강한 착상',
+    phase: 'treating', // 'before' | 'treating' | 'after'
+    phaseProgress: 0.65,
+    actLabel: 'ACT I · 01 난임·불임 착상 치료 ➔ 생명 잉태',
+    sceneTag: 'ACT I · SCENE 01 (난임·불임 착상 치료)',
+    stateText: '✦ 자궁 온열·착상 한약 치료 ➔ 수정 성공',
+    subtitle: '“차가웠던 자궁을 따뜻하게 데우는 바른 난임·착상 치료를 통해 기적 같은 새 생명이 수정됩니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '자궁온열·착상보혈 한약',
+    metric2Title: '치료를 통한 호전 변화',
+    metric2Value: '자궁내막 착상률 98.4% ▲',
     barPercent: 92,
-    lightWarmth: 1.0
+    lightWarmth: 1.0,
+    arBadge: '💊 바른 난임·착상 치료 작용 중 · 자궁 심부 온도 +1.8°C 상승'
   },
   {
-    index: 2,
-    id: 'backdrop-1b',
+    frameIndex: 1,
+    domId: 'backdrop-1b',
     step: 1,
     subPillIndex: 1,
-    start: 0.06,
-    end: 0.12,
-    isCrisis: false,
-    actLabel: 'ACT 01 · 아이 탄생',
-    stateText: '✦ 고귀한 아이 탄생',
-    sceneTag: 'ACT I · SCENE 02 (아이 탄생)',
-    subtitle: '“열 달의 따뜻한 품을 거쳐 세상에 태어난 아이 — 엄마의 손을 잡은 작고 고귀한 숨결.”',
-    metric1Title: '신생아 생명력 지수',
-    metric1Value: '100% 건강한 탄생',
-    metric2Title: '오장육부·원기 발달',
-    metric2Value: '최상급 생체 리듬',
-    barPercent: 96,
-    lightWarmth: 1.0
+    phase: 'after',
+    phaseProgress: 1.0,
+    actLabel: 'ACT I · 02 난임 치료 완결 ➔ 건강한 아이 탄생',
+    sceneTag: 'ACT I · SCENE 02 (건강한 생명 탄생)',
+    stateText: '✦ 바른 안태(安胎) 한약 케어 ➔ 건강한 출산',
+    subtitle: '“열 달간의 바른 안태 케어로 엄마의 손가락을 꼭 쥔 건강한 아이가 세상에 태어납니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '바른 안태(安胎)·산후 보약',
+    metric2Title: '치료를 통한 호전 변화',
+    metric2Value: '신생아 건강 활성도 99.8% ▲',
+    barPercent: 99,
+    lightWarmth: 1.0,
+    arBadge: '✦ 바른 난임·안태 치료 결과 · 건강한 아이 탄생 완료'
   },
   {
-    index: 3,
-    id: 'backdrop-1c',
+    frameIndex: 2,
+    domId: 'backdrop-1c0',
     step: 1,
     subPillIndex: 2,
-    start: 0.12,
-    end: 0.18,
-    isCrisis: true,
-    crisisThreshold: 0.145,
-    actLabel: 'ACT 01 · 소아 면역강화',
-    stateTextCrisis: '⚠️ 면역저하 · 감기 발생',
-    stateTextHeal: '✦ 면역강화 한약 회복',
-    sceneTag: 'ACT I · SCENE 03 (감기 ➔ 면역강화치료)',
-    subtitleCrisis: '“면역력이 떨어져 찾아온 잦은 감기와 비염 — 아이의 여린 호흡기가 쉽게 지칩니다.”',
-    subtitleHeal: '“따뜻한 바른 면역강화 보약 한 잔으로 감기를 이겨내고 발그레한 건강 미소를 되찾습니다.”',
-    metric1Title: '호흡기·전신 면역력',
-    metric2Title: '감기·비염 저항력',
-    lightWarmth: 0.85
+    phase: 'before',
+    phaseProgress: 0.15,
+    actLabel: 'ACT I · 03 소아 면역력 저하 ➔ 잦은 감기·발열 발생',
+    sceneTag: 'ACT I · SCENE 03 (치료 전 · 면역저하 감기)',
+    stateText: '⚠️ 치료 전 · 호흡기 면역력 저하 & 감기 발열',
+    subtitle: '“아이가 자라며 면역력이 떨어져 잦은 감기와 비염, 고열로 코가 헐고 지쳐갑니다.”',
+    metric1Title: '치료 전 증상 진단',
+    metric1Value: '호흡기·폐 면역력 41% 저하',
+    metric2Title: '현재 신체 상태',
+    metric2Value: '잦은 감기·비염·발열 지속 ⚠️',
+    barPercent: 38,
+    lightWarmth: 0.15,
+    arBadge: '⚠️ [치료 전 증상] 소아 면역력 저하로 인한 감기·비염 발생'
   },
   {
-    index: 4,
-    id: 'backdrop-1d',
+    frameIndex: 3,
+    domId: 'backdrop-1c',
+    step: 1,
+    subPillIndex: 2,
+    phase: 'after',
+    phaseProgress: 0.95,
+    actLabel: 'ACT I · 04 바른 면역강화 한약 치료 ➔ 감기 완치',
+    sceneTag: 'ACT I · SCENE 04 (바른 면역강화 치료 완료)',
+    stateText: '✦ 청정 녹용 면역보약 복용 ➔ 감기 완치·면역 회복',
+    subtitle: '“바른 소아 면역강화 한약 치료로 호흡기 자생력이 깨어나 감기가 씻은 듯이 낫고 활짝 웃습니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '소아 청정 녹용 면역보약',
+    metric2Title: '치료를 통한 호전 변화',
+    metric2Value: '면역력 41% ➔ 98.5% 완치 ▲',
+    barPercent: 98,
+    lightWarmth: 1.0,
+    arBadge: '💊 [바른 면역강화 치료 완료] 호흡기 자생력 98.5% 회복 · 감기 소실'
+  },
+  {
+    frameIndex: 4,
+    domId: 'backdrop-1d0',
     step: 1,
     subPillIndex: 3,
-    start: 0.18,
-    end: 0.25,
-    isCrisis: true,
-    crisisThreshold: 0.205,
-    actLabel: 'ACT 01 · 바른 키성장',
-    stateTextCrisis: '⚠️ 또래보다 작은 키',
-    stateTextHeal: '✦ 성장치료 · 폭풍 키성장',
-    sceneTag: 'ACT I · SCENE 04 (작은 키 ➔ 성장치료)',
-    subtitleCrisis: '“또래 친구들과 나란히 서 있을 때 유독 작아 보였던 키 — 숨은 성장 잠재력이 필요합니다.”',
-    subtitleHeal: '“바른 성장치료로 성장판과 척추가 바르게 펴지며 또래 친구들보다 머리 하나는 더 훤칠하게 자라납니다!”',
-    metric1Title: '또래 대비 신장 추이',
-    metric2Title: '성장판·골밀도 활성',
-    lightWarmth: 1.0
+    phase: 'before',
+    phaseProgress: 0.2,
+    actLabel: 'ACT I · 05 또래와 서 있을 때 유독 작은 키 고민',
+    sceneTag: 'ACT I · SCENE 05 (치료 전 · 또래 대비 작은 키)',
+    stateText: '⚠️ 치료 전 · 또래 평균 대비 -12cm 성장 지연',
+    subtitle: '“또래 친구들과 나란히 서 있을 때 유독 키가 작아 아이가 주눅 들고 자신감을 잃어갑니다.”',
+    metric1Title: '치료 전 성장 진단',
+    metric1Value: '현재 134.0cm (또래 하위 12%)',
+    metric2Title: '성장판·척추 상태',
+    metric2Value: '하체 성장판 순환 정체 ⚠️',
+    barPercent: 42,
+    lightWarmth: 0.3,
+    arBadge: '⚠️ [성장치료 전] 또래 대비 작은 키 (134.0cm) · 성장판 자극 필요'
   },
   {
-    index: 5,
-    id: 'backdrop-2a',
+    frameIndex: 5,
+    domId: 'backdrop-1d',
+    step: 1,
+    subPillIndex: 3,
+    phase: 'after',
+    phaseProgress: 1.0,
+    actLabel: 'ACT I · 06 바른 성장치료 ➔ 키가 쭈욱 길어지는 기적',
+    sceneTag: 'ACT I · SCENE 06 (바른 성장치료 · 키가 쭈욱 자라는 변화)',
+    stateText: '✦ 성장판 한약·성장추나 치료 ➔ 또래 추월 폭풍 키성장!',
+    subtitle: '“바른 성장치료(성장판 한약 + 척추 32마디 성장추나)를 통해 키가 쭈욱 길어져 또래보다 머리 하나만큼 훌쩍 자라납니다!”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '성장판 녹용한약 + 성장추나',
+    metric2Title: '치료를 통한 신장 변화',
+    metric2Value: '134cm ➔ 154.5cm (+20.5cm 폭풍성장!)',
+    barPercent: 100,
+    lightWarmth: 1.0,
+    arBadge: '🚀 [바른 성장치료 효과] 성장판 활성 ➔ 또래 추월 +20.5cm 폭풍 키성장 달성!'
+  },
+
+  // --- STAGE 2: 성인 비만(Before) -> 바른 비만치료 한약 복용(Treating) -> 날씬한 S라인 변신(After) ---
+  {
+    frameIndex: 6,
+    domId: 'backdrop-2a',
     step: 2,
     subPillIndex: 0,
-    start: 0.25,
-    end: 0.335,
-    isCrisis: true,
-    actLabel: 'ACT 02 · 성인기 비만 발생',
-    stateText: '⚠️ 체중 증가 · 비만 발생',
-    sceneTag: 'ACT II · SCENE 05 (성인 비만 발생)',
-    subtitle: '“성인이 되면서 스트레스와 대사 저하로 급격히 불어난 체중 — 무거워진 몸이 자신감마저 짓누릅니다.”',
-    metric1Title: '체지방률 / 내장지방',
-    metric1Value: '35.4% (비만 주의)',
-    metric2Title: '기초 신진대사율',
-    metric2Value: '44.0% (대사 저하)',
+    phase: 'before',
+    phaseProgress: 0.15,
+    actLabel: 'ACT II · 07 성인기 대사 저하 ➔ 체중 증가 & 비만 발생',
+    sceneTag: 'ACT II · SCENE 07 (치료 전 · 성인 비만 발생)',
+    stateText: '⚠️ 치료 전 · 성인 내장비만 & 체지방 과다 축적',
+    subtitle: '“성인이 되면서 급격히 살이 찌고 복부·팔뚝·턱선에 체지방이 불어나 몸과 마음이 무거워집니다.”',
+    metric1Title: '치료 전 체성분 진단',
+    metric1Value: '체지방률 34.8% (내장비만)',
+    metric2Title: '현재 대사 상태',
+    metric2Value: '기초대사 저하 · 부종 심화 ⚠️',
     barPercent: 32,
-    lightWarmth: 0.2
+    lightWarmth: 0.15,
+    arBadge: '⚠️ [비만치료 전] 체지방률 34.8% · 대사 정체 및 체중 급증 상태'
   },
   {
-    index: 6,
-    id: 'backdrop-2b',
+    frameIndex: 7,
+    domId: 'backdrop-2t',
     step: 2,
     subPillIndex: 1,
-    start: 0.335,
-    end: 0.42,
-    isCrisis: false,
-    actLabel: 'ACT 02 · 바른 비만치료',
-    stateText: '✦ 체지방 감량 · 슬림 라인',
-    sceneTag: 'ACT II · SCENE 06 (비만치료 ➔ 날씬한 변신)',
-    subtitle: '“바른 비만치료(식욕 ZERO)로 군살이 말끔히 정리되고, 가볍고 날씬한 본연의 아름다운 라인을 되찾습니다.”',
-    metric1Title: '실시간 체지방 감량',
-    metric2Title: '대사 활성 & 바디라인',
-    lightWarmth: 1.0
+    phase: 'treating',
+    phaseProgress: 0.6,
+    actLabel: 'ACT II · 08 바른 비만치료 한약 복용 ➔ 체지방 집중 분해 중',
+    sceneTag: 'ACT II · SCENE 08 (바른 비만치료 한약 작용 중)',
+    stateText: '💊 바른 다이어트 탕약 복용 ➔ 심부 체지방 연소 진행 중',
+    subtitle: '“바른 비만치료 한약이 식욕을 자연스럽게 잠재우고 심부 체지방을 분해하며 체형이 눈에 띄게 줄어듭니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '바른 비만탕약 (식욕·지방분해)',
+    metric2Title: '실시간 치료 호전도',
+    metric2Value: '체지방 34.8% ➔ 24.5% 연소 중 ▼',
+    barPercent: 68,
+    lightWarmth: 0.75,
+    arBadge: '💊 [바른 비만치료 진행 중] 심부 체지방 분해 대사율 +240% 활성화'
   },
   {
-    index: 7,
-    id: 'backdrop-3a',
+    frameIndex: 8,
+    domId: 'backdrop-2b',
+    step: 2,
+    subPillIndex: 2,
+    phase: 'after',
+    phaseProgress: 1.0,
+    actLabel: 'ACT II · 09 바른 비만치료 완결 ➔ 날씬하고 건강한 S라인 변신',
+    sceneTag: 'ACT II · SCENE 09 (비만치료 완료 · 슬림 체형 완성)',
+    stateText: '✦ 체지방 -14.2kg 감량 성공 ➔ 날씬한 S라인 완치',
+    subtitle: '“요요 없이 체지방만 쏙 빠져 가볍고 날씬해진 S라인 실루엣과 탄력 있는 건강미를 되찾았습니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '바른 비만치료 1:1 맞춤 한약',
+    metric2Title: '치료를 통한 최종 변화',
+    metric2Value: '체지방 18.2% 달성 (-14.2kg 감량!)',
+    barPercent: 99,
+    lightWarmth: 1.0,
+    arBadge: '✦ [바른 비만치료 완료] 체지방 -14.2kg 감량 · 날씬한 S라인 완벽 회복'
+  },
+
+  // --- STAGE 3: 30대 탈모 발생(Before) -> 두피 약침·청열 치료(Treating) -> 정상 모발 회복(After) ---
+  {
+    frameIndex: 9,
+    domId: 'backdrop-3a',
     step: 3,
     subPillIndex: 0,
-    start: 0.42,
-    end: 0.51,
-    isCrisis: true,
-    actLabel: 'ACT 03 · 30대 탈모 발생',
-    stateText: '⚠️ 두피 열감 · 탈모 진행',
-    sceneTag: 'ACT III · SCENE 07 (30대 탈모 발생)',
-    subtitle: '“치열한 30대, 뜨거운 두피 열감과 스트레스 속에 머리카락이 가늘어지고 우수수 빠져나갑니다.”',
-    metric1Title: '두피 표면 상열감',
-    metric1Value: '39.2°C (모낭 약화)',
-    metric2Title: '모발 밀도 & 탈락 상태',
-    metric2Value: '정수리·이마 탈모 진행',
-    barPercent: 28,
-    lightWarmth: 0.25
+    phase: 'before',
+    phaseProgress: 0.15,
+    actLabel: 'ACT III · 10 30대 스트레스·두피열 ➔ M자·정수리 탈모 발생',
+    sceneTag: 'ACT III · SCENE 10 (치료 전 · 30대 탈모 발생)',
+    stateText: '⚠️ 치료 전 · 30대 두피 상열감(熱) & 모발 탈락',
+    subtitle: '“30대가 되면서 과로와 두피 열독으로 M자 이마와 정수리 머리카락이 힘없이 빠지는 탈모가 찾아옵니다.”',
+    metric1Title: '치료 전 두피 진단',
+    metric1Value: '두피열 38.6°C · 모낭 위축',
+    metric2Title: '현재 모발 상태',
+    metric2Value: 'M자·정수리 밀도 45% 감소 ⚠️',
+    barPercent: 34,
+    lightWarmth: 0.15,
+    arBadge: '⚠️ [탈모치료 전] 두피 상열감 38.6°C · 30대 M자 및 정수리 모발 탈락'
   },
   {
-    index: 8,
-    id: 'backdrop-3b',
+    frameIndex: 10,
+    domId: 'backdrop-3t',
     step: 3,
     subPillIndex: 1,
-    start: 0.51,
-    end: 0.60,
-    isCrisis: false,
-    actLabel: 'ACT 03 · 바른 탈모치료',
-    stateText: '✦ 두피 청열 · 풍성한 모발',
-    sceneTag: 'ACT III · SCENE 08 (탈모치료 ➔ 정상 회복)',
-    subtitle: '“두피의 열을 내리는 청열 한약과 모근 재생 약침으로 뿌리부터 힘이 차오르며 다시 빽빽하고 풍성한 모발로 회복됩니다.”',
-    metric1Title: '두피 쿨링 온도 변화',
-    metric2Title: '모근 재생 & 모발 밀도',
-    lightWarmth: 0.95
+    phase: 'treating',
+    phaseProgress: 0.6,
+    actLabel: 'ACT III · 11 바른 탈모치료 (두피 청열 & 고농도 발모 약침 시술 중)',
+    sceneTag: 'ACT III · SCENE 11 (바른 두피 약침·청열 치료 과정)',
+    stateText: '💉 고농도 발모 약침·청열 치료 ➔ 신생 모발 발아 중',
+    subtitle: '“바른한의원의 정밀 발모 약침과 두피 청열 치료가 모낭 깊숙이 영양을 공급하며 새 머리카락이 힘차게 자라납니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '고농도 모근재생 약침 + 청열한약',
+    metric2Title: '실시간 치료 호전도',
+    metric2Value: '두피열 34.8°C 하강 · 신생모 발아 ▲',
+    barPercent: 72,
+    lightWarmth: 0.7,
+    arBadge: '💉 [바른 탈모치료 시술 중] 두피 열독 해소 & 잠든 모근 세포 재생 발모'
   },
   {
-    index: 9,
-    id: 'backdrop-4a',
+    frameIndex: 11,
+    domId: 'backdrop-3b',
+    step: 3,
+    subPillIndex: 2,
+    phase: 'after',
+    phaseProgress: 1.0,
+    actLabel: 'ACT III · 12 바른 탈모치료 완료 ➔ 풍성하고 빽빽한 정상 모발 회복',
+    sceneTag: 'ACT III · SCENE 12 (탈모치료 완료 · 정상 모발 회복)',
+    stateText: '✦ 모낭 밀도 99% 회복 ➔ 빈틈없이 풍성한 정상 모발',
+    subtitle: '“빠졌던 M자 헤어라인과 정수리가 다시 굵고 빽빽한 흑발로 가득 차올라 완벽한 정상 모발을 되찾았습니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '발모 약침 + 수승화강 탈모한약',
+    metric2Title: '치료를 통한 최종 변화',
+    metric2Value: '모발 밀도·굵기 99.2% 정상 회복 ▲',
+    barPercent: 99,
+    lightWarmth: 1.0,
+    arBadge: '✦ [바른 탈모치료 완료] M자·정수리 모발 밀도 99.2% 정상 회복 달성'
+  },
+
+  // --- STAGE 4: 근무 중 척추 틀어짐·관절통(Before) -> 원장님 1:1 추나 치료(Treating) -> 척추 회복(After) ---
+  {
+    frameIndex: 12,
+    domId: 'backdrop-4a',
     step: 4,
     subPillIndex: 0,
-    start: 0.60,
-    end: 0.69,
-    isCrisis: true,
-    actLabel: 'ACT 04 · 척추틀어짐 & 통증',
-    stateText: '⚠️ 척추 틀어짐 · 관절 통증',
-    sceneTag: 'ACT IV · SCENE 09 (근무 중 척추·관절 통증)',
-    subtitle: '“야근과 장시간 근무로 무너진 거북목과 틀어진 척추 — 목·어깨·허리·손목 전신 관절에 찌릿한 통증이 찾아옵니다.”',
-    metric1Title: '척추·골반 틀어짐 변위',
-    metric1Value: '18.6° 비대칭 왜곡',
-    metric2Title: '9대 관절 통증 지수',
-    metric2Value: 'VAS 8.5 (극심한 통증)',
-    barPercent: 22,
-    lightWarmth: 0.15
-  },
-  {
-    index: 10,
-    id: 'backdrop-4b',
-    step: 4,
-    subPillIndex: 1,
-    start: 0.69,
-    end: 0.78,
-    isCrisis: false,
-    actLabel: 'ACT 04 · 바른 추나·봉약침',
-    stateText: '✦ 추나 수직교정 · 통증 회복',
-    sceneTag: 'ACT IV · SCENE 10 (추나 통증치료 ➔ 회복)',
-    subtitle: '“대표원장 1:1 정밀 추나요법과 봉약침 치료로 틀어진 척추가 반듯하게 펴지고 일상의 가벼운 활력을 되찾습니다.”',
-    metric1Title: '척추·골반 정렬도',
-    metric2Title: '9대 관절 치유 상태',
-    lightWarmth: 1.0
-  },
-  {
-    index: 11,
-    id: 'backdrop-5a',
-    step: 5,
-    subPillIndex: 0,
-    start: 0.78,
-    end: 0.85,
-    isCrisis: true,
-    actLabel: 'ACT 05 · 노화와 기력저하',
-    stateText: '⚠️ 기력 고갈 · 성인병 위험',
-    sceneTag: 'ACT V · SCENE 11 (노화·기력저하·성인병)',
-    subtitle: '“나이가 들며 찾아온 깊은 기력 저하와 성인병의 무게 — 지친 몸과 마음이 온전한 회복을 부릅니다.”',
-    metric1Title: '전신 원기·심폐 활력',
-    metric1Value: '28.0% (기력 저하)',
-    metric2Title: '혈관·대사 성인병 지수',
-    metric2Value: '순환 저하 · 관리 필요',
+    phase: 'before',
+    phaseProgress: 0.15,
+    actLabel: 'ACT IV · 13 근무 중 척추 틀어짐 & 전신 9대 관절 통증 발생',
+    sceneTag: 'ACT IV · SCENE 13 (치료 전 · 척추 틀어짐 & 관절 통증)',
+    stateText: '⚠️ 치료 전 · 척추 14.8° 틀어짐 & 전신 관절 통증',
+    subtitle: '“과중한 업무로 척추와 골반이 틀어지고 목·어깨·허리·무릎 등 전신 관절에 극심한 통증이 발생합니다.”',
+    metric1Title: '치료 전 체형·통증 진단',
+    metric1Value: '척추 변위 14.8° · 디스크 압박',
+    metric2Title: '현재 통증 지수',
+    metric2Value: '목·어깨·허리 9대 관절 통증 ⚠️',
     barPercent: 28,
-    lightWarmth: 0.15
+    lightWarmth: 0.15,
+    arBadge: '⚠️ [추나치료 전] 근무 중 척추 14.8° 비대칭 틀어짐 & 전신 관절염증 발생'
   },
   {
-    index: 12,
-    id: 'backdrop-5b',
+    frameIndex: 13,
+    domId: 'backdrop-4t',
+    step: 4,
+    subPillIndex: 1,
+    phase: 'treating',
+    phaseProgress: 0.62,
+    actLabel: 'ACT IV · 14 대표원장 1:1 정밀 추나 수기 교정 & 약침 치료 중',
+    sceneTag: 'ACT IV · SCENE 14 (바른 추나 수기 교정 치료 과정)',
+    stateText: '👐 대표원장 1:1 추나요법 시술 ➔ 틀어진 척추 교정 중',
+    subtitle: '“대표원장님이 직접 손으로 어긋난 경추·요추·골반 마디마디를 바로잡는 추나 치료로 굽은 등이 곧게 펴집니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '대표원장 1:1 추나교정 + 봉약침',
+    metric2Title: '실시간 치료 호전도',
+    metric2Value: '척추 14.8° ➔ 2.4° 교정 진행 중 ▲',
+    barPercent: 74,
+    lightWarmth: 0.75,
+    arBadge: '👐 [바른 추나 통증치료 진행 중] 수기 척추 정렬 & 심부 신경압박 즉시 해소'
+  },
+  {
+    frameIndex: 14,
+    domId: 'backdrop-4b',
+    step: 4,
+    subPillIndex: 2,
+    phase: 'after',
+    phaseProgress: 1.0,
+    actLabel: 'ACT IV · 15 추나 통증치료 완료 ➔ 바른 척추 정렬 & 무통증 회복',
+    sceneTag: 'ACT IV · SCENE 15 (추나치료 완료 · 척추 및 관절 회복)',
+    stateText: '✦ 척추 0.2° 수직 정렬 완료 ➔ 전신 관절 통증 100% 소실',
+    subtitle: '“틀어졌던 척추가 반듯하게 펴지고 전신 관절 통증이 씻은 듯이 사라져 가벼운 일상을 되찾았습니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '정밀 추나요법 + 인대재생 한약',
+    metric2Title: '치료를 통한 최종 변화',
+    metric2Value: '척추 수직 정렬 & 통증 100% 회복 ▲',
+    barPercent: 100,
+    lightWarmth: 1.0,
+    arBadge: '✦ [바른 추나치료 완료] 척추 0.2° 수직 정렬 & 9대 관절 통증 완벽 회복'
+  },
+
+  // --- STAGE 5: 노화·기력저하·성인병(Before) -> 24K 황제공진단 치료(Treating) -> 아름다운 노년(After) ---
+  {
+    frameIndex: 15,
+    domId: 'backdrop-5a',
+    step: 5,
+    subPillIndex: 0,
+    phase: 'before',
+    phaseProgress: 0.15,
+    actLabel: 'ACT V · 16 노화로 인한 기력 고갈 & 성인병·만성피로 도래',
+    sceneTag: 'ACT V · SCENE 16 (치료 전 · 노년 기력저하 & 성인병)',
+    stateText: '⚠️ 치료 전 · 노년 원기 고갈 & 성인병 대사 저하',
+    subtitle: '“세월이 흐르며 기력이 급격히 쇠하고 성인병과 만성 피로가 찾아와 삶의 활력이 꺼져갑니다.”',
+    metric1Title: '치료 전 진맥 진단',
+    metric1Value: '심폐 원기 28% (기력 고갈)',
+    metric2Title: '현재 건강 상태',
+    metric2Value: '성인병 위험 · 만성 무기력증 ⚠️',
+    barPercent: 28,
+    lightWarmth: 0.15,
+    arBadge: '⚠️ [공진단 치료 전] 노년 기력 고갈(28%) 및 성인병·만성 피로 누적'
+  },
+  {
+    frameIndex: 16,
+    domId: 'backdrop-5b',
     step: 5,
     subPillIndex: 1,
-    start: 0.85,
-    end: 0.93,
-    isCrisis: false,
-    actLabel: 'ACT 05 · 황제공진단 처방',
-    stateText: '✦ 24K 황제공진단 · 기력 회복',
-    sceneTag: 'ACT V · SCENE 12 (황제공진단 기력 회복)',
-    subtitle: '“식약처 인증 100% 정품 천연 사향과 녹용 분골을 빚은 24K 황제공진단이 막힌 기혈을 뚫고 깊은 생명력을 채웁니다.”',
-    metric1Title: '전신 기력·활력 회복률',
-    metric2Title: '성인병 예방·면역 활력',
-    lightWarmth: 1.0
+    phase: 'treating',
+    phaseProgress: 0.65,
+    actLabel: 'ACT V · 17 특허 24K 황제공진단 복용 치료 ➔ 전신 기력 회복 중',
+    sceneTag: 'ACT V · SCENE 17 (황제공진단 기력 회복 치료 과정)',
+    stateText: '👑 24K 순금박 황제공진단 처방 ➔ 심폐 원기·면역 급상승',
+    subtitle: '“정품 사향·녹용을 빚은 24K 황제공진단 치료로 막힌 기혈이 뚫리고 전신에 뜨거운 생기와 혈색이 차오릅니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '특허 24K 순금박 황제공진단',
+    metric2Title: '실시간 치료 호전도',
+    metric2Value: '원기 지수 28% ➔ 86% 급상승 ▲',
+    barPercent: 82,
+    lightWarmth: 0.85,
+    arBadge: '👑 [황제공진단 치료 작용 중] 심폐 화색 회복 & 성인병 면역 방어력 강화'
   },
   {
-    index: 13,
-    id: 'backdrop-5c',
+    frameIndex: 17,
+    domId: 'backdrop-5c',
     step: 5,
     subPillIndex: 2,
-    start: 0.93,
-    end: 1.00,
-    isCrisis: false,
-    actLabel: 'ACT 05 · 아름다운 노년',
-    stateText: '✦ 품격 있는 백세 건강 완성',
-    sceneTag: 'ACT V · SCENE 13 (아름답게 늙어가는 모습)',
-    subtitle: '“흐르는 세월마저 가장 따뜻하고 아름다운 기품이 되도록 — 바른한의원이 당신의 일생과 백세 건강을 함께합니다.”',
-    metric1Title: '백세 장수·기력 지수',
-    metric1Value: '99.8% 충만한 활력',
-    metric2Title: '평생 주치의 케어',
-    metric2Value: '바른한의원 책임 전담',
+    phase: 'after',
+    phaseProgress: 1.0,
+    actLabel: 'ACT V · 18 기력 완벽 회복 ➔ 건강하고 아름답게 늙어가는 삶',
+    sceneTag: 'ACT V · SCENE 18 (황제공진단 완결 · 아름다운 노년)',
+    stateText: '✦ 백세 원기 99.5% 완성 ➔ 품격 있고 아름다운 노년',
+    subtitle: '“기력을 되찾고 성인병을 이겨내어, 황금빛 노을처럼 건강하고 아름답게 나이 들어가는 인생을 완성합니다.”',
+    metric1Title: '적용된 바른 치료 처방',
+    metric1Value: '황제공진단 · 백세 항노화 보약',
+    metric2Title: '치료를 통한 최종 변화',
+    metric2Value: '백세 활력 99.5% · 아름다운 노년 ▲',
     barPercent: 100,
-    lightWarmth: 1.0
+    lightWarmth: 1.0,
+    arBadge: '✦ [황제공진단 치료 완료] 원기 99.5% 회복 · 품격 있고 아름다운 백세 노년'
   }
 ];
 
-/**
- * Natural Optical Cinema Lens Bokeh Dust Texture (Soft Golden-Hour Sunlight Motes)
- * Zero hard edges, looks like real dust motes caught in an ARRI Alexa 50mm f/1.2 lens.
- */
-function createOpticalBokehTexture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 128;
-  canvas.height = 128;
-  const ctx = canvas.getContext('2d');
-  const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-  grad.addColorStop(0, 'rgba(255, 250, 235, 0.75)');
-  grad.addColorStop(0.45, 'rgba(245, 222, 179, 0.38)');
-  grad.addColorStop(0.8, 'rgba(212, 175, 55, 0.12)');
-  grad.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 128, 128);
-  return new THREE.CanvasTexture(canvas);
-}
+window.currentAppStepSlug = 'pediatric-growth';
 
+// ============================================================================
+// 3. CONTINUOUS LIVE-ACTION VIDEO SYNTHESIZER & ANATOMICAL DEFORMATION ENGINE
+// ============================================================================
 class BareunMasterpieceStoryApp {
   constructor() {
+    this.canvas = document.getElementById('storyboard-canvas');
+    this.videoCanvas = document.getElementById('cinema-video-canvas');
+    this.vCtx = this.videoCanvas ? this.videoCanvas.getContext('2d') : null;
+
     this.currentStep = 1;
     this.scrollProgress = 0;
-    this.isMobile = window.innerWidth <= 900;
+
+    // Master continuous film playhead (0.000 to 1.000 across all 18 frames)
+    this.playheadP = 0;
+    this.targetPlayheadP = 0;
+    this.isAutoPlaying = true;
+    this.lastScrollTimestamp = 0;
+    this.lastFrameTime = performance.now();
+
     this.mouseParallax = { x: 0, y: 0, targetX: 0, targetY: 0 };
     this.currentLightWarmth = 1.0;
 
-    this.initDOM();
-    this.initThreeOpticalLens();
-    this.initGSAPScrollTrigger();
-    this.initIntro();
-    this.initDrawer();
-    this.initInteractions();
-    this.initClock();
-    this.animate();
+    // Preloaded HTMLImageElements for 60fps Canvas Video Synthesis
+    this.loadedImages = new Array(VIDEO_FRAMES.length).fill(null);
+    this.imagesReadyCount = 0;
 
-    window.currentAppStepSlug = CLINIC_SPECS[0].slug;
-    this.renderTimeline(0);
-  }
-
-  initDOM() {
-    this.canvas = document.getElementById('storyboard-canvas');
-    this.stage = document.getElementById('story-stage-sticky');
-    this.track = document.getElementById('story-scroll-track');
+    // DOM References
     this.hudPanel = document.getElementById('story-hud-panel');
-
     this.hudBadge = document.getElementById('hud-step-badge');
     this.hudCounter = document.getElementById('hud-step-counter');
     this.hudSubsceneFlow = document.getElementById('hud-subscene-flow');
@@ -361,58 +467,122 @@ class BareunMasterpieceStoryApp {
     this.hudDesc = document.getElementById('hud-step-desc');
     this.hudPrimaryBtn = document.getElementById('hud-primary-btn');
     this.hudDrawerBtn = document.getElementById('hud-drawer-btn');
+    this.painRadarBox = document.getElementById('pain-radar-box');
+    this.painRadarStatus = document.getElementById('pain-radar-status');
 
+    // 3-Phase Treatment Recovery Pipeline DOM
+    this.tpPhaseBefore = document.getElementById('tp-phase-before');
+    this.tpPhaseTreating = document.getElementById('tp-phase-treating');
+    this.tpPhaseAfter = document.getElementById('tp-phase-after');
+    this.tpLabelBefore = document.getElementById('tp-label-before');
+    this.tpLabelTreating = document.getElementById('tp-label-treating');
+    this.tpLabelAfter = document.getElementById('tp-label-after');
+    this.tpConn1 = document.getElementById('tp-conn-1');
+    this.tpConn2 = document.getElementById('tp-conn-2');
+
+    // Top-right Live Video Player Controls
+    this.autoPlayBtn = document.getElementById('cinema-autoplay-btn');
+    this.autoPlayText = document.getElementById('cinema-autoplay-text');
+    this.timecodeEl = document.getElementById('cinema-timecode');
+
+    // Top Timeline & Telemetry DOM
+    this.timelineActLabel = document.getElementById('timeline-act-label');
+    this.timelineProgressFill = document.getElementById('timeline-progress-fill');
+    this.timelineStatePill = document.getElementById('timeline-state-pill');
     this.telemetryStatus = document.getElementById('telemetry-status');
     this.metric1Title = document.getElementById('metric-1-title');
     this.metric1Value = document.getElementById('metric-1-value');
     this.metric2Title = document.getElementById('metric-2-title');
     this.metric2Value = document.getElementById('metric-2-value');
     this.telemetryBarFill = document.getElementById('telemetry-bar-fill');
-
-    this.timelineActLabel = document.getElementById('timeline-act-label');
-    this.timelineProgressFill = document.getElementById('timeline-progress-fill');
-    this.timelineStatePill = document.getElementById('timeline-state-pill');
     this.cinemaSceneTag = document.getElementById('cinema-scene-tag');
     this.cinemaSubtitleText = document.getElementById('cinema-subtitle-text');
 
-    this.painRadarBox = document.getElementById('pain-radar-box');
-    this.painRadarStatus = document.getElementById('pain-radar-status');
-
-    this.backdropMap = {};
-    SCENE_TIMELINE.forEach(s => {
-      this.backdropMap[s.id] = document.getElementById(s.id);
-    });
-
     this.navDots = document.querySelectorAll('.step-nav-dot');
     this.sktCards = document.querySelectorAll('.skt-dock-card');
+
+    this.backdropMap = {};
+    VIDEO_FRAMES.forEach(f => {
+      const el = document.getElementById(f.domId);
+      if (el) this.backdropMap[f.domId] = el;
+    });
+
+    this.initClock();
+    this.preloadSequenceFrames();
+    this.initVideoCanvasSize();
+    this.initOpticalBokehWebGL();
+    this.initScrollEngine();
+    this.initInteractions();
+    this.initIntro();
+    this.initDrawer();
+
+    this.updateStepTextAndNav(1);
+    this.syncUIWithPlayhead(0);
+    this.animate();
   }
 
   initClock() {
-    const timeEl = document.getElementById('current-time');
-    if (!timeEl) return;
-    const updateClock = () => {
+    const updateTime = () => {
+      const el = document.getElementById('hud-clock');
+      if (!el) return;
       const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      timeEl.textContent = `${hh}:${mm}`;
+      el.textContent = now.toTimeString().split(' ')[0];
     };
-    updateClock();
-    setInterval(updateClock, 30000);
+    setInterval(updateTime, 1000);
+    updateTime();
   }
 
   // =========================================================================
-  // Photorealistic Three.js Optical Bokeh & Natural Sunlight Dust Engine
-  // (No artificial CGI primitives or wireframes — pure cinema lens atmosphere)
+  // Preload All 18 Locked-Camera Frames for 60fps Video Canvas Synthesis
   // =========================================================================
-  initThreeOpticalLens() {
+  preloadSequenceFrames() {
+    VIDEO_FRAMES.forEach((f, idx) => {
+      const el = this.backdropMap[f.domId];
+      if (!el) return;
+      const bgStyle = el.style.backgroundImage || '';
+      const match = bgStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
+      if (!match || !match[1]) return;
+
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        this.loadedImages[idx] = img;
+        this.imagesReadyCount++;
+      };
+      img.onerror = () => {
+        // Fallback without crossOrigin if needed
+        const fallbackImg = new Image();
+        fallbackImg.onload = () => {
+          this.loadedImages[idx] = fallbackImg;
+          this.imagesReadyCount++;
+        };
+        fallbackImg.src = match[1];
+      };
+      img.src = match[1];
+    });
+  }
+
+  initVideoCanvasSize() {
+    if (!this.videoCanvas) return;
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.videoCanvas.width = Math.floor(window.innerWidth * dpr);
+      this.videoCanvas.height = Math.floor(window.innerHeight * dpr);
+      this.videoDpr = dpr;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+  }
+
+  // =========================================================================
+  // Optical Lens Bokeh & Sunlight Dust Motes (Three.js Layer)
+  // =========================================================================
+  initOpticalBokehWebGL() {
     if (!this.canvas || typeof THREE === 'undefined') return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(40, width / height, 1, 500);
-    this.camera.position.set(0, 0, 90);
+    this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 300);
+    this.camera.position.set(0, 0, 50);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -420,131 +590,113 @@ class BareunMasterpieceStoryApp {
       alpha: true,
       powerPreference: 'high-performance'
     });
-    this.renderer.setSize(width, height);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x000000, 0.0);
 
-    const bokehTex = createOpticalBokehTexture();
+    const bokehTex = this.createOpticalBokehTexture();
 
-    // Layer 1: Fine Golden-Hour Sunlight Dust Motes (220 subtle organic motes)
-    const dustCount = 220;
+    const dustCount = 90;
+    const dustGeo = new THREE.BufferGeometry();
     this.dustPositions = new Float32Array(dustCount * 3);
+    const dustColors = new Float32Array(dustCount * 3);
     this.dustSpeeds = [];
+
+    const colWarm = new THREE.Color(0xFDE68A);
+    const colCream = new THREE.Color(0xFFFBEB);
+
     for (let i = 0; i < dustCount; i++) {
-      this.dustPositions[i * 3] = (Math.random() - 0.35) * 140;
-      this.dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 90;
-      this.dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 60;
+      this.dustPositions[i * 3] = (Math.random() - 0.35) * 90;
+      this.dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 60;
+      this.dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 35;
+
       this.dustSpeeds.push({
-        vx: (Math.random() - 0.5) * 0.025,
-        vy: 0.015 + Math.random() * 0.035,
+        vx: (Math.random() - 0.5) * 0.012,
+        vy: 0.008 + Math.random() * 0.016,
         phase: Math.random() * Math.PI * 2
       });
+
+      const c = Math.random() > 0.4 ? colWarm : colCream;
+      dustColors[i * 3] = c.r;
+      dustColors[i * 3 + 1] = c.g;
+      dustColors[i * 3 + 2] = c.b;
     }
-    const dustGeom = new THREE.BufferGeometry();
-    dustGeom.setAttribute('position', new THREE.BufferAttribute(this.dustPositions, 3));
+
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(this.dustPositions, 3));
+    dustGeo.setAttribute('color', new THREE.BufferAttribute(dustColors, 3));
+
     this.dustMat = new THREE.PointsMaterial({
       size: 1.8,
       map: bokehTex,
-      color: 0xFFF3D1,
+      vertexColors: true,
       transparent: true,
-      opacity: 0.42,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
+      opacity: 0.32,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
     });
-    this.dustPoints = new THREE.Points(dustGeom, this.dustMat);
+
+    this.dustPoints = new THREE.Points(dustGeo, this.dustMat);
     this.scene.add(this.dustPoints);
 
-    // Layer 2: Foreground Out-of-Focus Cinema Lens Bokeh Orbs (28 soft optical orbs)
-    const orbCount = 28;
-    this.orbPositions = new Float32Array(orbCount * 3);
-    for (let i = 0; i < orbCount; i++) {
-      this.orbPositions[i * 3] = (Math.random() - 0.25) * 120;
-      this.orbPositions[i * 3 + 1] = (Math.random() - 0.5) * 80;
-      this.orbPositions[i * 3 + 2] = 20 + Math.random() * 35;
-    }
-    const orbGeom = new THREE.BufferGeometry();
-    orbGeom.setAttribute('position', new THREE.BufferAttribute(this.orbPositions, 3));
-    this.orbMat = new THREE.PointsMaterial({
-      size: 7.5,
-      map: bokehTex,
-      color: 0xFDE68A,
-      transparent: true,
-      opacity: 0.18,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-    this.orbPoints = new THREE.Points(orbGeom, this.orbMat);
-    this.scene.add(this.orbPoints);
-
     window.addEventListener('resize', () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      this.isMobile = w <= 900;
-      this.camera.aspect = w / h;
+      if (!this.camera || !this.renderer) return;
+      this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(w, h);
-      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
     });
   }
 
-  // =========================================================================
-  // GSAP ScrollTrigger Pinning & Scrubbing Engine (850vh Track)
-  // =========================================================================
-  initGSAPScrollTrigger() {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      this.initFallbackScroll();
-      return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    ScrollTrigger.create({
-      trigger: '#story-scroll-track',
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: '#story-stage-sticky',
-      pinSpacing: false,
-      anticipatePin: 1,
-      scrub: 0.5,
-      onUpdate: (self) => {
-        this.scrollProgress = self.progress;
-        this.renderTimeline(self.progress);
-      }
-    });
-
-    ScrollTrigger.refresh();
+  createOpticalBokehTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0, 'rgba(255, 252, 240, 0.95)');
+    grad.addColorStop(0.5, 'rgba(253, 230, 138, 0.4)');
+    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(canvas);
   }
 
-  initFallbackScroll() {
+  // =========================================================================
+  // Scroll Engine + Continuous Film Hybrid Controller
+  // =========================================================================
+  initScrollEngine() {
     const track = document.getElementById('story-scroll-track');
     if (!track) return;
+
     window.addEventListener('scroll', () => {
       const rect = track.getBoundingClientRect();
       const total = track.offsetHeight - window.innerHeight;
-      let p = 0;
-      if (rect.top <= 0) {
-        p = Math.min(1.0, Math.max(0, -rect.top / total));
+      if (total <= 0) return;
+
+      if (rect.top <= 0 && rect.bottom >= window.innerHeight * 0.5) {
+        const p = Math.min(1.0, Math.max(0, -rect.top / total));
+        this.scrollProgress = p;
+        this.targetPlayheadP = p;
+        this.lastScrollTimestamp = performance.now();
       }
-      this.scrollProgress = p;
-      this.renderTimeline(p);
+    }, { passive: true });
+  }
+
+  initInteractions() {
+    window.addEventListener('mousemove', (e) => {
+      this.mouseParallax.targetX = (e.clientX / window.innerWidth - 0.5);
+      this.mouseParallax.targetY = (e.clientY / window.innerHeight - 0.5);
     }, { passive: true });
   }
 
   // =========================================================================
-  // Master 13-Scene Live-Action Film Timeline Choreography (0% ~ 100%)
+  // Sync DOM HUD, 3-Phase Treatment Pipeline & Telemetry with Playhead (0~1)
   // =========================================================================
-  renderTimeline(p) {
-    let activeScene = SCENE_TIMELINE[0];
-    for (let i = 0; i < SCENE_TIMELINE.length; i++) {
-      const s = SCENE_TIMELINE[i];
-      if (p >= s.start && p <= s.end) {
-        activeScene = s;
-        break;
-      }
-    }
+  syncUIWithPlayhead(p) {
+    const totalFrames = VIDEO_FRAMES.length;
+    const exactFrame = Math.max(0, Math.min(totalFrames - 1, p * (totalFrames - 1)));
+    const activeIdx = Math.min(totalFrames - 1, Math.floor(exactFrame + 0.35));
+    const frameData = VIDEO_FRAMES[activeIdx] || VIDEO_FRAMES[0];
 
-    let step = activeScene.step;
-
+    let step = frameData.step;
     const cardsSec = document.getElementById('signature-cards');
     if (cardsSec) {
       const cRect = cardsSec.getBoundingClientRect();
@@ -559,124 +711,46 @@ class BareunMasterpieceStoryApp {
       }
     }
 
-    // Update live telemetry, sub-pills, cinema subtitles, and 9-joint chips
-    this.updateSceneLiveTelemetry(activeScene, p);
+    // Update Top Timecode
+    if (this.timecodeEl) {
+      const fNum = String(activeIdx + 1).padStart(2, '0');
+      const pct = String(Math.round(p * 100)).padStart(2, '0');
+      this.timecodeEl.textContent = `SCENE ${fNum} / 18 · ${pct}%`;
+    }
 
-    // Render 3D Camera Dolly, Rack-Focus Blur, and Live-Action Scene Transitions
-    this.renderLiveActionCameraDolly(p);
+    // Update 3-Phase Treatment Recovery Pipeline (Before -> Treating -> After)
+    if (this.tpPhaseBefore && this.tpPhaseTreating && this.tpPhaseAfter) {
+      this.tpPhaseBefore.className = `tp-phase ${frameData.phase === 'before' ? 'active-before' : ''}`;
+      this.tpPhaseTreating.className = `tp-phase ${frameData.phase === 'treating' ? 'active-treating' : ''}`;
+      this.tpPhaseAfter.className = `tp-phase ${frameData.phase === 'after' ? 'active-after' : ''}`;
 
-    // Adjust sunlight dust warmth based on whether scene is Crisis (cool shadow) or Healing (golden hour)
-    this.currentLightWarmth = activeScene.lightWarmth ?? 1.0;
-  }
-
-  // =========================================================================
-  // 3D Live-Action Camera Dolly, Rack-Focus Blur & Perspective Choreography
-  // =========================================================================
-  renderLiveActionCameraDolly(p) {
-    const transWidth = 0.022; // Smooth rack-focus cross-dissolve window
-
-    let activeIdx = 0;
-    let nextIdx = -1;
-    let blend = 0;
-
-    for (let i = 0; i < SCENE_TIMELINE.length; i++) {
-      const s = SCENE_TIMELINE[i];
-      if (i === SCENE_TIMELINE.length - 1) {
-        if (p >= s.start) {
-          activeIdx = i;
-          nextIdx = -1;
-          break;
-        }
-      } else {
-        const boundary = SCENE_TIMELINE[i + 1].start;
-        if (p >= s.start && p < boundary - transWidth) {
-          activeIdx = i;
-          nextIdx = -1;
-          break;
-        } else if (p >= boundary - transWidth && p < boundary) {
-          activeIdx = i;
-          nextIdx = i + 1;
-          blend = (p - (boundary - transWidth)) / transWidth;
-          break;
+      if (this.tpConn1 && this.tpConn2) {
+        if (frameData.phase === 'before') {
+          this.tpConn1.style.width = '25%';
+          this.tpConn2.style.width = '0%';
+        } else if (frameData.phase === 'treating') {
+          this.tpConn1.style.width = '100%';
+          this.tpConn2.style.width = '55%';
+        } else {
+          this.tpConn1.style.width = '100%';
+          this.tpConn2.style.width = '100%';
         }
       }
     }
 
-    const px = (this.mouseParallax.x * -12).toFixed(2);
-    const py = (this.mouseParallax.y * -8).toFixed(2);
+    const isCrisis = frameData.phase === 'before';
 
-    SCENE_TIMELINE.forEach((scene, idx) => {
-      const el = this.backdropMap[scene.id];
-      if (!el) return;
-
-      const localP = Math.max(0, Math.min(1, (p - scene.start) / (scene.end - scene.start)));
-
-      // Scene-specific 3D camera dolly motion:
-      // Scene 4 (1D: Peer Height Growth) adds a vertical upward stretch & tilt-up as child grows tall!
-      let scaleX = 1.0 + localP * 0.045;
-      let scaleY = 1.0 + localP * 0.045;
-      let translateY = 0;
-
-      if (scene.index === 4) {
-        // Child growing tall among peers: smooth vertical elongation & upward camera lift
-        scaleY = 1.0 + localP * 0.095;
-        translateY = -localP * 14;
-      } else if (scene.index === 6) {
-        // Obesity -> Slimming: subtle horizontal refinement
-        scaleX = 1.04 - localP * 0.04;
-        scaleY = 1.0 + localP * 0.05;
-      }
-
-      if (idx === activeIdx && nextIdx === -1) {
-        el.style.opacity = '1';
-        el.style.zIndex = '3';
-        el.style.filter = 'blur(0px) brightness(1.0)';
-        el.style.transform = `translate3d(${px}px, ${( parseFloat(py) + translateY ).toFixed(2)}px, 0) scale(${scaleX.toFixed(4)}, ${scaleY.toFixed(4)})`;
-      } else if (idx === activeIdx && nextIdx !== -1) {
-        // Outgoing shot racks focus (subtle optical blur + dolly forward)
-        const blurPx = (blend * 6.0).toFixed(2);
-        el.style.opacity = (1 - blend).toFixed(3);
-        el.style.zIndex = '2';
-        el.style.filter = `blur(${blurPx}px) brightness(${(1 + blend * 0.08).toFixed(2)})`;
-        el.style.transform = `translate3d(${px}px, ${( parseFloat(py) + translateY ).toFixed(2)}px, 0) scale(${(scaleX + blend * 0.03).toFixed(4)}, ${(scaleY + blend * 0.03).toFixed(4)})`;
-      } else if (idx === nextIdx) {
-        // Incoming shot pulls into sharp focus from soft bokeh
-        const blurPx = ((1 - blend) * 6.0).toFixed(2);
-        el.style.opacity = blend.toFixed(3);
-        el.style.zIndex = '3';
-        el.style.filter = `blur(${blurPx}px) brightness(1.0)`;
-        el.style.transform = `translate3d(${px}px, ${py}px, 0) scale(${(1.04 - blend * 0.04).toFixed(4)})`;
-      } else {
-        el.style.opacity = '0';
-        el.style.zIndex = '1';
-        el.style.filter = 'none';
-      }
-    });
-  }
-
-  // =========================================================================
-  // Real-Time Biometric Telemetry, Sub-Scene Pills & 9-Joint Status
-  // =========================================================================
-  updateSceneLiveTelemetry(scene, p) {
-    const localP = Math.max(0, Math.min(1, (p - scene.start) / (scene.end - scene.start)));
-
-    let isCrisis = scene.isCrisis;
-    if (typeof scene.crisisThreshold === 'number') {
-      isCrisis = p < scene.crisisThreshold;
-    }
-
-    if (this.timelineActLabel) this.timelineActLabel.textContent = scene.actLabel;
+    if (this.timelineActLabel) this.timelineActLabel.textContent = frameData.actLabel;
     if (this.timelineProgressFill) {
-      this.timelineProgressFill.style.width = `${Math.max(3, Math.round(p * 100))}%`;
+      this.timelineProgressFill.style.width = `${Math.max(4, Math.round(p * 100))}%`;
     }
     if (this.timelineStatePill) {
-      const stateStr = scene.stateText || (isCrisis ? scene.stateTextCrisis : scene.stateTextHeal);
-      this.timelineStatePill.textContent = stateStr;
+      this.timelineStatePill.textContent = frameData.stateText;
       this.timelineStatePill.className = `timeline-state-pill ${isCrisis ? 'state-crisis' : 'state-healing'}`;
     }
 
     if (this.hudCounter) {
-      this.hudCounter.textContent = `SCENE ${String(scene.index).padStart(2, '0')} / 13`;
+      this.hudCounter.textContent = `SCENE ${String(activeIdx + 1).padStart(2, '0')} / 18`;
     }
     if (this.hudPanel) {
       this.hudPanel.classList.toggle('crisis-mode', isCrisis);
@@ -686,109 +760,73 @@ class BareunMasterpieceStoryApp {
       const pills = this.hudSubsceneFlow.querySelectorAll('.subscene-pill');
       pills.forEach((pill, idx) => {
         pill.classList.remove('active', 'crisis-active');
-        if (idx === scene.subPillIndex) {
+        if (idx === frameData.subPillIndex) {
           pill.classList.add(isCrisis ? 'crisis-active' : 'active');
         }
       });
     }
 
-    if (this.cinemaSceneTag) this.cinemaSceneTag.textContent = scene.sceneTag;
-    if (this.cinemaSubtitleText) {
-      const subStr = scene.subtitle || (isCrisis ? scene.subtitleCrisis : scene.subtitleHeal);
-      this.cinemaSubtitleText.textContent = subStr;
-    }
+    if (this.cinemaSceneTag) this.cinemaSceneTag.textContent = frameData.sceneTag;
+    if (this.cinemaSubtitleText) this.cinemaSubtitleText.textContent = frameData.subtitle;
 
     if (this.telemetryStatus) {
-      this.telemetryStatus.textContent = isCrisis ? '⚠️ 치료 전 증상 감지' : '✦ 바른한의원 치료·회복';
-      this.telemetryStatus.className = `telemetry-status ${isCrisis ? 'crisis' : ''}`;
-    }
-    if (this.metric1Title) this.metric1Title.textContent = scene.metric1Title;
-    if (this.metric2Title) this.metric2Title.textContent = scene.metric2Title;
-
-    let m1Val = scene.metric1Value || '';
-    let m2Val = scene.metric2Value || '';
-    let barPct = scene.barPercent || 85;
-
-    if (scene.index === 3) {
-      if (isCrisis) {
-        m1Val = '42.0% (감기·비염 발생)';
-        m2Val = '면역력 저하 상태';
-        barPct = 38;
+      if (frameData.phase === 'before') {
+        this.telemetryStatus.textContent = '⚠️ 치료 전 증상 발생';
+        this.telemetryStatus.className = 'telemetry-status crisis';
+      } else if (frameData.phase === 'treating') {
+        this.telemetryStatus.textContent = '💊 바른한의원 치료 작용 중';
+        this.telemetryStatus.className = 'telemetry-status';
       } else {
-        const healT = Math.min(1, (p - 0.145) / 0.035);
-        const imm = (42 + healT * 56.5).toFixed(1);
-        m1Val = `${imm}% (면역강화 완료)`;
-        m2Val = '호흡기·전신 자생력 회복';
-        barPct = Math.round(42 + healT * 56);
+        this.telemetryStatus.textContent = '✦ 치료 후 호전·완치 완료';
+        this.telemetryStatus.className = 'telemetry-status';
       }
-    } else if (scene.index === 4) {
-      if (isCrisis) {
-        m1Val = '134.0cm (또래 대비 -12cm)';
-        m2Val = '성장판 잠복 상태';
-        barPct = 40;
-      } else {
-        const growT = Math.min(1, (p - 0.205) / 0.045);
-        const cm = (134 + growT * 48.4).toFixed(1);
-        m1Val = `134cm ➔ ${cm}cm (+추월!)`;
-        m2Val = '성장판·척추 폭풍 키성장';
-        barPct = Math.round(45 + growT * 55);
-      }
-    } else if (scene.index === 6) {
-      const fatPct = (35.4 - localP * 17.2).toFixed(1);
-      const kgLost = (localP * 15.8).toFixed(1);
-      m1Val = `35.4% ➔ ${fatPct}% (-${kgLost}kg)`;
-      m2Val = '식욕 ZERO · 슬림 라인 완성';
-      barPct = Math.round(40 + localP * 58);
-    } else if (scene.index === 8) {
-      const temp = (39.2 - localP * 7.8).toFixed(1);
-      const density = Math.round(48 + localP * 52);
-      m1Val = `39.2°C ➔ ${temp}°C (청열 완료)`;
-      m2Val = `모낭 밀도 ${density}% 정상 회복`;
-      barPct = density;
-    } else if (scene.index === 9 || scene.index === 10) {
-      // Update 9-Joint Chips in Stage 4
-      const chips = document.querySelectorAll('.pain-chip');
-      if (scene.index === 9) {
-        chips.forEach(c => c.classList.remove('healed'));
-        if (this.painRadarStatus) {
-          this.painRadarStatus.className = 'pain-radar-status warning';
-          this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>근무 중 척추 틀어짐 & 통증 발생</span>';
-        }
-      } else {
-        const healedCount = Math.floor(localP * (chips.length + 1));
-        chips.forEach((c, idx) => {
-          c.classList.toggle('healed', idx <= healedCount);
-        });
-        const angle = Math.max(0, 18.6 * (1 - localP * 1.15)).toFixed(1);
-        m1Val = `18.6° ➔ ${angle}° 바른 정렬`;
-        m2Val = angle === '0.0' ? '9대 관절 통증 100% 회복' : '1:1 추나·봉약침 치료 중';
-        barPct = Math.round(35 + localP * 65);
-        if (this.painRadarStatus) {
-          this.painRadarStatus.className = 'pain-radar-status healing';
-          this.painRadarStatus.innerHTML = angle === '0.0'
-            ? '<span class="pulse-dot">✓</span> <span>척추 수직교정 & 전신 회복 완료</span>'
-            : '<span class="pulse-dot">✦</span> <span>추나·봉약침 교정 치료 진행 중</span>';
-        }
-      }
-    } else if (scene.index === 12) {
-      const vit = (28 + localP * 70.5).toFixed(1);
-      m1Val = `28% ➔ ${vit}% 기력 충전`;
-      m2Val = '24K 황제공진단 원기 회복';
-      barPct = Math.round(28 + localP * 70);
     }
 
+    if (this.metric1Title) this.metric1Title.textContent = frameData.metric1Title;
+    if (this.metric2Title) this.metric2Title.textContent = frameData.metric2Title;
     if (this.metric1Value) {
-      this.metric1Value.textContent = m1Val;
+      this.metric1Value.textContent = frameData.metric1Value;
       this.metric1Value.className = `metric-value ${isCrisis ? 'danger' : ''}`;
     }
     if (this.metric2Value) {
-      this.metric2Value.textContent = m2Val;
+      this.metric2Value.textContent = frameData.metric2Value;
       this.metric2Value.className = `metric-value ${isCrisis ? 'danger' : 'highlight'}`;
     }
     if (this.telemetryBarFill) {
-      this.telemetryBarFill.style.width = `${barPct}%`;
+      this.telemetryBarFill.style.width = `${frameData.barPercent}%`;
       this.telemetryBarFill.className = `telemetry-bar-fill ${isCrisis ? 'danger' : ''}`;
     }
+
+    // Step 4 9-Joint Radar chips live update
+    if (step === 4) {
+      const chips = document.querySelectorAll('.pain-chip');
+      const stageProgress = Math.max(0, Math.min(1, (exactFrame - 12) / 2));
+      const healedCount = Math.floor(stageProgress * (chips.length + 1));
+      chips.forEach((c, idx) => {
+        c.classList.toggle('healed', idx < healedCount);
+      });
+      if (this.painRadarStatus) {
+        if (stageProgress < 0.3) {
+          this.painRadarStatus.className = 'pain-radar-status warning';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>척추 14.8° 틀어짐 & 관절 통증 발생</span>';
+        } else if (stageProgress < 0.85) {
+          this.painRadarStatus.className = 'pain-radar-status healing';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✦</span> <span>원장님 1:1 추나 수기 교정 진행 중</span>';
+        } else {
+          this.painRadarStatus.className = 'pain-radar-status healing';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✓</span> <span>척추 수직 정렬 & 9대 관절 회복 완료</span>';
+        }
+      }
+    }
+
+    this.currentLightWarmth = frameData.lightWarmth ?? 1.0;
+
+    // Also update fallback DOM slides in case any image is still loading
+    VIDEO_FRAMES.forEach((f, idx) => {
+      const el = this.backdropMap[f.domId];
+      if (!el) return;
+      el.style.opacity = (idx === activeIdx) ? '1' : '0';
+    });
   }
 
   updateStepTextAndNav(step) {
@@ -819,6 +857,10 @@ class BareunMasterpieceStoryApp {
     if (this.hudSubtitle) this.hudSubtitle.textContent = data.mainCopy;
     if (this.hudDesc) this.hudDesc.textContent = data.desc;
 
+    if (this.tpLabelBefore && data.tpLabels) this.tpLabelBefore.textContent = data.tpLabels[0];
+    if (this.tpLabelTreating && data.tpLabels) this.tpLabelTreating.textContent = data.tpLabels[1];
+    if (this.tpLabelAfter && data.tpLabels) this.tpLabelAfter.textContent = data.tpLabels[2];
+
     if (this.hudSubsceneFlow && data.subPills) {
       this.hudSubsceneFlow.innerHTML = data.subPills
         .map((label, idx) => `<span class="subscene-pill ${idx === 0 ? 'active' : ''}">${label}</span>`)
@@ -837,43 +879,482 @@ class BareunMasterpieceStoryApp {
     }
   }
 
-  initInteractions() {
-    window.addEventListener('mousemove', (e) => {
-      this.mouseParallax.targetX = (e.clientX / window.innerWidth - 0.5);
-      this.mouseParallax.targetY = (e.clientY / window.innerHeight - 0.5);
-    }, { passive: true });
+  // =========================================================================
+  // Helper: Draw Cover-Fit Image onto Canvas with Continuous Camera Dolly
+  // =========================================================================
+  drawCoverImage(ctx, img, cw, ch, scaleX, scaleY, offsetX, offsetY, alpha) {
+    if (!img || !img.width || !img.height || alpha <= 0.001) return;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+
+    const imgAspect = img.width / img.height;
+    const canvasAspect = cw / ch;
+    let drawW, drawH;
+
+    if (canvasAspect > imgAspect) {
+      drawW = cw;
+      drawH = cw / imgAspect;
+    } else {
+      drawH = ch;
+      drawW = ch * imgAspect;
+    }
+
+    const finalW = drawW * scaleX;
+    const finalH = drawH * scaleY;
+    const dx = (cw - finalW) * 0.5 + offsetX;
+    const dy = (ch - finalH) * 0.5 + offsetY;
+
+    ctx.drawImage(img, dx, dy, finalW, finalH);
+    ctx.restore();
+    return { dx, dy, finalW, finalH };
   }
 
   // =========================================================================
-  // 60fps / 120fps Natural Sunlight Dust & Camera Parallax Loop
+  // 60fps Continuous Video Synthesizer & Real-Time Treatment Transformation
+  // =========================================================================
+  renderContinuousVideoCanvas(p, time) {
+    if (!this.vCtx || !this.videoCanvas) return;
+    const ctx = this.vCtx;
+    const cw = this.videoCanvas.width;
+    const ch = this.videoCanvas.height;
+    const dpr = this.videoDpr || 1;
+
+    const totalFrames = VIDEO_FRAMES.length;
+    const exactFrame = Math.max(0, Math.min(totalFrames - 1.0001, p * (totalFrames - 1)));
+    const idxA = Math.floor(exactFrame);
+    const idxB = Math.min(totalFrames - 1, idxA + 1);
+    const rawT = exactFrame - idxA;
+    // Smooth cosine interpolation for fluid film motion
+    const t = 0.5 - 0.5 * Math.cos(rawT * Math.PI);
+
+    const imgA = this.loadedImages[idxA];
+    const imgB = this.loadedImages[idxB];
+
+    // If neither image is loaded yet, let CSS fallback show through
+    if (!imgA && !imgB) return;
+
+    ctx.clearRect(0, 0, cw, ch);
+
+    // Continuous steadycam breathing + mouse parallax
+    const breathScale = 1.028 + Math.sin(time * 0.75) * 0.008;
+    const px = this.mouseParallax.x * -16 * dpr;
+    const py = this.mouseParallax.y * -10 * dpr;
+
+    // -----------------------------------------------------------------------
+    // SPECIAL CONTINUOUS PHYSICAL MORPHING BY STAGE
+    // -----------------------------------------------------------------------
+    if (idxA === 4 && idxB === 5 && imgA && imgB) {
+      // =====================================================================
+      // STAGE 1D: PEER HEIGHT GROWTH ("또래와 서 있을 때 키가 작아 -> 성장치료로 키가 쭈욱 길어지는 연출")
+      // Keep left & right peer children anchored while dynamically stretching
+      // the central boy upward from shorter (imgA) to a full head taller (imgB)!
+      // =====================================================================
+      this.drawCoverImage(ctx, imgA, cw, ch, breathScale, breathScale, px, py, 1.0);
+      this.drawCoverImage(ctx, imgB, cw, ch, breathScale, breathScale, px, py, t);
+
+      // Isolate the central child's column (55% ~ 71% horizontal) and render
+      // real-time vertical skeletal elongation anchored at the floor!
+      ctx.save();
+      const colLeft = cw * 0.555;
+      const colWidth = cw * 0.155;
+      ctx.beginPath();
+      ctx.rect(colLeft, 0, colWidth, ch);
+      ctx.clip();
+
+      // Stretch imgA upward from feet and blend into imgB stretching into full tall stature
+      const stretchA = 1.0 + t * 0.14;
+      const liftA = -t * ch * 0.055;
+      this.drawCoverImage(ctx, imgA, cw, ch, breathScale, breathScale * stretchA, px, py + liftA, 1 - t);
+
+      const stretchB = 0.89 + t * 0.11;
+      const liftB = (1 - t) * ch * 0.045;
+      this.drawCoverImage(ctx, imgB, cw, ch, breathScale, breathScale * stretchB, px, py + liftB, t);
+      ctx.restore();
+
+      // Draw Live Growth-Plate Ultrasonic Scan Wave & Rising Height Ruler
+      this.drawGrowthTherapyOverlay(ctx, cw, ch, dpr, t, time);
+
+    } else if ((idxA === 6 || idxA === 7) && imgA && imgB) {
+      // =====================================================================
+      // STAGE 2: OBESITY -> HERBAL DIET TREATMENT -> SLIM S-LINE SILHOUETTE
+      // Continuous horizontal waist-slimming contour morph & lipolysis wave
+      // =====================================================================
+      const stageP = (exactFrame - 6) / 2; // 0.0 -> 1.0 across 2a -> 2t -> 2b
+      const dollyA = breathScale + t * 0.015;
+      const dollyB = breathScale + (1 - t) * 0.015;
+
+      // Horizontal body-slimming squeeze on outgoing fuller frame
+      const slimScaleX_A = dollyA * (1.0 - t * 0.045);
+      const slimScaleX_B = dollyB * (1.03 - t * 0.03);
+
+      this.drawCoverImage(ctx, imgA, cw, ch, slimScaleX_A, dollyA, px, py, 1.0);
+      this.drawCoverImage(ctx, imgB, cw, ch, slimScaleX_B, dollyB, px, py, t);
+
+      this.drawObesitySlimmingOverlay(ctx, cw, ch, dpr, stageP, time);
+
+    } else if ((idxA === 9 || idxA === 10) && imgA && imgB) {
+      // =====================================================================
+      // STAGE 3: 30s HAIR LOSS -> SCALP ACUPUNCTURE TREATMENT -> FULL HAIR
+      // Directional follicular regrowth reveal wave across crown & hairline
+      // =====================================================================
+      const stageP = (exactFrame - 9) / 2; // 0.0 -> 1.0 across 3a -> 3t -> 3b
+      const dolly = breathScale + t * 0.018;
+
+      this.drawCoverImage(ctx, imgA, cw, ch, dolly, dolly, px, py, 1.0);
+      this.drawCoverImage(ctx, imgB, cw, ch, dolly, dolly, px, py, t);
+
+      this.drawHairRegrowthOverlay(ctx, cw, ch, dpr, stageP, time);
+
+    } else if ((idxA === 12 || idxA === 13) && imgA && imgB) {
+      // =====================================================================
+      // STAGE 4: SPINAL PAIN -> HANDS-ON CHUNA THERAPY -> ALIGNED RECOVERY
+      // Dynamic straightening spinal axis & 9-joint pain relief wave
+      // =====================================================================
+      const stageP = (exactFrame - 12) / 2; // 0.0 -> 1.0 across 4a -> 4t -> 4b
+      const dolly = breathScale + t * 0.016;
+
+      this.drawCoverImage(ctx, imgA, cw, ch, dolly, dolly, px, py, 1.0);
+      this.drawCoverImage(ctx, imgB, cw, ch, dolly, dolly, px, py, t);
+
+      this.drawChunaSpineOverlay(ctx, cw, ch, dpr, stageP, time);
+
+    } else if ((idxA === 15 || idxA === 16) && imgA && imgB) {
+      // =====================================================================
+      // STAGE 5: AGING FATIGUE -> 24K EMPEROR GONGJINDAN -> GRACEFUL ELDER
+      // Radial golden vitality bloom expanding from the Emperor Gongjindan pill
+      // =====================================================================
+      const stageP = (exactFrame - 15) / 2; // 0.0 -> 1.0 across 5a -> 5b -> 5c
+      const dolly = breathScale + t * 0.016;
+
+      this.drawCoverImage(ctx, imgA, cw, ch, dolly, dolly, px, py, 1.0);
+      this.drawCoverImage(ctx, imgB, cw, ch, dolly, dolly, px, py, t);
+
+      this.drawGongjindanVitalityOverlay(ctx, cw, ch, dpr, stageP, time);
+
+    } else {
+      // Standard ultra-smooth optical dolly cross-synthesis (e.g., 1a -> 1b -> 1c0 -> 1c)
+      const scaleA = breathScale + t * 0.025;
+      const scaleB = breathScale + (1 - t) * 0.02;
+      if (imgA) this.drawCoverImage(ctx, imgA, cw, ch, scaleA, scaleA, px, py, 1.0);
+      if (imgB && idxB !== idxA) this.drawCoverImage(ctx, imgB, cw, ch, scaleB, scaleB, px, py, t);
+
+      // If in Stage 1c (Cold -> Herbal Immunity Recovery), draw warm immunity shield wave
+      if (idxA === 2 && idxB === 3) {
+        this.drawImmunityHealingOverlay(ctx, cw, ch, dpr, t, time);
+      }
+    }
+
+    // Draw Universal Bottom-Right On-Video Treatment Progress Callout Badge
+    const activeFrameObj = VIDEO_FRAMES[Math.min(totalFrames - 1, Math.round(exactFrame))];
+    if (activeFrameObj) {
+      this.drawOnVideoTreatmentBadge(ctx, cw, ch, dpr, activeFrameObj, exactFrame, time);
+    }
+  }
+
+  // =========================================================================
+  // On-Video Medical Cinema AR Overlays (Visualizing "Getting Better Through Treatment")
+  // =========================================================================
+
+  // 1C: Childhood Cold -> Herbal Immunity Recovery Aura
+  drawImmunityHealingOverlay(ctx, cw, ch, dpr, t, time) {
+    ctx.save();
+    const cx = cw * 0.65;
+    const cy = ch * 0.56;
+    const radius = cw * (0.08 + t * 0.18);
+
+    const grad = ctx.createRadialGradient(cx, cy, radius * 0.1, cx, cy, radius);
+    grad.addColorStop(0, `rgba(253, 230, 138, ${0.28 * Math.sin(t * Math.PI)})`);
+    grad.addColorStop(0.6, `rgba(16, 185, 129, ${0.18 * Math.sin(t * Math.PI)})`);
+    grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // 1D: Child Height Growth AR Ruler & Growth Plate Scan Wave
+  drawGrowthTherapyOverlay(ctx, cw, ch, dpr, t, time) {
+    ctx.save();
+    const childX = cw * 0.635;
+    // Head top rises from y = 0.25*ch (short) to y = 0.13*ch (tall)
+    const headY = ch * (0.245 - t * 0.115);
+    const kneeY = ch * 0.76;
+    const spineY = ch * (0.48 - t * 0.05);
+
+    // 1. Ultrasonic Growth Wave scanning upward from knees to head
+    const scanY = kneeY - ((time * 0.65) % 1.0) * (kneeY - headY);
+    const scanGrad = ctx.createLinearGradient(childX - cw * 0.07, scanY, childX + cw * 0.07, scanY);
+    scanGrad.addColorStop(0, 'rgba(253, 230, 138, 0)');
+    scanGrad.addColorStop(0.5, 'rgba(253, 230, 138, 0.75)');
+    scanGrad.addColorStop(1, 'rgba(253, 230, 138, 0)');
+    ctx.strokeStyle = scanGrad;
+    ctx.lineWidth = 2.5 * dpr;
+    ctx.beginPath();
+    ctx.moveTo(childX - cw * 0.065, scanY);
+    ctx.lineTo(childX + cw * 0.065, scanY);
+    ctx.stroke();
+
+    // 2. Growth Plate Glow Nodes (Knee & Spine)
+    [kneeY, spineY].forEach(ny => {
+      const g = ctx.createRadialGradient(childX, ny, 2 * dpr, childX, ny, 28 * dpr);
+      g.addColorStop(0, 'rgba(253, 230, 138, 0.65)');
+      g.addColorStop(0.5, 'rgba(16, 185, 129, 0.25)');
+      g.addColorStop(1, 'rgba(16, 185, 129, 0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(childX, ny, 28 * dpr, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 3. Live Rising Height Measurement Bar above central child's head
+    const cmVal = (134.0 + t * 20.5).toFixed(1);
+    const deltaCm = (t * 20.5).toFixed(1);
+    ctx.strokeStyle = 'rgba(253, 230, 138, 0.9)';
+    ctx.lineWidth = 2 * dpr;
+    ctx.setLineDash([5 * dpr, 4 * dpr]);
+    ctx.beginPath();
+    ctx.moveTo(childX - cw * 0.055, headY);
+    ctx.lineTo(childX + cw * 0.095, headY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Height Tag Pill
+    const pillX = childX + cw * 0.02;
+    const pillY = headY - 30 * dpr;
+    ctx.fillStyle = 'rgba(3, 24, 17, 0.88)';
+    ctx.strokeStyle = '#FBBF24';
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.beginPath();
+    ctx.roundRect(pillX, pillY, 215 * dpr, 26 * dpr, 13 * dpr);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#FDE68A';
+    ctx.font = `800 ${12 * dpr}px "Plus Jakarta Sans", sans-serif`;
+    ctx.fillText(`▲ 성장치료 신장: ${cmVal}cm (+${deltaCm}cm)`, pillX + 12 * dpr, pillY + 17 * dpr);
+    ctx.restore();
+  }
+
+  // STAGE 2: Obesity -> Slimming Lipolysis Scan Wave
+  drawObesitySlimmingOverlay(ctx, cw, ch, dpr, stageP, time) {
+    ctx.save();
+    const cx = cw * 0.66;
+    const waistY = ch * 0.64;
+    // Waist width indicator narrows as stageP goes 0 -> 1
+    const halfW = cw * (0.095 - stageP * 0.032);
+
+    // Lipolysis metabolic scan line
+    const scanY = ch * (0.42 + ((time * 0.45) % 1.0) * 0.42);
+    const grad = ctx.createLinearGradient(cx - halfW * 1.4, scanY, cx + halfW * 1.4, scanY);
+    grad.addColorStop(0, 'rgba(251, 191, 36, 0)');
+    grad.addColorStop(0.5, 'rgba(251, 191, 36, 0.65)');
+    grad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2 * dpr;
+    ctx.beginPath();
+    ctx.moveTo(cx - halfW * 1.3, scanY);
+    ctx.lineTo(cx + halfW * 1.3, scanY);
+    ctx.stroke();
+
+    // Inward slimming arrows at waistline
+    ctx.strokeStyle = '#34D399';
+    ctx.lineWidth = 2.2 * dpr;
+    const arrowOffset = Math.sin(time * 4) * 4 * dpr;
+    // Left inward arrow
+    ctx.beginPath();
+    ctx.moveTo(cx - halfW - 18 * dpr + arrowOffset, waistY);
+    ctx.lineTo(cx - halfW + arrowOffset, waistY);
+    ctx.stroke();
+    // Right inward arrow
+    ctx.beginPath();
+    ctx.moveTo(cx + halfW + 18 * dpr - arrowOffset, waistY);
+    ctx.lineTo(cx + halfW - arrowOffset, waistY);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  // STAGE 3: 30s Hair Loss -> Scalp Cooling & Follicle Regrowth Wave
+  drawHairRegrowthOverlay(ctx, cw, ch, dpr, stageP, time) {
+    ctx.save();
+    const scalpX = cw * 0.62;
+    const scalpY = ch * 0.22;
+    const r = cw * 0.11;
+
+    const grad = ctx.createRadialGradient(scalpX, scalpY, r * 0.1, scalpX, scalpY, r);
+    if (stageP < 0.35) {
+      // Red scalp heat before treatment
+      grad.addColorStop(0, `rgba(239, 68, 68, ${0.32 * (1 - stageP * 2)})`);
+      grad.addColorStop(1, 'rgba(239, 68, 68, 0)');
+    } else {
+      // Cooling emerald-gold follicle regeneration wave
+      const pulse = 0.2 + 0.1 * Math.sin(time * 3);
+      grad.addColorStop(0, `rgba(52, 211, 153, ${pulse})`);
+      grad.addColorStop(0.6, `rgba(253, 230, 138, ${pulse * 0.6})`);
+      grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+    }
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(scalpX, scalpY, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // STAGE 4: Crooked Spine Pain -> Chuna Spinal Alignment Axis
+  drawChunaSpineOverlay(ctx, cw, ch, dpr, stageP, time) {
+    ctx.save();
+    const spineX = cw * 0.66;
+    const neckY = ch * 0.29;
+    const midY = ch * 0.44;
+    const lumbarY = ch * 0.60;
+
+    // Bend offset decreases from 26px crooked curve to 0px straight vertical line!
+    const curveOffset = (1 - stageP) * 26 * dpr;
+
+    ctx.lineWidth = 2.5 * dpr;
+    ctx.strokeStyle = stageP < 0.4
+      ? 'rgba(248, 113, 113, 0.85)'
+      : 'rgba(52, 211, 153, 0.9)';
+
+    ctx.beginPath();
+    ctx.moveTo(spineX - curveOffset * 0.5, neckY);
+    ctx.quadraticCurveTo(spineX + curveOffset, midY, spineX - curveOffset * 0.3, lumbarY);
+    ctx.stroke();
+
+    // Draw pain/healing nodes along neck, shoulder, lumbar
+    [
+      { x: spineX - curveOffset * 0.5, y: neckY },
+      { x: spineX + curveOffset * 0.4, y: midY },
+      { x: spineX - curveOffset * 0.3, y: lumbarY }
+    ].forEach((pt, i) => {
+      const isHealed = stageP > (0.3 + i * 0.2);
+      const pulseR = (8 + Math.sin(time * 4 + i) * 3) * dpr;
+      ctx.fillStyle = isHealed ? 'rgba(16, 185, 129, 0.85)' : 'rgba(239, 68, 68, 0.85)';
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 4.5 * dpr, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = isHealed ? 'rgba(167, 243, 208, 0.65)' : 'rgba(252, 165, 165, 0.65)';
+      ctx.lineWidth = 1.5 * dpr;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, pulseR, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    ctx.restore();
+  }
+
+  // STAGE 5: Aging Fatigue -> 24K Emperor Gongjindan Golden Vitality Wave
+  drawGongjindanVitalityOverlay(ctx, cw, ch, dpr, stageP, time) {
+    if (stageP < 0.2) return;
+    ctx.save();
+    const pillX = cw * 0.585;
+    const pillY = ch * 0.78;
+    const maxR = cw * (0.12 + stageP * 0.32);
+
+    const grad = ctx.createRadialGradient(pillX, pillY, 4 * dpr, pillX, pillY, maxR);
+    grad.addColorStop(0, `rgba(253, 230, 138, ${0.35 * Math.sin(stageP * Math.PI)})`);
+    grad.addColorStop(0.5, `rgba(197, 160, 89, ${0.18 * stageP})`);
+    grad.addColorStop(1, 'rgba(197, 160, 89, 0)');
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(pillX, pillY, maxR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Universal On-Video Treatment Status Overlay (Top-Center/Right over Subject)
+  drawOnVideoTreatmentBadge(ctx, cw, ch, dpr, frameObj, exactFrame, time) {
+    if (!frameObj.arBadge || cw < 700 * dpr) return;
+    ctx.save();
+
+    const text = frameObj.arBadge;
+    ctx.font = `700 ${12.5 * dpr}px "Plus Jakarta Sans", "Pretendard", sans-serif`;
+    const textW = ctx.measureText(text).width;
+    const boxW = textW + 32 * dpr;
+    const boxH = 32 * dpr;
+    const bx = Math.min(cw - boxW - 28 * dpr, cw * 0.52);
+    const by = ch - 196 * dpr;
+
+    ctx.fillStyle = 'rgba(2, 18, 12, 0.84)';
+    ctx.strokeStyle = frameObj.phase === 'before'
+      ? 'rgba(248, 113, 113, 0.65)'
+      : 'rgba(253, 230, 138, 0.65)';
+    ctx.lineWidth = 1.5 * dpr;
+
+    ctx.beginPath();
+    ctx.roundRect(bx, by, boxW, boxH, 16 * dpr);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = frameObj.phase === 'before' ? '#FCA5A5' : '#FDE68A';
+    ctx.fillText(text, bx + 16 * dpr, by + 20.5 * dpr);
+    ctx.restore();
+  }
+
+  // =========================================================================
+  // Master 60fps Animation Loop (Continuous Film Auto-Play + Scroll Scrubbing)
   // =========================================================================
   animate() {
     requestAnimationFrame(() => this.animate());
-    const time = performance.now() * 0.001;
 
-    // Smooth mouse parallax interpolation
+    const now = performance.now();
+    const dt = Math.min(0.05, (now - this.lastFrameTime) * 0.001);
+    this.lastFrameTime = now;
+    const time = now * 0.001;
+
+    // Smooth mouse parallax
     this.mouseParallax.x += (this.mouseParallax.targetX - this.mouseParallax.x) * 0.06;
     this.mouseParallax.y += (this.mouseParallax.targetY - this.mouseParallax.y) * 0.06;
 
-    if (this.camera && this.dustPoints) {
+    // Hybrid Continuous Video Playhead:
+    // If user scrolled within the last 1.6 seconds, smoothly scrub to scroll position.
+    // Otherwise, if auto-play is enabled and user is viewing the story stage,
+    // advance the continuous film playhead smoothly so the treatment video NEVER stops!
+    const timeSinceScroll = now - this.lastScrollTimestamp;
+    const cardsSec = document.getElementById('signature-cards');
+    const inCardsView = cardsSec && cardsSec.getBoundingClientRect().top < window.innerHeight * 0.5;
+
+    if (timeSinceScroll < 1600) {
+      this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.08;
+    } else if (this.isAutoPlaying && !inCardsView) {
+      // Continuous film playback (~48 seconds for full 18-scene treatment movie)
+      this.targetPlayheadP += dt * 0.021;
+      if (this.targetPlayheadP > 1.0) {
+        this.targetPlayheadP = 0.0;
+        this.playheadP = 0.0;
+      } else {
+        this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.06;
+      }
+    } else {
+      this.playheadP += (this.targetPlayheadP - this.playheadP) * 0.08;
+    }
+
+    // 1. Render 60fps Continuous Video Synthesizer Canvas
+    this.renderContinuousVideoCanvas(this.playheadP, time);
+
+    // 2. Sync HUD & Treatment Pipeline UI
+    this.syncUIWithPlayhead(this.playheadP);
+
+    // 3. Render Three.js Optical Bokeh & Sunlight Dust Layer
+    if (this.camera && this.dustPoints && this.renderer) {
       this.camera.position.x = this.mouseParallax.x * 5.0;
       this.camera.position.y = -this.mouseParallax.y * 3.5;
       this.camera.lookAt(0, 0, 0);
 
-      // Gentle upward drift of natural sunlight dust motes
       const pos = this.dustPositions;
       for (let i = 0; i < this.dustSpeeds.length; i++) {
         const sp = this.dustSpeeds[i];
         pos[i * 3] += sp.vx + Math.sin(time * 0.6 + sp.phase) * 0.012;
         pos[i * 3 + 1] += sp.vy;
-        if (pos[i * 3 + 1] > 48) pos[i * 3 + 1] = -48;
+        if (pos[i * 3 + 1] > 35) pos[i * 3 + 1] = -35;
       }
       this.dustPoints.geometry.attributes.position.needsUpdate = true;
-
-      // Modulate bokeh warmth opacity based on scene lighting
-      this.dustMat.opacity = THREE.MathUtils.lerp(this.dustMat.opacity, 0.14 + this.currentLightWarmth * 0.28, 0.05);
-      this.orbMat.opacity = THREE.MathUtils.lerp(this.orbMat.opacity, 0.05 + this.currentLightWarmth * 0.14, 0.05);
-
+      this.dustMat.opacity = 0.14 + this.currentLightWarmth * 0.22;
       this.renderer.render(this.scene, this.camera);
     }
   }
@@ -897,7 +1378,6 @@ class BareunMasterpieceStoryApp {
         splash.style.opacity = '0';
         splash.style.visibility = 'hidden';
         splash.style.pointerEvents = 'none';
-        if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
       }, 800);
     };
 
@@ -932,7 +1412,23 @@ class BareunMasterpieceStoryApp {
   }
 }
 
-// Global Navigation & Step Helpers
+// ============================================================================
+// 4. GLOBAL NAVIGATION, AUTOPLAY TOGGLE & RESERVATION HELPERS
+// ============================================================================
+function toggleCinemaAutoPlay() {
+  const app = window.bareunApp;
+  if (!app) return;
+  app.isAutoPlaying = !app.isAutoPlaying;
+  if (app.autoPlayBtn) {
+    app.autoPlayBtn.classList.toggle('paused', !app.isAutoPlaying);
+  }
+  if (app.autoPlayText) {
+    app.autoPlayText.textContent = app.isAutoPlaying
+      ? '🎬 연속 치료과정 영상 재생 중'
+      : '⏸ 영상 일시정지 (스크롤 제어)';
+  }
+}
+
 function navigateToStep(stepNum) {
   scrollToStep(stepNum);
 }
@@ -945,9 +1441,15 @@ function scrollToStep(stepNum) {
   const track = document.getElementById('story-scroll-track');
   if (!track) return;
   const trackHeight = track.offsetHeight - window.innerHeight;
-  const progressMap = [0.02, 0.27, 0.44, 0.62, 0.80];
-  const targetProgress = progressMap[stepNum - 1] || 0.02;
+  // Map steps 1..5 to the start of each stage in the 18-frame sequence
+  const progressMap = [0.0, 6 / 17, 9 / 17, 12 / 17, 15 / 17];
+  const targetProgress = progressMap[stepNum - 1] ?? 0.0;
   const scrollTarget = track.offsetTop + trackHeight * targetProgress;
+
+  if (window.bareunApp) {
+    window.bareunApp.targetPlayheadP = targetProgress;
+    window.bareunApp.lastScrollTimestamp = performance.now();
+  }
   window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 }
 
