@@ -692,6 +692,8 @@
     </a>
 
     <div class="nav-right-actions">
+      <a href="compare.html" class="btn-reserve-minimal" style="border-color: rgba(110, 231, 183, 0.55); color: #6EE7B7;" title="수정 전·후 동시 비교 화면 열기">⇄ 수정 전·후 비교 보기</a>
+      <a href="http://localhost:3001" target="_blank" class="btn-reserve-minimal" style="border-color: rgba(253, 230, 138, 0.5); color: #FDE68A;" title="수정 전 로컬 서버(포트 3001) 새 창 열기">수정 전 페이지(3001) ↗</a>
       <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 BGM 켜기/끄기">
         <span class="bgm-eq-bars">
           <span></span><span></span><span></span><span></span>
@@ -850,14 +852,17 @@
       ];
 
       // ======================================================================
-      // 2. 20 CONTINUOUS LIVE-ACTION FRAMES (1st-Person & 3rd-Person Mixed POV)
-      //    - Bright, Positive Sunlit Backgrounds
-      //    - Zero Mugs/Cups Anywhere
+      // 2. 22 CONTINUOUS LIVE-ACTION FRAMES (1st-Person & 3rd-Person Mixed POV)
+      //    - Male Korean Medicine Doctors Across All Clinic Cuts
+      //    - Pediatric Clinic Exam Cut Added Between Sick Child & Recovery
+      //    - Herbal Diet Medicine Pouch Cut Added Before Mirror Slimming
+      //    - Fine Floor Hair + Hand Clutching Hair -> Scope Exam -> Zoomed Follicle
+      //    - Restored Classic Pine-Garden Senior Portraits
       // ======================================================================
       const FRAMES = [
         // --- CHAPTER 1: 임신이 되지 않아 힘들게 얻은 선물 (Frames 0 ~ 3) ---
         {
-          src: 'life_1a0_infertility_before.jpg?v=pov3',
+          src: 'life_1a0_infertility_before.jpg?v=pov4',
           chapter: 1,
           povBadge: '👁️ 1인칭 시점 POV · 임신테스트기 음성(1줄)',
           stepLabel: '① 임신테스트기 음성(1줄)',
@@ -867,17 +872,17 @@
           whisper: '따스한 아침 햇살 속, 야속하게 한 줄(음성)만 뜬 임신테스트기를 바라보던 간절한 기다림의 시간'
         },
         {
-          src: 'life_1a1_infertility_treatment.jpg?v=pov3',
+          src: 'life_1a1_infertility_treatment.jpg?v=pov4',
           chapter: 1,
-          povBadge: '🎬 3인칭 진료실 시점 · 바른 난임 진맥·한약',
+          povBadge: '🎬 3인칭 진료실 시점 · 남자 한의사 원장님 난임 진맥·한약',
           stepLabel: '② ✦ 바른 난임·착상 진맥치료',
           mode: 0,
           warmth: 1.10,
-          focal: [0.54, 0.48],
-          whisper: '밝은 햇살이 가득한 바른한의원에서 정밀 진맥과 맞춤 착상 한약으로 새 생명의 희망을틔우고'
+          focal: [0.52, 0.48],
+          whisper: '햇살 가득한 바른한의원에서 대표원장님의 정밀 진맥과 맞춤 착상 한약으로 새 생명의 희망을 틔우고'
         },
         {
-          src: 'life_1a_fertilization.jpg?v=pov3',
+          src: 'life_1a_fertilization.jpg?v=pov4',
           chapter: 1,
           povBadge: '🎬 3인칭 부부 시점 · 아이 초음파 사진의 감동',
           stepLabel: '③ 부부가 함께 보는 아이 초음파 사진',
@@ -887,7 +892,7 @@
           whisper: '마침내 찾아온 기적! 부부가 함께 아이의 첫 초음파 사진을 바라보며 벅찬 행복의 눈물을 흘립니다.'
         },
         {
-          src: 'life_1b_birth.jpg?v=pov3',
+          src: 'life_1b_birth.jpg?v=pov4',
           chapter: 1,
           povBadge: '👁️ 1인칭 부모 시점 POV · 아기와의 첫 만남',
           stepLabel: '④ 소중한 아이 탄생',
@@ -897,9 +902,9 @@
           whisper: '엄마의 손가락을 꼭 쥐어주는 작은 손, 세상 무엇과도 바꿀 수 없는 선물이 태어납니다.'
         },
 
-        // --- CHAPTER 2: 사랑하는 아이가 건강하기를 바라면서 (Frames 4 ~ 5) ---
+        // --- CHAPTER 2: 사랑하는 아이가 건강하기를 바라면서 (Frames 4 ~ 6) ---
         {
-          src: 'life_1c_cold_before.jpg?v=pov3',
+          src: 'life_1c_cold_before.jpg?v=pov4',
           chapter: 2,
           povBadge: '🎬 3인칭 침대 시점 · 물수건·체온계와 걱정하는 엄마',
           stepLabel: '① 침대 위 고열(물수건·체온계)과 엄마의 걱정',
@@ -909,19 +914,29 @@
           whisper: '이마에 물수건을 얹고 체온계를 문 채 열감기로 힘들어하는 아이, 옆에서 손잡고 걱정하는 엄마의 마음'
         },
         {
-          src: 'life_1c_immunity.jpg?v=pov3',
+          src: 'life_1c_clinic_exam.jpg?v=pov4',
+          chapter: 2,
+          povBadge: '🩺 3인칭 한의원 진료 시점 · 소아 면역 진맥·진찰',
+          stepLabel: '② ✦ 바른한의원 소아 진맥·진찰',
+          mode: 0,
+          warmth: 1.09,
+          focal: [0.52, 0.48],
+          whisper: '바른한의원을 찾아 자상한 원장님께 세심하게 소아 진맥과 진찰을 받으며 약해진 호흡기 면역력을 바로잡고'
+        },
+        {
+          src: 'life_1c_immunity.jpg?v=pov4',
           chapter: 2,
           povBadge: '🎬 3인칭 회복 시점 · 면역강화 후 행복한 포옹',
-          stepLabel: '② ✦ 바른 소아 면역강화 완쾌',
+          stepLabel: '③ 소아 면역강화 완쾌 & 해맑은 미소',
           mode: 0,
           warmth: 1.10,
           focal: [0.54, 0.48],
           whisper: '바른 소아 면역강화 치료로 열과 감기를 훌훌 털어내고, 엄마 품에 안겨 해맑은 웃음을 되찾습니다.'
         },
 
-        // --- CHAPTER 3: 멋지게 성장하는 꿈을 꾸며 (Frames 6 ~ 7) ---
+        // --- CHAPTER 3: 멋지게 성장하는 꿈을 꾸며 (Frames 7 ~ 8) ---
         {
-          src: 'life_1d_growth_short.jpg?v=pov3',
+          src: 'life_1d_growth_short.jpg?v=pov4',
           chapter: 3,
           povBadge: '🏫 3인칭 학교 교실 시점 · 또래보다 작은 키',
           stepLabel: '① 학교 교실 또래보다 작은 키',
@@ -931,7 +946,7 @@
           whisper: '햇살 비치는 학교 교실, 친구들과 나란히 서 있을 때 유독 작아 보이던 우리 아이의 키도'
         },
         {
-          src: 'life_1d_growth_peers.jpg?v=pov3',
+          src: 'life_1d_growth_peers.jpg?v=pov4',
           chapter: 3,
           povBadge: '🏫 3인칭 학교 교실 시점 · 키가 쭈욱 자란 모습',
           stepLabel: '② ✦ 바른 성장치료로 교실 속 폭풍 키성장',
@@ -941,9 +956,9 @@
           whisper: '바른 성장판·성장추나 치료로 교실 친구들보다 머리 하나는 더 쭈욱 자라나 당당하게 미소 짓습니다.'
         },
 
-        // --- CHAPTER 4: 날씬하고 건강해서 예쁘게 (Frames 8 ~ 10) ---
+        // --- CHAPTER 4: 날씬하고 건강해서 예쁘게 (Frames 9 ~ 11) ---
         {
-          src: 'life_2a_obesity.jpg?v=pov3',
+          src: 'life_2a_obesity.jpg?v=pov4',
           chapter: 4,
           povBadge: '🪞 거울 양면 시점(1·3인칭 혼합) · 앞뒤 모두 살찐 체형',
           stepLabel: '① 전신거울 앞뒤 비만 체형 고민',
@@ -953,61 +968,71 @@
           whisper: '전신 거울 앞에 서면 뒷모습의 등살·옆구리살과 거울 속 불어난 뱃살까지 앞뒤로 무거워진 몸'
         },
         {
-          src: 'life_2a_treatment.jpg?v=pov3',
+          src: 'life_2a_treatment.jpg?v=pov4',
           chapter: 4,
-          povBadge: '🪞 거울 양면 시점 · 바른 비만치료 & 줄자 체크',
-          stepLabel: '② ✦ 바른 비만치료 허리라인 감소',
-          mode: 2,
+          povBadge: '🪞 거울 양면 시점 · 바른 다이어트 한약 복용',
+          stepLabel: '② ✦ 거울 앞 바른 다이어트 한약 복용',
+          mode: 2, // Dual Front+Back Mirror Slimming Transformation!
           warmth: 1.08,
           focal: [0.52, 0.50],
-          whisper: '바른한의원 맞춤 비만치료와 함께 날마다 줄어드는 허리둘레를 거울로 확인하며 자신감을 되찾고'
+          whisper: '거울 앞에서 바른 비만 맞춤 한약을 꾸준히 복용하며 체지방과 독소를 비워내고 라인이 몰라보게 달라집니다.'
         },
         {
-          src: 'life_2b_slim_therapy.jpg?v=pov3',
+          src: 'life_2b_slim_therapy.jpg?v=pov4',
           chapter: 4,
-          povBadge: '🪞 거울 양면 시점 · 앞뒤 모두 날씬해진 S라인',
-          stepLabel: '③ 앞뒤 모두 완벽해진 슬림 바디 완성',
+          povBadge: '🪞 거울 양면 시점 · 앞뒤 모두 날씬하고 예뻐진 변신',
+          stepLabel: '③ 날씬하고 예뻐진 S라인 완벽 변신',
           mode: 0,
           warmth: 1.10,
           focal: [0.52, 0.46],
-          whisper: '거울 속 탄탄한 복부와 매끈한 뒷모습까지, 날씬하고 건강해서 더욱 예쁜 모습을 완성합니다.'
+          whisper: '거울 속 탄탄한 복부와 매끈한 뒷모습까지, 날씬하고 건강해서 더욱 예쁜 모습으로 완벽하게 변신합니다.'
         },
 
-        // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 11 ~ 13) ---
+        // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 12 ~ 15) ---
         {
-          src: 'life_3a_hairloss.jpg?v=pov3',
+          src: 'life_3a_hairloss.jpg?v=pov4',
           chapter: 5,
-          povBadge: '👁️ 1·3인칭 하이앵글 시점 · 바닥에 수북이 떨어진 머리카락',
-          stepLabel: '① 바닥에 가득 떨어진 머리카락과 탈모 충격',
+          povBadge: '👁️ 1·3인칭 시점 · 바닥에 가늘게 떨어진 머리카락과 한 손에 움켜쥔 모발',
+          stepLabel: '① 바닥의 가는 머리카락 & 한 손에 움켜쥔 탈모',
           mode: 0,
-          warmth: 1.04,
-          focal: [0.52, 0.45],
-          whisper: '치열한 사회생활 속 스트레스, 아침마다 바닥에 수북하게 떨어진 머리카락을 보며 덜컥 내려앉는 마음'
+          warmth: 1.05,
+          focal: [0.54, 0.48],
+          whisper: '바닥에 가늘게 힘없이 떨어진 머리카락들과 한 손에 한 움큼 빠져 쥐어진 머리카락을 보며 충격에 빠진 순간'
         },
         {
-          src: 'life_3a_treatment.jpg?v=pov3',
+          src: 'life_3a_treatment.jpg?v=pov4',
           chapter: 5,
-          povBadge: '👁️ 1인칭 시술 시점 POV · 두피청열·발모 약침',
-          stepLabel: '② ✦ 바른 두피청열·모근재생 약침치료',
+          povBadge: '🔬 진료실 시점 · 남자 한의사 원장님의 두피 진단 검사기 정밀 검진',
+          stepLabel: '② ✦ 원장님 두피 검사기 정밀 진단',
+          mode: 4, // Optical Dermatoscope Zoom-In right into the scalp follicles!
+          warmth: 1.08,
+          focal: [0.52, 0.28],
+          whisper: '바른한의원 원장님이 정밀 두피 진단 검사기로 모공과 두피 열독 상태를 세밀하게 살펴보며 검사기가 확대됩니다.'
+        },
+        {
+          src: 'life_3a_follicle_zoom.jpg?v=pov4',
+          chapter: 5,
+          povBadge: '🔍 검사기 200배 확대 시점 POV · 모낭 속 머리카락 부족 확인',
+          stepLabel: '③ 검사기 확대 · 모낭 속 부족한 모발 확인',
           mode: 0,
           warmth: 1.06,
-          focal: [0.58, 0.42],
-          whisper: '달아오른 두피의 열독을 내리고 잠든 모낭을 깨우는 바른 탈모 약침 치료로 모근의 힘을 채워'
+          focal: [0.50, 0.50],
+          whisper: '확대된 두피 검사기 렌즈 속, 모낭마다 머리카락이 텅 비어 부족하고 가늘어진 원인을 정확히 찾아내어 치료합니다.'
         },
         {
-          src: 'life_3b_hair_restored.jpg?v=pov3',
+          src: 'life_3b_hair_restored.jpg?v=pov4',
           chapter: 5,
           povBadge: '🪞 거울 시점 POV · 풍성하게 회복된 정상 모발',
-          stepLabel: '③ 빽빽하고 풍성한 정상 모발 회복',
+          stepLabel: '④ ✦ 빽빽하고 풍성한 정상 모발 회복',
           mode: 0,
           warmth: 1.10,
           focal: [0.58, 0.42],
-          whisper: '거울 앞에서 다시 빽빽하고 풍성하게 차오른 모발을 쓸어 넘기며 당당한 미소를 되찾습니다.'
+          whisper: '두피청열·모근재생 치료 후, 빈 모낭마다 다시 빽빽하고 굵게 차오른 모발을 쓸어 넘기며 자신감을 되찾습니다.'
         },
 
-        // --- CHAPTER 6: 열심히 근무하면서 생긴 통증 (Frames 14 ~ 16) ---
+        // --- CHAPTER 6: 열심히 근무하면서 생긴 통증 (Frames 16 ~ 18) ---
         {
-          src: 'life_4a_work_spine_pain.jpg?v=pov3',
+          src: 'life_4a_work_spine_pain.jpg?v=pov4',
           chapter: 6,
           povBadge: '🎬 3인칭 전신 시점 · 굽은 척추와 목·어깨·팔·허리·다리·발 통증',
           stepLabel: '① 굽은 척추·목·어깨·팔·허리·다리·발 전신 통증',
@@ -1017,9 +1042,9 @@
           whisper: '열심히 근무하며 틀어진 굽은 척추와 목·어깨·팔·허리·다리·발까지 머리부터 발끝을 죄어오는 통증'
         },
         {
-          src: 'life_4a_treatment.jpg?v=pov3',
+          src: 'life_4a_treatment.jpg?v=pov4',
           chapter: 6,
-          povBadge: '🎬 3인칭 추나 시점 · 대표원장 1:1 전신 추나 교정',
+          povBadge: '🎬 3인칭 추나 시점 · 남자 한의사 원장님 1:1 전신 추나 교정',
           stepLabel: '② ✦ 바른 1:1 추나·약침 전신 교정치료',
           mode: 3,
           warmth: 1.08,
@@ -1027,7 +1052,7 @@
           whisper: '대표원장님의 정교한 1:1 수기 추나 치료로 어긋난 척추와 전신 관절 마디마디를 바르게 정렬하여'
         },
         {
-          src: 'life_4b_chuna_recovery.jpg?v=pov3',
+          src: 'life_4b_chuna_recovery.jpg?v=pov4',
           chapter: 6,
           povBadge: '🎬 3인칭 전신 회복 시점 · 통증 없이 바르게 펴진 자세',
           stepLabel: '③ 전신 수직 정렬 & 통증 완전 회복',
@@ -1037,43 +1062,43 @@
           whisper: '목·어깨·팔·허리·다리·발의 통증이 사라지고 곧게 펴진 가벼운 몸으로 활기찬 아침을 맞이합니다.'
         },
 
-        // --- CHAPTER 7: 약해진 기력을 보강해야할 나이가 오고 (Frames 17 ~ 18) ---
+        // --- CHAPTER 7: 약해진 기력을 보강해야할 나이가 오고 (Frames 19 ~ 20) ---
         {
-          src: 'life_5a_aging_fatigue.jpg?v=pov3',
+          src: 'life_5a_aging_fatigue.jpg?v=pov4',
           chapter: 7,
-          povBadge: '🎬 3인칭 부부 시점 · 세월 속에 약해진 노부부의 기력',
-          stepLabel: '① 노화·기력저하와 서로를 챙기는 노부부',
+          povBadge: '🎬 3인칭 시니어 시점 · 세월 속에 찾아온 노화와 기력저하',
+          stepLabel: '① 세월 속 노화·성인병·기력저하',
           mode: 0,
           warmth: 1.06,
-          focal: [0.52, 0.48],
-          whisper: '어느덧 세월이 흘러 기력이 약해지고 성인병을 돌보아야 할 나이가 찾아온 부부의 시간'
+          focal: [0.58, 0.46],
+          whisper: '어느덧 세월이 흘러 기력이 약해지고 성인병과 만성 피로를 돌보아야 할 나이가 찾아옵니다.'
         },
         {
-          src: 'life_5b_gongjindan_vitality.jpg?v=pov3',
+          src: 'life_5b_gongjindan_vitality.jpg?v=pov4',
           chapter: 7,
-          povBadge: '💛 노부부 교감 시점 · 서로 다정하게 먹여주는 황제공진단',
-          stepLabel: '② ✦ 노부부가 서로 먹여주는 24K 황제공진단',
+          povBadge: '💛 시니어 원기회복 시점 · 특허 받은 24K 황제공진단',
+          stepLabel: '② ✦ 특허 받은 24K 황제공진단 원기보강',
           mode: 0,
           warmth: 1.14,
-          focal: [0.52, 0.48],
-          whisper: '평생을 함께한 노부부가 특허 받은 24K 순금박 황제공진단을 서로 다정하게 먹여주며 깊은 원기를 채웁니다.'
+          focal: [0.58, 0.46],
+          whisper: '바른한의원의 특허 받은 24K 순금박 황제공진단으로 고갈된 원기와 면역력을 깊숙이 다시 채웁니다.'
         },
 
-        // --- CHAPTER 8: 건강한 인생이 될 수 있게 도와드립니다. (Frame 19) ---
+        // --- CHAPTER 8: 건강한 인생이 될 수 있게 도와드립니다. (Frame 21) ---
         {
-          src: 'life_5c_graceful_elder.jpg?v=pov3',
+          src: 'life_5c_graceful_elder.jpg?v=pov4',
           chapter: 8,
-          povBadge: '🌅 골든아워 시네마 시점 · 아름답게 나이 들어가는 부부',
+          povBadge: '🌅 골든아워 시네마 시점 · 품격 있고 아름답게 나이 들어가는 인생',
           stepLabel: '✦ 품격 있고 건강한 백세 인생 완성',
           mode: 0,
           warmth: 1.15,
-          focal: [0.54, 0.46],
-          whisper: '생명의 첫 순간부터 부부가 함께 아름답게 나이 들어가는 노년까지, 바른한의원이 평생 도와드립니다.'
+          focal: [0.58, 0.45],
+          whisper: '생명의 첫 순간부터 품격 있고 아름답게 나이 들어가는 노년까지, 바른한의원이 건강한 인생을 도와드립니다.'
         }
       ];
 
       // ======================================================================
-      // 3. CUSTOM GLSL SHADER ENGINE (1st/3rd POV Camera + Positive Warmth + Morph)
+      // 3. CUSTOM GLSL SHADER ENGINE (1st/3rd POV Camera + Scope Zoom + Morph)
       // ======================================================================
       const portalCanvas = document.getElementById('glsl-portal-canvas');
       let glRenderer, glScene, glCamera, glMaterial, glTextures = [];
@@ -1174,7 +1199,6 @@
           }
           else if (uMode == 2) {
             // CHAPTER 4: Dual Mirror Front-and-Back Waistline Slimming Morph!
-            // Pinches both the mirror front reflection (x ≈ 0.36) and the real back silhouette (x ≈ 0.68)
             float waistYMask = exp(-pow((baseUv.y - 0.46) / 0.25, 2.0));
             float dxMirror = baseUv.x - 0.365;
             float maskMirror = exp(-pow(dxMirror / 0.14, 2.0));
@@ -1213,6 +1237,28 @@
             finalColor = mix(cCurr, cNext, max(healedZone, t * 0.35));
             vec3 beamCol = mix(vec3(0.06, 0.72, 0.50), vec3(0.99, 0.88, 0.45), laserBeam);
             finalColor.rgb += beamCol * laserBeam * sin(t * 3.14159) * 0.88;
+          }
+          else if (uMode == 4) {
+            // CHAPTER 5: Dermatoscope Scalp Microscope 200x Optical Zoom-In!
+            // Zooms deeply into the doctor's scope tip at focal (0.52, 0.72 in GL UV) and opens the circular microscope lens
+            vec2 dVec = (baseUv - focal) * vec2(aspect, 1.0);
+            float dist = length(dVec);
+
+            float zoomOut = 1.0 + pow(t, 1.35) * 2.35;
+            float zoomIn = 0.42 + smoothstep(0.0, 1.0, t) * 0.58;
+
+            vec2 uvCurr = (baseUv - focal) / zoomOut + focal - parallax * (1.0 - t);
+            vec2 uvNext = (baseUv - vec2(0.5)) / zoomIn + vec2(0.5) - parallax * t;
+
+            float scopeRadius = mix(0.0, 1.45, pow(t, 1.08));
+            float scopeMask = smoothstep(scopeRadius + 0.08, scopeRadius - 0.08, dist);
+            float lensRing = exp(-pow((dist - scopeRadius) / 0.032, 2.0)) * sin(t * 3.14159);
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            finalColor = mix(cCurr, cNext, clamp(mix(t, scopeMask, 0.78), 0.0, 1.0));
+            finalColor.rgb += vec3(0.55, 0.92, 1.0) * lensRing * 0.85;
           }
           else {
             // 3D Z-Axis Portal Zoom-Through (1st-Person & 3rd-Person Perspective Shift)
@@ -1350,7 +1396,7 @@
           const radius = 3.2 + Math.random() * 18.0;
           pPos[i * 3] = Math.cos(angle) * radius + 1.0;
           pPos[i * 3 + 1] = Math.sin(angle) * radius * 0.65;
-          pPos[i * 3 + 2] = -Math.random() * 460 + 20;
+          pPos[i * 3 + 2] = -Math.random() * 480 + 20;
           const c = Math.random() > 0.3 ? cGold : cEmerald;
           pCol[i * 3] = c.r;
           pCol[i * 3 + 1] = c.g;
@@ -1387,8 +1433,8 @@
 
       function renderCleanLightOverlay(frameFloat, timeSec) {
         if (!svgOverlay) return;
-        if (frameFloat >= 13.6 && frameFloat <= 16.4) {
-          const p = Math.max(0, Math.min(1, (frameFloat - 14.0) / 2.0));
+        if (frameFloat >= 15.6 && frameFloat <= 18.4) {
+          const p = Math.max(0, Math.min(1, (frameFloat - 16.0) / 2.0));
           const scanY = 160 + p * 840;
           const crook = Math.max(0, 1.0 - p * 1.15);
 
@@ -1441,7 +1487,7 @@
       let currentPhaseStepEls = [];
 
       const dotsRow = document.getElementById('timeline-dots-row');
-      const chapterStartFrames = [0, 4, 6, 8, 11, 14, 17, 19];
+      const chapterStartFrames = DIALOGUE_CHAPTERS.map((ch) => Math.max(0, FRAMES.findIndex((f) => f.chapter === ch.id)));
       const dotEls = [];
       if (dotsRow) {
         DIALOGUE_CHAPTERS.forEach((ch, idx) => {
@@ -1614,6 +1660,32 @@
         targetProgress = clamped;
         window.scrollTo({ top: clamped * getScrollMax(), behavior: 'smooth' });
       }
+
+      window.addEventListener('message', (e) => {
+        if (!e.data || typeof e.data !== 'object') return;
+        if (e.data.type === 'SYNC_NORM' && typeof e.data.norm === 'number') {
+          scrollToNormalized(e.data.norm);
+        } else if (e.data.type === 'SYNC_CHAPTER' && typeof e.data.chapterId === 'number') {
+          const chIdx = Math.max(0, Math.min(DIALOGUE_CHAPTERS.length - 1, e.data.chapterId - 1));
+          const fIdx = chapterStartFrames[chIdx] || 0;
+          scrollToNormalized(fIdx / Math.max(1, FRAMES.length - 1));
+        } else if (e.data.type === 'SYNC_FRAME' && typeof e.data.frameIndex === 'number') {
+          scrollToNormalized(e.data.frameIndex / Math.max(1, FRAMES.length - 1));
+        }
+      });
+
+      setTimeout(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('frame')) {
+          const f = parseInt(params.get('frame'), 10);
+          if (!isNaN(f)) scrollToNormalized(f / Math.max(1, FRAMES.length - 1));
+        } else if (params.has('chapter')) {
+          const c = parseInt(params.get('chapter'), 10);
+          if (!isNaN(c) && c >= 1 && c <= 8) {
+            scrollToNormalized((chapterStartFrames[c - 1] || 0) / Math.max(1, FRAMES.length - 1));
+          }
+        }
+      }, 250);
 
       window.addEventListener('scroll', () => {
         const y = getCurrentScrollY();

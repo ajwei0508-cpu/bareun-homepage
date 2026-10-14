@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바른한의원 | 3D 시네마 수정 전·후(Before & After) 실시간 비교 스튜디오</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #04100C;
+      --bg-card: rgba(8, 26, 19, 0.88);
+      --gold: #C5A059;
+      --gold-bright: #FDE68A;
+      --emerald: #10B981;
+      --emerald-bright: #6EE7B7;
+      --coral: #F87171;
+      --font-serif: 'Noto Serif KR', serif;
+      --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Control Bar */
+    .compare-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(4, 16, 12, 0.95);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.35);
+      backdrop-filter: blur(14px);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 800;
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    .brand-gem {
+      width: 9px;
+      height: 9px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--emerald-bright);
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .mode-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .mode-tab-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.72);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .mode-tab-btn.active {
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+
+    .server-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .server-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .server-btn.before {
+      background: rgba(248, 113, 113, 0.14);
+      border: 1px solid rgba(248, 113, 113, 0.55);
+      color: #FCA5A5;
+    }
+
+    .server-btn.after {
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(110, 231, 183, 0.65);
+      color: #6EE7B7;
+    }
+
+    .server-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.15);
+    }
+
+    /* Synchronized Chapter Jump Bar */
+    .sync-chapter-bar {
+      background: rgba(6, 20, 15, 0.92);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .sync-btns-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sync-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gold-bright);
+      margin-right: 6px;
+      font-weight: 700;
+    }
+
+    .chapter-jump-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.88);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chapter-jump-btn:hover,
+    .chapter-jump-btn.active {
+      background: rgba(197, 160, 89, 0.28);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+    }
+
+    .sync-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 260px;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .sync-slider-wrap input[type="range"] {
+      width: 100%;
+      accent-color: var(--emerald);
+      cursor: pointer;
+    }
+
+    /* View 1: Live 3D Split View */
+    .split-3d-stage {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 108px);
+      min-height: 620px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .split-pane {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-right: 1px solid rgba(197, 160, 89, 0.35);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .split-pane-banner {
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .split-pane.before-pane .split-pane-banner {
+      background: rgba(127, 29, 29, 0.55);
+      color: #FECACA;
+      border-bottom: 1px solid rgba(248, 113, 113, 0.4);
+    }
+
+    .split-pane.after-pane .split-pane-banner {
+      background: rgba(6, 78, 59, 0.65);
+      color: #A7F3D0;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.5);
+    }
+
+    .split-pane iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background: #020D09;
+    }
+
+    /* View 2: 6 Point-by-Point Before vs After Visual Diff Board */
+    .diff-board-stage {
+      display: none;
+      padding: 36px 28px 64px;
+      max-width: 1560px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .diff-board-stage.active {
+      display: block;
+    }
+
+    .split-3d-stage.hidden {
+      display: none;
+    }
+
+    .board-intro {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .board-intro h1 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      color: var(--gold-bright);
+      margin-bottom: 10px;
+    }
+
+    .board-intro p {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .diff-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .diff-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .diff-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .diff-card-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .diff-num-pill {
+      background: linear-gradient(135deg, var(--gold), #9A7B3E);
+      color: #04100C;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .diff-compare-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .diff-col {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .diff-col.after-col {
+      border-color: rgba(16, 185, 129, 0.55);
+      background: rgba(6, 48, 35, 0.28);
+    }
+
+    .diff-col-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .diff-col.before-col .diff-col-tag {
+      background: rgba(248, 113, 113, 0.2);
+      color: #FCA5A5;
+      border: 1px solid rgba(248, 113, 113, 0.45);
+    }
+
+    .diff-col.after-col .diff-col-tag {
+      background: rgba(16, 185, 129, 0.22);
+      color: #6EE7B7;
+      border: 1px solid rgba(110, 231, 183, 0.55);
+    }
+
+    .diff-img-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .diff-img-box {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      aspect-ratio: 16 / 9;
+      background: #020D09;
+    }
+
+    .diff-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .diff-img-caption {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(2, 13, 9, 0.82);
+      backdrop-filter: blur(6px);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 9px;
+      border-radius: 6px;
+      border-left: 3px solid var(--gold-bright);
+    }
+
+    @media (max-width: 1024px) {
+      .split-3d-stage,
+      .diff-compare-cols {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="compare-header">
+    <a href="story-3d.html" class="brand-title">
+      <span class="brand-gem"></span>
+      <span>바른한의원 3D 스크롤 수정 전·후 비교 스튜디오</span>
+      <span class="brand-badge">6대 피드백 100% 반영 완료</span>
+    </a>
+
+    <div class="mode-tabs">
+      <button type="button" class="mode-tab-btn active" id="tab-board-btn">🖼️ 6대 수정 항목 전·후 한눈에 비교</button>
+      <button type="button" class="mode-tab-btn" id="tab-split-btn">🎬 3D 스크롤 좌·우 실시간 동시 비교</button>
+    </div>
+
+    <div class="server-links">
+      <a href="http://localhost:3001" target="_blank" class="server-btn before">● 수정 전 로컬서버 (포트 3001) 열기 ↗</a>
+      <a href="http://localhost:3000/story-3d.html" target="_blank" class="server-btn after">✦ 수정 후 로컬서버 (포트 3000) 열기 ↗</a>
+    </div>
+  </header>
+
+  <!-- Synchronized Chapter Control Bar -->
+  <div class="sync-chapter-bar">
+    <div class="sync-btns-group">
+      <span class="sync-label">⚡ 수정 구간 즉시 이동:</span>
+      <button type="button" class="chapter-jump-btn" onclick="syncFrames(1, 1)">① 난임 (남자 한의사 진맥)</button>
+      <button type="button" class="chapter-jump-btn" onclick="syncFrames(4, 5)">② 소아 (한의원 진찰 컷 추가)</button>
+      <button type="button" class="chapter-jump-btn" onclick="syncFrames(9, 10)">③ 다이어트 (거울 앞 한약 복용 & 변신)</button>
+      <button type="button" class="chapter-jump-btn" onclick="syncFrames(11, 12)">④ 탈모 (가는 모발 & 한손 움켜쥠)</button>
+      <button type="button" class="chapter-jump-btn" onclick="syncFrames(12, 13)">⑤ 탈모 (남자원장님 검사기 ➔ 모낭 확대)</button>
+      <button type="button" class="chapter-jump-btn" onclick="syncFrames(17, 19)">⑥ 노부부 (이전 황제공진단 이미지 복원)</button>
+    </div>
+
+    <div class="sync-slider-wrap">
+      <span style="font-size:11px; color:rgba(255,255,255,0.75); white-space:nowrap;">전체 동시 스크롤:</span>
+      <input type="range" id="master-sync-slider" min="0" max="100" value="0">
+      <span id="slider-pct-label" style="font-family:var(--font-mono); font-size:11px; color:var(--gold-bright);">0%</span>
+    </div>
+  </div>
+
+  <!-- TAB 1: 6-Point Visual Diff Board (Default active so user immediately sees all 6 changes clearly, plus Live 3D Split below/tab) -->
+  <section class="diff-board-stage active" id="diff-board-stage">
+    <div class="board-intro">
+      <h1>바른한의원 3D 시네마 · 6대 추가 수정 전(Before) vs 후(After) 정밀 비교</h1>
+      <p>상단 <strong>[🎬 3D 스크롤 좌·우 실시간 동시 비교]</strong> 탭을 누르시거나, 별도 오픈된 <strong>포트 3001(수정 전)</strong> / <strong>포트 3000(수정 후)</strong> 로컬 서버 창에서도 직접 비교하실 수 있습니다.</p>
+    </div>
+
+    <div class="diff-grid">
+      <!-- 1. 의료인 남자로 변경 -->
+      <div class="diff-card">
+        <div class="diff-card-header">
+          <div class="diff-card-title">
+            <span class="diff-num-pill">수정 01</span>
+            <span>의료인(한의사)을 모두 신뢰감 있는 남자 한의사 원장님으로 변경</span>
+          </div>
+          <button type="button" class="chapter-jump-btn" onclick="openSplitAt(1, 1)">🎬 3D 화면에서 바로 비교 ↗</button>
+        </div>
+        <div class="diff-compare-cols">
+          <div class="diff-col before-col">
+            <span class="diff-col-tag">수정 전 (BEFORE) · 여자 의료인 / 손 클로즈업</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="prev_life_1a1_infertility_treatment.jpg" alt="수정 전 난임 진료">
+                <div class="diff-img-caption">수정 전: 여자 한의사 난임 진맥</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="prev_life_3a_treatment.jpg" alt="수정 전 탈모 시술">
+                <div class="diff-img-caption">수정 전: 두피 시술 손 클로즈업</div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-col after-col">
+            <span class="diff-col-tag">✦ 수정 후 (AFTER) · 전 챕터 남자 한의사 원장님으로 통일</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="life_1a1_infertility_treatment.jpg?v=pov4" alt="수정 후 남자 한의사 난임 진맥">
+                <div class="diff-img-caption">✦ 수정 후: 남자 한의사 원장님 난임 진맥</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_1c_clinic_exam.jpg?v=pov4" alt="수정 후 남자 한의사 소아 진찰">
+                <div class="diff-img-caption">✦ 수정 후: 남자 한의사 원장님 소아 진찰</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_3a_treatment.jpg?v=pov4" alt="수정 후 남자 한의사 두피 검사">
+                <div class="diff-img-caption">✦ 수정 후: 남자 한의사 원장님 두피 검사기 진단</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 아이가 아프고 회복되는 사이에 한의원 진찰 컷 추가 -->
+      <div class="diff-card">
+        <div class="diff-card-header">
+          <div class="diff-card-title">
+            <span class="diff-num-pill">수정 02</span>
+            <span>아이가 아프고 회복되는 사이에 한의원에서 진찰하는 이미지 컷 추가</span>
+          </div>
+          <button type="button" class="chapter-jump-btn" onclick="openSplitAt(4, 5)">🎬 3D 화면에서 바로 비교 ↗</button>
+        </div>
+        <div class="diff-compare-cols">
+          <div class="diff-col before-col">
+            <span class="diff-col-tag">수정 전 (BEFORE) · 침대 고열 ➔ 즉시 회복 (진찰 컷 없음)</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="life_1c_cold_before.jpg" alt="아이 침대 고열">
+                <div class="diff-img-caption">① 침대 위 물수건·체온계 고열</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_1c_immunity.jpg" alt="아이 회복">
+                <div class="diff-img-caption">② 바로 회복 장면으로 전환됨</div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-col after-col">
+            <span class="diff-col-tag">✦ 수정 후 (AFTER) · 침대 고열 ➔ [한의원 남자 원장님 진찰 컷 추가] ➔ 완쾌 회복</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="life_1c_cold_before.jpg?v=pov4" alt="아이 침대 고열">
+                <div class="diff-img-caption">① 침대 위 고열과 걱정하는 엄마</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_1c_clinic_exam.jpg?v=pov4" alt="한의원 소아 진찰 추가">
+                <div class="diff-img-caption">② [신규 추가] 한의원에서 남자 원장님 진찰</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_1c_immunity.jpg?v=pov4" alt="아이 완쾌">
+                <div class="diff-img-caption">③ 면역강화 치료 후 해맑게 완쾌</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 거울 앞 뚱뚱한 모습 -> 한약 복용 모습 추가 -> 날씬하게 예뻐진 변신 -->
+      <div class="diff-card">
+        <div class="diff-card-header">
+          <div class="diff-card-title">
+            <span class="diff-num-pill">수정 03</span>
+            <span>거울에 비친 뚱뚱한 모습 ➔ 한약을 복용하는 모습 추가 ➔ 날씬하게 예뻐진 모습으로 변신</span>
+          </div>
+          <button type="button" class="chapter-jump-btn" onclick="openSplitAt(9, 10)">🎬 3D 화면에서 바로 비교 ↗</button>
+        </div>
+        <div class="diff-compare-cols">
+          <div class="diff-col before-col">
+            <span class="diff-col-tag">수정 전 (BEFORE) · 거울 앞 줄자 측정</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="prev_life_2a_treatment.jpg" alt="수정 전 줄자 측정">
+                <div class="diff-img-caption">수정 전: 여자 의료인과 줄자 측정</div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-col after-col">
+            <span class="diff-col-tag">✦ 수정 후 (AFTER) · 동일 거울 구도에서 한약 파우치 복용 후 날씬하게 변신</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="life_2a_obesity.jpg?v=pov4" alt="거울 앞뒤 살찐 모습">
+                <div class="diff-img-caption">① 거울 앞뒤 살이 찐 모습</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_2a_treatment.jpg?v=pov4" alt="거울 앞 한약 복용">
+                <div class="diff-img-caption">② [수정] 거울 앞에서 다이어트 한약 복용</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_2b_slim_therapy.jpg?v=pov4" alt="날씬하게 변신">
+                <div class="diff-img-caption">③ 날씬하고 예뻐진 S라인 변신</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 & 5. 탈모 바닥 가는 머리카락 + 한손 움켜쥠 & 남자 원장님 검사기 -> 모낭 속 부족한 머리카락 확대 -->
+      <div class="diff-card">
+        <div class="diff-card-header">
+          <div class="diff-card-title">
+            <span class="diff-num-pill">수정 04 · 05</span>
+            <span>바닥의 가는 머리카락 & 한 손에 움켜쥔 연출 + 남자 원장님 검사기 진단 ➔ 모낭 속 머리카락 부족 확대 연출</span>
+          </div>
+          <button type="button" class="chapter-jump-btn" onclick="openSplitAt(11, 12)">🎬 3D 화면에서 바로 비교 ↗</button>
+        </div>
+        <div class="diff-compare-cols">
+          <div class="diff-col before-col">
+            <span class="diff-col-tag">수정 전 (BEFORE) · 두서없는 바닥 머리카락 & 시술 부위 클로즈업</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="prev_life_3a_hairloss.jpg" alt="수정 전 바닥 머리카락">
+                <div class="diff-img-caption">수정 전: 바닥에 뭉쳐 떨어진 머리카락</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="prev_life_3a_treatment.jpg" alt="수정 전 탈모 시술">
+                <div class="diff-img-caption">수정 전: 두피 약침 시술 부위</div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-col after-col">
+            <span class="diff-col-tag">✦ 수정 후 (AFTER) · 가는 바닥 모발+한손 움켜쥠 ➔ 검사기 진단 ➔ 모낭 속 모발 부족 확대</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="life_3a_hairloss.jpg?v=pov4" alt="가는 바닥 모발과 한 손에 움켜쥔 머리카락">
+                <div class="diff-img-caption">① 가늘게 떨어진 바닥 모발 + 한 손에 움켜쥠</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_3a_treatment.jpg?v=pov4" alt="남자 원장님 검사기 진단">
+                <div class="diff-img-caption">② 남자 한의사 원장님이 두피 검사기로 진단</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_3a_follicle_zoom.jpg?v=pov4" alt="검사기 확대 모낭 속 머리카락 부족">
+                <div class="diff-img-caption">③ [신규 추가] 검사기 200배 확대 (모낭 속 모발 부족)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 노부부 이전 이미지로 복원 -->
+      <div class="diff-card">
+        <div class="diff-card-header">
+          <div class="diff-card-title">
+            <span class="diff-num-pill">수정 06</span>
+            <span>노년기(7·8장) 이미지를 이전에 사용했던 소나무 정원 시니어 이미지로 복원</span>
+          </div>
+          <button type="button" class="chapter-jump-btn" onclick="openSplitAt(17, 19)">🎬 3D 화면에서 바로 비교 ↗</button>
+        </div>
+        <div class="diff-compare-cols">
+          <div class="diff-col before-col">
+            <span class="diff-col-tag">수정 전 (BEFORE) · 실내 노부부 이미지</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="prev_life_5a_aging_fatigue.jpg" alt="수정 전 노부부 기력저하">
+                <div class="diff-img-caption">수정 전: 실내 노부부 기력저하</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="prev_life_5b_gongjindan_vitality.jpg" alt="수정 전 노부부 공진단">
+                <div class="diff-img-caption">수정 전: 노부부 공진단</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="prev_life_5c_graceful_elder.jpg" alt="수정 전 노부부 산책">
+                <div class="diff-img-caption">수정 전: 노부부 정원 산책</div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-col after-col">
+            <span class="diff-col-tag">✦ 수정 후 (AFTER) · 이전에 사용했던 소나무 정원 황제공진단 시니어 이미지로 완벽 복원</span>
+            <div class="diff-img-row">
+              <div class="diff-img-box">
+                <img src="life_5a_aging_fatigue.jpg?v=pov4" alt="복원된 시니어 기력저하">
+                <div class="diff-img-caption">✦ 복원: 소나무 정원 기력저하</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_5b_gongjindan_vitality.jpg?v=pov4" alt="복원된 24K 황제공진단">
+                <div class="diff-img-caption">✦ 복원: 특허 24K 황제공진단 원기회복</div>
+              </div>
+              <div class="diff-img-box">
+                <img src="life_5c_graceful_elder.jpg?v=pov4" alt="복원된 건강한 노년">
+                <div class="diff-img-caption">✦ 복원: 품격 있고 건강한 백세 인생</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: Live 3D Split-Screen Comparison -->
+  <section class="split-3d-stage hidden" id="split-3d-stage">
+    <div class="split-pane before-pane">
+      <div class="split-pane-banner">
+        <span>● 수정 전 (BEFORE · 20컷 버전 — http://localhost:3001)</span>
+        <a href="http://localhost:3001" target="_blank" style="color:#FECACA; text-decoration:underline; font-size:11px;">전체 화면으로 열기 ↗</a>
+      </div>
+      <iframe id="iframe-before" src="story-before.html" title="수정 전 3D 시네마"></iframe>
+    </div>
+
+    <div class="split-pane after-pane">
+      <div class="split-pane-banner">
+        <span>✦ 수정 후 (AFTER · 22컷 완성본 — http://localhost:3000/story-3d.html)</span>
+        <a href="story-3d.html" target="_blank" style="color:#A7F3D0; text-decoration:underline; font-size:11px;">전체 화면으로 열기 ↗</a>
+      </div>
+      <iframe id="iframe-after" src="story-3d.html" title="수정 후 3D 시네마"></iframe>
+    </div>
+  </section>
+
+  <script>
+    const tabBoardBtn = document.getElementById('tab-board-btn');
+    const tabSplitBtn = document.getElementById('tab-split-btn');
+    const boardStage = document.getElementById('diff-board-stage');
+    const splitStage = document.getElementById('split-3d-stage');
+    const iframeBefore = document.getElementById('iframe-before');
+    const iframeAfter = document.getElementById('iframe-after');
+    const masterSlider = document.getElementById('master-sync-slider');
+    const sliderPctLabel = document.getElementById('slider-pct-label');
+
+    function showBoardTab() {
+      tabBoardBtn.classList.add('active');
+      tabSplitBtn.classList.remove('active');
+      boardStage.classList.add('active');
+      splitStage.classList.add('hidden');
+    }
+
+    function showSplitTab() {
+      tabSplitBtn.classList.add('active');
+      tabBoardBtn.classList.remove('active');
+      boardStage.classList.remove('active');
+      splitStage.classList.remove('hidden');
+    }
+
+    tabBoardBtn.addEventListener('click', showBoardTab);
+    tabSplitBtn.addEventListener('click', showSplitTab);
+
+    function syncFrames(beforeFrameIdx, afterFrameIdx) {
+      showSplitTab();
+      setTimeout(() => {
+        if (iframeBefore && iframeBefore.contentWindow) {
+          iframeBefore.contentWindow.postMessage({ type: 'SYNC_FRAME', frameIndex: beforeFrameIdx }, '*');
+        }
+        if (iframeAfter && iframeAfter.contentWindow) {
+          iframeAfter.contentWindow.postMessage({ type: 'SYNC_FRAME', frameIndex: afterFrameIdx }, '*');
+        }
+        const pct = Math.round((afterFrameIdx / 21) * 100);
+        if (masterSlider) masterSlider.value = String(pct);
+        if (sliderPctLabel) sliderPctLabel.textContent = pct + '%';
+      }, 120);
+    }
+
+    function openSplitAt(beforeFrameIdx, afterFrameIdx) {
+      syncFrames(beforeFrameIdx, afterFrameIdx);
+    }
+
+    if (masterSlider) {
+      masterSlider.addEventListener('input', (e) => {
+        const pct = Number(e.target.value);
+        const norm = pct / 100;
+        if (sliderPctLabel) sliderPctLabel.textContent = pct + '%';
+        showSplitTab();
+        if (iframeBefore && iframeBefore.contentWindow) {
+          iframeBefore.contentWindow.postMessage({ type: 'SYNC_NORM', norm }, '*');
+        }
+        if (iframeAfter && iframeAfter.contentWindow) {
+          iframeAfter.contentWindow.postMessage({ type: 'SYNC_NORM', norm }, '*');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
