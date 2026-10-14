@@ -555,5 +555,47 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
 });
 
 server.listen(PORT, () => {
-  console.log(`✨ Huyml Replica Server running at: http://localhost:${PORT}`);
+  console.log(`✨ Bareun Main/After 3D Server running at: http://localhost:${PORT}`);
+  console.log(`   - 3D Cinema (After): http://localhost:${PORT}/story-3d.html`);
+  console.log(`   - Before/After Compare Studio: http://localhost:${PORT}/compare.html`);
+});
+
+// Companion Before Comparison Server on Port 3001 (auto-started together with serve.js)
+const BEFORE_PORT = 3001;
+const beforeServer = http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  let reqPath = decodeURIComponent((req.url || '/').split('?')[0]);
+  if (reqPath === '/' || reqPath === '/index.html') {
+    reqPath = '/story-before.html';
+  }
+  const filePath = path.join(__dirname, reqPath);
+  if (!filePath.startsWith(__dirname)) {
+    res.writeHead(403);
+    res.end('Forbidden');
+    return;
+  }
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=UTF-8' });
+      res.end('404 Not Found');
+      return;
+    }
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Cache-Control': 'no-store, no-cache, must-revalidate'
+    });
+    res.end(content);
+  });
+});
+
+beforeServer.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`ℹ️ [Port ${BEFORE_PORT}] Before Comparison Server is already running at http://localhost:${BEFORE_PORT}`);
+  }
+});
+
+beforeServer.listen(BEFORE_PORT, () => {
+  console.log(`✨ Bareun Before Comparison Server running at: http://localhost:${BEFORE_PORT} (story-before.html)`);
 });
