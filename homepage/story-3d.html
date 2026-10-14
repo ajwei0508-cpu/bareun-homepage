@@ -272,6 +272,72 @@
       animation: none;
     }
 
+    .btn-bgm-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(197, 160, 89, 0.16);
+      border: 1px solid rgba(253, 230, 138, 0.5);
+      color: var(--gold-bright);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-bgm-toggle:hover {
+      background: rgba(197, 160, 89, 0.32);
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(197, 160, 89, 0.35);
+    }
+
+    .btn-bgm-toggle.playing {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(197, 160, 89, 0.28));
+      border-color: var(--emerald-bright);
+      color: #FFFFFF;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+    }
+
+    .bgm-eq-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .bgm-eq-bars span {
+      width: 2.2px;
+      height: 3px;
+      background: var(--gold-bright);
+      border-radius: 2px;
+      transition: height 0.2s ease;
+    }
+
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(1) {
+      background: var(--emerald-bright);
+      animation: eqDance 0.7s infinite ease-in-out alternate;
+    }
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(2) {
+      background: var(--gold-bright);
+      animation: eqDance 0.5s 0.15s infinite ease-in-out alternate;
+    }
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(3) {
+      background: var(--emerald-bright);
+      animation: eqDance 0.85s 0.3s infinite ease-in-out alternate;
+    }
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(4) {
+      background: var(--gold-bright);
+      animation: eqDance 0.6s 0.1s infinite ease-in-out alternate;
+    }
+
+    @keyframes eqDance {
+      0% { height: 3px; }
+      100% { height: 12px; }
+    }
+
     .btn-return-home {
       display: inline-flex;
       align-items: center;
@@ -911,9 +977,15 @@
     </div>
 
     <div class="nav-right-actions">
+      <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 오케스트라 BGM 및 3D 공간 사운드 켜기/끄기">
+        <span class="bgm-eq-bars">
+          <span></span><span></span><span></span><span></span>
+        </span>
+        <span id="bgm-status-label">BGM · ON (스크롤 시 재생)</span>
+      </button>
       <button type="button" class="btn-auto-flight" id="btn-auto-flight">
         <span class="flight-dot"></span>
-        <span id="auto-flight-label">AUTO FLIGHT · ON</span>
+        <span id="auto-flight-label">▶ AUTO FLIGHT</span>
       </button>
       <a href="index.html" class="btn-return-home">메인 홈페이지 ↗</a>
     </div>
@@ -2185,7 +2257,293 @@
         // 3. Render Precision SVG Anatomical Scanner & Update HUD
         renderSpatialSVGOverlay(frameFloat, timeSec);
         updateHUD(frameFloat, scrollVelocity);
+
+        // 4. Update Scroll-Reactive 3D Spatial Sound & Stage Harmony
+        soundEngine.updateSpatialDynamics(scrollVelocity, FRAMES[currIdx].stage);
       }
+
+      // ======================================================================
+      // 8. CINEMATIC ORCHESTRAL & 3D SPATIAL BGM ENGINE (Max Richter / Hans Zimmer Style)
+      // ======================================================================
+      const soundEngine = (function () {
+        let ctx = null;
+        let masterGain = null;
+        let reverbNode = null;
+        let whooshGain = null;
+        let whooshFilter = null;
+        let isPlaying = false;
+        let userMuted = false;
+        let chordTimer = null;
+        let melodyTimer = null;
+        let chordIdx = 0;
+        let activeStage = 1;
+
+        // Emotional Cinema Chord Progression (Fmaj9 -> G6 -> Em9 -> Am9 -> Dm9 -> G13 -> Cmaj9)
+        const CHORDS = [
+          { bass: 87.31,  pad: [174.61, 220.00, 261.63, 329.63, 392.00], scale: [523.25, 587.33, 659.25, 783.99, 880.00] }, // Fmaj9
+          { bass: 98.00,  pad: [196.00, 246.94, 293.66, 329.63, 392.00], scale: [587.33, 659.25, 783.99, 880.00, 987.77] }, // G6
+          { bass: 82.41,  pad: [164.81, 246.94, 293.66, 329.63, 392.00], scale: [493.88, 587.33, 659.25, 783.99, 987.77] }, // Em9
+          { bass: 110.00, pad: [220.00, 261.63, 329.63, 392.00, 493.88], scale: [523.25, 659.25, 783.99, 880.00, 1046.50] } // Am9
+        ];
+
+        function createConcertHallReverb(audioCtx) {
+          const duration = 3.6;
+          const rate = audioCtx.sampleRate;
+          const length = Math.floor(rate * duration);
+          const impulse = audioCtx.createBuffer(2, length, rate);
+          for (let ch = 0; ch < 2; ch++) {
+            const data = impulse.getChannelData(ch);
+            for (let i = 0; i < length; i++) {
+              const decay = Math.pow(1 - i / length, 2.6);
+              data[i] = (Math.random() * 2 - 1) * decay * 0.45;
+            }
+          }
+          const convolver = audioCtx.createConvolver();
+          convolver.buffer = impulse;
+          return convolver;
+        }
+
+        function initAudioGraph() {
+          if (ctx) return;
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          ctx = new AudioCtx();
+
+          masterGain = ctx.createGain();
+          masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
+          masterGain.connect(ctx.destination);
+
+          reverbNode = createConcertHallReverb(ctx);
+          const reverbGain = ctx.createGain();
+          reverbGain.gain.value = 0.65;
+          reverbNode.connect(reverbGain);
+          reverbGain.connect(masterGain);
+
+          // Scroll-reactive 3D Spatial Portal Breeze / Whoosh Node
+          const noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+          const out = noiseBuf.getChannelData(0);
+          let b0 = 0, b1 = 0, b2 = 0;
+          for (let i = 0; i < out.length; i++) {
+            const w = Math.random() * 2 - 1;
+            b0 = 0.997 * b0 + w * 0.029;
+            b1 = 0.985 * b1 + w * 0.032;
+            b2 = 0.950 * b2 + w * 0.048;
+            out[i] = (b0 + b1 + b2) * 0.35;
+          }
+          const noiseSrc = ctx.createBufferSource();
+          noiseSrc.buffer = noiseBuf;
+          noiseSrc.loop = true;
+
+          whooshFilter = ctx.createBiquadFilter();
+          whooshFilter.type = 'bandpass';
+          whooshFilter.frequency.value = 240;
+          whooshFilter.Q.value = 1.8;
+
+          whooshGain = ctx.createGain();
+          whooshGain.gain.value = 0.0;
+
+          noiseSrc.connect(whooshFilter);
+          whooshFilter.connect(whooshGain);
+          whooshGain.connect(reverbNode);
+          noiseSrc.start();
+        }
+
+        function playWarmPadChord() {
+          if (!ctx || !isPlaying) return;
+          const now = ctx.currentTime;
+          const chord = CHORDS[chordIdx % CHORDS.length];
+          chordIdx++;
+
+          // Deep Warm Cello Bass Foundation
+          const bassOsc = ctx.createOscillator();
+          const bassFilter = ctx.createBiquadFilter();
+          const bassGain = ctx.createGain();
+          bassOsc.type = 'triangle';
+          bassOsc.frequency.setValueAtTime(chord.bass, now);
+          bassFilter.type = 'lowpass';
+          bassFilter.frequency.setValueAtTime(260, now);
+
+          bassGain.gain.setValueAtTime(0.0001, now);
+          bassGain.gain.linearRampToValueAtTime(0.11, now + 1.8);
+          bassGain.gain.exponentialRampToValueAtTime(0.0008, now + 6.4);
+
+          bassOsc.connect(bassFilter);
+          bassFilter.connect(bassGain);
+          bassGain.connect(masterGain);
+          bassGain.connect(reverbNode);
+          bassOsc.start(now);
+          bassOsc.stop(now + 6.5);
+
+          // Lush Cinema Strings & Celestial Pad Voices
+          chord.pad.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const lp = ctx.createBiquadFilter();
+            const vGain = ctx.createGain();
+
+            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+            // Subtle organic detune for warm orchestral chorus
+            osc.frequency.setValueAtTime(freq * (1 + (idx - 2) * 0.0012), now);
+
+            lp.type = 'lowpass';
+            lp.frequency.setValueAtTime(activeStage === 5 ? 1500 : 1100, now);
+
+            const peak = 0.042 / Math.sqrt(idx + 1);
+            vGain.gain.setValueAtTime(0.0001, now);
+            vGain.gain.linearRampToValueAtTime(peak, now + 2.1);
+            vGain.gain.exponentialRampToValueAtTime(0.0005, now + 6.6);
+
+            osc.connect(lp);
+            lp.connect(vGain);
+            vGain.connect(reverbNode);
+            vGain.connect(masterGain);
+
+            osc.start(now);
+            osc.stop(now + 6.7);
+          });
+        }
+
+        function playFeltPianoNote() {
+          if (!ctx || !isPlaying) return;
+          const now = ctx.currentTime;
+          const chord = CHORDS[(chordIdx - 1 + CHORDS.length) % CHORDS.length];
+          const notes = chord.scale;
+          const freq = notes[Math.floor(Math.random() * notes.length)];
+
+          const osc = ctx.createOscillator();
+          const overtone = ctx.createOscillator();
+          const lp = ctx.createBiquadFilter();
+          const env = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          overtone.type = 'triangle';
+          overtone.frequency.setValueAtTime(freq * 2.0, now);
+
+          lp.type = 'lowpass';
+          lp.frequency.setValueAtTime(1850, now);
+          lp.frequency.exponentialRampToValueAtTime(420, now + 2.6);
+
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(0.055, now + 0.035);
+          env.gain.exponentialRampToValueAtTime(0.0004, now + 3.4);
+
+          const overtoneGain = ctx.createGain();
+          overtoneGain.gain.value = 0.12;
+
+          osc.connect(lp);
+          overtone.connect(overtoneGain);
+          overtoneGain.connect(lp);
+          lp.connect(env);
+          env.connect(reverbNode);
+          env.connect(masterGain);
+
+          osc.start(now);
+          overtone.start(now);
+          osc.stop(now + 3.5);
+          overtone.stop(now + 3.5);
+        }
+
+        function playStagePortalChime(stageNum) {
+          if (!ctx || !isPlaying) return;
+          const now = ctx.currentTime;
+          const baseFreqs = [523.25, 659.25, 783.99, 1046.50];
+          baseFreqs.forEach((f, i) => {
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f * (1 + stageNum * 0.04), now + i * 0.08);
+            g.gain.setValueAtTime(0.0001, now + i * 0.08);
+            g.gain.linearRampToValueAtTime(0.028, now + i * 0.08 + 0.04);
+            g.gain.exponentialRampToValueAtTime(0.0002, now + i * 0.08 + 2.4);
+            osc.connect(g);
+            g.connect(reverbNode);
+            osc.start(now + i * 0.08);
+            osc.stop(now + i * 0.08 + 2.5);
+          });
+        }
+
+        function updateUI() {
+          const btn = document.getElementById('btn-bgm-toggle');
+          const label = document.getElementById('bgm-status-label');
+          if (btn) btn.classList.toggle('playing', isPlaying);
+          if (label) label.textContent = isPlaying ? '🔊 BGM · PLAYING' : '🔇 BGM · OFF';
+        }
+
+        function startBGM() {
+          if (userMuted || isPlaying) return;
+          initAudioGraph();
+          if (!ctx) return;
+          if (ctx.state === 'suspended') ctx.resume();
+
+          isPlaying = true;
+          masterGain.gain.cancelScheduledValues(ctx.currentTime);
+          masterGain.gain.setValueAtTime(Math.max(0.001, masterGain.gain.value), ctx.currentTime);
+          masterGain.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 1.6);
+
+          playWarmPadChord();
+          setTimeout(playFeltPianoNote, 600);
+          chordTimer = setInterval(playWarmPadChord, 4800);
+          melodyTimer = setInterval(playFeltPianoNote, 1900);
+          updateUI();
+        }
+
+        function stopBGM() {
+          if (!ctx || !isPlaying) return;
+          isPlaying = false;
+          clearInterval(chordTimer);
+          clearInterval(melodyTimer);
+          masterGain.gain.cancelScheduledValues(ctx.currentTime);
+          masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+          masterGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
+          updateUI();
+        }
+
+        function toggleBGM() {
+          if (isPlaying) {
+            userMuted = true;
+            stopBGM();
+          } else {
+            userMuted = false;
+            startBGM();
+          }
+        }
+
+        function updateSpatialDynamics(velocity, stageNum) {
+          if (!ctx || !isPlaying) return;
+          if (stageNum !== activeStage) {
+            activeStage = stageNum;
+            playStagePortalChime(stageNum);
+          }
+          if (whooshGain && whooshFilter) {
+            const speed = Math.min(1.0, Math.abs(velocity) * 2.5);
+            const targetG = speed * 0.09;
+            const targetF = 220 + speed * 780;
+            whooshGain.gain.setTargetAtTime(targetG, ctx.currentTime, 0.08);
+            whooshFilter.frequency.setTargetAtTime(targetF, ctx.currentTime, 0.08);
+          }
+        }
+
+        // Bind Toggle Button & Auto-Unlock on First User Gesture (Wheel, Click, Touch, Keydown)
+        const bgmBtn = document.getElementById('btn-bgm-toggle');
+        if (bgmBtn) {
+          bgmBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleBGM();
+          });
+        }
+
+        const unlockGesture = () => {
+          if (!isPlaying && !userMuted) {
+            startBGM();
+          }
+        };
+        window.addEventListener('wheel', unlockGesture, { passive: true, once: true });
+        window.addEventListener('pointerdown', unlockGesture, { passive: true, once: true });
+        window.addEventListener('touchstart', unlockGesture, { passive: true, once: true });
+        window.addEventListener('keydown', unlockGesture, { passive: true, once: true });
+
+        return { updateSpatialDynamics, toggleBGM, startBGM };
+      })();
 
       window.addEventListener('resize', () => {
         const w = window.innerWidth;

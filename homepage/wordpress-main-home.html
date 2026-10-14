@@ -6450,9 +6450,187 @@ async function handleDrawerBookingSubmit(event) {
   }
 }
 
+// ============================================================================
+// 5. CINEMATIC ORCHESTRAL & 3D SPATIAL BGM ENGINE (FOR MAIN HOMEPAGE)
+// ============================================================================
+(function initMainCinemaBGM() {
+  let ctx = null;
+  let masterGain = null;
+  let reverbNode = null;
+  let isPlaying = false;
+  let userMuted = false;
+  let chordTimer = null;
+  let melodyTimer = null;
+  let chordIdx = 0;
+
+  const CHORDS = [
+    { bass: 87.31,  pad: [174.61, 220.00, 261.63, 329.63, 392.00], scale: [523.25, 587.33, 659.25, 783.99, 880.00] },
+    { bass: 98.00,  pad: [196.00, 246.94, 293.66, 329.63, 392.00], scale: [587.33, 659.25, 783.99, 880.00, 987.77] },
+    { bass: 82.41,  pad: [164.81, 246.94, 293.66, 329.63, 392.00], scale: [493.88, 587.33, 659.25, 783.99, 987.77] },
+    { bass: 110.00, pad: [220.00, 261.63, 329.63, 392.00, 493.88], scale: [523.25, 659.25, 783.99, 880.00, 1046.50] }
+  ];
+
+  function createHallReverb(audioCtx) {
+    const duration = 3.4;
+    const rate = audioCtx.sampleRate;
+    const length = Math.floor(rate * duration);
+    const impulse = audioCtx.createBuffer(2, length, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = impulse.getChannelData(ch);
+      for (let i = 0; i < length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.5) * 0.42;
+      }
+    }
+    const conv = audioCtx.createConvolver();
+    conv.buffer = impulse;
+    return conv;
+  }
+
+  function ensureAudio() {
+    if (ctx) return;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    ctx = new AudioCtx();
+    masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
+    masterGain.connect(ctx.destination);
+
+    reverbNode = createHallReverb(ctx);
+    const revGain = ctx.createGain();
+    revGain.gain.value = 0.65;
+    reverbNode.connect(revGain);
+    revGain.connect(masterGain);
+  }
+
+  function playChord() {
+    if (!ctx || !isPlaying) return;
+    const now = ctx.currentTime;
+    const chord = CHORDS[chordIdx % CHORDS.length];
+    chordIdx++;
+
+    const bassOsc = ctx.createOscillator();
+    const bassLp = ctx.createBiquadFilter();
+    const bassG = ctx.createGain();
+    bassOsc.type = 'triangle';
+    bassOsc.frequency.setValueAtTime(chord.bass, now);
+    bassLp.type = 'lowpass';
+    bassLp.frequency.setValueAtTime(240, now);
+    bassG.gain.setValueAtTime(0.0001, now);
+    bassG.gain.linearRampToValueAtTime(0.095, now + 1.8);
+    bassG.gain.exponentialRampToValueAtTime(0.0008, now + 6.2);
+    bassOsc.connect(bassLp);
+    bassLp.connect(bassG);
+    bassG.connect(masterGain);
+    bassG.connect(reverbNode);
+    bassOsc.start(now);
+    bassOsc.stop(now + 6.3);
+
+    chord.pad.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const lp = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+      osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq * (1 + (idx - 2) * 0.0012), now);
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(1150, now);
+      const peak = 0.038 / Math.sqrt(idx + 1);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.linearRampToValueAtTime(peak, now + 2.0);
+      g.gain.exponentialRampToValueAtTime(0.0005, now + 6.4);
+      osc.connect(lp);
+      lp.connect(g);
+      g.connect(reverbNode);
+      g.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 6.5);
+    });
+  }
+
+  function playPianoNote() {
+    if (!ctx || !isPlaying) return;
+    const now = ctx.currentTime;
+    const chord = CHORDS[(chordIdx - 1 + CHORDS.length) % CHORDS.length];
+    const freq = chord.scale[Math.floor(Math.random() * chord.scale.length)];
+    const osc = ctx.createOscillator();
+    const lp = ctx.createBiquadFilter();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, now);
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(1750, now);
+    lp.frequency.exponentialRampToValueAtTime(420, now + 2.5);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.linearRampToValueAtTime(0.05, now + 0.035);
+    g.gain.exponentialRampToValueAtTime(0.0004, now + 3.2);
+    osc.connect(lp);
+    lp.connect(g);
+    g.connect(reverbNode);
+    g.connect(masterGain);
+    osc.start(now);
+    osc.stop(now + 3.3);
+  }
+
+  function syncAudioUI() {
+    const btn = document.getElementById('audio-toggle');
+    const stateEl = document.getElementById('audio-state');
+    if (btn) btn.classList.toggle('audio-playing', isPlaying);
+    if (stateEl) stateEl.textContent = isPlaying ? 'On 🔊' : 'Off';
+  }
+
+  function startBGM() {
+    if (userMuted || isPlaying) return;
+    ensureAudio();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') ctx.resume();
+    isPlaying = true;
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.setValueAtTime(Math.max(0.001, masterGain.gain.value), ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.82, ctx.currentTime + 1.6);
+    playChord();
+    setTimeout(playPianoNote, 500);
+    chordTimer = setInterval(playChord, 4800);
+    melodyTimer = setInterval(playPianoNote, 1950);
+    syncAudioUI();
+  }
+
+  function stopBGM() {
+    if (!ctx || !isPlaying) return;
+    isPlaying = false;
+    clearInterval(chordTimer);
+    clearInterval(melodyTimer);
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+    syncAudioUI();
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('audio-toggle');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isPlaying) {
+          userMuted = true;
+          stopBGM();
+        } else {
+          userMuted = false;
+          startBGM();
+        }
+      });
+    }
+    const autoUnlock = () => {
+      if (!isPlaying && !userMuted) startBGM();
+    };
+    window.addEventListener('wheel', autoUnlock, { passive: true, once: true });
+    window.addEventListener('pointerdown', autoUnlock, { passive: true, once: true });
+    window.addEventListener('touchstart', autoUnlock, { passive: true, once: true });
+  });
+})();
+
 window.addEventListener('DOMContentLoaded', () => {
   window.bareunApp = new BareunMasterpieceStoryApp();
 });
+
 
 </script>
 </body>
