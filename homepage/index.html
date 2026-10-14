@@ -1,714 +1,1883 @@
 <!DOCTYPE html>
-<html lang="ko" class="storyboard-active">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>바른한의원 대전본점 — 하이엔드 3D 생애주기 치유 시네마 (수정·성장·비만·탈모·추나·공진단)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>바른한의원 3D 생애주기 시네마 — 건강한 인생이 될 수 있게 도와드립니다</title>
   <link rel="icon" href="https://framerusercontent.com/images/T9Y2v9h5BFE7g3Jmw9iWd4WngyQ.svg">
-  
-  <!-- Typography Fonts (Pretendard, Noto Serif KR, Space Grotesk, Space Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Three.js & Post-Processing Suite via High-Speed CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --bg-obsidian: #020D09;
+      --gold: #C5A059;
+      --gold-bright: #FDE68A;
+      --emerald: #10B981;
+      --emerald-bright: #6EE7B7;
+      --crimson: #EF4444;
+      --font-serif: 'Noto Serif KR', Georgia, serif;
+      --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
 
-  <link rel="stylesheet" href="style.css">
-  <script src="terms.js"></script>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      width: 100%;
+      background-color: var(--bg-obsidian);
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) #020D09;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-obsidian);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      overflow: visible;
+      user-select: none;
+      word-break: keep-all;
+    }
+
+    body::-webkit-scrollbar {
+      width: 5px;
+    }
+    body::-webkit-scrollbar-track {
+      background: #020D09;
+    }
+    body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--emerald), var(--gold));
+      border-radius: 999px;
+    }
+
+    /* ==========================================================================
+       2200vh FULL-SCROLL TRACK (Drives 20 Live-Action Frames & 8 Story Dialogues)
+       ========================================================================== */
+    .fullscroll-virtual-track {
+      position: relative;
+      width: 100%;
+      height: 2200vh;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       FIXED 100vw x 100vh 3D WEBGL VIEWPORT (Never Scrolls Off Screen!)
+       ========================================================================== */
+    .spatial-fixed-viewport {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      z-index: 1;
+      background: #020D09;
+    }
+
+    #glsl-portal-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 2;
+      display: block;
+    }
+
+    #three-tunnel-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 4;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    /* Minimalist Anatomical Light Overlay (Zero Cluttered Cards!) */
+    #svg-spatial-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* Soft Cinematic Left Gradient for Pure Story Dialogue Readability */
+    .spatial-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 65% 50%, transparent 52%, rgba(2, 13, 9, 0.65) 100%),
+        linear-gradient(90deg, rgba(2, 13, 9, 0.84) 0%, rgba(2, 13, 9, 0.44) 38%, transparent 62%),
+        linear-gradient(180deg, rgba(2, 13, 9, 0.52) 0%, transparent 15%, transparent 84%, rgba(2, 13, 9, 0.78) 100%);
+    }
+
+    /* ==========================================================================
+       ULTRA-CLEAN TOP HEADER (Brand + BGM Toggle + Quick Reservation Drawer)
+       ========================================================================== */
+    .spatial-top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: linear-gradient(180deg, rgba(2, 13, 9, 0.75) 0%, rgba(2, 13, 9, 0) 100%);
+      pointer-events: auto;
+    }
+
+    .nav-brand-logo {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 900;
+      color: #FFFFFF;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .nav-brand-logo .logo-gem {
+      width: 9px;
+      height: 9px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      box-shadow: 0 0 12px var(--gold);
+    }
+
+    .nav-brand-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(253, 230, 138, 0.75);
+      letter-spacing: 0.12em;
+      margin-left: 4px;
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-bgm-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(2, 13, 9, 0.55);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      color: var(--gold-bright);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+
+    .btn-bgm-toggle:hover {
+      background: rgba(197, 160, 89, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-bgm-toggle.playing {
+      border-color: var(--emerald-bright);
+      color: #FFFFFF;
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.3);
+    }
+
+    .bgm-eq-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .bgm-eq-bars span {
+      width: 2px;
+      height: 3px;
+      background: var(--gold-bright);
+      border-radius: 2px;
+    }
+
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(1) {
+      background: var(--emerald-bright);
+      animation: eqDance 0.7s infinite ease-in-out alternate;
+    }
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(2) {
+      background: var(--gold-bright);
+      animation: eqDance 0.5s 0.15s infinite ease-in-out alternate;
+    }
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(3) {
+      background: var(--emerald-bright);
+      animation: eqDance 0.85s 0.3s infinite ease-in-out alternate;
+    }
+    .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(4) {
+      background: var(--gold-bright);
+      animation: eqDance 0.6s 0.1s infinite ease-in-out alternate;
+    }
+
+    @keyframes eqDance {
+      0% { height: 3px; }
+      100% { height: 12px; }
+    }
+
+    .btn-reserve-minimal {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #FFFFFF;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+
+    .btn-reserve-minimal:hover {
+      background: var(--gold);
+      color: #020D09;
+      border-color: var(--gold);
+    }
+
+    /* ==========================================================================
+       SCROLL-REACTIVE STORY DIALOGUE STAGE (NO CARDS, PURE CINEMA NARRATION)
+       ========================================================================== */
+    .story-dialogue-stage {
+      position: fixed;
+      left: 7vw;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(640px, 86vw);
+      z-index: 30;
+      pointer-events: none;
+      perspective: 1000px;
+    }
+
+    .dialogue-chapter-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      color: var(--gold-bright);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+    }
+
+    .dialogue-chapter-num::before {
+      content: '';
+      width: 32px;
+      height: 1.5px;
+      background: linear-gradient(90deg, var(--gold-bright), transparent);
+    }
+
+    /* Main Story Dialogue Line (1 ~ 8) with Scroll-Reactive Character Wave */
+    .dialogue-main-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3.8vw, 52px);
+      font-weight: 700;
+      line-height: 1.34;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      text-shadow: 0 8px 32px rgba(0, 0, 0, 0.95), 0 2px 12px rgba(0, 0, 0, 0.9);
+      transform-style: preserve-3d;
+    }
+
+    .dialogue-char {
+      display: inline-block;
+      will-change: transform, opacity, filter, color;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .dialogue-char.space {
+      width: 0.28em;
+    }
+
+    .dialogue-char.lit {
+      color: #FFFFFF;
+      text-shadow: 0 0 22px rgba(253, 230, 138, 0.35), 0 6px 24px rgba(0, 0, 0, 0.95);
+    }
+
+    .dialogue-char.gold-accent {
+      color: var(--gold-bright);
+      text-shadow: 0 0 26px rgba(253, 230, 138, 0.65), 0 6px 24px rgba(0, 0, 0, 0.95);
+    }
+
+    /* Scroll-Reactive Golden Brush Progress Line */
+    .dialogue-progress-brush {
+      position: relative;
+      width: min(380px, 74vw);
+      height: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .dialogue-progress-fill {
+      position: relative;
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--emerald-bright), var(--gold-bright));
+      box-shadow: 0 0 14px var(--gold-bright);
+    }
+
+    .dialogue-progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      box-shadow: 0 0 12px var(--gold-bright), 0 0 20px var(--emerald-bright);
+    }
+
+    /* Subtle Poetic Sub-Narration Whisper (Describes the live treatment transition) */
+    .dialogue-sub-whisper {
+      font-family: var(--font-sans);
+      font-size: clamp(15px, 1.45vw, 19px);
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(248, 250, 252, 0.92);
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95);
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      will-change: transform, opacity;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Pure Typographic Phase Breadcrumb (No Card Box! Shows Treatment Flow Clearly) */
+    .dialogue-phase-steps {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .phase-step-text {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.44);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+    }
+
+    .phase-step-text:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .phase-step-text.active {
+      color: var(--emerald-bright);
+      font-weight: 800;
+      text-shadow: 0 0 16px rgba(16, 185, 129, 0.55), 0 2px 10px rgba(0, 0, 0, 0.95);
+    }
+
+    .phase-step-arrow {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.26);
+    }
+
+    /* ==========================================================================
+       MINIMALIST BOTTOM TIMELINE LINE (NO BOTTOM CARDS!)
+       ========================================================================== */
+    .minimal-bottom-timeline {
+      position: fixed;
+      bottom: 26px;
+      left: 7vw;
+      right: 7vw;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .timeline-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.08em;
+    }
+
+    .timeline-scroll-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-bright);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .timeline-scroll-hint .wheel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold-bright);
+      box-shadow: 0 0 8px var(--gold-bright);
+      animation: wheelPulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes wheelPulse {
+      0%, 100% { transform: translateY(-2px); opacity: 0.5; }
+      50% { transform: translateY(3px); opacity: 1; }
+    }
+
+    .timeline-bar-track {
+      position: relative;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.16);
+      cursor: pointer;
+    }
+
+    .timeline-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--emerald), var(--gold-bright));
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .timeline-dots-row {
+      position: absolute;
+      inset: -5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .timeline-chapter-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(2, 13, 9, 0.9);
+      transition: all 0.3s ease;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .timeline-chapter-dot.active {
+      transform: scale(1.6);
+      background: var(--gold-bright);
+      box-shadow: 0 0 12px var(--gold-bright);
+    }
+
+    /* ==========================================================================
+       SLIDE-IN QUICK RESERVATION DRAWER (Hidden until user clicks '진료 예약')
+       ========================================================================== */
+    .reserve-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(2, 13, 9, 0.72);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .reserve-drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .reserve-drawer-panel {
+      width: min(460px, 92vw);
+      height: 100%;
+      background: rgba(5, 22, 16, 0.96);
+      border-left: 1px solid rgba(197, 160, 89, 0.3);
+      padding: 36px 32px;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .reserve-drawer-overlay.open .reserve-drawer-panel {
+      transform: translateX(0);
+    }
+
+    .drawer-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 16px;
+    }
+
+    .drawer-top-title {
+      font-family: var(--font-serif);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+
+    .drawer-close-btn {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .drawer-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .drawer-form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .drawer-form-group select,
+    .drawer-form-group input,
+    .drawer-form-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 13px;
+    }
+
+    .drawer-submit-btn {
+      padding: 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    }
+
+    .drawer-quick-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .drawer-quick-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .spatial-top-nav {
+        padding: 0 20px;
+      }
+      .nav-brand-sub {
+        display: none;
+      }
+      .story-dialogue-stage {
+        left: 24px;
+        right: 24px;
+        top: 62%;
+        width: auto;
+      }
+      .minimal-bottom-timeline {
+        left: 24px;
+        right: 24px;
+        bottom: 18px;
+      }
+    }
+  </style>
 </head>
-<body class="theme-light storyboard-active">
+<body>
 
-  <!-- =========================================================================
-       [시네마틱 인트로 스플래시]
-       ========================================================================= -->
-  <section id="intro-splash" class="intro-splash" aria-label="바른한의원 시네마틱 인트로">
-    <div class="intro-media-wrap">
-      <video id="intro-video" class="intro-video" autoplay muted playsinline preload="auto">
-        <source id="intro-video-src" src="http://bareunhaniwon.com/wp-content/uploads/2026/09/Person_commuting_to_medical_clinic_20260919204253-1.mp4" type="video/mp4">
-      </video>
-      <div class="intro-overlay-scrim"></div>
-    </div>
+  <!-- ========================================================================
+       ULTRA-CLEAN TOP HEADER (NO CLUTTER)
+       ======================================================================== -->
+  <header class="spatial-top-nav">
+    <a href="index.html" class="nav-brand-logo">
+      <span class="logo-gem"></span>
+      <span>바른한의원</span>
+      <span class="nav-brand-sub">3D LIFECYCLE STORY</span>
+    </a>
 
-    <div class="intro-content">
-      <div class="intro-badge-wrap">
-        <span class="intro-badge">THE SYMPHONY OF HUMAN LIFECYCLE · EST. 2026</span>
-      </div>
-
-      <div class="intro-brand-korean">바 른 한 의 원</div>
-
-      <h1 class="intro-brand-title">한 사람의 일생을 지키는 3D 바른 치유</h1>
-
-      <p class="intro-brand-subtitle">
-        생명의 수정과 탄생, 소아 면역·키성장부터 성인 비만, 30대 탈모, 척추·관절 추나, 노년 황제공진단까지<br>
-        <span class="subtitle-accent">대전본점 1:1 체질 맞춤 탕전</span> · <span class="subtitle-accent">전국 안심 비대면 처방</span>
-      </p>
-
-      <div class="intro-action-zone">
-        <a href="story-3d.html" class="intro-enter-btn" style="text-decoration: none; border-color: #FDE68A; background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(197, 160, 89, 0.35));">
-          <div class="enter-main-row">
-            <span class="enter-sparkle">✦</span>
-            <span class="enter-text">3D 전체스크롤 시네마틱 전용관 입장 (Lusion · Igloo급)</span>
-            <span class="enter-arrow">↗</span>
-          </div>
-          <span class="enter-subtext">DEDICATED FULL-SCROLL 3D WEBGL TUNNEL PAGE · 1800vh</span>
-        </a>
-        <button id="intro-enter-btn" class="intro-enter-btn" style="padding: 12px 36px; opacity: 0.9;" aria-label="메인 홈페이지로 입장하기">
-          <div class="enter-main-row">
-            <span class="enter-text" style="font-size: 14px;">메인 홈페이지 통합 뷰로 입장하기</span>
-            <span class="enter-arrow">➔</span>
-          </div>
-        </button>
-        <p class="intro-instruction">전용관 입장 시 페이지 전체 스크롤(100%)이 오직 3D 공간 관통(Zoom-Through) 연출로만 작동합니다</p>
-      </div>
-
-      <div class="intro-bottom-meta">
-        <span class="intro-meta-item">대전본점 원내 맞춤 탕전</span>
-        <span class="intro-meta-dot">·</span>
-        <span class="intro-meta-item">식약처 CITES 정품 인증</span>
-        <span class="intro-meta-dot">·</span>
-        <span class="intro-meta-item">평생 주치의 케어</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Difference Blend Mode Cursor -->
-  <div id="custom-cursor" class="cursor"></div>
-  <div id="cursor-follower" class="cursor-follower"></div>
-
-  <!-- Top Fixed HUD Header -->
-  <header class="hud-header">
-    <div class="header-left">
-      <div class="brand-group">
-        <a href="#" class="brand-title" data-hover="magnetic">바른한의원</a>
-        <span class="hud-divider">/</span>
-        <span class="hud-tag">대전본점 · 3D LIFECYCLE CINEMA</span>
-      </div>
-      <div class="hud-status">
-        <span class="status-dot"></span>
-        <span class="hud-tag">1:1 진료 & 비대면 처방 접수 중</span>
-      </div>
-    </div>
-
-    <!-- Center Scene Phase Timeline Pill (Desktop) -->
-    <div class="hud-center-timeline" id="hud-center-timeline">
-      <span class="timeline-act-label" id="timeline-act-label">ACT 01 · 잉태와 성장</span>
-      <div class="timeline-progress-track">
-        <div class="timeline-progress-fill" id="timeline-progress-fill" style="width: 4%;"></div>
-      </div>
-      <span class="timeline-state-pill state-healing" id="timeline-state-pill">✦ 생명의 시작</span>
-    </div>
-
-    <div class="header-right">
-      <a href="story-3d.html" class="hud-btn" style="background: linear-gradient(135deg, #10B981, #C5A059); color: #FFFFFF; border-color: #FDE68A; text-decoration: none; font-weight: 800; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);">
-        <span>✦ 3D 전체스크롤 전용관 열기 ↗</span>
-      </a>
-
-      <div class="hud-item time-widget" id="time-display" title="대전본점 현재 진료 시간">
-        <span class="hud-label">DAEJEON</span>
-        <span class="time-value" id="current-time">10:00</span>
-      </div>
-      
-      <button class="hud-btn audio-toggle" id="audio-toggle" aria-label="Toggle sound">
-        <span class="sound-wave">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+    <div class="nav-right-actions">
+      <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 BGM 켜기/끄기">
+        <span class="bgm-eq-bars">
+          <span></span><span></span><span></span><span></span>
         </span>
-        <span class="audio-status-text">Sound: <strong id="audio-state">Off</strong></span>
+        <span id="bgm-status-label">BGM · ON</span>
       </button>
-
-      <button class="hud-btn menu-btn" id="menu-toggle" aria-label="Open Menu">
-        <span class="menu-text">진료 안내 & 1-Click 예약</span>
-        <div class="hamburger-icon">
-          <span></span>
-          <span></span>
-        </div>
-      </button>
+      <button type="button" class="btn-reserve-minimal" id="btn-open-reserve">진료 예약 · 상담 ↗</button>
     </div>
   </header>
 
-  <!-- Left Floating Step Quick Navigator -->
-  <nav class="step-nav-dock" id="step-nav-dock" aria-label="5단계 생애주기 스토리보드 바로가기">
-    <button type="button" class="step-nav-dot active" data-step="1" onclick="navigateToStep(1)" title="01. 난임·탄생·면역·성장">
-      <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">01 수정·면역·성장</span>
-    </button>
-    <button type="button" class="step-nav-dot" data-step="2" onclick="navigateToStep(2)" title="02. 성인 비만과 슬림체형">
-      <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">02 성인 비만·감량</span>
-    </button>
-    <button type="button" class="step-nav-dot" data-step="3" onclick="navigateToStep(3)" title="03. 30대 탈모와 모발회복">
-      <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">03 30대 탈모·모근회복</span>
-    </button>
-    <button type="button" class="step-nav-dot" data-step="4" onclick="navigateToStep(4)" title="04. 척추틀어짐·추나통증치료">
-      <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">04 척추교정·추나통증</span>
-    </button>
-    <button type="button" class="step-nav-dot" data-step="5" onclick="navigateToStep(5)" title="05. 노년기력·황제공진단">
-      <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">05 황제공진단·백세건강</span>
-    </button>
-    <button type="button" class="step-nav-dot" data-step="6" onclick="navigateToStep(6)" title="06. 5대 특화진료 카드">
-      <span class="step-nav-indicator" style="background:#FBBF24; border-color:#FDE68A;"></span>
-      <span class="step-nav-label" style="color:#FDE68A;">06 5대 진료 카드</span>
-    </button>
-  </nav>
-
-  <!-- =========================================================================
-       [5단계 13시퀀스 3D 연속 생애주기 시네마 스크롤 뷰포트 (900vh)]
-       (GSAP ScrollTrigger + Three.js Anatomical Morphing & Particle Engine)
-       ========================================================================= -->
-  <div class="story-scroll-track" id="story-scroll-track">
-    <div class="story-stage-sticky" id="story-stage-sticky">
-      
-      <!-- 18-Frame 3D Z-Axis Spatial Zoom-Through Tunnel & Video Synthesizer -->
-      <div class="story-backdrop-wrap" id="story-backdrop-wrap">
-        <!-- Stage 1: 수정(난임치료) -> 아이 탄생 -> 감기 발생 -> 면역강화 한약 치료 -> 또래 대비 작은 키 -> 성장치료로 키가 쭈욱 자라는 연속 영상 -->
-        <div class="story-backdrop-slide" id="backdrop-1a" data-frame="0" style="background-image: url('life_1a_fertilization.jpg?v=typec1'); opacity: 1; z-index: 3;"></div>
-        <div class="story-backdrop-slide" id="backdrop-1b" data-frame="1" style="background-image: url('life_1b_birth.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1c0" data-frame="2" style="background-image: url('life_1c_cold_before.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1c" data-frame="3" style="background-image: url('life_1c_immunity.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1d0" data-frame="4" style="background-image: url('life_1d_growth_short.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1d" data-frame="5" style="background-image: url('life_1d_growth_peers.jpg?v=typec1');"></div>
-        
-        <!-- Stage 2: 성인 비만 발생(동일 인물) -> 바른 다이어트 한약 치료 과정 -> 날씬한 S라인 변신 완료 -->
-        <div class="story-backdrop-slide" id="backdrop-2a" data-frame="6" style="background-image: url('life_2a_obesity.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-2t" data-frame="7" style="background-image: url('life_2a_treatment.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-2b" data-frame="8" style="background-image: url('life_2b_slim_therapy.jpg?v=typec1');"></div>
-        
-        <!-- Stage 3: 30대 탈모 발생(동일 인물) -> 바른 두피 약침·청열 치료 과정 -> 풍성한 정상 모발 회복 완료 -->
-        <div class="story-backdrop-slide" id="backdrop-3a" data-frame="9" style="background-image: url('life_3a_hairloss.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-3t" data-frame="10" style="background-image: url('life_3a_treatment.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-3b" data-frame="11" style="background-image: url('life_3b_hair_restored.jpg?v=typec1');"></div>
-        
-        <!-- Stage 4: 굽은 척추 + 목·어깨·팔·허리·다리·발 전신 통증 -> 대표원장 1:1 추나·약침 교정 -> 전신 수직 정렬·통증 회복 완료 -->
-        <div class="story-backdrop-slide" id="backdrop-4a" data-frame="12" style="background-image: url('life_4a_work_spine_pain.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-4t" data-frame="13" style="background-image: url('life_4a_treatment.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-4b" data-frame="14" style="background-image: url('life_4b_chuna_recovery.jpg?v=typec1');"></div>
-        
-        <!-- Stage 5: 노화·기력저하·성인병(동일 인물) -> 특허 24K 황제공진단 치료 과정 -> 기력 회복 & 아름답게 늙어가는 모습 -->
-        <div class="story-backdrop-slide" id="backdrop-5a" data-frame="15" style="background-image: url('life_5a_aging_fatigue.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-5b" data-frame="16" style="background-image: url('life_5b_gongjindan_vitality.jpg?v=typec1');"></div>
-        <div class="story-backdrop-slide" id="backdrop-5c" data-frame="17" style="background-image: url('life_5c_graceful_elder.jpg?v=typec1');"></div>
-        
-        <!-- 60fps Type-C 3D Z-Axis Zoom-Through & Anatomical Morphing Canvas -->
-        <canvas class="cinema-video-canvas" id="cinema-video-canvas"></canvas>
-
-        <div class="story-backdrop-scrim"></div>
-      </div>
-
-      <!-- 3D Interactive Three.js Z-Axis Portal Rings & Bokeh Tunnel Canvas -->
-      <canvas class="story-webgl-canvas" id="storyboard-canvas"></canvas>
-
-      <!-- Top-Right Live 3D Spatial Tunnel Playback & Z-Depth Telemetry -->
-      <div class="cinema-live-player-badge" id="cinema-live-player-badge">
-        <button type="button" class="cinema-autoplay-btn active" id="cinema-autoplay-btn" onclick="toggleCinemaAutoPlay()" title="3D 공간 관통 연속 주행 토글">
-          <span class="rec-dot"></span>
-          <span id="cinema-autoplay-text">🚀 3D 공간 관통(Zoom-Through) 주행 중</span>
-        </button>
-        <span class="cinema-timecode" id="cinema-timecode">Z-DEPTH 0000m · SCENE 01/18</span>
-      </div>
-
-      <!-- Frameless Floating 3D Spatial Story Layer (Moves in 3D Z-Depth with the Camera) -->
-      <aside class="story-hud-panel frameless-spatial-hud" id="story-hud-panel">
-        <div class="hud-step-tag-row">
-          <span class="hud-step-badge" id="hud-step-badge">STAGE 01 · 잉태·탄생·면역·성장</span>
-          <span class="hud-step-counter" id="hud-step-counter">SCENE 01 / 18</span>
-        </div>
-
-        <!-- 3-Phase Treatment Recovery Progression Pipeline (치료 전 -> 바른 치료 중 -> 치료 후 호전) -->
-        <div class="treatment-pipeline-bar" id="treatment-pipeline-bar">
-          <div class="tp-phase tp-before" id="tp-phase-before">
-            <span class="tp-dot"></span>
-            <span class="tp-label" id="tp-label-before">① 증상·원인 공간</span>
-          </div>
-          <div class="tp-connector"><div class="tp-connector-fill" id="tp-conn-1"></div></div>
-          <div class="tp-phase tp-treating" id="tp-phase-treating">
-            <span class="tp-dot"></span>
-            <span class="tp-label" id="tp-label-treating">② 바른 치료 포털</span>
-          </div>
-          <div class="tp-connector"><div class="tp-connector-fill" id="tp-conn-2"></div></div>
-          <div class="tp-phase tp-after" id="tp-phase-after">
-            <span class="tp-dot"></span>
-            <span class="tp-label" id="tp-label-after">③ 완치·변화 돌파</span>
-          </div>
-        </div>
-
-        <!-- Sub-Scene Narrative Flow Pills (Shows current sub-step within the stage) -->
-        <div class="hud-subscene-flow" id="hud-subscene-flow">
-          <span class="subscene-pill active">① 난임·수정치료</span>
-          <span class="subscene-arrow">▸</span>
-          <span class="subscene-pill">② 아이 탄생</span>
-          <span class="subscene-arrow">▸</span>
-          <span class="subscene-pill">③ 감기·면역치료</span>
-          <span class="subscene-arrow">▸</span>
-          <span class="subscene-pill">④ 성장치료 키성장</span>
-        </div>
-
-        <h2 class="hud-step-title" id="hud-step-title">01. 생명 잉태부터 폭풍 키성장까지</h2>
-        <p class="hud-step-subtitle" id="hud-step-subtitle">난임 착상 치료 · 소아 감기 면역강화 · 또래를 뛰어넘는 골격 성장</p>
-        <p class="hud-step-desc" id="hud-step-desc">
-          새 생명이 수정되어 세상에 태어나고, 잦은 감기를 이겨내는 면역강화 치료부터 또래 친구들 사이에서 작았던 키가 쭈욱 자라나는 성장치료까지 3차원 공간을 관통하며 펼쳐집니다.
-        </p>
-
-        <!-- Real-Time Biometric Telemetry Box (Live Animated Metrics per Scene) -->
-        <div class="biometric-telemetry-box" id="biometric-telemetry-box">
-          <div class="telemetry-header">
-            <span class="telemetry-label" id="telemetry-label">💊 바른한의원 3D 치료 호전도 모니터</span>
-            <span class="telemetry-status" id="telemetry-status">✦ 바른 치료 호전 중</span>
-          </div>
-          <div class="telemetry-metrics-grid">
-            <div class="telemetry-metric-card">
-              <span class="metric-title" id="metric-1-title">적용된 바른 치료 처방</span>
-              <span class="metric-value" id="metric-1-value">자궁온열·착상한약</span>
-            </div>
-            <div class="telemetry-metric-card">
-              <span class="metric-title" id="metric-2-title">치료를 통한 신체 변화</span>
-              <span class="metric-value highlight" id="metric-2-value">착상률 98.4% ⬆</span>
-            </div>
-          </div>
-          <div class="telemetry-bar-wrap">
-            <div class="telemetry-bar-fill" id="telemetry-bar-fill" style="width: 85%;"></div>
-          </div>
-        </div>
-
-        <!-- Step 04 Live Full-Body 7-Region Pain Radar (굽은 척추 + 목·어깨·팔·허리·다리·발 통증 개선) -->
-        <div class="pain-radar-box" id="pain-radar-box" style="display: none;">
-          <div class="pain-radar-header">
-            <span>⚡ 굽은 척추 & 목·어깨·팔·허리·다리·발 전신 통증 모니터</span>
-            <span class="pain-radar-status warning" id="pain-radar-status">
-              <span class="pulse-dot">●</span> <span>전신 통증 신호 점멸 중</span>
-            </span>
-          </div>
-          <div class="pain-points-chips" id="pain-points-chips">
-            <span class="pain-chip" data-joint="neck"><span class="chip-dot"></span>① 목 (거북목·경추통)</span>
-            <span class="pain-chip" data-joint="shoulder"><span class="chip-dot"></span>② 어깨 (회전근개·오십견)</span>
-            <span class="pain-chip" data-joint="arm"><span class="chip-dot"></span>③ 팔·손목 (엘보·저림)</span>
-            <span class="pain-chip" data-joint="spine"><span class="chip-dot"></span>④ 굽은 척추 (흉추·측만)</span>
-            <span class="pain-chip" data-joint="waist"><span class="chip-dot"></span>⑤ 허리·골반 (요추디스크)</span>
-            <span class="pain-chip" data-joint="leg"><span class="chip-dot"></span>⑥ 다리·무릎 (관절·좌골통)</span>
-            <span class="pain-chip" data-joint="foot"><span class="chip-dot"></span>⑦ 발·발목 (염좌·족저근막)</span>
-          </div>
-        </div>
-
-        <div class="hud-btn-row">
-          <a href="story-3d.html" class="hud-cta-primary" style="background: linear-gradient(135deg, #C5A059, #10B981); border-color: #FDE68A;">
-            <span>✦ 3D 전체스크롤 전용관 열기</span>
-            <span>↗</span>
-          </a>
-          <a href="growth.html" class="hud-cta-secondary" id="hud-primary-btn">
-            <span>프로그램 자세히 보기</span>
-            <span>➔</span>
-          </a>
-          <button type="button" class="hud-cta-secondary" id="hud-drawer-btn">
-            <span>1-Click 빠른 예약</span>
-          </button>
-        </div>
-      </aside>
-
-      <!-- Cinematic Film Subtitle Narrative Caption (Above Bottom Dock) -->
-      <div class="cinema-subtitle-bar" id="cinema-subtitle-bar">
-        <span class="cinema-scene-tag" id="cinema-scene-tag">ACT I · SCENE 01</span>
-        <p class="cinema-subtitle-text" id="cinema-subtitle-text">
-          “간절한 기다림 끝에 찾아온 생명의 불꽃 — 바른 난임·착상 치료가 기적의 첫 장을 엽니다.”
-        </p>
-      </div>
-
-      <!-- SK Telecom Style Floating 5-Stage Glassmorphic Card Dock -->
-      <nav class="skt-floating-dock" id="skt-floating-dock" aria-label="5단계 생애주기 특화진료 3D 동기화 카드 덱">
-        <div class="skt-dock-container">
-          <button type="button" class="skt-dock-card active" data-step="1" onclick="navigateToStep(1)">
-            <span class="skt-card-step">01</span>
-            <div class="skt-card-info">
-              <span class="skt-card-badge">난임·면역·성장</span>
-              <h4 class="skt-card-title">탄생 & 또래추월 키성장</h4>
-            </div>
-            <span class="skt-card-glow"></span>
-          </button>
-          <button type="button" class="skt-dock-card" data-step="2" onclick="navigateToStep(2)">
-            <span class="skt-card-step">02</span>
-            <div class="skt-card-info">
-              <span class="skt-card-badge">성인 비만치료</span>
-              <h4 class="skt-card-title">체지방 분해 & 슬림체형</h4>
-            </div>
-            <span class="skt-card-glow"></span>
-          </button>
-          <button type="button" class="skt-dock-card" data-step="3" onclick="navigateToStep(3)">
-            <span class="skt-card-step">03</span>
-            <div class="skt-card-info">
-              <span class="skt-card-badge">30대 탈모치료</span>
-              <h4 class="skt-card-title">두피 열감해소 & 발모</h4>
-            </div>
-            <span class="skt-card-glow"></span>
-          </button>
-          <button type="button" class="skt-dock-card" data-step="4" onclick="navigateToStep(4)">
-            <span class="skt-card-step">04</span>
-            <div class="skt-card-info">
-              <span class="skt-card-badge">추나 통증치료</span>
-              <h4 class="skt-card-title">척추 교정 & 관절 회복</h4>
-            </div>
-            <span class="skt-card-glow"></span>
-          </button>
-          <button type="button" class="skt-dock-card" data-step="5" onclick="navigateToStep(5)">
-            <span class="skt-card-step">05</span>
-            <div class="skt-card-info">
-              <span class="skt-card-badge">황제 공진단</span>
-              <h4 class="skt-card-title">기력 회복 & 아름다운 노년</h4>
-            </div>
-            <span class="skt-card-glow"></span>
-          </button>
-        </div>
-      </nav>
-
-      <!-- Bottom Center Scroll Guidance & Skip Button -->
-      <div class="story-scroll-prompt">
-        <div class="scroll-wheel-icon">
-          <div class="scroll-wheel-dot"></div>
-        </div>
-        <span class="scroll-prompt-text">마우스 휠을 천천히 스크롤하면 생애주기 5단계 3D 치유 스토리가 영화처럼 이어집니다</span>
-        <button type="button" class="btn-skip-to-cards" id="btn-skip-to-cards" onclick="scrollToCards()">
-          <span>5대 특화진료 카드 바로보기 ⚡</span>
-        </button>
-      </div>
-
-    </div>
+  <!-- ========================================================================
+       FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT (NEVER DISAPPEARS)
+       ======================================================================== -->
+  <div class="spatial-fixed-viewport" id="spatial-viewport">
+    <canvas id="glsl-portal-canvas"></canvas>
+    <canvas id="three-tunnel-canvas"></canvas>
+    <div class="spatial-vignette"></div>
+    <svg id="svg-spatial-overlay" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
   </div>
 
-  <!-- =========================================================================
-       [스크롤 완료 시 노출: 5대 생애주기 특화진료 시그니처 메뉴 카드 그리드]
-       ========================================================================= -->
-  <section class="signature-cards-section" id="signature-cards">
-    <div class="cards-section-header">
-      <span class="cards-brand-badge">BAREUN 5 LIFECYCLE SIGNATURE CARE · 평생 주치의</span>
-      <h2 class="cards-main-title">인생의 모든 순간을 지키는 바른한의원 5대 생애주기 치료</h2>
-      <p class="cards-main-subtitle">
-        생명의 고귀한 잉태(난임치료)와 탄생, 면역력 강화와 키성장부터 성인기 비만 감량, 30대 탈모 회복,<br>
-        직장인 척추·관절 추나 교정, 그리고 황제공진단으로 완성하는 아름답고 품격 있는 노년까지 함께합니다.
+  <!-- ========================================================================
+       SCROLL-REACTIVE STORY DIALOGUE STAGE (NO CARDS — 8 STORY LINES)
+       ======================================================================== -->
+  <main class="story-dialogue-stage" id="story-dialogue-stage">
+    <div class="dialogue-chapter-num" id="dialogue-chapter-num">STORY 01 / 08 · 난임·착상 클리닉</div>
+    <h1 class="dialogue-main-quote" id="dialogue-main-quote">임신이 되지 않아 힘들게 얻은 선물</h1>
+    <div class="dialogue-progress-brush">
+      <div class="dialogue-progress-fill" id="dialogue-progress-fill"></div>
+    </div>
+    <p class="dialogue-sub-whisper" id="dialogue-sub-whisper">
+      바른한의원 진맥과 따뜻한 난임·착상 한약 치료로 자궁의 온기를 깨우고 기적의 새 생명을 맞이합니다.
+    </p>
+    <div class="dialogue-phase-steps" id="dialogue-phase-steps"></div>
+  </main>
+
+  <!-- ========================================================================
+       MINIMALIST BOTTOM TIMELINE LINE (NO CARDS AT THE BOTTOM!)
+       ======================================================================== -->
+  <footer class="minimal-bottom-timeline">
+    <div class="timeline-top-meta">
+      <span class="timeline-scroll-hint">
+        <span class="wheel-dot"></span>
+        <span>스크롤을 내리면 8개의 스토리 대사와 함께 생애주기 치유 영상이 이어집니다</span>
+      </span>
+      <span id="timeline-depth-readout">STORY 01 / 08 · 00%</span>
+    </div>
+    <div class="timeline-bar-track" id="timeline-bar-track">
+      <div class="timeline-bar-fill" id="timeline-bar-fill"></div>
+      <div class="timeline-dots-row" id="timeline-dots-row"></div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       SLIDE-IN RESERVATION DRAWER (Opens only when clicking '진료 예약 · 상담')
+       ======================================================================== -->
+  <aside class="reserve-drawer-overlay" id="reserve-drawer-overlay" aria-hidden="true">
+    <div class="reserve-drawer-panel" onclick="event.stopPropagation()">
+      <div class="drawer-top-row">
+        <span class="drawer-top-title">바른한의원 1:1 진료 및 비대면 처방 예약</span>
+        <button type="button" class="drawer-close-btn" id="btn-close-reserve">닫기 ✕</button>
+      </div>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.6;">
+        생애주기별 맞춤 진료(난임·소아면역·키성장·비만·탈모·추나통증·황제공진단) 예약을 남겨주시면 전담 상담실장이 빠르게 안내해 드립니다.
       </p>
-    </div>
-
-    <!-- 5 Cards Responsive Grid -->
-    <div class="cards-grid-wrap" id="signature-cards-grid">
-      
-      <!-- Card 1: 난임·소아면역·바른 성장클리닉 -->
-      <article class="signature-card">
-        <div class="card-visual-box">
-          <img src="life_1d_growth_peers.jpg?v=real1" onerror="this.src='bareun_seq_01_womb_spine.jpg'" alt="01. 난임·면역·성장클리닉" class="card-visual-img" loading="lazy">
-          <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge">🌱 난임착상 · 소아면역 · 무방사선 초음파 키성장</span>
+      <form id="quick-reserve-form" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="drawer-form-group">
+          <label>진료 분야 선택</label>
+          <select id="reserve-program">
+            <option value="난임·착상·임신준비 클리닉">01. 난임·불임 착상 한약 클리닉</option>
+            <option value="소아 감기·면역강화 클리닉">02. 소아 감기·면역강화 클리닉</option>
+            <option value="소아·청소년 키성장 클리닉">03. 소아·청소년 키성장 클리닉</option>
+            <option value="성인 비만·다이어트 클리닉">04. 성인 비만·체형 슬리밍 클리닉</option>
+            <option value="30대 탈모·모근재생 클리닉">05. 30대 탈모·두피청열 클리닉</option>
+            <option value="추나 척추·전신통증 클리닉">06. 척추·목·어깨·팔·허리·다리·발 추나 클리닉</option>
+            <option value="황제공진단·기력보강 클리닉">07. 특허 24K 황제공진단·기력보강 클리닉</option>
+          </select>
         </div>
-        <div class="card-content-box">
-          <span class="card-step-tag">STAGE 01 · 수정(난임) ➔ 탄생 ➔ 감기면역 ➔ 키성장</span>
-          <h3 class="card-title">01. 바른 잉태·면역·성장클리닉</h3>
-          <p class="card-subtitle">"생명의 기적 같은 잉태부터 감기 없는 면역력, 또래를 훌쩍 넘는 키성장까지"</p>
-          <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>난임·불임 착상 치료</strong>: 자궁 온열 순환 및 난소 기능 강화로 건강한 수정·착상 유도</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>소아 감기·면역강화 치료</strong>: 호흡기·비염·장 면역을 깨우는 청정 녹용 면역 보약</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>또래 추월 키성장 치료</strong>: 무방사선 초음파 성장판 정밀 진단 & 척추 32마디 성장 추나</li>
-          </ul>
-          <div class="card-action-row">
-            <a href="growth.html" class="btn-card-detail">성장클리닉 상세 ↗</a>
-            <button type="button" class="btn-card-drawer" onclick="openDrawerWithProgram('pediatric-growth')">1-Click 예약</button>
-          </div>
+        <div class="drawer-form-group">
+          <label>성함</label>
+          <input type="text" id="reserve-name" required placeholder="예약자 성함을 입력해 주세요">
         </div>
-      </article>
-
-      <!-- Card 2: 성인 비만치료 (바른 다이어트 식욕 ZERO) -->
-      <article class="signature-card">
-        <div class="card-visual-box">
-          <img src="life_2b_slim_therapy.jpg?v=real1" onerror="this.src='bareun_seq_02_fat_dissolve.jpg'" alt="02. 성인 비만치료 바른 다이어트" class="card-visual-img" loading="lazy">
-          <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge">🏆 비대면 비만처방 BEST 1위</span>
+        <div class="drawer-form-group">
+          <label>연락처</label>
+          <input type="tel" id="reserve-phone" required placeholder="010-0000-0000">
         </div>
-        <div class="card-content-box">
-          <span class="card-step-tag">STAGE 02 · 성인기 체중 증가·비만 ➔ 날씬한 슬림 라인</span>
-          <h3 class="card-title">02. 바른 비만치료 (식욕 ZERO)</h3>
-          <p class="card-subtitle">"성인이 되며 찐 살과 내장비만, 굶지 않고 날씬하고 가벼운 몸으로"</p>
-          <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>심부 체지방 집중 분해</strong>: 복부·허벅지·팔뚝의 축적된 지방층 연소 및 대사율 극대화</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>자연스러운 식욕 억제</strong>: 스트레스성 폭식·야식 습관을 편안하게 잠재우는 맞춤 한약</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>전국 안심 비대면 처방</strong>: 원장님 1:1 전화 진맥 후 원내 탕전실 직배송 (누적 5만건)</li>
-          </ul>
-          <div class="card-action-row">
-            <a href="diet-zero.html" class="btn-card-detail">비대면 처방 ↗</a>
-            <button type="button" class="btn-card-drawer" onclick="openDrawerWithProgram('appetite-zero')">1-Click 신청</button>
-          </div>
+        <div class="drawer-form-group">
+          <label>상담 희망 내용</label>
+          <textarea id="reserve-memo" rows="3" placeholder="증상이나 희망하시는 상담 시간대를 남겨주세요"></textarea>
         </div>
-      </article>
-
-      <!-- Card 3: 30대 바른 탈모케어 -->
-      <article class="signature-card">
-        <div class="card-visual-box">
-          <img src="life_3b_hair_restored.jpg?v=real1" onerror="this.src='bareun_seq_03_scalp_cooling.jpg'" alt="03. 30대 바른 탈모치료" class="card-visual-img" loading="lazy">
-          <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge">🌿 두피 열감 해소 & 발모 약침</span>
-        </div>
-        <div class="card-content-box">
-          <span class="card-step-tag">STAGE 03 · 30대 두피열·탈모 발생 ➔ 풍성한 정상 모발 회복</span>
-          <h3 class="card-title">03. 바른 탈모치료 (모근 재생)</h3>
-          <p class="card-subtitle">"30대 스트레스와 두피 열로 빠지는 머리카락, 뿌리부터 다시 빽빽하게"</p>
-          <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>두피 상열감(熱) 즉각 청열</strong>: 정수리와 이마로 몰리는 열독을 내려 모낭 위축 차단</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>고농도 모근 재생 약침</strong>: 잠든 모낭 세포를 깨워 굵고 힘 있는 신생 모발 개화 촉진</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>수승화강 체질 한약</strong>: 만성 피로와 자율신경 불균형을 바로잡아 재발 없는 정상 모발 유지</li>
-          </ul>
-          <div class="card-action-row">
-            <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer" class="btn-card-detail">카톡 상담 ↗</a>
-            <button type="button" class="btn-card-drawer" onclick="openDrawerWithProgram('scalp-hair')">1-Click 예약</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 4: 근무 중 굽은 척추 & 목·어깨·팔·허리·다리·발 전신 통증 추나치료 -->
-      <article class="signature-card">
-        <div class="card-visual-box">
-          <img src="life_4b_chuna_recovery.jpg?v=typec1" onerror="this.src='bareun_seq_04_pain_chuna_9joints.jpg'" alt="04. 바른 추나 통증치료" class="card-visual-img" loading="lazy">
-          <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge" style="color: #6EE7B7; border-color: #38A169;">⚡ 굽은 척추 교정 & 목·어깨·팔·허리·다리·발 전신 치유</span>
-        </div>
-        <div class="card-content-box">
-          <span class="card-step-tag">STAGE 04 · 굽은 척추 · 목 · 어깨 · 팔 · 허리 · 다리 · 발 전신 통증 ➔ 추나 완치</span>
-          <h3 class="card-title">04. 바른 추나·전신통증클리닉</h3>
-          <p class="card-subtitle">"굽은 척추부터 목·어깨·팔·허리·다리·발까지, 머리부터 발끝 전신 통증을 비수술 추나로 바르게 회복"</p>
-          <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>대표원장 1:1 전신 추나요법</strong>: 굽은 척추·거북목·어깨 비대칭·틀어진 허리와 골반을 수직 정렬</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>머리부터 발끝 7대 부위 집중 치유</strong>: ①목 ②어깨 ③팔·손목 ④굽은 척추 ⑤허리·골반 ⑥다리·무릎 ⑦발·발목 통증 개선</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>고농도 정품 봉약침 & 침도 치료</strong>: 신경 압박 해소 및 손상된 관절·인대·족저근막 심부 조직 재생</li>
-          </ul>
-          <div class="card-action-row">
-            <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="btn-card-detail">네이버 예약 ↗</a>
-            <button type="button" class="btn-card-drawer" onclick="openDrawerWithProgram('pain-chuna')">1-Click 예약</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 5: 노년 기력회복 & 성인병 케어 황제공진단 -->
-      <article class="signature-card">
-        <div class="card-visual-box">
-          <img src="life_5c_graceful_elder.jpg?v=real1" onerror="this.src='bareun_seq_05_gongjindan_aura.jpg'" alt="05. 황제공진단 & 백세건강" class="card-visual-img" loading="lazy">
-          <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge" style="color: #FCD34D; border-color: #C09A67;">👑 특허 제10-1744704호 · 백세건강</span>
-        </div>
-        <div class="card-content-box">
-          <span class="card-step-tag">STAGE 05 · 노화·기력저하·성인병 ➔ 황제공진단 & 아름다운 노년</span>
-          <h3 class="card-title">05. 황제공진단 · 항노화클리닉</h3>
-          <p class="card-subtitle">"기력을 되찾고 성인병을 예방하여, 품격 있고 아름답게 나이 들어가는 삶"</p>
-          <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>식약처 CITES 정품 천연 사향 100%</strong>: 막힌 기혈과 뇌혈류·심혈관 순환을 뚫어주는 최고급 명약</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>기력 고갈 & 성인병 집중 케어</strong>: 만성 피로, 면역 저하, 대사성 성인병 예방 및 원기 보강</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>러시아산 최상급 녹용 분골</strong>: 원내 조제실에서 정성껏 수제 제환한 24K 순금박 황제공진단</li>
-          </ul>
-          <div class="card-action-row">
-            <a href="gongjindan.html" class="btn-card-detail">상세 보기 ↗</a>
-            <button type="button" class="btn-card-drawer" onclick="openDrawerWithProgram('gongjindan')">사전 예약</button>
-          </div>
-        </div>
-      </article>
-
-    </div>
-
-    <!-- Bottom Quick Inquiry & Channel Strip -->
-    <div class="cards-channel-strip">
-      <div class="channel-info-box">
-        <h4 class="channel-info-title">바른한의원 대전본점 빠른 진료 예약 & 상담</h4>
-        <p class="channel-info-sub">대전광역시 서구 둔산로 중심상업지구 · 전용 지하 주차장 2시간 무료 지원</p>
-      </div>
-      <div class="channel-btn-group">
-        <a href="tel:042-488-1075" class="btn-channel-call">
-          <span>📞</span> <span>042-488-1075 전화 진료</span>
-        </a>
-        <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer" class="btn-channel-kakao">
-          <span>💬</span> <span>카카오톡 1:1 상담</span>
-        </a>
-        <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="btn-channel-naver">
-          <span>📍</span> <span>네이버 플레이스 예약</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================================
-       [비브이클리닉 스타일 우측 Slide-in Menu & 1-Click Consultation Drawer]
-       ========================================================================= -->
-  <aside class="menu-drawer" id="menu-drawer" aria-hidden="true">
-    <div class="drawer-backdrop" id="drawer-backdrop"></div>
-    <div class="drawer-content">
-      
-      <div class="drawer-header">
-        <span class="drawer-badge">바른한의원 1-Click 안심 진료 예약</span>
-        <button class="close-btn" id="drawer-close" aria-label="닫기">
-          <span>닫기</span>
-          <span class="close-icon">✕</span>
-        </button>
-      </div>
-
-      <div class="drawer-body">
-        
-        <!-- Left: Quick Booking Form -->
-        <div class="drawer-col contact-col">
-          <h3 class="col-title">간편 진료 신청서</h3>
-          <p style="font-size: 12px; color: #94A3B8; margin-bottom: 16px;">
-            정보를 남겨주시면 대표원장실에서 확인 후 카카오 알림톡 및 전담 안내 전화를 드립니다.
-          </p>
-          
-          <form id="drawer-booking-form" onsubmit="handleDrawerBookingSubmit(event)" style="display: flex; flex-direction: column; gap: 12px;">
-            <div>
-              <label style="font-size: 11px; font-weight: 700; color: #E2E8F0; display: block; margin-bottom: 4px;">신청 과목 선택</label>
-              <select id="drawer-program-select" style="width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #FFFFFF; font-size: 13px;">
-                <option value="pediatric-growth">01. 난임·소아면역·키성장 클리닉</option>
-                <option value="appetite-zero">02. 성인 비만치료 (식욕 ZERO 비대면)</option>
-                <option value="scalp-hair">03. 30대 바른 탈모케어 (두피열·모근재생)</option>
-                <option value="pain-chuna">04. 척추교정·추나 통증클리닉 (9대 관절)</option>
-                <option value="gongjindan">05. 황제 공진단 (기력회복·성인병 예방)</option>
-              </select>
-            </div>
-
-            <div>
-              <label style="font-size: 11px; font-weight: 700; color: #E2E8F0; display: block; margin-bottom: 4px;">예약자 성함</label>
-              <input type="text" id="drawer-patient-name" required placeholder="성함을 입력하세요" style="width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #FFFFFF; font-size: 13px;">
-            </div>
-
-            <div>
-              <label style="font-size: 11px; font-weight: 700; color: #E2E8F0; display: block; margin-bottom: 4px;">연락처 (휴대폰 번호)</label>
-              <input type="tel" id="drawer-patient-phone" required placeholder="010-0000-0000" style="width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #FFFFFF; font-size: 13px;">
-            </div>
-
-            <div>
-              <label style="font-size: 11px; font-weight: 700; color: #E2E8F0; display: block; margin-bottom: 4px;">증상 및 상담 요청 메모</label>
-              <textarea id="drawer-patient-memo" rows="3" placeholder="불편하신 부위나 원하시는 상담 시간대를 적어주세요" style="width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #FFFFFF; font-size: 13px;"></textarea>
-            </div>
-
-            <button type="submit" id="drawer-submit-btn" style="padding: 13px; border-radius: 14px; background: linear-gradient(135deg, #10B981, #059669); color: #FFFFFF; font-weight: 800; font-size: 14px; border: none; cursor: pointer; margin-top: 6px; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);">
-              ✦ 1-Click 상담 예약 신청 완료
-            </button>
-          </form>
-
-          <div class="social-links-grid" style="margin-top: 24px;">
-            <div class="social-group">
-              <span class="group-title">공식 온라인 채널</span>
-              <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer" class="social-link">
-                💬 카카오톡 1:1 실시간 상담 (@바른한의원) ↗
-              </a>
-              <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="social-link">
-                📍 네이버 플레이스 & 방문 예약 ↗
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Clinic Information -->
-        <div class="drawer-col credits-col">
-          <h3 class="col-title">진료 시간 & 오시는 길</h3>
-          
-          <ul class="credits-list">
-            <li class="credit-item">
-              <span class="credit-role">평일 진료 (야간진료)</span>
-              <span class="credit-name">AM 09:30 — PM 08:00</span>
-            </li>
-            <li class="credit-item">
-              <span class="credit-role">토·공휴일 진료</span>
-              <span class="credit-name">AM 09:30 — PM 03:00 (점심시간 없음)</span>
-            </li>
-            <li class="credit-item">
-              <span class="credit-role">일요일</span>
-              <span class="credit-name">정기 휴진</span>
-            </li>
-            <li class="credit-item">
-              <span class="credit-role">원내 탕전 원칙</span>
-              <span class="credit-name">식약처 인증 규격품 100% 원장 직접 조제</span>
-            </li>
-            <li class="credit-item">
-              <span class="credit-role">대표원장</span>
-              <span class="credit-name">한의학 박사 1:1 책임 전담 진료</span>
-            </li>
-          </ul>
-
-          <div class="drawer-footnote">
-            <div class="drawer-legal-box">
-              <p><strong>바른한의원 대전본점</strong> · 대표자: 대표원장 (한의학 박사)</p>
-              <p>사업자등록번호: 305-XX-XXXXX · 통신판매업신고: 제 2026-대전서구-0001 호</p>
-              <p>의료기관 개설신고: 제 3680000-000-00000 호 · 대표전화: 042-488-1075</p>
-              <p>주소: 대전광역시 서구 둔산로 123 · 이메일: bareunhaniwon@naver.com</p>
-
-              <div class="drawer-terms-btn-row">
-                <button type="button" class="drawer-terms-btn" onclick="openTermsModal('service')">서비스 이용약관</button>
-                <span>·</span>
-                <button type="button" class="drawer-terms-btn" onclick="openTermsModal('privacy')">개인정보처리방침</button>
-                <span>·</span>
-                <button type="button" class="drawer-terms-btn" onclick="openTermsModal('finance')">전자금융거래 이용약관</button>
-                <span>·</span>
-                <button type="button" class="drawer-terms-btn" onclick="openTermsModal('refund')">비대면 처방·환불 정책</button>
-              </div>
-
-              <p style="margin-top: 14px; font-size: 11px; opacity: 0.5;">
-                본 사이트의 비대면 진료 및 전화 처방은 보건복지부 비대면 진료 가이드라인을 준수합니다.<br>
-                © 2026 BAREUN CLINIC. All rights reserved.
-              </p>
-            </div>
-          </div>
-        </div>
-
+        <button type="submit" class="drawer-submit-btn">✦ 1-Click 상담 및 예약 신청하기</button>
+      </form>
+      <div class="drawer-quick-links">
+        <a href="tel:042-488-1075">📞 042-488-1075 전화</a>
+        <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">💬 카카오톡 상담 ↗</a>
+        <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" style="grid-column: span 2;">📍 네이버 플레이스 빠른 예약 ↗</a>
       </div>
     </div>
   </aside>
 
-  <!-- Statutory Terms & Policies Modal -->
-  <div class="bareun-modal-overlay" id="terms-modal" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title">
-    <div class="terms-modal-window">
-      <div class="terms-modal-header">
-        <div>
-          <h3 id="terms-modal-title">서비스 이용약관</h3>
-          <span id="terms-modal-subtitle">공정거래위원회 전자상거래 표준약관 준수</span>
-        </div>
-        <button type="button" class="modal-close-btn" onclick="closeTermsModal()" aria-label="닫기">✕</button>
-      </div>
-      <div class="terms-modal-body" id="terms-modal-body"></div>
-      <div class="terms-modal-footer">
-        <button type="button" class="btn-terms-confirm" onclick="closeTermsModal()">확인 및 닫기</button>
-      </div>
-    </div>
-  </div>
+  <!-- ========================================================================
+       2200vh VIRTUAL SCROLL TRACK
+       ======================================================================== -->
+  <div class="fullscroll-virtual-track" id="virtual-scroll-track"></div>
 
-  <!-- BV Clinic Style Fixed Bottom Sticky Booking Bar -->
-  <nav class="bv-fixed-booking-bar" id="bv-fixed-booking-bar" aria-label="빠른 진료 예약 및 상담 바로가기">
-    <div class="bv-bar-container">
-      <div class="bv-bar-info">
-        <span class="bv-bar-dot"></span>
-        <span class="bv-bar-text"><strong>바른한의원 대전본점</strong> · 5대 생애주기 당일 비대면 처방 & 1:1 방문 예약 접수 중</span>
-      </div>
-      <div class="bv-bar-actions">
-        <a href="tel:042-488-1075" class="bv-action-btn bv-btn-call" title="전화 상담">
-          <span class="bv-btn-icon">📞</span>
-          <span class="bv-btn-label">042-488-1075 전화</span>
-        </a>
-        <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer" class="bv-action-btn bv-btn-kakao" title="카톡 문의">
-          <span class="bv-btn-icon">💬</span>
-          <span class="bv-btn-label">카카오톡 문의</span>
-        </a>
-        <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="bv-action-btn bv-btn-naver" title="오시는길 네이버 지도">
-          <span class="bv-btn-icon">📍</span>
-          <span class="bv-btn-label">오시는길</span>
-        </a>
-        <button type="button" class="bv-action-btn bv-btn-reserve" onclick="openDrawerWithProgram(window.currentAppStepSlug || 'pediatric-growth')" title="온라인 빠른예약">
-          <span class="bv-btn-icon">📅</span>
-          <span class="bv-btn-label">온라인 빠른예약</span>
-          <span class="bv-btn-arrow">➔</span>
-        </button>
-      </div>
-    </div>
-  </nav>
+  <script>
+    (function () {
+      'use strict';
 
-  <script src="app.js"></script>
+      // ======================================================================
+      // 1. THE 8 STORY DIALOGUE CHAPTERS (User's Exact 8 Lines)
+      // ======================================================================
+      const DIALOGUE_CHAPTERS = [
+        {
+          id: 1,
+          numLabel: 'STORY 01 / 08 · 바른 난임·착상 치료',
+          quote: '임신이 되지 않아 힘들게 얻은 선물'
+        },
+        {
+          id: 2,
+          numLabel: 'STORY 02 / 08 · 바른 소아 면역강화 치료',
+          quote: '사랑하는 아이가 건강하기를 바라면서'
+        },
+        {
+          id: 3,
+          numLabel: 'STORY 03 / 08 · 바른 성장판·키성장 치료',
+          quote: '멋지게 성장하는 꿈을 꾸며'
+        },
+        {
+          id: 4,
+          numLabel: 'STORY 04 / 08 · 바른 성인 비만·체형 치료',
+          quote: '날씬하고 건강해서 예쁘게'
+        },
+        {
+          id: 5,
+          numLabel: 'STORY 05 / 08 · 바른 30대 탈모·모근 치료',
+          quote: '사회에서 인정받기 위해 탈모'
+        },
+        {
+          id: 6,
+          numLabel: 'STORY 06 / 08 · 바른 추나 척추·전신 통증치료',
+          quote: '열심히 근무하면서 생긴 통증'
+        },
+        {
+          id: 7,
+          numLabel: 'STORY 07 / 08 · 바른 황제공진단 기력보강',
+          quote: '약해진 기력을 보강해야할 나이가 오고'
+        },
+        {
+          id: 8,
+          numLabel: 'STORY 08 / 08 · 평생 주치의 바른한의원',
+          quote: '건강한 인생이 될 수 있게 도와드립니다.'
+        }
+      ];
+
+      // ======================================================================
+      // 2. 20 CONTINUOUS LIVE-ACTION FRAMES
+      //    Starts Immediately with Infertility Struggle -> Bareun Infertility Treatment!
+      // ======================================================================
+      const FRAMES = [
+        // --- CHAPTER 1: 임신이 되지 않아 힘들게 얻은 선물 (Frames 0 ~ 3) ---
+        {
+          src: 'life_1a0_infertility_before.jpg?v=story2',
+          chapter: 1,
+          stepLabel: '난임의 기다림',
+          mode: 0,
+          focal: [0.64, 0.46],
+          whisper: '아기가 찾아오지 않아 눈물짓던 밤, 부부의 간절한 기다림을 바른한의원이 함께합니다.'
+        },
+        {
+          src: 'life_1a1_infertility_treatment.jpg?v=story2',
+          chapter: 1,
+          stepLabel: '✦ 바른 난임·착상 한약치료',
+          mode: 0,
+          focal: [0.60, 0.46],
+          whisper: '대표원장님의 정밀 진맥과 따뜻한 난임·착상 보약으로 자궁의 온기와 생명력을 깨우고'
+        },
+        {
+          src: 'life_1a_fertilization.jpg?v=story2',
+          chapter: 1,
+          stepLabel: '기적의 수정·잉태',
+          mode: 0,
+          focal: [0.66, 0.50],
+          whisper: '마침내 어둠 속에서 찬란한 새 생명의 수정과 착상이 이루어져'
+        },
+        {
+          src: 'life_1b_birth.jpg?v=story2',
+          chapter: 1,
+          stepLabel: '소중한 아이 탄생',
+          mode: 0,
+          focal: [0.64, 0.52],
+          whisper: '세상 무엇과도 바꿀 수 없는 선물, 건강한 아이가 품에 안깁니다.'
+        },
+
+        // --- CHAPTER 2: 사랑하는 아이가 건강하기를 바라면서 (Frames 4 ~ 5) ---
+        {
+          src: 'life_1c_cold_before.jpg?v=story2',
+          chapter: 2,
+          stepLabel: '면역력 저하·잦은 감기',
+          mode: 0,
+          focal: [0.65, 0.48],
+          whisper: '면역력이 약해 잦은 감기와 열로 훌쩍이는 아이의 모습에 마음 졸일 때'
+        },
+        {
+          src: 'life_1c_immunity.jpg?v=story2',
+          chapter: 2,
+          stepLabel: '✦ 바른 면역강화 한약치료',
+          mode: 0,
+          focal: [0.65, 0.48],
+          whisper: '따뜻한 바른 면역강화 보약으로 호흡기 자생력을 채워 감기 없는 밝은 미소를 되찾습니다.'
+        },
+
+        // --- CHAPTER 3: 멋지게 성장하는 꿈을 꾸며 (Frames 6 ~ 7) ---
+        {
+          src: 'life_1d_growth_short.jpg?v=story2',
+          chapter: 3,
+          stepLabel: '또래보다 작은 키',
+          mode: 1, // Real-time vertical height stretch!
+          focal: [0.635, 0.46],
+          whisper: '또래 친구들과 나란히 서 있을 때 유독 작아 보이던 키도'
+        },
+        {
+          src: 'life_1d_growth_peers.jpg?v=story2',
+          chapter: 3,
+          stepLabel: '✦ 바른 성장치료 키성장 완수',
+          mode: 0,
+          focal: [0.635, 0.38],
+          whisper: '바른 성장판 한약과 성장추나 치료로 키가 쭈욱 자라나 또래보다 당당하게 어깨를 폅니다.'
+        },
+
+        // --- CHAPTER 4: 날씬하고 건강해서 예쁘게 (Frames 8 ~ 10) ---
+        {
+          src: 'life_2a_obesity.jpg?v=story2',
+          chapter: 4,
+          stepLabel: '성인 체중증가·비만',
+          mode: 2, // Real-time waistline slimming morph!
+          focal: [0.65, 0.50],
+          whisper: '어느덧 성인이 되어 불어난 체중과 비만으로 몸과 마음이 무거워질 때'
+        },
+        {
+          src: 'life_2a_treatment.jpg?v=story2',
+          chapter: 4,
+          stepLabel: '✦ 바른 비만치료 한약 처방',
+          mode: 2,
+          focal: [0.65, 0.50],
+          whisper: '굶지 않고 체지방만 건강하게 비워내는 바른 다이어트 한약 치료로'
+        },
+        {
+          src: 'life_2b_slim_therapy.jpg?v=story2',
+          chapter: 4,
+          stepLabel: '날씬하고 건강한 라인 완성',
+          mode: 0,
+          focal: [0.65, 0.46],
+          whisper: '날씬하고 건강해서 더욱 예쁜 본연의 실루엣을 되찾습니다.'
+        },
+
+        // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 11 ~ 13) ---
+        {
+          src: 'life_3a_hairloss.jpg?v=story2',
+          chapter: 5,
+          stepLabel: '30대 스트레스·탈모 발생',
+          mode: 0,
+          focal: [0.63, 0.42],
+          whisper: '사회에서 인정받기 위해 치열하게 달려온 30대, 스트레스와 두피열로 찾아온 탈모'
+        },
+        {
+          src: 'life_3a_treatment.jpg?v=story2',
+          chapter: 5,
+          stepLabel: '✦ 바른 두피청열·발모 약침치료',
+          mode: 0,
+          focal: [0.63, 0.42],
+          whisper: '달아오른 두피의 열독을 내리고 잠든 모근을 깨우는 바른 탈모 약침 치료로'
+        },
+        {
+          src: 'life_3b_hair_restored.jpg?v=story2',
+          chapter: 5,
+          stepLabel: '풍성한 정상 모발 회복',
+          mode: 0,
+          focal: [0.63, 0.42],
+          whisper: '다시 빽빽하고 풍성하게 차오른 정상 모발로 당당한 자신감을 회복합니다.'
+        },
+
+        // --- CHAPTER 6: 열심히 근무하면서 생긴 통증 (Frames 14 ~ 16) ---
+        {
+          src: 'life_4a_work_spine_pain.jpg?v=story2',
+          chapter: 6,
+          stepLabel: '굽은 척추·목·어깨·팔·허리·다리·발 통증',
+          mode: 3, // Full-body Chuna laser scan!
+          focal: [0.54, 0.52],
+          whisper: '쉼 없이 일하며 틀어진 굽은 척추와 목·어깨·팔·허리·다리·발까지 이어진 전신 관절 통증'
+        },
+        {
+          src: 'life_4a_treatment.jpg?v=story2',
+          chapter: 6,
+          stepLabel: '✦ 바른 1:1 추나·약침 통증치료',
+          mode: 3,
+          focal: [0.54, 0.52],
+          whisper: '대표원장님의 1:1 수기 추나 교정으로 머리부터 발끝까지 틀어진 마디마디를 바로잡아'
+        },
+        {
+          src: 'life_4b_chuna_recovery.jpg?v=story2',
+          chapter: 6,
+          stepLabel: '전신 수직 정렬·통증 회복',
+          mode: 0,
+          focal: [0.54, 0.50],
+          whisper: '굽은 척추부터 목·어깨·팔·허리·다리·발 통증이 사라진 가벼운 일상을 선물합니다.'
+        },
+
+        // --- CHAPTER 7: 약해진 기력을 보강해야할 나이가 오고 (Frames 17 ~ 18) ---
+        {
+          src: 'life_5a_aging_fatigue.jpg?v=story2',
+          chapter: 7,
+          stepLabel: '노화·기력저하·성인병',
+          mode: 0,
+          focal: [0.64, 0.48],
+          whisper: '어느덧 세월이 흘러 기력이 약해지고 성인병을 돌보아야 할 나이가 찾아오면'
+        },
+        {
+          src: 'life_5b_gongjindan_vitality.jpg?v=story2',
+          chapter: 7,
+          stepLabel: '✦ 바른 특허 24K 황제공진단 치료',
+          mode: 0,
+          focal: [0.64, 0.48],
+          whisper: '특허 받은 24K 순금박 황제공진단으로 고갈된 원기와 뜨거운 생명력을 다시 채웁니다.'
+        },
+
+        // --- CHAPTER 8: 건강한 인생이 될 수 있게 도와드립니다. (Frame 19) ---
+        {
+          src: 'life_5c_graceful_elder.jpg?v=story2',
+          chapter: 8,
+          stepLabel: '✦ 아름답고 건강한 백세 인생',
+          mode: 0,
+          focal: [0.64, 0.46],
+          whisper: '생명의 첫 순간부터 품격 있고 아름답게 나이 들어가는 노년까지, 바른한의원이 평생 함께합니다.'
+        }
+      ];
+
+      // ======================================================================
+      // 3. CUSTOM GLSL SHADER ENGINE (3D Z-Axis Portal & Anatomical Morph)
+      // ======================================================================
+      const portalCanvas = document.getElementById('glsl-portal-canvas');
+      let glRenderer, glScene, glCamera, glMaterial, glTextures = [];
+
+      const VERTEX_SHADER = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `;
+
+      const FRAGMENT_SHADER = `
+        precision highp float;
+        varying vec2 vUv;
+
+        uniform sampler2D uTexCurr;
+        uniform sampler2D uTexNext;
+        uniform float uMix;
+        uniform float uTime;
+        uniform float uVelocity;
+        uniform vec2 uResolution;
+        uniform vec2 uMouse;
+        uniform vec2 uFocal;
+        uniform int uMode;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+          return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+        }
+
+        float fbm(vec2 p) {
+          float v = 0.0;
+          float a = 0.5;
+          for (int i = 0; i < 4; i++) {
+            v += a * noise(p);
+            p *= 2.02;
+            a *= 0.5;
+          }
+          return v;
+        }
+
+        vec2 getCoverUv(vec2 uv) {
+          float screenAspect = uResolution.x / max(uResolution.y, 1.0);
+          float texAspect = 16.0 / 9.0;
+          vec2 s = vec2(1.0);
+          if (screenAspect > texAspect) {
+            s.y = texAspect / screenAspect;
+          } else {
+            s.x = screenAspect / texAspect;
+          }
+          return (uv - 0.5) * s + 0.5;
+        }
+
+        void main() {
+          vec2 baseUv = getCoverUv(vUv);
+          float aspect = uResolution.x / max(uResolution.y, 1.0);
+          float t = smoothstep(0.0, 1.0, uMix);
+          vec2 focal = vec2(uFocal.x, 1.0 - uFocal.y);
+          vec2 parallax = (uMouse - 0.5) * 0.016;
+          float breath = sin(uTime * 1.3) * 0.004;
+
+          vec4 finalColor = vec4(0.0);
+
+          if (uMode == 1) {
+            // CHAPTER 3: Height Growth Vertical Stretch
+            float horizMask = exp(-pow((baseUv.x - 0.635) / 0.14, 2.0));
+            float vertMask = smoothstep(0.15, 0.55, baseUv.y) * (1.0 - smoothstep(0.82, 0.98, baseUv.y));
+            float stretchMask = horizMask * vertMask;
+
+            vec2 uvCurr = baseUv - parallax * (1.0 - t);
+            uvCurr.y -= stretchMask * t * 0.095;
+            vec2 uvNext = baseUv - parallax * t;
+            uvNext.y += stretchMask * (1.0 - t) * 0.075;
+
+            uvCurr = (uvCurr - focal) / (1.0 + t * 0.08) + focal;
+            uvNext = (uvNext - focal) / (0.94 + t * 0.06) + focal;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            float waveY = mix(0.12, 0.95, t);
+            float scanLine = exp(-pow((baseUv.y - waveY) / 0.025, 2.0)) * horizMask;
+
+            finalColor = mix(cCurr, cNext, t);
+            finalColor.rgb += vec3(0.98, 0.82, 0.35) * scanLine * sin(t * 3.14159) * 0.75;
+          }
+          else if (uMode == 2) {
+            // CHAPTER 4: Obesity Slimming Waist Pinch
+            float waistYMask = exp(-pow((baseUv.y - 0.45) / 0.26, 2.0));
+            float dx = baseUv.x - 0.65;
+            float waistXMask = exp(-pow(dx / 0.18, 2.0));
+            float pinch = dx * waistYMask * waistXMask;
+
+            vec2 uvCurr = baseUv - parallax * (1.0 - t);
+            uvCurr.x += pinch * t * 0.38;
+            vec2 uvNext = baseUv - parallax * t;
+            uvNext.x -= pinch * (1.0 - t) * 0.32;
+
+            uvCurr = (uvCurr - focal) / (1.0 + t * 0.12) + focal;
+            uvNext = (uvNext - focal) / (0.92 + t * 0.08) + focal;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            finalColor = mix(cCurr, cNext, t);
+          }
+          else if (uMode == 3) {
+            // CHAPTER 6: Full-Body Head-to-Toe Chuna Laser Scan
+            float laserY = mix(0.90, 0.04, t);
+            float bodyMask = exp(-pow((baseUv.x - 0.54) / 0.22, 2.0));
+            float n = fbm(baseUv * 8.0 + uTime * 0.6) * 0.015;
+
+            vec2 uvCurr = (baseUv - focal) / (1.0 + t * 0.09) + focal - parallax;
+            vec2 uvNext = (baseUv - focal) / (0.93 + t * 0.07) + focal - parallax;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            float healedZone = smoothstep(laserY - 0.06, laserY + 0.06, baseUv.y + n);
+            float laserBeam = exp(-pow((baseUv.y - laserY) / 0.016, 2.0)) * (0.3 + 0.7 * bodyMask);
+
+            finalColor = mix(cCurr, cNext, max(healedZone, t * 0.35));
+            vec3 beamCol = mix(vec3(0.06, 0.72, 0.50), vec3(0.99, 0.88, 0.45), laserBeam);
+            finalColor.rgb += beamCol * laserBeam * sin(t * 3.14159) * 0.95;
+          }
+          else {
+            // 3D Z-Axis Portal Zoom-Through
+            vec2 dVec = (baseUv - focal) * vec2(aspect, 1.0);
+            float dist = length(dVec);
+            float organicNoise = (fbm(baseUv * 5.5 + uTime * 0.35) - 0.5) * 0.08;
+
+            float scaleOut = 1.0 + pow(t, 1.45) * 0.78 + breath;
+            float scaleIn = 0.58 + (1.0 - pow(1.0 - t, 1.65)) * 0.42 + breath;
+
+            float portalRadius = mix(-0.05, 1.42, pow(t, 1.15));
+            float portalEdge = smoothstep(portalRadius + 0.16, portalRadius - 0.12, dist + organicNoise);
+
+            float rimIntensity = exp(-pow((dist + organicNoise - portalRadius) / 0.055, 2.0)) * sin(t * 3.14159);
+            vec2 rimDir = normalize(dVec + vec2(0.0001));
+
+            vec2 uvCurr = (baseUv - focal) / scaleOut + focal - parallax * (1.0 + t * 0.7) + rimDir * rimIntensity * 0.02;
+            vec2 uvNext = (baseUv - focal) / scaleIn + focal - parallax * t - rimDir * rimIntensity * 0.016;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            float blendFactor = clamp(mix(t, portalEdge, 0.62), 0.0, 1.0);
+            finalColor = mix(cCurr, cNext, blendFactor);
+
+            vec3 portalGlow = mix(vec3(0.06, 0.73, 0.51), vec3(0.98, 0.84, 0.48), 0.65);
+            finalColor.rgb += portalGlow * rimIntensity * 0.55;
+          }
+
+          gl_FragColor = finalColor;
+        }
+      `;
+
+      function initGLSLPortalStage() {
+        if (typeof THREE === 'undefined' || !portalCanvas) return;
+
+        glRenderer = new THREE.WebGLRenderer({
+          canvas: portalCanvas,
+          antialias: true,
+          powerPreference: 'high-performance'
+        });
+        glRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        glRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        glScene = new THREE.Scene();
+        glCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+        const placeholderData = new Uint8Array([3, 24, 17, 255]);
+        const placeholderTex = new THREE.DataTexture(placeholderData, 1, 1, THREE.RGBAFormat);
+        placeholderTex.needsUpdate = true;
+
+        const loader = new THREE.TextureLoader();
+        glTextures = FRAMES.map((f) => {
+          const tex = loader.load(f.src, (loadedTex) => {
+            loadedTex.minFilter = THREE.LinearFilter;
+            loadedTex.magFilter = THREE.LinearFilter;
+            loadedTex.generateMipmaps = false;
+          });
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          return tex || placeholderTex;
+        });
+
+        glMaterial = new THREE.ShaderMaterial({
+          vertexShader: VERTEX_SHADER,
+          fragmentShader: FRAGMENT_SHADER,
+          uniforms: {
+            uTexCurr: { value: glTextures[0] || placeholderTex },
+            uTexNext: { value: glTextures[1] || placeholderTex },
+            uMix: { value: 0.0 },
+            uTime: { value: 0.0 },
+            uVelocity: { value: 0.0 },
+            uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+            uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+            uFocal: { value: new THREE.Vector2(0.64, 0.46) },
+            uMode: { value: 0 }
+          },
+          depthWrite: false,
+          depthTest: false
+        });
+
+        glScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), glMaterial));
+      }
+
+      // ======================================================================
+      // 4. THREE.JS 3D Z-AXIS TUNNEL RINGS & WARP PARTICLES
+      // ======================================================================
+      const tunnelCanvas = document.getElementById('three-tunnel-canvas');
+      let tRenderer, tScene, tCamera, tPortalGates = [], tParticles;
+
+      function initThreeTunnelStage() {
+        if (typeof THREE === 'undefined' || !tunnelCanvas) return;
+
+        tRenderer = new THREE.WebGLRenderer({
+          canvas: tunnelCanvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: 'high-performance'
+        });
+        tRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        tRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        tScene = new THREE.Scene();
+        tCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.5, 500);
+
+        const ringGeo = new THREE.RingGeometry(7.2, 7.28, 64);
+        for (let i = 0; i < FRAMES.length; i++) {
+          const mat = new THREE.MeshBasicMaterial({
+            color: i % 2 === 0 ? 0xC5A059 : 0x10B981,
+            transparent: true,
+            opacity: 0.14,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+          });
+          const ringMesh = new THREE.Mesh(ringGeo, mat);
+          ringMesh.position.set(1.8, 0.0, -i * 22);
+          tScene.add(ringMesh);
+          tPortalGates.push(ringMesh);
+        }
+
+        const pCount = 2800;
+        const pGeo = new THREE.BufferGeometry();
+        const pPos = new Float32Array(pCount * 3);
+        const pCol = new Float32Array(pCount * 3);
+        const cGold = new THREE.Color(0xFDE68A);
+        const cEmerald = new THREE.Color(0x10B981);
+
+        for (let i = 0; i < pCount; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const radius = 3.0 + Math.random() * 18.0;
+          pPos[i * 3] = Math.cos(angle) * radius + 1.5;
+          pPos[i * 3 + 1] = Math.sin(angle) * radius * 0.65;
+          pPos[i * 3 + 2] = -Math.random() * 460 + 20;
+          const c = Math.random() > 0.35 ? cGold : cEmerald;
+          pCol[i * 3] = c.r;
+          pCol[i * 3 + 1] = c.g;
+          pCol[i * 3 + 2] = c.b;
+        }
+
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+        pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+
+        tParticles = new THREE.Points(pGeo, new THREE.PointsMaterial({
+          size: 0.14,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.55,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        }));
+        tScene.add(tParticles);
+      }
+
+      // ======================================================================
+      // 5. CARDLESS ANATOMICAL LIGHT OVERLAY FOR CHAPTER 6 (CHUNA 7-JOINTS)
+      //    Pure glowing light points on Neck, Shoulder, Arm, Spine, Waist, Leg, Foot
+      //    NO ugly card boxes blocking the view!
+      // ======================================================================
+      const svgOverlay = document.getElementById('svg-spatial-overlay');
+      const PAIN_JOINTS_LIGHT = [
+        { name: '목',     bx: 1025, by: 225 },
+        { name: '어깨',   bx: 965,  by: 300 },
+        { name: '팔',     bx: 905,  by: 465 },
+        { name: '척추',   bx: 1045, by: 385 },
+        { name: '허리',   bx: 1030, by: 525 },
+        { name: '다리',   bx: 995,  by: 755 },
+        { name: '발',     bx: 1015, by: 955 }
+      ];
+
+      function renderCleanLightOverlay(frameFloat, timeSec) {
+        if (!svgOverlay) return;
+        if (frameFloat >= 13.6 && frameFloat <= 16.4) {
+          const p = Math.max(0, Math.min(1, (frameFloat - 14.0) / 2.0));
+          const scanY = 160 + p * 840;
+          const crook = Math.max(0, 1.0 - p * 1.15);
+
+          let spineD = '';
+          for (let s = 0; s <= 16; s++) {
+            const frac = s / 16;
+            const py = 220 + frac * 320;
+            const localCrook = py <= scanY ? crook * 0.1 : crook;
+            const px = 1030 + Math.sin(frac * Math.PI * 2.1) * 32 * localCrook;
+            spineD += (s === 0 ? `M ${px.toFixed(1)} ${py.toFixed(1)}` : ` L ${px.toFixed(1)} ${py.toFixed(1)}`);
+          }
+
+          let orbs = '';
+          PAIN_JOINTS_LIGHT.forEach((j, idx) => {
+            const jx = j.bx + Math.sin(idx * 1.5) * 14 * crook;
+            const jy = j.by;
+            const isHealed = scanY > jy + 20 || p >= 0.92;
+            const col = isHealed ? '#6EE7B7' : '#F87171';
+            const r = 9 + Math.sin(timeSec * 4.5 + idx) * 3.5;
+            orbs += `
+              <circle cx="${jx}" cy="${jy}" r="${r * 1.8}" fill="${col}" opacity="0.18"/>
+              <circle cx="${jx}" cy="${jy}" r="${r}" fill="none" stroke="${col}" stroke-width="1.8" opacity="0.85"/>
+              <circle cx="${jx}" cy="${jy}" r="4.5" fill="#FFFFFF"/>
+              <text x="${jx + 16}" y="${jy + 4}" fill="#FFFFFF" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" style="text-shadow: 0 2px 8px #000;">${j.name}</text>
+            `;
+          });
+
+          svgOverlay.innerHTML = `
+            <path d="${spineD}" fill="none" stroke="${p > 0.55 ? '#FDE68A' : '#EF4444'}" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+            ${orbs}
+          `;
+        } else {
+          if (svgOverlay.innerHTML !== '') svgOverlay.innerHTML = '';
+        }
+      }
+
+      // ======================================================================
+      // 6. SCROLL-REACTIVE 8-DIALOGUE KINETIC TYPOGRAPHY ENGINE
+      // ======================================================================
+      let activeChapterId = -1;
+      let chapterEnterTime = performance.now();
+      const quoteEl = document.getElementById('dialogue-main-quote');
+      const numEl = document.getElementById('dialogue-chapter-num');
+      const whisperEl = document.getElementById('dialogue-sub-whisper');
+      const phaseStepsEl = document.getElementById('dialogue-phase-steps');
+      const stageContainer = document.getElementById('story-dialogue-stage');
+      const brushFill = document.getElementById('dialogue-progress-fill');
+      let charSpans = [];
+      let currentPhaseStepEls = [];
+
+      // Build 8 Chapter Dots on Minimalist Bottom Line
+      const dotsRow = document.getElementById('timeline-dots-row');
+      const chapterStartFrames = [0, 4, 6, 8, 11, 14, 17, 19];
+      const dotEls = [];
+      if (dotsRow) {
+        DIALOGUE_CHAPTERS.forEach((ch, idx) => {
+          const dot = document.createElement('div');
+          dot.className = 'timeline-chapter-dot';
+          dot.title = `${idx + 1}. ${ch.quote}`;
+          dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const targetNorm = chapterStartFrames[idx] / (FRAMES.length - 1);
+            scrollToNormalized(targetNorm);
+          });
+          dotsRow.appendChild(dot);
+          dotEls.push(dot);
+        });
+      }
+
+      function buildDialogueCharacters(text) {
+        if (!quoteEl) return;
+        quoteEl.innerHTML = '';
+        charSpans = [];
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+          const span = document.createElement('span');
+          if (ch === ' ') {
+            span.className = 'dialogue-char space';
+            span.innerHTML = '&nbsp;';
+          } else {
+            span.className = 'dialogue-char';
+            span.textContent = ch;
+          }
+          quoteEl.appendChild(span);
+          charSpans.push(span);
+        }
+      }
+
+      function buildChapterPhaseSteps(chapterId) {
+        if (!phaseStepsEl) return;
+        phaseStepsEl.innerHTML = '';
+        currentPhaseStepEls = [];
+
+        const chFrames = [];
+        FRAMES.forEach((f, idx) => {
+          if (f.chapter === chapterId) chFrames.push({ frame: f, index: idx });
+        });
+
+        chFrames.forEach((item, i) => {
+          if (i > 0) {
+            const arr = document.createElement('span');
+            arr.className = 'phase-step-arrow';
+            arr.textContent = '➔';
+            phaseStepsEl.appendChild(arr);
+          }
+          const span = document.createElement('span');
+          span.className = 'phase-step-text';
+          span.textContent = item.frame.stepLabel;
+          span.dataset.frameIndex = String(item.index);
+          span.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hasUserScrolled = true;
+            scrollToNormalized(item.index / (FRAMES.length - 1));
+          });
+          phaseStepsEl.appendChild(span);
+          currentPhaseStepEls.push(span);
+        });
+      }
+
+      function getChapterProgress(frameFloat, chapterId) {
+        const chIndices = [];
+        FRAMES.forEach((f, idx) => {
+          if (f.chapter === chapterId) chIndices.push(idx);
+        });
+        const firstIdx = chIndices[0] || 0;
+        const lastIdx = chIndices[chIndices.length - 1] || firstIdx;
+        const span = Math.max(0.85, (lastIdx - firstIdx) + 0.85);
+        return Math.max(0, Math.min(1, (frameFloat - (firstIdx - 0.35)) / span));
+      }
+
+      function updateScrollDialogue(frameFloat, velocity, nowMs) {
+        const maxIdx = FRAMES.length - 1;
+        const idx = Math.min(maxIdx, Math.max(0, Math.round(frameFloat)));
+        const frame = FRAMES[idx];
+        const chapter = DIALOGUE_CHAPTERS[frame.chapter - 1];
+
+        if (activeChapterId !== chapter.id) {
+          activeChapterId = chapter.id;
+          chapterEnterTime = nowMs;
+          if (numEl) numEl.textContent = chapter.numLabel;
+          buildDialogueCharacters(chapter.quote);
+          buildChapterPhaseSteps(chapter.id);
+          dotEls.forEach((d, i) => d.classList.toggle('active', i === chapter.id - 1));
+        }
+
+        if (whisperEl && whisperEl.textContent !== frame.whisper) {
+          whisperEl.textContent = frame.whisper;
+        }
+
+        currentPhaseStepEls.forEach((el) => {
+          el.classList.toggle('active', Number(el.dataset.frameIndex) === idx);
+        });
+
+        const chProg = getChapterProgress(frameFloat, chapter.id);
+        if (brushFill) {
+          brushFill.style.width = `${Math.max(12, chProg * 100).toFixed(1)}%`;
+        }
+
+        // Time-based graceful cascade on chapter entrance + Scroll-Reactive Kinetic Ripple
+        const timeSinceEnter = Math.max(0, (nowMs - chapterEnterTime) * 0.001);
+        const totalChars = Math.max(1, charSpans.length);
+        const speedAmp = Math.min(9, Math.abs(velocity) * 28);
+
+        charSpans.forEach((span, i) => {
+          const charRatio = i / totalChars;
+          const entranceReveal = Math.max(0, Math.min(1, (timeSinceEnter * 2.1) - charRatio * 0.65));
+          const scrollWave = Math.sin(charRatio * 7.0 - frameFloat * 3.8) * speedAmp;
+          const yOffset = (1 - entranceReveal) * 18 + scrollWave;
+          const blurPx = (1 - entranceReveal) * 4.5;
+          const opacity = 0.25 + entranceReveal * 0.75;
+
+          span.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
+          span.style.opacity = opacity.toFixed(2);
+          span.style.filter = blurPx > 0.25 ? `blur(${blurPx.toFixed(1)}px)` : 'none';
+
+          // Progressive Gold-White Illumination along the sentence as user scrolls
+          const isLit = chProg >= charRatio * 0.72 || entranceReveal >= 0.99;
+          const isGoldHighlight = Math.abs(chProg - charRatio) < 0.22 || i >= totalChars - 4;
+          span.classList.toggle('lit', isLit);
+          span.classList.toggle('gold-accent', isGoldHighlight);
+        });
+
+        // 3D Stage Parallax Float on Scroll
+        if (stageContainer) {
+          const localWave = frameFloat - Math.floor(frameFloat);
+          const zFloat = Math.sin(localWave * Math.PI) * 20;
+          const yTilt = Math.max(-14, Math.min(14, velocity * -28));
+          stageContainer.style.transform = `perspective(1000px) translate3d(0, calc(-50% + ${yTilt.toFixed(1)}px), ${zFloat.toFixed(1)}px)`;
+        }
+
+        // Minimalist Bottom Line Readout
+        const pct = (smoothProgress * 100).toFixed(0);
+        const tFill = document.getElementById('timeline-bar-fill');
+        const tReadout = document.getElementById('timeline-depth-readout');
+        if (tFill) tFill.style.width = `${(smoothProgress * 100).toFixed(2)}%`;
+        if (tReadout) tReadout.textContent = `STORY 0${chapter.id} / 08 · ${String(pct).padStart(2, '0')}%`;
+      }
+
+      // ======================================================================
+      // 7. SCROLL CONTROLLER & OPENING INFERTILITY AUTO-SHOWCASE
+      // ======================================================================
+      let targetProgress = 0;
+      let smoothProgress = 0;
+      let prevProgress = 0;
+      let scrollVelocity = 0;
+      let lastUserInteract = 0;
+      let hasUserScrolled = false;
+      let mouseNorm = { x: 0.5, y: 0.5 };
+
+      function getScrollMax() {
+        const track = document.getElementById('virtual-scroll-track');
+        const h = track ? track.offsetHeight : document.documentElement.scrollHeight;
+        return Math.max(1, h - window.innerHeight);
+      }
+
+      function getCurrentScrollY() {
+        return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      }
+
+      function scrollToNormalized(norm) {
+        const clamped = Math.max(0, Math.min(1, norm));
+        hasUserScrolled = true;
+        targetProgress = clamped;
+        window.scrollTo({ top: clamped * getScrollMax(), behavior: 'smooth' });
+      }
+
+      window.addEventListener('scroll', () => {
+        const y = getCurrentScrollY();
+        if (y > 8) hasUserScrolled = true;
+        if (hasUserScrolled) {
+          targetProgress = Math.max(0, Math.min(1, y / getScrollMax()));
+        }
+      }, { passive: true });
+
+      window.addEventListener('wheel', (e) => {
+        hasUserScrolled = true;
+        lastUserInteract = performance.now();
+        const maxS = getScrollMax();
+        const nextY = Math.max(0, Math.min(maxS, getCurrentScrollY() + e.deltaY));
+        targetProgress = nextY / maxS;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', () => {
+        hasUserScrolled = true;
+        targetProgress = Math.max(0, Math.min(1, getCurrentScrollY() / getScrollMax()));
+      }, { passive: true });
+
+      window.addEventListener('mousemove', (e) => {
+        mouseNorm.x = e.clientX / Math.max(1, window.innerWidth);
+        mouseNorm.y = e.clientY / Math.max(1, window.innerHeight);
+      }, { passive: true });
+
+      const timelineTrack = document.getElementById('timeline-bar-track');
+      if (timelineTrack) {
+        timelineTrack.addEventListener('click', (e) => {
+          const rect = timelineTrack.getBoundingClientRect();
+          scrollToNormalized((e.clientX - rect.left) / Math.max(1, rect.width));
+        });
+      }
+
+      // Quick Reservation Drawer Controls
+      const drawerOverlay = document.getElementById('reserve-drawer-overlay');
+      const btnOpenReserve = document.getElementById('btn-open-reserve');
+      const btnCloseReserve = document.getElementById('btn-close-reserve');
+      const quickReserveForm = document.getElementById('quick-reserve-form');
+
+      if (btnOpenReserve && drawerOverlay) {
+        btnOpenReserve.addEventListener('click', () => drawerOverlay.classList.add('open'));
+      }
+      if (btnCloseReserve && drawerOverlay) {
+        btnCloseReserve.addEventListener('click', () => drawerOverlay.classList.remove('open'));
+      }
+      if (drawerOverlay) {
+        drawerOverlay.addEventListener('click', () => drawerOverlay.classList.remove('open'));
+      }
+      if (quickReserveForm) {
+        quickReserveForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('reserve-name').value;
+          const prog = document.getElementById('reserve-program').value;
+          alert(`[바른한의원 예약 접수 완료]\n${name}님, 선택하신 [${prog}] 상담 신청이 접수되었습니다. 전담 상담실장이 빠르게 연락드리겠습니다.`);
+          drawerOverlay.classList.remove('open');
+          quickReserveForm.reset();
+        });
+      }
+
+      // ======================================================================
+      // 8. CINEMATIC ORCHESTRAL & 3D SPATIAL BGM ENGINE
+      // ======================================================================
+      const soundEngine = (function () {
+        let ctx = null, masterGain = null, reverbNode = null, whooshGain = null, whooshFilter = null;
+        let isPlaying = false, userMuted = false, chordTimer = null, melodyTimer = null, chordIdx = 0, activeCh = 1;
+
+        const CHORDS = [
+          { bass: 87.31,  pad: [174.61, 220.00, 261.63, 329.63, 392.00], scale: [523.25, 587.33, 659.25, 783.99, 880.00] },
+          { bass: 98.00,  pad: [196.00, 246.94, 293.66, 329.63, 392.00], scale: [587.33, 659.25, 783.99, 880.00, 987.77] },
+          { bass: 82.41,  pad: [164.81, 246.94, 293.66, 329.63, 392.00], scale: [493.88, 587.33, 659.25, 783.99, 987.77] },
+          { bass: 110.00, pad: [220.00, 261.63, 329.63, 392.00, 493.88], scale: [523.25, 659.25, 783.99, 880.00, 1046.50] }
+        ];
+
+        function createConcertHallReverb(audioCtx) {
+          const length = Math.floor(audioCtx.sampleRate * 3.6);
+          const impulse = audioCtx.createBuffer(2, length, audioCtx.sampleRate);
+          for (let ch = 0; ch < 2; ch++) {
+            const data = impulse.getChannelData(ch);
+            for (let i = 0; i < length; i++) {
+              data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.6) * 0.45;
+            }
+          }
+          const conv = audioCtx.createConvolver();
+          conv.buffer = impulse;
+          return conv;
+        }
+
+        function initAudioGraph() {
+          if (ctx) return;
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          ctx = new AudioCtx();
+          masterGain = ctx.createGain();
+          masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
+          masterGain.connect(ctx.destination);
+
+          reverbNode = createConcertHallReverb(ctx);
+          const reverbGain = ctx.createGain();
+          reverbGain.gain.value = 0.65;
+          reverbNode.connect(reverbGain);
+          reverbGain.connect(masterGain);
+
+          const noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+          const out = noiseBuf.getChannelData(0);
+          let b0 = 0, b1 = 0, b2 = 0;
+          for (let i = 0; i < out.length; i++) {
+            const w = Math.random() * 2 - 1;
+            b0 = 0.997 * b0 + w * 0.029;
+            b1 = 0.985 * b1 + w * 0.032;
+            b2 = 0.950 * b2 + w * 0.048;
+            out[i] = (b0 + b1 + b2) * 0.35;
+          }
+          const noiseSrc = ctx.createBufferSource();
+          noiseSrc.buffer = noiseBuf;
+          noiseSrc.loop = true;
+
+          whooshFilter = ctx.createBiquadFilter();
+          whooshFilter.type = 'bandpass';
+          whooshFilter.frequency.value = 240;
+          whooshFilter.Q.value = 1.8;
+
+          whooshGain = ctx.createGain();
+          whooshGain.gain.value = 0.0;
+
+          noiseSrc.connect(whooshFilter);
+          whooshFilter.connect(whooshGain);
+          whooshGain.connect(reverbNode);
+          noiseSrc.start();
+        }
+
+        function playWarmPadChord() {
+          if (!ctx || !isPlaying) return;
+          const now = ctx.currentTime;
+          const chord = CHORDS[chordIdx % CHORDS.length];
+          chordIdx++;
+
+          const bassOsc = ctx.createOscillator();
+          const bassFilter = ctx.createBiquadFilter();
+          const bassGain = ctx.createGain();
+          bassOsc.type = 'triangle';
+          bassOsc.frequency.setValueAtTime(chord.bass, now);
+          bassFilter.type = 'lowpass';
+          bassFilter.frequency.setValueAtTime(250, now);
+          bassGain.gain.setValueAtTime(0.0001, now);
+          bassGain.gain.linearRampToValueAtTime(0.1, now + 1.8);
+          bassGain.gain.exponentialRampToValueAtTime(0.0008, now + 6.4);
+          bassOsc.connect(bassFilter);
+          bassFilter.connect(bassGain);
+          bassGain.connect(masterGain);
+          bassGain.connect(reverbNode);
+          bassOsc.start(now);
+          bassOsc.stop(now + 6.5);
+
+          chord.pad.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const lp = ctx.createBiquadFilter();
+            const vGain = ctx.createGain();
+            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq * (1 + (idx - 2) * 0.0012), now);
+            lp.type = 'lowpass';
+            lp.frequency.setValueAtTime(1150, now);
+            const peak = 0.04 / Math.sqrt(idx + 1);
+            vGain.gain.setValueAtTime(0.0001, now);
+            vGain.gain.linearRampToValueAtTime(peak, now + 2.1);
+            vGain.gain.exponentialRampToValueAtTime(0.0005, now + 6.6);
+            osc.connect(lp);
+            lp.connect(vGain);
+            vGain.connect(reverbNode);
+            vGain.connect(masterGain);
+            osc.start(now);
+            osc.stop(now + 6.7);
+          });
+        }
+
+        function playFeltPianoNote() {
+          if (!ctx || !isPlaying) return;
+          const now = ctx.currentTime;
+          const chord = CHORDS[(chordIdx - 1 + CHORDS.length) % CHORDS.length];
+          const freq = chord.scale[Math.floor(Math.random() * chord.scale.length)];
+          const osc = ctx.createOscillator();
+          const lp = ctx.createBiquadFilter();
+          const env = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          lp.type = 'lowpass';
+          lp.frequency.setValueAtTime(1800, now);
+          lp.frequency.exponentialRampToValueAtTime(420, now + 2.6);
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(0.052, now + 0.035);
+          env.gain.exponentialRampToValueAtTime(0.0004, now + 3.4);
+          osc.connect(lp);
+          lp.connect(env);
+          env.connect(reverbNode);
+          env.connect(masterGain);
+          osc.start(now);
+          osc.stop(now + 3.5);
+        }
+
+        function updateUI() {
+          const btn = document.getElementById('btn-bgm-toggle');
+          const label = document.getElementById('bgm-status-label');
+          if (btn) btn.classList.toggle('playing', isPlaying);
+          if (label) label.textContent = isPlaying ? '🔊 BGM · PLAYING' : '🔇 BGM · OFF';
+        }
+
+        function startBGM() {
+          if (userMuted || isPlaying) return;
+          initAudioGraph();
+          if (!ctx) return;
+          if (ctx.state === 'suspended') ctx.resume();
+          isPlaying = true;
+          masterGain.gain.cancelScheduledValues(ctx.currentTime);
+          masterGain.gain.setValueAtTime(Math.max(0.001, masterGain.gain.value), ctx.currentTime);
+          masterGain.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 1.6);
+          playWarmPadChord();
+          setTimeout(playFeltPianoNote, 500);
+          chordTimer = setInterval(playWarmPadChord, 4800);
+          melodyTimer = setInterval(playFeltPianoNote, 1900);
+          updateUI();
+        }
+
+        function stopBGM() {
+          if (!ctx || !isPlaying) return;
+          isPlaying = false;
+          clearInterval(chordTimer);
+          clearInterval(melodyTimer);
+          masterGain.gain.cancelScheduledValues(ctx.currentTime);
+          masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+          masterGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+          updateUI();
+        }
+
+        function updateSpatialDynamics(velocity, chapterId) {
+          if (!ctx || !isPlaying) return;
+          if (chapterId !== activeCh) activeCh = chapterId;
+          if (whooshGain && whooshFilter) {
+            const speed = Math.min(1.0, Math.abs(velocity) * 2.5);
+            whooshGain.gain.setTargetAtTime(speed * 0.08, ctx.currentTime, 0.08);
+            whooshFilter.frequency.setTargetAtTime(220 + speed * 750, ctx.currentTime, 0.08);
+          }
+        }
+
+        const bgmBtn = document.getElementById('btn-bgm-toggle');
+        if (bgmBtn) {
+          bgmBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isPlaying) { userMuted = true; stopBGM(); }
+            else { userMuted = false; startBGM(); }
+          });
+        }
+
+        const unlock = () => { if (!isPlaying && !userMuted) startBGM(); };
+        window.addEventListener('wheel', unlock, { passive: true, once: true });
+        window.addEventListener('pointerdown', unlock, { passive: true, once: true });
+        window.addEventListener('touchstart', unlock, { passive: true, once: true });
+
+        return { updateSpatialDynamics };
+      })();
+
+      // ======================================================================
+      // 9. MASTER 60FPS ANIMATION LOOP
+      // ======================================================================
+      let lastTime = performance.now();
+
+      function animate(now) {
+        requestAnimationFrame(animate);
+        const dt = Math.min(0.05, (now - lastTime) / 1000);
+        lastTime = now;
+        const timeSec = now * 0.001;
+
+        // Opening Infertility Treatment Auto-Showcase:
+        // Before the user scrolls, gently glide between Frame 0 (난임 기다림) and Frame 1 (바른한의원 난임 진맥·한약 치료)
+        // so the Infertility Treatment part is immediately visible on load!
+        if (!hasUserScrolled && getCurrentScrollY() < 8) {
+          const introCycle = (Math.sin(timeSec * 0.85 - 0.6) * 0.5 + 0.5) * 1.15;
+          targetProgress = introCycle / (FRAMES.length - 1);
+        } else if (now - lastUserInteract > 120) {
+          targetProgress = Math.max(0, Math.min(1, getCurrentScrollY() / getScrollMax()));
+        }
+
+        smoothProgress += (targetProgress - smoothProgress) * 0.085;
+        scrollVelocity = (smoothProgress - prevProgress) / Math.max(dt, 0.001);
+        prevProgress = smoothProgress;
+
+        const maxIdx = FRAMES.length - 1;
+        const frameFloat = Math.max(0, Math.min(maxIdx, smoothProgress * maxIdx));
+        const currIdx = Math.min(maxIdx, Math.floor(frameFloat));
+        const nextIdx = Math.min(maxIdx, currIdx + 1);
+        const localMix = frameFloat - currIdx;
+
+        if (glRenderer && glMaterial && glTextures.length > 0) {
+          const currFrame = FRAMES[currIdx];
+          glMaterial.uniforms.uTexCurr.value = glTextures[currIdx];
+          glMaterial.uniforms.uTexNext.value = glTextures[nextIdx];
+          glMaterial.uniforms.uMix.value = localMix;
+          glMaterial.uniforms.uTime.value = timeSec;
+          glMaterial.uniforms.uVelocity.value = scrollVelocity;
+          glMaterial.uniforms.uMouse.value.set(mouseNorm.x, 1.0 - mouseNorm.y);
+          glMaterial.uniforms.uFocal.value.set(currFrame.focal[0], currFrame.focal[1]);
+          glMaterial.uniforms.uMode.value = currFrame.mode;
+          glRenderer.render(glScene, glCamera);
+        }
+
+        if (tRenderer && tScene && tCamera) {
+          tCamera.position.z = -frameFloat * 22 + 8;
+          tCamera.position.x = (mouseNorm.x - 0.5) * 1.4;
+          tCamera.position.y = (0.5 - mouseNorm.y) * 0.9;
+          tCamera.fov = 50 + Math.min(14, Math.abs(scrollVelocity) * 45);
+          tCamera.updateProjectionMatrix();
+
+          tPortalGates.forEach((ring, i) => {
+            ring.rotation.z = timeSec * (i % 2 === 0 ? 0.2 : -0.2);
+          });
+          tRenderer.render(tScene, tCamera);
+        }
+
+        renderCleanLightOverlay(frameFloat, timeSec);
+        updateScrollDialogue(frameFloat, scrollVelocity, now);
+        soundEngine.updateSpatialDynamics(scrollVelocity, FRAMES[currIdx].chapter);
+      }
+
+      window.addEventListener('resize', () => {
+        const w = window.innerWidth, h = window.innerHeight;
+        if (glRenderer && glMaterial) {
+          glRenderer.setSize(w, h);
+          glMaterial.uniforms.uResolution.value.set(w, h);
+        }
+        if (tRenderer && tCamera) {
+          tRenderer.setSize(w, h);
+          tCamera.aspect = w / h;
+          tCamera.updateProjectionMatrix();
+        }
+      });
+
+      initGLSLPortalStage();
+      initThreeTunnelStage();
+      requestAnimationFrame(animate);
+    })();
+  </script>
 </body>
 </html>
