@@ -61,12 +61,12 @@
     }
 
     /* ==========================================================================
-       2200vh FULL-SCROLL TRACK (Drives 20 Live-Action Frames & 8 Story Dialogues)
+       3000vh FULL-SCROLL TRACK (Generous Frame Dwell & Spacing Across 24 Frames)
        ========================================================================== */
     .fullscroll-virtual-track {
       position: relative;
       width: 100%;
-      height: 2200vh;
+      height: 3000vh;
       pointer-events: none;
     }
 
@@ -284,47 +284,56 @@
       perspective: 1000px;
     }
 
-    .dialogue-meta-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
+    .dialogue-meta-row,
+    .dialogue-sub-whisper,
+    .dialogue-phase-steps,
+    .timeline-top-meta {
+      display: none !important;
     }
 
-    .dialogue-chapter-num {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      color: var(--gold-bright);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.8);
-    }
-
-    .dialogue-chapter-num::before {
-      content: '';
-      width: 28px;
-      height: 1.5px;
-      background: linear-gradient(90deg, var(--gold-bright), transparent);
-    }
-
-    .dialogue-pov-tag {
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 700;
-      color: #FFFFFF;
-      background: rgba(16, 185, 129, 0.28);
-      border: 1px solid rgba(110, 231, 183, 0.55);
-      padding: 3px 10px;
+    /* Story 4 Scroll-Reactive Weight Loss Counter */
+    .story4-weight-counter {
+      display: none;
+      align-items: baseline;
+      gap: 14px;
+      margin-top: 14px;
+      padding: 10px 22px;
       border-radius: 999px;
-      letter-spacing: 0.04em;
-      backdrop-filter: blur(6px);
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85);
+      background: rgba(6, 18, 13, 0.68);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65);
+      width: fit-content;
     }
 
-    /* Main Story Dialogue Line (1 ~ 8) with Scroll-Reactive Character Wave */
+    .story4-weight-counter.active {
+      display: inline-flex;
+    }
+
+    .weight-live-num {
+      font-family: var(--font-mono);
+      font-size: clamp(26px, 3.2vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--gold-bright);
+      text-shadow: 0 0 20px rgba(253, 230, 138, 0.55), 0 2px 10px rgba(0, 0, 0, 0.95);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .weight-diff-badge {
+      font-family: var(--font-mono);
+      font-size: clamp(14px, 1.5vw, 19px);
+      font-weight: 700;
+      color: var(--emerald-bright);
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Main Story Dialogue Line with Scroll-Reactive Character Wave */
     .dialogue-main-quote {
       font-family: var(--font-serif);
       font-size: clamp(28px, 3.7vw, 50px);
@@ -390,55 +399,6 @@
       box-shadow: 0 0 12px var(--gold-bright), 0 0 20px var(--emerald-bright);
     }
 
-    /* Subtle Poetic Sub-Narration Whisper (Describes the live treatment transition) */
-    .dialogue-sub-whisper {
-      font-family: var(--font-sans);
-      font-size: clamp(15px, 1.4vw, 18px);
-      font-weight: 600;
-      line-height: 1.65;
-      color: #FFFFFF;
-      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.96), 0 1px 6px rgba(0, 0, 0, 0.92);
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-      will-change: transform, opacity;
-      transition: opacity 0.25s ease;
-    }
-
-    /* Pure Typographic Phase Breadcrumb (No Card Box! Shows Treatment Flow Clearly) */
-    .dialogue-phase-steps {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      pointer-events: auto;
-    }
-
-    .phase-step-text {
-      font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.65);
-      cursor: pointer;
-      transition: all 0.25s ease;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.98);
-    }
-
-    .phase-step-text:hover {
-      color: #FFFFFF;
-    }
-
-    .phase-step-text.active {
-      color: var(--gold-bright);
-      font-weight: 800;
-      text-shadow: 0 0 16px rgba(253, 230, 138, 0.65), 0 2px 10px rgba(0, 0, 0, 0.98);
-    }
-
-    .phase-step-arrow {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.45);
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
-    }
-
     /* ==========================================================================
        MINIMALIST BOTTOM TIMELINE LINE (NO BOTTOM CARDS!)
        ========================================================================== */
@@ -452,37 +412,6 @@
       flex-direction: column;
       gap: 10px;
       pointer-events: auto;
-    }
-
-    .timeline-top-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.82);
-      letter-spacing: 0.08em;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
-    }
-
-    .timeline-scroll-hint {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--gold-bright);
-      font-family: var(--font-sans);
-      font-size: 12px;
-      font-weight: 700;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-    }
-
-    .timeline-scroll-hint .wheel-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--gold-bright);
-      box-shadow: 0 0 8px var(--gold-bright);
-      animation: wheelPulse 1.5s infinite ease-in-out;
     }
 
     @keyframes wheelPulse {
@@ -658,6 +587,332 @@
       font-weight: 600;
     }
 
+    /* ==========================================================================
+       SK TELECOM (sktelecom.com) INTRO CARD STACK -> BENTO FLIP SPREAD STAGE
+       Triggers automatically when scroll finishes (or via quick button)
+       Cards: 안정위원장 / 추나 / 성장 / 다이어트 / 탈모 / 황제공진단
+       ========================================================================== */
+    .skt-finale-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 45;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 78px 4vw 56px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+    }
+
+    .skt-finale-stage.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .skt-hero-bg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 108%;
+      height: 112%;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(circle at 50% 38%, rgba(253, 230, 138, 0.18) 0%, rgba(16, 185, 129, 0.12) 38%, rgba(4, 15, 11, 0.94) 78%),
+        linear-gradient(180deg, rgba(5, 18, 13, 0.88) 0%, rgba(3, 12, 9, 0.96) 100%);
+      backdrop-filter: blur(18px);
+      z-index: 0;
+      will-change: transform;
+    }
+
+    /* Center Headline that pops in before the 6 cards stack & spread */
+    .skt-hero-headline {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 15;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .skt-hero-headline .skt-headline-text {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: clamp(44px, 7.2vw, 96px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+      white-space: nowrap;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.85), 0 0 32px rgba(253, 230, 138, 0.45);
+      opacity: 0;
+      transform: scale(1.22);
+      transition: opacity 0.48s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .skt-hero-headline .skt-headline-sub {
+      display: block;
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: clamp(12px, 1.2vw, 15px);
+      letter-spacing: 0.22em;
+      color: var(--gold-bright);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .skt-finale-stage.phase-headline .skt-hero-headline .skt-headline-text,
+    .skt-finale-stage.phase-stack .skt-hero-headline .skt-headline-text {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .skt-finale-stage.phase-headline .skt-hero-headline .skt-headline-sub,
+    .skt-finale-stage.phase-stack .skt-hero-headline .skt-headline-sub {
+      opacity: 0.9;
+      transform: translateY(0);
+    }
+
+    .skt-finale-stage.phase-spread .skt-hero-headline .skt-headline-text,
+    .skt-finale-stage.phase-ready .skt-hero-headline .skt-headline-text {
+      opacity: 0;
+      transform: scale(0.78);
+      transition: opacity 0.42s ease, transform 0.42s ease;
+    }
+
+    .skt-finale-stage.phase-spread .skt-hero-headline .skt-headline-sub,
+    .skt-finale-stage.phase-ready .skt-hero-headline .skt-headline-sub {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    /* Top Bar inside Finale Stage */
+    .skt-finale-header {
+      position: relative;
+      z-index: 10;
+      width: min(1360px, 92vw);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .skt-finale-stage.phase-ready .skt-finale-header {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skt-finale-heading-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .skt-finale-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--emerald-bright);
+    }
+
+    .skt-finale-main-title {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.4vw, 32px);
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+
+    .skt-finale-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .skt-ctrl-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(253, 230, 138, 0.42);
+      color: var(--gold-bright);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .skt-ctrl-btn:hover {
+      background: var(--gold);
+      color: #020D09;
+      border-color: var(--gold);
+    }
+
+    /* 6-Card Bento Grid Container (mirrors sktelecom.com .hero-content-lg) */
+    .skt-bento-grid {
+      position: relative;
+      z-index: 10;
+      width: min(1360px, 92vw);
+      height: min(640px, 70vh);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .skt-card-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      text-decoration: none;
+      cursor: pointer;
+      overflow: visible;
+      user-select: none;
+    }
+
+    .skt-finale-stage.phase-ready .skt-card-item {
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+    }
+
+    .skt-finale-stage.phase-ready .skt-card-item:hover {
+      border-color: rgba(253, 230, 138, 0.78);
+      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.75), 0 0 28px rgba(253, 230, 138, 0.24);
+      transform: translateY(-4px);
+    }
+
+    /* The Card Image Box that starts stacked at viewport center & FLIPs into place */
+    .skt-card-item .skt-img-box {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.72);
+      border: 1px solid rgba(253, 230, 138, 0.35);
+      opacity: 0;
+      transform-origin: center center;
+      will-change: transform, opacity;
+    }
+
+    .skt-card-item .skt-img-box::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(4, 14, 10, 0.0) 0%, rgba(4, 14, 10, 0.04) 60%, rgba(3, 12, 9, 0.72) 100%);
+      transition: opacity 0.4s ease;
+    }
+
+    /* SKT Hover Zoom on .skt-img-box when in ready state */
+    .skt-finale-stage.phase-ready .skt-card-item .skt-img-box {
+      border: none;
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.3, 1.2) !important;
+    }
+
+    .skt-finale-stage.phase-ready .skt-card-item:hover .skt-img-box {
+      transform: scale(1.09) !important;
+    }
+
+    /* Card Content Overlay (.box in sktelecom.com) */
+    .skt-card-item .skt-card-box {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.48s ease, transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+
+    .skt-finale-stage.phase-ready .skt-card-item .skt-card-box {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skt-card-bottom-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .skt-card-title {
+      font-family: var(--font-serif);
+      font-size: clamp(24px, 2.4vw, 34px);
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.95);
+      margin: 0;
+    }
+
+    .skt-card-desc {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.86);
+      line-height: 1.5;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .skt-card-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      pointer-events: auto;
+    }
+
+    .skt-card-chip {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      color: #A7F3D0;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .skt-card-chip:hover {
+      background: var(--emerald);
+      color: #FFFFFF;
+    }
+
+    .skt-card-chip.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.28);
+      color: #FFFFFF;
+    }
+
+    .skt-card-chip.secondary:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #020D09;
+    }
+
     @media (max-width: 900px) {
       .spatial-top-nav {
         padding: 0 20px;
@@ -676,6 +931,15 @@
         right: 24px;
         bottom: 18px;
       }
+      .skt-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        height: 74vh;
+        gap: 10px;
+      }
+      .skt-card-item .skt-card-box {
+        padding: 16px;
+      }
     }
   </style>
 </head>
@@ -692,6 +956,7 @@
     </a>
 
     <div class="nav-right-actions">
+      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(253, 230, 138, 0.65); color: #FDE68A;" title="6대 핵심 진료 카드 펼침 보기">✦ 진료카드 펼침 보기</button>
       <a href="compare.html" class="btn-reserve-minimal" style="border-color: rgba(110, 231, 183, 0.55); color: #6EE7B7;" title="수정 전·후 동시 비교 화면 열기">⇄ 수정 전·후 비교 보기</a>
       <a href="http://localhost:3001" target="_blank" class="btn-reserve-minimal" style="border-color: rgba(253, 230, 138, 0.5); color: #FDE68A;" title="수정 전 로컬 서버(포트 3001) 새 창 열기">수정 전 페이지(3001) ↗</a>
       <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 BGM 켜기/끄기">
@@ -705,6 +970,89 @@
   </header>
 
   <!-- ========================================================================
+       SK TELECOM (sktelecom.com) INTRO CARD STACK -> BENTO SPREAD SHOWCASE
+       Triggers automatically when the 3D story scroll finishes!
+       6 Cards: 안정위원장 / 추나 / 성장 / 다이어트 / 탈모 / 황제공진단
+       ======================================================================== -->
+  <section class="skt-finale-stage" id="skt-finale-stage" aria-label="바른한의원 6대 핵심 클리닉">
+    <div class="skt-hero-bg" id="skt-hero-bg"></div>
+
+    <div class="skt-hero-headline" id="skt-hero-headline">
+      <span class="skt-headline-text">바른한의원</span>
+      <span class="skt-headline-sub">BAREUN KOREAN MEDICINE CLINIC</span>
+    </div>
+
+    <div class="skt-finale-header" style="justify-content: flex-end;">
+      <div class="skt-finale-controls">
+        <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
+        <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 3D 스토리 다시 스크롤</button>
+      </div>
+    </div>
+
+    <div class="skt-bento-grid" id="skt-bento-grid">
+      <!-- 1. 안정위원장 -->
+      <div class="skt-card-item" data-card-idx="0" data-rot="0" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
+        <div class="skt-img-box" style="background-image: url('card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info">
+            <p class="skt-card-title">안정위원장</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 추나 -->
+      <div class="skt-card-item" data-card-idx="1" data-rot="5" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
+        <div class="skt-img-box" style="background-image: url('card_2_chuna.jpg?v=card1'); background-position: center center;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info">
+            <p class="skt-card-title">추나</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 성장 -->
+      <div class="skt-card-item" data-card-idx="2" data-rot="7" data-link="growth.html" data-reserve="소아·청소년 키성장 클리닉" data-chapter="3">
+        <div class="skt-img-box" style="background-image: url('card_3_growth.jpg?v=card1'); background-position: center 22%;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info">
+            <p class="skt-card-title">성장</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 다이어트 -->
+      <div class="skt-card-item" data-card-idx="3" data-rot="-7" data-link="diet-zero.html" data-reserve="성인 비만·다이어트 클리닉" data-chapter="4">
+        <div class="skt-img-box" style="background-image: url('card_4_diet.jpg?v=card1'); background-position: center 25%;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info">
+            <p class="skt-card-title">다이어트</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 탈모 -->
+      <div class="skt-card-item" data-card-idx="4" data-rot="-5" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
+        <div class="skt-img-box" style="background-image: url('card_5_hairloss.jpg?v=card1'); background-position: center center;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info">
+            <p class="skt-card-title">탈모</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 황제공진단 -->
+      <div class="skt-card-item" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
+        <div class="skt-img-box" style="background-image: url('card_6_gongjindan.jpg?v=card1'); background-position: center center;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info">
+            <p class="skt-card-title">황제공진단</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
        FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT (NEVER DISAPPEARS)
        ======================================================================== -->
   <div class="spatial-fixed-viewport" id="spatial-viewport">
@@ -715,20 +1063,22 @@
   </div>
 
   <!-- ========================================================================
-       SCROLL-REACTIVE STORY DIALOGUE STAGE (NO CARDS — 8 STORY LINES)
+       SCROLL-REACTIVE STORY DIALOGUE STAGE (MAIN QUOTE ONLY + STORY 4 WEIGHT)
        ======================================================================== -->
   <main class="story-dialogue-stage" id="story-dialogue-stage">
     <div class="dialogue-meta-row">
       <div class="dialogue-chapter-num" id="dialogue-chapter-num">STORY 01 / 08 · 바른 난임·착상 치료</div>
       <span class="dialogue-pov-tag" id="dialogue-pov-tag">👁️ 1인칭 시점 POV</span>
     </div>
-    <h1 class="dialogue-main-quote" id="dialogue-main-quote">임신이 되지 않아 힘들게 얻은 선물</h1>
+    <h1 class="dialogue-main-quote" id="dialogue-main-quote">간절한 기다림</h1>
     <div class="dialogue-progress-brush">
       <div class="dialogue-progress-fill" id="dialogue-progress-fill"></div>
     </div>
-    <p class="dialogue-sub-whisper" id="dialogue-sub-whisper">
-      한 줄만 뜬 임신테스트기 앞의 기다림을 지나, 바른 난임 진맥·한약 치료로 마침내 아이의 초음파 사진을 품에 안습니다.
-    </p>
+    <div class="story4-weight-counter" id="story4-weight-counter">
+      <span class="weight-live-num" id="weight-live-num">68.5 kg</span>
+      <span class="weight-diff-badge" id="weight-diff-badge">▼ -0.0 kg 감량</span>
+    </div>
+    <p class="dialogue-sub-whisper" id="dialogue-sub-whisper"></p>
     <div class="dialogue-phase-steps" id="dialogue-phase-steps"></div>
   </main>
 
@@ -862,248 +1212,294 @@
       const FRAMES = [
         // --- CHAPTER 1: 임신이 되지 않아 힘들게 얻은 선물 (Frames 0 ~ 3) ---
         {
-          src: 'life_1a0_infertility_before.jpg?v=pov4',
+          src: 'life_1a0_infertility_before.jpg?v=pov7',
           chapter: 1,
-          povBadge: '👁️ 1인칭 시점 POV · 임신테스트기 음성(1줄)',
-          stepLabel: '① 임신테스트기 음성(1줄)',
-          mode: 0,
+          quote: '간절한 기다림',
+          povBadge: '',
+          stepLabel: '',
+          mode: 0, // Mode 0: Lusion Liquid Silk Flow
           warmth: 1.08,
           focal: [0.52, 0.56],
-          whisper: '따스한 아침 햇살 속, 야속하게 한 줄(음성)만 뜬 임신테스트기를 바라보던 간절한 기다림의 시간'
+          whisper: ''
         },
         {
-          src: 'prev_life_1a1_infertility_treatment.jpg?v=pov4',
+          src: 'prev_life_1a1_infertility_treatment.jpg?v=pov7',
           chapter: 1,
-          povBadge: '🎬 3인칭 진료실 시점 · 남자 한의사 원장님 난임 진맥·한약',
-          stepLabel: '② ✦ 바른 난임·착상 진맥치료',
-          mode: 0,
+          quote: '난임으로 찾게 된 한의원',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5, // Mode 5: Anamorphic Golden Light Sweep -> miracle ultrasound
           warmth: 1.10,
           focal: [0.52, 0.48],
-          whisper: '햇살 가득한 바른한의원에서 대표원장님의 정밀 진맥과 맞춤 착상 한약으로 새 생명의 희망을 틔우고'
+          whisper: ''
         },
         {
-          src: 'life_1a_fertilization.jpg?v=pov4',
+          src: 'life_1a_fertilization.jpg?v=pov7',
           chapter: 1,
-          povBadge: '🎬 3인칭 부부 시점 · 아이 초음파 사진의 감동',
-          stepLabel: '③ 부부가 함께 보는 아이 초음파 사진',
-          mode: 0,
+          quote: '힘들게 얻은 선물',
+          povBadge: '',
+          stepLabel: '',
+          mode: 6, // Mode 6: Iris Bokeh Aperture Focus-Pull -> newborn baby
           warmth: 1.12,
           focal: [0.56, 0.52],
-          whisper: '마침내 찾아온 기적! 부부가 함께 아이의 첫 초음파 사진을 바라보며 벅찬 행복의 눈물을 흘립니다.'
+          whisper: ''
         },
         {
-          src: 'life_1b_birth.jpg?v=pov4',
+          src: 'life_1b_birth.jpg?v=pov7',
           chapter: 1,
-          povBadge: '👁️ 1인칭 부모 시점 POV · 아기와의 첫 만남',
-          stepLabel: '④ 소중한 아이 탄생',
-          mode: 0,
+          quote: '소중한 탄생',
+          povBadge: '',
+          stepLabel: '',
+          mode: 7, // Mode 7: 3D Depth-Layer Parallax Push & Crystal Prism
           warmth: 1.12,
           focal: [0.52, 0.54],
-          whisper: '엄마의 손가락을 꼭 쥐어주는 작은 손, 세상 무엇과도 바꿀 수 없는 선물이 태어납니다.'
+          whisper: ''
         },
 
         // --- CHAPTER 2: 사랑하는 아이가 건강하기를 바라면서 (Frames 4 ~ 6) ---
         {
-          src: 'life_1c_cold_before.jpg?v=pov4',
+          src: 'life_1c_cold_before.jpg?v=pov7',
           chapter: 2,
-          povBadge: '🎬 3인칭 침대 시점 · 물수건·체온계와 걱정하는 엄마',
-          stepLabel: '① 침대 위 고열(물수건·체온계)과 엄마의 걱정',
-          mode: 0,
+          quote: '자꾸만 아픈 우리 아이',
+          povBadge: '',
+          stepLabel: '',
+          mode: 0, // Mode 0: Lusion Liquid Silk Flow -> warm pediatric clinic POV
           warmth: 1.04,
           focal: [0.52, 0.52],
-          whisper: '이마에 물수건을 얹고 체온계를 문 채 열감기로 힘들어하는 아이, 옆에서 손잡고 걱정하는 엄마의 마음'
+          whisper: ''
         },
         {
-          src: 'prev_life_1c_clinic_exam.jpg?v=pov4',
+          src: 'prev_life_1c_clinic_exam.jpg?v=pov8',
           chapter: 2,
-          povBadge: '🩺 3인칭 한의원 진료 시점 · 소아 면역 진맥·진찰',
-          stepLabel: '② ✦ 바른한의원 소아 진맥·진찰',
-          mode: 0,
+          quote: '다시 찾은 한의원',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5, // Mode 5: Anamorphic Golden Light Sweep -> joyful recovery hug
           warmth: 1.09,
-          focal: [0.52, 0.48],
-          whisper: '바른한의원을 찾아 자상한 원장님께 세심하게 소아 진맥과 진찰을 받으며 약해진 호흡기 면역력을 바로잡고'
+          focal: [0.50, 0.45],
+          whisper: ''
         },
         {
-          src: 'life_1c_immunity.jpg?v=pov4',
+          src: 'life_1c_immunity.jpg?v=pov7',
           chapter: 2,
-          povBadge: '🎬 3인칭 회복 시점 · 면역강화 후 행복한 포옹',
-          stepLabel: '③ 소아 면역강화 완쾌 & 해맑은 미소',
-          mode: 0,
+          quote: '으랏차차',
+          povBadge: '',
+          stepLabel: '',
+          mode: 6, // Mode 6: Iris Bokeh Aperture Focus-Pull -> school classroom
           warmth: 1.10,
           focal: [0.54, 0.48],
-          whisper: '바른 소아 면역강화 치료로 열과 감기를 훌훌 털어내고, 엄마 품에 안겨 해맑은 웃음을 되찾습니다.'
+          whisper: ''
         },
 
-        // --- CHAPTER 3: 멋지게 성장하는 꿈을 꾸며 (Frames 7 ~ 8) ---
+        // --- CHAPTER 3: 멋지게 성장하는 꿈을 꾸며 (Frames 7 ~ 9) ---
         {
-          src: 'life_1d_growth_short.jpg?v=pov4',
+          src: 'life_1d_growth_short.jpg?v=pov7',
           chapter: 3,
-          povBadge: '🏫 3인칭 학교 교실 시점 · 또래보다 작은 키',
-          stepLabel: '① 학교 교실 또래보다 작은 키',
-          mode: 1, // Real-time vertical height stretch in classroom!
+          quote: '친구보다 너무 작은 우리 아이',
+          povBadge: '',
+          stepLabel: '',
+          mode: 7, // Mode 7: 3D Depth-Layer Parallax Push & Crystal Prism -> ultrasound clinic
           warmth: 1.08,
           focal: [0.53, 0.48],
-          whisper: '햇살 비치는 학교 교실, 친구들과 나란히 서 있을 때 유독 작아 보이던 우리 아이의 키도'
+          whisper: ''
         },
         {
-          src: 'life_1d_growth_peers.jpg?v=pov4',
+          src: 'life_1d_growth_clinic.jpg?v=pov7',
           chapter: 3,
-          povBadge: '🏫 3인칭 학교 교실 시점 · 키가 쭈욱 자란 모습',
-          stepLabel: '② ✦ 바른 성장치료로 교실 속 폭풍 키성장',
-          mode: 0,
+          quote: '성장클리닉을 하다',
+          povBadge: '',
+          stepLabel: '',
+          mode: 1, // Mode 1: Real-time vertical height stretch into the tall classroom cut!
+          warmth: 1.09,
+          focal: [0.52, 0.48],
+          whisper: ''
+        },
+        {
+          src: 'life_1d_growth_peers.jpg?v=pov7',
+          chapter: 3,
+          quote: '쑥쑥 자란 우리 아이',
+          povBadge: '',
+          stepLabel: '',
+          mode: 6, // Mode 6: Iris Bokeh Aperture Focus-Pull
           warmth: 1.10,
           focal: [0.50, 0.36],
-          whisper: '바른 성장판·성장추나 치료로 교실 친구들보다 머리 하나는 더 쭈욱 자라나 당당하게 미소 짓습니다.'
+          whisper: ''
         },
 
-        // --- CHAPTER 4: 날씬하고 건강해서 예쁘게 (Frames 9 ~ 11) ---
+        // --- CHAPTER 4: 날씬하고 건강해서 예쁘게 (Frames 10 ~ 12) ---
         {
-          src: 'life_2a_obesity.jpg?v=pov4',
+          src: 'life_2a_obesity.jpg?v=pov7',
           chapter: 4,
-          povBadge: '🪞 거울 양면 시점(1·3인칭 혼합) · 앞뒤 모두 살찐 체형',
-          stepLabel: '① 전신거울 앞뒤 비만 체형 고민',
-          mode: 2, // Dual Front+Back Mirror Slimming Morph!
+          quote: '육아로 뱃살만...',
+          povBadge: '',
+          stepLabel: '',
+          mode: 0, // Mode 0: Lusion Liquid Silk Flow -> pink Dream Beauty pouch
           warmth: 1.05,
           focal: [0.52, 0.50],
-          whisper: '전신 거울 앞에 서면 뒷모습의 등살·옆구리살과 거울 속 불어난 뱃살까지 앞뒤로 무거워진 몸'
+          whisper: ''
         },
         {
-          src: 'prev_life_2a_treatment.jpg?v=pov4',
+          src: 'prev_life_2a_treatment.jpg?v=pov7',
           chapter: 4,
-          povBadge: '🪞 거울 양면 시점 · 바른 다이어트 한약 복용',
-          stepLabel: '② ✦ 거울 앞 바른 다이어트 한약 복용',
-          mode: 2, // Dual Front+Back Mirror Slimming Transformation!
-          warmth: 1.08,
-          focal: [0.52, 0.50],
-          whisper: '거울 앞에서 바른 비만 맞춤 한약을 꾸준히 복용하며 체지방과 독소를 비워내고 라인이 몰라보게 달라집니다.'
+          quote: '결심했어!!',
+          povBadge: '',
+          stepLabel: '',
+          mode: 2, // Mode 2: S-Line Silhouette Ribbon Morph & Golden Veil -> goddess slim
+          warmth: 1.09,
+          focal: [0.50, 0.52],
+          whisper: ''
         },
         {
-          src: 'prev_life_2b_slim_therapy.jpg?v=pov4',
+          src: 'prev_life_2b_slim_therapy.jpg?v=pov9',
           chapter: 4,
-          povBadge: '🪞 거울 양면 시점 · 앞뒤 모두 날씬하고 예뻐진 변신',
-          stepLabel: '③ 날씬하고 예뻐진 S라인 완벽 변신',
-          mode: 0,
-          warmth: 1.10,
-          focal: [0.52, 0.46],
-          whisper: '거울 속 탄탄한 복부와 매끈한 뒷모습까지, 날씬하고 건강해서 더욱 예쁜 모습으로 완벽하게 변신합니다.'
+          quote: '늘씬한 내가 되자',
+          povBadge: '',
+          stepLabel: '',
+          mode: 7, // Mode 7: 3D Depth-Layer Parallax Push
+          warmth: 1.12,
+          focal: [0.52, 0.42],
+          whisper: ''
         },
 
-        // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 12 ~ 15) ---
+        // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 13 ~ 16) ---
         {
-          src: 'life_3a_hairloss.jpg?v=pov4',
+          src: 'prev_life_3a_hairloss.jpg?v=pov7',
           chapter: 5,
-          povBadge: '👁️ 1·3인칭 시점 · 바닥에 가늘게 떨어진 머리카락과 한 손에 움켜쥔 모발',
-          stepLabel: '① 바닥의 가는 머리카락 & 한 손에 움켜쥔 탈모',
-          mode: 0,
+          quote: '심해진 탈모',
+          povBadge: '',
+          stepLabel: '',
+          mode: 6, // Mode 6: Iris Bokeh Focus-Pull -> clinic scalp exam
           warmth: 1.05,
           focal: [0.54, 0.48],
-          whisper: '바닥에 가늘게 힘없이 떨어진 머리카락들과 한 손에 한 움큼 빠져 쥐어진 머리카락을 보며 충격에 빠진 순간'
+          whisper: ''
         },
         {
-          src: 'life_3a_treatment.jpg?v=pov4',
+          src: 'prev_life_3a_treatment.jpg?v=pov7',
           chapter: 5,
-          povBadge: '🔬 진료실 시점 · 남자 한의사 원장님의 두피 진단 검사기 정밀 검진',
-          stepLabel: '② ✦ 원장님 두피 검사기 정밀 진단',
-          mode: 4, // Optical Dermatoscope Zoom-In right into the scalp follicles!
+          quote: '한의원에서 탈모검사 중',
+          povBadge: '',
+          stepLabel: '',
+          mode: 4, // Mode 4: Optical Dermatoscope 200x Zoom-In right into the scalp follicles!
           warmth: 1.08,
           focal: [0.52, 0.28],
-          whisper: '바른한의원 원장님이 정밀 두피 진단 검사기로 모공과 두피 열독 상태를 세밀하게 살펴보며 검사기가 확대됩니다.'
+          whisper: ''
         },
         {
-          src: 'life_3a_follicle_zoom.jpg?v=pov4',
+          src: 'life_3a_follicle_zoom.jpg?v=pov7',
           chapter: 5,
-          povBadge: '🔍 검사기 200배 확대 시점 POV · 모낭 속 머리카락 부족 확인',
-          stepLabel: '③ 검사기 확대 · 모낭 속 부족한 모발 확인',
-          mode: 0,
+          quote: '탈모 두피 치료',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5, // Mode 5: Anamorphic Golden Light Sweep -> confident morning commute!
           warmth: 1.06,
           focal: [0.50, 0.50],
-          whisper: '확대된 두피 검사기 렌즈 속, 모낭마다 머리카락이 텅 비어 부족하고 가늘어진 원인을 정확히 찾아내어 치료합니다.'
+          whisper: ''
         },
         {
-          src: 'prev_life_3b_hair_restored.jpg?v=pov4',
+          src: 'prev_life_3b_hair_restored.jpg?v=pov7',
           chapter: 5,
-          povBadge: '🪞 거울 시점 POV · 풍성하게 회복된 정상 모발',
-          stepLabel: '④ ✦ 빽빽하고 풍성한 정상 모발 회복',
-          mode: 0,
-          warmth: 1.10,
-          focal: [0.58, 0.42],
-          whisper: '두피청열·모근재생 치료 후, 빈 모낭마다 다시 빽빽하고 굵게 차오른 모발을 쓸어 넘기며 자신감을 되찾습니다.'
+          quote: '자신감 회복',
+          povBadge: '',
+          stepLabel: '',
+          mode: 7, // Mode 7: 3D Depth-Layer Parallax Push
+          warmth: 1.11,
+          focal: [0.54, 0.38],
+          whisper: ''
         },
 
-        // --- CHAPTER 6: 열심히 근무하면서 생긴 통증 (Frames 16 ~ 18) ---
+        // --- CHAPTER 6: 열심히 근무하면서 생긴 통증 (Frames 17 ~ 20) ---
         {
-          src: 'life_4a_work_spine_pain.jpg?v=pov4',
+          src: 'life_4a_work_spine_pain.jpg?v=pov7',
           chapter: 6,
-          povBadge: '🎬 3인칭 전신 시점 · 굽은 척추와 목·어깨·팔·허리·다리·발 통증',
-          stepLabel: '① 굽은 척추·목·어깨·팔·허리·다리·발 전신 통증',
-          mode: 3, // Full-body Chuna laser scan!
+          quote: '일하면서 온몸이 아파진 나',
+          povBadge: '',
+          stepLabel: '',
+          mode: 3, // Mode 3: Full-body Chuna Meridian Laser Scan!
           warmth: 1.04,
           focal: [0.54, 0.52],
-          whisper: '열심히 근무하며 틀어진 굽은 척추와 목·어깨·팔·허리·다리·발까지 머리부터 발끝을 죄어오는 통증'
+          whisper: ''
         },
         {
-          src: 'life_4a_treatment.jpg?v=pov4',
+          src: 'life_4a_treatment.jpg?v=pov8',
           chapter: 6,
-          povBadge: '🎬 3인칭 추나 시점 · 남자 한의사 원장님 1:1 전신 추나 교정',
-          stepLabel: '② ✦ 바른 1:1 추나·약침 전신 교정치료',
-          mode: 3,
+          quote: '한의원에서 추나 치료',
+          povBadge: '',
+          stepLabel: '',
+          mode: 6, // Mode 6: Iris Bokeh Focus-Pull -> 1st-person ankle acupuncture
           warmth: 1.08,
-          focal: [0.54, 0.52],
-          whisper: '대표원장님의 정교한 1:1 수기 추나 치료로 어긋난 척추와 전신 관절 마디마디를 바르게 정렬하여'
+          focal: [0.52, 0.52],
+          whisper: ''
         },
         {
-          src: 'life_4b_chuna_recovery.jpg?v=pov4',
+          src: 'life_4a2_ankle_acupuncture.jpg?v=pov8',
           chapter: 6,
-          povBadge: '🎬 3인칭 전신 회복 시점 · 통증 없이 바르게 펴진 자세',
-          stepLabel: '③ 전신 수직 정렬 & 통증 완전 회복',
-          mode: 0,
+          quote: '통증 치료',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5, // Mode 5: Anamorphic Golden Light Sweep -> full joint recovery!
+          warmth: 1.09,
+          focal: [0.50, 0.54],
+          whisper: ''
+        },
+        {
+          src: 'life_4b_chuna_recovery.jpg?v=pov7',
+          chapter: 6,
+          quote: '관절 튼튼 회복',
+          povBadge: '',
+          stepLabel: '',
+          mode: 0, // Mode 0: Lusion Liquid Silk Flow
           warmth: 1.10,
           focal: [0.54, 0.50],
-          whisper: '목·어깨·팔·허리·다리·발의 통증이 사라지고 곧게 펴진 가벼운 몸으로 활기찬 아침을 맞이합니다.'
+          whisper: ''
         },
 
-        // --- CHAPTER 7: 약해진 기력을 보강해야할 나이가 오고 (Frames 19 ~ 20) ---
+        // --- CHAPTER 7: 약해진 기력을 보강해야할 나이가 오고 (Frames 21 ~ 22) ---
         {
-          src: 'life_5a_aging_fatigue.jpg?v=pov4',
+          src: 'prev_life_5a_aging_fatigue.jpg?v=pov7',
           chapter: 7,
-          povBadge: '🎬 3인칭 시니어 시점 · 세월 속에 찾아온 노화와 기력저하',
-          stepLabel: '① 세월 속 노화·성인병·기력저하',
-          mode: 0,
+          quote: '어느새 기력이 쇠약해지고',
+          povBadge: '',
+          stepLabel: '',
+          mode: 7, // Mode 7: 3D Depth-Layer Parallax Push & Golden Aura
           warmth: 1.06,
           focal: [0.58, 0.46],
-          whisper: '어느덧 세월이 흘러 기력이 약해지고 성인병과 만성 피로를 돌보아야 할 나이가 찾아옵니다.'
+          whisper: ''
         },
         {
-          src: 'prev_life_5b_gongjindan_vitality.jpg?v=pov4',
+          src: 'prev_life_5b_gongjindan_vitality.jpg?v=pov7',
           chapter: 7,
-          povBadge: '💛 시니어 원기회복 시점 · 특허 받은 24K 황제공진단',
-          stepLabel: '② ✦ 특허 받은 24K 황제공진단 원기보강',
-          mode: 0,
+          quote: '황제공진단으로 기력충전',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5, // Mode 5: Anamorphic Golden Light Sweep -> 100-year life finale!
           warmth: 1.14,
           focal: [0.58, 0.46],
-          whisper: '바른한의원의 특허 받은 24K 순금박 황제공진단으로 고갈된 원기와 면역력을 깊숙이 다시 채웁니다.'
+          whisper: ''
         },
 
-        // --- CHAPTER 8: 건강한 인생이 될 수 있게 도와드립니다. (Frame 21) ---
+        // --- CHAPTER 8: 건강한 인생이 될 수 있게 도와드립니다. (Frame 23) ---
         {
-          src: 'life_5c_graceful_elder.jpg?v=pov4',
+          src: 'prev_life_5c_graceful_elder.jpg?v=pov7',
           chapter: 8,
-          povBadge: '🌅 골든아워 시네마 시점 · 품격 있고 아름답게 나이 들어가는 인생',
-          stepLabel: '✦ 품격 있고 건강한 백세 인생 완성',
-          mode: 0,
+          quote: '건강한 백세 인생',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5,
           warmth: 1.15,
           focal: [0.58, 0.45],
-          whisper: '생명의 첫 순간부터 품격 있고 아름답게 나이 들어가는 노년까지, 바른한의원이 건강한 인생을 도와드립니다.'
+          whisper: ''
         }
       ];
 
       // ======================================================================
-      // 3. CUSTOM GLSL SHADER ENGINE (1st/3rd POV Camera + Scope Zoom + Morph)
+      // 3. ART'S SIGNATURE 8-MODE HIGH-END 3D EDITORIAL & CINEMA SHADER
+      //    (100% Rectilinear, Zero Wobble, Bespoke Luxury Art Direction)
       // ======================================================================
       const portalCanvas = document.getElementById('glsl-portal-canvas');
-      let glRenderer, glScene, glCamera, glMaterial, glTextures = [];
+      let glRenderer, glScene, glCamera, glMaterial, glTextures = [], glManseTexture = null;
 
       const VERTEX_SHADER = `
+        precision highp float;
         varying vec2 vUv;
         void main() {
           vUv = uv;
@@ -1126,32 +1522,6 @@
         uniform vec2 uFocal;
         uniform int uMode;
 
-        float hash(vec2 p) {
-          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-        }
-
-        float noise(vec2 p) {
-          vec2 i = floor(p);
-          vec2 f = fract(p);
-          f = f * f * (3.0 - 2.0 * f);
-          float a = hash(i);
-          float b = hash(i + vec2(1.0, 0.0));
-          float c = hash(i + vec2(0.0, 1.0));
-          float d = hash(i + vec2(1.0, 1.0));
-          return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-        }
-
-        float fbm(vec2 p) {
-          float v = 0.0;
-          float a = 0.5;
-          for (int i = 0; i < 4; i++) {
-            v += a * noise(p);
-            p *= 2.02;
-            a *= 0.5;
-          }
-          return v;
-        }
-
         vec2 getCoverUv(vec2 uv) {
           float screenAspect = uResolution.x / max(uResolution.y, 1.0);
           float texAspect = 16.0 / 9.0;
@@ -1164,129 +1534,316 @@
           return (uv - 0.5) * s + 0.5;
         }
 
+        // 12-Tap Golden-Angle Vogel Disk Bokeh Blur for Leica f/0.95 Focus-Pull
+        vec4 sampleBokehDisk(sampler2D tex, vec2 uv, float radius, float aspect) {
+          if (radius <= 0.0005) {
+            return texture2D(tex, clamp(uv, 0.002, 0.998));
+          }
+          vec4 acc = vec4(0.0);
+          float wSum = 0.0;
+          for (int i = 0; i < 12; i++) {
+            float fi = float(i);
+            float r = sqrt((fi + 0.5) / 12.0) * radius;
+            float theta = fi * 2.3999632;
+            vec2 offset = vec2(cos(theta) / aspect, sin(theta)) * r;
+            vec4 c = texture2D(tex, clamp(uv + offset, 0.002, 0.998));
+            float luma = dot(c.rgb, vec3(0.299, 0.587, 0.114));
+            float bokehWeight = 1.0 + pow(max(0.0, luma - 0.52), 2.0) * 6.5;
+            acc += c * bokehWeight;
+            wSum += bokehWeight;
+          }
+          return acc / max(wSum, 0.001);
+        }
+
+        // Signed distance to a centered 2D box (for 3D Framed Gallery Pass-Through)
+        float sdBox(vec2 p, vec2 b) {
+          vec2 d = abs(p) - b;
+          return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+        }
+
         void main() {
           vec2 baseUv = getCoverUv(vUv);
           float aspect = uResolution.x / max(uResolution.y, 1.0);
           float t = smoothstep(0.0, 1.0, uMix);
+          float sinT = sin(t * 3.14159265);
           vec2 focal = vec2(uFocal.x, 1.0 - uFocal.y);
-          vec2 parallax = (uMouse - 0.5) * 0.018;
-          float breath = sin(uTime * 1.35) * 0.0045;
+
+          // Subtle, rock-steady rectilinear camera parallax (Zero wobble!)
+          vec2 parallax = (uMouse - 0.5) * 0.0085;
 
           vec4 finalColor = vec4(0.0);
 
-          if (uMode == 1) {
-            // CHAPTER 3: School Classroom Height Growth Vertical Stretch (Center Boy at x ≈ 0.52)
-            float horizMask = exp(-pow((baseUv.x - 0.52) / 0.14, 2.0));
-            float vertMask = smoothstep(0.12, 0.52, baseUv.y) * (1.0 - smoothstep(0.84, 0.98, baseUv.y));
+          if (uMix <= 0.002 && uMode != 3 && uMode != 8) {
+            finalColor = texture2D(uTexCurr, clamp(baseUv - parallax, 0.002, 0.998));
+          }
+          else if (uMix >= 0.998) {
+            finalColor = texture2D(uTexNext, clamp(baseUv - parallax, 0.002, 0.998));
+          }
+          else if (uMode == 1) {
+            // ================================================================
+            // MODE 1: CHAPTER 3 — Classroom Height Growth Vertical Stretch
+            //         (Center Boy at x ≈ 0.51 physically stretches from short to tall!)
+            // ================================================================
+            float horizMask = exp(-pow((baseUv.x - 0.51) / 0.145, 2.0));
+            float vertMask = smoothstep(0.10, 0.50, baseUv.y) * (1.0 - smoothstep(0.84, 0.98, baseUv.y));
             float stretchMask = horizMask * vertMask;
 
             vec2 uvCurr = baseUv - parallax * (1.0 - t);
-            uvCurr.y -= stretchMask * t * 0.105;
+            uvCurr.y -= stretchMask * t * 0.115;
             vec2 uvNext = baseUv - parallax * t;
-            uvNext.y += stretchMask * (1.0 - t) * 0.085;
+            uvNext.y += stretchMask * (1.0 - t) * 0.095;
 
-            uvCurr = (uvCurr - focal) / (1.0 + t * 0.08) + focal;
+            uvCurr = (uvCurr - focal) / (1.0 + t * 0.06) + focal;
             uvNext = (uvNext - focal) / (0.94 + t * 0.06) + focal;
 
             vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            float waveY = mix(0.12, 0.95, t);
-            float scanLine = exp(-pow((baseUv.y - waveY) / 0.025, 2.0)) * horizMask;
+            float waveY = mix(0.10, 0.94, t);
+            float scanCore = exp(-pow((baseUv.y - waveY) / 0.010, 2.0)) * horizMask;
+            float scanGlow = exp(-pow((baseUv.y - waveY) / 0.032, 2.0)) * horizMask;
 
             finalColor = mix(cCurr, cNext, t);
-            finalColor.rgb += vec3(0.99, 0.86, 0.42) * scanLine * sin(t * 3.14159) * 0.68;
+            finalColor.rgb += (vec3(0.99, 0.86, 0.42) * scanGlow * 0.55 + vec3(1.0, 0.97, 0.85) * scanCore * 0.45) * sinT;
           }
           else if (uMode == 2) {
-            // CHAPTER 4: Dual Mirror Front-and-Back Waistline Slimming Morph!
-            float waistYMask = exp(-pow((baseUv.y - 0.46) / 0.25, 2.0));
-            float dxMirror = baseUv.x - 0.365;
-            float maskMirror = exp(-pow(dxMirror / 0.14, 2.0));
-            float dxBack = baseUv.x - 0.685;
-            float maskBack = exp(-pow(dxBack / 0.16, 2.0));
-            float pinch = (dxMirror * maskMirror + dxBack * maskBack) * waistYMask;
+            // ================================================================
+            // MODE 2: CHAPTER 4 — Haute-Couture 3-Panel Editorial Parallax Slide
+            //         Asymmetric 3-column luxury gallery split (24% | 52% | 24%)
+            // ================================================================
+            float colLeft = step(vUv.x, 0.24);
+            float colRight = step(0.76, vUv.x);
+            float colCenter = 1.0 - max(colLeft, colRight);
 
-            vec2 uvCurr = baseUv - parallax * (1.0 - t);
-            uvCurr.x += pinch * t * 0.36;
-            vec2 uvNext = baseUv - parallax * t;
-            uvNext.x -= pinch * (1.0 - t) * 0.30;
+            // Staggered timing and opposing vertical parallax per editorial column
+            float tCenter = smoothstep(0.0, 0.88, t);
+            float tSides = smoothstep(0.12, 1.0, t);
+            float colT = colCenter * tCenter + (1.0 - colCenter) * tSides;
+            float dir = colCenter > 0.5 ? 1.0 : -1.0;
 
-            uvCurr = (uvCurr - focal) / (1.0 + t * 0.10) + focal;
-            uvNext = (uvNext - focal) / (0.93 + t * 0.07) + focal;
+            vec2 uvCurr = (baseUv - focal) / (1.0 + colT * 0.05) + focal - parallax * (1.0 - colT);
+            vec2 uvNext = (baseUv - focal) / (0.95 + colT * 0.05) + focal - parallax * colT;
+
+            uvCurr.y += dir * colT * 0.045;
+            uvNext.y -= dir * (1.0 - colT) * 0.045;
 
             vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            finalColor = mix(cCurr, cNext, t);
+            finalColor = mix(cCurr, cNext, colT);
+
+            // Crisp champagne rose-gold hairline seams at x = 0.24 and x = 0.76 during transition
+            float seamDist = min(abs(vUv.x - 0.24), abs(vUv.x - 0.76));
+            float seamShadow = exp(-pow(seamDist / 0.018, 2.0)) * sinT;
+            float seamLine = exp(-pow(seamDist / 0.0018, 2.0)) * sinT;
+            finalColor.rgb *= (1.0 - seamShadow * 0.28);
+            finalColor.rgb += vec3(1.0, 0.84, 0.88) * seamLine * 0.55;
           }
           else if (uMode == 3) {
-            // CHAPTER 6: Full-Body Head-to-Toe Chuna Laser Scan
-            float laserY = mix(0.90, 0.04, t);
-            float bodyMask = exp(-pow((baseUv.x - 0.54) / 0.22, 2.0));
-            float n = fbm(baseUv * 8.0 + uTime * 0.6) * 0.015;
+            // ================================================================
+            // MODE 3: CHAPTER 6 ("일하면서 온몸이 아파진 나")
+            //         Scroll-Driven Healthy Upright Posture -> Painful Hunched Posture
+            //         with Top-to-Bottom Pain Wave & Matched Background Bokeh
+            // ================================================================
+            float horizBody = exp(-pow((baseUv.x - 0.53) / 0.165, 2.0));
+            float vertBody = smoothstep(0.02, 0.12, baseUv.y) * (1.0 - smoothstep(0.88, 0.98, baseUv.y));
+            float subjectMask = horizBody * vertBody;
 
-            vec2 uvCurr = (baseUv - focal) / (1.0 + t * 0.09) + focal - parallax;
-            vec2 uvNext = (baseUv - focal) / (0.93 + t * 0.07) + focal - parallax;
+            // Upper torso/neck hunch deformation as pain progresses with scroll (t: 0 -> 1)
+            float upperTorso = smoothstep(0.42, 0.82, baseUv.y) * (1.0 - smoothstep(0.86, 0.96, baseUv.y));
+            float bendMask = horizBody * upperTorso;
 
-            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec2 uvCurr = baseUv - parallax * (1.0 - t);
+            uvCurr.x += bendMask * t * 0.022;
+            uvCurr.y += bendMask * t * 0.026;
+
+            vec2 uvNext = baseUv - parallax * t;
+            uvNext.x -= bendMask * (1.0 - t) * 0.022;
+            uvNext.y -= bendMask * (1.0 - t) * 0.026;
+
+            // Match creamy background bokeh on healthy starting image so only the posture transforms
+            float bgBlur = (1.0 - subjectMask) * 0.022;
+            vec4 cCurr = sampleBokehDisk(uTexCurr, uvCurr, bgBlur, aspect);
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            float healedZone = smoothstep(laserY - 0.06, laserY + 0.06, baseUv.y + n);
-            float laserBeam = exp(-pow((baseUv.y - laserY) / 0.016, 2.0)) * (0.3 + 0.7 * bodyMask);
+            // Top-to-bottom pain progression wave (neck y=0.86 down to feet y=0.08)
+            float painWaveY = mix(0.88, 0.06, t);
+            float painRevealed = smoothstep(painWaveY - 0.11, painWaveY + 0.11, baseUv.y);
+            float blendT = clamp(mix(t, painRevealed, 0.58), 0.0, 1.0);
 
-            finalColor = mix(cCurr, cNext, max(healedZone, t * 0.35));
-            vec3 beamCol = mix(vec3(0.06, 0.72, 0.50), vec3(0.99, 0.88, 0.45), laserBeam);
-            finalColor.rgb += beamCol * laserBeam * sin(t * 3.14159) * 0.88;
+            float waveCore = exp(-pow((baseUv.y - painWaveY) / 0.008, 2.0)) * horizBody;
+            float waveAura = exp(-pow((baseUv.y - painWaveY) / 0.032, 2.0)) * horizBody;
+
+            finalColor = mix(cCurr, cNext, blendT);
+            vec3 painGlowCol = mix(vec3(0.94, 0.24, 0.24), vec3(1.0, 0.78, 0.45), waveCore);
+            finalColor.rgb += painGlowCol * (waveAura * 0.48 + waveCore * 0.42) * sinT;
+          }
+          else if (uMode == 8) {
+            // ================================================================
+            // MODE 8: CHAPTER 6 FINALE ("관절 튼튼 회복")
+            //         Scroll-Driven Neutral Standing -> Joyful "만세!" (Hurray!) Stretch
+            //         with Emerald-Green Healing Vitality Wave
+            // ================================================================
+            float horizBody = exp(-pow((baseUv.x - 0.53) / 0.195, 2.0));
+            float vertBody = smoothstep(0.02, 0.10, baseUv.y) * (1.0 - smoothstep(0.92, 0.99, baseUv.y));
+            float subjectMask = horizBody * vertBody;
+
+            // Upward arm-raising lift motion during "만세!" stretch
+            float upperLift = smoothstep(0.45, 0.92, baseUv.y) * horizBody;
+
+            vec2 uvCurr = baseUv - parallax * (1.0 - t);
+            uvCurr.y -= upperLift * t * 0.032;
+
+            vec2 uvNext = baseUv - parallax * t;
+            uvNext.y += upperLift * (1.0 - t) * 0.028;
+
+            // Match creamy background bokeh on starting standing image
+            float bgBlur = (1.0 - subjectMask) * 0.022;
+            vec4 cCurr = sampleBokehDisk(uTexCurr, uvCurr, bgBlur, aspect);
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            float healWaveY = mix(0.88, 0.06, t);
+            float healRevealed = smoothstep(healWaveY - 0.12, healWaveY + 0.12, baseUv.y);
+            float blendT = clamp(mix(t, healRevealed, 0.52), 0.0, 1.0);
+
+            float waveCore = exp(-pow((baseUv.y - healWaveY) / 0.008, 2.0)) * horizBody;
+            float waveAura = exp(-pow((baseUv.y - healWaveY) / 0.034, 2.0)) * horizBody;
+
+            finalColor = mix(cCurr, cNext, blendT);
+            vec3 healGlowCol = mix(vec3(0.06, 0.82, 0.56), vec3(0.75, 1.0, 0.88), waveCore);
+            finalColor.rgb += healGlowCol * (waveAura * 0.50 + waveCore * 0.42) * sinT;
           }
           else if (uMode == 4) {
-            // CHAPTER 5: Dermatoscope Scalp Microscope 200x Optical Zoom-In!
-            // Zooms deeply into the doctor's scope tip at focal (0.52, 0.72 in GL UV) and opens the circular microscope lens
+            // ================================================================
+            // MODE 4: CHAPTER 5 — 200x Optical Macro Lens Dive
+            // ================================================================
             vec2 dVec = (baseUv - focal) * vec2(aspect, 1.0);
             float dist = length(dVec);
 
-            float zoomOut = 1.0 + pow(t, 1.35) * 2.35;
-            float zoomIn = 0.42 + smoothstep(0.0, 1.0, t) * 0.58;
+            float zoomOut = 1.0 + pow(t, 1.35) * 2.10;
+            float zoomIn = 0.50 + smoothstep(0.0, 1.0, t) * 0.50;
 
             vec2 uvCurr = (baseUv - focal) / zoomOut + focal - parallax * (1.0 - t);
             vec2 uvNext = (baseUv - vec2(0.5)) / zoomIn + vec2(0.5) - parallax * t;
 
             float scopeRadius = mix(0.0, 1.45, pow(t, 1.08));
-            float scopeMask = smoothstep(scopeRadius + 0.08, scopeRadius - 0.08, dist);
-            float lensRing = exp(-pow((dist - scopeRadius) / 0.032, 2.0)) * sin(t * 3.14159);
+            float scopeMask = smoothstep(scopeRadius + 0.07, scopeRadius - 0.07, dist);
+            float outerRing = exp(-pow((dist - scopeRadius) / 0.022, 2.0)) * sinT;
+            float innerRing = exp(-pow((dist - scopeRadius * 0.82) / 0.005, 2.0)) * sinT;
 
             vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
             finalColor = mix(cCurr, cNext, clamp(mix(t, scopeMask, 0.78), 0.0, 1.0));
-            finalColor.rgb += vec3(0.55, 0.92, 1.0) * lensRing * 0.85;
+            finalColor.rgb += vec3(0.65, 0.94, 1.0) * (outerRing * 0.65 + innerRing * 0.45);
           }
-          else {
-            // 3D Z-Axis Portal Zoom-Through (1st-Person & 3rd-Person Perspective Shift)
-            vec2 dVec = (baseUv - focal) * vec2(aspect, 1.0);
-            float dist = length(dVec);
-            float organicNoise = (fbm(baseUv * 5.5 + uTime * 0.35) - 0.5) * 0.08;
+          else if (uMode == 5) {
+            // ================================================================
+            // MODE 5: IMAX Anamorphic Amber Light-Leak & Golden Shutter
+            // ================================================================
+            float diagPos = vUv.x * 0.82 + (1.0 - vUv.y) * 0.18;
+            float sweepCenter = mix(-0.20, 1.20, t);
+            float curtainMask = smoothstep(sweepCenter - 0.18, sweepCenter + 0.18, diagPos);
 
-            float scaleOut = 1.0 + pow(t, 1.45) * 0.72 + breath;
-            float scaleIn = 0.62 + (1.0 - pow(1.0 - t, 1.65)) * 0.38 + breath;
+            // Dual-layer warm amber film burn + crisp horizontal anamorphic lens streak
+            float amberLeak = exp(-pow((diagPos - sweepCenter) / 0.095, 2.0)) * sinT;
+            float goldCore = exp(-pow((diagPos - sweepCenter) / 0.022, 2.0)) * sinT;
+            float anamorphicStreak = exp(-pow((vUv.y - focal.y) / 0.085, 2.0)) * exp(-pow((vUv.x - sweepCenter) / 0.34, 2.0)) * sinT;
 
-            float portalRadius = mix(-0.05, 1.42, pow(t, 1.15));
-            float portalEdge = smoothstep(portalRadius + 0.16, portalRadius - 0.12, dist + organicNoise);
-
-            float rimIntensity = exp(-pow((dist + organicNoise - portalRadius) / 0.055, 2.0)) * sin(t * 3.14159);
-            vec2 rimDir = normalize(dVec + vec2(0.0001));
-
-            vec2 uvCurr = (baseUv - focal) / scaleOut + focal - parallax * (1.0 + t * 0.7) + rimDir * rimIntensity * 0.018;
-            vec2 uvNext = (baseUv - focal) / scaleIn + focal - parallax * t - rimDir * rimIntensity * 0.014;
+            vec2 uvCurr = (baseUv - focal) / (1.0 + t * 0.06) + focal - parallax * (1.0 - t);
+            vec2 uvNext = (baseUv - focal) / (0.94 + t * 0.06) + focal - parallax * t;
 
             vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            float blendFactor = clamp(mix(t, portalEdge, 0.62), 0.0, 1.0);
-            finalColor = mix(cCurr, cNext, blendFactor);
+            float blend = clamp(mix(t, 1.0 - curtainMask, 0.70), 0.0, 1.0);
+            finalColor = mix(cCurr, cNext, blend);
 
-            vec3 portalGlow = mix(vec3(0.10, 0.78, 0.56), vec3(0.99, 0.88, 0.54), 0.68);
-            finalColor.rgb += portalGlow * rimIntensity * 0.48;
+            vec3 leakColor = mix(vec3(0.98, 0.68, 0.32), vec3(1.0, 0.96, 0.82), goldCore + anamorphicStreak * 0.5);
+            finalColor.rgb += leakColor * (amberLeak * 0.42 + goldCore * 0.38 + anamorphicStreak * 0.45);
           }
+          else if (uMode == 6) {
+            // ================================================================
+            // MODE 6: Leica Noctilux f/0.95 Creamy Bokeh Rack-Focus
+            // ================================================================
+            float blurCurr = pow(t, 1.2) * 0.025;
+            float blurNext = pow(1.0 - t, 1.2) * 0.025;
+
+            float dollyCurr = 1.0 + t * 0.055;
+            float dollyNext = 1.045 - t * 0.045;
+
+            vec2 uvCurr = (baseUv - focal) / dollyCurr + focal - parallax * (1.0 - t);
+            vec2 uvNext = (baseUv - focal) / dollyNext + focal - parallax * t;
+
+            vec4 cCurr = sampleBokehDisk(uTexCurr, uvCurr, blurCurr, aspect);
+            vec4 cNext = sampleBokehDisk(uTexNext, uvNext, blurNext, aspect);
+
+            float smoothCurve = smoothstep(0.05, 0.95, t);
+            finalColor = mix(cCurr, cNext, smoothCurve);
+            finalColor.rgb += vec3(1.0, 0.91, 0.65) * pow(sinT, 2.0) * 0.085;
+          }
+          else if (uMode == 7) {
+            // ================================================================
+            // MODE 7: Architectural Venetian Louver Cascade (12 Luxury Slats)
+            // ================================================================
+            float numLouvers = 12.0;
+            float slatIdx = floor(vUv.x * numLouvers) / numLouvers;
+            float slatFract = fract(vUv.x * numLouvers);
+            float localT = clamp((t * 1.42) - slatIdx * 0.42, 0.0, 1.0);
+            float slatReveal = smoothstep(0.0, 1.0, localT);
+
+            // Crisp 3D architectural louver edge bevel & subtle shadow
+            float edgeDist = abs(slatFract - slatReveal);
+            float goldBevel = exp(-pow(edgeDist / 0.035, 2.0)) * sin(localT * 3.14159265);
+            float slatShadow = smoothstep(slatReveal, slatReveal + 0.14, slatFract) * (1.0 - step(slatReveal, slatFract)) * sin(localT * 3.14159265);
+
+            vec2 uvCurr = (baseUv - focal) / (1.0 + localT * 0.045) + focal - parallax * (1.0 - localT);
+            vec2 uvNext = (baseUv - focal) / (0.955 + localT * 0.045) + focal - parallax * localT;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            float mask = step(slatFract, slatReveal);
+            finalColor = mix(cCurr, cNext, mix(localT, mask, 0.65));
+            finalColor.rgb *= (1.0 - slatShadow * 0.22);
+            finalColor.rgb += vec3(1.0, 0.92, 0.66) * goldBevel * 0.42;
+          }
+          else {
+            // ================================================================
+            // MODE 0: Art's 3D Framed Spatial Gallery Pass-Through
+            //         Starts from 0% at t=0 (100% pure Frame 0) and expands
+            //         a framed luxury 3D canvas window only during transition!
+            // ================================================================
+            float scaleCurr = 1.0 + t * 0.08;
+            float scaleNext = 0.92 + t * 0.08;
+
+            vec2 uvCurr = (baseUv - focal) / scaleCurr + focal - parallax * (1.0 - t);
+            vec2 uvNext = (baseUv - focal) / scaleNext + focal - parallax * t;
+
+            // Starts completely closed (-0.02) at t=0 and expands beyond viewport (0.72) at t=1
+            vec2 boxHalfSize = mix(vec2(-0.02, -0.02), vec2(0.72, 0.72), pow(t, 0.95));
+            float boxDist = sdBox(vUv - 0.5, boxHalfSize);
+
+            float activeWin = smoothstep(0.0, 0.12, t);
+            float frameMask = (1.0 - smoothstep(-0.015, 0.015, boxDist)) * activeWin;
+            float goldBorder = exp(-pow(boxDist / 0.0035, 2.0)) * sinT;
+            float ambientDropShadow = exp(-pow(max(0.0, boxDist) / 0.045, 2.0)) * sinT;
+
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+
+            cCurr.rgb *= (1.0 - ambientDropShadow * 0.32);
+
+            float blendFactor = clamp(mix(t, frameMask, 0.58), 0.0, 1.0);
+            finalColor = mix(cCurr, cNext, blendFactor);
+            finalColor.rgb += vec3(1.0, 0.90, 0.58) * goldBorder * 0.62;
+          }
+
+          // Subtle Golden-Hour Ambient Spotlight (Steady, zero distortion)
+          vec2 mouseUv = vec2(uMouse.x, 1.0 - uMouse.y);
+          float mouseDist = length((vUv - mouseUv) * vec2(aspect, 1.0));
+          float visorSpot = exp(-pow(mouseDist / 0.44, 2.0)) * 0.042;
+          finalColor.rgb += vec3(0.99, 0.91, 0.68) * visorSpot;
 
           // Positive Morning Sunlight & Warm Uplifting Grading
           vec3 warmSun = vec3(1.03, 1.01, 0.97) * uWarmth;
@@ -1326,6 +1883,14 @@
           return tex || placeholderTex;
         });
 
+        glManseTexture = loader.load('life_4b_chuna_manse.jpg?v=pov9', (loadedTex) => {
+          loadedTex.minFilter = THREE.LinearFilter;
+          loadedTex.magFilter = THREE.LinearFilter;
+          loadedTex.generateMipmaps = false;
+        }) || placeholderTex;
+        glManseTexture.minFilter = THREE.LinearFilter;
+        glManseTexture.magFilter = THREE.LinearFilter;
+
         glMaterial = new THREE.ShaderMaterial({
           vertexShader: VERTEX_SHADER,
           fragmentShader: FRAGMENT_SHADER,
@@ -1349,10 +1914,56 @@
       }
 
       // ======================================================================
-      // 4. THREE.JS 3D Z-AXIS TUNNEL RINGS & WARP PARTICLES
+      // 4. ART'S 3D VOLUMETRIC SUNLIGHT GOD-RAYS & MULTI-LAYER DEPTH BOKEH
+      //    (Zero Wireframes — Pure Warm Golden-Hour Spatial Sanctuary)
       // ======================================================================
       const tunnelCanvas = document.getElementById('three-tunnel-canvas');
-      let tRenderer, tScene, tCamera, tPortalGates = [], tParticles;
+      let tRenderer, tScene, tCamera, tPortalGates = [], tParticles, tForegroundBokeh;
+
+      function createSoftBokehTexture() {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 128;
+        const g = c.getContext('2d');
+        const grad = g.createRadialGradient(64, 64, 2, 64, 64, 60);
+        grad.addColorStop(0.0, 'rgba(255, 252, 240, 0.95)');
+        grad.addColorStop(0.32, 'rgba(253, 230, 138, 0.65)');
+        grad.addColorStop(0.70, 'rgba(245, 198, 105, 0.22)');
+        grad.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
+        g.fillStyle = grad;
+        g.fillRect(0, 0, 128, 128);
+        const tex = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
+        return tex;
+      }
+
+      function createGodRayShaftTexture() {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 512;
+        const g = c.getContext('2d');
+        const grad = g.createLinearGradient(0, 0, 0, 512);
+        grad.addColorStop(0.0, 'rgba(255, 244, 214, 0.0)');
+        grad.addColorStop(0.25, 'rgba(253, 230, 138, 0.22)');
+        grad.addColorStop(0.55, 'rgba(253, 230, 138, 0.10)');
+        grad.addColorStop(1.0, 'rgba(255, 244, 214, 0.0)');
+        g.fillStyle = grad;
+        g.fillRect(0, 0, 128, 512);
+
+        // Soft horizontal feathering so the light shaft has no hard side edges
+        g.globalCompositeOperation = 'destination-in';
+        const hGrad = g.createLinearGradient(0, 0, 128, 0);
+        hGrad.addColorStop(0.0, 'rgba(0, 0, 0, 0.0)');
+        hGrad.addColorStop(0.3, 'rgba(0, 0, 0, 1.0)');
+        hGrad.addColorStop(0.7, 'rgba(0, 0, 0, 1.0)');
+        hGrad.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
+        g.fillStyle = hGrad;
+        g.fillRect(0, 0, 128, 512);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
+        return tex;
+      }
 
       function initThreeTunnelStage() {
         if (typeof THREE === 'undefined' || !tunnelCanvas) return;
@@ -1367,37 +1978,52 @@
         tRenderer.setSize(window.innerWidth, window.innerHeight);
 
         tScene = new THREE.Scene();
-        tCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.5, 500);
+        tCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.5, 550);
 
-        const ringGeo = new THREE.RingGeometry(7.2, 7.28, 64);
+        const bokehTex = createSoftBokehTexture();
+        const rayTex = createGodRayShaftTexture();
+
+        // 1. 3D Volumetric Golden-Hour Sunlight Shafts (Slanted Venetian Blind Sunbeams)
+        const shaftGeo = new THREE.PlaneGeometry(5.5, 22.0);
         for (let i = 0; i < FRAMES.length; i++) {
-          const mat = new THREE.MeshBasicMaterial({
-            color: i % 2 === 0 ? 0xFDE68A : 0x10B981,
+          const shaftMat = new THREE.MeshBasicMaterial({
+            map: rayTex,
             transparent: true,
-            opacity: 0.12,
-            side: THREE.DoubleSide,
-            blending: THREE.AdditiveBlending
+            opacity: 0.24,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            side: THREE.DoubleSide
           });
-          const ringMesh = new THREE.Mesh(ringGeo, mat);
-          ringMesh.position.set(1.2, 0.0, -i * 22);
-          tScene.add(ringMesh);
-          tPortalGates.push(ringMesh);
+          const shaft = new THREE.Mesh(shaftGeo, shaftMat);
+          const side = i % 2 === 0 ? 1 : -1;
+          shaft.position.set(
+            side * (4.2 + (i % 3) * 1.6),
+            2.2,
+            -i * 22.0 + 2.0
+          );
+          shaft.rotation.z = -0.38; // Warm morning sun angle
+          shaft.rotation.y = side * 0.22;
+          tScene.add(shaft);
+          tPortalGates.push(shaft);
         }
 
-        const pCount = 2400;
+        // 2. Mid-Ground Golden-Hour Floating Dust Motes (1,400 Fine Particles)
+        const pCount = 1400;
         const pGeo = new THREE.BufferGeometry();
         const pPos = new Float32Array(pCount * 3);
         const pCol = new Float32Array(pCount * 3);
         const cGold = new THREE.Color(0xFDE68A);
+        const cWarmCream = new THREE.Color(0xFFF7ED);
         const cEmerald = new THREE.Color(0x6EE7B7);
 
         for (let i = 0; i < pCount; i++) {
           const angle = Math.random() * Math.PI * 2;
-          const radius = 3.2 + Math.random() * 18.0;
-          pPos[i * 3] = Math.cos(angle) * radius + 1.0;
-          pPos[i * 3 + 1] = Math.sin(angle) * radius * 0.65;
-          pPos[i * 3 + 2] = -Math.random() * 480 + 20;
-          const c = Math.random() > 0.3 ? cGold : cEmerald;
+          const radius = 2.2 + Math.random() * 14.5;
+          pPos[i * 3] = Math.cos(angle) * radius + 0.6;
+          pPos[i * 3 + 1] = Math.sin(angle) * radius * 0.68;
+          pPos[i * 3 + 2] = -Math.random() * 540 + 20;
+          const r = Math.random();
+          const c = r > 0.35 ? cGold : (r > 0.12 ? cWarmCream : cEmerald);
           pCol[i * 3] = c.r;
           pCol[i * 3 + 1] = c.g;
           pCol[i * 3 + 2] = c.b;
@@ -1407,65 +2033,363 @@
         pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
 
         tParticles = new THREE.Points(pGeo, new THREE.PointsMaterial({
-          size: 0.13,
+          size: 0.34,
+          map: bokehTex,
           vertexColors: true,
           transparent: true,
-          opacity: 0.48,
+          opacity: 0.52,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         }));
         tScene.add(tParticles);
+
+        // 3. Foreground Creamy Out-of-Focus Cinema Bokeh Orbs (Depth-of-Field Layer)
+        const fgCount = 220;
+        const fgGeo = new THREE.BufferGeometry();
+        const fgPos = new Float32Array(fgCount * 3);
+        for (let i = 0; i < fgCount; i++) {
+          fgPos[i * 3] = (Math.random() - 0.5) * 18.0;
+          fgPos[i * 3 + 1] = (Math.random() - 0.5) * 11.0;
+          fgPos[i * 3 + 2] = -Math.random() * 540 + 18;
+        }
+        fgGeo.setAttribute('position', new THREE.BufferAttribute(fgPos, 3));
+        tForegroundBokeh = new THREE.Points(fgGeo, new THREE.PointsMaterial({
+          size: 1.45,
+          map: bokehTex,
+          color: 0xFDE68A,
+          transparent: true,
+          opacity: 0.18,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        }));
+        tScene.add(tForegroundBokeh);
       }
 
       // ======================================================================
-      // 5. CARDLESS ANATOMICAL LIGHT OVERLAY FOR CHAPTER 6 (CHUNA 7-JOINTS)
+      // 5. CARDLESS ANATOMICAL LIGHT OVERLAY FOR CHAPTER 6 (KOREAN PAIN LABELS)
       // ======================================================================
       const svgOverlay = document.getElementById('svg-spatial-overlay');
-      const PAIN_JOINTS_LIGHT = [
-        { name: '목',     bx: 1025, by: 225 },
-        { name: '어깨',   bx: 965,  by: 300 },
-        { name: '팔',     bx: 905,  by: 465 },
-        { name: '척추',   bx: 1045, by: 385 },
-        { name: '허리',   bx: 1030, by: 525 },
-        { name: '다리',   bx: 995,  by: 755 },
-        { name: '발',     bx: 1015, by: 955 }
+      const PAIN_JOINTS_STANDING = [
+        { name: '목',     hx: 1025, hy: 225, bx: 1095, by: 220 },
+        { name: '어깨',   hx: 965,  hy: 300, bx: 965,  by: 245 },
+        { name: '팔',     hx: 905,  hy: 465, bx: 845,  by: 340 },
+        { name: '척추',   hx: 1045, hy: 385, bx: 985,  by: 350 },
+        { name: '허리',   hx: 1030, hy: 525, bx: 910,  by: 435 },
+        { name: '다리',   hx: 995,  hy: 755, bx: 1020, by: 690 },
+        { name: '발',     hx: 1015, hy: 955, bx: 950,  by: 925 }
+      ];
+      const PAIN_JOINTS_PRONE_CHUNA = [
+        { name: '목·어깨', bx: 1290, by: 715 },
+        { name: '척추',    bx: 1125, by: 705 },
+        { name: '허리',    bx: 985,  by: 715 },
+        { name: '골반',    bx: 835,  by: 730 },
+        { name: '다리',    bx: 585,  by: 765 }
+      ];
+      const PAIN_JOINTS_ANKLE_POV = [
+        { name: '발목 관절', bx: 945,  by: 655 },
+        { name: '발목 인대', bx: 900,  by: 745 },
+        { name: '발등·경혈', bx: 840,  by: 560 }
+      ];
+      const PAIN_JOINTS_RECOVERED = [
+        { name: '목',     sx: 1025, sy: 225, bx: 1025, by: 222 },
+        { name: '어깨',   sx: 965,  sy: 300, bx: 955,  by: 252 },
+        { name: '팔',     sx: 905,  sy: 465, bx: 865,  by: 155 },
+        { name: '척추',   sx: 1045, sy: 385, bx: 1030, by: 375 },
+        { name: '허리',   sx: 1030, sy: 525, bx: 1025, by: 495 },
+        { name: '다리',   sx: 995,  sy: 755, bx: 995,  by: 745 },
+        { name: '발',     sx: 1015, sy: 955, bx: 1010, by: 948 }
+      ];
+      const CH6_START_FRAME = Math.max(16, FRAMES.findIndex((f) => f.chapter === 6));
+      const CH6_RECOVERED_FRAME = Math.min(FRAMES.length - 1, CH6_START_FRAME + 3);
+      const GROWTH_TALL_FRAME = Math.max(9, FRAMES.findIndex((f) => f.quote === '쑥쑥 자란 우리 아이'));
+
+      // Give Chapter 3 ("쑥쑥 자란 우리 아이"), Chapter 6 Cut 1 ("일하면서 온몸이 아파진 나"), and Cut 4 ("관절 튼튼 회복")
+      // extended scroll travel so their multi-stage motions unfold smoothly!
+      const FRAME_STEP_WEIGHTS = [];
+      let totalStepWeight = 0;
+      for (let i = 0; i < FRAMES.length - 1; i++) {
+        const w = (i === CH6_START_FRAME || i === CH6_RECOVERED_FRAME)
+          ? 2.4
+          : (i === GROWTH_TALL_FRAME ? 2.0 : 1.0);
+        FRAME_STEP_WEIGHTS.push(w);
+        totalStepWeight += w;
+      }
+      let growthCompletedAtMs = 0;
+      let currentStarReveal = 0.0;
+
+      function storyNormToFrameFloat(storyNorm) {
+        const clamped = Math.max(0, Math.min(1, storyNorm));
+        const targetW = clamped * totalStepWeight;
+        let acc = 0;
+        for (let i = 0; i < FRAME_STEP_WEIGHTS.length; i++) {
+          const w = FRAME_STEP_WEIGHTS[i];
+          if (targetW <= acc + w || i === FRAME_STEP_WEIGHTS.length - 1) {
+            return i + Math.max(0, Math.min(1, (targetW - acc) / w));
+          }
+          acc += w;
+        }
+        return FRAMES.length - 1;
+      }
+
+      function frameFloatToFullNorm(frameFloat) {
+        const maxIdx = FRAMES.length - 1;
+        const clamped = Math.max(0, Math.min(maxIdx, frameFloat));
+        const idx = Math.min(maxIdx - 1, Math.floor(clamped));
+        const rem = clamped - idx;
+        let acc = 0;
+        for (let i = 0; i < idx; i++) {
+          acc += FRAME_STEP_WEIGHTS[i];
+        }
+        acc += rem * (FRAME_STEP_WEIGHTS[idx] || 1.0);
+        return (acc / Math.max(1, totalStepWeight)) * 0.90;
+      }
+
+      // Twinkling Starlight Constellation Around Our Tall Child ("쑥쑥 자란 우리 아이")
+      const GROWTH_TALL_STARS = [
+        { x: 978,  y: 122, size: 32, speed: 4.8, phase: 0.0,  eightPt: true  }, // Top crown hero star
+        { x: 832,  y: 188, size: 30, speed: 5.4, phase: 1.2,  eightPt: true  }, // Upper-left head star
+        { x: 1122, y: 185, size: 30, speed: 5.1, phase: 2.4,  eightPt: true  }, // Upper-right head star
+        { x: 882,  y: 138, size: 19, speed: 6.5, phase: 0.7,  eightPt: false }, // Top-left halo star
+        { x: 1076, y: 140, size: 20, speed: 6.2, phase: 3.1,  eightPt: false }, // Top-right halo star
+        { x: 785,  y: 278, size: 24, speed: 4.6, phase: 1.9,  eightPt: true  }, // Left ear level star
+        { x: 1168, y: 272, size: 24, speed: 5.7, phase: 4.0,  eightPt: true  }, // Right ear level star
+        { x: 814,  y: 365, size: 28, speed: 5.2, phase: 2.8,  eightPt: true  }, // Left cheek/shoulder hero star
+        { x: 1142, y: 360, size: 28, speed: 4.9, phase: 0.5,  eightPt: true  }, // Right cheek/shoulder hero star
+        { x: 752,  y: 452, size: 22, speed: 6.0, phase: 3.6,  eightPt: false }, // Left shoulder outer star
+        { x: 1204, y: 446, size: 22, speed: 5.8, phase: 1.5,  eightPt: false }, // Right shoulder outer star
+        { x: 768,  y: 558, size: 18, speed: 6.8, phase: 4.5,  eightPt: false }, // Left arm sparkle
+        { x: 1190, y: 552, size: 18, speed: 6.4, phase: 2.1,  eightPt: false }, // Right arm sparkle
+        { x: 855,  y: 425, size: 16, speed: 7.2, phase: 5.2,  eightPt: false }, // Left collar sparkle
+        { x: 1098, y: 422, size: 16, speed: 7.0, phase: 0.9,  eightPt: false }  // Right collar sparkle
       ];
 
-      function renderCleanLightOverlay(frameFloat, timeSec) {
-        if (!svgOverlay) return;
-        if (frameFloat >= 15.6 && frameFloat <= 18.4) {
-          const p = Math.max(0, Math.min(1, (frameFloat - 16.0) / 2.0));
-          const scanY = 160 + p * 840;
-          const crook = Math.max(0, 1.0 - p * 1.15);
+      function buildChildStarlightSparkles(timeSec, starReveal, fadeOutAlpha) {
+        if (starReveal <= 0.001 || fadeOutAlpha <= 0.001) return '';
+        const masterAlpha = Math.min(1.0, starReveal * 1.4) * fadeOutAlpha;
+        let svg = `
+          <defs>
+            <radialGradient id="childAuraGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFFBEB" stop-opacity="0.32"/>
+              <stop offset="55%" stop-color="#FDE68A" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#FDE68A" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="starOrbGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+              <stop offset="38%" stop-color="#FDE68A" stop-opacity="0.65"/>
+              <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="978" cy="340" rx="235" ry="255" fill="url(#childAuraGlow)" opacity="${(masterAlpha * (0.75 + 0.25 * Math.sin(timeSec * 2.6))).toFixed(2)}"/>
+        `;
 
+        const totalStars = GROWTH_TALL_STARS.length;
+        GROWTH_TALL_STARS.forEach((s, idx) => {
+          // Stagger star pop-in from bottom shoulders up to the top crown star right AFTER height growth finishes!
+          const orderFromBottom = (totalStars - 1 - idx) / Math.max(1, totalStars - 1);
+          const startT = orderFromBottom * 0.42;
+          const localStarP = Math.max(0.0, Math.min(1.0, (starReveal - startT) / 0.52));
+          if (localStarP <= 0.001) return;
+
+          const popScale = localStarP < 0.68
+            ? (localStarP / 0.68) * 1.24
+            : 1.24 - ((localStarP - 0.68) / 0.32) * 0.24;
+
+          const wave = 0.5 + 0.5 * Math.sin(timeSec * s.speed + s.phase);
+          const twinkle = Math.pow(wave, 1.45);
+          const scale = (0.42 + twinkle * 0.88) * popScale;
+          const r = s.size * scale;
+          const rInner = r * 0.16;
+          const op = (Math.min(1.0, localStarP * 1.8) * fadeOutAlpha * (0.28 + twinkle * 0.72)).toFixed(2);
+          const floatY = s.y + Math.sin(timeSec * 2.2 + idx) * 4.5;
+          const rotDeg = (Math.sin(timeSec * 1.6 + s.phase) * 14).toFixed(1);
+
+          // 4-point curved diamond star path
+          const starPath = `M 0 ${-r} Q ${-rInner} ${-rInner} ${-r} 0 Q ${-rInner} ${rInner} 0 ${r} Q ${rInner} ${rInner} ${r} 0 Q ${rInner} ${-rInner} 0 ${-r} Z`;
+          const diagR = r * 0.52;
+          const diagInner = rInner * 0.75;
+          const diagPath = `M 0 ${-diagR} Q ${-diagInner} ${-diagInner} ${-diagR} 0 Q ${-diagInner} ${diagInner} 0 ${diagR} Q ${diagInner} ${diagInner} ${diagR} 0 Q ${diagInner} ${-diagInner} 0 ${-diagR} Z`;
+
+          svg += `
+            <g transform="translate(${s.x}, ${floatY.toFixed(1)}) rotate(${rotDeg})" opacity="${op}">
+              <circle cx="0" cy="0" r="${(r * 1.25).toFixed(1)}" fill="url(#starOrbGlow)"/>
+              ${s.eightPt ? `<path d="${diagPath}" transform="rotate(45)" fill="#FDE68A" opacity="0.85"/>` : ''}
+              <path d="${starPath}" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+              <circle cx="0" cy="0" r="${Math.max(2.2, r * 0.14).toFixed(1)}" fill="#FFFFFF"/>
+            </g>
+          `;
+        });
+
+        return svg;
+      }
+
+      function buildKoreanJointNodes(points, isHealed, timeSec, crookAmt) {
+        let orbs = '';
+        points.forEach((j, idx) => {
+          const jx = j.bx + Math.sin(idx * 1.5) * 8 * crookAmt;
+          const jy = j.by;
+          const col = isHealed ? '#6EE7B7' : '#F87171';
+          const badgeBg = isHealed ? 'rgba(6, 78, 59, 0.85)' : 'rgba(127, 29, 29, 0.85)';
+          const r = 9 + Math.sin(timeSec * 4.5 + idx) * 3.0;
+          const textW = Math.max(46, j.name.length * 16 + 18);
+          orbs += `
+            <circle cx="${jx}" cy="${jy}" r="${r * 1.85}" fill="${col}" opacity="0.22"/>
+            <circle cx="${jx}" cy="${jy}" r="${r}" fill="none" stroke="${col}" stroke-width="2" opacity="0.92"/>
+            <circle cx="${jx}" cy="${jy}" r="4.5" fill="#FFFFFF"/>
+            <rect x="${jx + 14}" y="${jy - 14}" width="${textW}" height="26" rx="13" fill="${badgeBg}" stroke="${col}" stroke-width="1.2"/>
+            <text x="${jx + 14 + textW / 2}" y="${jy + 4}" text-anchor="middle" fill="#FFFFFF" font-family="Pretendard, sans-serif" font-size="14" font-weight="800">${j.name}</text>
+          `;
+        });
+        return orbs;
+      }
+
+      // Sequential 1-by-1 Pain Point Reveal for "일하면서 온몸이 아파진 나"
+      // As painProgress goes from 0.0 (healthy posture) -> 1.0 (painful posture),
+      // the spine bends from straight to crooked and the 7 pain points pop up one by one!
+      function buildSequentialPainStandingOverlay(painProgress, timeSec, masterAlpha) {
+        if (painProgress <= 0.02 || masterAlpha <= 0.01) return '';
+
+        let svg = '';
+        // 1. Progressive spine line that bends from upright healthy to crooked painful as you scroll
+        const spineDrawMax = Math.min(1.0, Math.max(0.0, (painProgress - 0.02) / 0.68));
+        if (spineDrawMax > 0.02) {
+          const steps = 16;
+          const activeSteps = Math.max(1, Math.round(steps * spineDrawMax));
           let spineD = '';
-          for (let s = 0; s <= 16; s++) {
-            const frac = s / 16;
-            const py = 220 + frac * 320;
-            const localCrook = py <= scanY ? crook * 0.1 : crook;
-            const px = 1030 + Math.sin(frac * Math.PI * 2.1) * 32 * localCrook;
+          for (let s = 0; s <= activeSteps; s++) {
+            const frac = s / steps;
+            const healthyX = 1025 + frac * 5;
+            const healthyY = 225 + frac * 300;
+            const painX = 985 - frac * 65 + Math.sin(frac * Math.PI * 2.0) * 24 * painProgress;
+            const painY = 225 + frac * 225;
+            const px = healthyX + (painX - healthyX) * painProgress;
+            const py = healthyY + (painY - healthyY) * painProgress;
             spineD += (s === 0 ? `M ${px.toFixed(1)} ${py.toFixed(1)}` : ` L ${px.toFixed(1)} ${py.toFixed(1)}`);
           }
+          svg += `<path d="${spineD}" fill="none" stroke="#EF4444" stroke-width="4" stroke-linecap="round" opacity="${(0.82 * masterAlpha).toFixed(2)}"/>`;
+        }
 
-          let orbs = '';
-          PAIN_JOINTS_LIGHT.forEach((j, idx) => {
-            const jx = j.bx + Math.sin(idx * 1.5) * 14 * crook;
-            const jy = j.by;
-            const isHealed = scanY > jy + 20 || p >= 0.92;
-            const col = isHealed ? '#6EE7B7' : '#F87171';
-            const r = 9 + Math.sin(timeSec * 4.5 + idx) * 3.5;
-            orbs += `
-              <circle cx="${jx}" cy="${jy}" r="${r * 1.8}" fill="${col}" opacity="0.18"/>
-              <circle cx="${jx}" cy="${jy}" r="${r}" fill="none" stroke="${col}" stroke-width="1.8" opacity="0.85"/>
-              <circle cx="${jx}" cy="${jy}" r="4.5" fill="#FFFFFF"/>
-              <text x="${jx + 16}" y="${jy + 4}" fill="#FFFFFF" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" style="text-shadow: 0 2px 8px #000;">${j.name}</text>
-            `;
-          });
+        // 2. Reveal the 7 pain points (목 -> 어깨 -> 팔 -> 척추 -> 허리 -> 다리 -> 발) ONE BY ONE with scroll!
+        PAIN_JOINTS_STANDING.forEach((j, idx) => {
+          const startT = 0.05 + idx * 0.125; // Staggered thresholds: 0.05, 0.175, 0.30, 0.425, 0.55, 0.675, 0.80
+          const localP = Math.max(0.0, Math.min(1.0, (painProgress - startT) / 0.12));
+          if (localP <= 0.001) return; // Not revealed yet!
 
-          svgOverlay.innerHTML = `
-            <path d="${spineD}" fill="none" stroke="${p > 0.55 ? '#FDE68A' : '#EF4444'}" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
-            ${orbs}
+          const poseT = Math.min(1.0, Math.max(painProgress, localP * 0.65));
+          const jx = j.hx + (j.bx - j.hx) * poseT + Math.sin(idx * 1.5) * 6 * painProgress;
+          const jy = j.hy + (j.by - j.hy) * poseT;
+
+          // Elastic pop-in scale & red shockwave ripple when each pain point activates
+          const popScale = localP < 0.65
+            ? (localP / 0.65) * 1.22
+            : 1.22 - ((localP - 0.65) / 0.35) * 0.22;
+          const nodeOp = (Math.min(1.0, localP * 1.8) * masterAlpha).toFixed(2);
+          const r = 9.5 + Math.sin(timeSec * 5.0 + idx) * 3.0;
+          const textW = Math.max(48, j.name.length * 16 + 20);
+
+          const shockR = (10 + localP * 34).toFixed(1);
+          const shockOp = ((1.0 - localP) * 0.85 * masterAlpha).toFixed(2);
+
+          svg += `
+            <g transform="translate(${jx.toFixed(1)}, ${jy.toFixed(1)}) scale(${popScale.toFixed(3)})" opacity="${nodeOp}">
+              ${localP < 0.99 ? `<circle cx="0" cy="0" r="${shockR}" fill="none" stroke="#EF4444" stroke-width="2.5" opacity="${shockOp}"/>` : ''}
+              <circle cx="0" cy="0" r="${(r * 1.9).toFixed(1)}" fill="#EF4444" opacity="0.26"/>
+              <circle cx="0" cy="0" r="${r.toFixed(1)}" fill="none" stroke="#F87171" stroke-width="2.2" opacity="0.95"/>
+              <circle cx="0" cy="0" r="4.8" fill="#FFFFFF"/>
+              <rect x="14" y="-14" width="${textW}" height="27" rx="13.5" fill="rgba(127, 29, 29, 0.90)" stroke="#F87171" stroke-width="1.4"/>
+              <text x="${14 + textW / 2}" y="4.5" text-anchor="middle" fill="#FFFFFF" font-family="Pretendard, sans-serif" font-size="14" font-weight="800">${j.name}</text>
+            </g>
           `;
+        });
+
+        return svg;
+      }
+
+      // Sequential 1-by-1 Emerald Green Joint Reveal for "관절 튼튼 회복" (During Joyful "만세!" Stretch)
+      // As manseProgress goes from 0.0 (neutral standing) -> 1.0 (arms raised high in "만세!" pose),
+      // the straight emerald spine line draws and the 7 recovered body parts pop up one by one in GREEN!
+      function buildSequentialRecoveredManseOverlay(manseProgress, timeSec, masterAlpha) {
+        if (manseProgress <= 0.02 || masterAlpha <= 0.01) return '';
+
+        let svg = '';
+        // 1. Progressive straight emerald spine alignment line
+        const spineDrawMax = Math.min(1.0, Math.max(0.0, (manseProgress - 0.02) / 0.65));
+        if (spineDrawMax > 0.02) {
+          const yEnd = 222 + 285 * spineDrawMax;
+          svg += `<line x1="1028" y1="222" x2="1025" y2="${yEnd.toFixed(1)}" stroke="#10B981" stroke-width="4" stroke-linecap="round" opacity="${(0.85 * masterAlpha).toFixed(2)}"/>`;
+        }
+
+        // 2. Reveal the 7 recovered body parts (목 -> 어깨 -> 팔 -> 척추 -> 허리 -> 다리 -> 발) ONE BY ONE in EMERALD GREEN!
+        PAIN_JOINTS_RECOVERED.forEach((j, idx) => {
+          const startT = 0.05 + idx * 0.125; // Staggered thresholds: 0.05, 0.175, 0.30, 0.425, 0.55, 0.675, 0.80
+          const localP = Math.max(0.0, Math.min(1.0, (manseProgress - startT) / 0.12));
+          if (localP <= 0.001) return; // Not revealed yet!
+
+          const poseT = Math.min(1.0, Math.max(manseProgress, localP * 0.70));
+          const jx = j.sx + (j.bx - j.sx) * poseT;
+          const jy = j.sy + (j.by - j.sy) * poseT;
+
+          // Elastic pop-in scale & emerald green healing shockwave ring when each joint lights up
+          const popScale = localP < 0.65
+            ? (localP / 0.65) * 1.22
+            : 1.22 - ((localP - 0.65) / 0.35) * 0.22;
+          const nodeOp = (Math.min(1.0, localP * 1.8) * masterAlpha).toFixed(2);
+          const r = 9.5 + Math.sin(timeSec * 4.8 + idx) * 3.0;
+          const textW = Math.max(48, j.name.length * 16 + 20);
+
+          const shockR = (10 + localP * 34).toFixed(1);
+          const shockOp = ((1.0 - localP) * 0.88 * masterAlpha).toFixed(2);
+
+          svg += `
+            <g transform="translate(${jx.toFixed(1)}, ${jy.toFixed(1)}) scale(${popScale.toFixed(3)})" opacity="${nodeOp}">
+              ${localP < 0.99 ? `<circle cx="0" cy="0" r="${shockR}" fill="none" stroke="#10B981" stroke-width="2.6" opacity="${shockOp}"/>` : ''}
+              <circle cx="0" cy="0" r="${(r * 1.9).toFixed(1)}" fill="#10B981" opacity="0.28"/>
+              <circle cx="0" cy="0" r="${r.toFixed(1)}" fill="none" stroke="#6EE7B7" stroke-width="2.2" opacity="0.96"/>
+              <circle cx="0" cy="0" r="4.8" fill="#FFFFFF"/>
+              <rect x="14" y="-14" width="${textW}" height="27" rx="13.5" fill="rgba(6, 78, 59, 0.92)" stroke="#34D399" stroke-width="1.5"/>
+              <text x="${14 + textW / 2}" y="4.5" text-anchor="middle" fill="#FFFFFF" font-family="Pretendard, sans-serif" font-size="14" font-weight="800">${j.name}</text>
+            </g>
+          `;
+        });
+
+        return svg;
+      }
+
+      function renderCleanLightOverlay(frameFloat, timeSec, rawFrameFloat) {
+        if (!svgOverlay) return;
+        const exactFloat = typeof rawFrameFloat === 'number' ? rawFrameFloat : frameFloat;
+        const exactGrowthRel = exactFloat - GROWTH_TALL_FRAME;
+        const rel = frameFloat - CH6_START_FRAME;
+        const exactRel = exactFloat - CH6_START_FRAME;
+        const exactRecovRel = exactFloat - CH6_RECOVERED_FRAME;
+
+        if (exactGrowthRel >= 0.0 && exactGrowthRel <= 0.94 && currentStarReveal > 0.001) {
+          // Frame 9 ("쑥쑥 자란 우리 아이"): Twinkling golden & white starlight ONLY AFTER the child's height growth finishes!
+          const fadeOut = exactGrowthRel > 0.80 ? Math.max(0.0, 1.0 - (exactGrowthRel - 0.80) / 0.14) : 1.0;
+          svgOverlay.innerHTML = buildChildStarlightSparkles(timeSec, currentStarReveal, fadeOut);
+        } else if (exactRel >= -0.05 && exactRel <= 0.96) {
+          // Cut 1 ("일하면서 온몸이 아파진 나"):
+          // Scroll-driven healthy -> painful posture transformation + 1-by-1 sequential RED pain point reveal!
+          const painProgress = Math.max(0.0, Math.min(1.0, (exactRel - 0.04) / 0.70));
+          const fadeOut = exactRel > 0.84 ? Math.max(0.0, 1.0 - (exactRel - 0.84) / 0.12) : 1.0;
+          svgOverlay.innerHTML = buildSequentialPainStandingOverlay(painProgress, timeSec, fadeOut);
+        } else if (exactRecovRel >= -0.05 && exactRecovRel <= 0.96) {
+          // Cut 4 ("관절 튼튼 회복"):
+          // Scroll-driven standing -> joyful "만세!" motion + 1-by-1 sequential EMERALD GREEN joint reveal!
+          const manseProgress = Math.max(0.0, Math.min(1.0, (exactRecovRel - 0.04) / 0.70));
+          const fadeOut = exactRecovRel > 0.84 ? Math.max(0.0, 1.0 - (exactRecovRel - 0.84) / 0.12) : 1.0;
+          svgOverlay.innerHTML = buildSequentialRecoveredManseOverlay(manseProgress, timeSec, fadeOut);
+        } else if (rel > 0.5 && rel < 2.6) {
+          const nearest = Math.round(rel);
+          if (nearest === 1) {
+            // Cut 2: 한의원에서 추나 치료 (Prone Chuna manual therapy + Korean back/spine labels)
+            svgOverlay.innerHTML = `
+              <line x1="820" y1="725" x2="1300" y2="710" stroke="#FDE68A" stroke-width="3.5" stroke-dasharray="8 6" opacity="0.75"/>
+              ${buildKoreanJointNodes(PAIN_JOINTS_PRONE_CHUNA, false, timeSec, 0.2)}
+            `;
+          } else {
+            // Cut 3: 통증 치료 (1st-person ankle acupuncture + Korean ankle labels)
+            svgOverlay.innerHTML = buildKoreanJointNodes(PAIN_JOINTS_ANKLE_POV, false, timeSec, 0.1);
+          }
         } else {
           if (svgOverlay.innerHTML !== '') svgOverlay.innerHTML = '';
         }
@@ -1475,7 +2399,9 @@
       // 6. SCROLL-REACTIVE 8-DIALOGUE KINETIC TYPOGRAPHY ENGINE
       // ======================================================================
       let activeChapterId = -1;
+      let activeFrameIdx = -1;
       let chapterEnterTime = performance.now();
+      let frameEnterTime = performance.now();
       const quoteEl = document.getElementById('dialogue-main-quote');
       const numEl = document.getElementById('dialogue-chapter-num');
       const povTagEl = document.getElementById('dialogue-pov-tag');
@@ -1483,6 +2409,9 @@
       const phaseStepsEl = document.getElementById('dialogue-phase-steps');
       const stageContainer = document.getElementById('story-dialogue-stage');
       const brushFill = document.getElementById('dialogue-progress-fill');
+      const weightCounterEl = document.getElementById('story4-weight-counter');
+      const weightLiveNumEl = document.getElementById('weight-live-num');
+      const weightDiffBadgeEl = document.getElementById('weight-diff-badge');
       let charSpans = [];
       let currentPhaseStepEls = [];
 
@@ -1493,11 +2422,10 @@
         DIALOGUE_CHAPTERS.forEach((ch, idx) => {
           const dot = document.createElement('div');
           dot.className = 'timeline-chapter-dot';
-          dot.title = `${idx + 1}. ${ch.quote}`;
+          dot.title = `${idx + 1}. ${FRAMES[chapterStartFrames[idx]]?.quote || ch.quote}`;
           dot.addEventListener('click', (e) => {
             e.stopPropagation();
-            const targetNorm = chapterStartFrames[idx] / (FRAMES.length - 1);
-            scrollToNormalized(targetNorm);
+            scrollToNormalized(frameFloatToFullNorm(chapterStartFrames[idx]));
           });
           dotsRow.appendChild(dot);
           dotEls.push(dot);
@@ -1547,7 +2475,7 @@
           span.addEventListener('click', (e) => {
             e.stopPropagation();
             hasUserScrolled = true;
-            scrollToNormalized(item.index / (FRAMES.length - 1));
+            scrollToNormalized(frameFloatToFullNorm(item.index));
           });
           phaseStepsEl.appendChild(span);
           currentPhaseStepEls.push(span);
@@ -1575,9 +2503,14 @@
           activeChapterId = chapter.id;
           chapterEnterTime = nowMs;
           if (numEl) numEl.textContent = chapter.numLabel;
-          buildDialogueCharacters(chapter.quote);
           buildChapterPhaseSteps(chapter.id);
           dotEls.forEach((d, i) => d.classList.toggle('active', i === chapter.id - 1));
+        }
+
+        if (activeFrameIdx !== idx) {
+          activeFrameIdx = idx;
+          frameEnterTime = nowMs;
+          buildDialogueCharacters(frame.quote || chapter.quote);
         }
 
         if (povTagEl && povTagEl.textContent !== frame.povBadge) {
@@ -1597,33 +2530,45 @@
           brushFill.style.width = `${Math.max(12, chProg * 100).toFixed(1)}%`;
         }
 
-        const timeSinceEnter = Math.max(0, (nowMs - chapterEnterTime) * 0.001);
+        // Story 4 (성인 비만·체형 치료): Scroll-reactive weight loss counter (68.5kg -> 48.5kg)
+        if (weightCounterEl) {
+          const isStory4 = chapter.id === 4;
+          weightCounterEl.classList.toggle('active', isStory4);
+          if (isStory4) {
+            const startWeight = 68.5;
+            const targetWeight = 48.5;
+            const lostKg = chProg * (startWeight - targetWeight);
+            const currentKg = startWeight - lostKg;
+            if (weightLiveNumEl) weightLiveNumEl.textContent = `${currentKg.toFixed(1)} kg`;
+            if (weightDiffBadgeEl) weightDiffBadgeEl.textContent = `▼ -${lostKg.toFixed(1)} kg 감량`;
+          }
+        }
+
+        const timeSinceEnter = Math.max(0, (nowMs - frameEnterTime) * 0.001);
+        const frameProg = Math.max(0, Math.min(1, (frameFloat - (idx - 0.45)) / 0.9));
         const totalChars = Math.max(1, charSpans.length);
-        const speedAmp = Math.min(9, Math.abs(velocity) * 28);
 
         charSpans.forEach((span, i) => {
           const charRatio = i / totalChars;
-          const entranceReveal = Math.max(0, Math.min(1, (timeSinceEnter * 2.1) - charRatio * 0.65));
-          const scrollWave = Math.sin(charRatio * 7.0 - frameFloat * 3.8) * speedAmp;
-          const yOffset = (1 - entranceReveal) * 18 + scrollWave;
-          const blurPx = (1 - entranceReveal) * 4.5;
-          const opacity = 0.25 + entranceReveal * 0.75;
+          const rawReveal = Math.max(0, Math.min(1, (timeSinceEnter * 2.5) - charRatio * 0.52));
+          const entranceReveal = 1 - Math.pow(1 - rawReveal, 3); // Luxury cubic-out ease
+          const yOffset = (1 - entranceReveal) * 20;
+          const rotX = (1 - entranceReveal) * -32;
+          const blurPx = (1 - entranceReveal) * 4.0;
+          const opacity = 0.15 + entranceReveal * 0.85;
 
-          span.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
+          span.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0) rotateX(${rotX.toFixed(1)}deg)`;
           span.style.opacity = opacity.toFixed(2);
           span.style.filter = blurPx > 0.25 ? `blur(${blurPx.toFixed(1)}px)` : 'none';
 
-          const isLit = chProg >= charRatio * 0.72 || entranceReveal >= 0.99;
-          const isGoldHighlight = Math.abs(chProg - charRatio) < 0.22 || i >= totalChars - 4;
+          const isLit = frameProg >= charRatio * 0.72 || entranceReveal >= 0.99;
+          const isGoldHighlight = Math.abs(frameProg - charRatio) < 0.25 || i >= Math.max(0, totalChars - 3);
           span.classList.toggle('lit', isLit);
           span.classList.toggle('gold-accent', isGoldHighlight);
         });
 
         if (stageContainer) {
-          const localWave = frameFloat - Math.floor(frameFloat);
-          const zFloat = Math.sin(localWave * Math.PI) * 20;
-          const yTilt = Math.max(-14, Math.min(14, velocity * -28));
-          stageContainer.style.transform = `perspective(1000px) translate3d(0, calc(-50% + ${yTilt.toFixed(1)}px), ${zFloat.toFixed(1)}px)`;
+          stageContainer.style.transform = `translateY(-50%)`;
         }
 
         const pct = (smoothProgress * 100).toFixed(0);
@@ -1640,9 +2585,11 @@
       let smoothProgress = 0;
       let prevProgress = 0;
       let scrollVelocity = 0;
+      let smoothMouse = { x: 0.5, y: 0.5 };
+      let mouseNorm = { x: 0.5, y: 0.5 };
+      let camRollSpring = 0;
       let lastUserInteract = 0;
       let hasUserScrolled = false;
-      let mouseNorm = { x: 0.5, y: 0.5 };
 
       function getScrollMax() {
         const track = document.getElementById('virtual-scroll-track');
@@ -1668,9 +2615,9 @@
         } else if (e.data.type === 'SYNC_CHAPTER' && typeof e.data.chapterId === 'number') {
           const chIdx = Math.max(0, Math.min(DIALOGUE_CHAPTERS.length - 1, e.data.chapterId - 1));
           const fIdx = chapterStartFrames[chIdx] || 0;
-          scrollToNormalized(fIdx / Math.max(1, FRAMES.length - 1));
+          scrollToNormalized(frameFloatToFullNorm(fIdx));
         } else if (e.data.type === 'SYNC_FRAME' && typeof e.data.frameIndex === 'number') {
-          scrollToNormalized(e.data.frameIndex / Math.max(1, FRAMES.length - 1));
+          scrollToNormalized(frameFloatToFullNorm(e.data.frameIndex));
         }
       });
 
@@ -1678,11 +2625,11 @@
         const params = new URLSearchParams(window.location.search);
         if (params.has('frame')) {
           const f = parseInt(params.get('frame'), 10);
-          if (!isNaN(f)) scrollToNormalized(f / Math.max(1, FRAMES.length - 1));
+          if (!isNaN(f)) scrollToNormalized(frameFloatToFullNorm(f));
         } else if (params.has('chapter')) {
           const c = parseInt(params.get('chapter'), 10);
           if (!isNaN(c) && c >= 1 && c <= 8) {
-            scrollToNormalized((chapterStartFrames[c - 1] || 0) / Math.max(1, FRAMES.length - 1));
+            scrollToNormalized(frameFloatToFullNorm(chapterStartFrames[c - 1] || 0));
           }
         }
       }, 250);
@@ -1745,26 +2692,99 @@
       }
 
       // ======================================================================
-      // 8. CINEMATIC ORCHESTRAL & 3D SPATIAL BGM ENGINE
+      // 8. EMOTIONAL CINEMA PIANO & CELLO/STRINGS SCORE SEQUENCER (NO RANDOM NOTES!)
+      //    - Composed 8-Bar Lyrical Theme in F Major / D Minor (Yiruma & Hisaishi Style)
+      //    - Multi-Harmonic Felt Grand Piano + Warm Vibrato Cello & Velvet Strings
       // ======================================================================
       const soundEngine = (function () {
-        let ctx = null, masterGain = null, reverbNode = null, whooshGain = null, whooshFilter = null;
-        let isPlaying = false, userMuted = false, chordTimer = null, melodyTimer = null, chordIdx = 0, activeCh = 1;
+        let ctx = null, masterGain = null, reverbNode = null;
+        let isPlaying = false, userMuted = false, stepTimer = null, stepIdx = 0, activeCh = 1;
 
-        const CHORDS = [
-          { bass: 87.31,  pad: [174.61, 220.00, 261.63, 329.63, 392.00], scale: [523.25, 587.33, 659.25, 783.99, 880.00] },
-          { bass: 98.00,  pad: [196.00, 246.94, 293.66, 329.63, 392.00], scale: [587.33, 659.25, 783.99, 880.00, 987.77] },
-          { bass: 82.41,  pad: [164.81, 246.94, 293.66, 329.63, 392.00], scale: [493.88, 587.33, 659.25, 783.99, 987.77] },
-          { bass: 110.00, pad: [220.00, 261.63, 329.63, 392.00, 493.88], scale: [523.25, 659.25, 783.99, 880.00, 1046.50] }
+        // Exact Equal-Temperament Note Frequencies (Hz)
+        const N = {
+          C2: 65.41,  D2: 73.42,  E2: 82.41,  F2: 87.31,  G2: 98.00,  A2: 110.00, Bb2: 116.54,
+          C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, Bb3: 233.08,
+          C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, Bb4: 466.16,
+          C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00, Bb5: 932.33,
+          C6: 1046.50
+        };
+
+        // 8-Bar Composed Emotional Cinema Score (8 eighth-notes per bar = 64 steps)
+        const BARS = [
+          {
+            // Bar 1: Fmaj9 — Warmth & Earnest Hope
+            cello: N.F2,
+            strings: [N.F3, N.A3, N.C4, N.E4, N.G4],
+            lh:  [N.F2, N.C3, N.F3, N.A3, N.C4, N.A3, N.F3, N.C3],
+            rh:  [N.C5, N.F5, N.G5, N.A5, N.G5, N.F5, N.C5, N.D5],
+            vel: [0.85, 0.72, 0.80, 1.00, 0.78, 0.74, 0.65, 0.72]
+          },
+          {
+            // Bar 2: C/E — Gentle Forward Journey
+            cello: N.E2,
+            strings: [N.E3, N.G3, N.C4, N.E4, N.G4],
+            lh:  [N.E2, N.C3, N.G3, N.C4, N.G3, N.E3, N.C3, N.G3],
+            rh:  [N.E5, N.G5, N.C6, N.G5, N.E5, N.D5, N.C5, N.E5],
+            vel: [0.88, 0.76, 1.02, 0.80, 0.75, 0.70, 0.68, 0.74]
+          },
+          {
+            // Bar 3: Dm7 — Tender Empathy & Deep Care
+            cello: N.D2,
+            strings: [N.D3, N.F3, N.A3, N.C4, N.F4],
+            lh:  [N.D2, N.A2, N.D3, N.F3, N.A3, N.F3, N.D3, N.A2],
+            rh:  [N.F5, N.E5, N.D5, N.A4, N.C5, N.D5, N.F5, N.G5],
+            vel: [0.92, 0.78, 0.84, 0.68, 0.74, 0.80, 0.88, 0.82]
+          },
+          {
+            // Bar 4: Am7 — Poignant Reflection
+            cello: N.A2,
+            strings: [N.A2, N.E3, N.G3, N.C4, N.E4],
+            lh:  [N.A2, N.E3, N.A3, N.C4, N.E4, N.C4, N.A3, N.E3],
+            rh:  [N.E5, N.C5, N.A4, N.E5, N.D5, N.C5, N.G4, N.A4],
+            vel: [0.88, 0.74, 0.68, 0.84, 0.78, 0.72, 0.64, 0.70]
+          },
+          {
+            // Bar 5: Bbmaj7 — Heartwarming Embrace & Miracle
+            cello: N.Bb2,
+            strings: [N.Bb2, N.F3, N.A3, N.D4, N.F4],
+            lh:  [N.Bb2, N.F3, N.Bb3, N.D4, N.F4, N.D4, N.Bb3, N.F3],
+            rh:  [N.D5, N.F5, N.A5, N.G5, N.F5, N.D5, N.C5, N.D5],
+            vel: [0.90, 0.82, 1.04, 0.88, 0.82, 0.74, 0.70, 0.76]
+          },
+          {
+            // Bar 6: F/A — Comfort, Healing & Smile
+            cello: N.A2,
+            strings: [N.A2, N.F3, N.A3, N.C4, N.F4],
+            lh:  [N.A2, N.F3, N.A3, N.C4, N.F4, N.C4, N.A3, N.F3],
+            rh:  [N.C5, N.F5, N.A5, N.C6, N.A5, N.G5, N.F5, N.E5],
+            vel: [0.86, 0.80, 0.94, 1.05, 0.86, 0.78, 0.74, 0.72]
+          },
+          {
+            // Bar 7: Gm7 — Deep Gratitude
+            cello: N.G2,
+            strings: [N.G2, N.D3, N.F3, N.Bb3, N.D4],
+            lh:  [N.G2, N.D3, N.G3, N.Bb3, N.D4, N.Bb3, N.G3, N.D3],
+            rh:  [N.D5, N.Bb4, N.D5, N.F5, N.G5, N.F5, N.D5, N.E5],
+            vel: [0.88, 0.72, 0.78, 0.88, 0.95, 0.82, 0.74, 0.78]
+          },
+          {
+            // Bar 8: C7sus4 -> C7 — Uplifting Resolution into New Beginning
+            cello: N.C2,
+            strings: [N.C3, N.F3, N.G3, N.C4, N.E4],
+            lh:  [N.C2, N.G2, N.C3, N.G3, N.C4, N.G3, N.E3, N.C3],
+            rh:  [N.F5, N.F5, N.E5, N.C5, N.D5, N.E5, N.F5, N.G5],
+            vel: [0.92, 0.80, 0.90, 0.74, 0.78, 0.84, 0.88, 0.94]
+          }
         ];
 
         function createConcertHallReverb(audioCtx) {
-          const length = Math.floor(audioCtx.sampleRate * 3.6);
+          const length = Math.floor(audioCtx.sampleRate * 3.8);
           const impulse = audioCtx.createBuffer(2, length, audioCtx.sampleRate);
           for (let ch = 0; ch < 2; ch++) {
             const data = impulse.getChannelData(ch);
             for (let i = 0; i < length; i++) {
-              data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.6) * 0.45;
+              const decay = Math.pow(1 - i / length, 2.8);
+              data[i] = (Math.random() * 2 - 1) * decay * 0.42;
             }
           }
           const conv = audioCtx.createConvolver();
@@ -1777,110 +2797,167 @@
           const AudioCtx = window.AudioContext || window.webkitAudioContext;
           if (!AudioCtx) return;
           ctx = new AudioCtx();
+
           masterGain = ctx.createGain();
           masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
           masterGain.connect(ctx.destination);
 
           reverbNode = createConcertHallReverb(ctx);
           const reverbGain = ctx.createGain();
-          reverbGain.gain.value = 0.65;
+          reverbGain.gain.value = 0.62;
           reverbNode.connect(reverbGain);
           reverbGain.connect(masterGain);
-
-          const noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
-          const out = noiseBuf.getChannelData(0);
-          let b0 = 0, b1 = 0, b2 = 0;
-          for (let i = 0; i < out.length; i++) {
-            const w = Math.random() * 2 - 1;
-            b0 = 0.997 * b0 + w * 0.029;
-            b1 = 0.985 * b1 + w * 0.032;
-            b2 = 0.950 * b2 + w * 0.048;
-            out[i] = (b0 + b1 + b2) * 0.35;
-          }
-          const noiseSrc = ctx.createBufferSource();
-          noiseSrc.buffer = noiseBuf;
-          noiseSrc.loop = true;
-
-          whooshFilter = ctx.createBiquadFilter();
-          whooshFilter.type = 'bandpass';
-          whooshFilter.frequency.value = 240;
-          whooshFilter.Q.value = 1.8;
-
-          whooshGain = ctx.createGain();
-          whooshGain.gain.value = 0.0;
-
-          noiseSrc.connect(whooshFilter);
-          whooshFilter.connect(whooshGain);
-          whooshGain.connect(reverbNode);
-          noiseSrc.start();
         }
 
-        function playWarmPadChord() {
+        // Acoustic Felt Grand Piano Synthesizer (Multi-Harmonic + Hammer Envelope)
+        function playGrandPianoVoice(freq, velocity, durationSec, isMelody) {
+          if (!ctx || !isPlaying || !freq) return;
+          const now = ctx.currentTime;
+          const outGain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          // Warm acoustic piano lowpass envelope (bright hammer strike -> warm sustain)
+          filter.type = 'lowpass';
+          const peakCutoff = isMelody ? 2600 * velocity : 1450 * velocity;
+          filter.frequency.setValueAtTime(Math.max(400, peakCutoff), now);
+          filter.frequency.exponentialRampToValueAtTime(isMelody ? 520 : 340, now + durationSec * 0.85);
+          filter.Q.value = 0.7;
+
+          const peakGain = (isMelody ? 0.068 : 0.034) * velocity;
+          outGain.gain.setValueAtTime(0.0001, now);
+          outGain.gain.linearRampToValueAtTime(peakGain, now + 0.018);
+          outGain.gain.exponentialRampToValueAtTime(peakGain * 0.32, now + 0.38);
+          outGain.gain.exponentialRampToValueAtTime(0.0002, now + durationSec);
+
+          // 1st Fundamental + Detuned Unison String + 2nd Octave Harmonic Overtones
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const osc3 = ctx.createOscillator();
+          const harmGain = ctx.createGain();
+
+          osc1.type = 'triangle';
+          osc2.type = 'sine';
+          osc3.type = 'sine';
+
+          osc1.frequency.setValueAtTime(freq, now);
+          osc2.frequency.setValueAtTime(freq * 1.0007, now); // Piano string unison chorus
+          osc3.frequency.setValueAtTime(freq * 2.0, now);    // 2nd harmonic warmth
+          harmGain.gain.value = 0.18;
+
+          osc1.connect(filter);
+          osc2.connect(filter);
+          osc3.connect(harmGain);
+          harmGain.connect(filter);
+
+          filter.connect(outGain);
+          outGain.connect(masterGain);
+          outGain.connect(reverbNode);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc3.start(now);
+          osc1.stop(now + durationSec + 0.05);
+          osc2.stop(now + durationSec + 0.05);
+          osc3.stop(now + durationSec + 0.05);
+        }
+
+        // Warm Solo Cello & Velvet String Ensemble Swell (Triggered at the start of each bar)
+        function playCelloAndStringsBar(bar, barDurationSec) {
           if (!ctx || !isPlaying) return;
           const now = ctx.currentTime;
-          const chord = CHORDS[chordIdx % CHORDS.length];
-          chordIdx++;
 
-          const bassOsc = ctx.createOscillator();
-          const bassFilter = ctx.createBiquadFilter();
-          const bassGain = ctx.createGain();
-          bassOsc.type = 'triangle';
-          bassOsc.frequency.setValueAtTime(chord.bass, now);
-          bassFilter.type = 'lowpass';
-          bassFilter.frequency.setValueAtTime(250, now);
-          bassGain.gain.setValueAtTime(0.0001, now);
-          bassGain.gain.linearRampToValueAtTime(0.1, now + 1.8);
-          bassGain.gain.exponentialRampToValueAtTime(0.0008, now + 6.4);
-          bassOsc.connect(bassFilter);
-          bassFilter.connect(bassGain);
-          bassGain.connect(masterGain);
-          bassGain.connect(reverbNode);
-          bassOsc.start(now);
-          bassOsc.stop(now + 6.5);
+          // Emotional swell based on story chapter (warmer & fuller on recovery/longevity chapters)
+          const chBoost = (activeCh === 4 || activeCh >= 6) ? 1.18 : 1.0;
 
-          chord.pad.forEach((freq, idx) => {
+          // 1. Warm Bowed Cello Bass with Subtle 5Hz Vibrato
+          const celloOsc = ctx.createOscillator();
+          const celloSub = ctx.createOscillator();
+          const vibOsc = ctx.createOscillator();
+          const vibGain = ctx.createGain();
+          const celloFilter = ctx.createBiquadFilter();
+          const celloEnv = ctx.createGain();
+
+          celloOsc.type = 'sawtooth';
+          celloSub.type = 'triangle';
+          celloOsc.frequency.setValueAtTime(bar.cello, now);
+          celloSub.frequency.setValueAtTime(bar.cello, now);
+
+          vibOsc.frequency.value = 5.1;
+          vibGain.gain.value = bar.cello * 0.0055;
+          vibOsc.connect(vibGain);
+          vibGain.connect(celloOsc.frequency);
+
+          celloFilter.type = 'lowpass';
+          celloFilter.frequency.setValueAtTime(290, now);
+          celloFilter.frequency.linearRampToValueAtTime(420, now + barDurationSec * 0.45);
+          celloFilter.frequency.linearRampToValueAtTime(240, now + barDurationSec);
+
+          celloEnv.gain.setValueAtTime(0.0001, now);
+          celloEnv.gain.linearRampToValueAtTime(0.055 * chBoost, now + 0.85);
+          celloEnv.gain.exponentialRampToValueAtTime(0.0006, now + barDurationSec + 0.6);
+
+          celloOsc.connect(celloFilter);
+          celloSub.connect(celloFilter);
+          celloFilter.connect(celloEnv);
+          celloEnv.connect(masterGain);
+          celloEnv.connect(reverbNode);
+
+          celloOsc.start(now);
+          celloSub.start(now);
+          vibOsc.start(now);
+          celloOsc.stop(now + barDurationSec + 0.65);
+          celloSub.stop(now + barDurationSec + 0.65);
+          vibOsc.stop(now + barDurationSec + 0.65);
+
+          // 2. Velvet String Section Pad
+          bar.strings.forEach((freq, idx) => {
             const osc = ctx.createOscillator();
             const lp = ctx.createBiquadFilter();
             const vGain = ctx.createGain();
-            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
-            osc.frequency.setValueAtTime(freq * (1 + (idx - 2) * 0.0012), now);
+            osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
+            osc.frequency.setValueAtTime(freq * (1 + (idx - 2) * 0.0014), now);
             lp.type = 'lowpass';
-            lp.frequency.setValueAtTime(1150, now);
-            const peak = 0.04 / Math.sqrt(idx + 1);
+            lp.frequency.setValueAtTime(1050, now);
+            const peak = (0.028 / Math.sqrt(idx + 1)) * chBoost;
             vGain.gain.setValueAtTime(0.0001, now);
-            vGain.gain.linearRampToValueAtTime(peak, now + 2.1);
-            vGain.gain.exponentialRampToValueAtTime(0.0005, now + 6.6);
+            vGain.gain.linearRampToValueAtTime(peak, now + 1.15);
+            vGain.gain.exponentialRampToValueAtTime(0.0004, now + barDurationSec + 0.7);
             osc.connect(lp);
             lp.connect(vGain);
             vGain.connect(reverbNode);
             vGain.connect(masterGain);
             osc.start(now);
-            osc.stop(now + 6.7);
+            osc.stop(now + barDurationSec + 0.75);
           });
         }
 
-        function playFeltPianoNote() {
+        function tickScoreStep() {
           if (!ctx || !isPlaying) return;
-          const now = ctx.currentTime;
-          const chord = CHORDS[(chordIdx - 1 + CHORDS.length) % CHORDS.length];
-          const freq = chord.scale[Math.floor(Math.random() * chord.scale.length)];
-          const osc = ctx.createOscillator();
-          const lp = ctx.createBiquadFilter();
-          const env = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now);
-          lp.type = 'lowpass';
-          lp.frequency.setValueAtTime(1800, now);
-          lp.frequency.exponentialRampToValueAtTime(420, now + 2.6);
-          env.gain.setValueAtTime(0.0001, now);
-          env.gain.linearRampToValueAtTime(0.052, now + 0.035);
-          env.gain.exponentialRampToValueAtTime(0.0004, now + 3.4);
-          osc.connect(lp);
-          lp.connect(env);
-          env.connect(reverbNode);
-          env.connect(masterGain);
-          osc.start(now);
-          osc.stop(now + 3.5);
+          const barIdx = Math.floor(stepIdx / 8) % BARS.length;
+          const beatInBar = stepIdx % 8;
+          const bar = BARS[barIdx];
+
+          // Start of a new 8-beat bar: swell Cello & Strings
+          if (beatInBar === 0) {
+            playCelloAndStringsBar(bar, 3.25);
+          }
+
+          // Play Left-Hand Arpeggio Note
+          const lhFreq = bar.lh[beatInBar];
+          const vel = bar.vel[beatInBar] || 0.8;
+          if (lhFreq) {
+            playGrandPianoVoice(lhFreq, vel * 0.78, 1.85, false);
+          }
+
+          // Play Right-Hand Emotional Piano Melody Note (with slight human rubato offset)
+          const rhFreq = bar.rh[beatInBar];
+          if (rhFreq) {
+            setTimeout(() => {
+              playGrandPianoVoice(rhFreq, vel, 2.35, true);
+            }, 14);
+          }
+
+          stepIdx = (stepIdx + 1) % (BARS.length * 8);
         }
 
         function updateUI() {
@@ -1898,19 +2975,16 @@
           isPlaying = true;
           masterGain.gain.cancelScheduledValues(ctx.currentTime);
           masterGain.gain.setValueAtTime(Math.max(0.001, masterGain.gain.value), ctx.currentTime);
-          masterGain.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 1.6);
-          playWarmPadChord();
-          setTimeout(playFeltPianoNote, 500);
-          chordTimer = setInterval(playWarmPadChord, 4800);
-          melodyTimer = setInterval(playFeltPianoNote, 1900);
+          masterGain.gain.linearRampToValueAtTime(0.88, ctx.currentTime + 1.4);
+          tickScoreStep();
+          stepTimer = setInterval(tickScoreStep, 405); // ~74 BPM expressive eighth-note pulse
           updateUI();
         }
 
         function stopBGM() {
           if (!ctx || !isPlaying) return;
           isPlaying = false;
-          clearInterval(chordTimer);
-          clearInterval(melodyTimer);
+          clearInterval(stepTimer);
           masterGain.gain.cancelScheduledValues(ctx.currentTime);
           masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
           masterGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
@@ -1920,11 +2994,6 @@
         function updateSpatialDynamics(velocity, chapterId) {
           if (!ctx || !isPlaying) return;
           if (chapterId !== activeCh) activeCh = chapterId;
-          if (whooshGain && whooshFilter) {
-            const speed = Math.min(1.0, Math.abs(velocity) * 2.5);
-            whooshGain.gain.setTargetAtTime(speed * 0.08, ctx.currentTime, 0.08);
-            whooshFilter.frequency.setTargetAtTime(220 + speed * 750, ctx.currentTime, 0.08);
-          }
         }
 
         const bgmBtn = document.getElementById('btn-bgm-toggle');
@@ -1945,7 +3014,188 @@
       })();
 
       // ======================================================================
-      // 9. MASTER 60FPS ANIMATION LOOP
+      // 8.5. SK TELECOM (sktelecom.com) INTRO CARD STACK -> BENTO FLIP SPREAD
+      //      Automatically plays when the 3D story scroll finishes!
+      //      6 Cards: 안정위원장 / 추나 / 성장 / 다이어트 / 탈모 / 황제공진단
+      // ======================================================================
+      const sktCardFlipController = (function () {
+        const stageEl = document.getElementById('skt-finale-stage');
+        const heroBgEl = document.getElementById('skt-hero-bg');
+        const cardEls = Array.from(document.querySelectorAll('#skt-bento-grid .skt-card-item'));
+        const btnShowCards = document.getElementById('btn-show-skt-cards');
+        const btnReplayFlip = document.getElementById('btn-replay-skt-flip');
+        const btnBackToStory = document.getElementById('btn-back-to-story');
+
+        let isActive = false;
+        let timers = [];
+
+        function clearTimers() {
+          timers.forEach((id) => clearTimeout(id));
+          timers = [];
+        }
+
+        function playFlipSequence() {
+          if (!stageEl || cardEls.length === 0) return;
+          clearTimers();
+
+          stageEl.classList.remove('phase-headline', 'phase-stack', 'phase-spread', 'phase-ready');
+          stageEl.classList.add('active');
+
+          if (stageContainer) {
+            stageContainer.style.opacity = '0';
+            stageContainer.style.transition = 'opacity 0.35s ease';
+          }
+
+          // Calculate FLIP center delta for each card slot relative to viewport center
+          const vwCenter = window.innerWidth * 0.5;
+          const vhCenter = window.innerHeight * 0.5;
+
+          const cardMetrics = cardEls.map((card) => {
+            const imgBox = card.querySelector('.skt-img-box');
+            const rect = card.getBoundingClientRect();
+            const cx = rect.left + rect.width * 0.5;
+            const cy = rect.top + rect.height * 0.5;
+            const dx = vwCenter - cx;
+            const dy = vhCenter - cy;
+            const rot = parseFloat(card.dataset.rot || '0');
+            const stackScaleX = Math.min(0.68, 235 / Math.max(180, rect.width));
+            const stackScaleY = Math.min(0.76, 198 / Math.max(150, rect.height));
+            return { card, imgBox, dx, dy, rot, stackScaleX, stackScaleY };
+          });
+
+          // Initialize all 6 card image boxes at viewport center (hidden & enlarged like SKT intro)
+          cardMetrics.forEach((m) => {
+            if (!m.imgBox) return;
+            m.imgBox.style.transition = 'none';
+            m.imgBox.style.opacity = '0';
+            m.imgBox.style.zIndex = '20';
+            m.imgBox.style.transform = `translate3d(${m.dx.toFixed(1)}px, ${m.dy.toFixed(1)}px, 0) scale(${(m.stackScaleX * 1.38).toFixed(3)}, ${(m.stackScaleY * 1.38).toFixed(3)}) rotate(${m.rot}deg)`;
+          });
+
+          // Force reflow before starting transitions
+          void stageEl.offsetWidth;
+
+          // Phase 1 (0ms): Central Headline ("바른한의원") pops in with back.out bounce
+          stageEl.classList.add('phase-headline');
+
+          // Phase 2 (220ms ~ 950ms): Stack the 6 cards one by one at the center of the screen
+          timers.push(setTimeout(() => {
+            stageEl.classList.add('phase-stack');
+            cardMetrics.forEach((m, i) => {
+              timers.push(setTimeout(() => {
+                if (!m.imgBox) return;
+                m.imgBox.style.transition = 'transform 0.46s cubic-bezier(0.4, 0.2, 0.3, 1.2), opacity 0.32s ease';
+                m.imgBox.style.opacity = '1';
+                m.imgBox.style.transform = `translate3d(${m.dx.toFixed(1)}px, ${m.dy.toFixed(1)}px, 0) scale(${m.stackScaleX.toFixed(3)}, ${m.stackScaleY.toFixed(3)}) rotate(${m.rot}deg)`;
+              }, i * 115));
+            });
+          }, 220));
+
+          // Phase 3 (1080ms ~ 1920ms): FLIP Spread all 6 cards outward from center into the 6 Bento slots!
+          timers.push(setTimeout(() => {
+            stageEl.classList.remove('phase-headline', 'phase-stack');
+            stageEl.classList.add('phase-spread');
+
+            cardMetrics.forEach((m, i) => {
+              timers.push(setTimeout(() => {
+                if (!m.imgBox) return;
+                m.imgBox.style.transition = 'transform 0.86s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.4s ease';
+                m.imgBox.style.transform = 'translate3d(0px, 0px, 0) scale(1, 1) rotate(0deg)';
+                m.imgBox.style.zIndex = '1';
+              }, i * 75));
+            });
+          }, 1080));
+
+          // Phase 4 (1960ms): Reveal card titles, descriptions, badges, and enable hover zoom
+          timers.push(setTimeout(() => {
+            stageEl.classList.remove('phase-spread');
+            stageEl.classList.add('phase-ready');
+          }, 1960));
+        }
+
+        function activate() {
+          if (isActive) return;
+          isActive = true;
+          playFlipSequence();
+        }
+
+        function deactivate() {
+          if (!isActive) return;
+          isActive = false;
+          clearTimers();
+          if (stageEl) {
+            stageEl.classList.remove('active', 'phase-headline', 'phase-stack', 'phase-spread', 'phase-ready');
+          }
+          if (stageContainer) {
+            stageContainer.style.opacity = '1';
+          }
+        }
+
+        function openReserveWithProgram(progValue) {
+          if (progValue) {
+            const sel = document.getElementById('reserve-program');
+            if (sel) sel.value = progValue;
+          }
+          if (drawerOverlay) drawerOverlay.classList.add('open');
+        }
+
+        // Card & Action Chip Click Handlers
+        cardEls.forEach((card) => {
+          card.addEventListener('click', (e) => {
+            const chip = e.target.closest('.skt-card-chip');
+            const action = chip ? chip.dataset.action : (card.dataset.link ? 'link' : 'reserve');
+            const linkUrl = card.dataset.link;
+            const reserveProg = card.dataset.reserve;
+            const chNum = parseInt(card.dataset.chapter || '1', 10);
+
+            if (action === 'story') {
+              e.stopPropagation();
+              deactivate();
+              const targetFrame = chapterStartFrames[Math.max(0, chNum - 1)] || 0;
+              scrollToNormalized(frameFloatToFullNorm(targetFrame));
+            } else if (action === 'link' && linkUrl) {
+              window.location.href = linkUrl;
+            } else {
+              openReserveWithProgram(reserveProg);
+            }
+          });
+        });
+
+        if (btnShowCards) {
+          btnShowCards.addEventListener('click', () => {
+            scrollToNormalized(1.0);
+            if ( isActive ) playFlipSequence();
+            else activate();
+          });
+        }
+
+        if (btnReplayFlip) {
+          btnReplayFlip.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playFlipSequence();
+          });
+        }
+
+        if (btnBackToStory) {
+          btnBackToStory.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deactivate();
+            scrollToNormalized(0.0);
+          });
+        }
+
+        function updateMouseParallax(mx, my) {
+          if (!isActive || !heroBgEl) return;
+          const moveX = (mx - 0.5) * 28;
+          const moveY = (my - 0.5) * 28;
+          heroBgEl.style.transform = `translate(calc(-50% + ${moveX.toFixed(1)}px), calc(-50% + ${moveY.toFixed(1)}px))`;
+        }
+
+        return { activate, deactivate, isActive: () => isActive, updateMouseParallax };
+      })();
+
+      // ======================================================================
+      // 9. MASTER 60FPS ANIMATION LOOP (LUSION ZERO-G SPRING PHYSICS)
       // ======================================================================
       let lastTime = performance.now();
 
@@ -1959,46 +3209,171 @@
           targetProgress = Math.max(0, Math.min(1, getCurrentScrollY() / getScrollMax()));
         }
 
+        // Lusion Zero-G Smooth Spring Damping on Scroll & Mouse
         smoothProgress += (targetProgress - smoothProgress) * 0.085;
         scrollVelocity = (smoothProgress - prevProgress) / Math.max(dt, 0.001);
         prevProgress = smoothProgress;
 
+        smoothMouse.x += (mouseNorm.x - smoothMouse.x) * 0.075;
+        smoothMouse.y += (mouseNorm.y - smoothMouse.y) * 0.075;
+
+        const targetRoll = Math.max(-0.08, Math.min(0.08, scrollVelocity * 0.14 + (smoothMouse.x - 0.5) * -0.04));
+        camRollSpring += (targetRoll - camRollSpring) * 0.08;
+
+        // Map the story frames across the first 90% of scroll (with 2.4x scroll travel on Chapter 6 Cut 1),
+        // then trigger SKT Card Flip Stage at the end!
+        const storyNorm = Math.max(0, Math.min(1, smoothProgress / 0.90));
         const maxIdx = FRAMES.length - 1;
-        const frameFloat = Math.max(0, Math.min(maxIdx, smoothProgress * maxIdx));
+        const frameFloat = storyNormToFrameFloat(storyNorm);
         const currIdx = Math.min(maxIdx, Math.floor(frameFloat));
         const nextIdx = Math.min(maxIdx, currIdx + 1);
-        const localMix = frameFloat - currIdx;
+        const rawMix = frameFloat - currIdx;
+
+        // Trigger SK Telecom Card Stack -> Bento Flip Spread when scroll reaches the end
+        if (smoothProgress >= 0.925 && !sktCardFlipController.isActive()) {
+          sktCardFlipController.activate();
+        } else if (smoothProgress < 0.885 && sktCardFlipController.isActive()) {
+          sktCardFlipController.deactivate();
+        }
+        sktCardFlipController.updateMouseParallax(smoothMouse.x, smoothMouse.y);
+
+        // Frame Dwell/Hold Plateau: Keep each frame 100% pure & un-overlapped
+        // during the first 45% (Frame 0) or 36% (other frames) of its scroll step!
+        const holdEnd = currIdx === 0 ? 0.45 : 0.36;
+        const transEnd = 0.94;
+        const localMix = rawMix <= holdEnd
+          ? 0.0
+          : (rawMix >= transEnd ? 1.0 : (rawMix - holdEnd) / (transEnd - holdEnd));
 
         if (glRenderer && glMaterial && glTextures.length > 0) {
           const currFrame = FRAMES[currIdx];
           const nextFrame = FRAMES[nextIdx];
-          glMaterial.uniforms.uTexCurr.value = glTextures[currIdx];
-          glMaterial.uniforms.uTexNext.value = glTextures[nextIdx];
-          glMaterial.uniforms.uMix.value = localMix;
+          const growthShortIdx = Math.max(7, GROWTH_TALL_FRAME - 2);
+          const ch6HealthyIdx = Math.min(maxIdx, CH6_START_FRAME + 3);
+
+          let texCurr = glTextures[currIdx];
+          let texNext = glTextures[nextIdx];
+          let shaderMix = localMix;
+          let shaderMode = currFrame.mode;
+
+          if (currIdx !== GROWTH_TALL_FRAME) {
+            growthCompletedAtMs = 0;
+            currentStarReveal = 0.0;
+          }
+
+          if (currIdx === GROWTH_TALL_FRAME - 1 && localMix > 0.001) {
+            // Transitioning from Frame 8 ("성장클리닉을 하다") -> enter the classroom at the short-child state first!
+            texNext = glTextures[growthShortIdx];
+            shaderMode = 6;
+          } else if (currIdx === GROWTH_TALL_FRAME && rawMix <= 0.80) {
+            // Frame 9 ("쑥쑥 자란 우리 아이"):
+            // Step 1: Child height-growth motion from short child (life_1d_growth_short.jpg) -> tall child (life_1d_growth_peers.jpg)
+            // Step 2: ONLY AFTER the height growth finishes (growthProgress >= 0.96), pop in the twinkling stars!
+            texCurr = glTextures[growthShortIdx];
+            texNext = glTextures[GROWTH_TALL_FRAME];
+            shaderMode = 1; // Mode 1: Classroom Height Growth Vertical Stretch!
+
+            const enterElapsed = Math.max(0, (now - frameEnterTime) * 0.001);
+            const timeGrowth = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.08) / 1.15));
+            const scrollGrowth = Math.max(0.0, Math.min(1.0, (rawMix - 0.02) / 0.38));
+            const growthProgress = Math.max(timeGrowth, scrollGrowth);
+            shaderMix = growthProgress;
+
+            if (growthProgress >= 0.96) {
+              if (growthCompletedAtMs === 0) growthCompletedAtMs = now;
+              const postGrowthSec = Math.max(0, (now - growthCompletedAtMs) * 0.001);
+              const scrollPostGrowth = rawMix > 0.40 ? Math.min(1.0, (rawMix - 0.40) / 0.24) : 0.0;
+              currentStarReveal = Math.max(scrollPostGrowth, Math.min(1.0, postGrowthSec / 0.52));
+            } else {
+              growthCompletedAtMs = 0;
+              currentStarReveal = 0.0;
+            }
+          } else if (currIdx === GROWTH_TALL_FRAME && rawMix > 0.80) {
+            // Transitioning out of Frame 9 ("쑥쑥 자란 우리 아이") into Frame 10 ("육아로 뱃살만...")
+            texCurr = glTextures[GROWTH_TALL_FRAME];
+            texNext = glTextures[nextIdx];
+            shaderMode = currFrame.mode;
+            shaderMix = Math.min(1.0, (rawMix - 0.80) / (0.96 - 0.80));
+            currentStarReveal = 1.0;
+          } else if (currIdx === CH6_START_FRAME - 1 && localMix > 0.001) {
+            // Transitioning into Chapter 6 Cut 1 ("일하면서 온몸이 아파진 나"):
+            // Enter at the HEALTHY upright standing posture first!
+            texNext = glTextures[ch6HealthyIdx];
+            shaderMode = 6;
+          } else if (currIdx === CH6_START_FRAME && rawMix <= 0.84) {
+            // Chapter 6 Cut 1 ("일하면서 온몸이 아파진 나"):
+            // Scroll-driven transformation from Healthy Upright Posture (life_4b_chuna_recovery.jpg)
+            // -> Painful Hunched Posture (life_4a_work_spine_pain.jpg) while 7 pain points appear one by one!
+            texCurr = glTextures[ch6HealthyIdx];
+            texNext = glTextures[CH6_START_FRAME];
+            shaderMode = 3;
+            shaderMix = Math.max(0.0, Math.min(1.0, (rawMix - 0.04) / 0.70));
+          } else if (currIdx === CH6_START_FRAME && rawMix > 0.84) {
+            // Transitioning out of "일하면서 온몸이 아파진 나" (painful posture) into "한의원에서 추나 치료"
+            texCurr = glTextures[CH6_START_FRAME];
+            texNext = glTextures[nextIdx];
+            shaderMode = 6;
+            shaderMix = Math.min(1.0, (rawMix - 0.84) / (0.98 - 0.84));
+          } else if (currIdx === CH6_RECOVERED_FRAME && rawMix <= 0.84) {
+            // Chapter 6 Cut 4 ("관절 튼튼 회복"):
+            // Scroll-driven transformation from Neutral Standing (life_4b_chuna_recovery.jpg)
+            // -> Joyful "만세!" Stretch (life_4b_chuna_manse.jpg) while 7 recovered joints appear one by one in GREEN!
+            texCurr = glTextures[CH6_RECOVERED_FRAME];
+            texNext = glManseTexture || glTextures[CH6_RECOVERED_FRAME];
+            shaderMode = 8;
+            shaderMix = Math.max(0.0, Math.min(1.0, (rawMix - 0.04) / 0.70));
+          } else if (currIdx === CH6_RECOVERED_FRAME && rawMix > 0.84) {
+            // Transitioning out of "관절 튼튼 회복" (Manse posture) into Chapter 7
+            texCurr = glManseTexture || glTextures[CH6_RECOVERED_FRAME];
+            texNext = glTextures[nextIdx];
+            shaderMode = currFrame.mode;
+            shaderMix = Math.min(1.0, (rawMix - 0.84) / (0.98 - 0.84));
+          }
+
+          glMaterial.uniforms.uTexCurr.value = texCurr;
+          glMaterial.uniforms.uTexNext.value = texNext;
+          glMaterial.uniforms.uMix.value = shaderMix;
           glMaterial.uniforms.uTime.value = timeSec;
           glMaterial.uniforms.uVelocity.value = scrollVelocity;
           glMaterial.uniforms.uWarmth.value = (currFrame.warmth || 1.06) * (1 - localMix) + (nextFrame.warmth || 1.06) * localMix;
-          glMaterial.uniforms.uMouse.value.set(mouseNorm.x, 1.0 - mouseNorm.y);
+          glMaterial.uniforms.uMouse.value.set(smoothMouse.x, 1.0 - smoothMouse.y);
           glMaterial.uniforms.uFocal.value.set(currFrame.focal[0], currFrame.focal[1]);
-          glMaterial.uniforms.uMode.value = currFrame.mode;
+          glMaterial.uniforms.uMode.value = shaderMode;
           glRenderer.render(glScene, glCamera);
         }
 
         if (tRenderer && tScene && tCamera) {
           tCamera.position.z = -frameFloat * 22 + 8;
-          tCamera.position.x = (mouseNorm.x - 0.5) * 1.4;
-          tCamera.position.y = (0.5 - mouseNorm.y) * 0.9;
-          tCamera.fov = 50 + Math.min(14, Math.abs(scrollVelocity) * 45);
-          tCamera.updateProjectionMatrix();
+          tCamera.position.x = (smoothMouse.x - 0.5) * 1.1;
+          tCamera.position.y = (0.5 - smoothMouse.y) * 0.7;
+          tCamera.rotation.set(0, 0, 0);
 
-          tPortalGates.forEach((ring, i) => {
-            ring.rotation.z = timeSec * (i % 2 === 0 ? 0.2 : -0.2);
+          tPortalGates.forEach((shaft, i) => {
+            shaft.rotation.z = -0.38 + Math.sin(timeSec * 0.45 + i * 0.7) * 0.025;
+            if (shaft.material) {
+              shaft.material.opacity = 0.16 + Math.sin(timeSec * 0.8 + i * 1.1) * 0.06;
+            }
           });
+
+          if (tParticles) {
+            tParticles.position.y = Math.sin(timeSec * 0.35) * 0.35;
+          }
+          if (tForegroundBokeh) {
+            tForegroundBokeh.position.y = Math.cos(timeSec * 0.28) * 0.45;
+            tForegroundBokeh.position.x = (smoothMouse.x - 0.5) * -0.65;
+          }
+
           tRenderer.render(tScene, tCamera);
         }
 
-        renderCleanLightOverlay(frameFloat, timeSec);
-        updateScrollDialogue(frameFloat, scrollVelocity, now);
+        let effectiveFrame = currIdx + localMix;
+        if (currIdx === GROWTH_TALL_FRAME || currIdx === CH6_START_FRAME || currIdx === CH6_RECOVERED_FRAME) {
+          effectiveFrame = rawMix <= 0.84
+            ? currIdx + (rawMix / 0.84) * 0.42
+            : currIdx + 0.42 + ((rawMix - 0.84) / 0.16) * 0.58;
+        }
+        renderCleanLightOverlay(effectiveFrame, timeSec, frameFloat);
+        updateScrollDialogue(effectiveFrame, scrollVelocity, now);
         soundEngine.updateSpatialDynamics(scrollVelocity, FRAMES[currIdx].chapter);
       }
 

@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바른한의원 대전본점 — BAREUN CLINIC · Praxis Edition</title>
+  <meta name="description" content="스위스 자연치유의 온화함과 하이엔드 정밀 한의학의 만남. 대전 바른한의원 1:1 맞춤 진료 및 전국 비대면 처방.">
+  <link rel="icon" href="https://framerusercontent.com/images/T9Y2v9h5BFE7g3Jmw9iWd4WngyQ.svg">
+
+  <!-- Typography: Noto Serif KR, Pretendard, Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- External Smooth Animation Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       PRAXIS LEANDRA ISLER EDITION DESIGN SYSTEM
+       Awwwards SOTD Curated Palette:
+       - Warm Limestone & Organic Sand: #F4EFE6 / #FAF7F2
+       - Deep Slate Charcoal: #18191A / #2B2C2D
+       - Muted Botanical Sage & Earth Olive: #3F4A3E / #807663 / #C4B9A5
+       - Hairline Structural Borders: rgba(24, 25, 26, 0.12)
+       ========================================================================== */
+    :root {
+      --bg-base: #F5F1E9;
+      --bg-surface: #FAF7F2;
+      --bg-card: #FFFFFF;
+      --bg-dark: #1A1B1C;
+      --text-main: #18191A;
+      --text-muted: #696A68;
+      --text-light: #FAF7F2;
+      --accent-sage: #3D483A;
+      --accent-bronze: #84765E;
+      --accent-soft: #D5CEBE;
+      --border-line: rgba(24, 25, 26, 0.12);
+      --border-dark: rgba(250, 247, 242, 0.12);
+      
+      --font-serif: "Noto Serif KR", Georgia, serif;
+      --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      --font-mono: "Space Mono", monospace;
+      --font-grotesk: "Space Grotesk", sans-serif;
+
+      --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+    .lenis.lenis-scrolling iframe {
+      pointer-events: none;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      cursor: default;
+    }
+
+    /* Subtle Film Grain Texture Overlay */
+    .grain-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Custom Kinetic Cursor */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-sage);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s var(--ease-silk), height 0.3s var(--ease-silk), background-color 0.3s ease;
+    }
+    .custom-cursor-follower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(61, 72, 58, 0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      color: var(--accent-sage);
+      transition: width 0.35s var(--ease-silk), height 0.35s var(--ease-silk), border-color 0.3s ease, background-color 0.35s ease;
+    }
+    .custom-cursor-follower.is-hover {
+      width: 80px;
+      height: 80px;
+      background-color: rgba(61, 72, 58, 0.9);
+      color: #FFF;
+      border-color: transparent;
+      backdrop-filter: blur(4px);
+    }
+    .custom-cursor-follower span {
+      opacity: 0;
+      transform: scale(0.6);
+      transition: all 0.25s ease;
+    }
+    .custom-cursor-follower.is-hover span {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+    }
+
+    /* Hairline Divider */
+    .hairline {
+      width: 100%;
+      height: 1px;
+      background-color: var(--border-line);
+      margin: 0;
+    }
+    .hairline-dark {
+      background-color: var(--border-dark);
+    }
+
+    /* ==========================================================================
+       TOP FIXED NAVIGATION
+       ========================================================================== */
+    .praxis-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 24px 0;
+      transition: padding 0.4s var(--ease-silk), background-color 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    .praxis-nav.is-scrolled {
+      padding: 16px 0;
+      background-color: rgba(245, 241, 233, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-line);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .nav-logo-kor {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+    }
+    .nav-logo-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-bronze);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-menu a {
+      text-decoration: none;
+      font-family: var(--font-grotesk);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--text-main);
+      transition: width 0.3s var(--ease-silk);
+    }
+    .nav-menu a:hover {
+      color: var(--text-main);
+    }
+    .nav-menu a:hover::after {
+      width: 100%;
+    }
+    .nav-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      background-color: var(--accent-sage);
+      color: #FFF !important;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 0.3s var(--ease-silk), background-color 0.3s ease;
+    }
+    .nav-cta-btn:hover {
+      background-color: #273025;
+      transform: translateY(-2px);
+    }
+    .nav-cta-btn .arrow-icon {
+      transition: transform 0.3s var(--ease-silk);
+    }
+    .nav-cta-btn:hover .arrow-icon {
+      transform: translateX(4px);
+    }
+    @media (max-width: 992px) {
+      .nav-menu {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       HERO SECTION (Praxis Leandra Isler Aesthetic)
+       ========================================================================== */
+    .hero-section {
+      min-height: 100vh;
+      padding-top: 140px;
+      padding-bottom: 80px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero-meta-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 30px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .hero-meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+      animation: pulseAnim 2s infinite;
+    }
+    @keyframes pulseAnim {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .hero-main {
+      padding: 60px 0;
+    }
+    .hero-pre-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: var(--accent-bronze);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .hero-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(38px, 6.2vw, 76px);
+      font-weight: 400;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+      color: var(--text-main);
+    }
+    .hero-heading .serif-italic {
+      font-style: italic;
+      color: var(--accent-sage);
+      font-weight: 300;
+    }
+    .hero-heading .char-reveal {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: end;
+      margin-top: 40px;
+    }
+    .hero-desc {
+      font-size: 18px;
+      line-height: 1.85;
+      color: #383938;
+      font-weight: 300;
+    }
+    .hero-desc strong {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .hero-quick-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hero-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-line);
+      border-radius: 999px;
+      color: var(--text-muted);
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Hero Key Visual Card with Parallax */
+    .hero-visual-container {
+      width: 100%;
+      height: 520px;
+      position: relative;
+      margin-top: 50px;
+      border-radius: 20px;
+      overflow: hidden;
+      background-color: #E2DBD0;
+    }
+    .hero-visual-img {
+      width: 100%;
+      height: 115%;
+      object-fit: cover;
+      object-position: center 30%;
+      transform: translateY(-8%);
+      transition: transform 0.1s linear;
+      filter: brightness(0.96) contrast(1.04);
+    }
+    .hero-visual-badge {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      background-color: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 16px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-line);
+      max-width: 320px;
+    }
+    .hero-visual-badge h4 {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+    .hero-visual-badge p {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .hero-visual-container {
+        height: 380px;
+      }
+    }
+
+    /* ==========================================================================
+       FOCUS STATEMENT & MANIFESTO (Leandra Isler Signature)
+       ========================================================================== */
+    .manifesto-section {
+      padding: 140px 0;
+      background-color: var(--bg-surface);
+      position: relative;
+    }
+    .manifesto-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: var(--accent-bronze);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .manifesto-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3.8vw, 48px);
+      line-height: 1.45;
+      font-weight: 300;
+      color: var(--text-main);
+      max-width: 1080px;
+      margin-bottom: 50px;
+    }
+    .manifesto-quote em {
+      font-style: italic;
+      color: var(--accent-sage);
+      font-weight: 400;
+    }
+    .manifesto-author-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .manifesto-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #FFF;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    .manifesto-author-info h5 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .manifesto-author-info p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       CORE CLINICS (Horizontal Flow & Card Parallax)
+       ========================================================================== */
+    .clinics-section {
+      padding: 140px 0;
+      position: relative;
+    }
+    .section-header-flex {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 70px;
+    }
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: var(--accent-bronze);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--text-main);
+    }
+    .section-desc-right {
+      max-width: 420px;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .clinic-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .clinic-card {
+      background-color: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-line);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: transform 0.45s var(--ease-silk), box-shadow 0.45s var(--ease-silk);
+    }
+    .clinic-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px -12px rgba(24, 25, 26, 0.08);
+    }
+    .clinic-card-img-wrap {
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+      background-color: #E6E0D6;
+    }
+    .clinic-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--ease-silk);
+    }
+    .clinic-card:hover .clinic-card-img {
+      transform: scale(1.06);
+    }
+    .clinic-card-tag {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background-color: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--accent-sage);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .clinic-card-body {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+    .clinic-card-idx {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-bronze);
+      margin-bottom: 12px;
+    }
+    .clinic-card-title {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      line-height: 1.35;
+      color: var(--text-main);
+    }
+    .clinic-card-copy {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .clinic-card-link-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-sage);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .clinic-card-link-text .arrow {
+      transition: transform 0.3s ease;
+    }
+    .clinic-card:hover .clinic-card-link-text .arrow {
+      transform: translateX(6px);
+    }
+
+    @media (max-width: 992px) {
+      .clinic-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+    }
+
+    /* ==========================================================================
+       FUNCTIONAL DIAGNOSTICS MATRIX (Awwwards Clinical Precision Grid)
+       ========================================================================== */
+    .diagnostics-section {
+      padding: 140px 0;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      position: relative;
+    }
+    .diagnostics-section .section-title {
+      color: #FFF;
+    }
+    .diagnostics-section .section-desc-right {
+      color: #A3A4A3;
+    }
+    .diag-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border-dark);
+      border-left: 1px solid var(--border-dark);
+      margin-top: 60px;
+    }
+    .diag-item {
+      border-right: 1px solid var(--border-dark);
+      border-bottom: 1px solid var(--border-dark);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 420px;
+      position: relative;
+      background-color: rgba(255, 255, 255, 0.015);
+      transition: background-color 0.4s ease;
+    }
+    .diag-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    .diag-thumb-box {
+      width: 100%;
+      height: 180px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      position: relative;
+      background-color: #2B2C2D;
+    }
+    .diag-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.2) contrast(1.1);
+      transition: transform 0.6s var(--ease-silk), filter 0.4s ease;
+    }
+    .diag-item:hover .diag-thumb-img {
+      transform: scale(1.05);
+      filter: grayscale(0) contrast(1.05);
+    }
+    .diag-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #C4B9A5;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .diag-name {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: #FFF;
+      margin-bottom: 12px;
+      line-height: 1.35;
+    }
+    .diag-desc {
+      font-size: 13px;
+      color: #9E9F9D;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 1100px) {
+      .diag-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .diag-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       DIRECTOR EDITORIAL PROFILE SECTION
+       ========================================================================== */
+    .director-section {
+      padding: 140px 0;
+      position: relative;
+    }
+    .director-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .director-photo-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background-color: #E2DBD0;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.12);
+    }
+    .director-photo {
+      width: 100%;
+      height: 600px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .director-creds-badge {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background-color: rgba(26, 27, 28, 0.88);
+      color: #FFF;
+      backdrop-filter: blur(10px);
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    .director-content {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .director-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(24px, 2.8vw, 36px);
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--text-main);
+    }
+    .director-story {
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text-muted);
+    }
+    .director-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-line);
+    }
+    .director-list-item {
+      font-size: 13px;
+      color: #383938;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .director-list-item::before {
+      content: '✦';
+      color: var(--accent-bronze);
+      font-size: 11px;
+    }
+
+    @media (max-width: 992px) {
+      .director-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .director-photo {
+        height: 460px;
+      }
+      .director-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       INTERACTIVE BOOKING & APPOINTMENT FORM (Connected to /api/send-alimtalk)
+       ========================================================================== */
+    .booking-section {
+      padding: 140px 0;
+      background-color: var(--bg-surface);
+      position: relative;
+    }
+    .booking-card {
+      background-color: var(--bg-card);
+      border-radius: 24px;
+      border: 1px solid var(--border-line);
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.06);
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 60px;
+    }
+    @media (max-width: 992px) {
+      .booking-card {
+        grid-template-columns: 1fr;
+        padding: 40px 24px;
+        gap: 40px;
+      }
+    }
+    .booking-info h3 {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    .booking-info p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+    .booking-meta-box {
+      background-color: var(--bg-base);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+    .meta-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-bronze);
+      width: 70px;
+      text-transform: uppercase;
+    }
+    .meta-val {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 16px 20px;
+      background-color: #FAFAFA;
+      border: 1px solid #E5E1D8;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.25s ease, background-color 0.25s ease;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--accent-sage);
+      background-color: #FFF;
+    }
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 18px 30px;
+      background-color: var(--accent-sage);
+      color: #FFF;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .submit-btn:hover {
+      background-color: #273025;
+      transform: translateY(-2px);
+    }
+    .submit-btn:disabled {
+      background-color: #A3A4A3;
+      cursor: not-allowed;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      display: none;
+      margin-top: 20px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .toast-msg.success {
+      display: block;
+      background-color: #E8F5E9;
+      color: #1B5E20;
+      border: 1px solid #A5D6A7;
+    }
+    .toast-msg.error {
+      display: block;
+      background-color: #FFEBEE;
+      color: #B71C1C;
+      border: 1px solid #FFCDD2;
+    }
+
+    /* ==========================================================================
+       STICKY BOTTOM BOOKING DOCK
+       ========================================================================== */
+    .sticky-dock {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      z-index: 900;
+      background-color: rgba(26, 27, 28, 0.94);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 10px 14px 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      transition: transform 0.4s var(--ease-silk);
+    }
+    .sticky-dock.is-visible {
+      transform: translateX(-50%) translateY(0);
+    }
+    .sticky-dock-text {
+      color: #E0DDD5;
+      font-size: 13px;
+      font-family: var(--font-sans);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sticky-dock-text strong {
+      color: #FFF;
+      font-weight: 600;
+    }
+    .sticky-dock-btn {
+      background-color: #FFF;
+      color: var(--text-main);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .sticky-dock-btn:hover {
+      background-color: #EAE6DD;
+      transform: scale(1.04);
+    }
+    @media (max-width: 640px) {
+      .sticky-dock {
+        width: calc(100% - 32px);
+        justify-content: space-between;
+        padding: 10px 16px;
+      }
+      .sticky-dock-text span {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .praxis-footer {
+      padding: 100px 0 60px;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      position: relative;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+    .footer-brand h4 {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      margin-bottom: 16px;
+      color: #FFF;
+      letter-spacing: 0.1em;
+    }
+    .footer-brand p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #A3A4A3;
+      max-width: 440px;
+    }
+    .footer-col h5 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #C4B9A5;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-links a {
+      color: #D5CEBE;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: #FFF;
+    }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 40px;
+      border-top: 1px solid var(--border-dark);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #7A7B7A;
+    }
+    @media (max-width: 768px) {
+      .footer-top {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Film Grain Overlay for High-End Swiss Editorial Texture -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Custom Kinetic Magnetic Cursor -->
+  <div class="custom-cursor" id="cursor"></div>
+  <div class="custom-cursor-follower" id="cursor-follower">
+    <span id="cursor-text">VIEW</span>
+  </div>
+
+  <!-- Top Fixed Navigation -->
+  <nav class="praxis-nav" id="main-nav">
+    <div class="container nav-inner">
+      <a href="praxis-style.html" class="nav-logo" data-cursor="hover" data-cursor-text="SANCTUARY">
+        <span class="nav-logo-kor">바른한의원</span>
+        <span class="nav-logo-sub">PRAXIS EDITION</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#hero" data-cursor="hover" data-cursor-text="TOP">Home</a></li>
+        <li><a href="#manifesto" data-cursor="hover" data-cursor-text="PHILOSOPHY">철학</a></li>
+        <li><a href="#clinics" data-cursor="hover" data-cursor-text="CLINICS">진료과목</a></li>
+        <li><a href="#diagnostics" data-cursor="hover" data-cursor-text="DIAGNOSIS">기능검사</a></li>
+        <li><a href="myhealthprac-style.html" data-cursor="hover" data-cursor-text="TECH" style="color:var(--accent-bronze); font-weight:700;">⚡ 마이헬스프랙</a></li>
+        <li><a href="gongjindan.html" data-cursor="hover" data-cursor-text="SOFI" style="color:#C89B3C; font-weight:700;">👑 소피 공진단</a></li>
+      </ul>
+
+      <a href="#booking" class="nav-cta-btn" data-cursor="hover" data-cursor-text="RESERVE">
+        <span>진료 예약 신청</span>
+        <span class="arrow-icon">➔</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       HERO SECTION: Practice for Natural Healing & Atlasology
+       ========================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-meta-bar">
+        <div class="hero-meta-badge">
+          <span class="pulse-dot"></span>
+          <span>EST. 2011 · 대전본점 1:1 맞춤 진료 및 전국 비대면 처방</span>
+        </div>
+        <div class="hero-meta-date" id="live-clock">DAEJEON 23:20 KST</div>
+      </div>
+
+      <div class="hairline"></div>
+
+      <div class="hero-main">
+        <span class="hero-pre-title">The Architecture of Natural Healing</span>
+        <h1 class="hero-heading">
+          자연의 질서로 회복하는<br>
+          <span class="serif-italic">온전한 쉼,</span> 바른 치유의 성소
+        </h1>
+
+        <div class="hero-grid">
+          <p class="hero-desc">
+            스위스 취리히의 고요한 웰니스 성소처럼, 지친 신체와 자율신경의 균형을 되찾아드립니다. 
+            <strong>15년 임상경력의 대표원장</strong>이 1:1 맞춤 탕전과 과학적 정밀 진단으로 
+            환자 본연의 생명력을 일깨웁니다.
+          </p>
+
+          <div class="hero-quick-actions">
+            <div class="hero-pills">
+              <span class="hero-pill">식약처 CITES 정품 인증</span>
+              <span class="hero-pill">원내 무압력 청정 탕전</span>
+              <span class="hero-pill">평생 주치의 사후 케어</span>
+            </div>
+            <a href="#clinics" class="nav-cta-btn" style="background-color: var(--text-main);" data-cursor="hover" data-cursor-text="EXPLORE">
+              <span>핵심 진료 과목 탐색</span>
+              <span class="arrow-icon">↓</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Parallax Image -->
+        <div class="hero-visual-container" data-cursor="hover" data-cursor-text="EXPAND">
+          <img src="growth-golden-time-hero.jpg" alt="바른한의원 치유의 공간" class="hero-visual-img" id="hero-img">
+          <div class="hero-visual-badge">
+            <h4>BAREUN SANCTUARY</h4>
+            <p>신경계와 체내 대사를 다스리는 자연 치유의 따뜻한 여정</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MANIFESTO & FOCUS QUOTE (Praxis Leandra Isler Signature)
+       ========================================================================== */ -->
+  <section class="manifesto-section" id="manifesto">
+    <div class="container">
+      <div class="hairline"></div>
+      <div style="padding-top: 60px;">
+        <span class="manifesto-num">[ 01 · CLINICAL MANIFESTO ]</span>
+        <blockquote class="manifesto-quote">
+          “치료란 병든 부위만을 억누르는 것이 아니라, 
+          인체가 본래 가지고 태어난 <em>자연 치유의 위대한 메커니즘</em>을 
+          스스로 작동하게 돕는 일입니다.”
+        </blockquote>
+
+        <div class="manifesto-author-row">
+          <img src="doctor.png" alt="바른한의원 대표원장" class="manifesto-avatar">
+          <div class="manifesto-author-info">
+            <h5>김인태 대표원장</h5>
+            <p>15년 임상 경력 · 바른한의원 수석 진료원장</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       CORE CLINICS (Specialized Programs)
+       ========================================================================== -->
+  <section class="clinics-section" id="clinics">
+    <div class="container">
+      <div class="section-header-flex">
+        <div>
+          <span class="section-tag">[ 02 · SPECIALIZED CLINICS ]</span>
+          <h2 class="section-title">본질에 집중하는 3대 특화 진료</h2>
+        </div>
+        <p class="section-desc-right">
+          각 분야별 축적된 임상 데이터와 과학적 진단 장비를 결합하여 
+          체계적인 단계별 치료 솔루션을 제공합니다.
+        </p>
+      </div>
+
+      <div class="clinic-cards-grid">
+        <!-- Card 1: Pediatric Growth -->
+        <a href="growth.html" class="clinic-card" data-cursor="hover" data-cursor-text="GROWTH">
+          <div class="clinic-card-img-wrap">
+            <span class="clinic-card-tag">소아청소년 성장</span>
+            <img src="growth-child-sleep.jpg" alt="성장 클리닉" class="clinic-card-img">
+          </div>
+          <div class="clinic-card-body">
+            <div>
+              <div class="clinic-card-idx">NO. 01 / PEDIATRIC GROWTH</div>
+              <h3 class="clinic-card-title">키성장 & 성조숙증</h3>
+              <p class="clinic-card-copy">
+                성장판 초음파 정밀 분석과 체질별 비염·수면 대사 개선을 통해 아이의 숨은 잠재 키 골든타임을 확보합니다.
+              </p>
+            </div>
+            <div class="clinic-card-link-text">
+              <span>상세 진료 프로세스</span>
+              <span class="arrow">➔</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2: Metabolic Diet ZERO -->
+        <a href="diet-zero.html" class="clinic-card" data-cursor="hover" data-cursor-text="DIET">
+          <div class="clinic-card-img-wrap">
+            <span class="clinic-card-tag">자연 대사 다이어트</span>
+            <img src="empathy-metabolism-waist.jpg" alt="다이어트 ZERO" class="clinic-card-img">
+          </div>
+          <div class="clinic-card-body">
+            <div>
+              <div class="clinic-card-idx">NO. 02 / METABOLIC RESET</div>
+              <h3 class="clinic-card-title">감비환 다이어트 ZERO</h3>
+              <p class="clinic-card-copy">
+                억지로 굶지 않고 기초대사량을 정상화하여 요요 없는 건강한 체질 개선과 부종 및 독소 배출을 돕습니다.
+              </p>
+            </div>
+            <div class="clinic-card-link-text">
+              <span>감비환 처방 안내</span>
+              <span class="arrow">➔</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3: Traditional Gongjindan -->
+        <a href="gongjindan.html" class="clinic-card" data-cursor="hover" data-cursor-text="ELIXIR">
+          <div class="clinic-card-img-wrap">
+            <span class="clinic-card-tag">황실 명품 보약</span>
+            <img src="gongjindan.jpg" alt="원방 공진단" class="clinic-card-img">
+          </div>
+          <div class="clinic-card-body">
+            <div>
+              <div class="clinic-card-idx">NO. 03 / IMPERIAL RESTORATIVE</div>
+              <h3 class="clinic-card-title">원방 사향 공진단</h3>
+              <p class="clinic-card-copy">
+                식약처 CITES 정식 수입 통관 진품 사향과 러시아산 최고급 녹용 분골만을 사용하여 원내에서 직접 빚습니다.
+              </p>
+            </div>
+            <div class="clinic-card-link-text">
+              <span>진품 조제 과정 확인</span>
+              <span class="arrow">➔</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FUNCTIONAL DIAGNOSTICS MATRIX (Awwwards Precision Grid)
+       ========================================================================== -->
+  <section class="diagnostics-section" id="diagnostics">
+    <div class="container">
+      <div class="section-header-flex">
+        <div>
+          <span class="section-tag" style="color: #C4B9A5;">[ 03 · FUNCTIONAL DIAGNOSTICS ]</span>
+          <h2 class="section-title">원내 4대 과학적 정밀 검사</h2>
+        </div>
+        <p class="section-desc-right">
+          감(感)에 의존하지 않습니다. 첨단 진단 시스템으로 
+          체열, 자율신경, 호흡기 점막 및 체질 대사를 객관적 지표로 시각화합니다.
+        </p>
+      </div>
+
+      <div class="diag-grid">
+        <!-- Diag 1 -->
+        <div class="diag-item" data-cursor="hover" data-cursor-text="THERMAL">
+          <div>
+            <div class="diag-thumb-box">
+              <img src="growth_diag_thermography_clean_1791356919996.jpg" alt="적외선 체열 진단" class="diag-thumb-img">
+            </div>
+            <span class="diag-num">DIAGNOSTIC 01</span>
+            <h4 class="diag-name">디지털 적외선 체열 검사</h4>
+          </div>
+          <p class="diag-desc">
+            전신의 미세 혈류 순환 장애와 염증 부위를 색상 체온 지도로 검출하여 상열하한(上熱下寒) 불균형을 진단합니다.
+          </p>
+        </div>
+
+        <!-- Diag 2 -->
+        <div class="diag-item" data-cursor="hover" data-cursor-text="HRV">
+          <div>
+            <div class="diag-thumb-box">
+              <img src="growth_diag_hrv_clean_1791356955111.jpg" alt="자율신경계 HRV 검사" class="diag-thumb-img">
+            </div>
+            <span class="diag-num">DIAGNOSTIC 02</span>
+            <h4 class="diag-name">자율신경계 & HRV 스트레스</h4>
+          </div>
+          <p class="diag-desc">
+            교감·부교감 신경 밸런스와 혈관 건강도, 만성 피로 누적도를 수치화하여 신경계 과긴장을 정밀 판별합니다.
+          </p>
+        </div>
+
+        <!-- Diag 3 -->
+        <div class="diag-item" data-cursor="hover" data-cursor-text="AIRWAY">
+          <div>
+            <div class="diag-thumb-box">
+              <img src="growth_diag_rhinitis_pure_1791357007072.jpg" alt="비염 호흡기 내시경" class="diag-thumb-img">
+            </div>
+            <span class="diag-num">DIAGNOSTIC 03</span>
+            <h4 class="diag-name">비강 및 기도 내시경 분석</h4>
+          </div>
+          <p class="diag-desc">
+            수면 무호흡 및 구강 호흡의 원인이 되는 비갑개 종창과 만성 알레르기 비염 점막을 고해상도로 관찰합니다.
+          </p>
+        </div>
+
+        <!-- Diag 4 -->
+        <div class="diag-item" data-cursor="hover" data-cursor-text="METABOLISM">
+          <div>
+            <div class="diag-thumb-box">
+              <img src="growth_diag_sasang_models_1791357224460.jpg" alt="사상체질 대사 분석" class="diag-thumb-img">
+            </div>
+            <span class="diag-num">DIAGNOSTIC 04</span>
+            <h4 class="diag-name">사상체질 & 소화대사 체류</h4>
+          </div>
+          <p class="diag-desc">
+            태음인, 소음인, 소양인 체질별 장내 소화 효소 및 약물 감수성을 대조하여 1:1 맞춤 약재 비율을 도출합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       DIRECTOR PROFILE (Editorial Style)
+       ========================================================================== -->
+  <section class="director-section" id="director">
+    <div class="container">
+      <div class="director-grid">
+        <div class="director-photo-wrap" data-cursor="hover" data-cursor-text="DOCTOR">
+          <img src="doctor.png" alt="김인태 대표원장" class="director-photo">
+          <div class="director-creds-badge">
+            CHIEF MEDICAL DIRECTOR · KIM IN-TAE
+          </div>
+        </div>
+
+        <div class="director-content">
+          <span class="section-tag">[ 04 · MEDICAL DIRECTOR ]</span>
+          <h2 class="director-quote">
+            “한 사람의 체질과 일상을 깊이 들여다보는 진료가 진짜 치유를 만듭니다.”
+          </h2>
+          <p class="director-story">
+            환자마다 타고난 체질과 살아온 환경이 다릅니다. 
+            바른한의원은 규격화된 공장형 처방을 거부하고, 
+            모든 약재를 원내에서 대표원장이 직접 확인하고 다려냅니다.
+          </p>
+
+          <ul class="director-list">
+            <li class="director-list-item">15년 임상경력 한의학 전문 진료</li>
+            <li class="director-list-item">소아성장 & 비만학회 정회원</li>
+            <li class="director-list-item">식약처 공인 정품 사향 취급 인증의</li>
+            <li class="director-list-item">대전본점 원내 무압력 탕전실 총괄</li>
+          </ul>
+
+          <div style="margin-top: 20px;">
+            <a href="#booking" class="nav-cta-btn" data-cursor="hover" data-cursor-text="MEET">
+              <span>원장님 1:1 진료 상담 신청</span>
+              <span class="arrow-icon">➔</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE BOOKING & ALIMTALK GATEWAY
+       ========================================================================== -->
+  <section class="booking-section" id="booking">
+    <div class="container">
+      <div class="booking-card">
+        <div class="booking-info">
+          <span class="section-tag">[ 05 · APPOINTMENT ]</span>
+          <h3>진료 예약 및 비대면 처방 접수</h3>
+          <p>
+            남겨주신 차트를 대표원장실에서 직접 검토한 후, 
+            배정 가능한 진료 일정과 맞춤 상담 안내를 카카오 알림톡으로 전송해 드립니다.
+          </p>
+
+          <div class="booking-meta-box">
+            <div class="meta-row">
+              <span class="meta-label">진료 장소</span>
+              <span class="meta-val">대전광역시 서구 대덕대로 (대전본점)</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">원내 유선</span>
+              <span class="meta-val">042-488-1075</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">진료 형태</span>
+              <span class="meta-val">원내 1:1 대면 진료 및 전국 안심 비대면 처방</span>
+            </div>
+          </div>
+        </div>
+
+        <form id="praxis-booking-form">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="parentName">신청자 성함 *</label>
+              <input type="text" id="parentName" class="form-input" placeholder="홍길동" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="parentTel">휴대폰 번호 *</label>
+              <input type="tel" id="parentTel" class="form-input" placeholder="010-1234-5678" required>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="consultType">희망 진료 형태 *</label>
+              <select id="consultType" class="form-select">
+                <option value="원장님 1:1 대면 진료">원장님 1:1 대면 진료</option>
+                <option value="전국 안심 비대면 전화 상담">전국 안심 비대면 전화 상담</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="specialty">관심 진료 과목 *</label>
+              <select id="specialty" class="form-select">
+                <option value="소아 키성장 및 성조숙증">소아 키성장 및 성조숙증</option>
+                <option value="감비다이어트 ZERO">감비다이어트 ZERO</option>
+                <option value="명품 원방 공진단 조제">명품 원방 공진단 조제</option>
+                <option value="체형교정 및 만성피로">체형교정 및 만성피로</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="parentMemo">상담 희망 사항 및 주요 증상 (선택)</label>
+            <textarea id="parentMemo" class="form-textarea" rows="3" placeholder="자녀의 나이나 현재 체중, 가장 고민되시는 증상을 간략히 적어주세요."></textarea>
+          </div>
+
+          <button type="submit" id="submit-btn" class="submit-btn" data-cursor="hover" data-cursor-text="SUBMIT">
+            <span id="btn-text">카카오 알림톡 진료예약 신청하기</span>
+            <span class="arrow-icon">➔</span>
+          </button>
+
+          <div id="toast-success" class="toast-msg success"></div>
+          <div id="toast-error" class="toast-msg error"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky Bottom Quick Dock -->
+  <div class="sticky-dock" id="sticky-dock">
+    <div class="sticky-dock-text">
+      <strong>바른한의원 진료예약</strong>
+      <span>· 24시간 이내 대표원장실 직접 검토</span>
+    </div>
+    <a href="#booking" class="sticky-dock-btn" data-cursor="hover" data-cursor-text="CLICK">예약 접수 ➔</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="praxis-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h4>바 른 한 의 원</h4>
+          <p>
+            THE SANCTUARY OF NATURAL HEALING & PRECISION CLINIC<br>
+            대전본점 원내 맞춤 탕전 · 식약처 CITES 정품 인증 · 평생 주치의 사후 케어
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Specialized Programs</h5>
+          <ul class="footer-links">
+            <li><a href="growth.html">키성장 & 성조숙증</a></li>
+            <li><a href="diet-zero.html">감비다이어트 ZERO</a></li>
+            <li><a href="gongjindan.html">원방 사향 공진단</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Clinic Info</h5>
+          <ul class="footer-links">
+            <li><span>대전광역시 서구 대덕대로</span></li>
+            <li><span>TEL. 042-488-1075</span></li>
+            <li><span>상담 가능: 월~토 진료</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 BAREUN CLINIC. ALL RIGHTS RESERVED. PRAXIS LEANDRA ISLER EDITION.</div>
+        <div>AWWWARDS SOTD INITIATIVE · DEVELOPED BY ART</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       SCRIPTS: LENIS SMOOTH SCROLL, GSAP ANIMATIONS, KINETIC CURSOR, ALIMTALK
+       ========================================================================== -->
+  <script>
+    // 1. Initialize Lenis Inertia Momentum Scroll
+    const lenis = new Lenis({
+      duration: 1.25,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.5,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Integrate Lenis with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    // 2. Custom Kinetic Magnetic Cursor
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+    const cursorText = document.getElementById('cursor-text');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let followerX = mouseX, followerY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+    });
+
+    function animateCursor() {
+      followerX += (mouseX - followerX) * 0.15;
+      followerY += (mouseY - followerY) * 0.15;
+      follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('[data-cursor="hover"]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        follower.classList.add('is-hover');
+        const customText = el.getAttribute('data-cursor-text') || 'VIEW';
+        cursorText.textContent = customText;
+      });
+      el.addEventListener('mouseleave', () => {
+        follower.classList.remove('is-hover');
+      });
+    });
+
+    // 3. Navbar scroll effect & Sticky Dock visibility
+    const nav = document.getElementById('main-nav');
+    const stickyDock = document.getElementById('sticky-dock');
+    const bookingSection = document.getElementById('booking');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        nav.classList.add('is-scrolled');
+      } else {
+        nav.classList.remove('is-scrolled');
+      }
+
+      // Show dock after scrolling past hero, hide near booking form
+      const bookingRect = bookingSection.getBoundingClientRect();
+      if (window.scrollY > 600 && bookingRect.top > window.innerHeight) {
+        stickyDock.classList.add('is-visible');
+      } else {
+        stickyDock.classList.remove('is-visible');
+      }
+    });
+
+    // 4. Parallax Scroll on Hero Image
+    window.addEventListener('scroll', () => {
+      const heroImg = document.getElementById('hero-img');
+      const scrolled = window.scrollY;
+      if (heroImg && scrolled < 900) {
+        heroImg.style.transform = `translateY(${-8 + scrolled * 0.04}%)`;
+      }
+    });
+
+    // 5. Live Clock Update
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) {
+        clockEl.textContent = `DAEJEON ${hours}:${minutes} KST · AVAILABLE`;
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 6. Form Submission Gateway (Calls /api/send-alimtalk on serve.js)
+    const bookingForm = document.getElementById('praxis-booking-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const toastSuccess = document.getElementById('toast-success');
+    const toastError = document.getElementById('toast-error');
+
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const parentName = document.getElementById('parentName').value.trim();
+      const parentTel = document.getElementById('parentTel').value.trim();
+      const consultType = document.getElementById('consultType').value;
+      const specialty = document.getElementById('specialty').value;
+      const parentMemo = document.getElementById('parentMemo').value.trim();
+
+      if (!parentName || !parentTel) {
+        alert('성함과 휴대폰 번호를 올바르게 입력해 주세요.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      btnText.textContent = '카카오 알림톡 신청서 접수 중...';
+      toastSuccess.style.display = 'none';
+      toastError.style.display = 'none';
+
+      try {
+        const payload = {
+          parentName: parentName,
+          parentTel: parentTel,
+          childInfo: specialty,
+          consultType: consultType,
+          symptoms: [specialty],
+          parentMemo: parentMemo
+        };
+
+        const res = await fetch('/api/send-alimtalk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          toastSuccess.innerHTML = `
+            <strong>✨ 진료예약 신청서가 안전하게 접수되었습니다.</strong><br>
+            • 예약번호: <strong>${data.reservationId}</strong><br>
+            • 수신 알림톡: 카카오톡 알림톡으로 진료 안내문이 발송되었습니다.<br>
+            • 대표원장실에서 확인 후 순차적으로 안내 전화를 드립니다.
+          `;
+          toastSuccess.style.display = 'block';
+          bookingForm.reset();
+        } else {
+          throw new Error(data.message || '접수 실패');
+        }
+      } catch (err) {
+        toastError.innerHTML = `
+          <strong>신청 중 오류가 발생했습니다.</strong><br>
+          원내 유선전화(042-488-1075)로 직접 문의해 주시면 신속하게 안내해 드리겠습니다.
+        `;
+        toastError.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        btnText.textContent = '카카오 알림톡 진료예약 신청하기';
+      }
+    });
+  </script>
+</body>
+</html>
