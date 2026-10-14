@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>바른한의원 대전본점 — 3D 생애주기 & 9대 관절 통증 치유 스토리텔링</title>
+  <title>바른한의원 대전본점 — 하이엔드 3D 생애주기 치유 시네마 (수정·성장·비만·탈모·추나·공진단)</title>
   <link rel="icon" href="https://framerusercontent.com/images/T9Y2v9h5BFE7g3Jmw9iWd4WngyQ.svg">
   
   <!-- Typography Fonts (Pretendard, Noto Serif KR, Space Grotesk, Space Mono) -->
@@ -24,7 +24,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
-
 /* WORDPRESS & ASTRA THEME CONTAINER RESET */
 .entry-content, .ast-container, .site-content, article.page, .ast-plain-container,
 .elementor, .elementor-section-wrap, .wp-block-group {
@@ -2367,11 +2366,11 @@ html.storyboard-active {
   background-color: #031C13;
 }
 
-/* 500vh Scroll Track */
+/* 850vh Smooth Cinematic Scroll Track */
 .story-scroll-track {
   position: relative;
   width: 100%;
-  height: 500vh;
+  height: 850vh;
   background: #031C13;
 }
 
@@ -2398,10 +2397,10 @@ html.storyboard-active {
   height: 100% !important;
   z-index: 3;
   pointer-events: none;
-  mix-blend-mode: screen; /* Black background becomes completely transparent; 3D sparkles & lights glow directly on top of 8K images! */
+  mix-blend-mode: screen;
 }
 
-/* Cinematic Backdrop Layers (Continuous 8K Film Sequence) */
+/* Cinematic Backdrop Layers (Continuous 13-Scene 8K Film Sequence) */
 .story-backdrop-wrap {
   position: absolute;
   inset: 0;
@@ -2419,23 +2418,90 @@ html.storyboard-active {
   background-repeat: no-repeat;
   opacity: 0;
   transform: scale(1.0);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 
 /* Subtle Cinematic Edge Vignette (Keeps 8K Images Crisp, Bright & Fully Visible) */
 .story-backdrop-scrim {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(3, 24, 17, 0.4) 100%),
-              linear-gradient(to right, rgba(3, 24, 17, 0.45) 0%, transparent 40%);
+  background: radial-gradient(ellipse at 62% 50%, transparent 55%, rgba(3, 24, 17, 0.55) 100%),
+              linear-gradient(to right, rgba(2, 18, 12, 0.72) 0%, rgba(2, 18, 12, 0.25) 36%, transparent 58%),
+              linear-gradient(to top, rgba(2, 18, 12, 0.75) 0%, transparent 24%);
   z-index: 2;
   pointer-events: none;
+}
+
+/* Top Header Center Lifecycle Timeline Pill */
+.hud-center-timeline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(3, 24, 17, 0.88);
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-act-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #FDE68A;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.timeline-progress-track {
+  width: 110px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.timeline-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981, #C5A059, #FDE68A);
+  border-radius: 999px;
+  transition: width 0.15s ease-out;
+}
+
+.timeline-state-pill {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.timeline-state-pill.state-crisis {
+  background: rgba(229, 62, 62, 0.28);
+  border: 1px solid #F87171;
+  color: #FCA5A5;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}
+
+.timeline-state-pill.state-healing {
+  background: rgba(16, 185, 129, 0.25);
+  border: 1px solid #34D399;
+  color: #A7F3D0;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+@media (max-width: 1100px) {
+  .hud-center-timeline {
+    display: none;
+  }
 }
 
 /* Left Floating Step Quick Navigator */
 .step-nav-dock {
   position: fixed;
-  left: 28px;
+  left: 24px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 40;
@@ -2478,10 +2544,10 @@ html.storyboard-active {
   transform: translateX(-8px);
   transition: all 0.3s ease;
   white-space: nowrap;
-  background: rgba(3, 28, 19, 0.7);
+  background: rgba(3, 28, 19, 0.78);
   padding: 3px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
 }
 
@@ -2503,33 +2569,38 @@ html.storyboard-active {
 /* Floating Step Story Card (HUD Glassmorphism Panel) */
 .story-hud-panel {
   position: absolute;
-  left: 80px;
-  top: 50%;
+  left: 72px;
+  top: 46%;
   transform: translateY(-50%);
-  width: min(540px, calc(100vw - 120px));
+  width: min(510px, calc(100vw - 110px));
   z-index: 25;
-  background: rgba(4, 30, 21, 0.82);
-  border: 1px solid rgba(226, 200, 146, 0.28);
-  border-radius: 32px;
-  padding: 38px 42px;
+  background: rgba(3, 24, 17, 0.78);
+  border: 1px solid rgba(226, 200, 146, 0.32);
+  border-radius: 28px;
+  padding: 28px 32px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 40px rgba(56, 161, 105, 0.12);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   color: #FFFFFF;
   pointer-events: auto;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.story-hud-panel.crisis-mode {
+  border-color: rgba(248, 113, 113, 0.45);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 35px rgba(239, 68, 68, 0.18);
 }
 
 @media (max-width: 900px) {
   .story-hud-panel {
-    left: 20px;
-    right: 20px;
-    top: auto;
-    bottom: 90px;
+    left: 16px;
+    right: 16px;
+    top: 68px;
+    bottom: auto;
     transform: none;
     width: auto;
-    padding: 24px 24px;
-    border-radius: 24px;
+    padding: 18px 20px;
+    border-radius: 20px;
   }
   .step-nav-dock {
     display: none;
@@ -2540,7 +2611,7 @@ html.storyboard-active {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .hud-step-badge {
@@ -2550,9 +2621,9 @@ html.storyboard-active {
   background: rgba(56, 161, 105, 0.2);
   border: 1px solid rgba(56, 161, 105, 0.45);
   color: #6EE7B7;
-  padding: 4px 14px;
+  padding: 4px 12px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2560,44 +2631,238 @@ html.storyboard-active {
 
 .hud-step-counter {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: #C09A67;
 }
 
+/* Sub-scene Flow Pills inside HUD */
+.hud-subscene-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.subscene-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 3px 8px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.subscene-pill.active {
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.32), rgba(16, 185, 129, 0.28));
+  color: #FDE68A;
+  border: 1px solid rgba(253, 230, 138, 0.5);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.3);
+}
+
+.subscene-pill.crisis-active {
+  background: rgba(239, 68, 68, 0.28);
+  color: #FCA5A5;
+  border: 1px solid rgba(248, 113, 113, 0.55);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+.subscene-arrow {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
 .hud-step-title {
   font-family: var(--font-serif);
-  font-size: clamp(26px, 3.2vw, 36px);
+  font-size: clamp(22px, 2.5vw, 30px);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.25;
   color: #FFFFFF;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .hud-step-subtitle {
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: #FBBF24;
-  line-height: 1.5;
-  margin-bottom: 14px;
+  line-height: 1.45;
+  margin-bottom: 10px;
 }
 
 .hud-step-desc {
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 12.5px;
+  line-height: 1.65;
   color: #CBD5E1;
-  margin-bottom: 22px;
+  margin-bottom: 14px;
   word-break: keep-all;
+}
+
+/* Real-Time Biometric Telemetry Box */
+.biometric-telemetry-box {
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(197, 160, 89, 0.24);
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.telemetry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.telemetry-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #E2E8F0;
+}
+
+.telemetry-status {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.22);
+  color: #6EE7B7;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.telemetry-status.crisis {
+  background: rgba(239, 68, 68, 0.25);
+  color: #FCA5A5;
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
+.telemetry-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.telemetry-metric-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 7px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #94A3B8;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.metric-value.highlight {
+  color: #FDE68A;
+}
+
+.metric-value.danger {
+  color: #FCA5A5;
+}
+
+.telemetry-bar-wrap {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.telemetry-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981, #FBBF24);
+  border-radius: 999px;
+  transition: width 0.25s ease, background 0.3s ease;
+}
+
+.telemetry-bar-fill.danger {
+  background: linear-gradient(90deg, #EF4444, #F97316);
+}
+
+/* Cinema Film Subtitle Narrative Bar (Above Bottom SKT Dock) */
+.cinema-subtitle-bar {
+  position: absolute;
+  bottom: 146px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 28;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(2, 16, 11, 0.82);
+  border: 1px solid rgba(197, 160, 89, 0.38);
+  padding: 9px 22px;
+  border-radius: 999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  max-width: min(920px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.cinema-scene-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #031811;
+  background: linear-gradient(135deg, #FDE68A, #C5A059);
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cinema-subtitle-text {
+  font-family: var(--font-serif);
+  font-size: clamp(12px, 1.35vw, 14.5px);
+  font-weight: 600;
+  color: #F8FAFC;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .cinema-subtitle-bar {
+    bottom: 128px;
+    padding: 6px 14px;
+  }
+  .cinema-subtitle-text {
+    white-space: normal;
+    font-size: 11.5px;
+    text-align: center;
+  }
 }
 
 /* Step 04 Live 9-Pain Points Radar Box */
 .pain-radar-box {
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  padding: 16px;
-  margin-bottom: 20px;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
 }
 
 .pain-radar-header {
@@ -3583,28 +3848,28 @@ window.addEventListener('keydown', (e) => {
 
     <div class="intro-content">
       <div class="intro-badge-wrap">
-        <span class="intro-badge">THE ARCHITECTURE OF HEALING · EST. 2026</span>
+        <span class="intro-badge">THE SYMPHONY OF HUMAN LIFECYCLE · EST. 2026</span>
       </div>
 
       <div class="intro-brand-korean">바 른 한 의 원</div>
 
-      <h1 class="intro-brand-title">온전한 쉼, 3D 생애주기 바른 치유</h1>
+      <h1 class="intro-brand-title">한 사람의 일생을 지키는 3D 바른 치유</h1>
 
       <p class="intro-brand-subtitle">
-        성장부터 감량, 탈모, 9대 관절 만성 통증 치유와 황제 공진단까지<br>
+        생명의 수정과 탄생, 소아 면역·키성장부터 성인 비만, 30대 탈모, 척추·관절 추나, 노년 황제공진단까지<br>
         <span class="subtitle-accent">대전본점 1:1 체질 맞춤 탕전</span> · <span class="subtitle-accent">전국 안심 비대면 처방</span>
       </p>
 
       <div class="intro-action-zone">
-        <button id="intro-enter-btn" class="intro-enter-btn" aria-label="3D 치유 공간으로 입장하기">
+        <button id="intro-enter-btn" class="intro-enter-btn" aria-label="3D 생애주기 시네마 공간으로 입장하기">
           <div class="enter-main-row">
             <span class="enter-sparkle">✦</span>
-            <span class="enter-text">3D 치유 여정 시작하기</span>
+            <span class="enter-text">3D 생애주기 치유 필름 시작하기</span>
             <span class="enter-arrow">➔</span>
           </div>
-          <span class="enter-subtext">ENTER THE 3D HEALING SANCTUARY · 대전 바른한의원</span>
+          <span class="enter-subtext">ENTER THE 5-ACT 3D LIFECYCLE CINEMA · 대전 바른한의원</span>
         </button>
-        <p class="intro-instruction">화면의 어느 곳이든 가볍게 터치하시면 3D 스토리텔링 메인 공간으로 이동합니다</p>
+        <p class="intro-instruction">화면을 터치하신 후 스크롤을 내리면 한 사람의 생애주기를 담은 3D 치유 영화가 펼쳐집니다</p>
       </div>
 
       <div class="intro-bottom-meta">
@@ -3627,7 +3892,7 @@ window.addEventListener('keydown', (e) => {
       <div class="brand-group">
         <a href="#" class="brand-title" data-hover="magnetic">바른한의원</a>
         <span class="hud-divider">/</span>
-        <span class="hud-tag">대전본점 · 3D LIFECYCLE</span>
+        <span class="hud-tag">대전본점 · 3D LIFECYCLE CINEMA</span>
       </div>
       <div class="hud-status">
         <span class="status-dot"></span>
@@ -3635,10 +3900,19 @@ window.addEventListener('keydown', (e) => {
       </div>
     </div>
 
+    <!-- Center Scene Phase Timeline Pill (Desktop) -->
+    <div class="hud-center-timeline" id="hud-center-timeline">
+      <span class="timeline-act-label" id="timeline-act-label">ACT 01 · 잉태와 성장</span>
+      <div class="timeline-progress-track">
+        <div class="timeline-progress-fill" id="timeline-progress-fill" style="width: 4%;"></div>
+      </div>
+      <span class="timeline-state-pill state-healing" id="timeline-state-pill">✦ 생명의 시작</span>
+    </div>
+
     <div class="header-right">
       <div class="hud-item time-widget" id="time-display" title="대전본점 현재 진료 시간">
         <span class="hud-label">DAEJEON</span>
-        <span class="time-value" id="current-time">21:10</span>
+        <span class="time-value" id="current-time">10:00</span>
       </div>
       
       <button class="hud-btn audio-toggle" id="audio-toggle" aria-label="Toggle sound">
@@ -3661,49 +3935,65 @@ window.addEventListener('keydown', (e) => {
   </header>
 
   <!-- Left Floating Step Quick Navigator -->
-  <nav class="step-nav-dock" id="step-nav-dock" aria-label="5단계 스토리보드 바로가기">
-    <button type="button" class="step-nav-dot active" data-step="1" title="01. 수정과 성장">
+  <nav class="step-nav-dock" id="step-nav-dock" aria-label="5단계 생애주기 스토리보드 바로가기">
+    <button type="button" class="step-nav-dot active" data-step="1" onclick="navigateToStep(1)" title="01. 난임·탄생·면역·성장">
       <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">01 성장클리닉</span>
+      <span class="step-nav-label">01 수정·면역·성장</span>
     </button>
-    <button type="button" class="step-nav-dot" data-step="2" title="02. 체형과 감량">
+    <button type="button" class="step-nav-dot" data-step="2" onclick="navigateToStep(2)" title="02. 성인 비만과 슬림체형">
       <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">02 바른 다이어트</span>
+      <span class="step-nav-label">02 성인 비만·감량</span>
     </button>
-    <button type="button" class="step-nav-dot" data-step="3" title="03. 두피와 모근">
+    <button type="button" class="step-nav-dot" data-step="3" onclick="navigateToStep(3)" title="03. 30대 탈모와 모발회복">
       <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">03 탈모케어</span>
+      <span class="step-nav-label">03 30대 탈모·모근회복</span>
     </button>
-    <button type="button" class="step-nav-dot" data-step="4" title="04. 전신 통증 & 녹색 치유">
+    <button type="button" class="step-nav-dot" data-step="4" onclick="navigateToStep(4)" title="04. 척추틀어짐·추나통증치료">
       <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">04 9대 관절 치유</span>
+      <span class="step-nav-label">04 척추교정·추나통증</span>
     </button>
-    <button type="button" class="step-nav-dot" data-step="5" title="05. 황금빛 원기 회복">
+    <button type="button" class="step-nav-dot" data-step="5" onclick="navigateToStep(5)" title="05. 노년기력·황제공진단">
       <span class="step-nav-indicator"></span>
-      <span class="step-nav-label">05 황제 공진단</span>
+      <span class="step-nav-label">05 황제공진단·백세건강</span>
     </button>
-    <button type="button" class="step-nav-dot" data-step="6" title="06. 5대 특화진료 카드">
+    <button type="button" class="step-nav-dot" data-step="6" onclick="navigateToStep(6)" title="06. 5대 특화진료 카드">
       <span class="step-nav-indicator" style="background:#FBBF24; border-color:#FDE68A;"></span>
-      <span class="step-nav-label" style="color:#FDE68A;">06 진료 카드 모음</span>
+      <span class="step-nav-label" style="color:#FDE68A;">06 5대 진료 카드</span>
     </button>
   </nav>
 
   <!-- =========================================================================
-       [5단계 3D 연속 스토리보드 스크롤 뷰포트]
-       (GSAP ScrollTrigger + Three.js WebGL Interactive Canvas)
+       [5단계 13시퀀스 3D 연속 생애주기 시네마 스크롤 뷰포트 (900vh)]
+       (GSAP ScrollTrigger + Three.js Anatomical Morphing & Particle Engine)
        ========================================================================= -->
   <div class="story-scroll-track" id="story-scroll-track">
     <div class="story-stage-sticky" id="story-stage-sticky">
       
-      <!-- 8K Cinematic Visual Crossfading Backdrop Layers (Continuous Film Sequence) -->
-      <div class="story-backdrop-wrap">
-        <div class="story-backdrop-slide" id="backdrop-1a" style="background-image: url('bareun_step1_sub1_egg.png'); opacity: 1; z-index: 3;"></div>
-        <div class="story-backdrop-slide" id="backdrop-1b" style="background-image: url('bareun_step1_sub2_toddler.png');"></div>
-        <div class="story-backdrop-slide" id="backdrop-1c" style="background-image: url('bareun_step1_sub3_growth_card.png');"></div>
-        <div class="story-backdrop-slide" id="backdrop-2" style="background-image: url('bareun_seq_02_fat_dissolve.jpg');"></div>
-        <div class="story-backdrop-slide" id="backdrop-3" style="background-image: url('bareun_seq_03_scalp_cooling.jpg');"></div>
-        <div class="story-backdrop-slide" id="backdrop-4" style="background-image: url('bareun_seq_04_pain_chuna_9joints.jpg');"></div>
-        <div class="story-backdrop-slide" id="backdrop-5" style="background-image: url('bareun_seq_05_gongjindan_aura.jpg');"></div>
+      <!-- 13-Scene 8K Cinematic Keyframe Backdrop Layers (Continuous Film Sequence) -->
+      <div class="story-backdrop-wrap" id="story-backdrop-wrap">
+        <!-- Stage 1: 수정(난임치료) -> 아이 탄생 -> 감기(면역치료) -> 또래 키 비교(성장치료) -->
+        <div class="story-backdrop-slide" id="backdrop-1a" style="background-image: url('life_1a_fertilization.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a_fertilization.jpg'); opacity: 1; z-index: 3;"></div>
+        <div class="story-backdrop-slide" id="backdrop-1b" style="background-image: url('life_1b_birth.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1b_birth.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-1c" style="background-image: url('life_1c_immunity.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_immunity.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-1d" style="background-image: url('life_1d_growth_peers.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_peers.jpg');"></div>
+        
+        <!-- Stage 2: 성인 비만 발생 -> 비만치료 후 날씬한 변신 -->
+        <div class="story-backdrop-slide" id="backdrop-2a" style="background-image: url('life_2a_obesity.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-2b" style="background-image: url('life_2b_slim_therapy.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg');"></div>
+        
+        <!-- Stage 3: 30대 탈모 발생 -> 탈모치료 후 정상 모발 회복 -->
+        <div class="story-backdrop-slide" id="backdrop-3a" style="background-image: url('life_3a_hairloss.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_hairloss.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-3b" style="background-image: url('life_3b_hair_restored.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3b_hair_restored.jpg');"></div>
+        
+        <!-- Stage 4: 근무 중 척추 틀어짐 & 관절 통증 -> 추나 치료 후 회복 -->
+        <div class="story-backdrop-slide" id="backdrop-4a" style="background-image: url('life_4a_work_spine_pain.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_work_spine_pain.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-4b" style="background-image: url('life_4b_chuna_recovery.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_recovery.jpg');"></div>
+        
+        <!-- Stage 5: 노화·기력저하·성인병 -> 황제공진단 회복 -> 아름답게 늙어가는 모습 -->
+        <div class="story-backdrop-slide" id="backdrop-5a" style="background-image: url('life_5a_aging_fatigue.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5a_aging_fatigue.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-5b" style="background-image: url('life_5b_gongjindan_vitality.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5b_gongjindan_vitality.jpg');"></div>
+        <div class="story-backdrop-slide" id="backdrop-5c" style="background-image: url('life_5c_graceful_elder.jpg'), url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5c_graceful_elder.jpg');"></div>
+        
         <div class="story-backdrop-scrim"></div>
       </div>
 
@@ -3713,31 +4003,63 @@ window.addEventListener('keydown', (e) => {
       <!-- Floating Dynamic Step HUD Panel -->
       <aside class="story-hud-panel" id="story-hud-panel">
         <div class="hud-step-tag-row">
-          <span class="hud-step-badge" id="hud-step-badge">STEP 01 · 수정과 성장</span>
-          <span class="hud-step-counter" id="hud-step-counter">01 / 05</span>
+          <span class="hud-step-badge" id="hud-step-badge">STAGE 01 · 잉태·탄생·면역·성장</span>
+          <span class="hud-step-counter" id="hud-step-counter">SCENE 01 / 13</span>
         </div>
 
-        <h2 class="hud-step-title" id="hud-step-title">01. 바른 성장클리닉</h2>
-        <p class="hud-step-subtitle" id="hud-step-subtitle">세이지 그린 & 골드 입자가 이루는 생명 탄생과 3D 척추 바른 정렬</p>
+        <!-- Sub-Scene Narrative Flow Pills (Shows current sub-step within the stage) -->
+        <div class="hud-subscene-flow" id="hud-subscene-flow">
+          <span class="subscene-pill active">① 난임·수정</span>
+          <span class="subscene-arrow">▸</span>
+          <span class="subscene-pill">② 아이 탄생</span>
+          <span class="subscene-arrow">▸</span>
+          <span class="subscene-pill">③ 감기·면역치료</span>
+          <span class="subscene-arrow">▸</span>
+          <span class="subscene-pill">④ 또래 키성장</span>
+        </div>
+
+        <h2 class="hud-step-title" id="hud-step-title">01. 생명 잉태부터 폭풍 키성장까지</h2>
+        <p class="hud-step-subtitle" id="hud-step-subtitle">난임 착상 치료 · 소아 감기 면역강화 · 또래를 뛰어넘는 골격 성장</p>
         <p class="hud-step-desc" id="hud-step-desc">
-          15년 임상경력 대표원장이 자신의 친아들에게 직접 처방하여 입증한 무방사선 정밀 초음파와 8대 전신 기능 검진으로 아이의 숨은 잠재 키를 깨웁니다.
+          새 생명이 수정되어 세상에 태어나고, 잦은 감기를 이겨내는 면역강화 치료부터 또래 친구들 사이에서 작았던 키가 쭈욱 자라나는 성장치료까지 아이의 첫 생애주기를 바르게 세웁니다.
         </p>
+
+        <!-- Real-Time Biometric Telemetry Box (Live Animated Metrics per Scene) -->
+        <div class="biometric-telemetry-box" id="biometric-telemetry-box">
+          <div class="telemetry-header">
+            <span class="telemetry-label" id="telemetry-label">🧬 실시간 생애주기 바이오 지표</span>
+            <span class="telemetry-status" id="telemetry-status">✦ 바른 치유 활성</span>
+          </div>
+          <div class="telemetry-metrics-grid">
+            <div class="telemetry-metric-card">
+              <span class="metric-title" id="metric-1-title">생명·면역 활성도</span>
+              <span class="metric-value" id="metric-1-value">98.4%</span>
+            </div>
+            <div class="telemetry-metric-card">
+              <span class="metric-title" id="metric-2-title">성장판·신장 추이</span>
+              <span class="metric-value highlight" id="metric-2-value">132cm ➔ 181.5cm</span>
+            </div>
+          </div>
+          <div class="telemetry-bar-wrap">
+            <div class="telemetry-bar-fill" id="telemetry-bar-fill" style="width: 85%;"></div>
+          </div>
+        </div>
 
         <!-- Step 04 Live 9-Pain Points Radar (Visible in Step 4) -->
         <div class="pain-radar-box" id="pain-radar-box" style="display: none;">
           <div class="pain-radar-header">
-            <span>⚡ 9대 주요 관절 통증 실시간 모니터</span>
+            <span>⚡ 근무 중 척추 틀어짐 & 9대 관절 통증 모니터</span>
             <span class="pain-radar-status warning" id="pain-radar-status">
               <span class="pulse-dot">●</span> <span>통증 신호 점멸 중</span>
             </span>
           </div>
           <div class="pain-points-chips" id="pain-points-chips">
-            <span class="pain-chip" data-joint="neck"><span class="chip-dot"></span>목 (경추)</span>
+            <span class="pain-chip" data-joint="neck"><span class="chip-dot"></span>목 (거북목·경추)</span>
             <span class="pain-chip" data-joint="shoulder"><span class="chip-dot"></span>어깨 (견관절)</span>
             <span class="pain-chip" data-joint="elbow"><span class="chip-dot"></span>팔꿈치</span>
-            <span class="pain-chip" data-joint="wrist"><span class="chip-dot"></span>손가락/손목</span>
-            <span class="pain-chip" data-joint="waist"><span class="chip-dot"></span>허리 (요추)</span>
-            <span class="pain-chip" data-joint="hip"><span class="chip-dot"></span>골반/다리</span>
+            <span class="pain-chip" data-joint="wrist"><span class="chip-dot"></span>손목/손가락</span>
+            <span class="pain-chip" data-joint="waist"><span class="chip-dot"></span>허리 (척추·요추)</span>
+            <span class="pain-chip" data-joint="hip"><span class="chip-dot"></span>골반 틀어짐</span>
             <span class="pain-chip" data-joint="knee"><span class="chip-dot"></span>무릎 (슬관절)</span>
             <span class="pain-chip" data-joint="ankle"><span class="chip-dot"></span>발목</span>
             <span class="pain-chip" data-joint="toe"><span class="chip-dot"></span>발가락</span>
@@ -3755,38 +4077,46 @@ window.addEventListener('keydown', (e) => {
         </div>
       </aside>
 
-      <!-- SK Telecom Style Floating 4+1 Glassmorphic Card Dock (Lower 1/3 Overlay) -->
-      <nav class="skt-floating-dock" id="skt-floating-dock" aria-label="5대 특화진료 3D 동기화 카드 덱">
+      <!-- Cinematic Film Subtitle Narrative Caption (Above Bottom Dock) -->
+      <div class="cinema-subtitle-bar" id="cinema-subtitle-bar">
+        <span class="cinema-scene-tag" id="cinema-scene-tag">ACT I · SCENE 01</span>
+        <p class="cinema-subtitle-text" id="cinema-subtitle-text">
+          “간절한 기다림 끝에 찾아온 생명의 불꽃 — 바른 난임·착상 치료가 기적의 첫 장을 엽니다.”
+        </p>
+      </div>
+
+      <!-- SK Telecom Style Floating 5-Stage Glassmorphic Card Dock -->
+      <nav class="skt-floating-dock" id="skt-floating-dock" aria-label="5단계 생애주기 특화진료 3D 동기화 카드 덱">
         <div class="skt-dock-container">
           <button type="button" class="skt-dock-card active" data-step="1" onclick="navigateToStep(1)">
             <span class="skt-card-step">01</span>
             <div class="skt-card-info">
-              <span class="skt-card-badge">성장클리닉</span>
-              <h4 class="skt-card-title">생명 탄생 & 척추 정렬</h4>
+              <span class="skt-card-badge">난임·면역·성장</span>
+              <h4 class="skt-card-title">탄생 & 또래추월 키성장</h4>
             </div>
             <span class="skt-card-glow"></span>
           </button>
           <button type="button" class="skt-dock-card" data-step="2" onclick="navigateToStep(2)">
             <span class="skt-card-step">02</span>
             <div class="skt-card-info">
-              <span class="skt-card-badge">바른 다이어트</span>
-              <h4 class="skt-card-title">체지방 분해 & S라인</h4>
+              <span class="skt-card-badge">성인 비만치료</span>
+              <h4 class="skt-card-title">체지방 분해 & 슬림체형</h4>
             </div>
             <span class="skt-card-glow"></span>
           </button>
           <button type="button" class="skt-dock-card" data-step="3" onclick="navigateToStep(3)">
             <span class="skt-card-step">03</span>
             <div class="skt-card-info">
-              <span class="skt-card-badge">바른 탈모케어</span>
-              <h4 class="skt-card-title">두피 열감 & 모근 개화</h4>
+              <span class="skt-card-badge">30대 탈모치료</span>
+              <h4 class="skt-card-title">두피 열감해소 & 발모</h4>
             </div>
             <span class="skt-card-glow"></span>
           </button>
           <button type="button" class="skt-dock-card" data-step="4" onclick="navigateToStep(4)">
             <span class="skt-card-step">04</span>
             <div class="skt-card-info">
-              <span class="skt-card-badge">바른 통증·추나</span>
-              <h4 class="skt-card-title">9대 관절 치유 & 교정</h4>
+              <span class="skt-card-badge">추나 통증치료</span>
+              <h4 class="skt-card-title">척추 교정 & 관절 회복</h4>
             </div>
             <span class="skt-card-glow"></span>
           </button>
@@ -3794,7 +4124,7 @@ window.addEventListener('keydown', (e) => {
             <span class="skt-card-step">05</span>
             <div class="skt-card-info">
               <span class="skt-card-badge">황제 공진단</span>
-              <h4 class="skt-card-title">황금빛 원기 회복</h4>
+              <h4 class="skt-card-title">기력 회복 & 아름다운 노년</h4>
             </div>
             <span class="skt-card-glow"></span>
           </button>
@@ -3806,7 +4136,7 @@ window.addEventListener('keydown', (e) => {
         <div class="scroll-wheel-icon">
           <div class="scroll-wheel-dot"></div>
         </div>
-        <span class="scroll-prompt-text">마우스 휠을 아래로 스크롤하여 5단계 치유 여정을 경험하세요</span>
+        <span class="scroll-prompt-text">마우스 휠을 천천히 스크롤하면 생애주기 5단계 3D 치유 스토리가 영화처럼 이어집니다</span>
         <button type="button" class="btn-skip-to-cards" id="btn-skip-to-cards" onclick="scrollToCards()">
           <span>5대 특화진료 카드 바로보기 ⚡</span>
         </button>
@@ -3816,59 +4146,59 @@ window.addEventListener('keydown', (e) => {
   </div>
 
   <!-- =========================================================================
-       [스크롤 완료 시 노출: 5대 특화진료 시그니처 메뉴 카드 그리드]
+       [스크롤 완료 시 노출: 5대 생애주기 특화진료 시그니처 메뉴 카드 그리드]
        ========================================================================= -->
   <section class="signature-cards-section" id="signature-cards">
     <div class="cards-section-header">
-      <span class="cards-brand-badge">BAREUN 5 SIGNATURE CARE · 평생 주치의</span>
-      <h2 class="cards-main-title">생애주기 전반을 책임지는 바른한의원 5대 시그니처</h2>
+      <span class="cards-brand-badge">BAREUN 5 LIFECYCLE SIGNATURE CARE · 평생 주치의</span>
+      <h2 class="cards-main-title">인생의 모든 순간을 지키는 바른한의원 5대 생애주기 치료</h2>
       <p class="cards-main-subtitle">
-        아이의 키성장부터 체형 감량, 두피 탈모, 9대 관절 만성 통증 비수술 교정, 황제 공진단까지<br>
-        한의학 박사 대표원장이 1:1 책임 전담 진료로 온전한 건강을 회복시켜 드립니다.
+        생명의 고귀한 잉태(난임치료)와 탄생, 면역력 강화와 키성장부터 성인기 비만 감량, 30대 탈모 회복,<br>
+        직장인 척추·관절 추나 교정, 그리고 황제공진단으로 완성하는 아름답고 품격 있는 노년까지 함께합니다.
       </p>
     </div>
 
     <!-- 5 Cards Responsive Grid -->
     <div class="cards-grid-wrap" id="signature-cards-grid">
       
-      <!-- Card 1: 성장클리닉 -->
+      <!-- Card 1: 난임·소아면역·바른 성장클리닉 -->
       <article class="signature-card">
         <div class="card-visual-box">
-          <img src="bareun_seq_01_womb_spine.jpg" alt="01. 바른 성장클리닉" class="card-visual-img" loading="lazy">
+          <img src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_peers.jpg" onerror="this.src='bareun_seq_01_womb_spine.jpg'" alt="01. 난임·면역·성장클리닉" class="card-visual-img" loading="lazy">
           <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge">🌱 무방사선 정밀 초음파</span>
+          <span class="card-floating-badge">🌱 난임착상 · 소아면역 · 무방사선 초음파 키성장</span>
         </div>
         <div class="card-content-box">
-          <span class="card-step-tag">STEP 01 (0% ~ 20%) · 수정과 생명의 탄생</span>
-          <h3 class="card-title">01. 바른 성장클리닉</h3>
-          <p class="card-subtitle">"생명의 시작부터 바르게, 우리 아이 숨은 키를 찾는 골격 성장"</p>
+          <span class="card-step-tag">STAGE 01 · 수정(난임) ➔ 탄생 ➔ 감기면역 ➔ 키성장</span>
+          <h3 class="card-title">01. 바른 잉태·면역·성장클리닉</h3>
+          <p class="card-subtitle">"생명의 기적 같은 잉태부터 감기 없는 면역력, 또래를 훌쩍 넘는 키성장까지"</p>
           <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 방사선 피폭 걱정 없는 무방사선 정밀 초음파 4대 지표 판독</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 성장판 너머 8대 전신 기능검진 (체열·스트레스·자율신경·비염·장내GAS)</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 32개 척추 마디 바른 수직 정렬 & 15년 임상 대표원장 친아들 입증</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>난임·불임 착상 치료</strong>: 자궁 온열 순환 및 난소 기능 강화로 건강한 수정·착상 유도</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>소아 감기·면역강화 치료</strong>: 호흡기·비염·장 면역을 깨우는 청정 녹용 면역 보약</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>또래 추월 키성장 치료</strong>: 무방사선 초음파 성장판 정밀 진단 & 척추 32마디 성장 추나</li>
           </ul>
           <div class="card-action-row">
-            <a href="growth.html" class="btn-card-detail">상세 보기 ↗</a>
+            <a href="growth.html" class="btn-card-detail">성장클리닉 상세 ↗</a>
             <button type="button" class="btn-card-drawer" onclick="openDrawerWithProgram('pediatric-growth')">1-Click 예약</button>
           </div>
         </div>
       </article>
 
-      <!-- Card 2: 바른 다이어트 -->
+      <!-- Card 2: 성인 비만치료 (바른 다이어트 식욕 ZERO) -->
       <article class="signature-card">
         <div class="card-visual-box">
-          <img src="bareun_seq_02_fat_dissolve.jpg" alt="02. 바른 다이어트" class="card-visual-img" loading="lazy">
+          <img src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg" onerror="this.src='bareun_seq_02_fat_dissolve.jpg'" alt="02. 성인 비만치료 바른 다이어트" class="card-visual-img" loading="lazy">
           <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge">🏆 비대면 처방 BEST 1위</span>
+          <span class="card-floating-badge">🏆 비대면 비만처방 BEST 1위</span>
         </div>
         <div class="card-content-box">
-          <span class="card-step-tag">STEP 02 (20% ~ 40%) · 체형 변화 & 감량</span>
-          <h3 class="card-title">02. 바른 다이어트 (식욕 ZERO)</h3>
-          <p class="card-subtitle">"가벼워진 몸, 건강하게 되찾은 나만의 바른 라인"</p>
+          <span class="card-step-tag">STAGE 02 · 성인기 체중 증가·비만 ➔ 날씬한 슬림 라인</span>
+          <h3 class="card-title">02. 바른 비만치료 (식욕 ZERO)</h3>
+          <p class="card-subtitle">"성인이 되며 찐 살과 내장비만, 굶지 않고 날씬하고 가벼운 몸으로"</p>
           <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 3D 체지방 젤리 메쉬의 20,000개 골드 가루 마이크로 증발 디졸브</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 굶지 않고 자연스러운 식탐 억제 & 신진대사 촉진 (누적 50,000건)</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 전국 비대면 1:1 맞춤 전화 처방 & 안심 택배 직배송</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>심부 체지방 집중 분해</strong>: 복부·허벅지·팔뚝의 축적된 지방층 연소 및 대사율 극대화</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>자연스러운 식욕 억제</strong>: 스트레스성 폭식·야식 습관을 편안하게 잠재우는 맞춤 한약</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>전국 안심 비대면 처방</strong>: 원장님 1:1 전화 진맥 후 원내 탕전실 직배송 (누적 5만건)</li>
           </ul>
           <div class="card-action-row">
             <a href="diet-zero.html" class="btn-card-detail">비대면 처방 ↗</a>
@@ -3877,21 +4207,21 @@ window.addEventListener('keydown', (e) => {
         </div>
       </article>
 
-      <!-- Card 3: 바른 탈모케어 -->
+      <!-- Card 3: 30대 바른 탈모케어 -->
       <article class="signature-card">
         <div class="card-visual-box">
-          <img src="bareun_seq_03_scalp_cooling.jpg" alt="03. 바른 탈모케어" class="card-visual-img" loading="lazy">
+          <img src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3b_hair_restored.jpg" onerror="this.src='bareun_seq_03_scalp_cooling.jpg'" alt="03. 30대 바른 탈모치료" class="card-visual-img" loading="lazy">
           <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge">🌿 두피 상열감 순환 해소</span>
+          <span class="card-floating-badge">🌿 두피 열감 해소 & 발모 약침</span>
         </div>
         <div class="card-content-box">
-          <span class="card-step-tag">STEP 03 (40% ~ 60%) · 두피 열감 & 모근 개화</span>
-          <h3 class="card-title">03. 바른 탈모케어 (모근 개화)</h3>
-          <p class="card-subtitle">"뿌리부터 굵고 풍성하게, 두피 속부터 채우는 모근 회복"</p>
+          <span class="card-step-tag">STAGE 03 · 30대 두피열·탈모 발생 ➔ 풍성한 정상 모발 회복</span>
+          <h3 class="card-title">03. 바른 탈모치료 (모근 재생)</h3>
+          <p class="card-subtitle">"30대 스트레스와 두피 열로 빠지는 머리카락, 뿌리부터 다시 빽빽하게"</p>
           <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 붉은 열감 파티클 소멸 & 쿨링 에메랄드 한방 입자 침투</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 5,000개 굵은 3D 모발 인스턴스 모공에서 피어나는 개화 연출</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 1:1 두피 정밀 진단 및 고농도 모근 영양 약침 직접 주입</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>두피 상열감(熱) 즉각 청열</strong>: 정수리와 이마로 몰리는 열독을 내려 모낭 위축 차단</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>고농도 모근 재생 약침</strong>: 잠든 모낭 세포를 깨워 굵고 힘 있는 신생 모발 개화 촉진</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>수승화강 체질 한약</strong>: 만성 피로와 자율신경 불균형을 바로잡아 재발 없는 정상 모발 유지</li>
           </ul>
           <div class="card-action-row">
             <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer" class="btn-card-detail">카톡 상담 ↗</a>
@@ -3900,21 +4230,21 @@ window.addEventListener('keydown', (e) => {
         </div>
       </article>
 
-      <!-- Card 4: 바른 통증·추나 -->
+      <!-- Card 4: 근무 중 척추틀어짐 & 9대 관절 추나 통증치료 -->
       <article class="signature-card">
         <div class="card-visual-box">
-          <img src="bareun_seq_04_pain_chuna_9joints.jpg" alt="04. 바른 통증·추나" class="card-visual-img" loading="lazy">
+          <img src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_recovery.jpg" onerror="this.src='bareun_seq_04_pain_chuna_9joints.jpg'" alt="04. 바른 추나 통증치료" class="card-visual-img" loading="lazy">
           <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge" style="color: #6EE7B7; border-color: #38A169;">⚡ 9대 관절 바른 정렬</span>
+          <span class="card-floating-badge" style="color: #6EE7B7; border-color: #38A169;">⚡ 척추 수직교정 & 9대관절 치유</span>
         </div>
         <div class="card-content-box">
-          <span class="card-step-tag">STEP 04 (60% ~ 80%) · 전신 통증 & 녹색 치유</span>
-          <h3 class="card-title">04. 바른 통증·추나 (9대 관절)</h3>
-          <p class="card-subtitle">"통증의 붉은 신호를 지우고, 관절을 바르게 세우는 추나 케어"</p>
+          <span class="card-step-tag">STAGE 04 · 근무 중 척추 틀어짐·관절통 ➔ 추나 교정 후 회복</span>
+          <h3 class="card-title">04. 바른 추나·통증클리닉</h3>
+          <p class="card-subtitle">"과로와 근무로 틀어진 척추와 전신 관절 통증, 비수술 추나로 바르게 회복"</p>
           <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 목, 어깨, 팔꿈치, 손가락, 허리, 골반, 무릎, 발목, 발가락 9대 관절 정밀 좌표</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 8Hz 붉은 통증 링 점멸 $\rightarrow$ 한방 추나 치유 파동 스캔의 초록 치유점 전환</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 한의학 박사 대표원장 1:1 추나 요법 & 고농도 정품 봉약침 바른 척추 정렬</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>대표원장 1:1 정밀 추나요법</strong>: 거북목·척추측만·골반 비대칭을 손끝으로 맞추는 수기 교정</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>9대 주요 관절 통증 치료</strong>: 목·어깨·팔꿈치·손목·허리·골반·무릎·발목·발가락 염증 제거</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>고농도 정품 봉약침 & 한방물리</strong>: 신경 압박 해소 및 손상된 인대·디스크 심부 조직 재생</li>
           </ul>
           <div class="card-action-row">
             <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" class="btn-card-detail">네이버 예약 ↗</a>
@@ -3923,21 +4253,21 @@ window.addEventListener('keydown', (e) => {
         </div>
       </article>
 
-      <!-- Card 5: 명품 공진단 -->
+      <!-- Card 5: 노년 기력회복 & 성인병 케어 황제공진단 -->
       <article class="signature-card">
         <div class="card-visual-box">
-          <img src="bareun_seq_05_gongjindan_aura.jpg" alt="05. 명품 공진단" class="card-visual-img" loading="lazy">
+          <img src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5c_graceful_elder.jpg" onerror="this.src='bareun_seq_05_gongjindan_aura.jpg'" alt="05. 황제공진단 & 백세건강" class="card-visual-img" loading="lazy">
           <div class="card-visual-scrim"></div>
-          <span class="card-floating-badge" style="color: #FCD34D; border-color: #C09A67;">👑 특허 제10-1744704호</span>
+          <span class="card-floating-badge" style="color: #FCD34D; border-color: #C09A67;">👑 특허 제10-1744704호 · 백세건강</span>
         </div>
         <div class="card-content-box">
-          <span class="card-step-tag">STEP 05 (80% ~ 100%) · 황금빛 원기 회복</span>
-          <h3 class="card-title">05. 명품 공진단 (원기 회복)</h3>
-          <p class="card-subtitle">"지친 몸에 불어넣는 최고의 활력, 원방 그대로의 명품 공진단"</p>
+          <span class="card-step-tag">STAGE 05 · 노화·기력저하·성인병 ➔ 황제공진단 & 아름다운 노년</span>
+          <h3 class="card-title">05. 황제공진단 · 항노화클리닉</h3>
+          <p class="card-subtitle">"기력을 되찾고 성인병을 예방하여, 품격 있고 아름답게 나이 들어가는 삶"</p>
           <ul class="card-benefits-list">
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 3D 24K 금박 공진단 메쉬 중앙 안착 & 30,000개 샴페인 골드 오라</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 식약처 CITES 공인 정품 천연 사향 100% 보증서 동봉</li>
-            <li class="card-benefit-item"><span class="check-icon">✓</span> 최상급 러시아산 녹용 분골 배합, 원내 조제실 전통 수제 제환</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>식약처 CITES 정품 천연 사향 100%</strong>: 막힌 기혈과 뇌혈류·심혈관 순환을 뚫어주는 최고급 명약</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>기력 고갈 & 성인병 집중 케어</strong>: 만성 피로, 면역 저하, 대사성 성인병 예방 및 원기 보강</li>
+            <li class="card-benefit-item"><span class="check-icon">✓</span> <strong>러시아산 최상급 녹용 분골</strong>: 원내 조제실에서 정성껏 수제 제환한 24K 순금박 황제공진단</li>
           </ul>
           <div class="card-action-row">
             <a href="gongjindan.html" class="btn-card-detail">상세 보기 ↗</a>
@@ -3996,11 +4326,11 @@ window.addEventListener('keydown', (e) => {
             <div>
               <label style="font-size: 11px; font-weight: 700; color: #E2E8F0; display: block; margin-bottom: 4px;">신청 과목 선택</label>
               <select id="drawer-program-select" style="width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #FFFFFF; font-size: 13px;">
-                <option value="pediatric-growth">01. 바른 성장클리닉 (초음파 검진)</option>
-                <option value="appetite-zero">02. 바른 다이어트 (식욕 ZERO 비대면)</option>
-                <option value="scalp-hair">03. 바른 탈모케어 (두피 열감 순환)</option>
-                <option value="pain-chuna">04. 바른 통증·추나 (9대 관절 치유)</option>
-                <option value="gongjindan">05. 황제 공진단 (정품 사향 100%)</option>
+                <option value="pediatric-growth">01. 난임·소아면역·키성장 클리닉</option>
+                <option value="appetite-zero">02. 성인 비만치료 (식욕 ZERO 비대면)</option>
+                <option value="scalp-hair">03. 30대 바른 탈모케어 (두피열·모근재생)</option>
+                <option value="pain-chuna">04. 척추교정·추나 통증클리닉 (9대 관절)</option>
+                <option value="gongjindan">05. 황제 공진단 (기력회복·성인병 예방)</option>
               </select>
             </div>
 
@@ -4115,7 +4445,7 @@ window.addEventListener('keydown', (e) => {
     <div class="bv-bar-container">
       <div class="bv-bar-info">
         <span class="bv-bar-dot"></span>
-        <span class="bv-bar-text"><strong>바른한의원 대전본점</strong> · 당일 비대면 처방 & 1:1 방문 예약 접수 중</span>
+        <span class="bv-bar-text"><strong>바른한의원 대전본점</strong> · 5대 생애주기 당일 비대면 처방 & 1:1 방문 예약 접수 중</span>
       </div>
       <div class="bv-bar-actions">
         <a href="tel:042-488-1075" class="bv-action-btn bv-btn-call" title="전화 상담">
@@ -4142,193 +4472,303 @@ window.addEventListener('keydown', (e) => {
   <script>
 /**
  * BAREUN CLINIC (바른한의원 대전본점)
- * Awwwards Site of the Year Caliber — Master Creative Technologist WebGL Engine
- * 
- * 1. Lando Norris Style: Cinematic 3D WebGL Scrollytelling (Post-processing, GLSL Noise, Lerp Camera)
- * 2. SK Telecom Style: Clean 4+1 Glassmorphic Card Grid UX & Interactive Floating Dock
- * 3. BV Clinic Style: Medical Trust Architecture, Right Slide-Drawer Layer & Fixed Sticky Booking Bar
+ * 100-Point Masterpiece: 5-Act, 13-Scene Continuous 3D Lifecycle Scrollytelling Cinema
+ *
+ * Inspired by:
+ * - Patrick Clair / Elastic ('Westworld' Opening Title Sequence — Translucent Porcelain & Gold Anatomy)
+ * - Terrence Malick ('The Tree of Life' — Cellular Genesis & Cosmic Bioluminescence)
+ * - Denis Villeneuve ('Blade Runner 2049' — Volumetric Champagne Gold & Emerald Lighting)
+ * - Refik Anadol & Apple Scrollytelling — Real-time Particle Morphing & Biometric Telemetry
  */
 
 const CLINIC_SPECS = [
   {
     step: 1,
     slug: 'pediatric-growth',
-    title: '01. 바른 성장클리닉',
-    badge: 'STEP 01 (0% ~ 20%) · 수정과 생명의 탄생',
-    mainCopy: '생명의 시작부터 바르게, 우리 아이 숨은 키를 찾는 골격 성장',
-    desc: '세포 분열과 15,000개 유기적 생명 파티클이 응집하며 32개 아동 척추 마디가 형성되고, 골드 광원과 함께 바르게 수직 정렬됩니다.',
-    drawerSteps: ['3D 골격 분석', '성장판 검사', '추나 교정'],
+    title: '01. 생명 잉태부터 폭풍 키성장까지',
+    badge: 'STAGE 01 (0% ~ 25%) · 수정 ➔ 탄생 ➔ 감기면역 ➔ 키성장',
+    mainCopy: '난임 착상 치료 · 소아 감기 면역강화 · 또래를 뛰어넘는 골격 성장',
+    desc: '새 생명이 수정(난임치료)되어 세상에 태어나고, 면역력 저하로 찾아온 감기를 이겨내는 면역강화 한약부터 또래보다 작았던 키가 쭈욱 자라나는 성장치료까지 아이의 첫 생애를 바르게 세웁니다.',
+    subPills: ['① 난임·수정', '② 아이 탄생', '③ 감기·면역치료', '④ 또래 키성장'],
     link: 'growth.html',
-    color: '#34D399',
-    backdropId: 'backdrop-1'
+    color: '#34D399'
   },
   {
     step: 2,
     slug: 'appetite-zero',
-    title: '02. 바른 다이어트 (식욕 ZERO)',
-    badge: 'STEP 02 (20% ~ 40%) · 체형 변화 & 감량',
-    mainCopy: '가벼워진 몸, 건강하게 되찾은 나만의 바른 라인',
-    desc: '인체를 둘러싼 불투명 젤리 형태의 체지방 메쉬가 20,000개의 골드 미세 가루 파티클로 산산이 부서져 마이크로 증발하고, 매끈한 S라인 크리스탈 바디가 안착합니다.',
-    drawerSteps: ['1:1 체질 분석', '식욕 감퇴 & 독소 배출', '요요 방지 3단계'],
+    title: '02. 성인 비만과 날씬한 슬림 변신',
+    badge: 'STAGE 02 (25% ~ 42%) · 성인 비만 발생 ➔ 바른 비만치료',
+    mainCopy: '성인이 되며 불어난 체지방을 분해하여 가볍고 날씬한 바른 라인으로',
+    desc: '아이가 성인이 되면서 대사 저하와 스트레스로 살이 찌고 비만이 된 체형을, 바른 다이어트(식욕 ZERO) 맞춤 한약으로 심부 체지방만 정밀 분해하여 건강하고 날씬한 슬림 바디로 변화시킵니다.',
+    subPills: ['① 성인 체중증가·비만', '② 비만치료·슬림변신'],
     link: 'diet-zero.html#checkout-zone',
-    color: '#F472B6',
-    backdropId: 'backdrop-2'
+    color: '#F472B6'
   },
   {
     step: 3,
     slug: 'scalp-hair',
-    title: '03. 바른 탈모케어 (모근 개화)',
-    badge: 'STEP 03 (40% ~ 60%) · 두피 열감 & 모근 개화',
-    mainCopy: '뿌리부터 굵고 풍성하게, 두피 속부터 채우는 모근 회복',
-    desc: '두피 표면에 일렁이던 붉은 열감 입자가 쿨링 에메랄드 한방 입자 침투로 완전 소멸되고, 5,000개 굵은 3D 모발 인스턴스가 모공에서 피어나듯 풍성하게 개화합니다.',
-    drawerSteps: ['3D 두피 진단', '한방 약침 주입', '열감 완화 케어'],
+    title: '03. 30대 탈모 발생과 풍성한 모발 회복',
+    badge: 'STAGE 03 (42% ~ 60%) · 30대 탈모 발생 ➔ 바른 탈모치료',
+    mainCopy: '뜨거운 두피 열감을 식히고 약해진 모근을 깨워 다시 빽빽한 정상 모발로',
+    desc: '30대 과로와 상열감으로 머리카락이 우수수 빠지는 탈모 위기에서, 두피의 붉은 열을 내리는 청열 한약과 고농도 모근 재생 약침으로 다시 굵고 풍성한 정상 모발을 되찾습니다.',
+    subPills: ['① 30대 두피열·탈모', '② 탈모치료·모발회복'],
     link: 'https://pf.kakao.com/_ykxcLK',
-    color: '#60A5FA',
-    backdropId: 'backdrop-3'
+    color: '#60A5FA'
   },
   {
     step: 4,
     slug: 'pain-chuna',
-    title: '04. 바른 통증·추나 (9대 관절 치유)',
-    badge: 'STEP 04 (60% ~ 80%) · 전신 통증 점멸 & 녹색 치유',
-    mainCopy: '통증의 붉은 신호를 지우고, 관절을 바르게 세우는 추나 케어',
-    desc: '목, 어깨, 팔꿈치, 손가락, 허리, 골반, 무릎, 발목, 발가락 9대 관절의 8Hz 붉은 통증 링이 추나 치유 파동 스캔을 통과하며 눈부신 에메랄드 치유점으로 전환되고 척추가 곧게 정렬됩니다.',
-    drawerSteps: ['3D 관절 교정 원리', '추나/약침 프로세스', '치료 케이스'],
+    title: '04. 근무 중 척추 틀어짐 & 추나 통증치료',
+    badge: 'STAGE 04 (60% ~ 78%) · 척추·관절 통증 ➔ 바른 추나 회복',
+    mainCopy: '격무로 틀어진 척추와 9대 관절 통증을 수기 추나와 봉약침으로 바르게 교정',
+    desc: '장시간 근무로 거북목과 척추가 S자로 틀어지고 전신 9대 관절에 발생한 극심한 통증을, 한의학 박사 대표원장의 1:1 정밀 추나요법과 정품 봉약침으로 곧고 편안하게 회복시킵니다.',
+    subPills: ['① 근무 척추틀어짐·통증', '② 추나교정·완전회복'],
     link: 'https://naver.me/5U1ELn8L',
-    color: '#2F855A',
-    backdropId: 'backdrop-4'
+    color: '#2F855A'
   },
   {
     step: 5,
     slug: 'gongjindan',
-    title: '05. 명품 공진단 (원기 회복)',
-    badge: 'STEP 05 (80% ~ 100%) · 황금빛 원기 회복',
-    mainCopy: '지친 몸에 불어넣는 최고의 활력, 원방 그대로의 명품 공진단',
-    desc: '치유된 인체 주위로 30,000개 샴페인 골드 오라가 회전하며, 인체 중앙에서 24K 순금박 공진단 메쉬가 떠올라 360도 회전하며 최고의 활력을 완성합니다.',
-    drawerSteps: ['100% 정품 사향/녹용 인증서', '당일 수제 제환 영상', '처방 문의'],
+    title: '05. 황제공진단 기력 회복 & 아름다운 노년',
+    badge: 'STAGE 05 (78% ~ 100%) · 노화·성인병 ➔ 황제공진단 ➔ 백세건강',
+    mainCopy: '꺼져가는 기력과 성인병을 다스리고 품격 있고 아름답게 나이 들어가는 삶',
+    desc: '나이가 들며 기력이 고갈되고 성인병이 찾아올 때, 식약처 CITES 인증 100% 정품 천연 사향과 녹용 분골로 빚은 24K 황제공진단으로 전신 12경락의 기력을 깨워 건강하고 아름다운 노년을 완성합니다.',
+    subPills: ['① 노화·기력저하·성인병', '② 황제공진단 기력회복', '③ 아름다운 노년'],
     link: 'gongjindan.html',
-    color: '#C5A059',
-    backdropId: 'backdrop-5'
+    color: '#C5A059'
   }
 ];
 
 /**
- * High-Resolution 2D Canvas Texture for 3D UI Card 01 [바른 성장클리닉]
+ * 13-Scene Master Narrative & Biometric Telemetry Choreography
  */
-function createCard1Texture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 640;
-  const ctx = canvas.getContext('2d');
-
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
+const SCENE_TIMELINE = [
+  {
+    index: 1,
+    id: 'backdrop-1a',
+    step: 1,
+    subPillIndex: 0,
+    start: 0.00,
+    end: 0.06,
+    isCrisis: false,
+    actLabel: 'ACT 01 · 수정과 잉태',
+    stateText: '✦ 난임·착상 치료',
+    sceneTag: 'ACT I · SCENE 01 (난임·불임치료)',
+    subtitle: '“간절한 기다림 끝에 찾아온 생명의 불꽃 — 바른 난임·착상 치료가 기적의 첫 장을 엽니다.”',
+    metric1Title: '자궁 심부 착상 환경',
+    metric1Value: '36.8°C 최적 온열',
+    metric2Title: '수정·세포분열 활성도',
+    metric2Value: '99.4% 기적의 착상',
+    barPercent: 92
+  },
+  {
+    index: 2,
+    id: 'backdrop-1b',
+    step: 1,
+    subPillIndex: 1,
+    start: 0.06,
+    end: 0.12,
+    isCrisis: false,
+    actLabel: 'ACT 01 · 아이 탄생',
+    stateText: '✦ 고귀한 생명 탄생',
+    sceneTag: 'ACT I · SCENE 02 (아이 탄생)',
+    subtitle: '“열 달의 따뜻한 품을 거쳐 세상에 태어난 아이 — 생명의 빛이 온전한 형상을 이룹니다.”',
+    metric1Title: '신생아 생명력 지수',
+    metric1Value: '100% 건강한 탄생',
+    metric2Title: '오장육부·원기 발달',
+    metric2Value: '최상급 생체 리듬',
+    barPercent: 96
+  },
+  {
+    index: 3,
+    id: 'backdrop-1c',
+    step: 1,
+    subPillIndex: 2,
+    start: 0.12,
+    end: 0.18,
+    isCrisis: true, // dynamically flips to false at p >= 0.15
+    crisisThreshold: 0.15,
+    actLabel: 'ACT 01 · 소아 면역강화',
+    stateTextCrisis: '⚠️ 면역저하 · 감기 침투',
+    stateTextHeal: '✦ 면역강화 한약 보호막',
+    sceneTag: 'ACT I · SCENE 03 (감기 ➔ 면역강화치료)',
+    subtitleCrisis: '“면역력 저하로 찾아온 차가운 감기와 비염 — 여린 호흡기가 바이러스에 흔들립니다.”',
+    subtitleHeal: '“바른 면역강화 녹용 보약이 황금빛 보호막을 펼쳐 감기 기운을 정화하고 자생력을 깨웁니다.”',
+    metric1Title: '호흡기·전신 면역력',
+    metric2Title: '감기·바이러스 방어막'
+  },
+  {
+    index: 4,
+    id: 'backdrop-1d',
+    step: 1,
+    subPillIndex: 3,
+    start: 0.18,
+    end: 0.25,
+    isCrisis: true, // flips at 0.205
+    crisisThreshold: 0.205,
+    actLabel: 'ACT 01 · 바른 키성장',
+    stateTextCrisis: '⚠️ 또래보다 작은 키',
+    stateTextHeal: '✦ 성장치료 · 폭풍 키성장',
+    sceneTag: 'ACT I · SCENE 04 (작은 키 ➔ 성장치료)',
+    subtitleCrisis: '“또래 친구들과 나란히 서 있을 때 유독 작아 보였던 키 — 성장판이 잠들어 있습니다.”',
+    subtitleHeal: '“무방사선 초음파 진단과 바른 성장치료로 32개 척추와 성장판이 깨어나 키가 쭈욱 자라납니다!”',
+    metric1Title: '또래 대비 신장 추이',
+    metric2Title: '성장판·골밀도 활성'
+  },
+  {
+    index: 5,
+    id: 'backdrop-2a',
+    step: 2,
+    subPillIndex: 0,
+    start: 0.25,
+    end: 0.335,
+    isCrisis: true,
+    actLabel: 'ACT 02 · 성인기 비만 발생',
+    stateText: '⚠️ 체중 증가 · 비만 발생',
+    sceneTag: 'ACT II · SCENE 05 (성인 비만 발생)',
+    subtitle: '“성인이 되면서 잦은 야식과 대사 저하로 급격히 찐 살 — 무거운 체지방이 전신을 짓누릅니다.”',
+    metric1Title: '체지방률 / 내장지방',
+    metric1Value: '35.4% (비만 위험)',
+    metric2Title: '기초 신진대사율',
+    metric2Value: '44.0% (대사 정체)',
+    barPercent: 32
+  },
+  {
+    index: 6,
+    id: 'backdrop-2b',
+    step: 2,
+    subPillIndex: 1,
+    start: 0.335,
+    end: 0.42,
+    isCrisis: false,
+    actLabel: 'ACT 02 · 바른 비만치료',
+    stateText: '✦ 체지방 분해 · 슬림 라인',
+    sceneTag: 'ACT II · SCENE 06 (비만치료 ➔ 날씬한 변신)',
+    subtitle: '“바른 비만치료(식욕 ZERO)로 두꺼운 체지방이 황금빛 입자로 증발하며 날씬하고 탄탄한 몸매로 변신합니다.”',
+    metric1Title: '실시간 체지방 감량',
+    metric2Title: '대사 활성 & 바디라인'
+  },
+  {
+    index: 7,
+    id: 'backdrop-3a',
+    step: 3,
+    subPillIndex: 0,
+    start: 0.42,
+    end: 0.51,
+    isCrisis: true,
+    actLabel: 'ACT 03 · 30대 탈모 발생',
+    stateText: '⚠️ 두피 상열감 · 탈모 진행',
+    sceneTag: 'ACT III · SCENE 07 (30대 탈모 발생)',
+    subtitle: '“30대가 되며 치솟는 스트레스성 두피 열감 — 모근이 약해지며 머리카락이 우수수 빠져나갑니다.”',
+    metric1Title: '두피 표면 상열감',
+    metric1Value: '39.2°C (적색 열독)',
+    metric2Title: '모낭 밀도 & 모발 상태',
+    metric2Value: '연모화 및 급격한 탈락',
+    barPercent: 28
+  },
+  {
+    index: 8,
+    id: 'backdrop-3b',
+    step: 3,
+    subPillIndex: 1,
+    start: 0.51,
+    end: 0.60,
+    isCrisis: false,
+    actLabel: 'ACT 03 · 바른 탈모치료',
+    stateText: '✦ 두피 청열 · 풍성한 발모',
+    sceneTag: 'ACT III · SCENE 08 (탈모치료 ➔ 정상 회복)',
+    subtitle: '“청량한 두피 청열 한약과 고농도 모근 약침으로 열감이 식고, 다시 빽빽하고 윤기 나는 정상 모발이 자라납니다.”',
+    metric1Title: '두피 쿨링 온도 변화',
+    metric2Title: '모근 재생 & 모발 밀도'
+  },
+  {
+    index: 9,
+    id: 'backdrop-4a',
+    step: 4,
+    subPillIndex: 0,
+    start: 0.60,
+    end: 0.69,
+    isCrisis: true,
+    actLabel: 'ACT 04 · 척추틀어짐 & 통증',
+    stateText: '⚠️ 척추 틀어짐 · 9대관절 통증',
+    sceneTag: 'ACT IV · SCENE 09 (근무 중 척추·관절 통증)',
+    subtitle: '“끝없는 근무 속 앞으로 꺾인 거북목과 S자로 틀어진 척추 — 전신 9대 관절에 붉은 통증 신호가 타오릅니다.”',
+    metric1Title: '척추·골반 틀어짐 변위',
+    metric1Value: '18.6° 비대칭 왜곡',
+    metric2Title: '9대 관절 통증 지수',
+    metric2Value: 'VAS 8.5 (극심한 통증)',
+    barPercent: 22
+  },
+  {
+    index: 10,
+    id: 'backdrop-4b',
+    step: 4,
+    subPillIndex: 1,
+    start: 0.69,
+    end: 0.78,
+    isCrisis: false,
+    actLabel: 'ACT 04 · 바른 추나·봉약침',
+    stateText: '✦ 추나 수직교정 · 통증 소멸',
+    sceneTag: 'ACT IV · SCENE 10 (추나 통증치료 ➔ 회복)',
+    subtitle: '“대표원장 1:1 추나 교정과 정품 봉약침 파동이 전신을 스캔하며 틀어진 척추를 곧게 펴고 통증을 지웁니다.”',
+    metric1Title: '척추 32마디 정렬도',
+    metric2Title: '9대 관절 치유 상태'
+  },
+  {
+    index: 11,
+    id: 'backdrop-5a',
+    step: 5,
+    subPillIndex: 0,
+    start: 0.78,
+    end: 0.85,
+    isCrisis: true,
+    actLabel: 'ACT 05 · 노화와 기력저하',
+    stateText: '⚠️ 기력 고갈 · 성인병 위험',
+    sceneTag: 'ACT V · SCENE 11 (노화·기력저하·성인병)',
+    subtitle: '“나이가 들며 찾아온 만성 기력 저하와 성인병의 그림자 — 기혈 순환이 느려지며 몸이 지쳐갑니다.”',
+    metric1Title: '전신 원기·심폐 활력',
+    metric1Value: '28.0% (기력 고갈)',
+    metric2Title: '혈관·대사 성인병 지수',
+    metric2Value: '순환 정체 · 관리 시급',
+    barPercent: 28
+  },
+  {
+    index: 12,
+    id: 'backdrop-5b',
+    step: 5,
+    subPillIndex: 1,
+    start: 0.85,
+    end: 0.93,
+    isCrisis: false,
+    actLabel: 'ACT 05 · 황제공진단 처방',
+    stateText: '✦ 24K 황제공진단 · 기력 폭발',
+    sceneTag: 'ACT V · SCENE 12 (황제공진단 기력 회복)',
+    subtitle: '“식약처 인증 100% 천연 사향과 녹용 분골의 24K 황제공진단이 심장과 12경락을 깨워 기력을 회복시킵니다.”',
+    metric1Title: '12경락·뇌혈류 개통율',
+    metric2Title: '성인병 예방·면역 활력'
+  },
+  {
+    index: 13,
+    id: 'backdrop-5c',
+    step: 5,
+    subPillIndex: 2,
+    start: 0.93,
+    end: 1.00,
+    isCrisis: false,
+    actLabel: 'ACT 05 · 아름다운 노년',
+    stateText: '✦ 품격 있는 백세 건강 완성',
+    sceneTag: 'ACT V · SCENE 13 (아름답게 나이 들어가는 삶)',
+    subtitle: '“흐르는 세월마저 가장 눈부신 기품이 되도록 — 바른한의원이 당신의 건강하고 아름다운 노년을 함께합니다.”',
+    metric1Title: '백세 장수·기력 지수',
+    metric1Value: '99.8% 황금빛 활력',
+    metric2Title: '평생 주치의 케어',
+    metric2Value: '바른한의원 책임 전담',
+    barPercent: 100
   }
-
-  // Luxury Glassmorphic Gradient Background
-  const bgGrad = ctx.createLinearGradient(0, 0, 1024, 640);
-  bgGrad.addColorStop(0, 'rgba(255, 255, 255, 0.94)');
-  bgGrad.addColorStop(0.5, 'rgba(247, 245, 240, 0.90)');
-  bgGrad.addColorStop(1, 'rgba(235, 230, 220, 0.88)');
-
-  // Outer Border & Card Body
-  roundRect(ctx, 20, 20, 984, 600, 36);
-  ctx.fillStyle = bgGrad;
-  ctx.fill();
-
-  // Champagne Gold Border
-  ctx.lineWidth = 6;
-  const borderGrad = ctx.createLinearGradient(0, 0, 1024, 640);
-  borderGrad.addColorStop(0, '#C5A059');
-  borderGrad.addColorStop(0.5, '#FDE68A');
-  borderGrad.addColorStop(1, '#99732B');
-  ctx.strokeStyle = borderGrad;
-  ctx.stroke();
-
-  // Subtle Inner Frame
-  roundRect(ctx, 32, 32, 960, 576, 26);
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = 'rgba(197, 160, 89, 0.35)';
-  ctx.stroke();
-
-  // Top Badge: STEP 01 · 성장클리닉
-  roundRect(ctx, 60, 60, 300, 50, 25);
-  ctx.fillStyle = '#2D4030';
-  ctx.fill();
-  ctx.fillStyle = '#FDE68A';
-  ctx.font = 'bold 21px "Pretendard", -apple-system, sans-serif';
-  ctx.fillText('✦ 01. 바른 성장클리닉', 86, 93);
-
-  // Main Korean Typography Copy
-  ctx.fillStyle = '#1A291E';
-  ctx.font = 'bold 44px "Pretendard", "Noto Serif KR", serif';
-  ctx.fillText('생명의 시작부터 바르게,', 60, 175);
-  ctx.fillStyle = '#C5A059';
-  ctx.font = 'bold 44px "Pretendard", "Noto Serif KR", serif';
-  ctx.fillText('우리 아이 숨은 키를 찾는 골격 성장', 60, 235);
-
-  // Elegant Divider
-  ctx.strokeStyle = 'rgba(197, 160, 89, 0.4)';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(60, 275);
-  ctx.lineTo(964, 275);
-  ctx.stroke();
-
-  // 3 Feature Cards
-  const features = [
-    { title: '무방사선 정밀 초음파', sub: '성장판 8대 관절 개폐 분석' },
-    { title: '1:1 맞춤 소아 추나', sub: '척추 32마디 바른 수직 정렬' },
-    { title: '원내 청정 맞춤 탕전', sub: '골밀도 촉진 녹용 성장단' }
-  ];
-
-  features.forEach((feat, idx) => {
-    const px = 60 + idx * 305;
-    roundRect(ctx, px, 310, 290, 160, 20);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(197, 160, 89, 0.3)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(px + 28, 345, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#C5A059';
-    ctx.fill();
-
-    ctx.fillStyle = '#1A291E';
-    ctx.font = 'bold 22px "Pretendard", sans-serif';
-    ctx.fillText(feat.title, px + 48, 352);
-
-    ctx.fillStyle = '#5A685D';
-    ctx.font = '17px "Pretendard", sans-serif';
-    ctx.fillText(feat.sub, px + 28, 410);
-  });
-
-  // Footer Tagline
-  ctx.fillStyle = '#2D4030';
-  ctx.font = 'bold 20px "Pretendard", sans-serif';
-  ctx.fillText('DAEJEON BAREUN KOREAN MEDICINE CLINIC · 15 YEARS CLINICAL TRUST', 60, 545);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.generateMipmaps = true;
-  texture.minFilter = THREE.LinearMipmapLinearFilter;
-  texture.needsUpdate = true;
-  return texture;
-}
+];
 
 /**
- * Soft Circular Radial Particle Texture for Bloom & Points
+ * Soft Circular Radial Particle Texture for Bloom & Bioluminescent Points
  */
 function createCircularParticleTexture() {
   const canvas = document.createElement('canvas');
@@ -4337,47 +4777,83 @@ function createCircularParticleTexture() {
   const ctx = canvas.getContext('2d');
   const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
-  grad.addColorStop(0.35, 'rgba(253, 230, 138, 0.9)');
-  grad.addColorStop(0.7, 'rgba(197, 160, 89, 0.35)');
+  grad.addColorStop(0.3, 'rgba(253, 230, 138, 0.92)');
+  grad.addColorStop(0.65, 'rgba(197, 160, 89, 0.4)');
   grad.addColorStop(1, 'rgba(197, 160, 89, 0.0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 64, 64);
-  const texture = new THREE.CanvasTexture(canvas);
-  return texture;
+  return new THREE.CanvasTexture(canvas);
+}
+
+/**
+ * Procedural 24K Crinkled Gold-Leaf Bump/Color Texture for Emperor Gongjindan
+ */
+function create24KGoldFoilTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  const grad = ctx.createLinearGradient(0, 0, 512, 512);
+  grad.addColorStop(0, '#D4AF37');
+  grad.addColorStop(0.5, '#FDE68A');
+  grad.addColorStop(1, '#99732B');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 512, 512);
+
+  // Subtle gold-leaf crinkle facets
+  for (let i = 0; i < 900; i++) {
+    const x = Math.random() * 512;
+    const y = Math.random() * 512;
+    const r = 4 + Math.random() * 18;
+    ctx.fillStyle = Math.random() > 0.5
+      ? 'rgba(255, 251, 235, 0.16)'
+      : 'rgba(120, 82, 20, 0.16)';
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + r, y + (Math.random() - 0.5) * r);
+    ctx.lineTo(x + (Math.random() - 0.5) * r, y + r);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  return tex;
 }
 
 class BareunMasterpieceStoryApp {
   constructor() {
     this.currentStep = 1;
+    this.currentSceneIndex = 1;
     this.scrollProgress = 0;
-    this.isMobile = window.innerWidth <= 768;
+    this.isMobile = window.innerWidth <= 900;
 
     // Camera Lerp Inertia Targets
-    this.targetCameraPos = new THREE.Vector3(0, 0, 115);
-    this.targetCameraFov = 45;
+    this.targetCameraPos = new THREE.Vector3(0, 0, 95);
     this.targetLookAt = new THREE.Vector3(0, 0, 0);
     this.currentLookAt = new THREE.Vector3(0, 0, 0);
-    this.targetRotation = new THREE.Euler(0, 0, 0);
     this.mouseParallax = { x: 0, y: 0 };
 
-    // Exact 9-Joint Real World Coordinates from Production Sheet
+    // Exact 9-Joint Coordinates (Relative to Stage Right-Center Anchor)
     this.jointAnchors = [
-      { id: 'neck', name: '목 (Cervical Spine)', pos: [0.0, 38.0, 0.0], chipKey: 'neck' },
-      { id: 'shoulder_l', name: '어깨 (L)', pos: [-12.0, 32.0, 0.0], chipKey: 'shoulder' },
-      { id: 'shoulder_r', name: '어깨 (R)', pos: [12.0, 32.0, 0.0], chipKey: 'shoulder' },
-      { id: 'elbow_l', name: '팔꿈치 (L)', pos: [-18.0, 18.0, 0.0], chipKey: 'elbow' },
-      { id: 'elbow_r', name: '팔꿈치 (R)', pos: [18.0, 18.0, 0.0], chipKey: 'elbow' },
-      { id: 'finger_l', name: '손가락 (L)', pos: [-22.0, 0.0, 0.0], chipKey: 'wrist' },
-      { id: 'finger_r', name: '손가락 (R)', pos: [22.0, 0.0, 0.0], chipKey: 'wrist' },
-      { id: 'lumbar', name: '허리 (Lumbar Spine)', pos: [0.0, 10.0, -2.0], chipKey: 'waist' },
-      { id: 'hip_l', name: '골반/다리 (L)', pos: [-8.0, -5.0, 0.0], chipKey: 'hip' },
-      { id: 'hip_r', name: '골반/다리 (R)', pos: [8.0, -5.0, 0.0], chipKey: 'hip' },
-      { id: 'knee_l', name: '무릎 (L)', pos: [-7.0, -25.0, 0.0], chipKey: 'knee' },
-      { id: 'knee_r', name: '무릎 (R)', pos: [7.0, -25.0, 0.0], chipKey: 'knee' },
-      { id: 'ankle_l', name: '발목 (L)', pos: [-6.0, -45.0, 0.0], chipKey: 'ankle' },
-      { id: 'ankle_r', name: '발목 (R)', pos: [6.0, -45.0, 0.0], chipKey: 'ankle' },
-      { id: 'toe_l', name: '발가락 (L)', pos: [-6.0, -52.0, 3.0], chipKey: 'toe' },
-      { id: 'toe_r', name: '발가락 (R)', pos: [6.0, -52.0, 3.0], chipKey: 'toe' }
+      { id: 'neck', name: '목 (경추)', pos: [0.0, 25.0, 0.0], chipKey: 'neck' },
+      { id: 'shoulder_l', name: '어깨 (L)', pos: [-9.5, 19.5, 0.0], chipKey: 'shoulder' },
+      { id: 'shoulder_r', name: '어깨 (R)', pos: [9.5, 19.5, 0.0], chipKey: 'shoulder' },
+      { id: 'elbow_l', name: '팔꿈치 (L)', pos: [-13.5, 8.0, 0.0], chipKey: 'elbow' },
+      { id: 'elbow_r', name: '팔꿈치 (R)', pos: [13.5, 8.0, 0.0], chipKey: 'elbow' },
+      { id: 'finger_l', name: '손목/손가락 (L)', pos: [-16.0, -4.0, 0.0], chipKey: 'wrist' },
+      { id: 'finger_r', name: '손목/손가락 (R)', pos: [16.0, -4.0, 0.0], chipKey: 'wrist' },
+      { id: 'lumbar', name: '허리 (요추)', pos: [0.0, 2.0, -1.0], chipKey: 'waist' },
+      { id: 'hip_l', name: '골반 (L)', pos: [-6.0, -6.0, 0.0], chipKey: 'hip' },
+      { id: 'hip_r', name: '골반 (R)', pos: [6.0, -6.0, 0.0], chipKey: 'hip' },
+      { id: 'knee_l', name: '무릎 (L)', pos: [-5.2, -20.0, 0.0], chipKey: 'knee' },
+      { id: 'knee_r', name: '무릎 (R)', pos: [5.2, -20.0, 0.0], chipKey: 'knee' },
+      { id: 'ankle_l', name: '발목 (L)', pos: [-4.5, -34.0, 0.0], chipKey: 'ankle' },
+      { id: 'ankle_r', name: '발목 (R)', pos: [4.5, -34.0, 0.0], chipKey: 'ankle' },
+      { id: 'toe_l', name: '발가락 (L)', pos: [-5.0, -37.5, 2.0], chipKey: 'toe' },
+      { id: 'toe_r', name: '발가락 (R)', pos: [5.0, -37.5, 2.0], chipKey: 'toe' }
     ];
 
     this.initDOM();
@@ -4386,40 +4862,67 @@ class BareunMasterpieceStoryApp {
     this.initIntro();
     this.initDrawer();
     this.initInteractions();
+    this.initClock();
     this.animate();
 
     window.currentAppStepSlug = CLINIC_SPECS[0].slug;
-    this.updateBackdrops(1);
-    this.renderBackdropBlend(0);
+    this.renderTimeline(0);
   }
 
   initDOM() {
     this.canvas = document.getElementById('storyboard-canvas');
     this.stage = document.getElementById('story-stage-sticky');
     this.track = document.getElementById('story-scroll-track');
+    this.hudPanel = document.getElementById('story-hud-panel');
 
     this.hudBadge = document.getElementById('hud-step-badge');
     this.hudCounter = document.getElementById('hud-step-counter');
+    this.hudSubsceneFlow = document.getElementById('hud-subscene-flow');
     this.hudTitle = document.getElementById('hud-step-title');
     this.hudSubtitle = document.getElementById('hud-step-subtitle');
     this.hudDesc = document.getElementById('hud-step-desc');
     this.hudPrimaryBtn = document.getElementById('hud-primary-btn');
     this.hudDrawerBtn = document.getElementById('hud-drawer-btn');
+
+    // Biometric Telemetry Elements
+    this.telemetryStatus = document.getElementById('telemetry-status');
+    this.metric1Title = document.getElementById('metric-1-title');
+    this.metric1Value = document.getElementById('metric-1-value');
+    this.metric2Title = document.getElementById('metric-2-title');
+    this.metric2Value = document.getElementById('metric-2-value');
+    this.telemetryBarFill = document.getElementById('telemetry-bar-fill');
+
+    // Top Header Timeline & Bottom Cinema Subtitle
+    this.timelineActLabel = document.getElementById('timeline-act-label');
+    this.timelineProgressFill = document.getElementById('timeline-progress-fill');
+    this.timelineStatePill = document.getElementById('timeline-state-pill');
+    this.cinemaSceneTag = document.getElementById('cinema-scene-tag');
+    this.cinemaSubtitleText = document.getElementById('cinema-subtitle-text');
+
     this.painRadarBox = document.getElementById('pain-radar-box');
     this.painRadarStatus = document.getElementById('pain-radar-status');
 
-    this.backdrops = [
-      document.getElementById('backdrop-1a'),
-      document.getElementById('backdrop-1b'),
-      document.getElementById('backdrop-1c'),
-      document.getElementById('backdrop-2'),
-      document.getElementById('backdrop-3'),
-      document.getElementById('backdrop-4'),
-      document.getElementById('backdrop-5')
-    ];
+    // 13 Scene Backdrop Elements
+    this.backdropMap = {};
+    SCENE_TIMELINE.forEach(s => {
+      this.backdropMap[s.id] = document.getElementById(s.id);
+    });
 
     this.navDots = document.querySelectorAll('.step-nav-dot');
     this.sktCards = document.querySelectorAll('.skt-dock-card');
+  }
+
+  initClock() {
+    const timeEl = document.getElementById('current-time');
+    if (!timeEl) return;
+    const updateClock = () => {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      timeEl.textContent = `${hh}:${mm}`;
+    };
+    updateClock();
+    setInterval(updateClock, 30000);
   }
 
   // =========================================================================
@@ -4431,15 +4934,11 @@ class BareunMasterpieceStoryApp {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // Scene
     this.scene = new THREE.Scene();
 
-    // Camera
-    this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(42, width / height, 1, 1000);
     this.camera.position.copy(this.targetCameraPos);
-    this.camera.lookAt(0, 0, 0);
 
-    // Renderer with ACESFilmic Tone Mapping for cinematic luxury dynamic range
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
@@ -4448,64 +4947,60 @@ class BareunMasterpieceStoryApp {
     });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x2D4030, 0.0);
+    this.renderer.setClearColor(0x000000, 0.0);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
 
-    // Post-Processing: UnrealBloomPass for heavenly golden & emerald glow
     if (typeof THREE.EffectComposer !== 'undefined' && typeof THREE.UnrealBloomPass !== 'undefined') {
       try {
         this.composer = new THREE.EffectComposer(this.renderer);
         const renderPass = new THREE.RenderPass(this.scene, this.camera);
         this.composer.addPass(renderPass);
 
-        // UnrealBloomPass(resolution, strength: 0.6, radius: 0.5, threshold: 0.8)
         this.bloomPass = new THREE.UnrealBloomPass(
           new THREE.Vector2(width, height),
-          0.6, // strength: 0.6 for celestial glow
-          0.5, // radius: 0.5
-          0.8  // threshold: 0.8
+          0.55,
+          0.45,
+          0.78
         );
         this.composer.addPass(this.bloomPass);
       } catch (err) {
-        console.warn('[Bareun] Post-processing fallback to default renderer', err);
         this.composer = null;
       }
     }
 
-    // Studio 3-Point Lighting System
-    // 1. Ambient Warm Light
-    const ambientLight = new THREE.AmbientLight(0xF7F5F0, 0.7);
+    // Studio 3-Point Lighting
+    const ambientLight = new THREE.AmbientLight(0xF7F5F0, 0.85);
     this.scene.add(ambientLight);
 
-    // 2. Key Light: Champagne Gold (#C5A059)
-    this.goldKeyLight = new THREE.DirectionalLight(0xC5A059, 1.8);
+    this.goldKeyLight = new THREE.DirectionalLight(0xFDE68A, 2.0);
     this.goldKeyLight.position.set(45, 65, 55);
     this.scene.add(this.goldKeyLight);
 
-    // 3. Rim Light: Deep Sage Green (#2D4030 / #34D399)
-    this.emeraldRimLight = new THREE.DirectionalLight(0x2D4030, 1.4);
-    this.emeraldRimLight.position.set(-45, -35, -25);
+    this.emeraldRimLight = new THREE.DirectionalLight(0x10B981, 1.5);
+    this.emeraldRimLight.position.set(-45, -30, 35);
     this.scene.add(this.emeraldRimLight);
 
-    // 4. Soft White Fill Light
-    const softFillLight = new THREE.DirectionalLight(0xFFFFFF, 0.6);
-    softFillLight.position.set(0, 30, 70);
-    this.scene.add(softFillLight);
+    // Master Right-Center Anchor (Aligns 3D VFX with the 60% horizontal subject in 16:9 keyframes)
+    this.stageAnchor = new THREE.Group();
+    this.stageAnchor.position.set(this.isMobile ? 0 : 12, 0, 0);
+    this.scene.add(this.stageAnchor);
 
-    // Build Master 5-Step Scrollytelling Meshes
-    this.buildStep1VFX();
-    this.buildStep2VFX();
-    this.buildStep3VFX();
-    this.buildStep4Joints();
-    this.buildStep5Gongjindan();
+    this.particleTex = createCircularParticleTexture();
 
-    // Window Resize Handling
+    // Build all 5 Act 3D VFX Systems
+    this.buildAct1LifecycleVFX();
+    this.buildAct2ObesitySlimVFX();
+    this.buildAct3HairLossRegrowthVFX();
+    this.buildAct4SpineChunaVFX();
+    this.buildAct5GongjindanAgingVFX();
+
     window.addEventListener('resize', () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      this.isMobile = w <= 768;
+      this.isMobile = w <= 900;
+      this.stageAnchor.position.x = this.isMobile ? 0 : 12;
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);
@@ -4518,445 +5013,470 @@ class BareunMasterpieceStoryApp {
   }
 
   // =========================================================================
-  // Step 01: Fertilization, Toddler Growth Morph & Card Enfolding Dissolve
+  // ACT 01 (0% ~ 25%): Fertilization -> Birth -> Cold/Immunity -> Peer Growth
   // =========================================================================
-  buildStep1VFX() {
-    this.step1Group = new THREE.Group();
-    const particleTex = createCircularParticleTexture();
+  buildAct1LifecycleVFX() {
+    this.act1Group = new THREE.Group();
+    this.stageAnchor.add(this.act1Group);
 
-    // -----------------------------------------------------------------------
-    // [1] Sub-Phase 1 (0% ~ 5%): Glowing Opal Egg, 1000 Particles & Shockwave
-    // -----------------------------------------------------------------------
-    this.step1EggGroup = new THREE.Group();
+    // --- [1A] Fertilization: Ovum + 12 Swimming Sperm Helices + Mitosis Cells ---
+    this.scene1aGroup = new THREE.Group();
 
-    // Glowing Opal Sphere (MeshPhysicalMaterial)
-    const eggGeom = new THREE.SphereGeometry(7.5, 48, 48);
-    eggGeom.scale(1.0, 1.24, 1.0); // Organic cellular ovum shape
-    this.step1EggMat = new THREE.MeshPhysicalMaterial({
-      color: 0xF7F5F0,
-      emissive: 0xC5A059,
-      emissiveIntensity: 0.95,
-      transmission: 0.9,
-      roughness: 0.1,
-      metalness: 0.08,
-      ior: 1.45,
-      transparent: true,
-      opacity: 0.95
-    });
-    this.step1EggMesh = new THREE.Mesh(eggGeom, this.step1EggMat);
-    this.step1EggGroup.add(this.step1EggMesh);
-
-    // Glowing Inner Nucleus Core
-    const coreGeom = new THREE.SphereGeometry(3.6, 24, 24);
-    const coreMat = new THREE.MeshBasicMaterial({
+    const ovumGeom = new THREE.SphereGeometry(8.5, 48, 48);
+    this.ovumMat = new THREE.MeshPhysicalMaterial({
       color: 0xFFFBEB,
+      emissive: 0xC5A059,
+      emissiveIntensity: 0.7,
+      transmission: 0.85,
+      roughness: 0.12,
+      metalness: 0.1,
       transparent: true,
       opacity: 0.85
     });
-    this.step1EggCore = new THREE.Mesh(coreGeom, coreMat);
-    this.step1EggGroup.add(this.step1EggCore);
+    this.ovumMesh = new THREE.Mesh(ovumGeom, this.ovumMat);
+    this.scene1aGroup.add(this.ovumMesh);
 
-    // Concentric Golden Orbital Rings (as in reference image)
-    this.step1EggRings = new THREE.Group();
+    // Orbital Corona Rings
+    this.ovumRings = new THREE.Group();
     for (let r = 0; r < 3; r++) {
-      const ringGeom = new THREE.TorusGeometry(11.5 + r * 4.2, 0.18, 16, 64);
-      const ringMat = new THREE.MeshStandardMaterial({
-        color: 0xFDE68A,
-        emissive: 0xC5A059,
-        emissiveIntensity: 1.3,
+      const rg = new THREE.TorusGeometry(11.5 + r * 3.2, 0.14, 16, 80);
+      const rm = new THREE.MeshBasicMaterial({
+        color: r === 1 ? 0x34D399 : 0xFDE68A,
         transparent: true,
-        opacity: 0.82 - r * 0.18
+        opacity: 0.65 - r * 0.15,
+        blending: THREE.AdditiveBlending
       });
-      const ring = new THREE.Mesh(ringGeom, ringMat);
-      ring.rotation.x = Math.PI / 2.2 + r * 0.22;
-      ring.rotation.y = r * 0.35;
-      this.step1EggRings.add(ring);
+      const ring = new THREE.Mesh(rg, rm);
+      ring.rotation.set(0.5 + r * 0.3, r * 0.4, 0);
+      this.ovumRings.add(ring);
     }
-    this.step1EggGroup.add(this.step1EggRings);
+    this.scene1aGroup.add(this.ovumRings);
 
-    // 1,000 Golden Converging Particles (Dispersed Sphere -> Converge to Egg)
-    const convergeCount = 1000;
-    this.step1ParticlePositions = new Float32Array(convergeCount * 3);
-    this.step1OriginPositions = new Float32Array(convergeCount * 3);
-    this.step1TargetPositions = new Float32Array(convergeCount * 3);
+    // 12 Swimming Golden Sperm Light Streams
+    this.spermStreams = [];
+    for (let s = 0; s < 12; s++) {
+      const sGroup = new THREE.Group();
+      const headGeom = new THREE.SphereGeometry(0.55, 16, 16);
+      headGeom.scale(1.6, 1.0, 1.0);
+      const headMat = new THREE.MeshBasicMaterial({
+        color: 0xFFFBEB,
+        transparent: true,
+        opacity: 0.95
+      });
+      const head = new THREE.Mesh(headGeom, headMat);
+      sGroup.add(head);
 
-    for (let i = 0; i < convergeCount; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
+      // Undulating Flagellum Tail Line
+      const tailPts = [];
+      for (let t = 0; t < 20; t++) {
+        tailPts.push(new THREE.Vector3(-t * 0.65, 0, 0));
+      }
+      const tailGeom = new THREE.BufferGeometry().setFromPoints(tailPts);
+      const tailMat = new THREE.LineBasicMaterial({
+        color: 0xFDE68A,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending
+      });
+      const tail = new THREE.Line(tailGeom, tailMat);
+      sGroup.add(tail);
 
-      // Origin: Dispersed cloud (radius 28 to 50)
-      const rOrig = 28 + Math.random() * 22;
-      const ox = rOrig * Math.sin(phi) * Math.cos(theta);
-      const oy = rOrig * Math.sin(phi) * Math.sin(theta) * 1.2;
-      const oz = rOrig * Math.cos(phi);
+      const angle = (s === 0) ? Math.PI : (Math.PI + (Math.random() - 0.5) * 1.4);
+      const dist = (s === 0) ? 28 : (32 + Math.random() * 18);
+      const zOff = (s === 0) ? 2 : (Math.random() - 0.5) * 16;
 
-      // Target: Surface of the egg (radius 7.5 to 9.5)
-      const rTarg = 7.5 + Math.random() * 2.0;
-      const tx = rTarg * Math.sin(phi) * Math.cos(theta);
-      const ty = rTarg * Math.sin(phi) * Math.sin(theta) * 1.2;
-      const tz = rTarg * Math.cos(phi);
-
-      this.step1OriginPositions[i * 3] = ox;
-      this.step1OriginPositions[i * 3 + 1] = oy;
-      this.step1OriginPositions[i * 3 + 2] = oz;
-
-      this.step1TargetPositions[i * 3] = tx;
-      this.step1TargetPositions[i * 3 + 1] = ty;
-      this.step1TargetPositions[i * 3 + 2] = tz;
-
-      this.step1ParticlePositions[i * 3] = ox;
-      this.step1ParticlePositions[i * 3 + 1] = oy;
-      this.step1ParticlePositions[i * 3 + 2] = oz;
+      this.scene1aGroup.add(sGroup);
+      this.spermStreams.push({
+        group: sGroup,
+        tail: tail,
+        angle: angle,
+        startDist: dist,
+        zOff: zOff,
+        isLead: s === 0,
+        speedOffset: Math.random() * Math.PI * 2
+      });
     }
 
-    const convergeGeom = new THREE.BufferGeometry();
-    convergeGeom.setAttribute('position', new THREE.BufferAttribute(this.step1ParticlePositions, 3));
-    const convergeMat = new THREE.PointsMaterial({
-      size: 1.8,
-      map: particleTex,
+    // Fertilization Golden Shockwave Ring
+    const swGeom = new THREE.RingGeometry(1.0, 2.4, 64);
+    this.fertShockwave = new THREE.Mesh(swGeom, new THREE.MeshBasicMaterial({
       color: 0xFDE68A,
-      transparent: true,
-      opacity: 0.9,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-    this.step1ConvergePoints = new THREE.Points(convergeGeom, convergeMat);
-    this.step1EggGroup.add(this.step1ConvergePoints);
-
-    // Golden Radial Shockwave Ring (Triggers on touch or 4% scroll)
-    const shockGeom = new THREE.RingGeometry(0.5, 2.2, 64);
-    this.step1ShockwaveMat = new THREE.MeshBasicMaterial({
-      color: 0xC5A059,
       side: THREE.DoubleSide,
       transparent: true,
       opacity: 0.0,
       blending: THREE.AdditiveBlending
-    });
-    this.step1Shockwave = new THREE.Mesh(shockGeom, this.step1ShockwaveMat);
-    this.step1EggGroup.add(this.step1Shockwave);
-    this.shockwaveActive = false;
+    }));
+    this.scene1aGroup.add(this.fertShockwave);
 
-    this.step1Group.add(this.step1EggGroup);
+    this.act1Group.add(this.scene1aGroup);
 
-    // -----------------------------------------------------------------------
-    // [2] Sub-Phase 2 & 3 (5% ~ 20%): Toddler Light Silhouette & Growth Morph
-    // -----------------------------------------------------------------------
-    this.step1ToddlerGroup = new THREE.Group();
+    // --- [1B] Baby Birth: Helical Golden Womb Cocoon & Life Particles ---
+    this.scene1bGroup = new THREE.Group();
+    this.wombHelixLines = [];
+    for (let h = 0; h < 4; h++) {
+      const pts = [];
+      const phase = (h * Math.PI) / 2;
+      for (let i = 0; i <= 60; i++) {
+        const t = i / 60;
+        const y = -22 + t * 44;
+        const radius = Math.sin(t * Math.PI) * 15;
+        const ang = t * Math.PI * 3 + phase;
+        pts.push(new THREE.Vector3(Math.cos(ang) * radius, y, Math.sin(ang) * radius));
+      }
+      const lGeom = new THREE.BufferGeometry().setFromPoints(pts);
+      const lMat = new THREE.LineBasicMaterial({
+        color: h % 2 === 0 ? 0xFDE68A : 0x34D399,
+        transparent: true,
+        opacity: 0.55,
+        blending: THREE.AdditiveBlending
+      });
+      const line = new THREE.Line(lGeom, lMat);
+      this.scene1bGroup.add(line);
+      this.wombHelixLines.push(line);
+    }
+    this.scene1bGroup.visible = false;
+    this.act1Group.add(this.scene1bGroup);
 
-    this.step1SilMat = new THREE.MeshPhysicalMaterial({
-      color: 0xF7F5F0,
-      emissive: 0xC5A059,
-      emissiveIntensity: 0.75,
-      transmission: 0.88,
-      roughness: 0.12,
-      metalness: 0.1,
-      ior: 1.45,
-      transparent: true,
-      opacity: 0.0
-    });
+    // --- [1C] Cold Viral Spikes vs. Golden-Emerald Hexagonal Immunity Shield ---
+    this.scene1cGroup = new THREE.Group();
 
-    // Cute toddler head
-    const headGeom = new THREE.SphereGeometry(4.2, 32, 32);
-    this.step1Head = new THREE.Mesh(headGeom, this.step1SilMat.clone());
-    this.step1Head.position.set(0, 14, 0);
-    this.step1ToddlerGroup.add(this.step1Head);
+    // Hexagonal Geodesic Immunity Shield Dome
+    const shieldGeom = new THREE.IcosahedronGeometry(18, 2);
+    this.immuneShieldWire = new THREE.Mesh(
+      shieldGeom,
+      new THREE.MeshBasicMaterial({
+        color: 0xFDE68A,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    this.scene1cGroup.add(this.immuneShieldWire);
 
-    // Golden Halo Aura
-    const haloGeom = new THREE.TorusGeometry(5.2, 0.18, 16, 48);
-    this.step1HaloMat = new THREE.MeshStandardMaterial({
-      color: 0xFDE68A,
-      emissive: 0xC5A059,
-      emissiveIntensity: 1.5,
-      transparent: true,
-      opacity: 0.0
-    });
-    this.step1Halo = new THREE.Mesh(haloGeom, this.step1HaloMat);
-    this.step1Halo.rotation.x = Math.PI / 2.3;
-    this.step1Halo.position.set(0, 16.5, 0);
-    this.step1ToddlerGroup.add(this.step1Halo);
+    this.immuneShieldGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(17.6, 32, 32),
+      new THREE.MeshPhysicalMaterial({
+        color: 0x10B981,
+        emissive: 0x34D399,
+        emissiveIntensity: 0.6,
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    this.scene1cGroup.add(this.immuneShieldGlow);
 
-    // Cute toddler torso
-    const torsoGeom = new THREE.CylinderGeometry(2.6, 3.4, 11, 24);
-    this.step1Torso = new THREE.Mesh(torsoGeom, this.step1SilMat.clone());
-    this.step1Torso.position.set(0, 5, 0);
-    this.step1ToddlerGroup.add(this.step1Torso);
+    // 40 Cold Viral Frost Crystals (Swarming then Repelled)
+    this.viralCrystals = [];
+    const viralGeom = new THREE.OctahedronGeometry(0.9, 0);
+    for (let v = 0; v < 40; v++) {
+      const vMat = new THREE.MeshBasicMaterial({
+        color: 0x38BDF8,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending
+      });
+      const vMesh = new THREE.Mesh(viralGeom, vMat);
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const dir = new THREE.Vector3(
+        Math.sin(phi) * Math.cos(theta),
+        Math.sin(phi) * Math.sin(theta),
+        Math.cos(phi)
+      );
+      this.scene1cGroup.add(vMesh);
+      this.viralCrystals.push({ mesh: vMesh, dir: dir, baseDist: 14 + Math.random() * 14 });
+    }
+    this.scene1cGroup.visible = false;
+    this.act1Group.add(this.scene1cGroup);
 
-    // Left & Right Arms
-    const armGeom = new THREE.CylinderGeometry(0.9, 0.8, 8, 16);
-    this.step1ArmL = new THREE.Mesh(armGeom, this.step1SilMat.clone());
-    this.step1ArmL.position.set(-4.4, 5, 0);
-    this.step1ArmL.rotation.z = 0.22;
-    this.step1ToddlerGroup.add(this.step1ArmL);
+    // --- [1D] Peer Height Comparison & Spine Growth Laser Stretch ---
+    this.scene1dGroup = new THREE.Group();
 
-    this.step1ArmR = new THREE.Mesh(armGeom, this.step1SilMat.clone());
-    this.step1ArmR.position.set(4.4, 5, 0);
-    this.step1ArmR.rotation.z = -0.22;
-    this.step1ToddlerGroup.add(this.step1ArmR);
-
-    // Left & Right Legs
-    const legGeom = new THREE.CylinderGeometry(1.1, 0.9, 10, 16);
-    this.step1LegL = new THREE.Mesh(legGeom, this.step1SilMat.clone());
-    this.step1LegL.position.set(-2.0, -5.5, 0);
-    this.step1ToddlerGroup.add(this.step1LegL);
-
-    this.step1LegR = new THREE.Mesh(legGeom, this.step1SilMat.clone());
-    this.step1LegR.position.set(2.0, -5.5, 0);
-    this.step1ToddlerGroup.add(this.step1LegR);
-
-    // 32-Vertebrae Child Spine Crystal Discs
-    this.spineNodes = [];
-    const discGeom = new THREE.CylinderGeometry(1.2, 1.4, 0.35, 20);
-    const discMat = new THREE.MeshPhysicalMaterial({
-      color: 0xFDE68A,
-      emissive: 0xC5A059,
-      emissiveIntensity: 0.95,
-      transmission: 0.85,
-      roughness: 0.15,
-      metalness: 0.2,
-      transparent: true,
-      opacity: 0.85
-    });
-
-    for (let i = 0; i < 32; i++) {
-      const disc = new THREE.Mesh(discGeom, discMat.clone());
-      disc.position.set(0, -6 + i * 0.72, 0.6);
-      disc.rotation.x = Math.PI / 2;
-      disc.scale.set(0.001, 0.001, 0.001);
-      this.step1ToddlerGroup.add(disc);
-      this.spineNodes.push(disc);
+    // Central Child 32-Vertebrae Golden Spine + Knee Growth Plates
+    this.childGrowthGroup = new THREE.Group();
+    this.growthVertebrae = [];
+    const vertGeom = new THREE.CylinderGeometry(0.9, 1.0, 0.35, 16);
+    for (let i = 0; i < 24; i++) {
+      const vm = new THREE.MeshBasicMaterial({
+        color: i % 3 === 0 ? 0x34D399 : 0xFDE68A,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending
+      });
+      const vd = new THREE.Mesh(vertGeom, vm);
+      vd.position.set(0, -4 + i * 0.8, 2);
+      this.childGrowthGroup.add(vd);
+      this.growthVertebrae.push(vd);
     }
 
-    // Vertical Golden Growth Height Ruler (as seen in user image 3)
-    this.step1GrowthRuler = new THREE.Group();
-    const rulerLineGeom = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(12.5, -12, 0),
-      new THREE.Vector3(12.5, 22, 0)
-    ]);
-    const rulerLine = new THREE.Line(rulerLineGeom, new THREE.LineBasicMaterial({
-      color: 0xC5A059,
+    // Knee Growth Plate Starbursts (Left & Right Knees)
+    const kneeRingGeom = new THREE.TorusGeometry(2.2, 0.18, 16, 48);
+    const kneeMat = new THREE.MeshBasicMaterial({
+      color: 0x34D399,
       transparent: true,
-      opacity: 0.75
-    }));
-    this.step1GrowthRuler.add(rulerLine);
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    });
+    this.kneePlateL = new THREE.Mesh(kneeRingGeom, kneeMat);
+    this.kneePlateL.rotation.x = Math.PI / 2;
+    this.kneePlateL.position.set(-2.4, -15, 2);
+    this.childGrowthGroup.add(this.kneePlateL);
 
-    for (let y = -10; y <= 20; y += 3) {
-      const tickGeom = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(11.8, y, 0),
-        new THREE.Vector3(13.2, y, 0)
+    this.kneePlateR = new THREE.Mesh(kneeRingGeom, kneeMat.clone());
+    this.kneePlateR.rotation.x = Math.PI / 2;
+    this.kneePlateR.position.set(2.4, -15, 2);
+    this.childGrowthGroup.add(this.kneePlateR);
+
+    // Ascending Golden Growth Laser Columns
+    this.growthBeams = new THREE.Group();
+    for (let b = 0; b < 5; b++) {
+      const bx = (b - 2) * 2.2;
+      const bGeom = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(bx, -26, 0),
+        new THREE.Vector3(bx, 32, 0)
       ]);
-      const tickLine = new THREE.Line(tickGeom, new THREE.LineBasicMaterial({
+      const bLine = new THREE.Line(
+        bGeom,
+        new THREE.LineBasicMaterial({
+          color: b === 2 ? 0x34D399 : 0xFDE68A,
+          transparent: true,
+          opacity: 0.65,
+          blending: THREE.AdditiveBlending
+        })
+      );
+      this.growthBeams.add(bLine);
+    }
+    this.scene1dGroup.add(this.growthBeams);
+
+    // Horizontal Height Indicator Bar (Moves upward as child grows past peers!)
+    const barGeom = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(-22, 0, 3),
+      new THREE.Vector3(22, 0, 3)
+    ]);
+    this.heightLaserBar = new THREE.Line(
+      barGeom,
+      new THREE.LineBasicMaterial({
         color: 0xFDE68A,
         transparent: true,
-        opacity: 0.85
-      }));
-      this.step1GrowthRuler.add(tickLine);
-    }
-    this.step1GrowthRuler.visible = false;
-    this.step1ToddlerGroup.add(this.step1GrowthRuler);
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    this.scene1dGroup.add(this.heightLaserBar);
 
-    this.step1ToddlerGroup.visible = false;
-    this.step1ToddlerGroup.scale.set(0.55, 0.55, 0.55);
-    this.step1ToddlerGroup.position.set(0, -4, 0);
-    this.step1Group.add(this.step1ToddlerGroup);
+    this.scene1dGroup.add(this.childGrowthGroup);
+    this.scene1dGroup.visible = false;
+    this.act1Group.add(this.scene1dGroup);
+  }
 
-    // -----------------------------------------------------------------------
-    // [3] Sub-Phase 3 & 4 (12% ~ 20%): 3D Curved UI Card 01 & Dissolution Dust
-    // -----------------------------------------------------------------------
-    this.step1CardGroup = new THREE.Group();
+  // =========================================================================
+  // ACT 02 (25% ~ 42%): Adult Obesity Contour Swell -> Lipolysis Vortex Dissolve
+  // =========================================================================
+  buildAct2ObesitySlimVFX() {
+    this.act2Group = new THREE.Group();
+    this.stageAnchor.add(this.act2Group);
 
-    // 3D Curved Cylindrical Card Mesh (Enfolds child naturally)
-    const cardGeom = new THREE.CylinderGeometry(23, 23, 15, 36, 1, true, -Math.PI / 3.4, (2 * Math.PI) / 3.4);
-    const cardTexture = createCard1Texture();
-    this.step1CardMat = new THREE.MeshPhysicalMaterial({
-      map: cardTexture,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.0,
-      transmission: 0.25,
-      roughness: 0.12,
-      metalness: 0.12,
-      ior: 1.4
-    });
-    this.step1CardMesh = new THREE.Mesh(cardGeom, this.step1CardMat);
-    this.step1CardMesh.position.set(0, 4, 0);
-    this.step1CardGroup.add(this.step1CardMesh);
-
-    // 1,200 Floating Champagne Gold Dust Particles for Dissolution (18% ~ 20%)
-    const dustCount = 1200;
-    const dustPositions = new Float32Array(dustCount * 3);
-    this.step1DustBasePos = new Float32Array(dustCount * 3);
-    this.step1DustVelocities = new Float32Array(dustCount * 3);
-
-    for (let i = 0; i < dustCount; i++) {
-      const theta = (Math.random() - 0.5) * (Math.PI * 0.7);
-      const dy = 4 + (Math.random() - 0.5) * 15;
-      const r = 23 + (Math.random() - 0.5) * 2;
-      const dx = r * Math.sin(theta);
-      const dz = r * Math.cos(theta);
-
-      dustPositions[i * 3] = dx;
-      dustPositions[i * 3 + 1] = dy;
-      dustPositions[i * 3 + 2] = dz;
-
-      this.step1DustBasePos[i * 3] = dx;
-      this.step1DustBasePos[i * 3 + 1] = dy;
-      this.step1DustBasePos[i * 3 + 2] = dz;
-
-      this.step1DustVelocities[i * 3] = (Math.random() - 0.5) * 10;
-      this.step1DustVelocities[i * 3 + 1] = 14 + Math.random() * 22; // upward float
-      this.step1DustVelocities[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    // 18 Horizontal Body Contour Rings (Morphing from Wide Obese Waist to Slim S-Line)
+    this.bodyContourRings = [];
+    for (let i = 0; i < 18; i++) {
+      const normY = i / 17; // 0 (hips) to 1 (chest)
+      const y = -16 + normY * 28;
+      // Waist/abdomen is fullest around normY = 0.35 ~ 0.65
+      const waistFactor = Math.sin(normY * Math.PI);
+      const rg = new THREE.TorusGeometry(8.5, 0.12, 12, 64);
+      const rm = new THREE.MeshBasicMaterial({
+        color: 0xF59E0B,
+        transparent: true,
+        opacity: 0.55,
+        blending: THREE.AdditiveBlending
+      });
+      const rMesh = new THREE.Mesh(rg, rm);
+      rMesh.rotation.x = Math.PI / 2;
+      rMesh.position.y = y;
+      this.act2Group.add(rMesh);
+      this.bodyContourRings.push({ mesh: rMesh, waistFactor: waistFactor, baseY: y });
     }
 
-    this.step1DustGeom = new THREE.BufferGeometry();
-    this.step1DustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-
-    this.step1CardDustMat = new THREE.PointsMaterial({
-      size: 1.6,
-      map: particleTex,
-      color: 0xC5A059,
+    // 1,800 Lipolysis Fat-Dissolve Golden Vortex Particles
+    const pCount = 1800;
+    this.fatParticlePos = new Float32Array(pCount * 3);
+    this.fatParticleMeta = [];
+    for (let i = 0; i < pCount; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const y = -15 + Math.random() * 24;
+      const r = 7 + Math.random() * 7;
+      this.fatParticlePos[i * 3] = Math.cos(angle) * r;
+      this.fatParticlePos[i * 3 + 1] = y;
+      this.fatParticlePos[i * 3 + 2] = Math.sin(angle) * r;
+      this.fatParticleMeta.push({
+        baseAngle: angle,
+        baseY: y,
+        baseR: r,
+        speed: 1.5 + Math.random() * 2.5,
+        lift: 12 + Math.random() * 24
+      });
+    }
+    const fatGeom = new THREE.BufferGeometry();
+    fatGeom.setAttribute('position', new THREE.BufferAttribute(this.fatParticlePos, 3));
+    this.fatPointsMat = new THREE.PointsMaterial({
+      size: 1.5,
+      map: this.particleTex,
+      color: 0xFDE68A,
       transparent: true,
       opacity: 0.0,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
-    this.step1CardDustPoints = new THREE.Points(this.step1DustGeom, this.step1CardDustMat);
-    this.step1CardDustPoints.visible = false;
-    this.step1CardGroup.add(this.step1CardDustPoints);
+    this.fatVortexPoints = new THREE.Points(fatGeom, this.fatPointsMat);
+    this.act2Group.add(this.fatVortexPoints);
 
-    this.step1CardGroup.visible = false;
-    this.step1Group.add(this.step1CardGroup);
-
-    this.scene.add(this.step1Group);
-  }
-
-  // Update 1,000 Golden Converging Particles (0% ~ 5%)
-  updateConvergingParticles(t) {
-    if (!this.step1ConvergePoints) return;
-    const pos = this.step1ParticlePositions;
-    const orig = this.step1OriginPositions;
-    const targ = this.step1TargetPositions;
-    const count = pos.length / 3;
-
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = THREE.MathUtils.lerp(orig[i * 3], targ[i * 3], t);
-      pos[i * 3 + 1] = THREE.MathUtils.lerp(orig[i * 3 + 1], targ[i * 3 + 1], t);
-      pos[i * 3 + 2] = THREE.MathUtils.lerp(orig[i * 3 + 2], targ[i * 3 + 2], t);
-    }
-    this.step1ConvergePoints.geometry.attributes.position.needsUpdate = true;
-  }
-
-  // Update 1,200 Floating Champagne Gold Dust Particles (18% ~ 20%)
-  updateCardDust(t) {
-    if (!this.step1DustGeom) return;
-    const pos = this.step1DustGeom.attributes.position.array;
-    const base = this.step1DustBasePos;
-    const vel = this.step1DustVelocities;
-    const count = pos.length / 3;
-
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = base[i * 3] + vel[i * 3] * t;
-      pos[i * 3 + 1] = base[i * 3 + 1] + vel[i * 3 + 1] * t;
-      pos[i * 3 + 2] = base[i * 3 + 2] + vel[i * 3 + 2] * t;
-    }
-    this.step1DustGeom.attributes.position.needsUpdate = true;
-  }
-
-  // Trigger Golden Radial Shockwave (on touch or 4% scroll)
-  triggerShockwave() {
-    if (!this.step1Shockwave) return;
-    this.shockwaveActive = true;
-    this.shockwaveStartTime = performance.now();
+    this.act2Group.visible = false;
   }
 
   // =========================================================================
-  // Step 02: 100% Crystal-Clear View of 8K Luxury S-Line Body (NO SQUARE NOISE)
+  // ACT 03 (42% ~ 60%): 30s Scalp Heat & Falling Hair -> Cooling & Regrowth
   // =========================================================================
-  buildStep2VFX() {
-    this.step2Group = new THREE.Group();
+  buildAct3HairLossRegrowthVFX() {
+    this.act3Group = new THREE.Group();
+    this.stageAnchor.add(this.act3Group);
 
-    // Sleek subtle holographic golden waist aura ring (Torus)
-    const waistRingGeom = new THREE.TorusGeometry(14, 0.35, 16, 64);
-    const waistRingMat = new THREE.MeshStandardMaterial({
-      color: 0xFDE68A,
-      emissive: 0xC5A059,
-      emissiveIntensity: 0.8,
+    // Thermal Scalp Aura Rings (Transition from Crimson Heat to Cooling Mint-Emerald)
+    this.scalpAuraRings = [];
+    for (let r = 0; r < 4; r++) {
+      const rg = new THREE.TorusGeometry(9 + r * 3.2, 0.18, 16, 64);
+      const rm = new THREE.MeshBasicMaterial({
+        color: 0xEF4444,
+        transparent: true,
+        opacity: 0.65 - r * 0.12,
+        blending: THREE.AdditiveBlending
+      });
+      const mesh = new THREE.Mesh(rg, rm);
+      mesh.rotation.x = Math.PI / 2.3;
+      mesh.position.set(0, 12 + r * 1.5, 0);
+      this.act3Group.add(mesh);
+      this.scalpAuraRings.push(mesh);
+    }
+
+    // 160 3D Hair Strands (Detach & Drift Away in 3A -> Sprout & Bloom in 3B)
+    this.hairStrands = [];
+    for (let h = 0; h < 160; h++) {
+      const u = Math.random();
+      const v = Math.random() * 0.55; // Upper cranial hemisphere
+      const theta = u * Math.PI * 2;
+      const phi = v * Math.PI;
+      const rad = 11.5;
+
+      const rootX = rad * Math.sin(phi) * Math.cos(theta);
+      const rootY = 6 + rad * Math.cos(phi);
+      const rootZ = rad * Math.sin(phi) * Math.sin(theta);
+
+      const pts = [];
+      for (let seg = 0; seg <= 6; seg++) {
+        const st = seg / 6;
+        pts.push(new THREE.Vector3(
+          rootX + Math.cos(theta) * st * 4.5,
+          rootY + Math.sin(st * Math.PI) * 2.5 - st * 1.5,
+          rootZ + Math.sin(theta) * st * 4.5
+        ));
+      }
+      const sGeom = new THREE.BufferGeometry().setFromPoints(pts);
+      const sMat = new THREE.LineBasicMaterial({
+        color: 0xFDE68A,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending
+      });
+      const line = new THREE.Line(sGeom, sMat);
+      this.act3Group.add(line);
+      this.hairStrands.push({
+        line: line,
+        driftVec: new THREE.Vector3(
+          (Math.random() - 0.3) * 18,
+          6 + Math.random() * 14,
+          (Math.random() - 0.5) * 14
+        )
+      });
+    }
+
+    // 60 Cooling Emerald Herbal Essence Micro-Droplets (Rain onto scalp in 3B)
+    const dropCount = 60;
+    this.coolDropPos = new Float32Array(dropCount * 3);
+    for (let i = 0; i < dropCount; i++) {
+      this.coolDropPos[i * 3] = (Math.random() - 0.5) * 26;
+      this.coolDropPos[i * 3 + 1] = 10 + Math.random() * 24;
+      this.coolDropPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    }
+    const dropGeom = new THREE.BufferGeometry();
+    dropGeom.setAttribute('position', new THREE.BufferAttribute(this.coolDropPos, 3));
+    this.coolDropMat = new THREE.PointsMaterial({
+      size: 2.0,
+      map: this.particleTex,
+      color: 0x34D399,
       transparent: true,
-      opacity: 0.0
+      opacity: 0.0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
     });
-    this.step2WaistRing = new THREE.Mesh(waistRingGeom, waistRingMat);
-    this.step2WaistRing.rotation.x = Math.PI / 2;
-    this.step2Group.add(this.step2WaistRing);
+    this.coolDropPoints = new THREE.Points(dropGeom, this.coolDropMat);
+    this.act3Group.add(this.coolDropPoints);
 
-    this.step2Group.visible = false;
-    this.scene.add(this.step2Group);
+    this.act3Group.visible = false;
   }
 
   // =========================================================================
-  // Step 03: Scalp Cooling Hologram Ring (100% Clear View of 8K Scalp Image)
+  // ACT 04 (60% ~ 78%): Twisted Spine & 9-Joint 8Hz Pain -> Chuna Alignment
   // =========================================================================
-  buildStep3VFX() {
-    this.step3Group = new THREE.Group();
+  buildAct4SpineChunaVFX() {
+    this.act4Group = new THREE.Group();
+    this.stageAnchor.add(this.act4Group);
 
-    const coolRingGeom = new THREE.TorusGeometry(18, 0.45, 16, 64);
-    const coolRingMat = new THREE.MeshStandardMaterial({
-      color: 0x38A169,
-      emissive: 0x10B981,
-      emissiveIntensity: 1.2,
-      transparent: true,
-      opacity: 0.0
-    });
-    this.step3CoolRing = new THREE.Mesh(coolRingGeom, coolRingMat);
-    this.step3CoolRing.rotation.x = Math.PI / 2;
-    this.step3CoolRing.position.y = 30;
-    this.step3Group.add(this.step3CoolRing);
-
-    this.step3Group.visible = false;
-    this.scene.add(this.step3Group);
-  }
-
-  // =========================================================================
-  // Step 04: Full Body 360 Rotation, 8Hz Pain Torus Rings & Chuna Green Healing Scan
-  // =========================================================================
-  buildStep4Joints() {
-    this.step4Group = new THREE.Group();
-
-    // 1. Sleek Golden Laser Alignment Vector (Connecting the Spine)
-    const spinePts = [];
-    for (let y = -45; y <= 38; y += 3) {
-      spinePts.push(new THREE.Vector3(0, y, 0));
+    // 32-Vertebrae 3D Spine Column (Twisted S-Curve in 4A -> Straight Vertical in 4B)
+    this.chunaVertebrae = [];
+    const vDiscGeom = new THREE.CylinderGeometry(1.1, 1.25, 0.45, 20);
+    for (let i = 0; i < 32; i++) {
+      const vMat = new THREE.MeshPhysicalMaterial({
+        color: 0xEF4444,
+        emissive: 0xEF4444,
+        emissiveIntensity: 1.1,
+        transparent: true,
+        opacity: 0.9
+      });
+      const disc = new THREE.Mesh(vDiscGeom, vMat);
+      const baseY = -4 + i * 0.92;
+      // S-curve scoliosis + forward neck distortion offsets
+      const twistX = Math.sin((i / 31) * Math.PI * 2.2) * 3.6;
+      const hunchZ = i > 22 ? (i - 22) * 0.55 : 0;
+      disc.position.set(twistX, baseY, hunchZ);
+      this.act4Group.add(disc);
+      this.chunaVertebrae.push({
+        mesh: disc,
+        baseY: baseY,
+        twistX: twistX,
+        hunchZ: hunchZ,
+        twistRotZ: Math.cos((i / 31) * Math.PI * 2.2) * 0.28
+      });
     }
-    const spineGeom = new THREE.BufferGeometry().setFromPoints(spinePts);
-    this.alignmentLaser = new THREE.Line(spineGeom, new THREE.LineBasicMaterial({
-      color: 0x2F855A,
-      linewidth: 3,
-      transparent: true,
-      opacity: 0.0
-    }));
-    this.step4Group.add(this.alignmentLaser);
 
-    // 2. 9 Major Joint Laser Nodes (Exact Coordinates)
+    // 9 Major Joint Laser Nodes (8Hz Crimson Pain Rings -> Emerald Healing Gems)
     this.jointNodes = [];
     this.jointAnchors.forEach(j => {
       const g = new THREE.Group();
       g.position.set(...j.pos);
 
-      // Core Glowing Crystal Gem (MeshPhysicalMaterial)
-      const gemGeom = new THREE.SphereGeometry(1.4, 20, 20);
+      const gemGeom = new THREE.SphereGeometry(1.1, 20, 20);
       const gemMat = new THREE.MeshPhysicalMaterial({
         color: 0xE53E3E,
         emissive: 0xE53E3E,
         emissiveIntensity: 1.4,
         transmission: 0.8,
-        roughness: 0.1,
-        metalness: 0.2
+        roughness: 0.1
       });
       const gem = new THREE.Mesh(gemGeom, gemMat);
       g.add(gem);
 
-      // 3D Smooth Torus Pulsing Ring (8Hz) - No pixelated square corners!
-      const ringGeom = new THREE.TorusGeometry(2.4, 0.25, 16, 48);
+      const ringGeom = new THREE.TorusGeometry(2.1, 0.2, 16, 48);
       const ringMat = new THREE.MeshStandardMaterial({
         color: 0xE53E3E,
         emissive: 0xE53E3E,
@@ -4967,78 +5487,141 @@ class BareunMasterpieceStoryApp {
       const ring = new THREE.Mesh(ringGeom, ringMat);
       g.add(ring);
 
-      this.step4Group.add(g);
+      this.act4Group.add(g);
       this.jointNodes.push({
         def: j,
         group: g,
         gem: gem,
         ring: ring,
-        healed: false,
-        pulseOffset: Math.random() * Math.PI
+        healed: false
       });
     });
 
-    // 3. Y-Axis Chuna Healing Laser Scan Beam (Torus Wave)
-    const scanGeom = new THREE.TorusGeometry(32, 0.7, 16, 64);
+    // Horizontal Chuna Healing Laser Scan Wave
+    const scanGeom = new THREE.TorusGeometry(24, 0.45, 16, 80);
     const scanMat = new THREE.MeshStandardMaterial({
-      color: 0x2F855A,
-      emissive: 0x38A169,
-      emissiveIntensity: 2.5,
+      color: 0x34D399,
+      emissive: 0x10B981,
+      emissiveIntensity: 2.2,
       transparent: true,
-      opacity: 0.95
+      opacity: 0.0
     });
     this.chunaScanBeam = new THREE.Mesh(scanGeom, scanMat);
     this.chunaScanBeam.rotation.x = Math.PI / 2;
-    this.chunaScanBeam.position.y = 48; // Starts above cervical spine
-    this.step4Group.add(this.chunaScanBeam);
+    this.chunaScanBeam.position.y = 32;
+    this.act4Group.add(this.chunaScanBeam);
 
-    this.step4Group.visible = false;
-    this.scene.add(this.step4Group);
+    this.act4Group.visible = false;
   }
 
   // =========================================================================
-  // Step 05: 24K Gold Orbital Rings (100% Clear View of 8K Gongjindan Image)
+  // ACT 05 (78% ~ 100%): Aging Fatigue -> 24K Emperor Gongjindan -> Graceful Aging
   // =========================================================================
-  buildStep5Gongjindan() {
-    this.step5Group = new THREE.Group();
+  buildAct5GongjindanAgingVFX() {
+    this.act5Group = new THREE.Group();
+    this.stageAnchor.add(this.act5Group);
 
-    // Orbital Gold Energy Rings (Smooth 3D Torus)
-    const ring1Geom = new THREE.TorusGeometry(24, 0.5, 16, 64);
-    const rMat = new THREE.MeshStandardMaterial({
+    // 1. 24K Pure Gold-Leaf Emperor Gongjindan Pill Group
+    this.gongjindanPillGroup = new THREE.Group();
+    this.gongjindanPillGroup.position.set(-8, 4, 8);
+
+    const goldTex = create24KGoldFoilTexture();
+    const pillGeom = new THREE.SphereGeometry(5.5, 48, 48);
+    this.gongjindanMat = new THREE.MeshStandardMaterial({
+      map: goldTex,
+      bumpMap: goldTex,
+      bumpScale: 0.35,
       color: 0xFDE68A,
       emissive: 0xC5A059,
-      emissiveIntensity: 0.9,
-      metalness: 0.95,
-      roughness: 0.1
+      emissiveIntensity: 0.65,
+      metalness: 0.92,
+      roughness: 0.18,
+      transparent: true,
+      opacity: 0.0
     });
-    this.goldOrbit1 = new THREE.Mesh(ring1Geom, rMat);
-    this.goldOrbit1.rotation.x = 0.85;
-    this.goldOrbit1.rotation.y = 0.35;
-    this.step5Group.add(this.goldOrbit1);
+    this.gongjindanMesh = new THREE.Mesh(pillGeom, this.gongjindanMat);
+    this.gongjindanPillGroup.add(this.gongjindanMesh);
 
-    const ring2Geom = new THREE.TorusGeometry(30, 0.38, 16, 64);
-    this.goldOrbit2 = new THREE.Mesh(ring2Geom, rMat);
-    this.goldOrbit2.rotation.x = -0.65;
-    this.goldOrbit2.rotation.y = -0.45;
-    this.step5Group.add(this.goldOrbit2);
+    // Concentric Celestial Golden Gyroscope Rings around Gongjindan
+    this.gongjindanRings = [];
+    for (let r = 0; r < 3; r++) {
+      const rg = new THREE.TorusGeometry(7.8 + r * 2.4, 0.14, 16, 64);
+      const rm = new THREE.MeshBasicMaterial({
+        color: 0xFDE68A,
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending
+      });
+      const ring = new THREE.Mesh(rg, rm);
+      ring.rotation.set(r * 0.6, r * 0.8, 0);
+      this.gongjindanPillGroup.add(ring);
+      this.gongjindanRings.push(ring);
+    }
+    this.act5Group.add(this.gongjindanPillGroup);
 
-    this.step5Group.visible = false;
-    this.scene.add(this.step5Group);
+    // 2. 12 Internal Golden Meridian Energy Pathways (Ignite in 5B & 5C)
+    this.meridianLines = [];
+    for (let m = 0; m < 12; m++) {
+      const spreadX = ((m - 5.5) / 5.5) * 10;
+      const pts = [];
+      for (let s = 0; s <= 24; s++) {
+        const t = s / 24;
+        const y = -24 + t * 50;
+        const x = spreadX * Math.sin(t * Math.PI) + Math.sin(t * 8 + m) * 0.8;
+        const z = Math.cos(t * Math.PI * 2 + m) * 2.0;
+        pts.push(new THREE.Vector3(x, y, z));
+      }
+      const mGeom = new THREE.BufferGeometry().setFromPoints(pts);
+      const mMat = new THREE.LineBasicMaterial({
+        color: 0xFDE68A,
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending
+      });
+      const mLine = new THREE.Line(mGeom, mMat);
+      this.act5Group.add(mLine);
+      this.meridianLines.push(mLine);
+    }
+
+    // 3. 1,500 Golden-Emerald Longevity Aurora Particles (Graceful Aging Finale 5C)
+    const auraCount = 1500;
+    this.longevityPos = new Float32Array(auraCount * 3);
+    for (let i = 0; i < auraCount; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const rad = 6 + Math.random() * 22;
+      const y = -28 + Math.random() * 58;
+      this.longevityPos[i * 3] = Math.cos(ang) * rad;
+      this.longevityPos[i * 3 + 1] = y;
+      this.longevityPos[i * 3 + 2] = Math.sin(ang) * rad;
+    }
+    const auraGeom = new THREE.BufferGeometry();
+    auraGeom.setAttribute('position', new THREE.BufferAttribute(this.longevityPos, 3));
+    this.longevityMat = new THREE.PointsMaterial({
+      size: 1.5,
+      map: this.particleTex,
+      color: 0xFDE68A,
+      transparent: true,
+      opacity: 0.0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    this.longevityPoints = new THREE.Points(auraGeom, this.longevityMat);
+    this.act5Group.add(this.longevityPoints);
+
+    this.act5Group.visible = false;
   }
 
   // =========================================================================
-  // GSAP ScrollTrigger Rock-Solid Pinning & Scrub Engine
+  // GSAP ScrollTrigger Pinning & Scrubbing Engine (850vh Track)
   // =========================================================================
   initGSAPScrollTrigger() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn('[Bareun] GSAP / ScrollTrigger not loaded, falling back to window scroll.');
       this.initFallbackScroll();
       return;
     }
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Scrub normalized progress 0.0 to 1.0 across the 500vh story-scroll-track
     ScrollTrigger.create({
       trigger: '#story-scroll-track',
       start: 'top top',
@@ -5046,11 +5629,10 @@ class BareunMasterpieceStoryApp {
       pin: '#story-stage-sticky',
       pinSpacing: false,
       anticipatePin: 1,
-      scrub: 0.6,
+      scrub: 0.5,
       onUpdate: (self) => {
-        const p = self.progress; // perfectly normalized 0.0 to 1.0
-        this.scrollProgress = p;
-        this.renderTimeline(p);
+        this.scrollProgress = self.progress;
+        this.renderTimeline(self.progress);
       }
     });
 
@@ -5073,17 +5655,22 @@ class BareunMasterpieceStoryApp {
   }
 
   // =========================================================================
-  // Timeline Choreography (0% ~ 100% Seamless Continuous Transition)
+  // Master 13-Scene Timeline & 3D Morphing Choreography (0% ~ 100%)
   // =========================================================================
   renderTimeline(p) {
-    let step = 1;
-    if (p < 0.20) step = 1;
-    else if (p < 0.40) step = 2;
-    else if (p < 0.60) step = 3;
-    else if (p < 0.80) step = 4;
-    else step = 5;
+    // Find current active scene out of 13
+    let activeScene = SCENE_TIMELINE[0];
+    for (let i = 0; i < SCENE_TIMELINE.length; i++) {
+      const s = SCENE_TIMELINE[i];
+      if (p >= s.start && p <= s.end) {
+        activeScene = s;
+        break;
+      }
+    }
 
-    // Check if user scrolled past 500vh into signature cards
+    let step = activeScene.step;
+
+    // Check if scrolled down into the 5 Signature Cards section
     const cardsSec = document.getElementById('signature-cards');
     if (cardsSec) {
       const cRect = cardsSec.getBoundingClientRect();
@@ -5092,362 +5679,570 @@ class BareunMasterpieceStoryApp {
 
     if (this.currentStep !== step) {
       this.currentStep = step;
-      this.updateHUD(step);
-      this.updateBackdrops(step);
-      this.updateNavDots(step);
-      this.updateSKTDock(step);
-
+      this.updateStepTextAndNav(step);
       if (step <= 5) {
         window.currentAppStepSlug = CLINIC_SPECS[step - 1].slug;
       }
     }
 
-    // Continuous Backdrop Cross-fade & Ken Burns Zoom
+    // Update live 13-scene telemetry, sub-pills, top header bar, and cinema subtitle
+    this.updateSceneLiveTelemetry(activeScene, p);
+
+    // Smooth cross-fade & Ken Burns motion across all 13 8K keyframes
     this.renderBackdropBlend(p);
 
-    // [Step 01] 0% ~ 20%: Fertilization, Toddler Growth Morph & Card Enfolding Dissolve
-    if (p <= 0.20) {
-      this.setGroupVisible(1);
-      const sub = p / 0.20; // 0.0 ~ 1.0
+    // -----------------------------------------------------------------------
+    // ACT 01 (0.00 ~ 0.25): Fertilization -> Birth -> Immunity -> Peer Growth
+    // -----------------------------------------------------------------------
+    if (p <= 0.25) {
+      this.setActVisible(1);
 
-      // Sub-Phase 1: 0% ~ 5% (Egg & Fertilization)
-      if (sub <= 0.25) {
-        const subEgg = sub / 0.25; // 0.0 ~ 1.0
+      // 1A: Fertilization (0.00 ~ 0.06)
+      if (p <= 0.06) {
+        const sub = p / 0.06; // 0..1
+        this.scene1aGroup.visible = true;
+        this.scene1bGroup.visible = false;
+        this.scene1cGroup.visible = false;
+        this.scene1dGroup.visible = false;
 
-        this.targetCameraPos.set(0, 0, 48 + subEgg * 8);
+        this.targetCameraPos.set(0, 0, 78 - sub * 10);
         this.targetLookAt.set(0, 0, 0);
 
-        this.step1EggGroup.visible = true;
-        this.step1EggMesh.material.opacity = 0.95;
-        this.step1EggMesh.rotation.y = subEgg * Math.PI * 0.8;
-        this.step1EggCore.material.opacity = 0.85;
-
-        // 1,000 Golden particles converge inwards towards egg
-        this.updateConvergingParticles(subEgg);
-        this.step1ConvergePoints.material.opacity = 0.9;
-
-        // Golden radial shockwave near 4% ~ 5%
-        if (subEgg >= 0.80) {
-          const swP = (subEgg - 0.80) / 0.20;
-          const swScale = 1.0 + swP * 28.0;
-          this.step1Shockwave.scale.set(swScale, swScale, swScale);
-          this.step1Shockwave.material.opacity = (1.0 - swP) * 0.95;
-        } else if (!this.shockwaveActive) {
-          this.step1Shockwave.material.opacity = 0.0;
-        }
-
-        this.step1ToddlerGroup.visible = false;
-        this.step1CardGroup.visible = false;
-      }
-      // Sub-Phase 2: 5% ~ 12% (Toddler Silhouette Formation)
-      else if (sub > 0.25 && sub <= 0.60) {
-        const subToddler = (sub - 0.25) / 0.35; // 0.0 ~ 1.0
-
-        this.targetCameraPos.set(0, 0, 56 + subToddler * 30);
-        this.targetLookAt.set(0, 0, 0);
-
-        // Egg smoothly dissolves into light
-        const eggFade = Math.max(0, 1.0 - subToddler * 2.2);
-        this.step1EggMesh.material.opacity = eggFade * 0.95;
-        this.step1EggCore.material.opacity = eggFade * 0.85;
-        if (eggFade <= 0.01) {
-          this.step1EggGroup.visible = false;
-        }
-
-        // Toddler light silhouette fades in at small cute scale
-        this.step1ToddlerGroup.visible = true;
-        const tOp = Math.min(0.92, subToddler * 1.5);
-        this.step1SilMat.opacity = tOp;
-        this.step1Head.material.opacity = tOp;
-        this.step1Torso.material.opacity = tOp;
-        this.step1ArmL.material.opacity = tOp;
-        this.step1ArmR.material.opacity = tOp;
-        this.step1LegL.material.opacity = tOp;
-        this.step1LegR.material.opacity = tOp;
-        this.step1HaloMat.opacity = tOp * 0.9;
-
-        this.step1ToddlerGroup.scale.set(0.55, 0.55, 0.55);
-        this.step1ToddlerGroup.position.set(0, -4, 0);
-        this.step1GrowthRuler.visible = false;
-
-        // Vertebrae 0..16 light up along toddler spine
-        const activeSpine = Math.floor(subToddler * 16);
-        this.spineNodes.forEach((node, i) => {
-          if (i <= activeSpine) {
-            node.scale.set(0.8, 0.8, 0.8);
-            node.position.y = -6 + i * 0.72;
-          } else {
-            node.scale.set(0.001, 0.001, 0.001);
-          }
+        // Swim sperm streams toward ovum
+        const swimT = Math.min(1.0, sub / 0.72);
+        this.spermStreams.forEach(sp => {
+          const curDist = THREE.MathUtils.lerp(sp.startDist, 8.2, swimT);
+          sp.group.position.set(
+            Math.cos(sp.angle) * curDist,
+            Math.sin(sp.angle) * curDist,
+            sp.zOff * (1 - swimT * 0.7)
+          );
+          sp.group.rotation.z = sp.angle + Math.PI;
+          sp.group.visible = sub < 0.85;
         });
 
-        this.step1CardGroup.visible = false;
+        // Golden fertilization shockwave upon contact (sub >= 0.70)
+        if (sub >= 0.70) {
+          const swT = (sub - 0.70) / 0.30;
+          const swScale = 1 + swT * 18;
+          this.fertShockwave.scale.set(swScale, swScale, 1);
+          this.fertShockwave.material.opacity = (1 - swT) * 0.95;
+          this.ovumMat.emissiveIntensity = 0.7 + Math.sin(swT * Math.PI) * 1.5;
+        } else {
+          this.fertShockwave.material.opacity = 0;
+          this.ovumMat.emissiveIntensity = 0.7;
+        }
       }
-      // Sub-Phase 3: 12% ~ 18% (Height Growth & Card 01 Enfolding 360 Rotation)
-      else if (sub > 0.60 && sub <= 0.90) {
-        const subGrowth = (sub - 0.60) / 0.30; // 0.0 ~ 1.0
+      // 1B: Baby Birth (0.06 ~ 0.12)
+      else if (p > 0.06 && p <= 0.12) {
+        const sub = (p - 0.06) / 0.06;
+        this.scene1aGroup.visible = false;
+        this.scene1bGroup.visible = true;
+        this.scene1cGroup.visible = false;
+        this.scene1dGroup.visible = false;
 
-        this.targetCameraPos.set(0, 0, 86 + subGrowth * 24);
+        this.targetCameraPos.set(0, 0, 82);
         this.targetLookAt.set(0, 0, 0);
-        this.step1EggGroup.visible = false;
-
-        // Toddler scales vertically into elementary school child
-        const scaleY = 0.55 + subGrowth * 0.65; // 0.55 -> 1.20!
-        const scaleXZ = 0.55 + subGrowth * 0.30; // 0.55 -> 0.85
-        this.step1ToddlerGroup.visible = true;
-        this.step1ToddlerGroup.scale.set(scaleXZ, scaleY, scaleXZ);
-        this.step1ToddlerGroup.position.set(0, -4 + subGrowth * 4, 0);
-
-        this.step1SilMat.opacity = 0.92;
-        this.step1Head.material.opacity = 0.92;
-        this.step1Torso.material.opacity = 0.92;
-        this.step1ArmL.material.opacity = 0.92;
-        this.step1ArmR.material.opacity = 0.92;
-        this.step1LegL.material.opacity = 0.92;
-        this.step1LegR.material.opacity = 0.92;
-        this.step1HaloMat.opacity = 0.9;
-        this.step1GrowthRuler.visible = true;
-
-        // All 32 vertebrae straightens and spaces out with golden light
-        const activeSpine = 16 + Math.floor(subGrowth * 16);
-        this.spineNodes.forEach((node, i) => {
-          if (i <= activeSpine) {
-            node.scale.set(1.0, 1.0, 1.0);
-            node.position.y = -6 + i * (0.72 + subGrowth * 0.35);
-          } else {
-            node.scale.set(0.001, 0.001, 0.001);
-          }
-        });
-
-        // 3D Card 01 lifts, orbits 360-degrees around child & warmly enfolds child
-        this.step1CardGroup.visible = true;
-        this.step1CardMesh.material.opacity = Math.min(0.95, subGrowth * 2.2);
-        this.step1CardGroup.rotation.y = subGrowth * Math.PI * 2;
-        this.step1CardMesh.position.y = 4 - Math.sin(subGrowth * Math.PI) * 1.5;
-        this.step1CardDustPoints.visible = false;
+        this.scene1bGroup.rotation.y = sub * Math.PI * 0.8;
       }
-      // Sub-Phase 4: 18% ~ 20% (Card Dissolution into Champagne Gold Dust)
+      // 1C: Cold Viral Frost vs. Herbal Immunity Shield (0.12 ~ 0.18)
+      else if (p > 0.12 && p <= 0.18) {
+        const sub = (p - 0.12) / 0.06; // 0..1 (0..0.5 cold crisis, 0.5..1.0 shield expansion)
+        this.scene1aGroup.visible = false;
+        this.scene1bGroup.visible = false;
+        this.scene1cGroup.visible = true;
+        this.scene1dGroup.visible = false;
+
+        this.targetCameraPos.set(0, 2, 85);
+        this.targetLookAt.set(0, 2, 0);
+
+        if (sub < 0.5) {
+          // Cold virus crystals swarm inward toward child's chest
+          const cT = sub / 0.5;
+          this.immuneShieldWire.material.opacity = 0.0;
+          this.immuneShieldGlow.material.opacity = 0.0;
+          this.viralCrystals.forEach(vc => {
+            const dist = THREE.MathUtils.lerp(vc.baseDist + 8, 7.5, cT);
+            vc.mesh.position.copy(vc.dir).multiplyScalar(dist);
+            vc.mesh.material.color.setHex(0x38BDF8);
+            vc.mesh.material.opacity = 0.85;
+          });
+        } else {
+          // Herbal Immunity Shield expands outward and purifies viral frost into gold!
+          const hT = (sub - 0.5) / 0.5;
+          const shieldScale = 0.35 + hT * 0.85;
+          this.immuneShieldWire.scale.set(shieldScale, shieldScale, shieldScale);
+          this.immuneShieldGlow.scale.set(shieldScale, shieldScale, shieldScale);
+          this.immuneShieldWire.material.opacity = Math.sin(hT * Math.PI) * 0.65 + 0.25;
+          this.immuneShieldGlow.material.opacity = Math.sin(hT * Math.PI) * 0.22;
+
+          this.viralCrystals.forEach(vc => {
+            const dist = THREE.MathUtils.lerp(7.5, vc.baseDist + 16, hT);
+            vc.mesh.position.copy(vc.dir).multiplyScalar(dist);
+            vc.mesh.material.color.setHex(0xFDE68A);
+            vc.mesh.material.opacity = (1 - hT) * 0.9;
+          });
+        }
+      }
+      // 1D: Short Among Peers -> Growing Tall with Spine & Knee Growth Lasers (0.18 ~ 0.25)
       else {
-        const subDissolve = (sub - 0.90) / 0.10; // 0.0 ~ 1.0
+        const sub = (p - 0.18) / 0.07; // 0..1
+        this.scene1aGroup.visible = false;
+        this.scene1bGroup.visible = false;
+        this.scene1cGroup.visible = false;
+        this.scene1dGroup.visible = true;
 
-        this.targetCameraPos.set(0, 0, 110);
+        this.targetCameraPos.set(0, 0, 92);
         this.targetLookAt.set(0, 0, 0);
-        this.step1EggGroup.visible = false;
 
-        // Tall, confident child stands proud in center focus
-        this.step1ToddlerGroup.visible = true;
-        this.step1ToddlerGroup.scale.set(0.85, 1.20, 0.85);
-        this.step1ToddlerGroup.position.set(0, 0, 0);
-        this.step1SilMat.opacity = 0.95;
-        this.step1Head.material.opacity = 0.95;
-        this.step1Torso.material.opacity = 0.95;
-        this.step1ArmL.material.opacity = 0.95;
-        this.step1ArmR.material.opacity = 0.95;
-        this.step1LegL.material.opacity = 0.95;
-        this.step1LegR.material.opacity = 0.95;
-        this.step1HaloMat.opacity = 0.9;
-        this.step1GrowthRuler.visible = true;
+        // Stretch child spine & height indicator bar from short (y = -4) to tall (y = +20)
+        const growthFactor = Math.max(0, (sub - 0.2) / 0.8);
+        const easedGrowth = THREE.MathUtils.smoothstep(growthFactor, 0, 1);
 
-        this.spineNodes.forEach((node, i) => {
-          node.scale.set(1.0, 1.0, 1.0);
-          node.position.y = -6 + i * 1.07;
+        this.childGrowthGroup.scale.set(1.0, 0.68 + easedGrowth * 0.58, 1.0);
+        this.heightLaserBar.position.y = -4 + easedGrowth * 24;
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // ACT 02 (0.25 ~ 0.42): Adult Obesity -> Lipolysis Vortex & Slim S-Line
+    // -----------------------------------------------------------------------
+    else if (p > 0.25 && p <= 0.42) {
+      this.setActVisible(2);
+      const sub = (p - 0.25) / 0.17; // 0..1 (0..0.5 obesity, 0.5..1.0 slimming dissolve)
+
+      this.targetCameraPos.set(0, 2, 86);
+      this.targetLookAt.set(0, 2, 0);
+
+      if (sub <= 0.5) {
+        // 2A: Swollen obese waist contour rings
+        const obT = sub / 0.5;
+        this.bodyContourRings.forEach(cr => {
+          const swell = 1.0 + cr.waistFactor * (0.45 + obT * 0.25);
+          cr.mesh.scale.set(swell, swell, 1.0);
+          cr.mesh.material.color.setHex(0xF59E0B); // heavy amber fat tone
+          cr.mesh.material.opacity = 0.42;
+        });
+        this.fatPointsMat.opacity = 0.15;
+      } else {
+        // 2B: Fat shatters into swirling golden vortex & waist slims down to S-line!
+        const slimT = (sub - 0.5) / 0.5;
+        const easedSlim = THREE.MathUtils.smoothstep(slimT, 0, 1);
+
+        this.bodyContourRings.forEach(cr => {
+          const swell = THREE.MathUtils.lerp(
+            1.0 + cr.waistFactor * 0.70,
+            0.78 - cr.waistFactor * 0.22,
+            easedSlim
+          );
+          cr.mesh.scale.set(swell, swell, 1.0);
+          cr.mesh.material.color.setHex(easedSlim > 0.4 ? 0x34D399 : 0xFDE68A);
+          cr.mesh.material.opacity = (1 - slimT * 0.6) * 0.5;
         });
 
-        // Card 01 smoothly dissolves into floating champagne gold dust
-        const cardOp = Math.max(0, 0.95 * (1.0 - subDissolve));
-        this.step1CardMesh.material.opacity = cardOp;
-        this.step1CardDustPoints.visible = true;
-        this.step1CardDustMat.opacity = Math.max(0, (1.0 - subDissolve * 0.85) * 0.95);
-        this.updateCardDust(subDissolve);
-
-        if (subDissolve >= 0.98) {
-          this.step1CardGroup.visible = false;
-          this.step1CardDustPoints.visible = false;
+        // Vortex particles spiral outward and upward as fat evaporates
+        this.fatPointsMat.opacity = Math.sin(slimT * Math.PI) * 0.92;
+        const pos = this.fatParticlePos;
+        for (let i = 0; i < this.fatParticleMeta.length; i++) {
+          const m = this.fatParticleMeta[i];
+          const curAng = m.baseAngle + slimT * m.speed * 4.0;
+          const curR = m.baseR + slimT * 18.0;
+          pos[i * 3] = Math.cos(curAng) * curR;
+          pos[i * 3 + 1] = m.baseY + slimT * m.lift;
+          pos[i * 3 + 2] = Math.sin(curAng) * curR;
         }
+        this.fatVortexPoints.geometry.attributes.position.needsUpdate = true;
       }
     }
 
-    // [Step 02] 20% ~ 40% (3/4 Perspective View Pos [28, 8, 85] - 100% Crisp S-Line Body Visual)
-    else if (p > 0.20 && p <= 0.40) {
-      this.setGroupVisible(2);
-      const sub = (p - 0.20) / 0.20;
+    // -----------------------------------------------------------------------
+    // ACT 03 (0.42 ~ 0.60): 30s Scalp Heat & Hair Loss -> Cooling & Regrowth
+    // -----------------------------------------------------------------------
+    else if (p > 0.42 && p <= 0.60) {
+      this.setActVisible(3);
+      const sub = (p - 0.42) / 0.18; // 0..1 (0..0.5 hair loss, 0.5..1.0 hair regrowth)
 
-      this.targetCameraPos.set(28, 8, 85);
+      this.targetCameraPos.set(0, 8, 72);
+      this.targetLookAt.set(0, 8, 0);
+
+      if (sub <= 0.5) {
+        // 3A: Crimson scalp heat + hair strands detaching & drifting away
+        const lossT = sub / 0.5;
+        this.scalpAuraRings.forEach(r => {
+          r.material.color.setHex(0xEF4444);
+          r.material.opacity = 0.55;
+        });
+        this.hairStrands.forEach((hs, idx) => {
+          const delay = (idx / this.hairStrands.length) * 0.5;
+          const localT = Math.max(0, Math.min(1, (lossT - delay) / 0.5));
+          hs.line.position.copy(hs.driftVec).multiplyScalar(localT);
+          hs.line.material.color.setHex(0xFCA5A5);
+          hs.line.material.opacity = (1 - localT * 0.85) * 0.75;
+        });
+        this.coolDropMat.opacity = 0.0;
+      } else {
+        // 3B: Cooling emerald droplets + thick golden-emerald hair strands regrowing
+        const growT = (sub - 0.5) / 0.5;
+        const easedGrow = THREE.MathUtils.smoothstep(growT, 0, 1);
+
+        this.scalpAuraRings.forEach(r => {
+          r.material.color.setHex(0x10B981);
+          r.material.opacity = (1 - growT * 0.5) * 0.65;
+        });
+
+        this.coolDropMat.opacity = Math.sin(growT * Math.PI) * 0.9;
+
+        this.hairStrands.forEach(hs => {
+          hs.line.position.set(0, 0, 0);
+          hs.line.scale.set(easedGrow, easedGrow, easedGrow);
+          hs.line.material.color.setHex(0xFDE68A);
+          hs.line.material.opacity = easedGrow * 0.72;
+        });
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // ACT 04 (0.60 ~ 0.78): Twisted Spine & 9-Joint Pain -> Chuna Alignment
+    // -----------------------------------------------------------------------
+    else if (p > 0.60 && p <= 0.78) {
+      this.setActVisible(4);
+      const sub = (p - 0.60) / 0.18; // 0..1 (0..0.5 pain & twisted spine, 0.5..1.0 Chuna scan)
+
+      this.targetCameraPos.set(0, 0, 96);
       this.targetLookAt.set(0, 0, 0);
 
-      // Subtle golden waist aura ring smoothly highlights S-line curve
-      if (this.step2WaistRing) {
-        this.step2WaistRing.material.opacity = Math.sin(sub * Math.PI) * 0.75;
-      }
-    }
-
-    // [Step 03] 40% ~ 60% (Extreme Close-Up Scalp Pos [0, 42, 28], LookAt [0, 38, 0])
-    else if (p > 0.40 && p <= 0.60) {
-      this.setGroupVisible(3);
-      const sub = (p - 0.40) / 0.20;
-
-      this.targetCameraPos.set(0, 42, 28);
-      this.targetLookAt.set(0, 38, 0);
-
-      // Subtle cooling ring highlight
-      if (this.step3CoolRing) {
-        this.step3CoolRing.material.opacity = Math.sin(sub * Math.PI) * 0.85;
-      }
-    }
-
-    // [Step 04] 60% ~ 80% (Full Body 360 Rotation View Pos [0, 0, 105], Rot Y: 0 -> 360)
-    else if (p > 0.60 && p <= 0.80) {
-      this.setGroupVisible(4);
-      const sub = (p - 0.60) / 0.20; // 0.0 ~ 1.0
-
-      this.targetCameraPos.set(0, 0, 105);
-      this.targetLookAt.set(0, 0, 0);
-
-      // Full body rotation: 0 to 360 degrees
-      this.step4Group.rotation.y = sub * Math.PI * 2;
-
-      // Scan beam sweeps from y = 48 down to y = -58
-      const scanY = 48 - sub * 106;
+      // Scan wave sweeps from y = +32 down to y = -40 during sub 0.45 -> 0.95
+      const scanProgress = Math.max(0, Math.min(1, (sub - 0.42) / 0.53));
+      const scanY = 32 - scanProgress * 72;
       this.chunaScanBeam.position.y = scanY;
+      this.chunaScanBeam.material.opacity = sub >= 0.42 && sub <= 0.96 ? 0.9 : 0.0;
 
-      // Check each of the 9 joints
+      // Straighten 32 vertebrae as Chuna scan beam passes them
+      this.chunaVertebrae.forEach(v => {
+        const aligned = scanProgress > 0 && v.baseY >= scanY;
+        const alignLerp = aligned
+          ? Math.min(1, (v.baseY - scanY) / 8.0)
+          : 0;
+        v.mesh.position.x = THREE.MathUtils.lerp(v.twistX, 0, alignLerp);
+        v.mesh.position.z = THREE.MathUtils.lerp(v.hunchZ, 0, alignLerp);
+        v.mesh.rotation.z = THREE.MathUtils.lerp(v.twistRotZ, 0, alignLerp);
+
+        if (alignLerp > 0.5) {
+          v.mesh.material.color.setHex(0xFDE68A);
+          v.mesh.material.emissive.setHex(0xC5A059);
+        } else {
+          v.mesh.material.color.setHex(0xEF4444);
+          v.mesh.material.emissive.setHex(0xE53E3E);
+        }
+      });
+
+      // Update 9 Joint Nodes & HUD Chips
       let allHealed = true;
       let anyHealed = false;
-
       this.jointNodes.forEach(item => {
         const jY = item.def.pos[1];
-        const isHealed = scanY <= jY + 2.0;
+        const isHealed = sub >= 0.45 && scanY <= jY + 1.5;
 
         if (isHealed) {
-          item.gem.material.color.setHex(0x2F855A); // Emerald Healing Green
-          item.gem.material.emissive.setHex(0x38A169);
-          item.ring.material.color.setHex(0x2F855A);
-          item.ring.material.emissive.setHex(0x38A169);
+          item.gem.material.color.setHex(0x10B981);
+          item.gem.material.emissive.setHex(0x34D399);
+          item.ring.material.color.setHex(0x10B981);
+          item.ring.material.emissive.setHex(0x34D399);
           item.healed = true;
           anyHealed = true;
-
           const chip = document.querySelector(`.pain-chip[data-joint="${item.def.chipKey}"]`);
           if (chip) chip.classList.add('healed');
         } else {
-          item.gem.material.color.setHex(0xE53E3E); // Pain Signal Red
+          item.gem.material.color.setHex(0xE53E3E);
           item.gem.material.emissive.setHex(0xE53E3E);
           item.ring.material.color.setHex(0xE53E3E);
           item.ring.material.emissive.setHex(0xE53E3E);
           item.healed = false;
           allHealed = false;
-
           const chip = document.querySelector(`.pain-chip[data-joint="${item.def.chipKey}"]`);
           if (chip) chip.classList.remove('healed');
         }
       });
 
-      // Spine alignment laser lights up as healing proceeds
-      this.alignmentLaser.material.opacity = Math.min(1.0, sub * 1.5);
-
       if (this.painRadarStatus) {
         if (allHealed) {
           this.painRadarStatus.className = 'pain-radar-status healing';
-          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✓</span> <span>9대 관절 바른 정렬 완료</span>';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✓</span> <span>척추 수직교정 & 9대관절 회복 완료</span>';
         } else if (anyHealed) {
           this.painRadarStatus.className = 'pain-radar-status healing';
-          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✦</span> <span>추나 치유 파동 스캔 중</span>';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">✦</span> <span>추나·봉약침 치유 파동 스캔 중</span>';
         } else {
           this.painRadarStatus.className = 'pain-radar-status warning';
-          this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>8Hz 통증 링 점멸 중</span>';
+          this.painRadarStatus.innerHTML = '<span class="pulse-dot">●</span> <span>척추 틀어짐 & 8Hz 통증 점멸 중</span>';
         }
       }
     }
 
-    // [Step 05] 80% ~ 100% (Golden Vitality Recovery & Floating 24K Gongjindan)
+    // -----------------------------------------------------------------------
+    // ACT 05 (0.78 ~ 1.00): Aging Fatigue -> 24K Gongjindan -> Graceful Aging
+    // -----------------------------------------------------------------------
     else {
-      this.setGroupVisible(5);
-      const sub = (p - 0.80) / 0.20;
+      this.setActVisible(5);
+      const sub = (p - 0.78) / 0.22; // 0..1
 
-      this.targetCameraPos.set(0, 0, 85);
-      this.targetLookAt.set(0, 0, 0);
+      this.targetCameraPos.set(0, 2, 84);
+      this.targetLookAt.set(0, 2, 0);
+
+      // 5A: 0.78 ~ 0.85 (sub 0.00 ~ 0.32): Depleted vitality
+      if (sub <= 0.32) {
+        this.gongjindanMat.opacity = 0.0;
+        this.gongjindanRings.forEach(r => { r.material.opacity = 0.0; });
+        this.meridianLines.forEach(m => {
+          m.material.color.setHex(0x64748B);
+          m.material.opacity = 0.18;
+        });
+        this.longevityMat.opacity = 0.1;
+      }
+      // 5B: 0.85 ~ 0.93 (sub 0.32 ~ 0.68): 24K Gongjindan Awakens 12 Meridians
+      else if (sub > 0.32 && sub <= 0.68) {
+        const gT = (sub - 0.32) / 0.36; // 0..1
+        const pillOp = Math.sin(gT * Math.PI);
+        this.gongjindanMat.opacity = Math.min(0.95, pillOp * 1.4);
+        this.gongjindanPillGroup.position.x = THREE.MathUtils.lerp(-10, -2, gT);
+        this.gongjindanRings.forEach(r => { r.material.opacity = pillOp * 0.75; });
+
+        this.meridianLines.forEach(m => {
+          m.material.color.setHex(0xFDE68A);
+          m.material.opacity = THREE.MathUtils.lerp(0.2, 0.85, gT);
+        });
+        this.longevityMat.opacity = gT * 0.65;
+      }
+      // 5C: 0.93 ~ 1.00 (sub 0.68 ~ 1.00): Graceful & Noble Aging Finale
+      else {
+        const fT = (sub - 0.68) / 0.32;
+        this.gongjindanMat.opacity = Math.max(0, (1 - fT * 1.5) * 0.7);
+        this.gongjindanRings.forEach(r => { r.material.opacity = (1 - fT) * 0.5; });
+
+        this.meridianLines.forEach((m, idx) => {
+          m.material.color.setHex(idx % 2 === 0 ? 0xFDE68A : 0x34D399);
+          m.material.opacity = 0.65;
+        });
+        this.longevityMat.opacity = 0.85;
+      }
     }
   }
 
-  // Smooth Film Cross-fade between 8K Continuous Visuals (7 Slides: 1a, 1b, 1c, 2, 3, 4, 5)
+  // =========================================================================
+  // Smooth 13-Scene Film Cross-Fade & Dynamic Depth Scale
+  // =========================================================================
   renderBackdropBlend(p) {
-    if (!this.backdrops || this.backdrops.length < 7) return;
-
-    const slides = [
-      { el: this.backdrops[0], start: 0.00, end: 0.05 }, // 1a: Egg
-      { el: this.backdrops[1], start: 0.05, end: 0.12 }, // 1b: Toddler
-      { el: this.backdrops[2], start: 0.12, end: 0.20 }, // 1c: Child & Card
-      { el: this.backdrops[3], start: 0.20, end: 0.40 }, // 2:  Diet S-line
-      { el: this.backdrops[4], start: 0.40, end: 0.60 }, // 3:  Scalp Hair
-      { el: this.backdrops[5], start: 0.60, end: 0.80 }, // 4:  9-Joint Pain
-      { el: this.backdrops[6], start: 0.80, end: 1.00 }  // 5:  Gongjindan
-    ];
-
-    const transDur = [0.012, 0.015, 0.02, 0.03, 0.03, 0.03]; // transition window width
+    const transWidth = 0.016; // Smooth crossfade window between scenes
 
     let activeIdx = 0;
     let nextIdx = -1;
     let blend = 0;
 
-    for (let i = 0; i < slides.length; i++) {
-      if (i === slides.length - 1) {
-        if (p >= slides[i].start) {
+    for (let i = 0; i < SCENE_TIMELINE.length; i++) {
+      const s = SCENE_TIMELINE[i];
+      if (i === SCENE_TIMELINE.length - 1) {
+        if (p >= s.start) {
           activeIdx = i;
           nextIdx = -1;
           break;
         }
       } else {
-        const trans = transDur[i] || 0.02;
-        const boundary = slides[i + 1].start;
-        if (p >= slides[i].start && p < boundary - trans) {
+        const boundary = SCENE_TIMELINE[i + 1].start;
+        if (p >= s.start && p < boundary - transWidth) {
           activeIdx = i;
           nextIdx = -1;
           break;
-        } else if (p >= boundary - trans && p < boundary) {
+        } else if (p >= boundary - transWidth && p < boundary) {
           activeIdx = i;
           nextIdx = i + 1;
-          blend = (p - (boundary - trans)) / trans;
+          blend = (p - (boundary - transWidth)) / transWidth;
           break;
         }
       }
     }
 
-    slides.forEach((item, idx) => {
-      if (!item.el) return;
+    SCENE_TIMELINE.forEach((scene, idx) => {
+      const el = this.backdropMap[scene.id];
+      if (!el) return;
+
+      // Subtle continuous Ken Burns drift within each scene
+      const sceneProgress = Math.max(0, Math.min(1, (p - scene.start) / (scene.end - scene.start)));
+      const kenBurnsScale = 1.0 + sceneProgress * 0.035;
+
       if (idx === activeIdx && nextIdx === -1) {
-        item.el.style.opacity = '1';
-        item.el.style.zIndex = '3';
-        item.el.style.transform = 'scale(1.0)';
+        el.style.opacity = '1';
+        el.style.zIndex = '3';
+        el.style.transform = `scale(${kenBurnsScale.toFixed(4)})`;
       } else if (idx === activeIdx && nextIdx !== -1) {
-        item.el.style.opacity = (1 - blend).toFixed(3);
-        item.el.style.zIndex = '2';
-        item.el.style.transform = `scale(${(1.0 + blend * 0.02).toFixed(3)})`;
+        el.style.opacity = (1 - blend).toFixed(3);
+        el.style.zIndex = '2';
+        el.style.transform = `scale(${(kenBurnsScale + blend * 0.015).toFixed(4)})`;
       } else if (idx === nextIdx) {
-        item.el.style.opacity = blend.toFixed(3);
-        item.el.style.zIndex = '3';
-        item.el.style.transform = `scale(${(1.02 - blend * 0.02).toFixed(3)})`;
+        el.style.opacity = blend.toFixed(3);
+        el.style.zIndex = '3';
+        el.style.transform = `scale(${(1.02 - blend * 0.02).toFixed(4)})`;
       } else {
-        item.el.style.opacity = '0';
-        item.el.style.zIndex = '1';
+        el.style.opacity = '0';
+        el.style.zIndex = '1';
       }
     });
   }
 
-  setGroupVisible(step) {
-    if (!this.step1Group) return;
-    this.step1Group.visible = (step === 1);
-    this.step2Group.visible = (step === 2);
-    this.step3Group.visible = (step === 3);
-    this.step4Group.visible = (step === 4);
-    this.step5Group.visible = (step === 5);
+  setActVisible(actNum) {
+    if (!this.act1Group) return;
+    this.act1Group.visible = (actNum === 1);
+    this.act2Group.visible = (actNum === 2);
+    this.act3Group.visible = (actNum === 3);
+    this.act4Group.visible = (actNum === 4);
+    this.act5Group.visible = (actNum === 5);
   }
 
-  updateHUD(step) {
+  // =========================================================================
+  // Real-Time Biometric Telemetry, Sub-Scene Pills & Cinema Subtitles
+  // =========================================================================
+  updateSceneLiveTelemetry(scene, p) {
+    const localP = Math.max(0, Math.min(1, (p - scene.start) / (scene.end - scene.start)));
+
+    // Determine whether current scroll point is in Crisis (Before) or Healing (After)
+    let isCrisis = scene.isCrisis;
+    if (typeof scene.crisisThreshold === 'number') {
+      isCrisis = p < scene.crisisThreshold;
+    }
+
+    // 1. Update Top Header Timeline Bar
+    if (this.timelineActLabel) this.timelineActLabel.textContent = scene.actLabel;
+    if (this.timelineProgressFill) {
+      this.timelineProgressFill.style.width = `${Math.max(3, Math.round(p * 100))}%`;
+    }
+    if (this.timelineStatePill) {
+      const stateStr = scene.stateText || (isCrisis ? scene.stateTextCrisis : scene.stateTextHeal);
+      this.timelineStatePill.textContent = stateStr;
+      this.timelineStatePill.className = `timeline-state-pill ${isCrisis ? 'state-crisis' : 'state-healing'}`;
+    }
+
+    // 2. Update Scene Counter & HUD Border Mode
+    if (this.hudCounter) {
+      this.hudCounter.textContent = `SCENE ${String(scene.index).padStart(2, '0')} / 13`;
+    }
+    if (this.hudPanel) {
+      if (isCrisis) this.hudPanel.classList.add('crisis-mode');
+      else this.hudPanel.classList.remove('crisis-mode');
+    }
+
+    // 3. Highlight active sub-scene pill inside HUD
+    if (this.hudSubsceneFlow && this.currentStep <= 5) {
+      const pills = this.hudSubsceneFlow.querySelectorAll('.subscene-pill');
+      pills.forEach((pill, idx) => {
+        pill.classList.remove('active', 'crisis-active');
+        if (idx === scene.subPillIndex) {
+          pill.classList.add(isCrisis ? 'crisis-active' : 'active');
+        }
+      });
+    }
+
+    // 4. Update Cinema Subtitle Caption Bar
+    if (this.cinemaSceneTag) this.cinemaSceneTag.textContent = scene.sceneTag;
+    if (this.cinemaSubtitleText) {
+      const subStr = scene.subtitle || (isCrisis ? scene.subtitleCrisis : scene.subtitleHeal);
+      this.cinemaSubtitleText.textContent = subStr;
+    }
+
+    // 5. Update Dynamic Biometric Telemetry Box
+    if (this.telemetryStatus) {
+      this.telemetryStatus.textContent = isCrisis ? '⚠️ 치료 전 증상 감지' : '✦ 바른한의원 치료·회복';
+      this.telemetryStatus.className = `telemetry-status ${isCrisis ? 'crisis' : ''}`;
+    }
+    if (this.metric1Title) this.metric1Title.textContent = scene.metric1Title;
+    if (this.metric2Title) this.metric2Title.textContent = scene.metric2Title;
+
+    // Scene-specific interpolated live metrics
+    let m1Val = scene.metric1Value || '';
+    let m2Val = scene.metric2Value || '';
+    let barPct = scene.barPercent || 85;
+
+    if (scene.index === 3) {
+      // Scene 1C: Cold/Flu -> Immunity Shield
+      if (isCrisis) {
+        m1Val = '42.0% (감기·비염 침투)';
+        m2Val = '면역 저하 · 한기 감지';
+        barPct = 38;
+      } else {
+        const healT = (p - 0.15) / 0.03;
+        const imm = (42 + healT * 56.5).toFixed(1);
+        m1Val = `${imm}% (면역강화 완료)`;
+        m2Val = '황금 면역 방어막 가동';
+        barPct = Math.round(42 + healT * 56);
+      }
+    } else if (scene.index === 4) {
+      // Scene 1D: Peer Height Comparison -> Growing Tall
+      if (isCrisis) {
+        m1Val = '134.0cm (또래 대비 -12cm)';
+        m2Val = '성장판 잠복 상태';
+        barPct = 40;
+      } else {
+        const growT = Math.min(1, (p - 0.205) / 0.045);
+        const cm = (134 + growT * 48.4).toFixed(1);
+        m1Val = `134cm ➔ ${cm}cm (+추월!)`;
+        m2Val = '32개 척추·성장판 폭풍 성장';
+        barPct = Math.round(45 + growT * 55);
+      }
+    } else if (scene.index === 6) {
+      // Scene 2B: Obesity Slimming
+      const fatPct = (35.4 - localP * 17.2).toFixed(1);
+      const kgLost = (localP * 15.8).toFixed(1);
+      m1Val = `35.4% ➔ ${fatPct}% (-${kgLost}kg)`;
+      m2Val = '식욕 ZERO · S라인 완성';
+      barPct = Math.round(40 + localP * 58);
+    } else if (scene.index === 8) {
+      // Scene 3B: Scalp Cooling & Hair Regrowth
+      const temp = (39.2 - localP * 7.8).toFixed(1);
+      const density = Math.round(48 + localP * 52);
+      m1Val = `39.2°C ➔ ${temp}°C (청열 완료)`;
+      m2Val = `모낭 밀도 ${density}% 정상 회복`;
+      barPct = density;
+    } else if (scene.index === 10) {
+      // Scene 4B: Chuna Spine Alignment
+      const angle = Math.max(0, 18.6 * (1 - localP * 1.15)).toFixed(1);
+      m1Val = `18.6° ➔ ${angle}° 바른 정렬`;
+      m2Val = angle === '0.0' ? '9대 관절 통증 100% 소멸' : '1:1 추나·봉약침 교정 중';
+      barPct = Math.round(35 + localP * 65);
+    } else if (scene.index === 12) {
+      // Scene 5B: Emperor Gongjindan Vitality Surge
+      const vit = (28 + localP * 70.5).toFixed(1);
+      m1Val = `28% ➔ ${vit}% 기력 충전`;
+      m2Val = '24K 사향·녹용 12경락 개통';
+      barPct = Math.round(28 + localP * 70);
+    }
+
+    if (this.metric1Value) {
+      this.metric1Value.textContent = m1Val;
+      this.metric1Value.className = `metric-value ${isCrisis ? 'danger' : ''}`;
+    }
+    if (this.metric2Value) {
+      this.metric2Value.textContent = m2Val;
+      this.metric2Value.className = `metric-value ${isCrisis ? 'danger' : 'highlight'}`;
+    }
+    if (this.telemetryBarFill) {
+      this.telemetryBarFill.style.width = `${barPct}%`;
+      this.telemetryBarFill.className = `telemetry-bar-fill ${isCrisis ? 'danger' : ''}`;
+    }
+  }
+
+  updateStepTextAndNav(step) {
+    this.navDots.forEach(dot => {
+      const s = parseInt(dot.getAttribute('data-step') || '1', 10);
+      dot.classList.toggle('active', s === step);
+    });
+
+    this.sktCards.forEach(card => {
+      const s = parseInt(card.getAttribute('data-step') || '1', 10);
+      card.classList.toggle('active', s === step);
+    });
+
     if (step > 5) {
-      if (this.hudBadge) this.hudBadge.textContent = '5대 특화진료 카드';
-      if (this.hudCounter) this.hudCounter.textContent = 'FINAL';
+      if (this.hudBadge) this.hudBadge.textContent = '5대 생애주기 특화진료';
       if (this.hudTitle) this.hudTitle.textContent = '바른한의원 5대 시그니처';
-      if (this.hudSubtitle) this.hudSubtitle.textContent = '아래 카드에서 원하는 진료를 선택하세요';
-      if (this.hudDesc) this.hudDesc.textContent = '소아 성장, 다이어트, 탈모, 9대 관절 통증, 명품 공진단까지 1:1 맞춤 진료';
+      if (this.hudSubtitle) this.hudSubtitle.textContent = '아래 카드에서 생애주기별 맞춤 진료를 선택하세요';
+      if (this.hudDesc) this.hudDesc.textContent = '난임·소아면역·키성장부터 비만, 탈모, 척추·관절 추나, 황제공진단까지 1:1 맞춤 처방';
       if (this.painRadarBox) this.painRadarBox.style.display = 'none';
       return;
     }
@@ -5456,10 +6251,17 @@ class BareunMasterpieceStoryApp {
     if (!data) return;
 
     if (this.hudBadge) this.hudBadge.textContent = data.badge;
-    if (this.hudCounter) this.hudCounter.textContent = `0${data.step} / 05`;
     if (this.hudTitle) this.hudTitle.textContent = data.title;
     if (this.hudSubtitle) this.hudSubtitle.textContent = data.mainCopy;
     if (this.hudDesc) this.hudDesc.textContent = data.desc;
+
+    // Render sub-scene flow pills for this stage
+    if (this.hudSubsceneFlow && data.subPills) {
+      this.hudSubsceneFlow.innerHTML = data.subPills
+        .map((label, idx) => `<span class="subscene-pill ${idx === 0 ? 'active' : ''}">${label}</span>`)
+        .join('<span class="subscene-arrow">▸</span>');
+    }
+
     if (this.hudPrimaryBtn) {
       this.hudPrimaryBtn.href = data.link;
       this.hudPrimaryBtn.innerHTML = `<span>프로그램 상세 보기</span> <span>➔</span>`;
@@ -5467,134 +6269,89 @@ class BareunMasterpieceStoryApp {
     if (this.hudDrawerBtn) {
       this.hudDrawerBtn.onclick = () => openDrawerWithProgram(data.slug);
     }
-
     if (this.painRadarBox) {
       this.painRadarBox.style.display = (step === 4) ? 'block' : 'none';
     }
   }
 
-  updateBackdrops(step) {
-    this.renderBackdropBlend(this.scrollProgress);
-  }
-
-  updateNavDots(step) {
-    this.navDots.forEach(dot => {
-      const s = parseInt(dot.getAttribute('data-step') || '1', 10);
-      if (s === step) dot.classList.add('active');
-      else dot.classList.remove('active');
-    });
-  }
-
-  updateSKTDock(step) {
-    this.sktCards.forEach(card => {
-      const s = parseInt(card.getAttribute('data-step') || '1', 10);
-      if (s === step) card.classList.add('active');
-      else card.classList.remove('active');
-    });
-  }
-
-  // Interactive Mouse Parallax & Hover Sync
   initInteractions() {
     window.addEventListener('mousemove', (e) => {
-      this.mouseParallax.x = (e.clientX / window.innerWidth - 0.5) * 6;
-      this.mouseParallax.y = (e.clientY / window.innerHeight - 0.5) * -4;
+      this.mouseParallax.x = (e.clientX / window.innerWidth - 0.5) * 4.5;
+      this.mouseParallax.y = (e.clientY / window.innerHeight - 0.5) * -3.0;
     }, { passive: true });
-
-    // Touch / Click triggers golden radial shockwave
-    if (this.stage) {
-      this.stage.addEventListener('pointerdown', (e) => {
-        if (!e.target.closest('button, a, input, select, textarea')) {
-          if (this.currentStep === 1) {
-            this.triggerShockwave();
-          }
-        }
-      });
-    }
-
-    // Hover sync on SKT Dock cards
-    this.sktCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        const step = parseInt(card.getAttribute('data-step'), 10);
-        this.targetRotation.y = (step - 3) * 0.15;
-      });
-      card.addEventListener('mouseleave', () => {
-        this.targetRotation.y = 0;
-      });
-    });
   }
 
-  // 60fps / 120fps Smooth Damped Animation Loop
+  // =========================================================================
+  // 60fps / 120fps Continuous Render & Micro-Animation Loop
+  // =========================================================================
   animate() {
     requestAnimationFrame(() => this.animate());
     const time = performance.now() * 0.001;
 
-    // Camera Inertia Damping via THREE.MathUtils.lerp
+    // Smooth camera damping
     this.camera.position.x = THREE.MathUtils.lerp(
       this.camera.position.x,
       this.targetCameraPos.x + this.mouseParallax.x,
-      0.07
+      0.06
     );
     this.camera.position.y = THREE.MathUtils.lerp(
       this.camera.position.y,
       this.targetCameraPos.y + this.mouseParallax.y,
-      0.07
+      0.06
     );
     this.camera.position.z = THREE.MathUtils.lerp(
       this.camera.position.z,
       this.targetCameraPos.z,
-      0.07
+      0.06
     );
 
-    this.currentLookAt.x = THREE.MathUtils.lerp(this.currentLookAt.x, this.targetLookAt.x, 0.07);
-    this.currentLookAt.y = THREE.MathUtils.lerp(this.currentLookAt.y, this.targetLookAt.y, 0.07);
-    this.currentLookAt.z = THREE.MathUtils.lerp(this.currentLookAt.z, this.targetLookAt.z, 0.07);
+    this.currentLookAt.lerp(this.targetLookAt, 0.06);
     this.camera.lookAt(this.currentLookAt);
 
-    // Step 01 Continuous Animations (Egg rings, Shockwave pulse, Halo float)
-    if (this.step1Group && this.step1Group.visible) {
-      if (this.step1EggRings && this.step1EggGroup.visible) {
-        this.step1EggRings.children.forEach((r, idx) => {
-          r.rotation.z = time * (0.3 + idx * 0.15) * (idx % 2 === 0 ? 1 : -1);
+    // Act 1 Continuous Animations
+    if (this.act1Group && this.act1Group.visible) {
+      if (this.scene1aGroup.visible) {
+        this.ovumMesh.rotation.y = time * 0.35;
+        this.ovumRings.children.forEach((r, i) => {
+          r.rotation.z = time * (0.3 + i * 0.15) * (i % 2 === 0 ? 1 : -1);
+        });
+        // Undulate sperm tails
+        this.spermStreams.forEach(sp => {
+          const pos = sp.tail.geometry.attributes.position.array;
+          for (let t = 0; t < 20; t++) {
+            pos[t * 3 + 1] = Math.sin(time * 14 - t * 0.5 + sp.speedOffset) * (t * 0.045);
+          }
+          sp.tail.geometry.attributes.position.needsUpdate = true;
         });
       }
-
-      // Golden Shockwave Pulse on Touch/Trigger
-      if (this.shockwaveActive && this.step1Shockwave) {
-        const elapsed = (performance.now() - this.shockwaveStartTime) * 0.001;
-        if (elapsed < 0.75) {
-          const swNorm = elapsed / 0.75;
-          const swScale = 1.0 + swNorm * 36.0;
-          this.step1Shockwave.scale.set(swScale, swScale, swScale);
-          this.step1Shockwave.material.opacity = (1.0 - swNorm) * 0.95;
-        } else {
-          this.shockwaveActive = false;
-          this.step1Shockwave.material.opacity = 0.0;
-          this.step1Shockwave.scale.set(1, 1, 1);
-        }
+      if (this.scene1cGroup.visible) {
+        this.immuneShieldWire.rotation.y = time * 0.25;
+        this.immuneShieldWire.rotation.x = Math.sin(time * 0.4) * 0.15;
       }
-
-      // Toddler Halo Rotation
-      if (this.step1Halo && this.step1ToddlerGroup.visible) {
-        this.step1Halo.rotation.z = time * 0.4;
+      if (this.scene1dGroup.visible) {
+        this.kneePlateL.rotation.z = time * 0.8;
+        this.kneePlateR.rotation.z = -time * 0.8;
       }
     }
 
-    // Step 02 Waist Ring Rotation
-    if (this.step2Group && this.step2Group.visible && this.step2WaistRing) {
-      this.step2WaistRing.rotation.z = time * 0.4;
+    // Act 2 Continuous Animations
+    if (this.act2Group && this.act2Group.visible) {
+      this.act2Group.rotation.y = Math.sin(time * 0.5) * 0.2;
     }
 
-    // Step 03 Cooling Ring Rotation
-    if (this.step3Group && this.step3Group.visible && this.step3CoolRing) {
-      this.step3CoolRing.rotation.z = -time * 0.3;
+    // Act 3 Continuous Animations
+    if (this.act3Group && this.act3Group.visible) {
+      this.scalpAuraRings.forEach((r, i) => {
+        r.rotation.z = time * (0.4 + i * 0.1) * (i % 2 === 0 ? 1 : -1);
+      });
     }
 
-    // Step 04 8Hz Pulsating Ring on 9 Joint Anchors
-    if (this.step4Group && this.step4Group.visible) {
+    // Act 4 8Hz Pain Pulsation on Unhealed Joints
+    if (this.act4Group && this.act4Group.visible) {
       const pulse8Hz = Math.sin(time * 16 * Math.PI) * 0.5 + 0.5;
       this.jointNodes.forEach(item => {
         if (!item.healed) {
-          const s = 1.0 + pulse8Hz * 0.6;
+          const s = 1.0 + pulse8Hz * 0.65;
           item.ring.scale.set(s, s, s);
           item.ring.material.opacity = (1.0 - pulse8Hz * 0.5) * 0.9;
         } else {
@@ -5604,13 +6361,16 @@ class BareunMasterpieceStoryApp {
       });
     }
 
-    // Step 05 Gongjindan Planetary Rings
-    if (this.step5Group && this.step5Group.visible) {
-      if (this.goldOrbit1) this.goldOrbit1.rotation.z = time * 0.5;
-      if (this.goldOrbit2) this.goldOrbit2.rotation.z = -time * 0.35;
+    // Act 5 24K Gongjindan Rotation & Rising Longevity Aurora
+    if (this.act5Group && this.act5Group.visible) {
+      this.gongjindanMesh.rotation.y = time * 0.6;
+      this.gongjindanRings.forEach((r, idx) => {
+        r.rotation.z = time * (0.5 + idx * 0.2) * (idx % 2 === 0 ? 1 : -1);
+        r.rotation.x = Math.sin(time * 0.7 + idx) * 0.5;
+      });
+      this.longevityPoints.rotation.y = time * 0.12;
     }
 
-    // Render with EffectComposer (Post-processing) or Fallback Renderer
     if (this.composer) {
       this.composer.render();
     } else if (this.renderer && this.scene && this.camera) {
@@ -5621,13 +6381,25 @@ class BareunMasterpieceStoryApp {
   initIntro() {
     const splash = document.getElementById('intro-splash');
     const enterBtn = document.getElementById('intro-enter-btn');
+    const video = document.getElementById('intro-video');
     if (!splash) return;
 
+    // Trigger .video-ended so title & button bloom in smoothly
+    setTimeout(() => {
+      splash.classList.add('video-ended');
+    }, 600);
+    if (video) {
+      video.addEventListener('ended', () => splash.classList.add('video-ended'));
+    }
+
     const closeIntro = () => {
-      splash.style.transition = 'opacity 0.8s ease, visibility 0.8s ease';
-      splash.style.opacity = '0';
-      splash.style.visibility = 'hidden';
-      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      splash.classList.add('leaving');
+      setTimeout(() => {
+        splash.style.opacity = '0';
+        splash.style.visibility = 'hidden';
+        splash.style.pointerEvents = 'none';
+        if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      }, 800);
     };
 
     if (enterBtn) enterBtn.addEventListener('click', closeIntro);
@@ -5661,7 +6433,7 @@ class BareunMasterpieceStoryApp {
   }
 }
 
-// Global Navigation & Step Navigation Helpers
+// Global Navigation & Step Helpers
 function navigateToStep(stepNum) {
   scrollToStep(stepNum);
 }
@@ -5674,8 +6446,8 @@ function scrollToStep(stepNum) {
   const track = document.getElementById('story-scroll-track');
   if (!track) return;
   const trackHeight = track.offsetHeight - window.innerHeight;
-  const progressMap = [0.05, 0.28, 0.48, 0.68, 0.88];
-  const targetProgress = progressMap[stepNum - 1] || 0.05;
+  const progressMap = [0.02, 0.27, 0.44, 0.62, 0.80];
+  const targetProgress = progressMap[stepNum - 1] || 0.02;
   const scrollTarget = track.offsetTop + trackHeight * targetProgress;
   window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 }
@@ -5728,21 +6500,24 @@ async function handleDrawerBookingSubmit(event) {
   };
 
   try {
-    const res = await fetch('/api/send-alimtalk', {
+    await fetch('/api/send-alimtalk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
 
     alert(`🎉 ${payload.parentName}님, 예약 신청이 성공적으로 접수되었습니다!\n원내 원장실에서 확인 후 카카오 알림톡과 안내 전화를 드립니다.`);
-    
+
     if (nameInput) nameInput.value = '';
     if (phoneInput) phoneInput.value = '';
     if (memoInput) memoInput.value = '';
     const drawer = document.getElementById('menu-drawer');
-    if (drawer) drawer.classList.remove('active');
+    if (drawer) {
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
   } catch (err) {
-    alert(`신청서가 안전하게 저장되었습니다.\n담당 직원이 빠른 시간 내에 연락드리겠습니다.`);
+    alert(`예약 신청이 접수되었습니다. 빠른 시간 내에 연락드리겠습니다.`);
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
@@ -5751,8 +6526,8 @@ async function handleDrawerBookingSubmit(event) {
   }
 }
 
-// Auto Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize Masterpiece App on DOMContentLoaded
+window.addEventListener('DOMContentLoaded', () => {
   window.bareunApp = new BareunMasterpieceStoryApp();
 });
 
