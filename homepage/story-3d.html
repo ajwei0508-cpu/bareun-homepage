@@ -991,7 +991,7 @@
 
     <div class="skt-bento-grid" id="skt-bento-grid">
       <!-- 1. 안정위원장 -->
-      <div class="skt-card-item" data-card-idx="0" data-rot="0" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
+      <div class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
         <div class="skt-img-box" style="background-image: url('card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
@@ -1001,7 +1001,7 @@
       </div>
 
       <!-- 2. 추나 -->
-      <div class="skt-card-item" data-card-idx="1" data-rot="5" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
+      <div class="skt-card-item" data-card-idx="1" data-rot="5" data-link="chuna.html" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
         <div class="skt-img-box" style="background-image: url('card_2_chuna.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
@@ -1031,7 +1031,7 @@
       </div>
 
       <!-- 5. 탈모 -->
-      <div class="skt-card-item" data-card-idx="4" data-rot="-5" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
+      <div class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss.html" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
         <div class="skt-img-box" style="background-image: url('card_5_hairloss.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
@@ -2623,7 +2623,12 @@
 
       setTimeout(() => {
         const params = new URLSearchParams(window.location.search);
-        if (params.has('frame')) {
+        if (params.has('cards')) {
+          scrollToNormalized(1.0);
+          if (typeof sktCardFlipController !== 'undefined' && sktCardFlipController) {
+            sktCardFlipController.activate();
+          }
+        } else if (params.has('frame')) {
           const f = parseInt(params.get('frame'), 10);
           if (!isNaN(f)) scrollToNormalized(frameFloatToFullNorm(f));
         } else if (params.has('chapter')) {

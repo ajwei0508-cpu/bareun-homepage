@@ -469,6 +469,12 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     reqPath = '/index.html';
   } else if (reqPath === '/story-3d' || reqPath === '/story-3d/') {
     reqPath = '/story-3d.html';
+  } else if (reqPath === '/director' || reqPath === '/director/') {
+    reqPath = '/director.html';
+  } else if (reqPath === '/chuna' || reqPath === '/chuna/') {
+    reqPath = '/chuna.html';
+  } else if (reqPath === '/hairloss' || reqPath === '/hairloss/') {
+    reqPath = '/hairloss.html';
   } else if (reqPath === '/diet-zero' || reqPath === '/diet-zero/') {
     reqPath = '/diet-zero.html';
   } else if (reqPath === '/growth' || reqPath === '/growth/') {

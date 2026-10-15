@@ -9,32 +9,23 @@
 ---
 
 ## 2. Custom Command: "3번 실행" / "3번 실행해줘" / "마지막 작업 이어서"
-사용자가 다른 컴퓨터에서 **"3번 실행해줘"** 또는 **"마지막 작업이 뭐야?" / "마지막 작업 이어서 해줘"**라고 명령하면:
+사용자가 다른 컴퓨터에서 **"3번 실행해줘"** 또는 **"마지막 작업 이어서 해줘"**라고 명령하면:
 1. `git pull origin main`으로 최신 변경 사항을 즉시 풀합니다.
 2. `homepage` 폴더에서 `node serve.js`를 백그라운드 데몬으로 구동합니다.
-   - `node serve.js` 실행 시 **포트 3000 (수정 후 완성본 3D 시네마 & 전·후 비교 스튜디오)** 과 **포트 3001 (수정 전 보존본 3D 시네마)** 이 동시에 자동 실행됩니다!
-3. 반드시 본 파일(`AGENTS.md`) 및 `HANDOFF_LATEST.md`를 읽고, **직전까지 완료된 작업과 아래 3번의 [마지막에 요청한 미완료 명령어]**를 사용자에게 명확히 브리핑한 뒤 즉시 이어서 수행합니다.
+   - `node serve.js` 실행 시 **포트 3000 (3D 시네마 + Lusion 스타일 6대 클리닉 상세페이지 + 전·후 비교 스튜디오)** 과 **포트 3001 (수정 전 보존본 3D 시네마)** 이 동시에 자동 실행됩니다!
+3. 반드시 본 파일(`AGENTS.md`) 및 `HANDOFF_LATEST.md`를 읽고 최신 작업 상태를 브리핑한 뒤 사용자의 추가 지시를 즉시 수행합니다.
 
 ---
 
 ## 3. 🔥 [최신 작업 인계 상태 — 2026-10-15 기준]
 
-### A. 직전까지 완료된 작업 (`homepage/story-3d.html`, `homepage/index.html`, `homepage/wordpress-story-3d.html`)
-1. **하단 6대 핵심 진료 카드(`#skt-bento-grid`) 직관적 전용 이미지 6종 신규 생성 & 메인 타이틀 단독 표시**
-   - `card_1_director.jpg` (`안정위원장`), `card_2_chuna.jpg` (`추나`), `card_3_growth.jpg` (`성장`), `card_4_diet.jpg` (`다이어트`), `card_5_hairloss.jpg` (`탈모`), `card_6_gongjindan.jpg` (`황제공진단`) 생성 및 적용 완료.
-   - 카드 내 부가 대사·뱃지·버튼을 모두 제거하고 메인 타이틀만 표시하며 이미지 상단 암막을 제거해 직관성 극대화.
-2. **STORY 06 (`관절 튼튼 회복`) 만세 모션 & 초록색 관절 7곳 순차 점등**
-   - 스크롤 시 차렷 자세(`life_4b_chuna_recovery.jpg`)에서 만세 자세(`life_4b_chuna_manse.jpg`)로 전환되며 7개 회복 부위(`목` ➔ `어깨` ➔ `팔` ➔ `척추` ➔ `허리` ➔ `다리` ➔ `발`)가 에메랄드 그린으로 하나씩 점등.
-3. **STORY 03 (`쑥쑥 자란 우리 아이`) 키 성장 완료 후 별 모양 표시**
-   - 아이 키가 자라는 모션(`growthProgress: 0 ➔ 1`)이 완전히 끝난 직후(`growthProgress >= 0.96`)에 별 모양이 반짝이며 팝업되도록 시퀀스 조정 완료.
-
-### B. 🚨 이어서 바로 수행해야 할 [마지막 요청 명령어] 원문
-```text
-https://lusion.co/projects/infinite_passerella
-
-처럼 스크롤 해서 이미지로 설명하는 상세페이로 제작해줘 
-추나 / 탈모 / 황제공진단 / 안정위 / 카드별로 최고급 디자인으로 연출해주고 내용에 필요한 정보는 온라인에서 수집하고 / 논문 자료를 근거하면 더 좋아 / 필요한 이미지와 영상은 직접 하이엔드 수준으로 생성해줘 / 소비자가 공감 할 수 있는 스토리텔링 필수 / 직관적이게 / 전문가 /
-```
-- **수행 지침**:
-  - `lusion.co/projects/infinite_passerella` 케이스 스터디처럼 스크롤에 따라 대형 비주얼(직접 생성한 하이엔드 실사 이미지·영상)과 스토리텔링, SCI급 논문/임상 데이터 근거가 유려하게 펼쳐지는 최고급 상세페이지를 **`추나` / `탈모` / `황제공진단` / `안정위원장`** 카드별로 제작하고 `story-3d.html`(`index.html`)의 6대 카드와 연결합니다.
-  - 실제 안정위 대표원장님 얼굴 레퍼런스는 `homepage/director_real_reference.jpg`에 저장되어 있으므로 원장님 등장 이미지 생성 시 반드시 참조합니다.
+1. **메인 3D 생애주기 스크롤 시네마 (`homepage/story-3d.html`, `homepage/index.html`)**
+   - 24프레임 8대 스토리 시네마 + 하단 6대 핵심 클리닉 카드(`#skt-bento-grid`) 펼침 모션 탑재.
+   - 각 카드 클릭 시 해당 상세페이지로 즉시 이동하도록 연결 완료 (`?cards=1` 파라미터로 상세페이지에서 6대 카드 화면으로 즉시 복귀 지원).
+2. **Lusion (`infinite_passerella`) 스타일 하이엔드 스크롤 상세페이지 4종 완성**
+   - `homepage/director.html` (`안정위원장` — 1:1 진맥·맞춤 한약 철학, 맥파 시뮬레이터, 한약 안전성 SCI 코호트 논문 근거)
+   - `homepage/chuna.html` (`추나` — 경추·척추·골반 수기 교정, 60fps 추간판 감압 시뮬레이터, *JAMA Network Open* RCT 논문 근거)
+   - `homepage/hairloss.html` (`탈모` — 수승화강 두피열 쿨링 & 발모 약침, 200배 모낭 시뮬레이터, 모유두세포 IGF-1·VEGF SCI 논문 근거)
+   - `homepage/gongjindan.html` (`황제공진단` — 24K 순금 수제 조제, 사향·분골 매크로 화보, BDNF·NGF·Sirt1 뇌신경 시냅스 시뮬레이터 & *PLOS ONE* / *Nutrients* SCI 논문 근거)
+3. **워드프레스 올인원 복사·붙여넣기 파일 6종 자동 동기화 (`node bundle-wp.js`)**
+   - `wordpress-main-home.html`, `wordpress-story-3d.html`, `wordpress-director.html`, `wordpress-chuna.html`, `wordpress-hairloss.html`, `wordpress-gongjindan.html`
