@@ -1772,6 +1772,293 @@
           ctx.fillStyle = '#FDE68A';
           ctx.font = '800 14px Pretendard, sans-serif';
           ctx.fillText('✦ LIVE BODY RESET: ' + curKg + ' kg', 26, 76);
+        } else if (type === 'warm-breath-zoom') {
+          // STORY 01: Warm morning sunlight volumetric rays + breathing golden aura
+          const breath = 0.5 + 0.5 * Math.sin(timeSec * 1.35);
+          const sunGrad = ctx.createRadialGradient(w * 0.22, h * 0.16, 10, w * 0.35, h * 0.38, Math.max(w, h) * 0.78);
+          sunGrad.addColorStop(0, 'rgba(253, 230, 138, ' + (0.22 + breath * 0.16).toFixed(3) + ')');
+          sunGrad.addColorStop(0.45, 'rgba(212, 175, 55, ' + (0.09 + breath * 0.08).toFixed(3) + ')');
+          sunGrad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+          ctx.fillStyle = sunGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          // Soft diagonal morning light shafts
+          ctx.save();
+          for (let i = 0; i < 3; i++) {
+            const beamX = w * (0.14 + i * 0.22) + Math.sin(timeSec * 0.6 + i) * 18;
+            const beamGrad = ctx.createLinearGradient(beamX, 0, beamX + w * 0.18, h * 0.85);
+            beamGrad.addColorStop(0, 'rgba(253, 230, 138, ' + (0.11 + breath * 0.06).toFixed(3) + ')');
+            beamGrad.addColorStop(1, 'rgba(253, 230, 138, 0)');
+            ctx.fillStyle = beamGrad;
+            ctx.beginPath();
+            ctx.moveTo(beamX, 0);
+            ctx.lineTo(beamX + w * 0.14, 0);
+            ctx.lineTo(beamX + w * 0.34, h);
+            ctx.lineTo(beamX + w * 0.12, h);
+            ctx.closePath();
+            ctx.fill();
+          }
+          ctx.restore();
+
+          // Floating warm dust motes
+          for (let i = 0; i < 18; i++) {
+            const bx = ((i * 89 + timeSec * 14) % w);
+            const by = h - ((i * 67 + timeSec * 20) % h);
+            const br = 1.8 + (i % 4) * 1.4;
+            ctx.beginPath();
+            ctx.arc(bx, by, br, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(253, 230, 138, ' + (0.22 + 0.28 * Math.sin(timeSec * 2.2 + i)).toFixed(2) + ')';
+            ctx.fill();
+          }
+        } else if (type === 'live-ecg-pulse-wave') {
+          // STORY 02: Both wrists 촌·관·척 pulse points + real-time 3-channel heartbeat & autonomic pulse overlay
+          const wristPoints = [
+            { x: w * 0.43, y: h * 0.68, label: '좌측 촌·관·척 (심·간·신)' },
+            { x: w * 0.58, y: h * 0.68, label: '우측 촌·관·척 (폐·비·명문)' }
+          ];
+          wristPoints.forEach((wp, idx) => {
+            for (let r = 0; r < 3; r++) {
+              const p = (timeSec * 0.75 + r * 0.33 + idx * 0.15) % 1;
+              ctx.beginPath();
+              ctx.arc(wp.x, wp.y, 12 + p * 68, 0, Math.PI * 2);
+              ctx.strokeStyle = r % 2 === 0
+                ? 'rgba(212, 175, 55, ' + ((1 - p) * 0.65).toFixed(2) + ')'
+                : 'rgba(16, 185, 129, ' + ((1 - p) * 0.55).toFixed(2) + ')';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.arc(wp.x, wp.y, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#6EE7B7';
+            ctx.fill();
+          });
+
+          // Translucent real-time pulse & ECG wave monitor overlay
+          const panelW = Math.min(w - 44, 430);
+          const panelH = 128;
+          const px = 22, py = 66;
+          ctx.fillStyle = 'rgba(10, 14, 20, 0.74)';
+          ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.roundRect(px, py, panelW, panelH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          const bpm = 68 + Math.round(Math.sin(timeSec * 1.5) * 2);
+          ctx.fillText('♥ LIVE 촌·관·척 양 손목 정밀 맥파 스캔 · ' + bpm + ' BPM (자율신경·오장육부)', px + 14, py + 22);
+
+          const chNames = ['촌(寸·상초)', '관(關·중초)', '척(尺·하초)'];
+          const chColors = ['#D4AF37', '#10B981', '#38BDF8'];
+          chNames.forEach((cn, cIdx) => {
+            const baseY = py + 46 + cIdx * 30;
+            ctx.fillStyle = 'rgba(255,255,255,0.78)';
+            ctx.font = '700 10.5px Pretendard, sans-serif';
+            ctx.fillText(cn, px + 14, baseY + 4);
+
+            const waveStartX = px + 82;
+            const waveEndX = px + panelW - 16;
+            ctx.beginPath();
+            ctx.strokeStyle = chColors[cIdx];
+            ctx.lineWidth = 2;
+            for (let x = waveStartX; x <= waveEndX; x += 2) {
+              const phase = (x - waveStartX) * 0.065 - timeSec * 4.8 + cIdx * 1.3;
+              const ecgSpike = Math.exp(-Math.pow(((phase % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2) - 3.1, 2) * 18) * 11;
+              const y = baseY + Math.sin(phase) * 4.5 - ecgSpike;
+              if (x === waveStartX) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+          });
+        } else if (type === 'integrative-design-hud') {
+          // STORY 03: Integrative treatment design roadmap HUD + warm nodding empathy waves
+          const panelW = Math.min(w - 44, 370);
+          const panelH = 148;
+          const px = w - panelW - 22;
+          const py = 66;
+          ctx.fillStyle = 'rgba(12, 16, 22, 0.76)';
+          ctx.strokeStyle = 'rgba(110, 231, 183, 0.45)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.roundRect(px, py, panelW, panelH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.fillText('✦ 1:1 사상체질 × 현대의학 통합 치료 설계도', px + 14, py + 22);
+
+          const steps = [
+            '01. 심층 경청 & 자율신경·스트레스 정밀 분석',
+            '02. 사상체질(태양·태음·소양·소음) 변증 진단',
+            '03. 추나(구조) · 약침(기혈) · 맞춤한약(본원) 설계',
+            '04. 치료 경과 예측 및 생활습관 1:1 밀착 코칭'
+          ];
+          const activeStep = Math.floor((timeSec * 0.85) % steps.length);
+          steps.forEach((st, idx) => {
+            const sy = py + 46 + idx * 26;
+            const isAct = idx === activeStep;
+            ctx.fillStyle = isAct ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.04)';
+            ctx.beginPath();
+            ctx.roundRect(px + 12, sy - 14, panelW - 24, 21, 6);
+            ctx.fill();
+            ctx.fillStyle = isAct ? '#6EE7B7' : 'rgba(248, 250, 252, 0.78)';
+            ctx.font = (isAct ? '800 ' : '600 ') + '11px Pretendard, sans-serif';
+            ctx.fillText((isAct ? '● ' : '○ ') + st, px + 20, sy);
+          });
+        } else if (type === 'gold-loupe-scan') {
+          // STORY 04: 1st-Person POV Gold Optical Loupe (확대경) Scanning Motion
+          const lx = w * (0.48 + Math.sin(timeSec * 0.95) * 0.16);
+          const ly = h * (0.49 + Math.sin(timeSec * 1.9) * 0.10);
+          const lr = Math.min(w, h) * 0.16;
+
+          // Subtle golden illumination inside loupe lens
+          const lensGrad = ctx.createRadialGradient(lx - lr * 0.25, ly - lr * 0.25, 4, lx, ly, lr);
+          lensGrad.addColorStop(0, 'rgba(255, 250, 220, 0.28)');
+          lensGrad.addColorStop(0.7, 'rgba(212, 175, 55, 0.14)');
+          lensGrad.addColorStop(1, 'rgba(16, 185, 129, 0.22)');
+          ctx.fillStyle = lensGrad;
+          ctx.beginPath();
+          ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Optical crosshair & degree ticks inside loupe
+          ctx.save();
+          ctx.translate(lx, ly);
+          ctx.strokeStyle = 'rgba(253, 230, 138, 0.55)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(-lr * 0.75, 0); ctx.lineTo(lr * 0.75, 0);
+          ctx.moveTo(0, -lr * 0.75); ctx.lineTo(0, lr * 0.75);
+          ctx.stroke();
+
+          for (let a = 0; a < 24; a++) {
+            const ang = (a / 24) * Math.PI * 2 + timeSec * 0.35;
+            const r1 = lr * (a % 3 === 0 ? 0.84 : 0.90);
+            ctx.beginPath();
+            ctx.moveTo(Math.cos(ang) * r1, Math.sin(ang) * r1);
+            ctx.lineTo(Math.cos(ang) * (lr - 2), Math.sin(ang) * (lr - 2));
+            ctx.stroke();
+          }
+
+          // Outer 24K Gold Loupe Rim
+          ctx.beginPath();
+          ctx.arc(0, 0, lr, 0, Math.PI * 2);
+          ctx.strokeStyle = '#D4AF37';
+          ctx.lineWidth = 4.5;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(0, 0, lr + 4, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(253, 230, 138, 0.55)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          ctx.restore();
+
+          // Telemetry label next to loupe
+          const tagW = 248, tagH = 58;
+          const tx = Math.min(w - tagW - 18, Math.max(18, lx + lr * 0.75));
+          const ty = Math.max(66, ly - lr * 0.85);
+          ctx.fillStyle = 'rgba(10, 13, 18, 0.84)';
+          ctx.strokeStyle = '#D4AF37';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 10);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('🔍 골드 루페 30X 광학 검수 · PASS', tx + 12, ty + 20);
+          ctx.fillStyle = '#A7F3D0';
+          ctx.font = '700 10.5px Pretendard, sans-serif';
+          ctx.fillText('• 러시아산 원용 분골 세포밀도 99.8%', tx + 12, ty + 36);
+          ctx.fillText('• GAP 청정 약재 잔류농약·중금속 ZERO', tx + 12, ty + 50);
+        } else if (type === 'liver-safety-decoction-chart') {
+          // STORY 05: Live AST/ALT Liver Safety & Antioxidant Chart + 10-Step Safe Decoction System
+          const padX = 22;
+          const topY = 62;
+          const boxW = Math.min(340, (w - 58) * 0.48);
+          const boxH = 146;
+
+          // Left Box: Real-Time AST/ALT & Antioxidant Chart
+          ctx.fillStyle = 'rgba(10, 14, 20, 0.80)';
+          ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#6EE7B7';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.fillText('📊 복용 전·후 간 수치(AST/ALT) & 항산화 실시간 차트', padX + 12, topY + 21);
+
+          const bars = [
+            { label: 'AST (간수치 정상 <40)', before: '24 IU/L', after: '21 IU/L (안심)', ratio: 0.52, col: '#10B981' },
+            { label: 'ALT (간수치 정상 <40)', before: '21 IU/L', after: '18 IU/L (안심)', ratio: 0.45, col: '#34D399' },
+            { label: '항산화 수치 (SOD·GSH)', before: '100%', after: '+163% 개선', ratio: 0.92, col: '#D4AF37' }
+          ];
+          bars.forEach((b, bIdx) => {
+            const by = topY + 42 + bIdx * 34;
+            ctx.fillStyle = 'rgba(255,255,255,0.86)';
+            ctx.font = '700 10.5px Pretendard, sans-serif';
+            ctx.fillText(b.label + ' : ' + b.before + ' ➔ ' + b.after, padX + 12, by);
+
+            const trackW = boxW - 24;
+            ctx.fillStyle = 'rgba(255,255,255,0.12)';
+            ctx.beginPath();
+            ctx.roundRect(padX + 12, by + 6, trackW, 8, 4);
+            ctx.fill();
+
+            const animW = trackW * b.ratio * (0.88 + 0.12 * Math.sin(timeSec * 2.5 + bIdx));
+            ctx.fillStyle = b.col;
+            ctx.beginPath();
+            ctx.roundRect(padX + 12, by + 6, animW, 8, 4);
+            ctx.fill();
+          });
+
+          // Right Box: 10-Step In-House Safe Decoction System
+          const rBoxX = w - boxW - padX;
+          if (rBoxX > padX + boxW + 8) {
+            ctx.fillStyle = 'rgba(10, 14, 20, 0.80)';
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+            ctx.lineWidth = 1.3;
+            ctx.beginPath();
+            ctx.roundRect(rBoxX, topY, boxW, boxH, 14);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#FDE68A';
+            ctx.font = '800 11.5px Pretendard, sans-serif';
+            ctx.fillText('🛡️ 10단계 원내 안전 탕전 시스템 (LIVE 가동)', rBoxX + 12, topY + 21);
+
+            const tenSteps = [
+              '01 GAP약재선별', '02 중금속검사',
+              '03 원장루페검수', '04 초순수세척',
+              '05 저온정밀불림', '06 무압력탕전',
+              '07 방향성분포집', '08 미세안전여과',
+              '09 고온멸균패킹', '10 원장최종검수'
+            ];
+            const activeTen = Math.floor((timeSec * 1.8) % 10);
+            const colW = (boxW - 28) * 0.5;
+            tenSteps.forEach((st, idx) => {
+              const col = idx % 2;
+              const row = Math.floor(idx / 2);
+              const sx = rBoxX + 12 + col * (colW + 4);
+              const sy = topY + 30 + row * 22;
+              const isAct = idx === activeTen;
+              ctx.fillStyle = isAct ? 'rgba(212, 175, 55, 0.28)' : 'rgba(255,255,255,0.05)';
+              ctx.beginPath();
+              ctx.roundRect(sx, sy, colW, 18, 5);
+              ctx.fill();
+              ctx.fillStyle = isAct ? '#FDE68A' : 'rgba(255,255,255,0.75)';
+              ctx.font = (isAct ? '800 ' : '600 ') + '9.8px Pretendard, sans-serif';
+              ctx.fillText((isAct ? '✓ ' : '• ') + st, sx + 6, sy + 12.5);
+            });
+          }
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
           const cx = w * 0.5, cy = h * 0.55;
@@ -2007,10 +2294,13 @@
             }
           }
 
-          // Continuous 3D Ken Burns camera pan/zoom so every frame feels like live cinema video
-          const zoom = 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
-          const panX = Math.cos(timeSec * 0.55 + sIdx) * 12;
-          const panY = Math.sin(timeSec * 0.45 + sIdx) * 8;
+          // Continuous 3D Ken Burns / Breathing Zoom camera motion
+          const isBreathingZoom = ms.fxType === 'warm-breath-zoom';
+          const zoom = isBreathingZoom
+            ? 1.055 + 0.055 * Math.sin(timeSec * 1.35)
+            : 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
+          const panX = Math.cos(timeSec * 0.55 + sIdx) * (isBreathingZoom ? 8 : 12);
+          const panY = Math.sin(timeSec * 0.45 + sIdx) * (isBreathingZoom ? 5 : 8);
           const transformStr = 'scale(' + zoom.toFixed(4) + ') translate3d(' + panX.toFixed(1) + 'px, ' + panY.toFixed(1) + 'px, 0)';
           if (ms.layerA) ms.layerA.style.transform = transformStr;
           if (ms.layerB) ms.layerB.style.transform = transformStr;

@@ -20,7 +20,8 @@
 2. **개편된 4대 클리닉 상세페이지 & 워드프레스 독립형 파일**:
    - **① 안정위 대표원장 (`homepage/director.html` / `wordpress-director.html`)**
      - 접속 주소: [http://localhost:3000/director.html](http://localhost:3000/director.html)
-     - 우측 6대 비주얼 플레이트: 원장 시그니처 포트레이트(`card_1_director.jpg`) ➔ 1:1 정밀 진맥 풀스크린(`detail_director_pulse.jpg`) ➔ 60fps 촌·관·척 3채널 맥파 안정화 캔버스 ➔ 러시아산 분골 녹용·청정 약재 검수(`detail_director_herbs.jpg`) ➔ 체질 상담 & 한약 간 안전성 `99.4%` SCI 그래픽 바(`detail_director_consult.jpg`) ➔ `NEXT: 02 바른 추나`
+     - 좌측 환자 공감 생활 불편감 체크리스트 5종: `병원 검사 정상인데 만성 피로·통증` / `나의 사상체질 궁금증` / `15년 임상 경력 아빠 같은 한의사` / `공장식이 아닌 1:1 체질 한약` / `장기 복용 시 한약재 안전성 걱정`
+     - 우측 5막 스토리텔링 & 모션 연출: **[STORY 01: 자세한 설명의 시작 (`detail_director_story1_enter.jpg`, 따스한 채광 + 호흡 줌 모션)] ➔ [STORY 02: 손끝으로 읽는 1:1 정밀 맥진 (`detail_director_story2_both_wrists_pulse.jpg`, 양 손목 촌·관·척 맥진 + 실시간 심박·맥파 파동 오버레이)] ➔ [STORY 03: 현대의학 통합 치료 설계 (`detail_director_story3_nod_design.jpg`, 깊이 끄덕이는 원장님 & 사상체질×현대의학 통합 치료 설계 HUD)] ➔ [STORY 04: 원장 직접 검수 고급 정품 약재 (`detail_director_story4_loupe_pov.jpg`, 1인칭 루페 검수 + 골드 루페 스캔 광학 모션)] ➔ [STORY 05: 내 가족에게 쓸 수 없는 치료는 하지 않습니다 (`detail_director_story5_family_safety.jpg`, 복용 전후 간 수치 AST/ALT 정상 유지 & 항산화 개선 실시간 차트 + 10단계 원내 안전 탕전 시스템)] ➔ `NEXT: 02 바른 추나`**
    - **② 바른 추나 · 척추교정 (`homepage/chuna.html` / `wordpress-chuna.html`)**
      - 접속 주소: [http://localhost:3000/chuna.html](http://localhost:3000/chuna.html)
      - 우측 6대 비주얼 플레이트: 3D 레이저 체형 대칭 스캔(`detail_chuna_pelvis.jpg`) ➔ 원장 1:1 경추 추나 풀스크린(`detail_chuna_cervical.jpg`) ➔ 60fps 척추 분절 정렬 & 추간공 감압 시뮬레이터 ➔ 심부 신경근 정제 약침(`detail_chuna_acupuncture.jpg`) ➔ 통증 해방 만세 화보(`life_4b_chuna_manse.jpg`) & *JAMA Network Open* `-67.4%` 통증 감소 그래픽 바 ➔ `NEXT: 05 바른 탈모`
