@@ -556,6 +556,86 @@
       overflow: hidden;
     }
 
+    /* Lusion Oryzo_AI Clean Video & Image Plates */
+    .project-details-item.is-clean-plate {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 237, 215, 0.12);
+      background: #14100E;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+
+    .project-details-item.is-clean-plate.is-active-plate {
+      border-color: rgba(255, 237, 215, 0.36);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.72);
+    }
+
+    .project-details-item.is-clean-plate.is-image .plate-media-inner {
+      cursor: zoom-in;
+    }
+
+    .lusion-clean-media {
+      position: absolute;
+      inset: -4%;
+      width: 108%;
+      height: 108%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      will-change: transform;
+      transition: transform 0.12s linear;
+    }
+
+    .clean-plate-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 8, 7, 0) 0%,
+        rgba(10, 8, 7, 0) 58%,
+        rgba(10, 8, 7, 0.78) 100%
+      );
+      pointer-events: none;
+    }
+
+    .clean-plate-caption {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 24px;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .clean-step-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .clean-spec-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .clean-spec-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(18, 14, 12, 0.72);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 237, 215, 0.22);
+      color: #FFEDD7;
+      font-size: 0.71rem;
+      font-weight: 600;
+    }
+
     /* Multi-Frame Motion Video Stage */
     .motion-video-stage {
       position: absolute;
@@ -1064,7 +1144,7 @@
 
     <div class="header-center">
       <div id="project-details-header-info">
-        <span>● LIVE MOTION STORY · 휠/드래그로 감상</span>
+        <span>scroll to explore</span>
         <svg viewBox="0 0 16 16" fill="currentColor">
           <path d="M11.485 8.365 8.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
           <path d="M5.485 8.365 2.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
@@ -1608,6 +1688,13 @@
         const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
         const ms = motionStages.find(m => m.stageEl === stageEl);
         const src = ms ? ms.frames[ms.currIdx] : '';
+        if (src) {
+          document.getElementById('lightbox-img').src = src;
+          document.getElementById('plate-lightbox').classList.add('open');
+        }
+      };
+
+      window.openCleanLightbox = function(src) {
         if (src) {
           document.getElementById('lightbox-img').src = src;
           document.getElementById('plate-lightbox').classList.add('open');
@@ -2280,6 +2367,11 @@
           plates.forEach((plate, idx) => {
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
+            const cleanMedia = plate.querySelector('.lusion-clean-media');
+            if (cleanMedia) {
+              const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
+              cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
+            }
           });
 
           plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));

@@ -18,10 +18,15 @@
      - 긴 텍스트 공해 없이 **[Plate 01: 원인·진단 화보] ➔ [Plate 02: 안정위 원장 1:1 시술 풀스크린 하이라이트] ➔ [Plate 03: 실시간 60fps 의학 메커니즘 캔버스] ➔ [Plate 04: 정밀 치료·약재 화보] ➔ [Plate 05: 회복 화보 + SCI 논문 대형 비주얼 그래프] ➔ [Plate 06: `NEXT CLINIC` 다음 클리닉 순환 포털]**로 이어집니다.
 
 2. **개편된 4대 클리닉 상세페이지 & 워드프레스 독립형 파일**:
-   - **① 안정위 대표원장 (`homepage/director.html` / `wordpress-director.html`)**
+   - **① 안정위 대표원장 (`homepage/director.html` / `wordpress-director.html` — Lusion `oryzo_ai` 클린 에디토리얼 스타일)**
      - 접속 주소: [http://localhost:3000/director.html](http://localhost:3000/director.html)
      - 좌측 환자 공감 생활 불편감 체크리스트 5종: `병원 검사 정상인데 만성 피로·통증` / `나의 사상체질 궁금증` / `15년 임상 경력 아빠 같은 한의사` / `공장식이 아닌 1:1 체질 한약` / `장기 복용 시 한약재 안전성 걱정`
-     - 우측 5막 스토리텔링 & 모션 연출: **[STORY 01: 자세한 설명의 시작 (`detail_director_story1_enter.jpg`, 따스한 채광 + 호흡 줌 모션)] ➔ [STORY 02: 손끝으로 읽는 1:1 정밀 맥진 (`detail_director_story2_both_wrists_pulse.jpg`, 양 손목 촌·관·척 맥진 + 실시간 심박·맥파 파동 오버레이)] ➔ [STORY 03: 현대의학 통합 치료 설계 (`detail_director_story3_nod_design.jpg`, 깊이 끄덕이는 원장님 & 사상체질×현대의학 통합 치료 설계 HUD)] ➔ [STORY 04: 원장 직접 검수 고급 정품 약재 (`detail_director_story4_loupe_pov.jpg`, 1인칭 루페 검수 + 골드 루페 스캔 광학 모션)] ➔ [STORY 05: 내 가족에게 쓸 수 없는 치료는 하지 않습니다 (`detail_director_story5_family_safety.jpg`, 복용 전후 간 수치 AST/ALT 정상 유지 & 항산화 개선 실시간 차트 + 10단계 원내 안전 탕전 시스템)] ➔ `NEXT: 02 바른 추나`**
+     - 우측 5막 클린 스토리텔링 (복잡한 HUD 오버레이·다중 프레임 깜빡임 완전 제거, **첫 스토리는 영상 + 이후 스토리는 단일 정밀 화보 + 원장 얼굴은 마지막 STORY 05에만 등장**):
+       1. **[STORY 01 · VIDEO] 자세한 설명의 시작 (`detail_director_story1.mp4` / `detail_director_story1_clean.jpg`)**: 원장 얼굴 없이 환자 1인칭 시점으로 따스한 아침 햇살이 가득한 바른한의원의 원목 문을 열고 들어오는 첫걸음 영상 (부드러운 호흡 줌 & 채광 모션)
+       2. **[STORY 02 · IMAGE] 손끝으로 읽는 1:1 정밀 맥진 (`detail_director_story2_clean.jpg`)**: 원장 얼굴 없이 골드 실크 맥침대 위 환자의 양 손목 촌·관·척 맥을 동시에 짚는 손끝 클로즈업 화보
+       3. **[STORY 03 · IMAGE] 현대의학 통합 치료 설계 (`detail_director_story3_clean.jpg`)**: 원장 얼굴 없이 오버더숄더 시점으로 통합 치료 설계도를 짚어주며, 맞은편 환자가 깊이 만족하며 미소 짓는 화보
+       4. **[STORY 04 · IMAGE] 원장 직접 검수 고급 정품 약재 (`detail_director_story4_clean.jpg`)**: 원장 얼굴 없이 순수 1인칭 시점(POV)으로 황동 루페(확대경)를 통해 러시아산 원용 분골의 치밀한 조직과 GAP 청정 약재를 검수하는 화보
+       5. **[STORY 05 · IMAGE] 내 가족에게 쓸 수 없는 치료는 하지 않습니다 (`detail_director_story5_clean.jpg`)**: **유일하게 안정위 대표원장님의 따뜻한 얼굴이 등장하는 피날레 컷!** 원내 안심 탕전실을 배경으로 아내와 아이에게 안심 한약을 건네는 장면 & 하단 클린 스펙(`간 수치 AST 21 / ALT 18 정상 유지` · `항산화 +163% 개선` · `10단계 원내 안전 탕전 시스템`) ➔ `NEXT: 02 바른 추나`
    - **② 바른 추나 · 척추교정 (`homepage/chuna.html` / `wordpress-chuna.html`)**
      - 접속 주소: [http://localhost:3000/chuna.html](http://localhost:3000/chuna.html)
      - 우측 6대 비주얼 플레이트: 3D 레이저 체형 대칭 스캔(`detail_chuna_pelvis.jpg`) ➔ 원장 1:1 경추 추나 풀스크린(`detail_chuna_cervical.jpg`) ➔ 60fps 척추 분절 정렬 & 추간공 감압 시뮬레이터 ➔ 심부 신경근 정제 약침(`detail_chuna_acupuncture.jpg`) ➔ 통증 해방 만세 화보(`life_4b_chuna_manse.jpg`) & *JAMA Network Open* `-67.4%` 통증 감소 그래픽 바 ➔ `NEXT: 05 바른 탈모`

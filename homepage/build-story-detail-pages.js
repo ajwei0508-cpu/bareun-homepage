@@ -10,13 +10,13 @@ const PAGES = [
     wpFile: 'wordpress-director.html',
     tabIdx: 0,
     theme: {
-      bgDark: '#121418',
-      bgPanel: 'rgba(16, 19, 24, 0.94)',
+      bgDark: '#1a1411',
+      bgPanel: 'rgba(24, 18, 15, 0.96)',
       accent: '#D4AF37',
-      accentLight: '#FDE68A',
+      accentLight: '#FFEDD7',
       secondary: '#10B981',
-      glowA: 'rgba(212, 175, 55, 0.11)',
-      glowB: 'rgba(16, 185, 129, 0.08)'
+      glowA: 'rgba(212, 175, 55, 0.08)',
+      glowB: 'rgba(220, 80, 0, 0.05)'
     },
     meta: {
       eyebrow: '01 / REPRESENTATIVE DIRECTOR STORY',
@@ -44,83 +44,51 @@ const PAGES = [
     },
     plates: [
       {
-        type: 'motion-story',
-        indexPill: 'STORY 01 / 자세한 설명의 시작',
-        metricPill: '따스한 채광 · 호흡 줌 모션 (Breathing Zoom)',
+        type: 'clean-video',
+        stepLabel: 'STORY 01 · VIDEO',
         title: '자세한 설명의 시작',
-        sub: '원인 모를 통증으로 지친 일상에서 바른한의원의 따뜻한 문을 열고 들어오는 첫걸음 (따스한 채광 + 호흡 줌 모션)',
+        sub: '원인 모를 통증으로 지친 일상에서 바른한의원의 따뜻한 문을 열고 들어오는 첫걸음',
         caption: 'STORY 01 · 자세한 설명의 시작 — 원인 모를 통증으로 지친 일상에서 바른한의원의 따뜻한 문을 열고 들어오는 첫걸음입니다.',
-        frames: [
-          'detail_director_story1_enter.jpg?v=pov15',
-          'card_1_director.jpg?v=pov15',
-          'life_1a0_infertility_before.jpg?v=pov15'
-        ],
-        fx: 'warm-breath-zoom',
-        durationSec: 6.5
+        videoSrc: 'detail_director_story1.mp4?v=oryzo3',
+        poster: 'detail_director_story1_clean.jpg?v=oryzo3'
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 / 손끝으로 읽는 1:1 정밀 맥진 · FULLSCREEN',
-        metricPill: '양 손목 촌·관·척 맥진 · 실시간 심박·맥파 오버레이',
+        stepLabel: 'STORY 02',
         title: '손끝으로 읽는 1:1 정밀 맥진',
-        sub: '안정위 원장님이 환자의 양 손목 촌·관·척 맥을 짚으며 자율신경과 오장육부의 불균형을 읽어내는 장면 (실시간 심박·맥파 파동 오버레이 모션)',
+        sub: '안정위 원장님이 환자의 양 손목 촌·관·척 맥을 짚으며 자율신경과 오장육부의 불균형을 읽어내는 장면',
         caption: 'STORY 02 · 손끝으로 읽는 1:1 정밀 맥진 — 환자의 양 손목 촌·관·척 맥을 짚으며 자율신경과 오장육부의 불균형을 읽어냅니다.',
-        frames: [
-          'detail_director_story2_both_wrists_pulse.jpg?v=pov15',
-          'detail_director_pulse.jpg?v=pov15',
-          'life_1c_clinic_exam.jpg?v=pov15'
-        ],
-        fx: 'live-ecg-pulse-wave',
-        durationSec: 6.0
+        imgSrc: 'detail_director_story2_clean.jpg?v=oryzo3'
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 03 / 현대의학 통합 치료 설계',
-        metricPill: '깊은 공감 · 사상체질 × 현대의학 1:1 맞춤 설계',
+        type: 'clean-image',
+        stepLabel: 'STORY 03',
         title: '현대의학 통합 치료 설계',
         sub: '환자말에 깊이 끄덕이며 자세하게 치료를 설계하여 환자가 만족하는 장면',
-        caption: 'STORY 03 · 현대의학 통합 치료 설계 — 환자 말에 깊이 고개를 끄덕이며 자세하게 통합 치료를 설계하여 환자가 깊이 만족하는 장면입니다.',
-        frames: [
-          'detail_director_story3_nod_design.jpg?v=pov15',
-          'detail_director_consult.jpg?v=pov15',
-          'life_1a1_infertility_treatment.jpg?v=pov15'
-        ],
-        fx: 'integrative-design-hud',
-        durationSec: 6.2
+        caption: 'STORY 03 · 현대의학 통합 치료 설계 — 환자 말에 깊이 공감하며 자세하게 통합 치료를 설계하여 환자가 만족하는 장면입니다.',
+        imgSrc: 'detail_director_story3_clean.jpg?v=oryzo3'
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 04 / 원장 직접 검수 고급 정품 약재',
-        metricPill: '1인칭 시점 · 골드 루페(확대경) 스캔 광학 모션',
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY 04',
         title: '원장 직접 검수 고급 정품 약재',
-        sub: '1인칭 시점 원장님이 직접 루페(확대경)로 러시아산 원용 분골과 GAP 인증 청정 약재를 검수하는 장면 (골드 루페 스캔 광학 모션)',
+        sub: '1인칭 시점 원장님이 직접 루페(확대경)로 러시아산 원용 분골과 GAP 인증 청정 약재를 검수하는 장면',
         caption: 'STORY 04 · 원장 직접 검수 고급 정품 약재 — 1인칭 시점 원장님이 직접 루페(확대경)로 러시아산 원용 분골과 GAP 인증 청정 약재를 검수합니다.',
-        frames: [
-          'detail_director_story4_loupe_pov.jpg?v=pov15',
-          'detail_director_herbs.jpg?v=pov15',
-          'detail_gongjindan_ingredients_macro.jpg?v=pov15'
-        ],
-        fx: 'gold-loupe-scan',
-        durationSec: 6.0
+        imgSrc: 'detail_director_story4_clean.jpg?v=oryzo3'
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 / 내 가족에게 쓸 수 없는 치료는 하지 않습니다',
-        metricPill: '복용 전후 간 수치(AST/ALT) 정상 유지 · 10단계 원내 안전 탕전',
+        type: 'clean-image',
+        stepLabel: 'STORY 05',
         title: '내 가족에게 쓸 수 없는 치료는 하지 않습니다',
-        sub: '가족에게 복용 전후 간 수치(AST/ALT) 정상 유지 및 항산화 수치 개선을 보여주는 실시간 데이터 차트 & 10단계 원내 안전 탕전 시스템',
-        caption: 'STORY 05 · 내 가족에게 쓸 수 없는 치료는 하지 않습니다 — 복용 전후 간 수치(AST/ALT) 정상 유지 및 항산화 수치 개선 차트와 10단계 원내 안전 탕전 시스템입니다.',
-        frames: [
-          'detail_director_story5_family_safety.jpg?v=pov15',
-          'detail_gongjindan_master.jpg?v=pov15',
-          'detail_director_consult.jpg?v=pov15'
-        ],
-        fx: 'liver-safety-decoction-chart',
-        durationSec: 6.8,
-        sciStats: [
-          { num: 'AST 21 / ALT 18', label: '복용 전후 간 수치(IU/L) 정상 범위 완벽 유지 · 간기능 안전성 99.4%', width: '99.4%' },
-          { num: '+163% 개선', label: '복용 후 항산화 효소(SOD·GSH) 수치 개선 & 10단계 원내 안전 탕전', width: '94%' }
+        sub: '복용 전후 간 수치(AST/ALT) 정상 유지 및 항산화 수치 개선 데이터 & 10단계 원내 안전 탕전 시스템',
+        caption: 'STORY 05 · 내 가족에게 쓸 수 없는 치료는 하지 않습니다 — 복용 전후 간 수치(AST/ALT) 정상 유지 및 항산화 수치 개선과 10단계 원내 안전 탕전 시스템입니다.',
+        imgSrc: 'detail_director_story5_clean.jpg?v=oryzo3',
+        cleanTags: [
+          '간 수치 AST 21 / ALT 18 정상 유지 (안전성 99.4%)',
+          '항산화 효소(SOD·GSH) +163% 개선',
+          '10단계 원내 안전 탕전 시스템'
         ]
       }
     ],
@@ -129,7 +97,7 @@ const PAGES = [
       eyebrow: 'NEXT STORY · 02 / 06',
       title: '바른 추나 · 척추교정',
       desc: '틀어진 경추·요추·골반의 3차원 정렬을 바로잡아 통증의 뿌리를 끊어내는 추나 스토리',
-      bg: 'detail_chuna_cervical.jpg?v=pov15',
+      bg: 'detail_chuna_cervical.jpg?v=oryzo3',
       caption: '다음 스토리: 틀어진 경추·요추·골반의 3차원 정렬을 바로잡는 바른 추나 클리닉으로 이어집니다.'
     }
   },
@@ -809,6 +777,46 @@ function buildPageHtml(page) {
 
   const platesHtml = page.plates.map((p, idx) => {
     const numStr = `0${idx + 1}`;
+    if (p.type === 'clean-video') {
+      return `
+        <!-- PLATE ${numStr}: Lusion Clean Video Plate -->
+        <article class="project-details-item is-video is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''} data-caption="${p.caption}">
+          <div class="plate-media-inner">
+            <video class="lusion-clean-media" src="${p.videoSrc}" poster="${p.poster}" autoplay muted loop playsinline></video>
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                <span class="clean-step-label">${p.stepLabel || `STORY ${numStr}`}</span>
+                <h2 class="plate-caption-title">${p.title}</h2>
+                <p class="plate-caption-sub">${p.sub}</p>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    if (p.type === 'clean-image') {
+      const tagsHtml = p.cleanTags ? `
+                <div class="clean-spec-tags">
+                  ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
+                </div>` : '';
+      return `
+        <!-- PLATE ${numStr}: Lusion Clean Image Plate -->
+        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''} data-caption="${p.caption}">
+          <div class="plate-media-inner" onclick="window.openCleanLightbox('${p.imgSrc}')">
+            <img class="lusion-clean-media" src="${p.imgSrc}" alt="${p.title}" draggable="false">
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                <span class="clean-step-label">${p.stepLabel || `STORY ${numStr}`}</span>${tagsHtml}
+                <h2 class="plate-caption-title">${p.title}</h2>
+                <p class="plate-caption-sub">${p.sub}</p>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
     if (p.type === 'sim-canvas') {
       return `
         <!-- PLATE ${numStr}: Live 60fps Biomedical Simulation -->
@@ -1421,6 +1429,86 @@ function buildPageHtml(page) {
       overflow: hidden;
     }
 
+    /* Lusion Oryzo_AI Clean Video & Image Plates */
+    .project-details-item.is-clean-plate {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 237, 215, 0.12);
+      background: #14100E;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+
+    .project-details-item.is-clean-plate.is-active-plate {
+      border-color: rgba(255, 237, 215, 0.36);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.72);
+    }
+
+    .project-details-item.is-clean-plate.is-image .plate-media-inner {
+      cursor: zoom-in;
+    }
+
+    .lusion-clean-media {
+      position: absolute;
+      inset: -4%;
+      width: 108%;
+      height: 108%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      will-change: transform;
+      transition: transform 0.12s linear;
+    }
+
+    .clean-plate-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 8, 7, 0) 0%,
+        rgba(10, 8, 7, 0) 58%,
+        rgba(10, 8, 7, 0.78) 100%
+      );
+      pointer-events: none;
+    }
+
+    .clean-plate-caption {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 24px;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .clean-step-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .clean-spec-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .clean-spec-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(18, 14, 12, 0.72);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 237, 215, 0.22);
+      color: #FFEDD7;
+      font-size: 0.71rem;
+      font-weight: 600;
+    }
+
     /* Multi-Frame Motion Video Stage */
     .motion-video-stage {
       position: absolute;
@@ -1929,7 +2017,7 @@ function buildPageHtml(page) {
 
     <div class="header-center">
       <div id="project-details-header-info">
-        <span>● LIVE MOTION STORY · 휠/드래그로 감상</span>
+        <span>scroll to explore</span>
         <svg viewBox="0 0 16 16" fill="currentColor">
           <path d="M11.485 8.365 8.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
           <path d="M5.485 8.365 2.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
@@ -2278,6 +2366,13 @@ function buildPageHtml(page) {
         const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
         const ms = motionStages.find(m => m.stageEl === stageEl);
         const src = ms ? ms.frames[ms.currIdx] : '';
+        if (src) {
+          document.getElementById('lightbox-img').src = src;
+          document.getElementById('plate-lightbox').classList.add('open');
+        }
+      };
+
+      window.openCleanLightbox = function(src) {
         if (src) {
           document.getElementById('lightbox-img').src = src;
           document.getElementById('plate-lightbox').classList.add('open');
@@ -2950,6 +3045,11 @@ function buildPageHtml(page) {
           plates.forEach((plate, idx) => {
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
+            const cleanMedia = plate.querySelector('.lusion-clean-media');
+            if (cleanMedia) {
+              const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
+              cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
+            }
           });
 
           plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));

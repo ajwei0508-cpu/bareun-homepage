@@ -28,6 +28,7 @@ function rewriteAssetsForWP(html) {
     .replace(/load\('((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "load('" + ghBase + "$1'")
     .replace(/loadLinearTex\('((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1')")
     .replace(/src="((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
+    .replace(/poster="((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
       const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : ghBase + f).join('|');
       return 'data-frames="' + rewritten + '"';
