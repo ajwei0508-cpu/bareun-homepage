@@ -1269,7 +1269,7 @@
           whisper: ''
         },
         {
-          src: 'life_1c_clinic_exam.jpg?v=pov11',
+          src: 'life_1c_clinic_exam.jpg?v=pov12',
           chapter: 2,
           quote: '다시 찾은 한의원',
           povBadge: '',
@@ -1497,6 +1497,7 @@
       // ======================================================================
       const portalCanvas = document.getElementById('glsl-portal-canvas');
       let glRenderer, glScene, glCamera, glMaterial, glTextures = [], glManseTexture = null;
+      let glGrowthTextures = [], glPainTextures = [], glRecoveryTextures = [];
 
       const VERTEX_SHADER = `
         precision highp float;
@@ -1514,6 +1515,7 @@
         uniform sampler2D uTexCurr;
         uniform sampler2D uTexNext;
         uniform float uMix;
+        uniform float uSeqProgress;
         uniform float uTime;
         uniform float uVelocity;
         uniform float uWarmth;
@@ -1576,65 +1578,40 @@
           if (uMix <= 0.002 && uMode != 1 && uMode != 3 && uMode != 8) {
             finalColor = texture2D(uTexCurr, clamp(baseUv - parallax, 0.002, 0.998));
           }
-          else if (uMix >= 0.998) {
+          else if (uMix >= 0.998 && uMode != 1 && uMode != 3 && uMode != 8) {
             finalColor = texture2D(uTexNext, clamp(baseUv - parallax, 0.002, 0.998));
           }
           else if (uMode == 1) {
             // ================================================================
             // MODE 1: CHAPTER 3 ("쑥쑥 자란 우리 아이")
-            //         6-Stage Multi-Frame Vertical Height Surge ("쑤욱 올라오는 모션")
-            //         Aligns both short & tall boy heads to the rising height trajectory
-            //         with zero double-head ghosting and clean chalkboard above!
+            //         6-Stage Multi-Frame Classroom Height Surge ("쑤욱 올라오는 모션")
+            //         Steps smoothly through 6 real height keyframes (0% -> 25% -> 50% -> 75% -> 96% -> 100%)
+            //         with 100% locked classroom background & upward growth-plate energy wave!
             // ================================================================
-            float stages = 6.0;
-            float stageIdx = floor(t * stages);
-            float stageFract = smoothstep(0.06, 0.94, fract(t * stages));
-            float steppedG = (stageIdx + stageFract) / stages;
-            // Combine 6 divided sub-frame steps with smooth upward surge momentum
-            float g = mix(t, steppedG, 0.62);
+            float centerBoyX = smoothstep(0.43, 0.46, baseUv.x) * (1.0 - smoothstep(0.59, 0.62, baseUv.x));
+            float bodyVert = smoothstep(0.04, 0.22, baseUv.y) * (1.0 - smoothstep(0.84, 0.92, baseUv.y));
+            float boyMask = centerBoyX * bodyVert;
 
-            // Isolate the center boy in the green hoodie (x ∈ [0.39, 0.61], clean gap from both classmates!)
-            float centerBoyX = smoothstep(0.382, 0.404, baseUv.x) * (1.0 - smoothstep(0.596, 0.618, baseUv.x));
-            float bodyAnchor = smoothstep(0.02, 0.24, baseUv.y);
+            // Gentle upward micro-flow strictly inside the boy silhouette between consecutive keyframes
+            vec2 uvCurr = baseUv - parallax;
+            uvCurr.y -= boyMask * t * 0.016;
 
-            // Height difference between short boy (head top y=0.653) and tall boy (head top y=0.855) is 0.202
-            float heightDelta = 0.202;
-            float tallDrop = (1.0 - g) * heightDelta;
-            float shortLift = g * heightDelta;
+            vec2 uvNext = baseUv - parallax;
+            uvNext.y += boyMask * (1.0 - t) * 0.016;
 
-            // Sample tall boy shifted down by tallDrop (so as g goes 0 -> 1, he rises up by +0.202!)
-            vec2 uvTallBoy = baseUv - parallax * g;
-            uvTallBoy.y += tallDrop * bodyAnchor;
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
+            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            // Sample short boy shifted up by shortLift (locked to the exact same rising head position!)
-            vec2 uvShortBoy = baseUv - parallax * (1.0 - g);
-            uvShortBoy.y -= shortLift * bodyAnchor;
+            float blendFactor = smoothstep(0.06, 0.94, t);
+            finalColor = mix(cCurr, cNext, blendFactor);
 
-            vec4 cCurrBg = texture2D(uTexCurr, clamp(baseUv - parallax * (1.0 - g), 0.002, 0.998));
-            vec4 cNextBg = texture2D(uTexNext, clamp(baseUv - parallax * g, 0.002, 0.998));
-
-            vec4 cShortRising = texture2D(uTexCurr, clamp(uvShortBoy, 0.002, 0.998));
-            vec4 cTallRising = texture2D(uTexNext, clamp(uvTallBoy, 0.002, 0.998));
-
-            // Inside the rising boy silhouette, morph expression from sad -> bright smile as he shoots up
-            float exprBlend = smoothstep(0.08, 0.52, g);
-            vec4 cBoyComposite = mix(cShortRising, cTallRising, exprBlend);
-
-            // Above the rising boy's current head top (uvTallBoy.y > 0.855), show the clean green chalkboard from uTexCurr!
-            float aboveHeadMask = smoothstep(0.846, 0.868, uvTallBoy.y);
-            vec4 cCenterColumn = mix(cBoyComposite, cCurrBg, aboveHeadMask);
-
-            // Classmates on left & right turn their heads to look up at him as he grows tall
-            float peersTurn = smoothstep(0.32, 0.88, g);
-            vec4 cOutsidePeers = mix(cCurrBg, cNextBg, peersTurn);
-
-            finalColor = mix(cOutsidePeers, cCenterColumn, centerBoyX);
-
-            // Subtle golden growth-plate energy rings rising up his spine/body across the 6 sub-frames
-            float waveY = mix(0.14, 0.86, g);
+            // Subtle golden growth-plate energy ring rising up his spine across the 6 frames
+            float seqP = clamp(uSeqProgress, 0.0, 1.0);
+            float seqActive = sin(seqP * 3.14159265);
+            float waveY = mix(0.14, 0.86, seqP);
             float scanCore = exp(-pow((baseUv.y - waveY) / 0.009, 2.0)) * centerBoyX;
-            float scanGlow = exp(-pow((baseUv.y - waveY) / 0.030, 2.0)) * centerBoyX;
-            finalColor.rgb += (vec3(0.99, 0.86, 0.42) * scanGlow * 0.48 + vec3(1.0, 0.97, 0.85) * scanCore * 0.40) * sinT;
+            float scanGlow = exp(-pow((baseUv.y - waveY) / 0.032, 2.0)) * centerBoyX;
+            finalColor.rgb += (vec3(0.99, 0.86, 0.42) * scanGlow * 0.45 + vec3(1.0, 0.97, 0.85) * scanCore * 0.38) * seqActive;
           }
           else if (uMode == 2) {
             // ================================================================
@@ -1672,76 +1649,61 @@
           else if (uMode == 3) {
             // ================================================================
             // MODE 3: CHAPTER 6 ("일하면서 온몸이 아파진 나")
-            //         Scroll-Driven Healthy Upright Posture -> Painful Hunched Posture
-            //         with Top-to-Bottom Pain Wave & Matched Background Bokeh
+            //         5-Stage Multi-Frame Posture Progression (Upright -> Neck Stiff -> Neck Pain -> Waist Pain -> Full Spine Pain)
+            //         with Top-to-Bottom Red Meridian Pain Wave
             // ================================================================
             float horizBody = exp(-pow((baseUv.x - 0.53) / 0.165, 2.0));
-            float vertBody = smoothstep(0.02, 0.12, baseUv.y) * (1.0 - smoothstep(0.88, 0.98, baseUv.y));
-            float subjectMask = horizBody * vertBody;
-
-            // Upper torso/neck hunch deformation as pain progresses with scroll (t: 0 -> 1)
             float upperTorso = smoothstep(0.42, 0.82, baseUv.y) * (1.0 - smoothstep(0.86, 0.96, baseUv.y));
             float bendMask = horizBody * upperTorso;
 
-            vec2 uvCurr = baseUv - parallax * (1.0 - t);
-            uvCurr.x += bendMask * t * 0.022;
-            uvCurr.y += bendMask * t * 0.026;
+            vec2 uvCurr = baseUv - parallax;
+            uvCurr.x += bendMask * t * 0.006;
+            uvCurr.y += bendMask * t * 0.008;
 
-            vec2 uvNext = baseUv - parallax * t;
-            uvNext.x -= bendMask * (1.0 - t) * 0.022;
-            uvNext.y -= bendMask * (1.0 - t) * 0.026;
+            vec2 uvNext = baseUv - parallax;
+            uvNext.x -= bendMask * (1.0 - t) * 0.006;
+            uvNext.y -= bendMask * (1.0 - t) * 0.008;
 
-            // Match creamy background bokeh on healthy starting image so only the posture transforms
-            float bgBlur = (1.0 - subjectMask) * 0.022;
-            vec4 cCurr = sampleBokehDisk(uTexCurr, uvCurr, bgBlur, aspect);
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            // Top-to-bottom pain progression wave (neck y=0.86 down to feet y=0.08)
-            float painWaveY = mix(0.88, 0.06, t);
-            float painRevealed = smoothstep(painWaveY - 0.11, painWaveY + 0.11, baseUv.y);
-            float blendT = clamp(mix(t, painRevealed, 0.58), 0.0, 1.0);
-
+            float seqP = clamp(uSeqProgress, 0.0, 1.0);
+            float seqActive = sin(seqP * 3.14159265);
+            float painWaveY = mix(0.88, 0.06, seqP);
             float waveCore = exp(-pow((baseUv.y - painWaveY) / 0.008, 2.0)) * horizBody;
             float waveAura = exp(-pow((baseUv.y - painWaveY) / 0.032, 2.0)) * horizBody;
 
-            finalColor = mix(cCurr, cNext, blendT);
+            finalColor = mix(cCurr, cNext, smoothstep(0.05, 0.95, t));
             vec3 painGlowCol = mix(vec3(0.94, 0.24, 0.24), vec3(1.0, 0.78, 0.45), waveCore);
-            finalColor.rgb += painGlowCol * (waveAura * 0.48 + waveCore * 0.42) * sinT;
+            finalColor.rgb += painGlowCol * (waveAura * 0.45 + waveCore * 0.38) * seqActive;
           }
           else if (uMode == 8) {
             // ================================================================
             // MODE 8: CHAPTER 6 FINALE ("관절 튼튼 회복")
-            //         Scroll-Driven Neutral Standing -> Joyful "만세!" (Hurray!) Stretch
+            //         3-Stage Multi-Frame Recovery Stretch (Neutral -> Arms Shoulder-Level -> Joyful "만세!" Hurray!)
             //         with Emerald-Green Healing Vitality Wave
             // ================================================================
             float horizBody = exp(-pow((baseUv.x - 0.53) / 0.195, 2.0));
-            float vertBody = smoothstep(0.02, 0.10, baseUv.y) * (1.0 - smoothstep(0.92, 0.99, baseUv.y));
-            float subjectMask = horizBody * vertBody;
-
-            // Upward arm-raising lift motion during "만세!" stretch
             float upperLift = smoothstep(0.45, 0.92, baseUv.y) * horizBody;
 
-            vec2 uvCurr = baseUv - parallax * (1.0 - t);
-            uvCurr.y -= upperLift * t * 0.032;
+            vec2 uvCurr = baseUv - parallax;
+            uvCurr.y -= upperLift * t * 0.010;
 
-            vec2 uvNext = baseUv - parallax * t;
-            uvNext.y += upperLift * (1.0 - t) * 0.028;
+            vec2 uvNext = baseUv - parallax;
+            uvNext.y += upperLift * (1.0 - t) * 0.010;
 
-            // Match creamy background bokeh on starting standing image
-            float bgBlur = (1.0 - subjectMask) * 0.022;
-            vec4 cCurr = sampleBokehDisk(uTexCurr, uvCurr, bgBlur, aspect);
+            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
             vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
 
-            float healWaveY = mix(0.88, 0.06, t);
-            float healRevealed = smoothstep(healWaveY - 0.12, healWaveY + 0.12, baseUv.y);
-            float blendT = clamp(mix(t, healRevealed, 0.52), 0.0, 1.0);
-
+            float seqP = clamp(uSeqProgress, 0.0, 1.0);
+            float seqActive = sin(seqP * 3.14159265);
+            float healWaveY = mix(0.10, 0.90, seqP);
             float waveCore = exp(-pow((baseUv.y - healWaveY) / 0.008, 2.0)) * horizBody;
             float waveAura = exp(-pow((baseUv.y - healWaveY) / 0.034, 2.0)) * horizBody;
 
-            finalColor = mix(cCurr, cNext, blendT);
+            finalColor = mix(cCurr, cNext, smoothstep(0.05, 0.95, t));
             vec3 healGlowCol = mix(vec3(0.06, 0.82, 0.56), vec3(0.75, 1.0, 0.88), waveCore);
-            finalColor.rgb += healGlowCol * (waveAura * 0.50 + waveCore * 0.42) * sinT;
+            finalColor.rgb += healGlowCol * (waveAura * 0.46 + waveCore * 0.38) * seqActive;
           }
           else if (uMode == 4) {
             // ================================================================
@@ -1902,8 +1864,9 @@
         placeholderTex.needsUpdate = true;
 
         const loader = new THREE.TextureLoader();
-        glTextures = FRAMES.map((f) => {
-          const tex = loader.load(f.src, (loadedTex) => {
+        if (loader.setCrossOrigin) loader.setCrossOrigin('anonymous');
+        const loadLinearTex = (src) => {
+          const tex = loader.load(src, (loadedTex) => {
             loadedTex.minFilter = THREE.LinearFilter;
             loadedTex.magFilter = THREE.LinearFilter;
             loadedTex.generateMipmaps = false;
@@ -1911,15 +1874,36 @@
           tex.minFilter = THREE.LinearFilter;
           tex.magFilter = THREE.LinearFilter;
           return tex || placeholderTex;
-        });
+        };
 
-        glManseTexture = loader.load('life_4b_chuna_manse.jpg?v=pov9', (loadedTex) => {
-          loadedTex.minFilter = THREE.LinearFilter;
-          loadedTex.magFilter = THREE.LinearFilter;
-          loadedTex.generateMipmaps = false;
-        }) || placeholderTex;
-        glManseTexture.minFilter = THREE.LinearFilter;
-        glManseTexture.magFilter = THREE.LinearFilter;
+        glTextures = FRAMES.map((f) => loadLinearTex(f.src));
+
+        // 6-Stage Growth Multi-Frame Textures (0% -> 25% -> 50% -> 75% -> 96% -> 100%)
+        glGrowthTextures = [
+          glTextures[7] || loadLinearTex('life_1d_growth_short.jpg?v=pov12'),
+          loadLinearTex('life_1d_growth_step1.jpg?v=pov12'),
+          loadLinearTex('life_1d_growth_step2.jpg?v=pov12'),
+          loadLinearTex('life_1d_growth_step3.jpg?v=pov12'),
+          loadLinearTex('life_1d_growth_step4.jpg?v=pov12'),
+          glTextures[9] || loadLinearTex('life_1d_growth_peers.jpg?v=pov12')
+        ];
+
+        // 5-Stage Chuna Pain Multi-Frame Textures (Upright -> Stiff -> Neck Pain -> Waist Pain -> Full Spine Pain)
+        glPainTextures = [
+          loadLinearTex('life_4a_pain_step0.jpg?v=pov12'),
+          loadLinearTex('life_4a_pain_step0_5.jpg?v=pov12'),
+          loadLinearTex('life_4a_pain_step1.jpg?v=pov12'),
+          loadLinearTex('life_4a_pain_step2.jpg?v=pov12'),
+          glTextures[17] || loadLinearTex('life_4a_work_spine_pain.jpg?v=pov12')
+        ];
+
+        // 3-Stage Chuna Recovery Multi-Frame Textures (Standing -> Shoulder-Level Lift -> Full "만세!" Stretch)
+        glManseTexture = loadLinearTex('life_4b_chuna_manse.jpg?v=pov12');
+        glRecoveryTextures = [
+          glTextures[20] || loadLinearTex('life_4b_chuna_recovery.jpg?v=pov12'),
+          loadLinearTex('life_4b_chuna_manse_mid.jpg?v=pov12'),
+          glManseTexture
+        ];
 
         glMaterial = new THREE.ShaderMaterial({
           vertexShader: VERTEX_SHADER,
@@ -1928,6 +1912,7 @@
             uTexCurr: { value: glTextures[0] || placeholderTex },
             uTexNext: { value: glTextures[1] || placeholderTex },
             uMix: { value: 0.0 },
+            uSeqProgress: { value: 0.0 },
             uTime: { value: 0.0 },
             uVelocity: { value: 0.0 },
             uWarmth: { value: 1.08 },
@@ -2146,6 +2131,10 @@
       }
       let growthCompletedAtMs = 0;
       let currentStarReveal = 0.0;
+      let currentPainProgress = 0.0;
+      let currentManseProgress = 0.0;
+      let lastShaderCurrIdx = -1;
+      let shaderFrameEnterTime = performance.now();
 
       function storyNormToFrameFloat(storyNorm) {
         const clamped = Math.max(0, Math.min(1, storyNorm));
@@ -2398,14 +2387,16 @@
           svgOverlay.innerHTML = buildChildStarlightSparkles(timeSec, currentStarReveal, fadeOut);
         } else if (exactRel >= -0.05 && exactRel <= 0.96) {
           // Cut 1 ("일하면서 온몸이 아파진 나"):
-          // Scroll-driven healthy -> painful posture transformation + 1-by-1 sequential RED pain point reveal!
-          const painProgress = Math.max(0.0, Math.min(1.0, (exactRel - 0.04) / 0.70));
+          // Multi-frame healthy -> painful posture transformation + 1-by-1 sequential RED pain point reveal!
+          const scrollPain = Math.max(0.0, Math.min(1.0, (exactRel - 0.04) / 0.70));
+          const painProgress = Math.max(currentPainProgress, scrollPain);
           const fadeOut = exactRel > 0.84 ? Math.max(0.0, 1.0 - (exactRel - 0.84) / 0.12) : 1.0;
           svgOverlay.innerHTML = buildSequentialPainStandingOverlay(painProgress, timeSec, fadeOut);
         } else if (exactRecovRel >= -0.05 && exactRecovRel <= 0.96) {
           // Cut 4 ("관절 튼튼 회복"):
-          // Scroll-driven standing -> joyful "만세!" motion + 1-by-1 sequential EMERALD GREEN joint reveal!
-          const manseProgress = Math.max(0.0, Math.min(1.0, (exactRecovRel - 0.04) / 0.70));
+          // Multi-frame standing -> joyful "만세!" motion + 1-by-1 sequential EMERALD GREEN joint reveal!
+          const scrollManse = Math.max(0.0, Math.min(1.0, (exactRecovRel - 0.04) / 0.70));
+          const manseProgress = Math.max(currentManseProgress, scrollManse);
           const fadeOut = exactRecovRel > 0.84 ? Math.max(0.0, 1.0 - (exactRecovRel - 0.84) / 0.12) : 1.0;
           svgOverlay.innerHTML = buildSequentialRecoveredManseOverlay(manseProgress, timeSec, fadeOut);
         } else if (rel > 0.5 && rel < 2.6) {
@@ -3280,6 +3271,11 @@
           ? 0.0
           : (rawMix >= transEnd ? 1.0 : (rawMix - holdEnd) / (transEnd - holdEnd));
 
+        if (currIdx !== lastShaderCurrIdx) {
+          lastShaderCurrIdx = currIdx;
+          shaderFrameEnterTime = now;
+        }
+
         if (glRenderer && glMaterial && glTextures.length > 0) {
           const currFrame = FRAMES[currIdx];
           const nextFrame = FRAMES[nextIdx];
@@ -3289,85 +3285,139 @@
           let texCurr = glTextures[currIdx];
           let texNext = glTextures[nextIdx];
           let shaderMix = localMix;
+          let shaderSeqProgress = localMix;
           let shaderMode = currFrame.mode;
 
           if (currIdx !== GROWTH_TALL_FRAME) {
             growthCompletedAtMs = 0;
             currentStarReveal = 0.0;
           }
+          if (currIdx !== CH6_START_FRAME) {
+            currentPainProgress = 0.0;
+          }
+          if (currIdx !== CH6_RECOVERED_FRAME) {
+            currentManseProgress = 0.0;
+          }
 
           if (currIdx === GROWTH_TALL_FRAME - 1 && localMix > 0.001) {
             // Transitioning from Frame 8 ("성장클리닉을 하다") -> enter the classroom at the short-child state first!
-            texNext = glTextures[growthShortIdx];
+            texNext = glGrowthTextures[0] || glTextures[growthShortIdx];
             shaderMode = 6;
-          } else if (currIdx === GROWTH_TALL_FRAME && rawMix <= 0.82) {
+          } else if (currIdx === GROWTH_TALL_FRAME && rawMix <= 0.84) {
             // Frame 9 ("쑥쑥 자란 우리 아이"):
             // Step 1: 6-Stage multi-frame height-growth surge from short child -> tall child ("쑤욱 올라오는 모션")
             // Step 2: ONLY AFTER the height growth finishes (growthProgress >= 0.96), pop in the twinkling stars!
-            texCurr = glTextures[growthShortIdx];
-            texNext = glTextures[GROWTH_TALL_FRAME];
             shaderMode = 1; // Mode 1: 6-Stage Multi-Frame Classroom Height Surge!
 
-            const enterElapsed = Math.max(0, (now - frameEnterTime) * 0.001);
-            const timeGrowth = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.10) / 1.75));
-            const scrollGrowth = Math.max(0.0, Math.min(1.0, (rawMix - 0.02) / 0.50));
+            const enterElapsed = Math.max(0, (now - shaderFrameEnterTime) * 0.001);
+            const timeGrowth = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.22) / 2.40));
+            const scrollGrowth = Math.max(0.0, Math.min(1.0, (rawMix - 0.02) / 0.62));
             const growthProgress = Math.max(timeGrowth, scrollGrowth);
-            shaderMix = growthProgress;
+
+            const growthTexCount = glGrowthTextures.length;
+            if (growthTexCount >= 2) {
+              const segFloat = growthProgress * (growthTexCount - 1);
+              const segIdx = Math.min(growthTexCount - 2, Math.floor(segFloat));
+              texCurr = glGrowthTextures[segIdx] || glTextures[growthShortIdx];
+              texNext = glGrowthTextures[segIdx + 1] || glTextures[GROWTH_TALL_FRAME];
+              shaderMix = segFloat - segIdx;
+            } else {
+              texCurr = glTextures[growthShortIdx];
+              texNext = glTextures[GROWTH_TALL_FRAME];
+              shaderMix = growthProgress;
+            }
+            shaderSeqProgress = growthProgress;
 
             if (growthProgress >= 0.96) {
               if (growthCompletedAtMs === 0) growthCompletedAtMs = now;
               const postGrowthSec = Math.max(0, (now - growthCompletedAtMs) * 0.001);
-              const scrollPostGrowth = rawMix > 0.52 ? Math.min(1.0, (rawMix - 0.52) / 0.22) : 0.0;
+              const scrollPostGrowth = rawMix > 0.56 ? Math.min(1.0, (rawMix - 0.56) / 0.22) : 0.0;
               currentStarReveal = Math.max(scrollPostGrowth, Math.min(1.0, postGrowthSec / 0.50));
             } else {
               growthCompletedAtMs = 0;
               currentStarReveal = 0.0;
             }
-          } else if (currIdx === GROWTH_TALL_FRAME && rawMix > 0.82) {
+          } else if (currIdx === GROWTH_TALL_FRAME && rawMix > 0.84) {
             // Transitioning out of Frame 9 ("쑥쑥 자란 우리 아이") into Frame 10 ("육아로 뱃살만...")
-            texCurr = glTextures[GROWTH_TALL_FRAME];
+            texCurr = glGrowthTextures[glGrowthTextures.length - 1] || glTextures[GROWTH_TALL_FRAME];
             texNext = glTextures[nextIdx];
             shaderMode = currFrame.mode;
-            shaderMix = Math.min(1.0, (rawMix - 0.82) / (0.96 - 0.82));
+            shaderMix = Math.min(1.0, (rawMix - 0.84) / (0.98 - 0.84));
+            shaderSeqProgress = 1.0;
             currentStarReveal = 1.0;
           } else if (currIdx === CH6_START_FRAME - 1 && localMix > 0.001) {
             // Transitioning into Chapter 6 Cut 1 ("일하면서 온몸이 아파진 나"):
-            // Enter at the HEALTHY upright standing posture first!
-            texNext = glTextures[ch6HealthyIdx];
+            // Enter at the HEALTHY upright standing posture (step 0) first!
+            texNext = glPainTextures[0] || glTextures[ch6HealthyIdx];
             shaderMode = 6;
           } else if (currIdx === CH6_START_FRAME && rawMix <= 0.84) {
             // Chapter 6 Cut 1 ("일하면서 온몸이 아파진 나"):
-            // Scroll-driven transformation from Healthy Upright Posture (life_4b_chuna_recovery.jpg)
-            // -> Painful Hunched Posture (life_4a_work_spine_pain.jpg) while 7 pain points appear one by one!
-            texCurr = glTextures[ch6HealthyIdx];
-            texNext = glTextures[CH6_START_FRAME];
+            // 5-Stage Multi-Frame transformation from Healthy Upright Posture -> Shoulder Tension -> Neck Pain -> Neck+Back Pain -> Full Spine Pain
+            const enterElapsed = Math.max(0, (now - shaderFrameEnterTime) * 0.001);
+            const timePain = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.20) / 2.30));
+            const scrollPain = Math.max(0.0, Math.min(1.0, (rawMix - 0.03) / 0.68));
+            const painProgress = Math.max(timePain, scrollPain);
+            currentPainProgress = painProgress;
+
+            const painTexCount = glPainTextures.length;
+            if (painTexCount >= 2) {
+              const segFloat = painProgress * (painTexCount - 1);
+              const segIdx = Math.min(painTexCount - 2, Math.floor(segFloat));
+              texCurr = glPainTextures[segIdx] || glTextures[ch6HealthyIdx];
+              texNext = glPainTextures[segIdx + 1] || glTextures[CH6_START_FRAME];
+              shaderMix = segFloat - segIdx;
+            } else {
+              texCurr = glTextures[ch6HealthyIdx];
+              texNext = glTextures[CH6_START_FRAME];
+              shaderMix = painProgress;
+            }
+            shaderSeqProgress = painProgress;
             shaderMode = 3;
-            shaderMix = Math.max(0.0, Math.min(1.0, (rawMix - 0.04) / 0.70));
           } else if (currIdx === CH6_START_FRAME && rawMix > 0.84) {
             // Transitioning out of "일하면서 온몸이 아파진 나" (painful posture) into "한의원에서 추나 치료"
-            texCurr = glTextures[CH6_START_FRAME];
+            texCurr = glPainTextures[glPainTextures.length - 1] || glTextures[CH6_START_FRAME];
             texNext = glTextures[nextIdx];
             shaderMode = 6;
             shaderMix = Math.min(1.0, (rawMix - 0.84) / (0.98 - 0.84));
+            shaderSeqProgress = 1.0;
+            currentPainProgress = 1.0;
           } else if (currIdx === CH6_RECOVERED_FRAME && rawMix <= 0.84) {
             // Chapter 6 Cut 4 ("관절 튼튼 회복"):
-            // Scroll-driven transformation from Neutral Standing (life_4b_chuna_recovery.jpg)
-            // -> Joyful "만세!" Stretch (life_4b_chuna_manse.jpg) while 7 recovered joints appear one by one in GREEN!
-            texCurr = glTextures[CH6_RECOVERED_FRAME];
-            texNext = glManseTexture || glTextures[CH6_RECOVERED_FRAME];
+            // 3-Stage Multi-Frame transformation from Neutral Standing -> Shoulder-Level Arm Lift -> Joyful "만세!" Stretch
+            const enterElapsed = Math.max(0, (now - shaderFrameEnterTime) * 0.001);
+            const timeManse = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.20) / 2.10));
+            const scrollManse = Math.max(0.0, Math.min(1.0, (rawMix - 0.03) / 0.68));
+            const manseProgress = Math.max(timeManse, scrollManse);
+            currentManseProgress = manseProgress;
+
+            const recovTexCount = glRecoveryTextures.length;
+            if (recovTexCount >= 2) {
+              const segFloat = manseProgress * (recovTexCount - 1);
+              const segIdx = Math.min(recovTexCount - 2, Math.floor(segFloat));
+              texCurr = glRecoveryTextures[segIdx] || glTextures[CH6_RECOVERED_FRAME];
+              texNext = glRecoveryTextures[segIdx + 1] || glManseTexture || glTextures[CH6_RECOVERED_FRAME];
+              shaderMix = segFloat - segIdx;
+            } else {
+              texCurr = glTextures[CH6_RECOVERED_FRAME];
+              texNext = glManseTexture || glTextures[CH6_RECOVERED_FRAME];
+              shaderMix = manseProgress;
+            }
+            shaderSeqProgress = manseProgress;
             shaderMode = 8;
-            shaderMix = Math.max(0.0, Math.min(1.0, (rawMix - 0.04) / 0.70));
           } else if (currIdx === CH6_RECOVERED_FRAME && rawMix > 0.84) {
             // Transitioning out of "관절 튼튼 회복" (Manse posture) into Chapter 7
-            texCurr = glManseTexture || glTextures[CH6_RECOVERED_FRAME];
+            texCurr = glRecoveryTextures[glRecoveryTextures.length - 1] || glManseTexture || glTextures[CH6_RECOVERED_FRAME];
             texNext = glTextures[nextIdx];
             shaderMode = currFrame.mode;
             shaderMix = Math.min(1.0, (rawMix - 0.84) / (0.98 - 0.84));
+            shaderSeqProgress = 1.0;
+            currentManseProgress = 1.0;
           }
 
           glMaterial.uniforms.uTexCurr.value = texCurr;
           glMaterial.uniforms.uTexNext.value = texNext;
           glMaterial.uniforms.uMix.value = shaderMix;
+          glMaterial.uniforms.uSeqProgress.value = shaderSeqProgress;
           glMaterial.uniforms.uTime.value = timeSec;
           glMaterial.uniforms.uVelocity.value = scrollVelocity;
           glMaterial.uniforms.uWarmth.value = (currFrame.warmth || 1.06) * (1 - localMix) + (nextFrame.warmth || 1.06) * localMix;
