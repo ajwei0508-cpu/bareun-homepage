@@ -36,7 +36,7 @@
        2. **[STORY 02 · IMAGE] 3D 체형 분석 & 1:1 수기 추나 (`detail_chuna_story2_clean.jpg`)**: 원장 얼굴 없이 손끝으로 틀어진 경추·요추·골반의 아탈구 지점을 촉진하고 밀고 당기며 정렬을 맞추는 정밀 수기 추나 화보
        3. **[STORY 03 · IMAGE] 척추 추간판 +3.8mm 감압 기전 (`detail_chuna_story3_clean.jpg`)**: 좁아져 신경을 누르던 디스크 간격이 추나 교정을 통해 `+3.8mm` 넓어지며 붉은 염증 신호가 푸른 회복 빛으로 바뀌는 3D 하이엔드 척추 시뮬레이션 아트워크
        4. **[STORY 04 · IMAGE] 심부 약침 & 어혈 한약 복합 치료 (`detail_chuna_story4_clean.jpg`)**: 원장 얼굴 없이 손상된 심부 인대와 힘줄에 정제 약침을 시술하여 염증을 빠르게 제거하고 어혈 한약으로 근육·인대를 강화하는 타겟 파동 화보
-       5. **[STORY 05 · IMAGE] 다시 찾은 가벼운 일상, "만세!" (`detail_chuna_story5_clean.jpg`)**: **유일하게 안정위 대표원장님의 따뜻한 미소 얼굴이 함께 등장하는 피날레 컷!** 허리를 짚던 환자가 통증 없이 활짝 웃으며 두 팔을 머리 위로 번쩍 들어 올리는 만세 화보 & JAMA 학술 근거(`VAS 통증 지수 -67.4% 감소` · `ROM +73.3% 향상`) ➔ `NEXT: 03 바른 성장`
+       5. **[STORY 05 · IMAGE] 다시 찾은 가벼운 일상, "만세!" (`detail_chuna_story5_clean.jpg`)**: **원장 사진 제외, STORY 01 동일 환자의 통증 해방 단독 만세 컷!** 허리를 짚던 환자가 통증 없이 활짝 웃으며 두 팔을 머리 위로 번쩍 들어 올리는 만세 화보 & SCI급 국제 학술지 근거 비수술 회복률 오버레이(**`허리·목 디스크(추간판 탈출증) 비수술 회복률 95.2% (PAIN · JAMA Netw Open)`** / **`척추관 협착증 통증·보행기능 회복률 91.4% (BMJ Open · J Clin Med)`**) ➔ `NEXT: 03 바른 성장`
    - **③ 바른 탈모 · 모근재생 (`homepage/hairloss.html` / `wordpress-hairloss.html`)**
      - 접속 주소: [http://localhost:3000/hairloss.html](http://localhost:3000/hairloss.html)
      - 우측 6대 비주얼 플레이트: 두피열(`38.4°C`) vs 수승화강 냉각(`34.2°C`) 열화상 비교(`detail_hair_thermography.jpg`) ➔ 원장 1:1 고농축 발모 약침 풀스크린(`detail_hair_pharmacopuncture.jpg`) ➔ 200배율 광학 현미경 다모낭(3모) 재생 시뮬레이터 ➔ 모유두세포 IGF-1·VEGF 8K 3D 아트워크(`detail_hair_follicle_3d.jpg`) ➔ 자연광 실사 자신감 회복 화보(`life_3b_hair_restored.jpg?v=pov10`) & `+158%` 모유두세포 증식 그래픽 바 ➔ `NEXT: 06 황제공진단`

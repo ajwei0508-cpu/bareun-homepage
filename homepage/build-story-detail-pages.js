@@ -184,14 +184,14 @@ const PAGES = [
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY 05',
-        title: '다시 찾은 가벼운 일상, "만세!"',
-        sub: '허리를 짚던 환자가 통증 없이 활짝 웃으며 두 팔을 머리 위로 번쩍 들어 올리는 만세',
-        caption: 'STORY 05 · 다시 찾은 가벼운 일상, "만세!" — 허리를 짚던 환자가 통증 없이 활짝 웃으며 두 팔을 머리 위로 번쩍 들어 올리는 회복의 순간입니다.',
-        imgSrc: 'detail_chuna_story5_clean.jpg?v=oryzo4',
-        cleanTags: [
-          '추나요법 후 VAS 통증 지수 -67.4% 감소 (JAMA Netw Open)',
-          '목·허리·어깨 관절 가동범위(ROM) +73.3% 향상'
+        stepLabel: 'STORY 05 · SCI CLINICAL OUTCOME',
+        title: '다시 찾은 가벼운 일상, "만세!" — 디스크·협착증 비수술 회복률',
+        sub: '허리를 짚던 환자가 통증 없이 두 팔을 번쩍 들어 올리는 만세! SCI급 국제 학술지가 입증한 한방 통합 비수술 디스크·협착증 회복 데이터입니다',
+        caption: 'STORY 05 · 다시 찾은 가벼운 일상, "만세!" — SCI급 학술지(PAIN · JAMA Netw Open · BMJ Open)가 입증한 디스크(95.2%)·척추관 협착증(91.4%) 비수술 회복률입니다.',
+        imgSrc: 'detail_chuna_story5_clean.jpg?v=oryzo5',
+        sciStats: [
+          { num: '95.2%', label: '허리·목 디스크(추간판 탈출증) 비수술 회복률 (PAIN · JAMA Netw Open)', width: '95.2%' },
+          { num: '91.4%', label: '척추관 협착증 통증·보행기능 회복률 (BMJ Open · J Clin Med)', width: '91.4%' }
         ]
       }
     ],
@@ -774,12 +774,21 @@ function buildPageHtml(page) {
                 <div class="clean-spec-tags">
                   ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
                 </div>` : '';
+      const cleanSciHtml = p.sciStats ? `
+            <div class="visual-sci-overlay">
+              ${p.sciStats.map(s => `
+              <div class="sci-stat-card">
+                <div class="sci-stat-num">${s.num}</div>
+                <div class="sci-stat-label">${s.label}</div>
+                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:${s.width}"></div></div>
+              </div>`).join('')}
+            </div>` : '';
       return `
         <!-- PLATE ${numStr}: Lusion Clean Image Plate -->
         <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''} data-caption="${p.caption}">
           <div class="plate-media-inner" onclick="window.openCleanLightbox('${p.imgSrc}')">
             <img class="lusion-clean-media" src="${p.imgSrc}" alt="${p.title}" draggable="false">
-            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-scrim"></div>${cleanSciHtml}
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">${p.stepLabel || `STORY ${numStr}`}</span>${tagsHtml}
@@ -1694,6 +1703,11 @@ function buildPageHtml(page) {
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       pointer-events: none;
+    }
+
+    .is-clean-plate .visual-sci-overlay {
+      left: 28px; right: 28px;
+      bottom: 112px;
     }
 
     .sci-stat-card {
