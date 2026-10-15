@@ -97,7 +97,7 @@ const PAGES = [
       eyebrow: 'NEXT STORY · 02 / 06',
       title: '바른 추나 · 척추교정',
       desc: '틀어진 경추·요추·골반의 3차원 정렬을 바로잡아 통증의 뿌리를 끊어내는 추나 스토리',
-      bg: 'detail_chuna_cervical.jpg?v=oryzo3',
+      bg: 'detail_chuna_story2_clean.jpg?v=oryzo4',
       caption: '다음 스토리: 틀어진 경추·요추·골반의 3차원 정렬을 바로잡는 바른 추나 클리닉으로 이어집니다.'
     }
   },
@@ -110,114 +110,88 @@ const PAGES = [
     wpFile: 'wordpress-chuna.html',
     tabIdx: 1,
     theme: {
-      bgDark: '#101518',
-      bgPanel: 'rgba(14, 19, 24, 0.94)',
+      bgDark: '#121716',
+      bgPanel: 'rgba(18, 23, 22, 0.96)',
       accent: '#10B981',
-      accentLight: '#6EE7B7',
+      accentLight: '#D1FAE5',
       secondary: '#D4AF37',
-      glowA: 'rgba(16, 185, 129, 0.12)',
-      glowB: 'rgba(212, 175, 55, 0.08)'
+      glowA: 'rgba(16, 185, 129, 0.08)',
+      glowB: 'rgba(212, 175, 55, 0.05)'
     },
     meta: {
       eyebrow: '02 / CHUNA BIOMECHANICAL STORY',
       title: '바른 추나 · 척추교정',
-      subtitleEn: '3D Biomechanical Spine & Pelvis Alignment',
+      subtitleEn: '3D Biomechanical Spine & Pelvis Decompression',
       desc: [
-        '진통제로 신경 신호만 잠시 꺼두면 디스크 압박은 그대로 남습니다. 반복되는 목·어깨·허리 통증은 결과가 아니라 무너진 척추·골반 중심축이 보내는 구조 신호입니다.',
-        '안정위 대표원장이 손끝으로 경추 C자 커브부터 틀어진 요추·골반까지 3차원 대칭축을 바로잡아 눌려 있던 추간공 신경 통로를 근본적으로 열어줍니다.'
+        '“무너진 뼈와 신경의 공간을 열어, 수술 없이 통증의 뿌리를 뽑다.” 진통제로 신경 신호만 잠시 꺼두면 디스크 압박은 그대로 남습니다. 육아와 업무로 굽어진 등, 끊어질 듯한 허리와 목 통증은 무너진 척추·골반 중심축이 보내는 구조 신호입니다.',
+        '3D 체형 분석과 1:1 수기 추나로 추간판 공간을 +3.8mm 감압 확장하고, 심부 정제 약침과 어혈 한약 복합 치료로 손상된 인대·신경 염증까지 근본적으로 회복시켜 두 팔 벌려 “만세!”를 외치는 가벼운 일상을 되찾아 드립니다.'
       ],
-      ctaText: '추나 · 통증 1:1 진료 예약하기',
+      ctaText: '추나 · 비수술 척추 진료 예약하기',
       reserveProgram: '추나 척추·전신통증 클리닉',
-      checklistTitle: '일상 속 척추·관절 통증 공감 체크',
+      checklistTitle: '환자 공감 생활 불편감 체크리스트',
       checklistItems: [
-        '모니터·스마트폰을 볼 때 뒷목과 승모근이 돌처럼 굳고 뻐근하다',
-        '아침에 일어날 때 허리가 뻣뻣해 바로 펴기가 두렵고 찌릿하다',
-        '오래 앉아 있으면 골반이 틀어진 느낌과 함께 다리·발목이 저리다',
-        '치마나 바지가 한쪽으로 돌아가고 양쪽 어깨·골반 높이가 다르다',
-        '진통제나 물리치료를 받아도 며칠 지나면 통증이 다시 재발한다'
+        '아침에 일어날 때 목·어깨가 돌처럼 굳고 뒷목이 뻐근하다',
+        '오래 앉아 있으면 허리가 끊어질 듯 아프고 골반·다리가 저리다',
+        '거울을 보면 양쪽 어깨 높이가 다르고 거북목·라운드숄더가 심하다',
+        '진통제나 물리치료를 받아도 그때뿐이고 통증이 계속 재발한다',
+        '디스크·협착증 진단을 받았지만 수술 없이 비수술로 치료하고 싶다'
       ],
       doctorAdvice: {
-        zero: '일상이나 근무 중 겪고 계신 통증 부위를 체크해 보세요. 무너진 신체 중심축 상태를 즉시 진단해 드립니다.',
-        low: '경추·요추 주변 근육과 인대의 긴장이 시작된 단계입니다. 디스크 내압이 더 높아지기 전에 1:1 수기 추나로 정렬을 맞추면 빠르게 가벼워집니다.',
-        high: '척추·골반 비대칭으로 추간공 신경 통로가 좁아진 위험 신호입니다. 원장 1:1 정밀 추나 감압과 심부 신경근 약침 병행 치료가 꼭 필요합니다.'
+        zero: '위 환자 공감 생활 불편감 체크리스트 중 해당하시는 증상을 체크해 보세요. 무너진 척추·골반 중심축 상태를 즉시 진단해 드립니다.',
+        low: '경추·요추 주변 심부 근육과 인대의 구조적 긴장이 시작된 단계입니다. 디스크 내압이 더 높아지기 전에 1:1 수기 추나로 아탈구 정렬을 맞추면 빠르게 가벼워집니다.',
+        high: '척추·골반 비대칭으로 추간판 신경 통로가 좁아진 상태입니다. 추간판 +3.8mm 감압 추나 교정과 심부 약침·어혈 한약 복합 비수술 치료가 꼭 필요한 시점입니다.'
       }
     },
     plates: [
       {
-        type: 'motion-story',
-        indexPill: 'STORY 01 / 일하면서 온몸이 아파진 나',
-        metricPill: '5단계 연속 통증 발생 모션 · 7대 관절 스캔',
-        title: '열심히 일한 당신의 어깨와 허리, 어느새 무너져 내린 중심축',
-        sub: '바른 자세에서 어깨 경직, 뒷목 통증, 허리 통증까지 도미노처럼 번지는 5단계 연속 모션입니다',
-        caption: 'STORY 01 · 열심히 근무하며 목부터 어깨·척추·허리·다리까지 도미노처럼 무너지는 5단계 연속 통증 모션입니다.',
-        frames: [
-          'life_4a_pain_step0.jpg?v=pov13',
-          'life_4a_pain_step0_5.jpg?v=pov13',
-          'life_4a_pain_step1.jpg?v=pov13',
-          'life_4a_pain_step2.jpg?v=pov13',
-          'life_4a_work_spine_pain.jpg?v=pov13'
-        ],
-        fx: 'spine-pain-scan',
-        durationSec: 5.5
+        type: 'clean-video',
+        stepLabel: 'STORY 01 · VIDEO',
+        title: '일상을 멈추게 한 찌릿한 통증',
+        sub: '사무실 컴퓨터에 앉아서 업무를 보는데 허리·목 통증이 서서히 몰려와 허리를 짚고 찡그리는 5단계 연속 통증 발현 모션 시퀀스 + 붉은 신경 압박 파동',
+        caption: 'STORY 01 · 일상을 멈추게 한 찌릿한 통증 — 사무실 컴퓨터 업무 중 허리·목 통증이 서서히 몰려와 허리를 짚고 찡그리는 5단계 연속 통증 발현 모션 시퀀스입니다.',
+        videoSrc: 'detail_chuna_story1.mp4?v=oryzo4',
+        poster: 'detail_chuna_story1_clean.jpg?v=oryzo4'
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 / 1:1 정밀 추나 수기 교정 · FULLSCREEN',
-        metricPill: '추간공 신경 통로 +3.8mm 감압 확장',
-        title: '밀리미터 단위로 신경의 숨통을 틔우는 대표원장 1:1 추나',
-        sub: '3D 체형 분석부터 경추·요추 수기 추나까지 틀어진 뼈와 관절을 제자리로 맞추는 라이브 스토리',
-        caption: 'STORY 02 · 안정위 대표원장이 직접 손끝으로 틀어진 경추 마디와 요추·골반 추간공을 정밀 교정합니다.',
-        frames: [
-          'detail_chuna_pelvis.jpg?v=pov13',
-          'detail_chuna_cervical.jpg?v=pov13',
-          'life_4a_treatment.jpg?v=pov13'
-        ],
-        fx: 'chuna-laser-grid',
-        durationSec: 6.0
+        stepLabel: 'STORY 02',
+        title: '3D 체형 분석 & 1:1 수기 추나',
+        sub: '원장님이 직접 손으로 틀어진 경추·요추·골반의 아탈구 지점을 촉진하고 밀고 당기며 정렬을 맞추는 정밀 추나 모션',
+        caption: 'STORY 02 · 3D 체형 분석 & 1:1 수기 추나 — 직접 손으로 틀어진 경추·요추·골반의 아탈구 지점을 촉진하고 밀고 당기며 3차원 정렬을 맞춥니다.',
+        imgSrc: 'detail_chuna_story2_clean.jpg?v=oryzo4'
       },
       {
-        type: 'sim-canvas',
-        simId: 'chuna-spine',
-        indexPill: 'STORY 03 / 60FPS 척추 분절 정렬 & 신경 감압 모션',
-        beforeLabel: '교정 전 · 추간판 편측 압박 & 신경염증',
-        afterLabel: '추나 교정 후 · 3D 수직 정렬 & 신경 감압',
-        title: '붉게 눌리던 디스크가 에메랄드빛 수직 중심축으로 펴지는 순간',
-        sub: '수기 추나 교정을 통해 틀어진 척추 분절이 정렬되고 추간공 신경 압박이 해소되는 60fps 시뮬레이션입니다',
-        caption: 'STORY 03 · 붉게 압박받던 추간판과 신경근이 수기 추나 교정 후 에메랄드빛 수직 정렬로 회복되는 실시간 기전입니다.'
+        type: 'clean-image',
+        stepLabel: 'STORY 03',
+        title: '척추 추간판 +3.8mm 감압 기전',
+        sub: '좁아져 신경을 누르던 디스크 간격이 추나 교정을 통해 +3.8mm 넓어지며 붉은 염증 신호가 푸른 회복 빛으로 바뀌는 3D 하이엔드 척추 시뮬레이션',
+        caption: 'STORY 03 · 척추 추간판 +3.8mm 감압 기전 — 좁아져 신경을 누르던 디스크 간격이 추나 교정을 통해 +3.8mm 넓어지며 붉은 염증 신호가 푸른 회복 빛으로 바뀝니다.',
+        imgSrc: 'detail_chuna_story3_clean.jpg?v=oryzo4',
+        cleanTags: [
+          '추간판 신경 통로 +3.8mm 감압 확장',
+          '붉은 신경 압박 염증 ➔ 푸른 회복 기전 전환'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 04 / 심부 신경근 약침 & 관절 정밀 치료',
-        metricPill: '무스테로이드 고순도 약침 · 인대 강화',
-        title: '손이 닿지 않는 깊은 염증까지 깨끗하게 씻어내는 정제 약침',
-        sub: '추나로 열어준 공간에 고농축 약침과 발목·관절 침구 치료를 더해 부종과 통증을 빠르게 잠재웁니다',
-        caption: 'STORY 04 · 심부 인대와 신경근 주위의 염증 물질(사이토카인)을 고농축 정제 약침과 정밀 침구로 치료합니다.',
-        frames: [
-          'detail_chuna_acupuncture.jpg?v=pov13',
-          'life_4a2_ankle_acupuncture.jpg?v=pov13',
-          'bareun_step4_pain_chuna_healing.jpg?v=pov13'
-        ],
-        fx: 'pulse-ripples',
-        durationSec: 6.0
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY 04',
+        title: '심부 약침 & 어혈 한약 복합 치료',
+        sub: '손상된 심부 인대와 힘줄에 손에 들고 있는 정제 약침으로 염증을 빠르게 제거하고 근육·인대를 강화하는 타겟 파동 모션',
+        caption: 'STORY 04 · 심부 약침 & 어혈 한약 복합 치료 — 손상된 심부 인대와 힘줄에 정제 약침과 어혈 한약으로 염증을 빠르게 제거하고 근육·인대를 강화합니다.',
+        imgSrc: 'detail_chuna_story4_clean.jpg?v=oryzo4'
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 / 관절 튼튼 회복 만세! & JAMA 논문 입증',
-        metricPill: '3단계 연속 만세 모션 · 통증 -67.4% 감소',
-        title: '가벼워진 어깨와 허리, 두 팔 벌려 만끽하는 상쾌한 일상',
-        sub: '편안한 기립에서 양팔을 높이 들어 올리는 3단계 연속 회복 모션과 에메랄드빛 7대 관절 회복 스캔입니다',
-        caption: 'STORY 05 · JAMA Network Open 등 세계적 학술지가 입증한 추나요법의 통증 감소(-67.4%)와 3단계 만세 회복 모션입니다.',
-        frames: [
-          'life_4b_chuna_recovery.jpg?v=pov13',
-          'life_4b_chuna_manse_mid.jpg?v=pov13',
-          'life_4b_chuna_manse.jpg?v=pov13'
-        ],
-        fx: 'manse-emerald',
-        durationSec: 5.2,
-        sciStats: [
-          { num: '-67.4%', label: '추나요법 후 VAS 통증 지수 감소율 (JAMA Netw Open)', width: '86%' },
-          { num: '+73.3%', label: '목·허리·어깨 관절 가동범위(ROM) 및 기능 지수 향상', width: '91%' }
+        type: 'clean-image',
+        stepLabel: 'STORY 05',
+        title: '다시 찾은 가벼운 일상, "만세!"',
+        sub: '허리를 짚던 환자가 통증 없이 활짝 웃으며 두 팔을 머리 위로 번쩍 들어 올리는 만세',
+        caption: 'STORY 05 · 다시 찾은 가벼운 일상, "만세!" — 허리를 짚던 환자가 통증 없이 활짝 웃으며 두 팔을 머리 위로 번쩍 들어 올리는 회복의 순간입니다.',
+        imgSrc: 'detail_chuna_story5_clean.jpg?v=oryzo4',
+        cleanTags: [
+          '추나요법 후 VAS 통증 지수 -67.4% 감소 (JAMA Netw Open)',
+          '목·허리·어깨 관절 가동범위(ROM) +73.3% 향상'
         ]
       }
     ],
