@@ -1212,13 +1212,13 @@
       const FRAMES = [
         // --- CHAPTER 1: 임신이 되지 않아 힘들게 얻은 선물 (Frames 0 ~ 3) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a0_infertility_before.jpg?v=pov7',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a0_infertility_before.jpg?v=pov11',
           chapter: 1,
           quote: '간절한 기다림',
           povBadge: '',
           stepLabel: '',
           mode: 0, // Mode 0: Lusion Liquid Silk Flow
-          warmth: 1.08,
+          warmth: 1.06,
           focal: [0.52, 0.56],
           whisper: ''
         },
@@ -1234,14 +1234,14 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a_fertilization.jpg?v=pov7',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a_fertilization.jpg?v=pov11',
           chapter: 1,
           quote: '힘들게 얻은 선물',
           povBadge: '',
           stepLabel: '',
           mode: 6, // Mode 6: Iris Bokeh Aperture Focus-Pull -> newborn baby
-          warmth: 1.12,
-          focal: [0.56, 0.52],
+          warmth: 1.08,
+          focal: [0.52, 0.50],
           whisper: ''
         },
         {
@@ -1269,13 +1269,13 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_clinic_exam.jpg?v=pov8',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_clinic_exam.jpg?v=pov11',
           chapter: 2,
           quote: '다시 찾은 한의원',
           povBadge: '',
           stepLabel: '',
           mode: 5, // Mode 5: Anamorphic Golden Light Sweep -> joyful recovery hug
-          warmth: 1.09,
+          warmth: 1.06,
           focal: [0.50, 0.45],
           whisper: ''
         },
@@ -1350,27 +1350,27 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg?v=pov9',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg?v=pov11',
           chapter: 4,
           quote: '늘씬한 내가 되자',
           povBadge: '',
           stepLabel: '',
           mode: 7, // Mode 7: 3D Depth-Layer Parallax Push
-          warmth: 1.12,
-          focal: [0.52, 0.42],
+          warmth: 1.05,
+          focal: [0.58, 0.42],
           whisper: ''
         },
 
         // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 13 ~ 16) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_hairloss.jpg?v=pov7',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_hairloss.jpg?v=pov11',
           chapter: 5,
           quote: '심해진 탈모',
           povBadge: '',
           stepLabel: '',
           mode: 6, // Mode 6: Iris Bokeh Focus-Pull -> clinic scalp exam
-          warmth: 1.05,
-          focal: [0.54, 0.48],
+          warmth: 1.03,
+          focal: [0.52, 0.44],
           whisper: ''
         },
         {
@@ -1573,7 +1573,7 @@
 
           vec4 finalColor = vec4(0.0);
 
-          if (uMix <= 0.002 && uMode != 3 && uMode != 8) {
+          if (uMix <= 0.002 && uMode != 1 && uMode != 3 && uMode != 8) {
             finalColor = texture2D(uTexCurr, clamp(baseUv - parallax, 0.002, 0.998));
           }
           else if (uMix >= 0.998) {
@@ -1581,30 +1581,60 @@
           }
           else if (uMode == 1) {
             // ================================================================
-            // MODE 1: CHAPTER 3 — Classroom Height Growth Vertical Stretch
-            //         (Center Boy at x ≈ 0.51 physically stretches from short to tall!)
+            // MODE 1: CHAPTER 3 ("쑥쑥 자란 우리 아이")
+            //         6-Stage Multi-Frame Vertical Height Surge ("쑤욱 올라오는 모션")
+            //         Aligns both short & tall boy heads to the rising height trajectory
+            //         with zero double-head ghosting and clean chalkboard above!
             // ================================================================
-            float horizMask = exp(-pow((baseUv.x - 0.51) / 0.145, 2.0));
-            float vertMask = smoothstep(0.10, 0.50, baseUv.y) * (1.0 - smoothstep(0.84, 0.98, baseUv.y));
-            float stretchMask = horizMask * vertMask;
+            float stages = 6.0;
+            float stageIdx = floor(t * stages);
+            float stageFract = smoothstep(0.06, 0.94, fract(t * stages));
+            float steppedG = (stageIdx + stageFract) / stages;
+            // Combine 6 divided sub-frame steps with smooth upward surge momentum
+            float g = mix(t, steppedG, 0.62);
 
-            vec2 uvCurr = baseUv - parallax * (1.0 - t);
-            uvCurr.y -= stretchMask * t * 0.115;
-            vec2 uvNext = baseUv - parallax * t;
-            uvNext.y += stretchMask * (1.0 - t) * 0.095;
+            // Isolate the center boy in the green hoodie (x ∈ [0.39, 0.61], clean gap from both classmates!)
+            float centerBoyX = smoothstep(0.382, 0.404, baseUv.x) * (1.0 - smoothstep(0.596, 0.618, baseUv.x));
+            float bodyAnchor = smoothstep(0.02, 0.24, baseUv.y);
 
-            uvCurr = (uvCurr - focal) / (1.0 + t * 0.06) + focal;
-            uvNext = (uvNext - focal) / (0.94 + t * 0.06) + focal;
+            // Height difference between short boy (head top y=0.653) and tall boy (head top y=0.855) is 0.202
+            float heightDelta = 0.202;
+            float tallDrop = (1.0 - g) * heightDelta;
+            float shortLift = g * heightDelta;
 
-            vec4 cCurr = texture2D(uTexCurr, clamp(uvCurr, 0.002, 0.998));
-            vec4 cNext = texture2D(uTexNext, clamp(uvNext, 0.002, 0.998));
+            // Sample tall boy shifted down by tallDrop (so as g goes 0 -> 1, he rises up by +0.202!)
+            vec2 uvTallBoy = baseUv - parallax * g;
+            uvTallBoy.y += tallDrop * bodyAnchor;
 
-            float waveY = mix(0.10, 0.94, t);
-            float scanCore = exp(-pow((baseUv.y - waveY) / 0.010, 2.0)) * horizMask;
-            float scanGlow = exp(-pow((baseUv.y - waveY) / 0.032, 2.0)) * horizMask;
+            // Sample short boy shifted up by shortLift (locked to the exact same rising head position!)
+            vec2 uvShortBoy = baseUv - parallax * (1.0 - g);
+            uvShortBoy.y -= shortLift * bodyAnchor;
 
-            finalColor = mix(cCurr, cNext, t);
-            finalColor.rgb += (vec3(0.99, 0.86, 0.42) * scanGlow * 0.55 + vec3(1.0, 0.97, 0.85) * scanCore * 0.45) * sinT;
+            vec4 cCurrBg = texture2D(uTexCurr, clamp(baseUv - parallax * (1.0 - g), 0.002, 0.998));
+            vec4 cNextBg = texture2D(uTexNext, clamp(baseUv - parallax * g, 0.002, 0.998));
+
+            vec4 cShortRising = texture2D(uTexCurr, clamp(uvShortBoy, 0.002, 0.998));
+            vec4 cTallRising = texture2D(uTexNext, clamp(uvTallBoy, 0.002, 0.998));
+
+            // Inside the rising boy silhouette, morph expression from sad -> bright smile as he shoots up
+            float exprBlend = smoothstep(0.08, 0.52, g);
+            vec4 cBoyComposite = mix(cShortRising, cTallRising, exprBlend);
+
+            // Above the rising boy's current head top (uvTallBoy.y > 0.855), show the clean green chalkboard from uTexCurr!
+            float aboveHeadMask = smoothstep(0.846, 0.868, uvTallBoy.y);
+            vec4 cCenterColumn = mix(cBoyComposite, cCurrBg, aboveHeadMask);
+
+            // Classmates on left & right turn their heads to look up at him as he grows tall
+            float peersTurn = smoothstep(0.32, 0.88, g);
+            vec4 cOutsidePeers = mix(cCurrBg, cNextBg, peersTurn);
+
+            finalColor = mix(cOutsidePeers, cCenterColumn, centerBoyX);
+
+            // Subtle golden growth-plate energy rings rising up his spine/body across the 6 sub-frames
+            float waveY = mix(0.14, 0.86, g);
+            float scanCore = exp(-pow((baseUv.y - waveY) / 0.009, 2.0)) * centerBoyX;
+            float scanGlow = exp(-pow((baseUv.y - waveY) / 0.030, 2.0)) * centerBoyX;
+            finalColor.rgb += (vec3(0.99, 0.86, 0.42) * scanGlow * 0.48 + vec3(1.0, 0.97, 0.85) * scanCore * 0.40) * sinT;
           }
           else if (uMode == 2) {
             // ================================================================
@@ -2110,7 +2140,7 @@
       for (let i = 0; i < FRAMES.length - 1; i++) {
         const w = (i === CH6_START_FRAME || i === CH6_RECOVERED_FRAME)
           ? 2.4
-          : (i === GROWTH_TALL_FRAME ? 2.0 : 1.0);
+          : (i === GROWTH_TALL_FRAME ? 2.5 : 1.0);
         FRAME_STEP_WEIGHTS.push(w);
         totalStepWeight += w;
       }
@@ -3270,35 +3300,35 @@
             // Transitioning from Frame 8 ("성장클리닉을 하다") -> enter the classroom at the short-child state first!
             texNext = glTextures[growthShortIdx];
             shaderMode = 6;
-          } else if (currIdx === GROWTH_TALL_FRAME && rawMix <= 0.80) {
+          } else if (currIdx === GROWTH_TALL_FRAME && rawMix <= 0.82) {
             // Frame 9 ("쑥쑥 자란 우리 아이"):
-            // Step 1: Child height-growth motion from short child (life_1d_growth_short.jpg) -> tall child (life_1d_growth_peers.jpg)
+            // Step 1: 6-Stage multi-frame height-growth surge from short child -> tall child ("쑤욱 올라오는 모션")
             // Step 2: ONLY AFTER the height growth finishes (growthProgress >= 0.96), pop in the twinkling stars!
             texCurr = glTextures[growthShortIdx];
             texNext = glTextures[GROWTH_TALL_FRAME];
-            shaderMode = 1; // Mode 1: Classroom Height Growth Vertical Stretch!
+            shaderMode = 1; // Mode 1: 6-Stage Multi-Frame Classroom Height Surge!
 
             const enterElapsed = Math.max(0, (now - frameEnterTime) * 0.001);
-            const timeGrowth = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.08) / 1.15));
-            const scrollGrowth = Math.max(0.0, Math.min(1.0, (rawMix - 0.02) / 0.38));
+            const timeGrowth = Math.max(0.0, Math.min(1.0, (enterElapsed - 0.10) / 1.75));
+            const scrollGrowth = Math.max(0.0, Math.min(1.0, (rawMix - 0.02) / 0.50));
             const growthProgress = Math.max(timeGrowth, scrollGrowth);
             shaderMix = growthProgress;
 
             if (growthProgress >= 0.96) {
               if (growthCompletedAtMs === 0) growthCompletedAtMs = now;
               const postGrowthSec = Math.max(0, (now - growthCompletedAtMs) * 0.001);
-              const scrollPostGrowth = rawMix > 0.40 ? Math.min(1.0, (rawMix - 0.40) / 0.24) : 0.0;
-              currentStarReveal = Math.max(scrollPostGrowth, Math.min(1.0, postGrowthSec / 0.52));
+              const scrollPostGrowth = rawMix > 0.52 ? Math.min(1.0, (rawMix - 0.52) / 0.22) : 0.0;
+              currentStarReveal = Math.max(scrollPostGrowth, Math.min(1.0, postGrowthSec / 0.50));
             } else {
               growthCompletedAtMs = 0;
               currentStarReveal = 0.0;
             }
-          } else if (currIdx === GROWTH_TALL_FRAME && rawMix > 0.80) {
+          } else if (currIdx === GROWTH_TALL_FRAME && rawMix > 0.82) {
             // Transitioning out of Frame 9 ("쑥쑥 자란 우리 아이") into Frame 10 ("육아로 뱃살만...")
             texCurr = glTextures[GROWTH_TALL_FRAME];
             texNext = glTextures[nextIdx];
             shaderMode = currFrame.mode;
-            shaderMix = Math.min(1.0, (rawMix - 0.80) / (0.96 - 0.80));
+            shaderMix = Math.min(1.0, (rawMix - 0.82) / (0.96 - 0.82));
             currentStarReveal = 1.0;
           } else if (currIdx === CH6_START_FRAME - 1 && localMix > 0.001) {
             // Transitioning into Chapter 6 Cut 1 ("일하면서 온몸이 아파진 나"):
