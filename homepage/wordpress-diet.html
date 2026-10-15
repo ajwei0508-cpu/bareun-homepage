@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>바른 다이어트 · 식욕ZERO — 바른한의원 모션 스토리텔링 상세페이지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+/* WORDPRESS & ASTRA THEME CONTAINER RESET */
+.entry-content, .ast-container, .site-content, article.page, .ast-plain-container,
+.elementor, .elementor-section-wrap, .wp-block-group {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+    :root {
+      --bg-dark: #161114;
+      --bg-panel: rgba(22, 16, 19, 0.94);
+      --accent: #DF7E8E;
+      --accent-light: #FBE6EA;
+      --secondary: #D4AF37;
+      --gold: #D4AF37;
+      --gold-light: #F3E5AB;
+      --emerald: #10B981;
+      --text-main: #F8FAFC;
+      --text-sub: rgba(248, 250, 252, 0.76);
+      --text-muted: rgba(248, 250, 252, 0.48);
+      --border-subtle: rgba(255, 255, 255, 0.09);
+      --border-gold: rgba(212, 175, 55, 0.35);
+      --left-col-width: 455px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 20% 24%, rgba(223, 126, 142, 0.14) 0%, transparent 50%),
+        radial-gradient(circle at 80% 72%, rgba(212, 175, 55, 0.09) 0%, transparent 52%),
+        linear-gradient(135deg, #0D1014 0%, var(--bg-dark) 55%, #090B0E 100%);
+    }
+
+    /* Top Header */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 66px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 26px;
+      background: rgba(12, 14, 18, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-left { display: flex; align-items: center; gap: 14px; }
+
+    .brand-logo {
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: 'Noto Serif KR', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .brand-logo-mark {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .back-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.79rem;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+
+    .back-pill-btn:hover {
+      background: var(--accent);
+      color: #0B0D10;
+      border-color: var(--accent);
+      transform: translateX(-2px);
+    }
+
+    .header-center { display: flex; align-items: center; gap: 18px; }
+
+    #project-details-header-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    #project-details-header-info svg {
+      width: 14px; height: 14px;
+      animation: arrowPulseRight 1.6s infinite ease-in-out;
+    }
+
+    @keyframes arrowPulseRight {
+      0%, 100% { transform: translateX(0); opacity: 0.65; }
+      50% { transform: translateX(4px); opacity: 1; }
+    }
+
+    .clinic-quick-tabs { display: flex; align-items: center; gap: 5px; }
+
+    .clinic-tab {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .clinic-tab:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.06); }
+
+    .clinic-tab.active {
+      color: #0D0F12;
+      background: var(--accent-light);
+      border-color: var(--accent);
+      font-weight: 800;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .header-talk-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent) 0%, #B8860B 100%);
+      color: #0B0D10;
+      font-size: 0.8rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .header-talk-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    }
+
+    /* Main Split Stage */
+    #project-details {
+      position: relative;
+      z-index: 10;
+      width: 100vw;
+      height: 100vh;
+      padding-top: 66px;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* LEFT CLINIC GUIDE & EMPATHY CHECKLIST PANEL */
+    #project-details-meta {
+      width: var(--left-col-width);
+      min-width: var(--left-col-width);
+      height: calc(100vh - 66px);
+      background: var(--bg-panel);
+      backdrop-filter: blur(28px);
+      border-right: 1px solid var(--border-subtle);
+      padding: 24px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      z-index: 30;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+    }
+
+    .meta-eyebrow {
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    #project-details-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.85rem;
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .meta-subtitle-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.04rem;
+      color: var(--accent-light);
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+
+    #project-details-desc {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.82rem;
+      line-height: 1.62;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+
+    /* Interactive Patient Empathy Daily Discomfort Checklist */
+    .empathy-checklist-card {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 15px 16px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .empathy-checklist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .empathy-checklist-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--accent-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .empathy-count-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      color: var(--accent-light);
+      transition: all 0.25s ease;
+    }
+
+    .empathy-count-badge.active {
+      background: var(--accent);
+      color: #0B0D10;
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+    }
+
+    .empathy-checklist-sub {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .empathy-checklist-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .empathy-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.26);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .empathy-check-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .empathy-check-item.checked {
+      background: rgba(16, 185, 129, 0.13);
+      border-color: rgba(110, 231, 183, 0.55);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.14);
+    }
+
+    .empathy-check-input {
+      display: none;
+    }
+
+    .empathy-check-box {
+      width: 17px;
+      height: 17px;
+      min-width: 17px;
+      border-radius: 5px;
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.04);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+      color: transparent;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .empathy-check-box svg {
+      width: 11px;
+      height: 11px;
+      transform: scale(0.5);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .empathy-check-item.checked .empathy-check-box {
+      background: var(--emerald);
+      border-color: #6EE7B7;
+      color: #06281E;
+    }
+
+    .empathy-check-item.checked .empathy-check-box svg {
+      transform: scale(1);
+    }
+
+    .empathy-check-text {
+      font-size: 0.77rem;
+      line-height: 1.42;
+      color: rgba(248, 250, 252, 0.84);
+      word-break: keep-all;
+    }
+
+    .empathy-check-item.checked .empathy-check-text {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .empathy-diagnosis-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.09);
+      border-left: 3px solid var(--accent);
+      font-size: 0.75rem;
+      line-height: 1.52;
+      color: var(--accent-light);
+      word-break: keep-all;
+      transition: all 0.25s ease;
+    }
+
+    #project-details-launch-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(16, 185, 129, 0.18));
+      border: 1px solid var(--accent);
+      color: #FFFFFF;
+      font-size: 0.84rem;
+      font-weight: 800;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    #project-details-launch-cta:hover {
+      background: var(--accent);
+      color: #0B0D10;
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+    }
+
+    .cta-left-group { display: flex; align-items: center; gap: 9px; }
+
+    #project-details-launch-cta-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    .extra-detail-link {
+      display: block;
+      text-align: center;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--accent-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .extra-detail-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--accent);
+    }
+
+    /* Live Story Docent Box */
+    .live-plate-docent {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 13px 15px;
+    }
+
+    .docent-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+    }
+
+    .docent-step-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--accent-light);
+    }
+
+    .plate-jump-dots { display: flex; gap: 5px; }
+
+    .plate-dot-btn {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .plate-dot-btn.active,
+    .plate-dot-btn:hover {
+      background: var(--accent);
+      color: #0B0D10;
+      border-color: var(--accent);
+    }
+
+    .docent-active-caption {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #FFFFFF;
+      font-weight: 500;
+      min-height: 2.9em;
+      word-break: keep-all;
+    }
+
+    /* RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY */
+    #project-details-items-wrapper {
+      flex: 1;
+      height: calc(100vh - 66px);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      cursor: grab;
+    }
+
+    #project-details-items-wrapper:active { cursor: grabbing; }
+
+    #project-details-items-move-container {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 0 56px;
+      height: 100%;
+      will-change: transform;
+    }
+
+    .project-details-item {
+      position: relative;
+      width: 56vw;
+      max-width: 820px;
+      height: 76vh;
+      max-height: 680px;
+      border-radius: 22px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #101318;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .project-details-item[data-fullscreen] {
+      width: 66vw;
+      max-width: 960px;
+      height: 81vh;
+      max-height: 730px;
+    }
+
+    .project-details-item.is-active-plate {
+      border-color: rgba(212, 175, 55, 0.65);
+      box-shadow: 0 32px 85px rgba(0, 0, 0, 0.78), 0 0 36px rgba(212, 175, 55, 0.14);
+    }
+
+    .plate-media-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Multi-Frame Motion Video Stage */
+    .motion-video-stage {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0A0D10;
+    }
+
+    .motion-frame-layer {
+      position: absolute;
+      inset: -4%;
+      width: 108%;
+      height: 108%;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      will-change: transform, opacity;
+      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .plate-fx-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .full-sim-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #0B0E13;
+    }
+
+    .motion-progress-track {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.14);
+      z-index: 8;
+    }
+
+    .motion-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--emerald));
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .plate-gradient-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: linear-gradient(
+        180deg,
+        rgba(8, 10, 14, 0.42) 0%,
+        rgba(8, 10, 14, 0.02) 38%,
+        rgba(8, 10, 14, 0.16) 62%,
+        rgba(8, 10, 14, 0.88) 100%
+      );
+      pointer-events: none;
+    }
+
+    .plate-top-bar {
+      position: absolute;
+      top: 20px; left: 22px; right: 22px;
+      z-index: 7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .plate-index-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(12, 14, 18, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+    }
+
+    .live-rec-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 10px #10B981;
+      animation: liveRecPulse 1.4s infinite ease-in-out;
+    }
+
+    @keyframes liveRecPulse {
+      0%, 100% { transform: scale(0.85); opacity: 0.6; }
+      50% { transform: scale(1.25); opacity: 1; }
+    }
+
+    .plate-metric-pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.2);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(16, 185, 129, 0.48);
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: #A7F3D0;
+    }
+
+    .plate-bottom-caption {
+      position: absolute;
+      bottom: 22px; left: 26px; right: 26px;
+      z-index: 7;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      pointer-events: none;
+    }
+
+    .plate-caption-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.42rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 5px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.8);
+    }
+
+    .plate-caption-sub {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.86);
+      font-weight: 400;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    }
+
+    .plate-action-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+      flex-shrink: 0;
+    }
+
+    .plate-step-btn,
+    .plate-expand-btn {
+      pointer-events: auto;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(15, 18, 24, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .plate-step-btn:hover,
+    .plate-expand-btn:hover {
+      background: var(--accent);
+      color: #0B0D10;
+      border-color: var(--accent);
+    }
+
+    .canvas-interactive-controls {
+      position: absolute;
+      top: 20px; right: 22px;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+
+    .sim-mode-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(15, 17, 22, 0.8);
+      backdrop-filter: blur(10px);
+      color: var(--text-sub);
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sim-mode-btn.active {
+      background: var(--accent);
+      color: #0B0D10;
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
+    }
+
+    .visual-sci-overlay {
+      position: absolute;
+      left: 26px; right: 26px;
+      bottom: 92px;
+      z-index: 6;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .sci-stat-card {
+      background: rgba(10, 13, 18, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 14px;
+      padding: 13px 16px;
+    }
+
+    .sci-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.05rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .sci-stat-label {
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .sci-bar-track {
+      width: 100%; height: 5px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .sci-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--emerald));
+      border-radius: 999px;
+    }
+
+    /* Next Clinic Portal */
+    #project-details-preview {
+      width: 42vw;
+      max-width: 600px;
+      height: 76vh;
+      max-height: 680px;
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid var(--border-gold);
+      background: #121419;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 34px;
+      text-decoration: none;
+      color: var(--text-main);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+
+    #project-details-preview:hover { transform: scale(1.015); border-color: var(--accent); }
+
+    .next-portal-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.46;
+      transition: transform 0.6s ease, opacity 0.4s ease;
+    }
+
+    #project-details-preview:hover .next-portal-bg { transform: scale(1.07); opacity: 0.62; }
+
+    .next-portal-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(12, 14, 18, 0.22) 0%, rgba(12, 14, 18, 0.92) 100%);
+    }
+
+    #project-details-preview-inner { position: relative; z-index: 5; }
+
+    .next-portal-eyebrow {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    #project-details-preview-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .next-portal-desc { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 24px; line-height: 1.55; }
+
+    #project-details-preview-footer { display: flex; align-items: center; gap: 14px; }
+
+    #project-details-preview-footer-text {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--accent-light);
+    }
+
+    #project-details-preview-footer-bar {
+      flex: 1; height: 3px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    #project-details-preview-footer-bar-inner {
+      width: 100%; height: 100%;
+      background: var(--accent);
+      transform-origin: left;
+      transform: scaleX(0.35);
+      transition: transform 0.4s ease;
+    }
+
+    #project-details-preview:hover #project-details-preview-footer-bar-inner { transform: scaleX(1); }
+
+    #scroll-indicator {
+      position: fixed;
+      bottom: 0;
+      left: var(--left-col-width);
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 90;
+    }
+
+    #scroll-indicator-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--emerald));
+      box-shadow: 0 0 12px var(--accent);
+      transition: width 0.08s linear;
+    }
+
+    /* Modals */
+    #plate-lightbox, #consult-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(8, 9, 12, 0.92);
+      backdrop-filter: blur(22px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    #plate-lightbox.open, #consult-modal.open { display: flex; }
+
+    #plate-lightbox img {
+      max-width: 92vw;
+      max-height: 86vh;
+      border-radius: 18px;
+      border: 1px solid var(--border-gold);
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 28px; right: 34px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .consult-modal-card {
+      width: 100%;
+      max-width: 490px;
+      background: #15181F;
+      border: 1px solid var(--border-gold);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85);
+    }
+
+    .consult-modal-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+      color: var(--accent-light);
+    }
+
+    .consult-modal-sub { font-size: 0.83rem; color: var(--text-sub); margin-bottom: 16px; line-height: 1.55; }
+
+    .modal-checked-summary {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(110, 231, 183, 0.35);
+      border-radius: 12px;
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      font-size: 0.76rem;
+      color: #D1FAE5;
+      line-height: 1.5;
+    }
+
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 11px;
+    }
+
+    .modal-form-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .modal-form-group input,
+    .modal-form-group textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.42);
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 0.82rem;
+    }
+
+    .modal-submit-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.88rem;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    }
+
+    .consult-action-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+
+    .consult-action-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .consult-action-item:hover { background: var(--accent); color: #111; border-color: var(--accent); }
+
+    @media (max-width: 1024px) {
+      html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
+      .clinic-quick-tabs { display: none; }
+      #project-details { flex-direction: column; height: auto; overflow: visible; }
+      #project-details-meta { width: 100%; min-width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+      #project-details-items-wrapper { width: 100%; height: auto; overflow-x: auto; padding: 28px 0 44px; }
+      #project-details-items-move-container { transform: none !important; padding: 0 20px; gap: 18px; }
+      .project-details-item, .project-details-item[data-fullscreen], #project-details-preview { width: 88vw; height: 58vh; min-height: 400px; }
+      #scroll-indicator { left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-bg"></div>
+
+  <header id="header">
+    <div class="header-left">
+      <a class="brand-logo" href="story-3d.html">
+        <span class="brand-logo-mark"></span>
+        <span>바른한의원</span>
+      </a>
+      <a class="back-pill-btn" href="story-3d.html?cards=1">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path stroke="currentColor" stroke-linecap="round" stroke-width="1.6" d="M8 12.243 3.757 8m0 0L8 3.757M3.757 8h8.486"/>
+        </svg>
+        <span>6대 클리닉 카드</span>
+      </a>
+    </div>
+
+    <div class="header-center">
+      <div id="project-details-header-info">
+        <span>● LIVE MOTION STORY · 휠/드래그로 감상</span>
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path d="M11.485 8.365 8.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
+          <path d="M5.485 8.365 2.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
+        </svg>
+      </div>
+
+      <nav class="clinic-quick-tabs" aria-label="클리닉 바로가기">
+        <a class="clinic-tab" href="director.html">01 원장</a>
+        <a class="clinic-tab" href="chuna.html">02 추나</a>
+        <a class="clinic-tab" href="growth.html">03 성장</a>
+        <a class="clinic-tab active" href="diet-zero.html">04 다이어트</a>
+        <a class="clinic-tab" href="hairloss.html">05 탈모</a>
+        <a class="clinic-tab" href="gongjindan.html">06 공진단</a>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <button class="header-talk-btn" onclick="window.openConsultModal()">
+        <span>1:1 진료예약</span>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M2.5 8h11m0 0-4.5 4.5M13.5 8 9 3.5"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="project-details">
+    <!-- LEFT CLINIC GUIDE & INTERACTIVE PATIENT EMPATHY CHECKLIST -->
+    <aside id="project-details-meta">
+      <div>
+        <div class="meta-eyebrow">04 / METABOLIC SLIMMING STORY</div>
+        <h1 id="project-details-title">바른 다이어트 · 식욕ZERO</h1>
+        <div class="meta-subtitle-en">Metabolic Reset & S-Line Silhouette Therapy</div>
+
+        <div id="project-details-desc">
+          <p>의지력이 약해서 살이 안 빠지는 것이 아닙니다. 출산·육아와 만성 스트레스로 기초대사량이 떨어지고 식욕 호르몬(렙틴·그렐린)이 교란되었기 때문입니다.</p>
+          <p>바른한의원은 손떨림이나 불면 없이 가짜 배고픔을 편안하게 잠재우고, 몸속 냉증과 부종·독소를 먼저 비워내어 굶지 않고도 체지방이 스스로 타오르는 체질로 바꿉니다.</p>
+        </div>
+
+        <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
+        <div class="empathy-checklist-card">
+          <div class="empathy-checklist-header">
+            <span class="empathy-checklist-title">✓ 일상 속 다이어트·부종 공감 체크</span>
+            <span class="empathy-count-badge" id="empathy-count-badge">0 / 5 체크됨</span>
+          </div>
+          <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
+          <div class="empathy-checklist-list" id="empathy-checklist-list">
+            
+            <label class="empathy-check-item" data-idx="0">
+              <input type="checkbox" class="empathy-check-input" value="출산·육아나 야근 스트레스 후 찐 뱃살이 아무리 굶어도 안 빠진다">
+              <span class="empathy-check-box">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="empathy-check-text">출산·육아나 야근 스트레스 후 찐 뱃살이 아무리 굶어도 안 빠진다</span>
+            </label>
+            <label class="empathy-check-item" data-idx="1">
+              <input type="checkbox" class="empathy-check-input" value="저녁만 되면 터지는 가짜 배고픔과 야식 유혹을 참기 힘들다">
+              <span class="empathy-check-box">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="empathy-check-text">저녁만 되면 터지는 가짜 배고픔과 야식 유혹을 참기 힘들다</span>
+            </label>
+            <label class="empathy-check-item" data-idx="2">
+              <input type="checkbox" class="empathy-check-input" value="아침마다 얼굴과 종아리가 팅팅 붓고 몸이 물먹은 솜처럼 무겁다">
+              <span class="empathy-check-box">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="empathy-check-text">아침마다 얼굴과 종아리가 팅팅 붓고 몸이 물먹은 솜처럼 무겁다</span>
+            </label>
+            <label class="empathy-check-item" data-idx="3">
+              <input type="checkbox" class="empathy-check-input" value="예전에 입던 옷이 맞지 않아 거울을 볼 때마다 자신감이 떨어진다">
+              <span class="empathy-check-box">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="empathy-check-text">예전에 입던 옷이 맞지 않아 거울을 볼 때마다 자신감이 떨어진다</span>
+            </label>
+            <label class="empathy-check-item" data-idx="4">
+              <input type="checkbox" class="empathy-check-input" value="다이어트 약을 먹으면 손떨림·두근거림·불면증이 생길까 봐 두렵다">
+              <span class="empathy-check-box">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="empathy-check-text">다이어트 약을 먹으면 손떨림·두근거림·불면증이 생길까 봐 두렵다</span>
+            </label>
+          </div>
+          <div class="empathy-diagnosis-box" id="empathy-diagnosis-box">
+            평소 다이어트를 하면서 가장 힘들었던 일상 속 순간을 체크해 보세요. 체질별 감량 솔루션을 진단해 드립니다.
+          </div>
+        </div>
+
+        <button id="project-details-launch-cta" onclick="window.openConsultModal()">
+          <span class="cta-left-group">
+            <span id="project-details-launch-cta-dot"></span>
+            <span id="cta-btn-label">다이어트 1:1 맞춤 처방 예약하기</span>
+          </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M7 17 17 7m0 0H8m9 0v9"/>
+          </svg>
+        </button>
+        <a href="diet-zero-full.html" class="extra-detail-link">💗 식욕ZERO 시크릿 플랜 · 비대면/정밀 안내 전체보기 ↗</a>
+      </div>
+
+      <!-- Live Storytelling Docent Tracker -->
+      <div class="live-plate-docent">
+        <div class="docent-header">
+          <span class="docent-step-badge" id="active-plate-badge">STORY 01 / 06</span>
+          <div class="plate-jump-dots">
+            <button class="plate-dot-btn active" onclick="jumpToPlate(0)">01</button>
+            <button class="plate-dot-btn" onclick="jumpToPlate(1)">02</button>
+            <button class="plate-dot-btn" onclick="jumpToPlate(2)">03</button>
+            <button class="plate-dot-btn" onclick="jumpToPlate(3)">04</button>
+            <button class="plate-dot-btn" onclick="jumpToPlate(4)">05</button>
+            <button class="plate-dot-btn" onclick="jumpToPlate(5)">06</button>
+          </div>
+        </div>
+        <div class="docent-active-caption" id="active-plate-caption">
+          STORY 01 · 거울 앞에서 한숨짓던 무거운 일상, 무너진 대사 밸런스와 부종의 뿌리부터 진단합니다.
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY -->
+    <section id="project-details-items-wrapper" aria-label="수평 모션 스토리텔링 트랙">
+      <div id="project-details-items-move-container">
+        
+        <!-- PLATE 01: Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate is-active-plate" data-caption="STORY 01 · 거울 앞에서 한숨짓던 무거운 일상, 무너진 대사 밸런스와 부종의 뿌리부터 진단합니다.">
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/empathy-metabolism-waist.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/empathy-leg-edema.jpg?v=pov13" data-duration="6">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg?v=pov13');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/empathy-metabolism-waist.jpg?v=pov13'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="metabolic-burn"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY 01 / 육아와 일상에 지쳐 불어난 체중</span>
+              <span class="plate-metric-pill">대사 저하 · 복부 체지방 · 만성 부종</span>
+            </div>
+            
+            <div class="plate-bottom-caption">
+              <div>
+                <h2 class="plate-caption-title">거울 앞에 설 때마다 작아지던 마음, 당신의 탓이 아닙니다</h2>
+                <p class="plate-caption-sub">무거워진 몸과 빠지지 않는 나잇살·산후 뱃살의 원인은 떨어진 기초대사와 독소 정체에 있습니다</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
+                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 02: Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate" data-fullscreen data-caption="STORY 02 · 나를 되찾기 위한 결심의 순간, 체질에 맞춘 슬리밍 한약이 가짜 식욕을 편안하게 잠재웁니다.">
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_treatment.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/efficacy-neuro-calm.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/empathy-safe-herbal.jpg?v=pov13" data-duration="6">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_treatment.jpg?v=pov13');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/efficacy-neuro-calm.jpg?v=pov13'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="gold-aura"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY 02 / 나를 위한 결심, 핑크빛 맞춤 한약 · FULLSCREEN</span>
+              <span class="plate-metric-pill">가짜 식욕 자연 차단 · 손떨림·불면 ZERO 지향</span>
+            </div>
+            
+            <div class="plate-bottom-caption">
+              <div>
+                <h2 class="plate-caption-title">결심했어!! 참는 고통 대신 편안하게 비워내는 하루 한 포</h2>
+                <p class="plate-caption-sub">시상하부 포만감 중추를 부드럽게 안정시켜 야식과 폭식 유혹에서 자연스럽게 자유로워집니다</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
+                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 03: Live 60fps Biomedical Simulation -->
+        <article class="project-details-item is-video" data-caption="STORY 03 · 정체되어 있던 지방세포와 부종 독소가 AMPK 대사 효소 활성화로 빠르게 분해·배출되는 실시간 모션입니다.">
+          <div class="plate-media-inner">
+            <canvas id="sim-canvas-diet-lipolysis" class="full-sim-canvas"></canvas>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY 03 / 60FPS 내장지방 분해(AMPK) & 대사 리셋 모션</span>
+            </div>
+            <div class="canvas-interactive-controls">
+              <button type="button" class="sim-mode-btn" id="btn-sim-before" onclick="window.setSimMode('before')">복용 전 · 지방세포 비대 & 림프 정체</button>
+              <button type="button" class="sim-mode-btn active" id="btn-sim-after" onclick="window.setSimMode('after')">복용 후 · AMPK 열대사 연소 & 슬리밍</button>
+            </div>
+            <div class="plate-bottom-caption">
+              <div>
+                <h2 class="plate-caption-title">가만히 있어도 에너지가 타오르는 AMPK 지방 연소 메커니즘</h2>
+                <p class="plate-caption-sub">비대해진 백색 지방세포가 쪼개져 배출되고 기초대사 열에너지가 순환하는 60fps 시뮬레이션입니다</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 04: Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate" data-caption="STORY 04 · 부종 해독부터 심부 체지방 분해, 요요 방지 체질 개선까지 3단계로 정교하게 케어합니다.">
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/efficacy-detox-flush.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/efficacy-core-lipolysis.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_4_diet.jpg?v=pov13" data-duration="6">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/efficacy-detox-flush.jpg?v=pov13');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/efficacy-core-lipolysis.jpg?v=pov13'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="sline-curtain"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY 04 / 비움·태움·채움 3단계 체형 리모델링</span>
+              <span class="plate-metric-pill">독소 해독 ➔ 체지방 집중 연소 ➔ 요요 방지</span>
+            </div>
+            
+            <div class="plate-bottom-caption">
+              <div>
+                <h2 class="plate-caption-title">숫자만 줄이는 감량이 아닌, 매끈한 바디 라인의 완성</h2>
+                <p class="plate-caption-sub">하체 부종부터 복부 내장지방까지 단계별로 정교하게 디자인하여 탄력 있는 실루엣을 만듭니다</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
+                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 05: Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate" data-caption="STORY 05 · 68.5kg에서 54.2kg으로, 굶지 않고 건강하게 완성한 당당한 바디라인과 임상 데이터입니다.">
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/empathy-wedding-dress.jpg?v=pov13|https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg?v=pov13" data-duration="5.8">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg?v=pov13');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/empathy-wedding-dress.jpg?v=pov13'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="sline-curtain"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY 05 / 늘씬하고 건강해진 나! Before ➔ After 모션</span>
+              <span class="plate-metric-pill">68.5kg ➔ 54.2kg · 체지방 위주 건강한 감량</span>
+            </div>
+            
+            <div class="visual-sci-overlay">
+              
+              <div class="sci-stat-card">
+                <div class="sci-stat-num">-14.3kg</div>
+                <div class="sci-stat-label">12주 집중 대사 리셋 프로그램 평균 체중 감량 (근손실 최소화)</div>
+                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:91%"></div></div>
+              </div>
+              <div class="sci-stat-card">
+                <div class="sci-stat-num">94.2%</div>
+                <div class="sci-stat-label">복용 중 가짜 배고픔·야식 충동 감소 및 포만감 만족도</div>
+                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:94.2%"></div></div>
+              </div>
+            </div>
+            <div class="plate-bottom-caption">
+              <div>
+                <h2 class="plate-caption-title">어떤 옷을 입어도 당당하게 빛나는 가벼운 아침</h2>
+                <p class="plate-caption-sub">통통했던 거울 속 모습에서 건강하고 늘씬한 S라인 실루엣으로 전환되는 시네마틱 모션입니다</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
+                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 06: Next Clinic Portal -->
+        <a id="project-details-preview" href="hairloss.html" data-caption="다음 스토리: 두피열을 식히고 잠든 모근을 깨워 풍성한 자신감을 되찾는 바른 탈모 클리닉으로 이어집니다.">
+          <img class="next-portal-bg" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3b_hair_restored.jpg?v=pov13" alt="바른 탈모 · 모근재생">
+          <div class="next-portal-scrim"></div>
+          <div id="project-details-preview-inner">
+            <div class="next-portal-eyebrow">NEXT STORY · 05 / 06</div>
+            <h2 id="project-details-preview-title">바른 탈모 · 모근재생</h2>
+            <p class="next-portal-desc">뜨거운 두피 사막화를 식히는 수승화강 청열 한약과 1:1 모낭 발모 약침 스토리</p>
+            <div id="project-details-preview-footer">
+              <span id="project-details-preview-footer-text">EXPLORE NEXT STORY</span>
+              <div id="project-details-preview-footer-bar">
+                <div id="project-details-preview-footer-bar-inner"></div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                <path stroke="#D4AF37" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2 8h12m0 0-5.5 5.5M14 8 8.5 2.5"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <div id="scroll-indicator">
+    <div id="scroll-indicator-bar"></div>
+  </div>
+
+  <div id="plate-lightbox" onclick="this.classList.remove('open')">
+    <button class="lightbox-close">닫기 ✕</button>
+    <img id="lightbox-img" src="" alt="확대 이미지">
+  </div>
+
+  <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
+  <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="consult-modal-card">
+      <h3 class="consult-modal-title">바른 다이어트 · 식욕ZERO 1:1 맞춤 진료 예약</h3>
+      <p class="consult-modal-sub">좌측에서 체크하신 일상 불편감 증상을 바탕으로 안정위 대표원장이 1:1 맞춤 진료를 준비합니다.</p>
+      <div class="modal-checked-summary" id="modal-checked-summary">
+        체크된 일상 불편감 증상이 자동으로 이곳에 연동됩니다.
+      </div>
+      <form id="detail-consult-form">
+        <div class="modal-form-group">
+          <label>예약자 성함</label>
+          <input type="text" id="modal-user-name" required placeholder="성함을 입력해 주세요">
+        </div>
+        <div class="modal-form-group">
+          <label>연락처</label>
+          <input type="tel" id="modal-user-phone" required placeholder="010-0000-0000">
+        </div>
+        <div class="modal-form-group">
+          <label>체크된 불편감 및 추가 상담 메모</label>
+          <textarea id="modal-user-memo" rows="3" placeholder="희망하시는 진료 시간대나 증상을 남겨주세요"></textarea>
+        </div>
+        <button type="submit" class="modal-submit-btn">✦ 체크한 증상으로 1:1 진료 예약 신청하기</button>
+      </form>
+      <div class="consult-action-list">
+        <a class="consult-action-item" href="tel:042-488-1075">📞 042-488-1075 전화</a>
+        <a class="consult-action-item" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">💬 카카오톡 상담 ↗</a>
+      </div>
+      <button class="plate-expand-btn" style="width:100%;padding:11px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ====================================================================
+      // 1. INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST ENGINE
+      // ====================================================================
+      const ADVICE = {"zero":"평소 다이어트를 하면서 가장 힘들었던 일상 속 순간을 체크해 보세요. 체질별 감량 솔루션을 진단해 드립니다.","low":"순환 정체와 부종이 살이 되는 타입입니다. 림프 순환과 수분 대사를 열어주는 처방만으로도 라인이 빠르게 정리됩니다.","high":"식욕 호르몬 교란과 대사 저하가 겹친 상태입니다. 무리한 절식 대신 심박수 부담 없는 맞춤 식욕조절 한약과 체지방 분해 집중 케어를 추천합니다."};
+      const checkItems = Array.from(document.querySelectorAll('.empathy-check-item'));
+      const countBadge = document.getElementById('empathy-count-badge');
+      const diagnosisBox = document.getElementById('empathy-diagnosis-box');
+      const ctaBtnLabel = document.getElementById('cta-btn-label');
+      const totalItems = checkItems.length;
+
+      function getCheckedSymptoms() {
+        return checkItems
+          .filter(el => el.querySelector('.empathy-check-input').checked)
+          .map(el => el.querySelector('.empathy-check-input').value);
+      }
+
+      function updateChecklistState() {
+        const checked = getCheckedSymptoms();
+        const cnt = checked.length;
+        countBadge.textContent = cnt + ' / ' + totalItems + ' 체크됨';
+        countBadge.classList.toggle('active', cnt > 0);
+
+        if (cnt === 0) {
+          diagnosisBox.innerHTML = ADVICE.zero;
+          ctaBtnLabel.textContent = '다이어트 1:1 맞춤 처방 예약하기';
+        } else if (cnt <= 2) {
+          diagnosisBox.innerHTML = '<strong>[원장 1:1 진단 가이드 · ' + cnt + '개 해당]</strong><br>' + ADVICE.low;
+          ctaBtnLabel.textContent = '체크한 ' + cnt + '가지 증상 1:1 진료 예약하기';
+        } else {
+          diagnosisBox.innerHTML = '<strong>[집중 치료 권장 · ' + cnt + '개 해당]</strong><br>' + ADVICE.high;
+          ctaBtnLabel.textContent = '체크한 ' + cnt + '가지 증상 집중 진료 예약하기';
+        }
+      }
+
+      checkItems.forEach(item => {
+        const input = item.querySelector('.empathy-check-input');
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          input.checked = !input.checked;
+          item.classList.toggle('checked', input.checked);
+          updateChecklistState();
+        });
+      });
+
+      window.openConsultModal = function() {
+        const checked = getCheckedSymptoms();
+        const summaryEl = document.getElementById('modal-checked-summary');
+        const memoEl = document.getElementById('modal-user-memo');
+        if (checked.length > 0) {
+          summaryEl.innerHTML = '<strong>✓ 체크하신 일상 불편감 (' + checked.length + '개):</strong><br>• ' + checked.join('<br>• ');
+          memoEl.value = '[체크 증상] ' + checked.join(' / ');
+        } else {
+          summaryEl.innerHTML = '체크하신 항목이 없습니다. 좌측 체크리스트에서 불편감을 선택하시거나 아래에 직접 증상을 남겨주세요.';
+        }
+        document.getElementById('consult-modal').classList.add('open');
+      };
+
+      const consultForm = document.getElementById('detail-consult-form');
+      if (consultForm) {
+        consultForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('modal-user-name').value;
+          const phone = document.getElementById('modal-user-phone').value;
+          const checked = getCheckedSymptoms();
+          fetch('/api/send-alimtalk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              parentName: name,
+              parentTel: phone,
+              childInfo: '바른 다이어트 · 식욕ZERO',
+              consultType: '성인 비만·다이어트 클리닉',
+              symptoms: checked,
+              parentMemo: document.getElementById('modal-user-memo').value
+            })
+          }).catch(() => {});
+          alert('[바른한의원 1:1 맞춤 예약 접수 완료]\n' + name + '님, 체크하신 증상(' + (checked.length || '맞춤 상담') + '건)을 바탕으로 전담 상담실장이 빠르게 연락드리겠습니다.');
+          document.getElementById('consult-modal').classList.remove('open');
+          consultForm.reset();
+        });
+      }
+
+      // ====================================================================
+      // 2. HORIZONTAL SMOOTH PASSERELLA RUNWAY ENGINE
+      // ====================================================================
+      const wrapper = document.getElementById('project-details-items-wrapper');
+      const moveContainer = document.getElementById('project-details-items-move-container');
+      const progressBar = document.getElementById('scroll-indicator-bar');
+      const plates = Array.from(document.querySelectorAll('.project-details-item, #project-details-preview'));
+      const dotBtns = Array.from(document.querySelectorAll('.plate-dot-btn'));
+      const activeBadge = document.getElementById('active-plate-badge');
+      const activeCaption = document.getElementById('active-plate-caption');
+
+      let targetX = 0, currentX = 0, maxScrollX = 0;
+      let isDragging = false, startDragX = 0, startTargetX = 0;
+
+      function updateBounds() {
+        if (window.innerWidth <= 1024) { maxScrollX = 0; return; }
+        maxScrollX = Math.max(0, moveContainer.scrollWidth - wrapper.clientWidth);
+        targetX = Math.max(0, Math.min(targetX, maxScrollX));
+      }
+
+      window.addEventListener('resize', updateBounds);
+      window.addEventListener('load', updateBounds);
+      setTimeout(updateBounds, 200);
+
+      window.addEventListener('wheel', (e) => {
+        if (window.innerWidth <= 1024) return;
+        if (e.target.closest('#project-details-meta') && e.target.closest('#project-details-meta').scrollHeight > e.target.closest('#project-details-meta').clientHeight) {
+          return;
+        }
+        updateBounds();
+        const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+        targetX = Math.max(0, Math.min(maxScrollX, targetX + delta * 1.15));
+      }, { passive: true });
+
+      wrapper.addEventListener('pointerdown', (e) => {
+        if (window.innerWidth <= 1024 || e.target.closest('button, a')) return;
+        isDragging = true;
+        startDragX = e.clientX;
+        startTargetX = targetX;
+        wrapper.setPointerCapture(e.pointerId);
+      });
+
+      wrapper.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        targetX = Math.max(0, Math.min(maxScrollX, startTargetX + (startDragX - e.clientX) * 1.35));
+      });
+
+      wrapper.addEventListener('pointerup', () => { isDragging = false; });
+      wrapper.addEventListener('pointercancel', () => { isDragging = false; });
+
+      window.addEventListener('keydown', (e) => {
+        if (window.innerWidth <= 1024) return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') targetX = Math.min(maxScrollX, targetX + window.innerWidth * 0.45);
+        else if (e.key === 'ArrowLeft' || e.key === 'PageUp') targetX = Math.max(0, targetX - window.innerWidth * 0.45);
+      });
+
+      window.jumpToPlate = function(index) {
+        updateBounds();
+        const plate = plates[index];
+        if (!plate) return;
+        if (window.innerWidth <= 1024) { plate.scrollIntoView({ behavior: 'smooth', inline: 'center' }); return; }
+        const centerOffset = plate.offsetLeft - (wrapper.clientWidth - plate.offsetWidth) * 0.5;
+        targetX = Math.max(0, Math.min(maxScrollX, centerOffset));
+      };
+
+      // ====================================================================
+      // 3. MULTI-FRAME VIDEO-LIKE MOTION STAGE & 60FPS FX CANVAS ENGINE
+      // ====================================================================
+      const motionStages = Array.from(document.querySelectorAll('.motion-video-stage')).map((stageEl) => {
+        const frames = (stageEl.dataset.frames || '').split('|').filter(Boolean);
+        const duration = parseFloat(stageEl.dataset.duration || '6.0');
+        const layerA = stageEl.querySelector('.frame-layer-a');
+        const layerB = stageEl.querySelector('.frame-layer-b');
+        const progFill = stageEl.querySelector('.motion-progress-fill');
+        const fxCanvas = stageEl.querySelector('.plate-fx-canvas');
+        const fxType = fxCanvas ? fxCanvas.dataset.fx : 'sunlight-bokeh';
+
+        // Preload frames
+        frames.forEach(src => { const img = new Image(); img.src = src; });
+
+        return {
+          stageEl, frames, duration, layerA, layerB, progFill, fxCanvas,
+          fxCtx: fxCanvas ? fxCanvas.getContext('2d') : null,
+          fxType,
+          currIdx: 0,
+          activeLayer: 'A',
+          elapsed: 0
+        };
+      });
+
+      function resizeFxCanvases() {
+        motionStages.forEach(ms => {
+          if (!ms.fxCanvas || !ms.fxCtx) return;
+          const r = ms.stageEl.getBoundingClientRect();
+          if (r.width > 0 && r.height > 0) {
+            ms.fxCanvas.width = r.width;
+            ms.fxCanvas.height = r.height;
+          }
+        });
+      }
+      window.addEventListener('resize', resizeFxCanvases);
+      setTimeout(resizeFxCanvases, 120);
+
+      window.stepPlateFrame = function(btn) {
+        const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
+        const ms = motionStages.find(m => m.stageEl === stageEl);
+        if (!ms || ms.frames.length < 2) return;
+        ms.currIdx = (ms.currIdx + 1) % ms.frames.length;
+        ms.elapsed = (ms.currIdx / ms.frames.length) * ms.duration;
+        applyStageFrame(ms, ms.currIdx);
+      };
+
+      window.openLightboxFromPlate = function(btn) {
+        const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
+        const ms = motionStages.find(m => m.stageEl === stageEl);
+        const src = ms ? ms.frames[ms.currIdx] : '';
+        if (src) {
+          document.getElementById('lightbox-img').src = src;
+          document.getElementById('plate-lightbox').classList.add('open');
+        }
+      };
+
+      function applyStageFrame(ms, nextIdx) {
+        const url = ms.frames[nextIdx];
+        if (ms.activeLayer === 'A') {
+          ms.layerB.style.backgroundImage = "url('" + url + "')";
+          ms.layerB.style.opacity = '1';
+          ms.layerA.style.opacity = '0';
+          ms.activeLayer = 'B';
+        } else {
+          ms.layerA.style.backgroundImage = "url('" + url + "')";
+          ms.layerA.style.opacity = '1';
+          ms.layerB.style.opacity = '0';
+          ms.activeLayer = 'A';
+        }
+      }
+
+      function drawPlateMotionFx(ms, timeSec, cycleNorm) {
+        const ctx = ms.fxCtx;
+        const w = ms.fxCanvas ? ms.fxCanvas.width : 0;
+        const h = ms.fxCanvas ? ms.fxCanvas.height : 0;
+        if (!ctx || w <= 0 || h <= 0) return;
+
+        ctx.clearRect(0, 0, w, h);
+        const type = ms.fxType;
+
+        if (type === 'spine-pain-scan') {
+          // Animated bending red spine curve + 7 sequential pain nodes
+          const joints = [
+            { name: '목', x: w * 0.52, y: h * 0.24 },
+            { name: '어깨', x: w * 0.48, y: h * 0.31 },
+            { name: '팔', x: w * 0.43, y: h * 0.43 },
+            { name: '척추', x: w * 0.51, y: h * 0.39 },
+            { name: '허리', x: w * 0.49, y: h * 0.50 },
+            { name: '다리', x: w * 0.48, y: h * 0.69 },
+            { name: '발', x: w * 0.49, y: h * 0.86 }
+          ];
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(239, 68, 68, 0.78)';
+          ctx.lineWidth = 3;
+          joints.slice(0, 5).forEach((j, i) => {
+            const ox = Math.sin(timeSec * 3 + i) * 6 * cycleNorm;
+            if (i === 0) ctx.moveTo(j.x + ox, j.y);
+            else ctx.lineTo(j.x + ox, j.y);
+          });
+          ctx.stroke();
+
+          joints.forEach((j, idx) => {
+            const threshold = idx / joints.length;
+            if (cycleNorm < threshold * 0.85) return;
+            const pulse = 7 + Math.sin(timeSec * 5 + idx) * 3;
+            ctx.beginPath();
+            ctx.arc(j.x, j.y, pulse * 1.9, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.24)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(j.x, j.y, pulse, 0, Math.PI * 2);
+            ctx.strokeStyle = '#F87171';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 11px Pretendard, sans-serif';
+            ctx.fillText(j.name, j.x + 12, j.y + 4);
+          });
+        } else if (type === 'manse-emerald') {
+          // Straight emerald spine + 7 recovered green nodes + rising joy particles
+          const joints = [
+            { name: '목', x: w * 0.53, y: h * 0.22 },
+            { name: '어깨', x: w * 0.49, y: h * 0.26 },
+            { name: '팔', x: w * 0.45, y: h * 0.16 },
+            { name: '척추', x: w * 0.53, y: h * 0.36 },
+            { name: '허리', x: w * 0.53, y: h * 0.48 },
+            { name: '다리', x: w * 0.51, y: h * 0.70 },
+            { name: '발', x: w * 0.52, y: h * 0.88 }
+          ];
+          ctx.beginPath();
+          ctx.moveTo(w * 0.53, h * 0.21);
+          ctx.lineTo(w * 0.53, h * 0.52);
+          ctx.strokeStyle = 'rgba(16, 185, 129, 0.85)';
+          ctx.lineWidth = 3.5;
+          ctx.stroke();
+
+          joints.forEach((j, idx) => {
+            if (cycleNorm < (idx / joints.length) * 0.8) return;
+            const r = 7 + Math.sin(timeSec * 4.5 + idx) * 2.5;
+            ctx.beginPath();
+            ctx.arc(j.x, j.y, r * 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.26)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(j.x, j.y, r, 0, Math.PI * 2);
+            ctx.strokeStyle = '#6EE7B7';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#A7F3D0';
+            ctx.font = '700 11px Pretendard, sans-serif';
+            ctx.fillText(j.name + ' 회복', j.x + 12, j.y + 4);
+          });
+        } else if (type === 'growth-starlight') {
+          // Upward height scale ruler + twinkling golden stars after growth
+          const rulerX = w * 0.34;
+          const topY = h * (0.48 - cycleNorm * 0.24);
+          ctx.strokeStyle = 'rgba(253, 230, 138, 0.75)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(rulerX, h * 0.65);
+          ctx.lineTo(rulerX, topY);
+          ctx.stroke();
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 13px Pretendard, sans-serif';
+          ctx.fillText('▲ +' + (cycleNorm * 12.4).toFixed(1) + 'cm 성장', rulerX - 28, topY - 10);
+
+          if (cycleNorm > 0.55) {
+            const starAlpha = Math.min(1, (cycleNorm - 0.55) / 0.35);
+            for (let i = 0; i < 10; i++) {
+              const sx = w * (0.38 + (i % 5) * 0.06 + Math.sin(i * 2.1) * 0.03);
+              const sy = h * (0.14 + Math.floor(i / 5) * 0.14 + Math.cos(i * 1.7) * 0.04);
+              const sr = (5 + (i % 3) * 3) * (0.6 + 0.4 * Math.sin(timeSec * 5 + i));
+              ctx.save();
+              ctx.translate(sx, sy);
+              ctx.fillStyle = 'rgba(253, 230, 138, ' + (starAlpha * 0.9).toFixed(2) + ')';
+              ctx.beginPath();
+              ctx.moveTo(0, -sr);
+              ctx.quadraticCurveTo(0, 0, sr, 0);
+              ctx.quadraticCurveTo(0, 0, 0, sr);
+              ctx.quadraticCurveTo(0, 0, -sr, 0);
+              ctx.quadraticCurveTo(0, 0, 0, -sr);
+              ctx.fill();
+              ctx.restore();
+            }
+          }
+        } else if (type === 'ultrasound-beam' || type === 'chuna-laser-grid' || type === 'follicle-laser') {
+          // Scanning medical laser beam + live telemetry wave
+          const scanY = h * (0.2 + 0.6 * (0.5 + 0.5 * Math.sin(timeSec * 1.8)));
+          const grad = ctx.createLinearGradient(0, scanY - 24, 0, scanY + 24);
+          grad.addColorStop(0, 'rgba(16, 185, 129, 0)');
+          grad.addColorStop(0.5, 'rgba(110, 231, 183, 0.45)');
+          grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(w * 0.12, scanY - 24, w * 0.76, 48);
+
+          ctx.strokeStyle = 'rgba(110, 231, 183, 0.7)';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(w * 0.28, h * 0.24, w * 0.44, h * 0.46);
+        } else if (type === 'thermal-cooling') {
+          // Downward cooling cyan water-wave replacing red heat aura
+          const coolY = h * cycleNorm;
+          const grad = ctx.createLinearGradient(0, coolY - 40, 0, coolY + 40);
+          grad.addColorStop(0, 'rgba(56, 189, 248, 0)');
+          grad.addColorStop(0.5, 'rgba(56, 189, 248, 0.42)');
+          grad.addColorStop(1, 'rgba(239, 68, 68, 0.18)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, coolY - 40, w, 80);
+          ctx.fillStyle = '#BAE6FD';
+          ctx.font = '800 13px Pretendard, sans-serif';
+          ctx.fillText('❄️ 두피 온도 ' + (38.4 - cycleNorm * 4.2).toFixed(1) + '°C 수승화강 쿨링', 26, 76);
+        } else if (type === 'metabolic-burn' || type === 'sline-curtain') {
+          // Rose-gold S-line contour & live weight countdown overlay
+          const sweepX = w * (0.2 + 0.6 * (0.5 + 0.5 * Math.sin(timeSec * 1.4)));
+          const grad = ctx.createLinearGradient(sweepX - 45, 0, sweepX + 45, 0);
+          grad.addColorStop(0, 'rgba(223, 126, 142, 0)');
+          grad.addColorStop(0.5, 'rgba(251, 230, 234, 0.36)');
+          grad.addColorStop(1, 'rgba(223, 126, 142, 0)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(sweepX - 45, 0, 90, h);
+          const curKg = (68.5 - cycleNorm * 14.3).toFixed(1);
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 14px Pretendard, sans-serif';
+          ctx.fillText('✦ LIVE BODY RESET: ' + curKg + ' kg', 26, 76);
+        } else {
+          // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
+          const cx = w * 0.5, cy = h * 0.55;
+          for (let i = 0; i < 3; i++) {
+            const p = (timeSec * 0.55 + i * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, p * Math.min(w, h) * 0.42, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(253, 230, 138, ' + ((1 - p) * 0.38).toFixed(2) + ')';
+            ctx.lineWidth = 1.8;
+            ctx.stroke();
+          }
+          for (let i = 0; i < 14; i++) {
+            const bx = ((i * 97 + timeSec * 18) % w);
+            const by = h - ((i * 73 + timeSec * 26) % h);
+            const br = 2 + (i % 4) * 1.8;
+            ctx.beginPath();
+            ctx.arc(bx, by, br, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(253, 230, 138, ' + (0.25 + 0.25 * Math.sin(timeSec * 3 + i)).toFixed(2) + ')';
+            ctx.fill();
+          }
+        }
+      }
+
+      // ====================================================================
+      // 4. DEDICATED 60FPS INTERACTIVE MEDICAL SIMULATION CANVASES (STORY 03)
+      // ====================================================================
+      const simCanvas = document.querySelector('.full-sim-canvas');
+      const simCtx = simCanvas ? simCanvas.getContext('2d') : null;
+      let simMode = 'after';
+
+      window.setSimMode = function(mode) {
+        simMode = mode;
+        document.getElementById('btn-sim-before')?.classList.toggle('active', mode === 'before');
+        document.getElementById('btn-sim-after')?.classList.toggle('active', mode === 'after');
+      };
+
+      function resizeSimCanvas() {
+        if (!simCanvas || !simCtx) return;
+        const r = simCanvas.parentElement.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0) {
+          simCanvas.width = r.width * window.devicePixelRatio;
+          simCanvas.height = r.height * window.devicePixelRatio;
+          simCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        }
+      }
+      window.addEventListener('resize', resizeSimCanvas);
+      setTimeout(resizeSimCanvas, 120);
+
+      function drawSimCanvas(timeSec) {
+        if (!simCanvas || !simCtx) return;
+        const w = simCanvas.width / window.devicePixelRatio;
+        const h = simCanvas.height / window.devicePixelRatio;
+        if (w <= 0 || h <= 0) return;
+
+        simCtx.clearRect(0, 0, w, h);
+        const simId = simCanvas.id.replace('sim-canvas-', '');
+
+        // Subtle grid
+        simCtx.strokeStyle = 'rgba(255,255,255,0.05)';
+        simCtx.lineWidth = 1;
+        for (let x = 0; x < w; x += 42) { simCtx.beginPath(); simCtx.moveTo(x, 0); simCtx.lineTo(x, h); simCtx.stroke(); }
+        for (let y = 0; y < h; y += 42) { simCtx.beginPath(); simCtx.moveTo(0, y); simCtx.lineTo(w, y); simCtx.stroke(); }
+
+        if (simId === 'director-pulse') {
+          const labels = ['촌(寸) · 상초/심폐 맥파', '관(關) · 중초/간비 맥파', '척(尺) · 하초/신장·자궁 맥파'];
+          const cols = simMode === 'after' ? ['#D4AF37', '#10B981', '#60A5FA'] : ['#EF4444', '#F59E0B', '#FB7185'];
+          labels.forEach((lbl, idx) => {
+            const baseY = h * (0.28 + idx * 0.21);
+            simCtx.fillStyle = 'rgba(255,255,255,0.78)';
+            simCtx.font = '700 12px Pretendard, sans-serif';
+            simCtx.fillText(lbl, 34, baseY - 26);
+            simCtx.beginPath();
+            simCtx.strokeStyle = cols[idx];
+            simCtx.lineWidth = 2.8;
+            for (let x = 34; x < w - 34; x += 3) {
+              const yOff = simMode === 'after'
+                ? Math.sin(x * 0.028 - timeSec * 3.2 + idx) * 18 + Math.sin(x * 0.056 - timeSec * 6.4 + idx) * 5
+                : Math.sin(x * 0.075 - timeSec * 6.5 + idx) * 24 + Math.cos(x * 0.19 + timeSec * 8.2) * 11;
+              if (x === 34) simCtx.moveTo(x, baseY + yOff);
+              else simCtx.lineTo(x, baseY + yOff);
+            }
+            simCtx.stroke();
+          });
+        } else if (simId === 'chuna-spine') {
+          const cx = w * 0.5;
+          simCtx.strokeStyle = 'rgba(255,255,255,0.16)';
+          simCtx.setLineDash([5, 5]);
+          simCtx.beginPath(); simCtx.moveTo(cx, h * 0.14); simCtx.lineTo(cx, h * 0.84); simCtx.stroke();
+          simCtx.setLineDash([]);
+          for (let i = 0; i < 8; i++) {
+            const by = h * 0.18 + i * ((h * 0.62) / 8);
+            const offX = simMode === 'after'
+              ? Math.sin(timeSec * 2 + i * 0.5) * 2
+              : Math.sin(i * 0.85) * 32 + Math.sin(timeSec * 6 + i) * 4;
+            const tilt = simMode === 'after' ? 0 : Math.cos(i * 0.8) * 0.18;
+            simCtx.save();
+            simCtx.translate(cx + offX, by);
+            simCtx.rotate(tilt);
+            simCtx.fillStyle = simMode === 'after' ? 'rgba(16, 185, 129, 0.28)' : 'rgba(239, 68, 68, 0.28)';
+            simCtx.strokeStyle = simMode === 'after' ? '#6EE7B7' : '#F87171';
+            simCtx.lineWidth = 2;
+            simCtx.beginPath();
+            simCtx.roundRect(-36, -12, 72, 24, 7);
+            simCtx.fill(); simCtx.stroke();
+            simCtx.restore();
+          }
+        } else if (simId === 'growth-plate') {
+          const cx = w * 0.5, cy = h * 0.48;
+          const bandH = simMode === 'after' ? 56 + Math.sin(timeSec * 3) * 6 : 22;
+          simCtx.fillStyle = simMode === 'after' ? 'rgba(16, 185, 129, 0.28)' : 'rgba(239, 68, 68, 0.22)';
+          simCtx.strokeStyle = simMode === 'after' ? '#6EE7B7' : '#F87171';
+          simCtx.lineWidth = 2.5;
+          simCtx.beginPath();
+          simCtx.roundRect(cx - 140, cy - bandH * 0.5, 280, bandH, 18);
+          simCtx.fill(); simCtx.stroke();
+          const count = simMode === 'after' ? 28 : 9;
+          for (let i = 0; i < count; i++) {
+            const px = cx - 120 + ((i * 47) % 240);
+            const py = cy + Math.sin(timeSec * 3 + i) * (bandH * 0.34);
+            simCtx.beginPath();
+            simCtx.arc(px, py, simMode === 'after' ? 5.5 : 3.5, 0, Math.PI * 2);
+            simCtx.fillStyle = simMode === 'after' ? '#FDE68A' : '#FCA5A5';
+            simCtx.fill();
+          }
+          simCtx.fillStyle = '#FFFFFF';
+          simCtx.font = '800 14px Pretendard, sans-serif';
+          simCtx.fillText(simMode === 'after' ? '✦ IGF-1 성장판 연골세포 활발 증식 중 (+2.4mm)' : '⚠️ 성장판 연골 대사 저하 상태', cx - 135, cy - bandH * 0.5 - 16);
+        } else if (simId === 'diet-lipolysis') {
+          const cx = w * 0.5, cy = h * 0.48;
+          for (let i = 0; i < 18; i++) {
+            const angle = (i / 18) * Math.PI * 2 + timeSec * (simMode === 'after' ? 0.9 : 0.2);
+            const dist = simMode === 'after' ? 45 + ((i * 19 + timeSec * 35) % 130) : 35 + (i % 4) * 22;
+            const r = simMode === 'after' ? 6 + (i % 3) * 2 : 16 + (i % 4) * 4;
+            simCtx.beginPath();
+            simCtx.arc(cx + Math.cos(angle) * dist, cy + Math.sin(angle) * dist * 0.65, r, 0, Math.PI * 2);
+            simCtx.fillStyle = simMode === 'after' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(223, 126, 142, 0.45)';
+            simCtx.strokeStyle = simMode === 'after' ? '#6EE7B7' : '#DF7E8E';
+            simCtx.lineWidth = 2;
+            simCtx.fill(); simCtx.stroke();
+          }
+        } else if (simId === 'hair-follicle') {
+          const cols = 4, rows = 3;
+          for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+              const fx = (w / (cols + 1)) * (c + 1);
+              const fy = (h / (rows + 1)) * (r + 1) + 10;
+              simCtx.beginPath();
+              simCtx.arc(fx, fy, 16, 0, Math.PI * 2);
+              simCtx.fillStyle = simMode === 'after' ? 'rgba(56, 189, 248, 0.22)' : 'rgba(239, 68, 68, 0.28)';
+              simCtx.fill();
+              const hairs = simMode === 'after' ? 3 : 1;
+              for (let k = 0; k < hairs; k++) {
+                simCtx.beginPath();
+                simCtx.moveTo(fx + (k - 1) * 4, fy);
+                simCtx.quadraticCurveTo(fx + (k - 1) * 10 + Math.sin(timeSec * 2 + r) * 4, fy - 28, fx + (k - 1) * 14, fy - (simMode === 'after' ? 54 : 26));
+                simCtx.strokeStyle = simMode === 'after' ? '#F8FAFC' : 'rgba(248,250,252,0.5)';
+                simCtx.lineWidth = simMode === 'after' ? 3.2 : 1.4;
+                simCtx.stroke();
+              }
+            }
+          }
+        } else {
+          // gongjindan-neuro
+          const nodes = [];
+          for (let i = 0; i < 16; i++) {
+            nodes.push({
+              x: w * (0.18 + ((i * 67) % 64) * 0.01) + Math.sin(timeSec + i) * 10,
+              y: h * (0.22 + ((i * 43) % 56) * 0.01) + Math.cos(timeSec * 1.2 + i) * 10
+            });
+          }
+          nodes.forEach((n, i) => {
+            nodes.slice(i + 1, i + (simMode === 'after' ? 5 : 2)).forEach(m => {
+              simCtx.beginPath();
+              simCtx.moveTo(n.x, n.y);
+              simCtx.lineTo(m.x, m.y);
+              simCtx.strokeStyle = simMode === 'after' ? 'rgba(212, 175, 55, 0.45)' : 'rgba(255,255,255,0.12)';
+              simCtx.lineWidth = simMode === 'after' ? 1.8 : 1;
+              simCtx.stroke();
+            });
+            simCtx.beginPath();
+            simCtx.arc(n.x, n.y, simMode === 'after' ? 6 : 3.5, 0, Math.PI * 2);
+            simCtx.fillStyle = simMode === 'after' ? '#FDE68A' : 'rgba(255,255,255,0.35)';
+            simCtx.fill();
+          });
+        }
+      }
+
+      // ====================================================================
+      // 5. MASTER 60FPS ANIMATION LOOP
+      // ====================================================================
+      let lastNow = performance.now();
+
+      function animateAll(now) {
+        const dt = Math.min(0.1, (now - lastNow) * 0.001);
+        lastNow = now;
+        const timeSec = now * 0.001;
+
+        // Horizontal Runway Smooth Lerp
+        if (window.innerWidth > 1024) {
+          currentX += (targetX - currentX) * 0.085;
+          const velocity = (targetX - currentX) * 0.0025;
+          const clampedSkew = Math.max(-1.6, Math.min(1.6, -velocity));
+
+          moveContainer.style.transform = 'translate3d(' + (-currentX.toFixed(2)) + 'px, 0, 0) skewX(' + clampedSkew.toFixed(2) + 'deg)';
+          progressBar.style.width = (maxScrollX > 0 ? (currentX / maxScrollX) * 100 : 0).toFixed(1) + '%';
+
+          const viewportCenter = currentX + wrapper.clientWidth * 0.5;
+          let closestIdx = 0, minDistance = Infinity;
+
+          plates.forEach((plate, idx) => {
+            const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
+            if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
+          });
+
+          plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
+          dotBtns.forEach((b, idx) => b.classList.toggle('active', idx === closestIdx));
+          activeBadge.textContent = 'STORY 0' + (closestIdx + 1) + ' / 0' + plates.length;
+          const cap = plates[closestIdx]?.getAttribute('data-caption');
+          if (cap && activeCaption.textContent !== cap) activeCaption.textContent = cap;
+        }
+
+        // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
+        motionStages.forEach((ms, sIdx) => {
+          ms.elapsed = (ms.elapsed + dt) % ms.duration;
+          const cycleNorm = ms.elapsed / ms.duration;
+          if (ms.progFill) ms.progFill.style.width = (cycleNorm * 100).toFixed(1) + '%';
+
+          if (ms.frames.length > 1) {
+            const targetIdx = Math.min(ms.frames.length - 1, Math.floor(cycleNorm * ms.frames.length));
+            if (targetIdx !== ms.currIdx) {
+              ms.currIdx = targetIdx;
+              applyStageFrame(ms, targetIdx);
+            }
+          }
+
+          // Continuous 3D Ken Burns camera pan/zoom so every frame feels like live cinema video
+          const zoom = 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
+          const panX = Math.cos(timeSec * 0.55 + sIdx) * 12;
+          const panY = Math.sin(timeSec * 0.45 + sIdx) * 8;
+          const transformStr = 'scale(' + zoom.toFixed(4) + ') translate3d(' + panX.toFixed(1) + 'px, ' + panY.toFixed(1) + 'px, 0)';
+          if (ms.layerA) ms.layerA.style.transform = transformStr;
+          if (ms.layerB) ms.layerB.style.transform = transformStr;
+
+          drawPlateMotionFx(ms, timeSec, cycleNorm);
+        });
+
+        drawSimCanvas(timeSec);
+        requestAnimationFrame(animateAll);
+      }
+
+      requestAnimationFrame(animateAll);
+    })();
+  </script>
+</body>
+</html>

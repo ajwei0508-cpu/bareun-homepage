@@ -23,12 +23,15 @@ const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/
 
 function rewriteAssetsForWP(html) {
   return html
-    .replace(/src:\s*'((?:life_|bareun_|card_|detail_|gongjindan_)[^']+)'/g, "src: '" + ghBase + "$1'")
-    .replace(/url\('((?:life_|bareun_|card_|detail_|gongjindan_)[^']+)'\)/g, "url('" + ghBase + "$1')")
-    .replace(/load\('((?:life_|bareun_|card_|detail_|gongjindan_)[^']+)'/g, "load('" + ghBase + "$1'")
-    .replace(/src="((?:life_|bareun_|card_|detail_|gongjindan_)[^"]+)"/g, 'src="' + ghBase + '$1"')
-    .replace(/this\.src='((?:life_|bareun_|card_|detail_|gongjindan_)[^']+)'/g, "this.src='" + ghBase + "$1'")
-    .replace(/bgImg\.src\s*=\s*'((?:life_|bareun_|card_|detail_|gongjindan_)[^']+)'/g, "bgImg.src = '" + ghBase + "$1'");
+    .replace(/src:\s*'((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "src: '" + ghBase + "$1'")
+    .replace(/url\('((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
+    .replace(/load\('((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "load('" + ghBase + "$1'")
+    .replace(/loadLinearTex\('((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1')")
+    .replace(/src="((?:life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
+    .replace(/data-frames="([^"]+)"/g, (match, p1) => {
+      const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : ghBase + f).join('|');
+      return 'data-frames="' + rewritten + '"';
+    });
 }
 
 let wpMain = rewriteAssetsForWP(indexHtml).replace('<style>', '<style>' + wpReset);
@@ -42,6 +45,8 @@ console.log('Successfully generated wordpress-story-3d.html (' + wpStory3d.lengt
 const detailPages = [
   ['director.html', 'wordpress-director.html'],
   ['chuna.html', 'wordpress-chuna.html'],
+  ['growth.html', 'wordpress-growth.html'],
+  ['diet-zero.html', 'wordpress-diet.html'],
   ['hairloss.html', 'wordpress-hairloss.html'],
   ['gongjindan.html', 'wordpress-gongjindan.html']
 ];
@@ -50,7 +55,7 @@ detailPages.forEach(([srcFile, outFile]) => {
   const fullSrc = path.join(dir, srcFile);
   if (fs.existsSync(fullSrc)) {
     const raw = fs.readFileSync(fullSrc, 'utf8');
-    const wpOut = rewriteAssetsForWP(raw);
+    const wpOut = rewriteAssetsForWP(raw).replace('<style>', '<style>' + wpReset);
     fs.writeFileSync(path.join(dir, outFile), wpOut, 'utf8');
     console.log('Successfully generated ' + outFile + ' (' + wpOut.length + ' bytes)');
   }

@@ -10,6 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
+/* WORDPRESS & ASTRA THEME CONTAINER RESET */
+.entry-content, .ast-container, .site-content, article.page, .ast-plain-container,
+.elementor, .elementor-section-wrap, .wp-block-group {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
     :root {
       --bg-warm-dark: #0A1410;
       --gold: #C5A059;
@@ -992,7 +1002,7 @@
     <div class="skt-bento-grid" id="skt-bento-grid">
       <!-- 1. 안정위원장 -->
       <div class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
-        <div class="skt-img-box" style="background-image: url('card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
+        <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <p class="skt-card-title">안정위원장</p>
@@ -1002,7 +1012,7 @@
 
       <!-- 2. 추나 -->
       <div class="skt-card-item" data-card-idx="1" data-rot="5" data-link="chuna.html" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
-        <div class="skt-img-box" style="background-image: url('card_2_chuna.jpg?v=card1'); background-position: center center;"></div>
+        <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_2_chuna.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <p class="skt-card-title">추나</p>
@@ -1012,7 +1022,7 @@
 
       <!-- 3. 성장 -->
       <div class="skt-card-item" data-card-idx="2" data-rot="7" data-link="growth.html" data-reserve="소아·청소년 키성장 클리닉" data-chapter="3">
-        <div class="skt-img-box" style="background-image: url('card_3_growth.jpg?v=card1'); background-position: center 22%;"></div>
+        <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_3_growth.jpg?v=card1'); background-position: center 22%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <p class="skt-card-title">성장</p>
@@ -1022,7 +1032,7 @@
 
       <!-- 4. 다이어트 -->
       <div class="skt-card-item" data-card-idx="3" data-rot="-7" data-link="diet-zero.html" data-reserve="성인 비만·다이어트 클리닉" data-chapter="4">
-        <div class="skt-img-box" style="background-image: url('card_4_diet.jpg?v=card1'); background-position: center 25%;"></div>
+        <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_4_diet.jpg?v=card1'); background-position: center 25%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <p class="skt-card-title">다이어트</p>
@@ -1032,7 +1042,7 @@
 
       <!-- 5. 탈모 -->
       <div class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss.html" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
-        <div class="skt-img-box" style="background-image: url('card_5_hairloss.jpg?v=pov12'); background-position: center center;"></div>
+        <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_5_hairloss.jpg?v=pov12'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <p class="skt-card-title">탈모</p>
@@ -1042,7 +1052,7 @@
 
       <!-- 6. 황제공진단 -->
       <div class="skt-card-item" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
-        <div class="skt-img-box" style="background-image: url('card_6_gongjindan.jpg?v=card1'); background-position: center center;"></div>
+        <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_6_gongjindan.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <p class="skt-card-title">황제공진단</p>
@@ -1212,7 +1222,7 @@
       const FRAMES = [
         // --- CHAPTER 1: 임신이 되지 않아 힘들게 얻은 선물 (Frames 0 ~ 3) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a0_infertility_before.jpg?v=pov11',
           chapter: 1,
           quote: '간절한 기다림',
           povBadge: '',
@@ -1223,7 +1233,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a1_infertility_treatment.jpg?v=pov7',
           chapter: 1,
           quote: '난임으로 찾게 된 한의원',
           povBadge: '',
@@ -1234,7 +1244,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1a_fertilization.jpg?v=pov11',
           chapter: 1,
           quote: '힘들게 얻은 선물',
           povBadge: '',
@@ -1245,7 +1255,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1b_birth.jpg?v=pov7',
           chapter: 1,
           quote: '소중한 탄생',
           povBadge: '',
@@ -1258,7 +1268,7 @@
 
         // --- CHAPTER 2: 사랑하는 아이가 건강하기를 바라면서 (Frames 4 ~ 6) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_cold_before.jpg?v=pov7',
           chapter: 2,
           quote: '자꾸만 아픈 우리 아이',
           povBadge: '',
@@ -1269,7 +1279,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_clinic_exam.jpg?v=pov13',
           chapter: 2,
           quote: '다시 찾은 한의원',
           povBadge: '',
@@ -1280,7 +1290,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1c_immunity.jpg?v=pov7',
           chapter: 2,
           quote: '으랏차차',
           povBadge: '',
@@ -1293,7 +1303,7 @@
 
         // --- CHAPTER 3: 멋지게 성장하는 꿈을 꾸며 (Frames 7 ~ 9) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_short.jpg?v=pov7',
           chapter: 3,
           quote: '친구보다 너무 작은 우리 아이',
           povBadge: '',
@@ -1304,7 +1314,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_clinic.jpg?v=pov7',
           chapter: 3,
           quote: '성장클리닉을 하다',
           povBadge: '',
@@ -1315,7 +1325,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_peers.jpg?v=pov7',
           chapter: 3,
           quote: '쑥쑥 자란 우리 아이',
           povBadge: '',
@@ -1328,7 +1338,7 @@
 
         // --- CHAPTER 4: 날씬하고 건강해서 예쁘게 (Frames 10 ~ 12) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_obesity.jpg?v=pov7',
           chapter: 4,
           quote: '육아로 뱃살만...',
           povBadge: '',
@@ -1339,7 +1349,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2a_treatment.jpg?v=pov7',
           chapter: 4,
           quote: '결심했어!!',
           povBadge: '',
@@ -1350,7 +1360,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_2b_slim_therapy.jpg?v=pov11',
           chapter: 4,
           quote: '늘씬한 내가 되자',
           povBadge: '',
@@ -1363,7 +1373,7 @@
 
         // --- CHAPTER 5: 사회에서 인정받기 위해 탈모 (Frames 13 ~ 16) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_hairloss.jpg?v=pov12',
           chapter: 5,
           quote: '심해진 탈모',
           povBadge: '',
@@ -1374,7 +1384,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_treatment.jpg?v=pov12',
           chapter: 5,
           quote: '한의원에서 탈모검사 중',
           povBadge: '',
@@ -1385,7 +1395,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3a_follicle_zoom.jpg?v=pov7',
           chapter: 5,
           quote: '탈모 두피 치료',
           povBadge: '',
@@ -1396,7 +1406,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_3b_hair_restored.jpg?v=pov12',
           chapter: 5,
           quote: '자신감 회복',
           povBadge: '',
@@ -1409,7 +1419,7 @@
 
         // --- CHAPTER 6: 열심히 근무하면서 생긴 통증 (Frames 17 ~ 20) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_work_spine_pain.jpg?v=pov7',
           chapter: 6,
           quote: '일하면서 온몸이 아파진 나',
           povBadge: '',
@@ -1420,7 +1430,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_treatment.jpg?v=pov8',
           chapter: 6,
           quote: '한의원에서 추나 치료',
           povBadge: '',
@@ -1431,7 +1441,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a2_ankle_acupuncture.jpg?v=pov8',
           chapter: 6,
           quote: '통증 치료',
           povBadge: '',
@@ -1442,7 +1452,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_recovery.jpg?v=pov7',
           chapter: 6,
           quote: '관절 튼튼 회복',
           povBadge: '',
@@ -1455,7 +1465,7 @@
 
         // --- CHAPTER 7: 약해진 기력을 보강해야할 나이가 오고 (Frames 21 ~ 22) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5a_aging_fatigue.jpg?v=pov7',
           chapter: 7,
           quote: '어느새 기력이 쇠약해지고',
           povBadge: '',
@@ -1466,7 +1476,7 @@
           whisper: ''
         },
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5b_gongjindan_vitality.jpg?v=pov7',
           chapter: 7,
           quote: '황제공진단으로 기력충전',
           povBadge: '',
@@ -1479,7 +1489,7 @@
 
         // --- CHAPTER 8: 건강한 인생이 될 수 있게 도와드립니다. (Frame 23) ---
         {
-          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/',
+          src: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_5c_graceful_elder.jpg?v=pov7',
           chapter: 8,
           quote: '건강한 백세 인생',
           povBadge: '',
@@ -1880,28 +1890,28 @@
 
         // 6-Stage Growth Multi-Frame Textures (0% -> 25% -> 50% -> 75% -> 96% -> 100%)
         glGrowthTextures = [
-          glTextures[7] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          glTextures[9] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/')
+          glTextures[7] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_short.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_step1.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_step2.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_step3.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_step4.jpg?v=pov12'),
+          glTextures[9] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_1d_growth_peers.jpg?v=pov12')
         ];
 
         // 5-Stage Chuna Pain Multi-Frame Textures (Upright -> Stiff -> Neck Pain -> Waist Pain -> Full Spine Pain)
         glPainTextures = [
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          glTextures[17] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/')
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_pain_step0.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_pain_step0_5.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_pain_step1.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_pain_step2.jpg?v=pov12'),
+          glTextures[17] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4a_work_spine_pain.jpg?v=pov12')
         ];
 
         // 3-Stage Chuna Recovery Multi-Frame Textures (Standing -> Shoulder-Level Lift -> Full "만세!" Stretch)
-        glManseTexture = loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/');
+        glManseTexture = loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_manse.jpg?v=pov12');
         glRecoveryTextures = [
-          glTextures[20] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
-          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/'),
+          glTextures[20] || loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_recovery.jpg?v=pov12'),
+          loadLinearTex('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/life_4b_chuna_manse_mid.jpg?v=pov12'),
           glManseTexture
         ];
 
