@@ -158,58 +158,50 @@ const PAGES = [
         fx: 'chuna-lost-movement-fx'
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 · 통증의 스위치만 끄는 반복된 실패 · FULLSCREEN',
-        metricPill: '화재경보기 배터리만 빼는 진통제의 한계',
+        stepLabel: 'STORY 02 · 통증의 스위치만 끄는 반복된 실패',
         title: '스위치만 끄는 진통제, 다시 켜지는 통증',
         sub: '약을 먹을 때만 잠시 덜 아플 뿐, 며칠 뒤면 똑같은 곳이 또 아프지 않으셨나요? 진통제는 무너진 뼈가 보내는 \'구조적 경고 신호\'를 잠시 꺼둘 뿐입니다. 짓눌린 디스크와 틀어진 골반을 그대로 둔 채 통증을 가리기만 한다면, 악순환은 결코 끝나지 않습니다.',
         caption: 'STORY 02 · 통증의 스위치만 끄는 반복된 실패 — 진통제는 무너진 뼈가 보내는 구조적 경고 신호를 잠시 꺼둘 뿐입니다. 짓눌린 디스크와 틀어진 골반을 그대로 둔 채 통증을 가리기만 한다면, 악순환은 결코 끝나지 않습니다.',
-        frames: [
-          'detail_chuna_story2_painkiller_drawer.jpg?v=chuna1',
-          'detail_chuna_story1_clean.jpg?v=oryzo4'
-        ],
-        durationSec: 6.4,
-        fx: 'fire-alarm-cutoff-hud'
+        imgSrc: 'detail_chuna_story2_painkiller_drawer.jpg?v=chuna2',
+        cleanTags: [
+          '화재경보기 배터리만 빼는 진통제의 한계',
+          '구조적 디스크·골반 압박 원인 잔존'
+        ]
       },
       {
-        type: 'sim-canvas',
-        simId: 'chuna-spine',
-        indexPill: 'STORY 03 · 문제는 근육이 아니라, 근육이 매달린 \'뼈의 축\'입니다 (3D BIOMECHANICAL SIM)',
-        beforeLabel: '치료 전 · 틀어진 젠가 하단 축(골반 1cm) & 24시간 근육 과긴장',
-        afterLabel: '치료 후 · 원장 수기 추나 정렬 ➔ 3D 척추 +3.8mm 신경 감압',
+        type: 'clean-image',
+        stepLabel: 'STORY 03 · 문제는 근육이 아니라, 근육이 매달린 \'뼈의 축\'입니다',
         title: '무너진 기둥을 바로 세워야 통증의 뿌리가 뽑힙니다',
         sub: '우리 몸은 정교한 톱니바퀴와 같습니다. 골반이 1cm 틀어지면 허리와 목의 근육은 넘어지지 않기 위해 24시간 팽팽하게 긴장해야 합니다. 굳은 근육만 주무르는 것을 넘어, 밀고 당기는 \'추나요법\'으로 척추의 중심축과 신경의 공간(+3.8mm)을 직접 열어주어야 원인 모를 통증이 사라집니다.',
-        caption: 'STORY 03 · 문제는 근육이 아니라, 근육이 매달린 뼈의 축입니다 — 틀어진 하단 젠가 블록(골반·요추)을 원장의 수기 추나로 밀어 넣어 중심축을 바로 세우면, 3D 척추와 신경의 공간(+3.8mm)이 열리며 붉은 신경 압박이 푸른 회복 기전으로 전환됩니다.'
+        caption: 'STORY 03 · 문제는 근육이 아니라, 근육이 매달린 뼈의 축입니다 — 틀어진 하단 젠가 블록(골반·요추)을 원장의 수기 추나로 밀어 넣어 중심축을 바로 세우면, 척추와 신경의 공간(+3.8mm)이 열리며 붉은 신경 압박이 푸른 회복 기전으로 전환됩니다.',
+        imgSrc: 'detail_chuna_story3_jenga_spine.jpg?v=chuna2',
+        cleanTags: [
+          '틀어진 하단 중심축(골반·요추) 수직 정렬',
+          '추간판 신경 통로 +3.8mm 감압 확장'
+        ]
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 04 · 기계가 할 수 없는, 원장 1:1 수기(手技) 추나 · FULLSCREEN',
-        metricPill: '1mm 미세 아탈구 수기 촉진(Palpation) & 추나(推拿)',
+        stepLabel: 'STORY 04 · 기계가 할 수 없는, 원장 1:1 수기(手技) 추나',
         title: '원장의 두 손이 찾아내는 1mm의 정밀한 교정',
         sub: '엑스레이에도 나오지 않는 미세한 뼈의 틀어짐은 오직 숙련된 한의사의 두 손끝으로만 찾아낼 수 있습니다. 획일적인 물리치료가 아닙니다. 환자의 호흡과 근육 저항감을 실시간으로 느끼며, 척추 분절마다 각기 다른 압력과 방향으로 정렬을 맞추는 하이엔드 수기 치료입니다.',
         caption: 'STORY 04 · 기계가 할 수 없는, 원장 1:1 수기(手技) 추나 — 엑스레이에도 나오지 않는 미세한 뼈의 틀어짐을 손끝으로 촉진(Palpation)하고, 환자의 호흡과 근육 저항감을 느끼며 밀고 당기는(推拿) 하이엔드 수기 치료입니다.',
-        frames: [
-          'detail_chuna_story4_palpation.jpg?v=chuna1',
-          'detail_chuna_story2_clean.jpg?v=oryzo4'
-        ],
-        durationSec: 6.2,
-        fx: 'chuna-palpation-vector-fx'
+        imgSrc: 'detail_chuna_story4_palpation.jpg?v=chuna2',
+        cleanTags: [
+          '1mm 미세 아탈구 손끝 촉진(Palpation)',
+          '밀 추(推) · 당길 나(拿) 1:1 맞춤 수기 교정'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 · 되찾은 움직임, 다시 넓어진 당신의 일상',
-        metricPill: '포기했던 일상의 회복 · SCI급 비수술 회복률 95.2%',
+        type: 'clean-image',
+        stepLabel: 'STORY 05 · 되찾은 움직임, 다시 넓어진 당신의 일상',
         title: '다시 넓어진 세상, 두 팔을 벌려 만세를 외치다',
         sub: '통증이 사라진 자리에, 포기했던 일상들이 다시 채워집니다. 약물에 의존하지 않고 내 몸의 구조적 자생력을 되살리는 바른 추나. 당신이 다시 마음껏 움직이고, 사랑하는 사람을 아프지 않게 안아줄 수 있도록 척추의 중심을 굳건히 세우겠습니다.',
         caption: 'STORY 05 · 되찾은 움직임, 다시 넓어진 당신의 일상 — 아이를 번쩍 안아 비행기를 태워주고 두 팔 벌려 공원을 산책하는 당연한 행복. 바른 추나가 당신의 척추 중심을 굳건히 세우겠습니다.',
-        frames: [
-          'detail_chuna_story5_child_airplane.jpg?v=chuna1',
-          'detail_chuna_story5_park_arms_wide.jpg?v=chuna1'
-        ],
-        durationSec: 6.2,
-        fx: 'sunlight-bokeh',
+        imgSrc: 'detail_chuna_story5_child_airplane.jpg?v=chuna2',
         sciStats: [
           { num: '95.2%', label: '허리·목 디스크 비수술 일상 움직임 회복률 (PAIN · JAMA Netw Open)', width: '95.2%' },
           { num: '91.4%', label: '척추관 협착증 보행·활동 반경 회복률 (BMJ Open · J Clin Med)', width: '91.4%' }
@@ -284,63 +276,50 @@ const PAGES = [
         durationSec: 6.0
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 / 아이 눈높이 진맥 & 성장판 초음파 · FULLSCREEN',
-        metricPill: '무방사선 초음파 판독 · 따뜻한 1:1 진맥',
+        stepLabel: 'STORY 02 · 아이 눈높이 진맥 & 성장판 초음파',
         title: '무섭지 않은 한의원, 따뜻한 미소로 성장판을 정밀 스캔합니다',
-        sub: '아이 1인칭 시점의 다정한 진맥부터 무릎 성장판 연골 초음파 검사까지 편안하고 정밀하게 진행됩니다',
+        sub: '아이 눈높이에 맞춘 다정한 진맥과 무방사선 무릎 성장판 연골 초음파 검사로 숨은 성장 골든타임을 편안하고 정밀하게 판독합니다.',
         caption: 'STORY 02 · 따뜻한 미소의 대표원장님 진맥과 무방사선 성장판 초음파 검사로 아이의 숨은 성장 잠재력을 확인합니다.',
-        frames: [
-          'life_1c_clinic_exam.jpg?v=pov13',
-          'life_1d_growth_clinic.jpg?v=pov13',
-          'growth-ultrasound-metrics.jpg?v=pov13'
-        ],
-        fx: 'ultrasound-beam',
-        durationSec: 6.0
+        imgSrc: 'life_1d_growth_clinic.jpg?v=pov13',
+        cleanTags: [
+          '무방사선 성장판 초음파 정밀 판독',
+          '아이 눈높이 1:1 맞춤 진맥'
+        ]
       },
       {
-        type: 'sim-canvas',
-        simId: 'growth-plate',
-        indexPill: 'STORY 03 / 60FPS 성장판 연골세포(IGF-1) 증식 모션',
-        beforeLabel: '치료 전 · 성장판 연골 활성 저하',
-        afterLabel: '치료 후 · IGF-1 골화세포 폭발적 증식',
+        type: 'clean-image',
+        stepLabel: 'STORY 03 · 성장판 연골세포(IGF-1) 증식 기전',
         title: '잠들어 있던 무릎 성장판 연골세포가 촘촘하게 차오르는 기전',
-        sub: '분골 녹용과 성장 한약 투여 후 성장호르몬 인자(IGF-1·BMP-2)가 연골세포 증식을 깨우는 60fps 시뮬레이션입니다',
-        caption: 'STORY 03 · 성장판 연골 내 골화세포(Osteoblast)와 성장인자(IGF-1)가 활성화되어 뼈 길이가 자라나는 실시간 모션입니다.'
+        sub: '분골 녹용과 맞춤 성장 한약이 성장호르몬 인자(IGF-1·BMP-2)와 골화세포(Osteoblast) 증식을 깨워 뼈 길이가 건강하게 자라납니다.',
+        caption: 'STORY 03 · 성장판 연골 내 골화세포(Osteoblast)와 성장인자(IGF-1)가 활성화되어 뼈 길이가 자라나는 핵심 기전입니다.',
+        imgSrc: 'growth-ultrasound-metrics.jpg?v=pov13',
+        cleanTags: [
+          '성장인자 IGF-1 · BMP-2 활성 증폭',
+          '성장판 연골세포 증식 및 골밀도 강화'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 04 / 으랏차차 면역 회복 & 안심 성장 한약',
-        metricPill: '러시아산 원용 분골 · 비염·소화·수면 통합케어',
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY 04 · 으랏차차 면역 회복 & 안심 성장 한약',
         title: '감기는 뚝, 밥맛은 꿀맛! 속부터 탄탄해지는 성장 엔진',
-        sub: '호흡기 면역과 비위(소화기)를 먼저 세워주어 먹은 영양이 고스란히 키로 가는 바른 성장 처방입니다',
+        sub: '호흡기 면역과 비위(소화기)를 먼저 세워주어 먹은 영양이 고스란히 키로 가는 바른 성장 처방입니다.',
         caption: 'STORY 04 · 잦은 감기와 비염을 잡고 깊은 숙면과 왕성한 식욕을 되찾아주어 폭발적인 성장의 발판을 만듭니다.',
-        frames: [
-          'life_1c_immunity.jpg?v=pov13',
-          'growth-herbal-immune.jpg?v=pov13',
-          'growth-happy-family.jpg?v=pov13'
-        ],
-        fx: 'gold-aura',
-        durationSec: 6.0
+        imgSrc: 'life_1c_immunity.jpg?v=pov13',
+        cleanTags: [
+          '러시아산 원용 분골 최상단 사용',
+          '비염 · 소화 · 숙면 통합 성장 케어'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 / 6단계 연속 모션: 쑥쑥 자란 우리 아이!',
-        metricPill: '교실 6단계 키성장 시퀀스 · IGF-1 +162%',
+        type: 'clean-image',
+        stepLabel: 'STORY 05 · 쑥쑥 자란 우리 아이! 당당한 성장 피날레',
         title: '교실 한가운데서 친구들보다 훌쩍 자라난 반짝이는 순간',
-        sub: '작은 키에서 또래보다 훤칠하게 쑤욱 자라나는 6단계 멀티프레임 성장 모션과 황금 별빛 시퀀스입니다',
-        caption: 'STORY 05 · 작은 키에서 큰 키로 6단계에 걸쳐 쑤욱 자라난 뒤 황금빛 별빛이 터지는 감동의 성장 피날레입니다.',
-        frames: [
-          'life_1d_growth_short.jpg?v=pov13',
-          'life_1d_growth_step1.jpg?v=pov13',
-          'life_1d_growth_step2.jpg?v=pov13',
-          'life_1d_growth_step3.jpg?v=pov13',
-          'life_1d_growth_step4.jpg?v=pov13',
-          'life_1d_growth_peers.jpg?v=pov13'
-        ],
-        fx: 'growth-starlight',
-        durationSec: 5.8,
+        sub: '작은 키로 움츠러들던 모습에서 벗어나 또래 친구들과 당당하게 어깨를 나란히 하며 환하게 웃는 성장을 완성합니다.',
+        caption: 'STORY 05 · 숨은 10cm 성장 잠재력을 깨워 또래들 사이에서 당당하고 건강하게 자라난 성장 피날레입니다.',
+        imgSrc: 'life_1d_growth_peers.jpg?v=pov13',
         sciStats: [
           { num: '+162%', label: '녹용 분골·성장 한약 투여군 성장인자(IGF-1·BMP-2) 활성 증가', width: '92%' },
           { num: '+9.8cm', label: '1년 집중 성장 치료군 평균 연간 키 성장치 달성 기록', width: '88%' }
@@ -415,60 +394,50 @@ const PAGES = [
         durationSec: 6.0
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 / 나를 위한 결심, 핑크빛 맞춤 한약 · FULLSCREEN',
-        metricPill: '가짜 식욕 자연 차단 · 손떨림·불면 ZERO 지향',
+        stepLabel: 'STORY 02 · 나를 위한 결심, 핑크빛 맞춤 한약',
         title: '결심했어!! 참는 고통 대신 편안하게 비워내는 하루 한 포',
-        sub: '시상하부 포만감 중추를 부드럽게 안정시켜 야식과 폭식 유혹에서 자연스럽게 자유로워집니다',
+        sub: '시상하부 포만감 중추를 부드럽게 안정시켜 손떨림이나 불면 걱정 없이 야식과 폭식 유혹에서 자연스럽게 자유로워집니다.',
         caption: 'STORY 02 · 나를 되찾기 위한 결심의 순간, 체질에 맞춘 슬리밍 한약이 가짜 식욕을 편안하게 잠재웁니다.',
-        frames: [
-          'life_2a_treatment.jpg?v=pov13',
-          'efficacy-neuro-calm.jpg?v=pov13',
-          'empathy-safe-herbal.jpg?v=pov13'
-        ],
-        fx: 'gold-aura',
-        durationSec: 6.0
+        imgSrc: 'life_2a_treatment.jpg?v=pov13',
+        cleanTags: [
+          '가짜 식욕 · 야식 충동 자연 차단',
+          '손떨림 · 불면 · 두근거림 ZERO 지향'
+        ]
       },
       {
-        type: 'sim-canvas',
-        simId: 'diet-lipolysis',
-        indexPill: 'STORY 03 / 60FPS 내장지방 분해(AMPK) & 대사 리셋 모션',
-        beforeLabel: '복용 전 · 지방세포 비대 & 림프 정체',
-        afterLabel: '복용 후 · AMPK 열대사 연소 & 슬리밍',
+        type: 'clean-image',
+        stepLabel: 'STORY 03 · 내장지방 분해(AMPK) & 대사 리셋 기전',
         title: '가만히 있어도 에너지가 타오르는 AMPK 지방 연소 메커니즘',
-        sub: '비대해진 백색 지방세포가 쪼개져 배출되고 기초대사 열에너지가 순환하는 60fps 시뮬레이션입니다',
-        caption: 'STORY 03 · 정체되어 있던 지방세포와 부종 독소가 AMPK 대사 효소 활성화로 빠르게 분해·배출되는 실시간 모션입니다.'
+        sub: '정체되어 있던 복부 백색 지방세포와 림프 부종 독소가 AMPK 대사 효소 활성화로 빠르게 분해·배출되며 기초대사 열에너지가 깨어납니다.',
+        caption: 'STORY 03 · 정체되어 있던 지방세포와 부종 독소가 AMPK 대사 효소 활성화로 빠르게 분해·배출되는 핵심 기전입니다.',
+        imgSrc: 'efficacy-core-lipolysis.jpg?v=pov13',
+        cleanTags: [
+          'AMPK 생체 대사 효소 활성화',
+          '심부 내장지방 분해 및 기초대사량 상승'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 04 / 비움·태움·채움 3단계 체형 리모델링',
-        metricPill: '독소 해독 ➔ 체지방 집중 연소 ➔ 요요 방지',
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY 04 · 비움·태움·채움 3단계 체형 리모델링',
         title: '숫자만 줄이는 감량이 아닌, 매끈한 바디 라인의 완성',
-        sub: '하체 부종부터 복부 내장지방까지 단계별로 정교하게 디자인하여 탄력 있는 실루엣을 만듭니다',
+        sub: '하체 림프 부종 해독부터 복부 내장지방 집중 연소, 근손실과 요요를 막는 체질 개선까지 3단계로 정교하게 디자인합니다.',
         caption: 'STORY 04 · 부종 해독부터 심부 체지방 분해, 요요 방지 체질 개선까지 3단계로 정교하게 케어합니다.',
-        frames: [
-          'efficacy-detox-flush.jpg?v=pov13',
-          'efficacy-core-lipolysis.jpg?v=pov13',
-          'card_4_diet.jpg?v=pov13'
-        ],
-        fx: 'sline-curtain',
-        durationSec: 6.0
+        imgSrc: 'efficacy-detox-flush.jpg?v=pov13',
+        cleanTags: [
+          '림프 부종·독소 배출 (비움)',
+          '체지방 집중 연소 & 요요 방지 (태움·채움)'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 / 늘씬하고 건강해진 나! Before ➔ After 모션',
-        metricPill: '68.5kg ➔ 54.2kg · 체지방 위주 건강한 감량',
+        type: 'clean-image',
+        stepLabel: 'STORY 05 · 늘씬하고 건강해진 나! 당당한 S라인 회복',
         title: '어떤 옷을 입어도 당당하게 빛나는 가벼운 아침',
-        sub: '통통했던 거울 속 모습에서 건강하고 늘씬한 S라인 실루엣으로 전환되는 시네마틱 모션입니다',
+        sub: '무리한 절식 없이 체지방 위주로 건강하게 감량하여, 거울 앞에 설 때마다 미소 짓는 가볍고 탄력 있는 일상을 되찾아 드립니다.',
         caption: 'STORY 05 · 68.5kg에서 54.2kg으로, 굶지 않고 건강하게 완성한 당당한 바디라인과 임상 데이터입니다.',
-        frames: [
-          'life_2a_obesity.jpg?v=pov13',
-          'empathy-wedding-dress.jpg?v=pov13',
-          'life_2b_slim_therapy.jpg?v=pov13'
-        ],
-        fx: 'sline-curtain',
-        durationSec: 5.8,
+        imgSrc: 'life_2b_slim_therapy.jpg?v=pov13',
         sciStats: [
           { num: '-14.3kg', label: '12주 집중 대사 리셋 프로그램 평균 체중 감량 (근손실 최소화)', width: '91%' },
           { num: '94.2%', label: '복용 중 가짜 배고픔·야식 충동 감소 및 포만감 만족도', width: '94.2%' }
@@ -541,60 +510,50 @@ const PAGES = [
         durationSec: 6.4
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 · 샴푸와 영양제로는 채울 수 없었던 빈자리 · FULLSCREEN',
-        metricPill: '고가 샴푸 · 영양제 · 탈모약 부작용의 좌절',
+        stepLabel: 'STORY 02 · 샴푸와 영양제로는 채울 수 없었던 빈자리',
         title: '진열장을 가득 채운 실패의 기록들',
         sub: '"이 샴푸를 쓰면 덜 빠질까?", "독한 약을 평생 먹어야만 할까?" 유명하다는 샴푸를 들이붓고 영양제를 발라도 빠지는 머리카락은 줄지 않았습니다. 약의 부작용을 걱정하며 하루하루 불안감에 기대어 온 지난날의 좌절을 우리는 너무나 잘 알고 있습니다.',
         caption: 'STORY 02 · 샴푸와 영양제로는 채울 수 없었던 빈자리 — 유명하다는 샴푸를 들이붓고 영양제를 발라도 빠지는 머리카락은 줄지 않았습니다. 약의 부작용을 걱정하며 하루하루 불안감에 기대어 온 지난날의 좌절을 우리는 너무나 잘 알고 있습니다.',
-        frames: [
-          'detail_hair_story2_cabinet_failure.jpg?v=30cm1',
-          'life_3a_hairloss.jpg?v=pov13'
-        ],
-        fx: 'cabinet-frustration-hud',
-        durationSec: 6.4
+        imgSrc: 'detail_hair_story2_cabinet_failure.jpg?v=30cm2',
+        cleanTags: [
+          '고가 탈모 샴푸 · 영양제의 흡수 한계',
+          '먹는 탈모약 부작용 · 쉐딩 현상 우려'
+        ]
       },
       {
-        type: 'sim-canvas',
-        simId: 'hair-follicle',
-        indexPill: 'STORY 03 · 문제는 모발이 아니라 끓어오르는 \'두피열\'입니다 (60FPS 모션 시뮬레이션)',
-        beforeLabel: '치료 전 · 42.0°C 불타는 냄비(상열) & 샴푸 겉물의 한계',
-        afterLabel: '치료 후 · 36.5°C 수승화강(水升火降) 쿨링 & 모근 자생',
+        type: 'clean-image',
+        stepLabel: 'STORY 03 · 문제는 모발이 아니라 끓어오르는 \'두피열\'입니다',
         title: '불타는 토양에는 어떤 나무도 자라지 못합니다',
         sub: '스트레스와 과로로 머리에 몰린 비정상적인 열(上熱)은 모근의 진액을 말라붙게 합니다. 끓는 냄비에 겉물(샴푸)만 붓는다고 열이 식지 않듯, 탈모약에만 의존할 것이 아니라 체내의 열을 내리고 두피 환경 자체를 비옥하게 바꾸는 근본적인 패러다임 전환이 필요합니다.',
-        caption: 'STORY 03 · 문제는 모발이 아니라 끓어오르는 \'두피열\'입니다 — 끓는 냄비(42°C 상열)에 겉물(샴푸)만 붓는다고 열이 식지 않듯, 수승화강(水升火降)으로 체내의 열을 36.5°C로 내리고 두피 토양을 비옥하게 바꾸어 모근을 굵게 되살립니다.'
+        caption: 'STORY 03 · 문제는 모발이 아니라 끓어오르는 두피열입니다 — 끓는 냄비(42°C 상열)에 겉물(샴푸)만 붓는다고 열이 식지 않듯, 수승화강(水升火降)으로 체내의 열을 36.5°C로 내리고 두피 토양을 비옥하게 바꾸어 모근을 굵게 되살립니다.',
+        imgSrc: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2',
+        cleanTags: [
+          '상열하한(42.0°C) ➔ 수승화강(36.5°C) 두피 쿨링',
+          '비옥한 두피 토양 복원 및 모근 굵기 +44.4% 강화'
+        ]
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 04 · 독한 약 대신, 두피 자생력을 깨우는 한의학적 치유 · FULLSCREEN',
-        metricPill: '1:1 진맥 · 청열(淸熱) 한약 · 정제 약침 루틴',
+        stepLabel: 'STORY 04 · 독한 약 대신, 두피 자생력을 깨우는 한의학적 치유',
         title: '몸을 살리고 모근을 깨우는 1:1 정밀 루틴',
         sub: '체질에 맞춘 한약으로 가슴과 머리로 치솟은 열을 끄고(淸熱), 말라버린 두피에 진액을 보충합니다. 이후 두피 미세 자침과 정제 약침을 통해, 모낭이 스스로 혈류를 공급받고 숨 쉴 수 있는 생명력을 안전하게 되살립니다.',
         caption: 'STORY 04 · 독한 약 대신, 두피 자생력을 깨우는 한의학적 치유 — 체질에 맞춘 한약으로 가슴과 머리로 치솟은 열을 끄고(淸熱) 진액을 보충하며, 두피 미세 자침과 정제 약침으로 모낭이 스스로 숨 쉴 수 있는 생명력을 되살립니다.',
-        frames: [
-          'detail_hair_story4_pulse_routine.jpg?v=30cm1',
-          'life_3a_treatment.jpg?v=pov13',
-          'detail_hair_pharmacopuncture.jpg?v=pov13'
-        ],
-        fx: 'thermal-cooling',
-        durationSec: 6.2
+        imgSrc: 'detail_hair_story4_pulse_routine.jpg?v=30cm2',
+        cleanTags: [
+          '1:1 체질 진맥 & 수승화강 청열(淸熱) 한약',
+          '두피 미세 자침 & 고농축 정제 약침 루틴'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 · 시선을 피하지 않는 당당한 일상의 회복',
-        metricPill: '30cm 거리의 자유 · 업무 & 데이트 자신감 회복',
+        type: 'clean-image',
+        stepLabel: 'STORY 05 · 시선을 피하지 않는 당당한 일상의 회복',
         title: '다시 가까워진 거리, 온전한 나로 마주하다',
         sub: '누군가 내 뒤에 서 있어도 더 이상 긴장하지 않습니다. 우리가 치료하는 것은 단순히 머리카락 몇 가닥이 아닙니다. 사랑하는 사람 앞에서도, 치열한 업무 앞에서도 나를 잃지 않고 온전히 마주할 수 있는 \'당당한 일상\'의 회복입니다.',
-        caption: 'STORY 05 · 시선을 피하지 않는 당당한 일상의 회복 — 누군가 내 뒤에 서 있어도 더 이상 긴장하지 않습니다. 사랑하는 사람 앞에서도, 치열한 업무 앞에서도 나를 잃지 않고 온전히 마주할 수 있는 \'당당한 일상\'의 회복입니다.',
-        frames: [
-          'detail_hair_story5_30cm_confidence.jpg?v=30cm1',
-          'detail_hair_story5_date_smile.jpg?v=30cm1',
-          'life_3b_hair_restored.jpg?v=pov13'
-        ],
-        fx: 'sunlight-bokeh',
-        durationSec: 6.2,
+        caption: 'STORY 05 · 시선을 피하지 않는 당당한 일상의 회복 — 누군가 내 뒤에 서 있어도 더 이상 긴장하지 않습니다. 사랑하는 사람 앞에서도, 치열한 업무 앞에서도 나를 잃지 않고 온전히 마주할 수 있는 당당한 일상의 회복입니다.',
+        imgSrc: 'detail_hair_story5_30cm_confidence.jpg?v=30cm2',
         sciStats: [
           { num: '36.5°C', label: '수승화강(水升火降) 청열 치료를 통한 두피 열감(42°C➔36.5°C) 안정화 및 진액 회복', width: '94%' },
           { num: '+158%', label: '모유두세포(Dermal Papilla) 자생력 및 모근 굵기(+44.4%) 강화 (SCI 입증)', width: '92%' }
@@ -667,59 +626,50 @@ const PAGES = [
         durationSec: 6.4
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 02 · 겉만 채우는 영양제로는 채울 수 없는 \'원기(元氣)\' · FULLSCREEN',
-        metricPill: '밑빠진 독에 물 붓기 · 비타민·홍삼의 한계',
+        stepLabel: 'STORY 02 · 겉만 채우는 영양제로는 채울 수 없는 \'원기(元氣)\'',
         title: '밑빠진 독에 물 붓기, 한계에 부딪힌 영양제',
         sub: '카페인으로 피로를 속이고, 비타민으로 억지로 눈을 뜨게 하는 것은 임시방편일 뿐입니다. 생명력을 담는 그릇 자체가 깨져있다면 아무리 좋은 영양을 부어도 모두 새어나갑니다. 지금 당신에게 필요한 것은 각성제가 아니라, 밑빠진 독을 메우고 불씨를 살리는 강력한 복원력입니다.',
         caption: 'STORY 02 · 겉만 채우는 영양제로는 채울 수 없는 원기(元氣) — 생명력을 담는 그릇 자체가 깨져있다면 아무리 좋은 영양을 부어도 모두 새어나갑니다. 밑빠진 독을 메우고 불씨를 살리는 강력한 복원력이 필요합니다.',
-        frames: [
-          'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd1',
-          'detail_gongjindan_ingredients_macro.jpg?v=pov13'
-        ],
-        fx: 'bottomless-jug-leak-fx',
-        durationSec: 6.4
+        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2',
+        cleanTags: [
+          '밑빠진 독에 물 붓기 (비타민·홍삼의 한계)',
+          '깨진 원기(元氣)의 그릇을 메우는 근본 복원'
+        ]
       },
       {
-        type: 'sim-canvas',
-        simId: 'gongjindan-neuro',
-        indexPill: 'STORY 03 · 막힌 기혈을 뚫고 뇌 끝까지 에너지를 밀어 올리다 (60FPS 사향 약리 시뮬레이션)',
-        beforeLabel: '복용 전 · 꽉 막힌 기혈의 거대 수문 & 메마른 혈관',
-        afterLabel: '복용 후 · 24K 사향 공진단 수문 개방 & 전신 생명수 도달',
+        type: 'clean-image',
+        stepLabel: 'STORY 03 · 막힌 기혈을 뚫고 뇌 끝까지 에너지를 밀어 올리다',
         title: '황제의 불로장생을 위한 처방, 생명력을 깨우는 사향(麝香)',
         sub: '공진단의 핵심, \'사향\'은 막힌 기운을 뚫고 전신으로 기혈을 강하게 순환시키는 지구상 가장 강력한 약재입니다. 심장의 뜨거운 열을 내리고, 신장의 서늘한 기운을 올려(수승화강), 녹용과 당귀의 응축된 에너지를 머리끝부터 발끝까지 단숨에 도달시킵니다.',
-        caption: 'STORY 03 · 막힌 기혈을 뚫고 뇌 끝까지 에너지를 밀어 올리다 — 금박을 두른 사향 공진단이 꽉 막힌 기혈의 수문을 활짝 열고, 녹용과 당귀의 생명수를 머리끝부터 발끝까지 단숨에 도달시킵니다.'
+        caption: 'STORY 03 · 막힌 기혈을 뚫고 뇌 끝까지 에너지를 밀어 올리다 — 금박을 두른 사향 공진단이 꽉 막힌 기혈의 수문을 활짝 열고, 녹용과 당귀의 생명수를 머리끝부터 발끝까지 단숨에 도달시킵니다.',
+        imgSrc: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2',
+        cleanTags: [
+          '사향(麝香) 개규(開竅) 작용으로 막힌 기혈 수문 개방',
+          '수승화강(水升火降) 전신·뇌신경 생명수 도달'
+        ]
       },
       {
-        type: 'motion-story',
+        type: 'clean-image',
         fullscreen: true,
-        indexPill: 'STORY 04 · 타협하지 않는 원칙, 원장이 직접 빚는 하이엔드 조제 · FULLSCREEN',
-        metricPill: '식약처 CITES 정품 사향 · 0.001g 정밀 계량 & 24K 금박 수제 봉인',
+        stepLabel: 'STORY 04 · 타협하지 않는 원칙, 원장이 직접 빚는 하이엔드 조제',
         title: '원장의 지독한 고집으로 빚어내는 단 하나의 명작',
         sub: '공진단의 효능은 사향의 \'함량\'과 \'진위 여부\'에서 결정됩니다. 우리는 외부 업체에 맡기지 않습니다. 오직 원장이 직접 식약처 정식 통관 사향만을 개봉하고, 0.1g의 오차도 없이 정량 배합하여 황금빛 금박을 입히는 마지막 순간까지 완벽을 기합니다.',
         caption: 'STORY 04 · 타협하지 않는 원칙, 원장이 직접 빚는 하이엔드 조제 — 외부 업체에 맡기지 않고 오직 원장이 직접 식약처 정식 통관(CITES) 사향만을 개봉하여 정량 배합하고 24K 순금박을 입혀 완성합니다.',
-        frames: [
-          'detail_gongjindan_story4_cites_scale.jpg?v=gjd1',
-          'detail_gongjindan_master.jpg?v=pov13'
-        ],
-        fx: 'rolex-craft-scale-hud',
-        durationSec: 6.4
+        imgSrc: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2',
+        cleanTags: [
+          '식약처 CITES 인증 100% 정품 사향 0.001g 정밀 계량',
+          '원장 직접 조제 & 24K 순금박 수제 봉인'
+        ]
       },
       {
-        type: 'motion-story',
-        indexPill: 'STORY 05 · 꺼지지 않는 활력, 내일을 위한 완벽한 회복',
-        metricPill: '100% CITES 정품 사향 · 가장 소중한 사람을 위한 헌사',
+        type: 'clean-image',
+        stepLabel: 'STORY 05 · 꺼지지 않는 활력, 내일을 위한 완벽한 회복',
         title: '다시 타오르는 생명력, 가장 소중한 사람을 위한 헌사',
         sub: '아침에 눈을 뜨는 것이 더 이상 두렵지 않은 가벼움. 100% 정품 사향과 원장의 고집이 담긴 황제의 명약. 나를 위한 최고의 보상, 그리고 가장 사랑하고 지켜주고 싶은 사람에게 바치는 절대적인 생명력의 선물입니다.',
         caption: 'STORY 05 · 꺼지지 않는 활력, 내일을 위한 완벽한 회복 — 아침에 눈을 뜨는 것이 더 이상 두렵지 않은 가벼움. 나를 위한 최고의 보상이자 가장 사랑하는 사람에게 바치는 절대적인 생명력의 선물입니다.',
-        frames: [
-          'detail_gongjindan_story5_royal_box_family.jpg?v=gjd1',
-          'detail_gongjindan_story5_morning_vitality.jpg?v=gjd1',
-          'life_5b_gongjindan_vitality.jpg?v=pov13'
-        ],
-        fx: 'sunlight-bokeh',
-        durationSec: 6.4,
+        imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
         sciStats: [
           { num: '100%', label: '식약처 CITES 정식 통관 천연 사향 & 러시아산 원용 분골 정량 원칙', width: '100%' },
           { num: '+184%', label: '뇌 신경성장인자(NGF·BDNF) 발현 및 만성 피로 호르몬 감소 (SCI 입증)', width: '94%' }
