@@ -381,24 +381,166 @@
     }
 
     .slot-footer-btn {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       color: var(--text-secondary);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .slot-quick-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      width: 100%;
+      margin-top: 2px;
+      z-index: 3;
+    }
+
+    .slot-mini-btn {
+      padding: 4px 4px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(10, 14, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #cbd5e1;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .slot-mini-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+
+    .slot-mini-btn.active-base-green {
+      background: rgba(0, 230, 118, 0.24);
+      border-color: var(--before-green);
+      color: var(--before-green);
+      box-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
+    }
+
+    .slot-mini-btn.active-base-red {
+      background: rgba(255, 42, 84, 0.25);
+      border-color: var(--after-red);
+      color: #ff6b89;
+      box-shadow: 0 0 8px rgba(255, 42, 84, 0.35);
+    }
+
+    .upload-slot.is-base-selected.before-slot {
+      border: 2px solid var(--before-green);
+      box-shadow: 0 0 16px rgba(0, 230, 118, 0.22);
+      background: rgba(0, 230, 118, 0.09);
+    }
+
+    .upload-slot.is-base-selected.after-slot {
+      border: 2px solid var(--after-red);
+      box-shadow: 0 0 16px rgba(255, 42, 84, 0.24);
+      background: rgba(255, 42, 84, 0.09);
+    }
+
+    .base-select-box {
+      margin-top: 10px;
+      background: rgba(7, 9, 14, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .base-select-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #e2e8f0;
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .base-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .base-target-btn {
+      padding: 8px 6px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.16s ease;
+      text-align: center;
+    }
+
+    .base-target-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+    }
+
+    .base-target-btn.active-before {
+      background: rgba(0, 230, 118, 0.2);
+      border: 1.5px solid var(--before-green);
+      color: var(--before-green);
+      box-shadow: 0 0 12px rgba(0, 230, 118, 0.25);
+    }
+
+    .base-target-btn.active-after {
+      background: rgba(255, 42, 84, 0.22);
+      border: 1.5px solid var(--after-red);
+      color: #ff6b89;
+      box-shadow: 0 0 12px rgba(255, 42, 84, 0.28);
+    }
+
+    /* 중앙 상단 기준 이미지 대입 컨트롤 서브바 */
+    .stage-sub-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(14, 18, 27, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 7px 12px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+      z-index: 10;
+    }
+
+    .sub-bar-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sub-bar-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #cbd5e1;
+      margin-right: 2px;
     }
 
     .slot-actions-bar {
       display: flex;
       gap: 6px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .slot-actions-bar .btn {
       flex: 1;
       padding: 7px 8px;
-      font-size: 11.5px;
+      font-size: 11px;
     }
 
     /* 프리셋 케이스 버튼 */
@@ -1115,11 +1257,11 @@
     <!-- 좌측 사이드바: 사진 업로드 & 임상 샘플 프리셋 & 정합 제어 -->
     <aside class="sidebar-left">
 
-      <!-- 1. 시술 전·후 사진 업로드 슬롯 -->
+      <!-- 1. 시술 전·후 사진 업로드 슬롯 & 기준 이미지 대입 선택 -->
       <section class="panel-section">
         <div class="section-header">
-          <div class="section-title">📸 시술 전 · 후 사진 입력</div>
-          <span class="section-badge">드래그 & 붙여넣기(Ctrl+V)</span>
+          <div class="section-title">📸 시술 전 · 후 사진 & 기준 선택</div>
+          <span class="section-badge">클릭 · 드롭 · Ctrl+V</span>
         </div>
 
         <div class="upload-dual-grid">
@@ -1131,28 +1273,60 @@
                ondrop="handleDrop(event, 'before')">
             <div class="slot-header-tag">
               <span>BEFORE (시술 전)</span>
-              <span>● 녹색선</span>
+              <span id="slotBadgeBefore">● 녹색선</span>
             </div>
             <div class="slot-thumb-wrap">
               <canvas id="thumbBefore" width="160" height="120"></canvas>
             </div>
-            <div class="slot-footer-btn">📂 클릭 또는 사진 드롭</div>
+            <div class="slot-footer-btn">📂 사진 변경 (클릭/드롭)</div>
+            <div class="slot-quick-btns" onclick="event.stopPropagation()">
+              <button class="slot-mini-btn" id="slotEditBtnBefore" onclick="focusIndividualImageEdit('before')" title="시술 전 이미지에서 녹색 윤곽선을 별도로 수동 조절합니다">✋ 개별 윤곽조절</button>
+              <button class="slot-mini-btn" id="slotBaseBtnBefore" onclick="selectBaseImageForProjection('before')" title="시술 전 이미지를 기준으로 시술 전·후 윤곽선을 모두 대입합니다">🎯 기준 대입</button>
+            </div>
           </div>
 
           <!-- 시술 후 (After - 붉은색) -->
-          <div class="upload-slot after-slot" id="dropAfter"
+          <div class="upload-slot after-slot is-base-selected" id="dropAfter"
                onclick="document.getElementById('fileAfter').click()"
                ondragover="handleDragOver(event, 'dropAfter')"
                ondragleave="handleDragLeave(event, 'dropAfter')"
                ondrop="handleDrop(event, 'after')">
             <div class="slot-header-tag">
               <span>AFTER (시술 후)</span>
-              <span>● 붉은선</span>
+              <span id="slotBadgeAfter">★ 기준 이미지</span>
             </div>
             <div class="slot-thumb-wrap">
               <canvas id="thumbAfter" width="160" height="120"></canvas>
             </div>
-            <div class="slot-footer-btn">📂 클릭 또는 사진 드롭</div>
+            <div class="slot-footer-btn">📂 사진 변경 (클릭/드롭)</div>
+            <div class="slot-quick-btns" onclick="event.stopPropagation()">
+              <button class="slot-mini-btn" id="slotEditBtnAfter" onclick="focusIndividualImageEdit('after')" title="시술 후 이미지에서 붉은색 윤곽선을 별도로 수동 조절합니다">✋ 개별 윤곽조절</button>
+              <button class="slot-mini-btn active-base-red" id="slotBaseBtnAfter" onclick="selectBaseImageForProjection('after')" title="시술 후 이미지를 기준으로 시술 전·후 윤곽선을 모두 대입합니다">🎯 기준 대입</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 내가 선택한 이미지를 기준으로 시술 전·후 윤곽선 대입 박스 -->
+        <div class="base-select-box">
+          <div class="base-select-title">
+            <span>🎯 기준 이미지 선택 (시술 전·후 윤곽선 대입)</span>
+            <span style="font-size:10px; color:var(--accent-cyan);" id="currentBaseLabel">현재: 시술 후 이미지 기준</span>
+          </div>
+          <div class="base-select-grid">
+            <button class="base-target-btn" id="sidebarBaseBefore" onclick="selectBaseImageForProjection('before')">
+              🟢 시술 전 이미지 기준 대입
+            </button>
+            <button class="base-target-btn active-after" id="sidebarBaseAfter" onclick="selectBaseImageForProjection('after')">
+              🔴 시술 후 이미지 기준 대입
+            </button>
+          </div>
+          <div class="base-select-grid" style="margin-top:6px;">
+            <button class="slot-mini-btn" style="padding:6px 4px;" onclick="copyContourBetweenImages('before-to-after')" title="시술 전(녹색) 윤곽선 모양을 시술 후(붉은색) 윤곽선에 그대로 대입(복사)합니다">
+              📥 시술전(녹색) ➔ 시술후에 복사대입
+            </button>
+            <button class="slot-mini-btn" style="padding:6px 4px;" onclick="copyContourBetweenImages('after-to-before')" title="시술 후(붉은색) 윤곽선 모양을 시술 전(녹색) 윤곽선에 그대로 대입(복사)합니다">
+              📥 시술후(붉은색) ➔ 시술전에 복사대입
+            </button>
           </div>
         </div>
 
@@ -1199,27 +1373,36 @@
         </div>
       </section>
 
-      <!-- 3. 시술 후(붉은색) & 시술 전(녹색) 윤곽선 정밀 조절 메뉴 -->
+      <!-- 3. 시술 후(붉은색) & 시술 전(녹색) 각 이미지별 윤곽선 별도 수동 조절 메뉴 -->
       <section class="panel-section">
         <div class="section-header">
-          <div class="section-title">🎛️ 시술 후(붉은색) · 시술 전(녹색) 조절</div>
+          <div class="section-title">🎛️ 이미지별 윤곽선 별도 수동 조절</div>
           <button class="chip-btn" style="padding:2px 8px; font-size:10.5px;" onclick="resetAllAdjustments()">전체 초기화</button>
         </div>
 
         <!-- 조절 패널 필터 탭 -->
         <div class="adjust-filter-tabs">
           <button class="adjust-filter-btn active-both" id="filterTabBoth" onclick="setAdjustPanelFilter('both')">⚡ 전·후 모두 보기</button>
-          <button class="adjust-filter-btn" id="filterTabAfter" onclick="setAdjustPanelFilter('after')">🔴 시술 후(붉은색)</button>
-          <button class="adjust-filter-btn" id="filterTabBefore" onclick="setAdjustPanelFilter('before')">🟢 시술 전(녹색)</button>
+          <button class="adjust-filter-btn" id="filterTabAfter" onclick="setAdjustPanelFilter('after')">🔴 시술 후 별도조절</button>
+          <button class="adjust-filter-btn" id="filterTabBefore" onclick="setAdjustPanelFilter('before')">🟢 시술 전 별도조절</button>
         </div>
 
-        <!-- A. 시술 후 (붉은색) 윤곽선 & 부위별 리프팅 조절 카드 -->
+        <!-- A. 시술 후 (붉은색) 이미지 윤곽선 별도 조절 카드 -->
         <div class="adjust-subcard after-card" id="panelAdjustAfter">
           <div class="subcard-head">
             <div class="subcard-title" style="color: #ff5c7c;">
-              <span>🔴 시술 후 (붉은색) 윤곽선 · 리프팅 조절</span>
+              <span>🔴 시술 후(After) 이미지 윤곽선 별도 조절</span>
             </div>
             <button class="chip-btn" style="padding:1px 7px; font-size:10px;" onclick="resetAfterAdjustment()">시술후 초기화</button>
+          </div>
+
+          <div class="base-select-grid" style="margin-bottom:9px;">
+            <button class="slot-mini-btn" style="padding:5px 4px; border-color:rgba(255,42,84,0.45); color:#ff8da3;" onclick="focusIndividualImageEdit('after')">
+              ✋ 시술후 이미지 단독 포인트 조절
+            </button>
+            <button class="slot-mini-btn" style="padding:5px 4px; border-color:rgba(255,42,84,0.45); color:#ff8da3;" onclick="selectBaseImageForProjection('after')">
+              🎯 시술후 이미지에 전·후 대입
+            </button>
           </div>
 
           <!-- 시술 후 부위별 리프팅 강도 성형 -->
@@ -1253,7 +1436,7 @@
           </div>
 
           <div class="subcard-group-label">
-            <span>시술 후(붉은색) 윤곽선 위치 · 크기 · 각도</span>
+            <span>시술 후(붉은색) 윤곽선 위치 · 크기 · 각도 (개별)</span>
           </div>
 
           <div class="control-row">
@@ -1297,13 +1480,51 @@
           </div>
         </div>
 
-        <!-- B. 시술 전 (녹색) 윤곽선 위치 · 크기 · 각도 조절 카드 -->
+        <!-- B. 시술 전 (녹색) 이미지 윤곽선 별도 조절 카드 -->
         <div class="adjust-subcard before-card" id="panelAdjustBefore">
           <div class="subcard-head">
             <div class="subcard-title" style="color: var(--before-green);">
-              <span>🟢 시술 전 (녹색) 윤곽선 정합 · 위치 조절</span>
+              <span>🟢 시술 전(Before) 이미지 윤곽선 별도 조절</span>
             </div>
             <button class="chip-btn" style="padding:1px 7px; font-size:10px;" onclick="resetAlignment()">시술전 초기화</button>
+          </div>
+
+          <div class="base-select-grid" style="margin-bottom:9px;">
+            <button class="slot-mini-btn" style="padding:5px 4px; border-color:rgba(0,230,118,0.45); color:#69f0ae;" onclick="focusIndividualImageEdit('before')">
+              ✋ 시술전 이미지 단독 포인트 조절
+            </button>
+            <button class="slot-mini-btn" style="padding:5px 4px; border-color:rgba(0,230,118,0.45); color:#69f0ae;" onclick="selectBaseImageForProjection('before')">
+              🎯 시술전 이미지에 전·후 대입
+            </button>
+          </div>
+
+          <!-- 시술 전 부위별 윤곽 형태 미세 조절 -->
+          <div class="control-row">
+            <div class="control-label-line">
+              <span style="color:#69f0ae; font-weight:600;">심부볼(불독살) 윤곽 수축·확장</span>
+              <span class="control-val" id="valBeforeJowl">0.0 px</span>
+            </div>
+            <input type="range" id="sliderBeforeJowl" min="-25" max="25" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span style="color:#69f0ae; font-weight:600;">사각턱(하악각) 윤곽 수축·확장</span>
+              <span class="control-val" id="valBeforeGonion">0.0 px</span>
+            </div>
+            <input type="range" id="sliderBeforeGonion" min="-25" max="25" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span style="color:#69f0ae; font-weight:600;">턱끝(V라인) 수직 위치 조절</span>
+              <span class="control-val" id="valBeforeChin">0.0 px</span>
+            </div>
+            <input type="range" id="sliderBeforeChin" min="-25" max="25" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="subcard-group-label">
+            <span>시술 전(녹색) 윤곽선 위치 · 크기 · 각도 (개별)</span>
           </div>
 
           <div class="control-row">
@@ -1385,22 +1606,53 @@
       <div class="stage-top-bar">
         <div class="view-mode-tabs">
           <button class="view-tab active" id="tabAfterOverlay" onclick="setViewMode('after-overlay')">
-            <span>🎯 시술 후 사진 + 전(녹색)·후(붉은색) 윤곽선 중첩</span>
+            <span>🎯 기준 이미지에 전·후 윤곽선 대입</span>
           </button>
           <button class="view-tab" id="tabSideBySide" onclick="setViewMode('side-by-side')">
-            <span>⚖️ 시술 전(좌) · 시술 후(우) 나란히 비교</span>
+            <span>✋ 전·후 이미지 각각 별도 조절 (2분할)</span>
+          </button>
+          <button class="view-tab" id="tabSingleBefore" onclick="setViewMode('single-before')">
+            <span>🟢 시술 전 이미지 단독 조절</span>
+          </button>
+          <button class="view-tab" id="tabSingleAfter" onclick="setViewMode('single-after')">
+            <span>🔴 시술 후 이미지 단독 조절</span>
           </button>
           <button class="view-tab" id="tabCurtain" onclick="setViewMode('curtain')">
-            <span>🌓 전·후 사진 슬라이더 커튼</span>
+            <span>🌓 커튼 비교</span>
           </button>
           <button class="view-tab" id="tabBlueprint" onclick="setViewMode('blueprint')">
-            <span>📐 윤곽선 정밀 도면 뷰</span>
+            <span>📐 도면 뷰</span>
           </button>
         </div>
 
         <div class="ai-status-pill">
           <span class="status-led" id="aiStatusLed"></span>
           <span id="aiStatusText">AI 478 안면 랜드마크 & 턱 윤곽선 정합 완료</span>
+        </div>
+      </div>
+
+      <!-- 상단 서브 컨트롤 바: 기준 이미지 선택(전/후 윤곽선 대입) & 개별 편집 보조 -->
+      <div class="stage-sub-bar">
+        <div class="sub-bar-group">
+          <span class="sub-bar-label">🎯 전·후 윤곽선 대입 기준 이미지 선택:</span>
+          <button class="chip-btn" id="topBaseBefore" onclick="selectBaseImageForProjection('before')">
+            🟢 시술 전(Before) 이미지 기준으로 전·후 윤곽선 대입
+          </button>
+          <button class="chip-btn active-red" id="topBaseAfter" onclick="selectBaseImageForProjection('after')">
+            🔴 시술 후(After) 이미지 기준으로 전·후 윤곽선 대입
+          </button>
+        </div>
+
+        <div class="sub-bar-group">
+          <button class="chip-btn" id="btnDualOverlayToggle" onclick="toggleDualShowOverlay()" title="2분할 나란히 보기 모드에서 각 이미지 위에 반대쪽 윤곽선도 함께 겹쳐서 표시할지 선택합니다">
+            🔗 2분할 시 전·후 윤곽선 동시 겹쳐보기: OFF (개별 조절 집중)
+          </button>
+          <button class="chip-btn" onclick="copyContourBetweenImages('before-to-after')" title="시술 전(녹색) 윤곽선을 시술 후(붉은색)에 그대로 복사 대입합니다">
+            📥 녹색선➔붉은선 복사
+          </button>
+          <button class="chip-btn" onclick="copyContourBetweenImages('after-to-before')" title="시술 후(붉은색) 윤곽선을 시술 전(녹색)에 그대로 복사 대입합니다">
+            📥 붉은선➔녹색선 복사
+          </button>
         </div>
       </div>
 
@@ -1414,18 +1666,18 @@
       <!-- 하단 포인트 직접 편집 & 정밀 조작 바 -->
       <div class="stage-bottom-bar">
         <div class="edit-mode-group">
-          <span style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-right:4px;">✋ 윤곽선 수동 미세조정:</span>
-          <button class="chip-btn active" id="editBtnOff" onclick="setEditTarget('none')">
-            🔒 보기 전용 (잠금)
+          <span style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-right:4px;">✋ 마우스 포인트 수동 드래그:</span>
+          <button class="chip-btn active" id="editBtnBoth" onclick="setEditTarget('both')">
+            ✨ 각 이미지 윤곽선 포인트 드래그 ON (전·후 모두)
           </button>
           <button class="chip-btn" id="editBtnBefore" onclick="setEditTarget('before')">
-            🟢 시술 전(녹색) 윤곽선 포인트 드래그
+            🟢 시술 전(녹색) 포인트만 드래그
           </button>
           <button class="chip-btn" id="editBtnAfter" onclick="setEditTarget('after')">
-            🔴 시술 후(붉은색) 윤곽선 포인트 드래그
+            🔴 시술 후(붉은색) 포인트만 드래그
           </button>
-          <button class="chip-btn" id="editBtnBoth" onclick="setEditTarget('both')">
-            ✨ 전·후 포인트 모두 표시
+          <button class="chip-btn" id="editBtnOff" onclick="setEditTarget('none')">
+            🔒 제어점 숨기기 (잠금)
           </button>
         </div>
 
@@ -1570,12 +1822,15 @@
 
     // 앱 전역 상태
     const state = {
-      viewMode: 'after-overlay', // 'after-overlay' | 'side-by-side' | 'curtain' | 'blueprint'
-      editTarget: 'none',        // 'none' | 'before' | 'after' | 'both'
+      viewMode: 'after-overlay', // 'after-overlay' | 'side-by-side' | 'single-before' | 'single-after' | 'curtain' | 'blueprint'
+      baseImageTarget: 'after',  // 'after' (시술 후 이미지 기준 대입) | 'before' (시술 전 이미지 기준 대입)
+      dualShowOverlay: false,    // 2분할 나란히 보기에서 반대쪽 윤곽선 동시 겹쳐보기 여부
+      editTarget: 'both',        // 'none' | 'before' | 'after' | 'both' (기본값: 각 이미지에서 즉시 드래그 가능하도록 'both')
       curtainPos: 0.5,           // 커튼 뷰 분할 위치 (0.0 ~ 1.0)
       isDraggingPoint: false,
       draggedCurve: null,        // 'before' | 'after'
       draggedPointIdx: -1,
+      draggedPanel: null,        // 'left' | 'right' | 'single'
       isDraggingCurtain: false,
       activePreset: 1,
 
@@ -1586,24 +1841,28 @@
       basePortraitImg: null,
 
       // 정규화 좌표계 기준 윤곽선 포인트 배열 [{x, y}, ... 17개]
-      beforePointsRaw: [], // 시술 전 사진 원본에서 검출된 17개 윤곽점
-      afterPointsRaw: [],  // 시술 후 사진 원본에서 검출된 17개 기준 윤곽점
-      afterPoints: [],     // 시술 후 조절값(슬라이더)이 최종 반영된 17개 윤곽점 (붉은색)
+      beforePointsRaw: [], // 시술 전 사진 원본에서 검출/수동조절된 17개 기준 윤곽점
+      beforePoints: [],    // 시술 전 조절값(슬라이더)이 최종 반영된 시술 전 이미지 고유 17개 윤곽점 (녹색)
+      afterPointsRaw: [],  // 시술 후 사진 원본에서 검출/수동조절된 17개 기준 윤곽점
+      afterPoints: [],     // 시술 후 조절값(슬라이더)이 최종 반영된 시술 후 이미지 고유 17개 윤곽점 (붉은색)
 
       // 동공/안각 기준 정합 메타데이터
       beforeAnchors: { leftEye: { x: 295, y: 385 }, rightEye: { x: 505, y: 385 }, nose: { x: 400, y: 495 } },
       afterAnchors:  { leftEye: { x: 295, y: 385 }, rightEye: { x: 505, y: 385 }, nose: { x: 400, y: 495 } },
 
-      // 시술 전(녹색) 미세 정합 보정값
+      // 시술 전(녹색) 이미지 개별 윤곽선 정밀 조절값
       alignOffset: {
         x: 0,
         y: 0,
         scale: 1.0,
         widthScale: 1.0,
-        rotateDeg: 0
+        rotateDeg: 0,
+        jowlLift: 0,
+        gonionSlim: 0,
+        chinLift: 0
       },
 
-      // 시술 후(붉은색) 윤곽선 및 부위별 리프팅 정밀 조절값
+      // 시술 후(붉은색) 이미지 개별 윤곽선 및 부위별 리프팅 정밀 조절값
       afterAdjust: {
         x: 0,
         y: 0,
@@ -1673,49 +1932,8 @@
       }
     }
 
-    // 2. 시술 전 윤곽선(Before)을 시술 후 사진(After) 좌표계로 정합 변환한 17개 포인트 반환
-    function getAlignedBeforePoints() {
-      if (!state.beforePointsRaw || state.beforePointsRaw.length === 0) return [];
-
-      // 상안면 동공 중심 및 동공 간 거리(IPD) 기반 자동 Procrustes 정합
-      const bLE = state.beforeAnchors.leftEye;
-      const bRE = state.beforeAnchors.rightEye;
-      const aLE = state.afterAnchors.leftEye;
-      const aRE = state.afterAnchors.rightEye;
-
-      const bCenter = { x: (bLE.x + bRE.x) * 0.5, y: (bLE.y + bRE.y) * 0.5 };
-      const aCenter = { x: (aLE.x + aRE.x) * 0.5, y: (aLE.y + aRE.y) * 0.5 };
-
-      const bDist = Math.hypot(bRE.x - bLE.x, bRE.y - bLE.y) || 200;
-      const aDist = Math.hypot(aRE.x - aLE.x, aRE.y - aLE.y) || 200;
-      const autoScale = aDist / bDist;
-
-      const bAngle = Math.atan2(bRE.y - bLE.y, bRE.x - bLE.x);
-      const aAngle = Math.atan2(aRE.y - aLE.y, aRE.x - aLE.x);
-      const autoRot = aAngle - bAngle;
-
-      // 사용자 수동 보정 결합
-      const totalScale = autoScale * state.alignOffset.scale;
-      const widthScale = state.alignOffset.widthScale || 1.0;
-      const totalRot = autoRot + (state.alignOffset.rotateDeg * Math.PI) / 180;
-      const cosR = Math.cos(totalRot);
-      const sinR = Math.sin(totalRot);
-
-      return state.beforePointsRaw.map(pt => {
-        const dx = (pt.x - bCenter.x) * totalScale * widthScale;
-        const dy = (pt.y - bCenter.y) * totalScale;
-        const rx = dx * cosR - dy * sinR;
-        const ry = dx * sinR + dy * cosR;
-        return {
-          x: aCenter.x + rx + state.alignOffset.x,
-          y: aCenter.y + ry + state.alignOffset.y
-        };
-      });
-    }
-
-    // 2-B. 시술 후(After · 붉은색) 부위별 리프팅 변위 벡터 및 위치/크기/회전 조절 반영
-    function getAfterMorphVectors() {
-      const adj = state.afterAdjust;
+    // 공통 해부학적 부위별 변위 벡터 계산 헬퍼 (Before / After 개별 조절 공용)
+    function computeAnatomicalMorphVectors(adj) {
       const jowl = adj.jowlLift || 0;
       const gon = adj.gonionSlim || 0;
       const chin = adj.chinLift || 0;
@@ -1726,12 +1944,49 @@
       const chinWeights = [0, 0.00, 0.00, 0.00, 0.00, 0.15, 0.42, 0.80, 1.00, 0.80, 0.42, 0.15, 0.00, 0.00, 0.00, 0.00, 0];
 
       return gonWeights.map((_, i) => {
-        // 좌측(i < 8)은 내측이 +x, 우측(i > 8)은 내측이 -x
         const inwardDir = i < 8 ? 1 : (i > 8 ? -1 : 0);
         const dx = inwardDir * (gon * gonWeights[i] * 0.95 + jowl * jowlWeights[i] * 0.90);
         const dy = -(gon * gonWeights[i] * 0.50 + jowl * jowlWeights[i] * 0.80 + chin * chinWeights[i] * 1.0);
         return { dx, dy, radius: 138 };
       });
+    }
+
+    // 2-A. 시술 전(Before · 녹색) 이미지 고유 윤곽선 개별 조절 적용
+    function applyBeforeAdjustments() {
+      if (!state.beforePointsRaw || state.beforePointsRaw.length < 17) return;
+      const adj = state.alignOffset;
+      const morphVecs = computeAnatomicalMorphVectors(adj);
+
+      const bLE = state.beforeAnchors.leftEye;
+      const bRE = state.beforeAnchors.rightEye;
+      const bCenter = {
+        x: (bLE.x + bRE.x) * 0.5,
+        y: (bLE.y + bRE.y) * 0.5 + 110
+      };
+
+      const sc = adj.scale || 1.0;
+      const wSc = adj.widthScale || 1.0;
+      const rot = ((adj.rotateDeg || 0) * Math.PI) / 180;
+      const cosR = Math.cos(rot);
+      const sinR = Math.sin(rot);
+
+      state.beforePoints = state.beforePointsRaw.map((pt, i) => {
+        const mx = pt.x + morphVecs[i].dx;
+        const my = pt.y + morphVecs[i].dy;
+        const dx = (mx - bCenter.x) * sc * wSc;
+        const dy = (my - bCenter.y) * sc;
+        const rx = dx * cosR - dy * sinR;
+        const ry = dx * sinR + dy * cosR;
+        return {
+          x: bCenter.x + rx + (adj.x || 0),
+          y: bCenter.y + ry + (adj.y || 0)
+        };
+      });
+    }
+
+    // 2-B. 시술 후(After · 붉은색) 이미지 고유 윤곽선 및 피부 리프팅 개별 조절 적용
+    function getAfterMorphVectors() {
+      return computeAnatomicalMorphVectors(state.afterAdjust);
     }
 
     function applyAfterAdjustments() {
@@ -1778,6 +2033,92 @@
           y: aCenter.y + ry + adj.y
         };
       });
+    }
+
+    // 2-C. 시술 전 윤곽선(Before · 녹색)을 ➔ 시술 후 이미지(After) 좌표계로 대입 변환
+    function getAlignedBeforePoints() {
+      const srcPts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
+      if (!srcPts || srcPts.length === 0) return [];
+
+      const bLE = state.beforeAnchors.leftEye;
+      const bRE = state.beforeAnchors.rightEye;
+      const aLE = state.afterAnchors.leftEye;
+      const aRE = state.afterAnchors.rightEye;
+
+      const bCenter = { x: (bLE.x + bRE.x) * 0.5, y: (bLE.y + bRE.y) * 0.5 };
+      const aCenter = { x: (aLE.x + aRE.x) * 0.5, y: (aLE.y + aRE.y) * 0.5 };
+
+      const bDist = Math.hypot(bRE.x - bLE.x, bRE.y - bLE.y) || 200;
+      const aDist = Math.hypot(aRE.x - aLE.x, aRE.y - aLE.y) || 200;
+      const autoScale = aDist / bDist;
+
+      const bAngle = Math.atan2(bRE.y - bLE.y, bRE.x - bLE.x);
+      const aAngle = Math.atan2(aRE.y - aLE.y, aRE.x - aLE.x);
+      const autoRot = aAngle - bAngle;
+      const cosR = Math.cos(autoRot);
+      const sinR = Math.sin(autoRot);
+
+      return srcPts.map(pt => {
+        const dx = (pt.x - bCenter.x) * autoScale;
+        const dy = (pt.y - bCenter.y) * autoScale;
+        return {
+          x: aCenter.x + (dx * cosR - dy * sinR),
+          y: aCenter.y + (dx * sinR + dy * cosR)
+        };
+      });
+    }
+
+    // 2-D. 시술 후 윤곽선(After · 붉은색)을 ➔ 시술 전 이미지(Before) 좌표계로 대입 변환
+    function getAlignedAfterPointsOnBefore() {
+      const srcPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
+      if (!srcPts || srcPts.length === 0) return [];
+
+      const bLE = state.beforeAnchors.leftEye;
+      const bRE = state.beforeAnchors.rightEye;
+      const aLE = state.afterAnchors.leftEye;
+      const aRE = state.afterAnchors.rightEye;
+
+      const bCenter = { x: (bLE.x + bRE.x) * 0.5, y: (bLE.y + bRE.y) * 0.5 };
+      const aCenter = { x: (aLE.x + aRE.x) * 0.5, y: (aLE.y + aRE.y) * 0.5 };
+
+      const bDist = Math.hypot(bRE.x - bLE.x, bRE.y - bLE.y) || 200;
+      const aDist = Math.hypot(aRE.x - aLE.x, aRE.y - aLE.y) || 200;
+      const autoScale = bDist / aDist;
+
+      const bAngle = Math.atan2(bRE.y - bLE.y, bRE.x - bLE.x);
+      const aAngle = Math.atan2(aRE.y - aLE.y, aRE.x - aLE.x);
+      const autoRot = bAngle - aAngle;
+      const cosR = Math.cos(autoRot);
+      const sinR = Math.sin(autoRot);
+
+      return srcPts.map(pt => {
+        const dx = (pt.x - aCenter.x) * autoScale;
+        const dy = (pt.y - aCenter.y) * autoScale;
+        return {
+          x: bCenter.x + (dx * cosR - dy * sinR),
+          y: bCenter.y + (dx * sinR + dy * cosR)
+        };
+      });
+    }
+
+    // 2-E. 사용자가 선택한 기준 이미지(baseImageTarget: 'after' | 'before')에 대입된 전·후 윤곽선 세트 반환
+    function getContoursForBaseImage(baseTarget = state.baseImageTarget) {
+      if (baseTarget === 'before') {
+        return {
+          baseTarget: 'before',
+          baseCanvas: state.beforeCanvas,
+          beforePts: (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw,
+          afterPts: getAlignedAfterPointsOnBefore(),
+          anchors: state.beforeAnchors
+        };
+      }
+      return {
+        baseTarget: 'after',
+        baseCanvas: state.afterCanvas,
+        beforePts: getAlignedBeforePoints(),
+        afterPts: (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw,
+        anchors: state.afterAnchors
+      };
     }
 
     // 3. Catmull-Rom 부드러운 곡선 보간 함수
@@ -1863,11 +2204,14 @@
 
       if (targetType === 'before') {
         state.beforePointsRaw = detectedJaw.map(p => ({ ...p }));
+        state.beforePoints = detectedJaw.map(p => ({ ...p }));
         state.beforeAnchors = detectedAnchors;
+        applyBeforeAdjustments();
       } else {
         state.afterPointsRaw = detectedJaw.map(p => ({ ...p }));
         state.afterPoints = detectedJaw.map(p => ({ ...p }));
         state.afterAnchors = detectedAnchors;
+        applyAfterAdjustments();
       }
     }
 
@@ -2205,11 +2549,13 @@
       bCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
       bCtx.drawImage(warpedBefore.canvas, 0, 0);
 
-      state.beforePointsRaw = warpedBefore.jawPoints;
+      state.beforePointsRaw = warpedBefore.jawPoints.map(p => ({ ...p }));
+      state.beforePoints = warpedBefore.jawPoints.map(p => ({ ...p }));
       state.afterPointsRaw = baseJaw.map(p => ({ ...p }));
       state.afterPoints = baseJaw.map(p => ({ ...p }));
       state.beforeAnchors = JSON.parse(JSON.stringify(state.afterAnchors));
 
+      applyBeforeAdjustments();
       applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
@@ -2276,7 +2622,9 @@
           const dh = ih * scale;
           tCtx.drawImage(img, (PORTRAIT_W - dw) * 0.5, (PORTRAIT_H - dh) * 0.5, dw, dh);
 
-          if (slotType === 'after') {
+          if (slotType === 'before') {
+            resetAlignment(false);
+          } else {
             const sCtx = state.afterSourceCanvas.getContext('2d');
             sCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
             sCtx.drawImage(state.afterCanvas, 0, 0);
@@ -2292,6 +2640,7 @@
             if (b) b.classList.remove('active');
           });
 
+          applyBeforeAdjustments();
           applyAfterAdjustments();
           updateThumbnails();
           updateQuantitativeMetrics();
@@ -2316,6 +2665,7 @@
 
       const tempPts = state.beforePointsRaw.map(p => ({ ...p }));
       state.beforePointsRaw = state.afterPointsRaw.map(p => ({ ...p }));
+      state.beforePoints = state.beforePointsRaw.map(p => ({ ...p }));
       state.afterPointsRaw = tempPts;
       state.afterPoints = tempPts.map(p => ({ ...p }));
 
@@ -2325,6 +2675,7 @@
 
       resetAlignment(false);
       resetAfterAdjustment(false);
+      applyBeforeAdjustments();
       applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
@@ -2333,7 +2684,9 @@
 
     // 시술 전(Before) 사진 1장만으로 가상 리프팅 후(After) 사진 자동 생성
     function generateSimulatedAfterFromBefore() {
-      const baseJaw = state.beforePointsRaw.map(p => ({ ...p }));
+      const baseJaw = (state.beforePoints && state.beforePoints.length === 17)
+        ? state.beforePoints.map(p => ({ ...p }))
+        : state.beforePointsRaw.map(p => ({ ...p }));
       // 내측·상방 리프팅 벡터 (시술 전 -> 시술 후 수축)
       const liftVectors = [
         { dx: 0, dy: 0 },
@@ -2376,22 +2729,21 @@
       updateAIStatus('시술 전 사진 기반 AI 가상 리프팅 후(붉은색 윤곽선) 생성 완료', true);
     }
 
-    // 9. 좌측 업로드 슬롯 썸네일 미리보기 업데이트
+    // 9. 좌측 업로드 슬롯 썸네일 미리보기 업데이트 (각 이미지 고유 윤곽선 표시)
     function updateThumbnails() {
       const tb = document.getElementById('thumbBefore');
       const ta = document.getElementById('thumbAfter');
+      const bPts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
       if (tb) {
         const c = tb.getContext('2d');
         c.clearRect(0, 0, tb.width, tb.height);
         c.drawImage(state.beforeCanvas, 0, 0, tb.width, tb.height);
-        // 썸네일에 녹색 윤곽선 미니 프리뷰 표시
-        drawMiniContourOnThumb(c, state.beforePointsRaw, '#00e676', tb.width / PORTRAIT_W, tb.height / PORTRAIT_H);
+        drawMiniContourOnThumb(c, bPts, '#00e676', tb.width / PORTRAIT_W, tb.height / PORTRAIT_H);
       }
       if (ta) {
         const c = ta.getContext('2d');
         c.clearRect(0, 0, ta.width, ta.height);
         c.drawImage(state.afterCanvas, 0, 0, ta.width, ta.height);
-        // 썸네일에 붉은색 윤곽선 미니 프리뷰 표시
         drawMiniContourOnThumb(c, state.afterPoints, '#ff2a54', ta.width / PORTRAIT_W, ta.height / PORTRAIT_H);
       }
     }
@@ -2410,15 +2762,16 @@
       c.restore();
     }
 
-    // 10. 정량적 리프팅 임상 지표 계산 (mm, 각도, 면적 축소율, 대칭도)
+    // 10. 정량적 리프팅 임상 지표 계산 (선택한 기준 이미지 좌표계 기반 mm, 각도, 면적 축소율, 대칭도)
     function updateQuantitativeMetrics() {
-      const beforePts = getAlignedBeforePoints();
-      const afterPts = state.afterPoints;
-      if (beforePts.length < 17 || afterPts.length < 17) return;
+      const activeSet = getContoursForBaseImage(state.baseImageTarget);
+      const beforePts = activeSet.beforePts;
+      const afterPts = activeSet.afterPts;
+      if (!beforePts || beforePts.length < 17 || !afterPts || afterPts.length < 17) return;
 
       // 동공 간 거리(IPD)를 표준 63.0mm로 설정하여 픽셀 -> mm 변환 계수 산출
-      const aLE = state.afterAnchors.leftEye;
-      const aRE = state.afterAnchors.rightEye;
+      const aLE = activeSet.anchors.leftEye;
+      const aRE = activeSet.anchors.rightEye;
       const ipdPx = Math.hypot(aRE.x - aLE.x, aRE.y - aLE.y) || 172;
       const mmPerPx = 63.0 / ipdPx;
 
@@ -2541,33 +2894,34 @@
       };
     }
 
-    // 11. 메인 비교 캔버스 렌더링 (4가지 뷰 모드 지원)
+    // 11. 메인 비교 캔버스 렌더링 (6가지 뷰 모드 지원: 기준이미지 대입 / 2분할 각각 별도조절 / 시술전 단독 / 시술후 단독 / 커튼 / 도면)
     function renderMainCanvas() {
       const W = mainCanvas.width;
       const H = mainCanvas.height;
       ctx.clearRect(0, 0, W, H);
 
-      const beforePts = getAlignedBeforePoints();
-      const afterPts = state.afterPoints;
-
       if (state.viewMode === 'side-by-side') {
-        renderSideBySideView(W, H, beforePts, afterPts);
+        renderSideBySideView(W, H);
+      } else if (state.viewMode === 'single-before') {
+        renderSingleStageView(W, H, 'single-before');
+      } else if (state.viewMode === 'single-after') {
+        renderSingleStageView(W, H, 'single-after');
       } else if (state.viewMode === 'curtain') {
-        renderSingleStageView(W, H, beforePts, afterPts, 'curtain');
+        renderSingleStageView(W, H, 'curtain');
       } else if (state.viewMode === 'blueprint') {
-        renderSingleStageView(W, H, beforePts, afterPts, 'blueprint');
+        renderSingleStageView(W, H, 'blueprint');
       } else {
-        // 기본 핵심 뷰: 시술 후 사진 위에 시술 전(녹색) + 시술 후(붉은색) 윤곽선 동시 중첩
-        renderSingleStageView(W, H, beforePts, afterPts, 'after-overlay');
+        // 기본 핵심 뷰: 사용자가 선택한 기준 이미지(시술 전 또는 시술 후) 위에 시술 전(녹색) + 시술 후(붉은색) 윤곽선 대입 비교
+        renderSingleStageView(W, H, 'after-overlay');
       }
     }
 
-    // 단일 메인 뷰포트 렌더링 (시술 후 사진 + 녹색/붉은색 윤곽선 중첩)
-    function renderSingleStageView(W, H, beforePts, afterPts, subMode) {
+    // 단일 메인 뷰포트 렌더링 (기준 이미지 대입 비교 / 시술 전 단독 조절 / 시술 후 단독 조절 / 커튼 / 도면)
+    function renderSingleStageView(W, H, subMode) {
       ctx.fillStyle = '#080b11';
       ctx.fillRect(0, 0, W, H);
 
-      // 포트레이트(800x920)를 캔버스 중앙에 배치할 영역 계산
+      // 포트레이트(800x1070)를 캔버스 중앙에 배치할 영역 계산
       const pad = 24;
       const scale = Math.min((W - pad * 2) / PORTRAIT_W, (H - pad * 2) / PORTRAIT_H);
       const drawW = PORTRAIT_W * scale;
@@ -2576,35 +2930,75 @@
       const oy = (H - drawH) * 0.5;
 
       // 좌표 변환 헬퍼
-      state.currentViewport = { mode: 'single', ox, oy, scale, drawW, drawH };
+      state.currentViewport = { mode: 'single', subMode, ox, oy, scale, drawW, drawH };
       const toScreen = (pt) => ({ x: ox + pt.x * scale, y: oy + pt.y * scale });
 
+      const activeSet = getContoursForBaseImage(state.baseImageTarget);
+      const nativeBeforePts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
+      const nativeAfterPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
+
       ctx.save();
-      // 둥근 모서리 클리핑
       roundRectPath(ctx, ox, oy, drawW, drawH, 14);
       ctx.clip();
 
-      if (subMode === 'blueprint') {
-        // 도면 뷰: 어두운 배경 + 시술 후 사진 22% 투명도 + 의료용 그리드
+      if (subMode === 'single-before') {
+        // 시술 전(Before) 이미지 단독 윤곽선 수동 조절 모드
+        ctx.drawImage(state.beforeCanvas, ox, oy, drawW, drawH);
+        const sBefore = nativeBeforePts.map(toScreen);
+        const sAfter = nativeAfterPts.map(toScreen);
+        drawContoursAndVectors(ctx, sBefore, sAfter, {
+          drawBefore: true,
+          drawAfter: false,
+          drawZoneFill: false,
+          drawVectors: false,
+          drawCallouts: false,
+          forceBeforeNodes: state.editTarget !== 'none'
+        });
+        drawPanelHeaderBadge(ctx, ox + 16, oy + 16, '🟢 BEFORE 이미지 단독 윤곽선 조절 모드', '#00E676', '녹색 포인트를 드래그하여 시술 전 턱선에 맞추세요');
+      } else if (subMode === 'single-after') {
+        // 시술 후(After) 이미지 단독 윤곽선 수동 조절 모드
+        ctx.drawImage(state.afterCanvas, ox, oy, drawW, drawH);
+        const sBefore = nativeBeforePts.map(toScreen);
+        const sAfter = nativeAfterPts.map(toScreen);
+        drawContoursAndVectors(ctx, sBefore, sAfter, {
+          drawBefore: false,
+          drawAfter: true,
+          drawZoneFill: false,
+          drawVectors: false,
+          drawCallouts: false,
+          forceAfterNodes: state.editTarget !== 'none'
+        });
+        drawPanelHeaderBadge(ctx, ox + 16, oy + 16, '🔴 AFTER 이미지 단독 윤곽선 조절 모드', '#FF2A54', '붉은색 포인트를 드래그하여 시술 후 턱선에 맞추세요');
+      } else if (subMode === 'blueprint') {
+        // 도면 뷰: 선택한 기준 이미지 24% 투명도 + 의료용 그리드 + 대입된 두 윤곽선
         ctx.fillStyle = '#090d16';
         ctx.fillRect(ox, oy, drawW, drawH);
         ctx.globalAlpha = 0.24;
-        ctx.drawImage(state.afterCanvas, ox, oy, drawW, drawH);
+        ctx.drawImage(activeSet.baseCanvas, ox, oy, drawW, drawH);
         ctx.globalAlpha = 1.0;
         drawClinicalGrid(ctx, ox, oy, drawW, drawH, 28);
+
+        const screenBeforePts = activeSet.beforePts.map(toScreen);
+        const screenAfterPts = activeSet.afterPts.map(toScreen);
+        drawContoursAndVectors(ctx, screenBeforePts, screenAfterPts, {
+          drawBefore: true,
+          drawAfter: true,
+          drawZoneFill: state.visual.showZoneFill,
+          drawVectors: state.visual.showVectors,
+          drawCallouts: state.visual.showMetricCallouts
+        });
+        drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH, 'BLUEPRINT CONTOUR ANALYSIS (정밀 윤곽 도면 비교)');
       } else if (subMode === 'curtain') {
-        // 슬라이더 커튼 뷰: 좌측은 정합된 시술 전 사진, 우측은 시술 후 사진
+        // 슬라이더 커튼 뷰: 좌측은 시술 전 사진, 우측은 시술 후 사진
         const splitX = ox + drawW * state.curtainPos;
 
-        // 우측 전체에 시술 후 사진
         ctx.drawImage(state.afterCanvas, ox, oy, drawW, drawH);
 
-        // 좌측 클리핑 영역에 시술 전 사진
         ctx.save();
         ctx.beginPath();
         ctx.rect(ox, oy, splitX - ox, drawH);
         ctx.clip();
-        ctx.drawImage(state.beforeCanvas, ox + state.alignOffset.x * scale, oy + state.alignOffset.y * scale, drawW, drawH);
+        ctx.drawImage(state.beforeCanvas, ox, oy, drawW, drawH);
         ctx.restore();
 
         // 커튼 분할선 및 핸들
@@ -2615,7 +3009,6 @@
         ctx.lineTo(splitX, oy + drawH);
         ctx.stroke();
 
-        // 커튼 핸들 버튼
         ctx.fillStyle = '#0e121b';
         ctx.beginPath();
         ctx.arc(splitX, oy + drawH * 0.5, 18, 0, Math.PI * 2);
@@ -2628,38 +3021,45 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('↔', splitX, oy + drawH * 0.5);
+
+        const screenBeforePts = activeSet.beforePts.map(toScreen);
+        const screenAfterPts = activeSet.afterPts.map(toScreen);
+        drawContoursAndVectors(ctx, screenBeforePts, screenAfterPts, {
+          drawBefore: true,
+          drawAfter: true,
+          drawZoneFill: state.visual.showZoneFill,
+          drawVectors: state.visual.showVectors,
+          drawCallouts: state.visual.showMetricCallouts
+        });
+        drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH, 'BEFORE / AFTER INTERACTIVE CURTAIN (전·후 커튼 비교)');
       } else {
-        // 기본 핵심 모드: 시술 후(After) 사진을 선명하게 표시
-        ctx.drawImage(state.afterCanvas, ox, oy, drawW, drawH);
+        // 기본 핵심 모드: 사용자가 선택한 기준 이미지(Before 또는 After) 위에 시술 전(녹색) + 시술 후(붉은색) 윤곽선 대입!
+        ctx.drawImage(activeSet.baseCanvas, ox, oy, drawW, drawH);
+
+        const screenBeforePts = activeSet.beforePts.map(toScreen);
+        const screenAfterPts = activeSet.afterPts.map(toScreen);
+
+        drawContoursAndVectors(ctx, screenBeforePts, screenAfterPts, {
+          drawBefore: true,
+          drawAfter: true,
+          drawZoneFill: state.visual.showZoneFill,
+          drawVectors: state.visual.showVectors,
+          drawCallouts: state.visual.showMetricCallouts
+        });
+
+        const baseTitle = state.baseImageTarget === 'before'
+          ? '🟢 기준 이미지: 시술 전(BEFORE) 사진 + 전(녹색)·후(붉은색) 윤곽선 대입'
+          : '🔴 기준 이미지: 시술 후(AFTER) 사진 + 전(녹색)·후(붉은색) 윤곽선 대입';
+        drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH, baseTitle);
       }
-
-      // 윤곽선들을 화면 좌표로 변환
-      const screenBeforePts = beforePts.map(toScreen);
-      const screenAfterPts = afterPts.map(toScreen);
-
-      // 두 윤곽선 중첩 렌더링 (녹색 = 시술 전, 붉은색 = 시술 후)
-      drawContoursAndVectors(ctx, screenBeforePts, screenAfterPts, {
-        drawBefore: true,
-        drawAfter: true,
-        drawZoneFill: state.visual.showZoneFill,
-        drawVectors: state.visual.showVectors,
-        drawCallouts: state.visual.showMetricCallouts
-      });
-
-      // 상단 코너 타이틀 및 컬러 범례 배지 렌더링
-      drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH,
-        subMode === 'blueprint' ? 'BLUEPRINT CONTOUR ANALYSIS (정밀 윤곽 도면 비교)' :
-        subMode === 'curtain' ? 'BEFORE / AFTER INTERACTIVE CURTAIN (전·후 커튼 비교)' :
-        'AFTER PHOTO + BEFORE(GREEN) & AFTER(RED) CONTOUR OVERLAY'
-      );
 
       ctx.restore();
     }
 
-    // 좌·우 1:1 2분할 나란히 비교 뷰 렌더링
-    // 좌측: 시술 전 사진 + 시술 전 윤곽선(녹색)
-    // 우측: 시술 후 사진 + 시술 전 윤곽선(녹색) + 시술 후 윤곽선(붉은색) 동시 중첩!
-    function renderSideBySideView(W, H, beforePts, afterPts) {
+    // 좌·우 1:1 2분할 각각 별도 조절 & 비교 뷰 렌더링
+    // 좌측: 시술 전 사진 + 시술 전 고유 윤곽선(녹색) 별도 조절
+    // 우측: 시술 후 사진 + 시술 후 고유 윤곽선(붉은색) 별도 조절 (옵션 켜면 반대쪽 윤곽선도 동시 대입 표시)
+    function renderSideBySideView(W, H) {
       ctx.fillStyle = '#080b11';
       ctx.fillRect(0, 0, W, H);
 
@@ -2678,57 +3078,79 @@
 
       state.currentViewport = { mode: 'dual', leftOx, rightOx, oy, scale, drawW, drawH };
 
-      // 1) 좌측 패널: 시술 전 (BEFORE) 사진 + 녹색 윤곽선
+      const nativeBeforePts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
+      const nativeAfterPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
+      const afterOnBeforePts = getAlignedAfterPointsOnBefore();
+      const beforeOnAfterPts = getAlignedBeforePoints();
+
+      // 1) 좌측 패널: 시술 전 (BEFORE) 이미지 — 녹색 윤곽선 별도 수동 조절
       ctx.save();
       roundRectPath(ctx, leftOx, oy, drawW, drawH, 12);
       ctx.clip();
       ctx.drawImage(state.beforeCanvas, leftOx, oy, drawW, drawH);
 
-      const leftBeforeScreen = state.beforePointsRaw.map(p => ({
+      const leftBeforeScreen = nativeBeforePts.map(p => ({
         x: leftOx + p.x * scale,
         y: oy + p.y * scale
       }));
-      const leftAfterScreen = afterPts.map(p => ({
+      const leftAfterScreen = afterOnBeforePts.map(p => ({
         x: leftOx + p.x * scale,
         y: oy + p.y * scale
       }));
 
-      // 좌측 시술 전 사진에는 시술 전 윤곽선(녹색)을 메인으로 표시
       drawContoursAndVectors(ctx, leftBeforeScreen, leftAfterScreen, {
         drawBefore: true,
-        drawAfter: false,
-        drawZoneFill: false,
-        drawVectors: false,
-        drawCallouts: false
+        drawAfter: state.dualShowOverlay,
+        drawZoneFill: state.dualShowOverlay && state.visual.showZoneFill,
+        drawVectors: state.dualShowOverlay && state.visual.showVectors,
+        drawCallouts: false,
+        forceBeforeNodes: state.editTarget !== 'none',
+        forceAfterNodes: false
       });
 
-      drawPanelHeaderBadge(ctx, leftOx + 14, oy + 14, 'BEFORE · 시술 전 사진', '#00e676', '시술 전 윤곽선 (녹색)');
+      drawPanelHeaderBadge(
+        ctx,
+        leftOx + 14,
+        oy + 14,
+        '🟢 시술 전(BEFORE) 이미지 윤곽선 조절',
+        '#00e676',
+        state.dualShowOverlay ? '시술전(녹색) + 시술후(붉은색 대입)' : '이 화면에서 녹색 포인트를 드래그해 조절하세요'
+      );
       ctx.restore();
 
-      // 2) 우측 패널: 시술 후 (AFTER) 사진 + 시술 전 윤곽선(녹색) & 시술 후 윤곽선(붉은색) 동시 표시!
+      // 2) 우측 패널: 시술 후 (AFTER) 이미지 — 붉은색 윤곽선 별도 수동 조절
       ctx.save();
       roundRectPath(ctx, rightOx, oy, drawW, drawH, 12);
       ctx.clip();
       ctx.drawImage(state.afterCanvas, rightOx, oy, drawW, drawH);
 
-      const rightBeforeScreen = beforePts.map(p => ({
+      const rightBeforeScreen = beforeOnAfterPts.map(p => ({
         x: rightOx + p.x * scale,
         y: oy + p.y * scale
       }));
-      const rightAfterScreen = afterPts.map(p => ({
+      const rightAfterScreen = nativeAfterPts.map(p => ({
         x: rightOx + p.x * scale,
         y: oy + p.y * scale
       }));
 
       drawContoursAndVectors(ctx, rightBeforeScreen, rightAfterScreen, {
-        drawBefore: true,
+        drawBefore: state.dualShowOverlay,
         drawAfter: true,
-        drawZoneFill: state.visual.showZoneFill,
-        drawVectors: state.visual.showVectors,
-        drawCallouts: state.visual.showMetricCallouts
+        drawZoneFill: state.dualShowOverlay && state.visual.showZoneFill,
+        drawVectors: state.dualShowOverlay && state.visual.showVectors,
+        drawCallouts: state.dualShowOverlay && state.visual.showMetricCallouts,
+        forceBeforeNodes: false,
+        forceAfterNodes: state.editTarget !== 'none'
       });
 
-      drawPanelHeaderBadge(ctx, rightOx + 14, oy + 14, 'AFTER · 시술 후 사진 (전·후 윤곽선 비교)', '#ff2a54', '녹색(시술전) ➔ 붉은색(시술후)');
+      drawPanelHeaderBadge(
+        ctx,
+        rightOx + 14,
+        oy + 14,
+        '🔴 시술 후(AFTER) 이미지 윤곽선 조절',
+        '#ff2a54',
+        state.dualShowOverlay ? '시술전(녹색 대입) ➔ 시술후(붉은색)' : '이 화면에서 붉은색 포인트를 드래그해 조절하세요'
+      );
       ctx.restore();
     }
 
@@ -2868,8 +3290,12 @@
       }
 
       // F. 수동 포인트 편집 모드일 때 제어점 핸들 표시
-      const showBeforeNodes = (state.editTarget === 'before' || state.editTarget === 'both') && opts.drawBefore;
-      const showAfterNodes = (state.editTarget === 'after' || state.editTarget === 'both') && opts.drawAfter;
+      const showBeforeNodes = (opts.forceBeforeNodes !== undefined)
+        ? (opts.forceBeforeNodes && opts.drawBefore)
+        : ((state.editTarget === 'before' || state.editTarget === 'both') && opts.drawBefore);
+      const showAfterNodes = (opts.forceAfterNodes !== undefined)
+        ? (opts.forceAfterNodes && opts.drawAfter)
+        : ((state.editTarget === 'after' || state.editTarget === 'both') && opts.drawAfter);
 
       if (showBeforeNodes) {
         screenBeforePts.forEach((pt, idx) => {
@@ -2994,15 +3420,15 @@
     function drawCornerLegendOnCanvas(c, ox, oy, drawW, drawH, modeTitle) {
       c.save();
       // 좌측 상단 모드 배지
-      c.fillStyle = 'rgba(8, 11, 18, 0.84)';
-      roundRectPath(c, ox + 14, oy + 14, 385, 58, 10);
+      c.fillStyle = 'rgba(8, 11, 18, 0.86)';
+      roundRectPath(c, ox + 14, oy + 14, 435, 58, 10);
       c.fill();
-      c.strokeStyle = 'rgba(255,255,255,0.15)';
+      c.strokeStyle = 'rgba(255,255,255,0.16)';
       c.lineWidth = 1;
       c.stroke();
 
-      c.fillStyle = '#9ba4b8';
-      c.font = '700 10.5px "Plus Jakarta Sans", sans-serif';
+      c.fillStyle = '#e2e8f0';
+      c.font = '700 11px "Noto Sans KR", "Plus Jakarta Sans", sans-serif';
       c.textAlign = 'left';
       c.fillText(modeTitle, ox + 26, oy + 32);
 
@@ -3026,8 +3452,8 @@
 
     function drawPanelHeaderBadge(c, x, y, title, accentColor, subText) {
       c.save();
-      c.fillStyle = 'rgba(8, 11, 18, 0.85)';
-      roundRectPath(c, x, y, 255, 52, 9);
+      c.fillStyle = 'rgba(8, 11, 18, 0.86)';
+      roundRectPath(c, x, y, 295, 52, 9);
       c.fill();
       c.strokeStyle = accentColor;
       c.lineWidth = 1.5;
@@ -3039,7 +3465,7 @@
       c.fillText(title, x + 12, y + 22);
 
       c.fillStyle = '#e2e8f0';
-      c.font = '600 11.5px "Noto Sans KR", sans-serif';
+      c.font = '600 11px "Noto Sans KR", sans-serif';
       c.fillText(subText, x + 12, y + 40);
       c.restore();
     }
@@ -3084,7 +3510,7 @@
       c.closePath();
     }
 
-    // 13. 마우스 / 터치 인터랙션 (윤곽선 포인트 드래그 미세조정 & 커튼 슬라이더)
+    // 13. 마우스 / 터치 인터랙션 (각 이미지별 윤곽선 포인트 개별 드래그 & 기준 이미지 대입 드래그 & 커튼 슬라이더)
     function getCanvasMousePos(evt) {
       const rect = mainCanvas.getBoundingClientRect();
       const scaleX = mainCanvas.width / rect.width;
@@ -3113,7 +3539,7 @@
       // 커튼 모드 슬라이더 핸들 체크
       if (state.viewMode === 'curtain' && vp.mode === 'single') {
         const splitX = vp.ox + vp.drawW * state.curtainPos;
-        if (Math.abs(pos.x - splitX) < 28 && state.editTarget === 'none') {
+        if (Math.abs(pos.x - splitX) < 26) {
           state.isDraggingCurtain = true;
           return;
         }
@@ -3121,42 +3547,94 @@
 
       if (state.editTarget === 'none') return;
 
-      // 포트레이트 정규 좌표(800x920)로 역변환
-      let normX, normY;
-      if (vp.mode === 'single') {
-        normX = (pos.x - vp.ox) / vp.scale;
-        normY = (pos.y - vp.oy) / vp.scale;
-      } else {
-        // 2분할 뷰일 때 우측 또는 좌측 패널 판별
-        const inRight = pos.x >= vp.rightOx;
+      const hitRadius = 26 / (vp.scale || 1);
+      const nativeBeforePts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
+      const nativeAfterPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
+
+      // 1) 2분할 나란히 보기 (좌: 시술전 이미지 고유 녹색선 조절 / 우: 시술후 이미지 고유 붉은선 조절)
+      if (vp.mode === 'dual') {
+        const inRight = pos.x >= vp.rightOx - 9;
         const baseOx = inRight ? vp.rightOx : vp.leftOx;
-        normX = (pos.x - baseOx) / vp.scale;
-        normY = (pos.y - vp.oy) / vp.scale;
+        const normX = (pos.x - baseOx) / vp.scale;
+        const normY = (pos.y - vp.oy) / vp.scale;
+
+        if (!inRight) {
+          // 좌측 시술 전 이미지 클릭 -> 시술 전(녹색) 고유 포인트 드래그
+          for (let i = 0; i < nativeBeforePts.length; i++) {
+            if (Math.hypot(nativeBeforePts[i].x - normX, nativeBeforePts[i].y - normY) < hitRadius) {
+              state.isDraggingPoint = true;
+              state.draggedCurve = 'before';
+              state.draggedPanel = 'left';
+              state.draggedPointIdx = i;
+              return;
+            }
+          }
+        } else {
+          // 우측 시술 후 이미지 클릭 -> 시술 후(붉은색) 고유 포인트 드래그
+          for (let i = 0; i < nativeAfterPts.length; i++) {
+            if (Math.hypot(nativeAfterPts[i].x - normX, nativeAfterPts[i].y - normY) < hitRadius) {
+              state.isDraggingPoint = true;
+              state.draggedCurve = 'after';
+              state.draggedPanel = 'right';
+              state.draggedPointIdx = i;
+              return;
+            }
+          }
+        }
+        return;
       }
 
-      const hitRadius = 24 / (vp.scale || 1);
-      const beforeAligned = getAlignedBeforePoints();
+      // 2) 단일 뷰포트 모드 (single-before / single-after / after-overlay / curtain / blueprint)
+      const normX = (pos.x - vp.ox) / vp.scale;
+      const normY = (pos.y - vp.oy) / vp.scale;
 
-      // After(붉은색) 포인트 히트 검사
-      if (state.editTarget === 'after' || state.editTarget === 'both') {
-        for (let i = 0; i < state.afterPoints.length; i++) {
-          const d = Math.hypot(state.afterPoints[i].x - normX, state.afterPoints[i].y - normY);
-          if (d < hitRadius) {
+      if (vp.subMode === 'single-before') {
+        for (let i = 0; i < nativeBeforePts.length; i++) {
+          if (Math.hypot(nativeBeforePts[i].x - normX, nativeBeforePts[i].y - normY) < hitRadius) {
+            state.isDraggingPoint = true;
+            state.draggedCurve = 'before';
+            state.draggedPanel = 'single-before';
+            state.draggedPointIdx = i;
+            return;
+          }
+        }
+        return;
+      }
+
+      if (vp.subMode === 'single-after') {
+        for (let i = 0; i < nativeAfterPts.length; i++) {
+          if (Math.hypot(nativeAfterPts[i].x - normX, nativeAfterPts[i].y - normY) < hitRadius) {
             state.isDraggingPoint = true;
             state.draggedCurve = 'after';
+            state.draggedPanel = 'single-after';
+            state.draggedPointIdx = i;
+            return;
+          }
+        }
+        return;
+      }
+
+      // 기준 이미지 대입 비교 뷰 (after-overlay / curtain / blueprint)
+      const activeSet = getContoursForBaseImage(state.baseImageTarget);
+
+      if (state.editTarget === 'after' || state.editTarget === 'both') {
+        for (let i = 0; i < activeSet.afterPts.length; i++) {
+          if (Math.hypot(activeSet.afterPts[i].x - normX, activeSet.afterPts[i].y - normY) < hitRadius) {
+            state.isDraggingPoint = true;
+            state.draggedCurve = 'after';
+            state.draggedPanel = 'overlay';
             state.draggedPointIdx = i;
             return;
           }
         }
       }
 
-      // Before(녹색) 포인트 히트 검사
       if (state.editTarget === 'before' || state.editTarget === 'both') {
-        for (let i = 0; i < beforeAligned.length; i++) {
-          const d = Math.hypot(beforeAligned[i].x - normX, beforeAligned[i].y - normY);
-          if (d < hitRadius) {
+        for (let i = 0; i < activeSet.beforePts.length; i++) {
+          if (Math.hypot(activeSet.beforePts[i].x - normX, activeSet.beforePts[i].y - normY) < hitRadius) {
             state.isDraggingPoint = true;
             state.draggedCurve = 'before';
+            state.draggedPanel = 'overlay';
             state.draggedPointIdx = i;
             return;
           }
@@ -3178,13 +3656,12 @@
       if (!state.isDraggingPoint || state.draggedPointIdx < 0) return;
 
       let normX, normY;
-      if (vp.mode === 'single') {
-        normX = (pos.x - vp.ox) / vp.scale;
+      if (vp.mode === 'dual') {
+        const baseOx = state.draggedPanel === 'right' ? vp.rightOx : vp.leftOx;
+        normX = (pos.x - baseOx) / vp.scale;
         normY = (pos.y - vp.oy) / vp.scale;
       } else {
-        const inRight = pos.x >= vp.rightOx;
-        const baseOx = inRight ? vp.rightOx : vp.leftOx;
-        normX = (pos.x - baseOx) / vp.scale;
+        normX = (pos.x - vp.ox) / vp.scale;
         normY = (pos.y - vp.oy) / vp.scale;
       }
 
@@ -3194,11 +3671,13 @@
       const idx = state.draggedPointIdx;
 
       if (state.draggedCurve === 'after') {
-        const dx = normX - state.afterPoints[idx].x;
-        const dy = normY - state.afterPoints[idx].y;
+        const currentAfterPts = (state.draggedPanel === 'overlay')
+          ? getContoursForBaseImage(state.baseImageTarget).afterPts
+          : ((state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw);
+        const dx = normX - currentAfterPts[idx].x;
+        const dy = normY - currentAfterPts[idx].y;
         state.afterPointsRaw[idx].x += dx;
         state.afterPointsRaw[idx].y += dy;
-        // 인접 포인트 부드러운 연동(Gaussian Smoothing Falloff)
         if (idx > 0 && idx < 16) {
           if (idx - 1 > 0) {
             state.afterPointsRaw[idx - 1].x += dx * 0.32;
@@ -3211,9 +3690,11 @@
         }
         applyAfterAdjustments();
       } else if (state.draggedCurve === 'before') {
-        const aligned = getAlignedBeforePoints();
-        const dx = normX - aligned[idx].x;
-        const dy = normY - aligned[idx].y;
+        const currentBeforePts = (state.draggedPanel === 'overlay')
+          ? getContoursForBaseImage(state.baseImageTarget).beforePts
+          : ((state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw);
+        const dx = normX - currentBeforePts[idx].x;
+        const dy = normY - currentBeforePts[idx].y;
         state.beforePointsRaw[idx].x += dx;
         state.beforePointsRaw[idx].y += dy;
         if (idx > 0 && idx < 16) {
@@ -3226,6 +3707,7 @@
             state.beforePointsRaw[idx + 1].y += dy * 0.32;
           }
         }
+        applyBeforeAdjustments();
       }
 
       updateThumbnails();
@@ -3236,6 +3718,7 @@
     function handlePointerUp() {
       state.isDraggingPoint = false;
       state.draggedCurve = null;
+      state.draggedPanel = null;
       state.draggedPointIdx = -1;
       state.isDraggingCurtain = false;
     }
@@ -3243,11 +3726,127 @@
     // 14. UI 컨트롤 핸들러
     function setViewMode(mode) {
       state.viewMode = mode;
-      document.getElementById('tabAfterOverlay').classList.toggle('active', mode === 'after-overlay');
-      document.getElementById('tabSideBySide').classList.toggle('active', mode === 'side-by-side');
-      document.getElementById('tabCurtain').classList.toggle('active', mode === 'curtain');
-      document.getElementById('tabBlueprint').classList.toggle('active', mode === 'blueprint');
+      const tabMap = {
+        'after-overlay': 'tabAfterOverlay',
+        'side-by-side': 'tabSideBySide',
+        'single-before': 'tabSingleBefore',
+        'single-after': 'tabSingleAfter',
+        'curtain': 'tabCurtain',
+        'blueprint': 'tabBlueprint'
+      };
+      Object.keys(tabMap).forEach(k => {
+        const el = document.getElementById(tabMap[k]);
+        if (el) el.classList.toggle('active', k === mode);
+      });
+
+      // 개별 단독/2분할 조절 모드 진입 시 제어점 드래그가 잠겨있다면 자동 활성화
+      if ((mode === 'single-before' || mode === 'single-after' || mode === 'side-by-side') && state.editTarget === 'none') {
+        setEditTarget('both');
+        return;
+      }
       renderMainCanvas();
+    }
+
+    // 내가 선택한 이미지('before' | 'after')를 기준 이미지로 설정하고 시술 전·후 윤곽선 대입
+    function selectBaseImageForProjection(target) {
+      state.baseImageTarget = (target === 'before') ? 'before' : 'after';
+
+      // 좌측 슬롯 테두리 & 배지 업데이트
+      const dropB = document.getElementById('dropBefore');
+      const dropA = document.getElementById('dropAfter');
+      if (dropB) dropB.classList.toggle('is-base-selected', state.baseImageTarget === 'before');
+      if (dropA) dropA.classList.toggle('is-base-selected', state.baseImageTarget === 'after');
+
+      const badgeB = document.getElementById('slotBadgeBefore');
+      const badgeA = document.getElementById('slotBadgeAfter');
+      if (badgeB) badgeB.textContent = state.baseImageTarget === 'before' ? '★ 기준 이미지' : '● 녹색선';
+      if (badgeA) badgeA.textContent = state.baseImageTarget === 'after' ? '★ 기준 이미지' : '● 붉은선';
+
+      const slotBtnB = document.getElementById('slotBaseBtnBefore');
+      const slotBtnA = document.getElementById('slotBaseBtnAfter');
+      if (slotBtnB) slotBtnB.className = 'slot-mini-btn' + (state.baseImageTarget === 'before' ? ' active-base-green' : '');
+      if (slotBtnA) slotBtnA.className = 'slot-mini-btn' + (state.baseImageTarget === 'after' ? ' active-base-red' : '');
+
+      const sideBtnB = document.getElementById('sidebarBaseBefore');
+      const sideBtnA = document.getElementById('sidebarBaseAfter');
+      if (sideBtnB) sideBtnB.className = 'base-target-btn' + (state.baseImageTarget === 'before' ? ' active-before' : '');
+      if (sideBtnA) sideBtnA.className = 'base-target-btn' + (state.baseImageTarget === 'after' ? ' active-after' : '');
+
+      const topBtnB = document.getElementById('topBaseBefore');
+      const topBtnA = document.getElementById('topBaseAfter');
+      if (topBtnB) topBtnB.className = 'chip-btn' + (state.baseImageTarget === 'before' ? ' active-green' : '');
+      if (topBtnA) topBtnA.className = 'chip-btn' + (state.baseImageTarget === 'after' ? ' active-red' : '');
+
+      const lbl = document.getElementById('currentBaseLabel');
+      if (lbl) lbl.textContent = state.baseImageTarget === 'before' ? '현재: 시술 전 이미지 기준' : '현재: 시술 후 이미지 기준';
+
+      // 기준 이미지에 전·후 윤곽선 대입 비교 모드로 즉시 전환
+      setViewMode('after-overlay');
+      updateQuantitativeMetrics();
+      renderMainCanvas();
+      updateAIStatus(
+        state.baseImageTarget === 'before'
+          ? '시술 전(Before) 이미지를 기준으로 전(녹색)·후(붉은색) 윤곽선 대입 완료'
+          : '시술 후(After) 이미지를 기준으로 전(녹색)·후(붉은색) 윤곽선 대입 완료',
+        true
+      );
+    }
+
+    // 특정 이미지('before' | 'after')의 단독 윤곽선 수동 조절 모드로 즉시 포커스
+    function focusIndividualImageEdit(target) {
+      if (target === 'before') {
+        setAdjustPanelFilter('before');
+        setEditTarget('both');
+        setViewMode('single-before');
+        updateAIStatus('시술 전(Before) 이미지 단독 윤곽선 수동 조절 모드 (녹색 포인트 드래그 & 슬라이더)', true);
+      } else {
+        setAdjustPanelFilter('after');
+        setEditTarget('both');
+        setViewMode('single-after');
+        updateAIStatus('시술 후(After) 이미지 단독 윤곽선 수동 조절 모드 (붉은색 포인트 드래그 & 슬라이더)', true);
+      }
+    }
+
+    // 2분할 나란히 보기 모드에서 반대쪽 윤곽선 동시 겹쳐보기 토글
+    function toggleDualShowOverlay() {
+      state.dualShowOverlay = !state.dualShowOverlay;
+      const btn = document.getElementById('btnDualOverlayToggle');
+      if (btn) {
+        btn.className = 'chip-btn' + (state.dualShowOverlay ? ' active' : '');
+        btn.textContent = state.dualShowOverlay
+          ? '🔗 2분할 시 전·후 윤곽선 동시 겹쳐보기: ON (전·후 비교)'
+          : '🔗 2분할 시 전·후 윤곽선 동시 겹쳐보기: OFF (개별 조절 집중)';
+      }
+      if (state.viewMode !== 'side-by-side') {
+        setViewMode('side-by-side');
+      } else {
+        renderMainCanvas();
+      }
+    }
+
+    // 한쪽 이미지의 윤곽선 모양을 반대쪽 이미지의 윤곽선으로 그대로 복사 대입
+    function copyContourBetweenImages(direction) {
+      if (direction === 'before-to-after') {
+        const projected = getAlignedBeforePoints();
+        if (!projected || projected.length < 17) return;
+        state.afterPointsRaw = projected.map(p => ({ ...p }));
+        resetAfterAdjustment(false);
+        applyAfterAdjustments();
+        updateThumbnails();
+        updateQuantitativeMetrics();
+        renderMainCanvas();
+        updateAIStatus('시술 전(녹색) 윤곽선 형태를 시술 후(붉은색) 윤곽선에 복사 대입했습니다', true);
+      } else if (direction === 'after-to-before') {
+        const projected = getAlignedAfterPointsOnBefore();
+        if (!projected || projected.length < 17) return;
+        state.beforePointsRaw = projected.map(p => ({ ...p }));
+        resetAlignment(false);
+        applyBeforeAdjustments();
+        updateThumbnails();
+        updateQuantitativeMetrics();
+        renderMainCanvas();
+        updateAIStatus('시술 후(붉은색) 윤곽선 형태를 시술 전(녹색) 윤곽선에 복사 대입했습니다', true);
+      }
     }
 
     function setEditTarget(target) {
@@ -3364,6 +3963,7 @@
     function resetAllAdjustments() {
       resetAfterAdjustment(false);
       resetAlignment(false);
+      applyBeforeAdjustments();
       applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
@@ -3371,39 +3971,57 @@
     }
 
     function updateAlignmentFromSliders() {
+      const bjowl = parseFloat((document.getElementById('sliderBeforeJowl') || {}).value) || 0;
+      const bgon  = parseFloat((document.getElementById('sliderBeforeGonion') || {}).value) || 0;
+      const bchin = parseFloat((document.getElementById('sliderBeforeChin') || {}).value) || 0;
       const ox = parseFloat(document.getElementById('sliderOffsetX').value) || 0;
       const oy = parseFloat(document.getElementById('sliderOffsetY').value) || 0;
       const sc = parseFloat(document.getElementById('sliderScale').value) || 100;
       const bw = parseFloat(document.getElementById('sliderBeforeWidth').value) || 100;
       const rot = parseFloat(document.getElementById('sliderRotate').value) || 0;
 
+      state.alignOffset.jowlLift = bjowl;
+      state.alignOffset.gonionSlim = bgon;
+      state.alignOffset.chinLift = bchin;
       state.alignOffset.x = ox;
       state.alignOffset.y = oy;
       state.alignOffset.scale = sc / 100;
       state.alignOffset.widthScale = bw / 100;
       state.alignOffset.rotateDeg = rot;
 
-      document.getElementById('valOffsetX').textContent = `${ox > 0 ? '+' : ''}${ox.toFixed(1)} px`;
-      document.getElementById('valOffsetY').textContent = `${oy > 0 ? '+' : ''}${oy.toFixed(1)} px`;
-      document.getElementById('valScale').textContent = `${sc.toFixed(1)} %`;
-      document.getElementById('valBeforeWidth').textContent = `${bw.toFixed(1)} %`;
-      document.getElementById('valRotate').textContent = `${rot > 0 ? '+' : ''}${rot.toFixed(1)} °`;
+      const setTxt = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+      setTxt('valBeforeJowl', `${bjowl > 0 ? '+' : ''}${bjowl.toFixed(1)} px`);
+      setTxt('valBeforeGonion', `${bgon > 0 ? '+' : ''}${bgon.toFixed(1)} px`);
+      setTxt('valBeforeChin', `${bchin > 0 ? '+' : ''}${bchin.toFixed(1)} px`);
+      setTxt('valOffsetX', `${ox > 0 ? '+' : ''}${ox.toFixed(1)} px`);
+      setTxt('valOffsetY', `${oy > 0 ? '+' : ''}${oy.toFixed(1)} px`);
+      setTxt('valScale', `${sc.toFixed(1)} %`);
+      setTxt('valBeforeWidth', `${bw.toFixed(1)} %`);
+      setTxt('valRotate', `${rot > 0 ? '+' : ''}${rot.toFixed(1)} °`);
 
+      applyBeforeAdjustments();
+      updateThumbnails();
       updateQuantitativeMetrics();
       renderMainCanvas();
     }
 
     function resetAlignment(shouldRender = true) {
-      state.alignOffset = { x: 0, y: 0, scale: 1.0, widthScale: 1.0, rotateDeg: 0 };
+      state.alignOffset = { x: 0, y: 0, scale: 1.0, widthScale: 1.0, rotateDeg: 0, jowlLift: 0, gonionSlim: 0, chinLift: 0 };
       const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
       const setTxt = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
 
+      setVal('sliderBeforeJowl', 0);
+      setVal('sliderBeforeGonion', 0);
+      setVal('sliderBeforeChin', 0);
       setVal('sliderOffsetX', 0);
       setVal('sliderOffsetY', 0);
       setVal('sliderScale', 100);
       setVal('sliderBeforeWidth', 100);
       setVal('sliderRotate', 0);
 
+      setTxt('valBeforeJowl', '0.0 px');
+      setTxt('valBeforeGonion', '0.0 px');
+      setTxt('valBeforeChin', '0.0 px');
       setTxt('valOffsetX', '0.0 px');
       setTxt('valOffsetY', '0.0 px');
       setTxt('valScale', '100.0 %');
@@ -3411,6 +4029,8 @@
       setTxt('valRotate', '0.0 °');
 
       if (shouldRender) {
+        applyBeforeAdjustments();
+        updateThumbnails();
         updateQuantitativeMetrics();
         renderMainCanvas();
       }
@@ -3442,6 +4062,7 @@
       resetAlignment(false);
       await detectContourOnCanvas(state.beforeCanvas, 'before');
       await detectContourOnCanvas(state.afterSourceCanvas, 'after');
+      applyBeforeAdjustments();
       applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
@@ -3483,10 +4104,10 @@
       rc.fillStyle = '#FF2A54';
       rc.fillText('● 시술 후 윤곽선 (붉은색 · AFTER)', 1470, 56);
 
-      const beforePts = getAlignedBeforePoints();
-      const afterPts = state.afterPoints;
+      const activeSet = getContoursForBaseImage(state.baseImageTarget);
+      const nativeBeforePts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
+      const nativeAfterPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
 
-      // 좌측: 시술 전 사진 (Before + 녹색 윤곽선)
       const cardW = 760;
       const cardH = 860;
       const scale = Math.min(cardW / PORTRAIT_W, cardH / PORTRAIT_H);
@@ -3497,38 +4118,45 @@
       const rightX = 980;
       const topY = 124;
 
-      // 좌측 카드 (시술 전)
+      // 좌측 카드: 시술 전 사진 + 시술 전 고유 윤곽선 (녹색)
       rc.save();
       roundRectPath(rc, leftX, topY, dw, dh, 16);
       rc.clip();
       rc.drawImage(state.beforeCanvas, leftX, topY, dw, dh);
-      const lBeforeScreen = state.beforePointsRaw.map(p => ({ x: leftX + p.x * scale, y: topY + p.y * scale }));
-      const lAfterScreen = afterPts.map(p => ({ x: leftX + p.x * scale, y: topY + p.y * scale }));
+      const lBeforeScreen = nativeBeforePts.map(p => ({ x: leftX + p.x * scale, y: topY + p.y * scale }));
+      const lAfterScreen = nativeAfterPts.map(p => ({ x: leftX + p.x * scale, y: topY + p.y * scale }));
       drawContoursAndVectors(rc, lBeforeScreen, lAfterScreen, {
         drawBefore: true,
         drawAfter: false,
         drawZoneFill: false,
         drawVectors: false,
-        drawCallouts: false
+        drawCallouts: false,
+        forceBeforeNodes: false,
+        forceAfterNodes: false
       });
       drawPanelHeaderBadge(rc, leftX + 18, topY + 18, 'BEFORE (시술 전 사진)', '#00E676', '시술 전 턱 윤곽선 (녹색 표시)');
       rc.restore();
 
-      // 우측 카드 (시술 후 사진 위에 녹색 시술전 윤곽선 + 붉은색 시술후 윤곽선 동시 중첩!)
+      // 우측 카드: 사용자가 선택한 기준 이미지 위에 시술전(녹색) + 시술후(붉은색) 윤곽선 대입 비교!
       rc.save();
       roundRectPath(rc, rightX, topY, dw, dh, 16);
       rc.clip();
-      rc.drawImage(state.afterCanvas, rightX, topY, dw, dh);
-      const rBeforeScreen = beforePts.map(p => ({ x: rightX + p.x * scale, y: topY + p.y * scale }));
-      const rAfterScreen = afterPts.map(p => ({ x: rightX + p.x * scale, y: topY + p.y * scale }));
+      rc.drawImage(activeSet.baseCanvas, rightX, topY, dw, dh);
+      const rBeforeScreen = activeSet.beforePts.map(p => ({ x: rightX + p.x * scale, y: topY + p.y * scale }));
+      const rAfterScreen = activeSet.afterPts.map(p => ({ x: rightX + p.x * scale, y: topY + p.y * scale }));
       drawContoursAndVectors(rc, rBeforeScreen, rAfterScreen, {
         drawBefore: true,
         drawAfter: true,
         drawZoneFill: true,
         drawVectors: true,
-        drawCallouts: true
+        drawCallouts: true,
+        forceBeforeNodes: false,
+        forceAfterNodes: false
       });
-      drawPanelHeaderBadge(rc, rightX + 18, topY + 18, 'AFTER (시술 후 사진 + 전·후 윤곽선 비교)', '#FF2A54', '녹색(시술 전) ➔ 붉은색(시술 후) 리프팅 비교');
+      const rBadgeTitle = state.baseImageTarget === 'before'
+        ? '시술 전 이미지 기준 · 전·후 윤곽선 대입'
+        : '시술 후 이미지 기준 · 전·후 윤곽선 대입';
+      drawPanelHeaderBadge(rc, rightX + 18, topY + 18, rBadgeTitle, '#FF2A54', '녹색(시술 전) ➔ 붉은색(시술 후) 리프팅 비교');
       rc.restore();
 
       // 하단 정량 계측 요약 바
