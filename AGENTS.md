@@ -12,20 +12,19 @@
 사용자가 다른 컴퓨터에서 **"3번 실행해줘"** 또는 **"마지막 작업 이어서 해줘"**라고 명령하면:
 1. `git pull origin main`으로 최신 변경 사항을 즉시 풀합니다.
 2. `homepage` 폴더에서 `node serve.js`를 백그라운드 데몬으로 구동합니다.
-   - `node serve.js` 실행 시 **포트 3000 (3D 시네마 + Lusion 스타일 6대 클리닉 상세페이지 + 전·후 비교 스튜디오)** 과 **포트 3001 (수정 전 보존본 3D 시네마)** 이 동시에 자동 실행됩니다!
+   - `node serve.js` 실행 시 **포트 3000 (3D 시네마 + Lusion 스타일 6대 클리닉 상세페이지 + 리프팅 윤곽진단 스튜디오)** 과 **포트 3001 (수정 전 보존본 3D 시네마)** 이 동시에 자동 실행됩니다!
 3. 반드시 본 파일(`AGENTS.md`) 및 `HANDOFF_LATEST.md`를 읽고 최신 작업 상태를 브리핑한 뒤 사용자의 추가 지시를 즉시 수행합니다.
 
 ---
 
-## 3. 🔥 [최신 작업 인계 상태 — 2026-10-15 기준]
+## 3. 🔥 [최신 작업 인계 상태 — 2026-10-16 기준]
 
-1. **메인 3D 생애주기 스크롤 시네마 (`homepage/story-3d.html`, `homepage/index.html`)**
-   - 24프레임 8대 스토리 시네마 + 하단 6대 핵심 클리닉 카드(`#skt-bento-grid`) 펼침 모션 탑재.
-   - 각 카드 클릭 시 해당 상세페이지로 즉시 이동하도록 연결 완료 (`?cards=1` 파라미터로 상세페이지에서 6대 카드 화면으로 즉시 복귀 지원).
-2. **Lusion (`infinite_passerella`) 스타일 하이엔드 스크롤 상세페이지 4종 완성**
-   - `homepage/director.html` (`안정위원장` — 1:1 진맥·맞춤 한약 철학, 맥파 시뮬레이터, 한약 안전성 SCI 코호트 논문 근거)
-   - `homepage/chuna.html` (`추나` — 경추·척추·골반 수기 교정, 60fps 추간판 감압 시뮬레이터, *JAMA Network Open* RCT 논문 근거)
-   - `homepage/hairloss.html` (`탈모` — 수승화강 두피열 쿨링 & 발모 약침, 200배 모낭 시뮬레이터, 모유두세포 IGF-1·VEGF SCI 논문 근거)
-   - `homepage/gongjindan.html` (`황제공진단` — 24K 순금 수제 조제, 사향·분골 매크로 화보, BDNF·NGF·Sirt1 뇌신경 시냅스 시뮬레이터 & *PLOS ONE* / *Nutrients* SCI 논문 근거)
-3. **워드프레스 올인원 복사·붙여넣기 파일 6종 자동 동기화 (`node bundle-wp.js`)**
-   - `wordpress-main-home.html`, `wordpress-story-3d.html`, `wordpress-director.html`, `wordpress-chuna.html`, `wordpress-hairloss.html`, `wordpress-gongjindan.html`
+1. **6대 상세페이지 전체 (`director.html`, `chuna.html`, `growth.html`, `diet-zero.html`, `hairloss.html`, `gongjindan.html`) 전면 개편 완료**
+   - **구성 원칙**: 첫 번째 스토리(`STORY 01`)만 영상/모션으로 구성하고, 나머지 스토리(`STORY 02` ~ `STORY 05`)는 모두 단 한 장의 고해상도 시네마틱/3D 의학 이미지(`clean-image`)로 구성 완료.
+   - **중복 텍스트 & 중복 이미지 0건**:
+     - 좌측 상단 클리닉 정의(`meta.desc`), 체크리스트 5종, 우측 스토리 캡션(`sub`), 좌측 하단 `원장 임상 노트 · STEP 01 / 06`(`caption`)의 모든 중복 문구를 제거하고 각기 다른 전문 의학 내용으로 재작성 완료.
+     - 메인 페이지(`story-3d.html`) 및 상세페이지 간 겹치던 이미지를 모두 제거하고 17장의 신규 전용 시네마틱/3D 의학 비주얼을 생성하여 총 42개 미디어 전체 고유화 완료.
+2. **시술 전후 리프팅 윤곽진단 비교 앱 (`homepage/lifting-compare.html` & `wealthywei` `/lifting-compare`)**
+   - 시술 후(After) 사진 기본 기준 설정, 전/후 사진 개별 윤곽선 수동 편집, 촬영 각도·거리 보정을 위한 3점 중심축(양안 동공 + 코끝) 자동 정합 기능 구현 완료.
+3. **워드프레스 올인원 복사·붙여넣기 파일 전체 동기화 (`node bundle-wp.js`)**
+   - `wordpress-main-home.html`, `wordpress-story-3d.html`, `wordpress-director.html`, `wordpress-chuna.html`, `wordpress-growth.html`, `wordpress-diet.html`, `wordpress-hairloss.html`, `wordpress-gongjindan.html`, `wordpress-lifting-compare.html`
