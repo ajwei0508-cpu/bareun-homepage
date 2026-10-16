@@ -2083,6 +2083,73 @@
               ctx.fillText((isAct ? '✓ ' : '• ') + st, sx + 6, sy + 12.5);
             });
           }
+        } else if (type === 'distance-30cm-tension') {
+          // STORY 01: 30cm Proximity Gaze Tension Radar & Distance Callout
+          const cx = w * 0.46, cy = h * 0.28;
+          const peerX = w * 0.64, peerY = h * 0.20;
+          const pulse = 0.5 + 0.5 * Math.sin(timeSec * 3.2);
+
+          // Dashed gaze line from colleague/date to crown (30cm proximity)
+          ctx.save();
+          ctx.setLineDash([6, 5]);
+          ctx.strokeStyle = 'rgba(248, 113, 113, ' + (0.55 + pulse * 0.35).toFixed(2) + ')';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.moveTo(peerX, peerY);
+          ctx.lineTo(cx, cy);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Target rings on crown
+          for (let r = 0; r < 2; r++) {
+            const p = (timeSec * 0.8 + r * 0.5) % 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 14 + p * 46, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(239, 68, 68, ' + ((1 - p) * 0.55).toFixed(2) + ')';
+            ctx.lineWidth = 1.8;
+            ctx.stroke();
+          }
+
+          // 30cm Distance Pill Badge
+          const midX = (cx + peerX) * 0.5;
+          const midY = (cy + peerY) * 0.5 - 18;
+          const tagW = 196, tagH = 30;
+          ctx.fillStyle = 'rgba(12, 15, 22, 0.86)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.7)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(midX - tagW * 0.5, midY - tagH * 0.5, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FCA5A5';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('⚠️ 타인 시선 거리 30cm · 위축감 경보', midX, midY + 4);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'cabinet-frustration-hud') {
+          // STORY 02: Medical Frustration & Limitation Callout HUD
+          const padX = 24, topY = 66;
+          const boxW = Math.min(390, w - 48), boxH = 88;
+          ctx.save();
+          ctx.fillStyle = 'rgba(10, 14, 20, 0.80)';
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.48)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.fillText('🔍 기존 자가관리 · 대증치료가 실패했던 의학적 이유', padX + 14, topY + 23);
+
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
+          ctx.font = '600 11px Pretendard, sans-serif';
+          ctx.fillText('• 탈모 샴푸·토닉 : 표피 세정일 뿐, 끓어오르는 두피열(上熱) 제거 불가', padX + 14, topY + 46);
+          ctx.fillText('• 먹는 탈모약 : 부작용·쉐딩 우려 및 복용 중단 시 재탈모 반복 한계', padX + 14, topY + 68);
+          ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
           const cx = w * 0.5, cy = h * 0.55;
@@ -2112,9 +2179,11 @@
       const simCanvas = document.querySelector('.full-sim-canvas');
       const simCtx = simCanvas ? simCanvas.getContext('2d') : null;
       let simMode = 'after';
+      let simManualOverride = false;
 
       window.setSimMode = function(mode) {
         simMode = mode;
+        simManualOverride = true;
         document.getElementById('btn-sim-before')?.classList.toggle('active', mode === 'before');
         document.getElementById('btn-sim-after')?.classList.toggle('active', mode === 'after');
       };
@@ -2224,26 +2293,230 @@
             simCtx.fill(); simCtx.stroke();
           }
         } else if (simId === 'hair-follicle') {
-          const cols = 4, rows = 3;
-          for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-              const fx = (w / (cols + 1)) * (c + 1);
-              const fy = (h / (rows + 1)) * (r + 1) + 10;
+          // ==================================================================
+          // STORY 03: 불타는 토양에는 어떤 나무도 자라지 못합니다
+          // [모션 그래픽 시뮬레이션]
+          // - Before (Phase 0): 붉게 타오르는 냄비(가슴·머리에 몰린 42.0°C 상열) 위로 식물(모발)이 말라죽고,
+          //   화학 샴푸(물뿌리개)를 잎사귀에 아무리 뿌려도 뿌리는 타들어가는 모습.
+          // - After (Phase 1): 수승화강(水升火降) 치료가 시작되자 두피의 붉은 열(42°C)이 푸른색 안정 온도(36.5°C)로
+          //   식으면서 비옥한 토양 속에서 모근이 굵어지고 새싹·모발이 힘차게 자라나는 시각적 변화.
+          // ==================================================================
+          if (!simManualOverride) {
+            // 10초 주기로 전(불타는 냄비 42°C) ➔ 후(수승화강 쿨링 36.5°C) 자동 전환 시연
+            const autoPhase = (timeSec % 10) < 4.8 ? 'before' : 'after';
+            if (autoPhase !== simMode) {
+              simMode = autoPhase;
+              document.getElementById('btn-sim-before')?.classList.toggle('active', simMode === 'before');
+              document.getElementById('btn-sim-after')?.classList.toggle('active', simMode === 'after');
+            }
+          }
+
+          const isCool = simMode === 'after';
+          const cx = w * 0.5;
+          const soilY = h * 0.54;
+          const potTopY = h * 0.56;
+          const potBotY = h * 0.78;
+          const potW = Math.min(w * 0.62, 420);
+
+          // 1) 배경 열기 / 수승화강 오라 그라디언트
+          const bgGlow = simCtx.createRadialGradient(cx, soilY, 20, cx, soilY, Math.max(w, h) * 0.55);
+          if (isCool) {
+            bgGlow.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
+            bgGlow.addColorStop(0.5, 'rgba(16, 185, 129, 0.10)');
+            bgGlow.addColorStop(1, 'rgba(10, 15, 24, 0)');
+          } else {
+            bgGlow.addColorStop(0, 'rgba(239, 68, 68, 0.28)');
+            bgGlow.addColorStop(0.5, 'rgba(249, 115, 22, 0.12)');
+            bgGlow.addColorStop(1, 'rgba(15, 10, 12, 0)');
+          }
+          simCtx.fillStyle = bgGlow;
+          simCtx.fillRect(0, 0, w, h);
+
+          // 2) 하단 냄비(가슴·머리에 몰린 상열 vs 수승화강 청열 진액 용기) 그래픽
+          simCtx.save();
+          simCtx.beginPath();
+          simCtx.moveTo(cx - potW * 0.5, potTopY);
+          simCtx.lineTo(cx - potW * 0.40, potBotY);
+          simCtx.quadraticCurveTo(cx, potBotY + 26, cx + potW * 0.40, potBotY);
+          simCtx.lineTo(cx + potW * 0.5, potTopY);
+          simCtx.closePath();
+
+          const potGrad = simCtx.createLinearGradient(0, potTopY, 0, potBotY);
+          if (isCool) {
+            potGrad.addColorStop(0, 'rgba(14, 116, 144, 0.55)');
+            potGrad.addColorStop(0.5, 'rgba(16, 185, 129, 0.35)');
+            potGrad.addColorStop(1, 'rgba(6, 78, 59, 0.65)');
+          } else {
+            potGrad.addColorStop(0, 'rgba(185, 28, 28, 0.68)');
+            potGrad.addColorStop(0.5, 'rgba(239, 68, 68, 0.52)');
+            potGrad.addColorStop(1, 'rgba(249, 115, 22, 0.75)');
+          }
+          simCtx.fillStyle = potGrad;
+          simCtx.fill();
+          simCtx.lineWidth = 2.5;
+          simCtx.strokeStyle = isCool ? '#38BDF8' : '#F87171';
+          simCtx.stroke();
+
+          // 냄비 양쪽 손잡이
+          simCtx.beginPath();
+          simCtx.arc(cx - potW * 0.51, potTopY + 24, 12, Math.PI * 0.5, Math.PI * 1.5);
+          simCtx.stroke();
+          simCtx.beginPath();
+          simCtx.arc(cx + potW * 0.51, potTopY + 24, 12, -Math.PI * 0.5, Math.PI * 0.5);
+          simCtx.stroke();
+
+          // 3) 두피 토양 표면 (사막화 갈라진 토양 vs 비옥한 수분·진액 토양)
+          simCtx.beginPath();
+          simCtx.ellipse(cx, potTopY, potW * 0.5, 16, 0, 0, Math.PI * 2);
+          simCtx.fillStyle = isCool ? '#065F46' : '#7F1D1D';
+          simCtx.fill();
+          simCtx.strokeStyle = isCool ? '#6EE7B7' : '#FCA5A5';
+          simCtx.lineWidth = 2;
+          simCtx.stroke();
+
+          // 4) Before: 냄비 아래 타오르는 불꽃 + 좌상단 화학 샴푸(물뿌리개)가 잎사귀만 적시고 증발하는 연출
+          //    After: 수승화강(水升火降) 청열 순환 화살표 + 진액 방울이 뿌리 깊숙이 스며드는 연출
+          if (!isCool) {
+            // 냄비 하단 불꽃 파동 (42.0°C 상열)
+            for (let f = 0; f < 9; f++) {
+              const fx = cx - potW * 0.34 + (f / 8) * (potW * 0.68);
+              const fh = 18 + Math.sin(timeSec * 7 + f * 1.3) * 9;
               simCtx.beginPath();
-              simCtx.arc(fx, fy, 16, 0, Math.PI * 2);
-              simCtx.fillStyle = simMode === 'after' ? 'rgba(56, 189, 248, 0.22)' : 'rgba(239, 68, 68, 0.28)';
+              simCtx.moveTo(fx - 12, potBotY + 22);
+              simCtx.quadraticCurveTo(fx, potBotY - fh, fx + 12, potBotY + 22);
+              simCtx.fillStyle = f % 2 === 0 ? 'rgba(239, 68, 68, 0.78)' : 'rgba(251, 191, 36, 0.75)';
               simCtx.fill();
-              const hairs = simMode === 'after' ? 3 : 1;
-              for (let k = 0; k < hairs; k++) {
+            }
+
+            // 좌상단 화학 샴푸 / 물뿌리개 (겉물만 뿌리는 한계 시각화)
+            const canX = cx - potW * 0.42;
+            const canY = h * 0.22;
+            simCtx.fillStyle = 'rgba(148, 163, 184, 0.24)';
+            simCtx.strokeStyle = '#94A3B8';
+            simCtx.lineWidth = 1.8;
+            simCtx.beginPath();
+            simCtx.roundRect(canX - 42, canY - 18, 84, 34, 8);
+            simCtx.fill();
+            simCtx.stroke();
+            simCtx.fillStyle = '#E2E8F0';
+            simCtx.font = '700 10.5px Pretendard, sans-serif';
+            simCtx.textAlign = 'center';
+            simCtx.fillText('🧴 탈모샴푸·영양제', canX, canY + 3);
+
+            // 물뿌리개에서 떨어지지만 뜨거운 열기에 닿자마자 증발하는 물방울
+            for (let d = 0; d < 6; d++) {
+              const prog = (timeSec * 1.4 + d * 0.16) % 1;
+              const dx = canX + 46 + prog * 70;
+              const dy = canY + 6 + prog * 95;
+              if (prog < 0.72) {
                 simCtx.beginPath();
-                simCtx.moveTo(fx + (k - 1) * 4, fy);
-                simCtx.quadraticCurveTo(fx + (k - 1) * 10 + Math.sin(timeSec * 2 + r) * 4, fy - 28, fx + (k - 1) * 14, fy - (simMode === 'after' ? 54 : 26));
-                simCtx.strokeStyle = simMode === 'after' ? '#F8FAFC' : 'rgba(248,250,252,0.5)';
-                simCtx.lineWidth = simMode === 'after' ? 3.2 : 1.4;
+                simCtx.arc(dx, dy, 3, 0, Math.PI * 2);
+                simCtx.fillStyle = 'rgba(147, 197, 253, 0.75)';
+                simCtx.fill();
+              } else {
+                // 열기에 막혀 수증기로 증발!
+                simCtx.beginPath();
+                simCtx.arc(dx, dy - (prog - 0.72) * 40, 5, 0, Math.PI * 2);
+                simCtx.strokeStyle = 'rgba(252, 165, 165, 0.55)';
                 simCtx.stroke();
               }
             }
+            simCtx.fillStyle = '#FCA5A5';
+            simCtx.font = '700 11px Pretendard, sans-serif';
+            simCtx.fillText('✗ 끓는 냄비에 겉물(샴푸)만 부으면 뿌리 도달 전 증발!', canX + 95, canY + 38);
+          } else {
+            // 수승화강(水升火降) 푸른 청열·진액 순환 파동
+            for (let wIdx = 0; wIdx < 12; wIdx++) {
+              const p = (timeSec * 0.65 + wIdx * 0.08) % 1;
+              const wx = cx - potW * 0.36 + ((wIdx * 53) % (potW * 0.72));
+              const wy = potTopY + 18 + p * (potBotY - potTopY - 26);
+              simCtx.beginPath();
+              simCtx.arc(wx, wy, 4, 0, Math.PI * 2);
+              simCtx.fillStyle = wIdx % 2 === 0 ? 'rgba(56, 189, 248, 0.75)' : 'rgba(110, 231, 183, 0.75)';
+              simCtx.fill();
+            }
           }
+
+          // 5) 3개의 모낭 뿌리(모근)와 식물(모발) 줄기·잎사귀 비교 렌더링
+          const roots = [-potW * 0.24, 0, potW * 0.24];
+          roots.forEach((rxOff, rIdx) => {
+            const rx = cx + rxOff;
+            const bulbY = potTopY + 72;
+            const bulbR = isCool ? 20 + Math.sin(timeSec * 3 + rIdx) * 1.8 : 9.5;
+
+            // 모구부(모근 뿌리)
+            simCtx.beginPath();
+            simCtx.arc(rx, bulbY, bulbR, 0, Math.PI * 2);
+            simCtx.fillStyle = isCool ? 'rgba(16, 185, 129, 0.42)' : 'rgba(239, 68, 68, 0.38)';
+            simCtx.fill();
+            simCtx.lineWidth = isCool ? 2.8 : 1.5;
+            simCtx.strokeStyle = isCool ? '#6EE7B7' : '#F87171';
+            simCtx.stroke();
+
+            // 잔뿌리(모세혈관)
+            const rootCount = isCool ? 5 : 2;
+            for (let k = 0; k < rootCount; k++) {
+              const ang = Math.PI * 0.25 + (k / Math.max(1, rootCount - 1)) * Math.PI * 0.5;
+              const len = isCool ? 28 : 11;
+              simCtx.beginPath();
+              simCtx.moveTo(rx, bulbY + bulbR * 0.6);
+              simCtx.lineTo(rx + Math.cos(ang) * len * (k % 2 === 0 ? 1 : -1), bulbY + bulbR * 0.6 + Math.sin(ang) * len);
+              simCtx.strokeStyle = isCool ? 'rgba(56, 189, 248, 0.75)' : 'rgba(248, 113, 113, 0.45)';
+              simCtx.lineWidth = isCool ? 2 : 1;
+              simCtx.stroke();
+            }
+
+            // 모발 줄기 & 식물 잎사귀 (Before: 힘없이 휘어지고 말라죽는 단모 / After: 굵고 곧게 뻗어 오르는 3모낭과 푸른 잎)
+            const stemH = isCool ? 145 : 78;
+            const sway = isCool ? Math.sin(timeSec * 2 + rIdx) * 5 : 26 + Math.sin(timeSec * 4 + rIdx) * 6;
+            const topX = rx + sway;
+            const topY = potTopY - stemH;
+
+            simCtx.beginPath();
+            simCtx.moveTo(rx, bulbY);
+            simCtx.quadraticCurveTo(rx + sway * 0.35, potTopY - stemH * 0.45, topX, topY);
+            simCtx.strokeStyle = isCool ? '#34D399' : '#D97706';
+            simCtx.lineWidth = isCool ? 5.2 : 1.8;
+            simCtx.lineCap = 'round';
+            simCtx.stroke();
+
+            if (isCool) {
+              // 풍성한 다발모 & 싱그러운 잎사귀
+              [-1, 1].forEach(dir => {
+                simCtx.beginPath();
+                simCtx.moveTo(rx, potTopY - 6);
+                simCtx.quadraticCurveTo(rx + dir * 18, potTopY - stemH * 0.55, rx + dir * 24 + sway * 0.5, topY + 18);
+                simCtx.strokeStyle = '#F8FAFC';
+                simCtx.lineWidth = 3.2;
+                simCtx.stroke();
+
+                // 싱그러운 초록 잎사귀
+                simCtx.beginPath();
+                simCtx.ellipse(rx + dir * 16, potTopY - stemH * 0.55, 14, 7, dir * -0.45, 0, Math.PI * 2);
+                simCtx.fillStyle = '#10B981';
+                simCtx.fill();
+              });
+            } else {
+              // 말라붙은 갈색 잎사귀
+              simCtx.beginPath();
+              simCtx.ellipse(topX + 10, topY + 12, 9, 4, 0.5, 0, Math.PI * 2);
+              simCtx.fillStyle = 'rgba(180, 83, 9, 0.75)';
+              simCtx.fill();
+            }
+          });
+
+          // 6) 상단 실시간 두피 온도 & 모근 상태 비교 배지
+          simCtx.textAlign = 'center';
+          simCtx.font = '800 15px Pretendard, sans-serif';
+          if (isCool) {
+            simCtx.fillStyle = '#6EE7B7';
+            simCtx.fillText('❄️ 수승화강(水升火降) 청열 완료 : 두피 42.0°C ➔ 36.5°C 안정 온도 (모근 +44.4% 굵어짐)', cx, potBotY + 52);
+          } else {
+            simCtx.fillStyle = '#FCA5A5';
+            simCtx.fillText('🔥 상열하한(上熱下寒) 42.0°C 끓는 냄비 : 진액 고갈 및 모근 위축 (샴푸·겉물 무효)', cx, potBotY + 52);
+          }
+          simCtx.textAlign = 'left';
+          simCtx.restore();
         } else {
           // gongjindan-neuro
           const nodes = [];
