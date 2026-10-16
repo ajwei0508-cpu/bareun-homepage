@@ -2227,6 +2227,133 @@
           ctx.fillText('• 탈모 샴푸·토닉 : 표피 세정일 뿐, 끓어오르는 두피열(上熱) 제거 불가', padX + 14, topY + 46);
           ctx.fillText('• 먹는 탈모약 : 부작용·쉐딩 우려 및 복용 중단 시 재탈모 반복 한계', padX + 14, topY + 68);
           ctx.restore();
+        } else if (type === 'chuna-lost-movement-fx') {
+          // STORY 01 (Chuna): Lumbar Acute Pain Shockwave & Narrowed Life Radius Callout
+          const lx = w * 0.44, ly = h * 0.52;
+          ctx.save();
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.85 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(lx, ly, 16 + p * 72, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(239, 68, 68, ' + ((1 - p) * 0.62).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+
+          // Narrowed movement boundary arc
+          const tagW = 248, tagH = 32;
+          const tx = Math.max(20, lx - tagW * 0.5);
+          const ty = Math.max(66, ly - 88);
+          ctx.fillStyle = 'rgba(12, 16, 20, 0.86)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.72)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FCA5A5';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('⚡ 요추 L4-L5 구조적 통증 신호 · 동작 멈칫', tx + tagW * 0.5, ty + 20);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'fire-alarm-cutoff-hud') {
+          // STORY 02 (Chuna): Fire Alarm (Pain Signal) Ringing vs Pulling Out the Painkiller Battery Metaphor
+          const padX = 24, topY = 64;
+          const boxW = Math.min(430, w - 48), boxH = 122;
+          const isCutoffPhase = (timeSec % 4.0) > 2.0;
+          const shake = isCutoffPhase ? 0 : Math.sin(timeSec * 42) * 3.2;
+
+          ctx.save();
+          ctx.fillStyle = 'rgba(10, 14, 18, 0.84)';
+          ctx.strokeStyle = isCutoffPhase ? 'rgba(251, 191, 36, 0.65)' : 'rgba(239, 68, 68, 0.82)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          // Red Fire Alarm Bell Icon (Left inside HUD)
+          const bellX = padX + 42 + shake, bellY = topY + 48;
+          ctx.beginPath();
+          ctx.arc(bellX, bellY, 22, 0, Math.PI * 2);
+          ctx.fillStyle = isCutoffPhase ? 'rgba(100, 116, 139, 0.35)' : 'rgba(239, 68, 68, 0.85)';
+          ctx.fill();
+          ctx.strokeStyle = isCutoffPhase ? '#94A3B8' : '#FCA5A5';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          if (!isCutoffPhase) {
+            for (let wIdx = 0; wIdx < 2; wIdx++) {
+              const p = (timeSec * 2.2 + wIdx * 0.5) % 1;
+              ctx.beginPath();
+              ctx.arc(bellX, bellY, 22 + p * 18, -Math.PI * 0.35, Math.PI * 0.35);
+              ctx.strokeStyle = 'rgba(248, 113, 113, ' + (1 - p).toFixed(2) + ')';
+              ctx.stroke();
+            }
+          }
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '800 13px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(isCutoffPhase ? '🔇' : '🚨', bellX, bellY + 5);
+          ctx.textAlign = 'left';
+
+          // Metaphor Title & Battery Pull-out Animation
+          ctx.fillStyle = isCutoffPhase ? '#FDE68A' : '#FCA5A5';
+          ctx.font = '800 12px Pretendard, sans-serif';
+          ctx.fillText(
+            isCutoffPhase
+              ? '🔋 [진통제 복용] 화재경보기 배터리만 분리됨 (경보음 일시 정지)'
+              : '🚨 [척추 구조 붕괴] 디스크·골반 압박 화재경보기 작동 중!',
+            padX + 78,
+            topY + 32
+          );
+
+          // Battery Slot Graphic
+          const batX = padX + 78, batY = topY + 44;
+          const pullOffset = isCutoffPhase ? 34 : 0;
+          ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+          ctx.lineWidth = 1.2;
+          ctx.strokeRect(batX, batY, 64, 22);
+
+          ctx.fillStyle = isCutoffPhase ? 'rgba(251, 191, 36, 0.32)' : 'rgba(16, 185, 129, 0.45)';
+          ctx.strokeStyle = isCutoffPhase ? '#FBBF24' : '#34D399';
+          ctx.fillRect(batX + pullOffset, batY + 2, 58, 18);
+          ctx.strokeRect(batX + pullOffset, batY + 2, 58, 18);
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '700 9.5px Pretendard, sans-serif';
+          ctx.fillText(isCutoffPhase ? '약효 OFF' : '통증신호 ON', batX + pullOffset + 6, batY + 14.5);
+
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.90)';
+          ctx.font = '600 10.8px Pretendard, sans-serif';
+          ctx.fillText('⚠️ 불(틀어진 골반·짓눌린 디스크)을 끄지 않고 경보기 스위치(진통제)만 끄면', padX + 78, topY + 88);
+          ctx.fillStyle = '#FCA5A5';
+          ctx.fillText('   약효가 떨어지는 순간 똑같은 통증이 어김없이 다시 켜집니다.', padX + 78, topY + 106);
+          ctx.restore();
+        } else if (type === 'chuna-palpation-vector-fx') {
+          // STORY 04 (Chuna): 1mm Fingertip Palpation & Push/Pull (밀 추 推 · 당길 나 拿) Alignment HUD
+          const padX = 24, topY = 64;
+          const boxW = Math.min(395, w - 48), boxH = 92;
+          ctx.save();
+          ctx.fillStyle = 'rgba(10, 16, 15, 0.82)';
+          ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#6EE7B7';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.fillText('🖐️ 원장 1:1 수기(手技) 촉진 · 추나(推拿) 실시간 정렬 스캔', padX + 14, topY + 24);
+
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.90)';
+          ctx.font = '600 10.8px Pretendard, sans-serif';
+          ctx.fillText('• 수기 촉진(Palpation) : X-ray에 안 보이는 1mm 미세 아탈구 탐색', padX + 14, topY + 48);
+          ctx.fillText('• 밀 추(推) · 당길 나(拿) : 호흡·근육 저항감 맞춤 분절 정밀 교정', padX + 14, topY + 70);
+          ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
           const cx = w * 0.5, cy = h * 0.55;
@@ -2313,28 +2440,224 @@
             simCtx.stroke();
           });
         } else if (simId === 'chuna-spine') {
+          // ==================================================================
+          // STORY 03 (Chuna): 무너진 기둥을 바로 세워야 통증의 뿌리가 뽑힙니다
+          // [3D Biomechanical 시뮬레이션: 젠가(Jenga) 하단 블록 교정 ➔ 3D 척추·골반 디졸브]
+          // - Before: 하단부 블록 하나(골반/요추 L4-L5)가 옆으로 틀어져 젠가 탑 전체가 한쪽으로
+          //   위태롭게 기울어 흔들리고, 양옆 근육(장력선)이 24시간 팽팽하게 긴장하며 붉은 신경 압박 경보 발생.
+          // - After: 원장의 두 손(수기 추나 推·拿)이 들어와 틀어진 하단 블록을 '탁' 밀어 넣어 정렬을 맞추자,
+          //   탑 전체가 안정적으로 바로 서며 실제 인체 3D 척추·골반 그래픽으로 디졸브(전환)되고
+          //   추간판 공간(+3.8mm)이 열리며 신경 압박이 풀리는 모습(붉은색 ➔ 푸른색/에메랄드).
+          // ==================================================================
+          if (!simManualOverride) {
+            const autoPhase = (timeSec % 10.4) < 5.0 ? 'before' : 'after';
+            if (autoPhase !== simMode) {
+              simMode = autoPhase;
+              document.getElementById('btn-sim-before')?.classList.toggle('active', simMode === 'before');
+              document.getElementById('btn-sim-after')?.classList.toggle('active', simMode === 'after');
+            }
+          }
+
+          const isAligned = simMode === 'after';
           const cx = w * 0.5;
-          simCtx.strokeStyle = 'rgba(255,255,255,0.16)';
-          simCtx.setLineDash([5, 5]);
-          simCtx.beginPath(); simCtx.moveTo(cx, h * 0.14); simCtx.lineTo(cx, h * 0.84); simCtx.stroke();
+          const topY = h * 0.16;
+          const botY = h * 0.72;
+          const levels = 7; // C-spine to Pelvis
+          const segNames = ['경추 C1-C3', '경추 C4-C7', '흉추 T1-T6', '흉추 T7-T12', '요추 L1-L3', '요추 L4-L5 (핵심축)', '골반 · 천장관절 (기초축)'];
+
+          // After 모드에서: 전반부(0~1.8초)는 원장 손이 젠가 블록을 '탁' 밀어 넣는 모션, 후반부는 3D 척추·골반으로 디졸브
+          const subCycle = timeSec % 5.2;
+          const pushProgress = isAligned ? Math.min(1, subCycle / 1.1) : 0;
+          const dissolveSpine = isAligned ? Math.max(0, Math.min(1, (subCycle - 1.0) / 1.4)) : 0;
+
+          // 배경 오라
+          const bgGlow = simCtx.createRadialGradient(cx, (topY + botY) * 0.5, 20, cx, (topY + botY) * 0.5, Math.max(w, h) * 0.5);
+          if (isAligned) {
+            bgGlow.addColorStop(0, 'rgba(16, 185, 129, 0.22)');
+            bgGlow.addColorStop(0.5, 'rgba(56, 189, 248, 0.12)');
+            bgGlow.addColorStop(1, 'rgba(10, 16, 15, 0)');
+          } else {
+            bgGlow.addColorStop(0, 'rgba(239, 68, 68, 0.25)');
+            bgGlow.addColorStop(0.5, 'rgba(245, 158, 11, 0.10)');
+            bgGlow.addColorStop(1, 'rgba(15, 10, 12, 0)');
+          }
+          simCtx.fillStyle = bgGlow;
+          simCtx.fillRect(0, 0, w, h);
+
+          // 수직 중력 중심축 가이드라인
+          simCtx.save();
+          simCtx.strokeStyle = isAligned ? 'rgba(110, 231, 183, 0.45)' : 'rgba(255, 255, 255, 0.18)';
+          simCtx.setLineDash([6, 5]);
+          simCtx.lineWidth = 1.5;
+          simCtx.beginPath();
+          simCtx.moveTo(cx, topY - 24);
+          simCtx.lineTo(cx, botY + 34);
+          simCtx.stroke();
           simCtx.setLineDash([]);
-          for (let i = 0; i < 8; i++) {
-            const by = h * 0.18 + i * ((h * 0.62) / 8);
-            const offX = simMode === 'after'
-              ? Math.sin(timeSec * 2 + i * 0.5) * 2
-              : Math.sin(i * 0.85) * 32 + Math.sin(timeSec * 6 + i) * 4;
-            const tilt = simMode === 'after' ? 0 : Math.cos(i * 0.8) * 0.18;
+
+          // 골반 받침대 (Pelvic Base)
+          const pelvisY = botY + 12;
+          const pelvisTilt = isAligned ? (1 - pushProgress) * 0.14 : 0.14 + Math.sin(timeSec * 5) * 0.02;
+          simCtx.save();
+          simCtx.translate(cx, pelvisY);
+          simCtx.rotate(pelvisTilt);
+          simCtx.fillStyle = isAligned ? 'rgba(16, 185, 129, 0.22)' : 'rgba(239, 68, 68, 0.24)';
+          simCtx.strokeStyle = isAligned ? '#38BDF8' : '#F87171';
+          simCtx.lineWidth = 2.2;
+          simCtx.beginPath();
+          simCtx.roundRect(-88, -14, 176, 28, 12);
+          simCtx.fill();
+          simCtx.stroke();
+          simCtx.restore();
+
+          // 7층 젠가 블록 탑 ➔ 3D 척추 분절 & 추간판 디스크(+3.8mm) 렌더링
+          const stepH = (botY - topY) / levels;
+          const coords = [];
+
+          for (let i = 0; i < levels; i++) {
+            const revIdx = levels - 1 - i; // 0 at bottom, 6 at top
+            const baseGap = isAligned ? stepH : stepH * 0.91;
+            const by = botY - revIdx * baseGap - 18;
+
+            // i === 5 (요추 L4-L5 하단 핵심 블록)이 옆으로 삐져나와 전체 탑이 기울어짐
+            let offX = 0;
+            let tilt = 0;
+            if (!isAligned) {
+              if (i === 5) {
+                // 틀어져 삐져나온 하단 젠가 블록 (골반·요추 1cm 아탈구)
+                offX = 46 + Math.sin(timeSec * 7) * 3.5;
+                tilt = 0.16;
+              } else {
+                // 하단 블록이 빠져나간 반대쪽으로 위태롭게 기울어 흔들리는 상부 탑
+                offX = -revIdx * 10.5 + Math.sin(timeSec * 6.5 + i) * 4.5;
+                tilt = -0.14 + Math.sin(timeSec * 5 + i) * 0.025;
+              }
+            } else {
+              const remain = 1 - pushProgress;
+              offX = (i === 5 ? 46 * remain : -revIdx * 10.5 * remain) + Math.sin(timeSec * 2 + i * 0.5) * 1.2;
+              tilt = (i === 5 ? 0.16 : -0.14) * remain;
+            }
+
+            coords.push({ x: cx + offX, y: by, tilt, i });
+          }
+
+          // 근육 긴장 와이어 (Before: 넘어지지 않기 위해 24시간 팽팽하게 당겨진 붉은 근육선 / After: 편안한 에메랄드 균형선)
+          [-1, 1].forEach(side => {
+            simCtx.beginPath();
+            coords.forEach((pt, idx) => {
+              const wx = pt.x + side * 56;
+              const wy = pt.y;
+              if (idx === 0) simCtx.moveTo(wx, wy);
+              else simCtx.lineTo(wx, wy);
+            });
+            simCtx.strokeStyle = isAligned ? 'rgba(56, 189, 248, 0.45)' : 'rgba(248, 113, 113, 0.78)';
+            simCtx.lineWidth = isAligned ? 2 : 2.8;
+            simCtx.stroke();
+          });
+
+          // 각 층 블록(젠가) + 3D 척추체/디스크 디졸브 렌더링
+          coords.forEach(pt => {
+            const isKeySublux = pt.i === 5; // 하단 틀어진 블록 (L4-L5)
             simCtx.save();
-            simCtx.translate(cx + offX, by);
-            simCtx.rotate(tilt);
-            simCtx.fillStyle = simMode === 'after' ? 'rgba(16, 185, 129, 0.28)' : 'rgba(239, 68, 68, 0.28)';
-            simCtx.strokeStyle = simMode === 'after' ? '#6EE7B7' : '#F87171';
+            simCtx.translate(pt.x, pt.y);
+            simCtx.rotate(pt.tilt);
+
+            const bw = isKeySublux ? 96 : 86;
+            const bh = isAligned ? 24 : 22;
+
+            // 1) 젠가 우드/구조 블록 레이어 (dissolveSpine이 커질수록 3D 척추체로 변환)
+            const jengaAlpha = 1 - dissolveSpine * 0.55;
+            simCtx.fillStyle = isAligned
+              ? 'rgba(16, 185, 129, ' + (0.28 * jengaAlpha + 0.25).toFixed(2) + ')'
+              : (isKeySublux ? 'rgba(239, 68, 68, 0.52)' : 'rgba(217, 119, 6, 0.34)');
+            simCtx.strokeStyle = isAligned ? '#6EE7B7' : (isKeySublux ? '#FCA5A5' : '#FBBF24');
+            simCtx.lineWidth = isKeySublux ? 2.6 : 1.8;
+
+            // 3D Isometric Jenga Block side depth
+            simCtx.beginPath();
+            simCtx.roundRect(-bw * 0.5, -bh * 0.5, bw, bh, dissolveSpine > 0.5 ? 9 : 4);
+            simCtx.fill();
+            simCtx.stroke();
+
+            // 3D Spine Spinous Process & Intervertebral Disc Cushion (+3.8mm) when dissolving
+            if (isAligned) {
+              // 푸른색/청록색 추간판 디스크 쿠션 (+3.8mm 감압 공간)
+              simCtx.fillStyle = 'rgba(56, 189, 248, ' + (0.35 + dissolveSpine * 0.5).toFixed(2) + ')';
+              simCtx.beginPath();
+              simCtx.roundRect(-bw * 0.42, bh * 0.5 + 1, bw * 0.84, 7, 4);
+              simCtx.fill();
+            } else if (isKeySublux) {
+              // 붉은색 디스크 짓눌림 & 신경 압박 스파크
+              const pulseR = 10 + (timeSec * 22) % 24;
+              simCtx.beginPath();
+              simCtx.arc(bw * 0.42, bh * 0.35, pulseR, 0, Math.PI * 2);
+              simCtx.strokeStyle = 'rgba(239, 68, 68, 0.75)';
+              simCtx.lineWidth = 2;
+              simCtx.stroke();
+            }
+
+            // 블록 내부 라벨
+            simCtx.fillStyle = '#FFFFFF';
+            simCtx.font = (isKeySublux ? '800 ' : '600 ') + '10px Pretendard, sans-serif';
+            simCtx.textAlign = 'center';
+            simCtx.fillText(segNames[pt.i], 0, 3.5);
+            simCtx.restore();
+          });
+
+          // 원장님의 수기 추나 손길 (하단 틀어진 블록을 '탁' 밀어 넣어 정렬하는 벡터 연출)
+          const targetPt = coords[5];
+          if (isAligned) {
+            const handX = targetPt.x + 76 + (1 - pushProgress) * 32;
+            const handY = targetPt.y;
+            simCtx.fillStyle = 'rgba(212, 175, 55, 0.26)';
+            simCtx.strokeStyle = '#FDE68A';
             simCtx.lineWidth = 2;
             simCtx.beginPath();
-            simCtx.roundRect(-36, -12, 72, 24, 7);
-            simCtx.fill(); simCtx.stroke();
-            simCtx.restore();
+            simCtx.roundRect(handX, handY - 15, 148, 30, 999);
+            simCtx.fill();
+            simCtx.stroke();
+
+            // 화살표 (밀 추 推)
+            simCtx.beginPath();
+            simCtx.moveTo(handX - 6, handY);
+            simCtx.lineTo(targetPt.x + 52, handY);
+            simCtx.strokeStyle = '#FDE68A';
+            simCtx.lineWidth = 2.5;
+            simCtx.stroke();
+
+            simCtx.fillStyle = '#FDE68A';
+            simCtx.font = '800 11px Pretendard, sans-serif';
+            simCtx.textAlign = 'center';
+            simCtx.fillText('🫲 원장 수기 추나(推拿) 정렬', handX + 74, handY + 4);
+          } else {
+            // Before: 틀어진 하단 블록 경고 콜아웃
+            const warnX = targetPt.x + 64;
+            const warnY = targetPt.y;
+            simCtx.fillStyle = 'rgba(127, 29, 29, 0.85)';
+            simCtx.strokeStyle = '#F87171';
+            simCtx.lineWidth = 1.5;
+            simCtx.beginPath();
+            simCtx.roundRect(warnX, warnY - 15, 162, 30, 999);
+            simCtx.fill();
+            simCtx.stroke();
+            simCtx.fillStyle = '#FCA5A5';
+            simCtx.font = '800 10.8px Pretendard, sans-serif';
+            simCtx.textAlign = 'center';
+            simCtx.fillText('⚠️ 골반·요추 1cm 이탈 (붕괴 위기)', warnX + 81, warnY + 4);
           }
+
+          // 하단 상태 요약 캡션
+          simCtx.textAlign = 'center';
+          simCtx.font = '800 14.5px Pretendard, sans-serif';
+          if (isAligned) {
+            simCtx.fillStyle = '#6EE7B7';
+            simCtx.fillText('✦ 추나(推拿) 중심축 수직 정렬 완료 ➔ 3D 척추·골반 추간판 +3.8mm 신경 감압 (붉은 염증 ➔ 푸른 회복)', cx, botY + 56);
+          } else {
+            simCtx.fillStyle = '#FCA5A5';
+            simCtx.fillText('⚠️ 하단 젠가 블록(골반·요추) 1cm 틀어짐 : 상부 척추 전체 흔들림 & 24시간 근육 과긴장·신경 압박', cx, botY + 56);
+          }
+          simCtx.textAlign = 'left';
+          simCtx.restore();
         } else if (simId === 'growth-plate') {
           const cx = w * 0.5, cy = h * 0.48;
           const bandH = simMode === 'after' ? 56 + Math.sin(timeSec * 3) * 6 : 22;
