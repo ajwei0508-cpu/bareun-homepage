@@ -2277,6 +2277,127 @@
           ctx.fillText('• 수기 촉진(Palpation) : X-ray에 안 보이는 1mm 미세 아탈구 탐색', padX + 14, topY + 48);
           ctx.fillText('• 밀 추(推) · 당길 나(拿) : 호흡·근육 저항감 맞춤 분절 정밀 교정', padX + 14, topY + 70);
           ctx.restore();
+        } else if (type === 'battery-1pct-warning-fx') {
+          // STORY 01 (Gongjindan): Blinking Red 1% Battery Icon Overlapping Exhausted Silhouette
+          const bx = w * 0.50, by = h * 0.36;
+          const batW = 148, batH = 68;
+          const blink = Math.sin(timeSec * 6.5) > -0.2;
+
+          ctx.save();
+          // Outer red warning pulse rings
+          for (let r = 0; r < 2; r++) {
+            const p = (timeSec * 0.75 + r * 0.5) % 1;
+            ctx.beginPath();
+            ctx.arc(bx, by, 42 + p * 85, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(239, 68, 68, ' + ((1 - p) * 0.52).toFixed(2) + ')';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+
+          // Battery Body Frame
+          ctx.fillStyle = 'rgba(10, 12, 16, 0.84)';
+          ctx.strokeStyle = blink ? '#EF4444' : 'rgba(239, 68, 68, 0.38)';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(bx - batW * 0.5, by - batH * 0.5, batW, batH, 12);
+          ctx.fill();
+          ctx.stroke();
+
+          // Battery Positive Terminal Tip
+          ctx.fillStyle = blink ? '#EF4444' : 'rgba(239, 68, 68, 0.38)';
+          ctx.beginPath();
+          ctx.roundRect(bx + batW * 0.5 + 3, by - 14, 9, 28, 4);
+          ctx.fill();
+
+          // 1% Remaining Red Sliver Bar Inside Battery
+          if (blink) {
+            ctx.fillStyle = '#EF4444';
+            ctx.beginPath();
+            ctx.roundRect(bx - batW * 0.5 + 8, by - batH * 0.5 + 8, 12, batH - 16, 5);
+            ctx.fill();
+          }
+
+          // 1% Text Inside Battery
+          ctx.fillStyle = blink ? '#FCA5A5' : 'rgba(252, 165, 165, 0.45)';
+          ctx.font = '900 22px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('1%', bx + 8, by + 8);
+
+          // Callout Pill Below Battery
+          const tagW = 290, tagH = 32;
+          ctx.fillStyle = 'rgba(15, 10, 12, 0.88)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.72)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(bx - tagW * 0.5, by + batH * 0.5 + 14, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FCA5A5';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.fillText('🚨 생체 에너지 잔량 1% · 만성 번아웃 방전 경보', bx, by + batH * 0.5 + 34);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'bottomless-jug-leak-fx') {
+          // STORY 02 (Gongjindan): Bottomless Glass / Cracked Vessel Leaking Golden Nutrition Metaphor HUD
+          const cx = w * 0.50, crackY = h * 0.62;
+          ctx.save();
+
+          // Animated golden drops leaking downward from cracked bottom
+          for (let d = 0; d < 8; d++) {
+            const p = (timeSec * 1.15 + d * 0.125) % 1;
+            const dx = cx + ((d % 3) - 1) * 24 + Math.sin(d * 2.1) * 8;
+            const dy = crackY + p * 95;
+            ctx.beginPath();
+            ctx.arc(dx, dy, 3.5 * (1 - p * 0.4), 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(251, 191, 36, ' + ((1 - p) * 0.85).toFixed(2) + ')';
+            ctx.fill();
+          }
+
+          // Top HUD Panel explaining the Bottomless Jug metaphor
+          const padX = 24, topY = 64;
+          const boxW = Math.min(410, w - 48), boxH = 92;
+          ctx.fillStyle = 'rgba(14, 12, 10, 0.84)';
+          ctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.fillText('🏺 [밑빠진 독 메타포] 비타민·홍삼·수액이 그때뿐인 이유', padX + 14, topY + 24);
+
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.90)';
+          ctx.font = '600 10.8px Pretendard, sans-serif';
+          ctx.fillText('• 원기(元氣)의 그릇이 깨진 상태에서는 외부 영양분이 체내에 머물지 못함', padX + 14, topY + 48);
+          ctx.fillText('• 각성제·일시 보충이 아닌, 깨진 기혈의 독을 메우는 근본 복원력 필요', padX + 14, topY + 70);
+          ctx.restore();
+        } else if (type === 'rolex-craft-scale-hud') {
+          // STORY 04 (Gongjindan): Master's Craft 0.001g Precision Scale & CITES Authentication HUD
+          const padX = 24, topY = 64;
+          const boxW = Math.min(420, w - 48), boxH = 108;
+          ctx.save();
+          ctx.fillStyle = 'rgba(14, 12, 10, 0.85)';
+          ctx.strokeStyle = '#D4AF37';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.8px Pretendard, sans-serif';
+          ctx.fillText('⚖️ MASTER’S CRAFT · 안정위 대표원장 직접 조제 프로토콜', padX + 14, topY + 24);
+
+          ctx.fillStyle = '#6EE7B7';
+          ctx.font = '700 11px Pretendard, sans-serif';
+          ctx.fillText('✓ 식약처 CITES 정식 통관 러시아산 정품 사향 100% 직접 개봉', padX + 14, topY + 48);
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.92)';
+          ctx.fillText('✓ 0.001g 초정밀 전자저울 계량 · 러시아 원용 분골 최상단 정량 배합', padX + 14, topY + 70);
+          ctx.fillText('✓ L-Muscone 향기 휘발을 차단하는 99.9% 24K 순금박 수제 봉인', padX + 14, topY + 92);
+          ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
           const cx = w * 0.5, cy = h * 0.55;
@@ -2841,28 +2962,167 @@
           simCtx.textAlign = 'left';
           simCtx.restore();
         } else {
-          // gongjindan-neuro
-          const nodes = [];
-          for (let i = 0; i < 16; i++) {
-            nodes.push({
-              x: w * (0.18 + ((i * 67) % 64) * 0.01) + Math.sin(timeSec + i) * 10,
-              y: h * (0.22 + ((i * 43) % 56) * 0.01) + Math.cos(timeSec * 1.2 + i) * 10
-            });
+          // ==================================================================
+          // STORY 03 (Gongjindan): 황제의 불로장생을 위한 처방, 생명력을 깨우는 사향(麝香)
+          // [사향의 약리 기전 시뮬레이션: 거대 수문(막힌 기혈) 개방 ➔ 전신 혈관 생명수 도달]
+          // - Before: 꽉 막힌 거대한 수문(막힌 기혈·상열하한 울체) 앞에서 에너지가 차단되어
+          //   전신과 뇌 끝까지 이어지는 혈관망이 메말라 어둡게 정체된 모습.
+          // - After: 24K 금박을 두른 황제공진단이 수문 중앙에 닿자마자 강력한 황금빛 파동(개규 開竅)이
+          //   폭발하듯 퍼져나가며 수문이 양옆으로 활짝 열리고, 막혀있던 생명수(사향·녹용·당귀 기혈)가
+          //   전신의 메마른 혈관을 타고 머리끝(뇌신경)부터 발끝까지 단숨에 뻗어나가는 3D 모션.
+          // ==================================================================
+          if (!simManualOverride) {
+            const autoPhase = (timeSec % 10.4) < 4.8 ? 'before' : 'after';
+            if (autoPhase !== simMode) {
+              simMode = autoPhase;
+              document.getElementById('btn-sim-before')?.classList.toggle('active', simMode === 'before');
+              document.getElementById('btn-sim-after')?.classList.toggle('active', simMode === 'after');
+            }
           }
-          nodes.forEach((n, i) => {
-            nodes.slice(i + 1, i + (simMode === 'after' ? 5 : 2)).forEach(m => {
-              simCtx.beginPath();
-              simCtx.moveTo(n.x, n.y);
-              simCtx.lineTo(m.x, m.y);
-              simCtx.strokeStyle = simMode === 'after' ? 'rgba(212, 175, 55, 0.45)' : 'rgba(255,255,255,0.12)';
-              simCtx.lineWidth = simMode === 'after' ? 1.8 : 1;
-              simCtx.stroke();
-            });
+
+          const isOpened = simMode === 'after';
+          const cx = w * 0.5;
+          const gateY = h * 0.48;
+          const gateW = Math.min(w * 0.54, 380);
+          const gateH = 54;
+          const subCycle = timeSec % 5.6;
+          const openRatio = isOpened ? Math.min(1, subCycle / 1.1) : 0;
+
+          // 1) 배경 황금빛 사향 개규(開竅) 오라 vs 어두운 기혈 울체 배경
+          const bgGlow = simCtx.createRadialGradient(cx, gateY, 16, cx, gateY, Math.max(w, h) * 0.55);
+          if (isOpened) {
+            bgGlow.addColorStop(0, 'rgba(212, 175, 55, 0.34)');
+            bgGlow.addColorStop(0.45, 'rgba(245, 158, 11, 0.14)');
+            bgGlow.addColorStop(0.75, 'rgba(16, 185, 129, 0.08)');
+            bgGlow.addColorStop(1, 'rgba(14, 11, 8, 0)');
+          } else {
+            bgGlow.addColorStop(0, 'rgba(239, 68, 68, 0.20)');
+            bgGlow.addColorStop(0.5, 'rgba(30, 27, 24, 0.15)');
+            bgGlow.addColorStop(1, 'rgba(14, 11, 8, 0)');
+          }
+          simCtx.fillStyle = bgGlow;
+          simCtx.fillRect(0, 0, w, h);
+
+          simCtx.save();
+
+          // 2) 전신 혈관·경락 네트워크 (수문 위쪽: 뇌·상초 혈관망 / 수문 아래쪽: 심장·신장·사지 말초 혈관망)
+          const branches = [
+            // 상단(머리끝·뇌신경 방향) 5개 주요 혈관 줄기
+            { sx: cx, sy: gateY - 12, cx1: cx - 40, cy1: h * 0.30, ex: cx - 150, ey: h * 0.15, label: '뇌해마(NGF)' },
+            { sx: cx, sy: gateY - 12, cx1: cx - 18, cy1: h * 0.26, ex: cx - 65, ey: h * 0.12, label: '전두엽·집중력' },
+            { sx: cx, sy: gateY - 12, cx1: cx, cy1: h * 0.25, ex: cx, ey: h * 0.10, label: '백회(머리끝 기혈)' },
+            { sx: cx, sy: gateY - 12, cx1: cx + 18, cy1: h * 0.26, ex: cx + 65, ey: h * 0.12, label: '뇌혈류 순환' },
+            { sx: cx, sy: gateY - 12, cx1: cx + 40, cy1: h * 0.30, ex: cx + 150, ey: h * 0.15, label: '자율신경 안정' },
+            // 하단(심장·신장·발끝 말초 방향) 5개 주요 혈관 줄기
+            { sx: cx, sy: gateY + 12, cx1: cx - 45, cy1: h * 0.62, ex: cx - 155, ey: h * 0.76, label: '상열하한 해소' },
+            { sx: cx, sy: gateY + 12, cx1: cx - 20, cy1: h * 0.65, ex: cx - 70, ey: h * 0.80, label: '신장 원기(元氣)' },
+            { sx: cx, sy: gateY + 12, cx1: cx, cy1: h * 0.66, ex: cx, ey: h * 0.82, label: '용천(발끝 말초혈관)' },
+            { sx: cx, sy: gateY + 12, cx1: cx + 20, cy1: h * 0.65, ex: cx + 70, ey: h * 0.80, label: '조혈·면역 활성' },
+            { sx: cx, sy: gateY + 12, cx1: cx + 45, cy1: h * 0.62, ex: cx + 155, ey: h * 0.76, label: '만성피로 젖산배출' }
+          ];
+
+          branches.forEach((br, bIdx) => {
+            // 혈관 줄기 렌더링 (Before: 메마르고 어두운 회갈색 실선 / After: 황금빛·청록빛 생명수가 흐르는 굵은 혈관)
             simCtx.beginPath();
-            simCtx.arc(n.x, n.y, simMode === 'after' ? 6 : 3.5, 0, Math.PI * 2);
-            simCtx.fillStyle = simMode === 'after' ? '#FDE68A' : 'rgba(255,255,255,0.35)';
+            simCtx.moveTo(br.sx, br.sy);
+            simCtx.quadraticCurveTo(br.cx1, br.cy1, br.ex, br.ey);
+            simCtx.strokeStyle = isOpened ? 'rgba(212, 175, 55, 0.68)' : 'rgba(148, 163, 184, 0.20)';
+            simCtx.lineWidth = isOpened ? 3.2 : 1.3;
+            simCtx.stroke();
+
+            // After: 수문이 열리면서 생명수(사향 L-Muscone + 녹용 + 당귀) 입자가 혈관 끝까지 뻗어나가는 모션
+            if (isOpened) {
+              for (let pIdx = 0; pIdx < 3; pIdx++) {
+                const t = (timeSec * 1.35 + pIdx * 0.33 + bIdx * 0.07) % 1;
+                const inv = 1 - t;
+                const px = inv * inv * br.sx + 2 * inv * t * br.cx1 + t * t * br.ex;
+                const py = inv * inv * br.sy + 2 * inv * t * br.cy1 + t * t * br.ey;
+                simCtx.beginPath();
+                simCtx.arc(px, py, 4.2, 0, Math.PI * 2);
+                simCtx.fillStyle = pIdx === 0 ? '#FDE68A' : (pIdx === 1 ? '#34D399' : '#38BDF8');
+                simCtx.fill();
+              }
+            }
+
+            // 말단 노드 및 라벨
+            simCtx.beginPath();
+            simCtx.arc(br.ex, br.ey, isOpened ? 6.5 : 3.5, 0, Math.PI * 2);
+            simCtx.fillStyle = isOpened ? '#FDE68A' : 'rgba(239, 68, 68, 0.45)';
             simCtx.fill();
+
+            if (bIdx % 2 === 0) {
+              simCtx.fillStyle = isOpened ? '#FDE68A' : 'rgba(255,255,255,0.42)';
+              simCtx.font = '700 10px Pretendard, sans-serif';
+              simCtx.textAlign = 'center';
+              simCtx.fillText(br.label, br.ex, br.ey + (bIdx < 5 ? -10 : 18));
+            }
           });
+
+          // 3) 중앙 거대 수문 (Floodgate of Qi & Blood)
+          const doorW = gateW * 0.46;
+          const slideX = openRatio * (gateW * 0.38);
+
+          // 좌측 수문 문짝
+          simCtx.fillStyle = isOpened ? 'rgba(30, 41, 59, 0.72)' : 'rgba(127, 29, 29, 0.82)';
+          simCtx.strokeStyle = isOpened ? '#D4AF37' : '#F87171';
+          simCtx.lineWidth = 2.4;
+          simCtx.beginPath();
+          simCtx.roundRect(cx - doorW - slideX, gateY - gateH * 0.5, doorW - 2, gateH, 8);
+          simCtx.fill();
+          simCtx.stroke();
+
+          // 우측 수문 문짝
+          simCtx.beginPath();
+          simCtx.roundRect(cx + 2 + slideX, gateY - gateH * 0.5, doorW - 2, gateH, 8);
+          simCtx.fill();
+          simCtx.stroke();
+
+          simCtx.fillStyle = isOpened ? '#FDE68A' : '#FCA5A5';
+          simCtx.font = '800 11px Pretendard, sans-serif';
+          simCtx.textAlign = 'center';
+          simCtx.fillText(isOpened ? '◀ 개규(開竅) 수문 개방' : '🔒 막힌 기혈 수문', cx - doorW * 0.5 - slideX, gateY + 4);
+          simCtx.fillText(isOpened ? '수문 개방 (수승화강) ▶' : '원기 차단·울체 🔒', cx + doorW * 0.5 + slideX, gateY + 4);
+
+          // 4) 중앙 24K 순금박 황제공진단 환(丸) & 폭발적 황금 파동(Shockwave)
+          if (isOpened) {
+            for (let r = 0; r < 3; r++) {
+              const p = (timeSec * 0.85 + r * 0.33) % 1;
+              simCtx.beginPath();
+              simCtx.arc(cx, gateY, 22 + p * 165, 0, Math.PI * 2);
+              simCtx.strokeStyle = 'rgba(253, 230, 138, ' + ((1 - p) * 0.72).toFixed(2) + ')';
+              simCtx.lineWidth = 2.6;
+              simCtx.stroke();
+            }
+
+            // 24K 순금박 공진단 구체
+            const orbGrad = simCtx.createRadialGradient(cx - 8, gateY - 8, 3, cx, gateY, 26);
+            orbGrad.addColorStop(0, '#FFFBEB');
+            orbGrad.addColorStop(0.45, '#FACC15');
+            orbGrad.addColorStop(1, '#B45309');
+            simCtx.beginPath();
+            simCtx.arc(cx, gateY, 25, 0, Math.PI * 2);
+            simCtx.fillStyle = orbGrad;
+            simCtx.fill();
+            simCtx.lineWidth = 2.5;
+            simCtx.strokeStyle = '#FEF08A';
+            simCtx.stroke();
+
+            simCtx.fillStyle = '#1C1917';
+            simCtx.font = '900 10.5px Pretendard, sans-serif';
+            simCtx.fillText('24K 사향', cx, gateY + 4);
+          }
+
+          // 5) 하단 실시간 약리 기전 요약 배지
+          simCtx.font = '800 14.5px Pretendard, sans-serif';
+          if (isOpened) {
+            simCtx.fillStyle = '#FDE68A';
+            simCtx.fillText('✦ 사향(麝香) 개규(開竅) 파동으로 막힌 기혈의 수문 개방! 녹용·당귀의 생명수가 머리끝부터 발끝까지 도달', cx, h * 0.89);
+          } else {
+            simCtx.fillStyle = '#FCA5A5';
+            simCtx.fillText('⚠️ 기혈의 수문이 꽉 막힌 만성 번아웃 상태 : 일반 영양제를 부어도 말초·뇌혈관까지 도달 불가', cx, h * 0.89);
+          }
+          simCtx.textAlign = 'left';
+          simCtx.restore();
         }
       }
 
