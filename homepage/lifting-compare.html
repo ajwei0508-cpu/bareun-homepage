@@ -500,9 +500,101 @@
       height: 15px;
       border-radius: 50%;
       background: #fff;
-      border: 2px solid var(--before-green);
+      border: 2.5px solid var(--before-green);
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="range"].red-slider::-webkit-slider-thumb {
+      border-color: var(--after-red);
+      box-shadow: 0 0 8px rgba(255, 42, 84, 0.65);
+    }
+
+    .adjust-filter-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 5px;
+      background: rgba(7, 9, 14, 0.75);
+      padding: 4px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 12px;
+    }
+
+    .adjust-filter-btn {
+      padding: 6px 4px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .adjust-filter-btn.active-both {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #fff;
+    }
+
+    .adjust-filter-btn.active-after {
+      background: rgba(255, 42, 84, 0.2);
+      border-color: var(--after-red);
+      color: #ff6b89;
+    }
+
+    .adjust-filter-btn.active-before {
+      background: rgba(0, 230, 118, 0.18);
+      border-color: var(--before-green);
+      color: var(--before-green);
+    }
+
+    .adjust-subcard {
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .adjust-subcard.after-card {
+      background: rgba(255, 42, 84, 0.06);
+      border: 1px solid rgba(255, 42, 84, 0.35);
+    }
+
+    .adjust-subcard.before-card {
+      background: rgba(0, 230, 118, 0.05);
+      border: 1px solid rgba(0, 230, 118, 0.32);
+    }
+
+    .subcard-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .subcard-title {
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .subcard-group-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin: 9px 0 6px 0;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .toggle-grid {
@@ -533,6 +625,12 @@
       color: var(--text-main);
     }
 
+    .toggle-chip.active-red-chip {
+      background: rgba(255, 42, 84, 0.16);
+      border-color: rgba(255, 42, 84, 0.55);
+      color: #fff;
+    }
+
     .toggle-dot {
       width: 8px;
       height: 8px;
@@ -543,6 +641,11 @@
     .toggle-chip.active .toggle-dot {
       background: var(--before-green);
       box-shadow: 0 0 8px var(--before-green);
+    }
+
+    .toggle-chip.active-red-chip .toggle-dot {
+      background: var(--after-red);
+      box-shadow: 0 0 8px var(--after-red);
     }
 
     /* 중앙 메인 뷰어 영역 */
@@ -1096,46 +1199,156 @@
         </div>
       </section>
 
-      <!-- 3. 사진 정합(Alignment) 및 윤곽선 표시 설정 -->
+      <!-- 3. 시술 후(붉은색) & 시술 전(녹색) 윤곽선 정밀 조절 메뉴 -->
       <section class="panel-section">
         <div class="section-header">
-          <div class="section-title">🎯 동공 기준 자동 정합 & 미세 위치보정</div>
-          <button class="chip-btn" style="padding:2px 8px; font-size:10.5px;" onclick="resetAlignment()">초기화</button>
+          <div class="section-title">🎛️ 시술 후(붉은색) · 시술 전(녹색) 조절</div>
+          <button class="chip-btn" style="padding:2px 8px; font-size:10.5px;" onclick="resetAllAdjustments()">전체 초기화</button>
         </div>
 
-        <div class="control-row">
-          <div class="control-label-line">
-            <span>시술 전 윤곽선 좌·우 미세 이동 (X)</span>
-            <span class="control-val" id="valOffsetX">0 px</span>
+        <!-- 조절 패널 필터 탭 -->
+        <div class="adjust-filter-tabs">
+          <button class="adjust-filter-btn active-both" id="filterTabBoth" onclick="setAdjustPanelFilter('both')">⚡ 전·후 모두 보기</button>
+          <button class="adjust-filter-btn" id="filterTabAfter" onclick="setAdjustPanelFilter('after')">🔴 시술 후(붉은색)</button>
+          <button class="adjust-filter-btn" id="filterTabBefore" onclick="setAdjustPanelFilter('before')">🟢 시술 전(녹색)</button>
+        </div>
+
+        <!-- A. 시술 후 (붉은색) 윤곽선 & 부위별 리프팅 조절 카드 -->
+        <div class="adjust-subcard after-card" id="panelAdjustAfter">
+          <div class="subcard-head">
+            <div class="subcard-title" style="color: #ff5c7c;">
+              <span>🔴 시술 후 (붉은색) 윤곽선 · 리프팅 조절</span>
+            </div>
+            <button class="chip-btn" style="padding:1px 7px; font-size:10px;" onclick="resetAfterAdjustment()">시술후 초기화</button>
           </div>
-          <input type="range" id="sliderOffsetX" min="-60" max="60" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
-        </div>
 
-        <div class="control-row">
-          <div class="control-label-line">
-            <span>시술 전 윤곽선 상·하 미세 이동 (Y)</span>
-            <span class="control-val" id="valOffsetY">0 px</span>
+          <!-- 시술 후 부위별 리프팅 강도 성형 -->
+          <div class="control-row">
+            <div class="control-label-line">
+              <span style="color:#ff8da3; font-weight:600;">심부볼(불독살) 리프팅 수축</span>
+              <span class="control-val" id="valAfterJowl">0.0 px</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterJowl" min="-25" max="25" step="0.5" value="0" oninput="updateAfterFromSliders()" />
           </div>
-          <input type="range" id="sliderOffsetY" min="-60" max="60" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
-        </div>
 
-        <div class="control-row">
-          <div class="control-label-line">
-            <span>시술 전 윤곽선 크기 배율 (Scale)</span>
-            <span class="control-val" id="valScale">100.0 %</span>
+          <div class="control-row">
+            <div class="control-label-line">
+              <span style="color:#ff8da3; font-weight:600;">사각턱(하악각) 라인 축소</span>
+              <span class="control-val" id="valAfterGonion">0.0 px</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterGonion" min="-25" max="25" step="0.5" value="0" oninput="updateAfterFromSliders()" />
           </div>
-          <input type="range" id="sliderScale" min="85" max="115" step="0.2" value="100" oninput="updateAlignmentFromSliders()" />
-        </div>
 
-        <div class="control-row">
-          <div class="control-label-line">
-            <span>시술 전 윤곽선 회전 각도 (Rotate)</span>
-            <span class="control-val" id="valRotate">0.0 °</span>
+          <div class="control-row">
+            <div class="control-label-line">
+              <span style="color:#ff8da3; font-weight:600;">턱끝(V라인) 수직 거상</span>
+              <span class="control-val" id="valAfterChin">0.0 px</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterChin" min="-25" max="25" step="0.5" value="0" oninput="updateAfterFromSliders()" />
           </div>
-          <input type="range" id="sliderRotate" min="-15" max="15" step="0.2" value="0" oninput="updateAlignmentFromSliders()" />
+
+          <div class="toggle-chip active-red-chip" id="toggleWarpAfterPhoto" style="margin: 6px 0 8px 0; width: 100%; justify-content: center;" onclick="toggleAfterPhotoWarp()">
+            <span class="toggle-dot"></span>
+            <span>📸 시술 후 사진 피부도 윤곽선과 함께 실시간 리프팅 변형</span>
+          </div>
+
+          <div class="subcard-group-label">
+            <span>시술 후(붉은색) 윤곽선 위치 · 크기 · 각도</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 후 윤곽선 좌·우 이동 (X)</span>
+              <span class="control-val" id="valAfterX">0.0 px</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterX" min="-60" max="60" step="0.5" value="0" oninput="updateAfterFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 후 윤곽선 상·하 이동 (Y)</span>
+              <span class="control-val" id="valAfterY">0.0 px</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterY" min="-60" max="60" step="0.5" value="0" oninput="updateAfterFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 후 윤곽선 전체 크기 (Scale)</span>
+              <span class="control-val" id="valAfterScale">100.0 %</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterScale" min="85" max="115" step="0.2" value="100" oninput="updateAfterFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 후 윤곽선 좌·우 가로폭 (Width)</span>
+              <span class="control-val" id="valAfterWidth">100.0 %</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterWidth" min="80" max="120" step="0.2" value="100" oninput="updateAfterFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 후 윤곽선 회전 각도 (Rotate)</span>
+              <span class="control-val" id="valAfterRotate">0.0 °</span>
+            </div>
+            <input type="range" class="red-slider" id="sliderAfterRotate" min="-15" max="15" step="0.2" value="0" oninput="updateAfterFromSliders()" />
+          </div>
         </div>
 
-        <div class="control-row" style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+        <!-- B. 시술 전 (녹색) 윤곽선 위치 · 크기 · 각도 조절 카드 -->
+        <div class="adjust-subcard before-card" id="panelAdjustBefore">
+          <div class="subcard-head">
+            <div class="subcard-title" style="color: var(--before-green);">
+              <span>🟢 시술 전 (녹색) 윤곽선 정합 · 위치 조절</span>
+            </div>
+            <button class="chip-btn" style="padding:1px 7px; font-size:10px;" onclick="resetAlignment()">시술전 초기화</button>
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 전 윤곽선 좌·우 이동 (X)</span>
+              <span class="control-val" id="valOffsetX">0.0 px</span>
+            </div>
+            <input type="range" id="sliderOffsetX" min="-60" max="60" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 전 윤곽선 상·하 이동 (Y)</span>
+              <span class="control-val" id="valOffsetY">0.0 px</span>
+            </div>
+            <input type="range" id="sliderOffsetY" min="-60" max="60" step="0.5" value="0" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 전 윤곽선 전체 크기 (Scale)</span>
+              <span class="control-val" id="valScale">100.0 %</span>
+            </div>
+            <input type="range" id="sliderScale" min="85" max="115" step="0.2" value="100" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 전 윤곽선 좌·우 가로폭 (Width)</span>
+              <span class="control-val" id="valBeforeWidth">100.0 %</span>
+            </div>
+            <input type="range" id="sliderBeforeWidth" min="80" max="120" step="0.2" value="100" oninput="updateAlignmentFromSliders()" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-label-line">
+              <span>시술 전 윤곽선 회전 각도 (Rotate)</span>
+              <span class="control-val" id="valRotate">0.0 °</span>
+            </div>
+            <input type="range" id="sliderRotate" min="-15" max="15" step="0.2" value="0" oninput="updateAlignmentFromSliders()" />
+          </div>
+        </div>
+
+        <!-- 공통 표시 옵션 -->
+        <div class="control-row" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
           <div class="control-label-line">
             <span>윤곽선 굵기 (Line Thickness)</span>
             <span class="control-val" id="valLineWidth">3.5 px</span>
@@ -1366,25 +1579,41 @@
       isDraggingCurtain: false,
       activePreset: 1,
 
-      // 이미지 객체 (정규화된 800x920 포트레이트 캔버스)
+      // 이미지 객체 (정규화된 800x1070 포트레이트 캔버스)
       beforeCanvas: document.createElement('canvas'),
       afterCanvas: document.createElement('canvas'),
+      afterSourceCanvas: document.createElement('canvas'),
       basePortraitImg: null,
 
-      // 정규화 좌표계(800 x 920) 기준 윤곽선 포인트 배열 [{x, y}, ... 17개]
+      // 정규화 좌표계 기준 윤곽선 포인트 배열 [{x, y}, ... 17개]
       beforePointsRaw: [], // 시술 전 사진 원본에서 검출된 17개 윤곽점
-      afterPoints: [],     // 시술 후 사진에서 검출된 17개 윤곽점 (붉은색)
+      afterPointsRaw: [],  // 시술 후 사진 원본에서 검출된 17개 기준 윤곽점
+      afterPoints: [],     // 시술 후 조절값(슬라이더)이 최종 반영된 17개 윤곽점 (붉은색)
 
       // 동공/안각 기준 정합 메타데이터
       beforeAnchors: { leftEye: { x: 295, y: 385 }, rightEye: { x: 505, y: 385 }, nose: { x: 400, y: 495 } },
       afterAnchors:  { leftEye: { x: 295, y: 385 }, rightEye: { x: 505, y: 385 }, nose: { x: 400, y: 495 } },
 
-      // 사용자 미세 정합 보정값
+      // 시술 전(녹색) 미세 정합 보정값
       alignOffset: {
         x: 0,
         y: 0,
         scale: 1.0,
+        widthScale: 1.0,
         rotateDeg: 0
+      },
+
+      // 시술 후(붉은색) 윤곽선 및 부위별 리프팅 정밀 조절값
+      afterAdjust: {
+        x: 0,
+        y: 0,
+        scale: 1.0,
+        widthScale: 1.0,
+        rotateDeg: 0,
+        jowlLift: 0,    // 심부볼 리프팅 수축 (-25 ~ +25)
+        gonionSlim: 0,  // 사각턱 축소 (-25 ~ +25)
+        chinLift: 0,    // 턱끝 수직 거상 (-25 ~ +25)
+        warpPhoto: true // 시술 후 사진 피부도 윤곽선 조절에 맞춰 함께 리프팅 변형
       },
 
       // 시각화 옵션
@@ -1407,6 +1636,8 @@
     state.beforeCanvas.height = PORTRAIT_H;
     state.afterCanvas.width = PORTRAIT_W;
     state.afterCanvas.height = PORTRAIT_H;
+    state.afterSourceCanvas.width = PORTRAIT_W;
+    state.afterSourceCanvas.height = PORTRAIT_H;
 
     // 1. MediaPipe FaceLandmarker 비동기 초기화 (CDN)
     async function initMediaPipeFaceLandmarker() {
@@ -1465,18 +1696,86 @@
 
       // 사용자 수동 보정 결합
       const totalScale = autoScale * state.alignOffset.scale;
+      const widthScale = state.alignOffset.widthScale || 1.0;
       const totalRot = autoRot + (state.alignOffset.rotateDeg * Math.PI) / 180;
       const cosR = Math.cos(totalRot);
       const sinR = Math.sin(totalRot);
 
       return state.beforePointsRaw.map(pt => {
-        const dx = (pt.x - bCenter.x) * totalScale;
+        const dx = (pt.x - bCenter.x) * totalScale * widthScale;
         const dy = (pt.y - bCenter.y) * totalScale;
         const rx = dx * cosR - dy * sinR;
         const ry = dx * sinR + dy * cosR;
         return {
           x: aCenter.x + rx + state.alignOffset.x,
           y: aCenter.y + ry + state.alignOffset.y
+        };
+      });
+    }
+
+    // 2-B. 시술 후(After · 붉은색) 부위별 리프팅 변위 벡터 및 위치/크기/회전 조절 반영
+    function getAfterMorphVectors() {
+      const adj = state.afterAdjust;
+      const jowl = adj.jowlLift || 0;
+      const gon = adj.gonionSlim || 0;
+      const chin = adj.chinLift || 0;
+
+      // 17개 포인트별 해부학적 가중치 (좌 0~7, 턱끝 8, 우 9~16)
+      const gonWeights  = [0, 0.18, 0.50, 0.85, 1.00, 0.65, 0.20, 0.00, 0.00, 0.00, 0.20, 0.65, 1.00, 0.85, 0.50, 0.18, 0];
+      const jowlWeights = [0, 0.00, 0.05, 0.20, 0.40, 0.78, 1.00, 0.88, 0.25, 0.88, 1.00, 0.78, 0.40, 0.20, 0.05, 0.00, 0];
+      const chinWeights = [0, 0.00, 0.00, 0.00, 0.00, 0.15, 0.42, 0.80, 1.00, 0.80, 0.42, 0.15, 0.00, 0.00, 0.00, 0.00, 0];
+
+      return gonWeights.map((_, i) => {
+        // 좌측(i < 8)은 내측이 +x, 우측(i > 8)은 내측이 -x
+        const inwardDir = i < 8 ? 1 : (i > 8 ? -1 : 0);
+        const dx = inwardDir * (gon * gonWeights[i] * 0.95 + jowl * jowlWeights[i] * 0.90);
+        const dy = -(gon * gonWeights[i] * 0.50 + jowl * jowlWeights[i] * 0.80 + chin * chinWeights[i] * 1.0);
+        return { dx, dy, radius: 138 };
+      });
+    }
+
+    function applyAfterAdjustments() {
+      if (!state.afterPointsRaw || state.afterPointsRaw.length < 17) return;
+
+      const adj = state.afterAdjust;
+      const morphVecs = getAfterMorphVectors();
+      const hasMorph = Math.abs(adj.jowlLift) > 0.01 || Math.abs(adj.gonionSlim) > 0.01 || Math.abs(adj.chinLift) > 0.01;
+
+      // 시술 후 사진 피부 워핑 연동 처리
+      const aCtx = state.afterCanvas.getContext('2d');
+      if (adj.warpPhoto && hasMorph) {
+        const morphed = warpLowerFacePortrait(state.afterSourceCanvas, state.afterPointsRaw, morphVecs);
+        aCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
+        aCtx.drawImage(morphed.canvas, 0, 0);
+      } else {
+        aCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
+        aCtx.drawImage(state.afterSourceCanvas, 0, 0);
+      }
+
+      // 시술 후 윤곽선(붉은색)에 부위별 리프팅 + 전체 Scale / Width / Rotate / X / Y 적용
+      const aLE = state.afterAnchors.leftEye;
+      const aRE = state.afterAnchors.rightEye;
+      const aCenter = {
+        x: (aLE.x + aRE.x) * 0.5,
+        y: (aLE.y + aRE.y) * 0.5 + 110
+      };
+
+      const sc = adj.scale || 1.0;
+      const wSc = adj.widthScale || 1.0;
+      const rot = ((adj.rotateDeg || 0) * Math.PI) / 180;
+      const cosR = Math.cos(rot);
+      const sinR = Math.sin(rot);
+
+      state.afterPoints = state.afterPointsRaw.map((pt, i) => {
+        const mx = pt.x + morphVecs[i].dx;
+        const my = pt.y + morphVecs[i].dy;
+        const dx = (mx - aCenter.x) * sc * wSc;
+        const dy = (my - aCenter.y) * sc;
+        const rx = dx * cosR - dy * sinR;
+        const ry = dx * sinR + dy * cosR;
+        return {
+          x: aCenter.x + rx + adj.x,
+          y: aCenter.y + ry + adj.y
         };
       });
     }
@@ -1563,10 +1862,11 @@
       }
 
       if (targetType === 'before') {
-        state.beforePointsRaw = detectedJaw;
+        state.beforePointsRaw = detectedJaw.map(p => ({ ...p }));
         state.beforeAnchors = detectedAnchors;
       } else {
-        state.afterPoints = detectedJaw;
+        state.afterPointsRaw = detectedJaw.map(p => ({ ...p }));
+        state.afterPoints = detectedJaw.map(p => ({ ...p }));
         state.afterAnchors = detectedAnchors;
       }
     }
@@ -1812,9 +2112,13 @@
       });
 
       resetAlignment(false);
+      resetAfterAdjustment(false);
 
-      // 베이스 클린 스튜디오 포트레이트를 After 캔버스에 렌더링 및 정밀 17개 윤곽 좌표 획득
-      const baseJaw = renderCleanStudioBasePortrait(state.afterCanvas);
+      // 베이스 클린 스튜디오 포트레이트를 After 원본 및 표시 캔버스에 렌더링 및 정밀 17개 윤곽 좌표 획득
+      const baseJaw = renderCleanStudioBasePortrait(state.afterSourceCanvas);
+      const aCtx = state.afterCanvas.getContext('2d');
+      aCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
+      aCtx.drawImage(state.afterSourceCanvas, 0, 0);
 
       state.afterAnchors = {
         leftEye:  { x: PORTRAIT_W * 0.378, y: PORTRAIT_H * 0.395 },
@@ -1896,15 +2200,17 @@
       }
 
       // 시술 전(Before) 사진과 윤곽선(녹색)을 리퀴파이 워핑으로 생성
-      const warpedBefore = warpLowerFacePortrait(state.afterCanvas, baseJaw, beforeWarpVectors);
+      const warpedBefore = warpLowerFacePortrait(state.afterSourceCanvas, baseJaw, beforeWarpVectors);
       const bCtx = state.beforeCanvas.getContext('2d');
       bCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
       bCtx.drawImage(warpedBefore.canvas, 0, 0);
 
       state.beforePointsRaw = warpedBefore.jawPoints;
+      state.afterPointsRaw = baseJaw.map(p => ({ ...p }));
       state.afterPoints = baseJaw.map(p => ({ ...p }));
       state.beforeAnchors = JSON.parse(JSON.stringify(state.afterAnchors));
 
+      applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
       renderMainCanvas();
@@ -1962,13 +2268,20 @@
           tCtx.fillStyle = '#0b0e15';
           tCtx.fillRect(0, 0, PORTRAIT_W, PORTRAIT_H);
 
-          // 얼굴 비율을 유지하면서 800x920 정규 캔버스에 중앙 배치 (Cover/Contain 스마트 크롭)
+          // 얼굴 비율을 유지하면서 800x1070 정규 캔버스에 중앙 배치 (Cover/Contain 스마트 크롭)
           const iw = img.naturalWidth;
           const ih = img.naturalHeight;
           const scale = Math.max(PORTRAIT_W / iw, PORTRAIT_H / ih);
           const dw = iw * scale;
           const dh = ih * scale;
           tCtx.drawImage(img, (PORTRAIT_W - dw) * 0.5, (PORTRAIT_H - dh) * 0.5, dw, dh);
+
+          if (slotType === 'after') {
+            const sCtx = state.afterSourceCanvas.getContext('2d');
+            sCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
+            sCtx.drawImage(state.afterCanvas, 0, 0);
+            resetAfterAdjustment(false);
+          }
 
           // AI 안면 랜드마크 및 턱 윤곽선 추출
           await detectContourOnCanvas(targetCanvas, slotType);
@@ -1979,6 +2292,7 @@
             if (b) b.classList.remove('active');
           });
 
+          applyAfterAdjustments();
           updateThumbnails();
           updateQuantitativeMetrics();
           renderMainCanvas();
@@ -1996,17 +2310,22 @@
       tempCanvas.height = PORTRAIT_H;
       tempCanvas.getContext('2d').drawImage(state.beforeCanvas, 0, 0);
 
-      state.beforeCanvas.getContext('2d').drawImage(state.afterCanvas, 0, 0);
+      state.beforeCanvas.getContext('2d').drawImage(state.afterSourceCanvas, 0, 0);
+      state.afterSourceCanvas.getContext('2d').drawImage(tempCanvas, 0, 0);
       state.afterCanvas.getContext('2d').drawImage(tempCanvas, 0, 0);
 
-      const tempPts = state.beforePointsRaw;
-      state.beforePointsRaw = state.afterPoints;
-      state.afterPoints = tempPts;
+      const tempPts = state.beforePointsRaw.map(p => ({ ...p }));
+      state.beforePointsRaw = state.afterPointsRaw.map(p => ({ ...p }));
+      state.afterPointsRaw = tempPts;
+      state.afterPoints = tempPts.map(p => ({ ...p }));
 
       const tempAnchors = state.beforeAnchors;
       state.beforeAnchors = state.afterAnchors;
       state.afterAnchors = tempAnchors;
 
+      resetAlignment(false);
+      resetAfterAdjustment(false);
+      applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
       renderMainCanvas();
@@ -2037,13 +2356,20 @@
       ];
 
       const lifted = warpLowerFacePortrait(state.beforeCanvas, baseJaw, liftVectors);
+      const sCtx = state.afterSourceCanvas.getContext('2d');
+      sCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
+      sCtx.drawImage(lifted.canvas, 0, 0);
+
       const aCtx = state.afterCanvas.getContext('2d');
       aCtx.clearRect(0, 0, PORTRAIT_W, PORTRAIT_H);
       aCtx.drawImage(lifted.canvas, 0, 0);
 
-      state.afterPoints = lifted.jawPoints;
+      state.afterPointsRaw = lifted.jawPoints.map(p => ({ ...p }));
+      state.afterPoints = lifted.jawPoints.map(p => ({ ...p }));
       state.afterAnchors = JSON.parse(JSON.stringify(state.beforeAnchors));
 
+      resetAfterAdjustment(false);
+      applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
       renderMainCanvas();
@@ -2870,19 +3196,20 @@
       if (state.draggedCurve === 'after') {
         const dx = normX - state.afterPoints[idx].x;
         const dy = normY - state.afterPoints[idx].y;
-        state.afterPoints[idx].x = normX;
-        state.afterPoints[idx].y = normY;
+        state.afterPointsRaw[idx].x += dx;
+        state.afterPointsRaw[idx].y += dy;
         // 인접 포인트 부드러운 연동(Gaussian Smoothing Falloff)
         if (idx > 0 && idx < 16) {
           if (idx - 1 > 0) {
-            state.afterPoints[idx - 1].x += dx * 0.32;
-            state.afterPoints[idx - 1].y += dy * 0.32;
+            state.afterPointsRaw[idx - 1].x += dx * 0.32;
+            state.afterPointsRaw[idx - 1].y += dy * 0.32;
           }
           if (idx + 1 < 16) {
-            state.afterPoints[idx + 1].x += dx * 0.32;
-            state.afterPoints[idx + 1].y += dy * 0.32;
+            state.afterPointsRaw[idx + 1].x += dx * 0.32;
+            state.afterPointsRaw[idx + 1].y += dy * 0.32;
           }
         }
+        applyAfterAdjustments();
       } else if (state.draggedCurve === 'before') {
         const aligned = getAlignedBeforePoints();
         const dx = normX - aligned[idx].x;
@@ -2932,20 +3259,134 @@
       renderMainCanvas();
     }
 
+    // 좌측 사이드바 시술 후(붉은색) / 시술 전(녹색) 조절 패널 필터 전환
+    function setAdjustPanelFilter(filter) {
+      const fBoth = document.getElementById('filterTabBoth');
+      const fAfter = document.getElementById('filterTabAfter');
+      const fBefore = document.getElementById('filterTabBefore');
+      if (fBoth) fBoth.className = 'adjust-filter-btn' + (filter === 'both' ? ' active-both' : '');
+      if (fAfter) fAfter.className = 'adjust-filter-btn' + (filter === 'after' ? ' active-after' : '');
+      if (fBefore) fBefore.className = 'adjust-filter-btn' + (filter === 'before' ? ' active-before' : '');
+
+      const pAfter = document.getElementById('panelAdjustAfter');
+      const pBefore = document.getElementById('panelAdjustBefore');
+      if (pAfter) pAfter.style.display = (filter === 'both' || filter === 'after') ? 'block' : 'none';
+      if (pBefore) pBefore.style.display = (filter === 'both' || filter === 'before') ? 'block' : 'none';
+    }
+
+    // 시술 후 (붉은색) 윤곽선 및 리프팅 슬라이더 실시간 반영
+    function updateAfterFromSliders() {
+      const jowl = parseFloat(document.getElementById('sliderAfterJowl').value) || 0;
+      const gon  = parseFloat(document.getElementById('sliderAfterGonion').value) || 0;
+      const chin = parseFloat(document.getElementById('sliderAfterChin').value) || 0;
+      const ax   = parseFloat(document.getElementById('sliderAfterX').value) || 0;
+      const ay   = parseFloat(document.getElementById('sliderAfterY').value) || 0;
+      const asc  = parseFloat(document.getElementById('sliderAfterScale').value) || 100;
+      const aw   = parseFloat(document.getElementById('sliderAfterWidth').value) || 100;
+      const arot = parseFloat(document.getElementById('sliderAfterRotate').value) || 0;
+
+      state.afterAdjust.jowlLift = jowl;
+      state.afterAdjust.gonionSlim = gon;
+      state.afterAdjust.chinLift = chin;
+      state.afterAdjust.x = ax;
+      state.afterAdjust.y = ay;
+      state.afterAdjust.scale = asc / 100;
+      state.afterAdjust.widthScale = aw / 100;
+      state.afterAdjust.rotateDeg = arot;
+
+      document.getElementById('valAfterJowl').textContent   = `${jowl > 0 ? '+' : ''}${jowl.toFixed(1)} px`;
+      document.getElementById('valAfterGonion').textContent = `${gon > 0 ? '+' : ''}${gon.toFixed(1)} px`;
+      document.getElementById('valAfterChin').textContent   = `${chin > 0 ? '+' : ''}${chin.toFixed(1)} px`;
+      document.getElementById('valAfterX').textContent      = `${ax > 0 ? '+' : ''}${ax.toFixed(1)} px`;
+      document.getElementById('valAfterY').textContent      = `${ay > 0 ? '+' : ''}${ay.toFixed(1)} px`;
+      document.getElementById('valAfterScale').textContent  = `${asc.toFixed(1)} %`;
+      document.getElementById('valAfterWidth').textContent  = `${aw.toFixed(1)} %`;
+      document.getElementById('valAfterRotate').textContent = `${arot > 0 ? '+' : ''}${arot.toFixed(1)} °`;
+
+      applyAfterAdjustments();
+      updateThumbnails();
+      updateQuantitativeMetrics();
+      renderMainCanvas();
+    }
+
+    function toggleAfterPhotoWarp() {
+      state.afterAdjust.warpPhoto = !state.afterAdjust.warpPhoto;
+      const el = document.getElementById('toggleWarpAfterPhoto');
+      if (el) el.classList.toggle('active-red-chip', state.afterAdjust.warpPhoto);
+      applyAfterAdjustments();
+      updateThumbnails();
+      renderMainCanvas();
+    }
+
+    function resetAfterAdjustment(shouldRender = true) {
+      const keepWarp = state.afterAdjust ? state.afterAdjust.warpPhoto : true;
+      state.afterAdjust = {
+        x: 0,
+        y: 0,
+        scale: 1.0,
+        widthScale: 1.0,
+        rotateDeg: 0,
+        jowlLift: 0,
+        gonionSlim: 0,
+        chinLift: 0,
+        warpPhoto: keepWarp
+      };
+
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      const setTxt = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+
+      setVal('sliderAfterJowl', 0);
+      setVal('sliderAfterGonion', 0);
+      setVal('sliderAfterChin', 0);
+      setVal('sliderAfterX', 0);
+      setVal('sliderAfterY', 0);
+      setVal('sliderAfterScale', 100);
+      setVal('sliderAfterWidth', 100);
+      setVal('sliderAfterRotate', 0);
+
+      setTxt('valAfterJowl', '0.0 px');
+      setTxt('valAfterGonion', '0.0 px');
+      setTxt('valAfterChin', '0.0 px');
+      setTxt('valAfterX', '0.0 px');
+      setTxt('valAfterY', '0.0 px');
+      setTxt('valAfterScale', '100.0 %');
+      setTxt('valAfterWidth', '100.0 %');
+      setTxt('valAfterRotate', '0.0 °');
+
+      if (shouldRender) {
+        applyAfterAdjustments();
+        updateThumbnails();
+        updateQuantitativeMetrics();
+        renderMainCanvas();
+      }
+    }
+
+    function resetAllAdjustments() {
+      resetAfterAdjustment(false);
+      resetAlignment(false);
+      applyAfterAdjustments();
+      updateThumbnails();
+      updateQuantitativeMetrics();
+      renderMainCanvas();
+    }
+
     function updateAlignmentFromSliders() {
       const ox = parseFloat(document.getElementById('sliderOffsetX').value) || 0;
       const oy = parseFloat(document.getElementById('sliderOffsetY').value) || 0;
       const sc = parseFloat(document.getElementById('sliderScale').value) || 100;
+      const bw = parseFloat(document.getElementById('sliderBeforeWidth').value) || 100;
       const rot = parseFloat(document.getElementById('sliderRotate').value) || 0;
 
       state.alignOffset.x = ox;
       state.alignOffset.y = oy;
       state.alignOffset.scale = sc / 100;
+      state.alignOffset.widthScale = bw / 100;
       state.alignOffset.rotateDeg = rot;
 
       document.getElementById('valOffsetX').textContent = `${ox > 0 ? '+' : ''}${ox.toFixed(1)} px`;
       document.getElementById('valOffsetY').textContent = `${oy > 0 ? '+' : ''}${oy.toFixed(1)} px`;
       document.getElementById('valScale').textContent = `${sc.toFixed(1)} %`;
+      document.getElementById('valBeforeWidth').textContent = `${bw.toFixed(1)} %`;
       document.getElementById('valRotate').textContent = `${rot > 0 ? '+' : ''}${rot.toFixed(1)} °`;
 
       updateQuantitativeMetrics();
@@ -2953,15 +3394,22 @@
     }
 
     function resetAlignment(shouldRender = true) {
-      state.alignOffset = { x: 0, y: 0, scale: 1.0, rotateDeg: 0 };
-      document.getElementById('sliderOffsetX').value = 0;
-      document.getElementById('sliderOffsetY').value = 0;
-      document.getElementById('sliderScale').value = 100;
-      document.getElementById('sliderRotate').value = 0;
-      document.getElementById('valOffsetX').textContent = '0 px';
-      document.getElementById('valOffsetY').textContent = '0 px';
-      document.getElementById('valScale').textContent = '100.0 %';
-      document.getElementById('valRotate').textContent = '0.0 °';
+      state.alignOffset = { x: 0, y: 0, scale: 1.0, widthScale: 1.0, rotateDeg: 0 };
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      const setTxt = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+
+      setVal('sliderOffsetX', 0);
+      setVal('sliderOffsetY', 0);
+      setVal('sliderScale', 100);
+      setVal('sliderBeforeWidth', 100);
+      setVal('sliderRotate', 0);
+
+      setTxt('valOffsetX', '0.0 px');
+      setTxt('valOffsetY', '0.0 px');
+      setTxt('valScale', '100.0 %');
+      setTxt('valBeforeWidth', '100.0 %');
+      setTxt('valRotate', '0.0 °');
+
       if (shouldRender) {
         updateQuantitativeMetrics();
         renderMainCanvas();
@@ -2990,8 +3438,11 @@
 
     async function reRunAIDetection() {
       updateAIStatus('전·후 사진 AI 안면 윤곽선 재검출 중...', false);
+      resetAfterAdjustment(false);
+      resetAlignment(false);
       await detectContourOnCanvas(state.beforeCanvas, 'before');
-      await detectContourOnCanvas(state.afterCanvas, 'after');
+      await detectContourOnCanvas(state.afterSourceCanvas, 'after');
+      applyAfterAdjustments();
       updateThumbnails();
       updateQuantitativeMetrics();
       renderMainCanvas();
