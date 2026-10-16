@@ -1577,7 +1577,7 @@
           <input type="range" id="sliderLineWidth" min="1.5" max="7" step="0.5" value="3.5" oninput="updateVisualSettings()" />
         </div>
 
-        <div class="toggle-grid">
+      <div class="toggle-grid">
           <div class="toggle-chip active" id="toggleVectors" onclick="toggleVisualOption('showVectors')">
             <span class="toggle-dot"></span>
             <span>리프팅 화살표</span>
@@ -1590,9 +1590,9 @@
             <span class="toggle-dot"></span>
             <span>mm 수치 태그</span>
           </div>
-          <div class="toggle-chip" id="toggleDashedBefore" onclick="toggleVisualOption('dashedBefore')">
+          <div class="toggle-chip active" id="toggleCenterAxis" onclick="toggleVisualOption('showCenterAxis')">
             <span class="toggle-dot"></span>
-            <span>시술전 점선표시</span>
+            <span>🎯 눈·코 중심축 표시</span>
           </div>
         </div>
       </section>
@@ -1605,17 +1605,17 @@
       <!-- 상단 뷰어 모드 전환 탭 -->
       <div class="stage-top-bar">
         <div class="view-mode-tabs">
-          <button class="view-tab active" id="tabAfterOverlay" onclick="setViewMode('after-overlay')">
-            <span>🎯 기준 이미지에 전·후 윤곽선 대입</span>
+          <button class="view-tab active" id="tabAfterOverlay" onclick="selectBaseImageForProjection('after')">
+            <span>🔴 시술 후 사진 기준 · 녹색(전)+붉은색(후) 중첩 비교</span>
           </button>
           <button class="view-tab" id="tabSideBySide" onclick="setViewMode('side-by-side')">
             <span>✋ 전·후 이미지 각각 별도 조절 (2분할)</span>
           </button>
           <button class="view-tab" id="tabSingleBefore" onclick="setViewMode('single-before')">
-            <span>🟢 시술 전 이미지 단독 조절</span>
+            <span>🟢 시술 전 단독 조절</span>
           </button>
           <button class="view-tab" id="tabSingleAfter" onclick="setViewMode('single-after')">
-            <span>🔴 시술 후 이미지 단독 조절</span>
+            <span>🔴 시술 후 단독 조절</span>
           </button>
           <button class="view-tab" id="tabCurtain" onclick="setViewMode('curtain')">
             <span>🌓 커튼 비교</span>
@@ -1627,31 +1627,31 @@
 
         <div class="ai-status-pill">
           <span class="status-led" id="aiStatusLed"></span>
-          <span id="aiStatusText">AI 478 안면 랜드마크 & 턱 윤곽선 정합 완료</span>
+          <span id="aiStatusText">시술 후(After) 사진 기준 · 동공·코 3점 중심값 정합 완료</span>
         </div>
       </div>
 
-      <!-- 상단 서브 컨트롤 바: 기준 이미지 선택(전/후 윤곽선 대입) & 개별 편집 보조 -->
+      <!-- 상단 서브 컨트롤 바: 기준 이미지(시술 후 고정 기본) & 촬영 구도·중심값 교정 컨트롤 -->
       <div class="stage-sub-bar">
         <div class="sub-bar-group">
-          <span class="sub-bar-label">🎯 전·후 윤곽선 대입 기준 이미지 선택:</span>
-          <button class="chip-btn" id="topBaseBefore" onclick="selectBaseImageForProjection('before')">
-            🟢 시술 전(Before) 이미지 기준으로 전·후 윤곽선 대입
+          <span class="sub-bar-label">🎯 기준 사진:</span>
+          <button class="chip-btn active-red" id="topBaseAfter" onclick="selectBaseImageForProjection('after')" title="시술 후(After) 사진을 기준으로 시술 전(녹색)과 시술 후(붉은색) 윤곽선을 겹쳐서 얼마나 줄었는지 비교합니다">
+            🔴 시술 후(After) 사진 기준 (녹색+붉은색 겹쳐보기 ★기본)
           </button>
-          <button class="chip-btn active-red" id="topBaseAfter" onclick="selectBaseImageForProjection('after')">
-            🔴 시술 후(After) 이미지 기준으로 전·후 윤곽선 대입
+          <button class="chip-btn" id="topBaseBefore" onclick="selectBaseImageForProjection('before')" title="시술 전(Before) 사진을 기준으로 전환합니다">
+            🟢 시술 전(Before) 사진 기준
           </button>
         </div>
 
         <div class="sub-bar-group">
-          <button class="chip-btn" id="btnDualOverlayToggle" onclick="toggleDualShowOverlay()" title="2분할 나란히 보기 모드에서 각 이미지 위에 반대쪽 윤곽선도 함께 겹쳐서 표시할지 선택합니다">
-            🔗 2분할 시 전·후 윤곽선 동시 겹쳐보기: OFF (개별 조절 집중)
+          <button class="chip-btn active" id="btnAutoCalibrateToggle" onclick="toggleAutoCenterCalibration()" title="촬영 거리(크기)·고개 기울기·얼굴 중심 위치가 다른 두 사진을 양쪽 눈동자(동공)와 코 중심 3점 기준으로 자동 보정하여 중심값을 일치시킵니다">
+            📐 촬영 구도·중심값 자동 보정(동공·코 3점 정합): ON
           </button>
-          <button class="chip-btn" onclick="copyContourBetweenImages('before-to-after')" title="시술 전(녹색) 윤곽선을 시술 후(붉은색)에 그대로 복사 대입합니다">
-            📥 녹색선➔붉은선 복사
+          <button class="chip-btn" id="btnSimulateMisalign" onclick="simulateCameraMisalignmentDemo()" title="시술 전 사진이 촬영 거리·각도·위치가 다르게 찍혔을 때 중심값 교정이 어떻게 작동하는지 즉시 테스트합니다">
+            🧪 다른 촬영 구도(크기·각도 불일치) 교정 시연
           </button>
-          <button class="chip-btn" onclick="copyContourBetweenImages('after-to-before')" title="시술 후(붉은색) 윤곽선을 시술 전(녹색)에 그대로 복사 대입합니다">
-            📥 붉은선➔녹색선 복사
+          <button class="chip-btn" id="btnDualOverlayToggle" onclick="toggleDualShowOverlay()" title="2분할 나란히 보기 모드에서 시술 후 사진 위에 녹색(시술 전) 윤곽선도 함께 겹쳐서 표시합니다">
+            🔗 2분할 시 시술후 사진에 녹색선 겹쳐보기: ON
           </button>
         </div>
       </div>
@@ -1663,42 +1663,45 @@
         </div>
       </div>
 
-      <!-- 하단 포인트 직접 편집 & 정밀 조작 바 -->
+      <!-- 하단 포인트 직접 편집 & 중심축 앵커 교정 조작 바 -->
       <div class="stage-bottom-bar">
         <div class="edit-mode-group">
-          <span style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-right:4px;">✋ 마우스 포인트 수동 드래그:</span>
+          <span style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-right:4px;">✋ 마우스 수동 교정:</span>
           <button class="chip-btn active" id="editBtnBoth" onclick="setEditTarget('both')">
-            ✨ 각 이미지 윤곽선 포인트 드래그 ON (전·후 모두)
+            ✨ 전(녹색)·후(붉은색) 윤곽선 포인트 드래그
           </button>
           <button class="chip-btn" id="editBtnBefore" onclick="setEditTarget('before')">
-            🟢 시술 전(녹색) 포인트만 드래그
+            🟢 시술 전(녹색)만 드래그
           </button>
           <button class="chip-btn" id="editBtnAfter" onclick="setEditTarget('after')">
-            🔴 시술 후(붉은색) 포인트만 드래그
+            🔴 시술 후(붉은색)만 드래그
+          </button>
+          <button class="chip-btn" id="editBtnAnchors" onclick="setEditTarget('anchors')" title="두 사진의 촬영 위치·크기·각도가 다를 때, 양쪽 눈동자(동공)와 코끝 기준점(하늘색 ⊕)을 마우스로 드래그하여 정확한 얼굴 중심값을 수동 교정합니다">
+            🎯 눈·코 3점 중심 기준점(⊕) 드래그 교정
           </button>
           <button class="chip-btn" id="editBtnOff" onclick="setEditTarget('none')">
-            🔒 제어점 숨기기 (잠금)
+            🔒 제어점 숨기기
           </button>
         </div>
 
         <div class="edit-mode-group">
           <button class="chip-btn" onclick="reRunAIDetection()">
-            🤖 AI 윤곽선 자동 재검출
+            🤖 AI 중심점·윤곽선 자동 재검출
           </button>
         </div>
       </div>
 
     </section>
 
-    <!-- 우측 사이드바: 정량적 리프팅 분석 수치 & 환자 리포트 -->
+    <!-- 우측 사이드바: 정량적 리프팅 분석 수치 & 촬영 구도 중심값 보정 리포트 -->
     <aside class="sidebar-right">
 
       <!-- 종합 리프팅 요약 스코어 카드 -->
       <section class="hero-score-card">
         <div class="score-top">
           <div>
-            <div class="score-label">하안면 리프팅 윤곽 축소율 (Contour Reduction)</div>
-            <div class="score-main-num" id="metricAreaReduction">-8.6% <span>LIFTED</span></div>
+            <div class="score-label">시술 후 사진 기준 · 하안면 윤곽 축소율 (녹색➔붉은색)</div>
+            <div class="score-main-num" id="metricAreaReduction">-8.6% <span>REDUCED</span></div>
           </div>
         </div>
 
@@ -1715,36 +1718,77 @@
         </div>
       </section>
 
+      <!-- ★ 신설: 촬영 구도·중심값 교정 (Procrustes 3점 정합) 상태 카드 -->
+      <section class="panel-section" style="border: 1px solid rgba(56, 189, 248, 0.25); background: rgba(56, 189, 248, 0.04); border-radius: 11px; padding: 12px; margin-bottom: 14px;">
+        <div class="section-header" style="margin-bottom: 8px;">
+          <div class="section-title" style="color: #7dd3fc; font-size: 12.5px;">🎯 촬영 구도 · 중심값 자동 교정 데이터</div>
+          <span class="section-badge" id="calibStatusBadge" style="background: rgba(56,189,248,0.18); color: #7dd3fc;">동공·코 3점 정합 ON</span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.45; margin-bottom: 9px;">
+          리프팅 시술 후에도 변하지 않는 <strong style="color:#fff;">①좌·우 동공 중심, ②미간 원점, ③코끝 수직축</strong>을 기준으로 촬영 거리(크기)·기울기·위치 오차를 자동 정규화하여 시술 후 사진 위에 녹색(시술 전) 윤곽선을 정확히 포갭니다.
+        </div>
+        <div class="metrics-quad-grid" style="gap: 6px;">
+          <div class="metric-box" style="padding: 8px;">
+            <div class="metric-title">중심점 이동 보정 (ΔX, ΔY)</div>
+            <div class="metric-value" id="calibValCenter" style="font-size: 13.5px; color: #7dd3fc;">0.0, 0.0 px</div>
+            <div class="metric-sub" style="color: var(--text-muted);">미간 중심 원점(0,0) 일치</div>
+          </div>
+          <div class="metric-box" style="padding: 8px;">
+            <div class="metric-title">촬영 거리(크기) 배율 보정</div>
+            <div class="metric-value" id="calibValScale" style="font-size: 13.5px; color: #7dd3fc;">×1.000 (100%)</div>
+            <div class="metric-sub" style="color: var(--text-muted);">동공 간 거리(IPD) 정규화</div>
+          </div>
+          <div class="metric-box" style="padding: 8px;">
+            <div class="metric-title">고개 기울기(수평) 회전 보정</div>
+            <div class="metric-value" id="calibValRotate" style="font-size: 13.5px; color: #7dd3fc;">0.00°</div>
+            <div class="metric-sub" style="color: var(--text-muted);">양안 수평선 각도 일치</div>
+          </div>
+          <div class="metric-box" style="padding: 8px;">
+            <div class="metric-title">상하 구도(코 길이) 비율 보정</div>
+            <div class="metric-value" id="calibValPitch" style="font-size: 13.5px; color: #7dd3fc;">×1.000 (100%)</div>
+            <div class="metric-sub" style="color: var(--text-muted);">고개 들림/숙임(Pitch) 보정</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px;">
+          <button class="slot-mini-btn" style="padding: 6px 4px; border-color: rgba(56,189,248,0.45); color: #7dd3fc;" onclick="setEditTarget('anchors'); setViewMode('side-by-side');">
+            ✋ 2분할에서 눈·코 중심점(⊕) 직접 맞추기
+          </button>
+          <button class="slot-mini-btn" style="padding: 6px 4px; border-color: rgba(56,189,248,0.45); color: #7dd3fc;" onclick="simulateCameraMisalignmentDemo()">
+            🧪 구도 불일치 사진 자동교정 시연
+          </button>
+        </div>
+      </section>
+
       <!-- 4대 핵심 임상 계측 지표 -->
       <section class="panel-section">
         <div class="section-header">
-          <div class="section-title">📏 핵심 부위별 리프팅 계측값</div>
+          <div class="section-title">📏 핵심 부위별 리프팅 축소량</div>
           <span class="section-badge">동공 거리(63mm) 보정 기준</span>
         </div>
 
         <div class="metrics-quad-grid">
           <div class="metric-box">
-            <div class="metric-title">좌측 심부볼 (L-Jowl)</div>
+            <div class="metric-title">좌측 심부볼 축소 (L-Jowl)</div>
             <div class="metric-value" id="metricLeftJowl">-4.3 mm</div>
-            <div class="metric-sub good" id="metricLeftJowlSub">↗ 상내측 리프팅</div>
+            <div class="metric-sub good" id="metricLeftJowlSub">↗ 녹색➔붉은색 수축</div>
           </div>
 
           <div class="metric-box">
-            <div class="metric-title">우측 심부볼 (R-Jowl)</div>
+            <div class="metric-title">우측 심부볼 축소 (R-Jowl)</div>
             <div class="metric-value" id="metricRightJowl">-4.1 mm</div>
-            <div class="metric-sub good" id="metricRightJowlSub">↖ 상내측 리프팅</div>
+            <div class="metric-sub good" id="metricRightJowlSub">↖ 녹색➔붉은색 수축</div>
           </div>
 
           <div class="metric-box">
-            <div class="metric-title">하악각 폭 (Gonion Width)</div>
+            <div class="metric-title">사각턱 가로폭 축소 (Gonion)</div>
             <div class="metric-value" id="metricGonionWidth">-6.8 mm</div>
-            <div class="metric-sub red-accent" id="metricGonionSub">사각턱 라인 축소</div>
+            <div class="metric-sub red-accent" id="metricGonionSub">하악각 라인 슬림화</div>
           </div>
 
           <div class="metric-box">
-            <div class="metric-title">좌·우 안면 대칭도</div>
+            <div class="metric-title">시술 후 좌·우 대칭도</div>
             <div class="metric-value" id="metricSymmetry">97.8 %</div>
-            <div class="metric-sub good" id="metricSymmetrySub">균형 밸런스 우수</div>
+            <div class="metric-sub good" id="metricSymmetrySub">중심축 기준 대칭 밸런스</div>
           </div>
         </div>
       </section>
@@ -1772,7 +1816,7 @@
           <input type="text" class="form-input full" id="inputProcedure" placeholder="시술 프로그램명" value="프리미엄 하안면 코어 리프팅 & V라인 윤곽술 (시술 전·후 비교)" oninput="renderMainCanvas()" />
         </div>
         <button class="btn btn-export" style="width:100%; margin-top:10px; padding:11px;" onclick="exportComparisonReport()">
-          📸 시술 전(녹색)·후(붉은색) 비교 결과 이미지 다운로드
+          📸 시술 후 사진 기준 전(녹색)·후(붉은색) 비교 리포트 저장
         </button>
       </section>
 
@@ -1823,14 +1867,19 @@
     // 앱 전역 상태
     const state = {
       viewMode: 'after-overlay', // 'after-overlay' | 'side-by-side' | 'single-before' | 'single-after' | 'curtain' | 'blueprint'
-      baseImageTarget: 'after',  // 'after' (시술 후 이미지 기준 대입) | 'before' (시술 전 이미지 기준 대입)
-      dualShowOverlay: false,    // 2분할 나란히 보기에서 반대쪽 윤곽선 동시 겹쳐보기 여부
-      editTarget: 'both',        // 'none' | 'before' | 'after' | 'both' (기본값: 각 이미지에서 즉시 드래그 가능하도록 'both')
+      baseImageTarget: 'after',  // 기본 고정값: 'after' (시술 후 사진을 기준으로 녹색·붉은색 윤곽선 중첩 비교)
+      dualShowOverlay: true,     // 2분할 나란히 보기에서도 시술 후 사진 위에 녹색+붉은색 중첩 표시 기본 ON
+      autoCenterCalibrate: true, // 동공·미간·코끝 3점 기준 촬영 구도(크기·기울기·중심값) 자동 교정 ON
+      isMisalignDemoActive: false, // 구도 불일치 시연 모드 여부
+      editTarget: 'both',        // 'none' | 'before' | 'after' | 'both' | 'anchors'
       curtainPos: 0.5,           // 커튼 뷰 분할 위치 (0.0 ~ 1.0)
       isDraggingPoint: false,
       draggedCurve: null,        // 'before' | 'after'
       draggedPointIdx: -1,
       draggedPanel: null,        // 'left' | 'right' | 'single'
+      isDraggingAnchor: false,
+      draggedAnchorKey: null,    // 'leftEye' | 'rightEye' | 'nose'
+      draggedAnchorTarget: null, // 'before' | 'after'
       isDraggingCurtain: false,
       activePreset: 1,
 
@@ -1846,7 +1895,7 @@
       afterPointsRaw: [],  // 시술 후 사진 원본에서 검출/수동조절된 17개 기준 윤곽점
       afterPoints: [],     // 시술 후 조절값(슬라이더)이 최종 반영된 시술 후 이미지 고유 17개 윤곽점 (붉은색)
 
-      // 동공/안각 기준 정합 메타데이터
+      // 동공/안각 및 코끝 3점 불변 기준 정합 메타데이터 (좌안 동공, 우안 동공, 코끝 중심)
       beforeAnchors: { leftEye: { x: 295, y: 385 }, rightEye: { x: 505, y: 385 }, nose: { x: 400, y: 495 } },
       afterAnchors:  { leftEye: { x: 295, y: 385 }, rightEye: { x: 505, y: 385 }, nose: { x: 400, y: 495 } },
 
@@ -1881,6 +1930,7 @@
         showVectors: true,
         showZoneFill: true,
         showMetricCallouts: true,
+        showCenterAxis: true,
         dashedBefore: false
       },
 
@@ -1915,10 +1965,10 @@
           numFaces: 1
         });
         state.mpReady = true;
-        updateAIStatus('AI 478 3D 안면 랜드마크 & 윤곽선 검출 엔진 활성화 완료', true);
+        updateAIStatus('AI 478 3D 안면 랜드마크 & 동공·코 3점 중심축 정합 엔진 활성화', true);
       } catch (err) {
         console.warn('[ContourVision] MediaPipe CDN fallback to Local Edge Engine:', err.message);
-        updateAIStatus('정밀 안면 윤곽선 스플라인 & 경계 분석 엔진 가동 중', true);
+        updateAIStatus('시술 후 사진 기준 · 동공·코 3점 중심값 정합 엔진 가동 중', true);
       }
     }
 
@@ -2035,74 +2085,135 @@
       });
     }
 
-    // 2-C. 시술 전 윤곽선(Before · 녹색)을 ➔ 시술 후 이미지(After) 좌표계로 대입 변환
+    // ★ 핵심 알고리즘: 촬영 구도가 다른 두 사진 간의 3점 해부학 중심 정합 행렬 산출
+    // ① 양안 동공 정중앙(미간 원점) 일치 (ΔX, ΔY)
+    // ② 동공 간 거리(IPD) 비율 기반 촬영 거리(줌 배율) 정규화 (Scale)
+    // ③ 양안 수평선 각도 기반 고개 기울기 자동 수평 회전 보정 (Roll Δθ)
+    // ④ 미간~코끝 수직 거리 비율 기반 고개 들림/숙임 상하 비율 보정 (Pitch Ratio)
+    function computeCalibrationTransform(fromAnchors, toAnchors) {
+      const fLE = fromAnchors.leftEye;
+      const fRE = fromAnchors.rightEye;
+      const fNose = fromAnchors.nose || { x: (fLE.x + fRE.x) * 0.5, y: (fLE.y + fRE.y) * 0.5 + 110 };
+
+      const tLE = toAnchors.leftEye;
+      const tRE = toAnchors.rightEye;
+      const tNose = toAnchors.nose || { x: (tLE.x + tRE.x) * 0.5, y: (tLE.y + tRE.y) * 0.5 + 110 };
+
+      // 1) 미간 중심 원점 (Mid-Interpupillary Point)
+      const fCenter = { x: (fLE.x + fRE.x) * 0.5, y: (fLE.y + fRE.y) * 0.5 };
+      const tCenter = { x: (tLE.x + tRE.x) * 0.5, y: (tLE.y + tRE.y) * 0.5 };
+      const deltaX = tCenter.x - fCenter.x;
+      const deltaY = tCenter.y - fCenter.y;
+
+      // 2) 촬영 거리(크기) 배율: 양안 동공 간 거리(IPD) 비율
+      const fIPD = Math.hypot(fRE.x - fLE.x, fRE.y - fLE.y) || 200;
+      const tIPD = Math.hypot(tRE.x - tLE.x, tRE.y - tLE.y) || 200;
+      const scale = tIPD / fIPD;
+
+      // 3) 고개 기울기(Roll) 각도 차이
+      const fAngle = Math.atan2(fRE.y - fLE.y, fRE.x - fLE.x);
+      const tAngle = Math.atan2(tRE.y - tLE.y, tRE.x - tLE.x);
+      const rotateRad = tAngle - fAngle;
+      const rotateDeg = (rotateRad * 180) / Math.PI;
+
+      // 4) 상하 구도(고개 들림/숙임 Pitch) 비율: 미간~코끝 거리 비율
+      const fNoseLen = Math.hypot(fNose.x - fCenter.x, fNose.y - fCenter.y) || 105;
+      const tNoseLen = Math.hypot(tNose.x - tCenter.x, tNose.y - tCenter.y) || 105;
+      const rawPitch = tNoseLen / (fNoseLen * scale);
+      const pitchRatio = Math.max(0.84, Math.min(1.18, rawPitch));
+
+      return {
+        fCenter,
+        tCenter,
+        deltaX,
+        deltaY,
+        fIPD,
+        tIPD,
+        scale,
+        fAngle,
+        tAngle,
+        rotateRad,
+        rotateDeg,
+        pitchRatio
+      };
+    }
+
+    function transformPointsByCalibration(points, fromAnchors, toAnchors) {
+      if (!points || points.length === 0) return [];
+      if (!state.autoCenterCalibrate) {
+        // 자동 보정 OFF 시 원본 좌표 그대로 반환 (보정 전후 비교 확인용)
+        return points.map(p => ({ x: p.x, y: p.y }));
+      }
+      const tf = computeCalibrationTransform(fromAnchors, toAnchors);
+      const cosNegF = Math.cos(-tf.fAngle);
+      const sinNegF = Math.sin(-tf.fAngle);
+      const cosT = Math.cos(tf.tAngle);
+      const sinT = Math.sin(tf.tAngle);
+
+      return points.map(pt => {
+        // 1. 출발 이미지의 미간 원점 기준 상대 좌표
+        const rx0 = pt.x - tf.fCenter.x;
+        const ry0 = pt.y - tf.fCenter.y;
+        // 2. 출발 이미지의 고개 기울기를 수평(0°)으로 역회전하여 순수 해부학 로컬 축 분리
+        const localX = rx0 * cosNegF - ry0 * sinNegF;
+        const localY = rx0 * sinNegF + ry0 * cosNegF;
+        // 3. 동공 거리 비율(Scale) 및 코 길이 상하 비율(Pitch Ratio) 정규화 적용
+        const scaledX = localX * tf.scale;
+        const scaledY = localY * tf.scale * tf.pitchRatio;
+        // 4. 기준 이미지(시술 후)의 고개 각도로 회전 후 기준 이미지 미간 원점(tCenter)에 대입
+        return {
+          x: tf.tCenter.x + (scaledX * cosT - scaledY * sinT),
+          y: tf.tCenter.y + (scaledX * sinT + scaledY * cosT)
+        };
+      });
+    }
+
+    // 우측 사이드바의 촬영 구도·중심값 자동 교정 데이터 카드 실시간 업데이트
+    function updateCalibrationReportDOM() {
+      const tf = computeCalibrationTransform(state.beforeAnchors, state.afterAnchors);
+      const elCenter = document.getElementById('calibValCenter');
+      const elScale  = document.getElementById('calibValScale');
+      const elRotate = document.getElementById('calibValRotate');
+      const elPitch  = document.getElementById('calibValPitch');
+      const elBadge  = document.getElementById('calibStatusBadge');
+
+      if (elCenter) {
+        const sx = tf.deltaX >= 0 ? '+' : '';
+        const sy = tf.deltaY >= 0 ? '+' : '';
+        elCenter.textContent = `${sx}${tf.deltaX.toFixed(1)}, ${sy}${tf.deltaY.toFixed(1)} px`;
+      }
+      if (elScale) {
+        elScale.textContent = `×${tf.scale.toFixed(3)} (${(tf.scale * 100).toFixed(1)}%)`;
+      }
+      if (elRotate) {
+        const sr = tf.rotateDeg >= 0 ? '+' : '';
+        elRotate.textContent = `${sr}${tf.rotateDeg.toFixed(2)}°`;
+      }
+      if (elPitch) {
+        elPitch.textContent = `×${tf.pitchRatio.toFixed(3)} (${(tf.pitchRatio * 100).toFixed(1)}%)`;
+      }
+      if (elBadge) {
+        elBadge.textContent = state.autoCenterCalibrate ? '동공·코 3점 정합 ON' : '자동 보정 OFF (원본)';
+        elBadge.style.background = state.autoCenterCalibrate ? 'rgba(56,189,248,0.18)' : 'rgba(251,191,36,0.2)';
+        elBadge.style.color = state.autoCenterCalibrate ? '#7dd3fc' : '#fbbf24';
+      }
+    }
+
+    // 2-C. 시술 전 윤곽선(Before · 녹색)을 ➔ 시술 후 이미지(After) 좌표계로 중심값 정합 대입 변환
     function getAlignedBeforePoints() {
       const srcPts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
-      if (!srcPts || srcPts.length === 0) return [];
-
-      const bLE = state.beforeAnchors.leftEye;
-      const bRE = state.beforeAnchors.rightEye;
-      const aLE = state.afterAnchors.leftEye;
-      const aRE = state.afterAnchors.rightEye;
-
-      const bCenter = { x: (bLE.x + bRE.x) * 0.5, y: (bLE.y + bRE.y) * 0.5 };
-      const aCenter = { x: (aLE.x + aRE.x) * 0.5, y: (aLE.y + aRE.y) * 0.5 };
-
-      const bDist = Math.hypot(bRE.x - bLE.x, bRE.y - bLE.y) || 200;
-      const aDist = Math.hypot(aRE.x - aLE.x, aRE.y - aLE.y) || 200;
-      const autoScale = aDist / bDist;
-
-      const bAngle = Math.atan2(bRE.y - bLE.y, bRE.x - bLE.x);
-      const aAngle = Math.atan2(aRE.y - aLE.y, aRE.x - aLE.x);
-      const autoRot = aAngle - bAngle;
-      const cosR = Math.cos(autoRot);
-      const sinR = Math.sin(autoRot);
-
-      return srcPts.map(pt => {
-        const dx = (pt.x - bCenter.x) * autoScale;
-        const dy = (pt.y - bCenter.y) * autoScale;
-        return {
-          x: aCenter.x + (dx * cosR - dy * sinR),
-          y: aCenter.y + (dx * sinR + dy * cosR)
-        };
-      });
+      return transformPointsByCalibration(srcPts, state.beforeAnchors, state.afterAnchors);
     }
 
-    // 2-D. 시술 후 윤곽선(After · 붉은색)을 ➔ 시술 전 이미지(Before) 좌표계로 대입 변환
+    // 2-D. 시술 후 윤곽선(After · 붉은색)을 ➔ 시술 전 이미지(Before) 좌표계로 중심값 정합 대입 변환
     function getAlignedAfterPointsOnBefore() {
       const srcPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
-      if (!srcPts || srcPts.length === 0) return [];
-
-      const bLE = state.beforeAnchors.leftEye;
-      const bRE = state.beforeAnchors.rightEye;
-      const aLE = state.afterAnchors.leftEye;
-      const aRE = state.afterAnchors.rightEye;
-
-      const bCenter = { x: (bLE.x + bRE.x) * 0.5, y: (bLE.y + bRE.y) * 0.5 };
-      const aCenter = { x: (aLE.x + aRE.x) * 0.5, y: (aLE.y + aRE.y) * 0.5 };
-
-      const bDist = Math.hypot(bRE.x - bLE.x, bRE.y - bLE.y) || 200;
-      const aDist = Math.hypot(aRE.x - aLE.x, aRE.y - aLE.y) || 200;
-      const autoScale = bDist / aDist;
-
-      const bAngle = Math.atan2(bRE.y - bLE.y, bRE.x - bLE.x);
-      const aAngle = Math.atan2(aRE.y - aLE.y, aRE.x - aLE.x);
-      const autoRot = bAngle - aAngle;
-      const cosR = Math.cos(autoRot);
-      const sinR = Math.sin(autoRot);
-
-      return srcPts.map(pt => {
-        const dx = (pt.x - aCenter.x) * autoScale;
-        const dy = (pt.y - aCenter.y) * autoScale;
-        return {
-          x: bCenter.x + (dx * cosR - dy * sinR),
-          y: bCenter.y + (dx * sinR + dy * cosR)
-        };
-      });
+      return transformPointsByCalibration(srcPts, state.afterAnchors, state.beforeAnchors);
     }
 
-    // 2-E. 사용자가 선택한 기준 이미지(baseImageTarget: 'after' | 'before')에 대입된 전·후 윤곽선 세트 반환
+    // 2-E. 사용자가 선택한 기준 이미지(기본: 'after' 시술 후 이미지)에 대입된 전·후 윤곽선 세트 반환
     function getContoursForBaseImage(baseTarget = state.baseImageTarget) {
+      updateCalibrationReportDOM();
       if (baseTarget === 'before') {
         return {
           baseTarget: 'before',
@@ -2450,6 +2561,12 @@
     // 7. 임상 케이스 프리셋 3종 로드
     async function loadClinicalPreset(caseNum) {
       state.activePreset = caseNum;
+      state.isMisalignDemoActive = false;
+      const misBtn = document.getElementById('btnSimulateMisalign');
+      if (misBtn) {
+        misBtn.className = 'chip-btn';
+        misBtn.textContent = '🧪 다른 촬영 구도(크기·각도 불일치) 교정 시연';
+      }
       [1, 2, 3].forEach(n => {
         const btn = document.getElementById('presetBtn' + n);
         if (btn) btn.classList.toggle('active', n === caseNum);
@@ -2946,29 +3063,35 @@
         ctx.drawImage(state.beforeCanvas, ox, oy, drawW, drawH);
         const sBefore = nativeBeforePts.map(toScreen);
         const sAfter = nativeAfterPts.map(toScreen);
+        if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+          drawAnatomicalCenterAxis(ctx, state.beforeAnchors, nativeBeforePts[8], toScreen, '시술 전(Before) 중심축');
+        }
         drawContoursAndVectors(ctx, sBefore, sAfter, {
           drawBefore: true,
           drawAfter: false,
           drawZoneFill: false,
           drawVectors: false,
           drawCallouts: false,
-          forceBeforeNodes: state.editTarget !== 'none'
+          forceBeforeNodes: state.editTarget !== 'none' && state.editTarget !== 'anchors'
         });
-        drawPanelHeaderBadge(ctx, ox + 16, oy + 16, '🟢 BEFORE 이미지 단독 윤곽선 조절 모드', '#00E676', '녹색 포인트를 드래그하여 시술 전 턱선에 맞추세요');
+        drawPanelHeaderBadge(ctx, ox + 16, oy + 16, '🟢 BEFORE 이미지 단독 윤곽선·중심축 조절', '#00E676', '녹색 윤곽 포인트 또는 하늘색 눈·코 기준점(⊕)을 드래그하세요');
       } else if (subMode === 'single-after') {
         // 시술 후(After) 이미지 단독 윤곽선 수동 조절 모드
         ctx.drawImage(state.afterCanvas, ox, oy, drawW, drawH);
         const sBefore = nativeBeforePts.map(toScreen);
         const sAfter = nativeAfterPts.map(toScreen);
+        if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+          drawAnatomicalCenterAxis(ctx, state.afterAnchors, nativeAfterPts[8], toScreen, '시술 후(After) 중심축');
+        }
         drawContoursAndVectors(ctx, sBefore, sAfter, {
           drawBefore: false,
           drawAfter: true,
           drawZoneFill: false,
           drawVectors: false,
           drawCallouts: false,
-          forceAfterNodes: state.editTarget !== 'none'
+          forceAfterNodes: state.editTarget !== 'none' && state.editTarget !== 'anchors'
         });
-        drawPanelHeaderBadge(ctx, ox + 16, oy + 16, '🔴 AFTER 이미지 단독 윤곽선 조절 모드', '#FF2A54', '붉은색 포인트를 드래그하여 시술 후 턱선에 맞추세요');
+        drawPanelHeaderBadge(ctx, ox + 16, oy + 16, '🔴 AFTER 이미지 단독 윤곽선·중심축 조절', '#FF2A54', '붉은색 윤곽 포인트 또는 하늘색 눈·코 기준점(⊕)을 드래그하세요');
       } else if (subMode === 'blueprint') {
         // 도면 뷰: 선택한 기준 이미지 24% 투명도 + 의료용 그리드 + 대입된 두 윤곽선
         ctx.fillStyle = '#090d16';
@@ -2977,6 +3100,10 @@
         ctx.drawImage(activeSet.baseCanvas, ox, oy, drawW, drawH);
         ctx.globalAlpha = 1.0;
         drawClinicalGrid(ctx, ox, oy, drawW, drawH, 28);
+
+        if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+          drawAnatomicalCenterAxis(ctx, activeSet.anchors, activeSet.afterPts[8], toScreen, '동공·코 3점 정합 중심축');
+        }
 
         const screenBeforePts = activeSet.beforePts.map(toScreen);
         const screenAfterPts = activeSet.afterPts.map(toScreen);
@@ -2989,7 +3116,7 @@
         });
         drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH, 'BLUEPRINT CONTOUR ANALYSIS (정밀 윤곽 도면 비교)');
       } else if (subMode === 'curtain') {
-        // 슬라이더 커튼 뷰: 좌측은 시술 전 사진, 우측은 시술 후 사진
+        // 슬라이더 커튼 뷰: 좌측은 시술 전 사진(자동 중심 보정 켜진 경우 구도 정합 적용), 우측은 시술 후 사진
         const splitX = ox + drawW * state.curtainPos;
 
         ctx.drawImage(state.afterCanvas, ox, oy, drawW, drawH);
@@ -2998,7 +3125,11 @@
         ctx.beginPath();
         ctx.rect(ox, oy, splitX - ox, drawH);
         ctx.clip();
-        ctx.drawImage(state.beforeCanvas, ox, oy, drawW, drawH);
+        if (state.autoCenterCalibrate) {
+          drawCalibratedBeforeImageOnAfterViewport(ctx, ox, oy, scale);
+        } else {
+          ctx.drawImage(state.beforeCanvas, ox, oy, drawW, drawH);
+        }
         ctx.restore();
 
         // 커튼 분할선 및 핸들
@@ -3022,6 +3153,10 @@
         ctx.textBaseline = 'middle';
         ctx.fillText('↔', splitX, oy + drawH * 0.5);
 
+        if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+          drawAnatomicalCenterAxis(ctx, activeSet.anchors, activeSet.afterPts[8], toScreen, '동공·코 3점 정합 중심축');
+        }
+
         const screenBeforePts = activeSet.beforePts.map(toScreen);
         const screenAfterPts = activeSet.afterPts.map(toScreen);
         drawContoursAndVectors(ctx, screenBeforePts, screenAfterPts, {
@@ -3033,8 +3168,18 @@
         });
         drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH, 'BEFORE / AFTER INTERACTIVE CURTAIN (전·후 커튼 비교)');
       } else {
-        // 기본 핵심 모드: 사용자가 선택한 기준 이미지(Before 또는 After) 위에 시술 전(녹색) + 시술 후(붉은색) 윤곽선 대입!
+        // ★ 기본 핵심 모드: 시술 후(After) 사진을 기준으로 시술 전(녹색)과 시술 후(붉은색) 윤곽선을 겹쳐서 얼마나 줄어들었는지 비교!
         ctx.drawImage(activeSet.baseCanvas, ox, oy, drawW, drawH);
+
+        if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+          drawAnatomicalCenterAxis(
+            ctx,
+            activeSet.anchors,
+            activeSet.afterPts[8],
+            toScreen,
+            state.baseImageTarget === 'before' ? '시술 전 기준 중심축(0,0)' : '시술 후 기준 중심축(0,0)'
+          );
+        }
 
         const screenBeforePts = activeSet.beforePts.map(toScreen);
         const screenAfterPts = activeSet.afterPts.map(toScreen);
@@ -3048,17 +3193,29 @@
         });
 
         const baseTitle = state.baseImageTarget === 'before'
-          ? '🟢 기준 이미지: 시술 전(BEFORE) 사진 + 전(녹색)·후(붉은색) 윤곽선 대입'
-          : '🔴 기준 이미지: 시술 후(AFTER) 사진 + 전(녹색)·후(붉은색) 윤곽선 대입';
+          ? '🟢 기준 사진: 시술 전(BEFORE) + 녹색(전)·붉은색(후) 윤곽선 중첩'
+          : '🔴 기준 사진: 시술 후(AFTER) + 녹색(전)·붉은색(후) 윤곽선 중첩 비교';
         drawCornerLegendOnCanvas(ctx, ox, oy, drawW, drawH, baseTitle);
+        drawReductionSummaryBannerOnCanvas(ctx, ox, oy, drawW, drawH);
       }
 
       ctx.restore();
     }
 
+    // 커튼 뷰에서 시술 전 사진이 촬영 거리/기울기/위치가 다를 때 시술 후 사진 중심축에 맞춰 자동 변환 렌더링
+    function drawCalibratedBeforeImageOnAfterViewport(c, ox, oy, viewportScale) {
+      const tf = computeCalibrationTransform(state.beforeAnchors, state.afterAnchors);
+      c.save();
+      c.translate(ox + tf.tCenter.x * viewportScale, oy + tf.tCenter.y * viewportScale);
+      c.rotate(tf.rotateRad);
+      c.scale(tf.scale * viewportScale, tf.scale * tf.pitchRatio * viewportScale);
+      c.drawImage(state.beforeCanvas, -tf.fCenter.x, -tf.fCenter.y);
+      c.restore();
+    }
+
     // 좌·우 1:1 2분할 각각 별도 조절 & 비교 뷰 렌더링
-    // 좌측: 시술 전 사진 + 시술 전 고유 윤곽선(녹색) 별도 조절
-    // 우측: 시술 후 사진 + 시술 후 고유 윤곽선(붉은색) 별도 조절 (옵션 켜면 반대쪽 윤곽선도 동시 대입 표시)
+    // 좌측: 시술 전 사진 + 시술 전 고유 윤곽선(녹색) + 시술 전 눈·코 중심축 별도 조절
+    // 우측: 시술 후 사진 + 시술 전(녹색 대입) & 시술 후(붉은색) 중첩 비교 + 시술 후 눈·코 중심축 조절
     function renderSideBySideView(W, H) {
       ctx.fillStyle = '#080b11';
       ctx.fillRect(0, 0, W, H);
@@ -3083,28 +3240,29 @@
       const afterOnBeforePts = getAlignedAfterPointsOnBefore();
       const beforeOnAfterPts = getAlignedBeforePoints();
 
-      // 1) 좌측 패널: 시술 전 (BEFORE) 이미지 — 녹색 윤곽선 별도 수동 조절
+      const toLeftScreen = (p) => ({ x: leftOx + p.x * scale, y: oy + p.y * scale });
+      const toRightScreen = (p) => ({ x: rightOx + p.x * scale, y: oy + p.y * scale });
+
+      // 1) 좌측 패널: 시술 전 (BEFORE) 이미지 — 녹색 윤곽선 & 시술 전 중심 기준점(⊕) 별도 수동 조절
       ctx.save();
       roundRectPath(ctx, leftOx, oy, drawW, drawH, 12);
       ctx.clip();
       ctx.drawImage(state.beforeCanvas, leftOx, oy, drawW, drawH);
 
-      const leftBeforeScreen = nativeBeforePts.map(p => ({
-        x: leftOx + p.x * scale,
-        y: oy + p.y * scale
-      }));
-      const leftAfterScreen = afterOnBeforePts.map(p => ({
-        x: leftOx + p.x * scale,
-        y: oy + p.y * scale
-      }));
+      if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+        drawAnatomicalCenterAxis(ctx, state.beforeAnchors, nativeBeforePts[8], toLeftScreen, '시술전 중심원점(0,0)');
+      }
+
+      const leftBeforeScreen = nativeBeforePts.map(toLeftScreen);
+      const leftAfterScreen = afterOnBeforePts.map(toLeftScreen);
 
       drawContoursAndVectors(ctx, leftBeforeScreen, leftAfterScreen, {
         drawBefore: true,
-        drawAfter: state.dualShowOverlay,
-        drawZoneFill: state.dualShowOverlay && state.visual.showZoneFill,
-        drawVectors: state.dualShowOverlay && state.visual.showVectors,
+        drawAfter: false,
+        drawZoneFill: false,
+        drawVectors: false,
         drawCallouts: false,
-        forceBeforeNodes: state.editTarget !== 'none',
+        forceBeforeNodes: state.editTarget !== 'none' && state.editTarget !== 'anchors',
         forceAfterNodes: false
       });
 
@@ -3112,26 +3270,24 @@
         ctx,
         leftOx + 14,
         oy + 14,
-        '🟢 시술 전(BEFORE) 이미지 윤곽선 조절',
+        '🟢 시술 전(BEFORE) 원본 · 녹색 윤곽선 조절',
         '#00e676',
-        state.dualShowOverlay ? '시술전(녹색) + 시술후(붉은색 대입)' : '이 화면에서 녹색 포인트를 드래그해 조절하세요'
+        state.editTarget === 'anchors' ? '하늘색 눈·코 기준점(⊕)을 드래그해 중심축을 맞추세요' : '녹색 포인트를 드래그해 시술 전 턱선을 조절하세요'
       );
       ctx.restore();
 
-      // 2) 우측 패널: 시술 후 (AFTER) 이미지 — 붉은색 윤곽선 별도 수동 조절
+      // 2) 우측 패널: 시술 후 (AFTER) 기준 이미지 — 녹색(시술 전 대입) + 붉은색(시술 후) 윤곽선 중첩 비교!
       ctx.save();
       roundRectPath(ctx, rightOx, oy, drawW, drawH, 12);
       ctx.clip();
       ctx.drawImage(state.afterCanvas, rightOx, oy, drawW, drawH);
 
-      const rightBeforeScreen = beforeOnAfterPts.map(p => ({
-        x: rightOx + p.x * scale,
-        y: oy + p.y * scale
-      }));
-      const rightAfterScreen = nativeAfterPts.map(p => ({
-        x: rightOx + p.x * scale,
-        y: oy + p.y * scale
-      }));
+      if (state.visual.showCenterAxis || state.editTarget === 'anchors') {
+        drawAnatomicalCenterAxis(ctx, state.afterAnchors, nativeAfterPts[8], toRightScreen, '시술후 기준원점(0,0)');
+      }
+
+      const rightBeforeScreen = beforeOnAfterPts.map(toRightScreen);
+      const rightAfterScreen = nativeAfterPts.map(toRightScreen);
 
       drawContoursAndVectors(ctx, rightBeforeScreen, rightAfterScreen, {
         drawBefore: state.dualShowOverlay,
@@ -3140,18 +3296,158 @@
         drawVectors: state.dualShowOverlay && state.visual.showVectors,
         drawCallouts: state.dualShowOverlay && state.visual.showMetricCallouts,
         forceBeforeNodes: false,
-        forceAfterNodes: state.editTarget !== 'none'
+        forceAfterNodes: state.editTarget !== 'none' && state.editTarget !== 'anchors'
       });
 
       drawPanelHeaderBadge(
         ctx,
         rightOx + 14,
         oy + 14,
-        '🔴 시술 후(AFTER) 이미지 윤곽선 조절',
+        '🔴 시술 후(AFTER) 기준 · 녹색(전)+붉은색(후) 중첩',
         '#ff2a54',
-        state.dualShowOverlay ? '시술전(녹색 대입) ➔ 시술후(붉은색)' : '이 화면에서 붉은색 포인트를 드래그해 조절하세요'
+        state.dualShowOverlay ? '녹색(시술전 보정대입) ➔ 붉은색(시술후) 축소량 비교' : '붉은색 포인트를 드래그해 시술 후 턱선을 조절하세요'
       );
       ctx.restore();
+    }
+
+    // ★ 안면 T-중심축 (양안 동공 수평선 + 미간 원점 + 코끝 수직 중심선) 및 3점 기준 마커(⊕) 시각화
+    function drawAnatomicalCenterAxis(c, anchors, chinPt, toScreenFn, axisTitle) {
+      if (!anchors || !anchors.leftEye || !anchors.rightEye) return;
+      const le = toScreenFn(anchors.leftEye);
+      const re = toScreenFn(anchors.rightEye);
+      const nose = toScreenFn(anchors.nose || {
+        x: (anchors.leftEye.x + anchors.rightEye.x) * 0.5,
+        y: (anchors.leftEye.y + anchors.rightEye.y) * 0.5 + 110
+      });
+      const midEye = { x: (le.x + re.x) * 0.5, y: (le.y + re.y) * 0.5 };
+      const angle = Math.atan2(re.y - le.y, re.x - le.x);
+      const ipdScreen = Math.hypot(re.x - le.x, re.y - le.y) || 120;
+
+      const isAnchorEdit = state.editTarget === 'anchors';
+
+      c.save();
+
+      // 1) 양안 동공 수평 기준선 (Interpupillary Roll Line)
+      const ext = ipdScreen * 0.42;
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
+      c.strokeStyle = isAnchorEdit ? 'rgba(56, 189, 248, 0.92)' : 'rgba(56, 189, 248, 0.55)';
+      c.lineWidth = isAnchorEdit ? 2.0 : 1.3;
+      c.setLineDash([5, 4]);
+      c.beginPath();
+      c.moveTo(le.x - cosA * ext, le.y - sinA * ext);
+      c.lineTo(re.x + cosA * ext, re.y + sinA * ext);
+      c.stroke();
+
+      // 2) 미간 원점(midEye) ➔ 코끝(nose) ➔ 턱끝 방향 수직 중심축 (Facial Midline Axis)
+      const vx = nose.x - midEye.x;
+      const vy = nose.y - midEye.y;
+      const vLen = Math.hypot(vx, vy) || 1;
+      const ux = vx / vLen;
+      const uy = vy / vLen;
+      c.beginPath();
+      c.moveTo(midEye.x - ux * (ipdScreen * 0.35), midEye.y - uy * (ipdScreen * 0.35));
+      c.lineTo(midEye.x + ux * (ipdScreen * 1.95), midEye.y + uy * (ipdScreen * 1.95));
+      c.stroke();
+      c.setLineDash([]);
+
+      // 3) 미간 중심 원점(0,0) 십자 마커
+      c.strokeStyle = '#38bdf8';
+      c.lineWidth = 2;
+      c.beginPath();
+      c.arc(midEye.x, midEye.y, 5, 0, Math.PI * 2);
+      c.stroke();
+
+      // 미간 상단 중심값 안내 캡슐
+      c.font = '700 10.5px "Noto Sans KR", sans-serif';
+      const labelTxt = `🎯 ${axisTitle || '중심축 원점(0,0)'}`;
+      const tw = c.measureText(labelTxt).width + 14;
+      c.fillStyle = 'rgba(7, 11, 20, 0.85)';
+      roundRectPath(c, midEye.x - tw * 0.5, midEye.y - 30, tw, 20, 5);
+      c.fill();
+      c.strokeStyle = 'rgba(56, 189, 248, 0.65)';
+      c.lineWidth = 1;
+      c.stroke();
+      c.fillStyle = '#7dd3fc';
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText(labelTxt, midEye.x, midEye.y - 20);
+
+      // 4) 3대 불변 기준점 타겟 레티클 (좌안 동공, 우안 동공, 코끝 중심)
+      const anchorPoints = [
+        { pt: le, name: '좌안 동공' },
+        { pt: re, name: '우안 동공' },
+        { pt: nose, name: '코 중심' }
+      ];
+      const rOuter = isAnchorEdit ? 10 : 6.5;
+
+      anchorPoints.forEach(a => {
+        c.save();
+        c.beginPath();
+        c.arc(a.pt.x, a.pt.y, rOuter, 0, Math.PI * 2);
+        c.fillStyle = isAnchorEdit ? 'rgba(56, 189, 248, 0.28)' : 'rgba(56, 189, 248, 0.16)';
+        c.fill();
+        c.lineWidth = isAnchorEdit ? 2.2 : 1.5;
+        c.strokeStyle = '#38bdf8';
+        c.stroke();
+
+        // 십자선
+        c.beginPath();
+        c.moveTo(a.pt.x - rOuter - 3, a.pt.y);
+        c.lineTo(a.pt.x + rOuter + 3, a.pt.y);
+        c.moveTo(a.pt.x, a.pt.y - rOuter - 3);
+        c.lineTo(a.pt.x, a.pt.y + rOuter + 3);
+        c.stroke();
+
+        if (isAnchorEdit) {
+          c.font = '700 10px "Noto Sans KR", sans-serif';
+          c.fillStyle = '#ffffff';
+          c.shadowColor = 'rgba(0,0,0,0.9)';
+          c.shadowBlur = 4;
+          c.textAlign = 'center';
+          c.fillText(a.name, a.pt.x, a.pt.y + rOuter + 11);
+        }
+        c.restore();
+      });
+
+      c.restore();
+    }
+
+    // 시술 후 사진 위 우측 상단에 표시되는 전(녹색)➔후(붉은색) 윤곽 축소량 요약 배너
+    function drawReductionSummaryBannerOnCanvas(c, ox, oy, drawW, drawH) {
+      if (!state.latestMetrics) return;
+      const m = state.latestMetrics;
+      const tf = computeCalibrationTransform(state.beforeAnchors, state.afterAnchors);
+
+      const boxW = 310;
+      const boxH = 74;
+      const bx = ox + drawW - boxW - 14;
+      const by = oy + 14;
+
+      c.save();
+      c.fillStyle = 'rgba(8, 11, 18, 0.88)';
+      roundRectPath(c, bx, by, boxW, boxH, 10);
+      c.fill();
+      c.strokeStyle = 'rgba(255, 42, 84, 0.55)';
+      c.lineWidth = 1.4;
+      c.stroke();
+
+      c.fillStyle = '#ff6b89';
+      c.font = '800 12px "Noto Sans KR", sans-serif';
+      c.textAlign = 'left';
+      c.fillText(`📉 시술 후 사진 기준 윤곽 축소율 : ${m.areaReductionPct.toFixed(1)}%`, bx + 12, by + 22);
+
+      c.fillStyle = '#e2e8f0';
+      c.font = '600 11px "Noto Sans KR", sans-serif';
+      c.fillText(`심부볼 ${(m.leftJowlMm + m.rightJowlMm >= 0 ? '+' : '')}${((m.leftJowlMm + m.rightJowlMm) * 0.5).toFixed(1)}mm  |  사각턱폭 ${m.gonionDiffMm.toFixed(1)}mm  |  V각 ${(m.angleAfter - m.angleBefore).toFixed(1)}°`, bx + 12, by + 42);
+
+      c.fillStyle = '#7dd3fc';
+      c.font = '600 10.5px "Noto Sans KR", sans-serif';
+      const calibNote = state.autoCenterCalibrate
+        ? `🎯 중심교정 완료 (배율 ×${tf.scale.toFixed(2)} · 회전 ${tf.rotateDeg >= 0 ? '+' : ''}${tf.rotateDeg.toFixed(1)}°)`
+        : '⚠️ 중심값 자동보정 OFF (원본 좌표 단순 중첩)';
+      c.fillText(calibNote, bx + 12, by + 61);
+      c.restore();
     }
 
     // 12. 핵심 윤곽선(녹색 시술전 / 붉은색 시술후), 수축 면적, 리프팅 화살표, 수치 콜아웃 렌더링
@@ -3176,9 +3472,9 @@
         c.closePath();
 
         const grad = c.createLinearGradient(0, smoothBefore[0].y, 0, smoothBefore[Math.floor(smoothBefore.length / 2)].y);
-        grad.addColorStop(0, 'rgba(0, 230, 118, 0.14)');
-        grad.addColorStop(0.5, 'rgba(0, 230, 118, 0.26)');
-        grad.addColorStop(1, 'rgba(255, 42, 84, 0.28)');
+        grad.addColorStop(0, 'rgba(0, 230, 118, 0.18)');
+        grad.addColorStop(0.5, 'rgba(0, 230, 118, 0.30)');
+        grad.addColorStop(1, 'rgba(255, 42, 84, 0.32)');
         c.fillStyle = grad;
         c.fill();
         c.restore();
@@ -3262,7 +3558,7 @@
           pLJ.y + 18,
           pLJ.x,
           pLJ.y,
-          `좌 심부볼 ${m.leftJowlMm.toFixed(1)}mm`,
+          `좌 심부볼 ${m.leftJowlMm.toFixed(1)}mm 축소`,
           '#00E676',
           '#FF2A54'
         );
@@ -3275,7 +3571,7 @@
           pRJ.y + 18,
           pRJ.x,
           pRJ.y,
-          `우 심부볼 ${m.rightJowlMm.toFixed(1)}mm`,
+          `우 심부볼 ${m.rightJowlMm.toFixed(1)}mm 축소`,
           '#00E676',
           '#FF2A54'
         );
@@ -3421,7 +3717,7 @@
       c.save();
       // 좌측 상단 모드 배지
       c.fillStyle = 'rgba(8, 11, 18, 0.86)';
-      roundRectPath(c, ox + 14, oy + 14, 435, 58, 10);
+      roundRectPath(c, ox + 14, oy + 14, 415, 58, 10);
       c.fill();
       c.strokeStyle = 'rgba(255,255,255,0.16)';
       c.lineWidth = 1;
@@ -3453,19 +3749,19 @@
     function drawPanelHeaderBadge(c, x, y, title, accentColor, subText) {
       c.save();
       c.fillStyle = 'rgba(8, 11, 18, 0.86)';
-      roundRectPath(c, x, y, 295, 52, 9);
+      roundRectPath(c, x, y, 315, 52, 9);
       c.fill();
       c.strokeStyle = accentColor;
       c.lineWidth = 1.5;
       c.stroke();
 
       c.fillStyle = accentColor;
-      c.font = '800 12.5px "Noto Sans KR", sans-serif';
+      c.font = '800 12px "Noto Sans KR", sans-serif';
       c.textAlign = 'left';
       c.fillText(title, x + 12, y + 22);
 
       c.fillStyle = '#e2e8f0';
-      c.font = '600 11px "Noto Sans KR", sans-serif';
+      c.font = '600 10.5px "Noto Sans KR", sans-serif';
       c.fillText(subText, x + 12, y + 40);
       c.restore();
     }
@@ -3510,7 +3806,7 @@
       c.closePath();
     }
 
-    // 13. 마우스 / 터치 인터랙션 (각 이미지별 윤곽선 포인트 개별 드래그 & 기준 이미지 대입 드래그 & 커튼 슬라이더)
+    // 13. 마우스 / 터치 인터랙션 (윤곽선 포인트 개별 드래그 + 동공·코 3점 중심 기준점 드래그 + 커튼 슬라이더)
     function getCanvasMousePos(evt) {
       const rect = mainCanvas.getBoundingClientRect();
       const scaleX = mainCanvas.width / rect.width;
@@ -3530,6 +3826,20 @@
     mainCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); handlePointerDown(e); }, { passive: false });
     mainCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); handlePointerMove(e); }, { passive: false });
     window.addEventListener('touchend', handlePointerUp);
+
+    // 특정 앵커 세트(beforeAnchors 또는 afterAnchors)에서 클릭된 기준점('leftEye' | 'rightEye' | 'nose') 탐색
+    function findHitAnchorKey(anchors, normX, normY, hitRadius) {
+      if (!anchors) return null;
+      const keys = ['leftEye', 'rightEye', 'nose'];
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+        const pt = anchors[k];
+        if (pt && Math.hypot(pt.x - normX, pt.y - normY) < hitRadius) {
+          return k;
+        }
+      }
+      return null;
+    }
 
     function handlePointerDown(evt) {
       const pos = getCanvasMousePos(evt);
@@ -3551,12 +3861,27 @@
       const nativeBeforePts = (state.beforePoints && state.beforePoints.length === 17) ? state.beforePoints : state.beforePointsRaw;
       const nativeAfterPts = (state.afterPoints && state.afterPoints.length === 17) ? state.afterPoints : state.afterPointsRaw;
 
-      // 1) 2분할 나란히 보기 (좌: 시술전 이미지 고유 녹색선 조절 / 우: 시술후 이미지 고유 붉은선 조절)
+      // 1) 2분할 나란히 보기 (좌: 시술전 이미지 / 우: 시술후 이미지)
       if (vp.mode === 'dual') {
         const inRight = pos.x >= vp.rightOx - 9;
         const baseOx = inRight ? vp.rightOx : vp.leftOx;
         const normX = (pos.x - baseOx) / vp.scale;
         const normY = (pos.y - vp.oy) / vp.scale;
+        const targetType = inRight ? 'after' : 'before';
+        const targetAnchors = inRight ? state.afterAnchors : state.beforeAnchors;
+
+        // 눈·코 3점 중심 기준점(⊕) 드래그 우선 체크
+        if (state.editTarget === 'anchors' || state.visual.showCenterAxis) {
+          const hitKey = findHitAnchorKey(targetAnchors, normX, normY, hitRadius * 0.95);
+          if (hitKey) {
+            state.isDraggingAnchor = true;
+            state.draggedAnchorKey = hitKey;
+            state.draggedAnchorTarget = targetType;
+            state.draggedPanel = inRight ? 'right' : 'left';
+            return;
+          }
+        }
+        if (state.editTarget === 'anchors') return;
 
         if (!inRight) {
           // 좌측 시술 전 이미지 클릭 -> 시술 전(녹색) 고유 포인트 드래그
@@ -3587,6 +3912,24 @@
       // 2) 단일 뷰포트 모드 (single-before / single-after / after-overlay / curtain / blueprint)
       const normX = (pos.x - vp.ox) / vp.scale;
       const normY = (pos.y - vp.oy) / vp.scale;
+
+      // 단일 뷰포트에서 눈·코 중심 기준점(⊕) 클릭 체크
+      const singleAnchorTarget = (vp.subMode === 'single-before')
+        ? 'before'
+        : (vp.subMode === 'single-after' ? 'after' : state.baseImageTarget);
+      const singleAnchors = singleAnchorTarget === 'before' ? state.beforeAnchors : state.afterAnchors;
+
+      if (state.editTarget === 'anchors' || state.visual.showCenterAxis) {
+        const hitKey = findHitAnchorKey(singleAnchors, normX, normY, hitRadius * 0.9);
+        if (hitKey) {
+          state.isDraggingAnchor = true;
+          state.draggedAnchorKey = hitKey;
+          state.draggedAnchorTarget = singleAnchorTarget;
+          state.draggedPanel = 'single';
+          return;
+        }
+      }
+      if (state.editTarget === 'anchors') return;
 
       if (vp.subMode === 'single-before') {
         for (let i = 0; i < nativeBeforePts.length; i++) {
@@ -3653,8 +3996,6 @@
         return;
       }
 
-      if (!state.isDraggingPoint || state.draggedPointIdx < 0) return;
-
       let normX, normY;
       if (vp.mode === 'dual') {
         const baseOx = state.draggedPanel === 'right' ? vp.rightOx : vp.leftOx;
@@ -3667,6 +4008,19 @@
 
       normX = Math.max(10, Math.min(PORTRAIT_W - 10, normX));
       normY = Math.max(10, Math.min(PORTRAIT_H - 10, normY));
+
+      // 눈·코 3점 중심 기준점(⊕) 드래그 이동 처리
+      if (state.isDraggingAnchor && state.draggedAnchorKey) {
+        const targetAnchors = state.draggedAnchorTarget === 'before' ? state.beforeAnchors : state.afterAnchors;
+        targetAnchors[state.draggedAnchorKey] = { x: normX, y: normY };
+        applyBeforeAdjustments();
+        applyAfterAdjustments();
+        updateQuantitativeMetrics();
+        renderMainCanvas();
+        return;
+      }
+
+      if (!state.isDraggingPoint || state.draggedPointIdx < 0) return;
 
       const idx = state.draggedPointIdx;
 
@@ -3720,6 +4074,9 @@
       state.draggedCurve = null;
       state.draggedPanel = null;
       state.draggedPointIdx = -1;
+      state.isDraggingAnchor = false;
+      state.draggedAnchorKey = null;
+      state.draggedAnchorTarget = null;
       state.isDraggingCurtain = false;
     }
 
@@ -3747,7 +4104,7 @@
       renderMainCanvas();
     }
 
-    // 내가 선택한 이미지('before' | 'after')를 기준 이미지로 설정하고 시술 전·후 윤곽선 대입
+    // 내가 선택한 이미지(기본: 'after' 시술 후 이미지)를 기준 이미지로 설정하고 시술 전·후 윤곽선 대입
     function selectBaseImageForProjection(target) {
       state.baseImageTarget = (target === 'before') ? 'before' : 'after';
 
@@ -3786,10 +4143,109 @@
       renderMainCanvas();
       updateAIStatus(
         state.baseImageTarget === 'before'
-          ? '시술 전(Before) 이미지를 기준으로 전(녹색)·후(붉은색) 윤곽선 대입 완료'
-          : '시술 후(After) 이미지를 기준으로 전(녹색)·후(붉은색) 윤곽선 대입 완료',
+          ? '시술 전(Before) 사진 기준 · 전(녹색)+후(붉은색) 윤곽선 중첩 비교 모드'
+          : '시술 후(After) 사진 기준 · 전(녹색)+후(붉은색) 윤곽선 축소량 중첩 비교 모드',
         true
       );
+    }
+
+    // 촬영 구도·중심값 자동 보정(동공·코 3점 정합) ON/OFF 토글
+    function toggleAutoCenterCalibration() {
+      state.autoCenterCalibrate = !state.autoCenterCalibrate;
+      const btn = document.getElementById('btnAutoCalibrateToggle');
+      if (btn) {
+        btn.className = 'chip-btn' + (state.autoCenterCalibrate ? ' active' : '');
+        btn.textContent = state.autoCenterCalibrate
+          ? '📐 촬영 구도·중심값 자동 보정(동공·코 3점 정합): ON'
+          : '⚠️ 촬영 구도·중심값 자동 보정: OFF (원본 단순 겹침)';
+      }
+      updateQuantitativeMetrics();
+      renderMainCanvas();
+      updateAIStatus(
+        state.autoCenterCalibrate
+          ? '양쪽 동공·미간·코끝 3점 기준 촬영 크기·기울기·중심값 자동 정규화 ON'
+          : '중심값 자동 보정 OFF — 촬영 구도 차이가 보정되지 않은 단순 중첩 상태입니다',
+        state.autoCenterCalibrate
+      );
+    }
+
+    // ★ 촬영 거리(크기)·고개 기울기·얼굴 중심 위치가 다르게 찍힌 시술 전 사진의 중심값 교정 시연
+    function simulateCameraMisalignmentDemo() {
+      if (state.isMisalignDemoActive) {
+        state.isMisalignDemoActive = false;
+        const btn = document.getElementById('btnSimulateMisalign');
+        if (btn) {
+          btn.className = 'chip-btn';
+          btn.textContent = '🧪 다른 촬영 구도(크기·각도 불일치) 교정 시연';
+        }
+        loadClinicalPreset(state.activePreset || 1);
+        updateAIStatus('표준 정면 스튜디오 구도로 복원되었습니다', true);
+        return;
+      }
+
+      // 먼저 표준 프리셋 데이터를 깨끗하게 준비
+      loadClinicalPreset(state.activePreset || 1);
+      state.isMisalignDemoActive = true;
+
+      const btn = document.getElementById('btnSimulateMisalign');
+      if (btn) {
+        btn.className = 'chip-btn active';
+        btn.textContent = '🧪 구도 불일치 시연 중 (클릭 시 원상복구)';
+      }
+
+      // 시술 전 사진이 카메라에서 13% 멀리(0.87배), 고개가 -5.2° 기울어지고, 좌상단(-36px, -22px)으로 치우쳐 촬영된 상황 생성
+      const camScale = 0.87;
+      const camRotDeg = -5.2;
+      const camRotRad = (camRotDeg * Math.PI) / 180;
+      const camTx = -36;
+      const camTy = -22;
+      const pivot = { x: PORTRAIT_W * 0.5, y: PORTRAIT_H * 0.45 };
+
+      const srcBeforeCopy = document.createElement('canvas');
+      srcBeforeCopy.width = PORTRAIT_W;
+      srcBeforeCopy.height = PORTRAIT_H;
+      srcBeforeCopy.getContext('2d').drawImage(state.beforeCanvas, 0, 0);
+
+      const bCtx = state.beforeCanvas.getContext('2d');
+      bCtx.fillStyle = '#0b0e15';
+      bCtx.fillRect(0, 0, PORTRAIT_W, PORTRAIT_H);
+      bCtx.save();
+      bCtx.translate(pivot.x + camTx, pivot.y + camTy);
+      bCtx.rotate(camRotRad);
+      bCtx.scale(camScale, camScale);
+      bCtx.drawImage(srcBeforeCopy, -pivot.x, -pivot.y);
+      bCtx.restore();
+
+      const transformPt = (pt) => {
+        const dx = (pt.x - pivot.x) * camScale;
+        const dy = (pt.y - pivot.y) * camScale;
+        const cosR = Math.cos(camRotRad);
+        const sinR = Math.sin(camRotRad);
+        return {
+          x: pivot.x + camTx + (dx * cosR - dy * sinR),
+          y: pivot.y + camTy + (dx * sinR + dy * cosR)
+        };
+      };
+
+      state.beforePointsRaw = state.beforePointsRaw.map(transformPt);
+      state.beforeAnchors = {
+        leftEye: transformPt(state.beforeAnchors.leftEye),
+        rightEye: transformPt(state.beforeAnchors.rightEye),
+        nose: transformPt(state.beforeAnchors.nose)
+      };
+
+      state.autoCenterCalibrate = true;
+      const autoBtn = document.getElementById('btnAutoCalibrateToggle');
+      if (autoBtn) {
+        autoBtn.className = 'chip-btn active';
+        autoBtn.textContent = '📐 촬영 구도·중심값 자동 보정(동공·코 3점 정합): ON';
+      }
+
+      applyBeforeAdjustments();
+      updateThumbnails();
+      updateQuantitativeMetrics();
+      renderMainCanvas();
+      updateAIStatus('시술 전 사진(크기 87%·기울기 -5.2°·중심 이탈)을 동공·코 3점 기준으로 시술 후 사진에 자동 정합 완료!', true);
     }
 
     // 특정 이미지('before' | 'after')의 단독 윤곽선 수동 조절 모드로 즉시 포커스
@@ -3807,15 +4263,15 @@
       }
     }
 
-    // 2분할 나란히 보기 모드에서 반대쪽 윤곽선 동시 겹쳐보기 토글
+    // 2분할 나란히 보기 모드에서 시술 후 사진 위에 녹색(시술 전) 윤곽선 동시 겹쳐보기 토글
     function toggleDualShowOverlay() {
       state.dualShowOverlay = !state.dualShowOverlay;
       const btn = document.getElementById('btnDualOverlayToggle');
       if (btn) {
         btn.className = 'chip-btn' + (state.dualShowOverlay ? ' active' : '');
         btn.textContent = state.dualShowOverlay
-          ? '🔗 2분할 시 전·후 윤곽선 동시 겹쳐보기: ON (전·후 비교)'
-          : '🔗 2분할 시 전·후 윤곽선 동시 겹쳐보기: OFF (개별 조절 집중)';
+          ? '🔗 2분할 시 시술후 사진에 녹색선 겹쳐보기: ON'
+          : '🔗 2분할 시 시술후 사진에 녹색선 겹쳐보기: OFF (개별 조절 집중)';
       }
       if (state.viewMode !== 'side-by-side') {
         setViewMode('side-by-side');
@@ -3851,10 +4307,18 @@
 
     function setEditTarget(target) {
       state.editTarget = target;
-      document.getElementById('editBtnOff').className = 'chip-btn' + (target === 'none' ? ' active' : '');
-      document.getElementById('editBtnBefore').className = 'chip-btn' + (target === 'before' ? ' active-green' : '');
-      document.getElementById('editBtnAfter').className = 'chip-btn' + (target === 'after' ? ' active-red' : '');
-      document.getElementById('editBtnBoth').className = 'chip-btn' + (target === 'both' ? ' active' : '');
+      const setCls = (id, cls) => { const el = document.getElementById(id); if (el) el.className = cls; };
+      setCls('editBtnOff', 'chip-btn' + (target === 'none' ? ' active' : ''));
+      setCls('editBtnBefore', 'chip-btn' + (target === 'before' ? ' active-green' : ''));
+      setCls('editBtnAfter', 'chip-btn' + (target === 'after' ? ' active-red' : ''));
+      setCls('editBtnBoth', 'chip-btn' + (target === 'both' ? ' active' : ''));
+      setCls('editBtnAnchors', 'chip-btn' + (target === 'anchors' ? ' active' : ''));
+      if (target === 'anchors') {
+        state.visual.showCenterAxis = true;
+        const axisChip = document.getElementById('toggleCenterAxis');
+        if (axisChip) axisChip.classList.add('active');
+        updateAIStatus('🎯 눈·코 3점 중심 기준점(⊕) 드래그 모드: 좌·우 동공과 코 중심을 드래그해 얼굴 중심값을 교정하세요', true);
+      }
       renderMainCanvas();
     }
 
@@ -4049,6 +4513,7 @@
         showVectors: 'toggleVectors',
         showZoneFill: 'toggleZoneFill',
         showMetricCallouts: 'toggleLabels',
+        showCenterAxis: 'toggleCenterAxis',
         dashedBefore: 'toggleDashedBefore'
       };
       const el = document.getElementById(map[key]);
@@ -4057,7 +4522,13 @@
     }
 
     async function reRunAIDetection() {
-      updateAIStatus('전·후 사진 AI 안면 윤곽선 재검출 중...', false);
+      updateAIStatus('전·후 사진 AI 동공·코 중심점 및 턱 윤곽선 재검출 중...', false);
+      state.isMisalignDemoActive = false;
+      const btn = document.getElementById('btnSimulateMisalign');
+      if (btn) {
+        btn.className = 'chip-btn';
+        btn.textContent = '🧪 다른 촬영 구도(크기·각도 불일치) 교정 시연';
+      }
       resetAfterAdjustment(false);
       resetAlignment(false);
       await detectContourOnCanvas(state.beforeCanvas, 'before');
@@ -4067,7 +4538,7 @@
       updateThumbnails();
       updateQuantitativeMetrics();
       renderMainCanvas();
-      updateAIStatus('AI 안면 윤곽선 정밀 재검출 완료', true);
+      updateAIStatus('시술 후 사진 기준 · 동공·코 3점 중심값 및 윤곽선 정합 완료', true);
     }
 
     // 15. 환자 상담용 고해상도 전·후 윤곽선 비교 리포트 이미지(PNG) 저장
