@@ -4,16 +4,15 @@ const puppeteer = require('C:\\Users\\0508a\\.gemini\\antigravity\\brain\\c3430d
 
 const PAGES_TO_DEPLOY = [
   { id: 46,  slug: '46-2',            title: '메인',                          file: 'wordpress-main-home.html' },
-  { id: null, slug: 'body-explorer',   title: '바른한의원 3D 질환 쇼룸',         file: 'wordpress-body-explorer.html' },
-  { id: null, slug: 'director',        title: '안정위 대표원장',                 file: 'wordpress-director.html' },
-  { id: null, slug: 'chuna',           title: '바른 추나 · 척추교정',            file: 'wordpress-chuna.html' },
-  { id: 105,  slug: 'growth',          title: '바른 성장 · 성조숙증',            file: 'wordpress-growth.html' },
-  { id: 66,   slug: 'diet-zero',       title: '바른 다이어트 · 식욕ZERO',        file: 'wordpress-diet.html' },
-  { id: null, slug: 'hairloss',        title: '바른 탈모 · 모근재생',            file: 'wordpress-hairloss.html' },
-  { id: 96,   slug: 'gongjindan-2',    title: '바른 황제공진단',                 file: 'wordpress-gongjindan.html' },
-  { id: null, slug: 'gongjindan',      title: '바른 황제공진단',                 file: 'wordpress-gongjindan.html' },
-  { id: null, slug: 'prostate',        title: '바른 전립선 · 남성활력',          file: 'wordpress-prostate.html' },
-  { id: null, slug: 'lifting-compare', title: '바른리프팅 시술 전후 윤곽진단',    file: 'wordpress-lifting-compare.html' }
+  { id: 125, slug: 'body-explorer',   title: '바른한의원 3D 질환 쇼룸',         file: 'wordpress-body-explorer.html' },
+  { id: 126, slug: 'director',        title: '안정위 대표원장',                 file: 'wordpress-director.html' },
+  { id: 127, slug: 'chuna',           title: '바른 추나 · 척추교정',            file: 'wordpress-chuna.html' },
+  { id: 105, slug: 'growth',          title: '바른 성장 · 성조숙증',            file: 'wordpress-growth.html' },
+  { id: 66,  slug: 'diet-zero',       title: '바른 다이어트 · 식욕ZERO',        file: 'wordpress-diet.html' },
+  { id: 130, slug: 'hairloss',        title: '바른 탈모 · 모근재생',            file: 'wordpress-hairloss.html' },
+  { id: 96,  slug: 'gongjindan-2',    title: '바른 황제공진단',                 file: 'wordpress-gongjindan.html' },
+  { id: 133, slug: 'prostate',        title: '바른 전립선 · 남성활력',          file: 'wordpress-prostate.html' },
+  { id: 134, slug: 'lifting-compare', title: '바른리프팅 시술 전후 윤곽진단',    file: 'wordpress-lifting-compare.html' }
 ];
 
 (async () => {
@@ -113,19 +112,14 @@ const PAGES_TO_DEPLOY = [
       console.log(`   [DEPLOYED] ${item.slug.padEnd(16)} -> status ${res.status} | ID: ${res.id} | URL: ${res.link || res.err}`);
     }
 
-    // 3) Flush WP Super Cache if active
+    // 3) Flush WP Super Cache safely via DOM evaluate
     console.log('3) Clearing WP Super Cache ...');
-    await page.goto('https://bareunhaniwon.com/wp-admin/options-general.php?page=wpsupercache&tab=contents', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
-    const deleteCacheBtn = await page.$('input[name="wp_delete_cache"], button[name="wp_delete_cache"]');
-    if (deleteCacheBtn) {
-      await Promise.all([
-        page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {}),
-        deleteCacheBtn.click()
-      ]);
-      console.log('   WP Super Cache cleared!');
-    } else {
-      console.log('   WP Super Cache button not required or already clean.');
-    }
+    await page.goto('https://bareunhaniwon.com/wp-admin/options-general.php?page=wpsupercache', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+    await page.evaluate(() => {
+      const btn = document.querySelector('input[name="wp_delete_cache"], button[name="wp_delete_cache"]');
+      if (btn && btn.form) btn.form.submit();
+    }).catch(() => {});
+    await new Promise(r => setTimeout(r, 1500));
 
     console.log('✅ ALL PAGES DEPLOYED TO https://www.bareunhaniwon.com/ !');
   } catch (err) {

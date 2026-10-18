@@ -37,7 +37,7 @@ function rewriteAssetsForWP(html) {
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
     .replace(/url\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
     .replace(/loadLinearTex\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1'")
-    .replace(/src="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
+    .replace(/src="((?:clinic-template-config\.js|ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
     .replace(/poster="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
     .replace(/href="story-3d\.html(\?[^"]*)?"/g, 'href="/$1"')
     .replace(/href="index\.html(\?[^"]*)?"/g, 'href="/$1"')
