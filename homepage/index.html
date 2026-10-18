@@ -1015,72 +1015,97 @@
 
     <div class="skt-finale-header" style="justify-content: flex-end;">
       <div class="skt-finale-controls">
-        <a href="body-explorer.html" class="skt-ctrl-btn" style="background: #2D5A43; border-color: #6EE7B7; color: #FFFFFF; text-decoration: none; font-weight: 800;">🧬 3D 인체모형 허브 · 8대 클리닉 벤토 쇼룸 (Idea B) ↗</a>
+        <a href="body-explorer.html" class="skt-ctrl-btn" style="background: #2D5A43; border-color: #6EE7B7; color: #FFFFFF; text-decoration: none; font-weight: 800;">🧬 3D 인체모형 통합 의학·논문 정보 페이지 ↗</a>
         <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
         <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 3D 스토리 다시 스크롤</button>
       </div>
     </div>
 
     <div class="skt-bento-grid" id="skt-bento-grid">
-      <!-- 1. 안정위원장 -->
-      <div class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
+      <!-- 1. 안정위원장 (난임·착상·원장 철학 상세페이지 연결) -->
+      <a href="director.html" class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
         <div class="skt-img-box" style="background-image: url('card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
         <div class="skt-card-box">
-          <div class="skt-card-bottom-info">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">안정위원장</p>
+            <p class="skt-card-desc">난임·착상·자율신경 · 1:1 진맥 안심탕전</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- 2. 추나 -->
-      <div class="skt-card-item" data-card-idx="1" data-rot="5" data-link="chuna.html" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
+      <!-- 2. 추나 (척추·골반·디스크 상세페이지 연결) -->
+      <a href="chuna.html" class="skt-card-item" data-card-idx="1" data-rot="5" data-link="chuna.html" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
         <div class="skt-img-box" style="background-image: url('card_2_chuna.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
-          <div class="skt-card-bottom-info">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">추나</p>
+            <p class="skt-card-desc">척추·골반 비대칭 교정 · 목·허리 디스크 감압</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- 3. 성장 -->
-      <div class="skt-card-item" data-card-idx="2" data-rot="7" data-link="growth.html" data-reserve="소아·청소년 키성장 클리닉" data-chapter="3">
+      <!-- 3. 성장 (소아 키성장·성조숙증·비염면역 상세페이지 연결) -->
+      <a href="growth.html" class="skt-card-item" data-card-idx="2" data-rot="7" data-link="growth.html" data-reserve="소아·청소년 키성장 클리닉" data-chapter="3">
         <div class="skt-img-box" style="background-image: url('card_3_growth.jpg?v=card1'); background-position: center 22%;"></div>
         <div class="skt-card-box">
-          <div class="skt-card-bottom-info">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">성장</p>
+            <p class="skt-card-desc">소아 키성장 골든타임 · 비염·감기면역 강화</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- 4. 다이어트 -->
-      <div class="skt-card-item" data-card-idx="3" data-rot="-7" data-link="diet-zero.html" data-reserve="성인 비만·다이어트 클리닉" data-chapter="4">
+      <!-- 4. 다이어트 (위장·간해독·체형감량 상세페이지 연결) -->
+      <a href="diet-zero.html" class="skt-card-item" data-card-idx="3" data-rot="-7" data-link="diet-zero.html" data-reserve="성인 비만·다이어트 클리닉" data-chapter="4">
         <div class="skt-img-box" style="background-image: url('card_4_diet.jpg?v=card1'); background-position: center 25%;"></div>
         <div class="skt-card-box">
-          <div class="skt-card-bottom-info">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">다이어트</p>
+            <p class="skt-card-desc">내장지방·독소 해독 · 기초대사 리셋 감량</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- 5. 탈모 -->
-      <div class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss.html" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
+      <!-- 5. 탈모 (두피열·경추·모근재생 상세페이지 연결) -->
+      <a href="hairloss.html" class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss.html" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
         <div class="skt-img-box" style="background-image: url('card_5_hairloss.jpg?v=pov12'); background-position: center center;"></div>
         <div class="skt-card-box">
-          <div class="skt-card-bottom-info">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">탈모</p>
+            <p class="skt-card-desc">두피열 쿨링 · 경추 혈류개통 · 모근 집중재생</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- 6. 황제공진단 -->
-      <div class="skt-card-item" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
+      <!-- 6. 황제공진단 & 전립선·남성활력 상세페이지 연결 -->
+      <a href="gongjindan.html" class="skt-card-item" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
         <div class="skt-img-box" style="background-image: url('card_6_gongjindan.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
-          <div class="skt-card-bottom-info">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">황제공진단</p>
+            <p class="skt-card-desc">만성피로·뇌심장 수승화강 · 남성 전립선 활력</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">공진단 상세 →</span>
+              <span class="skt-card-chip secondary" data-action="custom-link" data-href="prostate.html">전립선 클리닉 →</span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -3294,17 +3319,24 @@
         cardEls.forEach((card) => {
           card.addEventListener('click', (e) => {
             const chip = e.target.closest('.skt-card-chip');
-            const action = chip ? chip.dataset.action : (card.dataset.link ? 'link' : 'reserve');
-            const linkUrl = card.dataset.link;
+            const action = chip ? chip.dataset.action : 'link';
+            const customHref = chip ? chip.dataset.href : null;
+            const linkUrl = card.getAttribute('href') || card.dataset.link;
             const reserveProg = card.dataset.reserve;
             const chNum = parseInt(card.dataset.chapter || '1', 10);
 
-            if (action === 'story') {
+            if (action === 'custom-link' && customHref) {
+              e.preventDefault();
+              e.stopPropagation();
+              window.location.href = customHref;
+            } else if (action === 'story') {
+              e.preventDefault();
               e.stopPropagation();
               deactivate();
               const targetFrame = chapterStartFrames[Math.max(0, chNum - 1)] || 0;
               scrollToNormalized(frameFloatToFullNorm(targetFrame));
-            } else if (action === 'link' && linkUrl) {
+            } else if (linkUrl) {
+              e.preventDefault();
               window.location.href = linkUrl;
             } else {
               openReserveWithProgram(reserveProg);

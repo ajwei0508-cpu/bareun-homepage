@@ -149,206 +149,24 @@
     }
 
     /* =========================================================================
-       2. IDEA B — 3-COLUMN HUB & SPOKE STAGE (LEFT 4 BENTO CARDS + CENTER 3D + RIGHT 4 BENTO CARDS)
+       2. UNIFIED 3D HUMAN BODY & MEDICAL INFORMATION WORKSPACE (LEFT 3D + RIGHT INFO)
        ========================================================================= */
     .vibrant-workspace {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 42% 58%;
       width: 100%;
       min-height: 100vh;
       padding-top: 62px;
       background:
-        radial-gradient(circle at 50% 35%, #FAF7F0 0%, #F4EFE4 58%, #EBE3D3 100%);
-    }
-
-    .idea-b-hub-stage {
-      position: relative;
-      width: min(1480px, 96vw);
-      margin: 18px auto 10px;
-      padding: 22px 24px;
-      border-radius: 28px;
-      background: rgba(250, 246, 238, 0.88);
-      border: 1.5px solid rgba(196, 174, 142, 0.55);
-      box-shadow: 0 20px 52px rgba(58, 42, 30, 0.08);
-      display: grid;
-      grid-template-columns: 1fr minmax(340px, 430px) 1fr;
-      align-items: center;
-      gap: 18px;
-      overflow: hidden;
-    }
-
-    /* Live SVG Callout Pointer Lines connecting 3D Organs to Left & Right Bento Cards */
-    #hub-spoke-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 15;
-    }
-
-    .hub-card-column {
-      position: relative;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .hub-bento-card {
-      position: relative;
-      display: grid;
-      grid-template-columns: 88px 1fr;
-      align-items: center;
-      gap: 14px;
-      padding: 13px 15px;
-      border-radius: 18px;
-      background: #FFFFFF;
-      border: 1.5px solid rgba(188, 166, 136, 0.55);
-      box-shadow: 0 8px 24px rgba(58, 42, 30, 0.06);
-      cursor: pointer;
-      transition: all 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .hub-card-column.right .hub-bento-card {
-      grid-template-columns: 1fr 88px;
-    }
-
-    .hub-bento-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--green-primary);
-      box-shadow: 0 14px 32px rgba(45, 90, 67, 0.14);
-    }
-
-    .hub-bento-card.active {
-      border-color: var(--green-primary);
-      border-width: 2px;
-      background: #FDFBF7;
-      box-shadow: 0 14px 34px rgba(45, 90, 67, 0.18);
-    }
-
-    .hub-card-thumb-wrap {
-      position: relative;
-      width: 88px;
-      height: 82px;
-      border-radius: 13px;
-      overflow: hidden;
-      border: 1px solid var(--border-warm);
-      background: var(--bg-beige);
-      flex-shrink: 0;
-    }
-
-    .hub-card-thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .hub-card-thumb-badge {
-      position: absolute;
-      bottom: 5px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(45, 90, 67, 0.90);
-      color: #FFFFFF;
-      font-size: 0.62rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .hub-card-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .hub-card-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 0.98rem;
-      font-weight: 800;
-      color: var(--black-ink);
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-    }
-
-    .hub-card-sub {
-      font-size: 0.75rem;
-      color: var(--brown-soft);
-      line-height: 1.4;
-      word-break: keep-all;
-    }
-
-    .hub-card-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 5px;
-      flex-wrap: wrap;
-    }
-
-    .hub-chip-btn {
-      appearance: none;
-      border: 1px solid var(--border-warm);
-      background: var(--bg-beige);
-      color: var(--brown-deep);
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 999px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-    .hub-chip-btn:hover {
-      background: var(--brown-deep);
-      border-color: var(--brown-deep);
-      color: #FFFFFF;
-    }
-    .hub-chip-btn.primary {
-      background: var(--green-primary);
-      border-color: var(--green-primary);
-      color: #FFFFFF;
-    }
-    .hub-chip-btn.primary:hover {
-      background: var(--brown-deep);
-      border-color: var(--brown-deep);
-    }
-
-    /* Connection Anchor Dot on the inner edge of each Bento Card */
-    .hub-card-anchor {
-      position: absolute;
-      top: 50%;
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #C5A880;
-      border: 2px solid #FFFFFF;
-      box-shadow: 0 0 0 2px rgba(197, 168, 128, 0.35);
-      transform: translateY(-50%);
-      transition: all 0.22s ease;
-    }
-    .hub-card-column.left .hub-card-anchor {
-      right: -6px;
-    }
-    .hub-card-column.right .hub-card-anchor {
-      left: -6px;
-    }
-    .hub-bento-card.active .hub-card-anchor {
-      background: var(--green-primary);
-      box-shadow: 0 0 0 4px rgba(45, 90, 67, 0.25);
+        radial-gradient(circle at 30% 35%, #FAF7F0 0%, #F4EFE4 58%, #EBE3D3 100%);
     }
 
     .vibrant-3d-stage {
-      position: relative;
-      height: 620px;
-      border-radius: 24px;
+      position: sticky;
+      top: 62px;
+      height: calc(100vh - 62px);
       background: radial-gradient(circle at 50% 42%, #FAF7F0 0%, #EFE9DA 68%, #E4DCCB 100%);
-      border: 1px solid var(--border-warm);
+      border-right: 1px solid var(--border-warm);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -371,7 +189,7 @@
     .stage-top-badge {
       position: relative;
       z-index: 25;
-      margin: 14px auto 0;
+      margin: 16px auto 0;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -401,7 +219,7 @@
     .stage-bottom-bar {
       position: relative;
       z-index: 25;
-      margin: 0 auto 14px;
+      margin: 0 auto 18px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -527,18 +345,15 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* =========================================================================
-       3. BOTTOM SECTION: SELECTABLE 4-STEP SLIDE DECK + COMPACT SCI SIDEBAR
+       3. RIGHT SECTION: UNIFIED 4-STEP MEDICAL INFO SLIDE DECK + SCI SIDEBAR
        ========================================================================= */
     .encyclopedia-scroll-panel {
-      width: min(1480px, 96vw);
-      margin: 6px auto 48px;
-      padding: 26px 32px 36px;
-      border-radius: 26px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid var(--border-warm);
-      box-shadow: var(--shadow-soft);
+      padding: 26px 32px 42px;
+      background: var(--bg-beige);
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 62px);
     }
 
     /* Top Title Header */
@@ -870,34 +685,22 @@
       word-break: keep-all;
     }
 
-    @media (max-width: 1180px) {
-      .idea-b-hub-stage {
+    @media (max-width: 1120px) {
+      .vibrant-workspace {
         grid-template-columns: 1fr;
-        padding: 16px;
-      }
-      #hub-spoke-svg, .hub-card-anchor {
-        display: none;
       }
       .vibrant-3d-stage {
-        order: -1;
-        height: 52vh;
-      }
-      .hub-card-column {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-      .hub-card-column.right .hub-bento-card {
-        grid-template-columns: 88px 1fr;
+        position: relative;
+        top: 0;
+        height: 54vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border-warm);
       }
       .encyc-main-grid {
         grid-template-columns: 1fr;
       }
     }
-    @media (max-width: 720px) {
-      .hub-card-column {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 680px) {
       .slide-visual-banner {
         grid-template-columns: 1fr;
       }
@@ -915,7 +718,7 @@
   <header class="vibrant-header">
     <a href="story-3d.html" class="vh-brand">
       <div class="vh-brand-mark">바</div>
-      <span class="vh-brand-title">바른한의원 3D 인체 × 클리닉 허브</span>
+      <span class="vh-brand-title">바른한의원 3D 인체모형 · 통합 의학백과</span>
     </a>
 
     <nav class="vh-part-quicknav" id="vh-part-quicknav">
@@ -931,177 +734,38 @@
 
     <div class="vh-right-actions">
       <a href="story-3d.html" class="vh-pill-btn">← 3D 메인 쇼룸</a>
-      <a href="story-3d.html?cards=1" class="vh-pill-btn primary">클리닉 전체보기 ↗</a>
+      <a href="story-3d.html?cards=1" class="vh-pill-btn primary">질환별 상세카드 펼침 ↗</a>
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE: IDEA B HUB & SPOKE + 4-STEP SLIDE DECK -->
+  <!-- MAIN WORKSPACE: UNIFIED 3D HUMAN BODY + 4-STEP MEDICAL INFORMATION SLIDE DECK -->
   <main class="vibrant-workspace">
 
-    <!-- IDEA B: 3-COLUMN HUB & SPOKE (LEFT 4 BENTO CARDS + CENTER 3D HUMAN + RIGHT 4 BENTO CARDS) -->
-    <section class="idea-b-hub-stage" id="idea-b-hub-stage">
-      <svg id="hub-spoke-svg"></svg>
-
-      <!-- LEFT 4 CLINIC BENTO CARDS -->
-      <div class="hub-card-column left" id="hub-col-left">
-        <article class="hub-bento-card" data-hub-part="cervical" onclick="window.selectBodyPart('cervical', true)">
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_cervical_hairloss.jpg" alt="경추·두피열 탈모" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">두피청열</span>
-          </div>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">경추 · 두피열 탈모 클리닉</h3>
-            <p class="hub-card-sub">거북목 교정 · 두피 열독 쿨링 · 모근 재생</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('cervical', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="hairloss.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <span class="hub-card-anchor" data-anchor-part="cervical"></span>
-        </article>
-
-        <article class="hub-bento-card" data-hub-part="syncope" onclick="window.selectBodyPart('syncope', true)">
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_syncope_autonomic.jpg" alt="자율신경·실신 클리닉" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">심신안정</span>
-          </div>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">자율신경 · 실신 클리닉</h3>
-            <p class="hub-card-sub">미주신경성 실신 · 기립성 어지럼증 · 두통 완화</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('syncope', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="director.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <span class="hub-card-anchor" data-anchor-part="syncope"></span>
-        </article>
-
-        <article class="hub-bento-card" data-hub-part="lumbar" onclick="window.selectBodyPart('lumbar', true)">
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_lumbar_pelvis.jpg" alt="척추·관절 추나 클리닉" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">추나요법</span>
-          </div>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">척추 · 관절 · 디스크 추나</h3>
-            <p class="hub-card-sub">허리 디스크 감압 · 골반 수평 교정 · 통증 치료</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('lumbar', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="chuna.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <span class="hub-card-anchor" data-anchor-part="lumbar"></span>
-        </article>
-
-        <article class="hub-bento-card" data-hub-part="prostate" onclick="window.selectBodyPart('prostate', true)">
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_prostate_care.jpg" alt="전립선·배뇨 클리닉" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">원기회복</span>
-          </div>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">전립선 · 배뇨 · 남성활력</h3>
-            <p class="hub-card-sub">야간뇨 · 잔뇨감 해소 · 신장·방광 하초 온열 보강</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('prostate', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="prostate.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <span class="hub-card-anchor" data-anchor-part="prostate"></span>
-        </article>
+    <!-- LEFT: 3D ANATOMICAL SHOWROOM STAGE -->
+    <section class="vibrant-3d-stage" id="vibrant-3d-stage">
+      <div id="dongin-loader-overlay">
+        <div class="loader-spinner"></div>
+        <div style="font-size:0.8rem;font-weight:700;color:var(--brown-deep);">3D 인체 장기 · 신경 · 골격 일러스트 로딩 중...</div>
       </div>
 
-      <!-- CENTER: 3D ANATOMICAL SHOWROOM STAGE -->
-      <section class="vibrant-3d-stage" id="vibrant-3d-stage">
-        <div id="dongin-loader-overlay">
-          <div class="loader-spinner"></div>
-          <div style="font-size:0.8rem;font-weight:700;color:var(--brown-deep);">3D 인체 장기 · 신경 · 골격 일러스트 로딩 중...</div>
-        </div>
+      <div class="stage-top-badge">
+        <span class="stage-top-dot"></span>
+        <span class="stage-top-text" id="stage-active-part-label">무릎 · 소아 성장판 & 감기면역</span>
+      </div>
 
-        <div class="stage-top-badge">
-          <span class="stage-top-dot"></span>
-          <span class="stage-top-text" id="stage-active-part-label">무릎 · 소아 성장판 & 감기면역</span>
-        </div>
+      <canvas id="vibrant-body-canvas"></canvas>
+      <div id="hotspot-overlay-layer"></div>
 
-        <canvas id="vibrant-body-canvas"></canvas>
-        <div id="hotspot-overlay-layer"></div>
-
-        <!-- Bottom Control Bar: Gender Toggle + Single Reset ("원위치") Button (#4, #5) -->
-        <div class="stage-bottom-bar">
-          <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
-          <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
-          <span style="width:1px;height:14px;background:var(--border-warm);"></span>
-          <button type="button" class="stage-ctrl-btn reset-btn" id="btn-cam-reset" onclick="window.resetDonginView()">↺ 원위치</button>
-        </div>
-      </section>
-
-      <!-- RIGHT 4 CLINIC BENTO CARDS -->
-      <div class="hub-card-column right" id="hub-col-right">
-        <article class="hub-bento-card" data-hub-part="gongjindan" onclick="window.selectBodyPart('gongjindan', true)">
-          <span class="hub-card-anchor" data-anchor-part="gongjindan"></span>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">뇌 · 심장 황제공진단</h3>
-            <p class="hub-card-sub">만성 번아웃 · 뇌해마 기억력 · 수승화강 원기 충전</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('gongjindan', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="gongjindan.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_gongjindan_heart_brain_noborder.jpg" alt="뇌·심장 황제공진단" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">황제보약</span>
-          </div>
-        </article>
-
-        <article class="hub-bento-card" data-hub-part="gut" onclick="window.selectBodyPart('gut', true)">
-          <span class="hub-card-anchor" data-anchor-part="gut"></span>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">위장 · 비만 · 대사 다이어트</h3>
-            <p class="hub-card-sub">소화불량·담적 치료 · 간 해독 · 체질개선 감량</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('gut', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="diet-zero.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_gut_metabolism.jpg" alt="위장·비만 다이어트" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">체질개선</span>
-          </div>
-        </article>
-
-        <article class="hub-bento-card" data-hub-part="uterus" onclick="window.selectBodyPart('uterus', true)">
-          <span class="hub-card-anchor" data-anchor-part="uterus"></span>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">여성 · 부인과 · 난임 착상</h3>
-            <p class="hub-card-sub">36.8°C 자궁 심부 온열 · 착상보약 · 생리통·갱년기</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('uterus', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="director.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_uterus_fertility.jpg" alt="여성·자궁·난임" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">착상보약</span>
-          </div>
-        </article>
-
-        <article class="hub-bento-card" data-hub-part="knee" onclick="window.selectBodyPart('knee', true)">
-          <span class="hub-card-anchor" data-anchor-part="knee"></span>
-          <div class="hub-card-info">
-            <h3 class="hub-card-title">성장 · 수험생 클리닉</h3>
-            <p class="hub-card-sub">무릎 성장판 자극 · 비염·감기면역 · 학습 집중력</p>
-            <div class="hub-card-actions">
-              <button type="button" class="hub-chip-btn" onclick="event.stopPropagation(); window.selectBodyPart('knee', true); document.getElementById('encyclopedia-scroll-panel').scrollIntoView({behavior:'smooth'});">3D 원리·논문 ↓</button>
-              <a href="growth.html" class="hub-chip-btn primary" onclick="event.stopPropagation()">상세 스토리 →</a>
-            </div>
-          </div>
-          <div class="hub-card-thumb-wrap">
-            <img src="illust_knee_growth_care.jpg" alt="성장·수험생 클리닉" class="hub-card-thumb" />
-            <span class="hub-card-thumb-badge">성장골든</span>
-          </div>
-        </article>
+      <!-- Bottom Control Bar: Gender Toggle + Single Reset ("원위치") Button (#4, #5) -->
+      <div class="stage-bottom-bar">
+        <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
+        <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
+        <span style="width:1px;height:14px;background:var(--border-warm);"></span>
+        <button type="button" class="stage-ctrl-btn reset-btn" id="btn-cam-reset" onclick="window.resetDonginView()">↺ 원위치</button>
       </div>
     </section>
 
-    <!-- BOTTOM: PAGINATED 4-STEP SLIDE DECK + COMPACT SCI REFERENCE RAIL -->
+    <!-- RIGHT: PAGINATED 4-STEP SLIDE DECK + COMPACT SCI REFERENCE RAIL -->
     <section class="encyclopedia-scroll-panel" id="encyclopedia-scroll-panel">
       <div id="encyclopedia-dynamic-content"></div>
     </section>

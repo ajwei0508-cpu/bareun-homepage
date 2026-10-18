@@ -2794,7 +2794,7 @@ function buildPageHtml(page) {
         <span>6대 클리닉</span>
       </a>
       <a class="back-pill-btn" id="header-body-explorer-link" href="body-explorer.html" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
-        <span>3D 인체 허브 (Idea B) ↗</span>
+        <span>🧬 3D 인체모형 통합 의학·논문 정보 ↗</span>
       </a>
     </div>
 
@@ -2829,7 +2829,7 @@ function buildPageHtml(page) {
   </header>
 
   <main id="project-details">
-    <!-- LEFT CLINIC GUIDE & IDEA A 360° 3D ORGAN/SPINE VIEWER PANEL -->
+    <!-- LEFT CLINIC GUIDE & INTERACTIVE PATIENT EMPATHY CHECKLIST -->
     <aside id="project-details-meta">
       <div>
         <div class="meta-eyebrow">${page.meta.eyebrow}</div>
@@ -2838,33 +2838,6 @@ function buildPageHtml(page) {
 
         <div id="project-details-desc">
           ${descHtml}
-        </div>
-
-        <!-- IDEA A: EMBEDDED 360° INTERACTIVE 3D ORGAN / SPINE ANATOMY VIEWER CARD -->
-        <div class="idea-a-3d-viewer-card" id="idea-a-3d-viewer-card">
-          <div class="idea-a-3d-header">
-            <span class="idea-a-3d-badge">
-              <span class="idea-a-3d-badge-dot"></span>
-              <span id="idea-a-3d-title-label">360° 3D 해부학 뷰어</span>
-            </span>
-            <div class="idea-a-3d-ctrl-btns">
-              <button type="button" class="idea-a-3d-mini-btn" onclick="window.zoomIdeaA3D(-0.22)" title="확대">＋</button>
-              <button type="button" class="idea-a-3d-mini-btn" onclick="window.zoomIdeaA3D(0.22)" title="축소">－</button>
-              <button type="button" class="idea-a-3d-mini-btn" onclick="window.resetIdeaA3D()" title="원위치">원위치</button>
-            </div>
-          </div>
-          <div class="idea-a-3d-stage" id="idea-a-3d-stage">
-            <canvas id="idea-a-3d-canvas"></canvas>
-            <div class="idea-a-orbit-ring-hint">↻ 마우스·터치 360° 회전 / 우측 카드 스크롤 연동</div>
-          </div>
-          <div class="idea-a-3d-footer">
-            <button type="button" class="idea-a-green-pill" onclick="window.toggleIdeaAAutoSpin()">
-              <span id="idea-a-spin-label">● 360° 3D 뷰어 제어</span>
-            </button>
-            <a class="idea-a-hub-link" id="sidebar-body-explorer-link" href="body-explorer.html">
-              <span>전체 3D 인체 허브(Idea B) ↗</span>
-            </a>
-          </div>
         </div>
 
         <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
@@ -2903,6 +2876,12 @@ function buildPageHtml(page) {
             <button type="button" style="background:none;border:none;color:var(--gold-light);font-size:0.7rem;font-weight:800;cursor:pointer;" onclick="window.openDetailBaModal()">전체화면 상세비교 ↗</button>
           </div>
         </div>
+
+        <!-- 1-CLICK PORTAL TO UNIFIED 3D HUMAN BODY MEDICAL INFORMATION PAGE -->
+        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html" style="background:#2D5A43;border-color:#2D5A43;color:#FFFFFF;">
+          <span>🧬 3D 인체모형 통합 의학·원인·음식·SCI논문 정보</span>
+          <span>페이지 이동 ↗</span>
+        </a>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
@@ -3324,272 +3303,6 @@ function buildPageHtml(page) {
         if (telEl && brandData.phone) {
           telEl.href = 'tel:' + brandData.phone;
           telEl.textContent = '전화 상담 (' + brandData.phone + ')';
-        }
-      })();
-
-      // ====================================================================
-      // 0-B. IDEA A: EMBEDDED 360° INTERACTIVE 3D ORGAN / SPINE VIEWER ENGINE
-      // ====================================================================
-      (async function initIdeaA3DViewer() {
-        const stageEl = document.getElementById('idea-a-3d-stage');
-        const canvasEl = document.getElementById('idea-a-3d-canvas');
-        const titleLabelEl = document.getElementById('idea-a-3d-title-label');
-        if (!stageEl || !canvasEl) return;
-
-        const PART_TITLES = {
-          lumbar: '360° 3D 요추 L1~L5 · 추간판 · 골반',
-          knee: '360° 3D 무릎 성장판 · 대퇴·경골',
-          gut: '360° 3D 위장 · 간 대사 해독 기관',
-          cervical: '360° 3D 경추 C1~C7 · 뇌혈류 모형',
-          gongjindan: '360° 3D 뇌 · 심장 수승화강 회로',
-          prostate: '360° 3D 신장 · 방광 · 전립선 하초',
-          syncope: '360° 3D 오장육부 · 자율신경 밸런스'
-        };
-        const partKey = activeBaData.part || 'lumbar';
-        if (titleLabelEl) {
-          titleLabelEl.textContent = PART_TITLES[partKey] || PART_TITLES.lumbar;
-        }
-
-        try {
-          const [THREE, { GLTFLoader }, { DRACOLoader }, { OrbitControls }] = await Promise.all([
-            import('https://esm.sh/three@0.166.0'),
-            import('https://esm.sh/three@0.166.0/examples/jsm/loaders/GLTFLoader.js'),
-            import('https://esm.sh/three@0.166.0/examples/jsm/loaders/DRACOLoader.js'),
-            import('https://esm.sh/three@0.166.0/examples/jsm/controls/OrbitControls.js')
-          ]);
-
-          const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-          renderer.outputColorSpace = THREE.SRGBColorSpace;
-          renderer.toneMapping = THREE.ACESFilmicToneMapping;
-          renderer.toneMappingExposure = 1.08;
-
-          const scene = new THREE.Scene();
-          const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 50);
-          const DEFAULT_POS = new THREE.Vector3(0, 0.25, 2.55);
-          camera.position.copy(DEFAULT_POS);
-
-          const controls = new OrbitControls(camera, canvasEl);
-          controls.enableDamping = true;
-          controls.dampingFactor = 0.07;
-          controls.enablePan = false;
-          controls.minDistance = 1.25;
-          controls.maxDistance = 4.2;
-          controls.target.set(0, 0.05, 0);
-
-          scene.add(new THREE.HemisphereLight(0xFFFDF9, 0xD8CCB8, 1.35));
-          const dirLight = new THREE.DirectionalLight(0xFFF9EE, 1.55);
-          dirLight.position.set(2.5, 4.0, 3.5);
-          scene.add(dirLight);
-          const rimLight = new THREE.DirectionalLight(0xA7F3D0, 0.55);
-          rimLight.position.set(-2.5, 1.5, -2.0);
-          scene.add(rimLight);
-
-          // Studio 360° Pedestal Ring on Floor (matching Sample Idea A)
-          const pedestalGroup = new THREE.Group();
-          pedestalGroup.position.y = -0.78;
-          const ringMat = new THREE.MeshBasicMaterial({ color: 0x8C735B, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
-          const outerRing = new THREE.Mesh(new THREE.RingGeometry(0.68, 0.71, 64), ringMat);
-          outerRing.rotation.x = -Math.PI / 2;
-          pedestalGroup.add(outerRing);
-
-          const innerDisk = new THREE.Mesh(
-            new THREE.CircleGeometry(0.67, 64),
-            new THREE.MeshBasicMaterial({ color: 0xEFE7D6, transparent: true, opacity: 0.55 })
-          );
-          innerDisk.rotation.x = -Math.PI / 2;
-          innerDisk.position.y = -0.005;
-          pedestalGroup.add(innerDisk);
-          scene.add(pedestalGroup);
-
-          const rootGroup = new THREE.Group();
-          scene.add(rootGroup);
-
-          const boneMat = new THREE.MeshPhysicalMaterial({
-            color: 0xF5EFE2,
-            roughness: 0.42,
-            metalness: 0.02,
-            clearcoat: 0.12
-          });
-          const discMat = new THREE.MeshPhysicalMaterial({
-            color: 0x7EB8DA,
-            roughness: 0.25,
-            transmission: 0.25,
-            transparent: true,
-            opacity: 0.92
-          });
-          const greenMat = new THREE.MeshPhysicalMaterial({
-            color: 0x2D5A43,
-            emissive: 0x10B981,
-            emissiveIntensity: 0.28,
-            roughness: 0.3
-          });
-
-          const draco = new DRACOLoader();
-          draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
-          const gltfLoader = new GLTFLoader();
-          gltfLoader.setDRACOLoader(draco);
-
-          function loadNormalizedOrgan(url, targetSize, pos, tintHex, opacityVal) {
-            return new Promise((resolve) => {
-              gltfLoader.load(url, (gltf) => {
-                const obj = gltf.scene;
-                const box = new THREE.Box3().setFromObject(obj);
-                const size = new THREE.Vector3();
-                const center = new THREE.Vector3();
-                box.getSize(size);
-                box.getCenter(center);
-                const maxDim = Math.max(size.x, size.y, size.z, 0.001);
-                const s = targetSize / maxDim;
-                obj.scale.setScalar(s);
-                obj.position.set(
-                  pos[0] - center.x * s,
-                  pos[1] - center.y * s,
-                  pos[2] - center.z * s
-                );
-                obj.traverse((c) => {
-                  if (c.isMesh) {
-                    c.material = new THREE.MeshPhysicalMaterial({
-                      color: tintHex,
-                      roughness: 0.46,
-                      metalness: 0.02,
-                      clearcoat: 0.14,
-                      transparent: opacityVal < 1.0,
-                      opacity: opacityVal
-                    });
-                  }
-                });
-                rootGroup.add(obj);
-                resolve(obj);
-              }, undefined, () => resolve(null));
-            });
-          }
-
-          if (partKey === 'lumbar') {
-            // Lumbar Spine (L1~L5) + Sky-Blue Intervertebral Discs + Pelvis (Exact match to Sample Idea A!)
-            await loadNormalizedOrgan('Pelvis_Femur.glb', 1.25, [0, -0.32, 0], 0xF3ECE0, 0.96);
-            for (let i = 0; i < 5; i++) {
-              const vy = 0.08 + i * 0.145;
-              const zCurve = Math.sin((i / 4) * Math.PI) * 0.035;
-              const vBody = new THREE.Mesh(new THREE.CylinderGeometry(0.105 - i * 0.005, 0.11 - i * 0.005, 0.088, 28), boneMat);
-              vBody.scale.set(1.22, 1, 0.92);
-              vBody.position.set(0, vy, zCurve);
-              rootGroup.add(vBody);
-
-              const tProc = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.028, 0.035), boneMat);
-              tProc.position.set(0, vy, zCurve - 0.05);
-              rootGroup.add(tProc);
-
-              const sProc = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.055, 0.12), boneMat);
-              sProc.position.set(0, vy - 0.01, zCurve - 0.09);
-              rootGroup.add(sProc);
-
-              const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.102 - i * 0.005, 0.105 - i * 0.005, 0.038, 28), discMat);
-              disc.scale.set(1.2, 1, 0.9);
-              disc.position.set(0, vy - 0.064, zCurve);
-              rootGroup.add(disc);
-            }
-            const axisLine = new THREE.Mesh(
-              new THREE.CylinderGeometry(0.008, 0.008, 1.48, 12),
-              greenMat
-            );
-            axisLine.position.set(0, 0.05, 0);
-            rootGroup.add(axisLine);
-          } else if (partKey === 'knee') {
-            // Knee Joint + Glowing Botanical Green Epiphyseal Growth Plate
-            await loadNormalizedOrgan('Pelvis_Femur.glb', 1.35, [0, 0.22, 0], 0xF3ECE0, 0.95);
-            [-0.19, 0.19].forEach((kx) => {
-              const gp = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.045, 28), greenMat);
-              gp.position.set(kx, -0.34, 0.02);
-              rootGroup.add(gp);
-              const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.065, 0.42, 24), boneMat);
-              tibia.position.set(kx, -0.58, 0.02);
-              rootGroup.add(tibia);
-            });
-          } else if (partKey === 'gut') {
-            await loadNormalizedOrgan('Liver.glb', 0.82, [-0.18, 0.18, 0], 0xB86B52, 0.96);
-            await loadNormalizedOrgan('Stomach.glb', 0.78, [0.18, 0.02, 0.05], 0xE29578, 0.96);
-          } else if (partKey === 'cervical') {
-            await loadNormalizedOrgan('Brain.glb', 0.76, [0, 0.36, 0], 0xE8B4A6, 0.96);
-            for (let i = 0; i < 7; i++) {
-              const cy = -0.45 + i * 0.095;
-              const zc = Math.sin((i / 6) * Math.PI) * 0.03;
-              const cv = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.085, 0.055, 24), boneMat);
-              cv.scale.set(1.2, 1, 0.9);
-              cv.position.set(0, cy, zc);
-              rootGroup.add(cv);
-              const cd = new THREE.Mesh(new THREE.CylinderGeometry(0.076, 0.08, 0.024, 24), discMat);
-              cd.scale.set(1.18, 1, 0.88);
-              cd.position.set(0, cy - 0.04, zc);
-              rootGroup.add(cd);
-            }
-          } else if (partKey === 'gongjindan') {
-            await loadNormalizedOrgan('Brain.glb', 0.76, [0, 0.38, 0], 0xE8B4A6, 0.96);
-            await loadNormalizedOrgan('Heart.glb', 0.62, [0.04, -0.28, 0.04], 0xC85A53, 0.96);
-            const stream = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.56, 16), greenMat);
-            stream.position.set(0, 0.05, 0);
-            rootGroup.add(stream);
-          } else if (partKey === 'prostate') {
-            await loadNormalizedOrgan('Pelvis_Femur.glb', 1.25, [0, -0.18, 0], 0xF3ECE0, 0.42);
-            await loadNormalizedOrgan('Kidneys.glb', 0.72, [0, 0.36, -0.05], 0xB56557, 0.95);
-            const bladder = new THREE.Mesh(new THREE.SphereGeometry(0.13, 24, 20), new THREE.MeshPhysicalMaterial({ color: 0xE09F7D, roughness: 0.35 }));
-            bladder.scale.set(1.1, 0.9, 0.95);
-            bladder.position.set(0, -0.12, 0.08);
-            rootGroup.add(bladder);
-            const prostate = new THREE.Mesh(new THREE.SphereGeometry(0.095, 24, 20), greenMat);
-            prostate.scale.set(1.15, 0.88, 0.95);
-            prostate.position.set(0, -0.28, 0.08);
-            rootGroup.add(prostate);
-          } else {
-            await loadNormalizedOrgan('Brain.glb', 0.62, [0, 0.46, 0], 0xE8B4A6, 0.95);
-            await loadNormalizedOrgan('Heart.glb', 0.48, [0.04, 0.05, 0.04], 0xC85A53, 0.95);
-            await loadNormalizedOrgan('Liver.glb', 0.58, [-0.14, -0.26, 0], 0xB86B52, 0.95);
-            await loadNormalizedOrgan('Stomach.glb', 0.52, [0.15, -0.32, 0.04], 0xE29578, 0.95);
-          }
-
-          let autoSpin = true;
-          let scrollTargetRotY = 0;
-
-          window.toggleIdeaAAutoSpin = function() {
-            autoSpin = !autoSpin;
-            const lbl = document.getElementById('idea-a-spin-label');
-            if (lbl) lbl.textContent = autoSpin ? '● 360° 3D 뷰어 제어 (자동회전 ON)' : '○ 360° 3D 뷰어 제어 (수동모드)';
-          };
-          window.zoomIdeaA3D = function(delta) {
-            camera.position.z = Math.max(1.35, Math.min(3.8, camera.position.z + delta));
-          };
-          window.resetIdeaA3D = function() {
-            camera.position.copy(DEFAULT_POS);
-            controls.target.set(0, 0.05, 0);
-            rootGroup.rotation.set(0, 0, 0);
-          };
-          window.syncIdeaA3DScroll = function(norm) {
-            scrollTargetRotY = norm * Math.PI * 1.65;
-          };
-
-          function resize3D() {
-            const w = stageEl.clientWidth || 360;
-            const h = stageEl.clientHeight || 220;
-            renderer.setSize(w, h, false);
-            camera.aspect = w / Math.max(1, h);
-            camera.updateProjectionMatrix();
-          }
-          window.addEventListener('resize', resize3D);
-          resize3D();
-
-          function tick3D() {
-            requestAnimationFrame(tick3D);
-            if (autoSpin) {
-              rootGroup.rotation.y += 0.0055;
-            } else {
-              rootGroup.rotation.y += (scrollTargetRotY - rootGroup.rotation.y) * 0.08;
-            }
-            controls.update();
-            renderer.render(scene, camera);
-          }
-          tick3D();
-        } catch (err) {
-          console.warn('Idea A 3D viewer fallback:', err);
         }
       })();
 
