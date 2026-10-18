@@ -846,7 +846,7 @@ function buildPageHtml(page) {
     if (p.type === 'clean-video') {
       return `
         <!-- PLATE ${numStr}: Lusion Clean Video Plate -->
-        <article class="project-details-item is-video is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''} data-caption="${p.caption}">
+        <article class="project-details-item is-video is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
           <div class="plate-media-inner">
             <video class="lusion-clean-media" src="${p.videoSrc}" poster="${p.poster}" autoplay muted loop playsinline></video>
             <div class="clean-plate-scrim"></div>
@@ -877,8 +877,8 @@ function buildPageHtml(page) {
             </div>` : '';
       return `
         <!-- PLATE ${numStr}: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''} data-caption="${p.caption}">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('${p.imgSrc}')">
+        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="${p.imgSrc}" alt="${p.title}" draggable="false">
             <div class="clean-plate-scrim"></div>${cleanSciHtml}
             <div class="clean-plate-caption">
@@ -895,7 +895,7 @@ function buildPageHtml(page) {
     if (p.type === 'sim-canvas') {
       return `
         <!-- PLATE ${numStr}: Live 60fps Biomedical Simulation -->
-        <article class="project-details-item is-video" data-caption="${p.caption}">
+        <article class="project-details-item is-video">
           <div class="plate-media-inner">
             <canvas id="sim-canvas-${p.simId}" class="full-sim-canvas"></canvas>
             <div class="plate-top-bar">
@@ -928,7 +928,7 @@ function buildPageHtml(page) {
 
     return `
         <!-- PLATE ${numStr}: Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''} data-caption="${p.caption}">
+        <article class="project-details-item is-motion-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
           <div class="plate-media-inner">
             <div class="motion-video-stage" data-frames="${framesAttr}" data-duration="${p.durationSec || 6.0}">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('${p.frames[0]}');"></div>
@@ -949,7 +949,6 @@ function buildPageHtml(page) {
               </div>
               <div class="plate-action-group">
                 <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
-                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
               </div>
             </div>
           </div>
@@ -1515,10 +1514,6 @@ function buildPageHtml(page) {
     .project-details-item.is-clean-plate.is-active-plate {
       border-color: rgba(255, 237, 215, 0.36);
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.72);
-    }
-
-    .project-details-item.is-clean-plate.is-image .plate-media-inner {
-      cursor: zoom-in;
     }
 
     .lusion-clean-media {
@@ -2816,9 +2811,6 @@ function buildPageHtml(page) {
       <a class="back-pill-btn" href="tel:010-5631-1275" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
         <span>📞 010-5631-1275</span>
       </a>
-      <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
-        <span>B/A 스캔 크게보기 ⇄</span>
-      </button>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -2876,7 +2868,6 @@ function buildPageHtml(page) {
           </div>
           <div class="inline-scroll-ba-foot">
             <span>스크롤 시 BEFORE ➔ AFTER 자동 변환</span>
-            <button type="button" style="background:none;border:none;color:var(--gold-light);font-size:0.7rem;font-weight:800;cursor:pointer;" onclick="window.openDetailBaModal()">전체화면 상세비교 ↗</button>
           </div>
         </div>
 
@@ -2911,24 +2902,6 @@ function buildPageHtml(page) {
           </svg>
         </button>${extraLinkHtml}
       </div>
-
-      <!-- Live Storytelling Docent Tracker -->
-      <div class="live-plate-docent">
-        <div class="docent-header">
-          <span class="docent-step-badge" id="active-plate-badge">원장 임상 노트 · STEP 01 / 06</span>
-          <div class="plate-jump-dots">
-            <button class="plate-dot-btn active" onclick="jumpToPlate(0)">01</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(1)">02</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(2)">03</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(3)">04</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(4)">05</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(5)">B/A</button>
-          </div>
-        </div>
-        <div class="docent-active-caption" id="active-plate-caption">
-          ${page.plates[0].caption}
-        </div>
-      </div>
     </aside>
 
     <!-- RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY -->
@@ -2937,7 +2910,7 @@ function buildPageHtml(page) {
         ${platesHtml}
 
         <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen data-caption="[원장 임상 노트 · 전후 3D 생체 스캔] 스크롤 흐름에 따라 치료 전(Before) 병리적 원인 상태에서 치료 후(After) 근본 회복 상태로 3D 스캔이 자동 변환됩니다.">
+        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 3D 스캔" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
             <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
@@ -2961,7 +2934,7 @@ function buildPageHtml(page) {
         </article>
 
         <!-- PLATE 07: Next Clinic Portal -->
-        <a id="project-details-preview" href="${page.nextClinic.href}" data-caption="${page.nextClinic.caption}">
+        <a id="project-details-preview" href="${page.nextClinic.href}">
           <img class="next-portal-bg" src="${page.nextClinic.bg}" alt="${page.nextClinic.title}">
           <div class="next-portal-scrim"></div>
           <div id="project-details-preview-inner">
@@ -2985,42 +2958,6 @@ function buildPageHtml(page) {
 
   <div id="scroll-indicator">
     <div id="scroll-indicator-bar"></div>
-  </div>
-
-  <div id="plate-lightbox" onclick="this.classList.remove('open')">
-    <button class="lightbox-close">닫기 ✕</button>
-    <img id="lightbox-img" src="" alt="확대 이미지">
-  </div>
-
-  <!-- Interactive 3D Biomedical Before / After Split-Scan Modal -->
-  <div id="detail-ba-modal" onclick="if(event.target===this)this.classList.remove('open')">
-    <div class="detail-ba-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-        <div>
-          <span style="font-size:10.5px;font-weight:800;letter-spacing:0.15em;color:var(--gold-light);">NEKO HEALTH / PRENUVO STYLE 3D BIOMEDICAL SCAN</span>
-          <h3 style="font-family:'Noto Serif KR',serif;font-size:1.35rem;font-weight:800;margin-top:3px;" id="detail-ba-title">${page.meta.title} — 치료 전·후(Before / After) 비교</h3>
-        </div>
-        <button type="button" class="plate-expand-btn" onclick="document.getElementById('detail-ba-modal').classList.remove('open')">닫기 ✕</button>
-      </div>
-
-      <div class="detail-ba-stage" id="detail-ba-stage">
-        <img class="detail-ba-img" id="detail-ba-after" src="ba_chuna_after.jpg" alt="After Scan" draggable="false">
-        <div class="detail-ba-clip" id="detail-ba-clip">
-          <img class="detail-ba-img" id="detail-ba-before" src="ba_chuna_before.jpg" alt="Before Scan" draggable="false">
-        </div>
-        <span class="detail-ba-tag before" id="detail-ba-tag-before">BEFORE · 치료 전</span>
-        <span class="detail-ba-tag after" id="detail-ba-tag-after">AFTER · 치료 후</span>
-        <div class="detail-ba-line" id="detail-ba-line"></div>
-        <div class="detail-ba-knob" id="detail-ba-knob">◀ B/A ▶</div>
-      </div>
-
-      <div class="detail-ba-metrics" id="detail-ba-metrics"></div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px;flex-wrap:wrap;">
-        <span style="font-size:0.78rem;color:rgba(255,255,255,0.65);">중앙 슬라이더를 좌우로 드래그하여 치료 전 원인과 치료 후 회복 상태를 비교해 보세요.</span>
-        <button type="button" class="modal-submit-btn" style="width:auto;margin:0;padding:10px 20px;" onclick="document.getElementById('detail-ba-modal').classList.remove('open');window.openConsultModal();">1:1 맞춤 진료 예약하기 →</button>
-      </div>
-    </div>
   </div>
 
   <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
@@ -5162,10 +5099,6 @@ function buildPageHtml(page) {
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
-        dotBtns.forEach((b, idx) => b.classList.toggle('active', idx === closestIdx));
-        activeBadge.textContent = '원장 임상 노트 · STEP 0' + (closestIdx + 1) + ' / 0' + plates.length;
-        const cap = plates[closestIdx]?.getAttribute('data-caption');
-        if (cap && activeCaption.textContent !== cap) activeCaption.textContent = cap;
 
         // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
         motionStages.forEach((ms, sIdx) => {

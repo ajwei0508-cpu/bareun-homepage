@@ -559,10 +559,6 @@
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.72);
     }
 
-    .project-details-item.is-clean-plate.is-image .plate-media-inner {
-      cursor: zoom-in;
-    }
-
     .lusion-clean-media {
       position: absolute;
       inset: -4%;
@@ -1864,9 +1860,6 @@
       <a class="back-pill-btn" href="tel:010-5631-1275" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
         <span>📞 010-5631-1275</span>
       </a>
-      <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
-        <span>B/A 스캔 크게보기 ⇄</span>
-      </button>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -1925,7 +1918,6 @@
           </div>
           <div class="inline-scroll-ba-foot">
             <span>스크롤 시 BEFORE ➔ AFTER 자동 변환</span>
-            <button type="button" style="background:none;border:none;color:var(--gold-light);font-size:0.7rem;font-weight:800;cursor:pointer;" onclick="window.openDetailBaModal()">전체화면 상세비교 ↗</button>
           </div>
         </div>
 
@@ -2006,24 +1998,6 @@
         </button>
         <a href="diet-zero-full.html" class="extra-detail-link">💗 식욕ZERO 시크릿 플랜 · 비대면/정밀 안내 전체보기 ↗</a>
       </div>
-
-      <!-- Live Storytelling Docent Tracker -->
-      <div class="live-plate-docent">
-        <div class="docent-header">
-          <span class="docent-step-badge" id="active-plate-badge">원장 임상 노트 · STEP 01 / 06</span>
-          <div class="plate-jump-dots">
-            <button class="plate-dot-btn active" onclick="jumpToPlate(0)">01</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(1)">02</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(2)">03</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(3)">04</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(4)">05</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(5)">B/A</button>
-          </div>
-        </div>
-        <div class="docent-active-caption" id="active-plate-caption">
-          [원장 임상 노트 01 · 복부 중심성 비만과 복압 상승 기전] 복강 내 장간막 사이에 내장지방과 가스(식적)가 축적되면 복압이 상승해 허리 둘레가 급격히 늘어나며, 앉은 자세에서 위장관 압박과 요추 하중 과부하를 동시에 유발합니다.
-        </div>
-      </div>
     </aside>
 
     <!-- RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY -->
@@ -2031,7 +2005,7 @@
       <div id="project-details-items-move-container">
         
         <!-- PLATE 01: Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate is-active-plate" data-caption="[원장 임상 노트 01 · 복부 중심성 비만과 복압 상승 기전] 복강 내 장간막 사이에 내장지방과 가스(식적)가 축적되면 복압이 상승해 허리 둘레가 급격히 늘어나며, 앉은 자세에서 위장관 압박과 요추 하중 과부하를 동시에 유발합니다.">
+        <article class="project-details-item is-motion-plate is-active-plate">
           <div class="plate-media-inner">
             <div class="motion-video-stage" data-frames="detail_diet_story1_closet_zipper.jpg?v=belt1|detail_diet_story1_baggy_pants.jpg?v=belt1" data-duration="6.4">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('detail_diet_story1_closet_zipper.jpg?v=belt1');"></div>
@@ -2052,15 +2026,14 @@
               </div>
               <div class="plate-action-group">
                 <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
-                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
               </div>
             </div>
           </div>
         </article>
 
         <!-- PLATE 02: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen data-caption="[원장 임상 노트 02 · 극단적 절식과 내장지방 우선 축적(Set-Point 역설)] 초저열량 절식(닭가슴살·샐러드)은 골격근을 먼저 분해해 기초대사량을 떨어뜨리고 복부 지방합성효소(LPL) 활성을 급증시켜, 폭식 시 이전보다 훨씬 단단한 내장지방 요요를 초래합니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_diet_story2_starvation_yoyo.jpg?v=belt1')">
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_diet_story2_starvation_yoyo.jpg?v=belt1" alt="굶고 빼고 다시 찌는, 끝없는 요요의 형벌" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
@@ -2077,8 +2050,8 @@
         </article>
 
         <!-- PLATE 03: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-caption="[원장 임상 노트 03 · 식적(食積)·습담(濕痰) 해소와 복부 대사 화로 점화] 차갑게 식은 복부 화로에 음식(장작)이 들어가면 연소되지 않고 검은 재(습담·어혈·내장지방)로 쌓입니다. 맞춤 대사 한약은 심부 체온과 미토콘드리아 열발생을 깨워 쌓인 뱃살을 에너지로 태워냅니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_diet_story3_brazier_metabolism_3d.jpg?v=belt1')">
+        <article class="project-details-item is-image is-clean-plate">
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_diet_story3_brazier_metabolism_3d.jpg?v=belt1" alt="불 꺼진 화로에는 장작을 넣어도 타지 않습니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
@@ -2095,8 +2068,8 @@
         </article>
 
         <!-- PLATE 04: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen data-caption="[원장 임상 노트 04 · 정밀 체성분(InBody)·진맥 기반 복부 해독 & 대사 한약] 인바디 내장지방 지수와 1:1 진맥을 바탕으로 복부 심부 온열·약침 치료를 시행해 굳은 습담을 풀어주고, 정갈하게 탕전한 체질 맞춤 한약으로 심박수 부담 없이 기초대사량을 끌어올립니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_diet_story4_inbody_pulse_herb.jpg?v=belt1')">
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_diet_story4_inbody_pulse_herb.jpg?v=belt1" alt="노폐물은 비우고, 대사는 올리는 1:1 맞춤 감량 루틴" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
@@ -2113,8 +2086,8 @@
         </article>
 
         <!-- PLATE 05: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-caption="[원장 임상 노트 05 · 복부 둘레 감소 및 기초대사량 보존 임상 지표] 1:1 해독 & 대사 부스팅 프로그램 이수 환자 분석 결과, 골격근 손실 없이 복부 내장지방 단면적과 허리 둘레(벨트 2~3칸, 평균 -8.4cm)가 집중 감소하며 요요 없는 탄탄한 라인이 유지되었습니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_diet_story5_zipper_success_fit.jpg?v=belt1')">
+        <article class="project-details-item is-image is-clean-plate">
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_diet_story5_zipper_success_fit.jpg?v=belt1" alt="지퍼가 부드럽게 올라가는 아침, 다시 나를 사랑할 시간" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="visual-sci-overlay">
@@ -2141,7 +2114,7 @@
         </article>
 
         <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen data-caption="[원장 임상 노트 · 전후 3D 생체 스캔] 스크롤 흐름에 따라 치료 전(Before) 병리적 원인 상태에서 치료 후(After) 근본 회복 상태로 3D 스캔이 자동 변환됩니다.">
+        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 3D 스캔" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
             <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
@@ -2165,7 +2138,7 @@
         </article>
 
         <!-- PLATE 07: Next Clinic Portal -->
-        <a id="project-details-preview" href="hairloss.html" data-caption="[다음 클리닉 안내 · 05 탈모] 고가의 샴푸와 탈모약의 부작용 앞에서 좌절했던 분들을 위해, 두피 사막화의 근본 원인인 상열(上熱)을 끄는 바른 탈모 클리닉으로 이어집니다.">
+        <a id="project-details-preview" href="hairloss.html">
           <img class="next-portal-bg" src="detail_hair_story5_date_smile.jpg?v=uniq1" alt="바른 탈모 · 모근재생">
           <div class="next-portal-scrim"></div>
           <div id="project-details-preview-inner">
@@ -2189,42 +2162,6 @@
 
   <div id="scroll-indicator">
     <div id="scroll-indicator-bar"></div>
-  </div>
-
-  <div id="plate-lightbox" onclick="this.classList.remove('open')">
-    <button class="lightbox-close">닫기 ✕</button>
-    <img id="lightbox-img" src="" alt="확대 이미지">
-  </div>
-
-  <!-- Interactive 3D Biomedical Before / After Split-Scan Modal -->
-  <div id="detail-ba-modal" onclick="if(event.target===this)this.classList.remove('open')">
-    <div class="detail-ba-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-        <div>
-          <span style="font-size:10.5px;font-weight:800;letter-spacing:0.15em;color:var(--gold-light);">NEKO HEALTH / PRENUVO STYLE 3D BIOMEDICAL SCAN</span>
-          <h3 style="font-family:'Noto Serif KR',serif;font-size:1.35rem;font-weight:800;margin-top:3px;" id="detail-ba-title">바른 다이어트 · 식욕ZERO — 치료 전·후(Before / After) 비교</h3>
-        </div>
-        <button type="button" class="plate-expand-btn" onclick="document.getElementById('detail-ba-modal').classList.remove('open')">닫기 ✕</button>
-      </div>
-
-      <div class="detail-ba-stage" id="detail-ba-stage">
-        <img class="detail-ba-img" id="detail-ba-after" src="ba_chuna_after.jpg" alt="After Scan" draggable="false">
-        <div class="detail-ba-clip" id="detail-ba-clip">
-          <img class="detail-ba-img" id="detail-ba-before" src="ba_chuna_before.jpg" alt="Before Scan" draggable="false">
-        </div>
-        <span class="detail-ba-tag before" id="detail-ba-tag-before">BEFORE · 치료 전</span>
-        <span class="detail-ba-tag after" id="detail-ba-tag-after">AFTER · 치료 후</span>
-        <div class="detail-ba-line" id="detail-ba-line"></div>
-        <div class="detail-ba-knob" id="detail-ba-knob">◀ B/A ▶</div>
-      </div>
-
-      <div class="detail-ba-metrics" id="detail-ba-metrics"></div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px;flex-wrap:wrap;">
-        <span style="font-size:0.78rem;color:rgba(255,255,255,0.65);">중앙 슬라이더를 좌우로 드래그하여 치료 전 원인과 치료 후 회복 상태를 비교해 보세요.</span>
-        <button type="button" class="modal-submit-btn" style="width:auto;margin:0;padding:10px 20px;" onclick="document.getElementById('detail-ba-modal').classList.remove('open');window.openConsultModal();">1:1 맞춤 진료 예약하기 →</button>
-      </div>
-    </div>
   </div>
 
   <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
@@ -4366,10 +4303,6 @@
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
-        dotBtns.forEach((b, idx) => b.classList.toggle('active', idx === closestIdx));
-        activeBadge.textContent = '원장 임상 노트 · STEP 0' + (closestIdx + 1) + ' / 0' + plates.length;
-        const cap = plates[closestIdx]?.getAttribute('data-caption');
-        if (cap && activeCaption.textContent !== cap) activeCaption.textContent = cap;
 
         // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
         motionStages.forEach((ms, sIdx) => {

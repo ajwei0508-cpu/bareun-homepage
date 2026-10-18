@@ -559,10 +559,6 @@
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.72);
     }
 
-    .project-details-item.is-clean-plate.is-image .plate-media-inner {
-      cursor: zoom-in;
-    }
-
     .lusion-clean-media {
       position: absolute;
       inset: -4%;
@@ -1864,9 +1860,6 @@
       <a class="back-pill-btn" href="tel:010-5631-1275" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
         <span>📞 010-5631-1275</span>
       </a>
-      <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
-        <span>B/A 스캔 크게보기 ⇄</span>
-      </button>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -1925,7 +1918,6 @@
           </div>
           <div class="inline-scroll-ba-foot">
             <span>스크롤 시 BEFORE ➔ AFTER 자동 변환</span>
-            <button type="button" style="background:none;border:none;color:var(--gold-light);font-size:0.7rem;font-weight:800;cursor:pointer;" onclick="window.openDetailBaModal()">전체화면 상세비교 ↗</button>
           </div>
         </div>
 
@@ -2006,24 +1998,6 @@
         </button>
         <a href="growth-full.html" class="extra-detail-link">📊 성장판 백과사전 · 상세 리포트 전체보기 ↗</a>
       </div>
-
-      <!-- Live Storytelling Docent Tracker -->
-      <div class="live-plate-docent">
-        <div class="docent-header">
-          <span class="docent-step-badge" id="active-plate-badge">원장 임상 노트 · STEP 01 / 06</span>
-          <div class="plate-jump-dots">
-            <button class="plate-dot-btn active" onclick="jumpToPlate(0)">01</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(1)">02</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(2)">03</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(3)">04</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(4)">05</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(5)">B/A</button>
-          </div>
-        </div>
-        <div class="docent-active-caption" id="active-plate-caption">
-          [원장 임상 노트 01 · 야간 서파수면(Slow-Wave Sleep)과 성장호르몬 분비] 성장호르몬(GH)의 70% 이상은 밤 10시~새벽 2시 깊은 서파수면 단계에서 분비됩니다. 만성 비염과 구강호흡은 뇌 산소 포화도를 낮춰 야간 성장호르몬 분비량을 절반 이하로 떨어뜨립니다.
-        </div>
-      </div>
     </aside>
 
     <!-- RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY -->
@@ -2031,7 +2005,7 @@
       <div id="project-details-items-move-container">
         
         <!-- PLATE 01: Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate is-active-plate" data-caption="[원장 임상 노트 01 · 야간 서파수면(Slow-Wave Sleep)과 성장호르몬 분비] 성장호르몬(GH)의 70% 이상은 밤 10시~새벽 2시 깊은 서파수면 단계에서 분비됩니다. 만성 비염과 구강호흡은 뇌 산소 포화도를 낮춰 야간 성장호르몬 분비량을 절반 이하로 떨어뜨립니다.">
+        <article class="project-details-item is-motion-plate is-active-plate">
           <div class="plate-media-inner">
             <div class="motion-video-stage" data-frames="detail_growth_story1_wall_chart.jpg?v=grw1|detail_growth_story1_mouth_breathing.jpg?v=grw1" data-duration="6.4">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('detail_growth_story1_wall_chart.jpg?v=grw1');"></div>
@@ -2052,15 +2026,14 @@
               </div>
               <div class="plate-action-group">
                 <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
-                <button type="button" class="plate-expand-btn" onclick="window.openLightboxFromPlate(this)">크게 보기 ↗</button>
               </div>
             </div>
           </div>
         </article>
 
         <!-- PLATE 02: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen data-caption="[원장 임상 노트 02 · 칼슘 단독 보충의 한계와 골연령 가속] 위장관 흡수율이 떨어진 상태에서의 과도한 영양제·고열량 섭취는 골 길이 성장이 아닌 체지방 축적으로 이어지며, 오히려 렙틴(Leptin)과 성호르몬을 자극해 성장판 조기 폐쇄를 앞당길 수 있습니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_growth_story2_supplements_limit.jpg?v=grw2')">
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_growth_story2_supplements_limit.jpg?v=grw2" alt="식탁 위 가득한 영양제, 왜 키로는 한 뼘도 가지 않을까요?" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
@@ -2077,8 +2050,8 @@
         </article>
 
         <!-- PLATE 03: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-caption="[원장 임상 노트 03 · 성장판 연골 증식(Chondrogenesis) 이중 기전] 의이인·강황·지모 배합으로 시상하부-뇌하수체-성선 축(HPG Axis)의 조기 흥분을 안정시켜 골화 속도를 늦추는 동시에, 골형성단백질(BMP-2)과 IGF-1 발현을 높여 연골 기질 층을 확장합니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_growth_story3_epiphyseal_3d.jpg?v=grw2')">
+        <article class="project-details-item is-image is-clean-plate">
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_growth_story3_epiphyseal_3d.jpg?v=grw2" alt="닫혀가는 성장판의 시계를 멈추고, 뼈 길이 성장을 점화합니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
@@ -2095,8 +2068,8 @@
         </article>
 
         <!-- PLATE 04: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen data-caption="[원장 임상 노트 04 · 초음파 성장판 정량 계측 및 단계별 처방] 대퇴골 원위부와 경골 근위부 성장판의 저에코 연골층 두께를 0.1mm 단위로 추적 관찰하며, 소아도 쓰지 않고 맛있게 복용할 수 있는 천연 무감미 증류·농축 제형으로 조제합니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_growth_story4_ultrasound_scan.jpg?v=grw2')">
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_growth_story4_ultrasound_scan.jpg?v=grw2" alt="방사선 노출 걱정 없이 눈으로 확인하는 성장판 연골 두께" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
@@ -2113,8 +2086,8 @@
         </article>
 
         <!-- PLATE 05: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-caption="[원장 임상 노트 05 · 성장 치료 예후 및 골든타임 기준] 여아 만 8~10세(초경 전), 남아 만 9~12세(변성기 전)에 성장판 관리에 돌입할 경우 예측 최종 신장(MPH) 대비 평균 +7~10cm 이상의 추가 성장 포텐셜을 확보할 수 있습니다.">
-          <div class="plate-media-inner" onclick="window.openCleanLightbox('detail_growth_story5_tall_basketball.jpg?v=grw2')">
+        <article class="project-details-item is-image is-clean-plate">
+          <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_growth_story5_tall_basketball.jpg?v=grw2" alt="어느새 엄마 눈높이를 훌쩍 넘어선, 가장 반짝이는 성장의 기적" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="visual-sci-overlay">
@@ -2141,7 +2114,7 @@
         </article>
 
         <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen data-caption="[원장 임상 노트 · 전후 3D 생체 스캔] 스크롤 흐름에 따라 치료 전(Before) 병리적 원인 상태에서 치료 후(After) 근본 회복 상태로 3D 스캔이 자동 변환됩니다.">
+        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 3D 스캔" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
             <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
@@ -2165,7 +2138,7 @@
         </article>
 
         <!-- PLATE 07: Next Clinic Portal -->
-        <a id="project-details-preview" href="diet-zero.html" data-caption="[다음 클리닉 안내 · 04 다이어트] 굶고 빼고 다시 배부터 찌는 요요의 형벌을 끊어내고, 불 꺼진 대사 화로를 되살려 입고 싶은 옷을 당당히 입는 다이어트 클리닉으로 이어집니다.">
+        <a id="project-details-preview" href="diet-zero.html">
           <img class="next-portal-bg" src="detail_diet_portal_bg.jpg?v=uniq1" alt="바른 다이어트 · 식욕ZERO">
           <div class="next-portal-scrim"></div>
           <div id="project-details-preview-inner">
@@ -2189,42 +2162,6 @@
 
   <div id="scroll-indicator">
     <div id="scroll-indicator-bar"></div>
-  </div>
-
-  <div id="plate-lightbox" onclick="this.classList.remove('open')">
-    <button class="lightbox-close">닫기 ✕</button>
-    <img id="lightbox-img" src="" alt="확대 이미지">
-  </div>
-
-  <!-- Interactive 3D Biomedical Before / After Split-Scan Modal -->
-  <div id="detail-ba-modal" onclick="if(event.target===this)this.classList.remove('open')">
-    <div class="detail-ba-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-        <div>
-          <span style="font-size:10.5px;font-weight:800;letter-spacing:0.15em;color:var(--gold-light);">NEKO HEALTH / PRENUVO STYLE 3D BIOMEDICAL SCAN</span>
-          <h3 style="font-family:'Noto Serif KR',serif;font-size:1.35rem;font-weight:800;margin-top:3px;" id="detail-ba-title">바른 성장 · 성조숙증 — 치료 전·후(Before / After) 비교</h3>
-        </div>
-        <button type="button" class="plate-expand-btn" onclick="document.getElementById('detail-ba-modal').classList.remove('open')">닫기 ✕</button>
-      </div>
-
-      <div class="detail-ba-stage" id="detail-ba-stage">
-        <img class="detail-ba-img" id="detail-ba-after" src="ba_chuna_after.jpg" alt="After Scan" draggable="false">
-        <div class="detail-ba-clip" id="detail-ba-clip">
-          <img class="detail-ba-img" id="detail-ba-before" src="ba_chuna_before.jpg" alt="Before Scan" draggable="false">
-        </div>
-        <span class="detail-ba-tag before" id="detail-ba-tag-before">BEFORE · 치료 전</span>
-        <span class="detail-ba-tag after" id="detail-ba-tag-after">AFTER · 치료 후</span>
-        <div class="detail-ba-line" id="detail-ba-line"></div>
-        <div class="detail-ba-knob" id="detail-ba-knob">◀ B/A ▶</div>
-      </div>
-
-      <div class="detail-ba-metrics" id="detail-ba-metrics"></div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px;flex-wrap:wrap;">
-        <span style="font-size:0.78rem;color:rgba(255,255,255,0.65);">중앙 슬라이더를 좌우로 드래그하여 치료 전 원인과 치료 후 회복 상태를 비교해 보세요.</span>
-        <button type="button" class="modal-submit-btn" style="width:auto;margin:0;padding:10px 20px;" onclick="document.getElementById('detail-ba-modal').classList.remove('open');window.openConsultModal();">1:1 맞춤 진료 예약하기 →</button>
-      </div>
-    </div>
   </div>
 
   <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
@@ -4366,10 +4303,6 @@
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
-        dotBtns.forEach((b, idx) => b.classList.toggle('active', idx === closestIdx));
-        activeBadge.textContent = '원장 임상 노트 · STEP 0' + (closestIdx + 1) + ' / 0' + plates.length;
-        const cap = plates[closestIdx]?.getAttribute('data-caption');
-        if (cap && activeCaption.textContent !== cap) activeCaption.textContent = cap;
 
         // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
         motionStages.forEach((ms, sIdx) => {
