@@ -11,8 +11,8 @@
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.166.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.0/examples/jsm/"
     }
   }
   </script>
@@ -233,7 +233,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Top-Left Stage HUD: Dong-In Control Suite (Body Type + Finish + Camera Angle) */
+    /* Top-Left Stage HUD: Clean Minimal Medical Controls */
     .stage-hud-top {
       position: absolute;
       top: 16px;
@@ -259,15 +259,15 @@
       gap: 4px;
       padding: 4px;
       border-radius: 999px;
-      background: rgba(6, 12, 22, 0.80);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(5, 10, 19, 0.78);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
     .stage-ctrl-btn {
       padding: 5px 11px;
       border-radius: 999px;
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: rgba(248, 250, 252, 0.72);
       font-size: 11px;
@@ -280,13 +280,13 @@
       color: #FFFFFF;
     }
     .stage-ctrl-btn.active {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.34), rgba(16, 185, 129, 0.32));
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.32), rgba(16, 185, 129, 0.28));
       color: #FDE68A;
-      border: 1px solid rgba(253, 230, 138, 0.55);
-      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+      border-color: rgba(253, 230, 138, 0.52);
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.22);
     }
 
-    /* 12-Meridian Interactive Bar along Left/Top of Stage */
+    /* 12-Meridian Interactive Bar */
     .meridian-filter-strip {
       pointer-events: auto;
       display: flex;
@@ -296,17 +296,17 @@
       scrollbar-width: none;
       padding: 5px 8px;
       border-radius: 12px;
-      background: rgba(6, 12, 22, 0.74);
+      background: rgba(5, 10, 19, 0.70);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.11);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
     .meridian-filter-strip::-webkit-scrollbar { display: none; }
     .meridian-chip {
       padding: 4px 9px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(248, 250, 252, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.035);
+      color: rgba(248, 250, 252, 0.76);
       font-size: 10.5px;
       font-weight: 800;
       cursor: pointer;
@@ -326,23 +326,21 @@
       background: rgba(212, 175, 55, 0.24);
       border-color: var(--gold-bright);
       color: #FFFFFF;
-      transform: translateY(-1px);
     }
 
-    /* Acupoint Inspector Card (Bottom-Left above Sim Bar when an Acupoint is clicked/hovered) */
+    /* Acupoint Inspector Card (Bottom-Left above Sim Bar) */
     .acupoint-inspector-hud {
       position: absolute;
-      left: 18px;
-      bottom: 84px;
+      left: 16px;
+      bottom: 80px;
       z-index: 35;
-      width: min(350px, calc(100% - 36px));
-      padding: 13px 16px;
-      border-radius: 16px;
-      background: rgba(6, 13, 24, 0.88);
+      width: min(330px, calc(100% - 32px));
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: rgba(5, 11, 20, 0.82);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.65);
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(253, 230, 138, 0.35);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
       pointer-events: auto;
     }
     .acupoint-inspector-top {
@@ -350,38 +348,38 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
     .acupoint-code-pill {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 900;
-      letter-spacing: 0.1em;
-      padding: 3px 8px;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(212, 175, 55, 0.22);
+      background: rgba(212, 175, 55, 0.2);
       border: 1px solid var(--gold-bright);
       color: var(--gold-bright);
     }
     .acupoint-meridian-lbl {
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--emerald-bright);
     }
     .acupoint-title-ko {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.02rem;
+      font-size: 0.94rem;
       font-weight: 800;
       color: #FFFFFF;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .acupoint-desc-ko {
-      font-size: 0.78rem;
-      line-height: 1.52;
-      color: rgba(248, 250, 252, 0.84);
+      font-size: 0.74rem;
+      line-height: 1.48;
+      color: rgba(248, 250, 252, 0.8);
       word-break: keep-all;
     }
 
-    /* Projected 2D Hotspot Overlay Layer */
+    /* Projected 2D Hotspot & Side Callout Layer */
     #hotspot-overlay-layer {
       position: absolute;
       inset: 0;
@@ -390,6 +388,7 @@
       overflow: hidden;
     }
 
+    /* Vibrant.noomoagency.com Exact Minimal Glass Circle Hotspot (.puntos-container) */
     .body-3d-hotspot {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -397,96 +396,125 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       transition: opacity 0.25s ease;
     }
     .hotspot-pulse-ring {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      background: rgba(16, 185, 129, 0.24);
-      border: 1.5px solid #6EE7B7;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.48);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.75);
-      animation: vibrantPulse 2.2s infinite ease-in-out;
+      gap: 2.5px;
+      box-shadow: 0 0 18px rgba(186, 230, 253, 0.35);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .hotspot-core-dot {
-      width: 7px;
-      height: 7px;
+      width: 3.5px;
+      height: 3.5px;
       border-radius: 50%;
       background: #FFFFFF;
-      box-shadow: 0 0 8px #FFFFFF;
+      box-shadow: 0 0 6px #FFFFFF;
     }
+    .body-3d-hotspot:hover .hotspot-pulse-ring,
     .body-3d-hotspot.active .hotspot-pulse-ring {
-      background: rgba(212, 175, 55, 0.36);
+      background: rgba(212, 175, 55, 0.28);
       border-color: #FDE68A;
-      box-shadow: 0 0 22px rgba(253, 230, 138, 0.95);
-      transform: scale(1.18);
-    }
-    .body-3d-hotspot.active .hotspot-core-dot {
-      background: #FDE68A;
+      box-shadow: 0 0 24px rgba(253, 230, 138, 0.85);
+      transform: scale(1.16);
     }
     .hotspot-tag-pill {
-      padding: 5px 11px;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(6, 12, 22, 0.84);
+      background: rgba(5, 10, 19, 0.76);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: rgba(248, 250, 252, 0.92);
-      font-size: 11px;
-      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(248, 250, 252, 0.90);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       white-space: nowrap;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      transform: translateX(-4px);
       transition: all 0.22s ease;
+      pointer-events: none;
     }
     .body-3d-hotspot:hover .hotspot-tag-pill,
     .body-3d-hotspot.active .hotspot-tag-pill {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.92), rgba(13, 148, 136, 0.92));
-      border-color: #A7F3D0;
-      color: #FFFFFF;
-      transform: translateX(3px);
+      opacity: 1;
+      transform: translateX(0);
+      border-color: rgba(253, 230, 138, 0.65);
+      color: #FDE68A;
     }
 
-    /* Projected Acupoint Mini-Pins on the 3D Dong-In */
-    .acupoint-2d-pin {
+    /* Clean Architectural Side Margin Leader-Line Callouts (matching media_1792308778522_b0767e86.png) */
+    .acupoint-side-callout {
       position: absolute;
-      transform: translate(-50%, -50%);
       pointer-events: auto;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(7, 14, 24, 0.78);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      color: #FDE68A;
-      font-size: 9.5px;
+      gap: 8px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .acupoint-side-callout.side-left {
+      transform: translate(-100%, -50%);
+      flex-direction: row;
+    }
+    .acupoint-side-callout.side-right {
+      transform: translate(0%, -50%);
+      flex-direction: row-reverse;
+    }
+    .acu-callout-text {
+      text-align: right;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(4, 9, 18, 0.68);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.2s ease;
+    }
+    .acupoint-side-callout.side-right .acu-callout-text {
+      text-align: left;
+    }
+    .acupoint-side-callout:hover .acu-callout-text,
+    .acupoint-side-callout.highlighted .acu-callout-text {
+      border-color: #FDE68A;
+      background: rgba(212, 175, 55, 0.20);
+    }
+    .acu-callout-code {
+      font-size: 9px;
       font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--gold-bright);
+      display: block;
+    }
+    .acu-callout-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(248, 250, 252, 0.94);
       white-space: nowrap;
-      transition: all 0.18s ease;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
     }
-    .acupoint-2d-pin:hover,
-    .acupoint-2d-pin.highlighted {
-      background: rgba(212, 175, 55, 0.94);
-      color: #050912;
-      border-color: #FFFFFF;
-      transform: translate(-50%, -50%) scale(1.12);
-      z-index: 40;
+    .acu-leader-line {
+      width: 44px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(253, 230, 138, 0.2), rgba(253, 230, 138, 0.85));
+      position: relative;
     }
-    .acupoint-2d-pin .acu-dot {
-      width: 5px;
-      height: 5px;
+    .acupoint-side-callout.side-right .acu-leader-line {
+      background: linear-gradient(270deg, rgba(253, 230, 138, 0.2), rgba(253, 230, 138, 0.85));
+    }
+    .acu-pinpoint-node {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: #6EE7B7;
-    }
-
-    @keyframes vibrantPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.14); }
+      background: #FDE68A;
+      box-shadow: 0 0 10px #FDE68A, 0 0 18px #38BDF8;
+      flex-shrink: 0;
     }
 
     /* Bottom 3D Micro-Motion Status & Recovery Toggle Bar */
@@ -500,11 +528,11 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: rgba(7, 13, 24, 0.84);
+      padding: 9px 14px;
+      border-radius: 14px;
+      background: rgba(5, 10, 19, 0.82);
       backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.13);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
     }
     .sim-state-switch {
@@ -513,12 +541,12 @@
       gap: 6px;
     }
     .sim-state-btn {
-      padding: 6px 12px;
+      padding: 5px 11px;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.16);
       background: rgba(255, 255, 255, 0.05);
       color: rgba(248, 250, 252, 0.8);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.22s ease;
@@ -977,12 +1005,12 @@
        ======================================================================== -->
   <main class="vibrant-workspace">
 
-    <!-- LEFT: 3D INTERACTIVE DONG-IN HUMAN BODY + 12 MERIDIANS + REAL GLB ORGANS -->
+    <!-- LEFT: 3D INTERACTIVE DONG-IN HUMAN BODY + ANATOMICAL SKELETON + VASCULAR MERIDIANS + GLB ORGANS -->
     <section class="vibrant-3d-stage" id="vibrant-3d-stage">
       <div class="dongin-loader-overlay" id="dongin-loader-overlay">
         <div class="dongin-spinner"></div>
-        <div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:800;color:#FDE68A;margin-bottom:4px;">3D 침구동인(鍼灸銅人) 193,288 폴리곤 & 12경맥 로딩 중...</div>
-        <div style="font-size:0.78rem;color:rgba(248,250,252,0.68);">Vibrant Wellness 3D Organ Mesh + 12경맥 361혈 핵심 혈자리 정밀 매핑</div>
+        <div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:800;color:#FDE68A;margin-bottom:4px;">3D 침구동인(鍼灸銅人) 193,288 폴리곤 & 해부학 골격·12경맥 로딩 중...</div>
+        <div style="font-size:0.78rem;color:rgba(248,250,252,0.68);">Vibrant Wellness Subsurface Shader + 골격(Skeleton) + 혈관·12경맥(Vascular) 통합 렌더링</div>
       </div>
 
       <!-- Top HUD: Body Gender + Dong-In Material Mode + Camera View + 12 Meridians Bar -->
@@ -996,24 +1024,24 @@
 
           <!-- Dong-In Skin Material Mode Switcher -->
           <div class="stage-control-bar" aria-label="동인 재질 및 투시 모드">
-            <button type="button" class="stage-ctrl-btn active" id="btn-mat-glass" onclick="window.setDonginSkinMode('glass')">✨ Vibrant 유리·금침 동인</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-mat-bronze" onclick="window.setDonginSkinMode('bronze')">🏺 황실 청동(銅人) 조각</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-mat-xray" onclick="window.setDonginSkinMode('xray')">🔬 12경맥·장부 X-Ray</button>
+            <button type="button" class="stage-ctrl-btn active" id="btn-mat-glass" onclick="window.setDonginSkinMode('glass')">✨ 메디컬 글래스 동인</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-mat-bronze" onclick="window.setDonginSkinMode('bronze')">🏺 황실 청동(銅人)</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-mat-xray" onclick="window.setDonginSkinMode('xray')">🔬 심부 골격·경락 투시</button>
           </div>
 
-          <!-- Camera Quick View Switcher (Front / Back / Full Overview / Aurora Studio) -->
+          <!-- Camera Quick View Switcher -->
           <div class="stage-control-bar" aria-label="카메라 시점 전환">
-            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('full')">전신 12경맥</button>
-            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('front')">전면(임맥·위경)</button>
-            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('back')">후면(독맥·방광경)</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-studio-aurora" onclick="window.toggleVibrantAuroraStudio()">🌅 오로라 배경</button>
+            <button type="button" class="stage-ctrl-btn active" id="btn-cam-hero" onclick="window.setDonginCameraPreset('hero')">상체 정밀 뷰</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-cam-full" onclick="window.setDonginCameraPreset('full')">전신 동인 뷰</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-cam-back" onclick="window.setDonginCameraPreset('back')">후면 척추·독맥</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-studio-aurora" onclick="window.toggleVibrantAuroraStudio()">🌅 Vibrant 오로라</button>
           </div>
         </div>
 
         <!-- 12 Meridians + Ren/Du Interactive Filter Bar -->
         <div class="meridian-filter-strip" id="meridian-filter-strip">
           <button type="button" class="meridian-chip active" data-meridian="ALL" onclick="window.selectMeridianFilter('ALL')">
-            <span class="m-dot" style="background:#FDE68A;"></span>12경맥·기경팔맥 전체
+            <span class="m-dot" style="background:#FDE68A;"></span>12경맥·전신 기혈망 전체
           </button>
         </div>
       </div>
@@ -1021,7 +1049,7 @@
       <!-- 3D WebGL Canvas -->
       <canvas id="vibrant-body-canvas"></canvas>
 
-      <!-- 2D Projected Interactive Hotspots & Acupoint Pins -->
+      <!-- 2D Projected Interactive Hotspots & Side Margin Callouts -->
       <div id="hotspot-overlay-layer"></div>
 
       <!-- Acupoint Live Inspector HUD (Bottom-Left) -->
@@ -1031,19 +1059,19 @@
           <span class="acupoint-meridian-lbl" id="acu-hud-meridian">ST · 족양명위경(足陽明胃經)</span>
         </div>
         <div class="acupoint-title-ko" id="acu-hud-title">무릎 성장판(독비·족삼리·양릉천) & 위장 면역 대표 명혈</div>
-        <p class="acupoint-desc-ko" id="acu-hud-desc">소화 흡수력과 무릎 골단연골(성장판) IGF-1 발현 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 핵심 혈자리입니다. (인체모형 위의 황금 혈자리를 클릭해보세요)</p>
+        <p class="acupoint-desc-ko" id="acu-hud-desc">소화 흡수력과 무릎 골단연골(성장판) IGF-1 발현 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 핵심 혈자리입니다.</p>
       </div>
 
       <!-- Bottom HUD: 3D Organ & Meridian Recovery State Switcher -->
       <div class="stage-hud-bottom">
         <div>
-          <div style="font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--gold-bright);">SCROLL-LINKED 3D DONG-IN & ORGAN SIMULATION</div>
-          <div style="font-size:0.79rem;font-weight:700;color:#F8FAFC;margin-top:2px;">우측 백과를 스크롤하면 <span style="color:#6EE7B7;">3D 장부·성장판과 12경맥 기혈 유주</span>가 치료 후(After)로 실시간 회복됩니다</div>
+          <div style="font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--gold-bright);">SCROLL-LINKED 3D ANATOMY & MERIDIAN SIMULATION</div>
+          <div style="font-size:0.78rem;font-weight:700;color:#F8FAFC;margin-top:2px;">우측 백과를 스크롤하면 <span style="color:#6EE7B7;">3D 장부·성장판·척추와 12경맥 기혈 유주</span>가 치료 후(After)로 회복됩니다</div>
         </div>
         <div class="sim-state-switch">
           <button type="button" class="sim-state-btn" id="btn-sim-state-before" onclick="window.setManualSimRecovery(0.08)">치료 전 (병변·기체)</button>
           <button type="button" class="sim-state-btn active-after" id="btn-sim-state-after" onclick="window.setManualSimRecovery(0.95)">치료 후 (경락소통·회복)</button>
-          <span id="sim-progress-readout" style="font-size:11px;font-weight:900;color:#FDE68A;min-width:68px;text-align:right;">회복도 25%</span>
+          <span id="sim-progress-readout" style="font-size:11px;font-weight:900;color:#FDE68A;min-width:68px;text-align:right;">회복도 75%</span>
         </div>
       </div>
     </section>
@@ -1069,16 +1097,28 @@
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { SubsurfaceScatteringShader } from 'three/addons/shaders/SubsurfaceScatteringShader.js';
 
     const BODY_PARTS_DATA = [{"id":"knee","code":"01 / PEDIATRIC GROWTH PLATE & IMMUNITY","hotspotLabel":"무릎 · 소아 성장판 & 감기면역","shortName":"무릎 · 성장판 (키성장·감기면역)","organEn":"Knee Epiphyseal Growth Plate & Mucosal Immunity","clinicLink":"growth.html","clinicCta":"바른 성장 · 성조숙증 상세페이지 →","reserveProg":"소아·청소년 키성장 클리닉","pos3D":{"x":0.41,"y":1.28,"z":0.04},"camPos":{"x":0.46,"y":1.24,"z":1.92},"camTarget":{"x":0.18,"y":1.22,"z":-0.06},"activeMeridians":["ST","GB","SP","KI"],"accent":"#10B981","accentSecondary":"#FDE68A","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_growth_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_growth_after.jpg","baBeforeTag":"BEFORE · 염증성 사이토카인에 의한 성장판 연골 휴지기 정체 및 조기 골화 위험","baAfterTag":"AFTER · 면역 에너지 복원 및 IGF-1 연골모세포 증식 활성화 (+184%)","baMetrics":[{"label":"성장판 연골모세포(Chondrocyte) 증식률","b":"염증성 억제·정체","a":"+184% 활성 증식"},{"label":"소아 비염·감기 이환 후 연간 성장속도","b":"연 4.1 cm 미달","a":"연 7.8~9.2 cm 달성"},{"label":"야간 서파수면(N3) 성장호르몬 분비효율","b":"구강호흡·수면분절","a":"비강호흡·심부숙면 복원"}],"headline":"무릎 성장판(Epiphyseal Plate) 정밀 해부 & 소아 성장·감기면역 대백과","leadDesc":"아이의 키는 단순한 유전(23%)보다 후천적 면역·수면·영양·생체역학 환경(77%)이 결정합니다. 무릎 대퇴골과 경골 사이의 얇은 투명 연골층인 성장판(Epiphyseal Plate)에서 연골모세포가 매일 밤 어떻게 분열하여 뼈를 키우는지, 왜 감기·비염이 잦은 아이는 성장이 멈추는지 전세계 SCI급 논문 근거와 함께 부모님이 가정에서 실천할 수 있는 모든 관리법을 상세히 안내합니다.","microSimDesc":"3D 무릎 성장판(대퇴골-경골 골단판) 줌인 모션: 스크롤을 내리면 염증 물질(붉은 입자)에 의해 좁아진 성장판 연골층이 확장되며 황금빛 IGF-1 호르몬과 에메랄드 연골모세포가 위아래 뼈 축을 따라 활발히 분열·증식합니다.","causes":[{"badge":"CAUSE 01 · 면역 에너지 누수 (Immune-Growth Trade-off)","title":"잦은 감기 · 비염 · 편도/아데노이드 비대","mechanism":"아이의 몸에서 생성되는 생체 에너지(ATP)는 총량이 정해져 있습니다. 감기나 비염, 중이염, 장염을 자주 앓으면 면역계가 감염 방어를 위해 염증성 사이토카인(IL-6, TNF-α, IL-1β)을 대량 분비합니다. 세계 내분비학회지(JCEM) 연구에 따르면, 이 염증성 사이토카인은 간(Liver)의 성장호르몬 수용체(GHR) 발현을 직접 차단하여, 뇌하수체에서 성장호르몬(GH)이 분비되더라도 실제 무릎 성장판 연골을 키우는 핵심 인자인 IGF-1(인슐린유사성장인자-1) 합성을 최대 40~60%까지 급감시킵니다.","warning":"감기를 한 번 앓을 때마다 약 2~3주간 성장판 세포 분열이 멈추는 \"성장 휴지기(Growth Arrest)\"가 발생합니다. 일 년에 감기를 6번만 앓아도 1년 중 4개월 동안 키가 자라지 못하는 셈입니다."},{"badge":"CAUSE 02 · 수면 분절과 산소 부족 (Hypoxia & Sleep Fragmentation)","title":"비염 코막힘으로 인한 구강호흡과 깊은 수면(N3) 실패","mechanism":"성장호르몬(GH)의 약 70~80%는 밤 10시~새벽 2시 사이, 뇌파가 가장 느려지는 깊은 비렘수면(서파수면, Slow-Wave Sleep Stage N3) 구간에서 맥동성(Pulsatile)으로 폭발 분비됩니다. 그러나 알레르기 비염이나 아데노이드 비대로 코가 막혀 입을 벌리고 자는(구강호흡) 아이는 수면 중 뇌 산소포화도가 떨어지고 미세 각성(Micro-arousal)이 반복되어 서파수면에 진입하지 못합니다.","warning":"잠을 9시간 자더라도 입을 벌리고 코를 골거나 뒤척이며 자는 아이는 실제 성장호르몬 분비량이 정상 비강호흡 아동 대비 절반 이하로 떨어지며, 위턱이 길어지는 아데노이드형 얼굴 변형까지 동반됩니다."},{"badge":"CAUSE 03 · 비위(脾胃) 흡수 장애 (Malabsorption & Gut-Bone Axis)","title":"식욕부진 · 잦은 배앓이 · 장내 미생물 불균형","mechanism":"한의학에서 \"비주사말(脾主四末: 소화기가 팔다리 사지 말단의 성장을 주관한다)\"이라 하듯, 아무리 좋은 영양제를 먹어도 위장과 소장 융모에서 흡수하지 못하면 성장판까지 도달하지 못합니다. 밥을 입에 물고 있거나, 찬 음식을 좋아해 설사·변비·복통이 잦은 아이는 뼈의 콜라겐 기질을 만드는 필수 아미노산(아르기닌·라이신)과 연골 분화 효소의 핵심 조효소인 아연(Zinc)·철분·칼슘 흡수율이 현저히 낮습니다.","warning":"잦은 항생제 복용으로 장내 유익균 총이 파괴되면 장 점막 면역(sIgA)과 세로토닌(수면호르몬 전구체) 생성이 동시에 무너져 \"식욕 저하 ➔ 면역 저하 ➔ 수면 불량 ➔ 성장 정체\"의 악순환에 빠집니다."},{"badge":"CAUSE 04 · 내분비 교란과 조기 골화 (Premature Epiphyseal Fusion)","title":"소아 과체중 · 성조숙증 · 성장판 시계의 가속화","mechanism":"체지방 세포(Adipocyte)가 과도하게 늘어나면 지방세포에서 분비되는 렙틴(Leptin) 호르몬과 인슐린 저항성이 뇌의 시상하부-뇌하수체-성선 축(HPG Axis)을 조기에 깨웁니다. 이로 인해 성호르몬(에스트로겐·테스토스테론)이 또래보다 2년 이상 일찍 분비되면, 당장은 또래보다 키가 커 보일 수 있으나 무릎과 손목의 성장판 연골이 빠르게 석회화되어(뼈로 굳어 닫힘) 최종 성인 키는 유전적 예상키보다 7~12cm 작아집니다.","warning":"여아 만 8세 이전 가슴 멍울·머리 냄새, 남아 만 9세 이전 고환 용적 증가나 급격한 골연령(Bone Age) 앞서감이 보인다면 성장판이 닫히기 전 즉시 골든타임 개입이 필요합니다."},{"badge":"CAUSE 05 · 생체역학적 하중 불균형 (Hueter-Volkmann Law)","title":"소아 거북목 · 척추측만 · 골반/무릎 정렬 비대칭","mechanism":"정형외과 생체역학의 휴터-볼크만 법칙(Hueter-Volkmann Law)에 따르면, 성장판 연골은 적절한 간헐적 수직 자극에는 성장이 촉진되지만, 비대칭적이고 지속적인 과도한 압박(Compression)을 받으면 종축 성장이 물리적으로 억제됩니다. 스마트폰 사용과 다리 꼬기로 골반과 무릎 축(Q-angle)이 틀어진 아이는 성장판이 눌려 숨은 키 1.5~3cm를 손해 보게 됩니다.","warning":"신발 한쪽 굽만 유독 빨리 닳거나 양쪽 어깨·골반 높이가 다른 아이는 성장 추나 교정을 통해 눌려 있는 추간판과 무릎 성장판의 물리적 공간을 먼저 열어주어야 합니다."}],"coldCareSpecial":{"title":"[부모님 필독 특별 가이드] 감기·비염 자주 걸리는 아이, 집에서 어떻게 관리해야 키가 클까요?","subtitle":"소아 면역학 & 한의학 호흡기·비위 통합 케어 6대 실전 프로토콜","intro":"진료실에서 부모님들이 가장 많이 물어보시는 질문이 \"원장님, 우리 아이는 한 달에 한 번씩 감기약을 달고 사는데, 감기약 먹느라 키가 안 크는 걸까요?\"입니다. 정답은 \"잦은 호흡기 감염 자체가 성장판으로 갈 성장 인자(IGF-1)를 가로채고, 무분별한 항생제·해열제·항히스타민제 장기 복용이 위장관 흡수력과 깊은 수면을 방해하기 때문\"입니다. 감기가 잦은 아이를 둔 부모님이 오늘 밤부터 당장 실천하셔야 할 6가지 핵심 관리법을 정리해 드립니다.","protocols":[{"step":"PROTOCOL 01 · 발열 초기 대응의 황금률","heading":"38.2°C 이하 미열에서 무조건적인 해열제·항생제 투여를 멈추고 \"오한기 보온\"을 도와주세요","detail":"아이가 열이 나는 것은 체온을 1°C 높여 면역세포(NK세포·T림프구)의 이동 속도와 인터페론(항바이러스 단백질) 생성을 5배 이상 끌어올리는 정상적인 방어 반응입니다. 아이가 추워하며 손발이 차가운 \"오한기(열이 오르는 단계)\"에 해열제를 바로 먹이면 면역계가 바이러스를 제압하지 못해 감기가 2~3주씩 질질 끌게 됩니다. 손발이 차가울 때는 따뜻한 물수건으로 손발을 감싸주고, 따뜻한 생강·대추·갈근차나 초기 한방 감기약(갈근탕·패독산 등 천연 발한제)으로 땀을 촉촉히 내어 스스로 열을 내리게 해주세요. 단, 38.5°C 이상의 고열로 아이가 축 처지거나 열성경련 이력이 있을 때만 해열제를 교차 사용합니다."},{"step":"PROTOCOL 02 · 호흡기 면역 관문 \"목 뒷덜미(대추혈·폐수혈)\" 보온법","heading":"새벽 3~5시 찬 공기가 코점막 섬모를 마비시키지 않도록 수면 스카프·수면조끼를 입혀주세요","detail":"코와 기관지 점막의 미세 섬모(Cilia)는 온도 변화와 건조함에 매우 취약합니다. 새벽녘 체온이 떨어질 때 목 뒷덜미의 대추혈(제7경추 아래)과 등 위쪽의 폐수혈(제3흉추 양옆)이 찬 공기에 노출되면 즉각적으로 코점막 혈관이 수축하고 섬모 운동이 멈춰 아침마다 재채기·코막힘·기침이 폭발합니다. 잘 때 얇은 순면 손수건이나 수면조끼로 목과 등 상부를 따뜻하게 감싸주고, 침실 온도는 21~22°C, 습도는 50~55%로 일정하게 유지해 주세요."},{"step":"PROTOCOL 03 · 구강호흡 차단 & 서파수면(성장호르몬) 사수 루틴","heading":"취침 1시간 전 미온(36.5°C) 생리식염수 비강 세척과 온습포로 밤 10시~새벽 2시 비강호흡을 열어주세요","detail":"감기 끝에 남은 콧물이 목 뒤로 넘어가는 후비루(Post-nasal drip)가 있으면 아이는 밤새 기침을 하거나 입을 벌리고 자느라 성장호르몬이 나오는 서파수면(N3)에 들어가지 못합니다. 잠들기 1시간 전 체온과 비슷한 미온의 생리식염수로 코안을 부드럽게 세척하거나, 따뜻한 물수건을 코와 광대뼈(상악동) 위에 3분간 얹어 부비동 점막의 부종을 가라앉혀 주세요. 코 옆 영향혈(迎香穴)에 천연 아로마(유칼립투스·박하·자운고) 밤을 소량 발라주면 밤새 코로 깊게 숨 쉬며 성장호르몬이 정상 분비됩니다."},{"step":"PROTOCOL 04 · 장-폐 축(Gut-Lung Axis) 보호를 위한 \"냉음료·유제품\" 차단","heading":"냉장고에서 바로 꺼낸 찬물·우유·아이스크림은 호흡기 점막 면역(sIgA)을 즉각 떨어뜨립니다","detail":"최신 면역학의 장-폐 축(Gut-Lung Axis, Nature Reviews Immunology) 이론과 한의학의 \"비폐모자(脾肺母子: 소화기가 호흡기의 어머니다)\" 원리는 정확히 일치합니다. 인체 면역세포의 70%가 모인 소장 점막이 차가운 음식(찬물, 아이스크림, 과도한 찬 우유, 밀가루)으로 인해 냉각되면 장 점막에서 분비하는 분비형 면역글로불린 A(sIgA)가 감소하고, 동시에 기관지·코점막의 면역 장벽까지 약해집니다. 감기가 잦은 아이는 사계절 내내 정수기 찬물 대신 미온수나 따뜻하게 우린 보리차·둥굴레차를 마시는 습관만으로도 감기 횟수가 절반 이하로 줄어듭니다."},{"step":"PROTOCOL 05 · 감기 회복기 \"식적(食積) 재발\" 방지 소식(少食) 원칙","heading":"감기가 막 나을 무렵 고열량 보양식이나 야식을 과식하면 \"식적열\"로 중이염·부비동염이 재발합니다","detail":"아이가 감기를 앓는 동안 못 먹었다고 해서 열이 내리자마자 고기, 피자, 기름진 음식을 밤늦게 많이 먹이는 경우가 많습니다. 하지만 병후에는 위장관 효소 분비와 연동운동이 50% 이하로 떨어진 상태여서, 소화되지 못한 음식물이 장내에서 발효되며 열독(식적열 食積熱)을 만들고 이것이 다시 상기도(코·귀·편도)의 염증을 재점화시킵니다. 감기 직후 3~4일간은 평소 식사량의 70~80% 수준으로 소화가 잘되는 소고기 야채죽, 흰살생선, 두부 위주로 따뜻하게 먹이고 취침 3시간 전 공복을 유지해 주세요."},{"step":"PROTOCOL 06 · 항생제 복용 후 장내 미생물 복구 & 선제적 한방 면역 방어","heading":"불가피하게 항생제를 복용했다면 최소 4주간 유산균·프리바이오틱스와 점막 재생 한약으로 성장 엔진을 복구하세요","detail":"중이염이나 화농성 부비동염으로 항생제를 1~2주 복용하면 장내 유익균의 80% 이상이 사멸하여 이후 1~2개월간 영양 흡수율과 성장 속도가 급격히 떨어집니다. 항생제 복용 후에는 아연(Zinc)과 락토바실러스·비피도박테리움 복합 유산균을 보충하고, 호흡기 점막의 보호막(위기 衛氣)을 튼튼히 하는 황기·방풍·백출(옥병풍산 기전) 기반의 소아 면역·성장 한약으로 \"감기가 스쳐 지나가는 체질\"로 바꾸어 주어야 숨은 키 10cm가 자라납니다."}]},"nutrition":{"goodTitle":"성장판 연골을 키우고 면역을 높이는 5대 약선 식단","goodFoods":[{"name":"소고기 우둔살 · 대구살 · 달걀 · 두부 (L-아르기닌 & 라이신)","role":"뇌하수체 성장호르몬(GH) 분비 직접 자극 & 골기질 콜라겐 합성","tip":"기름기가 적은 소고기 살코기와 흰살생선, 두부의 아르기닌·라이신 아미노산은 성장판 연골 기질의 뼈대를 만듭니다. 튀기지 않고 찜·국·구이로 매일 체중 1kg당 1.2g의 단백질을 섭취하세요."},{"name":"굴 · 소고기 · 표고버섯 · 연어 · 낫토 (아연 Zinc + 비타민 D3/K2)","role":"IGF-1 합성 필수 조효소 & 칼슘을 뼈로 못 박아주는 오스테오칼신 활성화","tip":"아연(Zinc)이 부족하면 아무리 잘 먹어도 IGF-1 호르몬이 만들어지지 않고 입맛이 떨어집니다. 햇볕에 말린 표고버섯과 연어(비타민D), 낫토/청국장(비타민K2)은 흡수된 칼슘이 혈관이 아닌 무릎 성장판으로 정확히 들어가게 돕습니다."},{"name":"황기 · 대추 · 배도라지 · 연근 · 마 (호흡기 점막 & 비위 보강 약선)","role":"기관지 섬모 운동 촉진 & 소화기(비위) 아미노산 흡수율 극대화","tip":"감기가 잦고 땀이 많은 아이에게는 황기·대추를 넣고 끓인 닭육수나 소고기뭇국이 최고입니다. 마(산약)와 연근은 위장 점막을 코팅하고 코점막 출혈·건조를 막아줍니다."},{"name":"뼈째 먹는 생선(멸치·뱅어포) + 브로콜리·파프리카·시금치","role":"칼슘 흡수율을 3배 높이는 비타민C·마그네슘 황금 배합","tip":"칼슘은 단독 섭취 시 흡수율이 25%에 불과하지만, 브로콜리·파프리카의 비타민C 및 마그네슘과 함께 먹으면 흡수율이 2.5~3배 높아집니다."}],"badTitle":"성장호르몬을 차단하고 성조숙증을 부르는 4대 금기 식품","badFoods":[{"name":"액상과당 음료 · 탄산 · 가당 과일주스 · 젤리","reason":"혈당 스파이크로 분비된 과잉 인슐린(Insulin)과 유리 지방산은 뇌하수체의 성장호르몬(GH) 분비를 최대 2~3시간 동안 완전히 차단합니다. 특히 자기 전 단 간식은 야간 성장호르몬을 0으로 만듭니다."},{"name":"고지방 튀김류(치킨·감자튀김) · 야식 · 패스트푸드","reason":"트랜스지방과 포화지방은 체지방 세포의 렙틴(Leptin) 분비를 교란해 시상하부의 사춘기 시계(성조숙증)를 앞당기고 성장판이 일찍 닫히게 만듭니다."},{"name":"플라스틱·비닐 용기 전자레인지 조리 식품 (환경호르몬 BPA·프탈레이트)","reason":"내분비계 교란물질(EDC)은 체내에서 여성호르몬(에스트로겐) 유사 작용을 하여 여아의 가슴 발달과 초경을 앞당기는 가장 위험한 외부 요인입니다."},{"name":"인스턴트 라면·햄·소시지의 다량 인산염(Phosphate) & 카페인","reason":"가공식품의 인산염은 혈중 칼슘과 결합해 소변으로 뼈의 칼슘을 빼앗아 나가며, 초콜릿·콜라의 카페인은 서파수면 진입을 방해합니다."}]},"lifestyle":[{"category":"SLEEP · 성장호르몬 극대화 수면 루틴","title":"취침 2시간 전 블루라이트 차단 & 암막 환경으로 \"입면 후 첫 90분 서파수면\"을 지키세요","desc":"하루 성장호르몬의 70%는 잠든 뒤 첫 번째로 찾아오는 깊은 비렘수면(입면 후 60~120분 사이)에서 분비됩니다. 스마트폰·태블릿의 청색광(Blue Light)은 송과선의 멜라토닌 분비를 억제해 깊은 잠을 막으므로 취침 2시간 전에는 화면을 끄고, 침실 조도를 0 Lux(완전 암막)로 낮춰 숙면을 유도하세요."},{"category":"EXERCISE · 성장판 미세 자극 운동 처방","title":"줄넘기 · 농구 · 트램펄린 등 \"체중 1.5~2배의 리드미컬한 수직 점프\"를 하루 30분 시행하세요","desc":"무릎과 발목 성장판의 연골모세포는 수직 방향의 간헐적인 압력 변화(Piezoelectric effect)를 받을 때 골형성 단백질(BMP-2)과 IGF-1 수용체를 활성화합니다. 단, 아스팔트나 시멘트 바닥에서 딱딱한 신발을 신고 뛰면 오히려 성장판에 미세 손상을 주므로 반드시 쿠션이 좋은 운동화와 우레탄·마루 바닥에서 하루 500~1,000회 줄넘기 후 종아리·허벅지 스트레칭으로 마무리하세요."},{"category":"ACUPOINT · 부모님이 매일 밤 5분 해주는 성장·면역 혈자리 마사지","title":"무릎 아래 \"족삼리(ST36) · 양릉천(GB34)\"과 코 옆 \"영향혈(LI20)\"을 따뜻하게 지압해 주세요","desc":"① 족삼리(무릎 슬개골 아래 바깥쪽 오목한 곳에서 손가락 세 마디 아래)와 양릉천(종아리 바깥쪽 비골두 앞아래 오목한 곳)은 무릎 성장판으로 가는 혈류를 직접 늘리고 위장 소화력을 높이는 대표 성장혈입니다. ② 아킬레스건 위쪽 승산혈(BL57)을 풀어주면 밤중 성장통이 사라집니다. ③ 코 양옆 영향혈(LI20)을 위아래로 문질러 따뜻하게 해주면 코막힘이 뚫려 숙면을 돕습니다."}],"clinicalProtocol":{"steps":["01. 무방사선 초음파 성장판 정밀 스캔 & TW3 골연령·최종 성인 예측키 분석","02. 1:1 사상체질 IGF-1 성장탕 & 성조숙증 억제(율무·인진호·지모·황백 가감) 실명 처방","03. 호흡기 점막 면역(옥병풍산·형개연교탕 기전) 강화 및 비염 통비 배농·레이저 치료","04. 소아 무통 성장 자석침·성장 약침 & 숨은 키를 찾아주는 경추·골반·무릎 성장 추나"],"papers":[{"journal":"Journal of Clinical Endocrinology & Metabolism (JCEM · 세계내분비학회지)","title":"Proinflammatory Cytokines (IL-6, TNF-α) Inhibit Growth Hormone Receptor Signaling and Hepatic IGF-1 Production in Pediatric Growth Failure","pmid":"PMID: 16895956 · SCI Impact Factor 5.8","summary":"소아의 반복적인 호흡기·전신 염증 시 분비되는 사이토카인(IL-6, TNF-α)이 간의 성장호르몬 수용체(GHR) 신호 전달을 차단하여 혈중 IGF-1 농도를 급격히 떨어뜨리고 성장판 연골 증식을 멈추게 함을 규명."},{"journal":"The Journal of Pediatrics (미국 소아과학회 공식 저널)","title":"Resolution of Sleep-Disordered Breathing and Mouth Breathing Restores Nocturnal GH Secretion, IGF-1 Levels, and Linear Height Velocity in Children","pmid":"PMID: 12032520 · SCI Q1 Pediatrics","summary":"비염·아데노이드 비대로 인한 구강호흡 및 수면호흡장애 소아에게 비강 호흡을 복원하고 심부 서파수면을 정상화한 결과, 혈중 IGF-1 수치와 연간 성장 속도(Height Velocity)가 통계적으로 유의미하게 급증함을 입증."},{"journal":"Phytomedicine & eCAM (국제 천연물의학·통합의학 저널)","title":"Astragalus membranaceus (황기), Eleutherococcus senticosus (가시오가피), and Cervus elaphus (녹용) Complex Stimulates Longitudinal Bone Growth and Chondrocyte Proliferation via BMP-2 and IGF-1 Upregulation","pmid":"PMID: 25685115 · SCI Peer-Reviewed","summary":"황기·가시오가피·녹용 복합 한약 추출물이 성장판 내 휴지기 및 증식기 연골모세포(Chondrocyte)의 분열 속도를 +184% 촉진하고 국소 IGF-1 및 골형성 단백질(BMP-2) 발현을 유의하게 높임을 입증."},{"journal":"Nutrients / American Journal of Clinical Nutrition (AJCN)","title":"Effect of Zinc, L-Arginine, and Vitamin D3 Supplementation vs. High-Glycemic Sugar Load on Pituitary Growth Hormone Secretion in Growing Children","pmid":"PMID: 29772669 · SCI Nutrition Q1","summary":"아연(Zinc)과 L-아르기닌, 비타민 D3는 뇌하수체 GH 분비와 연골 골화를 촉진하는 반면, 정제당(액상과당) 섭취는 급격한 인슐린 상승을 통해 GH 분비를 즉각 억제함을 메타분석으로 확인."}]}},{"id":"cervical","code":"02 / CERVICAL SPINE & MYOFASCIAL ALIGNMENT","hotspotLabel":"경추 · 어깨 · 거북목 추나","shortName":"경추 · 어깨 (거북목·목디스크·두통)","organEn":"Cervical Vertebrae (C1-C7) & Suboccipital Nerve Plexus","clinicLink":"chuna.html","clinicCta":"바른 추나 · 척추교정 상세페이지 →","reserveProg":"추나 척추·전신통증 클리닉","pos3D":{"x":0,"y":3.92,"z":0.08},"camPos":{"x":0.42,"y":3.94,"z":1.62},"camTarget":{"x":0,"y":3.9,"z":-0.06},"activeMeridians":["GV","GB","BL","SI"],"accent":"#38BDF8","accentSecondary":"#6EE7B7","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg","baBeforeTag":"BEFORE · 거북목(일자목) 변형으로 인한 C5-C7 추간판 압박 및 승모근 과긴장","baAfterTag":"AFTER · 경추 C-커브 정상 복원 및 추간공 신경 통로 +3.2mm 감압","baMetrics":[{"label":"경추 전만각(C-Curve) 및 전방 머리 돌출","b":"일자·역C자 변형","a":"정상 C-커브 복원"},{"label":"경추 추간판 신경근 감압 공간","b":"신경 압박·팔저림","a":"+3.2mm 감압 개통"},{"label":"후두하근 긴장성 두통·안구 피로도","b":"만성 두통·어지럼","a":"뇌혈류·자율신경 안정"}],"headline":"경추(C1-C7) · 어깨 생체역학 해부 & 거북목·목디스크·긴장성 두통 백과","leadDesc":"볼링공 무게(약 5kg)에 달하는 머리가 스마트폰·모니터를 향해 앞으로 1cm 숙여질 때마다 경추(목뼈)와 어깨 근육이 견뎌야 하는 하중은 2~3kg씩 늘어나, 30도만 숙여도 무려 18kg의 압력이 경추 5·6·7번 디스크를 짓누릅니다. 왜 마사지를 받아도 하루 만에 어깨가 다시 돌처럼 굳는지, 손끝 저림과 만성 두통·이명·안구 건조까지 유발하는 경추 부정렬의 원인과 교정법을 SCI 논문 기반으로 안내합니다.","microSimDesc":"3D 경추 C1~C7 분절 & 추간판 줌인 모션: 스크롤을 내리면 앞으로 꺾여 붉게 압박받던 일자목(거북목) 경추 마디들이 원장 수기 추나 벡터에 의해 부드러운 C자 곡선으로 정렬되며 푸른 추간판 디스크 쿠션이 회복됩니다.","causes":[{"badge":"CAUSE 01 · 전방 머리 자세(Forward Head Posture)와 경추 하중 폭증","title":"스마트폰·모니터 응시로 인한 C자 커브 소실(일자목·역C자목)","mechanism":"정상적인 경추는 완만한 C자 곡선(전만 Curve)을 그려 머리 무게를 스프링처럼 분산합니다. 그러나 고개를 숙이거나 턱을 앞으로 내미는 자세가 반복되면 경추 주변 심부 굴곡근은 약해지고 뒷목의 판상근·상부 승모근은 24시간 늘어난 채로 버티는 \"신장성 수축(Eccentric Contraction)\" 상태에 빠져 혈류가 차단되고 섬유화됩니다.","warning":"어깨 위의 단단한 뭉침(승모근 통증)은 근육이 남아서가 아니라, 앞으로 쏟아지는 머리를 붙잡기 위해 근육이 밧줄처럼 버티다 비명을 지르는 구조적 결과입니다."},{"badge":"CAUSE 02 · 상부 경추(C1 환추 · C2 축추) 아탈구와 두통·자율신경 실조","title":"진통제로 안 낫는 편두통 · 뒷골 당김 · 눈 침침함 · 어지럼증","mechanism":"머리뼈 바로 아래의 경추 1번(Atlas)과 2번(Axis)을 감싸는 후두하근(Suboccipital muscles) 사이로는 뇌로 올라가는 추골동맥(Vertebral Artery)과 대후두신경, 그리고 전신 자율신경을 조절하는 미주신경(Vagus Nerve)이 지나갑니다. 상부 경추가 미세하게 틀어지면 이 혈관과 신경이 동시에 눌려 뇌혈류가 저하되고 만성 두통, 안구 통증, 이명, 불면증이 발생합니다.","warning":"머리 MRI에서는 아무 이상이 없다는데 뒷목부터 관자놀이·눈알까지 깨질 듯 아픈 환자의 80% 이상은 상부 경추(C1-C2)와 후두하근의 신경 포착이 원인입니다."},{"badge":"CAUSE 03 · 하부 경추(C5-C6, C6-C7) 추간판 탈출증과 상지 방사통","title":"목보다 날개뼈 안쪽이 쑤시고 어깨·팔·손가락 끝이 저린 목디스크","mechanism":"경추 5·6·7번 사이에서 빠져나온 신경근(Brachial Plexus 상완신경총)은 날개뼈 안쪽(능형근 부위)을 지나 어깨, 팔꿈치, 손가락 끝까지 내려갑니다. 따라서 디스크가 돌출되어 신경근을 누르면 정작 목은 덜 아픈데 날개뼈 안쪽이 칼로 도려내듯 아프거나 팔과 손가락이 저려 오십견이나 손목터널증후군으로 오인하기 쉽습니다.","warning":"고개를 뒤로 젖히거나 아픈 쪽으로 돌릴 때 날개뼈나 팔로 찌릿한 전기가 통한다면(Spurling Test 양성) 즉시 경추 신경 감압 추나와 항염 봉·약침 치료를 시작해야 합니다."}],"coldCareSpecial":{"title":"[직장인·수험생 필독] 하루 8시간 앉아 일하고 공부할 때 목디스크·두통을 막는 실전 교정 수칙","subtitle":"모니터 환경 세팅부터 1분 브뤼거(Brügger) 이완 호흡법까지","intro":"치료실에서 추나 교정으로 경추를 완벽히 맞춰드려도, 직장과 책상에서 잘못된 모니터 높이와 호흡 패턴을 유지하면 48시간 내에 근육 기억(Muscle Memory)에 의해 다시 목이 앞으로 빠집니다. 아래 4가지 수칙을 생활화하세요.","protocols":[{"step":"RULE 01 · 시선 수평 0도 법칙","heading":"모니터 상단 1/3 지점을 눈높이에 맞추고, 스마트폰은 겨드랑이에 주먹 하나를 끼워 눈앞으로 들어 올리세요","detail":"노트북을 거치대 없이 책상 위에 두고 보는 것은 목디스크를 자초하는 가장 치명적인 습관입니다. 반드시 노트북 스탠드와 외장 키보드를 사용해 시선이 아래로 떨어지지 않게 하세요."},{"step":"RULE 02 · 굳은 어깨를 주무르지 말고 \"소흉근(앞가슴)\"을 먼저 여세요","heading":"라운드 숄더(말린 어깨)의 주범은 등 근육이 아니라 짧아진 앞가슴 근육(소흉근)입니다","detail":"어깨가 앞으로 말리면 앞가슴의 소흉근이 단축되어 날개뼈를 앞으로 끌어당기고, 등 뒤의 승모근과 능형근은 억지로 늘어나 통증을 느낍니다. 문틀에 양팔을 ㄴ자로 대고 가슴을 앞으로 내밀어 앞가슴 근육을 30초씩 늘려주어야 뒷목 통증이 즉각 사라집니다."},{"step":"RULE 03 · 수면 베개 높이 공식 (앙와위 6~8cm / 측와위 어깨높이)","heading":"높은 베개는 밤새 경추 후방 인대를 늘리고 디스크를 뒤로 밀어냅니다","detail":"천장을 보고 누웠을 때 목의 C자 커브 공간만 부드럽게 채워주고 뒤통수는 바닥에서 6~8cm 높이에 놓이는 경추 베개(또는 수건을 말아 목덜미에 받침)를 사용하세요."},{"step":"RULE 04 · 매시간 30초 맥켄지(McKenzie) 경추 신전 운동","heading":"고개를 뒤로 젖힐 때 \"턱을 먼저 당긴 후\" 천장을 바라보며 날개뼈를 모으세요","detail":"턱을 든 채 고개를 꺾으면 오히려 후관절이 집힙니다. 턱을 목 쪽으로 살짝 당겨(Chin-in) 이중턱을 만든 상태에서 천천히 고개를 뒤로 젖히며 양손 엄지가 바깥을 향하도록 가슴을 펴면 돌출된 디스크 수핵이 제자리로 흡수됩니다."}]},"nutrition":{"goodTitle":"추간판(디스크) 수핵 재생 & 신경 염증을 가라앉히는 영양 식단","goodFoods":[{"name":"도가니 · 사골 · 생선 껍질 · 콜라겐 펩타이드 + 비타민 C","role":"추간판 섬유륜(Annulus Fibrosus) 및 경추 인대 콜라겐 합성","tip":"디스크 외벽인 섬유륜과 목뼈를 지지하는 전·후종인대는 제1형·2형 콜라겐으로 이루어져 있습니다. 비타민C가 풍부한 채소와 함께 섭취해야 체내 콜라겐으로 재합성됩니다."},{"name":"등푸른생선(고등어·연어) · 들기름 · 호두 (오메가-3 EPA/DHA)","role":"신경근 부종 및 프로스타글란딘 염증 매개체 자연 억제","tip":"불포화지방산 오메가-3는 디스크 주위 신경근의 화학적 염증을 진통제 부작용 없이 가라앉히고 혈류 순환을 개선합니다."},{"name":"아몬드 · 호박씨 · 바나나 · 시금치 (마그네슘 & 비타민 B군)","role":"과긴장된 승모근·후두하근 근경련 이완 및 손상 신경 수초 재생","tip":"마그네슘은 천연 근육 이완제이며, 비타민 B1·B6·B12는 눌려 있던 경추 신경의 저림 증상 회복을 앞당깁니다."}],"badTitle":"근막 섬유화와 디스크 퇴행을 가속화하는 주의 식품","badFoods":[{"name":"과도한 커피 · 고카페인 에너지 음료 (하루 2잔 초과)","reason":"카페인은 교감신경을 항진시켜 후두하근과 승모근의 근육 긴장도를 높이고, 이뇨 작용으로 추간판 수핵의 수분 함량을 떨어뜨립니다."},{"name":"알코올(음주) 및 흡연","reason":"알코올 분해 과정에서 생성되는 아세트알데히드는 신경근 염증을 폭증시키며, 흡연은 미세혈관을 수축시켜 무혈관 조직인 디스크로의 산소·영양 확산을 차단합니다."}]},"lifestyle":[{"category":"POSTURE · 턱 당기기(Chin-Tuck) 심부경추굴곡근 강화","title":"벽에 뒤통수와 등을 붙이고 턱을 살짝 당겨 10초 버티기를 하루 10회 반복하세요","desc":"겉 근육(흉쇄유돌근·승모근)의 긴장을 끄고 경추 마디마디를 잡아주는 속근육(경장근 Longus Colli)을 깨우는 가장 확실한 재활 운동입니다."},{"category":"ACUPOINT · 두통·목결림 즉시 완화 3대 혈자리","title":"뒤통수 아래 \"풍지혈(GB20)\", 목과 어깨 사이 \"견정혈(GB21)\", 손등 \"후계혈(SI3)\" 지압","desc":"양손 엄지로 귀 뒤쪽 머리뼈 아래 오목한 풍지혈을 지그시 누르며 고개를 천천히 끄덕이면 후두하근이 즉시 풀리며 눈과 머리가 맑아집니다."}],"clinicalProtocol":{"steps":["01. 경추 전만각(C-Curve) · 좌우 회전 가동범위(ROM) & 상완신경총 이학적 정밀 진단","02. 원장 1:1 상부경추(C1-C2) 교정 및 경추 분절 견인 감압 추나 (연 20회 건강보험 급여)","03. 신경근 부종을 빠르게 가라앉히는 정제 봉·약침 & 후두하근 심부 근막 약침","04. 손상된 추간판 섬유륜과 인대를 튼튼하게 보강하는 강척(強脊) 한약 처방"],"papers":[{"journal":"JAMA Network Open / PAIN (국제통증학회 공식 저널)","title":"Effectiveness of Chuna Manual Therapy and Integrative Korean Medicine for Cervical Disc Herniation and Chronic Neck Pain: A Multicenter Randomized Controlled Trial","pmid":"PMID: 31539074 · SCI Q1 Medicine","summary":"만성 경추 통증 및 목디스크 환자군에서 한의사 수기 추나요법과 약침 병행 치료가 일반 진통제·물리치료 대조군 대비 통증 지수(VAS) 감소 및 경추 기능 장애 지수(NDI) 회복에서 월등한 효과를 입증."},{"journal":"Surgical Technology International (미국 척추생체역학 연구)","title":"Assessment of Stresses in the Cervical Spine Caused by Posture and Position of the Head","pmid":"PMID: 25393825 · Classic Biomechanics Study (Hansraj KK)","summary":"경추 굴곡 각도가 0°일 때 4.5~5.4kg이던 머리 하중이 15° 숙일 때 12.2kg, 30° 숙일 때 18.1kg, 45° 숙일 때 22.2kg으로 기하급수적으로 폭증하여 경추 추간판 퇴행을 유발함을 정량 규명."}]}},{"id":"lumbar","code":"03 / LUMBAR DISC & PELVIC BIOMECHANICS","hotspotLabel":"요추 · 골반 · 디스크 추나","shortName":"요추 · 골반 (허리디스크·협착증·체형)","organEn":"Lumbar Spine (L4-L5) & Sacroiliac Pelvic Axis","clinicLink":"chuna.html","clinicCta":"바른 추나 · 척추교정 상세페이지 →","reserveProg":"추나 척추·전신통증 클리닉","pos3D":{"x":-0.09,"y":3.05,"z":-0.12},"camPos":{"x":-0.46,"y":3.05,"z":1.95},"camTarget":{"x":0,"y":3.04,"z":-0.06},"activeMeridians":["GV","BL","GB","KI"],"accent":"#10B981","accentSecondary":"#38BDF8","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg","baBeforeTag":"BEFORE · 골반 12.4° 비대칭 경사 및 요추 L4-L5 추간판 신경 압박","baAfterTag":"AFTER · 골반-요추 중심축 0° 수직 정렬 및 추간판 +3.8mm 음압 감압","baMetrics":[{"label":"골반 천장관절 및 요추 중심축 편차","b":"12.4° 비대칭 틀어짐","a":"0.4° 수직 정렬 복원"},{"label":"요추 L4-L5 추간판 신경 통로 간격","b":"디스크 돌출·압박","a":"+3.8mm 신경 감압"},{"label":"비수술 디스크·협착증 일상 동작 회복률","b":"진통제 임시 차단","a":"95.2% 일상 회복"}],"headline":"요추(L1-L5) · 골반 천장관절 정밀 해부 & 비수술 허리디스크·협착증 백과","leadDesc":"집의 주춧돌인 골반(Pelvis)이 1cm 기울어지면, 그 위에 쌓인 24개 척추 마디는 쓰러지지 않기 위해 젠가(Jenga) 탑처럼 지그재그로 휘어지며 요추 4·5번(L4-L5) 디스크 한쪽 모서리를 24시간 짓누릅니다. 왜 진통제나 신경차단술(주사)을 맞아도 며칠 뒤면 똑같이 허리가 끊어질 듯 아픈지, 수술 없이 탈출된 디스크가 어떻게 스스로 흡수·회복되는지 생체역학적 기전을 안내합니다.","microSimDesc":"3D 요추 L4-L5 & 골반 축 줌인 모션: 스크롤을 내리면 12.4° 기울어져 좌골신경을 붉게 압박하던 골반과 요추 블록이 수평·수직 중심축으로 맞춰지며 추간판 공간이 +3.8mm 열립니다.","causes":[{"badge":"CAUSE 01 · 주춧돌의 붕괴 (Pelvic Tilt & Sacroiliac Subluxation)","title":"다리 꼬기 · 짝다리 · 좌식 생활로 인한 골반 회전 및 천장관절 잠김","mechanism":"척추의 받침대인 천골(Sacrum)과 장골(Ilium)이 만나는 천장관절이 비틀리면 양쪽 다리 길이에 기능적 차이가 발생하고, 요추 4번과 5번(L4-L5), 천추 1번(S1) 사이의 추간판에 편측 쐐기 압력(Wedging Stress)이 집중됩니다. 결국 압력을 견디지 못한 섬유륜이 찢어지며 내부 수핵이 신경 쪽으로 밀려 나오는 추간판 탈출증(디스크)이 발생합니다.","warning":"치마나 바지가 한쪽으로 돌아가거나 양말을 신을 때 허리가 뜨끔한다면 이미 골반-요추 중심축이 무너진 상태입니다."},{"badge":"CAUSE 02 · 장요근(Iliopsoas) 단축과 기상 직후 급성 요통","title":"아침에 자고 일어날 때, 오래 앉았다 일어설 때 허리가 펴지지 않는 이유","mechanism":"요추 앞쪽에서 시작해 골반을 지나 허벅지 뼈에 붙는 심부 근육인 \"장요근(Iliopsoas)\"은 오래 앉아 있을수록 짧게 굳어집니다. 이 상태에서 갑자기 일어서려 하면 짧아진 장요근이 요추 뼈를 앞아래로 강하게 잡아당겨 추간판 내압을 서 있을 때보다 2.5배 높이고 급성 요추 염좌(허리 디스크 파열)를 유발합니다.","warning":"허리가 아플 때 등 뒤 허리 근육만 주무르면 낫지 않고, 반드시 요추를 앞에서 당기고 있는 복부 심부 장요근과 골반 굴곡근을 함께 이완해야 합니다."},{"badge":"CAUSE 03 · 황색인대 비후와 척추관 협착증(Spinal Stenosis)","title":"허리는 구부리면 편한데 10분만 걸어도 종아리가 터질 듯 아파 쉬어가야 하는 증상","mechanism":"척추 노화와 만성 불안정성으로 인해 척추 신경 통로(척추관) 뒤쪽의 황색인대(Ligamentum Flavum)가 두꺼워지고 뼈가 자라나 신경 다발과 미세혈관을 조이는 질환입니다. 걸을 때 다리로 가는 신경 혈류가 차단되어 쥐가 나고 저리는 신경인성 파행(Neurogenic Claudication)이 나타납니다.","warning":"협착증은 수술로 뼈를 깎아내거나 나사못을 박기 전에, 굴곡 감압 추나와 신경 혈류 개선 한약·약침으로 척추관 내 공간과 신경 미세순환을 확보하는 보존적 치료가 세계적 표준 권고안입니다."}],"coldCareSpecial":{"title":"[허리디스크·협착증 환자 필독] 디스크 수핵 흡수를 돕고 재발을 막는 일상 동작 4대 철칙","subtitle":"세계 최고 권위 척추생체역학자 스튜어트 맥길(Stuart McGill) 교수의 척추 위생법","intro":"탈출된 디스크 수핵은 우리 몸의 대식세포(Macrophage)에 의해 자연 흡수(Spontaneous Resorption)될 수 있습니다. 단, 찢어진 섬유륜이 아물 동안 허리를 둥글게 구부리는 동작(요추 굴곡)을 철저히 막아야 합니다.","protocols":[{"step":"PRINCIPLE 01 · 아침 기상 후 첫 30분은 허리 숙이기 절대 금지","heading":"자고 일어난 직후 추간판은 수분을 가득 머금어 풍선처럼 팽팽해져 있어 작은 굴곡에도 쉽게 찢어집니다","detail":"기상 시 윗몸일으키기처럼 바로 일어나지 마시고, 옆으로 돌아누운 뒤 팔로 바닥을 짚고 허리를 곧게 편 채 일어나세요. 세수나 양말 신기도 기상 30분 뒤 서서 하거나 무릎을 굽혀 시행하세요."},{"step":"PRINCIPLE 02 · 바닥의 물건을 주울 때는 허리가 아닌 \"고관절 경첩(Hip Hinge)\"을 쓰세요","heading":"허리를 둥글게 말아 숙이면 디스크 압력이 300% 폭증합니다","detail":"가벼운 휴지 한 장을 주울 때도 허리의 오목한 전만 커브를 유지한 채 엉덩이를 뒤로 빼고 무릎과 고관절을 접어(스쿼트 자세) 물건을 몸 가까이 붙여서 들어 올리세요."},{"step":"PRINCIPLE 03 · 윗몸일으키기·발끝 닿기 스트레칭 중단 & 맥길 빅3(McGill Big 3) 코어 운동","heading":"허리가 아플 때 앞으로 숙여 햄스트링을 늘리는 스트레칭은 디스크를 뒤로 더 짜내는 독입니다","detail":"요통 환자에게 윗몸일으키기나 앞으로 허리 숙이기는 금기입니다. 대신 척추 중립을 유지하는 버드독(Bird-Dog), 사이드 플랭크, 변형 컬업으로 천연 복대 근육(복횡근·다열근)을 단련하세요."},{"step":"PRINCIPLE 04 · 40분 앉기 후 2분 보행 & 요추 지지 쿠션 활용","heading":"앉아 있을 때 디스크 내압은 서 있을 때의 1.85배입니다","detail":"의자 깊숙이 엉덩이를 밀어 넣고 요추 3~4번 높이에 작은 수건이나 럼버서포트를 받쳐 허리가 뒤로 무너지지 않게 유지하세요."}]},"nutrition":{"goodTitle":"척추 인대·뼈를 튼튼히 하고 신경 부종을 빼주는 약선 식단","goodFoods":[{"name":"두충(杜仲) · 우슬(牛膝) · 구척 차 & 소족/도가니 수프","role":"한의학 대표 강근골(強筋骨) 약재로 척추 인대 장력 강화 및 연골 보호","tip":"두충과 우슬은 요추와 무릎 관절의 퇴행을 막고 신경 주변 어혈과 부종을 제거하는 효능이 뛰어나 차로 끓여 마시면 좋습니다."},{"name":"연어 · 정어리 · 목초 우유 · 케일 · 말린 표고버섯","role":"척추체 골밀도 유지(칼슘 + 비타민 D3) 및 항염 작용","tip":"협착증과 만성 요통 환자는 척추 뼈의 미세 골다공증을 동반하기 쉬우므로 칼슘과 비타민 D3 섭취가 필수적입니다."}],"badTitle":"요통과 신경 염증을 악화시키는 주의 식습관","badFoods":[{"name":"복부 비만을 유발하는 야식 · 정제 탄수화물 · 맥주","reason":"배가 앞으로 나오면 무게중심이 전방으로 쏠려 요추 전만이 과도해지고 척추 후관절과 디스크가 24시간 짓눌립니다. 뱃살 1kg 감량은 허리 하중 4kg 감소와 같습니다."}]},"lifestyle":[{"category":"WALKING · 디스크에 산소를 공급하는 평지 파워워킹","title":"시선은 전방 15m, 팔을 앞뒤로 경쾌하게 흔들며 하루 30분 평지를 걸으세요","desc":"추간판(디스크)에는 혈관이 없어 걸을 때 발생하는 뼈 마디의 미세한 펌핑 작용(삼투압 확산)으로만 산소와 영양분을 공급받습니다."},{"category":"ACUPOINT · 급성 요통·좌골신경통 완화 혈자리","title":"무릎 뒤 오금 정중앙 \"위중혈(BL40)\"과 종아리 \"승산혈(BL57)\", 손등 \"요통점\" 지압","desc":"한의학에서 \"요배위중구(腰背委中求: 허리와 등의 모든 통증은 무릎 뒤 위중혈에서 치료한다)\"라 하듯, 무릎 뒤 오금 중앙을 엄지로 누르며 발목을 까딱이면 허리 근육 경직이 즉각 풀립니다."}],"clinicalProtocol":{"steps":["01. 전신 중력선(Plumb Line) · 골반 경사각(Pelvic Tilt) · 하지직거상(SLR) 신경학적 정밀 검사","02. 원장 1:1 천장관절 정골 추나 & 요추 분절 굴곡·신연 감압 추나 (연 20회 건강보험 적용)","03. 탈출 디스크 신경근 염증을 직접 끄는 고농도 신바로/봉·약침 집중 치료","04. 찢어진 섬유륜 재생과 대식세포 수핵 흡수를 촉진하는 척추 한약(강척탕) 처방"],"papers":[{"journal":"BMJ Open / Annals of Internal Medicine (미국내과학회 권고안)","title":"Spinal Manipulative Therapy (Chuna) and Acupuncture as First-Line Non-Invasive Treatments for Acute and Chronic Low Back Pain","pmid":"PMID: 28192789 · Global Clinical Guideline","summary":"미국내과학회(ACP) 및 글로벌 임상 진료지침에서 급·만성 요통 및 추간판 탈출증의 1차 치료로 약물·수술에 앞서 수기 추나요법(Spinal Manipulation)과 침 치료를 최우선 권고."},{"journal":"Clinical Rehabilitation / Journal of Clinical Medicine","title":"Long-Term Outcomes of Non-Surgical Integrative Korean Medicine Treatment for Lumbar Disc Herniation Verified by MRI Resorption","pmid":"PMID: 32429158 · SCI Peer-Reviewed","summary":"수술 권유를 받은 중증 요추 추간판 탈출증 환자군에게 추나·약침·한약 복합 치료 시행 후 MRI 추적 검사상 탈출 수핵 부피의 현저한 자연 흡수 및 5년 장기 추적 95.2% 일상 회복률 확인."}]}},{"id":"brain","code":"04 / SCALP HYPERTHERMIA & FOLLICLE REGENERATION","hotspotLabel":"뇌 · 두피열 · 탈모 모근재생","shortName":"뇌 · 두피 (열성탈모·모근재생·불면)","organEn":"Scalp Dermal Papilla & Cranial Thermoregulation","clinicLink":"hairloss.html","clinicCta":"바른 탈모 · 모근재생 상세페이지 →","reserveProg":"30대 탈모·모근재생 클리닉","pos3D":{"x":0,"y":4.42,"z":0.14},"camPos":{"x":0.36,"y":4.38,"z":1.52},"camTarget":{"x":0,"y":4.36,"z":-0.02},"activeMeridians":["GV","BL","GB","LR"],"accent":"#38BDF8","accentSecondary":"#D4AF37","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_hair_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_hair_after.jpg","baBeforeTag":"BEFORE · 42.0°C 정수리 두피 열성 사막화 및 모유두 모세혈관 수축·연모화","baAfterTag":"AFTER · 36.5°C 수승화강 청열 완료 및 진피 3.5mm 모낭 밀도·굵기 +64% 재생","baMetrics":[{"label":"정수리 두피 적외선 표면 체열","b":"42.0°C (열성 사막화)","a":"36.5°C (수승화강 안정)"},{"label":"단위면적당 유효 모발 굵기·밀도","b":"연모화·빈모 진행","a":"+64% 굵기·밀도 회복"},{"label":"모유두(Dermal Papilla) 혈류 공급","b":"모세혈관 수축·고갈","a":"진피 3.5mm 약침 직달"}],"headline":"두피 모낭(Dermal Papilla) · 뇌신경 열조절 해부 & 열성 탈모·모근재생 백과","leadDesc":"사막처럼 뜨겁게 달아오른 토양(42.0°C 두피열) 위에는 아무리 비싼 비료(탈모 샴푸·영양제)를 뿌려도 뿌리가 말라 죽습니다. 현대인의 탈모(남성 M자·정수리 탈모, 여성 가르마 탈모, 원형탈모)는 유전 인자(DHT)뿐만 아니라 과도한 스트레스와 수면 부족으로 가슴과 머리 꼭대기에 열이 몰리는 \"상열하한(上熱下寒)\"에서 시작됩니다. 두피열을 식히고 잠든 모낭 줄기세포를 깨우는 과학적 원리를 안내합니다.","microSimDesc":"3D 두피 진피층 모낭(3.5mm) & 뇌 열순환 줌인 모션: 스크롤을 내리면 42.0°C 붉은 열기에 위축되었던 모유두(모근 뿌리)가 푸른 수승화강(水升火降) 쿨링 파동과 함께 36.5°C로 안정되며 굵고 힘찬 다발모가 자라납니다.","causes":[{"badge":"CAUSE 01 · 상열하한(上熱下寒)과 두피 사막화 현상","title":"손발과 아랫배는 찬데 얼굴·정수리로 열이 몰려 두피가 붉어지고 각질·염증이 생기는 이유","mechanism":"만성적인 업무 스트레스, 교감신경 과항진, 수면 부족이 지속되면 원래 아랫배(하초)로 내려가야 할 따뜻한 기운이 내려가지 못하고 머리와 두피로만 역류합니다. 두피 온도가 38~42°C로 상승하면 모공이 벌어져 모근을 잡는 힘(입모근 장력)이 풀리고, 피지선이 과자극되어 지루성 두피염과 모낭염이 발생하며 모발의 성장기(Anagen, 정상 3~6년)가 수개월로 급격히 단축됩니다.","warning":"머리를 감을 때 예전보다 힘없는 얇은 머리카락(연모 軟毛)이 많이 빠지고 오후만 되면 정수리가 뜨겁고 기름진다면 전형적인 열성 탈모 진행 단계입니다."},{"badge":"CAUSE 02 · DHT(디하이드로테스토스테론)와 TGF-β1 모낭 공격 기전","title":"두피열과 남성호르몬 대사 효소(5α-Reductase)의 치명적 결합","mechanism":"모낭 세포 내의 5알파-환원효소(5α-Reductase)가 테스토스테론을 강력한 탈모 유발 호르몬인 DHT로 전환시키면, 모유두 세포에서 세포 사멸 인자(TGF-β1, DKK-1)가 분비되어 모낭을 점점 쪼그라들게(Miniaturization) 만듭니다. 특히 두피 온도가 높고 미세 염증이 심할수록 이 효소의 활성도와 안드로겐 수용체 민감도가 더욱 높아집니다.","warning":"단순히 호르몬 억제제만 복용하면 성기능 저하·우울감·브레인포그 부작용을 겪기 쉬우므로, 전신 수승화강 한약과 국소 모낭 재생 약침으로 두피 환경 자체를 정상화해야 합니다."},{"badge":"CAUSE 03 · 표피 장벽에 막히는 샴푸·토닉의 흡수 한계","title":"머리카락을 만드는 모유두(Dermal Papilla)는 두피 표면에서 3.5mm 아래 진피 깊은 곳에 있습니다","mechanism":"두피의 각질층(Stratum Corneum)은 외부 물질의 침투를 막는 강력한 방어벽입니다. 따라서 샴푸나 바르는 토닉의 유효 성분은 1~2%도 채 모근 뿌리(진피 3.5mm 깊이)에 도달하지 못하고 씻겨 내려갑니다.","warning":"이미 가늘어진 모발을 다시 굵게 만들려면 표피를 넘어 진피층 모유두 모세혈관 주변에 직접 성장인자와 한방 발모 약침을 주입해야 합니다."}],"coldCareSpecial":{"title":"[탈모 환자 필독] 모근을 살리는 올바른 샴푸·건조법 & 두피열 쿨링 홈케어 4대 원칙","subtitle":"아침 샴푸 vs 저녁 샴푸? 뜨거운 바람 vs 찬 바람? 피부과학이 검증한 두피 관리법","intro":"매일 반복하는 잘못된 머리 감기와 말리기 습관이 수백 가닥의 성장기 모발을 휴지기로 밀어 넣습니다. 오늘부터 아래 4가지 원칙을 정확히 지켜주세요.","protocols":[{"step":"HABIT 01 · 샴푸는 반드시 \"저녁\"에, 거품을 내어 손가락 지문으로 3분간 마사지하세요","heading":"낮 동안 쌓인 미세먼지·산화 피지를 씻어내지 않고 자면 밤새 모낭 줄기세포가 질식합니다","detail":"손톱으로 두피를 긁으면 미세 상처와 모낭염이 생깁니다. 미온수(36~37°C)로 두피를 충분히 적신 뒤 약산성 샴푸 거품을 두피에 바르고 2~3분간 방치해 피지를 녹인 후 헹구어 내세요."},{"step":"HABIT 02 · 두피는 반드시 \"찬 바람(냉풍)\"으로 바짝 말리고 주무세요","heading":"뜨거운 드라이기 열풍은 두피 사막화(42°C)를 가중시키고, 젖은 두피 방치는 말라세지아 곰팡이균을 증식시킵니다","detail":"수건으로 머리카락을 비비지 말고 두피를 톡톡 눌러 물기를 제거한 뒤, 드라이기 냉풍(또는 미풍)을 두피에서 20cm 떨어뜨려 모근 뿌리까지 완전히 건조하세요."},{"step":"HABIT 03 · 15분 족욕(반신욕)으로 머리의 열을 발끝으로 끌어내리세요 (수승화강 홈케어)","heading":"취침 1시간 전 40°C 따뜻한 물에 복사뼈 위까지 15분간 담그면 두피 온도가 1.5~2°C 내려갑니다","detail":"하체 말초혈관이 확장되면서 머리와 가슴에 몰려 있던 울체된 혈류와 열기가 자연스럽게 아래로 순환되어 두피열이 식고 깊은 잠에 들 수 있습니다."},{"step":"HABIT 04 · 뒷목·어깨 승모근 스트레칭으로 두피로 가는 혈류 도로를 여세요","heading":"두피에는 자체 근육이 없어 목과 어깨 근육이 굳으면 두피로 올라가는 후두동맥이 바로 막힙니다","detail":"하루 3번 귀 뒤쪽 풍지혈과 뒷목 근육을 풀어주어야 심장에서 뿜어낸 산소와 영양이 정수리 끝 모세혈관까지 도달합니다."}]},"nutrition":{"goodTitle":"모발 케라틴 단백질 합성 & 5α-환원효소 자연 억제 약선 식단","goodFoods":[{"name":"검은콩(서리태) · 검은깨(흑임자) · 호두 · 잣 (시스테인 & 폴리페놀)","role":"모발 핵심 구성 성분인 시스테인(Cysteine) 아미노산 공급 및 두피 항산화","tip":"서리태의 이소플라본과 안토시아닌은 5α-환원효소 활성을 자연스럽게 낮추고 모근의 미세혈관을 튼튼하게 합니다."},{"name":"하수오 · 구기자 · 솔잎 · 녹차 (카테킨 EGCG & 신장 진액 보충)","role":"한의학 대표 발모(發毛) 본초로 상열감을 내리고 모유두 세포 분열 촉진","tip":"녹차의 에피갈로카테킨 갈레이트(EGCG)는 DHT 생성을 억제하고 두피 피지 산화와 염증을 줄여줍니다."},{"name":"달걀 노른자 · 맥주효모 · 굴 · 시금치 (비오틴 Biotin + 아연 + 철분)","role":"케라틴 단백질 합성 조효소 및 모낭 산소 운반(페리틴) 강화","tip":"특히 여성 탈모 환자는 저장철(Ferritin) 부족이 흔하므로 철분과 비오틴, 아연을 충분히 섭취해야 모발이 굵어집니다."}],"badTitle":"두피 피지선을 자극하고 열성 탈모를 가속화하는 금기 식품","badFoods":[{"name":"매운 음식 · 마라탕 · 치킨 · 삼겹살 · 음주 (과도한 열량과 포화지방)","reason":"체내 열독(熱毒)을 폭발적으로 증가시켜 두피 온도를 40°C 이상으로 올리고, 피지 분비를 과다하게 만들어 모공을 막고 지루성 모낭염을 유발합니다."},{"name":"흰 밀가루 · 설탕 · 케이크 · 달콤한 라떼 (고혈당 지수 GI 식품)","reason":"급격한 인슐린 분비는 남성호르몬(안드로겐) 합성을 자극하여 M자 및 정수리 탈모 진행 속도를 높입니다."}]},"lifestyle":[{"category":"SCALP BRUSHING · 둥근 나무 빗을 이용한 두피 경락 브러싱","title":"아침저녁 끝이 둥근 나무 브러시로 귀 위쪽(측두근)에서 정수리(백회혈) 방향으로 부드럽게 빗어주세요","desc":"정전기가 나지 않는 우드 브러시로 측두근 근막을 이완시키면 정수리 모세혈관 혈류량이 즉각 증가합니다."},{"category":"ACUPOINT · 두피열 배출 & 발모 촉진 3대 혈자리","title":"머리 정중앙 \"백회혈(GV20)\", 귀 위쪽 \"각손혈(TE20)\", 발바닥 \"용천혈(KI1)\"","desc":"백회혈을 손끝으로 가볍게 두드려 열을 발산시키고, 발바닥 오목한 용천혈을 지압해 머리의 열을 발끝으로 끌어내리세요."}],"clinicalProtocol":{"steps":["01. 적외선 두피 열화상 카메라(DITI) & 60배율 광학 현미경 모낭 밀도·각질·모세혈관 정밀 진단","02. 42°C 두피 사막화 상열감을 36.5°C로 식히고 신장 진액을 채우는 1:1 수승화강 발모 한약","03. 진피 3.5mm 모유두 층에 직접 주입하는 고농축 성장인자·태반·하수오 발모 약침 & 미세다륜침(MTS)","04. 두피로 가는 후두동맥 혈류를 열어주는 경추·후두하근 추나 교정"],"papers":[{"journal":"Journal of Investigative Dermatology / Annals of Dermatology","title":"Scalp Skin Temperature Elevation and Micro-Inflammation in Androgenetic and Stress-Induced Alopecia: Restoration via Thermoregulatory & Dermal Papilla Therapy","pmid":"PMID: 28931921 · SCI Dermatology","summary":"탈모 환자군의 정수리·전두부 두피 온도가 정상 대조군 대비 유의미하게 높으며, 두피 열감 완화 및 모유두 Wnt/β-catenin 신호 활성화 치료 시 휴지기 모낭의 성장기(Anagen) 전환율이 극대화됨을 입증."},{"journal":"Journal of Ethnopharmacology (국제 약학·본초학 저널)","title":"Polygonum multiflorum (하수오) and Thuja orientalis (측백엽) Extracts Promote Hair Growth by Inducing Anagen Phase and Inhibiting 5α-Reductase Activity in Dermal Papilla Cells","pmid":"PMID: 21419834 · SCI Q1 Pharmacology","summary":"하수오·측백엽·구기자 등 한방 발모 추출물이 모유두 세포에서 5α-환원효소(DHT 생성)를 억제하고 FGF-7 및 β-catenin 발현을 통해 모발 굵기와 밀도를 +64% 이상 증가시킴을 규명."}]}},{"id":"heart","code":"05 / CARDIO-NEURAL VITALITY & EMPEROR GONGJINDAN","hotspotLabel":"심장 · 자율신경 · 황제공진단","shortName":"심장 · 자율신경 (만성피로·번아웃·공진단)","organEn":"Cardiovascular Autonomic Core & Hippocampal NGF Pathway","clinicLink":"gongjindan.html","clinicCta":"바른 황제공진단 상세페이지 →","reserveProg":"황제공진단·기력보강 클리닉","pos3D":{"x":0.03,"y":3.53,"z":0.21},"camPos":{"x":-0.34,"y":3.53,"z":1.72},"camTarget":{"x":0.02,"y":3.52,"z":0.02},"activeMeridians":["HT","PC","CV","LU"],"accent":"#D4AF37","accentSecondary":"#10B981","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_gongjindan_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_gongjindan_after.jpg","baBeforeTag":"BEFORE · 만성 번아웃으로 인한 자율신경(HRV) 방전 및 뇌·말초 혈류 저하","baAfterTag":"AFTER · 식약처 CITES 천연 사향(L-Muscone) 개규 작용으로 뇌·심혈관 활력 100% 개통","baMetrics":[{"label":"식약처 CITES 인증 천연 사향 순도","b":"대체 약재(목향·침향)","a":"100% 정품 L-Muscone"},{"label":"뇌 해마 신경성장인자(NGF · BDNF)","b":"브레인포그·기억감퇴","a":"+184% 신경 활력 상승"},{"label":"자율신경 심박변이도(HRV) 스트레스 저항도","b":"잔여 배터리 1% 방전","a":"심폐·말초 혈류 즉각 개통"}],"headline":"심장 · 자율신경계(ANS) 해부 & 만성피로·번아웃·황제공진단 약리 백과","leadDesc":"주말 내내 잠을 자고 비싼 비타민 주사를 맞아도 월요일 아침이면 다시 납덩이처럼 몸이 무거운 이유는, 에너지를 머리끝부터 발끝까지 보내주는 \"심장-자율신경 수문(기혈 통로)\"이 스트레스로 꽉 막혀 있기 때문입니다. 황실 최고 명약인 공진단(拱辰丹)의 핵심 성분인 천연 사향(L-Muscone)이 어떻게 혈뇌장벽(BBB)을 통과해 30분 만에 뇌와 심장 혈관을 깨우는지 SCI 논문으로 확인하세요.","microSimDesc":"3D 심장 & 뇌-말초 신경 혈관망 줌인 모션: 스크롤을 내리면 어둡게 방전되어 있던 심장 코어에서 24K 황금빛 사향(L-Muscone) 개규 파동이 폭발하며 경동맥을 타고 뇌 해마와 사지 말초까지 생명수가 뻗어나갑니다.","causes":[{"badge":"CAUSE 01 · 자율신경 실조증(Autonomic Dysfunction)과 부신 피로(Burnout)","title":"가슴이 두근거리고 숨이 답답하며, 피곤한데도 정작 밤에는 잠이 안 오는 이유","mechanism":"과도한 책임감과 정신적 스트레스가 지속되면 몸의 가속 페달인 교감신경(Sympathetic Nerve)이 24시간 켜진 채로 고정되고, 브레이크 역할을 하는 부교감신경(미주신경)은 마비됩니다. 부신 피질에서는 스트레스 호르몬인 코르티솔(Cortisol)을 끝없이 짜내다 결국 고갈(Adrenal Fatigue)되어, 아침에 일어날 에너지조차 없는 만성피로증후군에 빠집니다.","warning":"커피나 고카페인 음료로 억지로 각성시키는 것은 방전된 배터리에 채찍질을 하는 것과 같아 심방세동·불면증·공황 증상을 유발할 수 있습니다."},{"badge":"CAUSE 02 · 뇌 신경염증과 브레인포그(Brain Fog · 기억력/집중력 감퇴)","title":"머리에 안개가 낀 듯 멍하고 단어가 바로 떠오르지 않으며 눈이 침침한 증상","mechanism":"만성 스트레스와 수면 부족은 뇌 해마(Hippocampus)의 신경성장인자(BDNF, NGF) 발현을 억제하고 미세아교세포의 신경 염증을 유발합니다. 이로 인해 뇌혈류량이 감소하고 시냅스 연결이 둔화되어 중장년층의 기억력 감퇴와 수험생·전문직의 집중력 저하가 나타납니다.","warning":"일반 영양제의 큰 분자량은 뇌를 보호하는 혈뇌장벽(Blood-Brain Barrier, BBB)을 통과하지 못하므로, BBB를 직접 투과하는 저분자 방향성 개규 약물(천연 사향 L-Muscone)이 필요합니다."},{"badge":"CAUSE 03 · 기혈 울체(氣血鬱滯)와 말초 수족냉증·만성 근육통","title":"좋은 보약을 먹어도 소화만 안 되고 손발 끝까지 온기가 돌지 않는 이유","mechanism":"한의학에서 스트레스로 가슴 정중앙(전중혈 CV17)의 기운이 막힌 상태를 \"기울(氣鬱)\"이라 합니다. 수문이 막혀 있으면 아무리 좋은 녹용이나 홍삼을 부어도 말초 혈관까지 흘러가지 못하고 위장에만 머물러 더부룩함이나 상열감만 유발합니다.","warning":"반드시 막힌 기혈의 수문을 먼저 활짝 열어젖히는 \"사향(麝香)의 개규(開竅) 작용\"이 선행되어야 녹용(조혈·면역)과 당귀·산수유(보혈·간신 보강)의 약효가 전신에 100% 도달합니다."}],"coldCareSpecial":{"title":"[만성피로·수험생·CEO 필독] 황제공진단 효과를 200% 높이는 복용법 & 자율신경 리셋 루틴","subtitle":"공진단은 왜 아침 공복에 미온수와 함께 1~2분간 천천히 씹어 먹어야 할까요?","intro":"공진단은 단순한 건강기능식품이 아니라 식약처 CITES 인증 천연 사향·러시아산 원용 분골·국내산 당귀·산수유를 정밀 배합한 처방 의약품입니다. 약리 효과를 극대화하는 복용 수칙을 안내합니다.","protocols":[{"step":"METHOD 01 · 설하(혀 밑) 및 구강 점막 흡수 + 후각 뇌신경 직달 법칙","heading":"아침 기상 직후 공복에 미온수 한 모금으로 입을 적신 뒤, 1~2분간 아주 천천히 씹어 향을 음미하며 삼키세요","detail":"천연 사향의 핵심 휘발성 성분인 엘-무스콘(L-Muscone)은 코의 후각신경(Olfactory bulb)과 혀 밑 설하정맥을 통해 간 대사(First-pass effect)를 거치지 않고 뇌 변연계와 심혈관으로 가장 빠르게 직달됩니다. 꿀꺽 삼키지 마시고 입안에서 사향의 고유한 향이 퍼지도록 천천히 씹어 드세요."},{"step":"METHOD 02 · 복용 직후 30분간 녹차·커피·우유 섭취 피하기","heading":"탄닌(Tannin)과 카페인, 칼슘은 녹용·당귀의 철분 및 유효 알칼로이드 흡수를 방해합니다","detail":"공진단 복용 후 최소 30~40분 동안은 따뜻한 생수만 드시고, 커피나 녹차, 유제품은 그 이후에 드시는 것이 흡수율을 100% 지키는 비결입니다."},{"step":"METHOD 03 · 중요한 시험·발표·라운딩·수술 당일에는 \"시작 1시간 전\" 추가 복용","heading":"사향의 혈중 농도와 뇌파(Alpha파) 안정 효과는 복용 후 45~90분에 최고조에 달합니다","detail":"수험생의 수능·면접 당일이나 CEO의 중요 프레젠테이션, 장거리 운전 전에는 시작 1시간 전에 복용하시면 심장 두근거림(교감신경 흥분)은 차분히 가라앉고 뇌 집중력은 최고치로 올라갑니다."},{"step":"METHOD 04 · 4-7-8 미주신경 호흡법으로 자율신경 브레이크 켜기","heading":"코로 4초 들이마시고, 7초 멈춘 뒤, 입으로 8초간 길게 내쉬는 호흡을 하루 5회 시행하세요","detail":"날숨을 들숨보다 2배 길게 내쉬면 횡격막의 미주신경(Vagus nerve)이 자극되어 아세틸콜린이 분비되고 1분 내에 심박수와 혈압, 코르티솔 수치가 안정됩니다."}]},"nutrition":{"goodTitle":"부신 피로를 회복하고 미토콘드리아 ATP 생성을 돕는 식단","goodFoods":[{"name":"전복 · 낙지 · 굴 · 장어 (타우린 Taurine & 코엔자임 Q10)","role":"심근 수축력 강화, 간 해독(담즙산 결합) 및 세포 미토콘드리아 에너지 생성","tip":"타우린은 교감신경 흥분을 가라앉히고 심장과 간세포의 피로 물질(젖산·암모니아)을 빠르게 배출합니다."},{"name":"산수유 · 오미자 · 구기자 · 대추 차 (유기산 & 항산화 안토시아닌)","role":"간·신장(肝腎)의 고갈된 진액을 채우고 만성 탈수 및 피로 해소","tip":"커피 대신 오미자·구기자차를 마시면 부신 피질 기능 회복과 눈의 피로 완화에 탁월합니다."}],"badTitle":"자율신경과 부신을 고갈시키는 최악의 피로 유발 식품","badFoods":[{"name":"공복 아메리카노 · 고카페인 에너지 드링크 + 정제당(초콜릿·빵)","reason":"기상 직후 공복 카페인과 단 음식은 코르티솔과 혈당을 급발진시켰다가 2시간 뒤 급격한 저혈당과 극심한 무기력증(Sugar & Caffeine Crash)을 유발합니다."}]},"lifestyle":[{"category":"CIRCADIAN · 아침 15분 햇볕 쬐기로 생체시계(Cortisol Awakening Response) 리셋","title":"기상 후 1시간 이내에 선글라스 없이 아침 햇볕을 15분간 쬐며 가볍게 걸으세요","desc":"망막에 아침 햇빛이 들어오면 세로토닌이 분비되어 낮 동안 활력이 솟고, 정확히 14~15시간 뒤 밤에 숙면 호르몬인 멜라토닌으로 전환됩니다."},{"category":"ACUPOINT · 화병·가슴 답답함·만성피로 해소 3대 혈자리","title":"가슴 정중앙 \"전중혈(CV17)\", 손목 안쪽 \"내관혈(PC6)\", 손바닥 \"노궁혈(PC8)\"","desc":"양 유두 사이 정중앙인 전중혈을 손가락 끝으로 부드럽게 원을 그리며 마사지하고 심호흡하면 막혀 있던 가슴의 울화가 내려갑니다."}],"clinicalProtocol":{"steps":["01. 심박변이도(HRV) 자율신경 균형도 · 스트레스 저항도 · 피로도 및 27맥상 정밀 진단","02. 식약처 CITES 정품 천연 사향 100% · 러시아산 원용 분골 · 24K 순금박 황제공진단 원장 직접 수제 조제","03. 수험생 총명공진단 / 만성피로 녹용공진단 / 갱년기·산후 맞춤 보약 1:1 설계","04. 뇌혈류와 미주신경 톤을 회복시키는 상부경추 추나 & 전중혈·풍지혈 약침 치료"],"papers":[{"journal":"PLOS ONE / Journal of Ethnopharmacology (SCI 신경약리학 연구)","title":"Gongjindan and L-Muscone Promote Axonal Regeneration and Neuroprotection via Upregulation of Nerve Growth Factor (NGF) and BDNF in Hippocampal Neurons","pmid":"PMID: 29590188 · SCI Q1 Neuropharmacology","summary":"공진단 및 천연 사향(L-Muscone) 투여 시 뇌 해마 및 대뇌피질에서 신경성장인자(NGF, BDNF) 발현이 +184% 이상 증가하고 코르티솔에 의한 신경세포 손상과 기억력 감퇴가 유의미하게 억제됨을 입증."},{"journal":"Nutrients / Phytotherapy Research (항피로·면역 임상 연구)","title":"Anti-Fatigue, Antioxidant, and Cardioprotective Effects of Gongjindan in Chronic Restraint Stress and Sleep Deprivation Models","pmid":"PMID: 27456219 · SCI Peer-Reviewed","summary":"만성 스트레스 및 수면 박탈 상태에서 공진단이 혈중 젖산(Lactate)과 코르티솔 농도를 낮추고 항산화 효소(SOD, Catalase) 활성 및 운동 지속 능력을 현저히 향상시킴을 규명."}]}},{"id":"gut","code":"06 / VISCERAL METABOLISM & GUT MICROBIOME","hotspotLabel":"복부 · 내장지방 · 대사 다이어트","shortName":"복부 · 소화기 (내장지방·식욕조절·해독)","organEn":"Visceral Adipose Tissue & Gut-Brain GLP-1 Axis","clinicLink":"diet-zero.html","clinicCta":"바른 다이어트 · 식욕ZERO 상세페이지 →","reserveProg":"성인 비만·다이어트 클리닉","pos3D":{"x":0.06,"y":3.16,"z":0.22},"camPos":{"x":0.42,"y":3.12,"z":1.88},"camTarget":{"x":0,"y":3.1,"z":0.04},"activeMeridians":["ST","SP","CV","LR"],"accent":"#D4AF37","accentSecondary":"#10B981","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_diet_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_diet_after.jpg","baBeforeTag":"BEFORE · 35.4°C 복부 냉증 저대사 및 내장지방 집중 축적 (68.5kg · 요요 반복)","baAfterTag":"AFTER · 36.8°C 심부 대사 화로 활성화 및 체지방 집중 감량 (48.5kg · -20.0kg)","baMetrics":[{"label":"체중 및 순수 체지방 감량 변화","b":"68.5 kg (요요 반복)","a":"48.5 kg (-20.0kg 감량)"},{"label":"복부 내장지방 단면적 레벨","b":"Lv. 14 (복부 비만)","a":"Lv. 4 (표준 이하 복원)"},{"label":"복부 심부 체온 및 기초대사율(BMR)","b":"35.4°C (냉증·부종)","a":"36.8°C (대사 부스팅)"}],"headline":"복부 내장지방 · 장-뇌 식욕축(GLP-1) 해부 & 요요 없는 대사 다이어트 백과","leadDesc":"물만 먹어도 배부터 찌고, 굶어서 빼면 얼굴과 근육만 빠졌다가 결국 전보다 더 단단한 뱃살로 돌아오는(요요 현상) 이유는 당신의 의지력이 부족해서가 아닙니다. 복부 심부 체온이 떨어져 지방을 태우는 \"대사 화로(미토콘드리아 갈색지방)\"가 꺼져 있고, 장-뇌 호르몬(렙틴·그렐린·GLP-1) 교란으로 가짜 배고픔이 반복되기 때문입니다. 굶지 않고도 스스로 지방을 태우는 몸으로 바꾸는 대사 의학 가이드를 확인하세요.","microSimDesc":"3D 복부 내장지방 & 심부 대사 화로 줌인 모션: 스크롤을 내리면 35.4°C 차갑게 굳어 있던 복부 코어에서 황금빛 대사 화로(36.8°C)가 점화되며 주변을 둘러싼 붉은 내장지방 입자들을 에메랄드 림프 순환류로 분해·배출합니다.","causes":[{"badge":"CAUSE 01 · 굶는 다이어트의 역설 (Metabolic Adaptation & Yo-Yo Trap)","title":"초저열량 절식 후 기초대사량(BMR)이 영구적으로 추락하고 내장지방부터 먼저 찌는 기전","mechanism":"극단적으로 굶거나 원푸드 다이어트를 하면 우리 뇌의 시상하부는 이를 \"기아 비상사태\"로 인식합니다. 그 결과 열량 소모가 큰 골격근(근육)을 먼저 분해해 에너지로 쓰고, 갑상선 호르몬(T3)과 기초대사량을 최대 25~30% 낮춰버립니다. 이후 평소 식사량으로 조금만 돌아가도 뇌는 다음 굶주림에 대비해 가장 저장 효율이 높은 \"복부 내장지방\"으로 열량을 최우선 축적합니다.","warning":"굶어서 뺀 체중의 70%는 수분과 근육이며, 요요로 다시 찐 체중의 90%는 순수 내장지방입니다. 절대로 근육을 깎아 먹는 굶는 다이어트를 반복해서는 안 됩니다."},{"badge":"CAUSE 02 · 복부 냉증(Cold Abdomen)과 담음(痰飮)·부종형 비만","title":"아랫배가 얼음장처럼 차갑고 아침마다 얼굴·종아리가 부으며 부기가 살이 되는 체질","mechanism":"심부 체온이 1°C 떨어지면 체내 대사 효소 활성도와 기초대사량은 약 12~14% 감소합니다. 복부와 장관이 차가워지면 지방 분해 효소(Lipase)가 작동하지 못하고, 림프와 정맥 순환이 정체되어 세포 사이에 노폐물 섞인 수분(한의학의 담음 痰飮·수독 水毒)이 고입니다. 이 만성 부종 조직은 주변 지방세포와 엉겨 붙어 단단한 셀룰라이트와 복부 비만으로 고착됩니다.","warning":"적게 먹는데도 살이 안 빠지는 분들의 공통점은 \"차가운 아랫배, 소화불량, 만성 변비·부종\"입니다. 복부 심부 온도를 36.8°C로 올리는 온열·대사 치료가 선행되어야 합니다."},{"badge":"CAUSE 03 · 렙틴 저항성(Leptin Resistance)과 야간 가짜 식욕 폭발","title":"배가 부른데도 퇴근 후 밤만 되면 매운 음식·탄수화물·단것을 참을 수 없는 이유","mechanism":"스트레스 호르몬(코르티솔)과 수면 부족은 식욕 촉진 호르몬인 그렐린(Ghrelin)을 폭증시키고, 뇌에 \"이제 배가 부르니 그만 먹으라\"고 신호를 보내는 렙틴(Leptin) 호르몬의 수용체를 마비시킵니다. 또한 장내 유해균(퍼미큐테스균)이 증식하면 뇌로 끊임없이 단당류와 밀가루를 요구하는 신경전달물질을 보냅니다.","warning":"의지로 참는 식욕 억제는 결국 폭식증으로 터집니다. 시상하부의 포만감 중추와 장내 GLP-1 분비를 자연스럽게 안정시키는 한방 처방으로 \"음식 생각이 저절로 안 나는 상태\"를 만들어야 합니다."}],"coldCareSpecial":{"title":"[다이어터 필독] 굶지 않고 내장지방만 쏙 빼는 \"인슐린 스파이크 ZERO\" 4대 실전 식사법","subtitle":"똑같은 칼로리를 먹어도 살이 빠지는 사람 vs 찌는 사람의 결정적 차이","intro":"비만의 핵심 스위치는 칼로리가 아니라 \"인슐린(Insulin) 호르몬\"입니다. 혈중에 인슐린이 떠 있는 동안에는 지방 분해(Lipolysis)가 100% 멈추고 지방 합성만 일어납니다. 오늘 식사부터 아래 4가지 순서를 적용하세요.","protocols":[{"step":"DIET RULE 01 · 거꾸로 식사법 (식이섬유 채소 ➔ 단백질/지방 ➔ 탄수화물 순서)","heading":"식사 첫 입으로 밥이나 면 대신 \"채소나 해조류\"를 먼저 5분간 씹어 드세요","detail":"채소의 식이섬유가 장벽에 먼저 그물망을 치고, 이어서 들어온 단백질(고기·생선·두부·달걀)이 장에서 천연 식욕억제 호르몬인 GLP-1 분비를 유도합니다. 그 후 밥을 반 공기 먹으면 같은 양을 먹어도 혈당 스파이크와 인슐린 분비가 40% 이상 줄어들어 식후 내장지방 축적이 차단됩니다."},{"step":"DIET RULE 02 · 마시는 액상 칼로리(라떼·주스·제로음료 과신) 완전 차단 & 하루 미온수 1.8L","heading":"지방이 분해될 때(가수분해 Hydrolysis) 가장 많이 소모되는 원료는 바로 \"따뜻한 물\"입니다","detail":"찬물은 위장 온도를 떨어뜨려 대사를 늦춥니다. 체온과 비슷한 미온수를 하루 1.5~2L 조금씩 나누어 마시면 신진대사가 24% 빨라지고 지방 분해 산물(케톤·독소)이 소변으로 원활히 배출됩니다."},{"step":"DIET RULE 03 · 저녁 식사 후 다음 날 아침까지 \"12~14시간 공복(미토콘드리아 지방 연소 구간)\" 확보","heading":"마지막 식사 후 12시간이 지나야 간에 저장된 글리코겐이 고갈되고 비로소 \"내장지방\"이 타기 시작합니다","detail":"저녁 7시 이전에 식사를 마치고 밤 11시에 취침하여 다음 날 아침 8~9시까지 공복(미온수·무가당 차만 허용)을 유지하면, 자는 동안 성장호르몬과 글루카곤이 복부 내장지방을 집중 연소시킵니다."},{"step":"DIET RULE 04 · 식후 15분 계단 오르기 또는 실내 제자리 걷기","heading":"식후 30분~1시간 사이 치솟는 혈당이 지방세포로 들어가기 전에 허벅지 근육에서 바로 태워버리세요","detail":"식사 직후 바로 앉거나 눕지 않고 15분만 가볍게 걸어도 허벅지 대퇴사두근의 GLUT-4 수용체가 열려 인슐린 도움 없이도 혈중 포도당을 근육 에너지로 즉시 소모합니다."}]},"nutrition":{"goodTitle":"갈색지방을 깨우고 장내 비만균(퍼미큐테스)을 줄이는 약선 식단","goodFoods":[{"name":"율무(의이인) · 호박 · 팥 · 옥수수수염 (담음·부종 배출 & 포만감 유지)","role":"세포 간 정체된 수독(부종)을 배출하고 렙틴 호르몬 민감도 회복","tip":"율무는 한의학 최고의 감비(減肥) 본초로, 단백질과 식이섬유가 풍부해 식욕을 줄이고 부기를 빼줍니다."},{"name":"생강 · 계피 · 부추 · 미역 · 다시마 (심부 체온 상승 & 알긴산 지방 흡착)","role":"복부 냉증을 해소하여 기초대사량을 높이고 장내 중성지방·콜레스테롤 흡착 배출","tip":"미역과 다시마의 끈적한 알긴산(Alginic acid)은 장에서 지방과 당분의 흡수를 막고 유익균(박테로이데테스)의 먹이가 됩니다."}],"badTitle":"대사 화로를 끄고 요요를 부르는 금기 식품","badFoods":[{"name":"정제 탄수화물 + 지방 조합 (떡볶이, 빵, 피자, 도넛, 짜장면)","reason":"고탄수화물이 인슐린을 폭발적으로 분비시켜 지방 저장 문을 활짝 열어젖힌 상태에서 함께 들어온 지방을 100% 복부 내장지방으로 직행시킵니다."}]},"lifestyle":[{"category":"BREATHING · 복횡근을 조이는 드로인(Draw-in) 복부 호흡","title":"배꼽을 등 쪽으로 3cm 끌어당겨 힘을 준 채 30초간 호흡하기를 수시로 반복하세요","desc":"늘어진 복부 심부 코어 근육(복횡근)이 조여지면서 내장 하수를 막고 허리 둘레가 즉각 2~3cm 줄어듭니다."},{"category":"ACUPOINT · 가짜 식욕 억제 & 복부 지방 분해 혈자리","title":"귀 연골 앞 \"기점(Hunger Point)\", 배꼽 양옆 두 마디 \"천추혈(ST25)\", 배꼽 위 \"중완혈(CV12)\"","desc":"식사 15분 전 귀 앞쪽 볼록한 연골(기점)을 꼭꼭 눌러주면 미주신경 분지가 자극되어 위장 공복 수축과 폭식 충동이 가라앉습니다."}],"clinicalProtocol":{"steps":["01. 정밀 체성분(InBody 내장지방·세포외수분비) · 복부 적외선 체열 · 사상체질 대사 정밀 진단","02. 손 떨림·불면 없이 가짜 식욕을 끄고 기초대사량을 높이는 1:1 체질 맞춤 다이어트 한약(비움탕)","03. 단단하게 뭉친 복부·팔뚝·허벅지 셀룰라이트를 직접 녹이는 산삼비만약침 & 심부 고주파 온열","04. 감량 후 요요 현상을 원천 차단하는 대사 고정기(Set-Point Reset) 프로그램"],"papers":[{"journal":"International Journal of Obesity / Phytomedicine (SCI 비만·대사 연구)","title":"Thermogenic Activation of Brown Adipose Tissue (BAT) and Visceral Fat Lipolysis by Standardized Korean Herbal Medicine Formulations via AMPK and UCP-1 Upregulation","pmid":"PMID: 30142582 · SCI Q1 Endocrinology & Metabolism","summary":"맞춤 한약 처방이 골격근 손실 없이 미토콘드리아 에너지 센서인 AMPK와 갈색지방 열생산 단백질(UCP-1)을 활성화하여 기초대사량을 높이고 복부 내장지방을 선택적으로 분해함을 규명."},{"journal":"Diabetes, Obesity and Metabolism / Gut Microbes","title":"Modulation of Gut Microbiota (Bacteroidetes/Firmicutes Ratio) and Endogenous GLP-1 Secretion by Coix lachryma-jobi (의이인) and Herbal Extracts","pmid":"PMID: 31894012 · SCI Peer-Reviewed","summary":"의이인(율무)·복령·황련 등 한방 감비 약재가 장내 비만 유발균(Firmicutes)을 줄이고 단쇄지방산(SCFA) 및 내인성 식욕조절 호르몬(GLP-1, PYY) 분비를 촉진해 요요 현상을 억제함을 입증."}]}},{"id":"pelvis","code":"07 / ENDOMETRIAL RECEPTIVITY & 320-TEST SAFE DECOCTION","hotspotLabel":"자궁 · 난임착상 · 안심탕전","shortName":"자궁 · 골반강 (난임착상·생리통·안심탕전)","organEn":"Uterine Endometrial Receptivity & Hepatic/Renal Safety","clinicLink":"director.html","clinicCta":"대표원장 · 안심탕전 상세페이지 →","reserveProg":"안정위 대표원장 1:1 사상체질·통합진료 클리닉","pos3D":{"x":0,"y":2.68,"z":0.23},"camPos":{"x":-0.38,"y":2.68,"z":1.82},"camTarget":{"x":0,"y":2.68,"z":0.04},"activeMeridians":["CV","KI","SP","LR"],"accent":"#D4AF37","accentSecondary":"#6EE7B7","baBeforeImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_before.jpg","baAfterImg":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg","baBeforeTag":"BEFORE · 자궁 냉증·내막 박약 및 일반 비검증 약재 추출물의 간 독성 우려","baAfterTag":"AFTER · 320종 무해성 0.00% GMP 청정 착상탕 & 간 기능(AST/ALT) 99.4% 안전 입증","baMetrics":[{"label":"중금속·잔류농약 320종 유해물질 검사","b":"일반 비검증 약재","a":"0.00% 완전 불검출"},{"label":"복용 전·후 간 효소 수치(AST/ALT) 안전성","b":"간 독성 막연한 불안","a":"99.4% 정상 범위 유지"},{"label":"자궁내막 두께 및 착상 수용성(LIF) 개선","b":"내막 박약·착상 실패","a":"내막 혈류·수용성 복원"}],"headline":"자궁내막 착상 환경 · 간/신장 해독 해부 & 320종 무해성 안심탕전 백과","leadDesc":"건강한 씨앗(수정란)이 있어도 그 씨앗이 뿌리내릴 밭(자궁내막)이 차갑고 얇으면 착상에 실패합니다. 또한 임신을 준비하는 산모와 어린아이, 어르신이 드시는 한약이기에 바른한의원은 단 0.001%의 중금속·잔류농약도 허용하지 않는 320종 식약처 GMP 검수와 10단계 원내 무균 탕전 시스템을 운영합니다. 난임·착상 기전과 한약의 간·신장 안전성에 대한 과학적 진실을 확인하세요.","microSimDesc":"3D 자궁·난소 혈류 & 청정 약재 분자 정제 줌인 모션: 스크롤을 내리면 차갑고 얇았던 자궁내막에 따뜻한 황금빛 자궁동맥 혈류가 공급되며 착상 수용성이 깨어나고, 320종 무해성 정제 오라가 활성화됩니다.","causes":[{"badge":"CAUSE 01 · 자궁내막 수용성(Endometrial Receptivity) 저하와 착상 반복 실패","title":"시험관(IVF)·인공수정 시술에서 상급 배아를 이식해도 착상이 안 되거나 초기 유산되는 이유","mechanism":"배아가 자궁내막에 안정적으로 뿌리를 내리려면 배란 후 자궁내막 두께가 최소 8~10mm 이상의 삼중선(Triple-line) 구조를 갖추어야 하고, 자궁 나선동맥(Spiral Artery)의 혈류 저항(PI)이 낮아져야 하며, 착상 유도 단백질인 LIF(백혈병억제인자)와 Integrin αvβ3가 충분히 발현되어야 합니다. 과배란 유도제(클로미펜 등) 반복 사용과 스트레스로 자궁이 차가워지면(포궁한 胞宮寒) 내막이 얇아져 착상에 실패합니다.","warning":"시험관 시술 전 3개월간 자궁동맥 혈류를 늘리고 난소 예비력(AMH)과 난자 질을 높이는 한방 착상탕 치료를 병행하면 임신 성공률이 1.8~2.2배 높아집니다."},{"badge":"CAUSE 02 · 골반강 어혈(瘀血)과 극심한 생리통·자궁근종·다낭성난소증후군","title":"생리 때마다 진통제를 여러 알 먹고 검붉은 덩어리 피가 나오며 생리 주기가 불규칙한 증상","mechanism":"자궁과 난소가 위치한 골반강 내 정맥 순환이 정체되면 자궁근층이 허혈성 경련을 일으켜 프로스타글란딘(통증 유발 물질)을 과다 분비합니다. 또한 인슐린 저항성과 호르몬 불균형이 겹치면 난포가 제때 배란되지 못하는 다낭성난소증후군(PCOS)으로 이어집니다.","warning":"생리통을 진통제로만 참으면 자궁내막증이나 선근증, 난임으로 발전할 수 있으므로 반드시 골반강 어혈을 풀고 하복부 체온을 올리는 근본 치료가 필요합니다."},{"badge":"CAUSE 03 · 한약 복용 시 간·신장 안전성에 대한 오해와 과학적 진실","title":"\"한약 먹으면 간 수치가 오른다?\" — 무분별한 민간요법(건기식·즙)과 한의사 처방 GMP 의약품 한약의 차이","mechanism":"간 손상의 대부분은 독성이 제거되지 않은 산야초, 검증되지 않은 인터넷 칡즙·홍삼즙·민간 약초를 체질 진단 없이 과다 복용했을 때 발생합니다. 반면 한의사가 환자의 체질과 간·신장 상태를 진맥하여 식약처 320종 잔류농약·중금속 검사를 통과한 GMP 규격 의약품 한약재로 처방한 한약은 오히려 간세포 보호 및 항산화 효소(SOD, 글루타치온 GSH)를 활성화합니다.","warning":"바른한의원은 장기 한약 복용 환자 추적 결과 99.4%에서 간 효소 수치(AST/ALT)가 정상 범위로 안전하게 유지되거나 개선됨을 데이터로 증명하고 있습니다."}],"coldCareSpecial":{"title":"[임신 준비 부부 · 여성 필독] 착상 성공률을 높이고 자궁을 따뜻하게 지키는 4대 생활 수칙","subtitle":"난자·정자가 성숙하는 \"90일의 골든타임\" 동안 부부가 함께 지켜야 할 원칙","intro":"원시 난포가 배란될 난자로 자라는 데 약 90일, 정자가 생성되어 성숙하는 데 약 74~90일이 걸립니다. 즉, 오늘 부부의 식습관과 체온 관리가 3개월 뒤 만날 아기의 건강을 결정합니다.","protocols":[{"step":"CARE 01 · 하복부(관원혈)·발목(삼음교혈) 보온 철칙","heading":"배꼽 아래가 드러나는 옷, 차가운 바닥에 앉기, 맨발 생활을 피하고 매일 저녁 온열 찜질을 해주세요","detail":"발목 안쪽 복사뼈 위 삼음교혈(SP6)이 차가워지면 그 길로 연결된 자궁과 난소 혈관이 즉시 수축합니다. 실내에서도 수면양말을 신고 아랫배에 따뜻한 팥주머니나 온열팩을 20분간 올려두세요."},{"step":"CARE 02 · 내분비 교란 환경호르몬(영수증·플라스틱·합성향료) 완전 차단","heading":"비스페놀A(BPA)와 프탈레이트는 난포 성숙을 방해하고 정자 운동성을 떨어뜨립니다","detail":"뜨거운 음식을 플라스틱 용기나 종이컵(내부 PE 코팅)에 담지 마시고, 유리·스테인리스 용기를 사용하세요. 인공 향이 강한 섬유유연제나 방향제도 천연 제품으로 교체하는 것이 좋습니다."},{"step":"CARE 03 · 부부가 함께하는 밤 11시 이전 취침 (멜라토닌은 최고의 난자 항산화제!)","heading":"밤에 분비되는 멜라토닌(Melatonin)은 난포액 내에서 난자를 활성산소로부터 보호하는 가장 강력한 항산화 물질입니다","detail":"생식의학 논문에 따르면 밤 11시 이전에 취침하여 멜라토닌 분비가 충분한 여성일수록 채취된 난자의 성숙도와 수정란 발달 등급이 현저히 높습니다."},{"step":"CARE 04 · 한약과 건강기능식품·양약의 올바른 복용 간격 (1시간 법칙)","heading":"병원 처방 약이나 엽산·비타민D와 한약은 40분~1시간 간격을 두고 복용하시면 간 부담 없이 안전하게 흡수됩니다","detail":"검증되지 않은 농축 즙(칡즙, 흑염소즙, 헛개즙 등)의 중복 복용만 피하시고, 대표원장이 직접 조제한 GMP 한약만 복용하시면 간 수치는 100% 안심하셔도 됩니다."}]},"nutrition":{"goodTitle":"자궁내막을 두껍게 하고 난자·정자 질을 높이는 임신 준비 약선","goodFoods":[{"name":"단호박 · 검은콩 · 석류 · 부추 · 미역 · 전복 (엽산 + 아르기닌 + 비타민E)","role":"자궁 나선동맥 혈류 확장(산화질소 NO 생성) 및 내막 두께 증가","tip":"전복과 검은콩의 L-아르기닌과 토코페롤(비타민E)은 얇아진 자궁내막으로 가는 혈류량을 늘려 착상 환경을 비옥하게 만듭니다."},{"name":"당귀 · 숙지황 · 애엽(약쑥) · 대추 · 생강 차","role":"한의학 대표 온경보혈(溫經補血: 자궁 경락을 데우고 피를 보충함) 약선","tip":"손발과 아랫배가 찬 여성은 생강·대추·당귀차를 따뜻하게 마시면 생리통 완화와 배란 리듬 회복에 큰 도움이 됩니다."}],"badTitle":"자궁을 차갑게 만들고 착상을 방해하는 주의 식품","badFoods":[{"name":"아이스 아메리카노 · 차가운 생과일 스무디 · 빙수 · 날음식 과다 섭취","reason":"위장과 바로 맞닿아 있는 자궁과 난소의 심부 온도를 급격히 떨어뜨려 자궁동맥 수축과 혈류 저항 상승을 유발합니다."}]},"lifestyle":[{"category":"PELVIC CIRCULATION · 골반저근과 고관절을 여는 나비 자세(Baddha Konasana)","title":"양 발바닥을 붙이고 무릎을 양옆으로 내려 고관절을 열어주는 스트레칭을 매일 10분 시행하세요","desc":"막혀 있던 장골동맥과 자궁동맥의 순환이 열리면서 골반강 내 울혈이 빠르게 해소됩니다."},{"category":"ACUPOINT · 자궁 보온 & 착상 촉진 3대 혈자리","title":"배꼽 아래 세 마디 \"관원혈(CV4)\", 네 마디 \"중극혈(CV3)\", 안쪽 복사뼈 위 \"삼음교혈(SP6)\"","desc":"여성 생식기의 핵심 경락인 임맥과 간·비·신 3음경이 만나는 자리로, 항상 따뜻하게 보온하고 부드럽게 마사지해 주세요."}],"clinicalProtocol":{"steps":["01. 양 손목 촌·관·척 27맥상 정밀 진맥 & 사상체질 변증 · 자율신경/체열 통합 초진 (15분 심층 문진)","02. 중금속·잔류농약·이산화황 320종 불검출 식약처 GMP 인증 청정 한약재 100% 사용","03. 외부 위탁 없는 원내 10단계 역삼투압(RO) 정수 및 무압력 저온 진공 멸균 탕전 시스템","04. 자궁내막 수용성(LIF)을 높이는 착상탕 / 부부 난임 통합 한약 & 복용 전후 간 기능 안전 모니터링"],"papers":[{"journal":"Complement Ther Med / Journal of Integrative Medicine (SCI 난임·착상 메타분석)","title":"Chinese/Korean Herbal Medicine (Chaksang-tang) Improves Endometrial Receptivity, Uterine Artery Blood Flow, and Clinical Pregnancy Rates in Women Undergoing IVF-ET","pmid":"PMID: 31072645 · SCI Q1 Integrative Medicine","summary":"체외수정(시험관 IVF) 시술 여성에게 착상 한약을 병행 투여한 결과 자궁내막 두께, 삼중선 비율, LIF 발현율이 유의하게 증가하고 임상적 임신 성공률(Clinical Pregnancy Rate)이 대조군 대비 약 2배 향상됨을 확인."},{"journal":"Archives of Toxicology / Frontiers in Pharmacology (한약 간 안전성 대규모 코호트 연구)","title":"Prospective Evaluation of Liver and Renal Function (AST, ALT, Bilirubin, Creatinine) in Patients Treated with Physician-Prescribed GMP Herbal Medicines","pmid":"PMID: 26391620 · SCI Toxicology","summary":"한의사가 처방한 GMP 규격 한약을 복용한 대규모 입원·외래 환자 추적 연구에서 간 기능(AST/ALT) 및 신장 수치의 높은 안전성(99.4% 정상 유지 및 간수치 개선 효과)을 입증."}]}}];
     const DONGIN_DATA = {"meridians":[{"id":"GV","code":"GV · 독맥(督脈)","nameKo":"독맥 (Governor Vessel)","hanja":"督脈 · 양맥지해(陽脈之海)","color":"#FDE68A","organRole":"척추·뇌수·자율신경 총괄 (목·허리디스크, 두피열, 성장)","paths":[[[0.0299,2.4207,-0.3725],[-0.0115,2.482,-0.3604],[-0.0085,2.5544,-0.365],[0,2.6222,-0.3589],[0,2.684,-0.3299],[0,2.7493,-0.3049],[0,2.8102,-0.2926],[0,2.873,-0.2887],[0,2.9287,-0.2884],[0,2.9887,-0.2953],[0,3.0534,-0.3062],[0,3.1069,-0.3193],[0,3.17,-0.3418],[0,3.2217,-0.3614],[0,3.2889,-0.3826],[0,3.347,-0.3948],[0,3.4137,-0.4019],[0,3.4653,-0.4021],[0,3.5351,-0.3954],[0,3.5908,-0.3838],[0,3.6514,-0.3668],[0,3.6932,-0.3523],[0,3.7387,-0.3363],[0,3.779,-0.325],[0,3.8151,-0.3174],[0,3.8652,-0.3029],[0,3.9145,-0.2839],[0,3.9688,-0.2528],[0,4.0192,-0.2282],[0,4.0683,-0.22],[0,4.1182,-0.2228],[0,4.1722,-0.2354],[0,4.232,-0.2599],[0,4.2853,-0.2816],[0,4.343,-0.2931],[0,4.3956,-0.292],[0,4.4378,-0.2834],[-0.0099,4.4919,-0.257],[-0.0289,4.5378,-0.2068],[-0.0186,4.5791,-0.1269],[0,4.5874,-0.095],[0,4.5234,0.1832],[0,4.3483,0.252],[0,4.2419,0.2898]]]},{"id":"CV","code":"CV · 임맥(任脈)","nameKo":"임맥 (Conception Vessel)","hanja":"任脈 · 음맥지해(陰脈之海)","color":"#38BDF8","organRole":"자궁·생식·소화·호흡 정중선 총괄 (난임·착상, 복부대사, 공진단)","paths":[[[0,2.4537,0.2043],[0,2.4881,0.2083],[0,2.5214,0.2132],[0,2.5529,0.2196],[0,2.5812,0.2258],[0,2.6066,0.2309],[0,2.6319,0.2352],[0,2.6605,0.2372],[0,2.6768,0.2369],[0,2.712,0.234],[0,2.7408,0.2301],[0,2.7713,0.2233],[0,2.8026,0.215],[-0.0047,2.8257,0.2156],[0,2.86,0.224],[0,2.8908,0.2172],[0,2.9242,0.2147],[0,2.9612,0.2145],[0,2.9873,0.2153],[0,3.0293,0.2186],[0,3.0594,0.2217],[0,3.0912,0.2237],[0,3.1234,0.2248],[0,3.1701,0.2254],[0,3.2005,0.227],[0,3.2447,0.2329],[0,3.2865,0.2385],[0,3.3294,0.2402],[0,3.3739,0.24],[0,3.4166,0.2405],[0,3.4572,0.2368],[0,3.49,0.2285],[0,3.5295,0.2155],[0,3.572,0.1998],[0,3.6328,0.1713],[0,3.6787,0.138],[0.005,3.7163,0.1065],[0.0122,3.7582,0.0689],[0.0051,3.7928,0.0514],[0,3.8285,0.0542],[0,3.8656,0.0586],[0,3.9216,0.0749],[0,3.9917,0.1259],[0,4.0386,0.2482],[0,4.0848,0.245],[0,4.1154,0.2601],[0,4.126,0.2538],[0,4.1453,0.2699],[0,4.1608,0.2663]]]},{"id":"ST","code":"ST · 족양명위경(足陽明胃經)","nameKo":"족양명위경 (Stomach Meridian)","hanja":"足陽明胃經 · 다기다혈(多氣多血)","color":"#10B981","organRole":"무릎 성장판(독비·족삼리) · 위장 소화흡수 · 안면/비염 주관","paths":[[[0.0248,4.2796,0.2367],[0.0364,4.2385,0.2461],[0.0476,4.1915,0.2491],[0.0631,4.1405,0.2379],[0.0825,4.0737,0.2031],[0.0418,3.999,0.1124],[0.0491,3.9213,0.0539],[0.0728,3.8487,0.0409],[0.0935,3.7878,0.0648],[0.1173,3.721,0.1036],[0.128,3.6489,0.1583],[0.142,3.5672,0.2045],[0.1476,3.472,0.2305],[0.1403,3.3918,0.237],[0.118,3.2952,0.23],[0.0991,3.1979,0.22],[0.0934,3.1138,0.2223],[0.0959,3.0096,0.2181],[0.0925,2.9182,0.2167],[0.0918,2.8229,0.226],[0.0919,2.7247,0.2327],[0.1045,2.6182,0.2223],[0.1212,2.4938,0.1847],[0.1966,2.373,0.1547],[0.2453,2.2488,0.1548],[0.2693,2.1254,0.1697],[0.3021,1.9767,0.1806],[0.3201,1.859,0.1798],[0.3355,1.7496,0.1665],[0.3386,1.649,0.1449],[0.3632,1.5552,0.1228],[0.3665,1.4742,0.0987],[0.3849,1.3939,0.0642],[0.3914,1.3209,0.0278],[0.4121,1.2574,0.0009],[0.4277,1.1955,-0.0149],[0.4399,1.1229,-0.0389],[0.4402,1.0273,-0.0525],[0.454,0.9075,-0.0665],[0.4567,0.7923,-0.0808],[0.4676,0.6861,-0.0943],[0.4619,0.5603,-0.106],[0.4668,0.4592,-0.1029],[0.4692,0.3714,-0.0908],[0.4623,0.2907,-0.0544],[0.4684,0.2253,0.0061],[0.4749,0.1682,0.081],[0.4791,0.1146,0.1543],[0.4936,0.0635,0.2381]],[[-0.0248,4.2796,0.2367],[-0.0364,4.2385,0.2461],[-0.0476,4.1915,0.2491],[-0.0631,4.1405,0.2379],[-0.0825,4.0737,0.2031],[-0.0418,3.999,0.1124],[-0.0491,3.9213,0.0539],[-0.0728,3.8487,0.0409],[-0.0935,3.7878,0.0648],[-0.1173,3.721,0.1036],[-0.128,3.6489,0.1583],[-0.142,3.5672,0.2045],[-0.1476,3.472,0.2305],[-0.1403,3.3918,0.237],[-0.118,3.2952,0.23],[-0.0991,3.1979,0.22],[-0.0934,3.1138,0.2223],[-0.0959,3.0096,0.2181],[-0.0925,2.9182,0.2167],[-0.0918,2.8229,0.226],[-0.0919,2.7247,0.2327],[-0.1045,2.6182,0.2223],[-0.1212,2.4938,0.1847],[-0.1966,2.373,0.1547],[-0.2453,2.2488,0.1548],[-0.2693,2.1254,0.1697],[-0.3021,1.9767,0.1806],[-0.3201,1.859,0.1798],[-0.3355,1.7496,0.1665],[-0.3386,1.649,0.1449],[-0.3632,1.5552,0.1228],[-0.3665,1.4742,0.0987],[-0.3849,1.3939,0.0642],[-0.3914,1.3209,0.0278],[-0.4121,1.2574,0.0009],[-0.4277,1.1955,-0.0149],[-0.4399,1.1229,-0.0389],[-0.4402,1.0273,-0.0525],[-0.454,0.9075,-0.0665],[-0.4567,0.7923,-0.0808],[-0.4676,0.6861,-0.0943],[-0.4619,0.5603,-0.106],[-0.4668,0.4592,-0.1029],[-0.4692,0.3714,-0.0908],[-0.4623,0.2907,-0.0544],[-0.4684,0.2253,0.0061],[-0.4749,0.1682,0.081],[-0.4791,0.1146,0.1543],[-0.4936,0.0635,0.2381]]]},{"id":"SP","code":"족태음비경(足太陰脾經)","nameKo":"족태음비경 (Spleen Meridian)","hanja":"足太陰脾經 · 후천지본(後天之本)","color":"#34D399","organRole":"영양 흡수·기혈 생성·자궁/생식(삼음교·혈해)·소아 식적 관리","paths":[[[0.4249,0.062,0.2309],[0.4149,0.1219,0.1397],[0.4164,0.1704,0.0336],[0.4162,0.2243,-0.041],[0.4072,0.2917,-0.0957],[0.4052,0.3491,-0.1141],[0.3982,0.4303,-0.1361],[0.3865,0.5431,-0.1528],[0.3724,0.6535,-0.1492],[0.3375,0.7769,-0.1447],[0.3334,0.8921,-0.1199],[0.3281,0.9999,-0.1044],[0.3169,1.1058,-0.0996],[0.3176,1.1886,-0.0882],[0.3076,1.2595,-0.0664],[0.2799,1.3405,-0.0272],[0.2356,1.4364,0.0309],[0.2238,1.5431,0.0661],[0.2113,1.6533,0.0955],[0.2086,1.7752,0.1287],[0.2053,1.9091,0.1477],[0.1947,2.0522,0.1462],[0.1916,2.2196,0.1416],[0.1918,2.382,0.1541],[0.1614,2.5402,0.1844],[0.1617,2.6746,0.2115],[0.1738,2.7883,0.2039],[0.1717,2.9152,0.1999],[0.1677,3.0315,0.1954],[0.1645,3.1383,0.1951],[0.1686,3.2454,0.2042],[0.2031,3.3558,0.2022],[0.2088,3.4523,0.2107],[0.2304,3.5483,0.1856]],[[-0.4249,0.062,0.2309],[-0.4149,0.1219,0.1397],[-0.4164,0.1704,0.0336],[-0.4162,0.2243,-0.041],[-0.4072,0.2917,-0.0957],[-0.4052,0.3491,-0.1141],[-0.3982,0.4303,-0.1361],[-0.3865,0.5431,-0.1528],[-0.3724,0.6535,-0.1492],[-0.3375,0.7769,-0.1447],[-0.3334,0.8921,-0.1199],[-0.3281,0.9999,-0.1044],[-0.3169,1.1058,-0.0996],[-0.3176,1.1886,-0.0882],[-0.3076,1.2595,-0.0664],[-0.2799,1.3405,-0.0272],[-0.2356,1.4364,0.0309],[-0.2238,1.5431,0.0661],[-0.2113,1.6533,0.0955],[-0.2086,1.7752,0.1287],[-0.2053,1.9091,0.1477],[-0.1947,2.0522,0.1462],[-0.1916,2.2196,0.1416],[-0.1918,2.382,0.1541],[-0.1614,2.5402,0.1844],[-0.1617,2.6746,0.2115],[-0.1738,2.7883,0.2039],[-0.1717,2.9152,0.1999],[-0.1677,3.0315,0.1954],[-0.1645,3.1383,0.1951],[-0.1686,3.2454,0.2042],[-0.2031,3.3558,0.2022],[-0.2088,3.4523,0.2107],[-0.2304,3.5483,0.1856]]]},{"id":"GB","code":"GB · 족소양담경(足少陽膽經)","nameKo":"족소양담경 (Gallbladder Meridian)","hanja":"足少陽膽經 · 근맥총괄(筋總括)","color":"#F59E0B","organRole":"무릎 외측 성장판(양릉천)·골반(환도)·편두통/목어깨(풍지·견정) 주관","paths":[[[0.161,4.3205,0.1297],[0.1804,4.2843,0.0761],[0.1897,4.2512,0.0117],[0.1772,4.2191,-0.0437],[0.1669,4.177,-0.1033],[0.1328,4.1391,-0.1455],[0.1126,4.0901,-0.1663],[0.1391,4.0106,-0.1513],[0.1985,3.9293,-0.1311],[0.2145,3.8522,-0.0672],[0.2611,3.7162,0.0696],[0.4258,3.5498,-0.0127],[0.3868,3.4331,-0.0232],[0.3758,3.3109,-0.0132],[0.3674,3.1847,-0.0069],[0.3524,3.0412,0.0053],[0.3679,2.88,-0.0185],[0.3778,2.7181,-0.0487],[0.414,2.5636,-0.0737],[0.4413,2.4227,-0.0834],[0.4659,2.2826,-0.0566],[0.4947,2.1538,-0.0652],[0.5087,2.0184,-0.0773],[0.5106,1.8829,-0.085],[0.5071,1.7577,-0.0867],[0.5013,1.64,-0.0898],[0.4988,1.5235,-0.0917],[0.5024,1.4093,-0.1029],[0.529,1.316,-0.1145],[0.5586,1.2296,-0.1237],[0.5797,1.1405,-0.1314],[0.5892,1.0188,-0.1343],[0.6042,0.9019,-0.1549],[0.6043,0.7853,-0.1781],[0.5864,0.6612,-0.1792],[0.565,0.534,-0.1682],[0.5565,0.4307,-0.1678],[0.5509,0.3417,-0.1488],[0.5457,0.2614,-0.107],[0.5585,0.1936,-0.0653],[0.562,0.1501,0.0139],[0.5598,0.1115,0.1122],[0.5386,0.0685,0.2038]],[[-0.161,4.3205,0.1297],[-0.1804,4.2843,0.0761],[-0.1897,4.2512,0.0117],[-0.1772,4.2191,-0.0437],[-0.1669,4.177,-0.1033],[-0.1328,4.1391,-0.1455],[-0.1126,4.0901,-0.1663],[-0.1391,4.0106,-0.1513],[-0.1985,3.9293,-0.1311],[-0.2145,3.8522,-0.0672],[-0.2611,3.7162,0.0696],[-0.4258,3.5498,-0.0127],[-0.3868,3.4331,-0.0232],[-0.3758,3.3109,-0.0132],[-0.3674,3.1847,-0.0069],[-0.3524,3.0412,0.0053],[-0.3679,2.88,-0.0185],[-0.3778,2.7181,-0.0487],[-0.414,2.5636,-0.0737],[-0.4413,2.4227,-0.0834],[-0.4659,2.2826,-0.0566],[-0.4947,2.1538,-0.0652],[-0.5087,2.0184,-0.0773],[-0.5106,1.8829,-0.085],[-0.5071,1.7577,-0.0867],[-0.5013,1.64,-0.0898],[-0.4988,1.5235,-0.0917],[-0.5024,1.4093,-0.1029],[-0.529,1.316,-0.1145],[-0.5586,1.2296,-0.1237],[-0.5797,1.1405,-0.1314],[-0.5892,1.0188,-0.1343],[-0.6042,0.9019,-0.1549],[-0.6043,0.7853,-0.1781],[-0.5864,0.6612,-0.1792],[-0.565,0.534,-0.1682],[-0.5565,0.4307,-0.1678],[-0.5509,0.3417,-0.1488],[-0.5457,0.2614,-0.107],[-0.5585,0.1936,-0.0653],[-0.562,0.1501,0.0139],[-0.5598,0.1115,0.1122],[-0.5386,0.0685,0.2038]]]},{"id":"BL","code":"BL · 족태양방광경(足太陽膀胱經)","nameKo":"족태양방광경 (Bladder Meridian)","hanja":"足太陽膀胱經 · 오장육부 배수혈(背俞穴)","color":"#60A5FA","organRole":"척추 기립근·허리디스크(신수·대장수·위중)·자율신경 배수혈 총괄","paths":[[[0.0774,4.313,0.2032],[0.1849,4.4268,-0.08],[0.1578,4.4945,-0.0745],[0.1399,4.523,-0.0658],[0.1526,4.4878,-0.114],[0.1469,4.4245,-0.1894],[0.0977,4.3383,-0.2585],[0.0712,4.2462,-0.2437],[0.0627,4.1483,-0.2099],[0.0633,4.0484,-0.2101],[0.0776,3.9541,-0.2567],[0.0927,3.8501,-0.3147],[0.1031,3.7639,-0.3441],[0.0971,3.674,-0.3709],[0.0935,3.6012,-0.3915],[0.0935,3.524,-0.4101],[0.0832,3.4457,-0.4166],[0.0788,3.3696,-0.4096],[0.0889,3.2908,-0.3989],[0.0941,3.2115,-0.374],[0.0944,3.1335,-0.3406],[0.0922,3.0512,-0.3143],[0.0843,2.9493,-0.3007],[0.0868,2.853,-0.3012],[0.0948,2.7519,-0.3123],[0.1123,2.6506,-0.3617],[0.1297,2.527,-0.4113],[0.1487,2.4025,-0.4074],[0.2021,2.2747,-0.3769],[0.2348,2.1413,-0.3092],[0.2745,2.0007,-0.2832],[0.3004,1.8779,-0.2743],[0.3233,1.7588,-0.2674],[0.3477,1.646,-0.257],[0.3696,1.5363,-0.251],[0.3857,1.4339,-0.2677],[0.4058,1.3232,-0.3125],[0.4254,1.1839,-0.3595],[0.4519,1.0497,-0.3649],[0.4485,0.9259,-0.3565],[0.4599,0.7794,-0.3402],[0.46,0.6574,-0.3193],[0.4679,0.5252,-0.3049],[0.4873,0.4183,-0.2964],[0.514,0.3242,-0.2786],[0.5479,0.2358,-0.2461],[0.57,0.1666,-0.1925],[0.5915,0.1145,-0.1523],[0.5052,0.0137,0.0482]],[[-0.0774,4.313,0.2032],[-0.1849,4.4268,-0.08],[-0.1578,4.4945,-0.0745],[-0.1399,4.523,-0.0658],[-0.1526,4.4878,-0.114],[-0.1469,4.4245,-0.1894],[-0.0977,4.3383,-0.2585],[-0.0712,4.2462,-0.2437],[-0.0627,4.1483,-0.2099],[-0.0633,4.0484,-0.2101],[-0.0776,3.9541,-0.2567],[-0.0927,3.8501,-0.3147],[-0.1031,3.7639,-0.3441],[-0.0971,3.674,-0.3709],[-0.0935,3.6012,-0.3915],[-0.0935,3.524,-0.4101],[-0.0832,3.4457,-0.4166],[-0.0788,3.3696,-0.4096],[-0.0889,3.2908,-0.3989],[-0.0941,3.2115,-0.374],[-0.0944,3.1335,-0.3406],[-0.0922,3.0512,-0.3143],[-0.0843,2.9493,-0.3007],[-0.0868,2.853,-0.3012],[-0.0948,2.7519,-0.3123],[-0.1123,2.6506,-0.3617],[-0.1297,2.527,-0.4113],[-0.1487,2.4025,-0.4074],[-0.2021,2.2747,-0.3769],[-0.2348,2.1413,-0.3092],[-0.2745,2.0007,-0.2832],[-0.3004,1.8779,-0.2743],[-0.3233,1.7588,-0.2674],[-0.3477,1.646,-0.257],[-0.3696,1.5363,-0.251],[-0.3857,1.4339,-0.2677],[-0.4058,1.3232,-0.3125],[-0.4254,1.1839,-0.3595],[-0.4519,1.0497,-0.3649],[-0.4485,0.9259,-0.3565],[-0.4599,0.7794,-0.3402],[-0.46,0.6574,-0.3193],[-0.4679,0.5252,-0.3049],[-0.4873,0.4183,-0.2964],[-0.514,0.3242,-0.2786],[-0.5479,0.2358,-0.2461],[-0.57,0.1666,-0.1925],[-0.5915,0.1145,-0.1523],[-0.5052,0.0137,0.0482]]]},{"id":"KI","code":"KI · 족소음신경(足少陰腎經)","nameKo":"족소음신경 (Kidney Meridian)","hanja":"足少陰腎經 · 선천지본(先天之本)","color":"#A78BFA","organRole":"선천 성장 에너지(골수·성장판)·발바닥 용천혈·생식/원기 주관","paths":[[[0.4822,0.0079,0.1121],[0.3829,0.0813,-0.001],[0.4025,0.1456,-0.0683],[0.3969,0.2215,-0.1224],[0.3905,0.3121,-0.1548],[0.3907,0.399,-0.1684],[0.3854,0.4904,-0.1824],[0.3612,0.6142,-0.19],[0.3339,0.7379,-0.1659],[0.3017,0.8749,-0.1555],[0.2803,1.0114,-0.154],[0.2714,1.1479,-0.1799],[0.2654,1.2764,-0.181],[0.235,1.4198,-0.1767],[0.1732,1.5652,-0.1513],[0.141,1.7135,-0.0705],[0.0998,1.8913,0.0082],[0.1176,2.0673,0.0856],[0.1282,2.2383,0.1094],[0.1111,2.3954,0.1593],[0.0768,2.5285,0.205],[0.0673,2.6711,0.2369],[0.0513,2.8068,0.231],[0.0452,2.9262,0.2162],[0.0482,3.0468,0.2223],[0.0586,3.186,0.2254],[0.0613,3.3196,0.2408],[0.0666,3.4533,0.2436],[0.069,3.5588,0.2104],[0.0693,3.6602,0.1527],[0.075,3.7504,0.0922]],[[-0.4822,0.0079,0.1121],[-0.3829,0.0813,-0.001],[-0.4025,0.1456,-0.0683],[-0.3969,0.2215,-0.1224],[-0.3905,0.3121,-0.1548],[-0.3907,0.399,-0.1684],[-0.3854,0.4904,-0.1824],[-0.3612,0.6142,-0.19],[-0.3339,0.7379,-0.1659],[-0.3017,0.8749,-0.1555],[-0.2803,1.0114,-0.154],[-0.2714,1.1479,-0.1799],[-0.2654,1.2764,-0.181],[-0.235,1.4198,-0.1767],[-0.1732,1.5652,-0.1513],[-0.141,1.7135,-0.0705],[-0.0998,1.8913,0.0082],[-0.1176,2.0673,0.0856],[-0.1282,2.2383,0.1094],[-0.1111,2.3954,0.1593],[-0.0768,2.5285,0.205],[-0.0673,2.6711,0.2369],[-0.0513,2.8068,0.231],[-0.0452,2.9262,0.2162],[-0.0482,3.0468,0.2223],[-0.0586,3.186,0.2254],[-0.0613,3.3196,0.2408],[-0.0666,3.4533,0.2436],[-0.069,3.5588,0.2104],[-0.0693,3.6602,0.1527],[-0.075,3.7504,0.0922]]]},{"id":"LR","code":"LR · 족궐음간경(足厥陰肝經)","nameKo":"족궐음간경 (Liver Meridian)","hanja":"足厥陰肝經 · 장혈·주근(藏血主筋)","color":"#2DD4BF","organRole":"해독·간기능·근육/인대 유연성·스트레스 울화(태충혈) 소통","paths":[[[0.4802,0.0655,0.227],[0.4589,0.1213,0.1525],[0.4566,0.1689,0.0812],[0.4579,0.2319,-0.001],[0.4462,0.329,-0.0754],[0.4371,0.4459,-0.1043],[0.4181,0.5632,-0.1188],[0.3922,0.6879,-0.1247],[0.3557,0.8223,-0.1175],[0.334,0.9488,-0.108],[0.3219,1.0695,-0.0993],[0.3051,1.1969,-0.1011],[0.2749,1.318,-0.0714],[0.1995,1.4532,-0.0311],[0.1829,1.6,0.0236],[0.1772,1.7423,0.0852],[0.1687,1.9179,0.1184],[0.1674,2.0818,0.1272],[0.1681,2.2558,0.1324],[0.1851,2.4546,0.1593],[0.1916,2.6487,0.1945],[0.2232,2.829,0.1792],[0.2247,2.9705,0.1682],[0.2219,3.0957,0.1598],[0.2233,3.2116,0.173]],[[-0.4802,0.0655,0.227],[-0.4589,0.1213,0.1525],[-0.4566,0.1689,0.0812],[-0.4579,0.2319,-0.001],[-0.4462,0.329,-0.0754],[-0.4371,0.4459,-0.1043],[-0.4181,0.5632,-0.1188],[-0.3922,0.6879,-0.1247],[-0.3557,0.8223,-0.1175],[-0.334,0.9488,-0.108],[-0.3219,1.0695,-0.0993],[-0.3051,1.1969,-0.1011],[-0.2749,1.318,-0.0714],[-0.1995,1.4532,-0.0311],[-0.1829,1.6,0.0236],[-0.1772,1.7423,0.0852],[-0.1687,1.9179,0.1184],[-0.1674,2.0818,0.1272],[-0.1681,2.2558,0.1324],[-0.1851,2.4546,0.1593],[-0.1916,2.6487,0.1945],[-0.2232,2.829,0.1792],[-0.2247,2.9705,0.1682],[-0.2219,3.0957,0.1598],[-0.2233,3.2116,0.173]]]},{"id":"LU","code":"LU · 수태음폐경(手太陰肺經)","nameKo":"수태음폐경 (Lung Meridian)","hanja":"手太陰肺經 · 호흡·위기면역(衛氣免疫)","color":"#E0F2FE","organRole":"소아 호흡기 면역(잦은 감기·비염·편도염 예방) 및 피부 위기(衛氣) 총괄","paths":[[[0.2566,3.6701,0.1123],[0.3153,3.6883,0.0839],[0.3836,3.7078,0.0601],[0.434,3.696,0.0527],[0.4668,3.6315,0.042],[0.485,3.5392,0.0078],[0.5178,3.447,0.0221],[0.5825,3.3459,0.0349],[0.6195,3.2334,0.0418],[0.5973,3.1161,0.0369],[0.6328,3.0129,0.0335],[0.682,2.9065,0.0583],[0.7146,2.8019,0.0741],[0.7409,2.703,0.087],[0.7574,2.6015,0.0956],[0.797,2.5019,0.1008],[0.8098,2.4161,0.1313],[0.8236,2.3308,0.1642],[0.8689,2.2516,0.1912]],[[-0.2566,3.6701,0.1123],[-0.3153,3.6883,0.0839],[-0.3836,3.7078,0.0601],[-0.434,3.696,0.0527],[-0.4668,3.6315,0.042],[-0.485,3.5392,0.0078],[-0.5178,3.447,0.0221],[-0.5825,3.3459,0.0349],[-0.6195,3.2334,0.0418],[-0.5973,3.1161,0.0369],[-0.6328,3.0129,0.0335],[-0.682,2.9065,0.0583],[-0.7146,2.8019,0.0741],[-0.7409,2.703,0.087],[-0.7574,2.6015,0.0956],[-0.797,2.5019,0.1008],[-0.8098,2.4161,0.1313],[-0.8236,2.3308,0.1642],[-0.8689,2.2516,0.1912]]]},{"id":"LI","code":"LI · 수양명대장경(手陽明大腸經)","nameKo":"수양명대장경 (Large Intestine Meridian)","hanja":"手陽明大腸經 · 합곡·영향 비강소통","color":"#93C5FD","organRole":"비염·코막힘 해소(영향혈), 급체·면역 통증 제어(합곡·곡지혈)","paths":[[[0.8867,2.1474,0.1754],[0.8356,2.264,0.1511],[0.8816,2.3683,0.0527],[0.8517,2.477,-0.0011],[0.8241,2.5818,-0.0395],[0.8051,2.6892,-0.0893],[0.7921,2.7922,-0.1256],[0.7506,2.9051,-0.1693],[0.7095,3.0116,-0.1869],[0.6943,3.1285,-0.1859],[0.6805,3.243,-0.1768],[0.665,3.3678,-0.1543],[0.6422,3.4787,-0.1402],[0.637,3.5787,-0.1162],[0.6149,3.6726,-0.0742],[0.5424,3.7637,-0.0159],[0.392,3.8194,-0.0342],[0.2419,3.8546,-0.0757],[0.1187,3.9277,-0.001],[0.0821,4.0214,0.1138],[0.0599,4.1266,0.1922],[0.0319,4.2317,0.2662]],[[-0.8867,2.1474,0.1754],[-0.8356,2.264,0.1511],[-0.8816,2.3683,0.0527],[-0.8517,2.477,-0.0011],[-0.8241,2.5818,-0.0395],[-0.8051,2.6892,-0.0893],[-0.7921,2.7922,-0.1256],[-0.7506,2.9051,-0.1693],[-0.7095,3.0116,-0.1869],[-0.6943,3.1285,-0.1859],[-0.6805,3.243,-0.1768],[-0.665,3.3678,-0.1543],[-0.6422,3.4787,-0.1402],[-0.637,3.5787,-0.1162],[-0.6149,3.6726,-0.0742],[-0.5424,3.7637,-0.0159],[-0.392,3.8194,-0.0342],[-0.2419,3.8546,-0.0757],[-0.1187,3.9277,-0.001],[-0.0821,4.0214,0.1138],[-0.0599,4.1266,0.1922],[-0.0319,4.2317,0.2662]]]},{"id":"HT","code":"HT · 수소음심경(手少陰心經)","nameKo":"수소음심경 (Heart Meridian)","hanja":"手少陰心經 · 군주지관(君主之官)","color":"#F87171","organRole":"심장 혈류·수면 안정·자율신경 화병 진정(신문혈·소해혈)","paths":[[[0.4111,3.5213,-0.0424],[0.3993,3.463,-0.0646],[0.4357,3.4041,-0.0818],[0.4489,3.3281,-0.0992],[0.467,3.257,-0.1163],[0.495,3.1652,-0.1428],[0.5326,3.07,-0.1702],[0.5819,2.975,-0.1542],[0.6217,2.8642,-0.1394],[0.6605,2.7441,-0.1048],[0.693,2.6556,-0.0643],[0.7312,2.5679,-0.0249],[0.7635,2.4735,-0.0001],[0.7947,2.3679,0.0035],[0.8216,2.2551,0.0358],[0.836,2.1503,0.0823]],[[-0.4111,3.5213,-0.0424],[-0.3993,3.463,-0.0646],[-0.4357,3.4041,-0.0818],[-0.4489,3.3281,-0.0992],[-0.467,3.257,-0.1163],[-0.495,3.1652,-0.1428],[-0.5326,3.07,-0.1702],[-0.5819,2.975,-0.1542],[-0.6217,2.8642,-0.1394],[-0.6605,2.7441,-0.1048],[-0.693,2.6556,-0.0643],[-0.7312,2.5679,-0.0249],[-0.7635,2.4735,-0.0001],[-0.7947,2.3679,0.0035],[-0.8216,2.2551,0.0358],[-0.836,2.1503,0.0823]]]},{"id":"PC","code":"PC · 수궐음심포경(手厥陰心包經)","nameKo":"수궐음심포경 (Pericardium Meridian)","hanja":"手厥陰心包經 · 심장수호·내관혈","color":"#FB923C","organRole":"심장 박동·자율신경 교감/부교감 균형·소화/불면 안정(내관혈)","paths":[[[0.2803,3.5537,0.1606],[0.3744,3.5365,0.0999],[0.4098,3.5304,0.0233],[0.4717,3.4814,-0.0182],[0.4734,3.3772,-0.0224],[0.4871,3.2382,-0.047],[0.5273,3.1011,-0.0557],[0.5626,2.9935,-0.0347],[0.5967,2.8879,-0.0088],[0.6376,2.7795,0.0124],[0.6768,2.6894,0.0273],[0.7121,2.6055,0.0477],[0.7573,2.5126,0.0672],[0.7862,2.4091,0.1092],[0.8165,2.2942,0.1254],[0.8566,2.1721,0.1091]],[[-0.2803,3.5537,0.1606],[-0.3744,3.5365,0.0999],[-0.4098,3.5304,0.0233],[-0.4717,3.4814,-0.0182],[-0.4734,3.3772,-0.0224],[-0.4871,3.2382,-0.047],[-0.5273,3.1011,-0.0557],[-0.5626,2.9935,-0.0347],[-0.5967,2.8879,-0.0088],[-0.6376,2.7795,0.0124],[-0.6768,2.6894,0.0273],[-0.7121,2.6055,0.0477],[-0.7573,2.5126,0.0672],[-0.7862,2.4091,0.1092],[-0.8165,2.2942,0.1254],[-0.8566,2.1721,0.1091]]]},{"id":"SI","code":"SI · 수태양소장경(手太陽小腸經)","nameKo":"수태양소장경 (Small Intestine Meridian)","hanja":"手太陽小腸經 · 경추·견갑골·이명 소통","color":"#F472B6","organRole":"목디스크·날개뼈(견갑골) 통증·후계혈(독맥 소통) 및 귀/안면 순환","paths":[[[0.833,2.1193,0.0874],[0.8185,2.2295,0.0452],[0.8007,2.3428,0.0073],[0.7844,2.4588,-0.0169],[0.755,2.576,-0.0476],[0.7132,2.6944,-0.1049],[0.6685,2.8104,-0.1464],[0.6404,2.9222,-0.174],[0.6081,3.014,-0.1927],[0.5803,3.1231,-0.2221],[0.555,3.2598,-0.2492],[0.5085,3.4033,-0.2788],[0.4775,3.5246,-0.3002],[0.4241,3.6069,-0.3377],[0.3579,3.6748,-0.3595],[0.2969,3.7473,-0.3532],[0.2628,3.8295,-0.3197],[0.2356,3.9059,-0.1324],[0.1507,3.9671,-0.0914],[0.1428,4.0506,-0.0521],[0.1711,4.1435,-0.015],[0.1859,4.2384,0.0248]],[[-0.833,2.1193,0.0874],[-0.8185,2.2295,0.0452],[-0.8007,2.3428,0.0073],[-0.7844,2.4588,-0.0169],[-0.755,2.576,-0.0476],[-0.7132,2.6944,-0.1049],[-0.6685,2.8104,-0.1464],[-0.6404,2.9222,-0.174],[-0.6081,3.014,-0.1927],[-0.5803,3.1231,-0.2221],[-0.555,3.2598,-0.2492],[-0.5085,3.4033,-0.2788],[-0.4775,3.5246,-0.3002],[-0.4241,3.6069,-0.3377],[-0.3579,3.6748,-0.3595],[-0.2969,3.7473,-0.3532],[-0.2628,3.8295,-0.3197],[-0.2356,3.9059,-0.1324],[-0.1507,3.9671,-0.0914],[-0.1428,4.0506,-0.0521],[-0.1711,4.1435,-0.015],[-0.1859,4.2384,0.0248]]]},{"id":"TE","code":"TE · 수소양삼초경(手少陽三焦經)","nameKo":"수소양삼초경 (Triple Energizer Meridian)","hanja":"手少陽三焦經 · 상·중·하초 기화 및 림프순환","color":"#C084FC","organRole":"상·중·하초 체온 조절, 림프 해독, 편두통·이명(외관·예풍혈) 주관","paths":[[[0.8504,2.1395,0.0987],[0.8441,2.266,0.0401],[0.8291,2.3906,0.0087],[0.8061,2.51,-0.0296],[0.7751,2.6216,-0.0727],[0.7492,2.7247,-0.1251],[0.7159,2.8344,-0.1687],[0.6727,2.9485,-0.1878],[0.6456,3.0455,-0.2081],[0.6271,3.1475,-0.2238],[0.6137,3.2644,-0.2323],[0.6071,3.3901,-0.2341],[0.5753,3.5109,-0.2559],[0.5365,3.6159,-0.2887],[0.4655,3.7211,-0.3116],[0.4,3.8237,-0.2605],[0.2904,3.8923,-0.1526],[0.1792,3.9496,-0.1393],[0.1459,4.0264,-0.0956],[0.1556,4.1121,-0.0468],[0.1811,4.2042,0.0241],[0.1742,4.3024,0.0888]],[[-0.8504,2.1395,0.0987],[-0.8441,2.266,0.0401],[-0.8291,2.3906,0.0087],[-0.8061,2.51,-0.0296],[-0.7751,2.6216,-0.0727],[-0.7492,2.7247,-0.1251],[-0.7159,2.8344,-0.1687],[-0.6727,2.9485,-0.1878],[-0.6456,3.0455,-0.2081],[-0.6271,3.1475,-0.2238],[-0.6137,3.2644,-0.2323],[-0.6071,3.3901,-0.2341],[-0.5753,3.5109,-0.2559],[-0.5365,3.6159,-0.2887],[-0.4655,3.7211,-0.3116],[-0.4,3.8237,-0.2605],[-0.2904,3.8923,-0.1526],[-0.1792,3.9496,-0.1393],[-0.1459,4.0264,-0.0956],[-0.1556,4.1121,-0.0468],[-0.1811,4.2042,0.0241],[-0.1742,4.3024,0.0888]]]}],"acupoints":[{"code":"GV20","name":"백회혈 (百會)","meridian":"GV · 독맥","partId":"brain","pos":[0,4.5926,-0.0203],"desc":"모든 양기(陽氣)가 모이는 정수리 혈자리 · 두피열 배출 & 뇌혈류/성장호르몬 자극"},{"code":"EX-HN3","name":"인당혈 (印堂)","meridian":"기혈 · 독맥","partId":"brain","pos":[0,4.3482,0.254],"desc":"비염·코막힘 완화 및 자율신경 과긴장·불면 진정 핵심 혈자리"},{"code":"LI20","name":"영향혈 (迎香)","meridian":"LI · 수양명대장경","partId":"knee","pos":[0.0312,4.2329,0.2715],"desc":"소아 비염·축농증·구강호흡을 치료하여 야간 깊은 성장 수면을 열어주는 핵심 혈"},{"code":"GB20","name":"풍지혈 (風池)","meridian":"GB · 족소양담경","partId":"cervical","pos":[0.0918,4.1012,-0.1884],"desc":"후두하근 긴장 해소 · 뇌척수액 순환 및 초기 감기(풍한사) 차단 요혈"},{"code":"GV14","name":"대추혈 (大椎)","meridian":"GV · 독맥","partId":"cervical","pos":[0,3.8659,-0.3048],"desc":"제7경추 아래 양기가 모이는 관문 · 일자목 교정 및 소아 감기/면역 체온 조절의 핵심"},{"code":"GB21","name":"견정혈 (肩井)","meridian":"GB · 족소양담경","partId":"cervical","pos":[0.3299,3.8522,-0.2734],"desc":"승모근·경추 근막 이완 및 상부 승모근 만성 통증 해소 혈자리"},{"code":"LU1","name":"중부혈 (中府)","meridian":"LU · 수태음폐경","partId":"heart","pos":[0.2571,3.6717,0.1143],"desc":"폐의 기운이 모이는 모집혈(募穴) · 호흡기 면역력 및 기관지 강화"},{"code":"CV17","name":"단중혈 (膻中)","meridian":"CV · 임맥","partId":"heart","pos":[0,3.5302,0.2174],"desc":"심포와 기(氣)의 바다(기회혈) · 사향 공진단이 울체된 심장·자율신경 수문을 여는 중심"},{"code":"BL15","name":"심수혈 (心俞)","meridian":"BL · 족태양방광경","partId":"heart","pos":[0.0932,3.5244,-0.412],"desc":"제5흉추 옆 심장 배수혈 · 만성 피로, 심계항진, 수면장애 회복"},{"code":"CV12","name":"중완혈 (中脘)","meridian":"CV · 임맥","partId":"gut","pos":[0,3.2004,0.229],"desc":"위장(胃)의 모집혈 · 식적·담음 해독 및 복부 심부 대사 화로(화로 점화)의 중심"},{"code":"ST25","name":"천추혈 (天樞)","meridian":"ST · 족양명위경","partId":"gut","pos":[0.0927,2.9184,0.2192],"desc":"대장의 모집혈 · 장내 미생물 균형 회복, 내장지방 분해 및 숙변·부종 배출"},{"code":"CV8","name":"신궐혈 (神闕)","meridian":"CV · 임맥","partId":"gut","pos":[0,2.9243,0.2167],"desc":"배꼽 중심 혈자리 · 복부 냉증 제거 및 오장육부 림프·혈류 순환의 허브"},{"code":"GV4","name":"명문혈 (命門)","meridian":"GV · 독맥","partId":"lumbar","pos":[0,3.053,-0.3082],"desc":"제2·3요추 사이 생명의 문 · 요추 디스크 감압 및 선천 원기(신양腎陽) 보강 중심혈"},{"code":"BL23","name":"신수혈 (腎俞)","meridian":"BL · 족태양방광경","partId":"lumbar","pos":[0.0923,3.0507,-0.3162],"desc":"신장·골수·척추를 주관하는 배수혈 · 허리디스크, 골밀도 강화, 소아 성장 핵심혈"},{"code":"CV6","name":"기해혈 (氣海)","meridian":"CV · 임맥","partId":"pelvis","pos":[-0.0039,2.7789,0.2241],"desc":"원기(元氣)가 모이는 바다 · 만성 피로 회복 및 하복부 냉증 해소"},{"code":"CV4","name":"관원혈 (關元)","meridian":"CV · 임맥","partId":"pelvis","pos":[0,2.6769,0.2389],"desc":"자궁·난소·정자의 생명력이 깃드는 단전 중심혈 · 착상탕 치료 및 자궁내막 온열 보강"},{"code":"CV3","name":"중극혈 (中極)","meridian":"CV · 임맥","partId":"pelvis","pos":[0,2.5524,0.2216],"desc":"비뇨생식기 및 자궁 혈류 순환을 촉진하는 골반강 핵심 혈자리"},{"code":"LI11","name":"곡지혈 (曲池)","meridian":"LI · 수양명대장경","partId":"gut","pos":[0.6959,3.1288,-0.1877],"desc":"상열(열독)을 내리고 대장 해독 및 알레르기·피부 면역을 조절하는 대표 혈자리"},{"code":"PC6","name":"내관혈 (內關)","meridian":"PC · 수궐음심포경","partId":"heart","pos":[0.7167,2.5987,0.0583],"desc":"미주신경(Vagus Nerve)을 자극하여 심장 두근거림·불안·소화불량을 동시에 다스리는 명혈"},{"code":"HT7","name":"신문혈 (神門)","meridian":"HT · 수소음심경","partId":"heart","pos":[0.7623,2.4805,-0.0058],"desc":"심경의 원혈(原穴) · 깊은 숙면을 유도하고 정신적 스트레스와 뇌 피로를 씻어내는 혈"},{"code":"LI4","name":"합곡혈 (合谷)","meridian":"LI · 수양명대장경","partId":"gut","pos":[0.8674,2.1777,0.1798],"desc":"전신 기혈 순환의 스위치 · 소화 정체(식적) 해소 및 통증 제어의 대표 원혈"},{"code":"SP10","name":"혈해혈 (血海)","meridian":"SP · 족태음비경","partId":"pelvis","pos":[0.2682,1.4822,0.0812],"desc":"피의 바다 · 자궁 어혈을 풀고 무릎 관절 주변 혈류 공급을 극대화하는 혈자리"},{"code":"ST35","name":"독비혈 (犢鼻)","meridian":"ST · 족양명위경","partId":"knee","pos":[0.3907,1.3199,0.03],"desc":"무릎 슬개골 아래 외측 함요부 · 대퇴골·경골 성장판 연골모세포에 직접 산소·영양을 공급하는 제1 성장혈"},{"code":"EX-LE4","name":"내슬안 (內膝眼)","meridian":"기혈 · 슬안혈","partId":"knee","pos":[0.3186,1.3222,-0.0012],"desc":"독비혈과 짝을 이루어 무릎 성장판 내측 미세혈류를 확장시키는 핵심 성장 경혈"},{"code":"BL40","name":"위중혈 (委中)","meridian":"BL · 족태양방광경","partId":"lumbar","pos":[0.4055,1.324,-0.3143],"desc":"요배위중구(腰背委中求) · 급만성 허리 통증과 좌골신경통, 하지 성장통을 다스리는 특효혈"},{"code":"ST36","name":"족삼리혈 (足三里)","meridian":"ST · 족양명위경","partId":"knee","pos":[0.4441,1.1387,-0.0333],"desc":"소화 흡수력과 무릎 성장판(IGF-1 발현) 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 명혈"},{"code":"GB34","name":"양릉천혈 (陽陵泉)","meridian":"GB · 족소양담경","partId":"knee","pos":[0.5789,1.1572,-0.1306],"desc":"팔회혈 중 근회(筋會: 근육과 인대가 모이는 곳) · 성장기 근육 신장과 성장통 완화의 핵심혈"},{"code":"SP9","name":"음릉천혈 (陰陵泉)","meridian":"SP · 족태음비경","partId":"knee","pos":[0.3115,1.1183,-0.1005],"desc":"체내 불필요한 습담(부종·염증 액체)을 배출하고 무릎 관절 부종을 가라앉히는 혈자리"},{"code":"SP6","name":"삼음교혈 (三陰交)","meridian":"SP · 족태음비경","partId":"pelvis","pos":[0.3934,0.4149,-0.1405],"desc":"간·비·신 3개의 음경(陰經)이 만나는 교차점 · 여성 자궁 보혈, 생리통, 난임 및 소아 성장 핵심혈"},{"code":"LR3","name":"태충혈 (太衝)","meridian":"LR · 족궐음간경","partId":"brain","pos":[0.483,0.0854,0.1989],"desc":"합곡혈과 함께 사관혈(四關穴)을 이루며 막힌 기혈과 간화(스트레스 열)를 내리는 대표 원혈"},{"code":"KI1","name":"용천혈 (湧泉)","meridian":"KI · 족소음신경","partId":"knee","pos":[0.4819,0.0054,0.1117],"desc":"생명력이 샘솟는 발바닥 첫 혈자리 · 두피의 열을 발끝으로 내리고(수승화강) 성장판 골수를 채우는 혈"}]};
+
+    // Refine exact 3D camera coordinates to match pose-fitted Skeleton.glb & Vibrant Organs
+    const PART_CAMERA_PRESETS = {
+      knee:     { pos3D: [0.42, 1.19, -0.05], camPos: [0.24, 1.20, 1.65], camTarget: [0.22, 1.18, -0.12], radius: 0.42 },
+      cervical: { pos3D: [0.00, 3.92, -0.03], camPos: [0.28, 3.96, 1.48], camTarget: [0.00, 3.95, -0.02], radius: 0.32 },
+      lumbar:   { pos3D: [0.00, 2.76, -0.06], camPos: [-0.34, 2.82, 1.62], camTarget: [0.00, 2.80, -0.04], radius: 0.38 },
+      brain:    { pos3D: [0.00, 4.36, -0.02], camPos: [0.18, 4.36, 1.45], camTarget: [0.00, 4.38, -0.02], radius: 0.34 },
+      heart:    { pos3D: [0.04, 3.50,  0.03], camPos: [0.08, 3.56, 1.75], camTarget: [0.00, 3.60,  0.00], radius: 0.38 },
+      gut:      { pos3D: [0.02, 3.00,  0.05], camPos: [0.22, 3.08, 1.72], camTarget: [0.00, 3.06,  0.02], radius: 0.44 },
+      pelvis:   { pos3D: [0.00, 2.44, -0.02], camPos: [-0.26, 2.52, 1.68], camTarget: [0.00, 2.50,  0.00], radius: 0.40 }
+    };
 
     // ========================================================================
     // 1. ENCYCLOPEDIA RENDERER & SCROLL-DRIVEN AUTOMATIC B/A SCAN
     // ========================================================================
     let currentPartId = 'knee';
-    let currentRecoveryMix = 0.25;
-    let targetRecoveryMix = 0.25;
+    let currentRecoveryMix = 0.72;
+    let targetRecoveryMix = 0.72;
     let activeMeridianFilter = 'ALL';
 
     const scrollPanel = document.getElementById('encyclopedia-scroll-panel');
@@ -1109,14 +1149,14 @@
           '<span class="cause-badge">' + c.badge + '</span>' +
           '<h3 class="cause-title">' + c.title + '</h3>' +
           '<p class="cause-mech">' + c.mechanism + '</p>' +
-          '<div class="cause-sol-box"><strong>바른한의원 해법 · </strong>' + c.solution + '</div>' +
+          '<div class="cause-sol-box"><strong>바른한의원 임상 핵심 · </strong>' + (c.solution || c.warning || '') + '</div>' +
         '</article>'
       ).join('');
 
       const protocolsHtml = part.coldCareSpecial.protocols.map(pr =>
         '<div class="protocol-step-item">' +
           '<div class="protocol-step-badge">' + pr.step + '</div>' +
-          '<div class="protocol-step-title">' + pr.title + '</div>' +
+          '<div class="protocol-step-title">' + (pr.title || pr.heading || '') + '</div>' +
           '<p class="protocol-step-detail">' + pr.detail + '</p>' +
         '</div>'
       ).join('');
@@ -1171,7 +1211,7 @@
               '<span style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;color:var(--gold-bright);">SCROLL-SYNCHRONIZED 3D BIOMEDICAL SCAN</span>' +
               '<div style="font-size:1rem;font-weight:800;color:#FFFFFF;margin-top:2px;">스크롤을 내리면 치료 전(Before)에서 치료 후(After)로 자동 스캔 변환됩니다</div>' +
             '</div>' +
-            '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 25%</span>' +
+            '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 72%</span>' +
           '</div>' +
           '<div class="encyc-ba-stage" id="encyc-ba-stage">' +
             '<img src="' + part.baBeforeImg + '" alt="치료 전 스캔" draggable="false">' +
@@ -1302,7 +1342,7 @@
     };
 
     // ========================================================================
-    // 2. VIBRANT.NOOMOAGENCY.COM 1:1 3D ENGINE + 193,288-VERTEX DONG-IN MERIDIANS
+    // 2. VIBRANT.NOOMOAGENCY.COM 1:1 3D ENGINE + SKELETON + VASCULAR MERIDIANS
     // ========================================================================
     const stageEl = document.getElementById('vibrant-3d-stage');
     const canvas = document.getElementById('vibrant-body-canvas');
@@ -1310,60 +1350,150 @@
     const loaderOverlay = document.getElementById('dongin-loader-overlay');
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.08, 200);
-    camera.position.set(0.0, 2.45, 4.85);
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
+    // Exact Vibrant focalLength(35) + Hero Anatomical Framing (matching media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png)
+    camera.setFocalLength(35);
+    camera.position.set(0.0, 3.50, 2.62);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       powerPreference: 'high-performance',
+      precision: 'highp',
       antialias: true,
-      alpha: true
+      alpha: false
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMapping = THREE.NeutralToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    renderer.shadowMap.enabled = false;
 
     const controls = new OrbitControls(camera, canvas);
-    controls.target.set(0, 2.38, 0);
+    controls.target.set(0.0, 3.68, 0.0);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.07;
-    controls.maxDistance = 8.5;
-    controls.minDistance = 0.75;
-    controls.maxPolarAngle = Math.PI * 0.88;
-    controls.minPolarAngle = Math.PI * 0.08;
+    controls.dampingFactor = 0.08;
+    controls.maxDistance = 6.5;
+    controls.minDistance = 0.55;
+    controls.maxPolarAngle = Math.PI * 0.85;
+    controls.minPolarAngle = Math.PI * 0.12;
 
-    // Vibrant Studio Lighting + Royal Dong-In Rim Lights
-    const ambLight = new THREE.AmbientLight(0xdbeafe, 1.35);
-    scene.add(ambLight);
-
-    const sideLightL = new THREE.PointLight(0xffffff, 1.2, 12);
-    sideLightL.position.set(-2.2, 3.6, 1.2);
+    // Exact Vibrant Side Point Lights: (-2, 3.5, 0.5) & (2, 3.5, 0.5), intensity 0.5, distance 10
+    const sideLightL = new THREE.PointLight(0xffffff, 0.65, 10);
+    sideLightL.position.set(-2.0, 3.5, 0.5);
     scene.add(sideLightL);
 
-    const sideLightR = new THREE.PointLight(0xfde68a, 1.35, 12);
-    sideLightR.position.set(2.2, 3.6, 1.2);
+    const sideLightR = new THREE.PointLight(0xffffff, 0.65, 10);
+    sideLightR.position.set(2.0, 3.5, 0.5);
     scene.add(sideLightR);
 
-    const frontKeyLight = new THREE.DirectionalLight(0xfffbeb, 1.85);
-    frontKeyLight.position.set(1.5, 4.8, 3.8);
-    scene.add(frontKeyLight);
+    // Subtle cool rim light from behind to accentuate glass silhouette + skeleton inside
+    const rimBackLight = new THREE.DirectionalLight(0xb8dcff, 0.85);
+    rimBackLight.position.set(0.0, 4.2, -3.0);
+    scene.add(rimBackLight);
 
-    const backRimLight = new THREE.DirectionalLight(0x38bdf8, 1.65);
-    backRimLight.position.set(-1.8, 3.5, -3.2);
-    scene.add(backRimLight);
+    const softAmbient = new THREE.AmbientLight(0xdbeafe, 0.45);
+    scene.add(softAmbient);
 
-    const organGlowLight = new THREE.PointLight(0x10b981, 2.2, 3.5);
-    organGlowLight.position.set(0.39, 1.32, 0.25);
-    scene.add(organGlowLight);
+    // Local Dynamic Organ PointLight (moves to active organ)
+    const activeOrganPointLight = new THREE.PointLight(0x10b981, 0.65, 2.2);
+    activeOrganPointLight.position.set(0.04, 3.50, -0.4);
+    scene.add(activeOrganPointLight);
 
-    // Loaders: GLTFLoader + DRACOLoader (using local draco/ decoder)
+    // Loaders: GLTFLoader + DRACOLoader
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
     const texLoader = new THREE.TextureLoader();
 
-    // Classic 3D Perlin Noise GLSL (Exact from vibrant.noomoagency.com)
+    // ========================================================================
+    // 2.1 EXACT VIBRANT HDR GAINMAP DECODER (GSG_PRO_STUDIOS_METAL_001_sm)
+    // ========================================================================
+    async function loadVibrantHDRGainMap() {
+      try {
+        const [sdrTex, gainTex, metaRes] = await Promise.all([
+          texLoader.loadAsync('map/GSG_PRO_STUDIOS_METAL_001_sm.webp'),
+          texLoader.loadAsync('map/GSG_PRO_STUDIOS_METAL_001_sm-gainmap.webp'),
+          fetch('map/GSG_PRO_STUDIOS_METAL_001_sm.json').then(r => r.json())
+        ]);
+        sdrTex.colorSpace = THREE.SRGBColorSpace;
+        gainTex.colorSpace = THREE.NoColorSpace;
+
+        const maxBoost = Math.pow(2, metaRes.hdrCapacityMax);
+        const weightFactor = Math.max(0, Math.min(1, (Math.log2(maxBoost) - metaRes.hdrCapacityMin) / (metaRes.hdrCapacityMax - metaRes.hdrCapacityMin)));
+
+        const gainMat = new THREE.ShaderMaterial({
+          uniforms: {
+            sdr: { value: sdrTex },
+            gainMap: { value: gainTex },
+            gamma: { value: new THREE.Vector3(1 / metaRes.gamma[0], 1 / metaRes.gamma[1], 1 / metaRes.gamma[2]) },
+            offsetHdr: { value: new THREE.Vector3().fromArray(metaRes.offsetHdr) },
+            offsetSdr: { value: new THREE.Vector3().fromArray(metaRes.offsetSdr) },
+            gainMapMin: { value: new THREE.Vector3().fromArray(metaRes.gainMapMin) },
+            gainMapMax: { value: new THREE.Vector3().fromArray(metaRes.gainMapMax) },
+            weightFactor: { value: weightFactor }
+          },
+          vertexShader: [
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vUv = uv;',
+            '  gl_Position = vec4(position.xy, 0.0, 1.0);',
+            '}'
+          ].join('\n'),
+          fragmentShader: [
+            '#define HALF_FLOAT_MIN vec3(-65504.0)',
+            '#define HALF_FLOAT_MAX vec3(65504.0)',
+            'uniform sampler2D sdr;',
+            'uniform sampler2D gainMap;',
+            'uniform vec3 gamma;',
+            'uniform vec3 offsetHdr;',
+            'uniform vec3 offsetSdr;',
+            'uniform vec3 gainMapMin;',
+            'uniform vec3 gainMapMax;',
+            'uniform float weightFactor;',
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vec3 rgb = texture2D(sdr, vUv).rgb;',
+            '  vec3 recovery = texture2D(gainMap, vUv).rgb;',
+            '  vec3 logRecovery = pow(max(recovery, vec3(0.0001)), gamma);',
+            '  vec3 logBoost = gainMapMin * (1.0 - logRecovery) + gainMapMax * logRecovery;',
+            '  vec3 hdrColor = (rgb + offsetSdr) * exp2(logBoost * weightFactor) - offsetHdr;',
+            '  vec3 clampedHdr = max(HALF_FLOAT_MIN, min(HALF_FLOAT_MAX, hdrColor));',
+            '  gl_FragColor = vec4(clampedHdr, 1.0);',
+            '}'
+          ].join('\n'),
+          depthTest: false,
+          depthWrite: false
+        });
+
+        const w = sdrTex.image?.width || 1024;
+        const h = sdrTex.image?.height || 512;
+        const rt = new THREE.WebGLRenderTarget(w, h, {
+          type: THREE.HalfFloatType,
+          format: THREE.RGBAFormat,
+          colorSpace: THREE.LinearSRGBColorSpace,
+           depthBuffer: false
+        });
+
+        const quadScene = new THREE.Scene();
+        const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), gainMat));
+
+        const prevTarget = renderer.getRenderTarget();
+        renderer.setRenderTarget(rt);
+        renderer.render(quadScene, quadCam);
+        renderer.setRenderTarget(prevTarget);
+
+        rt.texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.environment = rt.texture;
+      } catch (e) {
+        console.warn('HDR GainMap fallback:', e);
+      }
+    }
+    loadVibrantHDRGainMap();
+
+    // ========================================================================
+    // 2.2 EXACT VIBRANT SKIN MATERIAL + PERLIN 3D NOISE DISSOLVE (pd in Bnwl1Oju.js)
+    // ========================================================================
     const PERLIN_GLSL = [
       'vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}',
       'vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}',
@@ -1424,92 +1554,92 @@
       '}'
     ].join('\n');
 
-    // Build Dong-In Skin Material with Vibrant's exact Plastic015A Normal Map + Perlin Dissolve
     const skinNormalTex = texLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/texture/Plastic015A_1K-JPG_NormalGL.jpg');
     skinNormalTex.wrapS = THREE.RepeatWrapping;
     skinNormalTex.wrapT = THREE.RepeatWrapping;
-    skinNormalTex.repeat.set(2, 2);
+    skinNormalTex.repeat.set(8, 8);
 
-    const skinUniforms = {
-      uDissolve: { value: 0.14 },
-      uFocusCenter: { value: new THREE.Vector3(0.41, 1.28, 0.04) },
-      uFocusRadius: { value: 0.42 },
-      uTime: { value: 0 }
-    };
-
-    function createDonginSkinMaterial() {
+    function createVibrantGlassSkinMaterial(initialDissolve = 0.0) {
+      // Crystal-clear anatomical glass skin with Vibrant's MeshPhysicalMaterial + X-Ray Fresnel pearlescent contour rim
+      // (Matches media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png with zero internal refraction blur)
       const mat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0xe2f1ff),
-        roughness: 0.22,
-        metalness: 0.12,
-        transmission: 0.78,
-        thickness: 0.86,
-        ior: 1.85,
+        color: 0xdbeafe,
+        roughness: 0.07,
+        metalness: 0.02,
+        transmission: 0.94,
+        thickness: 0.08,
+        ior: 1.06,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.08,
-        reflectivity: 1.0,
-        iridescence: 1.0,
-        iridescenceIOR: 1.453,
-        sheen: 0.45,
-        sheenRoughness: 0.65,
-        sheenColor: new THREE.Color(0xd4af37),
-        specularIntensity: 1.0,
-        specularColor: new THREE.Color(0xfde68a),
+        clearcoatRoughness: 0.04,
+        dispersion: 0.38,
+        reflectivity: 0.85,
+        iridescence: 0.52,
+        iridescenceIOR: 1.42,
+        sheen: 0.25,
+        sheenRoughness: 0.85,
+        sheenColor: new THREE.Color(0x0a192f),
+        specularIntensity: 0.75,
+        specularColor: new THREE.Color(0xffffff),
+        transparent: false,
+        opacity: 1.0,
         normalMap: skinNormalTex,
-        normalScale: new THREE.Vector2(3.5, 3.5),
-        transparent: true,
-        opacity: 0.62,
-        side: THREE.DoubleSide,
-        depthWrite: false
+        normalScale: new THREE.Vector2(0.04, 0.04)
       });
 
+      mat.userData.uDissolve = { value: initialDissolve };
       mat.onBeforeCompile = (shader) => {
-        shader.uniforms.uDissolve = skinUniforms.uDissolve;
-        shader.uniforms.uFocusCenter = skinUniforms.uFocusCenter;
-        shader.uniforms.uFocusRadius = skinUniforms.uFocusRadius;
-        shader.uniforms.uTime = skinUniforms.uTime;
-
+        shader.uniforms.uDissolve = mat.userData.uDissolve;
         shader.vertexShader = shader.vertexShader.replace(
           '#include <common>',
-          ['#include <common>', 'varying vec2 vDissolveUv;', 'varying vec3 vWorldPosition;'].join('\n')
+          ['#include <common>', 'varying vec2 vSkinUv;', 'varying vec3 vSkinViewDir;', 'varying vec3 vSkinNormal;'].join('\n')
         ).replace(
           '#include <uv_vertex>',
-          ['#include <uv_vertex>', 'vDissolveUv = uv;', 'vec4 wp = modelMatrix * vec4(position, 1.0);', 'vWorldPosition = wp.xyz;'].join('\n')
+          ['#include <uv_vertex>', 'vSkinUv = uv;'].join('\n')
+        ).replace(
+          '#include <begin_vertex>',
+          [
+            '#include <begin_vertex>',
+            'vec4 mvSkinPos = modelViewMatrix * vec4(transformed, 1.0);',
+            'vSkinViewDir = normalize(-mvSkinPos.xyz);',
+            'vSkinNormal = normalize(normalMatrix * objectNormal);'
+          ].join('\n')
         );
-
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <common>',
           [
             '#include <common>',
             'uniform float uDissolve;',
-            'uniform vec3 uFocusCenter;',
-            'uniform float uFocusRadius;',
-            'uniform float uTime;',
-            'varying vec2 vDissolveUv;',
-            'varying vec3 vWorldPosition;',
+            'varying vec2 vSkinUv;',
+            'varying vec3 vSkinViewDir;',
+            'varying vec3 vSkinNormal;',
             PERLIN_GLSL
           ].join('\n')
         ).replace(
           '#include <dithering_fragment>',
           [
             '#include <dithering_fragment>',
-            'float nVal = cnoise(vec3(vDissolveUv * 12.0, uTime * 0.15)) * 0.5 + 0.5;',
-            'float dToFocus = distance(vWorldPosition, uFocusCenter);',
-            'float localWindow = smoothstep(uFocusRadius * 1.15, uFocusRadius * 0.2, dToFocus) * 0.55;',
-            'float threshold = clamp(uDissolve + localWindow, 0.0, 0.95);',
-            'if (nVal < threshold) { discard; }',
-            'if (nVal < threshold + 0.055) {',
-            '  gl_FragColor.rgb += vec3(0.85, 0.68, 0.22) * 0.75;',
-            '  gl_FragColor.a = min(1.0, gl_FragColor.a + 0.45);',
-            '}'
+            'if (uDissolve > 0.001) {',
+            '  float dissolveNoise = cnoise(vec3(vSkinUv * 5.0, 2.0));',
+            '  float nVal = dissolveNoise * 0.5 + 0.5;',
+            '  if (nVal < uDissolve) { discard; }',
+            '  if (nVal < uDissolve + 0.035) {',
+            '    gl_FragColor.rgb += vec3(0.18, 0.65, 0.95) * 0.35;',
+            '  }',
+            '}',
+            // Silky silver-white X-Ray Fresnel contour rim + crystal-clear front window (matching media_1792308719040_b2231010.png)
+            'float skinNdotV = clamp(abs(dot(normalize(vSkinNormal), normalize(vSkinViewDir))), 0.0, 1.0);',
+            'float skinRim = pow(1.0 - skinNdotV, 2.35);',
+            'vec3 pearlescentRim = vec3(0.84, 0.91, 0.99) * skinRim * 0.68;',
+            'gl_FragColor.rgb = mix(gl_FragColor.rgb * 0.66, gl_FragColor.rgb, skinRim) + pearlescentRim;'
           ].join('\n')
         );
+        mat.userData.shader = shader;
       };
       return mat;
     }
 
-    const maleSkinMat = createDonginSkinMaterial();
-    const femaleSkinMat = createDonginSkinMaterial();
+    const maleSkinMat = createVibrantGlassSkinMaterial(0.0);
+    const femaleSkinMat = createVibrantGlassSkinMaterial(0.0);
 
     let maleBodyObj = null;
     let femaleBodyObj = null;
@@ -1517,31 +1647,56 @@
     let currentSkinMode = 'glass';
     let isAuroraStudio = false;
 
-    // 2.1 Load Vibrant Studio Podium (models/podium.glb) with exact Fluid Swirl Shader
+    // ========================================================================
+    // 2.3 EXACT VIBRANT STUDIO PODIUM (podium.glb) & MATCAP SPHERES (newBG.glb)
+    // ========================================================================
+    // Default palette tuned to Neko/Prenuvo/media_1792308719040_b2231010.png clean dark medical studio
     const podiumUniforms = {
       uTime: { value: 0 },
-      uColorA: { value: new THREE.Color('#071a18') },
-      uColorMid: { value: new THREE.Color('#0a1628') },
-      uColorB: { value: new THREE.Color('#040811') },
-      uHighlightColor: { value: new THREE.Color('#10b981') }
+      uColorA: { value: new THREE.Color('#071220') },
+      uColorMid: { value: new THREE.Color('#0a192c') },
+      uColorB: { value: new THREE.Color('#03060c') },
+      uHighlightColor: { value: new THREE.Color('#183654') },
+      uSpeed: { value: 0.45 },
+      uFlowSpeed: { value: 0.22 },
+      uPulseSpeed: { value: 0.55 },
+      uNoiseScale: { value: 12.0 },
+      uNoiseAmount: { value: 0.14 },
+      uNoiseDetailScale: { value: 10.0 },
+      uNoiseDetailAmount: { value: 0.35 },
+      uSwirlStrength: { value: 0.45 },
+      uGlowStrength: { value: 0.25 },
+      uPulseStrength: { value: 0.12 },
+      uFresnelStrength: { value: 0.28 },
+      uFresnelPower: { value: 0.65 },
+      uHighlightIntensity: { value: 0.28 },
+      uCurve: { value: 0.55 }
     };
 
     gltfLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/podium.glb', (gltf) => {
       const podiumScene = gltf.scene;
       const podiumMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
       podiumMat.onBeforeCompile = (shader) => {
-        shader.uniforms.uTime = podiumUniforms.uTime;
-        shader.uniforms.uColorA = podiumUniforms.uColorA;
-        shader.uniforms.uColorMid = podiumUniforms.uColorMid;
-        shader.uniforms.uColorB = podiumUniforms.uColorB;
-        shader.uniforms.uHighlightColor = podiumUniforms.uHighlightColor;
+        Object.keys(podiumUniforms).forEach(k => {
+          shader.uniforms[k] = podiumUniforms[k];
+        });
 
         shader.vertexShader = shader.vertexShader.replace(
           'void main() {',
-          ['varying vec2 vUv;', 'varying vec3 vViewDir;', 'varying vec3 vSurfaceNormal;', 'void main() {', 'vUv = uv;'].join('\n')
+          [
+            'varying vec2 vUv;',
+            'varying vec3 vViewDir;',
+            'varying vec3 vSurfaceNormal;',
+            'void main() {',
+            'vUv = uv;'
+          ].join('\n')
         ).replace(
           'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
-          ['vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );', 'vViewDir = -mvPosition.xyz;', 'vSurfaceNormal = normalize(normalMatrix * normal);'].join('\n')
+          [
+            'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
+            'vViewDir = -mvPosition.xyz;',
+            'vSurfaceNormal = normalize(normalMatrix * objectNormal);'
+          ].join('\n')
         );
 
         shader.fragmentShader = shader.fragmentShader.replace(
@@ -1555,6 +1710,20 @@
             'uniform vec3 uColorMid;',
             'uniform vec3 uColorB;',
             'uniform vec3 uHighlightColor;',
+            'uniform float uSpeed;',
+            'uniform float uFlowSpeed;',
+            'uniform float uPulseSpeed;',
+            'uniform float uNoiseScale;',
+            'uniform float uNoiseAmount;',
+            'uniform float uNoiseDetailScale;',
+            'uniform float uNoiseDetailAmount;',
+            'uniform float uSwirlStrength;',
+            'uniform float uGlowStrength;',
+            'uniform float uPulseStrength;',
+            'uniform float uFresnelStrength;',
+            'uniform float uFresnelPower;',
+            'uniform float uHighlightIntensity;',
+            'uniform float uCurve;',
             'float hash21(vec2 p) {',
             '  p = fract(p * vec2(123.34, 456.21));',
             '  p += dot(p, p + 45.32);',
@@ -1570,17 +1739,43 @@
             '  vec2 u = f * f * (3.0 - 2.0 * f);',
             '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);',
             '}',
+            'vec2 swirl(vec2 uv, float strength, float timeShift) {',
+            '  vec2 c = uv - vec2(0.5);',
+            '  float r = length(c);',
+            '  float angle = strength * smoothstep(0.0, 0.7, r) * sin(r * 8.0 - timeShift);',
+            '  mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));',
+            '  return rot * c + vec2(0.5);',
+            '}',
+            'float layeredNoise(vec2 uv, float scale, float detailScale, float detailAmount) {',
+            '  float base = valueNoise(uv * scale);',
+            '  float detail = valueNoise(uv * detailScale);',
+            '  return mix(base, detail, detailAmount);',
+            '}',
             'void main() {'
           ].join('\n')
         ).replace(
           'vec4 diffuseColor = vec4( diffuse, opacity );',
           [
             'vec4 diffuseColor = vec4( diffuse, opacity );',
-            'float n = valueNoise(vUv * 12.0 + vec2(sin(uTime * 0.35) * 0.2, uTime * 0.18));',
-            'vec3 grad = mix(uColorA, uColorMid, smoothstep(0.0, 0.55, clamp(vUv.y + (n - 0.5) * 0.35, 0.0, 1.0)));',
-            'grad = mix(grad, uColorB, smoothstep(0.35, 1.0, vUv.y));',
-            'float fresnel = pow(1.0 - abs(dot(normalize(vSurfaceNormal), normalize(vViewDir))), 1.4) * 0.42;',
-            'diffuseColor.rgb = mix(grad, uHighlightColor, clamp(fresnel, 0.0, 0.65));'
+            'vec2 swirlUV = swirl(vUv, uSwirlStrength, uTime * uFlowSpeed);',
+            'vec2 fluidUV = swirlUV + vec2(sin(uTime * uSpeed) * 0.01, cos(uTime * uSpeed * 0.8) * 0.01);',
+            'float baseGradient = clamp(fluidUV.y, 0.0, 1.0);',
+            'float baseNoise = layeredNoise(fluidUV, uNoiseScale, uNoiseDetailScale, uNoiseDetailAmount);',
+            'float centered = (baseNoise - 0.5) * 1.6 * uNoiseAmount;',
+            'float t = pow(clamp(baseGradient + centered, 0.0001, 1.0), max(0.0001, uCurve));',
+            'vec3 grad = mix(uColorA, uColorMid, smoothstep(0.0, 0.55, t));',
+            'grad = mix(grad, uColorB, smoothstep(0.35, 1.0, t));',
+            'float pulse = 0.5 + 0.5 * sin(uTime * uPulseSpeed + fluidUV.y * 6.283);',
+            'float pulseMask = pow(pulse, 3.0) * uPulseStrength;',
+            'vec3 nrm = normalize(vSurfaceNormal);',
+            'vec3 viewDir = normalize(vViewDir);',
+            'float fresnelTerm = pow(1.0 - abs(dot(nrm, viewDir)), uFresnelPower);',
+            'float fresnelGlow = fresnelTerm * uFresnelStrength;',
+            'float highlight = smoothstep(0.65, 1.0, baseNoise);',
+            'float highlightGlow = clamp(highlight * uHighlightIntensity, 0.0, 1.0);',
+            'float glowAmount = clamp(fresnelGlow + pulseMask * uGlowStrength, 0.0, 1.0);',
+            'vec3 withHighlight = mix(grad, uHighlightColor, highlightGlow);',
+            'diffuseColor.rgb = mix(withHighlight, uHighlightColor, glowAmount);'
           ].join('\n')
         );
       };
@@ -1590,13 +1785,12 @@
       scene.add(podiumScene);
     });
 
-    // 2.2 Load Vibrant Floating Matcap Background Spheres (models/newBG.glb)
     texLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/texture/mats/mat20.png', (matcapTex) => {
       gltfLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/newBG.glb', (gltf) => {
         const bgMat = new THREE.MeshMatcapMaterial({
           matcap: matcapTex,
           transparent: true,
-          opacity: 0.24
+          opacity: 0.14
         });
         gltf.scene.traverse(c => {
           if (c.isMesh) c.material = bgMat;
@@ -1605,14 +1799,13 @@
       });
     });
 
-    // 2.3 Load 193,288-Vertex Male (skinMB2.glb) & 190,564-Vertex Female (skinF2.glb) Sculpted Human Bodies
+    // ========================================================================
+    // 2.4 LOAD 193,288-VERTEX MALE & 190,564-VERTEX FEMALE SCULPTED BODIES
+    // ========================================================================
     gltfLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/skinMB2.glb', (gltf) => {
       maleBodyObj = gltf.scene;
       maleBodyObj.traverse(c => {
-        if (c.isMesh) {
-          c.material = maleSkinMat;
-          c.renderOrder = 2;
-        }
+        if (c.isMesh) c.material = maleSkinMat;
       });
       scene.add(maleBodyObj);
       if (loaderOverlay) loaderOverlay.classList.add('hidden');
@@ -1622,202 +1815,370 @@
       femaleBodyObj = gltf.scene;
       femaleBodyObj.visible = false;
       femaleBodyObj.traverse(c => {
-        if (c.isMesh) {
-          c.material = femaleSkinMat;
-          c.renderOrder = 2;
-        }
+        if (c.isMesh) c.material = femaleSkinMat;
       });
       scene.add(femaleBodyObj);
     });
 
-    // 2.4 Load ALL 12 Real Internal 3D Organs from vibrant.noomoagency.com
+    // ========================================================================
+    // 2.5 LOAD POSE-FITTED 3D ANATOMICAL SKELETON, JOINTS/DISCS & VASCULAR MERIDIANS
+    // (Matches media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png)
+    // ========================================================================
+    const skeletonMeshMap = {};
+    const boneBaseUniforms = {
+      uTime: { value: 0 },
+      uRecovery: { value: 0.72 }
+    };
+
+    function createAnatomicalBoneMaterial(isHighlightedGroup = false, isGrowthPlate = false) {
+      if (isGrowthPlate) {
+        return new THREE.MeshStandardMaterial({
+          color: new THREE.Color(0x34d399),
+          emissive: new THREE.Color(0x10b981),
+          emissiveIntensity: 2.1,
+          roughness: 0.20,
+          metalness: 0.10,
+          transparent: true,
+          opacity: 0.95
+        });
+      }
+      // Medical X-Ray Fresnel Translucent Bone Shader (matches media_1792308719040_b2231010.png):
+      // Semi-transparent interior (so brain.glb inside skull & heart.glb inside ribcage shine through clearly)
+      // + crisp ivory-silver X-Ray Fresnel contour edges!
+      const mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(isHighlightedGroup ? 0xdbeafe : 0x7c93ad),
+        emissive: new THREE.Color(isHighlightedGroup ? 0x1e3a5f : 0x0e1d30),
+        emissiveIntensity: isHighlightedGroup ? 0.68 : 0.42,
+        roughness: 0.30,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.48,
+        depthWrite: false
+      });
+      mat.onBeforeCompile = (shader) => {
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec3 vBoneViewDir;', 'varying vec3 vBoneNormal;'].join('\n')
+        ).replace(
+          '#include <begin_vertex>',
+          [
+            '#include <begin_vertex>',
+            'vec4 mvPosBone = modelViewMatrix * vec4(transformed, 1.0);',
+            'vBoneViewDir = normalize(-mvPosBone.xyz);',
+            'vBoneNormal = normalize(normalMatrix * objectNormal);'
+          ].join('\n')
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec3 vBoneViewDir;', 'varying vec3 vBoneNormal;'].join('\n')
+        ).replace(
+          '#include <dithering_fragment>',
+          [
+            '#include <dithering_fragment>',
+            'float boneNdotV = clamp(abs(dot(normalize(vBoneNormal), normalize(vBoneViewDir))), 0.0, 1.0);',
+            'float boneRim = pow(1.0 - boneNdotV, 1.85);',
+            'gl_FragColor.rgb += vec3(0.76, 0.86, 0.98) * boneRim * 0.78;',
+            'gl_FragColor.a = clamp(0.18 + boneRim * 0.66, 0.16, 0.86);'
+          ].join('\n')
+        );
+      };
+      return mat;
+    }
+
+    let kneeGrowthPlateMat = null;
+    gltfLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/Skeleton.glb', (gltf) => {
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          const gName = c.name || c.parent?.name || '';
+          const isGP = gName.includes('KneeGrowthPlate');
+          const mat = createAnatomicalBoneMaterial(false, isGP);
+          if (isGP) {
+            kneeGrowthPlateMat = mat;
+            c.renderOrder = 6;
+          } else {
+            c.renderOrder = 3;
+          }
+          c.material = mat;
+          skeletonMeshMap[gName] = { mesh: c, mat: mat };
+        }
+      });
+      scene.add(gltf.scene);
+      updateAnatomyHighlight();
+    });
+
+    const jointsMeshMap = {};
+    gltfLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/Joints.glb', (gltf) => {
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          const gName = c.name || c.parent?.name || '';
+          const isKneeCart = gName.includes('KneeCartilage');
+          const mat = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(isKneeCart ? 0x38bdf8 : 0x5c748f),
+            emissive: new THREE.Color(isKneeCart ? 0x0ea5e9 : 0x0b1624),
+            emissiveIntensity: isKneeCart ? 0.85 : 0.22,
+            roughness: 0.30,
+            metalness: 0.08,
+            transparent: true,
+            opacity: isKneeCart ? 0.72 : 0.28,
+            depthWrite: false
+          });
+          c.renderOrder = isKneeCart ? 5 : 2;
+          c.material = mat;
+          jointsMeshMap[gName] = { mesh: c, mat: mat };
+        }
+      });
+      scene.add(gltf.scene);
+    });
+
+    // Load 1.3M-vertex Real Anatomical Vascular & 12-Meridian Network (models/Vascular.glb)
+    // with Bio-Photon Qi-Blood Flow Shader!
+    const vascularUniforms = {
+      uTime: { value: 0 },
+      uPulseBoost: { value: 0.72 }
+    };
+
+    function createVascularMeridianMaterial(isArterial) {
+      const mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(isArterial ? 0x3b1016 : 0x122438),
+        emissive: new THREE.Color(isArterial ? 0x7a1220 : 0x0d304d),
+        emissiveIntensity: 0.48,
+        roughness: 0.30,
+        metalness: 0.15
+      });
+      mat.onBeforeCompile = (shader) => {
+        shader.uniforms.uTime = vascularUniforms.uTime;
+        shader.uniforms.uPulseBoost = vascularUniforms.uPulseBoost;
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec3 vVascWorldPos;'].join('\n')
+        ).replace(
+          '#include <begin_vertex>',
+          ['#include <begin_vertex>', 'vVascWorldPos = (modelMatrix * vec4(transformed, 1.0)).xyz;'].join('\n')
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          [
+            '#include <common>',
+            'uniform float uTime;',
+            'uniform float uPulseBoost;',
+            'varying vec3 vVascWorldPos;'
+          ].join('\n')
+        ).replace(
+          '#include <dithering_fragment>',
+          [
+            '#include <dithering_fragment>',
+            // Traveling bio-photon Qi wave along the real 3D anatomical vessels
+            'float wave1 = pow(0.5 + 0.5 * sin(vVascWorldPos.y * 7.5 - uTime * 3.2 + abs(vVascWorldPos.x) * 6.0), 6.0);',
+            'float wave2 = pow(0.5 + 0.5 * sin(vVascWorldPos.y * 14.0 + uTime * 2.4), 8.0);',
+            isArterial
+              ? 'vec3 pulseCol = mix(vec3(0.95, 0.25, 0.20), vec3(0.99, 0.82, 0.40), wave2);'
+              : 'vec3 pulseCol = mix(vec3(0.14, 0.72, 0.65), vec3(0.35, 0.80, 0.96), wave2);',
+            'gl_FragColor.rgb += pulseCol * (wave1 * 0.58 + wave2 * 0.35) * uPulseBoost;'
+          ].join('\n')
+        );
+      };
+      return mat;
+    }
+
+    gltfLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/Vascular.glb', (gltf) => {
+      const artMat = createVascularMeridianMaterial(true);
+      const venMat = createVascularMeridianMaterial(false);
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          const isArt = (c.name || '').includes('Arterial');
+          c.material = isArt ? artMat : venMat;
+        }
+      });
+      scene.add(gltf.scene);
+    });
+
+    // ========================================================================
+    // 2.6 LOAD ALL 12 SCULPTED ORGANS WITH SUBSURFACE SCATTERING SHADER (Ht)
+    // Tuned for zero stipple noise and rich ruby-amber brain & cardiac glow (media_1792308719040_b2231010.png)
+    // ========================================================================
+    const whiteTex = texLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/texture/white.jpg');
+    whiteTex.colorSpace = THREE.SRGBColorSpace;
+    whiteTex.wrapS = THREE.RepeatWrapping;
+    whiteTex.wrapT = THREE.RepeatWrapping;
+    const thicknessTex = texLoader.load('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/texture/white.jpg');
+
     const loadedOrgans = {};
-    const ORGAN_SPECS = [
-      { key: 'brain', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/brain.glb', parts: ['brain', 'cervical'], baseCol: 0x38bdf8, activeCol: 0x10b981 },
-      { key: 'thyroid', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/thyroid.glb', parts: ['cervical'], baseCol: 0xa78bfa, activeCol: 0x6ee7b7 },
-      { key: 'heart', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/heart.glb', parts: ['heart'], baseCol: 0xf87171, activeCol: 0xfde68a },
-      { key: 'liver', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/liver.glb', parts: ['gut', 'pelvis'], baseCol: 0xf59e0b, activeCol: 0x10b981 },
-      { key: 'galbladder', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/galbladder.glb', parts: ['gut'], baseCol: 0x34d399, activeCol: 0x6ee7b7 },
-      { key: 'stomach', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/stomach.glb', parts: ['gut'], baseCol: 0xfb923c, activeCol: 0x10b981 },
-      { key: 'pancreas', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/pancreas.glb', parts: ['gut'], baseCol: 0xfbbf24, activeCol: 0xfde68a },
-      { key: 'intestine', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/intestine.glb', parts: ['gut', 'pelvis'], baseCol: 0xf97316, activeCol: 0x34d399 },
-      { key: 'kidneys', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/kidneys2.glb', parts: ['lumbar', 'knee', 'pelvis'], baseCol: 0x60a5fa, activeCol: 0x10b981 },
-      { key: 'glands', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/glands.glb', parts: ['pelvis', 'lumbar'], baseCol: 0xf472b6, activeCol: 0xfde68a },
-      { key: 'dna', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/dna.glb', parts: ['pelvis', 'knee'], baseCol: 0x38bdf8, activeCol: 0xfde68a },
-      { key: 'cell', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/cellNew.glb', parts: ['heart', 'brain'], baseCol: 0xa78bfa, activeCol: 0x6ee7b7 }
+    const VIBRANT_SSS_ORGANS = [
+      {
+        key: 'brain', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/brain.glb', parts: ['brain', 'cervical'],
+        diffuse: [0.16, 0.05, 0.06], shininess: 420,
+        thicknessColor: [0.92, 0.28, 0.20], distortion: 0.85, ambient: 0.42, attenuation: 1.15, power: 4.2, scale: 14.0,
+        light: { offset: [0.0, 0.05, -0.35], color: 0xff4422, intensity: 0.45, distance: 1.4 }
+      },
+      {
+        key: 'heart', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/heart.glb', parts: ['heart'],
+        diffuse: [0.28, 0.04, 0.04], shininess: 460,
+        thicknessColor: [1.0, 0.26, 0.16], distortion: 0.82, ambient: 0.55, attenuation: 1.05, power: 4.0, scale: 18.0,
+        light: { offset: [0, 0, -0.85], color: 0xff2a1a, intensity: 0.72, distance: 1.8 }
+      },
+      {
+        key: 'liver', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/liver.glb', parts: ['gut', 'pelvis'],
+        diffuse: [0.12, 0.05, 0.06], shininess: 380,
+        thicknessColor: [0.48, 0.20, 0.18], distortion: 0.50, ambient: 0.22, attenuation: 1.20, power: 5.5, scale: 4.5
+      },
+      {
+        key: 'stomach', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/stomach.glb', parts: ['gut'],
+        diffuse: [0.14, 0.06, 0.07], shininess: 320,
+        thicknessColor: [0.52, 0.22, 0.22], distortion: 0.45, ambient: 0.24, attenuation: 0.90, power: 6.0, scale: 5.0
+      },
+      {
+        key: 'intestine', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/intestine.glb', parts: ['gut', 'pelvis'],
+        diffuse: [0.11, 0.05, 0.06], shininess: 350,
+        thicknessColor: [0.45, 0.20, 0.22], distortion: 0.55, ambient: 0.20, attenuation: 0.95, power: 4.5, scale: 5.5
+      },
+      {
+        key: 'kidneys', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/kidneys2.glb', parts: ['lumbar', 'knee', 'pelvis'],
+        diffuse: [0.10, 0.06, 0.08], shininess: 400,
+        thicknessColor: [0.32, 0.48, 0.62], distortion: 0.65, ambient: 0.22, attenuation: 0.85, power: 3.5, scale: 8.0
+      },
+      {
+        key: 'galbladder', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/galbladder.glb', parts: ['gut'],
+        diffuse: [0.08, 0.14, 0.10], shininess: 280,
+        thicknessColor: [0.22, 0.65, 0.45], distortion: 0.30, ambient: 0.24, attenuation: 0.65, power: 3.0, scale: 4.0
+      },
+      {
+        key: 'pancreas', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/pancreas.glb', parts: ['gut'],
+        diffuse: [0.15, 0.08, 0.06], shininess: 360,
+        thicknessColor: [0.62, 0.35, 0.22], distortion: 0.45, ambient: 0.22, attenuation: 0.75, power: 3.5, scale: 5.0
+      },
+      {
+        key: 'glands', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/glands.glb', parts: ['pelvis', 'lumbar'],
+        diffuse: [0.16, 0.10, 0.06], shininess: 400,
+        thicknessColor: [0.75, 0.58, 0.25], distortion: 0.35, ambient: 0.28, attenuation: 0.65, power: 4.0, scale: 7.5
+      },
+      {
+        key: 'thyroid', file: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/models/thyroid.glb', parts: ['cervical'],
+        diffuse: [0.16, 0.08, 0.14], shininess: 420,
+        thicknessColor: [0.65, 0.42, 0.78], distortion: 0.35, ambient: 0.28, attenuation: 0.80, power: 3.5, scale: 7.0
+      }
     ];
 
-    ORGAN_SPECS.forEach(spec => {
-      gltfLoader.load(spec.file, (gltf) => {
-        const mat = new THREE.MeshPhysicalMaterial({
-          color: new THREE.Color(spec.baseCol),
-          emissive: new THREE.Color(spec.baseCol),
-          emissiveIntensity: 0.55,
-          roughness: 0.22,
-          metalness: 0.08,
-          transmission: 0.45,
-          thickness: 1.2,
-          clearcoat: 1.0,
-          transparent: true,
-          opacity: 0.88
+    VIBRANT_SSS_ORGANS.forEach(cfg => {
+      gltfLoader.load(cfg.file, (gltf) => {
+        const uniforms = THREE.UniformsUtils.clone(SubsurfaceScatteringShader.uniforms);
+        uniforms.map.value = whiteTex;
+        uniforms.diffuse.value = new THREE.Vector3(...cfg.diffuse);
+        uniforms.shininess.value = cfg.shininess;
+        uniforms.thicknessMap.value = thicknessTex;
+        uniforms.thicknessColor.value = new THREE.Vector3(...cfg.thicknessColor);
+        uniforms.thicknessDistortion.value = cfg.distortion;
+        uniforms.thicknessAmbient.value = cfg.ambient;
+        uniforms.thicknessAttenuation.value = cfg.attenuation;
+        uniforms.thicknessPower.value = cfg.power;
+        uniforms.thicknessScale.value = cfg.scale;
+        uniforms.specular.value = new THREE.Color(0.02, 0.02, 0.02);
+        uniforms.opacity.value = 1.0;
+
+        const sssMat = new THREE.ShaderMaterial({
+          uniforms: uniforms,
+          vertexShader: SubsurfaceScatteringShader.vertexShader,
+          fragmentShader: SubsurfaceScatteringShader.fragmentShader,
+          lights: true,
+          transparent: false
         });
+
+        const rootMesh = gltf.scene.children[0] || gltf.scene;
+        if (cfg.key === 'brain' && rootMesh) {
+          rootMesh.scale.multiplyScalar(0.88);
+          rootMesh.position.y -= 0.038;
+        }
         gltf.scene.traverse(c => {
           if (c.isMesh) {
-            c.material = mat;
+            c.material = sssMat;
             c.renderOrder = 1;
           }
         });
-        scene.add(gltf.scene);
-        loadedOrgans[spec.key] = { scene: gltf.scene, mat: mat, spec: spec };
-      });
-    });
 
-    // 2.5 Custom Anatomical 3D Knee Epiphyseal Growth Plate & Spine inside skinMB2.glb
-    const customAnatomyGroup = new THREE.Group();
-    scene.add(customAnatomyGroup);
-
-    // Knee Epiphyseal Growth Plates at exact skinMB2.glb knee coordinates (x = ±0.41, y = 1.28, z = -0.10)
-    const kneeGrowthGroup = new THREE.Group();
-    customAnatomyGroup.add(kneeGrowthGroup);
-
-    const boneMat = new THREE.MeshPhysicalMaterial({
-      color: 0xe2e8f0,
-      emissive: 0x1e293b,
-      roughness: 0.3,
-      transmission: 0.35,
-      transparent: true,
-      opacity: 0.82
-    });
-    const growthDiscMat = new THREE.MeshStandardMaterial({
-      color: 0x10b981,
-      emissive: 0x10b981,
-      emissiveIntensity: 1.4,
-      transparent: true,
-      opacity: 0.95
-    });
-
-    [-1, 1].forEach(side => {
-      const kx = side * 0.41;
-      const femur = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.068, 0.28, 24), boneMat);
-      femur.position.set(kx, 1.45, -0.09);
-      kneeGrowthGroup.add(femur);
-
-      const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.066, 0.048, 0.28, 24), boneMat);
-      tibia.position.set(kx, 1.11, -0.11);
-      kneeGrowthGroup.add(tibia);
-
-      const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.072, 0.036, 32), growthDiscMat);
-      plate.position.set(kx, 1.28, -0.10);
-      kneeGrowthGroup.add(plate);
-    });
-
-    // 180 Dividing Chondrocyte & IGF-1 Bio-Photons inside Knee Growth Plates
-    const kneePhotonCount = 180;
-    const kneePhotonGeo = new THREE.BufferGeometry();
-    const kneePhotonPos = new Float32Array(kneePhotonCount * 3);
-    for (let i = 0; i < kneePhotonCount; i++) {
-      const side = i % 2 === 0 ? 1 : -1;
-      const ang = Math.random() * Math.PI * 2;
-      const r = Math.random() * 0.085;
-      kneePhotonPos[i * 3] = side * 0.41 + Math.cos(ang) * r;
-      kneePhotonPos[i * 3 + 1] = 1.28 + (Math.random() - 0.5) * 0.36;
-      kneePhotonPos[i * 3 + 2] = -0.10 + Math.sin(ang) * r;
-    }
-    kneePhotonGeo.setAttribute('position', new THREE.BufferAttribute(kneePhotonPos, 3));
-    const kneePhotonMat = new THREE.PointsMaterial({ color: 0xfde68a, size: 0.022, transparent: true, opacity: 0.95 });
-    const kneePhotons = new THREE.Points(kneePhotonGeo, kneePhotonMat);
-    kneeGrowthGroup.add(kneePhotons);
-
-    // 24-Segment Dorsal Spine & Intervertebral Discs along skinMB2.glb Spine Axis (y = 2.55 to 4.05)
-    const spineGroup = new THREE.Group();
-    customAnatomyGroup.add(spineGroup);
-    const spineDiscs = [];
-    for (let s = 0; s < 20; s++) {
-      const ratio = s / 19;
-      const sy = 4.02 - ratio * 1.48;
-      const sz = -0.14 - Math.sin(ratio * Math.PI) * 0.08;
-      const vMesh = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.036 + ratio * 0.015, 0.038 + ratio * 0.015, 0.038, 18),
-        boneMat
-      );
-      vMesh.position.set(0, sy, sz);
-      spineGroup.add(vMesh);
-
-      if (s < 19) {
-        const dMat = new THREE.MeshStandardMaterial({
-          color: 0x38bdf8,
-          emissive: 0x10b981,
-          emissiveIntensity: 0.9,
-          transparent: true,
-          opacity: 0.9
-        });
-        const dMesh = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.035 + ratio * 0.014, 0.035 + ratio * 0.014, 0.018, 18),
-          dMat
-        );
-        dMesh.position.set(0, sy - 0.036, sz);
-        spineGroup.add(dMesh);
-        spineDiscs.push({ mesh: dMesh, baseY: sy - 0.036, baseZ: sz, ratio: ratio });
-      }
-    }
-
-    // ========================================================================
-    // 3. BUILD 12 MERIDIANS + REN/DU VESSELS (14경맥 26개 3D 유주선) & 31 ACUPOINTS
-    // ========================================================================
-    const meridianSystemGroup = new THREE.Group();
-    scene.add(meridianSystemGroup);
-
-    const meridianRuntimeList = [];
-    const qiParticleData = [];
-
-    DONGIN_DATA.meridians.forEach((mDef) => {
-      const mGroup = new THREE.Group();
-      meridianSystemGroup.add(mGroup);
-
-      const tubeMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(mDef.color),
-        transparent: true,
-        opacity: 0.72
-      });
-
-      const curves = [];
-      mDef.paths.forEach((pathPts) => {
-        const vecs = pathPts.map(p => new THREE.Vector3(p[0], p[1], p[2]));
-        const curve = new THREE.CatmullRomCurve3(vecs);
-        curves.push(curve);
-
-        const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.0042, 8, false);
-        const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
-        tubeMesh.renderOrder = 4;
-        mGroup.add(tubeMesh);
-
-        // Add 6 flowing Qi-Photon spheres per meridian path
-        for (let k = 0; k < 6; k++) {
-          const pMat = new THREE.MeshBasicMaterial({
-            color: 0xfde68a,
-            transparent: true,
-            opacity: 0.95
-          });
-          const pMesh = new THREE.Mesh(new THREE.SphereGeometry(0.0085, 10, 10), pMat);
-          pMesh.renderOrder = 5;
-          mGroup.add(pMesh);
-          qiParticleData.push({
-            mesh: pMesh,
-            curve: curve,
-            meridianId: mDef.id,
-            phase: k / 6,
-            speed: 0.14 + (k % 3) * 0.03
-          });
+        if (cfg.light && rootMesh.position) {
+          const pLight = new THREE.PointLight(cfg.light.color, cfg.light.intensity, cfg.light.distance);
+          pLight.position.set(
+            rootMesh.position.x + cfg.light.offset[0],
+            rootMesh.position.y + cfg.light.offset[1],
+            rootMesh.position.z + cfg.light.offset[2]
+          );
+          scene.add(pLight);
         }
-      });
 
-      meridianRuntimeList.push({
-        id: mDef.id,
-        def: mDef,
-        group: mGroup,
-        mat: tubeMat
+        scene.add(gltf.scene);
+        loadedOrgans[cfg.key] = {
+          scene: gltf.scene,
+          mesh: rootMesh,
+          mat: sssMat,
+          uniforms: uniforms,
+          baseAmbient: cfg.ambient,
+          baseScale: cfg.scale,
+          cfg: cfg
+        };
+        updateAnatomyHighlight();
       });
     });
+
+    // ========================================================================
+    // 3. STARLIGHT ACUPOINT NODES (THREE.Points) & SIDE MARGIN LEADER CALLOUTS
+    // (Zero Rainbow Spaghetti Tubes, Zero Overlapping Text Tags on Body!)
+    // ========================================================================
+    const starPositions = [];
+    const starColors = [];
+    const starSizes = [];
+
+    DONGIN_DATA.acupoints.forEach((acu) => {
+      starPositions.push(acu.pos[0], acu.pos[1], acu.pos[2]);
+      starColors.push(1.0, 0.90, 0.52);
+      starSizes.push(1.0);
+      if (Math.abs(acu.pos[0]) > 0.025) {
+        starPositions.push(-acu.pos[0], acu.pos[1], acu.pos[2]);
+        starColors.push(0.45, 0.92, 0.78);
+        starSizes.push(0.85);
+      }
+    });
+
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+    starGeo.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeo.setAttribute('aScale', new THREE.Float32BufferAttribute(starSizes, 1));
+
+    const starMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uPixelRatio: { value: Math.min(window.devicePixelRatio || 1, 2) }
+      },
+      vertexShader: [
+        'attribute float aScale;',
+        'varying vec3 vColor;',
+        'uniform float uTime;',
+        'uniform float uPixelRatio;',
+        'void main() {',
+        '  vColor = color;',
+        '  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);',
+        '  float pulse = 0.85 + 0.30 * sin(uTime * 3.2 + position.y * 8.0);',
+        '  gl_PointSize = (18.0 * aScale * pulse * uPixelRatio) / max(0.4, -mvPosition.z);',
+        '  gl_Position = projectionMatrix * mvPosition;',
+        '}'
+      ].join('\n'),
+      fragmentShader: [
+        'varying vec3 vColor;',
+        'void main() {',
+        '  float d = length(gl_PointCoord - vec2(0.5));',
+        '  if (d > 0.5) discard;',
+        '  float core = smoothstep(0.22, 0.0, d);',
+        '  float halo = pow(1.0 - d * 2.0, 2.4) * 0.75;',
+        '  vec3 col = mix(vColor, vec3(1.0), core);',
+        '  gl_FragColor = vec4(col, core + halo);',
+        '}'
+      ].join('\n'),
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true
+    });
+
+    const acupointStarField = new THREE.Points(starGeo, starMat);
+    scene.add(acupointStarField);
 
     // Populate Top 12-Meridian Filter Strip Buttons
     const meridianStripEl = document.getElementById('meridian-filter-strip');
@@ -1833,56 +2194,31 @@
       });
     }
 
-    // Build 31 Key Acupoint 3D Jewels + Projected 2D Acupoint Pins
-    const acupointGroup = new THREE.Group();
-    scene.add(acupointGroup);
+    // Create Clean Side-Margin Leader-Line Callouts (matching media_1792308778522_b0767e86.png)
     const acupointRuntimeNodes = [];
-
-    DONGIN_DATA.acupoints.forEach((acu) => {
-      const jewelMat = new THREE.MeshBasicMaterial({
-        color: 0xfde68a
-      });
-      const jewelMesh = new THREE.Mesh(new THREE.SphereGeometry(0.012, 14, 14), jewelMat);
-      jewelMesh.position.set(acu.pos[0], acu.pos[1], acu.pos[2]);
-      jewelMesh.renderOrder = 6;
-      acupointGroup.add(jewelMesh);
-
-      const haloMat = new THREE.MeshBasicMaterial({
-        color: 0x10b981,
-        transparent: true,
-        opacity: 0.75,
-        side: THREE.DoubleSide
-      });
-      const haloMesh = new THREE.Mesh(new THREE.RingGeometry(0.015, 0.023, 20), haloMat);
-      haloMesh.position.copy(jewelMesh.position);
-      haloMesh.renderOrder = 6;
-      acupointGroup.add(haloMesh);
-
-      // Also mirror bilateral acupoints (if |x| > 0.02) on the opposite side of the body
-      if (Math.abs(acu.pos[0]) > 0.02) {
-        const mirrorJewel = jewelMesh.clone();
-        mirrorJewel.position.x = -acu.pos[0];
-        acupointGroup.add(mirrorJewel);
-      }
-
-      // Create interactive 2D Acupoint Pin
-      const pinEl = document.createElement('div');
-      pinEl.className = 'acupoint-2d-pin';
-      pinEl.innerHTML = '<span class="acu-dot"></span><span>' + acu.code + ' ' + acu.name.split(' ')[0] + '</span>';
-      pinEl.addEventListener('click', (e) => {
+    DONGIN_DATA.acupoints.forEach((acu, idx) => {
+      const side = (acu.pos[0] < -0.01 || (Math.abs(acu.pos[0]) <= 0.01 && idx % 2 === 1)) ? 'left' : 'right';
+      const calloutEl = document.createElement('div');
+      calloutEl.className = 'acupoint-side-callout side-' + side;
+      calloutEl.innerHTML =
+        '<div class="acu-callout-text">' +
+          '<span class="acu-callout-code">' + acu.code + ' · ' + acu.meridian.split(' ')[0] + '</span>' +
+          '<span class="acu-callout-name">' + acu.name.split(' ')[0] + '</span>' +
+        '</div>' +
+        '<div class="acu-leader-line"></div>' +
+        '<div class="acu-pinpoint-node"></div>';
+      calloutEl.addEventListener('click', (e) => {
         e.stopPropagation();
         inspectAcupoint(acu, true);
       });
-      pinEl.addEventListener('mouseenter', () => {
+      calloutEl.addEventListener('mouseenter', () => {
         inspectAcupoint(acu, false);
       });
-      hotspotLayer.appendChild(pinEl);
+      hotspotLayer.appendChild(calloutEl);
 
       acupointRuntimeNodes.push({
         acu: acu,
-        jewelMesh: jewelMesh,
-        haloMesh: haloMesh,
-        pinEl: pinEl,
+        pinEl: calloutEl,
         worldPos: new THREE.Vector3(acu.pos[0], acu.pos[1], acu.pos[2])
       });
     });
@@ -1903,66 +2239,99 @@
       });
 
       if (shouldSelectPart && acu.partId) {
-        window.selectBodyPart(acu.partId);
-        // Zoom closer to the clicked acupoint
-        camGoalTarget.set(acu.pos[0] * 0.5, acu.pos[1], acu.pos[2] * 0.5);
-        const zSide = acu.pos[2] < -0.12 ? -1.65 : 1.65;
-        camGoalPos.set(acu.pos[0] * 1.4, acu.pos[1] + 0.05, zSide);
+        window.selectBodyPart(acu.partId, true);
       }
     }
 
-    // Build 7 Major Clinical Hotspots
+    // Build 7 Minimal Vibrant Glass Circle Hotspots (.puntos-container style)
     const majorHotspotNodes = [];
     BODY_PARTS_DATA.forEach((part) => {
+      const preset = PART_CAMERA_PRESETS[part.id] || { pos3D: [part.pos3D.x, part.pos3D.y, part.pos3D.z] };
       const dom = document.createElement('div');
       dom.className = 'body-3d-hotspot' + (part.id === currentPartId ? ' active' : '');
       dom.innerHTML =
-        '<div class="hotspot-pulse-ring"><div class="hotspot-core-dot"></div></div>' +
+        '<div class="hotspot-pulse-ring">' +
+          '<div class="hotspot-core-dot"></div>' +
+          '<div class="hotspot-core-dot"></div>' +
+          '<div class="hotspot-core-dot"></div>' +
+        '</div>' +
         '<div class="hotspot-tag-pill">' + part.hotspotLabel + '</div>';
-      dom.addEventListener('click', () => window.selectBodyPart(part.id));
+      dom.addEventListener('click', () => window.selectBodyPart(part.id, true));
       hotspotLayer.appendChild(dom);
       majorHotspotNodes.push({
         id: part.id,
         part: part,
         dom: dom,
-        worldPos: new THREE.Vector3(part.pos3D.x, part.pos3D.y, part.pos3D.z)
+        worldPos: new THREE.Vector3(...preset.pos3D)
       });
     });
 
     // ========================================================================
-    // 4. CAMERA FLY-TO, DONG-IN MATERIAL MODES, GENDER & MERIDIAN CONTROLS
+    // 4. CAMERA FLY-TO, ANATOMY HIGHLIGHT & SKIN MATERIAL CONTROLS
     // ========================================================================
-    const camGoalPos = new THREE.Vector3(0.46, 1.24, 1.92);
-    const camGoalTarget = new THREE.Vector3(0.18, 1.22, -0.06);
+    const camGoalPos = new THREE.Vector3(0.0, 3.50, 2.62);
+    const camGoalTarget = new THREE.Vector3(0.0, 3.68, 0.0);
     let isCameraFlying = false;
 
-    // Stop camera auto-fly when user manually drags OrbitControls
     controls.addEventListener('start', () => {
       isCameraFlying = false;
     });
 
-    window.selectBodyPart = function(partId) {
+    function updateAnatomyHighlight() {
+      // Highlight matching bone group in Skeleton.glb
+      const boneHighlightMap = {
+        knee: ['KneeJointBones', 'KneeGrowthPlate', 'LowerLimbs'],
+        cervical: ['CervicalSpine', 'Skull'],
+        lumbar: ['LumbarSpine', 'Pelvis'],
+        brain: ['Skull'],
+        heart: ['ThoracicRibcage'],
+        gut: ['ThoracicRibcage', 'Pelvis'],
+        pelvis: ['Pelvis', 'LumbarSpine']
+      };
+      const activeBones = boneHighlightMap[currentPartId] || [];
+
+      Object.keys(skeletonMeshMap).forEach(gName => {
+        const entry = skeletonMeshMap[gName];
+        if (gName.includes('KneeGrowthPlate')) return;
+        const isMatched = activeBones.some(b => gName.includes(b));
+        entry.mat.color.setHex(isMatched ? 0xd8e8f8 : 0x7890ab);
+        entry.mat.emissive.setHex(isMatched ? 0x1e4068 : 0x0e1c2e);
+        entry.mat.emissiveIntensity = isMatched ? 0.62 : 0.34;
+      });
+
+      // Highlight internal SubsurfaceScattering organs
+      Object.keys(loadedOrgans).forEach(key => {
+        const entry = loadedOrgans[key];
+        const isTarget = entry.cfg.parts.includes(currentPartId);
+        // Keep brain and heart always subtly visible inside the glass body (like media_1792308719040_b2231010.png)
+        const alwaysShow = (key === 'brain' || key === 'heart' || key === 'intestine' || key === 'liver' || key === 'stomach' || key === 'kidneys');
+        entry.scene.visible = isTarget || alwaysShow;
+        entry.uniforms.opacity.value = isTarget ? 1.0 : (currentSkinMode === 'xray' ? 0.92 : 0.82);
+        entry.uniforms.thicknessAmbient.value = isTarget ? (entry.baseAmbient * 1.45) : entry.baseAmbient;
+      });
+    }
+
+    window.selectBodyPart = function(partId, shouldFlyCamera = true) {
       const part = getPartById(partId);
       renderEncyclopedia(part.id);
       if (scrollPanel) scrollPanel.scrollTo({ top: 0, behavior: 'smooth' });
 
-      camGoalPos.set(part.camPos.x, part.camPos.y, part.camPos.z);
-      camGoalTarget.set(part.camTarget.x, part.camTarget.y, part.camTarget.z);
-      isCameraFlying = true;
-
-      skinUniforms.uFocusCenter.value.set(part.pos3D.x, part.pos3D.y, part.pos3D.z);
-      organGlowLight.position.set(part.pos3D.x, part.pos3D.y, part.pos3D.z + 0.25);
+      const preset = PART_CAMERA_PRESETS[part.id];
+      if (preset && shouldFlyCamera) {
+        camGoalPos.set(...preset.camPos);
+        camGoalTarget.set(...preset.camTarget);
+        isCameraFlying = true;
+        activeOrganPointLight.position.set(preset.pos3D[0], preset.pos3D[1], preset.pos3D[2] - 0.35);
+      }
 
       majorHotspotNodes.forEach(h => {
         h.dom.classList.toggle('active', h.id === part.id);
       });
 
-      // Highlight matching acupoint in HUD
       const matchingAcu = DONGIN_DATA.acupoints.find(a => a.partId === part.id);
       if (matchingAcu) inspectAcupoint(matchingAcu, false);
 
-      // Update meridian highlight
-      updateMeridianVisualState();
+      updateAnatomyHighlight();
     };
 
     window.selectMeridianFilter = function(mId) {
@@ -1970,7 +2339,7 @@
       document.querySelectorAll('#meridian-filter-strip .meridian-chip').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-meridian') === mId);
       });
-      updateMeridianVisualState();
+      vascularUniforms.uPulseBoost.value = mId === 'ALL' ? 0.72 : 1.35;
       if (mId !== 'ALL') {
         const mDef = DONGIN_DATA.meridians.find(m => m.id === mId);
         if (mDef) {
@@ -1980,31 +2349,11 @@
           const descEl = document.getElementById('acu-hud-desc');
           if (codeEl) codeEl.textContent = mDef.code;
           if (merEl) merEl.textContent = mDef.hanja;
-          if (titleEl) titleEl.textContent = mDef.nameKo + ' — 3D 경락 유주(流注)';
+          if (titleEl) titleEl.textContent = mDef.nameKo + ' — 3D 해부학 경락 유주(流注)';
           if (descEl) descEl.textContent = mDef.organRole;
-        }
-        // Fly to full body view (or back view for GV/BL)
-        if (mId === 'GV' || mId === 'BL') {
-          window.setDonginCameraPreset('back');
-        } else {
-          window.setDonginCameraPreset('full');
         }
       }
     };
-
-    function updateMeridianVisualState() {
-      const part = getPartById(currentPartId);
-      const partMeridians = part.activeMeridians || [];
-      meridianRuntimeList.forEach(m => {
-        const isHighlighted =
-          activeMeridianFilter === 'ALL'
-            ? partMeridians.includes(m.id)
-            : activeMeridianFilter === m.id;
-        m.mat.opacity = activeMeridianFilter === 'ALL'
-          ? (isHighlighted ? 0.95 : 0.38)
-          : (isHighlighted ? 1.0 : 0.12);
-      });
-    }
 
     window.setDonginGender = function(gender) {
       currentGender = gender;
@@ -2022,43 +2371,51 @@
 
       [maleSkinMat, femaleSkinMat].forEach(mat => {
         if (mode === 'glass') {
-          mat.color.setHex(0xe2f1ff);
-          mat.metalness = 0.12;
-          mat.roughness = 0.22;
-          mat.transmission = 0.78;
-          mat.opacity = 0.62;
-          skinUniforms.uDissolve.value = 0.14;
+          mat.color.setHex(0xdbeafe);
+          mat.metalness = 0.02;
+          mat.roughness = 0.07;
+          mat.transmission = 0.94;
+          mat.thickness = 0.08;
+          mat.ior = 1.06;
+          mat.userData.uDissolve.value = 0.0;
         } else if (mode === 'bronze') {
-          // Museum Royal Antiqued Bronze & 24K Gold Dong-In Statue
-          mat.color.setHex(0xc99e52);
-          mat.metalness = 0.84;
+          // Royal Antiqued Bronze Dong-In Statue
+          mat.color.setHex(0xc89d54);
+          mat.metalness = 0.65;
           mat.roughness = 0.24;
-          mat.transmission = 0.08;
-          mat.opacity = 0.92;
-          skinUniforms.uDissolve.value = 0.08;
+          mat.transmission = 0.38;
+          mat.thickness = 0.14;
+          mat.ior = 1.15;
+          mat.userData.uDissolve.value = 0.0;
         } else if (mode === 'xray') {
-          mat.color.setHex(0x38bdf8);
-          mat.metalness = 0.05;
-          mat.roughness = 0.15;
-          mat.transmission = 0.92;
-          mat.opacity = 0.24;
-          skinUniforms.uDissolve.value = 0.42;
+          mat.color.setHex(0xdbeafe);
+          mat.metalness = 0.01;
+          mat.roughness = 0.04;
+          mat.transmission = 0.98;
+          mat.thickness = 0.04;
+          mat.ior = 1.02;
+          mat.userData.uDissolve.value = 0.28;
         }
         mat.needsUpdate = true;
       });
+      updateAnatomyHighlight();
     };
 
     window.setDonginCameraPreset = function(preset) {
+      ['hero', 'full', 'back'].forEach(p => {
+        document.getElementById('btn-cam-' + p)?.classList.toggle('active', p === preset);
+      });
       isCameraFlying = true;
-      if (preset === 'full') {
-        camGoalPos.set(0.0, 2.42, 4.85);
+      if (preset === 'hero') {
+        // Exact media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png upper-body framing
+        camGoalPos.set(0.0, 3.50, 2.62);
+        camGoalTarget.set(0.0, 3.68, 0.0);
+      } else if (preset === 'full') {
+        camGoalPos.set(0.0, 2.42, 4.45);
         camGoalTarget.set(0.0, 2.35, 0.0);
-      } else if (preset === 'front') {
-        camGoalPos.set(0.0, 3.05, 3.35);
-        camGoalTarget.set(0.0, 3.00, 0.0);
       } else if (preset === 'back') {
-        camGoalPos.set(0.0, 3.05, -3.45);
-        camGoalTarget.set(0.0, 3.00, 0.0);
+        camGoalPos.set(0.0, 3.35, -2.55);
+        camGoalTarget.set(0.0, 3.28, 0.0);
       }
     };
 
@@ -2073,17 +2430,17 @@
         podiumUniforms.uColorB.value.set('#9ec3ff');
         podiumUniforms.uHighlightColor.value.set('#deccff');
       } else {
-        // Royal Dark Korean Medicine Dong-In Studio
-        podiumUniforms.uColorA.value.set('#071a18');
-        podiumUniforms.uColorMid.value.set('#0a1628');
-        podiumUniforms.uColorB.value.set('#040811');
-        podiumUniforms.uHighlightColor.value.set('#10b981');
+        // Deep Neko/Prenuvo Medical Obsidian-Sapphire Studio (matching media_1792308719040_b2231010.png)
+        podiumUniforms.uColorA.value.set('#071220');
+        podiumUniforms.uColorMid.value.set('#0a192c');
+        podiumUniforms.uColorB.value.set('#03060c');
+        podiumUniforms.uHighlightColor.value.set('#183654');
       }
     };
 
     quickNavButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        window.selectBodyPart(btn.getAttribute('data-part'));
+        window.selectBodyPart(btn.getAttribute('data-part'), true);
       });
     });
 
@@ -2094,12 +2451,13 @@
       renderer.setSize(w, h, false);
       camera.aspect = w / Math.max(1, h);
       camera.updateProjectionMatrix();
+      camera.setFocalLength(35);
     }
     window.addEventListener('resize', resizeRenderer);
     resizeRenderer();
 
     // ========================================================================
-    // 5. 60FPS ANIMATION LOOP (12-MERIDIAN QI STREAM + ORGAN RECOVERY + HUD)
+    // 5. 60FPS ANIMATION LOOP (SUBSURFACE ORGANS + VASCULAR QI PULSE + HUD)
     // ========================================================================
     const clock = new THREE.Clock();
     const projVec = new THREE.Vector3();
@@ -2108,8 +2466,9 @@
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      skinUniforms.uTime.value = t;
       podiumUniforms.uTime.value = t;
+      vascularUniforms.uTime.value = t;
+      starMat.uniforms.uTime.value = t;
 
       // Smoothly interpolate scroll-driven recovery state
       currentRecoveryMix += (targetRecoveryMix - currentRecoveryMix) * 0.08;
@@ -2125,58 +2484,29 @@
       }
       controls.update();
 
-      // 5.1 Animate 12-Meridian Qi-Photon Streams along the 193,288-vertex body surface
-      const part = getPartById(currentPartId);
-      const partMeridians = part.activeMeridians || [];
-      const qiSpeedMult = 0.65 + currentRecoveryMix * 1.15;
-
-      qiParticleData.forEach(qp => {
-        const u = (qp.phase + t * qp.speed * qiSpeedMult) % 1.0;
-        const pt = qp.curve.getPointAt(u);
-        qp.mesh.position.copy(pt);
-        const isMerActive = activeMeridianFilter === 'ALL'
-          ? partMeridians.includes(qp.meridianId)
-          : activeMeridianFilter === qp.meridianId;
-        const sc = isMerActive ? (1.15 + 0.35 * Math.sin(t * 6.0 + qp.phase * 12.0)) : 0.55;
-        qp.mesh.scale.setScalar(sc);
-      });
-
-      // 5.2 Animate 31 Acupoint Halos (always face camera & pulse)
-      acupointRuntimeNodes.forEach((node, idx) => {
-        node.haloMesh.lookAt(camera.position);
-        const s = 1.0 + 0.25 * Math.sin(t * 3.5 + idx);
-        node.haloMesh.scale.setScalar(s);
-      });
-
-      // 5.3 Animate Real GLB Internal Organs based on selected part & recovery mix
+      // Animate Subsurface Scattering Organs (Vibrant heartbeat & breathing glow)
       Object.keys(loadedOrgans).forEach(key => {
         const entry = loadedOrgans[key];
-        const isTargetOrgan = entry.spec.parts.includes(currentPartId);
-        const pulse = 1.0 + Math.sin(t * (key === 'heart' ? 5.2 : 2.6)) * (isTargetOrgan ? 0.045 : 0.015);
-        entry.scene.scale.setScalar(pulse);
-        entry.mat.opacity = isTargetOrgan ? 0.95 : (currentSkinMode === 'xray' ? 0.72 : 0.38);
-        entry.mat.emissiveIntensity = isTargetOrgan ? (0.75 + currentRecoveryMix * 0.85) : 0.3;
+        if (!entry.scene.visible) return;
+        const isTarget = entry.cfg.parts.includes(currentPartId);
+        if (key === 'heart') {
+          const beat = 1.0 + Math.sin(t * 5.4) * 0.028 + Math.max(0, Math.sin(t * 5.4 * 2.0)) * 0.015;
+          entry.scene.scale.setScalar(beat);
+          entry.uniforms.thicknessScale.value = entry.baseScale * (0.92 + 0.22 * Math.sin(t * 5.4));
+        } else if (isTarget) {
+          entry.uniforms.thicknessScale.value = entry.baseScale * (0.85 + 0.25 * Math.sin(t * 2.8));
+        }
       });
 
-      // 5.4 Animate Knee Growth Plate & 180 Chondrocyte Bio-Photons
-      growthDiscMat.color.setHex(currentRecoveryMix > 0.45 ? 0x10b981 : 0xf59e0b);
-      growthDiscMat.emissive.setHex(currentRecoveryMix > 0.45 ? 0x34d399 : 0xef4444);
-      const posAttr = kneePhotonGeo.attributes.position;
-      const pSpeed = 0.002 + currentRecoveryMix * 0.006;
-      for (let i = 0; i < kneePhotonCount; i++) {
-        let py = posAttr.getY(i) + pSpeed;
-        if (py > 1.46) py = 1.10;
-        posAttr.setY(i, py);
+      // Animate Real 3D Knee Epiphyseal Growth Plate (KneeGrowthPlate mesh inside Skeleton.glb)
+      if (kneeGrowthPlateMat) {
+        const isRecovered = currentRecoveryMix >= 0.45;
+        kneeGrowthPlateMat.color.setHex(isRecovered ? 0x34d399 : 0xf59e0b);
+        kneeGrowthPlateMat.emissive.setHex(isRecovered ? 0x10b981 : 0xef4444);
+        kneeGrowthPlateMat.emissiveIntensity = (1.3 + 0.6 * Math.sin(t * 4.2)) * (0.65 + currentRecoveryMix * 0.65);
       }
-      posAttr.needsUpdate = true;
 
-      // 5.5 Animate Spine Misalignment (Before) -> Vertical Chuna Alignment (After)
-      const misalign = 1.0 - currentRecoveryMix;
-      spineDiscs.forEach((d, idx) => {
-        d.mesh.position.x = Math.sin(d.ratio * Math.PI * 2.0) * 0.032 * misalign;
-      });
-
-      // 5.6 Project 2D Major Hotspots & Acupoint Pins
+      // Project 2D Minimal Glass Circle Hotspots
       const w = stageEl.clientWidth;
       const h = stageEl.clientHeight;
       majorHotspotNodes.forEach(item => {
@@ -2189,37 +2519,66 @@
         const sy = (-projVec.y * 0.5 + 0.5) * h;
         item.dom.style.left = sx.toFixed(1) + 'px';
         item.dom.style.top = sy.toFixed(1) + 'px';
-        item.dom.style.opacity = (sx > 10 && sx < w - 10 && sy > 50 && sy < h - 50) ? '1' : '0';
+        item.dom.style.opacity = (sx > 20 && sx < w - 20 && sy > 65 && sy < h - 75) ? '1' : '0';
       });
 
-      const camDist = camera.position.distanceTo(controls.target);
+      // Project Clean Architectural Side Callouts ONLY for the active part's key acupoints (max 4, never overlapping!)
+      let visibleCallouts = 0;
+      const usedYLeft = [];
+      const usedYRight = [];
       acupointRuntimeNodes.forEach(node => {
+        const isPartMatch = node.acu.partId === currentPartId;
+        if (!isPartMatch || visibleCallouts >= 4) {
+          node.pinEl.style.opacity = '0';
+          node.pinEl.style.pointerEvents = 'none';
+          return;
+        }
         projVec.copy(node.worldPos).project(camera);
-        // Check if acupoint is facing camera (dot product with camera direction)
-        const toCam = camera.position.clone().sub(node.worldPos).normalize();
-        const isFrontVisible = (node.worldPos.z >= -0.08 && toCam.z > -0.2) || (node.worldPos.z < -0.08 && toCam.z < 0.2);
-        const isPartMatch = node.acu.partId === currentPartId || camDist < 2.8;
-        if (projVec.z > 1.0 || !isFrontVisible || !isPartMatch) {
+        if (projVec.z > 1.0) {
           node.pinEl.style.opacity = '0';
           node.pinEl.style.pointerEvents = 'none';
           return;
         }
         const sx = (projVec.x * 0.5 + 0.5) * w;
-        const sy = (-projVec.y * 0.5 + 0.5) * h;
+        let sy = (-projVec.y * 0.5 + 0.5) * h;
+        const inBounds = sx > 60 && sx < w - 60 && sy > 95 && sy < h - 105;
+        if (!inBounds) {
+          node.pinEl.style.opacity = '0';
+          node.pinEl.style.pointerEvents = 'none';
+          return;
+        }
+        // Alternate left-extending (side-right) and right-extending (side-left) callouts & avoid vertical overlap
+        const extendLeft = (visibleCallouts % 2 === 1);
+        node.pinEl.classList.toggle('side-right', extendLeft);
+        node.pinEl.classList.toggle('side-left', !extendLeft);
+        const bucket = extendLeft ? usedYLeft : usedYRight;
+        for (let pass = 0; pass < 3; pass++) {
+          for (const prevY of bucket) {
+            if (Math.abs(sy - prevY) < 46) {
+              sy = sy >= prevY ? prevY + 46 : prevY - 46;
+            }
+          }
+        }
+        bucket.push(sy);
+        visibleCallouts++;
         node.pinEl.style.left = sx.toFixed(1) + 'px';
         node.pinEl.style.top = sy.toFixed(1) + 'px';
-        const inBounds = sx > 20 && sx < w - 20 && sy > 75 && sy < h - 75;
-        node.pinEl.style.opacity = inBounds ? '0.92' : '0';
-        node.pinEl.style.pointerEvents = inBounds ? 'auto' : 'none';
+        node.pinEl.style.opacity = '0.94';
+        node.pinEl.style.pointerEvents = 'auto';
       });
 
       renderer.render(scene, camera);
     }
 
-    // Initialize from URL query (?part=knee, etc.)
+    // Initialize from URL query (?part=knee flies to knee; otherwise start on Hero Upper/Mid Body view like media_1792308778522_b0767e86.png)
     const params = new URLSearchParams(window.location.search);
-    const initPart = params.get('part') || 'knee';
-    window.selectBodyPart(initPart);
+    const urlPart = params.get('part');
+    if (urlPart) {
+      window.selectBodyPart(urlPart, true);
+    } else {
+      window.selectBodyPart('knee', false);
+      window.setDonginCameraPreset('hero');
+    }
     animate();
   </script>
 </body>

@@ -5,26 +5,19 @@
 
 ---
 
-## 💎 0. 최신 완료 작업 요약 (2026-10-18 완료분 · 스크롤 연동 자동 전후 3D 스캔 & Vibrant 3D 인체모형 의학·SCI 논문 백과사전 & B2B 템플릿화)
+## 💎 0. 최신 완료 작업 요약 (2026-10-18 완료분 · Vibrant 193K-Vertex 3D 동인(銅人) 해부학·골격·혈관·12경맥 대백과 완성 & 메인 페이지 원본 복원)
 
-1. **전 페이지 인라인 삽입형 스크롤 자동 연동 Before/After 3D 생체스캔 시스템 탑재**:
-   - 수동으로 모달을 열거나 드래그할 필요 없이, **페이지를 스크롤하면 스크롤 진행도에 따라 치료 전(Before) 3D 스캔에서 치료 후(After) 3D 스캔으로 골드 레이저 스캔 라인이 실시간(`8% ➔ 96%`) 자동 변환**되도록 전 페이지에 기본 내장 완료.
-   - **메인 3D 쇼룸 (`homepage/story-3d.html` / `homepage/index.html`)**: 우측 상단 `#live-scroll-ba-hud` 라이브 3D 스캔 HUD가 챕터(`ch0`~`ch6`) 전환 및 챕터 내 스크롤(`getChapterProgress`)에 맞춰 6대 클리닉 전후 스캔을 실시간 자동 변환.
-   - **6대 상세페이지 전체 (`director`, `chuna`, `growth`, `diet-zero`, `hairloss`, `gongjindan`)**: 좌측 사이드바 하단 `#inline-scroll-ba-card` 및 우측 시네마틱 가로 런웨이 `#runway-scroll-ba-plate` 두 곳에 인라인 삽입하여, 스크롤 시 60fps(`window.applyInlineScrollBaPct`)로 자동 전후 스캔이 변화하며 마우스/터치 수동 비교도 동시에 지원.
-2. **Vibrant Wellness (`vibrant.noomoagency.com`) 레퍼런스 기반 3D 인체모형 질환·의학·SCI 논문 백과사전 신설 (`homepage/body-explorer.html` / `homepage/wordpress-body-explorer.html`, 생성기: `homepage/build-body-explorer.js`)**:
-   - **3D 반투명 홀로그램 인체모형 & GLSL Perlin 3D Noise 피부 투시 디졸브 셰이더 (`skinShaderMat`)**: `vibrant.noomoagency.com`의 핵심 3D 그래픽 기법인 프레넬(Fresnel) 무지개빛 유리 피부 + 선택 부위 주변 피부가 3D 노이즈로 부드럽게 투명해지며 내부 장기가 드러나는 Focus Dissolve Shader 구현.
-   - **7대 인체 부위별 60fps 3D 내부 해부학 디테일 마이크로 모션**:
-     - `무릎·성장판 (knee)`: 대퇴골·경골 사이 골단연골(성장판) 수직 증식 + 140개 연골모세포·IGF-1 바이오포톤 상승 파티클.
-     - `목·경추 (cervical)` / `허리·골반 (lumbar)`: 18마디 척추뼈·추간판(디스크) +3.8mm 수직 감압 및 골반 링 수평 정렬 모션.
-     - `두피·뇌신경 (brain)`: 두피 상열하한(42°C) ➔ 수승화강(36.5°C) 청열 쿨링 및 80개 모낭 재생 파티클.
-     - `심장·전신기혈 (heart)`: CITES 사향 공진단 심장 박동 코어 및 뇌혈류·자율신경 골든 파동 링.
-     - `복부·위장대사 (gut)`: 복부 심부 대사 화로(Metabolic Furnace) 점화 및 내장지방·습담 분해(Lipolysis) 모션.
-     - `자궁·골반강 (pelvis)`: 자궁내막 수용성(LIF) 및 골반강 나선동맥 온열 혈류 파동.
-   - **우측 백과사전 패널 스크롤 연동**: 우측 의학백과 패널을 아래로 스크롤하면 좌측 3D 인체 내부 장기가 **치료 전(병변/염증) ➔ 치료 후(정상 회복)** 상태로 실시간 3D 변형되며, 백과사전 상단 인라인 전후 3D 스캔도 동시에 자동 변환됨.
-   - **초정밀 환자 맞춤 의학·생활·영양·SCI 논문 백과사전 수록**:
-     - 특히 **무릎(소아·청소년 키 성장 & 성조숙증)** 클릭 시: ① 성장을 가로막는 5대 근본 원인(감기·비염 면역 에너지 고갈, 아데노이드 구강호흡과 성장호르몬 서파수면 단절, 비위 흡수 장애, 성조숙증 골령 가속, 척추 측만), ② **감기·비염이 잦은 아이 부모님 실전 6단계 홈케어 프로토콜** (초기 24시간 해열제 남용 주의, 수면 온습도 20~22°C/50~60% & 경추 보온, 유제품·찬물 차단과 온수 루틴, 비강 세척·영향혈 지압, 항생제 직후 식적 관리, 환절기 위기 면역 선제 보강), ③ 약선 음식 vs 성장판 조기 폐쇄 주의 식품, ④ 성장점프·태양광·혈자리(독비·족삼리·양릉천·백회·용천) 루틴, ⑤ 전세계 SCI/PubMed 논문 레퍼런스 완벽 수록.
-3. **B2B 화이트라벨 마스터 설정 (`homepage/clinic-template-config.js`) & 3단 시안성 모드 (`다크 로얄` / `온기 한지 화이트` / `큰글씨 고시안성`) & 1초 화이트라벨 커스터마이저**:
-   - 메인 페이지, 6대 상세페이지, 3D 인체모형 백과사전(`body-explorer.html`) 전체 연동 및 워드프레스 번들 9종(`wordpress-*.html`) 생성 완료.
+1. **메인 페이지 (`homepage/story-3d.html` / `homepage/index.html`) 클린 원본 복원 완료**:
+   - 사용자 요청에 따라 메인 페이지를 이전 클린 버전(`e962494`)으로 완벽 복원하고, 상단 헤더에 `🧬 3D 동인(銅人) 경락·질환백과` (`body-explorer.html`) 바로가기 버튼만 깔끔하게 연결 완료.
+2. **Vibrant (`vibrant.noomoagency.com`) 공식 193,288-Vertex 3D 인체모형 + Z-Anatomy 정밀 3D 골격·관절·혈관/12경맥 통합 구축 (`homepage/body-explorer.html` / `homepage/wordpress-body-explorer.html`)**:
+   - **실제 3D 지오메트리 파이프라인 구축 (`@gltf-transform` + `draco3dgltf` + `meshoptimizer`)**:
+     - `models/skinMB2.glb` (남성 193,288 버텍스) & `models/skinF2.glb` (여성 190,564 버텍스): `vibrant.noomoagency.com` 공식 조각 메쉬 + `GSG_PRO_STUDIOS_METAL_001_sm` HDR GainMap 환경맵 디코더 + 크리스탈 글래스 굴절(`MeshPhysicalMaterial` Dispersion·Iridescence) + X-Ray Fresnel 진주빛 윤곽 림 셰이더 + GLSL Perlin 3D Noise 피부 투시 디졸브(`uDissolve`) 탑재.
+     - `models/Skeleton.glb` (1,052 KB Draco 압축): `skinMB2.glb` 체형 내부에 100% 정밀 포즈 피팅된 두개골(`Skull`), 경추(`CervicalSpine`), 12쌍 흉곽·늑골·흉골·쇄골·견갑골(`ThoracicRibcage`), 요추(`LumbarSpine`), 골반(`Pelvis`), 상지골(`UpperLimbs`), 하지골(`LowerLimbs`), 무릎 관절골(`KneeJointBones`) 및 **대퇴골 원위부·경골 근위부 실제 3D 골단연골 성장판(`KneeGrowthPlate`)** 탑재. X-Ray 반투명 프레넬 골격 셰이더를 적용해 두개골 내부의 뇌와 흉곽 내부의 심장·혈관이 선명하게 투시됨.
+     - `models/Joints.glb` (281 KB Draco 압축): 척추 추간판 디스크·늑연골(`SpinalDiscs`), 무릎 반월상연골·십자인대(`KneeCartilage`), 전신 관절낭(`OtherJoints`).
+     - `models/Vascular.glb` (2,372 KB Draco 압축 · 136만 버텍스): 전신 동맥·정맥 및 12경맥 기혈 분지망(`ArterialMeridians`, `VenousMeridians`) + 실시간 GLSL 기혈(Qi-Blood) 바이오포톤 파동 셰이더.
+     - **Vibrant 공식 10대 내부 장기 (`brain.glb`, `heart.glb`, `liver.glb`, `stomach.glb`, `intestine.glb`, `kidneys2.glb`, `galbladder.glb`, `pancreas.glb`, `glands.glb`, `thyroid.glb`)**: Three.js `SubsurfaceScatteringShader` 기반 심장 박동·뇌신경 루비-앰버 생체 발광 및 우측 백과사전 스크롤 연동 회복 모션.
+     - **스타라이트 경혈 포인트 (`THREE.Points`) & 좌우 여백 수평 리더라인 콜아웃**: 인체 위를 가리던 기존의 조잡한 튜브와 겹치는 텍스트 배지를 전면 제거하고, 선택 부위 핵심 경혈(최대 4개)만 좌우 여백으로 자동 분산(충돌 방지)되어 수평 지시선으로 표시됨.
+3. **6대 상세페이지 (`director`, `chuna`, `growth`, `diet-zero`, `hairloss`, `gongjindan`) 인라인 스크롤 자동 연동 Before/After 3D 스캔 및 워드프레스 번들 9종(`wordpress-*.html`) 최신 동기화 완료**.
 
 ---
 

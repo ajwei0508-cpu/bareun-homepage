@@ -1049,8 +1049,8 @@ function buildBodyExplorerHtml(donginData) {
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.166.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.0/examples/jsm/"
     }
   }
   </script>
@@ -1261,7 +1261,7 @@ function buildBodyExplorerHtml(donginData) {
       to { transform: rotate(360deg); }
     }
 
-    /* Top-Left Stage HUD: Dong-In Control Suite (Body Type + Finish + Camera Angle) */
+    /* Top-Left Stage HUD: Clean Minimal Medical Controls */
     .stage-hud-top {
       position: absolute;
       top: 16px;
@@ -1287,15 +1287,15 @@ function buildBodyExplorerHtml(donginData) {
       gap: 4px;
       padding: 4px;
       border-radius: 999px;
-      background: rgba(6, 12, 22, 0.80);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(5, 10, 19, 0.78);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
     .stage-ctrl-btn {
       padding: 5px 11px;
       border-radius: 999px;
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: rgba(248, 250, 252, 0.72);
       font-size: 11px;
@@ -1308,13 +1308,13 @@ function buildBodyExplorerHtml(donginData) {
       color: #FFFFFF;
     }
     .stage-ctrl-btn.active {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.34), rgba(16, 185, 129, 0.32));
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.32), rgba(16, 185, 129, 0.28));
       color: #FDE68A;
-      border: 1px solid rgba(253, 230, 138, 0.55);
-      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+      border-color: rgba(253, 230, 138, 0.52);
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.22);
     }
 
-    /* 12-Meridian Interactive Bar along Left/Top of Stage */
+    /* 12-Meridian Interactive Bar */
     .meridian-filter-strip {
       pointer-events: auto;
       display: flex;
@@ -1324,17 +1324,17 @@ function buildBodyExplorerHtml(donginData) {
       scrollbar-width: none;
       padding: 5px 8px;
       border-radius: 12px;
-      background: rgba(6, 12, 22, 0.74);
+      background: rgba(5, 10, 19, 0.70);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.11);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
     .meridian-filter-strip::-webkit-scrollbar { display: none; }
     .meridian-chip {
       padding: 4px 9px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(248, 250, 252, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.035);
+      color: rgba(248, 250, 252, 0.76);
       font-size: 10.5px;
       font-weight: 800;
       cursor: pointer;
@@ -1354,23 +1354,21 @@ function buildBodyExplorerHtml(donginData) {
       background: rgba(212, 175, 55, 0.24);
       border-color: var(--gold-bright);
       color: #FFFFFF;
-      transform: translateY(-1px);
     }
 
-    /* Acupoint Inspector Card (Bottom-Left above Sim Bar when an Acupoint is clicked/hovered) */
+    /* Acupoint Inspector Card (Bottom-Left above Sim Bar) */
     .acupoint-inspector-hud {
       position: absolute;
-      left: 18px;
-      bottom: 84px;
+      left: 16px;
+      bottom: 80px;
       z-index: 35;
-      width: min(350px, calc(100% - 36px));
-      padding: 13px 16px;
-      border-radius: 16px;
-      background: rgba(6, 13, 24, 0.88);
+      width: min(330px, calc(100% - 32px));
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: rgba(5, 11, 20, 0.82);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.65);
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(253, 230, 138, 0.35);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
       pointer-events: auto;
     }
     .acupoint-inspector-top {
@@ -1378,38 +1376,38 @@ function buildBodyExplorerHtml(donginData) {
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
     .acupoint-code-pill {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 900;
-      letter-spacing: 0.1em;
-      padding: 3px 8px;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(212, 175, 55, 0.22);
+      background: rgba(212, 175, 55, 0.2);
       border: 1px solid var(--gold-bright);
       color: var(--gold-bright);
     }
     .acupoint-meridian-lbl {
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--emerald-bright);
     }
     .acupoint-title-ko {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.02rem;
+      font-size: 0.94rem;
       font-weight: 800;
       color: #FFFFFF;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .acupoint-desc-ko {
-      font-size: 0.78rem;
-      line-height: 1.52;
-      color: rgba(248, 250, 252, 0.84);
+      font-size: 0.74rem;
+      line-height: 1.48;
+      color: rgba(248, 250, 252, 0.8);
       word-break: keep-all;
     }
 
-    /* Projected 2D Hotspot Overlay Layer */
+    /* Projected 2D Hotspot & Side Callout Layer */
     #hotspot-overlay-layer {
       position: absolute;
       inset: 0;
@@ -1418,6 +1416,7 @@ function buildBodyExplorerHtml(donginData) {
       overflow: hidden;
     }
 
+    /* Vibrant.noomoagency.com Exact Minimal Glass Circle Hotspot (.puntos-container) */
     .body-3d-hotspot {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -1425,96 +1424,125 @@ function buildBodyExplorerHtml(donginData) {
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       transition: opacity 0.25s ease;
     }
     .hotspot-pulse-ring {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      background: rgba(16, 185, 129, 0.24);
-      border: 1.5px solid #6EE7B7;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.48);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.75);
-      animation: vibrantPulse 2.2s infinite ease-in-out;
+      gap: 2.5px;
+      box-shadow: 0 0 18px rgba(186, 230, 253, 0.35);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .hotspot-core-dot {
-      width: 7px;
-      height: 7px;
+      width: 3.5px;
+      height: 3.5px;
       border-radius: 50%;
       background: #FFFFFF;
-      box-shadow: 0 0 8px #FFFFFF;
+      box-shadow: 0 0 6px #FFFFFF;
     }
+    .body-3d-hotspot:hover .hotspot-pulse-ring,
     .body-3d-hotspot.active .hotspot-pulse-ring {
-      background: rgba(212, 175, 55, 0.36);
+      background: rgba(212, 175, 55, 0.28);
       border-color: #FDE68A;
-      box-shadow: 0 0 22px rgba(253, 230, 138, 0.95);
-      transform: scale(1.18);
-    }
-    .body-3d-hotspot.active .hotspot-core-dot {
-      background: #FDE68A;
+      box-shadow: 0 0 24px rgba(253, 230, 138, 0.85);
+      transform: scale(1.16);
     }
     .hotspot-tag-pill {
-      padding: 5px 11px;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(6, 12, 22, 0.84);
+      background: rgba(5, 10, 19, 0.76);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: rgba(248, 250, 252, 0.92);
-      font-size: 11px;
-      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(248, 250, 252, 0.90);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       white-space: nowrap;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      transform: translateX(-4px);
       transition: all 0.22s ease;
+      pointer-events: none;
     }
     .body-3d-hotspot:hover .hotspot-tag-pill,
     .body-3d-hotspot.active .hotspot-tag-pill {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.92), rgba(13, 148, 136, 0.92));
-      border-color: #A7F3D0;
-      color: #FFFFFF;
-      transform: translateX(3px);
+      opacity: 1;
+      transform: translateX(0);
+      border-color: rgba(253, 230, 138, 0.65);
+      color: #FDE68A;
     }
 
-    /* Projected Acupoint Mini-Pins on the 3D Dong-In */
-    .acupoint-2d-pin {
+    /* Clean Architectural Side Margin Leader-Line Callouts (matching media_1792308778522_b0767e86.png) */
+    .acupoint-side-callout {
       position: absolute;
-      transform: translate(-50%, -50%);
       pointer-events: auto;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(7, 14, 24, 0.78);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      color: #FDE68A;
-      font-size: 9.5px;
+      gap: 8px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .acupoint-side-callout.side-left {
+      transform: translate(-100%, -50%);
+      flex-direction: row;
+    }
+    .acupoint-side-callout.side-right {
+      transform: translate(0%, -50%);
+      flex-direction: row-reverse;
+    }
+    .acu-callout-text {
+      text-align: right;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(4, 9, 18, 0.68);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.2s ease;
+    }
+    .acupoint-side-callout.side-right .acu-callout-text {
+      text-align: left;
+    }
+    .acupoint-side-callout:hover .acu-callout-text,
+    .acupoint-side-callout.highlighted .acu-callout-text {
+      border-color: #FDE68A;
+      background: rgba(212, 175, 55, 0.20);
+    }
+    .acu-callout-code {
+      font-size: 9px;
       font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--gold-bright);
+      display: block;
+    }
+    .acu-callout-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(248, 250, 252, 0.94);
       white-space: nowrap;
-      transition: all 0.18s ease;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
     }
-    .acupoint-2d-pin:hover,
-    .acupoint-2d-pin.highlighted {
-      background: rgba(212, 175, 55, 0.94);
-      color: #050912;
-      border-color: #FFFFFF;
-      transform: translate(-50%, -50%) scale(1.12);
-      z-index: 40;
+    .acu-leader-line {
+      width: 44px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(253, 230, 138, 0.2), rgba(253, 230, 138, 0.85));
+      position: relative;
     }
-    .acupoint-2d-pin .acu-dot {
-      width: 5px;
-      height: 5px;
+    .acupoint-side-callout.side-right .acu-leader-line {
+      background: linear-gradient(270deg, rgba(253, 230, 138, 0.2), rgba(253, 230, 138, 0.85));
+    }
+    .acu-pinpoint-node {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: #6EE7B7;
-    }
-
-    @keyframes vibrantPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.14); }
+      background: #FDE68A;
+      box-shadow: 0 0 10px #FDE68A, 0 0 18px #38BDF8;
+      flex-shrink: 0;
     }
 
     /* Bottom 3D Micro-Motion Status & Recovery Toggle Bar */
@@ -1528,11 +1556,11 @@ function buildBodyExplorerHtml(donginData) {
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: rgba(7, 13, 24, 0.84);
+      padding: 9px 14px;
+      border-radius: 14px;
+      background: rgba(5, 10, 19, 0.82);
       backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.13);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
     }
     .sim-state-switch {
@@ -1541,12 +1569,12 @@ function buildBodyExplorerHtml(donginData) {
       gap: 6px;
     }
     .sim-state-btn {
-      padding: 6px 12px;
+      padding: 5px 11px;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.16);
       background: rgba(255, 255, 255, 0.05);
       color: rgba(248, 250, 252, 0.8);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.22s ease;
@@ -2005,12 +2033,12 @@ function buildBodyExplorerHtml(donginData) {
        ======================================================================== -->
   <main class="vibrant-workspace">
 
-    <!-- LEFT: 3D INTERACTIVE DONG-IN HUMAN BODY + 12 MERIDIANS + REAL GLB ORGANS -->
+    <!-- LEFT: 3D INTERACTIVE DONG-IN HUMAN BODY + ANATOMICAL SKELETON + VASCULAR MERIDIANS + GLB ORGANS -->
     <section class="vibrant-3d-stage" id="vibrant-3d-stage">
       <div class="dongin-loader-overlay" id="dongin-loader-overlay">
         <div class="dongin-spinner"></div>
-        <div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:800;color:#FDE68A;margin-bottom:4px;">3D 침구동인(鍼灸銅人) 193,288 폴리곤 & 12경맥 로딩 중...</div>
-        <div style="font-size:0.78rem;color:rgba(248,250,252,0.68);">Vibrant Wellness 3D Organ Mesh + 12경맥 361혈 핵심 혈자리 정밀 매핑</div>
+        <div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:800;color:#FDE68A;margin-bottom:4px;">3D 침구동인(鍼灸銅人) 193,288 폴리곤 & 해부학 골격·12경맥 로딩 중...</div>
+        <div style="font-size:0.78rem;color:rgba(248,250,252,0.68);">Vibrant Wellness Subsurface Shader + 골격(Skeleton) + 혈관·12경맥(Vascular) 통합 렌더링</div>
       </div>
 
       <!-- Top HUD: Body Gender + Dong-In Material Mode + Camera View + 12 Meridians Bar -->
@@ -2024,24 +2052,24 @@ function buildBodyExplorerHtml(donginData) {
 
           <!-- Dong-In Skin Material Mode Switcher -->
           <div class="stage-control-bar" aria-label="동인 재질 및 투시 모드">
-            <button type="button" class="stage-ctrl-btn active" id="btn-mat-glass" onclick="window.setDonginSkinMode('glass')">✨ Vibrant 유리·금침 동인</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-mat-bronze" onclick="window.setDonginSkinMode('bronze')">🏺 황실 청동(銅人) 조각</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-mat-xray" onclick="window.setDonginSkinMode('xray')">🔬 12경맥·장부 X-Ray</button>
+            <button type="button" class="stage-ctrl-btn active" id="btn-mat-glass" onclick="window.setDonginSkinMode('glass')">✨ 메디컬 글래스 동인</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-mat-bronze" onclick="window.setDonginSkinMode('bronze')">🏺 황실 청동(銅人)</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-mat-xray" onclick="window.setDonginSkinMode('xray')">🔬 심부 골격·경락 투시</button>
           </div>
 
-          <!-- Camera Quick View Switcher (Front / Back / Full Overview / Aurora Studio) -->
+          <!-- Camera Quick View Switcher -->
           <div class="stage-control-bar" aria-label="카메라 시점 전환">
-            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('full')">전신 12경맥</button>
-            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('front')">전면(임맥·위경)</button>
-            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('back')">후면(독맥·방광경)</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-studio-aurora" onclick="window.toggleVibrantAuroraStudio()">🌅 오로라 배경</button>
+            <button type="button" class="stage-ctrl-btn active" id="btn-cam-hero" onclick="window.setDonginCameraPreset('hero')">상체 정밀 뷰</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-cam-full" onclick="window.setDonginCameraPreset('full')">전신 동인 뷰</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-cam-back" onclick="window.setDonginCameraPreset('back')">후면 척추·독맥</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-studio-aurora" onclick="window.toggleVibrantAuroraStudio()">🌅 Vibrant 오로라</button>
           </div>
         </div>
 
         <!-- 12 Meridians + Ren/Du Interactive Filter Bar -->
         <div class="meridian-filter-strip" id="meridian-filter-strip">
           <button type="button" class="meridian-chip active" data-meridian="ALL" onclick="window.selectMeridianFilter('ALL')">
-            <span class="m-dot" style="background:#FDE68A;"></span>12경맥·기경팔맥 전체
+            <span class="m-dot" style="background:#FDE68A;"></span>12경맥·전신 기혈망 전체
           </button>
         </div>
       </div>
@@ -2049,7 +2077,7 @@ function buildBodyExplorerHtml(donginData) {
       <!-- 3D WebGL Canvas -->
       <canvas id="vibrant-body-canvas"></canvas>
 
-      <!-- 2D Projected Interactive Hotspots & Acupoint Pins -->
+      <!-- 2D Projected Interactive Hotspots & Side Margin Callouts -->
       <div id="hotspot-overlay-layer"></div>
 
       <!-- Acupoint Live Inspector HUD (Bottom-Left) -->
@@ -2059,19 +2087,19 @@ function buildBodyExplorerHtml(donginData) {
           <span class="acupoint-meridian-lbl" id="acu-hud-meridian">ST · 족양명위경(足陽明胃經)</span>
         </div>
         <div class="acupoint-title-ko" id="acu-hud-title">무릎 성장판(독비·족삼리·양릉천) & 위장 면역 대표 명혈</div>
-        <p class="acupoint-desc-ko" id="acu-hud-desc">소화 흡수력과 무릎 골단연골(성장판) IGF-1 발현 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 핵심 혈자리입니다. (인체모형 위의 황금 혈자리를 클릭해보세요)</p>
+        <p class="acupoint-desc-ko" id="acu-hud-desc">소화 흡수력과 무릎 골단연골(성장판) IGF-1 발현 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 핵심 혈자리입니다.</p>
       </div>
 
       <!-- Bottom HUD: 3D Organ & Meridian Recovery State Switcher -->
       <div class="stage-hud-bottom">
         <div>
-          <div style="font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--gold-bright);">SCROLL-LINKED 3D DONG-IN & ORGAN SIMULATION</div>
-          <div style="font-size:0.79rem;font-weight:700;color:#F8FAFC;margin-top:2px;">우측 백과를 스크롤하면 <span style="color:#6EE7B7;">3D 장부·성장판과 12경맥 기혈 유주</span>가 치료 후(After)로 실시간 회복됩니다</div>
+          <div style="font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--gold-bright);">SCROLL-LINKED 3D ANATOMY & MERIDIAN SIMULATION</div>
+          <div style="font-size:0.78rem;font-weight:700;color:#F8FAFC;margin-top:2px;">우측 백과를 스크롤하면 <span style="color:#6EE7B7;">3D 장부·성장판·척추와 12경맥 기혈 유주</span>가 치료 후(After)로 회복됩니다</div>
         </div>
         <div class="sim-state-switch">
           <button type="button" class="sim-state-btn" id="btn-sim-state-before" onclick="window.setManualSimRecovery(0.08)">치료 전 (병변·기체)</button>
           <button type="button" class="sim-state-btn active-after" id="btn-sim-state-after" onclick="window.setManualSimRecovery(0.95)">치료 후 (경락소통·회복)</button>
-          <span id="sim-progress-readout" style="font-size:11px;font-weight:900;color:#FDE68A;min-width:68px;text-align:right;">회복도 25%</span>
+          <span id="sim-progress-readout" style="font-size:11px;font-weight:900;color:#FDE68A;min-width:68px;text-align:right;">회복도 75%</span>
         </div>
       </div>
     </section>
@@ -2097,16 +2125,28 @@ function buildBodyExplorerHtml(donginData) {
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { SubsurfaceScatteringShader } from 'three/addons/shaders/SubsurfaceScatteringShader.js';
 
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
     const DONGIN_DATA = ${JSON.stringify(donginData)};
+
+    // Refine exact 3D camera coordinates to match pose-fitted Skeleton.glb & Vibrant Organs
+    const PART_CAMERA_PRESETS = {
+      knee:     { pos3D: [0.42, 1.19, -0.05], camPos: [0.24, 1.20, 1.65], camTarget: [0.22, 1.18, -0.12], radius: 0.42 },
+      cervical: { pos3D: [0.00, 3.92, -0.03], camPos: [0.28, 3.96, 1.48], camTarget: [0.00, 3.95, -0.02], radius: 0.32 },
+      lumbar:   { pos3D: [0.00, 2.76, -0.06], camPos: [-0.34, 2.82, 1.62], camTarget: [0.00, 2.80, -0.04], radius: 0.38 },
+      brain:    { pos3D: [0.00, 4.36, -0.02], camPos: [0.18, 4.36, 1.45], camTarget: [0.00, 4.38, -0.02], radius: 0.34 },
+      heart:    { pos3D: [0.04, 3.50,  0.03], camPos: [0.08, 3.56, 1.75], camTarget: [0.00, 3.60,  0.00], radius: 0.38 },
+      gut:      { pos3D: [0.02, 3.00,  0.05], camPos: [0.22, 3.08, 1.72], camTarget: [0.00, 3.06,  0.02], radius: 0.44 },
+      pelvis:   { pos3D: [0.00, 2.44, -0.02], camPos: [-0.26, 2.52, 1.68], camTarget: [0.00, 2.50,  0.00], radius: 0.40 }
+    };
 
     // ========================================================================
     // 1. ENCYCLOPEDIA RENDERER & SCROLL-DRIVEN AUTOMATIC B/A SCAN
     // ========================================================================
     let currentPartId = 'knee';
-    let currentRecoveryMix = 0.25;
-    let targetRecoveryMix = 0.25;
+    let currentRecoveryMix = 0.72;
+    let targetRecoveryMix = 0.72;
     let activeMeridianFilter = 'ALL';
 
     const scrollPanel = document.getElementById('encyclopedia-scroll-panel');
@@ -2137,14 +2177,14 @@ function buildBodyExplorerHtml(donginData) {
           '<span class="cause-badge">' + c.badge + '</span>' +
           '<h3 class="cause-title">' + c.title + '</h3>' +
           '<p class="cause-mech">' + c.mechanism + '</p>' +
-          '<div class="cause-sol-box"><strong>바른한의원 해법 · </strong>' + c.solution + '</div>' +
+          '<div class="cause-sol-box"><strong>바른한의원 임상 핵심 · </strong>' + (c.solution || c.warning || '') + '</div>' +
         '</article>'
       ).join('');
 
       const protocolsHtml = part.coldCareSpecial.protocols.map(pr =>
         '<div class="protocol-step-item">' +
           '<div class="protocol-step-badge">' + pr.step + '</div>' +
-          '<div class="protocol-step-title">' + pr.title + '</div>' +
+          '<div class="protocol-step-title">' + (pr.title || pr.heading || '') + '</div>' +
           '<p class="protocol-step-detail">' + pr.detail + '</p>' +
         '</div>'
       ).join('');
@@ -2199,7 +2239,7 @@ function buildBodyExplorerHtml(donginData) {
               '<span style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;color:var(--gold-bright);">SCROLL-SYNCHRONIZED 3D BIOMEDICAL SCAN</span>' +
               '<div style="font-size:1rem;font-weight:800;color:#FFFFFF;margin-top:2px;">스크롤을 내리면 치료 전(Before)에서 치료 후(After)로 자동 스캔 변환됩니다</div>' +
             '</div>' +
-            '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 25%</span>' +
+            '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 72%</span>' +
           '</div>' +
           '<div class="encyc-ba-stage" id="encyc-ba-stage">' +
             '<img src="' + part.baBeforeImg + '" alt="치료 전 스캔" draggable="false">' +
@@ -2330,7 +2370,7 @@ function buildBodyExplorerHtml(donginData) {
     };
 
     // ========================================================================
-    // 2. VIBRANT.NOOMOAGENCY.COM 1:1 3D ENGINE + 193,288-VERTEX DONG-IN MERIDIANS
+    // 2. VIBRANT.NOOMOAGENCY.COM 1:1 3D ENGINE + SKELETON + VASCULAR MERIDIANS
     // ========================================================================
     const stageEl = document.getElementById('vibrant-3d-stage');
     const canvas = document.getElementById('vibrant-body-canvas');
@@ -2338,60 +2378,150 @@ function buildBodyExplorerHtml(donginData) {
     const loaderOverlay = document.getElementById('dongin-loader-overlay');
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.08, 200);
-    camera.position.set(0.0, 2.45, 4.85);
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
+    // Exact Vibrant focalLength(35) + Hero Anatomical Framing (matching media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png)
+    camera.setFocalLength(35);
+    camera.position.set(0.0, 3.50, 2.62);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       powerPreference: 'high-performance',
+      precision: 'highp',
       antialias: true,
-      alpha: true
+      alpha: false
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMapping = THREE.NeutralToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    renderer.shadowMap.enabled = false;
 
     const controls = new OrbitControls(camera, canvas);
-    controls.target.set(0, 2.38, 0);
+    controls.target.set(0.0, 3.68, 0.0);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.07;
-    controls.maxDistance = 8.5;
-    controls.minDistance = 0.75;
-    controls.maxPolarAngle = Math.PI * 0.88;
-    controls.minPolarAngle = Math.PI * 0.08;
+    controls.dampingFactor = 0.08;
+    controls.maxDistance = 6.5;
+    controls.minDistance = 0.55;
+    controls.maxPolarAngle = Math.PI * 0.85;
+    controls.minPolarAngle = Math.PI * 0.12;
 
-    // Vibrant Studio Lighting + Royal Dong-In Rim Lights
-    const ambLight = new THREE.AmbientLight(0xdbeafe, 1.35);
-    scene.add(ambLight);
-
-    const sideLightL = new THREE.PointLight(0xffffff, 1.2, 12);
-    sideLightL.position.set(-2.2, 3.6, 1.2);
+    // Exact Vibrant Side Point Lights: (-2, 3.5, 0.5) & (2, 3.5, 0.5), intensity 0.5, distance 10
+    const sideLightL = new THREE.PointLight(0xffffff, 0.65, 10);
+    sideLightL.position.set(-2.0, 3.5, 0.5);
     scene.add(sideLightL);
 
-    const sideLightR = new THREE.PointLight(0xfde68a, 1.35, 12);
-    sideLightR.position.set(2.2, 3.6, 1.2);
+    const sideLightR = new THREE.PointLight(0xffffff, 0.65, 10);
+    sideLightR.position.set(2.0, 3.5, 0.5);
     scene.add(sideLightR);
 
-    const frontKeyLight = new THREE.DirectionalLight(0xfffbeb, 1.85);
-    frontKeyLight.position.set(1.5, 4.8, 3.8);
-    scene.add(frontKeyLight);
+    // Subtle cool rim light from behind to accentuate glass silhouette + skeleton inside
+    const rimBackLight = new THREE.DirectionalLight(0xb8dcff, 0.85);
+    rimBackLight.position.set(0.0, 4.2, -3.0);
+    scene.add(rimBackLight);
 
-    const backRimLight = new THREE.DirectionalLight(0x38bdf8, 1.65);
-    backRimLight.position.set(-1.8, 3.5, -3.2);
-    scene.add(backRimLight);
+    const softAmbient = new THREE.AmbientLight(0xdbeafe, 0.45);
+    scene.add(softAmbient);
 
-    const organGlowLight = new THREE.PointLight(0x10b981, 2.2, 3.5);
-    organGlowLight.position.set(0.39, 1.32, 0.25);
-    scene.add(organGlowLight);
+    // Local Dynamic Organ PointLight (moves to active organ)
+    const activeOrganPointLight = new THREE.PointLight(0x10b981, 0.65, 2.2);
+    activeOrganPointLight.position.set(0.04, 3.50, -0.4);
+    scene.add(activeOrganPointLight);
 
-    // Loaders: GLTFLoader + DRACOLoader (using local draco/ decoder)
+    // Loaders: GLTFLoader + DRACOLoader
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('draco/');
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
     const texLoader = new THREE.TextureLoader();
 
-    // Classic 3D Perlin Noise GLSL (Exact from vibrant.noomoagency.com)
+    // ========================================================================
+    // 2.1 EXACT VIBRANT HDR GAINMAP DECODER (GSG_PRO_STUDIOS_METAL_001_sm)
+    // ========================================================================
+    async function loadVibrantHDRGainMap() {
+      try {
+        const [sdrTex, gainTex, metaRes] = await Promise.all([
+          texLoader.loadAsync('map/GSG_PRO_STUDIOS_METAL_001_sm.webp'),
+          texLoader.loadAsync('map/GSG_PRO_STUDIOS_METAL_001_sm-gainmap.webp'),
+          fetch('map/GSG_PRO_STUDIOS_METAL_001_sm.json').then(r => r.json())
+        ]);
+        sdrTex.colorSpace = THREE.SRGBColorSpace;
+        gainTex.colorSpace = THREE.NoColorSpace;
+
+        const maxBoost = Math.pow(2, metaRes.hdrCapacityMax);
+        const weightFactor = Math.max(0, Math.min(1, (Math.log2(maxBoost) - metaRes.hdrCapacityMin) / (metaRes.hdrCapacityMax - metaRes.hdrCapacityMin)));
+
+        const gainMat = new THREE.ShaderMaterial({
+          uniforms: {
+            sdr: { value: sdrTex },
+            gainMap: { value: gainTex },
+            gamma: { value: new THREE.Vector3(1 / metaRes.gamma[0], 1 / metaRes.gamma[1], 1 / metaRes.gamma[2]) },
+            offsetHdr: { value: new THREE.Vector3().fromArray(metaRes.offsetHdr) },
+            offsetSdr: { value: new THREE.Vector3().fromArray(metaRes.offsetSdr) },
+            gainMapMin: { value: new THREE.Vector3().fromArray(metaRes.gainMapMin) },
+            gainMapMax: { value: new THREE.Vector3().fromArray(metaRes.gainMapMax) },
+            weightFactor: { value: weightFactor }
+          },
+          vertexShader: [
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vUv = uv;',
+            '  gl_Position = vec4(position.xy, 0.0, 1.0);',
+            '}'
+          ].join('\\n'),
+          fragmentShader: [
+            '#define HALF_FLOAT_MIN vec3(-65504.0)',
+            '#define HALF_FLOAT_MAX vec3(65504.0)',
+            'uniform sampler2D sdr;',
+            'uniform sampler2D gainMap;',
+            'uniform vec3 gamma;',
+            'uniform vec3 offsetHdr;',
+            'uniform vec3 offsetSdr;',
+            'uniform vec3 gainMapMin;',
+            'uniform vec3 gainMapMax;',
+            'uniform float weightFactor;',
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vec3 rgb = texture2D(sdr, vUv).rgb;',
+            '  vec3 recovery = texture2D(gainMap, vUv).rgb;',
+            '  vec3 logRecovery = pow(max(recovery, vec3(0.0001)), gamma);',
+            '  vec3 logBoost = gainMapMin * (1.0 - logRecovery) + gainMapMax * logRecovery;',
+            '  vec3 hdrColor = (rgb + offsetSdr) * exp2(logBoost * weightFactor) - offsetHdr;',
+            '  vec3 clampedHdr = max(HALF_FLOAT_MIN, min(HALF_FLOAT_MAX, hdrColor));',
+            '  gl_FragColor = vec4(clampedHdr, 1.0);',
+            '}'
+          ].join('\\n'),
+          depthTest: false,
+          depthWrite: false
+        });
+
+        const w = sdrTex.image?.width || 1024;
+        const h = sdrTex.image?.height || 512;
+        const rt = new THREE.WebGLRenderTarget(w, h, {
+          type: THREE.HalfFloatType,
+          format: THREE.RGBAFormat,
+          colorSpace: THREE.LinearSRGBColorSpace,
+           depthBuffer: false
+        });
+
+        const quadScene = new THREE.Scene();
+        const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), gainMat));
+
+        const prevTarget = renderer.getRenderTarget();
+        renderer.setRenderTarget(rt);
+        renderer.render(quadScene, quadCam);
+        renderer.setRenderTarget(prevTarget);
+
+        rt.texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.environment = rt.texture;
+      } catch (e) {
+        console.warn('HDR GainMap fallback:', e);
+      }
+    }
+    loadVibrantHDRGainMap();
+
+    // ========================================================================
+    // 2.2 EXACT VIBRANT SKIN MATERIAL + PERLIN 3D NOISE DISSOLVE (pd in Bnwl1Oju.js)
+    // ========================================================================
     const PERLIN_GLSL = [
       'vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}',
       'vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}',
@@ -2452,92 +2582,92 @@ function buildBodyExplorerHtml(donginData) {
       '}'
     ].join('\\n');
 
-    // Build Dong-In Skin Material with Vibrant's exact Plastic015A Normal Map + Perlin Dissolve
     const skinNormalTex = texLoader.load('texture/Plastic015A_1K-JPG_NormalGL.jpg');
     skinNormalTex.wrapS = THREE.RepeatWrapping;
     skinNormalTex.wrapT = THREE.RepeatWrapping;
-    skinNormalTex.repeat.set(2, 2);
+    skinNormalTex.repeat.set(8, 8);
 
-    const skinUniforms = {
-      uDissolve: { value: 0.14 },
-      uFocusCenter: { value: new THREE.Vector3(0.41, 1.28, 0.04) },
-      uFocusRadius: { value: 0.42 },
-      uTime: { value: 0 }
-    };
-
-    function createDonginSkinMaterial() {
+    function createVibrantGlassSkinMaterial(initialDissolve = 0.0) {
+      // Crystal-clear anatomical glass skin with Vibrant's MeshPhysicalMaterial + X-Ray Fresnel pearlescent contour rim
+      // (Matches media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png with zero internal refraction blur)
       const mat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0xe2f1ff),
-        roughness: 0.22,
-        metalness: 0.12,
-        transmission: 0.78,
-        thickness: 0.86,
-        ior: 1.85,
+        color: 0xdbeafe,
+        roughness: 0.07,
+        metalness: 0.02,
+        transmission: 0.94,
+        thickness: 0.08,
+        ior: 1.06,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.08,
-        reflectivity: 1.0,
-        iridescence: 1.0,
-        iridescenceIOR: 1.453,
-        sheen: 0.45,
-        sheenRoughness: 0.65,
-        sheenColor: new THREE.Color(0xd4af37),
-        specularIntensity: 1.0,
-        specularColor: new THREE.Color(0xfde68a),
+        clearcoatRoughness: 0.04,
+        dispersion: 0.38,
+        reflectivity: 0.85,
+        iridescence: 0.52,
+        iridescenceIOR: 1.42,
+        sheen: 0.25,
+        sheenRoughness: 0.85,
+        sheenColor: new THREE.Color(0x0a192f),
+        specularIntensity: 0.75,
+        specularColor: new THREE.Color(0xffffff),
+        transparent: false,
+        opacity: 1.0,
         normalMap: skinNormalTex,
-        normalScale: new THREE.Vector2(3.5, 3.5),
-        transparent: true,
-        opacity: 0.62,
-        side: THREE.DoubleSide,
-        depthWrite: false
+        normalScale: new THREE.Vector2(0.04, 0.04)
       });
 
+      mat.userData.uDissolve = { value: initialDissolve };
       mat.onBeforeCompile = (shader) => {
-        shader.uniforms.uDissolve = skinUniforms.uDissolve;
-        shader.uniforms.uFocusCenter = skinUniforms.uFocusCenter;
-        shader.uniforms.uFocusRadius = skinUniforms.uFocusRadius;
-        shader.uniforms.uTime = skinUniforms.uTime;
-
+        shader.uniforms.uDissolve = mat.userData.uDissolve;
         shader.vertexShader = shader.vertexShader.replace(
           '#include <common>',
-          ['#include <common>', 'varying vec2 vDissolveUv;', 'varying vec3 vWorldPosition;'].join('\\n')
+          ['#include <common>', 'varying vec2 vSkinUv;', 'varying vec3 vSkinViewDir;', 'varying vec3 vSkinNormal;'].join('\\n')
         ).replace(
           '#include <uv_vertex>',
-          ['#include <uv_vertex>', 'vDissolveUv = uv;', 'vec4 wp = modelMatrix * vec4(position, 1.0);', 'vWorldPosition = wp.xyz;'].join('\\n')
+          ['#include <uv_vertex>', 'vSkinUv = uv;'].join('\\n')
+        ).replace(
+          '#include <begin_vertex>',
+          [
+            '#include <begin_vertex>',
+            'vec4 mvSkinPos = modelViewMatrix * vec4(transformed, 1.0);',
+            'vSkinViewDir = normalize(-mvSkinPos.xyz);',
+            'vSkinNormal = normalize(normalMatrix * objectNormal);'
+          ].join('\\n')
         );
-
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <common>',
           [
             '#include <common>',
             'uniform float uDissolve;',
-            'uniform vec3 uFocusCenter;',
-            'uniform float uFocusRadius;',
-            'uniform float uTime;',
-            'varying vec2 vDissolveUv;',
-            'varying vec3 vWorldPosition;',
+            'varying vec2 vSkinUv;',
+            'varying vec3 vSkinViewDir;',
+            'varying vec3 vSkinNormal;',
             PERLIN_GLSL
           ].join('\\n')
         ).replace(
           '#include <dithering_fragment>',
           [
             '#include <dithering_fragment>',
-            'float nVal = cnoise(vec3(vDissolveUv * 12.0, uTime * 0.15)) * 0.5 + 0.5;',
-            'float dToFocus = distance(vWorldPosition, uFocusCenter);',
-            'float localWindow = smoothstep(uFocusRadius * 1.15, uFocusRadius * 0.2, dToFocus) * 0.55;',
-            'float threshold = clamp(uDissolve + localWindow, 0.0, 0.95);',
-            'if (nVal < threshold) { discard; }',
-            'if (nVal < threshold + 0.055) {',
-            '  gl_FragColor.rgb += vec3(0.85, 0.68, 0.22) * 0.75;',
-            '  gl_FragColor.a = min(1.0, gl_FragColor.a + 0.45);',
-            '}'
+            'if (uDissolve > 0.001) {',
+            '  float dissolveNoise = cnoise(vec3(vSkinUv * 5.0, 2.0));',
+            '  float nVal = dissolveNoise * 0.5 + 0.5;',
+            '  if (nVal < uDissolve) { discard; }',
+            '  if (nVal < uDissolve + 0.035) {',
+            '    gl_FragColor.rgb += vec3(0.18, 0.65, 0.95) * 0.35;',
+            '  }',
+            '}',
+            // Silky silver-white X-Ray Fresnel contour rim + crystal-clear front window (matching media_1792308719040_b2231010.png)
+            'float skinNdotV = clamp(abs(dot(normalize(vSkinNormal), normalize(vSkinViewDir))), 0.0, 1.0);',
+            'float skinRim = pow(1.0 - skinNdotV, 2.35);',
+            'vec3 pearlescentRim = vec3(0.84, 0.91, 0.99) * skinRim * 0.68;',
+            'gl_FragColor.rgb = mix(gl_FragColor.rgb * 0.66, gl_FragColor.rgb, skinRim) + pearlescentRim;'
           ].join('\\n')
         );
+        mat.userData.shader = shader;
       };
       return mat;
     }
 
-    const maleSkinMat = createDonginSkinMaterial();
-    const femaleSkinMat = createDonginSkinMaterial();
+    const maleSkinMat = createVibrantGlassSkinMaterial(0.0);
+    const femaleSkinMat = createVibrantGlassSkinMaterial(0.0);
 
     let maleBodyObj = null;
     let femaleBodyObj = null;
@@ -2545,31 +2675,56 @@ function buildBodyExplorerHtml(donginData) {
     let currentSkinMode = 'glass';
     let isAuroraStudio = false;
 
-    // 2.1 Load Vibrant Studio Podium (models/podium.glb) with exact Fluid Swirl Shader
+    // ========================================================================
+    // 2.3 EXACT VIBRANT STUDIO PODIUM (podium.glb) & MATCAP SPHERES (newBG.glb)
+    // ========================================================================
+    // Default palette tuned to Neko/Prenuvo/media_1792308719040_b2231010.png clean dark medical studio
     const podiumUniforms = {
       uTime: { value: 0 },
-      uColorA: { value: new THREE.Color('#071a18') },
-      uColorMid: { value: new THREE.Color('#0a1628') },
-      uColorB: { value: new THREE.Color('#040811') },
-      uHighlightColor: { value: new THREE.Color('#10b981') }
+      uColorA: { value: new THREE.Color('#071220') },
+      uColorMid: { value: new THREE.Color('#0a192c') },
+      uColorB: { value: new THREE.Color('#03060c') },
+      uHighlightColor: { value: new THREE.Color('#183654') },
+      uSpeed: { value: 0.45 },
+      uFlowSpeed: { value: 0.22 },
+      uPulseSpeed: { value: 0.55 },
+      uNoiseScale: { value: 12.0 },
+      uNoiseAmount: { value: 0.14 },
+      uNoiseDetailScale: { value: 10.0 },
+      uNoiseDetailAmount: { value: 0.35 },
+      uSwirlStrength: { value: 0.45 },
+      uGlowStrength: { value: 0.25 },
+      uPulseStrength: { value: 0.12 },
+      uFresnelStrength: { value: 0.28 },
+      uFresnelPower: { value: 0.65 },
+      uHighlightIntensity: { value: 0.28 },
+      uCurve: { value: 0.55 }
     };
 
     gltfLoader.load('models/podium.glb', (gltf) => {
       const podiumScene = gltf.scene;
       const podiumMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
       podiumMat.onBeforeCompile = (shader) => {
-        shader.uniforms.uTime = podiumUniforms.uTime;
-        shader.uniforms.uColorA = podiumUniforms.uColorA;
-        shader.uniforms.uColorMid = podiumUniforms.uColorMid;
-        shader.uniforms.uColorB = podiumUniforms.uColorB;
-        shader.uniforms.uHighlightColor = podiumUniforms.uHighlightColor;
+        Object.keys(podiumUniforms).forEach(k => {
+          shader.uniforms[k] = podiumUniforms[k];
+        });
 
         shader.vertexShader = shader.vertexShader.replace(
           'void main() {',
-          ['varying vec2 vUv;', 'varying vec3 vViewDir;', 'varying vec3 vSurfaceNormal;', 'void main() {', 'vUv = uv;'].join('\\n')
+          [
+            'varying vec2 vUv;',
+            'varying vec3 vViewDir;',
+            'varying vec3 vSurfaceNormal;',
+            'void main() {',
+            'vUv = uv;'
+          ].join('\\n')
         ).replace(
           'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
-          ['vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );', 'vViewDir = -mvPosition.xyz;', 'vSurfaceNormal = normalize(normalMatrix * normal);'].join('\\n')
+          [
+            'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
+            'vViewDir = -mvPosition.xyz;',
+            'vSurfaceNormal = normalize(normalMatrix * objectNormal);'
+          ].join('\\n')
         );
 
         shader.fragmentShader = shader.fragmentShader.replace(
@@ -2583,6 +2738,20 @@ function buildBodyExplorerHtml(donginData) {
             'uniform vec3 uColorMid;',
             'uniform vec3 uColorB;',
             'uniform vec3 uHighlightColor;',
+            'uniform float uSpeed;',
+            'uniform float uFlowSpeed;',
+            'uniform float uPulseSpeed;',
+            'uniform float uNoiseScale;',
+            'uniform float uNoiseAmount;',
+            'uniform float uNoiseDetailScale;',
+            'uniform float uNoiseDetailAmount;',
+            'uniform float uSwirlStrength;',
+            'uniform float uGlowStrength;',
+            'uniform float uPulseStrength;',
+            'uniform float uFresnelStrength;',
+            'uniform float uFresnelPower;',
+            'uniform float uHighlightIntensity;',
+            'uniform float uCurve;',
             'float hash21(vec2 p) {',
             '  p = fract(p * vec2(123.34, 456.21));',
             '  p += dot(p, p + 45.32);',
@@ -2598,17 +2767,43 @@ function buildBodyExplorerHtml(donginData) {
             '  vec2 u = f * f * (3.0 - 2.0 * f);',
             '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);',
             '}',
+            'vec2 swirl(vec2 uv, float strength, float timeShift) {',
+            '  vec2 c = uv - vec2(0.5);',
+            '  float r = length(c);',
+            '  float angle = strength * smoothstep(0.0, 0.7, r) * sin(r * 8.0 - timeShift);',
+            '  mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));',
+            '  return rot * c + vec2(0.5);',
+            '}',
+            'float layeredNoise(vec2 uv, float scale, float detailScale, float detailAmount) {',
+            '  float base = valueNoise(uv * scale);',
+            '  float detail = valueNoise(uv * detailScale);',
+            '  return mix(base, detail, detailAmount);',
+            '}',
             'void main() {'
           ].join('\\n')
         ).replace(
           'vec4 diffuseColor = vec4( diffuse, opacity );',
           [
             'vec4 diffuseColor = vec4( diffuse, opacity );',
-            'float n = valueNoise(vUv * 12.0 + vec2(sin(uTime * 0.35) * 0.2, uTime * 0.18));',
-            'vec3 grad = mix(uColorA, uColorMid, smoothstep(0.0, 0.55, clamp(vUv.y + (n - 0.5) * 0.35, 0.0, 1.0)));',
-            'grad = mix(grad, uColorB, smoothstep(0.35, 1.0, vUv.y));',
-            'float fresnel = pow(1.0 - abs(dot(normalize(vSurfaceNormal), normalize(vViewDir))), 1.4) * 0.42;',
-            'diffuseColor.rgb = mix(grad, uHighlightColor, clamp(fresnel, 0.0, 0.65));'
+            'vec2 swirlUV = swirl(vUv, uSwirlStrength, uTime * uFlowSpeed);',
+            'vec2 fluidUV = swirlUV + vec2(sin(uTime * uSpeed) * 0.01, cos(uTime * uSpeed * 0.8) * 0.01);',
+            'float baseGradient = clamp(fluidUV.y, 0.0, 1.0);',
+            'float baseNoise = layeredNoise(fluidUV, uNoiseScale, uNoiseDetailScale, uNoiseDetailAmount);',
+            'float centered = (baseNoise - 0.5) * 1.6 * uNoiseAmount;',
+            'float t = pow(clamp(baseGradient + centered, 0.0001, 1.0), max(0.0001, uCurve));',
+            'vec3 grad = mix(uColorA, uColorMid, smoothstep(0.0, 0.55, t));',
+            'grad = mix(grad, uColorB, smoothstep(0.35, 1.0, t));',
+            'float pulse = 0.5 + 0.5 * sin(uTime * uPulseSpeed + fluidUV.y * 6.283);',
+            'float pulseMask = pow(pulse, 3.0) * uPulseStrength;',
+            'vec3 nrm = normalize(vSurfaceNormal);',
+            'vec3 viewDir = normalize(vViewDir);',
+            'float fresnelTerm = pow(1.0 - abs(dot(nrm, viewDir)), uFresnelPower);',
+            'float fresnelGlow = fresnelTerm * uFresnelStrength;',
+            'float highlight = smoothstep(0.65, 1.0, baseNoise);',
+            'float highlightGlow = clamp(highlight * uHighlightIntensity, 0.0, 1.0);',
+            'float glowAmount = clamp(fresnelGlow + pulseMask * uGlowStrength, 0.0, 1.0);',
+            'vec3 withHighlight = mix(grad, uHighlightColor, highlightGlow);',
+            'diffuseColor.rgb = mix(withHighlight, uHighlightColor, glowAmount);'
           ].join('\\n')
         );
       };
@@ -2618,13 +2813,12 @@ function buildBodyExplorerHtml(donginData) {
       scene.add(podiumScene);
     });
 
-    // 2.2 Load Vibrant Floating Matcap Background Spheres (models/newBG.glb)
     texLoader.load('texture/mats/mat20.png', (matcapTex) => {
       gltfLoader.load('models/newBG.glb', (gltf) => {
         const bgMat = new THREE.MeshMatcapMaterial({
           matcap: matcapTex,
           transparent: true,
-          opacity: 0.24
+          opacity: 0.14
         });
         gltf.scene.traverse(c => {
           if (c.isMesh) c.material = bgMat;
@@ -2633,14 +2827,13 @@ function buildBodyExplorerHtml(donginData) {
       });
     });
 
-    // 2.3 Load 193,288-Vertex Male (skinMB2.glb) & 190,564-Vertex Female (skinF2.glb) Sculpted Human Bodies
+    // ========================================================================
+    // 2.4 LOAD 193,288-VERTEX MALE & 190,564-VERTEX FEMALE SCULPTED BODIES
+    // ========================================================================
     gltfLoader.load('models/skinMB2.glb', (gltf) => {
       maleBodyObj = gltf.scene;
       maleBodyObj.traverse(c => {
-        if (c.isMesh) {
-          c.material = maleSkinMat;
-          c.renderOrder = 2;
-        }
+        if (c.isMesh) c.material = maleSkinMat;
       });
       scene.add(maleBodyObj);
       if (loaderOverlay) loaderOverlay.classList.add('hidden');
@@ -2650,202 +2843,370 @@ function buildBodyExplorerHtml(donginData) {
       femaleBodyObj = gltf.scene;
       femaleBodyObj.visible = false;
       femaleBodyObj.traverse(c => {
-        if (c.isMesh) {
-          c.material = femaleSkinMat;
-          c.renderOrder = 2;
-        }
+        if (c.isMesh) c.material = femaleSkinMat;
       });
       scene.add(femaleBodyObj);
     });
 
-    // 2.4 Load ALL 12 Real Internal 3D Organs from vibrant.noomoagency.com
+    // ========================================================================
+    // 2.5 LOAD POSE-FITTED 3D ANATOMICAL SKELETON, JOINTS/DISCS & VASCULAR MERIDIANS
+    // (Matches media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png)
+    // ========================================================================
+    const skeletonMeshMap = {};
+    const boneBaseUniforms = {
+      uTime: { value: 0 },
+      uRecovery: { value: 0.72 }
+    };
+
+    function createAnatomicalBoneMaterial(isHighlightedGroup = false, isGrowthPlate = false) {
+      if (isGrowthPlate) {
+        return new THREE.MeshStandardMaterial({
+          color: new THREE.Color(0x34d399),
+          emissive: new THREE.Color(0x10b981),
+          emissiveIntensity: 2.1,
+          roughness: 0.20,
+          metalness: 0.10,
+          transparent: true,
+          opacity: 0.95
+        });
+      }
+      // Medical X-Ray Fresnel Translucent Bone Shader (matches media_1792308719040_b2231010.png):
+      // Semi-transparent interior (so brain.glb inside skull & heart.glb inside ribcage shine through clearly)
+      // + crisp ivory-silver X-Ray Fresnel contour edges!
+      const mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(isHighlightedGroup ? 0xdbeafe : 0x7c93ad),
+        emissive: new THREE.Color(isHighlightedGroup ? 0x1e3a5f : 0x0e1d30),
+        emissiveIntensity: isHighlightedGroup ? 0.68 : 0.42,
+        roughness: 0.30,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.48,
+        depthWrite: false
+      });
+      mat.onBeforeCompile = (shader) => {
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec3 vBoneViewDir;', 'varying vec3 vBoneNormal;'].join('\\n')
+        ).replace(
+          '#include <begin_vertex>',
+          [
+            '#include <begin_vertex>',
+            'vec4 mvPosBone = modelViewMatrix * vec4(transformed, 1.0);',
+            'vBoneViewDir = normalize(-mvPosBone.xyz);',
+            'vBoneNormal = normalize(normalMatrix * objectNormal);'
+          ].join('\\n')
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec3 vBoneViewDir;', 'varying vec3 vBoneNormal;'].join('\\n')
+        ).replace(
+          '#include <dithering_fragment>',
+          [
+            '#include <dithering_fragment>',
+            'float boneNdotV = clamp(abs(dot(normalize(vBoneNormal), normalize(vBoneViewDir))), 0.0, 1.0);',
+            'float boneRim = pow(1.0 - boneNdotV, 1.85);',
+            'gl_FragColor.rgb += vec3(0.76, 0.86, 0.98) * boneRim * 0.78;',
+            'gl_FragColor.a = clamp(0.18 + boneRim * 0.66, 0.16, 0.86);'
+          ].join('\\n')
+        );
+      };
+      return mat;
+    }
+
+    let kneeGrowthPlateMat = null;
+    gltfLoader.load('models/Skeleton.glb', (gltf) => {
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          const gName = c.name || c.parent?.name || '';
+          const isGP = gName.includes('KneeGrowthPlate');
+          const mat = createAnatomicalBoneMaterial(false, isGP);
+          if (isGP) {
+            kneeGrowthPlateMat = mat;
+            c.renderOrder = 6;
+          } else {
+            c.renderOrder = 3;
+          }
+          c.material = mat;
+          skeletonMeshMap[gName] = { mesh: c, mat: mat };
+        }
+      });
+      scene.add(gltf.scene);
+      updateAnatomyHighlight();
+    });
+
+    const jointsMeshMap = {};
+    gltfLoader.load('models/Joints.glb', (gltf) => {
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          const gName = c.name || c.parent?.name || '';
+          const isKneeCart = gName.includes('KneeCartilage');
+          const mat = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(isKneeCart ? 0x38bdf8 : 0x5c748f),
+            emissive: new THREE.Color(isKneeCart ? 0x0ea5e9 : 0x0b1624),
+            emissiveIntensity: isKneeCart ? 0.85 : 0.22,
+            roughness: 0.30,
+            metalness: 0.08,
+            transparent: true,
+            opacity: isKneeCart ? 0.72 : 0.28,
+            depthWrite: false
+          });
+          c.renderOrder = isKneeCart ? 5 : 2;
+          c.material = mat;
+          jointsMeshMap[gName] = { mesh: c, mat: mat };
+        }
+      });
+      scene.add(gltf.scene);
+    });
+
+    // Load 1.3M-vertex Real Anatomical Vascular & 12-Meridian Network (models/Vascular.glb)
+    // with Bio-Photon Qi-Blood Flow Shader!
+    const vascularUniforms = {
+      uTime: { value: 0 },
+      uPulseBoost: { value: 0.72 }
+    };
+
+    function createVascularMeridianMaterial(isArterial) {
+      const mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(isArterial ? 0x3b1016 : 0x122438),
+        emissive: new THREE.Color(isArterial ? 0x7a1220 : 0x0d304d),
+        emissiveIntensity: 0.48,
+        roughness: 0.30,
+        metalness: 0.15
+      });
+      mat.onBeforeCompile = (shader) => {
+        shader.uniforms.uTime = vascularUniforms.uTime;
+        shader.uniforms.uPulseBoost = vascularUniforms.uPulseBoost;
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec3 vVascWorldPos;'].join('\\n')
+        ).replace(
+          '#include <begin_vertex>',
+          ['#include <begin_vertex>', 'vVascWorldPos = (modelMatrix * vec4(transformed, 1.0)).xyz;'].join('\\n')
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          [
+            '#include <common>',
+            'uniform float uTime;',
+            'uniform float uPulseBoost;',
+            'varying vec3 vVascWorldPos;'
+          ].join('\\n')
+        ).replace(
+          '#include <dithering_fragment>',
+          [
+            '#include <dithering_fragment>',
+            // Traveling bio-photon Qi wave along the real 3D anatomical vessels
+            'float wave1 = pow(0.5 + 0.5 * sin(vVascWorldPos.y * 7.5 - uTime * 3.2 + abs(vVascWorldPos.x) * 6.0), 6.0);',
+            'float wave2 = pow(0.5 + 0.5 * sin(vVascWorldPos.y * 14.0 + uTime * 2.4), 8.0);',
+            isArterial
+              ? 'vec3 pulseCol = mix(vec3(0.95, 0.25, 0.20), vec3(0.99, 0.82, 0.40), wave2);'
+              : 'vec3 pulseCol = mix(vec3(0.14, 0.72, 0.65), vec3(0.35, 0.80, 0.96), wave2);',
+            'gl_FragColor.rgb += pulseCol * (wave1 * 0.58 + wave2 * 0.35) * uPulseBoost;'
+          ].join('\\n')
+        );
+      };
+      return mat;
+    }
+
+    gltfLoader.load('models/Vascular.glb', (gltf) => {
+      const artMat = createVascularMeridianMaterial(true);
+      const venMat = createVascularMeridianMaterial(false);
+      gltf.scene.traverse(c => {
+        if (c.isMesh) {
+          const isArt = (c.name || '').includes('Arterial');
+          c.material = isArt ? artMat : venMat;
+        }
+      });
+      scene.add(gltf.scene);
+    });
+
+    // ========================================================================
+    // 2.6 LOAD ALL 12 SCULPTED ORGANS WITH SUBSURFACE SCATTERING SHADER (Ht)
+    // Tuned for zero stipple noise and rich ruby-amber brain & cardiac glow (media_1792308719040_b2231010.png)
+    // ========================================================================
+    const whiteTex = texLoader.load('texture/white.jpg');
+    whiteTex.colorSpace = THREE.SRGBColorSpace;
+    whiteTex.wrapS = THREE.RepeatWrapping;
+    whiteTex.wrapT = THREE.RepeatWrapping;
+    const thicknessTex = texLoader.load('texture/white.jpg');
+
     const loadedOrgans = {};
-    const ORGAN_SPECS = [
-      { key: 'brain', file: 'models/brain.glb', parts: ['brain', 'cervical'], baseCol: 0x38bdf8, activeCol: 0x10b981 },
-      { key: 'thyroid', file: 'models/thyroid.glb', parts: ['cervical'], baseCol: 0xa78bfa, activeCol: 0x6ee7b7 },
-      { key: 'heart', file: 'models/heart.glb', parts: ['heart'], baseCol: 0xf87171, activeCol: 0xfde68a },
-      { key: 'liver', file: 'models/liver.glb', parts: ['gut', 'pelvis'], baseCol: 0xf59e0b, activeCol: 0x10b981 },
-      { key: 'galbladder', file: 'models/galbladder.glb', parts: ['gut'], baseCol: 0x34d399, activeCol: 0x6ee7b7 },
-      { key: 'stomach', file: 'models/stomach.glb', parts: ['gut'], baseCol: 0xfb923c, activeCol: 0x10b981 },
-      { key: 'pancreas', file: 'models/pancreas.glb', parts: ['gut'], baseCol: 0xfbbf24, activeCol: 0xfde68a },
-      { key: 'intestine', file: 'models/intestine.glb', parts: ['gut', 'pelvis'], baseCol: 0xf97316, activeCol: 0x34d399 },
-      { key: 'kidneys', file: 'models/kidneys2.glb', parts: ['lumbar', 'knee', 'pelvis'], baseCol: 0x60a5fa, activeCol: 0x10b981 },
-      { key: 'glands', file: 'models/glands.glb', parts: ['pelvis', 'lumbar'], baseCol: 0xf472b6, activeCol: 0xfde68a },
-      { key: 'dna', file: 'models/dna.glb', parts: ['pelvis', 'knee'], baseCol: 0x38bdf8, activeCol: 0xfde68a },
-      { key: 'cell', file: 'models/cellNew.glb', parts: ['heart', 'brain'], baseCol: 0xa78bfa, activeCol: 0x6ee7b7 }
+    const VIBRANT_SSS_ORGANS = [
+      {
+        key: 'brain', file: 'models/brain.glb', parts: ['brain', 'cervical'],
+        diffuse: [0.16, 0.05, 0.06], shininess: 420,
+        thicknessColor: [0.92, 0.28, 0.20], distortion: 0.85, ambient: 0.42, attenuation: 1.15, power: 4.2, scale: 14.0,
+        light: { offset: [0.0, 0.05, -0.35], color: 0xff4422, intensity: 0.45, distance: 1.4 }
+      },
+      {
+        key: 'heart', file: 'models/heart.glb', parts: ['heart'],
+        diffuse: [0.28, 0.04, 0.04], shininess: 460,
+        thicknessColor: [1.0, 0.26, 0.16], distortion: 0.82, ambient: 0.55, attenuation: 1.05, power: 4.0, scale: 18.0,
+        light: { offset: [0, 0, -0.85], color: 0xff2a1a, intensity: 0.72, distance: 1.8 }
+      },
+      {
+        key: 'liver', file: 'models/liver.glb', parts: ['gut', 'pelvis'],
+        diffuse: [0.12, 0.05, 0.06], shininess: 380,
+        thicknessColor: [0.48, 0.20, 0.18], distortion: 0.50, ambient: 0.22, attenuation: 1.20, power: 5.5, scale: 4.5
+      },
+      {
+        key: 'stomach', file: 'models/stomach.glb', parts: ['gut'],
+        diffuse: [0.14, 0.06, 0.07], shininess: 320,
+        thicknessColor: [0.52, 0.22, 0.22], distortion: 0.45, ambient: 0.24, attenuation: 0.90, power: 6.0, scale: 5.0
+      },
+      {
+        key: 'intestine', file: 'models/intestine.glb', parts: ['gut', 'pelvis'],
+        diffuse: [0.11, 0.05, 0.06], shininess: 350,
+        thicknessColor: [0.45, 0.20, 0.22], distortion: 0.55, ambient: 0.20, attenuation: 0.95, power: 4.5, scale: 5.5
+      },
+      {
+        key: 'kidneys', file: 'models/kidneys2.glb', parts: ['lumbar', 'knee', 'pelvis'],
+        diffuse: [0.10, 0.06, 0.08], shininess: 400,
+        thicknessColor: [0.32, 0.48, 0.62], distortion: 0.65, ambient: 0.22, attenuation: 0.85, power: 3.5, scale: 8.0
+      },
+      {
+        key: 'galbladder', file: 'models/galbladder.glb', parts: ['gut'],
+        diffuse: [0.08, 0.14, 0.10], shininess: 280,
+        thicknessColor: [0.22, 0.65, 0.45], distortion: 0.30, ambient: 0.24, attenuation: 0.65, power: 3.0, scale: 4.0
+      },
+      {
+        key: 'pancreas', file: 'models/pancreas.glb', parts: ['gut'],
+        diffuse: [0.15, 0.08, 0.06], shininess: 360,
+        thicknessColor: [0.62, 0.35, 0.22], distortion: 0.45, ambient: 0.22, attenuation: 0.75, power: 3.5, scale: 5.0
+      },
+      {
+        key: 'glands', file: 'models/glands.glb', parts: ['pelvis', 'lumbar'],
+        diffuse: [0.16, 0.10, 0.06], shininess: 400,
+        thicknessColor: [0.75, 0.58, 0.25], distortion: 0.35, ambient: 0.28, attenuation: 0.65, power: 4.0, scale: 7.5
+      },
+      {
+        key: 'thyroid', file: 'models/thyroid.glb', parts: ['cervical'],
+        diffuse: [0.16, 0.08, 0.14], shininess: 420,
+        thicknessColor: [0.65, 0.42, 0.78], distortion: 0.35, ambient: 0.28, attenuation: 0.80, power: 3.5, scale: 7.0
+      }
     ];
 
-    ORGAN_SPECS.forEach(spec => {
-      gltfLoader.load(spec.file, (gltf) => {
-        const mat = new THREE.MeshPhysicalMaterial({
-          color: new THREE.Color(spec.baseCol),
-          emissive: new THREE.Color(spec.baseCol),
-          emissiveIntensity: 0.55,
-          roughness: 0.22,
-          metalness: 0.08,
-          transmission: 0.45,
-          thickness: 1.2,
-          clearcoat: 1.0,
-          transparent: true,
-          opacity: 0.88
+    VIBRANT_SSS_ORGANS.forEach(cfg => {
+      gltfLoader.load(cfg.file, (gltf) => {
+        const uniforms = THREE.UniformsUtils.clone(SubsurfaceScatteringShader.uniforms);
+        uniforms.map.value = whiteTex;
+        uniforms.diffuse.value = new THREE.Vector3(...cfg.diffuse);
+        uniforms.shininess.value = cfg.shininess;
+        uniforms.thicknessMap.value = thicknessTex;
+        uniforms.thicknessColor.value = new THREE.Vector3(...cfg.thicknessColor);
+        uniforms.thicknessDistortion.value = cfg.distortion;
+        uniforms.thicknessAmbient.value = cfg.ambient;
+        uniforms.thicknessAttenuation.value = cfg.attenuation;
+        uniforms.thicknessPower.value = cfg.power;
+        uniforms.thicknessScale.value = cfg.scale;
+        uniforms.specular.value = new THREE.Color(0.02, 0.02, 0.02);
+        uniforms.opacity.value = 1.0;
+
+        const sssMat = new THREE.ShaderMaterial({
+          uniforms: uniforms,
+          vertexShader: SubsurfaceScatteringShader.vertexShader,
+          fragmentShader: SubsurfaceScatteringShader.fragmentShader,
+          lights: true,
+          transparent: false
         });
+
+        const rootMesh = gltf.scene.children[0] || gltf.scene;
+        if (cfg.key === 'brain' && rootMesh) {
+          rootMesh.scale.multiplyScalar(0.88);
+          rootMesh.position.y -= 0.038;
+        }
         gltf.scene.traverse(c => {
           if (c.isMesh) {
-            c.material = mat;
+            c.material = sssMat;
             c.renderOrder = 1;
           }
         });
-        scene.add(gltf.scene);
-        loadedOrgans[spec.key] = { scene: gltf.scene, mat: mat, spec: spec };
-      });
-    });
 
-    // 2.5 Custom Anatomical 3D Knee Epiphyseal Growth Plate & Spine inside skinMB2.glb
-    const customAnatomyGroup = new THREE.Group();
-    scene.add(customAnatomyGroup);
-
-    // Knee Epiphyseal Growth Plates at exact skinMB2.glb knee coordinates (x = ±0.41, y = 1.28, z = -0.10)
-    const kneeGrowthGroup = new THREE.Group();
-    customAnatomyGroup.add(kneeGrowthGroup);
-
-    const boneMat = new THREE.MeshPhysicalMaterial({
-      color: 0xe2e8f0,
-      emissive: 0x1e293b,
-      roughness: 0.3,
-      transmission: 0.35,
-      transparent: true,
-      opacity: 0.82
-    });
-    const growthDiscMat = new THREE.MeshStandardMaterial({
-      color: 0x10b981,
-      emissive: 0x10b981,
-      emissiveIntensity: 1.4,
-      transparent: true,
-      opacity: 0.95
-    });
-
-    [-1, 1].forEach(side => {
-      const kx = side * 0.41;
-      const femur = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.068, 0.28, 24), boneMat);
-      femur.position.set(kx, 1.45, -0.09);
-      kneeGrowthGroup.add(femur);
-
-      const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.066, 0.048, 0.28, 24), boneMat);
-      tibia.position.set(kx, 1.11, -0.11);
-      kneeGrowthGroup.add(tibia);
-
-      const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.072, 0.036, 32), growthDiscMat);
-      plate.position.set(kx, 1.28, -0.10);
-      kneeGrowthGroup.add(plate);
-    });
-
-    // 180 Dividing Chondrocyte & IGF-1 Bio-Photons inside Knee Growth Plates
-    const kneePhotonCount = 180;
-    const kneePhotonGeo = new THREE.BufferGeometry();
-    const kneePhotonPos = new Float32Array(kneePhotonCount * 3);
-    for (let i = 0; i < kneePhotonCount; i++) {
-      const side = i % 2 === 0 ? 1 : -1;
-      const ang = Math.random() * Math.PI * 2;
-      const r = Math.random() * 0.085;
-      kneePhotonPos[i * 3] = side * 0.41 + Math.cos(ang) * r;
-      kneePhotonPos[i * 3 + 1] = 1.28 + (Math.random() - 0.5) * 0.36;
-      kneePhotonPos[i * 3 + 2] = -0.10 + Math.sin(ang) * r;
-    }
-    kneePhotonGeo.setAttribute('position', new THREE.BufferAttribute(kneePhotonPos, 3));
-    const kneePhotonMat = new THREE.PointsMaterial({ color: 0xfde68a, size: 0.022, transparent: true, opacity: 0.95 });
-    const kneePhotons = new THREE.Points(kneePhotonGeo, kneePhotonMat);
-    kneeGrowthGroup.add(kneePhotons);
-
-    // 24-Segment Dorsal Spine & Intervertebral Discs along skinMB2.glb Spine Axis (y = 2.55 to 4.05)
-    const spineGroup = new THREE.Group();
-    customAnatomyGroup.add(spineGroup);
-    const spineDiscs = [];
-    for (let s = 0; s < 20; s++) {
-      const ratio = s / 19;
-      const sy = 4.02 - ratio * 1.48;
-      const sz = -0.14 - Math.sin(ratio * Math.PI) * 0.08;
-      const vMesh = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.036 + ratio * 0.015, 0.038 + ratio * 0.015, 0.038, 18),
-        boneMat
-      );
-      vMesh.position.set(0, sy, sz);
-      spineGroup.add(vMesh);
-
-      if (s < 19) {
-        const dMat = new THREE.MeshStandardMaterial({
-          color: 0x38bdf8,
-          emissive: 0x10b981,
-          emissiveIntensity: 0.9,
-          transparent: true,
-          opacity: 0.9
-        });
-        const dMesh = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.035 + ratio * 0.014, 0.035 + ratio * 0.014, 0.018, 18),
-          dMat
-        );
-        dMesh.position.set(0, sy - 0.036, sz);
-        spineGroup.add(dMesh);
-        spineDiscs.push({ mesh: dMesh, baseY: sy - 0.036, baseZ: sz, ratio: ratio });
-      }
-    }
-
-    // ========================================================================
-    // 3. BUILD 12 MERIDIANS + REN/DU VESSELS (14경맥 26개 3D 유주선) & 31 ACUPOINTS
-    // ========================================================================
-    const meridianSystemGroup = new THREE.Group();
-    scene.add(meridianSystemGroup);
-
-    const meridianRuntimeList = [];
-    const qiParticleData = [];
-
-    DONGIN_DATA.meridians.forEach((mDef) => {
-      const mGroup = new THREE.Group();
-      meridianSystemGroup.add(mGroup);
-
-      const tubeMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(mDef.color),
-        transparent: true,
-        opacity: 0.72
-      });
-
-      const curves = [];
-      mDef.paths.forEach((pathPts) => {
-        const vecs = pathPts.map(p => new THREE.Vector3(p[0], p[1], p[2]));
-        const curve = new THREE.CatmullRomCurve3(vecs);
-        curves.push(curve);
-
-        const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.0042, 8, false);
-        const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
-        tubeMesh.renderOrder = 4;
-        mGroup.add(tubeMesh);
-
-        // Add 6 flowing Qi-Photon spheres per meridian path
-        for (let k = 0; k < 6; k++) {
-          const pMat = new THREE.MeshBasicMaterial({
-            color: 0xfde68a,
-            transparent: true,
-            opacity: 0.95
-          });
-          const pMesh = new THREE.Mesh(new THREE.SphereGeometry(0.0085, 10, 10), pMat);
-          pMesh.renderOrder = 5;
-          mGroup.add(pMesh);
-          qiParticleData.push({
-            mesh: pMesh,
-            curve: curve,
-            meridianId: mDef.id,
-            phase: k / 6,
-            speed: 0.14 + (k % 3) * 0.03
-          });
+        if (cfg.light && rootMesh.position) {
+          const pLight = new THREE.PointLight(cfg.light.color, cfg.light.intensity, cfg.light.distance);
+          pLight.position.set(
+            rootMesh.position.x + cfg.light.offset[0],
+            rootMesh.position.y + cfg.light.offset[1],
+            rootMesh.position.z + cfg.light.offset[2]
+          );
+          scene.add(pLight);
         }
-      });
 
-      meridianRuntimeList.push({
-        id: mDef.id,
-        def: mDef,
-        group: mGroup,
-        mat: tubeMat
+        scene.add(gltf.scene);
+        loadedOrgans[cfg.key] = {
+          scene: gltf.scene,
+          mesh: rootMesh,
+          mat: sssMat,
+          uniforms: uniforms,
+          baseAmbient: cfg.ambient,
+          baseScale: cfg.scale,
+          cfg: cfg
+        };
+        updateAnatomyHighlight();
       });
     });
+
+    // ========================================================================
+    // 3. STARLIGHT ACUPOINT NODES (THREE.Points) & SIDE MARGIN LEADER CALLOUTS
+    // (Zero Rainbow Spaghetti Tubes, Zero Overlapping Text Tags on Body!)
+    // ========================================================================
+    const starPositions = [];
+    const starColors = [];
+    const starSizes = [];
+
+    DONGIN_DATA.acupoints.forEach((acu) => {
+      starPositions.push(acu.pos[0], acu.pos[1], acu.pos[2]);
+      starColors.push(1.0, 0.90, 0.52);
+      starSizes.push(1.0);
+      if (Math.abs(acu.pos[0]) > 0.025) {
+        starPositions.push(-acu.pos[0], acu.pos[1], acu.pos[2]);
+        starColors.push(0.45, 0.92, 0.78);
+        starSizes.push(0.85);
+      }
+    });
+
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+    starGeo.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeo.setAttribute('aScale', new THREE.Float32BufferAttribute(starSizes, 1));
+
+    const starMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uPixelRatio: { value: Math.min(window.devicePixelRatio || 1, 2) }
+      },
+      vertexShader: [
+        'attribute float aScale;',
+        'varying vec3 vColor;',
+        'uniform float uTime;',
+        'uniform float uPixelRatio;',
+        'void main() {',
+        '  vColor = color;',
+        '  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);',
+        '  float pulse = 0.85 + 0.30 * sin(uTime * 3.2 + position.y * 8.0);',
+        '  gl_PointSize = (18.0 * aScale * pulse * uPixelRatio) / max(0.4, -mvPosition.z);',
+        '  gl_Position = projectionMatrix * mvPosition;',
+        '}'
+      ].join('\\n'),
+      fragmentShader: [
+        'varying vec3 vColor;',
+        'void main() {',
+        '  float d = length(gl_PointCoord - vec2(0.5));',
+        '  if (d > 0.5) discard;',
+        '  float core = smoothstep(0.22, 0.0, d);',
+        '  float halo = pow(1.0 - d * 2.0, 2.4) * 0.75;',
+        '  vec3 col = mix(vColor, vec3(1.0), core);',
+        '  gl_FragColor = vec4(col, core + halo);',
+        '}'
+      ].join('\\n'),
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true
+    });
+
+    const acupointStarField = new THREE.Points(starGeo, starMat);
+    scene.add(acupointStarField);
 
     // Populate Top 12-Meridian Filter Strip Buttons
     const meridianStripEl = document.getElementById('meridian-filter-strip');
@@ -2861,56 +3222,31 @@ function buildBodyExplorerHtml(donginData) {
       });
     }
 
-    // Build 31 Key Acupoint 3D Jewels + Projected 2D Acupoint Pins
-    const acupointGroup = new THREE.Group();
-    scene.add(acupointGroup);
+    // Create Clean Side-Margin Leader-Line Callouts (matching media_1792308778522_b0767e86.png)
     const acupointRuntimeNodes = [];
-
-    DONGIN_DATA.acupoints.forEach((acu) => {
-      const jewelMat = new THREE.MeshBasicMaterial({
-        color: 0xfde68a
-      });
-      const jewelMesh = new THREE.Mesh(new THREE.SphereGeometry(0.012, 14, 14), jewelMat);
-      jewelMesh.position.set(acu.pos[0], acu.pos[1], acu.pos[2]);
-      jewelMesh.renderOrder = 6;
-      acupointGroup.add(jewelMesh);
-
-      const haloMat = new THREE.MeshBasicMaterial({
-        color: 0x10b981,
-        transparent: true,
-        opacity: 0.75,
-        side: THREE.DoubleSide
-      });
-      const haloMesh = new THREE.Mesh(new THREE.RingGeometry(0.015, 0.023, 20), haloMat);
-      haloMesh.position.copy(jewelMesh.position);
-      haloMesh.renderOrder = 6;
-      acupointGroup.add(haloMesh);
-
-      // Also mirror bilateral acupoints (if |x| > 0.02) on the opposite side of the body
-      if (Math.abs(acu.pos[0]) > 0.02) {
-        const mirrorJewel = jewelMesh.clone();
-        mirrorJewel.position.x = -acu.pos[0];
-        acupointGroup.add(mirrorJewel);
-      }
-
-      // Create interactive 2D Acupoint Pin
-      const pinEl = document.createElement('div');
-      pinEl.className = 'acupoint-2d-pin';
-      pinEl.innerHTML = '<span class="acu-dot"></span><span>' + acu.code + ' ' + acu.name.split(' ')[0] + '</span>';
-      pinEl.addEventListener('click', (e) => {
+    DONGIN_DATA.acupoints.forEach((acu, idx) => {
+      const side = (acu.pos[0] < -0.01 || (Math.abs(acu.pos[0]) <= 0.01 && idx % 2 === 1)) ? 'left' : 'right';
+      const calloutEl = document.createElement('div');
+      calloutEl.className = 'acupoint-side-callout side-' + side;
+      calloutEl.innerHTML =
+        '<div class="acu-callout-text">' +
+          '<span class="acu-callout-code">' + acu.code + ' · ' + acu.meridian.split(' ')[0] + '</span>' +
+          '<span class="acu-callout-name">' + acu.name.split(' ')[0] + '</span>' +
+        '</div>' +
+        '<div class="acu-leader-line"></div>' +
+        '<div class="acu-pinpoint-node"></div>';
+      calloutEl.addEventListener('click', (e) => {
         e.stopPropagation();
         inspectAcupoint(acu, true);
       });
-      pinEl.addEventListener('mouseenter', () => {
+      calloutEl.addEventListener('mouseenter', () => {
         inspectAcupoint(acu, false);
       });
-      hotspotLayer.appendChild(pinEl);
+      hotspotLayer.appendChild(calloutEl);
 
       acupointRuntimeNodes.push({
         acu: acu,
-        jewelMesh: jewelMesh,
-        haloMesh: haloMesh,
-        pinEl: pinEl,
+        pinEl: calloutEl,
         worldPos: new THREE.Vector3(acu.pos[0], acu.pos[1], acu.pos[2])
       });
     });
@@ -2931,66 +3267,99 @@ function buildBodyExplorerHtml(donginData) {
       });
 
       if (shouldSelectPart && acu.partId) {
-        window.selectBodyPart(acu.partId);
-        // Zoom closer to the clicked acupoint
-        camGoalTarget.set(acu.pos[0] * 0.5, acu.pos[1], acu.pos[2] * 0.5);
-        const zSide = acu.pos[2] < -0.12 ? -1.65 : 1.65;
-        camGoalPos.set(acu.pos[0] * 1.4, acu.pos[1] + 0.05, zSide);
+        window.selectBodyPart(acu.partId, true);
       }
     }
 
-    // Build 7 Major Clinical Hotspots
+    // Build 7 Minimal Vibrant Glass Circle Hotspots (.puntos-container style)
     const majorHotspotNodes = [];
     BODY_PARTS_DATA.forEach((part) => {
+      const preset = PART_CAMERA_PRESETS[part.id] || { pos3D: [part.pos3D.x, part.pos3D.y, part.pos3D.z] };
       const dom = document.createElement('div');
       dom.className = 'body-3d-hotspot' + (part.id === currentPartId ? ' active' : '');
       dom.innerHTML =
-        '<div class="hotspot-pulse-ring"><div class="hotspot-core-dot"></div></div>' +
+        '<div class="hotspot-pulse-ring">' +
+          '<div class="hotspot-core-dot"></div>' +
+          '<div class="hotspot-core-dot"></div>' +
+          '<div class="hotspot-core-dot"></div>' +
+        '</div>' +
         '<div class="hotspot-tag-pill">' + part.hotspotLabel + '</div>';
-      dom.addEventListener('click', () => window.selectBodyPart(part.id));
+      dom.addEventListener('click', () => window.selectBodyPart(part.id, true));
       hotspotLayer.appendChild(dom);
       majorHotspotNodes.push({
         id: part.id,
         part: part,
         dom: dom,
-        worldPos: new THREE.Vector3(part.pos3D.x, part.pos3D.y, part.pos3D.z)
+        worldPos: new THREE.Vector3(...preset.pos3D)
       });
     });
 
     // ========================================================================
-    // 4. CAMERA FLY-TO, DONG-IN MATERIAL MODES, GENDER & MERIDIAN CONTROLS
+    // 4. CAMERA FLY-TO, ANATOMY HIGHLIGHT & SKIN MATERIAL CONTROLS
     // ========================================================================
-    const camGoalPos = new THREE.Vector3(0.46, 1.24, 1.92);
-    const camGoalTarget = new THREE.Vector3(0.18, 1.22, -0.06);
+    const camGoalPos = new THREE.Vector3(0.0, 3.50, 2.62);
+    const camGoalTarget = new THREE.Vector3(0.0, 3.68, 0.0);
     let isCameraFlying = false;
 
-    // Stop camera auto-fly when user manually drags OrbitControls
     controls.addEventListener('start', () => {
       isCameraFlying = false;
     });
 
-    window.selectBodyPart = function(partId) {
+    function updateAnatomyHighlight() {
+      // Highlight matching bone group in Skeleton.glb
+      const boneHighlightMap = {
+        knee: ['KneeJointBones', 'KneeGrowthPlate', 'LowerLimbs'],
+        cervical: ['CervicalSpine', 'Skull'],
+        lumbar: ['LumbarSpine', 'Pelvis'],
+        brain: ['Skull'],
+        heart: ['ThoracicRibcage'],
+        gut: ['ThoracicRibcage', 'Pelvis'],
+        pelvis: ['Pelvis', 'LumbarSpine']
+      };
+      const activeBones = boneHighlightMap[currentPartId] || [];
+
+      Object.keys(skeletonMeshMap).forEach(gName => {
+        const entry = skeletonMeshMap[gName];
+        if (gName.includes('KneeGrowthPlate')) return;
+        const isMatched = activeBones.some(b => gName.includes(b));
+        entry.mat.color.setHex(isMatched ? 0xd8e8f8 : 0x7890ab);
+        entry.mat.emissive.setHex(isMatched ? 0x1e4068 : 0x0e1c2e);
+        entry.mat.emissiveIntensity = isMatched ? 0.62 : 0.34;
+      });
+
+      // Highlight internal SubsurfaceScattering organs
+      Object.keys(loadedOrgans).forEach(key => {
+        const entry = loadedOrgans[key];
+        const isTarget = entry.cfg.parts.includes(currentPartId);
+        // Keep brain and heart always subtly visible inside the glass body (like media_1792308719040_b2231010.png)
+        const alwaysShow = (key === 'brain' || key === 'heart' || key === 'intestine' || key === 'liver' || key === 'stomach' || key === 'kidneys');
+        entry.scene.visible = isTarget || alwaysShow;
+        entry.uniforms.opacity.value = isTarget ? 1.0 : (currentSkinMode === 'xray' ? 0.92 : 0.82);
+        entry.uniforms.thicknessAmbient.value = isTarget ? (entry.baseAmbient * 1.45) : entry.baseAmbient;
+      });
+    }
+
+    window.selectBodyPart = function(partId, shouldFlyCamera = true) {
       const part = getPartById(partId);
       renderEncyclopedia(part.id);
       if (scrollPanel) scrollPanel.scrollTo({ top: 0, behavior: 'smooth' });
 
-      camGoalPos.set(part.camPos.x, part.camPos.y, part.camPos.z);
-      camGoalTarget.set(part.camTarget.x, part.camTarget.y, part.camTarget.z);
-      isCameraFlying = true;
-
-      skinUniforms.uFocusCenter.value.set(part.pos3D.x, part.pos3D.y, part.pos3D.z);
-      organGlowLight.position.set(part.pos3D.x, part.pos3D.y, part.pos3D.z + 0.25);
+      const preset = PART_CAMERA_PRESETS[part.id];
+      if (preset && shouldFlyCamera) {
+        camGoalPos.set(...preset.camPos);
+        camGoalTarget.set(...preset.camTarget);
+        isCameraFlying = true;
+        activeOrganPointLight.position.set(preset.pos3D[0], preset.pos3D[1], preset.pos3D[2] - 0.35);
+      }
 
       majorHotspotNodes.forEach(h => {
         h.dom.classList.toggle('active', h.id === part.id);
       });
 
-      // Highlight matching acupoint in HUD
       const matchingAcu = DONGIN_DATA.acupoints.find(a => a.partId === part.id);
       if (matchingAcu) inspectAcupoint(matchingAcu, false);
 
-      // Update meridian highlight
-      updateMeridianVisualState();
+      updateAnatomyHighlight();
     };
 
     window.selectMeridianFilter = function(mId) {
@@ -2998,7 +3367,7 @@ function buildBodyExplorerHtml(donginData) {
       document.querySelectorAll('#meridian-filter-strip .meridian-chip').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-meridian') === mId);
       });
-      updateMeridianVisualState();
+      vascularUniforms.uPulseBoost.value = mId === 'ALL' ? 0.72 : 1.35;
       if (mId !== 'ALL') {
         const mDef = DONGIN_DATA.meridians.find(m => m.id === mId);
         if (mDef) {
@@ -3008,31 +3377,11 @@ function buildBodyExplorerHtml(donginData) {
           const descEl = document.getElementById('acu-hud-desc');
           if (codeEl) codeEl.textContent = mDef.code;
           if (merEl) merEl.textContent = mDef.hanja;
-          if (titleEl) titleEl.textContent = mDef.nameKo + ' — 3D 경락 유주(流注)';
+          if (titleEl) titleEl.textContent = mDef.nameKo + ' — 3D 해부학 경락 유주(流注)';
           if (descEl) descEl.textContent = mDef.organRole;
-        }
-        // Fly to full body view (or back view for GV/BL)
-        if (mId === 'GV' || mId === 'BL') {
-          window.setDonginCameraPreset('back');
-        } else {
-          window.setDonginCameraPreset('full');
         }
       }
     };
-
-    function updateMeridianVisualState() {
-      const part = getPartById(currentPartId);
-      const partMeridians = part.activeMeridians || [];
-      meridianRuntimeList.forEach(m => {
-        const isHighlighted =
-          activeMeridianFilter === 'ALL'
-            ? partMeridians.includes(m.id)
-            : activeMeridianFilter === m.id;
-        m.mat.opacity = activeMeridianFilter === 'ALL'
-          ? (isHighlighted ? 0.95 : 0.38)
-          : (isHighlighted ? 1.0 : 0.12);
-      });
-    }
 
     window.setDonginGender = function(gender) {
       currentGender = gender;
@@ -3050,43 +3399,51 @@ function buildBodyExplorerHtml(donginData) {
 
       [maleSkinMat, femaleSkinMat].forEach(mat => {
         if (mode === 'glass') {
-          mat.color.setHex(0xe2f1ff);
-          mat.metalness = 0.12;
-          mat.roughness = 0.22;
-          mat.transmission = 0.78;
-          mat.opacity = 0.62;
-          skinUniforms.uDissolve.value = 0.14;
+          mat.color.setHex(0xdbeafe);
+          mat.metalness = 0.02;
+          mat.roughness = 0.07;
+          mat.transmission = 0.94;
+          mat.thickness = 0.08;
+          mat.ior = 1.06;
+          mat.userData.uDissolve.value = 0.0;
         } else if (mode === 'bronze') {
-          // Museum Royal Antiqued Bronze & 24K Gold Dong-In Statue
-          mat.color.setHex(0xc99e52);
-          mat.metalness = 0.84;
+          // Royal Antiqued Bronze Dong-In Statue
+          mat.color.setHex(0xc89d54);
+          mat.metalness = 0.65;
           mat.roughness = 0.24;
-          mat.transmission = 0.08;
-          mat.opacity = 0.92;
-          skinUniforms.uDissolve.value = 0.08;
+          mat.transmission = 0.38;
+          mat.thickness = 0.14;
+          mat.ior = 1.15;
+          mat.userData.uDissolve.value = 0.0;
         } else if (mode === 'xray') {
-          mat.color.setHex(0x38bdf8);
-          mat.metalness = 0.05;
-          mat.roughness = 0.15;
-          mat.transmission = 0.92;
-          mat.opacity = 0.24;
-          skinUniforms.uDissolve.value = 0.42;
+          mat.color.setHex(0xdbeafe);
+          mat.metalness = 0.01;
+          mat.roughness = 0.04;
+          mat.transmission = 0.98;
+          mat.thickness = 0.04;
+          mat.ior = 1.02;
+          mat.userData.uDissolve.value = 0.28;
         }
         mat.needsUpdate = true;
       });
+      updateAnatomyHighlight();
     };
 
     window.setDonginCameraPreset = function(preset) {
+      ['hero', 'full', 'back'].forEach(p => {
+        document.getElementById('btn-cam-' + p)?.classList.toggle('active', p === preset);
+      });
       isCameraFlying = true;
-      if (preset === 'full') {
-        camGoalPos.set(0.0, 2.42, 4.85);
+      if (preset === 'hero') {
+        // Exact media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png upper-body framing
+        camGoalPos.set(0.0, 3.50, 2.62);
+        camGoalTarget.set(0.0, 3.68, 0.0);
+      } else if (preset === 'full') {
+        camGoalPos.set(0.0, 2.42, 4.45);
         camGoalTarget.set(0.0, 2.35, 0.0);
-      } else if (preset === 'front') {
-        camGoalPos.set(0.0, 3.05, 3.35);
-        camGoalTarget.set(0.0, 3.00, 0.0);
       } else if (preset === 'back') {
-        camGoalPos.set(0.0, 3.05, -3.45);
-        camGoalTarget.set(0.0, 3.00, 0.0);
+        camGoalPos.set(0.0, 3.35, -2.55);
+        camGoalTarget.set(0.0, 3.28, 0.0);
       }
     };
 
@@ -3101,17 +3458,17 @@ function buildBodyExplorerHtml(donginData) {
         podiumUniforms.uColorB.value.set('#9ec3ff');
         podiumUniforms.uHighlightColor.value.set('#deccff');
       } else {
-        // Royal Dark Korean Medicine Dong-In Studio
-        podiumUniforms.uColorA.value.set('#071a18');
-        podiumUniforms.uColorMid.value.set('#0a1628');
-        podiumUniforms.uColorB.value.set('#040811');
-        podiumUniforms.uHighlightColor.value.set('#10b981');
+        // Deep Neko/Prenuvo Medical Obsidian-Sapphire Studio (matching media_1792308719040_b2231010.png)
+        podiumUniforms.uColorA.value.set('#071220');
+        podiumUniforms.uColorMid.value.set('#0a192c');
+        podiumUniforms.uColorB.value.set('#03060c');
+        podiumUniforms.uHighlightColor.value.set('#183654');
       }
     };
 
     quickNavButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        window.selectBodyPart(btn.getAttribute('data-part'));
+        window.selectBodyPart(btn.getAttribute('data-part'), true);
       });
     });
 
@@ -3122,12 +3479,13 @@ function buildBodyExplorerHtml(donginData) {
       renderer.setSize(w, h, false);
       camera.aspect = w / Math.max(1, h);
       camera.updateProjectionMatrix();
+      camera.setFocalLength(35);
     }
     window.addEventListener('resize', resizeRenderer);
     resizeRenderer();
 
     // ========================================================================
-    // 5. 60FPS ANIMATION LOOP (12-MERIDIAN QI STREAM + ORGAN RECOVERY + HUD)
+    // 5. 60FPS ANIMATION LOOP (SUBSURFACE ORGANS + VASCULAR QI PULSE + HUD)
     // ========================================================================
     const clock = new THREE.Clock();
     const projVec = new THREE.Vector3();
@@ -3136,8 +3494,9 @@ function buildBodyExplorerHtml(donginData) {
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      skinUniforms.uTime.value = t;
       podiumUniforms.uTime.value = t;
+      vascularUniforms.uTime.value = t;
+      starMat.uniforms.uTime.value = t;
 
       // Smoothly interpolate scroll-driven recovery state
       currentRecoveryMix += (targetRecoveryMix - currentRecoveryMix) * 0.08;
@@ -3153,58 +3512,29 @@ function buildBodyExplorerHtml(donginData) {
       }
       controls.update();
 
-      // 5.1 Animate 12-Meridian Qi-Photon Streams along the 193,288-vertex body surface
-      const part = getPartById(currentPartId);
-      const partMeridians = part.activeMeridians || [];
-      const qiSpeedMult = 0.65 + currentRecoveryMix * 1.15;
-
-      qiParticleData.forEach(qp => {
-        const u = (qp.phase + t * qp.speed * qiSpeedMult) % 1.0;
-        const pt = qp.curve.getPointAt(u);
-        qp.mesh.position.copy(pt);
-        const isMerActive = activeMeridianFilter === 'ALL'
-          ? partMeridians.includes(qp.meridianId)
-          : activeMeridianFilter === qp.meridianId;
-        const sc = isMerActive ? (1.15 + 0.35 * Math.sin(t * 6.0 + qp.phase * 12.0)) : 0.55;
-        qp.mesh.scale.setScalar(sc);
-      });
-
-      // 5.2 Animate 31 Acupoint Halos (always face camera & pulse)
-      acupointRuntimeNodes.forEach((node, idx) => {
-        node.haloMesh.lookAt(camera.position);
-        const s = 1.0 + 0.25 * Math.sin(t * 3.5 + idx);
-        node.haloMesh.scale.setScalar(s);
-      });
-
-      // 5.3 Animate Real GLB Internal Organs based on selected part & recovery mix
+      // Animate Subsurface Scattering Organs (Vibrant heartbeat & breathing glow)
       Object.keys(loadedOrgans).forEach(key => {
         const entry = loadedOrgans[key];
-        const isTargetOrgan = entry.spec.parts.includes(currentPartId);
-        const pulse = 1.0 + Math.sin(t * (key === 'heart' ? 5.2 : 2.6)) * (isTargetOrgan ? 0.045 : 0.015);
-        entry.scene.scale.setScalar(pulse);
-        entry.mat.opacity = isTargetOrgan ? 0.95 : (currentSkinMode === 'xray' ? 0.72 : 0.38);
-        entry.mat.emissiveIntensity = isTargetOrgan ? (0.75 + currentRecoveryMix * 0.85) : 0.3;
+        if (!entry.scene.visible) return;
+        const isTarget = entry.cfg.parts.includes(currentPartId);
+        if (key === 'heart') {
+          const beat = 1.0 + Math.sin(t * 5.4) * 0.028 + Math.max(0, Math.sin(t * 5.4 * 2.0)) * 0.015;
+          entry.scene.scale.setScalar(beat);
+          entry.uniforms.thicknessScale.value = entry.baseScale * (0.92 + 0.22 * Math.sin(t * 5.4));
+        } else if (isTarget) {
+          entry.uniforms.thicknessScale.value = entry.baseScale * (0.85 + 0.25 * Math.sin(t * 2.8));
+        }
       });
 
-      // 5.4 Animate Knee Growth Plate & 180 Chondrocyte Bio-Photons
-      growthDiscMat.color.setHex(currentRecoveryMix > 0.45 ? 0x10b981 : 0xf59e0b);
-      growthDiscMat.emissive.setHex(currentRecoveryMix > 0.45 ? 0x34d399 : 0xef4444);
-      const posAttr = kneePhotonGeo.attributes.position;
-      const pSpeed = 0.002 + currentRecoveryMix * 0.006;
-      for (let i = 0; i < kneePhotonCount; i++) {
-        let py = posAttr.getY(i) + pSpeed;
-        if (py > 1.46) py = 1.10;
-        posAttr.setY(i, py);
+      // Animate Real 3D Knee Epiphyseal Growth Plate (KneeGrowthPlate mesh inside Skeleton.glb)
+      if (kneeGrowthPlateMat) {
+        const isRecovered = currentRecoveryMix >= 0.45;
+        kneeGrowthPlateMat.color.setHex(isRecovered ? 0x34d399 : 0xf59e0b);
+        kneeGrowthPlateMat.emissive.setHex(isRecovered ? 0x10b981 : 0xef4444);
+        kneeGrowthPlateMat.emissiveIntensity = (1.3 + 0.6 * Math.sin(t * 4.2)) * (0.65 + currentRecoveryMix * 0.65);
       }
-      posAttr.needsUpdate = true;
 
-      // 5.5 Animate Spine Misalignment (Before) -> Vertical Chuna Alignment (After)
-      const misalign = 1.0 - currentRecoveryMix;
-      spineDiscs.forEach((d, idx) => {
-        d.mesh.position.x = Math.sin(d.ratio * Math.PI * 2.0) * 0.032 * misalign;
-      });
-
-      // 5.6 Project 2D Major Hotspots & Acupoint Pins
+      // Project 2D Minimal Glass Circle Hotspots
       const w = stageEl.clientWidth;
       const h = stageEl.clientHeight;
       majorHotspotNodes.forEach(item => {
@@ -3217,37 +3547,66 @@ function buildBodyExplorerHtml(donginData) {
         const sy = (-projVec.y * 0.5 + 0.5) * h;
         item.dom.style.left = sx.toFixed(1) + 'px';
         item.dom.style.top = sy.toFixed(1) + 'px';
-        item.dom.style.opacity = (sx > 10 && sx < w - 10 && sy > 50 && sy < h - 50) ? '1' : '0';
+        item.dom.style.opacity = (sx > 20 && sx < w - 20 && sy > 65 && sy < h - 75) ? '1' : '0';
       });
 
-      const camDist = camera.position.distanceTo(controls.target);
+      // Project Clean Architectural Side Callouts ONLY for the active part's key acupoints (max 4, never overlapping!)
+      let visibleCallouts = 0;
+      const usedYLeft = [];
+      const usedYRight = [];
       acupointRuntimeNodes.forEach(node => {
+        const isPartMatch = node.acu.partId === currentPartId;
+        if (!isPartMatch || visibleCallouts >= 4) {
+          node.pinEl.style.opacity = '0';
+          node.pinEl.style.pointerEvents = 'none';
+          return;
+        }
         projVec.copy(node.worldPos).project(camera);
-        // Check if acupoint is facing camera (dot product with camera direction)
-        const toCam = camera.position.clone().sub(node.worldPos).normalize();
-        const isFrontVisible = (node.worldPos.z >= -0.08 && toCam.z > -0.2) || (node.worldPos.z < -0.08 && toCam.z < 0.2);
-        const isPartMatch = node.acu.partId === currentPartId || camDist < 2.8;
-        if (projVec.z > 1.0 || !isFrontVisible || !isPartMatch) {
+        if (projVec.z > 1.0) {
           node.pinEl.style.opacity = '0';
           node.pinEl.style.pointerEvents = 'none';
           return;
         }
         const sx = (projVec.x * 0.5 + 0.5) * w;
-        const sy = (-projVec.y * 0.5 + 0.5) * h;
+        let sy = (-projVec.y * 0.5 + 0.5) * h;
+        const inBounds = sx > 60 && sx < w - 60 && sy > 95 && sy < h - 105;
+        if (!inBounds) {
+          node.pinEl.style.opacity = '0';
+          node.pinEl.style.pointerEvents = 'none';
+          return;
+        }
+        // Alternate left-extending (side-right) and right-extending (side-left) callouts & avoid vertical overlap
+        const extendLeft = (visibleCallouts % 2 === 1);
+        node.pinEl.classList.toggle('side-right', extendLeft);
+        node.pinEl.classList.toggle('side-left', !extendLeft);
+        const bucket = extendLeft ? usedYLeft : usedYRight;
+        for (let pass = 0; pass < 3; pass++) {
+          for (const prevY of bucket) {
+            if (Math.abs(sy - prevY) < 46) {
+              sy = sy >= prevY ? prevY + 46 : prevY - 46;
+            }
+          }
+        }
+        bucket.push(sy);
+        visibleCallouts++;
         node.pinEl.style.left = sx.toFixed(1) + 'px';
         node.pinEl.style.top = sy.toFixed(1) + 'px';
-        const inBounds = sx > 20 && sx < w - 20 && sy > 75 && sy < h - 75;
-        node.pinEl.style.opacity = inBounds ? '0.92' : '0';
-        node.pinEl.style.pointerEvents = inBounds ? 'auto' : 'none';
+        node.pinEl.style.opacity = '0.94';
+        node.pinEl.style.pointerEvents = 'auto';
       });
 
       renderer.render(scene, camera);
     }
 
-    // Initialize from URL query (?part=knee, etc.)
+    // Initialize from URL query (?part=knee flies to knee; otherwise start on Hero Upper/Mid Body view like media_1792308778522_b0767e86.png)
     const params = new URLSearchParams(window.location.search);
-    const initPart = params.get('part') || 'knee';
-    window.selectBodyPart(initPart);
+    const urlPart = params.get('part');
+    if (urlPart) {
+      window.selectBodyPart(urlPart, true);
+    } else {
+      window.selectBodyPart('knee', false);
+      window.setDonginCameraPreset('hero');
+    }
     animate();
   </script>
 </body>
@@ -3260,3 +3619,4 @@ buildDonginSurfaceData().then(donginData => {
   fs.writeFileSync(outPath, html, 'utf8');
   console.log('Generated Vibrant 193K-Vertex 3D Dong-In Encyclopedia:', outPath, '(' + html.length + ' bytes)');
 });
+
