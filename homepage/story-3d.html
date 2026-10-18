@@ -913,10 +913,16 @@
       color: #020D09;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       html, body {
-        overscroll-behavior-y: none;
-        touch-action: pan-y;
+        overflow: hidden !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        overscroll-behavior: none !important;
+        touch-action: none !important;
+      }
+      .fullscroll-virtual-track {
+        display: none !important;
       }
       .spatial-top-nav {
         padding: 0 12px;
@@ -930,6 +936,7 @@
         overflow-x: auto;
         max-width: 68vw;
         scrollbar-width: none;
+        touch-action: pan-x;
       }
       .nav-right-actions::-webkit-scrollbar {
         display: none;
@@ -954,6 +961,7 @@
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(3, 1fr);
         height: 74vh;
+        height: 74dvh;
         gap: 10px;
       }
       .skt-card-item .skt-card-box {
@@ -2653,6 +2661,7 @@
       let isSyncingNativeScroll = false;
 
       function syncNativeScrollPosition() {
+        if (isTouchDragging || window.innerWidth <= 1024) return;
         const maxS = getScrollMax();
         if (maxS > 10) {
           isSyncingNativeScroll = true;
