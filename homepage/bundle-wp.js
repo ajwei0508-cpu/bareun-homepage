@@ -23,20 +23,21 @@ const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/
 
 function rewriteAssetsForWP(html) {
   return html
-    .replace(/src:\s*'((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "src: '" + ghBase + "$1'")
-    .replace(/before:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "before: '" + ghBase + "$1'")
-    .replace(/after:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "after: '" + ghBase + "$1'")
-    .replace(/beforeImg:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
-    .replace(/afterImg:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "afterImg: '" + ghBase + "$1'")
+    .replace(/src:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "src: '" + ghBase + "$1'")
+    .replace(/before:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "before: '" + ghBase + "$1'")
+    .replace(/after:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "after: '" + ghBase + "$1'")
+    .replace(/beforeImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
+    .replace(/afterImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "afterImg: '" + ghBase + "$1'")
+    .replace(/"illustration":"(illust_[^"]+)"/g, '"illustration":"' + ghBase + '$1"')
     .replace(/"baBeforeImg":"(ba_[^"]+)"/g, '"baBeforeImg":"' + ghBase + '$1"')
     .replace(/"baAfterImg":"(ba_[^"]+)"/g, '"baAfterImg":"' + ghBase + '$1"')
     .replace(/setDecoderPath\('draco\/'\)/g, "setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')")
-    .replace(/load\('((?:models\/|texture\/|ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "load('" + ghBase + "$1'")
+    .replace(/load\('((?:models\/|texture\/|ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "load('" + ghBase + "$1'")
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
-    .replace(/url\('((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
-    .replace(/loadLinearTex\('((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1'")
-    .replace(/src="((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
-    .replace(/poster="((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
+    .replace(/url\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
+    .replace(/loadLinearTex\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1'")
+    .replace(/src="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
+    .replace(/poster="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
       const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : ghBase + f).join('|');
       return 'data-frames="' + rewritten + '"';
@@ -58,6 +59,7 @@ const detailPages = [
   ['diet-zero.html', 'wordpress-diet.html'],
   ['hairloss.html', 'wordpress-hairloss.html'],
   ['gongjindan.html', 'wordpress-gongjindan.html'],
+  ['prostate.html', 'wordpress-prostate.html'],
   ['body-explorer.html', 'wordpress-body-explorer.html']
 ];
 

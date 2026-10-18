@@ -686,12 +686,126 @@ const PAGES = [
       }
     ],
     nextClinic: {
+      href: 'prostate.html',
+      eyebrow: 'NEXT STORY · 07 / 07',
+      title: '바른 전립선 · 남성활력 클리닉',
+      desc: '밤마다 잠을 깨우는 야간뇨·잔뇨감과 전립선 울혈을 풀고 하초(下焦)의 생명력을 되살리는 남성 비뇨·활력 스토리',
+      bg: 'illust_prostate_care.jpg',
+      caption: '[다음 클리닉 안내 · 07 전립선·남성활력] 전립선 비대·만성 전립선염·야간뇨의 근본 원인인 골반 울혈과 신양허(腎陽虛)를 다스리는 클리닉으로 이어집니다.'
+    }
+  },
+
+  // ==========================================================================
+  // 07. 바른 전립선 · 남성활력 클리닉 (prostate.html) — [끊기지 않는 밤의 숙면과 당당한 하초 활력]
+  // ==========================================================================
+  {
+    file: 'prostate.html',
+    wpFile: 'wordpress-prostate.html',
+    tabIdx: 6,
+    theme: {
+      bgDark: '#171310',
+      bgPanel: 'rgba(23, 19, 16, 0.96)',
+      accent: '#C89B5B',
+      accentLight: '#F5E1C0',
+      secondary: '#2D5A43',
+      glowA: 'rgba(200, 155, 91, 0.12)',
+      glowB: 'rgba(45, 90, 67, 0.08)'
+    },
+    meta: {
+      eyebrow: '07 / PROSTATE, URINARY BLADDER & MALE VITALITY CLINIC',
+      title: '바른 전립선 · 남성활력',
+      subtitleEn: 'Prostate Decompression, Nocturia Relief & Lower-Pelvic Vitality',
+      desc: [
+        '밤마다 화장실 때문에 2~3번씩 잠에서 깨는 야간뇨, 소변 줄기가 가늘어지고 다녀와도 개운치 않은 잔뇨감, 그리고 항생제를 먹어도 반복되는 회음부·하복부의 뻐근한 통증은 전립선과 방광이 보내는 구조적·순환적 구조 신호입니다.',
+        '바른한의원 전립선·남성활력 클리닉은 골반 바닥의 만성 울혈(瘀血)을 풀어 부어오른 전립선 조직의 압박을 감압하고, 차갑게 식은 하초(신장·방광)의 양기를 데워 방광 저장 기능과 남성 활력을 근본부터 복원합니다.'
+      ],
+      ctaText: '1:1 전립선 · 남성활력 비공개 진료 예약',
+      reserveProgram: '바른 전립선 · 배뇨 · 남성활력 클리닉',
+      checklistTitle: '전립선 · 야간뇨 · 남성활력 자가 체크리스트',
+      checklistItems: [
+        '[야간뇨와 수면 분절] 잠자리에 든 후 소변이 마려워 밤새 2번 이상 깨어나며, 아침에 일어나도 늘 피로하다.',
+        '[세뇨 · 지연뇨 · 잔뇨감] 예전보다 소변 줄기가 눈에 띄게 가늘어졌고, 소변을 본 직후에도 방광에 남은 듯 찝찝하다.',
+        '[급박뇨와 빈뇨] 외출하거나 차를 탈 때 화장실 위치부터 찾게 되고, 소변 신호가 오면 참기 힘들다.',
+        '[만성 전립선염 통증] 세균 검사에서는 이상이 없다는데 회음부, 고환, 아랫배, 골반 안쪽이 묵직하고 뻐근하다.',
+        '[하초 냉증과 활력 저하] 아랫배와 손발이 차갑고, 만성 피로와 함께 예전 같지 않은 남성 활력 저하가 느껴진다.'
+      ],
+      doctorAdvice: {
+        zero: '현재 겪고 계신 배뇨 불편감이나 회음부 통증, 야간 수면 방해 증상을 체크해 보세요. 증상 단계에 맞는 1:1 한의학 비수술 치료 가이드를 안내해 드립니다.',
+        low: '골반저 근육 긴장과 전립선 주변 미세혈류 정체가 시작된 초기 단계입니다. 하복부 온열 순환과 맞춤형 전립선 감압 한약으로 조기에 관리하면 야간뇨와 잔뇨감이 빠르게 호전됩니다.',
+        high: '전립선 비대 압박과 방광 괄약근 과민성, 하초 신양허(腎陽虛)가 복합된 상태입니다! 증상만 잠시 억제하는 약물에 의존하기보다, 전립선 부종 감압 한약과 회음·골반 심부 약침으로 요도 길을 넓히고 방광 에너지를 근본 복원해야 합니다.'
+      }
+    },
+    plates: [
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY 01 · 밤마다 깨어나는 시계, 잃어버린 깊은 잠',
+        title: '소변 줄기가 약해질수록, 당신의 밤과 일상은 짧아집니다',
+        sub: '하루 종일 앉아서 일하고 돌아온 밤, 가장 깊게 쉬어야 할 새벽마다 화장실 불을 켜야 하는 고통. 단순한 노화가 아닙니다. 골반 바닥의 혈류가 막혀 부어오른 전립선이 방광 아래 요도를 꽉 조이고 있다는 신호입니다.',
+        caption: '[원장 임상 노트 01 · 하부요로증상(LUTS)과 수면 분절의 악순환] 전립선 비대와 방광 과민성으로 야간뇨가 2회 이상 발생하면 서파수면(N3)이 깨져 남성 호르몬(Testosterone) 분비와 자율신경 회복력이 급격히 저하됩니다.',
+        imgSrc: 'illust_prostate_care.jpg',
+        cleanTags: [
+          '전립선 울혈·부종으로 인한 요도 압박',
+          '야간뇨 2~4회 · 깊은 숙면 및 활력 저하'
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY 02 · 항생제로 낫지 않는 90%의 비세균성 전립선염',
+        title: '세균이 아닌 골반 속 \'어혈과 냉증\'이 통증의 뿌리입니다',
+        sub: '만성 전립선염 환자의 90% 이상은 세균 감염이 없는 비세균성 울혈·염증입니다. 항생제와 진통제를 반복해도 회음부와 아랫배의 뻐근함이 재발하는 이유는 굳어버린 골반저 근육과 차갑게 정체된 골반 혈류를 풀어주지 못했기 때문입니다.',
+        caption: '[원장 임상 노트 02 · 만성골반통증증후군(CP/CPPS)의 한의학적 해법] 골반강 내 정맥 울혈을 제거하는 활혈거어(活血祛瘀) 처방과 골반저 근육 이완 치료는 항생제 내성 없이 전립선 조직 내 염증 사이토카인을 감소시킵니다.',
+        imgSrc: 'detail_director_story2_clean.jpg?v=oryzo3',
+        cleanTags: [
+          '만성 비세균성 전립선염 · 골반 울혈 해소',
+          '회음부 · 아랫배 · 고환 방사통 근본 완화'
+        ]
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY 03 · 부어오른 전립선을 줄이고 차가운 방광을 데우다',
+        title: '요도의 길을 넓히는 감압 한약과 하초(下焦) 보양의 결합',
+        sub: '바른한의원은 두 가지 축으로 치료합니다. 첫째, 전립선 조직의 부종과 섬유화를 억제해 좁아진 요도 통로를 편안하게 넓힙니다. 둘째, 신장(腎)과 방광의 양기를 따뜻하게 채워 소변을 충분히 저장하고 힘차게 배출하는 방광 탄력을 되살립니다.',
+        caption: '[원장 임상 노트 03 · 5α-환원효소 억제 및 방광 배뇨근 강화 기전] 숙지황·산수유·복분자·우슬·토사자 등 맞춤 보신(補腎)·청열리습 한약은 전립선 비대 인자를 억제하고 방광 평활근의 과민 수축을 안정화합니다.',
+        imgSrc: 'detail_director_story4_decoction_lab.jpg?v=dir4new',
+        cleanTags: [
+          '5α-환원효소 억제 & 전립선 부종 감압 한약',
+          '신양(腎陽) 보강으로 방광 저장능·소변 줄기 회복'
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY 04 · 회음·관원 심부 약침 & 골반 균형 추나',
+        title: '약 기운이 가장 빠르게 닿는 골반 심부 직달 치료',
+        sub: '혈관 분포가 적어 약물이 잘 도달하지 못하는 전립선 특성을 고려하여, 하복부(관원·중극혈)와 골반 신경 총에 정제 한약 약침과 심부 온열 뜸 치료를 직접 시행합니다. 틀어진 골반을 바로잡아 전립선을 누르는 물리적 압박까지 함께 해소합니다.',
+        caption: '[원장 임상 노트 04 · 음부신경(Pudendal Nerve) 조절 및 골반 감압] 천골 신경공(팔료혈)과 관원혈 심부 약침 자극은 방광-요도 반사 신경을 안정시키고 골반강 내부 온도를 +1.2°C 높여 미세혈류를 즉각 개통합니다.',
+        imgSrc: 'detail_chuna_story4_palpation.jpg?v=chuna2',
+        cleanTags: [
+          '관원 · 회음 · 팔료혈 심부 약침 & 온열 뜸',
+          '골반저 근육 이완 및 전립선 혈류 직달 개통'
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY 05 · 아침까지 깨지 않는 숙면, 되찾은 남성의 자신감',
+        title: '화장실 걱정 없는 편안한 외출과 활기찬 아침을 약속합니다',
+        sub: '밤새 한 번도 깨지 않고 아침 햇살을 맞이하는 개운함, 시원한 배뇨와 함께 되살아나는 전신 활력. 프라이버시가 철저히 보장되는 1:1 대표원장 심층 진료로 당신의 품격 있는 일상을 되찾아 드립니다.',
+        caption: '[원장 임상 노트 05 · 국제 전립선 증상 점수(IPSS) 및 야간뇨 개선 지표] 통합 한의 치료 후 야간뇨 횟수 감소 및 잔뇨량 감소, 남성 호르몬·활력 지표의 안정적 회복을 데이터로 확인합니다.',
+        imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
+        sciStats: [
+          { num: '92.8%', label: '만성 전립선염·비대증 배뇨 불편감(IPSS) 및 잔뇨감 호전율', width: '92.8%' },
+          { num: '-74%', label: '야간뇨 횟수 감소 및 심부 숙면 시간 연장 (Urology · Phytomedicine)', width: '88%' }
+        ]
+      }
+    ],
+    nextClinic: {
       href: 'director.html',
-      eyebrow: 'NEXT STORY · 01 / 06',
+      eyebrow: 'NEXT STORY · 01 / 07',
       title: '안정위 대표원장',
       desc: '병명 뒤에 숨은 사람의 체질과 일상을 읽는 15년 임상 대표원장 진료 철학으로 순환합니다',
       bg: 'detail_director_consult.jpg?v=uniq1',
-      caption: '[처음 클리닉으로 순환 · 01 대표원장] 6대 클리닉의 모든 진단과 처방, 안전 탕전을 직접 책임지는 안정위 대표원장의 진료 철학 스토리로 이어집니다.'
+      caption: '[처음 클리닉으로 순환 · 01 대표원장] 7대 클리닉의 모든 진단과 처방, 안전 탕전을 직접 책임지는 안정위 대표원장의 진료 철학 스토리로 이어집니다.'
     }
   }
 ];
@@ -702,7 +816,8 @@ const NAV_TABS = [
   { href: 'growth.html', label: '03 성장' },
   { href: 'diet-zero.html', label: '04 다이어트' },
   { href: 'hairloss.html', label: '05 탈모' },
-  { href: 'gongjindan.html', label: '06 공진단' }
+  { href: 'gongjindan.html', label: '06 공진단' },
+  { href: 'prostate.html', label: '07 전립선' }
 ];
 
 function buildPageHtml(page) {
@@ -2721,7 +2836,7 @@ function buildPageHtml(page) {
       const PAGE_FILE = '${page.file}';
       const DETAIL_BA_MAP = {
         'director.html': {
-          part: 'pelvis',
+          part: 'syncope',
           beforeImg: 'ba_director_before.jpg',
           afterImg: 'ba_director_after.jpg',
           beforeTag: 'BEFORE · 일반 비검증 약재 추출물 및 불순물 우려',
@@ -2769,7 +2884,7 @@ function buildPageHtml(page) {
           ]
         },
         'hairloss.html': {
-          part: 'brain',
+          part: 'cervical',
           beforeImg: 'ba_hair_before.jpg',
           afterImg: 'ba_hair_after.jpg',
           beforeTag: 'BEFORE · 42.0°C 두피 사막화 상열감 및 모낭 위축',
@@ -2781,7 +2896,7 @@ function buildPageHtml(page) {
           ]
         },
         'gongjindan.html': {
-          part: 'heart',
+          part: 'gongjindan',
           beforeImg: 'ba_gongjindan_before.jpg',
           afterImg: 'ba_gongjindan_after.jpg',
           beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심혈관 말초 에너지 방전 (1%)',
@@ -2790,6 +2905,18 @@ function buildPageHtml(page) {
             { label: '식약처 CITES 천연 사향', b: '대체 약재(목향 등)', a: '100% 정품 L-Muscone' },
             { label: '뇌 신경성장인자(NGF·BDNF)', b: '만성 피로·브레인포그', a: '+184% 신경 활력 상승' },
             { label: '자율신경 피로도(HRV) 회복', b: '잔여 배터리 1% 방전', a: '심폐·말초 혈류 즉각 개통' }
+          ]
+        },
+        'prostate.html': {
+          part: 'prostate',
+          beforeImg: 'ba_gongjindan_before.jpg',
+          afterImg: 'ba_gongjindan_after.jpg',
+          beforeTag: 'BEFORE · 전립선 울혈·요도 압박 및 야간뇨 3~4회 수면 분절',
+          afterTag: 'AFTER · 전립선 부종 감압 및 하초(신장·방광) 양기·숙면 복원',
+          metrics: [
+            { label: '배뇨 불편감 점수(IPSS)', b: '세뇨·잔뇨감·급박뇨', a: '92.8% 배뇨 흐름 호전' },
+            { label: '야간뇨 횟수 및 숙면', b: '밤 2~4회 수면 분절', a: '야간뇨 -74% · 통잠 회복' },
+            { label: '골반 심부 체온 및 활력', b: '하초 냉증·회음 통증', a: '+1.2°C 온열 순환 개통' }
           ]
         }
       };
