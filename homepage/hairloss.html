@@ -1109,37 +1109,59 @@
     .consult-action-item:hover { background: var(--accent); color: #111; border-color: var(--accent); }
 
     /* ======================================================================
-       AWWWARDS HIGH-VISIBILITY & WARM HANJI LIGHT MODE + CLINICAL TRUST BAR
+       AWWWARDS / NEKO HEALTH ULTRA-CLEAN HIERARCHY & B/A SPLIT-SCAN STUDIO
        ====================================================================== */
-    .header-vis-btn {
+    /* Hide verbose 2nd paragraph in left panel so only the core essence stands out */
+    #project-details-desc p:nth-child(n+2),
+    .empathy-checklist-sub {
+      display: none !important;
+    }
+    #project-details-desc {
+      margin-bottom: 12px !important;
+    }
+    #project-details-desc p:first-child {
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: rgba(248, 250, 252, 0.88);
+    }
+
+    .header-vis-btn,
+    .header-ba-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 13px;
+      padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(212, 175, 55, 0.14);
-      border: 1px solid rgba(212, 175, 55, 0.42);
-      color: var(--gold-light);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #F8FAFC;
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.22s ease;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
-    .header-vis-btn:hover {
-      background: rgba(212, 175, 55, 0.28);
-      color: #FFFFFF;
-      transform: translateY(-1px);
+    .header-ba-btn {
+      background: rgba(212, 175, 55, 0.16);
+      border-color: rgba(212, 175, 55, 0.55);
+      color: var(--gold-light);
+    }
+    .header-vis-btn:hover,
+    .header-ba-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #090B0E;
     }
 
     .detail-clinical-trust-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      margin-bottom: 16px;
-      padding: 10px;
+      margin-bottom: 10px;
+      padding: 8px;
       border-radius: 12px;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.28);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .detail-trust-seal {
       display: flex;
@@ -1148,20 +1170,180 @@
       gap: 2px;
       padding: 6px 8px;
       border-radius: 8px;
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.28);
     }
     .detail-trust-seal-num {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
       color: #6EE7B7;
       letter-spacing: -0.01em;
     }
     .detail-trust-seal-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: rgba(248, 250, 252, 0.85);
-      line-height: 1.3;
+      font-size: 0.67rem;
+      font-weight: 500;
+      color: rgba(248, 250, 252, 0.78);
+      line-height: 1.25;
       word-break: keep-all;
+    }
+
+    .detail-ba-trigger-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.16) 0%, rgba(16, 185, 129, 0.14) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: var(--gold-light);
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+    .detail-ba-trigger-bar:hover {
+      background: var(--gold);
+      color: #090B0E;
+      border-color: var(--gold);
+    }
+
+    /* Detail Before/After Split-Scan Modal */
+    #detail-ba-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 320;
+      background: rgba(5, 8, 11, 0.88);
+      backdrop-filter: blur(22px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #detail-ba-modal.open { display: flex; }
+    .detail-ba-card {
+      width: min(900px, 95vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #0B0E13;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 22px;
+      padding: 26px 30px;
+      box-shadow: 0 36px 96px rgba(0, 0, 0, 0.92);
+      color: #FFFFFF;
+    }
+    .detail-ba-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 430px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #06080B;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      cursor: ew-resize;
+      touch-action: none;
+      user-select: none;
+      margin: 14px 0;
+    }
+    .detail-ba-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .detail-ba-clip {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      clip-path: inset(0 50% 0 0);
+      pointer-events: none;
+    }
+    .detail-ba-line {
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, var(--gold-light), #FFFFFF, var(--gold-light), transparent);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.85);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .detail-ba-knob {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(10, 14, 18, 0.92);
+      border: 1.5px solid var(--gold);
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+      pointer-events: none;
+      z-index: 6;
+    }
+    .detail-ba-tag {
+      position: absolute;
+      top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      backdrop-filter: blur(12px);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .detail-ba-tag.before {
+      left: 14px;
+      background: rgba(127, 29, 29, 0.8);
+      border: 1px solid rgba(252, 165, 165, 0.45);
+      color: #FECACA;
+    }
+    .detail-ba-tag.after {
+      right: 14px;
+      background: rgba(6, 78, 59, 0.84);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      color: #A7F3D0;
+    }
+    .detail-ba-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .detail-ba-metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .detail-ba-metric-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.58);
+      margin-bottom: 4px;
+    }
+    .detail-ba-metric-val {
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .detail-ba-metric-val .b {
+      color: rgba(252, 165, 165, 0.78);
+      text-decoration: line-through;
+      font-weight: 500;
+      font-size: 12px;
+    }
+    .detail-ba-metric-val .a {
+      color: #6EE7B7;
     }
 
     /* Warm Hanji Light Mode for Detail Pages */
@@ -1198,7 +1380,7 @@
       background: #8A6421;
       color: #FFFFFF;
     }
-    body.theme-hanji #project-details-desc p {
+    body.theme-hanji #project-details-desc p:first-child {
       color: #2B2219;
       font-weight: 500;
     }
@@ -1218,11 +1400,11 @@
       font-weight: 600;
     }
     body.theme-hanji .detail-clinical-trust-bar {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(5, 150, 105, 0.35);
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(5, 150, 105, 0.3);
     }
     body.theme-hanji .detail-trust-seal {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
     }
     body.theme-hanji .detail-trust-seal-num {
       color: #047857;
@@ -1235,15 +1417,19 @@
       color: #FFFFFF;
       border-color: #8A6421;
     }
+    body.theme-hanji .detail-ba-trigger-bar {
+      background: #18130E;
+      color: #FDE68A;
+    }
 
     /* High-Visibility Large Text Mode for Detail Pages */
     body.high-visibility-mode #project-details-meta {
       width: 490px;
       min-width: 490px;
     }
-    body.high-visibility-mode #project-details-desc p {
-      font-size: 0.96rem !important;
-      line-height: 1.75 !important;
+    body.high-visibility-mode #project-details-desc p:first-child {
+      font-size: 0.95rem !important;
+      line-height: 1.7 !important;
       color: #FFFFFF !important;
       font-weight: 500 !important;
     }
@@ -1279,6 +1465,7 @@
       #project-details-items-move-container { transform: none !important; padding: 0 20px; gap: 18px; }
       .project-details-item, .project-details-item[data-fullscreen], #project-details-preview { width: 88vw; height: 58vh; min-height: 400px; }
       #scroll-indicator { left: 0; }
+      .detail-ba-metrics { grid-template-columns: 1fr; }
     }
   </style>
   <script src="clinic-template-config.js"></script>
@@ -1296,7 +1483,7 @@
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path stroke="currentColor" stroke-linecap="round" stroke-width="1.6" d="M8 12.243 3.757 8m0 0L8 3.757M3.757 8h8.486"/>
         </svg>
-        <span>6대 클리닉 카드</span>
+        <span>6대 클리닉</span>
       </a>
     </div>
 
@@ -1320,8 +1507,11 @@
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
+        <span>B/A 전후 스캔 비교 ⇄</span>
+      </button>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (다크 / 한지화이트 / 큰글씨)">
-        <span id="vis-mode-label">👁️ 한지·고시안성 모드</span>
+        <span id="vis-mode-label">시안성 · 한지모드</span>
       </button>
       <button class="header-talk-btn" onclick="window.openConsultModal()">
         <span>1:1 진료예약</span>
@@ -1333,7 +1523,7 @@
   </header>
 
   <main id="project-details">
-    <!-- LEFT CLINIC GUIDE & INTERACTIVE PATIENT EMPATHY CHECKLIST -->
+    <!-- LEFT CLINIC GUIDE & INTERACTIVE PATIENT EMPATHY CHECKLIST (CLEAN, SCANNABLE HIERARCHY) -->
     <aside id="project-details-meta">
       <div>
         <div class="meta-eyebrow">05 / 30CM CONFIDENCE & SCALP COOLING STORY</div>
@@ -1348,23 +1538,29 @@
         <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
         <div class="detail-clinical-trust-bar" aria-label="바른한의원 3대 안심 진료 보증">
           <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">🛡️ 320종 무해성</span>
-            <span class="detail-trust-seal-label">잔류농약·중금속 0% GMP 청정탕전</span>
+            <span class="detail-trust-seal-num">320종 0.00%</span>
+            <span class="detail-trust-seal-label">잔류농약·중금속 불검출 GMP 탕전</span>
           </div>
           <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">🩺 1:1 실명처방</span>
+            <span class="detail-trust-seal-num">1:1 실명처방</span>
             <span class="detail-trust-seal-label">대표원장 직접 진맥·정밀 체질조제</span>
           </div>
           <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">📊 99.4% 안전</span>
+            <span class="detail-trust-seal-num">99.4% 안전</span>
             <span class="detail-trust-seal-label">복용 전후 간수치(AST/ALT) 검증</span>
           </div>
         </div>
 
+        <!-- 1-CLICK BEFORE / AFTER 3D BIOMEDICAL SCAN COMPARISON TRIGGER -->
+        <button type="button" class="detail-ba-trigger-bar" onclick="window.openDetailBaModal()">
+          <span>BEFORE / AFTER 치료 전·후 3D 생체 스캔 비교</span>
+          <span>슬라이더 열기 ⇄</span>
+        </button>
+
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
           <div class="empathy-checklist-header">
-            <span class="empathy-checklist-title">✓ 환자 공감 생활 불편감 체크리스트</span>
+            <span class="empathy-checklist-title">환자 공감 생활 불편감 체크리스트</span>
             <span class="empathy-count-badge" id="empathy-count-badge">0 / 5 체크됨</span>
           </div>
           <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
@@ -1597,6 +1793,37 @@
     <img id="lightbox-img" src="" alt="확대 이미지">
   </div>
 
+  <!-- Interactive 3D Biomedical Before / After Split-Scan Modal -->
+  <div id="detail-ba-modal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="detail-ba-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <div>
+          <span style="font-size:10.5px;font-weight:800;letter-spacing:0.15em;color:var(--gold-light);">NEKO HEALTH / PRENUVO STYLE 3D BIOMEDICAL SCAN</span>
+          <h3 style="font-family:'Noto Serif KR',serif;font-size:1.35rem;font-weight:800;margin-top:3px;" id="detail-ba-title">바른 탈모 · 모근재생 — 치료 전·후(Before / After) 비교</h3>
+        </div>
+        <button type="button" class="plate-expand-btn" onclick="document.getElementById('detail-ba-modal').classList.remove('open')">닫기 ✕</button>
+      </div>
+
+      <div class="detail-ba-stage" id="detail-ba-stage">
+        <img class="detail-ba-img" id="detail-ba-after" src="ba_chuna_after.jpg" alt="After Scan" draggable="false">
+        <div class="detail-ba-clip" id="detail-ba-clip">
+          <img class="detail-ba-img" id="detail-ba-before" src="ba_chuna_before.jpg" alt="Before Scan" draggable="false">
+        </div>
+        <span class="detail-ba-tag before" id="detail-ba-tag-before">BEFORE · 치료 전</span>
+        <span class="detail-ba-tag after" id="detail-ba-tag-after">AFTER · 치료 후</span>
+        <div class="detail-ba-line" id="detail-ba-line"></div>
+        <div class="detail-ba-knob" id="detail-ba-knob">◀ B/A ▶</div>
+      </div>
+
+      <div class="detail-ba-metrics" id="detail-ba-metrics"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:0.78rem;color:rgba(255,255,255,0.65);">중앙 슬라이더를 좌우로 드래그하여 치료 전 원인과 치료 후 회복 상태를 비교해 보세요.</span>
+        <button type="button" class="modal-submit-btn" style="width:auto;margin:0;padding:10px 20px;" onclick="document.getElementById('detail-ba-modal').classList.remove('open');window.openConsultModal();">1:1 맞춤 진료 예약하기 →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
@@ -1618,11 +1845,11 @@
           <label>체크된 불편감 및 추가 상담 메모</label>
           <textarea id="modal-user-memo" rows="3" placeholder="희망하시는 진료 시간대나 증상을 남겨주세요"></textarea>
         </div>
-        <button type="submit" class="modal-submit-btn">✦ 체크한 증상으로 1:1 진료 예약 신청하기</button>
+        <button type="submit" class="modal-submit-btn">체크한 증상으로 1:1 진료 예약 신청하기</button>
       </form>
       <div class="consult-action-list">
-        <a class="consult-action-item" id="detail-tel-link" href="tel:042-488-1075">📞 042-488-1075 전화</a>
-        <a class="consult-action-item" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">💬 카카오톡 상담 ↗</a>
+        <a class="consult-action-item" id="detail-tel-link" href="tel:042-488-1075">전화 상담 (042-488-1075)</a>
+        <a class="consult-action-item" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">카카오톡 채널 상담 ↗</a>
       </div>
       <button class="plate-expand-btn" style="width:100%;padding:11px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
     </div>
@@ -1633,8 +1860,129 @@
       'use strict';
 
       // ====================================================================
-      // 0. AWWWARDS VISIBILITY MODE & B2B WHITE-LABEL BRAND SYNC
+      // 0. AWWWARDS VISIBILITY MODE, B2B BRAND SYNC & BEFORE/AFTER STUDIO
       // ====================================================================
+      const PAGE_FILE = 'hairloss.html';
+      const DETAIL_BA_MAP = {
+        'director.html': {
+          beforeImg: 'ba_director_before.jpg',
+          afterImg: 'ba_director_after.jpg',
+          beforeTag: 'BEFORE · 일반 비검증 약재 추출물 및 불순물 우려',
+          afterTag: 'AFTER · 320종 잔류농약·중금속 0.00% GMP 청정 탕전',
+          metrics: [
+            { label: '중금속·잔류농약 320종 검사', b: '일반 유통 약재', a: '0.00% 완전 불검출' },
+            { label: '복용 전·후 간 수치(AST/ALT)', b: '간 독성 우려', a: '99.4% 정상 범위 안전' },
+            { label: '진맥 및 처방 설계', b: '공장식 획일 처방', a: '15분 27맥상 1:1 실명조제' }
+          ]
+        },
+        'chuna.html': {
+          beforeImg: 'ba_chuna_before.jpg',
+          afterImg: 'ba_chuna_after.jpg',
+          beforeTag: 'BEFORE · 골반 12° 비대칭 경사 및 요추 L4-L5 신경 압박',
+          afterTag: 'AFTER · 중심축 0° 수직 정렬 및 추간판 공간 +3.8mm 감압',
+          metrics: [
+            { label: '골반·척추 중심축 편차', b: '12.4° 비대칭 틀어짐', a: '0.4° 수직 정렬 복원' },
+            { label: '요추 추간판 신경 간격', b: '디스크 압박·통증', a: '+3.8mm 신경 감압' },
+            { label: '건강보험 급여 적용', b: '진통제 임시 억제', a: '연 20회 건강보험 급여' }
+          ]
+        },
+        'growth.html': {
+          beforeImg: 'ba_growth_before.jpg',
+          afterImg: 'ba_growth_after.jpg',
+          beforeTag: 'BEFORE · 성장판 연골층 압박 및 조기 골화 위험 신호',
+          afterTag: 'AFTER · IGF-1 연골모세포 증식 활성화 및 숨은 키 +10cm 견인',
+          metrics: [
+            { label: '성장판 연골모세포 활성도', b: '성장 정체·조기골화', a: 'IGF-1 증식 +184%' },
+            { label: '연간 성장 속도 변화', b: '연 4.1 cm 미달', a: '연 7.8~9.2 cm 달성' },
+            { label: '야간 성장호르몬 분비', b: '구강호흡·수면분절', a: '비강호흡·심부숙면 복원' }
+          ]
+        },
+        'diet-zero.html': {
+          beforeImg: 'ba_diet_before.jpg',
+          afterImg: 'ba_diet_after.jpg',
+          beforeTag: 'BEFORE · 복부 냉증 저대사 및 내장지방 집중 축적 (68.5kg)',
+          afterTag: 'AFTER · 심부 대사 화로 활성화 및 코어 라인 복원 (48.5kg)',
+          metrics: [
+            { label: '체중 및 체지방 변화', b: '68.5 kg (요요 반복)', a: '48.5 kg (-20.0kg 감량)' },
+            { label: '복부 내장지방 레벨', b: 'Lv. 14 (복부 비만)', a: 'Lv. 4 (표준 이하)' },
+            { label: '복부 심부 대사 체온', b: '35.4°C (냉증·부종)', a: '36.8°C (대사 부스팅)' }
+          ]
+        },
+        'hairloss.html': {
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 42.0°C 두피 사막화 상열감 및 모낭 위축',
+          afterTag: 'AFTER · 36.5°C 수승화강 쿨링 및 신생 모근 고밀도 재생',
+          metrics: [
+            { label: '정수리 두피 표면 온도', b: '42.0°C (열성 사막화)', a: '36.5°C (수승화강 안정)' },
+            { label: '유효 모낭 밀도 및 굵기', b: '연모화·빈모 진행', a: '+64% 모발 굵기·밀도 증가' },
+            { label: '모유두 모세혈관 영양 공급', b: '혈류 수축·고갈', a: '진피 3.5mm 약침 직달' }
+          ]
+        },
+        'gongjindan.html': {
+          beforeImg: 'ba_gongjindan_before.jpg',
+          afterImg: 'ba_gongjindan_after.jpg',
+          beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심혈관 말초 에너지 방전 (1%)',
+          afterTag: 'AFTER · CITES 정품 사향 개규(開竅) 작용으로 전신 활력 100% 직달',
+          metrics: [
+            { label: '식약처 CITES 천연 사향', b: '대체 약재(목향 등)', a: '100% 정품 L-Muscone' },
+            { label: '뇌 신경성장인자(NGF·BDNF)', b: '만성 피로·브레인포그', a: '+184% 신경 활력 상승' },
+            { label: '자율신경 피로도(HRV) 회복', b: '잔여 배터리 1% 방전', a: '심폐·말초 혈류 즉각 개통' }
+          ]
+        }
+      };
+
+      const detailBaModal = document.getElementById('detail-ba-modal');
+      const detailBaStage = document.getElementById('detail-ba-stage');
+      const detailBaClip = document.getElementById('detail-ba-clip');
+      const detailBaLine = document.getElementById('detail-ba-line');
+      const detailBaKnob = document.getElementById('detail-ba-knob');
+
+      function setDetailBaPct(pct) {
+        const c = Math.max(4, Math.min(96, pct));
+        if (detailBaClip) detailBaClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        if (detailBaLine) detailBaLine.style.left = c.toFixed(1) + '%';
+        if (detailBaKnob) detailBaKnob.style.left = c.toFixed(1) + '%';
+      }
+
+      window.openDetailBaModal = function() {
+        const data = DETAIL_BA_MAP[PAGE_FILE] || DETAIL_BA_MAP['chuna.html'];
+        const bImg = document.getElementById('detail-ba-before');
+        const aImg = document.getElementById('detail-ba-after');
+        const bTag = document.getElementById('detail-ba-tag-before');
+        const aTag = document.getElementById('detail-ba-tag-after');
+        const mBox = document.getElementById('detail-ba-metrics');
+        if (bImg) bImg.src = data.beforeImg;
+        if (aImg) aImg.src = data.afterImg;
+        if (bTag) bTag.textContent = data.beforeTag;
+        if (aTag) aTag.textContent = data.afterTag;
+        if (mBox) {
+          mBox.innerHTML = data.metrics.map(function(m) {
+            return '<div class="detail-ba-metric-card"><div class="detail-ba-metric-label">' + m.label + '</div><div class="detail-ba-metric-val"><span class="b">' + m.b + '</span><span>→</span><span class="a">' + m.a + '</span></div></div>';
+          }).join('');
+        }
+        setDetailBaPct(50);
+        if (detailBaModal) detailBaModal.classList.add('open');
+      };
+
+      if (detailBaStage) {
+        let dragging = false;
+        const updateX = function(clientX) {
+          const r = detailBaStage.getBoundingClientRect();
+          setDetailBaPct(((clientX - r.left) / Math.max(1, r.width)) * 100);
+        };
+        detailBaStage.addEventListener('pointerdown', function(e) {
+          dragging = true;
+          updateX(e.clientX);
+          try { detailBaStage.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+        detailBaStage.addEventListener('pointermove', function(e) {
+          if (!dragging) return;
+          updateX(e.clientX);
+        });
+        window.addEventListener('pointerup', function() { dragging = false; });
+      }
+
       const VIS_MODES = ['dark-royal', 'warm-hanji', 'high-visibility'];
       let currentVisMode = 'dark-royal';
 
@@ -1644,12 +1992,12 @@
         const labelEl = document.getElementById('vis-mode-label');
         if (currentVisMode === 'warm-hanji') {
           document.body.classList.add('theme-hanji');
-          if (labelEl) labelEl.textContent = '☀️ 한지 화이트 (켜짐)';
+          if (labelEl) labelEl.textContent = '한지 라이트 (ON)';
         } else if (currentVisMode === 'high-visibility') {
           document.body.classList.add('high-visibility-mode');
-          if (labelEl) labelEl.textContent = '🔍 큰글씨 고시안성 (켜짐)';
+          if (labelEl) labelEl.textContent = '큰글씨 고시안성 (ON)';
         } else {
-          if (labelEl) labelEl.textContent = '👁️ 한지·고시안성 모드';
+          if (labelEl) labelEl.textContent = '시안성 · 한지모드';
         }
         try {
           localStorage.setItem('bareun_visual_mode', currentVisMode);
@@ -1685,7 +2033,7 @@
         const telEl = document.getElementById('detail-tel-link');
         if (telEl && brandData.phone) {
           telEl.href = 'tel:' + brandData.phone;
-          telEl.textContent = '📞 ' + brandData.phone + ' 전화';
+          telEl.textContent = '전화 상담 (' + brandData.phone + ')';
         }
       })();
 

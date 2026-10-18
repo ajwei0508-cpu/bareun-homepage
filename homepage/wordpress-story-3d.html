@@ -1062,39 +1062,163 @@
     }
 
     /* ==========================================================================
-       AWWWARDS 2026 FLOATING QUICK-TRIAGE DOCK & CLINICAL TRUST / B2B MODALS
+       AWWWARDS 2026 ULTRA-CLEAN HUD, B/A SPLIT STUDIO & UI COMPARE ENGINE
+       (Inspired by Neko Health, Prenuvo, Lusion.co — Zero Clutter, Pure Clarity)
        ========================================================================== */
+    .dialogue-progress-brush,
+    .minimal-bottom-timeline {
+      display: none !important;
+    }
+
+    /* Website Upgrade Before / After Live Switch (Top Bar) */
+    .ui-upgrade-switch {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(4, 14, 10, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      padding: 3px;
+      margin-left: 14px;
+      backdrop-filter: blur(14px);
+    }
+    .ui-switch-btn {
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.56);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 5px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      white-space: nowrap;
+    }
+    .ui-switch-btn.active {
+      background: var(--gold-bright);
+      color: #04120C;
+      box-shadow: 0 2px 10px rgba(253, 230, 138, 0.35);
+    }
+
+    /* Legacy Before Mode (Shows what the site looked like BEFORE Awwwards upgrade) */
+    .legacy-mode-banner {
+      display: none;
+      position: fixed;
+      top: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 120;
+      background: rgba(18, 20, 24, 0.94);
+      border: 1px solid rgba(253, 230, 138, 0.55);
+      padding: 8px 18px;
+      border-radius: 999px;
+      color: #FDE68A;
+      font-size: 12px;
+      font-weight: 700;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+    }
+    body.legacy-before-mode .legacy-mode-banner {
+      display: inline-flex;
+    }
+    body.legacy-before-mode .dialogue-meta-row,
+    body.legacy-before-mode .dialogue-trust-pill,
+    body.legacy-before-mode .awwwards-quick-dock {
+      display: none !important;
+    }
+    body.legacy-before-mode .dialogue-main-quote {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      opacity: 0.72;
+    }
+
+    /* Center Stage Clean 3-Point Hierarchy */
+    .dialogue-ba-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(253, 230, 138, 0.55);
+      color: var(--gold-bright);
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
+    }
+    .dialogue-ba-btn:hover {
+      background: var(--gold-bright);
+      color: #04120C;
+    }
+    .trust-dot-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-bright);
+      box-shadow: 0 0 8px var(--emerald-bright);
+      flex-shrink: 0;
+    }
+
+    /* Unified Single Bottom Dock with Integrated Progress Hairline */
     .awwwards-quick-dock {
       position: fixed;
-      bottom: 42px;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 44;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
+      gap: 4px;
+      padding: 7px 10px;
       border-radius: 999px;
-      background: rgba(5, 16, 12, 0.84);
-      border: 1px solid rgba(253, 230, 138, 0.38);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.72);
+      background: rgba(4, 13, 10, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.78);
       pointer-events: auto;
-      max-width: 94vw;
+      max-width: 95vw;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .awwwards-quick-dock::-webkit-scrollbar { display: none; }
 
+    .dock-progress-hairline {
+      position: absolute;
+      top: 0;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .dock-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--emerald-bright), var(--gold-bright));
+      transition: width 0.15s linear;
+    }
+
     .dock-pill-link {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 6px 12px;
+      gap: 6px;
+      padding: 6px 13px;
       border-radius: 999px;
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255, 255, 255, 0.72);
       font-size: 11.5px;
-      font-weight: 700;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       text-decoration: none;
       white-space: nowrap;
       border: 1px solid transparent;
@@ -1102,43 +1226,64 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
+    .dock-pill-link .dock-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(253, 230, 138, 0.65);
+    }
     .dock-pill-link:hover,
     .dock-pill-link.active {
-      background: rgba(253, 230, 138, 0.18);
-      border-color: rgba(253, 230, 138, 0.55);
-      color: var(--gold-bright);
-    }
-    .dock-pill-link.trust-highlight {
-      background: rgba(16, 185, 129, 0.22);
-      border-color: rgba(110, 231, 183, 0.55);
-      color: #A7F3D0;
-    }
-    .dock-pill-link.trust-highlight:hover {
-      background: var(--emerald);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(253, 230, 138, 0.45);
       color: #FFFFFF;
     }
-
-    body.theme-hanji .awwwards-quick-dock {
-      background: rgba(252, 249, 242, 0.94);
-      border-color: rgba(140, 109, 50, 0.45);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+    .dock-pill-link.active .dock-num {
+      color: var(--gold-bright);
     }
-    body.theme-hanji .dock-pill-link {
-      color: #1B2E24;
+    .dock-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.14);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+    .dock-pill-link.ba-highlight {
+      background: rgba(253, 230, 138, 0.14);
+      border-color: rgba(253, 230, 138, 0.5);
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+    .dock-pill-link.ba-highlight:hover {
+      background: var(--gold-bright);
+      color: #04120C;
+    }
+
+    body.theme-hanji .awwwards-quick-dock,
+    body.theme-hanji .ui-upgrade-switch {
+      background: rgba(252, 249, 242, 0.95);
+      border-color: rgba(140, 109, 50, 0.35);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+    }
+    body.theme-hanji .dock-pill-link,
+    body.theme-hanji .ui-switch-btn {
+      color: #2B3B32;
     }
     body.theme-hanji .dock-pill-link:hover,
-    body.theme-hanji .dock-pill-link.active {
+    body.theme-hanji .dock-pill-link.active,
+    body.theme-hanji .ui-switch-btn.active {
       background: #16261E;
       color: #FDE68A;
     }
 
-    /* Clinical Trust & B2B Template Showroom Modals */
+    /* ==========================================================================
+       NEKO HEALTH / PRENUVO STYLE 3D BIOMEDICAL BEFORE & AFTER SPLIT-SCAN STUDIO
+       ========================================================================== */
     .awwwards-modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 260;
-      background: rgba(3, 10, 8, 0.82);
-      backdrop-filter: blur(18px);
+      background: rgba(2, 8, 6, 0.86);
+      backdrop-filter: blur(22px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1148,16 +1293,168 @@
       display: flex;
     }
     .awwwards-modal-card {
-      width: min(860px, 95vw);
-      max-height: 88vh;
+      width: min(920px, 95vw);
+      max-height: 90vh;
       overflow-y: auto;
-      background: linear-gradient(145deg, #071912 0%, #04100B 100%);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.88);
+      background: linear-gradient(160deg, #081510 0%, #040B08 100%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 22px;
+      padding: 28px 32px;
+      box-shadow: 0 36px 96px rgba(0, 0, 0, 0.92);
       color: #FFFFFF;
     }
+
+    .ba-clinic-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin: 14px 0 18px;
+      scrollbar-width: none;
+    }
+    .ba-clinic-tabs::-webkit-scrollbar { display: none; }
+    .ba-tab-btn {
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .ba-tab-btn.active,
+    .ba-tab-btn:hover {
+      background: var(--gold-bright);
+      border-color: var(--gold-bright);
+      color: #04120C;
+    }
+
+    .ba-split-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 440px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #06090D;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      user-select: none;
+      touch-action: none;
+      cursor: ew-resize;
+    }
+    .ba-layer-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .ba-before-clip {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      clip-path: inset(0 50% 0 0);
+      pointer-events: none;
+    }
+    .ba-divider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: linear-gradient(180deg, transparent 0%, var(--gold-bright) 15%, #FFFFFF 50%, var(--gold-bright) 85%, transparent 100%);
+      box-shadow: 0 0 16px rgba(253, 230, 138, 0.85);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .ba-handle-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(6, 16, 12, 0.92);
+      border: 1.5px solid var(--gold-bright);
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+      z-index: 6;
+      pointer-events: none;
+    }
+    .ba-corner-tag {
+      position: absolute;
+      top: 14px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      backdrop-filter: blur(12px);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .ba-corner-tag.before {
+      left: 14px;
+      background: rgba(127, 29, 29, 0.78);
+      border: 1px solid rgba(252, 165, 165, 0.45);
+      color: #FECACA;
+    }
+    .ba-corner-tag.after {
+      right: 14px;
+      background: rgba(6, 78, 59, 0.82);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      color: #A7F3D0;
+    }
+
+    .ba-metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .ba-metric-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 13px 16px;
+    }
+    .ba-metric-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.58);
+      margin-bottom: 4px;
+    }
+    .ba-metric-delta {
+      font-size: 15px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ba-metric-delta .before-val {
+      color: rgba(252, 165, 165, 0.78);
+      text-decoration: line-through;
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .ba-metric-delta .after-val {
+      color: var(--emerald-bright);
+    }
+
     .trust-grid-4 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1165,46 +1462,46 @@
       margin: 18px 0;
     }
     .trust-metric-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 14px;
       padding: 18px;
     }
     .trust-metric-badge {
       font-family: var(--font-mono);
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--emerald-bright);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       margin-bottom: 6px;
       display: block;
     }
     .trust-metric-val {
       font-family: var(--font-serif);
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 900;
       color: var(--gold-bright);
       line-height: 1.1;
       margin-bottom: 6px;
     }
     .trust-metric-title {
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 800;
       color: #FFFFFF;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .trust-metric-desc {
-      font-size: 12.5px;
-      color: rgba(255, 255, 255, 0.78);
-      line-height: 1.55;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.5;
     }
     .trust-hours-box {
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(110, 231, 183, 0.32);
-      border-radius: 16px;
-      padding: 18px 20px;
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(110, 231, 183, 0.25);
+      border-radius: 14px;
+      padding: 16px 20px;
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
+      grid-template-columns: 1.3fr 1fr;
       gap: 16px;
       align-items: center;
     }
@@ -1216,9 +1513,9 @@
     }
     .theme-preset-btn {
       padding: 16px 14px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: #FFFFFF;
       text-align: left;
       cursor: pointer;
@@ -1227,49 +1524,17 @@
     .theme-preset-btn:hover,
     .theme-preset-btn.active {
       border-color: var(--gold-bright);
-      background: rgba(197, 160, 89, 0.18);
-      box-shadow: 0 0 24px rgba(253, 230, 138, 0.22);
+      background: rgba(197, 160, 89, 0.16);
     }
 
     @media (max-width: 900px) {
-      .spatial-top-nav {
-        padding: 0 16px;
-      }
-      .nav-brand-sub {
-        display: none;
-      }
-      .story-dialogue-stage {
-        left: 20px;
-        right: 20px;
-        top: 56%;
-        width: auto;
-      }
-      .minimal-bottom-timeline {
-        left: 20px;
-        right: 20px;
-        bottom: 14px;
-      }
-      .awwwards-quick-dock {
-        bottom: 34px;
-        left: 12px;
-        right: 12px;
-        transform: none;
-        justify-content: flex-start;
-      }
-      .skt-bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        height: 74vh;
-        gap: 10px;
-      }
-      .skt-card-item .skt-card-box {
-        padding: 16px;
-      }
-      .trust-grid-4,
-      .trust-hours-box,
-      .theme-preset-grid {
-        grid-template-columns: 1fr;
-      }
+      .spatial-top-nav { padding: 0 14px; }
+      .nav-brand-sub, .ui-upgrade-switch { display: none; }
+      .story-dialogue-stage { left: 18px; right: 18px; top: 56%; width: auto; }
+      .awwwards-quick-dock { bottom: 16px; left: 12px; right: 12px; transform: none; justify-content: flex-start; }
+      .skt-bento-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); height: 74vh; gap: 10px; }
+      .skt-card-item .skt-card-box { padding: 14px; }
+      .trust-grid-4, .trust-hours-box, .theme-preset-grid, .ba-metrics-strip { grid-template-columns: 1fr; }
     }
   </style>
   <script src="clinic-template-config.js"></script>
@@ -1277,34 +1542,48 @@
 <body>
 
   <!-- ========================================================================
-       ULTRA-CLEAN TOP HEADER (WITH TRUST HUB & VISIBILITY/B2B THEME SWITCHER)
+       LEGACY BEFORE-UPGRADE BANNER (Visible only when checking '개선 전 ORIGINAL')
+       ======================================================================== -->
+  <div class="legacy-mode-banner" id="legacy-mode-banner">
+    <span>[비교 모드 · 개선 전 ORIGINAL] 챕터 맥락·임상 신뢰 지표·전후 스캔 비교·하단 퀵독이 없던 이전 상태입니다.</span>
+    <button type="button" class="ui-switch-btn active" onclick="window.setUiCompareMode('after')">개선 후 AWWWARDS 모드로 복귀 →</button>
+  </div>
+
+  <!-- ========================================================================
+       ULTRA-CLEAN EDITORIAL HEADER (NO EMOJI CLUTTER · PURE AWWWARDS HIERARCHY)
        ======================================================================== -->
   <header class="spatial-top-nav">
-    <a href="index.html" class="nav-brand-logo">
-      <span class="logo-gem"></span>
-      <span data-tpl="clinicName">바른한의원</span>
-      <span class="nav-brand-sub" data-tpl="clinicNameEn">BAREUN KOREAN MEDICINE</span>
-    </a>
+    <div style="display:flex;align-items:center;">
+      <a href="index.html" class="nav-brand-logo">
+        <span class="logo-gem"></span>
+        <span id="brand-clinic-title" data-tpl="clinicName">바른한의원</span>
+        <span class="nav-brand-sub" id="brand-clinic-sub" data-tpl="clinicNameEn">BAREUN KOREAN MEDICINE</span>
+      </a>
+
+      <!-- Live Website Before / After Upgrade Toggle Switch -->
+      <div class="ui-upgrade-switch" id="ui-upgrade-compare-switch" title="홈페이지 보완 전(Original)과 보완 후(Awwwards Edition)를 즉시 비교합니다">
+        <button type="button" class="ui-switch-btn active" id="btn-ui-after" onclick="window.setUiCompareMode('after')">개선 후 · AWWWARDS</button>
+        <button type="button" class="ui-switch-btn" id="btn-ui-before" onclick="window.setUiCompareMode('before')">개선 전 · ORIGINAL</button>
+      </div>
+    </div>
 
     <div class="nav-right-actions">
-      <button type="button" class="btn-reserve-minimal" id="btn-open-trust-modal" style="border-color: rgba(110, 231, 183, 0.65); color: #A7F3D0;" title="원장 약력 · 320종 무해성 탕전 · 진료시간 검증">🛡️ 안심·신뢰 검증</button>
-      <button type="button" class="btn-reserve-minimal" id="btn-open-b2b-modal" style="border-color: rgba(253, 230, 138, 0.72); color: #FDE68A;" title="고시안성 큰글씨 / 한지 라이트모드 / 한의원 템플릿 설정">👁️ 시안성·테마 설정</button>
-      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(253, 230, 138, 0.65); color: #FDE68A;" title="6대 핵심 진료 카드 펼침 보기">✦ 6대 진료카드</button>
-      <a href="lifting-compare.html" class="btn-reserve-minimal" style="border-color: rgba(110, 231, 183, 0.55); color: #6EE7B7;" title="AI 안면 리프팅 전후 윤곽진단 스튜디오">윤곽진단 ↗</a>
-      <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 BGM 켜기/끄기">
+      <button type="button" class="btn-reserve-minimal" id="btn-open-ba-modal" style="border-color: rgba(253, 230, 138, 0.75); color: #FDE68A;" onclick="window.openBaModal()">B/A 임상 전후비교</button>
+      <button type="button" class="btn-reserve-minimal" id="btn-open-trust-modal" style="border-color: rgba(110, 231, 183, 0.55); color: #A7F3D0;">안심탕전 · 신뢰 99.4%</button>
+      <button type="button" class="btn-reserve-minimal" id="btn-open-b2b-modal" style="border-color: rgba(255, 255, 255, 0.28); color: #FFFFFF;">시안성 · 원장님 설정</button>
+      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards">6대 클리닉</button>
+      <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 사운드 켜기/끄기">
         <span class="bgm-eq-bars">
           <span></span><span></span><span></span><span></span>
         </span>
-        <span id="bgm-status-label">BGM · ON</span>
+        <span id="bgm-status-label">SOUND</span>
       </button>
-      <button type="button" class="btn-reserve-minimal" id="btn-open-reserve">진료 예약 · 상담 ↗</button>
+      <button type="button" class="btn-reserve-minimal" id="btn-open-reserve" style="background:rgba(253,230,138,0.16);border-color:var(--gold-bright);color:var(--gold-bright);">1:1 진료예약 ↗</button>
     </div>
   </header>
 
   <!-- ========================================================================
-       SK TELECOM (sktelecom.com) INTRO CARD STACK -> BENTO SPREAD SHOWCASE
-       Triggers automatically when the 3D story scroll finishes!
-       6 Cards: 안정위원장 / 추나 / 성장 / 다이어트 / 탈모 / 황제공진단
+       6 SIGNATURE CLINICS BENTO SHOWCASE (CLEAN, SCANNABLE KEY POINTS ONLY)
        ======================================================================== -->
   <section class="skt-finale-stage" id="skt-finale-stage" aria-label="바른한의원 6대 핵심 클리닉">
     <div class="skt-hero-bg" id="skt-hero-bg"></div>
@@ -1316,29 +1595,30 @@
 
     <div class="skt-finale-header" style="justify-content: space-between;">
       <div class="skt-finale-heading-group">
-        <span class="skt-finale-eyebrow">BAREUN 6 SIGNATURE CLINICS · CLICK TO EXPLORE</span>
-        <h2 class="skt-finale-main-title"><span data-tpl="clinicName">바른한의원</span> 6대 핵심 클리닉 상세 스토리</h2>
+        <span class="skt-finale-eyebrow">6 SIGNATURE CLINICS & BEFORE / AFTER ARCHIVE</span>
+        <h2 class="skt-finale-main-title"><span data-tpl="clinicName">바른한의원</span> 6대 핵심 클리닉</h2>
       </div>
       <div class="skt-finale-controls">
-        <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
-        <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 3D 스토리 다시 스크롤</button>
+        <button type="button" class="skt-ctrl-btn" onclick="window.openBaModal()">B/A 6대 클리닉 전후 스캔 비교 ⇄</button>
+        <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">카드 모션 다시보기</button>
+        <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 3D 스토리로 복귀</button>
       </div>
     </div>
 
     <div class="skt-bento-grid" id="skt-bento-grid">
-      <!-- 1. 안정위원장 -->
-      <div class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="안정위 대표원장 1:1 사상체질·통합진료 클리닉" data-chapter="1">
+      <!-- 1. 대표원장 -->
+      <div class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="대표원장 1:1 사상체질·통합진료 클리닉" data-chapter="1">
         <div class="skt-img-box" style="background-image: url('https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info">
             <div>
               <p class="skt-card-title"><span data-tpl="directorName">안정위</span> <span data-tpl="directorTitle">대표원장</span></p>
-              <p class="skt-card-desc">15년 사상체질 · 양 손목 27맥상 · 320종 무해성 원내 탕전</p>
+              <p class="skt-card-desc">320종 무해성 0% · 간 수치 안전 99.4% · 1:1 실명 진맥</p>
             </div>
           </div>
           <div class="skt-card-actions-row">
             <span class="skt-card-chip" data-action="link">상세 스토리 →</span>
-            <span class="skt-card-chip secondary" data-action="reserve">1:1 예약</span>
+            <span class="skt-card-chip secondary" onclick="event.stopPropagation();window.openBaModal('director')">B/A 전후비교</span>
           </div>
         </div>
       </div>
@@ -1350,12 +1630,12 @@
           <div class="skt-card-bottom-info">
             <div>
               <p class="skt-card-title">바른 추나 · 척추교정</p>
-              <p class="skt-card-desc">건강보험 급여 적용 · 원장 1:1 수기 척추·골반 중심축 복원</p>
+              <p class="skt-card-desc">골반 경사 12°→0° 정렬 · 신경 감압 +3.8mm · 건보 급여</p>
             </div>
           </div>
           <div class="skt-card-actions-row">
             <span class="skt-card-chip" data-action="link">상세 스토리 →</span>
-            <span class="skt-card-chip secondary" data-action="reserve">1:1 예약</span>
+            <span class="skt-card-chip secondary" onclick="event.stopPropagation();window.openBaModal('chuna')">B/A 전후비교</span>
           </div>
         </div>
       </div>
@@ -1367,12 +1647,12 @@
           <div class="skt-card-bottom-info">
             <div>
               <p class="skt-card-title">바른 성장 · 성조숙증</p>
-              <p class="skt-card-desc">무방사선 초음파 성장판 스캔 · 숨은 10cm 골든타임 한약</p>
+              <p class="skt-card-desc">초음파 성장판 스캔 · IGF-1 골든타임 +10cm 성장 처방</p>
             </div>
           </div>
           <div class="skt-card-actions-row">
             <span class="skt-card-chip" data-action="link">상세 스토리 →</span>
-            <span class="skt-card-chip secondary" data-action="reserve">1:1 예약</span>
+            <span class="skt-card-chip secondary" onclick="event.stopPropagation();window.openBaModal('growth')">B/A 전후비교</span>
           </div>
         </div>
       </div>
@@ -1384,12 +1664,12 @@
           <div class="skt-card-bottom-info">
             <div>
               <p class="skt-card-title">바른 다이어트 · 식욕ZERO</p>
-              <p class="skt-card-desc">불 꺼진 복부 대사 화로 부스팅 · 굶지 않는 건강한 체형 감량</p>
+              <p class="skt-card-desc">복부 대사 화로 점화 · 체지방 집중 감량 (68.5→48.5kg)</p>
             </div>
           </div>
           <div class="skt-card-actions-row">
             <span class="skt-card-chip" data-action="link">상세 스토리 →</span>
-            <span class="skt-card-chip secondary" data-action="reserve">1:1 예약</span>
+            <span class="skt-card-chip secondary" onclick="event.stopPropagation();window.openBaModal('diet')">B/A 전후비교</span>
           </div>
         </div>
       </div>
@@ -1401,12 +1681,12 @@
           <div class="skt-card-bottom-info">
             <div>
               <p class="skt-card-title">바른 탈모 · 모근재생</p>
-              <p class="skt-card-desc">42°C 두피 사막화 수승화강 쿨링 · 진피 3.5mm 발모 약침</p>
+              <p class="skt-card-desc">두피열 42°C→36.5°C 쿨링 · 진피 3.5mm 고농축 발모약침</p>
             </div>
           </div>
           <div class="skt-card-actions-row">
             <span class="skt-card-chip" data-action="link">상세 스토리 →</span>
-            <span class="skt-card-chip secondary" data-action="reserve">1:1 예약</span>
+            <span class="skt-card-chip secondary" onclick="event.stopPropagation();window.openBaModal('hair')">B/A 전후비교</span>
           </div>
         </div>
       </div>
@@ -1418,12 +1698,12 @@
           <div class="skt-card-bottom-info">
             <div>
               <p class="skt-card-title">바른 황제공진단</p>
-              <p class="skt-card-desc">식약처 CITES 100% 정품 사향 · 원장 직접 24K 금박 수제 조제</p>
+              <p class="skt-card-desc">식약처 CITES 100% 정품 사향 · 뇌·심혈관 원기 직달 복원</p>
             </div>
           </div>
           <div class="skt-card-actions-row">
             <span class="skt-card-chip" data-action="link">상세 스토리 →</span>
-            <span class="skt-card-chip secondary" data-action="reserve">1:1 예약</span>
+            <span class="skt-card-chip secondary" onclick="event.stopPropagation();window.openBaModal('gongjindan')">B/A 전후비교</span>
           </div>
         </div>
       </div>
@@ -1431,7 +1711,7 @@
   </section>
 
   <!-- ========================================================================
-       FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT (NEVER DISAPPEARS)
+       FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT
        ======================================================================== -->
   <div class="spatial-fixed-viewport" id="spatial-viewport">
     <canvas id="glsl-portal-canvas"></canvas>
@@ -1441,21 +1721,29 @@
   </div>
 
   <!-- ========================================================================
-       SCROLL-REACTIVE STORY DIALOGUE STAGE (HIGH-VISIBILITY + CLINICAL PROOF)
+       SCROLL-REACTIVE DIALOGUE STAGE (3 ESSENTIAL POINTS ONLY · ZERO CLUTTER)
        ======================================================================== -->
   <main class="story-dialogue-stage" id="story-dialogue-stage">
+    <!-- Point 1: Chapter Context + Direct Detail CTA + Before/After Trigger -->
     <div class="dialogue-meta-row">
       <div class="dialogue-chapter-num" id="dialogue-chapter-num">STORY 01 / 08 · 바른 난임·착상 치료</div>
-      <a href="director.html" class="dialogue-clinic-cta" id="dialogue-clinic-cta">이 클리닉 상세보기 →</a>
+      <a href="director.html" class="dialogue-clinic-cta" id="dialogue-clinic-cta">클리닉 상세보기 →</a>
+      <button type="button" class="dialogue-ba-btn" id="dialogue-ba-trigger" onclick="window.openBaModalForCurrentChapter()">B/A 전후 스캔 비교 ⇄</button>
       <span class="dialogue-pov-tag" id="dialogue-pov-tag" style="display:none;"></span>
     </div>
+
+    <!-- Point 2: High-Contrast Core Headline -->
     <h1 class="dialogue-main-quote" id="dialogue-main-quote">간절한 기다림</h1>
     <div class="dialogue-progress-brush">
       <div class="dialogue-progress-fill" id="dialogue-progress-fill"></div>
     </div>
+
+    <!-- Point 3: Single Scannable Clinical Evidence Pill -->
     <div class="dialogue-trust-pill" id="dialogue-trust-pill">
-      ✓ 15년 사상체질 착상탕 · 자궁내막 수용성 향상 및 부부 통합 난임 치료
+      <span class="trust-dot-indicator"></span>
+      <span id="dialogue-trust-text">15년 사상체질 착상탕 · 자궁내막 수용성 향상 및 부부 통합 난임 치료</span>
     </div>
+
     <div class="story4-weight-counter" id="story4-weight-counter">
       <span class="weight-live-num" id="weight-live-num">68.5 kg</span>
       <span class="weight-diff-badge" id="weight-diff-badge">▼ -0.0 kg 감량</span>
@@ -1465,144 +1753,175 @@
   </main>
 
   <!-- ========================================================================
-       AWWWARDS 2026 FLOATING QUICK-TRIAGE & TRUST DOCK (1-CLICK NAVIGATION)
+       UNIFIED FLOATING EDITORIAL DOCK (WITH INTEGRATED PROGRESS HAIRLINE)
        ======================================================================== -->
   <nav class="awwwards-quick-dock" id="awwwards-quick-dock" aria-label="6대 핵심 클리닉 퀵 네비게이션">
-    <a href="director.html" class="dock-pill-link">01 대표원장</a>
-    <a href="chuna.html" class="dock-pill-link">02 추나·척추</a>
-    <a href="growth.html" class="dock-pill-link">03 키성장</a>
-    <a href="diet-zero.html" class="dock-pill-link">04 다이어트</a>
-    <a href="hairloss.html" class="dock-pill-link">05 탈모</a>
-    <a href="gongjindan.html" class="dock-pill-link">06 황제공진단</a>
-    <a href="lifting-compare.html" class="dock-pill-link">✦ 윤곽진단</a>
-    <button type="button" class="dock-pill-link trust-highlight" onclick="document.getElementById('clinical-trust-modal').classList.add('open')">🛡️ 안심·신뢰 검증</button>
+    <div class="dock-progress-hairline"><div class="dock-progress-fill" id="dock-progress-fill"></div></div>
+    <a href="director.html" class="dock-pill-link"><span class="dock-num">01</span>대표원장</a>
+    <a href="chuna.html" class="dock-pill-link"><span class="dock-num">02</span>추나교정</a>
+    <a href="growth.html" class="dock-pill-link"><span class="dock-num">03</span>키성장</a>
+    <a href="diet-zero.html" class="dock-pill-link"><span class="dock-num">04</span>다이어트</a>
+    <a href="hairloss.html" class="dock-pill-link"><span class="dock-num">05</span>탈모모근</a>
+    <a href="gongjindan.html" class="dock-pill-link"><span class="dock-num">06</span>황제공진단</a>
+    <span class="dock-divider"></span>
+    <button type="button" class="dock-pill-link ba-highlight" onclick="window.openBaModalForCurrentChapter()">B/A 전후 스캔 비교 ⇄</button>
+    <a href="lifting-compare.html" class="dock-pill-link">윤곽진단 ↗</a>
   </nav>
 
-  <!-- ========================================================================
-       MINIMALIST BOTTOM TIMELINE LINE (NO CARDS AT THE BOTTOM!)
-       ======================================================================== -->
-  <footer class="minimal-bottom-timeline">
-    <div class="timeline-top-meta">
-      <span class="timeline-scroll-hint">
-        <span class="wheel-dot"></span>
-        <span>스크롤을 내리면 1인칭·3인칭 시점 전환과 함께 8개의 스토리 대사가 펼쳐집니다</span>
-      </span>
-      <span id="timeline-depth-readout">STORY 01 / 08 · 00%</span>
-    </div>
-    <div class="timeline-bar-track" id="timeline-bar-track">
-      <div class="timeline-bar-fill" id="timeline-bar-fill"></div>
-      <div class="timeline-dots-row" id="timeline-dots-row"></div>
-    </div>
+  <!-- Hidden legacy timeline hooks for JS compatibility -->
+  <footer class="minimal-bottom-timeline" aria-hidden="true">
+    <span id="timeline-depth-readout"></span>
+    <div id="timeline-bar-track"><div id="timeline-bar-fill"></div><div id="timeline-dots-row"></div></div>
   </footer>
 
   <!-- ========================================================================
-       CLINICAL TRUST & SAFETY VERIFICATION MODAL (환자 신뢰성 100% 확보)
+       NEKO HEALTH / PRENUVO STYLE 6-CLINIC 3D BEFORE & AFTER SPLIT-SCAN MODAL
        ======================================================================== -->
-  <div class="awwwards-modal-overlay" id="clinical-trust-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="awwwards-modal-overlay" id="clinical-ba-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="awwwards-modal-card">
       <div class="drawer-top-row">
         <div>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--emerald-bright);letter-spacing:0.14em;">CLINICAL TRUST & SAFETY VERIFICATION</span>
-          <h3 class="drawer-top-title" style="font-size:22px;margin-top:4px;"><span data-tpl="clinicName">바른한의원</span> 4대 환자 안심 · 임상 신뢰 검증 센터</h3>
+          <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--gold-bright);letter-spacing:0.16em;">BIOMEDICAL 3D DIAGNOSTIC BEFORE & AFTER ARCHIVE</span>
+          <h3 class="drawer-top-title" style="font-size:21px;margin-top:3px;" id="ba-modal-title">6대 클리닉 치료 전·후(Before / After) 3D 생체 스캔 비교</h3>
         </div>
-        <button type="button" class="drawer-close-btn" onclick="document.getElementById('clinical-trust-modal').classList.remove('open')">닫기 ✕</button>
+        <button type="button" class="drawer-close-btn" onclick="document.getElementById('clinical-ba-modal').classList.remove('open')">닫기 ✕</button>
       </div>
 
-      <div class="trust-grid-4">
-        <div class="trust-metric-card">
-          <span class="trust-metric-badge">CERTIFIED 01 · 원장 1:1 책임 진료</span>
-          <div class="trust-metric-val">15년+ 임상</div>
-          <div class="trust-metric-title"><span data-tpl="directorName">안정위</span> <span data-tpl="directorTitle">대표원장</span> 심층 맥진·문진</div>
-          <p class="trust-metric-desc">3분 공장식 진료를 거부하고 초진 최소 15분 이상 양 손목 27맥상과 사상체질(태양·태음·소양·소음)을 정밀 판독하여 1g 단위로 맞춤 처방합니다.</p>
-        </div>
-        <div class="trust-metric-card">
-          <span class="trust-metric-badge">CERTIFIED 02 · 무해성 안전 검증</span>
-          <div class="trust-metric-val">320종 ZERO</div>
-          <div class="trust-metric-title">중금속·잔류농약 불검출 식약처 GMP 약재</div>
-          <p class="trust-metric-desc">외부 위탁 없이 원내 10단계 역삼투압 정수 및 저온 진공 멸균 탕전 시스템에서 원장이 직접 약재 순도와 당도(Brix)·산도(pH)를 검수합니다.</p>
-        </div>
-        <div class="trust-metric-card">
-          <span class="trust-metric-badge">CERTIFIED 03 · 간·신장 독성 안전 입증</span>
-          <div class="trust-metric-val">99.4% 안심</div>
-          <div class="trust-metric-title">복용 전·후 간 기능(AST·ALT) 정상 범위 유지</div>
-          <p class="trust-metric-desc">장기 복용 환자 혈액 추적 결과 간 효소 수치(AST 21 / ALT 18 평균) 안전 유지 및 체내 항산화 방어 효소(SOD·GSH) +163% 활성 향상을 확인했습니다.</p>
-        </div>
-        <div class="trust-metric-card">
-          <span class="trust-metric-badge">CERTIFIED 04 · 보건복지부 급여 지정</span>
-          <div class="trust-metric-val">건보·실손 적용</div>
-          <div class="trust-metric-title">연간 20회 추나요법 건강보험 급여 혜택</div>
-          <p class="trust-metric-desc">목·허리 디스크, 협착증, 체형 불균형에 대한 한의사 1:1 수기 추나 교정 시 건강보험 급여 및 실손의료비 적용으로 환자분의 부담을 덜어드립니다.</p>
-        </div>
+      <div class="ba-clinic-tabs" id="ba-clinic-tabs">
+        <button type="button" class="ba-tab-btn active" data-ba-key="chuna" onclick="window.selectBaClinic('chuna')">02. 추나 · 척추정렬</button>
+        <button type="button" class="ba-tab-btn" data-ba-key="diet" onclick="window.selectBaClinic('diet')">04. 다이어트 · 내장지방</button>
+        <button type="button" class="ba-tab-btn" data-ba-key="hair" onclick="window.selectBaClinic('hair')">05. 탈모 · 두피열/모근</button>
+        <button type="button" class="ba-tab-btn" data-ba-key="growth" onclick="window.selectBaClinic('growth')">03. 소아성장 · 성장판</button>
+        <button type="button" class="ba-tab-btn" data-ba-key="gongjindan" onclick="window.selectBaClinic('gongjindan')">06. 황제공진단 · 뇌/심혈관</button>
+        <button type="button" class="ba-tab-btn" data-ba-key="director" onclick="window.selectBaClinic('director')">01. 안심탕전 · 순도검증</button>
       </div>
 
-      <div class="trust-hours-box">
-        <div>
-          <div style="font-size:14px;font-weight:800;color:var(--gold-bright);margin-bottom:8px;">🕒 진료시간 및 오시는 길 안내</div>
-          <div style="font-size:12.5px;color:rgba(255,255,255,0.88);line-height:1.7;">
-            • <strong>평일 (월~금)</strong> : 09:30 ~ 20:30 (매주 야간진료 운영)<br>
-            • <strong>토요일 · 공휴일</strong> : 09:30 ~ 15:00 (점심시간 없이 진료)<br>
-            • <strong>오시는 길</strong> : <span data-tpl="address">대전광역시 서구 둔산로 (바른한의원 빌딩 3층 · 전용 주차 완비)</span><br>
-            • <strong>대표 전화</strong> : <span data-tpl="phone">042-488-1075</span>
-          </div>
+      <!-- Interactive Drag Split Stage -->
+      <div class="ba-split-stage" id="ba-split-stage">
+        <img class="ba-layer-img" id="ba-img-after" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg" alt="치료 후 After 스캔" draggable="false">
+        <div class="ba-before-clip" id="ba-before-clip">
+          <img class="ba-layer-img" id="ba-img-before" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg" alt="치료 전 Before 스캔" draggable="false">
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <button type="button" class="drawer-submit-btn" onclick="document.getElementById('clinical-trust-modal').classList.remove('open');document.getElementById('reserve-drawer-overlay').classList.add('open');">✦ 1:1 대표원장 심층 진료 예약하기</button>
-          <a href="director.html" class="dock-pill-link trust-highlight" style="justify-content:center;padding:10px;">대표원장 진료철학 & 원내 탕전실 자세히 보기 →</a>
+        <span class="ba-corner-tag before" id="ba-tag-before">BEFORE · 골반 12° 경사 및 요추 압박</span>
+        <span class="ba-corner-tag after" id="ba-tag-after">AFTER · 중심축 0° 수직 정렬 및 신경 감압</span>
+        <div class="ba-divider-line" id="ba-divider-line"></div>
+        <div class="ba-handle-knob" id="ba-handle-knob">◀ B/A ▶</div>
+      </div>
+
+      <!-- 3 Core Numerical Proof Points -->
+      <div class="ba-metrics-strip" id="ba-metrics-strip"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:rgba(255,255,255,0.62);">좌우로 슬라이더를 드래그하여 치료 전(원인)과 치료 후(근본 회복) 차이를 직접 확인하세요.</span>
+        <div style="display:flex;gap:8px;">
+          <a href="chuna.html" id="ba-detail-link" class="dock-pill-link ba-highlight" style="padding:9px 16px;">해당 클리닉 상세페이지 이동 →</a>
+          <button type="button" class="drawer-submit-btn" style="padding:9px 18px;width:auto;" onclick="document.getElementById('clinical-ba-modal').classList.remove('open');document.getElementById('reserve-drawer-overlay').classList.add('open');">1:1 맞춤 진료 예약</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ========================================================================
-       B2B TEMPLATE SHOWROOM & HIGH-VISIBILITY SWITCHER MODAL (한의사 데모용)
+       CLINICAL TRUST & SAFETY VERIFICATION MODAL (4 ESSENTIAL PILLARS)
+       ======================================================================== -->
+  <div class="awwwards-modal-overlay" id="clinical-trust-modal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="awwwards-modal-card">
+      <div class="drawer-top-row">
+        <div>
+          <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--emerald-bright);letter-spacing:0.14em;">CLINICAL TRUST & SAFETY VERIFICATION</span>
+          <h3 class="drawer-top-title" style="font-size:21px;margin-top:4px;"><span data-tpl="clinicName">바른한의원</span> 4대 임상 신뢰 보증</h3>
+        </div>
+        <button type="button" class="drawer-close-btn" onclick="document.getElementById('clinical-trust-modal').classList.remove('open')">닫기 ✕</button>
+      </div>
+
+      <div class="trust-grid-4">
+        <div class="trust-metric-card">
+          <span class="trust-metric-badge">01 · DIRECTOR RESPONSIBILITY</span>
+          <div class="trust-metric-val">15년+ 1:1 진맥</div>
+          <div class="trust-metric-title"><span data-tpl="directorName">안정위</span> <span data-tpl="directorTitle">대표원장</span> 전담 책임 진료</div>
+          <p class="trust-metric-desc">초진 15분 심층 문진과 양 손목 27맥상 판독으로 1g 단위 맞춤 처방을 직접 설계합니다.</p>
+        </div>
+        <div class="trust-metric-card">
+          <span class="trust-metric-badge">02 · ZERO TOXICITY GMP</span>
+          <div class="trust-metric-val">320종 0.00%</div>
+          <div class="trust-metric-title">잔류농약·중금속 불검출 식약처 GMP 약재</div>
+          <p class="trust-metric-desc">원내 10단계 정수 및 무균 탕전 시스템에서 원장이 직접 약재 순도와 산도를 검수합니다.</p>
+        </div>
+        <div class="trust-metric-card">
+          <span class="trust-metric-badge">03 · LIVER & KIDNEY SAFETY</span>
+          <div class="trust-metric-val">99.4% 안전</div>
+          <div class="trust-metric-title">복용 전·후 간 기능(AST·ALT) 안전 범위 검증</div>
+          <p class="trust-metric-desc">혈액 추적 데이터 기반 간 효소 수치 정상 유지 및 항산화 효소(SOD) 활성화를 입증했습니다.</p>
+        </div>
+        <div class="trust-metric-card">
+          <span class="trust-metric-badge">04 · NATIONAL INSURANCE</span>
+          <div class="trust-metric-val">건보·실손 적용</div>
+          <div class="trust-metric-title">연 20회 추나요법 건강보험 급여 지정</div>
+          <p class="trust-metric-desc">목·허리 디스크 및 체형 불균형 수기 추나 교정 시 건강보험 및 실손보험 혜택을 적용합니다.</p>
+        </div>
+      </div>
+
+      <div class="trust-hours-box">
+        <div>
+          <div style="font-size:13.5px;font-weight:800;color:var(--gold-bright);margin-bottom:6px;">진료시간 및 오시는 길</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.86);line-height:1.65;">
+            • <strong>평일</strong> : 09:30 ~ 20:30 (야간진료) · <strong>토/공휴일</strong> : 09:30 ~ 15:00<br>
+            • <strong>위치</strong> : <span data-tpl="address">대전광역시 서구 둔산로 (바른한의원 빌딩 3층)</span> · <strong>전화</strong> : <span data-tpl="phone">042-488-1075</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button type="button" class="drawer-submit-btn" onclick="document.getElementById('clinical-trust-modal').classList.remove('open');document.getElementById('reserve-drawer-overlay').classList.add('open');">1:1 대표원장 진료 예약하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       B2B TEMPLATE SHOWROOM & 3-MODE VISIBILITY SWITCHER MODAL
        ======================================================================== -->
   <div class="awwwards-modal-overlay" id="b2b-showroom-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="awwwards-modal-card">
       <div class="drawer-top-row">
         <div>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--gold-bright);letter-spacing:0.14em;">AWWWARDS × KOREAN MEDICINE B2B TEMPLATE ENGINE</span>
-          <h3 class="drawer-top-title" style="font-size:22px;margin-top:4px;">👁️ 시안성(가독성) 모드 & 한의원 맞춤 화이트라벨 설정</h3>
+          <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--gold-bright);letter-spacing:0.14em;">VISIBILITY & WHITE-LABEL CUSTOMIZER</span>
+          <h3 class="drawer-top-title" style="font-size:21px;margin-top:4px;">3단 시안성 모드 & 한의원 1초 화이트라벨 설정</h3>
         </div>
         <button type="button" class="drawer-close-btn" onclick="document.getElementById('b2b-showroom-modal').classList.remove('open')">닫기 ✕</button>
       </div>
 
-      <p style="font-size:13px;color:rgba(255,255,255,0.78);margin-top:12px;line-height:1.6;">
-        <strong>한의사 원장님에게는 압도적인 화려함</strong>을, <strong>환자분들에게는 눈이 편안한 시안성과 신뢰감</strong>을 동시에 제공하는 3대 디스플레이 프리셋입니다. 클릭 시 즉시 화면에 반영됩니다.
-      </p>
-
       <div class="theme-preset-grid">
-        <button type="button" class="theme-preset-btn active" id="preset-btn-dark" onclick="window.applyClinicVisualMode('dark-royal')">
-          <div style="font-size:11px;color:var(--gold-bright);font-weight:800;margin-bottom:4px;">MODE 01 · DEFAULT</div>
-          <div style="font-size:15px;font-weight:800;margin-bottom:6px;">✨ 로얄 다크 시네마</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.72);line-height:1.45;">3D WebGL 셰이더와 황금빛 파티클의 몰입감을 극대화한 하이엔드 시그니처 모드</div>
+        <button type="button" class="theme-preset-btn active" id="theme-card-dark-royal" onclick="window.applyClinicVisualMode('dark-royal')">
+          <div style="font-size:10.5px;color:var(--gold-bright);font-weight:800;margin-bottom:4px;">MODE 01 · SIGNATURE</div>
+          <div style="font-size:15px;font-weight:800;margin-bottom:6px;">로얄 다크 시네마</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.45;">WebGL 3D 파티클 몰입감과 고대비 스크림을 결합한 기본 모드</div>
         </button>
-        <button type="button" class="theme-preset-btn" id="preset-btn-hanji" onclick="window.applyClinicVisualMode('warm-hanji')">
-          <div style="font-size:11px;color:var(--emerald-bright);font-weight:800;margin-bottom:4px;">MODE 02 · WARM EDITORIAL</div>
-          <div style="font-size:15px;font-weight:800;margin-bottom:6px;">📜 웜 한지(Linen) 모드</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.72);line-height:1.45;">Awwwards 2026 웰니스 트렌드인 따뜻한 한지 배경 카드로 환자 심리적 안정감·가독성 강화</div>
+        <button type="button" class="theme-preset-btn" id="theme-card-warm-hanji" onclick="window.applyClinicVisualMode('warm-hanji')">
+          <div style="font-size:10.5px;color:var(--emerald-bright);font-weight:800;margin-bottom:4px;">MODE 02 · WARM EDITORIAL</div>
+          <div style="font-size:15px;font-weight:800;margin-bottom:6px;">온기 한지 라이트</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.45;">밝고 단아한 전통 한지 톤으로 환자 심리적 안정감과 가독성 강화</div>
         </button>
-        <button type="button" class="theme-preset-btn" id="preset-btn-highvis" onclick="window.applyClinicVisualMode('high-visibility')">
-          <div style="font-size:11px;color:#38BDF8;font-weight:800;margin-bottom:4px;">MODE 03 · WCAG AAA</div>
-          <div style="font-size:15px;font-weight:800;margin-bottom:6px;">🔍 초고시안성 큰글씨</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.72);line-height:1.45;">중장년·어르신 환자도 한눈에 읽히도록 폰트 크기 확대 및 고대비 글래스 백플레이트 적용</div>
+        <button type="button" class="theme-preset-btn" id="theme-card-high-visibility" onclick="window.applyClinicVisualMode('high-visibility')">
+          <div style="font-size:10.5px;color:#38BDF8;font-weight:800;margin-bottom:4px;">MODE 03 · WCAG AAA</div>
+          <div style="font-size:15px;font-weight:800;margin-bottom:6px;">초고시안성 큰글씨</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.45;">중장년·어르신 환자를 위해 텍스트 크기와 배경 대비를 극대화</div>
         </button>
       </div>
 
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(253,230,138,0.3);border-radius:16px;padding:20px;">
-        <div style="font-size:14px;font-weight:800;color:var(--gold-bright);margin-bottom:6px;">⚙️ [B2B 템플릿 판매 시연용] 우리 한의원 상호·원장명 1초 실시간 적용 테스트</div>
-        <p style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:14px;">전국 어느 한의원이든 아래 정보만 입력하면 홈페이지 전체 로고·헤드라인·예약창·신뢰센터가 즉시 해당 한의원 브랜드로 변환됩니다.</p>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(253,230,138,0.28);border-radius:14px;padding:18px 20px;">
+        <div style="font-size:13.5px;font-weight:800;color:var(--gold-bright);margin-bottom:4px;">한의원 상호 · 대표원장명 1초 실시간 적용 (B2B 데모)</div>
+        <p style="font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:12px;">입력 즉시 메인 3D 화면과 6대 상세페이지 전체가 해당 한의원 브랜드로 변환됩니다.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;">
           <div class="drawer-form-group">
             <label>한의원 상호명</label>
-            <input type="text" id="tpl-input-clinic" value="바른한의원" placeholder="예: 경희바른한의원">
+            <input type="text" id="b2b-input-clinic" value="바른한의원" placeholder="예: 경희바른한의원">
           </div>
           <div class="drawer-form-group">
             <label>대표원장 성함</label>
-            <input type="text" id="tpl-input-director" value="안정위" placeholder="예: 김한의">
+            <input type="text" id="b2b-input-director" value="안정위" placeholder="예: 김한의">
           </div>
           <div class="drawer-form-group">
             <label>대표 전화번호</label>
-            <input type="text" id="tpl-input-phone" value="042-488-1075" placeholder="예: 02-555-1075">
+            <input type="text" id="b2b-input-phone" value="042-488-1075" placeholder="예: 02-555-1075">
           </div>
           <button type="button" class="drawer-submit-btn" style="padding:11px 18px;white-space:nowrap;" onclick="window.applyCustomClinicBrand()">즉시 변환 적용</button>
         </div>
@@ -2963,6 +3282,8 @@
       const numEl = document.getElementById('dialogue-chapter-num');
       const ctaEl = document.getElementById('dialogue-clinic-cta');
       const trustPillEl = document.getElementById('dialogue-trust-pill');
+      const trustTextEl = document.getElementById('dialogue-trust-text');
+      const dockProgressFill = document.getElementById('dock-progress-fill');
       const dockPillLinks = Array.from(document.querySelectorAll('#awwwards-quick-dock .dock-pill-link'));
       const povTagEl = document.getElementById('dialogue-pov-tag');
       const whisperEl = document.getElementById('dialogue-sub-whisper');
@@ -3015,31 +3336,6 @@
         if (!phaseStepsEl) return;
         phaseStepsEl.innerHTML = '';
         currentPhaseStepEls = [];
-
-        const chFrames = [];
-        FRAMES.forEach((f, idx) => {
-          if (f.chapter === chapterId) chFrames.push({ frame: f, index: idx });
-        });
-
-        chFrames.forEach((item, i) => {
-          if (i > 0) {
-            const arr = document.createElement('span');
-            arr.className = 'phase-step-arrow';
-            arr.textContent = '➔';
-            phaseStepsEl.appendChild(arr);
-          }
-          const span = document.createElement('span');
-          span.className = 'phase-step-text';
-          span.textContent = item.frame.stepLabel;
-          span.dataset.frameIndex = String(item.index);
-          span.addEventListener('click', (e) => {
-            e.stopPropagation();
-            hasUserScrolled = true;
-            scrollToNormalized(frameFloatToFullNorm(item.index));
-          });
-          phaseStepsEl.appendChild(span);
-          currentPhaseStepEls.push(span);
-        });
       }
 
       function getChapterProgress(frameFloat, chapterId) {
@@ -3065,10 +3361,15 @@
           if (numEl) numEl.textContent = chapter.numLabel;
           if (ctaEl) {
             ctaEl.href = chapter.link || 'director.html';
-            ctaEl.textContent = chapter.ctaLabel || '이 클리닉 상세보기 →';
+            ctaEl.textContent = (chapter.ctaLabel || '클리닉 상세보기 →').replace(/^✦\s*/, '');
           }
-          if (trustPillEl && chapter.trustText) {
-            trustPillEl.textContent = chapter.trustText;
+          if (chapter.trustText) {
+            const cleanTrust = chapter.trustText.replace(/^[✓✦]\s*/, '');
+            if (trustTextEl) {
+              trustTextEl.textContent = cleanTrust;
+            } else if (trustPillEl) {
+              trustPillEl.textContent = cleanTrust;
+            }
           }
           dockPillLinks.forEach((d) => {
             d.classList.toggle('active', d.getAttribute('href') === chapter.link);
@@ -3082,18 +3383,6 @@
           frameEnterTime = nowMs;
           buildDialogueCharacters(frame.quote || chapter.quote);
         }
-
-        if (povTagEl && povTagEl.textContent !== frame.povBadge) {
-          povTagEl.textContent = frame.povBadge;
-        }
-
-        if (whisperEl && whisperEl.textContent !== frame.whisper) {
-          whisperEl.textContent = frame.whisper;
-        }
-
-        currentPhaseStepEls.forEach((el) => {
-          el.classList.toggle('active', Number(el.dataset.frameIndex) === idx);
-        });
 
         const chProg = getChapterProgress(frameFloat, chapter.id);
         if (brushFill) {
@@ -3121,7 +3410,7 @@
         charSpans.forEach((span, i) => {
           const charRatio = i / totalChars;
           const rawReveal = Math.max(0, Math.min(1, (timeSinceEnter * 2.5) - charRatio * 0.52));
-          const entranceReveal = 1 - Math.pow(1 - rawReveal, 3); // Luxury cubic-out ease
+          const entranceReveal = 1 - Math.pow(1 - rawReveal, 3);
           const yOffset = (1 - entranceReveal) * 20;
           const rotX = (1 - entranceReveal) * -32;
           const blurPx = (1 - entranceReveal) * 4.0;
@@ -3141,15 +3430,14 @@
           stageContainer.style.transform = `translateY(-50%)`;
         }
 
-        const pct = (smoothProgress * 100).toFixed(0);
+        const pctStr = `${(smoothProgress * 100).toFixed(2)}%`;
         const tFill = document.getElementById('timeline-bar-fill');
-        const tReadout = document.getElementById('timeline-depth-readout');
-        if (tFill) tFill.style.width = `${(smoothProgress * 100).toFixed(2)}%`;
-        if (tReadout) tReadout.textContent = `STORY 0${chapter.id} / 08 · ${String(pct).padStart(2, '0')}%`;
+        if (tFill) tFill.style.width = pctStr;
+        if (dockProgressFill) dockProgressFill.style.width = pctStr;
       }
 
       // ======================================================================
-      // 7. SCROLL CONTROLLER (Starts Immediately on Frame 0: 1st-Person Negative Test!)
+      // 7. SCROLL CONTROLLER
       // ======================================================================
       let targetProgress = 0;
       let smoothProgress = 0;
@@ -3198,6 +3486,8 @@
           if (typeof sktCardFlipController !== 'undefined' && sktCardFlipController) {
             sktCardFlipController.activate();
           }
+        } else if (params.has('ba')) {
+          window.openBaModal(params.get('ba') || 'chuna');
         } else if (params.has('frame')) {
           const f = parseInt(params.get('frame'), 10);
           if (!isNaN(f)) scrollToNormalized(frameFloatToFullNorm(f));
@@ -3232,14 +3522,6 @@
         mouseNorm.x = e.clientX / Math.max(1, window.innerWidth);
         mouseNorm.y = e.clientY / Math.max(1, window.innerHeight);
       }, { passive: true });
-
-      const timelineTrack = document.getElementById('timeline-bar-track');
-      if (timelineTrack) {
-        timelineTrack.addEventListener('click', (e) => {
-          const rect = timelineTrack.getBoundingClientRect();
-          scrollToNormalized((e.clientX - rect.left) / Math.max(1, rect.width));
-        });
-      }
 
       const drawerOverlay = document.getElementById('reserve-drawer-overlay');
       const btnOpenReserve = document.getElementById('btn-open-reserve');
@@ -3276,8 +3558,190 @@
       }
 
       // ======================================================================
-      // 7.5 AWWWARDS CLINICAL TRUST MODAL & B2B WHITE-LABEL SHOWROOM ENGINE
+      // 7.5 AWWWARDS BEFORE/AFTER 3D BIOMEDICAL SCAN STUDIO & UI COMPARE ENGINE
       // ======================================================================
+      const BA_CLINIC_DATA = {
+        chuna: {
+          title: '02. 바른 추나 · 척추교정 — 치료 전·후 3D 생체역학 정렬 비교',
+          beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg',
+          afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg',
+          beforeTag: 'BEFORE · 골반 12° 경사 및 요추 L4-L5 신경 압박',
+          afterTag: 'AFTER · 중심축 0° 수직 정렬 및 추간판 +3.8mm 감압',
+          link: 'chuna.html',
+          metrics: [
+            { label: '골반·척추 중심축 편차', before: '12.4° 비대칭', after: '0.4° 수직 정렬' },
+            { label: '요추 추간판 신경 간격', before: '협착·압박', after: '+3.8mm 감압 확보' },
+            { label: '건강보험 급여 혜택', before: '진통제 대증요법', after: '연 20회 건보 급여' }
+          ]
+        },
+        diet: {
+          title: '04. 바른 다이어트 · 식욕ZERO — 치료 전·후 복부 내장지방·대사 스캔 비교',
+          beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_diet_before.jpg',
+          afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_diet_after.jpg',
+          beforeTag: 'BEFORE · 복부 냉증 저대사 및 내장지방 집중 축적 (68.5kg)',
+          afterTag: 'AFTER · 심부 대사 화로 활성화 및 코어 라인 복원 (48.5kg)',
+          link: 'diet-zero.html',
+          metrics: [
+            { label: '체중 및 체지방 변화', before: '68.5 kg', after: '48.5 kg (-20.0kg)' },
+            { label: '복부 내장지방 레벨', before: 'Lv. 14 (고위험)', after: 'Lv. 4 (표준 이하)' },
+            { label: '복부 심부 대사 체온', before: '35.4°C (냉증 정체)', after: '36.8°C (대사 부스팅)' }
+          ]
+        },
+        hair: {
+          title: '05. 바른 탈모 · 모근재생 — 치료 전·후 두피 열화상·모낭 밀도 비교',
+          beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_hair_before.jpg',
+          afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 42.0°C 두피 사막화 상열감 및 모낭 위축',
+          afterTag: 'AFTER · 36.5°C 수승화강 쿨링 및 신생 모근 고밀도 재생',
+          link: 'hairloss.html',
+          metrics: [
+            { label: '정수리 두피 표면 온도', before: '42.0°C (열성 탈모)', after: '36.5°C (수승화강 안정)' },
+            { label: '단위면적당 유효 모낭 수', before: '연모화·밀도 저하', after: '+64% 굵기·밀도 증가' },
+            { label: '모유두 모세혈관 영양 공급', before: '혈류 수축·고갈', after: '진피 3.5mm 약침 직달' }
+          ]
+        },
+        growth: {
+          title: '03. 바른 성장 · 성조숙증 — 치료 전·후 성장판 연골모세포 활성 비교',
+          beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_growth_before.jpg',
+          afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_growth_after.jpg',
+          beforeTag: 'BEFORE · 성장판 연골층 압박 및 조기 골화 위험 신호',
+          afterTag: 'AFTER · IGF-1 연골모세포 증식 활성화 및 숨은 키 +10cm 견인',
+          link: 'growth.html',
+          metrics: [
+            { label: '성장판(Epiphyseal Plate) 활성도', before: '정체·조기골화 위험', after: 'IGF-1 증식 +184%' },
+            { label: '연간 성장 속도 변화', before: '연 4.1 cm 미달', after: '연 7.8~9.2 cm 달성' },
+            { label: '야간 성장호르몬 분비 효율', before: '구강호흡·수면분절', after: '비강호흡·심부숙면 복원' }
+          ]
+        },
+        gongjindan: {
+          title: '06. 바른 황제공진단 — 복용 전·후 뇌신경·심혈관 원기 순환 비교',
+          beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_gongjindan_before.jpg',
+          afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_gongjindan_after.jpg',
+          beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심혈관 말초 에너지 방전 (1%)',
+          afterTag: 'AFTER · CITES 정품 사향 개규(開竅) 작용으로 전신 활력 100% 직달',
+          link: 'gongjindan.html',
+          metrics: [
+            { label: '식약처 CITES 천연 사향 순도', before: '대체 약재(목향 등)', after: '100% 정품 L-Muscone' },
+            { label: '뇌 신경성장인자(NGF·BDNF)', before: '만성 피로·브레인포그', after: '+184% 신경 활력 상승' },
+            { label: '자율신경 피로도(HRV) 회복', before: '잔여 배터리 1% 방전', after: '심폐·말초 혈류 즉각 개통' }
+          ]
+        },
+        director: {
+          title: '01. 대표원장 안심탕전 — 일반 약재 vs 320종 무해성 0% 정제 한약 비교',
+          beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_before.jpg',
+          afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg',
+          beforeTag: 'BEFORE · 불순물·중금속 우려가 있는 일반 비검증 추출물',
+          afterTag: 'AFTER · 320종 잔류농약·중금속 0.00% 식약처 GMP 멸균 정제 한약',
+          link: 'director.html',
+          metrics: [
+            { label: '중금속·잔류농약 320종 검사', before: '일반 유통 약재', after: '0.00% 완전 불검출' },
+            { label: '복용 전·후 간 수치(AST/ALT)', before: '간 독성 막연한 불안', after: '99.4% 정상 범위 안전' },
+            { label: '진맥 및 처방 설계 방식', before: '3분 공장식 획일 처방', after: '15분 27맥상 1:1 실명조제' }
+          ]
+        }
+      };
+
+      const CHAPTER_TO_BA_KEY = {
+        1: 'director',
+        2: 'growth',
+        3: 'growth',
+        4: 'diet',
+        5: 'hair',
+        6: 'chuna',
+        7: 'gongjindan',
+        8: 'director'
+      };
+
+      const baModal = document.getElementById('clinical-ba-modal');
+      const baStage = document.getElementById('ba-split-stage');
+      const baBeforeClip = document.getElementById('ba-before-clip');
+      const baDivider = document.getElementById('ba-divider-line');
+      const baKnob = document.getElementById('ba-handle-knob');
+
+      function setBaSliderPercent(pct) {
+        const clamped = Math.max(4, Math.min(96, pct));
+        if (baBeforeClip) baBeforeClip.style.clipPath = `inset(0 ${(100 - clamped).toFixed(1)}% 0 0)`;
+        if (baDivider) baDivider.style.left = `${clamped.toFixed(1)}%`;
+        if (baKnob) baKnob.style.left = `${clamped.toFixed(1)}%`;
+      }
+
+      window.selectBaClinic = function(key) {
+        const data = BA_CLINIC_DATA[key] || BA_CLINIC_DATA.chuna;
+        const titleEl = document.getElementById('ba-modal-title');
+        const imgBefore = document.getElementById('ba-img-before');
+        const imgAfter = document.getElementById('ba-img-after');
+        const tagBefore = document.getElementById('ba-tag-before');
+        const tagAfter = document.getElementById('ba-tag-after');
+        const metricsEl = document.getElementById('ba-metrics-strip');
+        const detailLink = document.getElementById('ba-detail-link');
+
+        if (titleEl) titleEl.textContent = data.title;
+        if (imgBefore) imgBefore.src = data.beforeImg;
+        if (imgAfter) imgAfter.src = data.afterImg;
+        if (tagBefore) tagBefore.textContent = data.beforeTag;
+        if (tagAfter) tagAfter.textContent = data.afterTag;
+        if (detailLink) detailLink.href = data.link;
+
+        if (metricsEl) {
+          metricsEl.innerHTML = data.metrics.map((m) => `
+            <div class="ba-metric-box">
+              <div class="ba-metric-label">${m.label}</div>
+              <div class="ba-metric-delta">
+                <span class="before-val">${m.before}</span>
+                <span>→</span>
+                <span class="after-val">${m.after}</span>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        document.querySelectorAll('#ba-clinic-tabs .ba-tab-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.baKey === key);
+        });
+
+        setBaSliderPercent(50);
+      };
+
+      window.openBaModal = function(clinicKey) {
+        const key = clinicKey || CHAPTER_TO_BA_KEY[activeChapterId] || 'chuna';
+        window.selectBaClinic(key);
+        if (baModal) baModal.classList.add('open');
+      };
+
+      window.openBaModalForCurrentChapter = function() {
+        const key = CHAPTER_TO_BA_KEY[activeChapterId] || 'chuna';
+        window.openBaModal(key);
+      };
+
+      if (baStage) {
+        let isDraggingBa = false;
+        const updateFromEvent = (clientX) => {
+          const rect = baStage.getBoundingClientRect();
+          const pct = ((clientX - rect.left) / Math.max(1, rect.width)) * 100;
+          setBaSliderPercent(pct);
+        };
+        baStage.addEventListener('pointerdown', (e) => {
+          isDraggingBa = true;
+          updateFromEvent(e.clientX);
+          try { baStage.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+        baStage.addEventListener('pointermove', (e) => {
+          if (!isDraggingBa) return;
+          updateFromEvent(e.clientX);
+        });
+        window.addEventListener('pointerup', () => { isDraggingBa = false; });
+      }
+
+      // Website Upgrade Before/After Live Compare Switch ('after' = Awwwards Edition, 'before' = Original Legacy)
+      window.setUiCompareMode = function(mode) {
+        const isBefore = mode === 'before';
+        document.body.classList.toggle('legacy-before-mode', isBefore);
+        const btnAfter = document.getElementById('btn-ui-after');
+        const btnBefore = document.getElementById('btn-ui-before');
+        if (btnAfter) btnAfter.classList.toggle('active', !isBefore);
+        if (btnBefore) btnBefore.classList.toggle('active', isBefore);
+      };
+
       const trustModal = document.getElementById('clinical-trust-modal');
       const b2bModal = document.getElementById('b2b-showroom-modal');
       const btnOpenTrust = document.getElementById('btn-open-trust-modal');
@@ -3285,15 +3749,9 @@
 
       if (btnOpenTrust && trustModal) {
         btnOpenTrust.addEventListener('click', () => trustModal.classList.add('open'));
-        trustModal.addEventListener('click', (e) => {
-          if (e.target === trustModal) trustModal.classList.remove('open');
-        });
       }
       if (btnOpenB2b && b2bModal) {
         btnOpenB2b.addEventListener('click', () => b2bModal.classList.add('open'));
-        b2bModal.addEventListener('click', (e) => {
-          if (e.target === b2bModal) b2bModal.classList.remove('open');
-        });
       }
 
       window.applyClinicVisualMode = function(mode) {
@@ -3314,18 +3772,23 @@
 
       function renderCustomBrandToDOM(brandData) {
         if (!brandData) return;
-        const titleEl = document.getElementById('brand-clinic-title');
-        const subEl = document.getElementById('brand-clinic-sub');
-        if (titleEl && brandData.clinicName) titleEl.textContent = brandData.clinicName;
-        if (subEl && brandData.directorName) {
-          subEl.textContent = `${brandData.directorName} · 한방명의 1:1 전담 진료`;
+        if (brandData.clinicName) {
+          document.querySelectorAll('[data-tpl="clinicName"]').forEach((el) => {
+            el.textContent = brandData.clinicName;
+          });
+        }
+        if (brandData.directorName) {
+          const cleanDir = brandData.directorName.replace(/\s*대표원장$/, '');
+          document.querySelectorAll('[data-tpl="directorName"]').forEach((el) => {
+            el.textContent = cleanDir;
+          });
         }
         if (brandData.phone) {
+          document.querySelectorAll('[data-tpl="phone"]').forEach((el) => {
+            el.textContent = brandData.phone;
+          });
           document.querySelectorAll('a[href^="tel:"]').forEach((a) => {
             a.href = `tel:${brandData.phone}`;
-            if (a.textContent.includes('전화')) {
-              a.textContent = `📞 전화 (${brandData.phone})`;
-            }
           });
         }
         const inputClinic = document.getElementById('b2b-input-clinic');
@@ -3338,8 +3801,8 @@
 
       window.applyCustomClinicBrand = function() {
         const clinicName = (document.getElementById('b2b-input-clinic')?.value || '바른한의원').trim();
-        const directorName = (document.getElementById('b2b-input-director')?.value || '위현우 대표원장').trim();
-        const phone = (document.getElementById('b2b-input-phone')?.value || '02-1234-5678').trim();
+        const directorName = (document.getElementById('b2b-input-director')?.value || '안정위').trim();
+        const phone = (document.getElementById('b2b-input-phone')?.value || '042-488-1075').trim();
         const brandData = { clinicName, directorName, phone };
         renderCustomBrandToDOM(brandData);
         try {
@@ -3359,8 +3822,8 @@
 
         let brandData = {
           clinicName: cfg.clinicName || '바른한의원',
-          directorName: cfg.directorName || '위현우 대표원장',
-          phone: cfg.phone || '02-1234-5678'
+          directorName: cfg.directorName || '안정위',
+          phone: cfg.phone || '042-488-1075'
         };
         try {
           const lsBrand = localStorage.getItem('bareun_custom_brand');
@@ -3370,6 +3833,7 @@
           }
         } catch (_) {}
         renderCustomBrandToDOM(brandData);
+        window.selectBaClinic('chuna');
       })();
 
       // ======================================================================
