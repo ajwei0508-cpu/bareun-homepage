@@ -1741,19 +1741,15 @@
       }
       controls.update();
 
-      // Gentle cartoon/illustration breathing & heartbeat
+      // Static calm illustration (heart motion removed per user request)
       Object.keys(loadedOrgans).forEach(key => {
         const entry = loadedOrgans[key];
         const isTarget = entry.cfg.parts.includes(currentPartId);
-        if (key === 'heart') {
-          const beat = 1.0 + Math.sin(t * 4.6) * 0.022;
-          entry.scene.scale.setScalar(beat);
-        }
-        entry.mat.uniforms.uPulse.value = isTarget ? (0.5 + 0.5 * Math.sin(t * 3.0)) * currentRecoveryMix : 0.0;
+        entry.mat.uniforms.uPulse.value = isTarget ? 0.35 * currentRecoveryMix : 0.0;
       });
 
       if (kneeGrowthPlateMat) {
-        kneeGrowthPlateMat.uniforms.uPulse.value = (0.5 + 0.5 * Math.sin(t * 3.5)) * currentRecoveryMix;
+        kneeGrowthPlateMat.uniforms.uPulse.value = 0.35 * currentRecoveryMix;
       }
 
       const w = stageEl.clientWidth;
