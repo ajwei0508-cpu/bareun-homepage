@@ -8,6 +8,7 @@ const story3d = fs.readFileSync(path.join(dir, 'story-3d.html'), 'utf8');
 const wpReset = [
   '',
   '/* WORDPRESS & ASTRA THEME CONTAINER RESET */',
+  '.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper { display: none !important; }',
   '.entry-content, .ast-container, .site-content, article.page, .ast-plain-container,',
   '.elementor, .elementor-section-wrap, .wp-block-group {',
   '  padding: 0 !important;',
@@ -38,6 +39,16 @@ function rewriteAssetsForWP(html) {
     .replace(/loadLinearTex\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1'")
     .replace(/src="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
     .replace(/poster="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
+    .replace(/href="story-3d\.html(\?[^"]*)?"/g, 'href="/$1"')
+    .replace(/href="index\.html(\?[^"]*)?"/g, 'href="/$1"')
+    .replace(/href="(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'href="/$1/$2"')
+    .replace(/href="gongjindan\.html(\?[^"]*)?"/g, 'href="/gongjindan-2/$1"')
+    .replace(/href:\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href: '/$1/$2'")
+    .replace(/href:\s*'gongjindan\.html(\?[^']*)?'/g, "href: '/gongjindan-2/$1'")
+    .replace(/href\s*=\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href = '/$1/$2'")
+    .replace(/'body-explorer\.html\?part='/g, "'/body-explorer/?part='")
+    .replace(/"ctaHref":"(director|chuna|growth|diet-zero|hairloss|prostate)\.html"/g, '"ctaHref":"/$1/"')
+    .replace(/"ctaHref":"gongjindan\.html"/g, '"ctaHref":"/gongjindan-2/"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
       const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : ghBase + f).join('|');
       return 'data-frames="' + rewritten + '"';
@@ -60,7 +71,8 @@ const detailPages = [
   ['hairloss.html', 'wordpress-hairloss.html'],
   ['gongjindan.html', 'wordpress-gongjindan.html'],
   ['prostate.html', 'wordpress-prostate.html'],
-  ['body-explorer.html', 'wordpress-body-explorer.html']
+  ['body-explorer.html', 'wordpress-body-explorer.html'],
+  ['lifting-compare.html', 'wordpress-lifting-compare.html']
 ];
 
 detailPages.forEach(([srcFile, outFile]) => {

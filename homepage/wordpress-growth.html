@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
 /* WORDPRESS & ASTRA THEME CONTAINER RESET */
+.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper { display: none !important; }
 .entry-content, .ast-container, .site-content, article.page, .ast-plain-container,
 .elementor, .elementor-section-wrap, .wp-block-group {
   padding: 0 !important;
@@ -1610,17 +1611,17 @@
 
   <header id="header">
     <div class="header-left">
-      <a class="brand-logo" href="story-3d.html">
+      <a class="brand-logo" href="/">
         <span class="brand-logo-mark"></span>
         <span id="detail-brand-clinic-name">바른한의원</span>
       </a>
-      <a class="back-pill-btn" href="story-3d.html?cards=1">
+      <a class="back-pill-btn" href="/?cards=1">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path stroke="currentColor" stroke-linecap="round" stroke-width="1.6" d="M8 12.243 3.757 8m0 0L8 3.757M3.757 8h8.486"/>
         </svg>
         <span>6대 클리닉</span>
       </a>
-      <a class="back-pill-btn" id="header-body-explorer-link" href="body-explorer.html" style="border-color:rgba(110,231,183,0.5);color:#A7F3D0;">
+      <a class="back-pill-btn" id="header-body-explorer-link" href="/body-explorer/" style="border-color:rgba(110,231,183,0.5);color:#A7F3D0;">
         <span>3D 인체 질환·논문 백과 ↗</span>
       </a>
     </div>
@@ -1635,13 +1636,13 @@
       </div>
 
       <nav class="clinic-quick-tabs" aria-label="클리닉 바로가기">
-        <a class="clinic-tab" href="director.html">01 원장</a>
-        <a class="clinic-tab" href="chuna.html">02 추나</a>
-        <a class="clinic-tab active" href="growth.html">03 성장</a>
-        <a class="clinic-tab" href="diet-zero.html">04 다이어트</a>
-        <a class="clinic-tab" href="hairloss.html">05 탈모</a>
-        <a class="clinic-tab" href="gongjindan.html">06 공진단</a>
-        <a class="clinic-tab" href="prostate.html">07 전립선</a>
+        <a class="clinic-tab" href="/director/">01 원장</a>
+        <a class="clinic-tab" href="/chuna/">02 추나</a>
+        <a class="clinic-tab active" href="/growth/">03 성장</a>
+        <a class="clinic-tab" href="/diet-zero/">04 다이어트</a>
+        <a class="clinic-tab" href="/hairloss/">05 탈모</a>
+        <a class="clinic-tab" href="/gongjindan-2/">06 공진단</a>
+        <a class="clinic-tab" href="/prostate/">07 전립선</a>
       </nav>
     </div>
 
@@ -1712,7 +1713,7 @@
         </div>
 
         <!-- 1-CLICK 3D HUMAN BODY MEDICAL ENCYCLOPEDIA PORTAL -->
-        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html">
+        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="/body-explorer/">
           <span>3D 인체모형 클릭 · 원인/음식/생활/SCI논문 백과</span>
           <span>탐색하기 ↗</span>
         </a>
@@ -1947,7 +1948,7 @@
         </article>
 
         <!-- PLATE 07: Next Clinic Portal -->
-        <a id="project-details-preview" href="diet-zero.html" data-caption="[다음 클리닉 안내 · 04 다이어트] 굶고 빼고 다시 배부터 찌는 요요의 형벌을 끊어내고, 불 꺼진 대사 화로를 되살려 입고 싶은 옷을 당당히 입는 다이어트 클리닉으로 이어집니다.">
+        <a id="project-details-preview" href="/diet-zero/" data-caption="[다음 클리닉 안내 · 04 다이어트] 굶고 빼고 다시 배부터 찌는 요요의 형벌을 끊어내고, 불 꺼진 대사 화로를 되살려 입고 싶은 옷을 당당히 입는 다이어트 클리닉으로 이어집니다.">
           <img class="next-portal-bg" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_diet_portal_bg.jpg?v=uniq1" alt="바른 다이어트 · 식욕ZERO">
           <div class="next-portal-scrim"></div>
           <div id="project-details-preview-inner">
@@ -2160,8 +2161,8 @@
         if (raImg) raImg.src = activeBaData.afterImg;
         if (rTagB) rTagB.textContent = activeBaData.beforeTag;
         if (rTagA) rTagA.textContent = activeBaData.afterTag;
-        if (hExplorer) hExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
-        if (sExplorer) sExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
+        if (hExplorer) hExplorer.href = '/body-explorer/?part=' + activeBaData.part;
+        if (sExplorer) sExplorer.href = '/body-explorer/?part=' + activeBaData.part;
         if (rMetrics && activeBaData.metrics) {
           rMetrics.innerHTML = activeBaData.metrics.map(function(m) {
             return '<div class="sci-stat-card"><div class="sci-stat-num" style="font-size:1.15rem;">' + m.a + '</div><div class="sci-stat-label">' + m.label + ' (치료 전: ' + m.b + ')</div><div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div></div>';
