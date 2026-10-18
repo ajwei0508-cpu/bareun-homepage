@@ -2429,79 +2429,244 @@ function buildPageHtml(page) {
       transform: translateY(-1px);
     }
 
-    /* Warm Hanji Light Mode for Detail Pages */
+    /* ======================================================================
+       IDEA A: EMBEDDED 360° INTERACTIVE 3D ORGAN/SPINE VIEWER CARD (LEFT PANEL)
+       ====================================================================== */
+    .idea-a-3d-viewer-card {
+      background: #FBF9F4;
+      border: 1.5px solid rgba(94, 71, 54, 0.22);
+      border-radius: 18px;
+      padding: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 14px 34px rgba(42, 30, 21, 0.08);
+      color: #2A1E15;
+    }
+    .idea-a-3d-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .idea-a-3d-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #2D5A43;
+      letter-spacing: 0.03em;
+    }
+    .idea-a-3d-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2D5A43;
+      box-shadow: 0 0 8px rgba(45, 90, 67, 0.5);
+    }
+    .idea-a-3d-ctrl-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .idea-a-3d-mini-btn {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 71, 54, 0.24);
+      background: #FFFFFF;
+      color: #3A2A1E;
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .idea-a-3d-mini-btn:hover {
+      background: #2D5A43;
+      color: #FFFFFF;
+      border-color: #2D5A43;
+    }
+    .idea-a-3d-stage {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 42%, #FFFDF9 0%, #F2ECE0 68%, #E6DEC8 100%);
+      border: 1px solid rgba(94, 71, 54, 0.16);
+      cursor: grab;
+      touch-action: none;
+    }
+    .idea-a-3d-stage:active {
+      cursor: grabbing;
+    }
+    #idea-a-3d-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .idea-a-orbit-ring-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      padding: 3px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(94, 71, 54, 0.2);
+      color: #5E4736;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(42, 30, 21, 0.08);
+    }
+    .idea-a-3d-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 9px;
+    }
+    .idea-a-green-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #2D5A43;
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .idea-a-green-pill:hover {
+      background: #214533;
+    }
+    .idea-a-hub-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(94, 71, 54, 0.09);
+      border: 1px solid rgba(94, 71, 54, 0.25);
+      color: #3A2A1E;
+      font-size: 0.71rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .idea-a-hub-link:hover {
+      background: #3A2A1E;
+      color: #FFFFFF;
+    }
+
+    /* Warm Hanji / Beige / Espresso Brown / Botanical Sage Green Mode (Default for Idea A) */
     body.theme-hanji {
-      --bg-dark: #F7F3EB;
-      --bg-panel: rgba(252, 249, 242, 0.96);
-      --text-main: #18130E;
-      --text-sub: #33291F;
-      --text-muted: #6E5D4B;
-      --border-subtle: rgba(138, 100, 33, 0.18);
-      background-color: #F7F3EB;
-      color: #18130E;
+      --bg-dark: #F5F1E8;
+      --bg-panel: rgba(251, 248, 241, 0.97);
+      --text-main: #231A12;
+      --text-sub: #4A382B;
+      --text-muted: #786250;
+      --border-subtle: rgba(94, 71, 54, 0.16);
+      background-color: #F5F1E8;
+      color: #231A12;
     }
     body.theme-hanji .ambient-bg {
       background:
-        radial-gradient(circle at 20% 24%, rgba(212, 175, 55, 0.14) 0%, transparent 50%),
-        linear-gradient(135deg, #FBF8F3 0%, #F4EFE6 55%, #EDE5D8 100%);
+        radial-gradient(circle at 20% 24%, rgba(45, 90, 67, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #FBF8F2 0%, #F5F1E8 55%, #EBE4D5 100%);
     }
     body.theme-hanji #header {
-      background: rgba(252, 249, 242, 0.92);
-      border-bottom: 1px solid rgba(138, 100, 33, 0.18);
+      background: rgba(251, 248, 241, 0.94);
+      border-bottom: 1px solid rgba(94, 71, 54, 0.16);
     }
     body.theme-hanji .brand-logo,
     body.theme-hanji #project-details-title {
-      color: #18130E;
+      color: #231A12;
+    }
+    body.theme-hanji .meta-eyebrow {
+      color: #2D5A43;
+    }
+    body.theme-hanji .meta-subtitle-en {
+      color: #6E533E;
     }
     body.theme-hanji .back-pill-btn,
     body.theme-hanji .clinic-tab {
-      color: #3D3124;
-      background: rgba(24, 19, 14, 0.05);
-      border-color: rgba(138, 100, 33, 0.22);
+      color: #3A2A1E;
+      background: rgba(58, 42, 30, 0.05);
+      border-color: rgba(94, 71, 54, 0.2);
     }
     body.theme-hanji .clinic-tab.active {
-      background: #8A6421;
+      background: #2D5A43;
+      border-color: #2D5A43;
       color: #FFFFFF;
     }
     body.theme-hanji #project-details-desc p:first-child {
-      color: #2B2219;
+      color: #3A2A1E;
       font-weight: 500;
     }
     body.theme-hanji .empathy-checklist-card,
     body.theme-hanji .live-plate-docent {
-      background: rgba(255, 255, 255, 0.86);
-      border-color: rgba(138, 100, 33, 0.25);
-      box-shadow: 0 8px 24px rgba(24, 19, 14, 0.06);
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.2);
+      box-shadow: 0 8px 24px rgba(42, 30, 21, 0.05);
+    }
+    body.theme-hanji .empathy-checklist-title,
+    body.theme-hanji .docent-step-badge {
+      color: #2D5A43;
     }
     body.theme-hanji .empathy-check-item {
-      background: rgba(247, 243, 235, 0.9);
-      border-color: rgba(138, 100, 33, 0.2);
+      background: #F8F5EE;
+      border-color: rgba(94, 71, 54, 0.16);
     }
     body.theme-hanji .empathy-check-text,
     body.theme-hanji .docent-active-caption {
-      color: #1F1812;
+      color: #231A12;
       font-weight: 600;
     }
+    body.theme-hanji .empathy-diagnosis-box {
+      background: rgba(45, 90, 67, 0.08);
+      border-left-color: #2D5A43;
+      color: #1E3F2E;
+    }
+    body.theme-hanji #project-details-launch-cta {
+      background: #2D5A43;
+      border-color: #2D5A43;
+      color: #FFFFFF;
+    }
+    body.theme-hanji #project-details-launch-cta:hover {
+      background: #1E3F2E;
+      color: #FFFFFF;
+    }
     body.theme-hanji .detail-clinical-trust-bar {
-      background: rgba(16, 185, 129, 0.08);
-      border-color: rgba(5, 150, 105, 0.3);
+      background: rgba(45, 90, 67, 0.07);
+      border-color: rgba(45, 90, 67, 0.24);
     }
     body.theme-hanji .detail-trust-seal {
-      background: rgba(255, 255, 255, 0.88);
+      background: #FFFFFF;
     }
     body.theme-hanji .detail-trust-seal-num {
-      color: #047857;
+      color: #2D5A43;
     }
     body.theme-hanji .detail-trust-seal-label {
-      color: #1F1812;
+      color: #231A12;
     }
     body.theme-hanji .header-vis-btn {
-      background: #8A6421;
+      background: #3A2A1E;
       color: #FFFFFF;
-      border-color: #8A6421;
+      border-color: #3A2A1E;
+    }
+    body.theme-hanji .header-ba-btn {
+      background: rgba(45, 90, 67, 0.12);
+      border-color: rgba(45, 90, 67, 0.4);
+      color: #2D5A43;
     }
     body.theme-hanji .detail-ba-trigger-bar {
-      background: #18130E;
+      background: #231A12;
       color: #FDE68A;
     }
 
@@ -2613,7 +2778,7 @@ function buildPageHtml(page) {
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
-<body>
+<body class="theme-hanji">
   <div class="ambient-bg"></div>
 
   <header id="header">
@@ -2628,8 +2793,8 @@ function buildPageHtml(page) {
         </svg>
         <span>6대 클리닉</span>
       </a>
-      <a class="back-pill-btn" id="header-body-explorer-link" href="body-explorer.html" style="border-color:rgba(110,231,183,0.5);color:#A7F3D0;">
-        <span>3D 인체 질환·논문 백과 ↗</span>
+      <a class="back-pill-btn" id="header-body-explorer-link" href="body-explorer.html" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
+        <span>3D 인체 허브 (Idea B) ↗</span>
       </a>
     </div>
 
@@ -2651,8 +2816,8 @@ function buildPageHtml(page) {
       <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
         <span>B/A 스캔 크게보기 ⇄</span>
       </button>
-      <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (다크 / 한지화이트 / 큰글씨)">
-        <span id="vis-mode-label">시안성 · 한지모드</span>
+      <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
+        <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
       <button class="header-talk-btn" onclick="window.openConsultModal()">
         <span>1:1 진료예약</span>
@@ -2664,7 +2829,7 @@ function buildPageHtml(page) {
   </header>
 
   <main id="project-details">
-    <!-- LEFT CLINIC GUIDE & INTERACTIVE PATIENT EMPATHY CHECKLIST (CLEAN, SCANNABLE HIERARCHY) -->
+    <!-- LEFT CLINIC GUIDE & IDEA A 360° 3D ORGAN/SPINE VIEWER PANEL -->
     <aside id="project-details-meta">
       <div>
         <div class="meta-eyebrow">${page.meta.eyebrow}</div>
@@ -2673,6 +2838,33 @@ function buildPageHtml(page) {
 
         <div id="project-details-desc">
           ${descHtml}
+        </div>
+
+        <!-- IDEA A: EMBEDDED 360° INTERACTIVE 3D ORGAN / SPINE ANATOMY VIEWER CARD -->
+        <div class="idea-a-3d-viewer-card" id="idea-a-3d-viewer-card">
+          <div class="idea-a-3d-header">
+            <span class="idea-a-3d-badge">
+              <span class="idea-a-3d-badge-dot"></span>
+              <span id="idea-a-3d-title-label">360° 3D 해부학 뷰어</span>
+            </span>
+            <div class="idea-a-3d-ctrl-btns">
+              <button type="button" class="idea-a-3d-mini-btn" onclick="window.zoomIdeaA3D(-0.22)" title="확대">＋</button>
+              <button type="button" class="idea-a-3d-mini-btn" onclick="window.zoomIdeaA3D(0.22)" title="축소">－</button>
+              <button type="button" class="idea-a-3d-mini-btn" onclick="window.resetIdeaA3D()" title="원위치">원위치</button>
+            </div>
+          </div>
+          <div class="idea-a-3d-stage" id="idea-a-3d-stage">
+            <canvas id="idea-a-3d-canvas"></canvas>
+            <div class="idea-a-orbit-ring-hint">↻ 마우스·터치 360° 회전 / 우측 카드 스크롤 연동</div>
+          </div>
+          <div class="idea-a-3d-footer">
+            <button type="button" class="idea-a-green-pill" onclick="window.toggleIdeaAAutoSpin()">
+              <span id="idea-a-spin-label">● 360° 3D 뷰어 제어</span>
+            </button>
+            <a class="idea-a-hub-link" id="sidebar-body-explorer-link" href="body-explorer.html">
+              <span>전체 3D 인체 허브(Idea B) ↗</span>
+            </a>
+          </div>
         </div>
 
         <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
@@ -2711,12 +2903,6 @@ function buildPageHtml(page) {
             <button type="button" style="background:none;border:none;color:var(--gold-light);font-size:0.7rem;font-weight:800;cursor:pointer;" onclick="window.openDetailBaModal()">전체화면 상세비교 ↗</button>
           </div>
         </div>
-
-        <!-- 1-CLICK 3D HUMAN BODY MEDICAL ENCYCLOPEDIA PORTAL -->
-        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html">
-          <span>3D 인체모형 클릭 · 원인/음식/생활/SCI논문 백과</span>
-          <span>탐색하기 ↗</span>
-        </a>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
@@ -3087,24 +3273,24 @@ function buildPageHtml(page) {
         window.addEventListener('pointerup', function() { dragging = false; });
       }
 
-      const VIS_MODES = ['dark-royal', 'warm-hanji', 'high-visibility'];
-      let currentVisMode = 'dark-royal';
+      const VIS_MODES = ['warm-hanji', 'dark-royal', 'high-visibility'];
+      let currentVisMode = 'warm-hanji';
 
       function applyDetailVisMode(mode) {
-        currentVisMode = VIS_MODES.includes(mode) ? mode : 'dark-royal';
+        currentVisMode = VIS_MODES.includes(mode) ? mode : 'warm-hanji';
         document.body.classList.remove('theme-hanji', 'high-visibility-mode');
         const labelEl = document.getElementById('vis-mode-label');
         if (currentVisMode === 'warm-hanji') {
           document.body.classList.add('theme-hanji');
-          if (labelEl) labelEl.textContent = '한지 라이트 (ON)';
+          if (labelEl) labelEl.textContent = '한지 베이지 (ON)';
         } else if (currentVisMode === 'high-visibility') {
           document.body.classList.add('high-visibility-mode');
           if (labelEl) labelEl.textContent = '큰글씨 고시안성 (ON)';
         } else {
-          if (labelEl) labelEl.textContent = '시안성 · 한지모드';
+          if (labelEl) labelEl.textContent = '다크 로얄 (ON)';
         }
         try {
-          localStorage.setItem('bareun_visual_mode', currentVisMode);
+          localStorage.setItem('bareun_visual_mode_v3', currentVisMode);
         } catch (_) {}
       }
 
@@ -3115,9 +3301,9 @@ function buildPageHtml(page) {
 
       (function initDetailBrandAndMode() {
         const cfg = window.CLINIC_TEMPLATE_CONFIG || {};
-        let savedMode = cfg.defaultTheme || 'dark-royal';
+        let savedMode = 'warm-hanji';
         try {
-          const lsMode = localStorage.getItem('bareun_visual_mode');
+          const lsMode = localStorage.getItem('bareun_visual_mode_v3');
           if (lsMode) savedMode = lsMode;
         } catch (_) {}
         applyDetailVisMode(savedMode);
@@ -3138,6 +3324,272 @@ function buildPageHtml(page) {
         if (telEl && brandData.phone) {
           telEl.href = 'tel:' + brandData.phone;
           telEl.textContent = '전화 상담 (' + brandData.phone + ')';
+        }
+      })();
+
+      // ====================================================================
+      // 0-B. IDEA A: EMBEDDED 360° INTERACTIVE 3D ORGAN / SPINE VIEWER ENGINE
+      // ====================================================================
+      (async function initIdeaA3DViewer() {
+        const stageEl = document.getElementById('idea-a-3d-stage');
+        const canvasEl = document.getElementById('idea-a-3d-canvas');
+        const titleLabelEl = document.getElementById('idea-a-3d-title-label');
+        if (!stageEl || !canvasEl) return;
+
+        const PART_TITLES = {
+          lumbar: '360° 3D 요추 L1~L5 · 추간판 · 골반',
+          knee: '360° 3D 무릎 성장판 · 대퇴·경골',
+          gut: '360° 3D 위장 · 간 대사 해독 기관',
+          cervical: '360° 3D 경추 C1~C7 · 뇌혈류 모형',
+          gongjindan: '360° 3D 뇌 · 심장 수승화강 회로',
+          prostate: '360° 3D 신장 · 방광 · 전립선 하초',
+          syncope: '360° 3D 오장육부 · 자율신경 밸런스'
+        };
+        const partKey = activeBaData.part || 'lumbar';
+        if (titleLabelEl) {
+          titleLabelEl.textContent = PART_TITLES[partKey] || PART_TITLES.lumbar;
+        }
+
+        try {
+          const [THREE, { GLTFLoader }, { DRACOLoader }, { OrbitControls }] = await Promise.all([
+            import('https://esm.sh/three@0.166.0'),
+            import('https://esm.sh/three@0.166.0/examples/jsm/loaders/GLTFLoader.js'),
+            import('https://esm.sh/three@0.166.0/examples/jsm/loaders/DRACOLoader.js'),
+            import('https://esm.sh/three@0.166.0/examples/jsm/controls/OrbitControls.js')
+          ]);
+
+          const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          renderer.outputColorSpace = THREE.SRGBColorSpace;
+          renderer.toneMapping = THREE.ACESFilmicToneMapping;
+          renderer.toneMappingExposure = 1.08;
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 50);
+          const DEFAULT_POS = new THREE.Vector3(0, 0.25, 2.55);
+          camera.position.copy(DEFAULT_POS);
+
+          const controls = new OrbitControls(camera, canvasEl);
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.07;
+          controls.enablePan = false;
+          controls.minDistance = 1.25;
+          controls.maxDistance = 4.2;
+          controls.target.set(0, 0.05, 0);
+
+          scene.add(new THREE.HemisphereLight(0xFFFDF9, 0xD8CCB8, 1.35));
+          const dirLight = new THREE.DirectionalLight(0xFFF9EE, 1.55);
+          dirLight.position.set(2.5, 4.0, 3.5);
+          scene.add(dirLight);
+          const rimLight = new THREE.DirectionalLight(0xA7F3D0, 0.55);
+          rimLight.position.set(-2.5, 1.5, -2.0);
+          scene.add(rimLight);
+
+          // Studio 360° Pedestal Ring on Floor (matching Sample Idea A)
+          const pedestalGroup = new THREE.Group();
+          pedestalGroup.position.y = -0.78;
+          const ringMat = new THREE.MeshBasicMaterial({ color: 0x8C735B, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
+          const outerRing = new THREE.Mesh(new THREE.RingGeometry(0.68, 0.71, 64), ringMat);
+          outerRing.rotation.x = -Math.PI / 2;
+          pedestalGroup.add(outerRing);
+
+          const innerDisk = new THREE.Mesh(
+            new THREE.CircleGeometry(0.67, 64),
+            new THREE.MeshBasicMaterial({ color: 0xEFE7D6, transparent: true, opacity: 0.55 })
+          );
+          innerDisk.rotation.x = -Math.PI / 2;
+          innerDisk.position.y = -0.005;
+          pedestalGroup.add(innerDisk);
+          scene.add(pedestalGroup);
+
+          const rootGroup = new THREE.Group();
+          scene.add(rootGroup);
+
+          const boneMat = new THREE.MeshPhysicalMaterial({
+            color: 0xF5EFE2,
+            roughness: 0.42,
+            metalness: 0.02,
+            clearcoat: 0.12
+          });
+          const discMat = new THREE.MeshPhysicalMaterial({
+            color: 0x7EB8DA,
+            roughness: 0.25,
+            transmission: 0.25,
+            transparent: true,
+            opacity: 0.92
+          });
+          const greenMat = new THREE.MeshPhysicalMaterial({
+            color: 0x2D5A43,
+            emissive: 0x10B981,
+            emissiveIntensity: 0.28,
+            roughness: 0.3
+          });
+
+          const draco = new DRACOLoader();
+          draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+          const gltfLoader = new GLTFLoader();
+          gltfLoader.setDRACOLoader(draco);
+
+          function loadNormalizedOrgan(url, targetSize, pos, tintHex, opacityVal) {
+            return new Promise((resolve) => {
+              gltfLoader.load(url, (gltf) => {
+                const obj = gltf.scene;
+                const box = new THREE.Box3().setFromObject(obj);
+                const size = new THREE.Vector3();
+                const center = new THREE.Vector3();
+                box.getSize(size);
+                box.getCenter(center);
+                const maxDim = Math.max(size.x, size.y, size.z, 0.001);
+                const s = targetSize / maxDim;
+                obj.scale.setScalar(s);
+                obj.position.set(
+                  pos[0] - center.x * s,
+                  pos[1] - center.y * s,
+                  pos[2] - center.z * s
+                );
+                obj.traverse((c) => {
+                  if (c.isMesh) {
+                    c.material = new THREE.MeshPhysicalMaterial({
+                      color: tintHex,
+                      roughness: 0.46,
+                      metalness: 0.02,
+                      clearcoat: 0.14,
+                      transparent: opacityVal < 1.0,
+                      opacity: opacityVal
+                    });
+                  }
+                });
+                rootGroup.add(obj);
+                resolve(obj);
+              }, undefined, () => resolve(null));
+            });
+          }
+
+          if (partKey === 'lumbar') {
+            // Lumbar Spine (L1~L5) + Sky-Blue Intervertebral Discs + Pelvis (Exact match to Sample Idea A!)
+            await loadNormalizedOrgan('Pelvis_Femur.glb', 1.25, [0, -0.32, 0], 0xF3ECE0, 0.96);
+            for (let i = 0; i < 5; i++) {
+              const vy = 0.08 + i * 0.145;
+              const zCurve = Math.sin((i / 4) * Math.PI) * 0.035;
+              const vBody = new THREE.Mesh(new THREE.CylinderGeometry(0.105 - i * 0.005, 0.11 - i * 0.005, 0.088, 28), boneMat);
+              vBody.scale.set(1.22, 1, 0.92);
+              vBody.position.set(0, vy, zCurve);
+              rootGroup.add(vBody);
+
+              const tProc = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.028, 0.035), boneMat);
+              tProc.position.set(0, vy, zCurve - 0.05);
+              rootGroup.add(tProc);
+
+              const sProc = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.055, 0.12), boneMat);
+              sProc.position.set(0, vy - 0.01, zCurve - 0.09);
+              rootGroup.add(sProc);
+
+              const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.102 - i * 0.005, 0.105 - i * 0.005, 0.038, 28), discMat);
+              disc.scale.set(1.2, 1, 0.9);
+              disc.position.set(0, vy - 0.064, zCurve);
+              rootGroup.add(disc);
+            }
+            const axisLine = new THREE.Mesh(
+              new THREE.CylinderGeometry(0.008, 0.008, 1.48, 12),
+              greenMat
+            );
+            axisLine.position.set(0, 0.05, 0);
+            rootGroup.add(axisLine);
+          } else if (partKey === 'knee') {
+            // Knee Joint + Glowing Botanical Green Epiphyseal Growth Plate
+            await loadNormalizedOrgan('Pelvis_Femur.glb', 1.35, [0, 0.22, 0], 0xF3ECE0, 0.95);
+            [-0.19, 0.19].forEach((kx) => {
+              const gp = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.045, 28), greenMat);
+              gp.position.set(kx, -0.34, 0.02);
+              rootGroup.add(gp);
+              const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.065, 0.42, 24), boneMat);
+              tibia.position.set(kx, -0.58, 0.02);
+              rootGroup.add(tibia);
+            });
+          } else if (partKey === 'gut') {
+            await loadNormalizedOrgan('Liver.glb', 0.82, [-0.18, 0.18, 0], 0xB86B52, 0.96);
+            await loadNormalizedOrgan('Stomach.glb', 0.78, [0.18, 0.02, 0.05], 0xE29578, 0.96);
+          } else if (partKey === 'cervical') {
+            await loadNormalizedOrgan('Brain.glb', 0.76, [0, 0.36, 0], 0xE8B4A6, 0.96);
+            for (let i = 0; i < 7; i++) {
+              const cy = -0.45 + i * 0.095;
+              const zc = Math.sin((i / 6) * Math.PI) * 0.03;
+              const cv = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.085, 0.055, 24), boneMat);
+              cv.scale.set(1.2, 1, 0.9);
+              cv.position.set(0, cy, zc);
+              rootGroup.add(cv);
+              const cd = new THREE.Mesh(new THREE.CylinderGeometry(0.076, 0.08, 0.024, 24), discMat);
+              cd.scale.set(1.18, 1, 0.88);
+              cd.position.set(0, cy - 0.04, zc);
+              rootGroup.add(cd);
+            }
+          } else if (partKey === 'gongjindan') {
+            await loadNormalizedOrgan('Brain.glb', 0.76, [0, 0.38, 0], 0xE8B4A6, 0.96);
+            await loadNormalizedOrgan('Heart.glb', 0.62, [0.04, -0.28, 0.04], 0xC85A53, 0.96);
+            const stream = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.56, 16), greenMat);
+            stream.position.set(0, 0.05, 0);
+            rootGroup.add(stream);
+          } else if (partKey === 'prostate') {
+            await loadNormalizedOrgan('Pelvis_Femur.glb', 1.25, [0, -0.18, 0], 0xF3ECE0, 0.42);
+            await loadNormalizedOrgan('Kidneys.glb', 0.72, [0, 0.36, -0.05], 0xB56557, 0.95);
+            const bladder = new THREE.Mesh(new THREE.SphereGeometry(0.13, 24, 20), new THREE.MeshPhysicalMaterial({ color: 0xE09F7D, roughness: 0.35 }));
+            bladder.scale.set(1.1, 0.9, 0.95);
+            bladder.position.set(0, -0.12, 0.08);
+            rootGroup.add(bladder);
+            const prostate = new THREE.Mesh(new THREE.SphereGeometry(0.095, 24, 20), greenMat);
+            prostate.scale.set(1.15, 0.88, 0.95);
+            prostate.position.set(0, -0.28, 0.08);
+            rootGroup.add(prostate);
+          } else {
+            await loadNormalizedOrgan('Brain.glb', 0.62, [0, 0.46, 0], 0xE8B4A6, 0.95);
+            await loadNormalizedOrgan('Heart.glb', 0.48, [0.04, 0.05, 0.04], 0xC85A53, 0.95);
+            await loadNormalizedOrgan('Liver.glb', 0.58, [-0.14, -0.26, 0], 0xB86B52, 0.95);
+            await loadNormalizedOrgan('Stomach.glb', 0.52, [0.15, -0.32, 0.04], 0xE29578, 0.95);
+          }
+
+          let autoSpin = true;
+          let scrollTargetRotY = 0;
+
+          window.toggleIdeaAAutoSpin = function() {
+            autoSpin = !autoSpin;
+            const lbl = document.getElementById('idea-a-spin-label');
+            if (lbl) lbl.textContent = autoSpin ? '● 360° 3D 뷰어 제어 (자동회전 ON)' : '○ 360° 3D 뷰어 제어 (수동모드)';
+          };
+          window.zoomIdeaA3D = function(delta) {
+            camera.position.z = Math.max(1.35, Math.min(3.8, camera.position.z + delta));
+          };
+          window.resetIdeaA3D = function() {
+            camera.position.copy(DEFAULT_POS);
+            controls.target.set(0, 0.05, 0);
+            rootGroup.rotation.set(0, 0, 0);
+          };
+          window.syncIdeaA3DScroll = function(norm) {
+            scrollTargetRotY = norm * Math.PI * 1.65;
+          };
+
+          function resize3D() {
+            const w = stageEl.clientWidth || 360;
+            const h = stageEl.clientHeight || 220;
+            renderer.setSize(w, h, false);
+            camera.aspect = w / Math.max(1, h);
+            camera.updateProjectionMatrix();
+          }
+          window.addEventListener('resize', resize3D);
+          resize3D();
+
+          function tick3D() {
+            requestAnimationFrame(tick3D);
+            if (autoSpin) {
+              rootGroup.rotation.y += 0.0055;
+            } else {
+              rootGroup.rotation.y += (scrollTargetRotY - rootGroup.rotation.y) * 0.08;
+            }
+            controls.update();
+            renderer.render(scene, camera);
+          }
+          tick3D();
+        } catch (err) {
+          console.warn('Idea A 3D viewer fallback:', err);
         }
       })();
 
@@ -4975,6 +5427,9 @@ function buildPageHtml(page) {
         if (typeof window.applyInlineScrollBaPct === 'function') {
           const autoBaPct = 8 + scrollNorm * 88;
           window.applyInlineScrollBaPct(autoBaPct);
+        }
+        if (typeof window.syncIdeaA3DScroll === 'function') {
+          window.syncIdeaA3DScroll(scrollNorm);
         }
 
         const viewportCenter = currentX + wrapper.clientWidth * 0.5;
