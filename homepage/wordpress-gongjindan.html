@@ -1356,6 +1356,131 @@
       color: #6EE7B7;
     }
 
+    /* Inline Scroll-Synchronized Before/After 3D Biomedical Scan Card (Left Sidebar & Runway Plate) */
+    .inline-scroll-ba-card {
+      background: rgba(8, 12, 18, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    }
+    .inline-scroll-ba-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .inline-scroll-ba-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+    }
+    .inline-scroll-ba-pct {
+      font-size: 0.69rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #6EE7B7;
+    }
+    .inline-scroll-ba-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 11px;
+      overflow: hidden;
+      background: #070A0F;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      cursor: ew-resize;
+    }
+    .inline-scroll-ba-viewport img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .inline-scroll-ba-after-clip {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      clip-path: inset(0 85% 0 0);
+      pointer-events: none;
+      will-change: clip-path;
+    }
+    .inline-scroll-ba-laser {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 15%;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, #6EE7B7, #FFFFFF, var(--gold-light), transparent);
+      box-shadow: 0 0 14px rgba(110, 231, 183, 0.95);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 5;
+      will-change: left;
+    }
+    .inline-scroll-ba-pill {
+      position: absolute;
+      bottom: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 9.5px;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .inline-scroll-ba-pill.b {
+      left: 8px;
+      background: rgba(127, 29, 29, 0.82);
+      border: 1px solid rgba(252, 165, 165, 0.4);
+      color: #FECACA;
+    }
+    .inline-scroll-ba-pill.a {
+      right: 8px;
+      background: rgba(6, 78, 59, 0.86);
+      border: 1px solid rgba(110, 231, 183, 0.5);
+      color: #A7F3D0;
+    }
+    .inline-scroll-ba-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 7px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.68);
+    }
+    .body-explorer-portal-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: linear-gradient(95deg, rgba(16, 185, 129, 0.2), rgba(56, 189, 248, 0.16), rgba(212, 175, 55, 0.18));
+      border: 1px solid rgba(110, 231, 183, 0.5);
+      color: #E0F2FE;
+      text-decoration: none;
+      font-size: 0.77rem;
+      font-weight: 800;
+      transition: all 0.22s ease;
+    }
+    .body-explorer-portal-btn:hover {
+      background: linear-gradient(95deg, #10B981, #38BDF8);
+      color: #04120C;
+      border-color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
     /* Warm Hanji Light Mode for Detail Pages */
     body.theme-hanji {
       --bg-dark: #F7F3EB;
@@ -1495,6 +1620,9 @@
         </svg>
         <span>6대 클리닉</span>
       </a>
+      <a class="back-pill-btn" id="header-body-explorer-link" href="body-explorer.html" style="border-color:rgba(110,231,183,0.5);color:#A7F3D0;">
+        <span>3D 인체 질환·논문 백과 ↗</span>
+      </a>
     </div>
 
     <div class="header-center">
@@ -1518,7 +1646,7 @@
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
       <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
-        <span>B/A 전후 스캔 비교 ⇄</span>
+        <span>B/A 스캔 크게보기 ⇄</span>
       </button>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (다크 / 한지화이트 / 큰글씨)">
         <span id="vis-mode-label">시안성 · 한지모드</span>
@@ -1561,11 +1689,32 @@
           </div>
         </div>
 
-        <!-- 1-CLICK BEFORE / AFTER 3D BIOMEDICAL SCAN COMPARISON TRIGGER -->
-        <button type="button" class="detail-ba-trigger-bar" onclick="window.openDetailBaModal()">
-          <span>BEFORE / AFTER 치료 전·후 3D 생체 스캔 비교</span>
-          <span>슬라이더 열기 ⇄</span>
-        </button>
+        <!-- EMBEDDED SCROLL-REACTIVE 3D BEFORE / AFTER BIOMEDICAL SCAN (Auto-transforms on scroll!) -->
+        <div class="inline-scroll-ba-card" id="inline-scroll-ba-card">
+          <div class="inline-scroll-ba-head">
+            <span class="inline-scroll-ba-title">SCROLL-SYNC 3D 전·후 생체 스캔</span>
+            <span class="inline-scroll-ba-pct" id="inline-ba-pct-badge">스크롤 연동 · 회복 15%</span>
+          </div>
+          <div class="inline-scroll-ba-viewport" id="inline-ba-viewport" title="스크롤을 내리면 자동으로 치료 전(Before)에서 치료 후(After)로 변환됩니다">
+            <img id="inline-ba-before-img" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg" alt="치료 전 3D 스캔" draggable="false">
+            <div class="inline-scroll-ba-after-clip" id="inline-ba-after-clip">
+              <img id="inline-ba-after-img" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg" alt="치료 후 3D 스캔" draggable="false">
+            </div>
+            <span class="inline-scroll-ba-pill b" id="inline-ba-pill-b">BEFORE · 치료 전</span>
+            <span class="inline-scroll-ba-pill a" id="inline-ba-pill-a">AFTER · 치료 후</span>
+            <div class="inline-scroll-ba-laser" id="inline-ba-laser"></div>
+          </div>
+          <div class="inline-scroll-ba-foot">
+            <span>스크롤 시 BEFORE ➔ AFTER 자동 변환</span>
+            <button type="button" style="background:none;border:none;color:var(--gold-light);font-size:0.7rem;font-weight:800;cursor:pointer;" onclick="window.openDetailBaModal()">전체화면 상세비교 ↗</button>
+          </div>
+        </div>
+
+        <!-- 1-CLICK 3D HUMAN BODY MEDICAL ENCYCLOPEDIA PORTAL -->
+        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html">
+          <span>3D 인체모형 클릭 · 원인/음식/생활/SCI논문 백과</span>
+          <span>탐색하기 ↗</span>
+        </a>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
@@ -1648,7 +1797,7 @@
             <button class="plate-dot-btn" onclick="jumpToPlate(2)">03</button>
             <button class="plate-dot-btn" onclick="jumpToPlate(3)">04</button>
             <button class="plate-dot-btn" onclick="jumpToPlate(4)">05</button>
-            <button class="plate-dot-btn" onclick="jumpToPlate(5)">06</button>
+            <button class="plate-dot-btn" onclick="jumpToPlate(5)">B/A</button>
           </div>
         </div>
         <div class="docent-active-caption" id="active-plate-caption">
@@ -1771,7 +1920,31 @@
           </div>
         </article>
 
-        <!-- PLATE 06: Next Clinic Portal -->
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
+        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen data-caption="[원장 임상 노트 · 전후 3D 생체 스캔] 스크롤 흐름에 따라 치료 전(Before) 병리적 원인 상태에서 치료 후(After) 근본 회복 상태로 3D 스캔이 자동 변환됩니다.">
+          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
+            <img class="lusion-clean-media" id="runway-ba-before-img" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg" alt="치료 전 3D 스캔" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
+              <img class="lusion-clean-media" id="runway-ba-after-img" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg" alt="치료 후 3D 스캔" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
+            <div class="clean-plate-scrim"></div>
+            <div class="visual-sci-overlay" id="runway-ba-metrics-overlay"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                <span class="clean-step-label" id="runway-ba-step-pill">SCROLL-DRIVEN 3D BIOMEDICAL SCAN · 자동 전후 변환</span>
+                <div class="clean-spec-tags">
+                  <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전 원인 스캔</span>
+                  <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후 근본 회복</span>
+                </div>
+                <h2 class="plate-caption-title">바른 황제공진단 — 스크롤 연동 3D 전·후 스캔 비교</h2>
+                <p class="plate-caption-sub">스크롤을 내리면 수동 조작 없이도 치료 전(Before) 원인이 치료 후(After) 회복 상태로 실시간 스캔 변환됩니다.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 07: Next Clinic Portal -->
         <a id="project-details-preview" href="director.html" data-caption="[처음 클리닉으로 순환 · 01 대표원장] 6대 클리닉의 모든 진단과 처방, 안전 탕전을 직접 책임지는 안정위 대표원장의 진료 철학 스토리로 이어집니다.">
           <img class="next-portal-bg" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_consult.jpg?v=uniq1" alt="안정위 대표원장">
           <div class="next-portal-scrim"></div>
@@ -1870,11 +2043,12 @@
       'use strict';
 
       // ====================================================================
-      // 0. AWWWARDS VISIBILITY MODE, B2B BRAND SYNC & BEFORE/AFTER STUDIO
+      // 0. AWWWARDS VISIBILITY MODE, B2B BRAND SYNC & SCROLL-DRIVEN B/A ENGINE
       // ====================================================================
       const PAGE_FILE = 'gongjindan.html';
       const DETAIL_BA_MAP = {
         'director.html': {
+          part: 'pelvis',
           beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_before.jpg',
           afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg',
           beforeTag: 'BEFORE · 일반 비검증 약재 추출물 및 불순물 우려',
@@ -1886,6 +2060,7 @@
           ]
         },
         'chuna.html': {
+          part: 'lumbar',
           beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_before.jpg',
           afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_chuna_after.jpg',
           beforeTag: 'BEFORE · 골반 12° 비대칭 경사 및 요추 L4-L5 신경 압박',
@@ -1897,6 +2072,7 @@
           ]
         },
         'growth.html': {
+          part: 'knee',
           beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_growth_before.jpg',
           afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_growth_after.jpg',
           beforeTag: 'BEFORE · 성장판 연골층 압박 및 조기 골화 위험 신호',
@@ -1908,6 +2084,7 @@
           ]
         },
         'diet-zero.html': {
+          part: 'gut',
           beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_diet_before.jpg',
           afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_diet_after.jpg',
           beforeTag: 'BEFORE · 복부 냉증 저대사 및 내장지방 집중 축적 (68.5kg)',
@@ -1919,6 +2096,7 @@
           ]
         },
         'hairloss.html': {
+          part: 'brain',
           beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_hair_before.jpg',
           afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_hair_after.jpg',
           beforeTag: 'BEFORE · 42.0°C 두피 사막화 상열감 및 모낭 위축',
@@ -1930,6 +2108,7 @@
           ]
         },
         'gongjindan.html': {
+          part: 'heart',
           beforeImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_gongjindan_before.jpg',
           afterImg: 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_gongjindan_after.jpg',
           beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심혈관 말초 에너지 방전 (1%)',
@@ -1942,11 +2121,66 @@
         }
       };
 
+      const activeBaData = DETAIL_BA_MAP[PAGE_FILE] || DETAIL_BA_MAP['chuna.html'];
       const detailBaModal = document.getElementById('detail-ba-modal');
       const detailBaStage = document.getElementById('detail-ba-stage');
       const detailBaClip = document.getElementById('detail-ba-clip');
       const detailBaLine = document.getElementById('detail-ba-line');
       const detailBaKnob = document.getElementById('detail-ba-knob');
+
+      // Initialize Embedded Sidebar & Runway Before/After 3D Scans + Body Explorer Links
+      (function initEmbeddedScrollBa() {
+        const ibImg = document.getElementById('inline-ba-before-img');
+        const iaImg = document.getElementById('inline-ba-after-img');
+        const rbImg = document.getElementById('runway-ba-before-img');
+        const raImg = document.getElementById('runway-ba-after-img');
+        const rTagB = document.getElementById('runway-ba-tag-b');
+        const rTagA = document.getElementById('runway-ba-tag-a');
+        const rMetrics = document.getElementById('runway-ba-metrics-overlay');
+        const hExplorer = document.getElementById('header-body-explorer-link');
+        const sExplorer = document.getElementById('sidebar-body-explorer-link');
+
+        if (ibImg) ibImg.src = activeBaData.beforeImg;
+        if (iaImg) iaImg.src = activeBaData.afterImg;
+        if (rbImg) rbImg.src = activeBaData.beforeImg;
+        if (raImg) raImg.src = activeBaData.afterImg;
+        if (rTagB) rTagB.textContent = activeBaData.beforeTag;
+        if (rTagA) rTagA.textContent = activeBaData.afterTag;
+        if (hExplorer) hExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
+        if (sExplorer) sExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
+        if (rMetrics && activeBaData.metrics) {
+          rMetrics.innerHTML = activeBaData.metrics.map(function(m) {
+            return '<div class="sci-stat-card"><div class="sci-stat-num" style="font-size:1.15rem;">' + m.a + '</div><div class="sci-stat-label">' + m.label + ' (치료 전: ' + m.b + ')</div><div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div></div>';
+          }).join('');
+        }
+
+        // Allow optional hover/pointer scrub on embedded viewport too, while scroll drives it automatically
+        const inlineVp = document.getElementById('inline-ba-viewport');
+        if (inlineVp) {
+          inlineVp.addEventListener('pointermove', function(e) {
+            const r = inlineVp.getBoundingClientRect();
+            const pct = Math.max(5, Math.min(95, ((e.clientX - r.left) / Math.max(1, r.width)) * 100));
+            window.applyInlineScrollBaPct(pct);
+          });
+        }
+      })();
+
+      window.applyInlineScrollBaPct = function(pct) {
+        const c = Math.max(6, Math.min(96, pct));
+        const iaClip = document.getElementById('inline-ba-after-clip');
+        const iLaser = document.getElementById('inline-ba-laser');
+        const iBadge = document.getElementById('inline-ba-pct-badge');
+        const raClip = document.getElementById('runway-ba-after-clip');
+        const rLaser = document.getElementById('runway-ba-laser');
+        const rStepPill = document.getElementById('runway-ba-step-pill');
+
+        if (iaClip) iaClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        if (iLaser) iLaser.style.left = c.toFixed(1) + '%';
+        if (iBadge) iBadge.textContent = '스크롤 자동연동 · 회복 ' + Math.round(c) + '%';
+        if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
+        if (rStepPill) rStepPill.textContent = 'SCROLL-DRIVEN 3D BIOMEDICAL SCAN · 치료 후 회복 변환 ' + Math.round(c) + '%';
+      };
 
       function setDetailBaPct(pct) {
         const c = Math.max(4, Math.min(96, pct));
@@ -1956,7 +2190,7 @@
       }
 
       window.openDetailBaModal = function() {
-        const data = DETAIL_BA_MAP[PAGE_FILE] || DETAIL_BA_MAP['chuna.html'];
+        const data = activeBaData;
         const bImg = document.getElementById('detail-ba-before');
         const aImg = document.getElementById('detail-ba-after');
         const bTag = document.getElementById('detail-ba-tag-before');
@@ -3780,14 +4014,20 @@
         lastNow = now;
         const timeSec = now * 0.001;
 
-        // Horizontal Runway Smooth Lerp
+        // Horizontal Runway Smooth Lerp + Automatic Scroll-Driven Before/After 3D Scan Transformation
         if (window.innerWidth > 1024) {
           currentX += (targetX - currentX) * 0.085;
           const velocity = (targetX - currentX) * 0.0025;
           const clampedSkew = Math.max(-1.6, Math.min(1.6, -velocity));
 
           moveContainer.style.transform = 'translate3d(' + (-currentX.toFixed(2)) + 'px, 0, 0) skewX(' + clampedSkew.toFixed(2) + 'deg)';
-          progressBar.style.width = (maxScrollX > 0 ? (currentX / maxScrollX) * 100 : 0).toFixed(1) + '%';
+          const scrollNorm = maxScrollX > 0 ? Math.max(0, Math.min(1, currentX / maxScrollX)) : 0;
+          progressBar.style.width = (scrollNorm * 100).toFixed(1) + '%';
+
+          if (typeof window.applyInlineScrollBaPct === 'function') {
+            const autoBaPct = 8 + scrollNorm * 88;
+            window.applyInlineScrollBaPct(autoBaPct);
+          }
 
           const viewportCenter = currentX + wrapper.clientWidth * 0.5;
           let closestIdx = 0, minDistance = Infinity;
@@ -3796,7 +4036,7 @@
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia) {
+            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
               const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
               cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
             }
@@ -3807,6 +4047,12 @@
           activeBadge.textContent = '원장 임상 노트 · STEP 0' + (closestIdx + 1) + ' / 0' + plates.length;
           const cap = plates[closestIdx]?.getAttribute('data-caption');
           if (cap && activeCaption.textContent !== cap) activeCaption.textContent = cap;
+        } else if (typeof window.applyInlineScrollBaPct === 'function') {
+          const mobMax = Math.max(1, (wrapper ? wrapper.scrollWidth - wrapper.clientWidth : 1));
+          const mobNorm = wrapper && wrapper.scrollLeft > 2
+            ? Math.max(0, Math.min(1, wrapper.scrollLeft / mobMax))
+            : Math.max(0, Math.min(1, window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight)));
+          window.applyInlineScrollBaPct(8 + mobNorm * 88);
         }
 
         // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay

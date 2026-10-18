@@ -24,11 +24,13 @@ const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/
 function rewriteAssetsForWP(html) {
   return html
     .replace(/src:\s*'((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "src: '" + ghBase + "$1'")
+    .replace(/before:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "before: '" + ghBase + "$1'")
+    .replace(/after:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "after: '" + ghBase + "$1'")
     .replace(/beforeImg:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
     .replace(/afterImg:\s*'((?:ba_|life_|bareun_|card_|detail_)[^']+)'/g, "afterImg: '" + ghBase + "$1'")
     .replace(/url\('((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
     .replace(/load\('((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "load('" + ghBase + "$1'")
-    .replace(/loadLinearTex\('((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1')")
+    .replace(/loadLinearTex\('((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1'")
     .replace(/src="((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
     .replace(/poster="((?:ba_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
@@ -51,7 +53,8 @@ const detailPages = [
   ['growth.html', 'wordpress-growth.html'],
   ['diet-zero.html', 'wordpress-diet.html'],
   ['hairloss.html', 'wordpress-hairloss.html'],
-  ['gongjindan.html', 'wordpress-gongjindan.html']
+  ['gongjindan.html', 'wordpress-gongjindan.html'],
+  ['body-explorer.html', 'wordpress-body-explorer.html']
 ];
 
 detailPages.forEach(([srcFile, outFile]) => {
