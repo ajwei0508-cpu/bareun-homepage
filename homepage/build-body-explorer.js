@@ -1812,12 +1812,8 @@ function buildBodyExplorerHtml() {
 
   </main>
 
-  <script type="module">
-    import * as THREE from 'three';
-    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
+  <script>
+  (async function() {
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
 
     const PART_CAMERA_PRESETS = {
@@ -1837,6 +1833,10 @@ function buildBodyExplorerHtml() {
     const contentBox = document.getElementById('encyclopedia-dynamic-content');
     const quickNavButtons = document.querySelectorAll('#vh-part-quicknav .vh-part-chip');
     const stageLabelEl = document.getElementById('stage-active-part-label');
+    const stageEl = document.getElementById('vibrant-3d-stage');
+    const canvas = document.getElementById('vibrant-body-canvas');
+    const hotspotLayer = document.getElementById('hotspot-overlay-layer');
+    const loaderOverlay = document.getElementById('dongin-loader-overlay');
 
     function getPartById(id) {
       return BODY_PARTS_DATA.find(p => p.id === id) || BODY_PARTS_DATA[0];
@@ -1932,13 +1932,25 @@ function buildBodyExplorerHtml() {
       renderEncyclopedia(currentPartId, currentSlideIdx + delta, dir);
     };
 
+    // Render Encyclopedia Immediately (0ms) so UI is ready before 3D assets finish downloading
+    const initParams = new URLSearchParams(window.location.search);
+    const initPart = initParams.get('part') || 'knee';
+    renderEncyclopedia(initPart, 0, 'next');
+
+    // Safety fallback so loader overlay never stays forever on slow mobile connections
+    setTimeout(() => {
+      if (loaderOverlay) loaderOverlay.classList.add('hidden');
+    }, 5500);
+
     // ========================================================================
     // 2. 3D WEBGL SCENE & LIFELIKE NATURAL ORGAN SHADERS (#1, #2, #3, #6, #8, #9)
     // ========================================================================
-    const stageEl = document.getElementById('vibrant-3d-stage');
-    const canvas = document.getElementById('vibrant-body-canvas');
-    const hotspotLayer = document.getElementById('hotspot-overlay-layer');
-    const loaderOverlay = document.getElementById('dongin-loader-overlay');
+    const [THREE, { GLTFLoader }, { DRACOLoader }, { OrbitControls }] = await Promise.all([
+      import('https://esm.sh/three@0.166.0'),
+      import('https://esm.sh/three@0.166.0/examples/jsm/loaders/GLTFLoader.js'),
+      import('https://esm.sh/three@0.166.0/examples/jsm/loaders/DRACOLoader.js'),
+      import('https://esm.sh/three@0.166.0/examples/jsm/controls/OrbitControls.js')
+    ]);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
@@ -2742,6 +2754,7 @@ function buildBodyExplorerHtml() {
       window.resetDonginView();
     }
     animate();
+  })();
   </script>
 </body>
 </html>`;

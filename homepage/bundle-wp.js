@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const dir = __dirname;
 const indexHtml = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
@@ -22,21 +23,22 @@ const wpReset = [
 
 const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
 
-function rewriteAssetsForWP(html) {
-  return html
+function rewriteAssetsForWP(html, label) {
+  let out = html
     .replace(/src:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "src: '" + ghBase + "$1'")
     .replace(/before:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "before: '" + ghBase + "$1'")
     .replace(/after:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "after: '" + ghBase + "$1'")
     .replace(/beforeImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
     .replace(/afterImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "afterImg: '" + ghBase + "$1'")
     .replace(/"illustration":"(illust_[^"]+)"/g, '"illustration":"' + ghBase + '$1"')
+    .replace(/"illustImg":"(illust_[^"]+)"/g, '"illustImg":"' + ghBase + '$1"')
     .replace(/"baBeforeImg":"(ba_[^"]+)"/g, '"baBeforeImg":"' + ghBase + '$1"')
     .replace(/"baAfterImg":"(ba_[^"]+)"/g, '"baAfterImg":"' + ghBase + '$1"')
     .replace(/setDecoderPath\('draco\/'\)/g, "setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')")
     .replace(/load\('((?:models\/|texture\/|ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "load('" + ghBase + "$1'")
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
     .replace(/url\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
-    .replace(/loadLinearTex\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1'")
+    .replace(/loadLinearTex\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1')")
     .replace(/src="((?:clinic-template-config\.js|ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
     .replace(/poster="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
     .replace(/href="story-3d\.html(\?[^"]*)?"/g, 'href="/$1"')
@@ -47,19 +49,38 @@ function rewriteAssetsForWP(html) {
     .replace(/href:\s*'gongjindan\.html(\?[^']*)?'/g, "href: '/gongjindan-2/$1'")
     .replace(/href\s*=\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href = '/$1/$2'")
     .replace(/'body-explorer\.html\?part='/g, "'/body-explorer/?part='")
+    .replace(/"clinicLink":"(director|chuna|growth|diet-zero|hairloss|prostate)\.html"/g, '"clinicLink":"/$1/"')
+    .replace(/"clinicLink":"gongjindan\.html"/g, '"clinicLink":"/gongjindan-2/"')
     .replace(/"ctaHref":"(director|chuna|growth|diet-zero|hairloss|prostate)\.html"/g, '"ctaHref":"/$1/"')
     .replace(/"ctaHref":"gongjindan\.html"/g, '"ctaHref":"/gongjindan-2/"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
       const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : ghBase + f).join('|');
       return 'data-frames="' + rewritten + '"';
     });
+
+  // Protect inline executable <script> blocks against WordPress wptexturize / wpautop (which corrupts `< ... && ... >` into `&#038;&#038;`)
+  out = out.replace(/<script(?![^>]*\bsrc=)(?![^>]*type=["']importmap["'])([^>]*)>([\s\S]*?)<\/script>/gi, (full, attrs, jsCode) => {
+    const trimmed = jsCode.trim();
+    if (!trimmed) return full;
+    // Validate syntax at build time!
+    try {
+      new vm.Script(trimmed);
+    } catch (err) {
+      console.error(`[SYNTAX ERROR in ${label}]:`, err.message);
+      throw err;
+    }
+    const b64 = Buffer.from(trimmed, 'utf8').toString('base64');
+    return `<script>new Function(new TextDecoder().decode(Uint8Array.from(atob("${b64}"),function(c){return c.charCodeAt(0)})))();</script>`;
+  });
+
+  return out;
 }
 
-let wpMain = rewriteAssetsForWP(indexHtml).replace('<style>', '<style>' + wpReset);
+let wpMain = rewriteAssetsForWP(indexHtml, 'wordpress-main-home.html').replace('<style>', '<style>' + wpReset);
 fs.writeFileSync(path.join(dir, 'wordpress-main-home.html'), wpMain, 'utf8');
 console.log('Successfully generated wordpress-main-home.html (' + wpMain.length + ' bytes)');
 
-let wpStory3d = rewriteAssetsForWP(story3d).replace('<style>', '<style>' + wpReset);
+let wpStory3d = rewriteAssetsForWP(story3d, 'wordpress-story-3d.html').replace('<style>', '<style>' + wpReset);
 fs.writeFileSync(path.join(dir, 'wordpress-story-3d.html'), wpStory3d, 'utf8');
 console.log('Successfully generated wordpress-story-3d.html (' + wpStory3d.length + ' bytes)');
 
@@ -79,7 +100,7 @@ detailPages.forEach(([srcFile, outFile]) => {
   const fullSrc = path.join(dir, srcFile);
   if (fs.existsSync(fullSrc)) {
     const raw = fs.readFileSync(fullSrc, 'utf8');
-    const wpOut = rewriteAssetsForWP(raw).replace('<style>', '<style>' + wpReset);
+    const wpOut = rewriteAssetsForWP(raw, outFile).replace('<style>', '<style>' + wpReset);
     fs.writeFileSync(path.join(dir, outFile), wpOut, 'utf8');
     console.log('Successfully generated ' + outFile + ' (' + wpOut.length + ' bytes)');
   }
