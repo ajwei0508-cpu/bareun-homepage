@@ -13,8 +13,11 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
+  '.webp': 'image/webp',
   '.mp4': 'video/mp4',
-  '.woff2': 'font/woff2'
+  '.woff2': 'font/woff2',
+  '.wasm': 'application/wasm',
+  '.glb': 'model/gltf-binary'
 };
 
 const brainDir = path.resolve('C:/Users/0508a/.gemini/antigravity/brain/876cd643-a906-469f-8561-63b60bf0a819');

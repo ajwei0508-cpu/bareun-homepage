@@ -20,9 +20,10 @@ const BODY_PARTS = [
     clinicLink: 'growth.html',
     clinicCta: '바른 성장 · 성조숙증 상세페이지 →',
     reserveProg: '소아·청소년 키성장 클리닉',
-    pos3D: { x: 0.24, y: -1.18, z: 0.22 },
-    camPos: { x: 0.62, y: -1.12, z: 1.85 },
-    camTarget: { x: 0.12, y: -1.18, z: 0.0 },
+    pos3D: { x: 0.41, y: 1.28, z: 0.04 },
+    camPos: { x: 0.46, y: 1.24, z: 1.92 },
+    camTarget: { x: 0.18, y: 1.22, z: -0.06 },
+    activeMeridians: ['ST', 'GB', 'SP', 'KI'],
     accent: '#10B981',
     accentSecondary: '#FDE68A',
     baBeforeImg: 'ba_growth_before.jpg',
@@ -215,9 +216,10 @@ const BODY_PARTS = [
     clinicLink: 'chuna.html',
     clinicCta: '바른 추나 · 척추교정 상세페이지 →',
     reserveProg: '추나 척추·전신통증 클리닉',
-    pos3D: { x: 0.0, y: 1.05, z: 0.14 },
-    camPos: { x: 0.55, y: 1.08, z: 1.75 },
-    camTarget: { x: 0.0, y: 1.02, z: 0.0 },
+    pos3D: { x: 0.0, y: 3.92, z: 0.08 },
+    camPos: { x: 0.42, y: 3.94, z: 1.62 },
+    camTarget: { x: 0.0, y: 3.90, z: -0.06 },
+    activeMeridians: ['GV', 'GB', 'BL', 'SI'],
     accent: '#38BDF8',
     accentSecondary: '#6EE7B7',
     baBeforeImg: 'ba_chuna_before.jpg',
@@ -358,9 +360,10 @@ const BODY_PARTS = [
     clinicLink: 'chuna.html',
     clinicCta: '바른 추나 · 척추교정 상세페이지 →',
     reserveProg: '추나 척추·전신통증 클리닉',
-    pos3D: { x: 0.0, y: -0.08, z: 0.16 },
-    camPos: { x: 0.68, y: -0.05, z: 1.88 },
-    camTarget: { x: 0.0, y: -0.08, z: 0.0 },
+    pos3D: { x: -0.09, y: 3.05, z: -0.12 },
+    camPos: { x: -0.46, y: 3.05, z: 1.95 },
+    camTarget: { x: 0.0, y: 3.04, z: -0.06 },
+    activeMeridians: ['GV', 'BL', 'GB', 'KI'],
     accent: '#10B981',
     accentSecondary: '#38BDF8',
     baBeforeImg: 'ba_chuna_before.jpg',
@@ -492,9 +495,10 @@ const BODY_PARTS = [
     clinicLink: 'hairloss.html',
     clinicCta: '바른 탈모 · 모근재생 상세페이지 →',
     reserveProg: '30대 탈모·모근재생 클리닉',
-    pos3D: { x: 0.0, y: 1.56, z: 0.12 },
-    camPos: { x: 0.48, y: 1.56, z: 1.52 },
-    camTarget: { x: 0.0, y: 1.52, z: 0.0 },
+    pos3D: { x: 0.0, y: 4.42, z: 0.14 },
+    camPos: { x: 0.36, y: 4.38, z: 1.52 },
+    camTarget: { x: 0.0, y: 4.36, z: -0.02 },
+    activeMeridians: ['GV', 'BL', 'GB', 'LR'],
     accent: '#38BDF8',
     accentSecondary: '#D4AF37',
     baBeforeImg: 'ba_hair_before.jpg',
@@ -635,9 +639,10 @@ const BODY_PARTS = [
     clinicLink: 'gongjindan.html',
     clinicCta: '바른 황제공진단 상세페이지 →',
     reserveProg: '황제공진단·기력보강 클리닉',
-    pos3D: { x: 0.08, y: 0.52, z: 0.20 },
-    camPos: { x: 0.56, y: 0.52, z: 1.72 },
-    camTarget: { x: 0.04, y: 0.50, z: 0.0 },
+    pos3D: { x: 0.03, y: 3.53, z: 0.21 },
+    camPos: { x: -0.34, y: 3.53, z: 1.72 },
+    camTarget: { x: 0.02, y: 3.52, z: 0.02 },
+    activeMeridians: ['HT', 'PC', 'CV', 'LU'],
     accent: '#D4AF37',
     accentSecondary: '#10B981',
     baBeforeImg: 'ba_gongjindan_before.jpg',
@@ -769,9 +774,10 @@ const BODY_PARTS = [
     clinicLink: 'diet-zero.html',
     clinicCta: '바른 다이어트 · 식욕ZERO 상세페이지 →',
     reserveProg: '성인 비만·다이어트 클리닉',
-    pos3D: { x: 0.0, y: 0.16, z: 0.22 },
-    camPos: { x: 0.62, y: 0.16, z: 1.78 },
-    camTarget: { x: 0.0, y: 0.14, z: 0.0 },
+    pos3D: { x: 0.06, y: 3.16, z: 0.22 },
+    camPos: { x: 0.42, y: 3.12, z: 1.88 },
+    camTarget: { x: 0.0, y: 3.10, z: 0.04 },
+    activeMeridians: ['ST', 'SP', 'CV', 'LR'],
     accent: '#D4AF37',
     accentSecondary: '#10B981',
     baBeforeImg: 'ba_diet_before.jpg',
@@ -903,9 +909,10 @@ const BODY_PARTS = [
     clinicLink: 'director.html',
     clinicCta: '대표원장 · 안심탕전 상세페이지 →',
     reserveProg: '안정위 대표원장 1:1 사상체질·통합진료 클리닉',
-    pos3D: { x: 0.0, y: -0.36, z: 0.18 },
-    camPos: { x: 0.58, y: -0.34, z: 1.72 },
-    camTarget: { x: 0.0, y: -0.36, z: 0.0 },
+    pos3D: { x: 0.0, y: 2.68, z: 0.23 },
+    camPos: { x: -0.38, y: 2.68, z: 1.82 },
+    camTarget: { x: 0.0, y: 2.68, z: 0.04 },
+    activeMeridians: ['CV', 'KI', 'SP', 'LR'],
     accent: '#D4AF37',
     accentSecondary: '#6EE7B7',
     baBeforeImg: 'ba_director_before.jpg',
@@ -1026,24 +1033,33 @@ const BODY_PARTS = [
   }
 ];
 
-function buildBodyExplorerHtml() {
+const { buildDonginSurfaceData } = require('./generate-dongin-meridians.js');
+
+function buildBodyExplorerHtml(donginData) {
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>바른한의원 3D 인체모형 질환 · 논문 대백과 — Vibrant Interactive Medical Hub</title>
+  <title>바른한의원 3D 침구동인(鍼灸銅人) 12경맥 · 질환 · SCI 논문 대백과 — Vibrant Interactive Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="clinic-template-config.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
   <style>
     :root {
       --bg-cosmos: #050811;
-      --bg-glass: rgba(9, 15, 26, 0.84);
-      --bg-card: rgba(255, 255, 255, 0.04);
-      --border-glass: rgba(255, 255, 255, 0.13);
+      --bg-glass: rgba(8, 14, 24, 0.84);
+      --bg-card: rgba(255, 255, 255, 0.045);
+      --border-glass: rgba(255, 255, 255, 0.14);
       --gold: #D4AF37;
       --gold-bright: #FDE68A;
       --emerald: #10B981;
@@ -1052,8 +1068,8 @@ function buildBodyExplorerHtml() {
       --cyan-bright: #BAE6FD;
       --crimson: #F87171;
       --text-main: #F8FAFC;
-      --text-sub: rgba(248, 250, 252, 0.80);
-      --text-muted: rgba(248, 250, 252, 0.52);
+      --text-sub: rgba(248, 250, 252, 0.82);
+      --text-muted: rgba(248, 250, 252, 0.54);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1068,206 +1084,362 @@ function buildBodyExplorerHtml() {
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Vibrant Wellness (vibrant.noomoagency.com) Iridescent Gradient Text */
-    .vibrant-iridescent-text {
-      background: linear-gradient(91.11deg, #dee9ff 0%, #f2f3ff 28%, #bae6fd 52%, #fde68a 78%, #ffffff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Top Navigation Bar */
+    /* ==========================================================================
+       TOP NAVIGATION BAR (VIBRANT WELLNESS + DONG-IN ROYAL HEADER)
+       ========================================================================== */
     .vibrant-top-header {
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 64px;
-      z-index: 120;
+      z-index: 200;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      background: rgba(5, 9, 18, 0.76);
+      background: rgba(5, 9, 18, 0.78);
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
-      border-bottom: 1px solid var(--border-glass);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .vh-left {
+    .vh-brand-group {
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-
-    .vh-brand {
       text-decoration: none;
       color: #FFFFFF;
+    }
+    .vh-gem {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      box-shadow: 0 0 14px var(--gold);
+    }
+    .vh-title {
       font-family: 'Noto Serif KR', serif;
-      font-weight: 800;
       font-size: 1.05rem;
-      display: flex;
-      align-items: center;
-      gap: 9px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
-
-    .vh-brand-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 14px var(--emerald-bright);
-    }
-
-    .vh-pill-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
+    .vh-badge {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #F8FAFC;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.22s ease;
-      white-space: nowrap;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(16, 185, 129, 0.22));
+      border: 1px solid rgba(253, 230, 138, 0.55);
+      color: var(--gold-bright);
     }
 
-    .vh-pill-btn:hover,
-    .vh-pill-btn.active {
-      background: var(--gold-bright);
-      color: #050911;
-      border-color: var(--gold-bright);
-    }
-
-    /* Vibrant Organ Quick Selector Strip in Header */
-    .vh-organ-strip {
+    .vh-part-QuickNav {
       display: flex;
       align-items: center;
       gap: 5px;
       overflow-x: auto;
       scrollbar-width: none;
     }
-    .vh-organ-strip::-webkit-scrollbar { display: none; }
+    .vh-part-QuickNav::-webkit-scrollbar { display: none; }
 
-    .vh-organ-tab {
+    .vh-part-chip {
       padding: 6px 12px;
       border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 0.75rem;
+      color: rgba(248, 250, 252, 0.78);
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
       white-space: nowrap;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .vh-organ-tab:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .vh-part-chip:hover {
+      border-color: var(--gold-bright);
       color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+    .vh-part-chip.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.32), rgba(212, 175, 55, 0.28));
+      border-color: var(--emerald-bright);
+      color: #FFFFFF;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.28);
     }
 
-    .vh-organ-tab.active {
-      background: linear-gradient(95deg, var(--emerald), var(--cyan));
-      color: #04120C;
-      border-color: #FFFFFF;
-      font-weight: 800;
-      box-shadow: 0 0 18px rgba(16, 185, 129, 0.45);
-    }
-
-    .vh-right {
+    .vh-right-actions {
       display: flex;
       align-items: center;
       gap: 8px;
     }
+    .vh-pill-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #FFFFFF;
+      transition: all 0.22s ease;
+      white-space: nowrap;
+    }
+    .vh-pill-btn:hover {
+      border-color: var(--gold-bright);
+      background: rgba(212, 175, 55, 0.18);
+    }
+    .vh-pill-btn.active {
+      background: linear-gradient(135deg, #D4AF37, #B48A1E);
+      color: #070B12;
+      border-color: #FDE68A;
+    }
 
-    /* Main Split Layout: Left 3D Interactive Body Stage (46%) + Right Deep Encyclopedia (54%) */
-    .vibrant-main-workspace {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      padding-top: 64px;
-      display: flex;
+    /* ==========================================================================
+       MAIN SPLIT WORKSPACE (LEFT: VIBRANT 3D DONG-IN STAGE / RIGHT: ENCYCLOPEDIA)
+       ========================================================================== */
+    .vibrant-workspace {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: 48% 52%;
       overflow: hidden;
     }
 
     /* ==========================================================================
-       LEFT STAGE: 3D HUMAN BODY WEBGL + PROJECTED CSS2D HOTSPOTS
+       LEFT PANEL: VIBRANT.NOOMOAGENCY.COM 193K-VERTEX 3D DONG-IN STAGE
        ========================================================================== */
     .vibrant-3d-stage {
       position: relative;
-      width: 46%;
-      min-width: 440px;
-      height: calc(100vh - 64px);
-      background:
-        radial-gradient(circle at 50% 42%, rgba(56, 189, 248, 0.13) 0%, rgba(16, 185, 129, 0.07) 36%, transparent 70%),
-        linear-gradient(180deg, #060B16 0%, #04070E 100%);
-      border-right: 1px solid var(--border-glass);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 38%, #102338 0%, #07111e 52%, #03070e 100%);
       overflow: hidden;
       user-select: none;
     }
 
     #vibrant-body-canvas {
-      position: absolute;
-      inset: 0;
       width: 100%;
       height: 100%;
       display: block;
-      z-index: 2;
       cursor: grab;
     }
     #vibrant-body-canvas:active {
       cursor: grabbing;
     }
 
-    /* SVG Dynamic Pointer Lines Layer */
-    #hotspot-svg-lines {
+    /* Loading Overlay while 193,288-vertex GLB + Draco decodes */
+    .dongin-loader-overlay {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 5;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 45%, rgba(12, 26, 42, 0.92), rgba(4, 8, 15, 0.98));
+      backdrop-filter: blur(14px);
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .dongin-loader-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
       pointer-events: none;
     }
+    .dongin-spinner {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 2px solid rgba(253, 230, 138, 0.18);
+      border-top-color: var(--gold-bright);
+      border-right-color: var(--emerald-bright);
+      animation: donginSpin 0.95s linear infinite;
+      margin-bottom: 14px;
+    }
+    @keyframes donginSpin {
+      to { transform: rotate(360deg); }
+    }
 
-    /* 3D Projected Screen-Space Hotspots Container (vibrant.noomoagency.com style) */
+    /* Top-Left Stage HUD: Dong-In Control Suite (Body Type + Finish + Camera Angle) */
+    .stage-hud-top {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .stage-hud-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .stage-control-bar {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(6, 12, 22, 0.80);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+    .stage-ctrl-btn {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: rgba(248, 250, 252, 0.72);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .stage-ctrl-btn:hover {
+      color: #FFFFFF;
+    }
+    .stage-ctrl-btn.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.34), rgba(16, 185, 129, 0.32));
+      color: #FDE68A;
+      border: 1px solid rgba(253, 230, 138, 0.55);
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+    }
+
+    /* 12-Meridian Interactive Bar along Left/Top of Stage */
+    .meridian-filter-strip {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 5px 8px;
+      border-radius: 12px;
+      background: rgba(6, 12, 22, 0.74);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+    }
+    .meridian-filter-strip::-webkit-scrollbar { display: none; }
+    .meridian-chip {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(248, 250, 252, 0.78);
+      font-size: 10.5px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .meridian-chip .m-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .meridian-chip:hover,
+    .meridian-chip.active {
+      background: rgba(212, 175, 55, 0.24);
+      border-color: var(--gold-bright);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    /* Acupoint Inspector Card (Bottom-Left above Sim Bar when an Acupoint is clicked/hovered) */
+    .acupoint-inspector-hud {
+      position: absolute;
+      left: 18px;
+      bottom: 84px;
+      z-index: 35;
+      width: min(350px, calc(100% - 36px));
+      padding: 13px 16px;
+      border-radius: 16px;
+      background: rgba(6, 13, 24, 0.88);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.65);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+    .acupoint-inspector-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .acupoint-code-pill {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.22);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+    }
+    .acupoint-meridian-lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--emerald-bright);
+    }
+    .acupoint-title-ko {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+    .acupoint-desc-ko {
+      font-size: 0.78rem;
+      line-height: 1.52;
+      color: rgba(248, 250, 252, 0.84);
+      word-break: keep-all;
+    }
+
+    /* Projected 2D Hotspot Overlay Layer */
     #hotspot-overlay-layer {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
       pointer-events: none;
+      z-index: 25;
+      overflow: hidden;
     }
 
-    .body-hotspot-node {
+    .body-3d-hotspot {
       position: absolute;
-      top: 0; left: 0;
       transform: translate(-50%, -50%);
       pointer-events: auto;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       transition: opacity 0.25s ease;
     }
-
-    .hotspot-core-ring {
-      position: relative;
+    .hotspot-pulse-ring {
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.24);
       border: 1.5px solid #6EE7B7;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 16px rgba(16, 185, 129, 0.75);
-      transition: all 0.25s ease;
+      animation: vibrantPulse 2.2s infinite ease-in-out;
     }
-
     .hotspot-core-dot {
       width: 7px;
       height: 7px;
@@ -1275,282 +1447,220 @@ function buildBodyExplorerHtml() {
       background: #FFFFFF;
       box-shadow: 0 0 8px #FFFFFF;
     }
-
-    .hotspot-pulse-halo {
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 1px solid rgba(110, 231, 183, 0.65);
-      animation: vibrantPulse 2.2s infinite ease-out;
+    .body-3d-hotspot.active .hotspot-pulse-ring {
+      background: rgba(212, 175, 55, 0.36);
+      border-color: #FDE68A;
+      box-shadow: 0 0 22px rgba(253, 230, 138, 0.95);
+      transform: scale(1.18);
     }
-
-    @keyframes vibrantPulse {
-      0% { transform: scale(0.85); opacity: 0.9; }
-      100% { transform: scale(1.85); opacity: 0; }
+    .body-3d-hotspot.active .hotspot-core-dot {
+      background: #FDE68A;
     }
-
-    .hotspot-label-pill {
+    .hotspot-tag-pill {
       padding: 5px 11px;
       border-radius: 999px;
-      background: rgba(7, 13, 24, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(6, 12, 22, 0.84);
       backdrop-filter: blur(12px);
-      color: #F8FAFC;
-      font-size: 11.5px;
-      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(248, 250, 252, 0.92);
+      font-size: 11px;
+      font-weight: 800;
       white-space: nowrap;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
       transition: all 0.22s ease;
     }
-
-    .body-hotspot-node:hover .hotspot-core-ring,
-    .body-hotspot-node.active .hotspot-core-ring {
-      background: var(--gold-bright);
-      border-color: #FFFFFF;
-      transform: scale(1.22);
-      box-shadow: 0 0 24px rgba(253, 230, 138, 0.95);
-    }
-
-    .body-hotspot-node:hover .hotspot-core-dot,
-    .body-hotspot-node.active .hotspot-core-dot {
-      background: #050911;
-    }
-
-    .body-hotspot-node:hover .hotspot-label-pill,
-    .body-hotspot-node.active .hotspot-label-pill {
-      background: linear-gradient(95deg, rgba(253, 230, 138, 0.95), rgba(110, 231, 183, 0.95));
-      color: #04120C;
-      border-color: #FFFFFF;
-      font-weight: 800;
+    .body-3d-hotspot:hover .hotspot-tag-pill,
+    .body-3d-hotspot.active .hotspot-tag-pill {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.92), rgba(13, 148, 136, 0.92));
+      border-color: #A7F3D0;
+      color: #FFFFFF;
       transform: translateX(3px);
     }
 
-    /* Top-Left Stage HUD Overlay */
-    .stage-hud-top {
+    /* Projected Acupoint Mini-Pins on the 3D Dong-In */
+    .acupoint-2d-pin {
       position: absolute;
-      top: 18px;
-      left: 20px;
-      right: 20px;
-      z-index: 15;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      pointer-events: none;
-    }
-
-    .stage-hud-badge {
+      transform: translate(-50%, -50%);
       pointer-events: auto;
-      background: rgba(7, 12, 22, 0.82);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 14px;
-      padding: 11px 15px;
-      backdrop-filter: blur(16px);
-      max-width: 310px;
-    }
-
-    .stage-hud-eyebrow {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      color: var(--cyan-bright);
-      margin-bottom: 4px;
-    }
-
-    .stage-hud-organ-name {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: #FFFFFF;
-    }
-
-    .stage-hud-micro-desc {
-      font-size: 11px;
-      line-height: 1.48;
-      color: rgba(248, 250, 252, 0.72);
-      margin-top: 5px;
-      word-break: keep-all;
-    }
-
-    .stage-cam-controls {
-      pointer-events: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      align-items: flex-end;
-    }
-
-    .stage-ctrl-btn {
-      padding: 7px 13px;
-      border-radius: 999px;
-      background: rgba(8, 14, 26, 0.86);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #E2E8F0;
-      font-size: 11px;
-      font-weight: 700;
       cursor: pointer;
-      backdrop-filter: blur(12px);
-      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(7, 14, 24, 0.78);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      color: #FDE68A;
+      font-size: 9.5px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
     }
-
-    .stage-ctrl-btn:hover,
-    .stage-ctrl-btn.active {
-      background: var(--emerald-bright);
-      color: #04120C;
+    .acupoint-2d-pin:hover,
+    .acupoint-2d-pin.highlighted {
+      background: rgba(212, 175, 55, 0.94);
+      color: #050912;
       border-color: #FFFFFF;
+      transform: translate(-50%, -50%) scale(1.12);
+      z-index: 40;
+    }
+    .acupoint-2d-pin .acu-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #6EE7B7;
     }
 
-    /* Bottom-Left 3D Simulation State Bar */
+    @keyframes vibrantPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.14); }
+    }
+
+    /* Bottom 3D Micro-Motion Status & Recovery Toggle Bar */
     .stage-hud-bottom {
       position: absolute;
-      bottom: 18px;
-      left: 20px;
-      right: 20px;
-      z-index: 15;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 30;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 10px 15px;
-      border-radius: 14px;
-      background: rgba(7, 12, 22, 0.86);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      backdrop-filter: blur(16px);
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(7, 13, 24, 0.84);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
     }
-
-    .sim-state-toggle {
+    .sim-state-switch {
       display: flex;
+      align-items: center;
       gap: 6px;
     }
-
-    .sim-state-pill {
+    .sim-state-btn {
       padding: 6px 12px;
       border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(248, 250, 252, 0.8);
       font-size: 11px;
       font-weight: 800;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.72);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
     }
-
-    .sim-state-pill.active-before {
-      background: rgba(239, 68, 68, 0.26);
-      border-color: #F87171;
+    .sim-state-btn.active-before {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #FCA5A5;
       color: #FECACA;
     }
-
-    .sim-state-pill.active-after {
-      background: rgba(16, 185, 129, 0.26);
+    .sim-state-btn.active-after {
+      background: rgba(16, 185, 129, 0.28);
       border-color: #6EE7B7;
       color: #A7F3D0;
     }
 
     /* ==========================================================================
-       RIGHT STAGE: DEEP MEDICAL & SCI PAPER ENCYCLOPEDIA PANEL (54%)
+       RIGHT PANEL: SCROLLABLE DEEP MEDICAL & SCI PAPER ENCYCLOPEDIA
        ========================================================================== */
-    .vibrant-encyclopedia-panel {
-      flex: 1;
-      height: calc(100vh - 64px);
+    .encyclopedia-scroll-panel {
+      position: relative;
+      width: 100%;
+      height: 100%;
       overflow-y: auto;
-      background: linear-gradient(165deg, rgba(10, 16, 28, 0.98) 0%, rgba(6, 10, 18, 0.99) 100%);
-      padding: 28px 36px 80px;
+      overflow-x: hidden;
+      padding: 28px 34px 90px;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.08), transparent 45%),
+        radial-gradient(circle at 10% 80%, rgba(212, 175, 55, 0.07), transparent 50%),
+        #060A12;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
       scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(110, 231, 183, 0.35) transparent;
     }
 
-    /* Sticky Section Jump Tabs inside Encyclopedia (Vibrant Story Tabs) */
     .encyc-sticky-tabs {
       position: sticky;
       top: -28px;
-      z-index: 40;
+      z-index: 50;
+      margin: -28px -34px 24px;
+      padding: 12px 34px;
+      background: rgba(6, 10, 18, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 12px 0;
-      margin-bottom: 20px;
-      background: rgba(7, 11, 20, 0.92);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 7px;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .encyc-sticky-tabs::-webkit-scrollbar { display: none; }
 
     .encyc-tab-btn {
-      padding: 7px 14px;
+      padding: 7px 13px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 0.76rem;
-      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(248, 250, 252, 0.78);
+      font-size: 11.5px;
+      font-weight: 800;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
     }
-
     .encyc-tab-btn:hover,
     .encyc-tab-btn.active {
-      background: var(--gold-bright);
-      color: #050911;
+      background: rgba(212, 175, 55, 0.22);
       border-color: var(--gold-bright);
-      font-weight: 800;
+      color: var(--gold-bright);
     }
 
     .encyc-hero-header {
       margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-
     .encyc-code-badge {
       display: inline-block;
-      font-size: 0.72rem;
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.16em;
       color: var(--emerald-bright);
       margin-bottom: 8px;
     }
-
     .encyc-main-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.95rem;
-      font-weight: 900;
-      line-height: 1.24;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
+      font-size: clamp(1.5rem, 2.3vw, 2.08rem);
+      font-weight: 800;
+      line-height: 1.32;
+      color: #FFFFFF;
+      word-break: keep-all;
+      margin-bottom: 8px;
     }
-
     .encyc-sub-en {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 1.08rem;
+      font-size: 1.05rem;
       color: var(--gold-bright);
-      opacity: 0.88;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
-
     .encyc-lead-desc {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       line-height: 1.72;
       color: var(--text-sub);
       word-break: keep-all;
-      padding: 16px 18px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.035);
-      border-left: 3px solid var(--emerald-bright);
     }
 
-    /* Embedded Scroll-Driven Automatic Before/After 3D Scan Card inside Encyclopedia */
+    /* SCROLL-DRIVEN INLINE BEFORE/AFTER 3D BIOMEDICAL SCAN */
     .encyc-ba-scroll-box {
-      margin: 22px 0 28px;
-      background: rgba(4, 8, 15, 0.9);
-      border: 1px solid rgba(212, 175, 55, 0.42);
-      border-radius: 18px;
+      margin: 22px 0 30px;
       padding: 18px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(13, 23, 38, 0.92), rgba(7, 12, 22, 0.96));
+      border: 1px solid rgba(212, 175, 55, 0.36);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
     }
-
     .encyc-ba-top-bar {
       display: flex;
       align-items: center;
@@ -1559,19 +1669,15 @@ function buildBodyExplorerHtml() {
       margin-bottom: 12px;
       flex-wrap: wrap;
     }
-
     .encyc-ba-stage {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      max-height: 360px;
       border-radius: 14px;
       overflow: hidden;
-      background: #06090F;
       border: 1px solid rgba(255, 255, 255, 0.16);
-      cursor: ew-resize;
+      background: #050811;
     }
-
     .encyc-ba-stage img {
       position: absolute;
       inset: 0;
@@ -1580,294 +1686,253 @@ function buildBodyExplorerHtml() {
       object-fit: cover;
       pointer-events: none;
     }
-
     .encyc-ba-after-clip {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      clip-path: inset(0 82% 0 0);
-      pointer-events: none;
+      clip-path: inset(0 80% 0 0);
       will-change: clip-path;
     }
-
     .encyc-ba-laser {
       position: absolute;
-      top: 0; bottom: 0;
-      left: 18%;
+      top: 0;
+      bottom: 0;
+      left: 20%;
       width: 2.5px;
-      background: linear-gradient(180deg, transparent, var(--emerald-bright), #FFFFFF, var(--gold-bright), transparent);
-      box-shadow: 0 0 18px rgba(110, 231, 183, 0.95);
-      transform: translateX(-50%);
+      background: linear-gradient(180deg, #6EE7B7, #FDE68A, #10B981);
+      box-shadow: 0 0 18px rgba(253, 230, 138, 0.95);
       pointer-events: none;
       z-index: 5;
-      will-change: left;
     }
-
     .encyc-ba-tag {
       position: absolute;
       top: 12px;
-      padding: 5px 12px;
+      padding: 5px 11px;
       border-radius: 999px;
       font-size: 10.5px;
       font-weight: 800;
+      z-index: 6;
       backdrop-filter: blur(10px);
-      z-index: 4;
-      pointer-events: none;
     }
     .encyc-ba-tag.b {
       left: 12px;
-      background: rgba(127, 29, 29, 0.85);
-      border: 1px solid rgba(252, 165, 165, 0.45);
+      background: rgba(127, 29, 29, 0.84);
+      border: 1px solid rgba(252, 165, 165, 0.55);
       color: #FECACA;
     }
     .encyc-ba-tag.a {
       right: 12px;
       background: rgba(6, 78, 59, 0.88);
-      border: 1px solid rgba(110, 231, 183, 0.55);
+      border: 1px solid rgba(110, 231, 183, 0.65);
       color: #A7F3D0;
     }
-
     .encyc-ba-metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       margin-top: 12px;
     }
-
-    .encyc-ba-metric-item {
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 11px;
+    .encyc-ba-metric-card {
       padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
     }
+    .ebm-lbl { font-size: 10.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
+    .ebm-vals { font-size: 11.5px; font-weight: 800; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .ebm-b { color: #FCA5A5; text-decoration: line-through; opacity: 0.85; }
+    .ebm-a { color: #6EE7B7; }
 
-    .encyc-ba-metric-label {
-      font-size: 10.5px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .encyc-ba-metric-val {
-      font-size: 13px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    /* Encyclopedia Content Sections */
+    /* SECTION CARDS */
     .encyc-section-block {
       margin-bottom: 34px;
-      padding-top: 8px;
+      scroll-margin-top: 70px;
     }
-
     .encyc-sec-header {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
-
     .encyc-sec-num {
-      font-size: 0.72rem;
+      font-size: 11px;
       font-weight: 900;
       padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.18);
-      border: 1px solid rgba(110, 231, 183, 0.5);
-      color: var(--emerald-bright);
+      border-radius: 8px;
+      background: rgba(212, 175, 55, 0.18);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      color: var(--gold-bright);
+      letter-spacing: 0.08em;
     }
-
     .encyc-sec-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.32rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: #FFFFFF;
     }
 
-    /* Root Cause Cards */
     .cause-cards-stack {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
-
     .cause-detail-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      border-radius: 15px;
       padding: 18px 20px;
-      transition: border-color 0.2s ease;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      transition: border-color 0.25s ease, transform 0.25s ease;
     }
     .cause-detail-card:hover {
-      border-color: rgba(56, 189, 248, 0.45);
+      border-color: rgba(212, 175, 55, 0.5);
+      transform: translateY(-2px);
     }
-
     .cause-badge {
       display: inline-block;
       font-size: 10.5px;
       font-weight: 800;
-      color: var(--cyan-bright);
-      letter-spacing: 0.06em;
-      margin-bottom: 5px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(248, 113, 113, 0.16);
+      border: 1px solid rgba(248, 113, 113, 0.4);
+      color: #FCA5A5;
+      margin-bottom: 8px;
     }
-
     .cause-title {
       font-size: 1.04rem;
       font-weight: 800;
       color: #FFFFFF;
       margin-bottom: 8px;
+      word-break: keep-all;
     }
-
     .cause-mech {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       line-height: 1.68;
       color: var(--text-sub);
-      word-break: keep-all;
       margin-bottom: 10px;
+      word-break: keep-all;
     }
-
-    .cause-warn {
-      font-size: 0.8rem;
-      line-height: 1.56;
-      color: #FDE68A;
-      background: rgba(212, 175, 55, 0.11);
-      border-left: 3px solid var(--gold);
-      padding: 9px 12px;
-      border-radius: 8px;
+    .cause-sol-box {
+      padding: 11px 14px;
+      border-radius: 11px;
+      background: rgba(16, 185, 129, 0.11);
+      border-left: 3px solid var(--emerald-bright);
+      font-size: 0.85rem;
+      line-height: 1.62;
+      color: #D1FAE5;
       word-break: keep-all;
     }
 
-    /* Special Deep-Dive Protocol Box (e.g., Frequent Cold Care for Parents) */
     .special-care-banner {
-      background: linear-gradient(145deg, rgba(16, 185, 129, 0.11) 0%, rgba(56, 189, 248, 0.08) 100%);
-      border: 1px solid rgba(110, 231, 183, 0.4);
-      border-radius: 18px;
-      padding: 22px 24px;
+      padding: 22px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(6, 78, 59, 0.34), rgba(15, 23, 42, 0.92));
+      border: 1.5px solid rgba(110, 231, 183, 0.45);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
     }
-
     .special-care-intro {
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       line-height: 1.68;
-      color: #E2E8F0;
+      color: #A7F3D0;
       margin: 10px 0 16px;
       word-break: keep-all;
     }
-
     .protocol-step-item {
-      background: rgba(5, 10, 18, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 16px;
       border-radius: 13px;
-      padding: 15px 18px;
+      background: rgba(5, 10, 20, 0.66);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       margin-bottom: 10px;
     }
-
-    .protocol-step-tag {
+    .protocol-step-badge {
       font-size: 10.5px;
-      font-weight: 800;
-      color: var(--emerald-bright);
+      font-weight: 900;
+      color: var(--gold-bright);
       letter-spacing: 0.08em;
       margin-bottom: 4px;
     }
-
-    .protocol-step-heading {
+    .protocol-step-title {
       font-size: 0.96rem;
       font-weight: 800;
-      color: var(--gold-bright);
+      color: #FFFFFF;
       margin-bottom: 6px;
       word-break: keep-all;
     }
-
     .protocol-step-detail {
-      font-size: 0.83rem;
-      line-height: 1.66;
+      font-size: 0.85rem;
+      line-height: 1.65;
       color: var(--text-sub);
       word-break: keep-all;
     }
 
-    /* Nutrition Grid (Good vs Bad Foods) */
     .nutrition-split-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
-
     .nutri-box {
+      padding: 16px;
       border-radius: 16px;
-      padding: 18px;
       border: 1px solid rgba(255, 255, 255, 0.12);
     }
-
     .nutri-box.good {
-      background: rgba(16, 185, 129, 0.06);
+      background: rgba(16, 185, 129, 0.07);
       border-color: rgba(110, 231, 183, 0.35);
     }
-
     .nutri-box.bad {
-      background: rgba(239, 68, 68, 0.06);
-      border-color: rgba(248, 113, 113, 0.35);
+      background: rgba(239, 68, 68, 0.07);
+      border-color: rgba(252, 165, 165, 0.32);
     }
-
     .nutri-item {
       padding: 11px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .nutri-item:last-child { border-bottom: none; }
+    .nutri-item:last-child { border-bottom: none; padding-bottom: 0; }
 
-    /* SCI Papers Reference Cards */
     .sci-paper-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(212, 175, 55, 0.32);
+      padding: 16px 18px;
       border-radius: 14px;
-      padding: 15px 18px;
-      margin-bottom: 10px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.85));
+      border: 1px solid rgba(186, 230, 253, 0.28);
+      margin-bottom: 12px;
     }
-
     .sci-journal-tag {
       display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.18);
+      color: #BAE6FD;
+      margin-bottom: 6px;
+    }
+    .sci-paper-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #F8FAFC;
+      line-height: 1.38;
+      margin-bottom: 5px;
+    }
+    .sci-paper-pmid {
       font-size: 10.5px;
       font-weight: 800;
       color: var(--gold-bright);
-      background: rgba(212, 175, 55, 0.15);
-      padding: 3px 9px;
-      border-radius: 999px;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
-
-    .sci-paper-title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.04rem;
-      font-weight: 700;
-      color: #FFFFFF;
-      line-height: 1.35;
-      margin-bottom: 5px;
-    }
-
-    .sci-paper-pmid {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--emerald-bright);
-      margin-bottom: 6px;
-    }
-
     .sci-paper-sum {
-      font-size: 0.82rem;
-      line-height: 1.6;
+      font-size: 0.84rem;
+      line-height: 1.62;
       color: var(--text-sub);
       word-break: keep-all;
     }
 
-    /* Bottom Action Bar inside Encyclopedia */
     .encyc-cta-footer {
       margin-top: 28px;
-      padding: 20px 24px;
+      padding: 22px 24px;
       border-radius: 18px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(16, 185, 129, 0.18));
-      border: 1px solid var(--gold-bright);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(16, 185, 129, 0.18));
+      border: 1px solid rgba(253, 230, 138, 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1875,962 +1940,1323 @@ function buildBodyExplorerHtml() {
       flex-wrap: wrap;
     }
 
-    /* Warm Hanji & High-Visibility Support */
-    body.theme-hanji {
-      --bg-cosmos: #F7F3EB;
-      --text-main: #18130E;
-      --text-sub: #2D241B;
-      --text-muted: #6E5D4B;
-    }
-    body.theme-hanji .vibrant-encyclopedia-panel {
-      background: #FBF8F2;
-      color: #18130E;
-    }
-    body.theme-hanji .encyc-main-title,
-    body.theme-hanji .encyc-sec-title,
-    body.theme-hanji .cause-title,
-    body.theme-hanji .sci-paper-title {
-      color: #18130E;
-    }
-    body.theme-hanji .cause-detail-card,
-    body.theme-hanji .protocol-step-item,
-    body.theme-hanji .sci-paper-card {
-      background: #FFFFFF;
-      border-color: rgba(138, 100, 33, 0.25);
-    }
-    body.theme-hanji .protocol-step-heading,
-    body.theme-hanji .cause-warn {
-      color: #78350F;
-    }
-
-    body.high-visibility-mode .cause-mech,
-    body.high-visibility-mode .protocol-step-detail,
-    body.high-visibility-mode .encyc-lead-desc,
-    body.high-visibility-mode .sci-paper-sum {
-      font-size: 0.98rem !important;
-      line-height: 1.78 !important;
-      color: #FFFFFF !important;
+    .vibrant-iridescent-text {
+      background: linear-gradient(96deg, #FFFFFF 0%, #A7F3D0 48%, #FDE68A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     @media (max-width: 1080px) {
-      html, body { overflow-y: auto; height: auto; }
-      .vibrant-main-workspace { flex-direction: column; height: auto; overflow: visible; }
-      .vibrant-3d-stage { width: 100%; min-width: 100%; height: 56vh; min-height: 430px; border-right: none; border-bottom: 1px solid var(--border-glass); }
-      .vibrant-encyclopedia-panel { height: auto; overflow: visible; padding: 22px 18px 60px; }
-      .nutrition-split-grid, .encyc-ba-metrics-grid { grid-template-columns: 1fr; }
+      html, body { overflow: auto; }
+      .vibrant-workspace {
+        position: relative;
+        top: 64px;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+      }
+      .vibrant-3d-stage {
+        height: 62vh;
+        min-height: 460px;
+      }
+      .encyclopedia-scroll-panel {
+        height: auto;
+        overflow: visible;
+        padding: 22px 18px 80px;
+      }
+      .nutrition-split-grid,
+      .encyc-ba-metrics-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
   <!-- ========================================================================
-       VIBRANT WELLNESS STYLE TOP NAVIGATION & 7-ORGAN QUICK SWITCHER
+       TOP NAVIGATION HEADER (VIBRANT WELLNESS + DONG-IN 12 MERIDIANS)
        ======================================================================== -->
   <header class="vibrant-top-header">
-    <div class="vh-left">
-      <a href="story-3d.html" class="vh-brand">
-        <span class="vh-brand-dot"></span>
-        <span id="explorer-clinic-name">바른한의원</span>
-      </a>
-      <a href="story-3d.html" class="vh-pill-btn">← 3D 메인 스토리</a>
-      <a href="story-3d.html?cards=1" class="vh-pill-btn">6대 클리닉</a>
-    </div>
+    <a href="story-3d.html" class="vh-brand-group" title="메인 3D 클리닉 쇼룸으로 돌아가기">
+      <span class="vh-gem"></span>
+      <span class="vh-title" data-brand="clinicName">바른한의원</span>
+      <span class="vh-badge">3D 침구동인(鍼灸銅人) · 12경맥 · 논문백과</span>
+    </a>
 
-    <nav class="vh-organ-strip" id="vh-organ-strip" aria-label="3D 인체 부위별 질환 백과 선택">
-      <button type="button" class="vh-organ-tab active" data-part="knee" onclick="window.selectBodyPart('knee')">01. 무릎 · 성장판/감기면역</button>
-      <button type="button" class="vh-organ-tab" data-part="cervical" onclick="window.selectBodyPart('cervical')">02. 경추 · 거북목/두통</button>
-      <button type="button" class="vh-organ-tab" data-part="lumbar" onclick="window.selectBodyPart('lumbar')">03. 요추 · 골반/디스크</button>
-      <button type="button" class="vh-organ-tab" data-part="brain" onclick="window.selectBodyPart('brain')">04. 뇌 · 두피열/탈모</button>
-      <button type="button" class="vh-organ-tab" data-part="heart" onclick="window.selectBodyPart('heart')">05. 심장 · 자율신경/공진단</button>
-      <button type="button" class="vh-organ-tab" data-part="gut" onclick="window.selectBodyPart('gut')">06. 복부 · 내장지방/대사</button>
-      <button type="button" class="vh-organ-tab" data-part="pelvis" onclick="window.selectBodyPart('pelvis')">07. 자궁 · 착상/안심탕전</button>
+    <nav class="vh-part-QuickNav" id="vh-part-quicknav" aria-label="인체 부위별 3D 진단 탐색">
+      <button type="button" class="vh-part-chip active" data-part="knee">01 · 무릎 (소아 키성장·감기면역)</button>
+      <button type="button" class="vh-part-chip" data-part="cervical">02 · 목·경추 (일자목·두통 추나)</button>
+      <button type="button" class="vh-part-chip" data-part="lumbar">03 · 허리·골반 (디스크·체형 추나)</button>
+      <button type="button" class="vh-part-chip" data-part="brain">04 · 두피열·뇌신경 (탈모·수승화강)</button>
+      <button type="button" class="vh-part-chip" data-part="heart">05 · 심장·기혈 (황제공진단·만성피로)</button>
+      <button type="button" class="vh-part-chip" data-part="gut">06 · 복부·위장대사 (식욕ZERO 다이어트)</button>
+      <button type="button" class="vh-part-chip" data-part="pelvis">07 · 자궁·골반강 (난임·안심탕전)</button>
     </nav>
 
-    <div class="vh-right">
-      <button type="button" class="vh-pill-btn" onclick="window.cycleExplorerVisMode()" id="btn-explorer-vis">시안성 · 한지모드</button>
-      <a href="director.html" id="header-direct-clinic-btn" class="vh-pill-btn active">클리닉 진료예약 ↗</a>
+    <div class="vh-right-actions">
+      <a href="story-3d.html" class="vh-pill-btn">← 3D 메인 쇼룸</a>
+      <a href="story-3d.html?cards=1" class="vh-pill-btn active">6대 클리닉 전체보기 ↗</a>
     </div>
   </header>
 
   <!-- ========================================================================
-       MAIN SPLIT WORKSPACE: LEFT 3D HUMAN BODY + RIGHT SCI ENCYCLOPEDIA
+       MAIN SPLIT WORKSPACE (LEFT: VIBRANT 3D DONG-IN / RIGHT: ENCYCLOPEDIA)
        ======================================================================== -->
-  <main class="vibrant-main-workspace">
-    <!-- LEFT: THREE.JS 3D INTERACTIVE HUMAN BODY WITH PERLIN DISSOLVE & MICRO-MOTION -->
-    <section class="vibrant-3d-stage" id="vibrant-3d-stage" aria-label="3D 인체 해부학 인터랙티브 뷰포트">
-      <canvas id="vibrant-body-canvas"></canvas>
-      <svg id="hotspot-svg-lines"></svg>
-      <div id="hotspot-overlay-layer"></div>
+  <main class="vibrant-workspace">
 
+    <!-- LEFT: 3D INTERACTIVE DONG-IN HUMAN BODY + 12 MERIDIANS + REAL GLB ORGANS -->
+    <section class="vibrant-3d-stage" id="vibrant-3d-stage">
+      <div class="dongin-loader-overlay" id="dongin-loader-overlay">
+        <div class="dongin-spinner"></div>
+        <div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:800;color:#FDE68A;margin-bottom:4px;">3D 침구동인(鍼灸銅人) 193,288 폴리곤 & 12경맥 로딩 중...</div>
+        <div style="font-size:0.78rem;color:rgba(248,250,252,0.68);">Vibrant Wellness 3D Organ Mesh + 12경맥 361혈 핵심 혈자리 정밀 매핑</div>
+      </div>
+
+      <!-- Top HUD: Body Gender + Dong-In Material Mode + Camera View + 12 Meridians Bar -->
       <div class="stage-hud-top">
-        <div class="stage-hud-badge">
-          <div class="stage-hud-eyebrow" id="hud-organ-code">VIBRANT 3D ANATOMICAL SCAN</div>
-          <div class="stage-hud-organ-name vibrant-iridescent-text" id="hud-organ-title">무릎 · 성장판 & 소아 감기면역</div>
-          <div class="stage-hud-micro-desc" id="hud-micro-desc">3D 인체모형의 부위별 포인트를 클릭하거나 우측 백과사전을 스크롤하면 3D 세부 치료 기전이 실시간 시뮬레이션됩니다.</div>
+        <div class="stage-hud-row">
+          <!-- Male / Female 3D Body Switcher (skinMB2.glb vs skinF2.glb) -->
+          <div class="stage-control-bar" aria-label="동인 체형 선택">
+            <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 동인 (Male)</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 동인 (Female)</button>
+          </div>
+
+          <!-- Dong-In Skin Material Mode Switcher -->
+          <div class="stage-control-bar" aria-label="동인 재질 및 투시 모드">
+            <button type="button" class="stage-ctrl-btn active" id="btn-mat-glass" onclick="window.setDonginSkinMode('glass')">✨ Vibrant 유리·금침 동인</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-mat-bronze" onclick="window.setDonginSkinMode('bronze')">🏺 황실 청동(銅人) 조각</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-mat-xray" onclick="window.setDonginSkinMode('xray')">🔬 12경맥·장부 X-Ray</button>
+          </div>
+
+          <!-- Camera Quick View Switcher (Front / Back / Full Overview / Aurora Studio) -->
+          <div class="stage-control-bar" aria-label="카메라 시점 전환">
+            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('full')">전신 12경맥</button>
+            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('front')">전면(임맥·위경)</button>
+            <button type="button" class="stage-ctrl-btn" onclick="window.setDonginCameraPreset('back')">후면(독맥·방광경)</button>
+            <button type="button" class="stage-ctrl-btn" id="btn-studio-aurora" onclick="window.toggleVibrantAuroraStudio()">🌅 오로라 배경</button>
+          </div>
         </div>
 
-        <div class="stage-cam-controls">
-          <button type="button" class="stage-ctrl-btn" id="btn-cam-overview" onclick="window.setCameraOverview()">전신 3D 스캔 보기 (Overview)</button>
-          <button type="button" class="stage-ctrl-btn active" id="btn-cam-zoom" onclick="window.zoomToActivePart()">선택 부위 3D 현미경 줌인</button>
+        <!-- 12 Meridians + Ren/Du Interactive Filter Bar -->
+        <div class="meridian-filter-strip" id="meridian-filter-strip">
+          <button type="button" class="meridian-chip active" data-meridian="ALL" onclick="window.selectMeridianFilter('ALL')">
+            <span class="m-dot" style="background:#FDE68A;"></span>12경맥·기경팔맥 전체
+          </button>
         </div>
       </div>
 
-      <div class="stage-hud-bottom">
-        <div style="font-size:11px;color:rgba(255,255,255,0.78);font-weight:700;">
-          <span style="color:var(--gold-bright);">3D 세부 모션 상태</span> · <span id="sim-progress-readout">스크롤 연동 회복 20%</span>
+      <!-- 3D WebGL Canvas -->
+      <canvas id="vibrant-body-canvas"></canvas>
+
+      <!-- 2D Projected Interactive Hotspots & Acupoint Pins -->
+      <div id="hotspot-overlay-layer"></div>
+
+      <!-- Acupoint Live Inspector HUD (Bottom-Left) -->
+      <div class="acupoint-inspector-hud" id="acupoint-inspector-hud">
+        <div class="acupoint-inspector-top">
+          <span class="acupoint-code-pill" id="acu-hud-code">ST36 · 족삼리혈 (足三里)</span>
+          <span class="acupoint-meridian-lbl" id="acu-hud-meridian">ST · 족양명위경(足陽明胃經)</span>
         </div>
-        <div class="sim-state-toggle">
-          <button type="button" class="sim-state-pill" id="btn-sim-state-before" onclick="window.setManualSimRecovery(0.05)">BEFORE · 병리 원인</button>
-          <button type="button" class="sim-state-pill active-after" id="btn-sim-state-after" onclick="window.setManualSimRecovery(0.95)">AFTER · 치료 회복 모션</button>
+        <div class="acupoint-title-ko" id="acu-hud-title">무릎 성장판(독비·족삼리·양릉천) & 위장 면역 대표 명혈</div>
+        <p class="acupoint-desc-ko" id="acu-hud-desc">소화 흡수력과 무릎 골단연골(성장판) IGF-1 발현 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 핵심 혈자리입니다. (인체모형 위의 황금 혈자리를 클릭해보세요)</p>
+      </div>
+
+      <!-- Bottom HUD: 3D Organ & Meridian Recovery State Switcher -->
+      <div class="stage-hud-bottom">
+        <div>
+          <div style="font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--gold-bright);">SCROLL-LINKED 3D DONG-IN & ORGAN SIMULATION</div>
+          <div style="font-size:0.79rem;font-weight:700;color:#F8FAFC;margin-top:2px;">우측 백과를 스크롤하면 <span style="color:#6EE7B7;">3D 장부·성장판과 12경맥 기혈 유주</span>가 치료 후(After)로 실시간 회복됩니다</div>
+        </div>
+        <div class="sim-state-switch">
+          <button type="button" class="sim-state-btn" id="btn-sim-state-before" onclick="window.setManualSimRecovery(0.08)">치료 전 (병변·기체)</button>
+          <button type="button" class="sim-state-btn active-after" id="btn-sim-state-after" onclick="window.setManualSimRecovery(0.95)">치료 후 (경락소통·회복)</button>
+          <span id="sim-progress-readout" style="font-size:11px;font-weight:900;color:#FDE68A;min-width:68px;text-align:right;">회복도 25%</span>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT: EVIDENCE-BASED MEDICAL, NUTRITION, LIFESTYLE & SCI PAPER ENCYCLOPEDIA -->
-    <section class="vibrant-encyclopedia-panel" id="encyclopedia-scroll-panel" aria-label="질환별 원인·음식·생활·SCI논문 심층 백과">
+    <!-- RIGHT: DEEP MEDICAL, LIFESTYLE, NUTRITION & SCI PAPER ENCYCLOPEDIA -->
+    <section class="encyclopedia-scroll-panel" id="encyclopedia-scroll-panel">
       <div class="encyc-sticky-tabs">
-        <button type="button" class="encyc-tab-btn active" onclick="window.scrollToEncycSec('sec-ba-scan')">00. 스크롤 전후 3D 스캔</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-causes')">01. 근본 원인 정밀 분석</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-special-care')">02. 부모님·환자 실전 관리법</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-nutrition')">03. 맞춤 약선 음식 vs 금기</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-lifestyle')">04. 수면·운동·혈자리 루틴</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-sci-papers')">05. 한의원 치료 & SCI 논문</button>
+        <button type="button" class="encyc-tab-btn active" onclick="window.scrollToEncycSec('sec-ba-scan')">① 스크롤 자동 전후 3D 스캔</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-causes')">② 성장을 막는/질환 원인별 기전</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-special-care')">③ 감기·핵심 홈케어 프로토콜</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-nutrition')">④ 도움 음식 vs 금기 식품</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-lifestyle')">⑤ 수면 · 운동 · 동인 혈자리 루틴</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-sci-papers')">⑥ 한의원 치료 & 전세계 SCI 논문</button>
       </div>
 
       <div id="encyclopedia-dynamic-content"></div>
     </section>
+
   </main>
 
-  <script>
-    (function() {
-      'use strict';
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-      const PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
-      let currentPartId = 'knee';
-      let targetRecoveryMix = 0.25;
-      let smoothRecoveryMix = 0.25;
-      let isOverviewMode = false;
+    const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
+    const DONGIN_DATA = ${JSON.stringify(donginData)};
 
-      // ======================================================================
-      // 1. RENDER RIGHT-HAND MEDICAL ENCYCLOPEDIA & SCROLL-SYNC B/A SCAN
-      // ======================================================================
-      const contentBox = document.getElementById('encyclopedia-dynamic-content');
-      const scrollPanel = document.getElementById('encyclopedia-scroll-panel');
+    // ========================================================================
+    // 1. ENCYCLOPEDIA RENDERER & SCROLL-DRIVEN AUTOMATIC B/A SCAN
+    // ========================================================================
+    let currentPartId = 'knee';
+    let currentRecoveryMix = 0.25;
+    let targetRecoveryMix = 0.25;
+    let activeMeridianFilter = 'ALL';
 
-      function renderEncyclopedia(part) {
-        if (!contentBox || !part) return;
+    const scrollPanel = document.getElementById('encyclopedia-scroll-panel');
+    const contentBox = document.getElementById('encyclopedia-dynamic-content');
+    const quickNavButtons = document.querySelectorAll('#vh-part-quicknav .vh-part-chip');
 
-        const metricsHtml = part.baMetrics.map(function(m) {
-          return '<div class="encyc-ba-metric-item">' +
-            '<div class="encyc-ba-metric-label">' + m.label + '</div>' +
-            '<div class="encyc-ba-metric-val">' +
-              '<span style="color:rgba(252,165,165,0.8);text-decoration:line-through;font-size:11.5px;font-weight:500;">' + m.b + '</span>' +
-              '<span style="color:var(--gold-bright);">→</span>' +
-              '<span style="color:var(--emerald-bright);">' + m.a + '</span>' +
-            '</div>' +
-          '</div>';
-        }).join('');
+    function getPartById(id) {
+      return BODY_PARTS_DATA.find(p => p.id === id) || BODY_PARTS_DATA[0];
+    }
 
-        const causesHtml = part.causes.map(function(c) {
-          return '<article class="cause-detail-card">' +
-            '<span class="cause-badge">' + c.badge + '</span>' +
-            '<h4 class="cause-title">' + c.title + '</h4>' +
-            '<p class="cause-mech">' + c.mechanism + '</p>' +
-            '<div class="cause-warn"><strong>임상 핵심 포인트:</strong> ' + c.warning + '</div>' +
-          '</article>';
-        }).join('');
+    function renderEncyclopedia(partId) {
+      const part = getPartById(partId);
+      currentPartId = part.id;
 
-        const protocolsHtml = part.coldCareSpecial.protocols.map(function(p) {
-          return '<div class="protocol-step-item">' +
-            '<div class="protocol-step-tag">' + p.step + '</div>' +
-            '<div class="protocol-step-heading">' + p.heading + '</div>' +
-            '<p class="protocol-step-detail">' + p.detail + '</p>' +
-          '</div>';
-        }).join('');
+      quickNavButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-part') === part.id);
+      });
 
-        const goodFoodsHtml = part.nutrition.goodFoods.map(function(f) {
-          return '<div class="nutri-item">' +
-            '<div style="font-size:0.92rem;font-weight:800;color:#6EE7B7;margin-bottom:3px;">✓ ' + f.name + '</div>' +
-            '<div style="font-size:0.76rem;font-weight:700;color:var(--gold-bright);margin-bottom:4px;">기전: ' + f.role + '</div>' +
-            '<p style="font-size:0.8rem;line-height:1.56;color:var(--text-sub);word-break:keep-all;">' + f.tip + '</p>' +
-          '</div>';
-        }).join('');
+      const metricsHtml = part.baMetrics.map(m =>
+        '<div class="encyc-ba-metric-card">' +
+          '<div class="ebm-lbl">' + m.label + '</div>' +
+          '<div class="ebm-vals"><span class="ebm-b">' + m.b + '</span> <span>→</span> <span class="ebm-a">' + m.a + '</span></div>' +
+        '</div>'
+      ).join('');
 
-        const badFoodsHtml = part.nutrition.badFoods.map(function(f) {
-          return '<div class="nutri-item">' +
-            '<div style="font-size:0.9rem;font-weight:800;color:#FCA5A5;margin-bottom:4px;">✕ ' + f.name + '</div>' +
-            '<p style="font-size:0.8rem;line-height:1.56;color:var(--text-sub);word-break:keep-all;">' + f.reason + '</p>' +
-          '</div>';
-        }).join('');
+      const causesHtml = part.causes.map(c =>
+        '<article class="cause-detail-card">' +
+          '<span class="cause-badge">' + c.badge + '</span>' +
+          '<h3 class="cause-title">' + c.title + '</h3>' +
+          '<p class="cause-mech">' + c.mechanism + '</p>' +
+          '<div class="cause-sol-box"><strong>바른한의원 해법 · </strong>' + c.solution + '</div>' +
+        '</article>'
+      ).join('');
 
-        const lifeHtml = part.lifestyle.map(function(l) {
-          return '<div class="cause-detail-card">' +
-            '<span class="cause-badge">' + l.category + '</span>' +
-            '<h4 class="cause-title">' + l.title + '</h4>' +
-            '<p class="cause-mech" style="margin-bottom:0;">' + l.desc + '</p>' +
-          '</div>';
-        }).join('');
+      const protocolsHtml = part.coldCareSpecial.protocols.map(pr =>
+        '<div class="protocol-step-item">' +
+          '<div class="protocol-step-badge">' + pr.step + '</div>' +
+          '<div class="protocol-step-title">' + pr.title + '</div>' +
+          '<p class="protocol-step-detail">' + pr.detail + '</p>' +
+        '</div>'
+      ).join('');
 
-        const clinicStepsHtml = part.clinicalProtocol.steps.map(function(s) {
-          return '<div style="padding:10px 14px;border-radius:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(110,231,183,0.3);font-size:0.86rem;font-weight:700;color:#E2E8F0;margin-bottom:8px;">' + s + '</div>';
-        }).join('');
+      const goodFoodsHtml = part.nutrition.goodFoods.map(f =>
+        '<div class="nutri-item">' +
+          '<div style="font-size:0.92rem;font-weight:800;color:#6EE7B7;margin-bottom:3px;">✓ ' + f.name + '</div>' +
+          '<div style="font-size:0.76rem;font-weight:700;color:var(--gold-bright);margin-bottom:4px;">기전: ' + f.role + '</div>' +
+          '<p style="font-size:0.8rem;line-height:1.56;color:var(--text-sub);word-break:keep-all;">' + f.tip + '</p>' +
+        '</div>'
+      ).join('');
 
-        const papersHtml = part.clinicalProtocol.papers.map(function(p) {
-          return '<div class="sci-paper-card">' +
-            '<span class="sci-journal-tag">' + p.journal + '</span>' +
-            '<div class="sci-paper-title">' + p.title + '</div>' +
-            '<div class="sci-paper-pmid">' + p.pmid + '</div>' +
-            '<p class="sci-paper-sum">' + p.summary + '</p>' +
-          '</div>';
-        }).join('');
+      const badFoodsHtml = part.nutrition.badFoods.map(f =>
+        '<div class="nutri-item">' +
+          '<div style="font-size:0.9rem;font-weight:800;color:#FCA5A5;margin-bottom:4px;">✕ ' + f.name + '</div>' +
+          '<p style="font-size:0.8rem;line-height:1.56;color:var(--text-sub);word-break:keep-all;">' + f.reason + '</p>' +
+        '</div>'
+      ).join('');
 
-        contentBox.innerHTML =
-          '<div class="encyc-hero-header" id="sec-ba-scan">' +
-            '<span class="encyc-code-badge">' + part.code + '</span>' +
-            '<h1 class="encyc-main-title vibrant-iridescent-text">' + part.headline + '</h1>' +
-            '<div class="encyc-sub-en">' + part.organEn + '</div>' +
-            '<p class="encyc-lead-desc">' + part.leadDesc + '</p>' +
-          '</div>' +
+      const lifeHtml = part.lifestyle.map(l =>
+        '<div class="cause-detail-card">' +
+          '<span class="cause-badge">' + l.category + '</span>' +
+          '<h4 class="cause-title">' + l.title + '</h4>' +
+          '<p class="cause-mech" style="margin-bottom:0;">' + l.desc + '</p>' +
+        '</div>'
+      ).join('');
 
-          '<!-- EMBEDDED SCROLL-REACTIVE 3D BEFORE / AFTER BIOMEDICAL SCAN -->' +
-          '<div class="encyc-ba-scroll-box">' +
-            '<div class="encyc-ba-top-bar">' +
-              '<div>' +
-                '<span style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;color:var(--gold-bright);">SCROLL-SYNCHRONIZED 3D BIOMEDICAL SCAN</span>' +
-                '<div style="font-size:1rem;font-weight:800;color:#FFFFFF;margin-top:2px;">스크롤을 내리면 치료 전(Before)에서 치료 후(After)로 자동 스캔 변환됩니다</div>' +
-              '</div>' +
-              '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 20%</span>' +
-            '</div>' +
-            '<div class="encyc-ba-stage" id="encyc-ba-stage">' +
-              '<img src="' + part.baBeforeImg + '" alt="치료 전 스캔" draggable="false">' +
-              '<div class="encyc-ba-after-clip" id="encyc-ba-after-clip">' +
-                '<img src="' + part.baAfterImg + '" alt="치료 후 스캔" draggable="false">' +
-              '</div>' +
-              '<span class="encyc-ba-tag b">' + part.baBeforeTag + '</span>' +
-              '<span class="encyc-ba-tag a">' + part.baAfterTag + '</span>' +
-              '<div class="encyc-ba-laser" id="encyc-ba-laser"></div>' +
-            '</div>' +
-            '<div class="encyc-ba-metrics-grid">' + metricsHtml + '</div>' +
-          '</div>' +
+      const clinicStepsHtml = part.clinicalProtocol.steps.map(s =>
+        '<div style="padding:10px 14px;border-radius:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(110,231,183,0.3);font-size:0.86rem;font-weight:700;color:#E2E8F0;margin-bottom:8px;">' + s + '</div>'
+      ).join('');
 
-          '<!-- SECTION 01: ROOT CAUSES -->' +
-          '<section class="encyc-section-block" id="sec-causes">' +
-            '<div class="encyc-sec-header">' +
-              '<span class="encyc-sec-num">SECTION 01</span>' +
-              '<h2 class="encyc-sec-title">왜 증상이 발생하고 재발할까요? — 근본 원인별 정밀 기전</h2>' +
-            '</div>' +
-            '<div class="cause-cards-stack">' + causesHtml + '</div>' +
-          '</section>' +
+      const papersHtml = part.clinicalProtocol.papers.map(p =>
+        '<div class="sci-paper-card">' +
+          '<span class="sci-journal-tag">' + p.journal + '</span>' +
+          '<div class="sci-paper-title">' + p.title + '</div>' +
+          '<div class="sci-paper-pmid">' + p.pmid + '</div>' +
+          '<p class="sci-paper-sum">' + p.summary + '</p>' +
+        '</div>'
+      ).join('');
 
-          '<!-- SECTION 02: SPECIAL PARENTAL / PATIENT CARE PROTOCOL -->' +
-          '<section class="encyc-section-block" id="sec-special-care">' +
-            '<div class="encyc-sec-header">' +
-              '<span class="encyc-sec-num">SECTION 02</span>' +
-              '<h2 class="encyc-sec-title">실전 집중 관리 프로토콜</h2>' +
-            '</div>' +
-            '<div class="special-care-banner">' +
-              '<div style="font-size:0.74rem;font-weight:800;color:var(--emerald-bright);letter-spacing:0.1em;">' + part.coldCareSpecial.subtitle + '</div>' +
-              '<h3 style="font-family:Noto Serif KR,serif;font-size:1.26rem;font-weight:800;color:#FFFFFF;margin-top:4px;">' + part.coldCareSpecial.title + '</h3>' +
-              '<p class="special-care-intro">' + part.coldCareSpecial.intro + '</p>' +
-              '<div>' + protocolsHtml + '</div>' +
-            '</div>' +
-          '</section>' +
+      contentBox.innerHTML =
+        '<div class="encyc-hero-header" id="sec-ba-scan">' +
+          '<span class="encyc-code-badge">' + part.code + '</span>' +
+          '<h1 class="encyc-main-title vibrant-iridescent-text">' + part.headline + '</h1>' +
+          '<div class="encyc-sub-en">' + part.organEn + '</div>' +
+          '<p class="encyc-lead-desc">' + part.leadDesc + '</p>' +
+        '</div>' +
 
-          '<!-- SECTION 03: THERAPEUTIC NUTRITION vs CONTRAINDIACTED FOODS -->' +
-          '<section class="encyc-section-block" id="sec-nutrition">' +
-            '<div class="encyc-sec-header">' +
-              '<span class="encyc-sec-num">SECTION 03</span>' +
-              '<h2 class="encyc-sec-title">도움이 되는 약선 음식 vs 피해야 할 식단</h2>' +
-            '</div>' +
-            '<div class="nutrition-split-grid">' +
-              '<div class="nutri-box good">' +
-                '<h3 style="font-size:1rem;font-weight:800;color:#6EE7B7;margin-bottom:10px;">' + part.nutrition.goodTitle + '</h3>' +
-                goodFoodsHtml +
-              '</div>' +
-              '<div class="nutri-box bad">' +
-                '<h3 style="font-size:1rem;font-weight:800;color:#FCA5A5;margin-bottom:10px;">' + part.nutrition.badTitle + '</h3>' +
-                badFoodsHtml +
-              '</div>' +
-            '</div>' +
-          '</section>' +
-
-          '<!-- SECTION 04: DAILY SLEEP, EXERCISE & ACUPOINT ROUTINE -->' +
-          '<section class="encyc-section-block" id="sec-lifestyle">' +
-            '<div class="encyc-sec-header">' +
-              '<span class="encyc-sec-num">SECTION 04</span>' +
-              '<h2 class="encyc-sec-title">가정 내 수면 · 운동 · 경혈 지압 루틴</h2>' +
-            '</div>' +
-            '<div class="cause-cards-stack">' + lifeHtml + '</div>' +
-          '</section>' +
-
-          '<!-- SECTION 05: BAREUN CLINIC PROTOCOL & GLOBAL SCI PAPERS -->' +
-          '<section class="encyc-section-block" id="sec-sci-papers">' +
-            '<div class="encyc-sec-header">' +
-              '<span class="encyc-sec-num">SECTION 05</span>' +
-              '<h2 class="encyc-sec-title">바른한의원 정밀 치료 프로토콜 & 전세계 SCI 논문 레퍼런스</h2>' +
-            '</div>' +
-            '<div style="margin-bottom:18px;">' + clinicStepsHtml + '</div>' +
-            '<div>' + papersHtml + '</div>' +
-          '</section>' +
-
-          '<div class="encyc-cta-footer">' +
+        '<div class="encyc-ba-scroll-box">' +
+          '<div class="encyc-ba-top-bar">' +
             '<div>' +
-              '<div style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);letter-spacing:0.12em;">1:1 MASTER DIRECTOR CONSULTATION</div>' +
-              '<div style="font-family:Noto Serif KR,serif;font-size:1.22rem;font-weight:800;color:#FFFFFF;margin-top:3px;">' + part.shortName + ' — 1:1 맞춤 진료 및 스토리 확인</div>' +
+              '<span style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;color:var(--gold-bright);">SCROLL-SYNCHRONIZED 3D BIOMEDICAL SCAN</span>' +
+              '<div style="font-size:1rem;font-weight:800;color:#FFFFFF;margin-top:2px;">스크롤을 내리면 치료 전(Before)에서 치료 후(After)로 자동 스캔 변환됩니다</div>' +
             '</div>' +
-            '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
-              '<a href="' + part.clinicLink + '" class="vh-pill-btn active" style="padding:11px 20px;font-size:0.86rem;">' + part.clinicCta + '</a>' +
+            '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 25%</span>' +
+          '</div>' +
+          '<div class="encyc-ba-stage" id="encyc-ba-stage">' +
+            '<img src="' + part.baBeforeImg + '" alt="치료 전 스캔" draggable="false">' +
+            '<div class="encyc-ba-after-clip" id="encyc-ba-after-clip">' +
+              '<img src="' + part.baAfterImg + '" alt="치료 후 스캔" draggable="false">' +
             '</div>' +
-          '</div>';
+            '<span class="encyc-ba-tag b">' + part.baBeforeTag + '</span>' +
+            '<span class="encyc-ba-tag a">' + part.baAfterTag + '</span>' +
+            '<div class="encyc-ba-laser" id="encyc-ba-laser"></div>' +
+          '</div>' +
+          '<div class="encyc-ba-metrics-grid">' + metricsHtml + '</div>' +
+        '</div>' +
 
-        // Optional pointer scrub on the embedded B/A stage inside encyclopedia
-        const baStageEl = document.getElementById('encyc-ba-stage');
-        if (baStageEl) {
-          baStageEl.addEventListener('pointermove', function(e) {
-            const r = baStageEl.getBoundingClientRect();
-            const ratio = Math.max(0.05, Math.min(0.96, (e.clientX - r.left) / Math.max(1, r.width)));
-            window.setManualSimRecovery(ratio);
-          });
-        }
+        '<section class="encyc-section-block" id="sec-causes">' +
+          '<div class="encyc-sec-header">' +
+            '<span class="encyc-sec-num">SECTION 01</span>' +
+            '<h2 class="encyc-sec-title">왜 증상이 발생하고 재발할까요? — 근본 원인별 정밀 기전</h2>' +
+          '</div>' +
+          '<div class="cause-cards-stack">' + causesHtml + '</div>' +
+        '</section>' +
+
+        '<section class="encyc-section-block" id="sec-special-care">' +
+          '<div class="encyc-sec-header">' +
+            '<span class="encyc-sec-num">SECTION 02</span>' +
+            '<h2 class="encyc-sec-title">실전 집중 관리 프로토콜</h2>' +
+          '</div>' +
+          '<div class="special-care-banner">' +
+            '<div style="font-size:0.74rem;font-weight:800;color:var(--emerald-bright);letter-spacing:0.1em;">' + part.coldCareSpecial.subtitle + '</div>' +
+            '<h3 style="font-family:Noto Serif KR,serif;font-size:1.26rem;font-weight:800;color:#FFFFFF;margin-top:4px;">' + part.coldCareSpecial.title + '</h3>' +
+            '<p class="special-care-intro">' + part.coldCareSpecial.intro + '</p>' +
+            '<div>' + protocolsHtml + '</div>' +
+          '</div>' +
+        '</section>' +
+
+        '<section class="encyc-section-block" id="sec-nutrition">' +
+          '<div class="encyc-sec-header">' +
+            '<span class="encyc-sec-num">SECTION 03</span>' +
+            '<h2 class="encyc-sec-title">도움이 되는 약선 음식 vs 피해야 할 식단</h2>' +
+          '</div>' +
+          '<div class="nutrition-split-grid">' +
+            '<div class="nutri-box good">' +
+              '<h3 style="font-size:1rem;font-weight:800;color:#6EE7B7;margin-bottom:10px;">' + part.nutrition.goodTitle + '</h3>' +
+              goodFoodsHtml +
+            '</div>' +
+            '<div class="nutri-box bad">' +
+              '<h3 style="font-size:1rem;font-weight:800;color:#FCA5A5;margin-bottom:10px;">' + part.nutrition.badTitle + '</h3>' +
+              badFoodsHtml +
+            '</div>' +
+          '</div>' +
+        '</section>' +
+
+        '<section class="encyc-section-block" id="sec-lifestyle">' +
+          '<div class="encyc-sec-header">' +
+            '<span class="encyc-sec-num">SECTION 04</span>' +
+            '<h2 class="encyc-sec-title">가정 내 수면 · 운동 · 동인(銅人) 경혈 지압 루틴</h2>' +
+          '</div>' +
+          '<div class="cause-cards-stack">' + lifeHtml + '</div>' +
+        '</section>' +
+
+        '<section class="encyc-section-block" id="sec-sci-papers">' +
+          '<div class="encyc-sec-header">' +
+            '<span class="encyc-sec-num">SECTION 05</span>' +
+            '<h2 class="encyc-sec-title">바른한의원 정밀 치료 프로토콜 & 전세계 SCI 논문 레퍼런스</h2>' +
+          '</div>' +
+          '<div style="margin-bottom:18px;">' + clinicStepsHtml + '</div>' +
+          '<div>' + papersHtml + '</div>' +
+        '</section>' +
+
+        '<div class="encyc-cta-footer">' +
+          '<div>' +
+            '<div style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);letter-spacing:0.12em;">1:1 MASTER DIRECTOR CONSULTATION</div>' +
+            '<div style="font-family:Noto Serif KR,serif;font-size:1.22rem;font-weight:800;color:#FFFFFF;margin-top:3px;">' + part.shortName + ' — 1:1 맞춤 진료 및 스토리 확인</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+            '<a href="' + part.clinicLink + '" class="vh-pill-btn active" style="padding:11px 20px;font-size:0.86rem;">' + part.clinicCta + '</a>' +
+          '</div>' +
+        '</div>';
+
+      const baStageEl = document.getElementById('encyc-ba-stage');
+      if (baStageEl) {
+        baStageEl.addEventListener('pointermove', function(e) {
+          const r = baStageEl.getBoundingClientRect();
+          const ratio = Math.max(0.05, Math.min(0.96, (e.clientX - r.left) / Math.max(1, r.width)));
+          window.setManualSimRecovery(ratio);
+        });
       }
+    }
 
-      function updateEncycBaVisuals(mixRatio) {
-        const pct = Math.max(6, Math.min(96, mixRatio * 100));
-        const clipEl = document.getElementById('encyc-ba-after-clip');
-        const laserEl = document.getElementById('encyc-ba-laser');
-        const badgeEl = document.getElementById('encyc-ba-live-pct');
-        const simReadout = document.getElementById('sim-progress-readout');
-        const btnBefore = document.getElementById('btn-sim-state-before');
-        const btnAfter = document.getElementById('btn-sim-state-after');
+    function updateEncycBaVisuals(mixRatio) {
+      const pct = Math.max(6, Math.min(96, mixRatio * 100));
+      const clipEl = document.getElementById('encyc-ba-after-clip');
+      const laserEl = document.getElementById('encyc-ba-laser');
+      const badgeEl = document.getElementById('encyc-ba-live-pct');
+      const simReadout = document.getElementById('sim-progress-readout');
+      const btnBefore = document.getElementById('btn-sim-state-before');
+      const btnAfter = document.getElementById('btn-sim-state-after');
 
-        if (clipEl) clipEl.style.clipPath = 'inset(0 ' + (100 - pct).toFixed(1) + '% 0 0)';
-        if (laserEl) laserEl.style.left = pct.toFixed(1) + '%';
-        if (badgeEl) badgeEl.textContent = '스크롤 자동연동 · 회복 ' + Math.round(pct) + '%';
-        if (simReadout) simReadout.textContent = '치료 회복도 ' + Math.round(pct) + '%';
-        if (btnBefore) btnBefore.classList.toggle('active-before', mixRatio < 0.5);
-        if (btnAfter) btnAfter.classList.toggle('active-after', mixRatio >= 0.5);
-      }
+      if (clipEl) clipEl.style.clipPath = 'inset(0 ' + (100 - pct).toFixed(1) + '% 0 0)';
+      if (laserEl) laserEl.style.left = pct.toFixed(1) + '%';
+      if (badgeEl) badgeEl.textContent = '스크롤 자동연동 · 회복 ' + Math.round(pct) + '%';
+      if (simReadout) simReadout.textContent = '회복도 ' + Math.round(pct) + '%';
+      if (btnBefore) btnBefore.classList.toggle('active-before', mixRatio < 0.5);
+      if (btnAfter) btnAfter.classList.toggle('active-after', mixRatio >= 0.5);
+    }
 
-      // Scroll listener on right-hand encyclopedia panel -> automatically drives 3D recovery & B/A scan!
-      if (scrollPanel) {
-        scrollPanel.addEventListener('scroll', function() {
-          const maxS = Math.max(1, scrollPanel.scrollHeight - scrollPanel.clientHeight);
-          const norm = Math.max(0, Math.min(1, scrollPanel.scrollTop / maxS));
-          targetRecoveryMix = 0.08 + norm * 0.88;
-        }, { passive: true });
-      }
-      window.addEventListener('scroll', function() {
-        if (window.innerWidth <= 1080) {
-          const maxS = Math.max(1, document.body.scrollHeight - window.innerHeight);
-          const norm = Math.max(0, Math.min(1, window.scrollY / maxS));
-          targetRecoveryMix = 0.08 + norm * 0.88;
-        }
+    if (scrollPanel) {
+      scrollPanel.addEventListener('scroll', function() {
+        const maxS = Math.max(1, scrollPanel.scrollHeight - scrollPanel.clientHeight);
+        const norm = Math.max(0, Math.min(1, scrollPanel.scrollTop / maxS));
+        targetRecoveryMix = 0.08 + norm * 0.88;
       }, { passive: true });
+    }
+    window.addEventListener('scroll', function() {
+      if (window.innerWidth <= 1080) {
+        const maxS = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        const norm = Math.max(0, Math.min(1, window.scrollY / maxS));
+        targetRecoveryMix = 0.08 + norm * 0.88;
+      }
+    }, { passive: true });
 
-      window.setManualSimRecovery = function(val) {
-        targetRecoveryMix = Math.max(0.05, Math.min(0.96, val));
-      };
+    window.setManualSimRecovery = function(val) {
+      targetRecoveryMix = Math.max(0.05, Math.min(0.96, val));
+    };
 
-      window.scrollToEncycSec = function(secId) {
-        const el = document.getElementById(secId);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      };
+    window.scrollToEncycSec = function(secId) {
+      const el = document.getElementById(secId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
-      // ======================================================================
-      // 2. THREE.JS 3D INTERACTIVE HUMAN BODY + PERLIN DISSOLVE + ORGAN MICRO-SIMS
-      // ======================================================================
-      const stageEl = document.getElementById('vibrant-3d-stage');
-      const canvas = document.getElementById('vibrant-body-canvas');
-      const hotspotLayer = document.getElementById('hotspot-overlay-layer');
-      const svgLines = document.getElementById('hotspot-svg-lines');
+    // ========================================================================
+    // 2. VIBRANT.NOOMOAGENCY.COM 1:1 3D ENGINE + 193,288-VERTEX DONG-IN MERIDIANS
+    // ========================================================================
+    const stageEl = document.getElementById('vibrant-3d-stage');
+    const canvas = document.getElementById('vibrant-body-canvas');
+    const hotspotLayer = document.getElementById('hotspot-overlay-layer');
+    const loaderOverlay = document.getElementById('dongin-loader-overlay');
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-      camera.position.set(0, 0.1, 4.3);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.08, 200);
+    camera.position.set(0.0, 2.45, 4.85);
 
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      powerPreference: 'high-performance',
+      antialias: true,
+      alpha: true
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
 
-      // Lighting
-      const ambLight = new THREE.AmbientLight(0xdbeafe, 0.75);
-      scene.add(ambLight);
-      const keyLight = new THREE.DirectionalLight(0xfde68a, 1.35);
-      keyLight.position.set(2.5, 4.0, 3.5);
-      scene.add(keyLight);
-      const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.25);
-      rimLight.position.set(-3.0, 2.0, -2.5);
-      scene.add(rimLight);
-      const emeraldLight = new THREE.PointLight(0x10b981, 1.4, 6);
-      emeraldLight.position.set(0, -0.5, 1.5);
-      scene.add(emeraldLight);
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 2.38, 0);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.maxDistance = 8.5;
+    controls.minDistance = 0.75;
+    controls.maxPolarAngle = Math.PI * 0.88;
+    controls.minPolarAngle = Math.PI * 0.08;
 
-      const humanRoot = new THREE.Group();
-      scene.add(humanRoot);
+    // Vibrant Studio Lighting + Royal Dong-In Rim Lights
+    const ambLight = new THREE.AmbientLight(0xdbeafe, 1.35);
+    scene.add(ambLight);
 
-      // Vibrant Wellness Style Holographic Podium
-      const podiumGroup = new THREE.Group();
-      podiumGroup.position.y = -2.02;
-      humanRoot.add(podiumGroup);
+    const sideLightL = new THREE.PointLight(0xffffff, 1.2, 12);
+    sideLightL.position.set(-2.2, 3.6, 1.2);
+    scene.add(sideLightL);
 
-      [0.85, 1.12, 1.38].forEach(function(radius, idx) {
-        const ringGeo = new THREE.RingGeometry(radius - 0.018, radius, 64);
-        ringGeo.rotateX(-Math.PI * 0.5);
-        const ringMat = new THREE.MeshBasicMaterial({
-          color: idx === 0 ? 0x6ee7b7 : (idx === 1 ? 0x38bdf8 : 0xd4af37),
-          transparent: true,
-          opacity: 0.42 - idx * 0.1,
-          side: THREE.DoubleSide
-        });
-        podiumGroup.add(new THREE.Mesh(ringGeo, ringMat));
-      });
+    const sideLightR = new THREE.PointLight(0xfde68a, 1.35, 12);
+    sideLightR.position.set(2.2, 3.6, 1.2);
+    scene.add(sideLightR);
 
-      // Custom GLSL Iridescent Glass Skin Material with Perlin 3D Noise Focus Dissolve (from vibrant.noomoagency.com)
-      const skinShaderMat = new THREE.ShaderMaterial({
+    const frontKeyLight = new THREE.DirectionalLight(0xfffbeb, 1.85);
+    frontKeyLight.position.set(1.5, 4.8, 3.8);
+    scene.add(frontKeyLight);
+
+    const backRimLight = new THREE.DirectionalLight(0x38bdf8, 1.65);
+    backRimLight.position.set(-1.8, 3.5, -3.2);
+    scene.add(backRimLight);
+
+    const organGlowLight = new THREE.PointLight(0x10b981, 2.2, 3.5);
+    organGlowLight.position.set(0.39, 1.32, 0.25);
+    scene.add(organGlowLight);
+
+    // Loaders: GLTFLoader + DRACOLoader (using local draco/ decoder)
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('draco/');
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+    const texLoader = new THREE.TextureLoader();
+
+    // Classic 3D Perlin Noise GLSL (Exact from vibrant.noomoagency.com)
+    const PERLIN_GLSL = [
+      'vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}',
+      'vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}',
+      'vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}',
+      'float cnoise(vec3 P){',
+      '  vec3 Pi0 = floor(P);',
+      '  vec3 Pi1 = Pi0 + vec3(1.0);',
+      '  Pi0 = mod(Pi0, 289.0);',
+      '  Pi1 = mod(Pi1, 289.0);',
+      '  vec3 Pf0 = fract(P);',
+      '  vec3 Pf1 = Pf0 - vec3(1.0);',
+      '  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);',
+      '  vec4 iy = vec4(Pi0.yy, Pi1.yy);',
+      '  vec4 iz0 = Pi0.zzzz;',
+      '  vec4 iz1 = Pi1.zzzz;',
+      '  vec4 ixy = permute(permute(ix) + iy);',
+      '  vec4 ixy0 = permute(ixy + iz0);',
+      '  vec4 ixy1 = permute(ixy + iz1);',
+      '  vec4 gx0 = ixy0 / 7.0;',
+      '  vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;',
+      '  gx0 = fract(gx0);',
+      '  vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);',
+      '  vec4 sz0 = step(gz0, vec4(0.0));',
+      '  gx0 -= sz0 * (step(0.0, gx0) - 0.5);',
+      '  gy0 -= sz0 * (step(0.0, gy0) - 0.5);',
+      '  vec4 gx1 = ixy1 / 7.0;',
+      '  vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;',
+      '  gx1 = fract(gx1);',
+      '  vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);',
+      '  vec4 sz1 = step(gz1, vec4(0.0));',
+      '  gx1 -= sz1 * (step(0.0, gx1) - 0.5);',
+      '  gy1 -= sz1 * (step(0.0, gy1) - 0.5);',
+      '  vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);',
+      '  vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);',
+      '  vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);',
+      '  vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);',
+      '  vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);',
+      '  vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);',
+      '  vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);',
+      '  vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);',
+      '  vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));',
+      '  g000 *= norm0.x; g010 *= norm0.y; g100 *= norm0.z; g110 *= norm0.w;',
+      '  vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));',
+      '  g001 *= norm1.x; g011 *= norm1.y; g101 *= norm1.z; g111 *= norm1.w;',
+      '  float n000 = dot(g000, Pf0);',
+      '  float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));',
+      '  float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));',
+      '  float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));',
+      '  float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));',
+      '  float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));',
+      '  float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));',
+      '  float n111 = dot(g111, Pf1);',
+      '  vec3 fade_xyz = fade(Pf0);',
+      '  vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);',
+      '  vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);',
+      '  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);',
+      '  return 2.2 * n_xyz;',
+      '}'
+    ].join('\\n');
+
+    // Build Dong-In Skin Material with Vibrant's exact Plastic015A Normal Map + Perlin Dissolve
+    const skinNormalTex = texLoader.load('texture/Plastic015A_1K-JPG_NormalGL.jpg');
+    skinNormalTex.wrapS = THREE.RepeatWrapping;
+    skinNormalTex.wrapT = THREE.RepeatWrapping;
+    skinNormalTex.repeat.set(2, 2);
+
+    const skinUniforms = {
+      uDissolve: { value: 0.14 },
+      uFocusCenter: { value: new THREE.Vector3(0.41, 1.28, 0.04) },
+      uFocusRadius: { value: 0.42 },
+      uTime: { value: 0 }
+    };
+
+    function createDonginSkinMaterial() {
+      const mat = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0xe2f1ff),
+        roughness: 0.22,
+        metalness: 0.12,
+        transmission: 0.78,
+        thickness: 0.86,
+        ior: 1.85,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.08,
+        reflectivity: 1.0,
+        iridescence: 1.0,
+        iridescenceIOR: 1.453,
+        sheen: 0.45,
+        sheenRoughness: 0.65,
+        sheenColor: new THREE.Color(0xd4af37),
+        specularIntensity: 1.0,
+        specularColor: new THREE.Color(0xfde68a),
+        normalMap: skinNormalTex,
+        normalScale: new THREE.Vector2(3.5, 3.5),
         transparent: true,
-        depthWrite: false,
+        opacity: 0.62,
         side: THREE.DoubleSide,
-        uniforms: {
-          uTime: { value: 0 },
-          uFocusPos: { value: new THREE.Vector3(0.24, -1.18, 0.22) },
-          uDissolveStrength: { value: 1.0 },
-          uRecovery: { value: 0.25 }
-        },
-        vertexShader: [
-          'varying vec3 vNormal;',
-          'varying vec3 vWorldPos;',
-          'varying vec3 vViewPosition;',
-          'void main() {',
-          '  vNormal = normalize(normalMatrix * normal);',
-          '  vec4 worldPosition = modelMatrix * vec4(position, 1.0);',
-          '  vWorldPos = worldPosition.xyz;',
-          '  vec4 mvPosition = viewMatrix * worldPosition;',
-          '  vViewPosition = -mvPosition.xyz;',
-          '  gl_Position = projectionMatrix * mvPosition;',
-          '}'
-        ].join('\\n'),
-        fragmentShader: [
-          'uniform float uTime;',
-          'uniform vec3 uFocusPos;',
-          'uniform float uDissolveStrength;',
-          'uniform float uRecovery;',
-          'varying vec3 vNormal;',
-          'varying vec3 vWorldPos;',
-          'varying vec3 vViewPosition;',
-          'float hash(vec3 p) {',
-          '  p = fract(p * 0.3183099 + 0.1);',
-          '  p *= 17.0;',
-          '  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));',
-          '}',
-          'float noise(vec3 x) {',
-          '  vec3 i = floor(x);',
-          '  vec3 f = fract(x);',
-          '  f = f * f * (3.0 - 2.0 * f);',
-          '  return mix(mix(mix(hash(i + vec3(0,0,0)), hash(i + vec3(1,0,0)), f.x),',
-          '                 mix(hash(i + vec3(0,1,0)), hash(i + vec3(1,1,0)), f.x), f.y),',
-          '             mix(mix(hash(i + vec3(0,0,1)), hash(i + vec3(1,0,1)), f.x),',
-          '                 mix(hash(i + vec3(0,1,1)), hash(i + vec3(1,1,1)), f.x), f.y), f.z);',
-          '}',
-          'void main() {',
-          '  vec3 viewDir = normalize(vViewPosition);',
-          '  float fresnel = pow(1.0 - abs(dot(vNormal, viewDir)), 2.15);',
-          '  float distToFocus = distance(vWorldPos, uFocusPos);',
-          '  float n = noise(vWorldPos * 6.5 + vec3(0.0, uTime * 0.4, 0.0));',
-          '  float dissolveZone = smoothstep(0.18, 0.52, distToFocus + n * 0.18 * uDissolveStrength);',
-          '  float edgeGlow = (1.0 - smoothstep(0.18, 0.34, distToFocus)) * uDissolveStrength;',
-          '  vec3 baseCol = mix(vec3(0.12, 0.42, 0.68), vec3(0.06, 0.72, 0.55), uRecovery);',
-          '  vec3 iridCol = mix(baseCol, vec3(0.98, 0.90, 0.58), fresnel * 0.62 + edgeGlow * 0.85);',
-          '  float scanWave = 0.5 + 0.5 * sin(vWorldPos.y * 14.0 - uTime * 2.4);',
-          '  iridCol += vec3(0.22, 0.74, 0.96) * scanWave * 0.08;',
-          '  float alpha = (0.11 + fresnel * 0.58 + edgeGlow * 0.45) * mix(0.28, 1.0, dissolveZone);',
-          '  gl_FragColor = vec4(iridCol, clamp(alpha, 0.05, 0.85));',
-          '}'
-        ].join('\\n')
+        depthWrite: false
       });
 
-      // Build Articulated Anatomical Human Body Shell
-      function addBodyLimb(geo, x, y, z, sx, sy, sz, rx, ry, rz) {
-        const m = new THREE.Mesh(geo, skinShaderMat);
-        m.position.set(x, y, z);
-        m.scale.set(sx || 1, sy || 1, sz || 1);
-        if (rx || ry || rz) m.rotation.set(rx || 0, ry || 0, rz || 0);
-        humanRoot.add(m);
-        return m;
-      }
+      mat.onBeforeCompile = (shader) => {
+        shader.uniforms.uDissolve = skinUniforms.uDissolve;
+        shader.uniforms.uFocusCenter = skinUniforms.uFocusCenter;
+        shader.uniforms.uFocusRadius = skinUniforms.uFocusRadius;
+        shader.uniforms.uTime = skinUniforms.uTime;
 
-      const sphereGeo = new THREE.SphereGeometry(1, 36, 36);
-      const cylGeo = new THREE.CylinderGeometry(1, 1, 1, 32, 16);
-
-      // Cranium & Head
-      addBodyLimb(sphereGeo, 0, 1.54, 0, 0.23, 0.28, 0.25);
-      // Neck
-      addBodyLimb(cylGeo, 0, 1.20, 0, 0.105, 0.24, 0.105);
-      // Upper Thorax / Chest
-      addBodyLimb(sphereGeo, 0, 0.68, 0, 0.37, 0.44, 0.23);
-      // Abdomen / Waist
-      addBodyLimb(cylGeo, 0, 0.18, 0, 0.29, 0.52, 0.20);
-      // Pelvis / Hips
-      addBodyLimb(sphereGeo, 0, -0.32, 0, 0.33, 0.28, 0.22);
-
-      // Left & Right Shoulders, Arms, Forearms, Thighs, Knees, Calves
-      [-1, 1].forEach(function(side) {
-        // Shoulder deltoid
-        addBodyLimb(sphereGeo, side * 0.41, 0.90, 0, 0.13, 0.14, 0.13);
-        // Upper arm
-        addBodyLimb(cylGeo, side * 0.48, 0.52, 0, 0.088, 0.58, 0.088, 0, 0, side * -0.10);
-        // Forearm
-        addBodyLimb(cylGeo, side * 0.55, -0.04, 0.04, 0.074, 0.56, 0.074, 0.12, 0, side * -0.06);
-        // Hand
-        addBodyLimb(sphereGeo, side * 0.58, -0.38, 0.08, 0.06, 0.12, 0.04);
-        // Thigh (Femur region)
-        addBodyLimb(cylGeo, side * 0.21, -0.78, 0, 0.145, 0.72, 0.145, 0, 0, side * 0.03);
-        // Knee Joint Shell
-        addBodyLimb(sphereGeo, side * 0.22, -1.18, 0.02, 0.125, 0.13, 0.125);
-        // Calf (Tibia region)
-        addBodyLimb(cylGeo, side * 0.22, -1.56, 0, 0.105, 0.68, 0.105);
-        // Foot
-        addBodyLimb(sphereGeo, side * 0.22, -1.94, 0.08, 0.095, 0.065, 0.18);
-      });
-
-      // ======================================================================
-      // 3. INTERNAL 3D ANATOMICAL ORGANS & JOINTS (WITH 60FPS MICRO-MOTIONS!)
-      // ======================================================================
-      const internalOrgansGroup = new THREE.Group();
-      humanRoot.add(internalOrgansGroup);
-
-      // 3.1 KNEE EPIPHYSEAL GROWTH PLATE & CHONDROCYTE STREAM (무릎 성장판 3D 디테일 모션)
-      const kneeOrganGroup = new THREE.Group();
-      internalOrgansGroup.add(kneeOrganGroup);
-
-      const boneMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.35, metalness: 0.1, transparent: true, opacity: 0.88 });
-      const femurLower = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.11, 0.36, 24), boneMat);
-      femurLower.position.set(0.22, -0.98, 0.02);
-      kneeOrganGroup.add(femurLower);
-
-      const tibiaUpper = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.08, 0.36, 24), boneMat);
-      tibiaUpper.position.set(0.22, -1.38, 0.02);
-      kneeOrganGroup.add(tibiaUpper);
-
-      const growthPlateMat = new THREE.MeshStandardMaterial({
-        color: 0x10b981,
-        emissive: 0x10b981,
-        emissiveIntensity: 0.85,
-        transparent: true,
-        opacity: 0.95
-      });
-      const growthPlateDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.112, 0.112, 0.055, 32), growthPlateMat);
-      growthPlateDisc.position.set(0.22, -1.18, 0.02);
-      kneeOrganGroup.add(growthPlateDisc);
-
-      // Left knee companion growth plate
-      const leftGrowthDisc = growthPlateDisc.clone();
-      leftGrowthDisc.position.set(-0.22, -1.18, 0.02);
-      kneeOrganGroup.add(leftGrowthDisc);
-
-      // 140 Chondrocyte & IGF-1 Dividing Bio-Particles inside Knee Growth Plate
-      const kneeParticleCount = 140;
-      const kneePartGeo = new THREE.BufferGeometry();
-      const kneePartPos = new Float32Array(kneeParticleCount * 3);
-      for (let i = 0; i < kneeParticleCount; i++) {
-        const ang = Math.random() * Math.PI * 2;
-        const rad = Math.random() * 0.14;
-        kneePartPos[i * 3] = 0.22 + Math.cos(ang) * rad;
-        kneePartPos[i * 3 + 1] = -1.18 + (Math.random() - 0.5) * 0.45;
-        kneePartPos[i * 3 + 2] = 0.02 + Math.sin(ang) * rad;
-      }
-      kneePartGeo.setAttribute('position', new THREE.BufferAttribute(kneePartPos, 3));
-      const kneePartMat = new THREE.PointsMaterial({ color: 0xfde68a, size: 0.028, transparent: true, opacity: 0.9 });
-      const kneeParticles = new THREE.Points(kneePartGeo, kneePartMat);
-      kneeOrganGroup.add(kneeParticles);
-
-      // 3.2 CERVICAL & LUMBAR SPINE + PELVIC AXIS (경추·요추·골반 24마디 척추 & 디스크 3D 모션)
-      const spineOrganGroup = new THREE.Group();
-      internalOrgansGroup.add(spineOrganGroup);
-
-      const vertebraeMeshes = [];
-      const discMeshes = [];
-      for (let v = 0; v < 18; v++) {
-        const ratio = v / 17; // 0 = C1 (top), 1 = L5 (bottom)
-        const vy = 1.26 - ratio * 1.54;
-        const vMat = new THREE.MeshStandardMaterial({
-          color: 0xf8fafc,
-          emissive: 0x38bdf8,
-          emissiveIntensity: 0.25,
-          roughness: 0.3
-        });
-        const vMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.055 + ratio * 0.025, 0.058 + ratio * 0.025, 0.048, 20), vMat);
-        vMesh.position.set(0, vy, -0.03);
-        spineOrganGroup.add(vMesh);
-        vertebraeMeshes.push({ mesh: vMesh, baseY: vy, ratio: ratio });
-
-        if (v < 17) {
-          const dMat = new THREE.MeshStandardMaterial({
-            color: 0x38bdf8,
-            emissive: 0x10b981,
-            emissiveIntensity: 0.65,
-            transparent: true,
-            opacity: 0.9
-          });
-          const dMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.052 + ratio * 0.022, 0.052 + ratio * 0.022, 0.024, 20), dMat);
-          dMesh.position.set(0, vy - 0.042, -0.03);
-          spineOrganGroup.add(dMesh);
-          discMeshes.push({ mesh: dMesh, baseY: vy - 0.042, ratio: ratio });
-        }
-      }
-
-      // Pelvic Iliac Ring
-      const pelvicRingMat = new THREE.MeshStandardMaterial({
-        color: 0x10b981,
-        emissive: 0x10b981,
-        emissiveIntensity: 0.45,
-        transparent: true,
-        opacity: 0.85
-      });
-      const pelvicRingMesh = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.036, 16, 40), pelvicRingMat);
-      pelvicRingMesh.rotation.x = Math.PI * 0.42;
-      pelvicRingMesh.position.set(0, -0.34, 0.0);
-      spineOrganGroup.add(pelvicRingMesh);
-
-      // 3.3 BRAIN, SCALP FOLLICLES & SU-SEUNG-HWA-GANG COOLING (뇌·두피열 3D 모션)
-      const brainOrganGroup = new THREE.Group();
-      internalOrgansGroup.add(brainOrganGroup);
-
-      const brainMat = new THREE.MeshStandardMaterial({
-        color: 0x38bdf8,
-        emissive: 0xef4444,
-        emissiveIntensity: 0.55,
-        wireframe: false,
-        roughness: 0.25,
-        transparent: true,
-        opacity: 0.9
-      });
-      const brainLeft = new THREE.Mesh(new THREE.SphereGeometry(0.14, 24, 24), brainMat);
-      brainLeft.scale.set(0.85, 1.0, 1.15);
-      brainLeft.position.set(-0.075, 1.56, 0.01);
-      const brainRight = brainLeft.clone();
-      brainRight.position.x = 0.075;
-      brainOrganGroup.add(brainLeft, brainRight);
-
-      // 3.4 HEART & CITES MUSK GONGJINDAN SHOCKWAVE (심장·자율신경 3D 모션)
-      const heartOrganGroup = new THREE.Group();
-      internalOrgansGroup.add(heartOrganGroup);
-
-      const heartMat = new THREE.MeshStandardMaterial({
-        color: 0xd4af37,
-        emissive: 0xfacc15,
-        emissiveIntensity: 0.9,
-        roughness: 0.2
-      });
-      const heartCoreMesh = new THREE.Mesh(new THREE.SphereGeometry(0.105, 28, 28), heartMat);
-      heartCoreMesh.position.set(0.06, 0.64, 0.06);
-      heartOrganGroup.add(heartCoreMesh);
-
-      const heartPulseRing = new THREE.Mesh(
-        new THREE.RingGeometry(0.12, 0.145, 36),
-        new THREE.MeshBasicMaterial({ color: 0xfde68a, transparent: true, opacity: 0.75, side: THREE.DoubleSide })
-      );
-      heartPulseRing.position.copy(heartCoreMesh.position);
-      heartOrganGroup.add(heartPulseRing);
-
-      // 3.5 GUT METABOLIC FURNACE & VISCERAL FAT GLOBULES (복부·내장지방 3D 모션)
-      const gutOrganGroup = new THREE.Group();
-      internalOrgansGroup.add(gutOrganGroup);
-
-      const furnaceMat = new THREE.MeshStandardMaterial({
-        color: 0xf59e0b,
-        emissive: 0xd4af37,
-        emissiveIntensity: 0.75,
-        transparent: true,
-        opacity: 0.9
-      });
-      const gutFurnaceMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(0.11, 0.032, 64, 12), furnaceMat);
-      gutFurnaceMesh.position.set(0, 0.15, 0.05);
-      gutOrganGroup.add(gutFurnaceMesh);
-
-      const fatGlobules = [];
-      for (let f = 0; f < 16; f++) {
-        const fAng = (f / 16) * Math.PI * 2;
-        const fMesh = new THREE.Mesh(
-          new THREE.SphereGeometry(0.038, 14, 14),
-          new THREE.MeshStandardMaterial({ color: 0xf87171, emissive: 0xd97706, emissiveIntensity: 0.5, transparent: true, opacity: 0.85 })
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <common>',
+          ['#include <common>', 'varying vec2 vDissolveUv;', 'varying vec3 vWorldPosition;'].join('\\n')
+        ).replace(
+          '#include <uv_vertex>',
+          ['#include <uv_vertex>', 'vDissolveUv = uv;', 'vec4 wp = modelMatrix * vec4(position, 1.0);', 'vWorldPosition = wp.xyz;'].join('\\n')
         );
-        fMesh.position.set(Math.cos(fAng) * 0.22, 0.15 + Math.sin(fAng * 2) * 0.08, Math.sin(fAng) * 0.16);
-        gutOrganGroup.add(fMesh);
-        fatGlobules.push({ mesh: fMesh, ang: fAng });
-      }
 
-      // 3.6 UTERUS / PELVIC IMPLANTATION CORE (자궁·착상·안심탕전 3D 모션)
-      const uterusMesh = new THREE.Mesh(
-        new THREE.OctahedronGeometry(0.095, 2),
-        new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0x10b981, emissiveIntensity: 0.7, transparent: true, opacity: 0.92 })
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          [
+            '#include <common>',
+            'uniform float uDissolve;',
+            'uniform vec3 uFocusCenter;',
+            'uniform float uFocusRadius;',
+            'uniform float uTime;',
+            'varying vec2 vDissolveUv;',
+            'varying vec3 vWorldPosition;',
+            PERLIN_GLSL
+          ].join('\\n')
+        ).replace(
+          '#include <dithering_fragment>',
+          [
+            '#include <dithering_fragment>',
+            'float nVal = cnoise(vec3(vDissolveUv * 12.0, uTime * 0.15)) * 0.5 + 0.5;',
+            'float dToFocus = distance(vWorldPosition, uFocusCenter);',
+            'float localWindow = smoothstep(uFocusRadius * 1.15, uFocusRadius * 0.2, dToFocus) * 0.55;',
+            'float threshold = clamp(uDissolve + localWindow, 0.0, 0.95);',
+            'if (nVal < threshold) { discard; }',
+            'if (nVal < threshold + 0.055) {',
+            '  gl_FragColor.rgb += vec3(0.85, 0.68, 0.22) * 0.75;',
+            '  gl_FragColor.a = min(1.0, gl_FragColor.a + 0.45);',
+            '}'
+          ].join('\\n')
+        );
+      };
+      return mat;
+    }
+
+    const maleSkinMat = createDonginSkinMaterial();
+    const femaleSkinMat = createDonginSkinMaterial();
+
+    let maleBodyObj = null;
+    let femaleBodyObj = null;
+    let currentGender = 'male';
+    let currentSkinMode = 'glass';
+    let isAuroraStudio = false;
+
+    // 2.1 Load Vibrant Studio Podium (models/podium.glb) with exact Fluid Swirl Shader
+    const podiumUniforms = {
+      uTime: { value: 0 },
+      uColorA: { value: new THREE.Color('#071a18') },
+      uColorMid: { value: new THREE.Color('#0a1628') },
+      uColorB: { value: new THREE.Color('#040811') },
+      uHighlightColor: { value: new THREE.Color('#10b981') }
+    };
+
+    gltfLoader.load('models/podium.glb', (gltf) => {
+      const podiumScene = gltf.scene;
+      const podiumMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      podiumMat.onBeforeCompile = (shader) => {
+        shader.uniforms.uTime = podiumUniforms.uTime;
+        shader.uniforms.uColorA = podiumUniforms.uColorA;
+        shader.uniforms.uColorMid = podiumUniforms.uColorMid;
+        shader.uniforms.uColorB = podiumUniforms.uColorB;
+        shader.uniforms.uHighlightColor = podiumUniforms.uHighlightColor;
+
+        shader.vertexShader = shader.vertexShader.replace(
+          'void main() {',
+          ['varying vec2 vUv;', 'varying vec3 vViewDir;', 'varying vec3 vSurfaceNormal;', 'void main() {', 'vUv = uv;'].join('\\n')
+        ).replace(
+          'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
+          ['vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );', 'vViewDir = -mvPosition.xyz;', 'vSurfaceNormal = normalize(normalMatrix * normal);'].join('\\n')
+        );
+
+        shader.fragmentShader = shader.fragmentShader.replace(
+          'void main() {',
+          [
+            'varying vec2 vUv;',
+            'varying vec3 vViewDir;',
+            'varying vec3 vSurfaceNormal;',
+            'uniform float uTime;',
+            'uniform vec3 uColorA;',
+            'uniform vec3 uColorMid;',
+            'uniform vec3 uColorB;',
+            'uniform vec3 uHighlightColor;',
+            'float hash21(vec2 p) {',
+            '  p = fract(p * vec2(123.34, 456.21));',
+            '  p += dot(p, p + 45.32);',
+            '  return fract(p.x * p.y);',
+            '}',
+            'float valueNoise(vec2 p) {',
+            '  vec2 i = floor(p);',
+            '  vec2 f = fract(p);',
+            '  float a = hash21(i);',
+            '  float b = hash21(i + vec2(1.0, 0.0));',
+            '  float c = hash21(i + vec2(0.0, 1.0));',
+            '  float d = hash21(i + vec2(1.0, 1.0));',
+            '  vec2 u = f * f * (3.0 - 2.0 * f);',
+            '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);',
+            '}',
+            'void main() {'
+          ].join('\\n')
+        ).replace(
+          'vec4 diffuseColor = vec4( diffuse, opacity );',
+          [
+            'vec4 diffuseColor = vec4( diffuse, opacity );',
+            'float n = valueNoise(vUv * 12.0 + vec2(sin(uTime * 0.35) * 0.2, uTime * 0.18));',
+            'vec3 grad = mix(uColorA, uColorMid, smoothstep(0.0, 0.55, clamp(vUv.y + (n - 0.5) * 0.35, 0.0, 1.0)));',
+            'grad = mix(grad, uColorB, smoothstep(0.35, 1.0, vUv.y));',
+            'float fresnel = pow(1.0 - abs(dot(normalize(vSurfaceNormal), normalize(vViewDir))), 1.4) * 0.42;',
+            'diffuseColor.rgb = mix(grad, uHighlightColor, clamp(fresnel, 0.0, 0.65));'
+          ].join('\\n')
+        );
+      };
+      podiumScene.traverse(c => {
+        if (c.isMesh) c.material = podiumMat;
+      });
+      scene.add(podiumScene);
+    });
+
+    // 2.2 Load Vibrant Floating Matcap Background Spheres (models/newBG.glb)
+    texLoader.load('texture/mats/mat20.png', (matcapTex) => {
+      gltfLoader.load('models/newBG.glb', (gltf) => {
+        const bgMat = new THREE.MeshMatcapMaterial({
+          matcap: matcapTex,
+          transparent: true,
+          opacity: 0.24
+        });
+        gltf.scene.traverse(c => {
+          if (c.isMesh) c.material = bgMat;
+        });
+        scene.add(gltf.scene);
+      });
+    });
+
+    // 2.3 Load 193,288-Vertex Male (skinMB2.glb) & 190,564-Vertex Female (skinF2.glb) Sculpted Human Bodies
+    gltfLoader.load('models/skinMB2.glb', (gltf) => {
+      maleBodyObj = gltf.scene;
+      maleBodyObj.traverse(c => {
+        if (c.isMesh) {
+          c.material = maleSkinMat;
+          c.renderOrder = 2;
+        }
+      });
+      scene.add(maleBodyObj);
+      if (loaderOverlay) loaderOverlay.classList.add('hidden');
+    });
+
+    gltfLoader.load('models/skinF2.glb', (gltf) => {
+      femaleBodyObj = gltf.scene;
+      femaleBodyObj.visible = false;
+      femaleBodyObj.traverse(c => {
+        if (c.isMesh) {
+          c.material = femaleSkinMat;
+          c.renderOrder = 2;
+        }
+      });
+      scene.add(femaleBodyObj);
+    });
+
+    // 2.4 Load ALL 12 Real Internal 3D Organs from vibrant.noomoagency.com
+    const loadedOrgans = {};
+    const ORGAN_SPECS = [
+      { key: 'brain', file: 'models/brain.glb', parts: ['brain', 'cervical'], baseCol: 0x38bdf8, activeCol: 0x10b981 },
+      { key: 'thyroid', file: 'models/thyroid.glb', parts: ['cervical'], baseCol: 0xa78bfa, activeCol: 0x6ee7b7 },
+      { key: 'heart', file: 'models/heart.glb', parts: ['heart'], baseCol: 0xf87171, activeCol: 0xfde68a },
+      { key: 'liver', file: 'models/liver.glb', parts: ['gut', 'pelvis'], baseCol: 0xf59e0b, activeCol: 0x10b981 },
+      { key: 'galbladder', file: 'models/galbladder.glb', parts: ['gut'], baseCol: 0x34d399, activeCol: 0x6ee7b7 },
+      { key: 'stomach', file: 'models/stomach.glb', parts: ['gut'], baseCol: 0xfb923c, activeCol: 0x10b981 },
+      { key: 'pancreas', file: 'models/pancreas.glb', parts: ['gut'], baseCol: 0xfbbf24, activeCol: 0xfde68a },
+      { key: 'intestine', file: 'models/intestine.glb', parts: ['gut', 'pelvis'], baseCol: 0xf97316, activeCol: 0x34d399 },
+      { key: 'kidneys', file: 'models/kidneys2.glb', parts: ['lumbar', 'knee', 'pelvis'], baseCol: 0x60a5fa, activeCol: 0x10b981 },
+      { key: 'glands', file: 'models/glands.glb', parts: ['pelvis', 'lumbar'], baseCol: 0xf472b6, activeCol: 0xfde68a },
+      { key: 'dna', file: 'models/dna.glb', parts: ['pelvis', 'knee'], baseCol: 0x38bdf8, activeCol: 0xfde68a },
+      { key: 'cell', file: 'models/cellNew.glb', parts: ['heart', 'brain'], baseCol: 0xa78bfa, activeCol: 0x6ee7b7 }
+    ];
+
+    ORGAN_SPECS.forEach(spec => {
+      gltfLoader.load(spec.file, (gltf) => {
+        const mat = new THREE.MeshPhysicalMaterial({
+          color: new THREE.Color(spec.baseCol),
+          emissive: new THREE.Color(spec.baseCol),
+          emissiveIntensity: 0.55,
+          roughness: 0.22,
+          metalness: 0.08,
+          transmission: 0.45,
+          thickness: 1.2,
+          clearcoat: 1.0,
+          transparent: true,
+          opacity: 0.88
+        });
+        gltf.scene.traverse(c => {
+          if (c.isMesh) {
+            c.material = mat;
+            c.renderOrder = 1;
+          }
+        });
+        scene.add(gltf.scene);
+        loadedOrgans[spec.key] = { scene: gltf.scene, mat: mat, spec: spec };
+      });
+    });
+
+    // 2.5 Custom Anatomical 3D Knee Epiphyseal Growth Plate & Spine inside skinMB2.glb
+    const customAnatomyGroup = new THREE.Group();
+    scene.add(customAnatomyGroup);
+
+    // Knee Epiphyseal Growth Plates at exact skinMB2.glb knee coordinates (x = ±0.41, y = 1.28, z = -0.10)
+    const kneeGrowthGroup = new THREE.Group();
+    customAnatomyGroup.add(kneeGrowthGroup);
+
+    const boneMat = new THREE.MeshPhysicalMaterial({
+      color: 0xe2e8f0,
+      emissive: 0x1e293b,
+      roughness: 0.3,
+      transmission: 0.35,
+      transparent: true,
+      opacity: 0.82
+    });
+    const growthDiscMat = new THREE.MeshStandardMaterial({
+      color: 0x10b981,
+      emissive: 0x10b981,
+      emissiveIntensity: 1.4,
+      transparent: true,
+      opacity: 0.95
+    });
+
+    [-1, 1].forEach(side => {
+      const kx = side * 0.41;
+      const femur = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.068, 0.28, 24), boneMat);
+      femur.position.set(kx, 1.45, -0.09);
+      kneeGrowthGroup.add(femur);
+
+      const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.066, 0.048, 0.28, 24), boneMat);
+      tibia.position.set(kx, 1.11, -0.11);
+      kneeGrowthGroup.add(tibia);
+
+      const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.072, 0.036, 32), growthDiscMat);
+      plate.position.set(kx, 1.28, -0.10);
+      kneeGrowthGroup.add(plate);
+    });
+
+    // 180 Dividing Chondrocyte & IGF-1 Bio-Photons inside Knee Growth Plates
+    const kneePhotonCount = 180;
+    const kneePhotonGeo = new THREE.BufferGeometry();
+    const kneePhotonPos = new Float32Array(kneePhotonCount * 3);
+    for (let i = 0; i < kneePhotonCount; i++) {
+      const side = i % 2 === 0 ? 1 : -1;
+      const ang = Math.random() * Math.PI * 2;
+      const r = Math.random() * 0.085;
+      kneePhotonPos[i * 3] = side * 0.41 + Math.cos(ang) * r;
+      kneePhotonPos[i * 3 + 1] = 1.28 + (Math.random() - 0.5) * 0.36;
+      kneePhotonPos[i * 3 + 2] = -0.10 + Math.sin(ang) * r;
+    }
+    kneePhotonGeo.setAttribute('position', new THREE.BufferAttribute(kneePhotonPos, 3));
+    const kneePhotonMat = new THREE.PointsMaterial({ color: 0xfde68a, size: 0.022, transparent: true, opacity: 0.95 });
+    const kneePhotons = new THREE.Points(kneePhotonGeo, kneePhotonMat);
+    kneeGrowthGroup.add(kneePhotons);
+
+    // 24-Segment Dorsal Spine & Intervertebral Discs along skinMB2.glb Spine Axis (y = 2.55 to 4.05)
+    const spineGroup = new THREE.Group();
+    customAnatomyGroup.add(spineGroup);
+    const spineDiscs = [];
+    for (let s = 0; s < 20; s++) {
+      const ratio = s / 19;
+      const sy = 4.02 - ratio * 1.48;
+      const sz = -0.14 - Math.sin(ratio * Math.PI) * 0.08;
+      const vMesh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.036 + ratio * 0.015, 0.038 + ratio * 0.015, 0.038, 18),
+        boneMat
       );
-      uterusMesh.position.set(0, -0.35, 0.06);
-      spineOrganGroup.add(uterusMesh);
+      vMesh.position.set(0, sy, sz);
+      spineGroup.add(vMesh);
 
-      // ======================================================================
-      // 4. CREATE 3D PROJECTED HOTSPOT NODES (vibrant.noomoagency.com style)
-      // ======================================================================
-      const hotspotDomNodes = {};
-      PARTS_DATA.forEach(function(p) {
-        const el = document.createElement('div');
-        el.className = 'body-hotspot-node' + (p.id === currentPartId ? ' active' : '');
-        el.innerHTML =
-          '<div class="hotspot-core-ring"><div class="hotspot-pulse-halo"></div><div class="hotspot-core-dot"></div></div>' +
-          '<div class="hotspot-label-pill">' + p.hotspotLabel + '</div>';
-        el.addEventListener('click', function(e) {
-          e.stopPropagation();
-          window.selectBodyPart(p.id);
+      if (s < 19) {
+        const dMat = new THREE.MeshStandardMaterial({
+          color: 0x38bdf8,
+          emissive: 0x10b981,
+          emissiveIntensity: 0.9,
+          transparent: true,
+          opacity: 0.9
         });
-        hotspotLayer.appendChild(el);
-        hotspotDomNodes[p.id] = el;
-      });
-
-      // Camera Orbit & Smooth Fly-To State
-      let camCurrPos = new THREE.Vector3(0.62, -1.12, 1.85);
-      let camGoalPos = new THREE.Vector3(0.62, -1.12, 1.85);
-      let camCurrTarget = new THREE.Vector3(0.12, -1.18, 0.0);
-      let camGoalTarget = new THREE.Vector3(0.12, -1.18, 0.0);
-      let bodyRotY = 0;
-      let isDraggingBody = false;
-      let prevPointerX = 0;
-
-      canvas.addEventListener('pointerdown', function(e) {
-        isDraggingBody = true;
-        prevPointerX = e.clientX;
-      });
-      window.addEventListener('pointermove', function(e) {
-        if (!isDraggingBody) return;
-        const dx = e.clientX - prevPointerX;
-        prevPointerX = e.clientX;
-        bodyRotY += dx * 0.008;
-      });
-      window.addEventListener('pointerup', function() { isDraggingBody = false; });
-
-      window.setCameraOverview = function() {
-        isOverviewMode = true;
-        camGoalPos.set(0.0, 0.05, 4.35);
-        camGoalTarget.set(0.0, -0.15, 0.0);
-        document.getElementById('btn-cam-overview')?.classList.add('active');
-        document.getElementById('btn-cam-zoom')?.classList.remove('active');
-      };
-
-      window.zoomToActivePart = function() {
-        isOverviewMode = false;
-        const p = PARTS_DATA.find(function(x) { return x.id === currentPartId; }) || PARTS_DATA[0];
-        camGoalPos.set(p.camPos.x, p.camPos.y, p.camPos.z);
-        camGoalTarget.set(p.camTarget.x, p.camTarget.y, p.camTarget.z);
-        document.getElementById('btn-cam-overview')?.classList.remove('active');
-        document.getElementById('btn-cam-zoom')?.classList.add('active');
-      };
-
-      window.selectBodyPart = function(partId) {
-        const part = PARTS_DATA.find(function(x) { return x.id === partId; }) || PARTS_DATA[0];
-        currentPartId = part.id;
-        isOverviewMode = false;
-
-        // Update Top Strip & Hotspots
-        document.querySelectorAll('.vh-organ-tab').forEach(function(btn) {
-          btn.classList.toggle('active', btn.dataset.part === part.id);
-        });
-        Object.keys(hotspotDomNodes).forEach(function(k) {
-          hotspotDomNodes[k].classList.toggle('active', k === part.id);
-        });
-
-        // Update Left Stage HUD
-        const hudCode = document.getElementById('hud-organ-code');
-        const hudTitle = document.getElementById('hud-organ-title');
-        const hudDesc = document.getElementById('hud-micro-desc');
-        const topCta = document.getElementById('header-direct-clinic-btn');
-        if (hudCode) hudCode.textContent = part.code;
-        if (hudTitle) hudTitle.textContent = part.shortName;
-        if (hudDesc) hudDesc.textContent = part.microSimDesc;
-        if (topCta) topCta.href = part.clinicLink;
-
-        // Fly 3D Camera & Perlin Dissolve Focus to Selected Part
-        camGoalPos.set(part.camPos.x, part.camPos.y, part.camPos.z);
-        camGoalTarget.set(part.camTarget.x, part.camTarget.y, part.camTarget.z);
-        skinShaderMat.uniforms.uFocusPos.value.set(part.pos3D.x, part.pos3D.y, part.pos3D.z);
-        document.getElementById('btn-cam-overview')?.classList.remove('active');
-        document.getElementById('btn-cam-zoom')?.classList.add('active');
-
-        // Render Right Encyclopedia & Reset Scroll to Top
-        renderEncyclopedia(part);
-        if (scrollPanel) scrollPanel.scrollTop = 0;
-        targetRecoveryMix = 0.20;
-      };
-
-      function resize3DStage() {
-        if (!stageEl) return;
-        const w = stageEl.clientWidth;
-        const h = stageEl.clientHeight;
-        if (w > 0 && h > 0) {
-          camera.aspect = w / h;
-          camera.updateProjectionMatrix();
-          renderer.setSize(w, h);
-        }
+        const dMesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.035 + ratio * 0.014, 0.035 + ratio * 0.014, 0.018, 18),
+          dMat
+        );
+        dMesh.position.set(0, sy - 0.036, sz);
+        spineGroup.add(dMesh);
+        spineDiscs.push({ mesh: dMesh, baseY: sy - 0.036, baseZ: sz, ratio: ratio });
       }
-      window.addEventListener('resize', resize3DStage);
-      setTimeout(resize3DStage, 60);
+    }
 
-      // ======================================================================
-      // 5. MASTER 60FPS ANIMATION LOOP (3D ORGAN MICRO-MOTIONS + HOTSPOT PROJECTION)
-      // ======================================================================
-      const tempVec = new THREE.Vector3();
+    // ========================================================================
+    // 3. BUILD 12 MERIDIANS + REN/DU VESSELS (14경맥 26개 3D 유주선) & 31 ACUPOINTS
+    // ========================================================================
+    const meridianSystemGroup = new THREE.Group();
+    scene.add(meridianSystemGroup);
 
-      function animateExplorer(now) {
-        requestAnimationFrame(animateExplorer);
-        const t = now * 0.001;
+    const meridianRuntimeList = [];
+    const qiParticleData = [];
 
-        smoothRecoveryMix += (targetRecoveryMix - smoothRecoveryMix) * 0.08;
-        updateEncycBaVisuals(smoothRecoveryMix);
+    DONGIN_DATA.meridians.forEach((mDef) => {
+      const mGroup = new THREE.Group();
+      meridianSystemGroup.add(mGroup);
 
-        skinShaderMat.uniforms.uTime.value = t;
-        skinShaderMat.uniforms.uRecovery.value = smoothRecoveryMix;
-        skinShaderMat.uniforms.uDissolveStrength.value = isOverviewMode ? 0.35 : 1.15;
+      const tubeMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(mDef.color),
+        transparent: true,
+        opacity: 0.72
+      });
 
-        // Gentle breathing rotation on human body
-        if (!isDraggingBody) {
-          const targetRot = isOverviewMode ? Math.sin(t * 0.45) * 0.28 : Math.sin(t * 0.35) * 0.10;
-          bodyRotY += (targetRot - bodyRotY) * 0.05;
-        }
-        humanRoot.rotation.y = bodyRotY;
+      const curves = [];
+      mDef.paths.forEach((pathPts) => {
+        const vecs = pathPts.map(p => new THREE.Vector3(p[0], p[1], p[2]));
+        const curve = new THREE.CatmullRomCurve3(vecs);
+        curves.push(curve);
 
-        // Smooth Camera Fly-To Interpolation
-        camCurrPos.lerp(camGoalPos, 0.075);
-        camCurrTarget.lerp(camGoalTarget, 0.075);
-        camera.position.copy(camCurrPos);
-        camera.lookAt(camCurrTarget);
+        const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.0042, 8, false);
+        const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+        tubeMesh.renderOrder = 4;
+        mGroup.add(tubeMesh);
 
-        // --- 3D MICRO-MOTION 01: KNEE EPIPHYSEAL GROWTH PLATE PROLIFERATION ---
-        const plateExpand = 0.45 + smoothRecoveryMix * 1.15 + Math.sin(t * 3.2) * 0.08;
-        growthPlateDisc.scale.set(1, plateExpand, 1);
-        leftGrowthDisc.scale.set(1, plateExpand, 1);
-        growthPlateMat.color.setHex(smoothRecoveryMix > 0.45 ? 0x10b981 : 0xef4444);
-        growthPlateMat.emissive.setHex(smoothRecoveryMix > 0.45 ? 0x34d399 : 0xdc2626);
-
-        const posArr = kneePartGeo.attributes.position.array;
-        const speed = 0.002 + smoothRecoveryMix * 0.007;
-        for (let i = 0; i < kneeParticleCount; i++) {
-          posArr[i * 3 + 1] += speed;
-          if (posArr[i * 3 + 1] > -0.92) posArr[i * 3 + 1] = -1.42;
-        }
-        kneePartGeo.attributes.position.needsUpdate = true;
-        kneePartMat.color.setHex(smoothRecoveryMix > 0.45 ? 0xfde68a : 0xf87171);
-
-        // --- 3D MICRO-MOTION 02: SPINE & PELVIC AXIS BIOMECHANICAL ALIGNMENT ---
-        const misalignment = (1.0 - smoothRecoveryMix);
-        pelvicRingMesh.rotation.z = misalignment * 0.24;
-        pelvicRingMat.emissive.setHex(smoothRecoveryMix > 0.45 ? 0x10b981 : 0xef4444);
-
-        vertebraeMeshes.forEach(function(vm, idx) {
-          const sWave = Math.sin(vm.ratio * Math.PI * 2 + t * 2) * 0.065 * misalignment;
-          const forwardHead = (vm.ratio < 0.32) ? (0.32 - vm.ratio) * 0.28 * misalignment : 0;
-          vm.mesh.position.x = sWave;
-          vm.mesh.position.z = -0.03 + forwardHead;
-          vm.mesh.rotation.z = sWave * 1.8;
-        });
-        discMeshes.forEach(function(dm) {
-          dm.mesh.scale.y = 0.55 + smoothRecoveryMix * 0.75;
-          dm.mesh.material.emissive.setHex(smoothRecoveryMix > 0.45 ? 0x38bdf8 : 0xef4444);
-        });
-
-        // --- 3D MICRO-MOTION 03: BRAIN & SCALP SU-SEUNG-HWA-GANG COOLING ---
-        brainMat.color.setHex(smoothRecoveryMix > 0.45 ? 0x38bdf8 : 0xf97316);
-        brainMat.emissive.setHex(smoothRecoveryMix > 0.45 ? 0x10b981 : 0xef4444);
-        const brainPulse = 1.0 + Math.sin(t * 2.6) * 0.04;
-        brainLeft.scale.set(0.85 * brainPulse, brainPulse, 1.15 * brainPulse);
-        brainRight.scale.set(0.85 * brainPulse, brainPulse, 1.15 * brainPulse);
-
-        // --- 3D MICRO-MOTION 04: HEART & CITES MUSK GONGJINDAN SHOCKWAVE ---
-        const beat = 1.0 + Math.pow(Math.max(0, Math.sin(t * (3.2 + smoothRecoveryMix * 1.5))), 4) * 0.22;
-        heartCoreMesh.scale.set(beat, beat, beat);
-        const ringCycle = (t * (0.6 + smoothRecoveryMix * 0.8)) % 1;
-        heartPulseRing.scale.setScalar(1.0 + ringCycle * 3.8);
-        heartPulseRing.material.opacity = (1.0 - ringCycle) * (0.25 + smoothRecoveryMix * 0.65);
-
-        // --- 3D MICRO-MOTION 05: GUT METABOLIC FURNACE & VISCERAL FAT LIPOLYSIS ---
-        gutFurnaceMesh.rotation.y = t * (0.6 + smoothRecoveryMix * 2.2);
-        gutFurnaceMesh.rotation.x = t * 0.8;
-        const fatShrink = Math.max(0.22, 1.15 - smoothRecoveryMix * 0.88);
-        fatGlobules.forEach(function(fg, idx) {
-          fg.mesh.scale.setScalar(fatShrink);
-          const dist = 0.20 + smoothRecoveryMix * 0.06;
-          fg.mesh.position.x = Math.cos(fg.ang + t * 0.5) * dist;
-          fg.mesh.position.z = Math.sin(fg.ang + t * 0.5) * 0.14;
-          fg.mesh.material.color.setHex(smoothRecoveryMix > 0.5 ? 0x34d399 : 0xf87171);
-        });
-
-        // --- 3D MICRO-MOTION 06: UTERUS IMPLANTATION WARMTH ---
-        uterusMesh.rotation.y = t * 0.9;
-        uterusMesh.scale.setScalar(0.82 + smoothRecoveryMix * 0.38 + Math.sin(t * 2.5) * 0.05);
-
-        renderer.render(scene, camera);
-
-        // Project 3D Hotspots to 2D Screen Coordinates
-        if (stageEl) {
-          const sw = stageEl.clientWidth;
-          const sh = stageEl.clientHeight;
-          PARTS_DATA.forEach(function(p) {
-            const domEl = hotspotDomNodes[p.id];
-            if (!domEl) return;
-            tempVec.set(p.pos3D.x, p.pos3D.y, p.pos3D.z);
-            tempVec.applyMatrix4(humanRoot.matrixWorld);
-            tempVec.project(camera);
-
-            const sx = (tempVec.x * 0.5 + 0.5) * sw;
-            const sy = (-tempVec.y * 0.5 + 0.5) * sh;
-            const isVisible = tempVec.z >= -1 && tempVec.z <= 1;
-            domEl.style.display = isVisible ? 'inline-flex' : 'none';
-            if (isVisible) {
-              domEl.style.transform = 'translate3d(' + sx.toFixed(1) + 'px, ' + sy.toFixed(1) + 'px, 0) translate(-12px, -50%)';
-            }
+        // Add 6 flowing Qi-Photon spheres per meridian path
+        for (let k = 0; k < 6; k++) {
+          const pMat = new THREE.MeshBasicMaterial({
+            color: 0xfde68a,
+            transparent: true,
+            opacity: 0.95
+          });
+          const pMesh = new THREE.Mesh(new THREE.SphereGeometry(0.0085, 10, 10), pMat);
+          pMesh.renderOrder = 5;
+          mGroup.add(pMesh);
+          qiParticleData.push({
+            mesh: pMesh,
+            curve: curve,
+            meridianId: mDef.id,
+            phase: k / 6,
+            speed: 0.14 + (k % 3) * 0.03
           });
         }
+      });
+
+      meridianRuntimeList.push({
+        id: mDef.id,
+        def: mDef,
+        group: mGroup,
+        mat: tubeMat
+      });
+    });
+
+    // Populate Top 12-Meridian Filter Strip Buttons
+    const meridianStripEl = document.getElementById('meridian-filter-strip');
+    if (meridianStripEl) {
+      DONGIN_DATA.meridians.forEach(mDef => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'meridian-chip';
+        btn.setAttribute('data-meridian', mDef.id);
+        btn.innerHTML = '<span class="m-dot" style="background:' + mDef.color + ';"></span>' + mDef.code;
+        btn.addEventListener('click', () => window.selectMeridianFilter(mDef.id));
+        meridianStripEl.appendChild(btn);
+      });
+    }
+
+    // Build 31 Key Acupoint 3D Jewels + Projected 2D Acupoint Pins
+    const acupointGroup = new THREE.Group();
+    scene.add(acupointGroup);
+    const acupointRuntimeNodes = [];
+
+    DONGIN_DATA.acupoints.forEach((acu) => {
+      const jewelMat = new THREE.MeshBasicMaterial({
+        color: 0xfde68a
+      });
+      const jewelMesh = new THREE.Mesh(new THREE.SphereGeometry(0.012, 14, 14), jewelMat);
+      jewelMesh.position.set(acu.pos[0], acu.pos[1], acu.pos[2]);
+      jewelMesh.renderOrder = 6;
+      acupointGroup.add(jewelMesh);
+
+      const haloMat = new THREE.MeshBasicMaterial({
+        color: 0x10b981,
+        transparent: true,
+        opacity: 0.75,
+        side: THREE.DoubleSide
+      });
+      const haloMesh = new THREE.Mesh(new THREE.RingGeometry(0.015, 0.023, 20), haloMat);
+      haloMesh.position.copy(jewelMesh.position);
+      haloMesh.renderOrder = 6;
+      acupointGroup.add(haloMesh);
+
+      // Also mirror bilateral acupoints (if |x| > 0.02) on the opposite side of the body
+      if (Math.abs(acu.pos[0]) > 0.02) {
+        const mirrorJewel = jewelMesh.clone();
+        mirrorJewel.position.x = -acu.pos[0];
+        acupointGroup.add(mirrorJewel);
       }
 
-      // Visibility Mode & White-Label Brand Sync
-      const VIS_MODES = ['dark-royal', 'warm-hanji', 'high-visibility'];
-      let currVis = 'dark-royal';
-      function applyVis(m) {
-        currVis = VIS_MODES.includes(m) ? m : 'dark-royal';
-        document.body.classList.remove('theme-hanji', 'high-visibility-mode');
-        const btn = document.getElementById('btn-explorer-vis');
-        if (currVis === 'warm-hanji') {
-          document.body.classList.add('theme-hanji');
-          if (btn) btn.textContent = '한지 라이트 (ON)';
-        } else if (currVis === 'high-visibility') {
-          document.body.classList.add('high-visibility-mode');
-          if (btn) btn.textContent = '큰글씨 고시안성 (ON)';
+      // Create interactive 2D Acupoint Pin
+      const pinEl = document.createElement('div');
+      pinEl.className = 'acupoint-2d-pin';
+      pinEl.innerHTML = '<span class="acu-dot"></span><span>' + acu.code + ' ' + acu.name.split(' ')[0] + '</span>';
+      pinEl.addEventListener('click', (e) => {
+        e.stopPropagation();
+        inspectAcupoint(acu, true);
+      });
+      pinEl.addEventListener('mouseenter', () => {
+        inspectAcupoint(acu, false);
+      });
+      hotspotLayer.appendChild(pinEl);
+
+      acupointRuntimeNodes.push({
+        acu: acu,
+        jewelMesh: jewelMesh,
+        haloMesh: haloMesh,
+        pinEl: pinEl,
+        worldPos: new THREE.Vector3(acu.pos[0], acu.pos[1], acu.pos[2])
+      });
+    });
+
+    function inspectAcupoint(acu, shouldSelectPart) {
+      const codeEl = document.getElementById('acu-hud-code');
+      const merEl = document.getElementById('acu-hud-meridian');
+      const titleEl = document.getElementById('acu-hud-title');
+      const descEl = document.getElementById('acu-hud-desc');
+
+      if (codeEl) codeEl.textContent = acu.code + ' · ' + acu.name;
+      if (merEl) merEl.textContent = acu.meridian;
+      if (titleEl) titleEl.textContent = acu.name + ' — 동인(銅人) 핵심 치료 경혈';
+      if (descEl) descEl.textContent = acu.desc;
+
+      acupointRuntimeNodes.forEach(node => {
+        node.pinEl.classList.toggle('highlighted', node.acu.code === acu.code);
+      });
+
+      if (shouldSelectPart && acu.partId) {
+        window.selectBodyPart(acu.partId);
+        // Zoom closer to the clicked acupoint
+        camGoalTarget.set(acu.pos[0] * 0.5, acu.pos[1], acu.pos[2] * 0.5);
+        const zSide = acu.pos[2] < -0.12 ? -1.65 : 1.65;
+        camGoalPos.set(acu.pos[0] * 1.4, acu.pos[1] + 0.05, zSide);
+      }
+    }
+
+    // Build 7 Major Clinical Hotspots
+    const majorHotspotNodes = [];
+    BODY_PARTS_DATA.forEach((part) => {
+      const dom = document.createElement('div');
+      dom.className = 'body-3d-hotspot' + (part.id === currentPartId ? ' active' : '');
+      dom.innerHTML =
+        '<div class="hotspot-pulse-ring"><div class="hotspot-core-dot"></div></div>' +
+        '<div class="hotspot-tag-pill">' + part.hotspotLabel + '</div>';
+      dom.addEventListener('click', () => window.selectBodyPart(part.id));
+      hotspotLayer.appendChild(dom);
+      majorHotspotNodes.push({
+        id: part.id,
+        part: part,
+        dom: dom,
+        worldPos: new THREE.Vector3(part.pos3D.x, part.pos3D.y, part.pos3D.z)
+      });
+    });
+
+    // ========================================================================
+    // 4. CAMERA FLY-TO, DONG-IN MATERIAL MODES, GENDER & MERIDIAN CONTROLS
+    // ========================================================================
+    const camGoalPos = new THREE.Vector3(0.46, 1.24, 1.92);
+    const camGoalTarget = new THREE.Vector3(0.18, 1.22, -0.06);
+    let isCameraFlying = false;
+
+    // Stop camera auto-fly when user manually drags OrbitControls
+    controls.addEventListener('start', () => {
+      isCameraFlying = false;
+    });
+
+    window.selectBodyPart = function(partId) {
+      const part = getPartById(partId);
+      renderEncyclopedia(part.id);
+      if (scrollPanel) scrollPanel.scrollTo({ top: 0, behavior: 'smooth' });
+
+      camGoalPos.set(part.camPos.x, part.camPos.y, part.camPos.z);
+      camGoalTarget.set(part.camTarget.x, part.camTarget.y, part.camTarget.z);
+      isCameraFlying = true;
+
+      skinUniforms.uFocusCenter.value.set(part.pos3D.x, part.pos3D.y, part.pos3D.z);
+      organGlowLight.position.set(part.pos3D.x, part.pos3D.y, part.pos3D.z + 0.25);
+
+      majorHotspotNodes.forEach(h => {
+        h.dom.classList.toggle('active', h.id === part.id);
+      });
+
+      // Highlight matching acupoint in HUD
+      const matchingAcu = DONGIN_DATA.acupoints.find(a => a.partId === part.id);
+      if (matchingAcu) inspectAcupoint(matchingAcu, false);
+
+      // Update meridian highlight
+      updateMeridianVisualState();
+    };
+
+    window.selectMeridianFilter = function(mId) {
+      activeMeridianFilter = mId;
+      document.querySelectorAll('#meridian-filter-strip .meridian-chip').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-meridian') === mId);
+      });
+      updateMeridianVisualState();
+      if (mId !== 'ALL') {
+        const mDef = DONGIN_DATA.meridians.find(m => m.id === mId);
+        if (mDef) {
+          const codeEl = document.getElementById('acu-hud-code');
+          const merEl = document.getElementById('acu-hud-meridian');
+          const titleEl = document.getElementById('acu-hud-title');
+          const descEl = document.getElementById('acu-hud-desc');
+          if (codeEl) codeEl.textContent = mDef.code;
+          if (merEl) merEl.textContent = mDef.hanja;
+          if (titleEl) titleEl.textContent = mDef.nameKo + ' — 3D 경락 유주(流注)';
+          if (descEl) descEl.textContent = mDef.organRole;
+        }
+        // Fly to full body view (or back view for GV/BL)
+        if (mId === 'GV' || mId === 'BL') {
+          window.setDonginCameraPreset('back');
         } else {
-          if (btn) btn.textContent = '시안성 · 한지모드';
+          window.setDonginCameraPreset('full');
         }
-        try { localStorage.setItem('bareun_visual_mode', currVis); } catch (_) {}
       }
-      window.cycleExplorerVisMode = function() {
-        applyVis(VIS_MODES[(VIS_MODES.indexOf(currVis) + 1) % VIS_MODES.length]);
-      };
+    };
 
-      try {
-        const savedVis = localStorage.getItem('bareun_visual_mode');
-        if (savedVis) applyVis(savedVis);
-        const savedBrand = JSON.parse(localStorage.getItem('bareun_custom_brand') || '{}');
-        if (savedBrand.clinicName) {
-          const cn = document.getElementById('explorer-clinic-name');
-          if (cn) cn.textContent = savedBrand.clinicName;
+    function updateMeridianVisualState() {
+      const part = getPartById(currentPartId);
+      const partMeridians = part.activeMeridians || [];
+      meridianRuntimeList.forEach(m => {
+        const isHighlighted =
+          activeMeridianFilter === 'ALL'
+            ? partMeridians.includes(m.id)
+            : activeMeridianFilter === m.id;
+        m.mat.opacity = activeMeridianFilter === 'ALL'
+          ? (isHighlighted ? 0.95 : 0.38)
+          : (isHighlighted ? 1.0 : 0.12);
+      });
+    }
+
+    window.setDonginGender = function(gender) {
+      currentGender = gender;
+      document.getElementById('btn-gender-male')?.classList.toggle('active', gender === 'male');
+      document.getElementById('btn-gender-female')?.classList.toggle('active', gender === 'female');
+      if (maleBodyObj) maleBodyObj.visible = (gender === 'male');
+      if (femaleBodyObj) femaleBodyObj.visible = (gender === 'female');
+    };
+
+    window.setDonginSkinMode = function(mode) {
+      currentSkinMode = mode;
+      document.getElementById('btn-mat-glass')?.classList.toggle('active', mode === 'glass');
+      document.getElementById('btn-mat-bronze')?.classList.toggle('active', mode === 'bronze');
+      document.getElementById('btn-mat-xray')?.classList.toggle('active', mode === 'xray');
+
+      [maleSkinMat, femaleSkinMat].forEach(mat => {
+        if (mode === 'glass') {
+          mat.color.setHex(0xe2f1ff);
+          mat.metalness = 0.12;
+          mat.roughness = 0.22;
+          mat.transmission = 0.78;
+          mat.opacity = 0.62;
+          skinUniforms.uDissolve.value = 0.14;
+        } else if (mode === 'bronze') {
+          // Museum Royal Antiqued Bronze & 24K Gold Dong-In Statue
+          mat.color.setHex(0xc99e52);
+          mat.metalness = 0.84;
+          mat.roughness = 0.24;
+          mat.transmission = 0.08;
+          mat.opacity = 0.92;
+          skinUniforms.uDissolve.value = 0.08;
+        } else if (mode === 'xray') {
+          mat.color.setHex(0x38bdf8);
+          mat.metalness = 0.05;
+          mat.roughness = 0.15;
+          mat.transmission = 0.92;
+          mat.opacity = 0.24;
+          skinUniforms.uDissolve.value = 0.42;
         }
-      } catch (_) {}
+        mat.needsUpdate = true;
+      });
+    };
 
-      // Initialize from URL query (?part=knee, etc.)
-      const urlParams = new URLSearchParams(window.location.search);
-      const initialPart = urlParams.get('part') || 'knee';
-      window.selectBodyPart(initialPart);
-      requestAnimationFrame(animateExplorer);
-    })();
+    window.setDonginCameraPreset = function(preset) {
+      isCameraFlying = true;
+      if (preset === 'full') {
+        camGoalPos.set(0.0, 2.42, 4.85);
+        camGoalTarget.set(0.0, 2.35, 0.0);
+      } else if (preset === 'front') {
+        camGoalPos.set(0.0, 3.05, 3.35);
+        camGoalTarget.set(0.0, 3.00, 0.0);
+      } else if (preset === 'back') {
+        camGoalPos.set(0.0, 3.05, -3.45);
+        camGoalTarget.set(0.0, 3.00, 0.0);
+      }
+    };
+
+    window.toggleVibrantAuroraStudio = function() {
+      isAuroraStudio = !isAuroraStudio;
+      const btn = document.getElementById('btn-studio-aurora');
+      if (btn) btn.classList.toggle('active', isAuroraStudio);
+      if (isAuroraStudio) {
+        // Exact vibrant.noomoagency.com pastel aurora studio palette
+        podiumUniforms.uColorA.value.set('#dbfff6');
+        podiumUniforms.uColorMid.value.set('#fbebff');
+        podiumUniforms.uColorB.value.set('#9ec3ff');
+        podiumUniforms.uHighlightColor.value.set('#deccff');
+      } else {
+        // Royal Dark Korean Medicine Dong-In Studio
+        podiumUniforms.uColorA.value.set('#071a18');
+        podiumUniforms.uColorMid.value.set('#0a1628');
+        podiumUniforms.uColorB.value.set('#040811');
+        podiumUniforms.uHighlightColor.value.set('#10b981');
+      }
+    };
+
+    quickNavButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.selectBodyPart(btn.getAttribute('data-part'));
+      });
+    });
+
+    function resizeRenderer() {
+      if (!stageEl) return;
+      const w = stageEl.clientWidth;
+      const h = stageEl.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / Math.max(1, h);
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resizeRenderer);
+    resizeRenderer();
+
+    // ========================================================================
+    // 5. 60FPS ANIMATION LOOP (12-MERIDIAN QI STREAM + ORGAN RECOVERY + HUD)
+    // ========================================================================
+    const clock = new THREE.Clock();
+    const projVec = new THREE.Vector3();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      skinUniforms.uTime.value = t;
+      podiumUniforms.uTime.value = t;
+
+      // Smoothly interpolate scroll-driven recovery state
+      currentRecoveryMix += (targetRecoveryMix - currentRecoveryMix) * 0.08;
+      updateEncycBaVisuals(currentRecoveryMix);
+
+      // Smooth camera fly-to
+      if (isCameraFlying) {
+        camera.position.lerp(camGoalPos, 0.075);
+        controls.target.lerp(camGoalTarget, 0.085);
+        if (camera.position.distanceTo(camGoalPos) < 0.015) {
+          isCameraFlying = false;
+        }
+      }
+      controls.update();
+
+      // 5.1 Animate 12-Meridian Qi-Photon Streams along the 193,288-vertex body surface
+      const part = getPartById(currentPartId);
+      const partMeridians = part.activeMeridians || [];
+      const qiSpeedMult = 0.65 + currentRecoveryMix * 1.15;
+
+      qiParticleData.forEach(qp => {
+        const u = (qp.phase + t * qp.speed * qiSpeedMult) % 1.0;
+        const pt = qp.curve.getPointAt(u);
+        qp.mesh.position.copy(pt);
+        const isMerActive = activeMeridianFilter === 'ALL'
+          ? partMeridians.includes(qp.meridianId)
+          : activeMeridianFilter === qp.meridianId;
+        const sc = isMerActive ? (1.15 + 0.35 * Math.sin(t * 6.0 + qp.phase * 12.0)) : 0.55;
+        qp.mesh.scale.setScalar(sc);
+      });
+
+      // 5.2 Animate 31 Acupoint Halos (always face camera & pulse)
+      acupointRuntimeNodes.forEach((node, idx) => {
+        node.haloMesh.lookAt(camera.position);
+        const s = 1.0 + 0.25 * Math.sin(t * 3.5 + idx);
+        node.haloMesh.scale.setScalar(s);
+      });
+
+      // 5.3 Animate Real GLB Internal Organs based on selected part & recovery mix
+      Object.keys(loadedOrgans).forEach(key => {
+        const entry = loadedOrgans[key];
+        const isTargetOrgan = entry.spec.parts.includes(currentPartId);
+        const pulse = 1.0 + Math.sin(t * (key === 'heart' ? 5.2 : 2.6)) * (isTargetOrgan ? 0.045 : 0.015);
+        entry.scene.scale.setScalar(pulse);
+        entry.mat.opacity = isTargetOrgan ? 0.95 : (currentSkinMode === 'xray' ? 0.72 : 0.38);
+        entry.mat.emissiveIntensity = isTargetOrgan ? (0.75 + currentRecoveryMix * 0.85) : 0.3;
+      });
+
+      // 5.4 Animate Knee Growth Plate & 180 Chondrocyte Bio-Photons
+      growthDiscMat.color.setHex(currentRecoveryMix > 0.45 ? 0x10b981 : 0xf59e0b);
+      growthDiscMat.emissive.setHex(currentRecoveryMix > 0.45 ? 0x34d399 : 0xef4444);
+      const posAttr = kneePhotonGeo.attributes.position;
+      const pSpeed = 0.002 + currentRecoveryMix * 0.006;
+      for (let i = 0; i < kneePhotonCount; i++) {
+        let py = posAttr.getY(i) + pSpeed;
+        if (py > 1.46) py = 1.10;
+        posAttr.setY(i, py);
+      }
+      posAttr.needsUpdate = true;
+
+      // 5.5 Animate Spine Misalignment (Before) -> Vertical Chuna Alignment (After)
+      const misalign = 1.0 - currentRecoveryMix;
+      spineDiscs.forEach((d, idx) => {
+        d.mesh.position.x = Math.sin(d.ratio * Math.PI * 2.0) * 0.032 * misalign;
+      });
+
+      // 5.6 Project 2D Major Hotspots & Acupoint Pins
+      const w = stageEl.clientWidth;
+      const h = stageEl.clientHeight;
+      majorHotspotNodes.forEach(item => {
+        projVec.copy(item.worldPos).project(camera);
+        if (projVec.z > 1.0) {
+          item.dom.style.opacity = '0';
+          return;
+        }
+        const sx = (projVec.x * 0.5 + 0.5) * w;
+        const sy = (-projVec.y * 0.5 + 0.5) * h;
+        item.dom.style.left = sx.toFixed(1) + 'px';
+        item.dom.style.top = sy.toFixed(1) + 'px';
+        item.dom.style.opacity = (sx > 10 && sx < w - 10 && sy > 50 && sy < h - 50) ? '1' : '0';
+      });
+
+      const camDist = camera.position.distanceTo(controls.target);
+      acupointRuntimeNodes.forEach(node => {
+        projVec.copy(node.worldPos).project(camera);
+        // Check if acupoint is facing camera (dot product with camera direction)
+        const toCam = camera.position.clone().sub(node.worldPos).normalize();
+        const isFrontVisible = (node.worldPos.z >= -0.08 && toCam.z > -0.2) || (node.worldPos.z < -0.08 && toCam.z < 0.2);
+        const isPartMatch = node.acu.partId === currentPartId || camDist < 2.8;
+        if (projVec.z > 1.0 || !isFrontVisible || !isPartMatch) {
+          node.pinEl.style.opacity = '0';
+          node.pinEl.style.pointerEvents = 'none';
+          return;
+        }
+        const sx = (projVec.x * 0.5 + 0.5) * w;
+        const sy = (-projVec.y * 0.5 + 0.5) * h;
+        node.pinEl.style.left = sx.toFixed(1) + 'px';
+        node.pinEl.style.top = sy.toFixed(1) + 'px';
+        const inBounds = sx > 20 && sx < w - 20 && sy > 75 && sy < h - 75;
+        node.pinEl.style.opacity = inBounds ? '0.92' : '0';
+        node.pinEl.style.pointerEvents = inBounds ? 'auto' : 'none';
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    // Initialize from URL query (?part=knee, etc.)
+    const params = new URLSearchParams(window.location.search);
+    const initPart = params.get('part') || 'knee';
+    window.selectBodyPart(initPart);
+    animate();
   </script>
 </body>
 </html>`;
 }
 
-const outPath = path.join(__dirname, 'body-explorer.html');
-const html = buildBodyExplorerHtml();
-fs.writeFileSync(outPath, html, 'utf8');
-console.log('Generated Vibrant 3D Human Body Medical Encyclopedia:', outPath, '(' + html.length + ' bytes)');
+buildDonginSurfaceData().then(donginData => {
+  const outPath = path.join(__dirname, 'body-explorer.html');
+  const html = buildBodyExplorerHtml(donginData);
+  fs.writeFileSync(outPath, html, 'utf8');
+  console.log('Generated Vibrant 193K-Vertex 3D Dong-In Encyclopedia:', outPath, '(' + html.length + ' bytes)');
+});
