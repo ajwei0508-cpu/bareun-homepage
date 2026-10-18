@@ -2482,13 +2482,30 @@
       wrapper.addEventListener('pointerup', () => { isDragging = false; });
       wrapper.addEventListener('pointercancel', () => { isDragging = false; });
 
-      // Unified Mobile Touch-Swipe (both Vertical Thumb Scroll & Horizontal Swipe) + Momentum Inertia
+      // Unified Mobile Touch-Swipe (Calm 1-Card-Per-Swipe Step & Magnetic Centering)
+      let touchStartTargetX = 0;
+      let touchStartPlateIdx = 0;
+      let touchAccumDelta = 0;
+
+      function getClosestPlateIndex(xVal) {
+        const vc = xVal + wrapper.clientWidth * 0.5;
+        let cIdx = 0, minD = Infinity;
+        plates.forEach((pl, i) => {
+          const d = Math.abs((pl.offsetLeft + pl.offsetWidth * 0.5) - vc);
+          if (d < minD) { minD = d; cIdx = i; }
+        });
+        return cIdx;
+      }
+
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
         if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
         updateBounds();
         isTouchActive = true;
         touchInertiaVelX = 0;
+        touchAccumDelta = 0;
+        touchStartTargetX = targetX;
+        touchStartPlateIdx = getClosestPlateIndex(currentX);
         touchLastX = e.touches[0].clientX;
         touchLastY = e.touches[0].clientY;
         touchLastTime = performance.now();
@@ -2507,7 +2524,7 @@
         const dtSec = Math.max(0.008, Math.min(0.1, (now - touchLastTime) * 0.001));
         touchLastTime = now;
 
-        // If touching inside #project-details-meta and scrolling vertically while meta still has scroll room, let meta scroll first, then chain seamlessly into runway!
+        // If touching inside #project-details-meta and scrolling vertically while meta still has scroll room, let meta scroll first
         const metaEl = e.target.closest && e.target.closest('#project-details-meta');
         if (metaEl && Math.abs(dy) > Math.abs(dx) && metaEl.scrollHeight > metaEl.clientHeight + 4) {
           const canScrollDown = dy > 0 && (metaEl.scrollTop + metaEl.clientHeight < metaEl.scrollHeight - 4);
@@ -2517,13 +2534,27 @@
 
         updateBounds();
         const dominantDelta = Math.abs(dy) >= Math.abs(dx) ? dy : dx;
-        const stepX = dominantDelta * 1.45;
-        targetX = Math.max(0, Math.min(maxScrollX, targetX + stepX));
+        touchAccumDelta += dominantDelta;
+        const stepX = dominantDelta * 0.55;
+        const maxOneCardSpan = Math.max(280, wrapper.clientWidth * 0.92);
+        const minSwipeX = Math.max(0, touchStartTargetX - maxOneCardSpan);
+        const maxSwipeX = Math.min(maxScrollX, touchStartTargetX + maxOneCardSpan);
+        targetX = Math.max(minSwipeX, Math.min(maxSwipeX, targetX + stepX));
         const instVelX = stepX / dtSec;
-        touchInertiaVelX = touchInertiaVelX * 0.35 + Math.max(-2600, Math.min(2600, instVelX)) * 0.65;
+        touchInertiaVelX = touchInertiaVelX * 0.5 + Math.max(-320, Math.min(320, instVelX)) * 0.5;
       }, { passive: true });
 
-      const endTouchRunway = () => { isTouchActive = false; };
+      const endTouchRunway = () => {
+        if (!isTouchActive) return;
+        isTouchActive = false;
+        touchInertiaVelX = 0;
+        // On mobile/tablet, snap cleanly to the current or next/prev 1 card so content never flies past!
+        if (window.innerWidth <= 1024 && Math.abs(touchAccumDelta) > 12) {
+          const stepDir = touchAccumDelta > 26 ? 1 : (touchAccumDelta < -26 ? -1 : 0);
+          const nextIdx = Math.max(0, Math.min(plates.length - 1, touchStartPlateIdx + stepDir));
+          window.jumpToPlate(nextIdx);
+        }
+      };
       window.addEventListener('touchend', endTouchRunway, { passive: true });
       window.addEventListener('touchcancel', endTouchRunway, { passive: true });
 

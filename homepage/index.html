@@ -2735,11 +2735,14 @@
         syncNativeScrollPosition();
       }, { passive: true });
 
+      let touchStartProgress = 0;
+
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
         if (e.target && e.target.closest && e.target.closest('.reserve-drawer')) return;
         isTouchDragging = true;
         touchInertiaVel = 0;
+        touchStartProgress = targetProgress;
         touchLastY = e.touches[0].clientY;
         touchLastX = e.touches[0].clientX;
         touchLastTime = performance.now();
@@ -2763,12 +2766,15 @@
         hasUserScrolled = true;
 
         const dominantDelta = Math.abs(dy) >= Math.abs(dx) ? dy : dx;
-        const virtualTouchSpan = Math.max(2400, window.innerHeight * 5.2);
-        const stepNorm = (dominantDelta * 1.45) / virtualTouchSpan;
-        targetProgress = Math.max(0, Math.min(1, targetProgress + stepNorm));
+        // Calm, deliberate mobile scroll speed + max 1 story-step (±8%) per single swipe
+        const virtualTouchSpan = Math.max(7200, window.innerHeight * 14.5);
+        const stepNorm = (dominantDelta * 0.55) / virtualTouchSpan;
+        const minSwipeBound = Math.max(0, touchStartProgress - 0.082);
+        const maxSwipeBound = Math.min(1, touchStartProgress + 0.082);
+        targetProgress = Math.max(minSwipeBound, Math.min(maxSwipeBound, targetProgress + stepNorm));
 
         const instVel = stepNorm / dtSec;
-        touchInertiaVel = touchInertiaVel * 0.35 + Math.max(-0.85, Math.min(0.85, instVel)) * 0.65;
+        touchInertiaVel = touchInertiaVel * 0.5 + Math.max(-0.08, Math.min(0.08, instVel)) * 0.5;
 
         mouseNorm.x = curX / Math.max(1, window.innerWidth);
         mouseNorm.y = curY / Math.max(1, window.innerHeight);
@@ -3349,10 +3355,12 @@
         lastTime = now;
         const timeSec = now * 0.001;
 
-        // Mobile Touch Momentum Inertia Coasting (same feel as Desktop Wheel)
+        // Mobile Touch Momentum Inertia Coasting (calm, controlled stop)
         if (!isTouchDragging && Math.abs(touchInertiaVel) > 0.00005) {
-          targetProgress = Math.max(0, Math.min(1, targetProgress + touchInertiaVel * dt));
-          touchInertiaVel *= Math.pow(0.915, dt * 60);
+          const minSwipeBound = Math.max(0, touchStartProgress - 0.095);
+          const maxSwipeBound = Math.min(1, touchStartProgress + 0.095);
+          targetProgress = Math.max(minSwipeBound, Math.min(maxSwipeBound, targetProgress + touchInertiaVel * dt));
+          touchInertiaVel *= Math.pow(0.82, dt * 60);
           if (targetProgress <= 0 || targetProgress >= 1) touchInertiaVel = 0;
           syncNativeScrollPosition();
         }
