@@ -5,20 +5,18 @@
 
 ---
 
-## 💎 0. 최신 완료 작업 요약 (2026-10-18 완료분 · 베이지·브라운·그린·화이트·블랙 5색 하이엔드 에디토리얼 & 소프트 3D 일러스트/툰-클레이 인체 백과 완성)
+## 💎 0. 최신 완료 작업 요약 (2026-10-18 최신본 · 상호명/연락처 전체 통일 & 질환별 상세페이지 직통 연결 & 3D 인체모형 통합 의학백과 일원화 & 실서버 자동 배포)
 
-1. **메인 페이지 (`homepage/story-3d.html` / `homepage/index.html`) 클린 원본 복원 완료**:
-   - 사용자 요청에 따라 메인 페이지를 이전 클린 버전(`e962494`)으로 완벽 복원하고, 상단 헤더에 3D 인체 질환백과(`body-explorer.html`) 바로가기 버튼만 깔끔하게 연결 완료.
-2. **베이지 · 브라운 · 그린 · 화이트 · 블랙 5색 하이엔드 에디토리얼 & 비실사 소프트 3D 툰-클레이(Toon-Clay) 인체 일러스트 대백과 (`homepage/body-explorer.html` / `homepage/wordpress-body-explorer.html`)**:
-   - **불필요한 시각 요소 및 경락·경혈 100% 삭제 완료**:
-     - 기존 12경맥 라인, 경락 필터 칩, 경혈 스타라이트 포인트, 좌우 경혈 지시선 태그, 경혈 HUD 박스를 100% 제거하여 여백의 미가 살아있는 미니멀 에디토리얼 화면으로 재설계.
-   - **징그럽거나 노골적인 실사 혈관·두개골·늑골 완전 제거 & 소프트 3D 카툰/클레이 일러스트 셰이더 탑재**:
-     - 실사 혈관(`Vascular.glb`), 치아·안와가 드러나는 두개골(`Skull`), 복잡한 흉곽(`ThoracicRibcage`)을 전면 제거.
-     - **구면 라디얼 법선 블렌딩(Spherical Radial Normal Smoothing) 3단 셀-툰 클레이 셰이더(`createToonClayMaterial`)**: 뇌(`brain.glb`), 위장(`stomach.glb`), 심장(`heart.glb`), 신장(`kidneys2.glb`), 갑상선(`thyroid.glb`), 대소장(`intestine.glb`), 간(`liver.glb`)의 실사 주름/고랑 노멀을 구면 라디얼 노멀과 블렌딩하여 징그러운 실사 주름 없이 부드럽고 친근한 3D 클레이/일러스트 장기로 렌더링.
-     - **포슬린 베이지 아트토이 마네킹 셰이더(`createStylizedPorcelainBodyMaterial`)**: 얼굴 부위(콧구멍·입술·눈꺼풀)의 어두운 음영을 제거하여 깔끔하고 편안한 아트토이 마네킹 실루엣 구현.
-   - **베이지(`#F5F1E8`) · 브라운(`#3A2A1E`, `#5E4736`) · 그린(`#2D5A43`, `#68A684`) · 화이트(`#FFFFFF`) · 블랙(`#171614`) 5색 시그니처 컬러 시스템**:
-     - 3D 장기/성장판부터 우측 백과사전 카드, 스크롤 연동 비실사 회복도 프로그레스 바까지 100% 5색 팔레트로 통일(붉은 핏빛/살구빛 완전 배제).
-3. **6대 상세페이지 (`director`, `chuna`, `growth`, `diet-zero`, `hairloss`, `gongjindan`) 인라인 스크롤 자동 연동 Before/After 3D 스캔 및 워드프레스 번들 9종(`wordpress-*.html`) 최신 동기화 완료**.
+1. **전 페이지 상호명(`바른한의원 대전본점`) 및 대표 연락처(`010-5631-1275`) 완벽 통일**:
+   - 메인 3D 쇼룸(`index.html`, `story-3d.html`), 3D 인체모형 통합 의학백과(`body-explorer.html`), 7대 질환별 상세페이지(`director.html`, `chuna.html`, `growth.html`, `diet-zero.html`, `hairloss.html`, `gongjindan.html`, `prostate.html`), 윤곽진단 스튜디오(`lifting-compare.html`), 글로벌 설정(`clinic-template-config.js`) 및 워드프레스 번들 전체를 **`바른한의원 대전본점`** / **`010-5631-1275`**로 통일 완료.
+2. **역할 분리 및 직관적 동선 구축 (펼침 카드 ➔ 질환별 상세페이지 / 3D 모형 ➔ 통합 의학백과 페이지)**:
+   - 메인 페이지에서 카드를 펼쳤을 때(`#skt-bento-grid`) 각 카드를 클릭하면 해당 질환 상세페이지(`director`, `chuna`, `growth`, `diet-zero`, `hairloss`, `gongjindan`, `prostate`)로 즉시 이동하도록 직통 연결 완료.
+   - 모든 3D 인체모형은 별도의 통합 의학정보 페이지(`body-explorer.html` / `/body-explorer/`)로 통합 구성하고, 각 질환 상세페이지에서도 해당 부위(`?part=knee`, `?part=lumbar` 등)로 1클릭 이동 가능하도록 연동.
+3. **불필요한 버튼 및 오버레이 메뉴 클린 정리**:
+   - 메인 페이지 상단 헤더의 개발용 비교 메뉴(`⇄ 수정 전·후 비교 보기`, `수정 전 페이지(3001) ↗`) 삭제 완료.
+   - 7대 질환 상세페이지 전체에서 **`B/A 스캔 크게보기`**, **모든 `이미지 크게 보기` 버튼/클릭 확대 라이트박스**, 좌측 하단 **`원장 임상 노트` 도슨트 박스(`.live-plate-docent`)**를 전면 삭제하여 한눈에 깔끔하게 읽히는 레이아웃 완성.
+4. **카페24 워드프레스 실서버(`https://www.bareunhaniwon.com/`) 원클릭 배포 자동화 (`homepage/deploy-cafe24.js`)**:
+   - `node bundle-wp.js` 실행 후 `node deploy-cafe24.js`로 10개 전체 워드프레스 페이지 배포 및 WP Super Cache 즉시 초기화 완료.
 
 ---
 
