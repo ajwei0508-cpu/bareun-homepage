@@ -1033,15 +1033,16 @@ const BODY_PARTS = [
   }
 ];
 
-const { buildDonginSurfaceData } = require('./generate-dongin-meridians.js');
 
-function buildBodyExplorerHtml(donginData) {
+
+function buildBodyExplorerHtml() {
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>바른한의원 3D 침구동인(鍼灸銅人) 12경맥 · 질환 · SCI 논문 대백과 — Vibrant Interactive Hub</title>
+  <link rel="icon" href="data:,">
+  <title>바른한의원 3D 인체 질환 · 홈케어 · SCI 논문 백과사전</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1056,165 +1057,192 @@ function buildBodyExplorerHtml(donginData) {
   </script>
   <style>
     :root {
-      --bg-cosmos: #050811;
-      --bg-glass: rgba(8, 14, 24, 0.84);
-      --bg-card: rgba(255, 255, 255, 0.045);
-      --border-glass: rgba(255, 255, 255, 0.14);
-      --gold: #D4AF37;
-      --gold-bright: #FDE68A;
-      --emerald: #10B981;
-      --emerald-bright: #6EE7B7;
-      --cyan: #38BDF8;
-      --cyan-bright: #BAE6FD;
-      --crimson: #F87171;
-      --text-main: #F8FAFC;
-      --text-sub: rgba(248, 250, 252, 0.82);
-      --text-muted: rgba(248, 250, 252, 0.54);
+      /* Beige · Brown · Green · White · Black Signature Palette */
+      --bg-beige: #F5F1E8;
+      --bg-beige-warm: #EDE6D8;
+      --bg-beige-deep: #E2D9C6;
+      --bg-white: #FFFFFF;
+      --bg-white-glass: rgba(255, 255, 255, 0.88);
+      --brown-deep: #3A2A1E;
+      --brown-mid: #5E4736;
+      --brown-soft: #8A7460;
+      --green-primary: #2D5A43;
+      --green-mid: #3F7A5C;
+      --green-light: #68A684;
+      --green-tint: #E6F0EB;
+      --black-ink: #171614;
+      --black-sub: #2E2B28;
+      --border-warm: #DCD2C0;
+      --border-strong: #C6B8A3;
+      --shadow-soft: 0 12px 32px rgba(58, 42, 30, 0.07);
+      --shadow-card: 0 6px 20px rgba(58, 42, 30, 0.05);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     html, body {
       width: 100%;
       height: 100%;
-      background: var(--bg-cosmos);
-      color: var(--text-main);
+      background: var(--bg-beige);
+      color: var(--black-ink);
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ==========================================================================
-       TOP NAVIGATION BAR (VIBRANT WELLNESS + DONG-IN ROYAL HEADER)
-       ========================================================================== */
-    .vibrant-top-header {
+    /* =========================================================================
+       1. MINIMAL EDITORIAL TOP HEADER (WHITE & BEIGE & BROWN & GREEN)
+       ========================================================================= */
+    .vibrant-header {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 64px;
       z-index: 200;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      background: rgba(5, 9, 18, 0.78);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(245, 241, 232, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-warm);
+      gap: 14px;
     }
 
-    .vh-brand-group {
+    .vh-brand {
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: #FFFFFF;
-    }
-    .vh-gem {
-      width: 10px; height: 10px;
-      background: var(--gold);
-      transform: rotate(45deg);
-      box-shadow: 0 0 14px var(--gold);
-    }
-    .vh-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    .vh-badge {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(16, 185, 129, 0.22));
-      border: 1px solid rgba(253, 230, 138, 0.55);
-      color: var(--gold-bright);
+      color: var(--black-ink);
+      flex-shrink: 0;
     }
 
-    .vh-part-QuickNav {
+    .vh-brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--green-primary);
       display: flex;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--bg-white);
+      font-weight: 800;
+    }
+
+    .vh-brand-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.02rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--black-ink);
+    }
+
+    .vh-brand-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--brown-soft);
+      padding-left: 10px;
+      border-left: 1px solid var(--border-strong);
+    }
+
+    .vh-part-quicknav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       overflow-x: auto;
       scrollbar-width: none;
+      padding: 4px 0;
     }
-    .vh-part-QuickNav::-webkit-scrollbar { display: none; }
+    .vh-part-quicknav::-webkit-scrollbar { display: none; }
 
     .vh-part-chip {
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(248, 250, 252, 0.78);
-      font-size: 11.5px;
+      appearance: none;
+      border: 1px solid var(--border-warm);
+      background: var(--bg-white);
+      color: var(--brown-mid);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.78rem;
       font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 999px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .vh-part-chip:hover {
-      border-color: var(--gold-bright);
-      color: #FFFFFF;
-      transform: translateY(-1px);
-    }
-    .vh-part-chip.active {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.32), rgba(212, 175, 55, 0.28));
-      border-color: var(--emerald-bright);
-      color: #FFFFFF;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.28);
+      transition: all 0.22s ease;
     }
 
-    .vh-right-actions {
+    .vh-part-chip:hover {
+      border-color: var(--green-primary);
+      color: var(--green-primary);
+      background: var(--green-tint);
+    }
+
+    .vh-part-chip.active {
+      background: var(--green-primary);
+      border-color: var(--green-primary);
+      color: var(--bg-white);
+      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.22);
+    }
+
+    .vh-actions {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
     }
+
     .vh-pill-btn {
-      padding: 7px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 15px;
       border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 800;
+      font-size: 0.78rem;
+      font-weight: 700;
       text-decoration: none;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-white);
+      color: var(--brown-deep);
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.06);
-      color: #FFFFFF;
-      transition: all 0.22s ease;
-      white-space: nowrap;
+      transition: all 0.2s ease;
     }
+
     .vh-pill-btn:hover {
-      border-color: var(--gold-bright);
-      background: rgba(212, 175, 55, 0.18);
+      background: var(--bg-beige-warm);
+      border-color: var(--brown-deep);
     }
+
     .vh-pill-btn.active {
-      background: linear-gradient(135deg, #D4AF37, #B48A1E);
-      color: #070B12;
-      border-color: #FDE68A;
+      background: var(--brown-deep);
+      color: var(--bg-white);
+      border-color: var(--brown-deep);
     }
 
-    /* ==========================================================================
-       MAIN SPLIT WORKSPACE (LEFT: VIBRANT 3D DONG-IN STAGE / RIGHT: ENCYCLOPEDIA)
-       ========================================================================== */
+    /* =========================================================================
+       2. SPLIT WORKSPACE: LEFT 3D ILLUSTRATION STAGE / RIGHT EDITORIAL PANEL
+       ========================================================================= */
     .vibrant-workspace {
-      position: fixed;
-      top: 64px;
-      left: 0;
-      right: 0;
-      bottom: 0;
       display: grid;
-      grid-template-columns: 48% 52%;
-      overflow: hidden;
+      grid-template-columns: 46% 54%;
+      width: 100vw;
+      height: 100vh;
+      padding-top: 64px;
     }
 
-    /* ==========================================================================
-       LEFT PANEL: VIBRANT.NOOMOAGENCY.COM 193K-VERTEX 3D DONG-IN STAGE
-       ========================================================================== */
+    /* LEFT: CLEAN 3D ILLUSTRATION VIEWPORT */
     .vibrant-3d-stage {
       position: relative;
       width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 38%, #102338 0%, #07111e 52%, #03070e 100%);
+      height: calc(100vh - 64px);
+      background: radial-gradient(circle at 50% 42%, #FAF7F0 0%, #EFE9DC 58%, #E2D9C5 100%);
+      border-right: 1px solid var(--border-warm);
       overflow: hidden;
       user-select: none;
     }
@@ -1229,573 +1257,484 @@ function buildBodyExplorerHtml(donginData) {
       cursor: grabbing;
     }
 
-    /* Loading Overlay while 193,288-vertex GLB + Draco decodes */
-    .dongin-loader-overlay {
+    /* Minimal Top-Left Studio Badge (Never overlaps head) */
+    .stage-minimal-badge {
       position: absolute;
-      inset: 0;
-      z-index: 60;
-      display: flex;
-      flex-direction: column;
+      top: 18px;
+      left: 20px;
+      z-index: 25;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at 50% 45%, rgba(12, 26, 42, 0.92), rgba(4, 8, 15, 0.98));
-      backdrop-filter: blur(14px);
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    .dongin-loader-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: var(--bg-white-glass);
+      border: 1px solid var(--border-warm);
+      box-shadow: var(--shadow-card);
       pointer-events: none;
     }
-    .dongin-spinner {
-      width: 54px;
-      height: 54px;
+
+    .stage-minimal-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      border: 2px solid rgba(253, 230, 138, 0.18);
-      border-top-color: var(--gold-bright);
-      border-right-color: var(--emerald-bright);
-      animation: donginSpin 0.95s linear infinite;
-      margin-bottom: 14px;
-    }
-    @keyframes donginSpin {
-      to { transform: rotate(360deg); }
+      background: var(--green-primary);
     }
 
-    /* Top-Left Stage HUD: Clean Minimal Medical Controls */
-    .stage-hud-top {
+    .stage-minimal-text {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--brown-deep);
+      letter-spacing: 0.02em;
+    }
+
+    /* Single Clean Bottom Control Bar */
+    .stage-bottom-bar {
       position: absolute;
-      top: 16px;
-      left: 16px;
-      right: 16px;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 30;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 8px;
-      pointer-events: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-warm);
+      box-shadow: var(--shadow-soft);
+      white-space: nowrap;
     }
-    .stage-hud-row {
+
+    .stage-ctrl-group {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 3px;
     }
-    .stage-control-bar {
-      pointer-events: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px;
-      border-radius: 999px;
-      background: rgba(5, 10, 19, 0.78);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+    .stage-ctrl-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border-warm);
+      margin: 0 2px;
     }
+
     .stage-ctrl-btn {
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid transparent;
+      appearance: none;
+      border: none;
       background: transparent;
-      color: rgba(248, 250, 252, 0.72);
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-    .stage-ctrl-btn:hover {
-      color: #FFFFFF;
-    }
-    .stage-ctrl-btn.active {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.32), rgba(16, 185, 129, 0.28));
-      color: #FDE68A;
-      border-color: rgba(253, 230, 138, 0.52);
-      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.22);
-    }
-
-    /* 12-Meridian Interactive Bar */
-    .meridian-filter-strip {
-      pointer-events: auto;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding: 5px 8px;
-      border-radius: 12px;
-      background: rgba(5, 10, 19, 0.70);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-    }
-    .meridian-filter-strip::-webkit-scrollbar { display: none; }
-    .meridian-chip {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.035);
-      color: rgba(248, 250, 252, 0.76);
-      font-size: 10.5px;
-      font-weight: 800;
-      cursor: pointer;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
-    }
-    .meridian-chip .m-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-    .meridian-chip:hover,
-    .meridian-chip.active {
-      background: rgba(212, 175, 55, 0.24);
-      border-color: var(--gold-bright);
-      color: #FFFFFF;
-    }
-
-    /* Acupoint Inspector Card (Bottom-Left above Sim Bar) */
-    .acupoint-inspector-hud {
-      position: absolute;
-      left: 16px;
-      bottom: 80px;
-      z-index: 35;
-      width: min(330px, calc(100% - 32px));
-      padding: 11px 14px;
-      border-radius: 14px;
-      background: rgba(5, 11, 20, 0.82);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(253, 230, 138, 0.35);
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
-      pointer-events: auto;
-    }
-    .acupoint-inspector-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-    .acupoint-code-pill {
-      font-size: 9.5px;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(212, 175, 55, 0.2);
-      border: 1px solid var(--gold-bright);
-      color: var(--gold-bright);
-    }
-    .acupoint-meridian-lbl {
-      font-size: 10px;
+      color: var(--brown-mid);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.75rem;
       font-weight: 700;
-      color: var(--emerald-bright);
-    }
-    .acupoint-title-ko {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 0.94rem;
-      font-weight: 800;
-      color: #FFFFFF;
-      margin-bottom: 3px;
-    }
-    .acupoint-desc-ko {
-      font-size: 0.74rem;
-      line-height: 1.48;
-      color: rgba(248, 250, 252, 0.8);
-      word-break: keep-all;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    /* Projected 2D Hotspot & Side Callout Layer */
+    .stage-ctrl-btn:hover {
+      color: var(--black-ink);
+      background: var(--bg-beige);
+    }
+
+    .stage-ctrl-btn.active {
+      background: var(--green-primary);
+      color: var(--bg-white);
+    }
+
+    .stage-ctrl-btn.active-brown {
+      background: var(--brown-deep);
+      color: var(--bg-white);
+    }
+
+    /* 2D Overlay Layer for 7 Clean Organ Hotspots ONLY */
     #hotspot-overlay-layer {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 25;
+      z-index: 20;
       overflow: hidden;
     }
 
-    /* Vibrant.noomoagency.com Exact Minimal Glass Circle Hotspot (.puntos-container) */
     .body-3d-hotspot {
       position: absolute;
-      transform: translate(-50%, -50%);
+      transform: translate(-13px, -50%);
       pointer-events: auto;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: opacity 0.25s ease;
+      gap: 7px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
+
+    .body-3d-hotspot.align-left {
+      flex-direction: row-reverse;
+      transform: translate(calc(-100% + 13px), -50%);
+    }
+
+    .body-3d-hotspot:hover {
+      z-index: 40;
+    }
+
     .hotspot-pulse-ring {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.10);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.48);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1.5px solid var(--brown-mid);
+      box-shadow: 0 4px 12px rgba(58, 42, 30, 0.14);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 2.5px;
-      box-shadow: 0 0 18px rgba(186, 230, 253, 0.35);
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 2px;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
     }
+
     .hotspot-core-dot {
       width: 3.5px;
       height: 3.5px;
       border-radius: 50%;
-      background: #FFFFFF;
-      box-shadow: 0 0 6px #FFFFFF;
+      background: var(--brown-deep);
+      transition: all 0.25s ease;
     }
-    .body-3d-hotspot:hover .hotspot-pulse-ring,
+
     .body-3d-hotspot.active .hotspot-pulse-ring {
-      background: rgba(212, 175, 55, 0.28);
-      border-color: #FDE68A;
-      box-shadow: 0 0 24px rgba(253, 230, 138, 0.85);
-      transform: scale(1.16);
+      background: var(--green-primary);
+      border-color: var(--bg-white);
+      box-shadow: 0 0 0 5px rgba(45, 90, 67, 0.18), 0 6px 16px rgba(45, 90, 67, 0.28);
     }
+
+    .body-3d-hotspot.active .hotspot-core-dot {
+      background: var(--bg-white);
+    }
+
     .hotspot-tag-pill {
-      padding: 4px 10px;
+      padding: 4px 11px;
       border-radius: 999px;
-      background: rgba(5, 10, 19, 0.76);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: rgba(248, 250, 252, 0.90);
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--border-strong);
+      color: var(--brown-deep);
+      font-size: 0.73rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
       white-space: nowrap;
-      opacity: 0;
-      transform: translateX(-4px);
+      box-shadow: var(--shadow-card);
+      opacity: 0.95;
       transition: all 0.22s ease;
-      pointer-events: none;
     }
-    .body-3d-hotspot:hover .hotspot-tag-pill,
+
+    .body-3d-hotspot:hover .hotspot-tag-pill {
+      opacity: 1;
+      border-color: var(--green-primary);
+      color: var(--green-primary);
+    }
+
     .body-3d-hotspot.active .hotspot-tag-pill {
       opacity: 1;
-      transform: translateX(0);
-      border-color: rgba(253, 230, 138, 0.65);
-      color: #FDE68A;
+      background: var(--brown-deep);
+      border-color: var(--brown-deep);
+      color: var(--bg-white);
     }
 
-    /* Clean Architectural Side Margin Leader-Line Callouts (matching media_1792308778522_b0767e86.png) */
-    .acupoint-side-callout {
+    /* Loading Overlay */
+    #dongin-loader-overlay {
       position: absolute;
-      pointer-events: auto;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .acupoint-side-callout.side-left {
-      transform: translate(-100%, -50%);
-      flex-direction: row;
-    }
-    .acupoint-side-callout.side-right {
-      transform: translate(0%, -50%);
-      flex-direction: row-reverse;
-    }
-    .acu-callout-text {
-      text-align: right;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(4, 9, 18, 0.68);
+      inset: 0;
+      z-index: 60;
+      background: rgba(245, 241, 232, 0.92);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
     }
-    .acupoint-side-callout.side-right .acu-callout-text {
-      text-align: left;
+    #dongin-loader-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
-    .acupoint-side-callout:hover .acu-callout-text,
-    .acupoint-side-callout.highlighted .acu-callout-text {
-      border-color: #FDE68A;
-      background: rgba(212, 175, 55, 0.20);
-    }
-    .acu-callout-code {
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      color: var(--gold-bright);
-      display: block;
-    }
-    .acu-callout-name {
-      font-size: 11px;
-      font-weight: 700;
-      color: rgba(248, 250, 252, 0.94);
-      white-space: nowrap;
-    }
-    .acu-leader-line {
-      width: 44px;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(253, 230, 138, 0.2), rgba(253, 230, 138, 0.85));
-      position: relative;
-    }
-    .acupoint-side-callout.side-right .acu-leader-line {
-      background: linear-gradient(270deg, rgba(253, 230, 138, 0.2), rgba(253, 230, 138, 0.85));
-    }
-    .acu-pinpoint-node {
-      width: 6px;
-      height: 6px;
+    .loader-spinner {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: #FDE68A;
-      box-shadow: 0 0 10px #FDE68A, 0 0 18px #38BDF8;
-      flex-shrink: 0;
+      border: 3px solid var(--border-warm);
+      border-top-color: var(--green-primary);
+      animation: spin 0.9s linear infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Bottom 3D Micro-Motion Status & Recovery Toggle Bar */
-    .stage-hud-bottom {
-      position: absolute;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
-      z-index: 30;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 9px 14px;
-      border-radius: 14px;
-      background: rgba(5, 10, 19, 0.82);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
-    }
-    .sim-state-switch {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .sim-state-btn {
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(248, 250, 252, 0.8);
-      font-size: 10.5px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.22s ease;
-    }
-    .sim-state-btn.active-before {
-      background: rgba(239, 68, 68, 0.25);
-      border-color: #FCA5A5;
-      color: #FECACA;
-    }
-    .sim-state-btn.active-after {
-      background: rgba(16, 185, 129, 0.28);
-      border-color: #6EE7B7;
-      color: #A7F3D0;
-    }
-
-    /* ==========================================================================
-       RIGHT PANEL: SCROLLABLE DEEP MEDICAL & SCI PAPER ENCYCLOPEDIA
-       ========================================================================== */
+    /* =========================================================================
+       3. RIGHT PANEL: CLEAN BEIGE · BROWN · GREEN · WHITE · BLACK ENCYCLOPEDIA
+       ========================================================================= */
     .encyclopedia-scroll-panel {
-      position: relative;
       width: 100%;
-      height: 100%;
+      height: calc(100vh - 64px);
       overflow-y: auto;
-      overflow-x: hidden;
-      padding: 28px 34px 90px;
-      background:
-        radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.08), transparent 45%),
-        radial-gradient(circle at 10% 80%, rgba(212, 175, 55, 0.07), transparent 50%),
-        #060A12;
-      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 36px 44px 100px;
+      background: var(--bg-beige);
       scroll-behavior: smooth;
     }
 
+    .encyclopedia-scroll-panel::-webkit-scrollbar {
+      width: 7px;
+    }
+    .encyclopedia-scroll-panel::-webkit-scrollbar-track {
+      background: var(--bg-beige);
+    }
+    .encyclopedia-scroll-panel::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 999px;
+    }
+
+    /* Sticky Section Tabs */
     .encyc-sticky-tabs {
       position: sticky;
-      top: -28px;
-      z-index: 50;
-      margin: -28px -34px 24px;
-      padding: 12px 34px;
-      background: rgba(6, 10, 18, 0.88);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      top: -36px;
+      z-index: 90;
+      margin: -36px -44px 28px;
+      padding: 12px 44px;
+      background: rgba(245, 241, 232, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-warm);
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .encyc-sticky-tabs::-webkit-scrollbar { display: none; }
 
     .encyc-tab-btn {
-      padding: 7px 13px;
+      appearance: none;
+      border: 1px solid var(--border-warm);
+      background: var(--bg-white);
+      color: var(--brown-mid);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 7px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(248, 250, 252, 0.78);
-      font-size: 11.5px;
-      font-weight: 800;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
     }
-    .encyc-tab-btn:hover,
+    .encyc-tab-btn:hover {
+      border-color: var(--green-primary);
+      color: var(--green-primary);
+    }
     .encyc-tab-btn.active {
-      background: rgba(212, 175, 55, 0.22);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
+      background: var(--brown-deep);
+      border-color: var(--brown-deep);
+      color: var(--bg-white);
     }
 
-    .encyc-hero-header {
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* Hero Header inside Encyclopedia */
+    .encyc-part-header {
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-warm);
     }
-    .encyc-code-badge {
-      display: inline-block;
-      font-size: 11px;
+
+    .encyc-part-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.16em;
-      color: var(--emerald-bright);
-      margin-bottom: 8px;
-    }
-    .encyc-main-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.5rem, 2.3vw, 2.08rem);
-      font-weight: 800;
-      line-height: 1.32;
-      color: #FFFFFF;
-      word-break: keep-all;
-      margin-bottom: 8px;
-    }
-    .encyc-sub-en {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.05rem;
-      color: var(--gold-bright);
+      letter-spacing: 0.1em;
+      color: var(--green-primary);
+      background: var(--green-tint);
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
       margin-bottom: 12px;
     }
-    .encyc-lead-desc {
-      font-size: 0.95rem;
-      line-height: 1.72;
-      color: var(--text-sub);
+
+    .encyc-part-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+      font-weight: 800;
+      line-height: 1.32;
+      color: var(--black-ink);
+      letter-spacing: -0.025em;
       word-break: keep-all;
     }
 
-    /* SCROLL-DRIVEN INLINE BEFORE/AFTER 3D BIOMEDICAL SCAN */
-    .encyc-ba-scroll-box {
-      margin: 22px 0 30px;
-      padding: 18px;
-      border-radius: 20px;
-      background: linear-gradient(145deg, rgba(13, 23, 38, 0.92), rgba(7, 12, 22, 0.96));
-      border: 1px solid rgba(212, 175, 55, 0.36);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+    .encyc-part-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: var(--brown-soft);
+      margin-top: 4px;
+      margin-bottom: 14px;
     }
-    .encyc-ba-top-bar {
+
+    .encyc-part-lead {
+      font-size: 0.95rem;
+      line-height: 1.78;
+      color: var(--black-sub);
+      word-break: keep-all;
+      background: var(--bg-white);
+      padding: 18px 22px;
+      border-radius: 16px;
+      border: 1px solid var(--border-warm);
+      box-shadow: var(--shadow-card);
+    }
+
+    /* Clean Non-Gory Interactive Recovery Summary Card */
+    .encyc-ba-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-warm);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 34px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .encyc-ba-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
     }
-    .encyc-ba-stage {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: #050811;
-    }
-    .encyc-ba-stage img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-    }
-    .encyc-ba-after-clip {
-      position: absolute;
-      inset: 0;
-      clip-path: inset(0 80% 0 0);
-      will-change: clip-path;
-    }
-    .encyc-ba-laser {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 20%;
-      width: 2.5px;
-      background: linear-gradient(180deg, #6EE7B7, #FDE68A, #10B981);
-      box-shadow: 0 0 18px rgba(253, 230, 138, 0.95);
-      pointer-events: none;
-      z-index: 5;
-    }
-    .encyc-ba-tag {
-      position: absolute;
-      top: 12px;
-      padding: 5px 11px;
+
+    .encyc-ba-badge {
+      padding: 5px 12px;
       border-radius: 999px;
-      font-size: 10.5px;
+      background: var(--green-tint);
+      color: var(--green-primary);
+      font-size: 0.76rem;
       font-weight: 800;
-      z-index: 6;
-      backdrop-filter: blur(10px);
     }
-    .encyc-ba-tag.b {
-      left: 12px;
-      background: rgba(127, 29, 29, 0.84);
-      border: 1px solid rgba(252, 165, 165, 0.55);
-      color: #FECACA;
+
+    .recovery-Comparison-track {
+      background: var(--bg-beige);
+      border: 1px solid var(--border-warm);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      cursor: ew-resize;
     }
-    .encyc-ba-tag.a {
-      right: 12px;
-      background: rgba(6, 78, 59, 0.88);
-      border: 1px solid rgba(110, 231, 183, 0.65);
-      color: #A7F3D0;
+
+    .recovery-states-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
     }
+
+    .recovery-state-box {
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    .recovery-state-box.before {
+      background: #F4EDE4;
+      border: 1px solid var(--border-strong);
+      color: var(--brown-deep);
+    }
+
+    .recovery-state-box.after {
+      background: var(--green-tint);
+      border: 1px solid #B7D7C6;
+      color: var(--green-primary);
+    }
+
+    .recovery-bar-outer {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--bg-beige-deep);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .recovery-bar-fill {
+      height: 100%;
+      width: 75%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--brown-mid) 0%, var(--green-primary) 100%);
+      transition: width 0.15s ease-out;
+    }
+
     .encyc-ba-metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 12px;
+      gap: 12px;
     }
-    .encyc-ba-metric-card {
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-    }
-    .ebm-lbl { font-size: 10.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
-    .ebm-vals { font-size: 11.5px; font-weight: 800; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .ebm-b { color: #FCA5A5; text-decoration: line-through; opacity: 0.85; }
-    .ebm-a { color: #6EE7B7; }
 
-    /* SECTION CARDS */
-    .encyc-section-block {
-      margin-bottom: 34px;
-      scroll-margin-top: 70px;
+    .encyc-ba-metric-card {
+      background: var(--bg-beige);
+      border: 1px solid var(--border-warm);
+      border-radius: 14px;
+      padding: 14px 16px;
     }
-    .encyc-sec-header {
+
+    .ebm-lbl {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--brown-soft);
+      margin-bottom: 6px;
+    }
+
+    .ebm-vals {
+      font-size: 0.84rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ebm-b {
+      color: var(--brown-mid);
+      text-decoration: line-through;
+      font-weight: 600;
+    }
+
+    .ebm-a {
+      color: var(--green-primary);
+    }
+
+    /* Section Blocks */
+    .encyc-section-block {
+      margin-bottom: 38px;
+      scroll-margin-top: 72px;
+    }
+
+    .encyc-sec-header {
+      display: flex;
+      align-items: baseline;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--brown-deep);
     }
+
     .encyc-sec-num {
-      font-size: 11px;
+      font-size: 0.74rem;
       font-weight: 900;
-      padding: 4px 10px;
-      border-radius: 8px;
-      background: rgba(212, 175, 55, 0.18);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      color: var(--gold-bright);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      color: var(--green-primary);
     }
+
     .encyc-sec-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.25rem;
+      font-size: 1.24rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: var(--black-ink);
     }
 
     .cause-cards-stack {
@@ -1803,164 +1742,196 @@ function buildBodyExplorerHtml(donginData) {
       flex-direction: column;
       gap: 14px;
     }
+
     .cause-detail-card {
-      padding: 18px 20px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-warm);
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      transition: border-color 0.25s ease, transform 0.25s ease;
+      padding: 20px 22px;
+      box-shadow: var(--shadow-card);
     }
-    .cause-detail-card:hover {
-      border-color: rgba(212, 175, 55, 0.5);
-      transform: translateY(-2px);
-    }
+
     .cause-badge {
       display: inline-block;
-      font-size: 10.5px;
+      font-size: 0.72rem;
       font-weight: 800;
-      padding: 3px 9px;
+      color: var(--brown-deep);
+      background: var(--bg-beige-warm);
+      padding: 4px 10px;
       border-radius: 6px;
-      background: rgba(248, 113, 113, 0.16);
-      border: 1px solid rgba(248, 113, 113, 0.4);
-      color: #FCA5A5;
       margin-bottom: 8px;
     }
+
     .cause-title {
+      font-family: 'Noto Serif KR', serif;
       font-size: 1.04rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: var(--black-ink);
       margin-bottom: 8px;
-      word-break: keep-all;
-    }
-    .cause-mech {
-      font-size: 0.88rem;
-      line-height: 1.68;
-      color: var(--text-sub);
-      margin-bottom: 10px;
-      word-break: keep-all;
-    }
-    .cause-sol-box {
-      padding: 11px 14px;
-      border-radius: 11px;
-      background: rgba(16, 185, 129, 0.11);
-      border-left: 3px solid var(--emerald-bright);
-      font-size: 0.85rem;
-      line-height: 1.62;
-      color: #D1FAE5;
+      line-height: 1.42;
       word-break: keep-all;
     }
 
-    .special-care-banner {
-      padding: 22px;
-      border-radius: 20px;
-      background: linear-gradient(145deg, rgba(6, 78, 59, 0.34), rgba(15, 23, 42, 0.92));
-      border: 1.5px solid rgba(110, 231, 183, 0.45);
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
-    }
-    .special-care-intro {
-      font-size: 0.9rem;
-      line-height: 1.68;
-      color: #A7F3D0;
-      margin: 10px 0 16px;
+    .cause-mech {
+      font-size: 0.88rem;
+      line-height: 1.72;
+      color: var(--black-sub);
+      margin-bottom: 12px;
       word-break: keep-all;
     }
+
+    .cause-sol-box {
+      padding: 12px 15px;
+      border-radius: 12px;
+      background: var(--green-tint);
+      border-left: 3px solid var(--green-primary);
+      font-size: 0.84rem;
+      line-height: 1.62;
+      color: var(--black-ink);
+      word-break: keep-all;
+    }
+
+    .cause-sol-box strong {
+      color: var(--green-primary);
+    }
+
+    /* Special Care Protocol Box */
+    .special-care-banner {
+      background: var(--bg-white);
+      border: 1.5px solid var(--green-primary);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .special-care-intro {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--black-sub);
+      margin: 10px 0 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-warm);
+      word-break: keep-all;
+    }
+
     .protocol-step-item {
       padding: 14px 16px;
-      border-radius: 13px;
-      background: rgba(5, 10, 20, 0.66);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      background: var(--bg-beige);
+      border: 1px solid var(--border-warm);
       margin-bottom: 10px;
     }
+    .protocol-step-item:last-child { margin-bottom: 0; }
+
     .protocol-step-badge {
-      font-size: 10.5px;
-      font-weight: 900;
-      color: var(--gold-bright);
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--green-primary);
       margin-bottom: 4px;
     }
+
     .protocol-step-title {
-      font-size: 0.96rem;
+      font-size: 0.94rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: var(--black-ink);
       margin-bottom: 6px;
       word-break: keep-all;
     }
+
     .protocol-step-detail {
-      font-size: 0.85rem;
-      line-height: 1.65;
-      color: var(--text-sub);
+      font-size: 0.84rem;
+      line-height: 1.66;
+      color: var(--black-sub);
       word-break: keep-all;
     }
 
+    /* Nutrition Split Grid */
     .nutrition-split-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
+
     .nutri-box {
-      padding: 16px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-warm);
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
     }
+
     .nutri-box.good {
-      background: rgba(16, 185, 129, 0.07);
-      border-color: rgba(110, 231, 183, 0.35);
+      border-top: 4px solid var(--green-primary);
     }
+
     .nutri-box.bad {
-      background: rgba(239, 68, 68, 0.07);
-      border-color: rgba(252, 165, 165, 0.32);
+      border-top: 4px solid var(--brown-deep);
     }
+
     .nutri-item {
-      padding: 11px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-warm);
     }
-    .nutri-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nutri-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    /* SCI Papers & Clinical Steps */
+    .clinic-step-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-warm);
+      padding: 13px 18px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--black-ink);
+      box-shadow: var(--shadow-card);
+    }
 
     .sci-paper-card {
-      padding: 16px 18px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-warm);
+      border-left: 4px solid var(--brown-deep);
       border-radius: 14px;
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.85));
-      border: 1px solid rgba(186, 230, 253, 0.28);
+      padding: 18px 20px;
       margin-bottom: 12px;
+      box-shadow: var(--shadow-card);
     }
-    .sci-journal-tag {
-      display: inline-block;
-      font-size: 10px;
+
+    .sci-journal {
+      font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(56, 189, 248, 0.18);
-      color: #BAE6FD;
-      margin-bottom: 6px;
+      color: var(--green-primary);
+      margin-bottom: 4px;
     }
-    .sci-paper-title {
+
+    .sci-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       font-weight: 700;
-      color: #F8FAFC;
-      line-height: 1.38;
-      margin-bottom: 5px;
+      color: var(--black-ink);
+      margin-bottom: 6px;
+      line-height: 1.35;
     }
-    .sci-paper-pmid {
-      font-size: 10.5px;
-      font-weight: 800;
-      color: var(--gold-bright);
-      margin-bottom: 7px;
-    }
-    .sci-paper-sum {
+
+    .sci-summary {
       font-size: 0.84rem;
-      line-height: 1.62;
-      color: var(--text-sub);
+      line-height: 1.65;
+      color: var(--black-sub);
       word-break: keep-all;
     }
 
     .encyc-cta-footer {
-      margin-top: 28px;
-      padding: 22px 24px;
+      margin-top: 32px;
+      padding: 24px 28px;
       border-radius: 18px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(16, 185, 129, 0.18));
-      border: 1px solid rgba(253, 230, 138, 0.5);
+      background: var(--brown-deep);
+      color: var(--bg-white);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1968,33 +1939,31 @@ function buildBodyExplorerHtml(donginData) {
       flex-wrap: wrap;
     }
 
-    .vibrant-iridescent-text {
-      background: linear-gradient(96deg, #FFFFFF 0%, #A7F3D0 48%, #FDE68A 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
     @media (max-width: 1080px) {
-      html, body { overflow: auto; }
+      html, body { overflow: auto; height: auto; }
       .vibrant-workspace {
-        position: relative;
-        top: 64px;
-        display: flex;
-        flex-direction: column;
+        grid-template-columns: 1fr;
         height: auto;
-        overflow: visible;
       }
       .vibrant-3d-stage {
-        height: 62vh;
-        min-height: 460px;
+        height: 58vh;
+        min-height: 440px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-warm);
       }
       .encyclopedia-scroll-panel {
         height: auto;
-        overflow: visible;
-        padding: 22px 18px 80px;
+        overflow-y: visible;
+        padding: 24px 20px 80px;
       }
+      .encyc-sticky-tabs {
+        top: 64px;
+        margin: -24px -20px 20px;
+        padding: 10px 20px;
+      }
+      .encyc-ba-metrics-grid,
       .nutrition-split-grid,
-      .encyc-ba-metrics-grid {
+      .recovery-states-row {
         grid-template-columns: 1fr;
       }
     }
@@ -2002,117 +1971,79 @@ function buildBodyExplorerHtml(donginData) {
 </head>
 <body>
 
-  <!-- ========================================================================
-       TOP NAVIGATION HEADER (VIBRANT WELLNESS + DONG-IN 12 MERIDIANS)
-       ======================================================================== -->
-  <header class="vibrant-top-header">
-    <a href="story-3d.html" class="vh-brand-group" title="메인 3D 클리닉 쇼룸으로 돌아가기">
-      <span class="vh-gem"></span>
-      <span class="vh-title" data-brand="clinicName">바른한의원</span>
-      <span class="vh-badge">3D 침구동인(鍼灸銅人) · 12경맥 · 논문백과</span>
+  <!-- TOP HEADER: CLEAN BEIGE / WHITE / BROWN / GREEN -->
+  <header class="vibrant-header">
+    <a href="story-3d.html" class="vh-brand">
+      <div class="vh-brand-mark">바</div>
+      <span class="vh-brand-title">바른한의원</span>
+      <span class="vh-brand-sub">3D 인체 질환 · 홈케어 백과</span>
     </a>
 
-    <nav class="vh-part-QuickNav" id="vh-part-quicknav" aria-label="인체 부위별 3D 진단 탐색">
+    <nav class="vh-part-quicknav" id="vh-part-quicknav" aria-label="7대 부위 선택">
       <button type="button" class="vh-part-chip active" data-part="knee">01 · 무릎 (소아 키성장·감기면역)</button>
       <button type="button" class="vh-part-chip" data-part="cervical">02 · 목·경추 (일자목·두통 추나)</button>
       <button type="button" class="vh-part-chip" data-part="lumbar">03 · 허리·골반 (디스크·체형 추나)</button>
       <button type="button" class="vh-part-chip" data-part="brain">04 · 두피열·뇌신경 (탈모·수승화강)</button>
       <button type="button" class="vh-part-chip" data-part="heart">05 · 심장·기혈 (황제공진단·만성피로)</button>
-      <button type="button" class="vh-part-chip" data-part="gut">06 · 복부·위장대사 (식욕ZERO 다이어트)</button>
-      <button type="button" class="vh-part-chip" data-part="pelvis">07 · 자궁·골반강 (난임·안심탕전)</button>
+      <button type="button" class="vh-part-chip" data-part="gut">06 · 복부·위장 (내장지방·대사 다이어트)</button>
+      <button type="button" class="vh-part-chip" data-part="pelvis">07 · 자궁·골반강 (난임착상·안심탕전)</button>
     </nav>
 
-    <div class="vh-right-actions">
+    <div class="vh-actions">
       <a href="story-3d.html" class="vh-pill-btn">← 3D 메인 쇼룸</a>
       <a href="story-3d.html?cards=1" class="vh-pill-btn active">6대 클리닉 전체보기 ↗</a>
     </div>
   </header>
 
-  <!-- ========================================================================
-       MAIN SPLIT WORKSPACE (LEFT: VIBRANT 3D DONG-IN / RIGHT: ENCYCLOPEDIA)
-       ======================================================================== -->
+  <!-- MAIN WORKSPACE -->
   <main class="vibrant-workspace">
 
-    <!-- LEFT: 3D INTERACTIVE DONG-IN HUMAN BODY + ANATOMICAL SKELETON + VASCULAR MERIDIANS + GLB ORGANS -->
+    <!-- LEFT: CLEAN 3D ILLUSTRATION STAGE (ZERO CLUTTER) -->
     <section class="vibrant-3d-stage" id="vibrant-3d-stage">
-      <div class="dongin-loader-overlay" id="dongin-loader-overlay">
-        <div class="dongin-spinner"></div>
-        <div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:800;color:#FDE68A;margin-bottom:4px;">3D 침구동인(鍼灸銅人) 193,288 폴리곤 & 해부학 골격·12경맥 로딩 중...</div>
-        <div style="font-size:0.78rem;color:rgba(248,250,252,0.68);">Vibrant Wellness Subsurface Shader + 골격(Skeleton) + 혈관·12경맥(Vascular) 통합 렌더링</div>
-      </div>
-
-      <!-- Top HUD: Body Gender + Dong-In Material Mode + Camera View + 12 Meridians Bar -->
-      <div class="stage-hud-top">
-        <div class="stage-hud-row">
-          <!-- Male / Female 3D Body Switcher (skinMB2.glb vs skinF2.glb) -->
-          <div class="stage-control-bar" aria-label="동인 체형 선택">
-            <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 동인 (Male)</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 동인 (Female)</button>
-          </div>
-
-          <!-- Dong-In Skin Material Mode Switcher -->
-          <div class="stage-control-bar" aria-label="동인 재질 및 투시 모드">
-            <button type="button" class="stage-ctrl-btn active" id="btn-mat-glass" onclick="window.setDonginSkinMode('glass')">✨ 메디컬 글래스 동인</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-mat-bronze" onclick="window.setDonginSkinMode('bronze')">🏺 황실 청동(銅人)</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-mat-xray" onclick="window.setDonginSkinMode('xray')">🔬 심부 골격·경락 투시</button>
-          </div>
-
-          <!-- Camera Quick View Switcher -->
-          <div class="stage-control-bar" aria-label="카메라 시점 전환">
-            <button type="button" class="stage-ctrl-btn active" id="btn-cam-hero" onclick="window.setDonginCameraPreset('hero')">상체 정밀 뷰</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-cam-full" onclick="window.setDonginCameraPreset('full')">전신 동인 뷰</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-cam-back" onclick="window.setDonginCameraPreset('back')">후면 척추·독맥</button>
-            <button type="button" class="stage-ctrl-btn" id="btn-studio-aurora" onclick="window.toggleVibrantAuroraStudio()">🌅 Vibrant 오로라</button>
-          </div>
-        </div>
-
-        <!-- 12 Meridians + Ren/Du Interactive Filter Bar -->
-        <div class="meridian-filter-strip" id="meridian-filter-strip">
-          <button type="button" class="meridian-chip active" data-meridian="ALL" onclick="window.selectMeridianFilter('ALL')">
-            <span class="m-dot" style="background:#FDE68A;"></span>12경맥·전신 기혈망 전체
-          </button>
-        </div>
-      </div>
-
-      <!-- 3D WebGL Canvas -->
       <canvas id="vibrant-body-canvas"></canvas>
 
-      <!-- 2D Projected Interactive Hotspots & Side Margin Callouts -->
-      <div id="hotspot-overlay-layer"></div>
-
-      <!-- Acupoint Live Inspector HUD (Bottom-Left) -->
-      <div class="acupoint-inspector-hud" id="acupoint-inspector-hud">
-        <div class="acupoint-inspector-top">
-          <span class="acupoint-code-pill" id="acu-hud-code">ST36 · 족삼리혈 (足三里)</span>
-          <span class="acupoint-meridian-lbl" id="acu-hud-meridian">ST · 족양명위경(足陽明胃經)</span>
-        </div>
-        <div class="acupoint-title-ko" id="acu-hud-title">무릎 성장판(독비·족삼리·양릉천) & 위장 면역 대표 명혈</div>
-        <p class="acupoint-desc-ko" id="acu-hud-desc">소화 흡수력과 무릎 골단연골(성장판) IGF-1 발현 및 전신 면역(NK세포)을 동시에 깨우는 소아 성장 최고 핵심 혈자리입니다.</p>
+      <div id="dongin-loader-overlay">
+        <div class="loader-spinner"></div>
+        <div style="font-family:'Noto Serif KR',serif;font-size:0.95rem;font-weight:800;color:var(--brown-deep);">3D 인체 일러스트 스튜디오 준비 중...</div>
       </div>
 
-      <!-- Bottom HUD: 3D Organ & Meridian Recovery State Switcher -->
-      <div class="stage-hud-bottom">
-        <div>
-          <div style="font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--gold-bright);">SCROLL-LINKED 3D ANATOMY & MERIDIAN SIMULATION</div>
-          <div style="font-size:0.78rem;font-weight:700;color:#F8FAFC;margin-top:2px;">우측 백과를 스크롤하면 <span style="color:#6EE7B7;">3D 장부·성장판·척추와 12경맥 기혈 유주</span>가 치료 후(After)로 회복됩니다</div>
+      <!-- Minimal Top-Left Indicator -->
+      <div class="stage-minimal-badge">
+        <span class="stage-minimal-dot"></span>
+        <span class="stage-minimal-text" id="stage-active-part-label">01 · 무릎 성장판 & 소아 면역 3D 일러스트</span>
+      </div>
+
+      <!-- 2D Overlay for 7 Minimal Hotspots ONLY -->
+      <div id="hotspot-overlay-layer"></div>
+
+      <!-- Single Minimal Bottom Control Bar -->
+      <div class="stage-bottom-bar">
+        <div class="stage-ctrl-group">
+          <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
+          <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
         </div>
-        <div class="sim-state-switch">
-          <button type="button" class="sim-state-btn" id="btn-sim-state-before" onclick="window.setManualSimRecovery(0.08)">치료 전 (병변·기체)</button>
-          <button type="button" class="sim-state-btn active-after" id="btn-sim-state-after" onclick="window.setManualSimRecovery(0.95)">치료 후 (경락소통·회복)</button>
-          <span id="sim-progress-readout" style="font-size:11px;font-weight:900;color:#FDE68A;min-width:68px;text-align:right;">회복도 75%</span>
+        <div class="stage-ctrl-divider"></div>
+        <div class="stage-ctrl-group">
+          <button type="button" class="stage-ctrl-btn active-brown" id="btn-cam-hero" onclick="window.setDonginCameraPreset('hero')">상체 뷰</button>
+          <button type="button" class="stage-ctrl-btn" id="btn-cam-full" onclick="window.setDonginCameraPreset('full')">전신 뷰</button>
+        </div>
+        <div class="stage-ctrl-divider"></div>
+        <div class="stage-ctrl-group">
+          <button type="button" class="stage-ctrl-btn" id="btn-sim-state-before" onclick="window.setManualSimRecovery(0.12)">치료 전</button>
+          <button type="button" class="stage-ctrl-btn active" id="btn-sim-state-after" onclick="window.setManualSimRecovery(0.92)">치료 후 회복</button>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT: DEEP MEDICAL, LIFESTYLE, NUTRITION & SCI PAPER ENCYCLOPEDIA -->
+    <!-- RIGHT: CLEAN EDITORIAL ENCYCLOPEDIA -->
     <section class="encyclopedia-scroll-panel" id="encyclopedia-scroll-panel">
       <div class="encyc-sticky-tabs">
-        <button type="button" class="encyc-tab-btn active" onclick="window.scrollToEncycSec('sec-ba-scan')">① 스크롤 자동 전후 3D 스캔</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-causes')">② 성장을 막는/질환 원인별 기전</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-special-care')">③ 감기·핵심 홈케어 프로토콜</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-nutrition')">④ 도움 음식 vs 금기 식품</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-lifestyle')">⑤ 수면 · 운동 · 동인 혈자리 루틴</button>
-        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-sci-papers')">⑥ 한의원 치료 & 전세계 SCI 논문</button>
+        <button type="button" class="encyc-tab-btn active" onclick="window.scrollToEncycSec('sec-ba-scan')">① 전후 회복 지표</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-causes')">② 질환 원인별 기전</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-special-care')">③ 핵심 홈케어 가이드</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-nutrition')">④ 추천 식단 vs 주의 식품</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-lifestyle')">⑤ 생활 습관 가이드</button>
+        <button type="button" class="encyc-tab-btn" onclick="window.scrollToEncycSec('sec-sci-papers')">⑥ 한의원 치료 & SCI 논문</button>
       </div>
 
       <div id="encyclopedia-dynamic-content"></div>
@@ -2125,33 +2056,27 @@ function buildBodyExplorerHtml(donginData) {
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import { SubsurfaceScatteringShader } from 'three/addons/shaders/SubsurfaceScatteringShader.js';
 
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
-    const DONGIN_DATA = ${JSON.stringify(donginData)};
 
-    // Refine exact 3D camera coordinates to match pose-fitted Skeleton.glb & Vibrant Organs
     const PART_CAMERA_PRESETS = {
-      knee:     { pos3D: [0.42, 1.19, -0.05], camPos: [0.24, 1.20, 1.65], camTarget: [0.22, 1.18, -0.12], radius: 0.42 },
-      cervical: { pos3D: [0.00, 3.92, -0.03], camPos: [0.28, 3.96, 1.48], camTarget: [0.00, 3.95, -0.02], radius: 0.32 },
-      lumbar:   { pos3D: [0.00, 2.76, -0.06], camPos: [-0.34, 2.82, 1.62], camTarget: [0.00, 2.80, -0.04], radius: 0.38 },
-      brain:    { pos3D: [0.00, 4.36, -0.02], camPos: [0.18, 4.36, 1.45], camTarget: [0.00, 4.38, -0.02], radius: 0.34 },
-      heart:    { pos3D: [0.04, 3.50,  0.03], camPos: [0.08, 3.56, 1.75], camTarget: [0.00, 3.60,  0.00], radius: 0.38 },
-      gut:      { pos3D: [0.02, 3.00,  0.05], camPos: [0.22, 3.08, 1.72], camTarget: [0.00, 3.06,  0.02], radius: 0.44 },
-      pelvis:   { pos3D: [0.00, 2.44, -0.02], camPos: [-0.26, 2.52, 1.68], camTarget: [0.00, 2.50,  0.00], radius: 0.40 }
+      knee:     { pos3D: [0.42, 1.19, -0.05], camPos: [0.18, 1.25, 1.85], camTarget: [0.12, 1.18, -0.10] },
+      cervical: { pos3D: [0.00, 3.92, -0.03], camPos: [0.24, 3.92, 1.65], camTarget: [0.00, 3.88, -0.02] },
+      lumbar:   { pos3D: [0.00, 2.76, -0.06], camPos: [-0.28, 2.82, 1.85], camTarget: [0.00, 2.78, -0.04] },
+      brain:    { pos3D: [0.00, 4.34, -0.02], camPos: [0.18, 4.30, 1.65], camTarget: [0.00, 4.28, -0.02] },
+      heart:    { pos3D: [0.04, 3.50,  0.03], camPos: [0.10, 3.52, 1.95], camTarget: [0.00, 3.52,  0.00] },
+      gut:      { pos3D: [0.02, 3.05,  0.05], camPos: [0.18, 3.08, 1.92], camTarget: [0.00, 3.06,  0.02] },
+      pelvis:   { pos3D: [0.00, 2.48, -0.02], camPos: [-0.22, 2.55, 1.88], camTarget: [0.00, 2.50,  0.00] }
     };
 
-    // ========================================================================
-    // 1. ENCYCLOPEDIA RENDERER & SCROLL-DRIVEN AUTOMATIC B/A SCAN
-    // ========================================================================
     let currentPartId = 'knee';
-    let currentRecoveryMix = 0.72;
-    let targetRecoveryMix = 0.72;
-    let activeMeridianFilter = 'ALL';
+    let currentRecoveryMix = 0.82;
+    let targetRecoveryMix = 0.82;
 
     const scrollPanel = document.getElementById('encyclopedia-scroll-panel');
     const contentBox = document.getElementById('encyclopedia-dynamic-content');
     const quickNavButtons = document.querySelectorAll('#vh-part-quicknav .vh-part-chip');
+    const stageLabelEl = document.getElementById('stage-active-part-label');
 
     function getPartById(id) {
       return BODY_PARTS_DATA.find(p => p.id === id) || BODY_PARTS_DATA[0];
@@ -2164,6 +2089,9 @@ function buildBodyExplorerHtml(donginData) {
       quickNavButtons.forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-part') === part.id);
       });
+      if (stageLabelEl) {
+        stageLabelEl.textContent = part.shortName + ' · 3D 소프트 일러스트';
+      }
 
       const metricsHtml = part.baMetrics.map(m =>
         '<div class="encyc-ba-metric-card">' +
@@ -2177,7 +2105,7 @@ function buildBodyExplorerHtml(donginData) {
           '<span class="cause-badge">' + c.badge + '</span>' +
           '<h3 class="cause-title">' + c.title + '</h3>' +
           '<p class="cause-mech">' + c.mechanism + '</p>' +
-          '<div class="cause-sol-box"><strong>바른한의원 임상 핵심 · </strong>' + (c.solution || c.warning || '') + '</div>' +
+          '<div class="cause-sol-box"><strong>바른한의원 치료 포인트 · </strong>' + (c.solution || c.warning || '') + '</div>' +
         '</article>'
       ).join('');
 
@@ -2191,84 +2119,86 @@ function buildBodyExplorerHtml(donginData) {
 
       const goodFoodsHtml = part.nutrition.goodFoods.map(f =>
         '<div class="nutri-item">' +
-          '<div style="font-size:0.92rem;font-weight:800;color:#6EE7B7;margin-bottom:3px;">✓ ' + f.name + '</div>' +
-          '<div style="font-size:0.76rem;font-weight:700;color:var(--gold-bright);margin-bottom:4px;">기전: ' + f.role + '</div>' +
-          '<p style="font-size:0.8rem;line-height:1.56;color:var(--text-sub);word-break:keep-all;">' + f.tip + '</p>' +
+          '<div style="font-size:0.92rem;font-weight:800;color:var(--green-primary);margin-bottom:3px;">✓ ' + f.name + '</div>' +
+          '<div style="font-size:0.76rem;font-weight:700;color:var(--brown-mid);margin-bottom:4px;">핵심 기전: ' + f.role + '</div>' +
+          '<p style="font-size:0.82rem;line-height:1.58;color:var(--black-sub);word-break:keep-all;">' + f.tip + '</p>' +
         '</div>'
       ).join('');
 
       const badFoodsHtml = part.nutrition.badFoods.map(f =>
         '<div class="nutri-item">' +
-          '<div style="font-size:0.9rem;font-weight:800;color:#FCA5A5;margin-bottom:4px;">✕ ' + f.name + '</div>' +
-          '<p style="font-size:0.8rem;line-height:1.56;color:var(--text-sub);word-break:keep-all;">' + f.reason + '</p>' +
+          '<div style="font-size:0.92rem;font-weight:800;color:var(--brown-deep);margin-bottom:4px;">✕ ' + f.name + '</div>' +
+          '<p style="font-size:0.82rem;line-height:1.58;color:var(--black-sub);word-break:keep-all;">' + f.reason + '</p>' +
         '</div>'
       ).join('');
 
-      const lifeHtml = part.lifestyle.map(l =>
+      // Filter out any acupoint items per user request ("경락 경혈 모두 삭제해줘")
+      const cleanLifestyle = (part.lifestyle || []).filter(l => !String(l.category || '').toUpperCase().includes('ACUPOINT'));
+      const lifeHtml = cleanLifestyle.map(l =>
         '<div class="cause-detail-card">' +
-          '<span class="cause-badge">' + l.category + '</span>' +
-          '<h4 class="cause-title">' + l.title + '</h4>' +
-          '<p class="cause-mech" style="margin-bottom:0;">' + l.desc + '</p>' +
+          '<div style="font-size:0.73rem;font-weight:800;color:var(--green-primary);letter-spacing:0.06em;margin-bottom:5px;">' + l.category + '</div>' +
+          '<div style="font-size:0.98rem;font-weight:800;color:var(--black-ink);margin-bottom:6px;word-break:keep-all;">' + l.title + '</div>' +
+          '<p style="font-size:0.85rem;line-height:1.65;color:var(--black-sub);word-break:keep-all;">' + l.desc + '</p>' +
         '</div>'
       ).join('');
 
-      const clinicStepsHtml = part.clinicalProtocol.steps.map(s =>
-        '<div style="padding:10px 14px;border-radius:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(110,231,183,0.3);font-size:0.86rem;font-weight:700;color:#E2E8F0;margin-bottom:8px;">' + s + '</div>'
-      ).join('');
+      const clinicStepsHtml = part.clinicalProtocol.steps
+        .map(s => s.replace(/약침|경혈|전중혈|풍지혈/g, '맞춤 치료'))
+        .map(s => '<div class="clinic-step-pill"><span style="color:var(--green-primary);font-weight:900;">●</span><span>' + s + '</span></div>')
+        .join('');
 
       const papersHtml = part.clinicalProtocol.papers.map(p =>
         '<div class="sci-paper-card">' +
-          '<span class="sci-journal-tag">' + p.journal + '</span>' +
-          '<div class="sci-paper-title">' + p.title + '</div>' +
-          '<div class="sci-paper-pmid">' + p.pmid + '</div>' +
-          '<p class="sci-paper-sum">' + p.summary + '</p>' +
+          '<div class="sci-journal">' + p.journal + ' · ' + p.pmid + '</div>' +
+          '<div class="sci-title">' + p.title + '</div>' +
+          '<p class="sci-summary">' + p.summary + '</p>' +
         '</div>'
       ).join('');
 
       contentBox.innerHTML =
-        '<div class="encyc-hero-header" id="sec-ba-scan">' +
-          '<span class="encyc-code-badge">' + part.code + '</span>' +
-          '<h1 class="encyc-main-title vibrant-iridescent-text">' + part.headline + '</h1>' +
-          '<div class="encyc-sub-en">' + part.organEn + '</div>' +
-          '<p class="encyc-lead-desc">' + part.leadDesc + '</p>' +
+        '<div class="encyc-part-header">' +
+          '<div class="encyc-part-kicker">' + part.code + '</div>' +
+          '<h1 class="encyc-part-title">' + part.headline + '</h1>' +
+          '<div class="encyc-part-en">' + part.organEn + '</div>' +
+          '<p class="encyc-part-lead">' + part.leadDesc + '</p>' +
         '</div>' +
 
-        '<div class="encyc-ba-scroll-box">' +
-          '<div class="encyc-ba-top-bar">' +
+        '<section class="encyc-ba-card" id="sec-ba-scan">' +
+          '<div class="encyc-ba-top">' +
             '<div>' +
-              '<span style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;color:var(--gold-bright);">SCROLL-SYNCHRONIZED 3D BIOMEDICAL SCAN</span>' +
-              '<div style="font-size:1rem;font-weight:800;color:#FFFFFF;margin-top:2px;">스크롤을 내리면 치료 전(Before)에서 치료 후(After)로 자동 스캔 변환됩니다</div>' +
+              '<div style="font-size:0.72rem;font-weight:800;color:var(--brown-soft);letter-spacing:0.08em;">SCROLL-LINKED CLINICAL RECOVERY</div>' +
+              '<div style="font-family:Noto Serif KR,serif;font-size:1.08rem;font-weight:800;color:var(--black-ink);margin-top:2px;">스크롤에 따라 좌측 3D 장기와 회복 지표가 함께 변화합니다</div>' +
             '</div>' +
-            '<span style="font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid #6EE7B7;color:#A7F3D0;" id="encyc-ba-live-pct">스크롤 자동연동 · 72%</span>' +
+            '<span class="encyc-ba-badge" id="encyc-ba-live-pct">회복도 82%</span>' +
           '</div>' +
-          '<div class="encyc-ba-stage" id="encyc-ba-stage">' +
-            '<img src="' + part.baBeforeImg + '" alt="치료 전 스캔" draggable="false">' +
-            '<div class="encyc-ba-after-clip" id="encyc-ba-after-clip">' +
-              '<img src="' + part.baAfterImg + '" alt="치료 후 스캔" draggable="false">' +
+          '<div class="recovery-Comparison-track" id="encyc-ba-stage" title="좌우로 마우스를 움직이거나 아래로 스크롤해 보세요">' +
+            '<div class="recovery-states-row">' +
+              '<div class="recovery-state-box before">' + part.baBeforeTag + '</div>' +
+              '<div class="recovery-state-box after">' + part.baAfterTag + '</div>' +
             '</div>' +
-            '<span class="encyc-ba-tag b">' + part.baBeforeTag + '</span>' +
-            '<span class="encyc-ba-tag a">' + part.baAfterTag + '</span>' +
-            '<div class="encyc-ba-laser" id="encyc-ba-laser"></div>' +
+            '<div class="recovery-bar-outer">' +
+              '<div class="recovery-bar-fill" id="encyc-ba-bar-fill" style="width:82%;"></div>' +
+            '</div>' +
           '</div>' +
           '<div class="encyc-ba-metrics-grid">' + metricsHtml + '</div>' +
-        '</div>' +
+        '</section>' +
 
         '<section class="encyc-section-block" id="sec-causes">' +
           '<div class="encyc-sec-header">' +
-            '<span class="encyc-sec-num">SECTION 01</span>' +
-            '<h2 class="encyc-sec-title">왜 증상이 발생하고 재발할까요? — 근본 원인별 정밀 기전</h2>' +
+            '<span class="encyc-sec-num">01</span>' +
+            '<h2 class="encyc-sec-title">핵심 원인 및 기전 분석</h2>' +
           '</div>' +
           '<div class="cause-cards-stack">' + causesHtml + '</div>' +
         '</section>' +
 
         '<section class="encyc-section-block" id="sec-special-care">' +
           '<div class="encyc-sec-header">' +
-            '<span class="encyc-sec-num">SECTION 02</span>' +
-            '<h2 class="encyc-sec-title">실전 집중 관리 프로토콜</h2>' +
+            '<span class="encyc-sec-num">02</span>' +
+            '<h2 class="encyc-sec-title">실전 집중 홈케어 프로토콜</h2>' +
           '</div>' +
           '<div class="special-care-banner">' +
-            '<div style="font-size:0.74rem;font-weight:800;color:var(--emerald-bright);letter-spacing:0.1em;">' + part.coldCareSpecial.subtitle + '</div>' +
-            '<h3 style="font-family:Noto Serif KR,serif;font-size:1.26rem;font-weight:800;color:#FFFFFF;margin-top:4px;">' + part.coldCareSpecial.title + '</h3>' +
+            '<div style="font-size:0.74rem;font-weight:800;color:var(--green-primary);letter-spacing:0.08em;">' + part.coldCareSpecial.subtitle + '</div>' +
+            '<h3 style="font-family:Noto Serif KR,serif;font-size:1.22rem;font-weight:800;color:var(--black-ink);margin-top:4px;">' + part.coldCareSpecial.title + '</h3>' +
             '<p class="special-care-intro">' + part.coldCareSpecial.intro + '</p>' +
             '<div>' + protocolsHtml + '</div>' +
           '</div>' +
@@ -2276,16 +2206,16 @@ function buildBodyExplorerHtml(donginData) {
 
         '<section class="encyc-section-block" id="sec-nutrition">' +
           '<div class="encyc-sec-header">' +
-            '<span class="encyc-sec-num">SECTION 03</span>' +
+            '<span class="encyc-sec-num">03</span>' +
             '<h2 class="encyc-sec-title">도움이 되는 약선 음식 vs 피해야 할 식단</h2>' +
           '</div>' +
           '<div class="nutrition-split-grid">' +
             '<div class="nutri-box good">' +
-              '<h3 style="font-size:1rem;font-weight:800;color:#6EE7B7;margin-bottom:10px;">' + part.nutrition.goodTitle + '</h3>' +
+              '<h3 style="font-size:0.98rem;font-weight:800;color:var(--green-primary);margin-bottom:10px;">' + part.nutrition.goodTitle + '</h3>' +
               goodFoodsHtml +
             '</div>' +
             '<div class="nutri-box bad">' +
-              '<h3 style="font-size:1rem;font-weight:800;color:#FCA5A5;margin-bottom:10px;">' + part.nutrition.badTitle + '</h3>' +
+              '<h3 style="font-size:0.98rem;font-weight:800;color:var(--brown-deep);margin-bottom:10px;">' + part.nutrition.badTitle + '</h3>' +
               badFoodsHtml +
             '</div>' +
           '</div>' +
@@ -2293,75 +2223,62 @@ function buildBodyExplorerHtml(donginData) {
 
         '<section class="encyc-section-block" id="sec-lifestyle">' +
           '<div class="encyc-sec-header">' +
-            '<span class="encyc-sec-num">SECTION 04</span>' +
-            '<h2 class="encyc-sec-title">가정 내 수면 · 운동 · 동인(銅人) 경혈 지압 루틴</h2>' +
+            '<span class="encyc-sec-num">04</span>' +
+            '<h2 class="encyc-sec-title">가정 내 수면 · 운동 · 생활 루틴</h2>' +
           '</div>' +
           '<div class="cause-cards-stack">' + lifeHtml + '</div>' +
         '</section>' +
 
         '<section class="encyc-section-block" id="sec-sci-papers">' +
           '<div class="encyc-sec-header">' +
-            '<span class="encyc-sec-num">SECTION 05</span>' +
-            '<h2 class="encyc-sec-title">바른한의원 정밀 치료 프로토콜 & 전세계 SCI 논문 레퍼런스</h2>' +
+            '<span class="encyc-sec-num">05</span>' +
+            '<h2 class="encyc-sec-title">바른한의원 맞춤 치료 프로토콜 & SCI 논문 근거</h2>' +
           '</div>' +
-          '<div style="margin-bottom:18px;">' + clinicStepsHtml + '</div>' +
+          '<div style="margin-bottom:16px;">' + clinicStepsHtml + '</div>' +
           '<div>' + papersHtml + '</div>' +
         '</section>' +
 
         '<div class="encyc-cta-footer">' +
           '<div>' +
-            '<div style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);letter-spacing:0.12em;">1:1 MASTER DIRECTOR CONSULTATION</div>' +
-            '<div style="font-family:Noto Serif KR,serif;font-size:1.22rem;font-weight:800;color:#FFFFFF;margin-top:3px;">' + part.shortName + ' — 1:1 맞춤 진료 및 스토리 확인</div>' +
+            '<div style="font-size:0.74rem;font-weight:800;color:#DFD5C5;letter-spacing:0.1em;">1:1 MASTER DIRECTOR CONSULTATION</div>' +
+            '<div style="font-family:Noto Serif KR,serif;font-size:1.18rem;font-weight:800;color:#FFFFFF;margin-top:3px;">' + part.shortName + ' — 상세 클리닉 스토리 확인</div>' +
           '</div>' +
-          '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
-            '<a href="' + part.clinicLink + '" class="vh-pill-btn active" style="padding:11px 20px;font-size:0.86rem;">' + part.clinicCta + '</a>' +
-          '</div>' +
+          '<a href="' + part.clinicLink + '" class="vh-pill-btn" style="background:var(--green-primary);color:#FFFFFF;border-color:var(--green-primary);padding:11px 20px;font-size:0.85rem;">' + part.clinicCta + '</a>' +
         '</div>';
 
       const baStageEl = document.getElementById('encyc-ba-stage');
       if (baStageEl) {
         baStageEl.addEventListener('pointermove', function(e) {
           const r = baStageEl.getBoundingClientRect();
-          const ratio = Math.max(0.05, Math.min(0.96, (e.clientX - r.left) / Math.max(1, r.width)));
+          const ratio = Math.max(0.08, Math.min(0.96, (e.clientX - r.left) / Math.max(1, r.width)));
           window.setManualSimRecovery(ratio);
         });
       }
     }
 
     function updateEncycBaVisuals(mixRatio) {
-      const pct = Math.max(6, Math.min(96, mixRatio * 100));
-      const clipEl = document.getElementById('encyc-ba-after-clip');
-      const laserEl = document.getElementById('encyc-ba-laser');
+      const pct = Math.max(8, Math.min(96, mixRatio * 100));
+      const barFill = document.getElementById('encyc-ba-bar-fill');
       const badgeEl = document.getElementById('encyc-ba-live-pct');
-      const simReadout = document.getElementById('sim-progress-readout');
       const btnBefore = document.getElementById('btn-sim-state-before');
       const btnAfter = document.getElementById('btn-sim-state-after');
 
-      if (clipEl) clipEl.style.clipPath = 'inset(0 ' + (100 - pct).toFixed(1) + '% 0 0)';
-      if (laserEl) laserEl.style.left = pct.toFixed(1) + '%';
-      if (badgeEl) badgeEl.textContent = '스크롤 자동연동 · 회복 ' + Math.round(pct) + '%';
-      if (simReadout) simReadout.textContent = '회복도 ' + Math.round(pct) + '%';
-      if (btnBefore) btnBefore.classList.toggle('active-before', mixRatio < 0.5);
-      if (btnAfter) btnAfter.classList.toggle('active-after', mixRatio >= 0.5);
+      if (barFill) barFill.style.width = pct.toFixed(1) + '%';
+      if (badgeEl) badgeEl.textContent = '회복도 ' + Math.round(pct) + '%';
+      if (btnBefore) btnBefore.classList.toggle('active-brown', mixRatio < 0.5);
+      if (btnAfter) btnAfter.classList.toggle('active', mixRatio >= 0.5);
     }
 
     if (scrollPanel) {
       scrollPanel.addEventListener('scroll', function() {
         const maxS = Math.max(1, scrollPanel.scrollHeight - scrollPanel.clientHeight);
         const norm = Math.max(0, Math.min(1, scrollPanel.scrollTop / maxS));
-        targetRecoveryMix = 0.08 + norm * 0.88;
+        targetRecoveryMix = 0.15 + norm * 0.81;
       }, { passive: true });
     }
-    window.addEventListener('scroll', function() {
-      if (window.innerWidth <= 1080) {
-        const maxS = Math.max(1, document.body.scrollHeight - window.innerHeight);
-        const norm = Math.max(0, Math.min(1, window.scrollY / maxS));
-        targetRecoveryMix = 0.08 + norm * 0.88;
-      }
-    }, { passive: true });
 
     window.setManualSimRecovery = function(val) {
-      targetRecoveryMix = Math.max(0.05, Math.min(0.96, val));
+      targetRecoveryMix = Math.max(0.08, Math.min(0.96, val));
     };
 
     window.scrollToEncycSec = function(secId) {
@@ -2370,7 +2287,8 @@ function buildBodyExplorerHtml(donginData) {
     };
 
     // ========================================================================
-    // 2. VIBRANT.NOOMOAGENCY.COM 1:1 3D ENGINE + SKELETON + VASCULAR MERIDIANS
+    // 2. STYLIZED 3D TOON-CLAY ILLUSTRATION ENGINE (BEIGE / BROWN / GREEN / WHITE)
+    // Non-gory, friendly 3D cartoon/illustration feel with clean cel-shading!
     // ========================================================================
     const stageEl = document.getElementById('vibrant-3d-stage');
     const canvas = document.getElementById('vibrant-body-canvas');
@@ -2378,462 +2296,108 @@ function buildBodyExplorerHtml(donginData) {
     const loaderOverlay = document.getElementById('dongin-loader-overlay');
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
-    // Exact Vibrant focalLength(35) + Hero Anatomical Framing (matching media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png)
-    camera.setFocalLength(35);
-    camera.position.set(0.0, 3.50, 2.62);
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
+    camera.setFocalLength(38);
+    camera.position.set(0.0, 3.48, 2.65);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       powerPreference: 'high-performance',
-      precision: 'highp',
       antialias: true,
-      alpha: false
+      alpha: true
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.toneMapping = THREE.NeutralToneMapping;
-    renderer.toneMappingExposure = 1.25;
-    renderer.shadowMap.enabled = false;
+    renderer.toneMapping = THREE.NoToneMapping;
 
     const controls = new OrbitControls(camera, canvas);
-    controls.target.set(0.0, 3.68, 0.0);
+    controls.target.set(0.0, 3.55, 0.0);
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
-    controls.maxDistance = 6.5;
-    controls.minDistance = 0.55;
-    controls.maxPolarAngle = Math.PI * 0.85;
-    controls.minPolarAngle = Math.PI * 0.12;
+    controls.maxDistance = 6.0;
+    controls.minDistance = 0.75;
+    controls.maxPolarAngle = Math.PI * 0.82;
+    controls.minPolarAngle = Math.PI * 0.18;
 
-    // Exact Vibrant Side Point Lights: (-2, 3.5, 0.5) & (2, 3.5, 0.5), intensity 0.5, distance 10
-    const sideLightL = new THREE.PointLight(0xffffff, 0.65, 10);
-    sideLightL.position.set(-2.0, 3.5, 0.5);
-    scene.add(sideLightL);
-
-    const sideLightR = new THREE.PointLight(0xffffff, 0.65, 10);
-    sideLightR.position.set(2.0, 3.5, 0.5);
-    scene.add(sideLightR);
-
-    // Subtle cool rim light from behind to accentuate glass silhouette + skeleton inside
-    const rimBackLight = new THREE.DirectionalLight(0xb8dcff, 0.85);
-    rimBackLight.position.set(0.0, 4.2, -3.0);
-    scene.add(rimBackLight);
-
-    const softAmbient = new THREE.AmbientLight(0xdbeafe, 0.45);
-    scene.add(softAmbient);
-
-    // Local Dynamic Organ PointLight (moves to active organ)
-    const activeOrganPointLight = new THREE.PointLight(0x10b981, 0.65, 2.2);
-    activeOrganPointLight.position.set(0.04, 3.50, -0.4);
-    scene.add(activeOrganPointLight);
-
-    // Loaders: GLTFLoader + DRACOLoader
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('draco/');
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
-    const texLoader = new THREE.TextureLoader();
 
     // ========================================================================
-    // 2.1 EXACT VIBRANT HDR GAINMAP DECODER (GSG_PRO_STUDIOS_METAL_001_sm)
+    // 2.1 SOFT ALABASTER-BEIGE ILLUSTRATION MANNEQUIN SHADER (skinMB2 / skinF2)
+    // Smooth ceramic-clay outer silhouette with a serene featureless-style face
+    // and a warm espresso-brown cartoon contour rim!
     // ========================================================================
-    async function loadVibrantHDRGainMap() {
-      try {
-        const [sdrTex, gainTex, metaRes] = await Promise.all([
-          texLoader.loadAsync('map/GSG_PRO_STUDIOS_METAL_001_sm.webp'),
-          texLoader.loadAsync('map/GSG_PRO_STUDIOS_METAL_001_sm-gainmap.webp'),
-          fetch('map/GSG_PRO_STUDIOS_METAL_001_sm.json').then(r => r.json())
-        ]);
-        sdrTex.colorSpace = THREE.SRGBColorSpace;
-        gainTex.colorSpace = THREE.NoColorSpace;
-
-        const maxBoost = Math.pow(2, metaRes.hdrCapacityMax);
-        const weightFactor = Math.max(0, Math.min(1, (Math.log2(maxBoost) - metaRes.hdrCapacityMin) / (metaRes.hdrCapacityMax - metaRes.hdrCapacityMin)));
-
-        const gainMat = new THREE.ShaderMaterial({
-          uniforms: {
-            sdr: { value: sdrTex },
-            gainMap: { value: gainTex },
-            gamma: { value: new THREE.Vector3(1 / metaRes.gamma[0], 1 / metaRes.gamma[1], 1 / metaRes.gamma[2]) },
-            offsetHdr: { value: new THREE.Vector3().fromArray(metaRes.offsetHdr) },
-            offsetSdr: { value: new THREE.Vector3().fromArray(metaRes.offsetSdr) },
-            gainMapMin: { value: new THREE.Vector3().fromArray(metaRes.gainMapMin) },
-            gainMapMax: { value: new THREE.Vector3().fromArray(metaRes.gainMapMax) },
-            weightFactor: { value: weightFactor }
-          },
-          vertexShader: [
-            'varying vec2 vUv;',
-            'void main() {',
-            '  vUv = uv;',
-            '  gl_Position = vec4(position.xy, 0.0, 1.0);',
-            '}'
-          ].join('\\n'),
-          fragmentShader: [
-            '#define HALF_FLOAT_MIN vec3(-65504.0)',
-            '#define HALF_FLOAT_MAX vec3(65504.0)',
-            'uniform sampler2D sdr;',
-            'uniform sampler2D gainMap;',
-            'uniform vec3 gamma;',
-            'uniform vec3 offsetHdr;',
-            'uniform vec3 offsetSdr;',
-            'uniform vec3 gainMapMin;',
-            'uniform vec3 gainMapMax;',
-            'uniform float weightFactor;',
-            'varying vec2 vUv;',
-            'void main() {',
-            '  vec3 rgb = texture2D(sdr, vUv).rgb;',
-            '  vec3 recovery = texture2D(gainMap, vUv).rgb;',
-            '  vec3 logRecovery = pow(max(recovery, vec3(0.0001)), gamma);',
-            '  vec3 logBoost = gainMapMin * (1.0 - logRecovery) + gainMapMax * logRecovery;',
-            '  vec3 hdrColor = (rgb + offsetSdr) * exp2(logBoost * weightFactor) - offsetHdr;',
-            '  vec3 clampedHdr = max(HALF_FLOAT_MIN, min(HALF_FLOAT_MAX, hdrColor));',
-            '  gl_FragColor = vec4(clampedHdr, 1.0);',
-            '}'
-          ].join('\\n'),
-          depthTest: false,
-          depthWrite: false
-        });
-
-        const w = sdrTex.image?.width || 1024;
-        const h = sdrTex.image?.height || 512;
-        const rt = new THREE.WebGLRenderTarget(w, h, {
-          type: THREE.HalfFloatType,
-          format: THREE.RGBAFormat,
-          colorSpace: THREE.LinearSRGBColorSpace,
-           depthBuffer: false
-        });
-
-        const quadScene = new THREE.Scene();
-        const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), gainMat));
-
-        const prevTarget = renderer.getRenderTarget();
-        renderer.setRenderTarget(rt);
-        renderer.render(quadScene, quadCam);
-        renderer.setRenderTarget(prevTarget);
-
-        rt.texture.mapping = THREE.EquirectangularReflectionMapping;
-        scene.environment = rt.texture;
-      } catch (e) {
-        console.warn('HDR GainMap fallback:', e);
-      }
-    }
-    loadVibrantHDRGainMap();
-
-    // ========================================================================
-    // 2.2 EXACT VIBRANT SKIN MATERIAL + PERLIN 3D NOISE DISSOLVE (pd in Bnwl1Oju.js)
-    // ========================================================================
-    const PERLIN_GLSL = [
-      'vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}',
-      'vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}',
-      'vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}',
-      'float cnoise(vec3 P){',
-      '  vec3 Pi0 = floor(P);',
-      '  vec3 Pi1 = Pi0 + vec3(1.0);',
-      '  Pi0 = mod(Pi0, 289.0);',
-      '  Pi1 = mod(Pi1, 289.0);',
-      '  vec3 Pf0 = fract(P);',
-      '  vec3 Pf1 = Pf0 - vec3(1.0);',
-      '  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);',
-      '  vec4 iy = vec4(Pi0.yy, Pi1.yy);',
-      '  vec4 iz0 = Pi0.zzzz;',
-      '  vec4 iz1 = Pi1.zzzz;',
-      '  vec4 ixy = permute(permute(ix) + iy);',
-      '  vec4 ixy0 = permute(ixy + iz0);',
-      '  vec4 ixy1 = permute(ixy + iz1);',
-      '  vec4 gx0 = ixy0 / 7.0;',
-      '  vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;',
-      '  gx0 = fract(gx0);',
-      '  vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);',
-      '  vec4 sz0 = step(gz0, vec4(0.0));',
-      '  gx0 -= sz0 * (step(0.0, gx0) - 0.5);',
-      '  gy0 -= sz0 * (step(0.0, gy0) - 0.5);',
-      '  vec4 gx1 = ixy1 / 7.0;',
-      '  vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;',
-      '  gx1 = fract(gx1);',
-      '  vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);',
-      '  vec4 sz1 = step(gz1, vec4(0.0));',
-      '  gx1 -= sz1 * (step(0.0, gx1) - 0.5);',
-      '  gy1 -= sz1 * (step(0.0, gy1) - 0.5);',
-      '  vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);',
-      '  vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);',
-      '  vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);',
-      '  vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);',
-      '  vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);',
-      '  vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);',
-      '  vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);',
-      '  vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);',
-      '  vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));',
-      '  g000 *= norm0.x; g010 *= norm0.y; g100 *= norm0.z; g110 *= norm0.w;',
-      '  vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));',
-      '  g001 *= norm1.x; g011 *= norm1.y; g101 *= norm1.z; g111 *= norm1.w;',
-      '  float n000 = dot(g000, Pf0);',
-      '  float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));',
-      '  float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));',
-      '  float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));',
-      '  float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));',
-      '  float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));',
-      '  float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));',
-      '  float n111 = dot(g111, Pf1);',
-      '  vec3 fade_xyz = fade(Pf0);',
-      '  vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);',
-      '  vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);',
-      '  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);',
-      '  return 2.2 * n_xyz;',
-      '}'
-    ].join('\\n');
-
-    const skinNormalTex = texLoader.load('texture/Plastic015A_1K-JPG_NormalGL.jpg');
-    skinNormalTex.wrapS = THREE.RepeatWrapping;
-    skinNormalTex.wrapT = THREE.RepeatWrapping;
-    skinNormalTex.repeat.set(8, 8);
-
-    function createVibrantGlassSkinMaterial(initialDissolve = 0.0) {
-      // Crystal-clear anatomical glass skin with Vibrant's MeshPhysicalMaterial + X-Ray Fresnel pearlescent contour rim
-      // (Matches media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png with zero internal refraction blur)
-      const mat = new THREE.MeshPhysicalMaterial({
-        color: 0xdbeafe,
-        roughness: 0.07,
-        metalness: 0.02,
-        transmission: 0.94,
-        thickness: 0.08,
-        ior: 1.06,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.04,
-        dispersion: 0.38,
-        reflectivity: 0.85,
-        iridescence: 0.52,
-        iridescenceIOR: 1.42,
-        sheen: 0.25,
-        sheenRoughness: 0.85,
-        sheenColor: new THREE.Color(0x0a192f),
-        specularIntensity: 0.75,
-        specularColor: new THREE.Color(0xffffff),
-        transparent: false,
-        opacity: 1.0,
-        normalMap: skinNormalTex,
-        normalScale: new THREE.Vector2(0.04, 0.04)
+    function createStylizedPorcelainBodyMaterial() {
+      return new THREE.ShaderMaterial({
+        uniforms: {
+          uHighlightCol: { value: new THREE.Color('#FAF6EC') },
+          uMidCol:       { value: new THREE.Color('#EFE6D5') },
+          uRimCol:       { value: new THREE.Color('#D2C2A8') },
+          uOutlineCol:   { value: new THREE.Color('#6E5844') }
+        },
+        vertexShader: [
+          'varying vec3 vNormal;',
+          'varying vec3 vViewDir;',
+          'varying vec3 vWorldPos;',
+          'void main() {',
+          '  vec4 worldPos = modelMatrix * vec4(position, 1.0);',
+          '  vWorldPos = worldPos.xyz;',
+          '  vec4 mvPos = viewMatrix * worldPos;',
+          '  vViewDir = normalize(-mvPos.xyz);',
+          '  vNormal = normalize(normalMatrix * normal);',
+          '  gl_Position = projectionMatrix * mvPos;',
+          '}'
+        ].join(' '),
+        fragmentShader: [
+          'uniform vec3 uHighlightCol;',
+          'uniform vec3 uMidCol;',
+          'uniform vec3 uRimCol;',
+          'uniform vec3 uOutlineCol;',
+          'varying vec3 vNormal;',
+          'varying vec3 vViewDir;',
+          'varying vec3 vWorldPos;',
+          'void main() {',
+          '  vec3 N = normalize(vNormal);',
+          '  vec3 V = normalize(vViewDir);',
+          '  vec3 L = normalize(vec3(0.42, 0.78, 0.68));',
+          // Smooth out internal facial creases (nostrils, lips, eyelids) above y=3.98 while keeping the outer head crown contour crisp!
+          '  float faceMask = smoothstep(3.96, 4.10, vWorldPos.y) * (1.0 - smoothstep(4.40, 4.54, vWorldPos.y));',
+          '  vec3 smoothFaceN = normalize(vec3(N.x * 0.92, N.y * 0.35, max(abs(N.z), 0.66)));',
+          '  vec3 effN = normalize(mix(N, smoothFaceN, faceMask * 0.84));',
+          '  float NdotL = dot(effN, L) * 0.5 + 0.5;',
+          '  float NdotV = clamp(abs(dot(effN, V)), 0.0, 1.0);',
+          '  float toonBand = smoothstep(0.38, 0.46, NdotL);',
+          '  vec3 baseCol = mix(uMidCol, uHighlightCol, toonBand);',
+          '  float rim = 1.0 - NdotV;',
+          '  float rimBand = smoothstep(0.54, 0.74, rim);',
+          '  float inkOutline = smoothstep(0.80, 0.90, rim);',
+          '  vec3 col = mix(baseCol, uRimCol, rimBand * 0.60);',
+          '  col = mix(col, uOutlineCol, inkOutline * 0.50);',
+          '  float alpha = mix(0.26, 0.85, pow(rim, 1.5));',
+          '  gl_FragColor = vec4(col, alpha);',
+          '}'
+        ].join(' '),
+        transparent: true,
+        depthWrite: false,
+        side: THREE.FrontSide
       });
-
-      mat.userData.uDissolve = { value: initialDissolve };
-      mat.onBeforeCompile = (shader) => {
-        shader.uniforms.uDissolve = mat.userData.uDissolve;
-        shader.vertexShader = shader.vertexShader.replace(
-          '#include <common>',
-          ['#include <common>', 'varying vec2 vSkinUv;', 'varying vec3 vSkinViewDir;', 'varying vec3 vSkinNormal;'].join('\\n')
-        ).replace(
-          '#include <uv_vertex>',
-          ['#include <uv_vertex>', 'vSkinUv = uv;'].join('\\n')
-        ).replace(
-          '#include <begin_vertex>',
-          [
-            '#include <begin_vertex>',
-            'vec4 mvSkinPos = modelViewMatrix * vec4(transformed, 1.0);',
-            'vSkinViewDir = normalize(-mvSkinPos.xyz);',
-            'vSkinNormal = normalize(normalMatrix * objectNormal);'
-          ].join('\\n')
-        );
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <common>',
-          [
-            '#include <common>',
-            'uniform float uDissolve;',
-            'varying vec2 vSkinUv;',
-            'varying vec3 vSkinViewDir;',
-            'varying vec3 vSkinNormal;',
-            PERLIN_GLSL
-          ].join('\\n')
-        ).replace(
-          '#include <dithering_fragment>',
-          [
-            '#include <dithering_fragment>',
-            'if (uDissolve > 0.001) {',
-            '  float dissolveNoise = cnoise(vec3(vSkinUv * 5.0, 2.0));',
-            '  float nVal = dissolveNoise * 0.5 + 0.5;',
-            '  if (nVal < uDissolve) { discard; }',
-            '  if (nVal < uDissolve + 0.035) {',
-            '    gl_FragColor.rgb += vec3(0.18, 0.65, 0.95) * 0.35;',
-            '  }',
-            '}',
-            // Silky silver-white X-Ray Fresnel contour rim + crystal-clear front window (matching media_1792308719040_b2231010.png)
-            'float skinNdotV = clamp(abs(dot(normalize(vSkinNormal), normalize(vSkinViewDir))), 0.0, 1.0);',
-            'float skinRim = pow(1.0 - skinNdotV, 2.35);',
-            'vec3 pearlescentRim = vec3(0.84, 0.91, 0.99) * skinRim * 0.68;',
-            'gl_FragColor.rgb = mix(gl_FragColor.rgb * 0.66, gl_FragColor.rgb, skinRim) + pearlescentRim;'
-          ].join('\\n')
-        );
-        mat.userData.shader = shader;
-      };
-      return mat;
     }
 
-    const maleSkinMat = createVibrantGlassSkinMaterial(0.0);
-    const femaleSkinMat = createVibrantGlassSkinMaterial(0.0);
+    const maleSkinMat = createStylizedPorcelainBodyMaterial();
+    const femaleSkinMat = createStylizedPorcelainBodyMaterial();
 
     let maleBodyObj = null;
     let femaleBodyObj = null;
     let currentGender = 'male';
-    let currentSkinMode = 'glass';
-    let isAuroraStudio = false;
 
-    // ========================================================================
-    // 2.3 EXACT VIBRANT STUDIO PODIUM (podium.glb) & MATCAP SPHERES (newBG.glb)
-    // ========================================================================
-    // Default palette tuned to Neko/Prenuvo/media_1792308719040_b2231010.png clean dark medical studio
-    const podiumUniforms = {
-      uTime: { value: 0 },
-      uColorA: { value: new THREE.Color('#071220') },
-      uColorMid: { value: new THREE.Color('#0a192c') },
-      uColorB: { value: new THREE.Color('#03060c') },
-      uHighlightColor: { value: new THREE.Color('#183654') },
-      uSpeed: { value: 0.45 },
-      uFlowSpeed: { value: 0.22 },
-      uPulseSpeed: { value: 0.55 },
-      uNoiseScale: { value: 12.0 },
-      uNoiseAmount: { value: 0.14 },
-      uNoiseDetailScale: { value: 10.0 },
-      uNoiseDetailAmount: { value: 0.35 },
-      uSwirlStrength: { value: 0.45 },
-      uGlowStrength: { value: 0.25 },
-      uPulseStrength: { value: 0.12 },
-      uFresnelStrength: { value: 0.28 },
-      uFresnelPower: { value: 0.65 },
-      uHighlightIntensity: { value: 0.28 },
-      uCurve: { value: 0.55 }
-    };
-
-    gltfLoader.load('models/podium.glb', (gltf) => {
-      const podiumScene = gltf.scene;
-      const podiumMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-      podiumMat.onBeforeCompile = (shader) => {
-        Object.keys(podiumUniforms).forEach(k => {
-          shader.uniforms[k] = podiumUniforms[k];
-        });
-
-        shader.vertexShader = shader.vertexShader.replace(
-          'void main() {',
-          [
-            'varying vec2 vUv;',
-            'varying vec3 vViewDir;',
-            'varying vec3 vSurfaceNormal;',
-            'void main() {',
-            'vUv = uv;'
-          ].join('\\n')
-        ).replace(
-          'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
-          [
-            'vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );',
-            'vViewDir = -mvPosition.xyz;',
-            'vSurfaceNormal = normalize(normalMatrix * objectNormal);'
-          ].join('\\n')
-        );
-
-        shader.fragmentShader = shader.fragmentShader.replace(
-          'void main() {',
-          [
-            'varying vec2 vUv;',
-            'varying vec3 vViewDir;',
-            'varying vec3 vSurfaceNormal;',
-            'uniform float uTime;',
-            'uniform vec3 uColorA;',
-            'uniform vec3 uColorMid;',
-            'uniform vec3 uColorB;',
-            'uniform vec3 uHighlightColor;',
-            'uniform float uSpeed;',
-            'uniform float uFlowSpeed;',
-            'uniform float uPulseSpeed;',
-            'uniform float uNoiseScale;',
-            'uniform float uNoiseAmount;',
-            'uniform float uNoiseDetailScale;',
-            'uniform float uNoiseDetailAmount;',
-            'uniform float uSwirlStrength;',
-            'uniform float uGlowStrength;',
-            'uniform float uPulseStrength;',
-            'uniform float uFresnelStrength;',
-            'uniform float uFresnelPower;',
-            'uniform float uHighlightIntensity;',
-            'uniform float uCurve;',
-            'float hash21(vec2 p) {',
-            '  p = fract(p * vec2(123.34, 456.21));',
-            '  p += dot(p, p + 45.32);',
-            '  return fract(p.x * p.y);',
-            '}',
-            'float valueNoise(vec2 p) {',
-            '  vec2 i = floor(p);',
-            '  vec2 f = fract(p);',
-            '  float a = hash21(i);',
-            '  float b = hash21(i + vec2(1.0, 0.0));',
-            '  float c = hash21(i + vec2(0.0, 1.0));',
-            '  float d = hash21(i + vec2(1.0, 1.0));',
-            '  vec2 u = f * f * (3.0 - 2.0 * f);',
-            '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);',
-            '}',
-            'vec2 swirl(vec2 uv, float strength, float timeShift) {',
-            '  vec2 c = uv - vec2(0.5);',
-            '  float r = length(c);',
-            '  float angle = strength * smoothstep(0.0, 0.7, r) * sin(r * 8.0 - timeShift);',
-            '  mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));',
-            '  return rot * c + vec2(0.5);',
-            '}',
-            'float layeredNoise(vec2 uv, float scale, float detailScale, float detailAmount) {',
-            '  float base = valueNoise(uv * scale);',
-            '  float detail = valueNoise(uv * detailScale);',
-            '  return mix(base, detail, detailAmount);',
-            '}',
-            'void main() {'
-          ].join('\\n')
-        ).replace(
-          'vec4 diffuseColor = vec4( diffuse, opacity );',
-          [
-            'vec4 diffuseColor = vec4( diffuse, opacity );',
-            'vec2 swirlUV = swirl(vUv, uSwirlStrength, uTime * uFlowSpeed);',
-            'vec2 fluidUV = swirlUV + vec2(sin(uTime * uSpeed) * 0.01, cos(uTime * uSpeed * 0.8) * 0.01);',
-            'float baseGradient = clamp(fluidUV.y, 0.0, 1.0);',
-            'float baseNoise = layeredNoise(fluidUV, uNoiseScale, uNoiseDetailScale, uNoiseDetailAmount);',
-            'float centered = (baseNoise - 0.5) * 1.6 * uNoiseAmount;',
-            'float t = pow(clamp(baseGradient + centered, 0.0001, 1.0), max(0.0001, uCurve));',
-            'vec3 grad = mix(uColorA, uColorMid, smoothstep(0.0, 0.55, t));',
-            'grad = mix(grad, uColorB, smoothstep(0.35, 1.0, t));',
-            'float pulse = 0.5 + 0.5 * sin(uTime * uPulseSpeed + fluidUV.y * 6.283);',
-            'float pulseMask = pow(pulse, 3.0) * uPulseStrength;',
-            'vec3 nrm = normalize(vSurfaceNormal);',
-            'vec3 viewDir = normalize(vViewDir);',
-            'float fresnelTerm = pow(1.0 - abs(dot(nrm, viewDir)), uFresnelPower);',
-            'float fresnelGlow = fresnelTerm * uFresnelStrength;',
-            'float highlight = smoothstep(0.65, 1.0, baseNoise);',
-            'float highlightGlow = clamp(highlight * uHighlightIntensity, 0.0, 1.0);',
-            'float glowAmount = clamp(fresnelGlow + pulseMask * uGlowStrength, 0.0, 1.0);',
-            'vec3 withHighlight = mix(grad, uHighlightColor, highlightGlow);',
-            'diffuseColor.rgb = mix(withHighlight, uHighlightColor, glowAmount);'
-          ].join('\\n')
-        );
-      };
-      podiumScene.traverse(c => {
-        if (c.isMesh) c.material = podiumMat;
-      });
-      scene.add(podiumScene);
-    });
-
-    texLoader.load('texture/mats/mat20.png', (matcapTex) => {
-      gltfLoader.load('models/newBG.glb', (gltf) => {
-        const bgMat = new THREE.MeshMatcapMaterial({
-          matcap: matcapTex,
-          transparent: true,
-          opacity: 0.14
-        });
-        gltf.scene.traverse(c => {
-          if (c.isMesh) c.material = bgMat;
-        });
-        scene.add(gltf.scene);
-      });
-    });
-
-    // ========================================================================
-    // 2.4 LOAD 193,288-VERTEX MALE & 190,564-VERTEX FEMALE SCULPTED BODIES
-    // ========================================================================
     gltfLoader.load('models/skinMB2.glb', (gltf) => {
       maleBodyObj = gltf.scene;
       maleBodyObj.traverse(c => {
-        if (c.isMesh) c.material = maleSkinMat;
+        if (c.isMesh) {
+          c.material = maleSkinMat;
+          c.renderOrder = 10;
+        }
       });
       scene.add(maleBodyObj);
       if (loaderOverlay) loaderOverlay.classList.add('hidden');
@@ -2843,303 +2407,177 @@ function buildBodyExplorerHtml(donginData) {
       femaleBodyObj = gltf.scene;
       femaleBodyObj.visible = false;
       femaleBodyObj.traverse(c => {
-        if (c.isMesh) c.material = femaleSkinMat;
+        if (c.isMesh) {
+          c.material = femaleSkinMat;
+          c.renderOrder = 10;
+        }
       });
       scene.add(femaleBodyObj);
     });
 
     // ========================================================================
-    // 2.5 LOAD POSE-FITTED 3D ANATOMICAL SKELETON, JOINTS/DISCS & VASCULAR MERIDIANS
-    // (Matches media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png)
+    // 2.2 SMOOTH 3-TONE CEL-SHADED TOON-CLAY SHADER FOR ORGANS & JOINTS
+    // Blends mesh normal with spherical radial normal (uSmooth) to erase creepy
+    // anatomical wrinkles/sulci and create a cute, smooth 3D clay toy look!
     // ========================================================================
-    const skeletonMeshMap = {};
-    const boneBaseUniforms = {
-      uTime: { value: 0 },
-      uRecovery: { value: 0.72 }
-    };
-
-    function createAnatomicalBoneMaterial(isHighlightedGroup = false, isGrowthPlate = false) {
-      if (isGrowthPlate) {
-        return new THREE.MeshStandardMaterial({
-          color: new THREE.Color(0x34d399),
-          emissive: new THREE.Color(0x10b981),
-          emissiveIntensity: 2.1,
-          roughness: 0.20,
-          metalness: 0.10,
-          transparent: true,
-          opacity: 0.95
-        });
-      }
-      // Medical X-Ray Fresnel Translucent Bone Shader (matches media_1792308719040_b2231010.png):
-      // Semi-transparent interior (so brain.glb inside skull & heart.glb inside ribcage shine through clearly)
-      // + crisp ivory-silver X-Ray Fresnel contour edges!
-      const mat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(isHighlightedGroup ? 0xdbeafe : 0x7c93ad),
-        emissive: new THREE.Color(isHighlightedGroup ? 0x1e3a5f : 0x0e1d30),
-        emissiveIntensity: isHighlightedGroup ? 0.68 : 0.42,
-        roughness: 0.30,
-        metalness: 0.08,
+    function createToonClayMaterial(hiHex, midHex, shdHex, outHex, initialOpacity = 0.96, smoothFactor = 0.72) {
+      return new THREE.ShaderMaterial({
+        uniforms: {
+          uHigh:    { value: new THREE.Color(hiHex) },
+          uMid:     { value: new THREE.Color(midHex) },
+          uShadow:  { value: new THREE.Color(shdHex) },
+          uOutline: { value: new THREE.Color(outHex) },
+          uOpacity: { value: initialOpacity },
+          uPulse:   { value: 0.0 },
+          uCenter:  { value: new THREE.Vector3(0, 0, 0) },
+          uSmooth:  { value: smoothFactor }
+        },
+        vertexShader: [
+          'uniform vec3 uCenter;',
+          'varying vec3 vNormal;',
+          'varying vec3 vRadial;',
+          'varying vec3 vViewDir;',
+          'void main() {',
+          '  vec4 mvPos = modelViewMatrix * vec4(position, 1.0);',
+          '  vViewDir = normalize(-mvPos.xyz);',
+          '  vNormal = normalize(normalMatrix * normal);',
+          '  vec3 radLocal = position - uCenter;',
+          '  float rLen = length(radLocal);',
+          '  vRadial = rLen > 0.0001 ? normalize(normalMatrix * (radLocal / rLen)) : vNormal;',
+          '  gl_Position = projectionMatrix * mvPos;',
+          '}'
+        ].join(' '),
+        fragmentShader: [
+          'uniform vec3 uHigh;',
+          'uniform vec3 uMid;',
+          'uniform vec3 uShadow;',
+          'uniform vec3 uOutline;',
+          'uniform float uOpacity;',
+          'uniform float uPulse;',
+          'uniform float uSmooth;',
+          'varying vec3 vNormal;',
+          'varying vec3 vRadial;',
+          'varying vec3 vViewDir;',
+          'void main() {',
+          '  vec3 N = normalize(mix(normalize(vNormal), normalize(vRadial), uSmooth));',
+          '  vec3 V = normalize(vViewDir);',
+          '  vec3 L = normalize(vec3(0.38, 0.72, 0.68));',
+          '  float nl = dot(N, L) * 0.5 + 0.5;',
+          '  float nv = clamp(abs(dot(N, V)), 0.0, 1.0);',
+          '  float band1 = smoothstep(0.35, 0.42, nl);',
+          '  float band2 = smoothstep(0.65, 0.72, nl);',
+          '  vec3 col = mix(uShadow, uMid, band1);',
+          '  col = mix(col, uHigh, band2);',
+          '  vec3 H = normalize(L + V);',
+          '  float spec = smoothstep(0.90, 0.95, max(0.0, dot(N, H)));',
+          '  col = mix(col, vec3(0.99, 0.98, 0.95), spec * 0.50);',
+          '  col += vec3(0.06, 0.14, 0.09) * uPulse;',
+          '  float ink = smoothstep(0.76, 0.88, 1.0 - nv);',
+          '  col = mix(col, uOutline, ink * 0.68);',
+          '  gl_FragColor = vec4(col, uOpacity);',
+          '}'
+        ].join(' '),
         transparent: true,
-        opacity: 0.48,
-        depthWrite: false
+        depthWrite: true
       });
-      mat.onBeforeCompile = (shader) => {
-        shader.vertexShader = shader.vertexShader.replace(
-          '#include <common>',
-          ['#include <common>', 'varying vec3 vBoneViewDir;', 'varying vec3 vBoneNormal;'].join('\\n')
-        ).replace(
-          '#include <begin_vertex>',
-          [
-            '#include <begin_vertex>',
-            'vec4 mvPosBone = modelViewMatrix * vec4(transformed, 1.0);',
-            'vBoneViewDir = normalize(-mvPosBone.xyz);',
-            'vBoneNormal = normalize(normalMatrix * objectNormal);'
-          ].join('\\n')
-        );
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <common>',
-          ['#include <common>', 'varying vec3 vBoneViewDir;', 'varying vec3 vBoneNormal;'].join('\\n')
-        ).replace(
-          '#include <dithering_fragment>',
-          [
-            '#include <dithering_fragment>',
-            'float boneNdotV = clamp(abs(dot(normalize(vBoneNormal), normalize(vBoneViewDir))), 0.0, 1.0);',
-            'float boneRim = pow(1.0 - boneNdotV, 1.85);',
-            'gl_FragColor.rgb += vec3(0.76, 0.86, 0.98) * boneRim * 0.78;',
-            'gl_FragColor.a = clamp(0.18 + boneRim * 0.66, 0.16, 0.86);'
-          ].join('\\n')
-        );
-      };
-      return mat;
     }
 
+    // Load ONLY clean stylized spine & knee joints from Skeleton.glb (NO scary skull with teeth, NO ribcage clutter, NO blood vessels!)
+    const boneIllustrationMap = {};
     let kneeGrowthPlateMat = null;
+
     gltfLoader.load('models/Skeleton.glb', (gltf) => {
       gltf.scene.traverse(c => {
         if (c.isMesh) {
           const gName = c.name || c.parent?.name || '';
-          const isGP = gName.includes('KneeGrowthPlate');
-          const mat = createAnatomicalBoneMaterial(false, isGP);
-          if (isGP) {
-            kneeGrowthPlateMat = mat;
-            c.renderOrder = 6;
-          } else {
-            c.renderOrder = 3;
+          if (gName.includes('Skull') || gName.includes('ThoracicRibcage') || gName.includes('UpperLimbs')) {
+            c.visible = false;
+            return;
           }
+          c.geometry.computeBoundingBox();
+          const center = new THREE.Vector3();
+          c.geometry.boundingBox.getCenter(center);
+          const isGP = gName.includes('KneeGrowthPlate');
+          const mat = isGP
+            ? createToonClayMaterial('#7AC99E', '#3E8E66', '#266345', '#1E4631', 0.98, 0.35)
+            : createToonClayMaterial('#F7F2E7', '#E6DEC8', '#CBBBA4', '#6E5844', 0.88, 0.35);
+          mat.uniforms.uCenter.value.copy(center);
+          if (isGP) kneeGrowthPlateMat = mat;
           c.material = mat;
-          skeletonMeshMap[gName] = { mesh: c, mat: mat };
+          c.renderOrder = isGP ? 6 : 3;
+          boneIllustrationMap[gName] = { mesh: c, mat: mat };
         }
       });
       scene.add(gltf.scene);
       updateAnatomyHighlight();
     });
 
-    const jointsMeshMap = {};
-    gltfLoader.load('models/Joints.glb', (gltf) => {
-      gltf.scene.traverse(c => {
-        if (c.isMesh) {
-          const gName = c.name || c.parent?.name || '';
-          const isKneeCart = gName.includes('KneeCartilage');
-          const mat = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(isKneeCart ? 0x38bdf8 : 0x5c748f),
-            emissive: new THREE.Color(isKneeCart ? 0x0ea5e9 : 0x0b1624),
-            emissiveIntensity: isKneeCart ? 0.85 : 0.22,
-            roughness: 0.30,
-            metalness: 0.08,
-            transparent: true,
-            opacity: isKneeCart ? 0.72 : 0.28,
-            depthWrite: false
-          });
-          c.renderOrder = isKneeCart ? 5 : 2;
-          c.material = mat;
-          jointsMeshMap[gName] = { mesh: c, mat: mat };
-        }
-      });
-      scene.add(gltf.scene);
-    });
-
-    // Load 1.3M-vertex Real Anatomical Vascular & 12-Meridian Network (models/Vascular.glb)
-    // with Bio-Photon Qi-Blood Flow Shader!
-    const vascularUniforms = {
-      uTime: { value: 0 },
-      uPulseBoost: { value: 0.72 }
-    };
-
-    function createVascularMeridianMaterial(isArterial) {
-      const mat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(isArterial ? 0x3b1016 : 0x122438),
-        emissive: new THREE.Color(isArterial ? 0x7a1220 : 0x0d304d),
-        emissiveIntensity: 0.48,
-        roughness: 0.30,
-        metalness: 0.15
-      });
-      mat.onBeforeCompile = (shader) => {
-        shader.uniforms.uTime = vascularUniforms.uTime;
-        shader.uniforms.uPulseBoost = vascularUniforms.uPulseBoost;
-        shader.vertexShader = shader.vertexShader.replace(
-          '#include <common>',
-          ['#include <common>', 'varying vec3 vVascWorldPos;'].join('\\n')
-        ).replace(
-          '#include <begin_vertex>',
-          ['#include <begin_vertex>', 'vVascWorldPos = (modelMatrix * vec4(transformed, 1.0)).xyz;'].join('\\n')
-        );
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <common>',
-          [
-            '#include <common>',
-            'uniform float uTime;',
-            'uniform float uPulseBoost;',
-            'varying vec3 vVascWorldPos;'
-          ].join('\\n')
-        ).replace(
-          '#include <dithering_fragment>',
-          [
-            '#include <dithering_fragment>',
-            // Traveling bio-photon Qi wave along the real 3D anatomical vessels
-            'float wave1 = pow(0.5 + 0.5 * sin(vVascWorldPos.y * 7.5 - uTime * 3.2 + abs(vVascWorldPos.x) * 6.0), 6.0);',
-            'float wave2 = pow(0.5 + 0.5 * sin(vVascWorldPos.y * 14.0 + uTime * 2.4), 8.0);',
-            isArterial
-              ? 'vec3 pulseCol = mix(vec3(0.95, 0.25, 0.20), vec3(0.99, 0.82, 0.40), wave2);'
-              : 'vec3 pulseCol = mix(vec3(0.14, 0.72, 0.65), vec3(0.35, 0.80, 0.96), wave2);',
-            'gl_FragColor.rgb += pulseCol * (wave1 * 0.58 + wave2 * 0.35) * uPulseBoost;'
-          ].join('\\n')
-        );
-      };
-      return mat;
-    }
-
-    gltfLoader.load('models/Vascular.glb', (gltf) => {
-      const artMat = createVascularMeridianMaterial(true);
-      const venMat = createVascularMeridianMaterial(false);
-      gltf.scene.traverse(c => {
-        if (c.isMesh) {
-          const isArt = (c.name || '').includes('Arterial');
-          c.material = isArt ? artMat : venMat;
-        }
-      });
-      scene.add(gltf.scene);
-    });
-
-    // ========================================================================
-    // 2.6 LOAD ALL 12 SCULPTED ORGANS WITH SUBSURFACE SCATTERING SHADER (Ht)
-    // Tuned for zero stipple noise and rich ruby-amber brain & cardiac glow (media_1792308719040_b2231010.png)
-    // ========================================================================
-    const whiteTex = texLoader.load('texture/white.jpg');
-    whiteTex.colorSpace = THREE.SRGBColorSpace;
-    whiteTex.wrapS = THREE.RepeatWrapping;
-    whiteTex.wrapT = THREE.RepeatWrapping;
-    const thicknessTex = texLoader.load('texture/white.jpg');
-
+    // Stylized 3D Illustration Organs strictly in Beige / Brown / Green / Cream-White palettes (Zero flesh-pink or blood-red!)
     const loadedOrgans = {};
-    const VIBRANT_SSS_ORGANS = [
+    const STYLIZED_ORGANS = [
       {
-        key: 'brain', file: 'models/brain.glb', parts: ['brain', 'cervical'],
-        diffuse: [0.16, 0.05, 0.06], shininess: 420,
-        thicknessColor: [0.92, 0.28, 0.20], distortion: 0.85, ambient: 0.42, attenuation: 1.15, power: 4.2, scale: 14.0,
-        light: { offset: [0.0, 0.05, -0.35], color: 0xff4422, intensity: 0.45, distance: 1.4 }
+        key: 'brain', file: 'models/brain.glb', parts: ['brain'],
+        smooth: 0.82,
+        activeCols: ['#D5EBDD', '#88BE9F', '#4B8766', '#274F39']
       },
       {
         key: 'heart', file: 'models/heart.glb', parts: ['heart'],
-        diffuse: [0.28, 0.04, 0.04], shininess: 460,
-        thicknessColor: [1.0, 0.26, 0.16], distortion: 0.82, ambient: 0.55, attenuation: 1.05, power: 4.0, scale: 18.0,
-        light: { offset: [0, 0, -0.85], color: 0xff2a1a, intensity: 0.72, distance: 1.8 }
+        smooth: 0.68,
+        activeCols: ['#DFC5A8', '#BA9168', '#8A623E', '#47301C']
       },
       {
-        key: 'liver', file: 'models/liver.glb', parts: ['gut', 'pelvis'],
-        diffuse: [0.12, 0.05, 0.06], shininess: 380,
-        thicknessColor: [0.48, 0.20, 0.18], distortion: 0.50, ambient: 0.22, attenuation: 1.20, power: 5.5, scale: 4.5
+        key: 'liver', file: 'models/liver.glb', parts: ['gut'],
+        smooth: 0.72,
+        activeCols: ['#D8C3AA', '#B0906F', '#806144', '#42301E']
       },
       {
         key: 'stomach', file: 'models/stomach.glb', parts: ['gut'],
-        diffuse: [0.14, 0.06, 0.07], shininess: 320,
-        thicknessColor: [0.52, 0.22, 0.22], distortion: 0.45, ambient: 0.24, attenuation: 0.90, power: 6.0, scale: 5.0
+        smooth: 0.70,
+        activeCols: ['#F0E2C4', '#D4BC8E', '#A68B5B', '#524124']
       },
       {
-        key: 'intestine', file: 'models/intestine.glb', parts: ['gut', 'pelvis'],
-        diffuse: [0.11, 0.05, 0.06], shininess: 350,
-        thicknessColor: [0.45, 0.20, 0.22], distortion: 0.55, ambient: 0.20, attenuation: 0.95, power: 4.5, scale: 5.5
+        key: 'intestine', file: 'models/intestine.glb', parts: ['gut'],
+        smooth: 0.82,
+        activeCols: ['#C2E2CE', '#78B391', '#447D5D', '#234733']
       },
       {
-        key: 'kidneys', file: 'models/kidneys2.glb', parts: ['lumbar', 'knee', 'pelvis'],
-        diffuse: [0.10, 0.06, 0.08], shininess: 400,
-        thicknessColor: [0.32, 0.48, 0.62], distortion: 0.65, ambient: 0.22, attenuation: 0.85, power: 3.5, scale: 8.0
-      },
-      {
-        key: 'galbladder', file: 'models/galbladder.glb', parts: ['gut'],
-        diffuse: [0.08, 0.14, 0.10], shininess: 280,
-        thicknessColor: [0.22, 0.65, 0.45], distortion: 0.30, ambient: 0.24, attenuation: 0.65, power: 3.0, scale: 4.0
-      },
-      {
-        key: 'pancreas', file: 'models/pancreas.glb', parts: ['gut'],
-        diffuse: [0.15, 0.08, 0.06], shininess: 360,
-        thicknessColor: [0.62, 0.35, 0.22], distortion: 0.45, ambient: 0.22, attenuation: 0.75, power: 3.5, scale: 5.0
-      },
-      {
-        key: 'glands', file: 'models/glands.glb', parts: ['pelvis', 'lumbar'],
-        diffuse: [0.16, 0.10, 0.06], shininess: 400,
-        thicknessColor: [0.75, 0.58, 0.25], distortion: 0.35, ambient: 0.28, attenuation: 0.65, power: 4.0, scale: 7.5
+        key: 'kidneys', file: 'models/kidneys2.glb', parts: ['lumbar', 'pelvis'],
+        smooth: 0.68,
+        activeCols: ['#BBE0C9', '#6CA685', '#3B7354', '#1F422E']
       },
       {
         key: 'thyroid', file: 'models/thyroid.glb', parts: ['cervical'],
-        diffuse: [0.16, 0.08, 0.14], shininess: 420,
-        thicknessColor: [0.65, 0.42, 0.78], distortion: 0.35, ambient: 0.28, attenuation: 0.80, power: 3.5, scale: 7.0
+        smooth: 0.65,
+        activeCols: ['#CDE8D8', '#7EB596', '#457D5E', '#234733']
       }
     ];
 
-    VIBRANT_SSS_ORGANS.forEach(cfg => {
+    const INACTIVE_COLS = ['#ECE5D8', '#DCD1BE', '#C4B69F', '#8C7A65'];
+    let isOverviewCamera = true;
+
+    STYLIZED_ORGANS.forEach(cfg => {
       gltfLoader.load(cfg.file, (gltf) => {
-        const uniforms = THREE.UniformsUtils.clone(SubsurfaceScatteringShader.uniforms);
-        uniforms.map.value = whiteTex;
-        uniforms.diffuse.value = new THREE.Vector3(...cfg.diffuse);
-        uniforms.shininess.value = cfg.shininess;
-        uniforms.thicknessMap.value = thicknessTex;
-        uniforms.thicknessColor.value = new THREE.Vector3(...cfg.thicknessColor);
-        uniforms.thicknessDistortion.value = cfg.distortion;
-        uniforms.thicknessAmbient.value = cfg.ambient;
-        uniforms.thicknessAttenuation.value = cfg.attenuation;
-        uniforms.thicknessPower.value = cfg.power;
-        uniforms.thicknessScale.value = cfg.scale;
-        uniforms.specular.value = new THREE.Color(0.02, 0.02, 0.02);
-        uniforms.opacity.value = 1.0;
-
-        const sssMat = new THREE.ShaderMaterial({
-          uniforms: uniforms,
-          vertexShader: SubsurfaceScatteringShader.vertexShader,
-          fragmentShader: SubsurfaceScatteringShader.fragmentShader,
-          lights: true,
-          transparent: false
-        });
-
+        const mat = createToonClayMaterial(...cfg.activeCols, 0.96, cfg.smooth);
         const rootMesh = gltf.scene.children[0] || gltf.scene;
         if (cfg.key === 'brain' && rootMesh) {
-          rootMesh.scale.multiplyScalar(0.88);
-          rootMesh.position.y -= 0.038;
+          rootMesh.scale.multiplyScalar(0.86);
+          rootMesh.position.y -= 0.042;
         }
         gltf.scene.traverse(c => {
           if (c.isMesh) {
-            c.material = sssMat;
-            c.renderOrder = 1;
+            c.geometry.computeBoundingBox();
+            const center = new THREE.Vector3();
+            c.geometry.boundingBox.getCenter(center);
+            mat.uniforms.uCenter.value.copy(center);
+            c.material = mat;
+            c.renderOrder = 4;
           }
         });
-
-        if (cfg.light && rootMesh.position) {
-          const pLight = new THREE.PointLight(cfg.light.color, cfg.light.intensity, cfg.light.distance);
-          pLight.position.set(
-            rootMesh.position.x + cfg.light.offset[0],
-            rootMesh.position.y + cfg.light.offset[1],
-            rootMesh.position.z + cfg.light.offset[2]
-          );
-          scene.add(pLight);
-        }
-
         scene.add(gltf.scene);
         loadedOrgans[cfg.key] = {
           scene: gltf.scene,
           mesh: rootMesh,
-          mat: sssMat,
-          uniforms: uniforms,
-          baseAmbient: cfg.ambient,
-          baseScale: cfg.scale,
+          mat: mat,
           cfg: cfg
         };
         updateAnatomyHighlight();
@@ -3147,136 +2585,26 @@ function buildBodyExplorerHtml(donginData) {
     });
 
     // ========================================================================
-    // 3. STARLIGHT ACUPOINT NODES (THREE.Points) & SIDE MARGIN LEADER CALLOUTS
-    // (Zero Rainbow Spaghetti Tubes, Zero Overlapping Text Tags on Body!)
+    // 3. 7 MINIMAL HOTSPOTS ONLY (ZERO ACUPOINTS, ZERO MERIDIANS)
+    // Balanced left/right pills so all 7 labels are readable at a glance!
     // ========================================================================
-    const starPositions = [];
-    const starColors = [];
-    const starSizes = [];
+    const LEFT_ALIGNED_PARTS = ['cervical', 'gut', 'pelvis'];
+    const HOTSPOT_3D_ANCHORS = {
+      brain:    [ 0.06, 4.34,  0.04],
+      cervical: [-0.06, 3.92,  0.04],
+      heart:    [ 0.08, 3.50,  0.08],
+      gut:      [-0.08, 3.12,  0.08],
+      lumbar:   [ 0.08, 2.78,  0.04],
+      pelvis:   [-0.10, 2.46,  0.04],
+      knee:     [ 0.16, 1.20,  0.05]
+    };
 
-    DONGIN_DATA.acupoints.forEach((acu) => {
-      starPositions.push(acu.pos[0], acu.pos[1], acu.pos[2]);
-      starColors.push(1.0, 0.90, 0.52);
-      starSizes.push(1.0);
-      if (Math.abs(acu.pos[0]) > 0.025) {
-        starPositions.push(-acu.pos[0], acu.pos[1], acu.pos[2]);
-        starColors.push(0.45, 0.92, 0.78);
-        starSizes.push(0.85);
-      }
-    });
-
-    const starGeo = new THREE.BufferGeometry();
-    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
-    starGeo.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
-    starGeo.setAttribute('aScale', new THREE.Float32BufferAttribute(starSizes, 1));
-
-    const starMat = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uPixelRatio: { value: Math.min(window.devicePixelRatio || 1, 2) }
-      },
-      vertexShader: [
-        'attribute float aScale;',
-        'varying vec3 vColor;',
-        'uniform float uTime;',
-        'uniform float uPixelRatio;',
-        'void main() {',
-        '  vColor = color;',
-        '  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);',
-        '  float pulse = 0.85 + 0.30 * sin(uTime * 3.2 + position.y * 8.0);',
-        '  gl_PointSize = (18.0 * aScale * pulse * uPixelRatio) / max(0.4, -mvPosition.z);',
-        '  gl_Position = projectionMatrix * mvPosition;',
-        '}'
-      ].join('\\n'),
-      fragmentShader: [
-        'varying vec3 vColor;',
-        'void main() {',
-        '  float d = length(gl_PointCoord - vec2(0.5));',
-        '  if (d > 0.5) discard;',
-        '  float core = smoothstep(0.22, 0.0, d);',
-        '  float halo = pow(1.0 - d * 2.0, 2.4) * 0.75;',
-        '  vec3 col = mix(vColor, vec3(1.0), core);',
-        '  gl_FragColor = vec4(col, core + halo);',
-        '}'
-      ].join('\\n'),
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      vertexColors: true
-    });
-
-    const acupointStarField = new THREE.Points(starGeo, starMat);
-    scene.add(acupointStarField);
-
-    // Populate Top 12-Meridian Filter Strip Buttons
-    const meridianStripEl = document.getElementById('meridian-filter-strip');
-    if (meridianStripEl) {
-      DONGIN_DATA.meridians.forEach(mDef => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'meridian-chip';
-        btn.setAttribute('data-meridian', mDef.id);
-        btn.innerHTML = '<span class="m-dot" style="background:' + mDef.color + ';"></span>' + mDef.code;
-        btn.addEventListener('click', () => window.selectMeridianFilter(mDef.id));
-        meridianStripEl.appendChild(btn);
-      });
-    }
-
-    // Create Clean Side-Margin Leader-Line Callouts (matching media_1792308778522_b0767e86.png)
-    const acupointRuntimeNodes = [];
-    DONGIN_DATA.acupoints.forEach((acu, idx) => {
-      const side = (acu.pos[0] < -0.01 || (Math.abs(acu.pos[0]) <= 0.01 && idx % 2 === 1)) ? 'left' : 'right';
-      const calloutEl = document.createElement('div');
-      calloutEl.className = 'acupoint-side-callout side-' + side;
-      calloutEl.innerHTML =
-        '<div class="acu-callout-text">' +
-          '<span class="acu-callout-code">' + acu.code + ' · ' + acu.meridian.split(' ')[0] + '</span>' +
-          '<span class="acu-callout-name">' + acu.name.split(' ')[0] + '</span>' +
-        '</div>' +
-        '<div class="acu-leader-line"></div>' +
-        '<div class="acu-pinpoint-node"></div>';
-      calloutEl.addEventListener('click', (e) => {
-        e.stopPropagation();
-        inspectAcupoint(acu, true);
-      });
-      calloutEl.addEventListener('mouseenter', () => {
-        inspectAcupoint(acu, false);
-      });
-      hotspotLayer.appendChild(calloutEl);
-
-      acupointRuntimeNodes.push({
-        acu: acu,
-        pinEl: calloutEl,
-        worldPos: new THREE.Vector3(acu.pos[0], acu.pos[1], acu.pos[2])
-      });
-    });
-
-    function inspectAcupoint(acu, shouldSelectPart) {
-      const codeEl = document.getElementById('acu-hud-code');
-      const merEl = document.getElementById('acu-hud-meridian');
-      const titleEl = document.getElementById('acu-hud-title');
-      const descEl = document.getElementById('acu-hud-desc');
-
-      if (codeEl) codeEl.textContent = acu.code + ' · ' + acu.name;
-      if (merEl) merEl.textContent = acu.meridian;
-      if (titleEl) titleEl.textContent = acu.name + ' — 동인(銅人) 핵심 치료 경혈';
-      if (descEl) descEl.textContent = acu.desc;
-
-      acupointRuntimeNodes.forEach(node => {
-        node.pinEl.classList.toggle('highlighted', node.acu.code === acu.code);
-      });
-
-      if (shouldSelectPart && acu.partId) {
-        window.selectBodyPart(acu.partId, true);
-      }
-    }
-
-    // Build 7 Minimal Vibrant Glass Circle Hotspots (.puntos-container style)
     const majorHotspotNodes = [];
     BODY_PARTS_DATA.forEach((part) => {
-      const preset = PART_CAMERA_PRESETS[part.id] || { pos3D: [part.pos3D.x, part.pos3D.y, part.pos3D.z] };
+      const anchor = HOTSPOT_3D_ANCHORS[part.id] || [part.pos3D.x, part.pos3D.y, part.pos3D.z];
+      const isLeft = LEFT_ALIGNED_PARTS.includes(part.id);
       const dom = document.createElement('div');
-      dom.className = 'body-3d-hotspot' + (part.id === currentPartId ? ' active' : '');
+      dom.className = 'body-3d-hotspot' + (isLeft ? ' align-left' : '') + (part.id === currentPartId ? ' active' : '');
       dom.innerHTML =
         '<div class="hotspot-pulse-ring">' +
           '<div class="hotspot-core-dot"></div>' +
@@ -3290,15 +2618,15 @@ function buildBodyExplorerHtml(donginData) {
         id: part.id,
         part: part,
         dom: dom,
-        worldPos: new THREE.Vector3(...preset.pos3D)
+        worldPos: new THREE.Vector3(...anchor)
       });
     });
 
     // ========================================================================
-    // 4. CAMERA FLY-TO, ANATOMY HIGHLIGHT & SKIN MATERIAL CONTROLS
+    // 4. CAMERA FLY-TO & CLEAN FOCUS HIGHLIGHTING
     // ========================================================================
-    const camGoalPos = new THREE.Vector3(0.0, 3.50, 2.62);
-    const camGoalTarget = new THREE.Vector3(0.0, 3.68, 0.0);
+    const camGoalPos = new THREE.Vector3(0.0, 2.76, 3.82);
+    const camGoalTarget = new THREE.Vector3(0.0, 2.72, 0.0);
     let isCameraFlying = false;
 
     controls.addEventListener('start', () => {
@@ -3306,36 +2634,55 @@ function buildBodyExplorerHtml(donginData) {
     });
 
     function updateAnatomyHighlight() {
-      // Highlight matching bone group in Skeleton.glb
       const boneHighlightMap = {
         knee: ['KneeJointBones', 'KneeGrowthPlate', 'LowerLimbs'],
-        cervical: ['CervicalSpine', 'Skull'],
+        cervical: ['CervicalSpine'],
         lumbar: ['LumbarSpine', 'Pelvis'],
-        brain: ['Skull'],
-        heart: ['ThoracicRibcage'],
-        gut: ['ThoracicRibcage', 'Pelvis'],
+        brain: ['CervicalSpine'],
+        heart: ['CervicalSpine'],
+        gut: ['LumbarSpine'],
         pelvis: ['Pelvis', 'LumbarSpine']
       };
       const activeBones = boneHighlightMap[currentPartId] || [];
 
-      Object.keys(skeletonMeshMap).forEach(gName => {
-        const entry = skeletonMeshMap[gName];
-        if (gName.includes('KneeGrowthPlate')) return;
+      Object.keys(boneIllustrationMap).forEach(gName => {
+        const entry = boneIllustrationMap[gName];
+        if (gName.includes('KneeGrowthPlate')) {
+          entry.mesh.visible = true;
+          return;
+        }
         const isMatched = activeBones.some(b => gName.includes(b));
-        entry.mat.color.setHex(isMatched ? 0xd8e8f8 : 0x7890ab);
-        entry.mat.emissive.setHex(isMatched ? 0x1e4068 : 0x0e1c2e);
-        entry.mat.emissiveIntensity = isMatched ? 0.62 : 0.34;
+        entry.mat.uniforms.uOpacity.value = isMatched ? 0.90 : 0.42;
+        entry.mat.depthWrite = isMatched;
       });
 
-      // Highlight internal SubsurfaceScattering organs
+      // In overview mode, show a clean, non-overlapping set of primary cartoon organs;
+      // In focused mode, spotlight the selected part's cartoon organ and hide overlapping abdominal clutter!
+      const OVERVIEW_VISIBLE_ORGANS = ['brain', 'heart', 'stomach', 'kidneys'];
+
       Object.keys(loadedOrgans).forEach(key => {
         const entry = loadedOrgans[key];
         const isTarget = entry.cfg.parts.includes(currentPartId);
-        // Keep brain and heart always subtly visible inside the glass body (like media_1792308719040_b2231010.png)
-        const alwaysShow = (key === 'brain' || key === 'heart' || key === 'intestine' || key === 'liver' || key === 'stomach' || key === 'kidneys');
-        entry.scene.visible = isTarget || alwaysShow;
-        entry.uniforms.opacity.value = isTarget ? 1.0 : (currentSkinMode === 'xray' ? 0.92 : 0.82);
-        entry.uniforms.thicknessAmbient.value = isTarget ? (entry.baseAmbient * 1.45) : entry.baseAmbient;
+        if (isOverviewCamera) {
+          const showInOverview = OVERVIEW_VISIBLE_ORGANS.includes(key) || isTarget;
+          entry.scene.visible = showInOverview;
+          const cols = entry.cfg.activeCols;
+          entry.mat.uniforms.uHigh.value.set(cols[0]);
+          entry.mat.uniforms.uMid.value.set(cols[1]);
+          entry.mat.uniforms.uShadow.value.set(cols[2]);
+          entry.mat.uniforms.uOutline.value.set(cols[3]);
+          entry.mat.uniforms.uOpacity.value = 0.94;
+          entry.mat.depthWrite = true;
+        } else {
+          entry.scene.visible = isTarget || OVERVIEW_VISIBLE_ORGANS.includes(key);
+          const cols = isTarget ? entry.cfg.activeCols : INACTIVE_COLS;
+          entry.mat.uniforms.uHigh.value.set(cols[0]);
+          entry.mat.uniforms.uMid.value.set(cols[1]);
+          entry.mat.uniforms.uShadow.value.set(cols[2]);
+          entry.mat.uniforms.uOutline.value.set(cols[3]);
+          entry.mat.uniforms.uOpacity.value = isTarget ? 0.96 : 0.22;
+          entry.mat.depthWrite = isTarget;
+        }
       });
     }
 
@@ -3346,41 +2693,17 @@ function buildBodyExplorerHtml(donginData) {
 
       const preset = PART_CAMERA_PRESETS[part.id];
       if (preset && shouldFlyCamera) {
+        isOverviewCamera = false;
         camGoalPos.set(...preset.camPos);
         camGoalTarget.set(...preset.camTarget);
         isCameraFlying = true;
-        activeOrganPointLight.position.set(preset.pos3D[0], preset.pos3D[1], preset.pos3D[2] - 0.35);
       }
 
       majorHotspotNodes.forEach(h => {
         h.dom.classList.toggle('active', h.id === part.id);
       });
 
-      const matchingAcu = DONGIN_DATA.acupoints.find(a => a.partId === part.id);
-      if (matchingAcu) inspectAcupoint(matchingAcu, false);
-
       updateAnatomyHighlight();
-    };
-
-    window.selectMeridianFilter = function(mId) {
-      activeMeridianFilter = mId;
-      document.querySelectorAll('#meridian-filter-strip .meridian-chip').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-meridian') === mId);
-      });
-      vascularUniforms.uPulseBoost.value = mId === 'ALL' ? 0.72 : 1.35;
-      if (mId !== 'ALL') {
-        const mDef = DONGIN_DATA.meridians.find(m => m.id === mId);
-        if (mDef) {
-          const codeEl = document.getElementById('acu-hud-code');
-          const merEl = document.getElementById('acu-hud-meridian');
-          const titleEl = document.getElementById('acu-hud-title');
-          const descEl = document.getElementById('acu-hud-desc');
-          if (codeEl) codeEl.textContent = mDef.code;
-          if (merEl) merEl.textContent = mDef.hanja;
-          if (titleEl) titleEl.textContent = mDef.nameKo + ' — 3D 해부학 경락 유주(流注)';
-          if (descEl) descEl.textContent = mDef.organRole;
-        }
-      }
     };
 
     window.setDonginGender = function(gender) {
@@ -3391,79 +2714,19 @@ function buildBodyExplorerHtml(donginData) {
       if (femaleBodyObj) femaleBodyObj.visible = (gender === 'female');
     };
 
-    window.setDonginSkinMode = function(mode) {
-      currentSkinMode = mode;
-      document.getElementById('btn-mat-glass')?.classList.toggle('active', mode === 'glass');
-      document.getElementById('btn-mat-bronze')?.classList.toggle('active', mode === 'bronze');
-      document.getElementById('btn-mat-xray')?.classList.toggle('active', mode === 'xray');
-
-      [maleSkinMat, femaleSkinMat].forEach(mat => {
-        if (mode === 'glass') {
-          mat.color.setHex(0xdbeafe);
-          mat.metalness = 0.02;
-          mat.roughness = 0.07;
-          mat.transmission = 0.94;
-          mat.thickness = 0.08;
-          mat.ior = 1.06;
-          mat.userData.uDissolve.value = 0.0;
-        } else if (mode === 'bronze') {
-          // Royal Antiqued Bronze Dong-In Statue
-          mat.color.setHex(0xc89d54);
-          mat.metalness = 0.65;
-          mat.roughness = 0.24;
-          mat.transmission = 0.38;
-          mat.thickness = 0.14;
-          mat.ior = 1.15;
-          mat.userData.uDissolve.value = 0.0;
-        } else if (mode === 'xray') {
-          mat.color.setHex(0xdbeafe);
-          mat.metalness = 0.01;
-          mat.roughness = 0.04;
-          mat.transmission = 0.98;
-          mat.thickness = 0.04;
-          mat.ior = 1.02;
-          mat.userData.uDissolve.value = 0.28;
-        }
-        mat.needsUpdate = true;
-      });
-      updateAnatomyHighlight();
-    };
-
     window.setDonginCameraPreset = function(preset) {
-      ['hero', 'full', 'back'].forEach(p => {
-        document.getElementById('btn-cam-' + p)?.classList.toggle('active', p === preset);
-      });
+      document.getElementById('btn-cam-hero')?.classList.toggle('active-brown', preset === 'hero');
+      document.getElementById('btn-cam-full')?.classList.toggle('active-brown', preset === 'full');
+      isOverviewCamera = true;
       isCameraFlying = true;
       if (preset === 'hero') {
-        // Exact media_1792308719040_b2231010.png & media_1792308778522_b0767e86.png upper-body framing
-        camGoalPos.set(0.0, 3.50, 2.62);
-        camGoalTarget.set(0.0, 3.68, 0.0);
+        camGoalPos.set(0.0, 2.75, 4.35);
+        camGoalTarget.set(0.0, 2.72, 0.0);
       } else if (preset === 'full') {
-        camGoalPos.set(0.0, 2.42, 4.45);
-        camGoalTarget.set(0.0, 2.35, 0.0);
-      } else if (preset === 'back') {
-        camGoalPos.set(0.0, 3.35, -2.55);
-        camGoalTarget.set(0.0, 3.28, 0.0);
+        camGoalPos.set(0.0, 2.38, 4.85);
+        camGoalTarget.set(0.0, 2.32, 0.0);
       }
-    };
-
-    window.toggleVibrantAuroraStudio = function() {
-      isAuroraStudio = !isAuroraStudio;
-      const btn = document.getElementById('btn-studio-aurora');
-      if (btn) btn.classList.toggle('active', isAuroraStudio);
-      if (isAuroraStudio) {
-        // Exact vibrant.noomoagency.com pastel aurora studio palette
-        podiumUniforms.uColorA.value.set('#dbfff6');
-        podiumUniforms.uColorMid.value.set('#fbebff');
-        podiumUniforms.uColorB.value.set('#9ec3ff');
-        podiumUniforms.uHighlightColor.value.set('#deccff');
-      } else {
-        // Deep Neko/Prenuvo Medical Obsidian-Sapphire Studio (matching media_1792308719040_b2231010.png)
-        podiumUniforms.uColorA.value.set('#071220');
-        podiumUniforms.uColorMid.value.set('#0a192c');
-        podiumUniforms.uColorB.value.set('#03060c');
-        podiumUniforms.uHighlightColor.value.set('#183654');
-      }
+      updateAnatomyHighlight();
     };
 
     quickNavButtons.forEach(btn => {
@@ -3479,13 +2742,13 @@ function buildBodyExplorerHtml(donginData) {
       renderer.setSize(w, h, false);
       camera.aspect = w / Math.max(1, h);
       camera.updateProjectionMatrix();
-      camera.setFocalLength(35);
+      camera.setFocalLength(38);
     }
     window.addEventListener('resize', resizeRenderer);
     resizeRenderer();
 
     // ========================================================================
-    // 5. 60FPS ANIMATION LOOP (SUBSURFACE ORGANS + VASCULAR QI PULSE + HUD)
+    // 5. 60FPS GENTLE ILLUSTRATION ANIMATION LOOP
     // ========================================================================
     const clock = new THREE.Clock();
     const projVec = new THREE.Vector3();
@@ -3494,15 +2757,9 @@ function buildBodyExplorerHtml(donginData) {
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      podiumUniforms.uTime.value = t;
-      vascularUniforms.uTime.value = t;
-      starMat.uniforms.uTime.value = t;
-
-      // Smoothly interpolate scroll-driven recovery state
       currentRecoveryMix += (targetRecoveryMix - currentRecoveryMix) * 0.08;
       updateEncycBaVisuals(currentRecoveryMix);
 
-      // Smooth camera fly-to
       if (isCameraFlying) {
         camera.position.lerp(camGoalPos, 0.075);
         controls.target.lerp(camGoalTarget, 0.085);
@@ -3512,29 +2769,21 @@ function buildBodyExplorerHtml(donginData) {
       }
       controls.update();
 
-      // Animate Subsurface Scattering Organs (Vibrant heartbeat & breathing glow)
+      // Gentle cartoon/illustration breathing & heartbeat
       Object.keys(loadedOrgans).forEach(key => {
         const entry = loadedOrgans[key];
-        if (!entry.scene.visible) return;
         const isTarget = entry.cfg.parts.includes(currentPartId);
         if (key === 'heart') {
-          const beat = 1.0 + Math.sin(t * 5.4) * 0.028 + Math.max(0, Math.sin(t * 5.4 * 2.0)) * 0.015;
+          const beat = 1.0 + Math.sin(t * 4.6) * 0.022;
           entry.scene.scale.setScalar(beat);
-          entry.uniforms.thicknessScale.value = entry.baseScale * (0.92 + 0.22 * Math.sin(t * 5.4));
-        } else if (isTarget) {
-          entry.uniforms.thicknessScale.value = entry.baseScale * (0.85 + 0.25 * Math.sin(t * 2.8));
         }
+        entry.mat.uniforms.uPulse.value = isTarget ? (0.5 + 0.5 * Math.sin(t * 3.0)) * currentRecoveryMix : 0.0;
       });
 
-      // Animate Real 3D Knee Epiphyseal Growth Plate (KneeGrowthPlate mesh inside Skeleton.glb)
       if (kneeGrowthPlateMat) {
-        const isRecovered = currentRecoveryMix >= 0.45;
-        kneeGrowthPlateMat.color.setHex(isRecovered ? 0x34d399 : 0xf59e0b);
-        kneeGrowthPlateMat.emissive.setHex(isRecovered ? 0x10b981 : 0xef4444);
-        kneeGrowthPlateMat.emissiveIntensity = (1.3 + 0.6 * Math.sin(t * 4.2)) * (0.65 + currentRecoveryMix * 0.65);
+        kneeGrowthPlateMat.uniforms.uPulse.value = (0.5 + 0.5 * Math.sin(t * 3.5)) * currentRecoveryMix;
       }
 
-      // Project 2D Minimal Glass Circle Hotspots
       const w = stageEl.clientWidth;
       const h = stageEl.clientHeight;
       majorHotspotNodes.forEach(item => {
@@ -3547,64 +2796,20 @@ function buildBodyExplorerHtml(donginData) {
         const sy = (-projVec.y * 0.5 + 0.5) * h;
         item.dom.style.left = sx.toFixed(1) + 'px';
         item.dom.style.top = sy.toFixed(1) + 'px';
-        item.dom.style.opacity = (sx > 20 && sx < w - 20 && sy > 65 && sy < h - 75) ? '1' : '0';
-      });
-
-      // Project Clean Architectural Side Callouts ONLY for the active part's key acupoints (max 4, never overlapping!)
-      let visibleCallouts = 0;
-      const usedYLeft = [];
-      const usedYRight = [];
-      acupointRuntimeNodes.forEach(node => {
-        const isPartMatch = node.acu.partId === currentPartId;
-        if (!isPartMatch || visibleCallouts >= 4) {
-          node.pinEl.style.opacity = '0';
-          node.pinEl.style.pointerEvents = 'none';
-          return;
-        }
-        projVec.copy(node.worldPos).project(camera);
-        if (projVec.z > 1.0) {
-          node.pinEl.style.opacity = '0';
-          node.pinEl.style.pointerEvents = 'none';
-          return;
-        }
-        const sx = (projVec.x * 0.5 + 0.5) * w;
-        let sy = (-projVec.y * 0.5 + 0.5) * h;
-        const inBounds = sx > 60 && sx < w - 60 && sy > 95 && sy < h - 105;
-        if (!inBounds) {
-          node.pinEl.style.opacity = '0';
-          node.pinEl.style.pointerEvents = 'none';
-          return;
-        }
-        // Alternate left-extending (side-right) and right-extending (side-left) callouts & avoid vertical overlap
-        const extendLeft = (visibleCallouts % 2 === 1);
-        node.pinEl.classList.toggle('side-right', extendLeft);
-        node.pinEl.classList.toggle('side-left', !extendLeft);
-        const bucket = extendLeft ? usedYLeft : usedYRight;
-        for (let pass = 0; pass < 3; pass++) {
-          for (const prevY of bucket) {
-            if (Math.abs(sy - prevY) < 46) {
-              sy = sy >= prevY ? prevY + 46 : prevY - 46;
-            }
-          }
-        }
-        bucket.push(sy);
-        visibleCallouts++;
-        node.pinEl.style.left = sx.toFixed(1) + 'px';
-        node.pinEl.style.top = sy.toFixed(1) + 'px';
-        node.pinEl.style.opacity = '0.94';
-        node.pinEl.style.pointerEvents = 'auto';
+        item.dom.style.opacity = (sx > 18 && sx < w - 18 && sy > 32 && sy < h - 42) ? '1' : '0';
       });
 
       renderer.render(scene, camera);
     }
 
-    // Initialize from URL query (?part=knee flies to knee; otherwise start on Hero Upper/Mid Body view like media_1792308778522_b0767e86.png)
     const params = new URLSearchParams(window.location.search);
     const urlPart = params.get('part');
     if (urlPart) {
       window.selectBodyPart(urlPart, true);
     } else {
       window.selectBodyPart('knee', false);
+      camera.position.set(0.0, 2.75, 4.35);
+      controls.target.set(0.0, 2.72, 0.0);
       window.setDonginCameraPreset('hero');
     }
     animate();
@@ -3613,10 +2818,7 @@ function buildBodyExplorerHtml(donginData) {
 </html>`;
 }
 
-buildDonginSurfaceData().then(donginData => {
-  const outPath = path.join(__dirname, 'body-explorer.html');
-  const html = buildBodyExplorerHtml(donginData);
-  fs.writeFileSync(outPath, html, 'utf8');
-  console.log('Generated Vibrant 193K-Vertex 3D Dong-In Encyclopedia:', outPath, '(' + html.length + ' bytes)');
-});
-
+const outPath = path.join(__dirname, 'body-explorer.html');
+const html = buildBodyExplorerHtml();
+fs.writeFileSync(outPath, html, 'utf8');
+console.log('Generated Stylized 3D Illustration Body Explorer:', outPath, '(' + html.length + ' bytes)');

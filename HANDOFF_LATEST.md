@@ -5,18 +5,19 @@
 
 ---
 
-## 💎 0. 최신 완료 작업 요약 (2026-10-18 완료분 · Vibrant 193K-Vertex 3D 동인(銅人) 해부학·골격·혈관·12경맥 대백과 완성 & 메인 페이지 원본 복원)
+## 💎 0. 최신 완료 작업 요약 (2026-10-18 완료분 · 베이지·브라운·그린·화이트·블랙 5색 하이엔드 에디토리얼 & 소프트 3D 일러스트/툰-클레이 인체 백과 완성)
 
 1. **메인 페이지 (`homepage/story-3d.html` / `homepage/index.html`) 클린 원본 복원 완료**:
-   - 사용자 요청에 따라 메인 페이지를 이전 클린 버전(`e962494`)으로 완벽 복원하고, 상단 헤더에 `🧬 3D 동인(銅人) 경락·질환백과` (`body-explorer.html`) 바로가기 버튼만 깔끔하게 연결 완료.
-2. **Vibrant (`vibrant.noomoagency.com`) 공식 193,288-Vertex 3D 인체모형 + Z-Anatomy 정밀 3D 골격·관절·혈관/12경맥 통합 구축 (`homepage/body-explorer.html` / `homepage/wordpress-body-explorer.html`)**:
-   - **실제 3D 지오메트리 파이프라인 구축 (`@gltf-transform` + `draco3dgltf` + `meshoptimizer`)**:
-     - `models/skinMB2.glb` (남성 193,288 버텍스) & `models/skinF2.glb` (여성 190,564 버텍스): `vibrant.noomoagency.com` 공식 조각 메쉬 + `GSG_PRO_STUDIOS_METAL_001_sm` HDR GainMap 환경맵 디코더 + 크리스탈 글래스 굴절(`MeshPhysicalMaterial` Dispersion·Iridescence) + X-Ray Fresnel 진주빛 윤곽 림 셰이더 + GLSL Perlin 3D Noise 피부 투시 디졸브(`uDissolve`) 탑재.
-     - `models/Skeleton.glb` (1,052 KB Draco 압축): `skinMB2.glb` 체형 내부에 100% 정밀 포즈 피팅된 두개골(`Skull`), 경추(`CervicalSpine`), 12쌍 흉곽·늑골·흉골·쇄골·견갑골(`ThoracicRibcage`), 요추(`LumbarSpine`), 골반(`Pelvis`), 상지골(`UpperLimbs`), 하지골(`LowerLimbs`), 무릎 관절골(`KneeJointBones`) 및 **대퇴골 원위부·경골 근위부 실제 3D 골단연골 성장판(`KneeGrowthPlate`)** 탑재. X-Ray 반투명 프레넬 골격 셰이더를 적용해 두개골 내부의 뇌와 흉곽 내부의 심장·혈관이 선명하게 투시됨.
-     - `models/Joints.glb` (281 KB Draco 압축): 척추 추간판 디스크·늑연골(`SpinalDiscs`), 무릎 반월상연골·십자인대(`KneeCartilage`), 전신 관절낭(`OtherJoints`).
-     - `models/Vascular.glb` (2,372 KB Draco 압축 · 136만 버텍스): 전신 동맥·정맥 및 12경맥 기혈 분지망(`ArterialMeridians`, `VenousMeridians`) + 실시간 GLSL 기혈(Qi-Blood) 바이오포톤 파동 셰이더.
-     - **Vibrant 공식 10대 내부 장기 (`brain.glb`, `heart.glb`, `liver.glb`, `stomach.glb`, `intestine.glb`, `kidneys2.glb`, `galbladder.glb`, `pancreas.glb`, `glands.glb`, `thyroid.glb`)**: Three.js `SubsurfaceScatteringShader` 기반 심장 박동·뇌신경 루비-앰버 생체 발광 및 우측 백과사전 스크롤 연동 회복 모션.
-     - **스타라이트 경혈 포인트 (`THREE.Points`) & 좌우 여백 수평 리더라인 콜아웃**: 인체 위를 가리던 기존의 조잡한 튜브와 겹치는 텍스트 배지를 전면 제거하고, 선택 부위 핵심 경혈(최대 4개)만 좌우 여백으로 자동 분산(충돌 방지)되어 수평 지시선으로 표시됨.
+   - 사용자 요청에 따라 메인 페이지를 이전 클린 버전(`e962494`)으로 완벽 복원하고, 상단 헤더에 3D 인체 질환백과(`body-explorer.html`) 바로가기 버튼만 깔끔하게 연결 완료.
+2. **베이지 · 브라운 · 그린 · 화이트 · 블랙 5색 하이엔드 에디토리얼 & 비실사 소프트 3D 툰-클레이(Toon-Clay) 인체 일러스트 대백과 (`homepage/body-explorer.html` / `homepage/wordpress-body-explorer.html`)**:
+   - **불필요한 시각 요소 및 경락·경혈 100% 삭제 완료**:
+     - 기존 12경맥 라인, 경락 필터 칩, 경혈 스타라이트 포인트, 좌우 경혈 지시선 태그, 경혈 HUD 박스를 100% 제거하여 여백의 미가 살아있는 미니멀 에디토리얼 화면으로 재설계.
+   - **징그럽거나 노골적인 실사 혈관·두개골·늑골 완전 제거 & 소프트 3D 카툰/클레이 일러스트 셰이더 탑재**:
+     - 실사 혈관(`Vascular.glb`), 치아·안와가 드러나는 두개골(`Skull`), 복잡한 흉곽(`ThoracicRibcage`)을 전면 제거.
+     - **구면 라디얼 법선 블렌딩(Spherical Radial Normal Smoothing) 3단 셀-툰 클레이 셰이더(`createToonClayMaterial`)**: 뇌(`brain.glb`), 위장(`stomach.glb`), 심장(`heart.glb`), 신장(`kidneys2.glb`), 갑상선(`thyroid.glb`), 대소장(`intestine.glb`), 간(`liver.glb`)의 실사 주름/고랑 노멀을 구면 라디얼 노멀과 블렌딩하여 징그러운 실사 주름 없이 부드럽고 친근한 3D 클레이/일러스트 장기로 렌더링.
+     - **포슬린 베이지 아트토이 마네킹 셰이더(`createStylizedPorcelainBodyMaterial`)**: 얼굴 부위(콧구멍·입술·눈꺼풀)의 어두운 음영을 제거하여 깔끔하고 편안한 아트토이 마네킹 실루엣 구현.
+   - **베이지(`#F5F1E8`) · 브라운(`#3A2A1E`, `#5E4736`) · 그린(`#2D5A43`, `#68A684`) · 화이트(`#FFFFFF`) · 블랙(`#171614`) 5색 시그니처 컬러 시스템**:
+     - 3D 장기/성장판부터 우측 백과사전 카드, 스크롤 연동 비실사 회복도 프로그레스 바까지 100% 5색 팔레트로 통일(붉은 핏빛/살구빛 완전 배제).
 3. **6대 상세페이지 (`director`, `chuna`, `growth`, `diet-zero`, `hairloss`, `gongjindan`) 인라인 스크롤 자동 연동 Before/After 3D 스캔 및 워드프레스 번들 9종(`wordpress-*.html`) 최신 동기화 완료**.
 
 ---
