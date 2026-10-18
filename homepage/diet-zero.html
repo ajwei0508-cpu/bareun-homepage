@@ -1108,17 +1108,180 @@
 
     .consult-action-item:hover { background: var(--accent); color: #111; border-color: var(--accent); }
 
+    /* ======================================================================
+       AWWWARDS HIGH-VISIBILITY & WARM HANJI LIGHT MODE + CLINICAL TRUST BAR
+       ====================================================================== */
+    .header-vis-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      color: var(--gold-light);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+    .header-vis-btn:hover {
+      background: rgba(212, 175, 55, 0.28);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    .detail-clinical-trust-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+    }
+    .detail-trust-seal {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+    .detail-trust-seal-num {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #6EE7B7;
+      letter-spacing: -0.01em;
+    }
+    .detail-trust-seal-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: rgba(248, 250, 252, 0.85);
+      line-height: 1.3;
+      word-break: keep-all;
+    }
+
+    /* Warm Hanji Light Mode for Detail Pages */
+    body.theme-hanji {
+      --bg-dark: #F7F3EB;
+      --bg-panel: rgba(252, 249, 242, 0.96);
+      --text-main: #18130E;
+      --text-sub: #33291F;
+      --text-muted: #6E5D4B;
+      --border-subtle: rgba(138, 100, 33, 0.18);
+      background-color: #F7F3EB;
+      color: #18130E;
+    }
+    body.theme-hanji .ambient-bg {
+      background:
+        radial-gradient(circle at 20% 24%, rgba(212, 175, 55, 0.14) 0%, transparent 50%),
+        linear-gradient(135deg, #FBF8F3 0%, #F4EFE6 55%, #EDE5D8 100%);
+    }
+    body.theme-hanji #header {
+      background: rgba(252, 249, 242, 0.92);
+      border-bottom: 1px solid rgba(138, 100, 33, 0.18);
+    }
+    body.theme-hanji .brand-logo,
+    body.theme-hanji #project-details-title {
+      color: #18130E;
+    }
+    body.theme-hanji .back-pill-btn,
+    body.theme-hanji .clinic-tab {
+      color: #3D3124;
+      background: rgba(24, 19, 14, 0.05);
+      border-color: rgba(138, 100, 33, 0.22);
+    }
+    body.theme-hanji .clinic-tab.active {
+      background: #8A6421;
+      color: #FFFFFF;
+    }
+    body.theme-hanji #project-details-desc p {
+      color: #2B2219;
+      font-weight: 500;
+    }
+    body.theme-hanji .empathy-checklist-card,
+    body.theme-hanji .live-plate-docent {
+      background: rgba(255, 255, 255, 0.86);
+      border-color: rgba(138, 100, 33, 0.25);
+      box-shadow: 0 8px 24px rgba(24, 19, 14, 0.06);
+    }
+    body.theme-hanji .empathy-check-item {
+      background: rgba(247, 243, 235, 0.9);
+      border-color: rgba(138, 100, 33, 0.2);
+    }
+    body.theme-hanji .empathy-check-text,
+    body.theme-hanji .docent-active-caption {
+      color: #1F1812;
+      font-weight: 600;
+    }
+    body.theme-hanji .detail-clinical-trust-bar {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(5, 150, 105, 0.35);
+    }
+    body.theme-hanji .detail-trust-seal {
+      background: rgba(255, 255, 255, 0.85);
+    }
+    body.theme-hanji .detail-trust-seal-num {
+      color: #047857;
+    }
+    body.theme-hanji .detail-trust-seal-label {
+      color: #1F1812;
+    }
+    body.theme-hanji .header-vis-btn {
+      background: #8A6421;
+      color: #FFFFFF;
+      border-color: #8A6421;
+    }
+
+    /* High-Visibility Large Text Mode for Detail Pages */
+    body.high-visibility-mode #project-details-meta {
+      width: 490px;
+      min-width: 490px;
+    }
+    body.high-visibility-mode #project-details-desc p {
+      font-size: 0.96rem !important;
+      line-height: 1.75 !important;
+      color: #FFFFFF !important;
+      font-weight: 500 !important;
+    }
+    body.high-visibility-mode .empathy-check-text {
+      font-size: 0.88rem !important;
+      line-height: 1.55 !important;
+      font-weight: 600 !important;
+      color: #FFFFFF !important;
+    }
+    body.high-visibility-mode .plate-caption-title {
+      font-size: 1.62rem !important;
+    }
+    body.high-visibility-mode .plate-caption-sub {
+      font-size: 0.98rem !important;
+      line-height: 1.65 !important;
+      color: #FFFFFF !important;
+      background: rgba(8, 10, 14, 0.78);
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+    body.high-visibility-mode .docent-active-caption {
+      font-size: 0.88rem !important;
+      line-height: 1.65 !important;
+      color: #FFFFFF !important;
+    }
+
     @media (max-width: 1024px) {
       html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
       .clinic-quick-tabs { display: none; }
       #project-details { flex-direction: column; height: auto; overflow: visible; }
-      #project-details-meta { width: 100%; min-width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+      #project-details-meta, body.high-visibility-mode #project-details-meta { width: 100%; min-width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); }
       #project-details-items-wrapper { width: 100%; height: auto; overflow-x: auto; padding: 28px 0 44px; }
       #project-details-items-move-container { transform: none !important; padding: 0 20px; gap: 18px; }
       .project-details-item, .project-details-item[data-fullscreen], #project-details-preview { width: 88vw; height: 58vh; min-height: 400px; }
       #scroll-indicator { left: 0; }
     }
   </style>
+  <script src="clinic-template-config.js"></script>
 </head>
 <body>
   <div class="ambient-bg"></div>
@@ -1127,7 +1290,7 @@
     <div class="header-left">
       <a class="brand-logo" href="story-3d.html">
         <span class="brand-logo-mark"></span>
-        <span>바른한의원</span>
+        <span id="detail-brand-clinic-name">바른한의원</span>
       </a>
       <a class="back-pill-btn" href="story-3d.html?cards=1">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -1156,7 +1319,10 @@
       </nav>
     </div>
 
-    <div class="header-right">
+    <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (다크 / 한지화이트 / 큰글씨)">
+        <span id="vis-mode-label">👁️ 한지·고시안성 모드</span>
+      </button>
       <button class="header-talk-btn" onclick="window.openConsultModal()">
         <span>1:1 진료예약</span>
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -1177,6 +1343,22 @@
         <div id="project-details-desc">
           <p>뱃살(복부 비만)로 고민하는 환자의 가장 큰 고통은 체중계의 숫자가 아니라, 매일 아침 바지 지퍼를 올릴 때 느끼는 패배감과 거울 앞에서 무의식적으로 배를 가리게 되는 위축감입니다. 극단적인 굶기나 약물 의존은 기초대사량만 무너뜨려 전보다 더 단단한 내장지방 요요를 부를 뿐입니다.</p>
           <p>바른한의원 다이어트 클리닉은 식적(食積)과 습담(노폐물)으로 차갑게 꺼져버린 복부의 대사 화로에 다시 불씨를 되살립니다. 내 몸의 속도에 맞춘 1:1 해독과 기초대사량 부스팅으로 숨기지 않고 입고 싶은 옷을 당당하게 입는 자유를 되찾아 드립니다.</p>
+        </div>
+
+        <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
+        <div class="detail-clinical-trust-bar" aria-label="바른한의원 3대 안심 진료 보증">
+          <div class="detail-trust-seal">
+            <span class="detail-trust-seal-num">🛡️ 320종 무해성</span>
+            <span class="detail-trust-seal-label">잔류농약·중금속 0% GMP 청정탕전</span>
+          </div>
+          <div class="detail-trust-seal">
+            <span class="detail-trust-seal-num">🩺 1:1 실명처방</span>
+            <span class="detail-trust-seal-label">대표원장 직접 진맥·정밀 체질조제</span>
+          </div>
+          <div class="detail-trust-seal">
+            <span class="detail-trust-seal-num">📊 99.4% 안전</span>
+            <span class="detail-trust-seal-label">복용 전후 간수치(AST/ALT) 검증</span>
+          </div>
         </div>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
@@ -1420,7 +1602,7 @@
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
       <h3 class="consult-modal-title">바른 다이어트 · 식욕ZERO 1:1 맞춤 진료 예약</h3>
-      <p class="consult-modal-sub">좌측에서 체크하신 일상 불편감 증상을 바탕으로 안정위 대표원장이 1:1 맞춤 진료를 준비합니다.</p>
+      <p class="consult-modal-sub">좌측에서 체크하신 일상 불편감 증상을 바탕으로 대표원장이 1:1 맞춤 진료를 준비합니다.</p>
       <div class="modal-checked-summary" id="modal-checked-summary">
         체크된 일상 불편감 증상이 자동으로 이곳에 연동됩니다.
       </div>
@@ -1440,7 +1622,7 @@
         <button type="submit" class="modal-submit-btn">✦ 체크한 증상으로 1:1 진료 예약 신청하기</button>
       </form>
       <div class="consult-action-list">
-        <a class="consult-action-item" href="tel:042-488-1075">📞 042-488-1075 전화</a>
+        <a class="consult-action-item" id="detail-tel-link" href="tel:042-488-1075">📞 042-488-1075 전화</a>
         <a class="consult-action-item" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">💬 카카오톡 상담 ↗</a>
       </div>
       <button class="plate-expand-btn" style="width:100%;padding:11px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
@@ -1450,6 +1632,63 @@
   <script>
     (function() {
       'use strict';
+
+      // ====================================================================
+      // 0. AWWWARDS VISIBILITY MODE & B2B WHITE-LABEL BRAND SYNC
+      // ====================================================================
+      const VIS_MODES = ['dark-royal', 'warm-hanji', 'high-visibility'];
+      let currentVisMode = 'dark-royal';
+
+      function applyDetailVisMode(mode) {
+        currentVisMode = VIS_MODES.includes(mode) ? mode : 'dark-royal';
+        document.body.classList.remove('theme-hanji', 'high-visibility-mode');
+        const labelEl = document.getElementById('vis-mode-label');
+        if (currentVisMode === 'warm-hanji') {
+          document.body.classList.add('theme-hanji');
+          if (labelEl) labelEl.textContent = '☀️ 한지 화이트 (켜짐)';
+        } else if (currentVisMode === 'high-visibility') {
+          document.body.classList.add('high-visibility-mode');
+          if (labelEl) labelEl.textContent = '🔍 큰글씨 고시안성 (켜짐)';
+        } else {
+          if (labelEl) labelEl.textContent = '👁️ 한지·고시안성 모드';
+        }
+        try {
+          localStorage.setItem('bareun_visual_mode', currentVisMode);
+        } catch (_) {}
+      }
+
+      window.cycleDetailVisibilityMode = function() {
+        const nextIdx = (VIS_MODES.indexOf(currentVisMode) + 1) % VIS_MODES.length;
+        applyDetailVisMode(VIS_MODES[nextIdx]);
+      };
+
+      (function initDetailBrandAndMode() {
+        const cfg = window.CLINIC_TEMPLATE_CONFIG || {};
+        let savedMode = cfg.defaultTheme || 'dark-royal';
+        try {
+          const lsMode = localStorage.getItem('bareun_visual_mode');
+          if (lsMode) savedMode = lsMode;
+        } catch (_) {}
+        applyDetailVisMode(savedMode);
+
+        let brandData = {
+          clinicName: cfg.clinicName || '바른한의원',
+          phone: cfg.phone || '042-488-1075'
+        };
+        try {
+          const lsBrand = localStorage.getItem('bareun_custom_brand');
+          if (lsBrand) {
+            brandData = Object.assign(brandData, JSON.parse(lsBrand));
+          }
+        } catch (_) {}
+        const nameEl = document.getElementById('detail-brand-clinic-name');
+        if (nameEl && brandData.clinicName) nameEl.textContent = brandData.clinicName;
+        const telEl = document.getElementById('detail-tel-link');
+        if (telEl && brandData.phone) {
+          telEl.href = 'tel:' + brandData.phone;
+          telEl.textContent = '📞 ' + brandData.phone + ' 전화';
+        }
+      })();
 
       // ====================================================================
       // 1. INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST ENGINE
