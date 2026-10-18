@@ -1022,7 +1022,7 @@ function buildBodyExplorerHtml() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>바른한의원 | 3D 인체 질환 · 치료 · 홈케어 쇼룸</title>
+  <title>바른한의원 대전본점 | 3D 인체 질환 · 치료 · 홈케어 쇼룸</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@500;600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1737,7 +1737,7 @@ function buildBodyExplorerHtml() {
   <header class="vibrant-header">
     <a href="story-3d.html" class="vh-brand">
       <div class="vh-brand-mark">바</div>
-      <span class="vh-brand-title">바른한의원 3D 인체모형 · 통합 의학백과</span>
+      <span class="vh-brand-title">바른한의원 대전본점 3D 인체모형 · 통합 의학백과</span>
     </a>
 
     <nav class="vh-part-quicknav" id="vh-part-quicknav">
@@ -1745,6 +1745,7 @@ function buildBodyExplorerHtml() {
     </nav>
 
     <div class="vh-right-actions">
+      <a href="tel:010-5631-1275" class="vh-pill-btn">📞 010-5631-1275</a>
       <a href="story-3d.html" class="vh-pill-btn">← 3D 메인 쇼룸</a>
       <a href="story-3d.html?cards=1" class="vh-pill-btn primary">질환별 상세카드 펼침 ↗</a>
     </div>

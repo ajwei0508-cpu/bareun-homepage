@@ -8,18 +8,18 @@
  */
 window.CLINIC_TEMPLATE_CONFIG = {
   // 1. 한의원 기본 브랜드 정보
-  clinicName: '바른한의원',
-  clinicNameEn: 'BAREUN KOREAN MEDICINE CLINIC',
+  clinicName: '바른한의원 대전본점',
+  clinicNameEn: 'BAREUN KOREAN MEDICINE CLINIC DAEJEON',
   directorName: '안정위',
   directorTitle: '대표원장',
   careerYears: '15년',
-  slogan: '바른 마음, 정직한 처방 · 평생 주치의 한의원',
+  slogan: '바른 마음, 정직한 처방 · 평생 주치의 바른한의원 대전본점',
 
   // 2. 연락처 및 예약 채널
-  phone: '042-488-1075',
+  phone: '010-5631-1275',
   kakaoUrl: 'https://pf.kakao.com/_ykxcLK',
   naverBookingUrl: 'https://naver.me/5U1ELn8L',
-  address: '대전광역시 서구 둔산로 (둔산동, 바른한의원 빌딩 3층 · 전용 주차장 완비)',
+  address: '대전광역시 서구 둔산로 (둔산동, 바른한의원 대전본점 · 전용 주차장 완비)',
 
   // 3. 진료 시간 안내 (환자 신뢰 & 시안성 정보)
   hours: [

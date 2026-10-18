@@ -961,7 +961,7 @@ function buildPageHtml(page) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>${page.meta.title} — 바른한의원 모션 스토리텔링 상세페이지</title>
+  <title>${page.meta.title} — 바른한의원 대전본점 모션 스토리텔링 상세페이지</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2785,7 +2785,7 @@ function buildPageHtml(page) {
     <div class="header-left">
       <a class="brand-logo" href="story-3d.html">
         <span class="brand-logo-mark"></span>
-        <span id="detail-brand-clinic-name">바른한의원</span>
+        <span id="detail-brand-clinic-name">바른한의원 대전본점</span>
       </a>
       <a class="back-pill-btn" href="story-3d.html?cards=1">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -2813,6 +2813,9 @@ function buildPageHtml(page) {
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <a class="back-pill-btn" href="tel:010-5631-1275" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
+        <span>📞 010-5631-1275</span>
+      </a>
       <button type="button" class="header-ba-btn" onclick="window.openDetailBaModal()">
         <span>B/A 스캔 크게보기 ⇄</span>
       </button>
@@ -3044,7 +3047,7 @@ function buildPageHtml(page) {
         <button type="submit" class="modal-submit-btn">체크한 증상으로 1:1 진료 예약 신청하기</button>
       </form>
       <div class="consult-action-list">
-        <a class="consult-action-item" id="detail-tel-link" href="tel:042-488-1075">전화 상담 (042-488-1075)</a>
+        <a class="consult-action-item" id="detail-tel-link" href="tel:010-5631-1275">전화 상담 (010-5631-1275)</a>
         <a class="consult-action-item" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">카카오톡 채널 상담 ↗</a>
       </div>
       <button class="plate-expand-btn" style="width:100%;padding:11px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
@@ -3288,11 +3291,11 @@ function buildPageHtml(page) {
         applyDetailVisMode(savedMode);
 
         let brandData = {
-          clinicName: cfg.clinicName || '바른한의원',
-          phone: cfg.phone || '042-488-1075'
+          clinicName: cfg.clinicName || '바른한의원 대전본점',
+          phone: cfg.phone || '010-5631-1275'
         };
         try {
-          const lsBrand = localStorage.getItem('bareun_custom_brand');
+          const lsBrand = localStorage.getItem('bareun_custom_brand_v2');
           if (lsBrand) {
             brandData = Object.assign(brandData, JSON.parse(lsBrand));
           }
@@ -3382,7 +3385,7 @@ function buildPageHtml(page) {
               parentMemo: document.getElementById('modal-user-memo').value
             })
           }).catch(() => {});
-          alert('[바른한의원 1:1 맞춤 예약 접수 완료]\\n' + name + '님, 체크하신 증상(' + (checked.length || '맞춤 상담') + '건)을 바탕으로 전담 상담실장이 빠르게 연락드리겠습니다.');
+          alert('[바른한의원 대전본점 1:1 맞춤 예약 접수 완료]\\n' + name + '님, 체크하신 증상(' + (checked.length || '맞춤 상담') + '건)을 바탕으로 전담 상담실장이 빠르게 연락드리겠습니다.\\n대표전화: 010-5631-1275');
           document.getElementById('consult-modal').classList.remove('open');
           consultForm.reset();
         });
