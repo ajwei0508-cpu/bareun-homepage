@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>바른 전립선 · 남성활력 — 바른한의원 대전본점 모션 스토리텔링 상세페이지</title>
-  <meta name="description" content="바른 전립선 · 남성활력 — 골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.">
+  <title>바른 전립선 · 남성활력 — 바른한의원 대전본점 · 아빠 한의사 내 가족 주치의</title>
+  <meta name="description" content="아빠 한의사 · 내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 주치의 | 바른 전립선 · 남성활력 — 골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="바른한의원 대전본점">
-  <meta property="og:title" content="바른 전립선 · 남성활력 — 바른한의원 대전본점">
-  <meta property="og:description" content="골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.">
+  <meta property="og:site_name" content="바른한의원 대전본점 · 아빠 한의사">
+  <meta property="og:title" content="바른 전립선 · 남성활력 — 바른한의원 대전본점 (아빠 한의사 · 내 가족 주치의)">
+  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 하는 아빠 한의사 · 골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.">
   <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/illust_prostate_care.jpg">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -381,17 +381,180 @@
       font-weight: 600;
     }
 
-    .empathy-diagnosis-box {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: rgba(212, 175, 55, 0.09);
-      border-left: 3px solid var(--accent);
-      font-size: 0.75rem;
-      line-height: 1.52;
-      color: var(--accent-light);
+    .empathy-count-badge.is-caution {
+      background: #D97706 !important;
+      border-color: #F59E0B !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 14px rgba(217, 119, 6, 0.45);
+    }
+
+    .empathy-count-badge.is-severe {
+      background: #DC2626 !important;
+      border-color: #EF4444 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 16px rgba(220, 38, 38, 0.6);
+      animation: severeBadgePulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes severeBadgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .empathy-severity-board {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .severity-tier-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 11px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .severity-check-box {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border-radius: 7px;
+      border: 2px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.05);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .severity-check-box svg {
+      width: 15px;
+      height: 15px;
+      transform: scale(0.4);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .severity-tier-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .severity-tier-cond {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: rgba(248, 250, 252, 0.62);
+      letter-spacing: -0.01em;
+    }
+
+    .severity-tier-label {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: rgba(248, 250, 252, 0.78);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
       word-break: keep-all;
+    }
+
+    .severity-tier-pill {
+      position: absolute;
+      top: -8px;
+      right: 8px;
+      font-size: 0.62rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.02em;
       transition: all 0.25s ease;
+    }
+
+    /* ACTIVE CAUTION (1~2개 선택 시) */
+    .severity-tier-card.tier-caution.is-checked {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.26) 0%, rgba(217, 119, 6, 0.16) 100%);
+      border: 2px solid #F59E0B;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.32);
+      transform: translateY(-2px);
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-check-box {
+      background: #D97706;
+      border-color: #FBBF24;
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.65);
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-check-box svg {
+      transform: scale(1);
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-tier-cond {
+      color: #FDE68A;
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-tier-label {
+      color: #FEF08A;
+      font-size: 0.92rem;
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-tier-pill {
+      background: #D97706;
+      border-color: #FDE68A;
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5);
+    }
+
+    /* ACTIVE SEVERE (3개 이상 선택 시) */
+    .severity-tier-card.tier-severe.is-checked {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.36) 0%, rgba(153, 27, 27, 0.26) 100%);
+      border: 2.5px solid #EF4444;
+      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.48);
+      transform: translateY(-2px) scale(1.02);
+      animation: severeCardPulse 1.3s infinite ease-in-out;
+    }
+
+    @keyframes severeCardPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.38); }
+      50% { box-shadow: 0 8px 32px rgba(239, 68, 68, 0.72); }
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-check-box {
+      background: #DC2626;
+      border-color: #FCA5A5;
+      color: #FFFFFF;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.85);
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-check-box svg {
+      transform: scale(1.08);
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-tier-cond {
+      color: #FECACA;
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-tier-label {
+      color: #FFFFFF;
+      font-size: 0.94rem;
+      text-shadow: 0 2px 8px rgba(220, 38, 38, 0.6);
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-tier-pill {
+      background: #DC2626;
+      border-color: #FECACA;
+      color: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(220, 38, 38, 0.65);
     }
 
     .cta-nudge-msg {
@@ -594,7 +757,109 @@
       object-position: center center;
       display: block;
       will-change: transform;
-      transition: transform 0.12s linear;
+      transition: transform 0.12s linear, opacity 0.18s ease;
+    }
+
+    .lusion-clean-media.is-contain-fit {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center 12px !important;
+      padding: 12px 18px 158px !important;
+      background: radial-gradient(circle at 50% 42%, #1D1814 0%, #0D0A08 100%);
+    }
+
+    .project-details-item.has-contain-media .visual-sci-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .plate-thumb-dock {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      pointer-events: auto;
+    }
+
+    .plate-thumb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px 4px 4px;
+      border-radius: 10px;
+      background: rgba(12, 15, 20, 0.84);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      color: rgba(248, 250, 252, 0.88);
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    .plate-thumb-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(253, 230, 138, 0.65);
+      transform: translateY(-2px);
+    }
+
+    .plate-thumb-btn.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.36) 0%, rgba(16, 185, 129, 0.24) 100%);
+      border-color: var(--accent-light);
+      color: #FFFFFF;
+      box-shadow: 0 8px 22px rgba(212, 175, 55, 0.38);
+      transform: translateY(-2px);
+    }
+
+    .plate-thumb-preview {
+      width: 44px;
+      height: 30px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+      background: #0F1216;
+    }
+
+    .plate-thumb-btn.active .plate-thumb-preview {
+      border-color: #FEF08A;
+    }
+
+    .plate-thumb-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .plate-thumb-btn.active .plate-thumb-label {
+      color: #FEF08A;
+    }
+
+    @media (max-width: 1024px) {
+      .lusion-clean-media.is-contain-fit {
+        padding: 8px 10px 136px !important;
+      }
+      .plate-thumb-dock {
+        gap: 5px;
+        margin-bottom: 6px;
+      }
+      .plate-thumb-btn {
+        padding: 3px 7px 3px 3px;
+        gap: 5px;
+        border-radius: 8px;
+      }
+      .plate-thumb-preview {
+        width: 30px;
+        height: 21px;
+      }
+      .plate-thumb-label {
+        font-size: 0.63rem;
+      }
     }
 
     .clean-plate-scrim {
@@ -866,11 +1131,12 @@
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       pointer-events: none;
+      transition: opacity 0.22s ease;
     }
 
     .is-clean-plate .visual-sci-overlay {
       left: 28px; right: 28px;
-      bottom: 138px;
+      bottom: 168px;
     }
 
     .sci-stat-card {
@@ -1436,6 +1702,195 @@
       background: var(--gold);
       border-color: var(--gold);
       color: #090B0E;
+    }
+
+    /* Daddy Doctor Brand Promise Card & Opening Slogan Stage */
+    .daddy-doc-promise-card {
+      margin-bottom: 10px;
+      padding: 10px 13px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16) 0%, rgba(45, 90, 67, 0.14) 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+    }
+    .daddy-doc-promise-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .daddy-doc-promise-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+    }
+    .daddy-doc-promise-text {
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #FFFFFF;
+      word-break: keep-all;
+    }
+    body.theme-hanji .daddy-doc-promise-card {
+      background: linear-gradient(135deg, #FFFDF7 0%, #EFE9DC 100%);
+      border: 1.5px solid rgba(74, 53, 37, 0.28);
+      box-shadow: 0 6px 18px rgba(58, 42, 30, 0.06);
+    }
+    body.theme-hanji .daddy-doc-promise-badge {
+      color: #2D5A43;
+    }
+    body.theme-hanji .daddy-doc-promise-text {
+      color: #171614;
+    }
+
+    #detail-daddy-intro-overlay {
+      position: absolute;
+      inset: 14px 22px 18px 22px;
+      z-index: 65;
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px 24px;
+      background:
+        radial-gradient(circle at 50% 36%, rgba(212, 175, 55, 0.22) 0%, rgba(45, 90, 67, 0.16) 42%, rgba(12, 14, 18, 0.95) 86%),
+        linear-gradient(160deg, rgba(18, 15, 13, 0.96) 0%, rgba(10, 13, 18, 0.97) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.65);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease;
+      cursor: pointer;
+    }
+    #detail-daddy-intro-overlay.closing {
+      opacity: 0;
+      transform: scale(1.05) translateY(-10px);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+    #detail-daddy-intro-overlay.hidden {
+      display: none !important;
+    }
+    .detail-daddy-intro-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(253, 230, 138, 0.48);
+      color: #FEF3C7;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .detail-daddy-intro-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 12px #34D399;
+    }
+    .detail-daddy-intro-quote {
+      font-family: 'Cormorant Garamond', 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 900;
+      color: rgba(253, 230, 138, 0.75);
+      line-height: 1;
+      margin: 0 4px;
+    }
+    .detail-daddy-intro-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.55rem, 3.1vw, 2.55rem);
+      font-weight: 900;
+      line-height: 1.32;
+      letter-spacing: -0.025em;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .detail-daddy-char {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) rotateX(-35deg) scale(0.92);
+      filter: blur(5px);
+      transition: opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1), transform 0.56s cubic-bezier(0.22, 1, 0.36, 1), filter 0.48s ease;
+    }
+    .detail-daddy-char.revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+    .detail-daddy-char.gold {
+      background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 48%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .detail-daddy-space {
+      display: inline-block;
+      width: 0.3em;
+    }
+    .detail-daddy-intro-sub {
+      font-size: clamp(0.84rem, 1.25vw, 1.02rem);
+      font-weight: 600;
+      line-height: 1.6;
+      color: rgba(248, 250, 252, 0.9);
+      max-width: 580px;
+      margin-bottom: 18px;
+      word-break: keep-all;
+    }
+    .detail-daddy-intro-sub strong {
+      color: #FDE68A;
+      font-weight: 800;
+    }
+    .detail-daddy-intro-progress {
+      width: min(260px, 72vw);
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .detail-daddy-intro-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #D4AF37, #FEF08A, #10B981);
+      transition: width 0.08s linear;
+    }
+    .detail-daddy-intro-hint {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(253, 230, 138, 0.88);
+      letter-spacing: 0.05em;
+    }
+    @media (max-width: 1024px) {
+      #detail-daddy-intro-overlay {
+        inset: 8px 12px 42px 12px;
+        padding: 18px 16px;
+        border-radius: 16px;
+      }
+      .detail-daddy-intro-pill {
+        font-size: 0.64rem;
+        padding: 4px 11px;
+        margin-bottom: 8px;
+      }
+      .detail-daddy-intro-title {
+        font-size: 1.26rem;
+        margin-bottom: 8px;
+      }
+      .detail-daddy-intro-sub {
+        font-size: 0.76rem;
+        margin-bottom: 10px;
+      }
     }
 
     .detail-clinical-trust-bar {
@@ -2068,11 +2523,67 @@
       color: #171614;
       font-weight: 800;
     }
-    body.theme-hanji .empathy-diagnosis-box {
-      background: #E8F2EC;
-      border-left-color: #2D5A43;
-      color: #171614;
-      font-weight: 500;
+    body.theme-hanji .severity-tier-card {
+      background: #F8F5EE;
+      border-color: rgba(94, 71, 54, 0.22);
+    }
+    body.theme-hanji .severity-check-box {
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.36);
+    }
+    body.theme-hanji .severity-tier-cond {
+      color: #6B5746;
+    }
+    body.theme-hanji .severity-tier-label {
+      color: #2A1E15;
+    }
+    body.theme-hanji .severity-tier-pill {
+      background: #EFE9DC;
+      border-color: rgba(94, 71, 54, 0.26);
+      color: #5E4736;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked {
+      background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+      border: 2.5px solid #D97706;
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.28);
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-check-box {
+      background: #D97706;
+      border-color: #B45309;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-cond {
+      color: #92400E;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-label {
+      color: #B45309;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-pill {
+      background: #D97706;
+      border-color: #B45309;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked {
+      background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+      border: 2.5px solid #DC2626;
+      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.35);
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-check-box {
+      background: #DC2626;
+      border-color: #991B1B;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-cond {
+      color: #991B1B;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-label {
+      color: #B91C1C;
+      text-shadow: none;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-pill {
+      background: #DC2626;
+      border-color: #991B1B;
+      color: #FFFFFF;
     }
     body.theme-hanji #project-details-launch-cta {
       background: linear-gradient(135deg, #2D5A43, #3D7357);
@@ -2526,6 +3037,289 @@
         bottom: 12px;
       }
     }
+
+    /* ============================================================================
+       4-TYPE HAIRLOSS SUBTYPE SWITCHER BAR & MODAL IN DETAIL PAGES
+       ============================================================================ */
+    .hairloss-subtype-switcher {
+      margin: 0 0 12px 0;
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(16, 36, 26, 0.94), rgba(24, 52, 38, 0.92));
+      border: 1.5px solid rgba(212, 175, 55, 0.48);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+    }
+    .hairloss-subtype-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .hairloss-subtype-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #FDE68A;
+      letter-spacing: -0.01em;
+    }
+    .hairloss-subtype-modal-btn {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #FEF3C7;
+      font-size: 0.65rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .hairloss-subtype-modal-btn:hover {
+      background: #D4AF37;
+      color: #0F1D15;
+    }
+    .hairloss-subtype-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .hairloss-subtype-tab {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 7px 9px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      text-decoration: none;
+      transition: all 0.22s ease;
+    }
+    .hairloss-subtype-tab:hover {
+      background: rgba(110, 231, 183, 0.16);
+      border-color: rgba(110, 231, 183, 0.55);
+      transform: translateY(-1px);
+    }
+    .hairloss-subtype-tab.active {
+      background: linear-gradient(135deg, rgba(45, 90, 67, 0.95), rgba(27, 67, 50, 0.95));
+      border-color: #6EE7B7;
+      box-shadow: 0 0 14px rgba(110, 231, 183, 0.32);
+    }
+    .hst-top {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .hst-num {
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: #6EE7B7;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.2);
+    }
+    .hairloss-subtype-tab.active .hst-num {
+      background: #6EE7B7;
+      color: #0B1911;
+    }
+    .hst-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .hst-sub {
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.74);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 4-Type Hairloss Modal Overlay inside Detail Pages */
+    #detail-hairloss-4type-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 12000;
+      background: rgba(8, 15, 11, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #detail-hairloss-4type-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .dh4-dialog {
+      width: min(1060px, 96vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 26px;
+      background: linear-gradient(155deg, rgba(16, 30, 22, 0.97), rgba(10, 19, 14, 0.99));
+      border: 1.5px solid rgba(212, 175, 55, 0.5);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.65);
+      padding: 26px 28px;
+      color: #FFFFFF;
+    }
+    .dh4-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .dh4-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: #FDE68A;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+    .dh4-title {
+      margin: 0 0 5px 0;
+      font-family: var(--font-serif, 'Noto Serif KR', serif);
+      font-size: clamp(1.3rem, 2.1vw, 1.8rem);
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .dh4-title em {
+      font-style: normal;
+      color: #6EE7B7;
+    }
+    .dh4-sub {
+      margin: 0;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .dh4-close {
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .dh4-close:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: rgba(248, 113, 113, 0.6);
+    }
+    .dh4-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .dh4-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      text-decoration: none;
+      color: #FFFFFF;
+      transition: transform 0.26s ease, border-color 0.26s ease, box-shadow 0.26s ease;
+    }
+    .dh4-card:hover, .dh4-card.current {
+      transform: translateY(-4px);
+      border-color: #6EE7B7;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 22px rgba(110, 231, 183, 0.24);
+    }
+    .dh4-visual {
+      position: relative;
+      height: 136px;
+      overflow: hidden;
+    }
+    .dh4-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+    .dh4-card:hover .dh4-visual img {
+      transform: scale(1.06);
+    }
+    .dh4-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,18,14,0.12) 0%, rgba(10,18,14,0.86) 100%);
+    }
+    .dh4-badge {
+      position: absolute;
+      top: 9px;
+      left: 9px;
+      z-index: 2;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 29, 21, 0.86);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      color: #A7F3D0;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .dh4-body {
+      padding: 13px 14px 15px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .dh4-card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .dh4-card-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #FDE68A;
+    }
+    .dh4-card-desc {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.44;
+      color: rgba(255, 255, 255, 0.8);
+      flex: 1;
+    }
+    .dh4-cta {
+      margin-top: 6px;
+      padding: 8px 11px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2D5A43, #1B4332);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dh4-card:hover .dh4-cta {
+      background: linear-gradient(135deg, #D4AF37, #B58E24);
+      color: #0F1D15;
+    }
+    @media (max-width: 920px) {
+      .dh4-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .dh4-grid { grid-template-columns: 1fr; }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -2550,20 +3344,12 @@
     </div>
 
     <div class="header-center">
-      <div id="project-details-header-info">
-        <span>scroll to explore</span>
-        <svg viewBox="0 0 16 16" fill="currentColor">
-          <path d="M11.485 8.365 8.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
-          <path d="M5.485 8.365 2.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
-        </svg>
-      </div>
-
       <nav class="clinic-quick-tabs" aria-label="클리닉 바로가기">
         <a class="clinic-tab" href="director.html">원장 철학</a>
         <a class="clinic-tab" href="chuna.html">바른 추나</a>
         <a class="clinic-tab" href="growth.html">소아 성장</a>
         <a class="clinic-tab" href="diet-zero.html">바른 다이어트</a>
-        <a class="clinic-tab" href="hairloss.html">바른 탈모</a>
+        <a class="clinic-tab" href="hairloss.html" onclick="if(window.openDetailHairlossModal){event.preventDefault();window.openDetailHairlossModal();}">바른 탈모 ▾</a>
         <a class="clinic-tab" href="gongjindan.html">황제공진단</a>
         <a class="clinic-tab active" href="prostate.html">전립선 활력</a>
       </nav>
@@ -2596,48 +3382,6 @@
         <div id="project-details-desc">
           <p>골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.</p>
         </div>
-
-        <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
-        <div class="detail-clinical-trust-bar" aria-label="바른한의원 학술 논문 검증 안심 진료 보증">
-          <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">SCI·학술 검증</span>
-            <span class="detail-trust-seal-label">실제 학술 논문 검수로 입증된 치료법</span>
-          </div>
-          <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">원장 전담 진맥</span>
-            <span class="detail-trust-seal-label">대표원장 직접 맥진·체질 맞춤 처방</span>
-          </div>
-          <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">청정 안심 탕전</span>
-            <span class="detail-trust-seal-label">중금속·잔류농약 불검출 GMP 약재</span>
-          </div>
-        </div>
-
-        <!-- EMBEDDED SCROLL-REACTIVE 3D BEFORE / AFTER BIOMEDICAL SCAN (Auto-transforms on scroll!) -->
-        <div class="inline-scroll-ba-card" id="inline-scroll-ba-card">
-          <div class="inline-scroll-ba-head">
-            <span class="inline-scroll-ba-title">학술 검증 치료 전·후 생체 비교</span>
-            <span class="inline-scroll-ba-pct" id="inline-ba-pct-badge">스크롤 연동 · 학술 검증 치료 변화</span>
-          </div>
-          <div class="inline-scroll-ba-viewport" id="inline-ba-viewport" title="스크롤을 내리면 자동으로 치료 전(Before)에서 치료 후(After)로 변환됩니다">
-            <img id="inline-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false">
-            <div class="inline-scroll-ba-after-clip" id="inline-ba-after-clip">
-              <img id="inline-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false">
-            </div>
-            <span class="inline-scroll-ba-pill b" id="inline-ba-pill-b">BEFORE · 치료 전</span>
-            <span class="inline-scroll-ba-pill a" id="inline-ba-pill-a">AFTER · 치료 후</span>
-            <div class="inline-scroll-ba-laser" id="inline-ba-laser"></div>
-          </div>
-          <div class="inline-scroll-ba-foot">
-            <span>스크롤 시 BEFORE ➔ AFTER 자동 변환</span>
-          </div>
-        </div>
-
-        <!-- 1-CLICK PORTAL TO UNIFIED 3D HUMAN BODY MEDICAL INFORMATION PAGE -->
-        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html" style="background:#2D5A43;border-color:#2D5A43;color:#FFFFFF;">
-          <span>🧬 인체모형 통합 의학·학술논문 정보</span>
-          <span style="white-space:nowrap;flex-shrink:0;">보러가기 ↗</span>
-        </a>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
@@ -2694,12 +3438,35 @@
               <span class="empathy-check-text">[남성 활력 저하] 배뇨 불편감과 함께 만성 피로 및 하체·남성 활력 저하가 느껴진다.</span>
             </label>
           </div>
-          <div class="empathy-diagnosis-box" id="empathy-diagnosis-box">
-            겪고 계신 배뇨·전립선 불편감을 체크하시면 진단 가이드가 안내됩니다.
+          <div class="empathy-severity-board" id="empathy-diagnosis-box" aria-live="polite" style="display:none;">
+            <div class="severity-tier-card tier-caution" id="severity-tier-caution" style="display:none;">
+              <span class="severity-check-box" id="severity-box-caution">
+                <svg viewBox="0 0 18 18" fill="none">
+                  <path d="M3.2 9.4L7.2 13.4L14.8 4.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div class="severity-tier-info">
+                <span class="severity-tier-cond">1~2개 선택 시</span>
+                <strong class="severity-tier-label">전립선장애 주의</strong>
+              </div>
+              <span class="severity-tier-pill" id="severity-pill-caution">✓ 주의</span>
+            </div>
+
+            <div class="severity-tier-card tier-severe" id="severity-tier-severe" style="display:none;">
+              <span class="severity-check-box" id="severity-box-severe">
+                <svg viewBox="0 0 18 18" fill="none">
+                  <path d="M3.2 9.4L7.2 13.4L14.8 4.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div class="severity-tier-info">
+                <span class="severity-tier-cond">3개 이상 선택 시</span>
+                <strong class="severity-tier-label">전립선장애 심각</strong>
+              </div>
+              <span class="severity-tier-pill" id="severity-pill-severe">🚨 심각</span>
+            </div>
           </div>
         </div>
 
-        <div class="cta-nudge-msg" id="cta-nudge-msg">📝 체크하신 배뇨 불편 증상을 원장님께 먼저 보내고 프라이빗 상담을 받습니다.</div>
         <button id="project-details-launch-cta" onclick="window.openConsultModal()">
           <span class="cta-left-group">
             <span id="project-details-launch-cta-dot"></span>
@@ -2712,105 +3479,88 @@
       </div>
     </aside>
 
-    <!-- RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY -->
-    <section id="project-details-items-wrapper" aria-label="수평 모션 스토리텔링 트랙">
+    <!-- RIGHT HORIZONTAL CARD RUNWAY -->
+    <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
         
-        <!-- PLATE 01: Lusion Clean Image Plate -->
+        <!-- PLATE 01: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate is-active-plate" data-fullscreen>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="illust_prostate_care.jpg" alt="밤마다 잠을 깨우는 '야간뇨'와 '잔뇨감', 숙면과 일상이 무너집니다" draggable="false">
+            <img class="lusion-clean-media" src="illust_prostate_care.jpg" alt="밤마다 잠을 깨우는 '야간뇨와 잔뇨감', 숙면과 일상이 무너집니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 밤마다 깨어나는 야간뇨의 고통</span>
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag">야간뇨·잔뇨감 배뇨 불편</span><span class="clean-spec-tag">수면 분절 및 만성 피로 유발</span>
-                </div>
-                <h2 class="plate-caption-title">밤마다 잠을 깨우는 <span class="title-key-em">'야간뇨'</span>와 <span class="title-key-em">'잔뇨감'</span>, 숙면과 일상이 무너집니다</h2>
-                <p class="plate-caption-sub">화장실을 다녀와도 개운하지 않고 밤잠을 설치는 일상은 부어오른 전립선과 약해진 방광이 보내는 신호입니다.</p>
+                <h2 class="plate-caption-title">밤마다 잠을 깨우는 <span class="title-key-em">'야간뇨와 잔뇨감'</span>, 숙면과 일상이 무너집니다</h2>
+                <p class="plate-caption-sub">개운치 않은 배뇨와 끊기는 밤잠은 부어오른 전립선과 약해진 방광의 신호입니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 02: Lusion Clean Image Plate -->
+        <!-- PLATE 02: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate">
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story2_clean.jpg?v=oryzo3" alt="항생제를 먹어도 반복되는 이유, 세균이 아닌 골반 울혈 때문입니다" draggable="false">
+            <img class="lusion-clean-media" src="detail_director_story2_clean.jpg?v=oryzo3" alt="항생제를 먹어도 재발하는 이유, 세균 아닌 '골반 울혈'입니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 항생제로도 재발하는 만성 전립선염의 원인</span>
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag">만성 비세균성 골반 울혈</span><span class="clean-spec-tag">요도 압박 및 회음부 통증 원인</span>
-                </div>
-                <h2 class="plate-caption-title">항생제를 먹어도 반복되는 이유, 세균이 아닌 골반 울혈 때문입니다</h2>
-                <p class="plate-caption-sub">만성 전립선염의 대다수는 세균 감염이 아닌 골반 근육 긴장과 혈류 정체로 인한 비세균성 울혈이 원인입니다.</p>
+                <h2 class="plate-caption-title">항생제를 먹어도 재발하는 이유, 세균 아닌 <span class="title-key-em">'골반 울혈'</span>입니다</h2>
+                <p class="plate-caption-sub">만성 전립선염 대다수는 골반 근육 긴장과 혈류 정체로 인한 비세균성 울혈입니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 03: Lusion Clean Image Plate -->
+        <!-- PLATE 03: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate" data-fullscreen>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story4_decoction_lab.jpg?v=dir4new" alt="부어오른 전립선 압박은 풀고, 차가워진 방광의 저장력은 깨웁니다" draggable="false">
+            <img class="lusion-clean-media" src="detail_director_story4_decoction_lab.jpg?v=dir4new" alt="부어오른 전립선 압박은 풀고, '방광 저장력'은 따뜻하게 깨웁니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 전립선 부종 감압 & 방광 온양(溫陽) 치료</span>
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag">전립선 부종 감압 및 요도 개통</span><span class="clean-spec-tag">신장·방광 온양(溫陽) 저장력 복원</span>
-                </div>
-                <h2 class="plate-caption-title">부어오른 전립선 압박은 풀고, 차가워진 방광의 저장력은 깨웁니다</h2>
-                <p class="plate-caption-sub">전립선 미세 염증과 부종을 가라앉혀 소변 길을 시원하게 넓히고, 방광 괄약근을 따뜻하게 보강해 통잠을 되찾아 드립니다.</p>
+                <h2 class="plate-caption-title">부어오른 전립선 압박은 풀고, <span class="title-key-em">'방광 저장력'</span>은 따뜻하게 깨웁니다</h2>
+                <p class="plate-caption-sub">전립선 부종을 가라앉혀 요도를 넓히고 방광 괄약근을 보강해 통잠을 되찾습니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 04: Lusion Clean Image Plate -->
+        <!-- PLATE 04: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate">
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_chuna_story4_palpation.jpg?v=chuna2" alt="회음부 신경을 누르는 골반 틀어짐까지 정밀하게 교정합니다" draggable="false">
+            <img class="lusion-clean-media" src="detail_chuna_story4_palpation.jpg?v=chuna2" alt="회음부 신경을 누르는 '골반 틀어짐'까지 정밀하게 교정합니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 골반저 감압 추나 & 심부 약침 시술</span>
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag">골반저 근육·신경 감압 추나</span><span class="clean-spec-tag">하초 혈류 활성화 정제 약침</span>
-                </div>
-                <h2 class="plate-caption-title">회음부 신경을 누르는 골반 틀어짐까지 정밀하게 교정합니다</h2>
-                <p class="plate-caption-sub">오래 앉아 굳어진 골반저 근육과 천장관절을 추나로 이완하고, 심부 약침으로 전립선 주변 혈류 순환을 촉진합니다.</p>
+                <h2 class="plate-caption-title">회음부 신경을 누르는 <span class="title-key-em">'골반 틀어짐'</span>까지 정밀하게 교정합니다</h2>
+                <p class="plate-caption-sub">굳어진 골반저 근육을 추나로 이완하고 심부 약침으로 전립선 혈류를 깨웁니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 05: Lusion Clean Image Plate -->
+        <!-- PLATE 05: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate">
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" alt="실제 학술 논문 검수로 입증된 한방 전립선·배뇨 치료법" draggable="false">
+            <img class="lusion-clean-media" src="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" alt="실제 학술 논문 검수로 입증된 '한방 전립선·배뇨 치료법'" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="visual-sci-overlay">
               
               <div class="sci-stat-card">
                 <div class="sci-stat-num">국제 비뇨의학회지(Urology) 검증</div>
-                <div class="sci-stat-label">만성 비세균성 전립선염·골반통증증후군 배뇨 및 통증 개선 입증</div>
+                <div class="sci-stat-label">만성 비세균성 전립선염·골반통증 배뇨 및 통증 개선 입증</div>
                 <div class="sci-bar-track"><div class="sci-bar-fill" style="width:96%"></div></div>
               </div>
               <div class="sci-stat-card">
                 <div class="sci-stat-num">국제 식물학술지(Phytomedicine) 등재</div>
-                <div class="sci-stat-label">전립선 비대 조직 감압 및 하부요로증상 완화 기전 학술 검증</div>
+                <div class="sci-stat-label">전립선 비대 조직 감압 및 하부요로증상 완화 검증</div>
                 <div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div>
               </div>
             </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 비뇨의학·약리 학술 논문 검수 완료</span>
-                <h2 class="plate-caption-title">실제 학술 논문 검수로 입증된 한방 전립선·배뇨 치료법</h2>
-                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 국제 비뇨의학 및 약리학 학술 논문에서 전립선 감압과 배뇨 개선 기전이 입증된 치료법을 안내합니다.</p>
+                <h2 class="plate-caption-title">실제 학술 논문 검수로 입증된 <span class="title-key-em">'한방 전립선·배뇨 치료법'</span></h2>
+                <p class="plate-caption-sub">국제 비뇨의학 학술지에서 전립선 비대 감압과 배뇨 개선이 입증된 치료입니다.</p>
               </div>
             </div>
           </div>
@@ -2825,35 +3575,32 @@
             </div>
             <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
             <div class="clean-plate-scrim"></div>
-            <div class="visual-sci-overlay" id="runway-ba-metrics-overlay"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label" id="runway-ba-step-pill">EVIDENCE-BASED CARE · 학술 논문 검증 치료 전·후 비교</span>
                 <div class="clean-spec-tags">
                   <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
                 </div>
-                <h2 class="plate-caption-title">바른 전립선 · 남성활력 — 학술 논문 검수 기반 치료 변화</h2>
-                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
+                <h2 class="plate-caption-title">바른 전립선 · 남성활력 — 치료 전·후 비교</h2>
+                <p class="plate-caption-sub">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 07 (LAST CARD): 3D Human Body Model Portal + Bottom-Right Mini Keyword Card -->
+        <!-- LAST CARD: 3D Human Body Model Portal -->
         <article id="project-details-preview" class="body-model-last-card">
           <img class="next-portal-bg" src="illust_prostate_care.jpg" alt="인체모형으로 내 전립선·방광 원인 연결하기">
           <div class="next-portal-scrim"></div>
           <div class="body-model-holo-grid"></div>
 
           <div class="body-model-top-bar">
-            <span class="body-model-badge-main">🧬 인체모형 통합 의학·논문 쇼룸 연결 카드</span>
+            <span class="body-model-badge-main">🧬 인체모형 통합 의학·논문 쇼룸</span>
             <span class="body-model-badge-sub">전립선 · 방광 · 골반 인체모형</span>
           </div>
 
           <div class="body-model-bottom-stage">
             <a id="project-details-preview-inner" href="body-explorer.html?part=prostate">
-              <div class="next-portal-eyebrow">FINAL CARD · HUMAN BODY MODEL SHOWROOM</div>
               <h2 id="project-details-preview-title">인체모형으로 내 전립선·방광 원인 연결하기</h2>
               <p class="next-portal-desc">인체모형에서 전립선·방광 해부 구조와 실제 학술 논문으로 검증된 치료법을 한눈에 확인하세요.</p>
               <div class="body-model-feature-chips">
@@ -2871,58 +3618,10 @@
                 </svg>
               </div>
             </a>
-
-            <!-- SMALL KEYWORD CARD AT BOTTOM-RIGHT OF LAST CARD -->
-            <div class="last-card-mini-keyword-box" aria-label="다른 스토리 키워드 미니 카드">
-              <div class="mini-kw-eyebrow">
-                <span>OTHER STORY · 키워드 카드</span>
-                <span>↗</span>
-              </div>
-              <a class="mini-kw-card-link primary-hair" href="hairloss.html">
-                <span class="mini-kw-text-col">
-                  <span class="mini-kw-question">탈모 궁금해?</span>
-                  <span class="mini-kw-sub">바른 탈모 · 모근재생 스토리</span>
-                </span>
-                <span class="mini-kw-arrow">→</span>
-              </a>
-              <a class="mini-kw-card-link secondary-next" href="director.html">
-                <span class="mini-kw-text-col">
-                  <span class="mini-kw-question">대표원장 진료철학 궁금해?</span>
-                  <span class="mini-kw-sub">안정위 대표원장 철학</span>
-                </span>
-                <span class="mini-kw-arrow">→</span>
-              </a>
-            </div>
           </div>
         </article>
       </div>
     </section>
-
-    <!-- FLOATING BOTTOM-RIGHT SMALL KEYWORD CARD ("탈모 궁금해?" + 다른 스토리 미니 카드) -->
-    <aside id="floating-bottom-right-kw-card" aria-label="우측 하단 키워드 미니 카드">
-      <div class="mini-kw-eyebrow">
-        <span>KEYWORD STORY · 다른 스토리</span>
-        <span>✨</span>
-      </div>
-      <a class="mini-kw-card-link primary-hair" href="hairloss.html">
-        <span class="mini-kw-text-col">
-          <span class="mini-kw-question">탈모 궁금해?</span>
-          <span class="mini-kw-sub">바른 탈모 · 두피열 모근재생</span>
-        </span>
-        <span class="mini-kw-arrow">→</span>
-      </a>
-      <a class="mini-kw-card-link secondary-next" href="director.html">
-        <span class="mini-kw-text-col">
-          <span class="mini-kw-question">대표원장 진료철학 궁금해?</span>
-          <span class="mini-kw-sub">안정위 대표원장 철학</span>
-        </span>
-        <span class="mini-kw-arrow">→</span>
-      </a>
-      <button type="button" class="floating-kw-jump-3d" onclick="window.jumpToPlate(document.querySelectorAll('.project-details-item, #project-details-preview').length - 1)">
-        <span>🧬 인체모형 연결</span>
-        <span>→</span>
-      </button>
-    </aside>
   </main>
 
   <div id="scroll-indicator">
@@ -2960,14 +3659,92 @@
     </div>
   </div>
 
+  <!-- 4-TYPE HAIRLOSS SELECTOR MODAL IN DETAIL PAGES -->
+  <div id="detail-hairloss-4type-modal" role="dialog" aria-modal="true" aria-label="바른 탈모 4가지 유형별 상세페이지 선택" onclick="if(event.target===this)window.closeDetailHairlossModal()">
+    <div class="dh4-dialog">
+      <div class="dh4-head">
+        <div>
+          <span class="dh4-eyebrow">👨‍👧‍👦 아빠 한의사 · 내 가족 주치의 4대 탈모 맞춤 진료</span>
+          <h3 class="dh4-title">어떤 <em>탈모 · 두피 고민</em>의 상세페이지를 확인하시겠습니까?</h3>
+          <p class="dh4-sub">내 가족에게 직접 처방하고 시술한 치료만 시행합니다. 원하시는 탈모 유형을 선택하시면 맞춤 상세페이지로 즉시 이동합니다.</p>
+        </div>
+        <button type="button" class="dh4-close" onclick="window.closeDetailHairlossModal()">✕ 닫기</button>
+      </div>
+      <div class="dh4-grid">
+        <a href="hairloss-male.html" class="dh4-card">
+          <div class="dh4-visual">
+            <img src="detail_hair_story1_30cm_tension.jpg?v=30cm1" alt="남성탈모 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 01 · 남성탈모</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">남성탈모</h4>
+            <div class="dh4-card-sub">M자 · 정수리 · 두피열 사막화</div>
+            <p class="dh4-card-desc">피나스테리드·성기능 부작용 걱정 없이 상체로 치솟은 두피열을 내리고 위축된 모근을 깨웁니다.</p>
+            <span class="dh4-cta"><span>남성탈모 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+        <a href="hairloss-alopecia.html" class="dh4-card">
+          <div class="dh4-visual">
+            <img src="detail_director_story2_both_wrists_pulse.jpg" alt="원형탈모 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 02 · 원형탈모</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">원형탈모</h4>
+            <div class="dh4-card-sub">동전 모양 · 다발성 · 자가면역 폭주</div>
+            <p class="dh4-card-desc">스테로이드 주사로 인한 두피 함몰 대신, 자율신경 안정과 면역 정상화로 재발 고리를 끊어냅니다.</p>
+            <span class="dh4-cta"><span>원형탈모 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+        <a href="hairloss-female.html" class="dh4-card">
+          <div class="dh4-visual">
+            <img src="detail_hair_story5_date_smile.jpg" alt="여성탈모 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 03 · 여성탈모</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">여성탈모</h4>
+            <div class="dh4-card-sub">가르마 확장 · 산후 · 갱년기 · 다이어트</div>
+            <p class="dh4-card-desc">상열하한(머리는 뜨겁고 손발·하복부는 찬 상태)과 보혈(補血)을 다스려 정수리 볼륨을 복원합니다.</p>
+            <span class="dh4-cta"><span>여성탈모 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+        <a href="hairloss-seborrheic.html" class="dh4-card">
+          <div class="dh4-visual">
+            <img src="detail_hair_thermography.jpg" alt="지루성두피염 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 04 · 지루성두피염</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">지루성두피염</h4>
+            <div class="dh4-card-sub">붉은 홍반 · 화농성 모낭염 · 각질 · 가려움</div>
+            <p class="dh4-card-desc">항생제·스테로이드 내성 없이 두피 속 열독(熱毒)과 피지 과분비를 해독해 진피 장벽을 재생합니다.</p>
+            <span class="dh4-cta"><span>지루성두피염 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function() {
       'use strict';
+
+      window.openDetailHairlossModal = function() {
+        const m = document.getElementById('detail-hairloss-4type-modal');
+        if (m) m.classList.add('open');
+      };
+      window.closeDetailHairlossModal = function() {
+        const m = document.getElementById('detail-hairloss-4type-modal');
+        if (m) m.classList.remove('open');
+      };
 
       // ====================================================================
       // 0. AWWWARDS VISIBILITY MODE, B2B BRAND SYNC & SCROLL-DRIVEN B/A ENGINE
       // ====================================================================
       const PAGE_FILE = 'prostate.html';
+      if ((PAGE_FILE === 'hairloss.html' && !window.location.search.includes('direct=1')) || window.location.search.includes('select=1')) {
+        setTimeout(function() {
+          window.openDetailHairlossModal();
+        }, 120);
+      }
       const DETAIL_BA_MAP = {
         'director.html': {
           part: 'syncope',
@@ -3024,6 +3801,50 @@
             { label: '피부과학 저널(J Dermatol Sci) 등재', b: '두피 열독·미세염증', a: '수승화강 청열·모유두세포 보호 검증' }
           ]
         },
+        'hairloss-male.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 남성 M자·정수리 두피열 사막화 및 연모화',
+          afterTag: 'AFTER · 수승화강 청열 및 M자·정수리 모근 재생',
+          metrics: [
+            { label: '국제 식물요법학회지(Phytother Res) 검증', b: 'M자·정수리 모낭 위축', a: 'DHT 저항·모유두세포 성장기 연장 입증' },
+            { label: '피부과학 저널(J Dermatol Sci) 등재', b: '상열하한 두피 열독', a: '호르몬 부작용 없는 모낭 혈류 복원 검증' }
+          ]
+        },
+        'hairloss-alopecia.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 자가면역 폭주 및 원형 탈락반 진행',
+          afterTag: 'AFTER · 자율신경 안정 및 면역 재조율 신생모 발모',
+          metrics: [
+            { label: '국제 민족약리학회지(J Ethnopharmacol) 검증', b: '자가면역 모낭 공격', a: '염증성 사이토카인 억제·모낭 회복 입증' },
+            { label: '피부과학 저널(J Dermatol Sci) 등재', b: '스테로이드 두피 함몰 우려', a: '무위축 면역 재조율·재발 방지 검증' }
+          ]
+        },
+        'hairloss-female.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 여성 가르마 확장 및 상열하한·혈허 빈모',
+          afterTag: 'AFTER · 자음보혈 진액 보충 및 정수리 볼륨 복원',
+          metrics: [
+            { label: '국제 식물학술지(Phytomedicine) 검증', b: '산후·갱년기 가르마 빈모', a: '모유두세포 영양·모발 굵기 회복 입증' },
+            { label: '국제 약리학술지(Front Pharmacol) 등재', b: '상열하한·만성 냉증', a: '전신 기혈 순환·모낭 성장인자 활성 검증' }
+          ]
+        },
+        'hairloss-seborrheic.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 두피 홍반·화농성 모낭염 및 각질·열독',
+          afterTag: 'AFTER · 청열해독 염증 진정 및 건강 진피 장벽 복원',
+          metrics: [
+            { label: '피부과학 저널(J Dermatol Sci) 검증', b: '만성 홍반·화농성 모낭염', a: '피지 과분비·염증 매개체 억제 입증' },
+            { label: '국제 식물요법학회지(Phytother Res) 등재', b: '스테로이드 리바운드 재발', a: '진피 면역 장벽·염증성 탈모 차단 검증' }
+          ]
+        },
         'gongjindan.html': {
           part: 'gongjindan',
           beforeImg: 'ba_gongjindan_before.jpg',
@@ -3055,58 +3876,28 @@
       const detailBaLine = document.getElementById('detail-ba-line');
       const detailBaKnob = document.getElementById('detail-ba-knob');
 
-      // Initialize Embedded Sidebar & Runway Before/After 3D Scans + Body Explorer Links
+      // Initialize Runway Before/After 3D Scan + Body Explorer Link
       (function initEmbeddedScrollBa() {
-        const ibImg = document.getElementById('inline-ba-before-img');
-        const iaImg = document.getElementById('inline-ba-after-img');
         const rbImg = document.getElementById('runway-ba-before-img');
         const raImg = document.getElementById('runway-ba-after-img');
         const rTagB = document.getElementById('runway-ba-tag-b');
         const rTagA = document.getElementById('runway-ba-tag-a');
-        const rMetrics = document.getElementById('runway-ba-metrics-overlay');
         const hExplorer = document.getElementById('header-body-explorer-link');
-        const sExplorer = document.getElementById('sidebar-body-explorer-link');
 
-        if (ibImg) ibImg.src = activeBaData.beforeImg;
-        if (iaImg) iaImg.src = activeBaData.afterImg;
         if (rbImg) rbImg.src = activeBaData.beforeImg;
         if (raImg) raImg.src = activeBaData.afterImg;
         if (rTagB) rTagB.textContent = activeBaData.beforeTag;
         if (rTagA) rTagA.textContent = activeBaData.afterTag;
         if (hExplorer) hExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
-        if (sExplorer) sExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
-        if (rMetrics && activeBaData.metrics) {
-          rMetrics.innerHTML = activeBaData.metrics.map(function(m) {
-            return '<div class="sci-stat-card"><div class="sci-stat-num" style="font-size:1.15rem;">' + m.a + '</div><div class="sci-stat-label">' + m.label + ' (치료 전: ' + m.b + ')</div><div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div></div>';
-          }).join('');
-        }
-
-        // Allow optional hover/pointer scrub on embedded viewport too, while scroll drives it automatically
-        const inlineVp = document.getElementById('inline-ba-viewport');
-        if (inlineVp) {
-          inlineVp.addEventListener('pointermove', function(e) {
-            const r = inlineVp.getBoundingClientRect();
-            const pct = Math.max(5, Math.min(95, ((e.clientX - r.left) / Math.max(1, r.width)) * 100));
-            window.applyInlineScrollBaPct(pct);
-          });
-        }
       })();
 
       window.applyInlineScrollBaPct = function(pct) {
         const c = Math.max(6, Math.min(96, pct));
-        const iaClip = document.getElementById('inline-ba-after-clip');
-        const iLaser = document.getElementById('inline-ba-laser');
-        const iBadge = document.getElementById('inline-ba-pct-badge');
         const raClip = document.getElementById('runway-ba-after-clip');
         const rLaser = document.getElementById('runway-ba-laser');
-        const rStepPill = document.getElementById('runway-ba-step-pill');
 
-        if (iaClip) iaClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
-        if (iLaser) iLaser.style.left = c.toFixed(1) + '%';
-        if (iBadge) iBadge.textContent = '스크롤 연동 · 학술 검증 치료 변화';
         if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
         if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
-        if (rStepPill) rStepPill.textContent = 'EVIDENCE-BASED CLINICAL CARE · 학술 논문 검증 치료 전·후 비교';
       };
 
       function setDetailBaPct(pct) {
@@ -3211,12 +4002,15 @@
       // ====================================================================
       // 1. INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST ENGINE
       // ====================================================================
-      const ADVICE = {"zero":"겪고 계신 배뇨·전립선 불편감을 체크하시면 진단 가이드가 안내됩니다.","low":"초기 전립선 울혈 및 방광 과민 신호입니다. 전립선 감압 한약과 골반 순환 치료로 시원한 배뇨와 숙면을 회복할 수 있습니다.","high":"<strong>\"매일 밤 깨어나는 수면 장애와 배뇨 불편감으로 많이 지치셨겠습니다.\"</strong> 만성 비세균성 전립선염 또는 전립선 비대 압박이 누적된 상태입니다. 전립선 감압과 방광 저장력 회복을 돕는 통합 치료를 권장합니다."};
+      const ADVICE = {"caution":"전립선장애 주의","severe":"전립선장애 심각"};
       const checkItems = Array.from(document.querySelectorAll('.empathy-check-item'));
       const countBadge = document.getElementById('empathy-count-badge');
       const diagnosisBox = document.getElementById('empathy-diagnosis-box');
+      const tierCaution = document.getElementById('severity-tier-caution');
+      const tierSevere = document.getElementById('severity-tier-severe');
+      const pillCaution = document.getElementById('severity-pill-caution');
+      const pillSevere = document.getElementById('severity-pill-severe');
       const ctaBtnLabel = document.getElementById('cta-btn-label');
-      const totalItems = checkItems.length;
 
       function getCheckedSymptoms() {
         return checkItems
@@ -3227,18 +4021,52 @@
       function updateChecklistState() {
         const checked = getCheckedSymptoms();
         const cnt = checked.length;
-        countBadge.textContent = cnt > 0 ? '맞춤 증상 선택됨' : '증상 체크 전';
-        countBadge.classList.toggle('active', cnt > 0);
-        ctaBtnLabel.textContent = '내 전립선·배뇨 증상 원장님과 프라이빗 상담하기';
+        const isCaution = cnt >= 1 && cnt <= 2;
+        const isSevere = cnt >= 3;
 
-        if (cnt === 0) {
-          diagnosisBox.innerHTML = ADVICE.zero;
-        } else if (cnt <= 2) {
-          diagnosisBox.innerHTML = '<strong>[원장 맞춤 진단 가이드 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.low;
+        countBadge.classList.remove('active', 'is-caution', 'is-severe');
+        if (isSevere) {
+          countBadge.textContent = '🚨 ' + cnt + '개 선택 · ' + ADVICE.severe;
+          countBadge.classList.add('active', 'is-severe');
+          if (diagnosisBox) diagnosisBox.style.display = 'flex';
+          if (tierCaution) {
+            tierCaution.style.display = 'none';
+            tierCaution.classList.remove('is-checked');
+          }
+          if (tierSevere) {
+            tierSevere.style.display = 'flex';
+            tierSevere.classList.add('is-checked');
+          }
+          if (pillSevere) pillSevere.textContent = '🚨 심각 체크됨';
+        } else if (isCaution) {
+          countBadge.textContent = '⚠️ ' + cnt + '개 선택 · ' + ADVICE.caution;
+          countBadge.classList.add('active', 'is-caution');
+          if (diagnosisBox) diagnosisBox.style.display = 'flex';
+          if (tierCaution) {
+            tierCaution.style.display = 'flex';
+            tierCaution.classList.add('is-checked');
+          }
+          if (tierSevere) {
+            tierSevere.style.display = 'none';
+            tierSevere.classList.remove('is-checked');
+          }
+          if (pillCaution) pillCaution.textContent = '✓ 주의 체크됨';
         } else {
-          diagnosisBox.innerHTML = '<strong>[집중 치료 권장 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.high;
+          countBadge.textContent = '증상 체크 전';
+          if (diagnosisBox) diagnosisBox.style.display = 'none';
+          if (tierCaution) {
+            tierCaution.style.display = 'none';
+            tierCaution.classList.remove('is-checked');
+          }
+          if (tierSevere) {
+            tierSevere.style.display = 'none';
+            tierSevere.classList.remove('is-checked');
+          }
         }
+        ctaBtnLabel.textContent = '내 전립선·배뇨 증상 원장님과 프라이빗 상담하기';
       }
+
+      updateChecklistState();
 
       checkItems.forEach(item => {
         const input = item.querySelector('.empathy-check-input');
@@ -3289,19 +4117,17 @@
       }
 
       // ====================================================================
-      // 2. HORIZONTAL SMOOTH PASSERELLA RUNWAY ENGINE
+      // 2. HORIZONTAL SMOOTH PASSERELLA RUNWAY ENGINE (MANUAL SCROLL ONLY)
       // ====================================================================
       const wrapper = document.getElementById('project-details-items-wrapper');
       const moveContainer = document.getElementById('project-details-items-move-container');
       const progressBar = document.getElementById('scroll-indicator-bar');
       const plates = Array.from(document.querySelectorAll('.project-details-item, #project-details-preview'));
-      const dotBtns = Array.from(document.querySelectorAll('.plate-dot-btn'));
-      const activeBadge = document.getElementById('active-plate-badge');
-      const activeCaption = document.getElementById('active-plate-caption');
 
       let targetX = 0, currentX = 0, maxScrollX = 0;
       let isDragging = false, startDragX = 0, startTargetX = 0;
       let isTouchActive = false, touchLastX = 0, touchLastY = 0, touchLastTime = 0, touchInertiaVelX = 0;
+      let lastDetailInteractMs = 0;
 
       function updateBounds() {
         maxScrollX = Math.max(0, moveContainer.scrollWidth - wrapper.clientWidth);
@@ -3320,6 +4146,7 @@
           const atBottom = (metaEl.scrollTop + metaEl.clientHeight >= metaEl.scrollHeight - 4) && e.deltaY > 0;
           if (!atTop && !atBottom) return;
         }
+        lastDetailInteractMs = performance.now();
         updateBounds();
         touchInertiaVelX = 0;
         const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
@@ -3327,7 +4154,8 @@
       }, { passive: true });
 
       wrapper.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' || e.target.closest('button, a')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay')) return;
+        lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
         startDragX = e.clientX;
@@ -3337,6 +4165,7 @@
 
       wrapper.addEventListener('pointermove', (e) => {
         if (!isDragging) return;
+        lastDetailInteractMs = performance.now();
         targetX = Math.max(0, Math.min(maxScrollX, startTargetX + (startDragX - e.clientX) * 1.35));
       });
 
@@ -3360,9 +4189,10 @@
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay')) return;
         updateBounds();
         isTouchActive = true;
+        lastDetailInteractMs = performance.now();
         touchInertiaVelX = 0;
         touchAccumDelta = 0;
         touchStartTargetX = targetX;
@@ -3376,6 +4206,7 @@
         if (!isTouchActive || !e.touches || !e.touches.length) return;
         if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
         const now = performance.now();
+        lastDetailInteractMs = now;
         const curX = e.touches[0].clientX;
         const curY = e.touches[0].clientY;
         const dx = touchLastX - curX;
@@ -3409,6 +4240,7 @@
         if (!isTouchActive) return;
         isTouchActive = false;
         touchInertiaVelX = 0;
+        lastDetailInteractMs = performance.now();
         // On mobile/tablet, snap cleanly to the current or next/prev 1 card so content never flies past!
         if (window.innerWidth <= 1024 && Math.abs(touchAccumDelta) > 12) {
           const stepDir = touchAccumDelta > 26 ? 1 : (touchAccumDelta < -26 ? -1 : 0);
@@ -3420,12 +4252,14 @@
       window.addEventListener('touchcancel', endTouchRunway, { passive: true });
 
       window.addEventListener('keydown', (e) => {
+        lastDetailInteractMs = performance.now();
         updateBounds();
         if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') targetX = Math.min(maxScrollX, targetX + window.innerWidth * 0.45);
         else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') targetX = Math.max(0, targetX - window.innerWidth * 0.45);
       });
 
       window.jumpToPlate = function(index) {
+        lastDetailInteractMs = performance.now();
         updateBounds();
         const plate = plates[index];
         if (!plate) return;
@@ -3446,6 +4280,7 @@
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
             lastPlateTapMs = now;
+            lastDetailInteractMs = now;
             const activeIdx = getClosestPlateIndex(currentX);
             const nextIdx = idx > activeIdx ? idx : Math.min(plates.length - 1, activeIdx + 1);
             window.jumpToPlate(nextIdx);
@@ -3500,6 +4335,59 @@
         applyStageFrame(ms, ms.currIdx);
       };
 
+      window.switchPlateThumb = function(e, btn, isAuto) {
+        if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+        const dock = btn.closest('.plate-thumb-dock');
+        if (dock) {
+          dock.querySelectorAll('.plate-thumb-btn').forEach(b => b.classList.toggle('active', b === btn));
+        }
+        const plate = btn.closest('.project-details-item');
+        if (!plate) return;
+        if (!isAuto) plate.dataset.manualThumb = '1';
+        const mode = btn.dataset.mode;
+        const imgSrc = btn.dataset.img;
+        const fit = btn.dataset.fit || 'cover';
+
+        if (mode === 'motion') {
+          const stageEl = plate.querySelector('.motion-video-stage');
+          const ms = motionStages.find(m => m.stageEl === stageEl);
+          const tIdx = parseInt(btn.dataset.idx || '0', 10);
+          if (ms && tIdx >= 0 && tIdx < ms.frames.length) {
+            ms.currIdx = tIdx;
+            ms.elapsed = (tIdx / ms.frames.length) * ms.duration;
+            applyStageFrame(ms, tIdx);
+          }
+          return;
+        }
+
+        const mediaImg = plate.querySelector('img.lusion-clean-media');
+        if (mediaImg && imgSrc) {
+          mediaImg.style.opacity = '0.35';
+          setTimeout(() => {
+            mediaImg.src = imgSrc;
+            mediaImg.classList.toggle('is-contain-fit', fit === 'contain');
+            plate.classList.toggle('has-contain-media', fit === 'contain');
+            mediaImg.style.opacity = '1';
+          }, 80);
+        }
+      };
+
+      // Preload all clean-image thumbnails & gently auto-cycle active clean plate thumbnails unless manually selected
+      document.querySelectorAll('.plate-thumb-btn[data-img]').forEach(b => {
+        const im = new Image();
+        im.src = b.dataset.img;
+      });
+
+      setInterval(() => {
+        const activePlate = document.querySelector('.project-details-item.is-clean-plate.is-active-plate');
+        if (!activePlate || activePlate.dataset.manualThumb === '1') return;
+        const btns = Array.from(activePlate.querySelectorAll('.plate-thumb-btn[data-mode="clean"]'));
+        if (btns.length < 2) return;
+        const currIdx = btns.findIndex(b => b.classList.contains('active'));
+        const nextBtn = btns[(currIdx + 1) % btns.length];
+        if (nextBtn) window.switchPlateThumb(null, nextBtn, true);
+      }, 4500);
+
       window.openLightboxFromPlate = function(btn) {
         const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
         const ms = motionStages.find(m => m.stageEl === stageEl);
@@ -3529,6 +4417,12 @@
           ms.layerA.style.opacity = '1';
           ms.layerB.style.opacity = '0';
           ms.activeLayer = 'A';
+        }
+        const plate = ms.stageEl.closest('.project-details-item');
+        if (plate) {
+          plate.querySelectorAll('.plate-thumb-btn[data-mode="motion"]').forEach((b, bIdx) => {
+            b.classList.toggle('active', bIdx === nextIdx);
+          });
         }
       }
 
@@ -5047,7 +5941,7 @@
           if (targetX <= 0 || targetX >= maxScrollX) touchInertiaVelX = 0;
         }
 
-        // Horizontal Runway Smooth Lerp + Automatic Scroll-Driven Before/After 3D Scan Transformation (Desktop & Mobile Unified)
+        // Horizontal Runway Smooth Lerp + Scroll-Driven Before/After 3D Scan Transformation
         currentX += (targetX - currentX) * 0.085;
         const velocity = (targetX - currentX) * 0.0025;
         const clampedSkew = Math.max(-1.6, Math.min(1.6, -velocity));
@@ -5072,44 +5966,16 @@
           if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
           const cleanMedia = plate.querySelector('.lusion-clean-media');
           if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
-            const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
-            cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
+            if (cleanMedia.classList.contains('is-contain-fit')) {
+              cleanMedia.style.transform = 'none';
+            } else {
+              const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
+              cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
+            }
           }
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
-        const floatingKwCard = document.getElementById('floating-bottom-right-kw-card');
-        if (floatingKwCard) {
-          floatingKwCard.classList.toggle('is-docked-on-last', closestIdx === plates.length - 1);
-        }
-
-        // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
-        motionStages.forEach((ms, sIdx) => {
-          ms.elapsed = (ms.elapsed + dt) % ms.duration;
-          const cycleNorm = ms.elapsed / ms.duration;
-          if (ms.progFill) ms.progFill.style.width = (cycleNorm * 100).toFixed(1) + '%';
-
-          if (ms.frames.length > 1) {
-            const targetIdx = Math.min(ms.frames.length - 1, Math.floor(cycleNorm * ms.frames.length));
-            if (targetIdx !== ms.currIdx) {
-              ms.currIdx = targetIdx;
-              applyStageFrame(ms, targetIdx);
-            }
-          }
-
-          // Continuous 3D Ken Burns / Breathing Zoom camera motion
-          const isBreathingZoom = ms.fxType === 'warm-breath-zoom';
-          const zoom = isBreathingZoom
-            ? 1.055 + 0.055 * Math.sin(timeSec * 1.35)
-            : 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
-          const panX = Math.cos(timeSec * 0.55 + sIdx) * (isBreathingZoom ? 8 : 12);
-          const panY = Math.sin(timeSec * 0.45 + sIdx) * (isBreathingZoom ? 5 : 8);
-          const transformStr = 'scale(' + zoom.toFixed(4) + ') translate3d(' + panX.toFixed(1) + 'px, ' + panY.toFixed(1) + 'px, 0)';
-          if (ms.layerA) ms.layerA.style.transform = transformStr;
-          if (ms.layerB) ms.layerB.style.transform = transformStr;
-
-          drawPlateMotionFx(ms, timeSec, cycleNorm);
-        });
 
         drawSimCanvas(timeSec);
         requestAnimationFrame(animateAll);

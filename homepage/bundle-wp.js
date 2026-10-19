@@ -30,8 +30,9 @@ const wpReset = [
 const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
 
 function rewriteAssetsForWP(html, label) {
+  const assetPrefix = '(?:brochure\\/|ba_|illust_|life_|bareun_|card_|detail_|gongjindan|growth-|growth_|empathy-|empathy_|efficacy-)';
   let out = html
-    .replace(/src:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "src: '" + ghBase + "$1'")
+    .replace(new RegExp("src:\\s*'(" + assetPrefix + "[^']+)'", 'g'), "src: '" + ghBase + "$1'")
     .replace(/before:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "before: '" + ghBase + "$1'")
     .replace(/after:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "after: '" + ghBase + "$1'")
     .replace(/beforeImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
@@ -41,27 +42,28 @@ function rewriteAssetsForWP(html, label) {
     .replace(/"baBeforeImg":"(ba_[^"]+)"/g, '"baBeforeImg":"' + ghBase + '$1"')
     .replace(/"baAfterImg":"(ba_[^"]+)"/g, '"baAfterImg":"' + ghBase + '$1"')
     .replace(/setDecoderPath\('draco\/'\)/g, "setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')")
-    .replace(/load\('((?:models\/|texture\/|ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'/g, "load('" + ghBase + "$1'")
+    .replace(new RegExp("load\\('((?:models\\/|texture\\/|" + assetPrefix + ")[^']+)'\\)", 'g'), "load('" + ghBase + "$1')")
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
-    .replace(/url\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "url('" + ghBase + "$1')")
-    .replace(/loadLinearTex\('((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^']+)'\)/g, "loadLinearTex('" + ghBase + "$1')")
-    .replace(/src="((?:clinic-template-config\.js|ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'src="' + ghBase + '$1"')
-    .replace(/poster="((?:ba_|illust_|life_|bareun_|card_|detail_|gongjindan_|growth-|growth_|empathy-|empathy_|efficacy-)[^"]+)"/g, 'poster="' + ghBase + '$1"')
+    .replace(new RegExp("url\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "url('" + ghBase + "$1')")
+    .replace(new RegExp("loadLinearTex\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "loadLinearTex('" + ghBase + "$1')")
+    .replace(new RegExp('src="((?:clinic-template-config\\.js|' + assetPrefix + ')[^"]+)"', 'g'), 'src="' + ghBase + '$1"')
+    .replace(new RegExp('data-img="(' + assetPrefix + '[^"]+)"', 'g'), 'data-img="' + ghBase + '$1"')
+    .replace(new RegExp('poster="(' + assetPrefix + '[^"]+)"', 'g'), 'poster="' + ghBase + '$1"')
     .replace(/href="story-3d\.html(\?[^"]*)?"/g, 'href="/$1"')
     .replace(/href="index\.html(\?[^"]*)?"/g, 'href="/$1"')
-    .replace(/href="(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'href="/$1/$2"')
+    .replace(/href="(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'href="/$1/$2"')
     .replace(/href="gongjindan\.html(\?[^"]*)?"/g, 'href="/gongjindan-2/$1"')
-    .replace(/data-link="(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'data-link="/$1/$2"')
+    .replace(/data-link="(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'data-link="/$1/$2"')
     .replace(/data-link="gongjindan\.html(\?[^"]*)?"/g, 'data-link="/gongjindan-2/$1"')
-    .replace(/data-href="(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'data-href="/$1/$2"')
+    .replace(/data-href="(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'data-href="/$1/$2"')
     .replace(/data-href="gongjindan\.html(\?[^"]*)?"/g, 'data-href="/gongjindan-2/$1"')
-    .replace(/href:\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href: '/$1/$2'")
+    .replace(/href:\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href: '/$1/$2'")
     .replace(/href:\s*'gongjindan\.html(\?[^']*)?'/g, "href: '/gongjindan-2/$1'")
-    .replace(/href\s*=\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href = '/$1/$2'")
+    .replace(/href\s*=\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href = '/$1/$2'")
     .replace(/'body-explorer\.html\?part='/g, "'/body-explorer/?part='")
-    .replace(/"clinicLink":"(director|chuna|growth|diet-zero|hairloss|prostate)\.html"/g, '"clinicLink":"/$1/"')
+    .replace(/"clinicLink":"(director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate)\.html"/g, '"clinicLink":"/$1/"')
     .replace(/"clinicLink":"gongjindan\.html"/g, '"clinicLink":"/gongjindan-2/"')
-    .replace(/"ctaHref":"(director|chuna|growth|diet-zero|hairloss|prostate)\.html"/g, '"ctaHref":"/$1/"')
+    .replace(/"ctaHref":"(director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate)\.html"/g, '"ctaHref":"/$1/"')
     .replace(/"ctaHref":"gongjindan\.html"/g, '"ctaHref":"/gongjindan-2/"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
       const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : ghBase + f).join('|');
@@ -100,6 +102,10 @@ const detailPages = [
   ['growth.html', 'wordpress-growth.html'],
   ['diet-zero.html', 'wordpress-diet.html'],
   ['hairloss.html', 'wordpress-hairloss.html'],
+  ['hairloss-male.html', 'wordpress-hairloss-male.html'],
+  ['hairloss-alopecia.html', 'wordpress-hairloss-alopecia.html'],
+  ['hairloss-female.html', 'wordpress-hairloss-female.html'],
+  ['hairloss-seborrheic.html', 'wordpress-hairloss-seborrheic.html'],
   ['gongjindan.html', 'wordpress-gongjindan.html'],
   ['prostate.html', 'wordpress-prostate.html'],
   ['body-explorer.html', 'wordpress-body-explorer.html'],

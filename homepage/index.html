@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>바른한의원 대전본점 3D 생애주기 시네마 — 건강한 인생이 될 수 있게 도와드립니다</title>
-  <meta name="description" content="바른한의원 대전본점 — 안정위 대표원장의 심층 맥진과 실제 학술 논문으로 검증된 무독성 안심 한약. 사상체질·추나 척추교정·소아 키성장·식욕ZERO 다이어트·두피열 탈모·황제공진단·전립선 1:1 맞춤 진료 클리닉">
+  <title>바른한의원 대전본점 · 아빠 한의사 안정위 대표원장 — 내 가족에게 처방하고 시술한 치료만 하는 주치의</title>
+  <meta name="description" content="바른한의원 대전본점 (아빠 한의사 안정위 대표원장) — 내 가족에게 직접 처방하고 시술한 치료만 시행하며, 모든 환자를 내 가족처럼 진료하는 주치의. 학술 논문 검증 사상체질·추나·키성장·다이어트·탈모·황제공진단·전립선 클리닉">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="바른한의원 대전본점">
-  <meta property="og:title" content="바른한의원 대전본점 — 1:1 사상체질 · 추나 · 성장 · 다이어트 · 탈모 · 공진단">
-  <meta property="og:description" content="안정위 대표원장의 심층 맥진과 실제 학술 논문으로 검증된 무독성 안심 한약으로 병의 뿌리를 다스리는 바른한의원 대전본점입니다.">
+  <meta property="og:site_name" content="바른한의원 대전본점 · 아빠 한의사">
+  <meta property="og:title" content="바른한의원 대전본점 — 아빠 한의사를 찾는 환자 스토리 공개">
+  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 합니다. 모든 환자를 내 가족처럼 진료하는 주치의, 바른한의원 대전본점 안정위 대표원장입니다.">
   <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg">
   <meta property="og:url" content="https://www.bareunhaniwon.com/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="바른한의원 대전본점">
-  <meta name="twitter:description" content="안정위 대표원장의 심층 맥진과 실제 학술 논문으로 검증된 무독성 안심 한약. 추나·성장·다이어트·탈모·공진단·전립선 1:1 맞춤 진료">
+  <meta name="twitter:title" content="바른한의원 대전본점 · 아빠 한의사">
+  <meta name="twitter:description" content="내 가족에게 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 아빠 한의사 안정위 대표원장">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg">
@@ -1160,10 +1160,503 @@
         padding: 4px 8px;
         font-size: 9.5px;
       }
+      .daddy-intro-card {
+        padding: 28px 20px !important;
+        border-radius: 22px !important;
+      }
+      .daddy-intro-slogan {
+        font-size: clamp(23px, 6.6vw, 36px) !important;
+      }
+      .daddy-intro-sub {
+        font-size: 13px !important;
+      }
+    }
+
+    /* ==========================================================================
+       CINEMATIC OPENING SLOGAN STAGE: “아빠 한의사를 찾는 환자 스토리 공개”
+       Automatically plays before the Main Storyboard and transitions smoothly!
+       ========================================================================== */
+    .daddy-doc-intro-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(45, 90, 67, 0.34) 0%, rgba(23, 22, 20, 0.88) 54%, rgba(15, 13, 11, 0.96) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.85s ease;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .daddy-doc-intro-stage.closing {
+      opacity: 0;
+      transform: scale(1.06);
+      pointer-events: none;
+    }
+
+    .daddy-doc-intro-stage.hidden {
+      display: none !important;
+      pointer-events: none;
+    }
+
+    /* Volumetric Sunlight Rays & Floating Bokeh inside Opening Stage */
+    .daddy-intro-sunbeam {
+      position: absolute;
+      width: 140vw;
+      height: 140vh;
+      top: -20vh;
+      left: -20vw;
+      background:
+        conic-gradient(from 135deg at 30% 10%, transparent 0deg, rgba(253, 230, 138, 0.14) 18deg, transparent 38deg, rgba(110, 231, 183, 0.10) 56deg, transparent 80deg);
+      filter: blur(28px);
+      animation: introSunSweep 5.5s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes introSunSweep {
+      0% { transform: rotate(-4deg) scale(1); opacity: 0.75; }
+      100% { transform: rotate(5deg) scale(1.06); opacity: 1; }
+    }
+
+    .daddy-intro-aura-ring {
+      position: absolute;
+      width: min(680px, 90vw);
+      height: min(680px, 90vw);
+      border-radius: 50%;
+      border: 1px solid rgba(245, 241, 232, 0.16);
+      box-shadow: 0 0 90px rgba(212, 175, 55, 0.16), inset 0 0 60px rgba(45, 90, 67, 0.22);
+      animation: introRingPulse 3.2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes introRingPulse {
+      0% { transform: scale(0.86); opacity: 0.75; }
+      70% { transform: scale(1.08); opacity: 0.25; }
+      100% { transform: scale(1.14); opacity: 0; }
+    }
+
+    .daddy-intro-card {
+      position: relative;
+      z-index: 5;
+      width: min(860px, 94vw);
+      padding: 46px 44px 38px;
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(32, 26, 21, 0.88) 0%, rgba(20, 18, 16, 0.94) 100%);
+      border: 1.5px solid rgba(245, 241, 232, 0.28);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(212, 175, 55, 0.22);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      animation: introCardRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes introCardRise {
+      0% { opacity: 0; transform: translateY(28px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .daddy-intro-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      background: rgba(45, 90, 67, 0.88);
+      border: 1px solid rgba(167, 243, 208, 0.55);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      box-shadow: 0 6px 20px rgba(45, 90, 67, 0.45);
+    }
+
+    .daddy-intro-seal-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #FDE68A;
+      box-shadow: 0 0 10px #FDE68A;
+    }
+
+    .daddy-intro-quote-marks {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 4vw, 48px);
+      font-weight: 900;
+      color: #FDE68A;
+      opacity: 0.9;
+      margin: 0 4px;
+    }
+
+    .daddy-intro-slogan {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4.4vw, 56px);
+      font-weight: 900;
+      line-height: 1.28;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+      text-shadow: 0 6px 28px rgba(0, 0, 0, 0.85), 0 0 32px rgba(253, 230, 138, 0.32);
+      margin: 2px 0;
+      word-break: keep-all;
+    }
+
+    .daddy-intro-char {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) rotateX(-35deg) scale(0.92);
+      filter: blur(6px);
+      animation: daddyCharPop 0.68s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .daddy-intro-space {
+      display: inline-block;
+      width: 0.28em;
+    }
+
+    .daddy-intro-char.highlight,
+    .daddy-intro-char.highlight-gold {
+      color: #FDE68A;
+      text-shadow: 0 0 24px rgba(253, 230, 138, 0.72), 0 4px 18px rgba(0, 0, 0, 0.9);
+    }
+
+    @keyframes daddyCharPop {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 22px, 0) rotateX(-35deg) scale(0.92);
+        filter: blur(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    .daddy-intro-manifesto {
+      width: 100%;
+      max-width: 660px;
+      padding: 16px 22px;
+      border-radius: 18px;
+      background: rgba(245, 241, 232, 0.10);
+      border: 1px solid rgba(245, 241, 232, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: introSubFade 0.75s 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes introSubFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .daddy-intro-sub {
+      font-family: var(--font-sans);
+      font-size: clamp(14px, 1.55vw, 18px);
+      font-weight: 700;
+      line-height: 1.58;
+      color: var(--brand-beige);
+      word-break: keep-all;
+    }
+
+    .daddy-intro-sub strong {
+      color: #FDE68A;
+      font-weight: 900;
+    }
+
+    .daddy-intro-progress-wrap {
+      width: min(420px, 82vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .daddy-intro-progress-track {
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(245, 241, 232, 0.18);
+      overflow: hidden;
+    }
+
+    .daddy-intro-progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #10B981, #FDE68A);
+      box-shadow: 0 0 14px rgba(253, 230, 138, 0.75);
+      transition: width 0.08s linear;
+    }
+
+    .daddy-intro-cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .daddy-intro-enter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand-green), var(--brand-green-mid));
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(45, 90, 67, 0.45);
+      transition: all 0.25s ease;
+    }
+
+    .daddy-intro-enter-btn:hover {
+      background: #FDE68A;
+      color: #171614;
+      border-color: #FDE68A;
+      transform: translateY(-2px);
+    }
+
+    /* Persistent Father-Doctor Seal on Main Story Dialogue Stage */
+    .dialogue-daddy-concept-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: rgba(23, 22, 20, 0.72);
+      border: 1px solid rgba(253, 230, 138, 0.48);
+      color: #FDE68A;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.38);
+    }
+
+    .dialogue-daddy-concept-pill .concept-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    /* 4-Type Hairloss Selector Modal (남성탈모 · 원형탈모 · 여성탈모 · 지루성두피염) */
+    .hairloss-4type-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 460;
+      background: rgba(12, 14, 18, 0.84);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .hairloss-4type-modal-overlay.open {
+      display: flex;
+    }
+    .hairloss-4type-modal-card {
+      width: min(940px, 96vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 26px;
+      background: linear-gradient(160deg, #FBF8F1 0%, #F2ECE0 100%);
+      border: 2px solid rgba(94, 71, 54, 0.32);
+      box-shadow: 0 36px 96px rgba(0, 0, 0, 0.72);
+      padding: 28px 30px;
+      color: #171614;
+      position: relative;
+    }
+    .hairloss-4type-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .hairloss-4type-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #2D5A43;
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .hairloss-4type-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+      font-weight: 800;
+      color: #171614;
+      line-height: 1.28;
+      margin-bottom: 5px;
+    }
+    .hairloss-4type-sub {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #4A3525;
+      line-height: 1.5;
+    }
+    .hairloss-4type-close-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(94, 71, 54, 0.28);
+      background: #FFFFFF;
+      color: #171614;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .hairloss-4type-close-btn:hover {
+      background: #171614;
+      color: #FFFFFF;
+    }
+    .hairloss-4type-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .hairloss-type-select-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(94, 71, 54, 0.22);
+      text-decoration: none;
+      color: #171614;
+      box-shadow: 0 10px 26px rgba(42, 30, 21, 0.07);
+      transition: all 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .hairloss-type-select-card:hover {
+      transform: translateY(-4px);
+      border-color: #2D5A43;
+      box-shadow: 0 18px 40px rgba(45, 90, 67, 0.18);
+    }
+    .hairloss-type-thumb {
+      width: 100%;
+      height: 138px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .hairloss-type-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15,18,22,0.12) 0%, rgba(15,18,22,0.68) 100%);
+    }
+    .hairloss-type-badge {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      z-index: 2;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 18, 24, 0.82);
+      border: 1px solid rgba(253, 230, 138, 0.55);
+      color: #FEF08A;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .hairloss-type-body {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .hairloss-type-name {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #171614;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hairloss-type-desc {
+      font-size: 12.8px;
+      font-weight: 600;
+      color: #4A3525;
+      line-height: 1.48;
+      word-break: keep-all;
+    }
+    .hairloss-type-cta {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #E8F2EC;
+      color: #2D5A43;
+      font-size: 12px;
+      font-weight: 800;
+      transition: all 0.2s ease;
+    }
+    .hairloss-type-select-card:hover .hairloss-type-cta {
+      background: #2D5A43;
+      color: #FFFFFF;
+    }
+    @media (max-width: 768px) {
+      .hairloss-4type-modal-card {
+        padding: 18px 16px;
+      }
+      .hairloss-4type-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .hairloss-type-thumb {
+        height: 106px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- ========================================================================
+       CINEMATIC OPENING SLOGAN STAGE (Plays before Main Storyboard)
+       “아빠 한의사를 찾는 환자 스토리 공개” (MAIN SLOGAN ONLY)
+       ======================================================================== -->
+  <section class="daddy-doc-intro-stage" id="daddy-doc-intro-stage" aria-label="아빠 한의사를 찾는 환자 스토리 공개 오프닝">
+    <div class="daddy-intro-sunbeam"></div>
+    <div class="daddy-intro-aura-ring"></div>
+
+    <div class="daddy-intro-card" id="daddy-intro-card" style="padding: 54px 48px; background: transparent; border: none; box-shadow: none;">
+      <h2 class="daddy-intro-slogan" id="daddy-intro-slogan" aria-label="아빠 한의사를 찾는 환자 스토리 공개">
+        <span class="daddy-intro-quote-marks">“</span><span id="daddy-intro-chars">아빠 한의사를 찾는 환자 스토리 공개</span><span class="daddy-intro-quote-marks">”</span>
+      </h2>
+    </div>
+  </section>
 
   <!-- ========================================================================
        ULTRA-CLEAN TOP HEADER (NO CLUTTER)
@@ -1172,18 +1665,12 @@
     <a href="index.html" class="nav-brand-logo">
       <span class="logo-gem"></span>
       <span>바른한의원 대전본점</span>
-      <span class="nav-brand-sub">1ST & 3RD POV 3D CINEMA</span>
+      <span class="nav-brand-sub">👨‍👧‍👦 아빠 한의사 · 내 가족에게 처방·시술한 치료만 합니다</span>
     </a>
 
     <div class="nav-right-actions">
       <a href="body-explorer.html" class="btn-reserve-minimal" style="background: var(--brand-green-tint); border-color: rgba(45, 90, 67, 0.45); color: var(--brand-green);" title="3D 동인(銅人) 12경맥·혈자리·질환·SCI 논문 백과사전">🧬 3D 인체모형 백과</a>
       <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(94, 71, 54, 0.35); color: var(--brand-brown);" title="6대 핵심 진료 카드 펼침 보기">✦ 6대 진료카드</button>
-      <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 BGM 켜기/끄기">
-        <span class="bgm-eq-bars">
-          <span></span><span></span><span></span><span></span>
-        </span>
-        <span id="bgm-status-label">BGM · ON</span>
-      </button>
       <button type="button" class="btn-reserve-minimal" id="btn-open-reserve">예약·상담 ↗</button>
     </div>
   </header>
@@ -1197,15 +1684,19 @@
     <div class="skt-hero-bg" id="skt-hero-bg"></div>
 
     <div class="skt-hero-headline" id="skt-hero-headline">
-      <span class="skt-headline-text">바른한의원 대전본점</span>
-      <span class="skt-headline-sub">BAREUN KOREAN MEDICINE CLINIC · DAEJEON</span>
+      <span class="skt-headline-text">아빠 한의사 · 바른한의원 대전본점</span>
+      <span class="skt-headline-sub">내 가족에게 처방하고 시술한 치료만 하는 내 가족 주치의</span>
     </div>
 
-    <div class="skt-finale-header" style="justify-content: flex-end;">
+    <div class="skt-finale-header" style="justify-content: space-between;">
+      <div class="skt-finale-heading-group">
+        <span class="skt-finale-eyebrow">FATHER DOCTOR PHILOSOPHY · 내 가족에게 처방하고 시술한 치료만 시행합니다</span>
+        <h2 class="skt-finale-main-title">모든 환자를 내 가족처럼 진료하는 ‘아빠 한의사’ 6대 클리닉</h2>
+      </div>
       <div class="skt-finale-controls">
         <a href="body-explorer.html" class="skt-ctrl-btn" style="background: var(--brand-green); border-color: var(--brand-green); color: #FFFFFF; text-decoration: none; font-weight: 800;">🧬 3D 인체모형 통합 의학·논문 정보 페이지 ↗</a>
         <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
-        <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 3D 스토리 다시 스크롤</button>
+        <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 환자 스토리 다시 보기</button>
       </div>
     </div>
 
@@ -1215,8 +1706,8 @@
         <div class="skt-img-box" style="background-image: url('card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
-            <p class="skt-card-title">안정위원장</p>
-            <p class="skt-card-desc">난임·착상·자율신경 · 학술검증 진맥 안심탕전</p>
+            <p class="skt-card-title">안정위원장 · 아빠 한의사</p>
+            <p class="skt-card-desc">내 가족에게 처방한 정품 한약 · 모든 환자를 내 가족처럼 진료하는 주치의</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
@@ -1230,7 +1721,7 @@
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">추나</p>
-            <p class="skt-card-desc">척추·골반 비대칭 교정 · 목·허리 디스크 감압</p>
+            <p class="skt-card-desc">내 가족의 척추를 바로잡는 마음 · 원장 직접 수기 추나·디스크 감압</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
@@ -1244,7 +1735,7 @@
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">성장</p>
-            <p class="skt-card-desc">소아 키성장 골든타임 · 비염·감기면역 강화</p>
+            <p class="skt-card-desc">실제 원장님 아들이 복용한 성장한약 · 키성장 골든타임 & 비염면역</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
@@ -1258,7 +1749,7 @@
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">다이어트</p>
-            <p class="skt-card-desc">내장지방·독소 해독 · 기초대사 리셋 감량</p>
+            <p class="skt-card-desc">내 가족도 안심하는 무부작용 대사 리셋 · 내장지방·독소 해독 감량</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
@@ -1266,15 +1757,19 @@
         </div>
       </a>
 
-      <!-- 5. 탈모 (두피열·경추·모근재생 상세페이지 연결) -->
-      <a href="hairloss.html" class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss.html" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
+      <!-- 5. 탈모 (남성탈모 · 원형탈모 · 여성탈모 · 지루성두피염 4가지 상세페이지 선택) -->
+      <a href="#hairloss-select" class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss-modal" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
         <div class="skt-img-box" style="background-image: url('card_5_hairloss.jpg?v=pov12'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
-            <p class="skt-card-title">탈모</p>
-            <p class="skt-card-desc">두피열 쿨링 · 경추 혈류개통 · 모근 집중재생</p>
-            <div class="skt-card-actions-row">
-              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            <p class="skt-card-title">탈모 · 4대 유형 맞춤</p>
+            <p class="skt-card-desc">내 가족에게 시술한 두피열 쿨링 · 남성/원형/여성/지루성두피염 선택</p>
+            <div class="skt-card-actions-row" style="flex-wrap:wrap;gap:5px;">
+              <span class="skt-card-chip" data-action="hairloss-modal">4가지 유형 선택 ⊞</span>
+              <span class="skt-card-chip secondary" data-action="custom-link" data-href="hairloss-male.html">남성탈모</span>
+              <span class="skt-card-chip secondary" data-action="custom-link" data-href="hairloss-alopecia.html">원형탈모</span>
+              <span class="skt-card-chip secondary" data-action="custom-link" data-href="hairloss-female.html">여성탈모</span>
+              <span class="skt-card-chip secondary" data-action="custom-link" data-href="hairloss-seborrheic.html">지루성두피염</span>
             </div>
           </div>
         </div>
@@ -1286,7 +1781,7 @@
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">황제공진단</p>
-            <p class="skt-card-desc">만성피로·뇌심장 수승화강 · 남성 전립선 활력</p>
+            <p class="skt-card-desc">내 부모님께 드리는 CITES 정품 사향 · 뇌·심장 원기 & 전립선 활력</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">공진단 상세 →</span>
               <span class="skt-card-chip secondary" data-action="custom-link" data-href="prostate.html">전립선 클리닉 →</span>
@@ -1296,6 +1791,92 @@
       </a>
     </div>
   </section>
+
+  <!-- ========================================================================
+       4-TYPE HAIRLOSS SELECTOR MODAL (남성탈모 · 원형탈모 · 여성탈모 · 지루성두피염)
+       ======================================================================== -->
+  <div class="hairloss-4type-modal-overlay" id="hairloss-4type-modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="hairloss-4type-modal-card" role="dialog" aria-modal="true" aria-labelledby="hairloss-4type-modal-title">
+      <div class="hairloss-4type-head">
+        <div>
+          <span class="hairloss-4type-eyebrow">👨‍👧‍👦 아빠 한의사 · 내 가족에게 직접 처방·시술하는 모근재생 클리닉</span>
+          <h3 class="hairloss-4type-title" id="hairloss-4type-modal-title">바른 탈모 · 4대 유형별 상세페이지 선택</h3>
+          <p class="hairloss-4type-sub">현재 겪고 계신 탈모·두피 유형을 선택하시면 학술 논문 검증 스토리와 자가진단(주의/심각) 페이지로 이동합니다.</p>
+        </div>
+        <button type="button" class="hairloss-4type-close-btn" onclick="document.getElementById('hairloss-4type-modal-overlay').classList.remove('open')">✕ 닫기</button>
+      </div>
+
+      <div class="hairloss-4type-grid">
+        <a href="hairloss-male.html" class="hairloss-type-select-card">
+          <div class="hairloss-type-thumb" style="background-image:url('detail_hair_story1_30cm_tension.jpg?v=30cm1');">
+            <span class="hairloss-type-badge">TYPE 01 · M자 · 정수리 · 두피열</span>
+          </div>
+          <div class="hairloss-type-body">
+            <div class="hairloss-type-name">
+              <span>남성탈모 상세페이지</span>
+              <span>↗</span>
+            </div>
+            <p class="hairloss-type-desc">M자 헤어라인 후퇴와 정수리 빈모 · 호르몬 억제 약물 부작용 걱정 없는 수승화강 두피 청열 & 경추·모낭 재생 치료</p>
+            <div class="hairloss-type-cta">
+              <span>남성탈모 자가진단 & 스토리 보러가기</span>
+              <span>→</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="hairloss-alopecia.html" class="hairloss-type-select-card">
+          <div class="hairloss-type-thumb" style="background-image:url('detail_director_story2_both_wrists_pulse.jpg');">
+            <span class="hairloss-type-badge">TYPE 02 · 동전 모양 · 다발성 · 면역</span>
+          </div>
+          <div class="hairloss-type-body">
+            <div class="hairloss-type-name">
+              <span>원형탈모 상세페이지</span>
+              <span>↗</span>
+            </div>
+            <p class="hairloss-type-desc">갑작스러운 동전 모양 탈락과 다발성 확산 · 스테로이드 재발을 막는 자율신경 안정 & 자가면역 근본 복원 치료</p>
+            <div class="hairloss-type-cta">
+              <span>원형탈모 자가진단 & 스토리 보러가기</span>
+              <span>→</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="hairloss-female.html" class="hairloss-type-select-card">
+          <div class="hairloss-type-thumb" style="background-image:url('detail_hair_story5_date_smile.jpg');">
+            <span class="hairloss-type-badge">TYPE 03 · 가르마 · 산후 · 갱년기</span>
+          </div>
+          <div class="hairloss-type-body">
+            <div class="hairloss-type-name">
+              <span>여성탈모 상세페이지</span>
+              <span>↗</span>
+            </div>
+            <p class="hairloss-type-desc">넓어진 가르마와 가늘어진 정수리 볼륨 · 두피는 뜨겁고 손발·아랫배는 찬 여성 상열하한(上熱下寒) 맞춤 보혈 치료</p>
+            <div class="hairloss-type-cta">
+              <span>여성탈모 자가진단 & 스토리 보러가기</span>
+              <span>→</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="hairloss-seborrheic.html" class="hairloss-type-select-card">
+          <div class="hairloss-type-thumb" style="background-image:url('detail_hair_thermography.jpg');">
+            <span class="hairloss-type-badge">TYPE 04 · 홍반 · 모낭염 · 각질·가려움</span>
+          </div>
+          <div class="hairloss-type-body">
+            <div class="hairloss-type-name">
+              <span>지루성두피염 상세페이지</span>
+              <span>↗</span>
+            </div>
+            <p class="hairloss-type-desc">붉게 달아오른 두피 열독, 화농성 뾰루지(모낭염), 비듬·각질과 가려움 · 염증성 탈모를 막는 청열해독 & 장벽 복원</p>
+            <div class="hairloss-type-cta">
+              <span>지루성두피염 자가진단 & 스토리 보러가기</span>
+              <span>→</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        FIXED 100vw x 100vh 3D WEBGL SPATIAL VIEWPORT (NEVER DISAPPEARS)
@@ -1311,6 +1892,10 @@
        SCROLL-REACTIVE STORY DIALOGUE STAGE (MAIN QUOTE ONLY + STORY 4 WEIGHT)
        ======================================================================== -->
   <main class="story-dialogue-stage" id="story-dialogue-stage">
+    <div class="dialogue-daddy-concept-pill" id="dialogue-daddy-concept-pill">
+      <span class="concept-dot"></span>
+      <span>아빠 한의사 · 내 가족에게 처방·시술한 치료만 합니다</span>
+    </div>
     <div class="dialogue-meta-row">
       <div class="dialogue-chapter-num" id="dialogue-chapter-num">STORY 01 / 08 · 바른 난임·착상 치료</div>
       <span class="dialogue-pov-tag" id="dialogue-pov-tag">👁️ 1인칭 시점 POV</span>
@@ -1320,7 +1905,7 @@
       <div class="dialogue-progress-fill" id="dialogue-progress-fill"></div>
     </div>
     <button type="button" class="dialogue-tap-next-pill" id="dialogue-tap-next-pill" aria-label="다음 스토리로 이동">
-      <span id="dialogue-tap-next-text">스토리 터치 · 다음 장면 보기 (1/24)</span>
+      <span id="dialogue-tap-next-text">자동 스토리 스크롤 진행 중 · 터치 시 다음 장면 (1/24)</span>
       <span class="tap-pill-arrow">→</span>
     </button>
     <div class="story4-weight-counter" id="story4-weight-counter">
@@ -1354,11 +1939,11 @@
   <aside class="reserve-drawer-overlay" id="reserve-drawer-overlay" aria-hidden="true">
     <div class="reserve-drawer-panel" onclick="event.stopPropagation()">
       <div class="drawer-top-row">
-        <span class="drawer-top-title">바른한의원 대전본점 1:1 진료 및 비대면 처방 예약</span>
+        <span class="drawer-top-title">바른한의원 대전본점 · 아빠 한의사 1:1 진료 예약</span>
         <button type="button" class="drawer-close-btn" id="btn-close-reserve">닫기 ✕</button>
       </div>
-      <p style="font-size: 13px; color: var(--brand-brown-soft); line-height: 1.6; font-weight: 500;">
-        생애주기별 맞춤 진료(난임·소아면역·키성장·비만·탈모·추나통증·황제공진단) 예약을 남겨주시면 전담 상담실장이 빠르게 안내해 드립니다.
+      <p style="font-size: 13px; color: var(--brand-brown-soft); line-height: 1.6; font-weight: 600;">
+        👨‍👧‍👦 <strong>아빠 한의사의 약속:</strong> 내 가족에게 직접 처방하고 시술한 안전한 치료만 시행하며, 모든 환자를 내 가족처럼 진료합니다.
       </p>
       <form id="quick-reserve-form" style="display:flex; flex-direction:column; gap:14px;">
         <div class="drawer-form-group">
@@ -1715,7 +2300,7 @@
           whisper: ''
         },
         {
-          src: 'life_5b_gongjindan_vitality.jpg?v=pov7',
+          src: 'life_5b_gongjindan_vitality.jpg?v=pov14',
           chapter: 7,
           quote: '황제공진단으로 기력충전',
           povBadge: '',
@@ -2840,6 +3425,8 @@
         if (tapNextTextEl) {
           if (idx >= maxIdx) {
             tapNextTextEl.textContent = '터치 · 6대 핵심 진료카드 펼치기';
+          } else if (typeof isAutoScrollRunning !== 'undefined' && isAutoScrollRunning) {
+            tapNextTextEl.textContent = `✦ 자동 스토리 진행 중 · 터치 시 다음 장면 (${idx + 1}/${maxIdx + 1})`;
           } else {
             tapNextTextEl.textContent = `스토리 터치 · 다음 장면 (${idx + 1}/${maxIdx + 1})`;
           }
@@ -2853,7 +3440,7 @@
       }
 
       // ======================================================================
-      // 7. SCROLL CONTROLLER (Starts Immediately on Frame 0: 1st-Person Negative Test!)
+      // 7. SCROLL CONTROLLER & DADDY DOCTOR INTRO + AUTO-SCROLL ENGINE
       // ======================================================================
       let targetProgress = 0;
       let smoothProgress = 0;
@@ -2864,6 +3451,76 @@
       let camRollSpring = 0;
       let lastUserInteract = 0;
       let hasUserScrolled = false;
+      let isDaddyIntroFinished = false;
+      let introClosedAtMs = 0;
+      let isAutoScrollRunning = false;
+      let lastProgrammaticScrollMs = 0;
+
+      // Initialize "아빠 한의사를 찾는 환자 스토리 공개" Cinematic Opening Slogan Stage
+      const daddyIntroStageEl = document.getElementById('daddy-doc-intro-stage');
+      const daddyIntroCharsEl = document.getElementById('daddy-intro-chars');
+      const daddyIntroProgressFillEl = document.getElementById('daddy-intro-progress-fill');
+      const btnEnterMainStoryEl = document.getElementById('btn-enter-main-story');
+      const INTRO_DURATION_MS = 3200;
+      const introStartTimeMs = performance.now();
+
+      if (daddyIntroCharsEl) {
+        const line1 = '아빠 한의사를 찾는';
+        const line2 = '환자 스토리 공개';
+        let html = '';
+        let charGlobalIdx = 0;
+        const renderLineChars = (str, highlightStart, highlightEnd) => {
+          for (let i = 0; i < str.length; i++) {
+            const ch = str[i];
+            if (ch === ' ') {
+              html += '<span class="daddy-intro-space"></span>';
+            } else {
+              const isGold = i >= highlightStart && i < highlightEnd;
+              const delayMs = 120 + charGlobalIdx * 55;
+              html += `<span class="daddy-intro-char${isGold ? ' highlight-gold' : ''}" style="transition-delay:${delayMs}ms">${ch}</span>`;
+              charGlobalIdx++;
+            }
+          }
+        };
+        renderLineChars(line1, 0, 6); // Highlight "아빠 한의사"
+        html += '<br>';
+        renderLineChars(line2, 0, line2.length); // Highlight "환자 스토리 공개"
+        daddyIntroCharsEl.innerHTML = html;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const spans = daddyIntroCharsEl.querySelectorAll('.daddy-intro-char');
+            spans.forEach((sp) => sp.classList.add('revealed'));
+          });
+        });
+      }
+
+      function finishDaddyIntro(immediate) {
+        if (isDaddyIntroFinished) return;
+        isDaddyIntroFinished = true;
+        introClosedAtMs = performance.now();
+        if (!daddyIntroStageEl) return;
+        if (immediate) {
+          daddyIntroStageEl.classList.add('closing', 'hidden');
+        } else {
+          daddyIntroStageEl.classList.add('closing');
+          setTimeout(() => {
+            if (daddyIntroStageEl) daddyIntroStageEl.classList.add('hidden');
+          }, 960);
+        }
+      }
+
+      if (btnEnterMainStoryEl) {
+        btnEnterMainStoryEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          finishDaddyIntro(false);
+        });
+      }
+      if (daddyIntroStageEl) {
+        daddyIntroStageEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          finishDaddyIntro(false);
+        });
+      }
 
       function getScrollMax() {
         const track = document.getElementById('virtual-scroll-track');
@@ -2887,6 +3544,7 @@
         const maxS = getScrollMax();
         if (maxS > 10) {
           isSyncingNativeScroll = true;
+          lastProgrammaticScrollMs = performance.now();
           window.scrollTo(0, targetProgress * maxS);
           requestAnimationFrame(() => { isSyncingNativeScroll = false; });
         }
@@ -2907,12 +3565,15 @@
       window.addEventListener('message', (e) => {
         if (!e.data || typeof e.data !== 'object') return;
         if (e.data.type === 'SYNC_NORM' && typeof e.data.norm === 'number') {
+          finishDaddyIntro(true);
           scrollToNormalized(e.data.norm);
         } else if (e.data.type === 'SYNC_CHAPTER' && typeof e.data.chapterId === 'number') {
+          finishDaddyIntro(true);
           const chIdx = Math.max(0, Math.min(DIALOGUE_CHAPTERS.length - 1, e.data.chapterId - 1));
           const fIdx = chapterStartFrames[chIdx] || 0;
           scrollToNormalized(frameFloatToFullNorm(fIdx));
         } else if (e.data.type === 'SYNC_FRAME' && typeof e.data.frameIndex === 'number') {
+          finishDaddyIntro(true);
           scrollToNormalized(frameFloatToFullNorm(e.data.frameIndex));
         }
       });
@@ -2920,14 +3581,17 @@
       setTimeout(() => {
         const params = new URLSearchParams(window.location.search);
         if (params.has('cards')) {
+          finishDaddyIntro(true);
           scrollToNormalized(1.0, true);
           if (typeof sktCardFlipController !== 'undefined' && sktCardFlipController) {
             sktCardFlipController.activate();
           }
         } else if (params.has('frame')) {
+          finishDaddyIntro(true);
           const f = parseInt(params.get('frame'), 10);
           if (!isNaN(f)) scrollToNormalized(frameFloatToFullNorm(f));
         } else if (params.has('chapter')) {
+          finishDaddyIntro(true);
           const c = parseInt(params.get('chapter'), 10);
           if (!isNaN(c) && c >= 1 && c <= 8) {
             scrollToNormalized(frameFloatToFullNorm(chapterStartFrames[c - 1] || 0));
@@ -2936,8 +3600,10 @@
       }, 250);
 
       window.addEventListener('scroll', () => {
-        if (isSyncingNativeScroll || isTouchDragging) return;
-        if (performance.now() - lastUserInteract < 450) return;
+        if (isSyncingNativeScroll || isTouchDragging || isAutoScrollRunning) return;
+        const now = performance.now();
+        if (now - lastProgrammaticScrollMs < 220) return;
+        if (now - lastUserInteract < 450) return;
         const y = getCurrentScrollY();
         if (y > 4) hasUserScrolled = true;
         const maxS = getScrollMax();
@@ -2948,8 +3614,13 @@
 
       window.addEventListener('wheel', (e) => {
         if (e.target && e.target.closest && e.target.closest('.reserve-drawer')) return;
+        if (!isDaddyIntroFinished) {
+          finishDaddyIntro(false);
+          return;
+        }
         hasUserScrolled = true;
         lastUserInteract = performance.now();
+        isAutoScrollRunning = false;
         touchInertiaVel = 0;
         const virtualSpan = Math.max(3600, window.innerHeight * 9.5);
         const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
@@ -2969,7 +3640,7 @@
         if (!target || !target.closest) return false;
         if (target.closest('#dialogue-tap-next-pill, #story-dialogue-stage')) return false;
         return Boolean(
-          target.closest('.spatial-top-nav, .minimal-bottom-timeline, .skt-finale-stage, .reserve-drawer-overlay, .reserve-drawer-panel, a, button, input, select, textarea')
+          target.closest('.daddy-doc-intro-stage, .hairloss-4type-modal-overlay, .spatial-top-nav, .minimal-bottom-timeline, .skt-finale-stage, .reserve-drawer-overlay, .reserve-drawer-panel, a, button, input, select, textarea')
         );
       }
 
@@ -3126,326 +3797,11 @@
       }
 
       // ======================================================================
-      // 8. EMOTIONAL CINEMA PIANO & CELLO/STRINGS SCORE SEQUENCER (NO RANDOM NOTES!)
-      //    - Composed 8-Bar Lyrical Theme in F Major / D Minor (Yiruma & Hisaishi Style)
-      //    - Multi-Harmonic Felt Grand Piano + Warm Vibrato Cello & Velvet Strings
+      // 8. BGM ENGINE (Synthesized melody removed — ready for custom audio file)
       // ======================================================================
-      const soundEngine = (function () {
-        let ctx = null, masterGain = null, reverbNode = null;
-        let isPlaying = false, userMuted = false, stepTimer = null, stepIdx = 0, activeCh = 1;
-
-        // Exact Equal-Temperament Note Frequencies (Hz)
-        const N = {
-          C2: 65.41,  D2: 73.42,  E2: 82.41,  F2: 87.31,  G2: 98.00,  A2: 110.00, Bb2: 116.54,
-          C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, Bb3: 233.08,
-          C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, Bb4: 466.16,
-          C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00, Bb5: 932.33,
-          C6: 1046.50
-        };
-
-        // 8-Bar Composed Emotional Cinema Score (8 eighth-notes per bar = 64 steps)
-        const BARS = [
-          {
-            // Bar 1: Fmaj9 — Warmth & Earnest Hope
-            cello: N.F2,
-            strings: [N.F3, N.A3, N.C4, N.E4, N.G4],
-            lh:  [N.F2, N.C3, N.F3, N.A3, N.C4, N.A3, N.F3, N.C3],
-            rh:  [N.C5, N.F5, N.G5, N.A5, N.G5, N.F5, N.C5, N.D5],
-            vel: [0.85, 0.72, 0.80, 1.00, 0.78, 0.74, 0.65, 0.72]
-          },
-          {
-            // Bar 2: C/E — Gentle Forward Journey
-            cello: N.E2,
-            strings: [N.E3, N.G3, N.C4, N.E4, N.G4],
-            lh:  [N.E2, N.C3, N.G3, N.C4, N.G3, N.E3, N.C3, N.G3],
-            rh:  [N.E5, N.G5, N.C6, N.G5, N.E5, N.D5, N.C5, N.E5],
-            vel: [0.88, 0.76, 1.02, 0.80, 0.75, 0.70, 0.68, 0.74]
-          },
-          {
-            // Bar 3: Dm7 — Tender Empathy & Deep Care
-            cello: N.D2,
-            strings: [N.D3, N.F3, N.A3, N.C4, N.F4],
-            lh:  [N.D2, N.A2, N.D3, N.F3, N.A3, N.F3, N.D3, N.A2],
-            rh:  [N.F5, N.E5, N.D5, N.A4, N.C5, N.D5, N.F5, N.G5],
-            vel: [0.92, 0.78, 0.84, 0.68, 0.74, 0.80, 0.88, 0.82]
-          },
-          {
-            // Bar 4: Am7 — Poignant Reflection
-            cello: N.A2,
-            strings: [N.A2, N.E3, N.G3, N.C4, N.E4],
-            lh:  [N.A2, N.E3, N.A3, N.C4, N.E4, N.C4, N.A3, N.E3],
-            rh:  [N.E5, N.C5, N.A4, N.E5, N.D5, N.C5, N.G4, N.A4],
-            vel: [0.88, 0.74, 0.68, 0.84, 0.78, 0.72, 0.64, 0.70]
-          },
-          {
-            // Bar 5: Bbmaj7 — Heartwarming Embrace & Miracle
-            cello: N.Bb2,
-            strings: [N.Bb2, N.F3, N.A3, N.D4, N.F4],
-            lh:  [N.Bb2, N.F3, N.Bb3, N.D4, N.F4, N.D4, N.Bb3, N.F3],
-            rh:  [N.D5, N.F5, N.A5, N.G5, N.F5, N.D5, N.C5, N.D5],
-            vel: [0.90, 0.82, 1.04, 0.88, 0.82, 0.74, 0.70, 0.76]
-          },
-          {
-            // Bar 6: F/A — Comfort, Healing & Smile
-            cello: N.A2,
-            strings: [N.A2, N.F3, N.A3, N.C4, N.F4],
-            lh:  [N.A2, N.F3, N.A3, N.C4, N.F4, N.C4, N.A3, N.F3],
-            rh:  [N.C5, N.F5, N.A5, N.C6, N.A5, N.G5, N.F5, N.E5],
-            vel: [0.86, 0.80, 0.94, 1.05, 0.86, 0.78, 0.74, 0.72]
-          },
-          {
-            // Bar 7: Gm7 — Deep Gratitude
-            cello: N.G2,
-            strings: [N.G2, N.D3, N.F3, N.Bb3, N.D4],
-            lh:  [N.G2, N.D3, N.G3, N.Bb3, N.D4, N.Bb3, N.G3, N.D3],
-            rh:  [N.D5, N.Bb4, N.D5, N.F5, N.G5, N.F5, N.D5, N.E5],
-            vel: [0.88, 0.72, 0.78, 0.88, 0.95, 0.82, 0.74, 0.78]
-          },
-          {
-            // Bar 8: C7sus4 -> C7 — Uplifting Resolution into New Beginning
-            cello: N.C2,
-            strings: [N.C3, N.F3, N.G3, N.C4, N.E4],
-            lh:  [N.C2, N.G2, N.C3, N.G3, N.C4, N.G3, N.E3, N.C3],
-            rh:  [N.F5, N.F5, N.E5, N.C5, N.D5, N.E5, N.F5, N.G5],
-            vel: [0.92, 0.80, 0.90, 0.74, 0.78, 0.84, 0.88, 0.94]
-          }
-        ];
-
-        function createConcertHallReverb(audioCtx) {
-          const length = Math.floor(audioCtx.sampleRate * 3.8);
-          const impulse = audioCtx.createBuffer(2, length, audioCtx.sampleRate);
-          for (let ch = 0; ch < 2; ch++) {
-            const data = impulse.getChannelData(ch);
-            for (let i = 0; i < length; i++) {
-              const decay = Math.pow(1 - i / length, 2.8);
-              data[i] = (Math.random() * 2 - 1) * decay * 0.42;
-            }
-          }
-          const conv = audioCtx.createConvolver();
-          conv.buffer = impulse;
-          return conv;
-        }
-
-        function initAudioGraph() {
-          if (ctx) return;
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (!AudioCtx) return;
-          ctx = new AudioCtx();
-
-          masterGain = ctx.createGain();
-          masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
-          masterGain.connect(ctx.destination);
-
-          reverbNode = createConcertHallReverb(ctx);
-          const reverbGain = ctx.createGain();
-          reverbGain.gain.value = 0.62;
-          reverbNode.connect(reverbGain);
-          reverbGain.connect(masterGain);
-        }
-
-        // Acoustic Felt Grand Piano Synthesizer (Multi-Harmonic + Hammer Envelope)
-        function playGrandPianoVoice(freq, velocity, durationSec, isMelody) {
-          if (!ctx || !isPlaying || !freq) return;
-          const now = ctx.currentTime;
-          const outGain = ctx.createGain();
-          const filter = ctx.createBiquadFilter();
-
-          // Warm acoustic piano lowpass envelope (bright hammer strike -> warm sustain)
-          filter.type = 'lowpass';
-          const peakCutoff = isMelody ? 2600 * velocity : 1450 * velocity;
-          filter.frequency.setValueAtTime(Math.max(400, peakCutoff), now);
-          filter.frequency.exponentialRampToValueAtTime(isMelody ? 520 : 340, now + durationSec * 0.85);
-          filter.Q.value = 0.7;
-
-          const peakGain = (isMelody ? 0.068 : 0.034) * velocity;
-          outGain.gain.setValueAtTime(0.0001, now);
-          outGain.gain.linearRampToValueAtTime(peakGain, now + 0.018);
-          outGain.gain.exponentialRampToValueAtTime(peakGain * 0.32, now + 0.38);
-          outGain.gain.exponentialRampToValueAtTime(0.0002, now + durationSec);
-
-          // 1st Fundamental + Detuned Unison String + 2nd Octave Harmonic Overtones
-          const osc1 = ctx.createOscillator();
-          const osc2 = ctx.createOscillator();
-          const osc3 = ctx.createOscillator();
-          const harmGain = ctx.createGain();
-
-          osc1.type = 'triangle';
-          osc2.type = 'sine';
-          osc3.type = 'sine';
-
-          osc1.frequency.setValueAtTime(freq, now);
-          osc2.frequency.setValueAtTime(freq * 1.0007, now); // Piano string unison chorus
-          osc3.frequency.setValueAtTime(freq * 2.0, now);    // 2nd harmonic warmth
-          harmGain.gain.value = 0.18;
-
-          osc1.connect(filter);
-          osc2.connect(filter);
-          osc3.connect(harmGain);
-          harmGain.connect(filter);
-
-          filter.connect(outGain);
-          outGain.connect(masterGain);
-          outGain.connect(reverbNode);
-
-          osc1.start(now);
-          osc2.start(now);
-          osc3.start(now);
-          osc1.stop(now + durationSec + 0.05);
-          osc2.stop(now + durationSec + 0.05);
-          osc3.stop(now + durationSec + 0.05);
-        }
-
-        // Warm Solo Cello & Velvet String Ensemble Swell (Triggered at the start of each bar)
-        function playCelloAndStringsBar(bar, barDurationSec) {
-          if (!ctx || !isPlaying) return;
-          const now = ctx.currentTime;
-
-          // Emotional swell based on story chapter (warmer & fuller on recovery/longevity chapters)
-          const chBoost = (activeCh === 4 || activeCh >= 6) ? 1.18 : 1.0;
-
-          // 1. Warm Bowed Cello Bass with Subtle 5Hz Vibrato
-          const celloOsc = ctx.createOscillator();
-          const celloSub = ctx.createOscillator();
-          const vibOsc = ctx.createOscillator();
-          const vibGain = ctx.createGain();
-          const celloFilter = ctx.createBiquadFilter();
-          const celloEnv = ctx.createGain();
-
-          celloOsc.type = 'sawtooth';
-          celloSub.type = 'triangle';
-          celloOsc.frequency.setValueAtTime(bar.cello, now);
-          celloSub.frequency.setValueAtTime(bar.cello, now);
-
-          vibOsc.frequency.value = 5.1;
-          vibGain.gain.value = bar.cello * 0.0055;
-          vibOsc.connect(vibGain);
-          vibGain.connect(celloOsc.frequency);
-
-          celloFilter.type = 'lowpass';
-          celloFilter.frequency.setValueAtTime(290, now);
-          celloFilter.frequency.linearRampToValueAtTime(420, now + barDurationSec * 0.45);
-          celloFilter.frequency.linearRampToValueAtTime(240, now + barDurationSec);
-
-          celloEnv.gain.setValueAtTime(0.0001, now);
-          celloEnv.gain.linearRampToValueAtTime(0.055 * chBoost, now + 0.85);
-          celloEnv.gain.exponentialRampToValueAtTime(0.0006, now + barDurationSec + 0.6);
-
-          celloOsc.connect(celloFilter);
-          celloSub.connect(celloFilter);
-          celloFilter.connect(celloEnv);
-          celloEnv.connect(masterGain);
-          celloEnv.connect(reverbNode);
-
-          celloOsc.start(now);
-          celloSub.start(now);
-          vibOsc.start(now);
-          celloOsc.stop(now + barDurationSec + 0.65);
-          celloSub.stop(now + barDurationSec + 0.65);
-          vibOsc.stop(now + barDurationSec + 0.65);
-
-          // 2. Velvet String Section Pad
-          bar.strings.forEach((freq, idx) => {
-            const osc = ctx.createOscillator();
-            const lp = ctx.createBiquadFilter();
-            const vGain = ctx.createGain();
-            osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
-            osc.frequency.setValueAtTime(freq * (1 + (idx - 2) * 0.0014), now);
-            lp.type = 'lowpass';
-            lp.frequency.setValueAtTime(1050, now);
-            const peak = (0.028 / Math.sqrt(idx + 1)) * chBoost;
-            vGain.gain.setValueAtTime(0.0001, now);
-            vGain.gain.linearRampToValueAtTime(peak, now + 1.15);
-            vGain.gain.exponentialRampToValueAtTime(0.0004, now + barDurationSec + 0.7);
-            osc.connect(lp);
-            lp.connect(vGain);
-            vGain.connect(reverbNode);
-            vGain.connect(masterGain);
-            osc.start(now);
-            osc.stop(now + barDurationSec + 0.75);
-          });
-        }
-
-        function tickScoreStep() {
-          if (!ctx || !isPlaying) return;
-          const barIdx = Math.floor(stepIdx / 8) % BARS.length;
-          const beatInBar = stepIdx % 8;
-          const bar = BARS[barIdx];
-
-          // Start of a new 8-beat bar: swell Cello & Strings
-          if (beatInBar === 0) {
-            playCelloAndStringsBar(bar, 3.25);
-          }
-
-          // Play Left-Hand Arpeggio Note
-          const lhFreq = bar.lh[beatInBar];
-          const vel = bar.vel[beatInBar] || 0.8;
-          if (lhFreq) {
-            playGrandPianoVoice(lhFreq, vel * 0.78, 1.85, false);
-          }
-
-          // Play Right-Hand Emotional Piano Melody Note (with slight human rubato offset)
-          const rhFreq = bar.rh[beatInBar];
-          if (rhFreq) {
-            setTimeout(() => {
-              playGrandPianoVoice(rhFreq, vel, 2.35, true);
-            }, 14);
-          }
-
-          stepIdx = (stepIdx + 1) % (BARS.length * 8);
-        }
-
-        function updateUI() {
-          const btn = document.getElementById('btn-bgm-toggle');
-          const label = document.getElementById('bgm-status-label');
-          if (btn) btn.classList.toggle('playing', isPlaying);
-          if (label) label.textContent = isPlaying ? '🔊 BGM · PLAYING' : '🔇 BGM · OFF';
-        }
-
-        function startBGM() {
-          if (userMuted || isPlaying) return;
-          initAudioGraph();
-          if (!ctx) return;
-          if (ctx.state === 'suspended') ctx.resume();
-          isPlaying = true;
-          masterGain.gain.cancelScheduledValues(ctx.currentTime);
-          masterGain.gain.setValueAtTime(Math.max(0.001, masterGain.gain.value), ctx.currentTime);
-          masterGain.gain.linearRampToValueAtTime(0.88, ctx.currentTime + 1.4);
-          tickScoreStep();
-          stepTimer = setInterval(tickScoreStep, 405); // ~74 BPM expressive eighth-note pulse
-          updateUI();
-        }
-
-        function stopBGM() {
-          if (!ctx || !isPlaying) return;
-          isPlaying = false;
-          clearInterval(stepTimer);
-          masterGain.gain.cancelScheduledValues(ctx.currentTime);
-          masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-          masterGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-          updateUI();
-        }
-
-        function updateSpatialDynamics(velocity, chapterId) {
-          if (!ctx || !isPlaying) return;
-          if (chapterId !== activeCh) activeCh = chapterId;
-        }
-
-        const bgmBtn = document.getElementById('btn-bgm-toggle');
-        if (bgmBtn) {
-          bgmBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (isPlaying) { userMuted = true; stopBGM(); }
-            else { userMuted = false; startBGM(); }
-          });
-        }
-
-        const unlock = () => { if (!isPlaying && !userMuted) startBGM(); };
-        window.addEventListener('wheel', unlock, { passive: true, once: true });
-        window.addEventListener('pointerdown', unlock, { passive: true, once: true });
-        window.addEventListener('touchstart', unlock, { passive: true, once: true });
-
-        return { updateSpatialDynamics };
-      })();
+      const soundEngine = {
+        updateSpatialDynamics: function () {}
+      };
 
       // ======================================================================
       // 8.5. SK TELECOM (sktelecom.com) INTRO CARD STACK -> BENTO FLIP SPREAD
@@ -3574,6 +3930,7 @@
         }
 
         // Card & Action Chip Click Handlers
+        const hairloss4TypeModalEl = document.getElementById('hairloss-4type-modal-overlay');
         cardEls.forEach((card) => {
           card.addEventListener('click', (e) => {
             const chip = e.target.closest('.skt-card-chip');
@@ -3587,6 +3944,12 @@
               e.preventDefault();
               e.stopPropagation();
               window.location.href = customHref;
+            } else if (action === 'hairloss-modal' || card.dataset.link === 'hairloss-modal' || card.dataset.cardIdx === '4') {
+              e.preventDefault();
+              e.stopPropagation();
+              if (hairloss4TypeModalEl) {
+                hairloss4TypeModalEl.classList.add('open');
+              }
             } else if (action === 'story') {
               e.preventDefault();
               e.stopPropagation();
@@ -3604,6 +3967,7 @@
 
         if (btnShowCards) {
           btnShowCards.addEventListener('click', () => {
+            finishDaddyIntro(true);
             scrollToNormalized(1.0, true);
             if (isActive) playFlipSequence();
             else activate();
@@ -3621,7 +3985,9 @@
           btnBackToStory.addEventListener('click', (e) => {
             e.stopPropagation();
             deactivate();
-            scrollToNormalized(0.0);
+            scrollToNormalized(0.0, true);
+            lastUserInteract = 0;
+            introClosedAtMs = performance.now();
           });
         }
 
@@ -3645,6 +4011,51 @@
         const dt = Math.min(0.05, (now - lastTime) / 1000);
         lastTime = now;
         const timeSec = now * 0.001;
+
+        // 1) Cinematic "아빠 한의사를 찾는 환자 스토리 공개" Opening Slogan Progress & Auto-Transition
+        if (!isDaddyIntroFinished) {
+          const introElapsed = Math.max(0, now - introStartTimeMs);
+          const introRatio = Math.min(1, introElapsed / INTRO_DURATION_MS);
+          if (daddyIntroProgressFillEl) {
+            daddyIntroProgressFillEl.style.width = `${(introRatio * 100).toFixed(1)}%`;
+          }
+          if (introRatio >= 1) {
+            finishDaddyIntro(false);
+          }
+        }
+
+        // 2) Hands-Free Automatic Storyboard Scroll (when intro has finished and user has not clicked/scrolled recently)
+        const isDrawerOpen = Boolean(drawerOverlay && drawerOverlay.classList.contains('open'));
+        const isIdleForAutoScroll = (lastUserInteract === 0) || ((now - lastUserInteract) > 3800);
+        if (
+          isDaddyIntroFinished &&
+          (now - introClosedAtMs) > 650 &&
+          !sktCardFlipController.isActive() &&
+          !isTouchDragging &&
+          !isDrawerOpen &&
+          isIdleForAutoScroll &&
+          targetProgress < 0.965
+        ) {
+          isAutoScrollRunning = true;
+          const estStoryNorm = Math.max(0, Math.min(1, smoothProgress / 0.90));
+          const estFrameFloat = storyNormToFrameFloat(estStoryNorm);
+          const estFrameIdx = Math.floor(estFrameFloat);
+          const estRawMix = estFrameFloat - estFrameIdx;
+          const isSpecialMultiStageFrame = (
+            estFrameIdx === GROWTH_TALL_FRAME ||
+            estFrameIdx === CH6_START_FRAME ||
+            estFrameIdx === CH6_RECOVERED_FRAME
+          );
+          // Slowed down by ~1.5s per scene (from ~1.88s/cut at 0.0175 to ~3.38s/cut at 0.0097)
+          const baseAutoSpeed = isSpecialMultiStageFrame ? 0.0068 : 0.0097;
+          const autoSpeed = (!isSpecialMultiStageFrame && estRawMix < 0.42)
+            ? baseAutoSpeed * 0.85
+            : baseAutoSpeed * 1.10;
+          targetProgress = Math.min(0.965, targetProgress + dt * autoSpeed);
+          syncNativeScrollPosition();
+        } else {
+          isAutoScrollRunning = false;
+        }
 
         // Mobile Touch Momentum Inertia Coasting (calm, controlled stop)
         if (!isTouchDragging && Math.abs(touchInertiaVel) > 0.00005) {

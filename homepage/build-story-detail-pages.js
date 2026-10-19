@@ -23,32 +23,31 @@ const PAGES = [
       title: '안정위 대표원장',
       subtitleEn: 'Dr. Ahn Jung-wi · Evidence-Based Sasang & Integrative Korean Medicine',
       desc: [
-        '깊이 있는 맥진과 국가공인 무독성 검수 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 기전과 안전성이 입증된 치료법만을 시행합니다.'
+        '깊이 있는 맥진과 국가인증 정품 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 검사와 안전성이 입증된 치료법만을 시행합니다.'
       ],
       ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
       ctaText: '내 체질에 맞는 치료 방향 상담하기',
       reserveProgram: '안정위 대표원장 사상체질·통합진료 클리닉',
       checklistTitle: '사상체질 · 맞춤 한약 핵심 체크리스트',
       checklistItems: [
-        '[원인 미상 통증] 병원 검사는 정상인데 만성 통증·소화불량이 반복된다.',
+        '[원인 미상 통증] 병원 검사는 정상인데 만성 통증· 피로가 반복된다.',
         '[사상체질 진단] 내 타고난 체질과 체질별 맞춤 식단을 정확히 알고 싶다.',
         '[심층 전담 진료] 내 이야기를 끝까지 듣고 원인을 쉽게 설명해 주는 주치의를 원한다.',
         '[체질 맞춤 처방] 공용 한약이 아닌 내 맥상에 맞춘 정밀 단독 처방을 원한다.',
         '[학술 안전성 검증] 간·신장 부담이나 중금속 걱정 없이 논문으로 검증된 한약을 원한다.'
       ],
       doctorAdvice: {
-        zero: '현재 겪고 계신 증상을 체크하시면 대표원장 맞춤 진료 방향을 안내해 드립니다.',
-        low: '검사상 나타나지 않는 기능적 불균형 단계입니다. 학술 논문으로 검증된 사상체질 변증과 맥진 처방으로 근본 원인 해결이 가능합니다.',
-        high: '<strong>"오랜 기간 원인 모를 불편함으로 많이 힘드셨겠습니다."</strong> 복합 장부 기능 저하가 누적된 상태입니다. 동료심사 학술지로 안전성과 효능이 입증된 심층 맥진·맞춤 무균 탕전 치료를 권장합니다.'
+        caution: '장부불균형 주의',
+        severe: '장부불균형 심각'
       }
     },
     plates: [
       {
         type: 'clean-video',
-        stepLabel: 'STORY · 대표원장 심층 문진',
+        stepLabel: 'STORY · 대표원장 심층 검사',
         title: "병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다",
-        sub: '수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 미병(未病)의 뿌리를 찾습니다.',
-        caption: '[원장 임상 노트] 초진 시 수면·소화·한열 반응을 입체 문진해 기능성 질환의 근본 원인을 파악합니다.',
+        sub: '자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.',
+        caption: '[원장 임상 노트] 초진 시 자율신경·수면·소화·한열 반응을 입체 검사해 기능성 질환의 근본 원인을 파악합니다.',
         videoSrc: 'detail_director_story1.mp4?v=oryzo3',
         poster: 'detail_director_story1_clean.jpg?v=oryzo3'
       },
@@ -56,50 +55,58 @@ const PAGES = [
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 양 손목 정밀 진맥',
-        title: '손끝으로 읽어내는 오장육부와 자율신경의 파동',
-        sub: '양 손목 촌·관·척 맥진으로 자율신경 과항진과 오장육부의 기혈 막힘을 정밀하게 판독합니다.',
-        caption: '[원장 임상 노트] 좌우 손목 촌·관·척 부위의 맥상을 정밀 비교하여 상·중·하초의 기혈 편차를 객관화합니다.',
+        title: "손끝으로 읽어내는 '오장육부와 자율신경'의 파동",
+        sub: '창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.',
+        caption: '[원장 임상 노트] 창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.',
         imgSrc: 'detail_director_story2_clean.jpg?v=oryzo3',
-        cleanTags: [
-          '촌·관·척 정밀 맥상 판독',
-          '자율신경 밸런스 학술 변증'
+        thumbs: [
+          { img: 'detail_director_story2_clean.jpg?v=oryzo3', label: '양 손목 정밀 맥진' },
+          { img: 'detail_director_story2_both_wrists_pulse.jpg', label: '촌·관·척 장부 스캔' },
+          { img: 'detail_director_pulse.jpg', label: '1:1 원장 전담 진맥' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 사상체질 & 학술 근거 로드맵',
-        title: '체질 의학과 실제 학술 논문을 결합한 맞춤 치료 지도',
+        title: "체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'",
         sub: '타고난 사상체질과 현대 임상 논문 근거를 결합해 왜 아팠는지, 어떻게 회복되는지 명확히 안내합니다.',
         caption: '[원장 임상 노트] 태양·태음·소양·소음 사상체질의 장부 강약을 분석하여 학술적으로 검증된 처방을 설계합니다.',
         imgSrc: 'detail_director_story3_clean.jpg?v=oryzo3',
-        cleanTags: [
-          '사상체질 장부 정밀 분석',
-          '학술 논문 기반 치료 설계'
+        thumbs: [
+          { img: 'detail_director_story3_clean.jpg?v=oryzo3', label: '사상체질 치료 설계' },
+          { img: 'detail_director_story3_nod_design.jpg', label: '1:1 심층 브리핑' },
+          { img: 'detail_director_consult.jpg', label: '대표원장 책임 진료' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 무균 탕전 & 국가공인 약재 검수',
-        title: '한 방울의 타협도 없는 원내 클린 탕전 시스템',
-        sub: '국가공인 유해성 검사를 통과한 청정 GMP 약재만을 원내 무균 정수 시스템으로 정성껏 달여냅니다.',
-        caption: '[원장 임상 노트] 정수 시스템과 저온 추출 공법으로 유효 성분을 지키며 모든 탕전 과정을 대표원장이 직접 검수합니다.',
+        stepLabel: 'STORY · 압력 탕전 & 정품 약재 사용',
+        title: "모든 처방을 직접 달이는 '정통 시스템'",
+        sub: '국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 정성껏 달여냅니다.',
+        caption: '[원장 임상 노트] 국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 원내에서 직접 달여냅니다.',
         imgSrc: 'detail_director_story4_decoction_lab.jpg?v=dir4new',
-        cleanTags: [
-          '중금속·잔류농약 불검출 GMP 약재',
-          '원내 저온 진공 멸균 탕전'
+        thumbs: [
+          { img: 'detail_director_story4_decoction_lab.jpg?v=dir4new', label: '원내 정밀 탕전실' },
+          { img: 'detail_director_story4_loupe_pov.jpg', label: '정품 약재 직접 검수' },
+          { img: 'detail_director_herbs.jpg', label: 'GMP 인증 청정 약재' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · SCI급 학술 논문 검수 완료',
-        title: '실제 논문 검수로 안전성과 기전이 입증된 맞춤 한의학',
-        sub: '단순 수치 나열이 아닌, 국제 동료심사(Peer-review) 학술 논문을 철저히 검수하여 안전성이 입증된 한약만을 처방합니다.',
+        title: "실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'",
+        sub: '학술 논문연구를 통한 안전성이 입증된 한약만을 처방합니다.',
         caption: '[학술 논문 검수] 국제 학술지 연구를 통해 한약 투여 후 간·신장 기능 안전성 및 항산화·자율신경 회복 기전이 검증되었습니다.',
         imgSrc: 'detail_director_story5_clean.jpg?v=oryzo3',
+        thumbs: [
+          { img: 'detail_director_story5_clean.jpg?v=oryzo3', label: 'SCI급 학술 논문 검증' },
+          { img: 'detail_director_story5_family_safety.jpg', label: '온 가족 안심 한약' },
+          { img: 'ba_director_after.jpg', label: '간·신장 안전성 입증' }
+        ],
         sciStats: [
-          { num: 'SCI급 국제학술지 검증', label: '한약 복용 전후 간·신장 기능 안전성 및 항산화 효소 활성 입증 - Evid Based Complement Alternat Med', width: '96%' },
-          { num: '국제 민족약리학회지 등재', label: '체질 맞춤 처방의 자율신경 균형 회복 기전 검증 - J Ethnopharmacol', width: '94%' }
+          { num: 'SCI급 국제학술지 검증', label: '한약 복용 전후 간·신장 안전성 및 항산화 활성 입증', width: '96%' },
+          { num: '국제 민족약리학회지 등재', label: '체질 맞춤 처방의 자율신경 회복 기전 검증', width: '94%' }
         ]
       }
     ],
@@ -158,9 +165,8 @@ const PAGES = [
         '[비수술 근본 교정] 수술 없이 학술적으로 검증된 추나와 약침으로 치료받고 싶다.'
       ],
       doctorAdvice: {
-        zero: '일상 속 통증이나 체형 불균형 항목을 체크하시면 추나 진단 가이드가 안내됩니다.',
-        low: '골반과 경추의 균형이 무너지기 시작한 단계입니다. 원장 수기 추나로 디스크 압박을 조기에 해소할 수 있습니다.',
-        high: '<strong>"만성적인 통증과 저림으로 일상이 많이 불편하셨겠습니다."</strong> 척추 중심축 비대칭으로 신경 압박이 누적된 상태입니다. 국제 학술지에서 권고하는 비수술 추나 감압 교정과 약침 병행 치료를 권장합니다.'
+        caution: '척추불균형 주의',
+        severe: '척추불균형 심각'
       }
     },
     plates: [
@@ -169,11 +175,17 @@ const PAGES = [
         indexPill: 'STORY · 일상을 멈추게 하는 통증',
         metricPill: '요추·경추 구조적 불균형 신호',
         title: "당연했던 일상의 움직임을 앗아가는 '구조적 통증'",
-        sub: '허리를 숙이거나 고개를 돌리는 평범한 동작조차 망설이게 된다면 척추 기둥이 보내는 구조 신호입니다.',
+        sub: '허리를 숙이거나 고개를 돌리는 평범한 동작조차 망설이게 된다면 척추뼈가 보내는 구조 신호입니다.',
         caption: '[추나 임상 노트] 반복되는 급·만성 통증은 근육만의 문제가 아닌 골반과 척추 정렬의 붕괴에서 시작됩니다.',
         frames: [
           'detail_chuna_story1_shoe_pain.jpg?v=chuna1',
-          'detail_chuna_story1_camp_pain.jpg?v=chuna1'
+          'detail_chuna_story1_camp_pain.jpg?v=chuna1',
+          'detail_chuna_story1_child_pain.jpg'
+        ],
+        thumbs: [
+          { img: 'detail_chuna_story1_shoe_pain.jpg?v=chuna1', label: '허리 굽힘 통증' },
+          { img: 'detail_chuna_story1_camp_pain.jpg?v=chuna1', label: '일상 동작 제약' },
+          { img: 'detail_chuna_story1_child_pain.jpg', label: '반복되는 재발통' }
         ],
         fx: 'chuna-lost-movement-fx',
         durationSec: 6.4
@@ -182,50 +194,57 @@ const PAGES = [
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 대증 진통제의 한계',
-        title: '진통제는 경보음만 끌 뿐, 기울어진 기둥을 세우지 못합니다',
-        sub: '틀어진 골반과 짓눌린 디스크를 그대로 둔 채 통증 신호만 차단하면 통증은 어김없이 재발합니다.',
+        title: "진통제는 경보음만 끌 뿐, '기울어진 기둥'을 세우지 못합니다",
+        sub: '틀어진 골반과 눌린 디스크를 놔두면 통증은 어김없이 재발합니다.',
         caption: '[추나 임상 노트] 통증 원인이 되는 관절 아탈구와 디스크 압박을 물리적으로 감압해야 재발 고리를 끊을 수 있습니다.',
         imgSrc: 'detail_chuna_story2_painkiller_drawer.jpg?v=chuna2',
-        cleanTags: [
-          '대증 치료의 재발 한계',
-          '구조적 원인 교정 필수'
+        thumbs: [
+          { img: 'detail_chuna_story2_painkiller_drawer.jpg?v=chuna2', label: '진통제 의존의 한계' },
+          { img: 'detail_chuna_story2_clean.jpg', label: '신경 압박 근본 원인' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 골반·척추 중심축 복원 원리',
-        title: '무너진 주춧돌(골반)을 바로 세워야 통증의 뿌리가 뽑힙니다',
-        sub: '기울어진 하부 골반과 요추 정렬을 맞추면 상부 척추 긴장이 풀리고 눌려 있던 신경 공간이 열립니다.',
+        title: "무너진 '주춧돌(골반)'을 바로 세워야 통증의 뿌리가 뽑힙니다",
+        sub: '골반과 요추 정렬을 맞추면 눌려 있던 추간판 신경 공간이 열립니다.',
         caption: '[추나 임상 노트] 골반 천장관절과 요추 중심축을 수직 정렬하여 추간판에 집중된 비정상 하중을 분산시킵니다.',
         imgSrc: 'detail_chuna_story3_jenga_spine.jpg?v=chuna2',
-        cleanTags: [
-          '골반·척추 수직 중심축 복원',
-          '추간판 디스크 신경 감압'
+        thumbs: [
+          { img: 'detail_chuna_story3_jenga_spine.jpg?v=chuna2', label: '중심축 구조 복원' },
+          { img: 'detail_chuna_pelvis.jpg', label: '골반·요추 정렬' },
+          { img: 'detail_chuna_cervical.jpg', label: '경추·거북목 교정' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 대표원장 직접 수기 촉진·추나',
-        title: '기계가 대신할 수 없는 원장의 손끝 감각, 정밀 수기 추나',
-        sub: '영상 검사에 드러나지 않는 미세한 관절 틀어짐과 근막 저항까지 손끝으로 직접 촉진하여 안전하게 교정합니다.',
+        title: "기계가 대신할 수 없는 원장의 손끝 감각, '정밀 수기 추나'",
+        sub: '검사상 안 보이는 미세 관절 틀어짐까지 손끝으로 찾아 직접 교정합니다.',
         caption: '[추나 임상 노트] 밀 추(推)·당길 나(拿) 정통 수기 기법으로 환자 호흡과 근육 긴장도에 맞춰 안전하게 교정합니다.',
         imgSrc: 'detail_chuna_story4_palpation.jpg?v=chuna2',
-        cleanTags: [
-          '원장 직접 수기 촉진(Palpation)',
-          '맞춤형 추나·약침 통합 시술'
+        thumbs: [
+          { img: 'detail_chuna_story4_palpation.jpg?v=chuna2', label: '대표원장 수기 촉진' },
+          { img: 'detail_chuna_acupuncture.jpg', label: '신경 감압 약침 병행' },
+          { img: 'detail_chuna_story4_clean.jpg', label: '1:1 맞춤 분절 교정' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 국제 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 비수술 추나 치료법',
-        sub: '수치로 효과를 과장하지 않고, 미국의학협회지(JAMA)와 미국내과학회(ACP) 논문 검수를 통해 입증된 치료법을 안내합니다.',
+        title: "실제 학술 논문 검수로 입증된 '비수술 추나 치료법'",
+        sub: '미국의학협회지(JAMA)·미국내과학회(ACP)가 권고하는 비수술 척추 교정입니다.',
         caption: '[학술 논문 검수] 수기 교정(SMT/Chuna)과 한의 통합 치료는 국제 임상 가이드라인에서 권고하는 비수술 치료법입니다.',
         imgSrc: 'detail_chuna_story5_child_airplane.jpg?v=chuna2',
+        thumbs: [
+          { img: 'detail_chuna_story5_child_airplane.jpg?v=chuna2', label: '일상 움직임 회복' },
+          { img: 'detail_chuna_story5_park_arms_wide.jpg', label: '통증 없는 활력' },
+          { img: 'ba_chuna_after.jpg', label: '척추·골반 정렬 변화' }
+        ],
         sciStats: [
           { num: 'JAMA(미국의학협회지) 검증', label: '비수술 척추 수기치료의 추간판 감압 및 요통 개선 입증', width: '96%' },
-          { num: '미국내과학회(ACP) 권고', label: '급·만성 요통 및 척추 질환의 비약물 수기치료 권고 가이드라인', width: '94%' }
+          { num: '미국내과학회(ACP) 권고', label: '급·만성 요통 1차 비약물 수기치료 권고 가이드라인', width: '94%' }
         ]
       }
     ],
@@ -284,9 +303,8 @@ const PAGES = [
         '[자세 불균형] 거북목·구부정한 자세로 인해 숨은 키가 손해 보는 것 같아 걱정된다.'
       ],
       doctorAdvice: {
-        zero: '우리 아이의 일상 속 증상을 체크하시면 성장 진단 가이드가 안내됩니다.',
-        low: '호흡기 면역과 비위 흡수력을 보강해 줄 시기입니다. 안전성이 검증된 성장 한약으로 잠재력을 깨울 수 있습니다.',
-        high: '<strong>"아이의 성장이 더뎌 부모님의 걱정이 크셨겠습니다."</strong> 잦은 잔병치레나 편식, 조기 골화가 성장 에너지를 가로채고 있습니다. 정밀 성장판 평가와 맞춤 치료를 권장합니다.'
+        caution: '성장장애 주의',
+        severe: '성장장애 심각'
       },
       extraLink: {
         href: 'body-explorer.html?part=knee',
@@ -297,13 +315,19 @@ const PAGES = [
       {
         type: 'motion-story',
         indexPill: 'STORY · 키가 멈춘 진짜 이유',
-        metricPill: '몸속 성장 방해 요인 및 면역 누수',
+        metricPill: '감기·비염·소화불량 에너지 누수',
         title: "아이 키가 더딘 이유, 단순한 '유전 탓'만은 아닙니다",
-        sub: "유전이나 식습관 문제뿐 아니라, 잦은 감기·비염, 소화불량 등 성장에너지를 가로채는 '몸속 방해 요인'을 먼저 해결해야 온전한 성장이 이루어집니다.",
+        sub: '잦은 감기·비염·소화불량에 새는 에너지를 막아야 온전히 키로 갑니다.',
         caption: '[소아 성장 노트] 호흡기 염증과 소화불량에 쓰이는 면역 에너지를 줄여야 성장판 연골 증식으로 에너지가 집중됩니다.',
         frames: [
           'detail_growth_story1_wall_chart.jpg?v=grw1',
-          'detail_growth_story1_mouth_breathing.jpg?v=grw1'
+          'detail_growth_story1_mouth_breathing.jpg?v=grw1',
+          'growth-child-sleep.jpg'
+        ],
+        thumbs: [
+          { img: 'detail_growth_story1_wall_chart.jpg?v=grw1', label: '성장 속도 정체' },
+          { img: 'detail_growth_story1_mouth_breathing.jpg?v=grw1', label: '비염·구강호흡' },
+          { img: 'growth-child-sleep.jpg', label: '깊은 성장 숙면' }
         ],
         fx: 'sunlight-bokeh',
         durationSec: 6.4
@@ -311,50 +335,61 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 단순 영양 보충의 한계',
-        title: '흡수력과 성장판 문이 닫히면, 아무리 좋은 영양제도 스쳐 지나갑니다',
-        sub: '비위(소화기) 흡수력을 높이고 조기 골화를 늦추는 체질 맞춤 치료가 선행되어야 영양분이 키로 이어집니다.',
+        stepLabel: 'STORY · 허약아형 vs 성조숙증형 2대 맞춤 처방',
+        title: "'밥 안 먹는 허약아'와 '빨리 크는 성조숙증'은 처방이 다릅니다",
+        sub: '비위 흡수력 강화 vs 성호르몬 과항진 억제, 아이 체질에 맞춰 1:1 설계합니다.',
         caption: '[소아 성장 노트] 소화 흡수 기능과 사춘기 골 성숙 속도를 함께 조율하여 성장 골든타임을 길게 지켜줍니다.',
-        imgSrc: 'detail_growth_story2_supplements_limit.jpg?v=grw2',
-        cleanTags: [
-          '비위 소화 흡수력 강화',
-          '조기 골화 지연 맞춤 관리'
+        imgSrc: 'growth-two-types-director.jpg',
+        thumbs: [
+          { img: 'growth-two-types-director.jpg', label: '2대 유형 원장 맞춤' },
+          { img: 'growth-herbal-immune.jpg', label: '허약·소화 흡수 강화' },
+          { img: 'detail_growth_story2_supplements_limit.jpg?v=grw2', label: '조기 골화 지연 관리' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 성장판 연골모세포 활성 기전',
-        title: '성호르몬 자극 없이 성장판 연골세포 분열을 안전하게 깨웁니다',
-        sub: '성장판이 일찍 굳는 것을 예방하면서 연골모세포(Chondrocyte) 증식과 골 기질 생성을 돕는 한약 기전입니다.',
+        title: "성호르몬 자극 없이 '성장판 연골세포' 분열만 안전하게 깨웁니다",
+        sub: '성장판이 일찍 닫히는 것을 막고 연골 증식과 골 기질 생성만 촉진합니다.',
         caption: '[소아 성장 노트] 성호르몬을 자극하지 않는 안전한 약재 배합으로 성장판 연골층의 활발한 증식을 유도합니다.',
         imgSrc: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2',
-        cleanTags: [
-          '성장판 연골모세포 활성 촉진',
-          '성호르몬 자극 없는 안전 처방'
+        thumbs: [
+          { img: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2', label: '성장판 연골 증식 3D' },
+          { img: 'illust_knee_growth_care.jpg', label: '무릎 성장판 기전' },
+          { img: 'growth-diag-autonomic.jpg', label: '호르몬·자율신경 균형' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 정밀 성장판 평가 & 소아 성장 추나',
-        title: '정밀 성장판 상태 확인과 소아 추나로 숨은 키까지 찾아줍니다',
-        sub: '아이의 성장 단계를 세밀하게 확인하고 거북목·골반 불균형을 부드럽게 교정해 무릎 성장판 혈류를 열어줍니다.',
+        stepLabel: 'STORY · 초음파 성장판 & 4대 기능 검사',
+        title: "초음파 성장판부터 비염·장·체형까지 '숨은 키'를 찾습니다",
+        sub: '방사선 걱정 없는 초음파 성장판 검사와 소아 추나로 성장 길을 열어줍니다.',
         caption: '[소아 성장 노트] 척추·골반 정렬 교정과 성장혈 자극을 병행하여 바른 체형과 균형 잡힌 성장을 동시에 돕습니다.',
-        imgSrc: 'detail_growth_story4_ultrasound_scan.jpg?v=grw2',
-        cleanTags: [
-          '성장 단계별 정밀 평가',
-          '소아 체형 교정 성장 추나'
+        imgSrc: 'growth-ultrasound-metrics.jpg',
+        thumbs: [
+          { img: 'growth-ultrasound-metrics.jpg', label: '초음파 성장판 판독' },
+          { img: 'growth-diag-airway.jpg', label: '비염·기도 검사' },
+          { img: 'growth-diag-gut.jpg', label: '장·소화 흡수 검사' },
+          { img: 'growth-diag-thermography.jpg', label: '체열·체형 불균형' },
+          { img: 'detail_growth_story4_ultrasound_scan.jpg?v=grw2', label: '소아 성장 추나' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 소아·약리 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 한방 키성장·성조숙증 치료법',
-        sub: '인위적인 성장 수치를 내세우지 않고, 국제 학술 논문에서 연골세포 증식과 면역 개선 기전이 입증된 안전한 치료법을 안내합니다.',
+        stepLabel: 'STORY · 내 가족 내 아이가 복용하는 성장한약',
+        title: "실제 원장님의 가족과 똑같은 '키성장·성조숙증 치료법'",
+        sub: '안전한 국제 학술 논문에서 연골세포 증식과 면역 개선 기전이 입증된 안전한 치료법을 안내합니다.',
         caption: '[학술 논문 검수] 국제 학술지(Phytomedicine, Pediatrics) 연구를 통해 성장판 연골 증식 및 호흡기 면역·수면 개선 기전이 입증되었습니다.',
-        imgSrc: 'detail_growth_story5_tall_basketball.jpg?v=grw2',
+        imgSrc: 'growth-director-son-comparison.png',
+        fit: 'contain',
+        thumbs: [
+          { img: 'growth-director-son-comparison.png', label: '원장님 아들 성장 실증', fit: 'contain' },
+          { img: 'detail_growth_story5_tall_basketball.jpg?v=grw2', label: '논문 검증 키성장', fit: 'cover' },
+          { img: 'ba_growth_after.jpg', label: '성장판·면역 회복', fit: 'cover' }
+        ],
         sciStats: [
-          { num: '국제 식물학술지(Phytomedicine) 검증', label: '조기 골화 지연 및 성장판 연골모세포 증식 촉진 기전 입증', width: '96%' },
+          { num: '국제 식물학술지(Phytomedicine) 검증', label: '조기 골화 지연 및 성장판 연골모세포 증식 촉진 입증', width: '96%' },
           { num: '국제 소아과학회지(Pediatrics) 등재', label: '호흡기 감염·비염 개선을 통한 성장인자(IGF) 회복 입증', width: '94%' }
         ]
       }
@@ -414,9 +449,8 @@ const PAGES = [
         '[반복된 요요] 굶는 다이어트 후 근육만 빠지고 체지방이 다시 늘어났다.'
       ],
       doctorAdvice: {
-        zero: '나의 다이어트 고민과 체질 증상을 체크하시면 대사 진단 가이드가 안내됩니다.',
-        low: '기초대사 저하와 림프 부종이 시작된 단계입니다. 간 해독·대사 한약으로 편안하게 체지방 감량을 시작할 수 있습니다.',
-        high: '<strong>"반복되는 요요와 지치지 않는 가짜 식욕으로 스트레스가 많으셨겠습니다."</strong> 만성 대사 정체와 렙틴 저항성이 누적된 상태입니다. 근육 손실 없이 내장지방 분해를 돕는 맞춤 대사 치료를 권장합니다.'
+        caution: '대사저하 주의',
+        severe: '대사저하 심각'
       },
       extraLink: {
         href: 'body-explorer.html?part=gut',
@@ -426,14 +460,22 @@ const PAGES = [
     plates: [
       {
         type: 'motion-story',
-        indexPill: 'STORY · 답답한 옷장 앞의 한숨',
-        metricPill: '복부 대사 정체 및 나잇살 신호',
+        indexPill: 'STORY · 안 빠지는 나잇살의 원인',
+        metricPill: '복부 대사 정체 · 야식 · 부종 신호',
         title: "적게 먹어도 잠기지 않는 지퍼, 의지가 아닌 '대사의 문제'입니다",
-        sub: '기초대사가 떨어지고 속이 차가워지면 우리 몸은 에너지를 태우는 대신 복부에 지방을 쌓아둡니다.',
+        sub: '꺼진 기초대사와 야간 가짜 식욕, 만성 부종부터 잡아야 살이 빠집니다.',
         caption: '[대사 다이어트 노트] 무리한 절식이 아닌, 떨어진 기초대사량과 배출 기능을 회복하는 것이 감량의 첫걸음입니다.',
         frames: [
           'detail_diet_story1_closet_zipper.jpg?v=belt1',
-          'detail_diet_story1_baggy_pants.jpg?v=belt1'
+          'empathy-metabolism-waist.jpg',
+          'empathy-night-calm.jpg',
+          'empathy-leg-edema.jpg'
+        ],
+        thumbs: [
+          { img: 'detail_diet_story1_closet_zipper.jpg?v=belt1', label: '복부 지퍼 정체' },
+          { img: 'empathy-metabolism-waist.jpg', label: '아랫배 나잇살' },
+          { img: 'empathy-night-calm.jpg', label: '야식·가짜 식욕' },
+          { img: 'empathy-leg-edema.jpg', label: '만성 하체 부종' }
         ],
         fx: 'belt-zipper-morning-fx',
         durationSec: 6.4
@@ -441,48 +483,57 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 굶는 다이어트와 요요의 악순환',
-        title: '무작정 굶으면 지방이 아닌 근육과 수분부터 빠져나갑니다',
-        sub: '근육이 빠진 자리에 내장지방이 더 빠르게 채워지는 요요의 사슬을 근본적인 대사 치료로 끊어냅니다.',
+        stepLabel: 'STORY · 굶는 다이어트와 요요 단절',
+        title: "무작정 굶으면 지방 대신 '근육과 수분'만 빠져나갑니다",
+        sub: '포만감 호르몬(렙틴) 저항성을 회복해 억지로 참는 고통 없이 요요를 끊습니다.',
         caption: '[대사 다이어트 노트] 포만감 호르몬(렙틴) 저항성을 개선하여 억지로 참는 고통 없이 자연스러운 소식을 유도합니다.',
         imgSrc: 'detail_diet_story2_starvation_yoyo.jpg?v=belt1',
-        cleanTags: [
-          '근손실 유발 절식 지양',
-          '렙틴 저항성(가짜 식욕) 완화'
+        thumbs: [
+          { img: 'detail_diet_story2_starvation_yoyo.jpg?v=belt1', label: '절식·근손실 함정' },
+          { img: 'detail_diet_story2_scale_yoyo_trap.jpg', label: '반복되는 요요 차단' },
+          { img: 'detail_diet_story1_midnight_fridge.jpg', label: '야간 폭식 진정' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 복부 대사 화로(갈색지방) 점화',
-        title: '차갑게 식은 복부 대사 화로를 깨워 스스로 타오르게 만듭니다',
-        sub: '위장과 간의 담음(노폐물)을 비워내고 심부 체온과 대사 효소를 활성화하여 내장지방을 집중 연소합니다.',
+        stepLabel: 'STORY · 3단계 대사 화로(갈색지방) 점화',
+        title: "식욕 진정 · 내장지방 연소 · 독소 배출 '3단계 대사 리셋'",
+        sub: '차가운 복부 대사 화로를 깨워 휴식 중에도 스스로 지방을 태우게 만듭니다.',
         caption: '[대사 다이어트 노트] 갈색지방(BAT) 열발생과 AMPK 대사 경로를 깨워 휴식 중에도 에너지가 원활히 소모되도록 돕습니다.',
         imgSrc: 'detail_diet_story3_brazier_metabolism_3d.jpg?v=belt1',
-        cleanTags: [
-          '갈색지방 열발생 대사 활성화',
-          '위장·간 담음 독소 해독'
+        thumbs: [
+          { img: 'detail_diet_story3_brazier_metabolism_3d.jpg?v=belt1', label: '복부 대사 화로 3D' },
+          { img: 'efficacy-neuro-calm.jpg', label: 'STEP 1 식욕 진정' },
+          { img: 'efficacy-core-lipolysis.jpg', label: 'STEP 2 내장지방 연소' },
+          { img: 'efficacy-detox-flush.jpg', label: 'STEP 3 부종·독소 배출' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 체질별 정밀 진맥 & 대사 맞춤 한약',
-        title: '손 떨림·불면 걱정 없이 편안하게 비워내는 체질 맞춤 처방',
-        sub: '개인의 장부 대사 상태와 체성분을 정밀 분석하여 근육은 지키고 부종과 체지방만 선택적으로 감량합니다.',
+        stepLabel: 'STORY · 체질별 정밀 진맥 & 무부작용 맞춤 한약',
+        title: "손 떨림·불면 걱정 없이 '편안하게 비워내는' 체질 맞춤 처방",
+        sub: '원장 진맥과 인바디 분석으로 근육은 지키고 체지방과 부종만 골라 뺍니다.',
         caption: '[대사 다이어트 노트] 심장 부담 없이 자연스러운 포만감과 맑은 컨디션을 유지하는 대표원장 맞춤 처방입니다.',
         imgSrc: 'detail_diet_story4_inbody_pulse_herb.jpg?v=belt1',
-        cleanTags: [
-          '심장 부담 없는 편안한 포만감',
-          '근육 보존 · 부종·체지방 집중 관리'
+        thumbs: [
+          { img: 'detail_diet_story4_inbody_pulse_herb.jpg?v=belt1', label: '인바디·맥진 처방' },
+          { img: 'empathy-safe-herbal.jpg', label: '손떨림 없는 한약' },
+          { img: 'detail_diet_story4_inbody_counseling.jpg', label: '1:1 원장 밀착 코칭' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 국제 비만·약리 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 한방 대사 다이어트 치료법',
-        sub: '자극적인 감량 수치를 내세우지 않고, 국제 학술 논문에서 갈색지방 활성화와 내장지방 감소 기전이 입증된 치료법을 안내합니다.',
+        title: "실제 학술 논문으로 입증된 '내장지방 감량 · 라인 회복'",
+        sub: '국제 비만학술지에서 갈색지방 활성화와 가짜 식욕 개선이 입증된 치료법입니다.',
         caption: '[학술 논문 검수] 국제 비만학회지(Int J Obesity) 및 약리학 논문 검수를 통해 한약 복합물의 대사 활성화 기전이 검증되었습니다.',
         imgSrc: 'detail_diet_story5_zipper_success_fit.jpg?v=belt1',
+        thumbs: [
+          { img: 'detail_diet_story5_zipper_success_fit.jpg?v=belt1', label: '복부 라인 회복' },
+          { img: 'empathy-wedding-dress.jpg', label: '웨딩·중요 일정 케어' },
+          { img: 'detail_diet_story5_fitting_room_smile.jpg', label: '피팅룸 자신감' }
+        ],
         sciStats: [
           { num: '국제 비만학술지(Int J Obesity) 검증', label: '갈색지방 열발생 활성화 및 렙틴 저항성(가짜 식욕) 개선 입증', width: '96%' },
           { num: '국제 약리학술지(Front Pharmacol) 등재', label: '대사 효소 활성화 및 내장지방 감소 기전 학술 검증', width: '94%' }
@@ -510,12 +561,13 @@ const PAGES = [
   },
 
   // ==========================================================================
-  // 바른 탈모 · 모근재생 (hairloss.html) — [학술 논문 검수 기반 두피열·모낭 재생 치료]
+  // 바른 탈모 · 모근재생 통합 허브 (hairloss.html) & 01. 남성탈모 (hairloss-male.html)
   // ==========================================================================
   {
     file: 'hairloss.html',
     wpFile: 'wordpress-hairloss.html',
     tabIdx: 4,
+    hairlossSubType: 'hub',
     theme: {
       bgDark: '#0E1318',
       bgPanel: 'rgba(13, 18, 24, 0.95)',
@@ -526,40 +578,44 @@ const PAGES = [
       glowB: 'rgba(16, 185, 129, 0.08)'
     },
     meta: {
-      eyebrow: 'SCALP COOLING & FOLLICLE REGENERATION · 학술 논문 검증 탈모 치료',
-      title: '바른 탈모 · 모근재생',
-      subtitleEn: 'Evidence-Based Scalp Thermoregulation & Dermal Papilla Care',
+      eyebrow: 'MALE PATTERN HAIR LOSS · 아빠 한의사 학술 논문 검증 남성탈모',
+      title: '남성탈모 · M자·정수리 모근재생',
+      subtitleEn: 'Male Pattern Alopecia · Scalp Thermoregulation & Dermal Papilla Revival',
       desc: [
-        '머리로 치솟은 두피 열독을 식히고 경추 혈류를 열어 모유두세포에 영양을 공급합니다. 피부과학 및 약리학 학술 논문을 정밀 검수하여 효능이 입증된 비수술 모근재생 치료법을 시행합니다.'
+        '남편과 아버지, 내 가족에게 직접 처방하는 안전한 치료만 시행합니다. 호르몬 억제 약물의 부작용 걱정 없이 수승화강 두피 청열 한약과 경추 추나·약침으로 M자 이마와 정수리 모근의 자생력을 깨웁니다.'
       ],
-      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 탈모 진행 단계와 치료 계획을 브리핑해 드립니다.',
-      ctaText: '내 두피열·모낭 상태 원장님께 심층 진단받기',
-      reserveProgram: '바른 탈모 · 두피열 비수술 모근재생 클리닉',
-      checklistTitle: '두피열 · 모발 연모화 자가 진단 체크리스트',
+      ctaNudge: '👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 남성탈모 진행 단계와 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 M자·정수리 모낭 상태 원장님께 진단받기',
+      reserveProgram: '바른 남성탈모 (M자·정수리·두피열) 모근재생 클리닉',
+      checklistTitle: '남성탈모 (M자 · 정수리 · 두피열) 체크리스트',
       checklistItems: [
-        '[모발 탈락 증가] 샴푸하거나 머리를 말릴 때 빠지는 머리카락이 부쩍 많아졌다.',
-        '[정수리·가르마] 정수리나 가르마가 비어 보이고 모발이 힘없이 가늘어졌다.',
-        '[두피 열감·염증] 두피가 늘 뜨겁고 붉으며 뾰루지·가려움·각질이 반복된다.',
-        '[경추 긴장 동반] 뒷목과 어깨가 단단히 뭉쳐 있고 눈 피로와 편두통이 잦다.',
-        '[근본 치료 희망] 호르몬 억제 약물의 부작용 걱정 없이 모근 자생력을 살리고 싶다.'
+        '[M자 헤어라인 후퇴] 이마 양옆 M자 라인이 점점 깊어지고 앞머리에 힘이 없다.',
+        '[정수리 O자 빈모] 밝은 조명 아래나 사진에서 정수리 두피가 훤히 비쳐 보인다.',
+        '[과열된 두피·피지] 머리로 열이 자주 오르고 오후만 되면 두피에 기름기가 돈다.',
+        '[약물 부작용 우려] 먹는 탈모약의 부작용이나 중단 시 쉐딩·재탈모가 걱정된다.',
+        '[거북목·만성 피로] 과로와 스트레스로 뒷목·어깨가 굳고 두피까지 당기는 느낌이 든다.'
       ],
       doctorAdvice: {
-        zero: '겪고 계신 두피·모발 불편감을 체크하시면 탈모 진단 가이드가 표시됩니다.',
-        low: '초기 두피 열독 및 모발 연모화 신호입니다. 수승화강 청열 치료와 모낭 영양 공급으로 모근 힘을 회복할 수 있습니다.',
-        high: '<strong>"매일 빠지는 머리카락과 두피 열감으로 상심이 크셨겠습니다."</strong> 만성 두피 사막화와 모낭 위축이 진행 중입니다. 경추 혈류 개통 추나와 청열 약침을 결합한 집중 모근재생 치료를 권장합니다.'
+        caution: '남성탈모 주의',
+        severe: '남성탈모 심각'
       }
     },
     plates: [
       {
         type: 'motion-story',
-        indexPill: 'STORY · 가까워진 시선 앞의 위축감',
-        metricPill: '정수리·가르마 연모화 및 두피 상열 신호',
-        title: "가까워진 타인의 시선 앞에 '작아지는 마음', 탈모의 시작입니다",
-        sub: '조명 아래 드러나는 가르마와 가늘어진 모발은 두피 표면이 아닌 몸속 열 균형이 무너졌다는 신호입니다.',
-        caption: '[탈모 임상 노트] 과로와 스트레스로 상체에 몰린 열(上熱)이 두피 수분을 말리고 모낭 뿌리를 약화시킵니다.',
+        indexPill: 'STORY · 고개 숙일 때 신경 쓰이는 시선',
+        metricPill: 'M자 헤어라인 · 정수리 연모화 신호',
+        title: "고개 숙일 때 신경 쓰이는 'M자와 정수리', 두피열이 보내는 신호입니다",
+        sub: '유전 탓만 하기 전에, 모낭을 빠르게 위축시키는 두피 열독부터 잡아야 합니다.',
+        caption: '[남성탈모 임상 노트] 과로와 스트레스로 상체에 몰린 열(上熱)이 DHT 민감도를 높이고 모낭 뿌리를 약화시킵니다.',
         frames: [
           'detail_hair_story1_30cm_tension.jpg?v=30cm1',
           'detail_hair_story1_date_bow.jpg?v=30cm1'
+        ],
+        thumbs: [
+          { img: 'detail_hair_story1_30cm_tension.jpg?v=30cm1', label: '정수리·M자 비어보임' },
+          { img: 'detail_hair_story1_date_bow.jpg?v=30cm1', label: '가까운 시선 위축감' },
+          { img: 'life_3a_hairloss.jpg', label: '남성 탈모 진행' }
         ],
         fx: 'distance-30cm-tension',
         durationSec: 6.4
@@ -567,51 +623,59 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 표피 관리와 대증 치료의 한계',
-        title: '샴푸와 토닉을 바꿔도 계속 빠진다면, 뿌리의 열을 보아야 합니다',
-        sub: '겉만 씻어내는 관리만으로는 몸속에서 끊임없이 치솟아 오르는 두피 사막화 열독을 잠재울 수 없습니다.',
-        caption: '[탈모 임상 노트] 모발이 자라나는 토양인 두피의 열독과 경추 혈류 병목을 함께 해결해야 재탈모를 막습니다.',
+        stepLabel: 'STORY · 탈모 샴푸와 단순 억제제의 한계',
+        title: "표피만 씻거나 호르몬만 누르면, '불타는 모근 뿌리'는 그대로입니다",
+        sub: '두피 사막화를 부르는 상열(上熱)을 끄지 않으면 약을 멈추는 순간 다시 빠집니다.',
+        caption: '[남성탈모 임상 노트] 모발이 자라나는 토양인 두피의 열독과 경추 혈류 병목을 함께 해결해야 재탈모를 막습니다.',
         imgSrc: 'detail_hair_story2_cabinet_failure.jpg?v=30cm2',
-        cleanTags: [
-          '표피 세정 관리의 한계',
-          '심부 두피 열독(上熱) 해소 필수'
+        thumbs: [
+          { img: 'detail_hair_story2_cabinet_failure.jpg?v=30cm2', label: '표피 관리의 한계' },
+          { img: 'detail_hair_thermography.jpg', label: '두피 적외선 열화상' },
+          { img: 'life_3a_follicle_zoom.jpg', label: '모낭 열독 확대' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 수승화강(水昇火降) 두피 청열 원리',
-        title: '불타는 토양에는 어떤 나무도 뿌리내리지 못합니다',
-        sub: '머리로 치솟은 열을 내리고 차가운 하복부를 데우는 수승화강 치료로 모근이 자라날 비옥한 토양을 복원합니다.',
-        caption: '[탈모 임상 노트] 상열하한(上熱下寒) 불균형을 바로잡아 두피 미세염증을 가라앉히고 모낭 혈류를 회복합니다.',
+        stepLabel: 'STORY · 수승화강(水昇火降) 두피 청열 & 모유두 보호',
+        title: "머리의 열독은 내리고 '모유두세포 성장기'를 연장합니다",
+        sub: '끓어오르는 두피 온도를 낮춰 모낭 미세염증과 모근 연모화를 동시에 차단합니다.',
+        caption: '[남성탈모 임상 노트] 상열하한(上熱下寒) 불균형을 바로잡아 두피 미세염증을 가라앉히고 모낭 혈류를 회복합니다.',
         imgSrc: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2',
-        cleanTags: [
-          '수승화강 두피 열독 완화',
-          '모낭 미세혈류 및 진액 보충'
+        thumbs: [
+          { img: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2', label: '수승화강 두피 청열' },
+          { img: 'detail_hair_follicle_3d.jpg', label: '모유두세포 재생 3D' },
+          { img: 'illust_cervical_hairloss.jpg', label: '경추·두피열 기전' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 경추 감압 추나 & 모낭 재생 약침',
-        title: '목 길(경추)을 열어 혈류를 올리고, 약침으로 잠든 모낭을 깨웁니다',
-        sub: '거북목으로 막힌 두피 혈류 통로를 추나로 개통하고, 정제 약침으로 모유두세포에 고농축 영양을 직접 공급합니다.',
-        caption: '[탈모 임상 노트] 내치(청열 발모 한약)와 외치(경추 추나·모낭 약침)를 결합하여 가늘어진 모발을 굵고 탄탄하게 육모합니다.',
+        stepLabel: 'STORY · 경추 감압 추나 & 고농축 모낭 약침',
+        title: "거북목 혈류 병목을 추나로 열고, '모낭 약침'으로 뿌리를 채웁니다",
+        sub: '아빠 한의사가 내 가족에게 시술하듯 경추 순환로와 모낭 진피층을 함께 다스립니다.',
+        caption: '[남성탈모 임상 노트] 내치(청열 발모 한약)와 외치(경추 추나·모낭 약침)를 결합하여 가늘어진 모발을 굵고 탄탄하게 육모합니다.',
         imgSrc: 'detail_hair_story4_pulse_routine.jpg?v=30cm2',
-        cleanTags: [
-          '상부 경추 혈류 개통 추나',
-          '모유두세포 활성 정제 약침'
+        thumbs: [
+          { img: 'detail_hair_story4_pulse_routine.jpg?v=30cm2', label: '두피열 맥진·한약' },
+          { img: 'detail_hair_pharmacopuncture.jpg', label: '모낭 재생 약침' },
+          { img: 'detail_chuna_cervical.jpg', label: '경추 혈류 수기추나' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 피부과학·약리 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 비수술 모근재생 치료법',
-        sub: '과장된 수치 표현 대신, 국제 학술 논문에서 모낭 성장기 연장과 두피 열독·염증 완화 기전이 입증된 치료법을 안내합니다.',
+        stepLabel: 'STORY · 내 가족에게 처방하는 학술 논문 검증 남성탈모 치료',
+        title: "실제 학술 논문 검수로 입증된 '아빠 한의사 남성 모근재생'",
+        sub: '부작용 걱정 없이 모발 굵기와 정수리 볼륨을 되살리는 안전한 한방 발모 치료입니다.',
         caption: '[학술 논문 검수] 국제 학술지(Phytotherapy Research, J Dermatol Sci) 연구를 통해 모유두세포 활성 및 성장기 연장 기전이 검증되었습니다.',
         imgSrc: 'detail_hair_story5_30cm_confidence.jpg?v=30cm2',
+        thumbs: [
+          { img: 'detail_hair_story5_30cm_confidence.jpg?v=30cm2', label: '정수리 볼륨 자신감' },
+          { img: 'detail_hair_story5_date_smile.jpg', label: '가까운 시선 당당함' },
+          { img: 'ba_hair_after.jpg', label: '두피열·모근 회복' }
+        ],
         sciStats: [
-          { num: '국제 식물요법학회지(Phytother Res) 검증', label: '세포 신호 활성화를 통한 모낭 성장기(Anagen) 연장 입증', width: '96%' },
-          { num: '피부과학 저널(J Dermatol Sci) 등재', label: '두피 열독 완화 및 경추 혈류 개선을 통한 모유두세포 보호 기전 검증', width: '94%' }
+          { num: '국제 식물요법학회지(Phytother Res) 검증', label: 'Wnt/β-catenin 신호 활성화를 통한 모낭 성장기(Anagen) 연장 입증', width: '96%' },
+          { num: '피부과학 저널(J Dermatol Sci) 등재', label: '두피 국소 열독 완화 및 남성 모유두세포 사멸 억제 검증', width: '94%' }
         ]
       }
     ],
@@ -621,7 +685,440 @@ const PAGES = [
       partBadge: '경추 · 두피열 · 모낭 인체모형',
       eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
       title: '인체모형으로 내 경추·두피열 원인 연결하기',
-      desc: '인체모형에서 거북목·두피열과 탈모의 상관관계 및 실제 학술 논문으로 검증된 치료법을 확인하세요.',
+      desc: '인체모형에서 거북목·두피열과 남성탈모의 상관관계 및 학술 논문으로 검증된 치료법을 확인하세요.',
+      bg: 'illust_cervical_hairloss.jpg'
+    },
+    nextClinic: {
+      href: 'hairloss-alopecia.html',
+      keyword: '원형탈모 궁금해?',
+      eyebrow: 'NEXT HAIRLOSS STORY · 원형탈모 클리닉',
+      title: '원형탈모 · 자가면역 치료',
+      desc: '동전 모양 탈락과 다발성 확산을 막는 자율신경·자가면역 근본 복원 스토리로 이동합니다.',
+      bg: 'detail_director_story2_both_wrists_pulse.jpg',
+      caption: '[다음 탈모 유형 · 원형탈모] 스트레스와 면역 교란으로 인한 원형탈모 치료 스토리로 이동합니다.'
+    }
+  },
+
+  // ==========================================================================
+  // 01. 남성탈모 전용 상세페이지 (hairloss-male.html)
+  // ==========================================================================
+  {
+    file: 'hairloss-male.html',
+    wpFile: 'wordpress-hairloss-male.html',
+    tabIdx: 4,
+    hairlossSubType: 'male',
+    theme: {
+      bgDark: '#0E1318',
+      bgPanel: 'rgba(13, 18, 24, 0.95)',
+      accent: '#38BDF8',
+      accentLight: '#BAE6FD',
+      secondary: '#D4AF37',
+      glowA: 'rgba(56, 189, 248, 0.12)',
+      glowB: 'rgba(16, 185, 129, 0.08)'
+    },
+    meta: {
+      eyebrow: 'MALE PATTERN HAIR LOSS · 아빠 한의사 학술 논문 검증 남성탈모',
+      title: '남성탈모 · M자·정수리 모근재생',
+      subtitleEn: 'Male Pattern Alopecia · Scalp Thermoregulation & Dermal Papilla Revival',
+      desc: [
+        '남편과 아버지, 내 가족에게 직접 처방하는 안전한 치료만 시행합니다. 호르몬 억제 약물의 부작용 걱정 없이 수승화강 두피 청열 한약과 경추 추나·약침으로 M자 이마와 정수리 모근의 자생력을 깨웁니다.'
+      ],
+      ctaNudge: '👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 남성탈모 진행 단계와 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 M자·정수리 모낭 상태 원장님께 진단받기',
+      reserveProgram: '바른 남성탈모 (M자·정수리·두피열) 모근재생 클리닉',
+      checklistTitle: '남성탈모 (M자 · 정수리 · 두피열) 체크리스트',
+      checklistItems: [
+        '[M자 헤어라인 후퇴] 이마 양옆 M자 라인이 점점 깊어지고 앞머리에 힘이 없다.',
+        '[정수리 O자 빈모] 밝은 조명 아래나 사진에서 정수리 두피가 훤히 비쳐 보인다.',
+        '[과열된 두피·피지] 머리로 열이 자주 오르고 오후만 되면 두피에 기름기가 돈다.',
+        '[약물 부작용 우려] 먹는 탈모약의 부작용이나 중단 시 쉐딩·재탈모가 걱정된다.',
+        '[거북목·만성 피로] 과로와 스트레스로 뒷목·어깨가 굳고 두피까지 당기는 느낌이 든다.'
+      ],
+      doctorAdvice: {
+        caution: '남성탈모 주의',
+        severe: '남성탈모 심각'
+      }
+    },
+    plates: [
+      {
+        type: 'motion-story',
+        indexPill: 'STORY · 고개 숙일 때 신경 쓰이는 시선',
+        metricPill: 'M자 헤어라인 · 정수리 연모화 신호',
+        title: "고개 숙일 때 신경 쓰이는 'M자와 정수리', 두피열이 보내는 신호입니다",
+        sub: '유전 탓만 하기 전에, 모낭을 빠르게 위축시키는 두피 열독부터 잡아야 합니다.',
+        caption: '[남성탈모 임상 노트] 과로와 스트레스로 상체에 몰린 열(上熱)이 DHT 민감도를 높이고 모낭 뿌리를 약화시킵니다.',
+        frames: [
+          'detail_hair_story1_30cm_tension.jpg?v=30cm1',
+          'detail_hair_story1_date_bow.jpg?v=30cm1'
+        ],
+        thumbs: [
+          { img: 'detail_hair_story1_30cm_tension.jpg?v=30cm1', label: '정수리·M자 비어보임' },
+          { img: 'detail_hair_story1_date_bow.jpg?v=30cm1', label: '가까운 시선 위축감' },
+          { img: 'life_3a_hairloss.jpg', label: '남성 탈모 진행' }
+        ],
+        fx: 'distance-30cm-tension',
+        durationSec: 6.4
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY · 탈모 샴푸와 단순 억제제의 한계',
+        title: "표피만 씻거나 호르몬만 누르면, '불타는 모근 뿌리'는 그대로입니다",
+        sub: '두피 사막화를 부르는 상열(上熱)을 끄지 않으면 약을 멈추는 순간 다시 빠집니다.',
+        caption: '[남성탈모 임상 노트] 모발이 자라나는 토양인 두피의 열독과 경추 혈류 병목을 함께 해결해야 재탈모를 막습니다.',
+        imgSrc: 'detail_hair_story2_cabinet_failure.jpg?v=30cm2',
+        thumbs: [
+          { img: 'detail_hair_story2_cabinet_failure.jpg?v=30cm2', label: '표피 관리의 한계' },
+          { img: 'detail_hair_thermography.jpg', label: '두피 적외선 열화상' },
+          { img: 'life_3a_follicle_zoom.jpg', label: '모낭 열독 확대' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY · 수승화강(水昇火降) 두피 청열 & 모유두 보호',
+        title: "머리의 열독은 내리고 '모유두세포 성장기'를 연장합니다",
+        sub: '끓어오르는 두피 온도를 낮춰 모낭 미세염증과 모근 연모화를 동시에 차단합니다.',
+        caption: '[남성탈모 임상 노트] 상열하한(上熱下寒) 불균형을 바로잡아 두피 미세염증을 가라앉히고 모낭 혈류를 회복합니다.',
+        imgSrc: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2',
+        thumbs: [
+          { img: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2', label: '수승화강 두피 청열' },
+          { img: 'detail_hair_follicle_3d.jpg', label: '모유두세포 재생 3D' },
+          { img: 'illust_cervical_hairloss.jpg', label: '경추·두피열 기전' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY · 경추 감압 추나 & 고농축 모낭 약침',
+        title: "거북목 혈류 병목을 추나로 열고, '모낭 약침'으로 뿌리를 채웁니다",
+        sub: '아빠 한의사가 내 가족에게 시술하듯 경추 순환로와 모낭 진피층을 함께 다스립니다.',
+        caption: '[남성탈모 임상 노트] 내치(청열 발모 한약)와 외치(경추 추나·모낭 약침)를 결합하여 가늘어진 모발을 굵고 탄탄하게 육모합니다.',
+        imgSrc: 'detail_hair_story4_pulse_routine.jpg?v=30cm2',
+        thumbs: [
+          { img: 'detail_hair_story4_pulse_routine.jpg?v=30cm2', label: '두피열 맥진·한약' },
+          { img: 'detail_hair_pharmacopuncture.jpg', label: '모낭 재생 약침' },
+          { img: 'detail_chuna_cervical.jpg', label: '경추 혈류 수기추나' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY · 내 가족에게 처방하는 학술 논문 검증 남성탈모 치료',
+        title: "실제 학술 논문 검수로 입증된 '아빠 한의사 남성 모근재생'",
+        sub: '부작용 걱정 없이 모발 굵기와 정수리 볼륨을 되살리는 안전한 한방 발모 치료입니다.',
+        caption: '[학술 논문 검수] 국제 학술지(Phytotherapy Research, J Dermatol Sci) 연구를 통해 모유두세포 활성 및 성장기 연장 기전이 검증되었습니다.',
+        imgSrc: 'detail_hair_story5_30cm_confidence.jpg?v=30cm2',
+        thumbs: [
+          { img: 'detail_hair_story5_30cm_confidence.jpg?v=30cm2', label: '정수리 볼륨 자신감' },
+          { img: 'detail_hair_story5_date_smile.jpg', label: '가까운 시선 당당함' },
+          { img: 'ba_hair_after.jpg', label: '두피열·모근 회복' }
+        ],
+        sciStats: [
+          { num: '국제 식물요법학회지(Phytother Res) 검증', label: 'Wnt/β-catenin 신호 활성화를 통한 모낭 성장기(Anagen) 연장 입증', width: '96%' },
+          { num: '피부과학 저널(J Dermatol Sci) 등재', label: '두피 국소 열독 완화 및 남성 모유두세포 사멸 억제 검증', width: '94%' }
+        ]
+      }
+    ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=cervical',
+      part: 'cervical',
+      partBadge: '경추 · 두피열 · 남성 모낭 인체모형',
+      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
+      title: '인체모형으로 내 경추·두피열 원인 연결하기',
+      desc: '인체모형에서 거북목·두피열과 남성탈모의 상관관계 및 학술 논문으로 검증된 치료법을 확인하세요.',
+      bg: 'illust_cervical_hairloss.jpg'
+    },
+    nextClinic: {
+      href: 'hairloss-alopecia.html',
+      keyword: '원형탈모 궁금해?',
+      eyebrow: 'NEXT HAIRLOSS STORY · 원형탈모 클리닉',
+      title: '원형탈모 · 자가면역 치료',
+      desc: '동전 모양 탈락과 다발성 확산을 막는 자율신경·자가면역 근본 복원 스토리로 이동합니다.',
+      bg: 'detail_director_story2_both_wrists_pulse.jpg',
+      caption: '[다음 탈모 유형 · 원형탈모] 스트레스와 면역 교란으로 인한 원형탈모 치료 스토리로 이동합니다.'
+    }
+  },
+
+  // ==========================================================================
+  // 02. 원형탈모 전용 상세페이지 (hairloss-alopecia.html)
+  // ==========================================================================
+  {
+    file: 'hairloss-alopecia.html',
+    wpFile: 'wordpress-hairloss-alopecia.html',
+    tabIdx: 4,
+    hairlossSubType: 'alopecia',
+    theme: {
+      bgDark: '#0D1514',
+      bgPanel: 'rgba(13, 21, 20, 0.95)',
+      accent: '#10B981',
+      accentLight: '#A7F3D0',
+      secondary: '#D4AF37',
+      glowA: 'rgba(16, 185, 129, 0.12)',
+      glowB: 'rgba(212, 175, 55, 0.08)'
+    },
+    meta: {
+      eyebrow: 'ALOPECIA AREATA IMMUNE CARE · 아빠 한의사 학술 논문 검증 원형탈모',
+      title: '원형탈모 · 자가면역 신경안정 치료',
+      subtitleEn: 'Alopecia Areata · Autoimmune Regulation & Neuro-Autonomic Recovery',
+      desc: [
+        '내 아이와 가족에게 스테로이드 과용 대신 근본 면역 치료를 처방하는 아빠 한의사의 마음으로 진료합니다. 극심한 스트레스와 자율신경 실조로 내 면역세포가 모낭을 공격하는 원형탈모의 뿌리를 바로잡아 재발을 막습니다.'
+      ],
+      ctaNudge: '👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 원형탈모 면역 단계와 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 원형탈모·자율신경 상태 원장님께 진단받기',
+      reserveProgram: '바른 원형탈모 (단발성·다발성·자가면역) 클리닉',
+      checklistTitle: '원형탈모 · 자가면역 교란 체크리스트',
+      checklistItems: [
+        '[동전 모양 탈락] 머리카락이 동전 크기로 동그랗게 빠져 두피가 매끈하게 드러났다.',
+        '[크기 확대·다발성] 원형탈모 부위가 점점 커지거나 2곳 이상 여러 개로 번지고 있다.',
+        '[극심한 스트레스·불면] 최근 큰 스트레스나 과로를 겪은 뒤 잠들기 어렵고 가슴이 답답하다.',
+        '[스테로이드 재발] 피부과 국소 주사나 연고를 써도 그때뿐이고 다른 부위에 다시 생긴다.',
+        '[소아·가족 안심 치료] 전신 면역력과 자율신경을 함께 회복하는 안전한 한방 치료를 원한다.'
+      ],
+      doctorAdvice: {
+        caution: '원형탈모 주의',
+        severe: '원형탈모 심각'
+      }
+    },
+    plates: [
+      {
+        type: 'clean-image',
+        title: "갑자기 동전처럼 비어버린 두피, 단순 피부병이 아닌 '면역 경보'입니다",
+        sub: '극심한 스트레스와 피로로 혼란에 빠진 면역세포가 내 모낭을 공격하고 있다는 신호입니다.',
+        imgSrc: 'life_3a_hairloss.jpg'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "빠진 자리만 누르면, '교란된 자율신경과 면역 불씨'는 다른 곳으로 번집니다",
+        sub: '두피 함몰 우려가 있는 잦은 염증 억제보다 무너진 전신 면역 체계를 먼저 바로잡아야 합니다.',
+        imgSrc: 'detail_hair_follicle_3d.jpg'
+      },
+      {
+        type: 'clean-image',
+        title: "성난 면역세포를 진정시키고 '모낭 주변 미세혈류'를 다시 엽니다",
+        sub: '심장의 울열(鬱熱)을 풀어 교감신경 과항진을 낮추고 모유두 재생 환경을 복원합니다.',
+        imgSrc: 'illust_syncope_autonomic.jpg'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "내 가족에게 처방하는 '안신(安神)·면역 한약'과 모낭 재생 약침",
+        sub: '양 손목 정밀 맥진으로 장부 면역력을 깨우고 탈락 부위에 정제 약침으로 새순을 틔웁니다.',
+        imgSrc: 'detail_director_story2_both_wrists_pulse.jpg'
+      },
+      {
+        type: 'clean-image',
+        title: "실제 학술 논문으로 검증된 '자가면역 안정 & 신생모 발모'",
+        sub: '솜털부터 검고 굵은 정상 모발까지, 재발 없는 근본 회복을 아빠 한의사가 끝까지 동행합니다.',
+        imgSrc: 'life_3b_hair_restored.jpg',
+        sciStats: [
+          { num: '국제 민족약리학회지(J Ethnopharmacol) 검증', label: '모낭 주위 자가면역 염증(IFN-γ·JAK) 억제 및 신생모 발모 촉진 입증', width: '96%' },
+          { num: '자율신경 학술지(Auton Neurosci) 등재', label: '스트레스성 교감신경 과항진 완화 및 면역 항상성 회복 검증', width: '95%' }
+        ]
+      }
+    ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=syncope',
+      part: 'syncope',
+      partBadge: '자율신경 · 면역 · 두피 인체모형',
+      eyebrow: 'HUMAN BODY MODEL SHOWROOM',
+      title: '인체모형으로 내 자율신경·면역 원인 연결하기',
+      desc: '인체모형에서 스트레스 자율신경 실조와 원형탈모의 상관관계 및 학술 검증 치료법을 확인하세요.',
+      bg: 'illust_syncope_autonomic.jpg'
+    },
+    nextClinic: {
+      href: 'hairloss-female.html',
+      keyword: '여성탈모 궁금해?',
+      eyebrow: '여성탈모 클리닉',
+      title: '여성탈모 · 가르마·산후 빈모',
+      desc: '넓어진 가르마와 정수리 볼륨을 되살리는 여성 상열하한·보혈 모근재생 페이지로 이동합니다.',
+      bg: 'detail_hair_story5_date_smile.jpg',
+      caption: '[다음 탈모 유형 · 여성탈모] 가르마 빈모·산후·갱년기 여성탈모 치료 페이지로 이동합니다.'
+    }
+  },
+
+  // ==========================================================================
+  // 03. 여성탈모 전용 상세페이지 (hairloss-female.html)
+  // ==========================================================================
+  {
+    file: 'hairloss-female.html',
+    wpFile: 'wordpress-hairloss-female.html',
+    tabIdx: 4,
+    hairlossSubType: 'female',
+    theme: {
+      bgDark: '#171115',
+      bgPanel: 'rgba(23, 17, 21, 0.95)',
+      accent: '#F472B6',
+      accentLight: '#FBCFE8',
+      secondary: '#D4AF37',
+      glowA: 'rgba(244, 114, 182, 0.12)',
+      glowB: 'rgba(212, 175, 55, 0.08)'
+    },
+    meta: {
+      eyebrow: 'FEMALE PATTERN & POSTPARTUM HAIR LOSS · 아빠 한의사 학술 논문 검증 여성탈모',
+      title: '여성탈모 · 가르마·산후·갱년기 빈모',
+      subtitleEn: 'Female Diffuse Alopecia · Blood Nourishment & Thermoregulation Care',
+      desc: [
+        '아내와 어머니, 딸에게 처방하는 따뜻한 보혈(補血) 치료만 시행합니다. 두피는 뜨겁고 손발·아랫배는 차가운 여성 특유의 상열하한(上熱下寒)과 호르몬·영양 고갈을 다스려 휑해진 가르마와 정수리 볼륨을 풍성하게 되살립니다.'
+      ],
+      ctaNudge: '👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 여성탈모 원인과 맞춤 보혈 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 가르마·정수리 볼륨 원장님께 진단받기',
+      reserveProgram: '바른 여성탈모 (가르마·산후·갱년기·빈모) 클리닉',
+      checklistTitle: '여성탈모 · 상열하한 자가진단 체크리스트',
+      checklistItems: [
+        '[가르마·정수리 확장] 가르마 선이 크리스마스트리 모양으로 넓어지고 정수리 볼륨이 죽었다.',
+        '[모발 가늘어짐] 머리카락이 솜털처럼 가늘어져 스타일링이 안 되고 배수구가 자주 막힌다.',
+        '[상열하한·수족냉증] 얼굴과 두피로는 열이 오르는데 손발과 아랫배는 늘 차갑고 생리불순이 있다.',
+        '[출산·다이어트·갱년기] 출산 후, 무리한 다이어트, 또는 갱년기 이후 급격히 머리숱이 줄었다.',
+        '[안전한 여성 맞춤 한약] 호르몬 부작용 없이 빈혈·어지럼증·피로까지 함께 돌보는 치료를 원한다.'
+      ],
+      doctorAdvice: {
+        caution: '여성탈모 주의',
+        severe: '여성탈모 심각'
+      }
+    },
+    plates: [
+      {
+        type: 'clean-image',
+        title: "가르마를 바꿔 타도 비어 보이는 두피, '여성 상열하한'이 원인입니다",
+        sub: '헤어라인은 유지되지만 정수리와 가르마 전체가 가늘어지는 여성형 빈모의 시작입니다.',
+        imgSrc: 'detail_hair_story1_date_bow.jpg?v=30cm1'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "가임기·갱년기 여성의 탈모는 '혈(血) 부족과 냉증'부터 채워야 합니다",
+        sub: '출산·다이어트·폐경기로 고갈된 보혈(補血) 진액을 채우지 않으면 모근이 버티지 못합니다.',
+        imgSrc: 'detail_hair_thermography.jpg'
+      },
+      {
+        type: 'clean-image',
+        title: "아랫배는 따뜻하게 데우고, '메마른 두피에 영양혈'을 공급합니다",
+        sub: "한의학의 '발자혈지여(머리카락은 혈의 여분)' 원리로 모낭 뿌리에 진액을 채웁니다.",
+        imgSrc: 'detail_director_story4_decoction_lab.jpg?v=dir4new'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "아내와 어머니를 진료하듯, '체질 보혈한약과 모낭 약침'을 처방합니다",
+        sub: '손발 냉증·만성 피로·수면의 질을 함께 높이며 가르마 모근을 굵고 탄력 있게 깨웁니다.',
+        imgSrc: 'detail_hair_pharmacopuncture.jpg'
+      },
+      {
+        type: 'clean-image',
+        title: "실제 학술 논문으로 검증된 '여성 빈모·산후탈모 모근재생'",
+        sub: '사진 찍을 때도, 바람 부는 날에도 당당한 정수리 볼륨과 윤기를 되찾아 드립니다.',
+        imgSrc: 'detail_hair_story5_date_smile.jpg',
+        sciStats: [
+          { num: '국제 식물학술지(Phytomedicine) 검증', label: '보혈 한약 복합물의 모낭 혈관내피성장인자(VEGF) 발현 및 모발 굵기 증가 입증', width: '96%' },
+          { num: '국제 피부과학회지(J Dermatol) 등재', label: '출산 후·갱년기 휴지기 탈모의 성장기 전환 및 두피 열감 완화 검증', width: '94%' }
+        ]
+      }
+    ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=cervical',
+      part: 'cervical',
+      partBadge: '경추 · 두피열 · 여성 기혈 인체모형',
+      eyebrow: 'HUMAN BODY MODEL SHOWROOM',
+      title: '인체모형으로 내 상열하한·가르마 탈모 연결하기',
+      desc: '인체모형에서 여성 상열하한·경추 순환과 여성탈모의 상관관계 및 학술 검증 치료법을 확인하세요.',
+      bg: 'illust_cervical_hairloss.jpg'
+    },
+    nextClinic: {
+      href: 'hairloss-seborrheic.html',
+      keyword: '지루성두피염 궁금해?',
+      eyebrow: '지루성두피염 클리닉',
+      title: '지루성두피염 · 두피열독·모낭염',
+      desc: '붉은 두피 홍반, 화농성 모낭염, 가려움과 염증성 탈모를 잠재우는 청열해독 페이지로 이동합니다.',
+      bg: 'detail_hair_thermography.jpg',
+      caption: '[다음 탈모 유형 · 지루성두피염] 두피 홍반·모낭염·각질을 치료하는 지루성두피염 페이지로 이동합니다.'
+    }
+  },
+
+  // ==========================================================================
+  // 04. 지루성두피염 전용 상세페이지 (hairloss-seborrheic.html)
+  // ==========================================================================
+  {
+    file: 'hairloss-seborrheic.html',
+    wpFile: 'wordpress-hairloss-seborrheic.html',
+    tabIdx: 4,
+    hairlossSubType: 'seborrheic',
+    theme: {
+      bgDark: '#0C1618',
+      bgPanel: 'rgba(12, 22, 24, 0.95)',
+      accent: '#2DD4BF',
+      accentLight: '#99F6E4',
+      secondary: '#38BDF8',
+      glowA: 'rgba(45, 212, 191, 0.12)',
+      glowB: 'rgba(56, 189, 248, 0.08)'
+    },
+    meta: {
+      eyebrow: 'SEBORRHEIC SCALP DERMATITIS · 아빠 한의사 학술 논문 검증 지루성두피염',
+      title: '지루성두피염 · 두피열독·모낭염 치료',
+      subtitleEn: 'Seborrheic Scalp Dermatitis · Anti-Inflammatory Detox & Barrier Care',
+      desc: [
+        '내 가족의 피부에 독한 스테로이드를 반복해 바르지 않듯, 뿌리 깊은 열독과 피지 과다의 원인을 치료합니다. 붉게 달아오른 두피 홍반, 화농성 모낭염, 비듬·각질과 가려움을 가라앉혀 염증성 탈모로의 진행을 원천 차단합니다.'
+      ],
+      ctaNudge: '👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 지루성두피염·모낭염 단계와 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 두피 홍반·모낭염 상태 원장님께 진단받기',
+      reserveProgram: '바른 지루성두피염 · 모낭염 · 염증성탈모 클리닉',
+      checklistTitle: '지루성두피염 · 두피염증 자가진단 체크리스트',
+      checklistItems: [
+        '[홍반·열감·통증] 두피가 늘 붉게 충혈되어 있고 만지면 열감과 따가운 통증이 느껴진다.',
+        '[모낭염·뾰루지] 두피에 좁쌀이나 고름이 차는 화농성 뾰루지(모낭염)가 자꾸 올라온다.',
+        '[가려움·진물·딱지] 무의식중에 두피를 긁게 되고 진물이나 노란 기름 딱지가 앉는다.',
+        '[비듬·떡짐·냄새] 머리를 감아도 금세 기름지고 하얀 각질·비듬과 정수리 냄새가 심하다.',
+        '[염증성 탈모 동반] 스테로이드 물약을 바를 때만 잠깐 가라앉고 염증 부위 머리카락이 함께 빠진다.'
+      ],
+      doctorAdvice: {
+        caution: '지루성두피염 주의',
+        severe: '지루성두피염 심각'
+      }
+    },
+    plates: [
+      {
+        type: 'clean-image',
+        title: "긁을수록 번지는 '두피 홍반·각질·모낭염', 방치하면 탈모로 이어집니다",
+        sub: '만성 두피 염증은 모낭 뿌리를 직접 녹여 영구적인 염증성 탈모를 유발합니다.',
+        imgSrc: 'detail_hair_thermography.jpg'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "바를 때만 가라앉고 끊으면 더 심해지는 '스테로이드 리바운드'의 덫",
+        sub: '몸속에서 뿜어져 나오는 습열(濕熱)과 피지 과잉을 잡지 않으면 두피 장벽만 얇아집니다.',
+        imgSrc: 'detail_hair_story2_cabinet_failure.jpg?v=30cm2'
+      },
+      {
+        type: 'clean-image',
+        title: "두피로 치솟는 '습열(濕熱) 독소'를 끄고 무너진 두피 면역장벽을 세웁니다",
+        sub: '상체 열독과 소화기 습담을 함께 해독하여 피지 분비를 정상화하고 염증을 진정시킵니다.',
+        imgSrc: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "아빠 한의사가 직접 달이는 '청열해독 한약'과 두피 항염 약침",
+        sub: '스테로이드 없이 천연 생약 성분의 항염 약침과 맞춤 한약으로 맑고 깨끗한 두피를 되찾습니다.',
+        imgSrc: 'detail_hair_pharmacopuncture.jpg'
+      },
+      {
+        type: 'clean-image',
+        title: "실제 학술 논문으로 검증된 '두피 항염·장벽 복원 & 모근 보호'",
+        sub: '붉은 홍반과 가려움에서 벗어나 깨끗한 두피와 건강한 모발을 동시에 지킵니다.',
+        imgSrc: 'bareun_step3_scalp_hair_revival.jpg',
+        sciStats: [
+          { num: '국제 약리학술지(Front Pharmacol) 검증', label: '청열해독 생약 추출물의 두피 염증 인자(IL-1β·TNF-α) 억제 및 모낭염 완화 입증', width: '96%' },
+          { num: '피부과학 학술지(Exp Dermatol) 등재', label: '피지 분비 정상화 및 두피 표피 장벽(Filaggrin) 복원으로 재발 방지 검증', width: '95%' }
+        ]
+      }
+    ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=cervical',
+      part: 'cervical',
+      partBadge: '경추 · 두피열독 · 피지염증 인체모형',
+      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
+      title: '인체모형으로 내 두피열독·지루성두피염 연결하기',
+      desc: '인체모형에서 상체 열독·장내 습열과 지루성두피염의 상관관계 및 학술 검증 치료법을 확인하세요.',
       bg: 'illust_cervical_hairloss.jpg'
     },
     nextClinic: {
@@ -670,22 +1167,27 @@ const PAGES = [
         '[품격 있는 선물] 부모님이나 소중한 분께 학술적으로 검증된 정품 사향 공진단을 드리고 싶다.'
       ],
       doctorAdvice: {
-        zero: '겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 공진단 처방 가이드가 안내됩니다.',
-        low: '기혈 순환 저하와 두뇌 피로가 누적된 시기입니다. 정품 사향 공진단으로 뇌·심장 활력을 빠르게 충전할 수 있습니다.',
-        high: '<strong>"오랜 기간 누적된 피로와 두근거림으로 일상 유지가 힘드셨겠습니다."</strong> 심층 원기(元氣) 고갈 및 자율신경 번아웃 상태입니다. 대표원장이 직접 정량 조제하는 원방 황제공진단 집중 복용을 권장합니다.'
+        caution: '기력고갈 주의',
+        severe: '기력고갈 심각'
       }
     },
     plates: [
       {
         type: 'motion-story',
         indexPill: 'STORY · 바닥난 생체 에너지 경보',
-        metricPill: '만성 번아웃 및 심뇌 기혈 고갈',
-        title: "자도 자도 가시지 않는 '깊은 피로', 몸속 원기가 '방전된 신호'입니다",
-        sub: '카페인과 각성제로 버티는 일상은 오히려 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.',
+        metricPill: '만성 번아웃 · 심뇌 기혈 고갈',
+        title: "자도 자도 가시지 않는 피로, 몸속 원기가 '방전된 신호'입니다",
+        sub: '카페인으로 버티는 일상은 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.',
         caption: '[공진단 임상 노트] 극심한 과로와 스트레스 뒤에는 뇌혈류 저하와 자율신경 소진이 자리 잡고 있습니다.',
         frames: [
           'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1',
-          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2'
+          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2',
+          'brochure/brochure2.jpg'
+        ],
+        thumbs: [
+          { img: 'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1', label: '방전된 생체 배터리' },
+          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '만성 번아웃·과로' },
+          { img: 'brochure/brochure2.jpg', label: '700년 황실 황제보약' }
         ],
         fx: 'battery-1pct-warning-fx',
         durationSec: 6.4
@@ -693,51 +1195,66 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 일반 영양제가 그때뿐인 이유',
-        title: '기혈의 그릇이 막혀 있으면, 아무리 좋은 영양분도 스쳐 지나갑니다',
-        sub: '막힌 기혈의 수문을 먼저 열어주어야 몸에 들어온 귀한 영양분이 말초 혈관과 뇌 끝까지 도달합니다.',
+        stepLabel: 'STORY · 일반 영양제가 그때뿐인 이유 & 사향 씨알 특허',
+        title: "기혈의 수문이 막혀 있으면, 귀한 영양분도 '스쳐 지나갑니다'",
+        sub: '막힌 기혈 통로를 먼저 열어야 뇌 끝과 말초 혈관까지 약효가 도달합니다.',
         caption: '[공진단 임상 노트] 밑 빠진 독에 물을 붓는 대증 보충이 아닌, 기혈 순환 통로를 여는 개규(開竅) 치료가 핵심입니다.',
-        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2',
-        cleanTags: [
-          '막힌 기혈 통로 개통',
-          '근본 원기(元氣)의 그릇 복원'
+        imgSrc: 'brochure/brochure3.jpg',
+        fit: 'contain',
+        thumbs: [
+          { img: 'brochure/brochure3.jpg', label: '사향 씨알 특허 단면', fit: 'contain' },
+          { img: 'brochure/brochure5.jpg', label: '사향 함량 비교표', fit: 'contain' },
+          { img: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2', label: '막힌 기혈의 한계', fit: 'cover' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 천연 사향(麝香)의 개규·순환 원리',
-        title: '막힌 기혈의 수문을 단숨에 여는 핵심 약재, 천연 사향의 힘',
-        sub: '사향의 활성 성분(L-Muscone)이 뇌혈관장벽을 직접 통과해 막힌 기혈을 열고 녹용·당귀·산수유의 약효를 전신에 전달합니다.',
+        stepLabel: 'STORY · 사향 · 녹용 · 당귀 · 산수유 4대 명품 약재',
+        title: "막힌 기혈 수문을 단숨에 여는 핵심 약재, '천연 사향의 힘'",
+        sub: '사향(L-Muscone)이 뇌혈관장벽을 통과해 녹용·당귀·산수유 약효를 전신에 깨웁니다.',
         caption: '[공진단 임상 노트] 머리의 열은 내리고 차가운 아랫배는 데우는 수승화강(水昇火降) 작용을 즉각적으로 이끌어냅니다.',
-        imgSrc: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2',
-        cleanTags: [
-          '사향 L-Muscone 뇌혈관장벽 통과',
-          '전신 기혈 및 수승화강 대순환'
+        imgSrc: 'brochure/brochure10.jpg',
+        fit: 'contain',
+        thumbs: [
+          { img: 'brochure/brochure10.jpg', label: '4대 명품 성분 도감', fit: 'contain' },
+          { img: 'brochure/brochure4.jpg', label: '효능 특허 사향 기술', fit: 'contain' },
+          { img: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2', label: '사향 개규(開竅) 수문', fit: 'cover' },
+          { img: 'detail_gongjindan_ingredients_macro.jpg', label: '최상위 4대 원재료', fit: 'cover' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 식약처 인증 정품 사향 & 원장 수제 제환',
-        title: '식약처 인증 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다',
-        sub: '정식 통관된 정품 사향과 녹용 최상단 분골만을 엄선하여 대표원장이 직접 정량 배합하고 순금박으로 수제 봉인합니다.',
+        stepLabel: 'STORY · 식약처 CITES 인증 & 유해물질 0ppm 성적서',
+        title: "식약처 인증 정품 사향과 러시아 분골, '대표원장이 직접 빚습니다'",
+        sub: '러시아산 녹용 분골 함량과 중금속·잔류농약 0ppm 불검출 성적서로 증명합니다.',
         caption: '[공진단 임상 노트] 사향의 방향성 활성 성분이 날아가지 않도록 원내에서 소량씩 정밀 수제 제환합니다.',
-        imgSrc: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2',
-        cleanTags: [
-          '식약처 CITES 정식 인증 사향',
-          '러시아산 원용 분골 & 순금박 봉인'
+        imgSrc: 'brochure/brochure8.jpg',
+        fit: 'contain',
+        thumbs: [
+          { img: 'brochure/brochure8.jpg', label: '유해물질 0ppm 성적서', fit: 'contain' },
+          { img: 'brochure/brochure6.jpg', label: '러시아 녹용 분골 함량', fit: 'contain' },
+          { img: 'brochure/brochure1.jpg', label: '제조특허 제10-1744704호', fit: 'contain' },
+          { img: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2', label: '0.01g 원장 수제 계량', fit: 'cover' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 국제 신경약리학 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 뇌·심장 원기 회복 처방',
-        sub: '과장된 수치 없이, 국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 입증된 원방 공진단만을 조제합니다.',
+        stepLabel: 'STORY · 한의사 100인 검증 & 황실 자개함 기프트 패키지',
+        title: "학술 논문으로 입증된 '뇌·심장 원기 회복'과 품격 있는 선물",
+        sub: '뇌신경 영양인자 발현이 입증된 공진단을 원목 자개함과 비단보자기에 담아 드립니다.',
         caption: '[학술 논문 검수] 국제 학술지(J Ethnopharmacology, Front Pharmacol) 연구를 통해 공진단과 사향의 신경 보호·피로 회복 기전이 입증되었습니다.',
-        imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
+        imgSrc: 'brochure/brochure9.jpg',
+        fit: 'contain',
+        thumbs: [
+          { img: 'brochure/brochure9.jpg', label: '원목 자개함·비단보자기', fit: 'contain' },
+          { img: 'brochure/brochure7.jpg', label: '한의사 100인 만족도', fit: 'contain' },
+          { img: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2', label: '소중한 분께 품격 선물', fit: 'cover' },
+          { img: 'gongjindan_lineup_luxury.jpg', label: '황제공진단 라인업', fit: 'cover' }
+        ],
         sciStats: [
           { num: '국제 민족약리학회지(J Ethnopharmacol) 검증', label: '뇌신경 영양인자 발현 촉진 및 만성피로·기억력 개선 입증', width: '96%' },
-          { num: '국제 약리학술지(Front Pharmacol) 등재', label: '천연 사향의 뇌혈관장벽 투과 및 심뇌혈류 보호 기전 학술 검증', width: '94%' }
+          { num: '국제 약리학술지(Front Pharmacol) 등재', label: '천연 사향의 뇌혈관장벽 투과 및 심뇌혈류 보호 기전 검증', width: '94%' }
         ]
       }
     ],
@@ -796,9 +1313,8 @@ const PAGES = [
         '[남성 활력 저하] 배뇨 불편감과 함께 만성 피로 및 하체·남성 활력 저하가 느껴진다.'
       ],
       doctorAdvice: {
-        zero: '겪고 계신 배뇨·전립선 불편감을 체크하시면 진단 가이드가 안내됩니다.',
-        low: '초기 전립선 울혈 및 방광 과민 신호입니다. 전립선 감압 한약과 골반 순환 치료로 시원한 배뇨와 숙면을 회복할 수 있습니다.',
-        high: '<strong>"매일 밤 깨어나는 수면 장애와 배뇨 불편감으로 많이 지치셨겠습니다."</strong> 만성 비세균성 전립선염 또는 전립선 비대 압박이 누적된 상태입니다. 전립선 감압과 방광 저장력 회복을 돕는 통합 치료를 권장합니다.'
+        caution: '전립선장애 주의',
+        severe: '전립선장애 심각'
       }
     },
     plates: [
@@ -806,62 +1322,67 @@ const PAGES = [
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 밤마다 깨어나는 야간뇨의 고통',
-        title: "밤마다 잠을 깨우는 '야간뇨'와 '잔뇨감', 숙면과 일상이 무너집니다",
-        sub: '화장실을 다녀와도 개운하지 않고 밤잠을 설치는 일상은 부어오른 전립선과 약해진 방광이 보내는 신호입니다.',
+        title: "밤마다 잠을 깨우는 '야간뇨와 잔뇨감', 숙면과 일상이 무너집니다",
+        sub: '개운치 않은 배뇨와 끊기는 밤잠은 부어오른 전립선과 약해진 방광의 신호입니다.',
         caption: '[전립선 임상 노트] 야간뇨로 깊은 수면이 끊기면 만성 피로와 면역력·남성 활력 저하가 연쇄적으로 발생합니다.',
         imgSrc: 'illust_prostate_care.jpg',
-        cleanTags: [
-          '야간뇨·잔뇨감 배뇨 불편',
-          '수면 분절 및 만성 피로 유발'
+        thumbs: [
+          { img: 'illust_prostate_care.jpg', label: '전립선·방광 압박 구조' },
+          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '야간뇨 수면 분절' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 항생제로도 재발하는 만성 전립선염의 원인',
-        title: '항생제를 먹어도 반복되는 이유, 세균이 아닌 골반 울혈 때문입니다',
-        sub: '만성 전립선염의 대다수는 세균 감염이 아닌 골반 근육 긴장과 혈류 정체로 인한 비세균성 울혈이 원인입니다.',
+        stepLabel: 'STORY · 항생제로도 재발하는 만성 전립선염 원인',
+        title: "항생제를 먹어도 재발하는 이유, 세균 아닌 '골반 울혈'입니다",
+        sub: '만성 전립선염 대다수는 골반 근육 긴장과 혈류 정체로 인한 비세균성 울혈입니다.',
         caption: '[전립선 임상 노트] 막힌 골반 혈류를 열고 부어오른 전립선 조직의 압력을 낮춰야 재발의 고리를 끊을 수 있습니다.',
         imgSrc: 'detail_director_story2_clean.jpg?v=oryzo3',
-        cleanTags: [
-          '만성 비세균성 골반 울혈',
-          '요도 압박 및 회음부 통증 원인'
+        thumbs: [
+          { img: 'detail_director_story2_clean.jpg?v=oryzo3', label: '하초 기혈 정밀 진맥' },
+          { img: 'illust_lumbar_pelvis.jpg', label: '골반 울혈 해부도' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 전립선 부종 감압 & 방광 온양(溫陽) 치료',
-        title: '부어오른 전립선 압박은 풀고, 차가워진 방광의 저장력은 깨웁니다',
-        sub: '전립선 미세 염증과 부종을 가라앉혀 소변 길을 시원하게 넓히고, 방광 괄약근을 따뜻하게 보강해 통잠을 되찾아 드립니다.',
+        title: "부어오른 전립선 압박은 풀고, '방광 저장력'은 따뜻하게 깨웁니다",
+        sub: '전립선 부종을 가라앉혀 요도를 넓히고 방광 괄약근을 보강해 통잠을 되찾습니다.',
         caption: '[전립선 임상 노트] 청열리습(부종·염증 완화)과 보신온양(방광·신장 원기 회복)을 결합한 체질 맞춤 탕전입니다.',
         imgSrc: 'detail_director_story4_decoction_lab.jpg?v=dir4new',
-        cleanTags: [
-          '전립선 부종 감압 및 요도 개통',
-          '신장·방광 온양(溫陽) 저장력 복원'
+        thumbs: [
+          { img: 'detail_director_story4_decoction_lab.jpg?v=dir4new', label: '전립선·방광 맞춤 탕전' },
+          { img: 'detail_director_herbs.jpg', label: '보신온양 정품 약재' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 골반저 감압 추나 & 심부 약침 시술',
-        title: '회음부 신경을 누르는 골반 틀어짐까지 정밀하게 교정합니다',
-        sub: '오래 앉아 굳어진 골반저 근육과 천장관절을 추나로 이완하고, 심부 약침으로 전립선 주변 혈류 순환을 촉진합니다.',
+        title: "회음부 신경을 누르는 '골반 틀어짐'까지 정밀하게 교정합니다",
+        sub: '굳어진 골반저 근육을 추나로 이완하고 심부 약침으로 전립선 혈류를 깨웁니다.',
         caption: '[전립선 임상 노트] 골반 구조 교정과 약침·한약을 병행하여 회음부 뻐근함과 배뇨 불편을 입체적으로 개선합니다.',
         imgSrc: 'detail_chuna_story4_palpation.jpg?v=chuna2',
-        cleanTags: [
-          '골반저 근육·신경 감압 추나',
-          '하초 혈류 활성화 정제 약침'
+        thumbs: [
+          { img: 'detail_chuna_story4_palpation.jpg?v=chuna2', label: '골반저 감압 추나' },
+          { img: 'detail_chuna_pelvis.jpg', label: '골반·천장관절 교정' },
+          { img: 'detail_chuna_acupuncture.jpg', label: '하초 혈류 정제 약침' }
         ]
       },
       {
         type: 'clean-image',
         stepLabel: 'STORY · 비뇨의학·약리 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 한방 전립선·배뇨 치료법',
-        sub: '수치로 효과를 과장하지 않고, 국제 비뇨의학 및 약리학 학술 논문에서 전립선 감압과 배뇨 개선 기전이 입증된 치료법을 안내합니다.',
+        title: "실제 학술 논문 검수로 입증된 '한방 전립선·배뇨 치료법'",
+        sub: '국제 비뇨의학 학술지에서 전립선 비대 감압과 배뇨 개선이 입증된 치료입니다.',
         caption: '[학술 논문 검수] 국제 학술지(Urology, Phytomedicine) 연구를 통해 만성 전립선염 통증 완화 및 전립선 비대 조직 감압 기전이 검증되었습니다.',
         imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
+        thumbs: [
+          { img: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2', label: '남성 원기·활력 복원' },
+          { img: 'detail_gongjindan_story5_morning_vitality.jpg?v=uniq1', label: '끊김 없는 통잠 회복' }
+        ],
         sciStats: [
-          { num: '국제 비뇨의학회지(Urology) 검증', label: '만성 비세균성 전립선염·골반통증증후군 배뇨 및 통증 개선 입증', width: '96%' },
-          { num: '국제 식물학술지(Phytomedicine) 등재', label: '전립선 비대 조직 감압 및 하부요로증상 완화 기전 학술 검증', width: '94%' }
+          { num: '국제 비뇨의학회지(Urology) 검증', label: '만성 비세균성 전립선염·골반통증 배뇨 및 통증 개선 입증', width: '96%' },
+          { num: '국제 식물학술지(Phytomedicine) 등재', label: '전립선 비대 조직 감압 및 하부요로증상 완화 검증', width: '94%' }
         ]
       }
     ],
@@ -897,9 +1418,34 @@ const NAV_TABS = [
 ];
 
 function buildPageHtml(page) {
-  const navHtml = NAV_TABS.map((t, i) =>
-    `<a class="clinic-tab${i === page.tabIdx ? ' active' : ''}" href="${t.href}">${t.label}</a>`
-  ).join('\n        ');
+  const navHtml = NAV_TABS.map((t, i) => {
+    const isHairTab = t.href === 'hairloss.html';
+    const clickAttr = isHairTab ? ' onclick="if(window.openDetailHairlossModal){event.preventDefault();window.openDetailHairlossModal();}"' : '';
+    return `<a class="clinic-tab${i === page.tabIdx ? ' active' : ''}" href="${t.href}"${clickAttr}>${t.label}${isHairTab ? ' ▾' : ''}</a>`;
+  }).join('\n        ');
+
+  const hairlossSubTypes = [
+    { key: 'male', num: '01', label: '남성탈모', sub: 'M자·정수리·두피열', href: 'hairloss-male.html' },
+    { key: 'alopecia', num: '02', label: '원형탈모', sub: '자가면역·스트레스', href: 'hairloss-alopecia.html' },
+    { key: 'female', num: '03', label: '여성탈모', sub: '가르마·산후·갱년기', href: 'hairloss-female.html' },
+    { key: 'seborrheic', num: '04', label: '지루성두피염', sub: '열독·모낭염·각질', href: 'hairloss-seborrheic.html' }
+  ];
+
+  const hairlossSubSwitcherHtml = page.tabIdx === 4 ? `
+        <!-- 4-TYPE HAIRLOSS SUBTYPE SWITCHER BAR -->
+        <div class="hairloss-subtype-switcher" role="navigation" aria-label="4대 탈모 유형 상세페이지 전환">
+          <div class="hairloss-subtype-head">
+            <span class="hairloss-subtype-title">✦ 바른 탈모 · 4가지 유형별 상세페이지 선택</span>
+            <button type="button" class="hairloss-subtype-modal-btn" onclick="window.openDetailHairlossModal()">⊞ 4대 유형 한눈에 비교</button>
+          </div>
+          <div class="hairloss-subtype-grid">
+            ${hairlossSubTypes.map(st => `
+            <a href="${st.href}" class="hairloss-subtype-tab${page.hairlossSubType === st.key ? ' active' : ''}">
+              <span class="hst-top"><span class="hst-num">${st.num}</span><strong class="hst-label">${st.label}</strong></span>
+              <span class="hst-sub">${st.sub}</span>
+            </a>`).join('')}
+          </div>
+        </div>` : '';
 
   const descHtml = page.meta.desc.map(p => `<p>${p}</p>`).join('\n          ');
 
@@ -924,14 +1470,13 @@ function buildPageHtml(page) {
     const formattedTitle = formatTitleEmphasis(p.title);
     if (p.type === 'clean-video') {
       return `
-        <!-- PLATE ${numStr}: Lusion Clean Video Plate -->
+        <!-- PLATE ${numStr}: Clean Video Plate -->
         <article class="project-details-item is-video is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
           <div class="plate-media-inner">
             <video class="lusion-clean-media" src="${p.videoSrc}" poster="${p.poster}" autoplay muted loop playsinline></video>
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">${p.stepLabel || 'STORY · 임상 스토리'}</span>
                 <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
@@ -940,12 +1485,9 @@ function buildPageHtml(page) {
         </article>`;
     }
 
-    if (p.type === 'clean-image') {
-      const tagsHtml = p.cleanTags ? `
-                <div class="clean-spec-tags">
-                  ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
-                </div>` : '';
-      const cleanSciHtml = p.sciStats ? `
+    const isContain = p.fit === 'contain';
+    const mainImgSrc = p.imgSrc || (p.frames && p.frames[0]) || '';
+    const cleanSciHtml = p.sciStats ? `
             <div class="visual-sci-overlay">
               ${p.sciStats.map(s => `
               <div class="sci-stat-card">
@@ -954,80 +1496,16 @@ function buildPageHtml(page) {
                 <div class="sci-bar-track"><div class="sci-bar-fill" style="width:${s.width}"></div></div>
               </div>`).join('')}
             </div>` : '';
-      return `
-        <!-- PLATE ${numStr}: Lusion Clean Image Plate -->
-        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+    return `
+        <!-- PLATE ${numStr}: Single Main Image Plate -->
+        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}${isContain ? ' has-contain-media' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="${p.imgSrc}" alt="${p.title}" draggable="false">
+            <img class="lusion-clean-media${isContain ? ' is-contain-fit' : ''}" src="${mainImgSrc}" alt="${p.title}" draggable="false">
             <div class="clean-plate-scrim"></div>${cleanSciHtml}
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">${p.stepLabel || 'STORY · 임상 스토리'}</span>${tagsHtml}
                 <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-            </div>
-          </div>
-        </article>`;
-    }
-
-    if (p.type === 'sim-canvas') {
-      return `
-        <!-- PLATE ${numStr}: Live 60fps Biomedical Simulation -->
-        <article class="project-details-item is-video">
-          <div class="plate-media-inner">
-            <canvas id="sim-canvas-${p.simId}" class="full-sim-canvas"></canvas>
-            <div class="plate-top-bar">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill}</span>
-            </div>
-            <div class="canvas-interactive-controls">
-              <button type="button" class="sim-mode-btn" id="btn-sim-before" onclick="window.setSimMode('before')">${p.beforeLabel}</button>
-              <button type="button" class="sim-mode-btn active" id="btn-sim-after" onclick="window.setSimMode('after')">${p.afterLabel}</button>
-            </div>
-            <div class="plate-bottom-caption">
-              <div>
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-            </div>
-          </div>
-        </article>`;
-    }
-
-    const framesAttr = p.frames.join('|');
-    const sciHtml = p.sciStats ? `
-            <div class="visual-sci-overlay">
-              ${p.sciStats.map(s => `
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">${s.num}</div>
-                <div class="sci-stat-label">${s.label}</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:${s.width}"></div></div>
-              </div>`).join('')}
-            </div>` : '';
-
-    return `
-        <!-- PLATE ${numStr}: Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
-          <div class="plate-media-inner">
-            <div class="motion-video-stage" data-frames="${framesAttr}" data-duration="${p.durationSec || 6.0}">
-              <div class="motion-frame-layer frame-layer-a" style="background-image: url('${p.frames[0]}');"></div>
-              <div class="motion-frame-layer frame-layer-b" style="background-image: url('${p.frames[1 % p.frames.length]}'); opacity: 0;"></div>
-              <canvas class="plate-fx-canvas" data-fx="${p.fx || 'sunlight-bokeh'}"></canvas>
-              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
-            </div>
-            <div class="plate-gradient-scrim"></div>
-            <div class="plate-top-bar">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill}</span>
-              <span class="plate-metric-pill">${p.metricPill}</span>
-            </div>
-            ${sciHtml}
-            <div class="plate-bottom-caption">
-              <div>
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-              <div class="plate-action-group">
-                <button type="button" class="plate-step-btn" onclick="window.stepPlateFrame(this)">다음 장면 ⟳</button>
               </div>
             </div>
           </div>
@@ -1039,12 +1517,12 @@ function buildPageHtml(page) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>${page.meta.title} — 바른한의원 대전본점 모션 스토리텔링 상세페이지</title>
-  <meta name="description" content="${page.meta.title} — ${page.meta.desc[0]}">
+  <title>${page.meta.title} — 바른한의원 대전본점 · 아빠 한의사 내 가족 주치의</title>
+  <meta name="description" content="아빠 한의사 · 내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 주치의 | ${page.meta.title} — ${page.meta.desc[0]}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="바른한의원 대전본점">
-  <meta property="og:title" content="${page.meta.title} — 바른한의원 대전본점">
-  <meta property="og:description" content="${page.meta.desc[0]}">
+  <meta property="og:site_name" content="바른한의원 대전본점 · 아빠 한의사">
+  <meta property="og:title" content="${page.meta.title} — 바른한의원 대전본점 (아빠 한의사 · 내 가족 주치의)">
+  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 하는 아빠 한의사 · ${page.meta.desc[0]}">
   <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/${page.bodyModelCard.bg}">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1417,17 +1895,180 @@ function buildPageHtml(page) {
       font-weight: 600;
     }
 
-    .empathy-diagnosis-box {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: rgba(212, 175, 55, 0.09);
-      border-left: 3px solid var(--accent);
-      font-size: 0.75rem;
-      line-height: 1.52;
-      color: var(--accent-light);
+    .empathy-count-badge.is-caution {
+      background: #D97706 !important;
+      border-color: #F59E0B !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 14px rgba(217, 119, 6, 0.45);
+    }
+
+    .empathy-count-badge.is-severe {
+      background: #DC2626 !important;
+      border-color: #EF4444 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 16px rgba(220, 38, 38, 0.6);
+      animation: severeBadgePulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes severeBadgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .empathy-severity-board {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .severity-tier-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 11px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .severity-check-box {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border-radius: 7px;
+      border: 2px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.05);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .severity-check-box svg {
+      width: 15px;
+      height: 15px;
+      transform: scale(0.4);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .severity-tier-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .severity-tier-cond {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: rgba(248, 250, 252, 0.62);
+      letter-spacing: -0.01em;
+    }
+
+    .severity-tier-label {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: rgba(248, 250, 252, 0.78);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
       word-break: keep-all;
+    }
+
+    .severity-tier-pill {
+      position: absolute;
+      top: -8px;
+      right: 8px;
+      font-size: 0.62rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.02em;
       transition: all 0.25s ease;
+    }
+
+    /* ACTIVE CAUTION (1~2개 선택 시) */
+    .severity-tier-card.tier-caution.is-checked {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.26) 0%, rgba(217, 119, 6, 0.16) 100%);
+      border: 2px solid #F59E0B;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.32);
+      transform: translateY(-2px);
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-check-box {
+      background: #D97706;
+      border-color: #FBBF24;
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.65);
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-check-box svg {
+      transform: scale(1);
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-tier-cond {
+      color: #FDE68A;
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-tier-label {
+      color: #FEF08A;
+      font-size: 0.92rem;
+    }
+
+    .severity-tier-card.tier-caution.is-checked .severity-tier-pill {
+      background: #D97706;
+      border-color: #FDE68A;
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5);
+    }
+
+    /* ACTIVE SEVERE (3개 이상 선택 시) */
+    .severity-tier-card.tier-severe.is-checked {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.36) 0%, rgba(153, 27, 27, 0.26) 100%);
+      border: 2.5px solid #EF4444;
+      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.48);
+      transform: translateY(-2px) scale(1.02);
+      animation: severeCardPulse 1.3s infinite ease-in-out;
+    }
+
+    @keyframes severeCardPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.38); }
+      50% { box-shadow: 0 8px 32px rgba(239, 68, 68, 0.72); }
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-check-box {
+      background: #DC2626;
+      border-color: #FCA5A5;
+      color: #FFFFFF;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.85);
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-check-box svg {
+      transform: scale(1.08);
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-tier-cond {
+      color: #FECACA;
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-tier-label {
+      color: #FFFFFF;
+      font-size: 0.94rem;
+      text-shadow: 0 2px 8px rgba(220, 38, 38, 0.6);
+    }
+
+    .severity-tier-card.tier-severe.is-checked .severity-tier-pill {
+      background: #DC2626;
+      border-color: #FECACA;
+      color: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(220, 38, 38, 0.65);
     }
 
     .cta-nudge-msg {
@@ -1630,7 +2271,109 @@ function buildPageHtml(page) {
       object-position: center center;
       display: block;
       will-change: transform;
-      transition: transform 0.12s linear;
+      transition: transform 0.12s linear, opacity 0.18s ease;
+    }
+
+    .lusion-clean-media.is-contain-fit {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center 12px !important;
+      padding: 12px 18px 158px !important;
+      background: radial-gradient(circle at 50% 42%, #1D1814 0%, #0D0A08 100%);
+    }
+
+    .project-details-item.has-contain-media .visual-sci-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .plate-thumb-dock {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      pointer-events: auto;
+    }
+
+    .plate-thumb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px 4px 4px;
+      border-radius: 10px;
+      background: rgba(12, 15, 20, 0.84);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      color: rgba(248, 250, 252, 0.88);
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    .plate-thumb-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(253, 230, 138, 0.65);
+      transform: translateY(-2px);
+    }
+
+    .plate-thumb-btn.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.36) 0%, rgba(16, 185, 129, 0.24) 100%);
+      border-color: var(--accent-light);
+      color: #FFFFFF;
+      box-shadow: 0 8px 22px rgba(212, 175, 55, 0.38);
+      transform: translateY(-2px);
+    }
+
+    .plate-thumb-preview {
+      width: 44px;
+      height: 30px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+      background: #0F1216;
+    }
+
+    .plate-thumb-btn.active .plate-thumb-preview {
+      border-color: #FEF08A;
+    }
+
+    .plate-thumb-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .plate-thumb-btn.active .plate-thumb-label {
+      color: #FEF08A;
+    }
+
+    @media (max-width: 1024px) {
+      .lusion-clean-media.is-contain-fit {
+        padding: 8px 10px 136px !important;
+      }
+      .plate-thumb-dock {
+        gap: 5px;
+        margin-bottom: 6px;
+      }
+      .plate-thumb-btn {
+        padding: 3px 7px 3px 3px;
+        gap: 5px;
+        border-radius: 8px;
+      }
+      .plate-thumb-preview {
+        width: 30px;
+        height: 21px;
+      }
+      .plate-thumb-label {
+        font-size: 0.63rem;
+      }
     }
 
     .clean-plate-scrim {
@@ -1902,11 +2645,12 @@ function buildPageHtml(page) {
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       pointer-events: none;
+      transition: opacity 0.22s ease;
     }
 
     .is-clean-plate .visual-sci-overlay {
       left: 28px; right: 28px;
-      bottom: 138px;
+      bottom: 168px;
     }
 
     .sci-stat-card {
@@ -2472,6 +3216,195 @@ function buildPageHtml(page) {
       background: var(--gold);
       border-color: var(--gold);
       color: #090B0E;
+    }
+
+    /* Daddy Doctor Brand Promise Card & Opening Slogan Stage */
+    .daddy-doc-promise-card {
+      margin-bottom: 10px;
+      padding: 10px 13px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16) 0%, rgba(45, 90, 67, 0.14) 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+    }
+    .daddy-doc-promise-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .daddy-doc-promise-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+    }
+    .daddy-doc-promise-text {
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #FFFFFF;
+      word-break: keep-all;
+    }
+    body.theme-hanji .daddy-doc-promise-card {
+      background: linear-gradient(135deg, #FFFDF7 0%, #EFE9DC 100%);
+      border: 1.5px solid rgba(74, 53, 37, 0.28);
+      box-shadow: 0 6px 18px rgba(58, 42, 30, 0.06);
+    }
+    body.theme-hanji .daddy-doc-promise-badge {
+      color: #2D5A43;
+    }
+    body.theme-hanji .daddy-doc-promise-text {
+      color: #171614;
+    }
+
+    #detail-daddy-intro-overlay {
+      position: absolute;
+      inset: 14px 22px 18px 22px;
+      z-index: 65;
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px 24px;
+      background:
+        radial-gradient(circle at 50% 36%, rgba(212, 175, 55, 0.22) 0%, rgba(45, 90, 67, 0.16) 42%, rgba(12, 14, 18, 0.95) 86%),
+        linear-gradient(160deg, rgba(18, 15, 13, 0.96) 0%, rgba(10, 13, 18, 0.97) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.65);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), filter 0.85s ease;
+      cursor: pointer;
+    }
+    #detail-daddy-intro-overlay.closing {
+      opacity: 0;
+      transform: scale(1.05) translateY(-10px);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+    #detail-daddy-intro-overlay.hidden {
+      display: none !important;
+    }
+    .detail-daddy-intro-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(253, 230, 138, 0.48);
+      color: #FEF3C7;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .detail-daddy-intro-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 12px #34D399;
+    }
+    .detail-daddy-intro-quote {
+      font-family: 'Cormorant Garamond', 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 900;
+      color: rgba(253, 230, 138, 0.75);
+      line-height: 1;
+      margin: 0 4px;
+    }
+    .detail-daddy-intro-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.55rem, 3.1vw, 2.55rem);
+      font-weight: 900;
+      line-height: 1.32;
+      letter-spacing: -0.025em;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .detail-daddy-char {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) rotateX(-35deg) scale(0.92);
+      filter: blur(5px);
+      transition: opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1), transform 0.56s cubic-bezier(0.22, 1, 0.36, 1), filter 0.48s ease;
+    }
+    .detail-daddy-char.revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+    .detail-daddy-char.gold {
+      background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 48%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .detail-daddy-space {
+      display: inline-block;
+      width: 0.3em;
+    }
+    .detail-daddy-intro-sub {
+      font-size: clamp(0.84rem, 1.25vw, 1.02rem);
+      font-weight: 600;
+      line-height: 1.6;
+      color: rgba(248, 250, 252, 0.9);
+      max-width: 580px;
+      margin-bottom: 18px;
+      word-break: keep-all;
+    }
+    .detail-daddy-intro-sub strong {
+      color: #FDE68A;
+      font-weight: 800;
+    }
+    .detail-daddy-intro-progress {
+      width: min(260px, 72vw);
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .detail-daddy-intro-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #D4AF37, #FEF08A, #10B981);
+      transition: width 0.08s linear;
+    }
+    .detail-daddy-intro-hint {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(253, 230, 138, 0.88);
+      letter-spacing: 0.05em;
+    }
+    @media (max-width: 1024px) {
+      #detail-daddy-intro-overlay {
+        inset: 8px 12px 42px 12px;
+        padding: 18px 16px;
+        border-radius: 16px;
+      }
+      .detail-daddy-intro-pill {
+        font-size: 0.64rem;
+        padding: 4px 11px;
+        margin-bottom: 8px;
+      }
+      .detail-daddy-intro-title {
+        font-size: 1.26rem;
+        margin-bottom: 8px;
+      }
+      .detail-daddy-intro-sub {
+        font-size: 0.76rem;
+        margin-bottom: 10px;
+      }
     }
 
     .detail-clinical-trust-bar {
@@ -3104,11 +4037,67 @@ function buildPageHtml(page) {
       color: #171614;
       font-weight: 800;
     }
-    body.theme-hanji .empathy-diagnosis-box {
-      background: #E8F2EC;
-      border-left-color: #2D5A43;
-      color: #171614;
-      font-weight: 500;
+    body.theme-hanji .severity-tier-card {
+      background: #F8F5EE;
+      border-color: rgba(94, 71, 54, 0.22);
+    }
+    body.theme-hanji .severity-check-box {
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.36);
+    }
+    body.theme-hanji .severity-tier-cond {
+      color: #6B5746;
+    }
+    body.theme-hanji .severity-tier-label {
+      color: #2A1E15;
+    }
+    body.theme-hanji .severity-tier-pill {
+      background: #EFE9DC;
+      border-color: rgba(94, 71, 54, 0.26);
+      color: #5E4736;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked {
+      background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+      border: 2.5px solid #D97706;
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.28);
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-check-box {
+      background: #D97706;
+      border-color: #B45309;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-cond {
+      color: #92400E;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-label {
+      color: #B45309;
+    }
+    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-pill {
+      background: #D97706;
+      border-color: #B45309;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked {
+      background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+      border: 2.5px solid #DC2626;
+      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.35);
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-check-box {
+      background: #DC2626;
+      border-color: #991B1B;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-cond {
+      color: #991B1B;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-label {
+      color: #B91C1C;
+      text-shadow: none;
+    }
+    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-pill {
+      background: #DC2626;
+      border-color: #991B1B;
+      color: #FFFFFF;
     }
     body.theme-hanji #project-details-launch-cta {
       background: linear-gradient(135deg, #2D5A43, #3D7357);
@@ -3562,6 +4551,289 @@ function buildPageHtml(page) {
         bottom: 12px;
       }
     }
+
+    /* ============================================================================
+       4-TYPE HAIRLOSS SUBTYPE SWITCHER BAR & MODAL IN DETAIL PAGES
+       ============================================================================ */
+    .hairloss-subtype-switcher {
+      margin: 0 0 12px 0;
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(16, 36, 26, 0.94), rgba(24, 52, 38, 0.92));
+      border: 1.5px solid rgba(212, 175, 55, 0.48);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+    }
+    .hairloss-subtype-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .hairloss-subtype-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #FDE68A;
+      letter-spacing: -0.01em;
+    }
+    .hairloss-subtype-modal-btn {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #FEF3C7;
+      font-size: 0.65rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .hairloss-subtype-modal-btn:hover {
+      background: #D4AF37;
+      color: #0F1D15;
+    }
+    .hairloss-subtype-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .hairloss-subtype-tab {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 7px 9px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      text-decoration: none;
+      transition: all 0.22s ease;
+    }
+    .hairloss-subtype-tab:hover {
+      background: rgba(110, 231, 183, 0.16);
+      border-color: rgba(110, 231, 183, 0.55);
+      transform: translateY(-1px);
+    }
+    .hairloss-subtype-tab.active {
+      background: linear-gradient(135deg, rgba(45, 90, 67, 0.95), rgba(27, 67, 50, 0.95));
+      border-color: #6EE7B7;
+      box-shadow: 0 0 14px rgba(110, 231, 183, 0.32);
+    }
+    .hst-top {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .hst-num {
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: #6EE7B7;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.2);
+    }
+    .hairloss-subtype-tab.active .hst-num {
+      background: #6EE7B7;
+      color: #0B1911;
+    }
+    .hst-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .hst-sub {
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.74);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 4-Type Hairloss Modal Overlay inside Detail Pages */
+    #detail-hairloss-4type-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 12000;
+      background: rgba(8, 15, 11, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #detail-hairloss-4type-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .dh4-dialog {
+      width: min(1060px, 96vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 26px;
+      background: linear-gradient(155deg, rgba(16, 30, 22, 0.97), rgba(10, 19, 14, 0.99));
+      border: 1.5px solid rgba(212, 175, 55, 0.5);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.65);
+      padding: 26px 28px;
+      color: #FFFFFF;
+    }
+    .dh4-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .dh4-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: #FDE68A;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+    .dh4-title {
+      margin: 0 0 5px 0;
+      font-family: var(--font-serif, 'Noto Serif KR', serif);
+      font-size: clamp(1.3rem, 2.1vw, 1.8rem);
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .dh4-title em {
+      font-style: normal;
+      color: #6EE7B7;
+    }
+    .dh4-sub {
+      margin: 0;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .dh4-close {
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .dh4-close:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: rgba(248, 113, 113, 0.6);
+    }
+    .dh4-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .dh4-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      text-decoration: none;
+      color: #FFFFFF;
+      transition: transform 0.26s ease, border-color 0.26s ease, box-shadow 0.26s ease;
+    }
+    .dh4-card:hover, .dh4-card.current {
+      transform: translateY(-4px);
+      border-color: #6EE7B7;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 22px rgba(110, 231, 183, 0.24);
+    }
+    .dh4-visual {
+      position: relative;
+      height: 136px;
+      overflow: hidden;
+    }
+    .dh4-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+    .dh4-card:hover .dh4-visual img {
+      transform: scale(1.06);
+    }
+    .dh4-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,18,14,0.12) 0%, rgba(10,18,14,0.86) 100%);
+    }
+    .dh4-badge {
+      position: absolute;
+      top: 9px;
+      left: 9px;
+      z-index: 2;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 29, 21, 0.86);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      color: #A7F3D0;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .dh4-body {
+      padding: 13px 14px 15px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .dh4-card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .dh4-card-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #FDE68A;
+    }
+    .dh4-card-desc {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.44;
+      color: rgba(255, 255, 255, 0.8);
+      flex: 1;
+    }
+    .dh4-cta {
+      margin-top: 6px;
+      padding: 8px 11px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2D5A43, #1B4332);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dh4-card:hover .dh4-cta {
+      background: linear-gradient(135deg, #D4AF37, #B58E24);
+      color: #0F1D15;
+    }
+    @media (max-width: 920px) {
+      .dh4-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .dh4-grid { grid-template-columns: 1fr; }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -3586,14 +4858,6 @@ function buildPageHtml(page) {
     </div>
 
     <div class="header-center">
-      <div id="project-details-header-info">
-        <span>scroll to explore</span>
-        <svg viewBox="0 0 16 16" fill="currentColor">
-          <path d="M11.485 8.365 8.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
-          <path d="M5.485 8.365 2.657 5.536a1 1 0 0 1 1.414-1.414l3.525 3.525a1 1 0 0 1 0 1.414l-3.525 3.525a1 1 0 0 1-1.414-1.414l2.828-2.807Z"/>
-        </svg>
-      </div>
-
       <nav class="clinic-quick-tabs" aria-label="클리닉 바로가기">
         ${navHtml}
       </nav>
@@ -3621,53 +4885,11 @@ function buildPageHtml(page) {
       <div>
         <div class="meta-eyebrow">${page.meta.eyebrow}</div>
         <h1 id="project-details-title">${page.meta.title}</h1>
-        <div class="meta-subtitle-en">${page.meta.subtitleEn}</div>
+        <div class="meta-subtitle-en">${page.meta.subtitleEn}</div>${hairlossSubSwitcherHtml}
 
         <div id="project-details-desc">
           ${descHtml}
         </div>
-
-        <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
-        <div class="detail-clinical-trust-bar" aria-label="바른한의원 학술 논문 검증 안심 진료 보증">
-          <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">SCI·학술 검증</span>
-            <span class="detail-trust-seal-label">실제 학술 논문 검수로 입증된 치료법</span>
-          </div>
-          <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">원장 전담 진맥</span>
-            <span class="detail-trust-seal-label">대표원장 직접 맥진·체질 맞춤 처방</span>
-          </div>
-          <div class="detail-trust-seal">
-            <span class="detail-trust-seal-num">청정 안심 탕전</span>
-            <span class="detail-trust-seal-label">중금속·잔류농약 불검출 GMP 약재</span>
-          </div>
-        </div>
-
-        <!-- EMBEDDED SCROLL-REACTIVE 3D BEFORE / AFTER BIOMEDICAL SCAN (Auto-transforms on scroll!) -->
-        <div class="inline-scroll-ba-card" id="inline-scroll-ba-card">
-          <div class="inline-scroll-ba-head">
-            <span class="inline-scroll-ba-title">학술 검증 치료 전·후 생체 비교</span>
-            <span class="inline-scroll-ba-pct" id="inline-ba-pct-badge">스크롤 연동 · 학술 검증 치료 변화</span>
-          </div>
-          <div class="inline-scroll-ba-viewport" id="inline-ba-viewport" title="스크롤을 내리면 자동으로 치료 전(Before)에서 치료 후(After)로 변환됩니다">
-            <img id="inline-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false">
-            <div class="inline-scroll-ba-after-clip" id="inline-ba-after-clip">
-              <img id="inline-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false">
-            </div>
-            <span class="inline-scroll-ba-pill b" id="inline-ba-pill-b">BEFORE · 치료 전</span>
-            <span class="inline-scroll-ba-pill a" id="inline-ba-pill-a">AFTER · 치료 후</span>
-            <div class="inline-scroll-ba-laser" id="inline-ba-laser"></div>
-          </div>
-          <div class="inline-scroll-ba-foot">
-            <span>스크롤 시 BEFORE ➔ AFTER 자동 변환</span>
-          </div>
-        </div>
-
-        <!-- 1-CLICK PORTAL TO UNIFIED 3D HUMAN BODY MEDICAL INFORMATION PAGE -->
-        <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html" style="background:#2D5A43;border-color:#2D5A43;color:#FFFFFF;">
-          <span>🧬 인체모형 통합 의학·학술논문 정보</span>
-          <span style="white-space:nowrap;flex-shrink:0;">보러가기 ↗</span>
-        </a>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
@@ -3679,12 +4901,35 @@ function buildPageHtml(page) {
           <div class="empathy-checklist-list" id="empathy-checklist-list">
             ${checklistHtml}
           </div>
-          <div class="empathy-diagnosis-box" id="empathy-diagnosis-box">
-            ${page.meta.doctorAdvice.zero}
+          <div class="empathy-severity-board" id="empathy-diagnosis-box" aria-live="polite" style="display:none;">
+            <div class="severity-tier-card tier-caution" id="severity-tier-caution" style="display:none;">
+              <span class="severity-check-box" id="severity-box-caution">
+                <svg viewBox="0 0 18 18" fill="none">
+                  <path d="M3.2 9.4L7.2 13.4L14.8 4.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div class="severity-tier-info">
+                <span class="severity-tier-cond">1~2개 선택 시</span>
+                <strong class="severity-tier-label">${page.meta.doctorAdvice.caution}</strong>
+              </div>
+              <span class="severity-tier-pill" id="severity-pill-caution">✓ 주의</span>
+            </div>
+
+            <div class="severity-tier-card tier-severe" id="severity-tier-severe" style="display:none;">
+              <span class="severity-check-box" id="severity-box-severe">
+                <svg viewBox="0 0 18 18" fill="none">
+                  <path d="M3.2 9.4L7.2 13.4L14.8 4.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div class="severity-tier-info">
+                <span class="severity-tier-cond">3개 이상 선택 시</span>
+                <strong class="severity-tier-label">${page.meta.doctorAdvice.severe}</strong>
+              </div>
+              <span class="severity-tier-pill" id="severity-pill-severe">🚨 심각</span>
+            </div>
           </div>
         </div>
 
-        <div class="cta-nudge-msg" id="cta-nudge-msg">${page.meta.ctaNudge}</div>
         <button id="project-details-launch-cta" onclick="window.openConsultModal()">
           <span class="cta-left-group">
             <span id="project-details-launch-cta-dot"></span>
@@ -3697,8 +4942,8 @@ function buildPageHtml(page) {
       </div>
     </aside>
 
-    <!-- RIGHT HORIZONTAL MOTION-VIDEO STORYTELLING RUNWAY -->
-    <section id="project-details-items-wrapper" aria-label="수평 모션 스토리텔링 트랙">
+    <!-- RIGHT HORIZONTAL CARD RUNWAY -->
+    <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
         ${platesHtml}
 
@@ -3711,35 +4956,32 @@ function buildPageHtml(page) {
             </div>
             <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
             <div class="clean-plate-scrim"></div>
-            <div class="visual-sci-overlay" id="runway-ba-metrics-overlay"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label" id="runway-ba-step-pill">EVIDENCE-BASED CARE · 학술 논문 검증 치료 전·후 비교</span>
                 <div class="clean-spec-tags">
                   <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
                 </div>
-                <h2 class="plate-caption-title">${page.meta.title} — 학술 논문 검수 기반 치료 변화</h2>
-                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
+                <h2 class="plate-caption-title">${page.meta.title} — 치료 전·후 비교</h2>
+                <p class="plate-caption-sub">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 07 (LAST CARD): 3D Human Body Model Portal + Bottom-Right Mini Keyword Card -->
+        <!-- LAST CARD: 3D Human Body Model Portal -->
         <article id="project-details-preview" class="body-model-last-card">
           <img class="next-portal-bg" src="${page.bodyModelCard.bg}" alt="${page.bodyModelCard.title}">
           <div class="next-portal-scrim"></div>
           <div class="body-model-holo-grid"></div>
 
           <div class="body-model-top-bar">
-            <span class="body-model-badge-main">🧬 인체모형 통합 의학·논문 쇼룸 연결 카드</span>
+            <span class="body-model-badge-main">🧬 인체모형 통합 의학·논문 쇼룸</span>
             <span class="body-model-badge-sub">${page.bodyModelCard.partBadge}</span>
           </div>
 
           <div class="body-model-bottom-stage">
             <a id="project-details-preview-inner" href="${page.bodyModelCard.href}">
-              <div class="next-portal-eyebrow">${page.bodyModelCard.eyebrow}</div>
               <h2 id="project-details-preview-title">${page.bodyModelCard.title}</h2>
               <p class="next-portal-desc">${page.bodyModelCard.desc}</p>
               <div class="body-model-feature-chips">
@@ -3757,58 +4999,10 @@ function buildPageHtml(page) {
                 </svg>
               </div>
             </a>
-
-            <!-- SMALL KEYWORD CARD AT BOTTOM-RIGHT OF LAST CARD -->
-            <div class="last-card-mini-keyword-box" aria-label="다른 스토리 키워드 미니 카드">
-              <div class="mini-kw-eyebrow">
-                <span>OTHER STORY · 키워드 카드</span>
-                <span>↗</span>
-              </div>
-              <a class="mini-kw-card-link primary-hair" href="hairloss.html">
-                <span class="mini-kw-text-col">
-                  <span class="mini-kw-question">탈모 궁금해?</span>
-                  <span class="mini-kw-sub">바른 탈모 · 모근재생 스토리</span>
-                </span>
-                <span class="mini-kw-arrow">→</span>
-              </a>
-              <a class="mini-kw-card-link secondary-next" href="${page.nextClinic.href === 'hairloss.html' ? 'chuna.html' : page.nextClinic.href}">
-                <span class="mini-kw-text-col">
-                  <span class="mini-kw-question">${page.nextClinic.href === 'hairloss.html' ? '추나 교정 궁금해?' : page.nextClinic.keyword}</span>
-                  <span class="mini-kw-sub">${page.nextClinic.href === 'hairloss.html' ? '바른 추나 · 척추교정' : page.nextClinic.title}</span>
-                </span>
-                <span class="mini-kw-arrow">→</span>
-              </a>
-            </div>
           </div>
         </article>
       </div>
     </section>
-
-    <!-- FLOATING BOTTOM-RIGHT SMALL KEYWORD CARD ("탈모 궁금해?" + 다른 스토리 미니 카드) -->
-    <aside id="floating-bottom-right-kw-card" aria-label="우측 하단 키워드 미니 카드">
-      <div class="mini-kw-eyebrow">
-        <span>KEYWORD STORY · 다른 스토리</span>
-        <span>✨</span>
-      </div>
-      <a class="mini-kw-card-link primary-hair" href="hairloss.html">
-        <span class="mini-kw-text-col">
-          <span class="mini-kw-question">탈모 궁금해?</span>
-          <span class="mini-kw-sub">바른 탈모 · 두피열 모근재생</span>
-        </span>
-        <span class="mini-kw-arrow">→</span>
-      </a>
-      <a class="mini-kw-card-link secondary-next" href="${page.nextClinic.href === 'hairloss.html' ? 'chuna.html' : page.nextClinic.href}">
-        <span class="mini-kw-text-col">
-          <span class="mini-kw-question">${page.nextClinic.href === 'hairloss.html' ? '추나 교정 궁금해?' : page.nextClinic.keyword}</span>
-          <span class="mini-kw-sub">${page.nextClinic.href === 'hairloss.html' ? '바른 추나 · 척추교정' : page.nextClinic.title}</span>
-        </span>
-        <span class="mini-kw-arrow">→</span>
-      </a>
-      <button type="button" class="floating-kw-jump-3d" onclick="window.jumpToPlate(document.querySelectorAll('.project-details-item, #project-details-preview').length - 1)">
-        <span>🧬 인체모형 연결</span>
-        <span>→</span>
-      </button>
-    </aside>
   </main>
 
   <div id="scroll-indicator">
@@ -3846,14 +5040,92 @@ function buildPageHtml(page) {
     </div>
   </div>
 
+  <!-- 4-TYPE HAIRLOSS SELECTOR MODAL IN DETAIL PAGES -->
+  <div id="detail-hairloss-4type-modal" role="dialog" aria-modal="true" aria-label="바른 탈모 4가지 유형별 상세페이지 선택" onclick="if(event.target===this)window.closeDetailHairlossModal()">
+    <div class="dh4-dialog">
+      <div class="dh4-head">
+        <div>
+          <span class="dh4-eyebrow">👨‍👧‍👦 아빠 한의사 · 내 가족 주치의 4대 탈모 맞춤 진료</span>
+          <h3 class="dh4-title">어떤 <em>탈모 · 두피 고민</em>의 상세페이지를 확인하시겠습니까?</h3>
+          <p class="dh4-sub">내 가족에게 직접 처방하고 시술한 치료만 시행합니다. 원하시는 탈모 유형을 선택하시면 맞춤 상세페이지로 즉시 이동합니다.</p>
+        </div>
+        <button type="button" class="dh4-close" onclick="window.closeDetailHairlossModal()">✕ 닫기</button>
+      </div>
+      <div class="dh4-grid">
+        <a href="hairloss-male.html" class="dh4-card${page.file === 'hairloss-male.html' ? ' current' : ''}">
+          <div class="dh4-visual">
+            <img src="detail_hair_story1_30cm_tension.jpg?v=30cm1" alt="남성탈모 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 01 · 남성탈모</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">남성탈모</h4>
+            <div class="dh4-card-sub">M자 · 정수리 · 두피열 사막화</div>
+            <p class="dh4-card-desc">피나스테리드·성기능 부작용 걱정 없이 상체로 치솟은 두피열을 내리고 위축된 모근을 깨웁니다.</p>
+            <span class="dh4-cta"><span>남성탈모 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+        <a href="hairloss-alopecia.html" class="dh4-card${page.file === 'hairloss-alopecia.html' ? ' current' : ''}">
+          <div class="dh4-visual">
+            <img src="detail_director_story2_both_wrists_pulse.jpg" alt="원형탈모 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 02 · 원형탈모</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">원형탈모</h4>
+            <div class="dh4-card-sub">동전 모양 · 다발성 · 자가면역 폭주</div>
+            <p class="dh4-card-desc">스테로이드 주사로 인한 두피 함몰 대신, 자율신경 안정과 면역 정상화로 재발 고리를 끊어냅니다.</p>
+            <span class="dh4-cta"><span>원형탈모 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+        <a href="hairloss-female.html" class="dh4-card${page.file === 'hairloss-female.html' ? ' current' : ''}">
+          <div class="dh4-visual">
+            <img src="detail_hair_story5_date_smile.jpg" alt="여성탈모 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 03 · 여성탈모</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">여성탈모</h4>
+            <div class="dh4-card-sub">가르마 확장 · 산후 · 갱년기 · 다이어트</div>
+            <p class="dh4-card-desc">상열하한(머리는 뜨겁고 손발·하복부는 찬 상태)과 보혈(補血)을 다스려 정수리 볼륨을 복원합니다.</p>
+            <span class="dh4-cta"><span>여성탈모 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+        <a href="hairloss-seborrheic.html" class="dh4-card${page.file === 'hairloss-seborrheic.html' ? ' current' : ''}">
+          <div class="dh4-visual">
+            <img src="detail_hair_thermography.jpg" alt="지루성두피염 상세페이지" loading="lazy">
+            <span class="dh4-badge">TYPE 04 · 지루성두피염</span>
+          </div>
+          <div class="dh4-body">
+            <h4 class="dh4-card-title">지루성두피염</h4>
+            <div class="dh4-card-sub">붉은 홍반 · 화농성 모낭염 · 각질 · 가려움</div>
+            <p class="dh4-card-desc">항생제·스테로이드 내성 없이 두피 속 열독(熱毒)과 피지 과분비를 해독해 진피 장벽을 재생합니다.</p>
+            <span class="dh4-cta"><span>지루성두피염 상세페이지</span><span>→</span></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function() {
       'use strict';
+
+      window.openDetailHairlossModal = function() {
+        const m = document.getElementById('detail-hairloss-4type-modal');
+        if (m) m.classList.add('open');
+      };
+      window.closeDetailHairlossModal = function() {
+        const m = document.getElementById('detail-hairloss-4type-modal');
+        if (m) m.classList.remove('open');
+      };
 
       // ====================================================================
       // 0. AWWWARDS VISIBILITY MODE, B2B BRAND SYNC & SCROLL-DRIVEN B/A ENGINE
       // ====================================================================
       const PAGE_FILE = '${page.file}';
+      if ((PAGE_FILE === 'hairloss.html' && !window.location.search.includes('direct=1')) || window.location.search.includes('select=1')) {
+        setTimeout(function() {
+          window.openDetailHairlossModal();
+        }, 120);
+      }
       const DETAIL_BA_MAP = {
         'director.html': {
           part: 'syncope',
@@ -3910,6 +5182,50 @@ function buildPageHtml(page) {
             { label: '피부과학 저널(J Dermatol Sci) 등재', b: '두피 열독·미세염증', a: '수승화강 청열·모유두세포 보호 검증' }
           ]
         },
+        'hairloss-male.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 남성 M자·정수리 두피열 사막화 및 연모화',
+          afterTag: 'AFTER · 수승화강 청열 및 M자·정수리 모근 재생',
+          metrics: [
+            { label: '국제 식물요법학회지(Phytother Res) 검증', b: 'M자·정수리 모낭 위축', a: 'DHT 저항·모유두세포 성장기 연장 입증' },
+            { label: '피부과학 저널(J Dermatol Sci) 등재', b: '상열하한 두피 열독', a: '호르몬 부작용 없는 모낭 혈류 복원 검증' }
+          ]
+        },
+        'hairloss-alopecia.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 자가면역 폭주 및 원형 탈락반 진행',
+          afterTag: 'AFTER · 자율신경 안정 및 면역 재조율 신생모 발모',
+          metrics: [
+            { label: '국제 민족약리학회지(J Ethnopharmacol) 검증', b: '자가면역 모낭 공격', a: '염증성 사이토카인 억제·모낭 회복 입증' },
+            { label: '피부과학 저널(J Dermatol Sci) 등재', b: '스테로이드 두피 함몰 우려', a: '무위축 면역 재조율·재발 방지 검증' }
+          ]
+        },
+        'hairloss-female.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 여성 가르마 확장 및 상열하한·혈허 빈모',
+          afterTag: 'AFTER · 자음보혈 진액 보충 및 정수리 볼륨 복원',
+          metrics: [
+            { label: '국제 식물학술지(Phytomedicine) 검증', b: '산후·갱년기 가르마 빈모', a: '모유두세포 영양·모발 굵기 회복 입증' },
+            { label: '국제 약리학술지(Front Pharmacol) 등재', b: '상열하한·만성 냉증', a: '전신 기혈 순환·모낭 성장인자 활성 검증' }
+          ]
+        },
+        'hairloss-seborrheic.html': {
+          part: 'cervical',
+          beforeImg: 'ba_hair_before.jpg',
+          afterImg: 'ba_hair_after.jpg',
+          beforeTag: 'BEFORE · 두피 홍반·화농성 모낭염 및 각질·열독',
+          afterTag: 'AFTER · 청열해독 염증 진정 및 건강 진피 장벽 복원',
+          metrics: [
+            { label: '피부과학 저널(J Dermatol Sci) 검증', b: '만성 홍반·화농성 모낭염', a: '피지 과분비·염증 매개체 억제 입증' },
+            { label: '국제 식물요법학회지(Phytother Res) 등재', b: '스테로이드 리바운드 재발', a: '진피 면역 장벽·염증성 탈모 차단 검증' }
+          ]
+        },
         'gongjindan.html': {
           part: 'gongjindan',
           beforeImg: 'ba_gongjindan_before.jpg',
@@ -3941,58 +5257,28 @@ function buildPageHtml(page) {
       const detailBaLine = document.getElementById('detail-ba-line');
       const detailBaKnob = document.getElementById('detail-ba-knob');
 
-      // Initialize Embedded Sidebar & Runway Before/After 3D Scans + Body Explorer Links
+      // Initialize Runway Before/After 3D Scan + Body Explorer Link
       (function initEmbeddedScrollBa() {
-        const ibImg = document.getElementById('inline-ba-before-img');
-        const iaImg = document.getElementById('inline-ba-after-img');
         const rbImg = document.getElementById('runway-ba-before-img');
         const raImg = document.getElementById('runway-ba-after-img');
         const rTagB = document.getElementById('runway-ba-tag-b');
         const rTagA = document.getElementById('runway-ba-tag-a');
-        const rMetrics = document.getElementById('runway-ba-metrics-overlay');
         const hExplorer = document.getElementById('header-body-explorer-link');
-        const sExplorer = document.getElementById('sidebar-body-explorer-link');
 
-        if (ibImg) ibImg.src = activeBaData.beforeImg;
-        if (iaImg) iaImg.src = activeBaData.afterImg;
         if (rbImg) rbImg.src = activeBaData.beforeImg;
         if (raImg) raImg.src = activeBaData.afterImg;
         if (rTagB) rTagB.textContent = activeBaData.beforeTag;
         if (rTagA) rTagA.textContent = activeBaData.afterTag;
         if (hExplorer) hExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
-        if (sExplorer) sExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
-        if (rMetrics && activeBaData.metrics) {
-          rMetrics.innerHTML = activeBaData.metrics.map(function(m) {
-            return '<div class="sci-stat-card"><div class="sci-stat-num" style="font-size:1.15rem;">' + m.a + '</div><div class="sci-stat-label">' + m.label + ' (치료 전: ' + m.b + ')</div><div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div></div>';
-          }).join('');
-        }
-
-        // Allow optional hover/pointer scrub on embedded viewport too, while scroll drives it automatically
-        const inlineVp = document.getElementById('inline-ba-viewport');
-        if (inlineVp) {
-          inlineVp.addEventListener('pointermove', function(e) {
-            const r = inlineVp.getBoundingClientRect();
-            const pct = Math.max(5, Math.min(95, ((e.clientX - r.left) / Math.max(1, r.width)) * 100));
-            window.applyInlineScrollBaPct(pct);
-          });
-        }
       })();
 
       window.applyInlineScrollBaPct = function(pct) {
         const c = Math.max(6, Math.min(96, pct));
-        const iaClip = document.getElementById('inline-ba-after-clip');
-        const iLaser = document.getElementById('inline-ba-laser');
-        const iBadge = document.getElementById('inline-ba-pct-badge');
         const raClip = document.getElementById('runway-ba-after-clip');
         const rLaser = document.getElementById('runway-ba-laser');
-        const rStepPill = document.getElementById('runway-ba-step-pill');
 
-        if (iaClip) iaClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
-        if (iLaser) iLaser.style.left = c.toFixed(1) + '%';
-        if (iBadge) iBadge.textContent = '스크롤 연동 · 학술 검증 치료 변화';
         if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
         if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
-        if (rStepPill) rStepPill.textContent = 'EVIDENCE-BASED CLINICAL CARE · 학술 논문 검증 치료 전·후 비교';
       };
 
       function setDetailBaPct(pct) {
@@ -4101,8 +5387,11 @@ function buildPageHtml(page) {
       const checkItems = Array.from(document.querySelectorAll('.empathy-check-item'));
       const countBadge = document.getElementById('empathy-count-badge');
       const diagnosisBox = document.getElementById('empathy-diagnosis-box');
+      const tierCaution = document.getElementById('severity-tier-caution');
+      const tierSevere = document.getElementById('severity-tier-severe');
+      const pillCaution = document.getElementById('severity-pill-caution');
+      const pillSevere = document.getElementById('severity-pill-severe');
       const ctaBtnLabel = document.getElementById('cta-btn-label');
-      const totalItems = checkItems.length;
 
       function getCheckedSymptoms() {
         return checkItems
@@ -4113,18 +5402,52 @@ function buildPageHtml(page) {
       function updateChecklistState() {
         const checked = getCheckedSymptoms();
         const cnt = checked.length;
-        countBadge.textContent = cnt > 0 ? '맞춤 증상 선택됨' : '증상 체크 전';
-        countBadge.classList.toggle('active', cnt > 0);
-        ctaBtnLabel.textContent = '${page.meta.ctaText}';
+        const isCaution = cnt >= 1 && cnt <= 2;
+        const isSevere = cnt >= 3;
 
-        if (cnt === 0) {
-          diagnosisBox.innerHTML = ADVICE.zero;
-        } else if (cnt <= 2) {
-          diagnosisBox.innerHTML = '<strong>[원장 맞춤 진단 가이드 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.low;
+        countBadge.classList.remove('active', 'is-caution', 'is-severe');
+        if (isSevere) {
+          countBadge.textContent = '🚨 ' + cnt + '개 선택 · ' + ADVICE.severe;
+          countBadge.classList.add('active', 'is-severe');
+          if (diagnosisBox) diagnosisBox.style.display = 'flex';
+          if (tierCaution) {
+            tierCaution.style.display = 'none';
+            tierCaution.classList.remove('is-checked');
+          }
+          if (tierSevere) {
+            tierSevere.style.display = 'flex';
+            tierSevere.classList.add('is-checked');
+          }
+          if (pillSevere) pillSevere.textContent = '🚨 심각 체크됨';
+        } else if (isCaution) {
+          countBadge.textContent = '⚠️ ' + cnt + '개 선택 · ' + ADVICE.caution;
+          countBadge.classList.add('active', 'is-caution');
+          if (diagnosisBox) diagnosisBox.style.display = 'flex';
+          if (tierCaution) {
+            tierCaution.style.display = 'flex';
+            tierCaution.classList.add('is-checked');
+          }
+          if (tierSevere) {
+            tierSevere.style.display = 'none';
+            tierSevere.classList.remove('is-checked');
+          }
+          if (pillCaution) pillCaution.textContent = '✓ 주의 체크됨';
         } else {
-          diagnosisBox.innerHTML = '<strong>[집중 치료 권장 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.high;
+          countBadge.textContent = '증상 체크 전';
+          if (diagnosisBox) diagnosisBox.style.display = 'none';
+          if (tierCaution) {
+            tierCaution.style.display = 'none';
+            tierCaution.classList.remove('is-checked');
+          }
+          if (tierSevere) {
+            tierSevere.style.display = 'none';
+            tierSevere.classList.remove('is-checked');
+          }
         }
+        ctaBtnLabel.textContent = '${page.meta.ctaText}';
       }
+
+      updateChecklistState();
 
       checkItems.forEach(item => {
         const input = item.querySelector('.empathy-check-input');
@@ -4175,19 +5498,17 @@ function buildPageHtml(page) {
       }
 
       // ====================================================================
-      // 2. HORIZONTAL SMOOTH PASSERELLA RUNWAY ENGINE
+      // 2. HORIZONTAL SMOOTH PASSERELLA RUNWAY ENGINE (MANUAL SCROLL ONLY)
       // ====================================================================
       const wrapper = document.getElementById('project-details-items-wrapper');
       const moveContainer = document.getElementById('project-details-items-move-container');
       const progressBar = document.getElementById('scroll-indicator-bar');
       const plates = Array.from(document.querySelectorAll('.project-details-item, #project-details-preview'));
-      const dotBtns = Array.from(document.querySelectorAll('.plate-dot-btn'));
-      const activeBadge = document.getElementById('active-plate-badge');
-      const activeCaption = document.getElementById('active-plate-caption');
 
       let targetX = 0, currentX = 0, maxScrollX = 0;
       let isDragging = false, startDragX = 0, startTargetX = 0;
       let isTouchActive = false, touchLastX = 0, touchLastY = 0, touchLastTime = 0, touchInertiaVelX = 0;
+      let lastDetailInteractMs = 0;
 
       function updateBounds() {
         maxScrollX = Math.max(0, moveContainer.scrollWidth - wrapper.clientWidth);
@@ -4206,6 +5527,7 @@ function buildPageHtml(page) {
           const atBottom = (metaEl.scrollTop + metaEl.clientHeight >= metaEl.scrollHeight - 4) && e.deltaY > 0;
           if (!atTop && !atBottom) return;
         }
+        lastDetailInteractMs = performance.now();
         updateBounds();
         touchInertiaVelX = 0;
         const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
@@ -4213,7 +5535,8 @@ function buildPageHtml(page) {
       }, { passive: true });
 
       wrapper.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' || e.target.closest('button, a')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay')) return;
+        lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
         startDragX = e.clientX;
@@ -4223,6 +5546,7 @@ function buildPageHtml(page) {
 
       wrapper.addEventListener('pointermove', (e) => {
         if (!isDragging) return;
+        lastDetailInteractMs = performance.now();
         targetX = Math.max(0, Math.min(maxScrollX, startTargetX + (startDragX - e.clientX) * 1.35));
       });
 
@@ -4246,9 +5570,10 @@ function buildPageHtml(page) {
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay')) return;
         updateBounds();
         isTouchActive = true;
+        lastDetailInteractMs = performance.now();
         touchInertiaVelX = 0;
         touchAccumDelta = 0;
         touchStartTargetX = targetX;
@@ -4262,6 +5587,7 @@ function buildPageHtml(page) {
         if (!isTouchActive || !e.touches || !e.touches.length) return;
         if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
         const now = performance.now();
+        lastDetailInteractMs = now;
         const curX = e.touches[0].clientX;
         const curY = e.touches[0].clientY;
         const dx = touchLastX - curX;
@@ -4295,6 +5621,7 @@ function buildPageHtml(page) {
         if (!isTouchActive) return;
         isTouchActive = false;
         touchInertiaVelX = 0;
+        lastDetailInteractMs = performance.now();
         // On mobile/tablet, snap cleanly to the current or next/prev 1 card so content never flies past!
         if (window.innerWidth <= 1024 && Math.abs(touchAccumDelta) > 12) {
           const stepDir = touchAccumDelta > 26 ? 1 : (touchAccumDelta < -26 ? -1 : 0);
@@ -4306,12 +5633,14 @@ function buildPageHtml(page) {
       window.addEventListener('touchcancel', endTouchRunway, { passive: true });
 
       window.addEventListener('keydown', (e) => {
+        lastDetailInteractMs = performance.now();
         updateBounds();
         if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') targetX = Math.min(maxScrollX, targetX + window.innerWidth * 0.45);
         else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') targetX = Math.max(0, targetX - window.innerWidth * 0.45);
       });
 
       window.jumpToPlate = function(index) {
+        lastDetailInteractMs = performance.now();
         updateBounds();
         const plate = plates[index];
         if (!plate) return;
@@ -4332,6 +5661,7 @@ function buildPageHtml(page) {
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
             lastPlateTapMs = now;
+            lastDetailInteractMs = now;
             const activeIdx = getClosestPlateIndex(currentX);
             const nextIdx = idx > activeIdx ? idx : Math.min(plates.length - 1, activeIdx + 1);
             window.jumpToPlate(nextIdx);
@@ -4386,6 +5716,59 @@ function buildPageHtml(page) {
         applyStageFrame(ms, ms.currIdx);
       };
 
+      window.switchPlateThumb = function(e, btn, isAuto) {
+        if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+        const dock = btn.closest('.plate-thumb-dock');
+        if (dock) {
+          dock.querySelectorAll('.plate-thumb-btn').forEach(b => b.classList.toggle('active', b === btn));
+        }
+        const plate = btn.closest('.project-details-item');
+        if (!plate) return;
+        if (!isAuto) plate.dataset.manualThumb = '1';
+        const mode = btn.dataset.mode;
+        const imgSrc = btn.dataset.img;
+        const fit = btn.dataset.fit || 'cover';
+
+        if (mode === 'motion') {
+          const stageEl = plate.querySelector('.motion-video-stage');
+          const ms = motionStages.find(m => m.stageEl === stageEl);
+          const tIdx = parseInt(btn.dataset.idx || '0', 10);
+          if (ms && tIdx >= 0 && tIdx < ms.frames.length) {
+            ms.currIdx = tIdx;
+            ms.elapsed = (tIdx / ms.frames.length) * ms.duration;
+            applyStageFrame(ms, tIdx);
+          }
+          return;
+        }
+
+        const mediaImg = plate.querySelector('img.lusion-clean-media');
+        if (mediaImg && imgSrc) {
+          mediaImg.style.opacity = '0.35';
+          setTimeout(() => {
+            mediaImg.src = imgSrc;
+            mediaImg.classList.toggle('is-contain-fit', fit === 'contain');
+            plate.classList.toggle('has-contain-media', fit === 'contain');
+            mediaImg.style.opacity = '1';
+          }, 80);
+        }
+      };
+
+      // Preload all clean-image thumbnails & gently auto-cycle active clean plate thumbnails unless manually selected
+      document.querySelectorAll('.plate-thumb-btn[data-img]').forEach(b => {
+        const im = new Image();
+        im.src = b.dataset.img;
+      });
+
+      setInterval(() => {
+        const activePlate = document.querySelector('.project-details-item.is-clean-plate.is-active-plate');
+        if (!activePlate || activePlate.dataset.manualThumb === '1') return;
+        const btns = Array.from(activePlate.querySelectorAll('.plate-thumb-btn[data-mode="clean"]'));
+        if (btns.length < 2) return;
+        const currIdx = btns.findIndex(b => b.classList.contains('active'));
+        const nextBtn = btns[(currIdx + 1) % btns.length];
+        if (nextBtn) window.switchPlateThumb(null, nextBtn, true);
+      }, 4500);
+
       window.openLightboxFromPlate = function(btn) {
         const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
         const ms = motionStages.find(m => m.stageEl === stageEl);
@@ -4415,6 +5798,12 @@ function buildPageHtml(page) {
           ms.layerA.style.opacity = '1';
           ms.layerB.style.opacity = '0';
           ms.activeLayer = 'A';
+        }
+        const plate = ms.stageEl.closest('.project-details-item');
+        if (plate) {
+          plate.querySelectorAll('.plate-thumb-btn[data-mode="motion"]').forEach((b, bIdx) => {
+            b.classList.toggle('active', bIdx === nextIdx);
+          });
         }
       }
 
@@ -5933,7 +7322,7 @@ function buildPageHtml(page) {
           if (targetX <= 0 || targetX >= maxScrollX) touchInertiaVelX = 0;
         }
 
-        // Horizontal Runway Smooth Lerp + Automatic Scroll-Driven Before/After 3D Scan Transformation (Desktop & Mobile Unified)
+        // Horizontal Runway Smooth Lerp + Scroll-Driven Before/After 3D Scan Transformation
         currentX += (targetX - currentX) * 0.085;
         const velocity = (targetX - currentX) * 0.0025;
         const clampedSkew = Math.max(-1.6, Math.min(1.6, -velocity));
@@ -5958,44 +7347,16 @@ function buildPageHtml(page) {
           if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
           const cleanMedia = plate.querySelector('.lusion-clean-media');
           if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
-            const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
-            cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
+            if (cleanMedia.classList.contains('is-contain-fit')) {
+              cleanMedia.style.transform = 'none';
+            } else {
+              const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
+              cleanMedia.style.transform = 'scale(1.06) translate3d(' + parallaxX.toFixed(1) + 'px, 0, 0)';
+            }
           }
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
-        const floatingKwCard = document.getElementById('floating-bottom-right-kw-card');
-        if (floatingKwCard) {
-          floatingKwCard.classList.toggle('is-docked-on-last', closestIdx === plates.length - 1);
-        }
-
-        // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
-        motionStages.forEach((ms, sIdx) => {
-          ms.elapsed = (ms.elapsed + dt) % ms.duration;
-          const cycleNorm = ms.elapsed / ms.duration;
-          if (ms.progFill) ms.progFill.style.width = (cycleNorm * 100).toFixed(1) + '%';
-
-          if (ms.frames.length > 1) {
-            const targetIdx = Math.min(ms.frames.length - 1, Math.floor(cycleNorm * ms.frames.length));
-            if (targetIdx !== ms.currIdx) {
-              ms.currIdx = targetIdx;
-              applyStageFrame(ms, targetIdx);
-            }
-          }
-
-          // Continuous 3D Ken Burns / Breathing Zoom camera motion
-          const isBreathingZoom = ms.fxType === 'warm-breath-zoom';
-          const zoom = isBreathingZoom
-            ? 1.055 + 0.055 * Math.sin(timeSec * 1.35)
-            : 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
-          const panX = Math.cos(timeSec * 0.55 + sIdx) * (isBreathingZoom ? 8 : 12);
-          const panY = Math.sin(timeSec * 0.45 + sIdx) * (isBreathingZoom ? 5 : 8);
-          const transformStr = 'scale(' + zoom.toFixed(4) + ') translate3d(' + panX.toFixed(1) + 'px, ' + panY.toFixed(1) + 'px, 0)';
-          if (ms.layerA) ms.layerA.style.transform = transformStr;
-          if (ms.layerB) ms.layerB.style.transform = transformStr;
-
-          drawPlateMotionFx(ms, timeSec, cycleNorm);
-        });
 
         drawSimCanvas(timeSec);
         requestAnimationFrame(animateAll);
