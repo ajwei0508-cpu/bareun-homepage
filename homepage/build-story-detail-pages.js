@@ -23,9 +23,10 @@ const PAGES = [
       title: '안정위 대표원장',
       subtitleEn: 'Dr. Ahn Jung-wi · Evidence-Based Sasang & Integrative Korean Medicine',
       desc: [
-        '깊이 있는 맥진과 국가공인 무독성 검수 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 기전과 안전성이 입증된 검증된 치료법만을 시행합니다.'
+        '깊이 있는 맥진과 국가공인 무독성 검수 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 기전과 안전성이 입증된 치료법만을 시행합니다.'
       ],
-      ctaText: '대표원장 심층 맞춤 진료 예약하기',
+      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 체질에 맞는 치료 방향 상담하기',
       reserveProgram: '안정위 대표원장 사상체질·통합진료 클리닉',
       checklistTitle: '사상체질 · 맞춤 한약 핵심 체크리스트',
       checklistItems: [
@@ -36,16 +37,16 @@ const PAGES = [
         '[학술 안전성 검증] 간·신장 부담이나 중금속 걱정 없이 논문으로 검증된 한약을 원한다.'
       ],
       doctorAdvice: {
-        zero: '현재 겪고 계신 증상을 체크하시면 실제 학술 논문 검수를 거친 대표원장 맞춤 진료 방향을 안내해 드립니다.',
+        zero: '현재 겪고 계신 증상을 체크하시면 대표원장 맞춤 진료 방향을 안내해 드립니다.',
         low: '검사상 나타나지 않는 기능적 불균형 단계입니다. 학술 논문으로 검증된 사상체질 변증과 맥진 처방으로 근본 원인 해결이 가능합니다.',
-        high: '복합 장부 기능 저하가 누적된 상태입니다. 동료심사 학술지로 안전성과 효능이 입증된 심층 맥진·맞춤 무균 탕전 치료를 권장합니다.'
+        high: '<strong>"오랜 기간 원인 모를 불편함으로 많이 힘드셨겠습니다."</strong> 복합 장부 기능 저하가 누적된 상태입니다. 동료심사 학술지로 안전성과 효능이 입증된 심층 맥진·맞춤 무균 탕전 치료를 권장합니다.'
       }
     },
     plates: [
       {
         type: 'clean-video',
         stepLabel: 'STORY · 대표원장 심층 문진',
-        title: '병명 뒤에 가려진 당신의 일상부터 먼저 묻습니다',
+        title: "병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다",
         sub: '수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 미병(未病)의 뿌리를 찾습니다.',
         caption: '[원장 임상 노트] 초진 시 수면·소화·한열 반응을 입체 문진해 기능성 질환의 근본 원인을 파악합니다.',
         videoSrc: 'detail_director_story1.mp4?v=oryzo3',
@@ -92,13 +93,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · SCI급 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 안전성과 기전이 입증된 검증된 치료법',
-        sub: '단순 수치 나열이 아닌, 국제 동료심사(Peer-review) 학술 논문을 철저히 검수하여 입증된 안전한 한약만을 처방합니다.',
+        title: '실제 논문 검수로 안전성과 기전이 입증된 맞춤 한의학',
+        sub: '단순 수치 나열이 아닌, 국제 동료심사(Peer-review) 학술 논문을 철저히 검수하여 안전성이 입증된 한약만을 처방합니다.',
         caption: '[학술 논문 검수] 국제 학술지 연구를 통해 한약 투여 후 간·신장 기능 안전성 및 항산화·자율신경 회복 기전이 검증되었습니다.',
         imgSrc: 'detail_director_story5_clean.jpg?v=oryzo3',
         sciStats: [
-          { num: 'SCI 학술 논문 검증', label: 'Evid Based Complement Alternat Med · 한약 복용 전후 간·신장 기능 안전성 및 항산화 효소 활성 입증', width: '96%' },
-          { num: 'J Ethnopharmacol 등재', label: '체질 맞춤 보익·보궁 처방의 자율신경 균형 회복 및 자궁내막 수용성 개선 기전 학술 검증', width: '94%' }
+          { num: 'SCI급 국제학술지 검증', label: '한약 복용 전후 간·신장 기능 안전성 및 항산화 효소 활성 입증 - Evid Based Complement Alternat Med', width: '96%' },
+          { num: '국제 민족약리학회지 등재', label: '체질 맞춤 처방의 자율신경 균형 회복 기전 검증 - J Ethnopharmacol', width: '94%' }
         ]
       }
     ],
@@ -143,9 +144,10 @@ const PAGES = [
       title: '바른 추나 · 척추교정',
       subtitleEn: 'Evidence-Based Manual Chuna & Spinal Decompression Care',
       desc: [
-        '진통제로 통증만 가리지 않고, 대표원장 수기 추나로 틀어진 척추·골반 중심축을 바로잡습니다. 미국의학협회지(JAMA) 등 실제 학술 논문을 검수하여 유효성이 입증된 검증된 비수술 치료법을 시행합니다.'
+        '진통제로 통증만 가리지 않고, 대표원장 수기 추나로 틀어진 척추·골반 중심축을 바로잡습니다. 미국의학협회지(JAMA) 등 실제 학술 논문을 검수하여 유효성이 입증된 비수술 치료법을 시행합니다.'
       ],
-      ctaText: '바른 추나 맞춤 교정 예약하기',
+      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 체형에 맞는 교정 계획 원장님과 상담하기',
       reserveProgram: '추나 척추·전신통증 클리닉',
       checklistTitle: '척추 · 골반 불균형 자가 진단 체크리스트',
       checklistItems: [
@@ -156,9 +158,9 @@ const PAGES = [
         '[비수술 근본 교정] 수술 없이 학술적으로 검증된 추나와 약침으로 치료받고 싶다.'
       ],
       doctorAdvice: {
-        zero: '일상 속 통증이나 체형 불균형 항목을 체크하시면 실제 학술 논문 기반의 추나 진단 가이드가 안내됩니다.',
-        low: '골반과 경추의 균형이 무너지기 시작한 단계입니다. 논문으로 검증된 원장 수기 추나로 디스크 압박을 조기에 해소할 수 있습니다.',
-        high: '척추 중심축 비대칭으로 신경 압박이 누적된 상태입니다. 국제 학술지에서 권고하는 비수술 추나 감압 교정과 약침 병행 치료를 권장합니다.'
+        zero: '일상 속 통증이나 체형 불균형 항목을 체크하시면 추나 진단 가이드가 안내됩니다.',
+        low: '골반과 경추의 균형이 무너지기 시작한 단계입니다. 원장 수기 추나로 디스크 압박을 조기에 해소할 수 있습니다.',
+        high: '<strong>"만성적인 통증과 저림으로 일상이 많이 불편하셨겠습니다."</strong> 척추 중심축 비대칭으로 신경 압박이 누적된 상태입니다. 국제 학술지에서 권고하는 비수술 추나 감압 교정과 약침 병행 치료를 권장합니다.'
       }
     },
     plates: [
@@ -166,7 +168,7 @@ const PAGES = [
         type: 'motion-story',
         indexPill: 'STORY · 일상을 멈추게 하는 통증',
         metricPill: '요추·경추 구조적 불균형 신호',
-        title: '당연했던 일상의 움직임을 앗아가는 구조적 통증',
+        title: "당연했던 일상의 움직임을 앗아가는 '구조적 통증'",
         sub: '허리를 숙이거나 고개를 돌리는 평범한 동작조차 망설이게 된다면 척추 기둥이 보내는 구조 신호입니다.',
         caption: '[추나 임상 노트] 반복되는 급·만성 통증은 근육만의 문제가 아닌 골반과 척추 정렬의 붕괴에서 시작됩니다.',
         frames: [
@@ -217,13 +219,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · 국제 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 검증된 비수술 추나 치료법',
-        sub: '수치로 효과를 과장하지 않고, 미국의학협회지(JAMA)와 미국내과학회(ACP) 논문 검수를 통해 검증된 치료법을 안내합니다.',
-        caption: '[학술 논문 검수] 수기 교정(SMT/Chuna)과 한의 통합 치료는 국제 임상 가이드라인에서 권고하는 검증된 비수술 치료법입니다.',
+        title: '실제 학술 논문 검수로 입증된 비수술 추나 치료법',
+        sub: '수치로 효과를 과장하지 않고, 미국의학협회지(JAMA)와 미국내과학회(ACP) 논문 검수를 통해 입증된 치료법을 안내합니다.',
+        caption: '[학술 논문 검수] 수기 교정(SMT/Chuna)과 한의 통합 치료는 국제 임상 가이드라인에서 권고하는 비수술 치료법입니다.',
         imgSrc: 'detail_chuna_story5_child_airplane.jpg?v=chuna2',
         sciStats: [
-          { num: 'JAMA 학술지 검증', label: 'JAMA Network Open · 비수술 척추 수기치료(추나)의 추간판 감압 및 요통·방사통 개선 기전 입증', width: '96%' },
-          { num: '미국내과학회 권고', label: 'Annals of Internal Medicine · 급·만성 요통 및 척추 질환의 비약물 수기치료 권고 치료법 등재', width: '94%' }
+          { num: 'JAMA(미국의학협회지) 검증', label: '비수술 척추 수기치료의 추간판 감압 및 요통 개선 입증', width: '96%' },
+          { num: '미국내과학회(ACP) 권고', label: '급·만성 요통 및 척추 질환의 비약물 수기치료 권고 가이드라인', width: '94%' }
         ]
       }
     ],
@@ -268,9 +270,10 @@ const PAGES = [
       title: '바른 성장 · 성조숙증',
       subtitleEn: 'Evidence-Based Epiphyseal Chondrocyte & Pediatric Immunity Care',
       desc: [
-        '성호르몬 과항진 자극 없이 성장판 연골 증식과 호흡기·소화기 면역을 함께 깨웁니다. 소아과학 및 약리학 학술 논문(Phytomedicine, Pediatrics)을 정밀 검수하여 안전성이 입증된 검증된 성장 치료법을 시행합니다.'
+        '성호르몬 과항진 자극 없이 성장판 연골 증식과 호흡기·소화기 면역을 함께 깨웁니다. 학술 논문을 정밀 검수하여 안전성이 입증된 한방 성장 치료법을 시행합니다.'
       ],
-      ctaText: '우리 아이 맞춤 성장 진료 예약하기',
+      ctaNudge: '📝 체크한 항목을 바탕으로 원장님이 직접 우리 아이의 성장 계획표를 브리핑해 드립니다.',
+      ctaText: '우리 아이 맞춤 성장 계획 원장님과 상담하기',
       reserveProgram: '소아·청소년 키성장 클리닉',
       checklistTitle: '우리 아이 성장 · 성조숙증 체크리스트',
       checklistItems: [
@@ -281,9 +284,9 @@ const PAGES = [
         '[자세 불균형] 거북목·구부정한 자세로 인해 숨은 키가 손해 보는 것 같아 걱정된다.'
       ],
       doctorAdvice: {
-        zero: '우리 아이의 일상 속 증상을 체크하시면 실제 학술 논문 검수를 거친 성장 진단 가이드가 안내됩니다.',
-        low: '호흡기 면역과 비위 흡수력을 보강해 줄 시기입니다. 논문으로 검증된 면역·성장 한약으로 건강한 성장 잠재력을 깨울 수 있습니다.',
-        high: '잦은 잔병치레나 조기 골화가 성장 에너지를 가로채고 있습니다. 정밀 성장판 평가와 학술 검증된 성장·성조숙증 맞춤 치료를 권장합니다.'
+        zero: '우리 아이의 일상 속 증상을 체크하시면 성장 진단 가이드가 안내됩니다.',
+        low: '호흡기 면역과 비위 흡수력을 보강해 줄 시기입니다. 안전성이 검증된 성장 한약으로 잠재력을 깨울 수 있습니다.',
+        high: '<strong>"아이의 성장이 더뎌 부모님의 걱정이 크셨겠습니다."</strong> 잦은 잔병치레나 편식, 조기 골화가 성장 에너지를 가로채고 있습니다. 정밀 성장판 평가와 맞춤 치료를 권장합니다.'
       },
       extraLink: {
         href: 'body-explorer.html?part=knee',
@@ -294,10 +297,10 @@ const PAGES = [
       {
         type: 'motion-story',
         indexPill: 'STORY · 키가 멈춘 진짜 이유',
-        metricPill: '비염·감기 면역 누수 및 구강호흡',
-        title: '아이 키가 더딘 이유, 잦은 비염과 구강호흡이 성장 에너지를 가로챕니다',
-        sub: '만성 코막힘과 호흡기 염증을 먼저 다스려야 밤사이 깊은 숙면과 성장호르몬 분비가 온전히 이루어집니다.',
-        caption: '[소아 성장 노트] 호흡기 염증과 구강호흡에 쓰이는 면역 에너지를 줄여야 성장판 연골 증식으로 에너지가 집중됩니다.',
+        metricPill: '몸속 성장 방해 요인 및 면역 누수',
+        title: "아이 키가 더딘 이유, 단순한 '유전 탓'만은 아닙니다",
+        sub: "유전이나 식습관 문제뿐 아니라, 잦은 감기·비염, 소화불량 등 성장에너지를 가로채는 '몸속 방해 요인'을 먼저 해결해야 온전한 성장이 이루어집니다.",
+        caption: '[소아 성장 노트] 호흡기 염증과 소화불량에 쓰이는 면역 에너지를 줄여야 성장판 연골 증식으로 에너지가 집중됩니다.',
         frames: [
           'detail_growth_story1_wall_chart.jpg?v=grw1',
           'detail_growth_story1_mouth_breathing.jpg?v=grw1'
@@ -322,7 +325,7 @@ const PAGES = [
         type: 'clean-image',
         stepLabel: 'STORY · 성장판 연골모세포 활성 기전',
         title: '성호르몬 자극 없이 성장판 연골세포 분열을 안전하게 깨웁니다',
-        sub: '성장판이 일찍 굳는 것을 예방하면서 연골모세포(Chondrocyte) 증식과 골 기질 생성을 돕는 검증된 한약 기전입니다.',
+        sub: '성장판이 일찍 굳는 것을 예방하면서 연골모세포(Chondrocyte) 증식과 골 기질 생성을 돕는 한약 기전입니다.',
         caption: '[소아 성장 노트] 성호르몬을 자극하지 않는 안전한 약재 배합으로 성장판 연골층의 활발한 증식을 유도합니다.',
         imgSrc: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2',
         cleanTags: [
@@ -346,13 +349,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · 소아·약리 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 검증된 한방 키성장·성조숙증 치료법',
-        sub: '인위적인 성장 수치를 내세우지 않고, 국제 학술 논문에서 연골세포 증식과 면역 개선 기전이 검증된 안전한 치료법을 안내합니다.',
+        title: '실제 학술 논문 검수로 입증된 한방 키성장·성조숙증 치료법',
+        sub: '인위적인 성장 수치를 내세우지 않고, 국제 학술 논문에서 연골세포 증식과 면역 개선 기전이 입증된 안전한 치료법을 안내합니다.',
         caption: '[학술 논문 검수] 국제 학술지(Phytomedicine, Pediatrics) 연구를 통해 성장판 연골 증식 및 호흡기 면역·수면 개선 기전이 입증되었습니다.',
         imgSrc: 'detail_growth_story5_tall_basketball.jpg?v=grw2',
         sciStats: [
-          { num: 'Phytomedicine 검증', label: 'Phytomedicine 등재 · 전통 한약 추출물의 조기 골화 지연 및 성장판 연골모세포 증식 촉진 기전 입증', width: '96%' },
-          { num: 'Pediatrics 학술 검증', label: '소아 호흡기 감염·비염 구강호흡 개선을 통한 성장인자(IGF) 회복 및 깊은 수면 증진 기전 규명', width: '94%' }
+          { num: '국제 식물학술지(Phytomedicine) 검증', label: '조기 골화 지연 및 성장판 연골모세포 증식 촉진 기전 입증', width: '96%' },
+          { num: '국제 소아과학회지(Pediatrics) 등재', label: '호흡기 감염·비염 개선을 통한 성장인자(IGF) 회복 입증', width: '94%' }
         ]
       }
     ],
@@ -397,9 +400,10 @@ const PAGES = [
       title: '바른 다이어트 · 식욕ZERO',
       subtitleEn: 'Evidence-Based Visceral Fat Lipolysis & Metabolic Reset',
       desc: [
-        '무작정 굶는 요요를 끊어내고, 차갑게 꺼진 복부 대사 화로를 깨워 내장지방부터 비워냅니다. 국제 비만·약리 학술 논문(Int J Obesity, Front Pharmacol)을 정밀 검수하여 기전이 입증된 검증된 대사 치료법을 시행합니다.'
+        '무작정 굶는 요요를 끊어내고, 차갑게 꺼진 복부 대사 화로를 깨워 내장지방부터 비워냅니다. 국제 학술 논문을 정밀 검수하여 기전이 입증된 대사 다이어트 치료법을 시행합니다.'
       ],
-      ctaText: '바른 다이어트 맞춤 진료 예약하기',
+      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 대사 진단 및 감량 계획을 브리핑해 드립니다.',
+      ctaText: '내 대사 상태 원장님께 진단받고 감량 계획 세우기',
       reserveProgram: '성인 비만·다이어트 클리닉',
       checklistTitle: '대사 저하 · 내장지방 자가 진단 체크리스트',
       checklistItems: [
@@ -410,9 +414,9 @@ const PAGES = [
         '[반복된 요요] 굶는 다이어트 후 근육만 빠지고 체지방이 다시 늘어났다.'
       ],
       doctorAdvice: {
-        zero: '나의 다이어트 고민과 체질 증상을 체크하시면 실제 학술 논문 기반의 대사 진단 가이드가 안내됩니다.',
-        low: '기초대사 저하와 림프 부종이 시작된 단계입니다. 학술 논문으로 검증된 간 해독·대사 한약으로 편안하게 체지방 감량을 시작할 수 있습니다.',
-        high: '만성 대사 정체와 렙틴 저항성(가짜 식욕)이 누적된 상태입니다. 근육 손실 없이 내장지방 분해를 돕는 검증된 맞춤 대사 치료를 권장합니다.'
+        zero: '나의 다이어트 고민과 체질 증상을 체크하시면 대사 진단 가이드가 안내됩니다.',
+        low: '기초대사 저하와 림프 부종이 시작된 단계입니다. 간 해독·대사 한약으로 편안하게 체지방 감량을 시작할 수 있습니다.',
+        high: '<strong>"반복되는 요요와 지치지 않는 가짜 식욕으로 스트레스가 많으셨겠습니다."</strong> 만성 대사 정체와 렙틴 저항성이 누적된 상태입니다. 근육 손실 없이 내장지방 분해를 돕는 맞춤 대사 치료를 권장합니다.'
       },
       extraLink: {
         href: 'body-explorer.html?part=gut',
@@ -424,7 +428,7 @@ const PAGES = [
         type: 'motion-story',
         indexPill: 'STORY · 답답한 옷장 앞의 한숨',
         metricPill: '복부 대사 정체 및 나잇살 신호',
-        title: '적게 먹어도 잠기지 않는 지퍼, 의지가 아닌 대사의 문제입니다',
+        title: "적게 먹어도 잠기지 않는 지퍼, 의지가 아닌 '대사의 문제'입니다",
         sub: '기초대사가 떨어지고 속이 차가워지면 우리 몸은 에너지를 태우는 대신 복부에 지방을 쌓아둡니다.',
         caption: '[대사 다이어트 노트] 무리한 절식이 아닌, 떨어진 기초대사량과 배출 기능을 회복하는 것이 감량의 첫걸음입니다.',
         frames: [
@@ -475,13 +479,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · 국제 비만·약리 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 검증된 한방 대사 다이어트 치료법',
+        title: '실제 학술 논문 검수로 입증된 한방 대사 다이어트 치료법',
         sub: '자극적인 감량 수치를 내세우지 않고, 국제 학술 논문에서 갈색지방 활성화와 내장지방 감소 기전이 입증된 치료법을 안내합니다.',
         caption: '[학술 논문 검수] 국제 비만학회지(Int J Obesity) 및 약리학 논문 검수를 통해 한약 복합물의 대사 활성화 기전이 검증되었습니다.',
         imgSrc: 'detail_diet_story5_zipper_success_fit.jpg?v=belt1',
         sciStats: [
-          { num: 'Int J Obesity 검증', label: 'International Journal of Obesity · 전통 한약 복합물의 갈색지방 열발생 활성화 및 렙틴 저항성 개선 입증', width: '96%' },
-          { num: 'Front Pharmacol 등재', label: 'AMPK 대사 효소 활성화 및 장내 환경 개선을 통한 복부 내장지방 감소 기전 학술 검증', width: '94%' }
+          { num: '국제 비만학술지(Int J Obesity) 검증', label: '갈색지방 열발생 활성화 및 렙틴 저항성(가짜 식욕) 개선 입증', width: '96%' },
+          { num: '국제 약리학술지(Front Pharmacol) 등재', label: '대사 효소 활성화 및 내장지방 감소 기전 학술 검증', width: '94%' }
         ]
       }
     ],
@@ -526,9 +530,10 @@ const PAGES = [
       title: '바른 탈모 · 모근재생',
       subtitleEn: 'Evidence-Based Scalp Thermoregulation & Dermal Papilla Care',
       desc: [
-        '머리로 치솟은 두피 열독을 식히고 경추 혈류를 열어 모유두세포에 영양을 공급합니다. 피부과학 및 약리학 학술 논문(J Dermatol Sci, Phytotherapy Research)을 정밀 검수하여 입증된 검증된 비수술 모근재생 치료법을 시행합니다.'
+        '머리로 치솟은 두피 열독을 식히고 경추 혈류를 열어 모유두세포에 영양을 공급합니다. 피부과학 및 약리학 학술 논문을 정밀 검수하여 효능이 입증된 비수술 모근재생 치료법을 시행합니다.'
       ],
-      ctaText: '바른 탈모 맞춤 진료 예약하기',
+      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 탈모 진행 단계와 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 두피열·모낭 상태 원장님께 심층 진단받기',
       reserveProgram: '바른 탈모 · 두피열 비수술 모근재생 클리닉',
       checklistTitle: '두피열 · 모발 연모화 자가 진단 체크리스트',
       checklistItems: [
@@ -539,9 +544,9 @@ const PAGES = [
         '[근본 치료 희망] 호르몬 억제 약물의 부작용 걱정 없이 모근 자생력을 살리고 싶다.'
       ],
       doctorAdvice: {
-        zero: '현재 겪고 계신 두피·모발 불편감을 체크하시면 실제 학술 논문 기반의 탈모 진단 가이드가 표시됩니다.',
-        low: '초기 두피 열독 및 모발 연모화 신호입니다. 학술 논문으로 검증된 수승화강 청열 치료와 모낭 영양 공급으로 모근 힘을 회복할 수 있습니다.',
-        high: '만성 두피 사막화와 모낭 위축이 진행 중입니다. 경추 혈류 개통 추나와 청열 한약·약침을 결합한 검증된 집중 모근재생 치료를 권장합니다.'
+        zero: '겪고 계신 두피·모발 불편감을 체크하시면 탈모 진단 가이드가 표시됩니다.',
+        low: '초기 두피 열독 및 모발 연모화 신호입니다. 수승화강 청열 치료와 모낭 영양 공급으로 모근 힘을 회복할 수 있습니다.',
+        high: '<strong>"매일 빠지는 머리카락과 두피 열감으로 상심이 크셨겠습니다."</strong> 만성 두피 사막화와 모낭 위축이 진행 중입니다. 경추 혈류 개통 추나와 청열 약침을 결합한 집중 모근재생 치료를 권장합니다.'
       }
     },
     plates: [
@@ -549,7 +554,7 @@ const PAGES = [
         type: 'motion-story',
         indexPill: 'STORY · 가까워진 시선 앞의 위축감',
         metricPill: '정수리·가르마 연모화 및 두피 상열 신호',
-        title: '가까워진 타인의 시선 앞에 작아지는 마음, 탈모의 시작입니다',
+        title: "가까워진 타인의 시선 앞에 '작아지는 마음', 탈모의 시작입니다",
         sub: '조명 아래 드러나는 가르마와 가늘어진 모발은 두피 표면이 아닌 몸속 열 균형이 무너졌다는 신호입니다.',
         caption: '[탈모 임상 노트] 과로와 스트레스로 상체에 몰린 열(上熱)이 두피 수분을 말리고 모낭 뿌리를 약화시킵니다.',
         frames: [
@@ -600,13 +605,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · 피부과학·약리 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 검증된 비수술 모근재생 치료법',
-        sub: '과장된 수치 표현 대신, 국제 학술 논문에서 모낭 성장기 연장과 두피 열독·염증 완화 기전이 검증된 치료법을 안내합니다.',
+        title: '실제 학술 논문 검수로 입증된 비수술 모근재생 치료법',
+        sub: '과장된 수치 표현 대신, 국제 학술 논문에서 모낭 성장기 연장과 두피 열독·염증 완화 기전이 입증된 치료법을 안내합니다.',
         caption: '[학술 논문 검수] 국제 학술지(Phytotherapy Research, J Dermatol Sci) 연구를 통해 모유두세포 활성 및 성장기 연장 기전이 검증되었습니다.',
         imgSrc: 'detail_hair_story5_30cm_confidence.jpg?v=30cm2',
         sciStats: [
-          { num: 'Phytother Res 검증', label: 'Phytotherapy Research · 한약 복합물의 세포 신호(Wnt/β-catenin) 활성화를 통한 모낭 성장기(Anagen) 연장 입증', width: '96%' },
-          { num: 'J Dermatol Sci 등재', label: '두피 국소 열독·미세염증 완화 및 경추 혈류 개선을 통한 모유두세포(Dermal Papilla) 보호 기전 검증', width: '94%' }
+          { num: '국제 식물요법학회지(Phytother Res) 검증', label: '세포 신호 활성화를 통한 모낭 성장기(Anagen) 연장 입증', width: '96%' },
+          { num: '피부과학 저널(J Dermatol Sci) 등재', label: '두피 열독 완화 및 경추 혈류 개선을 통한 모유두세포 보호 기전 검증', width: '94%' }
         ]
       }
     ],
@@ -651,9 +656,10 @@ const PAGES = [
       title: '바른 황제공진단',
       subtitleEn: 'CITES-Certified Natural Musk & Evidence-Based Neuro-Cardiac Vitality',
       desc: [
-        '식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문(J Ethnopharmacology, Front Pharmacol)을 정밀 검수하여 효능 기전이 입증된 검증된 처방만을 고집합니다.'
+        '식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문을 정밀 검수하여 효능 기전이 입증된 처방만을 고집합니다.'
       ],
-      ctaText: '바른 황제공진단 맞춤 처방 예약하기',
+      ctaNudge: '📝 체크하신 피로도 증상을 원장님께 먼저 보내고 정확한 처방 상담을 받습니다.',
+      ctaText: '내 피로도에 맞는 정품 공진단 처방 상담하기',
       reserveProgram: '황제공진단·기력보강 클리닉',
       checklistTitle: '만성 번아웃 · 기력 고갈 자가 진단 체크리스트',
       checklistItems: [
@@ -664,9 +670,9 @@ const PAGES = [
         '[품격 있는 선물] 부모님이나 소중한 분께 학술적으로 검증된 정품 사향 공진단을 드리고 싶다.'
       ],
       doctorAdvice: {
-        zero: '현재 겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 실제 학술 논문 기반의 공진단 처방 가이드가 안내됩니다.',
-        low: '기혈 순환 저하와 두뇌 피로가 누적된 시기입니다. 학술 논문으로 검증된 정품 사향 공진단으로 뇌·심장 활력을 빠르게 충전할 수 있습니다.',
-        high: '심층 원기(元氣) 고갈 및 자율신경 번아웃 상태입니다. 대표원장이 직접 정량 조제하는 원방 황제공진단 집중 복용을 권장합니다.'
+        zero: '겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 공진단 처방 가이드가 안내됩니다.',
+        low: '기혈 순환 저하와 두뇌 피로가 누적된 시기입니다. 정품 사향 공진단으로 뇌·심장 활력을 빠르게 충전할 수 있습니다.',
+        high: '<strong>"오랜 기간 누적된 피로와 두근거림으로 일상 유지가 힘드셨겠습니다."</strong> 심층 원기(元氣) 고갈 및 자율신경 번아웃 상태입니다. 대표원장이 직접 정량 조제하는 원방 황제공진단 집중 복용을 권장합니다.'
       }
     },
     plates: [
@@ -674,7 +680,7 @@ const PAGES = [
         type: 'motion-story',
         indexPill: 'STORY · 바닥난 생체 에너지 경보',
         metricPill: '만성 번아웃 및 심뇌 기혈 고갈',
-        title: '자도 자도 가시지 않는 깊은 피로, 몸속 원기(元氣)가 방전된 신호입니다',
+        title: "자도 자도 가시지 않는 '깊은 피로', 몸속 원기가 '방전된 신호'입니다",
         sub: '카페인과 각성제로 버티는 일상은 오히려 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.',
         caption: '[공진단 임상 노트] 극심한 과로와 스트레스 뒤에는 뇌혈류 저하와 자율신경 소진이 자리 잡고 있습니다.',
         frames: [
@@ -713,7 +719,7 @@ const PAGES = [
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 식약처 인증 정품 사향 & 원장 수제 제환',
-        title: '식약처 CITES 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다',
+        title: '식약처 인증 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다',
         sub: '정식 통관된 정품 사향과 녹용 최상단 분골만을 엄선하여 대표원장이 직접 정량 배합하고 순금박으로 수제 봉인합니다.',
         caption: '[공진단 임상 노트] 사향의 방향성 활성 성분이 날아가지 않도록 원내에서 소량씩 정밀 수제 제환합니다.',
         imgSrc: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2',
@@ -725,13 +731,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · 국제 신경약리학 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 검증된 뇌·심장 원기 회복 처방',
-        sub: '과장된 수치 없이, 국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 검증된 원방 공진단만을 조제합니다.',
+        title: '실제 학술 논문 검수로 입증된 뇌·심장 원기 회복 처방',
+        sub: '과장된 수치 없이, 국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 입증된 원방 공진단만을 조제합니다.',
         caption: '[학술 논문 검수] 국제 학술지(J Ethnopharmacology, Front Pharmacol) 연구를 통해 공진단과 사향의 신경 보호·피로 회복 기전이 입증되었습니다.',
         imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
         sciStats: [
-          { num: 'J Ethnopharmacol 검증', label: 'Journal of Ethnopharmacology · 공진단의 뇌신경 영양인자(BDNF·NGF) 발현 촉진 및 만성피로·기억력 개선 입증', width: '96%' },
-          { num: 'Front Pharmacol 등재', label: '천연 사향 주성분(L-Muscone)의 뇌혈관장벽 투과 및 심근 허혈 보호·항스트레스 기전 학술 검증', width: '94%' }
+          { num: '국제 민족약리학회지(J Ethnopharmacol) 검증', label: '뇌신경 영양인자 발현 촉진 및 만성피로·기억력 개선 입증', width: '96%' },
+          { num: '국제 약리학술지(Front Pharmacol) 등재', label: '천연 사향의 뇌혈관장벽 투과 및 심뇌혈류 보호 기전 학술 검증', width: '94%' }
         ]
       }
     ],
@@ -776,9 +782,10 @@ const PAGES = [
       title: '바른 전립선 · 남성활력',
       subtitleEn: 'Evidence-Based Prostate Decongestion, Bladder Control & Male Vitality',
       desc: [
-        '골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 및 약리학 학술 논문(Urology, Phytomedicine)을 정밀 검수하여 입증된 검증된 한의학 치료법을 시행합니다.'
+        '골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.'
       ],
-      ctaText: '전립선 · 남성활력 프라이빗 예약하기',
+      ctaNudge: '📝 체크하신 배뇨 불편 증상을 원장님께 먼저 보내고 프라이빗 상담을 받습니다.',
+      ctaText: '내 전립선·배뇨 증상 원장님과 프라이빗 상담하기',
       reserveProgram: '바른 전립선 · 배뇨 · 남성활력 클리닉',
       checklistTitle: '전립선 · 야간뇨 · 배뇨 자가 진단 체크리스트',
       checklistItems: [
@@ -789,9 +796,9 @@ const PAGES = [
         '[남성 활력 저하] 배뇨 불편감과 함께 만성 피로 및 하체·남성 활력 저하가 느껴진다.'
       ],
       doctorAdvice: {
-        zero: '현재 겪고 계신 배뇨·전립선 불편감을 체크하시면 실제 학술 논문 기반의 진단 가이드가 안내됩니다.',
-        low: '초기 전립선 울혈 및 방광 과민 신호입니다. 학술 논문으로 검증된 전립선 감압 한약과 골반 순환 치료로 시원한 배뇨와 숙면을 회복할 수 있습니다.',
-        high: '만성 비세균성 전립선염 또는 전립선 비대 압박이 누적된 상태입니다. 전립선 부종 감압과 방광 저장력 회복을 돕는 검증된 통합 치료를 권장합니다.'
+        zero: '겪고 계신 배뇨·전립선 불편감을 체크하시면 진단 가이드가 안내됩니다.',
+        low: '초기 전립선 울혈 및 방광 과민 신호입니다. 전립선 감압 한약과 골반 순환 치료로 시원한 배뇨와 숙면을 회복할 수 있습니다.',
+        high: '<strong>"매일 밤 깨어나는 수면 장애와 배뇨 불편감으로 많이 지치셨겠습니다."</strong> 만성 비세균성 전립선염 또는 전립선 비대 압박이 누적된 상태입니다. 전립선 감압과 방광 저장력 회복을 돕는 통합 치료를 권장합니다.'
       }
     },
     plates: [
@@ -799,7 +806,7 @@ const PAGES = [
         type: 'clean-image',
         fullscreen: true,
         stepLabel: 'STORY · 밤마다 깨어나는 야간뇨의 고통',
-        title: '밤마다 잠을 깨우는 야간뇨와 잔뇨감, 숙면과 일상이 무너집니다',
+        title: "밤마다 잠을 깨우는 '야간뇨'와 '잔뇨감', 숙면과 일상이 무너집니다",
         sub: '화장실을 다녀와도 개운하지 않고 밤잠을 설치는 일상은 부어오른 전립선과 약해진 방광이 보내는 신호입니다.',
         caption: '[전립선 임상 노트] 야간뇨로 깊은 수면이 끊기면 만성 피로와 면역력·남성 활력 저하가 연쇄적으로 발생합니다.',
         imgSrc: 'illust_prostate_care.jpg',
@@ -848,13 +855,13 @@ const PAGES = [
       {
         type: 'clean-image',
         stepLabel: 'STORY · 비뇨의학·약리 학술 논문 검수 완료',
-        title: '실제 학술 논문 검수로 입증된 검증된 한방 전립선·배뇨 치료법',
+        title: '실제 학술 논문 검수로 입증된 한방 전립선·배뇨 치료법',
         sub: '수치로 효과를 과장하지 않고, 국제 비뇨의학 및 약리학 학술 논문에서 전립선 감압과 배뇨 개선 기전이 입증된 치료법을 안내합니다.',
         caption: '[학술 논문 검수] 국제 학술지(Urology, Phytomedicine) 연구를 통해 만성 전립선염 통증 완화 및 전립선 비대 조직 감압 기전이 검증되었습니다.',
         imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
         sciStats: [
-          { num: 'Urology 학술지 검증', label: 'Urology 등재 · 만성 비세균성 전립선염·골반통증증후군(CP/CPPS)에서 한의학 치료의 배뇨·통증 개선 입증', width: '96%' },
-          { num: 'Phytomedicine 등재', label: '한약 추출물의 환원효소 억제 및 전립선 비대 조직 감압·하부요로증상(LUTS) 완화 기전 학술 검증', width: '94%' }
+          { num: '국제 비뇨의학회지(Urology) 검증', label: '만성 비세균성 전립선염·골반통증증후군 배뇨 및 통증 개선 입증', width: '96%' },
+          { num: '국제 식물학술지(Phytomedicine) 등재', label: '전립선 비대 조직 감압 및 하부요로증상 완화 기전 학술 검증', width: '94%' }
         ]
       }
     ],
@@ -910,8 +917,11 @@ function buildPageHtml(page) {
   const extraLinkHtml = page.meta.extraLink ? `
         <a href="${page.meta.extraLink.href}" class="extra-detail-link">${page.meta.extraLink.text}</a>` : '';
 
+  const formatTitleEmphasis = (t) => String(t || '').replace(/'([^']+)'/g, "<span class=\"title-key-em\">'$1'</span>");
+
   const platesHtml = page.plates.map((p, idx) => {
     const numStr = `0${idx + 1}`;
+    const formattedTitle = formatTitleEmphasis(p.title);
     if (p.type === 'clean-video') {
       return `
         <!-- PLATE ${numStr}: Lusion Clean Video Plate -->
@@ -922,7 +932,7 @@ function buildPageHtml(page) {
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">${p.stepLabel || 'STORY · 임상 스토리'}</span>
-                <h2 class="plate-caption-title">${p.title}</h2>
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
             </div>
@@ -953,7 +963,7 @@ function buildPageHtml(page) {
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">${p.stepLabel || 'STORY · 임상 스토리'}</span>${tagsHtml}
-                <h2 class="plate-caption-title">${p.title}</h2>
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
             </div>
@@ -976,7 +986,7 @@ function buildPageHtml(page) {
             </div>
             <div class="plate-bottom-caption">
               <div>
-                <h2 class="plate-caption-title">${p.title}</h2>
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
             </div>
@@ -1013,7 +1023,7 @@ function buildPageHtml(page) {
             ${sciHtml}
             <div class="plate-bottom-caption">
               <div>
-                <h2 class="plate-caption-title">${p.title}</h2>
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
               <div class="plate-action-group">
@@ -1420,6 +1430,25 @@ function buildPageHtml(page) {
       transition: all 0.25s ease;
     }
 
+    .cta-nudge-msg {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px dashed rgba(16, 185, 129, 0.38);
+      border-radius: 10px;
+      padding: 8px 11px;
+      margin-bottom: 8px;
+      line-height: 1.42;
+      word-break: keep-all;
+    }
+
+    body.theme-hanji .cta-nudge-msg {
+      background: #E8F2EC;
+      border-color: rgba(45, 90, 67, 0.36);
+      color: #2D5A43;
+    }
+
     #project-details-launch-cta {
       display: inline-flex;
       align-items: center;
@@ -1789,6 +1818,13 @@ function buildPageHtml(page) {
       color: #FFFFFF;
       margin-bottom: 5px;
       text-shadow: 0 4px 18px rgba(0, 0, 0, 0.8);
+    }
+
+    .plate-caption-title .title-key-em {
+      color: #FDE68A;
+      text-decoration: underline;
+      text-decoration-color: rgba(253, 230, 138, 0.65);
+      text-underline-offset: 4px;
     }
 
     .plate-caption-sub {
@@ -3648,6 +3684,7 @@ function buildPageHtml(page) {
           </div>
         </div>
 
+        <div class="cta-nudge-msg" id="cta-nudge-msg">${page.meta.ctaNudge}</div>
         <button id="project-details-launch-cta" onclick="window.openConsultModal()">
           <span class="cta-left-group">
             <span id="project-details-launch-cta-dot"></span>
@@ -3682,8 +3719,8 @@ function buildPageHtml(page) {
                   <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
                 </div>
-                <h2 class="plate-caption-title">${page.meta.title} — 학술 논문 검수 기반 검증된 치료 변화</h2>
-                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 실제 학술 논문을 검수하여 기전이 입증된 검증된 치료법의 전·후 원리를 안내합니다.</p>
+                <h2 class="plate-caption-title">${page.meta.title} — 학술 논문 검수 기반 치료 변화</h2>
+                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
               </div>
             </div>
           </div>
@@ -3782,7 +3819,7 @@ function buildPageHtml(page) {
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
       <h3 class="consult-modal-title">${page.meta.title} 맞춤 진료 예약</h3>
-      <p class="consult-modal-sub">체크하신 증상을 바탕으로 학술 논문으로 검증된 대표원장 맞춤 진료를 준비합니다.</p>
+      <p class="consult-modal-sub">${page.meta.ctaNudge}</p>
       <div class="modal-checked-summary" id="modal-checked-summary">
         체크된 일상 불편감 증상이 자동으로 이곳에 연동됩니다.
       </div>
@@ -3799,7 +3836,7 @@ function buildPageHtml(page) {
           <label>체크된 불편감 및 추가 상담 메모</label>
           <textarea id="modal-user-memo" rows="3" placeholder="희망하시는 진료 시간대나 증상을 남겨주세요"></textarea>
         </div>
-        <button type="submit" class="modal-submit-btn">체크한 증상으로 맞춤 진료 예약 신청하기</button>
+        <button type="submit" class="modal-submit-btn">${page.meta.ctaText} 신청하기</button>
       </form>
       <div class="consult-action-list">
         <a class="consult-action-item" id="detail-tel-link" href="tel:010-5631-1275">대표원장실 전화 상담 연결</a>
@@ -3825,8 +3862,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 미검증 약재 우려 및 자율신경 불균형',
           afterTag: 'AFTER · 학술 논문 검증 청정 탕전 및 기혈 복원',
           metrics: [
-            { label: 'Evid Based Complement Alternat Med 논문 검수', b: '간·신장 부담 우려', a: '무독성·항산화 효소 활성 입증' },
-            { label: 'Journal of Ethnopharmacology 논문 검수', b: '자율신경·착상 저하', a: '맥진·체질 맞춤 처방 기전 검증' }
+            { label: 'SCI급 국제학술지(Evid Based Complement Alternat Med)', b: '간·신장 부담 우려', a: '무독성·항산화 효소 활성 입증' },
+            { label: '국제 민족약리학회지(J Ethnopharmacol)', b: '자율신경·착상 저하', a: '맥진·체질 맞춤 처방 기전 검증' }
           ]
         },
         'chuna.html': {
@@ -3836,8 +3873,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 골반 비대칭 및 추간판 신경 압박',
           afterTag: 'AFTER · 학술 검증 수기 추나 정렬 및 신경 감압',
           metrics: [
-            { label: 'JAMA Network Open 학술 논문 검수', b: '추간판 신경 압박', a: '비수술 수기 추나 신경 감압 입증' },
-            { label: 'Annals of Internal Medicine 가이드라인', b: '대증 진통제 의존', a: '비약물 척추 수기치료 권고 검증' }
+            { label: 'JAMA(미국의학협회지) 논문 검수', b: '추간판 신경 압박', a: '비수술 수기 추나 신경 감압 입증' },
+            { label: '미국내과학회(ACP) 권고 가이드라인', b: '대증 진통제 의존', a: '비약물 척추 수기치료 권고 검증' }
           ]
         },
         'growth.html': {
@@ -3847,8 +3884,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 성장 정체 및 조기 골화·면역 저하',
           afterTag: 'AFTER · 학술 검증 성장판 연골 증식 및 면역 회복',
           metrics: [
-            { label: 'Phytomedicine 국제 학술지 논문 검수', b: '성장판 연골 분열 정체', a: '조기 골화 지연·연골모세포 증식 검증' },
-            { label: 'Pediatrics 소아과학 학술 논문 검수', b: '비염·구강호흡 성장 방해', a: '호흡기 면역·성장인자 회복 입증' }
+            { label: '국제 식물학술지(Phytomedicine) 검증', b: '성장판 연골 분열 정체', a: '조기 골화 지연·연골모세포 증식 검증' },
+            { label: '국제 소아과학회지(Pediatrics) 등재', b: '비염·구강호흡 성장 방해', a: '호흡기 면역·성장인자 회복 입증' }
           ]
         },
         'diet-zero.html': {
@@ -3858,8 +3895,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 복부 대사 저하 및 내장지방 축적',
           afterTag: 'AFTER · 학술 검증 대사 활성화 및 체지방 감량',
           metrics: [
-            { label: 'International Journal of Obesity 논문 검수', b: '기초대사 저하·가짜 식욕', a: '갈색지방 열발생·렙틴 저항성 개선 검증' },
-            { label: 'Frontiers in Pharmacology 학술 검수', b: '근손실 요요 반복', a: '대사 효소 활성·내장지방 분해 입증' }
+            { label: '국제 비만학술지(Int J Obesity) 검증', b: '기초대사 저하·가짜 식욕', a: '갈색지방 열발생·렙틴 저항성 개선 입증' },
+            { label: '국제 약리학술지(Front Pharmacol) 등재', b: '근손실 요요 반복', a: '대사 효소 활성·내장지방 분해 검증' }
           ]
         },
         'hairloss.html': {
@@ -3869,8 +3906,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 두피 열독 사막화 및 모낭 위축',
           afterTag: 'AFTER · 학술 검증 수승화강 청열 및 모근 재생',
           metrics: [
-            { label: 'Phytotherapy Research 학술 논문 검수', b: '모낭 성장기 단축·연모화', a: '모유두세포 활성·성장기 연장 검증' },
-            { label: 'Journal of Dermatological Science 검수', b: '두피 열독·미세염증', a: '수승화강 청열·모낭 보호 기전 입증' }
+            { label: '국제 식물요법학회지(Phytother Res) 검증', b: '모낭 성장기 단축·연모화', a: '모유두세포 활성·성장기 연장 입증' },
+            { label: '피부과학 저널(J Dermatol Sci) 등재', b: '두피 열독·미세염증', a: '수승화강 청열·모유두세포 보호 검증' }
           ]
         },
         'gongjindan.html': {
@@ -3880,8 +3917,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심장 기혈 고갈',
           afterTag: 'AFTER · 학술 검증 정품 사향 뇌·심장 활력 복원',
           metrics: [
-            { label: 'Journal of Ethnopharmacology 논문 검수', b: '만성 피로·집중력 저하', a: '뇌신경 영양인자(BDNF) 발현 검증' },
-            { label: 'Frontiers in Pharmacology 학술 검수', b: '뇌·심장 기혈 울체', a: '천연 사향 뇌혈류·심근 보호 입증' }
+            { label: '국제 민족약리학회지(J Ethnopharmacol) 검증', b: '만성 피로·집중력 저하', a: '뇌신경 영양인자 발현·피로 개선 입증' },
+            { label: '국제 약리학술지(Front Pharmacol) 등재', b: '뇌·심장 기혈 울체', a: '천연 사향 뇌혈관장벽 투과·보호 검증' }
           ]
         },
         'prostate.html': {
@@ -3891,8 +3928,8 @@ function buildPageHtml(page) {
           beforeTag: 'BEFORE · 전립선 부종 압박 및 야간뇨·배뇨 불편',
           afterTag: 'AFTER · 학술 검증 전립선 감압 및 숙면·활력 복원',
           metrics: [
-            { label: 'Urology 비뇨의학 학술지 논문 검수', b: '만성 골반 울혈·잔뇨감', a: '비세균성 전립선염·배뇨 개선 검증' },
-            { label: 'Phytomedicine 약리학 학술 논문 검수', b: '전립선 비대·야간뇨', a: '전립선 조직 감압·방광 기능 회복 입증' }
+            { label: '국제 비뇨의학회지(Urology) 검증', b: '만성 골반 울혈·잔뇨감', a: '비세균성 전립선염·배뇨 개선 입증' },
+            { label: '국제 식물학술지(Phytomedicine) 등재', b: '전립선 비대·야간뇨', a: '전립선 조직 감압·하부요로증상 완화 검증' }
           ]
         }
       };
@@ -4078,16 +4115,14 @@ function buildPageHtml(page) {
         const cnt = checked.length;
         countBadge.textContent = cnt > 0 ? '맞춤 증상 선택됨' : '증상 체크 전';
         countBadge.classList.toggle('active', cnt > 0);
+        ctaBtnLabel.textContent = '${page.meta.ctaText}';
 
         if (cnt === 0) {
           diagnosisBox.innerHTML = ADVICE.zero;
-          ctaBtnLabel.textContent = '${page.meta.ctaText}';
         } else if (cnt <= 2) {
           diagnosisBox.innerHTML = '<strong>[원장 맞춤 진단 가이드 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.low;
-          ctaBtnLabel.textContent = '선택한 증상 맞춤 진료 예약하기';
         } else {
           diagnosisBox.innerHTML = '<strong>[집중 치료 권장 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.high;
-          ctaBtnLabel.textContent = '선택한 증상 집중 진료 예약하기';
         }
       }
 

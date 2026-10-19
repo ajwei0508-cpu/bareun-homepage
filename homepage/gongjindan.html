@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>바른 황제공진단 — 바른한의원 대전본점 모션 스토리텔링 상세페이지</title>
-  <meta name="description" content="바른 황제공진단 — 식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문(J Ethnopharmacology, Front Pharmacol)을 정밀 검수하여 효능 기전이 입증된 검증된 처방만을 고집합니다.">
+  <meta name="description" content="바른 황제공진단 — 식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문을 정밀 검수하여 효능 기전이 입증된 처방만을 고집합니다.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="바른한의원 대전본점">
   <meta property="og:title" content="바른 황제공진단 — 바른한의원 대전본점">
-  <meta property="og:description" content="식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문(J Ethnopharmacology, Front Pharmacol)을 정밀 검수하여 효능 기전이 입증된 검증된 처방만을 고집합니다.">
+  <meta property="og:description" content="식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문을 정밀 검수하여 효능 기전이 입증된 처방만을 고집합니다.">
   <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/illust_gongjindan_heart_brain.jpg">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -394,6 +394,25 @@
       transition: all 0.25s ease;
     }
 
+    .cta-nudge-msg {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px dashed rgba(16, 185, 129, 0.38);
+      border-radius: 10px;
+      padding: 8px 11px;
+      margin-bottom: 8px;
+      line-height: 1.42;
+      word-break: keep-all;
+    }
+
+    body.theme-hanji .cta-nudge-msg {
+      background: #E8F2EC;
+      border-color: rgba(45, 90, 67, 0.36);
+      color: #2D5A43;
+    }
+
     #project-details-launch-cta {
       display: inline-flex;
       align-items: center;
@@ -763,6 +782,13 @@
       color: #FFFFFF;
       margin-bottom: 5px;
       text-shadow: 0 4px 18px rgba(0, 0, 0, 0.8);
+    }
+
+    .plate-caption-title .title-key-em {
+      color: #FDE68A;
+      text-decoration: underline;
+      text-decoration-color: rgba(253, 230, 138, 0.65);
+      text-underline-offset: 4px;
     }
 
     .plate-caption-sub {
@@ -2568,7 +2594,7 @@
         <div class="meta-subtitle-en">CITES-Certified Natural Musk & Evidence-Based Neuro-Cardiac Vitality</div>
 
         <div id="project-details-desc">
-          <p>식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문(J Ethnopharmacology, Front Pharmacol)을 정밀 검수하여 효능 기전이 입증된 검증된 처방만을 고집합니다.</p>
+          <p>식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문을 정밀 검수하여 효능 기전이 입증된 처방만을 고집합니다.</p>
         </div>
 
         <!-- AWWWARDS CERTIFIED CLINICAL TRUST SEAL BAR -->
@@ -2669,14 +2695,15 @@
             </label>
           </div>
           <div class="empathy-diagnosis-box" id="empathy-diagnosis-box">
-            현재 겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 실제 학술 논문 기반의 공진단 처방 가이드가 안내됩니다.
+            겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 공진단 처방 가이드가 안내됩니다.
           </div>
         </div>
 
+        <div class="cta-nudge-msg" id="cta-nudge-msg">📝 체크하신 피로도 증상을 원장님께 먼저 보내고 정확한 처방 상담을 받습니다.</div>
         <button id="project-details-launch-cta" onclick="window.openConsultModal()">
           <span class="cta-left-group">
             <span id="project-details-launch-cta-dot"></span>
-            <span id="cta-btn-label">바른 황제공진단 맞춤 처방 예약하기</span>
+            <span id="cta-btn-label">내 피로도에 맞는 정품 공진단 처방 상담하기</span>
           </span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M7 17 17 7m0 0H8m9 0v9"/>
@@ -2706,7 +2733,7 @@
             
             <div class="plate-bottom-caption">
               <div>
-                <h2 class="plate-caption-title">자도 자도 가시지 않는 깊은 피로, 몸속 원기(元氣)가 방전된 신호입니다</h2>
+                <h2 class="plate-caption-title">자도 자도 가시지 않는 <span class="title-key-em">'깊은 피로'</span>, 몸속 원기가 <span class="title-key-em">'방전된 신호'</span>입니다</h2>
                 <p class="plate-caption-sub">카페인과 각성제로 버티는 일상은 오히려 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.</p>
               </div>
               <div class="plate-action-group">
@@ -2755,7 +2782,7 @@
         <!-- PLATE 04: Lusion Clean Image Plate -->
         <article class="project-details-item is-image is-clean-plate" data-fullscreen>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" alt="식약처 CITES 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다" draggable="false">
+            <img class="lusion-clean-media" src="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" alt="식약처 인증 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
@@ -2763,7 +2790,7 @@
                 <div class="clean-spec-tags">
                   <span class="clean-spec-tag">식약처 CITES 정식 인증 사향</span><span class="clean-spec-tag">러시아산 원용 분골 & 순금박 봉인</span>
                 </div>
-                <h2 class="plate-caption-title">식약처 CITES 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다</h2>
+                <h2 class="plate-caption-title">식약처 인증 정품 사향과 러시아산 분골, 대표원장이 직접 조제합니다</h2>
                 <p class="plate-caption-sub">정식 통관된 정품 사향과 녹용 최상단 분골만을 엄선하여 대표원장이 직접 정량 배합하고 순금박으로 수제 봉인합니다.</p>
               </div>
             </div>
@@ -2773,26 +2800,26 @@
         <!-- PLATE 05: Lusion Clean Image Plate -->
         <article class="project-details-item is-image is-clean-plate">
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" alt="실제 학술 논문 검수로 입증된 검증된 뇌·심장 원기 회복 처방" draggable="false">
+            <img class="lusion-clean-media" src="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" alt="실제 학술 논문 검수로 입증된 뇌·심장 원기 회복 처방" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="visual-sci-overlay">
               
               <div class="sci-stat-card">
-                <div class="sci-stat-num">J Ethnopharmacol 검증</div>
-                <div class="sci-stat-label">Journal of Ethnopharmacology · 공진단의 뇌신경 영양인자(BDNF·NGF) 발현 촉진 및 만성피로·기억력 개선 입증</div>
+                <div class="sci-stat-num">국제 민족약리학회지(J Ethnopharmacol) 검증</div>
+                <div class="sci-stat-label">뇌신경 영양인자 발현 촉진 및 만성피로·기억력 개선 입증</div>
                 <div class="sci-bar-track"><div class="sci-bar-fill" style="width:96%"></div></div>
               </div>
               <div class="sci-stat-card">
-                <div class="sci-stat-num">Front Pharmacol 등재</div>
-                <div class="sci-stat-label">천연 사향 주성분(L-Muscone)의 뇌혈관장벽 투과 및 심근 허혈 보호·항스트레스 기전 학술 검증</div>
+                <div class="sci-stat-num">국제 약리학술지(Front Pharmacol) 등재</div>
+                <div class="sci-stat-label">천연 사향의 뇌혈관장벽 투과 및 심뇌혈류 보호 기전 학술 검증</div>
                 <div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div>
               </div>
             </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">STORY · 국제 신경약리학 학술 논문 검수 완료</span>
-                <h2 class="plate-caption-title">실제 학술 논문 검수로 입증된 검증된 뇌·심장 원기 회복 처방</h2>
-                <p class="plate-caption-sub">과장된 수치 없이, 국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 검증된 원방 공진단만을 조제합니다.</p>
+                <h2 class="plate-caption-title">실제 학술 논문 검수로 입증된 뇌·심장 원기 회복 처방</h2>
+                <p class="plate-caption-sub">과장된 수치 없이, 국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 입증된 원방 공진단만을 조제합니다.</p>
               </div>
             </div>
           </div>
@@ -2815,8 +2842,8 @@
                   <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
                 </div>
-                <h2 class="plate-caption-title">바른 황제공진단 — 학술 논문 검수 기반 검증된 치료 변화</h2>
-                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 실제 학술 논문을 검수하여 기전이 입증된 검증된 치료법의 전·후 원리를 안내합니다.</p>
+                <h2 class="plate-caption-title">바른 황제공진단 — 학술 논문 검수 기반 치료 변화</h2>
+                <p class="plate-caption-sub">수치로 효과를 과장하지 않고, 실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
               </div>
             </div>
           </div>
@@ -2915,7 +2942,7 @@
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
       <h3 class="consult-modal-title">바른 황제공진단 맞춤 진료 예약</h3>
-      <p class="consult-modal-sub">체크하신 증상을 바탕으로 학술 논문으로 검증된 대표원장 맞춤 진료를 준비합니다.</p>
+      <p class="consult-modal-sub">📝 체크하신 피로도 증상을 원장님께 먼저 보내고 정확한 처방 상담을 받습니다.</p>
       <div class="modal-checked-summary" id="modal-checked-summary">
         체크된 일상 불편감 증상이 자동으로 이곳에 연동됩니다.
       </div>
@@ -2932,7 +2959,7 @@
           <label>체크된 불편감 및 추가 상담 메모</label>
           <textarea id="modal-user-memo" rows="3" placeholder="희망하시는 진료 시간대나 증상을 남겨주세요"></textarea>
         </div>
-        <button type="submit" class="modal-submit-btn">체크한 증상으로 맞춤 진료 예약 신청하기</button>
+        <button type="submit" class="modal-submit-btn">내 피로도에 맞는 정품 공진단 처방 상담하기 신청하기</button>
       </form>
       <div class="consult-action-list">
         <a class="consult-action-item" id="detail-tel-link" href="tel:010-5631-1275">대표원장실 전화 상담 연결</a>
@@ -2958,8 +2985,8 @@
           beforeTag: 'BEFORE · 미검증 약재 우려 및 자율신경 불균형',
           afterTag: 'AFTER · 학술 논문 검증 청정 탕전 및 기혈 복원',
           metrics: [
-            { label: 'Evid Based Complement Alternat Med 논문 검수', b: '간·신장 부담 우려', a: '무독성·항산화 효소 활성 입증' },
-            { label: 'Journal of Ethnopharmacology 논문 검수', b: '자율신경·착상 저하', a: '맥진·체질 맞춤 처방 기전 검증' }
+            { label: 'SCI급 국제학술지(Evid Based Complement Alternat Med)', b: '간·신장 부담 우려', a: '무독성·항산화 효소 활성 입증' },
+            { label: '국제 민족약리학회지(J Ethnopharmacol)', b: '자율신경·착상 저하', a: '맥진·체질 맞춤 처방 기전 검증' }
           ]
         },
         'chuna.html': {
@@ -2969,8 +2996,8 @@
           beforeTag: 'BEFORE · 골반 비대칭 및 추간판 신경 압박',
           afterTag: 'AFTER · 학술 검증 수기 추나 정렬 및 신경 감압',
           metrics: [
-            { label: 'JAMA Network Open 학술 논문 검수', b: '추간판 신경 압박', a: '비수술 수기 추나 신경 감압 입증' },
-            { label: 'Annals of Internal Medicine 가이드라인', b: '대증 진통제 의존', a: '비약물 척추 수기치료 권고 검증' }
+            { label: 'JAMA(미국의학협회지) 논문 검수', b: '추간판 신경 압박', a: '비수술 수기 추나 신경 감압 입증' },
+            { label: '미국내과학회(ACP) 권고 가이드라인', b: '대증 진통제 의존', a: '비약물 척추 수기치료 권고 검증' }
           ]
         },
         'growth.html': {
@@ -2980,8 +3007,8 @@
           beforeTag: 'BEFORE · 성장 정체 및 조기 골화·면역 저하',
           afterTag: 'AFTER · 학술 검증 성장판 연골 증식 및 면역 회복',
           metrics: [
-            { label: 'Phytomedicine 국제 학술지 논문 검수', b: '성장판 연골 분열 정체', a: '조기 골화 지연·연골모세포 증식 검증' },
-            { label: 'Pediatrics 소아과학 학술 논문 검수', b: '비염·구강호흡 성장 방해', a: '호흡기 면역·성장인자 회복 입증' }
+            { label: '국제 식물학술지(Phytomedicine) 검증', b: '성장판 연골 분열 정체', a: '조기 골화 지연·연골모세포 증식 검증' },
+            { label: '국제 소아과학회지(Pediatrics) 등재', b: '비염·구강호흡 성장 방해', a: '호흡기 면역·성장인자 회복 입증' }
           ]
         },
         'diet-zero.html': {
@@ -2991,8 +3018,8 @@
           beforeTag: 'BEFORE · 복부 대사 저하 및 내장지방 축적',
           afterTag: 'AFTER · 학술 검증 대사 활성화 및 체지방 감량',
           metrics: [
-            { label: 'International Journal of Obesity 논문 검수', b: '기초대사 저하·가짜 식욕', a: '갈색지방 열발생·렙틴 저항성 개선 검증' },
-            { label: 'Frontiers in Pharmacology 학술 검수', b: '근손실 요요 반복', a: '대사 효소 활성·내장지방 분해 입증' }
+            { label: '국제 비만학술지(Int J Obesity) 검증', b: '기초대사 저하·가짜 식욕', a: '갈색지방 열발생·렙틴 저항성 개선 입증' },
+            { label: '국제 약리학술지(Front Pharmacol) 등재', b: '근손실 요요 반복', a: '대사 효소 활성·내장지방 분해 검증' }
           ]
         },
         'hairloss.html': {
@@ -3002,8 +3029,8 @@
           beforeTag: 'BEFORE · 두피 열독 사막화 및 모낭 위축',
           afterTag: 'AFTER · 학술 검증 수승화강 청열 및 모근 재생',
           metrics: [
-            { label: 'Phytotherapy Research 학술 논문 검수', b: '모낭 성장기 단축·연모화', a: '모유두세포 활성·성장기 연장 검증' },
-            { label: 'Journal of Dermatological Science 검수', b: '두피 열독·미세염증', a: '수승화강 청열·모낭 보호 기전 입증' }
+            { label: '국제 식물요법학회지(Phytother Res) 검증', b: '모낭 성장기 단축·연모화', a: '모유두세포 활성·성장기 연장 입증' },
+            { label: '피부과학 저널(J Dermatol Sci) 등재', b: '두피 열독·미세염증', a: '수승화강 청열·모유두세포 보호 검증' }
           ]
         },
         'gongjindan.html': {
@@ -3013,8 +3040,8 @@
           beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심장 기혈 고갈',
           afterTag: 'AFTER · 학술 검증 정품 사향 뇌·심장 활력 복원',
           metrics: [
-            { label: 'Journal of Ethnopharmacology 논문 검수', b: '만성 피로·집중력 저하', a: '뇌신경 영양인자(BDNF) 발현 검증' },
-            { label: 'Frontiers in Pharmacology 학술 검수', b: '뇌·심장 기혈 울체', a: '천연 사향 뇌혈류·심근 보호 입증' }
+            { label: '국제 민족약리학회지(J Ethnopharmacol) 검증', b: '만성 피로·집중력 저하', a: '뇌신경 영양인자 발현·피로 개선 입증' },
+            { label: '국제 약리학술지(Front Pharmacol) 등재', b: '뇌·심장 기혈 울체', a: '천연 사향 뇌혈관장벽 투과·보호 검증' }
           ]
         },
         'prostate.html': {
@@ -3024,8 +3051,8 @@
           beforeTag: 'BEFORE · 전립선 부종 압박 및 야간뇨·배뇨 불편',
           afterTag: 'AFTER · 학술 검증 전립선 감압 및 숙면·활력 복원',
           metrics: [
-            { label: 'Urology 비뇨의학 학술지 논문 검수', b: '만성 골반 울혈·잔뇨감', a: '비세균성 전립선염·배뇨 개선 검증' },
-            { label: 'Phytomedicine 약리학 학술 논문 검수', b: '전립선 비대·야간뇨', a: '전립선 조직 감압·방광 기능 회복 입증' }
+            { label: '국제 비뇨의학회지(Urology) 검증', b: '만성 골반 울혈·잔뇨감', a: '비세균성 전립선염·배뇨 개선 입증' },
+            { label: '국제 식물학술지(Phytomedicine) 등재', b: '전립선 비대·야간뇨', a: '전립선 조직 감압·하부요로증상 완화 검증' }
           ]
         }
       };
@@ -3193,7 +3220,7 @@
       // ====================================================================
       // 1. INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST ENGINE
       // ====================================================================
-      const ADVICE = {"zero":"현재 겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 실제 학술 논문 기반의 공진단 처방 가이드가 안내됩니다.","low":"기혈 순환 저하와 두뇌 피로가 누적된 시기입니다. 학술 논문으로 검증된 정품 사향 공진단으로 뇌·심장 활력을 빠르게 충전할 수 있습니다.","high":"심층 원기(元氣) 고갈 및 자율신경 번아웃 상태입니다. 대표원장이 직접 정량 조제하는 원방 황제공진단 집중 복용을 권장합니다."};
+      const ADVICE = {"zero":"겪고 계신 피로도와 컨디션 저하 항목을 체크하시면 공진단 처방 가이드가 안내됩니다.","low":"기혈 순환 저하와 두뇌 피로가 누적된 시기입니다. 정품 사향 공진단으로 뇌·심장 활력을 빠르게 충전할 수 있습니다.","high":"<strong>\"오랜 기간 누적된 피로와 두근거림으로 일상 유지가 힘드셨겠습니다.\"</strong> 심층 원기(元氣) 고갈 및 자율신경 번아웃 상태입니다. 대표원장이 직접 정량 조제하는 원방 황제공진단 집중 복용을 권장합니다."};
       const checkItems = Array.from(document.querySelectorAll('.empathy-check-item'));
       const countBadge = document.getElementById('empathy-count-badge');
       const diagnosisBox = document.getElementById('empathy-diagnosis-box');
@@ -3211,16 +3238,14 @@
         const cnt = checked.length;
         countBadge.textContent = cnt > 0 ? '맞춤 증상 선택됨' : '증상 체크 전';
         countBadge.classList.toggle('active', cnt > 0);
+        ctaBtnLabel.textContent = '내 피로도에 맞는 정품 공진단 처방 상담하기';
 
         if (cnt === 0) {
           diagnosisBox.innerHTML = ADVICE.zero;
-          ctaBtnLabel.textContent = '바른 황제공진단 맞춤 처방 예약하기';
         } else if (cnt <= 2) {
           diagnosisBox.innerHTML = '<strong>[원장 맞춤 진단 가이드 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.low;
-          ctaBtnLabel.textContent = '선택한 증상 맞춤 진료 예약하기';
         } else {
           diagnosisBox.innerHTML = '<strong>[집중 치료 권장 · 학술 논문 검증 치료법]</strong><br>' + ADVICE.high;
-          ctaBtnLabel.textContent = '선택한 증상 집중 진료 예약하기';
         }
       }
 
