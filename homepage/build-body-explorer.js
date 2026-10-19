@@ -1172,9 +1172,13 @@ function buildBodyExplorerHtml() {
        ========================================================================= */
     .vibrant-workspace {
       display: grid;
-      grid-template-columns: 42% 58%;
-      width: 100%;
+      grid-template-columns: 44% 56%;
+      justify-items: stretch;
+      align-items: stretch;
+      width: 100% !important;
+      max-width: 100% !important;
       min-height: 100vh;
+      margin: 0 !important;
       padding-top: 62px;
       background:
         radial-gradient(circle at 30% 35%, #FAF7F0 0%, #F4EFE4 58%, #EBE3D3 100%);
@@ -1183,6 +1187,11 @@ function buildBodyExplorerHtml() {
     .vibrant-3d-stage {
       position: sticky;
       top: 62px;
+      width: 100% !important;
+      min-width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      justify-self: stretch !important;
       height: calc(100vh - 62px);
       background: radial-gradient(circle at 50% 42%, #FAF7F0 0%, #EFE9DA 68%, #E4DCCB 100%);
       border-right: 1px solid var(--border-warm);
@@ -1197,8 +1206,9 @@ function buildBodyExplorerHtml() {
     #vibrant-body-canvas {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
       display: block;
       z-index: 2;
       cursor: grab;
@@ -1367,6 +1377,11 @@ function buildBodyExplorerHtml() {
        3. RIGHT SECTION: UNIFIED 4-STEP MEDICAL INFO SLIDE DECK + SCI SIDEBAR
        ========================================================================= */
     .encyclopedia-scroll-panel {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      justify-self: stretch !important;
       padding: 26px 32px 42px;
       background: var(--bg-beige);
       display: flex;
@@ -1790,14 +1805,14 @@ function buildBodyExplorerHtml() {
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
 
     const PART_CAMERA_PRESETS = {
-      knee:      { pos3D: [ 0.16, 1.20,  0.05], camPos: [ 0.16, 1.22, 1.85], camTarget: [0.08, 1.18, -0.08] },
-      cervical:  { pos3D: [-0.06, 3.92,  0.04], camPos: [ 0.22, 3.92, 1.65], camTarget: [0.00, 3.88, -0.02] },
-      lumbar:    { pos3D: [ 0.08, 2.75,  0.04], camPos: [-0.24, 2.62, 1.95], camTarget: [0.00, 2.58, -0.04] },
-      gongjindan:{ pos3D: [ 0.06, 3.62,  0.06], camPos: [ 0.18, 3.90, 2.22], camTarget: [0.00, 3.88,  0.00] },
-      syncope:   { pos3D: [ 0.08, 4.28,  0.04], camPos: [ 0.00, 2.74, 4.10], camTarget: [0.00, 2.70,  0.00] },
-      gut:       { pos3D: [-0.08, 3.12,  0.08], camPos: [ 0.18, 3.12, 1.88], camTarget: [0.00, 3.10,  0.02] },
-      uterus:    { pos3D: [-0.10, 2.44,  0.05], camPos: [ 0.00, 2.44, 1.55], camTarget: [0.00, 2.42,  0.00] },
-      prostate:  { pos3D: [ 0.10, 2.26,  0.05], camPos: [ 0.00, 2.28, 1.52], camTarget: [0.00, 2.26,  0.00] }
+      knee:      { pos3D: [ 0.16, 1.20,  0.05], camPos: [ 0.14, 1.22, 2.05], camTarget: [0.06, 1.18, -0.06] },
+      cervical:  { pos3D: [-0.06, 3.92,  0.04], camPos: [ 0.20, 3.90, 1.85], camTarget: [0.00, 3.86, -0.02] },
+      lumbar:    { pos3D: [ 0.08, 2.75,  0.04], camPos: [-0.22, 2.62, 2.15], camTarget: [0.00, 2.58, -0.04] },
+      gongjindan:{ pos3D: [ 0.06, 3.62,  0.06], camPos: [ 0.16, 3.88, 2.40], camTarget: [0.00, 3.84,  0.00] },
+      syncope:   { pos3D: [ 0.08, 4.28,  0.04], camPos: [ 0.00, 2.28, 5.65], camTarget: [0.00, 2.26,  0.00] },
+      gut:       { pos3D: [-0.08, 3.12,  0.08], camPos: [ 0.16, 3.12, 2.08], camTarget: [0.00, 3.10,  0.02] },
+      uterus:    { pos3D: [-0.10, 2.44,  0.05], camPos: [ 0.00, 2.44, 1.75], camTarget: [0.00, 2.42,  0.00] },
+      prostate:  { pos3D: [ 0.10, 2.26,  0.05], camPos: [ 0.00, 2.28, 1.72], camTarget: [0.00, 2.26,  0.00] }
     };
 
     let currentPartId = 'knee';
@@ -1931,7 +1946,7 @@ function buildBodyExplorerHtml() {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
     camera.setFocalLength(38);
-    camera.position.set(0.0, 2.75, 4.35);
+    camera.position.set(0.0, 2.28, 5.65);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
@@ -1943,10 +1958,10 @@ function buildBodyExplorerHtml() {
     renderer.toneMapping = THREE.NoToneMapping;
 
     const controls = new OrbitControls(camera, canvas);
-    controls.target.set(0.0, 2.72, 0.0);
+    controls.target.set(0.0, 2.26, 0.0);
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
-    controls.maxDistance = 6.0;
+    controls.maxDistance = 7.5;
     controls.minDistance = 0.70;
     controls.maxPolarAngle = Math.PI * 0.82;
     controls.minPolarAngle = Math.PI * 0.18;
@@ -2554,8 +2569,8 @@ function buildBodyExplorerHtml() {
     // ========================================================================
     // 4. CAMERA FLY-TO, RESET VIEW ("원위치"), & PART-SPECIFIC 3D GRAPHICS
     // ========================================================================
-    const DEFAULT_CAM_POS = new THREE.Vector3(0.0, 2.75, 4.35);
-    const DEFAULT_CAM_TARGET = new THREE.Vector3(0.0, 2.72, 0.0);
+    const DEFAULT_CAM_POS = new THREE.Vector3(0.0, 2.28, 5.65);
+    const DEFAULT_CAM_TARGET = new THREE.Vector3(0.0, 2.26, 0.0);
     const camGoalPos = DEFAULT_CAM_POS.clone();
     const camGoalTarget = DEFAULT_CAM_TARGET.clone();
     let isCameraFlying = false;
@@ -2676,14 +2691,19 @@ function buildBodyExplorerHtml() {
 
     function resizeRenderer() {
       if (!stageEl) return;
-      const w = stageEl.clientWidth;
-      const h = stageEl.clientHeight;
+      const w = Math.max(320, stageEl.clientWidth || Math.round(window.innerWidth * 0.44));
+      const h = Math.max(320, stageEl.clientHeight || (window.innerHeight - 62));
       renderer.setSize(w, h, false);
-      camera.aspect = w / Math.max(1, h);
+      const aspect = w / Math.max(1, h);
+      camera.aspect = aspect;
+      const focal = aspect < 0.72 ? Math.max(22, 38 * (aspect / 0.72)) : 38;
+      camera.setFocalLength(focal);
       camera.updateProjectionMatrix();
-      camera.setFocalLength(38);
     }
     window.addEventListener('resize', resizeRenderer);
+    if (window.ResizeObserver && stageEl) {
+      new ResizeObserver(() => resizeRenderer()).observe(stageEl);
+    }
     resizeRenderer();
 
     // ========================================================================

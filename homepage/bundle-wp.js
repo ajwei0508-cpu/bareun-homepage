@@ -18,6 +18,11 @@ const wpReset = [
   '  width: 100% !important;',
   '  overflow: visible !important;',
   '}',
+  '.ast-page-builder-template .entry-content[data-ast-blocks-layout] > .inherit-container-width > *,',
+  '.ast-page-builder-template .entry-content[data-ast-blocks-layout] > :not(.wp-block-group):where(:not(.uagb-is-root-container):not(.spectra-is-root-container)) > * {',
+  '  margin-left: 0;',
+  '  margin-right: 0;',
+  '}',
   ''
 ].join('\n');
 
