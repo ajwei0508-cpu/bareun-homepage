@@ -834,7 +834,7 @@
     .visual-sci-overlay {
       position: absolute;
       left: 26px; right: 26px;
-      bottom: 92px;
+      bottom: 128px;
       z-index: 6;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -844,7 +844,7 @@
 
     .is-clean-plate .visual-sci-overlay {
       left: 28px; right: 28px;
-      bottom: 112px;
+      bottom: 138px;
     }
 
     .sci-stat-card {
@@ -852,23 +852,26 @@
       backdrop-filter: blur(16px);
       border: 1px solid rgba(212, 175, 55, 0.38);
       border-radius: 14px;
-      padding: 13px 16px;
+      padding: 12px 15px;
     }
 
     .sci-stat-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.05rem;
-      font-weight: 700;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.28rem;
+      font-weight: 800;
       color: var(--accent-light);
-      line-height: 1;
-      margin-bottom: 4px;
+      line-height: 1.25;
+      margin-bottom: 5px;
+      word-break: keep-all;
     }
 
     .sci-stat-label {
       font-size: 0.76rem;
       color: rgba(255, 255, 255, 0.88);
       font-weight: 600;
+      line-height: 1.42;
       margin-bottom: 8px;
+      word-break: keep-all;
     }
 
     .sci-bar-track {
@@ -2468,6 +2471,34 @@
       }
       #scroll-indicator { left: 0; }
       .detail-ba-metrics { grid-template-columns: 1fr; }
+      .visual-sci-overlay,
+      .is-clean-plate .visual-sci-overlay {
+        left: 12px;
+        right: 12px;
+        top: 12px;
+        bottom: auto;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .sci-stat-card {
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+      .sci-stat-num {
+        font-size: 0.84rem;
+        line-height: 1.22;
+        margin-bottom: 3px;
+      }
+      .sci-stat-label {
+        font-size: 0.63rem;
+        line-height: 1.32;
+        margin-bottom: 5px;
+      }
+      .clean-plate-caption {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+      }
     }
   </style>
   <script src="clinic-template-config.js"></script>
@@ -2578,8 +2609,8 @@
 
         <!-- 1-CLICK PORTAL TO UNIFIED 3D HUMAN BODY MEDICAL INFORMATION PAGE -->
         <a class="body-explorer-portal-btn" id="sidebar-body-explorer-link" href="body-explorer.html" style="background:#2D5A43;border-color:#2D5A43;color:#FFFFFF;">
-          <span>🧬 인체모형 통합 의학·원인·음식·학술논문 정보</span>
-          <span>페이지 이동 ↗</span>
+          <span>🧬 인체모형 통합 의학·학술논문 정보</span>
+          <span style="white-space:nowrap;flex-shrink:0;">보러가기 ↗</span>
         </a>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
