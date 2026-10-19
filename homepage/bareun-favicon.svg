@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="116" fill="#2D5A43"/>
+  <rect x="22" y="22" width="468" height="468" rx="96" fill="none" stroke="#F5F1E8" stroke-width="6" stroke-opacity="0.45"/>
+  <circle cx="256" cy="128" r="14" fill="#F5F1E8"/>
+  <text x="256" y="295" text-anchor="middle" fill="#F5F1E8" font-family="'Noto Serif KR', 'Batang', serif" font-size="168" font-weight="900" letter-spacing="-4">바른</text>
+  <text x="256" y="392" text-anchor="middle" fill="#E6DEC8" font-family="'Pretendard', 'Malgun Gothic', sans-serif" font-size="44" font-weight="700" letter-spacing="6">바른한의원</text>
+</svg>

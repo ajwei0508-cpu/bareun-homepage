@@ -1024,6 +1024,13 @@ function buildPageHtml(page) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>${page.meta.title} — 바른한의원 대전본점 모션 스토리텔링 상세페이지</title>
+  <meta name="description" content="${page.meta.title} — ${page.meta.desc[0]}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="바른한의원 대전본점">
+  <meta property="og:title" content="${page.meta.title} — 바른한의원 대전본점">
+  <meta property="og:description" content="${page.meta.desc[0]}">
+  <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/${page.bodyModelCard.bg}">
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
