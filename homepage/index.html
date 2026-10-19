@@ -323,8 +323,50 @@
       transform: translateY(-50%);
       width: min(620px, 88vw);
       z-index: 30;
-      pointer-events: none;
+      pointer-events: auto;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
       perspective: 1000px;
+    }
+
+    .dialogue-tap-next-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(23, 22, 20, 0.56);
+      border: 1px solid rgba(245, 241, 232, 0.42);
+      color: var(--brand-beige);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
+      pointer-events: auto;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .dialogue-tap-next-pill:hover,
+    .dialogue-tap-next-pill:active {
+      background: rgba(45, 90, 67, 0.88);
+      border-color: rgba(255, 255, 255, 0.65);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    .dialogue-tap-next-pill .tap-pill-arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .dialogue-tap-next-pill:hover .tap-pill-arrow,
+    .dialogue-tap-next-pill:active .tap-pill-arrow {
+      transform: translateX(3px);
     }
 
     .dialogue-meta-row,
@@ -1277,6 +1319,10 @@
     <div class="dialogue-progress-brush">
       <div class="dialogue-progress-fill" id="dialogue-progress-fill"></div>
     </div>
+    <button type="button" class="dialogue-tap-next-pill" id="dialogue-tap-next-pill" aria-label="다음 스토리로 이동">
+      <span id="dialogue-tap-next-text">스토리 터치 · 다음 장면 보기 (1/24)</span>
+      <span class="tap-pill-arrow">→</span>
+    </button>
     <div class="story4-weight-counter" id="story4-weight-counter">
       <span class="weight-live-num" id="weight-live-num">68.5 kg</span>
       <span class="weight-diff-badge" id="weight-diff-badge">▼ -0.0 kg 감량</span>
@@ -2792,7 +2838,15 @@
         });
 
         if (stageContainer) {
-          stageContainer.style.transform = `translateY(-50%)`;
+          stageContainer.style.transform = window.innerWidth <= 1024 ? 'none' : 'translateY(-50%)';
+        }
+        const tapNextTextEl = document.getElementById('dialogue-tap-next-text');
+        if (tapNextTextEl) {
+          if (idx >= maxIdx) {
+            tapNextTextEl.textContent = '터치 · 6대 핵심 진료카드 펼치기';
+          } else {
+            tapNextTextEl.textContent = `스토리 터치 · 다음 장면 (${idx + 1}/${maxIdx + 1})`;
+          }
         }
 
         const pct = (smoothProgress * 100).toFixed(0);
@@ -2908,6 +2962,43 @@
       }, { passive: true });
 
       let touchStartProgress = 0;
+      let touchDownX = 0;
+      let touchDownY = 0;
+      let touchMaxMoveDist = 0;
+      let touchDownTime = 0;
+      let lastTapAdvanceMs = 0;
+      let tapSpringBoostUntil = 0;
+
+      function isIgnoredStoryTapTarget(target) {
+        if (!target || !target.closest) return false;
+        if (target.closest('#dialogue-tap-next-pill, #story-dialogue-stage')) return false;
+        return Boolean(
+          target.closest('.spatial-top-nav, .minimal-bottom-timeline, .skt-finale-stage, .reserve-drawer-overlay, .reserve-drawer-panel, a, button, input, select, textarea')
+        );
+      }
+
+      function advanceMainStoryOnTap() {
+        const now = performance.now();
+        if (now - lastTapAdvanceMs < 260) return;
+        if (typeof sktCardFlipController !== 'undefined' && sktCardFlipController && sktCardFlipController.isActive()) return;
+        lastTapAdvanceMs = now;
+        tapSpringBoostUntil = now + 750;
+
+        const currentStoryNorm = Math.max(0, Math.min(1, targetProgress / 0.90));
+        const currentFrameFloat = storyNormToFrameFloat(currentStoryNorm);
+        const currentFrameIdx = Math.floor(currentFrameFloat + 0.18);
+        const nextFrameIdx = currentFrameIdx + 1;
+
+        if (nextFrameIdx <= FRAMES.length - 1) {
+          const targetFloat = nextFrameIdx < FRAMES.length - 1 ? nextFrameIdx + 0.06 : FRAMES.length - 1;
+          scrollToNormalized(frameFloatToFullNorm(targetFloat));
+        } else {
+          scrollToNormalized(1.0, false);
+          if (typeof sktCardFlipController !== 'undefined' && sktCardFlipController) {
+            sktCardFlipController.activate();
+          }
+        }
+      }
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
@@ -2917,7 +3008,11 @@
         touchStartProgress = targetProgress;
         touchLastY = e.touches[0].clientY;
         touchLastX = e.touches[0].clientX;
+        touchDownX = touchLastX;
+        touchDownY = touchLastY;
+        touchMaxMoveDist = 0;
         touchLastTime = performance.now();
+        touchDownTime = touchLastTime;
         lastUserInteract = touchLastTime;
       }, { passive: true });
 
@@ -2931,6 +3026,8 @@
         const dx = touchLastX - curX;
         touchLastY = curY;
         touchLastX = curX;
+        const distFromStart = Math.hypot(curX - touchDownX, curY - touchDownY);
+        if (distFromStart > touchMaxMoveDist) touchMaxMoveDist = distFromStart;
 
         const dtSec = Math.max(0.008, Math.min(0.1, (now - touchLastTime) * 0.001));
         touchLastTime = now;
@@ -2953,12 +3050,31 @@
         syncNativeScrollPosition();
       }, { passive: true });
 
-      const endTouchHandler = () => {
+      const endTouchHandler = (e) => {
+        const wasDragging = isTouchDragging;
         isTouchDragging = false;
-        lastUserInteract = performance.now();
+        const now = performance.now();
+        lastUserInteract = now;
+        if (wasDragging && e && e.type === 'touchend' && touchMaxMoveDist < 14 && (now - touchDownTime) < 600) {
+          if (!isIgnoredStoryTapTarget(e.target)) {
+            advanceMainStoryOnTap();
+          }
+        }
       };
       window.addEventListener('touchend', endTouchHandler, { passive: true });
       window.addEventListener('touchcancel', endTouchHandler, { passive: true });
+
+      let mouseDownX = 0, mouseDownY = 0;
+      window.addEventListener('mousedown', (e) => {
+        mouseDownX = e.clientX;
+        mouseDownY = e.clientY;
+      }, { passive: true });
+
+      window.addEventListener('click', (e) => {
+        if (Math.hypot(e.clientX - mouseDownX, e.clientY - mouseDownY) > 14) return;
+        if (isIgnoredStoryTapTarget(e.target)) return;
+        advanceMainStoryOnTap();
+      });
 
       window.addEventListener('keydown', (e) => {
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
@@ -3544,8 +3660,9 @@
           syncNativeScrollPosition();
         }
 
-        // Lusion Zero-G Smooth Spring Damping on Scroll & Mouse
-        smoothProgress += (targetProgress - smoothProgress) * 0.085;
+        // Lusion Zero-G Smooth Spring Damping on Scroll & Mouse (with snappy response on tap-to-advance)
+        const springLerp = (typeof tapSpringBoostUntil !== 'undefined' && now < tapSpringBoostUntil) ? 0.22 : 0.085;
+        smoothProgress += (targetProgress - smoothProgress) * springLerp;
         scrollVelocity = (smoothProgress - prevProgress) / Math.max(dt, 0.001);
         prevProgress = smoothProgress;
 

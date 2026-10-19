@@ -3387,6 +3387,25 @@
         targetX = Math.max(0, Math.min(maxScrollX, centerOffset));
       };
 
+      // Tap / Click on any story card (.project-details-item) to advance to the next story card
+      (function enablePlateTapAdvance() {
+        let lastPlateTapMs = 0;
+        plates.forEach((plate, idx) => {
+          if (plate.id === 'project-details-preview') return;
+          plate.style.cursor = 'pointer';
+          plate.addEventListener('click', (e) => {
+            if (e.target.closest('button, a')) return;
+            if (Math.abs(touchAccumDelta) > 14) return;
+            const now = performance.now();
+            if (now - lastPlateTapMs < 260) return;
+            lastPlateTapMs = now;
+            const activeIdx = getClosestPlateIndex(currentX);
+            const nextIdx = idx > activeIdx ? idx : Math.min(plates.length - 1, activeIdx + 1);
+            window.jumpToPlate(nextIdx);
+          });
+        });
+      })();
+
       // ====================================================================
       // 3. MULTI-FRAME VIDEO-LIKE MOTION STAGE & 60FPS FX CANVAS ENGINE
       // ====================================================================
