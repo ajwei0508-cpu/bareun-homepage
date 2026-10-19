@@ -1733,26 +1733,108 @@ function buildBodyExplorerHtml() {
     }
 
     @media (max-width: 1120px) {
+      .vibrant-header {
+        position: sticky;
+        top: 0;
+        height: auto;
+        min-height: 52px;
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .vh-brand {
+        gap: 6px;
+        flex: 1;
+        min-width: 0;
+      }
+      .vh-brand-mark {
+        width: 24px;
+        height: 24px;
+        font-size: 0.76rem;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+      .vh-brand-title {
+        font-size: 0.78rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .vh-right-actions {
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .vh-right-actions a[href^="tel:"],
+      .vh-right-actions .vh-pill-btn.primary {
+        display: none;
+      }
+      .vh-pill-btn {
+        padding: 5px 9px;
+        font-size: 0.66rem;
+        white-space: nowrap;
+      }
+      .vh-part-quicknav {
+        order: 3;
+        width: 100%;
+        padding: 2px 0 0;
+        gap: 5px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+      .vh-part-chip {
+        padding: 5px 9px;
+        font-size: 0.68rem;
+      }
       .vibrant-workspace {
         grid-template-columns: 1fr;
+        padding-top: 0;
       }
       .vibrant-3d-stage {
         position: relative;
         top: 0;
-        height: 54vh;
+        height: 48vh;
+        height: 48dvh;
+        min-height: 330px;
         border-right: none;
         border-bottom: 1px solid var(--border-warm);
+      }
+      .stage-top-badge {
+        margin: 10px auto 0;
+        padding: 5px 11px;
+      }
+      .stage-top-text {
+        font-size: 0.7rem;
+      }
+      .stage-bottom-bar {
+        margin: 0 auto 10px;
+        padding: 4px 8px;
+      }
+      .stage-ctrl-btn {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+      }
+      .encyclopedia-scroll-panel {
+        min-height: auto;
+        padding: 18px 14px 28px;
       }
       .encyc-main-grid {
         grid-template-columns: 1fr;
       }
-    }
-    @media (max-width: 680px) {
+      .slide-stage-card {
+        padding: 14px 14px;
+        border-radius: 16px;
+      }
       .slide-visual-banner {
         grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px 12px;
       }
-      .encyclopedia-scroll-panel {
-        padding: 18px 16px 28px;
+      .slide-illust-thumb {
+        height: 130px;
+      }
+      .slide-step-tab {
+        padding: 6px 11px;
+        font-size: 0.72rem;
       }
     }
   </style>

@@ -9,7 +9,8 @@ const story3d = fs.readFileSync(path.join(dir, 'story-3d.html'), 'utf8');
 const wpReset = [
   '',
   '/* WORDPRESS & ASTRA THEME CONTAINER RESET */',
-  '.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper { display: none !important; }',
+  '.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper, .post-thumb, .post-thumb-img-content, .ast-single-post-order { display: none !important; }',
+  '.entry-content a, .ast-container a, .site-content a { text-decoration: none !important; }',
   '.entry-content, .ast-container, .site-content, article.page, .ast-plain-container,',
   '.elementor, .elementor-section-wrap, .wp-block-group {',
   '  padding: 0 !important;',
