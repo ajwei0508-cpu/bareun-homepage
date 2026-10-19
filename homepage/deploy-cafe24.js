@@ -29,10 +29,14 @@ const PAGES_TO_DEPLOY = [
   { id: 127, slug: 'chuna',           title: '바른 추나 · 척추교정',            file: 'wordpress-chuna.html',           excerpt: '미국의학협회지(JAMA) 등 실제 학술 논문을 검수하여 유효성이 입증된 대표원장 수기 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
   { id: 105, slug: 'growth',          title: '바른 성장 · 성조숙증',            file: 'wordpress-growth.html',          excerpt: '소아과학 및 약리학 학술 논문 검수를 통해 검증된 안전한 한약 처방으로 성장판 연골 증식과 호흡기 면역을 함께 깨웁니다.' },
   { id: 66,  slug: 'diet-zero',       title: '바른 다이어트 · 식욕ZERO',        file: 'wordpress-diet.html',            excerpt: '국제 비만·약리 학술 논문으로 검증된 갈색지방 대사 활성화 처방으로 무리한 절식 없이 내장지방을 건강하게 비워냅니다.' },
-  { id: 130, slug: 'hairloss',        title: '바른 탈모 · 모근재생',            file: 'wordpress-hairloss.html',        excerpt: '피부과학 및 약리학 학술 논문으로 입증된 수승화강 청열 치료와 경추 추나로 두피 열독을 식히고 모유두세포 자생력을 깨웁니다.' },
-  { id: 96,  slug: 'gongjindan-2',    title: '바른 황제공진단',                 file: 'wordpress-gongjindan.html',      excerpt: '국제 신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 검증된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
-  { id: 133, slug: 'prostate',        title: '바른 전립선 · 남성활력',          file: 'wordpress-prostate.html',        excerpt: '비뇨의학 및 약리학 학술 논문 검수로 입증된 전립선 울혈 감압 및 신장·방광 온양 치료로 시원한 배뇨와 숙면을 되찾아 드립니다.' },
-  { id: 134, slug: 'lifting-compare', title: '바른리프팅 시술 전후 윤곽진단',    file: 'wordpress-lifting-compare.html', excerpt: '바른한의원 대전본점 학술 검증 비수술 한방 리프팅 전후 윤곽 비교 진단 시스템입니다.' }
+  { id: 130, slug: 'hairloss',            title: '바른 탈모 · 모근재생',            file: 'wordpress-hairloss.html',            excerpt: '피부과학 및 약리학 학술 논문으로 입증된 수승화강 청열 치료와 경추 추나로 두피 열독을 식히고 모유두세포 자생력을 깨웁니다.' },
+  { id: 408, slug: 'hairloss-male',       title: '바른 남성탈모 · M자·정수리',      file: 'wordpress-hairloss-male.html',       excerpt: '호르몬 억제 약물 부작용 걱정 없는 수승화강 두피 청열과 경추 추나로 M자·정수리 남성탈모 모근 자생력을 깨웁니다.' },
+  { id: 409, slug: 'hairloss-alopecia',   title: '바른 원형탈모 · 면역복원',        file: 'wordpress-hairloss-alopecia.html',   excerpt: '스테로이드 재발과 두피 함몰 걱정 없이 자율신경 안정과 자가면역 재조율로 동전 모양·다발성 원형탈모를 근본 치료합니다.' },
+  { id: 410, slug: 'hairloss-female',     title: '바른 여성탈모 · 가르마·볼륨',     file: 'wordpress-hairloss-female.html',     excerpt: '두피는 뜨겁고 손발·아랫배는 찬 여성 상열하한(上熱下寒)과 혈허를 다스려 넓어진 가르마와 정수리 볼륨을 복원합니다.' },
+  { id: 411, slug: 'hairloss-seborrheic', title: '바른 지루성두피염 · 열독해독',    file: 'wordpress-hairloss-seborrheic.html', excerpt: '반복되는 두피 홍반, 화농성 모낭염, 가려움과 각질을 청열해독 치료로 잠재우고 건강한 진피 장벽을 복원합니다.' },
+  { id: 96,  slug: 'gongjindan-2',        title: '바른 황제공진단',                 file: 'wordpress-gongjindan.html',          excerpt: '국제 신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 검증된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
+  { id: 133, slug: 'prostate',            title: '바른 전립선 · 남성활력',          file: 'wordpress-prostate.html',            excerpt: '비뇨의학 및 약리학 학술 논문 검수로 입증된 전립선 울혈 감압 및 신장·방광 온양 치료로 시원한 배뇨와 숙면을 되찾아 드립니다.' },
+  { id: 134, slug: 'lifting-compare',     title: '바른리프팅 시술 전후 윤곽진단',    file: 'wordpress-lifting-compare.html',     excerpt: '바른한의원 대전본점 학술 검증 비수술 한방 리프팅 전후 윤곽 비교 진단 시스템입니다.' }
 ];
 
 (async () => {
