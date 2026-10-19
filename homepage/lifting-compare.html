@@ -1727,41 +1727,41 @@
       </section>
 
       <!-- ★ 신설: 촬영 구도·중심값 교정 (Procrustes 3점 정합) 상태 카드 -->
-      <section class="panel-section" style="border: 1px solid rgba(56, 189, 248, 0.25); background: rgba(56, 189, 248, 0.04); border-radius: 11px; padding: 12px; margin-bottom: 14px;">
+      <section class="panel-section" style="border: 1px solid rgba(45, 90, 67, 0.28); background: #FFFFFF; border-radius: 11px; padding: 12px; margin-bottom: 14px;">
         <div class="section-header" style="margin-bottom: 8px;">
-          <div class="section-title" style="color: #7dd3fc; font-size: 12.5px;">🎯 촬영 구도 · 중심값 자동 교정 데이터</div>
-          <span class="section-badge" id="calibStatusBadge" style="background: rgba(56,189,248,0.18); color: #7dd3fc;">동공·코 3점 정합 ON</span>
+          <div class="section-title" style="color: #2D5A43; font-size: 12.5px;">🎯 촬영 구도 · 중심값 자동 교정 데이터</div>
+          <span class="section-badge" id="calibStatusBadge" style="background: #E8F2EC; border-color: rgba(45,90,67,0.35); color: #2D5A43;">동공·코 3점 정합 ON</span>
         </div>
         <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.45; margin-bottom: 9px;">
-          리프팅 시술 후에도 변하지 않는 <strong style="color:#fff;">①좌·우 동공 중심, ②미간 원점, ③코끝 수직축</strong>을 기준으로 촬영 거리(크기)·기울기·위치 오차를 자동 정규화하여 시술 후 사진 위에 녹색(시술 전) 윤곽선을 정확히 포갭니다.
+          리프팅 시술 후에도 변하지 않는 <strong style="color:#171614;">①좌·우 동공 중심, ②미간 원점, ③코끝 수직축</strong>을 기준으로 촬영 거리(크기)·기울기·위치 오차를 자동 정규화하여 시술 후 사진 위에 녹색(시술 전) 윤곽선을 정확히 포갭니다.
         </div>
         <div class="metrics-quad-grid" style="gap: 6px;">
           <div class="metric-box" style="padding: 8px;">
             <div class="metric-title">중심점 이동 보정 (ΔX, ΔY)</div>
-            <div class="metric-value" id="calibValCenter" style="font-size: 13.5px; color: #7dd3fc;">0.0, 0.0 px</div>
+            <div class="metric-value" id="calibValCenter" style="font-size: 13.5px; color: #2D5A43;">0.0, 0.0 px</div>
             <div class="metric-sub" style="color: var(--text-muted);">미간 중심 원점(0,0) 일치</div>
           </div>
           <div class="metric-box" style="padding: 8px;">
             <div class="metric-title">촬영 거리(크기) 배율 보정</div>
-            <div class="metric-value" id="calibValScale" style="font-size: 13.5px; color: #7dd3fc;">×1.000 (100%)</div>
+            <div class="metric-value" id="calibValScale" style="font-size: 13.5px; color: #2D5A43;">×1.000 (100%)</div>
             <div class="metric-sub" style="color: var(--text-muted);">동공 간 거리(IPD) 정규화</div>
           </div>
           <div class="metric-box" style="padding: 8px;">
             <div class="metric-title">고개 기울기(수평) 회전 보정</div>
-            <div class="metric-value" id="calibValRotate" style="font-size: 13.5px; color: #7dd3fc;">0.00°</div>
+            <div class="metric-value" id="calibValRotate" style="font-size: 13.5px; color: #2D5A43;">0.00°</div>
             <div class="metric-sub" style="color: var(--text-muted);">양안 수평선 각도 일치</div>
           </div>
           <div class="metric-box" style="padding: 8px;">
             <div class="metric-title">상하 구도(코 길이) 비율 보정</div>
-            <div class="metric-value" id="calibValPitch" style="font-size: 13.5px; color: #7dd3fc;">×1.000 (100%)</div>
+            <div class="metric-value" id="calibValPitch" style="font-size: 13.5px; color: #2D5A43;">×1.000 (100%)</div>
             <div class="metric-sub" style="color: var(--text-muted);">고개 들림/숙임(Pitch) 보정</div>
           </div>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px;">
-          <button class="slot-mini-btn" style="padding: 6px 4px; border-color: rgba(56,189,248,0.45); color: #7dd3fc;" onclick="setEditTarget('anchors'); setViewMode('side-by-side');">
+          <button class="slot-mini-btn" style="padding: 6px 4px; border-color: rgba(45,90,67,0.4); color: #2D5A43;" onclick="setEditTarget('anchors'); setViewMode('side-by-side');">
             ✋ 2분할에서 눈·코 중심점(⊕) 직접 맞추기
           </button>
-          <button class="slot-mini-btn" style="padding: 6px 4px; border-color: rgba(56,189,248,0.45); color: #7dd3fc;" onclick="simulateCameraMisalignmentDemo()">
+          <button class="slot-mini-btn" style="padding: 6px 4px; border-color: rgba(94,71,54,0.35); color: #4A3525;" onclick="simulateCameraMisalignmentDemo()">
             🧪 구도 불일치 사진 자동교정 시연
           </button>
         </div>
