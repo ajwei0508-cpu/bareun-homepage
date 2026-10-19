@@ -1,6 +1,26 @@
 const fs = require('fs');
 const path = require('path');
-const puppeteer = require('C:\\Users\\0508a\\.gemini\\antigravity\\brain\\c3430dcf-0c08-41eb-8e46-6f7a8809cff3\\scratch\\node_modules\\puppeteer-core');
+const os = require('os');
+
+function loadPuppeteer() {
+  const candidates = [
+    'puppeteer-core',
+    path.join(__dirname, 'node_modules', 'puppeteer-core'),
+    path.join(os.homedir(), '.gemini', 'antigravity', 'brain', 'dc8bc7cf-ae20-4c7f-ae8d-82394c2bbc64', 'scratch', 'node_modules', 'puppeteer-core'),
+    path.join(os.homedir(), '.gemini', 'antigravity', 'brain', 'c3430dcf-0c08-41eb-8e46-6f7a8809cff3', 'scratch', 'node_modules', 'puppeteer-core')
+  ];
+  const brainDir = path.join(os.homedir(), '.gemini', 'antigravity', 'brain');
+  if (fs.existsSync(brainDir)) {
+    for (const sub of fs.readdirSync(brainDir)) {
+      candidates.push(path.join(brainDir, sub, 'scratch', 'node_modules', 'puppeteer-core'));
+    }
+  }
+  for (const c of candidates) {
+    try { return require(c); } catch (e) {}
+  }
+  throw new Error('puppeteer-core not found');
+}
+const puppeteer = loadPuppeteer();
 
 const PAGES_TO_DEPLOY = [
   { id: 46,  slug: '46-2',            title: '메인',                          file: 'wordpress-main-home.html' },
