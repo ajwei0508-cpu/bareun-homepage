@@ -102,8 +102,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=syncope',
+      part: 'syncope',
+      partBadge: '3D 자율신경 · 사상체질 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 내 체질·원인 연결하기',
+      desc: '360° 회전 3D 인체모형에서 부위별 통증 원인과 맞춤 한약·홈케어·SCI 논문을 한눈에 확인하세요.',
+      bg: 'illust_syncope_autonomic.jpg'
+    },
     nextClinic: {
       href: 'chuna.html',
+      keyword: '추나 교정 궁금해?',
       eyebrow: 'NEXT STORY · 02 / 07',
       title: '바른 추나 · 척추교정',
       desc: '무너진 골반·척추 중심축을 바로 세워 일상의 움직임을 되찾는 수기 추나 클리닉입니다.',
@@ -217,8 +227,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=lumbar',
+      part: 'lumbar',
+      partBadge: '3D 척추 · 골반 · 디스크 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 척추·골반 교정 연결하기',
+      desc: '360° 회전 3D 인체모형에서 디스크 감압(+3.8mm) 원리와 자세 홈케어·식단·SCI 논문을 확인하세요.',
+      bg: 'illust_lumbar_pelvis.jpg'
+    },
     nextClinic: {
       href: 'growth.html',
+      keyword: '숨은 키성장 궁금해?',
       eyebrow: 'NEXT STORY · 03 / 07',
       title: '바른 성장 · 성조숙증',
       desc: '닫혀가는 성장판 시계를 늦추고 숨은 10cm 잠재력을 깨우는 소아 성장 클리닉입니다.',
@@ -333,8 +353,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=knee',
+      part: 'knee',
+      partBadge: '3D 무릎 성장판 · 면역 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 성장판·면역 연결하기',
+      desc: '360° 회전 3D 인체모형에서 성장판 연골 증식 원리와 성장 스트레칭·식단·SCI 논문을 확인하세요.',
+      bg: 'illust_knee_growth_care.jpg'
+    },
     nextClinic: {
       href: 'diet-zero.html',
+      keyword: '다이어트 궁금해?',
       eyebrow: 'NEXT STORY · 04 / 07',
       title: '바른 다이어트 · 식욕ZERO',
       desc: '굶지 않고 꺼진 복부 대사 화로를 다시 켜 내장지방만 비워내는 다이어트 클리닉입니다.',
@@ -449,8 +479,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=gut',
+      part: 'gut',
+      partBadge: '3D 위장 · 간 대사 해독 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 복부 대사·해독 연결하기',
+      desc: '360° 회전 3D 인체모형에서 내장지방 연소 기전과 대사 식단·홈케어·SCI 논문을 한눈에 확인하세요.',
+      bg: 'illust_gut_metabolism.jpg'
+    },
     nextClinic: {
       href: 'hairloss.html',
+      keyword: '탈모 궁금해?',
       eyebrow: 'NEXT STORY · 05 / 07',
       title: '바른 탈모 · 모근재생',
       desc: '42°C 두피 사막화 열을 식혀 모근 스스로 굵게 자라게 하는 비수술 탈모 클리닉입니다.',
@@ -564,8 +604,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=cervical',
+      part: 'cervical',
+      partBadge: '3D 경추 · 두피열 · 모근 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 두피열·모근 연결하기',
+      desc: '360° 회전 3D 인체모형에서 42°C 두피열 쿨링 기전과 발모 홈케어·식단·SCI 논문을 확인하세요.',
+      bg: 'illust_cervical_hairloss.jpg'
+    },
     nextClinic: {
       href: 'gongjindan.html',
+      keyword: '황제공진단 궁금해?',
       eyebrow: 'NEXT STORY · 06 / 07',
       title: '바른 황제공진단',
       desc: '방전된 체력 배터리를 100% 정품 사향으로 즉시 충전하는 황제공진단 클리닉입니다.',
@@ -679,8 +729,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=gongjindan',
+      part: 'gongjindan',
+      partBadge: '3D 뇌 · 심장 기혈순환 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 뇌·심장 활력 연결하기',
+      desc: '360° 회전 3D 인체모형에서 정품 사향의 뇌·심장 활력 직달 기전과 복용법·SCI 논문을 확인하세요.',
+      bg: 'illust_gongjindan_heart_brain.jpg'
+    },
     nextClinic: {
       href: 'prostate.html',
+      keyword: '전립선 활력 궁금해?',
       eyebrow: 'NEXT STORY · 07 / 07',
       title: '바른 전립선 · 남성활력 클리닉',
       desc: '밤잠을 깨우는 야간뇨·잔뇨감과 전립선 부종을 감압하는 남성활력 클리닉입니다.',
@@ -792,8 +852,18 @@ const PAGES = [
         ]
       }
     ],
+    bodyModelCard: {
+      href: 'body-explorer.html?part=prostate',
+      part: 'prostate',
+      partBadge: '3D 전립선 · 방광 · 골반 모형',
+      eyebrow: 'FINAL CARD · 360° 3D HUMAN BODY MODEL',
+      title: '3D 인체모형으로 전립선·활력 연결하기',
+      desc: '360° 회전 3D 인체모형에서 전립선 부종 감압 원리와 좌욕 홈케어·식단·SCI 논문을 확인하세요.',
+      bg: 'illust_prostate_care.jpg'
+    },
     nextClinic: {
       href: 'director.html',
+      keyword: '내 사상체질 궁금해?',
       eyebrow: 'NEXT STORY · 01 / 07',
       title: '안정위 대표원장',
       desc: '병명 뒤에 숨은 사람의 체질과 일상을 읽는 안정위 대표원장 진료 철학으로 이어집니다.',
@@ -1827,91 +1897,344 @@ function buildPageHtml(page) {
       border-radius: 999px;
     }
 
-    /* Next Clinic Portal */
+    /* PLATE 07 (Last Card): 3D Body Model Portal + Bottom-Right Mini Keyword Card */
     #project-details-preview {
-      width: 42vw;
-      max-width: 600px;
+      width: 52vw;
+      max-width: 760px;
       height: 76vh;
       max-height: 680px;
       border-radius: 22px;
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
-      border: 1px solid var(--border-gold);
-      background: #121419;
+      border: 1.5px solid rgba(45, 90, 67, 0.55);
+      background: #171614;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 34px;
+      justify-content: space-between;
+      padding: 28px 32px;
       text-decoration: none;
       color: var(--text-main);
       box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
-      transition: transform 0.35s ease, border-color 0.35s ease;
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     }
 
-    #project-details-preview:hover { transform: scale(1.015); border-color: var(--accent); }
+    #project-details-preview:hover {
+      transform: scale(1.01);
+      border-color: #2D5A43;
+      box-shadow: 0 32px 80px rgba(45, 90, 67, 0.28);
+    }
 
     .next-portal-bg {
       position: absolute;
       inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      opacity: 0.46;
-      transition: transform 0.6s ease, opacity 0.4s ease;
+      opacity: 0.42;
+      transition: transform 0.65s ease, opacity 0.4s ease;
     }
 
-    #project-details-preview:hover .next-portal-bg { transform: scale(1.07); opacity: 0.62; }
+    #project-details-preview:hover .next-portal-bg { transform: scale(1.05); opacity: 0.56; }
 
     .next-portal-scrim {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(12, 14, 18, 0.22) 0%, rgba(12, 14, 18, 0.92) 100%);
+      background:
+        radial-gradient(circle at 26% 32%, rgba(45, 90, 67, 0.32) 0%, transparent 55%),
+        linear-gradient(180deg, rgba(23, 22, 20, 0.38) 0%, rgba(23, 22, 20, 0.94) 100%);
+      pointer-events: none;
     }
 
-    #project-details-preview-inner { position: relative; z-index: 5; }
+    .body-model-holo-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245, 241, 232, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 241, 232, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 2;
+    }
 
-    .next-portal-eyebrow {
+    .body-model-top-bar {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .body-model-badge-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #2D5A43;
+      border: 1px solid rgba(232, 242, 236, 0.45);
+      color: #FFFFFF;
       font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      margin-bottom: 10px;
+      letter-spacing: 0.06em;
+      box-shadow: 0 6px 18px rgba(45, 90, 67, 0.38);
+    }
+
+    .body-model-badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: rgba(245, 241, 232, 0.92);
+      border: 1px solid rgba(94, 71, 54, 0.3);
+      color: #4A3525;
+      font-size: 0.73rem;
+      font-weight: 800;
+    }
+
+    .body-model-bottom-stage {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      width: 100%;
+    }
+
+    #project-details-preview-inner {
+      position: relative;
+      z-index: 6;
+      flex: 1;
+      max-width: 62%;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .next-portal-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: #A7F3D0;
+      margin-bottom: 8px;
     }
 
     #project-details-preview-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 800;
-      margin-bottom: 10px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+      word-break: keep-all;
     }
 
-    .next-portal-desc { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 24px; line-height: 1.55; }
+    .next-portal-desc {
+      font-size: 0.85rem;
+      color: rgba(245, 241, 232, 0.92);
+      margin-bottom: 14px;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
 
-    #project-details-preview-footer { display: flex; align-items: center; gap: 14px; }
+    .body-model-feature-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .body-model-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(245, 241, 232, 0.25);
+      color: #F5F1E8;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    #project-details-preview-footer {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2D5A43 0%, #3D7357 100%);
+      border: 1px solid rgba(232, 242, 236, 0.5);
+      color: #FFFFFF;
+      box-shadow: 0 8px 22px rgba(45, 90, 67, 0.36);
+      transition: all 0.25s ease;
+    }
+
+    #project-details-preview-inner:hover #project-details-preview-footer {
+      background: #4A3525;
+      border-color: #F5F1E8;
+      transform: translateY(-2px);
+    }
 
     #project-details-preview-footer-text {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 800;
-      letter-spacing: 0.14em;
-      color: var(--accent-light);
+      letter-spacing: 0.04em;
+      color: #FFFFFF;
     }
 
     #project-details-preview-footer-bar {
-      flex: 1; height: 3px;
-      background: rgba(255, 255, 255, 0.16);
+      width: 36px; height: 3px;
+      background: rgba(255, 255, 255, 0.28);
       border-radius: 999px;
       overflow: hidden;
     }
 
     #project-details-preview-footer-bar-inner {
       width: 100%; height: 100%;
-      background: var(--accent);
+      background: #F5F1E8;
       transform-origin: left;
-      transform: scaleX(0.35);
+      transform: scaleX(0.5);
       transition: transform 0.4s ease;
     }
 
     #project-details-preview:hover #project-details-preview-footer-bar-inner { transform: scaleX(1); }
+
+    /* Bottom-Right Small Keyword Card (Inside Last Card & Floating Viewport Corner) */
+    .last-card-mini-keyword-box {
+      position: relative;
+      z-index: 8;
+      width: 228px;
+      min-width: 215px;
+      background: rgba(245, 241, 232, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(74, 53, 37, 0.32);
+      border-radius: 16px;
+      padding: 12px 13px;
+      box-shadow: 0 14px 32px rgba(23, 22, 20, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .mini-kw-eyebrow {
+      font-size: 0.63rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #5E4736;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mini-kw-card-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 11px;
+      text-decoration: none;
+      transition: all 0.22s ease;
+    }
+
+    .mini-kw-card-link.primary-hair {
+      background: #2D5A43;
+      color: #FFFFFF;
+      border: 1px solid #2D5A43;
+      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.24);
+    }
+
+    .mini-kw-card-link.primary-hair:hover {
+      background: #171614;
+      border-color: #171614;
+      transform: translateY(-1px);
+    }
+
+    .mini-kw-card-link.secondary-next {
+      background: #FFFFFF;
+      color: #171614;
+      border: 1px solid rgba(94, 71, 54, 0.24);
+    }
+
+    .mini-kw-card-link.secondary-next:hover {
+      background: #EFE9DC;
+      border-color: #4A3525;
+      transform: translateY(-1px);
+    }
+
+    .mini-kw-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .mini-kw-question {
+      font-size: 0.82rem;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .mini-kw-sub {
+      font-size: 0.66rem;
+      font-weight: 600;
+      opacity: 0.86;
+    }
+
+    .mini-kw-arrow {
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    /* Floating Bottom-Right Mini Keyword Card on Detail Page Viewport */
+    #floating-bottom-right-kw-card {
+      position: fixed;
+      right: 22px;
+      bottom: 16px;
+      z-index: 95;
+      width: 226px;
+      background: rgba(245, 241, 232, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(74, 53, 37, 0.28);
+      border-radius: 16px;
+      padding: 11px 12px;
+      box-shadow: 0 12px 30px rgba(23, 22, 20, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #floating-bottom-right-kw-card.is-docked-on-last {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+    }
+
+    .floating-kw-jump-3d {
+      margin-top: 2px;
+      padding: 6px 10px;
+      border-radius: 9px;
+      background: #4A3525;
+      color: #F5F1E8;
+      border: none;
+      font-size: 0.69rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s ease;
+    }
+
+    .floating-kw-jump-3d:hover {
+      background: #2D5A43;
+      color: #FFFFFF;
+    }
 
     #scroll-indicator {
       position: fixed;
@@ -2989,6 +3312,39 @@ function buildPageHtml(page) {
         max-height: 55dvh;
         flex-shrink: 0;
       }
+      #project-details-preview {
+        padding: 18px 18px;
+      }
+      .body-model-bottom-stage {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      #project-details-preview-inner {
+        max-width: 100%;
+      }
+      #project-details-preview-title {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+      }
+      .next-portal-desc {
+        font-size: 0.76rem;
+        margin-bottom: 8px;
+      }
+      .body-model-feature-chips {
+        display: none;
+      }
+      .last-card-mini-keyword-box {
+        width: 100%;
+        padding: 9px 11px;
+        gap: 5px;
+      }
+      #floating-bottom-right-kw-card {
+        right: 12px;
+        bottom: 10px;
+        width: 192px;
+        padding: 8px 10px;
+      }
       #scroll-indicator { left: 0; }
       .detail-ba-metrics { grid-template-columns: 1fr; }
     }
@@ -3155,27 +3511,89 @@ function buildPageHtml(page) {
           </div>
         </article>
 
-        <!-- PLATE 07: Next Clinic Portal -->
-        <a id="project-details-preview" href="${page.nextClinic.href}">
-          <img class="next-portal-bg" src="${page.nextClinic.bg}" alt="${page.nextClinic.title}">
+        <!-- PLATE 07 (LAST CARD): 3D Human Body Model Portal + Bottom-Right Mini Keyword Card -->
+        <article id="project-details-preview" class="body-model-last-card">
+          <img class="next-portal-bg" src="${page.bodyModelCard.bg}" alt="${page.bodyModelCard.title}">
           <div class="next-portal-scrim"></div>
-          <div id="project-details-preview-inner">
-            <div class="next-portal-eyebrow">${page.nextClinic.eyebrow}</div>
-            <h2 id="project-details-preview-title">${page.nextClinic.title}</h2>
-            <p class="next-portal-desc">${page.nextClinic.desc}</p>
-            <div id="project-details-preview-footer">
-              <span id="project-details-preview-footer-text">EXPLORE NEXT STORY</span>
-              <div id="project-details-preview-footer-bar">
-                <div id="project-details-preview-footer-bar-inner"></div>
+          <div class="body-model-holo-grid"></div>
+
+          <div class="body-model-top-bar">
+            <span class="body-model-badge-main">🧬 360° 3D 인체모형 쇼룸 연결 카드</span>
+            <span class="body-model-badge-sub">${page.bodyModelCard.partBadge}</span>
+          </div>
+
+          <div class="body-model-bottom-stage">
+            <a id="project-details-preview-inner" href="${page.bodyModelCard.href}">
+              <div class="next-portal-eyebrow">${page.bodyModelCard.eyebrow}</div>
+              <h2 id="project-details-preview-title">${page.bodyModelCard.title}</h2>
+              <p class="next-portal-desc">${page.bodyModelCard.desc}</p>
+              <div class="body-model-feature-chips">
+                <span class="body-model-chip">🧊 360° 3D 부위별 투시</span>
+                <span class="body-model-chip">🧘 맞춤 홈케어 · 식단</span>
+                <span class="body-model-chip">📑 SCI 논문 데이터</span>
               </div>
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                <path stroke="#D4AF37" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2 8h12m0 0-5.5 5.5M14 8 8.5 2.5"/>
-              </svg>
+              <div id="project-details-preview-footer">
+                <span id="project-details-preview-footer-text">🧬 3D 인체모형 쇼룸으로 연결하기</span>
+                <div id="project-details-preview-footer-bar">
+                  <div id="project-details-preview-footer-bar-inner"></div>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                  <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2 8h12m0 0-5.5 5.5M14 8 8.5 2.5"/>
+                </svg>
+              </div>
+            </a>
+
+            <!-- SMALL KEYWORD CARD AT BOTTOM-RIGHT OF LAST CARD -->
+            <div class="last-card-mini-keyword-box" aria-label="다른 스토리 키워드 미니 카드">
+              <div class="mini-kw-eyebrow">
+                <span>OTHER STORY · 키워드 카드</span>
+                <span>↗</span>
+              </div>
+              <a class="mini-kw-card-link primary-hair" href="hairloss.html">
+                <span class="mini-kw-text-col">
+                  <span class="mini-kw-question">탈모 궁금해?</span>
+                  <span class="mini-kw-sub">05 바른 탈모 · 모근재생 스토리</span>
+                </span>
+                <span class="mini-kw-arrow">→</span>
+              </a>
+              <a class="mini-kw-card-link secondary-next" href="${page.nextClinic.href === 'hairloss.html' ? 'chuna.html' : page.nextClinic.href}">
+                <span class="mini-kw-text-col">
+                  <span class="mini-kw-question">${page.nextClinic.href === 'hairloss.html' ? '추나 교정 궁금해?' : page.nextClinic.keyword}</span>
+                  <span class="mini-kw-sub">${page.nextClinic.href === 'hairloss.html' ? '02 바른 추나 · 척추교정' : page.nextClinic.title}</span>
+                </span>
+                <span class="mini-kw-arrow">→</span>
+              </a>
             </div>
           </div>
-        </a>
+        </article>
       </div>
     </section>
+
+    <!-- FLOATING BOTTOM-RIGHT SMALL KEYWORD CARD ("탈모 궁금해?" + 다른 스토리 미니 카드) -->
+    <aside id="floating-bottom-right-kw-card" aria-label="우측 하단 키워드 미니 카드">
+      <div class="mini-kw-eyebrow">
+        <span>KEYWORD STORY · 다른 스토리</span>
+        <span>✨</span>
+      </div>
+      <a class="mini-kw-card-link primary-hair" href="hairloss.html">
+        <span class="mini-kw-text-col">
+          <span class="mini-kw-question">탈모 궁금해?</span>
+          <span class="mini-kw-sub">05 바른 탈모 · 두피열 모근재생</span>
+        </span>
+        <span class="mini-kw-arrow">→</span>
+      </a>
+      <a class="mini-kw-card-link secondary-next" href="${page.nextClinic.href === 'hairloss.html' ? 'chuna.html' : page.nextClinic.href}">
+        <span class="mini-kw-text-col">
+          <span class="mini-kw-question">${page.nextClinic.href === 'hairloss.html' ? '추나 교정 궁금해?' : page.nextClinic.keyword}</span>
+          <span class="mini-kw-sub">${page.nextClinic.href === 'hairloss.html' ? '02 바른 추나 · 척추교정' : page.nextClinic.title}</span>
+        </span>
+        <span class="mini-kw-arrow">→</span>
+      </a>
+      <button type="button" class="floating-kw-jump-3d" onclick="window.jumpToPlate(document.querySelectorAll('.project-details-item, #project-details-preview').length - 1)">
+        <span>🧬 마지막 카드 · 3D 모형 연결</span>
+        <span>→</span>
+      </button>
+    </aside>
   </main>
 
   <div id="scroll-indicator">
@@ -5314,6 +5732,10 @@ function buildPageHtml(page) {
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
+        const floatingKwCard = document.getElementById('floating-bottom-right-kw-card');
+        if (floatingKwCard) {
+          floatingKwCard.classList.toggle('is-docked-on-last', closestIdx === plates.length - 1);
+        }
 
         // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
         motionStages.forEach((ms, sIdx) => {
