@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>바른한의원 대전본점 3D 생애주기 시네마 — 건강한 인생이 될 수 있게 도와드립니다</title>
-  <meta name="description" content="바른한의원 대전본점 — 안정위 대표원장의 15분 심층 진맥과 320종 무독성 안심 한약. 사상체질·추나 척추교정·소아 키성장·식욕ZERO 다이어트·두피열 탈모·황제공진단·전립선 1:1 맞춤 진료 클리닉">
+  <meta name="description" content="바른한의원 대전본점 — 안정위 대표원장의 심층 맥진과 실제 학술 논문으로 검증된 무독성 안심 한약. 사상체질·추나 척추교정·소아 키성장·식욕ZERO 다이어트·두피열 탈모·황제공진단·전립선 1:1 맞춤 진료 클리닉">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="바른한의원 대전본점">
   <meta property="og:title" content="바른한의원 대전본점 — 1:1 사상체질 · 추나 · 성장 · 다이어트 · 탈모 · 공진단">
-  <meta property="og:description" content="안정위 대표원장의 15분 심층 진맥과 320종 무독성 안심 한약으로 병의 뿌리를 다스리는 바른한의원 대전본점입니다.">
+  <meta property="og:description" content="안정위 대표원장의 심층 맥진과 실제 학술 논문으로 검증된 무독성 안심 한약으로 병의 뿌리를 다스리는 바른한의원 대전본점입니다.">
   <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg">
   <meta property="og:url" content="https://www.bareunhaniwon.com/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="바른한의원 대전본점">
-  <meta name="twitter:description" content="안정위 대표원장의 15분 심층 진맥과 320종 무독성 안심 한약. 추나·성장·다이어트·탈모·공진단·전립선 1:1 맞춤 진료">
+  <meta name="twitter:description" content="안정위 대표원장의 심층 맥진과 실제 학술 논문으로 검증된 무독성 안심 한약. 추나·성장·다이어트·탈모·공진단·전립선 1:1 맞춤 진료">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg">
@@ -1216,7 +1216,7 @@
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">안정위원장</p>
-            <p class="skt-card-desc">난임·착상·자율신경 · 1:1 진맥 안심탕전</p>
+            <p class="skt-card-desc">난임·착상·자율신경 · 학술검증 진맥 안심탕전</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
@@ -1324,8 +1324,8 @@
       <span class="tap-pill-arrow">→</span>
     </button>
     <div class="story4-weight-counter" id="story4-weight-counter">
-      <span class="weight-live-num" id="weight-live-num">68.5 kg</span>
-      <span class="weight-diff-badge" id="weight-diff-badge">▼ -0.0 kg 감량</span>
+      <span class="weight-live-num" id="weight-live-num" style="font-size:clamp(18px,2.4vw,26px);">학술 논문 검증 대사 해독</span>
+      <span class="weight-diff-badge" id="weight-diff-badge">✦ 갈색지방 활성화 · 내장지방 분해 검증 치료법</span>
     </div>
     <p class="dialogue-sub-whisper" id="dialogue-sub-whisper"></p>
     <div class="dialogue-phase-steps" id="dialogue-phase-steps"></div>
@@ -2800,17 +2800,13 @@
           brushFill.style.width = `${Math.max(12, chProg * 100).toFixed(1)}%`;
         }
 
-        // Story 4 (성인 비만·체형 치료): Scroll-reactive weight loss counter (68.5kg -> 48.5kg)
+        // Story 4 (성인 비만·체형 치료): Evidence-based metabolic verification badge
         if (weightCounterEl) {
           const isStory4 = chapter.id === 4;
           weightCounterEl.classList.toggle('active', isStory4);
           if (isStory4) {
-            const startWeight = 68.5;
-            const targetWeight = 48.5;
-            const lostKg = chProg * (startWeight - targetWeight);
-            const currentKg = startWeight - lostKg;
-            if (weightLiveNumEl) weightLiveNumEl.textContent = `${currentKg.toFixed(1)} kg`;
-            if (weightDiffBadgeEl) weightDiffBadgeEl.textContent = `▼ -${lostKg.toFixed(1)} kg 감량`;
+            if (weightLiveNumEl) weightLiveNumEl.textContent = '학술 논문 검증 대사 해독';
+            if (weightDiffBadgeEl) weightDiffBadgeEl.textContent = '✦ 갈색지방 활성화 · 내장지방 분해 검증 치료법';
           }
         }
 
