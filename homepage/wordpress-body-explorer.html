@@ -25,20 +25,22 @@
 }
 
     :root {
-      --bg-beige: #F5F1E8;
-      --bg-beige-deep: #EBE4D5;
-      --bg-white: #FFFFFF;
-      --brown-deep: #3A2A1E;
-      --brown-mid: #5E4736;
-      --brown-soft: #8A7460;
-      --green-primary: #2D5A43;
-      --green-mid: #4B8567;
+      /* 바른한의원 5대 시그니처 브랜드 컬러 팔레트 (베이지·브라운·블랙·화이트·그린) */
+      --bg-beige: #F5F1E8;          /* 베이지 (신뢰감 · Trust) */
+      --bg-beige-deep: #EBE4D5;     /* 딥 한지 베이지 */
+      --bg-white: #FFFFFF;          /* 화이트 (투명 · Transparency) */
+      --bg-white-glass: rgba(255, 255, 255, 0.88);
+      --brown-deep: #4A3525;        /* 브라운 (부드러움 · Softness) */
+      --brown-mid: #5E4736;         /* 소프트 에스프레소 브라운 */
+      --brown-soft: #8A725E;        /* 웜 타우프 브라운 */
+      --green-primary: #2D5A43;     /* 그린 (자연 · Nature) */
+      --green-mid: #3D7357;         /* 보타니컬 세이지 그린 */
       --green-soft: #68A684;
       --green-tint: #E8F2EC;
-      --black-ink: #171614;
-      --black-sub: #45413C;
+      --black-ink: #171614;         /* 블랙 (진실 · Truth) */
+      --black-sub: #3A3530;
       --border-warm: #DFD6C5;
-      --border-strong: #C9BTA8;
+      --border-strong: #C9BAA8;
       --shadow-soft: 0 12px 34px rgba(58, 42, 30, 0.06);
       --shadow-card: 0 6px 20px rgba(58, 42, 30, 0.05);
     }
@@ -62,9 +64,11 @@
       top: 0; left: 0; right: 0;
       height: 62px;
       z-index: 300;
-      background: rgba(245, 241, 232, 0.96);
-      backdrop-filter: blur(14px);
+      background: var(--bg-white-glass);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border-warm);
+      box-shadow: 0 4px 20px rgba(58, 42, 30, 0.04);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -129,6 +133,7 @@
     .vh-part-chip:hover {
       border-color: var(--green-primary);
       color: var(--green-primary);
+      background: var(--green-tint);
     }
     .vh-part-chip.active {
       background: var(--green-primary);
@@ -154,14 +159,22 @@
       font-weight: 700;
       text-decoration: none;
       border: 1px solid var(--border-warm);
-      background: var(--bg-white);
+      background: var(--bg-beige);
       color: var(--brown-deep);
       transition: all 0.2s ease;
     }
+    .vh-pill-btn:hover {
+      border-color: var(--brown-deep);
+      background: var(--bg-beige-deep);
+    }
     .vh-pill-btn.primary {
+      background: var(--green-primary);
+      border-color: var(--green-primary);
+      color: var(--bg-white);
+    }
+    .vh-pill-btn.primary:hover {
       background: var(--brown-deep);
       border-color: var(--brown-deep);
-      color: var(--bg-white);
     }
 
     /* =========================================================================

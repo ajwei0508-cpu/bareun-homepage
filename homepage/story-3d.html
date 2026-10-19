@@ -11,12 +11,26 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
-      --bg-warm-dark: #0A1410;
-      --gold: #C5A059;
-      --gold-bright: #FDE68A;
-      --emerald: #10B981;
-      --emerald-bright: #6EE7B7;
-      --crimson: #EF4444;
+      /* 바른한의원 5대 시그니처 브랜드 컬러 팔레트 */
+      --brand-beige: #F5F1E8;          /* 베이지 (신뢰감 · Trust) */
+      --brand-beige-deep: #E6DEC8;     /* 딥 한지 베이지 */
+      --brand-brown: #4A3525;          /* 브라운 (부드러움 · Softness) */
+      --brand-brown-soft: #5E4736;     /* 소프트 에스프레소 브라운 */
+      --brand-brown-muted: #8A725E;    /* 웜 타우프 브라운 */
+      --brand-black: #171614;          /* 블랙 (진실 · Truth) */
+      --brand-white: #FFFFFF;          /* 화이트 (투명 · Transparency) */
+      --brand-white-glass: rgba(255, 255, 255, 0.88);
+      --brand-green: #2D5A43;          /* 그린 (자연 · Nature) */
+      --brand-green-mid: #3D7357;      /* 보타니컬 세이지 그린 */
+      --brand-green-tint: #E8F2EC;     /* 소프트 그린 틴트 */
+
+      /* 하위 호환 및 3D 시네마 포인트 변수 매핑 */
+      --bg-warm-dark: #171614;
+      --gold: #8A725E;
+      --gold-bright: #F5F1E8;
+      --emerald: #2D5A43;
+      --emerald-bright: #4B8567;
+      --crimson: #C84B31;
       --font-serif: 'Noto Serif KR', Georgia, serif;
       --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'Space Mono', monospace;
@@ -31,18 +45,18 @@
 
     html {
       width: 100%;
-      background-color: var(--bg-warm-dark);
+      background-color: var(--brand-beige);
       overflow-x: hidden;
       overflow-y: scroll;
       scrollbar-width: thin;
-      scrollbar-color: var(--gold) #0A1410;
+      scrollbar-color: var(--brand-green) var(--brand-beige);
     }
 
     body {
       width: 100%;
       min-height: 100vh;
-      background-color: var(--bg-warm-dark);
-      color: #FFFFFF;
+      background-color: var(--brand-beige);
+      color: var(--brand-black);
       font-family: var(--font-sans);
       overflow: visible;
       user-select: none;
@@ -50,13 +64,13 @@
     }
 
     body::-webkit-scrollbar {
-      width: 5px;
+      width: 6px;
     }
     body::-webkit-scrollbar-track {
-      background: #0A1410;
+      background: var(--brand-beige);
     }
     body::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, var(--emerald), var(--gold));
+      background: linear-gradient(180deg, var(--brand-green), var(--brand-brown));
       border-radius: 999px;
     }
 
@@ -82,7 +96,7 @@
       height: 100dvh;
       overflow: hidden;
       z-index: 1;
-      background: #0E1B14;
+      background: #171614;
     }
 
     #glsl-portal-canvas {
@@ -115,7 +129,7 @@
       overflow: visible;
     }
 
-    /* Bright, Warm, Positive Scrim — Keeps Sunlit Backgrounds Clear & Uplifting
+    /* Warm Espresso-Brown & Obsidian Scrim — Keeps Sunlit Backgrounds Clear & Uplifting
        while ensuring crisp readability for the left-side story dialogue */
     .spatial-vignette {
       position: absolute;
@@ -123,13 +137,13 @@
       z-index: 5;
       pointer-events: none;
       background:
-        linear-gradient(90deg, rgba(6, 16, 12, 0.58) 0%, rgba(6, 16, 12, 0.24) 36%, rgba(6, 16, 12, 0.0) 58%),
-        linear-gradient(180deg, rgba(6, 16, 12, 0.35) 0%, transparent 14%, transparent 84%, rgba(6, 16, 12, 0.52) 100%);
+        linear-gradient(90deg, rgba(23, 22, 20, 0.56) 0%, rgba(58, 42, 30, 0.24) 38%, rgba(23, 22, 20, 0.0) 60%),
+        linear-gradient(180deg, rgba(23, 22, 20, 0.28) 0%, transparent 14%, transparent 84%, rgba(23, 22, 20, 0.48) 100%);
       transition: opacity 0.4s ease;
     }
 
     /* ==========================================================================
-       ULTRA-CLEAN TOP HEADER (Brand + BGM Toggle + Quick Reservation Drawer)
+       ULTRA-CLEAN TOP HEADER (Translucent White + Warm Beige + Soft Brown + Green)
        ========================================================================== */
     .spatial-top-nav {
       position: fixed;
@@ -142,7 +156,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 40px;
-      background: linear-gradient(180deg, rgba(6, 16, 12, 0.55) 0%, rgba(6, 16, 12, 0) 100%);
+      background: rgba(245, 241, 232, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(94, 71, 54, 0.18);
+      box-shadow: 0 4px 24px rgba(58, 42, 30, 0.07);
       pointer-events: auto;
     }
 
@@ -150,28 +168,27 @@
       font-family: var(--font-serif);
       font-size: 18px;
       font-weight: 900;
-      color: #FFFFFF;
+      color: var(--brand-black);
       text-decoration: none;
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
       gap: 10px;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
     }
 
     .nav-brand-logo .logo-gem {
       width: 9px;
       height: 9px;
-      background: var(--gold);
+      background: var(--brand-green);
       transform: rotate(45deg);
-      box-shadow: 0 0 12px var(--gold);
+      box-shadow: 0 0 10px rgba(45, 90, 67, 0.45);
     }
 
     .nav-brand-sub {
       font-family: var(--font-mono);
       font-size: 11px;
-      font-weight: 400;
-      color: var(--gold-bright);
+      font-weight: 700;
+      color: var(--brand-brown-soft);
       letter-spacing: 0.12em;
       margin-left: 4px;
     }
@@ -179,16 +196,16 @@
     .nav-right-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .btn-bgm-toggle {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(6, 18, 13, 0.52);
-      border: 1px solid rgba(253, 230, 138, 0.5);
-      color: var(--gold-bright);
+      background: var(--brand-white-glass);
+      border: 1px solid rgba(94, 71, 54, 0.28);
+      color: var(--brand-brown);
       padding: 8px 16px;
       border-radius: 999px;
       font-family: var(--font-mono);
@@ -200,14 +217,16 @@
     }
 
     .btn-bgm-toggle:hover {
-      background: rgba(197, 160, 89, 0.28);
+      background: var(--brand-beige-deep);
+      border-color: var(--brand-brown);
       transform: translateY(-1px);
     }
 
     .btn-bgm-toggle.playing {
-      border-color: var(--emerald-bright);
-      color: #FFFFFF;
-      box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
+      background: var(--brand-green-tint);
+      border-color: var(--brand-green);
+      color: var(--brand-green);
+      box-shadow: 0 4px 14px rgba(45, 90, 67, 0.16);
     }
 
     .bgm-eq-bars {
@@ -220,24 +239,24 @@
     .bgm-eq-bars span {
       width: 2px;
       height: 3px;
-      background: var(--gold-bright);
+      background: var(--brand-brown-soft);
       border-radius: 2px;
     }
 
     .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(1) {
-      background: var(--emerald-bright);
+      background: var(--brand-green);
       animation: eqDance 0.7s infinite ease-in-out alternate;
     }
     .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(2) {
-      background: var(--gold-bright);
+      background: var(--brand-brown);
       animation: eqDance 0.5s 0.15s infinite ease-in-out alternate;
     }
     .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(3) {
-      background: var(--emerald-bright);
+      background: var(--brand-green);
       animation: eqDance 0.85s 0.3s infinite ease-in-out alternate;
     }
     .btn-bgm-toggle.playing .bgm-eq-bars span:nth-child(4) {
-      background: var(--gold-bright);
+      background: var(--brand-brown);
       animation: eqDance 0.6s 0.1s infinite ease-in-out alternate;
     }
 
@@ -250,9 +269,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(6, 18, 13, 0.52);
-      border: 1px solid rgba(255, 255, 255, 0.32);
-      color: #FFFFFF;
+      background: var(--brand-white-glass);
+      border: 1px solid rgba(94, 71, 54, 0.26);
+      color: var(--brand-black);
       padding: 8px 18px;
       border-radius: 999px;
       font-family: var(--font-sans);
@@ -265,9 +284,21 @@
     }
 
     .btn-reserve-minimal:hover {
-      background: var(--gold);
-      color: #020D09;
-      border-color: var(--gold);
+      background: var(--brand-green);
+      color: var(--brand-white);
+      border-color: var(--brand-green);
+      box-shadow: 0 6px 18px rgba(45, 90, 67, 0.24);
+    }
+
+    #btn-open-reserve {
+      background: var(--brand-green);
+      border-color: var(--brand-green);
+      color: var(--brand-white);
+    }
+    #btn-open-reserve:hover {
+      background: var(--brand-brown);
+      border-color: var(--brand-brown);
+      color: var(--brand-white);
     }
 
     /* ==========================================================================
@@ -299,10 +330,10 @@
       margin-top: 14px;
       padding: 10px 22px;
       border-radius: 999px;
-      background: rgba(6, 18, 13, 0.68);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65);
+      background: rgba(245, 241, 232, 0.92);
+      border: 1.5px solid rgba(94, 71, 54, 0.35);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(23, 22, 20, 0.45);
       width: fit-content;
     }
 
@@ -315,8 +346,7 @@
       font-size: clamp(26px, 3.2vw, 42px);
       font-weight: 700;
       letter-spacing: -0.03em;
-      color: var(--gold-bright);
-      text-shadow: 0 0 20px rgba(253, 230, 138, 0.55), 0 2px 10px rgba(0, 0, 0, 0.95);
+      color: var(--brand-black);
       font-variant-numeric: tabular-nums;
     }
 
@@ -324,13 +354,12 @@
       font-family: var(--font-mono);
       font-size: clamp(14px, 1.5vw, 19px);
       font-weight: 700;
-      color: var(--emerald-bright);
-      background: rgba(16, 185, 129, 0.22);
-      border: 1px solid rgba(110, 231, 183, 0.55);
+      color: var(--brand-white);
+      background: var(--brand-green);
+      border: 1px solid var(--brand-green);
       padding: 4px 12px;
       border-radius: 999px;
       font-variant-numeric: tabular-nums;
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
     }
 
     /* Main Story Dialogue Line with Scroll-Reactive Character Wave */
@@ -340,9 +369,9 @@
       font-weight: 700;
       line-height: 1.34;
       letter-spacing: -0.03em;
-      color: #FFFFFF;
+      color: var(--brand-white);
       margin-bottom: 20px;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.92);
+      text-shadow: 0 4px 24px rgba(23, 22, 20, 0.92), 0 2px 8px rgba(23, 22, 20, 0.88);
       transform-style: preserve-3d;
     }
 
@@ -357,24 +386,24 @@
     }
 
     .dialogue-char.lit {
-      color: #FFFFFF;
-      text-shadow: 0 0 22px rgba(253, 230, 138, 0.42), 0 4px 20px rgba(0, 0, 0, 0.95);
+      color: var(--brand-white);
+      text-shadow: 0 0 22px rgba(245, 241, 232, 0.45), 0 4px 20px rgba(23, 22, 20, 0.95);
     }
 
     .dialogue-char.gold-accent {
-      color: var(--gold-bright);
-      text-shadow: 0 0 26px rgba(253, 230, 138, 0.72), 0 4px 20px rgba(0, 0, 0, 0.95);
+      color: var(--brand-beige);
+      text-shadow: 0 0 24px rgba(245, 241, 232, 0.65), 0 4px 20px rgba(23, 22, 20, 0.95);
     }
 
-    /* Scroll-Reactive Golden Brush Progress Line */
+    /* Scroll-Reactive Brush Progress Line */
     .dialogue-progress-brush {
       position: relative;
       width: min(380px, 74vw);
-      height: 2.5px;
-      background: rgba(255, 255, 255, 0.22);
+      height: 3px;
+      background: rgba(245, 241, 232, 0.28);
       border-radius: 999px;
       margin-bottom: 18px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 2px 10px rgba(23, 22, 20, 0.55);
     }
 
     .dialogue-progress-fill {
@@ -382,8 +411,8 @@
       height: 100%;
       width: 0%;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--emerald-bright), var(--gold-bright));
-      box-shadow: 0 0 14px var(--gold-bright);
+      background: linear-gradient(90deg, var(--brand-green-mid), var(--brand-beige));
+      box-shadow: 0 0 14px rgba(245, 241, 232, 0.65);
     }
 
     .dialogue-progress-fill::after {
@@ -392,11 +421,12 @@
       right: -4px;
       top: 50%;
       transform: translateY(-50%);
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: #FFFFFF;
-      box-shadow: 0 0 12px var(--gold-bright), 0 0 20px var(--emerald-bright);
+      background: var(--brand-white);
+      border: 1.5px solid var(--brand-green);
+      box-shadow: 0 0 12px var(--brand-beige);
     }
 
     /* ==========================================================================
@@ -422,10 +452,11 @@
     .timeline-bar-track {
       position: relative;
       width: 100%;
-      height: 2.5px;
-      background: rgba(255, 255, 255, 0.24);
+      height: 3px;
+      background: rgba(245, 241, 232, 0.3);
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(23, 22, 20, 0.65);
     }
 
     .timeline-bar-fill {
@@ -434,8 +465,9 @@
       top: 0;
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--emerald), var(--gold-bright));
-      box-shadow: 0 0 10px var(--gold);
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--brand-green), var(--brand-beige));
+      box-shadow: 0 0 10px rgba(245, 241, 232, 0.55);
     }
 
     .timeline-dots-row {
@@ -451,8 +483,8 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.45);
-      border: 1px solid rgba(2, 13, 9, 0.9);
+      background: rgba(245, 241, 232, 0.55);
+      border: 1px solid rgba(23, 22, 20, 0.75);
       transition: all 0.3s ease;
       pointer-events: auto;
       cursor: pointer;
@@ -460,18 +492,19 @@
 
     .timeline-chapter-dot.active {
       transform: scale(1.65);
-      background: var(--gold-bright);
-      box-shadow: 0 0 12px var(--gold-bright);
+      background: var(--brand-green);
+      border-color: var(--brand-white);
+      box-shadow: 0 0 12px rgba(45, 90, 67, 0.85);
     }
 
     /* ==========================================================================
-       SLIDE-IN QUICK RESERVATION DRAWER (Hidden until user clicks '진료 예약')
+       SLIDE-IN QUICK RESERVATION DRAWER (Beige + Translucent White + Brown + Green)
        ========================================================================== */
     .reserve-drawer-overlay {
       position: fixed;
       inset: 0;
       z-index: 200;
-      background: rgba(2, 13, 9, 0.72);
+      background: rgba(23, 22, 20, 0.62);
       backdrop-filter: blur(10px);
       opacity: 0;
       pointer-events: none;
@@ -488,8 +521,9 @@
     .reserve-drawer-panel {
       width: min(460px, 92vw);
       height: 100%;
-      background: rgba(5, 22, 16, 0.96);
-      border-left: 1px solid rgba(197, 160, 89, 0.3);
+      background: var(--brand-beige);
+      border-left: 1px solid rgba(94, 71, 54, 0.25);
+      box-shadow: -20px 0 60px rgba(23, 22, 20, 0.28);
       padding: 36px 32px;
       overflow-y: auto;
       transform: translateX(100%);
@@ -497,6 +531,7 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      color: var(--brand-black);
     }
 
     .reserve-drawer-overlay.open .reserve-drawer-panel {
@@ -507,25 +542,31 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(94, 71, 54, 0.18);
       padding-bottom: 16px;
     }
 
     .drawer-top-title {
       font-family: var(--font-serif);
       font-size: 19px;
-      font-weight: 700;
-      color: var(--gold-bright);
+      font-weight: 800;
+      color: var(--brand-black);
     }
 
     .drawer-close-btn {
-      background: none;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #FFFFFF;
+      background: var(--brand-white);
+      border: 1px solid rgba(94, 71, 54, 0.26);
+      color: var(--brand-brown);
       border-radius: 999px;
       padding: 6px 14px;
       font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .drawer-close-btn:hover {
+      background: var(--brand-brown);
+      color: var(--brand-white);
     }
 
     .drawer-form-group {
@@ -536,8 +577,8 @@
 
     .drawer-form-group label {
       font-size: 12px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      color: var(--brand-brown);
     }
 
     .drawer-form-group select,
@@ -545,24 +586,29 @@
     .drawer-form-group textarea {
       width: 100%;
       padding: 11px 14px;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: var(--brand-white);
+      border: 1px solid rgba(94, 71, 54, 0.24);
       border-radius: 10px;
-      color: #FFFFFF;
+      color: var(--brand-black);
       font-family: var(--font-sans);
       font-size: 13px;
+      font-weight: 500;
     }
 
     .drawer-submit-btn {
       padding: 14px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--emerald), #059669);
-      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--brand-green), var(--brand-green-mid));
+      color: var(--brand-white);
       font-weight: 800;
       font-size: 14px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 6px 20px rgba(45, 90, 67, 0.28);
+      transition: all 0.22s ease;
+    }
+    .drawer-submit-btn:hover {
+      background: var(--brand-brown);
     }
 
     .drawer-quick-links {
@@ -579,18 +625,23 @@
       gap: 6px;
       padding: 11px;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: #FFFFFF;
+      background: var(--brand-white);
+      border: 1px solid rgba(94, 71, 54, 0.22);
+      color: var(--brand-brown);
       text-decoration: none;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .drawer-quick-links a:hover {
+      background: var(--brand-green-tint);
+      border-color: var(--brand-green);
+      color: var(--brand-green);
     }
 
     /* ==========================================================================
        SK TELECOM (sktelecom.com) INTRO CARD STACK -> BENTO FLIP SPREAD STAGE
-       Triggers automatically when scroll finishes (or via quick button)
-       Cards: 안정위원장 / 추나 / 성장 / 다이어트 / 탈모 / 황제공진단
+       Harmonized with Warm Hanji Beige, Soft Brown, Crisp Black, Pure White & Green
        ========================================================================== */
     .skt-finale-stage {
       position: fixed;
@@ -620,9 +671,8 @@
       height: 112%;
       transform: translate(-50%, -50%);
       background:
-        radial-gradient(circle at 50% 38%, rgba(253, 230, 138, 0.18) 0%, rgba(16, 185, 129, 0.12) 38%, rgba(4, 15, 11, 0.94) 78%),
-        linear-gradient(180deg, rgba(5, 18, 13, 0.88) 0%, rgba(3, 12, 9, 0.96) 100%);
-      backdrop-filter: blur(18px);
+        radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.92) 0%, rgba(245, 241, 232, 0.96) 52%, rgba(230, 222, 200, 0.98) 100%);
+      backdrop-filter: blur(20px);
       z-index: 0;
       will-change: transform;
     }
@@ -644,9 +694,9 @@
       font-size: clamp(44px, 7.2vw, 96px);
       font-weight: 900;
       letter-spacing: -0.03em;
-      color: #FFFFFF;
+      color: var(--brand-black);
       white-space: nowrap;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.85), 0 0 32px rgba(253, 230, 138, 0.45);
+      text-shadow: 0 10px 36px rgba(74, 53, 37, 0.16);
       opacity: 0;
       transform: scale(1.22);
       transition: opacity 0.48s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -657,8 +707,9 @@
       margin-top: 10px;
       font-family: var(--font-mono);
       font-size: clamp(12px, 1.2vw, 15px);
+      font-weight: 700;
       letter-spacing: 0.22em;
-      color: var(--gold-bright);
+      color: var(--brand-green);
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.4s ease, transform 0.4s ease;
@@ -672,7 +723,7 @@
 
     .skt-finale-stage.phase-headline .skt-hero-headline .skt-headline-sub,
     .skt-finale-stage.phase-stack .skt-hero-headline .skt-headline-sub {
-      opacity: 0.9;
+      opacity: 0.95;
       transform: translateY(0);
     }
 
@@ -719,14 +770,14 @@
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.16em;
-      color: var(--emerald-bright);
+      color: var(--brand-green);
     }
 
     .skt-finale-main-title {
       font-family: var(--font-serif);
       font-size: clamp(22px, 2.4vw, 32px);
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--brand-black);
       letter-spacing: -0.02em;
     }
 
@@ -737,22 +788,23 @@
     }
 
     .skt-ctrl-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(253, 230, 138, 0.42);
-      color: var(--gold-bright);
+      background: var(--brand-white-glass);
+      border: 1px solid rgba(94, 71, 54, 0.28);
+      color: var(--brand-brown);
       padding: 8px 16px;
       border-radius: 999px;
       font-family: var(--font-sans);
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 4px 14px rgba(58, 42, 30, 0.06);
       transition: all 0.25s ease;
     }
 
     .skt-ctrl-btn:hover {
-      background: var(--gold);
-      color: #020D09;
-      border-color: var(--gold);
+      background: var(--brand-green);
+      color: var(--brand-white);
+      border-color: var(--brand-green);
     }
 
     /* 6-Card Bento Grid Container (mirrors sktelecom.com .hero-content-lg) */
@@ -781,14 +833,14 @@
 
     .skt-finale-stage.phase-ready .skt-card-item {
       overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 16px 38px rgba(58, 42, 30, 0.16);
+      border: 1.5px solid rgba(94, 71, 54, 0.22);
       transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
     }
 
     .skt-finale-stage.phase-ready .skt-card-item:hover {
-      border-color: rgba(253, 230, 138, 0.78);
-      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.75), 0 0 28px rgba(253, 230, 138, 0.24);
+      border-color: var(--brand-green);
+      box-shadow: 0 22px 48px rgba(45, 90, 67, 0.26), 0 0 0 2px rgba(45, 90, 67, 0.18);
       transform: translateY(-4px);
     }
 
@@ -803,8 +855,8 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.72);
-      border: 1px solid rgba(253, 230, 138, 0.35);
+      box-shadow: 0 20px 50px rgba(58, 42, 30, 0.28);
+      border: 1.5px solid rgba(94, 71, 54, 0.28);
       opacity: 0;
       transform-origin: center center;
       will-change: transform, opacity;
@@ -814,7 +866,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(4, 14, 10, 0.0) 0%, rgba(4, 14, 10, 0.04) 60%, rgba(3, 12, 9, 0.72) 100%);
+      background: linear-gradient(180deg, rgba(23, 22, 20, 0.0) 0%, rgba(23, 22, 20, 0.08) 54%, rgba(23, 22, 20, 0.78) 100%);
       transition: opacity 0.4s ease;
     }
 
@@ -860,10 +912,10 @@
       font-family: var(--font-serif);
       font-size: clamp(24px, 2.4vw, 34px);
       font-weight: 900;
-      color: #FFFFFF;
+      color: var(--brand-white);
       letter-spacing: -0.02em;
       line-height: 1.2;
-      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.95);
+      text-shadow: 0 3px 16px rgba(23, 22, 20, 0.9), 0 1px 4px rgba(23, 22, 20, 0.95);
       margin: 0;
     }
 
@@ -871,9 +923,9 @@
       font-family: var(--font-sans);
       font-size: 13px;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.86);
+      color: rgba(245, 241, 232, 0.95);
       line-height: 1.5;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 2px 10px rgba(23, 22, 20, 0.9);
     }
 
     .skt-card-actions-row {
@@ -885,32 +937,34 @@
     }
 
     .skt-card-chip {
-      padding: 5px 12px;
+      padding: 6px 13px;
       border-radius: 999px;
       font-size: 11px;
-      font-weight: 700;
-      background: rgba(16, 185, 129, 0.25);
-      border: 1px solid rgba(110, 231, 183, 0.55);
-      color: #A7F3D0;
+      font-weight: 800;
+      background: rgba(45, 90, 67, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: var(--brand-white);
+      backdrop-filter: blur(8px);
       cursor: pointer;
       transition: all 0.25s ease;
     }
 
     .skt-card-chip:hover {
-      background: var(--emerald);
-      color: #FFFFFF;
+      background: var(--brand-white);
+      border-color: var(--brand-white);
+      color: var(--brand-green);
     }
 
     .skt-card-chip.secondary {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.28);
-      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(94, 71, 54, 0.35);
+      color: var(--brand-brown);
     }
 
     .skt-card-chip.secondary:hover {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #020D09;
+      background: var(--brand-brown);
+      border-color: var(--brand-brown);
+      color: var(--brand-white);
     }
 
     @media (max-width: 1024px) {
@@ -986,8 +1040,8 @@
     </a>
 
     <div class="nav-right-actions">
-      <a href="body-explorer.html" class="btn-reserve-minimal" style="border-color: rgba(110, 231, 183, 0.75); color: #6EE7B7;" title="3D 동인(銅人) 12경맥·혈자리·질환·SCI 논문 백과사전">🧬 3D 동인(銅人) 경락·질환백과</a>
-      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(253, 230, 138, 0.65); color: #FDE68A;" title="6대 핵심 진료 카드 펼침 보기">✦ 진료카드 펼침 보기</button>
+      <a href="body-explorer.html" class="btn-reserve-minimal" style="background: var(--brand-green-tint); border-color: rgba(45, 90, 67, 0.45); color: var(--brand-green);" title="3D 동인(銅人) 12경맥·혈자리·질환·SCI 논문 백과사전">🧬 3D 동인(銅人) 경락·질환백과</a>
+      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(94, 71, 54, 0.35); color: var(--brand-brown);" title="6대 핵심 진료 카드 펼침 보기">✦ 진료카드 펼침 보기</button>
       <button type="button" class="btn-bgm-toggle" id="btn-bgm-toggle" title="시네마틱 BGM 켜기/끄기">
         <span class="bgm-eq-bars">
           <span></span><span></span><span></span><span></span>
@@ -1013,7 +1067,7 @@
 
     <div class="skt-finale-header" style="justify-content: flex-end;">
       <div class="skt-finale-controls">
-        <a href="body-explorer.html" class="skt-ctrl-btn" style="background: #2D5A43; border-color: #6EE7B7; color: #FFFFFF; text-decoration: none; font-weight: 800;">🧬 3D 인체모형 통합 의학·논문 정보 페이지 ↗</a>
+        <a href="body-explorer.html" class="skt-ctrl-btn" style="background: var(--brand-green); border-color: var(--brand-green); color: #FFFFFF; text-decoration: none; font-weight: 800;">🧬 3D 인체모형 통합 의학·논문 정보 페이지 ↗</a>
         <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
         <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 3D 스토리 다시 스크롤</button>
       </div>
@@ -1163,7 +1217,7 @@
         <span class="drawer-top-title">바른한의원 대전본점 1:1 진료 및 비대면 처방 예약</span>
         <button type="button" class="drawer-close-btn" id="btn-close-reserve">닫기 ✕</button>
       </div>
-      <p style="font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.6;">
+      <p style="font-size: 13px; color: var(--brand-brown-soft); line-height: 1.6; font-weight: 500;">
         생애주기별 맞춤 진료(난임·소아면역·키성장·비만·탈모·추나통증·황제공진단) 예약을 남겨주시면 전담 상담실장이 빠르게 안내해 드립니다.
       </p>
       <form id="quick-reserve-form" style="display:flex; flex-direction:column; gap:14px;">

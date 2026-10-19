@@ -2559,110 +2559,339 @@ function buildPageHtml(page) {
       color: #FFFFFF;
     }
 
-    /* Warm Hanji / Beige / Espresso Brown / Botanical Sage Green Mode (Default for Idea A) */
+    /* ======================================================================
+       5-COLOR BRAND HARMONY SYSTEM (Default: Beige, Brown, Black, White, Green)
+       - 베이지 (신뢰감): #F5F1E8 / #EFE9DC / #E6DEC8
+       - 브라운 (부드러움): #4A3525 / #5E4736 / #8A725E
+       - 블랙 (진실): #171614 / #23201C
+       - 화이트 (투명): #FFFFFF / rgba(255, 255, 255, 0.88)
+       - 그린 (자연): #2D5A43 / #3D7357 / #E8F2EC
+       ====================================================================== */
     body.theme-hanji {
       --bg-dark: #F5F1E8;
-      --bg-panel: rgba(251, 248, 241, 0.97);
-      --text-main: #231A12;
-      --text-sub: #4A382B;
+      --bg-panel: rgba(255, 255, 255, 0.88);
+      --accent: #2D5A43;
+      --accent-light: #3D7357;
+      --secondary: #4A3525;
+      --gold: #5E4736;
+      --gold-light: #4A3525;
+      --emerald: #2D5A43;
+      --text-main: #171614;
+      --text-sub: #4A3525;
       --text-muted: #786250;
-      --border-subtle: rgba(94, 71, 54, 0.16);
+      --border-subtle: rgba(94, 71, 54, 0.18);
+      --border-gold: rgba(94, 71, 54, 0.26);
       background-color: #F5F1E8;
-      color: #231A12;
+      color: #171614;
     }
     body.theme-hanji .ambient-bg {
       background:
-        radial-gradient(circle at 20% 24%, rgba(45, 90, 67, 0.08) 0%, transparent 50%),
-        linear-gradient(135deg, #FBF8F2 0%, #F5F1E8 55%, #EBE4D5 100%);
+        radial-gradient(circle at 18% 22%, rgba(45, 90, 67, 0.08) 0%, transparent 48%),
+        radial-gradient(circle at 82% 76%, rgba(94, 71, 54, 0.08) 0%, transparent 52%),
+        linear-gradient(135deg, #FAF7F0 0%, #F5F1E8 55%, #E8DFCE 100%);
     }
     body.theme-hanji #header {
-      background: rgba(251, 248, 241, 0.94);
-      border-bottom: 1px solid rgba(94, 71, 54, 0.16);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(94, 71, 54, 0.18);
+      box-shadow: 0 4px 20px rgba(58, 42, 30, 0.05);
     }
     body.theme-hanji .brand-logo,
     body.theme-hanji #project-details-title {
-      color: #231A12;
+      color: #171614;
+    }
+    body.theme-hanji .brand-logo-mark {
+      background: #2D5A43;
+      box-shadow: 0 0 10px rgba(45, 90, 67, 0.45);
+    }
+    body.theme-hanji #project-details-header-info {
+      background: #F5F1E8;
+      border: 1px solid rgba(94, 71, 54, 0.22);
+      color: #4A3525;
     }
     body.theme-hanji .meta-eyebrow {
       color: #2D5A43;
     }
     body.theme-hanji .meta-subtitle-en {
-      color: #6E533E;
+      color: #5E4736;
+      opacity: 0.95;
     }
     body.theme-hanji .back-pill-btn,
     body.theme-hanji .clinic-tab {
-      color: #3A2A1E;
-      background: rgba(58, 42, 30, 0.05);
-      border-color: rgba(94, 71, 54, 0.2);
+      color: #4A3525;
+      background: rgba(245, 241, 232, 0.85);
+      border-color: rgba(94, 71, 54, 0.22);
+    }
+    body.theme-hanji .back-pill-btn:hover,
+    body.theme-hanji .clinic-tab:hover {
+      background: #E8F2EC;
+      color: #2D5A43;
+      border-color: #2D5A43;
     }
     body.theme-hanji .clinic-tab.active {
       background: #2D5A43;
       border-color: #2D5A43;
       color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.22);
+    }
+    body.theme-hanji .header-talk-btn {
+      background: linear-gradient(135deg, #2D5A43 0%, #3D7357 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(45, 90, 67, 0.24);
+    }
+    body.theme-hanji .header-talk-btn:hover {
+      background: #4A3525;
+      box-shadow: 0 6px 18px rgba(74, 53, 37, 0.28);
+    }
+    body.theme-hanji #project-details-meta {
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(24px);
+      border-right: 1px solid rgba(94, 71, 54, 0.18);
+      scrollbar-color: rgba(94, 71, 54, 0.28) transparent;
     }
     body.theme-hanji #project-details-desc p:first-child {
-      color: #3A2A1E;
+      color: #23201C;
       font-weight: 500;
     }
-    body.theme-hanji .empathy-checklist-card,
-    body.theme-hanji .live-plate-docent {
-      background: #FFFFFF;
-      border-color: rgba(94, 71, 54, 0.2);
-      box-shadow: 0 8px 24px rgba(42, 30, 21, 0.05);
-    }
-    body.theme-hanji .empathy-checklist-title,
-    body.theme-hanji .docent-step-badge {
-      color: #2D5A43;
-    }
-    body.theme-hanji .empathy-check-item {
-      background: #F8F5EE;
-      border-color: rgba(94, 71, 54, 0.16);
-    }
-    body.theme-hanji .empathy-check-text,
-    body.theme-hanji .docent-active-caption {
-      color: #231A12;
-      font-weight: 600;
-    }
-    body.theme-hanji .empathy-diagnosis-box {
-      background: rgba(45, 90, 67, 0.08);
-      border-left-color: #2D5A43;
-      color: #1E3F2E;
-    }
-    body.theme-hanji #project-details-launch-cta {
-      background: #2D5A43;
-      border-color: #2D5A43;
-      color: #FFFFFF;
-    }
-    body.theme-hanji #project-details-launch-cta:hover {
-      background: #1E3F2E;
-      color: #FFFFFF;
-    }
     body.theme-hanji .detail-clinical-trust-bar {
-      background: rgba(45, 90, 67, 0.07);
-      border-color: rgba(45, 90, 67, 0.24);
+      background: #F5F1E8;
+      border: 1px solid rgba(94, 71, 54, 0.2);
     }
     body.theme-hanji .detail-trust-seal {
       background: #FFFFFF;
+      border: 1px solid rgba(94, 71, 54, 0.12);
     }
     body.theme-hanji .detail-trust-seal-num {
       color: #2D5A43;
     }
     body.theme-hanji .detail-trust-seal-label {
-      color: #231A12;
+      color: #171614;
+    }
+    body.theme-hanji .inline-scroll-ba-card {
+      background: #FFFFFF;
+      border: 1.5px solid rgba(94, 71, 54, 0.22);
+      box-shadow: 0 10px 26px rgba(58, 42, 30, 0.07);
+    }
+    body.theme-hanji .inline-scroll-ba-title {
+      color: #171614;
+    }
+    body.theme-hanji .inline-scroll-ba-pct {
+      background: #E8F2EC;
+      border-color: rgba(45, 90, 67, 0.38);
+      color: #2D5A43;
+    }
+    body.theme-hanji .inline-scroll-ba-foot {
+      color: #5E4736;
+      font-weight: 600;
+    }
+    body.theme-hanji .empathy-checklist-card,
+    body.theme-hanji .live-plate-docent {
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.22);
+      box-shadow: 0 8px 24px rgba(58, 42, 30, 0.06);
+    }
+    body.theme-hanji .empathy-checklist-title,
+    body.theme-hanji .docent-step-badge {
+      color: #2D5A43;
+    }
+    body.theme-hanji .empathy-count-badge {
+      background: #F5F1E8;
+      border-color: rgba(94, 71, 54, 0.26);
+      color: #4A3525;
+    }
+    body.theme-hanji .empathy-count-badge.active {
+      background: #2D5A43;
+      border-color: #2D5A43;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .empathy-check-item {
+      background: #F8F5EE;
+      border-color: rgba(94, 71, 54, 0.16);
+    }
+    body.theme-hanji .empathy-check-item:hover {
+      background: #EFE9DC;
+      border-color: rgba(94, 71, 54, 0.3);
+    }
+    body.theme-hanji .empathy-check-item.checked {
+      background: #E8F2EC;
+      border-color: #2D5A43;
+      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.12);
+    }
+    body.theme-hanji .empathy-check-box {
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.36);
+    }
+    body.theme-hanji .empathy-check-item.checked .empathy-check-box {
+      background: #2D5A43;
+      border-color: #2D5A43;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .empathy-check-text,
+    body.theme-hanji .docent-active-caption {
+      color: #171614;
+      font-weight: 600;
+    }
+    body.theme-hanji .empathy-check-item.checked .empathy-check-text {
+      color: #171614;
+      font-weight: 800;
+    }
+    body.theme-hanji .empathy-diagnosis-box {
+      background: #E8F2EC;
+      border-left-color: #2D5A43;
+      color: #171614;
+      font-weight: 500;
+    }
+    body.theme-hanji #project-details-launch-cta {
+      background: linear-gradient(135deg, #2D5A43, #3D7357);
+      border-color: #2D5A43;
+      color: #FFFFFF;
+      box-shadow: 0 8px 22px rgba(45, 90, 67, 0.24);
+    }
+    body.theme-hanji #project-details-launch-cta:hover {
+      background: #4A3525;
+      border-color: #4A3525;
+      color: #FFFFFF;
+    }
+    body.theme-hanji #project-details-launch-cta-dot {
+      background: #FFFFFF;
+      box-shadow: 0 0 8px #FFFFFF;
+    }
+    body.theme-hanji .extra-detail-link {
+      background: #F5F1E8;
+      border-color: rgba(94, 71, 54, 0.24);
+      color: #4A3525;
+      font-weight: 700;
+    }
+    body.theme-hanji .extra-detail-link:hover {
+      background: #4A3525;
+      border-color: #4A3525;
+      color: #FFFFFF;
     }
     body.theme-hanji .header-vis-btn {
-      background: #3A2A1E;
+      background: #4A3525;
       color: #FFFFFF;
-      border-color: #3A2A1E;
+      border-color: #4A3525;
     }
     body.theme-hanji .header-ba-btn {
-      background: rgba(45, 90, 67, 0.12);
+      background: #E8F2EC;
       border-color: rgba(45, 90, 67, 0.4);
       color: #2D5A43;
     }
     body.theme-hanji .detail-ba-trigger-bar {
-      background: #231A12;
-      color: #FDE68A;
+      background: #4A3525;
+      color: #F5F1E8;
+    }
+    body.theme-hanji .project-details-item,
+    body.theme-hanji .project-details-item.is-clean-plate {
+      border: 1.5px solid rgba(94, 71, 54, 0.24);
+      box-shadow: 0 24px 60px rgba(58, 42, 30, 0.18);
+    }
+    body.theme-hanji .project-details-item.is-active-plate,
+    body.theme-hanji .project-details-item.is-clean-plate.is-active-plate {
+      border-color: #2D5A43;
+      box-shadow: 0 28px 72px rgba(45, 90, 67, 0.22), 0 0 0 2px rgba(45, 90, 67, 0.16);
+    }
+    body.theme-hanji .clean-step-label {
+      background: rgba(45, 90, 67, 0.9);
+      color: #FFFFFF;
+      padding: 4px 11px;
+      border-radius: 999px;
+      opacity: 1;
+    }
+    body.theme-hanji .clean-spec-tag {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(94, 71, 54, 0.28);
+      color: #171614;
+      font-weight: 700;
+    }
+    body.theme-hanji .sci-stat-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(94, 71, 54, 0.26);
+      box-shadow: 0 10px 28px rgba(23, 22, 20, 0.18);
+    }
+    body.theme-hanji .sci-stat-num {
+      color: #2D5A43;
+    }
+    body.theme-hanji .sci-stat-label {
+      color: #171614;
+    }
+    body.theme-hanji .sci-bar-track {
+      background: rgba(94, 71, 54, 0.16);
+    }
+    body.theme-hanji .sci-bar-fill {
+      background: linear-gradient(90deg, #2D5A43, #4A3525);
+    }
+    body.theme-hanji #project-details-preview {
+      border: 1.5px solid rgba(94, 71, 54, 0.28);
+      box-shadow: 0 24px 60px rgba(58, 42, 30, 0.2);
+    }
+    body.theme-hanji .next-portal-eyebrow {
+      color: #E8F2EC;
+    }
+    body.theme-hanji #project-details-preview-title {
+      color: #FFFFFF;
+    }
+    body.theme-hanji .next-portal-desc {
+      color: rgba(245, 241, 232, 0.92);
+    }
+    body.theme-hanji #project-details-preview-footer-text {
+      color: #F5F1E8;
+    }
+    body.theme-hanji #project-details-preview-footer-bar-inner {
+      background: #2D5A43;
+    }
+    body.theme-hanji #scroll-indicator {
+      background: rgba(94, 71, 54, 0.15);
+    }
+    body.theme-hanji #scroll-indicator-bar {
+      background: linear-gradient(90deg, #2D5A43, #4A3525);
+      box-shadow: none;
+    }
+    body.theme-hanji #consult-modal {
+      background: rgba(23, 22, 20, 0.62);
+    }
+    body.theme-hanji .consult-modal-card {
+      background: #F5F1E8;
+      border: 1.5px solid rgba(94, 71, 54, 0.28);
+      box-shadow: 0 30px 80px rgba(23, 22, 20, 0.32);
+      color: #171614;
+    }
+    body.theme-hanji .consult-modal-title {
+      color: #171614;
+    }
+    body.theme-hanji .consult-modal-sub {
+      color: #5E4736;
+    }
+    body.theme-hanji .modal-checked-summary {
+      background: #E8F2EC;
+      border-color: rgba(45, 90, 67, 0.35);
+      color: #2D5A43;
+      font-weight: 600;
+    }
+    body.theme-hanji .modal-form-group label {
+      color: #4A3525;
+    }
+    body.theme-hanji .modal-form-group input,
+    body.theme-hanji .modal-form-group textarea {
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.24);
+      color: #171614;
+    }
+    body.theme-hanji .modal-submit-btn {
+      background: linear-gradient(135deg, #2D5A43, #3D7357);
+      box-shadow: 0 6px 18px rgba(45, 90, 67, 0.26);
+    }
+    body.theme-hanji .consult-action-item {
+      background: #FFFFFF;
+      border-color: rgba(94, 71, 54, 0.22);
+      color: #4A3525;
+    }
+    body.theme-hanji .consult-action-item:hover {
+      background: #2D5A43;
+      border-color: #2D5A43;
+      color: #FFFFFF;
     }
 
     /* High-Visibility Large Text Mode for Detail Pages */

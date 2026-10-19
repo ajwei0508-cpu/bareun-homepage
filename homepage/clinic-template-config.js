@@ -29,8 +29,17 @@ window.CLINIC_TEMPLATE_CONFIG = {
     { day: '정기휴진', time: '매주 일요일' }
   ],
 
-  // 4. 기본 테마 & 시안성 프리셋 ('dark-royal' | 'warm-hanji' | 'high-visibility')
-  defaultTheme: 'dark-royal',
+  // 4. 기본 테마 & 시안성 프리셋 ('warm-hanji' | 'dark-royal' | 'high-visibility')
+  defaultTheme: 'warm-hanji',
+
+  // 4-1. 바른한의원 5대 시그니처 브랜드 컬러 팔레트 (심리학 기반 하이엔드 컬러 시스템)
+  brandPalette: {
+    beige: { hex: '#F5F1E8', subHex: '#EFE9DC', meaning: '신뢰감 (Trust)', role: '웜 한지 에디토리얼 배경 및 공간 베이스' },
+    brown: { hex: '#4A3525', subHex: '#5E4736', meaning: '부드러움 (Softness)', role: '부드러운 프레임, 보더, 서브 타이틀 및 온기 있는 그림자' },
+    black: { hex: '#171614', subHex: '#23201C', meaning: '진실 (Truth)', role: '정직한 진료를 상징하는 고대비 본문·헤드라인 타이포그래피' },
+    white: { hex: '#FFFFFF', glass: 'rgba(255, 255, 255, 0.88)', meaning: '투명 (Transparency)', role: '투명한 탕전과 진료를 상징하는 글래스모피즘 카드·헤더' },
+    green: { hex: '#2D5A43', subHex: '#3D7357', tint: '#E8F2EC', meaning: '자연 (Nature)', role: '자연 치유력과 생명력을 상징하는 포인트·CTA·활성 배지' }
+  },
 
   // 5. 환자 안심 5대 임상 신뢰 지표 (Clinical Trust Stack)
   trustMetrics: [
