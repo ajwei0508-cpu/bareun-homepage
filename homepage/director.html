@@ -5095,6 +5095,279 @@
         line-height: 1.3;
       }
     }
+
+    /* ============================================================================
+       DIET SINGLE-STAGE FULL CARDS (3 CARDS SPLIT · TOP TEXT REMOVED)
+       & DIET HUMAN BODY MODEL + EXTRA INFO CARD & ULTRA-SMALL HAIRLOSS CARD
+       ============================================================================ */
+    .project-details-item.is-diet-single-stage-plate .efficacy-visual-frame.is-full-stage-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+    }
+    .project-details-item.is-diet-single-stage-plate .zap-pulse-core {
+      width: 160px;
+      height: 160px;
+    }
+    .project-details-item.is-diet-single-stage-plate .zap-wave-ring {
+      width: 110px;
+      height: 110px;
+    }
+    .project-details-item.is-diet-single-stage-plate .combustion-fire-glow {
+      width: 260px;
+      height: 260px;
+    }
+    .project-details-item.is-diet-single-stage-plate .fat-contract-ring {
+      width: 280px;
+      height: 280px;
+    }
+
+    /* 8th Card: Human Body Model Image + Additional Diet Info */
+    #project-details-preview.is-diet-body-extra-card {
+      width: min(74vw, 1080px);
+      max-width: 1080px;
+      height: 81vh;
+      max-height: 730px;
+      padding: 20px 24px;
+      background: linear-gradient(155deg, #15181C 0%, #0E1014 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 30px 85px rgba(0, 0, 0, 0.78);
+    }
+    .diet-body-extra-layout {
+      display: grid;
+      grid-template-columns: 44% 1fr;
+      gap: 20px;
+      width: 100%;
+      height: 100%;
+      align-items: stretch;
+    }
+    .diet-body-model-visual-col {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #090C10;
+      border: 1.5px solid rgba(110, 231, 183, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
+    }
+    .diet-body-model-clear-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      padding: 8px;
+      transition: transform 0.35s ease;
+    }
+    .diet-body-model-visual-col:hover .diet-body-model-clear-img {
+      transform: scale(1.03);
+    }
+    .diet-body-model-zoom-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 4;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(12, 16, 22, 0.85);
+      border: 1px solid rgba(253, 230, 138, 0.5);
+      color: #FDE68A;
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .diet-body-extra-info-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
+      overflow-y: auto;
+    }
+    .diet-extra-head {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .diet-extra-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #A7F3D0;
+      font-size: 0.68rem;
+      font-weight: 800;
+    }
+    .diet-extra-main-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.32rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 0;
+    }
+    .diet-extra-main-desc {
+      font-size: 0.78rem;
+      color: rgba(248, 250, 252, 0.82);
+      line-height: 1.42;
+      margin: 0;
+      word-break: keep-all;
+    }
+    .diet-extra-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      flex: 1;
+    }
+    .diet-extra-info-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 13px;
+      padding: 11px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .dei-badge {
+      font-size: 0.64rem;
+      font-weight: 800;
+      color: #FDE68A;
+      letter-spacing: 0.02em;
+    }
+    .dei-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.28;
+    }
+    .dei-desc {
+      font-size: 0.72rem;
+      color: rgba(248, 250, 252, 0.80);
+      line-height: 1.42;
+      margin: 0;
+      word-break: keep-all;
+    }
+    .diet-extra-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .diet-extra-explorer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2D5A43 0%, #3D7357 100%);
+      border: 1px solid rgba(167, 243, 208, 0.45);
+      color: #FFFFFF;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .diet-extra-explorer-btn:hover {
+      transform: translateY(-2px);
+      background: #4A3525;
+    }
+
+    /* Ultra-Small Hairloss Card at Bottom-Right (우측 하단 아주 작은 탈모카드) */
+    .diet-tiny-hairloss-card,
+    #floating-bottom-right-hair-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 10px 5px 5px;
+      border-radius: 999px;
+      background: rgba(18, 22, 28, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #FFFFFF;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+      transition: all 0.22s ease;
+    }
+    #floating-bottom-right-hair-card {
+      position: fixed;
+      right: 16px;
+      bottom: 12px;
+      z-index: 98;
+      transform: scale(0.92);
+      transform-origin: bottom right;
+    }
+    .diet-tiny-hairloss-card:hover,
+    #floating-bottom-right-hair-card:hover {
+      background: #2D5A43;
+      border-color: #FEF08A;
+      transform: scale(0.96) translateY(-2px);
+    }
+    .dth-thumb,
+    .fbr-hair-thumb {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #FDE68A;
+      flex-shrink: 0;
+    }
+    .dth-text,
+    .fbr-hair-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      padding-right: 2px;
+    }
+    .dth-text small,
+    .fbr-hair-info small {
+      font-size: 0.54rem;
+      font-weight: 700;
+      color: #A7F3D0;
+      letter-spacing: 0.02em;
+    }
+    .dth-text strong,
+    .fbr-hair-info strong {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #FEF08A;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1024px) {
+      #project-details-preview.is-diet-body-extra-card {
+        width: 92vw;
+        height: 76vh;
+        padding: 12px 14px;
+      }
+      .diet-body-extra-layout {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        overflow-y: auto;
+      }
+      .diet-body-model-visual-col {
+        min-height: 185px;
+        max-height: 220px;
+      }
+      .diet-extra-info-grid {
+        grid-template-columns: 1fr;
+      }
+      #floating-bottom-right-hair-card {
+        right: 10px;
+        bottom: 8px;
+        transform: scale(0.84);
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -5412,6 +5685,7 @@
                 <div class="clean-spec-tags">
                   <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
+                  <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
                 </div>
                 <h2 class="plate-caption-title">안정위 대표원장 — 치료 전·후 비교</h2>
                 <p class="plate-caption-sub">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
@@ -5420,7 +5694,8 @@
           </div>
         </article>
 
-        <!-- LAST CARD: 3D Human Body Model Portal -->
+        <!-- LAST CARD: 3D Human Body Model & Diet Additional Information Card -->
+        
         <article id="project-details-preview" class="body-model-last-card">
           <img class="next-portal-bg" src="illust_syncope_autonomic.jpg" alt="인체모형으로 내 체질·원인 연결하기">
           <div class="next-portal-scrim"></div>
@@ -5455,6 +5730,8 @@
       </div>
     </section>
   </main>
+
+  
 
   <div id="scroll-indicator">
     <div id="scroll-indicator-bar"></div>
@@ -6618,6 +6895,58 @@
           ctx.fillStyle = '#BAE6FD';
           ctx.font = '800 13px Pretendard, sans-serif';
           ctx.fillText('❄️ 수승화강 두피 청열 · 학술 검증 모근 보호', 26, 76);
+        } else if (type === 'muscle-diet-core-fx') {
+          // CARD 01 (Diet): 근육다이어트 — 운동 없이 근육량 ▲ 상승 · 뱃살지방 ▼ 분해 모션
+          const wx = w * 0.52, wy = h * 0.54;
+          ctx.save();
+          // Scanning metabolic laser wave across the abdomen
+          const scanY = h * (0.28 + 0.42 * (0.5 + 0.5 * Math.sin(timeSec * 2.1)));
+          const scanGrad = ctx.createLinearGradient(0, scanY - 28, 0, scanY + 28);
+          scanGrad.addColorStop(0, 'rgba(217, 119, 6, 0)');
+          scanGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.34)');
+          scanGrad.addColorStop(1, 'rgba(217, 119, 6, 0)');
+          ctx.fillStyle = scanGrad;
+          ctx.fillRect(w * 0.16, scanY - 28, w * 0.68, 56);
+
+          // Concentric abdominal lipolysis & muscle activation rings
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.85 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(wx, wy, 18 + p * 74, 0, Math.PI * 2);
+            ctx.strokeStyle = r % 2 === 0
+              ? 'rgba(251, 191, 36, ' + ((1 - p) * 0.68).toFixed(2) + ')'
+              : 'rgba(52, 211, 153, ' + ((1 - p) * 0.58).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+
+          // Floating metabolic lipolysis sparks rising upward
+          for (let s = 0; s < 10; s++) {
+            const sp = (timeSec * 0.72 + s * 0.19) % 1;
+            const sx = wx + Math.sin(s * 2.1 + timeSec * 1.4) * (w * 0.22);
+            const sy = wy + 44 - sp * 110;
+            ctx.beginPath();
+            ctx.arc(sx, sy, 2.2 + (1 - sp) * 2.4, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(253, 224, 71, ' + ((1 - sp) * 0.82).toFixed(2) + ')';
+            ctx.fill();
+          }
+
+          const tagW = Math.min(w - 28, 340), tagH = 32;
+          const tx = Math.max(14, Math.min(w - tagW - 14, wx - tagW * 0.5));
+          const ty = Math.max(58, wy - 88);
+          ctx.fillStyle = 'rgba(18, 13, 9, 0.88)';
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.82)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FEF3C7';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🔥 근육다이어트 : 운동 없이 근육량 ▲ 상승 · 뱃살지방 ▼ 분해', tx + tagW * 0.5, ty + 20.5);
+          ctx.textAlign = 'left';
+          ctx.restore();
         } else if (type === 'belt-zipper-morning-fx' || type === 'metabolic-burn' || type === 'sline-curtain') {
           // STORY 01 (Diet): Waistline Zipper Tension Pulse & Last Belt Hole Callout
           const wx = w * 0.54, wy = h * 0.62;
@@ -8173,7 +8502,8 @@
         progressBar.style.width = (scrollNorm * 100).toFixed(1) + '%';
 
         if (typeof window.applyInlineScrollBaPct === 'function') {
-          const autoBaPct = 8 + scrollNorm * 88;
+          const autoWave = 0.5 - 0.5 * Math.cos(timeSec * 1.85);
+          const autoBaPct = 6 + autoWave * 88;
           window.applyInlineScrollBaPct(autoBaPct);
         }
         if (typeof window.syncIdeaA3DScroll === 'function') {

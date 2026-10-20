@@ -418,7 +418,7 @@ const PAGES = [
   },
 
   // ==========================================================================
-  // 바른 다이어트 · 식욕ZERO (diet-zero.html) — [학술 논문 검수 기반 대사·내장지방 해독]
+  // 바른 다이어트 · 식욕ZERO (diet-zero.html) — [운동 없이 근육량을 올려 뱃살지방을 분해하는 근육다이어트]
   // ==========================================================================
   {
     file: 'diet-zero.html',
@@ -434,15 +434,15 @@ const PAGES = [
       glowB: 'rgba(212, 175, 55, 0.09)'
     },
     meta: {
-      eyebrow: 'METABOLIC DETOX DIET · 학술 논문 검증 한방 대사·체형 클리닉',
-      title: '바른 다이어트 · 식욕ZERO',
-      subtitleEn: 'Evidence-Based Visceral Fat Lipolysis & Metabolic Reset',
+      eyebrow: 'MUSCLE & METABOLIC DIET · 운동 없이 근육량을 올려 뱃살지방을 분해하는 근육다이어트',
+      title: '바른 근육다이어트 · 식욕ZERO',
+      subtitleEn: 'Muscle-Up & Belly Fat Lipolysis Without Exhausting Exercise',
       desc: [
-        '무작정 굶는 요요를 끊어내고, 차갑게 꺼진 복부 대사 화로를 깨워 내장지방부터 비워냅니다. 국제 학술 논문을 정밀 검수하여 기전이 입증된 대사 다이어트 치료법을 시행합니다.'
+        '운동 없이 근육량을 올려 뱃살지방을 분해하는 바른 근육다이어트입니다. 무작정 굶는 요요를 끊어내고 기초대사 화로를 깨워 내장지방부터 스스로 타오르게 만듭니다.'
       ],
-      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 대사 진단 및 감량 계획을 브리핑해 드립니다.',
+      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 근육·대사 진단 및 감량 계획을 브리핑해 드립니다.',
       ctaText: '내 대사 상태 원장님께 진단받고 감량 계획 세우기',
-      reserveProgram: '성인 비만·다이어트 클리닉',
+      reserveProgram: '성인 비만·근육다이어트 클리닉',
       checklistTitle: '대사 저하 · 내장지방 자가 진단 체크리스트',
       checklistItems: [
         '[복부 나잇살] 예전보다 적게 먹어도 살이 안 빠지고 아랫배와 옆구리만 찐다.',
@@ -463,105 +463,115 @@ const PAGES = [
     plates: [
       {
         type: 'motion-story',
-        indexPill: 'STORY · 안 빠지는 나잇살의 원인',
-        metricPill: '복부 대사 정체 · 야식 · 부종 신호',
-        title: "적게 먹어도 잠기지 않는 지퍼, 의지가 아닌 '대사의 문제'입니다",
-        sub: '꺼진 기초대사와 야간 가짜 식욕, 만성 부종부터 잡아야 살이 빠집니다.',
-        caption: '[대사 다이어트 노트] 무리한 절식이 아닌, 떨어진 기초대사량과 배출 기능을 회복하는 것이 감량의 첫걸음입니다.',
+        fullscreen: true,
+        indexPill: 'CORE MOTION · 바른 근육다이어트',
+        metricPill: '운동 없이 근육량 ▲ · 뱃살지방 집중 분해 ▼',
+        title: "운동 없이 근육량을 올려 뱃살지방을 분해하는 다이어트 — '근육다이어트'",
+        sub: '억지로 굶거나 힘든 운동 없이, 체내 근육량을 끌어올려 기초대사 스스로 뱃살과 내장지방을 태우게 만드는 핵심 다이어트입니다.',
+        caption: '[근육다이어트 핵심 원리] 운동 없이 근육량을 높여 기초대사량을 활성화하고 복부 뱃살지방을 집중 분해합니다.',
         frames: [
           'detail_diet_story1_closet_zipper.jpg?v=belt1',
-          'empathy-metabolism-waist.jpg',
-          'empathy-night-calm.jpg',
-          'empathy-leg-edema.jpg'
+          'detail_diet_story3_brazier_metabolism_3d.jpg',
+          'empathy-metabolism-waist.jpg'
         ],
-        thumbs: [
-          { img: 'detail_diet_story1_closet_zipper.jpg?v=belt1', label: '복부 지퍼 정체' },
-          { img: 'empathy-metabolism-waist.jpg', label: '아랫배 나잇살' },
-          { img: 'empathy-night-calm.jpg', label: '야식·가짜 식욕' },
-          { img: 'empathy-leg-edema.jpg', label: '만성 하체 부종' }
-        ],
-        fx: 'belt-zipper-morning-fx',
-        durationSec: 6.4
+        fx: 'muscle-diet-core-fx',
+        durationSec: 6.0
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 굶는 다이어트와 요요 단절',
-        title: "무작정 굶으면 지방 대신 '근육과 수분'만 빠져나갑니다",
-        sub: '포만감 호르몬(렙틴) 저항성을 회복해 억지로 참는 고통 없이 요요를 끊습니다.',
-        caption: '[대사 다이어트 노트] 포만감 호르몬(렙틴) 저항성을 개선하여 억지로 참는 고통 없이 자연스러운 소식을 유도합니다.',
-        imgSrc: 'detail_diet_story2_starvation_yoyo.jpg?v=belt1',
-        thumbs: [
-          { img: 'detail_diet_story2_starvation_yoyo.jpg?v=belt1', label: '절식·근손실 함정' },
-          { img: 'detail_diet_story2_scale_yoyo_trap.jpg', label: '반복되는 요요 차단' },
-          { img: 'detail_diet_story1_midnight_fridge.jpg', label: '야간 폭식 진정' }
-        ]
+        title: "무작정 굶으면 지방 대신 '근육과 수분'만 빠집니다",
+        sub: '근손실로 기초대사가 무너지는 악순환을 끊고, 근육량을 지켜 요요 없는 감량을 완성합니다.',
+        caption: '[요요 단절 핵심] 굶는 다이어트로 인한 근손실을 막고 기초대사를 지키는 것이 핵심입니다.',
+        imgSrc: 'detail_diet_story2_starvation_yoyo.jpg?v=belt1'
       },
       {
-        type: 'diet-3stage-motion',
+        type: 'diet-single-stage',
+        stage: 1,
         fullscreen: true,
-        stepLabel: 'STORY · 3가지 핵심 작용 모션 메커니즘',
-        title: "식욕 중추 안정 · 심부 체지방 분해 · 붓기 독소 완화 '3단계 시크릿 메커니즘'",
-        sub: '인위적인 화학 억제제가 아닙니다. 뇌 식욕 신호 차단, 심부 발열 지방 연소, 수독 배출 슬림 축소의 3단계 작용이 입체적으로 작동합니다.',
-        caption: '[3단계 시크릿 메커니즘] 1단계 식욕 중추 안정(뇌 신호 차단) ➔ 2단계 심부 체지방 분해(열역학 연소) ➔ 3단계 붓기·독소 완화(림프 수독 배출)가 유기적으로 연결됩니다.'
+        title: "1단계 · 식욕 중추 안정 — '가짜 배고픔과 야식 본능 차단'",
+        sub: '과흥분된 뇌 식욕 신호를 안정시켜 억지로 참는 고통 없이 자연스러운 포만감을 유도합니다.',
+        caption: '[1단계 식욕 중추 안정] 시상하부 가짜 배고픔 신호를 진정시켜 자연스러운 소식을 돕습니다.'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 2,
+        fullscreen: true,
+        title: "2단계 · 심부 체지방 분해 — '근육 대사열로 뱃살 집중 연소'",
+        sub: '근육량과 심부 체온을 끌어올려 운동 없이도 뱃살과 내장지방을 스스로 태우는 체질로 전환합니다.',
+        caption: '[2단계 심부 체지방 분해] 근육 대사열과 갈색지방을 활성화해 고착된 뱃살·내장지방을 태웁니다.'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 3,
+        fullscreen: true,
+        title: "3단계 · 붓기 & 독소 완화 — '림프 순환 및 체내 수독 배출'",
+        sub: '정체된 수분 대사와 림프 순환을 열어 만성 부종과 혈관 속 노폐물(담음·어혈)을 말끔히 비워냅니다.',
+        caption: '[3단계 붓기 & 독소 완화] 림프 순환을 촉진하여 아침 부종과 체내 독소를 빠르게 배출합니다.'
       },
       {
         type: 'diet-tele-video',
         fullscreen: true,
-        stepLabel: 'STORY · 비대면 1:1 진료 & 안심 특급 배송 가이드 영상',
-        title: "내원 없이 집에서 받는 '1:1 대표원장 전화 진료 & 전국 안심 직배송'",
-        sub: '온라인 설문 ➔ 대표원장 1:1 전화 진료 ➔ 원내 맞춤 탕전 ➔ 우체국/CJ 안심 특급 배송까지 집에서 편하게 받아보세요.',
-        caption: '[비대면 진료 & 배송 가이드] 바쁜 일상 속 전국 어디서나 안심하고 진료받으실 수 있도록 대전본점 대표원장이 직접 전화 상담 후 직배송합니다.'
+        title: "내원 없이 집에서 받는 '1:1 대표원장 전화 진료 & 전국 직배송'",
+        sub: '온라인 문진 ➔ 대표원장 1:1 전화 진료 ➔ 원내 맞춤 탕전 ➔ 전국 안심 특급 배송으로 간편하게 처방받으세요.',
+        caption: '[비대면 진료 & 배송 가이드] 전국 어디서나 대표원장 1:1 전화 상담 후 맞춤 탕전하여 직배송합니다.'
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 체질별 정밀 진맥 & 무부작용 맞춤 한약',
-        title: "손 떨림·불면 걱정 없이 '편안하게 비워내는' 체질 맞춤 처방",
-        sub: '원장 진맥과 인바디 분석으로 근육은 지키고 체지방과 부종만 골라 뺍니다.',
-        caption: '[대사 다이어트 노트] 심장 부담 없이 자연스러운 포만감과 맑은 컨디션을 유지하는 대표원장 맞춤 처방입니다.',
-        imgSrc: 'detail_diet_story4_inbody_pulse_herb.jpg?v=belt1',
-        thumbs: [
-          { img: 'detail_diet_story4_inbody_pulse_herb.jpg?v=belt1', label: '인바디·맥진 처방' },
-          { img: 'empathy-safe-herbal.jpg', label: '손떨림 없는 한약' },
-          { img: 'detail_diet_story4_inbody_counseling.jpg', label: '1:1 원장 밀착 코칭' }
-        ]
+        title: "손 떨림·불면 걱정 없는 '1:1 체질 맞춤 근육다이어트 한약'",
+        sub: '대표원장 정밀 진맥과 인바디 분석으로 근육은 채우고 뱃살 체지방만 안전하게 분해합니다.',
+        caption: '[체질 맞춤 처방] 심장 부담 없이 근육량은 보존하고 체지방만 골라 감량하는 안심 처방입니다.',
+        imgSrc: 'detail_diet_story4_inbody_pulse_herb.jpg?v=belt1'
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 국제 비만·약리 논문 검수 완료',
-        title: "실제 학술 논문으로 입증된 '내장지방 감량 · 라인 회복'",
-        sub: '국제 비만학술지에서 갈색지방 활성화와 가짜 식욕 개선이 입증된 치료법입니다.',
-        caption: '[학술 논문 검수] 국제 비만학회지(Int J Obesity) 및 약리학 논문 검수를 통해 한약 복합물의 대사 활성화 기전이 검증되었습니다.',
-        imgSrc: 'detail_diet_story5_zipper_success_fit.jpg?v=belt1',
-        thumbs: [
-          { img: 'detail_diet_story5_zipper_success_fit.jpg?v=belt1', label: '복부 라인 회복' },
-          { img: 'empathy-wedding-dress.jpg', label: '웨딩·중요 일정 케어' },
-          { img: 'detail_diet_story5_fitting_room_smile.jpg', label: '피팅룸 자신감' }
-        ],
-        sciStats: [
-          { num: '국제 비만학술지(Int J Obesity) 검증', label: '갈색지방 열발생 활성화 및 렙틴 저항성(가짜 식욕) 개선 입증', width: '96%' },
-          { num: '국제 약리학술지(Front Pharmacol) 등재', label: '대사 효소 활성화 및 내장지방 감소 기전 학술 검증', width: '94%' }
-        ]
+        fullscreen: true,
+        title: "운동 없이 되찾는 '탄탄하고 날씬한 바디라인'",
+        sub: '근육량이 살아나 기초대사가 높아지면 감량 후에도 다시 찌지 않는 슬림한 라인이 유지됩니다.',
+        caption: '[라인 회복 완성] 근육량 증가로 기초대사를 높여 감량 후에도 탄탄하고 날씬한 라인을 유지합니다.',
+        imgSrc: 'empathy-metabolism-waist.jpg'
       }
     ],
     bodyModelCard: {
       href: 'body-explorer.html?part=gut',
       part: 'gut',
-      partBadge: '위장 · 간 대사 해독 인체모형',
-      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
-      title: '인체모형으로 내 위장·간 대사 연결하기',
-      desc: '인체모형에서 내장지방 축적 원인과 실제 학술 논문으로 검증된 대사 해독 치료법을 한눈에 확인하세요.',
-      bg: 'illust_gut_metabolism.jpg'
+      partBadge: '인체 모형 · 다이어트 추가 의학 정보',
+      eyebrow: 'HUMAN BODY MODEL · DIET EXTRA MEDICAL INFO',
+      title: '인체 모형으로 보는 바른 근육다이어트 추가 정보',
+      desc: '운동 없이 근육량을 올려 기초대사를 높이고, 체질별 위장·간 해독으로 뱃살 내장지방을 분해하는 핵심 추가 정보입니다.',
+      bg: 'growth-diag-gut.jpg',
+      extraInfoItems: [
+        {
+          badge: '추가 정보 01 · 무운동 근육 대사',
+          title: '운동 없이 근육량 증가 · 기초대사 활성화',
+          desc: '대사 효소(AMPK)와 단백질 동화 기전을 깨워 운동 없이도 근손실을 막고 골격근량과 기초대사량을 높입니다.'
+        },
+        {
+          badge: '추가 정보 02 · 뱃살 선택적 분해',
+          title: '복부 뱃살 · 심부 내장지방 집중 연소',
+          desc: '갈색지방 열발생을 촉진해 잘 빠지지 않는 아랫배·옆구리 피하지방과 장기 사이 내장지방을 집중 분해합니다.'
+        },
+        {
+          badge: '추가 정보 03 · 4대 체질 해독',
+          title: '사상체질 인체 모형 기반 위장·간 해독',
+          desc: '태음·소양·소음·태양인 체질별 장부 불균형과 간 대사 피로를 해독하고 체내 수독(부종)을 배출합니다.'
+        },
+        {
+          badge: '추가 정보 04 · 요요 완전 차단',
+          title: '렙틴 포만감 센서 복원 · 감량 체중 유지',
+          desc: '시상하부의 렙틴 저항성을 개선해 폭식·야식 습관을 교정하고 단약 후에도 날씬한 체중을 유지합니다.'
+        }
+      ]
     },
     nextClinic: {
       href: 'hairloss.html',
-      keyword: '탈모 궁금해?',
-      eyebrow: 'NEXT STORY · 바른 탈모 클리닉',
+      keyword: '바른 탈모',
+      eyebrow: 'NEXT · 탈모 클리닉',
       title: '바른 탈모 · 모근재생',
-      desc: '학술 논문으로 검증된 수승화강 청열 치료로 두피 열독을 식히고 잠든 모유두세포를 깨웁니다.',
+      desc: '두피 열독을 식히고 잠든 모근을 깨우는 탈모 클리닉',
       bg: 'detail_hair_story5_date_smile.jpg?v=uniq1',
-      caption: '[다음 클리닉 · 바른 탈모] 학술 논문으로 검증된 수승화강 청열 치료로 두피 열독을 내리고 모근을 살리는 스토리로 이동합니다.'
+      caption: '[다음 클리닉 · 바른 탈모] 수승화강 청열 치료로 두피 열독을 내리고 모근을 살리는 스토리로 이동합니다.'
     }
   },
 
@@ -1676,6 +1686,87 @@ function buildPageHtml(page) {
         </article>`;
     }
 
+    if (p.type === 'diet-single-stage') {
+      const stg = p.stage || 1;
+      let stageVisualHtml = '';
+      if (stg === 1) {
+        stageVisualHtml = `
+            <div class="efficacy-visual-frame neuro-frame is-full-stage-frame">
+              <img src="efficacy-neuro-calm.jpg" alt="1단계 식욕 중추 안정 모션" loading="lazy" draggable="false">
+              <div class="electric-zap-layer" aria-hidden="true">
+                <div class="zap-pulse-core"></div>
+                <div class="zap-wave-ring"></div>
+                <div class="zap-wave-ring ring-2"></div>
+                <svg class="zap-lightning-svg" viewBox="0 0 200 200" fill="none">
+                  <path class="zap-bolt bolt-1" d="M100 72 L84 52 L92 42 L72 22" />
+                  <path class="zap-bolt bolt-2" d="M114 78 L138 62 L130 50 L156 34" />
+                  <path class="zap-bolt bolt-3" d="M88 86 L62 82 L68 70 L42 64" />
+                  <path class="zap-bolt bolt-4" d="M112 92 L142 96 L134 108 L162 114" />
+                </svg>
+                <span class="spark-dot s1"></span>
+                <span class="spark-dot s2"></span>
+                <span class="spark-dot s3"></span>
+                <span class="spark-dot s4"></span>
+              </div>
+              <div class="efficacy-motion-overlay"></div>
+            </div>`;
+      } else if (stg === 2) {
+        stageVisualHtml = `
+            <div class="efficacy-visual-frame thermal-frame is-full-stage-frame">
+              <img src="efficacy-core-lipolysis.jpg" alt="2단계 심부 체지방 분해 모션" loading="lazy" draggable="false">
+              <div class="thermal-burn-layer" aria-hidden="true">
+                <div class="combustion-fire-glow"></div>
+                <div class="thermal-heat-haze"></div>
+                <div class="fat-contract-ring c-ring-1"></div>
+                <div class="fat-contract-ring c-ring-2"></div>
+                <div class="fat-contract-ring c-ring-3"></div>
+                <span class="ember-spark e1"></span>
+                <span class="ember-spark e2"></span>
+                <span class="ember-spark e3"></span>
+                <span class="ember-spark e4"></span>
+                <span class="ember-spark e5"></span>
+                <span class="ember-spark e6"></span>
+              </div>
+              <div class="efficacy-motion-overlay"></div>
+            </div>`;
+      } else {
+        stageVisualHtml = `
+            <div class="efficacy-visual-frame detox-frame is-full-stage-frame">
+              <div class="body-morph-wrapper">
+                <img class="edema-ghost-outline" src="efficacy-detox-flush.jpg" alt="" aria-hidden="true" loading="lazy" draggable="false">
+                <img class="slim-subject-img" src="efficacy-detox-flush.jpg" alt="3단계 붓기 및 독소 완화 모션" loading="lazy" draggable="false">
+              </div>
+              <div class="detox-slim-layer" aria-hidden="true">
+                <svg class="contour-cinch-guide" viewBox="0 0 240 240" fill="none">
+                  <path class="swollen-line-left" d="M58 55 Q34 120 58 185" />
+                  <path class="swollen-line-right" d="M182 55 Q206 120 182 185" />
+                  <path class="cinch-arrow left-arrow" d="M36 120 L66 120 M56 112 L66 120 L56 128" />
+                  <path class="cinch-arrow right-arrow" d="M204 120 L174 120 M184 112 L174 120 L184 128" />
+                </svg>
+                <span class="water-drop d1"></span>
+                <span class="water-drop d2"></span>
+                <span class="water-drop d3"></span>
+                <span class="water-drop d4"></span>
+              </div>
+              <div class="efficacy-motion-overlay"></div>
+            </div>`;
+      }
+      return `
+        <!-- PLATE ${numStr}: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+          <div class="plate-media-inner">
+            ${stageVisualHtml}
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
+                <p class="plate-caption-sub">${p.sub}</p>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
     if (p.type === 'diet-3stage-motion') {
       return `
         <!-- PLATE ${numStr}: 3-Stage Efficacy Interactive Motion Plate -->
@@ -1802,7 +1893,6 @@ function buildPageHtml(page) {
             <div class="concierge-cinema-suite">
               <div class="concierge-cinema-header">
                 <div>
-                  <span class="concierge-eyebrow-pill"><span class="live-dot"></span>NON-FACE-TO-FACE & EXPRESS DELIVERY · 전국 비대면 처방</span>
                   <h2 class="concierge-main-title">${formattedTitle}</h2>
                 </div>
                 <p class="concierge-sub-desc">${p.sub}</p>
@@ -1863,11 +1953,11 @@ function buildPageHtml(page) {
                 </video>
               </div>
 
-              <!-- Trust Metrics Ribbon -->
+              <!-- Trust Metrics Ribbon (1. 15년을 일로 환산한 누적 치료경험: 5,475일+) -->
               <div class="concierge-trust-ribbon">
                 <div class="trust-metric-box">
-                  <strong>52,000+</strong>
-                  <span>누적 비대면·내원 처방</span>
+                  <strong>5,475일+ (15년)</strong>
+                  <span>누적 치료경험</span>
                 </div>
                 <div class="trust-metric-box">
                   <strong>98.6%</strong>
@@ -7100,6 +7190,279 @@ function buildPageHtml(page) {
         line-height: 1.3;
       }
     }
+
+    /* ============================================================================
+       DIET SINGLE-STAGE FULL CARDS (3 CARDS SPLIT · TOP TEXT REMOVED)
+       & DIET HUMAN BODY MODEL + EXTRA INFO CARD & ULTRA-SMALL HAIRLOSS CARD
+       ============================================================================ */
+    .project-details-item.is-diet-single-stage-plate .efficacy-visual-frame.is-full-stage-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+    }
+    .project-details-item.is-diet-single-stage-plate .zap-pulse-core {
+      width: 160px;
+      height: 160px;
+    }
+    .project-details-item.is-diet-single-stage-plate .zap-wave-ring {
+      width: 110px;
+      height: 110px;
+    }
+    .project-details-item.is-diet-single-stage-plate .combustion-fire-glow {
+      width: 260px;
+      height: 260px;
+    }
+    .project-details-item.is-diet-single-stage-plate .fat-contract-ring {
+      width: 280px;
+      height: 280px;
+    }
+
+    /* 8th Card: Human Body Model Image + Additional Diet Info */
+    #project-details-preview.is-diet-body-extra-card {
+      width: min(74vw, 1080px);
+      max-width: 1080px;
+      height: 81vh;
+      max-height: 730px;
+      padding: 20px 24px;
+      background: linear-gradient(155deg, #15181C 0%, #0E1014 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 30px 85px rgba(0, 0, 0, 0.78);
+    }
+    .diet-body-extra-layout {
+      display: grid;
+      grid-template-columns: 44% 1fr;
+      gap: 20px;
+      width: 100%;
+      height: 100%;
+      align-items: stretch;
+    }
+    .diet-body-model-visual-col {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #090C10;
+      border: 1.5px solid rgba(110, 231, 183, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
+    }
+    .diet-body-model-clear-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      padding: 8px;
+      transition: transform 0.35s ease;
+    }
+    .diet-body-model-visual-col:hover .diet-body-model-clear-img {
+      transform: scale(1.03);
+    }
+    .diet-body-model-zoom-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 4;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(12, 16, 22, 0.85);
+      border: 1px solid rgba(253, 230, 138, 0.5);
+      color: #FDE68A;
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .diet-body-extra-info-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
+      overflow-y: auto;
+    }
+    .diet-extra-head {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .diet-extra-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #A7F3D0;
+      font-size: 0.68rem;
+      font-weight: 800;
+    }
+    .diet-extra-main-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.32rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 0;
+    }
+    .diet-extra-main-desc {
+      font-size: 0.78rem;
+      color: rgba(248, 250, 252, 0.82);
+      line-height: 1.42;
+      margin: 0;
+      word-break: keep-all;
+    }
+    .diet-extra-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      flex: 1;
+    }
+    .diet-extra-info-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 13px;
+      padding: 11px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .dei-badge {
+      font-size: 0.64rem;
+      font-weight: 800;
+      color: #FDE68A;
+      letter-spacing: 0.02em;
+    }
+    .dei-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.28;
+    }
+    .dei-desc {
+      font-size: 0.72rem;
+      color: rgba(248, 250, 252, 0.80);
+      line-height: 1.42;
+      margin: 0;
+      word-break: keep-all;
+    }
+    .diet-extra-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .diet-extra-explorer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2D5A43 0%, #3D7357 100%);
+      border: 1px solid rgba(167, 243, 208, 0.45);
+      color: #FFFFFF;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .diet-extra-explorer-btn:hover {
+      transform: translateY(-2px);
+      background: #4A3525;
+    }
+
+    /* Ultra-Small Hairloss Card at Bottom-Right (우측 하단 아주 작은 탈모카드) */
+    .diet-tiny-hairloss-card,
+    #floating-bottom-right-hair-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 10px 5px 5px;
+      border-radius: 999px;
+      background: rgba(18, 22, 28, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #FFFFFF;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+      transition: all 0.22s ease;
+    }
+    #floating-bottom-right-hair-card {
+      position: fixed;
+      right: 16px;
+      bottom: 12px;
+      z-index: 98;
+      transform: scale(0.92);
+      transform-origin: bottom right;
+    }
+    .diet-tiny-hairloss-card:hover,
+    #floating-bottom-right-hair-card:hover {
+      background: #2D5A43;
+      border-color: #FEF08A;
+      transform: scale(0.96) translateY(-2px);
+    }
+    .dth-thumb,
+    .fbr-hair-thumb {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #FDE68A;
+      flex-shrink: 0;
+    }
+    .dth-text,
+    .fbr-hair-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      padding-right: 2px;
+    }
+    .dth-text small,
+    .fbr-hair-info small {
+      font-size: 0.54rem;
+      font-weight: 700;
+      color: #A7F3D0;
+      letter-spacing: 0.02em;
+    }
+    .dth-text strong,
+    .fbr-hair-info strong {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #FEF08A;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1024px) {
+      #project-details-preview.is-diet-body-extra-card {
+        width: 92vw;
+        height: 76vh;
+        padding: 12px 14px;
+      }
+      .diet-body-extra-layout {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        overflow-y: auto;
+      }
+      .diet-body-model-visual-col {
+        min-height: 185px;
+        max-height: 220px;
+      }
+      .diet-extra-info-grid {
+        grid-template-columns: 1fr;
+      }
+      #floating-bottom-right-hair-card {
+        right: 10px;
+        bottom: 8px;
+        transform: scale(0.84);
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -7303,15 +7666,61 @@ function buildPageHtml(page) {
                 <div class="clean-spec-tags">
                   <span class="clean-spec-tag" id="runway-ba-tag-b">${page.file === 'growth.html' ? '📊 연령별 평균키 · 성장판 나이 비교' : 'BEFORE · 치료 전'}</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">${page.file === 'growth.html' ? '🎯 뼈길이 · 최종예상키 정밀 분석' : 'AFTER · 치료 후'}</span>
+                  <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
                 </div>
-                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : `${page.meta.title} — 치료 전·후 비교`}</h2>
-                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.'}</p>
+                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : (page.file === 'diet-zero.html' ? '바른 근육다이어트 — 전·후 복부 내장지방 변화' : `${page.meta.title} — 치료 전·후 비교`)}</h2>
+                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : (page.file === 'diet-zero.html' ? '운동 없이 근육량을 올리고 대사를 깨워 뱃살과 내장지방이 분해되는 전·후 변화가 자동으로 반복됩니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.')}</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- LAST CARD: 3D Human Body Model Portal -->
+        <!-- LAST CARD: 3D Human Body Model & Diet Additional Information Card -->
+        ${page.bodyModelCard.extraInfoItems ? `
+        <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card">
+          <div class="diet-body-extra-layout">
+            <!-- LEFT: Clear 3D Human Body Model Image Showcase -->
+            <div class="diet-body-model-visual-col" onclick="event.stopPropagation(); window.openCleanLightbox('${page.bodyModelCard.bg}')">
+              <img class="diet-body-model-clear-img" src="${page.bodyModelCard.bg}" alt="${page.bodyModelCard.title}" draggable="false">
+              <button type="button" class="diet-body-model-zoom-btn" onclick="event.stopPropagation(); window.openCleanLightbox('${page.bodyModelCard.bg}')">
+                🔍 인체 모형 확대보기
+              </button>
+            </div>
+
+            <!-- RIGHT: Diet Additional Medical Information (다이어트 관련 추가 정보) -->
+            <div class="diet-body-extra-info-col">
+              <div class="diet-extra-head">
+                <span class="diet-extra-badge">🧬 ${page.bodyModelCard.partBadge}</span>
+                <h2 class="diet-extra-main-title">${page.bodyModelCard.title}</h2>
+                <p class="diet-extra-main-desc">${page.bodyModelCard.desc}</p>
+              </div>
+
+              <div class="diet-extra-info-grid">
+                ${page.bodyModelCard.extraInfoItems.map(item => `
+                <div class="diet-extra-info-item">
+                  <span class="dei-badge">${item.badge}</span>
+                  <strong class="dei-title">${item.title}</strong>
+                  <p class="dei-desc">${item.desc}</p>
+                </div>`).join('')}
+              </div>
+
+              <div class="diet-extra-bottom-row">
+                <a class="diet-extra-explorer-btn" href="${page.bodyModelCard.href}">
+                  <span>🧬 인체모형 통합 의학·논문 쇼룸 바로가기</span>
+                  <span>↗</span>
+                </a>
+                ${page.nextClinic ? `
+                <a class="diet-tiny-hairloss-card" href="${page.nextClinic.href}" title="${page.nextClinic.title} 상세페이지로 이동">
+                  <img class="dth-thumb" src="${page.nextClinic.bg}" alt="${page.nextClinic.title}">
+                  <span class="dth-text">
+                    <small>${page.nextClinic.eyebrow || 'NEXT'}</small>
+                    <strong>${page.nextClinic.keyword || '바른 탈모'} →</strong>
+                  </span>
+                </a>` : ''}
+              </div>
+            </div>
+          </div>
+        </article>` : `
         <article id="project-details-preview" class="body-model-last-card">
           <img class="next-portal-bg" src="${page.bodyModelCard.bg}" alt="${page.bodyModelCard.title}">
           <div class="next-portal-scrim"></div>
@@ -7342,10 +7751,20 @@ function buildPageHtml(page) {
               </div>
             </a>
           </div>
-        </article>
+        </article>`}
       </div>
     </section>
   </main>
+
+  ${page.file === 'diet-zero.html' && page.nextClinic ? `
+  <!-- Floating Bottom-Right Very Small Hairloss Mini Card (우측 하단 아주 작은 탈모 카드) -->
+  <a id="floating-bottom-right-hair-card" href="${page.nextClinic.href}" title="바른 탈모 상세페이지로 이동">
+    <img class="fbr-hair-thumb" src="${page.nextClinic.bg}" alt="바른 탈모">
+    <span class="fbr-hair-info">
+      <small>NEXT · 탈모 클리닉</small>
+      <strong>바른 탈모 →</strong>
+    </span>
+  </a>` : ''}
 
   <div id="scroll-indicator">
     <div id="scroll-indicator-bar"></div>
@@ -8509,6 +8928,58 @@ function buildPageHtml(page) {
           ctx.fillStyle = '#BAE6FD';
           ctx.font = '800 13px Pretendard, sans-serif';
           ctx.fillText('❄️ 수승화강 두피 청열 · 학술 검증 모근 보호', 26, 76);
+        } else if (type === 'muscle-diet-core-fx') {
+          // CARD 01 (Diet): 근육다이어트 — 운동 없이 근육량 ▲ 상승 · 뱃살지방 ▼ 분해 모션
+          const wx = w * 0.52, wy = h * 0.54;
+          ctx.save();
+          // Scanning metabolic laser wave across the abdomen
+          const scanY = h * (0.28 + 0.42 * (0.5 + 0.5 * Math.sin(timeSec * 2.1)));
+          const scanGrad = ctx.createLinearGradient(0, scanY - 28, 0, scanY + 28);
+          scanGrad.addColorStop(0, 'rgba(217, 119, 6, 0)');
+          scanGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.34)');
+          scanGrad.addColorStop(1, 'rgba(217, 119, 6, 0)');
+          ctx.fillStyle = scanGrad;
+          ctx.fillRect(w * 0.16, scanY - 28, w * 0.68, 56);
+
+          // Concentric abdominal lipolysis & muscle activation rings
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.85 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(wx, wy, 18 + p * 74, 0, Math.PI * 2);
+            ctx.strokeStyle = r % 2 === 0
+              ? 'rgba(251, 191, 36, ' + ((1 - p) * 0.68).toFixed(2) + ')'
+              : 'rgba(52, 211, 153, ' + ((1 - p) * 0.58).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+
+          // Floating metabolic lipolysis sparks rising upward
+          for (let s = 0; s < 10; s++) {
+            const sp = (timeSec * 0.72 + s * 0.19) % 1;
+            const sx = wx + Math.sin(s * 2.1 + timeSec * 1.4) * (w * 0.22);
+            const sy = wy + 44 - sp * 110;
+            ctx.beginPath();
+            ctx.arc(sx, sy, 2.2 + (1 - sp) * 2.4, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(253, 224, 71, ' + ((1 - sp) * 0.82).toFixed(2) + ')';
+            ctx.fill();
+          }
+
+          const tagW = Math.min(w - 28, 340), tagH = 32;
+          const tx = Math.max(14, Math.min(w - tagW - 14, wx - tagW * 0.5));
+          const ty = Math.max(58, wy - 88);
+          ctx.fillStyle = 'rgba(18, 13, 9, 0.88)';
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.82)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FEF3C7';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🔥 근육다이어트 : 운동 없이 근육량 ▲ 상승 · 뱃살지방 ▼ 분해', tx + tagW * 0.5, ty + 20.5);
+          ctx.textAlign = 'left';
+          ctx.restore();
         } else if (type === 'belt-zipper-morning-fx' || type === 'metabolic-burn' || type === 'sline-curtain') {
           // STORY 01 (Diet): Waistline Zipper Tension Pulse & Last Belt Hole Callout
           const wx = w * 0.54, wy = h * 0.62;
@@ -10064,7 +10535,8 @@ function buildPageHtml(page) {
         progressBar.style.width = (scrollNorm * 100).toFixed(1) + '%';
 
         if (typeof window.applyInlineScrollBaPct === 'function') {
-          const autoBaPct = 8 + scrollNorm * 88;
+          const autoWave = 0.5 - 0.5 * Math.cos(timeSec * 1.85);
+          const autoBaPct = 6 + autoWave * 88;
           window.applyInlineScrollBaPct(autoBaPct);
         }
         if (typeof window.syncIdeaA3DScroll === 'function') {
