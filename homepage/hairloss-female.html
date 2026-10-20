@@ -423,82 +423,17 @@
       50% { transform: scale(1.05); }
     }
 
-    /* 5-Stage Doctor Comment Board inside Empathy Checklist (녹색 -> 주황색 -> 레드) */
+    /* 5-Stage Doctor Comment Board inside Empathy Checklist (초록 -> 주황 -> 레드) */
     .empathy-severity-board {
       margin-top: 12px;
-      display: flex;
+      display: none;
       flex-direction: column;
       gap: 8px;
       padding: 13px 14px;
       border-radius: 14px;
-      background: linear-gradient(135deg, rgba(22, 163, 74, 0.16) 0%, rgba(249, 115, 22, 0.14) 52%, rgba(220, 38, 38, 0.16) 100%);
+      background: rgba(22, 163, 74, 0.18);
       border: 1.5px solid rgba(34, 197, 94, 0.45);
       transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .doc-color-spectrum-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.26);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      font-size: 0.65rem;
-      font-weight: 800;
-    }
-    .dcs-step {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      opacity: 0.72;
-      transition: all 0.22s ease;
-    }
-    .dcs-step.is-green {
-      color: #86EFAC;
-      background: rgba(22, 163, 74, 0.22);
-      border: 1px solid rgba(34, 197, 94, 0.45);
-    }
-    .dcs-step.is-orange {
-      color: #FDBA74;
-      background: rgba(249, 115, 22, 0.22);
-      border: 1px solid rgba(249, 115, 22, 0.45);
-    }
-    .dcs-step.is-red {
-      color: #FCA5A5;
-      background: rgba(220, 38, 38, 0.22);
-      border: 1px solid rgba(239, 68, 68, 0.45);
-    }
-    .dcs-arrow {
-      color: rgba(255, 255, 255, 0.55);
-      font-size: 0.65rem;
-      font-weight: 900;
-    }
-    .empathy-severity-board.tier-1 .dcs-step.is-green {
-      opacity: 1;
-      background: #16A34A;
-      color: #FFFFFF;
-      border-color: #86EFAC;
-      box-shadow: 0 0 10px rgba(22, 163, 74, 0.6);
-    }
-    .empathy-severity-board.tier-2 .dcs-step.is-orange,
-    .empathy-severity-board.tier-3 .dcs-step.is-orange {
-      opacity: 1;
-      background: #EA580C;
-      color: #FFFFFF;
-      border-color: #FDBA74;
-      box-shadow: 0 0 10px rgba(234, 88, 12, 0.6);
-    }
-    .empathy-severity-board.tier-4 .dcs-step.is-red,
-    .empathy-severity-board.tier-5 .dcs-step.is-red {
-      opacity: 1;
-      background: #DC2626;
-      color: #FFFFFF;
-      border-color: #FCA5A5;
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.7);
     }
 
     .doc-comment-top-row {
@@ -3184,31 +3119,6 @@
     body.theme-hanji .empathy-severity-board .doc-comment-body {
       color: #1E293B;
     }
-    body.theme-hanji .doc-color-spectrum-row {
-      background: #FFFFFF;
-      border: 1px solid rgba(94, 71, 54, 0.18);
-    }
-    body.theme-hanji .dcs-step.is-green {
-      color: #15803D;
-      background: #DCFCE7;
-      border-color: #4ADE80;
-      opacity: 0.9;
-    }
-    body.theme-hanji .dcs-step.is-orange {
-      color: #C2410C;
-      background: #FFEDD5;
-      border-color: #FB923C;
-      opacity: 0.9;
-    }
-    body.theme-hanji .dcs-step.is-red {
-      color: #B91C1C;
-      background: #FEE2E2;
-      border-color: #F87171;
-      opacity: 0.9;
-    }
-    body.theme-hanji .dcs-arrow {
-      color: #64748B;
-    }
     body.theme-hanji .empathy-severity-board.tier-1 {
       background: linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%);
       border: 2px solid #16A34A;
@@ -3218,14 +3128,20 @@
     body.theme-hanji .empathy-severity-board.tier-1 .doc-comment-headline {
       color: #15803D;
     }
-    body.theme-hanji .empathy-severity-board.tier-2,
-    body.theme-hanji .empathy-severity-board.tier-3 {
+    body.theme-hanji .empathy-severity-board.tier-2 {
       background: linear-gradient(135deg, #FFEDD5 0%, #FFF7ED 100%);
       border: 2px solid #F97316;
-      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.24);
     }
     body.theme-hanji .empathy-severity-board.tier-2 .doc-comment-eyebrow,
-    body.theme-hanji .empathy-severity-board.tier-2 .doc-comment-headline,
+    body.theme-hanji .empathy-severity-board.tier-2 .doc-comment-headline {
+      color: #EA580C;
+    }
+    body.theme-hanji .empathy-severity-board.tier-3 {
+      background: linear-gradient(135deg, #FED7AA 0%, #FFEDD5 100%);
+      border: 2px solid #EA580C;
+      box-shadow: 0 8px 22px rgba(234, 88, 12, 0.28);
+    }
     body.theme-hanji .empathy-severity-board.tier-3 .doc-comment-eyebrow,
     body.theme-hanji .empathy-severity-board.tier-3 .doc-comment-headline {
       color: #C2410C;
@@ -5307,81 +5223,6 @@
     }
 
     /* ============================================================================
-       수정사항 6: 좌측 닥터 코멘트 색감 스펙트럼 (녹색 -> 주황색 -> 레드순 표시)
-       ============================================================================ */
-    .doc-color-spectrum-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-      padding: 4px 7px;
-      border-radius: 8px;
-      background: rgba(15, 23, 42, 0.28);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      margin-bottom: 2px;
-    }
-    body.theme-hanji .doc-color-spectrum-row {
-      background: rgba(255, 255, 255, 0.72);
-      border-color: rgba(0, 0, 0, 0.08);
-    }
-    .dcs-step {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 0.58rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      opacity: 0.58;
-      transition: all 0.25s ease;
-      white-space: nowrap;
-    }
-    .dcs-step.is-green {
-      background: rgba(22, 163, 74, 0.16);
-      color: #15803D;
-      border: 1px solid rgba(22, 163, 74, 0.40);
-    }
-    .dcs-step.is-orange {
-      background: rgba(249, 115, 22, 0.16);
-      color: #C2410C;
-      border: 1px solid rgba(249, 115, 22, 0.42);
-    }
-    .dcs-step.is-red {
-      background: rgba(220, 38, 38, 0.16);
-      color: #B91C1C;
-      border: 1px solid rgba(220, 38, 38, 0.42);
-    }
-    body:not(.theme-hanji) .dcs-step.is-green { color: #86EFAC; }
-    body:not(.theme-hanji) .dcs-step.is-orange { color: #FDBA74; }
-    body:not(.theme-hanji) .dcs-step.is-red { color: #FCA5A5; }
-    .dcs-step.active {
-      opacity: 1;
-      transform: scale(1.04);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-    .dcs-step.is-green.active {
-      background: #16A34A;
-      color: #FFFFFF !important;
-      border-color: #22C55E;
-    }
-    .dcs-step.is-orange.active {
-      background: #EA580C;
-      color: #FFFFFF !important;
-      border-color: #FB923C;
-    }
-    .dcs-step.is-red.active {
-      background: #DC2626;
-      color: #FFFFFF !important;
-      border-color: #F87171;
-    }
-    .dcs-arrow {
-      font-size: 0.62rem;
-      font-weight: 900;
-      color: rgba(148, 163, 184, 0.85);
-    }
-
-    /* ============================================================================
        수정사항 2, 3, 4: 9번째 카드 (80% 컴팩트 축소 + 우리 3D 인체모형 + 다이어트 꿀팁 창고)
        ============================================================================ */
     #project-details-preview.is-diet-body-extra-card {
@@ -5714,7 +5555,7 @@
         <div class="empathy-checklist-card">
           <div class="empathy-checklist-header">
             <span class="empathy-checklist-title">여성탈모 · 상열하한 자가진단 체크리스트</span>
-            <span class="empathy-count-badge is-tier-1" id="empathy-count-badge">🟢 증상 체크 대기 (0/5)</span>
+            <span class="empathy-count-badge" id="empathy-count-badge">증상 체크 전</span>
           </div>
           <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
           <div class="empathy-checklist-list" id="empathy-checklist-list">
@@ -5765,23 +5606,16 @@
               <span class="empathy-check-text">[안전한 여성 맞춤 한약] 호르몬 부작용 없이 빈혈·어지럼증·피로까지 함께 돌보는 치료를 원한다.</span>
             </label>
           </div>
-          <div class="empathy-severity-board tier-1" id="empathy-diagnosis-box" aria-live="polite">
-            <div class="doc-color-spectrum-row" aria-label="닥터 코멘트 색감 단계 (녹색 → 주황색 → 레드)">
-              <span class="dcs-step is-green active" id="dcs-step-green">🟢 녹색 · 관리(1개)</span>
-              <span class="dcs-arrow">→</span>
-              <span class="dcs-step is-orange" id="dcs-step-orange">🟠 주황 · 주의·위험(2~3개)</span>
-              <span class="dcs-arrow">→</span>
-              <span class="dcs-step is-red" id="dcs-step-red">🔴 레드 · 심각·긴급(4~5개)</span>
-            </div>
+          <div class="empathy-severity-board" id="empathy-diagnosis-box" aria-live="polite" style="display:none;">
             <div class="doc-comment-top-row">
               <span class="doc-comment-eyebrow">👨‍⚕️ 안정위 대표원장 닥터 코멘트</span>
-              <span class="doc-comment-pill" id="doc-comment-pill">녹색 · 초기 관리</span>
+              <span class="doc-comment-pill" id="doc-comment-pill">1단계 · 관리 권장</span>
             </div>
             <div class="doc-comment-progress-track">
-              <div class="doc-comment-progress-fill" id="doc-comment-bar-fill" style="width:12%;"></div>
+              <div class="doc-comment-progress-fill" id="doc-comment-bar-fill"></div>
             </div>
-            <strong class="doc-comment-headline" id="doc-comment-title">증상을 체크하시면 녹색 ➔ 주황색 ➔ 레드순으로 진단됩니다</strong>
-            <p class="doc-comment-body" id="doc-comment-desc">위 항목을 체크하시면 1개(녹색·관리) ➔ 2~3개(주황색·주의/위험) ➔ 4~5개(레드·심각/긴급) 순으로 대표원장 코멘트가 즉시 표시됩니다.</p>
+            <strong class="doc-comment-headline" id="doc-comment-title">초기 관리 권장</strong>
+            <p class="doc-comment-body" id="doc-comment-desc">증상이 더 깊어지기 전에 내원하셔서 예방 및 맞춤 관리를 받아보시길 권합니다.</p>
           </div>
         </div>
 
@@ -6568,69 +6402,71 @@
         const checked = getCheckedSymptoms();
         const cnt = checked.length;
 
-        const dcsGreen = document.getElementById('dcs-step-green');
-        const dcsOrange = document.getElementById('dcs-step-orange');
-        const dcsRed = document.getElementById('dcs-step-red');
-        if (dcsGreen) dcsGreen.classList.toggle('active', cnt === 0 || cnt === 1);
-        if (dcsOrange) dcsOrange.classList.toggle('active', cnt === 2 || cnt === 3);
-        if (dcsRed) dcsRed.classList.toggle('active', cnt >= 4);
-
         countBadge.classList.remove('active', 'is-tier-1', 'is-tier-2', 'is-tier-3', 'is-tier-4', 'is-tier-5');
         if (diagnosisBox) {
-          diagnosisBox.style.display = 'flex';
           diagnosisBox.classList.remove('tier-1', 'tier-2', 'tier-3', 'tier-4', 'tier-5');
         }
 
         if (cnt === 0) {
-          countBadge.textContent = '🟢 증상 체크 대기 (0/5)';
-          countBadge.classList.add('is-tier-1');
-          if (diagnosisBox) diagnosisBox.classList.add('tier-1');
-          if (docCommentPill) docCommentPill.textContent = '🟢 녹색 · 초기 관리';
-          if (docCommentBarFill) docCommentBarFill.style.width = '12%';
-          if (docCommentTitle) docCommentTitle.textContent = '증상을 체크하시면 녹색 ➔ 주황색 ➔ 레드순으로 진단됩니다';
-          if (docCommentDesc) docCommentDesc.textContent = '위 항목을 체크하시면 1개(녹색·관리) ➔ 2~3개(주황색·주의/위험) ➔ 4~5개(레드·심각/긴급) 순으로 대표원장 코멘트가 즉시 표시됩니다.';
+          countBadge.textContent = '증상 체크 전 (0/5)';
+          if (diagnosisBox) diagnosisBox.style.display = 'none';
           if (urgentModalEl) urgentModalEl.classList.remove('open');
         } else if (cnt === 1) {
-          countBadge.textContent = '🟢 1개 체크 · 녹색 (초기 관리)';
+          countBadge.textContent = '🩺 1개 체크 · 초기 관리 권장';
           countBadge.classList.add('active', 'is-tier-1');
-          if (diagnosisBox) diagnosisBox.classList.add('tier-1');
-          if (docCommentPill) docCommentPill.textContent = '🟢 녹색 · 1개 체크 (관리 요망)';
-          if (docCommentBarFill) docCommentBarFill.style.width = '20%';
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-1');
+          }
+          if (docCommentPill) docCommentPill.textContent = '1개 체크 · 관리 요망';
+          if (docCommentBarFill) docCommentBarFill.style.width = '12%';
           if (docCommentTitle) docCommentTitle.textContent = '초기 관리 권장 (' + COND_NAME + ' 예방 · 관리 단계)';
           if (docCommentDesc) docCommentDesc.textContent = '초기 불편감 신호가 감지되었습니다. 증상이 더 깊어지기 전에 내원하셔서 예방 및 맞춤 관리를 받아보시길 권합니다.';
           if (justChecked) playStepCheckPulse(1);
         } else if (cnt === 2) {
-          countBadge.textContent = '🟠 2개 체크 · 주황색 주의 (40% 진행중)';
+          countBadge.textContent = '⚠️ 2개 체크 · 주의 (20% 진행중)';
           countBadge.classList.add('active', 'is-tier-2');
-          if (diagnosisBox) diagnosisBox.classList.add('tier-2');
-          if (docCommentPill) docCommentPill.textContent = '🟠 주황색 · 2개 체크 (주의)';
-          if (docCommentBarFill) docCommentBarFill.style.width = '45%';
-          if (docCommentTitle) docCommentTitle.textContent = '주의 단계 · ' + COND_NAME + ' 진행 차단 필요';
-          if (docCommentDesc) docCommentDesc.textContent = '증상이 서서히 자리 잡고 있습니다. 자연 회복만 기다리기보다 정밀 진맥과 초기 치료로 진행을 차단해야 할 시점입니다.';
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-2');
+          }
+          if (docCommentPill) docCommentPill.textContent = '2개 체크 · 20% 진행중';
+          if (docCommentBarFill) docCommentBarFill.style.width = '20%';
+          if (docCommentTitle) docCommentTitle.textContent = '주의 (20% 진행중) · ' + COND_NAME + ' 주의 단계';
+          if (docCommentDesc) docCommentDesc.textContent = '증상이 서서히 자리 잡고 있습니다(20% 진행중). 자연 회복만 기다리기보다 정밀 진맥과 초기 치료로 진행을 차단해야 할 시점입니다.';
           if (justChecked) playStepCheckPulse(2);
         } else if (cnt === 3) {
-          countBadge.textContent = '🟠 3개 체크 · 주황색 위험 (65% 고생중)';
+          countBadge.textContent = '🔶 3개 체크 · 위험 (50% 고생중)';
           countBadge.classList.add('active', 'is-tier-3');
-          if (diagnosisBox) diagnosisBox.classList.add('tier-3');
-          if (docCommentPill) docCommentPill.textContent = '🟠 주황색 · 3개 체크 (위험)';
-          if (docCommentBarFill) docCommentBarFill.style.width = '68%';
-          if (docCommentTitle) docCommentTitle.textContent = '위험 단계 · ' + COND_NAME + ' 집중 치료 권장';
-          if (docCommentDesc) docCommentDesc.textContent = '이미 일상 속에서 상당한 불편감으로 고생하고 계십니다. 만성화되기 직전이므로 대표원장 정밀 진단을 통한 집중 치료가 필요합니다.';
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-3');
+          }
+          if (docCommentPill) docCommentPill.textContent = '3개 체크 · 50% 고생중';
+          if (docCommentBarFill) docCommentBarFill.style.width = '50%';
+          if (docCommentTitle) docCommentTitle.textContent = '위험 (50% 고생중) · ' + COND_NAME + ' 위험 단계';
+          if (docCommentDesc) docCommentDesc.textContent = '이미 일상 속에서 상당한 불편감으로 고생하고 계십니다(50% 고생중). 만성화되기 직전이므로 대표원장 정밀 진단을 통한 집중 치료가 필요합니다.';
           if (justChecked) playStepCheckPulse(3);
         } else if (cnt === 4) {
-          countBadge.textContent = '🔴 4개 체크 · 레드 심각 (85% 위태함)';
+          countBadge.textContent = '🚨 4개 체크 · 심각 (70% 위태함)';
           countBadge.classList.add('active', 'is-tier-4');
-          if (diagnosisBox) diagnosisBox.classList.add('tier-4');
-          if (docCommentPill) docCommentPill.textContent = '🔴 레드 · 4개 체크 (심각)';
-          if (docCommentBarFill) docCommentBarFill.style.width = '88%';
-          if (docCommentTitle) docCommentTitle.textContent = '심각 단계 · ' + COND_NAME + ' 조속한 진료 요망';
-          if (docCommentDesc) docCommentDesc.textContent = '신체 균형이 무너지며 매우 위태로운 레드 단계에 접어들었습니다. 미루실수록 치료 기간이 길어지니 빠른 시일 내에 진료받으셔야 합니다.';
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-4');
+          }
+          if (docCommentPill) docCommentPill.textContent = '4개 체크 · 70% 위태함';
+          if (docCommentBarFill) docCommentBarFill.style.width = '70%';
+          if (docCommentTitle) docCommentTitle.textContent = '심각 (70% 위태함) · ' + COND_NAME + ' 심각 단계';
+          if (docCommentDesc) docCommentDesc.textContent = '신체 균형이 무너지며 매우 위태로운 단계에 접어들었습니다(70% 위태함). 미루실수록 치료 기간이 길어지니 빠른 시일 내에 진료받으셔야 합니다.';
           if (justChecked) playStepCheckPulse(4);
         } else if (cnt >= 5) {
-          countBadge.textContent = '🔴 5개 모두 체크 · 레드 긴급 진료 요망!';
+          countBadge.textContent = '🆘 5개 모두 체크 · 당장 진료 요망!';
           countBadge.classList.add('active', 'is-tier-5');
-          if (diagnosisBox) diagnosisBox.classList.add('tier-5');
-          if (docCommentPill) docCommentPill.textContent = '🔴 레드 · 5개 모두 체크 (100% 긴급)';
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-5');
+          }
+          if (docCommentPill) docCommentPill.textContent = '5개 모두 체크 · 100% 긴급';
           if (docCommentBarFill) docCommentBarFill.style.width = '100%';
           if (docCommentTitle) docCommentTitle.textContent = '“더이상 방치하지말고 당장 진료받으세요”';
           if (docCommentDesc) docCommentDesc.textContent = '5가지 핵심 증상이 모두 해당됩니다! 더이상 방치하지말고 당장 진료받으세요. 지금 즉시 대표원장 1:1 정밀 진맥과 근본 치료를 시작하셔야 합니다.';
