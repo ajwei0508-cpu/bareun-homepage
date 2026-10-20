@@ -382,24 +382,24 @@
     }
 
     .empathy-count-badge.is-tier-1 {
-      background: #0D9488 !important;
-      border-color: #2DD4BF !important;
+      background: #16A34A !important;
+      border-color: #4ADE80 !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 12px rgba(13, 148, 136, 0.45);
+      box-shadow: 0 0 12px rgba(22, 163, 74, 0.48);
     }
 
     .empathy-count-badge.is-tier-2 {
-      background: #D97706 !important;
-      border-color: #FBBF24 !important;
+      background: #F97316 !important;
+      border-color: #FDBA74 !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 14px rgba(217, 119, 6, 0.48);
+      box-shadow: 0 0 14px rgba(249, 115, 22, 0.52);
     }
 
     .empathy-count-badge.is-tier-3 {
       background: #EA580C !important;
       border-color: #FB923C !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 15px rgba(234, 88, 12, 0.55);
+      box-shadow: 0 0 15px rgba(234, 88, 12, 0.58);
     }
 
     .empathy-count-badge.is-tier-4 {
@@ -411,7 +411,7 @@
     }
 
     .empathy-count-badge.is-tier-5 {
-      background: #991B1B !important;
+      background: #B91C1C !important;
       border-color: #FCA5A5 !important;
       color: #FEF08A !important;
       box-shadow: 0 0 20px rgba(239, 68, 68, 0.85);
@@ -423,7 +423,7 @@
       50% { transform: scale(1.05); }
     }
 
-    /* 5-Stage Doctor Comment Board inside Empathy Checklist */
+    /* 5-Stage Doctor Comment Board inside Empathy Checklist (녹색 -> 주황색 -> 레드) */
     .empathy-severity-board {
       margin-top: 12px;
       display: flex;
@@ -431,9 +431,74 @@
       gap: 8px;
       padding: 13px 14px;
       border-radius: 14px;
-      background: rgba(15, 23, 42, 0.78);
-      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.16) 0%, rgba(249, 115, 22, 0.14) 52%, rgba(220, 38, 38, 0.16) 100%);
+      border: 1.5px solid rgba(34, 197, 94, 0.45);
       transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .doc-color-spectrum-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.26);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .dcs-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      opacity: 0.72;
+      transition: all 0.22s ease;
+    }
+    .dcs-step.is-green {
+      color: #86EFAC;
+      background: rgba(22, 163, 74, 0.22);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+    }
+    .dcs-step.is-orange {
+      color: #FDBA74;
+      background: rgba(249, 115, 22, 0.22);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+    }
+    .dcs-step.is-red {
+      color: #FCA5A5;
+      background: rgba(220, 38, 38, 0.22);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+    }
+    .dcs-arrow {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.65rem;
+      font-weight: 900;
+    }
+    .empathy-severity-board.tier-1 .dcs-step.is-green {
+      opacity: 1;
+      background: #16A34A;
+      color: #FFFFFF;
+      border-color: #86EFAC;
+      box-shadow: 0 0 10px rgba(22, 163, 74, 0.6);
+    }
+    .empathy-severity-board.tier-2 .dcs-step.is-orange,
+    .empathy-severity-board.tier-3 .dcs-step.is-orange {
+      opacity: 1;
+      background: #EA580C;
+      color: #FFFFFF;
+      border-color: #FDBA74;
+      box-shadow: 0 0 10px rgba(234, 88, 12, 0.6);
+    }
+    .empathy-severity-board.tier-4 .dcs-step.is-red,
+    .empathy-severity-board.tier-5 .dcs-step.is-red {
+      opacity: 1;
+      background: #DC2626;
+      color: #FFFFFF;
+      border-color: #FCA5A5;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.7);
     }
 
     .doc-comment-top-row {
@@ -458,23 +523,24 @@
       font-weight: 900;
       padding: 3px 9px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
+      background: #16A34A;
       color: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      border: 1px solid #86EFAC;
     }
 
     .doc-comment-progress-track {
       width: 100%;
-      height: 7px;
+      height: 8px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
+      background: linear-gradient(90deg, rgba(22, 163, 74, 0.25) 0%, rgba(249, 115, 22, 0.25) 50%, rgba(220, 38, 38, 0.25) 100%);
       overflow: hidden;
     }
 
     .doc-comment-progress-fill {
       height: 100%;
-      width: 0%;
+      width: 100%;
       border-radius: 999px;
+      background: linear-gradient(90deg, #16A34A 0%, #F97316 50%, #DC2626 100%);
       transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
     }
 
@@ -495,62 +561,62 @@
       word-break: keep-all;
     }
 
-    /* Tier 1: 1개 체크 (관리 권장) */
+    /* Tier 1: 1개 체크 — 녹색 (Green · 초기 관리 권장) */
     .empathy-severity-board.tier-1 {
-      background: linear-gradient(135deg, rgba(13, 148, 136, 0.26) 0%, rgba(15, 118, 110, 0.18) 100%);
-      border-color: #2DD4BF;
-      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.24);
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.36) 0%, rgba(21, 128, 61, 0.26) 100%);
+      border: 2px solid #22C55E;
+      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.28);
     }
     .empathy-severity-board.tier-1 .doc-comment-pill {
-      background: #0D9488;
-      border-color: #5EEAD4;
+      background: #16A34A;
+      border-color: #86EFAC;
     }
     .empathy-severity-board.tier-1 .doc-comment-progress-fill {
-      background: linear-gradient(90deg, #10B981, #2DD4BF);
+      background: linear-gradient(90deg, #16A34A, #22C55E);
     }
     .empathy-severity-board.tier-1 .doc-comment-headline {
-      color: #A7F3D0;
+      color: #86EFAC;
     }
 
-    /* Tier 2: 2개 체크 (주의 · 20% 진행중) */
+    /* Tier 2: 2개 체크 — 주황색 (Orange · 주의 20% 진행중) */
     .empathy-severity-board.tier-2 {
-      background: linear-gradient(135deg, rgba(217, 119, 6, 0.28) 0%, rgba(180, 83, 9, 0.2) 100%);
-      border-color: #F59E0B;
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.28);
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.36) 0%, rgba(234, 88, 12, 0.26) 100%);
+      border: 2px solid #F97316;
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.32);
     }
     .empathy-severity-board.tier-2 .doc-comment-pill {
-      background: #D97706;
-      border-color: #FDE68A;
+      background: #F97316;
+      border-color: #FED7AA;
     }
     .empathy-severity-board.tier-2 .doc-comment-progress-fill {
-      background: linear-gradient(90deg, #FBBF24, #F59E0B);
+      background: linear-gradient(90deg, #16A34A 0%, #F97316 100%);
     }
     .empathy-severity-board.tier-2 .doc-comment-headline {
-      color: #FEF08A;
+      color: #FED7AA;
     }
 
-    /* Tier 3: 3개 체크 (위험 · 50% 고생중) */
+    /* Tier 3: 3개 체크 — 진한 주황색 (Deep Orange · 위험 50% 고생중) */
     .empathy-severity-board.tier-3 {
-      background: linear-gradient(135deg, rgba(234, 88, 12, 0.32) 0%, rgba(194, 65, 12, 0.24) 100%);
-      border-color: #FB923C;
-      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.36);
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.42) 0%, rgba(194, 65, 12, 0.30) 100%);
+      border: 2px solid #FB923C;
+      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.38);
     }
     .empathy-severity-board.tier-3 .doc-comment-pill {
       background: #EA580C;
       border-color: #FED7AA;
     }
     .empathy-severity-board.tier-3 .doc-comment-progress-fill {
-      background: linear-gradient(90deg, #F59E0B, #EA580C);
+      background: linear-gradient(90deg, #16A34A 0%, #F97316 55%, #EA580C 100%);
     }
     .empathy-severity-board.tier-3 .doc-comment-headline {
       color: #FFEDD5;
     }
 
-    /* Tier 4: 4개 체크 (심각 · 70% 위태함) */
+    /* Tier 4: 4개 체크 — 레드 (Red · 심각 70% 위태함) */
     .empathy-severity-board.tier-4 {
-      background: linear-gradient(135deg, rgba(220, 38, 38, 0.38) 0%, rgba(153, 27, 27, 0.28) 100%);
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.44) 0%, rgba(153, 27, 27, 0.34) 100%);
       border: 2px solid #EF4444;
-      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.45);
+      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.48);
       animation: severeCardPulse 1.3s infinite ease-in-out;
     }
     .empathy-severity-board.tier-4 .doc-comment-pill {
@@ -558,26 +624,26 @@
       border-color: #FECACA;
     }
     .empathy-severity-board.tier-4 .doc-comment-progress-fill {
-      background: linear-gradient(90deg, #EA580C, #EF4444);
+      background: linear-gradient(90deg, #16A34A 0%, #F97316 45%, #EF4444 100%);
     }
     .empathy-severity-board.tier-4 .doc-comment-headline {
       color: #FECACA;
     }
 
-    /* Tier 5: 5개 모두 체크 (100% 긴급 경보 — 더이상 방치하지말고 당장 진료받으세요) */
+    /* Tier 5: 5개 모두 체크 — 강렬한 레드 (Crimson Red · 100% 긴급 경보) */
     .empathy-severity-board.tier-5 {
-      background: linear-gradient(135deg, rgba(153, 27, 27, 0.92) 0%, rgba(69, 10, 10, 0.96) 100%);
-      border: 2.5px solid #F87171;
-      box-shadow: 0 10px 32px rgba(220, 38, 38, 0.65);
+      background: linear-gradient(135deg, rgba(185, 28, 28, 0.94) 0%, rgba(127, 29, 29, 0.96) 100%);
+      border: 2.5px solid #EF4444;
+      box-shadow: 0 10px 32px rgba(220, 38, 38, 0.68);
       animation: severeCardPulse 0.9s infinite ease-in-out;
     }
     .empathy-severity-board.tier-5 .doc-comment-pill {
-      background: #EF4444;
+      background: #DC2626;
       border-color: #FEF08A;
       color: #FFFFFF;
     }
     .empathy-severity-board.tier-5 .doc-comment-progress-fill {
-      background: linear-gradient(90deg, #EF4444, #FEF08A);
+      background: linear-gradient(90deg, #16A34A 0%, #F97316 40%, #DC2626 100%);
     }
     .empathy-severity-board.tier-5 .doc-comment-headline {
       color: #FEF08A !important;
@@ -3079,30 +3145,106 @@
     }
     body.theme-hanji .empathy-count-badge.active,
     body.theme-hanji .empathy-count-badge.is-tier-1 {
-      background: #2D5A43;
-      border-color: #2D5A43;
-      color: #FFFFFF;
+      background: #16A34A !important;
+      border-color: #15803D !important;
+      color: #FFFFFF !important;
     }
     body.theme-hanji .empathy-count-badge.is-tier-2 {
-      background: #D97706;
-      border-color: #B45309;
-      color: #FFFFFF;
+      background: #F97316 !important;
+      border-color: #EA580C !important;
+      color: #FFFFFF !important;
     }
     body.theme-hanji .empathy-count-badge.is-tier-3 {
-      background: #EA580C;
-      border-color: #C2410C;
-      color: #FFFFFF;
+      background: #EA580C !important;
+      border-color: #C2410C !important;
+      color: #FFFFFF !important;
     }
     body.theme-hanji .empathy-count-badge.is-tier-4 {
-      background: #DC2626;
-      border-color: #991B1B;
-      color: #FFFFFF;
+      background: #DC2626 !important;
+      border-color: #991B1B !important;
+      color: #FFFFFF !important;
     }
     body.theme-hanji .empathy-count-badge.is-tier-5 {
-      background: #991B1B;
-      border-color: #EF4444;
-      color: #FFFFFF;
+      background: #B91C1C !important;
+      border-color: #EF4444 !important;
+      color: #FFFFFF !important;
       box-shadow: 0 0 12px rgba(220, 38, 38, 0.55);
+    }
+    body.theme-hanji .empathy-severity-board {
+      background: linear-gradient(135deg, #EFFDF4 0%, #FFF7ED 52%, #FEF2F2 100%);
+      border: 1.5px solid #22C55E;
+      box-shadow: 0 6px 18px rgba(22, 163, 74, 0.12);
+    }
+    body.theme-hanji .empathy-severity-board .doc-comment-eyebrow {
+      color: #15803D;
+    }
+    body.theme-hanji .empathy-severity-board .doc-comment-headline {
+      color: #14532D;
+    }
+    body.theme-hanji .empathy-severity-board .doc-comment-body {
+      color: #1E293B;
+    }
+    body.theme-hanji .doc-color-spectrum-row {
+      background: #FFFFFF;
+      border: 1px solid rgba(94, 71, 54, 0.18);
+    }
+    body.theme-hanji .dcs-step.is-green {
+      color: #15803D;
+      background: #DCFCE7;
+      border-color: #4ADE80;
+      opacity: 0.9;
+    }
+    body.theme-hanji .dcs-step.is-orange {
+      color: #C2410C;
+      background: #FFEDD5;
+      border-color: #FB923C;
+      opacity: 0.9;
+    }
+    body.theme-hanji .dcs-step.is-red {
+      color: #B91C1C;
+      background: #FEE2E2;
+      border-color: #F87171;
+      opacity: 0.9;
+    }
+    body.theme-hanji .dcs-arrow {
+      color: #64748B;
+    }
+    body.theme-hanji .empathy-severity-board.tier-1 {
+      background: linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%);
+      border: 2px solid #16A34A;
+      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.22);
+    }
+    body.theme-hanji .empathy-severity-board.tier-1 .doc-comment-eyebrow,
+    body.theme-hanji .empathy-severity-board.tier-1 .doc-comment-headline {
+      color: #15803D;
+    }
+    body.theme-hanji .empathy-severity-board.tier-2,
+    body.theme-hanji .empathy-severity-board.tier-3 {
+      background: linear-gradient(135deg, #FFEDD5 0%, #FFF7ED 100%);
+      border: 2px solid #F97316;
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
+    }
+    body.theme-hanji .empathy-severity-board.tier-2 .doc-comment-eyebrow,
+    body.theme-hanji .empathy-severity-board.tier-2 .doc-comment-headline,
+    body.theme-hanji .empathy-severity-board.tier-3 .doc-comment-eyebrow,
+    body.theme-hanji .empathy-severity-board.tier-3 .doc-comment-headline {
+      color: #C2410C;
+    }
+    body.theme-hanji .empathy-severity-board.tier-4 {
+      background: linear-gradient(135deg, #FEE2E2 0%, #FEF2F2 100%);
+      border: 2px solid #DC2626;
+      box-shadow: 0 8px 24px rgba(220, 38, 38, 0.28);
+    }
+    body.theme-hanji .empathy-severity-board.tier-4 .doc-comment-eyebrow,
+    body.theme-hanji .empathy-severity-board.tier-4 .doc-comment-headline {
+      color: #B91C1C;
+    }
+    body.theme-hanji .empathy-severity-board.tier-5 {
+      background: linear-gradient(135deg, #991B1B 0%, #7F1D1D 100%);
+      border: 2.5px solid #EF4444;
+    }
+    body.theme-hanji .empathy-severity-board.tier-5 .doc-comment-eyebrow {
+      color: #FEF08A;
     }
     body.theme-hanji .empathy-check-item {
       background: #F8F5EE;
@@ -5124,21 +5266,140 @@
       height: 280px;
     }
 
-    /* 8th Card: Human Body Model Image + Additional Diet Info */
+    /* ============================================================================
+       수정사항 1: 모든 카드에 아주 작게 넘버 표시 (.tiny-card-num-badge)
+       ============================================================================ */
+    .project-details-item,
+    #project-details-preview {
+      position: relative;
+    }
+    .tiny-card-num-badge {
+      position: absolute;
+      top: 9px;
+      left: 11px;
+      z-index: 38;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 6px;
+      min-width: 19px;
+      height: 15px;
+      border-radius: 999px;
+      background: rgba(12, 16, 22, 0.72);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      color: #FDE68A;
+      font-family: 'JetBrains Mono', 'Pretendard', monospace;
+      font-size: 0.54rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+    body.theme-hanji .tiny-card-num-badge {
+      background: rgba(34, 24, 17, 0.78);
+      border-color: rgba(212, 175, 55, 0.55);
+      color: #FEF08A;
+    }
+    .plate-top-bar,
+    .body-model-top-bar {
+      padding-left: 34px;
+    }
+
+    /* ============================================================================
+       수정사항 6: 좌측 닥터 코멘트 색감 스펙트럼 (녹색 -> 주황색 -> 레드순 표시)
+       ============================================================================ */
+    .doc-color-spectrum-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      padding: 4px 7px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 2px;
+    }
+    body.theme-hanji .doc-color-spectrum-row {
+      background: rgba(255, 255, 255, 0.72);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    .dcs-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      opacity: 0.58;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .dcs-step.is-green {
+      background: rgba(22, 163, 74, 0.16);
+      color: #15803D;
+      border: 1px solid rgba(22, 163, 74, 0.40);
+    }
+    .dcs-step.is-orange {
+      background: rgba(249, 115, 22, 0.16);
+      color: #C2410C;
+      border: 1px solid rgba(249, 115, 22, 0.42);
+    }
+    .dcs-step.is-red {
+      background: rgba(220, 38, 38, 0.16);
+      color: #B91C1C;
+      border: 1px solid rgba(220, 38, 38, 0.42);
+    }
+    body:not(.theme-hanji) .dcs-step.is-green { color: #86EFAC; }
+    body:not(.theme-hanji) .dcs-step.is-orange { color: #FDBA74; }
+    body:not(.theme-hanji) .dcs-step.is-red { color: #FCA5A5; }
+    .dcs-step.active {
+      opacity: 1;
+      transform: scale(1.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .dcs-step.is-green.active {
+      background: #16A34A;
+      color: #FFFFFF !important;
+      border-color: #22C55E;
+    }
+    .dcs-step.is-orange.active {
+      background: #EA580C;
+      color: #FFFFFF !important;
+      border-color: #FB923C;
+    }
+    .dcs-step.is-red.active {
+      background: #DC2626;
+      color: #FFFFFF !important;
+      border-color: #F87171;
+    }
+    .dcs-arrow {
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: rgba(148, 163, 184, 0.85);
+    }
+
+    /* ============================================================================
+       수정사항 2, 3, 4: 9번째 카드 (80% 컴팩트 축소 + 우리 3D 인체모형 + 다이어트 꿀팁 창고)
+       ============================================================================ */
     #project-details-preview.is-diet-body-extra-card {
-      width: min(74vw, 1080px);
-      max-width: 1080px;
-      height: 81vh;
-      max-height: 730px;
-      padding: 20px 24px;
+      width: min(46vw, 620px);
+      max-width: 620px;
+      height: 62vh;
+      max-height: 495px;
+      padding: 13px 15px;
+      border-radius: 20px;
       background: linear-gradient(155deg, #15181C 0%, #0E1014 100%);
-      border: 1.5px solid rgba(212, 175, 55, 0.45);
-      box-shadow: 0 30px 85px rgba(0, 0, 0, 0.78);
+      border: 1.5px solid rgba(212, 175, 55, 0.48);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.72);
+      align-self: center;
     }
     .diet-body-extra-layout {
       display: grid;
-      grid-template-columns: 44% 1fr;
-      gap: 20px;
+      grid-template-columns: 42% 1fr;
+      gap: 12px;
       width: 100%;
       height: 100%;
       align-items: stretch;
@@ -5147,112 +5408,170 @@
       position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      background: #090C10;
-      border: 1.5px solid rgba(110, 231, 183, 0.35);
+      background: radial-gradient(circle at 50% 42%, #FAF6F0 0%, #EDE3D2 62%, #DFD1BC 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.55);
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: zoom-in;
+      cursor: grab;
+      user-select: none;
     }
-    .diet-body-model-clear-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      padding: 8px;
-      transition: transform 0.35s ease;
+    .diet-body-model-visual-col:active {
+      cursor: grabbing;
     }
-    .diet-body-model-visual-col:hover .diet-body-model-clear-img {
-      transform: scale(1.03);
-    }
-    .diet-body-model-zoom-btn {
+    #diet-our-3d-body-canvas {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
-      z-index: 4;
-      padding: 5px 11px;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      z-index: 2;
+    }
+    .diet-3d-stage-top-badge {
+      position: absolute;
+      top: 8px;
+      left: 36px;
+      right: 8px;
+      z-index: 5;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(12, 16, 22, 0.85);
-      border: 1px solid rgba(253, 230, 138, 0.5);
-      color: #FDE68A;
-      font-size: 0.68rem;
+      background: rgba(24, 18, 14, 0.78);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #FEF08A;
+      font-size: 0.56rem;
+      font-weight: 800;
+      pointer-events: none;
+    }
+    .diet-3d-stage-controls {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .diet-3d-ctrl-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(18, 14, 11, 0.84);
+      padding: 2px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+    }
+    .diet-3d-ctrl-btn {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.58rem;
       font-weight: 800;
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .diet-3d-ctrl-btn.active,
+    .diet-3d-ctrl-btn:hover {
+      background: #2D5A43;
+      color: #FEF08A;
+    }
+    .diet-3d-loading-hint {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #523B28;
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 12px;
+      pointer-events: none;
     }
     .diet-body-extra-info-col {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 10px;
+      gap: 6px;
       min-width: 0;
       overflow-y: auto;
     }
     .diet-extra-head {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .diet-extra-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       width: fit-content;
-      padding: 4px 11px;
+      padding: 2px 8px;
       border-radius: 999px;
       background: rgba(16, 185, 129, 0.18);
       border: 1px solid rgba(110, 231, 183, 0.45);
       color: #A7F3D0;
-      font-size: 0.68rem;
+      font-size: 0.58rem;
       font-weight: 800;
     }
     .diet-extra-main-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.32rem;
+      font-size: 0.96rem;
       font-weight: 800;
       color: #FFFFFF;
-      line-height: 1.25;
+      line-height: 1.22;
       margin: 0;
     }
     .diet-extra-main-desc {
-      font-size: 0.78rem;
+      font-size: 0.66rem;
       color: rgba(248, 250, 252, 0.82);
-      line-height: 1.42;
+      line-height: 1.32;
       margin: 0;
       word-break: keep-all;
     }
     .diet-extra-info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 9px;
+      gap: 6px;
       flex: 1;
     }
     .diet-extra-info-item {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.13);
-      border-radius: 13px;
-      padding: 11px 13px;
+      border-radius: 10px;
+      padding: 7px 9px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .dei-badge {
-      font-size: 0.64rem;
+      font-size: 0.56rem;
       font-weight: 800;
       color: #FDE68A;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
     .dei-title {
-      font-size: 0.86rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: #FFFFFF;
-      line-height: 1.28;
+      line-height: 1.22;
     }
     .dei-desc {
-      font-size: 0.72rem;
+      font-size: 0.61rem;
       color: rgba(248, 250, 252, 0.80);
-      line-height: 1.42;
+      line-height: 1.32;
       margin: 0;
       word-break: keep-all;
     }
@@ -5260,112 +5579,49 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 6px;
       flex-wrap: wrap;
     }
     .diet-extra-explorer-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
+      justify-content: center;
+      width: 100%;
+      gap: 6px;
+      padding: 7px 12px;
       border-radius: 999px;
       background: linear-gradient(135deg, #2D5A43 0%, #3D7357 100%);
       border: 1px solid rgba(167, 243, 208, 0.45);
       color: #FFFFFF;
-      font-size: 0.76rem;
+      font-size: 0.68rem;
       font-weight: 800;
       text-decoration: none;
       transition: transform 0.2s ease, background 0.2s ease;
     }
     .diet-extra-explorer-btn:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       background: #4A3525;
-    }
-
-    /* Ultra-Small Hairloss Card at Bottom-Right (우측 하단 아주 작은 탈모카드) */
-    .diet-tiny-hairloss-card,
-    #floating-bottom-right-hair-card {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 5px 10px 5px 5px;
-      border-radius: 999px;
-      background: rgba(18, 22, 28, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(212, 175, 55, 0.55);
-      color: #FFFFFF;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-      transition: all 0.22s ease;
-    }
-    #floating-bottom-right-hair-card {
-      position: fixed;
-      right: 16px;
-      bottom: 12px;
-      z-index: 98;
-      transform: scale(0.92);
-      transform-origin: bottom right;
-    }
-    .diet-tiny-hairloss-card:hover,
-    #floating-bottom-right-hair-card:hover {
-      background: #2D5A43;
-      border-color: #FEF08A;
-      transform: scale(0.96) translateY(-2px);
-    }
-    .dth-thumb,
-    .fbr-hair-thumb {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid #FDE68A;
-      flex-shrink: 0;
-    }
-    .dth-text,
-    .fbr-hair-info {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.15;
-      padding-right: 2px;
-    }
-    .dth-text small,
-    .fbr-hair-info small {
-      font-size: 0.54rem;
-      font-weight: 700;
-      color: #A7F3D0;
-      letter-spacing: 0.02em;
-    }
-    .dth-text strong,
-    .fbr-hair-info strong {
-      font-size: 0.68rem;
-      font-weight: 800;
-      color: #FEF08A;
-      white-space: nowrap;
     }
 
     @media (max-width: 1024px) {
       #project-details-preview.is-diet-body-extra-card {
-        width: 92vw;
-        height: 76vh;
-        padding: 12px 14px;
+        width: 82vw;
+        max-width: 480px;
+        height: 66vh;
+        max-height: 510px;
+        padding: 10px 12px;
       }
       .diet-body-extra-layout {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
         overflow-y: auto;
       }
       .diet-body-model-visual-col {
-        min-height: 185px;
-        max-height: 220px;
+        min-height: 165px;
+        max-height: 190px;
       }
       .diet-extra-info-grid {
         grid-template-columns: 1fr;
-      }
-      #floating-bottom-right-hair-card {
-        right: 10px;
-        bottom: 8px;
-        transform: scale(0.84);
       }
     }
   </style>
@@ -5404,9 +5660,6 @@
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
-      <a class="back-pill-btn" href="tel:010-5631-1275" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
-        <span>📞 대표원장실 전화 상담</span>
-      </a>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -5461,7 +5714,7 @@
         <div class="empathy-checklist-card">
           <div class="empathy-checklist-header">
             <span class="empathy-checklist-title">원형탈모 · 자가면역 교란 체크리스트</span>
-            <span class="empathy-count-badge" id="empathy-count-badge">증상 체크 전</span>
+            <span class="empathy-count-badge is-tier-1" id="empathy-count-badge">🟢 증상 체크 대기 (0/5)</span>
           </div>
           <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
           <div class="empathy-checklist-list" id="empathy-checklist-list">
@@ -5512,16 +5765,23 @@
               <span class="empathy-check-text">[소아·가족 안심 치료] 전신 면역력과 자율신경을 함께 회복하는 안전한 한방 치료를 원한다.</span>
             </label>
           </div>
-          <div class="empathy-severity-board" id="empathy-diagnosis-box" aria-live="polite" style="display:none;">
+          <div class="empathy-severity-board tier-1" id="empathy-diagnosis-box" aria-live="polite">
+            <div class="doc-color-spectrum-row" aria-label="닥터 코멘트 색감 단계 (녹색 → 주황색 → 레드)">
+              <span class="dcs-step is-green active" id="dcs-step-green">🟢 녹색 · 관리(1개)</span>
+              <span class="dcs-arrow">→</span>
+              <span class="dcs-step is-orange" id="dcs-step-orange">🟠 주황 · 주의·위험(2~3개)</span>
+              <span class="dcs-arrow">→</span>
+              <span class="dcs-step is-red" id="dcs-step-red">🔴 레드 · 심각·긴급(4~5개)</span>
+            </div>
             <div class="doc-comment-top-row">
               <span class="doc-comment-eyebrow">👨‍⚕️ 안정위 대표원장 닥터 코멘트</span>
-              <span class="doc-comment-pill" id="doc-comment-pill">1단계 · 관리 권장</span>
+              <span class="doc-comment-pill" id="doc-comment-pill">녹색 · 초기 관리</span>
             </div>
             <div class="doc-comment-progress-track">
-              <div class="doc-comment-progress-fill" id="doc-comment-bar-fill"></div>
+              <div class="doc-comment-progress-fill" id="doc-comment-bar-fill" style="width:12%;"></div>
             </div>
-            <strong class="doc-comment-headline" id="doc-comment-title">초기 관리 권장</strong>
-            <p class="doc-comment-body" id="doc-comment-desc">증상이 더 깊어지기 전에 내원하셔서 예방 및 맞춤 관리를 받아보시길 권합니다.</p>
+            <strong class="doc-comment-headline" id="doc-comment-title">증상을 체크하시면 녹색 ➔ 주황색 ➔ 레드순으로 진단됩니다</strong>
+            <p class="doc-comment-body" id="doc-comment-desc">위 항목을 체크하시면 1개(녹색·관리) ➔ 2~3개(주황색·주의/위험) ➔ 4~5개(레드·심각/긴급) 순으로 대표원장 코멘트가 즉시 표시됩니다.</p>
           </div>
         </div>
 
@@ -5543,6 +5803,7 @@
         
         <!-- PLATE 01: Multi-Frame Motion Video Storytelling Stage -->
         <article class="project-details-item is-motion-plate is-active-plate">
+          <span class="tiny-card-num-badge">01</span>
           <div class="plate-media-inner">
             <div class="motion-video-stage" data-frames="life_3a_hairloss.jpg|detail_hair_follicle_3d.jpg|illust_syncope_autonomic.jpg" data-duration="6.4">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('life_3a_hairloss.jpg');"></div>
@@ -5586,6 +5847,7 @@
 
         <!-- PLATE 02: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">02</span>
           <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_hair_follicle_3d.jpg" alt="빠진 자리만 누르면, '교란된 자율신경과 면역 불씨'는 다른 곳으로 번집니다" draggable="false">
             <div class="clean-plate-scrim"></div>
@@ -5601,6 +5863,7 @@
 
         <!-- PLATE 03: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate">
+          <span class="tiny-card-num-badge">03</span>
           <div class="plate-media-inner">
             <img class="lusion-clean-media" src="illust_syncope_autonomic.jpg" alt="성난 면역세포를 진정시키고 '모낭 주변 미세혈류'를 다시 엽니다" draggable="false">
             <div class="clean-plate-scrim"></div>
@@ -5616,6 +5879,7 @@
 
         <!-- PLATE 04: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">04</span>
           <div class="plate-media-inner">
             <img class="lusion-clean-media" src="detail_director_story2_both_wrists_pulse.jpg" alt="내 가족에게 처방하는 '안신(安神)·면역 한약'과 모낭 재생 약침" draggable="false">
             <div class="clean-plate-scrim"></div>
@@ -5631,6 +5895,7 @@
 
         <!-- PLATE 05: Single Main Image Plate -->
         <article class="project-details-item is-image is-clean-plate">
+          <span class="tiny-card-num-badge">05</span>
           <div class="plate-media-inner">
             <img class="lusion-clean-media" src="life_3b_hair_restored.jpg" alt="실제 학술 논문으로 검증된 '자가면역 안정 & 신생모 발모'" draggable="false">
             <div class="clean-plate-scrim"></div>
@@ -5659,6 +5924,7 @@
 
         <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
         <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">06</span>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
             <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
@@ -5680,9 +5946,10 @@
           </div>
         </article>
 
-        <!-- LAST CARD: 3D Human Body Model & Diet Additional Information Card -->
+        <!-- LAST CARD (9th Card): Compact 80% Scaled-Down Our 3D Human Body Model & Diet Honey-Tips Warehouse -->
         
         <article id="project-details-preview" class="body-model-last-card">
+          <span class="tiny-card-num-badge">07</span>
           <img class="next-portal-bg" src="illust_syncope_autonomic.jpg" alt="인체모형으로 내 자율신경·면역 원인 연결하기">
           <div class="next-portal-scrim"></div>
           <div class="body-model-holo-grid"></div>
@@ -5716,8 +5983,6 @@
       </div>
     </section>
   </main>
-
-  
 
   <div id="scroll-indicator">
     <div id="scroll-indicator-bar"></div>
@@ -5756,9 +6021,6 @@
         <button type="button" class="urgent-btn-primary" onclick="window.closeUrgent5CheckModal(); window.openConsultModal();">
           🚨 지금 바로 대표원장 진료 예약하기 ↗
         </button>
-        <a href="tel:010-5631-1275" class="urgent-btn-tel">
-          📞 대표원장실 즉시 전화 상담
-        </a>
       </div>
 
       <button type="button" class="urgent-btn-close" onclick="window.closeUrgent5CheckModal()">
@@ -5767,7 +6029,7 @@
     </div>
   </div>
 
-  <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
+  <!-- Consultation Modal Synchronized with Checked Empathy Symptoms (수정사항 8 & 9 반영: 전화상담/별도 카카오 메뉴 삭제 및 신청 시 카카오 채널 자동 연결 + 내용 복사) -->
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
       <h3 class="consult-modal-title">원형탈모 · 자가면역 신경안정 치료 맞춤 진료 예약</h3>
@@ -5788,13 +6050,12 @@
           <label>체크된 불편감 및 추가 상담 메모</label>
           <textarea id="modal-user-memo" rows="3" placeholder="희망하시는 진료 시간대나 증상을 남겨주세요"></textarea>
         </div>
-        <button type="submit" class="modal-submit-btn">내 원형탈모·자율신경 상태 원장님께 진단받기 신청하기</button>
+        <p style="margin:0 0 10px 0;font-size:0.75rem;line-height:1.45;color:rgba(253,230,138,0.92);background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.32);padding:8px 10px;border-radius:10px;word-break:keep-all;">
+          💡 <strong>신청하기</strong>를 누르시면 작성하신 예약 내용과 체크 증상이 <strong>자동 복사</strong>되며 <strong>바른한의원 카카오톡 채널 채팅창으로 즉시 자동 연결</strong>됩니다. (열린 채팅창에 <strong>붙여넣기</strong>만 해주시면 됩니다)
+        </p>
+        <button type="submit" class="modal-submit-btn">💬 내 원형탈모·자율신경 상태 원장님께 진단받기 신청하기 (카카오 채널 자동 연결)</button>
       </form>
-      <div class="consult-action-list">
-        <a class="consult-action-item" id="detail-tel-link" href="tel:010-5631-1275">대표원장실 전화 상담 연결</a>
-        <a class="consult-action-item" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">카카오톡 채널 상담 ↗</a>
-      </div>
-      <button class="plate-expand-btn" style="width:100%;padding:11px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
+      <button class="plate-expand-btn" style="width:100%;padding:11px;margin-top:10px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
     </div>
   </div>
 
@@ -5939,10 +6200,10 @@
         },
         'diet-zero.html': {
           part: 'gut',
-          beforeImg: 'ba_diet_before.jpg',
-          afterImg: 'ba_diet_after.jpg',
+          beforeImg: 'diet_minimal_card9_ba_before.jpg',
+          afterImg: 'diet_minimal_card9_ba_after.jpg',
           beforeTag: 'BEFORE · 복부 대사 저하 및 내장지방 축적',
-          afterTag: 'AFTER · 학술 검증 대사 활성화 및 체지방 감량',
+          afterTag: 'AFTER · 근육량 상승 및 복부 뱃살지방 분해 완료',
           metrics: [
             { label: '국제 비만학술지(Int J Obesity) 검증', b: '기초대사 저하·가짜 식욕', a: '갈색지방 열발생·렙틴 저항성 개선 입증' },
             { label: '국제 약리학술지(Front Pharmacol) 등재', b: '근손실 요요 반복', a: '대사 효소 활성·내장지방 분해 검증' }
@@ -6307,71 +6568,69 @@
         const checked = getCheckedSymptoms();
         const cnt = checked.length;
 
+        const dcsGreen = document.getElementById('dcs-step-green');
+        const dcsOrange = document.getElementById('dcs-step-orange');
+        const dcsRed = document.getElementById('dcs-step-red');
+        if (dcsGreen) dcsGreen.classList.toggle('active', cnt === 0 || cnt === 1);
+        if (dcsOrange) dcsOrange.classList.toggle('active', cnt === 2 || cnt === 3);
+        if (dcsRed) dcsRed.classList.toggle('active', cnt >= 4);
+
         countBadge.classList.remove('active', 'is-tier-1', 'is-tier-2', 'is-tier-3', 'is-tier-4', 'is-tier-5');
         if (diagnosisBox) {
+          diagnosisBox.style.display = 'flex';
           diagnosisBox.classList.remove('tier-1', 'tier-2', 'tier-3', 'tier-4', 'tier-5');
         }
 
         if (cnt === 0) {
-          countBadge.textContent = '증상 체크 전 (0/5)';
-          if (diagnosisBox) diagnosisBox.style.display = 'none';
+          countBadge.textContent = '🟢 증상 체크 대기 (0/5)';
+          countBadge.classList.add('is-tier-1');
+          if (diagnosisBox) diagnosisBox.classList.add('tier-1');
+          if (docCommentPill) docCommentPill.textContent = '🟢 녹색 · 초기 관리';
+          if (docCommentBarFill) docCommentBarFill.style.width = '12%';
+          if (docCommentTitle) docCommentTitle.textContent = '증상을 체크하시면 녹색 ➔ 주황색 ➔ 레드순으로 진단됩니다';
+          if (docCommentDesc) docCommentDesc.textContent = '위 항목을 체크하시면 1개(녹색·관리) ➔ 2~3개(주황색·주의/위험) ➔ 4~5개(레드·심각/긴급) 순으로 대표원장 코멘트가 즉시 표시됩니다.';
           if (urgentModalEl) urgentModalEl.classList.remove('open');
         } else if (cnt === 1) {
-          countBadge.textContent = '🩺 1개 체크 · 초기 관리 권장';
+          countBadge.textContent = '🟢 1개 체크 · 녹색 (초기 관리)';
           countBadge.classList.add('active', 'is-tier-1');
-          if (diagnosisBox) {
-            diagnosisBox.style.display = 'flex';
-            diagnosisBox.classList.add('tier-1');
-          }
-          if (docCommentPill) docCommentPill.textContent = '1개 체크 · 관리 요망';
-          if (docCommentBarFill) docCommentBarFill.style.width = '12%';
+          if (diagnosisBox) diagnosisBox.classList.add('tier-1');
+          if (docCommentPill) docCommentPill.textContent = '🟢 녹색 · 1개 체크 (관리 요망)';
+          if (docCommentBarFill) docCommentBarFill.style.width = '20%';
           if (docCommentTitle) docCommentTitle.textContent = '초기 관리 권장 (' + COND_NAME + ' 예방 · 관리 단계)';
           if (docCommentDesc) docCommentDesc.textContent = '초기 불편감 신호가 감지되었습니다. 증상이 더 깊어지기 전에 내원하셔서 예방 및 맞춤 관리를 받아보시길 권합니다.';
           if (justChecked) playStepCheckPulse(1);
         } else if (cnt === 2) {
-          countBadge.textContent = '⚠️ 2개 체크 · 주의 (20% 진행중)';
+          countBadge.textContent = '🟠 2개 체크 · 주황색 주의 (40% 진행중)';
           countBadge.classList.add('active', 'is-tier-2');
-          if (diagnosisBox) {
-            diagnosisBox.style.display = 'flex';
-            diagnosisBox.classList.add('tier-2');
-          }
-          if (docCommentPill) docCommentPill.textContent = '2개 체크 · 20% 진행중';
-          if (docCommentBarFill) docCommentBarFill.style.width = '20%';
-          if (docCommentTitle) docCommentTitle.textContent = '주의 (20% 진행중) · ' + COND_NAME + ' 주의 단계';
-          if (docCommentDesc) docCommentDesc.textContent = '증상이 서서히 자리 잡고 있습니다(20% 진행중). 자연 회복만 기다리기보다 정밀 진맥과 초기 치료로 진행을 차단해야 할 시점입니다.';
+          if (diagnosisBox) diagnosisBox.classList.add('tier-2');
+          if (docCommentPill) docCommentPill.textContent = '🟠 주황색 · 2개 체크 (주의)';
+          if (docCommentBarFill) docCommentBarFill.style.width = '45%';
+          if (docCommentTitle) docCommentTitle.textContent = '주의 단계 · ' + COND_NAME + ' 진행 차단 필요';
+          if (docCommentDesc) docCommentDesc.textContent = '증상이 서서히 자리 잡고 있습니다. 자연 회복만 기다리기보다 정밀 진맥과 초기 치료로 진행을 차단해야 할 시점입니다.';
           if (justChecked) playStepCheckPulse(2);
         } else if (cnt === 3) {
-          countBadge.textContent = '🔶 3개 체크 · 위험 (50% 고생중)';
+          countBadge.textContent = '🟠 3개 체크 · 주황색 위험 (65% 고생중)';
           countBadge.classList.add('active', 'is-tier-3');
-          if (diagnosisBox) {
-            diagnosisBox.style.display = 'flex';
-            diagnosisBox.classList.add('tier-3');
-          }
-          if (docCommentPill) docCommentPill.textContent = '3개 체크 · 50% 고생중';
-          if (docCommentBarFill) docCommentBarFill.style.width = '50%';
-          if (docCommentTitle) docCommentTitle.textContent = '위험 (50% 고생중) · ' + COND_NAME + ' 위험 단계';
-          if (docCommentDesc) docCommentDesc.textContent = '이미 일상 속에서 상당한 불편감으로 고생하고 계십니다(50% 고생중). 만성화되기 직전이므로 대표원장 정밀 진단을 통한 집중 치료가 필요합니다.';
+          if (diagnosisBox) diagnosisBox.classList.add('tier-3');
+          if (docCommentPill) docCommentPill.textContent = '🟠 주황색 · 3개 체크 (위험)';
+          if (docCommentBarFill) docCommentBarFill.style.width = '68%';
+          if (docCommentTitle) docCommentTitle.textContent = '위험 단계 · ' + COND_NAME + ' 집중 치료 권장';
+          if (docCommentDesc) docCommentDesc.textContent = '이미 일상 속에서 상당한 불편감으로 고생하고 계십니다. 만성화되기 직전이므로 대표원장 정밀 진단을 통한 집중 치료가 필요합니다.';
           if (justChecked) playStepCheckPulse(3);
         } else if (cnt === 4) {
-          countBadge.textContent = '🚨 4개 체크 · 심각 (70% 위태함)';
+          countBadge.textContent = '🔴 4개 체크 · 레드 심각 (85% 위태함)';
           countBadge.classList.add('active', 'is-tier-4');
-          if (diagnosisBox) {
-            diagnosisBox.style.display = 'flex';
-            diagnosisBox.classList.add('tier-4');
-          }
-          if (docCommentPill) docCommentPill.textContent = '4개 체크 · 70% 위태함';
-          if (docCommentBarFill) docCommentBarFill.style.width = '70%';
-          if (docCommentTitle) docCommentTitle.textContent = '심각 (70% 위태함) · ' + COND_NAME + ' 심각 단계';
-          if (docCommentDesc) docCommentDesc.textContent = '신체 균형이 무너지며 매우 위태로운 단계에 접어들었습니다(70% 위태함). 미루실수록 치료 기간이 길어지니 빠른 시일 내에 진료받으셔야 합니다.';
+          if (diagnosisBox) diagnosisBox.classList.add('tier-4');
+          if (docCommentPill) docCommentPill.textContent = '🔴 레드 · 4개 체크 (심각)';
+          if (docCommentBarFill) docCommentBarFill.style.width = '88%';
+          if (docCommentTitle) docCommentTitle.textContent = '심각 단계 · ' + COND_NAME + ' 조속한 진료 요망';
+          if (docCommentDesc) docCommentDesc.textContent = '신체 균형이 무너지며 매우 위태로운 레드 단계에 접어들었습니다. 미루실수록 치료 기간이 길어지니 빠른 시일 내에 진료받으셔야 합니다.';
           if (justChecked) playStepCheckPulse(4);
         } else if (cnt >= 5) {
-          countBadge.textContent = '🆘 5개 모두 체크 · 당장 진료 요망!';
+          countBadge.textContent = '🔴 5개 모두 체크 · 레드 긴급 진료 요망!';
           countBadge.classList.add('active', 'is-tier-5');
-          if (diagnosisBox) {
-            diagnosisBox.style.display = 'flex';
-            diagnosisBox.classList.add('tier-5');
-          }
-          if (docCommentPill) docCommentPill.textContent = '5개 모두 체크 · 100% 긴급';
+          if (diagnosisBox) diagnosisBox.classList.add('tier-5');
+          if (docCommentPill) docCommentPill.textContent = '🔴 레드 · 5개 모두 체크 (100% 긴급)';
           if (docCommentBarFill) docCommentBarFill.style.width = '100%';
           if (docCommentTitle) docCommentTitle.textContent = '“더이상 방치하지말고 당장 진료받으세요”';
           if (docCommentDesc) docCommentDesc.textContent = '5가지 핵심 증상이 모두 해당됩니다! 더이상 방치하지말고 당장 진료받으세요. 지금 즉시 대표원장 1:1 정밀 진맥과 근본 치료를 시작하셔야 합니다.';
@@ -6407,13 +6666,47 @@
         document.getElementById('consult-modal').classList.add('open');
       };
 
+      function copyTextSyncAndAsync(text) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.top = '-9999px';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch (_) {}
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(text).catch(function() {});
+        }
+      }
+
       const consultForm = document.getElementById('detail-consult-form');
       if (consultForm) {
         consultForm.addEventListener('submit', (e) => {
           e.preventDefault();
-          const name = document.getElementById('modal-user-name').value;
-          const phone = document.getElementById('modal-user-phone').value;
+          const name = (document.getElementById('modal-user-name').value || '').trim();
+          const phone = (document.getElementById('modal-user-phone').value || '').trim();
+          const memo = (document.getElementById('modal-user-memo').value || '').trim();
           const checked = getCheckedSymptoms();
+
+          const kakaoMsg = [
+            '[바른한의원 대전본점 맞춤 진료예약 신청]',
+            '• 희망 클리닉: 원형탈모 · 자가면역 신경안정 치료 (바른 원형탈모 (단발성·다발성·자가면역) 클리닉)',
+            '• 예약자 성함: ' + name,
+            '• 연락처: ' + phone,
+            '• 체크 증상: ' + (checked.length ? checked.join(', ') : '없음'),
+            '• 상담 메모: ' + (memo || '없음')
+          ].join('\n');
+
+          // 1) 작성 내용을 클립보드에 즉시 자동 복사
+          copyTextSyncAndAsync(kakaoMsg);
+
+          // 2) 백그라운드 알림톡 접수 연동 유지
           fetch('/api/send-alimtalk', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -6423,10 +6716,17 @@
               childInfo: '원형탈모 · 자가면역 신경안정 치료',
               consultType: '바른 원형탈모 (단발성·다발성·자가면역) 클리닉',
               symptoms: checked,
-              parentMemo: document.getElementById('modal-user-memo').value
+              parentMemo: memo
             })
           }).catch(() => {});
-          alert('[바른한의원 대전본점 맞춤 예약 접수 완료]\n' + name + '님, 체크하신 증상을 바탕으로 전담 상담실장이 빠르게 연락드리겠습니다.');
+
+          // 3) 바른한의원 카카오톡 채널 1:1 채팅창으로 즉시 자동 연결
+          const kakaoChatUrl = 'https://pf.kakao.com/_ykxcLK/chat';
+          const win = window.open(kakaoChatUrl, '_blank', 'noopener,noreferrer');
+          alert('[작성하신 예약 내용이 자동 복사되었습니다!]\n\n열리는 바른한의원 카카오톡 채널 상담창에 붙여넣기(Ctrl+V 또는 길게 눌러 붙여넣기) 후 전송해 주시면 대표원장실 전담 상담이 즉시 시작됩니다.\n\n--- 복사된 예약 내용 ---\n' + kakaoMsg);
+          if (!win) {
+            window.location.href = kakaoChatUrl;
+          }
           document.getElementById('consult-modal').classList.remove('open');
           consultForm.reset();
         });
@@ -6439,6 +6739,18 @@
       const moveContainer = document.getElementById('project-details-items-move-container');
       const progressBar = document.getElementById('scroll-indicator-bar');
       const plates = Array.from(document.querySelectorAll('.project-details-item, #project-details-preview'));
+
+      // 수정사항 1: 모든 카드에 아주 작게 일련번호(01, 02, 03...) 배지가 빠짐없이 들어가도록 보장
+      plates.forEach((pl, idx) => {
+        const numStr = (idx + 1) < 10 ? '0' + (idx + 1) : '' + (idx + 1);
+        let badge = pl.querySelector(':scope > .tiny-card-num-badge');
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'tiny-card-num-badge';
+          pl.insertBefore(badge, pl.firstChild);
+        }
+        badge.textContent = numStr;
+      });
 
       let targetX = 0, currentX = 0, maxScrollX = 0;
       let isDragging = false, startDragX = 0, startTargetX = 0;
@@ -6470,7 +6782,7 @@
       }, { passive: true });
 
       wrapper.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -6505,7 +6817,7 @@
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         updateBounds();
         isTouchActive = true;
         lastDetailInteractMs = performance.now();
@@ -6520,7 +6832,7 @@
 
       window.addEventListener('touchmove', (e) => {
         if (!isTouchActive || !e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         const now = performance.now();
         lastDetailInteractMs = now;
         const curX = e.touches[0].clientX;
@@ -8546,6 +8858,249 @@
         drawSimCanvas(timeSec);
         requestAnimationFrame(animateAll);
       }
+
+      // ====================================================================
+      // 6. OUR SIGNATURE 3D PORCELAIN HUMAN BODY MODEL FOR 9TH CARD (수정사항 3)
+      // ====================================================================
+      (async function initOur3DBodyModelInCard9() {
+        const canvas = document.getElementById('diet-our-3d-body-canvas');
+        const stageEl = document.getElementById('diet-our-3d-body-stage');
+        const hintEl = document.getElementById('diet-3d-loading-hint');
+        if (!canvas || !stageEl) return;
+
+        try {
+          const THREE = await import('https://esm.sh/three@0.166.0');
+          const { GLTFLoader } = await import('https://esm.sh/three@0.166.0/examples/jsm/loaders/GLTFLoader.js');
+          const { DRACOLoader } = await import('https://esm.sh/three@0.166.0/examples/jsm/loaders/DRACOLoader.js');
+          const { OrbitControls } = await import('https://esm.sh/three@0.166.0/examples/jsm/controls/OrbitControls.js');
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
+          camera.position.set(0, 0.25, 3.35);
+
+          const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+          renderer.outputColorSpace = THREE.SRGBColorSpace;
+          renderer.toneMapping = THREE.ACESFilmicToneMapping;
+          renderer.toneMappingExposure = 1.15;
+
+          const controls = new OrbitControls(camera, canvas);
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.06;
+          controls.enablePan = false;
+          controls.minDistance = 1.8;
+          controls.maxDistance = 4.6;
+          controls.target.set(0, 0.12, 0);
+          controls.autoRotate = true;
+          controls.autoRotateSpeed = 1.25;
+
+          function syncSize() {
+            const r = stageEl.getBoundingClientRect();
+            const w = Math.max(180, r.width);
+            const h = Math.max(200, r.height);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h, false);
+          }
+          syncSize();
+          window.addEventListener('resize', syncSize);
+          setTimeout(syncSize, 250);
+          setTimeout(syncSize, 800);
+
+          const lightDir = new THREE.Vector3(0.45, 0.72, 0.85).normalize();
+
+          function createPorcelainSkinMaterial(opacityVal) {
+            return new THREE.ShaderMaterial({
+              transparent: true,
+              depthWrite: false,
+              side: THREE.FrontSide,
+              uniforms: {
+                uBaseColor: { value: new THREE.Color('#FCF8F2') },
+                uShadowColor: { value: new THREE.Color('#E5D5C3') },
+                uRimColor: { value: new THREE.Color('#D4AF37') },
+                uOpacity: { value: opacityVal },
+                uLightDir: { value: lightDir }
+              },
+              vertexShader: [
+                'varying vec3 vNormal;',
+                'varying vec3 vViewDir;',
+                'void main() {',
+                '  vec4 mvPos = modelViewMatrix * vec4(position, 1.0);',
+                '  vNormal = normalize(normalMatrix * normal);',
+                '  vViewDir = normalize(-mvPos.xyz);',
+                '  gl_Position = projectionMatrix * mvPos;',
+                '}'
+              ].join('\n'),
+              fragmentShader: [
+                'uniform vec3 uBaseColor;',
+                'uniform vec3 uShadowColor;',
+                'uniform vec3 uRimColor;',
+                'uniform float uOpacity;',
+                'uniform vec3 uLightDir;',
+                'varying vec3 vNormal;',
+                'varying vec3 vViewDir;',
+                'void main() {',
+                '  vec3 N = normalize(vNormal);',
+                '  vec3 V = normalize(vViewDir);',
+                '  vec3 L = normalize((viewMatrix * vec4(uLightDir, 0.0)).xyz);',
+                '  float ndl = dot(N, L) * 0.5 + 0.5;',
+                '  float toon = smoothstep(0.32, 0.65, ndl);',
+                '  vec3 col = mix(uShadowColor, uBaseColor, toon);',
+                '  float fresnel = pow(1.0 - max(dot(N, V), 0.0), 2.3);',
+                '  col = mix(col, uRimColor, fresnel * 0.42);',
+                '  float alpha = clamp(uOpacity + fresnel * 0.36, 0.08, 0.92);',
+                '  gl_FragColor = vec4(col, alpha);',
+                '}'
+              ].join('\n')
+            });
+          }
+
+          function createCelMaterial(baseHex, shadowHex, rimHex, opacityVal) {
+            const isTrans = opacityVal < 0.99;
+            return new THREE.ShaderMaterial({
+              transparent: isTrans,
+              depthWrite: !isTrans,
+              side: THREE.DoubleSide,
+              uniforms: {
+                uBase: { value: new THREE.Color(baseHex) },
+                uShadow: { value: new THREE.Color(shadowHex) },
+                uRim: { value: new THREE.Color(rimHex || '#FFFDF9') },
+                uOpacity: { value: opacityVal },
+                uLightDir: { value: lightDir }
+              },
+              vertexShader: [
+                'varying vec3 vNormal;',
+                'varying vec3 vViewDir;',
+                'void main() {',
+                '  vec4 mvPos = modelViewMatrix * vec4(position, 1.0);',
+                '  vNormal = normalize(normalMatrix * normal);',
+                '  vViewDir = normalize(-mvPos.xyz);',
+                '  gl_Position = projectionMatrix * mvPos;',
+                '}'
+              ].join('\n'),
+              fragmentShader: [
+                'uniform vec3 uBase;',
+                'uniform vec3 uShadow;',
+                'uniform vec3 uRim;',
+                'uniform float uOpacity;',
+                'uniform vec3 uLightDir;',
+                'varying vec3 vNormal;',
+                'varying vec3 vViewDir;',
+                'void main() {',
+                '  vec3 N = normalize(vNormal);',
+                '  if (!gl_FrontFacing) N = -N;',
+                '  vec3 V = normalize(vViewDir);',
+                '  vec3 L = normalize((viewMatrix * vec4(uLightDir, 0.0)).xyz);',
+                '  float ndl = dot(N, L) * 0.5 + 0.5;',
+                '  float celBand = ndl > 0.66 ? 1.0 : (ndl > 0.36 ? 0.55 : 0.12);',
+                '  vec3 col = mix(uShadow, uBase, celBand);',
+                '  float rim = smoothstep(0.62, 0.92, 1.0 - max(dot(N, V), 0.0));',
+                '  col = mix(col, uRim, rim * 0.35);',
+                '  gl_FragColor = vec4(col, uOpacity);',
+                '}'
+              ].join('\n')
+            });
+          }
+
+          const bodyRoot = new THREE.Group();
+          bodyRoot.position.set(0, -0.02, 0);
+          scene.add(bodyRoot);
+
+          const dracoLoader = new DRACOLoader();
+          dracoLoader.setDecoderPath('draco/');
+          const gltfLoader = new GLTFLoader();
+          gltfLoader.setDRACOLoader(dracoLoader);
+
+          let femaleModel = null;
+          let maleModel = null;
+
+          // 1) Female Porcelain Skin (Default)
+          gltfLoader.load('models/skinF2.glb', (gltf) => {
+            femaleModel = gltf.scene;
+            const mat = createPorcelainSkinMaterial(0.38);
+            femaleModel.traverse((c) => {
+              if (c.isMesh) {
+                c.material = mat;
+                c.renderOrder = 3;
+              }
+            });
+            bodyRoot.add(femaleModel);
+            if (hintEl) hintEl.style.display = 'none';
+            syncSize();
+          });
+
+          // 2) Male Porcelain Skin
+          gltfLoader.load('models/skinMB2.glb', (gltf) => {
+            maleModel = gltf.scene;
+            const mat = createPorcelainSkinMaterial(0.38);
+            maleModel.traverse((c) => {
+              if (c.isMesh) {
+                c.material = mat;
+                c.renderOrder = 3;
+              }
+            });
+            maleModel.visible = false;
+            bodyRoot.add(maleModel);
+          });
+
+          // 3) Skeleton
+          gltfLoader.load('models/Skeleton.glb', (gltf) => {
+            const skel = gltf.scene;
+            const skelMat = createCelMaterial('#F5EFE4', '#CBBBA4', '#FFFFFF', 0.58);
+            skel.traverse((c) => {
+              if (c.isMesh) {
+                c.material = skelMat;
+                c.renderOrder = 1;
+              }
+            });
+            bodyRoot.add(skel);
+          });
+
+          // 4) Core Metabolic & Digestive Organs (Liver, Stomach, Intestine)
+          const organConfigs = [
+            { file: 'models/liver.glb', base: '#D47B6A', shadow: '#9B4B3E', rim: '#FADAD3', pos: [-0.07, 0.30, 0.05], scale: 0.04 },
+            { file: 'models/stomach.glb', base: '#E99B72', shadow: '#B6633D', rim: '#FDE4D4', pos: [0.05, 0.25, 0.06], scale: 0.25 },
+            { file: 'models/intestine.glb', base: '#E2A689', shadow: '#AD6E52', rim: '#FCE9DF', pos: [0.00, 0.06, 0.05], scale: 0.095 }
+          ];
+          organConfigs.forEach((cfg) => {
+            gltfLoader.load(cfg.file, (gltf) => {
+              const org = gltf.scene;
+              org.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
+              org.scale.setScalar(cfg.scale);
+              const mat = createCelMaterial(cfg.base, cfg.shadow, cfg.rim, 0.96);
+              org.traverse((c) => {
+                if (c.isMesh) {
+                  c.material = mat;
+                  c.renderOrder = 2;
+                }
+              });
+              bodyRoot.add(org);
+            });
+          });
+
+          window.switchDietCard3DGender = function(gender) {
+            if (femaleModel) femaleModel.visible = (gender === 'female');
+            if (maleModel) maleModel.visible = (gender === 'male');
+            document.getElementById('btn-diet-3d-female')?.classList.toggle('active', gender === 'female');
+            document.getElementById('btn-diet-3d-male')?.classList.toggle('active', gender === 'male');
+          };
+
+          window.resetDietCard3DView = function() {
+            camera.position.set(0, 0.25, 3.35);
+            controls.target.set(0, 0.12, 0);
+            controls.update();
+          };
+
+          function render3DLoop() {
+            requestAnimationFrame(render3DLoop);
+            controls.update();
+            renderer.render(scene, camera);
+          }
+          render3DLoop();
+        } catch (err) {
+          console.warn('3D Body Model fallback:', err);
+        }
+      })();
 
       requestAnimationFrame(animateAll);
     })();

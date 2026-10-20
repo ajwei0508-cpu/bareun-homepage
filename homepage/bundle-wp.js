@@ -30,13 +30,13 @@ const wpReset = [
 const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
 
 function rewriteAssetsForWP(html, label) {
-  const assetPrefix = '(?:brochure\\/|ba_|illust_|life_|bareun_|card_|detail_|gongjindan|growth-|growth_|empathy-|empathy_|efficacy-)';
+  const assetPrefix = '(?:brochure\\/|ba_|illust_|life_|bareun_|card_|detail_|diet_minimal_|gongjindan|growth-|growth_|empathy-|empathy_|efficacy-)';
   let out = html
     .replace(new RegExp("src:\\s*'(" + assetPrefix + "[^']+)'", 'g'), "src: '" + ghBase + "$1'")
-    .replace(/before:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "before: '" + ghBase + "$1'")
-    .replace(/after:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "after: '" + ghBase + "$1'")
-    .replace(/beforeImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
-    .replace(/afterImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_)[^']+)'/g, "afterImg: '" + ghBase + "$1'")
+    .replace(/before:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|diet_minimal_)[^']+)'/g, "before: '" + ghBase + "$1'")
+    .replace(/after:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|diet_minimal_)[^']+)'/g, "after: '" + ghBase + "$1'")
+    .replace(/beforeImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|diet_minimal_)[^']+)'/g, "beforeImg: '" + ghBase + "$1'")
+    .replace(/afterImg:\s*'((?:ba_|illust_|life_|bareun_|card_|detail_|diet_minimal_)[^']+)'/g, "afterImg: '" + ghBase + "$1'")
     .replace(/"illustration":"(illust_[^"]+)"/g, '"illustration":"' + ghBase + '$1"')
     .replace(/"illustImg":"(illust_[^"]+)"/g, '"illustImg":"' + ghBase + '$1"')
     .replace(/"baBeforeImg":"(ba_[^"]+)"/g, '"baBeforeImg":"' + ghBase + '$1"')

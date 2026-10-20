@@ -1970,11 +1970,12 @@
           <label>상담 희망 내용</label>
           <textarea id="reserve-memo" rows="3" placeholder="증상이나 희망하시는 상담 시간대를 남겨주세요"></textarea>
         </div>
-        <button type="submit" class="drawer-submit-btn">✦ 1-Click 상담 및 예약 신청하기</button>
+        <p style="margin:0;font-size:12px;line-height:1.45;color:var(--brand-green);background:var(--brand-green-tint);border:1px solid rgba(45,90,67,0.3);padding:8px 10px;border-radius:10px;font-weight:700;word-break:keep-all;">
+          💡 신청하기를 누르시면 작성하신 예약 내용이 자동 복사되며 <strong>바른한의원 카카오톡 채널 채팅창으로 즉시 자동 연결</strong>됩니다. (열린 채팅창에 붙여넣기만 해주세요)
+        </p>
+        <button type="submit" class="drawer-submit-btn">💬 예약 신청하기 (카카오 채널 자동 연결)</button>
       </form>
       <div class="drawer-quick-links">
-        <a href="tel:010-5631-1275">📞 010-5631-1275 전화</a>
-        <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noreferrer">💬 카카오톡 상담 ↗</a>
         <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" style="grid-column: span 2;">📍 네이버 플레이스 빠른 예약 ↗</a>
       </div>
     </div>
@@ -3792,9 +3793,42 @@
       if (quickReserveForm) {
         quickReserveForm.addEventListener('submit', (e) => {
           e.preventDefault();
-          const name = document.getElementById('reserve-name').value;
-          const prog = document.getElementById('reserve-program').value;
-          alert(`[바른한의원 대전본점 예약 접수 완료]\n${name}님, 선택하신 [${prog}] 상담 신청이 접수되었습니다. 전담 상담실장이 빠르게 연락드리겠습니다.`);
+          const name = (document.getElementById('reserve-name').value || '').trim();
+          const phone = (document.getElementById('reserve-phone').value || '').trim();
+          const prog = (document.getElementById('reserve-program').value || '').trim();
+          const memo = (document.getElementById('reserve-memo').value || '').trim();
+
+          const kakaoMsg = [
+            '[바른한의원 대전본점 맞춤 진료예약 신청]',
+            '• 희망 진료분야: ' + prog,
+            '• 예약자 성함: ' + name,
+            '• 연락처: ' + phone,
+            '• 상담 희망 내용: ' + (memo || '없음')
+          ].join('\n');
+
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = kakaoMsg;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            ta.setSelectionRange(0, kakaoMsg.length);
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          } catch (_) {}
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+            navigator.clipboard.writeText(kakaoMsg).catch(function () {});
+          }
+
+          const kakaoChatUrl = 'https://pf.kakao.com/_ykxcLK/chat';
+          const win = window.open(kakaoChatUrl, '_blank', 'noopener,noreferrer');
+          alert(`[작성하신 예약 내용이 자동 복사되었습니다!]\n\n열리는 바른한의원 카카오톡 채널 상담창에 붙여넣기(Ctrl+V 또는 길게 눌러 붙여넣기) 후 전송해 주시면 대표원장실 전담 상담이 즉시 시작됩니다.\n\n--- 복사된 예약 내용 ---\n${kakaoMsg}`);
+          if (!win) {
+            window.location.href = kakaoChatUrl;
+          }
           drawerOverlay.classList.remove('open');
           quickReserveForm.reset();
         });
