@@ -175,90 +175,129 @@ const PAGES = [
     plates: [
       {
         type: 'motion-story',
-        indexPill: 'STORY · 일상을 멈추게 하는 통증',
-        metricPill: '요추·경추 구조적 불균형 신호',
-        title: "당연했던 일상의 움직임을 앗아가는 '구조적 통증'",
-        sub: '허리를 숙이거나 고개를 돌리는 평범한 동작조차 망설이게 된다면 척추뼈가 보내는 구조 신호입니다.',
-        caption: '[추나 임상 노트] 반복되는 급·만성 통증은 근육만의 문제가 아닌 골반과 척추 정렬의 붕괴에서 시작됩니다.',
+        fullscreen: true,
+        indexPill: 'CORE MOTION · 바른 정밀 수기 추나',
+        metricPill: '수술 없이 척추·골반 정렬 ▲ · 신경 압박 통증 해소 ▼',
+        title: "수술 없이 틀어진 척추·골반 중심축을 바로잡는 교정 — '정밀 수기 추나'",
+        sub: '진통제나 수술에 의존하지 않고, 대표원장의 정밀 수기(手技) 추나로 무너진 골반·척추 정렬을 바로잡아 디스크·신경 압박 통증의 뿌리를 해결합니다.',
+        caption: '[정밀 수기 추나 핵심 원리] 수술 없이 무너진 골반·척추 중심축을 바로잡아 디스크·신경 압박 통증을 근본부터 해소합니다.',
         frames: [
-          'detail_chuna_story1_shoe_pain.jpg?v=chuna1',
-          'detail_chuna_story1_camp_pain.jpg?v=chuna1',
-          'detail_chuna_story1_child_pain.jpg'
+          'chuna_minimal_card1_core_align_a.jpg',
+          'chuna_minimal_card1_core_align_b.jpg',
+          'chuna_minimal_card1_core_align_c.jpg'
         ],
-        thumbs: [
-          { img: 'detail_chuna_story1_shoe_pain.jpg?v=chuna1', label: '허리 굽힘 통증' },
-          { img: 'detail_chuna_story1_camp_pain.jpg?v=chuna1', label: '일상 동작 제약' },
-          { img: 'detail_chuna_story1_child_pain.jpg', label: '반복되는 재발통' }
-        ],
-        fx: 'chuna-lost-movement-fx',
-        durationSec: 6.4
+        fx: 'sunlight-bokeh',
+        durationSec: 6.0
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 대증 진통제의 한계',
-        title: "진통제는 경보음만 끌 뿐, '기울어진 기둥'을 세우지 못합니다",
-        sub: '틀어진 골반과 눌린 디스크를 놔두면 통증은 어김없이 재발합니다.',
-        caption: '[추나 임상 노트] 통증 원인이 되는 관절 아탈구와 디스크 압박을 물리적으로 감압해야 재발 고리를 끊을 수 있습니다.',
-        imgSrc: 'detail_chuna_story2_painkiller_drawer.jpg?v=chuna2',
-        thumbs: [
-          { img: 'detail_chuna_story2_painkiller_drawer.jpg?v=chuna2', label: '진통제 의존의 한계' },
-          { img: 'detail_chuna_story2_clean.jpg', label: '신경 압박 근본 원인' }
-        ]
+        title: "진통제와 파스는 경보음만 끌 뿐, '기울어진 척추·골반'은 그대로입니다",
+        sub: '일시적으로 통증 신호만 가리는 대증요법의 악순환을 끊고, 틀어진 골반과 눌린 추간판 공간을 구조적으로 복원합니다.',
+        caption: '[재발 단절 핵심] 진통제로 통증 신호만 가리는 것이 아니라 기울어진 척추·골반 구조를 바로 세우는 것이 핵심입니다.',
+        imgSrc: 'chuna_minimal_card2_painkiller_limit.jpg'
       },
       {
-        type: 'clean-image',
-        stepLabel: 'STORY · 골반·척추 중심축 복원 원리',
-        title: "무너진 '주춧돌(골반)'을 바로 세워야 통증의 뿌리가 뽑힙니다",
-        sub: '골반과 요추 정렬을 맞추면 눌려 있던 추간판 신경 공간이 열립니다.',
-        caption: '[추나 임상 노트] 골반 천장관절과 요추 중심축을 수직 정렬하여 추간판에 집중된 비정상 하중을 분산시킵니다.',
-        imgSrc: 'detail_chuna_story3_jenga_spine.jpg?v=chuna2',
-        thumbs: [
-          { img: 'detail_chuna_story3_jenga_spine.jpg?v=chuna2', label: '중심축 구조 복원' },
-          { img: 'detail_chuna_pelvis.jpg', label: '골반·요추 정렬' },
-          { img: 'detail_chuna_cervical.jpg', label: '경추·거북목 교정' }
+        type: 'diet-single-stage',
+        stage: 3,
+        fullscreen: true,
+        imgSrc: 'chuna_minimal_card3_pelvis_tilted_a.jpg',
+        frames: [
+          'chuna_minimal_card3_pelvis_tilted_a.jpg',
+          'chuna_minimal_card3_pelvis_correcting_b.jpg',
+          'chuna_minimal_card3_pelvis_aligned_c.jpg'
+        ],
+        title: "전신 체형·어혈 부종 완화 — '틀어지고 뭉친 전신에서 어혈·수독을 배출해 바른 체형으로'",
+        sub: '골반·어깨 비대칭으로 정체된 전신 어혈과 부종을 중심축 교정과 순환으로 풀어내어 가볍고 반듯한 전신 체형으로 변화시킵니다.',
+        caption: '[전신 체형 & 어혈 완화] 틀어진 전신 불균형과 뭉친 어혈·부종을 배출해 바르고 늘씬한 전신 체형으로 바꿉니다.'
+      },
+      {
+        type: 'runway-ba-scan',
+        fullscreen: true,
+        beforeImg: 'chuna_minimal_card4_ba_before.jpg',
+        afterImg: 'chuna_minimal_card4_ba_after.jpg',
+        title: "추간판 감압 & 척추 정렬 — '굽은 등·거북목·틀어진 골반에서 바르게 펴지는 중심축 정렬'",
+        sub: '눌려 있던 디스크(추간판) 공간을 추나 감압으로 넓혀주고, 굽은 등·거북목·요추 틀어짐을 바른 척추 정렬로 빠르게 복원합니다.',
+        caption: '[추간판 감압 & 척추 정렬] 정밀 수기 추나로 굽고 틀어진 체형을 반듯한 중심축 정렬로 복원합니다.'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 1,
+        fullscreen: true,
+        imgSrc: 'chuna_minimal_card5_stage1_nerve_calm.jpg',
+        title: "신경 압박·방사통 진정 — '찌릿한 디스크 신경염증과 근육 경직 차단'",
+        sub: '과흥분된 척추 신경근 통증 신호와 심부 근육 경직을 안정시켜 목·허리 통증과 팔·다리 저림(방사통)을 빠르게 가라앉힙니다.',
+        caption: '[신경 압박·방사통 진정] 눌린 신경근 염증과 근육 경직 신호를 진정시켜 통증을 완화합니다.'
+      },
+      {
+        type: 'diet-tele-video',
+        fullscreen: true,
+        title: "대표원장이 직접 손으로 짚고 교정하는 '1:1 맞춤 추나 & 안심 진료 안내'",
+        sub: '',
+        caption: '[1:1 맞춤 추나 진료 가이드] 대표원장 정밀 체형 진단 후 수기 추나·약침·맞춤 한약으로 근본 교정합니다.',
+        ctaLabel: '📞 1:1 추나 교정 진료 바로 예약 ↗',
+        customSteps: [
+          { num: '01', title: '체형 · 관절 정밀 진단', sub: '척추 · 골반 · 가동범위 분석' },
+          { num: '02', title: '대표원장 1:1 수기 추나', sub: '안정위 원장 직접 분절 교정' },
+          { num: '03', title: '신경 감압 약침 · 침 치료', sub: '디스크 염증 · 심부 근육 이완' },
+          { num: '04', title: '건강보험 급여 혜택 적용', sub: '연 20회 건강보험 본인부담 경감' }
+        ],
+        customTrust: [
+          { strong: '5,475일+ (15년)', span: '누적 치료경험' },
+          { strong: '98.6%', span: '추나 환자 치료 만족도' },
+          { strong: '건강보험 적용', span: '연 20회 급여 혜택 지원' },
+          { strong: '1:1 원장 직강', span: '대표원장 직접 수기 교정' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 대표원장 직접 수기 촉진·추나',
-        title: "기계가 대신할 수 없는 원장의 손끝 감각, '정밀 수기 추나'",
-        sub: '검사상 안 보이는 미세 관절 틀어짐까지 손끝으로 찾아 직접 교정합니다.',
-        caption: '[추나 임상 노트] 밀 추(推)·당길 나(拿) 정통 수기 기법으로 환자 호흡과 근육 긴장도에 맞춰 안전하게 교정합니다.',
-        imgSrc: 'detail_chuna_story4_palpation.jpg?v=chuna2',
-        thumbs: [
-          { img: 'detail_chuna_story4_palpation.jpg?v=chuna2', label: '대표원장 수기 촉진' },
-          { img: 'detail_chuna_acupuncture.jpg', label: '신경 감압 약침 병행' },
-          { img: 'detail_chuna_story4_clean.jpg', label: '1:1 맞춤 분절 교정' }
-        ]
+        title: "기계가 대신할 수 없는 손끝 감각 — '대표원장 수기 추나 & 인대강화 한약'",
+        sub: '대표원장 정밀 촉진과 맥진으로 틀어진 관절을 맞추고, 약해진 척추 인대와 디스크 주변 근육을 단단하게 보강합니다.',
+        caption: '[인대·근육 보강 처방] 교정된 척추가 다시 틀어지지 않도록 인대와 심부 근육을 강화하는 맞춤 처방입니다.',
+        imgSrc: 'chuna_minimal_card7_hand_palpation_herb.jpg'
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 국제 학술 논문 검수 완료',
-        title: "실제 학술 논문 검수로 입증된 '비수술 추나 치료법'",
-        sub: '미국의학협회지(JAMA)·미국내과학회(ACP)가 권고하는 비수술 척추 교정입니다.',
-        caption: '[학술 논문 검수] 수기 교정(SMT/Chuna)과 한의 통합 치료는 국제 임상 가이드라인에서 권고하는 비수술 치료법입니다.',
-        imgSrc: 'detail_chuna_story5_child_airplane.jpg?v=chuna2',
-        thumbs: [
-          { img: 'detail_chuna_story5_child_airplane.jpg?v=chuna2', label: '일상 움직임 회복' },
-          { img: 'detail_chuna_story5_park_arms_wide.jpg', label: '통증 없는 활력' },
-          { img: 'ba_chuna_after.jpg', label: '척추·골반 정렬 변화' }
+        fullscreen: true,
+        title: "수술 없이 되찾는 '바르고 통증 없는 척추·체형 라인'",
+        sub: '골반과 척추 중심축이 바로 서고 코어 인대가 탄탄해지면 교정 후에도 통증 없이 반듯한 체형이 유지됩니다.',
+        caption: '[바른 체형 완성] 척추·골반 중심축 복원과 인대 강화로 통증 없는 반듯한 체형을 유지합니다.',
+        imgSrc: 'chuna_minimal_card8_upright_posture.jpg'
+      },
+      {
+        type: 'motion-story',
+        fullscreen: true,
+        hideTopBar: true,
+        title: "육아 · 업무 · 갱년기로 갑자기 찾아온 목·허리·골반 통증 — '참 곤란하다'",
+        sub: '육아 중 아이를 안다 삐끗한 허리, 중요한 업무 중 굳어버린 거북목과 디스크 통증, 갱년기 갑자기 찾아온 골반·관절 통증까지 — 갑작스러운 통증으로 움직이지 못해 가장 난감하고 곤란한 순간입니다.',
+        caption: '[통증으로 곤란한 3대 상황] 육아 · 업무 · 갱년기로 갑자기 찾아온 목·허리·골반 통증 때문에 움직이기 힘들어 곤란한 순간입니다.',
+        frames: [
+          'chuna_minimal_card9_trouble_1_childcare.jpg',
+          'chuna_minimal_card9_trouble_2_office.jpg',
+          'chuna_minimal_card9_trouble_3_menopause.jpg'
         ],
-        sciStats: [
-          { num: 'JAMA(미국의학협회지) 검증', label: '비수술 척추 수기치료의 추간판 감압 및 요통 개선 입증', width: '96%' },
-          { num: '미국내과학회(ACP) 권고', label: '급·만성 요통 1차 비약물 수기치료 권고 가이드라인', width: '94%' }
-        ]
+        fx: 'sunlight-bokeh',
+        durationSec: 6.6
       }
     ],
     bodyModelCard: {
       href: 'body-explorer.html?part=lumbar',
       part: 'lumbar',
+      useOur3DBodyModel: true,
+      honeyTipLabel: '추나 꿀팁',
       partBadge: '요추 · 골반 · 추간판 인체모형',
-      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
+      eyebrow: '3D HUMAN BODY MODEL · CHUNA HONEY-TIP WAREHOUSE',
       title: '인체모형으로 내 척추·골반 원인 연결하기',
       desc: '인체모형에서 요추·골반·디스크 구조와 실제 학술 논문으로 검증된 추나 치료법을 한눈에 확인하세요.',
-      bg: 'illust_lumbar_pelvis.jpg'
+      bg: 'illust_lumbar_pelvis.jpg',
+      extraInfoItems: [
+        {
+          badge: '꿀팁 01 · 골반 중립 착석법',
+          title: '다리 꼬기 멈추고 좌골로 바르게 앉기',
+          desc: '골반 비대칭과 요추 추간판 압박을 줄여 교정된 척추 정렬이 오래 유지되도록 돕습니다.'
+        }
+      ]
     },
     nextClinic: {
       href: 'growth.html',
@@ -1941,6 +1980,19 @@ function buildPageHtml(page) {
     }
 
     if (p.type === 'diet-tele-video') {
+      const stepsData = p.customSteps || [
+        { num: '01', title: '온라인 사전 문진', sub: '체질 · 식습관 · 목표체중 체크' },
+        { num: '02', title: '대표원장 1:1 전화 진료', sub: '안정위 원장 심층 비대면 상담' },
+        { num: '03', title: '원내 1:1 맞춤 탕전 · 조제', sub: '청정 GAP 약재 당일 안전 조제' },
+        { num: '04', title: '전국 안심 특급 배송', sub: '문 앞까지 빠르고 안전하게 도착' }
+      ];
+      const trustData = p.customTrust || [
+        { strong: '5,475일+ (15년)', span: '누적 치료경험' },
+        { strong: '98.6%', span: '복용 환자 치료 만족도' },
+        { strong: '100%', span: '식약처 인증 정품 청정 약재' },
+        { strong: '1:1 전담 케어', span: '감량 후 요요방지 밀착 코칭' }
+      ];
+      const ctaTextLabel = p.ctaLabel || '📞 비대면 전화처방 바로 신청 ↗';
       return `
         <!-- PLATE ${numStr}: Non-Face-to-Face Telemedicine & Express Delivery Video Suite -->
         <article class="project-details-item is-diet-tele-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
@@ -1955,41 +2007,21 @@ function buildPageHtml(page) {
 
               <!-- 4-Step Telemedicine & Delivery Flow -->
               <div class="concierge-steps-bar">
+                ${stepsData.map(st => `
                 <div class="concierge-step-chip">
-                  <span class="step-num">01</span>
+                  <span class="step-num">${st.num}</span>
                   <div class="step-text">
-                    <strong>온라인 사전 문진</strong>
-                    <span>체질 · 식습관 · 목표체중 체크</span>
+                    <strong>${st.title}</strong>
+                    <span>${st.sub}</span>
                   </div>
-                </div>
-                <div class="concierge-step-chip">
-                  <span class="step-num">02</span>
-                  <div class="step-text">
-                    <strong>대표원장 1:1 전화 진료</strong>
-                    <span>안정위 원장 심층 비대면 상담</span>
-                  </div>
-                </div>
-                <div class="concierge-step-chip">
-                  <span class="step-num">03</span>
-                  <div class="step-text">
-                    <strong>원내 1:1 맞춤 탕전 · 조제</strong>
-                    <span>청정 GAP 약재 당일 안전 조제</span>
-                  </div>
-                </div>
-                <div class="concierge-step-chip">
-                  <span class="step-num">04</span>
-                  <div class="step-text">
-                    <strong>전국 안심 특급 배송</strong>
-                    <span>문 앞까지 빠르고 안전하게 도착</span>
-                  </div>
-                </div>
+                </div>`).join('')}
               </div>
 
               <!-- Widescreen Cinema Video Frame (Click to Play) -->
               <div class="concierge-video-frame" onclick="event.stopPropagation(); if(!event.target.closest('.video-consult-trigger, video')){window.toggleDietTeleVideo(this);}">
                 <div class="video-top-overlay" style="justify-content:flex-end;">
                   <button type="button" class="video-consult-trigger" onclick="event.stopPropagation(); window.openConsultModal()">
-                    📞 비대면 전화처방 바로 신청 ↗
+                    ${ctaTextLabel}
                   </button>
                 </div>
                 <button type="button" class="concierge-video-play-overlay" aria-label="안내 영상 재생" onclick="event.stopPropagation(); window.toggleDietTeleVideo(this)">
@@ -2011,22 +2043,11 @@ function buildPageHtml(page) {
 
               <!-- Trust Metrics Ribbon (1. 15년을 일로 환산한 누적 치료경험: 5,475일+) -->
               <div class="concierge-trust-ribbon">
+                ${trustData.map(tr => `
                 <div class="trust-metric-box">
-                  <strong>5,475일+ (15년)</strong>
-                  <span>누적 치료경험</span>
-                </div>
-                <div class="trust-metric-box">
-                  <strong>98.6%</strong>
-                  <span>복용 환자 치료 만족도</span>
-                </div>
-                <div class="trust-metric-box">
-                  <strong>100%</strong>
-                  <span>식약처 인증 정품 청정 약재</span>
-                </div>
-                <div class="trust-metric-box">
-                  <strong>1:1 전담 케어</strong>
-                  <span>감량 후 요요방지 밀착 코칭</span>
-                </div>
+                  <strong>${tr.strong}</strong>
+                  <span>${tr.span}</span>
+                </div>`).join('')}
               </div>
             </div>
           </div>
@@ -7923,8 +7944,8 @@ function buildPageHtml(page) {
       <div id="project-details-items-move-container">
         ${platesHtml}
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html where Card 09 is the Weight Gain Trouble Scene Card) -->
-        ${page.file === 'diet-zero.html' ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html and chuna.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
+        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
@@ -8039,15 +8060,15 @@ function buildPageHtml(page) {
           </div>
         </article>`}
 
-        <!-- LAST CARD (10th Card): Minimalist "다이어트 꿀팁" Linked to 3D Body Model -->
+        <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
         ${page.bodyModelCard.extraInfoItems ? `
         <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card" style="cursor:pointer;" onclick="if(!event.target.closest('a')){const a=this.querySelector('a');if(a)window.location.href=a.href;}">
           <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="diet-card10-3d-bg" id="diet-our-3d-body-stage" aria-hidden="true">
             <canvas id="diet-our-3d-body-canvas"></canvas>
           </div>
-          <a class="diet-honey-tip-only-center" href="${page.bodyModelCard.href}" aria-label="다이어트 꿀팁 - 3D 인체모형 바로가기">
-            <h2 class="diet-honey-tip-only-title">다이어트 꿀팁</h2>
+          <a class="diet-honey-tip-only-center" href="${page.bodyModelCard.href}" aria-label="${page.bodyModelCard.honeyTipLabel || '다이어트 꿀팁'} - 3D 인체모형 바로가기">
+            <h2 class="diet-honey-tip-only-title">${page.bodyModelCard.honeyTipLabel || '다이어트 꿀팁'}</h2>
           </a>
         </article>` : `
         <article id="project-details-preview" class="body-model-last-card">
@@ -8280,8 +8301,8 @@ function buildPageHtml(page) {
         },
         'chuna.html': {
           part: 'lumbar',
-          beforeImg: 'ba_chuna_before.jpg',
-          afterImg: 'ba_chuna_after.jpg',
+          beforeImg: 'chuna_minimal_card4_ba_before.jpg',
+          afterImg: 'chuna_minimal_card4_ba_after.jpg',
           beforeTag: 'BEFORE · 골반 비대칭 및 추간판 신경 압박',
           afterTag: 'AFTER · 학술 검증 수기 추나 정렬 및 신경 감압',
           metrics: [
