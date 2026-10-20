@@ -5182,6 +5182,135 @@
       height: 280px;
     }
 
+    /* 3-Frame Sequential Motions for Card 03 (Edema Wringing) & Card 04 (Belly Contraction) */
+    .belly-shrink-seq-stage,
+    .edema-wring-seq-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #DFC8AC;
+    }
+    .belly-seq-img,
+    .edema-seq-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+    /* Card 04: Obese Belly (seq-1) -> Contracting Belly (seq-2) -> Slim Belly (seq-3) */
+    .belly-seq-img.seq-1 {
+      z-index: 1;
+      transform-origin: 48% 55%;
+      animation: bellySeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .belly-seq-img.seq-2 {
+      z-index: 2;
+      transform-origin: 48% 55%;
+      animation: bellySeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .belly-seq-img.seq-3 {
+      z-index: 3;
+      transform-origin: 48% 55%;
+      animation: bellySeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes bellySeqFrame1 {
+      0%, 26% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+      38%, 90% { opacity: 0; transform: scaleX(0.95) scaleY(1.0); }
+      100% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+    }
+    @keyframes bellySeqFrame2 {
+      0%, 22% { opacity: 0; transform: scaleX(1.04); }
+      32%, 58% { opacity: 1; transform: scaleX(0.96); }
+      68%, 100% { opacity: 0; transform: scaleX(0.91); }
+    }
+    @keyframes bellySeqFrame3 {
+      0%, 54% { opacity: 0; transform: scaleX(0.98); }
+      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
+      100% { opacity: 0; transform: scaleX(0.98); }
+    }
+    .belly-contract-arrows-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(255, 190, 70, 0.9));
+    }
+    .belly-inward-arrow {
+      stroke: #FDE68A;
+      stroke-width: 3.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: bellyInwardPush 2.4s ease-in-out infinite;
+    }
+    .belly-inward-arrow.delay-1 { animation-delay: 0.25s; }
+    .belly-inward-arrow.delay-2 { animation-delay: 0.5s; }
+    @keyframes bellyInwardPush {
+      0%, 15% { transform: translateX(-14px); opacity: 0.2; }
+      55%, 80% { transform: translateX(16px); opacity: 1; }
+      100% { transform: translateX(-14px); opacity: 0.2; }
+    }
+
+    /* Card 03: Water-Filled Full Body (seq-1) -> Wringing Water Out (seq-2) -> Slim Full Body (seq-3) */
+    .edema-seq-img.seq-1 {
+      z-index: 1;
+      transform-origin: 50% 54%;
+      animation: edemaSeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .edema-seq-img.seq-2 {
+      z-index: 2;
+      transform-origin: 50% 54%;
+      animation: edemaSeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .edema-seq-img.seq-3 {
+      z-index: 3;
+      transform-origin: 50% 54%;
+      animation: edemaSeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes edemaSeqFrame1 {
+      0%, 26% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+      38%, 90% { opacity: 0; transform: scaleX(0.94) scaleY(1.02); }
+      100% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+    }
+    @keyframes edemaSeqFrame2 {
+      0%, 22% { opacity: 0; transform: scaleX(1.05); }
+      32%, 58% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
+      68%, 100% { opacity: 0; transform: scaleX(0.89) scaleY(1.03); }
+    }
+    @keyframes edemaSeqFrame3 {
+      0%, 54% { opacity: 0; transform: scaleX(0.97); }
+      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
+      100% { opacity: 0; transform: scaleX(0.97); }
+    }
+    .water-drop.d5 { left: 26%; top: 44%; animation-delay: 0.4s; }
+    .water-drop.d6 { right: 26%; top: 46%; animation-delay: 1.05s; }
+
+    /* Card 10: Minimalist "다이어트 꿀팁" Only Card */
+    .diet-honey-tip-only-center {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .diet-honey-tip-only-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+      font-weight: 900;
+      color: #FDE68A;
+      letter-spacing: -0.02em;
+      margin: 0;
+      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.65);
+    }
+
     /* ============================================================================
        수정사항 1: 모든 카드에 아주 작게 넘버 표시 (.tiny-card-num-badge)
        ============================================================================ */
@@ -5780,7 +5909,7 @@
           </div>
         </article>
 
-        <!-- LAST CARD (9th Card): Compact 80% Scaled-Down Our 3D Human Body Model & Diet Honey-Tips Warehouse -->
+        <!-- LAST CARD (10th Card): Minimalist "다이어트 꿀팁" Only -->
         
         <article id="project-details-preview" class="body-model-last-card">
           <span class="tiny-card-num-badge">07</span>
@@ -6034,7 +6163,7 @@
         },
         'diet-zero.html': {
           part: 'gut',
-          beforeImg: 'diet_minimal_card9_ba_before.jpg',
+          beforeImg: 'diet_minimal_card9_ba_before_v2.jpg',
           afterImg: 'diet_minimal_card9_ba_after.jpg',
           beforeTag: 'BEFORE · 복부 대사 저하 및 내장지방 축적',
           afterTag: 'AFTER · 근육량 상승 및 복부 뱃살지방 분해 완료',
@@ -7064,22 +7193,6 @@
             ctx.fillStyle = 'rgba(253, 224, 71, ' + ((1 - sp) * 0.82).toFixed(2) + ')';
             ctx.fill();
           }
-
-          const tagW = Math.min(w - 28, 340), tagH = 32;
-          const tx = Math.max(14, Math.min(w - tagW - 14, wx - tagW * 0.5));
-          const ty = Math.max(58, wy - 88);
-          ctx.fillStyle = 'rgba(18, 13, 9, 0.88)';
-          ctx.strokeStyle = 'rgba(251, 191, 36, 0.82)';
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.roundRect(tx, ty, tagW, tagH, 999);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#FEF3C7';
-          ctx.font = '800 11.5px Pretendard, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText('🔥 근육다이어트 : 운동 없이 근육량 ▲ 상승 · 뱃살지방 ▼ 분해', tx + tagW * 0.5, ty + 20.5);
-          ctx.textAlign = 'left';
           ctx.restore();
         } else if (type === 'belt-zipper-morning-fx' || type === 'metabolic-burn' || type === 'sline-curtain') {
           // STORY 01 (Diet): Waistline Zipper Tension Pulse & Last Belt Hole Callout

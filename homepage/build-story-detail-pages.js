@@ -483,36 +483,46 @@ const PAGES = [
       },
       {
         type: 'diet-single-stage',
-        stage: 1,
+        stage: 3,
         fullscreen: true,
-        imgSrc: 'diet_minimal_card3_stage1_neuro_calm.jpg',
-        title: "1단계 · 식욕 중추 안정 — '가짜 배고픔과 야식 본능 차단'",
-        sub: '과흥분된 뇌 식욕 신호를 안정시켜 억지로 참는 고통 없이 자연스러운 포만감을 유도합니다.',
-        caption: '[1단계 식욕 중추 안정] 시상하부 가짜 배고픔 신호를 진정시켜 자연스러운 소식을 돕습니다.'
+        imgSrc: 'diet_minimal_card3_edema_full_a.jpg',
+        frames: [
+          'diet_minimal_card3_edema_full_a.jpg',
+          'diet_minimal_card3_edema_squeeze_b.jpg',
+          'diet_minimal_card3_edema_slim_c.jpg'
+        ],
+        title: "붓기 & 독소 완화 — '물이 꽉 찬 전신에서 수독을 쥐어짜 배출해 늘씬한 전신으로'",
+        sub: '물이 꽉 차 부어오른 전신 부종과 수독(노폐물)을 림프 순환으로 쥐어짜듯 배출하여 가볍고 늘씬한 전신 라인으로 변화시킵니다.',
+        caption: '[붓기 & 독소 완화] 물이 꽉 찬 전신 부종에서 수분 독소를 쥐어짜 배출해 늘씬한 전신으로 바꿉니다.'
       },
       {
         type: 'diet-single-stage',
         stage: 2,
         fullscreen: true,
-        imgSrc: 'diet_minimal_card4_stage2_core_lipolysis.jpg',
-        title: "2단계 · 심부 체지방 분해 — '근육 대사열로 뱃살 집중 연소'",
-        sub: '근육량과 심부 체온을 끌어올려 운동 없이도 뱃살과 내장지방을 스스로 태우는 체질로 전환합니다.',
-        caption: '[2단계 심부 체지방 분해] 근육 대사열과 갈색지방을 활성화해 고착된 뱃살·내장지방을 태웁니다.'
+        imgSrc: 'diet_minimal_card4_belly_obese_a.jpg',
+        frames: [
+          'diet_minimal_card4_belly_obese_a.jpg',
+          'diet_minimal_card4_belly_shrinking_b.jpg',
+          'diet_minimal_card4_belly_slim_c.jpg'
+        ],
+        title: "심부 체지방 분해 — '비만형 복부에서 근육 대사열로 수축되는 늘씬한 복부'",
+        sub: '근육량과 심부 대사열을 끌어올려 볼록하게 나온 비만형 복부 내장지방을 집중 연소하고 늘씬한 복부로 빠르게 수축시킵니다.',
+        caption: '[심부 체지방 분해] 근육 대사열로 비만형 복부를 집중 연소하여 탄탄하고 늘씬한 복부로 수축시킵니다.'
       },
       {
         type: 'diet-single-stage',
-        stage: 3,
+        stage: 1,
         fullscreen: true,
-        imgSrc: 'diet_minimal_card5_stage3_detox_flush.jpg',
-        title: "3단계 · 붓기 & 독소 완화 — '림프 순환 및 체내 수독 배출'",
-        sub: '정체된 수분 대사와 림프 순환을 열어 만성 부종과 혈관 속 노폐물(담음·어혈)을 말끔히 비워냅니다.',
-        caption: '[3단계 붓기 & 독소 완화] 림프 순환을 촉진하여 아침 부종과 체내 독소를 빠르게 배출합니다.'
+        imgSrc: 'diet_minimal_card3_stage1_neuro_calm.jpg',
+        title: "식욕 중추 안정 — '가짜 배고픔과 야식 본능 차단'",
+        sub: '과흥분된 뇌 식욕 신호를 안정시켜 억지로 참는 고통 없이 자연스러운 포만감을 유도합니다.',
+        caption: '[식욕 중추 안정] 시상하부 가짜 배고픔 신호를 진정시켜 자연스러운 소식을 돕습니다.'
       },
       {
         type: 'diet-tele-video',
         fullscreen: true,
         title: "내원 없이 집에서 받는 '1:1 대표원장 전화 진료 & 전국 직배송'",
-        sub: '온라인 문진 ➔ 대표원장 1:1 전화 진료 ➔ 원내 맞춤 탕전 ➔ 전국 안심 특급 배송으로 간편하게 처방받으세요.',
+        sub: '',
         caption: '[비대면 진료 & 배송 가이드] 전국 어디서나 대표원장 1:1 전화 상담 후 맞춤 탕전하여 직배송합니다.'
       },
       {
@@ -1703,16 +1713,27 @@ function buildPageHtml(page) {
               <div class="efficacy-motion-overlay"></div>
             </div>`;
       } else if (stg === 2) {
-        const s2Img = p.imgSrc || 'diet_minimal_card4_stage2_core_lipolysis.jpg';
+        const s2Frames = (p.frames && p.frames.length >= 3)
+          ? p.frames
+          : ['diet_minimal_card4_belly_obese_a.jpg', 'diet_minimal_card4_belly_shrinking_b.jpg', 'diet_minimal_card4_belly_slim_c.jpg'];
         stageVisualHtml = `
-            <div class="efficacy-visual-frame thermal-frame is-full-stage-frame">
-              <img src="${s2Img}" alt="2단계 심부 체지방 분해 모션" loading="lazy" draggable="false">
+            <div class="efficacy-visual-frame thermal-frame is-full-stage-frame is-belly-shrink-motion">
+              <div class="belly-shrink-seq-stage">
+                <img class="belly-seq-img seq-1" src="${s2Frames[0]}" alt="비만형 복부 (수축 전)" loading="lazy" draggable="false">
+                <img class="belly-seq-img seq-2" src="${s2Frames[1]}" alt="근육 대사열로 복부 수축 진행 중" loading="lazy" draggable="false">
+                <img class="belly-seq-img seq-3" src="${s2Frames[2]}" alt="늘씬한 복부로 수축 완료" loading="lazy" draggable="false">
+              </div>
               <div class="thermal-burn-layer" aria-hidden="true">
                 <div class="combustion-fire-glow"></div>
                 <div class="thermal-heat-haze"></div>
                 <div class="fat-contract-ring c-ring-1"></div>
                 <div class="fat-contract-ring c-ring-2"></div>
                 <div class="fat-contract-ring c-ring-3"></div>
+                <svg class="belly-contract-arrows-svg" viewBox="0 0 280 200" fill="none">
+                  <path class="belly-inward-arrow" d="M64 102 L114 102 M100 90 L114 102 L100 114" />
+                  <path class="belly-inward-arrow delay-1" d="M72 72 L116 82 M103 71 L116 82 L101 91" />
+                  <path class="belly-inward-arrow delay-2" d="M72 132 L116 122 M101 113 L116 122 L103 133" />
+                </svg>
                 <span class="ember-spark e1"></span>
                 <span class="ember-spark e2"></span>
                 <span class="ember-spark e3"></span>
@@ -1723,24 +1744,31 @@ function buildPageHtml(page) {
               <div class="efficacy-motion-overlay"></div>
             </div>`;
       } else {
-        const s3Img = p.imgSrc || 'diet_minimal_card5_stage3_detox_flush.jpg';
+        const s3Frames = (p.frames && p.frames.length >= 3)
+          ? p.frames
+          : ['diet_minimal_card3_edema_full_a.jpg', 'diet_minimal_card3_edema_squeeze_b.jpg', 'diet_minimal_card3_edema_slim_c.jpg'];
         stageVisualHtml = `
-            <div class="efficacy-visual-frame detox-frame is-full-stage-frame">
-              <div class="body-morph-wrapper">
-                <img class="edema-ghost-outline" src="${s3Img}" alt="" aria-hidden="true" loading="lazy" draggable="false">
-                <img class="slim-subject-img" src="${s3Img}" alt="3단계 붓기 및 독소 완화 모션" loading="lazy" draggable="false">
+            <div class="efficacy-visual-frame detox-frame is-full-stage-frame is-edema-wring-motion">
+              <div class="edema-wring-seq-stage">
+                <img class="edema-seq-img seq-1" src="${s3Frames[0]}" alt="물이 꽉 찬 부종 전신" loading="lazy" draggable="false">
+                <img class="edema-seq-img seq-2" src="${s3Frames[1]}" alt="쥐어 짜서 물이 배출되는 전신" loading="lazy" draggable="false">
+                <img class="edema-seq-img seq-3" src="${s3Frames[2]}" alt="물이 빠져 늘씬해진 전신" loading="lazy" draggable="false">
               </div>
               <div class="detox-slim-layer" aria-hidden="true">
                 <svg class="contour-cinch-guide" viewBox="0 0 240 240" fill="none">
-                  <path class="swollen-line-left" d="M58 55 Q34 120 58 185" />
-                  <path class="swollen-line-right" d="M182 55 Q206 120 182 185" />
-                  <path class="cinch-arrow left-arrow" d="M36 120 L66 120 M56 112 L66 120 L56 128" />
-                  <path class="cinch-arrow right-arrow" d="M204 120 L174 120 M184 112 L174 120 L184 128" />
+                  <path class="swollen-line-left" d="M62 46 Q36 120 62 194" />
+                  <path class="swollen-line-right" d="M178 46 Q204 120 178 194" />
+                  <path class="cinch-arrow left-arrow" d="M32 92 L78 92 M66 84 L78 92 L66 100" />
+                  <path class="cinch-arrow right-arrow" d="M208 92 L162 92 M174 84 L162 92 L174 100" />
+                  <path class="cinch-arrow left-arrow" d="M32 146 L78 146 M66 138 L78 146 L66 154" />
+                  <path class="cinch-arrow right-arrow" d="M208 146 L162 146 M174 138 L162 146 L174 154" />
                 </svg>
                 <span class="water-drop d1"></span>
                 <span class="water-drop d2"></span>
                 <span class="water-drop d3"></span>
                 <span class="water-drop d4"></span>
+                <span class="water-drop d5"></span>
+                <span class="water-drop d6"></span>
               </div>
               <div class="efficacy-motion-overlay"></div>
             </div>`;
@@ -1891,7 +1919,6 @@ function buildPageHtml(page) {
                 <div>
                   <h2 class="concierge-main-title">${formattedTitle}</h2>
                 </div>
-                <p class="concierge-sub-desc">${p.sub}</p>
               </div>
 
               <!-- 4-Step Telemedicine & Delivery Flow -->
@@ -1928,11 +1955,7 @@ function buildPageHtml(page) {
 
               <!-- Widescreen Cinema Video Frame -->
               <div class="concierge-video-frame" onclick="event.stopPropagation();">
-                <div class="video-top-overlay">
-                  <span class="video-badge-pill">
-                    <span class="rec-dot"></span>
-                    바른한의원 비대면 다이어트 프로그램 안내 영상
-                  </span>
+                <div class="video-top-overlay" style="justify-content:flex-end;">
                   <button type="button" class="video-consult-trigger" onclick="event.stopPropagation(); window.openConsultModal()">
                     📞 비대면 전화처방 바로 신청 ↗
                   </button>
@@ -7275,6 +7298,135 @@ function buildPageHtml(page) {
       height: 280px;
     }
 
+    /* 3-Frame Sequential Motions for Card 03 (Edema Wringing) & Card 04 (Belly Contraction) */
+    .belly-shrink-seq-stage,
+    .edema-wring-seq-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #DFC8AC;
+    }
+    .belly-seq-img,
+    .edema-seq-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+    /* Card 04: Obese Belly (seq-1) -> Contracting Belly (seq-2) -> Slim Belly (seq-3) */
+    .belly-seq-img.seq-1 {
+      z-index: 1;
+      transform-origin: 48% 55%;
+      animation: bellySeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .belly-seq-img.seq-2 {
+      z-index: 2;
+      transform-origin: 48% 55%;
+      animation: bellySeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .belly-seq-img.seq-3 {
+      z-index: 3;
+      transform-origin: 48% 55%;
+      animation: bellySeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes bellySeqFrame1 {
+      0%, 26% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+      38%, 90% { opacity: 0; transform: scaleX(0.95) scaleY(1.0); }
+      100% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+    }
+    @keyframes bellySeqFrame2 {
+      0%, 22% { opacity: 0; transform: scaleX(1.04); }
+      32%, 58% { opacity: 1; transform: scaleX(0.96); }
+      68%, 100% { opacity: 0; transform: scaleX(0.91); }
+    }
+    @keyframes bellySeqFrame3 {
+      0%, 54% { opacity: 0; transform: scaleX(0.98); }
+      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
+      100% { opacity: 0; transform: scaleX(0.98); }
+    }
+    .belly-contract-arrows-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(255, 190, 70, 0.9));
+    }
+    .belly-inward-arrow {
+      stroke: #FDE68A;
+      stroke-width: 3.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: bellyInwardPush 2.4s ease-in-out infinite;
+    }
+    .belly-inward-arrow.delay-1 { animation-delay: 0.25s; }
+    .belly-inward-arrow.delay-2 { animation-delay: 0.5s; }
+    @keyframes bellyInwardPush {
+      0%, 15% { transform: translateX(-14px); opacity: 0.2; }
+      55%, 80% { transform: translateX(16px); opacity: 1; }
+      100% { transform: translateX(-14px); opacity: 0.2; }
+    }
+
+    /* Card 03: Water-Filled Full Body (seq-1) -> Wringing Water Out (seq-2) -> Slim Full Body (seq-3) */
+    .edema-seq-img.seq-1 {
+      z-index: 1;
+      transform-origin: 50% 54%;
+      animation: edemaSeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .edema-seq-img.seq-2 {
+      z-index: 2;
+      transform-origin: 50% 54%;
+      animation: edemaSeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .edema-seq-img.seq-3 {
+      z-index: 3;
+      transform-origin: 50% 54%;
+      animation: edemaSeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes edemaSeqFrame1 {
+      0%, 26% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+      38%, 90% { opacity: 0; transform: scaleX(0.94) scaleY(1.02); }
+      100% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+    }
+    @keyframes edemaSeqFrame2 {
+      0%, 22% { opacity: 0; transform: scaleX(1.05); }
+      32%, 58% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
+      68%, 100% { opacity: 0; transform: scaleX(0.89) scaleY(1.03); }
+    }
+    @keyframes edemaSeqFrame3 {
+      0%, 54% { opacity: 0; transform: scaleX(0.97); }
+      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
+      100% { opacity: 0; transform: scaleX(0.97); }
+    }
+    .water-drop.d5 { left: 26%; top: 44%; animation-delay: 0.4s; }
+    .water-drop.d6 { right: 26%; top: 46%; animation-delay: 1.05s; }
+
+    /* Card 10: Minimalist "다이어트 꿀팁" Only Card */
+    .diet-honey-tip-only-center {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .diet-honey-tip-only-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+      font-weight: 900;
+      color: #FDE68A;
+      letter-spacing: -0.02em;
+      margin: 0;
+      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.65);
+    }
+
     /* ============================================================================
        수정사항 1: 모든 카드에 아주 작게 넘버 표시 (.tiny-card-num-badge)
        ============================================================================ */
@@ -7756,69 +7908,24 @@ function buildPageHtml(page) {
             </div>` : ''}
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <div class="clean-spec-tags">
+                ${page.file === 'diet-zero.html' ? '' : `<div class="clean-spec-tags">
                   <span class="clean-spec-tag" id="runway-ba-tag-b">${page.file === 'growth.html' ? '📊 연령별 평균키 · 성장판 나이 비교' : 'BEFORE · 치료 전'}</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">${page.file === 'growth.html' ? '🎯 뼈길이 · 최종예상키 정밀 분석' : 'AFTER · 치료 후'}</span>
                   <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
-                </div>
-                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : (page.file === 'diet-zero.html' ? '바른 근육다이어트 — 전·후 복부 내장지방 변화' : `${page.meta.title} — 치료 전·후 비교`)}</h2>
-                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : (page.file === 'diet-zero.html' ? '운동 없이 근육량을 올리고 대사를 깨워 뱃살과 내장지방이 분해되는 전·후 변화가 자동으로 반복됩니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.')}</p>
+                </div>`}
+                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : (page.file === 'diet-zero.html' ? '바른 근육다이어트 — 복부 내장지방 변화' : `${page.meta.title} — 치료 전·후 비교`)}</h2>
+                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : (page.file === 'diet-zero.html' ? '운동 없이 근육량을 올리고 대사를 깨워 뱃살과 내장지방이 분해되는 변화가 자동으로 반복됩니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.')}</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- LAST CARD (9th Card): Compact 80% Scaled-Down Our 3D Human Body Model & Diet Honey-Tips Warehouse -->
+        <!-- LAST CARD (10th Card): Minimalist "다이어트 꿀팁" Only -->
         ${page.bodyModelCard.extraInfoItems ? `
         <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card">
           <span class="tiny-card-num-badge">${(page.plates.length + 2) < 10 ? '0' + (page.plates.length + 2) : '' + (page.plates.length + 2)}</span>
-          <div class="diet-body-extra-layout">
-            <!-- LEFT: Our Signature Interactive 3D Porcelain Human Body Model (우리 3D 인체모형) -->
-            <div class="diet-body-model-visual-col" id="diet-our-3d-body-stage">
-              <div class="diet-3d-stage-top-badge">
-                <span>🧊 바른 3D 인체모형</span>
-                <span>360° 회전</span>
-              </div>
-              <div class="diet-3d-loading-hint" id="diet-3d-loading-hint">
-                <span>🧬 바른한의원 3D 인체모형 로딩 중...</span>
-                <small style="opacity:0.75;font-weight:600;">드래그하여 360° 회전 · 위/간/대장 투시</small>
-              </div>
-              <canvas id="diet-our-3d-body-canvas"></canvas>
-              <div class="diet-3d-stage-controls" onclick="event.stopPropagation();">
-                <div class="diet-3d-ctrl-group">
-                  <button type="button" class="diet-3d-ctrl-btn active" id="btn-diet-3d-female" onclick="window.switchDietCard3DGender && window.switchDietCard3DGender('female')">여성</button>
-                  <button type="button" class="diet-3d-ctrl-btn" id="btn-diet-3d-male" onclick="window.switchDietCard3DGender && window.switchDietCard3DGender('male')">남성</button>
-                </div>
-                <div class="diet-3d-ctrl-group">
-                  <button type="button" class="diet-3d-ctrl-btn" onclick="window.resetDietCard3DView && window.resetDietCard3DView()">원위치</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- RIGHT: Diet Honey-Tips Warehouse (다이어트 꿀팁 창고) -->
-            <div class="diet-body-extra-info-col">
-              <div class="diet-extra-head">
-                <span class="diet-extra-badge">🍯 ${page.bodyModelCard.partBadge}</span>
-                <h2 class="diet-extra-main-title">${page.bodyModelCard.title}</h2>
-                <p class="diet-extra-main-desc">${page.bodyModelCard.desc}</p>
-              </div>
-
-              <div class="diet-extra-info-grid">
-                ${page.bodyModelCard.extraInfoItems.map(item => `
-                <div class="diet-extra-info-item">
-                  <span class="dei-badge">${item.badge}</span>
-                  <strong class="dei-title">${item.title}</strong>
-                  <p class="dei-desc">${item.desc}</p>
-                </div>`).join('')}
-              </div>
-
-              <div class="diet-extra-bottom-row">
-                <a class="diet-extra-explorer-btn" href="${page.bodyModelCard.href}">
-                  <span>🧬 3D 인체모형 통합 의학·논문 쇼룸 전체보기</span>
-                  <span>↗</span>
-                </a>
-              </div>
-            </div>
+          <div class="diet-honey-tip-only-center">
+            <h2 class="diet-honey-tip-only-title">다이어트 꿀팁</h2>
           </div>
         </article>` : `
         <article id="project-details-preview" class="body-model-last-card">
@@ -8073,7 +8180,7 @@ function buildPageHtml(page) {
         },
         'diet-zero.html': {
           part: 'gut',
-          beforeImg: 'diet_minimal_card9_ba_before.jpg',
+          beforeImg: 'diet_minimal_card9_ba_before_v2.jpg',
           afterImg: 'diet_minimal_card9_ba_after.jpg',
           beforeTag: 'BEFORE · 복부 대사 저하 및 내장지방 축적',
           afterTag: 'AFTER · 근육량 상승 및 복부 뱃살지방 분해 완료',
@@ -9103,22 +9210,6 @@ function buildPageHtml(page) {
             ctx.fillStyle = 'rgba(253, 224, 71, ' + ((1 - sp) * 0.82).toFixed(2) + ')';
             ctx.fill();
           }
-
-          const tagW = Math.min(w - 28, 340), tagH = 32;
-          const tx = Math.max(14, Math.min(w - tagW - 14, wx - tagW * 0.5));
-          const ty = Math.max(58, wy - 88);
-          ctx.fillStyle = 'rgba(18, 13, 9, 0.88)';
-          ctx.strokeStyle = 'rgba(251, 191, 36, 0.82)';
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.roundRect(tx, ty, tagW, tagH, 999);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#FEF3C7';
-          ctx.font = '800 11.5px Pretendard, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText('🔥 근육다이어트 : 운동 없이 근육량 ▲ 상승 · 뱃살지방 ▼ 분해', tx + tagW * 0.5, ty + 20.5);
-          ctx.textAlign = 'left';
           ctx.restore();
         } else if (type === 'belt-zipper-morning-fx' || type === 'metabolic-burn' || type === 'sline-curtain') {
           // STORY 01 (Diet): Waistline Zipper Tension Pulse & Last Belt Hole Callout
