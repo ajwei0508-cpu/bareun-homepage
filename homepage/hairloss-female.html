@@ -381,19 +381,41 @@
       font-weight: 600;
     }
 
-    .empathy-count-badge.is-caution {
-      background: #D97706 !important;
-      border-color: #F59E0B !important;
+    .empathy-count-badge.is-tier-1 {
+      background: #0D9488 !important;
+      border-color: #2DD4BF !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 14px rgba(217, 119, 6, 0.45);
+      box-shadow: 0 0 12px rgba(13, 148, 136, 0.45);
     }
 
-    .empathy-count-badge.is-severe {
-      background: #DC2626 !important;
-      border-color: #EF4444 !important;
+    .empathy-count-badge.is-tier-2 {
+      background: #D97706 !important;
+      border-color: #FBBF24 !important;
       color: #FFFFFF !important;
-      box-shadow: 0 0 16px rgba(220, 38, 38, 0.6);
+      box-shadow: 0 0 14px rgba(217, 119, 6, 0.48);
+    }
+
+    .empathy-count-badge.is-tier-3 {
+      background: #EA580C !important;
+      border-color: #FB923C !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 15px rgba(234, 88, 12, 0.55);
+    }
+
+    .empathy-count-badge.is-tier-4 {
+      background: #DC2626 !important;
+      border-color: #F87171 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 16px rgba(220, 38, 38, 0.65);
       animation: severeBadgePulse 1.2s infinite ease-in-out;
+    }
+
+    .empathy-count-badge.is-tier-5 {
+      background: #991B1B !important;
+      border-color: #FCA5A5 !important;
+      color: #FEF08A !important;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.85);
+      animation: severeBadgePulse 0.85s infinite ease-in-out;
     }
 
     @keyframes severeBadgePulse {
@@ -401,160 +423,416 @@
       50% { transform: scale(1.05); }
     }
 
+    /* 5-Stage Doctor Comment Board inside Empathy Checklist */
     .empathy-severity-board {
       margin-top: 12px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .doc-comment-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 8px;
     }
 
-    .severity-tier-card {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 11px 11px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1.5px solid rgba(255, 255, 255, 0.14);
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .severity-check-box {
-      width: 24px;
-      height: 24px;
-      min-width: 24px;
-      border-radius: 7px;
-      border: 2px solid rgba(255, 255, 255, 0.32);
-      background: rgba(255, 255, 255, 0.05);
+    .doc-comment-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #FDE68A;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      color: transparent;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      gap: 5px;
     }
 
-    .severity-check-box svg {
-      width: 15px;
-      height: 15px;
-      transform: scale(0.4);
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .severity-tier-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .severity-tier-cond {
-      font-size: 0.68rem;
-      font-weight: 800;
-      color: rgba(248, 250, 252, 0.62);
-      letter-spacing: -0.01em;
-    }
-
-    .severity-tier-label {
-      font-size: 0.88rem;
+    .doc-comment-pill {
+      font-size: 0.66rem;
       font-weight: 900;
-      color: rgba(248, 250, 252, 0.78);
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .doc-comment-progress-track {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+    }
+
+    .doc-comment-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+    }
+
+    .doc-comment-headline {
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.3;
       letter-spacing: -0.02em;
-      line-height: 1.2;
       word-break: keep-all;
     }
 
-    .severity-tier-pill {
-      position: absolute;
-      top: -8px;
-      right: 8px;
-      font-size: 0.62rem;
-      font-weight: 900;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: rgba(255, 255, 255, 0.55);
-      letter-spacing: 0.02em;
-      transition: all 0.25s ease;
+    .doc-comment-body {
+      font-size: 0.77rem;
+      font-weight: 600;
+      line-height: 1.52;
+      color: rgba(248, 250, 252, 0.92);
+      word-break: keep-all;
     }
 
-    /* ACTIVE CAUTION (1~2개 선택 시) */
-    .severity-tier-card.tier-caution.is-checked {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.26) 0%, rgba(217, 119, 6, 0.16) 100%);
-      border: 2px solid #F59E0B;
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.32);
-      transform: translateY(-2px);
+    /* Tier 1: 1개 체크 (관리 권장) */
+    .empathy-severity-board.tier-1 {
+      background: linear-gradient(135deg, rgba(13, 148, 136, 0.26) 0%, rgba(15, 118, 110, 0.18) 100%);
+      border-color: #2DD4BF;
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.24);
+    }
+    .empathy-severity-board.tier-1 .doc-comment-pill {
+      background: #0D9488;
+      border-color: #5EEAD4;
+    }
+    .empathy-severity-board.tier-1 .doc-comment-progress-fill {
+      background: linear-gradient(90deg, #10B981, #2DD4BF);
+    }
+    .empathy-severity-board.tier-1 .doc-comment-headline {
+      color: #A7F3D0;
     }
 
-    .severity-tier-card.tier-caution.is-checked .severity-check-box {
-      background: #D97706;
-      border-color: #FBBF24;
-      color: #FFFFFF;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.65);
+    /* Tier 2: 2개 체크 (주의 · 20% 진행중) */
+    .empathy-severity-board.tier-2 {
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.28) 0%, rgba(180, 83, 9, 0.2) 100%);
+      border-color: #F59E0B;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.28);
     }
-
-    .severity-tier-card.tier-caution.is-checked .severity-check-box svg {
-      transform: scale(1);
-    }
-
-    .severity-tier-card.tier-caution.is-checked .severity-tier-cond {
-      color: #FDE68A;
-    }
-
-    .severity-tier-card.tier-caution.is-checked .severity-tier-label {
-      color: #FEF08A;
-      font-size: 0.92rem;
-    }
-
-    .severity-tier-card.tier-caution.is-checked .severity-tier-pill {
+    .empathy-severity-board.tier-2 .doc-comment-pill {
       background: #D97706;
       border-color: #FDE68A;
-      color: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5);
+    }
+    .empathy-severity-board.tier-2 .doc-comment-progress-fill {
+      background: linear-gradient(90deg, #FBBF24, #F59E0B);
+    }
+    .empathy-severity-board.tier-2 .doc-comment-headline {
+      color: #FEF08A;
     }
 
-    /* ACTIVE SEVERE (3개 이상 선택 시) */
-    .severity-tier-card.tier-severe.is-checked {
-      background: linear-gradient(135deg, rgba(220, 38, 38, 0.36) 0%, rgba(153, 27, 27, 0.26) 100%);
-      border: 2.5px solid #EF4444;
-      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.48);
-      transform: translateY(-2px) scale(1.02);
+    /* Tier 3: 3개 체크 (위험 · 50% 고생중) */
+    .empathy-severity-board.tier-3 {
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.32) 0%, rgba(194, 65, 12, 0.24) 100%);
+      border-color: #FB923C;
+      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.36);
+    }
+    .empathy-severity-board.tier-3 .doc-comment-pill {
+      background: #EA580C;
+      border-color: #FED7AA;
+    }
+    .empathy-severity-board.tier-3 .doc-comment-progress-fill {
+      background: linear-gradient(90deg, #F59E0B, #EA580C);
+    }
+    .empathy-severity-board.tier-3 .doc-comment-headline {
+      color: #FFEDD5;
+    }
+
+    /* Tier 4: 4개 체크 (심각 · 70% 위태함) */
+    .empathy-severity-board.tier-4 {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.38) 0%, rgba(153, 27, 27, 0.28) 100%);
+      border: 2px solid #EF4444;
+      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.45);
       animation: severeCardPulse 1.3s infinite ease-in-out;
+    }
+    .empathy-severity-board.tier-4 .doc-comment-pill {
+      background: #DC2626;
+      border-color: #FECACA;
+    }
+    .empathy-severity-board.tier-4 .doc-comment-progress-fill {
+      background: linear-gradient(90deg, #EA580C, #EF4444);
+    }
+    .empathy-severity-board.tier-4 .doc-comment-headline {
+      color: #FECACA;
+    }
+
+    /* Tier 5: 5개 모두 체크 (100% 긴급 경보 — 더이상 방치하지말고 당장 진료받으세요) */
+    .empathy-severity-board.tier-5 {
+      background: linear-gradient(135deg, rgba(153, 27, 27, 0.92) 0%, rgba(69, 10, 10, 0.96) 100%);
+      border: 2.5px solid #F87171;
+      box-shadow: 0 10px 32px rgba(220, 38, 38, 0.65);
+      animation: severeCardPulse 0.9s infinite ease-in-out;
+    }
+    .empathy-severity-board.tier-5 .doc-comment-pill {
+      background: #EF4444;
+      border-color: #FEF08A;
+      color: #FFFFFF;
+    }
+    .empathy-severity-board.tier-5 .doc-comment-progress-fill {
+      background: linear-gradient(90deg, #EF4444, #FEF08A);
+    }
+    .empathy-severity-board.tier-5 .doc-comment-headline {
+      color: #FEF08A !important;
+      font-size: 0.96rem;
+    }
+    .empathy-severity-board.tier-5 .doc-comment-body {
+      color: #FFFFFF !important;
     }
 
     @keyframes severeCardPulse {
       0%, 100% { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.38); }
-      50% { box-shadow: 0 8px 32px rgba(239, 68, 68, 0.72); }
+      50% { box-shadow: 0 8px 32px rgba(239, 68, 68, 0.75); }
     }
 
-    .severity-tier-card.tier-severe.is-checked .severity-check-box {
-      background: #DC2626;
-      border-color: #FCA5A5;
+    /* ============================================================================
+       5/5 CHECKLIST FULL-SCREEN CENTER URGENT SLAM ANIMATION & "쾅! 쾅!" OVERLAY
+       ============================================================================ */
+    @keyframes screenHeavyImpactShake {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      12% { transform: translate3d(-12px, -9px, 0) rotate(-0.8deg); }
+      24% { transform: translate3d(11px, 8px, 0) rotate(0.8deg); }
+      36% { transform: translate3d(-9px, 6px, 0) rotate(-0.5deg); }
+      48% { transform: translate3d(9px, -7px, 0) rotate(0.5deg); }
+      64% { transform: translate3d(-5px, 4px, 0); }
+      80% { transform: translate3d(4px, -3px, 0); }
+    }
+
+    body.urgent-impact-shaking {
+      animation: screenHeavyImpactShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    }
+
+    #urgent-5check-alert-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 15000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(185, 28, 28, 0.45) 0%, rgba(15, 5, 7, 0.94) 72%),
+        rgba(8, 4, 6, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    #urgent-5check-alert-modal.open {
+      display: flex;
+    }
+
+    .urgent-5check-dialog {
+      position: relative;
+      width: min(680px, 94vw);
+      border-radius: 28px;
+      padding: 36px 34px 30px;
+      background: linear-gradient(155deg, #24080B 0%, #140507 58%, #1C080A 100%);
+      border: 2.5px solid #EF4444;
+      box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.92),
+        0 0 65px rgba(220, 38, 38, 0.55),
+        inset 0 0 0 2px rgba(253, 230, 138, 0.22);
+      text-align: center;
       color: #FFFFFF;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.85);
+      overflow: hidden;
     }
 
-    .severity-tier-card.tier-severe.is-checked .severity-check-box svg {
-      transform: scale(1.08);
+    .urgent-shockwave-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 4px solid rgba(248, 113, 113, 0.9);
+      transform: translate(-50%, -50%) scale(0.2);
+      opacity: 0;
+      pointer-events: none;
     }
 
-    .severity-tier-card.tier-severe.is-checked .severity-tier-cond {
-      color: #FECACA;
+    #urgent-5check-alert-modal.open .urgent-shockwave-ring.ring-1 {
+      animation: urgentShockwaveExpand 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.02s forwards;
     }
 
-    .severity-tier-card.tier-severe.is-checked .severity-tier-label {
+    #urgent-5check-alert-modal.open .urgent-shockwave-ring.ring-2 {
+      border-color: rgba(253, 230, 138, 0.95);
+      animation: urgentShockwaveExpand 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.36s forwards;
+    }
+
+    @keyframes urgentShockwaveExpand {
+      0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(5.2); opacity: 0; }
+    }
+
+    /* 1st Impact ("쾅!" at 0ms): Top Red Warning Seal Stamp */
+    .urgent-slam-stage-1 {
+      opacity: 0;
+      transform: scale(2.8) translateY(-30px);
+    }
+
+    #urgent-5check-alert-modal.open .urgent-slam-stage-1 {
+      animation: heavyStampSlam 0.36s cubic-bezier(0.18, 1.25, 0.4, 1) 0.01s forwards;
+    }
+
+    /* 2nd Impact ("쾅!" at 360ms): Main Serious Headline Stamp */
+    .urgent-slam-stage-2 {
+      opacity: 0;
+      transform: scale(2.6) rotate(-2deg);
+    }
+
+    #urgent-5check-alert-modal.open .urgent-slam-stage-2 {
+      animation: heavyStampSlamMain 0.42s cubic-bezier(0.18, 1.3, 0.38, 1) 0.36s forwards;
+    }
+
+    @keyframes heavyStampSlam {
+      0% { opacity: 0; transform: scale(2.8) translateY(-28px); filter: blur(8px); }
+      70% { opacity: 1; transform: scale(0.93) translateY(3px); filter: blur(0); }
+      86% { transform: scale(1.04); }
+      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+
+    @keyframes heavyStampSlamMain {
+      0% { opacity: 0; transform: scale(2.65) rotate(-3deg); filter: blur(10px); }
+      68% { opacity: 1; transform: scale(0.92) rotate(0.6deg); filter: blur(0); }
+      85% { transform: scale(1.05) rotate(-0.3deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
+    }
+
+    .urgent-top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #DC2626, #991B1B);
+      border: 1.5px solid #FCA5A5;
+      color: #FEF08A;
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 22px rgba(220, 38, 38, 0.6);
+    }
+
+    .urgent-stamp-box {
+      position: relative;
+      margin: 4px auto 20px;
+      padding: 22px 20px;
+      border-radius: 20px;
+      background: rgba(153, 27, 27, 0.28);
+      border: 3px double #F87171;
+      box-shadow: inset 0 0 30px rgba(220, 38, 38, 0.35), 0 12px 32px rgba(0, 0, 0, 0.55);
+    }
+
+    .urgent-main-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.55rem, 3.2vw, 2.35rem);
+      font-weight: 900;
+      line-height: 1.34;
+      letter-spacing: -0.03em;
       color: #FFFFFF;
-      font-size: 0.94rem;
-      text-shadow: 0 2px 8px rgba(220, 38, 38, 0.6);
+      text-shadow: 0 4px 20px rgba(220, 38, 38, 0.85);
+      word-break: keep-all;
+      margin: 0;
     }
 
-    .severity-tier-card.tier-severe.is-checked .severity-tier-pill {
-      background: #DC2626;
-      border-color: #FECACA;
+    .urgent-main-headline em {
+      font-style: normal;
+      color: #FEF08A;
+      display: block;
+      font-size: clamp(1.7rem, 3.5vw, 2.55rem);
+      margin-top: 4px;
+      text-decoration: underline;
+      text-decoration-color: #EF4444;
+      text-underline-offset: 6px;
+    }
+
+    .urgent-sub-desc {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: rgba(254, 226, 226, 0.94);
+      margin: 0 auto 22px;
+      max-width: 540px;
+      font-weight: 600;
+      word-break: keep-all;
+    }
+
+    .urgent-sub-desc strong {
+      color: #FEF08A;
+      font-weight: 800;
+    }
+
+    .urgent-actions-row {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .urgent-btn-primary {
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1.5px solid #FEF08A;
+      background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
       color: #FFFFFF;
-      box-shadow: 0 2px 10px rgba(220, 38, 38, 0.65);
+      font-size: 0.92rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(220, 38, 38, 0.55);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .urgent-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(239, 68, 68, 0.75);
+    }
+
+    .urgent-btn-tel {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(253, 230, 138, 0.55);
+      background: rgba(255, 255, 255, 0.08);
+      color: #FEF08A;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .urgent-btn-tel:hover {
+      background: rgba(253, 230, 138, 0.2);
+    }
+
+    .urgent-btn-close {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @media (max-width: 640px) {
+      .urgent-5check-dialog {
+        padding: 26px 20px 22px;
+      }
+      .urgent-actions-row {
+        grid-template-columns: 1fr;
+      }
     }
 
     .cta-nudge-msg {
@@ -2487,10 +2765,32 @@
       border-color: rgba(94, 71, 54, 0.26);
       color: #4A3525;
     }
-    body.theme-hanji .empathy-count-badge.active {
+    body.theme-hanji .empathy-count-badge.active,
+    body.theme-hanji .empathy-count-badge.is-tier-1 {
       background: #2D5A43;
       border-color: #2D5A43;
       color: #FFFFFF;
+    }
+    body.theme-hanji .empathy-count-badge.is-tier-2 {
+      background: #D97706;
+      border-color: #B45309;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .empathy-count-badge.is-tier-3 {
+      background: #EA580C;
+      border-color: #C2410C;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .empathy-count-badge.is-tier-4 {
+      background: #DC2626;
+      border-color: #991B1B;
+      color: #FFFFFF;
+    }
+    body.theme-hanji .empathy-count-badge.is-tier-5 {
+      background: #991B1B;
+      border-color: #EF4444;
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(220, 38, 38, 0.55);
     }
     body.theme-hanji .empathy-check-item {
       background: #F8F5EE;
@@ -2522,68 +2822,6 @@
     body.theme-hanji .empathy-check-item.checked .empathy-check-text {
       color: #171614;
       font-weight: 800;
-    }
-    body.theme-hanji .severity-tier-card {
-      background: #F8F5EE;
-      border-color: rgba(94, 71, 54, 0.22);
-    }
-    body.theme-hanji .severity-check-box {
-      background: #FFFFFF;
-      border-color: rgba(94, 71, 54, 0.36);
-    }
-    body.theme-hanji .severity-tier-cond {
-      color: #6B5746;
-    }
-    body.theme-hanji .severity-tier-label {
-      color: #2A1E15;
-    }
-    body.theme-hanji .severity-tier-pill {
-      background: #EFE9DC;
-      border-color: rgba(94, 71, 54, 0.26);
-      color: #5E4736;
-    }
-    body.theme-hanji .severity-tier-card.tier-caution.is-checked {
-      background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-      border: 2.5px solid #D97706;
-      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.28);
-    }
-    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-check-box {
-      background: #D97706;
-      border-color: #B45309;
-      color: #FFFFFF;
-    }
-    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-cond {
-      color: #92400E;
-    }
-    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-label {
-      color: #B45309;
-    }
-    body.theme-hanji .severity-tier-card.tier-caution.is-checked .severity-tier-pill {
-      background: #D97706;
-      border-color: #B45309;
-      color: #FFFFFF;
-    }
-    body.theme-hanji .severity-tier-card.tier-severe.is-checked {
-      background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-      border: 2.5px solid #DC2626;
-      box-shadow: 0 8px 26px rgba(220, 38, 38, 0.35);
-    }
-    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-check-box {
-      background: #DC2626;
-      border-color: #991B1B;
-      color: #FFFFFF;
-    }
-    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-cond {
-      color: #991B1B;
-    }
-    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-label {
-      color: #B91C1C;
-      text-shadow: none;
-    }
-    body.theme-hanji .severity-tier-card.tier-severe.is-checked .severity-tier-pill {
-      background: #DC2626;
-      border-color: #991B1B;
-      color: #FFFFFF;
     }
     body.theme-hanji #project-details-launch-cta {
       background: linear-gradient(135deg, #2D5A43, #3D7357);
@@ -4551,31 +4789,15 @@
             </label>
           </div>
           <div class="empathy-severity-board" id="empathy-diagnosis-box" aria-live="polite" style="display:none;">
-            <div class="severity-tier-card tier-caution" id="severity-tier-caution" style="display:none;">
-              <span class="severity-check-box" id="severity-box-caution">
-                <svg viewBox="0 0 18 18" fill="none">
-                  <path d="M3.2 9.4L7.2 13.4L14.8 4.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <div class="severity-tier-info">
-                <span class="severity-tier-cond">1~2개 선택 시</span>
-                <strong class="severity-tier-label">여성탈모 주의</strong>
-              </div>
-              <span class="severity-tier-pill" id="severity-pill-caution">✓ 주의</span>
+            <div class="doc-comment-top-row">
+              <span class="doc-comment-eyebrow">👨‍⚕️ 안정위 대표원장 닥터 코멘트</span>
+              <span class="doc-comment-pill" id="doc-comment-pill">1단계 · 관리 권장</span>
             </div>
-
-            <div class="severity-tier-card tier-severe" id="severity-tier-severe" style="display:none;">
-              <span class="severity-check-box" id="severity-box-severe">
-                <svg viewBox="0 0 18 18" fill="none">
-                  <path d="M3.2 9.4L7.2 13.4L14.8 4.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <div class="severity-tier-info">
-                <span class="severity-tier-cond">3개 이상 선택 시</span>
-                <strong class="severity-tier-label">여성탈모 심각</strong>
-              </div>
-              <span class="severity-tier-pill" id="severity-pill-severe">🚨 심각</span>
+            <div class="doc-comment-progress-track">
+              <div class="doc-comment-progress-fill" id="doc-comment-bar-fill"></div>
             </div>
+            <strong class="doc-comment-headline" id="doc-comment-title">초기 관리 권장</strong>
+            <p class="doc-comment-body" id="doc-comment-desc">증상이 더 깊어지기 전에 내원하셔서 예방 및 맞춤 관리를 받아보시길 권합니다.</p>
           </div>
         </div>
 
@@ -4744,6 +4966,44 @@
   <div id="plate-lightbox" onclick="if(event.target===this)this.classList.remove('open')">
     <button type="button" class="lightbox-close" onclick="document.getElementById('plate-lightbox').classList.remove('open')">✕ 닫기</button>
     <img id="lightbox-img" src="" alt="확대 이미지">
+  </div>
+
+  <!-- 5/5 Checklist Center Urgent Doctor Warning Modal ("쾅! 쾅!" Animation & Sound) -->
+  <div id="urgent-5check-alert-modal" role="alertdialog" aria-modal="true" aria-labelledby="urgent-main-headline" onclick="if(event.target===this)window.closeUrgent5CheckModal()">
+    <div class="urgent-5check-dialog">
+      <div class="urgent-shockwave-ring ring-1"></div>
+      <div class="urgent-shockwave-ring ring-2"></div>
+
+      <div class="urgent-slam-stage-1">
+        <span class="urgent-top-badge">🚨 DOCTOR'S URGENT WARNING · 5가지 핵심 증상 100% 모두 해당</span>
+      </div>
+
+      <div class="urgent-slam-stage-2">
+        <div class="urgent-stamp-box">
+          <h2 class="urgent-main-headline" id="urgent-main-headline">
+            “더이상 방치하지말고
+            <em>당장 진료받으세요”</em>
+          </h2>
+        </div>
+      </div>
+
+      <p class="urgent-sub-desc">
+        체크리스트 <strong>5가지 항목이 모두 일치</strong>합니다. 이미 신체 균형과 회복력이 한계치(100%)에 도달한 상태이므로, 더 이상 미루지 마시고 <strong>안정위 대표원장의 1:1 정밀 진맥과 근본 치료</strong>를 즉시 시작하셔야 합니다.
+      </p>
+
+      <div class="urgent-actions-row">
+        <button type="button" class="urgent-btn-primary" onclick="window.closeUrgent5CheckModal(); window.openConsultModal();">
+          🚨 지금 바로 대표원장 진료 예약하기 ↗
+        </button>
+        <a href="tel:010-5631-1275" class="urgent-btn-tel">
+          📞 대표원장실 즉시 전화 상담
+        </a>
+      </div>
+
+      <button type="button" class="urgent-btn-close" onclick="window.closeUrgent5CheckModal()">
+        확인했습니다 (상세페이지 계속 보기)
+      </button>
+    </div>
   </div>
 
   <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
@@ -5140,14 +5400,141 @@
       // 1. INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST ENGINE
       // ====================================================================
       const ADVICE = {"caution":"여성탈모 주의","severe":"여성탈모 심각"};
+      const COND_NAME = String((ADVICE && ADVICE.caution) || '여성탈모 · 가르마·산후·갱년기 빈모').replace(/s*주의$/, '');
       const checkItems = Array.from(document.querySelectorAll('.empathy-check-item'));
       const countBadge = document.getElementById('empathy-count-badge');
       const diagnosisBox = document.getElementById('empathy-diagnosis-box');
-      const tierCaution = document.getElementById('severity-tier-caution');
-      const tierSevere = document.getElementById('severity-tier-severe');
-      const pillCaution = document.getElementById('severity-pill-caution');
-      const pillSevere = document.getElementById('severity-pill-severe');
+      const docCommentPill = document.getElementById('doc-comment-pill');
+      const docCommentBarFill = document.getElementById('doc-comment-bar-fill');
+      const docCommentTitle = document.getElementById('doc-comment-title');
+      const docCommentDesc = document.getElementById('doc-comment-desc');
+      const urgentModalEl = document.getElementById('urgent-5check-alert-modal');
       const ctaBtnLabel = document.getElementById('cta-btn-label');
+      let sharedAudioCtx = null;
+
+      function getAudioCtx() {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!sharedAudioCtx) {
+          sharedAudioCtx = new AudioCtx();
+        }
+        if (sharedAudioCtx.state === 'suspended') {
+          sharedAudioCtx.resume().catch(function() {});
+        }
+        return sharedAudioCtx;
+      }
+
+      // Synthesize a single deep, authoritative "쾅!" (Heavy Gavel / Seal Stamp / Taiko Impact Boom)
+      function triggerSingleBoomHit(ctx, startTime, intensity) {
+        const vol = intensity || 1.0;
+
+        // 1) Sub-bass seismic thump (135Hz -> 26Hz pitch drop)
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(138 * vol, startTime);
+        subOsc.frequency.exponentialRampToValueAtTime(26, startTime + 0.34);
+        subGain.gain.setValueAtTime(0.001, startTime);
+        subGain.gain.linearRampToValueAtTime(0.95 * vol, startTime + 0.008);
+        subGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.42);
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+        subOsc.start(startTime);
+        subOsc.stop(startTime + 0.44);
+
+        // 2) Mid-low punch body (240Hz -> 44Hz triangle wave)
+        const punchOsc = ctx.createOscillator();
+        const punchGain = ctx.createGain();
+        punchOsc.type = 'triangle';
+        punchOsc.frequency.setValueAtTime(240, startTime);
+        punchOsc.frequency.exponentialRampToValueAtTime(42, startTime + 0.19);
+        punchGain.gain.setValueAtTime(0.001, startTime);
+        punchGain.gain.linearRampToValueAtTime(0.65 * vol, startTime + 0.006);
+        punchGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.24);
+        punchOsc.connect(punchGain);
+        punchGain.connect(ctx.destination);
+        punchOsc.start(startTime);
+        punchOsc.stop(startTime + 0.26);
+
+        // 3) Heavy stamp transient crack & low-pass rumble burst
+        const bufSize = Math.floor(ctx.sampleRate * 0.28);
+        const noiseBuf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+        const data = noiseBuf.getChannelData(0);
+        for (let i = 0; i < bufSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.055));
+        }
+        const noiseSrc = ctx.createBufferSource();
+        noiseSrc.buffer = noiseBuf;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(520, startTime);
+        filter.frequency.exponentialRampToValueAtTime(95, startTime + 0.24);
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.82 * vol, startTime);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.26);
+        noiseSrc.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+        noiseSrc.start(startTime);
+      }
+
+      // Play "쾅! 쾅!" Heavy Double Impact Sound Effect when all 5 items are checked
+      window.playHeavyDoubleImpactSound = function() {
+        try {
+          const ctx = getAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime + 0.01;
+          triggerSingleBoomHit(ctx, now, 0.95);        // 1st "쾅!"
+          triggerSingleBoomHit(ctx, now + 0.36, 1.15); // 2nd heavier "쾅!"
+        } catch (_) {}
+      };
+
+      // Subtle clinical check feedback pulse for 1~4 checks
+      function playStepCheckPulse(stepCount) {
+        try {
+          const ctx = getAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime + 0.005;
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'sine';
+          const baseFreq = stepCount === 4 ? 190 : (stepCount === 3 ? 240 : 310);
+          osc.frequency.setValueAtTime(baseFreq, now);
+          osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.72, now + 0.09);
+          g.gain.setValueAtTime(0.14, now);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+          osc.connect(g);
+          g.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.11);
+        } catch (_) {}
+      }
+
+      window.triggerUrgent5CheckAlert = function() {
+        if (!urgentModalEl) return;
+        urgentModalEl.classList.remove('open');
+        void urgentModalEl.offsetWidth; // Force reflow so stamp slam animations replay cleanly
+        urgentModalEl.classList.add('open');
+
+        window.playHeavyDoubleImpactSound();
+
+        // Sync 1st & 2nd screen shake with "쾅! (0ms)" and "쾅! (360ms)"
+        document.body.classList.remove('urgent-impact-shaking');
+        void document.body.offsetWidth;
+        document.body.classList.add('urgent-impact-shaking');
+        setTimeout(function() {
+          document.body.classList.remove('urgent-impact-shaking');
+          void document.body.offsetWidth;
+          document.body.classList.add('urgent-impact-shaking');
+        }, 360);
+        setTimeout(function() {
+          document.body.classList.remove('urgent-impact-shaking');
+        }, 860);
+      };
+
+      window.closeUrgent5CheckModal = function() {
+        if (urgentModalEl) urgentModalEl.classList.remove('open');
+      };
 
       function getCheckedSymptoms() {
         return checkItems
@@ -5155,55 +5542,86 @@
           .map(el => el.querySelector('.empathy-check-input').value);
       }
 
-      function updateChecklistState() {
+      function updateChecklistState(justChecked) {
         const checked = getCheckedSymptoms();
         const cnt = checked.length;
-        const isCaution = cnt >= 1 && cnt <= 2;
-        const isSevere = cnt >= 3;
 
-        countBadge.classList.remove('active', 'is-caution', 'is-severe');
-        if (isSevere) {
-          countBadge.textContent = '🚨 ' + cnt + '개 선택 · ' + ADVICE.severe;
-          countBadge.classList.add('active', 'is-severe');
-          if (diagnosisBox) diagnosisBox.style.display = 'flex';
-          if (tierCaution) {
-            tierCaution.style.display = 'none';
-            tierCaution.classList.remove('is-checked');
-          }
-          if (tierSevere) {
-            tierSevere.style.display = 'flex';
-            tierSevere.classList.add('is-checked');
-          }
-          if (pillSevere) pillSevere.textContent = '🚨 심각 체크됨';
-        } else if (isCaution) {
-          countBadge.textContent = '⚠️ ' + cnt + '개 선택 · ' + ADVICE.caution;
-          countBadge.classList.add('active', 'is-caution');
-          if (diagnosisBox) diagnosisBox.style.display = 'flex';
-          if (tierCaution) {
-            tierCaution.style.display = 'flex';
-            tierCaution.classList.add('is-checked');
-          }
-          if (tierSevere) {
-            tierSevere.style.display = 'none';
-            tierSevere.classList.remove('is-checked');
-          }
-          if (pillCaution) pillCaution.textContent = '✓ 주의 체크됨';
-        } else {
-          countBadge.textContent = '증상 체크 전';
+        countBadge.classList.remove('active', 'is-tier-1', 'is-tier-2', 'is-tier-3', 'is-tier-4', 'is-tier-5');
+        if (diagnosisBox) {
+          diagnosisBox.classList.remove('tier-1', 'tier-2', 'tier-3', 'tier-4', 'tier-5');
+        }
+
+        if (cnt === 0) {
+          countBadge.textContent = '증상 체크 전 (0/5)';
           if (diagnosisBox) diagnosisBox.style.display = 'none';
-          if (tierCaution) {
-            tierCaution.style.display = 'none';
-            tierCaution.classList.remove('is-checked');
+          if (urgentModalEl) urgentModalEl.classList.remove('open');
+        } else if (cnt === 1) {
+          countBadge.textContent = '🩺 1개 체크 · 초기 관리 권장';
+          countBadge.classList.add('active', 'is-tier-1');
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-1');
           }
-          if (tierSevere) {
-            tierSevere.style.display = 'none';
-            tierSevere.classList.remove('is-checked');
+          if (docCommentPill) docCommentPill.textContent = '1개 체크 · 관리 요망';
+          if (docCommentBarFill) docCommentBarFill.style.width = '12%';
+          if (docCommentTitle) docCommentTitle.textContent = '초기 관리 권장 (' + COND_NAME + ' 예방 · 관리 단계)';
+          if (docCommentDesc) docCommentDesc.textContent = '초기 불편감 신호가 감지되었습니다. 증상이 더 깊어지기 전에 내원하셔서 예방 및 맞춤 관리를 받아보시길 권합니다.';
+          if (justChecked) playStepCheckPulse(1);
+        } else if (cnt === 2) {
+          countBadge.textContent = '⚠️ 2개 체크 · 주의 (20% 진행중)';
+          countBadge.classList.add('active', 'is-tier-2');
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-2');
+          }
+          if (docCommentPill) docCommentPill.textContent = '2개 체크 · 20% 진행중';
+          if (docCommentBarFill) docCommentBarFill.style.width = '20%';
+          if (docCommentTitle) docCommentTitle.textContent = '주의 (20% 진행중) · ' + COND_NAME + ' 주의 단계';
+          if (docCommentDesc) docCommentDesc.textContent = '증상이 서서히 자리 잡고 있습니다(20% 진행중). 자연 회복만 기다리기보다 정밀 진맥과 초기 치료로 진행을 차단해야 할 시점입니다.';
+          if (justChecked) playStepCheckPulse(2);
+        } else if (cnt === 3) {
+          countBadge.textContent = '🔶 3개 체크 · 위험 (50% 고생중)';
+          countBadge.classList.add('active', 'is-tier-3');
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-3');
+          }
+          if (docCommentPill) docCommentPill.textContent = '3개 체크 · 50% 고생중';
+          if (docCommentBarFill) docCommentBarFill.style.width = '50%';
+          if (docCommentTitle) docCommentTitle.textContent = '위험 (50% 고생중) · ' + COND_NAME + ' 위험 단계';
+          if (docCommentDesc) docCommentDesc.textContent = '이미 일상 속에서 상당한 불편감으로 고생하고 계십니다(50% 고생중). 만성화되기 직전이므로 대표원장 정밀 진단을 통한 집중 치료가 필요합니다.';
+          if (justChecked) playStepCheckPulse(3);
+        } else if (cnt === 4) {
+          countBadge.textContent = '🚨 4개 체크 · 심각 (70% 위태함)';
+          countBadge.classList.add('active', 'is-tier-4');
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-4');
+          }
+          if (docCommentPill) docCommentPill.textContent = '4개 체크 · 70% 위태함';
+          if (docCommentBarFill) docCommentBarFill.style.width = '70%';
+          if (docCommentTitle) docCommentTitle.textContent = '심각 (70% 위태함) · ' + COND_NAME + ' 심각 단계';
+          if (docCommentDesc) docCommentDesc.textContent = '신체 균형이 무너지며 매우 위태로운 단계에 접어들었습니다(70% 위태함). 미루실수록 치료 기간이 길어지니 빠른 시일 내에 진료받으셔야 합니다.';
+          if (justChecked) playStepCheckPulse(4);
+        } else if (cnt >= 5) {
+          countBadge.textContent = '🆘 5개 모두 체크 · 당장 진료 요망!';
+          countBadge.classList.add('active', 'is-tier-5');
+          if (diagnosisBox) {
+            diagnosisBox.style.display = 'flex';
+            diagnosisBox.classList.add('tier-5');
+          }
+          if (docCommentPill) docCommentPill.textContent = '5개 모두 체크 · 100% 긴급';
+          if (docCommentBarFill) docCommentBarFill.style.width = '100%';
+          if (docCommentTitle) docCommentTitle.textContent = '“더이상 방치하지말고 당장 진료받으세요”';
+          if (docCommentDesc) docCommentDesc.textContent = '5가지 핵심 증상이 모두 해당됩니다! 더이상 방치하지말고 당장 진료받으세요. 지금 즉시 대표원장 1:1 정밀 진맥과 근본 치료를 시작하셔야 합니다.';
+          if (justChecked) {
+            window.triggerUrgent5CheckAlert();
           }
         }
         ctaBtnLabel.textContent = '내 가르마·정수리 볼륨 원장님께 진단받기';
       }
 
-      updateChecklistState();
+      updateChecklistState(false);
 
       checkItems.forEach(item => {
         const input = item.querySelector('.empathy-check-input');
@@ -5211,7 +5629,7 @@
           e.preventDefault();
           input.checked = !input.checked;
           item.classList.toggle('checked', input.checked);
-          updateChecklistState();
+          updateChecklistState(input.checked);
         });
       });
 
