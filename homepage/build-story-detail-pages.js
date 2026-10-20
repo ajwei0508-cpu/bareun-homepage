@@ -539,8 +539,7 @@ const PAGES = [
       {
         type: 'motion-story',
         fullscreen: true,
-        indexPill: 'REAL SITUATION · 육아 · 결혼식 전 · 갱년기 체중 증가',
-        metricPill: '갑자기 불어난 체중 · 옷이 안 잠겨 참 곤란하다',
+        hideTopBar: true,
         title: "육아 · 결혼식 전 · 갱년기로 갑자기 불어난 체중 — '참 곤란하다'",
         sub: '출산·육아 중 안 잠기는 바지, 결혼식 코앞인데 끼는 웨딩드레스, 굶어도 배만 나오는 갱년기 나잇살까지 — 갑자기 늘어난 체중으로 가장 난감하고 곤란한 순간입니다.',
         caption: '[체중 증가로 곤란한 3대 상황] 육아 · 결혼식 전 · 갱년기로 체중이 늘어나 옷이 맞지 않아 곤란한 순간입니다.',
@@ -2087,10 +2086,10 @@ function buildPageHtml(page) {
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
             <div class="plate-gradient-scrim"></div>
-            <div class="plate-top-bar">
+            ${p.hideTopBar ? '' : `<div class="plate-top-bar">
               <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill || p.stepLabel || 'STORY · LIVE MOTION'}</span>
               ${p.metricPill ? `<span class="plate-metric-pill">${p.metricPill}</span>` : ''}
-            </div>
+            </div>`}
             ${sciHtml}
             <div class="plate-bottom-caption">
               <div>
