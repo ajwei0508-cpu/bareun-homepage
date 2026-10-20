@@ -6381,6 +6381,214 @@ function buildPageHtml(page) {
         grid-template-columns: repeat(2, 1fr);
       }
     }
+
+    /* ============================================================================
+       GROWTH BIOMETRIC 4-METRIC COMPARISON ANALYSIS OVERLAY
+       (연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석)
+       ============================================================================ */
+    .growth-4metrics-compare-overlay {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      z-index: 8;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .g4m-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(12, 22, 17, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(212, 175, 55, 0.65);
+      color: #FDE68A;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      width: fit-content;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+    }
+    .g4m-header-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 10px #34D399;
+      animation: liveRecPulse 1.5s infinite ease-in-out;
+    }
+    .growth-4metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .g4m-card {
+      background: rgba(11, 18, 15, 0.86);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(110, 231, 183, 0.35);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.52);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .g4m-card:hover {
+      transform: translateY(-2px);
+      border-color: #FDE68A;
+    }
+    .g4m-card.is-gold-card {
+      border-color: rgba(212, 175, 55, 0.68);
+      background: linear-gradient(145deg, rgba(20, 28, 22, 0.92), rgba(28, 22, 14, 0.90));
+    }
+    .g4m-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .g4m-title-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .g4m-icon-badge {
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #A7F3D0;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .g4m-card.is-gold-card .g4m-icon-badge {
+      background: rgba(212, 175, 55, 0.25);
+      border-color: rgba(253, 230, 138, 0.6);
+      color: #FEF08A;
+    }
+    .g4m-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.98rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      margin: 0;
+    }
+    .g4m-vs-pill {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #FDE68A;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(253, 230, 138, 0.35);
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .g4m-compare-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.36);
+      border-radius: 8px;
+      padding: 7px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .g4m-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: rgba(248, 250, 252, 0.85);
+    }
+    .g4m-bar-label {
+      width: 92px;
+      flex-shrink: 0;
+      color: rgba(248, 250, 252, 0.78);
+    }
+    .g4m-bar-row.is-after .g4m-bar-label {
+      color: #A7F3D0;
+      font-weight: 800;
+    }
+    .g4m-card.is-gold-card .g4m-bar-row.is-after .g4m-bar-label {
+      color: #FEF08A;
+    }
+    .g4m-bar-track {
+      flex: 1;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      overflow: hidden;
+    }
+    .g4m-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+    .g4m-bar-fill.b {
+      background: linear-gradient(90deg, #94A3B8, #F59E0B);
+    }
+    .g4m-bar-fill.a {
+      background: linear-gradient(90deg, #10B981, #6EE7B7);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    }
+    .g4m-card.is-gold-card .g4m-bar-fill.a {
+      background: linear-gradient(90deg, #D4AF37, #FEF08A);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.65);
+    }
+    .g4m-desc {
+      font-size: 0.73rem;
+      line-height: 1.42;
+      color: rgba(248, 250, 252, 0.88);
+      margin: 0;
+      word-break: keep-all;
+    }
+    .g4m-desc strong {
+      color: #A7F3D0;
+      font-weight: 800;
+    }
+    .g4m-card.is-gold-card .g4m-desc strong {
+      color: #FEF08A;
+    }
+    @media (max-width: 1024px) {
+      .growth-4metrics-compare-overlay {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        gap: 6px;
+      }
+      .g4m-header-pill {
+        font-size: 0.6rem;
+        padding: 4px 9px;
+      }
+      .growth-4metrics-grid {
+        gap: 6px;
+      }
+      .g4m-card {
+        padding: 7px 9px;
+        gap: 4px;
+        border-radius: 10px;
+      }
+      .g4m-title {
+        font-size: 0.78rem;
+      }
+      .g4m-icon-badge,
+      .g4m-vs-pill {
+        font-size: 0.55rem;
+        padding: 2px 5px;
+      }
+      .g4m-compare-bars {
+        display: none;
+      }
+      .g4m-desc {
+        font-size: 0.61rem;
+        line-height: 1.3;
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -6486,15 +6694,107 @@ function buildPageHtml(page) {
               <img class="lusion-clean-media" id="runway-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
             </div>
             <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-scrim"></div>${page.file === 'growth.html' ? `
+            <!-- 4-CORE GROWTH BIOMETRIC COMPARISON ANALYSIS SUITE (연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키) -->
+            <div class="growth-4metrics-compare-overlay">
+              <div class="g4m-header-pill">
+                <span class="g4m-header-dot"></span>
+                <span>ULTRASOUND BIOMETRIC COMPARISON · 무방사선 초음파 4대 성장 지표 정밀 비교 분석</span>
+              </div>
+              <div class="growth-4metrics-grid">
+                <div class="g4m-card">
+                  <div class="g4m-top-row">
+                    <div class="g4m-title-group">
+                      <span class="g4m-icon-badge">지표 I</span>
+                      <h3 class="g4m-title">연령별 평균키 비교</h3>
+                    </div>
+                    <span class="g4m-vs-pill">표준 평균키 vs 현재 키</span>
+                  </div>
+                  <div class="g4m-compare-bars">
+                    <div class="g4m-bar-row">
+                      <span class="g4m-bar-label">현재 아이 키 위치</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:52%"></div></div>
+                    </div>
+                    <div class="g4m-bar-row is-after">
+                      <span class="g4m-bar-label">연령별 표준·목표</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:88%"></div></div>
+                    </div>
+                  </div>
+                  <p class="g4m-desc">동일 연령·성별 <strong>표준 평균키 대비 현재 우리 아이의 키 위치와 부족 편차</strong>를 정밀 비교하여 따라잡기 성장 속도를 설계합니다.</p>
+                </div>
+
+                <div class="g4m-card">
+                  <div class="g4m-top-row">
+                    <div class="g4m-title-group">
+                      <span class="g4m-icon-badge">지표 II</span>
+                      <h3 class="g4m-title">성장판 나이 비교</h3>
+                    </div>
+                    <span class="g4m-vs-pill">실제 나이 vs 뼈 나이</span>
+                  </div>
+                  <div class="g4m-compare-bars">
+                    <div class="g4m-bar-row">
+                      <span class="g4m-bar-label">실제 생년월일 나이</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:60%"></div></div>
+                    </div>
+                    <div class="g4m-bar-row is-after">
+                      <span class="g4m-bar-label">성장판 개방 활성도</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:90%"></div></div>
+                    </div>
+                  </div>
+                  <p class="g4m-desc">실제 나이와 <strong>초음파로 계측한 성장판 나이(골연령)</strong>를 비교하여 성조숙증에 의한 조기 폐쇄 위험과 남은 성장 기간을 판독합니다.</p>
+                </div>
+
+                <div class="g4m-card">
+                  <div class="g4m-top-row">
+                    <div class="g4m-title-group">
+                      <span class="g4m-icon-badge">지표 III</span>
+                      <h3 class="g4m-title">뼈길이 비교</h3>
+                    </div>
+                    <span class="g4m-vs-pill">정상 뼈길이 vs 실제 골길이</span>
+                  </div>
+                  <div class="g4m-compare-bars">
+                    <div class="g4m-bar-row">
+                      <span class="g4m-bar-label">검사 전 골격 밸런스</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:56%"></div></div>
+                    </div>
+                    <div class="g4m-bar-row is-after">
+                      <span class="g4m-bar-label">정상 뼈길이·연골층</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:92%"></div></div>
+                    </div>
+                  </div>
+                  <p class="g4m-desc">무릎 <strong>성장판 연골 두께 및 대퇴골·경골 실제 뼈길이</strong>를 정상 기준과 비교하고 좌우 골격 불균형으로 숨은 키를 찾아냅니다.</p>
+                </div>
+
+                <div class="g4m-card is-gold-card">
+                  <div class="g4m-top-row">
+                    <div class="g4m-title-group">
+                      <span class="g4m-icon-badge">지표 IV</span>
+                      <h3 class="g4m-title">최종예상키 비교</h3>
+                    </div>
+                    <span class="g4m-vs-pill">방치 시 vs 집중 치료 시</span>
+                  </div>
+                  <div class="g4m-compare-bars">
+                    <div class="g4m-bar-row">
+                      <span class="g4m-bar-label">현재 추세 예상키</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:58%"></div></div>
+                    </div>
+                    <div class="g4m-bar-row is-after">
+                      <span class="g4m-bar-label">골든타임 최종예상키</span>
+                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:96%"></div></div>
+                    </div>
+                  </div>
+                  <p class="g4m-desc">현재 상태 방치 시 성인 예상키와 <strong>골든타임 맞춤 한약·추나 치료 시 도달 가능한 최종예상키</strong>를 입체적으로 비교 분석합니다.</p>
+                </div>
+              </div>
+            </div>` : ''}
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <div class="clean-spec-tags">
-                  <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
-                  <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
+                  <span class="clean-spec-tag" id="runway-ba-tag-b">${page.file === 'growth.html' ? '📊 연령별 평균키 · 성장판 나이 비교' : 'BEFORE · 치료 전'}</span>
+                  <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">${page.file === 'growth.html' ? '🎯 뼈길이 · 최종예상키 정밀 분석' : 'AFTER · 치료 후'}</span>
                 </div>
-                <h2 class="plate-caption-title">${page.meta.title} — 치료 전·후 비교</h2>
-                <p class="plate-caption-sub">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
+                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : `${page.meta.title} — 치료 전·후 비교`}</h2>
+                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.'}</p>
               </div>
             </div>
           </div>
@@ -6747,11 +7047,11 @@ function buildPageHtml(page) {
           part: 'knee',
           beforeImg: 'ba_growth_before.jpg',
           afterImg: 'ba_growth_after.jpg',
-          beforeTag: 'BEFORE · 성장 정체 및 조기 골화·면역 저하',
-          afterTag: 'AFTER · 학술 검증 성장판 연골 증식 및 면역 회복',
+          beforeTag: '📊 연령별 평균키 · 성장판 나이 비교',
+          afterTag: '🎯 뼈길이 · 최종예상키 정밀 분석',
           metrics: [
-            { label: '국제 식물학술지(Phytomedicine) 검증', b: '성장판 연골 분열 정체', a: '조기 골화 지연·연골모세포 증식 검증' },
-            { label: '국제 소아과학회지(Pediatrics) 등재', b: '비염·구강호흡 성장 방해', a: '호흡기 면역·성장인자 회복 입증' }
+            { label: '연령별 평균키 · 성장판 나이', b: '또래 평균키 편차 · 골연령 진행도', a: '잔여 성장판 개방 기간 정밀 판독' },
+            { label: '뼈길이 · 최종예상키', b: '방치 시 성인 예상키 산출', a: '골든타임 맞춤 치료 시 최종예상키 도약' }
           ]
         },
         'diet-zero.html': {
