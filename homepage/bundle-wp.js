@@ -46,6 +46,7 @@ function rewriteAssetsForWP(html, label) {
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
     .replace(new RegExp("url\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "url('" + ghBase + "$1')")
     .replace(new RegExp("loadLinearTex\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "loadLinearTex('" + ghBase + "$1')")
+    .replace(new RegExp("openCleanLightbox\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "openCleanLightbox('" + ghBase + "$1')")
     .replace(new RegExp('src="((?:clinic-template-config\\.js|' + assetPrefix + ')[^"]+)"', 'g'), 'src="' + ghBase + '$1"')
     .replace(new RegExp('data-img="(' + assetPrefix + '[^"]+)"', 'g'), 'data-img="' + ghBase + '$1"')
     .replace(new RegExp('poster="(' + assetPrefix + '[^"]+)"', 'g'), 'poster="' + ghBase + '$1"')

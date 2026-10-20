@@ -313,6 +313,14 @@ const PAGES = [
     },
     plates: [
       {
+        type: 'growth-son-main-hero',
+        fullscreen: true,
+        stepLabel: 'MAIN STORY · 대표원장 친아들 3개년 성장 실증 & 친필 서약',
+        title: "내 아이에게 먹이지 못할 약이라면, 세상 어떤 아이에게도 '처방하지 않습니다'",
+        sub: '15년 임상경력의 안정위 대표원장이 친아들(초5 ➔ 초6 ➔ 중1 · 173cm 달성)에게 직접 처방하며 입증한 성장 한약입니다.',
+        caption: '[대표원장 친필 서약] 내 아이가 마시는 탕약과 단 0.1g의 차이도 없이 동일한 식약처 GMP 최상급 청정 규격 한약재로 정성껏 처방합니다.'
+      },
+      {
         type: 'motion-story',
         indexPill: 'STORY · 키가 멈춘 진짜 이유',
         metricPill: '감기·비염·소화불량 에너지 누수',
@@ -377,17 +385,11 @@ const PAGES = [
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 내 가족 내 아이가 복용하는 성장한약',
-        title: "실제 원장님의 가족과 똑같은 '키성장·성조숙증 치료법'",
-        sub: '안전한 국제 학술 논문에서 연골세포 증식과 면역 개선 기전이 입증된 안전한 치료법을 안내합니다.',
+        stepLabel: 'STORY · 국제 학술 논문 검수 완료',
+        title: "실제 학술 논문으로 입증된 '성장판 연골 증식 · 면역 회복'",
+        sub: '국제 학술지에서 연골세포 증식과 호흡기 면역 개선 기전이 입증된 안전한 치료법입니다.',
         caption: '[학술 논문 검수] 국제 학술지(Phytomedicine, Pediatrics) 연구를 통해 성장판 연골 증식 및 호흡기 면역·수면 개선 기전이 입증되었습니다.',
-        imgSrc: 'growth-director-son-comparison.png',
-        fit: 'contain',
-        thumbs: [
-          { img: 'growth-director-son-comparison.png', label: '원장님 아들 성장 실증', fit: 'contain' },
-          { img: 'detail_growth_story5_tall_basketball.jpg?v=grw2', label: '논문 검증 키성장', fit: 'cover' },
-          { img: 'ba_growth_after.jpg', label: '성장판·면역 회복', fit: 'cover' }
-        ],
+        imgSrc: 'detail_growth_story5_tall_basketball.jpg?v=grw2',
         sciStats: [
           { num: '국제 식물학술지(Phytomedicine) 검증', label: '조기 골화 지연 및 성장판 연골모세포 증식 촉진 입증', width: '96%' },
           { num: '국제 소아과학회지(Pediatrics) 등재', label: '호흡기 감염·비염 개선을 통한 성장인자(IGF) 회복 입증', width: '94%' }
@@ -495,18 +497,20 @@ const PAGES = [
         ]
       },
       {
-        type: 'clean-image',
-        stepLabel: 'STORY · 3단계 대사 화로(갈색지방) 점화',
-        title: "식욕 진정 · 내장지방 연소 · 독소 배출 '3단계 대사 리셋'",
-        sub: '차가운 복부 대사 화로를 깨워 휴식 중에도 스스로 지방을 태우게 만듭니다.',
-        caption: '[대사 다이어트 노트] 갈색지방(BAT) 열발생과 AMPK 대사 경로를 깨워 휴식 중에도 에너지가 원활히 소모되도록 돕습니다.',
-        imgSrc: 'detail_diet_story3_brazier_metabolism_3d.jpg?v=belt1',
-        thumbs: [
-          { img: 'detail_diet_story3_brazier_metabolism_3d.jpg?v=belt1', label: '복부 대사 화로 3D' },
-          { img: 'efficacy-neuro-calm.jpg', label: 'STEP 1 식욕 진정' },
-          { img: 'efficacy-core-lipolysis.jpg', label: 'STEP 2 내장지방 연소' },
-          { img: 'efficacy-detox-flush.jpg', label: 'STEP 3 부종·독소 배출' }
-        ]
+        type: 'diet-3stage-motion',
+        fullscreen: true,
+        stepLabel: 'STORY · 3가지 핵심 작용 모션 메커니즘',
+        title: "식욕 중추 안정 · 심부 체지방 분해 · 붓기 독소 완화 '3단계 시크릿 메커니즘'",
+        sub: '인위적인 화학 억제제가 아닙니다. 뇌 식욕 신호 차단, 심부 발열 지방 연소, 수독 배출 슬림 축소의 3단계 작용이 입체적으로 작동합니다.',
+        caption: '[3단계 시크릿 메커니즘] 1단계 식욕 중추 안정(뇌 신호 차단) ➔ 2단계 심부 체지방 분해(열역학 연소) ➔ 3단계 붓기·독소 완화(림프 수독 배출)가 유기적으로 연결됩니다.'
+      },
+      {
+        type: 'diet-tele-video',
+        fullscreen: true,
+        stepLabel: 'STORY · 비대면 1:1 진료 & 안심 특급 배송 가이드 영상',
+        title: "내원 없이 집에서 받는 '1:1 대표원장 전화 진료 & 전국 안심 직배송'",
+        sub: '온라인 설문 ➔ 대표원장 1:1 전화 진료 ➔ 원내 맞춤 탕전 ➔ 우체국/CJ 안심 특급 배송까지 집에서 편하게 받아보세요.',
+        caption: '[비대면 진료 & 배송 가이드] 바쁜 일상 속 전국 어디서나 안심하고 진료받으실 수 있도록 대전본점 대표원장이 직접 전화 상담 후 직배송합니다.'
       },
       {
         type: 'clean-image',
@@ -1468,6 +1472,331 @@ function buildPageHtml(page) {
   const platesHtml = page.plates.map((p, idx) => {
     const numStr = `0${idx + 1}`;
     const formattedTitle = formatTitleEmphasis(p.title);
+    if (p.type === 'growth-son-main-hero') {
+      return `
+        <!-- PLATE ${numStr}: Director's Son Growth Enlarged Main Hero & Handwritten Pledge -->
+        <article class="project-details-item is-growth-son-hero is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
+          <div class="plate-media-inner growth-son-hero-inner">
+            <div class="growth-son-hero-grid">
+              <!-- LEFT: ENLARGED 3-STAGE SON GROWTH PHOTOGRAPHY SHOWCASE -->
+              <div class="son-growth-visual-col">
+                <div class="son-visual-top-bar">
+                  <div class="son-visual-badge-group">
+                    <span class="son-live-badge"><span class="son-live-dot"></span>MAIN RECORD · 대표원장 친아들 실제 성장 기록</span>
+                    <span class="son-height-pill">초5 복용 시작 ➔ 중1 <strong>173cm 달성</strong></span>
+                  </div>
+                  <button type="button" class="son-zoom-trigger-btn" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son-comparison.png')">
+                    <span>🔍 원본 비교표 크게 확대</span>
+                  </button>
+                </div>
+
+                <div class="son-3stage-photo-grid">
+                  <div class="son-photo-card" onclick="event.stopPropagation(); window.openCleanLightbox('growth_son_grade5.jpg')">
+                    <div class="son-photo-frame">
+                      <img src="growth_son_grade5.jpg" alt="안정위 대표원장 아들 초등학교 5학년 한약 복용 시작 당시" draggable="false">
+                      <span class="son-stage-step-tag">STEP 01 · 초등 5학년</span>
+                      <span class="son-photo-zoom-icon">🔍 클릭 확대</span>
+                    </div>
+                    <div class="son-photo-caption">
+                      <strong>초등 5학년 · 성장한약 시작</strong>
+                      <span>또래보다 작고 여렸던 시기 · 아빠의 첫 처방</span>
+                    </div>
+                  </div>
+
+                  <div class="son-photo-card" onclick="event.stopPropagation(); window.openCleanLightbox('growth_son_grade6.jpg')">
+                    <div class="son-photo-frame">
+                      <img src="growth_son_grade6.jpg" alt="안정위 대표원장 아들 초등학교 6학년 폭풍 성장기" draggable="false">
+                      <span class="son-stage-step-tag">STEP 02 · 초등 6학년</span>
+                      <span class="son-photo-zoom-icon">🔍 클릭 확대</span>
+                    </div>
+                    <div class="son-photo-caption">
+                      <strong>초등 6학년 · 성장판 골든타임</strong>
+                      <span>비위 흡수력 강화 및 성장판 연골 증식 가속</span>
+                    </div>
+                  </div>
+
+                  <div class="son-photo-card is-highlight-final" onclick="event.stopPropagation(); window.openCleanLightbox('growth_son_grade7.jpg')">
+                    <div class="son-photo-frame">
+                      <img src="growth_son_grade7.jpg" alt="안정위 대표원장 아들 중학교 1학년 173cm 달성" draggable="false">
+                      <span class="son-stage-step-tag is-gold">STEP 03 · 중학교 1학년 (173cm)</span>
+                      <span class="son-photo-zoom-icon">🔍 클릭 확대</span>
+                    </div>
+                    <div class="son-photo-caption">
+                      <strong>중학교 1학년 · 173cm 탄탄한 성장</strong>
+                      <span>성조숙증 우려 없이 균형 잡힌 골격 완성</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="son-visual-bottom-caption">
+                  <h2 class="son-hero-main-title">${formattedTitle}</h2>
+                  <p class="son-hero-main-sub">${p.sub}</p>
+                </div>
+              </div>
+
+              <!-- RIGHT: DIRECTOR'S HANDWRITTEN PLEDGE (원장 친필 서약 & 친아들 처방 기록) -->
+              <div class="father-letter-box">
+                <div class="letter-eyebrow">
+                  <span class="letter-eyebrow-line"></span>
+                  <span>DIRECTOR'S HANDWRITTEN PLEDGE · 아빠의 마음으로 달인 성장한약</span>
+                </div>
+                <h3 class="letter-headline">
+                  "내 아이에게 먹이지 못할 약이라면,<br>
+                  <span>세상 어떤 아이에게도 처방하지 않습니다"</span>
+                </h3>
+                <div class="letter-handwriting">
+                  "제 아들이 초등학교 5학년이 되었을 때, 또래보다 작은 키와 허약한 체력을 보며 한의사이기 이전에 한 명의 아버지로서 깊은 책임감을 느꼈습니다.<br><br>
+                  성장 골든타임을 놓치지 않기 위해 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 GAP 약재를 선별해 정성껏 달여 먹였습니다.<br>
+                  초5부터 꾸준히 복용한 끝에 <strong>중학교 1학년 무렵 173cm의 탄탄하고 바른 체격</strong>으로 자라났습니다. 내 아들을 키운 그 처방과 정성 그대로 우리 아이들을 진료합니다."
+                </div>
+                <div class="letter-milestone-row">
+                  <div class="letter-milestone-chip">
+                    <span class="lm-label">START · 초등 5학년</span>
+                    <strong class="lm-val">비위·면역 기반 구축</strong>
+                  </div>
+                  <div class="letter-milestone-chip">
+                    <span class="lm-label">GOLDEN TIME · 초등 6학년</span>
+                    <strong class="lm-val">연골모세포 증식 집중</strong>
+                  </div>
+                  <div class="letter-milestone-chip is-accent">
+                    <span class="lm-label">RESULT · 중학교 1학년</span>
+                    <strong class="lm-val">173cm 달성 · 현재 진행형</strong>
+                  </div>
+                </div>
+                <div class="letter-sign-row">
+                  <div class="letter-sign-info">
+                    <div class="letter-sign-text">아빠같은 한의사 <span>안 정 위</span> 대표원장 배상</div>
+                    <a href="https://blog.naver.com/wei0508/223437892490" target="_blank" rel="noopener" class="letter-blog-btn" onclick="event.stopPropagation();">
+                      <span>📖 대표원장 아들 성장 스토리 원문 보러가기</span>
+                      <span>↗</span>
+                    </a>
+                  </div>
+                  <div class="director-seal-stamp" aria-label="안정위 대표원장 직인">
+                    <svg viewBox="0 0 64 64" width="48" height="48">
+                      <rect x="4" y="4" width="56" height="56" rx="6" fill="none" stroke="#B83B2A" stroke-width="3.5"/>
+                      <rect x="9" y="9" width="46" height="46" rx="3" fill="none" stroke="#B83B2A" stroke-width="1.2" stroke-dasharray="4 2"/>
+                      <text x="32" y="28" text-anchor="middle" fill="#B83B2A" font-family="'Noto Serif KR', serif" font-weight="900" font-size="14">바른</text>
+                      <text x="32" y="47" text-anchor="middle" fill="#B83B2A" font-family="'Noto Serif KR', serif" font-weight="900" font-size="14">正印</text>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    if (p.type === 'diet-3stage-motion') {
+      return `
+        <!-- PLATE ${numStr}: 3-Stage Efficacy Interactive Motion Plate -->
+        <article class="project-details-item is-diet-3stage-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
+          <div class="plate-media-inner diet-3stage-inner">
+            <div class="diet-3stage-header">
+              <div>
+                <span class="diet-3stage-eyebrow">⚡ 3-STAGE METABOLIC ACTION · 바른다이어트 3단계 핵심 작용 모션</span>
+                <h2 class="diet-3stage-title">${formattedTitle}</h2>
+                <p class="diet-3stage-sub">${p.sub}</p>
+              </div>
+              <div class="diet-3stage-tabs" role="tablist">
+                <button type="button" class="diet-3stage-tab active" onclick="event.stopPropagation(); window.switchDietStage3(0)">전체 동시 가동</button>
+                <button type="button" class="diet-3stage-tab" onclick="event.stopPropagation(); window.switchDietStage3(1)">01 식욕 중추 안정</button>
+                <button type="button" class="diet-3stage-tab" onclick="event.stopPropagation(); window.switchDietStage3(2)">02 심부 체지방 분해</button>
+                <button type="button" class="diet-3stage-tab" onclick="event.stopPropagation(); window.switchDietStage3(3)">03 붓기 & 독소 완화</button>
+              </div>
+            </div>
+
+            <div class="efficacy-3stage-grid" id="diet-3stage-grid">
+              <!-- STAGE 1: NEURO CALM (식욕 중추 안정 + 전기 스파크 모션) -->
+              <div class="efficacy-stage-card diet-3stage-card" data-stage="1" onclick="event.stopPropagation(); window.switchDietStage3(1)">
+                <div class="efficacy-visual-frame neuro-frame">
+                  <img src="efficacy-neuro-calm.jpg" alt="시상하부 식욕 중추 안정 및 가짜 배고픔 완화 모션" loading="lazy" draggable="false">
+                  <div class="electric-zap-layer" aria-hidden="true">
+                    <div class="zap-pulse-core"></div>
+                    <div class="zap-wave-ring"></div>
+                    <div class="zap-wave-ring ring-2"></div>
+                    <svg class="zap-lightning-svg" viewBox="0 0 200 200" fill="none">
+                      <path class="zap-bolt bolt-1" d="M100 72 L84 52 L92 42 L72 22" />
+                      <path class="zap-bolt bolt-2" d="M114 78 L138 62 L130 50 L156 34" />
+                      <path class="zap-bolt bolt-3" d="M88 86 L62 82 L68 70 L42 64" />
+                      <path class="zap-bolt bolt-4" d="M112 92 L142 96 L134 108 L162 114" />
+                    </svg>
+                    <span class="spark-dot s1"></span>
+                    <span class="spark-dot s2"></span>
+                    <span class="spark-dot s3"></span>
+                    <span class="spark-dot s4"></span>
+                  </div>
+                  <div class="efficacy-motion-overlay"></div>
+                  <span class="efficacy-step-pill"><span class="pulse-dot"></span>STAGE 01 · NEURO CALM</span>
+                  <span class="efficacy-metric-tag">렙틴 저항성 개선 · 가짜 식욕 <strong>-68%</strong></span>
+                </div>
+                <div class="efficacy-card-body">
+                  <div class="efficacy-card-title">
+                    <h4>식욕 중추 안정</h4>
+                    <span class="hanja-tag">食慾安定</span>
+                  </div>
+                  <p class="efficacy-card-desc">시상하부의 과흥분된 가짜 배고픔 신호를 부드럽게 진정시켜 억지 굶기 없이 자연스러운 포만감을 유도합니다.</p>
+                </div>
+              </div>
+
+              <!-- STAGE 2: CORE LIPOLYSIS (심부 체지방 분해 + 열대사 연소 수축 모션) -->
+              <div class="efficacy-stage-card diet-3stage-card" data-stage="2" onclick="event.stopPropagation(); window.switchDietStage3(2)">
+                <div class="efficacy-visual-frame thermal-frame">
+                  <img src="efficacy-core-lipolysis.jpg" alt="심부 체지방 분해 및 열대사 연소 수축 모션" loading="lazy" draggable="false">
+                  <div class="thermal-burn-layer" aria-hidden="true">
+                    <div class="combustion-fire-glow"></div>
+                    <div class="thermal-heat-haze"></div>
+                    <div class="fat-contract-ring c-ring-1"></div>
+                    <div class="fat-contract-ring c-ring-2"></div>
+                    <div class="fat-contract-ring c-ring-3"></div>
+                    <span class="ember-spark e1"></span>
+                    <span class="ember-spark e2"></span>
+                    <span class="ember-spark e3"></span>
+                    <span class="ember-spark e4"></span>
+                    <span class="ember-spark e5"></span>
+                    <span class="ember-spark e6"></span>
+                  </div>
+                  <div class="efficacy-motion-overlay"></div>
+                  <span class="efficacy-step-pill"><span class="pulse-dot"></span>STAGE 02 · LIPOLYSIS</span>
+                  <span class="efficacy-metric-tag">갈색지방 열발생 · 기초대사 <strong>+24%</strong></span>
+                </div>
+                <div class="efficacy-card-body">
+                  <div class="efficacy-card-title">
+                    <h4>심부 체지방 분해</h4>
+                    <span class="hanja-tag">體脂肪分解</span>
+                  </div>
+                  <p class="efficacy-card-desc">신진대사와 심부 체온을 끌어올려 가만히 있어도 에너지를 태우는 체질로 전환하고 고착된 내장지방을 연소합니다.</p>
+                </div>
+              </div>
+
+              <!-- STAGE 3: DETOX FLUSH (붓기 & 독소 완화 + 바디 슬리밍 드레이니지 모션) -->
+              <div class="efficacy-stage-card diet-3stage-card" data-stage="3" onclick="event.stopPropagation(); window.switchDietStage3(3)">
+                <div class="efficacy-visual-frame detox-frame">
+                  <div class="body-morph-wrapper">
+                    <img class="edema-ghost-outline" src="efficacy-detox-flush.jpg" alt="" aria-hidden="true" loading="lazy" draggable="false">
+                    <img class="slim-subject-img" src="efficacy-detox-flush.jpg" alt="림프 순환 및 부종 독소 배출 슬리밍 모션" loading="lazy" draggable="false">
+                  </div>
+                  <div class="detox-slim-layer" aria-hidden="true">
+                    <svg class="contour-cinch-guide" viewBox="0 0 240 240" fill="none">
+                      <path class="swollen-line-left" d="M58 55 Q34 120 58 185" />
+                      <path class="swollen-line-right" d="M182 55 Q206 120 182 185" />
+                      <path class="cinch-arrow left-arrow" d="M36 120 L66 120 M56 112 L66 120 L56 128" />
+                      <path class="cinch-arrow right-arrow" d="M204 120 L174 120 M184 112 L174 120 L184 128" />
+                    </svg>
+                    <span class="water-drop d1"></span>
+                    <span class="water-drop d2"></span>
+                    <span class="water-drop d3"></span>
+                    <span class="water-drop d4"></span>
+                  </div>
+                  <div class="efficacy-motion-overlay"></div>
+                  <span class="efficacy-step-pill"><span class="pulse-dot"></span>STAGE 03 · DETOX FLUSH</span>
+                  <span class="efficacy-metric-tag">림프 순환 · 수분 정체 <strong>즉각 완화</strong></span>
+                </div>
+                <div class="efficacy-card-body">
+                  <div class="efficacy-card-title">
+                    <h4>붓기 & 독소 완화</h4>
+                    <span class="hanja-tag">浮腫解毒</span>
+                  </div>
+                  <p class="efficacy-card-desc">정체된 림프 순환과 수분 대사를 열어 아침마다 붓는 얼굴·하체 부종과 혈관 속 노폐물(어혈·담음)을 배출합니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    if (p.type === 'diet-tele-video') {
+      return `
+        <!-- PLATE ${numStr}: Non-Face-to-Face Telemedicine & Express Delivery Video Suite -->
+        <article class="project-details-item is-diet-tele-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
+          <div class="plate-media-inner diet-tele-inner">
+            <div class="concierge-cinema-suite">
+              <div class="concierge-cinema-header">
+                <div>
+                  <span class="concierge-eyebrow-pill"><span class="live-dot"></span>NON-FACE-TO-FACE & EXPRESS DELIVERY · 전국 비대면 처방</span>
+                  <h2 class="concierge-main-title">${formattedTitle}</h2>
+                </div>
+                <p class="concierge-sub-desc">${p.sub}</p>
+              </div>
+
+              <!-- 4-Step Telemedicine & Delivery Flow -->
+              <div class="concierge-steps-bar">
+                <div class="concierge-step-chip">
+                  <span class="step-num">01</span>
+                  <div class="step-text">
+                    <strong>온라인 사전 문진</strong>
+                    <span>체질 · 식습관 · 목표체중 체크</span>
+                  </div>
+                </div>
+                <div class="concierge-step-chip">
+                  <span class="step-num">02</span>
+                  <div class="step-text">
+                    <strong>대표원장 1:1 전화 진료</strong>
+                    <span>안정위 원장 심층 비대면 상담</span>
+                  </div>
+                </div>
+                <div class="concierge-step-chip">
+                  <span class="step-num">03</span>
+                  <div class="step-text">
+                    <strong>원내 1:1 맞춤 탕전 · 조제</strong>
+                    <span>청정 GAP 약재 당일 안전 조제</span>
+                  </div>
+                </div>
+                <div class="concierge-step-chip">
+                  <span class="step-num">04</span>
+                  <div class="step-text">
+                    <strong>전국 안심 특급 배송</strong>
+                    <span>문 앞까지 빠르고 안전하게 도착</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widescreen Cinema Video Frame -->
+              <div class="concierge-video-frame" onclick="event.stopPropagation();">
+                <div class="video-top-overlay">
+                  <span class="video-badge-pill">
+                    <span class="rec-dot"></span>
+                    바른한의원 비대면 다이어트 프로그램 안내 영상
+                  </span>
+                  <button type="button" class="video-consult-trigger" onclick="event.stopPropagation(); window.openConsultModal()">
+                    📞 비대면 전화처방 바로 신청 ↗
+                  </button>
+                </div>
+                <video
+                  controls
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata">
+                  <source src="https://bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4" type="video/mp4">
+                  브라우저가 비디오 태그를 지원하지 않습니다.
+                </video>
+              </div>
+
+              <!-- Trust Metrics Ribbon -->
+              <div class="concierge-trust-ribbon">
+                <div class="trust-metric-box">
+                  <strong>52,000+</strong>
+                  <span>누적 비대면·내원 처방</span>
+                </div>
+                <div class="trust-metric-box">
+                  <strong>98.6%</strong>
+                  <span>복용 환자 치료 만족도</span>
+                </div>
+                <div class="trust-metric-box">
+                  <strong>100%</strong>
+                  <span>식약처 인증 정품 청정 약재</span>
+                </div>
+                <div class="trust-metric-box">
+                  <strong>1:1 전담 케어</strong>
+                  <span>감량 후 요요방지 밀착 코칭</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
     if (p.type === 'clean-video') {
       return `
         <!-- PLATE ${numStr}: Clean Video Plate -->
@@ -1527,7 +1856,7 @@ function buildPageHtml(page) {
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: ${page.theme.bgDark};
@@ -4834,6 +5163,1092 @@ function buildPageHtml(page) {
     @media (max-width: 560px) {
       .dh4-grid { grid-template-columns: 1fr; }
     }
+
+    /* ============================================================================
+       GROWTH MAIN HERO: ENLARGED SON GROWTH 3-STAGE SHOWCASE & FATHER LETTER BOX
+       ============================================================================ */
+    .project-details-item.is-growth-son-hero {
+      width: min(74vw, 1140px);
+      max-width: 1140px;
+      height: 82vh;
+      max-height: 750px;
+      background: linear-gradient(145deg, #16120E 0%, #1F1913 55%, #120E0B 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.55);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.78), 0 0 42px rgba(212, 175, 55, 0.16);
+    }
+    .growth-son-hero-inner {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .growth-son-hero-grid {
+      display: grid;
+      grid-template-columns: 1.32fr 1fr;
+      gap: 18px;
+      height: 100%;
+      align-items: stretch;
+    }
+    .son-growth-visual-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(10, 8, 6, 0.55);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+    .son-visual-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .son-visual-badge-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .son-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(45, 90, 67, 0.85);
+      border: 1px solid rgba(110, 231, 183, 0.5);
+      color: #ECFDF5;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    .son-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 10px #34D399;
+      animation: liveRecPulse 1.4s infinite ease-in-out;
+    }
+    .son-height-pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.18);
+      border: 1px solid rgba(253, 230, 138, 0.48);
+      color: #FEF3C7;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .son-height-pill strong {
+      color: #FDE68A;
+      font-weight: 900;
+    }
+    .son-zoom-trigger-btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37, #B58E24);
+      border: 1px solid #FEF08A;
+      color: #14100C;
+      font-size: 0.71rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .son-zoom-trigger-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.45);
+    }
+    .son-3stage-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+    .son-photo-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #1A1511;
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      cursor: zoom-in;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+    .son-photo-card:hover {
+      transform: translateY(-4px);
+      border-color: #FDE68A;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+    }
+    .son-photo-card.is-highlight-final {
+      border: 2px solid #D4AF37;
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.26);
+    }
+    .son-photo-frame {
+      position: relative;
+      flex: 1;
+      min-height: 220px;
+      overflow: hidden;
+      background: #0F0C0A;
+    }
+    .son-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .son-photo-card:hover .son-photo-frame img {
+      transform: scale(1.06);
+    }
+    .son-stage-step-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 19, 25, 0.84);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #F8FAFC;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .son-stage-step-tag.is-gold {
+      background: linear-gradient(135deg, #D4AF37, #B58E24);
+      border-color: #FEF08A;
+      color: #14100C;
+    }
+    .son-photo-zoom-icon {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(12, 14, 18, 0.78);
+      border: 1px solid rgba(253, 230, 138, 0.45);
+      color: #FDE68A;
+      font-size: 0.62rem;
+      font-weight: 700;
+    }
+    .son-photo-caption {
+      padding: 9px 10px;
+      background: rgba(20, 16, 13, 0.96);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .son-photo-caption strong {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #FEF3C7;
+      line-height: 1.25;
+    }
+    .son-photo-caption span {
+      font-size: 0.67rem;
+      color: rgba(248, 250, 252, 0.75);
+      line-height: 1.3;
+    }
+    .son-visual-bottom-caption {
+      padding-top: 4px;
+    }
+    .son-hero-main-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    .son-hero-main-title .title-key-em {
+      color: #FDE68A;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .son-hero-main-sub {
+      font-size: 0.77rem;
+      color: rgba(255, 255, 255, 0.84);
+      line-height: 1.45;
+    }
+
+    /* RIGHT COLUMN: FATHER LETTER BOX (원장 친필 서약 카드) */
+    .father-letter-box {
+      background: linear-gradient(155deg, #FFFDF9 0%, #F6EFE2 100%);
+      border: 2px solid #D4AF37;
+      border-radius: 18px;
+      padding: 20px 22px;
+      color: #231F1C;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), inset 0 0 0 4px rgba(212, 175, 55, 0.14);
+      position: relative;
+    }
+    .letter-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.69rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #8C6528;
+    }
+    .letter-eyebrow-line {
+      width: 22px;
+      height: 2px;
+      background: #8C6528;
+      display: inline-block;
+    }
+    .letter-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.18rem;
+      font-weight: 900;
+      line-height: 1.38;
+      color: #1F1914;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .letter-headline span {
+      color: #2D5A43;
+      background: linear-gradient(transparent 62%, rgba(45, 90, 67, 0.18) 62%);
+    }
+    .letter-handwriting {
+      font-family: 'Gowun Batang', 'Noto Serif KR', serif;
+      font-size: 0.86rem;
+      line-height: 1.68;
+      color: #332920;
+      background: rgba(255, 255, 255, 0.72);
+      border-left: 3.5px solid #2D5A43;
+      border-radius: 0 12px 12px 0;
+      padding: 13px 15px;
+      box-shadow: 0 4px 14px rgba(58, 42, 30, 0.05);
+      word-break: keep-all;
+    }
+    .letter-handwriting strong {
+      color: #1B4332;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.14);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    .letter-milestone-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+    .letter-milestone-chip {
+      background: #FFFFFF;
+      border: 1px solid rgba(140, 101, 40, 0.25);
+      border-radius: 10px;
+      padding: 8px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .letter-milestone-chip.is-accent {
+      background: linear-gradient(135deg, #2D5A43, #1B4332);
+      border-color: #2D5A43;
+      color: #FFFFFF;
+    }
+    .lm-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #8C6528;
+    }
+    .letter-milestone-chip.is-accent .lm-label {
+      color: #A7F3D0;
+    }
+    .lm-val {
+      font-size: 0.73rem;
+      font-weight: 800;
+      color: #1F1914;
+      line-height: 1.25;
+    }
+    .letter-milestone-chip.is-accent .lm-val {
+      color: #FFFFFF;
+    }
+    .letter-sign-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(140, 101, 40, 0.35);
+    }
+    .letter-sign-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .letter-sign-text {
+      font-family: 'Gowun Batang', 'Noto Serif KR', serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #231F1C;
+    }
+    .letter-sign-text span {
+      font-size: 1.12rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      color: #14100C;
+      margin: 0 4px;
+    }
+    .letter-blog-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #2D5A43;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 0.71rem;
+      font-weight: 800;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .letter-blog-btn:hover {
+      background: #14100C;
+      transform: translateY(-1px);
+    }
+    .director-seal-stamp {
+      flex-shrink: 0;
+      transform: rotate(-4deg);
+      filter: drop-shadow(0 3px 6px rgba(184, 59, 42, 0.22));
+    }
+
+    /* ============================================================================
+       DIET PLATE 03: 3-STAGE EFFICACY INTERACTIVE MOTION ACTIONS
+       ============================================================================ */
+    .project-details-item.is-diet-3stage-plate {
+      width: min(74vw, 1120px);
+      max-width: 1120px;
+      height: 82vh;
+      max-height: 750px;
+      background: linear-gradient(150deg, #FFFDFB 0%, #FBF5F3 55%, #F5EBE8 100%);
+      border: 1.5px solid rgba(184, 92, 110, 0.42);
+      box-shadow: 0 30px 85px rgba(42, 24, 28, 0.28);
+      color: #2A1E21;
+    }
+    .diet-3stage-inner {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      overflow-y: auto;
+    }
+    .diet-3stage-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .diet-3stage-eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #B85C6E;
+      margin-bottom: 4px;
+    }
+    .diet-3stage-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.38rem;
+      font-weight: 900;
+      color: #23181B;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+    .diet-3stage-title .title-key-em {
+      color: #B85C6E;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .diet-3stage-sub {
+      font-size: 0.8rem;
+      color: #5C474C;
+      line-height: 1.45;
+    }
+    .diet-3stage-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .diet-3stage-tab {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(184, 92, 110, 0.32);
+      background: #FFFFFF;
+      color: #5C474C;
+      font-size: 0.73rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+    .diet-3stage-tab:hover,
+    .diet-3stage-tab.active {
+      background: linear-gradient(135deg, #B85C6E 0%, #8E3B4B 100%);
+      border-color: #8E3B4B;
+      color: #FFFFFF;
+      box-shadow: 0 6px 16px rgba(184, 92, 110, 0.32);
+    }
+    .efficacy-3stage-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      flex: 1;
+      min-height: 0;
+    }
+    .efficacy-stage-card {
+      background: #FFFFFF;
+      border: 1.5px solid rgba(184, 92, 110, 0.22);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 14px 34px rgba(45, 30, 34, 0.08);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, opacity 0.3s ease;
+    }
+    .efficacy-stage-card:hover,
+    .efficacy-stage-card.is-stage-focused {
+      transform: translateY(-5px);
+      border-color: #B85C6E;
+      box-shadow: 0 22px 48px rgba(184, 92, 110, 0.24);
+    }
+    .efficacy-3stage-grid.has-focus .efficacy-stage-card:not(.is-stage-focused) {
+      opacity: 0.58;
+      transform: scale(0.98);
+    }
+    .efficacy-visual-frame {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      min-height: 225px;
+      overflow: hidden;
+      background: #F6EFEA;
+    }
+    .efficacy-visual-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .efficacy-motion-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    /* STAGE 1 MOTION: Brain Electric Impulse & Zap Calming */
+    .efficacy-visual-frame.neuro-frame img {
+      animation: brainElectricPulse 3.6s ease-in-out infinite;
+    }
+    .electric-zap-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+    .zap-pulse-core {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      width: 90px;
+      height: 90px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 230, 140, 0.85) 0%, rgba(255, 160, 90, 0.45) 45%, transparent 72%);
+      mix-blend-mode: screen;
+      animation: zapCorePulse 1.8s ease-in-out infinite;
+    }
+    .zap-wave-ring {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      width: 54px;
+      height: 54px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 220, 130, 0.85);
+      box-shadow: 0 0 14px rgba(255, 190, 90, 0.7);
+      animation: zapRingWave 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    .zap-wave-ring.ring-2 {
+      animation-delay: 1.2s;
+      border-color: rgba(140, 220, 255, 0.75);
+      box-shadow: 0 0 14px rgba(100, 200, 255, 0.6);
+    }
+    .zap-lightning-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 100, 0.95)) drop-shadow(0 0 12px rgba(255, 120, 80, 0.75));
+    }
+    .zap-bolt {
+      stroke: #FFF3B0;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 80;
+      stroke-dashoffset: 80;
+      animation: boltZap 2.2s ease-in-out infinite;
+    }
+    .zap-bolt.bolt-2 { animation-delay: 0.45s; stroke: #FFE082; }
+    .zap-bolt.bolt-3 { animation-delay: 0.95s; stroke: #B3E5FC; }
+    .zap-bolt.bolt-4 { animation-delay: 1.45s; stroke: #FFE082; }
+    .spark-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFF9C4;
+      box-shadow: 0 0 10px #FFD54F, 0 0 18px #FF8A65;
+      animation: sparkPop 1.6s ease-in-out infinite;
+    }
+    .spark-dot.s1 { top: 24%; left: 36%; animation-delay: 0.1s; }
+    .spark-dot.s2 { top: 22%; left: 64%; animation-delay: 0.5s; }
+    .spark-dot.s3 { top: 34%; left: 26%; animation-delay: 0.9s; }
+    .spark-dot.s4 { top: 44%; left: 72%; animation-delay: 1.3s; }
+    @keyframes brainElectricPulse {
+      0%, 100% { transform: scale(1.02); filter: brightness(1) contrast(1.02); }
+      45% { transform: scale(1.06); filter: brightness(1.1) contrast(1.08) saturate(1.12); }
+      50% { transform: scale(1.065) translateX(1.5px); filter: brightness(1.16) contrast(1.12); }
+      55% { transform: scale(1.06) translateX(-1.5px); filter: brightness(1.08); }
+    }
+    @keyframes zapCorePulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.75); opacity: 0.45; }
+      45% { transform: translate(-50%, -50%) scale(1.35); opacity: 0.95; }
+      55% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+    }
+    @keyframes zapRingWave {
+      0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0.95; }
+      80% { opacity: 0.25; }
+      100% { transform: translate(-50%, -50%) scale(2.7); opacity: 0; }
+    }
+    @keyframes boltZap {
+      0%, 18% { stroke-dashoffset: 80; opacity: 0; }
+      26% { stroke-dashoffset: 0; opacity: 1; }
+      34% { opacity: 0.25; }
+      42% { stroke-dashoffset: 0; opacity: 1; }
+      60%, 100% { stroke-dashoffset: -80; opacity: 0; }
+    }
+    @keyframes sparkPop {
+      0%, 100% { transform: scale(0.3); opacity: 0; }
+      40% { transform: scale(1.4); opacity: 1; }
+      70% { transform: scale(0.8); opacity: 0.4; }
+    }
+
+    /* STAGE 2 MOTION: Thermal Combustion & Fat Cluster Shrinkage */
+    .efficacy-visual-frame.thermal-frame img {
+      transform-origin: 50% 54%;
+      animation: fatCombustionShrink 3.8s ease-in-out infinite;
+    }
+    .thermal-burn-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+    .combustion-fire-glow {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      width: 170px;
+      height: 170px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 230, 120, 0.9) 0%, rgba(255, 105, 45, 0.65) 42%, rgba(220, 38, 38, 0.28) 68%, transparent 82%);
+      mix-blend-mode: screen;
+      animation: fireGlowBreathe 2.2s ease-in-out infinite;
+    }
+    .thermal-heat-haze {
+      position: absolute;
+      inset: -10% 0;
+      background: linear-gradient(0deg, rgba(255, 94, 58, 0.34) 0%, rgba(255, 165, 70, 0.18) 48%, transparent 85%);
+      mix-blend-mode: screen;
+      animation: heatHazeRise 2.6s ease-in-out infinite;
+    }
+    .fat-contract-ring {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      width: 185px;
+      height: 185px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px dashed rgba(255, 200, 110, 0.85);
+      box-shadow: 0 0 16px rgba(255, 110, 50, 0.65), inset 0 0 14px rgba(255, 160, 70, 0.45);
+      animation: fatRingContract 2.7s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .fat-contract-ring.c-ring-2 {
+      animation-delay: 0.9s;
+      border-style: solid;
+      border-color: rgba(255, 140, 80, 0.75);
+    }
+    .fat-contract-ring.c-ring-3 {
+      animation-delay: 1.8s;
+      border-color: rgba(255, 235, 150, 0.85);
+    }
+    .ember-spark {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FFF59D;
+      box-shadow: 0 0 10px #FF9800, 0 0 18px #FF3D00;
+      animation: emberFloatUp 2.3s ease-in infinite;
+    }
+    .ember-spark.e1 { left: 34%; bottom: 22%; animation-delay: 0s; }
+    .ember-spark.e2 { left: 48%; bottom: 18%; animation-delay: 0.4s; width: 9px; height: 9px; }
+    .ember-spark.e3 { left: 62%; bottom: 24%; animation-delay: 0.8s; }
+    .ember-spark.e4 { left: 41%; bottom: 28%; animation-delay: 1.2s; }
+    .ember-spark.e5 { left: 56%; bottom: 20%; animation-delay: 1.6s; width: 8px; height: 8px; }
+    .ember-spark.e6 { left: 68%; bottom: 30%; animation-delay: 2.0s; }
+    @keyframes fatCombustionShrink {
+      0%, 100% { transform: scale(1.12); filter: brightness(0.98) saturate(1.02); }
+      35% { transform: scale(1.14); filter: brightness(1.18) saturate(1.32) contrast(1.08); }
+      72% { transform: scale(0.91); filter: brightness(1.1) saturate(1.16); }
+    }
+    @keyframes fireGlowBreathe {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.82); opacity: 0.55; }
+      45% { transform: translate(-50%, -50%) scale(1.38); opacity: 0.98; }
+      75% { transform: translate(-50%, -50%) scale(0.72); opacity: 0.7; }
+    }
+    @keyframes heatHazeRise {
+      0%, 100% { transform: translateY(8%) scaleX(1); opacity: 0.5; }
+      50% { transform: translateY(-6%) scaleX(1.04); opacity: 0.92; }
+    }
+    @keyframes fatRingContract {
+      0% { transform: translate(-50%, -50%) scale(1.35) rotate(0deg); opacity: 0; }
+      25% { opacity: 0.92; }
+      85% { transform: translate(-50%, -50%) scale(0.32) rotate(60deg); opacity: 0.85; }
+      100% { transform: translate(-50%, -50%) scale(0.18) rotate(80deg); opacity: 0; }
+    }
+    @keyframes emberFloatUp {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      25% { opacity: 1; transform: translateY(-28px) translateX(-6px) scale(1.2); }
+      75% { opacity: 0.8; transform: translateY(-95px) translateX(8px) scale(0.8); }
+      100% { transform: translateY(-135px) translateX(-4px) scale(0.15); opacity: 0; }
+    }
+
+    /* STAGE 3 MOTION: Edema Volume Shrinkage & Lymph Drainage */
+    .body-morph-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #EFE6DD;
+    }
+    .body-morph-wrapper .edema-ghost-outline {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: 50% 55%;
+      animation: ghostEdemaPulse 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .body-morph-wrapper .slim-subject-img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: 50% 55%;
+      animation: bodySubjectSlimMorph 4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      z-index: 2;
+    }
+    .detox-slim-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+    .contour-cinch-guide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 8px rgba(64, 210, 255, 0.85));
+    }
+    .swollen-line-left,
+    .swollen-line-right {
+      stroke: rgba(255, 255, 255, 0.65);
+      stroke-width: 1.8;
+      stroke-dasharray: 5 5;
+    }
+    .cinch-arrow {
+      stroke: #7CE8FF;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .cinch-arrow.left-arrow { animation: cinchArrowPushLeft 4s ease-in-out infinite; }
+    .cinch-arrow.right-arrow { animation: cinchArrowPushRight 4s ease-in-out infinite; }
+    .water-drop {
+      position: absolute;
+      width: 7px;
+      height: 11px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      background: linear-gradient(180deg, #E0F7FA 0%, #29B6F6 100%);
+      box-shadow: 0 0 10px rgba(41, 182, 246, 0.85);
+      animation: dropFall 2.4s ease-in infinite;
+    }
+    .water-drop.d1 { left: 32%; top: 38%; animation-delay: 0.1s; }
+    .water-drop.d2 { right: 32%; top: 42%; animation-delay: 0.7s; }
+    .water-drop.d3 { left: 38%; top: 52%; animation-delay: 1.3s; }
+    .water-drop.d4 { right: 38%; top: 48%; animation-delay: 1.8s; }
+    @keyframes bodySubjectSlimMorph {
+      0%, 12% { transform: scaleX(1.16) scaleY(1.02); filter: brightness(0.95) saturate(0.92); }
+      55%, 82% { transform: scaleX(0.86) scaleY(1.04); filter: brightness(1.08) contrast(1.05) saturate(1.1); }
+      100% { transform: scaleX(1.16) scaleY(1.02); filter: brightness(0.95) saturate(0.92); }
+    }
+    @keyframes ghostEdemaPulse {
+      0%, 15% { transform: scaleX(1.18) scaleY(1.02); opacity: 0; }
+      45%, 75% { transform: scaleX(1.22) scaleY(1.02); opacity: 0.42; filter: blur(2px) hue-rotate(155deg) brightness(1.25); }
+      100% { transform: scaleX(1.18) scaleY(1.02); opacity: 0; }
+    }
+    @keyframes cinchArrowPushLeft {
+      0%, 15% { transform: translateX(-10px); opacity: 0.25; }
+      50%, 80% { transform: translateX(14px); opacity: 1; }
+      100% { transform: translateX(-10px); opacity: 0.25; }
+    }
+    @keyframes cinchArrowPushRight {
+      0%, 15% { transform: translateX(10px); opacity: 0.25; }
+      50%, 80% { transform: translateX(-14px); opacity: 1; }
+      100% { transform: translateX(10px); opacity: 0.25; }
+    }
+    @keyframes dropFall {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      25% { opacity: 0.95; transform: translateY(16px) scale(1); }
+      80% { opacity: 0.75; transform: translateY(74px) scale(0.85); }
+      100% { transform: translateY(100px) scale(0.2); opacity: 0; }
+    }
+    .efficacy-step-pill {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 4;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #8E3B4B;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+    .efficacy-step-pill .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #B85C6E;
+      animation: liveRecPulse 1.5s infinite ease-in-out;
+    }
+    .efficacy-metric-tag {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 4;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(28, 20, 22, 0.84);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 215, 222, 0.35);
+      color: #FCE7EC;
+      font-size: 0.67rem;
+      font-weight: 700;
+    }
+    .efficacy-metric-tag strong {
+      color: #FDE68A;
+      font-weight: 900;
+    }
+    .efficacy-card-body {
+      padding: 13px 15px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #FFFFFF;
+    }
+    .efficacy-card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .efficacy-card-title h4 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #23181B;
+      margin: 0;
+    }
+    .efficacy-card-title .hanja-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #8E3B4B;
+      background: #FDF2F4;
+      border: 1px solid rgba(184, 92, 110, 0.25);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .efficacy-card-desc {
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: #5C474C;
+      margin: 0;
+      word-break: keep-all;
+    }
+
+    /* ============================================================================
+       DIET PLATE 04: NON-FACE-TO-FACE TELEMEDICINE & EXPRESS DELIVERY VIDEO SUITE
+       ============================================================================ */
+    .project-details-item.is-diet-tele-plate {
+      width: min(72vw, 1080px);
+      max-width: 1080px;
+      height: 82vh;
+      max-height: 750px;
+      background: linear-gradient(160deg, #1E1719 0%, #141012 100%);
+      border: 1.5px solid rgba(223, 126, 142, 0.45);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.78);
+    }
+    .diet-tele-inner {
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+    .concierge-cinema-suite {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 11px;
+      height: 100%;
+    }
+    .concierge-cinema-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .concierge-eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(223, 126, 142, 0.16);
+      border: 1px solid rgba(223, 126, 142, 0.45);
+      color: #FBCFE8;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+    .concierge-eyebrow-pill .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #F43F5E;
+      box-shadow: 0 0 10px #F43F5E;
+      animation: liveRecPulse 1.4s infinite;
+    }
+    .concierge-main-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.32rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 0;
+    }
+    .concierge-main-title .title-key-em {
+      color: #FDE68A;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .concierge-sub-desc {
+      font-size: 0.76rem;
+      color: rgba(248, 250, 252, 0.78);
+      max-width: 420px;
+      line-height: 1.42;
+      margin: 0;
+    }
+    .concierge-steps-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .concierge-step-chip {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 11px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .concierge-step-chip .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #DF7E8E, #B85C6E);
+      color: #FFFFFF;
+      font-size: 0.7rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .concierge-step-chip .step-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+    .concierge-step-chip .step-text strong {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .concierge-step-chip .step-text span {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.68);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .concierge-video-frame {
+      position: relative;
+      flex: 1;
+      min-height: 240px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #090708;
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+    }
+    .concierge-video-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-top-overlay {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .video-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(15, 12, 14, 0.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .video-badge-pill .rec-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+    .video-consult-trigger {
+      pointer-events: auto;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37, #B58E24);
+      border: 1px solid #FEF08A;
+      color: #14100C;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .concierge-trust-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .trust-metric-box {
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .trust-metric-box strong {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: #FDE68A;
+    }
+    .trust-metric-box span {
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.82);
+      font-weight: 600;
+    }
+
+    @media (max-width: 1024px) {
+      .project-details-item.is-growth-son-hero,
+      .project-details-item.is-diet-3stage-plate,
+      .project-details-item.is-diet-tele-plate {
+        width: 88vw;
+      }
+      .growth-son-hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .son-photo-frame {
+        min-height: 150px;
+      }
+      .efficacy-3stage-grid {
+        grid-template-columns: 1fr;
+      }
+      .concierge-steps-bar,
+      .concierge-trust-ribbon {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -5009,6 +6424,12 @@ function buildPageHtml(page) {
     <div id="scroll-indicator-bar"></div>
   </div>
 
+  <!-- Fullscreen Image Lightbox Modal -->
+  <div id="plate-lightbox" onclick="if(event.target===this)this.classList.remove('open')">
+    <button type="button" class="lightbox-close" onclick="document.getElementById('plate-lightbox').classList.remove('open')">✕ 닫기</button>
+    <img id="lightbox-img" src="" alt="확대 이미지">
+  </div>
+
   <!-- Consultation Modal Synchronized with Checked Empathy Symptoms -->
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
@@ -5115,6 +6536,25 @@ function buildPageHtml(page) {
       window.closeDetailHairlossModal = function() {
         const m = document.getElementById('detail-hairloss-4type-modal');
         if (m) m.classList.remove('open');
+      };
+
+      window.switchDietStage3 = function(stageIdx) {
+        const grid = document.getElementById('diet-3stage-grid');
+        if (!grid) return;
+        const tabs = Array.from(document.querySelectorAll('.diet-3stage-tab'));
+        tabs.forEach(function(btn, idx) {
+          btn.classList.toggle('active', idx === stageIdx);
+        });
+        const cards = Array.from(grid.querySelectorAll('.diet-3stage-card'));
+        if (stageIdx === 0) {
+          grid.classList.remove('has-focus');
+          cards.forEach(function(c) { c.classList.remove('is-stage-focused'); });
+        } else {
+          grid.classList.add('has-focus');
+          cards.forEach(function(c) {
+            c.classList.toggle('is-stage-focused', parseInt(c.dataset.stage || '0', 10) === stageIdx);
+          });
+        }
       };
 
       // ====================================================================
