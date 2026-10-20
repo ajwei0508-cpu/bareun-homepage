@@ -546,7 +546,7 @@ const PAGES = [
         frames: [
           'diet_minimal_card9_trouble_1_childcare.jpg',
           'diet_minimal_card9_trouble_2_wedding.jpg',
-          'diet_minimal_card9_trouble_3_menopause.jpg'
+          'diet_minimal_card9_trouble_3_menopause_v2.jpg'
         ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
