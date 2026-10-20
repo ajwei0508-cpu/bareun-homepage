@@ -549,11 +549,6 @@ const PAGES = [
           'diet_minimal_card9_trouble_2_wedding.jpg',
           'diet_minimal_card9_trouble_3_menopause.jpg'
         ],
-        thumbs: [
-          { img: 'diet_minimal_card9_trouble_1_childcare.jpg', label: '① 육아 체중 증가 · 곤란하다' },
-          { img: 'diet_minimal_card9_trouble_2_wedding.jpg', label: '② 결혼식 전 체중 증가 · 곤란하다' },
-          { img: 'diet_minimal_card9_trouble_3_menopause.jpg', label: '③ 갱년기 체중 증가 · 곤란하다' }
-        ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
       }
