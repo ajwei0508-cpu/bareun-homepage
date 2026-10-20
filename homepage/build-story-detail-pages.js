@@ -1985,21 +1985,26 @@ function buildPageHtml(page) {
                 </div>
               </div>
 
-              <!-- Widescreen Cinema Video Frame -->
-              <div class="concierge-video-frame" onclick="event.stopPropagation();">
+              <!-- Widescreen Cinema Video Frame (Click to Play) -->
+              <div class="concierge-video-frame" onclick="event.stopPropagation(); if(!event.target.closest('.video-consult-trigger, video')){window.toggleDietTeleVideo(this);}">
                 <div class="video-top-overlay" style="justify-content:flex-end;">
                   <button type="button" class="video-consult-trigger" onclick="event.stopPropagation(); window.openConsultModal()">
                     📞 비대면 전화처방 바로 신청 ↗
                   </button>
                 </div>
+                <button type="button" class="concierge-video-play-overlay" aria-label="안내 영상 재생" onclick="event.stopPropagation(); window.toggleDietTeleVideo(this)">
+                  <span class="play-circle-icon">▶</span>
+                  <span class="play-label-text">클릭하여 영상 재생</span>
+                </button>
                 <video
+                  id="diet-tele-video-el"
                   controls
-                  autoplay
-                  muted
-                  loop
                   playsinline
-                  preload="metadata">
-                  <source src="https://bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4" type="video/mp4">
+                  preload="metadata"
+                  onplay="this.closest('.concierge-video-frame')?.classList.add('is-playing')"
+                  onpause="this.closest('.concierge-video-frame')?.classList.remove('is-playing')"
+                  onended="this.closest('.concierge-video-frame')?.classList.remove('is-playing')">
+                  <source src="https://bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4#t=0.1" type="video/mp4">
                   브라우저가 비디오 태그를 지원하지 않습니다.
                 </video>
               </div>
@@ -6989,12 +6994,58 @@ function buildPageHtml(page) {
       background: #090708;
       border: 1.5px solid rgba(255, 255, 255, 0.16);
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      cursor: pointer;
     }
     .concierge-video-frame video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      cursor: pointer;
+    }
+    .concierge-video-play-overlay {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 6;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: rgba(18, 14, 16, 0.84);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(253, 230, 138, 0.78);
+      color: #FEF08A;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+      transition: transform 0.22s ease, opacity 0.22s ease, background 0.22s ease;
+    }
+    .concierge-video-play-overlay:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+      background: #2D5A43;
+      color: #FFFFFF;
+    }
+    .concierge-video-play-overlay .play-circle-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #D4AF37, #B58E24);
+      color: #14100C;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      padding-left: 2px;
+    }
+    .concierge-video-frame.is-playing .concierge-video-play-overlay {
+      opacity: 0;
+      pointer-events: none;
     }
     .video-top-overlay {
       position: absolute;
@@ -8835,7 +8886,7 @@ function buildPageHtml(page) {
       }, { passive: true });
 
       wrapper.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -8949,6 +9000,21 @@ function buildPageHtml(page) {
         targetX = Math.max(0, Math.min(maxScrollX, centerOffset));
       };
 
+      window.toggleDietTeleVideo = function(el) {
+        const frame = el.closest ? el.closest('.concierge-video-frame') : document.querySelector('.concierge-video-frame');
+        const vid = frame ? frame.querySelector('video') : document.getElementById('diet-tele-video-el');
+        if (!vid) return;
+        if (vid.paused) {
+          vid.muted = false;
+          vid.play().catch(function() {
+            vid.muted = true;
+            vid.play().catch(function() {});
+          });
+        } else {
+          vid.pause();
+        }
+      };
+
       // Tap / Click on any story card (.project-details-item) to advance to the next story card
       (function enablePlateTapAdvance() {
         let lastPlateTapMs = 0;
@@ -8956,7 +9022,7 @@ function buildPageHtml(page) {
           if (plate.id === 'project-details-preview') return;
           plate.style.cursor = 'pointer';
           plate.addEventListener('click', (e) => {
-            if (e.target.closest('button, a')) return;
+            if (e.target.closest('button, a, video, .concierge-video-frame')) return;
             if (Math.abs(touchAccumDelta) > 14) return;
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
