@@ -5865,9 +5865,9 @@
             
             <div class="efficacy-visual-frame thermal-frame is-full-stage-frame is-belly-shrink-motion">
               <div class="belly-shrink-seq-stage">
-                <img class="belly-seq-img seq-1" src="diet_minimal_card4_belly_obese_a.jpg" alt="비만형 복부 (수축 전)" loading="lazy" draggable="false">
-                <img class="belly-seq-img seq-2" src="diet_minimal_card4_belly_shrinking_b.jpg" alt="근육 대사열로 복부 수축 진행 중" loading="lazy" draggable="false">
-                <img class="belly-seq-img seq-3" src="diet_minimal_card4_belly_slim_c.jpg" alt="늘씬한 복부로 수축 완료" loading="lazy" draggable="false">
+                <img class="belly-seq-img seq-1" src="diet_minimal_card9_ba_before_v2.jpg" alt="비만형 복부 (수축 전)" loading="lazy" draggable="false">
+                <img class="belly-seq-img seq-2" src="diet_minimal_card9_ba_shrinking_mid.jpg" alt="근육 대사열로 복부 수축 진행 중" loading="lazy" draggable="false">
+                <img class="belly-seq-img seq-3" src="diet_minimal_card9_ba_after.jpg" alt="늘씬한 복부로 수축 완료" loading="lazy" draggable="false">
               </div>
               <div class="thermal-burn-layer" aria-hidden="true">
                 <div class="combustion-fire-glow"></div>
@@ -6050,25 +6050,52 @@
           </div>
         </article>
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- PLATE 09: Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate" data-fullscreen>
           <span class="tiny-card-num-badge">09</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="diet_minimal_card9_trouble_1_childcare.jpg|diet_minimal_card9_trouble_2_wedding.jpg|diet_minimal_card9_trouble_3_menopause.jpg" data-duration="6.6">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('diet_minimal_card9_trouble_1_childcare.jpg');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('diet_minimal_card9_trouble_2_wedding.jpg'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>REAL SITUATION · 육아 · 결혼식 전 · 갱년기 체중 증가</span>
+              <span class="plate-metric-pill">갑자기 불어난 체중 · 옷이 안 잠겨 참 곤란하다</span>
+            </div>
+            
+            <div class="plate-bottom-caption">
+              <div>
                 
-                <h2 class="plate-caption-title">바른 근육다이어트 — 복부 내장지방 변화</h2>
-                <p class="plate-caption-sub">운동 없이 근육량을 올리고 대사를 깨워 뱃살과 내장지방이 분해되는 변화가 자동으로 반복됩니다.</p>
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="motion" data-idx="0" data-img="diet_minimal_card9_trouble_1_childcare.jpg" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="diet_minimal_card9_trouble_1_childcare.jpg" alt="① 육아 체중 증가 · 곤란하다" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">① 육아 체중 증가 · 곤란하다</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="motion" data-idx="1" data-img="diet_minimal_card9_trouble_2_wedding.jpg" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="diet_minimal_card9_trouble_2_wedding.jpg" alt="② 결혼식 전 체중 증가 · 곤란하다" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">② 결혼식 전 체중 증가 · 곤란하다</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="motion" data-idx="2" data-img="diet_minimal_card9_trouble_3_menopause.jpg" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="diet_minimal_card9_trouble_3_menopause.jpg" alt="③ 갱년기 체중 증가 · 곤란하다" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">③ 갱년기 체중 증가 · 곤란하다</span>
+                  </button>
+                </div>
+                <h2 class="plate-caption-title">육아 · 결혼식 전 · 갱년기로 갑자기 불어난 체중 — <span class="title-key-em">'참 곤란하다'</span></h2>
+                <p class="plate-caption-sub">출산·육아 중 안 잠기는 바지, 결혼식 코앞인데 끼는 웨딩드레스, 굶어도 배만 나오는 갱년기 나잇살까지 — 갑자기 늘어난 체중으로 가장 난감하고 곤란한 순간입니다.</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
               </div>
             </div>
           </div>
         </article>
+
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html where Card 09 is the Weight Gain Trouble Scene Card) -->
+        
 
         <!-- LAST CARD (10th Card): Minimalist "다이어트 꿀팁" Linked to 3D Body Model -->
         

@@ -499,11 +499,11 @@ const PAGES = [
         type: 'diet-single-stage',
         stage: 2,
         fullscreen: true,
-        imgSrc: 'diet_minimal_card4_belly_obese_a.jpg',
+        imgSrc: 'diet_minimal_card9_ba_before_v2.jpg',
         frames: [
-          'diet_minimal_card4_belly_obese_a.jpg',
-          'diet_minimal_card4_belly_shrinking_b.jpg',
-          'diet_minimal_card4_belly_slim_c.jpg'
+          'diet_minimal_card9_ba_before_v2.jpg',
+          'diet_minimal_card9_ba_shrinking_mid.jpg',
+          'diet_minimal_card9_ba_after.jpg'
         ],
         title: "심부 체지방 분해 — '비만형 복부에서 근육 대사열로 수축되는 늘씬한 복부'",
         sub: '근육량과 심부 대사열을 끌어올려 볼록하게 나온 비만형 복부 내장지방을 집중 연소하고 늘씬한 복부로 빠르게 수축시킵니다.',
@@ -540,6 +540,27 @@ const PAGES = [
         sub: '근육량이 살아나 기초대사가 높아지면 감량 후에도 다시 찌지 않는 슬림한 라인이 유지됩니다.',
         caption: '[라인 회복 완성] 근육량 증가로 기초대사를 높여 감량 후에도 탄탄하고 날씬한 라인을 유지합니다.',
         imgSrc: 'diet_minimal_card8_slim_woman.jpg'
+      },
+      {
+        type: 'motion-story',
+        fullscreen: true,
+        indexPill: 'REAL SITUATION · 육아 · 결혼식 전 · 갱년기 체중 증가',
+        metricPill: '갑자기 불어난 체중 · 옷이 안 잠겨 참 곤란하다',
+        title: "육아 · 결혼식 전 · 갱년기로 갑자기 불어난 체중 — '참 곤란하다'",
+        sub: '출산·육아 중 안 잠기는 바지, 결혼식 코앞인데 끼는 웨딩드레스, 굶어도 배만 나오는 갱년기 나잇살까지 — 갑자기 늘어난 체중으로 가장 난감하고 곤란한 순간입니다.',
+        caption: '[체중 증가로 곤란한 3대 상황] 육아 · 결혼식 전 · 갱년기로 체중이 늘어나 옷이 맞지 않아 곤란한 순간입니다.',
+        frames: [
+          'diet_minimal_card9_trouble_1_childcare.jpg',
+          'diet_minimal_card9_trouble_2_wedding.jpg',
+          'diet_minimal_card9_trouble_3_menopause.jpg'
+        ],
+        thumbs: [
+          { img: 'diet_minimal_card9_trouble_1_childcare.jpg', label: '① 육아 체중 증가 · 곤란하다' },
+          { img: 'diet_minimal_card9_trouble_2_wedding.jpg', label: '② 결혼식 전 체중 증가 · 곤란하다' },
+          { img: 'diet_minimal_card9_trouble_3_menopause.jpg', label: '③ 갱년기 체중 증가 · 곤란하다' }
+        ],
+        fx: 'sunlight-bokeh',
+        durationSec: 6.6
       }
     ],
     bodyModelCard: {
@@ -1715,7 +1736,7 @@ function buildPageHtml(page) {
       } else if (stg === 2) {
         const s2Frames = (p.frames && p.frames.length >= 3)
           ? p.frames
-          : ['diet_minimal_card4_belly_obese_a.jpg', 'diet_minimal_card4_belly_shrinking_b.jpg', 'diet_minimal_card4_belly_slim_c.jpg'];
+          : ['diet_minimal_card9_ba_before_v2.jpg', 'diet_minimal_card9_ba_shrinking_mid.jpg', 'diet_minimal_card9_ba_after.jpg'];
         stageVisualHtml = `
             <div class="efficacy-visual-frame thermal-frame is-full-stage-frame is-belly-shrink-motion">
               <div class="belly-shrink-seq-stage">
@@ -7840,8 +7861,8 @@ function buildPageHtml(page) {
       <div id="project-details-items-move-container">
         ${platesHtml}
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html where Card 09 is the Weight Gain Trouble Scene Card) -->
+        ${page.file === 'diet-zero.html' ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
@@ -7944,22 +7965,22 @@ function buildPageHtml(page) {
             </div>` : ''}
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                ${page.file === 'diet-zero.html' ? '' : `<div class="clean-spec-tags">
+                <div class="clean-spec-tags">
                   <span class="clean-spec-tag" id="runway-ba-tag-b">${page.file === 'growth.html' ? '📊 연령별 평균키 · 성장판 나이 비교' : 'BEFORE · 치료 전'}</span>
                   <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">${page.file === 'growth.html' ? '🎯 뼈길이 · 최종예상키 정밀 분석' : 'AFTER · 치료 후'}</span>
                   <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
-                </div>`}
-                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : (page.file === 'diet-zero.html' ? '바른 근육다이어트 — 복부 내장지방 변화' : `${page.meta.title} — 치료 전·후 비교`)}</h2>
-                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : (page.file === 'diet-zero.html' ? '운동 없이 근육량을 올리고 대사를 깨워 뱃살과 내장지방이 분해되는 변화가 자동으로 반복됩니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.')}</p>
+                </div>
+                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : `${page.meta.title} — 치료 전·후 비교`}</h2>
+                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.'}</p>
               </div>
             </div>
           </div>
-        </article>
+        </article>`}
 
         <!-- LAST CARD (10th Card): Minimalist "다이어트 꿀팁" Linked to 3D Body Model -->
         ${page.bodyModelCard.extraInfoItems ? `
         <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card" style="cursor:pointer;" onclick="if(!event.target.closest('a')){const a=this.querySelector('a');if(a)window.location.href=a.href;}">
-          <span class="tiny-card-num-badge">${(page.plates.length + 2) < 10 ? '0' + (page.plates.length + 2) : '' + (page.plates.length + 2)}</span>
+          <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="diet-card10-3d-bg" id="diet-our-3d-body-stage" aria-hidden="true">
             <canvas id="diet-our-3d-body-canvas"></canvas>
           </div>
