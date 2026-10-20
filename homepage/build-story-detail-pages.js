@@ -45,6 +45,9 @@ const PAGES = [
       {
         type: 'clean-video',
         stepLabel: 'STORY · 대표원장 심층 검사',
+        indexPill: 'LIVE MOTION · 대표원장 심층 문진',
+        metricPill: '자율신경 · 수면 · 소화 · 한열 입체 스캔',
+        fx: 'warm-breath-zoom',
         title: "병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다",
         sub: '자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.',
         caption: '[원장 임상 노트] 초진 시 자율신경·수면·소화·한열 반응을 입체 검사해 기능성 질환의 근본 원인을 파악합니다.',
@@ -337,7 +340,7 @@ const PAGES = [
           { img: 'detail_growth_story1_mouth_breathing.jpg?v=grw1', label: '비염·구강호흡' },
           { img: 'growth-child-sleep.jpg', label: '깊은 성장 숙면' }
         ],
-        fx: 'sunlight-bokeh',
+        fx: 'growth-starlight',
         durationSec: 6.4
       },
       {
@@ -882,10 +885,24 @@ const PAGES = [
     },
     plates: [
       {
-        type: 'clean-image',
+        type: 'motion-story',
+        indexPill: 'STORY · 동전 모양 탈락 · 자가면역 경보',
+        metricPill: '스트레스 교감신경 과항진 · 모낭 면역 공격',
         title: "갑자기 동전처럼 비어버린 두피, 단순 피부병이 아닌 '면역 경보'입니다",
         sub: '극심한 스트레스와 피로로 혼란에 빠진 면역세포가 내 모낭을 공격하고 있다는 신호입니다.',
-        imgSrc: 'life_3a_hairloss.jpg'
+        caption: '[원형탈모 임상 노트] 스트레스와 자율신경 실조로 교란된 면역세포(T세포)가 성장기 모낭을 공격해 급성 탈락을 유발합니다.',
+        frames: [
+          'life_3a_hairloss.jpg',
+          'detail_hair_follicle_3d.jpg',
+          'illust_syncope_autonomic.jpg'
+        ],
+        thumbs: [
+          { img: 'life_3a_hairloss.jpg', label: '동전 모양 급성 탈락' },
+          { img: 'detail_hair_follicle_3d.jpg', label: '자가면역 모낭 공격' },
+          { img: 'illust_syncope_autonomic.jpg', label: '자율신경 과항진 경보' }
+        ],
+        fx: 'alopecia-immune-radar-fx',
+        durationSec: 6.4
       },
       {
         type: 'clean-image',
@@ -980,10 +997,24 @@ const PAGES = [
     },
     plates: [
       {
-        type: 'clean-image',
+        type: 'motion-story',
+        indexPill: 'STORY · 넓어지는 가르마 · 상열하한 경보',
+        metricPill: '여성 정수리 빈모 · 보혈(補血) 고갈 신호',
         title: "가르마를 바꿔 타도 비어 보이는 두피, '여성 상열하한'이 원인입니다",
         sub: '헤어라인은 유지되지만 정수리와 가르마 전체가 가늘어지는 여성형 빈모의 시작입니다.',
-        imgSrc: 'detail_hair_story1_date_bow.jpg?v=30cm1'
+        caption: '[여성탈모 임상 노트] 두피로 열이 치솟고 아랫배·손발은 차가운 상열하한과 혈(血) 부족이 가르마 모근을 약화시킵니다.',
+        frames: [
+          'detail_hair_story1_date_bow.jpg?v=30cm1',
+          'detail_hair_thermography.jpg',
+          'detail_hair_story5_date_smile.jpg'
+        ],
+        thumbs: [
+          { img: 'detail_hair_story1_date_bow.jpg?v=30cm1', label: '가르마·정수리 빈모' },
+          { img: 'detail_hair_thermography.jpg', label: '상열하한 두피 열감' },
+          { img: 'detail_hair_story5_date_smile.jpg', label: '정수리 볼륨 회복' }
+        ],
+        fx: 'distance-30cm-tension',
+        durationSec: 6.4
       },
       {
         type: 'clean-image',
@@ -1078,10 +1109,24 @@ const PAGES = [
     },
     plates: [
       {
-        type: 'clean-image',
+        type: 'motion-story',
+        indexPill: 'STORY · 두피 홍반 · 화농성 모낭염 경보',
+        metricPill: '두피 습열(濕熱) 독소 · 염증성 탈모 신호',
         title: "긁을수록 번지는 '두피 홍반·각질·모낭염', 방치하면 탈모로 이어집니다",
         sub: '만성 두피 염증은 모낭 뿌리를 직접 녹여 영구적인 염증성 탈모를 유발합니다.',
-        imgSrc: 'detail_hair_thermography.jpg'
+        caption: '[지루성두피염 임상 노트] 상체로 치솟는 열독과 피지 과잉이 결합된 두피 습열(濕熱)을 끄지 않으면 염증과 탈모가 반복됩니다.',
+        frames: [
+          'detail_hair_thermography.jpg',
+          'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2',
+          'bareun_step3_scalp_hair_revival.jpg'
+        ],
+        thumbs: [
+          { img: 'detail_hair_thermography.jpg', label: '두피 홍반·열독 스캔' },
+          { img: 'detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2', label: '습열 독소 청열 쿨링' },
+          { img: 'bareun_step3_scalp_hair_revival.jpg', label: '모낭염 진정·장벽복원' }
+        ],
+        fx: 'thermal-cooling',
+        durationSec: 6.4
       },
       {
         type: 'clean-image',
@@ -1178,18 +1223,16 @@ const PAGES = [
         type: 'motion-story',
         indexPill: 'STORY · 바닥난 생체 에너지 경보',
         metricPill: '만성 번아웃 · 심뇌 기혈 고갈',
-        title: "자도 자도 가시지 않는 피로, 몸속 원기가 '방전된 신호'입니다",
-        sub: '카페인으로 버티는 일상은 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.',
+        title: "자도 자도 가시지 않는 '깊은 피로', 몸속 원기가 '방전된 신호'입니다",
+        sub: '카페인과 각성제로 버티는 일상은 오히려 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.',
         caption: '[공진단 임상 노트] 극심한 과로와 스트레스 뒤에는 뇌혈류 저하와 자율신경 소진이 자리 잡고 있습니다.',
         frames: [
           'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1',
-          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2',
-          'brochure/brochure2.jpg'
+          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2'
         ],
         thumbs: [
           { img: 'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1', label: '방전된 생체 배터리' },
-          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '만성 번아웃·과로' },
-          { img: 'brochure/brochure2.jpg', label: '700년 황실 황제보약' }
+          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '만성 번아웃·과로' }
         ],
         fx: 'battery-1pct-warning-fx',
         durationSec: 6.4
@@ -1197,67 +1240,74 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 일반 영양제가 그때뿐인 이유 & 사향 씨알 특허',
-        title: "기혈의 수문이 막혀 있으면, 귀한 영양분도 '스쳐 지나갑니다'",
-        sub: '막힌 기혈 통로를 먼저 열어야 뇌 끝과 말초 혈관까지 약효가 도달합니다.',
+        stepLabel: 'STORY · 일반 영양제가 그때뿐인 이유',
+        title: "기혈의 그릇이 막혀 있으면, 아무리 좋은 영양분도 '스쳐 지나갑니다'",
+        sub: '막힌 기혈의 수문을 먼저 열어주어야 몸에 들어온 귀한 영양분이 말초 혈관과 뇌 끝까지 도달합니다.',
         caption: '[공진단 임상 노트] 밑 빠진 독에 물을 붓는 대증 보충이 아닌, 기혈 순환 통로를 여는 개규(開竅) 치료가 핵심입니다.',
-        imgSrc: 'brochure/brochure3.jpg',
-        fit: 'contain',
-        thumbs: [
-          { img: 'brochure/brochure3.jpg', label: '사향 씨알 특허 단면', fit: 'contain' },
-          { img: 'brochure/brochure5.jpg', label: '사향 함량 비교표', fit: 'contain' },
-          { img: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2', label: '막힌 기혈의 한계', fit: 'cover' }
+        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2',
+        cleanTags: [
+          '막힌 기혈 통로 개통',
+          '근본 원기(元氣)의 그릇 복원'
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 사향 · 녹용 · 당귀 · 산수유 4대 명품 약재',
-        title: "막힌 기혈 수문을 단숨에 여는 핵심 약재, '천연 사향의 힘'",
-        sub: '사향(L-Muscone)이 뇌혈관장벽을 통과해 녹용·당귀·산수유 약효를 전신에 깨웁니다.',
+        stepLabel: 'STORY · 천연 사향(麝香)의 개규·순환 원리',
+        title: "막힌 기혈의 수문을 단숨에 여는 핵심 약재, '천연 사향의 힘'",
+        sub: '사향의 활성 성분(L-Muscone)이 뇌혈관장벽을 직접 통과해 막힌 기혈을 열고 녹용·당귀·산수유의 약효를 전신에 전달합니다.',
         caption: '[공진단 임상 노트] 머리의 열은 내리고 차가운 아랫배는 데우는 수승화강(水昇火降) 작용을 즉각적으로 이끌어냅니다.',
-        imgSrc: 'brochure/brochure10.jpg',
-        fit: 'contain',
+        imgSrc: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2',
+        cleanTags: [
+          '사향 L-Muscone 뇌혈관장벽 통과',
+          '전신 기혈 및 수승화강 대순환'
+        ],
         thumbs: [
-          { img: 'brochure/brochure10.jpg', label: '4대 명품 성분 도감', fit: 'contain' },
-          { img: 'brochure/brochure4.jpg', label: '효능 특허 사향 기술', fit: 'contain' },
-          { img: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2', label: '사향 개규(開竅) 수문', fit: 'cover' },
-          { img: 'detail_gongjindan_ingredients_macro.jpg', label: '최상위 4대 원재료', fit: 'cover' }
+          { img: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2', label: '사향 개규(開竅) 수문' },
+          { img: 'detail_gongjindan_ingredients_macro.jpg', label: '사향·녹용·당귀·산수유' },
+          { img: 'detail_gongjindan_neuro_aura.jpg', label: '뇌·심장 기혈 대순환' }
         ]
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 식약처 CITES 인증 & 유해물질 0ppm 성적서',
-        title: "식약처 인증 정품 사향과 러시아 분골, '대표원장이 직접 빚습니다'",
-        sub: '러시아산 녹용 분골 함량과 중금속·잔류농약 0ppm 불검출 성적서로 증명합니다.',
+        stepLabel: 'STORY · 식약처 인증 정품 사향 & 원장 수제 제환',
+        title: "식약처 인증 정품 사향과 러시아산 분골, '대표원장이 직접 조제합니다'",
+        sub: '정식 통관된 정품 사향과 녹용 최상단 분골만을 엄선하여 대표원장이 직접 정량 배합하고 순금박으로 수제 봉인합니다.',
         caption: '[공진단 임상 노트] 사향의 방향성 활성 성분이 날아가지 않도록 원내에서 소량씩 정밀 수제 제환합니다.',
-        imgSrc: 'brochure/brochure8.jpg',
-        fit: 'contain',
+        imgSrc: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2',
+        cleanTags: [
+          '식약처 CITES 정식 인증 사향',
+          '러시아산 원용 분골 & 순금박 봉인'
+        ],
         thumbs: [
-          { img: 'brochure/brochure8.jpg', label: '유해물질 0ppm 성적서', fit: 'contain' },
-          { img: 'brochure/brochure6.jpg', label: '러시아 녹용 분골 함량', fit: 'contain' },
-          { img: 'brochure/brochure1.jpg', label: '제조특허 제10-1744704호', fit: 'contain' },
-          { img: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2', label: '0.01g 원장 수제 계량', fit: 'cover' }
+          { img: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2', label: '0.01g 원장 수제 계량' },
+          { img: 'detail_gongjindan_master.jpg', label: '대표원장 수제 제환' }
         ]
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 한의사 100인 검증 & 황실 자개함 기프트 패키지',
-        title: "학술 논문으로 입증된 '뇌·심장 원기 회복'과 품격 있는 선물",
-        sub: '뇌신경 영양인자 발현이 입증된 공진단을 원목 자개함과 비단보자기에 담아 드립니다.',
+        stepLabel: 'STORY · 국제 신경약리학 학술 논문 검수 완료',
+        title: "실제 학술 논문 검수로 입증된 '뇌·심장 원기 회복'과 품격 있는 선물",
+        sub: '국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 입증된 원방 공진단만을 조제합니다.',
         caption: '[학술 논문 검수] 국제 학술지(J Ethnopharmacology, Front Pharmacol) 연구를 통해 공진단과 사향의 신경 보호·피로 회복 기전이 입증되었습니다.',
-        imgSrc: 'brochure/brochure9.jpg',
-        fit: 'contain',
+        imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
         thumbs: [
-          { img: 'brochure/brochure9.jpg', label: '원목 자개함·비단보자기', fit: 'contain' },
-          { img: 'brochure/brochure7.jpg', label: '한의사 100인 만족도', fit: 'contain' },
-          { img: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2', label: '소중한 분께 품격 선물', fit: 'cover' },
-          { img: 'gongjindan_lineup_luxury.jpg', label: '황제공진단 라인업', fit: 'cover' }
+          { img: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2', label: '소중한 분께 품격 선물' },
+          { img: 'detail_gongjindan_story5_morning_vitality.jpg?v=uniq1', label: '아침 활력·원기 회복' },
+          { img: 'gongjindan_lineup_luxury.jpg', label: '황제공진단 라인업' }
         ],
         sciStats: [
           { num: '국제 민족약리학회지(J Ethnopharmacol) 검증', label: '뇌신경 영양인자 발현 촉진 및 만성피로·기억력 개선 입증', width: '96%' },
           { num: '국제 약리학술지(Front Pharmacol) 등재', label: '천연 사향의 뇌혈관장벽 투과 및 심뇌혈류 보호 기전 검증', width: '94%' }
         ]
+      },
+      {
+        type: 'gongjindan-panorama-archive',
+        fullscreen: true,
+        stepLabel: 'ARCHIVE PANORAMA · 황제공진단 공식 브로슈어 10대 화보 파노라마',
+        title: "한눈에 넘겨보는 '바른 황제공진단' 특허·성분·성적서 파노라마 아카이브",
+        sub: '제조특허 제10-1744704호부터 사향 씨알 단면, 러시아산 원용 분골, 유해물질 0ppm 성적서, 황실 자개함까지 파노라마로 넘겨보세요.',
+        caption: '[황제공진단 파노라마 아카이브] 과거 황제공진단 공식 브로슈어 10장(P.01~P.10)을 한 카드에 모아 파노라마처럼 좌우로 넘기며 확인하실 수 있습니다.'
       }
     ],
     bodyModelCard: {
@@ -1321,17 +1371,25 @@ const PAGES = [
     },
     plates: [
       {
-        type: 'clean-image',
+        type: 'motion-story',
         fullscreen: true,
-        stepLabel: 'STORY · 밤마다 깨어나는 야간뇨의 고통',
+        indexPill: 'STORY · 밤마다 깨어나는 야간뇨의 고통',
+        metricPill: '전립선 울혈 압박 · 방광 저장력 저하 경보',
         title: "밤마다 잠을 깨우는 '야간뇨와 잔뇨감', 숙면과 일상이 무너집니다",
         sub: '개운치 않은 배뇨와 끊기는 밤잠은 부어오른 전립선과 약해진 방광의 신호입니다.',
         caption: '[전립선 임상 노트] 야간뇨로 깊은 수면이 끊기면 만성 피로와 면역력·남성 활력 저하가 연쇄적으로 발생합니다.',
-        imgSrc: 'illust_prostate_care.jpg',
+        frames: [
+          'illust_prostate_care.jpg',
+          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2',
+          'detail_director_story2_clean.jpg?v=oryzo3'
+        ],
         thumbs: [
           { img: 'illust_prostate_care.jpg', label: '전립선·방광 압박 구조' },
-          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '야간뇨 수면 분절' }
-        ]
+          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '야간뇨 수면 분절' },
+          { img: 'detail_director_story2_clean.jpg?v=oryzo3', label: '하초 기혈 정밀 진맥' }
+        ],
+        fx: 'prostate-pressure-pulse-fx',
+        durationSec: 6.4
       },
       {
         type: 'clean-image',
@@ -1475,7 +1533,11 @@ function buildPageHtml(page) {
         <!-- PLATE ${numStr}: Director's Son Growth Enlarged Original Image Hero & Handwritten Pledge -->
         <article class="project-details-item is-growth-son-hero is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
           <div class="plate-media-inner growth-son-hero-inner">
-            <div class="growth-son-hero-grid">
+            <div class="motion-video-stage is-son-ambient-stage" data-frames="growth-director-son.png" data-duration="6.4" style="background:transparent; pointer-events:none; z-index:0;">
+              <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="growth-son-hero-grid" style="position:relative; z-index:2;">
               <!-- LEFT: UNEDITED ORIGINAL SON GROWTH IMAGE ENLARGED SHOWCASE -->
               <div class="son-growth-visual-col" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son.png')" title="클릭하여 원본 이미지 전체화면 확대">
                 <div class="son-original-frame">
@@ -1544,6 +1606,71 @@ function buildPageHtml(page) {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    if (p.type === 'gongjindan-panorama-archive') {
+      const brochureArchive = [
+        { num: 1, code: 'P.01', tag: '국가 특허 등록', short: '01 특허공진단', title: '유효 성분 손실을 최소화하는 특허 공진단', desc: '특허 제10-1744704호 공식 등록 · 원목 자개함 & 99.9% 순금박 수제 제환', img: 'brochure/brochure1.jpg' },
+        { num: 2, code: 'P.02', tag: '황실 비방의 역사', short: '02 700년 황실비방', title: '황제의 공진단, 왜 지금 우리에게 필요할까?', desc: '700년 전 원나라 황실 비방이 현대인의 극심한 만성 피로와 번아웃을 다스리는 비결', img: 'brochure/brochure2.jpg' },
+        { num: 3, code: 'P.03', tag: '특허 기술의 본질', short: '03 사향보존 공법', title: "공진단에 왜 '특허'가 필요할까?", desc: '휘발되기 쉬운 천연 사향의 향기와 약효를 100% 가두는 중심핵 조제 공법', img: 'brochure/brochure3.jpg' },
+        { num: 4, code: 'P.04', tag: '국내 유일 기술', short: '04 효능특허 훈장', title: '국내 유일 공진단 효능 관련 특허 기술', desc: '대한민국 특허청 정식 인장 및 금장 훈장이 증명하는 독보적 임상 가치', img: 'brochure/brochure4.jpg' },
+        { num: 5, code: 'P.05', tag: '사향 씨알의 기적', short: '05 사향씨알 단면', title: "눈으로 확인하는 '사향 씨알' 특허 단면 & 함량 비교", desc: '중심에 온전히 보존된 사향 씨알 단면 비교 및 식약처 CITES 정품 사향 함유량', img: 'brochure/brochure5.jpg' },
+        { num: 6, code: 'P.06', tag: '재생의 연료', short: '06 러시아산 분골', title: '러시아산 최상급 원용 분골 녹용 아낌없는 배합', desc: '세포·피부·신경 재생의 핵심, 원산지가 명확한 러시아산 최상단 분골·상대 엄선', img: 'brochure/brochure6.jpg' },
+        { num: 7, code: 'P.07', tag: '100인 한의사 검증', short: '07 한의사 100인', title: '한의사 100인이 직접 검증한 압도적 효능', desc: '"사향의 향 손실을 막고 균일한 약효를 발휘하는 획기적 발명" 블라인드 평가 극찬', img: 'brochure/brochure7.jpg' },
+        { num: 8, code: 'P.08', tag: '공인 시험성적서', short: '08 유해물질 0ppm', title: '동의한약분석센터 잔류농약·중금속 0ppm 불검출', desc: '납·비소·수은·잔류농약·곰팡이독소 불검출 국가 공인 시험성적서 원문 공개', img: 'brochure/brochure8.jpg' },
+        { num: 9, code: 'P.09', tag: '황실 예우 패키징', short: '09 원목자개함', title: '마음을 움직이는 최고의 품격, 황실 예우 패키징', desc: '천연 원목 자개함 · 이중 비단보자기 · 정품 품질보증서 기프트 패키지', img: 'brochure/brochure9.jpg' },
+        { num: 10, code: 'P.10', tag: '4대 명품 약재', short: '10 4대 명품약재', title: '황제의 보약을 완성하는 4대 명품 한약재 도감', desc: '천연 사향 · 러시아산 분골 녹용 · 참당귀 · 산수유 최상위 원재료 도감', img: 'brochure/brochure10.jpg' }
+      ];
+      return `
+        <!-- PLATE ${numStr}: Emperor Gongjindan 10-Page Brochure Panorama Archive Card -->
+        <article class="project-details-item is-gongjindan-panorama-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" id="gjd-panorama-card" data-fullscreen>
+          <div class="plate-media-inner gjd-panorama-inner" onclick="event.stopPropagation();">
+            <!-- Top Header & Panorama Controls -->
+            <div class="gjd-pano-header">
+              <div class="gjd-pano-title-group">
+                <span class="gjd-pano-eyebrow">📜 EMPEROR GONGJINDAN PANORAMA ARCHIVE · 과거 황제공진단 공식 브로슈어 10대 화보 한눈에 넘겨보기</span>
+                <h2 class="gjd-pano-main-title">${formattedTitle}</h2>
+                <p class="gjd-pano-sub">${p.sub}</p>
+              </div>
+              <div class="gjd-pano-controls">
+                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); window.stepGjdPanorama(-1)" title="이전 브로슈어 페이지">◀ 이전 장</button>
+                <span class="gjd-pano-counter" id="gjd-pano-counter">01 / 10</span>
+                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); window.stepGjdPanorama(1)" title="다음 브로슈어 페이지">다음 장 ▶</button>
+                <button type="button" class="gjd-pano-auto-btn active" id="gjd-pano-auto-btn" onclick="event.stopPropagation(); window.toggleGjdPanoramaAuto()">⏯ 자동 파노라마 ON</button>
+                <button type="button" class="gjd-pano-zoom-btn" onclick="event.stopPropagation(); window.zoomActiveGjdPanorama()">🔍 현재 페이지 확대</button>
+              </div>
+            </div>
+
+            <!-- Horizontal Panorama Carousel Stage -->
+            <div class="gjd-panorama-viewport" id="gjd-panorama-viewport">
+              <div class="gjd-panorama-track" id="gjd-panorama-track">
+                ${brochureArchive.map((item, bIdx) => `
+                <div class="gjd-pano-slide${bIdx === 0 ? ' is-active' : ''}" data-idx="${bIdx}" data-img="${item.img}" onclick="event.stopPropagation(); window.handleGjdSlideClick(${bIdx}, '${item.img}')">
+                  <div class="gjd-pano-slide-top">
+                    <span class="gjd-pano-page-pill">${item.code} / 10 · ${item.tag}</span>
+                    <button type="button" class="gjd-pano-card-zoom" onclick="event.stopPropagation(); window.openCleanLightbox('${item.img}')">🔍 원본 확대</button>
+                  </div>
+                  <div class="gjd-pano-img-wrap">
+                    <img src="${item.img}" alt="${item.title}" loading="lazy" draggable="false">
+                  </div>
+                  <div class="gjd-pano-slide-caption">
+                    <strong>${item.title}</strong>
+                    <span>${item.desc}</span>
+                  </div>
+                </div>`).join('')}
+              </div>
+            </div>
+
+            <!-- Bottom 10-Page Quick Jump Filmstrip Bar -->
+            <div class="gjd-pano-thumbs-bar" id="gjd-pano-thumbs-bar">
+              ${brochureArchive.map((item, bIdx) => `
+              <button type="button" class="gjd-pano-thumb-pill${bIdx === 0 ? ' active' : ''}" data-idx="${bIdx}" onclick="event.stopPropagation(); window.selectGjdPanorama(${bIdx}, true)">
+                <img src="${item.img}" alt="${item.short}" loading="lazy" draggable="false">
+                <span>${item.short}</span>
+              </button>`).join('')}
             </div>
           </div>
         </article>`;
@@ -1762,13 +1889,22 @@ function buildPageHtml(page) {
 
     if (p.type === 'clean-video') {
       return `
-        <!-- PLATE ${numStr}: Clean Video Plate -->
-        <article class="project-details-item is-video is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+        <!-- PLATE ${numStr}: Clean Video + Live 60fps Motion FX Stage -->
+        <article class="project-details-item is-video is-motion-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
           <div class="plate-media-inner">
-            <video class="lusion-clean-media" src="${p.videoSrc}" poster="${p.poster}" autoplay muted loop playsinline></video>
+            <div class="motion-video-stage is-clean-video-stage" data-frames="${p.poster || ''}" data-duration="6.4">
+              <video class="lusion-clean-media" src="${p.videoSrc}" poster="${p.poster}" autoplay muted loop playsinline></video>
+              <canvas class="plate-fx-canvas" data-fx="${p.fx || 'warm-breath-zoom'}"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
             <div class="clean-plate-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill || p.stepLabel || 'LIVE MOTION STORY'}</span>
+              ${p.metricPill ? `<span class="plate-metric-pill">${p.metricPill}</span>` : ''}
+            </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
+                ${p.stepLabel ? `<span class="clean-step-label">${p.stepLabel}</span>` : ''}
                 <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
@@ -1777,8 +1913,70 @@ function buildPageHtml(page) {
         </article>`;
     }
 
+    if (p.type === 'motion-story') {
+      const framesList = (p.frames && p.frames.length) ? p.frames : [p.imgSrc || ''];
+      const framesAttr = framesList.join('|');
+      const sciHtml = p.sciStats ? `
+            <div class="visual-sci-overlay">
+              ${p.sciStats.map(s => `
+              <div class="sci-stat-card">
+                <div class="sci-stat-num">${s.num}</div>
+                <div class="sci-stat-label">${s.label}</div>
+                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:${s.width}"></div></div>
+              </div>`).join('')}
+            </div>` : '';
+      const motionThumbsHtml = (p.thumbs && p.thumbs.length > 1) ? `
+                <div class="plate-thumb-dock">
+                  ${p.thumbs.map((th, tIdx) => `
+                  <button type="button" class="plate-thumb-btn${tIdx === 0 ? ' active' : ''}" data-mode="motion" data-idx="${tIdx}" data-img="${th.img}" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="${th.img}" alt="${th.label}" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">${th.label}</span>
+                  </button>`).join('')}
+                </div>` : '';
+      return `
+        <!-- PLATE ${numStr}: Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="${framesAttr}" data-duration="${p.durationSec || 6.4}">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('${framesList[0]}');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('${framesList[1 % framesList.length]}'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="${p.fx || 'sunlight-bokeh'}"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill || p.stepLabel || 'STORY · LIVE MOTION'}</span>
+              ${p.metricPill ? `<span class="plate-metric-pill">${p.metricPill}</span>` : ''}
+            </div>
+            ${sciHtml}
+            <div class="plate-bottom-caption">
+              <div>
+                ${motionThumbsHtml}
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
+                <p class="plate-caption-sub">${p.sub}</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
     const isContain = p.fit === 'contain';
     const mainImgSrc = p.imgSrc || (p.frames && p.frames[0]) || '';
+    const tagsHtml = p.cleanTags ? `
+                <div class="clean-spec-tags">
+                  ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
+                </div>` : '';
+    const cleanThumbsHtml = (p.thumbs && p.thumbs.length > 1) ? `
+                <div class="plate-thumb-dock">
+                  ${p.thumbs.map((th, tIdx) => `
+                  <button type="button" class="plate-thumb-btn${tIdx === 0 ? ' active' : ''}" data-mode="clean" data-img="${th.img}" data-fit="${th.fit || 'cover'}" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="${th.img}" alt="${th.label}" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">${th.label}</span>
+                  </button>`).join('')}
+                </div>` : '';
     const cleanSciHtml = p.sciStats ? `
             <div class="visual-sci-overlay">
               ${p.sciStats.map(s => `
@@ -1796,6 +1994,7 @@ function buildPageHtml(page) {
             <div class="clean-plate-scrim"></div>${cleanSciHtml}
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
+                ${p.stepLabel ? `<span class="clean-step-label">${p.stepLabel}</span>` : ''}${tagsHtml}${cleanThumbsHtml}
                 <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
@@ -2995,6 +3194,318 @@ function buildPageHtml(page) {
       color: #FFEDD7;
       font-size: 0.71rem;
       font-weight: 600;
+    }
+
+    /* ============================================================================
+       EMPEROR GONGJINDAN 10-PAGE BROCHURE PANORAMA ARCHIVE CARD
+       ============================================================================ */
+    .project-details-item.is-gongjindan-panorama-plate {
+      width: min(76vw, 1140px);
+      max-width: 1140px;
+      height: 84vh;
+      max-height: 760px;
+      background: radial-gradient(circle at 50% 35%, #201A13 0%, #100D0A 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.48);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(253, 230, 138, 0.14);
+      cursor: default;
+    }
+
+    .gjd-panorama-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      gap: 12px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .gjd-pano-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .gjd-pano-eyebrow {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #FDE68A;
+      margin-bottom: 4px;
+    }
+
+    .gjd-pano-main-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.32rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin-bottom: 3px;
+    }
+
+    .gjd-pano-main-title .title-key-em {
+      color: #FDE68A;
+      text-decoration: underline;
+      text-decoration-color: rgba(212, 175, 55, 0.65);
+      text-underline-offset: 4px;
+    }
+
+    .gjd-pano-sub {
+      font-size: 0.78rem;
+      color: rgba(248, 250, 252, 0.78);
+      line-height: 1.38;
+    }
+
+    .gjd-pano-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .gjd-pano-nav-btn,
+    .gjd-pano-auto-btn,
+    .gjd-pano-zoom-btn {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      background: rgba(20, 16, 12, 0.88);
+      color: #FDE68A;
+      font-size: 0.73rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .gjd-pano-nav-btn:hover,
+    .gjd-pano-zoom-btn:hover,
+    .gjd-pano-auto-btn.active {
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      color: #0E0B08;
+      border-color: #FEF08A;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.38);
+    }
+
+    .gjd-pano-counter {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    /* Horizontal Panorama Viewport & Filmstrip Track */
+    .gjd-panorama-viewport {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 16px;
+      background: rgba(8, 6, 5, 0.68);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: #D4AF37 rgba(255, 255, 255, 0.06);
+      cursor: grab;
+    }
+
+    .gjd-panorama-viewport:active {
+      cursor: grabbing;
+    }
+
+    .gjd-panorama-track {
+      display: flex;
+      align-items: stretch;
+      gap: 18px;
+      height: 100%;
+      padding: 2px 12vw;
+    }
+
+    .gjd-pano-slide {
+      width: min(460px, 56vw);
+      height: 100%;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: linear-gradient(165deg, rgba(28, 22, 16, 0.96) 0%, rgba(14, 11, 8, 0.98) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      opacity: 0.56;
+      transform: scale(0.93);
+      transition: all 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+    }
+
+    .gjd-pano-slide:hover {
+      opacity: 0.85;
+      border-color: rgba(212, 175, 55, 0.5);
+    }
+
+    .gjd-pano-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+      border: 2px solid #D4AF37;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.78), 0 0 28px rgba(212, 175, 55, 0.28);
+    }
+
+    .gjd-pano-slide-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .gjd-pano-page-pill {
+      font-size: 0.69rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.18);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: #FDE68A;
+    }
+
+    .gjd-pano-card-zoom {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .gjd-pano-card-zoom:hover {
+      background: #D4AF37;
+      color: #0E0B08;
+      border-color: #FEF08A;
+    }
+
+    .gjd-pano-img-wrap {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      border-radius: 10px;
+      background: #0B0907;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gjd-pano-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .gjd-pano-slide-caption {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .gjd-pano-slide-caption strong {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #FEF08A;
+      line-height: 1.28;
+    }
+
+    .gjd-pano-slide-caption span {
+      font-size: 0.73rem;
+      color: rgba(248, 250, 252, 0.82);
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    /* Bottom 10-Page Filmstrip Thumbnail Bar */
+    .gjd-pano-thumbs-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+
+    .gjd-pano-thumbs-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gjd-pano-thumb-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px 4px 4px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(248, 250, 252, 0.82);
+      font-size: 0.69rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .gjd-pano-thumb-pill img {
+      width: 32px;
+      height: 22px;
+      border-radius: 5px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .gjd-pano-thumb-pill.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.36) 0%, rgba(180, 83, 9, 0.28) 100%);
+      border-color: #FDE68A;
+      color: #FEF08A;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+    }
+
+    @media (max-width: 1024px) {
+      .project-details-item.is-gongjindan-panorama-plate {
+        width: 92vw;
+        height: 76vh;
+      }
+      .gjd-panorama-inner {
+        padding: 14px 14px 12px;
+        gap: 8px;
+      }
+      .gjd-pano-main-title {
+        font-size: 1.05rem;
+      }
+      .gjd-pano-slide {
+        width: 74vw;
+      }
+      .gjd-panorama-track {
+        padding: 2px 4vw;
+      }
     }
 
     /* Multi-Frame Motion Video Stage */
@@ -7587,7 +8098,7 @@ function buildPageHtml(page) {
       }, { passive: true });
 
       wrapper.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -7622,7 +8133,7 @@ function buildPageHtml(page) {
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
         updateBounds();
         isTouchActive = true;
         lastDetailInteractMs = performance.now();
@@ -7637,7 +8148,7 @@ function buildPageHtml(page) {
 
       window.addEventListener('touchmove', (e) => {
         if (!isTouchActive || !e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
         const now = performance.now();
         lastDetailInteractMs = now;
         const curX = e.touches[0].clientX;
@@ -8628,6 +9139,66 @@ function buildPageHtml(page) {
           ctx.fillText('✓ 초정밀 전자저울 계량 · 러시아 원용 분골 최상단 정량 배합', padX + 14, topY + 70);
           ctx.fillText('✓ 사향 활성 성분 휘발을 차단하는 순금박 수제 봉인', padX + 14, topY + 92);
           ctx.restore();
+        } else if (type === 'alopecia-immune-radar-fx') {
+          // STORY 01 (Alopecia): Autoimmune Follicle Attack Radar & Autonomic Stress Wave
+          const cx = w * 0.50, cy = h * 0.42;
+          ctx.save();
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.82 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18 + p * 78, 0, Math.PI * 2);
+            ctx.strokeStyle = r % 2 === 0
+              ? 'rgba(239, 68, 68, ' + ((1 - p) * 0.62).toFixed(2) + ')'
+              : 'rgba(16, 185, 129, ' + ((1 - p) * 0.52).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+          const tagW = 286, tagH = 32;
+          const tx = Math.max(20, Math.min(w - tagW - 20, cx - tagW * 0.5));
+          const ty = Math.max(66, cy - 86);
+          ctx.fillStyle = 'rgba(10, 16, 15, 0.88)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.75)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FCA5A5';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🚨 자가면역 모낭 공격 · 자율신경 과항진 경보', tx + tagW * 0.5, ty + 20);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'prostate-pressure-pulse-fx') {
+          // STORY 01 (Prostate): Pelvic & Prostate Congestion Pressure Rings + Nocturia Alert
+          const cx = w * 0.50, cy = h * 0.56;
+          ctx.save();
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.78 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 16 + p * 74, 0, Math.PI * 2);
+            ctx.strokeStyle = r % 2 === 0
+              ? 'rgba(239, 68, 68, ' + ((1 - p) * 0.58).toFixed(2) + ')'
+              : 'rgba(200, 155, 91, ' + ((1 - p) * 0.52).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+          const tagW = 288, tagH = 32;
+          const tx = Math.max(20, Math.min(w - tagW - 20, cx - tagW * 0.5));
+          const ty = Math.max(66, cy - 88);
+          ctx.fillStyle = 'rgba(18, 14, 11, 0.88)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.75)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('⚠️ 전립선 울혈 압박 · 야간뇨 수면 분절 경보', tx + tagW * 0.5, ty + 20);
+          ctx.textAlign = 'left';
+          ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
           const cx = w * 0.5, cy = h * 0.55;
@@ -9357,6 +9928,115 @@ function buildPageHtml(page) {
       }
 
       // ====================================================================
+      // 4B. EMPEROR GONGJINDAN 10-PAGE BROCHURE PANORAMA CAROUSEL ENGINE
+      // ====================================================================
+      (function initGjdPanoramaArchive() {
+        const viewport = document.getElementById('gjd-panorama-viewport');
+        const track = document.getElementById('gjd-panorama-track');
+        const counterEl = document.getElementById('gjd-pano-counter');
+        const autoBtn = document.getElementById('gjd-pano-auto-btn');
+        if (!viewport || !track) return;
+
+        const slides = Array.from(track.querySelectorAll('.gjd-pano-slide'));
+        const thumbs = Array.from(document.querySelectorAll('.gjd-pano-thumb-pill'));
+        let activeIdx = 0;
+        let autoPlay = true;
+
+        function centerSlide(idx, smooth) {
+          if (!slides.length) return;
+          activeIdx = ((idx % slides.length) + slides.length) % slides.length;
+          slides.forEach((sl, i) => sl.classList.toggle('is-active', i === activeIdx));
+          thumbs.forEach((th, i) => th.classList.toggle('active', i === activeIdx));
+          if (counterEl) {
+            const n = activeIdx + 1;
+            counterEl.textContent = (n < 10 ? '0' + n : '' + n) + ' / ' + slides.length;
+          }
+          const targetSlide = slides[activeIdx];
+          if (targetSlide) {
+            const scrollTarget = targetSlide.offsetLeft - (viewport.clientWidth - targetSlide.offsetWidth) * 0.5;
+            viewport.scrollTo({ left: Math.max(0, scrollTarget), behavior: smooth === false ? 'auto' : 'smooth' });
+          }
+          const targetThumb = thumbs[activeIdx];
+          const thumbsBar = document.getElementById('gjd-pano-thumbs-bar');
+          if (targetThumb && thumbsBar) {
+            const thumbTarget = targetThumb.offsetLeft - (thumbsBar.clientWidth - targetThumb.offsetWidth) * 0.5;
+            thumbsBar.scrollTo({ left: Math.max(0, thumbTarget), behavior: 'smooth' });
+          }
+        }
+
+        window.selectGjdPanorama = function(idx, manual) {
+          if (manual) {
+            autoPlay = false;
+            if (autoBtn) {
+              autoBtn.classList.remove('active');
+              autoBtn.textContent = '▶ 자동 파노라마 OFF';
+            }
+          }
+          centerSlide(idx, true);
+        };
+
+        window.stepGjdPanorama = function(dir) {
+          window.selectGjdPanorama(activeIdx + dir, true);
+        };
+
+        window.toggleGjdPanoramaAuto = function() {
+          autoPlay = !autoPlay;
+          if (autoBtn) {
+            autoBtn.classList.toggle('active', autoPlay);
+            autoBtn.textContent = autoPlay ? '⏯ 자동 파노라마 ON' : '▶ 자동 파노라마 OFF';
+          }
+        };
+
+        window.zoomActiveGjdPanorama = function() {
+          const sl = slides[activeIdx];
+          const img = sl ? (sl.querySelector('img')?.src || sl.dataset.img) : '';
+          if (img && window.openCleanLightbox) window.openCleanLightbox(img);
+        };
+
+        window.handleGjdSlideClick = function(idx, imgSrc) {
+          if (idx === activeIdx) {
+            const sl = slides[idx];
+            const resolvedSrc = (sl && sl.querySelector('img')?.src) || imgSrc;
+            if (resolvedSrc && window.openCleanLightbox) window.openCleanLightbox(resolvedSrc);
+          } else {
+            window.selectGjdPanorama(idx, true);
+          }
+        };
+
+        // Drag-to-scroll inside panorama viewport
+        let pDown = false, pStartX = 0, pStartScroll = 0;
+        viewport.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('button')) return;
+          e.stopPropagation();
+          pDown = true;
+          pStartX = e.clientX;
+          pStartScroll = viewport.scrollLeft;
+        });
+        window.addEventListener('pointermove', (e) => {
+          if (!pDown) return;
+          const dx = pStartX - e.clientX;
+          if (Math.abs(dx) > 6) {
+            autoPlay = false;
+            if (autoBtn) {
+              autoBtn.classList.remove('active');
+              autoBtn.textContent = '▶ 자동 파노라마 OFF';
+            }
+          }
+          viewport.scrollLeft = pStartScroll + dx * 1.25;
+        });
+        window.addEventListener('pointerup', () => { pDown = false; });
+
+        setInterval(() => {
+          if (!autoPlay) return;
+          const card = document.getElementById('gjd-panorama-card');
+          if (!card || !card.classList.contains('is-active-plate')) return;
+          centerSlide(activeIdx + 1, true);
+        }, 3800);
+
+        setTimeout(() => centerSlide(0, false), 220);
+      })();
+
+      // ====================================================================
       // 5. MASTER 60FPS ANIMATION LOOP
       // ====================================================================
       let lastNow = performance.now();
@@ -9409,6 +10089,34 @@ function buildPageHtml(page) {
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
+
+        // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
+        motionStages.forEach((ms, sIdx) => {
+          ms.elapsed = (ms.elapsed + dt) % ms.duration;
+          const cycleNorm = ms.elapsed / ms.duration;
+          if (ms.progFill) ms.progFill.style.width = (cycleNorm * 100).toFixed(1) + '%';
+
+          if (ms.frames.length > 1 && ms.layerA && ms.layerB) {
+            const targetIdx = Math.min(ms.frames.length - 1, Math.floor(cycleNorm * ms.frames.length));
+            if (targetIdx !== ms.currIdx) {
+              ms.currIdx = targetIdx;
+              applyStageFrame(ms, targetIdx);
+            }
+          }
+
+          // Continuous 3D Ken Burns / Breathing Zoom camera motion
+          const isBreathingZoom = ms.fxType === 'warm-breath-zoom';
+          const zoom = isBreathingZoom
+            ? 1.055 + 0.055 * Math.sin(timeSec * 1.35)
+            : 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
+          const panX = Math.cos(timeSec * 0.55 + sIdx) * (isBreathingZoom ? 8 : 12);
+          const panY = Math.sin(timeSec * 0.45 + sIdx) * (isBreathingZoom ? 5 : 8);
+          const transformStr = 'scale(' + zoom.toFixed(4) + ') translate3d(' + panX.toFixed(1) + 'px, ' + panY.toFixed(1) + 'px, 0)';
+          if (ms.layerA) ms.layerA.style.transform = transformStr;
+          if (ms.layerB) ms.layerB.style.transform = transformStr;
+
+          drawPlateMotionFx(ms, timeSec, cycleNorm);
+        });
 
         drawSimCanvas(timeSec);
         requestAnimationFrame(animateAll);

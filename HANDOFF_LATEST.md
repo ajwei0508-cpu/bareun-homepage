@@ -32,6 +32,12 @@
      - 첫 번째 메인 카드(PLATE 01)를 **다른 일반 카드(`56vw × 76vh`)보다 월등히 큰 초대형 히어로 카드(`min(82vw, 1260px) × calc(100vh - 72px)`, 골드 스포트라이트 프레임)**로 확대하여 한눈에 시선을 사로잡도록 구성하고, 좌측에는 안정위 대표원장의 **친아들 성장 치료 원본 이미지(`growth-director-son.png` / `growth-director-son-comparison.png`)를 일체의 분할·편집 없이 원본 그대로 풀사이즈로 배치**, 우측에는 **숫자 표기를 모두 제거한 대표원장 친필 서약서(`father-letter-box`, 고운바탕 친필 서체 + 안정위 원장 서명 + 붉은 직인 `[바른正印]` + 네이버 블로그 원문 링크)**를 메인으로 배치.
      - 무릎 성장판 비교 스캔 카드(`#runway-scroll-ba-plate`)를 **초음파 4대 핵심 성장 지표 비교 분석 카드(`연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석`)**로 개편하여 2×2 정밀 비교 대시보드(각 지표별 비교 기준 · 시각 게이지 · 임상 판독 설명)와 하단 핵심 타이틀로 직관적 구성 완료.
    - **다이어트 상세페이지(`diet-zero.html` / `wordpress-diet.html`)**: 과거 브로슈어의 **3가지 핵심 작용 모션 동작(`01 식욕 중추 안정` 전기 스파크 진정 모션 · `02 심부 체지방 분해` 열대사 연소 수축 모션 · `03 붓기 & 독소 완화` 림프 순환 바디 슬리밍 모션)** 카드와 **전국 비대면 진료 4단계 프로세스 및 안심 특급 배송 안내 영상(`concierge-cinema-suite`)** 카드를 추가 반영.
+5. **11대 상세페이지 전체 첫 카드 60fps 모션 동작 복원 & 황제공진단(`gongjindan.html`) 기존 스토리 이미지 복구 및 10대 브로슈어 파노라마 아카이브 카드 신설**:
+   - **전 상세페이지(11개 전체) 첫 카드 실시간 모션 동작(`motion-video-stage` + 60fps Canvas FX) 완비**:
+     - 대표원장(`warm-breath-zoom` 골든 볼류메트릭 광선 + 비디오), 추나(`chuna-lost-movement-fx` 요추 통증 파동), 성장(`sunlight-bokeh` & `growth-starlight` 성장판 눈금·스타라이트 모션), 다이어트(`belt-zipper-morning-fx` 복부 지퍼 대사 정체 모션), 남성탈모/통합탈모(`distance-30cm-tension` 30cm 시선 레이더 모션), 원형탈모(`alopecia-immune-radar-fx` 자가면역 모낭 공격 레이더 모션), 여성탈모(`distance-30cm-tension` 가르마 상열하한 모션), 지루성두피염(`thermal-cooling` 두피 청열 쿨링 파동), 황제공진단(`battery-1pct-warning-fx` 1% 방전 배터리 점멸 모션), 전립선(`prostate-pressure-pulse-fx` 전립선 울혈 압박 파동)까지 모든 상세페이지 첫 카드의 멀티 프레임 크로스페이드 + 60fps 캔버스 모션 + 하단 프로그레스 바 + 장면 전환 버튼을 전면 복구 및 적용 완료.
+   - **황제공진단(`gongjindan.html` / `wordpress-gongjindan.html`) 스토리별 원본 이미지 복구 및 파노라마 아카이브 카드(`#gjd-panorama-card`) 탑재**:
+     - 카드 1~5의 스토리 텍스트와 100% 부합하는 기존 전용 이미지(`detail_gongjindan_story1_battery_sofa.jpg`, `detail_gongjindan_story1_burnout_clock.jpg`, `detail_gongjindan_story2_bottomless_glass.jpg`, `detail_gongjindan_story3_musk_floodgate.jpg`, `detail_gongjindan_story4_cites_scale.jpg`, `detail_gongjindan_story5_royal_box_family.jpg`)로 완벽 복구.
+     - 과거 황제공진단 브로슈어 화보 자료 10장(`brochure/brochure1.jpg` ~ `brochure/brochure10.jpg`: 특허 제10-1744704호, 700년 황실 비방, 사향 보존 공법, 효능 특허 훈장, 사향 씨알 단면, 러시아산 원용 분골, 한의사 100인 검증, 잔류농약·중금속 0ppm 성적서, 원목 자개함 패키징, 4대 명품 약재 도감)을 **단 하나의 파노라마 아카이브 카드(`#gjd-panorama-card`)**에 모아 좌우 드래그·스와이프·이전/다음 버튼·하단 10종 필름스트립 탭·전체화면 확대로 넘겨볼 수 있도록 구현 완료.
 
 ---
 

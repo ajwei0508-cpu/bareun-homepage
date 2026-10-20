@@ -1191,6 +1191,318 @@
       font-weight: 600;
     }
 
+    /* ============================================================================
+       EMPEROR GONGJINDAN 10-PAGE BROCHURE PANORAMA ARCHIVE CARD
+       ============================================================================ */
+    .project-details-item.is-gongjindan-panorama-plate {
+      width: min(76vw, 1140px);
+      max-width: 1140px;
+      height: 84vh;
+      max-height: 760px;
+      background: radial-gradient(circle at 50% 35%, #201A13 0%, #100D0A 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.48);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(253, 230, 138, 0.14);
+      cursor: default;
+    }
+
+    .gjd-panorama-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      gap: 12px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .gjd-pano-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .gjd-pano-eyebrow {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #FDE68A;
+      margin-bottom: 4px;
+    }
+
+    .gjd-pano-main-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.32rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin-bottom: 3px;
+    }
+
+    .gjd-pano-main-title .title-key-em {
+      color: #FDE68A;
+      text-decoration: underline;
+      text-decoration-color: rgba(212, 175, 55, 0.65);
+      text-underline-offset: 4px;
+    }
+
+    .gjd-pano-sub {
+      font-size: 0.78rem;
+      color: rgba(248, 250, 252, 0.78);
+      line-height: 1.38;
+    }
+
+    .gjd-pano-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .gjd-pano-nav-btn,
+    .gjd-pano-auto-btn,
+    .gjd-pano-zoom-btn {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      background: rgba(20, 16, 12, 0.88);
+      color: #FDE68A;
+      font-size: 0.73rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .gjd-pano-nav-btn:hover,
+    .gjd-pano-zoom-btn:hover,
+    .gjd-pano-auto-btn.active {
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      color: #0E0B08;
+      border-color: #FEF08A;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.38);
+    }
+
+    .gjd-pano-counter {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    /* Horizontal Panorama Viewport & Filmstrip Track */
+    .gjd-panorama-viewport {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 16px;
+      background: rgba(8, 6, 5, 0.68);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: #D4AF37 rgba(255, 255, 255, 0.06);
+      cursor: grab;
+    }
+
+    .gjd-panorama-viewport:active {
+      cursor: grabbing;
+    }
+
+    .gjd-panorama-track {
+      display: flex;
+      align-items: stretch;
+      gap: 18px;
+      height: 100%;
+      padding: 2px 12vw;
+    }
+
+    .gjd-pano-slide {
+      width: min(460px, 56vw);
+      height: 100%;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: linear-gradient(165deg, rgba(28, 22, 16, 0.96) 0%, rgba(14, 11, 8, 0.98) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      opacity: 0.56;
+      transform: scale(0.93);
+      transition: all 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+    }
+
+    .gjd-pano-slide:hover {
+      opacity: 0.85;
+      border-color: rgba(212, 175, 55, 0.5);
+    }
+
+    .gjd-pano-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+      border: 2px solid #D4AF37;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.78), 0 0 28px rgba(212, 175, 55, 0.28);
+    }
+
+    .gjd-pano-slide-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .gjd-pano-page-pill {
+      font-size: 0.69rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.18);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: #FDE68A;
+    }
+
+    .gjd-pano-card-zoom {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .gjd-pano-card-zoom:hover {
+      background: #D4AF37;
+      color: #0E0B08;
+      border-color: #FEF08A;
+    }
+
+    .gjd-pano-img-wrap {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      border-radius: 10px;
+      background: #0B0907;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gjd-pano-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .gjd-pano-slide-caption {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .gjd-pano-slide-caption strong {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #FEF08A;
+      line-height: 1.28;
+    }
+
+    .gjd-pano-slide-caption span {
+      font-size: 0.73rem;
+      color: rgba(248, 250, 252, 0.82);
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    /* Bottom 10-Page Filmstrip Thumbnail Bar */
+    .gjd-pano-thumbs-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+
+    .gjd-pano-thumbs-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gjd-pano-thumb-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px 4px 4px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(248, 250, 252, 0.82);
+      font-size: 0.69rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .gjd-pano-thumb-pill img {
+      width: 32px;
+      height: 22px;
+      border-radius: 5px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .gjd-pano-thumb-pill.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.36) 0%, rgba(180, 83, 9, 0.28) 100%);
+      border-color: #FDE68A;
+      color: #FEF08A;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+    }
+
+    @media (max-width: 1024px) {
+      .project-details-item.is-gongjindan-panorama-plate {
+        width: 92vw;
+        height: 76vh;
+      }
+      .gjd-panorama-inner {
+        padding: 14px 14px 12px;
+        gap: 8px;
+      }
+      .gjd-pano-main-title {
+        font-size: 1.05rem;
+      }
+      .gjd-pano-slide {
+        width: 74vw;
+      }
+      .gjd-panorama-track {
+        padding: 2px 4vw;
+      }
+    }
+
     /* Multi-Frame Motion Video Stage */
     .motion-video-stage {
       position: absolute;
@@ -4956,15 +5268,44 @@
     <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
         
-        <!-- PLATE 01: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate is-active-plate">
+        <!-- PLATE 01: Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate is-active-plate">
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_hair_story1_30cm_tension.jpg?v=30cm1" alt="고개 숙일 때 신경 쓰이는 'M자와 정수리', 두피열이 보내는 신호입니다" draggable="false">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
+            <div class="motion-video-stage" data-frames="detail_hair_story1_30cm_tension.jpg?v=30cm1|detail_hair_story1_date_bow.jpg?v=30cm1" data-duration="6.4">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('detail_hair_story1_30cm_tension.jpg?v=30cm1');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('detail_hair_story1_date_bow.jpg?v=30cm1'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="distance-30cm-tension"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            <div class="plate-top-bar">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY · 고개 숙일 때 신경 쓰이는 시선</span>
+              <span class="plate-metric-pill">M자 헤어라인 · 정수리 연모화 신호</span>
+            </div>
+            
+            <div class="plate-bottom-caption">
+              <div>
+                
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="motion" data-idx="0" data-img="detail_hair_story1_30cm_tension.jpg?v=30cm1" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story1_30cm_tension.jpg?v=30cm1" alt="정수리·M자 비어보임" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">정수리·M자 비어보임</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="motion" data-idx="1" data-img="detail_hair_story1_date_bow.jpg?v=30cm1" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story1_date_bow.jpg?v=30cm1" alt="가까운 시선 위축감" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">가까운 시선 위축감</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="motion" data-idx="2" data-img="life_3a_hairloss.jpg" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="life_3a_hairloss.jpg" alt="남성 탈모 진행" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">남성 탈모 진행</span>
+                  </button>
+                </div>
                 <h2 class="plate-caption-title">고개 숙일 때 신경 쓰이는 <span class="title-key-em">'M자와 정수리'</span>, 두피열이 보내는 신호입니다</h2>
                 <p class="plate-caption-sub">유전 탓만 하기 전에, 모낭을 빠르게 위축시키는 두피 열독부터 잡아야 합니다.</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
               </div>
             </div>
           </div>
@@ -4977,6 +5318,22 @@
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
+                <span class="clean-step-label">STORY · 탈모 샴푸와 단순 억제제의 한계</span>
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_hair_story2_cabinet_failure.jpg?v=30cm2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story2_cabinet_failure.jpg?v=30cm2" alt="표피 관리의 한계" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">표피 관리의 한계</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_hair_thermography.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_thermography.jpg" alt="두피 적외선 열화상" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">두피 적외선 열화상</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="life_3a_follicle_zoom.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="life_3a_follicle_zoom.jpg" alt="모낭 열독 확대" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">모낭 열독 확대</span>
+                  </button>
+                </div>
                 <h2 class="plate-caption-title">표피만 씻거나 호르몬만 누르면, <span class="title-key-em">'불타는 모근 뿌리'</span>는 그대로입니다</h2>
                 <p class="plate-caption-sub">두피 사막화를 부르는 상열(上熱)을 끄지 않으면 약을 멈추는 순간 다시 빠집니다.</p>
               </div>
@@ -4991,6 +5348,22 @@
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
+                <span class="clean-step-label">STORY · 수승화강(水昇火降) 두피 청열 & 모유두 보호</span>
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2" alt="수승화강 두피 청열" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">수승화강 두피 청열</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_hair_follicle_3d.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_follicle_3d.jpg" alt="모유두세포 재생 3D" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">모유두세포 재생 3D</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="illust_cervical_hairloss.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="illust_cervical_hairloss.jpg" alt="경추·두피열 기전" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">경추·두피열 기전</span>
+                  </button>
+                </div>
                 <h2 class="plate-caption-title">머리의 열독은 내리고 <span class="title-key-em">'모유두세포 성장기'</span>를 연장합니다</h2>
                 <p class="plate-caption-sub">끓어오르는 두피 온도를 낮춰 모낭 미세염증과 모근 연모화를 동시에 차단합니다.</p>
               </div>
@@ -5005,6 +5378,22 @@
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
+                <span class="clean-step-label">STORY · 경추 감압 추나 & 고농축 모낭 약침</span>
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_hair_story4_pulse_routine.jpg?v=30cm2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story4_pulse_routine.jpg?v=30cm2" alt="두피열 맥진·한약" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">두피열 맥진·한약</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_hair_pharmacopuncture.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_pharmacopuncture.jpg" alt="모낭 재생 약침" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">모낭 재생 약침</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_chuna_cervical.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_chuna_cervical.jpg" alt="경추 혈류 수기추나" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">경추 혈류 수기추나</span>
+                  </button>
+                </div>
                 <h2 class="plate-caption-title">거북목 혈류 병목을 추나로 열고, <span class="title-key-em">'모낭 약침'</span>으로 뿌리를 채웁니다</h2>
                 <p class="plate-caption-sub">아빠 한의사가 내 가족에게 시술하듯 경추 순환로와 모낭 진피층을 함께 다스립니다.</p>
               </div>
@@ -5032,6 +5421,22 @@
             </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
+                <span class="clean-step-label">STORY · 내 가족에게 처방하는 학술 논문 검증 남성탈모 치료</span>
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_hair_story5_30cm_confidence.jpg?v=30cm2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story5_30cm_confidence.jpg?v=30cm2" alt="정수리 볼륨 자신감" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">정수리 볼륨 자신감</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_hair_story5_date_smile.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="detail_hair_story5_date_smile.jpg" alt="가까운 시선 당당함" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">가까운 시선 당당함</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="ba_hair_after.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="ba_hair_after.jpg" alt="두피열·모근 회복" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">두피열·모근 회복</span>
+                  </button>
+                </div>
                 <h2 class="plate-caption-title">실제 학술 논문 검수로 입증된 <span class="title-key-em">'아빠 한의사 남성 모근재생'</span></h2>
                 <p class="plate-caption-sub">부작용 걱정 없이 모발 굵기와 정수리 볼륨을 되살리는 안전한 한방 발모 치료입니다.</p>
               </div>
@@ -5848,7 +6253,7 @@
       }, { passive: true });
 
       wrapper.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -5883,7 +6288,7 @@
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
         updateBounds();
         isTouchActive = true;
         lastDetailInteractMs = performance.now();
@@ -5898,7 +6303,7 @@
 
       window.addEventListener('touchmove', (e) => {
         if (!isTouchActive || !e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card')) return;
+        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #gjd-panorama-viewport, #gjd-pano-thumbs-bar')) return;
         const now = performance.now();
         lastDetailInteractMs = now;
         const curX = e.touches[0].clientX;
@@ -6889,6 +7294,66 @@
           ctx.fillText('✓ 초정밀 전자저울 계량 · 러시아 원용 분골 최상단 정량 배합', padX + 14, topY + 70);
           ctx.fillText('✓ 사향 활성 성분 휘발을 차단하는 순금박 수제 봉인', padX + 14, topY + 92);
           ctx.restore();
+        } else if (type === 'alopecia-immune-radar-fx') {
+          // STORY 01 (Alopecia): Autoimmune Follicle Attack Radar & Autonomic Stress Wave
+          const cx = w * 0.50, cy = h * 0.42;
+          ctx.save();
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.82 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18 + p * 78, 0, Math.PI * 2);
+            ctx.strokeStyle = r % 2 === 0
+              ? 'rgba(239, 68, 68, ' + ((1 - p) * 0.62).toFixed(2) + ')'
+              : 'rgba(16, 185, 129, ' + ((1 - p) * 0.52).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+          const tagW = 286, tagH = 32;
+          const tx = Math.max(20, Math.min(w - tagW - 20, cx - tagW * 0.5));
+          const ty = Math.max(66, cy - 86);
+          ctx.fillStyle = 'rgba(10, 16, 15, 0.88)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.75)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FCA5A5';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🚨 자가면역 모낭 공격 · 자율신경 과항진 경보', tx + tagW * 0.5, ty + 20);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'prostate-pressure-pulse-fx') {
+          // STORY 01 (Prostate): Pelvic & Prostate Congestion Pressure Rings + Nocturia Alert
+          const cx = w * 0.50, cy = h * 0.56;
+          ctx.save();
+          for (let r = 0; r < 3; r++) {
+            const p = (timeSec * 0.78 + r * 0.33) % 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 16 + p * 74, 0, Math.PI * 2);
+            ctx.strokeStyle = r % 2 === 0
+              ? 'rgba(239, 68, 68, ' + ((1 - p) * 0.58).toFixed(2) + ')'
+              : 'rgba(200, 155, 91, ' + ((1 - p) * 0.52).toFixed(2) + ')';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+          const tagW = 288, tagH = 32;
+          const tx = Math.max(20, Math.min(w - tagW - 20, cx - tagW * 0.5));
+          const ty = Math.max(66, cy - 88);
+          ctx.fillStyle = 'rgba(18, 14, 11, 0.88)';
+          ctx.strokeStyle = 'rgba(248, 113, 113, 0.75)';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.roundRect(tx, ty, tagW, tagH, 999);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11.5px Pretendard, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('⚠️ 전립선 울혈 압박 · 야간뇨 수면 분절 경보', tx + tagW * 0.5, ty + 20);
+          ctx.textAlign = 'left';
+          ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
           const cx = w * 0.5, cy = h * 0.55;
@@ -7618,6 +8083,115 @@
       }
 
       // ====================================================================
+      // 4B. EMPEROR GONGJINDAN 10-PAGE BROCHURE PANORAMA CAROUSEL ENGINE
+      // ====================================================================
+      (function initGjdPanoramaArchive() {
+        const viewport = document.getElementById('gjd-panorama-viewport');
+        const track = document.getElementById('gjd-panorama-track');
+        const counterEl = document.getElementById('gjd-pano-counter');
+        const autoBtn = document.getElementById('gjd-pano-auto-btn');
+        if (!viewport || !track) return;
+
+        const slides = Array.from(track.querySelectorAll('.gjd-pano-slide'));
+        const thumbs = Array.from(document.querySelectorAll('.gjd-pano-thumb-pill'));
+        let activeIdx = 0;
+        let autoPlay = true;
+
+        function centerSlide(idx, smooth) {
+          if (!slides.length) return;
+          activeIdx = ((idx % slides.length) + slides.length) % slides.length;
+          slides.forEach((sl, i) => sl.classList.toggle('is-active', i === activeIdx));
+          thumbs.forEach((th, i) => th.classList.toggle('active', i === activeIdx));
+          if (counterEl) {
+            const n = activeIdx + 1;
+            counterEl.textContent = (n < 10 ? '0' + n : '' + n) + ' / ' + slides.length;
+          }
+          const targetSlide = slides[activeIdx];
+          if (targetSlide) {
+            const scrollTarget = targetSlide.offsetLeft - (viewport.clientWidth - targetSlide.offsetWidth) * 0.5;
+            viewport.scrollTo({ left: Math.max(0, scrollTarget), behavior: smooth === false ? 'auto' : 'smooth' });
+          }
+          const targetThumb = thumbs[activeIdx];
+          const thumbsBar = document.getElementById('gjd-pano-thumbs-bar');
+          if (targetThumb && thumbsBar) {
+            const thumbTarget = targetThumb.offsetLeft - (thumbsBar.clientWidth - targetThumb.offsetWidth) * 0.5;
+            thumbsBar.scrollTo({ left: Math.max(0, thumbTarget), behavior: 'smooth' });
+          }
+        }
+
+        window.selectGjdPanorama = function(idx, manual) {
+          if (manual) {
+            autoPlay = false;
+            if (autoBtn) {
+              autoBtn.classList.remove('active');
+              autoBtn.textContent = '▶ 자동 파노라마 OFF';
+            }
+          }
+          centerSlide(idx, true);
+        };
+
+        window.stepGjdPanorama = function(dir) {
+          window.selectGjdPanorama(activeIdx + dir, true);
+        };
+
+        window.toggleGjdPanoramaAuto = function() {
+          autoPlay = !autoPlay;
+          if (autoBtn) {
+            autoBtn.classList.toggle('active', autoPlay);
+            autoBtn.textContent = autoPlay ? '⏯ 자동 파노라마 ON' : '▶ 자동 파노라마 OFF';
+          }
+        };
+
+        window.zoomActiveGjdPanorama = function() {
+          const sl = slides[activeIdx];
+          const img = sl ? (sl.querySelector('img')?.src || sl.dataset.img) : '';
+          if (img && window.openCleanLightbox) window.openCleanLightbox(img);
+        };
+
+        window.handleGjdSlideClick = function(idx, imgSrc) {
+          if (idx === activeIdx) {
+            const sl = slides[idx];
+            const resolvedSrc = (sl && sl.querySelector('img')?.src) || imgSrc;
+            if (resolvedSrc && window.openCleanLightbox) window.openCleanLightbox(resolvedSrc);
+          } else {
+            window.selectGjdPanorama(idx, true);
+          }
+        };
+
+        // Drag-to-scroll inside panorama viewport
+        let pDown = false, pStartX = 0, pStartScroll = 0;
+        viewport.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('button')) return;
+          e.stopPropagation();
+          pDown = true;
+          pStartX = e.clientX;
+          pStartScroll = viewport.scrollLeft;
+        });
+        window.addEventListener('pointermove', (e) => {
+          if (!pDown) return;
+          const dx = pStartX - e.clientX;
+          if (Math.abs(dx) > 6) {
+            autoPlay = false;
+            if (autoBtn) {
+              autoBtn.classList.remove('active');
+              autoBtn.textContent = '▶ 자동 파노라마 OFF';
+            }
+          }
+          viewport.scrollLeft = pStartScroll + dx * 1.25;
+        });
+        window.addEventListener('pointerup', () => { pDown = false; });
+
+        setInterval(() => {
+          if (!autoPlay) return;
+          const card = document.getElementById('gjd-panorama-card');
+          if (!card || !card.classList.contains('is-active-plate')) return;
+          centerSlide(activeIdx + 1, true);
+        }, 3800);
+
+        setTimeout(() => centerSlide(0, false), 220);
+      })();
+
+      // ====================================================================
       // 5. MASTER 60FPS ANIMATION LOOP
       // ====================================================================
       let lastNow = performance.now();
@@ -7670,6 +8244,34 @@
         });
 
         plates.forEach((p, idx) => p.classList.toggle('is-active-plate', idx === closestIdx));
+
+        // Advance Every Plate's Multi-Frame Motion Video & 60fps FX Overlay
+        motionStages.forEach((ms, sIdx) => {
+          ms.elapsed = (ms.elapsed + dt) % ms.duration;
+          const cycleNorm = ms.elapsed / ms.duration;
+          if (ms.progFill) ms.progFill.style.width = (cycleNorm * 100).toFixed(1) + '%';
+
+          if (ms.frames.length > 1 && ms.layerA && ms.layerB) {
+            const targetIdx = Math.min(ms.frames.length - 1, Math.floor(cycleNorm * ms.frames.length));
+            if (targetIdx !== ms.currIdx) {
+              ms.currIdx = targetIdx;
+              applyStageFrame(ms, targetIdx);
+            }
+          }
+
+          // Continuous 3D Ken Burns / Breathing Zoom camera motion
+          const isBreathingZoom = ms.fxType === 'warm-breath-zoom';
+          const zoom = isBreathingZoom
+            ? 1.055 + 0.055 * Math.sin(timeSec * 1.35)
+            : 1.03 + 0.06 * Math.sin(timeSec * 0.7 + sIdx);
+          const panX = Math.cos(timeSec * 0.55 + sIdx) * (isBreathingZoom ? 8 : 12);
+          const panY = Math.sin(timeSec * 0.45 + sIdx) * (isBreathingZoom ? 5 : 8);
+          const transformStr = 'scale(' + zoom.toFixed(4) + ') translate3d(' + panX.toFixed(1) + 'px, ' + panY.toFixed(1) + 'px, 0)';
+          if (ms.layerA) ms.layerA.style.transform = transformStr;
+          if (ms.layerB) ms.layerB.style.transform = transformStr;
+
+          drawPlateMotionFx(ms, timeSec, cycleNorm);
+        });
 
         drawSimCanvas(timeSec);
         requestAnimationFrame(animateAll);
