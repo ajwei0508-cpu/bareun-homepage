@@ -496,15 +496,10 @@ const PAGES = [
         caption: '[붓기 & 독소 완화] 물이 꽉 찬 전신 부종에서 수분 독소를 쥐어짜 배출해 늘씬한 전신으로 바꿉니다.'
       },
       {
-        type: 'diet-single-stage',
-        stage: 2,
+        type: 'runway-ba-scan',
         fullscreen: true,
-        imgSrc: 'diet_minimal_card9_ba_before_v2.jpg',
-        frames: [
-          'diet_minimal_card9_ba_before_v2.jpg',
-          'diet_minimal_card9_ba_shrinking_mid.jpg',
-          'diet_minimal_card9_ba_after.jpg'
-        ],
+        beforeImg: 'diet_minimal_card9_ba_before_v2.jpg',
+        afterImg: 'diet_minimal_card9_ba_after.jpg',
         title: "심부 체지방 분해 — '비만형 복부에서 근육 대사열로 수축되는 늘씬한 복부'",
         sub: '근육량과 심부 대사열을 끌어올려 볼록하게 나온 비만형 복부 내장지방을 집중 연소하고 늘씬한 복부로 빠르게 수축시킵니다.',
         caption: '[심부 체지방 분해] 근육 대사열로 비만형 복부를 집중 연소하여 탄탄하고 늘씬한 복부로 수축시킵니다.'
@@ -1703,6 +1698,28 @@ function buildPageHtml(page) {
                 <img src="${item.img}" alt="${item.short}" loading="lazy" draggable="false">
                 <span>${item.short}</span>
               </button>`).join('')}
+            </div>
+          </div>
+        </article>`;
+    }
+
+    if (p.type === 'runway-ba-scan') {
+      return `
+        <!-- PLATE ${numStr}: Revived Before/After Biomedical Scan Plate with Custom Content -->
+        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" id="runway-scroll-ba-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">${numStr}</span>
+          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
+            <img class="lusion-clean-media" id="runway-ba-before-img" src="${p.beforeImg || 'diet_minimal_card9_ba_before_v2.jpg'}" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
+              <img class="lusion-clean-media" id="runway-ba-after-img" src="${p.afterImg || 'diet_minimal_card9_ba_after.jpg'}" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
+                <p class="plate-caption-sub">${p.sub}</p>
+              </div>
             </div>
           </div>
         </article>`;
