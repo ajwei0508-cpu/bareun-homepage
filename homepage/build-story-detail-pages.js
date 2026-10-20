@@ -315,10 +315,10 @@ const PAGES = [
       {
         type: 'growth-son-main-hero',
         fullscreen: true,
-        stepLabel: 'MAIN STORY · 대표원장 친아들 3개년 성장 실증 & 친필 서약',
+        stepLabel: 'MAIN STORY · 대표원장 친아들 실제 성장 기록 & 친필 서약',
         title: "내 아이에게 먹이지 못할 약이라면, 세상 어떤 아이에게도 '처방하지 않습니다'",
-        sub: '15년 임상경력의 안정위 대표원장이 친아들(초5 ➔ 초6 ➔ 중1 · 173cm 달성)에게 직접 처방하며 입증한 성장 한약입니다.',
-        caption: '[대표원장 친필 서약] 내 아이가 마시는 탕약과 단 0.1g의 차이도 없이 동일한 식약처 GMP 최상급 청정 규격 한약재로 정성껏 처방합니다.'
+        sub: '안정위 대표원장이 친아들에게 직접 처방하며 입증한 바른 성장 한약입니다.',
+        caption: '[대표원장 친필 서약] 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 식약처 GMP 최상급 청정 규격 한약재로 정성껏 처방합니다.'
       },
       {
         type: 'motion-story',
@@ -342,14 +342,13 @@ const PAGES = [
       },
       {
         type: 'clean-image',
-        fullscreen: true,
-        stepLabel: 'STORY · 허약아형 vs 성조숙증형 2대 맞춤 처방',
+        stepLabel: 'STORY · 허약아형 vs 성조숙증형 맞춤 처방',
         title: "'밥 안 먹는 허약아'와 '빨리 크는 성조숙증'은 처방이 다릅니다",
-        sub: '비위 흡수력 강화 vs 성호르몬 과항진 억제, 아이 체질에 맞춰 1:1 설계합니다.',
+        sub: '비위 흡수력 강화 vs 성호르몬 과항진 억제, 아이 체질에 맞춰 정밀하게 설계합니다.',
         caption: '[소아 성장 노트] 소화 흡수 기능과 사춘기 골 성숙 속도를 함께 조율하여 성장 골든타임을 길게 지켜줍니다.',
         imgSrc: 'growth-two-types-director.jpg',
         thumbs: [
-          { img: 'growth-two-types-director.jpg', label: '2대 유형 원장 맞춤' },
+          { img: 'growth-two-types-director.jpg', label: '체질별 원장 맞춤' },
           { img: 'growth-herbal-immune.jpg', label: '허약·소화 흡수 강화' },
           { img: 'detail_growth_story2_supplements_limit.jpg?v=grw2', label: '조기 골화 지연 관리' }
         ]
@@ -362,15 +361,14 @@ const PAGES = [
         caption: '[소아 성장 노트] 성호르몬을 자극하지 않는 안전한 약재 배합으로 성장판 연골층의 활발한 증식을 유도합니다.',
         imgSrc: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2',
         thumbs: [
-          { img: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2', label: '성장판 연골 증식 3D' },
+          { img: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2', label: '성장판 연골 증식' },
           { img: 'illust_knee_growth_care.jpg', label: '무릎 성장판 기전' },
           { img: 'growth-diag-autonomic.jpg', label: '호르몬·자율신경 균형' }
         ]
       },
       {
         type: 'clean-image',
-        fullscreen: true,
-        stepLabel: 'STORY · 초음파 성장판 & 4대 기능 검사',
+        stepLabel: 'STORY · 초음파 성장판 & 전신 기능 검사',
         title: "초음파 성장판부터 비염·장·체형까지 '숨은 키'를 찾습니다",
         sub: '방사선 걱정 없는 초음파 성장판 검사와 소아 추나로 성장 길을 열어줍니다.',
         caption: '[소아 성장 노트] 척추·골반 정렬 교정과 성장혈 자극을 병행하여 바른 체형과 균형 잡힌 성장을 동시에 돕습니다.',
@@ -1474,68 +1472,33 @@ function buildPageHtml(page) {
     const formattedTitle = formatTitleEmphasis(p.title);
     if (p.type === 'growth-son-main-hero') {
       return `
-        <!-- PLATE ${numStr}: Director's Son Growth Enlarged Main Hero & Handwritten Pledge -->
+        <!-- PLATE ${numStr}: Director's Son Growth Enlarged Original Image Hero & Handwritten Pledge -->
         <article class="project-details-item is-growth-son-hero is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
           <div class="plate-media-inner growth-son-hero-inner">
             <div class="growth-son-hero-grid">
-              <!-- LEFT: ENLARGED 3-STAGE SON GROWTH PHOTOGRAPHY SHOWCASE -->
-              <div class="son-growth-visual-col">
-                <div class="son-visual-top-bar">
-                  <div class="son-visual-badge-group">
-                    <span class="son-live-badge"><span class="son-live-dot"></span>MAIN RECORD · 대표원장 친아들 실제 성장 기록</span>
-                    <span class="son-height-pill">초5 복용 시작 ➔ 중1 <strong>173cm 달성</strong></span>
-                  </div>
-                  <button type="button" class="son-zoom-trigger-btn" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son-comparison.png')">
-                    <span>🔍 원본 비교표 크게 확대</span>
+              <!-- LEFT: UNEDITED ORIGINAL SON GROWTH IMAGE ENLARGED SHOWCASE -->
+              <div class="son-growth-visual-col" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son.png')" title="클릭하여 원본 이미지 전체화면 확대">
+                <div class="son-original-frame">
+                  <img
+                    class="son-original-full-img"
+                    src="growth-director-son.png"
+                    onerror="this.onerror=null; this.src='growth-director-son-comparison.png';"
+                    alt="바른한의원 안정위 대표원장 친아들 성장한약 복용 비교 원본 이미지"
+                    draggable="false">
+                  <button type="button" class="son-original-zoom-pill" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son.png')">
+                    <span>🔍 원본 크게 확대보기</span>
                   </button>
-                </div>
-
-                <div class="son-3stage-photo-grid">
-                  <div class="son-photo-card" onclick="event.stopPropagation(); window.openCleanLightbox('growth_son_grade5.jpg')">
-                    <div class="son-photo-frame">
-                      <img src="growth_son_grade5.jpg" alt="안정위 대표원장 아들 초등학교 5학년 한약 복용 시작 당시" draggable="false">
-                      <span class="son-stage-step-tag">STEP 01 · 초등 5학년</span>
-                      <span class="son-photo-zoom-icon">🔍 클릭 확대</span>
-                    </div>
-                    <div class="son-photo-caption">
-                      <strong>초등 5학년 · 성장한약 시작</strong>
-                      <span>또래보다 작고 여렸던 시기 · 아빠의 첫 처방</span>
-                    </div>
-                  </div>
-
-                  <div class="son-photo-card" onclick="event.stopPropagation(); window.openCleanLightbox('growth_son_grade6.jpg')">
-                    <div class="son-photo-frame">
-                      <img src="growth_son_grade6.jpg" alt="안정위 대표원장 아들 초등학교 6학년 폭풍 성장기" draggable="false">
-                      <span class="son-stage-step-tag">STEP 02 · 초등 6학년</span>
-                      <span class="son-photo-zoom-icon">🔍 클릭 확대</span>
-                    </div>
-                    <div class="son-photo-caption">
-                      <strong>초등 6학년 · 성장판 골든타임</strong>
-                      <span>비위 흡수력 강화 및 성장판 연골 증식 가속</span>
-                    </div>
-                  </div>
-
-                  <div class="son-photo-card is-highlight-final" onclick="event.stopPropagation(); window.openCleanLightbox('growth_son_grade7.jpg')">
-                    <div class="son-photo-frame">
-                      <img src="growth_son_grade7.jpg" alt="안정위 대표원장 아들 중학교 1학년 173cm 달성" draggable="false">
-                      <span class="son-stage-step-tag is-gold">STEP 03 · 중학교 1학년 (173cm)</span>
-                      <span class="son-photo-zoom-icon">🔍 클릭 확대</span>
-                    </div>
-                    <div class="son-photo-caption">
-                      <strong>중학교 1학년 · 173cm 탄탄한 성장</strong>
-                      <span>성조숙증 우려 없이 균형 잡힌 골격 완성</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="son-visual-bottom-caption">
-                  <h2 class="son-hero-main-title">${formattedTitle}</h2>
-                  <p class="son-hero-main-sub">${p.sub}</p>
                 </div>
               </div>
 
-              <!-- RIGHT: DIRECTOR'S HANDWRITTEN PLEDGE (원장 친필 서약 & 친아들 처방 기록) -->
+              <!-- RIGHT: DIRECTOR'S HANDWRITTEN PLEDGE (원장 친필 서약 & 친아들 처방 기록 · 숫자 완전 제거) -->
               <div class="father-letter-box">
+                <div class="letter-top-hero-banner">
+                  <span class="son-live-badge"><span class="son-live-dot"></span>MAIN RECORD · 대표원장 친아들 실제 성장 스토리</span>
+                  <h2 class="son-hero-main-title">${formattedTitle}</h2>
+                  <p class="son-hero-main-sub">${p.sub}</p>
+                </div>
+
                 <div class="letter-eyebrow">
                   <span class="letter-eyebrow-line"></span>
                   <span>DIRECTOR'S HANDWRITTEN PLEDGE · 아빠의 마음으로 달인 성장한약</span>
@@ -1545,22 +1508,22 @@ function buildPageHtml(page) {
                   <span>세상 어떤 아이에게도 처방하지 않습니다"</span>
                 </h3>
                 <div class="letter-handwriting">
-                  "제 아들이 초등학교 5학년이 되었을 때, 또래보다 작은 키와 허약한 체력을 보며 한의사이기 이전에 한 명의 아버지로서 깊은 책임감을 느꼈습니다.<br><br>
-                  성장 골든타임을 놓치지 않기 위해 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 GAP 약재를 선별해 정성껏 달여 먹였습니다.<br>
-                  초5부터 꾸준히 복용한 끝에 <strong>중학교 1학년 무렵 173cm의 탄탄하고 바른 체격</strong>으로 자라났습니다. 내 아들을 키운 그 처방과 정성 그대로 우리 아이들을 진료합니다."
+                  "아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.<br><br>
+                  잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.<br>
+                  체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."
                 </div>
                 <div class="letter-milestone-row">
                   <div class="letter-milestone-chip">
-                    <span class="lm-label">START · 초등 5학년</span>
-                    <strong class="lm-val">비위·면역 기반 구축</strong>
+                    <span class="lm-label">기초 면역 리셋</span>
+                    <strong class="lm-val">비염 개선 · 소화 흡수 정상화</strong>
                   </div>
                   <div class="letter-milestone-chip">
-                    <span class="lm-label">GOLDEN TIME · 초등 6학년</span>
-                    <strong class="lm-val">연골모세포 증식 집중</strong>
+                    <span class="lm-label">성장판 골든타임</span>
+                    <strong class="lm-val">최상급 원용 분골 · 연골 증식</strong>
                   </div>
                   <div class="letter-milestone-chip is-accent">
-                    <span class="lm-label">RESULT · 중학교 1학년</span>
-                    <strong class="lm-val">173cm 달성 · 현재 진행형</strong>
+                    <span class="lm-label">탄탄한 피지컬 완성</span>
+                    <strong class="lm-val">성호르몬 균형 · 바른 골격 완성</strong>
                   </div>
                 </div>
                 <div class="letter-sign-row">
@@ -5403,28 +5366,31 @@ function buildPageHtml(page) {
     }
 
     /* ============================================================================
-       GROWTH MAIN HERO: ENLARGED SON GROWTH 3-STAGE SHOWCASE & FATHER LETTER BOX
+       GROWTH MAIN HERO: ENLARGED UNEDITED SON GROWTH IMAGE & FATHER LETTER BOX
+       (Larger than all other cards so it stands out immediately, zero numbers)
        ============================================================================ */
-    .project-details-item.is-growth-son-hero {
-      width: min(74vw, 1140px);
-      max-width: 1140px;
-      height: 82vh;
-      max-height: 750px;
-      background: linear-gradient(145deg, #16120E 0%, #1F1913 55%, #120E0B 100%);
-      border: 1.5px solid rgba(212, 175, 55, 0.55);
-      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.78), 0 0 42px rgba(212, 175, 55, 0.16);
+    .project-details-item.is-growth-son-hero,
+    body.theme-hanji .project-details-item.is-growth-son-hero {
+      width: min(82vw, 1260px) !important;
+      max-width: 1260px !important;
+      height: calc(100vh - 72px) !important;
+      max-height: 980px !important;
+      background: linear-gradient(145deg, #16120E 0%, #1F1913 55%, #120E0B 100%) !important;
+      border: 3px solid #D4AF37 !important;
+      box-shadow: 0 36px 100px rgba(0, 0, 0, 0.82), 0 0 60px rgba(212, 175, 55, 0.42), 0 0 0 4px rgba(212, 175, 55, 0.18) !important;
+      z-index: 5;
     }
     .growth-son-hero-inner {
-      padding: 20px 22px;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      overflow-y: auto;
-      scrollbar-width: thin;
+      height: 100%;
+      overflow: hidden;
     }
     .growth-son-hero-grid {
       display: grid;
-      grid-template-columns: 1.32fr 1fr;
+      grid-template-columns: clamp(330px, 38%, 450px) 1fr;
       gap: 18px;
       height: 100%;
       align-items: stretch;
@@ -5432,38 +5398,73 @@ function buildPageHtml(page) {
     .son-growth-visual-col {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-      background: rgba(10, 8, 6, 0.55);
-      border: 1px solid rgba(212, 175, 55, 0.28);
+      height: 100%;
+      min-height: 0;
       border-radius: 18px;
-      padding: 14px 16px;
+      overflow: hidden;
+      border: 2.5px solid #FDE68A;
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.65), 0 0 28px rgba(245, 130, 13, 0.35);
+      cursor: zoom-in;
+      background: linear-gradient(180deg, #F37800 0%, #FD8B00 50%, #F17400 100%);
+      position: relative;
     }
-    .son-visual-top-bar {
+    .son-original-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(180deg, #F37800 0%, #FD8B00 50%, #F17400 100%);
     }
-    .son-visual-badge-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+    .son-original-full-img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      object-position: center center;
+      display: block;
+      transform: scaleX(1.08) scaleY(1.02);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .son-growth-visual-col:hover .son-original-full-img {
+      transform: scaleX(1.11) scaleY(1.045);
+    }
+    .son-original-zoom-pill {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 4;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: rgba(15, 12, 10, 0.86);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid #FEF08A;
+      color: #FEF08A;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .son-original-zoom-pill:hover {
+      transform: translateY(-2px);
+      background: #14100C;
     }
     .son-live-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 11px;
+      padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(45, 90, 67, 0.85);
-      border: 1px solid rgba(110, 231, 183, 0.5);
+      background: #2D5A43;
+      border: 1px solid rgba(110, 231, 183, 0.55);
       color: #ECFDF5;
       font-size: 0.7rem;
       font-weight: 800;
       letter-spacing: 0.04em;
+      width: fit-content;
+      margin-bottom: 6px;
     }
     .son-live-dot {
       width: 7px;
@@ -5473,147 +5474,32 @@ function buildPageHtml(page) {
       box-shadow: 0 0 10px #34D399;
       animation: liveRecPulse 1.4s infinite ease-in-out;
     }
-    .son-height-pill {
-      padding: 5px 11px;
-      border-radius: 999px;
-      background: rgba(212, 175, 55, 0.18);
-      border: 1px solid rgba(253, 230, 138, 0.48);
-      color: #FEF3C7;
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-    .son-height-pill strong {
-      color: #FDE68A;
-      font-weight: 900;
-    }
-    .son-zoom-trigger-btn {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #D4AF37, #B58E24);
-      border: 1px solid #FEF08A;
-      color: #14100C;
-      font-size: 0.71rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .son-zoom-trigger-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.45);
-    }
-    .son-3stage-photo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      flex: 1;
-      min-height: 0;
-    }
-    .son-photo-card {
+    .letter-top-hero-banner {
       display: flex;
       flex-direction: column;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #1A1511;
-      border: 1.5px solid rgba(255, 255, 255, 0.14);
-      cursor: zoom-in;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
-    }
-    .son-photo-card:hover {
-      transform: translateY(-4px);
-      border-color: #FDE68A;
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
-    }
-    .son-photo-card.is-highlight-final {
-      border: 2px solid #D4AF37;
-      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.26);
-    }
-    .son-photo-frame {
-      position: relative;
-      flex: 1;
-      min-height: 220px;
-      overflow: hidden;
-      background: #0F0C0A;
-    }
-    .son-photo-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .son-photo-card:hover .son-photo-frame img {
-      transform: scale(1.06);
-    }
-    .son-stage-step-tag {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(15, 19, 25, 0.84);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      color: #F8FAFC;
-      font-size: 0.65rem;
-      font-weight: 800;
-    }
-    .son-stage-step-tag.is-gold {
-      background: linear-gradient(135deg, #D4AF37, #B58E24);
-      border-color: #FEF08A;
-      color: #14100C;
-    }
-    .son-photo-zoom-icon {
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(12, 14, 18, 0.78);
-      border: 1px solid rgba(253, 230, 138, 0.45);
-      color: #FDE68A;
-      font-size: 0.62rem;
-      font-weight: 700;
-    }
-    .son-photo-caption {
-      padding: 9px 10px;
-      background: rgba(20, 16, 13, 0.96);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .son-photo-caption strong {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: #FEF3C7;
-      line-height: 1.25;
-    }
-    .son-photo-caption span {
-      font-size: 0.67rem;
-      color: rgba(248, 250, 252, 0.75);
-      line-height: 1.3;
-    }
-    .son-visual-bottom-caption {
-      padding-top: 4px;
+      gap: 4px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid rgba(140, 101, 40, 0.22);
     }
     .son-hero-main-title {
       font-family: 'Noto Serif KR', serif;
       font-size: 1.18rem;
-      font-weight: 800;
-      color: #FFFFFF;
-      margin-bottom: 3px;
-      line-height: 1.3;
+      font-weight: 900;
+      color: #1F1914;
+      margin: 0;
+      line-height: 1.32;
     }
     .son-hero-main-title .title-key-em {
-      color: #FDE68A;
+      color: #2D5A43;
       text-decoration: underline;
       text-underline-offset: 4px;
     }
     .son-hero-main-sub {
-      font-size: 0.77rem;
-      color: rgba(255, 255, 255, 0.84);
-      line-height: 1.45;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4A3B2F;
+      line-height: 1.42;
+      margin: 0;
     }
 
     /* RIGHT COLUMN: FATHER LETTER BOX (원장 친필 서약 카드) */
@@ -5621,14 +5507,15 @@ function buildPageHtml(page) {
       background: linear-gradient(155deg, #FFFDF9 0%, #F6EFE2 100%);
       border: 2px solid #D4AF37;
       border-radius: 18px;
-      padding: 20px 22px;
+      padding: 18px 22px;
       color: #231F1C;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), inset 0 0 0 4px rgba(212, 175, 55, 0.14);
       position: relative;
+      overflow-y: auto;
     }
     .letter-eyebrow {
       display: flex;
@@ -5660,13 +5547,13 @@ function buildPageHtml(page) {
     }
     .letter-handwriting {
       font-family: 'Gowun Batang', 'Noto Serif KR', serif;
-      font-size: 0.86rem;
-      line-height: 1.68;
+      font-size: 0.88rem;
+      line-height: 1.72;
       color: #332920;
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.76);
       border-left: 3.5px solid #2D5A43;
       border-radius: 0 12px 12px 0;
-      padding: 13px 15px;
+      padding: 13px 16px;
       box-shadow: 0 4px 14px rgba(58, 42, 30, 0.05);
       word-break: keep-all;
     }
@@ -6469,15 +6356,22 @@ function buildPageHtml(page) {
 
     @media (max-width: 1024px) {
       .project-details-item.is-growth-son-hero,
+      body.theme-hanji .project-details-item.is-growth-son-hero {
+        width: 92vw !important;
+        height: calc(59dvh - 38px) !important;
+        max-height: calc(59dvh - 38px) !important;
+      }
       .project-details-item.is-diet-3stage-plate,
       .project-details-item.is-diet-tele-plate {
         width: 88vw;
       }
-      .growth-son-hero-grid {
-        grid-template-columns: 1fr;
+      .growth-son-hero-inner {
+        padding: 10px 12px;
+        overflow-y: auto;
       }
-      .son-photo-frame {
-        min-height: 150px;
+      .growth-son-hero-grid {
+        grid-template-columns: 42% 1fr;
+        gap: 10px;
       }
       .efficacy-3stage-grid {
         grid-template-columns: 1fr;
