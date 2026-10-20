@@ -1909,8 +1909,8 @@
       <span class="tap-pill-arrow">→</span>
     </button>
     <div class="story4-weight-counter" id="story4-weight-counter">
-      <span class="weight-live-num" id="weight-live-num" style="font-size:clamp(18px,2.4vw,26px);">학술 논문 검증 대사 해독</span>
-      <span class="weight-diff-badge" id="weight-diff-badge">✦ 갈색지방 활성화 · 내장지방 분해 검증 치료법</span>
+      <span class="weight-live-num" id="weight-live-num">68.5 kg</span>
+      <span class="weight-diff-badge" id="weight-diff-badge">▼ -0.0 kg 감량</span>
     </div>
     <p class="dialogue-sub-whisper" id="dialogue-sub-whisper"></p>
     <div class="dialogue-phase-steps" id="dialogue-phase-steps"></div>
@@ -3385,13 +3385,17 @@
           brushFill.style.width = `${Math.max(12, chProg * 100).toFixed(1)}%`;
         }
 
-        // Story 4 (성인 비만·체형 치료): Evidence-based metabolic verification badge
+        // Story 4 (성인 비만·체형 치료): Scroll-reactive weight loss counter (68.5kg -> 48.5kg)
         if (weightCounterEl) {
           const isStory4 = chapter.id === 4;
           weightCounterEl.classList.toggle('active', isStory4);
           if (isStory4) {
-            if (weightLiveNumEl) weightLiveNumEl.textContent = '학술 논문 검증 대사 해독';
-            if (weightDiffBadgeEl) weightDiffBadgeEl.textContent = '✦ 갈색지방 활성화 · 내장지방 분해 검증 치료법';
+            const startWeight = 68.5;
+            const targetWeight = 48.5;
+            const lostKg = chProg * (startWeight - targetWeight);
+            const currentKg = startWeight - lostKg;
+            if (weightLiveNumEl) weightLiveNumEl.textContent = `${currentKg.toFixed(1)} kg`;
+            if (weightDiffBadgeEl) weightDiffBadgeEl.textContent = `▼ -${lostKg.toFixed(1)} kg 감량`;
           }
         }
 
