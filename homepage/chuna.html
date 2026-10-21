@@ -4441,7 +4441,7 @@
     }
 
     /* STAGE 2 MOTION: Thermal Combustion & Fat Cluster Shrinkage */
-    .efficacy-visual-frame.thermal-frame img {
+    .efficacy-visual-frame.thermal-frame:not(.is-belly-shrink-motion) img {
       transform-origin: 50% 54%;
       animation: fatCombustionShrink 3.8s ease-in-out infinite;
     }
@@ -4508,9 +4508,9 @@
     .ember-spark.e5 { left: 56%; bottom: 20%; animation-delay: 1.6s; width: 8px; height: 8px; }
     .ember-spark.e6 { left: 68%; bottom: 30%; animation-delay: 2.0s; }
     @keyframes fatCombustionShrink {
-      0%, 100% { transform: scale(1.12); filter: brightness(0.98) saturate(1.02); }
-      35% { transform: scale(1.14); filter: brightness(1.18) saturate(1.32) contrast(1.08); }
-      72% { transform: scale(0.91); filter: brightness(1.1) saturate(1.16); }
+      0%, 100% { transform: scale(1.0); filter: brightness(0.98) saturate(1.02); }
+      35% { transform: scale(1.03); filter: brightness(1.12) saturate(1.22) contrast(1.05); }
+      72% { transform: scale(1.0); filter: brightness(1.06) saturate(1.1); }
     }
     @keyframes fireGlowBreathe {
       0%, 100% { transform: translate(-50%, -50%) scale(0.82); opacity: 0.55; }
@@ -5251,33 +5251,26 @@
     /* Card 04: Obese Belly (seq-1) -> Contracting Belly (seq-2) -> Slim Belly (seq-3) */
     .belly-seq-img.seq-1 {
       z-index: 1;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      opacity: 1;
+      transform: scale(1);
     }
     .belly-seq-img.seq-2 {
       z-index: 2;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation: bellySeqFrame2 5.4s ease-in-out infinite;
     }
     .belly-seq-img.seq-3 {
       z-index: 3;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-    @keyframes bellySeqFrame1 {
-      0%, 26% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
-      38%, 90% { opacity: 0; transform: scaleX(0.95) scaleY(1.0); }
-      100% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+      animation: bellySeqFrame3 5.4s ease-in-out infinite;
     }
     @keyframes bellySeqFrame2 {
-      0%, 22% { opacity: 0; transform: scaleX(1.04); }
-      32%, 58% { opacity: 1; transform: scaleX(0.96); }
-      68%, 100% { opacity: 0; transform: scaleX(0.91); }
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
     }
     @keyframes bellySeqFrame3 {
-      0%, 54% { opacity: 0; transform: scaleX(0.98); }
-      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      100% { opacity: 0; transform: scaleX(0.98); }
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
     }
     .belly-contract-arrows-svg {
       position: absolute;
@@ -5306,33 +5299,26 @@
     /* Card 03: Water-Filled Full Body (seq-1) -> Wringing Water Out (seq-2) -> Slim Full Body (seq-3) */
     .edema-seq-img.seq-1 {
       z-index: 1;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      opacity: 1;
+      transform: scale(1);
     }
     .edema-seq-img.seq-2 {
       z-index: 2;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation: edemaSeqFrame2 5.4s ease-in-out infinite;
     }
     .edema-seq-img.seq-3 {
       z-index: 3;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-    @keyframes edemaSeqFrame1 {
-      0%, 26% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
-      38%, 90% { opacity: 0; transform: scaleX(0.94) scaleY(1.02); }
-      100% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+      animation: edemaSeqFrame3 5.4s ease-in-out infinite;
     }
     @keyframes edemaSeqFrame2 {
-      0%, 22% { opacity: 0; transform: scaleX(1.05); }
-      32%, 58% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      68%, 100% { opacity: 0; transform: scaleX(0.89) scaleY(1.03); }
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
     }
     @keyframes edemaSeqFrame3 {
-      0%, 54% { opacity: 0; transform: scaleX(0.97); }
-      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      100% { opacity: 0; transform: scaleX(0.97); }
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
     }
     .water-drop.d5 { left: 26%; top: 44%; animation-delay: 0.4s; }
     .water-drop.d6 { right: 26%; top: 46%; animation-delay: 1.05s; }

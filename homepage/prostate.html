@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>바른 전립선 · 남성활력 — 바른한의원 대전본점 · 아빠 한의사 내 가족 주치의</title>
-  <meta name="description" content="아빠 한의사 · 내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 주치의 | 바른 전립선 · 남성활력 — 골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.">
+  <meta name="description" content="아빠 한의사 · 내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 주치의 | 바른 전립선 · 남성활력 — 전립선 울혈 압박으로 부어오른 조직을 감압하고 차가운 방광과 신장 원기를 따뜻하게 데워 시원한 배뇨와 남성 활력을 되찾아 드립니다. 국제 비뇨의학 학술 논문을 정밀 검수하여 재발 없는 근본 치료를 시행합니다.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="바른한의원 대전본점 · 아빠 한의사">
   <meta property="og:title" content="바른 전립선 · 남성활력 — 바른한의원 대전본점 (아빠 한의사 · 내 가족 주치의)">
-  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 하는 아빠 한의사 · 골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.">
+  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 하는 아빠 한의사 · 전립선 울혈 압박으로 부어오른 조직을 감압하고 차가운 방광과 신장 원기를 따뜻하게 데워 시원한 배뇨와 남성 활력을 되찾아 드립니다. 국제 비뇨의학 학술 논문을 정밀 검수하여 재발 없는 근본 치료를 시행합니다.">
   <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/illust_prostate_care.jpg">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -4441,7 +4441,7 @@
     }
 
     /* STAGE 2 MOTION: Thermal Combustion & Fat Cluster Shrinkage */
-    .efficacy-visual-frame.thermal-frame img {
+    .efficacy-visual-frame.thermal-frame:not(.is-belly-shrink-motion) img {
       transform-origin: 50% 54%;
       animation: fatCombustionShrink 3.8s ease-in-out infinite;
     }
@@ -4508,9 +4508,9 @@
     .ember-spark.e5 { left: 56%; bottom: 20%; animation-delay: 1.6s; width: 8px; height: 8px; }
     .ember-spark.e6 { left: 68%; bottom: 30%; animation-delay: 2.0s; }
     @keyframes fatCombustionShrink {
-      0%, 100% { transform: scale(1.12); filter: brightness(0.98) saturate(1.02); }
-      35% { transform: scale(1.14); filter: brightness(1.18) saturate(1.32) contrast(1.08); }
-      72% { transform: scale(0.91); filter: brightness(1.1) saturate(1.16); }
+      0%, 100% { transform: scale(1.0); filter: brightness(0.98) saturate(1.02); }
+      35% { transform: scale(1.03); filter: brightness(1.12) saturate(1.22) contrast(1.05); }
+      72% { transform: scale(1.0); filter: brightness(1.06) saturate(1.1); }
     }
     @keyframes fireGlowBreathe {
       0%, 100% { transform: translate(-50%, -50%) scale(0.82); opacity: 0.55; }
@@ -5251,33 +5251,26 @@
     /* Card 04: Obese Belly (seq-1) -> Contracting Belly (seq-2) -> Slim Belly (seq-3) */
     .belly-seq-img.seq-1 {
       z-index: 1;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      opacity: 1;
+      transform: scale(1);
     }
     .belly-seq-img.seq-2 {
       z-index: 2;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation: bellySeqFrame2 5.4s ease-in-out infinite;
     }
     .belly-seq-img.seq-3 {
       z-index: 3;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-    @keyframes bellySeqFrame1 {
-      0%, 26% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
-      38%, 90% { opacity: 0; transform: scaleX(0.95) scaleY(1.0); }
-      100% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+      animation: bellySeqFrame3 5.4s ease-in-out infinite;
     }
     @keyframes bellySeqFrame2 {
-      0%, 22% { opacity: 0; transform: scaleX(1.04); }
-      32%, 58% { opacity: 1; transform: scaleX(0.96); }
-      68%, 100% { opacity: 0; transform: scaleX(0.91); }
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
     }
     @keyframes bellySeqFrame3 {
-      0%, 54% { opacity: 0; transform: scaleX(0.98); }
-      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      100% { opacity: 0; transform: scaleX(0.98); }
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
     }
     .belly-contract-arrows-svg {
       position: absolute;
@@ -5306,33 +5299,26 @@
     /* Card 03: Water-Filled Full Body (seq-1) -> Wringing Water Out (seq-2) -> Slim Full Body (seq-3) */
     .edema-seq-img.seq-1 {
       z-index: 1;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      opacity: 1;
+      transform: scale(1);
     }
     .edema-seq-img.seq-2 {
       z-index: 2;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation: edemaSeqFrame2 5.4s ease-in-out infinite;
     }
     .edema-seq-img.seq-3 {
       z-index: 3;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-    @keyframes edemaSeqFrame1 {
-      0%, 26% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
-      38%, 90% { opacity: 0; transform: scaleX(0.94) scaleY(1.02); }
-      100% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+      animation: edemaSeqFrame3 5.4s ease-in-out infinite;
     }
     @keyframes edemaSeqFrame2 {
-      0%, 22% { opacity: 0; transform: scaleX(1.05); }
-      32%, 58% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      68%, 100% { opacity: 0; transform: scaleX(0.89) scaleY(1.03); }
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
     }
     @keyframes edemaSeqFrame3 {
-      0%, 54% { opacity: 0; transform: scaleX(0.97); }
-      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      100% { opacity: 0; transform: scaleX(0.97); }
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
     }
     .water-drop.d5 { left: 26%; top: 44%; animation-delay: 0.4s; }
     .water-drop.d6 { right: 26%; top: 46%; animation-delay: 1.05s; }
@@ -5728,49 +5714,49 @@
     <!-- LEFT CLINIC GUIDE & INTERACTIVE PATIENT EMPATHY CHECKLIST -->
     <aside id="project-details-meta">
       <div>
-        <div class="meta-eyebrow">PROSTATE & URINARY CLINIC · 학술 논문 검증 전립선·배뇨·남성활력</div>
+        <div class="meta-eyebrow">PROSTATE & URINARY CLINIC · 학술 논문 검증 전립선·남성활력</div>
         <h1 id="project-details-title">바른 전립선 · 남성활력</h1>
         <div class="meta-subtitle-en">Evidence-Based Prostate Decongestion, Bladder Control & Male Vitality</div>
 
         <div id="project-details-desc">
-          <p>골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.</p>
+          <p>전립선 울혈 압박으로 부어오른 조직을 감압하고 차가운 방광과 신장 원기를 따뜻하게 데워 시원한 배뇨와 남성 활력을 되찾아 드립니다. 국제 비뇨의학 학술 논문을 정밀 검수하여 재발 없는 근본 치료를 시행합니다.</p>
         </div>
 
         <!-- INTERACTIVE DAILY DISCOMFORT EMPATHY CHECKLIST -->
         <div class="empathy-checklist-card">
           <div class="empathy-checklist-header">
-            <span class="empathy-checklist-title">전립선 · 야간뇨 · 배뇨 자가 진단 체크리스트</span>
+            <span class="empathy-checklist-title">빈뇨 · 야간뇨 · 만성 전립선 자가 진단 체크리스트</span>
             <span class="empathy-count-badge" id="empathy-count-badge">증상 체크 전</span>
           </div>
           <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
           <div class="empathy-checklist-list" id="empathy-checklist-list">
             
             <label class="empathy-check-item" data-idx="0">
-              <input type="checkbox" class="empathy-check-input" value="[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 덜 본 듯 개운치 않다.">
+              <input type="checkbox" class="empathy-check-input" value="[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 시원하지 않고 잔뇨가 남는다.">
               <span class="empathy-check-box">
                 <svg viewBox="0 0 14 14" fill="none">
                   <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span class="empathy-check-text">[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 덜 본 듯 개운치 않다.</span>
+              <span class="empathy-check-text">[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 시원하지 않고 잔뇨가 남는다.</span>
             </label>
             <label class="empathy-check-item" data-idx="1">
-              <input type="checkbox" class="empathy-check-input" value="[야간뇨·수면장애] 밤에 소변 때문에 자주 깨어나 깊은 숙면을 취하기 어렵다.">
+              <input type="checkbox" class="empathy-check-input" value="[야간뇨·수면분절] 밤에 소변 때문에 1~2회 이상 깨어나 아침까지 깊은 숙면을 취하기 어렵다.">
               <span class="empathy-check-box">
                 <svg viewBox="0 0 14 14" fill="none">
                   <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span class="empathy-check-text">[야간뇨·수면장애] 밤에 소변 때문에 자주 깨어나 깊은 숙면을 취하기 어렵다.</span>
+              <span class="empathy-check-text">[야간뇨·수면분절] 밤에 소변 때문에 1~2회 이상 깨어나 아침까지 깊은 숙면을 취하기 어렵다.</span>
             </label>
             <label class="empathy-check-item" data-idx="2">
-              <input type="checkbox" class="empathy-check-input" value="[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 마려우면 참기 힘든 불편감이 있다.">
+              <input type="checkbox" class="empathy-check-input" value="[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 요의가 느껴지면 참기가 힘들다.">
               <span class="empathy-check-box">
                 <svg viewBox="0 0 14 14" fill="none">
                   <path d="M2.5 7.2L5.6 10.3L11.5 3.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span class="empathy-check-text">[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 마려우면 참기 힘든 불편감이 있다.</span>
+              <span class="empathy-check-text">[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 요의가 느껴지면 참기가 힘들다.</span>
             </label>
             <label class="empathy-check-item" data-idx="3">
               <input type="checkbox" class="empathy-check-input" value="[만성 골반통증] 항생제를 먹어도 회음부·고환·아랫배가 묵직하고 뻐근하다.">
@@ -5807,7 +5793,7 @@
         <button id="project-details-launch-cta" onclick="window.openConsultModal()">
           <span class="cta-left-group">
             <span id="project-details-launch-cta-dot"></span>
-            <span id="cta-btn-label">내 전립선·배뇨 증상 원장님과 프라이빗 상담하기</span>
+            <span id="cta-btn-label">내 전립선·배뇨 상태 원장님과 프라이빗 상담하기</span>
           </span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M7 17 17 7m0 0H8m9 0v9"/>
@@ -5824,38 +5810,23 @@
         <article class="project-details-item is-motion-plate is-active-plate" data-fullscreen>
           <span class="tiny-card-num-badge">01</span>
           <div class="plate-media-inner">
-            <div class="motion-video-stage" data-frames="illust_prostate_care.jpg|detail_gongjindan_story1_burnout_clock.jpg?v=gjd2|detail_director_story2_clean.jpg?v=oryzo3" data-duration="6.4">
-              <div class="motion-frame-layer frame-layer-a" style="background-image: url('illust_prostate_care.jpg');"></div>
-              <div class="motion-frame-layer frame-layer-b" style="background-image: url('detail_gongjindan_story1_burnout_clock.jpg?v=gjd2'); opacity: 0;"></div>
+            <div class="motion-video-stage" data-frames="prostate_minimal_card1_core_relief_a.jpg|prostate_minimal_card1_core_relief_b.jpg|prostate_minimal_card1_core_relief_c.jpg" data-duration="6">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('prostate_minimal_card1_core_relief_a.jpg');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('prostate_minimal_card1_core_relief_b.jpg'); opacity: 0;"></div>
               <canvas class="plate-fx-canvas" data-fx="prostate-pressure-pulse-fx"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
             <div class="plate-gradient-scrim"></div>
             <div class="plate-top-bar">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>STORY · 밤마다 깨어나는 야간뇨의 고통</span>
-              <span class="plate-metric-pill">전립선 울혈 압박 · 방광 저장력 저하 경보</span>
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>CORE MOTION · 바른 전립선 · 남성활력</span>
+              <span class="plate-metric-pill">전립선 울혈 감압 ▲ · 방광 저장력 & 남성 활력 ▲</span>
             </div>
             
             <div class="plate-bottom-caption">
               <div>
                 
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="motion" data-idx="0" data-img="illust_prostate_care.jpg" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="illust_prostate_care.jpg" alt="전립선·방광 압박 구조" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">전립선·방광 압박 구조</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="motion" data-idx="1" data-img="detail_gongjindan_story1_burnout_clock.jpg?v=gjd2" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_gongjindan_story1_burnout_clock.jpg?v=gjd2" alt="야간뇨 수면 분절" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">야간뇨 수면 분절</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="motion" data-idx="2" data-img="detail_director_story2_clean.jpg?v=oryzo3" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_story2_clean.jpg?v=oryzo3" alt="하초 기혈 정밀 진맥" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">하초 기혈 정밀 진맥</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">밤마다 잠을 깨우는 <span class="title-key-em">'야간뇨와 잔뇨감'</span>, 숙면과 일상이 무너집니다</h2>
-                <p class="plate-caption-sub">개운치 않은 배뇨와 끊기는 밤잠은 부어오른 전립선과 약해진 방광의 신호입니다.</p>
+                <h2 class="plate-caption-title">부어오른 전립선 압박을 풀고 방광과 남성 활력을 깨우는 근본 치료 — <span class="title-key-em">'바른 전립선 · 남성활력'</span></h2>
+                <p class="plate-caption-sub">항생제로도 반복되는 골반 울혈과 전립선 비대 압박을 근본적으로 감압하고, 차갑게 식은 방광과 신장 원기(腎陽)를 따뜻하게 채워 시원한 배뇨와 통잠을 되찾아 드립니다.</p>
               </div>
               <div class="plate-action-group">
                 <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
@@ -5865,187 +5836,200 @@
         </article>
 
         <!-- PLATE 02: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate">
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">02</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story2_clean.jpg?v=oryzo3" alt="항생제를 먹어도 재발하는 이유, 세균 아닌 '골반 울혈'입니다" draggable="false">
+            <img class="lusion-clean-media" src="prostate_minimal_card2_antibiotic_limit.jpg" alt="항생제·배뇨약만으로는 '굳어버린 골반 울혈과 약해진 방광'을 해결하지 못합니다" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 항생제로도 재발하는 만성 전립선염 원인</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_director_story2_clean.jpg?v=oryzo3" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_story2_clean.jpg?v=oryzo3" alt="하초 기혈 정밀 진맥" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">하초 기혈 정밀 진맥</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="illust_lumbar_pelvis.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="illust_lumbar_pelvis.jpg" alt="골반 울혈 해부도" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">골반 울혈 해부도</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">항생제를 먹어도 재발하는 이유, 세균 아닌 <span class="title-key-em">'골반 울혈'</span>입니다</h2>
-                <p class="plate-caption-sub">만성 전립선염 대다수는 골반 근육 긴장과 혈류 정체로 인한 비세균성 울혈입니다.</p>
+                
+                <h2 class="plate-caption-title">항생제·배뇨약만으로는 <span class="title-key-em">'굳어버린 골반 울혈과 약해진 방광'</span>을 해결하지 못합니다</h2>
+                <p class="plate-caption-sub">만성 전립선염과 배뇨 장애의 대다수는 세균이 아닌 골반 근육 긴장과 하초 혈류 정체(비세균성 울혈)가 원인입니다. 막힌 골반 혈류를 열어야 재발의 고리가 끊어집니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 03: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 03: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">03</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story4_decoction_lab.jpg?v=dir4new" alt="부어오른 전립선 압박은 풀고, '방광 저장력'은 따뜻하게 깨웁니다" draggable="false">
+            
+            <div class="efficacy-visual-frame detox-frame is-full-stage-frame is-edema-wring-motion">
+              <div class="edema-wring-seq-stage">
+                <img class="edema-seq-img seq-1" src="prostate_minimal_card3_decongestion_a.jpg" alt="물이 꽉 찬 부종 전신" loading="lazy" draggable="false">
+                <img class="edema-seq-img seq-2" src="prostate_minimal_card3_decongestion_b.jpg" alt="쥐어 짜서 물이 배출되는 전신" loading="lazy" draggable="false">
+                <img class="edema-seq-img seq-3" src="prostate_minimal_card3_decongestion_c.jpg" alt="물이 빠져 늘씬해진 전신" loading="lazy" draggable="false">
+              </div>
+              <div class="detox-slim-layer" aria-hidden="true">
+                <svg class="contour-cinch-guide" viewBox="0 0 240 240" fill="none">
+                  <path class="swollen-line-left" d="M62 46 Q36 120 62 194" />
+                  <path class="swollen-line-right" d="M178 46 Q204 120 178 194" />
+                  <path class="cinch-arrow left-arrow" d="M32 92 L78 92 M66 84 L78 92 L66 100" />
+                  <path class="cinch-arrow right-arrow" d="M208 92 L162 92 M174 84 L162 92 L174 100" />
+                  <path class="cinch-arrow left-arrow" d="M32 146 L78 146 M66 138 L78 146 L66 154" />
+                  <path class="cinch-arrow right-arrow" d="M208 146 L162 146 M174 138 L162 146 L174 154" />
+                </svg>
+                <span class="water-drop d1"></span>
+                <span class="water-drop d2"></span>
+                <span class="water-drop d3"></span>
+                <span class="water-drop d4"></span>
+                <span class="water-drop d5"></span>
+                <span class="water-drop d6"></span>
+              </div>
+              <div class="efficacy-motion-overlay"></div>
+            </div>
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 전립선 부종 감압 & 방광 온양(溫陽) 치료</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_director_story4_decoction_lab.jpg?v=dir4new" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_story4_decoction_lab.jpg?v=dir4new" alt="전립선·방광 맞춤 탕전" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">전립선·방광 맞춤 탕전</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_director_herbs.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_herbs.jpg" alt="보신온양 정품 약재" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">보신온양 정품 약재</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">부어오른 전립선 압박은 풀고, <span class="title-key-em">'방광 저장력'</span>은 따뜻하게 깨웁니다</h2>
-                <p class="plate-caption-sub">전립선 부종을 가라앉혀 요도를 넓히고 방광 괄약근을 보강해 통잠을 되찾습니다.</p>
+                <h2 class="plate-caption-title">골반 울혈 감압 & 하초 혈류 대순환 — <span class="title-key-em">'묵직하게 뭉친 골반·회음부 압박에서 막힌 어혈을 풀어 가뿐한 전신으로'</span></h2>
+                <p class="plate-caption-sub">오래 앉아 굳어버린 골반저 근육과 회음부·전립선 주위의 정체된 어혈·습담을 심부 온열 순환으로 배출하여, 묵직하고 뻐근하던 하복부를 가볍고 상쾌하게 변화시킵니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 04: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate">
+        <!-- PLATE 04: Revived Before/After Biomedical Scan Plate with Custom Content -->
+        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <span class="tiny-card-num-badge">04</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_chuna_story4_palpation.jpg?v=chuna2" alt="회음부 신경을 누르는 '골반 틀어짐'까지 정밀하게 교정합니다" draggable="false">
+          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
+            <img class="lusion-clean-media" id="runway-ba-before-img" src="prostate_minimal_card4_ba_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
+              <img class="lusion-clean-media" id="runway-ba-after-img" src="prostate_minimal_card4_ba_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 골반저 감압 추나 & 심부 약침 시술</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_chuna_story4_palpation.jpg?v=chuna2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_chuna_story4_palpation.jpg?v=chuna2" alt="골반저 감압 추나" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">골반저 감압 추나</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_chuna_pelvis.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_chuna_pelvis.jpg" alt="골반·천장관절 교정" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">골반·천장관절 교정</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_chuna_acupuncture.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_chuna_acupuncture.jpg" alt="하초 혈류 정제 약침" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">하초 혈류 정제 약침</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">회음부 신경을 누르는 <span class="title-key-em">'골반 틀어짐'</span>까지 정밀하게 교정합니다</h2>
-                <p class="plate-caption-sub">굳어진 골반저 근육을 추나로 이완하고 심부 약침으로 전립선 혈류를 깨웁니다.</p>
+                <h2 class="plate-caption-title">전립선 부종 감압 & 방광 저장력 복원 — <span class="title-key-em">'답답한 잔뇨감·야간뇨에서 시원한 쾌뇨와 끊김 없는 통잠으로'</span></h2>
+                <p class="plate-caption-sub">부어오른 전립선 조직의 압력을 낮춰 좁아진 요도 길을 시원하게 넓혀주고, 차갑고 예민해진 방광 괄약근을 보강하여 밤새 깨지 않는 깊은 숙면을 되찾아 드립니다.</p>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- PLATE 05: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate">
+        <!-- PLATE 05: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">05</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" alt="실제 학술 논문 검수로 입증된 '한방 전립선·배뇨 치료법'" draggable="false">
-            <div class="clean-plate-scrim"></div>
-            <div class="visual-sci-overlay">
-              
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">국제 비뇨의학회지(Urology) 검증</div>
-                <div class="sci-stat-label">만성 비세균성 전립선염·골반통증 배뇨 및 통증 개선 입증</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:96%"></div></div>
+            
+            <div class="efficacy-visual-frame neuro-frame is-full-stage-frame">
+              <img src="prostate_minimal_card5_stage1_bladder_calm.jpg" alt="1단계 식욕 중추 안정 모션" loading="lazy" draggable="false">
+              <div class="electric-zap-layer" aria-hidden="true">
+                <div class="zap-pulse-core"></div>
+                <div class="zap-wave-ring"></div>
+                <div class="zap-wave-ring ring-2"></div>
+                <svg class="zap-lightning-svg" viewBox="0 0 200 200" fill="none">
+                  <path class="zap-bolt bolt-1" d="M100 72 L84 52 L92 42 L72 22" />
+                  <path class="zap-bolt bolt-2" d="M114 78 L138 62 L130 50 L156 34" />
+                  <path class="zap-bolt bolt-3" d="M88 86 L62 82 L68 70 L42 64" />
+                  <path class="zap-bolt bolt-4" d="M112 92 L142 96 L134 108 L162 114" />
+                </svg>
+                <span class="spark-dot s1"></span>
+                <span class="spark-dot s2"></span>
+                <span class="spark-dot s3"></span>
+                <span class="spark-dot s4"></span>
               </div>
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">국제 식물학술지(Phytomedicine) 등재</div>
-                <div class="sci-stat-label">전립선 비대 조직 감압 및 하부요로증상 완화 검증</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div>
-              </div>
+              <div class="efficacy-motion-overlay"></div>
             </div>
+            <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 비뇨의학·약리 학술 논문 검수 완료</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_gongjindan_story5_royal_box_family.jpg?v=gjd2" alt="남성 원기·활력 복원" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">남성 원기·활력 복원</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_gongjindan_story5_morning_vitality.jpg?v=uniq1" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_gongjindan_story5_morning_vitality.jpg?v=uniq1" alt="끊김 없는 통잠 회복" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">끊김 없는 통잠 회복</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">실제 학술 논문 검수로 입증된 <span class="title-key-em">'한방 전립선·배뇨 치료법'</span></h2>
-                <p class="plate-caption-sub">국제 비뇨의학 학술지에서 전립선 비대 감압과 배뇨 개선이 입증된 치료입니다.</p>
+                <h2 class="plate-caption-title">과민성 방광 신경 안정 & 야간뇨 차단 — <span class="title-key-em">'예민한 배뇨 신경 진정과 아침까지 이어지는 깊은 숙면'</span></h2>
+                <p class="plate-caption-sub">조금만 소변이 차도 요의를 느끼는 과민성 방광 자율신경 신호를 안정시키고 항이뇨·수면 리듬을 회복시켜, 화장실 걱정 없는 편안한 밤과 일상을 만들어 드립니다.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 06: Single Main Image Plate -->
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">06</span>
+          <div class="plate-media-inner">
+            <img class="lusion-clean-media" src="prostate_minimal_card6_pelvic_chuna_care.jpg" alt="회음부 신경을 누르는 골반 틀어짐까지 바로잡는 — '골반저 감압 추나 & 심부 보신 약침'" draggable="false">
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                
+                <h2 class="plate-caption-title">회음부 신경을 누르는 골반 틀어짐까지 바로잡는 — <span class="title-key-em">'골반저 감압 추나 & 심부 보신 약침'</span></h2>
+                <p class="plate-caption-sub">전립선과 방광을 둘러싼 골반·천장관절의 구조적 비대칭을 대표원장 수기 추나로 정밀 교정하고, 고농축 정제 약침으로 하초 심부 혈류와 괄약근 탄력을 빠르게 깨웁니다.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 07: Single Main Image Plate -->
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">07</span>
+          <div class="plate-media-inner">
+            <img class="lusion-clean-media" src="prostate_minimal_card7_pulse_custom_herb.jpg" alt="간·신장 부담 없이 하초 원기를 채우는 — '대표원장 1:1 프라이빗 진맥 & 보신온양 맞춤 한약'" draggable="false">
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                
+                <h2 class="plate-caption-title">간·신장 부담 없이 하초 원기를 채우는 — <span class="title-key-em">'대표원장 1:1 프라이빗 진맥 & 보신온양 맞춤 한약'</span></h2>
+                <p class="plate-caption-sub">1:1 독립 진료실에서 세 손가락(촌·관·척) 정밀 맥진으로 하초(신장·방광·전립선)의 한열허실을 판독하고, 청열리습(염증·부종 배출)과 보신온양(남성 원기·활력 보강)을 결합한 맞춤 한약을 처방합니다.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 08: Single Main Image Plate -->
+        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">08</span>
+          <div class="plate-media-inner">
+            <img class="lusion-clean-media" src="prostate_minimal_card8_vitality_finale.jpg" alt="국제 학술 논문 검수로 입증된 '시원한 배뇨 · 끊김 없는 통잠 · 당당한 남성 활력'" draggable="false">
+            <div class="clean-plate-scrim"></div>
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                
+                <h2 class="plate-caption-title">국제 학술 논문 검수로 입증된 <span class="title-key-em">'시원한 배뇨 · 끊김 없는 통잠 · 당당한 남성 활력'</span></h2>
+                <p class="plate-caption-sub">국제 비뇨의학 학술지에서 전립선 조직 감압과 하부요로증상 개선 기전이 입증된 한방 치료로, 밤잠 설치던 피로를 걷어내고 아침의 당당한 활력을 되찾습니다.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PLATE 09: Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">09</span>
+          <div class="plate-media-inner">
+            <div class="motion-video-stage" data-frames="prostate_minimal_card9_trouble_1_nocturia.jpg?v=noct2|prostate_minimal_card9_trouble_2_driving.jpg|prostate_minimal_card9_trouble_3_pelvicpain.jpg" data-duration="6.6">
+              <div class="motion-frame-layer frame-layer-a" style="background-image: url('prostate_minimal_card9_trouble_1_nocturia.jpg?v=noct2');"></div>
+              <div class="motion-frame-layer frame-layer-b" style="background-image: url('prostate_minimal_card9_trouble_2_driving.jpg'); opacity: 0;"></div>
+              <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
+            <div class="plate-gradient-scrim"></div>
+            
+            
+            <div class="plate-bottom-caption">
+              <div>
+                
+                <h2 class="plate-caption-title">새벽마다 서너 번 깨는 야간뇨 · 장거리 운전·회의 중 급한 빈뇨 · 묵직한 회음부 통증과 활력 저하 — <span class="title-key-em">'참 곤란하다'</span></h2>
+                <p class="plate-caption-sub">새벽마다 소변 때문에 잠이 깨어 무너지는 숙면, 고속도로 운전이나 중요한 회의 중 갑자기 찾아오는 절박뇨와 잔뇨감, 오래 앉아 있을 때 묵직하게 올라오는 골반·회음부 통증과 남성 활력 저하까지 — 누구에게 말하기도 힘들어 가장 답답하고 곤란한 순간입니다.</p>
+              </div>
+              <div class="plate-action-group">
+                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
               </div>
             </div>
           </div>
         </article>
 
         <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
-          <span class="tiny-card-num-badge">06</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
-                  <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
-                  <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
-                </div>
-                <h2 class="plate-caption-title">바른 전립선 · 남성활력 — 치료 전·후 비교</h2>
-                <p class="plate-caption-sub">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
-              </div>
-            </div>
-          </div>
-        </article>
+        
 
         <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
         
-        <article id="project-details-preview" class="body-model-last-card">
-          <span class="tiny-card-num-badge">07</span>
-          <img class="next-portal-bg" src="illust_prostate_care.jpg" alt="인체모형으로 내 전립선·방광 원인 연결하기">
-          <div class="next-portal-scrim"></div>
-          <div class="body-model-holo-grid"></div>
-
-          <div class="body-model-top-bar">
-            <span class="body-model-badge-main">🧬 인체모형 통합 의학·논문 쇼룸</span>
-            <span class="body-model-badge-sub">전립선 · 방광 · 골반 인체모형</span>
+        <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card" style="cursor:pointer;" onclick="if(!event.target.closest('a')){const a=this.querySelector('a');if(a)window.location.href=a.href;}">
+          <span class="tiny-card-num-badge">10</span>
+          <div class="diet-card10-3d-bg" id="diet-our-3d-body-stage" aria-hidden="true">
+            <canvas id="diet-our-3d-body-canvas"></canvas>
           </div>
-
-          <div class="body-model-bottom-stage">
-            <a id="project-details-preview-inner" href="body-explorer.html?part=prostate">
-              <h2 id="project-details-preview-title">인체모형으로 내 전립선·방광 원인 연결하기</h2>
-              <p class="next-portal-desc">인체모형에서 전립선·방광 해부 구조와 실제 학술 논문으로 검증된 치료법을 한눈에 확인하세요.</p>
-              <div class="body-model-feature-chips">
-                <span class="body-model-chip">🧊 부위별 입체 해부 투시</span>
-                <span class="body-model-chip">🧘 맞춤 홈케어 · 식단</span>
-                <span class="body-model-chip">📑 실제 학술 논문 검수 근거</span>
-              </div>
-              <div id="project-details-preview-footer">
-                <span id="project-details-preview-footer-text">🧬 인체모형 통합 의학·논문 쇼룸으로 연결하기</span>
-                <div id="project-details-preview-footer-bar">
-                  <div id="project-details-preview-footer-bar-inner"></div>
-                </div>
-                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                  <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2 8h12m0 0-5.5 5.5M14 8 8.5 2.5"/>
-                </svg>
-              </div>
-            </a>
-          </div>
+          <a class="diet-honey-tip-only-center" href="body-explorer.html?part=prostate" aria-label="전립선 꿀팁 - 3D 인체모형 바로가기">
+            <h2 class="diet-honey-tip-only-title">전립선 꿀팁</h2>
+          </a>
         </article>
       </div>
     </section>
@@ -6100,7 +6084,7 @@
   <div id="consult-modal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="consult-modal-card">
       <h3 class="consult-modal-title">바른 전립선 · 남성활력 맞춤 진료 예약</h3>
-      <p class="consult-modal-sub">📝 체크하신 배뇨 불편 증상을 원장님께 먼저 보내고 프라이빗 상담을 받습니다.</p>
+      <p class="consult-modal-sub">📝 체크하신 전립선·배뇨 증상을 바탕으로 원장님과 1:1 프라이빗 상담을 받습니다.</p>
       <div class="modal-checked-summary" id="modal-checked-summary">
         체크된 일상 불편감 증상이 자동으로 이곳에 연동됩니다.
       </div>
@@ -6120,7 +6104,7 @@
         <p style="margin:0 0 10px 0;font-size:0.75rem;line-height:1.45;color:rgba(253,230,138,0.92);background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.32);padding:8px 10px;border-radius:10px;word-break:keep-all;">
           💡 <strong>신청하기</strong>를 누르시면 작성하신 예약 내용과 체크 증상이 <strong>자동 복사</strong>되며 <strong>바른한의원 카카오톡 채널 채팅창으로 즉시 자동 연결</strong>됩니다. (열린 채팅창에 <strong>붙여넣기</strong>만 해주시면 됩니다)
         </p>
-        <button type="submit" class="modal-submit-btn">💬 내 전립선·배뇨 증상 원장님과 프라이빗 상담하기 신청하기 (카카오 채널 자동 연결)</button>
+        <button type="submit" class="modal-submit-btn">💬 내 전립선·배뇨 상태 원장님과 프라이빗 상담하기 신청하기 (카카오 채널 자동 연결)</button>
       </form>
       <button class="plate-expand-btn" style="width:100%;padding:11px;margin-top:10px;" onclick="document.getElementById('consult-modal').classList.remove('open')">창 닫기</button>
     </div>
@@ -6707,7 +6691,7 @@
             window.triggerUrgent5CheckAlert();
           }
         }
-        ctaBtnLabel.textContent = '내 전립선·배뇨 증상 원장님과 프라이빗 상담하기';
+        ctaBtnLabel.textContent = '내 전립선·배뇨 상태 원장님과 프라이빗 상담하기';
       }
 
       updateChecklistState(false);
@@ -6765,7 +6749,7 @@
 
           const kakaoMsg = [
             '[바른한의원 대전본점 맞춤 진료예약 신청]',
-            '• 희망 클리닉: 바른 전립선 · 남성활력 (바른 전립선 · 배뇨 · 남성활력 클리닉)',
+            '• 희망 클리닉: 바른 전립선 · 남성활력 (바른 남성 · 전립선 · 배뇨활력 클리닉)',
             '• 예약자 성함: ' + name,
             '• 연락처: ' + phone,
             '• 체크 증상: ' + (checked.length ? checked.join(', ') : '없음'),
@@ -6783,7 +6767,7 @@
               parentName: name,
               parentTel: phone,
               childInfo: '바른 전립선 · 남성활력',
-              consultType: '바른 전립선 · 배뇨 · 남성활력 클리닉',
+              consultType: '바른 남성 · 전립선 · 배뇨활력 클리닉',
               symptoms: checked,
               parentMemo: memo
             })

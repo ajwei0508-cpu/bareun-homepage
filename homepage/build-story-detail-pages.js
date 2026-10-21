@@ -1299,51 +1299,67 @@ const PAGES = [
     plates: [
       {
         type: 'motion-story',
-        indexPill: 'STORY · 바닥난 생체 에너지 경보',
-        metricPill: '만성 번아웃 · 심뇌 기혈 고갈',
-        title: "자도 자도 가시지 않는 '깊은 피로', 몸속 원기가 '방전된 신호'입니다",
-        sub: '카페인과 각성제로 버티는 일상은 오히려 심장과 뇌신경의 남은 에너지를 앞당겨 소모시킵니다.',
-        caption: '[공진단 임상 노트] 극심한 과로와 스트레스 뒤에는 뇌혈류 저하와 자율신경 소진이 자리 잡고 있습니다.',
+        fullscreen: true,
+        indexPill: 'CORE MOTION · 바른 황제공진단',
+        metricPill: '뇌·심장 기혈 개통 ▲ · 만성 번아웃 원기 회복 ▲',
+        title: "방전된 뇌·심장 기혈을 깨워 전신 원기를 충전하는 황실 대보약 — '바른 황제공진단'",
+        sub: '식약처 CITES 인증 천연 사향의 개규(開竅) 힘으로 막힌 뇌·심장 혈류를 단숨에 열고, 1%까지 방전된 생체 에너지를 100% 활력으로 끌어올립니다.',
+        caption: '[황제공진단 핵심 원리] 천연 사향과 러시아산 원용 분골이 막힌 기혈을 뚫어 뇌·심장 원기를 빠르게 복원합니다.',
         frames: [
-          'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1',
-          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2'
-        ],
-        thumbs: [
-          { img: 'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1', label: '방전된 생체 배터리' },
-          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '만성 번아웃·과로' }
+          'gongjindan_minimal_card1_vitality_core_a.jpg',
+          'gongjindan_minimal_card1_vitality_core_b.jpg',
+          'gongjindan_minimal_card1_vitality_core_c.jpg'
         ],
         fx: 'battery-1pct-warning-fx',
-        durationSec: 6.4
+        durationSec: 6.0
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 일반 영양제가 그때뿐인 이유',
         title: "기혈의 그릇이 막혀 있으면, 아무리 좋은 영양분도 '스쳐 지나갑니다'",
         sub: '막힌 기혈의 수문을 먼저 열어주어야 몸에 들어온 귀한 영양분이 말초 혈관과 뇌 끝까지 도달합니다.',
-        caption: '[공진단 임상 노트] 밑 빠진 독에 물을 붓는 대증 보충이 아닌, 기혈 순환 통로를 여는 개규(開竅) 치료가 핵심입니다.',
-        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2',
-        cleanTags: [
-          '막힌 기혈 통로 개통',
-          '근본 원기(元氣)의 그릇 복원'
-        ]
+        caption: '[기혈 개통 핵심] 밑 빠진 독에 물을 붓는 대증 보충이 아닌, 기혈 순환 통로를 여는 개규(開竅) 치료가 핵심입니다.',
+        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2'
       },
       {
-        type: 'clean-image',
-        stepLabel: 'STORY · 천연 사향(麝香)의 개규·순환 원리',
-        title: "막힌 기혈의 수문을 단숨에 여는 핵심 약재, '천연 사향의 힘'",
-        sub: '사향의 활성 성분(L-Muscone)이 뇌혈관장벽을 직접 통과해 막힌 기혈을 열고 녹용·당귀·산수유의 약효를 전신에 전달합니다.',
-        caption: '[공진단 임상 노트] 머리의 열은 내리고 차가운 아랫배는 데우는 수승화강(水昇火降) 작용을 즉각적으로 이끌어냅니다.',
-        imgSrc: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2',
-        cleanTags: [
-          '사향 L-Muscone 뇌혈관장벽 통과',
-          '전신 기혈 및 수승화강 대순환'
+        type: 'diet-single-stage',
+        stage: 3,
+        fullscreen: true,
+        imgSrc: 'gongjindan_minimal_card3_circulation_a.jpg',
+        frames: [
+          'gongjindan_minimal_card3_circulation_a.jpg',
+          'gongjindan_minimal_card3_circulation_b.jpg',
+          'gongjindan_minimal_card3_circulation_c.jpg'
         ],
-        thumbs: [
-          { img: 'detail_gongjindan_story3_musk_floodgate.jpg?v=gjd2', label: '사향 개규(開竅) 수문' },
-          { img: 'detail_gongjindan_ingredients_macro.jpg', label: '사향·녹용·당귀·산수유' },
-          { img: 'detail_gongjindan_neuro_aura.jpg', label: '뇌·심장 기혈 대순환' }
-        ]
+        title: "수승화강(水昇火降) & 기혈 대순환 — '머리로 치솟은 열독과 막힌 기혈에서 사향 개규(開竅)로 맑아지는 전신'",
+        sub: '천연 사향의 활성 성분(L-Muscone)이 막힌 기혈의 수문을 단숨에 열어, 머리로 치솟은 상열(열독)은 시원하게 내리고 차갑게 식은 아랫배와 수족은 따뜻하게 데워 전신 활력을 깨웁니다.',
+        caption: '[수승화강 & 기혈 대순환] 천연 사향의 개규 작용으로 상열하한 불균형을 바로잡고 전신 기혈 순환을 회복시킵니다.'
+      },
+      {
+        type: 'runway-ba-scan',
+        fullscreen: true,
+        beforeImg: 'gongjindan_minimal_card4_ba_before.jpg',
+        afterImg: 'gongjindan_minimal_card4_ba_after.jpg',
+        title: "뇌·심장 원기 복원 & 만성 번아웃 회복 — '방전된 1% 만성 피로에서 100% 깨어나는 전신 활력'",
+        sub: '러시아산 최상단 원용 분골과 정품 사향이 고갈된 뇌혈류와 자율신경 에너지를 깊이 채워, 천근만근 무겁던 번아웃 신체에서 가볍고 총명한 활력으로 변화시킵니다.',
+        caption: '[뇌·심장 원기 복원 & 활력 완성] 방전된 만성 번아웃 상태에서 뇌·심장 기혈을 충전하여 맑고 탄탄한 활력을 되찾습니다.'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 1,
+        fullscreen: true,
+        imgSrc: 'gongjindan_minimal_card5_stage1_brain_calm.jpg',
+        title: "뇌신경 피로 진정 & 심장 자율신경 안정 — '브레인 포그·가슴 두근거림 차단과 깊은 숙면 회복'",
+        sub: '과열된 교감신경과 뇌 피로 신호(브레인 포그)를 천연 사향과 산수유·당귀 성분이 빠르게 진정시켜 심장 두근거림을 가라앉히고 깊은 숙면과 총명한 집중력을 깨웁니다.',
+        caption: '[뇌신경 진정 & 자율신경 안정] 과긴장된 뇌·심장 신경계를 안정시켜 브레인 포그를 걷어내고 깊은 숙면을 돕습니다.'
+      },
+      {
+        type: 'gongjindan-panorama-archive',
+        fullscreen: true,
+        stepLabel: 'ARCHIVE PANORAMA · 황제공진단 공식 브로슈어 10대 화보 파노라마',
+        title: "한눈에 넘겨보는 '바른 황제공진단' 특허·성분·성적서 파노라마 아카이브",
+        sub: '제조특허 제10-1744704호부터 사향 씨알 단면, 러시아산 원용 분골, 유해물질 0ppm 성적서, 황실 자개함까지 파노라마로 넘겨보세요.',
+        caption: '[황제공진단 파노라마 아카이브] 과거 황제공진단 공식 브로슈어 10장(P.01~P.10)을 한 카드에 모아 파노라마처럼 좌우로 넘기며 확인하실 수 있습니다.'
       },
       {
         type: 'clean-image',
@@ -1364,38 +1380,60 @@ const PAGES = [
       },
       {
         type: 'clean-image',
-        stepLabel: 'STORY · 국제 신경약리학 학술 논문 검수 완료',
+        fullscreen: true,
         title: "실제 학술 논문 검수로 입증된 '뇌·심장 원기 회복'과 품격 있는 선물",
         sub: '국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 입증된 원방 공진단만을 조제합니다.',
-        caption: '[학술 논문 검수] 국제 학술지(J Ethnopharmacology, Front Pharmacol) 연구를 통해 공진단과 사향의 신경 보호·피로 회복 기전이 입증되었습니다.',
-        imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
-        thumbs: [
-          { img: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2', label: '소중한 분께 품격 선물' },
-          { img: 'detail_gongjindan_story5_morning_vitality.jpg?v=uniq1', label: '아침 활력·원기 회복' },
-          { img: 'gongjindan_lineup_luxury.jpg', label: '황제공진단 라인업' }
-        ],
-        sciStats: [
-          { num: '국제 민족약리학회지(J Ethnopharmacol) 검증', label: '뇌신경 영양인자 발현 촉진 및 만성피로·기억력 개선 입증', width: '96%' },
-          { num: '국제 약리학술지(Front Pharmacol) 등재', label: '천연 사향의 뇌혈관장벽 투과 및 심뇌혈류 보호 기전 검증', width: '94%' }
-        ]
+        caption: '[학술 논문 검수 & 품격 완성] 국제 학술지(J Ethnopharmacology, Front Pharmacol) 연구를 통해 공진단과 사향의 신경 보호·피로 회복 기전이 입증되었습니다.',
+        imgSrc: 'gongjindan_minimal_card8_vitality_finale.jpg'
       },
       {
-        type: 'gongjindan-panorama-archive',
+        type: 'motion-story',
         fullscreen: true,
-        stepLabel: 'ARCHIVE PANORAMA · 황제공진단 공식 브로슈어 10대 화보 파노라마',
-        title: "한눈에 넘겨보는 '바른 황제공진단' 특허·성분·성적서 파노라마 아카이브",
-        sub: '제조특허 제10-1744704호부터 사향 씨알 단면, 러시아산 원용 분골, 유해물질 0ppm 성적서, 황실 자개함까지 파노라마로 넘겨보세요.',
-        caption: '[황제공진단 파노라마 아카이브] 과거 황제공진단 공식 브로슈어 10장(P.01~P.10)을 한 카드에 모아 파노라마처럼 좌우로 넘기며 확인하실 수 있습니다.'
+        hideTopBar: true,
+        title: "아침마다 눈 뜨기 힘든 만성 번아웃 · 중요한 일정을 앞둔 브레인 포그 · 급격히 기력이 떨어진 부모님 — '참 곤란하다'",
+        sub: '잠을 자도 몸이 천근만근 무거운 아침 피로, 중요한 회의와 시험을 앞두고 머리가 멍해지는 집중력 저하, 몰라보게 기력이 쇠약해진 부모님 건강까지 — 바닥난 원기로 가장 막막하고 곤란한 순간입니다.',
+        caption: '[원기 고갈로 곤란한 3대 상황] 만성 번아웃 · 두뇌 피로 브레인 포그 · 부모님 기력 저하로 가장 곤란한 순간입니다.',
+        frames: [
+          'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1',
+          'gongjindan_minimal_card9_trouble_2_brainfog.jpg',
+          'gongjindan_minimal_card9_trouble_3_parents.jpg'
+        ],
+        fx: 'sunlight-bokeh',
+        durationSec: 6.6
       }
     ],
     bodyModelCard: {
       href: 'body-explorer.html?part=gongjindan',
       part: 'gongjindan',
+      useOur3DBodyModel: true,
+      honeyTipLabel: '공진단 꿀팁',
       partBadge: '뇌 · 심장 · 기혈순환 인체모형',
-      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
-      title: '인체모형으로 내 뇌·심장 활력 연결하기',
-      desc: '인체모형에서 뇌·심장 기혈 대순환 원리와 실제 학술 논문으로 검증된 황제공진단 효능을 확인하세요.',
-      bg: 'illust_gongjindan_heart_brain.jpg'
+      eyebrow: '3D HUMAN BODY MODEL · GONGJINDAN HONEY-TIP WAREHOUSE',
+      title: "알아두면 약효가 배가되는 '공진단 꿀팁 창고'",
+      desc: '천연 사향의 개규(開竅) 흡수율과 뇌·심장 기혈 순환을 극대화하는 대표원장 실전 복용·보관 꿀팁입니다.',
+      bg: 'illust_gongjindan_heart_brain.jpg',
+      extraInfoItems: [
+        {
+          badge: '꿀팁 01 · 아침 기상 직후 공복 복용',
+          title: '아침 공복에 따뜻한 미온수와 함께 복용하기',
+          desc: '위장이 비어 있는 아침 공복에 복용하시면 사향과 녹용의 유효 성분이 가장 빠르고 온전하게 흡수됩니다.'
+        },
+        {
+          badge: '꿀팁 02 · 오래 꼭꼭 씹어서 복용',
+          title: '순금박째 천천히 오래 씹어 향기를 머금기',
+          desc: '사향의 방향성 개규 성분(L-Muscone)이 구강 점막과 후각 신경을 통해 뇌혈관과 심장으로 즉각 전달됩니다.'
+        },
+        {
+          badge: '꿀팁 03 · 복용 중 피해야 할 음식',
+          title: '녹두·숙주나물·찬 음료·과도한 카페인 피하기',
+          desc: '약효를 중화시키는 녹두류와 위장 온도를 낮추는 찬 음식은 피하시고 따뜻한 대추차나 미온수를 곁들이세요.'
+        },
+        {
+          badge: '꿀팁 04 · 사향 향기 보존 보관법',
+          title: '직사광선을 피해 서늘한 상온에 밀폐 보관',
+          desc: '냉동 보관 시 제형이 딱딱해지고 결로가 생길 수 있으므로, 전용 케이스와 보자기에 감싸 서늘한 곳에 보관하세요.'
+        }
+      ]
     },
     nextClinic: {
       href: 'prostate.html',
@@ -1425,20 +1463,20 @@ const PAGES = [
       glowB: 'rgba(45, 90, 67, 0.08)'
     },
     meta: {
-      eyebrow: 'PROSTATE & URINARY CLINIC · 학술 논문 검증 전립선·배뇨·남성활력',
+      eyebrow: 'PROSTATE & URINARY CLINIC · 학술 논문 검증 전립선·남성활력',
       title: '바른 전립선 · 남성활력',
       subtitleEn: 'Evidence-Based Prostate Decongestion, Bladder Control & Male Vitality',
       desc: [
-        '골반 울혈로 부어오른 전립선을 감압하고 차가운 방광을 데워 통잠과 남성 활력을 되찾아 드립니다. 비뇨의학 학술 논문을 정밀 검수하여 안전성이 입증된 한의학 치료법을 시행합니다.'
+        '전립선 울혈 압박으로 부어오른 조직을 감압하고 차가운 방광과 신장 원기를 따뜻하게 데워 시원한 배뇨와 남성 활력을 되찾아 드립니다. 국제 비뇨의학 학술 논문을 정밀 검수하여 재발 없는 근본 치료를 시행합니다.'
       ],
-      ctaNudge: '📝 체크하신 배뇨 불편 증상을 원장님께 먼저 보내고 프라이빗 상담을 받습니다.',
-      ctaText: '내 전립선·배뇨 증상 원장님과 프라이빗 상담하기',
-      reserveProgram: '바른 전립선 · 배뇨 · 남성활력 클리닉',
-      checklistTitle: '전립선 · 야간뇨 · 배뇨 자가 진단 체크리스트',
+      ctaNudge: '📝 체크하신 전립선·배뇨 증상을 바탕으로 원장님과 1:1 프라이빗 상담을 받습니다.',
+      ctaText: '내 전립선·배뇨 상태 원장님과 프라이빗 상담하기',
+      reserveProgram: '바른 남성 · 전립선 · 배뇨활력 클리닉',
+      checklistTitle: '빈뇨 · 야간뇨 · 만성 전립선 자가 진단 체크리스트',
       checklistItems: [
-        '[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 덜 본 듯 개운치 않다.',
-        '[야간뇨·수면장애] 밤에 소변 때문에 자주 깨어나 깊은 숙면을 취하기 어렵다.',
-        '[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 마려우면 참기 힘든 불편감이 있다.',
+        '[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 시원하지 않고 잔뇨가 남는다.',
+        '[야간뇨·수면분절] 밤에 소변 때문에 1~2회 이상 깨어나 아침까지 깊은 숙면을 취하기 어렵다.',
+        '[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 요의가 느껴지면 참기가 힘들다.',
         '[만성 골반통증] 항생제를 먹어도 회음부·고환·아랫배가 묵직하고 뻐근하다.',
         '[남성 활력 저하] 배뇨 불편감과 함께 만성 피로 및 하체·남성 활력 저하가 느껴진다.'
       ],
@@ -1451,87 +1489,131 @@ const PAGES = [
       {
         type: 'motion-story',
         fullscreen: true,
-        indexPill: 'STORY · 밤마다 깨어나는 야간뇨의 고통',
-        metricPill: '전립선 울혈 압박 · 방광 저장력 저하 경보',
-        title: "밤마다 잠을 깨우는 '야간뇨와 잔뇨감', 숙면과 일상이 무너집니다",
-        sub: '개운치 않은 배뇨와 끊기는 밤잠은 부어오른 전립선과 약해진 방광의 신호입니다.',
-        caption: '[전립선 임상 노트] 야간뇨로 깊은 수면이 끊기면 만성 피로와 면역력·남성 활력 저하가 연쇄적으로 발생합니다.',
+        indexPill: 'CORE MOTION · 바른 전립선 · 남성활력',
+        metricPill: '전립선 울혈 감압 ▲ · 방광 저장력 & 남성 활력 ▲',
+        title: "부어오른 전립선 압박을 풀고 방광과 남성 활력을 깨우는 근본 치료 — '바른 전립선 · 남성활력'",
+        sub: '항생제로도 반복되는 골반 울혈과 전립선 비대 압박을 근본적으로 감압하고, 차갑게 식은 방광과 신장 원기(腎陽)를 따뜻하게 채워 시원한 배뇨와 통잠을 되찾아 드립니다.',
+        caption: '[전립선·남성활력 핵심 원리] 전립선 울혈 감압과 보신온양(방광·신장 원기 강화)으로 배뇨 기능과 남성 활력을 동시에 복원합니다.',
         frames: [
-          'illust_prostate_care.jpg',
-          'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2',
-          'detail_director_story2_clean.jpg?v=oryzo3'
-        ],
-        thumbs: [
-          { img: 'illust_prostate_care.jpg', label: '전립선·방광 압박 구조' },
-          { img: 'detail_gongjindan_story1_burnout_clock.jpg?v=gjd2', label: '야간뇨 수면 분절' },
-          { img: 'detail_director_story2_clean.jpg?v=oryzo3', label: '하초 기혈 정밀 진맥' }
+          'prostate_minimal_card1_core_relief_a.jpg',
+          'prostate_minimal_card1_core_relief_b.jpg',
+          'prostate_minimal_card1_core_relief_c.jpg'
         ],
         fx: 'prostate-pressure-pulse-fx',
-        durationSec: 6.4
-      },
-      {
-        type: 'clean-image',
-        stepLabel: 'STORY · 항생제로도 재발하는 만성 전립선염 원인',
-        title: "항생제를 먹어도 재발하는 이유, 세균 아닌 '골반 울혈'입니다",
-        sub: '만성 전립선염 대다수는 골반 근육 긴장과 혈류 정체로 인한 비세균성 울혈입니다.',
-        caption: '[전립선 임상 노트] 막힌 골반 혈류를 열고 부어오른 전립선 조직의 압력을 낮춰야 재발의 고리를 끊을 수 있습니다.',
-        imgSrc: 'detail_director_story2_clean.jpg?v=oryzo3',
-        thumbs: [
-          { img: 'detail_director_story2_clean.jpg?v=oryzo3', label: '하초 기혈 정밀 진맥' },
-          { img: 'illust_lumbar_pelvis.jpg', label: '골반 울혈 해부도' }
-        ]
+        durationSec: 6.0
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 전립선 부종 감압 & 방광 온양(溫陽) 치료',
-        title: "부어오른 전립선 압박은 풀고, '방광 저장력'은 따뜻하게 깨웁니다",
-        sub: '전립선 부종을 가라앉혀 요도를 넓히고 방광 괄약근을 보강해 통잠을 되찾습니다.',
-        caption: '[전립선 임상 노트] 청열리습(부종·염증 완화)과 보신온양(방광·신장 원기 회복)을 결합한 체질 맞춤 탕전입니다.',
-        imgSrc: 'detail_director_story4_decoction_lab.jpg?v=dir4new',
-        thumbs: [
-          { img: 'detail_director_story4_decoction_lab.jpg?v=dir4new', label: '전립선·방광 맞춤 탕전' },
-          { img: 'detail_director_herbs.jpg', label: '보신온양 정품 약재' }
-        ]
+        title: "항생제·배뇨약만으로는 '굳어버린 골반 울혈과 약해진 방광'을 해결하지 못합니다",
+        sub: '만성 전립선염과 배뇨 장애의 대다수는 세균이 아닌 골반 근육 긴장과 하초 혈류 정체(비세균성 울혈)가 원인입니다. 막힌 골반 혈류를 열어야 재발의 고리가 끊어집니다.',
+        caption: '[재발 단절 핵심] 일시적인 증상 억제가 아니라 골반 울혈을 풀고 방광 저장력을 회복하는 근본 치료가 핵심입니다.',
+        imgSrc: 'prostate_minimal_card2_antibiotic_limit.jpg'
       },
       {
-        type: 'clean-image',
-        stepLabel: 'STORY · 골반저 감압 추나 & 심부 약침 시술',
-        title: "회음부 신경을 누르는 '골반 틀어짐'까지 정밀하게 교정합니다",
-        sub: '굳어진 골반저 근육을 추나로 이완하고 심부 약침으로 전립선 혈류를 깨웁니다.',
-        caption: '[전립선 임상 노트] 골반 구조 교정과 약침·한약을 병행하여 회음부 뻐근함과 배뇨 불편을 입체적으로 개선합니다.',
-        imgSrc: 'detail_chuna_story4_palpation.jpg?v=chuna2',
-        thumbs: [
-          { img: 'detail_chuna_story4_palpation.jpg?v=chuna2', label: '골반저 감압 추나' },
-          { img: 'detail_chuna_pelvis.jpg', label: '골반·천장관절 교정' },
-          { img: 'detail_chuna_acupuncture.jpg', label: '하초 혈류 정제 약침' }
-        ]
-      },
-      {
-        type: 'clean-image',
-        stepLabel: 'STORY · 비뇨의학·약리 학술 논문 검수 완료',
-        title: "실제 학술 논문 검수로 입증된 '한방 전립선·배뇨 치료법'",
-        sub: '국제 비뇨의학 학술지에서 전립선 비대 감압과 배뇨 개선이 입증된 치료입니다.',
-        caption: '[학술 논문 검수] 국제 학술지(Urology, Phytomedicine) 연구를 통해 만성 전립선염 통증 완화 및 전립선 비대 조직 감압 기전이 검증되었습니다.',
-        imgSrc: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2',
-        thumbs: [
-          { img: 'detail_gongjindan_story5_royal_box_family.jpg?v=gjd2', label: '남성 원기·활력 복원' },
-          { img: 'detail_gongjindan_story5_morning_vitality.jpg?v=uniq1', label: '끊김 없는 통잠 회복' }
+        type: 'diet-single-stage',
+        stage: 3,
+        fullscreen: true,
+        imgSrc: 'prostate_minimal_card3_decongestion_a.jpg',
+        frames: [
+          'prostate_minimal_card3_decongestion_a.jpg',
+          'prostate_minimal_card3_decongestion_b.jpg',
+          'prostate_minimal_card3_decongestion_c.jpg'
         ],
-        sciStats: [
-          { num: '국제 비뇨의학회지(Urology) 검증', label: '만성 비세균성 전립선염·골반통증 배뇨 및 통증 개선 입증', width: '96%' },
-          { num: '국제 식물학술지(Phytomedicine) 등재', label: '전립선 비대 조직 감압 및 하부요로증상 완화 검증', width: '94%' }
-        ]
+        title: "골반 울혈 감압 & 하초 혈류 대순환 — '묵직하게 뭉친 골반·회음부 압박에서 막힌 어혈을 풀어 가뿐한 전신으로'",
+        sub: '오래 앉아 굳어버린 골반저 근육과 회음부·전립선 주위의 정체된 어혈·습담을 심부 온열 순환으로 배출하여, 묵직하고 뻐근하던 하복부를 가볍고 상쾌하게 변화시킵니다.',
+        caption: '[골반 울혈 해독 & 혈류 순환] 정체된 골반·전립선 울혈을 풀고 하초 기혈 순환을 깨워 묵직한 통증과 압박감을 해소합니다.'
+      },
+      {
+        type: 'runway-ba-scan',
+        fullscreen: true,
+        beforeImg: 'prostate_minimal_card4_ba_before.jpg',
+        afterImg: 'prostate_minimal_card4_ba_after.jpg',
+        title: "전립선 부종 감압 & 방광 저장력 복원 — '답답한 잔뇨감·야간뇨에서 시원한 쾌뇨와 끊김 없는 통잠으로'",
+        sub: '부어오른 전립선 조직의 압력을 낮춰 좁아진 요도 길을 시원하게 넓혀주고, 차갑고 예민해진 방광 괄약근을 보강하여 밤새 깨지 않는 깊은 숙면을 되찾아 드립니다.',
+        caption: '[전립선 감압 & 쾌뇨 완성] 전립선 비대·부종 압박을 줄이고 방광 저장력을 높여 시원한 배뇨와 숙면을 완성합니다.'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 1,
+        fullscreen: true,
+        imgSrc: 'prostate_minimal_card5_stage1_bladder_calm.jpg',
+        title: "과민성 방광 신경 안정 & 야간뇨 차단 — '예민한 배뇨 신경 진정과 아침까지 이어지는 깊은 숙면'",
+        sub: '조금만 소변이 차도 요의를 느끼는 과민성 방광 자율신경 신호를 안정시키고 항이뇨·수면 리듬을 회복시켜, 화장실 걱정 없는 편안한 밤과 일상을 만들어 드립니다.',
+        caption: '[방광 자율신경 안정 & 통잠 회복] 과민해진 방광 신경을 진정시켜 빈뇨·절박뇨·야간뇨를 근본적으로 줄여줍니다.'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "회음부 신경을 누르는 골반 틀어짐까지 바로잡는 — '골반저 감압 추나 & 심부 보신 약침'",
+        sub: '전립선과 방광을 둘러싼 골반·천장관절의 구조적 비대칭을 대표원장 수기 추나로 정밀 교정하고, 고농축 정제 약침으로 하초 심부 혈류와 괄약근 탄력을 빠르게 깨웁니다.',
+        caption: '[골반저 감압 추나 & 심부 약침] 골반 구조 교정과 심부 약침 치료를 병행하여 만성 골반통과 배뇨 장애를 입체적으로 다스립니다.',
+        imgSrc: 'prostate_minimal_card6_pelvic_chuna_care.jpg'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "간·신장 부담 없이 하초 원기를 채우는 — '대표원장 1:1 프라이빗 진맥 & 보신온양 맞춤 한약'",
+        sub: '1:1 독립 진료실에서 세 손가락(촌·관·척) 정밀 맥진으로 하초(신장·방광·전립선)의 한열허실을 판독하고, 청열리습(염증·부종 배출)과 보신온양(남성 원기·활력 보강)을 결합한 맞춤 한약을 처방합니다.',
+        caption: '[1:1 프라이빗 진맥 & 보신온양 한약] 대표원장의 정밀 맥진과 식약처 GMP 청정 약재로 전립선 건강과 남성 활력을 안전하게 채웁니다.',
+        imgSrc: 'prostate_minimal_card7_pulse_custom_herb.jpg'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "국제 학술 논문 검수로 입증된 '시원한 배뇨 · 끊김 없는 통잠 · 당당한 남성 활력'",
+        sub: '국제 비뇨의학 학술지에서 전립선 조직 감압과 하부요로증상 개선 기전이 입증된 한방 치료로, 밤잠 설치던 피로를 걷어내고 아침의 당당한 활력을 되찾습니다.',
+        caption: '[배뇨 & 남성 활력 완성] 국제 학술지(Urology, Phytomedicine) 연구로 검증된 전립선 감압·온양 치료로 통잠과 남성 활력을 완성합니다.',
+        imgSrc: 'prostate_minimal_card8_vitality_finale.jpg'
+      },
+      {
+        type: 'motion-story',
+        fullscreen: true,
+        hideTopBar: true,
+        title: "새벽마다 서너 번 깨는 야간뇨 · 장거리 운전·회의 중 급한 빈뇨 · 묵직한 회음부 통증과 활력 저하 — '참 곤란하다'",
+        sub: '새벽마다 소변 때문에 잠이 깨어 무너지는 숙면, 고속도로 운전이나 중요한 회의 중 갑자기 찾아오는 절박뇨와 잔뇨감, 오래 앉아 있을 때 묵직하게 올라오는 골반·회음부 통증과 남성 활력 저하까지 — 누구에게 말하기도 힘들어 가장 답답하고 곤란한 순간입니다.',
+        caption: '[전립선·배뇨 장애로 곤란한 3대 상황] 새벽 야간뇨 · 회의·운전 중 빈뇨 · 만성 골반통과 활력 저하로 가장 곤란한 순간입니다.',
+        frames: [
+          'prostate_minimal_card9_trouble_1_nocturia.jpg?v=noct2',
+          'prostate_minimal_card9_trouble_2_driving.jpg',
+          'prostate_minimal_card9_trouble_3_pelvicpain.jpg'
+        ],
+        fx: 'sunlight-bokeh',
+        durationSec: 6.6
       }
     ],
     bodyModelCard: {
       href: 'body-explorer.html?part=prostate',
       part: 'prostate',
+      useOur3DBodyModel: true,
+      honeyTipLabel: '전립선 꿀팁',
       partBadge: '전립선 · 방광 · 골반 인체모형',
-      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
-      title: '인체모형으로 내 전립선·방광 원인 연결하기',
-      desc: '인체모형에서 전립선·방광 해부 구조와 실제 학술 논문으로 검증된 치료법을 한눈에 확인하세요.',
-      bg: 'illust_prostate_care.jpg'
+      eyebrow: '3D HUMAN BODY MODEL · PROSTATE HONEY-TIP WAREHOUSE',
+      title: "알아두면 배뇨와 활력이 달라지는 '전립선 꿀팁 창고'",
+      desc: '전립선 울혈을 줄이고 방광 저장력과 하체 남성 활력을 높이는 대표원장 실전 생활 꿀팁입니다.',
+      bg: 'illust_prostate_care.jpg',
+      extraInfoItems: [
+        {
+          badge: '꿀팁 01 · 온수 좌욕 10분 루틴',
+          title: '매일 저녁 40°C 따뜻한 좌욕으로 골반 울혈 풀기',
+          desc: '따뜻한 온수 좌욕은 굳어진 골반저 근육과 전립선 주위 괄약근을 이완시켜 회음부 통증과 잔뇨감을 빠르게 줄여줍니다.'
+        },
+        {
+          badge: '꿀팁 02 · 야간뇨 예방 수분 조절',
+          title: '취침 3시간 전 수분·카페인·알코올 섭취 줄이기',
+          desc: '저녁 늦은 시간의 커피·맥주·차가운 음료는 방광 점막을 자극하고 야간뇨를 악화시키므로 취침 전에는 입만 가볍게 적시세요.'
+        },
+        {
+          badge: '꿀팁 03 · 50분마다 골반 감압 스트레칭',
+          title: '오래 앉아 있을 때 50분마다 일어나 골반 순환 깨우기',
+          desc: '장시간 착석은 회음부와 전립선 혈관을 직접 압박하므로 1시간마다 자리에서 일어나 가벼운 스쿼트와 골반 스트레칭을 해주세요.'
+        },
+        {
+          badge: '꿀팁 04 · 전립선 항산화 식단',
+          title: '익힌 토마토(라이코펜)·호박씨·마늘·산수유 챙기기',
+          desc: '올리브유에 살짝 익힌 토마토의 라이코펜과 아연이 풍부한 음식은 전립선 염증을 낮추고 남성 호르몬과 활력 회복을 돕습니다.'
+        }
+      ]
     },
     nextClinic: {
       href: 'director.html',
@@ -6633,7 +6715,7 @@ function buildPageHtml(page) {
     }
 
     /* STAGE 2 MOTION: Thermal Combustion & Fat Cluster Shrinkage */
-    .efficacy-visual-frame.thermal-frame img {
+    .efficacy-visual-frame.thermal-frame:not(.is-belly-shrink-motion) img {
       transform-origin: 50% 54%;
       animation: fatCombustionShrink 3.8s ease-in-out infinite;
     }
@@ -6700,9 +6782,9 @@ function buildPageHtml(page) {
     .ember-spark.e5 { left: 56%; bottom: 20%; animation-delay: 1.6s; width: 8px; height: 8px; }
     .ember-spark.e6 { left: 68%; bottom: 30%; animation-delay: 2.0s; }
     @keyframes fatCombustionShrink {
-      0%, 100% { transform: scale(1.12); filter: brightness(0.98) saturate(1.02); }
-      35% { transform: scale(1.14); filter: brightness(1.18) saturate(1.32) contrast(1.08); }
-      72% { transform: scale(0.91); filter: brightness(1.1) saturate(1.16); }
+      0%, 100% { transform: scale(1.0); filter: brightness(0.98) saturate(1.02); }
+      35% { transform: scale(1.03); filter: brightness(1.12) saturate(1.22) contrast(1.05); }
+      72% { transform: scale(1.0); filter: brightness(1.06) saturate(1.1); }
     }
     @keyframes fireGlowBreathe {
       0%, 100% { transform: translate(-50%, -50%) scale(0.82); opacity: 0.55; }
@@ -7443,33 +7525,26 @@ function buildPageHtml(page) {
     /* Card 04: Obese Belly (seq-1) -> Contracting Belly (seq-2) -> Slim Belly (seq-3) */
     .belly-seq-img.seq-1 {
       z-index: 1;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      opacity: 1;
+      transform: scale(1);
     }
     .belly-seq-img.seq-2 {
       z-index: 2;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation: bellySeqFrame2 5.4s ease-in-out infinite;
     }
     .belly-seq-img.seq-3 {
       z-index: 3;
-      transform-origin: 48% 55%;
-      animation: bellySeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-    @keyframes bellySeqFrame1 {
-      0%, 26% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
-      38%, 90% { opacity: 0; transform: scaleX(0.95) scaleY(1.0); }
-      100% { opacity: 1; transform: scaleX(1.06) scaleY(1.01); }
+      animation: bellySeqFrame3 5.4s ease-in-out infinite;
     }
     @keyframes bellySeqFrame2 {
-      0%, 22% { opacity: 0; transform: scaleX(1.04); }
-      32%, 58% { opacity: 1; transform: scaleX(0.96); }
-      68%, 100% { opacity: 0; transform: scaleX(0.91); }
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
     }
     @keyframes bellySeqFrame3 {
-      0%, 54% { opacity: 0; transform: scaleX(0.98); }
-      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      100% { opacity: 0; transform: scaleX(0.98); }
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
     }
     .belly-contract-arrows-svg {
       position: absolute;
@@ -7498,33 +7573,26 @@ function buildPageHtml(page) {
     /* Card 03: Water-Filled Full Body (seq-1) -> Wringing Water Out (seq-2) -> Slim Full Body (seq-3) */
     .edema-seq-img.seq-1 {
       z-index: 1;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame1 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      opacity: 1;
+      transform: scale(1);
     }
     .edema-seq-img.seq-2 {
       z-index: 2;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame2 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation: edemaSeqFrame2 5.4s ease-in-out infinite;
     }
     .edema-seq-img.seq-3 {
       z-index: 3;
-      transform-origin: 50% 54%;
-      animation: edemaSeqFrame3 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-    @keyframes edemaSeqFrame1 {
-      0%, 26% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
-      38%, 90% { opacity: 0; transform: scaleX(0.94) scaleY(1.02); }
-      100% { opacity: 1; transform: scaleX(1.07) scaleY(1.0); }
+      animation: edemaSeqFrame3 5.4s ease-in-out infinite;
     }
     @keyframes edemaSeqFrame2 {
-      0%, 22% { opacity: 0; transform: scaleX(1.05); }
-      32%, 58% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      68%, 100% { opacity: 0; transform: scaleX(0.89) scaleY(1.03); }
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
     }
     @keyframes edemaSeqFrame3 {
-      0%, 54% { opacity: 0; transform: scaleX(0.97); }
-      64%, 92% { opacity: 1; transform: scaleX(0.92) scaleY(1.02); }
-      100% { opacity: 0; transform: scaleX(0.97); }
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
     }
     .water-drop.d5 { left: 26%; top: 44%; animation-delay: 0.4s; }
     .water-drop.d6 { right: 26%; top: 46%; animation-delay: 1.05s; }
@@ -7963,7 +8031,7 @@ function buildPageHtml(page) {
         ${platesHtml}
 
         <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
-        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html' || page.file === 'growth.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html' || page.file === 'growth.html' || page.file === 'gongjindan.html' || page.file === 'prostate.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
