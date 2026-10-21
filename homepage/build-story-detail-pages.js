@@ -351,87 +351,129 @@ const PAGES = [
         caption: '[대표원장 친필 서약] 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 식약처 GMP 최상급 청정 규격 한약재로 정성껏 처방합니다.'
       },
       {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "단순 칼슘·영양제만으로는 '닫혀가는 성장판과 면역 누수'를 막지 못합니다",
+        sub: '잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장판 연골 증식으로 에너지가 도달하지 못합니다.',
+        caption: '[에너지 누수 차단 핵심] 비염·소화불량으로 새는 면역 에너지를 막고 성장판 연골 증식에 집중시키는 것이 핵심입니다.',
+        imgSrc: 'detail_growth_story2_supplements_limit.jpg?v=grw2'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 3,
+        fullscreen: true,
+        imgSrc: 'life_1d_growth_short.jpg',
+        frames: [
+          'life_1d_growth_short.jpg',
+          'life_1d_growth_step2.jpg',
+          'life_1d_growth_peers.jpg'
+        ],
+        title: "비염·소화기 담음 해독 & 숨은 키 복원 — '막힌 호흡기와 구부정한 체형에서 노폐물을 비워 훤칠한 전신으로'",
+        sub: '만성 비염·구강호흡과 소화기 담음(노폐물)을 배출하고 구부정한 체형 정렬을 바로잡아 또래보다 작던 키에서 훤칠한 성장 라인으로 변화시킵니다.',
+        caption: '[호흡기·소화기 해독 & 숨은 키 복원] 비염·소화기 노폐물을 배출하고 굽은 체형을 펴주어 바르고 훤칠한 전신으로 바꿉니다.'
+      },
+      {
+        type: 'runway-ba-scan',
+        fullscreen: true,
+        beforeImg: 'ba_growth_before.jpg',
+        afterImg: 'ba_growth_after.jpg',
+        title: "성장판 연골 증식 & 골격 성장 — '닫혀가던 성장판에서 연골모세포 활성으로 쑥쑥 자라는 골격'",
+        sub: '성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여 닫혀가던 성장판을 깨우고 뼈길이를 든든하게 키워줍니다.',
+        caption: '[성장판 연골 증식 & 골격 성장] 성호르몬 자극 없이 성장판 연골모세포 증식을 촉진해 숨은 키와 골격 성장을 이끌어냅니다.'
+      },
+      {
+        type: 'diet-single-stage',
+        stage: 1,
+        fullscreen: true,
+        imgSrc: 'growth-child-sleep.jpg',
+        title: "성조숙증 호르몬 안정 & 깊은 성장 숙면 — '성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'",
+        sub: '과열된 사춘기 성호르몬 신호와 야간 구강호흡·자율신경 긴장을 안정시켜 조기 골화를 늦추고 밤사이 성장호르몬 분비를 극대화합니다.',
+        caption: '[성조숙증 안정 & 성장 숙면] 사춘기 성호르몬 과항진을 진정시키고 깊은 숙면을 유도해 야간 성장호르몬 분비를 높입니다.'
+      },
+      {
+        type: 'diet-tele-video',
+        fullscreen: true,
+        title: "바쁜 학기 중에도 편하게 받는 '1:1 대표원장 성장·성조숙증 진료 & 전국 직배송'",
+        sub: '',
+        caption: '[1:1 맞춤 성장 진료 & 배송 가이드] 대표원장 심층 상담 후 우리 아이 체질에 맞춰 원내 직접 탕전하여 안전하게 직배송합니다.',
+        ctaLabel: '📞 우리 아이 성장 진료·처방 바로 신청 ↗',
+        customSteps: [
+          { num: '01', title: '온라인 성장 · 사춘기 문진', sub: '키 편차 · 비염 · 수면 · 식욕 체크' },
+          { num: '02', title: '대표원장 1:1 심층 진료', sub: '안정위 원장 맞춤 성장·성조숙증 상담' },
+          { num: '03', title: '원내 1:1 맞춤 탕전 · 조제', sub: '러시아산 원용 분골 · 청정 약재 조제' },
+          { num: '04', title: '전국 안심 특급 배송', sub: '문 앞까지 빠르고 안전하게 도착' }
+        ],
+        customTrust: [
+          { strong: '5,475일+ (15년)', span: '누적 치료경험' },
+          { strong: '98.6%', span: '성장 학부모 치료 만족도' },
+          { strong: '100%', span: '식약처 인증 정품 청정 약재' },
+          { strong: '1:1 전담 케어', span: '성장판 골든타임 밀착 코칭' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "성호르몬 과자극 걱정 없는 '1:1 체질 맞춤 바른 성장·성조숙증 한약'",
+        sub: '대표원장 정밀 진맥과 초음파 성장판·체질 분석으로 비위 흡수력과 면역은 채우고 성장판 연골 증식만 안전하게 깨웁니다.',
+        caption: '[체질 맞춤 성장 처방] 밥 안 먹는 허약아형부터 성조숙증형까지 체질에 맞춰 성장판 연골 증식을 돕는 안심 처방입니다.',
+        imgSrc: 'chuna_minimal_card7_hand_palpation_herb.jpg?v=chuna7v2'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        title: "골든타임에 완성하는 '또래보다 훤칠하고 탄탄한 성장 피지컬'",
+        sub: '호흡기·소화기 면역이 살아나고 성장판 연골 증식이 활발해지면 사춘기 끝까지 흔들림 없이 훤칠하고 바른 체격으로 자라납니다.',
+        caption: '[성장 피지컬 완성] 면역력과 성장판 활성으로 또래보다 훤칠하고 반듯한 체격을 완성합니다.',
+        imgSrc: 'detail_growth_story5_tall_basketball.jpg?v=grw2'
+      },
+      {
         type: 'motion-story',
-        indexPill: 'STORY · 키가 멈춘 진짜 이유',
-        metricPill: '감기·비염·소화불량 에너지 누수',
-        title: "아이 키가 더딘 이유, 단순한 '유전 탓'만은 아닙니다",
-        sub: '잦은 감기·비염·소화불량에 새는 에너지를 막아야 온전히 키로 갑니다.',
-        caption: '[소아 성장 노트] 호흡기 염증과 소화불량에 쓰이는 면역 에너지를 줄여야 성장판 연골 증식으로 에너지가 집중됩니다.',
+        fullscreen: true,
+        hideTopBar: true,
+        title: "교실 맨 앞줄 작은 키 · 밤새 코 막힌 구강호흡 · 밥 안 먹는 편식 — '참 곤란하다'",
+        sub: '새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 골든타임이 흘러가 가장 애타고 곤란한 순간입니다.',
+        caption: '[성장 정체로 곤란한 3대 상황] 또래보다 작은 키 · 비염 구강호흡 · 식욕 부진으로 부모님 마음이 가장 곤란한 순간입니다.',
         frames: [
           'detail_growth_story1_wall_chart.jpg?v=grw1',
           'detail_growth_story1_mouth_breathing.jpg?v=grw1',
-          'growth-child-sleep.jpg'
+          'detail_growth_story2_supplements_limit.jpg?v=grw2'
         ],
-        thumbs: [
-          { img: 'detail_growth_story1_wall_chart.jpg?v=grw1', label: '성장 속도 정체' },
-          { img: 'detail_growth_story1_mouth_breathing.jpg?v=grw1', label: '비염·구강호흡' },
-          { img: 'growth-child-sleep.jpg', label: '깊은 성장 숙면' }
-        ],
-        fx: 'growth-starlight',
-        durationSec: 6.4
-      },
-      {
-        type: 'clean-image',
-        stepLabel: 'STORY · 허약아형 vs 성조숙증형 맞춤 처방',
-        title: "'밥 안 먹는 허약아'와 '빨리 크는 성조숙증'은 처방이 다릅니다",
-        sub: '비위 흡수력 강화 vs 성호르몬 과항진 억제, 아이 체질에 맞춰 정밀하게 설계합니다.',
-        caption: '[소아 성장 노트] 소화 흡수 기능과 사춘기 골 성숙 속도를 함께 조율하여 성장 골든타임을 길게 지켜줍니다.',
-        imgSrc: 'growth-two-types-director.jpg',
-        thumbs: [
-          { img: 'growth-two-types-director.jpg', label: '체질별 원장 맞춤' },
-          { img: 'growth-herbal-immune.jpg', label: '허약·소화 흡수 강화' },
-          { img: 'detail_growth_story2_supplements_limit.jpg?v=grw2', label: '조기 골화 지연 관리' }
-        ]
-      },
-      {
-        type: 'clean-image',
-        stepLabel: 'STORY · 성장판 연골모세포 활성 기전',
-        title: "성호르몬 자극 없이 '성장판 연골세포' 분열만 안전하게 깨웁니다",
-        sub: '성장판이 일찍 닫히는 것을 막고 연골 증식과 골 기질 생성만 촉진합니다.',
-        caption: '[소아 성장 노트] 성호르몬을 자극하지 않는 안전한 약재 배합으로 성장판 연골층의 활발한 증식을 유도합니다.',
-        imgSrc: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2',
-        thumbs: [
-          { img: 'detail_growth_story3_epiphyseal_3d.jpg?v=grw2', label: '성장판 연골 증식' },
-          { img: 'illust_knee_growth_care.jpg', label: '무릎 성장판 기전' },
-          { img: 'growth-diag-autonomic.jpg', label: '호르몬·자율신경 균형' }
-        ]
-      },
-      {
-        type: 'clean-image',
-        stepLabel: 'STORY · 초음파 성장판 & 전신 기능 검사',
-        title: "초음파 성장판부터 비염·장·체형까지 '숨은 키'를 찾습니다",
-        sub: '방사선 걱정 없는 초음파 성장판 검사와 소아 추나로 성장 길을 열어줍니다.',
-        caption: '[소아 성장 노트] 척추·골반 정렬 교정과 성장혈 자극을 병행하여 바른 체형과 균형 잡힌 성장을 동시에 돕습니다.',
-        imgSrc: 'growth-ultrasound-metrics.jpg',
-        thumbs: [
-          { img: 'growth-ultrasound-metrics.jpg', label: '초음파 성장판 판독' },
-          { img: 'growth-diag-airway.jpg', label: '비염·기도 검사' },
-          { img: 'growth-diag-gut.jpg', label: '장·소화 흡수 검사' },
-          { img: 'growth-diag-thermography.jpg', label: '체열·체형 불균형' },
-          { img: 'detail_growth_story4_ultrasound_scan.jpg?v=grw2', label: '소아 성장 추나' }
-        ]
-      },
-      {
-        type: 'clean-image',
-        stepLabel: 'STORY · 국제 학술 논문 검수 완료',
-        title: "실제 학술 논문으로 입증된 '성장판 연골 증식 · 면역 회복'",
-        sub: '국제 학술지에서 연골세포 증식과 호흡기 면역 개선 기전이 입증된 안전한 치료법입니다.',
-        caption: '[학술 논문 검수] 국제 학술지(Phytomedicine, Pediatrics) 연구를 통해 성장판 연골 증식 및 호흡기 면역·수면 개선 기전이 입증되었습니다.',
-        imgSrc: 'detail_growth_story5_tall_basketball.jpg?v=grw2',
-        sciStats: [
-          { num: '국제 식물학술지(Phytomedicine) 검증', label: '조기 골화 지연 및 성장판 연골모세포 증식 촉진 입증', width: '96%' },
-          { num: '국제 소아과학회지(Pediatrics) 등재', label: '호흡기 감염·비염 개선을 통한 성장인자(IGF) 회복 입증', width: '94%' }
-        ]
+        fx: 'sunlight-bokeh',
+        durationSec: 6.6
       }
     ],
     bodyModelCard: {
       href: 'body-explorer.html?part=knee',
       part: 'knee',
+      useOur3DBodyModel: true,
+      honeyTipLabel: '성장 꿀팁',
       partBadge: '무릎 성장판 · 감기면역 인체모형',
-      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
-      title: '인체모형으로 우리 아이 성장판·면역 연결하기',
-      desc: '인체모형에서 무릎 성장판 원리와 실제 학술 논문으로 검증된 성장·면역 치료법을 한눈에 확인하세요.',
-      bg: 'illust_knee_growth_care.jpg'
+      eyebrow: '3D HUMAN BODY MODEL · GROWTH HONEY-TIP WAREHOUSE',
+      title: "알아두면 키가 더 잘 크는 '성장 꿀팁 창고'",
+      desc: '성장판 연골 증식과 야간 성장호르몬 분비를 극대화하는 대표원장 실전 생활 꿀팁입니다.',
+      bg: 'illust_knee_growth_care.jpg',
+      extraInfoItems: [
+        {
+          badge: '꿀팁 01 · 밤 10시 숙면 골든타임',
+          title: '밤 10시~새벽 2시 깊은 숙면으로 성장호르몬 깨우기',
+          desc: '성장호르몬은 깊은 비렘수면 단계에서 가장 왕성하게 분비되므로 밤 10시 이전 취침 습관이 핵심입니다.'
+        },
+        {
+          badge: '꿀팁 02 · 비염·구강호흡 차단',
+          title: '잠들기 전 코 점막 보습으로 구강호흡 막기',
+          desc: '코가 막혀 입을 벌리고 자면 깊은 수면이 깨지고 성장인자(IGF-1) 분비가 저하되므로 비염 관리가 필수입니다.'
+        },
+        {
+          badge: '꿀팁 03 · 성장판 점프 자극',
+          title: '하루 15분 가벼운 줄넘기·농구로 성장판 자극',
+          desc: '무릎과 발목 성장판에 적당한 수직 압력 자극을 주면 연골모세포 분열과 골 기질 형성이 활발해집니다.'
+        },
+        {
+          badge: '꿀팁 04 · 성조숙증 식습관 관리',
+          title: '야식·액상과당 줄이고 양질의 단백질 섭취',
+          desc: '소아 체지방 증가는 성호르몬 조기 분비를 촉진해 성장판 폐쇄를 앞당기므로 균형 잡힌 식단이 중요합니다.'
+        }
+      ]
     },
     nextClinic: {
       href: 'diet-zero.html',
@@ -7932,8 +7974,8 @@ function buildPageHtml(page) {
       <div id="project-details-items-move-container">
         ${platesHtml}
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html and chuna.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
-        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
+        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html' || page.file === 'growth.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
