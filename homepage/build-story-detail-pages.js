@@ -362,11 +362,11 @@ const PAGES = [
         type: 'diet-single-stage',
         stage: 3,
         fullscreen: true,
-        imgSrc: 'life_1d_growth_short.jpg',
+        imgSrc: 'growth-diag-airway.jpg',
         frames: [
-          'life_1d_growth_short.jpg',
-          'life_1d_growth_step2.jpg',
-          'life_1d_growth_peers.jpg'
+          'growth-diag-airway.jpg',
+          'bareun_step1_growth_spine.jpg',
+          'growth-golden-time-hero.jpg'
         ],
         title: "비염·소화기 담음 해독 & 숨은 키 복원 — '막힌 호흡기와 구부정한 체형에서 노폐물을 비워 훤칠한 전신으로'",
         sub: '만성 비염·구강호흡과 소화기 담음(노폐물)을 배출하고 구부정한 체형 정렬을 바로잡아 또래보다 작던 키에서 훤칠한 성장 라인으로 변화시킵니다.',
@@ -391,32 +391,20 @@ const PAGES = [
         caption: '[성조숙증 안정 & 성장 숙면] 사춘기 성호르몬 과항진을 진정시키고 깊은 숙면을 유도해 야간 성장호르몬 분비를 높입니다.'
       },
       {
-        type: 'diet-tele-video',
+        type: 'clean-image',
         fullscreen: true,
-        title: "바쁜 학기 중에도 편하게 받는 '1:1 대표원장 성장·성조숙증 진료 & 전국 직배송'",
-        sub: '',
-        caption: '[1:1 맞춤 성장 진료 & 배송 가이드] 대표원장 심층 상담 후 우리 아이 체질에 맞춰 원내 직접 탕전하여 안전하게 직배송합니다.',
-        ctaLabel: '📞 우리 아이 성장 진료·처방 바로 신청 ↗',
-        customSteps: [
-          { num: '01', title: '온라인 성장 · 사춘기 문진', sub: '키 편차 · 비염 · 수면 · 식욕 체크' },
-          { num: '02', title: '대표원장 1:1 심층 진료', sub: '안정위 원장 맞춤 성장·성조숙증 상담' },
-          { num: '03', title: '원내 1:1 맞춤 탕전 · 조제', sub: '러시아산 원용 분골 · 청정 약재 조제' },
-          { num: '04', title: '전국 안심 특급 배송', sub: '문 앞까지 빠르고 안전하게 도착' }
-        ],
-        customTrust: [
-          { strong: '5,475일+ (15년)', span: '누적 치료경험' },
-          { strong: '98.6%', span: '성장 학부모 치료 만족도' },
-          { strong: '100%', span: '식약처 인증 정품 청정 약재' },
-          { strong: '1:1 전담 케어', span: '성장판 골든타임 밀착 코칭' }
-        ]
+        title: "펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 '선수 준비하는 아이들이 많이 내원하는' 스포츠 성장 클리닉",
+        sub: '펜싱·유도·태권도·럭비·스키·축구·농구 등 엘리트 유소년 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 바른한의원에 많이 내원하고 있습니다.',
+        caption: '[유소년 선수 준비생 특화 성장·피지컬 케어] 펜싱·유도·태권도·럭비·스키·축구·농구 등 선수 준비하는 아이들이 키 성장과 피지컬 강화를 위해 많이 내원합니다.',
+        imgSrc: 'growth_minimal_card6_youth_athletes.jpg?v=grw6'
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "성호르몬 과자극 걱정 없는 '1:1 체질 맞춤 바른 성장·성조숙증 한약'",
-        sub: '대표원장 정밀 진맥과 초음파 성장판·체질 분석으로 비위 흡수력과 면역은 채우고 성장판 연골 증식만 안전하게 깨웁니다.',
-        caption: '[체질 맞춤 성장 처방] 밥 안 먹는 허약아형부터 성조숙증형까지 체질에 맞춰 성장판 연골 증식을 돕는 안심 처방입니다.',
-        imgSrc: 'chuna_minimal_card7_hand_palpation_herb.jpg?v=chuna7v2'
+        title: "방사선 걱정 없는 초음파 성장판 검사 — '최종예상키 측정 · 성장판 나이 측정 · 뼈길이 측정 · 초경 예측'",
+        sub: '방사선 노출 걱정이 전혀 없는 안전한 초음파 성장판 검사로 성장판 나이 측정, 정밀 뼈길이 측정, 최종예상키 측정은 물론 여아 초경 예측까지 한 번에 정밀 판독합니다.',
+        caption: '[무방사선 초음파 성장판 정밀 검사] 방사선 걱정 없이 최종예상키 측정 · 성장판 나이 측정 · 뼈길이 측정 · 초경 예측을 안전하고 정확하게 진행합니다.',
+        imgSrc: 'growth-ultrasound-scan.jpg?v=grw7'
       },
       {
         type: 'clean-image',
@@ -436,7 +424,7 @@ const PAGES = [
         frames: [
           'detail_growth_story1_wall_chart.jpg?v=grw1',
           'detail_growth_story1_mouth_breathing.jpg?v=grw1',
-          'detail_growth_story2_supplements_limit.jpg?v=grw2'
+          'growth_minimal_card9_picky_eating.jpg?v=grw9'
         ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
