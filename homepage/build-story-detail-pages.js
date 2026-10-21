@@ -362,24 +362,24 @@ const PAGES = [
         type: 'diet-single-stage',
         stage: 3,
         fullscreen: true,
-        imgSrc: 'growth-diag-airway.jpg',
+        imgSrc: 'growth_minimal_card3_obese_to_tall_a.jpg?v=grw3v2',
         frames: [
-          'growth-diag-airway.jpg',
-          'bareun_step1_growth_spine.jpg',
-          'growth-golden-time-hero.jpg'
+          'growth_minimal_card3_obese_to_tall_a.jpg?v=grw3v2',
+          'growth_minimal_card3_obese_to_tall_b.jpg?v=grw3v2',
+          'growth_minimal_card3_obese_to_tall_c.jpg?v=grw3v2'
         ],
-        title: "비염·소화기 담음 해독 & 숨은 키 복원 — '막힌 호흡기와 구부정한 체형에서 노폐물을 비워 훤칠한 전신으로'",
-        sub: '만성 비염·구강호흡과 소화기 담음(노폐물)을 배출하고 구부정한 체형 정렬을 바로잡아 또래보다 작던 키에서 훤칠한 성장 라인으로 변화시킵니다.',
-        caption: '[호흡기·소화기 해독 & 숨은 키 복원] 비염·소화기 노폐물을 배출하고 굽은 체형을 펴주어 바르고 훤칠한 전신으로 바꿉니다.'
+        title: "소아비만 체지방 감량 & 숨은 키 성장 — '살이 키로 가는 대사 전환으로 날씬해지면서 쑥쑥 크는 전신'",
+        sub: '성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장판 연골 증식에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.',
+        caption: '[소아비만 감량 & 키 성장 모션] 성장판을 닫히게 하는 과도한 체지방은 줄이고 날씬해지면서 위로 쑥쑥 자라나게 만듭니다.'
       },
       {
         type: 'runway-ba-scan',
         fullscreen: true,
-        beforeImg: 'ba_growth_before.jpg',
-        afterImg: 'ba_growth_after.jpg',
-        title: "성장판 연골 증식 & 골격 성장 — '닫혀가던 성장판에서 연골모세포 활성으로 쑥쑥 자라는 골격'",
-        sub: '성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여 닫혀가던 성장판을 깨우고 뼈길이를 든든하게 키워줍니다.',
-        caption: '[성장판 연골 증식 & 골격 성장] 성호르몬 자극 없이 성장판 연골모세포 증식을 촉진해 숨은 키와 골격 성장을 이끌어냅니다.'
+        beforeImg: 'growth_minimal_card4_short_before.jpg?v=grw4v2',
+        afterImg: 'growth_minimal_card4_tall_after.jpg?v=grw4v2',
+        title: "성장판 연골 증식 & 수직 골격 성장 — '또래보다 작던 키에서 위로 쑥쑥 자라나는 폭풍 성장'",
+        sub: '성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여, 키가 작던 아이가 위로 훤칠하고 탄탄하게 성장합니다.',
+        caption: '[수직 골격 성장 & 키 성장 완성] 닫혀가던 성장판 연골 증식을 깨워 작은 키에서 위로 훤칠하게 성장시킵니다.'
       },
       {
         type: 'diet-single-stage',
@@ -393,18 +393,18 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 '선수 준비하는 아이들이 많이 내원하는' 스포츠 성장 클리닉",
-        sub: '펜싱·유도·태권도·럭비·스키·축구·농구 등 엘리트 유소년 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 바른한의원에 많이 내원하고 있습니다.',
-        caption: '[유소년 선수 준비생 특화 성장·피지컬 케어] 펜싱·유도·태권도·럭비·스키·축구·농구 등 선수 준비하는 아이들이 키 성장과 피지컬 강화를 위해 많이 내원합니다.',
-        imgSrc: 'growth_minimal_card6_youth_athletes.jpg?v=grw6'
+        title: "다양한 운동분야에서 선수 준비하는 아이들 전용 - '스포츠 성장 클리닉'",
+        sub: '펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 등 다양한 운동분야에서 엘리트 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 많이 내원하고 있습니다.',
+        caption: '[선수 준비하는 아이들 전용 - 스포츠 성장 클리닉] 다양한 운동분야에서 선수를 준비하는 아이들이 키 성장과 피지컬 강화를 위해 내원합니다.',
+        imgSrc: 'growth_minimal_card6_youth_athletes_v2.jpg?v=grw6v2'
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "방사선 걱정 없는 초음파 성장판 검사 — '최종예상키 측정 · 성장판 나이 측정 · 뼈길이 측정 · 초경 예측'",
-        sub: '방사선 노출 걱정이 전혀 없는 안전한 초음파 성장판 검사로 성장판 나이 측정, 정밀 뼈길이 측정, 최종예상키 측정은 물론 여아 초경 예측까지 한 번에 정밀 판독합니다.',
-        caption: '[무방사선 초음파 성장판 정밀 검사] 방사선 걱정 없이 최종예상키 측정 · 성장판 나이 측정 · 뼈길이 측정 · 초경 예측을 안전하고 정확하게 진행합니다.',
-        imgSrc: 'growth-ultrasound-scan.jpg?v=grw7'
+        title: "방사선 노출 성장 엑스레이 검사는 이제 그만 - '안전한 초음파 검사'",
+        sub: '걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측',
+        caption: '[방사선 노출 성장 엑스레이 검사는 이제 그만 - 안전한 초음파 검사] 걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측을 진행합니다.',
+        imgSrc: 'growth_minimal_card7_ultrasound_noface.jpg?v=grw7v2'
       },
       {
         type: 'clean-image',
