@@ -232,10 +232,10 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "누적 치료 경험 5,475일+ & 추나 환자 만족도 98.6% — '객관적 임상 데이터와 신뢰'",
-        sub: '15년간 척추·골반 불균형 환자 36,000례 이상을 대표원장이 직접 손으로 바로잡아 온 객관적 치료 데이터와 환자 만족도 지표입니다.',
-        caption: '[누적 치료경험 & 만족도] 15년간 5,475일+ 누적 진료와 36,000례 이상의 교정 임상 경험을 바탕으로 98.6% 치료 만족도를 달성했습니다.',
-        imgSrc: 'chuna_minimal_card6_stats_satisfaction.jpg?v=chuna6v2'
+        title: "근육 인대 관절 통증을 제어해주는 최신 물리치료 + 진료 경험 15년 — '추나 환자 만족도 98.6%'",
+        sub: '통증이 발생하는 원인을 해결해 최상의 효과를 나타내기 위한 물리치료 시스템',
+        caption: '[최신 물리치료 시스템] 통증이 발생하는 원인을 해결해 최상의 효과를 나타내기 위한 물리치료 시스템입니다.',
+        imgSrc: 'chuna_minimal_card6_physiotherapy.jpg?v=chuna6v4'
       },
       {
         type: 'clean-image',
