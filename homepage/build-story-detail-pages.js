@@ -235,7 +235,7 @@ const PAGES = [
         title: "누적 치료 경험 5,475일+ & 추나 환자 만족도 98.6% — '객관적 임상 데이터와 신뢰'",
         sub: '15년간 척추·골반 불균형 환자 36,000례 이상을 대표원장이 직접 손으로 바로잡아 온 객관적 치료 데이터와 환자 만족도 지표입니다.',
         caption: '[누적 치료경험 & 만족도] 15년간 5,475일+ 누적 진료와 36,000례 이상의 교정 임상 경험을 바탕으로 98.6% 치료 만족도를 달성했습니다.',
-        imgSrc: 'chuna_minimal_card6_stats_satisfaction.jpg'
+        imgSrc: 'chuna_minimal_card6_stats_satisfaction.jpg?v=chuna6v2'
       },
       {
         type: 'clean-image',
@@ -243,7 +243,7 @@ const PAGES = [
         title: "기계가 대신할 수 없는 손끝 감각 — '대표원장 수기 추나 & 인대강화 한약'",
         sub: '대표원장 정밀 촉진과 맥진으로 틀어진 관절을 맞추고, 약해진 척추 인대와 디스크 주변 근육을 단단하게 보강합니다.',
         caption: '[인대·근육 보강 처방] 교정된 척추가 다시 틀어지지 않도록 인대와 심부 근육을 강화하는 맞춤 처방입니다.',
-        imgSrc: 'chuna_minimal_card7_hand_palpation_herb.jpg'
+        imgSrc: 'chuna_minimal_card7_hand_palpation_herb.jpg?v=chuna7v2'
       },
       {
         type: 'clean-image',
