@@ -8801,10 +8801,10 @@ function buildPageHtml(page) {
         },
         'prostate.html': {
           part: 'prostate',
-          beforeImg: 'ba_gongjindan_before.jpg',
-          afterImg: 'ba_gongjindan_after.jpg',
-          beforeTag: 'BEFORE · 전립선 부종 압박 및 야간뇨·배뇨 불편',
-          afterTag: 'AFTER · 학술 검증 전립선 감압 및 숙면·활력 복원',
+          beforeImg: 'prostate_minimal_card4_ba_before.jpg?v=stream1',
+          afterImg: 'prostate_minimal_card4_ba_after.jpg?v=stream1',
+          beforeTag: 'BEFORE · 약해진 물줄기 (세뇨·잔뇨감·방광 압박)',
+          afterTag: 'AFTER · 강력한 물줄기 (전립선 감압 · 시원한 쾌뇨)',
           metrics: [
             { label: '국제 비뇨의학회지(Urology) 검증', b: '만성 골반 울혈·잔뇨감', a: '비세균성 전립선염·배뇨 개선 입증' },
             { label: '국제 식물학술지(Phytomedicine) 등재', b: '전립선 비대·야간뇨', a: '전립선 조직 감압·하부요로증상 완화 검증' }
@@ -8827,8 +8827,8 @@ function buildPageHtml(page) {
         const rTagA = document.getElementById('runway-ba-tag-a');
         const hExplorer = document.getElementById('header-body-explorer-link');
 
-        if (rbImg) rbImg.src = activeBaData.beforeImg;
-        if (raImg) raImg.src = activeBaData.afterImg;
+        if (rbImg && !rbImg.getAttribute('src')) rbImg.src = activeBaData.beforeImg;
+        if (raImg && !raImg.getAttribute('src')) raImg.src = activeBaData.afterImg;
         if (rTagB) rTagB.textContent = activeBaData.beforeTag;
         if (rTagA) rTagA.textContent = activeBaData.afterTag;
         if (hExplorer) hExplorer.href = 'body-explorer.html?part=' + activeBaData.part;
