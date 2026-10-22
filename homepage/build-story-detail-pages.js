@@ -1342,10 +1342,10 @@ const PAGES = [
         type: 'diet-single-stage',
         stage: 1,
         fullscreen: true,
-        imgSrc: 'gongjindan_minimal_card5_stage1_brain_calm.jpg',
-        title: "'기억력저하 · 만성스트레스 · 불안증후군' 케어와 '수험생' 고도 집중력 향상",
-        sub: '[성분 논문 근거] SCI 학술지(J Ethnopharmacology, PLoS One) 연구에서 공진단은 뇌 해마의 신경성장인자(NGF·BDNF) 발현을 높여 기억력저하를 개선하고, HPA축 스트레스 호르몬(코르티솔)과 세로토닌·GABA 신경계를 안정시켜 만성스트레스와 불안증후군을 완화하며, 수험생의 시험 불안 해소와 장기 암기·집중력을 극대화합니다.',
-        caption: '[기억력·스트레스·불안·수험생] 해마 NGF·BDNF 뇌신경성장인자 발현과 코르티솔 억제로 두뇌 인지력과 정서 안정을 돕습니다.'
+        imgSrc: 'gongjindan_minimal_card5_stage1_brain_calm.jpg?v=student1',
+        title: "'기억력저하 · 스트레스 · 불안증후군' 케어와 '수험생' 고도 집중력 향상",
+        sub: '[성분 논문 근거] 공진단은 뇌 해마의 신경을 활성화하여 장기 기억력과 깊은 집중력을 탄탄하게 끌어올립니다. 과도한 스트레스 호르몬을 낮추고 긴장된 신경을 안정시켜, 시험 불안을 덜고 최상의 두뇌 컨디션을 지켜줍니다.',
+        caption: '[성분 논문 근거] 공진단은 뇌 해마의 신경을 활성화하여 장기 기억력과 깊은 집중력을 탄탄하게 끌어올립니다. 과도한 스트레스 호르몬을 낮추고 긴장된 신경을 안정시켜, 시험 불안을 덜고 최상의 두뇌 컨디션을 지켜줍니다.'
       },
       {
         type: 'gongjindan-panorama-archive',
