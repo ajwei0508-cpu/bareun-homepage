@@ -1227,37 +1227,33 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 20px 24px 16px;
-      gap: 12px;
+      padding: 10px 12px 8px;
+      gap: 6px;
       width: 100%;
       height: 100%;
     }
 
     .gjd-pano-header {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 10px;
       flex-wrap: wrap;
       flex-shrink: 0;
+      padding: 0 2px;
     }
 
     .gjd-pano-eyebrow {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      color: #FDE68A;
-      margin-bottom: 4px;
+      display: none;
     }
 
     .gjd-pano-main-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.32rem;
+      font-size: 1.08rem;
       font-weight: 800;
       color: #FFFFFF;
-      line-height: 1.25;
-      margin-bottom: 3px;
+      line-height: 1.2;
+      margin: 0;
     }
 
     .gjd-pano-main-title .title-key-em {
@@ -1268,27 +1264,25 @@
     }
 
     .gjd-pano-sub {
-      font-size: 0.78rem;
-      color: rgba(248, 250, 252, 0.78);
-      line-height: 1.38;
+      display: none;
     }
 
     .gjd-pano-controls {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .gjd-pano-nav-btn,
     .gjd-pano-auto-btn,
     .gjd-pano-zoom-btn {
-      padding: 7px 13px;
+      padding: 5px 11px;
       border-radius: 999px;
       border: 1px solid rgba(212, 175, 55, 0.42);
       background: rgba(20, 16, 12, 0.88);
       color: #FDE68A;
-      font-size: 0.73rem;
+      font-size: 0.71rem;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -1305,34 +1299,39 @@
     }
 
     .gjd-pano-counter {
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.16);
       color: #FFFFFF;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 900;
       letter-spacing: 0.06em;
     }
 
-    /* Horizontal Panorama Viewport & Filmstrip Track */
+    /* Full-Bleed Panorama Viewport & Track (Fills Card 06 100% Edge-to-Edge) */
     .gjd-panorama-viewport {
       position: relative;
       flex: 1;
       min-height: 0;
       width: 100%;
+      height: 100%;
       overflow-x: auto;
       overflow-y: hidden;
-      border-radius: 16px;
-      background: rgba(8, 6, 5, 0.68);
-      border: 1px solid rgba(212, 175, 55, 0.24);
-      padding: 12px 24px;
+      border-radius: 14px;
+      background: #0B0907;
+      border: 1.5px solid rgba(212, 175, 55, 0.42);
+      padding: 0;
       display: flex;
-      align-items: center;
+      align-items: stretch;
       scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: #D4AF37 rgba(255, 255, 255, 0.06);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
       cursor: grab;
+    }
+
+    .gjd-panorama-viewport::-webkit-scrollbar {
+      display: none;
     }
 
     .gjd-panorama-viewport:active {
@@ -1342,67 +1341,69 @@
     .gjd-panorama-track {
       display: flex;
       align-items: stretch;
-      gap: 18px;
+      gap: 0;
+      width: 100%;
       height: 100%;
-      padding: 2px 12vw;
+      padding: 0;
     }
 
     .gjd-pano-slide {
-      width: min(460px, 56vw);
+      position: relative;
+      width: 100%;
+      min-width: 100%;
       height: 100%;
       flex-shrink: 0;
-      border-radius: 14px;
-      background: linear-gradient(165deg, rgba(28, 22, 16, 0.96) 0%, rgba(14, 11, 8, 0.98) 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.14);
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
-      opacity: 0.56;
-      transform: scale(0.93);
-      transition: all 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 0;
+      background: #0B0907;
+      border: none;
+      padding: 0;
+      overflow: hidden;
+      opacity: 1;
+      transform: none;
+      scroll-snap-align: center;
       cursor: pointer;
-    }
-
-    .gjd-pano-slide:hover {
-      opacity: 0.85;
-      border-color: rgba(212, 175, 55, 0.5);
     }
 
     .gjd-pano-slide.is-active {
       opacity: 1;
-      transform: scale(1);
-      border: 2px solid #D4AF37;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.78), 0 0 28px rgba(212, 175, 55, 0.28);
+      transform: none;
     }
 
     .gjd-pano-slide-top {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      right: 12px;
+      z-index: 4;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      flex-shrink: 0;
+      pointer-events: none;
     }
 
     .gjd-pano-page-pill {
-      font-size: 0.69rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(212, 175, 55, 0.18);
-      border: 1px solid rgba(212, 175, 55, 0.45);
+      background: rgba(14, 11, 8, 0.82);
+      border: 1px solid rgba(212, 175, 55, 0.58);
       color: #FDE68A;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
     }
 
     .gjd-pano-card-zoom {
-      padding: 4px 9px;
+      pointer-events: auto;
+      padding: 5px 11px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      background: rgba(255, 255, 255, 0.08);
-      color: #FFFFFF;
-      font-size: 0.68rem;
-      font-weight: 700;
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      background: rgba(14, 11, 8, 0.82);
+      color: #FDE68A;
+      font-size: 0.7rem;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
       cursor: pointer;
     }
 
@@ -1413,31 +1414,38 @@
     }
 
     .gjd-pano-img-wrap {
-      flex: 1;
-      min-height: 0;
+      position: absolute;
+      inset: 0;
       width: 100%;
-      border-radius: 10px;
+      height: 100%;
+      border-radius: 0;
       background: #0B0907;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
     }
 
     .gjd-pano-img-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: fill;
       display: block;
     }
 
     .gjd-pano-slide-caption {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 10px;
+      z-index: 4;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      flex-shrink: 0;
-      padding-top: 2px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(14, 11, 8, 0.78);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
     }
 
     .gjd-pano-slide-caption strong {
@@ -1514,10 +1522,11 @@
         font-size: 1.05rem;
       }
       .gjd-pano-slide {
-        width: 74vw;
+        width: 100%;
+        min-width: 100%;
       }
       .gjd-panorama-track {
-        padding: 2px 4vw;
+        padding: 0;
       }
     }
 

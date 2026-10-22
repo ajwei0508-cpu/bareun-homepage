@@ -1274,37 +1274,37 @@ const PAGES = [
       glowB: 'rgba(245, 158, 11, 0.09)'
     },
     meta: {
-      eyebrow: 'EMPEROR GONGJINDAN · 학술 논문 검증 뇌·심장 기혈 대보약',
+      eyebrow: 'EMPEROR GONGJINDAN · 4대 명품 약재 성분 기반 13대 적응증 학술 논문 검증',
       title: '바른 황제공진단',
-      subtitleEn: 'CITES-Certified Natural Musk & Evidence-Based Neuro-Cardiac Vitality',
+      subtitleEn: 'CITES-Certified Musk, Deer Antler, Angelica & Cornus — 13 Evidence-Based Indications',
       desc: [
-        '식약처 CITES 인증 정품 사향과 대표원장 직접 수제 조제로 방전된 뇌·심장 원기를 복원합니다. 국제 신경약리학 학술 논문을 정밀 검수하여 효능 기전이 입증된 처방만을 고집합니다.'
+        '식약처 CITES 인증 천연 사향(L-Muscone)·러시아산 원용 분골 녹용(IGF-1·강글리오사이드)·참당귀(데커신)·산수유(로가닌·코르누사이드) 4대 핵심 성분의 SCI급 학술 논문 연구를 바탕으로, (1)항피부노화(연예인 복용) (2)치매·뇌출혈 (3)퇴행성관절염 (4)심혈관질환 (5)면역피로 (6)자궁불임 (7)정력강화 (8)간 보호 (9)기억력저하 (10)만성스트레스 (11)불안증후군 (12)암 후유증 (13)수험생 집중력까지 체질별 맞춤 처방합니다.'
       ],
-      ctaNudge: '📝 체크하신 피로도 증상을 원장님께 먼저 보내고 정확한 처방 상담을 받습니다.',
-      ctaText: '내 피로도에 맞는 정품 공진단 처방 상담하기',
+      ctaNudge: '📝 체크하신 증상과 복용 목적을 원장님께 먼저 보내고 1:1 맞춤 공진단 처방 상담을 받습니다.',
+      ctaText: '내 증상에 맞는 정품 황제공진단 처방 상담하기',
       reserveProgram: '황제공진단·기력보강 클리닉',
-      checklistTitle: '만성 번아웃 · 기력 고갈 자가 진단 체크리스트',
+      checklistTitle: '황제공진단 13대 적응증 자가 진단 체크리스트',
       checklistItems: [
-        '[만성 번아웃] 잠을 자도 피로가 풀리지 않고 아침에 몸을 일으키기가 힘들다.',
-        '[두뇌 피로·건망증] 머리가 멍한 브레인 포그가 잦고 집중력·기억력이 떨어졌다.',
-        '[심장 두근거림] 과로나 스트레스 시 가슴이 답답하거나 두근거리고 잠이 얕다.',
-        '[중요 일정 대비] 큰 시험·발표·경영 일정을 앞두고 체력과 정신력을 끌어올리고 싶다.',
-        '[품격 있는 선물] 부모님이나 소중한 분께 학술적으로 검증된 정품 사향 공진단을 드리고 싶다.'
+        '[면역피로 · 간 보호 · 암 후유증] 만성 면역피로, 잦은 음주·과로로 인한 간 피로, 또는 큰 수술·항암 후유증 회복이 필요하다.',
+        '[치매·뇌출혈 · 심혈관질환] 뇌혈관(치매·뇌출혈 후유증) 및 심혈관 순환을 지키고 손발 저림·흉부 답답함을 예방하고 싶다.',
+        '[기억력저하 · 스트레스 · 불안 · 수험생] 기억력 감퇴, 만성스트레스·불안증후군, 또는 중요한 시험을 앞둔 수험생 체력·집중력이 절실하다.',
+        '[항피부노화(연예인 관리) · 퇴행성관절염] 푸석해진 피부 탄력·안색 노화를 되돌리거나 퇴행성 관절 염증과 뼈·연골 약화가 고민이다.',
+        '[자궁불임(난임) · 남성 정력강화] 여성 자궁 냉증·난임 착상 준비, 또는 남성 정력 저하와 갱년기 호르몬 활력 복원이 필요하다.'
       ],
       doctorAdvice: {
-        caution: '기력고갈 주의',
-        severe: '기력고갈 심각'
+        caution: '기력·면역 저하 주의',
+        severe: '전신 기능 고갈 심각'
       }
     },
     plates: [
       {
         type: 'motion-story',
         fullscreen: true,
-        indexPill: 'CORE MOTION · 바른 황제공진단',
-        metricPill: '뇌·심장 기혈 개통 ▲ · 만성 번아웃 원기 회복 ▲',
-        title: "방전된 뇌·심장 기혈을 깨워 전신 원기를 충전하는 황실 대보약 — '바른 황제공진단'",
-        sub: '식약처 CITES 인증 천연 사향의 개규(開竅) 힘으로 막힌 뇌·심장 혈류를 단숨에 열고, 1%까지 방전된 생체 에너지를 100% 활력으로 끌어올립니다.',
-        caption: '[황제공진단 핵심 원리] 천연 사향과 러시아산 원용 분골이 막힌 기혈을 뚫어 뇌·심장 원기를 빠르게 복원합니다.',
+        indexPill: '01 · 면역피로 · 간 보호 · 암 후유증 회복',
+        metricPill: 'NK 면역세포·조혈 ▲ · 간세포 보호(AST/ALT) ▲',
+        title: "단순 피로회복을 넘어 '면역피로 · 간 보호 · 암 후유증'까지 — 4대 약재 논문 검증 황제공진단",
+        sub: '[성분 논문 근거] 녹용(판토크린·강글리오사이드)과 참당귀 다당체가 NK 면역세포 활성 및 항암·방사선 치료 후 저하된 골수 조혈 기능 회복(암 후유증 완화)을 돕고, 산수유(모로니사이드·로가닌)가 간세포 산화스트레스를 억제해 간 기능(AST/ALT)을 보호한다는 연구 결과(Nutrients, Integr Cancer Ther)가 입증되어 있습니다.',
+        caption: '[면역피로 · 간 보호 · 암 후유증] 녹용·산수유·당귀 유효 성분이 면역세포와 조혈 기능을 깨우고 지친 간세포를 보호합니다.',
         frames: [
           'gongjindan_minimal_card1_vitality_core_a.jpg',
           'gongjindan_minimal_card1_vitality_core_b.jpg',
@@ -1316,9 +1316,9 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "기혈의 그릇이 막혀 있으면, 아무리 좋은 영양분도 '스쳐 지나갑니다'",
-        sub: '막힌 기혈의 수문을 먼저 열어주어야 몸에 들어온 귀한 영양분이 말초 혈관과 뇌 끝까지 도달합니다.',
-        caption: '[기혈 개통 핵심] 밑 빠진 독에 물을 붓는 대증 보충이 아닌, 기혈 순환 통로를 여는 개규(開竅) 치료가 핵심입니다.',
+        title: "'치매 · 뇌출혈 질환' 신경 보호부터 '심혈관질환' 예방까지 — 막힌 혈관을 여는 천연 사향(L-Muscone)",
+        sub: '[성분 논문 근거] 국제 약리학 학술지(Front Pharmacol, Phytomedicine) 연구에 따르면 사향의 핵심 성분 L-무스콘(L-Muscone)은 뇌혈관장벽(BBB)을 직접 투과하여 뇌출혈·뇌허혈 후 신경세포 사멸과 치매 원인 단백질(베타아밀로이드) 독성을 억제하며, 혈관 내피 산화질소(eNOS) 활성으로 관상동맥 확장 및 심근 허혈(심혈관질환)을 보호합니다.',
+        caption: '[치매·뇌출혈 & 심혈관질환 연구] 천연 사향(L-Muscone)과 당귀·산수유가 뇌혈관장벽을 통과해 뇌신경과 심혈관을 동시에 지킵니다.',
         imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2'
       },
       {
@@ -1331,47 +1331,49 @@ const PAGES = [
           'gongjindan_minimal_card3_circulation_b.jpg',
           'gongjindan_minimal_card3_circulation_c.jpg'
         ],
-        title: "수승화강(水昇火降) & 기혈 대순환 — '머리로 치솟은 열독과 막힌 기혈에서 사향 개규(開竅)로 맑아지는 전신'",
-        sub: '천연 사향의 활성 성분(L-Muscone)이 막힌 기혈의 수문을 단숨에 열어, 머리로 치솟은 상열(열독)은 시원하게 내리고 차갑게 식은 아랫배와 수족은 따뜻하게 데워 전신 활력을 깨웁니다.',
-        caption: '[수승화강 & 기혈 대순환] 천연 사향의 개규 작용으로 상열하한 불균형을 바로잡고 전신 기혈 순환을 회복시킵니다.'
+        title: "연예인들이 복용하는 비결 '항피부 노화' & 연골을 지키는 '퇴행성 관절 염증' 억제",
+        sub: '[성분 논문 근거] 밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 참당귀(데커신)와 산수유(모로니사이드)가 피부 콜라겐 분해효소(MMP-1)와 광노화 활성산소를 강력히 억제해 피부 탄력과 안색을 지켜주기 때문입니다. 동시에 녹용(IGF-1·콘드로이친)은 관절 활막 염증(TNF-α, IL-1β)을 낮춰 퇴행성 관절염과 연골 마모를 회복시킵니다.',
+        caption: '[항피부 노화(연예인 관리) & 퇴행성 관절염] 콜라겐 분해 억제에 의한 항피부 노화 효과와 관절 연골 항염·재생 기전이 논문으로 검증되었습니다.'
       },
       {
         type: 'runway-ba-scan',
         fullscreen: true,
         beforeImg: 'gongjindan_minimal_card4_ba_before.jpg',
         afterImg: 'gongjindan_minimal_card4_ba_after.jpg',
-        title: "뇌·심장 원기 복원 & 만성 번아웃 회복 — '방전된 1% 만성 피로에서 100% 깨어나는 전신 활력'",
-        sub: '러시아산 최상단 원용 분골과 정품 사향이 고갈된 뇌혈류와 자율신경 에너지를 깊이 채워, 천근만근 무겁던 번아웃 신체에서 가볍고 총명한 활력으로 변화시킵니다.',
-        caption: '[뇌·심장 원기 복원 & 활력 완성] 방전된 만성 번아웃 상태에서 뇌·심장 기혈을 충전하여 맑고 탄탄한 활력을 되찾습니다.'
+        title: "여성 '자궁불임(난임) 착상' 환경 복원 & 남성 '정력강화 · 호르몬 활력' 완성",
+        sub: '[성분 논문 근거] 참당귀(데커신·정유 성분)가 자궁 동맥 혈류를 확장하고 자궁내막 두께(수용성)와 난소 배란 기능을 높여 차가운 하복부로 인한 자궁불임(난임) 착상을 돕습니다. 또한 녹용(판토크린)과 산수유(코르누사이드)는 남성 테스토스테론 합성 및 음경 해면체 산화질소(cGMP/NO) 혈류를 증가시켜 정력강화와 성기능 회복에 탁월합니다.',
+        caption: '[자궁불임 착상 & 남성 정력강화] 여성의 자궁내막 보혈·착상력 향상과 남성의 테스토스테론·정력 강화를 동시에 이끕니다.'
       },
       {
         type: 'diet-single-stage',
         stage: 1,
         fullscreen: true,
         imgSrc: 'gongjindan_minimal_card5_stage1_brain_calm.jpg',
-        title: "뇌신경 피로 진정 & 심장 자율신경 안정 — '브레인 포그·가슴 두근거림 차단과 깊은 숙면 회복'",
-        sub: '과열된 교감신경과 뇌 피로 신호(브레인 포그)를 천연 사향과 산수유·당귀 성분이 빠르게 진정시켜 심장 두근거림을 가라앉히고 깊은 숙면과 총명한 집중력을 깨웁니다.',
-        caption: '[뇌신경 진정 & 자율신경 안정] 과긴장된 뇌·심장 신경계를 안정시켜 브레인 포그를 걷어내고 깊은 숙면을 돕습니다.'
+        title: "'기억력저하 · 만성스트레스 · 불안증후군' 케어와 '수험생' 고도 집중력 향상",
+        sub: '[성분 논문 근거] SCI 학술지(J Ethnopharmacology, PLoS One) 연구에서 공진단은 뇌 해마의 신경성장인자(NGF·BDNF) 발현을 높여 기억력저하를 개선하고, HPA축 스트레스 호르몬(코르티솔)과 세로토닌·GABA 신경계를 안정시켜 만성스트레스와 불안증후군을 완화하며, 수험생의 시험 불안 해소와 장기 암기·집중력을 극대화합니다.',
+        caption: '[기억력·스트레스·불안·수험생] 해마 NGF·BDNF 뇌신경성장인자 발현과 코르티솔 억제로 두뇌 인지력과 정서 안정을 돕습니다.'
       },
       {
         type: 'gongjindan-panorama-archive',
         fullscreen: true,
         stepLabel: 'ARCHIVE PANORAMA · 황제공진단 공식 브로슈어 10대 화보 파노라마',
         title: "한눈에 넘겨보는 '바른 황제공진단' 특허·성분·성적서 파노라마 아카이브",
-        sub: '제조특허 제10-1744704호부터 사향 씨알 단면, 러시아산 원용 분골, 유해물질 0ppm 성적서, 황실 자개함까지 파노라마로 넘겨보세요.',
-        caption: '[황제공진단 파노라마 아카이브] 과거 황제공진단 공식 브로슈어 10장(P.01~P.10)을 한 카드에 모아 파노라마처럼 좌우로 넘기며 확인하실 수 있습니다.'
+        sub: '제조특허 제10-1744704호부터 사향 씨알 단면, 러시아산 원용 분골, 유해물질 0ppm 성적서, 황실 자개함까지 꽉 찬 화면으로 넘겨보세요.',
+        caption: '[황제공진단 파노라마 아카이브] 공식 브로슈어 10장(P.01~P.10)을 카드 전체 화면으로 생생하게 넘기며 확인하실 수 있습니다.'
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        stepLabel: 'STORY · 식약처 인증 정품 사향 & 원장 수제 제환',
-        title: "식약처 인증 정품 사향과 러시아산 분골, '대표원장이 직접 조제합니다'",
-        sub: '정식 통관된 정품 사향과 녹용 최상단 분골만을 엄선하여 대표원장이 직접 정량 배합하고 순금박으로 수제 봉인합니다.',
-        caption: '[공진단 임상 노트] 사향의 방향성 활성 성분이 날아가지 않도록 원내에서 소량씩 정밀 수제 제환합니다.',
+        stepLabel: 'STORY · 4대 핵심 재료 약리 성분 & 대표원장 직접 수제 제환',
+        title: "사향(L-무스콘) · 녹용(강글리오사이드) · 당귀(데커신) · 산수유(로가닌) — '대표원장 수제 조제'",
+        sub: '논문으로 입증된 4대 원재료의 핵심 유효 성분이 단 1%도 소실되지 않도록, 식약처 CITES 정식 통관 사향과 러시아산 최상단 원용 분골만을 엄선해 안정위 대표원장이 직접 0.01g 단위로 계량하고 99.9% 순금박으로 수제 봉인합니다.',
+        caption: '[공진단 4대 성분 정량 제환] 천연 사향·러시아 녹용 분골·참당귀·산수유를 대표원장이 원내에서 직접 정량 수제 조제합니다.',
         imgSrc: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2',
         cleanTags: [
-          '식약처 CITES 정식 인증 사향',
-          '러시아산 원용 분골 & 순금박 봉인'
+          '천연 사향(L-Muscone) · 뇌출혈/치매/심혈관 개규',
+          '러시아 분골(IGF-1·판토크린) · 관절염/암후유증/정력',
+          '참당귀(Decursin) · 항피부노화/자궁불임/기억력',
+          '산수유(Loganin) · 간보호/면역피로/불안·스트레스'
         ],
         thumbs: [
           { img: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2', label: '0.01g 원장 수제 계량' },
@@ -1381,10 +1383,15 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "실제 학술 논문 검수로 입증된 '뇌·심장 원기 회복'과 품격 있는 선물",
-        sub: '국제 SCI급 학술 논문에서 뇌신경 영양인자 발현과 항피로·심뇌혈류 개선 기전이 입증된 원방 공진단만을 조제합니다.',
-        caption: '[학술 논문 검수 & 품격 완성] 국제 학술지(J Ethnopharmacology, Front Pharmacol) 연구를 통해 공진단과 사향의 신경 보호·피로 회복 기전이 입증되었습니다.',
-        imgSrc: 'gongjindan_minimal_card8_vitality_finale.jpg'
+        title: "13대 적응증 SCI 학술 논문 총정리 — '연예인 항노화부터 수험생·암 후유증·부모님 뇌·심장·관절까지'",
+        sub: '(1)항피부노화(연예인 애용·MMP-1 콜라겐 분해 억제) (2)치매·뇌출혈 신경재생 (3)퇴행성관절염 연골보호 (4)심혈관 관상동맥 혈류개선 (5)면역피로 NK세포 활성 (6)자궁불임 내막착상 (7)남성 정력강화 (8)간 보호(AST/ALT) (9)기억력저하(NGF·BDNF) (10)만성스트레스(코르티솔 정상화) (11)불안증후군 자율신경 안정 (12)암 후유증 조혈모세포 회복 (13)수험생 두뇌 체력까지 과학적 근거로 처방합니다.',
+        caption: '[13대 적응증 학술 논문 총정리] 공진단 4대 약재 성분의 현대 약리학 논문 연구로 입증된 13가지 전신 회복 적응증입니다.',
+        imgSrc: 'gongjindan_minimal_card8_vitality_finale.jpg',
+        cleanTags: [
+          '①항피부노화(연예인) · ②치매/뇌출혈 · ③퇴행성관절염 · ④심혈관질환',
+          '⑤면역피로 · ⑥자궁불임 · ⑦정력강화 · ⑧간보호 · ⑨기억력저하',
+          '⑩만성스트레스 · ⑪불안증후군 · ⑫암후유증 · ⑬수험생 집중력'
+        ]
       },
       {
         type: 'motion-story',
@@ -1407,31 +1414,31 @@ const PAGES = [
       part: 'gongjindan',
       useOur3DBodyModel: true,
       honeyTipLabel: '공진단 꿀팁',
-      partBadge: '뇌 · 심장 · 기혈순환 인체모형',
-      eyebrow: '3D HUMAN BODY MODEL · GONGJINDAN HONEY-TIP WAREHOUSE',
-      title: "알아두면 약효가 배가되는 '공진단 꿀팁 창고'",
-      desc: '천연 사향의 개규(開竅) 흡수율과 뇌·심장 기혈 순환을 극대화하는 대표원장 실전 복용·보관 꿀팁입니다.',
+      partBadge: '13대 적응증 · 4대 약재 논문 인체모형',
+      eyebrow: '3D HUMAN BODY MODEL · 13 INDICATIONS & INGREDIENT RESEARCH WAREHOUSE',
+      title: "목적별 약효를 200% 끌어올리는 '황제공진단 맞춤 복용 꿀팁'",
+      desc: '항피부노화·수험생·치매뇌출혈·심혈관·관절염·간보호·난임·정력·암후유증 등 복용 목적에 따라 약효 흡수율을 극대화하는 대표원장 실전 가이드입니다.',
       bg: 'illust_gongjindan_heart_brain.jpg',
       extraInfoItems: [
         {
-          badge: '꿀팁 01 · 아침 기상 직후 공복 복용',
-          title: '아침 공복에 따뜻한 미온수와 함께 복용하기',
-          desc: '위장이 비어 있는 아침 공복에 복용하시면 사향과 녹용의 유효 성분이 가장 빠르고 온전하게 흡수됩니다.'
+          badge: '꿀팁 01 · 연예인 항피부노화 & 수험생·기억력 복용법',
+          title: '아침 기상 직후 공복 미온수 복용 (시험·촬영 전에는 1시간 전)',
+          desc: '콜라겐 합성과 해마 뇌신경성장인자(BDNF) 활성화를 위해 아침 공복에 복용하시고, 수험생 시험이나 중요한 촬영·발표 날에는 시작 1시간 전에 추가 복용하시면 집중력과 안색이 살아납니다.'
         },
         {
-          badge: '꿀팁 02 · 오래 꼭꼭 씹어서 복용',
-          title: '순금박째 천천히 오래 씹어 향기를 머금기',
-          desc: '사향의 방향성 개규 성분(L-Muscone)이 구강 점막과 후각 신경을 통해 뇌혈관과 심장으로 즉각 전달됩니다.'
+          badge: '꿀팁 02 · 치매·뇌출혈·심혈관·불안·스트레스 개규 흡수법',
+          title: '바로 삼키지 말고 1~2분간 입안에서 천천히 녹여 향 머금기',
+          desc: '사향의 L-무스콘 성분은 구강 설하 점막과 후각 신경을 통해 뇌혈관장벽(BBB)과 관상동맥으로 가장 빠르게 전달되므로 오래 씹어 향을 충분히 머금으세요.'
         },
         {
-          badge: '꿀팁 03 · 복용 중 피해야 할 음식',
-          title: '녹두·숙주나물·찬 음료·과도한 카페인 피하기',
-          desc: '약효를 중화시키는 녹두류와 위장 온도를 낮추는 찬 음식은 피하시고 따뜻한 대추차나 미온수를 곁들이세요.'
+          badge: '꿀팁 03 · 간 보호·암 후유증·면역피로·퇴행성관절염 맞춤 수칙',
+          title: '약효 중화 식품(녹두·숙주·찬물) 차단 & 체온 유지',
+          desc: '항암 후 조혈·면역 회복이나 간 해독, 퇴행성 관절 염증 치료 중에는 녹두·숙주나물·알코올·찬 음료를 피하시고 따뜻한 미온수와 함께 복용하세요.'
         },
         {
-          badge: '꿀팁 04 · 사향 향기 보존 보관법',
-          title: '직사광선을 피해 서늘한 상온에 밀폐 보관',
-          desc: '냉동 보관 시 제형이 딱딱해지고 결로가 생길 수 있으므로, 전용 케이스와 보자기에 감싸 서늘한 곳에 보관하세요.'
+          badge: '꿀팁 04 · 자궁불임(난임 착상) & 남성 정력강화 시너지 루틴',
+          title: '저녁 족욕·하복부 보온 병행 & 서늘한 상온 밀폐 보관',
+          desc: '당귀·녹용·산수유의 자궁내막 혈류 및 남성 호르몬(테스토스테론) 활성 효과를 높이려면 하복부를 따뜻하게 유지하시고, 공진단은 냉동 대신 서늘한 상온에 밀폐 보관하세요.'
         }
       ]
     },
@@ -3484,37 +3491,33 @@ function buildPageHtml(page) {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 20px 24px 16px;
-      gap: 12px;
+      padding: 10px 12px 8px;
+      gap: 6px;
       width: 100%;
       height: 100%;
     }
 
     .gjd-pano-header {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 10px;
       flex-wrap: wrap;
       flex-shrink: 0;
+      padding: 0 2px;
     }
 
     .gjd-pano-eyebrow {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      color: #FDE68A;
-      margin-bottom: 4px;
+      display: none;
     }
 
     .gjd-pano-main-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.32rem;
+      font-size: 1.08rem;
       font-weight: 800;
       color: #FFFFFF;
-      line-height: 1.25;
-      margin-bottom: 3px;
+      line-height: 1.2;
+      margin: 0;
     }
 
     .gjd-pano-main-title .title-key-em {
@@ -3525,27 +3528,25 @@ function buildPageHtml(page) {
     }
 
     .gjd-pano-sub {
-      font-size: 0.78rem;
-      color: rgba(248, 250, 252, 0.78);
-      line-height: 1.38;
+      display: none;
     }
 
     .gjd-pano-controls {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .gjd-pano-nav-btn,
     .gjd-pano-auto-btn,
     .gjd-pano-zoom-btn {
-      padding: 7px 13px;
+      padding: 5px 11px;
       border-radius: 999px;
       border: 1px solid rgba(212, 175, 55, 0.42);
       background: rgba(20, 16, 12, 0.88);
       color: #FDE68A;
-      font-size: 0.73rem;
+      font-size: 0.71rem;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -3562,34 +3563,39 @@ function buildPageHtml(page) {
     }
 
     .gjd-pano-counter {
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.16);
       color: #FFFFFF;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 900;
       letter-spacing: 0.06em;
     }
 
-    /* Horizontal Panorama Viewport & Filmstrip Track */
+    /* Full-Bleed Panorama Viewport & Track (Fills Card 06 100% Edge-to-Edge) */
     .gjd-panorama-viewport {
       position: relative;
       flex: 1;
       min-height: 0;
       width: 100%;
+      height: 100%;
       overflow-x: auto;
       overflow-y: hidden;
-      border-radius: 16px;
-      background: rgba(8, 6, 5, 0.68);
-      border: 1px solid rgba(212, 175, 55, 0.24);
-      padding: 12px 24px;
+      border-radius: 14px;
+      background: #0B0907;
+      border: 1.5px solid rgba(212, 175, 55, 0.42);
+      padding: 0;
       display: flex;
-      align-items: center;
+      align-items: stretch;
       scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: #D4AF37 rgba(255, 255, 255, 0.06);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
       cursor: grab;
+    }
+
+    .gjd-panorama-viewport::-webkit-scrollbar {
+      display: none;
     }
 
     .gjd-panorama-viewport:active {
@@ -3599,67 +3605,69 @@ function buildPageHtml(page) {
     .gjd-panorama-track {
       display: flex;
       align-items: stretch;
-      gap: 18px;
+      gap: 0;
+      width: 100%;
       height: 100%;
-      padding: 2px 12vw;
+      padding: 0;
     }
 
     .gjd-pano-slide {
-      width: min(460px, 56vw);
+      position: relative;
+      width: 100%;
+      min-width: 100%;
       height: 100%;
       flex-shrink: 0;
-      border-radius: 14px;
-      background: linear-gradient(165deg, rgba(28, 22, 16, 0.96) 0%, rgba(14, 11, 8, 0.98) 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.14);
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
-      opacity: 0.56;
-      transform: scale(0.93);
-      transition: all 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 0;
+      background: #0B0907;
+      border: none;
+      padding: 0;
+      overflow: hidden;
+      opacity: 1;
+      transform: none;
+      scroll-snap-align: center;
       cursor: pointer;
-    }
-
-    .gjd-pano-slide:hover {
-      opacity: 0.85;
-      border-color: rgba(212, 175, 55, 0.5);
     }
 
     .gjd-pano-slide.is-active {
       opacity: 1;
-      transform: scale(1);
-      border: 2px solid #D4AF37;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.78), 0 0 28px rgba(212, 175, 55, 0.28);
+      transform: none;
     }
 
     .gjd-pano-slide-top {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      right: 12px;
+      z-index: 4;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      flex-shrink: 0;
+      pointer-events: none;
     }
 
     .gjd-pano-page-pill {
-      font-size: 0.69rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(212, 175, 55, 0.18);
-      border: 1px solid rgba(212, 175, 55, 0.45);
+      background: rgba(14, 11, 8, 0.82);
+      border: 1px solid rgba(212, 175, 55, 0.58);
       color: #FDE68A;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
     }
 
     .gjd-pano-card-zoom {
-      padding: 4px 9px;
+      pointer-events: auto;
+      padding: 5px 11px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      background: rgba(255, 255, 255, 0.08);
-      color: #FFFFFF;
-      font-size: 0.68rem;
-      font-weight: 700;
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      background: rgba(14, 11, 8, 0.82);
+      color: #FDE68A;
+      font-size: 0.7rem;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
       cursor: pointer;
     }
 
@@ -3670,31 +3678,38 @@ function buildPageHtml(page) {
     }
 
     .gjd-pano-img-wrap {
-      flex: 1;
-      min-height: 0;
+      position: absolute;
+      inset: 0;
       width: 100%;
-      border-radius: 10px;
+      height: 100%;
+      border-radius: 0;
       background: #0B0907;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
     }
 
     .gjd-pano-img-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: fill;
       display: block;
     }
 
     .gjd-pano-slide-caption {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 10px;
+      z-index: 4;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      flex-shrink: 0;
-      padding-top: 2px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(14, 11, 8, 0.78);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
     }
 
     .gjd-pano-slide-caption strong {
@@ -3771,10 +3786,11 @@ function buildPageHtml(page) {
         font-size: 1.05rem;
       }
       .gjd-pano-slide {
-        width: 74vw;
+        width: 100%;
+        min-width: 100%;
       }
       .gjd-panorama-track {
-        padding: 2px 4vw;
+        padding: 0;
       }
     }
 
