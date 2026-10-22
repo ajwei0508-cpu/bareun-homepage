@@ -1501,16 +1501,9 @@ const PAGES = [
         imgSrc: 'prostate_minimal_card2_antibiotic_limit.jpg'
       },
       {
-        type: 'diet-single-stage',
-        stage: 3,
-        hideCinchArrows: true,
+        type: 'clean-image',
         fullscreen: true,
         imgSrc: 'prostate_minimal_card3_decongestion_a.jpg?v=ur1',
-        frames: [
-          'prostate_minimal_card3_decongestion_a.jpg?v=ur1',
-          'prostate_minimal_card3_decongestion_b.jpg?v=ur1',
-          'prostate_minimal_card3_decongestion_c.jpg?v=ur1'
-        ],
         title: "방광 압박 & 참을 수 없는 소변 — '걱정 없이 어디서든 편하게'",
         sub: '오래 앉아 굳어버린 전립선의 정체된 어혈·습담을 심부 온열 순환으로 묵직하고 뻐근하던 하복부를 상쾌하게 변화시킵니다.',
         caption: '[방광 압박 해소 & 쾌뇨 순환] 정체된 전립선 어혈·습담을 심부 온열 순환으로 풀어 묵직하고 뻐근하던 하복부를 상쾌하게 변화시킵니다.'
