@@ -1536,10 +1536,10 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "회음부 신경을 누르는 골반 틀어짐까지 바로잡는 — '골반저 감압 추나 & 심부 보신 약침'",
+        title: "회음부 신경을 누르는 골반 틀어짐까지 바로잡는 — '골반 추나 & 전립선 약침'",
         sub: '전립선과 방광을 둘러싼 골반·천장관절의 구조적 비대칭을 대표원장 수기 추나로 정밀 교정하고, 고농축 정제 약침으로 하초 심부 혈류와 괄약근 탄력을 빠르게 깨웁니다.',
-        caption: '[골반저 감압 추나 & 심부 약침] 골반 구조 교정과 심부 약침 치료를 병행하여 만성 골반통과 배뇨 장애를 입체적으로 다스립니다.',
-        imgSrc: 'prostate_minimal_card6_pelvic_chuna_care.jpg'
+        caption: '[골반 추나 & 전립선 약침] 골반 구조 교정과 전립선 약침 치료를 병행하여 만성 골반통과 배뇨 장애를 입체적으로 다스립니다.',
+        imgSrc: 'prostate_minimal_card6_pelvic_chuna_care.jpg?v=noface1'
       },
       {
         type: 'clean-image',
