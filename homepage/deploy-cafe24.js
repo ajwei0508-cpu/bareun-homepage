@@ -231,22 +231,27 @@ const PAGES_TO_DEPLOY = [
       });
       const existingCats = await existingCatsRes.json();
 
-      for (const [partId, meta] of Object.entries(categoriesMap)) {
-        const found = Array.isArray(existingCats) ? existingCats.find(c => c.slug === meta.catSlug) : null;
+      const catArr = Array.isArray(categoriesMap) ? categoriesMap : Object.values(categoriesMap || {});
+      for (const meta of catArr) {
+        const pId = meta.partId;
+        const cSlug = meta.slug || meta.catSlug;
+        const cName = meta.name || meta.catName;
+        if (!pId || !cSlug) continue;
+        const found = Array.isArray(existingCats) ? existingCats.find(c => c.slug === cSlug) : null;
         if (found) {
-          catIds[partId] = found.id;
+          catIds[pId] = found.id;
         } else {
           const createRes = await fetch('/wp-json/wp/v2/categories', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
             body: JSON.stringify({
-              name: meta.catName,
-              slug: meta.catSlug,
-              description: meta.blogTitle + ' (' + meta.scheduleDesc + ')'
+              name: cName,
+              slug: cSlug,
+              description: (meta.organLabel || cName) + ' (매일 오전 08:00 자동 발행)'
             })
           });
           const created = await createRes.json();
-          if (created && created.id) catIds[partId] = created.id;
+          if (created && created.id) catIds[pId] = created.id;
         }
       }
 
@@ -262,18 +267,20 @@ const PAGES_TO_DEPLOY = [
       );
 
       let seededPostsCount = 0;
-      for (const [partId, postList] of Object.entries(postsMap)) {
-        if (!Array.isArray(postList) || postList.length === 0) continue;
-        const firstPost = postList[0]; // Seed latest flagship column per disease into WP
-        if (existingTitles.has(firstPost.title.trim())) continue;
-        const cId = catIds[partId];
+      const flatPosts = Array.isArray(postsMap) ? postsMap : Object.values(postsMap || {}).flat();
+      const seededByPart = new Set();
+      for (const post of flatPosts) {
+        if (!post || !post.partId || seededByPart.has(post.partId)) continue;
+        seededByPart.add(post.partId);
+        if (existingTitles.has(post.title.trim())) continue;
+        const cId = catIds[post.partId];
         const pRes = await fetch('/wp-json/wp/v2/posts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
           body: JSON.stringify({
-            title: firstPost.title,
-            excerpt: firstPost.summary,
-            content: firstPost.contentHtml,
+            title: post.title,
+            excerpt: post.summary,
+            content: post.contentHtml,
             status: 'publish',
             categories: cId ? [cId] : []
           })

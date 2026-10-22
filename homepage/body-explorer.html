@@ -1256,6 +1256,76 @@
       padding: 3px 9px;
       border-radius: 999px;
     }
+    .bblog-article-body h3 {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      margin: 14px 0 6px;
+      word-break: keep-all;
+    }
+    .bblog-article-body p {
+      font-size: 0.83rem;
+      line-height: 1.66;
+      color: var(--black-sub);
+      margin: 0 0 8px;
+      word-break: keep-all;
+    }
+    .bblog-lead {
+      font-size: 0.88rem !important;
+      font-weight: 700;
+      color: var(--black-ink) !important;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--bg-beige);
+      margin-bottom: 12px !important;
+    }
+    .bblog-sci-callout {
+      margin: 12px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #F4EFE4;
+      border: 1px solid var(--border-strong);
+    }
+    .bblog-sci-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      margin-bottom: 3px;
+    }
+    .bblog-sci-paper-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--brown-deep);
+      margin-bottom: 4px;
+    }
+    .bblog-sci-desc {
+      font-size: 0.78rem !important;
+      margin: 0 !important;
+      color: var(--black-sub) !important;
+    }
+    .bblog-check-list {
+      margin: 8px 0 12px;
+      padding: 12px 16px 12px 28px;
+      border-radius: 12px;
+      background: #FFFDF9;
+      border: 1px solid var(--border-warm);
+      font-size: 0.81rem;
+      line-height: 1.62;
+      color: var(--black-sub);
+    }
+    .bblog-check-list li {
+      margin-bottom: 6px;
+    }
+    .bblog-doctor-sign {
+      margin-top: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: var(--green-tint);
+      border: 1px solid #B7D4C3;
+      font-size: 0.79rem;
+      color: var(--green-primary);
+      line-height: 1.55;
+    }
 
     /* Google Apps Script (GAS) Configuration & Code Copy Modal */
     .gas-modal-backdrop {
@@ -1523,13 +1593,28 @@
     }
 
     function initDiseaseBlogStore() {
-      Object.keys(INITIAL_DISEASE_BLOG_POSTS_DATA).forEach(partKey => {
-        const seedArr = INITIAL_DISEASE_BLOG_POSTS_DATA[partKey] || [];
-        liveMergedBlogPosts[partKey] = seedArr.map((post, idx) => ({
-          ...post,
-          date: formatKstDateDaysAgo(idx)
-        }));
-      });
+      BODY_PARTS_DATA.forEach(p => { liveMergedBlogPosts[p.id] = []; });
+      if (Array.isArray(INITIAL_DISEASE_BLOG_POSTS_DATA)) {
+        INITIAL_DISEASE_BLOG_POSTS_DATA.forEach((post) => {
+          const pid = post.partId || 'knee';
+          if (!liveMergedBlogPosts[pid]) liveMergedBlogPosts[pid] = [];
+          const idx = liveMergedBlogPosts[pid].length;
+          liveMergedBlogPosts[pid].push({
+            ...post,
+            journalRef: post.journalRef || post.sciRef || 'SCI 국제 학술지 검증',
+            date: formatKstDateDaysAgo(typeof post.dateOffsetDays === 'number' ? post.dateOffsetDays : idx)
+          });
+        });
+      } else if (INITIAL_DISEASE_BLOG_POSTS_DATA && typeof INITIAL_DISEASE_BLOG_POSTS_DATA === 'object') {
+        Object.keys(INITIAL_DISEASE_BLOG_POSTS_DATA).forEach(partKey => {
+          const seedArr = Array.isArray(INITIAL_DISEASE_BLOG_POSTS_DATA[partKey]) ? INITIAL_DISEASE_BLOG_POSTS_DATA[partKey] : [];
+          liveMergedBlogPosts[partKey] = seedArr.map((post, idx) => ({
+            ...post,
+            journalRef: post.journalRef || post.sciRef || 'SCI 국제 학술지 검증',
+            date: formatKstDateDaysAgo(idx)
+          }));
+        });
+      }
     }
     initDiseaseBlogStore();
 
@@ -1590,7 +1675,13 @@
 
       if (isBlogTab) {
         // 5TH TAB: DISEASE-SPECIFIC DAILY AUTO-PUBLISHED BLOG PAGE
-        const catMeta = DISEASE_BLOG_CATEGORIES_DATA[part.id] || { blogTitle: part.title + ' 블로그', scheduleDesc: '매일 오전 08:00 구글 앱스 스크립트 자동 발행' };
+        const foundCat = Array.isArray(DISEASE_BLOG_CATEGORIES_DATA)
+          ? DISEASE_BLOG_CATEGORIES_DATA.find(c => c.partId === part.id)
+          : (DISEASE_BLOG_CATEGORIES_DATA && DISEASE_BLOG_CATEGORIES_DATA[part.id]);
+        const catMeta = {
+          blogTitle: (foundCat && (foundCat.blogTitle || foundCat.name)) || (part.title + ' 데일리 블로그'),
+          scheduleDesc: '매일 오전 08:00 구글 앱스 스크립트 자동 발행'
+        };
 
         const catFilterChipsHtml = BODY_PARTS_DATA.map(bp => {
           const cnt = getBlogPostsForPart(bp.id).length;
@@ -1848,12 +1939,10 @@
 
       let addedCount = 0;
 
-      // 1) Fetch from WordPress REST API (/wp-json/wp/v2/posts?_embed&per_page=30)
+      // 1) Fetch from WordPress REST API (/wp-json/wp/v2/posts?_embed&per_page=30) when running on WordPress host
       try {
-        const wpEndpoints = ['/wp-json/wp/v2/posts?_embed&per_page=30'];
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-          wpEndpoints.push('https://bareunhaniwon.com/wp-json/wp/v2/posts?_embed&per_page=30');
-        }
+        const isLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
+        const wpEndpoints = isLocalDev ? [] : ['/wp-json/wp/v2/posts?_embed&per_page=30'];
         for (const ep of wpEndpoints) {
           const resp = await fetch(ep, { method: 'GET' });
           if (!resp.ok) continue;
