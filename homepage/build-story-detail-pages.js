@@ -1558,9 +1558,9 @@ const PAGES = [
         sub: '새벽마다 서너 번 깨고 · 운전·회의 중 급한 빈뇨 · 묵직한 회음부 통증과 활력 저하 누구에게 말하기도 힘들어 가장 답답하고 곤란한 순간입니다.',
         caption: '[남성 갱년기 & 배뇨 장애로 곤란한 순간] 무력해진 활력 · 운전·회의 중 급한 빈뇨 · 새벽 야간뇨로 가장 답답하고 곤란한 순간입니다.',
         frames: [
-          'prostate_minimal_card9_trouble_1_nocturia.jpg?v=c9v5',
-          'prostate_minimal_card9_trouble_2_driving.jpg?v=c9v5',
-          'prostate_minimal_card9_trouble_3_pelvicpain.jpg?v=c9v5'
+          'prostate_minimal_card9_trouble_1_nocturia.jpg?v=c9v6',
+          'prostate_minimal_card9_trouble_2_driving.jpg?v=c9v6',
+          'prostate_minimal_card9_trouble_3_pelvicpain.jpg?v=c9v6'
         ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
