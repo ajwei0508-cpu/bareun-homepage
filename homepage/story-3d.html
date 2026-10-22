@@ -861,16 +861,32 @@
       border-color: var(--brand-green);
     }
 
-    /* 6-Card Bento Grid Container (mirrors sktelecom.com .hero-content-lg) */
+    /* 7-Card Bento Grid Container (mirrors sktelecom.com .hero-content-lg) */
     .skt-bento-grid {
       position: relative;
       z-index: 10;
       width: min(1360px, 92vw);
       height: min(640px, 70vh);
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(12, 1fr);
       grid-template-rows: repeat(2, 1fr);
       gap: 16px;
+    }
+
+    .skt-bento-grid > .skt-card-item:nth-child(-n+3) {
+      grid-column: span 4;
+    }
+
+    .skt-bento-grid > .skt-card-item:nth-child(n+4) {
+      grid-column: span 3;
+    }
+
+    .skt-bento-grid > .skt-card-item:nth-child(n+4) .skt-card-box {
+      padding: 20px 22px;
+    }
+
+    .skt-bento-grid > .skt-card-item:nth-child(n+4) .skt-card-title {
+      font-size: clamp(21px, 1.9vw, 28px);
     }
 
     .skt-card-item {
@@ -1124,10 +1140,23 @@
       .skt-bento-grid {
         width: 100%;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, minmax(145px, 1fr));
-        height: calc(100dvh - 106px);
-        min-height: 460px;
+        grid-template-rows: repeat(4, minmax(132px, 1fr));
+        height: auto;
+        min-height: calc(100dvh - 106px);
         gap: 8px;
+        padding-bottom: 16px;
+      }
+      .skt-bento-grid > .skt-card-item:nth-child(1) {
+        grid-column: 1 / -1;
+      }
+      .skt-bento-grid > .skt-card-item:nth-child(n+2) {
+        grid-column: span 1;
+      }
+      .skt-bento-grid > .skt-card-item:nth-child(n+4) .skt-card-box {
+        padding: 10px 11px;
+      }
+      .skt-bento-grid > .skt-card-item:nth-child(n+4) .skt-card-title {
+        font-size: 16px;
       }
       .skt-card-item,
       .skt-card-item .skt-img-box {
@@ -1775,16 +1804,29 @@
         </div>
       </a>
 
-      <!-- 6. 황제공진단 & 전립선·남성활력 상세페이지 연결 -->
+      <!-- 6. 황제공진단 상세페이지 연결 -->
       <a href="gongjindan.html" class="skt-card-item" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
         <div class="skt-img-box" style="background-image: url('card_6_gongjindan.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
             <p class="skt-card-title">황제공진단</p>
-            <p class="skt-card-desc">내 부모님께 드리는 CITES 정품 사향 · 뇌·심장 원기 & 전립선 활력</p>
+            <p class="skt-card-desc">내 부모님께 드리는 CITES 정품 사향 · 뇌·심장 원기 회복 & 만성 번아웃</p>
             <div class="skt-card-actions-row">
-              <span class="skt-card-chip" data-action="link">공진단 상세 →</span>
-              <span class="skt-card-chip secondary" data-action="custom-link" data-href="prostate.html">전립선 클리닉 →</span>
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 7. 전립선 · 남성활력 상세페이지 연결 -->
+      <a href="prostate.html" class="skt-card-item" data-card-idx="6" data-rot="-4" data-link="prostate.html" data-reserve="전립선·배뇨·남성활력 클리닉" data-chapter="7">
+        <div class="skt-img-box" style="background-image: url('card_7_prostate.jpg?v=card1'); background-position: center 22%;"></div>
+        <div class="skt-card-box">
+          <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            <p class="skt-card-title">전립선 · 남성활력</p>
+            <p class="skt-card-desc">반복되는 야간뇨·잔뇨감·회음부 통증 · 전립선 울혈 감압 & 신장·방광 온양</p>
+            <div class="skt-card-actions-row">
+              <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
           </div>
         </div>
@@ -1956,6 +1998,7 @@
             <option value="30대 탈모·모근재생 클리닉">05. 30대 탈모·두피청열 클리닉</option>
             <option value="추나 척추·전신통증 클리닉">06. 척추·목·어깨·팔·허리·다리·발 추나 클리닉</option>
             <option value="황제공진단·기력보강 클리닉">07. 특허 24K 황제공진단·기력보강 클리닉</option>
+            <option value="전립선·배뇨·남성활력 클리닉">08. 전립선·야간뇨·남성활력 클리닉</option>
           </select>
         </div>
         <div class="drawer-form-group">
