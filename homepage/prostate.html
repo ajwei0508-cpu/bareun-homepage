@@ -1049,6 +1049,29 @@
       background: radial-gradient(circle at 50% 42%, #1D1814 0%, #0D0A08 100%);
     }
 
+    .project-details-item.is-clean-video-contain,
+    body.theme-hanji .project-details-item.is-clean-video-contain {
+      background: #000000 !important;
+    }
+
+    .project-details-item.is-clean-video-contain .plate-media-inner,
+    .project-details-item.is-clean-video-contain .motion-video-stage {
+      background: #000000 !important;
+    }
+
+    .lusion-clean-media.is-video-contain-fit {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #000000 !important;
+      transform: none !important;
+    }
+
     .project-details-item.has-contain-media .visual-sci-overlay {
       opacity: 0;
       pointer-events: none;
@@ -9397,7 +9420,7 @@
           if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
           const cleanMedia = plate.querySelector('.lusion-clean-media');
           if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
-            if (cleanMedia.classList.contains('is-contain-fit')) {
+            if (cleanMedia.classList.contains('is-contain-fit') || cleanMedia.classList.contains('is-video-contain-fit')) {
               cleanMedia.style.transform = 'none';
             } else {
               const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));

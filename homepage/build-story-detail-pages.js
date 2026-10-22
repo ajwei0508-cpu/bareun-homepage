@@ -1358,19 +1358,15 @@ const PAGES = [
       {
         type: 'clean-video',
         fullscreen: true,
-        indexPill: '07 · 황제공진단 원내 직접 수제 조제 과정 영상',
-        stepLabel: 'STORY · 4대 핵심 재료 약리 성분 & 대표원장 직접 수제 제환',
-        title: "사향(L-무스콘) · 녹용(강글리오사이드) · 당귀(데커신) · 산수유(로가닌) — '대표원장 수제 조제'",
-        sub: '논문으로 입증된 4대 원재료의 핵심 유효 성분이 단 1%도 소실되지 않도록, 식약처 CITES 정식 통관 사향과 러시아산 최상단 원용 분골만을 엄선해 안정위 대표원장이 직접 0.01g 단위로 계량하고 99.9% 순금박으로 수제 봉인합니다.',
+        fit: 'contain',
+        hideText: true,
+        indexPill: '',
+        stepLabel: '',
+        title: '',
+        sub: '',
         caption: '[황제공진단 조제 과정 영상] 천연 사향·러시아 녹용 분골·참당귀·산수유를 원내에서 직접 정량 계량하고 수제 제환하는 실제 조제 영상입니다.',
         videoSrc: 'https://bareunhaniwon.com/wp-content/uploads/2026/10/%ED%99%A9%EC%A0%9C%EA%B3%B5%EC%A7%84%EB%8B%A8-%EC%A1%B0%EC%A0%9C-%EA%B3%BC%EC%A0%95-%EC%98%81%EC%83%81.mp4',
-        poster: 'detail_gongjindan_story4_cites_scale.jpg?v=gjd2',
-        cleanTags: [
-          '천연 사향(L-Muscone) · 뇌출혈/치매/심혈관 개규',
-          '러시아 분골(IGF-1·판토크린) · 관절염/암후유증/정력',
-          '참당귀(Decursin) · 항피부노화/자궁불임/기억력',
-          '산수유(Loganin) · 간보호/면역피로/불안·스트레스'
-        ]
+        poster: ''
       },
       {
         type: 'clean-image',
@@ -2160,21 +2156,30 @@ function buildPageHtml(page) {
     }
 
     if (p.type === 'clean-video') {
-      const videoTagsHtml = p.cleanTags ? `
+      const isContainVideo = p.fit === 'contain';
+      const hideAllText = Boolean(p.hideText);
+      const videoTagsHtml = (!hideAllText && p.cleanTags) ? `
                 <div class="clean-spec-tags">
                   ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
                 </div>` : '';
+      const posterAttr = p.poster ? ` poster="${p.poster}"` : '';
+      const containCardClass = isContainVideo ? ' is-clean-video-contain' : '';
+      const containVideoClass = isContainVideo ? ' is-video-contain-fit' : '';
+      const blackBgStyle = isContainVideo ? ' style="background:#000000 !important;"' : '';
+      const videoInlineStyle = isContainVideo
+        ? ' style="position:absolute;inset:0 !important;width:100% !important;height:100% !important;object-fit:contain !important;object-position:center center !important;padding:0 !important;margin:0 !important;background:#000000 !important;transform:none !important;pointer-events:none;"'
+        : '';
       return `
-        <!-- PLATE ${numStr}: Clean Video + Live 60fps Motion FX Stage -->
-        <article class="project-details-item is-video is-motion-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
-          <span class="tiny-card-num-badge">${numStr}</span>
-          <div class="plate-media-inner">
-            <div class="motion-video-stage is-clean-video-stage" data-frames="${p.poster || ''}" data-duration="6.4">
-              <video class="lusion-clean-media" src="${p.videoSrc}" poster="${p.poster || ''}" autoplay muted loop playsinline preload="auto"></video>
-              <canvas class="plate-fx-canvas" data-fx="${p.fx || 'warm-breath-zoom'}"></canvas>
-              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+        <!-- PLATE ${numStr}: Clean Video Stage -->
+        <article class="project-details-item is-video is-motion-plate is-clean-plate${containCardClass}${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}${blackBgStyle}>
+          ${hideAllText ? '' : `<span class="tiny-card-num-badge">${numStr}</span>`}
+          <div class="plate-media-inner"${blackBgStyle}>
+            <div class="motion-video-stage is-clean-video-stage" data-frames="${p.poster || ''}" data-duration="6.4"${blackBgStyle}>
+              <video class="lusion-clean-media${containVideoClass}" src="${p.videoSrc}"${posterAttr} autoplay muted loop playsinline preload="auto"${videoInlineStyle}></video>
+              ${hideAllText ? '' : `<canvas class="plate-fx-canvas" data-fx="${p.fx || 'warm-breath-zoom'}"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>`}
             </div>
-            <div class="clean-plate-scrim"></div>
+            ${hideAllText ? '' : `<div class="clean-plate-scrim"></div>
             <div class="plate-top-bar" style="z-index:7;">
               <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill || p.stepLabel || 'LIVE MOTION STORY'}</span>
               <div style="display:flex;align-items:center;gap:6px;pointer-events:auto;">
@@ -2189,7 +2194,7 @@ function buildPageHtml(page) {
                 <h2 class="plate-caption-title">${formattedTitle}</h2>
                 <p class="plate-caption-sub">${p.sub}</p>
               </div>
-            </div>
+            </div>`}
           </div>
         </article>`;
     }
@@ -3335,6 +3340,29 @@ function buildPageHtml(page) {
       object-position: center 12px !important;
       padding: 12px 18px 158px !important;
       background: radial-gradient(circle at 50% 42%, #1D1814 0%, #0D0A08 100%);
+    }
+
+    .project-details-item.is-clean-video-contain,
+    body.theme-hanji .project-details-item.is-clean-video-contain {
+      background: #000000 !important;
+    }
+
+    .project-details-item.is-clean-video-contain .plate-media-inner,
+    .project-details-item.is-clean-video-contain .motion-video-stage {
+      background: #000000 !important;
+    }
+
+    .lusion-clean-media.is-video-contain-fit {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #000000 !important;
+      transform: none !important;
     }
 
     .project-details-item.has-contain-media .visual-sci-overlay {
@@ -11569,7 +11597,7 @@ function buildPageHtml(page) {
           if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
           const cleanMedia = plate.querySelector('.lusion-clean-media');
           if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
-            if (cleanMedia.classList.contains('is-contain-fit')) {
+            if (cleanMedia.classList.contains('is-contain-fit') || cleanMedia.classList.contains('is-video-contain-fit')) {
               cleanMedia.style.transform = 'none';
             } else {
               const parallaxX = Math.max(-28, Math.min(28, dist * -0.04));
