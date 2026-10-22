@@ -6132,28 +6132,29 @@
           </div>
         </article>
 
-        <!-- PLATE 07: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 07: Clean Video + Live 60fps Motion FX Stage -->
+        <article class="project-details-item is-video is-motion-plate is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">07</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" alt="사향(L-무스콘) · 녹용(강글리오사이드) · 당귀(데커신) · 산수유(로가닌) — '대표원장 수제 조제'" draggable="false">
+            <div class="motion-video-stage is-clean-video-stage" data-frames="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" data-duration="6.4">
+              <video class="lusion-clean-media" src="https://bareunhaniwon.com/wp-content/uploads/2026/10/%ED%99%A9%EC%A0%9C%EA%B3%B5%EC%A7%84%EB%8B%A8-%EC%A1%B0%EC%A0%9C-%EA%B3%BC%EC%A0%95-%EC%98%81%EC%83%81.mp4" poster="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" autoplay muted loop playsinline preload="auto"></video>
+              <canvas class="plate-fx-canvas" data-fx="warm-breath-zoom"></canvas>
+              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>
             <div class="clean-plate-scrim"></div>
+            <div class="plate-top-bar" style="z-index:7;">
+              <span class="plate-index-pill"><span class="live-rec-dot"></span>07 · 황제공진단 원내 직접 수제 조제 과정 영상</span>
+              <div style="display:flex;align-items:center;gap:6px;pointer-events:auto;">
+                
+                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){v.muted=!v.muted; if(!v.muted)v.play(); this.textContent=v.muted?'🔇 소리 켜기':'🔊 소리 끄기';}">🔇 소리 켜기</button>
+                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){if(v.paused){v.play();this.textContent='⏸ 일시정지';}else{v.pause();this.textContent='▶ 영상 재생';}}">⏸ 일시정지</button>
+              </div>
+            </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">STORY · 4대 핵심 재료 약리 성분 & 대표원장 직접 수제 제환</span>
                 <div class="clean-spec-tags">
                   <span class="clean-spec-tag">천연 사향(L-Muscone) · 뇌출혈/치매/심혈관 개규</span><span class="clean-spec-tag">러시아 분골(IGF-1·판토크린) · 관절염/암후유증/정력</span><span class="clean-spec-tag">참당귀(Decursin) · 항피부노화/자궁불임/기억력</span><span class="clean-spec-tag">산수유(Loganin) · 간보호/면역피로/불안·스트레스</span>
-                </div>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_gongjindan_story4_cites_scale.jpg?v=gjd2" alt="0.01g 원장 수제 계량" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">0.01g 원장 수제 계량</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_gongjindan_master.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_gongjindan_master.jpg" alt="대표원장 수제 제환" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">대표원장 수제 제환</span>
-                  </button>
                 </div>
                 <h2 class="plate-caption-title">사향(L-무스콘) · 녹용(강글리오사이드) · 당귀(데커신) · 산수유(로가닌) — <span class="title-key-em">'대표원장 수제 조제'</span></h2>
                 <p class="plate-caption-sub">논문으로 입증된 4대 원재료의 핵심 유효 성분이 단 1%도 소실되지 않도록, 식약처 CITES 정식 통관 사향과 러시아산 최상단 원용 분골만을 엄선해 안정위 대표원장이 직접 0.01g 단위로 계량하고 99.9% 순금박으로 수제 봉인합니다.</p>

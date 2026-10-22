@@ -5817,16 +5817,21 @@
         
         <!-- PLATE 01: Clean Video + Live 60fps Motion FX Stage -->
         <article class="project-details-item is-video is-motion-plate is-clean-plate is-active-plate">
+          <span class="tiny-card-num-badge">01</span>
           <div class="plate-media-inner">
             <div class="motion-video-stage is-clean-video-stage" data-frames="detail_director_story1_clean.jpg?v=oryzo3" data-duration="6.4">
-              <video class="lusion-clean-media" src="detail_director_story1.mp4?v=oryzo3" poster="detail_director_story1_clean.jpg?v=oryzo3" autoplay muted loop playsinline></video>
+              <video class="lusion-clean-media" src="detail_director_story1.mp4?v=oryzo3" poster="detail_director_story1_clean.jpg?v=oryzo3" autoplay muted loop playsinline preload="auto"></video>
               <canvas class="plate-fx-canvas" data-fx="warm-breath-zoom"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
             <div class="clean-plate-scrim"></div>
-            <div class="plate-top-bar">
+            <div class="plate-top-bar" style="z-index:7;">
               <span class="plate-index-pill"><span class="live-rec-dot"></span>LIVE MOTION · 대표원장 심층 문진</span>
-              <span class="plate-metric-pill">자율신경 · 수면 · 소화 · 한열 입체 스캔</span>
+              <div style="display:flex;align-items:center;gap:6px;pointer-events:auto;">
+                <span class="plate-metric-pill">자율신경 · 수면 · 소화 · 한열 입체 스캔</span>
+                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){v.muted=!v.muted; if(!v.muted)v.play(); this.textContent=v.muted?'🔇 소리 켜기':'🔊 소리 끄기';}">🔇 소리 켜기</button>
+                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){if(v.paused){v.play();this.textContent='⏸ 일시정지';}else{v.pause();this.textContent='▶ 영상 재생';}}">⏸ 일시정지</button>
+              </div>
             </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
