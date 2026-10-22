@@ -1518,11 +1518,11 @@ const PAGES = [
       {
         type: 'runway-ba-scan',
         fullscreen: true,
-        beforeImg: 'prostate_minimal_card4_ba_before.jpg',
-        afterImg: 'prostate_minimal_card4_ba_after.jpg',
-        title: "전립선 부종 감압 & 방광 저장력 복원 — '답답한 잔뇨감·야간뇨에서 시원한 쾌뇨와 끊김 없는 통잠으로'",
+        beforeImg: 'prostate_minimal_card4_ba_before.jpg?v=stream1',
+        afterImg: 'prostate_minimal_card4_ba_after.jpg?v=stream1',
+        title: "전립선 부종 잔뇨감 & 방광압박으로 요실금 — '시원한 쾌뇨'",
         sub: '부어오른 전립선 조직의 압력을 낮춰 좁아진 요도 길을 시원하게 넓혀주고, 차갑고 예민해진 방광 괄약근을 보강하여 밤새 깨지 않는 깊은 숙면을 되찾아 드립니다.',
-        caption: '[전립선 감압 & 쾌뇨 완성] 전립선 비대·부종 압박을 줄이고 방광 저장력을 높여 시원한 배뇨와 숙면을 완성합니다.'
+        caption: '[전립선 감압 & 시원한 쾌뇨] 약해진 물줄기·잔뇨감과 방광 압박을 해소하여 시원한 쾌뇨와 깊은 숙면을 완성합니다.'
       },
       {
         type: 'diet-single-stage',
