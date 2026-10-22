@@ -2139,35 +2139,279 @@
     #plate-lightbox, #consult-modal {
       position: fixed;
       inset: 0;
-      z-index: 300;
-      background: rgba(8, 9, 12, 0.92);
+      z-index: 15000;
+      background: rgba(8, 9, 12, 0.94);
       backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px 24px;
+      user-select: none;
     }
 
     #plate-lightbox.open, #consult-modal.open { display: flex; }
 
-    #plate-lightbox img {
-      max-width: 92vw;
-      max-height: 86vh;
-      border-radius: 18px;
-      border: 1px solid var(--border-gold);
-      object-fit: contain;
+    #plate-lightbox {
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .gjd-pano-slide img.emoji,
+    .gjd-pano-controls img.emoji,
+    #plate-lightbox img.emoji {
+      width: 1em !important;
+      height: 1em !important;
+      max-width: 1em !important;
+      max-height: 1em !important;
+      display: inline-block !important;
+      vertical-align: -0.1em !important;
+      border: none !important;
+      margin: 0 2px !important;
+      object-fit: contain !important;
+      box-shadow: none !important;
+    }
+
+    .lightbox-top-bar {
+      width: min(1320px, 95vw);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .lightbox-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(20, 16, 12, 0.92);
+      border: 1.5px solid rgba(212, 175, 55, 0.62);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      max-width: calc(100% - 115px);
+      overflow: hidden;
+    }
+
+    .lightbox-counter-badge {
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      color: #0E0B08;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .lightbox-title-text {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #FEF08A;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .lightbox-close {
-      position: absolute;
-      top: 28px; right: 34px;
-      padding: 10px 20px;
+      margin-left: auto;
+      padding: 9px 20px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .lightbox-close:hover {
+      background: #DC2626;
+      border-color: #FCA5A5;
+      color: #FFFFFF;
+    }
+
+    .lightbox-stage-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    #plate-lightbox #lightbox-img {
+      max-width: min(84vw, 1280px);
+      max-height: 72vh;
+      width: auto;
+      height: auto;
+      border-radius: 16px;
+      border: 1.5px solid rgba(212, 175, 55, 0.55);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.82);
+      object-fit: contain;
+      background: #0B0907;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #plate-lightbox:not(.has-gallery) #lightbox-img {
+      max-width: 92vw;
+      max-height: 84vh;
+      cursor: default;
+    }
+
+    .lightbox-nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 15020;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: rgba(20, 16, 12, 0.9);
+      border: 1.5px solid rgba(253, 230, 138, 0.72);
+      color: #FEF08A;
+      font-size: 0.92rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+      transition: all 0.22s ease;
+    }
+
+    .lightbox-nav-arrow.prev { left: 24px; }
+    .lightbox-nav-arrow.next { right: 24px; }
+
+    .lightbox-nav-arrow:hover {
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      color: #0E0B08;
+      border-color: #FFFFFF;
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .lightbox-caption-bar {
+      width: min(980px, 90vw);
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: rgba(16, 13, 10, 0.88);
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .lightbox-caption-bar strong {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #FEF08A;
+    }
+
+    .lightbox-caption-bar span {
+      font-size: 0.8rem;
+      color: rgba(248, 250, 252, 0.88);
+      word-break: keep-all;
+    }
+
+    .lightbox-bottom-bar {
+      width: min(1320px, 96vw);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(16, 13, 10, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .lightbox-step-pill {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      background: rgba(28, 22, 16, 0.95);
+      color: #FDE68A;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .lightbox-step-pill.is-gold,
+    .lightbox-step-pill:hover {
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      color: #0E0B08;
+      border-color: #FEF08A;
+    }
+
+    .lightbox-dots-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 2px 4px;
+    }
+
+    .lightbox-dots-strip::-webkit-scrollbar { display: none; }
+
+    .lightbox-page-chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(248, 250, 252, 0.8);
+      font-size: 0.72rem;
       font-weight: 700;
       cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .lightbox-page-chip.active,
+    .lightbox-page-chip:hover {
+      background: rgba(212, 175, 55, 0.32);
+      border-color: #FEF08A;
+      color: #FEF08A;
+      font-weight: 900;
+    }
+
+    #plate-lightbox:not(.has-gallery) .lightbox-nav-arrow,
+    #plate-lightbox:not(.has-gallery) .lightbox-meta-pill,
+    #plate-lightbox:not(.has-gallery) .lightbox-caption-bar,
+    #plate-lightbox:not(.has-gallery) .lightbox-bottom-bar {
+      display: none !important;
+    }
+
+    @media (max-width: 1024px) {
+      #plate-lightbox { padding: 12px 10px; gap: 8px; }
+      #plate-lightbox #lightbox-img { max-width: 94vw; max-height: 62vh; }
+      .lightbox-nav-arrow { padding: 10px 13px; font-size: 0.8rem; }
+      .lightbox-nav-arrow .nav-label { display: none; }
+      .lightbox-nav-arrow.prev { left: 8px; }
+      .lightbox-nav-arrow.next { right: 8px; }
+      .lightbox-title-text { font-size: 0.78rem; }
+      .lightbox-caption-bar { padding: 7px 12px; }
+      .lightbox-caption-bar strong { font-size: 0.82rem; }
+      .lightbox-caption-bar span { font-size: 0.7rem; }
     }
 
     .consult-modal-card {
@@ -6088,10 +6332,39 @@
     <div id="scroll-indicator-bar"></div>
   </div>
 
-  <!-- Fullscreen Image Lightbox Modal -->
-  <div id="plate-lightbox" onclick="if(event.target===this)this.classList.remove('open')">
-    <button type="button" class="lightbox-close" onclick="document.getElementById('plate-lightbox').classList.remove('open')">✕ 닫기</button>
-    <img id="lightbox-img" src="" alt="확대 이미지">
+  <!-- Fullscreen Image Lightbox Modal (Supports Single Image & Multi-Image Gallery Navigation) -->
+  <div id="plate-lightbox" onclick="if(event.target===this)window.closeCleanLightbox()">
+    <div class="lightbox-top-bar" onclick="event.stopPropagation()">
+      <div class="lightbox-meta-pill" id="lightbox-meta-pill">
+        <span class="lightbox-counter-badge" id="lightbox-counter-badge">01 / 10</span>
+        <span class="lightbox-title-text" id="lightbox-title-text">황제공진단 공식 브로슈어 아카이브</span>
+      </div>
+      <button type="button" class="lightbox-close" onclick="event.stopPropagation(); window.closeCleanLightbox()">✕ 닫기</button>
+    </div>
+
+    <button type="button" class="lightbox-nav-arrow prev" id="lightbox-prev-btn" onclick="event.stopPropagation(); window.stepCleanLightbox(-1)" aria-label="이전 이미지" title="이전 이미지 (◀)">
+      <span>◀</span>
+      <span class="nav-label">이전 이미지</span>
+    </button>
+
+    <div class="lightbox-stage-wrap" onclick="if(event.target===this)window.closeCleanLightbox()">
+      <img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="확대 이미지" onclick="event.stopPropagation(); window.handleLightboxImgClick()" title="클릭하면 다음 이미지로 넘어갑니다">
+      <div class="lightbox-caption-bar" id="lightbox-caption-bar" onclick="event.stopPropagation()">
+        <strong id="lightbox-caption-title"></strong>
+        <span id="lightbox-caption-desc"></span>
+      </div>
+    </div>
+
+    <button type="button" class="lightbox-nav-arrow next" id="lightbox-next-btn" onclick="event.stopPropagation(); window.stepCleanLightbox(1)" aria-label="다음 이미지" title="다음 이미지 (▶)">
+      <span class="nav-label">다음 이미지</span>
+      <span>▶</span>
+    </button>
+
+    <div class="lightbox-bottom-bar" id="lightbox-bottom-bar" onclick="event.stopPropagation()">
+      <button type="button" class="lightbox-step-pill" onclick="event.stopPropagation(); window.stepCleanLightbox(-1)">◀ 이전 장</button>
+      <div class="lightbox-dots-strip" id="lightbox-dots-strip"></div>
+      <button type="button" class="lightbox-step-pill is-gold" onclick="event.stopPropagation(); window.stepCleanLightbox(1)">다음 장 ▶</button>
+    </div>
   </div>
 
   <!-- 5/5 Checklist Center Urgent Doctor Warning Modal ("쾅! 쾅!" Animation & Sound) -->
@@ -6366,10 +6639,10 @@
         },
         'gongjindan.html': {
           part: 'gongjindan',
-          beforeImg: 'ba_gongjindan_before.jpg',
-          afterImg: 'ba_gongjindan_after.jpg',
-          beforeTag: 'BEFORE · 만성 번아웃 및 뇌·심장 기혈 고갈',
-          afterTag: 'AFTER · 학술 검증 정품 사향 뇌·심장 활력 복원',
+          beforeImg: 'gongjindan_minimal_card4_ba_before.jpg?v=couple2',
+          afterImg: 'gongjindan_minimal_card4_ba_after.jpg?v=couple2',
+          beforeTag: 'BEFORE · 난임과 기력 저하로 지친 부부',
+          afterTag: 'AFTER · 자궁 착상 강화 및 호르몬 활력 복원',
           metrics: [
             { label: '국제 민족약리학회지(J Ethnopharmacol) 검증', b: '만성 피로·집중력 저하', a: '뇌신경 영양인자 발현·피로 개선 입증' },
             { label: '국제 약리학술지(Front Pharmacol) 등재', b: '뇌·심장 기혈 울체', a: '천연 사향 뇌혈관장벽 투과·보호 검증' }
@@ -6869,7 +7142,20 @@
       setTimeout(updateBounds, 200);
       setTimeout(updateBounds, 700);
 
+      let lastLightboxWheelMs = 0;
       window.addEventListener('wheel', (e) => {
+        const lbEl = document.getElementById('plate-lightbox');
+        if (lbEl && lbEl.classList.contains('open')) {
+          if (lbEl.classList.contains('has-gallery') && typeof window.stepCleanLightbox === 'function') {
+            const nowW = performance.now();
+            const deltaW = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+            if (Math.abs(deltaW) > 12 && nowW - lastLightboxWheelMs > 280) {
+              lastLightboxWheelMs = nowW;
+              window.stepCleanLightbox(deltaW > 0 ? 1 : -1);
+            }
+          }
+          return;
+        }
         const metaEl = e.target.closest && e.target.closest('#project-details-meta');
         if (metaEl && metaEl.scrollHeight > metaEl.clientHeight + 4) {
           const atTop = metaEl.scrollTop <= 2 && e.deltaY < 0;
@@ -6919,7 +7205,7 @@
 
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.target.closest && e.target.closest('#plate-lightbox, .consult-modal-card, .ba-modal-card, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         updateBounds();
         isTouchActive = true;
         lastDetailInteractMs = performance.now();
@@ -6934,7 +7220,7 @@
 
       window.addEventListener('touchmove', (e) => {
         if (!isTouchActive || !e.touches || !e.touches.length) return;
-        if (e.target.closest && e.target.closest('.consult-modal-card, .ba-modal-card, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.target.closest && e.target.closest('#plate-lightbox, .consult-modal-card, .ba-modal-card, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         const now = performance.now();
         lastDetailInteractMs = now;
         const curX = e.touches[0].clientX;
@@ -6982,6 +7268,25 @@
       window.addEventListener('touchcancel', endTouchRunway, { passive: true });
 
       window.addEventListener('keydown', (e) => {
+        const lbEl = document.getElementById('plate-lightbox');
+        if (lbEl && lbEl.classList.contains('open')) {
+          if (e.key === 'Escape') {
+            if (typeof window.closeCleanLightbox === 'function') window.closeCleanLightbox();
+            return;
+          }
+          if (lbEl.classList.contains('has-gallery') && typeof window.stepCleanLightbox === 'function') {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown' || e.key === ' ') {
+              e.preventDefault();
+              window.stepCleanLightbox(1);
+              return;
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') {
+              e.preventDefault();
+              window.stepCleanLightbox(-1);
+              return;
+            }
+          }
+          return;
+        }
         lastDetailInteractMs = performance.now();
         updateBounds();
         if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') targetX = Math.min(maxScrollX, targetX + window.innerWidth * 0.45);
@@ -7133,21 +7438,171 @@
         if (nextBtn) window.switchPlateThumb(null, nextBtn, true);
       }, 4500);
 
-      window.openLightboxFromPlate = function(btn) {
-        const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
-        const ms = motionStages.find(m => m.stageEl === stageEl);
-        const src = ms ? ms.frames[ms.currIdx] : '';
-        if (src) {
-          document.getElementById('lightbox-img').src = src;
-          document.getElementById('plate-lightbox').classList.add('open');
+      // ====================================================================
+      // 3B. INTERACTIVE FULLSCREEN GALLERY LIGHTBOX ENGINE (WITH PREV/NEXT)
+      // ====================================================================
+      let lightboxGallery = [];
+      let lightboxCurrIdx = 0;
+
+      function renderLightboxState() {
+        const lbEl = document.getElementById('plate-lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        if (!lbEl || !lbImg) return;
+
+        const hasGallery = Array.isArray(lightboxGallery) && lightboxGallery.length > 1;
+        lbEl.classList.toggle('has-gallery', hasGallery);
+
+        if (!lightboxGallery.length) return;
+        lightboxCurrIdx = ((lightboxCurrIdx % lightboxGallery.length) + lightboxGallery.length) % lightboxGallery.length;
+        const item = lightboxGallery[lightboxCurrIdx];
+        if (!item || !item.src) return;
+
+        lbImg.style.opacity = '0.38';
+        lbImg.src = item.src;
+        setTimeout(() => { lbImg.style.opacity = '1'; }, 40);
+
+        // Preload adjacent gallery images for instant next/prev transition
+        if (hasGallery) {
+          const nextItem = lightboxGallery[(lightboxCurrIdx + 1) % lightboxGallery.length];
+          const prevItem = lightboxGallery[(lightboxCurrIdx - 1 + lightboxGallery.length) % lightboxGallery.length];
+          if (nextItem && nextItem.src) { const im1 = new Image(); im1.src = nextItem.src; }
+          if (prevItem && prevItem.src) { const im2 = new Image(); im2.src = prevItem.src; }
+        }
+
+        const counterBadge = document.getElementById('lightbox-counter-badge');
+        const titleText = document.getElementById('lightbox-title-text');
+        const capTitle = document.getElementById('lightbox-caption-title');
+        const capDesc = document.getElementById('lightbox-caption-desc');
+        const dotsStrip = document.getElementById('lightbox-dots-strip');
+
+        const n = lightboxCurrIdx + 1;
+        const total = lightboxGallery.length;
+        const numPad = (n < 10 ? '0' + n : '' + n) + ' / ' + (total < 10 ? '0' + total : '' + total);
+        if (counterBadge) counterBadge.textContent = numPad;
+        if (titleText) {
+          titleText.textContent = (item.tag ? '[' + item.tag + '] ' : '') + (item.title || '확대 이미지 보기');
+        }
+        if (capTitle) capTitle.textContent = (item.code ? item.code + ' · ' : '') + (item.title || '');
+        if (capDesc) capDesc.textContent = item.desc || '좌우 화살표(◀ ▶) 버튼 또는 이미지를 클릭하시면 다음 이미지로 넘어갑니다.';
+
+        if (dotsStrip && hasGallery) {
+          const chips = Array.from(dotsStrip.querySelectorAll('.lightbox-page-chip'));
+          if (chips.length !== lightboxGallery.length) {
+            dotsStrip.innerHTML = lightboxGallery.map((g, gIdx) => {
+              const label = g.short || ((gIdx + 1 < 10 ? '0' + (gIdx + 1) : '' + (gIdx + 1)) + 'P');
+              return '<button type="button" class="lightbox-page-chip' + (gIdx === lightboxCurrIdx ? ' active' : '') + '" onclick="event.stopPropagation(); window.jumpCleanLightbox(' + gIdx + ')">' + label + '</button>';
+            }).join('');
+          } else {
+            chips.forEach((ch, cIdx) => ch.classList.toggle('active', cIdx === lightboxCurrIdx));
+          }
+          const activeChip = dotsStrip.querySelector('.lightbox-page-chip.active');
+          if (activeChip) {
+            const scrollLeft = activeChip.offsetLeft - (dotsStrip.clientWidth - activeChip.offsetWidth) * 0.5;
+            dotsStrip.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
+          }
+        }
+
+        if (item.isGjdPanorama && typeof window.selectGjdPanorama === 'function') {
+          window.selectGjdPanorama(lightboxCurrIdx, true);
+        }
+      }
+
+      window.openCleanLightbox = function(src, customGallery, startIndex) {
+        if (!src && (!customGallery || !customGallery.length)) return;
+        const lbEl = document.getElementById('plate-lightbox');
+        if (!lbEl) return;
+
+        if (Array.isArray(customGallery) && customGallery.length > 0) {
+          lightboxGallery = customGallery;
+          lightboxCurrIdx = typeof startIndex === 'number' ? startIndex : 0;
+        } else {
+          // Auto-detect if src belongs to Card 06 Panorama Archive
+          const panoSlides = Array.from(document.querySelectorAll('#gjd-panorama-track .gjd-pano-slide'));
+          const cleanFile = String(src || '').split('?')[0].split('/').pop();
+          let matchedPanoIdx = -1;
+          if (panoSlides.length > 0 && cleanFile) {
+            matchedPanoIdx = panoSlides.findIndex(sl => {
+              const sImg = sl.getAttribute('data-img') || '';
+              return sImg.endsWith(cleanFile);
+            });
+          }
+          if (matchedPanoIdx >= 0 && typeof window.getGjdPanoramaGalleryList === 'function') {
+            lightboxGallery = window.getGjdPanoramaGalleryList();
+            lightboxCurrIdx = matchedPanoIdx;
+          } else {
+            lightboxGallery = [{ src: src, title: '원본 확대 이미지', desc: '' }];
+            lightboxCurrIdx = 0;
+          }
+        }
+
+        renderLightboxState();
+        lbEl.classList.add('open');
+      };
+
+      window.stepCleanLightbox = function(dir) {
+        if (!lightboxGallery || lightboxGallery.length < 2) return;
+        lightboxCurrIdx = ((lightboxCurrIdx + (dir || 1)) % lightboxGallery.length + lightboxGallery.length) % lightboxGallery.length;
+        renderLightboxState();
+      };
+
+      window.jumpCleanLightbox = function(idx) {
+        if (!lightboxGallery || !lightboxGallery.length) return;
+        lightboxCurrIdx = ((idx % lightboxGallery.length) + lightboxGallery.length) % lightboxGallery.length;
+        renderLightboxState();
+      };
+
+      window.handleLightboxImgClick = function() {
+        if (lightboxGallery && lightboxGallery.length > 1) {
+          window.stepCleanLightbox(1);
         }
       };
 
-      window.openCleanLightbox = function(src) {
-        if (src) {
-          document.getElementById('lightbox-img').src = src;
-          document.getElementById('plate-lightbox').classList.add('open');
+      window.closeCleanLightbox = function() {
+        const lbEl = document.getElementById('plate-lightbox');
+        if (lbEl) lbEl.classList.remove('open');
+      };
+
+      // Touch swipe left/right inside #plate-lightbox to view next/prev image
+      (function initLightboxTouchSwipe() {
+        const lbEl = document.getElementById('plate-lightbox');
+        if (!lbEl) return;
+        let lbTouchStartX = 0;
+        let lbTouchStartY = 0;
+        let lbTracking = false;
+        lbEl.addEventListener('touchstart', (e) => {
+          if (!lbEl.classList.contains('open') || !e.touches || !e.touches.length) return;
+          if (e.target.closest && e.target.closest('.lightbox-dots-strip')) return;
+          lbTracking = true;
+          lbTouchStartX = e.touches[0].clientX;
+          lbTouchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        lbEl.addEventListener('touchend', (e) => {
+          if (!lbTracking || !e.changedTouches || !e.changedTouches.length) return;
+          lbTracking = false;
+          const dx = lbTouchStartX - e.changedTouches[0].clientX;
+          const dy = lbTouchStartY - e.changedTouches[0].clientY;
+          if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy)) {
+            window.stepCleanLightbox(dx > 0 ? 1 : -1);
+          }
+        }, { passive: true });
+      })();
+
+      window.openLightboxFromPlate = function(btn) {
+        const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
+        const ms = motionStages.find(m => m.stageEl === stageEl);
+        if (ms && ms.frames && ms.frames.length > 1) {
+          const gList = ms.frames.map((fSrc, fIdx) => ({
+            src: fSrc,
+            code: 'SCENE 0' + (fIdx + 1),
+            short: '0' + (fIdx + 1) + ' 장면',
+            title: '장면 0' + (fIdx + 1) + ' 확대 보기',
+            desc: '좌우 화살표(◀ ▶) 또는 이미지를 클릭하면 다음 장면으로 이동합니다.'
+          }));
+          window.openCleanLightbox(ms.frames[ms.currIdx], gList, ms.currIdx);
+          return;
         }
+        const src = ms ? ms.frames[ms.currIdx] : '';
+        if (src) window.openCleanLightbox(src);
       };
 
       function applyStageFrame(ms, nextIdx) {
@@ -8824,21 +9279,82 @@
           }
         };
 
-        window.zoomActiveGjdPanorama = function() {
-          const sl = slides[activeIdx];
-          const img = sl ? (sl.querySelector('img')?.src || sl.dataset.img) : '';
-          if (img && window.openCleanLightbox) window.openCleanLightbox(img);
+        function resolveSlideImageSrc(sl) {
+          if (!sl) return '';
+          const mainImg = sl.querySelector('img.gjd-pano-main-img') || sl.querySelector('.gjd-pano-img-wrap img:not(.emoji)');
+          if (mainImg) {
+            const attrSrc = mainImg.getAttribute('src') || '';
+            const propSrc = mainImg.src || '';
+            if (propSrc && !propSrc.includes('s.w.org/images/core/emoji')) return propSrc;
+            if (attrSrc && !attrSrc.includes('s.w.org/images/core/emoji')) return attrSrc;
+          }
+          return sl.getAttribute('data-img') || sl.dataset.img || '';
+        }
+
+        window.getGjdPanoramaGalleryList = function() {
+          return slides.map((sl, i) => ({
+            src: resolveSlideImageSrc(sl),
+            code: sl.getAttribute('data-code') || ('P.' + (i + 1 < 10 ? '0' + (i + 1) : '' + (i + 1))),
+            tag: sl.getAttribute('data-tag') || '',
+            short: sl.getAttribute('data-short') || ((i + 1 < 10 ? '0' + (i + 1) : '' + (i + 1)) + 'P'),
+            title: sl.getAttribute('data-title') || (sl.querySelector('.gjd-pano-slide-caption strong')?.textContent || ''),
+            desc: sl.getAttribute('data-desc') || (sl.querySelector('.gjd-pano-slide-caption span')?.textContent || ''),
+            isGjdPanorama: true
+          }));
         };
 
-        window.handleGjdSlideClick = function(idx, imgSrc) {
-          if (idx === activeIdx) {
-            const sl = slides[idx];
-            const resolvedSrc = (sl && sl.querySelector('img')?.src) || imgSrc;
-            if (resolvedSrc && window.openCleanLightbox) window.openCleanLightbox(resolvedSrc);
-          } else {
-            window.selectGjdPanorama(idx, true);
+        window.openGjdPanoramaLightbox = function(idx) {
+          const targetIdx = typeof idx === 'number' ? idx : activeIdx;
+          window.selectGjdPanorama(targetIdx, true);
+          const galleryList = window.getGjdPanoramaGalleryList();
+          const safeIdx = ((targetIdx % galleryList.length) + galleryList.length) % galleryList.length;
+          const targetItem = galleryList[safeIdx];
+          if (targetItem && targetItem.src && window.openCleanLightbox) {
+            window.openCleanLightbox(targetItem.src, galleryList, safeIdx);
           }
         };
+
+        window.zoomActiveGjdPanorama = function() {
+          window.openGjdPanoramaLightbox(activeIdx);
+        };
+
+        let lastPanoDragDistance = 0;
+        window.handleGjdSlideClick = function(idx) {
+          if (lastPanoDragDistance > 10) {
+            lastPanoDragDistance = 0;
+            return;
+          }
+          window.openGjdPanoramaLightbox(idx);
+        };
+
+        // Keep activeIdx synced when user manually scrolls/swipes the panorama viewport
+        let scrollSyncTimer = null;
+        viewport.addEventListener('scroll', () => {
+          if (scrollSyncTimer) clearTimeout(scrollSyncTimer);
+          scrollSyncTimer = setTimeout(() => {
+            if (!slides.length) return;
+            const vpCenter = viewport.scrollLeft + viewport.clientWidth * 0.5;
+            let bestIdx = activeIdx;
+            let minDist = Infinity;
+            slides.forEach((sl, i) => {
+              const slCenter = sl.offsetLeft + sl.offsetWidth * 0.5;
+              const d = Math.abs(slCenter - vpCenter);
+              if (d < minDist) {
+                minDist = d;
+                bestIdx = i;
+              }
+            });
+            if (bestIdx !== activeIdx) {
+              activeIdx = bestIdx;
+              slides.forEach((sl, i) => sl.classList.toggle('is-active', i === activeIdx));
+              thumbs.forEach((th, i) => th.classList.toggle('active', i === activeIdx));
+              if (counterEl) {
+                const n = activeIdx + 1;
+                counterEl.textContent = (n < 10 ? '0' + n : '' + n) + ' / ' + slides.length;
+              }
+            }
+          }, 90);
+        }, { passive: true });
 
         // Drag-to-scroll inside panorama viewport
         let pDown = false, pStartX = 0, pStartScroll = 0;
@@ -8846,12 +9362,14 @@
           if (e.target.closest('button')) return;
           e.stopPropagation();
           pDown = true;
+          lastPanoDragDistance = 0;
           pStartX = e.clientX;
           pStartScroll = viewport.scrollLeft;
         });
         window.addEventListener('pointermove', (e) => {
           if (!pDown) return;
           const dx = pStartX - e.clientX;
+          lastPanoDragDistance = Math.max(lastPanoDragDistance, Math.abs(dx));
           if (Math.abs(dx) > 6) {
             autoPlay = false;
             if (autoBtn) {
@@ -8865,6 +9383,8 @@
 
         setInterval(() => {
           if (!autoPlay) return;
+          const lbEl = document.getElementById('plate-lightbox');
+          if (lbEl && lbEl.classList.contains('open')) return;
           const card = document.getElementById('gjd-panorama-card');
           if (!card || !card.classList.contains('is-active-plate')) return;
           centerSlide(activeIdx + 1, true);
