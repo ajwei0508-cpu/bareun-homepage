@@ -1390,13 +1390,18 @@ const PAGES = [
         type: 'motion-story',
         fullscreen: true,
         hideTopBar: true,
-        title: "아침마다 눈 뜨기 힘든 만성 번아웃 · 중요한 일정을 앞둔 브레인 포그 · 급격히 기력이 떨어진 부모님 — '참 곤란하다'",
+        title: "아침마다 눈 뜨기 힘든 만성 번아웃 · 매일 숨막히는 중요한 일정들 · 급격히 기력이 떨어진 부모님 — '가족에게 선물하세요'",
         sub: '잠을 자도 몸이 천근만근 무거운 아침 피로, 중요한 회의와 시험을 앞두고 머리가 멍해지는 집중력 저하, 몰라보게 기력이 쇠약해진 부모님 건강까지 — 바닥난 원기로 가장 막막하고 곤란한 순간입니다.',
-        caption: '[원기 고갈로 곤란한 3대 상황] 만성 번아웃 · 두뇌 피로 브레인 포그 · 부모님 기력 저하로 가장 곤란한 순간입니다.',
+        caption: '잠을 자도 몸이 천근만근 무거운 아침 피로, 중요한 회의와 시험을 앞두고 머리가 멍해지는 집중력 저하, 몰라보게 기력이 쇠약해진 부모님 건강까지 — 바닥난 원기로 가장 막막하고 곤란한 순간입니다.',
         frames: [
-          'detail_gongjindan_story1_battery_sofa.jpg?v=gjd1',
-          'gongjindan_minimal_card9_trouble_2_brainfog.jpg',
-          'gongjindan_minimal_card9_trouble_3_parents.jpg'
+          'gongjindan_minimal_card9_trouble_3_parents.jpg?v=card9f1',
+          'gongjindan_minimal_card9_trouble_2_brainfog.jpg?v=card9f2',
+          'gongjindan_card9_frame3_pov_gift.jpg?v=card9f3'
+        ],
+        thumbs: [
+          { img: 'gongjindan_minimal_card9_trouble_3_parents.jpg?v=card9f1', label: '01 연로하신 부모님' },
+          { img: 'gongjindan_minimal_card9_trouble_2_brainfog.jpg?v=card9f2', label: '02 피곤한 4가족' },
+          { img: 'gongjindan_card9_frame3_pov_gift.jpg?v=card9f3', label: '03 부모님께 선물' }
         ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
