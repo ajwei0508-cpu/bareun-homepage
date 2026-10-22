@@ -1388,11 +1388,6 @@ const PAGES = [
           'gongjindan_minimal_card9_trouble_2_brainfog.jpg?v=card9f2',
           'gongjindan_card9_frame3_pov_gift.jpg?v=card9f3'
         ],
-        thumbs: [
-          { img: 'gongjindan_minimal_card9_trouble_3_parents.jpg?v=card9f1', label: '01 연로하신 부모님' },
-          { img: 'gongjindan_minimal_card9_trouble_2_brainfog.jpg?v=card9f2', label: '02 피곤한 4가족' },
-          { img: 'gongjindan_card9_frame3_pov_gift.jpg?v=card9f3', label: '03 부모님께 선물' }
-        ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
       }
