@@ -1338,11 +1338,11 @@ const PAGES = [
       {
         type: 'runway-ba-scan',
         fullscreen: true,
-        beforeImg: 'gongjindan_minimal_card4_ba_before.jpg',
-        afterImg: 'gongjindan_minimal_card4_ba_after.jpg',
-        title: "여성 '자궁불임(난임) 착상' 환경 복원 & 남성 '정력강화 · 호르몬 활력' 완성",
-        sub: '[성분 논문 근거] 참당귀(데커신·정유 성분)가 자궁 동맥 혈류를 확장하고 자궁내막 두께(수용성)와 난소 배란 기능을 높여 차가운 하복부로 인한 자궁불임(난임) 착상을 돕습니다. 또한 녹용(판토크린)과 산수유(코르누사이드)는 남성 테스토스테론 합성 및 음경 해면체 산화질소(cGMP/NO) 혈류를 증가시켜 정력강화와 성기능 회복에 탁월합니다.',
-        caption: '[자궁불임 착상 & 남성 정력강화] 여성의 자궁내막 보혈·착상력 향상과 남성의 테스토스테론·정력 강화를 동시에 이끕니다.'
+        beforeImg: 'gongjindan_minimal_card4_ba_before.jpg?v=couple1',
+        afterImg: 'gongjindan_minimal_card4_ba_after.jpg?v=couple1',
+        title: "여성 '자궁불임(난임) 착상' 강화 & 남성 '정자강화 · 호르몬 활력' 완성",
+        sub: '아내의 아랫배 혈류를 열어 수정란이 편안히 뿌리내릴 따뜻한 자궁 환경을 만들고, 남편의 활력 호르몬과 순환력을 힘있게 깨웁니다. 부부의 건강한 임신 준비와 지친 생식 기력을 속부터 균형 있게 함께 채워줍니다.',
+        caption: '아내의 아랫배 혈류를 열어 수정란이 편안히 뿌리내릴 따뜻한 자궁 환경을 만들고, 남편의 활력 호르몬과 순환력을 힘있게 깨웁니다. 부부의 건강한 임신 준비와 지친 생식 기력을 속부터 균형 있게 함께 채워줍니다.'
       },
       {
         type: 'diet-single-stage',
