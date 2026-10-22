@@ -1561,13 +1561,13 @@ const PAGES = [
         type: 'motion-story',
         fullscreen: true,
         hideTopBar: true,
-        title: "새벽마다 서너 번 깨는 야간뇨 · 장거리 운전·회의 중 급한 빈뇨 · 묵직한 회음부 통증과 활력 저하 — '참 곤란하다'",
-        sub: '새벽마다 소변 때문에 잠이 깨어 무너지는 숙면, 고속도로 운전이나 중요한 회의 중 갑자기 찾아오는 절박뇨와 잔뇨감, 오래 앉아 있을 때 묵직하게 올라오는 골반·회음부 통증과 남성 활력 저하까지 — 누구에게 말하기도 힘들어 가장 답답하고 곤란한 순간입니다.',
-        caption: '[전립선·배뇨 장애로 곤란한 3대 상황] 새벽 야간뇨 · 회의·운전 중 빈뇨 · 만성 골반통과 활력 저하로 가장 곤란한 순간입니다.',
+        title: "젊을때는 고생하고 나이가드니 남성 갱년기 오듯 무력해진 나 — '참 곤란하다'",
+        sub: '새벽마다 서너 번 깨고 · 운전·회의 중 급한 빈뇨 · 묵직한 회음부 통증과 활력 저하 누구에게 말하기도 힘들어 가장 답답하고 곤란한 순간입니다.',
+        caption: '[남성 갱년기 & 배뇨 장애로 곤란한 순간] 무력해진 활력 · 운전·회의 중 급한 빈뇨 · 새벽 야간뇨로 가장 답답하고 곤란한 순간입니다.',
         frames: [
-          'prostate_minimal_card9_trouble_1_nocturia.jpg?v=noct2',
-          'prostate_minimal_card9_trouble_2_driving.jpg',
-          'prostate_minimal_card9_trouble_3_pelvicpain.jpg'
+          'prostate_minimal_card9_trouble_1_nocturia.jpg?v=c9v3',
+          'prostate_minimal_card9_trouble_2_driving.jpg?v=c9v3',
+          'prostate_minimal_card9_trouble_3_pelvicpain.jpg?v=c9v3'
         ],
         fx: 'sunlight-bokeh',
         durationSec: 6.6
