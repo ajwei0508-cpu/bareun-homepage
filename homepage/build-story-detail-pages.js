@@ -1342,7 +1342,7 @@ const PAGES = [
         type: 'diet-single-stage',
         stage: 1,
         fullscreen: true,
-        imgSrc: 'gongjindan_minimal_card5_stage1_brain_calm.jpg?v=student1',
+        imgSrc: 'gongjindan_minimal_card5_stage1_brain_calm.jpg?v=student2',
         title: "'기억력저하 · 스트레스 · 불안증후군' 케어와 '수험생' 고도 집중력 향상",
         sub: '[성분 논문 근거] 공진단은 뇌 해마의 신경을 활성화하여 장기 기억력과 깊은 집중력을 탄탄하게 끌어올립니다. 과도한 스트레스 호르몬을 낮추고 긴장된 신경을 안정시켜, 시험 불안을 덜고 최상의 두뇌 컨디션을 지켜줍니다.',
         caption: '[성분 논문 근거] 공진단은 뇌 해마의 신경을 활성화하여 장기 기억력과 깊은 집중력을 탄탄하게 끌어올립니다. 과도한 스트레스 호르몬을 낮추고 긴장된 신경을 안정시켜, 시험 불안을 덜고 최상의 두뇌 컨디션을 지켜줍니다.'
