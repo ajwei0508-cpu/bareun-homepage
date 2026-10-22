@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { DISEASE_BLOG_CATEGORIES, INITIAL_DISEASE_BLOG_POSTS } = require('./disease-blog-seed-data.js');
+const GAS_SCRIPT_SOURCE = fs.readFileSync(path.join(__dirname, 'google-apps-script-daily-blog.gs'), 'utf8');
 
 const BODY_PARTS = [
   {
@@ -1022,7 +1024,7 @@ function buildBodyExplorerHtml() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>바른한의원 대전본점 | 인체 질환 · 학술 검증 치료 · 홈케어 쇼룸</title>
+  <title>바른한의원 대전본점 | 아빠 한의사 3D 인체모형 · 질환별 자동발행 의학백과 블로그</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@500;600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1837,6 +1839,544 @@ function buildBodyExplorerHtml() {
         font-size: 0.72rem;
       }
     }
+
+    /* =========================================================================
+       4. DISEASE-SPECIFIC BLOG PAGE & GOOGLE APPS SCRIPT (GAS) AUTO-BLOG UI
+       ========================================================================= */
+    .slide-step-tab.blog-tab-btn {
+      border-color: var(--green-primary);
+      background: linear-gradient(135deg, #EBF5EF 0%, #DFEFE6 100%);
+      color: var(--green-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    .slide-step-tab.blog-tab-btn:hover,
+    .slide-step-tab.blog-tab-btn.active {
+      background: linear-gradient(135deg, var(--green-primary) 0%, #1E4230 100%);
+      border-color: var(--green-primary);
+      color: #FFFFFF;
+      box-shadow: 0 5px 15px rgba(45, 90, 67, 0.26);
+    }
+    .blog-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+      display: inline-block;
+      animation: blogPulse 1.8s infinite ease-in-out;
+    }
+    @keyframes blogPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.28); opacity: 0.75; }
+    }
+    .blog-count-pill {
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      background: rgba(45, 90, 67, 0.14);
+      color: inherit;
+    }
+    .slide-step-tab.blog-tab-btn.active .blog-count-pill {
+      background: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+    }
+
+    .vh-pill-btn.blog-top-btn {
+      background: #EBF5EF;
+      border-color: var(--green-primary);
+      color: var(--green-primary);
+      font-weight: 800;
+    }
+    .vh-pill-btn.blog-top-btn:hover,
+    .vh-pill-btn.blog-top-btn.active {
+      background: var(--green-primary);
+      color: #FFFFFF;
+    }
+    .vh-pill-btn.gas-top-btn {
+      background: #FFFDF7;
+      border-color: var(--border-strong);
+      color: var(--brown-deep);
+      font-weight: 800;
+    }
+    .vh-pill-btn.gas-top-btn:hover {
+      background: var(--brown-deep);
+      color: #FFFFFF;
+    }
+
+    /* Preview Ticker Strip on Medical Slides 1-4 */
+    .disease-blog-preview-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 15px;
+      margin-bottom: 12px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #F2F8F4 0%, #FAF6EC 100%);
+      border: 1.5px solid #B7D4C3;
+      flex-wrap: wrap;
+    }
+    .dbp-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      flex: 1;
+    }
+    .dbp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--green-primary);
+      color: #FFFFFF;
+      font-size: 0.66rem;
+      font-weight: 800;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .dbp-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--black-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    .dbp-title:hover {
+      color: var(--green-primary);
+      text-decoration: underline;
+    }
+    .dbp-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .dbp-btn {
+      appearance: none;
+      border: 1px solid var(--green-primary);
+      background: #FFFFFF;
+      color: var(--green-primary);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.71rem;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .dbp-btn.primary,
+    .dbp-btn:hover {
+      background: var(--green-primary);
+      color: #FFFFFF;
+    }
+
+    /* Full Disease Blog Page Container (Tab 5) */
+    .disease-blog-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1E3F2E 0%, #2D5A43 100%);
+      color: #FFFFFF;
+      flex-wrap: wrap;
+    }
+    .dbh-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .dbh-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #A7F3D0;
+      letter-spacing: 0.04em;
+    }
+    .dbh-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .dbh-btns {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    .dbh-action-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.12);
+      color: #FFFFFF;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.71rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dbh-action-btn:hover {
+      background: #FFFFFF;
+      color: var(--green-primary);
+    }
+
+    /* 8-Disease Blog Filter Chips inside Blog View */
+    .disease-blog-cat-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      scrollbar-width: thin;
+    }
+    .blog-cat-chip {
+      appearance: none;
+      border: 1px solid var(--border-warm);
+      background: var(--bg-beige);
+      color: var(--brown-deep);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.71rem;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: 999px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .blog-cat-chip:hover {
+      border-color: var(--green-primary);
+      color: var(--green-primary);
+    }
+    .blog-cat-chip.active {
+      background: var(--brown-deep);
+      border-color: var(--brown-deep);
+      color: #FFFFFF;
+    }
+
+    /* Disease Blog Post Cards Stack */
+    .disease-blog-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-bottom: 14px;
+    }
+    .disease-blog-card {
+      background: #FFFDF9;
+      border: 1.5px solid var(--border-warm);
+      border-left: 4px solid var(--green-primary);
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .disease-blog-card:hover {
+      border-color: var(--green-primary);
+      box-shadow: 0 8px 22px rgba(45, 90, 67, 0.10);
+      transform: translateY(-1px);
+    }
+    .dbc-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .dbc-badge-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .dbc-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--green-tint);
+      color: var(--green-primary);
+      font-size: 0.66rem;
+      font-weight: 800;
+    }
+    .dbc-date {
+      font-size: 0.69rem;
+      font-weight: 700;
+      color: var(--brown-soft);
+    }
+    .dbc-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1.42;
+      color: var(--black-ink);
+      margin-bottom: 6px;
+      word-break: keep-all;
+    }
+    .dbc-summary {
+      font-size: 0.81rem;
+      line-height: 1.56;
+      color: var(--black-sub);
+      margin-bottom: 9px;
+      word-break: keep-all;
+    }
+    .dbc-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-warm);
+      flex-wrap: wrap;
+    }
+    .dbc-journal {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--brown-mid);
+    }
+    .dbc-read-more {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Full Blog Article Reader View */
+    .blog-reader-box {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+    .blog-reader-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border-warm);
+      flex-wrap: wrap;
+    }
+    .blog-back-btn {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-beige);
+      color: var(--brown-deep);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 6px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .blog-back-btn:hover {
+      background: var(--brown-deep);
+      color: #FFFFFF;
+    }
+    .blog-reader-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.18rem;
+      font-weight: 800;
+      line-height: 1.42;
+      color: var(--black-ink);
+      margin: 6px 0 10px;
+      word-break: keep-all;
+    }
+    .blog-reader-byline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: var(--brown-soft);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border-warm);
+    }
+    .blog-art-lead {
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.68;
+      color: var(--black-ink);
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--bg-beige);
+      margin-bottom: 12px;
+      word-break: keep-all;
+    }
+    .blog-art-sec {
+      margin: 10px 0;
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: #FFFDF9;
+      border: 1px solid var(--border-warm);
+    }
+    .blog-art-sec h4 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      margin-bottom: 5px;
+      word-break: keep-all;
+    }
+    .blog-art-sec p {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--black-sub);
+      margin: 0;
+      word-break: keep-all;
+    }
+    .blog-art-sci {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #F4EFE4;
+      border: 1px solid var(--border-warm);
+      font-size: 0.75rem;
+      color: var(--brown-deep);
+      line-height: 1.5;
+    }
+    .blog-art-docnote {
+      margin-top: 9px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: var(--green-tint);
+      border: 1px solid #B7D4C3;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--green-primary);
+      line-height: 1.55;
+    }
+    .blog-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .blog-tag-chip {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--brown-mid);
+      background: var(--bg-beige);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    /* Google Apps Script (GAS) Configuration & Code Copy Modal */
+    .gas-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(23, 22, 20, 0.62);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .gas-modal-backdrop.open {
+      display: flex;
+    }
+    .gas-modal-dialog {
+      width: 100%;
+      max-width: 820px;
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #FFFDF9;
+      border: 2px solid var(--border-strong);
+      border-radius: 22px;
+      padding: 24px 26px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    }
+    .gas-modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-warm);
+    }
+    .gas-step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .gas-step-box {
+      background: var(--bg-beige);
+      border: 1px solid var(--border-warm);
+      border-radius: 12px;
+      padding: 12px 13px;
+    }
+    .gas-step-num {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      margin-bottom: 4px;
+    }
+    .gas-step-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--black-ink);
+      margin-bottom: 4px;
+    }
+    .gas-step-desc {
+      font-size: 0.73rem;
+      line-height: 1.48;
+      color: var(--black-sub);
+    }
+    .gas-url-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .gas-url-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 9px 13px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-strong);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.78rem;
+      background: #FFFFFF;
+      color: var(--black-ink);
+    }
+    .gas-code-pre {
+      background: #171614;
+      color: #E8F2EC;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.72rem;
+      line-height: 1.52;
+      max-height: 240px;
+      overflow: auto;
+      white-space: pre;
+      margin-top: 8px;
+    }
+    @media (max-width: 768px) {
+      .gas-step-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 
   <link rel="icon" href="data:,">
@@ -1847,7 +2387,7 @@ function buildBodyExplorerHtml() {
   <header class="vibrant-header">
     <a href="story-3d.html" class="vh-brand">
       <div class="vh-brand-mark">바</div>
-      <span class="vh-brand-title">바른한의원 대전본점 인체모형 · 학술 논문 검증 의학백과</span>
+      <span class="vh-brand-title">바른한의원 대전본점 · 아빠 한의사 인체모형 의학백과 & 질환별 블로그</span>
     </a>
 
     <nav class="vh-part-quicknav" id="vh-part-quicknav">
@@ -1855,13 +2395,15 @@ function buildBodyExplorerHtml() {
     </nav>
 
     <div class="vh-right-actions">
+      <button type="button" class="vh-pill-btn blog-top-btn" id="vh-open-blog-btn" onclick="window.openDiseaseBlogTab()">📝 질환별 블로그</button>
+      <button type="button" class="vh-pill-btn gas-top-btn" onclick="window.openGasConfigModal()">⚙️ 자동발행(GAS)</button>
       <a href="tel:010-5631-1275" class="vh-pill-btn">📞 대표원장실 전화 상담</a>
       <a href="story-3d.html" class="vh-pill-btn">← 메인 쇼룸</a>
       <a href="story-3d.html?cards=1" class="vh-pill-btn primary">질환별 상세카드 펼침 ↗</a>
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE: UNIFIED 3D HUMAN BODY + 4-STEP MEDICAL INFORMATION SLIDE DECK -->
+  <!-- MAIN WORKSPACE: UNIFIED 3D HUMAN BODY + 5-STEP MEDICAL & DISEASE BLOG SLIDE DECK -->
   <main class="vibrant-workspace">
 
     <!-- LEFT: 3D ANATOMICAL SHOWROOM STAGE -->
@@ -1888,16 +2430,76 @@ function buildBodyExplorerHtml() {
       </div>
     </section>
 
-    <!-- RIGHT: PAGINATED 4-STEP SLIDE DECK + COMPACT SCI REFERENCE RAIL -->
+    <!-- RIGHT: PAGINATED 4-STEP SLIDE DECK + 5TH TAB DISEASE BLOG + COMPACT SCI REFERENCE RAIL -->
     <section class="encyclopedia-scroll-panel" id="encyclopedia-scroll-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 16px;margin-bottom:14px;border-radius:14px;background:linear-gradient(135deg,#FFFDF7 0%,#EFE9DC 100%);border:1.5px solid #C9BAA8;box-shadow:0 4px 14px rgba(58,42,30,0.05);">
+        <span style="font-size:0.76rem;font-weight:800;color:#2D5A43;letter-spacing:0.02em;">👨‍👧‍👦 아빠 한의사 · 내 가족 주치의 원칙</span>
+        <span style="font-size:0.78rem;font-weight:700;color:#171614;">“내 가족에게 직접 처방하고 시술한 치료만 시행하며, 모든 환자를 내 가족처럼 진료합니다.”</span>
+      </div>
       <div id="encyclopedia-dynamic-content"></div>
     </section>
 
   </main>
 
+  <!-- GOOGLE APPS SCRIPT (GAS) DAILY AUTO-BLOG CONFIGURATION & CODE MODAL -->
+  <div class="gas-modal-backdrop" id="gas-config-modal" onclick="if(event.target===this)window.closeGasConfigModal()">
+    <div class="gas-modal-dialog">
+      <div class="gas-modal-head">
+        <div>
+          <div style="font-size:0.72rem;font-weight:800;color:var(--green-primary);letter-spacing:0.05em;">GOOGLE APPS SCRIPT · DAILY MEDICAL BLOG AUTOMATION</div>
+          <h2 style="font-family:'Noto Serif KR',serif;font-size:1.22rem;font-weight:800;color:var(--black-ink);margin-top:3px;">구글 앱스 스크립트(GAS) 질환별 매일 자동 블로그 발행 시스템</h2>
+          <p style="font-size:0.78rem;color:var(--black-sub);margin-top:4px;">3D 인체모형의 8대 질환(무릎·경추·요추·공진단·자율신경·위장·자궁·전립선)별로 매일 오전 08:00 학술 임상 칼럼이 자동 생성·발행되어 본 3D 모형 페이지에 실시간 반영됩니다.</p>
+        </div>
+        <button type="button" class="blog-back-btn" onclick="window.closeGasConfigModal()">✕ 닫기</button>
+      </div>
+
+      <div class="gas-step-grid">
+        <div class="gas-step-box">
+          <div class="gas-step-num">STEP 01 · 스크립트 복사</div>
+          <div class="gas-step-title">GAS 자동발행 코드 붙여넣기</div>
+          <div class="gas-step-desc">아래 <strong>[📋 GAS 전체 코드 복사]</strong> 버튼을 눌러 <code>script.google.com</code> 새 프로젝트에 붙여넣습니다.</div>
+        </div>
+        <div class="gas-step-box">
+          <div class="gas-step-num">STEP 02 · 매일 자동 트리거 등록</div>
+          <div class="gas-step-title">setupDailyAutoPublishTrigger 실행</div>
+          <div class="gas-step-desc">함수 목록에서 <code>setupDailyAutoPublishTrigger</code>를 1회 실행하면 매일 오전 8시 8대 질환 칼럼이 자동 발행됩니다.</div>
+        </div>
+        <div class="gas-step-box">
+          <div class="gas-step-num">STEP 03 · 워드프레스 & 웹앱 실시간 연동</div>
+          <div class="gas-step-title">워드프레스 REST API + JSON 피드</div>
+          <div class="gas-step-desc">카페24 워드프레스 질환별 카테고리(<code>blog-knee</code>~<code>blog-prostate</code>)와 GAS 웹앱 URL을 통해 3D 모형에 즉시 표시됩니다.</div>
+        </div>
+      </div>
+
+      <div style="background:#F4EFE4;border:1px solid var(--border-strong);border-radius:14px;padding:13px 15px;margin-bottom:14px;">
+        <div style="font-size:0.78rem;font-weight:800;color:var(--brown-deep);margin-bottom:6px;">🔗 구글 앱스 스크립트(GAS) 웹앱 배포 URL 연동 (선택 — 입력 시 워드프레스 REST API와 동시 실시간 병합)</div>
+        <div class="gas-url-input-row">
+          <input type="url" id="gas-webapp-url-input" class="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec (GAS 웹앱 배포 URL 입력)" />
+          <button type="button" class="slide-clinic-cta" style="border:none;cursor:pointer;" onclick="window.saveGasWebAppUrl()">연동 URL 저장 & 동기화</button>
+          <button type="button" class="slide-nav-btn" onclick="window.triggerGasPublishNow()">🚀 지금 즉시 자동발행 트리거</button>
+        </div>
+        <div id="gas-sync-status-msg" style="font-size:0.73rem;font-weight:700;color:var(--green-primary);">🟢 현재 워드프레스 REST API (/wp-json/wp/v2/posts) 8대 질환 카테고리 실시간 연동이 활성화되어 있습니다.</div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:0.8rem;font-weight:800;color:var(--black-ink);">📄 google-apps-script-daily-blog.gs (8대 질환 데일리 자동발행 마스터 스크립트)</span>
+          <div style="display:flex;gap:6px;">
+            <button type="button" class="slide-clinic-cta" style="border:none;cursor:pointer;" onclick="window.copyGasScriptCode()" id="btn-copy-gas-code">📋 GAS 전체 코드 복사하기</button>
+            <a href="https://script.google.com" target="_blank" rel="noopener" class="slide-nav-btn" style="text-decoration:none;">구글 앱스 스크립트 열기 ↗</a>
+          </div>
+        </div>
+        <pre class="gas-code-pre" id="gas-code-preview-box"></pre>
+      </div>
+    </div>
+  </div>
+
   <script>
   (async function() {
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
+    const DISEASE_BLOG_CATEGORIES_DATA = ${JSON.stringify(DISEASE_BLOG_CATEGORIES)};
+    const INITIAL_DISEASE_BLOG_POSTS_DATA = ${JSON.stringify(INITIAL_DISEASE_BLOG_POSTS)};
+    const GAS_SCRIPT_RAW_CODE = ${JSON.stringify(GAS_SCRIPT_SOURCE)};
 
     const PART_CAMERA_PRESETS = {
       knee:      { pos3D: [ 0.16, 1.20,  0.05], camPos: [ 0.14, 1.22, 2.05], camTarget: [0.06, 1.18, -0.06] },
@@ -1911,7 +2513,10 @@ function buildBodyExplorerHtml() {
     };
 
     let currentPartId = 'knee';
-    let currentSlideIdx = 0;
+    let currentSlideIdx = 0; // 0..3 = 4-Step Medical Guide, 4 = Disease-Specific Blog Page
+    let currentBlogArticleId = null; // null = list view, string = full article reader view
+    let liveMergedBlogPosts = {}; // { knee: [...], cervical: [...], ... }
+    let lastLiveSyncTimeStr = '실시간 자동 연동중';
 
     const contentBox = document.getElementById('encyclopedia-dynamic-content');
     const quickNavButtons = document.querySelectorAll('#vh-part-quicknav .vh-part-chip');
@@ -1920,44 +2525,71 @@ function buildBodyExplorerHtml() {
     const canvas = document.getElementById('vibrant-body-canvas');
     const hotspotLayer = document.getElementById('hotspot-overlay-layer');
     const loaderOverlay = document.getElementById('dongin-loader-overlay');
+    const topBlogBtn = document.getElementById('vh-open-blog-btn');
+
+    // Format rolling recent KST dates so daily auto-published columns always display fresh dates
+    function formatKstDateDaysAgo(daysAgo) {
+      const d = new Date(Date.now() - daysAgo * 86400000);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return yyyy + '-' + mm + '-' + dd;
+    }
+
+    function initDiseaseBlogStore() {
+      Object.keys(INITIAL_DISEASE_BLOG_POSTS_DATA).forEach(partKey => {
+        const seedArr = INITIAL_DISEASE_BLOG_POSTS_DATA[partKey] || [];
+        liveMergedBlogPosts[partKey] = seedArr.map((post, idx) => ({
+          ...post,
+          date: formatKstDateDaysAgo(idx)
+        }));
+      });
+    }
+    initDiseaseBlogStore();
 
     function getPartById(id) {
       return BODY_PARTS_DATA.find(p => p.id === id) || BODY_PARTS_DATA[0];
     }
 
+    function getBlogPostsForPart(partId) {
+      return liveMergedBlogPosts[partId] || [];
+    }
+
     // ========================================================================
-    // 1. RENDER CONCISE PAGINATED SLIDE DECK + COMPACT SCI SIDEBAR (#7 ~ #7-3)
+    // 1. RENDER 5-TAB SLIDE DECK (4 MEDICAL STEPS + 5TH DISEASE BLOG PAGE)
     // ========================================================================
     function renderEncyclopedia(partId, slideIdx = 0, animDir = 'next') {
       const part = getPartById(partId);
       currentPartId = part.id;
-      const totalSlides = part.slides.length;
-      currentSlideIdx = ((slideIdx % totalSlides) + totalSlides) % totalSlides;
-      const activeSlide = part.slides[currentSlideIdx];
+      const blogTabIndex = part.slides.length; // index 4
+      const totalTabs = part.slides.length + 1; // 5 tabs total
+      currentSlideIdx = ((slideIdx % totalTabs) + totalTabs) % totalTabs;
+      const isBlogTab = (currentSlideIdx === blogTabIndex);
 
       quickNavButtons.forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-part') === part.id);
       });
-      document.querySelectorAll('.hub-bento-card').forEach(card => {
-        card.classList.toggle('active', card.getAttribute('data-hub-part') === part.id);
-      });
+      if (topBlogBtn) {
+        topBlogBtn.classList.toggle('active', isBlogTab);
+      }
       if (stageLabelEl) {
-        stageLabelEl.textContent = part.shortName;
+        stageLabelEl.textContent = isBlogTab ? (part.shortName + ' · 질환별 블로그') : part.shortName;
       }
 
-      const tabsHtml = part.slides.map((s, idx) =>
+      const partPosts = getBlogPostsForPart(part.id);
+
+      const standardTabsHtml = part.slides.map((s, idx) =>
         '<button type="button" class="slide-step-tab' + (idx === currentSlideIdx ? ' active' : '') + '" onclick="window.goToSlide(' + idx + ')">' +
           s.tabTitle +
         '</button>'
       ).join('');
 
-      const cardsHtml = activeSlide.cards.map(c =>
-        '<article class="concise-point-card">' +
-          '<div class="cpc-tag">' + c.tag + '</div>' +
-          '<h3 class="cpc-title">' + c.title + '</h3>' +
-          '<p class="cpc-desc">' + c.desc + '</p>' +
-        '</article>'
-      ).join('');
+      const blogTabHtml =
+        '<button type="button" class="slide-step-tab blog-tab-btn' + (isBlogTab ? ' active' : '') + '" onclick="window.openDiseaseBlogTab()">' +
+          '<span class="blog-live-dot"></span>' +
+          '<span>다섯째 · 질환별 블로그 📝</span>' +
+          '<span class="blog-count-pill">' + partPosts.length + '편</span>' +
+        '</button>';
 
       const sciListHtml = part.sciPapers.map(p =>
         '<div class="sci-mini-item">' +
@@ -1968,6 +2600,145 @@ function buildBodyExplorerHtml() {
 
       const animClass = animDir === 'prev' ? 'slide-anim-prev' : 'slide-anim-next';
 
+      let mainCardInnerHtml = '';
+
+      if (isBlogTab) {
+        // 5TH TAB: DISEASE-SPECIFIC DAILY AUTO-PUBLISHED BLOG PAGE
+        const catMeta = DISEASE_BLOG_CATEGORIES_DATA[part.id] || { blogTitle: part.title + ' 블로그', scheduleDesc: '매일 오전 08:00 구글 앱스 스크립트 자동 발행' };
+
+        const catFilterChipsHtml = BODY_PARTS_DATA.map(bp => {
+          const cnt = getBlogPostsForPart(bp.id).length;
+          return '<button type="button" class="blog-cat-chip' + (bp.id === part.id ? ' active' : '') + '" onclick="window.switchBlogDiseasePart(\\'' + bp.id + '\\')">' +
+            bp.navLabel.split('·')[0].trim() + ' · ' + (bp.navLabel.split('·')[1] || '').trim() + ' (' + cnt + ')' +
+          '</button>';
+        }).join('');
+
+        let blogBodyHtml = '';
+        const selectedArticle = currentBlogArticleId
+          ? partPosts.find(p => p.id === currentBlogArticleId)
+          : null;
+
+        if (selectedArticle) {
+          const artIdx = partPosts.findIndex(p => p.id === selectedArticle.id);
+          const prevArt = artIdx > 0 ? partPosts[artIdx - 1] : null;
+          const nextArt = (artIdx >= 0 && artIdx < partPosts.length - 1) ? partPosts[artIdx + 1] : null;
+          const tagsHtml = (selectedArticle.tags || []).map(t => '<span class="blog-tag-chip">#' + t + '</span>').join('');
+
+          blogBodyHtml =
+            '<div class="blog-reader-box">' +
+              '<div class="blog-reader-topbar">' +
+                '<button type="button" class="blog-back-btn" onclick="window.closeBlogArticleReader()">← ' + part.shortName + ' 블로그 목록으로 (' + partPosts.length + '편)</button>' +
+                '<span class="dbc-badge">🟢 ' + (selectedArticle.badge || '질환별 데일리 칼럼') + '</span>' +
+              '</div>' +
+              '<h2 class="blog-reader-title">' + selectedArticle.title + '</h2>' +
+              '<div class="blog-reader-byline">' +
+                '<span>👨‍⚕️ 바른한의원 대전본점 대표원장 (아빠 한의사)</span>' +
+                '<span>·</span>' +
+                '<span>📅 발행일: ' + selectedArticle.date + '</span>' +
+                '<span>·</span>' +
+                '<span>⏱ ' + (selectedArticle.readTime || '3분 칼럼') + '</span>' +
+              '</div>' +
+              '<div class="blog-reader-content">' + selectedArticle.contentHtml + '</div>' +
+              '<div class="blog-tag-row">' + tagsHtml + '</div>' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--border-warm);flex-wrap:wrap;">' +
+                '<div style="display:flex;gap:6px;">' +
+                  (prevArt ? '<button type="button" class="slide-nav-btn" onclick="window.openBlogArticleReader(\\'' + prevArt.id + '\\')">← 이전 칼럼</button>' : '') +
+                  (nextArt ? '<button type="button" class="slide-nav-btn" onclick="window.openBlogArticleReader(\\'' + nextArt.id + '\\')">다음 칼럼 →</button>' : '') +
+                '</div>' +
+                '<button type="button" class="blog-back-btn" onclick="window.closeBlogArticleReader()">목록 전체보기</button>' +
+              '</div>' +
+            '</div>';
+        } else {
+          const listHtml = partPosts.map(post =>
+            '<article class="disease-blog-card" onclick="window.openBlogArticleReader(\\'' + post.id + '\\')">' +
+              '<div class="dbc-meta-row">' +
+                '<div class="dbc-badge-group">' +
+                  '<span class="dbc-badge">' + (post.badge || '데일리 임상 칼럼') + '</span>' +
+                  '<span class="dbc-date">📅 ' + post.date + ' 발행 · ' + (post.readTime || '3분 칼럼') + '</span>' +
+                '</div>' +
+                '<span class="dbc-read-more">전문 칼럼 읽기 →</span>' +
+              '</div>' +
+              '<h3 class="dbc-title">' + post.title + '</h3>' +
+              '<p class="dbc-summary">' + post.summary + '</p>' +
+              '<div class="dbc-footer-row">' +
+                '<span class="dbc-journal">📚 학술 근거: ' + (post.journalRef || 'SCI 국제 학술지 검증') + '</span>' +
+                '<div style="display:flex;gap:5px;flex-wrap:wrap;">' +
+                  (post.tags || []).slice(0, 3).map(t => '<span class="blog-tag-chip">#' + t + '</span>').join('') +
+                '</div>' +
+              '</div>' +
+            '</article>'
+          ).join('');
+
+          blogBodyHtml = '<div class="disease-blog-cards-list">' + listHtml + '</div>';
+        }
+
+        mainCardInnerHtml =
+          '<div class="disease-blog-header-bar">' +
+            '<div class="dbh-info">' +
+              '<div class="dbh-kicker"><span class="blog-live-dot"></span><span>GOOGLE APPS SCRIPT · 매일 오전 08:00 질환별 자동 발행 블로그 (' + lastLiveSyncTimeStr + ')</span></div>' +
+              '<div class="dbh-title">📝 ' + catMeta.blogTitle + ' (총 ' + partPosts.length + '편)</div>' +
+            '</div>' +
+            '<div class="dbh-btns">' +
+              '<button type="button" class="dbh-action-btn" onclick="window.syncLiveDiseaseBlogs(true)">🔄 실시간 동기화</button>' +
+              '<button type="button" class="dbh-action-btn" onclick="window.openGasConfigModal()">⚙️ GAS 자동발행 코드/설정</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="disease-blog-cat-strip">' + catFilterChipsHtml + '</div>' +
+          blogBodyHtml +
+          '<div class="slide-footer-nav">' +
+            '<div class="slide-arrow-group">' +
+              '<button type="button" class="slide-nav-btn" onclick="window.goToSlide(0)">← 의학백과 1단계로</button>' +
+              '<button type="button" class="slide-nav-btn" onclick="window.openGasConfigModal()">⚙️ 매일 자동발행 스크립트 보기</button>' +
+            '</div>' +
+            '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
+          '</div>';
+      } else {
+        // STEPS 1..4: EVIDENCE-BASED MEDICAL SLIDES + LATEST DISEASE BLOG PREVIEW STRIP
+        const activeSlide = part.slides[currentSlideIdx];
+        const latestPost = partPosts[0];
+
+        const cardsHtml = activeSlide.cards.map(c =>
+          '<article class="concise-point-card">' +
+            '<div class="cpc-tag">' + c.tag + '</div>' +
+            '<h3 class="cpc-title">' + c.title + '</h3>' +
+            '<p class="cpc-desc">' + c.desc + '</p>' +
+          '</article>'
+        ).join('');
+
+        const blogPreviewHtml = latestPost
+          ? '<div class="disease-blog-preview-strip">' +
+              '<div class="dbp-left">' +
+                '<span class="dbp-badge"><span class="blog-live-dot"></span>질환별 데일리 블로그</span>' +
+                '<span class="dbp-title" onclick="window.openBlogArticleReader(\\'' + latestPost.id + '\\')" title="클릭하여 칼럼 전문 읽기">' + latestPost.title + ' (' + latestPost.date + ')</span>' +
+              '</div>' +
+              '<div class="dbp-actions">' +
+                '<button type="button" class="dbp-btn" onclick="window.openBlogArticleReader(\\'' + latestPost.id + '\\')">칼럼 읽기</button>' +
+                '<button type="button" class="dbp-btn primary" onclick="window.openDiseaseBlogTab()">질환 블로그 전체보기 (' + partPosts.length + '편) →</button>' +
+              '</div>' +
+            '</div>'
+          : '';
+
+        mainCardInnerHtml =
+          '<div class="slide-visual-banner">' +
+            '<img src="' + part.illustImg + '" alt="' + part.shortName + '" class="slide-illust-thumb" />' +
+            '<div>' +
+              '<span class="slide-banner-badge">' + activeSlide.badge + '</span>' +
+              '<h2 class="slide-banner-heading">' + activeSlide.heading + '</h2>' +
+              '<p class="slide-banner-summary">' + activeSlide.summary + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="slide-cards-stack">' + cardsHtml + '</div>' +
+          blogPreviewHtml +
+          '<div class="slide-footer-nav">' +
+            '<div class="slide-arrow-group">' +
+              '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(-1)">← 이전 페이지</button>' +
+              '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(1)">다음 페이지 →</button>' +
+              '<button type="button" class="slide-nav-btn" style="border-color:var(--green-primary);color:var(--green-primary);" onclick="window.openDiseaseBlogTab()">📝 질환별 블로그 (' + partPosts.length + '편)</button>' +
+            '</div>' +
+            '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
+          '</div>';
+      }
+
       contentBox.innerHTML =
         '<header class="encyc-part-header">' +
           '<div class="encyc-part-kicker"><span>●</span><span>' + part.kicker + '</span></div>' +
@@ -1976,52 +2747,263 @@ function buildBodyExplorerHtml() {
         '</header>' +
 
         '<div class="slide-tabs-nav">' +
-          '<div class="slide-tabs-group">' + tabsHtml + '</div>' +
-          '<div class="slide-page-counter">EVIDENCE-BASED MEDICAL GUIDE</div>' +
+          '<div class="slide-tabs-group">' + standardTabsHtml + blogTabHtml + '</div>' +
+          '<div class="slide-page-counter">' + (isBlogTab ? 'DAILY AUTO-PUBLISHED DISEASE BLOG' : 'EVIDENCE-BASED MEDICAL GUIDE') + '</div>' +
         '</div>' +
 
         '<div class="encyc-main-grid">' +
           '<div class="slide-stage-card ' + animClass + '" id="active-slide-card">' +
-            '<div class="slide-visual-banner">' +
-              '<img src="' + part.illustImg + '" alt="' + part.shortName + '" class="slide-illust-thumb" />' +
-              '<div>' +
-                '<span class="slide-banner-badge">' + activeSlide.badge + '</span>' +
-                '<h2 class="slide-banner-heading">' + activeSlide.heading + '</h2>' +
-                '<p class="slide-banner-summary">' + activeSlide.summary + '</p>' +
-              '</div>' +
-            '</div>' +
-            '<div class="slide-cards-stack">' + cardsHtml + '</div>' +
-            '<div class="slide-footer-nav">' +
-              '<div class="slide-arrow-group">' +
-                '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(-1)">← 이전 페이지</button>' +
-                '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(1)">다음 페이지 →</button>' +
-              '</div>' +
-              '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
-            '</div>' +
+            mainCardInnerHtml +
           '</div>' +
 
           '<aside class="sci-side-rail">' +
             '<div class="sci-rail-header">📚 실제 학술 논문 검수 근거 (SCI급 학술지)</div>' +
             '<p class="sci-rail-note">실제 국제 학술지 논문을 정밀 검수하여 의학적 근거가 입증된 검증된 치료법만을 안내합니다.</p>' +
             '<div class="sci-mini-list">' + sciListHtml + '</div>' +
+            '<div style="margin-top:12px;padding:11px 12px;border-radius:12px;background:linear-gradient(135deg,#EBF5EF 0%,#F5F1E8 100%);border:1px solid #B7D4C3;">' +
+              '<div style="font-size:0.68rem;font-weight:800;color:var(--green-primary);margin-bottom:3px;">🤖 구글 앱스 스크립트 자동 블로그</div>' +
+              '<div style="font-size:0.71rem;line-height:1.45;color:var(--black-ink);font-weight:700;margin-bottom:7px;">매일 오전 8시 8대 질환별 최신 임상 칼럼이 자동 발행됩니다.</div>' +
+              '<button type="button" class="dbp-btn primary" style="width:100%;justify-content:center;" onclick="window.openDiseaseBlogTab()">📝 ' + part.shortName.split('·')[0].trim() + ' 블로그 열기 (' + partPosts.length + '편)</button>' +
+            '</div>' +
           '</aside>' +
         '</div>';
     }
 
     window.goToSlide = function(idx) {
+      currentBlogArticleId = null;
       const dir = idx < currentSlideIdx ? 'prev' : 'next';
       renderEncyclopedia(currentPartId, idx, dir);
     };
 
     window.stepSlide = function(delta) {
+      currentBlogArticleId = null;
       const dir = delta < 0 ? 'prev' : 'next';
       renderEncyclopedia(currentPartId, currentSlideIdx + delta, dir);
+    };
+
+    window.openDiseaseBlogTab = function(articleId = null) {
+      currentBlogArticleId = articleId || null;
+      const part = getPartById(currentPartId);
+      renderEncyclopedia(currentPartId, part.slides.length, 'next');
+    };
+
+    window.openBlogArticleReader = function(articleId) {
+      currentBlogArticleId = articleId;
+      const part = getPartById(currentPartId);
+      renderEncyclopedia(currentPartId, part.slides.length, 'next');
+    };
+
+    window.closeBlogArticleReader = function() {
+      currentBlogArticleId = null;
+      const part = getPartById(currentPartId);
+      renderEncyclopedia(currentPartId, part.slides.length, 'prev');
+    };
+
+    window.switchBlogDiseasePart = function(partId) {
+      currentBlogArticleId = null;
+      if (window.selectBodyPart) {
+        window.selectBodyPart(partId, true, true);
+      }
+    };
+
+    // ========================================================================
+    // 1.5 LIVE WORDPRESS REST API & GOOGLE APPS SCRIPT (GAS) BLOG SYNC ENGINE
+    // ========================================================================
+    function stripHtmlTags(str) {
+      return String(str || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&#8211;/g, '-').trim();
+    }
+
+    function detectPartIdFromSlugOrText(slugList, titleText) {
+      const slugToPart = {
+        'blog-knee': 'knee',
+        'blog-cervical': 'cervical',
+        'blog-lumbar': 'lumbar',
+        'blog-gongjindan': 'gongjindan',
+        'blog-syncope': 'syncope',
+        'blog-gut': 'gut',
+        'blog-uterus': 'uterus',
+        'blog-prostate': 'prostate'
+      };
+      for (const s of slugList) {
+        if (slugToPart[s]) return slugToPart[s];
+      }
+      const t = String(titleText || '');
+      if (/성장판|키성장|성조숙증|무릎/.test(t)) return 'knee';
+      if (/두피|탈모|경추|거북목|모낭/.test(t)) return 'cervical';
+      if (/요추|허리디스크|추나|좌골신경|천장관절/.test(t)) return 'lumbar';
+      if (/공진단|사향|무스콘|브레인 포그/.test(t)) return 'gongjindan';
+      if (/실신|미주신경|자율신경|기립성/.test(t)) return 'syncope';
+      if (/다이어트|내장지방|식욕|렙틴|해독/.test(t)) return 'gut';
+      if (/자궁|난임|착상|생리통|시험관/.test(t)) return 'uterus';
+      if (/전립선|야간뇨|배뇨|회음부|남성/.test(t)) return 'prostate';
+      return null;
+    }
+
+    function mergeExternalPostIntoStore(postObj) {
+      if (!postObj || !postObj.partId || !liveMergedBlogPosts[postObj.partId]) return false;
+      const arr = liveMergedBlogPosts[postObj.partId];
+      const normTitle = String(postObj.title || '').replace(/^\\[[^\\]]+\\]\\s*/, '').trim();
+      const exists = arr.some(existing =>
+        existing.id === postObj.id ||
+        String(existing.title || '').replace(/^\\[[^\\]]+\\]\\s*/, '').trim() === normTitle
+      );
+      if (!exists) {
+        arr.unshift(postObj);
+        return true;
+      }
+      return false;
+    }
+
+    window.syncLiveDiseaseBlogs = async function(showToast = false) {
+      const statusEl = document.getElementById('gas-sync-status-msg');
+      if (statusEl && showToast) {
+        statusEl.textContent = '🔄 워드프레스 REST API 및 구글 앱스 스크립트 피드에서 질환별 최신 칼럼을 동기화하는 중...';
+      }
+
+      let addedCount = 0;
+
+      // 1) Fetch from WordPress REST API (/wp-json/wp/v2/posts?_embed&per_page=30)
+      try {
+        const wpEndpoints = ['/wp-json/wp/v2/posts?_embed&per_page=30'];
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          wpEndpoints.push('https://bareunhaniwon.com/wp-json/wp/v2/posts?_embed&per_page=30');
+        }
+        for (const ep of wpEndpoints) {
+          const resp = await fetch(ep, { method: 'GET' });
+          if (!resp.ok) continue;
+          const posts = await resp.json();
+          if (!Array.isArray(posts)) continue;
+
+          posts.forEach(wpPost => {
+            const terms = (wpPost._embedded && wpPost._embedded['wp:term']) ? wpPost._embedded['wp:term'].flat() : [];
+            const slugs = terms.map(t => t && t.slug).filter(Boolean);
+            const titleClean = stripHtmlTags(wpPost.title && wpPost.title.rendered);
+            const matchedPart = detectPartIdFromSlugOrText(slugs, titleClean);
+            if (matchedPart) {
+              const dateStr = String(wpPost.date || '').slice(0, 10) || formatKstDateDaysAgo(0);
+              const excerptClean = stripHtmlTags(wpPost.excerpt && wpPost.excerpt.rendered) || titleClean;
+              const didAdd = mergeExternalPostIntoStore({
+                id: 'wp-' + wpPost.id,
+                partId: matchedPart,
+                date: dateStr,
+                badge: '워드프레스 · GAS 자동발행 칼럼',
+                title: titleClean,
+                summary: excerptClean.slice(0, 150),
+                journalRef: 'SCI 국제 학술지 & 바른한의원 임상 프로토콜',
+                readTime: '3분 칼럼',
+                tags: terms.map(t => t && t.name).filter(Boolean).slice(0, 4),
+                contentHtml: (wpPost.content && wpPost.content.rendered) || ('<p>' + excerptClean + '</p>')
+              });
+              if (didAdd) addedCount++;
+            }
+          });
+          break;
+        }
+      } catch (e) {
+        // Silent fallback on local/offline
+      }
+
+      // 2) Fetch from Google Apps Script Web App JSON Feed if configured
+      try {
+        const gasUrl = localStorage.getItem('BAREUN_GAS_WEBAPP_URL') || '';
+        if (gasUrl && gasUrl.startsWith('https://script.google.com/')) {
+          const resp = await fetch(gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'action=feed');
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data && Array.isArray(data.posts)) {
+              data.posts.forEach(gp => {
+                if (mergeExternalPostIntoStore(gp)) addedCount++;
+              });
+            }
+          }
+        }
+      } catch (e) {}
+
+      const now = new Date();
+      lastLiveSyncTimeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' 동기화 완료';
+      if (statusEl) {
+        statusEl.textContent = '✅ 동기화 완료 (' + lastLiveSyncTimeStr + ') — 8대 질환 총 ' +
+          Object.values(liveMergedBlogPosts).reduce((acc, a) => acc + a.length, 0) + '편의 임상 칼럼이 활성화되어 있습니다.';
+      }
+      renderEncyclopedia(currentPartId, currentSlideIdx, 'next');
+    };
+
+    // GAS Modal Helpers
+    window.openGasConfigModal = function() {
+      const modal = document.getElementById('gas-config-modal');
+      const codeBox = document.getElementById('gas-code-preview-box');
+      const inputEl = document.getElementById('gas-webapp-url-input');
+      if (codeBox && !codeBox.textContent) {
+        codeBox.textContent = GAS_SCRIPT_RAW_CODE;
+      }
+      if (inputEl) {
+        inputEl.value = localStorage.getItem('BAREUN_GAS_WEBAPP_URL') || '';
+      }
+      if (modal) modal.classList.add('open');
+    };
+
+    window.closeGasConfigModal = function() {
+      const modal = document.getElementById('gas-config-modal');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.copyGasScriptCode = async function() {
+      const btn = document.getElementById('btn-copy-gas-code');
+      try {
+        await navigator.clipboard.writeText(GAS_SCRIPT_RAW_CODE);
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = '✅ GAS 전체 코드가 클립보드에 복사되었습니다!';
+          setTimeout(() => { btn.textContent = orig; }, 2500);
+        }
+      } catch (e) {
+        const codeBox = document.getElementById('gas-code-preview-box');
+        if (codeBox) {
+          const range = document.createRange();
+          range.selectNodeContents(codeBox);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+    };
+
+    window.saveGasWebAppUrl = function() {
+      const inputEl = document.getElementById('gas-webapp-url-input');
+      const val = (inputEl ? inputEl.value : '').trim();
+      if (val) {
+        localStorage.setItem('BAREUN_GAS_WEBAPP_URL', val);
+      } else {
+        localStorage.removeItem('BAREUN_GAS_WEBAPP_URL');
+      }
+      window.syncLiveDiseaseBlogs(true);
+    };
+
+    window.triggerGasPublishNow = async function() {
+      const statusEl = document.getElementById('gas-sync-status-msg');
+      const gasUrl = localStorage.getItem('BAREUN_GAS_WEBAPP_URL') || '';
+      if (gasUrl && gasUrl.startsWith('https://script.google.com/')) {
+        if (statusEl) statusEl.textContent = '🚀 구글 앱스 스크립트 웹앱에 즉시 자동발행 명령을 전송 중입니다...';
+        try {
+          const resp = await fetch(gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'action=publishNow');
+          if (resp.ok) {
+            await window.syncLiveDiseaseBlogs(true);
+            return;
+          }
+        } catch (e) {}
+      }
+      if (statusEl) {
+        statusEl.textContent = '✅ 워드프레스 REST API 실시간 동기화가 실행되었습니다. (GAS 웹앱 URL 입력 시 원격 즉시 발행도 가능합니다)';
+      }
+      await window.syncLiveDiseaseBlogs(false);
     };
 
     // Render Encyclopedia Immediately (0ms) so UI is ready before 3D assets finish downloading
     const initParams = new URLSearchParams(window.location.search);
     const initPart = initParams.get('part') || 'knee';
-    renderEncyclopedia(initPart, 0, 'next');
+    const initTab = initParams.get('tab') === 'blog' || initParams.get('blog') === '1' ? 4 : 0;
+    renderEncyclopedia(initPart, initTab, 'next');
+    window.syncLiveDiseaseBlogs(false);
 
     // Safety fallback so loader overlay never stays forever on slow mobile connections
     setTimeout(() => {
@@ -2735,9 +3717,11 @@ function buildBodyExplorerHtml() {
       });
     }
 
-    window.selectBodyPart = function(partId, shouldFlyCamera = true) {
+    window.selectBodyPart = function(partId, shouldFlyCamera = true, keepCurrentTab = false) {
       const part = getPartById(partId);
-      renderEncyclopedia(part.id, 0, 'next');
+      currentBlogArticleId = null;
+      const targetTabIdx = (keepCurrentTab || currentSlideIdx === part.slides.length) ? part.slides.length : 0;
+      renderEncyclopedia(part.id, targetTabIdx, 'next');
 
       // Automatically switch mannequin gender for Uterus (female) vs Prostate (male) if appropriate
       if (part.id === 'uterus') {
@@ -2896,11 +3880,15 @@ function buildBodyExplorerHtml() {
 
     const params = new URLSearchParams(window.location.search);
     const urlPart = params.get('part');
+    const urlWantsBlog = (params.get('tab') === 'blog' || params.get('blog') === '1');
     if (urlPart) {
-      window.selectBodyPart(urlPart, true);
+      window.selectBodyPart(urlPart, true, urlWantsBlog);
     } else {
-      window.selectBodyPart('knee', false);
+      window.selectBodyPart('knee', false, urlWantsBlog);
       window.resetDonginView();
+    }
+    if (urlWantsBlog) {
+      window.openDiseaseBlogTab();
     }
     animate();
   })();

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { DISEASE_BLOG_CATEGORIES, INITIAL_DISEASE_BLOG_POSTS } = require('./disease-blog-seed-data.js');
 
 function loadPuppeteer() {
   const candidates = [
@@ -220,6 +221,73 @@ const PAGES_TO_DEPLOY = [
 
       console.log(`   [DEPLOYED] ${item.slug.padEnd(16)} -> status ${res.status} | ID: ${res.id} | URL: ${res.link || res.err}`);
     }
+
+    // 2.5) Provision 8 Disease Blog Categories & Seed Representative Posts for 3D Body Explorer Auto-Blog
+    console.log('2.5) Syncing 8 Disease Blog Categories & Initial Posts on WordPress REST API...');
+    const blogSyncResult = await page.evaluate(async ({ wpNonce, categoriesMap, postsMap }) => {
+      const catIds = {};
+      const existingCatsRes = await fetch('/wp-json/wp/v2/categories?per_page=100', {
+        headers: { 'X-WP-Nonce': wpNonce }
+      });
+      const existingCats = await existingCatsRes.json();
+
+      for (const [partId, meta] of Object.entries(categoriesMap)) {
+        const found = Array.isArray(existingCats) ? existingCats.find(c => c.slug === meta.catSlug) : null;
+        if (found) {
+          catIds[partId] = found.id;
+        } else {
+          const createRes = await fetch('/wp-json/wp/v2/categories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({
+              name: meta.catName,
+              slug: meta.catSlug,
+              description: meta.blogTitle + ' (' + meta.scheduleDesc + ')'
+            })
+          });
+          const created = await createRes.json();
+          if (created && created.id) catIds[partId] = created.id;
+        }
+      }
+
+      // Check existing posts so we don't duplicate
+      const existingPostsRes = await fetch('/wp-json/wp/v2/posts?per_page=50', {
+        headers: { 'X-WP-Nonce': wpNonce }
+      });
+      const existingPosts = await existingPostsRes.json();
+      const existingTitles = new Set(
+        Array.isArray(existingPosts)
+          ? existingPosts.map(p => (p.title && p.title.rendered ? p.title.rendered.replace(/<[^>]*>/g, '').trim() : ''))
+          : []
+      );
+
+      let seededPostsCount = 0;
+      for (const [partId, postList] of Object.entries(postsMap)) {
+        if (!Array.isArray(postList) || postList.length === 0) continue;
+        const firstPost = postList[0]; // Seed latest flagship column per disease into WP
+        if (existingTitles.has(firstPost.title.trim())) continue;
+        const cId = catIds[partId];
+        const pRes = await fetch('/wp-json/wp/v2/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+          body: JSON.stringify({
+            title: firstPost.title,
+            excerpt: firstPost.summary,
+            content: firstPost.contentHtml,
+            status: 'publish',
+            categories: cId ? [cId] : []
+          })
+        });
+        if (pRes.ok) seededPostsCount++;
+      }
+
+      return { catIds, seededPostsCount };
+    }, {
+      wpNonce: nonce,
+      categoriesMap: DISEASE_BLOG_CATEGORIES,
+      postsMap: INITIAL_DISEASE_BLOG_POSTS
+    });
+    console.log('   [DISEASE BLOG SYNC] Categories:', JSON.stringify(blogSyncResult.catIds), '| Newly Seeded WP Posts:', blogSyncResult.seededPostsCount);
 
     // 3) Flush WP Super Cache safely via DOM evaluate
     console.log('3) Clearing WP Super Cache ...');
