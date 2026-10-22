@@ -1324,7 +1324,7 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        imgSrc: 'gongjindan_minimal_card3_circulation_a.jpg?v=celeb3',
+        imgSrc: 'gongjindan_minimal_card3_circulation_a.jpg?v=celeb4',
         title: "왜 연예인들이 공진단을 복용할까? 비결 '피부 주름 노화 회복'",
         sub: '[성분 논문 근거] 밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 피부 콜라겐 손상을 막아 피부 탄력과 안색을 밝게 지켜주기 때문입니다.',
         caption: '[성분 논문 근거] 밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 피부 콜라겐 손상을 막아 피부 탄력과 안색을 밝게 지켜주기 때문입니다.'
