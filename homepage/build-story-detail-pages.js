@@ -1319,18 +1319,12 @@ const PAGES = [
         title: "'치매 · 뇌출혈 질환' 신경 보호부터 '심혈관질환' 예방까지 — 막힌 혈관을 여는 정품 사향(L-Muscone)",
         sub: '[성분 논문 근거] 정품사향은 뇌혈관장벽(BBB)을 직접 투과하여 뇌출혈·뇌허혈 후 신경세포 사멸과 치매 원인 단백질 독성을 억제하며, 관상동맥 확장 및 심근 허혈(심혈관질환)을 보호합니다.',
         caption: '[성분 논문 근거] 정품사향은 뇌혈관장벽(BBB)을 직접 투과하여 뇌출혈·뇌허혈 후 신경세포 사멸과 치매 원인 단백질 독성을 억제하며, 관상동맥 확장 및 심근 허혈(심혈관질환)을 보호합니다.',
-        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=gjd2'
+        imgSrc: 'detail_gongjindan_story2_bottomless_glass.jpg?v=brainheart1'
       },
       {
-        type: 'diet-single-stage',
-        stage: 3,
+        type: 'clean-image',
         fullscreen: true,
-        imgSrc: 'gongjindan_minimal_card3_circulation_a.jpg',
-        frames: [
-          'gongjindan_minimal_card3_circulation_a.jpg',
-          'gongjindan_minimal_card3_circulation_b.jpg',
-          'gongjindan_minimal_card3_circulation_c.jpg'
-        ],
+        imgSrc: 'gongjindan_minimal_card3_circulation_a.jpg?v=celeb1',
         title: "왜 연예인들이 공진단을 복용할까? 비결 '피부 주름 노화 회복'",
         sub: '[성분 논문 근거] 밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 피부 콜라겐 손상을 막아 피부 탄력과 안색을 밝게 지켜주기 때문입니다.',
         caption: '[성분 논문 근거] 밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 피부 콜라겐 손상을 막아 피부 탄력과 안색을 밝게 지켜주기 때문입니다.'
