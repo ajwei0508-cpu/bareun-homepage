@@ -1503,16 +1503,17 @@ const PAGES = [
       {
         type: 'diet-single-stage',
         stage: 3,
+        hideCinchArrows: true,
         fullscreen: true,
-        imgSrc: 'prostate_minimal_card3_decongestion_a.jpg',
+        imgSrc: 'prostate_minimal_card3_decongestion_a.jpg?v=ur1',
         frames: [
-          'prostate_minimal_card3_decongestion_a.jpg',
-          'prostate_minimal_card3_decongestion_b.jpg',
-          'prostate_minimal_card3_decongestion_c.jpg'
+          'prostate_minimal_card3_decongestion_a.jpg?v=ur1',
+          'prostate_minimal_card3_decongestion_b.jpg?v=ur1',
+          'prostate_minimal_card3_decongestion_c.jpg?v=ur1'
         ],
-        title: "골반 울혈 감압 & 하초 혈류 대순환 — '묵직하게 뭉친 골반·회음부 압박에서 막힌 어혈을 풀어 가뿐한 전신으로'",
-        sub: '오래 앉아 굳어버린 골반저 근육과 회음부·전립선 주위의 정체된 어혈·습담을 심부 온열 순환으로 배출하여, 묵직하고 뻐근하던 하복부를 가볍고 상쾌하게 변화시킵니다.',
-        caption: '[골반 울혈 해독 & 혈류 순환] 정체된 골반·전립선 울혈을 풀고 하초 기혈 순환을 깨워 묵직한 통증과 압박감을 해소합니다.'
+        title: "방광 압박 & 참을 수 없는 소변 — '걱정 없이 어디서든 편하게'",
+        sub: '오래 앉아 굳어버린 전립선의 정체된 어혈·습담을 심부 온열 순환으로 묵직하고 뻐근하던 하복부를 상쾌하게 변화시킵니다.',
+        caption: '[방광 압박 해소 & 쾌뇨 순환] 정체된 전립선 어혈·습담을 심부 온열 순환으로 풀어 묵직하고 뻐근하던 하복부를 상쾌하게 변화시킵니다.'
       },
       {
         type: 'runway-ba-scan',
@@ -1908,13 +1909,7 @@ function buildPageHtml(page) {
         const s3Frames = (p.frames && p.frames.length >= 3)
           ? p.frames
           : ['diet_minimal_card3_edema_full_a.jpg', 'diet_minimal_card3_edema_squeeze_b.jpg', 'diet_minimal_card3_edema_slim_c.jpg'];
-        stageVisualHtml = `
-            <div class="efficacy-visual-frame detox-frame is-full-stage-frame is-edema-wring-motion">
-              <div class="edema-wring-seq-stage">
-                <img class="edema-seq-img seq-1" src="${s3Frames[0]}" alt="물이 꽉 찬 부종 전신" loading="lazy" draggable="false">
-                <img class="edema-seq-img seq-2" src="${s3Frames[1]}" alt="쥐어 짜서 물이 배출되는 전신" loading="lazy" draggable="false">
-                <img class="edema-seq-img seq-3" src="${s3Frames[2]}" alt="물이 빠져 늘씬해진 전신" loading="lazy" draggable="false">
-              </div>
+        const cinchArrowsHtml = p.hideCinchArrows ? '' : `
               <div class="detox-slim-layer" aria-hidden="true">
                 <svg class="contour-cinch-guide" viewBox="0 0 240 240" fill="none">
                   <path class="swollen-line-left" d="M62 46 Q36 120 62 194" />
@@ -1930,7 +1925,14 @@ function buildPageHtml(page) {
                 <span class="water-drop d4"></span>
                 <span class="water-drop d5"></span>
                 <span class="water-drop d6"></span>
-              </div>
+              </div>`;
+        stageVisualHtml = `
+            <div class="efficacy-visual-frame detox-frame is-full-stage-frame is-edema-wring-motion">
+              <div class="edema-wring-seq-stage">
+                <img class="edema-seq-img seq-1" src="${s3Frames[0]}" alt="물이 꽉 찬 부종 전신" loading="lazy" draggable="false">
+                <img class="edema-seq-img seq-2" src="${s3Frames[1]}" alt="쥐어 짜서 물이 배출되는 전신" loading="lazy" draggable="false">
+                <img class="edema-seq-img seq-3" src="${s3Frames[2]}" alt="물이 빠져 늘씬해진 전신" loading="lazy" draggable="false">
+              </div>${cinchArrowsHtml}
               <div class="efficacy-motion-overlay"></div>
             </div>`;
       }
