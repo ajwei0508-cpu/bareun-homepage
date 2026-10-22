@@ -1332,8 +1332,8 @@ const PAGES = [
       {
         type: 'runway-ba-scan',
         fullscreen: true,
-        beforeImg: 'gongjindan_minimal_card4_ba_before.jpg?v=couple1',
-        afterImg: 'gongjindan_minimal_card4_ba_after.jpg?v=couple1',
+        beforeImg: 'gongjindan_minimal_card4_ba_before.jpg?v=couple2',
+        afterImg: 'gongjindan_minimal_card4_ba_after.jpg?v=couple2',
         title: "여성 '자궁불임(난임) 착상' 강화 & 남성 '정자강화 · 호르몬 활력' 완성",
         sub: '아내의 아랫배 혈류를 열어 수정란이 편안히 뿌리내릴 따뜻한 자궁 환경을 만들고, 남편의 활력 호르몬과 순환력을 힘있게 깨웁니다. 부부의 건강한 임신 준비와 지친 생식 기력을 속부터 균형 있게 함께 채워줍니다.',
         caption: '아내의 아랫배 혈류를 열어 수정란이 편안히 뿌리내릴 따뜻한 자궁 환경을 만들고, 남편의 활력 호르몬과 순환력을 힘있게 깨웁니다. 부부의 건강한 임신 준비와 지친 생식 기력을 속부터 균형 있게 함께 채워줍니다.'
