@@ -1544,10 +1544,10 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "간·신장 부담 없이 하초 원기를 채우는 — '대표원장 1:1 프라이빗 진맥 & 보신온양 맞춤 한약'",
-        sub: '1:1 독립 진료실에서 세 손가락(촌·관·척) 정밀 맥진으로 하초(신장·방광·전립선)의 한열허실을 판독하고, 청열리습(염증·부종 배출)과 보신온양(남성 원기·활력 보강)을 결합한 맞춤 한약을 처방합니다.',
-        caption: '[1:1 프라이빗 진맥 & 보신온양 한약] 대표원장의 정밀 맥진과 식약처 GMP 청정 약재로 전립선 건강과 남성 활력을 안전하게 채웁니다.',
-        imgSrc: 'prostate_minimal_card7_pulse_custom_herb.jpg'
+        title: "남성호르몬 및 원기를 채우는 — '대표원장 1:1 프라이빗 진맥 & 정력 맞춤 한약'",
+        sub: '1:1 독립 진료실에서 정밀 맥진과 초음파 검사를 결합한 개인 체질 맞춤 한약을 처방합니다.',
+        caption: '[1:1 프라이빗 진맥 & 정력 맞춤 한약] 정밀 맥진과 초음파 검사를 결합하여 개인 체질에 맞춘 한약을 처방합니다.',
+        imgSrc: 'prostate_minimal_card7_pulse_custom_herb.jpg?v=noteapot1'
       },
       {
         type: 'clean-image',
