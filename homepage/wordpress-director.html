@@ -6534,27 +6534,33 @@
     <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
         
-        <!-- PLATE 01: Clean Video Stage -->
-        <article class="project-details-item is-video is-motion-plate is-clean-plate is-active-plate">
+        <!-- PLATE 01: Single Main Image Plate -->
+        <article class="project-details-item is-image is-clean-plate is-active-plate" data-fullscreen>
           <span class="tiny-card-num-badge">01</span>
           <div class="plate-media-inner">
-            <div class="motion-video-stage is-clean-video-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story1_clean.jpg?v=oryzo3" data-duration="6.4">
-              <video class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story1.mp4?v=oryzo3" poster="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story1_clean.jpg?v=oryzo3" autoplay muted loop playsinline preload="auto"></video>
-              <canvas class="plate-fx-canvas" data-fx="warm-breath-zoom"></canvas>
-              <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
-            </div>
+            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg?v=dir1only" alt="병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다" draggable="false">
             <div class="clean-plate-scrim"></div>
-            <div class="plate-top-bar" style="z-index:7;">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>LIVE MOTION · 대표원장 심층 문진</span>
-              <div style="display:flex;align-items:center;gap:6px;pointer-events:auto;">
-                <span class="plate-metric-pill">자율신경 · 수면 · 소화 · 한열 입체 스캔</span>
-                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){v.muted=!v.muted; if(!v.muted)v.play(); this.textContent=v.muted?'🔇 소리 켜기':'🔊 소리 끄기';}">🔇 소리 켜기</button>
-                <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){if(v.paused){v.play();this.textContent='⏸ 일시정지';}else{v.pause();this.textContent='▶ 영상 재생';}}">⏸ 일시정지</button>
-              </div>
+            <div class="motion-video-stage is-clean-fx-overlay" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg?v=dir1only" data-duration="6" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+              <canvas class="plate-fx-canvas" data-fx="warm-breath-zoom" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">STORY · 대표원장 심층 검사</span>
+                <div class="plate-thumb-dock">
+                  
+                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg?v=dir1only" alt="안정위 대표원장" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">안정위 대표원장</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story1_enter.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story1_enter.jpg?v=dir1only" alt="따뜻한 맞이" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">따뜻한 맞이</span>
+                  </button>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_consult.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_consult.jpg?v=dir1only" alt="1:1 심층 문진" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">1:1 심층 문진</span>
+                  </button>
+                </div>
                 <h2 class="plate-caption-title">병명 뒤에 가려진 <span class="title-key-em">'당신의 일상'</span>부터 먼저 묻습니다</h2>
                 <p class="plate-caption-sub">자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.</p>
               </div>
@@ -6566,26 +6572,11 @@
         <article class="project-details-item is-image is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">02</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story2_clean.jpg?v=oryzo3" alt="손끝으로 읽어내는 '오장육부와 자율신경'의 파동" draggable="false">
+            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story2_clean.jpg?v=dir1only" alt="손끝으로 읽어내는 '오장육부와 자율신경'의 파동" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">STORY · 양 손목 정밀 진맥</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story2_clean.jpg?v=oryzo3" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story2_clean.jpg?v=oryzo3" alt="양 손목 정밀 맥진" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">양 손목 정밀 맥진</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story2_both_wrists_pulse.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story2_both_wrists_pulse.jpg" alt="촌·관·척 장부 스캔" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">촌·관·척 장부 스캔</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_pulse.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_pulse.jpg" alt="1:1 원장 전담 진맥" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">1:1 원장 전담 진맥</span>
-                  </button>
-                </div>
                 <h2 class="plate-caption-title">손끝으로 읽어내는 <span class="title-key-em">'오장육부와 자율신경'</span>의 파동</h2>
                 <p class="plate-caption-sub">창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.</p>
               </div>
@@ -6597,26 +6588,11 @@
         <article class="project-details-item is-image is-clean-plate">
           <span class="tiny-card-num-badge">03</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story3_clean.jpg?v=oryzo3" alt="체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'" draggable="false">
+            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story3_clean.jpg?v=dir1only" alt="체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">STORY · 사상체질 & 학술 근거 로드맵</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story3_clean.jpg?v=oryzo3" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story3_clean.jpg?v=oryzo3" alt="사상체질 치료 설계" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">사상체질 치료 설계</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story3_nod_design.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story3_nod_design.jpg" alt="1:1 심층 브리핑" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">1:1 심층 브리핑</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_consult.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_consult.jpg" alt="대표원장 책임 진료" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">대표원장 책임 진료</span>
-                  </button>
-                </div>
                 <h2 class="plate-caption-title">체질 의학과 실제 학술 논문을 결합한 <span class="title-key-em">'맞춤 치료 지도'</span></h2>
                 <p class="plate-caption-sub">타고난 사상체질과 현대 임상 논문 근거를 결합해 왜 아팠는지, 어떻게 회복되는지 명확히 안내합니다.</p>
               </div>
@@ -6628,26 +6604,11 @@
         <article class="project-details-item is-image is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">04</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story4_decoction_lab.jpg?v=dir4new" alt="모든 처방을 직접 달이는 '정통 시스템'" draggable="false">
+            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story4_clean.jpg?v=dir1only" alt="모든 처방을 직접 달이는 '정통 시스템'" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
                 <span class="clean-step-label">STORY · 압력 탕전 & 정품 약재 사용</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story4_decoction_lab.jpg?v=dir4new" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story4_decoction_lab.jpg?v=dir4new" alt="원내 정밀 탕전실" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">원내 정밀 탕전실</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story4_loupe_pov.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story4_loupe_pov.jpg" alt="정품 약재 직접 검수" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">정품 약재 직접 검수</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_herbs.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_herbs.jpg" alt="GMP 인증 청정 약재" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">GMP 인증 청정 약재</span>
-                  </button>
-                </div>
                 <h2 class="plate-caption-title">모든 처방을 직접 달이는 <span class="title-key-em">'정통 시스템'</span></h2>
                 <p class="plate-caption-sub">국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 정성껏 달여냅니다.</p>
               </div>
@@ -6659,7 +6620,7 @@
         <article class="project-details-item is-image is-clean-plate">
           <span class="tiny-card-num-badge">05</span>
           <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_clean.jpg?v=oryzo3" alt="실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'" draggable="false">
+            <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_no_director.jpg?v=dir1only" alt="실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'" draggable="false">
             <div class="clean-plate-scrim"></div>
             <div class="visual-sci-overlay">
               
@@ -6679,17 +6640,13 @@
                 <span class="clean-step-label">STORY · SCI급 학술 논문 검수 완료</span>
                 <div class="plate-thumb-dock">
                   
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_clean.jpg?v=oryzo3" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_clean.jpg?v=oryzo3" alt="SCI급 학술 논문 검증" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">SCI급 학술 논문 검증</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_family_safety.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_family_safety.jpg" alt="온 가족 안심 한약" loading="lazy" draggable="false">
+                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_no_director.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/detail_director_story5_no_director.jpg?v=dir1only" alt="온 가족 안심 한약" loading="lazy" draggable="false">
                     <span class="plate-thumb-label">온 가족 안심 한약</span>
                   </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg" alt="간·신장 안전성 입증" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">간·신장 안전성 입증</span>
+                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                    <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/ba_director_after.jpg?v=dir1only" alt="SCI급 안전성 입증" loading="lazy" draggable="false">
+                    <span class="plate-thumb-label">SCI급 안전성 입증</span>
                   </button>
                 </div>
                 <h2 class="plate-caption-title">실제 논문 검수로 안전성과 기전이 입증된 <span class="title-key-em">'맞춤 현대 한의학'</span></h2>
@@ -6704,12 +6661,12 @@
           <span class="tiny-card-num-badge">06</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card1_ultrasound.jpg?v=dir9exam2" alt="보이지 않는 통증과 오장육부 속까지 살피는 — '정밀 초음파 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card1_ultrasound.jpg?v=dir1only" alt="보이지 않는 통증과 오장육부 속까지 살피는 — '정밀 초음파 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card1_ultrasound.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card1_ultrasound.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-1" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -6843,12 +6800,12 @@
           <span class="tiny-card-num-badge">07</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card2_thermography.jpg?v=dir9exam2" alt="면역력 · 혈액순환 · 생식기능의 온도를 읽는 — '적외선 체열진단기 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card2_thermography.jpg?v=dir1only" alt="면역력 · 혈액순환 · 생식기능의 온도를 읽는 — '적외선 체열진단기 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card2_thermography.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card2_thermography.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-2" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -6972,12 +6929,12 @@
           <span class="tiny-card-num-badge">08</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card3_ent_endoscope.jpg?v=dir9exam2" alt="귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — '이비인후 내시경 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card3_ent_endoscope.jpg?v=dir1only" alt="귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — '이비인후 내시경 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card3_ent_endoscope.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card3_ent_endoscope.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-3" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -7094,12 +7051,12 @@
           <span class="tiny-card-num-badge">09</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card4_sasang_constitution.jpg?v=dir9exam2" alt="타고난 장부의 강약과 평생의 체질을 판별하는 — '사상체질 정밀 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card4_sasang_constitution.jpg?v=dir1only" alt="타고난 장부의 강약과 평생의 체질을 판별하는 — '사상체질 정밀 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card4_sasang_constitution.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card4_sasang_constitution.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-4" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -7217,12 +7174,12 @@
           <span class="tiny-card-num-badge">010</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card5_bodyfat_inbody.jpg?v=dir9exam2" alt="소아비만부터 성인 복부비만·근육량까지 분석하는 — '체지방 · 체성분 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card5_bodyfat_inbody.jpg?v=dir1only" alt="소아비만부터 성인 복부비만·근육량까지 분석하는 — '체지방 · 체성분 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card5_bodyfat_inbody.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card5_bodyfat_inbody.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-5" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -7341,12 +7298,12 @@
           <span class="tiny-card-num-badge">011</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card6_autonomic_hrv.jpg?v=dir9exam2" alt="두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — '자율신경 · 스트레스 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card6_autonomic_hrv.jpg?v=dir1only" alt="두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — '자율신경 · 스트레스 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card6_autonomic_hrv.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card6_autonomic_hrv.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-6" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -7447,12 +7404,12 @@
           <span class="tiny-card-num-badge">012</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card7_endocrine_liver_glucose.jpg?v=dir9exam2" alt="대사질환 관리와 안전한 한약 처방을 위한 — '내분비 · 간 및 당 수치 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card7_endocrine_liver_glucose.jpg?v=dir1only" alt="대사질환 관리와 안전한 한약 처방을 위한 — '내분비 · 간 및 당 수치 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card7_endocrine_liver_glucose.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card7_endocrine_liver_glucose.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-7" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -7555,12 +7512,12 @@
           <span class="tiny-card-num-badge">013</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card8_vascular_toxin.jpg?v=dir9exam2" alt="혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — '말초 혈관 상태 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card8_vascular_toxin.jpg?v=dir1only" alt="혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — '말초 혈관 상태 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card8_vascular_toxin.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card8_vascular_toxin.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-8" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
@@ -7665,12 +7622,12 @@
           <span class="tiny-card-num-badge">014</span>
           <div class="plate-media-inner exam-media-stage">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card9_growth_check.jpg?v=dir9exam2" alt="성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card9_growth_check.jpg?v=dir1only" alt="성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
             <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
-            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card9_growth_check.jpg?v=dir9exam2" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director_exam_card9_growth_check.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-9" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
