@@ -19,22 +19,22 @@ const PAGES = [
       glowB: 'rgba(220, 80, 0, 0.05)'
     },
     meta: {
-      eyebrow: 'REPRESENTATIVE DIRECTOR & 9-STEP DIAGNOSTICS · 대표원장 9대 정밀 검진',
+      eyebrow: 'REPRESENTATIVE DIRECTOR PHILOSOPHY · 학술 논문 검증 통합 한의학',
       title: '안정위 대표원장',
-      subtitleEn: 'Dr. Ahn Jung-wi · 9-Core Precision Diagnostics & Sasang Medicine',
+      subtitleEn: 'Dr. Ahn Jung-wi · Evidence-Based Sasang & Integrative Korean Medicine',
       desc: [
-        '깊이 있는 전통 진맥에 9가지 현대 과학적 정밀 검사(초음파 · 체열진단기 · 이비인후 내시경 · 사상체질 · 체지방 · 자율신경 · 내분비 간/당 수치 · 혈관 독소 · 성장 검사)를 결합하여 보이지 않는 질환의 뿌리를 정확하게 찾아냅니다.'
+        '깊이 있는 맥진과 국가인증 정품 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 검사와 안전성이 입증된 치료법만을 시행합니다.'
       ],
-      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 9대 정밀 검진 및 맞춤 치료 계획을 브리핑해 드립니다.',
-      ctaText: '내 증상에 맞는 정밀 검진 · 체질 상담하기',
-      reserveProgram: '안정위 대표원장 9대 정밀검진 · 사상체질 클리닉',
-      checklistTitle: '대표원장 9대 정밀 검진 체크리스트',
+      ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
+      ctaText: '내 체질에 맞는 치료 방향 상담하기',
+      reserveProgram: '안정위 대표원장 사상체질·통합진료 클리닉',
+      checklistTitle: '사상체질 · 맞춤 한약 핵심 체크리스트',
       checklistItems: [
-        '[초음파·체열진단] 통증 부위와 오장육부, 면역·혈액순환·생식기능 상태를 정밀하게 확인하고 싶다.',
-        '[귀코목·사상체질] 귀·코·목 점막 내시경 검사와 내 타고난 사상체질을 정확히 진단받고 싶다.',
-        '[체지방·자율신경] 소아·복부비만 체지방 분석과 두통·어지럼·불면의 자율신경 원인을 찾고 싶다.',
-        '[간/당 수치·혈관 독소] 대사질환(내분비·간·당 수치)과 혈관 독소 상태를 확인해 안심 한약을 처방받고 싶다.',
-        '[소아·청소년 성장] 우리 아이 성장판 개방 상태와 골연령·최종예상키를 정밀하게 검사받고 싶다.'
+        '[원인 미상 통증] 병원 검사는 정상인데 만성 통증· 피로가 반복된다.',
+        '[사상체질 진단] 내 타고난 체질과 체질별 맞춤 식단을 정확히 알고 싶다.',
+        '[심층 전담 진료] 내 이야기를 끝까지 듣고 원인을 쉽게 설명해 주는 주치의를 원한다.',
+        '[체질 맞춤 처방] 공용 한약이 아닌 내 맥상에 맞춘 정밀 단독 처방을 원한다.',
+        '[학술 안전성 검증] 간·신장 부담이나 중금속 걱정 없이 논문으로 검증된 한약을 원한다.'
       ],
       doctorAdvice: {
         caution: '장부불균형 주의',
@@ -43,12 +43,85 @@ const PAGES = [
     },
     plates: [
       {
+        type: 'clean-video',
+        stepLabel: 'STORY · 대표원장 심층 검사',
+        indexPill: 'LIVE MOTION · 대표원장 심층 문진',
+        metricPill: '자율신경 · 수면 · 소화 · 한열 입체 스캔',
+        fx: 'warm-breath-zoom',
+        title: "병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다",
+        sub: '자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.',
+        caption: '[원장 임상 노트] 초진 시 자율신경·수면·소화·한열 반응을 입체 검사해 기능성 질환의 근본 원인을 파악합니다.',
+        videoSrc: 'detail_director_story1.mp4?v=oryzo3',
+        poster: 'detail_director_story1_clean.jpg?v=oryzo3'
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY · 양 손목 정밀 진맥',
+        title: "손끝으로 읽어내는 '오장육부와 자율신경'의 파동",
+        sub: '창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.',
+        caption: '[원장 임상 노트] 창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.',
+        imgSrc: 'detail_director_story2_clean.jpg?v=oryzo3',
+        thumbs: [
+          { img: 'detail_director_story2_clean.jpg?v=oryzo3', label: '양 손목 정밀 맥진' },
+          { img: 'detail_director_story2_both_wrists_pulse.jpg', label: '촌·관·척 장부 스캔' },
+          { img: 'detail_director_pulse.jpg', label: '1:1 원장 전담 진맥' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY · 사상체질 & 학술 근거 로드맵',
+        title: "체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'",
+        sub: '타고난 사상체질과 현대 임상 논문 근거를 결합해 왜 아팠는지, 어떻게 회복되는지 명확히 안내합니다.',
+        caption: '[원장 임상 노트] 태양·태음·소양·소음 사상체질의 장부 강약을 분석하여 학술적으로 검증된 처방을 설계합니다.',
+        imgSrc: 'detail_director_story3_clean.jpg?v=oryzo3',
+        thumbs: [
+          { img: 'detail_director_story3_clean.jpg?v=oryzo3', label: '사상체질 치료 설계' },
+          { img: 'detail_director_story3_nod_design.jpg', label: '1:1 심층 브리핑' },
+          { img: 'detail_director_consult.jpg', label: '대표원장 책임 진료' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        fullscreen: true,
+        stepLabel: 'STORY · 압력 탕전 & 정품 약재 사용',
+        title: "모든 처방을 직접 달이는 '정통 시스템'",
+        sub: '국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 정성껏 달여냅니다.',
+        caption: '[원장 임상 노트] 국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 원내에서 직접 달여냅니다.',
+        imgSrc: 'detail_director_story4_decoction_lab.jpg?v=dir4new',
+        thumbs: [
+          { img: 'detail_director_story4_decoction_lab.jpg?v=dir4new', label: '원내 정밀 탕전실' },
+          { img: 'detail_director_story4_loupe_pov.jpg', label: '정품 약재 직접 검수' },
+          { img: 'detail_director_herbs.jpg', label: 'GMP 인증 청정 약재' }
+        ]
+      },
+      {
+        type: 'clean-image',
+        stepLabel: 'STORY · SCI급 학술 논문 검수 완료',
+        title: "실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'",
+        sub: '학술 논문연구를 통한 안전성이 입증된 한약만을 처방합니다.',
+        caption: '[학술 논문 검수] 국제 학술지 연구를 통해 한약 투여 후 간·신장 기능 안전성 및 항산화·자율신경 회복 기전이 검증되었습니다.',
+        imgSrc: 'detail_director_story5_clean.jpg?v=oryzo3',
+        thumbs: [
+          { img: 'detail_director_story5_clean.jpg?v=oryzo3', label: 'SCI급 학술 논문 검증' },
+          { img: 'detail_director_story5_family_safety.jpg', label: '온 가족 안심 한약' },
+          { img: 'ba_director_after.jpg', label: '간·신장 안전성 입증' }
+        ],
+        sciStats: [
+          { num: 'SCI급 국제학술지 검증', label: '한약 복용 전후 간·신장 안전성 및 항산화 활성 입증', width: '96%' },
+          { num: '국제 민족약리학회지 등재', label: '체질 맞춤 처방의 자율신경 회복 기전 검증', width: '94%' }
+        ]
+      },
+      // ====================================================================
+      // 추가된 9대 정밀 검진 카드 (06 ~ 14번 카드 · Main + Sub 구성 & 맞춤 모션)
+      // ====================================================================
+      {
         type: 'clean-image',
         fullscreen: true,
         fx: 'exam-ultrasound-fx',
         title: "보이지 않는 통증과 오장육부 속까지 살피는 — '정밀 초음파 검사'",
         sub: '근육·인대·관절의 심부 통증 부위부터 간·담낭·위장·방광 등 오장육부의 상태까지 방사선 노출 없이 실시간 영상으로 정밀하게 확인합니다.',
-        caption: '[01 초음파 검사 · 통증 & 오장육부] 근육·인대·관절 통증 원인과 오장육부 내부 상태를 실시간 초음파로 안전하고 정확하게 진단합니다.',
+        caption: '[초음파 검사 · 통증 & 오장육부] 근육·인대·관절 통증 원인과 오장육부 내부 상태를 실시간 초음파로 안전하고 정확하게 진단합니다.',
         imgSrc: 'director_exam_card1_ultrasound.jpg?v=dir9exam1'
       },
       {
@@ -57,7 +130,7 @@ const PAGES = [
         fx: 'exam-thermography-fx',
         title: "면역력 · 혈액순환 · 생식기능의 온도를 읽는 — '적외선 체열진단기 검사'",
         sub: '상체로 몰린 열독과 손발·하복부의 냉증을 체표 온도 분포로 시각화하여 면역 저하, 혈액순환 정체, 자궁·전립선 생식기능 이상을 정확히 진단합니다.',
-        caption: '[02 체열진단기 검사 · 면역·순환·생식기능] 미세한 체표 온도 차이를 적외선으로 촬영하여 면역력·혈액순환·생식기능 밸런스를 입체 판독합니다.',
+        caption: '[체열진단기 검사 · 면역·순환·생식기능] 미세한 체표 온도 차이를 적외선으로 촬영하여 면역력·혈액순환·생식기능 밸런스를 입체 판독합니다.',
         imgSrc: 'director_exam_card2_thermography.jpg?v=dir9exam1'
       },
       {
@@ -66,7 +139,7 @@ const PAGES = [
         fx: 'exam-ent-endoscope-fx',
         title: "귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — '이비인후 내시경 검사'",
         sub: '중이염 고막 상태, 비염·축농증으로 부어오른 코 점막, 편도와 인후두 충혈까지 고화질 내시경으로 세밀하게 관찰해 호흡기 질환의 뿌리를 찾습니다.',
-        caption: '[03 이비인후 내시경 검사 · 귀·코·목] 귀(고막)·코(비강 점막)·목(편도·인후) 상태를 내시경으로 직접 확인하여 만성 비염·감기 면역을 치료합니다.',
+        caption: '[이비인후 내시경 검사 · 귀·코·목] 귀(고막)·코(비강 점막)·목(편도·인후) 상태를 내시경으로 직접 확인하여 만성 비염·감기 면역을 치료합니다.',
         imgSrc: 'director_exam_card3_ent_endoscope.jpg?v=dir9exam1'
       },
       {
@@ -75,7 +148,7 @@ const PAGES = [
         fx: 'exam-sasang-compass-fx',
         title: "타고난 장부의 강약과 평생의 체질을 판별하는 — '사상체질 정밀 검사'",
         sub: '체형·성정·체질 분석과 대표원장의 정밀 맥진·복진을 결합하여 태양·태음·소양·소음 사상체질을 진단하고 내 몸에 꼭 맞는 맞춤 한약을 설계합니다.',
-        caption: '[04 사상체질 검사 · 맞춤 체질의학] 타고난 사상체질과 오장육부 대소(大小) 강약을 분석하여 체질별 맞춤 처방과 섭생 기준을 제시합니다.',
+        caption: '[사상체질 검사 · 맞춤 체질의학] 타고난 사상체질과 오장육부 대소(大小) 강약을 분석하여 체질별 맞춤 처방과 섭생 기준을 제시합니다.',
         imgSrc: 'director_exam_card4_sasang_constitution.jpg?v=dir9exam1'
       },
       {
@@ -84,7 +157,7 @@ const PAGES = [
         fx: 'exam-bodyfat-inbody-fx',
         title: "소아비만부터 성인 복부비만·근육량까지 분석하는 — '체지방 · 체성분 검사'",
         sub: '체지방률과 복부 내장지방 레벨, 골격근량, 체수분 부종 밸런스를 정밀 계측하여 성장기 소아비만 관리와 근손실 없는 복부비만 감량 계획을 세웁니다.',
-        caption: '[05 체지방 검사 · 소아 및 복부비만] 체지방·내장지방·골격근량·부종 수치를 정밀 분석하여 소아비만과 성인 복부비만을 과학적으로 관리합니다.',
+        caption: '[체지방 검사 · 소아 및 복부비만] 체지방·내장지방·골격근량·부종 수치를 정밀 분석하여 소아비만과 성인 복부비만을 과학적으로 관리합니다.',
         imgSrc: 'director_exam_card5_bodyfat_inbody.jpg?v=dir9exam1'
       },
       {
@@ -93,7 +166,7 @@ const PAGES = [
         fx: 'exam-autonomic-hrv-fx',
         title: "두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — '자율신경 · 스트레스 검사'",
         sub: '심박변이도(HRV)와 자율신경 활성도를 측정해 교감신경 과열과 부교감신경 저하를 파악하고, 만성 두통·어지럼증·불면증의 근본 원인을 다스립니다.',
-        caption: '[06 자율신경검사 · 두통·어지럼·불면] 교감·부교감 자율신경 균형도와 스트레스 저항도를 수치로 분석하여 두통·어지럼·불면증을 치료합니다.',
+        caption: '[자율신경검사 · 두통·어지럼·불면] 교감·부교감 자율신경 균형도와 스트레스 저항도를 수치로 분석하여 두통·어지럼·불면증을 치료합니다.',
         imgSrc: 'director_exam_card6_autonomic_hrv.jpg?v=dir9exam1'
       },
       {
@@ -102,7 +175,7 @@ const PAGES = [
         fx: 'exam-endocrine-liver-glucose-fx',
         title: "대사질환 관리와 안전한 한약 처방을 위한 — '내분비 · 간 및 당 수치 검사'",
         sub: '한약 복용 전후 간 기능 수치(AST·ALT)와 혈당·당화혈색소·지질 대사 지표를 정밀하게 점검하여 대사질환을 관리하고 간 부담 없는 안심 처방을 시행합니다.',
-        caption: '[07 내분비 간 및 당 수치 검사 · 대사질환] 간 수치와 혈당·당화혈색소 등 내분비 대사 지표를 확인하여 대사질환 관리와 안전한 한약 처방을 보장합니다.',
+        caption: '[내분비 간 및 당 수치 검사 · 대사질환] 간 수치와 혈당·당화혈색소 등 내분비 대사 지표를 확인하여 대사질환 관리와 안전한 한약 처방을 보장합니다.',
         imgSrc: 'director_exam_card7_endocrine_liver_glucose.jpg?v=dir9exam1'
       },
       {
@@ -111,7 +184,7 @@ const PAGES = [
         fx: 'exam-vascular-toxin-fx',
         title: "혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — '말초 혈관 상태 검사'",
         sub: '가속도 맥파로 혈관 탄성도와 말초 혈액순환 속도, 혈관 내 어혈·독소 정체 정도를 단계별로 분석하여 손발 저림·수족냉증·만성 피로를 조기에 다스립니다.',
-        caption: '[08 혈관 상태 검사 · 독소 & 혈류] 말초 혈관 탄성도와 혈액 내 어혈·독소 정체를 정밀 분석하여 전신 해독과 혈관 건강을 회복시킵니다.',
+        caption: '[혈관 상태 검사 · 독소 & 혈류] 말초 혈관 탄성도와 혈액 내 어혈·독소 정체를 정밀 분석하여 전신 해독과 혈관 건강을 회복시킵니다.',
         imgSrc: 'director_exam_card8_vascular_toxin.jpg?v=dir9exam1'
       },
       {
@@ -120,42 +193,18 @@ const PAGES = [
         fx: 'exam-growth-potential-fx',
         title: "성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'",
         sub: '무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 골든타임을 찾아냅니다.',
-        caption: '[09 성장 검사 · 성장판 & 최종예상키] 성장판 개방 상태, 골연령, 뼈길이, 최종예상키를 종합 검사하여 우리 아이 맞춤 성장 솔루션을 설계합니다.',
+        caption: '[성장 검사 · 성장판 & 최종예상키] 성장판 개방 상태, 골연령, 뼈길이, 최종예상키를 종합 검사하여 우리 아이 맞춤 성장 솔루션을 설계합니다.',
         imgSrc: 'director_exam_card9_growth_check.jpg?v=dir9exam1'
       }
     ],
     bodyModelCard: {
       href: 'body-explorer.html?part=syncope',
       part: 'syncope',
-      useOur3DBodyModel: true,
-      honeyTipLabel: '원장 검진 꿀팁',
-      partBadge: '9대 정밀 검진 · 사상체질 인체모형',
-      eyebrow: '3D HUMAN BODY MODEL · 9-CORE DIAGNOSTIC HONEY-TIP WAREHOUSE',
-      title: "정확한 진단이 바른 치료의 시작 — '9대 정밀 검진 & 체질 꿀팁'",
-      desc: '초음파·체열·내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사와 연결된 3D 인체모형 의학백과를 한눈에 확인하세요.',
-      bg: 'illust_syncope_autonomic.jpg',
-      extraInfoItems: [
-        {
-          badge: '꿀팁 01 · 초음파 & 체열진단 동시 확인',
-          title: '구조적 통증(초음파)과 기능적 순환(체열)을 함께 점검하기',
-          desc: '관절·오장육부 구조와 체표 온도 분포를 함께 비교하면 일반 영상에서 놓치기 쉬운 만성 통증과 냉증의 원인이 명확해집니다.'
-        },
-        {
-          badge: '꿀팁 02 · 자율신경 & 혈관 독소 검진 전 수칙',
-          title: '검사 2시간 전 카페인·흡연 피하고 안정 상태로 측정',
-          desc: '커피나 에너지음료는 교감신경과 말초 혈관 수축에 영향을 주므로 검사 전 미온수만 가볍게 마시고 편안한 호흡으로 측정하세요.'
-        },
-        {
-          badge: '꿀팁 03 · 간/당 수치 & 체지방 정기 모니터링',
-          title: '한약 복용 전·후 간 수치와 내장지방 변화 비교하기',
-          desc: '복용 전후 간 기능(AST·ALT)과 당 수치, 내장지방 레벨을 객관적 수치로 비교 확인하면 더욱 안심하고 대사 건강을 관리할 수 있습니다.'
-        },
-        {
-          badge: '꿀팁 04 · 소아 성장 & 귀코목 내시경 골든타임',
-          title: '비염 점막 내시경과 성장판 검사를 함께 체크하기',
-          desc: '야간 코막힘과 구강호흡은 성장호르몬 분비를 방해하므로 이비인후 내시경 점막 점검과 성장판 검사를 함께 진행하는 것이 좋습니다.'
-        }
-      ]
+      partBadge: '자율신경 · 사상체질 인체모형',
+      eyebrow: 'FINAL CARD · HUMAN BODY MODEL SHOWROOM',
+      title: '인체모형으로 내 체질·원인 연결하기',
+      desc: '인체모형에서 부위별 질환 원인과 실제 학술 논문으로 검증된 한약·홈케어 정보를 한눈에 확인하세요.',
+      bg: 'illust_syncope_autonomic.jpg'
     },
     nextClinic: {
       href: 'chuna.html',
@@ -8348,8 +8397,8 @@ function buildPageHtml(page) {
       <div id="project-details-items-move-container">
         ${platesHtml}
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on director.html, diet-zero.html, chuna.html, growth.html, gongjindan.html, and prostate.html) -->
-        ${(page.file === 'director.html' || page.file === 'diet-zero.html' || page.file === 'chuna.html' || page.file === 'growth.html' || page.file === 'gongjindan.html' || page.file === 'prostate.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
+        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html' || page.file === 'growth.html' || page.file === 'gongjindan.html' || page.file === 'prostate.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
           <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
           <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
             <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
