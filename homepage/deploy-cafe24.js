@@ -26,7 +26,7 @@ const puppeteer = loadPuppeteer();
 const PAGES_TO_DEPLOY = [
   { id: 46,  slug: '46-2',            title: '바른한의원 대전본점',             file: 'wordpress-main-home.html',       excerpt: '바른한의원 대전본점 — 안정위 대표원장의 심층 맥진과 국가공인 무독성 안심 한약. 실제 학술 논문 검수를 거친 검증된 사상체질·추나·성장·다이어트·탈모·공진단·전립선 맞춤 진료 클리닉' },
   { id: 125, slug: 'body-explorer',   title: '바른한의원 인체 질환 쇼룸',       file: 'wordpress-body-explorer.html',   excerpt: '인체모형으로 부위별 질환 원인과 실제 SCI급 학술 논문으로 검증된 한약·추나·홈케어·추천 식단을 한눈에 확인하세요.' },
-  { id: 126, slug: 'director',        title: '안정위 대표원장',                 file: 'wordpress-director.html',        excerpt: '깊이 있는 맥진과 국가공인 무독성 검수 한약으로 병의 뿌리를 다스립니다. 실제 학술 논문으로 안전성과 기전이 검증된 치료법만을 시행합니다.' },
+  { id: 126, slug: 'director',        title: '안정위 대표원장',                 file: 'wordpress-director.html',        excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·내분비 간/당 수치·혈관 독소·성장 검사까지 9대 정밀 검진 시스템과 심층 맥진으로 병의 뿌리를 찾는 안정위 대표원장입니다.' },
   { id: 127, slug: 'chuna',           title: '바른 추나 · 척추교정',            file: 'wordpress-chuna.html',           excerpt: '미국의학협회지(JAMA) 등 실제 학술 논문을 검수하여 유효성이 입증된 대표원장 수기 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
   { id: 105, slug: 'growth',          title: '바른 성장 · 성조숙증',            file: 'wordpress-growth.html',          excerpt: '소아과학 및 약리학 학술 논문 검수를 통해 검증된 안전한 한약 처방으로 성장판 연골 증식과 호흡기 면역을 함께 깨웁니다.' },
   { id: 66,  slug: 'diet-zero',       title: '바른 다이어트 · 식욕ZERO',        file: 'wordpress-diet.html',            excerpt: '국제 비만·약리 학술 논문으로 검증된 갈색지방 대사 활성화 처방으로 무리한 절식 없이 내장지방을 건강하게 비워냅니다.' },

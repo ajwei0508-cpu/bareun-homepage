@@ -6369,7 +6369,7 @@
           </div>
         </article>
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
+        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on director.html, diet-zero.html, chuna.html, growth.html, gongjindan.html, and prostate.html) -->
         
 
         <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
@@ -8549,6 +8549,502 @@
           ctx.textAlign = 'center';
           ctx.fillText('⚠️ 전립선 울혈 압박 · 야간뇨 수면 분절 경보', tx + tagW * 0.5, ty + 20);
           ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'exam-ultrasound-fx') {
+          // CARD 01: 초음파 검사 (통증 · 오장육부) — Fan-shaped Acoustic Sector Scan Beam & Deep Tissue Echo Waves
+          const ox = w * 0.50, oy = h * 0.14;
+          const maxR = Math.min(w, h) * 0.46;
+          const startAng = Math.PI * 0.32;
+          const endAng = Math.PI * 0.68;
+          const sweepAng = startAng + (0.5 + 0.5 * Math.sin(timeSec * 2.1)) * (endAng - startAng);
+
+          ctx.save();
+          // Sector boundary & depth arcs
+          const beamGrad = ctx.createRadialGradient(ox, oy, 10, ox, oy, maxR);
+          beamGrad.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
+          beamGrad.addColorStop(0.55, 'rgba(16, 185, 129, 0.14)');
+          beamGrad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+          ctx.fillStyle = beamGrad;
+          ctx.beginPath();
+          ctx.moveTo(ox, oy);
+          ctx.arc(ox, oy, maxR, startAng, endAng);
+          ctx.closePath();
+          ctx.fill();
+
+          // Concentric acoustic depth rings (2cm, 4cm, 6cm, 8cm)
+          for (let d = 1; d <= 4; d++) {
+            const r = (d / 4) * maxR;
+            ctx.beginPath();
+            ctx.arc(ox, oy, r, startAng, endAng);
+            ctx.strokeStyle = d === 3 ? 'rgba(110, 231, 183, 0.52)' : 'rgba(255, 255, 255, 0.20)';
+            ctx.lineWidth = d === 3 ? 1.8 : 1.1;
+            ctx.setLineDash(d % 2 === 0 ? [5, 5] : []);
+            ctx.stroke();
+          }
+          ctx.setLineDash([]);
+
+          // Active scanning laser line
+          ctx.beginPath();
+          ctx.moveTo(ox, oy);
+          ctx.lineTo(ox + Math.cos(sweepAng) * maxR, oy + Math.sin(sweepAng) * maxR);
+          ctx.strokeStyle = '#6EE7B7';
+          ctx.lineWidth = 2.4;
+          ctx.stroke();
+
+          // Target anatomical echo nodes (근막·인대 / 오장육부)
+          const nodes = [
+            { r: maxR * 0.48, a: Math.PI * 0.44, label: '심부 근막·인대 층' },
+            { r: maxR * 0.72, a: Math.PI * 0.56, label: '오장육부 실질 에코' }
+          ];
+          nodes.forEach((nd, idx) => {
+            const nx = ox + Math.cos(nd.a) * nd.r;
+            const ny = oy + Math.sin(nd.a) * nd.r;
+            const pulse = 5 + Math.sin(timeSec * 4 + idx * 2) * 2.2;
+            ctx.beginPath();
+            ctx.arc(nx, ny, pulse * 2.1, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.25)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(nx, ny, pulse, 0, Math.PI * 2);
+            ctx.strokeStyle = '#FDE68A';
+            ctx.lineWidth = 1.8;
+            ctx.stroke();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 10.5px Pretendard, sans-serif';
+            ctx.fillText(nd.label, nx + 11, ny + 4);
+          });
+
+          // Top-Right Telemetry HUD
+          const boxW = 248, boxH = 62;
+          const bx = Math.max(18, w - boxW - 22), by = 58;
+          ctx.fillStyle = 'rgba(12, 18, 24, 0.78)';
+          ctx.strokeStyle = 'rgba(110, 231, 183, 0.52)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(bx, by, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#6EE7B7';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('📡 SONO-SCAN · 통증 & 오장육부 초음파', bx + 12, by + 22);
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
+          ctx.font = '600 10.2px Pretendard, sans-serif';
+          ctx.fillText('• 관절·인대 미세 염증 및 장부 움직임 실시간 확인', bx + 12, by + 44);
+          ctx.restore();
+        } else if (type === 'exam-thermography-fx') {
+          // CARD 02: 체열진단기 검사 (면역 · 순환 · 생식기능) — Infrared Isotherm Rings & Temperature Spectrum Bar
+          const cx = w * 0.48, cy = h * 0.36;
+          ctx.save();
+
+          // Warm core radiation isotherm rings (36.5°C Core Balance)
+          const colors = ['rgba(239, 68, 68, 0.42)', 'rgba(245, 158, 11, 0.36)', 'rgba(16, 185, 129, 0.34)', 'rgba(56, 189, 248, 0.28)'];
+          for (let i = 0; i < 4; i++) {
+            const p = (timeSec * 0.45 + i * 0.25) % 1;
+            const rx = 28 + p * Math.min(w, h) * 0.28;
+            const ry = rx * 0.78;
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, rx, ry, Math.sin(timeSec + i) * 0.15, 0, Math.PI * 2);
+            ctx.strokeStyle = colors[i];
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+          }
+
+          // Right-side Thermal Color Scale Bar (31.0°C ~ 38.5°C)
+          const barX = w - 42, barY = 66, barW = 12, barH = 148;
+          const thGrad = ctx.createLinearGradient(0, barY, 0, barY + barH);
+          thGrad.addColorStop(0, '#EF4444');
+          thGrad.addColorStop(0.35, '#F59E0B');
+          thGrad.addColorStop(0.68, '#10B981');
+          thGrad.addColorStop(1, '#38BDF8');
+          ctx.fillStyle = thGrad;
+          ctx.beginPath();
+          ctx.roundRect(barX, barY, barW, barH, 6);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Animated pointer on thermal scale
+          const ptrY = barY + (0.35 + 0.25 * Math.sin(timeSec * 1.8)) * barH;
+          ctx.fillStyle = '#FEF08A';
+          ctx.font = '800 10px Pretendard, sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText('36.5°C ▸', barX - 6, ptrY + 3);
+          ctx.textAlign = 'left';
+
+          // Top-Left HUD Badge
+          const boxW = 262, boxH = 62;
+          const bx = 22, by = 58;
+          ctx.fillStyle = 'rgba(18, 14, 12, 0.80)';
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(bx, by, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('🌡️ IR THERMOGRAPHY · 면역·순환·생식기능', bx + 12, by + 22);
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
+          ctx.font = '600 10.2px Pretendard, sans-serif';
+          ctx.fillText('• 상열하한·수족냉증·하복부 생식 온기 밸런스 스캔', bx + 12, by + 44);
+          ctx.restore();
+        } else if (type === 'exam-ent-endoscope-fx') {
+          // CARD 03: 이비인후 내시경 검사 (귀 · 코 · 목) — Optical Endoscope Lens Reticle & 3-Zone Mucosa Focus
+          const cx = w * 0.50, cy = h * 0.35;
+          const lr = Math.min(w, h) * 0.22;
+          ctx.save();
+
+          // Outer Fiber-Optic Illumination Ring
+          ctx.beginPath();
+          ctx.arc(cx, cy, lr, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(253, 230, 138, 0.62)';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // Rotating degree ticks around scope
+          for (let i = 0; i < 24; i++) {
+            const ang = (i / 24) * Math.PI * 2 + timeSec * 0.35;
+            const r1 = lr * (i % 3 === 0 ? 0.86 : 0.92);
+            ctx.beginPath();
+            ctx.moveTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1);
+            ctx.lineTo(cx + Math.cos(ang) * (lr - 2), cy + Math.sin(ang) * (lr - 2));
+            ctx.strokeStyle = i % 3 === 0 ? '#6EE7B7' : 'rgba(255,255,255,0.32)';
+            ctx.lineWidth = 1.3;
+            ctx.stroke();
+          }
+
+          // Crosshair focus brackets
+          const br = lr * 0.38;
+          ctx.strokeStyle = '#6EE7B7';
+          ctx.lineWidth = 1.8;
+          [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx, sy]) => {
+            ctx.beginPath();
+            ctx.moveTo(cx + sx * br, cy + sy * (br - 10));
+            ctx.lineTo(cx + sx * br, cy + sy * br);
+            ctx.lineTo(cx + sx * (br - 10), cy + sy * br);
+            ctx.stroke();
+          });
+
+          // 3-Zone Cycling Indicator Pill (귀 고막 · 코 비점막 · 목 인후두)
+          const zones = ['👂 귀(고막·외이도)', '👃 코(비점막·부비동)', '🗣️ 목(편도·인후두)'];
+          const actZone = Math.floor((timeSec * 0.85) % 3);
+          const padX = 22, topY = 58;
+          zones.forEach((z, idx) => {
+            const zx = padX + idx * 116;
+            const isAct = idx === actZone;
+            ctx.fillStyle = isAct ? 'rgba(16, 185, 129, 0.85)' : 'rgba(12, 16, 22, 0.74)';
+            ctx.strokeStyle = isAct ? '#FEF08A' : 'rgba(255,255,255,0.22)';
+            ctx.lineWidth = 1.3;
+            ctx.beginPath();
+            ctx.roundRect(zx, topY, 110, 28, 999);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = isAct ? '#FFFFFF' : 'rgba(248,250,252,0.75)';
+            ctx.font = (isAct ? '800 ' : '600 ') + '10.2px Pretendard, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(z, zx + 55, topY + 18);
+          });
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'exam-sasang-compass-fx') {
+          // CARD 04: 사상체질 검사 — 4-Axis Sasang Constitution Radar Compass (태양·태음·소양·소음 / 폐·비·간·신)
+          const cx = w * 0.50, cy = h * 0.35;
+          const maxR = Math.min(w, h) * 0.21;
+          ctx.save();
+
+          // Concentric radar rings
+          for (let l = 1; l <= 3; l++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, (l / 3) * maxR, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(253, 230, 138, 0.28)';
+            ctx.lineWidth = 1.1;
+            ctx.stroke();
+          }
+
+          const axes = [
+            { label: '태양 (폐大·간小)', ang: -Math.PI * 0.5, ratio: 0.65 + 0.15 * Math.sin(timeSec * 1.7) },
+            { label: '소양 (비大·신小)', ang: 0, ratio: 0.82 + 0.12 * Math.cos(timeSec * 1.5) },
+            { label: '태음 (간大·폐小)', ang: Math.PI * 0.5, ratio: 0.78 + 0.14 * Math.sin(timeSec * 1.3 + 1) },
+            { label: '소음 (신大·비小)', ang: Math.PI, ratio: 0.70 + 0.15 * Math.cos(timeSec * 1.9 + 2) }
+          ];
+
+          // Axis lines & labels
+          axes.forEach(ax => {
+            const ex = cx + Math.cos(ax.ang) * maxR;
+            const ey = cy + Math.sin(ax.ang) * maxR;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(ex, ey);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.26)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            const lx = cx + Math.cos(ax.ang) * (maxR + 26);
+            const ly = cy + Math.sin(ax.ang) * (maxR + 16);
+            ctx.fillStyle = '#FEF08A';
+            ctx.font = '800 10.5px Pretendard, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(ax.label, lx, ly + 4);
+          });
+
+          // Dynamic Constitution Polygon
+          ctx.beginPath();
+          axes.forEach((ax, idx) => {
+            const px = cx + Math.cos(ax.ang) * (maxR * ax.ratio);
+            const py = cy + Math.sin(ax.ang) * (maxR * ax.ratio);
+            if (idx === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          });
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(212, 175, 55, 0.28)';
+          ctx.fill();
+          ctx.strokeStyle = '#6EE7B7';
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (type === 'exam-bodyfat-inbody-fx') {
+          // CARD 05: 체지방 검사 (소아 및 복부비만) — Vertical BIA Impedance Scan Line & 3 Live Composition Bars
+          const scanY = h * (0.14 + 0.44 * (0.5 + 0.5 * Math.sin(timeSec * 1.6)));
+          ctx.save();
+
+          // Horizontal BIA Bioelectrical Impedance Scan Laser
+          const scanGrad = ctx.createLinearGradient(w * 0.15, scanY, w * 0.85, scanY);
+          scanGrad.addColorStop(0, 'rgba(16, 185, 129, 0)');
+          scanGrad.addColorStop(0.5, 'rgba(110, 231, 183, 0.85)');
+          scanGrad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+          ctx.strokeStyle = scanGrad;
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.moveTo(w * 0.15, scanY);
+          ctx.lineTo(w * 0.85, scanY);
+          ctx.stroke();
+
+          // Top-Right Body Composition HUD Panel
+          const boxW = Math.min(276, w - 40), boxH = 108;
+          const bx = w - boxW - 20, by = 56;
+          ctx.fillStyle = 'rgba(12, 18, 22, 0.82)';
+          ctx.strokeStyle = 'rgba(110, 231, 183, 0.52)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(bx, by, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+
+          const metrics = [
+            { name: '골격근·성장균형 (소아·청소년)', ratio: 0.82, col: '#10B981' },
+            { name: '체지방률 정밀 분석', ratio: 0.54, col: '#F59E0B' },
+            { name: '복부 내장지방 레벨', ratio: 0.46, col: '#38BDF8' }
+          ];
+          metrics.forEach((m, idx) => {
+            const my = by + 22 + idx * 29;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 10.2px Pretendard, sans-serif';
+            ctx.fillText(m.name, bx + 12, my);
+            const trackW = boxW - 24;
+            ctx.fillStyle = 'rgba(255,255,255,0.14)';
+            ctx.beginPath();
+            ctx.roundRect(bx + 12, my + 5, trackW, 7, 3.5);
+            ctx.fill();
+            const fillW = trackW * m.ratio * (0.9 + 0.1 * Math.sin(timeSec * 2.4 + idx));
+            ctx.fillStyle = m.col;
+            ctx.beginPath();
+            ctx.roundRect(bx + 12, my + 5, fillW, 7, 3.5);
+            ctx.fill();
+          });
+          ctx.restore();
+        } else if (type === 'exam-autonomic-hrv-fx') {
+          // CARD 06: 자율신경검사 (두통 · 어지럼 · 불면) — Dual Sympathetic vs Parasympathetic Harmonic Waveforms & HRV Pulse
+          const padX = 22, topY = 58;
+          const boxW = Math.min(340, w - 44), boxH = 104;
+          ctx.save();
+          ctx.fillStyle = 'rgba(12, 16, 24, 0.82)';
+          ctx.strokeStyle = 'rgba(147, 197, 253, 0.52)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('🧠 HRV 자율신경 균형도 · 두통/어지럼/불면 분석', padX + 12, topY + 21);
+
+          // Dual Sine Waves (교감신경 vs 부교감신경)
+          const wStart = padX + 14, wEnd = padX + boxW - 14;
+          const midY = topY + 62;
+          // Sympathetic wave (warm coral-gold)
+          ctx.beginPath();
+          ctx.strokeStyle = '#FBBF24';
+          ctx.lineWidth = 2;
+          for (let x = wStart; x <= wEnd; x += 3) {
+            const y = midY + Math.sin((x - wStart) * 0.055 - timeSec * 3.8) * 14;
+            if (x === wStart) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          // Parasympathetic wave (calming emerald-cyan)
+          ctx.beginPath();
+          ctx.strokeStyle = '#34D399';
+          ctx.lineWidth = 2.2;
+          for (let x = wStart; x <= wEnd; x += 3) {
+            const y = midY + Math.cos((x - wStart) * 0.045 - timeSec * 2.6) * 12;
+            if (x === wStart) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.86)';
+          ctx.font = '600 9.8px Pretendard, sans-serif';
+          ctx.fillText('● 교감신경(긴장·스트레스)   ● 부교감신경(이완·숙면 회복)', padX + 14, topY + 92);
+          ctx.restore();
+        } else if (type === 'exam-endocrine-liver-glucose-fx') {
+          // CARD 07: 내분비 간 및 당 수치 검사 (대사질환) — Live AST/ALT, HbA1c/Glucose & Lipid Safety Gauges
+          const padX = 22, topY = 58;
+          const boxW = Math.min(336, w - 44), boxH = 112;
+          ctx.save();
+          ctx.fillStyle = 'rgba(12, 18, 20, 0.82)';
+          ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(padX, topY, boxW, boxH, 14);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#6EE7B7';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('🩸 내분비 · 간 기능(AST/ALT) · 혈당 대사 패널', padX + 12, topY + 21);
+
+          const items = [
+            { label: 'AST / ALT 간 수치 안전성', status: '안심 범위', ratio: 0.78, col: '#10B981' },
+            { label: '공복혈당 · 당화혈색소(HbA1c)', status: '정밀 추적', ratio: 0.68, col: '#FBBF24' },
+            { label: '지질 · 내분비 대사 균형도', status: '맞춤 관리', ratio: 0.84, col: '#38BDF8' }
+          ];
+          items.forEach((it, idx) => {
+            const iy = topY + 40 + idx * 25;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 10px Pretendard, sans-serif';
+            ctx.fillText(it.label + ' (' + it.status + ')', padX + 12, iy);
+            const trackW = boxW - 24;
+            ctx.fillStyle = 'rgba(255,255,255,0.14)';
+            ctx.beginPath();
+            ctx.roundRect(padX + 12, iy + 4, trackW, 6, 3);
+            ctx.fill();
+            const fillW = trackW * it.ratio * (0.9 + 0.1 * Math.sin(timeSec * 2.2 + idx));
+            ctx.fillStyle = it.col;
+            ctx.beginPath();
+            ctx.roundRect(padX + 12, iy + 4, fillW, 6, 3);
+            ctx.fill();
+          });
+          ctx.restore();
+        } else if (type === 'exam-vascular-toxin-fx') {
+          // CARD 08: 혈관 상태 검사 (독소) — Microcirculation Stream Clearing Toxin Particles & APG Elasticity Wave
+          const vy = h * 0.30;
+          ctx.save();
+
+          // Translucent microvascular flow channel
+          ctx.beginPath();
+          ctx.moveTo(w * 0.12, vy - 18);
+          ctx.quadraticCurveTo(w * 0.5, vy - 30, w * 0.88, vy - 14);
+          ctx.lineTo(w * 0.88, vy + 14);
+          ctx.quadraticCurveTo(w * 0.5, vy - 2, w * 0.12, vy + 18);
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.18)';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(252, 165, 165, 0.55)';
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+
+          // Flowing oxygenated cells & clearing toxin particles
+          for (let i = 0; i < 12; i++) {
+            const p = (timeSec * 0.38 + i / 12) % 1;
+            const px = w * (0.14 + p * 0.72);
+            const py = vy - 6 + Math.sin(p * Math.PI * 2 + i) * 6;
+            const isClean = p > 0.45;
+            ctx.beginPath();
+            ctx.arc(px, py, isClean ? 4.5 : 3.8, 0, Math.PI * 2);
+            ctx.fillStyle = isClean ? '#6EE7B7' : '#F87171';
+            ctx.fill();
+          }
+
+          // Top-Left APG Vascular Aging & Toxin Badge
+          const boxW = 278, boxH = 58;
+          const bx = 22, by = 58;
+          ctx.fillStyle = 'rgba(16, 12, 14, 0.82)';
+          ctx.strokeStyle = 'rgba(252, 165, 165, 0.55)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(bx, by, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#FDE68A';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('💓 APG 혈관 탄력도 · 어혈/독소 정체 스캔', bx + 12, by + 22);
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
+          ctx.font = '600 10px Pretendard, sans-serif';
+          ctx.fillText('• 말초 혈액순환 속도 및 혈관 노화·독소 단계 측정', bx + 12, by + 42);
+          ctx.restore();
+        } else if (type === 'exam-growth-potential-fx') {
+          // CARD 09: 성장 검사 (성장) — Vertical Stadiometer Ruler & Ascending Predicted Height Trajectory Curve
+          const rx = w - 46, topY = 62, botY = h * 0.56;
+          ctx.save();
+
+          // Vertical Height Ruler
+          ctx.strokeStyle = 'rgba(253, 230, 138, 0.72)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(rx, botY);
+          ctx.lineTo(rx, topY);
+          ctx.stroke();
+
+          for (let t = 0; t <= 10; t++) {
+            const ty = botY - (t / 10) * (botY - topY);
+            const tickW = t % 5 === 0 ? 12 : 6;
+            ctx.beginPath();
+            ctx.moveTo(rx - tickW, ty);
+            ctx.lineTo(rx, ty);
+            ctx.stroke();
+          }
+
+          // Ascending Growth Trajectory Curve
+          const curveStartX = 36, curveEndX = rx - 28;
+          const curveStartY = botY - 16, curveEndY = topY + 22;
+          ctx.beginPath();
+          ctx.moveTo(curveStartX, curveStartY);
+          ctx.quadraticCurveTo((curveStartX + curveEndX) * 0.55, curveStartY - 12, curveEndX, curveEndY);
+          ctx.strokeStyle = '#6EE7B7';
+          ctx.lineWidth = 2.8;
+          ctx.stroke();
+
+          // Animated climbing star node along the trajectory
+          const p = (timeSec * 0.45) % 1;
+          const inv = 1 - p;
+          const cx1 = (curveStartX + curveEndX) * 0.55, cy1 = curveStartY - 12;
+          const sx = inv * inv * curveStartX + 2 * inv * p * cx1 + p * p * curveEndX;
+          const sy = inv * inv * curveStartY + 2 * inv * p * cy1 + p * p * curveEndY;
+          ctx.beginPath();
+          ctx.arc(sx, sy, 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#FEF08A';
+          ctx.fill();
+
+          // Top-Left Growth Potential HUD
+          const boxW = 268, boxH = 58;
+          const bx = 22, by = 58;
+          ctx.fillStyle = 'rgba(12, 18, 16, 0.82)';
+          ctx.strokeStyle = 'rgba(110, 231, 183, 0.55)';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.roundRect(bx, by, boxW, boxH, 12);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#6EE7B7';
+          ctx.font = '800 11px Pretendard, sans-serif';
+          ctx.fillText('🌱 GROWTH POTENTIAL · 성장판 & 예상키', bx + 12, by + 22);
+          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
+          ctx.font = '600 10px Pretendard, sans-serif';
+          ctx.fillText('• 골연령 · 성장판 활성도 · 최종 예상키 정밀 예측', bx + 12, by + 42);
           ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
