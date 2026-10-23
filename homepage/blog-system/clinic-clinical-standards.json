@@ -1,0 +1,142 @@
+{
+  "version": "2.0.0",
+  "updatedAt": "2026-10-23",
+  "clinicName": "바른한의원 대전본점",
+  "representativeDirector": "안정위 대표원장",
+  "writingToneRules": {
+    "mandatoryEndings": [
+      "도움드립니다.",
+      "검사합니다.",
+      "진단합니다.",
+      "회복합니다."
+    ],
+    "forbiddenExpressions": [
+      "검토합니다",
+      "고려합니다",
+      "기대할 수 있습니다",
+      "100% 완치 보장"
+    ]
+  },
+  "directorDetailPageExams": [
+    {
+      "examId": 1,
+      "cardNo": "CARD 06",
+      "name": "정밀 초음파 영상 검사",
+      "targetScope": "근육·인대·관절 심부 통증 부위 및 간·담낭·위장·방광 등 오장육부",
+      "standardVerb": "검사합니다."
+    },
+    {
+      "examId": 2,
+      "cardNo": "CARD 07",
+      "name": "적외선 체열진단기 검사 (DITI)",
+      "targetScope": "면역력 저하, 말초 혈액순환 정체, 상열하한, 자궁·전립선 등 생식기능 온도 분포",
+      "standardVerb": "검사합니다."
+    },
+    {
+      "examId": 3,
+      "cardNo": "CARD 08",
+      "name": "이비인후 내시경 검사",
+      "targetScope": "귀(중이염 고막), 코(비염·축농증 비강 점막), 목(편도·인후두 염증)",
+      "standardVerb": "검사합니다."
+    },
+    {
+      "examId": 4,
+      "cardNo": "CARD 09",
+      "name": "사상체질 정밀 검사 & 眞(진)장부맥학 진맥",
+      "targetScope": "태양·태음·소양·소음 사상체질 및 오장육부 대소 강약 판별",
+      "standardVerb": "진단합니다."
+    },
+    {
+      "examId": 5,
+      "cardNo": "CARD 10",
+      "name": "체지방 · 체성분 검사 (InBody)",
+      "targetScope": "성장기 소아비만, 성인 복부 내장지방 레벨, 골격근량, 체수분 부종 밸런스",
+      "standardVerb": "검사합니다."
+    },
+    {
+      "examId": 6,
+      "cardNo": "CARD 11",
+      "name": "자율신경 · 스트레스 검사 (HRV)",
+      "targetScope": "두통, 어지럼증, 불면증, 미주신경성 실신의 교감·부교감 자율신경 균형도 및 심박변이도",
+      "standardVerb": "진단합니다."
+    },
+    {
+      "examId": 7,
+      "cardNo": "CARD 12",
+      "name": "내분비 · 간 및 당 수치 검사",
+      "targetScope": "한약 복용 전후 간 기능 수치(AST·ALT), 혈당·당화혈색소·지질 대사질환 지표",
+      "standardVerb": "검사합니다."
+    },
+    {
+      "examId": 8,
+      "cardNo": "CARD 13",
+      "name": "말초 혈관 상태 검사 (APG)",
+      "targetScope": "혈관 노화도, 말초 혈관 탄성도, 혈액 속 어혈 및 독소 정체도",
+      "standardVerb": "검사합니다."
+    },
+    {
+      "examId": 9,
+      "cardNo": "CARD 14",
+      "name": "소아 · 청소년 성장 정밀 검사",
+      "targetScope": "무방사선 성장판 초음파 개방도, 골연령(뼈나이), 뼈길이, 성조숙증 징후 및 최종예상키",
+      "standardVerb": "진단합니다."
+    }
+  ],
+  "directorDirectProcedures": [
+    "안정위 대표원장 1:1 심층 문진 및 眞(진)장부맥학 양 손목 정밀 진맥·복진",
+    "대표원장 직접 수기 추나요법 (경추·흉추·요추·골반 신경감압 추나 및 무통 소아 성장 추나)",
+    "침 · 전침 치료",
+    "정제 약침 · 봉약침 · 매선 치료",
+    "부항 요법 및 비강·이비인후 통비 치료",
+    "원내 직접 압력 탕전 1:1 맞춤 한약 (식약처 인증 GAP/hGMP 정품 약재 · SCI급 논문 안전성 검수)",
+    "식약처 CITES 인증 정품 사향 & 러시아산 녹용 분골 특허 수제 황제공진단 (특허 제10-1744704호)"
+  ],
+  "koreanMedicinePhysicalTherapies": [
+    {
+      "code": "PMS",
+      "name": "자기장 치료 (심부 전자기장 치료)",
+      "effect": "고강도 펄스 자기장이 근육·신경 뿌리·골반저 심부까지 침투하여 통증 완화 및 골반저근·요실금·전립선 회복을 도움드립니다."
+    },
+    {
+      "code": "SONO",
+      "name": "소노 치료 (초음파 물리치료)",
+      "effect": "초음파 미세 진동으로 굳어진 근막·인대·건의 유착을 풀고 성장판 및 관절 연부조직 미세혈류 회복을 도움드립니다."
+    },
+    {
+      "code": "HOTPACK",
+      "name": "핫팩 온열요법 (습식 온열 찜질)",
+      "effect": "경직된 근육과 복부·골반을 따뜻하게 데워 혈관을 확장하고 추나·침 시술 전후 긴장 이완을 도움드립니다."
+    },
+    {
+      "code": "ICT",
+      "name": "ICT 치료 (간섭파 전류치료)",
+      "effect": "중주파 교차 전류로 심부 근육 경련을 풀고 통증 신경 전달을 억제하여 편안한 관절 가동성 회복을 도움드립니다."
+    },
+    {
+      "code": "IR",
+      "name": "IR 치료 (적외선 조사요법)",
+      "effect": "침·약침 시술 부위 및 냉증·통증 부위에 온열 적외선을 조사하여 국소 모세혈관 순환과 면역 활성을 도움드립니다."
+    },
+    {
+      "code": "MICROWAVE",
+      "name": "극초단파 치료 (심부 투열 치료)",
+      "effect": "척추관·관절·하복부(위장·자궁·전립선) 깊은 조직 내부에 직접 생체 심부열을 발생시켜 만성 염증과 냉증을 회복합니다."
+    }
+  ],
+  "nineDiseaseCategories": [
+    { "order": 1, "partId": "lumbar", "slug": "blog-lumbar", "name": "통증 · 척추관절", "detailPage": "chuna.html", "explorerUrl": "body-explorer.html?part=lumbar" },
+    { "order": 2, "partId": "digest", "slug": "blog-digest", "name": "소화 · 위장 · 담적 해독", "detailPage": "director.html", "explorerUrl": "body-explorer.html?part=digest" },
+    { "order": 3, "partId": "gut", "slug": "blog-gut", "name": "대사 · 복부비만 다이어트", "detailPage": "diet-zero.html", "explorerUrl": "body-explorer.html?part=gut" },
+    { "order": 4, "partId": "syncope", "slug": "blog-syncope", "name": "자율신경 · 두통 · 어지럼 · 수면 · 실신", "detailPage": "director.html", "explorerUrl": "body-explorer.html?part=syncope" },
+    { "order": 5, "partId": "knee", "slug": "blog-knee", "name": "소아 성장 · 소아비만 · 면역", "detailPage": "growth.html", "explorerUrl": "body-explorer.html?part=knee" },
+    { "order": 6, "partId": "uterus", "slug": "blog-uterus", "name": "여성 · 생리통 · 난임", "detailPage": "director.html", "explorerUrl": "body-explorer.html?part=uterus" },
+    { "order": 7, "partId": "cervical", "slug": "blog-cervical", "name": "탈모 · 두피 · 목어깨", "detailPage": "hairloss.html", "explorerUrl": "body-explorer.html?part=cervical" },
+    { "order": 8, "partId": "prostate", "slug": "blog-prostate", "name": "전립선 · 요실금 · 남성활력", "detailPage": "prostate.html", "explorerUrl": "body-explorer.html?part=prostate" },
+    { "order": 9, "partId": "gongjindan", "slug": "blog-gongjindan", "name": "만성피로 · 황제공진단", "detailPage": "gongjindan.html", "explorerUrl": "body-explorer.html?part=gongjindan" }
+  ],
+  "publishingRule": {
+    "frequency": "9대 카드 질환별로 각각 하루 1편 (일 총 9편)",
+    "imageRule": "잘생기고 예쁜 한국인 남녀노소, 일상 배경, 무텍스트, 영문 SEO 파일명 & 정확한 한글 ALT",
+    "homepageLinkRule": "3D 모션 백과사전(body-explorer.html)에 최신글 각 질환별로 3개 자동 노출 및 추천 블로그로 내부링크 연결"
+  }
+}

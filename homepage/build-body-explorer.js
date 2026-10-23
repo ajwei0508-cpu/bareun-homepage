@@ -6,61 +6,61 @@ const GAS_SCRIPT_SOURCE = fs.readFileSync(path.join(__dirname, 'google-apps-scri
 const BODY_PARTS = [
   {
     "id": "knee",
-    "navLabel": "무릎 · 소아 키성장·감기면역",
-    "shortName": "무릎 · 소아 성장판 & 감기면역",
-    "hotspotLabel": "무릎 · 소아 성장판 & 감기면역",
-    "kicker": "PEDIATRIC GROWTH PLATE & IMMUNITY · 학술 논문 검증",
-    "title": "무릎 성장판 & 소아 키성장 · 감기면역",
-    "subtitleEn": "Knee Epiphyseal Growth Plate & Mucosal Immunity",
-    "lead": "아이의 최종 키는 선천적 요인보다 후천적 면역·수면·성장판 관리가 결정한다는 사실이 학술 논문으로 입증되어 있습니다.",
+    "navLabel": "소아 성장 · 소아비만 · 면역",
+    "shortName": "소아 성장 · 소아비만 & 감기면역",
+    "hotspotLabel": "소아 성장 · 소아비만 · 면역",
+    "kicker": "PEDIATRIC GROWTH PLATE, OBESITY & IMMUNITY · 안정위 원장 9대 정밀 검사",
+    "title": "무릎 성장판 & 소아 키성장 · 소아비만 · 감기면역",
+    "subtitleEn": "Knee Epiphyseal Growth Plate, Pediatric Obesity & Mucosal Immunity",
+    "lead": "소아·청소년 성장 검사(골연령·성장판)와 체지방·체성분 검사(소아비만), 이비인후 내시경으로 숨은 키 원인을 정밀하게 검사하고 진단하며, 안정위 원장 직접 추나와 한약으로 건강한 성장을 회복합니다.",
     "illustImg": "illust_knee_growth_care.jpg",
-    "illustCaption": "대퇴골·경골 사이 성장판(Epiphyseal Plate) 연골세포 증식과 호흡기 면역 보호",
+    "illustCaption": "대퇴골·경골 성장판(Epiphyseal Plate) 연골세포 증식 · 소아비만 체성분 관리 · 호흡기 면역 보호",
     "clinicLink": "growth.html",
-    "clinicCta": "소아 성장 · 성조숙증 상세페이지 →",
+    "clinicCta": "소아 성장 · 소아비만 · 면역 상세페이지 →",
     "slides": [
       {
-        "tabTitle": "첫째 · 핵심 원인",
-        "badge": "STEP · 왜 키가 안 클까요?",
-        "heading": "성장을 멈추게 하는 핵심 원인",
-        "summary": "잦은 감기·비염과 야간 구강호흡이 성장호르몬과 성장판 분열을 직접 방해합니다.",
+        "tabTitle": "첫째 · 핵심 원인·진단",
+        "badge": "STEP 1 · 왜 키가 안 크고 살만 찔까요?",
+        "heading": "성장을 멈추게 하는 3대 원인(감기·구강호흡·소아비만)을 진단합니다",
+        "summary": "잦은 감기·비염과 야간 구강호흡, 그리고 성조숙증을 부르는 소아비만을 9대 과학 장비로 정밀하게 검사합니다.",
         "cards": [
           {
-            "tag": "핵심 원인 · 잦은 감기와 비염",
-            "title": "면역 소모가 성장 에너지를 가로챕니다",
-            "desc": "소아과학 학술 논문에 따르면 감기·비염의 만성 염증 물질은 간에서 생성되는 성장인자 분비를 직접 억제합니다."
+            "tag": "핵심 원인 · 잦은 감기와 비염 (이비인후 내시경 검사)",
+            "title": "호흡기 면역 소모가 성장 에너지를 가로채는지 검사합니다",
+            "desc": "이비인후 내시경으로 코점막 부종을 확인하며, 감기·비염의 만성 염증이 간 성장인자(IGF-1) 분비를 억제하는지 정밀하게 진단합니다."
+          },
+          {
+            "tag": "핵심 원인 · 소아비만과 성조숙증 (체지방·체성분 & 성장 검사)",
+            "title": "살이 키로 간다는 오해! 소아비만 조기 골화를 진단합니다",
+            "desc": "체지방·체성분 검사와 소아 성장판 검사로 과도한 지방세포(렙틴)가 성호르몬을 자극해 성장판 시계를 앞당기는지 꼼꼼히 검사합니다."
           },
           {
             "tag": "핵심 원인 · 야간 코막힘과 구강호흡",
-            "title": "입을 벌리고 자면 성장호르몬이 줄어듭니다",
-            "desc": "이비인후과 학술 연구에 따르면 야간 코막힘과 구강호흡은 깊은 서파수면을 방해해 성장호르몬 분비를 저하시킵니다."
-          },
-          {
-            "tag": "핵심 원인 · 성조숙증과 조기 골화",
-            "title": "성장판 시계가 빨리 닫히면 최종 키가 손해입니다",
-            "desc": "뼈나이가 앞서가면 성장판 연골이 일찍 뼈로 굳어 자랄 수 있는 시간이 단축됩니다."
+            "title": "입을 벌리고 자면 밤 10시 성장호르몬이 줄어듭니다",
+            "desc": "야간 코막힘과 구강호흡으로 깊은 서파수면에 들지 못해 성장호르몬 분비가 저하된 수면 환경을 바르게 회복합니다."
           }
         ]
       },
       {
-        "tabTitle": "둘째 · 학술 검증 치료",
-        "badge": "STEP · 학술 논문 검증 치료법",
-        "heading": "성장판 연골 증식 & 호흡기 면역 동시 치료",
-        "summary": "성호르몬 자극 없이 성장판 연골모세포 분열을 깨우고 비염·감기 면역력을 함께 높입니다.",
+        "tabTitle": "둘째 · 원장 직접 시술",
+        "badge": "STEP 2 · 안정위 원장 직접 시술 & 물리치료",
+        "heading": "성장판 연골 증식 & 소아비만·호흡기 면역을 동시에 회복합니다",
+        "summary": "성호르몬 자극 없이 성장판 연골모세포 분열을 깨우고 소아비만 체지방 감량과 비염 면역을 함께 도움드립니다.",
         "cards": [
           {
-            "tag": "검증 치료 · 비위·폐 면역 보강 한약",
-            "title": "감기·비염을 줄여 성장 에너지를 지킵니다",
-            "desc": "호흡기 점막 면역과 소화 흡수력을 높여 아파서 멈추는 성장 정체기를 예방합니다."
+            "tag": "직접 처방 · 비위·폐 면역 & 소아비만 감량 한약",
+            "title": "체지방·습열은 비우고 성장 에너지는 채워 회복합니다",
+            "desc": "원내 직영 압력 탕전 한약으로 소아비만 내장지방과 식적은 줄이고 호흡기 점막 면역과 뼈 성장을 안전하게 도움드립니다."
           },
           {
-            "tag": "검증 치료 · 성장판 연골모세포 활성화 처방",
-            "title": "성호르몬 자극 없는 안전한 연골 증식",
-            "desc": "체질 맞춤 한약재로 조기 골화를 늦추고 성장판 연골층 두께를 튼튼하게 유지합니다."
+            "tag": "직접 시술 · 안정위 원장 소아 성장·체형 교정 추나",
+            "title": "거북목·골반 비대칭 교정으로 숨은 키를 회복합니다",
+            "desc": "안정위 원장이 직접 휘어진 척추와 골반 정렬을 바로잡아 무릎 성장판에 가해지는 압박을 해소하고 바른 성장을 도움드립니다."
           },
           {
-            "tag": "검증 치료 · 소아 성장 추나 & 자세 교정",
-            "title": "거북목·골반 비대칭 교정으로 숨은 키 회복",
-            "desc": "휘어진 척추와 골반 정렬을 바로잡아 무릎 성장판에 가해지는 압박을 해소합니다."
+            "tag": "물리·이학 치료 · 소노(초음파)·자기장·IR·핫팩 케어",
+            "title": "무릎 성장판 미세혈류와 비강 온열 순환을 회복합니다",
+            "desc": "통증 없는 소노(초음파), 심부 자기장, IR(적외선), 온열 핫팩 치료로 성장판 연골 주변 혈류와 면역력을 높여드립니다."
           }
         ]
       },
@@ -514,107 +514,107 @@ const BODY_PARTS = [
   },
   {
     "id": "syncope",
-    "navLabel": "자율신경 · 전신 혈관·신경",
-    "shortName": "자율신경성 실신 · 전신 혈관·신경",
-    "hotspotLabel": "자율신경성 실신 · 혈관·신경",
-    "kicker": "VASOVAGAL SYNCOPE & AUTONOMIC VASCULAR NETWORK · 학술 논문 검증",
-    "title": "자율신경성(미주신경성) 실신 & 전신 혈관 · 신경 조절",
-    "subtitleEn": "Vasovagal Syncope, Orthostatic Hypotension & Autonomic Nerves",
-    "lead": "뇌·심장·말초혈관을 조율하는 자율신경 균형을 복원해 어지럼증과 실신 재발을 근본 예방합니다.",
+    "navLabel": "자율신경 · 두통·어지럼·수면·실신",
+    "shortName": "자율신경 · 두통·어지럼·수면·실신",
+    "hotspotLabel": "자율신경 · 두통·어지럼·수면·실신",
+    "kicker": "AUTONOMIC NERVES, HEADACHE, VERTIGO, SLEEP & SYNCOPE · 안정위 원장 9대 정밀 검사",
+    "title": "자율신경 · 두통 · 어지럼 · 수면 · 미주신경성 실신 클리닉",
+    "subtitleEn": "Autonomic Regulation, Headache, Vertigo, Insomnia & Vasovagal Syncope",
+    "lead": "자율신경·스트레스 검사(HRV)와 말초 혈관 상태 검사(APG), 이비인후 내시경으로 두통·어지럼·불면·실신의 원인을 정밀하게 검사하고 진단하며, 상부 경추 추나와 맞춤 한약으로 신경계 균형을 회복합니다.",
     "illustImg": "illust_syncope_autonomic.jpg",
-    "illustCaption": "뇌간-미주신경-심장-전신 혈관 수축 반사를 조율하는 자율신경 네트워크 복원",
+    "illustCaption": "뇌간-상부경추-미주신경-전정신경-전신 혈관 수축 반사를 조율하는 자율신경 네트워크 복원",
     "clinicLink": "director.html",
-    "clinicCta": "대표원장 자율신경 · 체질 클리닉 상세보기 →",
+    "clinicCta": "대표원장 자율신경 · 두통·어지럼·실신 클리닉 →",
     "slides": [
       {
-        "tabTitle": "첫째 · 핵심 원인",
-        "badge": "STEP · 왜 갑자기 어지럽고 쓰러질까요?",
-        "heading": "전신 혈관과 미주신경이 순간적으로 멈추는 이유",
-        "summary": "긴장·피로 시 다리로 몰린 혈액이 뇌로 올라오지 못해 순간적인 뇌 빈혈이 발생합니다.",
+        "tabTitle": "첫째 · 핵심 원인·진단",
+        "badge": "STEP 1 · 왜 두통·어지럼·불면·실신이 반복될까요?",
+        "heading": "뇌혈류·전정기능·미주신경 불균형을 과학 장비로 진단합니다",
+        "summary": "MRI상 이상이 없는 만성 편두통, 이석증·어지럼증, 불면증, 미주신경성 실신을 HRV·APG·내시경으로 정밀하게 검사합니다.",
         "cards": [
           {
-            "tag": "핵심 원인 · 미주신경 과민 반사",
-            "title": "교감신경이 지치면 미주신경이 급브레이크를 밟습니다",
-            "desc": "스트레스나 밀폐된 공간에서 심박수와 혈압이 급격히 떨어져 뇌 혈류가 일시 차단됩니다."
+            "tag": "핵심 원인 · 만성 편두통 & 이석증·어지럼증 (내시경·초음파 검사)",
+            "title": "상부 경추 추골동맥 압박과 전정신경 불균형을 진단합니다",
+            "desc": "상부 경추(C1-C2) 비틀림으로 뇌혈류가 감소하고 내이 전정기관 순환이 막혀 발생하는 두통·어지럼증을 이비인후 내시경과 초음파로 검사합니다."
           },
           {
-            "tag": "핵심 원인 · 하지 정맥 저류 & 혈관 탄력 저하",
-            "title": "다리로 내려간 피가 심장과 뇌로 못 올라옵니다",
-            "desc": "혈관 수축력이 약하면 일어설 때 혈액이 하체에 고여 눈앞이 하얘지는 현기증이 나타납니다."
+            "tag": "핵심 원인 · 미주신경 과민 반사 & 실신 (HRV·APG 혈관 검사)",
+            "title": "교감·부교감신경 급브레이크와 기립성 뇌빈혈을 검사합니다",
+            "desc": "자율신경·스트레스 검사(HRV)와 말초 혈관 검사(APG)로 심박수·혈압 급락과 하지 정맥 저류 원인을 정밀하게 진단합니다."
           },
           {
-            "tag": "핵심 원인 · 전조 증상 (식은땀 · 이명 · 메스꺼움)",
-            "title": "실신 직전 몸이 보내는 긴급 경고 신호",
-            "desc": "속이 울렁거리고 귀가 멍해지며 식은땀이 흐르는 것은 뇌 혈류가 부족하다는 경고입니다."
+            "tag": "핵심 원인 · 교감신경 과열과 만성 불면·화병 (DITI 체열 검사)",
+            "title": "밤에도 꺼지지 않는 뇌 각성과 상열감을 검사합니다",
+            "desc": "적외선 체열진단기(DITI)로 가슴과 머리에 몰린 열독을 확인하고 수면-각성 리듬이 무너진 원인을 진단합니다."
           }
         ]
       },
       {
-        "tabTitle": "둘째 · 학술 검증 치료",
-        "badge": "STEP · 학술 논문 검증 치료법",
-        "heading": "자율신경 밸런스 안정화 & 심뇌혈류 보강 치료",
-        "summary": "심장 펌프력을 높이고 과민한 미주신경 흥분을 가라앉혀 실신 재발을 근본 예방합니다.",
+        "tabTitle": "둘째 · 원장 직접 시술",
+        "badge": "STEP 2 · 안정위 원장 직접 시술 & 물리치료",
+        "heading": "상부 경추·두개천골 추나 & 자율신경 한약으로 맑은 머리와 숙면을 회복합니다",
+        "summary": "과열된 교감신경은 식히고 미주신경·뇌혈류 탄력을 높여 두통·어지럼·불면·실신을 근본부터 회복합니다.",
         "cards": [
           {
-            "tag": "검증 치료 · 자율신경 조율 체질 맞춤 한약",
-            "title": "심박수 변동성(HRV)과 혈관 수축 탄력 회복",
-            "desc": "심장과 소화기 기혈을 보충해 환경 변화에도 혈압과 뇌혈류가 흔들리지 않게 잡아줍니다."
+            "tag": "직접 처방 · 자율신경 조율 & 두풍·현훈·안신 맞춤 한약",
+            "title": "심박변이도(HRV)와 뇌·전정 혈류 탄력을 회복합니다",
+            "desc": "원내 직영 압력 탕전 한약으로 뇌혈류를 맑게 열고 심열(心熱)을 내려 두통·어지럼증 완화와 자연 숙면에 도움드립니다."
           },
           {
-            "tag": "검증 치료 · 두경부·흉추 자율신경절 이완 추나",
-            "title": "미주신경이 지나는 경추·흉곽 긴장 해소",
-            "desc": "뇌간에서 심장으로 내려가는 미주신경 통로의 압박을 풀어 신경 전달 오류를 바로잡습니다."
+            "tag": "직접 시술 · 안정위 원장 상부 경추(C1-C2) & 흉곽 추나요법",
+            "title": "추골동맥과 미주신경 통로의 구조적 압박을 해소합니다",
+            "desc": "대표원장이 직접 후두골과 상부 경추, 흉추 자율신경절을 정밀 교정해 신경 전달 오류와 경추성 두통·어지럼을 회복합니다."
           },
           {
-            "tag": "검증 치료 · 말초 순환 & 정맥 환류 강화",
-            "title": "차가운 손발과 하체 혈액 순환을 동시에 개선",
-            "desc": "하체에서 심장으로 혈액을 밀어 올리는 정맥 환류 힘을 높여 기립성 어지럼증을 없앱니다."
+            "tag": "물리·이학 치료 · 자기장·소노(초음파)·ICT·IR·핫팩 케어",
+            "title": "후두하근 긴장 이완과 말초 혈관 순환을 회복합니다",
+            "desc": "심부 자기장, 소노(초음파), ICT, IR, 온열 핫팩 치료로 경직된 두경부 근막을 풀고 하체 정맥 환류를 강화해 도움드립니다."
           }
         ]
       },
       {
-        "tabTitle": "셋째 · 실신 예방 응급요령",
-        "badge": "STEP · 실전 대처 가이드",
-        "heading": "전조 증상이 올 때 즉시 뇌혈류를 지키는 동작",
-        "summary": "눈앞이 아찔하거나 식은땀이 날 때 즉시 실천하면 쓰러지며 다치는 부상을 막을 수 있습니다.",
+        "tabTitle": "셋째 · 실전 대처·홈케어",
+        "badge": "STEP 3 · 실전 대처 가이드",
+        "heading": "두통·어지럼·실신 전조 증상 시 뇌혈류를 지키는 수칙",
+        "summary": "눈앞이 아찔하거나 어지러울 때 즉시 실천하면 실신 부상을 막고 빠르게 안정을 회복합니다.",
         "cards": [
           {
-            "tag": "응급 대처 · 즉시 앉거나 눕기 & 다리 올리기",
-            "title": "참지 말고 그 자리에 앉아 머리를 낮추세요",
-            "desc": "전조 증상이 오면 즉시 쪼그려 앉거나 누워 다리를 높이면 뇌 혈류가 빠르게 회복됩니다."
+            "tag": "응급 대처 · 즉시 쪼그려 앉기 & 다리 꼬아 힘주기(Leg Crossing)",
+            "title": "아찔한 전조 증상 시 참지 말고 자세를 낮추세요",
+            "desc": "식은땀·이명·현기증이 오면 즉시 앉거나 양다리를 교차해 허벅지·엉덩이에 힘을 주어 뇌혈류 유지에 도움드립니다."
           },
           {
-            "tag": "응급 대처 · 다리 꼬아 하체 근육 조이기",
-            "title": "양다리를 교차해 허벅지·엉덩이에 힘주기",
-            "desc": "서 있어야 할 때는 양다리를 교차하고 하체 근육에 힘을 주어 뇌혈류 유지를 도우세요."
+            "tag": "두통·어지럼 케어 · 뒷목 온찜질 & 급격한 고개 회전 피하기",
+            "title": "상부 경추 보온으로 뇌·내이 혈류를 부드럽게 유지합니다",
+            "desc": "뒷목(풍지혈)을 따뜻하게 찜질하고 기상 시 천천히 일어나 기립성 어지럼증과 이석 자극을 예방하도록 도움드립니다."
           },
           {
-            "tag": "응급 대처 · 아침 기상 시 천천히 일어나기",
-            "title": "침대에서 바로 벌떡 일어나지 마세요",
-            "desc": "침대 끝에 잠시 걸터앉아 발목을 충분히 움직인 뒤 천천히 일어서면 어지럼증을 예방합니다."
+            "tag": "수면 케어 · 취침 전 4-7-8 복식호흡 & 미온수 족욕",
+            "title": "부교감신경 스위치를 켜서 깊은 서파수면을 회복합니다",
+            "desc": "취침 1시간 전 스마트폰을 끄고 따뜻한 족욕과 복식호흡으로 머리의 열을 내려 숙면에 도움드립니다."
           }
         ]
       },
       {
         "tabTitle": "넷째 · 추천 식단 · 루틴",
-        "badge": "STEP · 식단 & 생활습관",
-        "heading": "혈관 볼륨을 지키는 수분 섭취와 하체 루틴",
-        "summary": "탈수와 공복을 피하고 하체 혈액을 심장으로 밀어 올리는 종아리 근육 운동을 매일 실천하세요.",
+        "badge": "STEP 4 · 식단 & 생활습관",
+        "heading": "뇌신경·혈관을 지키는 식단과 종아리 펌프 루틴",
+        "summary": "편두통 유발 식품과 탈수를 피하고 제2의 심장인 종아리 근육 운동으로 뇌혈류를 회복합니다.",
         "cards": [
           {
-            "tag": "추천 식단 · 혈액량 & 철분 보충",
-            "title": "충분한 미온수 · 소고기·시금치 · 대추·인삼차",
-            "desc": "혈장 볼륨을 유지하는 충분한 수분과 철분, 심장 기운을 돕는 따뜻한 차를 챙기세요."
+            "tag": "추천 식단 · 뇌혈류 & 자율신경 안정 영양",
+            "title": "충분한 미온수 · 천마·국화·대추차 · 푸른잎채소·연어",
+            "desc": "마그네슘과 철분, 따뜻한 미온수를 충분히 섭취해 혈장 볼륨과 신경 안정 유지에 도움드립니다."
           },
           {
-            "tag": "주의 상황 · 실신 유발 방아쇠 차단",
-            "title": "아침 공복 · 뜨거운 사우나 · 장시간 기립 주의",
-            "desc": "공복 저혈당이나 더운 사우나에서는 말초 혈관이 확장되어 뇌 혈류가 쉽게 빠져나갑니다."
+            "tag": "주의 요인 · 두통·어지럼·실신 유발 방아쇠 차단",
+            "title": "아침 공복 · 과도한 카페인·알코올 · 장시간 기립 주의",
+            "desc": "공복 저혈당과 카페인 과다 섭취는 뇌혈관 수축·확장 변동을 키워 편두통과 실신을 악화시킵니다."
           },
           {
-            "tag": "매일 루틴 · 종아리 펌프 운동",
-            "title": "매일 규칙적인 까치발 들기(Calf Raise) 운동",
-            "desc": "종아리 근육이 단단해야 하체에 고인 혈액을 심장과 뇌로 힘차게 올려보낼 수 있습니다."
+            "tag": "매일 루틴 · 종아리 펌프(까치발 들기) 운동 50회",
+            "title": "하체 혈액을 심장과 뇌로 힘차게 올려보냅니다",
+            "desc": "매일 규칙적인 까치발 들기(Calf Raise) 운동으로 정맥 환류 탄력을 높여 어지럼증 없는 일상을 회복합니다."
           }
         ]
       }
@@ -625,12 +625,12 @@ const BODY_PARTS = [
         "title": "ESC 실신(Syncope) 진단 및 관리 가이드라인: 미주신경성 반사 및 하지 근육 수축 요법"
       },
       {
-        "journal": "J Am Coll Cardiol (JACC) 학술지 등재",
-        "title": "재발성 미주신경성 실신 환자의 자율신경 심박변이도(HRV) 불균형 및 혈관 수축 기전"
+        "journal": "Cephalalgia & J Vestib Res 학술지 등재",
+        "title": "상부 경추(C1-C2) 수기 교정 및 침구 치료의 만성 편두통·경추성 어지럼증 완화 기전"
       },
       {
         "journal": "Autonomic Neuroscience 학술지 등재",
-        "title": "한의학 보익·안신 처방 및 침구 자극의 미주신경 톤 조절 및 기립성 저혈압 개선 연구"
+        "title": "한의학 보익·안신 처방 및 침구 자극의 심박변이도(HRV) 개선 및 불면·자율신경 회복 연구"
       },
       {
         "journal": "Circulation 학술지 등재",
@@ -639,18 +639,144 @@ const BODY_PARTS = [
     ]
   },
   {
-    "id": "gut",
-    "navLabel": "위장·간 · 대사 다이어트",
-    "shortName": "위장 · 간 해독 & 대사 다이어트",
-    "hotspotLabel": "위장 · 간 해독 · 대사 다이어트",
-    "kicker": "DIGESTIVE METABOLISM & VISCERAL FAT DETOX · 학술 논문 검증",
-    "title": "위장 · 간 대사 해독 & 식욕ZERO 다이어트",
-    "subtitleEn": "Gastric-Hepatic Detoxification & Metabolic Boosting",
-    "lead": "굶어서 근육만 빼는 요요 대신, 위장·간 해독과 복부 대사 화로를 깨워 내장지방만 비워냅니다.",
+    "id": "digest",
+    "navLabel": "소화 · 위장 · 담적 해독",
+    "shortName": "소화 · 위장 · 담적 해독 클리닉",
+    "hotspotLabel": "소화 · 위장 · 담적 해독",
+    "kicker": "GASTRIC MOTILITY, DAMJEOK & DIGESTIVE MUCOSA · 안정위 원장 9대 정밀 검사",
+    "title": "소화 · 위장 · 담적병 · 역류성식도염 · 과민성대장 해독",
+    "subtitleEn": "Gastric Emptying, Damjeok Dissolution & Gut-Brain Axis Care",
+    "lead": "내시경상 이상이 없는데도 명치가 답답한 담적병과 역류성식도염, 과민성대장증후군을 정밀 초음파(오장육부)와 적외선 체열진단기(DITI)로 검사하고 진단하며, 원내 직영 담적 한약과 온열 물리치료로 속 편한 소화력을 회복합니다.",
     "illustImg": "illust_gut_metabolism.jpg",
-    "illustCaption": "위장·간·장 대사 순환 활성화 및 심부 내장지방 연소 메커니즘",
+    "illustCaption": "위장(Stomach)·식도 괄약근·소장·대장 연동운동 복원 및 굳어진 담적(痰積) 용해 메커니즘",
+    "clinicLink": "director.html",
+    "clinicCta": "대표원장 소화 · 위장 · 담적 클리닉 →",
+    "slides": [
+      {
+        "tabTitle": "첫째 · 핵심 원인·진단",
+        "badge": "STEP 1 · 왜 내시경은 정상인데 늘 체하고 쓰릴까요?",
+        "heading": "위장 외벽이 굳어지는 ‘담적병’과 위 배출 지연을 정밀 진단합니다",
+        "summary": "점막 안쪽만 보는 내시경으로 알기 어려운 위장 근육층 경직과 복부 냉증을 초음파·체열·진맥으로 꼼꼼히 검사합니다.",
+        "cards": [
+          {
+            "tag": "핵심 원인 · 명치가 돌처럼 굳는 담적병 (복부 초음파 & 진맥 검사)",
+            "title": "굳어진 위장 외벽 평활근과 연동운동 저하를 검사합니다",
+            "desc": "정밀 초음파 검사(오장육부)와 眞장부맥학 진맥, 복진으로 위장 외벽에 쌓인 담적 독소와 위 배출능 저하를 정확히 진단합니다."
+          },
+          {
+            "tag": "핵심 원인 · 역류성식도염과 목 이물감 (이비인후 내시경 검사)",
+            "title": "위장 내 가스 팽만과 느슨해진 식도 괄약근을 진단합니다",
+            "desc": "소화되지 못한 음식물 가스가 식도 괄약근을 밀고 올라와 발생하는 가슴 쓰림과 매핵기(목 이물감)를 이비인후 내시경으로 검사합니다."
+          },
+          {
+            "tag": "핵심 원인 · 과민성대장증후군 & 복부 냉증 (DITI 체열 & HRV 검사)",
+            "title": "장-뇌 자율신경 축 불균형과 아랫배 냉증을 검사합니다",
+            "desc": "적외선 체열진단기(DITI)와 HRV 자율신경 검사로 긴장할 때마다 반복되는 복통·설사·변비·가스 팽만의 뿌리를 진단합니다."
+          }
+        ]
+      },
+      {
+        "tabTitle": "둘째 · 원장 직접 시술",
+        "badge": "STEP 2 · 안정위 원장 직접 시술 & 물리치료",
+        "heading": "담적 용해 한약 & 심부 온열 물리치료로 위장 자생력을 회복합니다",
+        "summary": "단순 제산제가 아닌 위장 근육을 부드럽게 녹이고 점막을 재생하여 재발 없는 소화력을 회복합니다.",
+        "cards": [
+          {
+            "tag": "직접 처방 · 담적 용해 & 위·식도 점막 재생 한약",
+            "title": "굳은 위장을 풀고 하부식도괄약근 힘을 회복합니다",
+            "desc": "안정위 원장이 원내에서 직접 압력 탕전하는 맞춤 한약으로 위장 외벽의 담적을 녹이고 식도·위·장 점막 장벽을 튼튼히 회복합니다."
+          },
+          {
+            "tag": "직접 시술 · 내장기 자율신경 추나 & 상복부 약침·침 치료",
+            "title": "위장과 대장을 지배하는 흉추·미주신경 긴장을 풀어줍니다",
+            "desc": "대표원장이 직접 등(흉추) 자율신경절과 횡격막 긴장을 교정하는 추나와 중완·족삼리혈 약침으로 위장 운동성을 깨워 도움드립니다."
+          },
+          {
+            "tag": "물리·이학 치료 · 극초단파·자기장·소노(초음파)·ICT·IR·핫팩",
+            "title": "차가운 복부 심부 체온을 높여 담적 배출을 회복합니다",
+            "desc": "극초단파 심부온열, 자기장, 소노(초음파), ICT, IR, 온열 핫팩 6대 치료로 복부 심부 혈류를 열어 굳은 위장을 부드럽게 회복합니다."
+          }
+        ]
+      },
+      {
+        "tabTitle": "셋째 · 소화기 실전 홈케어",
+        "badge": "STEP 3 · 실전 홈케어",
+        "heading": "담적과 위산 역류를 막는 일상 속 위장 보호 수칙",
+        "summary": "씹는 횟수와 식후 자세만 바꾸어도 명치 답답함과 역류성식도염 증상이 눈에 띄게 편안해집니다.",
+        "cards": [
+          {
+            "tag": "생활 수칙 · 한 입에 30번 꼭꼭 씹기 & 식사 중 물 줄이기",
+            "title": "침 속 소화효소(아밀라아제)가 최고의 천연 소화제입니다",
+            "desc": "천천히 오래 씹어 삼키고 식사 도중 국물이나 물을 많이 마시지 않아야 위산이 희석되지 않고 소화에 도움드립니다."
+          },
+          {
+            "tag": "생활 수칙 · 취침 3시간 전 금식 & 식후 바로 눕지 않기",
+            "title": "식후 15분 가벼운 산책으로 위장 연동운동을 깨웁니다",
+            "desc": "식사 직후 눕는 습관을 피하고 가볍게 걸으면 위장 내 가스가 빠르게 배출되어 역류성식도염 예방에 도움드립니다."
+          },
+          {
+            "tag": "생활 수칙 · 매일 저녁 따뜻한 복부 온찜질 20분",
+            "title": "배꼽 주변 온열 마사지로 대장 경련과 가스를 가라앉힙니다",
+            "desc": "아랫배를 따뜻하게 보온하고 시계 방향으로 부드럽게 마사지하면 과민성대장과 변비 완화에 큰 도움드립니다."
+          }
+        ]
+      },
+      {
+        "tabTitle": "넷째 · 추천 식단 · 루틴",
+        "badge": "STEP 4 · 식단 & 생활습관",
+        "heading": "위장 점막을 살리는 음식 vs 담적을 만드는 음식",
+        "summary": "비타민 U와 뮤신이 풍부한 식단을 챙기고 위장을 굳게 만드는 밀가루·야식을 줄이세요.",
+        "cards": [
+          {
+            "tag": "추천 식단 · 위·장 점막 복원 식단",
+            "title": "살짝 찐 양배추 · 마·연근 · 브로콜리 · 따뜻한 생강·진피차",
+            "desc": "비타민 U와 뮤신이 손상된 위벽과 식도 점막을 코팅하고 소화 효소 분비를 도와 속 편안한 일상을 회복합니다."
+          },
+          {
+            "tag": "주의 식품 · 담적·역류 유발 식품",
+            "title": "밀가루 면·빵 · 공복 커피 · 탄산음료 · 기름진 야식",
+            "desc": "글루텐과 카페인, 야식은 하부식도괄약근을 느슨하게 만들고 위장 외벽에 담적 독소를 쌓이게 합니다."
+          },
+          {
+            "tag": "매일 루틴 · 식후 횡격막 복식호흡 10회",
+            "title": "깊은 복식호흡이 위장과 장을 자연스럽게 마사지합니다",
+            "desc": "식후 편안한 자세로 배를 오르내리는 복식호흡을 하면 미주신경이 활성화되어 소화 흡수력을 빠르게 회복합니다."
+          }
+        ]
+      }
+    ],
+    "sciPapers": [
+      {
+        "journal": "Neurogastroenterol Motil 학술지 등재",
+        "title": "한의학 처방 및 침구 치료의 위 배출능(Gastric Emptying) 촉진 및 기능성 소화불량 개선 기전"
+      },
+      {
+        "journal": "Phytomedicine 학술지 등재",
+        "title": "반하·황련·진피 복합 추출물의 식도 하부 괄약근 압력 조절 및 역류성식도염 점막 보호 연구"
+      },
+      {
+        "journal": "World J Gastroenterol 학술지 등재",
+        "title": "과민성대장증후군(IBS)에서 장-뇌 축(Gut-Brain Axis) 조절 한약 치료의 복통·팽만감 개선"
+      },
+      {
+        "journal": "J Ethnopharmacology 학술지 등재",
+        "title": "전통 건비(健脾)·소도 처방의 위장 평활근 수축 리듬 복원 및 장내 미생물 균형 연구"
+      }
+    ]
+  },
+  {
+    "id": "gut",
+    "navLabel": "대사 · 복부비만 다이어트",
+    "shortName": "대사 · 복부비만 & 식욕ZERO 다이어트",
+    "hotspotLabel": "대사 · 복부비만 다이어트",
+    "kicker": "METABOLIC DETOX & VISCERAL FAT DIET · 안정위 원장 9대 정밀 검사",
+    "title": "간·대사 해독 & 복부·내장비만 식욕ZERO 다이어트",
+    "subtitleEn": "Hepatic-Metabolic Detoxification & Visceral Fat Diet",
+    "lead": "체지방·체성분 검사와 내분비·간 및 당 수치 검사, 사상체질 정밀 검사로 살이 찌는 대사 원인을 정확히 검사하고 진단하며, 근육은 지키고 순수 내장지방만 비워내는 건강한 감량을 회복합니다.",
+    "illustImg": "illust_gut_metabolism.jpg",
+    "illustCaption": "간(Liver)·대사 해독 순환 활성화 및 복부 심부 내장지방 선택 연소 메커니즘",
     "clinicLink": "diet-zero.html",
-    "clinicCta": "바른 다이어트 · 식욕ZERO 상세페이지 →",
+    "clinicCta": "바른 대사 · 복부비만 다이어트 상세페이지 →",
     "slides": [
       {
         "tabTitle": "첫째 · 핵심 원인",
@@ -892,127 +1018,127 @@ const BODY_PARTS = [
   },
   {
     "id": "prostate",
-    "navLabel": "전립선·배뇨 · 남성활력",
-    "shortName": "전립선 · 배뇨장애 & 남성활력",
-    "hotspotLabel": "전립선 · 배뇨 · 남성활력",
-    "kicker": "PROSTATE, URINARY BLADDER & MALE VITALITY CLINIC · 학술 논문 검증",
-    "title": "전립선 비대 · 만성 전립선염 & 야간뇨 · 배뇨 클리닉",
-    "subtitleEn": "Prostate Decongestion, Bladder Control & Male Vitality",
-    "lead": "전립선 부종을 감압해 소변 길을 넓히고 차가운 방광을 데워 통잠과 남성 활력을 되살립니다.",
+    "navLabel": "전립선 · 요실금 · 남성활력",
+    "shortName": "전립선 · 요실금 & 남성활력",
+    "hotspotLabel": "전립선 · 요실금 · 남성활력",
+    "kicker": "PROSTATE, URINARY INCONTINENCE & MALE VITALITY · 안정위 원장 9대 정밀 검사",
+    "title": "전립선 비대 · 만성 전립선염 & 요실금 · 남성활력 클리닉",
+    "subtitleEn": "Prostate Decongestion, Urinary Incontinence Control & Male Vitality",
+    "lead": "정밀 초음파 검사와 적외선 체열진단기(DITI), 말초 혈관 검사(APG)로 전립선 비대와 복압성·절박성 요실금, 야간뇨의 원인을 정밀하게 검사하고 진단하며, 골반저근 자기장·온열 치료와 보신 한약으로 통잠과 활력을 회복합니다.",
     "illustImg": "illust_prostate_care.jpg",
-    "illustCaption": "방광(Bladder)·전립선(Prostate)·요도 괄약근 감압 및 골반저 혈류 순환 복원",
+    "illustCaption": "방광(Bladder)·전립선(Prostate)·요도 괄약근(요실금) 강화 및 골반저 혈류 순환 복원",
     "clinicLink": "prostate.html",
-    "clinicCta": "전립선 · 남성활력 상세페이지 →",
+    "clinicCta": "전립선 · 요실금 · 남성활력 상세페이지 →",
     "slides": [
       {
-        "tabTitle": "첫째 · 핵심 원인",
-        "badge": "STEP · 왜 소변이 자주 마렵고 불편할까요?",
-        "heading": "전립선과 방광이 보내는 배뇨·통증 핵심 신호",
-        "summary": "장시간 좌식 생활과 과로로 골반 혈류가 막히면 전립선이 부어 요도를 좁게 압박합니다.",
+        "tabTitle": "첫째 · 핵심 원인·진단",
+        "badge": "STEP 1 · 왜 요실금과 야간뇨가 반복될까요?",
+        "heading": "전립선 압박과 약해진 방광 괄약근(요실금)을 정밀 진단합니다",
+        "summary": "전립선 부종과 방광 괄약근·골반저근 약화로 인한 복압성·절박성 요실금, 야간뇨를 초음파와 체열진단기로 꼼꼼히 검사합니다.",
         "cards": [
           {
-            "tag": "핵심 원인 · 전립선 울혈과 요도 압박",
-            "title": "부어오른 전립선이 소변 길을 꽉 조입니다",
-            "desc": "전립선이 요도를 누르면 소변 줄기가 가늘어지고 다녀와도 덜 본 듯한 잔뇨감이 남습니다."
+            "tag": "핵심 원인 · 복압성·절박성 요실금과 야간뇨 (초음파 & DITI 검사)",
+            "title": "약해진 방광 괄약근·골반저근과 하초 냉증을 검사합니다",
+            "desc": "기침·운동 시 새는 복압성 요실금과 참기 힘든 절박성 요실금·야간뇨의 원인을 정밀 초음파와 적외선 체열진단기(DITI)로 진단합니다."
           },
           {
-            "tag": "핵심 원인 · 방광 과민성과 야간뇨",
-            "title": "밤마다 소변 때문에 깨어나 깊은 수면과 활력이 무너집니다",
-            "desc": "방광이 차갑고 약해지면 소변을 충분히 저장하지 못해 빈뇨·야간뇨와 피로가 이어집니다."
+            "tag": "핵심 원인 · 전립선 울혈과 요도 압박 (진맥 & 혈관 검사)",
+            "title": "부어오른 전립선이 소변 길을 조이는 상태를 진단합니다",
+            "desc": "전립선이 요도를 눌러 소변 줄기가 가늘어지고 잔뇨감이 남는 상태를 眞장부맥학 진맥과 말초 혈관 검사(APG)로 검사합니다."
           },
           {
-            "tag": "핵심 원인 · 만성 비세균성 전립선염",
-            "title": "항생제를 먹어도 낫지 않는 회음부·고환 뻐근함",
-            "desc": "비뇨의학 논문에 따르면 만성 전립선염의 대다수는 세균이 아닌 골반 근육 긴장과 만성 울혈이 원인입니다."
+            "tag": "핵심 원인 · 만성 비세균성 전립선염 & 골반울혈",
+            "title": "항생제를 먹어도 낫지 않는 회음부·아랫배 통증을 진단합니다",
+            "desc": "세균이 아닌 골반 틀어짐과 골반저 근육 경직으로 인한 회음부 신경·혈관 울혈을 정밀하게 진단합니다."
           }
         ]
       },
       {
-        "tabTitle": "둘째 · 학술 검증 치료",
-        "badge": "STEP · 학술 논문 검증 치료법",
-        "heading": "전립선 부종 감압 한약 & 하초(腎·膀胱) 원기 회복",
-        "summary": "전립선 부종을 빼 소변 길을 시원하게 열고 방광 저장력과 남성 활력을 동시에 높입니다.",
+        "tabTitle": "둘째 · 원장 직접 시술",
+        "badge": "STEP 2 · 안정위 원장 직접 시술 & 물리치료",
+        "heading": "전립선 감압·요실금 괄약근 한약 & 심부 자기장·추나로 회복합니다",
+        "summary": "전립선 부종은 빼고 약해진 방광 괄약근과 골반저근은 탄탄히 조여 요실금 없는 쾌뇨와 남성 활력을 동시에 회복합니다.",
         "cards": [
           {
-            "tag": "검증 치료 · 전립선 울혈 해소 & 감압 한약",
-            "title": "단단하게 부은 전립선 조직을 부드럽게 감압",
-            "desc": "전립선 미세 염증과 부종을 가라앉혀 요도 압박을 풀고 시원한 소변 줄기를 회복합니다."
+            "tag": "직접 처방 · 전립선 감압 & 방광 괄약근(요실금) 강화 한약",
+            "title": "차가워진 신장·방광을 데우고 괄약근 저장력을 회복합니다",
+            "desc": "원내 직영 압력 탕전 한약으로 전립선 부종을 낮추고 방광 괄약근 수축력을 높여 요실금과 새벽 야간뇨 완화에 도움드립니다."
           },
           {
-            "tag": "검증 치료 · 신장·방광 온양(溫陽) 야간뇨 치료",
-            "title": "차가워진 방광을 데워 밤새 깨지 않는 숙면 유도",
-            "desc": "방광 괄약근 탄력과 저장력을 복원해 야간 배뇨 횟수를 줄이고 통잠을 되찾아 드립니다."
+            "tag": "직접 시술 · 1:1 독립 진료실 안정위 원장 골반 추나 & 약침",
+            "title": "회음부 신경과 방광을 누르는 골반 비대칭을 교정합니다",
+            "desc": "대표원장이 직접 틀어진 골반과 천골을 교정하는 수기 추나와 고농축 약침으로 만성 전립선염 통증과 배뇨 기능을 회복합니다."
           },
           {
-            "tag": "검증 치료 · 골반저 감압 추나 & 심부 약침",
-            "title": "회음부 신경과 전립선 혈관을 누르는 골반 교정",
-            "desc": "틀어진 골반과 근육 긴장을 풀어 회음부 불쾌감과 골반 통증을 빠르게 해소합니다."
+            "tag": "물리·이학 치료 · 심부 자기장·극초단파·소노(초음파)·ICT·IR·핫팩",
+            "title": "옷을 입은 채 골반저근과 요도 괄약근 수축력을 회복합니다",
+            "desc": "심부 자기장과 극초단파 심부온열, 소노(초음파), 핫팩 치료로 골반 바닥 근육과 방광 괄약근을 강화해 요실금 치유에 도움드립니다."
           }
         ]
       },
       {
-        "tabTitle": "셋째 · 전립선 실전 홈케어",
-        "badge": "STEP · 실전 홈케어",
-        "heading": "전립선 압박을 줄이고 야간뇨를 예방하는 생활 수칙",
-        "summary": "온수 좌욕과 저녁 수분 조절만 실천해도 야간뇨 횟수와 회음부 불편감이 크게 줄어듭니다.",
+        "tabTitle": "셋째 · 요실금·전립선 홈케어",
+        "badge": "STEP 3 · 실전 홈케어",
+        "heading": "요실금과 야간뇨를 예방하는 일상 속 골반저근 관리 수칙",
+        "summary": "온수 좌욕과 케겔(골반저근) 수축 운동, 저녁 수분 조절만 실천해도 요실금과 야간뇨가 크게 줄어듭니다.",
         "cards": [
           {
-            "tag": "생활 수칙 · 매일 저녁 따뜻한 온수 좌욕",
-            "title": "따뜻한 미온수 좌욕으로 전립선 울혈과 근육 이완",
-            "desc": "따뜻한 물에 회음부를 담그면 굳은 골반 근육이 풀리고 전립선 혈류 순환이 빨라집니다."
+            "tag": "생활 수칙 · 매일 저녁 따뜻한 온수 좌욕 & 케겔 운동",
+            "title": "미온수 좌욕과 괄약근 조이기로 요실금을 예방합니다",
+            "desc": "따뜻한 물로 회음부 울혈을 풀고 하루 30회 항문·요도 괄약근을 수축하는 케겔 운동으로 방광 조절력 회복에 도움드립니다."
           },
           {
-            "tag": "생활 수칙 · 자주 자리에서 일어나기 & 방석 사용",
+            "tag": "생활 수칙 · 자주 자리에서 일어나기 & 도넛 방석 사용",
             "title": "딱딱한 의자나 자전거 안장의 회음부 압박 피하기",
-            "desc": "장시간 앉아 있을 때는 자주 일어나 골반을 풀어주고 푹신한 방석으로 회음부 압박을 줄이세요."
+            "desc": "장시간 앉아 있을 때는 50분마다 일어나 골반을 풀어주고 푹신한 방석으로 전립선·방광 압박을 줄이도록 도움드립니다."
           },
           {
-            "tag": "생활 수칙 · 취침 전 야간 수분·알코올 제한",
-            "title": "저녁 식사 후에는 국물·과일·맥주 섭취 멈추기",
-            "desc": "과음과 야간 수분 섭취는 전립선을 붓게 만들어 급성 요폐와 심한 야간뇨를 유발합니다."
+            "tag": "생활 수칙 · 취침 3시간 전 야간 수분·알코올·카페인 제한",
+            "title": "저녁 7시 이후 국물·과일·맥주·커피 섭취 멈추기",
+            "desc": "방광을 자극하는 카페인과 알코올을 저녁에 제한하여 절박성 요실금과 새벽 야간뇨 없는 깊은 통잠을 회복합니다."
           }
         ]
       },
       {
         "tabTitle": "넷째 · 추천 식단 · 루틴",
-        "badge": "STEP · 식단 & 생활습관",
-        "heading": "전립선을 지키는 라이코펜 식단 vs 피해야 할 습관",
-        "summary": "익힌 토마토와 아연을 충분히 섭취하고 배뇨를 방해하는 과음과 소변 참기를 피하세요.",
+        "badge": "STEP 4 · 식단 & 생활습관",
+        "heading": "전립선·방광 괄약근을 지키는 식단 vs 피해야 할 습관",
+        "summary": "익힌 토마토와 산수유·아연을 챙기고 방광을 자극하는 과음과 코감기약 복용에 주의하세요.",
         "cards": [
           {
-            "tag": "추천 식단 · 전립선 보호 핵심 영양",
-            "title": "익힌 토마토 · 호박씨 · 굴·마늘 · 산수유차",
-            "desc": "익힌 토마토의 라이코펜과 호박씨·굴의 아연은 전립선 비대와 염증을 강력히 억제합니다."
+            "tag": "추천 식단 · 전립선 & 방광 괄약근 보호 영양",
+            "title": "익힌 토마토 · 호박씨 · 굴·마늘 · 산수유·복분자차",
+            "desc": "라이코펜과 아연, 산수유 성분이 전립선 염증을 억제하고 방광 괄약근 탄력과 남성 활력을 동시에 회복합니다."
           },
           {
-            "tag": "주의 사항 · 배뇨 장애 악화 요인",
+            "tag": "주의 사항 · 요실금·배뇨 장애 악화 요인",
             "title": "과음 · 진한 커피 · 코감기약(항히스타민제) 주의",
-            "desc": "일부 감기약 성분은 방광 출구를 조여 소변을 막을 수 있으니 처방 전 반드시 알리세요."
+            "desc": "일부 감기약 성분은 방광 출구를 강하게 조여 급성 요폐나 일류성 요실금을 유발할 수 있으니 처방 전 반드시 알리세요."
           },
           {
-            "tag": "매일 루틴 · 소변 참지 않기 & 복식호흡",
-            "title": "배뇨 신호 시 제때 비우고 골반 근육 이완하기",
-            "desc": "소변을 오래 참지 말고 평소 복식호흡으로 긴장된 골반 바닥 근육을 편안히 이완하세요."
+            "tag": "매일 루틴 · 하체 스쿼트 30회 & 골반 복식호흡",
+            "title": "허벅지·둔부 근육 강화로 골반 혈류와 활력을 깨웁니다",
+            "desc": "매일 규칙적인 스쿼트와 복식호흡으로 하초(腎·膀胱) 혈류를 순환시켜 당당한 일상으로 회복합니다."
           }
         ]
       }
     ],
     "sciPapers": [
       {
+        "journal": "Phytomedicine & J Urol 학술지 등재",
+        "title": "천연 한약 추출물 및 골반저 자극의 전립선 감압·방광 괄약근 안정화를 통한 요실금·야간뇨 감소 기전"
+      },
+      {
         "journal": "Urology 학술지 등재",
         "title": "만성 비세균성 전립선염/만성골반통증증후군(CP/CPPS)에서 한의학 치료의 통증·배뇨 개선 연구"
       },
       {
-        "journal": "Phytomedicine 학술지 등재",
-        "title": "천연 한약 추출물의 환원효소(Reductase) 억제 및 전립선 비대 조직 감압 기전"
-      },
-      {
-        "journal": "J Urol 학술지 등재",
-        "title": "골반저 근육 이완 및 온열 좌욕 요법이 하부요로증상(LUTS)과 야간뇨 감소에 미치는 임상 효과"
+        "journal": "Neurourol Urodyn 학술지 등재",
+        "title": "심부 자기장 및 골반저근 재활·침구 병행 치료의 복압성·절박성 요실금 임상 호전 연구"
       },
       {
         "journal": "Prostate Cancer Prostatic Dis 학술지 등재",
-        "title": "라이코펜·아연 및 항염증 약선 식단의 전립선 산화 스트레스 억제 연구"
+        "title": "라이코펜·아연 및 보신(補腎) 약선 처방의 전립선 산화 스트레스 억제 연구"
       }
     ]
   }
@@ -2516,9 +2642,9 @@ function buildBodyExplorerHtml() {
     <div class="gas-modal-dialog">
       <div class="gas-modal-head">
         <div>
-          <div style="font-size:0.72rem;font-weight:800;color:var(--green-primary);letter-spacing:0.05em;">GOOGLE APPS SCRIPT · DAILY MEDICAL BLOG AUTOMATION</div>
-          <h2 style="font-family:'Noto Serif KR',serif;font-size:1.22rem;font-weight:800;color:var(--black-ink);margin-top:3px;">구글 앱스 스크립트(GAS) 질환별 매일 자동 블로그 발행 시스템</h2>
-          <p style="font-size:0.78rem;color:var(--black-sub);margin-top:4px;">3D 인체모형의 8대 질환(무릎·경추·요추·공진단·자율신경·위장·자궁·전립선)별로 매일 오전 08:00 학술 임상 칼럼이 자동 생성·발행되어 본 3D 모형 페이지에 실시간 반영됩니다.</p>
+          <div style="font-size:0.72rem;font-weight:800;color:var(--green-primary);letter-spacing:0.05em;">GOOGLE APPS SCRIPT · 9대 카드 질환별 하루 1편 자동 발행 시스템</div>
+          <h2 style="font-family:'Noto Serif KR',serif;font-size:1.22rem;font-weight:800;color:var(--black-ink);margin-top:3px;">구글 앱스 스크립트(GAS) 9대 질환 카드별 매일 1편 자동 블로그 발행 시스템</h2>
+          <p style="font-size:0.78rem;color:var(--black-sub);margin-top:4px;">3D 모션 백과사전의 9대 질환(소아성장/소아비만·경추/탈모·척추/관절·공진단·자율신경/두통/어지럼/실신·소화/담적·대사/복부비만·자궁/난임·전립선/요실금)별로 각각 하루 1편(일 9편)씩 임상 칼럼이 자동 생성·발행되어 본 3D 모션 백과사전에 최신글 3개가 자동 노출 및 내부링크로 연결됩니다.</p>
         </div>
         <button type="button" class="blog-back-btn" onclick="window.closeGasConfigModal()">✕ 닫기</button>
       </div>
@@ -2532,12 +2658,12 @@ function buildBodyExplorerHtml() {
         <div class="gas-step-box">
           <div class="gas-step-num">STEP 02 · 매일 자동 트리거 등록</div>
           <div class="gas-step-title">setupDailyAutoPublishTrigger 실행</div>
-          <div class="gas-step-desc">함수 목록에서 <code>setupDailyAutoPublishTrigger</code>를 1회 실행하면 매일 오전 8시 8대 질환 칼럼이 자동 발행됩니다.</div>
+          <div class="gas-step-desc">함수 목록에서 <code>setupDailyAutoPublishTrigger</code>를 1회 실행하면 매일 오전 8시 9대 카드 질환별 각 1편(일 9편) 칼럼이 자동 발행됩니다.</div>
         </div>
         <div class="gas-step-box">
-          <div class="gas-step-num">STEP 03 · 워드프레스 & 웹앱 실시간 연동</div>
-          <div class="gas-step-title">워드프레스 REST API + JSON 피드</div>
-          <div class="gas-step-desc">카페24 워드프레스 질환별 카테고리(<code>blog-knee</code>~<code>blog-prostate</code>)와 GAS 웹앱 URL을 통해 3D 모형에 즉시 표시됩니다.</div>
+          <div class="gas-step-num">STEP 03 · 3D 모션 백과사전 최신글 3개 자동 노출</div>
+          <div class="gas-step-title">워드프레스 REST API + 내부링크 연결</div>
+          <div class="gas-step-desc">카페24 워드프레스 9대 질환 카테고리(<code>blog-knee</code>~<code>blog-prostate</code>)와 연동되어 각 질환별 최신글 3개가 자동 노출되고 추천 블로그로 내부링크가 연결됩니다.</div>
         </div>
       </div>
 
@@ -2548,12 +2674,12 @@ function buildBodyExplorerHtml() {
           <button type="button" class="slide-clinic-cta" style="border:none;cursor:pointer;" onclick="window.saveGasWebAppUrl()">연동 URL 저장 & 동기화</button>
           <button type="button" class="slide-nav-btn" onclick="window.triggerGasPublishNow()">🚀 지금 즉시 자동발행 트리거</button>
         </div>
-        <div id="gas-sync-status-msg" style="font-size:0.73rem;font-weight:700;color:var(--green-primary);">🟢 현재 워드프레스 REST API (/wp-json/wp/v2/posts) 8대 질환 카테고리 실시간 연동이 활성화되어 있습니다.</div>
+        <div id="gas-sync-status-msg" style="font-size:0.73rem;font-weight:700;color:var(--green-primary);">🟢 현재 워드프레스 REST API (/wp-json/wp/v2/posts) 9대 질환 카테고리 실시간 연동이 활성화되어 있습니다.</div>
       </div>
 
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <span style="font-size:0.8rem;font-weight:800;color:var(--black-ink);">📄 google-apps-script-daily-blog.gs (8대 질환 데일리 자동발행 마스터 스크립트)</span>
+          <span style="font-size:0.8rem;font-weight:800;color:var(--black-ink);">📄 google-apps-script-daily-blog.gs (9대 카드 질환 데일리 자동발행 마스터 스크립트)</span>
           <div style="display:flex;gap:6px;">
             <button type="button" class="slide-clinic-cta" style="border:none;cursor:pointer;" onclick="window.copyGasScriptCode()" id="btn-copy-gas-code">📋 GAS 전체 코드 복사하기</button>
             <a href="https://script.google.com" target="_blank" rel="noopener" class="slide-nav-btn" style="text-decoration:none;">구글 앱스 스크립트 열기 ↗</a>
@@ -2577,9 +2703,22 @@ function buildBodyExplorerHtml() {
       lumbar:    { pos3D: [ 0.08, 2.75,  0.04], camPos: [-0.22, 2.62, 2.15], camTarget: [0.00, 2.58, -0.04] },
       gongjindan:{ pos3D: [ 0.06, 3.62,  0.06], camPos: [ 0.16, 3.88, 2.40], camTarget: [0.00, 3.84,  0.00] },
       syncope:   { pos3D: [ 0.08, 4.28,  0.04], camPos: [ 0.00, 2.28, 5.65], camTarget: [0.00, 2.26,  0.00] },
-      gut:       { pos3D: [-0.08, 3.12,  0.08], camPos: [ 0.16, 3.12, 2.08], camTarget: [0.00, 3.10,  0.02] },
+      digest:    { pos3D: [ 0.08, 3.22,  0.08], camPos: [-0.16, 3.20, 2.04], camTarget: [0.00, 3.16,  0.02] },
+      gut:       { pos3D: [-0.08, 3.06,  0.08], camPos: [ 0.16, 3.08, 2.08], camTarget: [0.00, 3.06,  0.02] },
       uterus:    { pos3D: [-0.10, 2.44,  0.05], camPos: [ 0.00, 2.44, 1.75], camTarget: [0.00, 2.42,  0.00] },
       prostate:  { pos3D: [ 0.10, 2.26,  0.05], camPos: [ 0.00, 2.28, 1.72], camTarget: [0.00, 2.26,  0.00] }
+    };
+
+    const RELATED_RECOMMENDED_PARTS = {
+      knee: ['digest', 'syncope'],
+      cervical: ['syncope', 'lumbar'],
+      lumbar: ['cervical', 'prostate'],
+      gongjindan: ['syncope', 'prostate'],
+      syncope: ['cervical', 'gongjindan'],
+      digest: ['gut', 'syncope'],
+      gut: ['digest', 'uterus'],
+      uterus: ['gut', 'lumbar'],
+      prostate: ['gongjindan', 'lumbar']
     };
 
     let currentPartId = 'knee';
@@ -2640,6 +2779,59 @@ function buildBodyExplorerHtml() {
       return liveMergedBlogPosts[partId] || [];
     }
 
+    // Build Recommended Internal Blog Links HTML (동일 질환 최신글 3개 + 연관 질환 추천 블로그 내부링크)
+    function buildRecommendedInternalBlogLinksHtml(partId, excludeArticleId = null) {
+      const part = getPartById(partId);
+      const samePartPosts = getBlogPostsForPart(partId).filter(p => p.id !== excludeArticleId).slice(0, 3);
+      const relPartIds = RELATED_RECOMMENDED_PARTS[partId] || ['lumbar', 'gongjindan'];
+      const relPosts = [];
+      relPartIds.forEach(rpid => {
+        const rp = getPartById(rpid);
+        const topPost = getBlogPostsForPart(rpid)[0];
+        if (topPost) {
+          relPosts.push({ part: rp, post: topPost });
+        }
+      });
+
+      const sameLinksHtml = samePartPosts.map((p, idx) =>
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;background:#FFFDF9;border:1px solid #E2D9C8;cursor:pointer;" onclick="window.openBlogArticleReader(\\'' + p.id + '\\')">' +
+          '<span style="font-size:0.76rem;font-weight:700;color:#171614;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' +
+            '<strong style="color:#2D5A43;margin-right:5px;">[최신글 0' + (idx + 1) + ']</strong>' + p.title +
+          '</span>' +
+          '<span style="font-size:0.68rem;font-weight:800;color:#2D5A43;flex-shrink:0;">내부링크 열기 →</span>' +
+        '</div>'
+      ).join('');
+
+      const relLinksHtml = relPosts.map(item =>
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;background:#F4F8F5;border:1px solid #B7D4C3;cursor:pointer;" onclick="window.jumpToRecommendedBlog(\\'' + item.part.id + '\\', \\'' + item.post.id + '\\')">' +
+          '<span style="font-size:0.75rem;font-weight:700;color:#1E3A2B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' +
+            '<strong style="color:#4A3525;margin-right:5px;">[추천 블로그 · ' + item.part.navLabel.split('·')[0].trim() + ']</strong>' + item.post.title +
+          '</span>' +
+          '<span style="font-size:0.68rem;font-weight:800;color:#4A3525;flex-shrink:0;">추천 칼럼 이동 ↗</span>' +
+        '</div>'
+      ).join('');
+
+      return '<div style="margin-top:12px;padding:12px 14px;border-radius:13px;background:linear-gradient(135deg,#F2F8F4 0%,#FAF6EC 100%);border:1.5px solid #B7D4C3;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;">' +
+          '<span style="font-size:0.74rem;font-weight:800;color:#2D5A43;">🔗 3D 모션 백과사전 · ' + part.shortName + ' 최신글 3개 자동 노출 & 추천 블로그 내부링크</span>' +
+          '<button type="button" class="dbp-btn primary" onclick="window.openDiseaseBlogTab()">질환 블로그 전체보기 →</button>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:5px;">' +
+          sameLinksHtml +
+          relLinksHtml +
+        '</div>' +
+      '</div>';
+    }
+
+    window.jumpToRecommendedBlog = function(targetPartId, targetArticleId) {
+      if (window.selectBodyPart) {
+        window.selectBodyPart(targetPartId, true, true);
+      }
+      currentBlogArticleId = targetArticleId || null;
+      const part = getPartById(targetPartId);
+      renderEncyclopedia(part.id, part.slides.length, 'next');
+    };
+
     // ========================================================================
     // 1. RENDER 5-TAB SLIDE DECK (4 MEDICAL STEPS + 5TH DISEASE BLOG PAGE)
     // ========================================================================
@@ -2662,6 +2854,7 @@ function buildBodyExplorerHtml() {
       }
 
       const partPosts = getBlogPostsForPart(part.id);
+      const latest3Posts = partPosts.slice(0, 3);
 
       const standardTabsHtml = part.slides.map((s, idx) =>
         '<button type="button" class="slide-step-tab' + (idx === currentSlideIdx ? ' active' : '') + '" onclick="window.goToSlide(' + idx + ')">' +
@@ -2673,13 +2866,19 @@ function buildBodyExplorerHtml() {
         '<button type="button" class="slide-step-tab blog-tab-btn' + (isBlogTab ? ' active' : '') + '" onclick="window.openDiseaseBlogTab()">' +
           '<span class="blog-live-dot"></span>' +
           '<span>다섯째 · 질환별 블로그 📝</span>' +
-          '<span class="blog-count-pill">' + partPosts.length + '편</span>' +
+          '<span class="blog-count-pill">최신 ' + partPosts.length + '편</span>' +
         '</button>';
 
       const sciListHtml = part.sciPapers.map(p =>
         '<div class="sci-mini-item">' +
           '<div class="sci-mini-journal">📄 ' + p.journal + '</div>' +
           '<div class="sci-mini-title">' + p.title + '</div>' +
+        '</div>'
+      ).join('');
+
+      const sidebarLatest3Html = latest3Posts.map((lp, idx) =>
+        '<div style="padding:6px 8px;border-radius:8px;background:#FFFFFF;border:1px solid #DFD6C5;cursor:pointer;font-size:0.69rem;font-weight:700;color:#171614;line-height:1.38;" onclick="window.openBlogArticleReader(\\'' + lp.id + '\\')">' +
+          '<span style="color:#2D5A43;font-weight:800;">0' + (idx + 1) + '.</span> ' + lp.title +
         '</div>'
       ).join('');
 
@@ -2694,7 +2893,7 @@ function buildBodyExplorerHtml() {
           : (DISEASE_BLOG_CATEGORIES_DATA && DISEASE_BLOG_CATEGORIES_DATA[part.id]);
         const catMeta = {
           blogTitle: (foundCat && (foundCat.blogTitle || foundCat.name)) || (part.title + ' 데일리 블로그'),
-          scheduleDesc: '매일 오전 08:00 구글 앱스 스크립트 자동 발행'
+          scheduleDesc: '매일 오전 08:00 9대 카드 질환별 각 1편 자동 발행'
         };
 
         const catFilterChipsHtml = BODY_PARTS_DATA.map(bp => {
@@ -2723,14 +2922,15 @@ function buildBodyExplorerHtml() {
               '</div>' +
               '<h2 class="blog-reader-title">' + selectedArticle.title + '</h2>' +
               '<div class="blog-reader-byline">' +
-                '<span>👨‍⚕️ 바른한의원 대전본점 대표원장 (아빠 한의사)</span>' +
+                '<span>👨‍⚕️ 바른한의원 대전본점 안정위 대표원장 (아빠 한의사)</span>' +
                 '<span>·</span>' +
                 '<span>📅 발행일: ' + selectedArticle.date + '</span>' +
                 '<span>·</span>' +
-                '<span>⏱ ' + (selectedArticle.readTime || '3분 칼럼') + '</span>' +
+                '<span>⏱ ' + (selectedArticle.readTime || '4분 칼럼') + '</span>' +
               '</div>' +
               '<div class="blog-reader-content">' + selectedArticle.contentHtml + '</div>' +
               '<div class="blog-tag-row">' + tagsHtml + '</div>' +
+              buildRecommendedInternalBlogLinksHtml(part.id, selectedArticle.id) +
               '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--border-warm);flex-wrap:wrap;">' +
                 '<div style="display:flex;gap:6px;">' +
                   (prevArt ? '<button type="button" class="slide-nav-btn" onclick="window.openBlogArticleReader(\\'' + prevArt.id + '\\')">← 이전 칼럼</button>' : '') +
@@ -2740,12 +2940,12 @@ function buildBodyExplorerHtml() {
               '</div>' +
             '</div>';
         } else {
-          const listHtml = partPosts.map(post =>
+          const listHtml = partPosts.map((post, idx) =>
             '<article class="disease-blog-card" onclick="window.openBlogArticleReader(\\'' + post.id + '\\')">' +
               '<div class="dbc-meta-row">' +
                 '<div class="dbc-badge-group">' +
-                  '<span class="dbc-badge">' + (post.badge || '데일리 임상 칼럼') + '</span>' +
-                  '<span class="dbc-date">📅 ' + post.date + ' 발행 · ' + (post.readTime || '3분 칼럼') + '</span>' +
+                  '<span class="dbc-badge">최신 0' + (idx + 1) + ' · ' + (post.badge || '데일리 임상 칼럼') + '</span>' +
+                  '<span class="dbc-date">📅 ' + post.date + ' 발행 · ' + (post.readTime || '4분 칼럼') + '</span>' +
                 '</div>' +
                 '<span class="dbc-read-more">전문 칼럼 읽기 →</span>' +
               '</div>' +
@@ -2760,14 +2960,16 @@ function buildBodyExplorerHtml() {
             '</article>'
           ).join('');
 
-          blogBodyHtml = '<div class="disease-blog-cards-list">' + listHtml + '</div>';
+          blogBodyHtml =
+            '<div class="disease-blog-cards-list">' + listHtml + '</div>' +
+            buildRecommendedInternalBlogLinksHtml(part.id, null);
         }
 
         mainCardInnerHtml =
           '<div class="disease-blog-header-bar">' +
             '<div class="dbh-info">' +
-              '<div class="dbh-kicker"><span class="blog-live-dot"></span><span>GOOGLE APPS SCRIPT · 매일 오전 08:00 질환별 자동 발행 블로그 (' + lastLiveSyncTimeStr + ')</span></div>' +
-              '<div class="dbh-title">📝 ' + catMeta.blogTitle + ' (총 ' + partPosts.length + '편)</div>' +
+              '<div class="dbh-kicker"><span class="blog-live-dot"></span><span>GOOGLE APPS SCRIPT · 9대 카드 질환별 하루 1편 자동 발행 (' + lastLiveSyncTimeStr + ')</span></div>' +
+              '<div class="dbh-title">📝 ' + catMeta.blogTitle + ' (최신글 ' + partPosts.length + '편 자동 노출)</div>' +
             '</div>' +
             '<div class="dbh-btns">' +
               '<button type="button" class="dbh-action-btn" onclick="window.syncLiveDiseaseBlogs(true)">🔄 실시간 동기화</button>' +
@@ -2784,9 +2986,8 @@ function buildBodyExplorerHtml() {
             '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
           '</div>';
       } else {
-        // STEPS 1..4: EVIDENCE-BASED MEDICAL SLIDES + LATEST DISEASE BLOG PREVIEW STRIP
+        // STEPS 1..4: EVIDENCE-BASED MEDICAL SLIDES + LATEST 3 BLOG POSTS AUTO-DISPLAY & RECOMMENDED BLOG INTERNAL LINKS
         const activeSlide = part.slides[currentSlideIdx];
-        const latestPost = partPosts[0];
 
         const cardsHtml = activeSlide.cards.map(c =>
           '<article class="concise-point-card">' +
@@ -2796,22 +2997,11 @@ function buildBodyExplorerHtml() {
           '</article>'
         ).join('');
 
-        const blogPreviewHtml = latestPost
-          ? '<div class="disease-blog-preview-strip">' +
-              '<div class="dbp-left">' +
-                '<span class="dbp-badge"><span class="blog-live-dot"></span>질환별 데일리 블로그</span>' +
-                '<span class="dbp-title" onclick="window.openBlogArticleReader(\\'' + latestPost.id + '\\')" title="클릭하여 칼럼 전문 읽기">' + latestPost.title + ' (' + latestPost.date + ')</span>' +
-              '</div>' +
-              '<div class="dbp-actions">' +
-                '<button type="button" class="dbp-btn" onclick="window.openBlogArticleReader(\\'' + latestPost.id + '\\')">칼럼 읽기</button>' +
-                '<button type="button" class="dbp-btn primary" onclick="window.openDiseaseBlogTab()">질환 블로그 전체보기 (' + partPosts.length + '편) →</button>' +
-              '</div>' +
-            '</div>'
-          : '';
+        const blogPreviewHtml = buildRecommendedInternalBlogLinksHtml(part.id, null);
 
         mainCardInnerHtml =
           '<div class="slide-visual-banner">' +
-            '<img src="' + part.illustImg + '" alt="' + part.shortName + '" class="slide-illust-thumb" />' +
+            '<img src="' + part.illustImg + '" alt="대전 바른한의원 ' + part.shortName + ' 일러스트" class="slide-illust-thumb" />' +
             '<div>' +
               '<span class="slide-banner-badge">' + activeSlide.badge + '</span>' +
               '<h2 class="slide-banner-heading">' + activeSlide.heading + '</h2>' +
@@ -2824,7 +3014,7 @@ function buildBodyExplorerHtml() {
             '<div class="slide-arrow-group">' +
               '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(-1)">← 이전 페이지</button>' +
               '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(1)">다음 페이지 →</button>' +
-              '<button type="button" class="slide-nav-btn" style="border-color:var(--green-primary);color:var(--green-primary);" onclick="window.openDiseaseBlogTab()">📝 질환별 블로그 (' + partPosts.length + '편)</button>' +
+              '<button type="button" class="slide-nav-btn" style="border-color:var(--green-primary);color:var(--green-primary);" onclick="window.openDiseaseBlogTab()">📝 최신글 3개 & 추천 블로그 (' + partPosts.length + '편)</button>' +
             '</div>' +
             '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
           '</div>';
@@ -2839,7 +3029,7 @@ function buildBodyExplorerHtml() {
 
         '<div class="slide-tabs-nav">' +
           '<div class="slide-tabs-group">' + standardTabsHtml + blogTabHtml + '</div>' +
-          '<div class="slide-page-counter">' + (isBlogTab ? 'DAILY AUTO-PUBLISHED DISEASE BLOG' : 'EVIDENCE-BASED MEDICAL GUIDE') + '</div>' +
+          '<div class="slide-page-counter">' + (isBlogTab ? 'DAILY AUTO-PUBLISHED DISEASE BLOG (9 PARTS)' : 'EVIDENCE-BASED 3D MOTION ENCYCLOPEDIA') + '</div>' +
         '</div>' +
 
         '<div class="encyc-main-grid">' +
@@ -2849,12 +3039,12 @@ function buildBodyExplorerHtml() {
 
           '<aside class="sci-side-rail">' +
             '<div class="sci-rail-header">📚 실제 학술 논문 검수 근거 (SCI급 학술지)</div>' +
-            '<p class="sci-rail-note">실제 국제 학술지 논문을 정밀 검수하여 의학적 근거가 입증된 검증된 치료법만을 안내합니다.</p>' +
+            '<p class="sci-rail-note">안정위 원장의 9대 정밀 검사와 SCI급 국제 학술지 논문을 바탕으로 정밀하게 검사·진단·치료하여 건강한 일상을 회복합니다.</p>' +
             '<div class="sci-mini-list">' + sciListHtml + '</div>' +
             '<div style="margin-top:12px;padding:11px 12px;border-radius:12px;background:linear-gradient(135deg,#EBF5EF 0%,#F5F1E8 100%);border:1px solid #B7D4C3;">' +
-              '<div style="font-size:0.68rem;font-weight:800;color:var(--green-primary);margin-bottom:3px;">🤖 구글 앱스 스크립트 자동 블로그</div>' +
-              '<div style="font-size:0.71rem;line-height:1.45;color:var(--black-ink);font-weight:700;margin-bottom:7px;">매일 오전 8시 8대 질환별 최신 임상 칼럼이 자동 발행됩니다.</div>' +
-              '<button type="button" class="dbp-btn primary" style="width:100%;justify-content:center;" onclick="window.openDiseaseBlogTab()">📝 ' + part.shortName.split('·')[0].trim() + ' 블로그 열기 (' + partPosts.length + '편)</button>' +
+              '<div style="font-size:0.68rem;font-weight:800;color:var(--green-primary);margin-bottom:4px;">📝 질환별 최신글 3개 자동 노출</div>' +
+              '<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;">' + sidebarLatest3Html + '</div>' +
+              '<button type="button" class="dbp-btn primary" style="width:100%;justify-content:center;" onclick="window.openDiseaseBlogTab()">🔗 ' + part.shortName.split('·')[0].trim() + ' 추천 블로그 열기 (' + partPosts.length + '편)</button>' +
             '</div>' +
           '</aside>' +
         '</div>';
@@ -2911,6 +3101,7 @@ function buildBodyExplorerHtml() {
         'blog-lumbar': 'lumbar',
         'blog-gongjindan': 'gongjindan',
         'blog-syncope': 'syncope',
+        'blog-digest': 'digest',
         'blog-gut': 'gut',
         'blog-uterus': 'uterus',
         'blog-prostate': 'prostate'
@@ -2919,14 +3110,15 @@ function buildBodyExplorerHtml() {
         if (slugToPart[s]) return slugToPart[s];
       }
       const t = String(titleText || '');
-      if (/성장판|키성장|성조숙증|무릎/.test(t)) return 'knee';
+      if (/성장판|키성장|성조숙증|소아비만|무릎/.test(t)) return 'knee';
       if (/두피|탈모|경추|거북목|모낭/.test(t)) return 'cervical';
       if (/요추|허리디스크|추나|좌골신경|천장관절/.test(t)) return 'lumbar';
       if (/공진단|사향|무스콘|브레인 포그/.test(t)) return 'gongjindan';
-      if (/실신|미주신경|자율신경|기립성/.test(t)) return 'syncope';
-      if (/다이어트|내장지방|식욕|렙틴|해독/.test(t)) return 'gut';
-      if (/자궁|난임|착상|생리통|시험관/.test(t)) return 'uterus';
-      if (/전립선|야간뇨|배뇨|회음부|남성/.test(t)) return 'prostate';
+      if (/실신|미주신경|자율신경|기립성|편두통|어지럼|이석증|불면/.test(t)) return 'syncope';
+      if (/담적|역류성식도염|소화불량|과민성대장|위염|명치/.test(t)) return 'digest';
+      if (/다이어트|내장지방|복부비만|식욕|렙틴/.test(t)) return 'gut';
+      if (/자궁|난임|착상|생리통|시험관|산후/.test(t)) return 'uterus';
+      if (/전립선|요실금|야간뇨|배뇨|회음부|남성/.test(t)) return 'prostate';
       return null;
     }
 
@@ -3011,7 +3203,7 @@ function buildBodyExplorerHtml() {
       const now = new Date();
       lastLiveSyncTimeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' 동기화 완료';
       if (statusEl) {
-        statusEl.textContent = '✅ 동기화 완료 (' + lastLiveSyncTimeStr + ') — 8대 질환 총 ' +
+        statusEl.textContent = '✅ 동기화 완료 (' + lastLiveSyncTimeStr + ') — 9대 질환 총 ' +
           Object.values(liveMergedBlogPosts).reduce((acc, a) => acc + a.length, 0) + '편의 임상 칼럼이 활성화되어 있습니다.';
       }
       renderEncyclopedia(currentPartId, currentSlideIdx, 'next');
@@ -3378,17 +3570,17 @@ function buildBodyExplorerHtml() {
         activeCols: ['#E36B62', '#BE433B', '#8C2923', '#4A120F'] // Natural cardiac coral-crimson
       },
       {
-        key: 'liver', file: 'models/liver.glb', parts: ['gut'],
+        key: 'liver', file: 'models/liver.glb', parts: ['gut', 'digest'],
         smooth: 0.72,
         activeCols: ['#BF6556', '#994638', '#6E2C21', '#3D150E'] // Natural hepatic reddish-brown
       },
       {
-        key: 'stomach', file: 'models/stomach.glb', parts: ['gut'],
+        key: 'stomach', file: 'models/stomach.glb', parts: ['digest', 'gut'],
         smooth: 0.68,
         activeCols: ['#F0A892', '#D47E66', '#A35540', '#54271B'] // Natural gastric salmon-peach
       },
       {
-        key: 'intestine', file: 'models/intestine.glb', parts: ['gut'],
+        key: 'intestine', file: 'models/intestine.glb', parts: ['digest', 'gut'],
         smooth: 0.80,
         activeCols: ['#EBB9AA', '#CC9180', '#9C6454', '#523127'] // Natural intestinal warm rose-tan
       },
@@ -3695,14 +3887,15 @@ function buildBodyExplorerHtml() {
     const gongjindanBridgeGroup = createGongjindanBridgeGroup();
 
     // ========================================================================
-    // 3. 8 BALANCED HOTSPOTS ON THE 3D BODY
+    // 3. 9 BALANCED HOTSPOTS ON THE 3D BODY
     // ========================================================================
     const LEFT_ALIGNED_PARTS = ['cervical', 'gut', 'uterus'];
     const HOTSPOT_3D_ANCHORS = {
       syncope:    [ 0.08, 4.34,  0.04],
       cervical:   [-0.08, 3.92,  0.04],
       gongjindan: [ 0.08, 3.52,  0.08],
-      gut:        [-0.08, 3.12,  0.08],
+      digest:     [ 0.08, 3.22,  0.08],
+      gut:        [-0.08, 3.06,  0.08],
       lumbar:     [ 0.08, 2.76,  0.04],
       uterus:     [-0.10, 2.44,  0.05],
       prostate:   [ 0.10, 2.24,  0.05],
@@ -3761,6 +3954,7 @@ function buildBodyExplorerHtml() {
         lumbar:     ['LumbarSpine', 'Pelvis'],
         gongjindan: ['CervicalSpine'],
         syncope:    [],
+        digest:     ['LumbarSpine'],
         gut:        ['LumbarSpine'],
         uterus:     ['Pelvis', 'LumbarSpine'],
         prostate:   ['Pelvis', 'LumbarSpine']
