@@ -113,88 +113,97 @@ const PAGES = [
         ]
       },
       // ====================================================================
-      // 추가된 9대 정밀 검진 카드 (06 ~ 14번 카드 · Main + Sub 구성 & 맞춤 모션)
+      // 추가된 9대 정밀 검진 카드 (06 ~ 14번 카드 · Main + Sub 구성 & 하이엔드 시네마 그래픽 모션)
       // ====================================================================
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 1,
         fullscreen: true,
-        fx: 'exam-ultrasound-fx',
+        fx: 'exam-retina-shader-1',
         title: "보이지 않는 통증과 오장육부 속까지 살피는 — '정밀 초음파 검사'",
         sub: '근육·인대·관절의 심부 통증 부위부터 간·담낭·위장·방광 등 오장육부의 상태까지 방사선 노출 없이 실시간 영상으로 정밀하게 확인합니다.',
         caption: '[초음파 검사 · 통증 & 오장육부] 근육·인대·관절 통증 원인과 오장육부 내부 상태를 실시간 초음파로 안전하고 정확하게 진단합니다.',
-        imgSrc: 'director_exam_card1_ultrasound.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card1_ultrasound.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 2,
         fullscreen: true,
-        fx: 'exam-thermography-fx',
+        fx: 'exam-retina-shader-2',
         title: "면역력 · 혈액순환 · 생식기능의 온도를 읽는 — '적외선 체열진단기 검사'",
         sub: '상체로 몰린 열독과 손발·하복부의 냉증을 체표 온도 분포로 시각화하여 면역 저하, 혈액순환 정체, 자궁·전립선 생식기능 이상을 정확히 진단합니다.',
         caption: '[체열진단기 검사 · 면역·순환·생식기능] 미세한 체표 온도 차이를 적외선으로 촬영하여 면역력·혈액순환·생식기능 밸런스를 입체 판독합니다.',
-        imgSrc: 'director_exam_card2_thermography.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card2_thermography.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 3,
         fullscreen: true,
-        fx: 'exam-ent-endoscope-fx',
+        fx: 'exam-retina-shader-3',
         title: "귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — '이비인후 내시경 검사'",
         sub: '중이염 고막 상태, 비염·축농증으로 부어오른 코 점막, 편도와 인후두 충혈까지 고화질 내시경으로 세밀하게 관찰해 호흡기 질환의 뿌리를 찾습니다.',
         caption: '[이비인후 내시경 검사 · 귀·코·목] 귀(고막)·코(비강 점막)·목(편도·인후) 상태를 내시경으로 직접 확인하여 만성 비염·감기 면역을 치료합니다.',
-        imgSrc: 'director_exam_card3_ent_endoscope.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card3_ent_endoscope.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 4,
         fullscreen: true,
-        fx: 'exam-sasang-compass-fx',
+        fx: 'exam-retina-shader-4',
         title: "타고난 장부의 강약과 평생의 체질을 판별하는 — '사상체질 정밀 검사'",
         sub: '체형·성정·체질 분석과 대표원장의 정밀 맥진·복진을 결합하여 태양·태음·소양·소음 사상체질을 진단하고 내 몸에 꼭 맞는 맞춤 한약을 설계합니다.',
         caption: '[사상체질 검사 · 맞춤 체질의학] 타고난 사상체질과 오장육부 대소(大小) 강약을 분석하여 체질별 맞춤 처방과 섭생 기준을 제시합니다.',
-        imgSrc: 'director_exam_card4_sasang_constitution.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card4_sasang_constitution.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 5,
         fullscreen: true,
-        fx: 'exam-bodyfat-inbody-fx',
+        fx: 'exam-retina-shader-5',
         title: "소아비만부터 성인 복부비만·근육량까지 분석하는 — '체지방 · 체성분 검사'",
         sub: '체지방률과 복부 내장지방 레벨, 골격근량, 체수분 부종 밸런스를 정밀 계측하여 성장기 소아비만 관리와 근손실 없는 복부비만 감량 계획을 세웁니다.',
         caption: '[체지방 검사 · 소아 및 복부비만] 체지방·내장지방·골격근량·부종 수치를 정밀 분석하여 소아비만과 성인 복부비만을 과학적으로 관리합니다.',
-        imgSrc: 'director_exam_card5_bodyfat_inbody.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card5_bodyfat_inbody.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 6,
         fullscreen: true,
-        fx: 'exam-autonomic-hrv-fx',
+        fx: 'exam-retina-shader-6',
         title: "두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — '자율신경 · 스트레스 검사'",
         sub: '심박변이도(HRV)와 자율신경 활성도를 측정해 교감신경 과열과 부교감신경 저하를 파악하고, 만성 두통·어지럼증·불면증의 근본 원인을 다스립니다.',
         caption: '[자율신경검사 · 두통·어지럼·불면] 교감·부교감 자율신경 균형도와 스트레스 저항도를 수치로 분석하여 두통·어지럼·불면증을 치료합니다.',
-        imgSrc: 'director_exam_card6_autonomic_hrv.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card6_autonomic_hrv.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 7,
         fullscreen: true,
-        fx: 'exam-endocrine-liver-glucose-fx',
+        fx: 'exam-retina-shader-7',
         title: "대사질환 관리와 안전한 한약 처방을 위한 — '내분비 · 간 및 당 수치 검사'",
         sub: '한약 복용 전후 간 기능 수치(AST·ALT)와 혈당·당화혈색소·지질 대사 지표를 정밀하게 점검하여 대사질환을 관리하고 간 부담 없는 안심 처방을 시행합니다.',
         caption: '[내분비 간 및 당 수치 검사 · 대사질환] 간 수치와 혈당·당화혈색소 등 내분비 대사 지표를 확인하여 대사질환 관리와 안전한 한약 처방을 보장합니다.',
-        imgSrc: 'director_exam_card7_endocrine_liver_glucose.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card7_endocrine_liver_glucose.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 8,
         fullscreen: true,
-        fx: 'exam-vascular-toxin-fx',
+        fx: 'exam-retina-shader-8',
         title: "혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — '말초 혈관 상태 검사'",
         sub: '가속도 맥파로 혈관 탄성도와 말초 혈액순환 속도, 혈관 내 어혈·독소 정체 정도를 단계별로 분석하여 손발 저림·수족냉증·만성 피로를 조기에 다스립니다.',
         caption: '[혈관 상태 검사 · 독소 & 혈류] 말초 혈관 탄성도와 혈액 내 어혈·독소 정체를 정밀 분석하여 전신 해독과 혈관 건강을 회복시킵니다.',
-        imgSrc: 'director_exam_card8_vascular_toxin.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card8_vascular_toxin.jpg?v=dir9exam2'
       },
       {
-        type: 'clean-image',
+        type: 'director-exam-motion',
+        examId: 9,
         fullscreen: true,
-        fx: 'exam-growth-potential-fx',
+        fx: 'exam-retina-shader-9',
         title: "성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'",
         sub: '무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 골든타임을 찾아냅니다.',
         caption: '[성장 검사 · 성장판 & 최종예상키] 성장판 개방 상태, 골연령, 뼈길이, 최종예상키를 종합 검사하여 우리 아이 맞춤 성장 솔루션을 설계합니다.',
-        imgSrc: 'director_exam_card9_growth_check.jpg?v=dir9exam1'
+        imgSrc: 'director_exam_card9_growth_check.jpg?v=dir9exam2'
       }
     ],
     bodyModelCard: {
@@ -2312,6 +2321,553 @@ function buildPageHtml(page) {
               </div>
               <div class="plate-action-group">
                 <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    if (p.type === 'director-exam-motion') {
+      const exId = p.examId || 1;
+      const EXAM_MOTION_SPEC = {
+        1: {
+          code: 'SONO-DOPPLER 4D LIVE · 초음파 정밀 스캔',
+          liveReadout: '8.5 MHz Linear-Convex · 투과심도 12.0cm · 방사선 ZERO',
+          themeCol: '#10B981',
+          accentCol: '#6EE7B7',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-1" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <radialGradient id="sonoConeGrad" cx="50%" cy="6%" r="78%">
+                  <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.42"/>
+                  <stop offset="45%" stop-color="#10B981" stop-opacity="0.20"/>
+                  <stop offset="85%" stop-color="#D4AF37" stop-opacity="0.06"/>
+                  <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="sonoLaserBeam" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FEF08A" stop-opacity="0.95"/>
+                  <stop offset="55%" stop-color="#6EE7B7" stop-opacity="0.85"/>
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+                </linearGradient>
+                <filter id="examGlow1" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Acoustic Sector Fan Cone -->
+              <path d="M480,44 L195,385 A390,390 0 0,0 765,385 Z" fill="url(#sonoConeGrad)" class="exam-sono-fan-sector"/>
+              <path d="M480,44 L195,385 M480,44 L765,385" stroke="rgba(110,231,183,0.45)" stroke-width="1.5" stroke-dasharray="6 6"/>
+              <!-- Harmonic Depth Calibration Arcs (2cm ~ 10cm) -->
+              <path d="M398,142 A128,128 0 0,0 562,142" fill="none" stroke="rgba(255,255,255,0.26)" stroke-width="1.2" stroke-dasharray="4 4"/>
+              <path d="M332,221 A230,230 0 0,0 628,221" fill="none" stroke="rgba(110,231,183,0.42)" stroke-width="1.5"/>
+              <path d="M265,301 A334,334 0 0,0 695,301" fill="none" stroke="rgba(253,230,138,0.38)" stroke-width="1.4" stroke-dasharray="6 4"/>
+              <path d="M198,381 A438,438 0 0,0 762,381" fill="none" stroke="rgba(56,189,248,0.34)" stroke-width="1.4"/>
+              <!-- Propagating Acoustic Wavefront Ripples -->
+              <path class="exam-sono-ripple r1" d="M365,180 A180,180 0 0,0 595,180" fill="none" stroke="#6EE7B7" stroke-width="2.4" filter="url(#examGlow1)"/>
+              <path class="exam-sono-ripple r2" d="M365,180 A180,180 0 0,0 595,180" fill="none" stroke="#38BDF8" stroke-width="2" filter="url(#examGlow1)"/>
+              <!-- Sweeping Doppler Pendulum Laser Line -->
+              <g class="exam-sono-pendulum" style="transform-origin: 480px 44px;">
+                <line x1="480" y1="44" x2="480" y2="395" stroke="url(#sonoLaserBeam)" stroke-width="3.2" filter="url(#examGlow1)"/>
+                <circle cx="480" cy="44" r="7" fill="#FEF08A" filter="url(#examGlow1)"/>
+              </g>
+              <!-- Color Doppler & Anatomical Echo Target Nodes -->
+              <g class="exam-target-node n1" transform="translate(386, 205)">
+                <circle cx="0" cy="0" r="22" fill="rgba(239,68,68,0.18)" class="exam-doppler-pulse"/>
+                <circle cx="0" cy="0" r="11" fill="none" stroke="#F87171" stroke-width="1.8" stroke-dasharray="4 3"/>
+                <circle cx="0" cy="0" r="4" fill="#FEF08A"/>
+                <line x1="-14" y1="0" x2="-110" y2="-18" stroke="rgba(253,230,138,0.75)" stroke-width="1.3"/>
+                <rect x="-252" y="-34" width="142" height="26" rx="13" fill="rgba(10,16,22,0.82)" stroke="rgba(248,113,113,0.65)" stroke-width="1.2"/>
+                <text x="-181" y="-17" text-anchor="middle" fill="#FECACA" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">심부 근막·인대 염증 에코</text>
+              </g>
+              <g class="exam-target-node n2" transform="translate(568, 268)">
+                <circle cx="0" cy="0" r="24" fill="rgba(56,189,248,0.20)" class="exam-doppler-pulse delay-1"/>
+                <circle cx="0" cy="0" r="12" fill="none" stroke="#38BDF8" stroke-width="1.8" stroke-dasharray="4 3"/>
+                <circle cx="0" cy="0" r="4.5" fill="#6EE7B7"/>
+                <line x1="14" y1="0" x2="108" y2="-16" stroke="rgba(110,231,183,0.8)" stroke-width="1.3"/>
+                <rect x="108" y="-32" width="148" height="26" rx="13" fill="rgba(10,16,22,0.82)" stroke="rgba(110,231,183,0.68)" stroke-width="1.2"/>
+                <text x="182" y="-15" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">오장육부 실질·혈류 스캔</text>
+              </g>
+              <!-- Right-Edge Depth Scale Ruler -->
+              <g transform="translate(888, 92)" opacity="0.88">
+                <line x1="0" y1="0" x2="0" y2="240" stroke="rgba(110,231,183,0.55)" stroke-width="1.5"/>
+                <line x1="-8" y1="0" x2="0" y2="0" stroke="#6EE7B7" stroke-width="1.8"/><text x="-14" y="4" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">2cm</text>
+                <line x1="-8" y1="60" x2="0" y2="60" stroke="#6EE7B7" stroke-width="1.8"/><text x="-14" y="64" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">4cm</text>
+                <line x1="-10" y1="120" x2="0" y2="120" stroke="#FEF08A" stroke-width="2"/><text x="-14" y="124" text-anchor="end" fill="#FEF08A" font-size="10.5" font-weight="800" font-family="JetBrains Mono, monospace">6cm</text>
+                <line x1="-8" y1="180" x2="0" y2="180" stroke="#6EE7B7" stroke-width="1.8"/><text x="-14" y="184" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">8cm</text>
+                <line x1="-8" y1="240" x2="0" y2="240" stroke="#6EE7B7" stroke-width="1.8"/><text x="-14" y="244" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">12cm</text>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'SONO 01 · 통증 정밀', tag: 'B-MODE HD', title: '심부 근육 · 인대 · 관절 스캔', desc: '엑스레이에 보이지 않는 미세 염증·유착·삼출물 실시간 확인', pct: '98%' },
+            { code: 'SONO 02 · 장부 투시', tag: 'ORGAN ECHO', title: '오장육부 실질 · 연동운동 확인', desc: '간·담낭·위장·방광 내부 구조와 기능성 장부 움직임 정밀 판독', pct: '96%' },
+            { code: 'SONO 03 · 안심 진단', tag: 'ZERO-RAY', title: '방사선 노출 ZERO 안전 검사', desc: '소아·임산부도 안심하고 치료 전·후 회복 경과를 직접 비교', pct: '100%' }
+          ]
+        },
+        2: {
+          code: 'DITI INFRARED THERMOGRAPHY · 적외선 체열진단',
+          liveReadout: '0.1°C 미세 체표 온도 감지 · 심부체온 36.5°C 밸런스 스캔',
+          themeCol: '#F59E0B',
+          accentCol: '#FDE68A',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-2" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <radialGradient id="thermalCoreAura" cx="46%" cy="42%" r="42%">
+                  <stop offset="0%" stop-color="#EF4444" stop-opacity="0.34"/>
+                  <stop offset="38%" stop-color="#F59E0B" stop-opacity="0.22"/>
+                  <stop offset="72%" stop-color="#10B981" stop-opacity="0.14"/>
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="ditiSpectrumBar" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#EF4444"/>
+                  <stop offset="28%" stop-color="#F59E0B"/>
+                  <stop offset="56%" stop-color="#10B981"/>
+                  <stop offset="82%" stop-color="#38BDF8"/>
+                  <stop offset="100%" stop-color="#6366F1"/>
+                </linearGradient>
+                <filter id="examGlow2" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="5" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Morphing Infrared Isotherm Contours -->
+              <ellipse cx="450" cy="220" rx="235" ry="155" fill="url(#thermalCoreAura)" class="exam-thermal-aura"/>
+              <ellipse cx="450" cy="220" rx="210" ry="136" fill="none" stroke="rgba(56,189,248,0.42)" stroke-width="1.6" stroke-dasharray="8 6" class="exam-isotherm-ring iso-4"/>
+              <ellipse cx="450" cy="220" rx="164" ry="106" fill="none" stroke="rgba(16,185,129,0.55)" stroke-width="1.8" class="exam-isotherm-ring iso-3"/>
+              <ellipse cx="450" cy="220" rx="118" ry="76" fill="none" stroke="rgba(245,158,11,0.68)" stroke-width="2" stroke-dasharray="10 4" class="exam-isotherm-ring iso-2"/>
+              <ellipse cx="450" cy="220" rx="72" ry="46" fill="none" stroke="rgba(239,68,68,0.82)" stroke-width="2.2" filter="url(#examGlow2)" class="exam-isotherm-ring iso-1"/>
+              <!-- Callout Labels for Upper Heat vs Lower Reproductive Warmth -->
+              <g transform="translate(230, 145)">
+                <rect x="-95" y="-14" width="190" height="28" rx="14" fill="rgba(18,12,12,0.84)" stroke="rgba(248,113,113,0.72)" stroke-width="1.3"/>
+                <text x="0" y="4" text-anchor="middle" fill="#FCA5A5" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">🔥 상열(上熱) · 두면부·흉부 열독 감지</text>
+              </g>
+              <g transform="translate(665, 285)">
+                <rect x="-105" y="-14" width="210" height="28" rx="14" fill="rgba(10,18,16,0.84)" stroke="rgba(110,231,183,0.72)" stroke-width="1.3"/>
+                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">🌡️ 하복부 생식온기 · 말초순환 36.5°C</text>
+              </g>
+              <!-- Right-Edge DITI Medical Color Spectrum Bar -->
+              <g transform="translate(886, 82)">
+                <rect x="-4" y="-6" width="24" height="252" rx="12" fill="rgba(10,14,18,0.78)" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
+                <rect x="2" y="0" width="12" height="240" rx="6" fill="url(#ditiSpectrumBar)"/>
+                <text x="-10" y="10" text-anchor="end" fill="#FCA5A5" font-size="10" font-weight="800" font-family="JetBrains Mono, monospace">38.5°C</text>
+                <text x="-10" y="75" text-anchor="end" fill="#FDE68A" font-size="10" font-weight="800" font-family="JetBrains Mono, monospace">36.5°C</text>
+                <text x="-10" y="150" text-anchor="end" fill="#6EE7B7" font-size="10" font-weight="800" font-family="JetBrains Mono, monospace">34.0°C</text>
+                <text x="-10" y="236" text-anchor="end" fill="#7DD3FC" font-size="10" font-weight="800" font-family="JetBrains Mono, monospace">29.5°C</text>
+                <!-- Animated Live Temperature Tracker Pointer -->
+                <g class="exam-diti-pointer">
+                  <polygon points="-2,72 -10,67 -10,77" fill="#FEF08A"/>
+                  <rect x="-92" y="60" width="78" height="22" rx="11" fill="rgba(20,16,10,0.92)" stroke="#FEF08A" stroke-width="1.3"/>
+                  <text x="-53" y="75" text-anchor="middle" fill="#FEF08A" font-size="10" font-weight="900" font-family="JetBrains Mono, monospace">CORE 36.5°</text>
+                </g>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'DITI 01 · 면역 체온', tag: 'IMMUNE TEMP', title: '면역력 · 심부 체온 밸런스', desc: '체온 1°C 저하에 따른 면역 활성도 및 전신 한열 불균형 판독', pct: '96%' },
+            { code: 'DITI 02 · 혈액 순환', tag: 'CIRCULATION', title: '상열하한 · 수족냉증 · 혈류 정체', desc: '위로 몰린 열독과 차갑게 굳은 손발·어깨 통증 부위 시각화', pct: '95%' },
+            { code: 'DITI 03 · 생식 온기', tag: 'REPRODUCTIVE', title: '자궁 · 난소 · 전립선 생식기능', desc: '난임·생리통·전립선 활력과 직결되는 하복부 심부 온기 계측', pct: '98%' }
+          ]
+        },
+        3: {
+          code: '4K ENT FIBER-OPTIC ENDOSCOPE · 귀·코·목 광학 내시경',
+          liveReadout: '×15.0 HD 점막 광학 확대 · AF-LOCK 고막·비점막·인후두 스캔',
+          themeCol: '#38BDF8',
+          accentCol: '#BAE6FD',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-3" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <radialGradient id="scopeLensGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FEF08A" stop-opacity="0.16"/>
+                  <stop offset="68%" stop-color="#38BDF8" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="examGlow3" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Central Optical Endoscope HUD Reticle -->
+              <g transform="translate(480, 212)">
+                <circle cx="0" cy="0" r="142" fill="url(#scopeLensGlow)"/>
+                <circle cx="0" cy="0" r="134" fill="none" stroke="rgba(253,230,138,0.52)" stroke-width="1.8" stroke-dasharray="4 8" class="exam-scope-ring-cw"/>
+                <circle cx="0" cy="0" r="112" fill="none" stroke="rgba(110,231,183,0.58)" stroke-width="1.6" stroke-dasharray="32 14 8 14" class="exam-scope-ring-ccw"/>
+                <circle cx="0" cy="0" r="88" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+                <!-- Autofocus Corner Brackets -->
+                <g class="exam-scope-af-brackets" stroke="#6EE7B7" stroke-width="2.4" fill="none" filter="url(#examGlow3)">
+                  <path d="M-48,-32 L-48,-48 L-32,-48"/>
+                  <path d="M32,-48 L48,-48 L48,-32"/>
+                  <path d="M-48,32 L-48,48 L-32,48"/>
+                  <path d="M32,48 L48,48 L48,32"/>
+                </g>
+                <text x="0" y="-58" text-anchor="middle" fill="#FEF08A" font-size="10" font-weight="800" font-family="JetBrains Mono, monospace" letter-spacing="1.5">AF-LOCK · ×15.0 HD OPTICS</text>
+                <!-- 3-Cavity Anatomical Triangulation Callouts -->
+                <line x1="-112" y1="-42" x2="-210" y2="-68" stroke="rgba(253,230,138,0.75)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                <g transform="translate(-295, -86)">
+                  <rect x="-82" y="-16" width="164" height="32" rx="16" fill="rgba(12,18,24,0.86)" stroke="#FDE68A" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#FEF08A" font-size="11.2" font-weight="800" font-family="Pretendard, sans-serif">01 귀 · 고막 &amp; 외이도</text>
+                </g>
+                <line x1="112" y1="-42" x2="210" y2="-68" stroke="rgba(110,231,183,0.8)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                <g transform="translate(295, -86)">
+                  <rect x="-86" y="-16" width="172" height="32" rx="16" fill="rgba(12,18,24,0.86)" stroke="#6EE7B7" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="11.2" font-weight="800" font-family="Pretendard, sans-serif">02 코 · 비점막 &amp; 부비동</text>
+                </g>
+                <line x1="106" y1="54" x2="205" y2="82" stroke="rgba(56,189,248,0.8)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                <g transform="translate(292, 96)">
+                  <rect x="-86" y="-16" width="172" height="32" rx="16" fill="rgba(12,18,24,0.86)" stroke="#38BDF8" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#BAE6FD" font-size="11.2" font-weight="800" font-family="Pretendard, sans-serif">03 목 · 편도 &amp; 인후두</text>
+                </g>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'SCOPE 01 · 귀(耳)', tag: 'TYMPANIC HD', title: '고막 · 외이도 · 중이염 스캔', desc: '삼출성 중이염 삼출물·고막 충혈·이관 기능 이상을 선명하게 확인', pct: '99%' },
+            { code: 'SCOPE 02 · 코(鼻)', tag: 'NASAL MUCOSA', title: '비강 점막 · 축농증 · 구강호흡', desc: '알레르기 비염으로 부어오른 코 점막과 농성 콧물·부비동 정체 판독', pct: '98%' },
+            { code: 'SCOPE 03 · 목(咽)', tag: 'PHARYNX SCAN', title: '편도선 비대 · 후비루 · 인후두', desc: '잦은 목감기·편도염·만성 기침을 유발하는 인후두 점막 충혈 진단', pct: '97%' }
+          ]
+        },
+        4: {
+          code: 'SASANG CONSTITUTION ASTROLABE · 사상체질 정밀 검사',
+          liveReadout: '태양·태음·소양·소음 장부 대소(大小) & 眞장부맥학 27맥상 판독',
+          themeCol: '#D4AF37',
+          accentCol: '#FEF08A',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-4" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <radialGradient id="sasangGoldAura" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.28"/>
+                  <stop offset="65%" stop-color="#10B981" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="examGlow4" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Celestial Golden Sasang Compass & 4-Organ Radar -->
+              <g transform="translate(480, 212)">
+                <circle cx="0" cy="0" r="148" fill="url(#sasangGoldAura)"/>
+                <circle cx="0" cy="0" r="136" fill="none" stroke="rgba(253,230,138,0.62)" stroke-width="1.8" stroke-dasharray="6 6" class="exam-scope-ring-cw"/>
+                <circle cx="0" cy="0" r="102" fill="none" stroke="rgba(110,231,183,0.42)" stroke-width="1.3" stroke-dasharray="18 8" class="exam-scope-ring-ccw"/>
+                <circle cx="0" cy="0" r="68" fill="none" stroke="rgba(253,230,138,0.28)" stroke-width="1"/>
+                <line x1="-136" y1="0" x2="136" y2="0" stroke="rgba(253,230,138,0.35)" stroke-width="1.2"/>
+                <line x1="0" y1="-136" x2="0" y2="136" stroke="rgba(253,230,138,0.35)" stroke-width="1.2"/>
+                <!-- Morphing 4-Constitution Organ Balance Polygon -->
+                <polygon points="0,-96 112,0 0,108 -92,0" fill="rgba(212,175,55,0.26)" stroke="#6EE7B7" stroke-width="2.6" filter="url(#examGlow4)" class="exam-sasang-polygon"/>
+                <circle cx="0" cy="-96" r="5" fill="#FEF08A"/>
+                <circle cx="112" cy="0" r="5" fill="#6EE7B7"/>
+                <circle cx="0" cy="108" r="5" fill="#FEF08A"/>
+                <circle cx="-92" cy="0" r="5" fill="#6EE7B7"/>
+                <!-- 4 Cardinal Sasang Constitution Badges -->
+                <g transform="translate(0, -158)">
+                  <rect x="-88" y="-14" width="176" height="28" rx="14" fill="rgba(16,14,10,0.88)" stroke="#FDE68A" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#FEF08A" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">태양인 (肺大肝小 · 폐대간소)</text>
+                </g>
+                <g transform="translate(238, 0)">
+                  <rect x="-88" y="-14" width="176" height="28" rx="14" fill="rgba(10,18,15,0.88)" stroke="#6EE7B7" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">소양인 (脾大腎小 · 비대신소)</text>
+                </g>
+                <g transform="translate(0, 158)">
+                  <rect x="-88" y="-14" width="176" height="28" rx="14" fill="rgba(16,14,10,0.88)" stroke="#FDE68A" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#FEF08A" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">태음인 (肝大肺小 · 간대폐소)</text>
+                </g>
+                <g transform="translate(-238, 0)">
+                  <rect x="-88" y="-14" width="176" height="28" rx="14" fill="rgba(10,18,15,0.88)" stroke="#6EE7B7" stroke-width="1.4"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">소음인 (腎大脾小 · 신대비소)</text>
+                </g>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'SASANG 01 · 장부 대소', tag: '4-CONSTITUTION', title: '태양 · 태음 · 소양 · 소음 판별', desc: '폐·비·간·신 타고난 장부의 강약 구조와 체질적 병리 뿌리 분석', pct: '99%' },
+            { code: 'SASANG 02 · 정밀 진맥', tag: '27-PULSE', title: '대표원장 眞(진)장부맥학 · 복진', desc: '양 손목 촌·관·척 진맥과 복진·체형·성정을 결합한 입체 진단', pct: '98%' },
+            { code: 'SASANG 03 · 맞춤 처방', tag: 'BESPOKE HERB', title: '내 체질 단독 한약 · 섭생 가이드', desc: '같은 질환도 체질마다 다른 약재 배합과 평생 체질 식단표 설계', pct: '100%' }
+          ]
+        },
+        5: {
+          code: 'MULTI-FREQ BIA INBODY SCAN · 체지방 · 체성분 검사',
+          liveReadout: '소아비만 성장 균형 · 성인 복부 내장지방 · 골격근량 정밀 계측',
+          themeCol: '#10B981',
+          accentCol: '#A7F3D0',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-5" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="biaScanLaser" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#10B981" stop-opacity="0"/>
+                  <stop offset="20%" stop-color="#6EE7B7" stop-opacity="0.85"/>
+                  <stop offset="50%" stop-color="#FEF08A" stop-opacity="1"/>
+                  <stop offset="80%" stop-color="#6EE7B7" stop-opacity="0.85"/>
+                  <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="biaTrailMesh" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#6EE7B7" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                </linearGradient>
+                <filter id="examGlow5" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Vertical Sweeping BIA Bioelectrical Impedance Laser Bar -->
+              <g class="exam-bia-laser-group">
+                <rect x="140" y="120" width="680" height="44" fill="url(#biaTrailMesh)"/>
+                <line x1="120" y1="120" x2="840" y2="120" stroke="url(#biaScanLaser)" stroke-width="3.5" filter="url(#examGlow5)"/>
+              </g>
+              <!-- Contracting Visceral Fat Rings & Inward Lipolysis Arrows -->
+              <g transform="translate(480, 224)">
+                <ellipse cx="0" cy="0" rx="148" ry="88" fill="none" stroke="rgba(251,191,36,0.65)" stroke-width="2" stroke-dasharray="8 6" class="exam-fat-contract-ring"/>
+                <ellipse cx="0" cy="0" rx="108" ry="64" fill="none" stroke="rgba(110,231,183,0.75)" stroke-width="2.2" class="exam-fat-contract-ring delay-1"/>
+                <!-- Left & Right Inward Waist Cinch Arrows -->
+                <g class="exam-cinch-left" stroke="#FEF08A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#examGlow5)">
+                  <path d="M-210,0 L-156,0 M-170,-10 L-156,0 L-170,10"/>
+                  <path d="M-196,-42 L-148,-24 M-163,-36 L-148,-24 L-166,-18"/>
+                </g>
+                <g class="exam-cinch-right" stroke="#FEF08A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#examGlow5)">
+                  <path d="M210,0 L156,0 M170,-10 L156,0 L170,10"/>
+                  <path d="M196,-42 L148,-24 M163,-36 L148,-24 L166,-18"/>
+                </g>
+                <g transform="translate(-268, -74)">
+                  <rect x="-92" y="-14" width="184" height="28" rx="14" fill="rgba(12,18,16,0.86)" stroke="#FDE68A" stroke-width="1.3"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#FEF08A" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">🔥 복부 내장지방 집중 분해 ▼</text>
+                </g>
+                <g transform="translate(268, -74)">
+                  <rect x="-96" y="-14" width="192" height="28" rx="14" fill="rgba(12,18,16,0.86)" stroke="#6EE7B7" stroke-width="1.3"/>
+                  <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">💪 골격근 · 소아 성장균형 ▲</text>
+                </g>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'BIA 01 · 복부비만', tag: 'VISCERAL FAT ▼', title: '성인 복부비만 · 내장지방 레벨', desc: '장기 사이 고착된 내장지방 단면적과 복부 비만도를 정밀 계측', pct: '97%' },
+            { code: 'BIA 02 · 소아비만', tag: 'KIDS GROWTH ▲', title: '소아·청소년 비만 · 키성장 전환', desc: '성조숙증을 부르는 과잉 체지방은 줄이고 살이 키로 가도록 설계', pct: '96%' },
+            { code: 'BIA 03 · 근육·부종', tag: 'MUSCLE KEEP', title: '골격근량 보존 · 세포외수분(부종)', desc: '근손실·요요 없는 건강한 감량을 위해 근육량과 부종 수치 분석', pct: '98%' }
+          ]
+        },
+        6: {
+          code: 'HRV AUTONOMIC NEURO-SCAN · 자율신경 · 스트레스 검사',
+          liveReadout: '교감(LF)·부교감(HF) 신경 균형도 & 심박변이도(HRV) 실시간 파형',
+          themeCol: '#38BDF8',
+          accentCol: '#A7F3D0',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-6" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <filter id="examGlow6" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Cranial Neuro-Calming Concentric Ripples -->
+              <g transform="translate(480, 175)">
+                <circle cx="0" cy="0" r="46" fill="none" stroke="rgba(110,231,183,0.65)" stroke-width="2" class="exam-neuro-calm-ring r1"/>
+                <circle cx="0" cy="0" r="88" fill="none" stroke="rgba(56,189,248,0.45)" stroke-width="1.6" class="exam-neuro-calm-ring r2"/>
+                <circle cx="0" cy="0" r="132" fill="none" stroke="rgba(253,230,138,0.32)" stroke-width="1.3" stroke-dasharray="6 6"/>
+              </g>
+              <!-- Real-Time ECG R-R Interval Heartbeat Pulse Waveform -->
+              <g transform="translate(0, 265)">
+                <line x1="90" y1="0" x2="870" y2="0" stroke="rgba(255,255,255,0.16)" stroke-width="1" stroke-dasharray="4 4"/>
+                <path class="exam-ecg-pulse-line" d="M90,0 L190,0 L205,-12 L218,14 L232,-54 L246,28 L258,-18 L272,0 L410,0 L425,-12 L438,14 L452,-58 L466,28 L478,-18 L492,0 L630,0 L645,-12 L658,14 L672,-54 L686,28 L698,-18 L712,0 L870,0" fill="none" stroke="#FEF08A" stroke-width="2.6" filter="url(#examGlow6)"/>
+              </g>
+              <!-- Sympathetic vs Parasympathetic Legend Pills -->
+              <g transform="translate(245, 118)">
+                <rect x="-110" y="-14" width="220" height="28" rx="14" fill="rgba(16,14,22,0.86)" stroke="#FBBF24" stroke-width="1.3"/>
+                <text x="0" y="4" text-anchor="middle" fill="#FDE68A" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">⚡ 교감신경 과열 진정 (두통·긴장 완화)</text>
+              </g>
+              <g transform="translate(715, 118)">
+                <rect x="-115" y="-14" width="230" height="28" rx="14" fill="rgba(10,18,20,0.86)" stroke="#34D399" stroke-width="1.3"/>
+                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="Pretendard, sans-serif">🌿 부교감신경 활성 (어지럼·불면 회복)</text>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'HRV 01 · 만성 두통', tag: 'HEADACHE CALM', title: '두통 · 편두통 신경 긴장도 분석', desc: '스트레스·교감신경 과항진으로 인한 뇌혈관 수축 및 두통 원인 판독', pct: '96%' },
+            { code: 'HRV 02 · 어지럼증', tag: 'VERTIGO CARE', title: '어지럼증 · 이명 · 기립성 순환', desc: '자율신경 조절 실조로 발생하는 아찔한 어지럼증·전정 기능 점검', pct: '95%' },
+            { code: 'HRV 03 · 숙면 신경', tag: 'SLEEP RESTORE', title: '만성 불면증 · 수면 신경 회복력', desc: '밤마다 깨어있는 각성 신경을 가라앉히고 깊은 숙면 리듬 복원', pct: '98%' }
+          ]
+        },
+        7: {
+          code: 'HEPATIC & METABOLIC ASSAY · 내분비 · 간 · 당 수치 검사',
+          liveReadout: 'AST/ALT 간 기능 안전성 · 공복혈당/HbA1c · 지질 대사 정밀 점검',
+          themeCol: '#10B981',
+          accentCol: '#6EE7B7',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-7" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <filter id="examGlow7" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- 3 Precision Circular Biochemical Safety Gauges -->
+              <g transform="translate(235, 208)">
+                <circle cx="0" cy="0" r="56" fill="rgba(10,18,16,0.78)" stroke="rgba(255,255,255,0.14)" stroke-width="6"/>
+                <circle cx="0" cy="0" r="56" fill="none" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-dasharray="310 360" transform="rotate(-90)" filter="url(#examGlow7)" class="exam-ring-gauge g1"/>
+                <text x="0" y="-6" text-anchor="middle" fill="#A7F3D0" font-size="11" font-weight="800" font-family="JetBrains Mono, monospace">AST / ALT</text>
+                <text x="0" y="12" text-anchor="middle" fill="#FFFFFF" font-size="12.5" font-weight="900" font-family="Pretendard, sans-serif">간 안전 PASS</text>
+                <text x="0" y="28" text-anchor="middle" fill="#FEF08A" font-size="9.5" font-weight="700" font-family="Pretendard, sans-serif">99.2% 안심</text>
+              </g>
+              <g transform="translate(480, 178)">
+                <circle cx="0" cy="0" r="60" fill="rgba(16,15,10,0.80)" stroke="rgba(255,255,255,0.14)" stroke-width="6"/>
+                <circle cx="0" cy="0" r="60" fill="none" stroke="#FBBF24" stroke-width="6" stroke-linecap="round" stroke-dasharray="320 380" transform="rotate(-90)" filter="url(#examGlow7)" class="exam-ring-gauge g2"/>
+                <text x="0" y="-8" text-anchor="middle" fill="#FEF08A" font-size="11" font-weight="800" font-family="JetBrains Mono, monospace">HbA1c · 혈당</text>
+                <text x="0" y="11" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="900" font-family="Pretendard, sans-serif">당 대사 정밀</text>
+                <text x="0" y="28" text-anchor="middle" fill="#6EE7B7" font-size="9.5" font-weight="700" font-family="Pretendard, sans-serif">인슐린 균형</text>
+              </g>
+              <g transform="translate(725, 208)">
+                <circle cx="0" cy="0" r="56" fill="rgba(10,16,22,0.78)" stroke="rgba(255,255,255,0.14)" stroke-width="6"/>
+                <circle cx="0" cy="0" r="56" fill="none" stroke="#38BDF8" stroke-width="6" stroke-linecap="round" stroke-dasharray="300 360" transform="rotate(-90)" filter="url(#examGlow7)" class="exam-ring-gauge g3"/>
+                <text x="0" y="-6" text-anchor="middle" fill="#BAE6FD" font-size="11" font-weight="800" font-family="JetBrains Mono, monospace">LIPID · 내분비</text>
+                <text x="0" y="12" text-anchor="middle" fill="#FFFFFF" font-size="12.5" font-weight="900" font-family="Pretendard, sans-serif">대사질환 관리</text>
+                <text x="0" y="28" text-anchor="middle" fill="#A7F3D0" font-size="9.5" font-weight="700" font-family="Pretendard, sans-serif">지질·호르몬</text>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'LAB 01 · 간 안전성', tag: 'AST/ALT SAFE', title: '간 기능 수치 (AST · ALT) 점검', desc: '한약 복용 전·후 간 효소 수치를 객관적으로 확인해 간 부담 ZERO 보장', pct: '99%' },
+            { code: 'LAB 02 · 당 대사', tag: 'HbA1c CARE', title: '공복혈당 · 당화혈색소 정밀 측정', desc: '당뇨 전단계·인슐린 저항성 및 혈당 스파이크 대사 지표를 체계적 관리', pct: '97%' },
+            { code: 'LAB 03 · 내분비·지질', tag: 'METABOLIC', title: '콜레스테롤 · 중성지방 · 내분비', desc: '고지혈증·대사증후군 위험 인자와 내분비 호르몬 불균형을 통합 조절', pct: '96%' }
+          ]
+        },
+        8: {
+          code: 'APG VASCULAR & TOXIN SCAN · 말초 혈관 · 어혈 독소 검사',
+          liveReadout: '가속도 맥파(APG) 혈관 탄성도 · 혈액 순환 속도 · 어혈 정체 분석',
+          themeCol: '#F43F5E',
+          accentCol: '#FDA4AF',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-8" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="vesselPurifyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#881337" stop-opacity="0.48"/>
+                  <stop offset="48%" stop-color="#D4AF37" stop-opacity="0.38"/>
+                  <stop offset="100%" stop-color="#10B981" stop-opacity="0.42"/>
+                </linearGradient>
+                <filter id="examGlow8" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Micro-Vascular Conduit & Central Detoxification Filter Gate -->
+              <path d="M110,228 Q480,172 850,228 L850,266 Q480,210 110,266 Z" fill="url(#vesselPurifyGrad)" stroke="rgba(253,230,138,0.55)" stroke-width="1.6"/>
+              <!-- Central Detoxification Laser Gate -->
+              <g transform="translate(480, 220)">
+                <line x1="0" y1="-48" x2="0" y2="56" stroke="#6EE7B7" stroke-width="3" filter="url(#examGlow8)"/>
+                <circle cx="0" cy="4" r="28" fill="none" stroke="#FEF08A" stroke-width="2" stroke-dasharray="5 4" class="exam-scope-ring-cw"/>
+                <rect x="-88" y="-76" width="176" height="26" rx="13" fill="rgba(10,18,16,0.88)" stroke="#6EE7B7" stroke-width="1.3"/>
+                <text x="0" y="-59" text-anchor="middle" fill="#A7F3D0" font-size="10.8" font-weight="800" font-family="Pretendard, sans-serif">✨ 어혈·독소 해독 정화 게이트</text>
+              </g>
+              <!-- APG Accelerated Plethysmogram Waveform (a-b-c-d-e peaks) -->
+              <path class="exam-apg-waveform" d="M130,148 L210,148 L228,96 L246,168 L264,126 L282,154 L302,138 L330,148 L560,148 L578,92 L596,164 L614,122 L632,150 L652,136 L680,148 L830,148" fill="none" stroke="#FCA5A5" stroke-width="2.4" filter="url(#examGlow8)"/>
+              <g transform="translate(235, 292)">
+                <rect x="-95" y="-13" width="190" height="26" rx="13" fill="rgba(24,10,14,0.86)" stroke="#F87171" stroke-width="1.2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#FECACA" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">⚠️ 정체된 어혈 · 혈관 내 독소</text>
+              </g>
+              <g transform="translate(725, 292)">
+                <rect x="-102" y="-13" width="204" height="26" rx="13" fill="rgba(10,20,16,0.86)" stroke="#6EE7B7" stroke-width="1.2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">💎 해독 후 맑은 혈류 · 탄력 회복</text>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'APG 01 · 혈관 탄성', tag: 'ELASTICITY', title: '가속도 맥파 · 혈관 노화도 단계', desc: '동맥 혈관의 탄성도와 경직도를 정밀 측정하여 혈관 건강 단계 판독', pct: '96%' },
+            { code: 'APG 02 · 어혈·독소', tag: 'TOXIN DETOX', title: '혈액 속 어혈(瘀血) · 노폐물 정체', desc: '만성 피로·염증·통증의 원인인 혈관 내 어혈과 독소 축적도 분석', pct: '98%' },
+            { code: 'APG 03 · 말초 혈류', tag: 'MICRO-FLOW ▲', title: '말초 혈액순환 · 손발저림·냉증', desc: '손발 끝 모세혈관까지 깨끗한 혈액과 산소가 도달하는 순환력 평가', pct: '97%' }
+          ]
+        },
+        9: {
+          code: 'PEDIATRIC GROWTH POTENTIAL · 소아·청소년 정밀 성장 검사',
+          liveReadout: '무방사선 성장판 개방도 · 골연령(뼈나이) · 최종예상키 정밀 예측',
+          themeCol: '#D4AF37',
+          accentCol: '#FEF08A',
+          svgHtml: `
+            <svg class="exam-vector-svg exam-svg-9" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="growthCurveGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#10B981"/>
+                  <stop offset="55%" stop-color="#6EE7B7"/>
+                  <stop offset="100%" stop-color="#FEF08A"/>
+                </linearGradient>
+                <filter id="examGlow9" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <!-- Baseline Trajectory vs Golden-Time Accelerated Final Height Curve -->
+              <path d="M140,320 Q440,295 790,235" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-dasharray="6 6"/>
+              <path class="exam-growth-curve-main" d="M140,320 Q420,255 790,108" fill="none" stroke="url(#growthCurveGrad)" stroke-width="4" stroke-linecap="round" filter="url(#examGlow9)"/>
+              <!-- Milestone Nodes along Growth Curve -->
+              <circle cx="140" cy="320" r="6" fill="#10B981"/>
+              <circle cx="465" cy="212" r="7" fill="#6EE7B7" filter="url(#examGlow9)"/>
+              <g transform="translate(465, 178)">
+                <rect x="-88" y="-13" width="176" height="26" rx="13" fill="rgba(10,18,16,0.86)" stroke="#6EE7B7" stroke-width="1.3"/>
+                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">🌱 성장판 연골 증식 골든타임</text>
+              </g>
+              <g transform="translate(790, 108)">
+                <circle cx="0" cy="0" r="16" fill="rgba(253,230,138,0.28)" class="exam-doppler-pulse"/>
+                <circle cx="0" cy="0" r="8" fill="#FEF08A" filter="url(#examGlow9)"/>
+                <rect x="-152" y="-38" width="172" height="28" rx="14" fill="rgba(20,16,10,0.90)" stroke="#FEF08A" stroke-width="1.5"/>
+                <text x="-66" y="-20" text-anchor="middle" fill="#FEF08A" font-size="11" font-weight="900" font-family="Pretendard, sans-serif">🎯 숨은 키 + 최종예상키 도약 ▲</text>
+              </g>
+              <!-- Right-Edge Illuminated Laser Stadiometer Scale (130cm ~ 185cm+) -->
+              <g transform="translate(886, 78)">
+                <line x1="0" y1="0" x2="0" y2="250" stroke="rgba(253,230,138,0.68)" stroke-width="2"/>
+                <line x1="-12" y1="0" x2="0" y2="0" stroke="#FEF08A" stroke-width="2"/><text x="-16" y="4" text-anchor="end" fill="#FEF08A" font-size="10.5" font-weight="900" font-family="JetBrains Mono, monospace">185cm+</text>
+                <line x1="-8" y1="50" x2="0" y2="50" stroke="#6EE7B7" stroke-width="1.5"/><text x="-16" y="54" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">175cm</text>
+                <line x1="-8" y1="100" x2="0" y2="100" stroke="#6EE7B7" stroke-width="1.5"/><text x="-16" y="104" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">165cm</text>
+                <line x1="-8" y1="150" x2="0" y2="150" stroke="#6EE7B7" stroke-width="1.5"/><text x="-16" y="154" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">155cm</text>
+                <line x1="-8" y1="200" x2="0" y2="200" stroke="#6EE7B7" stroke-width="1.5"/><text x="-16" y="204" text-anchor="end" fill="#A7F3D0" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">145cm</text>
+                <line x1="-10" y1="250" x2="0" y2="250" stroke="#FEF08A" stroke-width="1.8"/><text x="-16" y="254" text-anchor="end" fill="#FDE68A" font-size="10" font-weight="700" font-family="JetBrains Mono, monospace">135cm</text>
+              </g>
+            </svg>`,
+          metrics: [
+            { code: 'GROWTH 01 · 성장판', tag: 'OPEN PLATE', title: '무방사선 성장판 개방도 · 연골층', desc: '방사선 걱정 없이 무릎·손목 성장판이 열려 있는 잔여 비율 판독', pct: '98%' },
+            { code: 'GROWTH 02 · 뼈나이', tag: 'BONE AGE', title: '골연령(뼈나이) · 성조숙증 징후', desc: '실제 나이 대비 뼈나이와 사춘기 성호르몬 조기 진행 위험 체크', pct: '96%' },
+            { code: 'GROWTH 03 · 예상키', tag: 'FINAL HEIGHT ▲', title: '뼈길이 · 숨은 키 · 최종예상키', desc: '체형 불균형 숨은 키 복원 및 골든타임 맞춤 치료 시 최종예상키 산출', pct: '99%' }
+          ]
+        }
+      }[exId];
+
+      return `
+        <!-- PLATE ${numStr}: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 0${exId}) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-${exId}${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen data-exam-id="${exId}">
+          <span class="tiny-card-num-badge">${numStr}</span>
+          <div class="plate-media-inner exam-media-stage">
+            <div class="exam-photo-kenburns-wrap">
+              <img class="lusion-clean-media exam-living-photo" src="${p.imgSrc}" alt="${p.title}" draggable="false">
+            </div>
+            <div class="exam-cinema-scrim"></div>
+
+            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
+            <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="${p.imgSrc}" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
+              <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-${exId}" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
+            </div>
+
+            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
+            <div class="exam-svg-motion-wrap" aria-hidden="true">
+              ${EXAM_MOTION_SPEC.svgHtml}
+            </div>
+
+            <!-- Top Glassmorphic Medical HUD Bar -->
+            <div class="exam-top-hud-bar">
+              <span class="exam-hud-badge">
+                <span class="exam-live-dot" style="background:${EXAM_MOTION_SPEC.themeCol};box-shadow:0 0 10px ${EXAM_MOTION_SPEC.themeCol};"></span>
+                <span>${EXAM_MOTION_SPEC.code}</span>
+              </span>
+              <span class="exam-hud-telemetry-pill" data-exam-live-readout="${exId}">
+                ${EXAM_MOTION_SPEC.liveReadout}
+              </span>
+            </div>
+
+            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
+            <div class="exam-biometric-dock">
+              ${EXAM_MOTION_SPEC.metrics.map((m, mIdx) => `
+              <div class="exam-bio-card">
+                <div class="exam-bio-top">
+                  <span class="exam-bio-code">${m.code}</span>
+                  <span class="exam-bio-tag">${m.tag}</span>
+                </div>
+                <strong class="exam-bio-title">${m.title}</strong>
+                <p class="exam-bio-desc">${m.desc}</p>
+                <div class="exam-bio-bar-track">
+                  <div class="exam-bio-bar-fill bar-${mIdx + 1}" style="width:${m.pct};"></div>
+                </div>
+              </div>`).join('')}
+            </div>
+
+            <!-- Main + Sub Text Caption -->
+            <div class="clean-plate-caption">
+              <div class="clean-plate-text">
+                <h2 class="plate-caption-title">${formattedTitle}</h2>
+                <p class="plate-caption-sub">${p.sub}</p>
               </div>
             </div>
           </div>
@@ -8303,6 +8859,441 @@ function buildPageHtml(page) {
         grid-template-columns: 1fr;
       }
     }
+
+    /* ============================================================================
+       DIRECTOR 9-CORE DIAGNOSTIC EXAMINATION CINEMA MOTION SUITE (CARDS 06 ~ 14)
+       (Retina 60fps Shader + Infinite-Resolution SVG HUD + Glassmorphic Telemetry)
+       ============================================================================ */
+    .project-details-item.is-director-exam-plate {
+      border: 1.5px solid rgba(212, 175, 55, 0.42);
+      box-shadow: 0 30px 85px rgba(0, 0, 0, 0.72), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    body.theme-hanji .project-details-item.is-director-exam-plate {
+      border: 1.5px solid rgba(74, 53, 37, 0.34);
+      box-shadow: 0 28px 75px rgba(42, 30, 20, 0.24);
+    }
+    .project-details-item.is-director-exam-plate.is-active-plate {
+      border-color: rgba(253, 230, 138, 0.78);
+      box-shadow: 0 34px 92px rgba(0, 0, 0, 0.82), 0 0 38px rgba(212, 175, 55, 0.22);
+    }
+    body.theme-hanji .project-details-item.is-director-exam-plate.is-active-plate {
+      border-color: #2D5A43;
+      box-shadow: 0 32px 80px rgba(45, 90, 67, 0.28), 0 0 0 2px rgba(45, 90, 67, 0.18);
+    }
+
+    .exam-photo-kenburns-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .exam-living-photo {
+      position: absolute;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      object-position: center 28%;
+      transform-origin: 50% 38%;
+      animation: examCinemaBreathe 9.5s ease-in-out infinite;
+      will-change: transform, filter;
+    }
+    @keyframes examCinemaBreathe {
+      0%, 100% { transform: scale(1.01) translate3d(0, 0, 0); filter: brightness(1.01) contrast(1.02) saturate(1.03); }
+      50% { transform: scale(1.055) translate3d(0, -4px, 0); filter: brightness(1.06) contrast(1.05) saturate(1.08); }
+    }
+
+    .exam-cinema-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg,
+          rgba(8, 12, 18, 0.64) 0%,
+          rgba(8, 12, 18, 0.14) 18%,
+          rgba(8, 12, 18, 0.08) 46%,
+          rgba(8, 12, 18, 0.62) 72%,
+          rgba(8, 12, 18, 0.94) 100%),
+        radial-gradient(circle at 50% 34%, transparent 38%, rgba(6, 10, 15, 0.38) 100%);
+    }
+
+    .exam-svg-motion-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .exam-vector-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform: translate3d(var(--exam-mx, 0px), var(--exam-my, 0px), 0);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* SVG Hardware-Accelerated Keyframe Motions */
+    .exam-sono-pendulum {
+      animation: examSonoPendulumSweep 4.2s ease-in-out infinite;
+    }
+    @keyframes examSonoPendulumSweep {
+      0%, 100% { transform: rotate(-28deg); }
+      50% { transform: rotate(28deg); }
+    }
+    .exam-sono-ripple {
+      transform-origin: 480px 44px;
+      animation: examSonicWaveExpand 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    .exam-sono-ripple.r2 {
+      animation-delay: 1.4s;
+    }
+    @keyframes examSonicWaveExpand {
+      0% { transform: scale(0.45); opacity: 0.95; }
+      80% { opacity: 0.35; }
+      100% { transform: scale(2.15); opacity: 0; }
+    }
+    .exam-doppler-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examDopplerNodePulse 1.8s ease-in-out infinite;
+    }
+    .exam-doppler-pulse.delay-1 {
+      animation-delay: 0.9s;
+    }
+    @keyframes examDopplerNodePulse {
+      0%, 100% { transform: scale(0.78); opacity: 0.45; }
+      50% { transform: scale(1.38); opacity: 0.95; }
+    }
+
+    /* Card 07: Thermography Isotherm & Pointer Animations */
+    .exam-thermal-aura {
+      transform-origin: 450px 220px;
+      animation: examThermalAuraBreathe 4.4s ease-in-out infinite;
+    }
+    .exam-isotherm-ring {
+      transform-origin: 450px 220px;
+      animation: examIsothermPulse 4.8s ease-in-out infinite;
+    }
+    .exam-isotherm-ring.iso-2 { animation-delay: 0.6s; }
+    .exam-isotherm-ring.iso-3 { animation-delay: 1.2s; }
+    .exam-isotherm-ring.iso-4 { animation-delay: 1.8s; }
+    @keyframes examThermalAuraBreathe {
+      0%, 100% { transform: scale(0.94); opacity: 0.72; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    @keyframes examIsothermPulse {
+      0%, 100% { transform: scale(0.95) rotate(-2deg); opacity: 0.55; }
+      50% { transform: scale(1.06) rotate(2deg); opacity: 0.95; }
+    }
+    .exam-diti-pointer {
+      animation: examDitiPointerSlide 3.8s ease-in-out infinite;
+    }
+    @keyframes examDitiPointerSlide {
+      0%, 100% { transform: translateY(-18px); }
+      50% { transform: translateY(28px); }
+    }
+
+    /* Card 08 & 09: Rotating Scope / Sasang Astrolabe Rings */
+    .exam-scope-ring-cw {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examScopeSpinCW 22s linear infinite;
+    }
+    .exam-scope-ring-ccw {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examScopeSpinCCW 15s linear infinite;
+    }
+    @keyframes examScopeSpinCW {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes examScopeSpinCCW {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .exam-scope-af-brackets {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examScopeAfLock 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes examScopeAfLock {
+      0%, 100% { transform: scale(1.14); opacity: 0.58; }
+      45%, 65% { transform: scale(0.92); opacity: 1; }
+    }
+    .exam-sasang-polygon {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examSasangPolygonBreathe 4.2s ease-in-out infinite;
+    }
+    @keyframes examSasangPolygonBreathe {
+      0%, 100% { transform: scale(0.92) rotate(-3deg); }
+      50% { transform: scale(1.06) rotate(3deg); }
+    }
+
+    /* Card 10: BIA Impedance Laser & Visceral Lipolysis Contraction */
+    .exam-bia-laser-group {
+      animation: examBiaLaserSweep 4.0s ease-in-out infinite;
+    }
+    @keyframes examBiaLaserSweep {
+      0%, 100% { transform: translateY(-38px); opacity: 0.78; }
+      50% { transform: translateY(155px); opacity: 1; }
+    }
+    .exam-fat-contract-ring {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examVisceralContract 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .exam-fat-contract-ring.delay-1 { animation-delay: 1.1s; }
+    @keyframes examVisceralContract {
+      0% { transform: scale(1.18); opacity: 0.25; }
+      40% { opacity: 0.92; }
+      100% { transform: scale(0.68); opacity: 0; }
+    }
+    .exam-cinch-left {
+      animation: examCinchLeftPush 2.4s ease-in-out infinite;
+    }
+    .exam-cinch-right {
+      animation: examCinchRightPush 2.4s ease-in-out infinite;
+    }
+    @keyframes examCinchLeftPush {
+      0%, 100% { transform: translateX(-12px); opacity: 0.45; }
+      50% { transform: translateX(12px); opacity: 1; }
+    }
+    @keyframes examCinchRightPush {
+      0%, 100% { transform: translateX(12px); opacity: 0.45; }
+      50% { transform: translateX(-12px); opacity: 1; }
+    }
+
+    /* Card 11, 12, 13, 14: HRV ECG, Biochemical Ring Gauges, APG Wave, Growth Trajectory */
+    .exam-neuro-calm-ring {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: examNeuroCalmWave 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    .exam-neuro-calm-ring.r2 { animation-delay: 1.5s; }
+    @keyframes examNeuroCalmWave {
+      0% { transform: scale(0.45); opacity: 0.92; }
+      100% { transform: scale(1.85); opacity: 0; }
+    }
+    .exam-ecg-pulse-line,
+    .exam-apg-waveform {
+      stroke-dasharray: 900;
+      stroke-dashoffset: 900;
+      animation: examWaveTraceDraw 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes examWaveTraceDraw {
+      0% { stroke-dashoffset: 900; opacity: 0.4; }
+      55%, 80% { stroke-dashoffset: 0; opacity: 1; }
+      100% { stroke-dashoffset: -900; opacity: 0.2; }
+    }
+    .exam-ring-gauge {
+      animation: examRingGaugePulse 3.6s ease-in-out infinite;
+    }
+    .exam-ring-gauge.g2 { animation-delay: 0.6s; }
+    .exam-ring-gauge.g3 { animation-delay: 1.2s; }
+    @keyframes examRingGaugePulse {
+      0%, 100% { stroke-dashoffset: 45; opacity: 0.82; }
+      50% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    .exam-growth-curve-main {
+      stroke-dasharray: 820;
+      stroke-dashoffset: 820;
+      animation: examGrowthCurveDraw 3.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes examGrowthCurveDraw {
+      0% { stroke-dashoffset: 820; opacity: 0.45; }
+      55%, 85% { stroke-dashoffset: 0; opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 0.35; }
+    }
+
+    /* Top Glassmorphic Medical HUD Bar */
+    .exam-top-hud-bar {
+      position: absolute;
+      top: 14px;
+      left: 42px;
+      right: 20px;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      pointer-events: none;
+    }
+    .exam-hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(10, 15, 22, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(253, 230, 138, 0.52);
+      color: #FEF08A;
+      font-family: 'JetBrains Mono', 'Pretendard', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.48);
+    }
+    .exam-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: liveRecPulse 1.4s infinite ease-in-out;
+    }
+    .exam-hud-telemetry-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(12, 22, 19, 0.80);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(110, 231, 183, 0.48);
+      color: #A7F3D0;
+      font-size: 0.71rem;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+    }
+
+    /* Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock */
+    .exam-biometric-dock {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 122px;
+      z-index: 7;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      pointer-events: none;
+    }
+    .exam-bio-card {
+      background: rgba(10, 15, 20, 0.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-top: 1.5px solid rgba(253, 230, 138, 0.48);
+      border-radius: 14px;
+      padding: 10px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+    }
+    .exam-bio-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .exam-bio-code {
+      font-family: 'JetBrains Mono', 'Pretendard', monospace;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #FDE68A;
+      letter-spacing: 0.03em;
+    }
+    .exam-bio-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      color: #A7F3D0;
+      white-space: nowrap;
+    }
+    .exam-bio-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .exam-bio-desc {
+      font-size: 0.68rem;
+      line-height: 1.36;
+      color: rgba(248, 250, 252, 0.82);
+      margin: 0;
+      word-break: keep-all;
+    }
+    .exam-bio-bar-track {
+      width: 100%;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      overflow: hidden;
+      margin-top: 3px;
+    }
+    .exam-bio-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #10B981, #6EE7B7, #FEF08A);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+      transform-origin: left center;
+      animation: examBioBarPulse 2.8s ease-in-out infinite;
+    }
+    .exam-bio-bar-fill.bar-2 {
+      animation-delay: 0.5s;
+      background: linear-gradient(90deg, #D4AF37, #FEF08A, #34D399);
+    }
+    .exam-bio-bar-fill.bar-3 {
+      animation-delay: 1.0s;
+      background: linear-gradient(90deg, #38BDF8, #34D399, #FEF08A);
+    }
+    @keyframes examBioBarPulse {
+      0%, 100% { transform: scaleX(0.92); opacity: 0.85; }
+      50% { transform: scaleX(1.0); opacity: 1; }
+    }
+
+    @media (max-width: 1024px) {
+      .exam-top-hud-bar {
+        top: 8px;
+        left: 34px;
+        right: 10px;
+        gap: 4px;
+      }
+      .exam-hud-badge {
+        font-size: 0.56rem;
+        padding: 4px 9px;
+      }
+      .exam-hud-telemetry-pill {
+        display: none;
+      }
+      .exam-biometric-dock {
+        left: 12px;
+        right: 12px;
+        bottom: 92px;
+        gap: 6px;
+      }
+      .exam-bio-card {
+        padding: 6px 8px;
+        border-radius: 10px;
+        gap: 2px;
+      }
+      .exam-bio-code {
+        font-size: 0.52rem;
+      }
+      .exam-bio-tag,
+      .exam-bio-desc {
+        display: none;
+      }
+      .exam-bio-title {
+        font-size: 0.68rem;
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -9596,17 +10587,39 @@ function buildPageHtml(page) {
       });
 
       function resizeFxCanvases() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         motionStages.forEach(ms => {
           if (!ms.fxCanvas || !ms.fxCtx) return;
           const r = ms.stageEl.getBoundingClientRect();
           if (r.width > 0 && r.height > 0) {
-            ms.fxCanvas.width = r.width;
-            ms.fxCanvas.height = r.height;
+            ms.logicalW = r.width;
+            ms.logicalH = r.height;
+            ms.dpr = dpr;
+            ms.fxCanvas.width = Math.round(r.width * dpr);
+            ms.fxCanvas.height = Math.round(r.height * dpr);
+            ms.fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
           }
         });
       }
       window.addEventListener('resize', resizeFxCanvases);
       setTimeout(resizeFxCanvases, 120);
+      setTimeout(resizeFxCanvases, 600);
+
+      // Interactive 3D Pointer Parallax for Director 9 Examination Motion Cards
+      document.querySelectorAll('.project-details-item.is-director-exam-plate').forEach(plateEl => {
+        plateEl.addEventListener('pointermove', (e) => {
+          const r = plateEl.getBoundingClientRect();
+          if (r.width <= 0 || r.height <= 0) return;
+          const nx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+          const ny = ((e.clientY - r.top) / r.height - 0.5) * 2;
+          plateEl.style.setProperty('--exam-mx', (nx * -8).toFixed(1) + 'px');
+          plateEl.style.setProperty('--exam-my', (ny * -6).toFixed(1) + 'px');
+        });
+        plateEl.addEventListener('pointerleave', () => {
+          plateEl.style.setProperty('--exam-mx', '0px');
+          plateEl.style.setProperty('--exam-my', '0px');
+        });
+      });
 
       window.stepPlateFrame = function(btn) {
         const stageEl = btn.closest('.plate-media-inner')?.querySelector('.motion-video-stage');
@@ -9860,8 +10873,8 @@ function buildPageHtml(page) {
 
       function drawPlateMotionFx(ms, timeSec, cycleNorm) {
         const ctx = ms.fxCtx;
-        const w = ms.fxCanvas ? ms.fxCanvas.width : 0;
-        const h = ms.fxCanvas ? ms.fxCanvas.height : 0;
+        const w = ms.logicalW || (ms.fxCanvas ? ms.fxCanvas.width : 0);
+        const h = ms.logicalH || (ms.fxCanvas ? ms.fxCanvas.height : 0);
         if (!ctx || w <= 0 || h <= 0) return;
 
         ctx.clearRect(0, 0, w, h);
@@ -10723,501 +11736,268 @@ function buildPageHtml(page) {
           ctx.fillText('⚠️ 전립선 울혈 압박 · 야간뇨 수면 분절 경보', tx + tagW * 0.5, ty + 20);
           ctx.textAlign = 'left';
           ctx.restore();
-        } else if (type === 'exam-ultrasound-fx') {
-          // CARD 01: 초음파 검사 (통증 · 오장육부) — Fan-shaped Acoustic Sector Scan Beam & Deep Tissue Echo Waves
-          const ox = w * 0.50, oy = h * 0.14;
-          const maxR = Math.min(w, h) * 0.46;
-          const startAng = Math.PI * 0.32;
-          const endAng = Math.PI * 0.68;
-          const sweepAng = startAng + (0.5 + 0.5 * Math.sin(timeSec * 2.1)) * (endAng - startAng);
-
+        } else if (type && type.startsWith('exam-retina-shader-')) {
+          // LUXURY 60FPS 2X-RETINA PARTICLE & HARMONIC WAVE SHADER (No Boxes, No Canvas Text)
+          const examIdx = parseInt(type.replace('exam-retina-shader-', ''), 10) || 1;
           ctx.save();
-          // Sector boundary & depth arcs
-          const beamGrad = ctx.createRadialGradient(ox, oy, 10, ox, oy, maxR);
-          beamGrad.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
-          beamGrad.addColorStop(0.55, 'rgba(16, 185, 129, 0.14)');
-          beamGrad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
-          ctx.fillStyle = beamGrad;
-          ctx.beginPath();
-          ctx.moveTo(ox, oy);
-          ctx.arc(ox, oy, maxR, startAng, endAng);
-          ctx.closePath();
-          ctx.fill();
+          ctx.globalCompositeOperation = 'lighter';
 
-          // Concentric acoustic depth rings (2cm, 4cm, 6cm, 8cm)
-          for (let d = 1; d <= 4; d++) {
-            const r = (d / 4) * maxR;
+          if (examIdx === 1) {
+            // 01. 초음파 검사 — Acoustic Harmonic Micro-Echoes & Color Doppler Micro-Vessels
+            const ox = w * 0.50, oy = h * 0.08;
+            const maxR = Math.min(w, h) * 0.58;
+            // Expanding harmonic acoustic wavefronts inside sector cone
+            for (let i = 0; i < 4; i++) {
+              const p = (timeSec * 0.42 + i * 0.25) % 1;
+              const r = maxR * (0.18 + p * 0.82);
+              const alpha = Math.sin(p * Math.PI) * 0.34;
+              ctx.beginPath();
+              ctx.arc(ox, oy, r, Math.PI * 0.34, Math.PI * 0.66);
+              ctx.strokeStyle = i % 2 === 0 ? ('rgba(56, 189, 248, ' + alpha.toFixed(3) + ')') : ('rgba(52, 211, 153, ' + alpha.toFixed(3) + ')');
+              ctx.lineWidth = 2.0;
+              ctx.stroke();
+            }
+            // Color Doppler micro-echo particles (Cyan / Ruby / Emerald)
+            for (let k = 0; k < 22; k++) {
+              const ang = Math.PI * (0.36 + ((k * 0.618034) % 1) * 0.28);
+              const dist = maxR * (0.28 + (((k * 0.381966) + timeSec * 0.12) % 0.66));
+              const px = ox + Math.cos(ang) * dist + Math.sin(timeSec * 2.2 + k) * 4;
+              const py = oy + Math.sin(ang) * dist;
+              const twinkle = 0.25 + 0.65 * (0.5 + 0.5 * Math.sin(timeSec * 3.8 + k * 1.7));
+              const rad = 1.6 + (k % 3) * 0.9;
+              const grad = ctx.createRadialGradient(px, py, 0, px, py, rad * 4);
+              const col = k % 4 === 0 ? '251, 113, 133' : (k % 2 === 0 ? '56, 189, 248' : '110, 231, 183');
+              grad.addColorStop(0, 'rgba(' + col + ', ' + twinkle.toFixed(3) + ')');
+              grad.addColorStop(1, 'rgba(' + col + ', 0)');
+              ctx.fillStyle = grad;
+              ctx.beginPath();
+              ctx.arc(px, py, rad * 4, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          } else if (examIdx === 2) {
+            // 02. 체열진단기 검사 — Warm Far-Infrared Core Aura & Ascending Thermal Spores
+            const cx = w * 0.48, cy = h * 0.36;
+            const pulseR = Math.min(w, h) * (0.26 + 0.04 * Math.sin(timeSec * 1.8));
+            const coreGrad = ctx.createRadialGradient(cx, cy, 4, cx, cy, pulseR);
+            coreGrad.addColorStop(0, 'rgba(251, 146, 60, 0.22)');
+            coreGrad.addColorStop(0.45, 'rgba(245, 158, 11, 0.12)');
+            coreGrad.addColorStop(0.8, 'rgba(16, 185, 129, 0.06)');
+            coreGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+            ctx.fillStyle = coreGrad;
             ctx.beginPath();
-            ctx.arc(ox, oy, r, startAng, endAng);
-            ctx.strokeStyle = d === 3 ? 'rgba(110, 231, 183, 0.52)' : 'rgba(255, 255, 255, 0.20)';
-            ctx.lineWidth = d === 3 ? 1.8 : 1.1;
-            ctx.setLineDash(d % 2 === 0 ? [5, 5] : []);
-            ctx.stroke();
-          }
-          ctx.setLineDash([]);
-
-          // Active scanning laser line
-          ctx.beginPath();
-          ctx.moveTo(ox, oy);
-          ctx.lineTo(ox + Math.cos(sweepAng) * maxR, oy + Math.sin(sweepAng) * maxR);
-          ctx.strokeStyle = '#6EE7B7';
-          ctx.lineWidth = 2.4;
-          ctx.stroke();
-
-          // Target anatomical echo nodes (근막·인대 / 오장육부)
-          const nodes = [
-            { r: maxR * 0.48, a: Math.PI * 0.44, label: '심부 근막·인대 층' },
-            { r: maxR * 0.72, a: Math.PI * 0.56, label: '오장육부 실질 에코' }
-          ];
-          nodes.forEach((nd, idx) => {
-            const nx = ox + Math.cos(nd.a) * nd.r;
-            const ny = oy + Math.sin(nd.a) * nd.r;
-            const pulse = 5 + Math.sin(timeSec * 4 + idx * 2) * 2.2;
-            ctx.beginPath();
-            ctx.arc(nx, ny, pulse * 2.1, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.25)';
+            ctx.arc(cx, cy, pulseR, 0, Math.PI * 2);
             ctx.fill();
+
+            for (let i = 0; i < 20; i++) {
+              const p = (timeSec * 0.22 + i * 0.05) % 1;
+              const px = cx + Math.sin(i * 2.4 + timeSec * 1.3) * (w * 0.24);
+              const py = h * 0.56 - p * (h * 0.44);
+              const a = Math.sin(p * Math.PI) * 0.55;
+              const r = 10 + (i % 4) * 5;
+              const g = ctx.createRadialGradient(px, py, 0, px, py, r);
+              const c = i % 3 === 0 ? '251, 191, 36' : (i % 3 === 1 ? '249, 115, 22' : '52, 211, 153');
+              g.addColorStop(0, 'rgba(' + c + ', ' + a.toFixed(3) + ')');
+              g.addColorStop(1, 'rgba(' + c + ', 0)');
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(px, py, r, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          } else if (examIdx === 3) {
+            // 03. 이비인후 내시경 검사 — 4K Fiber-Optic Ring-Light Glints & Mucosal Moisture Micro-Specularity
+            const cx = w * 0.50, cy = h * 0.34;
+            const ringR = Math.min(w, h) * 0.24;
+            // Rotating optical lens flare along the scope perimeter
+            for (let i = 0; i < 6; i++) {
+              const ang = timeSec * 0.65 + (i * Math.PI / 3);
+              const lx = cx + Math.cos(ang) * ringR;
+              const ly = cy + Math.sin(ang) * ringR;
+              const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, 18);
+              g.addColorStop(0, 'rgba(254, 240, 138, 0.52)');
+              g.addColorStop(0.45, 'rgba(56, 189, 248, 0.18)');
+              g.addColorStop(1, 'rgba(56, 189, 248, 0)');
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(lx, ly, 18, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            // Subtle breathing inner optical bloom
+            const innerBloom = ctx.createRadialGradient(cx, cy, ringR * 0.2, cx, cy, ringR * 0.95);
+            innerBloom.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            innerBloom.addColorStop(0.75, 'rgba(110, 231, 183, 0.06)');
+            innerBloom.addColorStop(1, 'rgba(56, 189, 248, 0.16)');
+            ctx.fillStyle = innerBloom;
             ctx.beginPath();
-            ctx.arc(nx, ny, pulse, 0, Math.PI * 2);
-            ctx.strokeStyle = '#FDE68A';
+            ctx.arc(cx, cy, ringR * 0.95, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (examIdx === 4) {
+            // 04. 사상체질 검사 — Golden Celestial Starfield & 3-Finger Radial Pulse Harmonics (촌·관·척)
+            const cx = w * 0.50, cy = h * 0.34;
+            const baseR = Math.min(w, h) * 0.23;
+            // Orbiting golden Qi particles around the 4-organ astrolabe
+            for (let i = 0; i < 16; i++) {
+              const orbitR = baseR * (0.45 + (i % 4) * 0.22);
+              const ang = timeSec * (i % 2 === 0 ? 0.35 : -0.28) + i * 1.15;
+              const px = cx + Math.cos(ang) * orbitR;
+              const py = cy + Math.sin(ang) * orbitR;
+              const g = ctx.createRadialGradient(px, py, 0, px, py, 10);
+              g.addColorStop(0, 'rgba(254, 240, 138, 0.75)');
+              g.addColorStop(0.5, 'rgba(212, 175, 55, 0.25)');
+              g.addColorStop(1, 'rgba(212, 175, 55, 0)');
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(px, py, 10, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            // Subtle 3-harmonic pulse wave at 56% height (촌·관·척 맥파)
+            const waveY = h * 0.56;
+            ctx.beginPath();
+            for (let x = w * 0.18; x <= w * 0.82; x += 3) {
+              const norm = (x - w * 0.18) / (w * 0.64);
+              const env = Math.sin(norm * Math.PI);
+              const y = waveY + Math.sin(norm * 18 - timeSec * 3.6) * 7 * env + Math.cos(norm * 9 - timeSec * 2.1) * 4 * env;
+              if (x === w * 0.18) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(253, 230, 138, 0.38)';
             ctx.lineWidth = 1.8;
             ctx.stroke();
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '700 10.5px Pretendard, sans-serif';
-            ctx.fillText(nd.label, nx + 11, ny + 4);
-          });
-
-          // Top-Right Telemetry HUD
-          const boxW = 248, boxH = 62;
-          const bx = Math.max(18, w - boxW - 22), by = 58;
-          ctx.fillStyle = 'rgba(12, 18, 24, 0.78)';
-          ctx.strokeStyle = 'rgba(110, 231, 183, 0.52)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(bx, by, boxW, boxH, 12);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#6EE7B7';
-          ctx.font = '800 11px Pretendard, sans-serif';
-          ctx.fillText('📡 SONO-SCAN · 통증 & 오장육부 초음파', bx + 12, by + 22);
-          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
-          ctx.font = '600 10.2px Pretendard, sans-serif';
-          ctx.fillText('• 관절·인대 미세 염증 및 장부 움직임 실시간 확인', bx + 12, by + 44);
-          ctx.restore();
-        } else if (type === 'exam-thermography-fx') {
-          // CARD 02: 체열진단기 검사 (면역 · 순환 · 생식기능) — Infrared Isotherm Rings & Temperature Spectrum Bar
-          const cx = w * 0.48, cy = h * 0.36;
-          ctx.save();
-
-          // Warm core radiation isotherm rings (36.5°C Core Balance)
-          const colors = ['rgba(239, 68, 68, 0.42)', 'rgba(245, 158, 11, 0.36)', 'rgba(16, 185, 129, 0.34)', 'rgba(56, 189, 248, 0.28)'];
-          for (let i = 0; i < 4; i++) {
-            const p = (timeSec * 0.45 + i * 0.25) % 1;
-            const rx = 28 + p * Math.min(w, h) * 0.28;
-            const ry = rx * 0.78;
+          } else if (examIdx === 5) {
+            // 05. 체지방 검사 — Rising Metabolic Lipolysis Embers & Bio-Impedance Current Ripples
+            const cx = w * 0.50, cy = h * 0.36;
+            for (let i = 0; i < 24; i++) {
+              const p = (timeSec * 0.28 + i * 0.042) % 1;
+              const spread = (1 - p * 0.45) * (w * 0.22);
+              const px = cx + Math.sin(i * 3.1 + timeSec * 1.6) * spread;
+              const py = h * 0.55 - p * (h * 0.42);
+              const alpha = Math.sin(p * Math.PI) * 0.6;
+              const rad = 8 + (i % 3) * 4;
+              const g = ctx.createRadialGradient(px, py, 0, px, py, rad);
+              const col = i % 2 === 0 ? '52, 211, 153' : '251, 191, 36';
+              g.addColorStop(0, 'rgba(' + col + ', ' + alpha.toFixed(3) + ')');
+              g.addColorStop(1, 'rgba(' + col + ', 0)');
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(px, py, rad, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          } else if (examIdx === 6) {
+            // 06. 자율신경검사 — Dual Sympathetic/Parasympathetic Sine Ribbon & Cranial Calming Aura
+            const midY = h * 0.46;
+            const startX = w * 0.08, endX = w * 0.92;
+            // Parasympathetic soothing emerald-blue ribbon
             ctx.beginPath();
-            ctx.ellipse(cx, cy, rx, ry, Math.sin(timeSec + i) * 0.15, 0, Math.PI * 2);
-            ctx.strokeStyle = colors[i];
-            ctx.lineWidth = 2.2;
-            ctx.stroke();
-          }
-
-          // Right-side Thermal Color Scale Bar (31.0°C ~ 38.5°C)
-          const barX = w - 42, barY = 66, barW = 12, barH = 148;
-          const thGrad = ctx.createLinearGradient(0, barY, 0, barY + barH);
-          thGrad.addColorStop(0, '#EF4444');
-          thGrad.addColorStop(0.35, '#F59E0B');
-          thGrad.addColorStop(0.68, '#10B981');
-          thGrad.addColorStop(1, '#38BDF8');
-          ctx.fillStyle = thGrad;
-          ctx.beginPath();
-          ctx.roundRect(barX, barY, barW, barH, 6);
-          ctx.fill();
-          ctx.strokeStyle = 'rgba(255,255,255,0.45)';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-
-          // Animated pointer on thermal scale
-          const ptrY = barY + (0.35 + 0.25 * Math.sin(timeSec * 1.8)) * barH;
-          ctx.fillStyle = '#FEF08A';
-          ctx.font = '800 10px Pretendard, sans-serif';
-          ctx.textAlign = 'right';
-          ctx.fillText('36.5°C ▸', barX - 6, ptrY + 3);
-          ctx.textAlign = 'left';
-
-          // Top-Left HUD Badge
-          const boxW = 262, boxH = 62;
-          const bx = 22, by = 58;
-          ctx.fillStyle = 'rgba(18, 14, 12, 0.80)';
-          ctx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(bx, by, boxW, boxH, 12);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#FDE68A';
-          ctx.font = '800 11px Pretendard, sans-serif';
-          ctx.fillText('🌡️ IR THERMOGRAPHY · 면역·순환·생식기능', bx + 12, by + 22);
-          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
-          ctx.font = '600 10.2px Pretendard, sans-serif';
-          ctx.fillText('• 상열하한·수족냉증·하복부 생식 온기 밸런스 스캔', bx + 12, by + 44);
-          ctx.restore();
-        } else if (type === 'exam-ent-endoscope-fx') {
-          // CARD 03: 이비인후 내시경 검사 (귀 · 코 · 목) — Optical Endoscope Lens Reticle & 3-Zone Mucosa Focus
-          const cx = w * 0.50, cy = h * 0.35;
-          const lr = Math.min(w, h) * 0.22;
-          ctx.save();
-
-          // Outer Fiber-Optic Illumination Ring
-          ctx.beginPath();
-          ctx.arc(cx, cy, lr, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(253, 230, 138, 0.62)';
-          ctx.lineWidth = 2.5;
-          ctx.stroke();
-
-          // Rotating degree ticks around scope
-          for (let i = 0; i < 24; i++) {
-            const ang = (i / 24) * Math.PI * 2 + timeSec * 0.35;
-            const r1 = lr * (i % 3 === 0 ? 0.86 : 0.92);
-            ctx.beginPath();
-            ctx.moveTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1);
-            ctx.lineTo(cx + Math.cos(ang) * (lr - 2), cy + Math.sin(ang) * (lr - 2));
-            ctx.strokeStyle = i % 3 === 0 ? '#6EE7B7' : 'rgba(255,255,255,0.32)';
-            ctx.lineWidth = 1.3;
-            ctx.stroke();
-          }
-
-          // Crosshair focus brackets
-          const br = lr * 0.38;
-          ctx.strokeStyle = '#6EE7B7';
-          ctx.lineWidth = 1.8;
-          [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx, sy]) => {
-            ctx.beginPath();
-            ctx.moveTo(cx + sx * br, cy + sy * (br - 10));
-            ctx.lineTo(cx + sx * br, cy + sy * br);
-            ctx.lineTo(cx + sx * (br - 10), cy + sy * br);
-            ctx.stroke();
-          });
-
-          // 3-Zone Cycling Indicator Pill (귀 고막 · 코 비점막 · 목 인후두)
-          const zones = ['👂 귀(고막·외이도)', '👃 코(비점막·부비동)', '🗣️ 목(편도·인후두)'];
-          const actZone = Math.floor((timeSec * 0.85) % 3);
-          const padX = 22, topY = 58;
-          zones.forEach((z, idx) => {
-            const zx = padX + idx * 116;
-            const isAct = idx === actZone;
-            ctx.fillStyle = isAct ? 'rgba(16, 185, 129, 0.85)' : 'rgba(12, 16, 22, 0.74)';
-            ctx.strokeStyle = isAct ? '#FEF08A' : 'rgba(255,255,255,0.22)';
-            ctx.lineWidth = 1.3;
-            ctx.beginPath();
-            ctx.roundRect(zx, topY, 110, 28, 999);
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = isAct ? '#FFFFFF' : 'rgba(248,250,252,0.75)';
-            ctx.font = (isAct ? '800 ' : '600 ') + '10.2px Pretendard, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(z, zx + 55, topY + 18);
-          });
-          ctx.textAlign = 'left';
-          ctx.restore();
-        } else if (type === 'exam-sasang-compass-fx') {
-          // CARD 04: 사상체질 검사 — 4-Axis Sasang Constitution Radar Compass (태양·태음·소양·소음 / 폐·비·간·신)
-          const cx = w * 0.50, cy = h * 0.35;
-          const maxR = Math.min(w, h) * 0.21;
-          ctx.save();
-
-          // Concentric radar rings
-          for (let l = 1; l <= 3; l++) {
-            ctx.beginPath();
-            ctx.arc(cx, cy, (l / 3) * maxR, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(253, 230, 138, 0.28)';
-            ctx.lineWidth = 1.1;
-            ctx.stroke();
-          }
-
-          const axes = [
-            { label: '태양 (폐大·간小)', ang: -Math.PI * 0.5, ratio: 0.65 + 0.15 * Math.sin(timeSec * 1.7) },
-            { label: '소양 (비大·신小)', ang: 0, ratio: 0.82 + 0.12 * Math.cos(timeSec * 1.5) },
-            { label: '태음 (간大·폐小)', ang: Math.PI * 0.5, ratio: 0.78 + 0.14 * Math.sin(timeSec * 1.3 + 1) },
-            { label: '소음 (신大·비小)', ang: Math.PI, ratio: 0.70 + 0.15 * Math.cos(timeSec * 1.9 + 2) }
-          ];
-
-          // Axis lines & labels
-          axes.forEach(ax => {
-            const ex = cx + Math.cos(ax.ang) * maxR;
-            const ey = cy + Math.sin(ax.ang) * maxR;
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(ex, ey);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.26)';
-            ctx.lineWidth = 1.2;
+            for (let x = startX; x <= endX; x += 3) {
+              const t = (x - startX) / (endX - startX);
+              const env = Math.sin(t * Math.PI);
+              const y = midY + Math.sin(t * 10 - timeSec * 2.2) * 18 * env;
+              if (x === startX) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.42)';
+            ctx.lineWidth = 2.4;
             ctx.stroke();
 
-            const lx = cx + Math.cos(ax.ang) * (maxR + 26);
-            const ly = cy + Math.sin(ax.ang) * (maxR + 16);
-            ctx.fillStyle = '#FEF08A';
-            ctx.font = '800 10.5px Pretendard, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(ax.label, lx, ly + 4);
-          });
-
-          // Dynamic Constitution Polygon
-          ctx.beginPath();
-          axes.forEach((ax, idx) => {
-            const px = cx + Math.cos(ax.ang) * (maxR * ax.ratio);
-            const py = cy + Math.sin(ax.ang) * (maxR * ax.ratio);
-            if (idx === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-          });
-          ctx.closePath();
-          ctx.fillStyle = 'rgba(212, 175, 55, 0.28)';
-          ctx.fill();
-          ctx.strokeStyle = '#6EE7B7';
-          ctx.lineWidth = 2.2;
-          ctx.stroke();
-          ctx.textAlign = 'left';
-          ctx.restore();
-        } else if (type === 'exam-bodyfat-inbody-fx') {
-          // CARD 05: 체지방 검사 (소아 및 복부비만) — Vertical BIA Impedance Scan Line & 3 Live Composition Bars
-          const scanY = h * (0.14 + 0.44 * (0.5 + 0.5 * Math.sin(timeSec * 1.6)));
-          ctx.save();
-
-          // Horizontal BIA Bioelectrical Impedance Scan Laser
-          const scanGrad = ctx.createLinearGradient(w * 0.15, scanY, w * 0.85, scanY);
-          scanGrad.addColorStop(0, 'rgba(16, 185, 129, 0)');
-          scanGrad.addColorStop(0.5, 'rgba(110, 231, 183, 0.85)');
-          scanGrad.addColorStop(1, 'rgba(16, 185, 129, 0)');
-          ctx.strokeStyle = scanGrad;
-          ctx.lineWidth = 2.6;
-          ctx.beginPath();
-          ctx.moveTo(w * 0.15, scanY);
-          ctx.lineTo(w * 0.85, scanY);
-          ctx.stroke();
-
-          // Top-Right Body Composition HUD Panel
-          const boxW = Math.min(276, w - 40), boxH = 108;
-          const bx = w - boxW - 20, by = 56;
-          ctx.fillStyle = 'rgba(12, 18, 22, 0.82)';
-          ctx.strokeStyle = 'rgba(110, 231, 183, 0.52)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(bx, by, boxW, boxH, 12);
-          ctx.fill();
-          ctx.stroke();
-
-          const metrics = [
-            { name: '골격근·성장균형 (소아·청소년)', ratio: 0.82, col: '#10B981' },
-            { name: '체지방률 정밀 분석', ratio: 0.54, col: '#F59E0B' },
-            { name: '복부 내장지방 레벨', ratio: 0.46, col: '#38BDF8' }
-          ];
-          metrics.forEach((m, idx) => {
-            const my = by + 22 + idx * 29;
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '700 10.2px Pretendard, sans-serif';
-            ctx.fillText(m.name, bx + 12, my);
-            const trackW = boxW - 24;
-            ctx.fillStyle = 'rgba(255,255,255,0.14)';
+            // Sympathetic warm gold harmonic wave
             ctx.beginPath();
-            ctx.roundRect(bx + 12, my + 5, trackW, 7, 3.5);
-            ctx.fill();
-            const fillW = trackW * m.ratio * (0.9 + 0.1 * Math.sin(timeSec * 2.4 + idx));
-            ctx.fillStyle = m.col;
-            ctx.beginPath();
-            ctx.roundRect(bx + 12, my + 5, fillW, 7, 3.5);
-            ctx.fill();
-          });
-          ctx.restore();
-        } else if (type === 'exam-autonomic-hrv-fx') {
-          // CARD 06: 자율신경검사 (두통 · 어지럼 · 불면) — Dual Sympathetic vs Parasympathetic Harmonic Waveforms & HRV Pulse
-          const padX = 22, topY = 58;
-          const boxW = Math.min(340, w - 44), boxH = 104;
-          ctx.save();
-          ctx.fillStyle = 'rgba(12, 16, 24, 0.82)';
-          ctx.strokeStyle = 'rgba(147, 197, 253, 0.52)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(padX, topY, boxW, boxH, 14);
-          ctx.fill();
-          ctx.stroke();
-
-          ctx.fillStyle = '#FDE68A';
-          ctx.font = '800 11px Pretendard, sans-serif';
-          ctx.fillText('🧠 HRV 자율신경 균형도 · 두통/어지럼/불면 분석', padX + 12, topY + 21);
-
-          // Dual Sine Waves (교감신경 vs 부교감신경)
-          const wStart = padX + 14, wEnd = padX + boxW - 14;
-          const midY = topY + 62;
-          // Sympathetic wave (warm coral-gold)
-          ctx.beginPath();
-          ctx.strokeStyle = '#FBBF24';
-          ctx.lineWidth = 2;
-          for (let x = wStart; x <= wEnd; x += 3) {
-            const y = midY + Math.sin((x - wStart) * 0.055 - timeSec * 3.8) * 14;
-            if (x === wStart) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-          }
-          ctx.stroke();
-
-          // Parasympathetic wave (calming emerald-cyan)
-          ctx.beginPath();
-          ctx.strokeStyle = '#34D399';
-          ctx.lineWidth = 2.2;
-          for (let x = wStart; x <= wEnd; x += 3) {
-            const y = midY + Math.cos((x - wStart) * 0.045 - timeSec * 2.6) * 12;
-            if (x === wStart) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-          }
-          ctx.stroke();
-
-          ctx.fillStyle = 'rgba(248, 250, 252, 0.86)';
-          ctx.font = '600 9.8px Pretendard, sans-serif';
-          ctx.fillText('● 교감신경(긴장·스트레스)   ● 부교감신경(이완·숙면 회복)', padX + 14, topY + 92);
-          ctx.restore();
-        } else if (type === 'exam-endocrine-liver-glucose-fx') {
-          // CARD 07: 내분비 간 및 당 수치 검사 (대사질환) — Live AST/ALT, HbA1c/Glucose & Lipid Safety Gauges
-          const padX = 22, topY = 58;
-          const boxW = Math.min(336, w - 44), boxH = 112;
-          ctx.save();
-          ctx.fillStyle = 'rgba(12, 18, 20, 0.82)';
-          ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(padX, topY, boxW, boxH, 14);
-          ctx.fill();
-          ctx.stroke();
-
-          ctx.fillStyle = '#6EE7B7';
-          ctx.font = '800 11px Pretendard, sans-serif';
-          ctx.fillText('🩸 내분비 · 간 기능(AST/ALT) · 혈당 대사 패널', padX + 12, topY + 21);
-
-          const items = [
-            { label: 'AST / ALT 간 수치 안전성', status: '안심 범위', ratio: 0.78, col: '#10B981' },
-            { label: '공복혈당 · 당화혈색소(HbA1c)', status: '정밀 추적', ratio: 0.68, col: '#FBBF24' },
-            { label: '지질 · 내분비 대사 균형도', status: '맞춤 관리', ratio: 0.84, col: '#38BDF8' }
-          ];
-          items.forEach((it, idx) => {
-            const iy = topY + 40 + idx * 25;
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '700 10px Pretendard, sans-serif';
-            ctx.fillText(it.label + ' (' + it.status + ')', padX + 12, iy);
-            const trackW = boxW - 24;
-            ctx.fillStyle = 'rgba(255,255,255,0.14)';
-            ctx.beginPath();
-            ctx.roundRect(padX + 12, iy + 4, trackW, 6, 3);
-            ctx.fill();
-            const fillW = trackW * it.ratio * (0.9 + 0.1 * Math.sin(timeSec * 2.2 + idx));
-            ctx.fillStyle = it.col;
-            ctx.beginPath();
-            ctx.roundRect(padX + 12, iy + 4, fillW, 6, 3);
-            ctx.fill();
-          });
-          ctx.restore();
-        } else if (type === 'exam-vascular-toxin-fx') {
-          // CARD 08: 혈관 상태 검사 (독소) — Microcirculation Stream Clearing Toxin Particles & APG Elasticity Wave
-          const vy = h * 0.30;
-          ctx.save();
-
-          // Translucent microvascular flow channel
-          ctx.beginPath();
-          ctx.moveTo(w * 0.12, vy - 18);
-          ctx.quadraticCurveTo(w * 0.5, vy - 30, w * 0.88, vy - 14);
-          ctx.lineTo(w * 0.88, vy + 14);
-          ctx.quadraticCurveTo(w * 0.5, vy - 2, w * 0.12, vy + 18);
-          ctx.closePath();
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.18)';
-          ctx.fill();
-          ctx.strokeStyle = 'rgba(252, 165, 165, 0.55)';
-          ctx.lineWidth = 1.6;
-          ctx.stroke();
-
-          // Flowing oxygenated cells & clearing toxin particles
-          for (let i = 0; i < 12; i++) {
-            const p = (timeSec * 0.38 + i / 12) % 1;
-            const px = w * (0.14 + p * 0.72);
-            const py = vy - 6 + Math.sin(p * Math.PI * 2 + i) * 6;
-            const isClean = p > 0.45;
-            ctx.beginPath();
-            ctx.arc(px, py, isClean ? 4.5 : 3.8, 0, Math.PI * 2);
-            ctx.fillStyle = isClean ? '#6EE7B7' : '#F87171';
-            ctx.fill();
-          }
-
-          // Top-Left APG Vascular Aging & Toxin Badge
-          const boxW = 278, boxH = 58;
-          const bx = 22, by = 58;
-          ctx.fillStyle = 'rgba(16, 12, 14, 0.82)';
-          ctx.strokeStyle = 'rgba(252, 165, 165, 0.55)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(bx, by, boxW, boxH, 12);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#FDE68A';
-          ctx.font = '800 11px Pretendard, sans-serif';
-          ctx.fillText('💓 APG 혈관 탄력도 · 어혈/독소 정체 스캔', bx + 12, by + 22);
-          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
-          ctx.font = '600 10px Pretendard, sans-serif';
-          ctx.fillText('• 말초 혈액순환 속도 및 혈관 노화·독소 단계 측정', bx + 12, by + 42);
-          ctx.restore();
-        } else if (type === 'exam-growth-potential-fx') {
-          // CARD 09: 성장 검사 (성장) — Vertical Stadiometer Ruler & Ascending Predicted Height Trajectory Curve
-          const rx = w - 46, topY = 62, botY = h * 0.56;
-          ctx.save();
-
-          // Vertical Height Ruler
-          ctx.strokeStyle = 'rgba(253, 230, 138, 0.72)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(rx, botY);
-          ctx.lineTo(rx, topY);
-          ctx.stroke();
-
-          for (let t = 0; t <= 10; t++) {
-            const ty = botY - (t / 10) * (botY - topY);
-            const tickW = t % 5 === 0 ? 12 : 6;
-            ctx.beginPath();
-            ctx.moveTo(rx - tickW, ty);
-            ctx.lineTo(rx, ty);
+            for (let x = startX; x <= endX; x += 3) {
+              const t = (x - startX) / (endX - startX);
+              const env = Math.sin(t * Math.PI);
+              const y = midY + Math.cos(t * 14 - timeSec * 3.1) * 12 * env;
+              if (x === startX) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.34)';
+            ctx.lineWidth = 1.8;
             ctx.stroke();
+          } else if (examIdx === 7) {
+            // 07. 내분비 간 및 당 수치 검사 — Floating Hexagonal Bio-Assay Molecules & Clean Hepatic Glow
+            const centers = [
+              { x: w * 0.25, y: h * 0.34, col: '52, 211, 153' },
+              { x: w * 0.50, y: h * 0.34, col: '251, 191, 36' },
+              { x: w * 0.75, y: h * 0.34, col: '56, 189, 248' }
+            ];
+            centers.forEach((c, idx) => {
+              const r = 38 + 6 * Math.sin(timeSec * 2.0 + idx);
+              const g = ctx.createRadialGradient(c.x, c.y, 4, c.x, c.y, r * 1.7);
+              g.addColorStop(0, 'rgba(' + c.col + ', 0.22)');
+              g.addColorStop(1, 'rgba(' + c.col + ', 0)');
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, r * 1.7, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            // Subtle floating hexagonal micro-crystals
+            for (let i = 0; i < 12; i++) {
+              const p = (timeSec * 0.18 + i * 0.083) % 1;
+              const hx = w * (0.14 + ((i * 0.73) % 0.72));
+              const hy = h * 0.54 - p * (h * 0.38);
+              const hr = 5 + (i % 3) * 2.5;
+              const ha = Math.sin(p * Math.PI) * 0.42;
+              ctx.beginPath();
+              for (let v = 0; v < 6; v++) {
+                const vang = timeSec * 0.5 + (v * Math.PI / 3);
+                const vx = hx + Math.cos(vang) * hr;
+                const vy = hy + Math.sin(vang) * hr;
+                if (v === 0) ctx.moveTo(vx, vy);
+                else ctx.lineTo(vx, vy);
+              }
+              ctx.closePath();
+              ctx.strokeStyle = 'rgba(110, 231, 183, ' + ha.toFixed(3) + ')';
+              ctx.lineWidth = 1.2;
+              ctx.stroke();
+            }
+          } else if (examIdx === 8) {
+            // 08. 혈관 상태 검사 (독소) — Microvascular Stream: Dark Stasis (Left) -> Purified Ruby-Gold Oxygenated Flow (Right)
+            const startX = w * 0.08, endX = w * 0.92;
+            const gateX = w * 0.50;
+            for (let i = 0; i < 24; i++) {
+              const p = (timeSec * 0.24 + i / 24) % 1;
+              const px = startX + p * (endX - startX);
+              const arch = Math.sin(p * Math.PI) * -22;
+              const py = h * 0.31 + arch + Math.sin(p * Math.PI * 4 + i) * 7;
+              const purified = px >= gateX;
+              const rad = purified ? 11 : 8;
+              const g = ctx.createRadialGradient(px, py, 0, px, py, rad);
+              if (purified) {
+                g.addColorStop(0, 'rgba(254, 240, 138, 0.85)');
+                g.addColorStop(0.45, 'rgba(52, 211, 153, 0.45)');
+                g.addColorStop(1, 'rgba(52, 211, 153, 0)');
+              } else {
+                g.addColorStop(0, 'rgba(248, 113, 113, 0.65)');
+                g.addColorStop(0.55, 'rgba(153, 27, 27, 0.30)');
+                g.addColorStop(1, 'rgba(153, 27, 27, 0)');
+              }
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(px, py, rad, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            // Purification gate vertical light curtain at x = 50%
+            const gateGrad = ctx.createLinearGradient(gateX - 18, 0, gateX + 18, 0);
+            gateGrad.addColorStop(0, 'rgba(110, 231, 183, 0)');
+            gateGrad.addColorStop(0.5, 'rgba(110, 231, 183, ' + (0.18 + 0.08 * Math.sin(timeSec * 3)).toFixed(3) + ')');
+            gateGrad.addColorStop(1, 'rgba(110, 231, 183, 0)');
+            ctx.fillStyle = gateGrad;
+            ctx.fillRect(gateX - 18, h * 0.14, 36, h * 0.34);
+          } else if (examIdx === 9) {
+            // 09. 성장 검사 (성장) — Ascending Golden Starlight & Epiphyseal Growth Plate Radiance
+            for (let i = 0; i < 22; i++) {
+              const p = (timeSec * 0.25 + i * 0.045) % 1;
+              const px = w * (0.14 + ((i * 0.67) % 0.72));
+              const py = h * 0.56 - p * (h * 0.44);
+              const alpha = Math.sin(p * Math.PI) * 0.75;
+              const r = 8 + (i % 3) * 4;
+              const g = ctx.createRadialGradient(px, py, 0, px, py, r);
+              const col = i % 2 === 0 ? '254, 240, 138' : '110, 231, 183';
+              g.addColorStop(0, 'rgba(' + col + ', ' + alpha.toFixed(3) + ')');
+              g.addColorStop(1, 'rgba(' + col + ', 0)');
+              ctx.fillStyle = g;
+              ctx.beginPath();
+              ctx.arc(px, py, r, 0, Math.PI * 2);
+              ctx.fill();
+            }
           }
-
-          // Ascending Growth Trajectory Curve
-          const curveStartX = 36, curveEndX = rx - 28;
-          const curveStartY = botY - 16, curveEndY = topY + 22;
-          ctx.beginPath();
-          ctx.moveTo(curveStartX, curveStartY);
-          ctx.quadraticCurveTo((curveStartX + curveEndX) * 0.55, curveStartY - 12, curveEndX, curveEndY);
-          ctx.strokeStyle = '#6EE7B7';
-          ctx.lineWidth = 2.8;
-          ctx.stroke();
-
-          // Animated climbing star node along the trajectory
-          const p = (timeSec * 0.45) % 1;
-          const inv = 1 - p;
-          const cx1 = (curveStartX + curveEndX) * 0.55, cy1 = curveStartY - 12;
-          const sx = inv * inv * curveStartX + 2 * inv * p * cx1 + p * p * curveEndX;
-          const sy = inv * inv * curveStartY + 2 * inv * p * cy1 + p * p * curveEndY;
-          ctx.beginPath();
-          ctx.arc(sx, sy, 6, 0, Math.PI * 2);
-          ctx.fillStyle = '#FEF08A';
-          ctx.fill();
-
-          // Top-Left Growth Potential HUD
-          const boxW = 268, boxH = 58;
-          const bx = 22, by = 58;
-          ctx.fillStyle = 'rgba(12, 18, 16, 0.82)';
-          ctx.strokeStyle = 'rgba(110, 231, 183, 0.55)';
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.roundRect(bx, by, boxW, boxH, 12);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#6EE7B7';
-          ctx.font = '800 11px Pretendard, sans-serif';
-          ctx.fillText('🌱 GROWTH POTENTIAL · 성장판 & 예상키', bx + 12, by + 22);
-          ctx.fillStyle = 'rgba(248, 250, 252, 0.88)';
-          ctx.font = '600 10px Pretendard, sans-serif';
-          ctx.fillText('• 골연령 · 성장판 활성도 · 최종 예상키 정밀 예측', bx + 12, by + 42);
           ctx.restore();
         } else {
           // 'pulse-ripples', 'gold-aura', 'sunlight-bokeh'
