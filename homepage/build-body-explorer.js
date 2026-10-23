@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const { DISEASE_BLOG_CATEGORIES, INITIAL_DISEASE_BLOG_POSTS } = require('./disease-blog-seed-data.js');
-const GAS_SCRIPT_SOURCE = fs.readFileSync(path.join(__dirname, 'google-apps-script-daily-blog.gs'), 'utf8');
 
 const BODY_PARTS = [
   {
@@ -1156,24 +1155,24 @@ function buildBodyExplorerHtml() {
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Serif+KR:wght@500;600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* 바른한의원 5대 시그니처 브랜드 컬러 팔레트 (베이지·브라운·블랙·화이트·그린) */
-      --bg-beige: #F5F1E8;          /* 베이지 (신뢰감 · Trust) */
-      --bg-beige-deep: #EBE4D5;     /* 딥 한지 베이지 */
-      --bg-white: #FFFFFF;          /* 화이트 (투명 · Transparency) */
-      --bg-white-glass: rgba(255, 255, 255, 0.88);
-      --brown-deep: #4A3525;        /* 브라운 (부드러움 · Softness) */
-      --brown-mid: #5E4736;         /* 소프트 에스프레소 브라운 */
-      --brown-soft: #8A725E;        /* 웜 타우프 브라운 */
-      --green-primary: #2D5A43;     /* 그린 (자연 · Nature) */
-      --green-mid: #3D7357;         /* 보타니컬 세이지 그린 */
-      --green-soft: #68A684;
-      --green-tint: #E8F2EC;
-      --black-ink: #171614;         /* 블랙 (진실 · Truth) */
-      --black-sub: #3A3530;
-      --border-warm: #DFD6C5;
-      --border-strong: #C9BAA8;
-      --shadow-soft: 0 12px 34px rgba(58, 42, 30, 0.06);
-      --shadow-card: 0 6px 20px rgba(58, 42, 30, 0.05);
+      /* 바른한의원 고시인성(High-Visibility) 브랜드 컬러 팔레트 */
+      --bg-beige: #F4F1EA;          /* 정갈한 한지 배경 */
+      --bg-beige-deep: #E6DFD1;     /* 딥 베이지 */
+      --bg-white: #FFFFFF;          /* 고대비 순백 카드 */
+      --bg-white-glass: rgba(255, 255, 255, 0.96);
+      --brown-deep: #362417;        /* 짙은 에스프레소 브라운 */
+      --brown-mid: #4A3525;         /* 미디엄 브라운 */
+      --brown-soft: #635142;        /* 선명한 서브 브라운 */
+      --green-primary: #1B4332;     /* 딥 포레스트 그린 (최고 시인성) */
+      --green-mid: #2D6A4F;         /* 에메랄드 세이지 그린 */
+      --green-soft: #52B788;
+      --green-tint: #E6F4ED;
+      --black-ink: #111111;         /* 선명한 딥 블랙 (제목·핵심 본문) */
+      --black-sub: #1F2421;         /* 가독성 최우선 다크 차콜 (본문) */
+      --border-warm: #C8D6CE;       /* 또렷한 카드 경계선 */
+      --border-strong: #94B0A0;     /* 강조 카드 경계선 */
+      --shadow-soft: 0 14px 36px rgba(27, 67, 50, 0.08);
+      --shadow-card: 0 8px 22px rgba(27, 67, 50, 0.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1188,22 +1187,22 @@ function buildBodyExplorerHtml() {
     }
 
     /* =========================================================================
-       1. TOP HEADER BAR (8 CLINIC PARTS QUICK NAV)
+       1. TOP HEADER BAR (9 CLINIC PARTS QUICK NAV)
        ========================================================================= */
     .vibrant-header {
       position: fixed;
       top: 0; left: 0; right: 0;
-      height: 62px;
+      height: 64px;
       z-index: 300;
       background: var(--bg-white-glass);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border-warm);
-      box-shadow: 0 4px 20px rgba(58, 42, 30, 0.04);
+      border-bottom: 1.5px solid var(--border-warm);
+      box-shadow: 0 4px 20px rgba(17, 17, 17, 0.06);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
+      padding: 0 22px;
       gap: 12px;
     }
 
@@ -1217,8 +1216,8 @@ function buildBodyExplorerHtml() {
     }
 
     .vh-brand-mark {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 9px;
       background: var(--green-primary);
       color: var(--bg-white);
@@ -1227,20 +1226,20 @@ function buildBodyExplorerHtml() {
       justify-content: center;
       font-family: 'Noto Serif KR', serif;
       font-weight: 800;
-      font-size: 0.92rem;
+      font-size: 0.96rem;
     }
 
     .vh-brand-title {
       font-family: 'Noto Serif KR', serif;
       font-weight: 800;
-      font-size: 0.98rem;
+      font-size: 1.02rem;
       color: var(--black-ink);
     }
 
     .vh-part-quicknav {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       overflow-x: auto;
       scrollbar-width: none;
       padding: 4px 0;
@@ -1249,13 +1248,13 @@ function buildBodyExplorerHtml() {
 
     .vh-part-chip {
       appearance: none;
-      border: 1px solid var(--border-warm);
+      border: 1.5px solid #D0C8B8;
       background: var(--bg-white);
-      color: var(--brown-mid);
+      color: #222222;
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 6px 11px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 7px 13px;
       border-radius: 999px;
       cursor: pointer;
       white-space: nowrap;
@@ -1270,7 +1269,7 @@ function buildBodyExplorerHtml() {
       background: var(--green-primary);
       border-color: var(--green-primary);
       color: var(--bg-white);
-      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.22);
+      box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
     }
 
     .vh-right-actions {
@@ -1284,19 +1283,19 @@ function buildBodyExplorerHtml() {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 7px 13px;
+      padding: 8px 14px;
       border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-size: 0.82rem;
+      font-weight: 800;
       text-decoration: none;
-      border: 1px solid var(--border-warm);
-      background: var(--bg-beige);
-      color: var(--brown-deep);
+      border: 1.5px solid #C8C0B0;
+      background: var(--bg-white);
+      color: var(--black-ink);
       transition: all 0.2s ease;
     }
     .vh-pill-btn:hover {
-      border-color: var(--brown-deep);
-      background: var(--bg-beige-deep);
+      border-color: var(--green-primary);
+      background: var(--green-tint);
     }
     .vh-pill-btn.primary {
       background: var(--green-primary);
@@ -1309,20 +1308,19 @@ function buildBodyExplorerHtml() {
     }
 
     /* =========================================================================
-       2. UNIFIED 3D HUMAN BODY & MEDICAL INFORMATION WORKSPACE (LEFT 3D + RIGHT INFO)
+       2. UNIFIED 3D HUMAN BODY & MEDICAL INFORMATION WORKSPACE (LEFT 40% + RIGHT 60%)
        ========================================================================= */
     .vibrant-workspace {
       display: grid;
-      grid-template-columns: 44% 56%;
+      grid-template-columns: 40% 60%;
       justify-items: stretch;
       align-items: stretch;
       width: 100% !important;
       max-width: 100% !important;
       min-height: 100vh;
       margin: 0 !important;
-      padding-top: 62px;
-      background:
-        radial-gradient(circle at 30% 35%, #FAF7F0 0%, #F4EFE4 58%, #EBE3D3 100%);
+      padding-top: 64px;
+      background: #F4F1EA;
     }
 
     .vibrant-3d-stage {
@@ -1515,7 +1513,7 @@ function buildBodyExplorerHtml() {
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* =========================================================================
-       3. RIGHT SECTION: UNIFIED 4-STEP MEDICAL INFO SLIDE DECK + SCI SIDEBAR
+       3. RIGHT SECTION: HIGH-VISIBILITY MEDICAL INFO SLIDE DECK + SCI SIDEBAR
        ========================================================================= */
     .encyclopedia-scroll-panel {
       width: 100% !important;
@@ -1523,228 +1521,240 @@ function buildBodyExplorerHtml() {
       max-width: 100% !important;
       margin: 0 !important;
       justify-self: stretch !important;
-      padding: 26px 32px 42px;
+      padding: 28px 34px 48px;
       background: var(--bg-beige);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      min-height: calc(100vh - 62px);
+      justify-content: flex-start;
+      min-height: calc(100vh - 68px);
     }
 
     /* Top Title Header */
     .encyc-part-header {
-      padding-bottom: 16px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border-warm);
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1.5px solid var(--border-warm);
     }
 
     .encyc-part-kicker {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.7rem;
+      font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.06em;
       color: var(--green-primary);
       background: var(--green-tint);
-      padding: 4px 11px;
+      border: 1px solid #B6D7C4;
+      padding: 5px 13px;
       border-radius: 999px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .encyc-part-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.35rem, 1.9vw, 1.75rem);
+      font-size: clamp(1.52rem, 2.2vw, 2.02rem);
       font-weight: 800;
       color: var(--black-ink);
-      letter-spacing: -0.02em;
-      line-height: 1.28;
+      letter-spacing: -0.025em;
+      line-height: 1.32;
     }
 
     .encyc-part-lead {
-      margin-top: 6px;
-      font-size: 0.86rem;
-      line-height: 1.6;
+      margin-top: 8px;
+      font-size: 0.98rem;
+      font-weight: 500;
+      line-height: 1.68;
       color: var(--black-sub);
       word-break: keep-all;
     }
 
-    /* Step Selector Bar (4 Selectable Pages per Condition) */
+    /* Step Selector Bar (4 Selectable Pages + 5th Blog Page per Condition) */
     .slide-tabs-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
     }
 
     .slide-tabs-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .slide-step-tab {
       appearance: none;
-      border: 1px solid var(--border-warm);
+      border: 1.5px solid var(--border-strong);
       background: var(--bg-white);
-      color: var(--brown-mid);
+      color: var(--brown-deep);
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.88rem;
       font-weight: 800;
-      padding: 8px 15px;
+      padding: 10px 18px;
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.22s ease;
+      transition: all 0.2s ease;
     }
     .slide-step-tab:hover {
       border-color: var(--green-primary);
       color: var(--green-primary);
+      background: var(--green-tint);
     }
     .slide-step-tab.active {
       background: var(--brown-deep);
       border-color: var(--brown-deep);
       color: var(--bg-white);
-      box-shadow: 0 4px 12px rgba(58, 42, 30, 0.18);
+      box-shadow: 0 5px 14px rgba(34, 24, 17, 0.22);
     }
 
     .slide-page-counter {
-      font-size: 0.76rem;
+      font-size: 0.82rem;
       font-weight: 800;
-      color: var(--brown-soft);
-      padding: 5px 12px;
+      color: var(--brown-deep);
+      padding: 6px 14px;
       border-radius: 999px;
       background: var(--bg-beige-deep);
+      border: 1px solid var(--border-warm);
     }
 
-    /* 2-Column Content Area: [Interactive Slide Card (70%)] + [Compact SCI Paper Side Rail (30%)] */
+    /* 2-Column Content Area for Medical Slides (Full-width when Blog Tab is active) */
     .encyc-main-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 235px;
-      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) 265px;
+      gap: 20px;
       align-items: start;
       flex: 1;
+    }
+    .encyc-main-grid.blog-mode-full {
+      grid-template-columns: minmax(0, 1fr);
     }
 
     /* Animated Slide Deck Container */
     .slide-stage-card {
       background: var(--bg-white);
-      border: 1px solid var(--border-warm);
-      border-radius: 20px;
-      padding: 20px 22px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 22px;
+      padding: 26px 28px;
       box-shadow: var(--shadow-soft);
       overflow: hidden;
       position: relative;
     }
 
-    /* Page Transition Animations (#7-3) */
+    /* Page Transition Animations */
     @keyframes slideMotionNext {
-      0% { opacity: 0; transform: translateX(34px) scale(0.985); }
+      0% { opacity: 0; transform: translateX(28px) scale(0.99); }
       100% { opacity: 1; transform: translateX(0) scale(1); }
     }
     @keyframes slideMotionPrev {
-      0% { opacity: 0; transform: translateX(-34px) scale(0.985); }
+      0% { opacity: 0; transform: translateX(-28px) scale(0.99); }
       100% { opacity: 1; transform: translateX(0) scale(1); }
     }
     .slide-anim-next {
-      animation: slideMotionNext 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: slideMotionNext 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .slide-anim-prev {
-      animation: slideMotionPrev 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: slideMotionPrev 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    /* Soft Editorial Illustration Banner blended with Slide Header (#7-2) */
+    /* Editorial Illustration Banner blended with Slide Header */
     .slide-visual-banner {
       display: grid;
-      grid-template-columns: 185px 1fr;
-      gap: 16px;
+      grid-template-columns: 215px 1fr;
+      gap: 20px;
       align-items: center;
-      background: var(--bg-beige);
-      border: 1px solid var(--border-warm);
-      border-radius: 15px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
+      background: #F6F2E9;
+      border: 1.5px solid var(--border-warm);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
     }
 
     .slide-illust-thumb {
       width: 100%;
-      height: 112px;
+      height: 132px;
       object-fit: cover;
-      border-radius: 11px;
-      border: 1px solid var(--border-warm);
+      border-radius: 12px;
+      border: 1px solid var(--border-strong);
       background: #EFE9DC;
       display: block;
     }
 
     .slide-banner-badge {
       display: inline-block;
-      font-size: 0.69rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: var(--green-primary);
       background: var(--green-tint);
-      padding: 3px 9px;
+      border: 1px solid #B6D7C4;
+      padding: 4px 11px;
       border-radius: 999px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .slide-banner-heading {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.08rem;
+      font-size: 1.24rem;
       font-weight: 800;
       color: var(--black-ink);
-      line-height: 1.35;
-      margin-bottom: 5px;
+      line-height: 1.4;
+      margin-bottom: 7px;
       word-break: keep-all;
     }
 
     .slide-banner-summary {
-      font-size: 0.81rem;
-      line-height: 1.55;
+      font-size: 0.94rem;
+      font-weight: 500;
+      line-height: 1.65;
       color: var(--black-sub);
       word-break: keep-all;
     }
 
-    /* 3 Concise Core Cards per Slide (#7-1) */
+    /* 3 Concise Core Cards per Slide */
     .slide-cards-stack {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 13px;
+      margin-bottom: 20px;
     }
 
     .concise-point-card {
-      background: #FAF8F3;
-      border: 1px solid var(--border-warm);
-      border-left: 4px solid var(--green-primary);
-      border-radius: 13px;
-      padding: 12px 16px;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      background: #FCFBF8;
+      border: 1.5px solid var(--border-warm);
+      border-left: 5px solid var(--green-primary);
+      border-radius: 14px;
+      padding: 16px 20px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .concise-point-card:hover {
       transform: translateX(3px);
       border-color: var(--green-primary);
+      box-shadow: 0 6px 18px rgba(27, 67, 50, 0.08);
     }
 
     .cpc-tag {
-      font-size: 0.7rem;
+      font-size: 0.78rem;
       font-weight: 800;
-      color: var(--brown-mid);
-      margin-bottom: 3px;
+      color: var(--green-primary);
+      margin-bottom: 5px;
     }
 
     .cpc-title {
-      font-size: 0.92rem;
+      font-size: 1.06rem;
       font-weight: 800;
       color: var(--black-ink);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      line-height: 1.42;
       word-break: keep-all;
     }
 
     .cpc-desc {
-      font-size: 0.81rem;
-      line-height: 1.54;
+      font-size: 0.94rem;
+      font-weight: 500;
+      line-height: 1.68;
       color: var(--black-sub);
       word-break: keep-all;
     }
@@ -1754,9 +1764,9 @@ function buildBodyExplorerHtml() {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-warm);
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1.5px solid var(--border-warm);
       flex-wrap: wrap;
     }
 
@@ -1764,17 +1774,18 @@ function buildBodyExplorerHtml() {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .slide-nav-btn {
       appearance: none;
-      border: 1px solid var(--border-warm);
+      border: 1.5px solid var(--border-strong);
       background: var(--bg-beige);
       color: var(--brown-deep);
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.76rem;
+      font-size: 0.86rem;
       font-weight: 800;
-      padding: 7px 14px;
+      padding: 9px 17px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -1789,25 +1800,26 @@ function buildBodyExplorerHtml() {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 15px;
+      padding: 10px 19px;
       border-radius: 999px;
       background: var(--green-primary);
       color: var(--bg-white);
-      font-size: 0.76rem;
+      font-size: 0.88rem;
       font-weight: 800;
       text-decoration: none;
       transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(27, 67, 50, 0.22);
     }
     .slide-clinic-cta:hover {
       background: var(--brown-deep);
     }
 
-    /* Compact SCI Paper Titles Side Rail (#7) */
+    /* SCI Paper Titles Side Rail */
     .sci-side-rail {
       background: var(--bg-white);
-      border: 1px solid var(--border-warm);
+      border: 1.5px solid var(--border-strong);
       border-radius: 18px;
-      padding: 16px 15px;
+      padding: 18px 17px;
       box-shadow: var(--shadow-card);
     }
 
@@ -1815,182 +1827,77 @@ function buildBodyExplorerHtml() {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.75rem;
+      font-size: 0.86rem;
       font-weight: 800;
       color: var(--brown-deep);
-      padding-bottom: 8px;
-      margin-bottom: 8px;
-      border-bottom: 1px solid var(--border-warm);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1.5px solid var(--border-warm);
     }
 
     .sci-rail-note {
-      font-size: 0.69rem;
-      line-height: 1.48;
-      color: var(--brown-soft);
-      margin-bottom: 10px;
+      font-size: 0.79rem;
+      font-weight: 500;
+      line-height: 1.56;
+      color: var(--black-sub);
+      margin-bottom: 12px;
       word-break: keep-all;
     }
 
     .sci-mini-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 9px;
     }
 
     .sci-mini-item {
-      background: var(--bg-beige);
+      background: #F7F4EC;
       border: 1px solid var(--border-warm);
-      border-radius: 10px;
-      padding: 8px 10px;
+      border-radius: 11px;
+      padding: 10px 12px;
     }
 
     .sci-mini-journal {
-      font-size: 0.64rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: var(--green-primary);
-      margin-bottom: 2px;
-      letter-spacing: 0.02em;
+      margin-bottom: 3px;
+      letter-spacing: 0.01em;
     }
 
     .sci-mini-title {
-      font-size: 0.71rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      line-height: 1.42;
+      line-height: 1.48;
       color: var(--black-ink);
       word-break: keep-all;
     }
 
-    @media (max-width: 1120px) {
-      .vibrant-header {
-        position: sticky;
-        top: 0;
-        height: auto;
-        min-height: 52px;
-        padding: 8px 12px;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .vh-brand {
-        gap: 6px;
-        flex: 1;
-        min-width: 0;
-      }
-      .vh-brand-mark {
-        width: 24px;
-        height: 24px;
-        font-size: 0.76rem;
-        border-radius: 6px;
-        flex-shrink: 0;
-      }
-      .vh-brand-title {
-        font-size: 0.78rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .vh-right-actions {
-        gap: 4px;
-        flex-shrink: 0;
-      }
-      .vh-right-actions a[href^="tel:"],
-      .vh-right-actions .vh-pill-btn.primary {
-        display: none;
-      }
-      .vh-pill-btn {
-        padding: 5px 9px;
-        font-size: 0.66rem;
-        white-space: nowrap;
-      }
-      .vh-part-quicknav {
-        order: 3;
-        width: 100%;
-        padding: 2px 0 0;
-        gap: 5px;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-      }
-      .vh-part-chip {
-        padding: 5px 9px;
-        font-size: 0.68rem;
-      }
-      .vibrant-workspace {
-        grid-template-columns: 1fr;
-        padding-top: 0;
-      }
-      .vibrant-3d-stage {
-        position: relative;
-        top: 0;
-        height: 48vh;
-        height: 48dvh;
-        min-height: 330px;
-        border-right: none;
-        border-bottom: 1px solid var(--border-warm);
-      }
-      .stage-top-badge {
-        margin: 10px auto 0;
-        padding: 5px 11px;
-      }
-      .stage-top-text {
-        font-size: 0.7rem;
-      }
-      .stage-bottom-bar {
-        margin: 0 auto 10px;
-        padding: 4px 8px;
-      }
-      .stage-ctrl-btn {
-        padding: 5px 10px;
-        font-size: 0.7rem;
-      }
-      .encyclopedia-scroll-panel {
-        min-height: auto;
-        padding: 18px 14px 28px;
-      }
-      .encyc-main-grid {
-        grid-template-columns: 1fr;
-      }
-      .slide-stage-card {
-        padding: 14px 14px;
-        border-radius: 16px;
-      }
-      .slide-visual-banner {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 10px 12px;
-      }
-      .slide-illust-thumb {
-        height: 130px;
-      }
-      .slide-step-tab {
-        padding: 6px 11px;
-        font-size: 0.72rem;
-      }
-    }
-
     /* =========================================================================
-       4. DISEASE-SPECIFIC BLOG PAGE & GOOGLE APPS SCRIPT (GAS) AUTO-BLOG UI
+       4. HIGH-VISIBILITY DISEASE BLOG & 5-LAYOUT EDITORIAL COLUMN SYSTEM
        ========================================================================= */
     .slide-step-tab.blog-tab-btn {
       border-color: var(--green-primary);
-      background: linear-gradient(135deg, #EBF5EF 0%, #DFEFE6 100%);
+      background: linear-gradient(135deg, #E8F4ED 0%, #D6EBE0 100%);
       color: var(--green-primary);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       position: relative;
     }
     .slide-step-tab.blog-tab-btn:hover,
     .slide-step-tab.blog-tab-btn.active {
-      background: linear-gradient(135deg, var(--green-primary) 0%, #1E4230 100%);
+      background: linear-gradient(135deg, var(--green-primary) 0%, #123023 100%);
       border-color: var(--green-primary);
       color: #FFFFFF;
-      box-shadow: 0 5px 15px rgba(45, 90, 67, 0.26);
+      box-shadow: 0 5px 16px rgba(27, 67, 50, 0.28);
     }
     .blog-live-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: #22C55E;
-      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+      background: #16A34A;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25);
       display: inline-block;
       animation: blogPulse 1.8s infinite ease-in-out;
     }
@@ -1999,20 +1906,20 @@ function buildBodyExplorerHtml() {
       50% { transform: scale(1.28); opacity: 0.75; }
     }
     .blog-count-pill {
-      padding: 1px 6px;
+      padding: 2px 8px;
       border-radius: 999px;
-      font-size: 0.65rem;
+      font-size: 0.74rem;
       font-weight: 800;
-      background: rgba(45, 90, 67, 0.14);
+      background: rgba(27, 67, 50, 0.14);
       color: inherit;
     }
     .slide-step-tab.blog-tab-btn.active .blog-count-pill {
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.25);
       color: #FFFFFF;
     }
 
     .vh-pill-btn.blog-top-btn {
-      background: #EBF5EF;
+      background: #E8F4ED;
       border-color: var(--green-primary);
       color: var(--green-primary);
       font-weight: 800;
@@ -2022,78 +1929,16 @@ function buildBodyExplorerHtml() {
       background: var(--green-primary);
       color: #FFFFFF;
     }
-    .vh-pill-btn.gas-top-btn {
-      background: #FFFDF7;
-      border-color: var(--border-strong);
-      color: var(--brown-deep);
-      font-weight: 800;
-    }
-    .vh-pill-btn.gas-top-btn:hover {
-      background: var(--brown-deep);
-      color: #FFFFFF;
-    }
 
-    /* Preview Ticker Strip on Medical Slides 1-4 */
-    .disease-blog-preview-strip {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 11px 15px;
-      margin-bottom: 12px;
-      border-radius: 13px;
-      background: linear-gradient(135deg, #F2F8F4 0%, #FAF6EC 100%);
-      border: 1.5px solid #B7D4C3;
-      flex-wrap: wrap;
-    }
-    .dbp-left {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      min-width: 0;
-      flex: 1;
-    }
-    .dbp-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: var(--green-primary);
-      color: #FFFFFF;
-      font-size: 0.66rem;
-      font-weight: 800;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .dbp-title {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--black-ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
-    }
-    .dbp-title:hover {
-      color: var(--green-primary);
-      text-decoration: underline;
-    }
-    .dbp-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
     .dbp-btn {
       appearance: none;
-      border: 1px solid var(--green-primary);
+      border: 1.5px solid var(--green-primary);
       background: #FFFFFF;
       color: var(--green-primary);
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.71rem;
+      font-size: 0.82rem;
       font-weight: 800;
-      padding: 5px 11px;
+      padding: 7px 14px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.18s ease;
@@ -2109,76 +1954,61 @@ function buildBodyExplorerHtml() {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 12px 15px;
-      margin-bottom: 12px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #1E3F2E 0%, #2D5A43 100%);
+      gap: 14px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #163829 0%, #24523D 100%);
       color: #FFFFFF;
       flex-wrap: wrap;
+      box-shadow: 0 8px 24px rgba(22, 56, 41, 0.16);
     }
     .dbh-info {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
     }
     .dbh-kicker {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.68rem;
+      gap: 7px;
+      font-size: 0.78rem;
       font-weight: 800;
       color: #A7F3D0;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
     .dbh-title {
-      font-size: 0.98rem;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.22rem;
       font-weight: 800;
       color: #FFFFFF;
+      line-height: 1.35;
     }
-    .dbh-btns {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-    .dbh-action-btn {
-      appearance: none;
-      border: 1px solid rgba(255,255,255,0.32);
-      background: rgba(255,255,255,0.12);
-      color: #FFFFFF;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.71rem;
-      font-weight: 800;
-      padding: 6px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .dbh-action-btn:hover {
-      background: #FFFFFF;
-      color: var(--green-primary);
+    .dbh-sub {
+      font-size: 0.88rem;
+      color: #E2F2EA;
+      font-weight: 500;
     }
 
-    /* 8-Disease Blog Filter Chips inside Blog View */
+    /* 9-Disease Blog Filter Chips inside Blog View */
     .disease-blog-cat-strip {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
       scrollbar-width: thin;
     }
     .blog-cat-chip {
       appearance: none;
-      border: 1px solid var(--border-warm);
+      border: 1.5px solid var(--border-strong);
       background: var(--bg-beige);
       color: var(--brown-deep);
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.71rem;
+      font-size: 0.84rem;
       font-weight: 800;
-      padding: 5px 11px;
+      padding: 8px 15px;
       border-radius: 999px;
       white-space: nowrap;
       cursor: pointer;
@@ -2187,6 +2017,7 @@ function buildBodyExplorerHtml() {
     .blog-cat-chip:hover {
       border-color: var(--green-primary);
       color: var(--green-primary);
+      background: var(--green-tint);
     }
     .blog-cat-chip.active {
       background: var(--brown-deep);
@@ -2194,85 +2025,117 @@ function buildBodyExplorerHtml() {
       color: #FFFFFF;
     }
 
-    /* Disease Blog Post Cards Stack */
+    /* Disease Blog Post Cards List with Visual Thumbnail */
     .disease-blog-cards-list {
       display: flex;
       flex-direction: column;
-      gap: 11px;
-      margin-bottom: 14px;
+      gap: 16px;
+      margin-bottom: 20px;
     }
     .disease-blog-card {
-      background: #FFFDF9;
-      border: 1.5px solid var(--border-warm);
-      border-left: 4px solid var(--green-primary);
-      border-radius: 14px;
-      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 20px;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-strong);
+      border-left: 6px solid var(--green-primary);
+      border-radius: 18px;
+      padding: 18px 20px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
+      box-shadow: 0 4px 16px rgba(24, 20, 15, 0.05);
     }
     .disease-blog-card:hover {
       border-color: var(--green-primary);
-      box-shadow: 0 8px 22px rgba(45, 90, 67, 0.10);
-      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(27, 67, 50, 0.13);
+      transform: translateY(-2px);
+    }
+    .dbc-thumb-wrap {
+      width: 100%;
+      height: 168px;
+      border-radius: 13px;
+      overflow: hidden;
+      border: 1px solid var(--border-warm);
+      background: #EDE6D8;
+      position: relative;
+    }
+    .dbc-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .disease-blog-card:hover .dbc-thumb-img {
+      transform: scale(1.04);
+    }
+    .dbc-body-col {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
     }
     .dbc-meta-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 6px;
+      gap: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
     .dbc-badge-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
     }
     .dbc-badge {
-      padding: 2px 8px;
+      padding: 4px 11px;
       border-radius: 999px;
       background: var(--green-tint);
+      border: 1px solid #B6D7C4;
       color: var(--green-primary);
-      font-size: 0.66rem;
+      font-size: 0.78rem;
       font-weight: 800;
     }
     .dbc-date {
-      font-size: 0.69rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: var(--brown-soft);
     }
     .dbc-title {
-      font-size: 0.95rem;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.18rem;
       font-weight: 800;
-      line-height: 1.42;
+      line-height: 1.44;
       color: var(--black-ink);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       word-break: keep-all;
     }
     .dbc-summary {
-      font-size: 0.81rem;
-      line-height: 1.56;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.66;
       color: var(--black-sub);
-      margin-bottom: 9px;
+      margin-bottom: 12px;
       word-break: keep-all;
     }
     .dbc-footer-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border-warm);
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-strong);
       flex-wrap: wrap;
     }
     .dbc-journal {
-      font-size: 0.68rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: var(--brown-mid);
     }
     .dbc-read-more {
-      font-size: 0.74rem;
+      font-size: 0.86rem;
       font-weight: 800;
       color: var(--green-primary);
       display: inline-flex;
@@ -2280,35 +2143,37 @@ function buildBodyExplorerHtml() {
       gap: 4px;
     }
 
-    /* Full Blog Article Reader View */
+    /* Full Blog Article Reader View — High Contrast & Generous Typography */
     .blog-reader-box {
       background: #FFFFFF;
       border: 1.5px solid var(--border-strong);
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 14px;
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 28px rgba(24, 20, 15, 0.06);
     }
     .blog-reader-topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding-bottom: 12px;
-      margin-bottom: 14px;
-      border-bottom: 1px solid var(--border-warm);
+      gap: 10px;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+      border-bottom: 1.5px solid var(--border-warm);
       flex-wrap: wrap;
     }
     .blog-back-btn {
       appearance: none;
-      border: 1px solid var(--border-strong);
+      border: 1.5px solid var(--border-strong);
       background: var(--bg-beige);
       color: var(--brown-deep);
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.86rem;
       font-weight: 800;
-      padding: 6px 13px;
+      padding: 8px 16px;
       border-radius: 999px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
     .blog-back-btn:hover {
       background: var(--brown-deep);
@@ -2316,261 +2181,440 @@ function buildBodyExplorerHtml() {
     }
     .blog-reader-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.18rem;
+      font-size: clamp(1.38rem, 2vw, 1.72rem);
       font-weight: 800;
       line-height: 1.42;
       color: var(--black-ink);
-      margin: 6px 0 10px;
+      margin: 6px 0 12px;
       word-break: keep-all;
     }
     .blog-reader-byline {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
-      font-size: 0.73rem;
+      font-size: 0.86rem;
       font-weight: 700;
-      color: var(--brown-soft);
-      padding-bottom: 12px;
-      margin-bottom: 14px;
-      border-bottom: 1px solid var(--border-warm);
-    }
-    .blog-art-lead {
-      font-size: 0.88rem;
-      font-weight: 700;
-      line-height: 1.68;
-      color: var(--black-ink);
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: var(--bg-beige);
-      margin-bottom: 12px;
-      word-break: keep-all;
-    }
-    .blog-art-sec {
-      margin: 10px 0;
-      padding: 13px 15px;
-      border-radius: 12px;
-      background: #FFFDF9;
-      border: 1px solid var(--border-warm);
-    }
-    .blog-art-sec h4 {
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: var(--green-primary);
-      margin-bottom: 5px;
-      word-break: keep-all;
-    }
-    .blog-art-sec p {
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: var(--black-sub);
-      margin: 0;
-      word-break: keep-all;
-    }
-    .blog-art-sci {
-      margin-top: 12px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      background: #F4EFE4;
-      border: 1px solid var(--border-warm);
-      font-size: 0.75rem;
-      color: var(--brown-deep);
-      line-height: 1.5;
-    }
-    .blog-art-docnote {
-      margin-top: 9px;
-      padding: 11px 14px;
-      border-radius: 10px;
-      background: var(--green-tint);
-      border: 1px solid #B7D4C3;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--green-primary);
-      line-height: 1.55;
+      color: var(--brown-mid);
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+      border-bottom: 1.5px solid var(--border-warm);
     }
     .blog-tag-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      margin-top: 18px;
     }
     .blog-tag-chip {
-      font-size: 0.68rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      color: var(--brown-mid);
+      color: var(--brown-deep);
       background: var(--bg-beige);
-      padding: 3px 9px;
+      border: 1px solid var(--border-warm);
+      padding: 5px 12px;
       border-radius: 999px;
     }
+
+    /* =========================================================================
+       5-LAYOUT EDITORIAL BLOG BODY STYLES (Layout A ~ E + Hero/Sub Photos)
+       ========================================================================= */
+    .bblog-article-body {
+      color: var(--black-sub);
+      font-size: 1.02rem;
+      line-height: 1.82;
+      word-break: keep-all;
+    }
     .bblog-article-body h3 {
-      font-size: 0.94rem;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.22rem;
       font-weight: 800;
       color: var(--green-primary);
-      margin: 14px 0 6px;
+      margin: 26px 0 10px;
+      line-height: 1.42;
       word-break: keep-all;
     }
     .bblog-article-body p {
-      font-size: 0.83rem;
-      line-height: 1.66;
+      font-size: 1.02rem;
+      font-weight: 500;
+      line-height: 1.82;
       color: var(--black-sub);
-      margin: 0 0 8px;
+      margin: 0 0 14px;
       word-break: keep-all;
     }
     .bblog-lead {
-      font-size: 0.88rem !important;
-      font-weight: 700;
+      font-size: 1.08rem !important;
+      font-weight: 700 !important;
+      line-height: 1.78 !important;
       color: var(--black-ink) !important;
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: var(--bg-beige);
-      margin-bottom: 12px !important;
+      padding: 18px 22px;
+      border-radius: 16px;
+      background: #F6F2E9;
+      border-left: 5px solid var(--green-primary);
+      margin-bottom: 20px !important;
     }
-    .bblog-sci-callout {
-      margin: 12px 0;
-      padding: 12px 14px;
+    .bblog-hero-figure {
+      margin: 0 0 22px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1.5px solid var(--border-warm);
+      background: #FAF8F3;
+      box-shadow: 0 6px 20px rgba(24, 20, 15, 0.07);
+    }
+    .bblog-hero-img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    .bblog-hero-caption {
+      padding: 11px 16px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--brown-mid);
+      background: #F6F2E9;
+      border-top: 1px solid var(--border-warm);
+    }
+    .bblog-visual-split-card {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+      align-items: center;
+      margin: 20px 0;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: #FAF8F3;
+      border: 1.5px solid var(--border-warm);
+    }
+    .bblog-sub-img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
       border-radius: 12px;
-      background: #F4EFE4;
       border: 1px solid var(--border-strong);
+      display: block;
     }
-    .bblog-sci-label {
-      font-size: 0.72rem;
+    .bblog-sub-text h4 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--black-ink);
+      margin: 6px 0 8px;
+      line-height: 1.4;
+    }
+    .bblog-sub-text p {
+      font-size: 0.96rem !important;
+      margin: 0 !important;
+      line-height: 1.72 !important;
+    }
+    .bblog-badge-inline {
+      display: inline-block;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: var(--green-tint);
+      border: 1px solid #B6D7C4;
+      color: var(--green-primary);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .bblog-qa-box {
+      margin: 18px 0;
+      padding: 20px 22px;
+      border-radius: 16px;
+      background: #F4F9F6;
+      border: 1.5px solid #B6D7C4;
+    }
+    .bblog-q {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.12rem;
       font-weight: 800;
       color: var(--green-primary);
-      margin-bottom: 3px;
+      margin-bottom: 10px;
+      line-height: 1.45;
     }
-    .bblog-sci-paper-title {
-      font-size: 0.82rem;
+    .bblog-a {
+      font-size: 1.0rem;
+      font-weight: 500;
+      color: var(--black-ink);
+      line-height: 1.78;
+    }
+    .bblog-selfcheck-box {
+      margin: 18px 0;
+      padding: 20px 24px;
+      border-radius: 16px;
+      background: #FFFDF8;
+      border: 1.5px solid var(--border-strong);
+    }
+    .bblog-selfcheck-title {
+      font-size: 1.06rem;
       font-weight: 800;
       color: var(--brown-deep);
+      margin-bottom: 10px;
+    }
+    .bblog-check-list {
+      margin: 10px 0 16px;
+      padding: 16px 20px 16px 34px;
+      border-radius: 14px;
+      background: #FAF8F3;
+      border: 1.5px solid var(--border-warm);
+      font-size: 0.98rem;
+      font-weight: 500;
+      line-height: 1.76;
+      color: var(--black-ink);
+    }
+    .bblog-check-list li {
+      margin-bottom: 8px;
+    }
+    .bblog-mythfact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 18px 0;
+    }
+    .bblog-myth-card {
+      padding: 18px 20px;
+      border-radius: 15px;
+      background: #FDF6F3;
+      border: 1.5px solid #E7C6BA;
+    }
+    .bblog-fact-card {
+      padding: 18px 20px;
+      border-radius: 15px;
+      background: #F1F8F4;
+      border: 1.5px solid #B6D7C4;
+    }
+    .bblog-mf-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      background: rgba(0,0,0,0.06);
+      color: var(--black-ink);
+    }
+    .bblog-essay-lead {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.82;
+      color: var(--brown-deep);
+      padding: 20px 24px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #FAF6EC 0%, #F1ECE0 100%);
+      border-left: 5px solid var(--brown-deep);
+      margin-bottom: 20px;
+    }
+    .bblog-physio-card {
+      margin: 16px 0;
+      padding: 18px 22px;
+      border-radius: 15px;
+      background: #F4F9F6;
+      border: 1.5px solid #B6D7C4;
+    }
+    .bblog-physio-card strong {
+      display: block;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      margin-bottom: 6px;
+    }
+    .bblog-sci-callout {
+      margin: 18px 0;
+      padding: 18px 22px;
+      border-radius: 15px;
+      background: #F5F0E4;
+      border: 1.5px solid var(--border-strong);
+    }
+    .bblog-sci-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--green-primary);
       margin-bottom: 4px;
     }
+    .bblog-sci-paper-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--brown-deep);
+      margin-bottom: 6px;
+    }
     .bblog-sci-desc {
-      font-size: 0.78rem !important;
+      font-size: 0.95rem !important;
       margin: 0 !important;
       color: var(--black-sub) !important;
     }
-    .bblog-check-list {
-      margin: 8px 0 12px;
-      padding: 12px 16px 12px 28px;
-      border-radius: 12px;
-      background: #FFFDF9;
-      border: 1px solid var(--border-warm);
-      font-size: 0.81rem;
-      line-height: 1.62;
-      color: var(--black-sub);
-    }
-    .bblog-check-list li {
-      margin-bottom: 6px;
-    }
     .bblog-doctor-sign {
-      margin-top: 12px;
-      padding: 11px 14px;
-      border-radius: 10px;
+      margin-top: 20px;
+      padding: 16px 20px;
+      border-radius: 14px;
       background: var(--green-tint);
-      border: 1px solid #B7D4C3;
-      font-size: 0.79rem;
+      border: 1.5px solid #B6D7C4;
+      font-size: 0.95rem;
+      font-weight: 700;
       color: var(--green-primary);
-      line-height: 1.55;
+      line-height: 1.65;
     }
 
-    /* Google Apps Script (GAS) Configuration & Code Copy Modal */
-    .gas-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(23, 22, 20, 0.62);
-      backdrop-filter: blur(5px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
+    /* Recommended Latest-3 & Related Blog Preview Grid */
+    .rec-blog-box {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #F2F8F4 0%, #FAF6EC 100%);
+      border: 1.5px solid #B6D7C4;
     }
-    .gas-modal-backdrop.open {
-      display: flex;
-    }
-    .gas-modal-dialog {
-      width: 100%;
-      max-width: 820px;
-      max-height: 88vh;
-      overflow-y: auto;
-      background: #FFFDF9;
-      border: 2px solid var(--border-strong);
-      border-radius: 22px;
-      padding: 24px 26px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-    }
-    .gas-modal-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 14px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border-warm);
-    }
-    .gas-step-grid {
+    .rec-blog-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 12px;
     }
-    .gas-step-box {
-      background: var(--bg-beige);
-      border: 1px solid var(--border-warm);
-      border-radius: 12px;
-      padding: 12px 13px;
+    .rec-blog-mini-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-strong);
+      border-radius: 13px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
     }
-    .gas-step-num {
-      font-size: 0.68rem;
+    .rec-blog-mini-card:hover {
+      border-color: var(--green-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(27, 67, 50, 0.12);
+    }
+    .rec-blog-mini-img {
+      width: 100%;
+      height: 104px;
+      object-fit: cover;
+      display: block;
+      background: #EFE9DC;
+    }
+    .rec-blog-mini-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .rec-blog-mini-tag {
+      font-size: 0.72rem;
       font-weight: 800;
       color: var(--green-primary);
-      margin-bottom: 4px;
     }
-    .gas-step-title {
-      font-size: 0.82rem;
+    .rec-blog-mini-title {
+      font-size: 0.86rem;
       font-weight: 800;
+      line-height: 1.4;
       color: var(--black-ink);
-      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: keep-all;
     }
-    .gas-step-desc {
-      font-size: 0.73rem;
-      line-height: 1.48;
-      color: var(--black-sub);
-    }
-    .gas-url-input-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    .gas-url-input {
-      flex: 1;
-      min-width: 220px;
-      padding: 9px 13px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border-strong);
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.78rem;
-      background: #FFFFFF;
-      color: var(--black-ink);
-    }
-    .gas-code-pre {
-      background: #171614;
-      color: #E8F2EC;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-family: Consolas, Monaco, monospace;
-      font-size: 0.72rem;
-      line-height: 1.52;
-      max-height: 240px;
-      overflow: auto;
-      white-space: pre;
-      margin-top: 8px;
-    }
-    @media (max-width: 768px) {
-      .gas-step-grid {
+
+    @media (max-width: 1120px) {
+      .vibrant-header {
+        position: sticky;
+        top: 0;
+        height: auto;
+        min-height: 54px;
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .vh-brand {
+        gap: 6px;
+        flex: 1;
+        min-width: 0;
+      }
+      .vh-brand-mark {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+      .vh-brand-title {
+        font-size: 0.84rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .vh-right-actions {
+        gap: 5px;
+        flex-shrink: 0;
+      }
+      .vh-right-actions a[href^="tel:"],
+      .vh-right-actions .vh-pill-btn.primary {
+        display: none;
+      }
+      .vh-pill-btn {
+        padding: 6px 11px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+      .vh-part-quicknav {
+        order: 3;
+        width: 100%;
+        padding: 2px 0 0;
+        gap: 6px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+      .vh-part-chip {
+        padding: 6px 11px;
+        font-size: 0.76rem;
+      }
+      .vibrant-workspace {
         grid-template-columns: 1fr;
+        padding-top: 0;
+      }
+      .vibrant-3d-stage {
+        position: relative;
+        top: 0;
+        height: 46vh;
+        height: 46dvh;
+        min-height: 320px;
+        border-right: none;
+        border-bottom: 1.5px solid var(--border-warm);
+      }
+      .encyclopedia-scroll-panel {
+        min-height: auto;
+        padding: 20px 14px 32px;
+      }
+      .encyc-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .slide-stage-card {
+        padding: 18px 16px;
+        border-radius: 18px;
+      }
+      .slide-visual-banner {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 14px;
+      }
+      .slide-illust-thumb {
+        height: 150px;
+      }
+      .disease-blog-card {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .dbc-thumb-wrap {
+        height: 190px;
+      }
+      .bblog-visual-split-card,
+      .bblog-mythfact-grid,
+      .rec-blog-grid {
+        grid-template-columns: 1fr;
+      }
+      .blog-reader-box {
+        padding: 20px 18px;
       }
     }
   </style>
@@ -2583,7 +2627,7 @@ function buildBodyExplorerHtml() {
   <header class="vibrant-header">
     <a href="story-3d.html" class="vh-brand">
       <div class="vh-brand-mark">바</div>
-      <span class="vh-brand-title">바른한의원 대전본점 · 아빠 한의사 인체모형 의학백과 & 질환별 블로그</span>
+      <span class="vh-brand-title">바른한의원 대전본점 · 아빠 한의사 인체모형 의학백과 & 질환별 칼럼</span>
     </a>
 
     <nav class="vh-part-quicknav" id="vh-part-quicknav">
@@ -2591,8 +2635,7 @@ function buildBodyExplorerHtml() {
     </nav>
 
     <div class="vh-right-actions">
-      <button type="button" class="vh-pill-btn blog-top-btn" id="vh-open-blog-btn" onclick="window.openDiseaseBlogTab()">📝 질환별 블로그</button>
-      <button type="button" class="vh-pill-btn gas-top-btn" onclick="window.openGasConfigModal()">⚙️ 자동발행(GAS)</button>
+      <button type="button" class="vh-pill-btn blog-top-btn" id="vh-open-blog-btn" onclick="window.openDiseaseBlogTab()">📝 질환별 건강칼럼</button>
       <a href="tel:010-5631-1275" class="vh-pill-btn">📞 대표원장실 전화 상담</a>
       <a href="story-3d.html" class="vh-pill-btn">← 메인 쇼룸</a>
       <a href="story-3d.html?cards=1" class="vh-pill-btn primary">질환별 상세카드 펼침 ↗</a>
@@ -2606,18 +2649,18 @@ function buildBodyExplorerHtml() {
     <section class="vibrant-3d-stage" id="vibrant-3d-stage">
       <div id="dongin-loader-overlay">
         <div class="loader-spinner"></div>
-        <div style="font-size:0.8rem;font-weight:700;color:var(--brown-deep);">인체 장기 · 신경 · 골격 일러스트 로딩 중...</div>
+        <div style="font-size:0.88rem;font-weight:700;color:var(--brown-deep);">인체 장기 · 신경 · 골격 일러스트 로딩 중...</div>
       </div>
 
       <div class="stage-top-badge">
         <span class="stage-top-dot"></span>
-        <span class="stage-top-text" id="stage-active-part-label">무릎 · 소아 성장판 & 감기면역</span>
+        <span class="stage-top-text" id="stage-active-part-label">무릎 · 소아 성장판 & 소아비만</span>
       </div>
 
       <canvas id="vibrant-body-canvas"></canvas>
       <div id="hotspot-overlay-layer"></div>
 
-      <!-- Bottom Control Bar: Gender Toggle + Single Reset ("원위치") Button (#4, #5) -->
+      <!-- Bottom Control Bar: Gender Toggle + Single Reset ("원위치") Button -->
       <div class="stage-bottom-bar">
         <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
         <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
@@ -2626,76 +2669,22 @@ function buildBodyExplorerHtml() {
       </div>
     </section>
 
-    <!-- RIGHT: PAGINATED 4-STEP SLIDE DECK + 5TH TAB DISEASE BLOG + COMPACT SCI REFERENCE RAIL -->
+    <!-- RIGHT: PAGINATED 4-STEP SLIDE DECK + 5TH TAB DISEASE BLOG + SCI REFERENCE RAIL -->
     <section class="encyclopedia-scroll-panel" id="encyclopedia-scroll-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 16px;margin-bottom:14px;border-radius:14px;background:linear-gradient(135deg,#FFFDF7 0%,#EFE9DC 100%);border:1.5px solid #C9BAA8;box-shadow:0 4px 14px rgba(58,42,30,0.05);">
-        <span style="font-size:0.76rem;font-weight:800;color:#2D5A43;letter-spacing:0.02em;">👨‍👧‍👦 아빠 한의사 · 내 가족 주치의 원칙</span>
-        <span style="font-size:0.78rem;font-weight:700;color:#171614;">“내 가족에게 직접 처방하고 시술한 치료만 시행하며, 모든 환자를 내 가족처럼 진료합니다.”</span>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:13px 18px;margin-bottom:16px;border-radius:14px;background:linear-gradient(135deg,#FFFDF9 0%,#EFE8DA 100%);border:1.5px solid #C2B29C;box-shadow:0 4px 14px rgba(58,42,30,0.06);">
+        <span style="font-size:0.86rem;font-weight:800;color:#1B4332;letter-spacing:0.01em;">👨‍👧‍👦 아빠 한의사 · 내 가족 주치의 원칙</span>
+        <span style="font-size:0.88rem;font-weight:700;color:#111111;">“내 가족에게 직접 처방하고 시술한 치료만 시행하며, 모든 환자를 내 가족처럼 정밀하게 검사·진단·치료합니다.”</span>
       </div>
       <div id="encyclopedia-dynamic-content"></div>
     </section>
 
   </main>
 
-  <!-- GOOGLE APPS SCRIPT (GAS) DAILY AUTO-BLOG CONFIGURATION & CODE MODAL -->
-  <div class="gas-modal-backdrop" id="gas-config-modal" onclick="if(event.target===this)window.closeGasConfigModal()">
-    <div class="gas-modal-dialog">
-      <div class="gas-modal-head">
-        <div>
-          <div style="font-size:0.72rem;font-weight:800;color:var(--green-primary);letter-spacing:0.05em;">GOOGLE APPS SCRIPT · 9대 카드 질환별 하루 1편 자동 발행 시스템</div>
-          <h2 style="font-family:'Noto Serif KR',serif;font-size:1.22rem;font-weight:800;color:var(--black-ink);margin-top:3px;">구글 앱스 스크립트(GAS) 9대 질환 카드별 매일 1편 자동 블로그 발행 시스템</h2>
-          <p style="font-size:0.78rem;color:var(--black-sub);margin-top:4px;">3D 모션 백과사전의 9대 질환(소아성장/소아비만·경추/탈모·척추/관절·공진단·자율신경/두통/어지럼/실신·소화/담적·대사/복부비만·자궁/난임·전립선/요실금)별로 각각 하루 1편(일 9편)씩 임상 칼럼이 자동 생성·발행되어 본 3D 모션 백과사전에 최신글 3개가 자동 노출 및 내부링크로 연결됩니다.</p>
-        </div>
-        <button type="button" class="blog-back-btn" onclick="window.closeGasConfigModal()">✕ 닫기</button>
-      </div>
-
-      <div class="gas-step-grid">
-        <div class="gas-step-box">
-          <div class="gas-step-num">STEP 01 · 스크립트 복사</div>
-          <div class="gas-step-title">GAS 자동발행 코드 붙여넣기</div>
-          <div class="gas-step-desc">아래 <strong>[📋 GAS 전체 코드 복사]</strong> 버튼을 눌러 <code>script.google.com</code> 새 프로젝트에 붙여넣습니다.</div>
-        </div>
-        <div class="gas-step-box">
-          <div class="gas-step-num">STEP 02 · 매일 자동 트리거 등록</div>
-          <div class="gas-step-title">setupDailyAutoPublishTrigger 실행</div>
-          <div class="gas-step-desc">함수 목록에서 <code>setupDailyAutoPublishTrigger</code>를 1회 실행하면 매일 오전 8시 9대 카드 질환별 각 1편(일 9편) 칼럼이 자동 발행됩니다.</div>
-        </div>
-        <div class="gas-step-box">
-          <div class="gas-step-num">STEP 03 · 3D 모션 백과사전 최신글 3개 자동 노출</div>
-          <div class="gas-step-title">워드프레스 REST API + 내부링크 연결</div>
-          <div class="gas-step-desc">카페24 워드프레스 9대 질환 카테고리(<code>blog-knee</code>~<code>blog-prostate</code>)와 연동되어 각 질환별 최신글 3개가 자동 노출되고 추천 블로그로 내부링크가 연결됩니다.</div>
-        </div>
-      </div>
-
-      <div style="background:#F4EFE4;border:1px solid var(--border-strong);border-radius:14px;padding:13px 15px;margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:800;color:var(--brown-deep);margin-bottom:6px;">🔗 구글 앱스 스크립트(GAS) 웹앱 배포 URL 연동 (선택 — 입력 시 워드프레스 REST API와 동시 실시간 병합)</div>
-        <div class="gas-url-input-row">
-          <input type="url" id="gas-webapp-url-input" class="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec (GAS 웹앱 배포 URL 입력)" />
-          <button type="button" class="slide-clinic-cta" style="border:none;cursor:pointer;" onclick="window.saveGasWebAppUrl()">연동 URL 저장 & 동기화</button>
-          <button type="button" class="slide-nav-btn" onclick="window.triggerGasPublishNow()">🚀 지금 즉시 자동발행 트리거</button>
-        </div>
-        <div id="gas-sync-status-msg" style="font-size:0.73rem;font-weight:700;color:var(--green-primary);">🟢 현재 워드프레스 REST API (/wp-json/wp/v2/posts) 9대 질환 카테고리 실시간 연동이 활성화되어 있습니다.</div>
-      </div>
-
-      <div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <span style="font-size:0.8rem;font-weight:800;color:var(--black-ink);">📄 google-apps-script-daily-blog.gs (9대 카드 질환 데일리 자동발행 마스터 스크립트)</span>
-          <div style="display:flex;gap:6px;">
-            <button type="button" class="slide-clinic-cta" style="border:none;cursor:pointer;" onclick="window.copyGasScriptCode()" id="btn-copy-gas-code">📋 GAS 전체 코드 복사하기</button>
-            <a href="https://script.google.com" target="_blank" rel="noopener" class="slide-nav-btn" style="text-decoration:none;">구글 앱스 스크립트 열기 ↗</a>
-          </div>
-        </div>
-        <pre class="gas-code-pre" id="gas-code-preview-box"></pre>
-      </div>
-    </div>
-  </div>
-
   <script>
   (async function() {
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
     const DISEASE_BLOG_CATEGORIES_DATA = ${JSON.stringify(DISEASE_BLOG_CATEGORIES)};
     const INITIAL_DISEASE_BLOG_POSTS_DATA = ${JSON.stringify(INITIAL_DISEASE_BLOG_POSTS)};
-    const GAS_SCRIPT_RAW_CODE = ${JSON.stringify(GAS_SCRIPT_SOURCE)};
 
     const PART_CAMERA_PRESETS = {
       knee:      { pos3D: [ 0.16, 1.20,  0.05], camPos: [ 0.14, 1.22, 2.05], camTarget: [0.06, 1.18, -0.06] },
@@ -2725,7 +2714,6 @@ function buildBodyExplorerHtml() {
     let currentSlideIdx = 0; // 0..3 = 4-Step Medical Guide, 4 = Disease-Specific Blog Page
     let currentBlogArticleId = null; // null = list view, string = full article reader view
     let liveMergedBlogPosts = {}; // { knee: [...], cervical: [...], ... }
-    let lastLiveSyncTimeStr = '실시간 자동 연동중';
 
     const contentBox = document.getElementById('encyclopedia-dynamic-content');
     const quickNavButtons = document.querySelectorAll('#vh-part-quicknav .vh-part-chip');
@@ -2736,7 +2724,6 @@ function buildBodyExplorerHtml() {
     const loaderOverlay = document.getElementById('dongin-loader-overlay');
     const topBlogBtn = document.getElementById('vh-open-blog-btn');
 
-    // Format rolling recent KST dates so daily auto-published columns always display fresh dates
     function formatKstDateDaysAgo(daysAgo) {
       const d = new Date(Date.now() - daysAgo * 86400000);
       const yyyy = d.getFullYear();
@@ -2758,15 +2745,6 @@ function buildBodyExplorerHtml() {
             date: formatKstDateDaysAgo(typeof post.dateOffsetDays === 'number' ? post.dateOffsetDays : idx)
           });
         });
-      } else if (INITIAL_DISEASE_BLOG_POSTS_DATA && typeof INITIAL_DISEASE_BLOG_POSTS_DATA === 'object') {
-        Object.keys(INITIAL_DISEASE_BLOG_POSTS_DATA).forEach(partKey => {
-          const seedArr = Array.isArray(INITIAL_DISEASE_BLOG_POSTS_DATA[partKey]) ? INITIAL_DISEASE_BLOG_POSTS_DATA[partKey] : [];
-          liveMergedBlogPosts[partKey] = seedArr.map((post, idx) => ({
-            ...post,
-            journalRef: post.journalRef || post.sciRef || 'SCI 국제 학술지 검증',
-            date: formatKstDateDaysAgo(idx)
-          }));
-        });
       }
     }
     initDiseaseBlogStore();
@@ -2779,7 +2757,7 @@ function buildBodyExplorerHtml() {
       return liveMergedBlogPosts[partId] || [];
     }
 
-    // Build Recommended Internal Blog Links HTML (동일 질환 최신글 3개 + 연관 질환 추천 블로그 내부링크)
+    // Build Visual Recommended Blog Cards HTML (동일 질환 최신 칼럼 3개 + 연관 진료과 추천 칼럼)
     function buildRecommendedInternalBlogLinksHtml(partId, excludeArticleId = null) {
       const part = getPartById(partId);
       const samePartPosts = getBlogPostsForPart(partId).filter(p => p.id !== excludeArticleId).slice(0, 3);
@@ -2793,31 +2771,32 @@ function buildBodyExplorerHtml() {
         }
       });
 
-      const sameLinksHtml = samePartPosts.map((p, idx) =>
-        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;background:#FFFDF9;border:1px solid #E2D9C8;cursor:pointer;" onclick="window.openBlogArticleReader(\\'' + p.id + '\\')">' +
-          '<span style="font-size:0.76rem;font-weight:700;color:#171614;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' +
-            '<strong style="color:#2D5A43;margin-right:5px;">[최신글 0' + (idx + 1) + ']</strong>' + p.title +
-          '</span>' +
-          '<span style="font-size:0.68rem;font-weight:800;color:#2D5A43;flex-shrink:0;">내부링크 열기 →</span>' +
+      const sameCardsHtml = samePartPosts.map((p, idx) =>
+        '<div class="rec-blog-mini-card" onclick="window.openBlogArticleReader(\\'' + p.id + '\\')">' +
+          '<img src="' + (p.heroImg || part.illustImg) + '" alt="' + (p.imageAlt || p.title) + '" class="rec-blog-mini-img" loading="lazy" />' +
+          '<div class="rec-blog-mini-body">' +
+            '<span class="rec-blog-mini-tag">최신 칼럼 0' + (idx + 1) + ' · ' + (p.date || '') + '</span>' +
+            '<div class="rec-blog-mini-title">' + p.title + '</div>' +
+          '</div>' +
         '</div>'
       ).join('');
 
       const relLinksHtml = relPosts.map(item =>
-        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:9px;background:#F4F8F5;border:1px solid #B7D4C3;cursor:pointer;" onclick="window.jumpToRecommendedBlog(\\'' + item.part.id + '\\', \\'' + item.post.id + '\\')">' +
-          '<span style="font-size:0.75rem;font-weight:700;color:#1E3A2B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' +
-            '<strong style="color:#4A3525;margin-right:5px;">[추천 블로그 · ' + item.part.navLabel.split('·')[0].trim() + ']</strong>' + item.post.title +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:11px;background:#FFFFFF;border:1px solid #B6D7C4;cursor:pointer;" onclick="window.jumpToRecommendedBlog(\\'' + item.part.id + '\\', \\'' + item.post.id + '\\')">' +
+          '<span style="font-size:0.88rem;font-weight:700;color:#111111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' +
+            '<strong style="color:#1B4332;margin-right:6px;">[함께 읽으면 좋은 칼럼 · ' + item.part.navLabel.split('·')[0].trim() + ']</strong>' + item.post.title +
           '</span>' +
-          '<span style="font-size:0.68rem;font-weight:800;color:#4A3525;flex-shrink:0;">추천 칼럼 이동 ↗</span>' +
+          '<span style="font-size:0.8rem;font-weight:800;color:#1B4332;flex-shrink:0;">칼럼 보기 ↗</span>' +
         '</div>'
       ).join('');
 
-      return '<div style="margin-top:12px;padding:12px 14px;border-radius:13px;background:linear-gradient(135deg,#F2F8F4 0%,#FAF6EC 100%);border:1.5px solid #B7D4C3;">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;">' +
-          '<span style="font-size:0.74rem;font-weight:800;color:#2D5A43;">🔗 3D 모션 백과사전 · ' + part.shortName + ' 최신글 3개 자동 노출 & 추천 블로그 내부링크</span>' +
-          '<button type="button" class="dbp-btn primary" onclick="window.openDiseaseBlogTab()">질환 블로그 전체보기 →</button>' +
+      return '<div class="rec-blog-box">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap;">' +
+          '<span style="font-size:0.92rem;font-weight:800;color:#1B4332;">📖 ' + part.shortName + ' 최신 건강칼럼 3선 & 맞춤 추천 칼럼</span>' +
+          '<button type="button" class="dbp-btn primary" onclick="window.openDiseaseBlogTab()">전체 칼럼 보기 →</button>' +
         '</div>' +
-        '<div style="display:flex;flex-direction:column;gap:5px;">' +
-          sameLinksHtml +
+        (sameCardsHtml ? '<div class="rec-blog-grid">' + sameCardsHtml + '</div>' : '') +
+        '<div style="display:flex;flex-direction:column;gap:7px;">' +
           relLinksHtml +
         '</div>' +
       '</div>';
@@ -2850,7 +2829,7 @@ function buildBodyExplorerHtml() {
         topBlogBtn.classList.toggle('active', isBlogTab);
       }
       if (stageLabelEl) {
-        stageLabelEl.textContent = isBlogTab ? (part.shortName + ' · 질환별 블로그') : part.shortName;
+        stageLabelEl.textContent = isBlogTab ? (part.shortName + ' · 건강칼럼') : part.shortName;
       }
 
       const partPosts = getBlogPostsForPart(part.id);
@@ -2865,8 +2844,8 @@ function buildBodyExplorerHtml() {
       const blogTabHtml =
         '<button type="button" class="slide-step-tab blog-tab-btn' + (isBlogTab ? ' active' : '') + '" onclick="window.openDiseaseBlogTab()">' +
           '<span class="blog-live-dot"></span>' +
-          '<span>다섯째 · 질환별 블로그 📝</span>' +
-          '<span class="blog-count-pill">최신 ' + partPosts.length + '편</span>' +
+          '<span>다섯째 · 질환별 건강칼럼 📝</span>' +
+          '<span class="blog-count-pill">' + partPosts.length + '편</span>' +
         '</button>';
 
       const sciListHtml = part.sciPapers.map(p =>
@@ -2877,8 +2856,8 @@ function buildBodyExplorerHtml() {
       ).join('');
 
       const sidebarLatest3Html = latest3Posts.map((lp, idx) =>
-        '<div style="padding:6px 8px;border-radius:8px;background:#FFFFFF;border:1px solid #DFD6C5;cursor:pointer;font-size:0.69rem;font-weight:700;color:#171614;line-height:1.38;" onclick="window.openBlogArticleReader(\\'' + lp.id + '\\')">' +
-          '<span style="color:#2D5A43;font-weight:800;">0' + (idx + 1) + '.</span> ' + lp.title +
+        '<div style="padding:8px 10px;border-radius:9px;background:#FFFFFF;border:1px solid #D4C8B4;cursor:pointer;font-size:0.78rem;font-weight:700;color:#111111;line-height:1.42;" onclick="window.openBlogArticleReader(\\'' + lp.id + '\\')">' +
+          '<span style="color:#1B4332;font-weight:800;">0' + (idx + 1) + '.</span> ' + lp.title +
         '</div>'
       ).join('');
 
@@ -2887,14 +2866,10 @@ function buildBodyExplorerHtml() {
       let mainCardInnerHtml = '';
 
       if (isBlogTab) {
-        // 5TH TAB: DISEASE-SPECIFIC DAILY AUTO-PUBLISHED BLOG PAGE
         const foundCat = Array.isArray(DISEASE_BLOG_CATEGORIES_DATA)
           ? DISEASE_BLOG_CATEGORIES_DATA.find(c => c.partId === part.id)
           : (DISEASE_BLOG_CATEGORIES_DATA && DISEASE_BLOG_CATEGORIES_DATA[part.id]);
-        const catMeta = {
-          blogTitle: (foundCat && (foundCat.blogTitle || foundCat.name)) || (part.title + ' 데일리 블로그'),
-          scheduleDesc: '매일 오전 08:00 9대 카드 질환별 각 1편 자동 발행'
-        };
+        const catTitle = (foundCat && (foundCat.blogTitle || foundCat.name)) || (part.title + ' 건강칼럼');
 
         const catFilterChipsHtml = BODY_PARTS_DATA.map(bp => {
           const cnt = getBlogPostsForPart(bp.id).length;
@@ -2917,8 +2892,8 @@ function buildBodyExplorerHtml() {
           blogBodyHtml =
             '<div class="blog-reader-box">' +
               '<div class="blog-reader-topbar">' +
-                '<button type="button" class="blog-back-btn" onclick="window.closeBlogArticleReader()">← ' + part.shortName + ' 블로그 목록으로 (' + partPosts.length + '편)</button>' +
-                '<span class="dbc-badge">🟢 ' + (selectedArticle.badge || '질환별 데일리 칼럼') + '</span>' +
+                '<button type="button" class="blog-back-btn" onclick="window.closeBlogArticleReader()">← ' + part.shortName + ' 칼럼 목록으로 (' + partPosts.length + '편)</button>' +
+                '<span class="dbc-badge">🟢 ' + (selectedArticle.badge || '안정위 원장 임상 칼럼') + '</span>' +
               '</div>' +
               '<h2 class="blog-reader-title">' + selectedArticle.title + '</h2>' +
               '<div class="blog-reader-byline">' +
@@ -2931,8 +2906,8 @@ function buildBodyExplorerHtml() {
               '<div class="blog-reader-content">' + selectedArticle.contentHtml + '</div>' +
               '<div class="blog-tag-row">' + tagsHtml + '</div>' +
               buildRecommendedInternalBlogLinksHtml(part.id, selectedArticle.id) +
-              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--border-warm);flex-wrap:wrap;">' +
-                '<div style="display:flex;gap:6px;">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;padding-top:16px;border-top:1.5px solid var(--border-warm);flex-wrap:wrap;">' +
+                '<div style="display:flex;gap:8px;">' +
                   (prevArt ? '<button type="button" class="slide-nav-btn" onclick="window.openBlogArticleReader(\\'' + prevArt.id + '\\')">← 이전 칼럼</button>' : '') +
                   (nextArt ? '<button type="button" class="slide-nav-btn" onclick="window.openBlogArticleReader(\\'' + nextArt.id + '\\')">다음 칼럼 →</button>' : '') +
                 '</div>' +
@@ -2942,19 +2917,24 @@ function buildBodyExplorerHtml() {
         } else {
           const listHtml = partPosts.map((post, idx) =>
             '<article class="disease-blog-card" onclick="window.openBlogArticleReader(\\'' + post.id + '\\')">' +
-              '<div class="dbc-meta-row">' +
-                '<div class="dbc-badge-group">' +
-                  '<span class="dbc-badge">최신 0' + (idx + 1) + ' · ' + (post.badge || '데일리 임상 칼럼') + '</span>' +
-                  '<span class="dbc-date">📅 ' + post.date + ' 발행 · ' + (post.readTime || '4분 칼럼') + '</span>' +
-                '</div>' +
-                '<span class="dbc-read-more">전문 칼럼 읽기 →</span>' +
+              '<div class="dbc-thumb-wrap">' +
+                '<img src="' + (post.heroImg || part.illustImg) + '" alt="' + (post.imageAlt || post.title) + '" class="dbc-thumb-img" loading="lazy" />' +
               '</div>' +
-              '<h3 class="dbc-title">' + post.title + '</h3>' +
-              '<p class="dbc-summary">' + post.summary + '</p>' +
-              '<div class="dbc-footer-row">' +
-                '<span class="dbc-journal">📚 학술 근거: ' + (post.journalRef || 'SCI 국제 학술지 검증') + '</span>' +
-                '<div style="display:flex;gap:5px;flex-wrap:wrap;">' +
-                  (post.tags || []).slice(0, 3).map(t => '<span class="blog-tag-chip">#' + t + '</span>').join('') +
+              '<div class="dbc-body-col">' +
+                '<div class="dbc-meta-row">' +
+                  '<div class="dbc-badge-group">' +
+                    '<span class="dbc-badge">칼럼 0' + (idx + 1) + ' · ' + (post.badge || '안정위 원장 임상 칼럼') + '</span>' +
+                    '<span class="dbc-date">📅 ' + post.date + ' · ' + (post.readTime || '4분 칼럼') + '</span>' +
+                  '</div>' +
+                  '<span class="dbc-read-more">칼럼 전문 읽기 →</span>' +
+                '</div>' +
+                '<h3 class="dbc-title">' + post.title + '</h3>' +
+                '<p class="dbc-summary">' + post.summary + '</p>' +
+                '<div class="dbc-footer-row">' +
+                  '<span class="dbc-journal">📚 학술 근거: ' + (post.journalRef || 'SCI 국제 학술지 검증') + '</span>' +
+                  '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+                    (post.tags || []).slice(0, 3).map(t => '<span class="blog-tag-chip">#' + t + '</span>').join('') +
+                  '</div>' +
                 '</div>' +
               '</div>' +
             '</article>'
@@ -2968,25 +2948,20 @@ function buildBodyExplorerHtml() {
         mainCardInnerHtml =
           '<div class="disease-blog-header-bar">' +
             '<div class="dbh-info">' +
-              '<div class="dbh-kicker"><span class="blog-live-dot"></span><span>GOOGLE APPS SCRIPT · 9대 카드 질환별 하루 1편 자동 발행 (' + lastLiveSyncTimeStr + ')</span></div>' +
-              '<div class="dbh-title">📝 ' + catMeta.blogTitle + ' (최신글 ' + partPosts.length + '편 자동 노출)</div>' +
-            '</div>' +
-            '<div class="dbh-btns">' +
-              '<button type="button" class="dbh-action-btn" onclick="window.syncLiveDiseaseBlogs(true)">🔄 실시간 동기화</button>' +
-              '<button type="button" class="dbh-action-btn" onclick="window.openGasConfigModal()">⚙️ GAS 자동발행 코드/설정</button>' +
+              '<div class="dbh-kicker"><span class="blog-live-dot"></span><span>바른한의원 대전본점 · 안정위 대표원장 직접 집필 건강칼럼</span></div>' +
+              '<div class="dbh-title">📝 ' + catTitle + '</div>' +
+              '<div class="dbh-sub">환자분의 증상과 상황에 맞춰 필요한 정밀 검사와 맞춤 한방·물리치료 해법을 알기 쉽게 안내해 드립니다.</div>' +
             '</div>' +
           '</div>' +
           '<div class="disease-blog-cat-strip">' + catFilterChipsHtml + '</div>' +
           blogBodyHtml +
           '<div class="slide-footer-nav">' +
             '<div class="slide-arrow-group">' +
-              '<button type="button" class="slide-nav-btn" onclick="window.goToSlide(0)">← 의학백과 1단계로</button>' +
-              '<button type="button" class="slide-nav-btn" onclick="window.openGasConfigModal()">⚙️ 매일 자동발행 스크립트 보기</button>' +
+              '<button type="button" class="slide-nav-btn" onclick="window.goToSlide(0)">← 의학백과 1단계로 돌아가기</button>' +
             '</div>' +
             '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
           '</div>';
       } else {
-        // STEPS 1..4: EVIDENCE-BASED MEDICAL SLIDES + LATEST 3 BLOG POSTS AUTO-DISPLAY & RECOMMENDED BLOG INTERNAL LINKS
         const activeSlide = part.slides[currentSlideIdx];
 
         const cardsHtml = activeSlide.cards.map(c =>
@@ -3012,9 +2987,9 @@ function buildBodyExplorerHtml() {
           blogPreviewHtml +
           '<div class="slide-footer-nav">' +
             '<div class="slide-arrow-group">' +
-              '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(-1)">← 이전 페이지</button>' +
-              '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(1)">다음 페이지 →</button>' +
-              '<button type="button" class="slide-nav-btn" style="border-color:var(--green-primary);color:var(--green-primary);" onclick="window.openDiseaseBlogTab()">📝 최신글 3개 & 추천 블로그 (' + partPosts.length + '편)</button>' +
+              '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(-1)">← 이전 단계</button>' +
+              '<button type="button" class="slide-nav-btn" onclick="window.stepSlide(1)">다음 단계 →</button>' +
+              '<button type="button" class="slide-nav-btn" style="border-color:var(--green-primary);color:var(--green-primary);" onclick="window.openDiseaseBlogTab()">📝 ' + part.shortName.split('·')[0].trim() + ' 건강칼럼 (' + partPosts.length + '편)</button>' +
             '</div>' +
             '<a href="' + part.clinicLink + '" class="slide-clinic-cta">' + part.clinicCta + '</a>' +
           '</div>';
@@ -3029,24 +3004,25 @@ function buildBodyExplorerHtml() {
 
         '<div class="slide-tabs-nav">' +
           '<div class="slide-tabs-group">' + standardTabsHtml + blogTabHtml + '</div>' +
-          '<div class="slide-page-counter">' + (isBlogTab ? 'DAILY AUTO-PUBLISHED DISEASE BLOG (9 PARTS)' : 'EVIDENCE-BASED 3D MOTION ENCYCLOPEDIA') + '</div>' +
+          '<div class="slide-page-counter">' + (isBlogTab ? '안정위 대표원장 질환별 임상 칼럼' : '3D 인체모형 의학백과 · 단계별 안내') + '</div>' +
         '</div>' +
 
-        '<div class="encyc-main-grid">' +
+        '<div class="encyc-main-grid' + (isBlogTab ? ' blog-mode-full' : '') + '">' +
           '<div class="slide-stage-card ' + animClass + '" id="active-slide-card">' +
             mainCardInnerHtml +
           '</div>' +
-
-          '<aside class="sci-side-rail">' +
-            '<div class="sci-rail-header">📚 실제 학술 논문 검수 근거 (SCI급 학술지)</div>' +
-            '<p class="sci-rail-note">안정위 원장의 9대 정밀 검사와 SCI급 국제 학술지 논문을 바탕으로 정밀하게 검사·진단·치료하여 건강한 일상을 회복합니다.</p>' +
-            '<div class="sci-mini-list">' + sciListHtml + '</div>' +
-            '<div style="margin-top:12px;padding:11px 12px;border-radius:12px;background:linear-gradient(135deg,#EBF5EF 0%,#F5F1E8 100%);border:1px solid #B7D4C3;">' +
-              '<div style="font-size:0.68rem;font-weight:800;color:var(--green-primary);margin-bottom:4px;">📝 질환별 최신글 3개 자동 노출</div>' +
-              '<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;">' + sidebarLatest3Html + '</div>' +
-              '<button type="button" class="dbp-btn primary" style="width:100%;justify-content:center;" onclick="window.openDiseaseBlogTab()">🔗 ' + part.shortName.split('·')[0].trim() + ' 추천 블로그 열기 (' + partPosts.length + '편)</button>' +
-            '</div>' +
-          '</aside>' +
+          (isBlogTab ? '' : (
+            '<aside class="sci-side-rail">' +
+              '<div class="sci-rail-header">📚 학술 논문 검증 근거 (SCI급 학술지)</div>' +
+              '<p class="sci-rail-note">안정위 원장의 정밀 검사와 SCI급 국제 학술지 논문을 바탕으로 정밀하게 검사·진단·치료하여 건강한 일상을 회복합니다.</p>' +
+              '<div class="sci-mini-list">' + sciListHtml + '</div>' +
+              '<div style="margin-top:14px;padding:13px 14px;border-radius:13px;background:linear-gradient(135deg,#E8F4ED 0%,#F5F1E8 100%);border:1.5px solid #B6D7C4;">' +
+                '<div style="font-size:0.78rem;font-weight:800;color:var(--green-primary);margin-bottom:6px;">📝 질환별 최신 건강칼럼 3선</div>' +
+                '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">' + sidebarLatest3Html + '</div>' +
+                '<button type="button" class="dbp-btn primary" style="width:100%;justify-content:center;" onclick="window.openDiseaseBlogTab()">📖 ' + part.shortName.split('·')[0].trim() + ' 칼럼 전체보기 (' + partPosts.length + '편)</button>' +
+              '</div>' +
+            '</aside>'
+          )) +
         '</div>';
     }
 
@@ -3087,9 +3063,7 @@ function buildBodyExplorerHtml() {
       }
     };
 
-    // ========================================================================
-    // 1.5 LIVE WORDPRESS REST API & GOOGLE APPS SCRIPT (GAS) BLOG SYNC ENGINE
-    // ========================================================================
+    // Background Live WordPress Post Sync (Silent for patients)
     function stripHtmlTags(str) {
       return String(str || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&#8211;/g, '-').trim();
     }
@@ -3125,10 +3099,10 @@ function buildBodyExplorerHtml() {
     function mergeExternalPostIntoStore(postObj) {
       if (!postObj || !postObj.partId || !liveMergedBlogPosts[postObj.partId]) return false;
       const arr = liveMergedBlogPosts[postObj.partId];
-      const normTitle = String(postObj.title || '').replace(/^\\[[^\\]]+\\]\\s*/, '').trim();
+      const normTitle = String(postObj.title || '').replace(/^\[[^\]]+\]\s*/, '').trim();
       const exists = arr.some(existing =>
         existing.id === postObj.id ||
-        String(existing.title || '').replace(/^\\[[^\\]]+\\]\\s*/, '').trim() === normTitle
+        String(existing.title || '').replace(/^\[[^\]]+\]\s*/, '').trim() === normTitle
       );
       if (!exists) {
         arr.unshift(postObj);
@@ -3137,15 +3111,7 @@ function buildBodyExplorerHtml() {
       return false;
     }
 
-    window.syncLiveDiseaseBlogs = async function(showToast = false) {
-      const statusEl = document.getElementById('gas-sync-status-msg');
-      if (statusEl && showToast) {
-        statusEl.textContent = '🔄 워드프레스 REST API 및 구글 앱스 스크립트 피드에서 질환별 최신 칼럼을 동기화하는 중...';
-      }
-
-      let addedCount = 0;
-
-      // 1) Fetch from WordPress REST API (/wp-json/wp/v2/posts?_embed&per_page=30) when running on WordPress host
+    window.syncLiveDiseaseBlogs = async function() {
       try {
         const isLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
         const wpEndpoints = isLocalDev ? [] : ['/wp-json/wp/v2/posts?_embed&per_page=30'];
@@ -3161,122 +3127,30 @@ function buildBodyExplorerHtml() {
             const titleClean = stripHtmlTags(wpPost.title && wpPost.title.rendered);
             const matchedPart = detectPartIdFromSlugOrText(slugs, titleClean);
             if (matchedPart) {
+              const partRef = getPartById(matchedPart);
               const dateStr = String(wpPost.date || '').slice(0, 10) || formatKstDateDaysAgo(0);
               const excerptClean = stripHtmlTags(wpPost.excerpt && wpPost.excerpt.rendered) || titleClean;
-              const didAdd = mergeExternalPostIntoStore({
+              const rawHtml = (wpPost.content && wpPost.content.rendered) || ('<p>' + excerptClean + '</p>');
+              const imgMatch = rawHtml.match(/<img[^>]+src="([^"]+)"/i);
+              mergeExternalPostIntoStore({
                 id: 'wp-' + wpPost.id,
                 partId: matchedPart,
                 date: dateStr,
-                badge: '워드프레스 · GAS 자동발행 칼럼',
+                badge: '안정위 원장 임상 칼럼',
+                heroImg: (imgMatch && imgMatch[1]) || partRef.illustImg,
                 title: titleClean,
                 summary: excerptClean.slice(0, 150),
                 journalRef: 'SCI 국제 학술지 & 바른한의원 임상 프로토콜',
-                readTime: '3분 칼럼',
+                readTime: '4분 칼럼',
                 tags: terms.map(t => t && t.name).filter(Boolean).slice(0, 4),
-                contentHtml: (wpPost.content && wpPost.content.rendered) || ('<p>' + excerptClean + '</p>')
+                contentHtml: rawHtml
               });
-              if (didAdd) addedCount++;
             }
           });
           break;
         }
-      } catch (e) {
-        // Silent fallback on local/offline
-      }
-
-      // 2) Fetch from Google Apps Script Web App JSON Feed if configured
-      try {
-        const gasUrl = localStorage.getItem('BAREUN_GAS_WEBAPP_URL') || '';
-        if (gasUrl && gasUrl.startsWith('https://script.google.com/')) {
-          const resp = await fetch(gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'action=feed');
-          if (resp.ok) {
-            const data = await resp.json();
-            if (data && Array.isArray(data.posts)) {
-              data.posts.forEach(gp => {
-                if (mergeExternalPostIntoStore(gp)) addedCount++;
-              });
-            }
-          }
-        }
       } catch (e) {}
-
-      const now = new Date();
-      lastLiveSyncTimeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' 동기화 완료';
-      if (statusEl) {
-        statusEl.textContent = '✅ 동기화 완료 (' + lastLiveSyncTimeStr + ') — 9대 질환 총 ' +
-          Object.values(liveMergedBlogPosts).reduce((acc, a) => acc + a.length, 0) + '편의 임상 칼럼이 활성화되어 있습니다.';
-      }
       renderEncyclopedia(currentPartId, currentSlideIdx, 'next');
-    };
-
-    // GAS Modal Helpers
-    window.openGasConfigModal = function() {
-      const modal = document.getElementById('gas-config-modal');
-      const codeBox = document.getElementById('gas-code-preview-box');
-      const inputEl = document.getElementById('gas-webapp-url-input');
-      if (codeBox && !codeBox.textContent) {
-        codeBox.textContent = GAS_SCRIPT_RAW_CODE;
-      }
-      if (inputEl) {
-        inputEl.value = localStorage.getItem('BAREUN_GAS_WEBAPP_URL') || '';
-      }
-      if (modal) modal.classList.add('open');
-    };
-
-    window.closeGasConfigModal = function() {
-      const modal = document.getElementById('gas-config-modal');
-      if (modal) modal.classList.remove('open');
-    };
-
-    window.copyGasScriptCode = async function() {
-      const btn = document.getElementById('btn-copy-gas-code');
-      try {
-        await navigator.clipboard.writeText(GAS_SCRIPT_RAW_CODE);
-        if (btn) {
-          const orig = btn.textContent;
-          btn.textContent = '✅ GAS 전체 코드가 클립보드에 복사되었습니다!';
-          setTimeout(() => { btn.textContent = orig; }, 2500);
-        }
-      } catch (e) {
-        const codeBox = document.getElementById('gas-code-preview-box');
-        if (codeBox) {
-          const range = document.createRange();
-          range.selectNodeContents(codeBox);
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-        }
-      }
-    };
-
-    window.saveGasWebAppUrl = function() {
-      const inputEl = document.getElementById('gas-webapp-url-input');
-      const val = (inputEl ? inputEl.value : '').trim();
-      if (val) {
-        localStorage.setItem('BAREUN_GAS_WEBAPP_URL', val);
-      } else {
-        localStorage.removeItem('BAREUN_GAS_WEBAPP_URL');
-      }
-      window.syncLiveDiseaseBlogs(true);
-    };
-
-    window.triggerGasPublishNow = async function() {
-      const statusEl = document.getElementById('gas-sync-status-msg');
-      const gasUrl = localStorage.getItem('BAREUN_GAS_WEBAPP_URL') || '';
-      if (gasUrl && gasUrl.startsWith('https://script.google.com/')) {
-        if (statusEl) statusEl.textContent = '🚀 구글 앱스 스크립트 웹앱에 즉시 자동발행 명령을 전송 중입니다...';
-        try {
-          const resp = await fetch(gasUrl + (gasUrl.includes('?') ? '&' : '?') + 'action=publishNow');
-          if (resp.ok) {
-            await window.syncLiveDiseaseBlogs(true);
-            return;
-          }
-        } catch (e) {}
-      }
-      if (statusEl) {
-        statusEl.textContent = '✅ 워드프레스 REST API 실시간 동기화가 실행되었습니다. (GAS 웹앱 URL 입력 시 원격 즉시 발행도 가능합니다)';
-      }
-      await window.syncLiveDiseaseBlogs(false);
     };
 
     // Render Encyclopedia Immediately (0ms) so UI is ready before 3D assets finish downloading
@@ -3284,7 +3158,7 @@ function buildBodyExplorerHtml() {
     const initPart = initParams.get('part') || 'knee';
     const initTab = initParams.get('tab') === 'blog' || initParams.get('blog') === '1' ? 4 : 0;
     renderEncyclopedia(initPart, initTab, 'next');
-    window.syncLiveDiseaseBlogs(false);
+    window.syncLiveDiseaseBlogs();
 
     // Safety fallback so loader overlay never stays forever on slow mobile connections
     setTimeout(() => {

@@ -255,16 +255,19 @@ const PAGES_TO_DEPLOY = [
         }
       }
 
-      // Check existing posts so we don't duplicate
+      // Check existing posts and update or create with 5-layout + CDN images
+      const ghBaseUrl = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
       const existingPostsRes = await fetch('/wp-json/wp/v2/posts?per_page=50', {
         headers: { 'X-WP-Nonce': wpNonce }
       });
       const existingPosts = await existingPostsRes.json();
-      const existingTitles = new Set(
-        Array.isArray(existingPosts)
-          ? existingPosts.map(p => (p.title && p.title.rendered ? p.title.rendered.replace(/<[^>]*>/g, '').trim() : ''))
-          : []
-      );
+      const existingByTitle = {};
+      if (Array.isArray(existingPosts)) {
+        existingPosts.forEach(p => {
+          const cleanT = (p.title && p.title.rendered ? p.title.rendered.replace(/<[^>]*>/g, '').replace(/&#8211;/g, '-').trim() : '');
+          if (cleanT) existingByTitle[cleanT] = p.id;
+        });
+      }
 
       let seededPostsCount = 0;
       const flatPosts = Array.isArray(postsMap) ? postsMap : Object.values(postsMap || {}).flat();
@@ -272,15 +275,17 @@ const PAGES_TO_DEPLOY = [
       for (const post of flatPosts) {
         if (!post || !post.partId || seededByPart.has(post.partId)) continue;
         seededByPart.add(post.partId);
-        if (existingTitles.has(post.title.trim())) continue;
         const cId = catIds[post.partId];
-        const pRes = await fetch('/wp-json/wp/v2/posts', {
+        const cdnContentHtml = String(post.contentHtml || '').replace(/src="(?!https?:\/\/)([^"]+)"/g, 'src="' + ghBaseUrl + '$1"');
+        const matchId = existingByTitle[post.title.trim()];
+        const endpoint = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
+        const pRes = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
           body: JSON.stringify({
             title: post.title,
             excerpt: post.summary,
-            content: post.contentHtml,
+            content: cdnContentHtml,
             status: 'publish',
             categories: cId ? [cId] : []
           })
