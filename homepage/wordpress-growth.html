@@ -5616,6 +5616,167 @@
     .water-drop.d5 { left: 26%; top: 44%; animation-delay: 0.4s; }
     .water-drop.d6 { right: 26%; top: 46%; animation-delay: 1.05s; }
 
+    /* Growth Card 04: Vertical Height Growth 3-Frame Motion + Rising Stadiometer Laser & Upward Vectors */
+    .growth-tall-seq-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #DFC8AC;
+    }
+    .growth-tall-seq-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+      pointer-events: none;
+      transform-origin: 50% 94%;
+      will-change: opacity, transform;
+    }
+    .growth-tall-seq-img.seq-1 {
+      z-index: 1;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .growth-tall-seq-img.seq-2 {
+      z-index: 2;
+      animation: growthTallSeqFrame2 5.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .growth-tall-seq-img.seq-3 {
+      z-index: 3;
+      animation: growthTallSeqFrame3 5.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes growthTallSeqFrame2 {
+      0%, 18% { opacity: 0; transform: scale(1); }
+      34%, 72% { opacity: 1; transform: scale(1); }
+      78%, 100% { opacity: 0; transform: scale(1); }
+    }
+    @keyframes growthTallSeqFrame3 {
+      0%, 52% { opacity: 0; transform: scale(1); }
+      68%, 84% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
+    }
+    .growth-tall-boost-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      overflow: hidden;
+    }
+    .growth-epiphyseal-glow {
+      position: absolute;
+      left: 50%;
+      bottom: 18%;
+      width: 240px;
+      height: 280px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(253, 230, 138, 0.38) 0%, rgba(16, 185, 129, 0.22) 48%, transparent 76%);
+      mix-blend-mode: screen;
+      animation: growthEpiphysealPulse 2.7s ease-in-out infinite;
+    }
+    @keyframes growthEpiphysealPulse {
+      0%, 100% { transform: translateX(-50%) scaleY(0.85); opacity: 0.45; }
+      50% { transform: translateX(-50%) scaleY(1.25) translateY(-18px); opacity: 0.92; }
+    }
+    .growth-height-laser-bar {
+      position: absolute;
+      left: 24%;
+      right: 24%;
+      height: 2.5px;
+      background: linear-gradient(90deg, transparent 0%, #6EE7B7 18%, #FEF08A 50%, #6EE7B7 82%, transparent 100%);
+      box-shadow: 0 0 16px rgba(253, 230, 138, 0.95), 0 0 28px rgba(16, 185, 129, 0.75);
+      z-index: 5;
+      animation: growthHeightLaserRise 5.4s ease-in-out infinite;
+    }
+    .growth-height-laser-pill {
+      position: absolute;
+      right: 6%;
+      top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(13, 23, 18, 0.86);
+      border: 1.2px solid rgba(253, 230, 138, 0.78);
+      color: #FEF08A;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+    }
+    .growth-height-laser-pill .laser-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 8px #34D399;
+    }
+    @keyframes growthHeightLaserRise {
+      0%, 18% { top: 34%; opacity: 0.82; }
+      34%, 52% { top: 16%; opacity: 0.95; }
+      68%, 84% { top: 9%; opacity: 1; }
+      100% { top: 34%; opacity: 0.82; }
+    }
+    .growth-upward-arrows-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(253, 230, 138, 0.88));
+    }
+    .growth-up-arrow {
+      stroke: #FEF08A;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: growthArrowShootUp 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    .growth-up-arrow.g-arr-2 {
+      stroke: #6EE7B7;
+      stroke-width: 2.6;
+      animation-delay: 0.45s;
+    }
+    .growth-up-arrow.g-arr-3 {
+      stroke: #FDE68A;
+      stroke-width: 2.8;
+      animation-delay: 0.9s;
+    }
+    @keyframes growthArrowShootUp {
+      0% { transform: translateY(22px); opacity: 0; }
+      35% { opacity: 0.95; }
+      80% { transform: translateY(-20px); opacity: 0.85; }
+      100% { transform: translateY(-32px); opacity: 0; }
+    }
+    .growth-spark {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FEF08A;
+      box-shadow: 0 0 10px #FACC15, 0 0 18px #10B981;
+      animation: growthSparkRise 2.4s ease-out infinite;
+    }
+    .growth-spark.gs1 { left: 44%; bottom: 20%; animation-delay: 0s; }
+    .growth-spark.gs2 { left: 52%; bottom: 18%; animation-delay: 0.4s; width: 9px; height: 9px; background: #A7F3D0; }
+    .growth-spark.gs3 { left: 40%; bottom: 32%; animation-delay: 0.8s; }
+    .growth-spark.gs4 { left: 56%; bottom: 28%; animation-delay: 1.2s; background: #A7F3D0; }
+    .growth-spark.gs5 { left: 47%; bottom: 42%; animation-delay: 1.6s; width: 8px; height: 8px; }
+    .growth-spark.gs6 { left: 37%; bottom: 24%; animation-delay: 2.0s; }
+    @keyframes growthSparkRise {
+      0% { transform: translateY(0) scale(0.4); opacity: 0; }
+      25% { opacity: 1; transform: translateY(-34px) scale(1.2); }
+      75% { opacity: 0.85; transform: translateY(-120px) scale(0.9); }
+      100% { transform: translateY(-170px) scale(0.2); opacity: 0; }
+    }
+
     /* Card 10: Minimalist "다이어트 꿀팁" Only Card + Link to 3D Body Model */
     .diet-honey-tip-only-center {
       position: relative;
@@ -6670,15 +6831,36 @@
           </div>
         </article>
 
-        <!-- PLATE 04: Revived Before/After Biomedical Scan Plate with Custom Content -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- PLATE 04: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
           <span class="tiny-card-num-badge">04</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/growth_minimal_card4_short_before.jpg?v=grw4v2" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/growth_minimal_card4_tall_after.jpg?v=grw4v2" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <div class="plate-media-inner">
+            
+            <div class="efficacy-visual-frame growth-tall-frame is-full-stage-frame is-growth-tall-motion">
+              <div class="growth-tall-seq-stage">
+                <img class="growth-tall-seq-img seq-1" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/growth_minimal_card4_short_before.jpg?v=grw4v3" alt="또래보다 작던 키 (성장 전)" loading="lazy" draggable="false">
+                <img class="growth-tall-seq-img seq-2" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/growth_minimal_card4_growing_mid.jpg?v=grw4v3" alt="성장판 연골 증식으로 키가 자라는 중" loading="lazy" draggable="false">
+                <img class="growth-tall-seq-img seq-3" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/growth_minimal_card4_tall_after.jpg?v=grw4v3" alt="위로 쑥쑥 폭풍 키 성장 완료" loading="lazy" draggable="false">
+              </div>
+              <div class="growth-tall-boost-layer" aria-hidden="true">
+                <div class="growth-epiphyseal-glow"></div>
+                <div class="growth-height-laser-bar">
+                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>▲ 성장판 연골 증식 · 수직 폭풍 성장 UP</span>
+                </div>
+                <svg class="growth-upward-arrows-svg" viewBox="0 0 280 240" fill="none">
+                  <path class="growth-up-arrow g-arr-1" d="M88 188 L88 54 M76 70 L88 54 L100 70" />
+                  <path class="growth-up-arrow g-arr-2" d="M106 168 L106 38 M96 52 L106 38 L116 52" />
+                  <path class="growth-up-arrow g-arr-3" d="M182 178 L182 52 M170 68 L182 52 L194 68" />
+                </svg>
+                <span class="growth-spark gs1"></span>
+                <span class="growth-spark gs2"></span>
+                <span class="growth-spark gs3"></span>
+                <span class="growth-spark gs4"></span>
+                <span class="growth-spark gs5"></span>
+                <span class="growth-spark gs6"></span>
+              </div>
+              <div class="efficacy-motion-overlay"></div>
             </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
             <div class="clean-plate-scrim"></div>
             <div class="clean-plate-caption">
               <div class="clean-plate-text">
