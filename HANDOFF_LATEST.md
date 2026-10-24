@@ -5,8 +5,17 @@
 
 ---
 
-## 💎 0. 최신 완료 작업 요약 (2026-10-22 최신본 · 황제공진단 & 전립선 10카드 구성 개편, 03번 카드 여백 제거 풀커버 전환, 중복 없는 신규 이미지 27장 적용 및 카페24 실서버 배포 완료)
+## 💎 0. 최신 완료 작업 요약 (2026-10-24 최신본 · 소아 성장 상세페이지 04번 카드 3단계 수직 폭풍 키 성장 모션 추가 & 황제공진단/전립선 10카드 구성 개편 및 카페24 실서버 배포 완료)
 
+0. **소아 성장 상세페이지(`growth.html` / `wordpress-growth.html`) 04번 카드 수직 폭풍 키 성장 모션 탑재 (`build-story-detail-pages.js`)**:
+   - **배경·신장계(`70cm~180cm`) 100% 고정 & 3단계 실제 키 성장 시퀀스 이미지 적용**:
+     - `growth_minimal_card4_short_before.jpg?v=grw4v3`: 또래보다 작던 성장 전 단계 (`~125cm` 지점)
+     - `growth_minimal_card4_growing_mid.jpg?v=grw4v3`: 무릎·발목 성장판 골든 글로우 활성화와 함께 쑥쑥 자라나는 중간 단계 (`~158cm` 지점)
+     - `growth_minimal_card4_tall_after.jpg?v=grw4v3`: 훤칠한 비율로 우뚝 자란 폭풍 성장 완료 단계 (`~180cm` 최상단 지점)
+   - **전용 수직 키 성장 모션(`stage: 4` · `.growth-tall-seq-stage`) 구현**:
+     - 3프레임 연속 크로스페이드(`growthTallSeqFrame2`, `growthTallSeqFrame3`, `transform: scale(1)` 고정으로 배경 흔들림 0%)
+     - 아이의 정수리 높이를 따라 아래에서 위로 상승하는 **골든 수평 신장 측정 레이저 바(`.growth-height-laser-bar`, `GROWTH · +15cm 쑥쑥 ↑`)**
+     - 양측 수직 상승 성장 벡터 화살표(`.growth-upward-arrows-svg`), 무릎 성장판 골든 펄스(`.growth-epiphyseal-glow`), 위로 솟구치는 스타라이트 파티클(`.growth-spark.gs1~gs6`) 탑재.
 1. **메인 진료카드 쇼케이스(`#skt-bento-grid` · `story-3d.html`, `index.html`)에 `전립선 · 남성활력` 전용 카드 메뉴 신설**:
    - 기존 황제공진단 카드 내부 보조 칩으로만 있던 전립선 메뉴를 독립시켜 **7번째 전용 카드(`전립선 · 남성활력`, `prostate.html` 직통 연결)**로 추가 완료.
    - 중복 없는 신규 전용 카드 배경 에셋(`card_7_prostate.jpg`)을 생성하여 적용하고, 데스크톱 12컬럼 벤토 그리드(상단 3카드 `span 4` + 하단 4카드 `span 3`) 및 모바일 반응형 그리드(상단 대표원장 풀폭 + 하단 6대 클리닉 `2×3` 대칭 배치)로 완벽 정렬.
