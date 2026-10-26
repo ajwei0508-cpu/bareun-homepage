@@ -484,6 +484,77 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     reqPath = '/growth.html';
   } else if (reqPath === '/gongjindan' || reqPath === '/gongjindan/' || reqPath === '/gongjindan-2' || reqPath === '/gongjindan-2/') {
     reqPath = '/gongjindan.html';
+  } else if (reqPath === '/prostate' || reqPath === '/prostate/') {
+    reqPath = '/prostate.html';
+  } else if (reqPath === '/body-explorer' || reqPath === '/body-explorer/') {
+    reqPath = '/body-explorer.html';
+  } else if (reqPath === '/ask-doctor' || reqPath === '/ask-doctor/') {
+    reqPath = '/ask-doctor.html';
+  }
+
+  // API Endpoint: Blog Q&A Reply Comments (GET & POST)
+  if (reqPath === '/api/blog-comments') {
+    const commentsFile = path.join(__dirname, 'blog-comments.json');
+    let store = {};
+    if (fs.existsSync(commentsFile)) {
+      try { store = JSON.parse(fs.readFileSync(commentsFile, 'utf8') || '{}'); } catch (e) { store = {}; }
+    }
+    const urlObj = new URL(req.url || '/', 'http://localhost:' + PORT);
+    if (req.method === 'GET') {
+      const slug = urlObj.searchParams.get('postSlug') || '';
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-store' });
+      res.end(JSON.stringify({ ok: true, threads: store[slug] || [] }));
+      return;
+    }
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(body || '{}');
+          const slug = String(payload.postSlug || '').trim();
+          const author = String(payload.author || '방문 질문자').trim().slice(0, 40);
+          const content = String(payload.content || '').trim().slice(0, 2000);
+          const parentId = Number(payload.parentId || 0);
+          const isDoctor = Boolean(payload.isDoctor);
+          if (!slug || !content) {
+            res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({ ok: false, error: 'missing-fields' }));
+            return;
+          }
+          if (!Array.isArray(store[slug])) store[slug] = [];
+          const today = new Date().toISOString().slice(0, 10);
+          const newId = Date.now();
+          const newNode = {
+            id: 'local-' + newId,
+            wpCommentId: newId,
+            author,
+            date: today,
+            isDoctor,
+            content,
+            replies: []
+          };
+          if (parentId) {
+            const parent = store[slug].find(item => Number(item.wpCommentId) === parentId);
+            if (parent) {
+              parent.replies = parent.replies || [];
+              parent.replies.push(newNode);
+            } else {
+              store[slug].push(newNode);
+            }
+          } else {
+            store[slug].push(newNode);
+          }
+          fs.writeFileSync(commentsFile, JSON.stringify(store, null, 2), 'utf8');
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: true, created: newNode, threads: store[slug] }));
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
   }
 
   // Intercept ultrasound consultation image to male director photo

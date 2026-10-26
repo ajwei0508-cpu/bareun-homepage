@@ -1,8 +1,14 @@
 /**
  * ============================================================================
- * [바른한의원 대전본점] 3D 모션 백과사전 — 9대 질환 카드별 데일리 블로그 자동 발행 시스템
- * Google Apps Script (GAS) Master Automation Engine v3.0
+ * [바른한의원 대전본점] 『무엇이든 물어보세요』 — 9대 질환 의학백과 & 데일리 임상칼럼 자동 발행 시스템
+ * Google Apps Script (GAS) Master Automation Engine v4.0 (AI-SEO & Global Search + Open Q&A Edition)
  * ============================================================================
+ *
+ * 📌 v4.0 핵심 고도화:
+ *   - '3D 부위별 생활꿀팁 창고(/body-explorer/)'와 '무엇이든 물어보세요 의학백과·Q&A(/ask-doctor/)' 완전 분리 연동
+ *   - 영문 고유 퍼머링크(slug) 자동 생성 + comment_status: 'open' (방문자 무로그인 즉시 답글 질문 수신)
+ *   - 국내(네이버·다음) + 해외·글로벌 AI 플랫폼(Google, Bing, ChatGPT Search, Perplexity) 동시 노출:
+ *     🤖 AI 핵심 3줄 즉답 요약(TL;DR) + 🌐 영문 의학 초록(EN) + 📊 시맨틱 비교표(<table>) + ❓ FAQ & JSON-LD 4종 + IndexNow 즉시 색인 핑
  *
  * 📌 지원 질환 (3D 모션 백과사전 9대 핵심 부위 1:1 매칭 — 카드 질환별 각각 하루 1편, 일 총 9편 발행):
  *   1. knee       (blog-knee)       : 소아 성장 · 소아비만 · 면역 (성장판·성조숙증·비염·아토피)
@@ -599,6 +605,7 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
   const heroImgUrl = CDN_IMG_BASE + heroFile;
   const subImgUrl = CDN_IMG_BASE + subFile;
 
+  const postSlug = 'daejeon-bareun-' + meta.partId + '-column-' + dateStr.replace(/-/g, '');
   const seoFilename = 'daejeon-bareun-korean-medicine-' + meta.partId + '-' + layoutType.toLowerCase() + '-' + dateStr.replace(/-/g, '') + '.jpg';
   const imageAlt = '대전 바른한의원 ' + meta.badgeLabel + ' — ' + meta.imageModelDesc;
   const subImageAlt = '대전 바른한의원 ' + meta.badgeLabel + ' 맞춤 정밀 검진 및 안정위 대표원장 1:1 직접 시술';
@@ -619,7 +626,7 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
         '주의사항: 모든 검사와 물리치료를 기계적으로 나열하지 말고, 오늘 주제(' + topicItem.titleTpl + ') 상황에 꼭 맞는 2~3가지 핵심 검사(' + meta.primaryExams + ' 중 선택)와 2~3가지 핵심 치료(' + meta.primaryTherapies + ' 중 선택)만 상황에 맞게 조합하여 설명하세요.',
         '인용 학술지: ' + journalRef,
         '반드시 아래 JSON 키만 포함하여 순수 JSON으로 응답하세요:',
-        '{"title":"제목","summary":"2문장 핵심 요약","hookText":"도입부 환자 공감 질문 또는 체크 포인트","step1Title":"원인 및 기전 소제목","step1Body":"해부학·생리학 원인 본문(3~4문장)","examTitle":"맞춤 정밀 검사 소제목","examBody":"상황별 정밀 검사 및 1:1 진맥 진단 본문(검사합니다/진단합니다 포함)","step2Title":"원장 직접 시술 및 맞춤 물리·한약 치료 소제목","step2Body":"상황별 치료 본문(도움드립니다/회복합니다 포함)","step3Title":"일상 속 실전 홈케어 소제목","step3Body":"가정 내 관리 수칙 본문(3~4문장)","tags":["태그1","태그2","태그3"]}'
+        '{"title":"제목","enTitle":"영문 임상 제목","enSummary":"해외 검색엔진 및 글로벌 AI용 2문장 영문 의학 초록","summary":"2문장 핵심 요약","tldr":["AI 즉답 요약1(핵심원인)","AI 즉답 요약2(선별검사)","AI 즉답 요약3(맞춤치료)"],"hookText":"도입부 환자 공감 질문 또는 체크 포인트","step1Title":"원인 및 기전 소제목","step1Body":"해부학·생리학 원인 본문(3~4문장)","examTitle":"맞춤 정밀 검사 소제목","examBody":"상황별 정밀 검사 및 1:1 진맥 진단 본문(검사합니다/진단합니다 포함)","step2Title":"원장 직접 시술 및 맞춤 물리·한약 치료 소제목","step2Body":"상황별 치료 본문(도움드립니다/회복합니다 포함)","step3Title":"일상 속 실전 홈케어 소제목","step3Body":"가정 내 관리 수칙 본문(3~4문장)","faqQ":"환자 다빈도 질문 1개","faqA":"원장 답변 1개","tags":["태그1","태그2","태그3"]}'
       ].join('\n');
 
       const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + CONFIG.GEMINI_MODEL + ':generateContent?key=' + encodeURIComponent(geminiKey);
@@ -638,6 +645,7 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
         const rawJson = parsed.candidates[0].content.parts[0].text;
         const aiData = JSON.parse(rawJson);
         return {
+          slug: postSlug,
           layoutType: layoutType,
           heroImg: heroImgUrl,
           subImg: subImgUrl,
@@ -649,6 +657,13 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
           imageAlt: imageAlt,
           tags: aiData.tags || [meta.badgeLabel.split('·')[0].trim(), '안정위원장직접시술', '바른한의원'],
           contentHtml: buildMedicalColumnHtml({
+            slug: postSlug,
+            title: aiData.title || topicItem.titleTpl,
+            enTitle: aiData.enTitle || ('Bareun Korean Medicine Clinic Daejeon — ' + meta.partId.toUpperCase() + ' Clinical Guide'),
+            enSummary: aiData.enSummary || 'Evidence-based Korean Medicine clinical guide by Dr. Jung-Wi Ahn at Bareun Korean Medicine Clinic in Daejeon, South Korea.',
+            tldr: aiData.tldr || [topicItem.keyCause, meta.primaryExams + ' 선별 검사로 정밀하게 검사하고 진단합니다.', meta.primaryTherapies + ' 맞춤 치료로 회복을 도움드립니다.'],
+            faqQ: aiData.faqQ || (meta.badgeLabel + ' 증상, 언제 내원하여 검사받는 것이 좋나요?'),
+            faqA: aiData.faqA || ('증상이 2주 이상 반복되거나 대증 약물 후에도 재발한다면 원내 선별 정밀 검사와 1:1 진맥으로 원인을 진단받아 조기에 회복하도록 도움드립니다.'),
             layoutType: layoutType,
             meta: meta,
             heroImg: heroImgUrl,
@@ -680,6 +695,7 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
   const seasonLabel = month >= 3 && month <= 5 ? seasonTags[0] : (month >= 6 && month <= 8 ? seasonTags[1] : (month >= 9 && month <= 11 ? seasonTags[2] : seasonTags[3]));
 
   return {
+    slug: postSlug,
     layoutType: layoutType,
     heroImg: heroImgUrl,
     subImg: subImgUrl,
@@ -691,6 +707,17 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
     imageAlt: imageAlt,
     tags: [meta.badgeLabel.split('·')[0].trim(), topicItem.subTopic.split(' ')[0], '안정위원장직접진료', '바른한의원'],
     contentHtml: buildMedicalColumnHtml({
+      slug: postSlug,
+      title: topicItem.titleTpl,
+      enTitle: 'Bareun Korean Medicine Clinic Daejeon — ' + meta.partId.toUpperCase() + ' Clinical Column',
+      enSummary: 'Integrative Korean Medicine diagnostic and non-surgical recovery protocol by Chief Physician Dr. Jung-Wi Ahn at Bareun Korean Medicine Clinic (Daejeon, South Korea).',
+      tldr: [
+        '핵심 원인: ' + topicItem.keyCause,
+        '선별 검진: ' + meta.primaryExams.split(',')[0] + ' 및 1:1 진맥으로 정밀하게 검사하고 진단합니다.',
+        '맞춤 회복: ' + topicItem.solution
+      ],
+      faqQ: meta.badgeLabel + ' 증상이 반복될 때 어떤 검사와 치료를 받게 되나요?',
+      faqA: meta.primaryExams + ' 중 증상에 꼭 필요한 선별 검사와 안정위 대표원장 직접 시술(' + meta.primaryTherapies + ')로 근본 회복을 도움드립니다.',
       layoutType: layoutType,
       meta: meta,
       heroImg: heroImgUrl,
@@ -714,88 +741,155 @@ function generateDiseaseArticleContent(meta, seedNumber, dateStr) {
 }
 
 /**
- * 5대 다변화 레이아웃(A~E) 빌더 — 매일 다른 구성과 상황별 맞춤 이미지·검사·치료 조합 렌더링
+ * v4.0 5대 다변화 레이아웃(A~E) + AI-SEO 5계층(TL;DR + EN 초록 + 시맨틱 표 + FAQ + JSON-LD) + 답글 질문 UI 빌더
  */
 function buildMedicalColumnHtml(data) {
   const layout = data.layoutType || 'A';
   const s0 = (data.sections && data.sections[0]) || { h: '원인 및 기전 분석', p: data.lead };
   const s1 = (data.sections && data.sections[1]) || { h: '맞춤 시술 및 한약 치료', p: '' };
   const s2 = (data.sections && data.sections[2]) || { h: '일상 속 홈케어 수칙', p: '' };
+  const partId = (data.meta && data.meta.partId) || 'lumbar';
+  const postSlug = data.slug || ('daejeon-bareun-' + partId);
+
+  const tldrBlock =
+    '<section class="bblog-aiseo-tldr" style="margin:0 0 18px;padding:18px 22px;border-radius:16px;background:#F0FDF4;border:1.5px solid #86EFAC;border-left:6px solid #15803D;">' +
+      '<div style="font-size:0.84rem;font-weight:800;color:#14532D;margin-bottom:8px;">🤖 AI 핵심 3줄 즉답 요약 · Clinical Quick Answer</div>' +
+      '<ul style="margin:0;padding-left:18px;color:#111827;font-size:0.95rem;font-weight:600;line-height:1.72;">' +
+        (data.tldr || []).map(function(t) { return '<li>' + t + '</li>'; }).join('') +
+      '</ul>' +
+    '</section>';
+
+  const enBlock =
+    '<section class="bblog-aiseo-en-box" lang="en" style="margin:0 0 20px;padding:15px 18px;border-radius:14px;background:#F8FAFC;border:1px solid #CBD5E1;">' +
+      '<div style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;color:#334155;margin-bottom:4px;">🌐 GLOBAL CLINICAL SUMMARY · DAEJEON BAREUN KOREAN MEDICINE CLINIC (SOUTH KOREA)</div>' +
+      '<h4 style="margin:0 0 5px;font-size:0.96rem;font-weight:800;color:#0F172A;">' + (data.enTitle || '') + '</h4>' +
+      '<p style="margin:0;font-size:0.86rem;line-height:1.62;color:#334155;">' + (data.enSummary || '') + '</p>' +
+    '</section>';
 
   const heroBlock =
-    '<figure class="bblog-hero-figure" data-seo-filename="' + (data.seoFilename || '') + '" style="margin:0 0 18px;border-radius:16px;overflow:hidden;border:1px solid #D5CBB8;background:#FFFFFF;">' +
-      '<img src="' + (data.heroImg || '') + '" alt="' + (data.imageAlt || '') + '" style="width:100%;max-height:340px;object-fit:cover;display:block;" loading="lazy" />' +
-      '<figcaption style="padding:10px 14px;font-size:0.86rem;font-weight:600;color:#3A332C;background:#F8F5EE;">▲ ' + (data.imageAlt || '') + '</figcaption>' +
+    '<figure class="bblog-hero-figure" data-seo-filename="' + (data.seoFilename || '') + '" style="margin:0 0 18px;border-radius:16px;overflow:hidden;border:1.5px solid #CBD5E1;background:#FFFFFF;">' +
+      '<img src="' + (data.heroImg || '') + '" alt="' + (data.imageAlt || '') + '" style="width:100%;max-height:380px;object-fit:cover;display:block;" loading="lazy" />' +
+      '<figcaption style="padding:10px 14px;font-size:0.85rem;font-weight:700;color:#334155;background:#F8FAFC;">▲ ' + (data.imageAlt || '') + '</figcaption>' +
     '</figure>';
 
   const splitExamBlock =
-    '<div class="bblog-visual-split-card" style="display:grid;grid-template-columns:180px 1fr;gap:16px;align-items:center;margin:16px 0;padding:16px;border-radius:14px;background:#F4F9F6;border:1.5px solid #B8D8C5;">' +
-      '<img src="' + (data.subImg || '') + '" alt="' + (data.subImageAlt || '') + '" style="width:100%;height:125px;object-fit:cover;border-radius:10px;border:1px solid #C5DDD0;" loading="lazy" />' +
+    '<div class="bblog-visual-split-card" style="display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;margin:16px 0;padding:16px;border-radius:14px;background:#F8FAFC;border:1.5px solid #CBD5E1;">' +
+      '<img src="' + (data.subImg || '') + '" alt="' + (data.subImageAlt || '') + '" style="width:100%;height:135px;object-fit:cover;border-radius:10px;" loading="lazy" />' +
       '<div>' +
-        '<div style="font-size:0.8rem;font-weight:800;color:#1B4332;margin-bottom:4px;">🩺 증상 맞춤형 선별 정밀 검진 & 진단</div>' +
-        '<h4 style="margin:0 0 6px;font-size:1.04rem;font-weight:800;color:#111111;">' + (data.examTitle || '정밀 장비 검사와 1:1 진맥') + '</h4>' +
-        '<p style="margin:0;font-size:0.95rem;line-height:1.72;color:#1F2924;">' + (data.examBody || s0.p) + '</p>' +
+        '<div style="font-size:0.8rem;font-weight:800;color:#15803D;margin-bottom:4px;">🩺 증상 맞춤형 선별 정밀 검진 & 진단</div>' +
+        '<h4 style="margin:0 0 6px;font-size:1.04rem;font-weight:800;color:#0F172A;">' + (data.examTitle || '정밀 장비 검사와 1:1 진맥') + '</h4>' +
+        '<p style="margin:0;font-size:0.95rem;line-height:1.72;color:#1F2937;">' + (data.examBody || s0.p) + '</p>' +
       '</div>' +
     '</div>';
 
   const sciBlock =
-    '<div class="bblog-sci-callout" style="margin:16px 0;padding:15px 18px;border-radius:14px;background:#F6F2E9;border-left:4px solid #1B4332;">' +
-      '<div style="font-size:0.82rem;font-weight:800;color:#1B4332;margin-bottom:4px;">📚 국제 학술지(SCI급) 논문 검증 근거</div>' +
-      '<p style="margin:0;font-size:0.94rem;font-weight:700;line-height:1.65;color:#1E1B18;">' + (data.journal || '') + '</p>' +
+    '<div class="bblog-sci-callout" style="margin:16px 0;padding:15px 18px;border-radius:14px;background:#EFF6FF;border:1px solid #BFDBFE;border-left:5px solid #1D4ED8;">' +
+      '<div style="font-size:0.82rem;font-weight:800;color:#1E40AF;margin-bottom:4px;">📚 국제 학술지(SCI급) 논문 검증 근거</div>' +
+      '<p style="margin:0;font-size:0.94rem;font-weight:700;line-height:1.65;color:#0F172A;">' + (data.journal || '') + '</p>' +
     '</div>';
 
+  const tableBlock =
+    '<section class="bblog-aiseo-table-sec" style="margin:22px 0;">' +
+      '<h3>📊 증상 · 선별 정밀검사 · 맞춤 시술 한눈에 요약표</h3>' +
+      '<div style="overflow-x:auto;border-radius:14px;border:1.5px solid #CBD5E1;">' +
+        '<table style="width:100%;border-collapse:collapse;background:#FFFFFF;font-size:0.9rem;">' +
+          '<thead><tr style="background:#0F172A;color:#FFFFFF;"><th style="padding:11px 13px;text-align:left;">진료 분야</th><th style="padding:11px 13px;text-align:left;">선별 정밀 검사</th><th style="padding:11px 13px;text-align:left;">원장 직접 시술 & 물리치료</th></tr></thead>' +
+          '<tbody><tr>' +
+            '<td style="padding:11px 13px;border-top:1px solid #E2E8F0;font-weight:800;">' + ((data.meta && data.meta.badgeLabel) || '') + '</td>' +
+            '<td style="padding:11px 13px;border-top:1px solid #E2E8F0;">' + ((data.meta && data.meta.primaryExams) || '') + '</td>' +
+            '<td style="padding:11px 13px;border-top:1px solid #E2E8F0;">' + ((data.meta && data.meta.primaryTherapies) || '') + '</td>' +
+          '</tr></tbody>' +
+        '</table>' +
+      '</div>' +
+    '</section>';
+
+  const faqBlock =
+    '<section class="bblog-aiseo-faq-sec" style="margin:18px 0;">' +
+      '<h3>❓ 자주 묻는 질문 Q&A</h3>' +
+      '<div style="padding:15px 18px;border-radius:14px;background:#F8FAFC;border:1.5px solid #E2E8F0;">' +
+        '<div style="font-weight:800;color:#0F172A;margin-bottom:6px;">Q. ' + (data.faqQ || '') + '</div>' +
+        '<div style="color:#334155;font-size:0.94rem;line-height:1.7;"><strong>A.</strong> ' + (data.faqA || '') + '</div>' +
+      '</div>' +
+    '</section>';
+
   const docSignBlock =
-    '<div class="bblog-doctor-sign" style="margin-top:18px;padding:15px 18px;border-radius:14px;background:#EBF5EF;border:1px solid #B7D4C3;font-size:0.92rem;color:#1B4332;line-height:1.68;">' +
-      '<strong>글·의학감수 : 바른한의원 대전본점 안정위 대표원장 (아빠 한의사)</strong><br/>' +
+    '<div class="bblog-doctor-sign" style="margin-top:18px;padding:16px 20px;border-radius:14px;background:#0F172A;color:#F8FAFC;font-size:0.92rem;line-height:1.7;">' +
+      '<strong style="color:#6EE7B7;">글·의학감수 : 바른한의원 대전본점 안정위 대표원장 (아빠 한의사)</strong><br/>' +
       '<span>' + (data.doctorNote || '') + '</span>' +
     '</div>';
 
+  const qnaCtaBanner =
+    '<div class="bblog-wp-only-bar-cta" style="margin-top:20px;padding:20px 22px;border-radius:16px;background:linear-gradient(135deg,#ECFDF5 0%,#FEF3C7 100%);border:2px solid #10B981;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">' +
+      '<div style="font-size:0.95rem;font-weight:800;color:#064E3B;">💬 궁금하신 증상은 바로 아래 답글창에 남겨주시면 안정위 대표원장실이 직접 답변해 도움드립니다.</div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+        '<a href="#respond" style="padding:9px 16px;border-radius:999px;background:#0F172A;color:#FFFFFF;font-size:0.84rem;font-weight:800;text-decoration:none;">✍️ 아래 답글 질문하기 ↓</a>' +
+        '<a href="/ask-doctor/?part=' + partId + '" style="padding:9px 16px;border-radius:999px;background:#FFFFFF;border:1.5px solid #0F172A;color:#0F172A;font-size:0.84rem;font-weight:800;text-decoration:none;">📚 무엇이든 물어보세요 허브</a>' +
+        '<a href="/body-explorer/?part=' + partId + '" style="padding:9px 16px;border-radius:999px;background:#FEF3C7;border:1.5px solid #F59E0B;color:#92400E;font-size:0.84rem;font-weight:800;text-decoration:none;">💡 3D 부위별 생활꿀팁</a>' +
+      '</div>' +
+    '</div>';
+
+  const jsonLdObj = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    'headline': data.title || '',
+    'alternativeHeadline': data.enTitle || '',
+    'description': (data.lead || '') + ' | ' + (data.enSummary || ''),
+    'inLanguage': ['ko-KR', 'en-US'],
+    'url': 'https://www.bareunhaniwon.com/' + postSlug + '/',
+    'image': data.heroImg || '',
+    'author': { '@type': 'Physician', 'name': '안정위 대표원장 (Dr. Jung-Wi Ahn)', 'url': 'https://www.bareunhaniwon.com/director/' },
+    'publisher': { '@type': 'MedicalClinic', 'name': '바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon)', 'telephone': '+82-42-488-1075' }
+  };
+
+  let innerNarrative = '';
   if (layout === 'B') {
-    // Type B: 핵심 체크 & 단계별 로드맵형
-    return '<div class="bblog-article-body layout-type-b" data-layout="B">' +
-      '<div class="bblog-selfcheck-box" style="margin-bottom:16px;padding:16px 18px;border-radius:14px;background:#FFFDF7;border:1.5px solid #D8CBB5;">' +
-        '<div style="font-size:0.84rem;font-weight:800;color:#1B4332;margin-bottom:6px;">📋 오늘의 중점 체크 포인트</div>' +
-        '<p style="margin:0;font-size:0.98rem;font-weight:700;line-height:1.72;color:#111111;">' + data.lead + '</p>' +
+    innerNarrative =
+      '<div class="bblog-selfcheck-box" style="margin-bottom:16px;padding:16px 18px;border-radius:14px;background:#F8FAFC;border:1.5px solid #CBD5E1;">' +
+        '<div style="font-size:0.84rem;font-weight:800;color:#15803D;margin-bottom:6px;">📋 오늘의 중점 체크 포인트</div>' +
+        '<p style="margin:0;font-size:0.98rem;font-weight:700;line-height:1.72;color:#111827;">' + data.lead + '</p>' +
       '</div>' +
       heroBlock +
       '<h3>■ ' + s0.h + '</h3><p>' + s0.p + '</p>' +
-      sciBlock +
-      splitExamBlock +
+      sciBlock + splitExamBlock +
       '<h3>■ ' + s1.h + '</h3><p>' + s1.p + '</p>' +
-      '<h3>■ ' + s2.h + '</h3><p>' + s2.p + '</p>' +
-      docSignBlock +
-    '</div>';
-  }
-
-  if (layout === 'C') {
-    // Type C: 오해 vs 진실 & 근본 해법형
-    return '<div class="bblog-article-body layout-type-c" data-layout="C">' +
+      '<h3>■ ' + s2.h + '</h3><p>' + s2.p + '</p>';
+  } else if (layout === 'C') {
+    innerNarrative =
       heroBlock +
       '<h3>첫째 · ' + s0.h + '</h3><p>' + s0.p + '</p>' +
       splitExamBlock +
       '<h3>둘째 · ' + s1.h + '</h3><p>' + s1.p + '</p>' +
       sciBlock +
-      '<h3>셋째 · ' + s2.h + '</h3><p>' + s2.p + '</p>' +
-      docSignBlock +
-    '</div>';
+      '<h3>셋째 · ' + s2.h + '</h3><p>' + s2.p + '</p>';
+  } else {
+    innerNarrative =
+      heroBlock +
+      '<p class="bblog-lead" style="font-size:1.0rem;font-weight:700;line-height:1.75;color:#111827;padding:15px 18px;border-radius:14px;background:#F8FAFC;border:1.5px solid #CBD5E1;margin-bottom:16px;">' + data.lead + '</p>' +
+      '<h3>1. ' + s0.h + '</h3><p>' + s0.p + '</p>' +
+      splitExamBlock +
+      '<h3>2. ' + s1.h + '</h3><p>' + s1.p + '</p>' +
+      sciBlock +
+      '<h3>3. ' + s2.h + '</h3><p>' + s2.p + '</p>';
   }
 
-  // Type A, D, E: 원장 진료 노트 & Q&A 스토리형
-  return '<div class="bblog-article-body layout-type-' + layout.toLowerCase() + '" data-layout="' + layout + '">' +
-    heroBlock +
-    '<p class="bblog-lead" style="font-size:1.0rem;font-weight:700;line-height:1.75;color:#111111;padding:15px 18px;border-radius:14px;background:#F4F8F5;border:1px solid #C5DDD0;margin-bottom:16px;">' + data.lead + '</p>' +
-    '<h3>1. ' + s0.h + '</h3><p>' + s0.p + '</p>' +
-    splitExamBlock +
-    '<h3>2. ' + s1.h + '</h3><p>' + s1.p + '</p>' +
-    sciBlock +
-    '<h3>3. ' + s2.h + '</h3><p>' + s2.p + '</p>' +
-    docSignBlock +
-  '</div>';
+  return '<!-- wp:html -->\n' +
+    '<style>.single-post .post-thumb-img-content{display:none !important;}</style>\n' +
+    '<article class="bblog-aiseo-article bblog-article-body layout-type-' + layout.toLowerCase() + '" data-layout="' + layout + '" style="max-width:860px;margin:0 auto;color:#111827;line-height:1.82;">' +
+      tldrBlock +
+      enBlock +
+      innerNarrative +
+      tableBlock +
+      faqBlock +
+      docSignBlock +
+      qnaCtaBanner +
+    '</article>\n' +
+    '<script type="application/ld+json">' + JSON.stringify(jsonLdObj) + '</script>\n' +
+    '<!-- /wp:html -->';
 }
 
 /**
  * ============================================================================
- * 5. 워드프레스 REST API 자동 카테고리 매칭 및 포스트 발행
+ * 5. 워드프레스 REST API 자동 카테고리 매칭, 답글(댓글) 허용 발행 & 글로벌 색인 핑
  * ============================================================================
  */
 function postToWordPressRestApi(meta, article) {
@@ -813,9 +907,12 @@ function postToWordPressRestApi(meta, article) {
 
   const payload = {
     title: article.title,
+    slug: article.slug || undefined,
     excerpt: article.summary,
     content: article.contentHtml,
     status: 'publish',
+    comment_status: 'open',
+    ping_status: 'open',
     categories: catId ? [catId] : []
   };
 
@@ -830,9 +927,33 @@ function postToWordPressRestApi(meta, article) {
   const code = postResp.getResponseCode();
   if (code === 200 || code === 201) {
     const body = JSON.parse(postResp.getContentText());
+    if (body.link) {
+      pingGlobalSearchEngines(body.link);
+    }
     return { ok: true, wpPostId: body.id, link: body.link || '' };
   }
   throw new Error('WP REST API 응답 코드: ' + code);
+}
+
+/**
+ * 발행 즉시 해외·글로벌 검색엔진(Bing / ChatGPT Search / Yandex / Naver IndexNow) 자동 색인 알림
+ */
+function pingGlobalSearchEngines(publishedUrl) {
+  try {
+    UrlFetchApp.fetch('https://api.indexnow.org/indexnow', {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify({
+        host: 'www.bareunhaniwon.com',
+        key: 'bareunhaniwon2026aiseokey849201',
+        keyLocation: 'https://www.bareunhaniwon.com/ask-doctor/',
+        urlList: [publishedUrl, 'https://www.bareunhaniwon.com/ask-doctor/']
+      }),
+      muteHttpExceptions: true
+    });
+  } catch (e) {
+    Logger.log('IndexNow ping skipped: ' + e.message);
+  }
 }
 
 function ensureWordPressCategory(baseUrl, authHeader, slug, name) {

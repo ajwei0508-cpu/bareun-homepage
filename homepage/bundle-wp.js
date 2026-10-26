@@ -31,6 +31,7 @@ const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/
 
 function rewriteAssetsForWP(html, label) {
   const assetPrefix = '(?:brochure\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|empathy-|empathy_|efficacy-)';
+  const pageSlugUnion = '(ask-doctor|body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)';
   let out = html
     .replace(new RegExp("src:\\s*'(" + assetPrefix + "[^']+)'", 'g'), "src: '" + ghBase + "$1'")
     .replace(new RegExp("before:\\s*'(" + assetPrefix + "[^']+)'", 'g'), "before: '" + ghBase + "$1'")
@@ -56,16 +57,17 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp('poster="(' + assetPrefix + '[^"]+)"', 'g'), 'poster="' + ghBase + '$1"')
     .replace(/href="story-3d\.html(\?[^"]*)?"/g, 'href="/$1"')
     .replace(/href="index\.html(\?[^"]*)?"/g, 'href="/$1"')
-    .replace(/href="(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'href="/$1/$2"')
+    .replace(new RegExp('href="' + pageSlugUnion + '\\.html(\\?[^"]*)?"', 'g'), 'href="/$1/$2"')
     .replace(/href="gongjindan\.html(\?[^"]*)?"/g, 'href="/gongjindan-2/$1"')
-    .replace(/data-link="(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'data-link="/$1/$2"')
+    .replace(new RegExp('data-link="' + pageSlugUnion + '\\.html(\\?[^"]*)?"', 'g'), 'data-link="/$1/$2"')
     .replace(/data-link="gongjindan\.html(\?[^"]*)?"/g, 'data-link="/gongjindan-2/$1"')
-    .replace(/data-href="(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^"]*)?"/g, 'data-href="/$1/$2"')
+    .replace(new RegExp('data-href="' + pageSlugUnion + '\\.html(\\?[^"]*)?"', 'g'), 'data-href="/$1/$2"')
     .replace(/data-href="gongjindan\.html(\?[^"]*)?"/g, 'data-href="/gongjindan-2/$1"')
-    .replace(/href:\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href: '/$1/$2'")
+    .replace(new RegExp("href:\\s*'" + pageSlugUnion + "\\.html(\\?[^']*)?'", 'g'), "href: '/$1/$2'")
     .replace(/href:\s*'gongjindan\.html(\?[^']*)?'/g, "href: '/gongjindan-2/$1'")
-    .replace(/href\s*=\s*'(body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate|lifting-compare)\.html(\?[^']*)?'/g, "href = '/$1/$2'")
+    .replace(new RegExp("href\\s*=\\s*'" + pageSlugUnion + "\\.html(\\?[^']*)?'", 'g'), "href = '/$1/$2'")
     .replace(/'body-explorer\.html\?part='/g, "'/body-explorer/?part='")
+    .replace(/'ask-doctor\.html\?part='/g, "'/ask-doctor/?part='")
     .replace(/"clinicLink":"(director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate)\.html"/g, '"clinicLink":"/$1/"')
     .replace(/"clinicLink":"gongjindan\.html"/g, '"clinicLink":"/gongjindan-2/"')
     .replace(/"ctaHref":"(director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate)\.html"/g, '"ctaHref":"/$1/"')
@@ -75,11 +77,11 @@ function rewriteAssetsForWP(html, label) {
       return 'data-frames="' + rewritten + '"';
     });
 
-  // Protect inline executable <script> blocks against WordPress wptexturize / wpautop (which corrupts `< ... && ... >` into `&#038;&#038;`)
-  out = out.replace(/<script(?![^>]*\bsrc=)(?![^>]*type=["']importmap["'])([^>]*)>([\s\S]*?)<\/script>/gi, (full, attrs, jsCode) => {
+  // Protect inline executable <script> blocks against WordPress wptexturize / wpautop
+  // IMPORTANT: Exclude type="importmap" AND type="application/ld+json" so search crawlers index pure JSON-LD!
+  out = out.replace(/<script(?![^>]*\bsrc=)(?![^>]*type=["'](?:importmap|application\/ld\+json)["'])([^>]*)>([\s\S]*?)<\/script>/gi, (full, attrs, jsCode) => {
     const trimmed = jsCode.trim();
     if (!trimmed) return full;
-    // Validate syntax at build time!
     try {
       new vm.Script(trimmed);
     } catch (err) {
@@ -114,6 +116,7 @@ const detailPages = [
   ['gongjindan.html', 'wordpress-gongjindan.html'],
   ['prostate.html', 'wordpress-prostate.html'],
   ['body-explorer.html', 'wordpress-body-explorer.html'],
+  ['ask-doctor.html', 'wordpress-ask-doctor.html'],
   ['lifting-compare.html', 'wordpress-lifting-compare.html']
 ];
 

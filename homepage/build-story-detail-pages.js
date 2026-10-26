@@ -9497,8 +9497,11 @@ function buildPageHtml(page) {
         </svg>
         <span>전체 클리닉</span>
       </a>
-      <a class="back-pill-btn" id="header-body-explorer-link" href="body-explorer.html" style="border-color:rgba(45,90,67,0.45);color:#2D5A43;font-weight:800;">
-        <span>🧬 인체모형 통합 의학·논문 정보 ↗</span>
+      <a class="back-pill-btn" id="header-body-explorer-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href : 'body-explorer.html'}" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;font-weight:800;">
+        <span>💡 3D 생활꿀팁 ↗</span>
+      </a>
+      <a class="back-pill-btn" id="header-ask-doctor-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href.replace('body-explorer.html', 'ask-doctor.html') : 'ask-doctor.html'}" style="background:#0F172A;border-color:#0F172A;color:#FFFFFF;font-weight:800;">
+        <span>💬 무엇이든 물어보세요 ↗</span>
       </a>
     </div>
 
@@ -9707,7 +9710,7 @@ function buildPageHtml(page) {
           <div class="body-model-holo-grid"></div>
 
           <div class="body-model-top-bar">
-            <span class="body-model-badge-main">🧬 인체모형 통합 의학·논문 쇼룸</span>
+            <span class="body-model-badge-main">💡 3D 인체모형 · 부위별 생활 꿀팁 창고</span>
             <span class="body-model-badge-sub">${page.bodyModelCard.partBadge}</span>
           </div>
 
@@ -9716,12 +9719,12 @@ function buildPageHtml(page) {
               <h2 id="project-details-preview-title">${page.bodyModelCard.title}</h2>
               <p class="next-portal-desc">${page.bodyModelCard.desc}</p>
               <div class="body-model-feature-chips">
-                <span class="body-model-chip">🧊 부위별 입체 해부 투시</span>
-                <span class="body-model-chip">🧘 맞춤 홈케어 · 식단</span>
-                <span class="body-model-chip">📑 실제 학술 논문 검수 근거</span>
+                <span class="body-model-chip">✅ 실천 DO vs 주의 DON'T</span>
+                <span class="body-model-chip">⏰ 아침·낮·밤 하루 루틴</span>
+                <span class="body-model-chip">🥗 맞춤 약선 식단 & 3분 지압</span>
               </div>
               <div id="project-details-preview-footer">
-                <span id="project-details-preview-footer-text">🧬 인체모형 통합 의학·논문 쇼룸으로 연결하기</span>
+                <span id="project-details-preview-footer-text">💡 3D 부위별 생활 꿀팁 창고 바로가기</span>
                 <div id="project-details-preview-footer-bar">
                   <div id="project-details-preview-footer-bar-inner"></div>
                 </div>
