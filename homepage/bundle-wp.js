@@ -9,7 +9,7 @@ const story3d = fs.readFileSync(path.join(dir, 'story-3d.html'), 'utf8');
 const wpReset = [
   '',
   '/* WORDPRESS & ASTRA THEME CONTAINER RESET */',
-  '.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper, .post-thumb, .post-thumb-img-content, .ast-single-post-order { display: none !important; }',
+  '.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper, .post-thumb, .post-thumb-img-content, .ast-single-post-order, #ast-scroll-top { display: none !important; }',
   '.entry-content a, .ast-container a, .site-content a { text-decoration: none !important; }',
   '.entry-content, .ast-container, .site-content, article.page, .ast-plain-container,',
   '.elementor, .elementor-section-wrap, .wp-block-group {',
@@ -65,9 +65,11 @@ function rewriteAssetsForWP(html, label) {
     .replace(/data-href="gongjindan\.html(\?[^"]*)?"/g, 'data-href="/gongjindan-2/$1"')
     .replace(new RegExp("href:\\s*'" + pageSlugUnion + "\\.html(\\?[^']*)?'", 'g'), "href: '/$1/$2'")
     .replace(/href:\s*'gongjindan\.html(\?[^']*)?'/g, "href: '/gongjindan-2/$1'")
+    .replace(new RegExp('"href":"' + pageSlugUnion + '\\.html(\\?[^"]*)?"', 'g'), '"href":"/$1/$2"')
+    .replace(/"href":"gongjindan\.html(\?[^"]*)?"/g, '"href":"/gongjindan-2/$1"')
     .replace(new RegExp("href\\s*=\\s*'" + pageSlugUnion + "\\.html(\\?[^']*)?'", 'g'), "href = '/$1/$2'")
-    .replace(/'body-explorer\.html\?part='/g, "'/body-explorer/?part='")
-    .replace(/'ask-doctor\.html\?part='/g, "'/ask-doctor/?part='")
+    .replace(/'body-explorer\.html(\?[^']*)?'/g, "'/body-explorer/$1'")
+    .replace(/'ask-doctor\.html(\?[^']*)?'/g, "'/ask-doctor/$1'")
     .replace(/"clinicLink":"(director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate)\.html"/g, '"clinicLink":"/$1/"')
     .replace(/"clinicLink":"gongjindan\.html"/g, '"clinicLink":"/gongjindan-2/"')
     .replace(/"ctaHref":"(director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|prostate)\.html"/g, '"ctaHref":"/$1/"')

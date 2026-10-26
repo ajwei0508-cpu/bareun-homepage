@@ -61,7 +61,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
 /* WORDPRESS & ASTRA THEME CONTAINER RESET */
-.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper, .post-thumb, .post-thumb-img-content, .ast-single-post-order { display: none !important; }
+.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper, .post-thumb, .post-thumb-img-content, .ast-single-post-order, #ast-scroll-top { display: none !important; }
 .entry-content a, .ast-container a, .site-content a { text-decoration: none !important; }
 .entry-content, .ast-container, .site-content, article.page, .ast-plain-container,
 .elementor, .elementor-section-wrap, .wp-block-group {
@@ -1753,8 +1753,9 @@
     </a>
 
     <div class="nav-right-actions">
-      <a href="/body-explorer/" class="btn-reserve-minimal" style="background: #FEF3C7; border-color: #F59E0B; color: #92400E;" title="3D 인체모형 부위별 생활 꿀팁 창고">💡 3D 생활꿀팁</a>
-      <a href="/ask-doctor/" class="btn-reserve-minimal" style="background: #0F172A; border-color: #0F172A; color: #FFFFFF;" title="공식 의학백과 블로그 및 안정위 대표원장 Q&A 문답">💬 무엇이든 물어보세요</a>
+      <a href="/body-explorer/" class="btn-reserve-minimal" style="background: #EFF6FF; border-color: #60A5FA; color: #1E3A8A;" title="풀스크린 3D 인체모형 & 바른한의원 진료 모션 탐색기">🧬 3D 인체·진료탐색</a>
+      <a href="/ask-doctor/?tab=blog" class="btn-reserve-minimal" style="background: #F8FAFC; border-color: #94A3B8; color: #0F172A;" title="해외 SCI 및 통합의학 논문 기반 대표 의학 인사이트 블로그">📘 의학 인사이트</a>
+      <a href="/ask-doctor/?tab=qna" class="btn-reserve-minimal" style="background: #0F172A; border-color: #0F172A; color: #FFFFFF;" title="회원 전용 질환별 1:1 비공개 Q&A 상담">🩺 질환별 비공개 Q&amp;A</a>
       <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(94, 71, 54, 0.35); color: var(--brand-brown);" title="6대 핵심 진료 카드 펼침 보기">✦ 6대 진료카드</button>
       <button type="button" class="btn-reserve-minimal" id="btn-open-reserve">예약·상담 ↗</button>
     </div>
@@ -1779,8 +1780,9 @@
         <h2 class="skt-finale-main-title">모든 환자를 내 가족처럼 진료하는 ‘아빠 한의사’ 6대 클리닉</h2>
       </div>
       <div class="skt-finale-controls">
-        <a href="/body-explorer/" class="skt-ctrl-btn" style="background: #FEF3C7; border-color: #F59E0B; color: #92400E; text-decoration: none; font-weight: 800;">💡 3D 부위별 생활꿀팁 창고 ↗</a>
-        <a href="/ask-doctor/" class="skt-ctrl-btn" style="background: #0F172A; border-color: #0F172A; color: #FFFFFF; text-decoration: none; font-weight: 800;">💬 무엇이든 물어보세요 (의학백과·Q&A) ↗</a>
+        <a href="/body-explorer/" class="skt-ctrl-btn" style="background: #EFF6FF; border-color: #60A5FA; color: #1E3A8A; text-decoration: none; font-weight: 800;">🧬 3D 인체·진료 모션 탐색기 ↗</a>
+        <a href="/ask-doctor/?tab=blog" class="skt-ctrl-btn" style="background: #FFFFFF; border-color: #94A3B8; color: #0F172A; text-decoration: none; font-weight: 800;">📘 대표 의학 인사이트 블로그 ↗</a>
+        <a href="/ask-doctor/?tab=qna" class="skt-ctrl-btn" style="background: #0F172A; border-color: #0F172A; color: #FFFFFF; text-decoration: none; font-weight: 800;">🩺 질환별 1:1 비공개 Q&amp;A ↗</a>
         <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
         <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 환자 스토리 다시 보기</button>
       </div>

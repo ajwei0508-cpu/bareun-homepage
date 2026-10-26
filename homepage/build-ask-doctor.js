@@ -1,1015 +1,849 @@
 /**
- * 바른한의원 대전본점 · 『무엇이든 물어보세요』 (공식 의학백과 블로그 & 안정위 대표원장 Q&A 라운지) 빌더
- * - 생성 파일: ask-doctor.html (워드프레스 번들: wordpress-ask-doctor.html -> 실서버 /ask-doctor/)
- * - 핵심 역할:
- *   1) '3D 부위별 생활 꿀팁 창고(body-explorer.html)'와 100% 시각·기능 분리 (로얄 슬레이트 네이비 #0F172A + 15:1 고대비 순백 매거진)
- *   2) 9편의 '공식 의학백과 마스터 블로그' + 27편의 '질환별 심층 임상칼럼'(총 36편+) 및 매일 자동발행 글 실시간 통합
- *   3) 발행된 각 블로그 글 하단에서 회원가입·로그인 없이 즉시 '답글(댓글)로 질문 남기기' & 원장 공식 답변 스레드 지원
- *      (실서버: WordPress /wp-comments-post.php & /wp-json/wp/v2/comments, 로컬: /api/blog-comments)
- *   4) 국내(네이버·다음) + 해외·글로벌 AI 플랫폼(Google, Bing, ChatGPT, Perplexity) 검색 노출 최적화:
- *      정적 크롤러 디렉토리(<nav> 36개 고유 퍼머링크) + 한·영 메타데이터 + CollectionPage/Blog/ItemList JSON-LD
+ * 바른한의원 대전본점 · 전문 의학 인사이트 블로그(대표글 1편) & 질환별 1:1 비공개 Q&A 빌더 (v5.0)
+ *
+ * [사용자 6대 핵심 요구사항 반영]
+ * 1. 모든 기존 홍보성 발행글 비공개 전환 & 오직 '전문가 대표 글 단 1편'만 단독 발행 노출
+ * 2. '안정위 원장 시술' 등 시술 홍보 문구 전면 삭제 → 유익한 의학·생리학 정보를 주는 전문가 저널 컨셉
+ * 3. 한의학 논문 외 해외 메이저 의학 논문(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews,
+ *    European Heart Journal, JCEM, Human Reproduction Update, European Urology 등) 전면 참고·인용
+ * 4. 블로그와 Q&A 분리 → 질환별(9대 카테고리) 전용 Q&A 메뉴 독립 구성
+ * 5. 질문은 회원가입자만 작성 가능 → Google · 카카오톡 · 네이버 3초 빠른 회원가입 지원
+ * 6. 모든 질문 100% 비공개 처리 → 작성자 본인 열람 및 마스터(관리자) 전체 열람 + 회원 상세정보 확인 가능
  */
+
 const fs = require('fs');
 const path = require('path');
-
 const {
-  DISEASE_BLOG_CATEGORIES,
-  INITIAL_DISEASE_BLOG_POSTS
+  DISEASE_QNA_CATEGORIES,
+  FLAGSHIP_REPRESENTATIVE_POST
 } = require('./disease-blog-seed-data.js');
 
-const wpMapPath = path.join(__dirname, 'wp-published-posts-map.json');
-const WP_PUBLISHED_MAP = fs.existsSync(wpMapPath)
-  ? JSON.parse(fs.readFileSync(wpMapPath, 'utf8'))
-  : {};
-
-// Initial Seeded Q&A Conversations (9 Master Encyclopedia Posts) — shown immediately & also seeded to live WP
-const INITIAL_QNA_SEED = {
-  'daejeon-pediatric-growth-plate-obesity-immunity-encyclopedia': [
-    {
-      id: 'seed-q-knee-1',
-      author: '둔산동 초3 보호자',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '아이가 비염으로 잘 때 입을 벌리고 자고 또래보다 키가 작아 걱정입니다. 성장판 초음파 검사는 방사선 걱정 없이 바로 받아볼 수 있나요?',
-      replies: [
-        {
-          id: 'seed-a-knee-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 바른한의원 대전본점 안정위 대표원장입니다. 구강호흡은 밤사이 깊은 서파수면과 성장호르몬 분비를 방해하는 대표적인 원인입니다. 원내 소아 성장판 검사는 방사선 노출이 없는 무통 초음파 방식과 체성분·코점막 내시경으로 안전하게 검사하며, 아이 체질에 맞춰 코호흡 회복과 숨은 키 성장을 함께 도움드립니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-cervical-spine-scalp-heat-hairloss-encyclopedia': [
-    {
-      id: 'seed-q-cervical-1',
-      author: '유성구 30대 직장인',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '야근이 잦은 뒤로 정수리가 뜨겁고 머리카락이 급격히 얇아졌습니다. 호르몬 억제 탈모약 부작용이 걱정되는데 한방 치료로 두피열부터 내릴 수 있을까요?',
-      replies: [
-        {
-          id: 'seed-a-cervical-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 뒷목 거북목 긴장과 스트레스로 열이 정수리에 고이는 ‘두피 사막화’ 상태일 가능성이 높습니다. 적외선 체열진단기(DITI)와 자율신경(HRV) 검사로 상열하한 정도를 정밀하게 검사하고, 호르몬 부작용 부담 없는 수승화강 청열 한약과 상부 경추 추나·두피 약침으로 모근 자생력을 회복합니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-lumbar-disc-pelvic-chuna-spine-encyclopedia': [
-    {
-      id: 'seed-q-lumbar-1',
-      author: '서구 탄방동 40대 환자분',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '허리디스크 주사를 맞아도 몇 달 뒤면 다시 엉덩이와 다리가 저립니다. 수술 없이 추나요법과 한방 치료로 근본 교정이 가능할까요?',
-      replies: [
-        {
-          id: 'seed-a-lumbar-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 기울어진 골반과 좁아진 추간판 간격이 그대로면 신경 염증이 쉽게 재발합니다. 근골격 초음파와 체열진단기로 눌린 신경 분절을 정확히 진단한 뒤, 원장 1:1 수기 감압 추나와 약침, 심부 자기장·극초단파 물리치료 및 강근골 한약을 병행해 비수술 회복을 세심하게 도움드립니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-emperor-gongjindan-chronic-fatigue-brain-encyclopedia': [
-    {
-      id: 'seed-q-gongjindan-1',
-      author: '세종시 수험생 학부모',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '고3 자녀 체력과 집중력이 많이 떨어져 황제공진단을 알아보고 있습니다. 간 수치 검사도 원내에서 확인하고 처방받을 수 있나요?',
-      replies: [
-        {
-          id: 'seed-a-gongjindan-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 네, 원내 내분비·간(AST/ALT)·당 수치 혈액 검사 장비와 자율신경(HRV) 검사, 1:1 진맥을 통해 장부 안전성을 먼저 꼼꼼히 검사합니다. 식약처 CITES 인증 정품 사향과 최상급 녹용 분골을 원장이 직접 정량 수제 조제하여 맑은 두뇌 집중력과 체력 회복을 도움드립니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-autonomic-nerve-headache-vertigo-syncope-encyclopedia': [
-    {
-      id: 'seed-q-syncope-1',
-      author: '대덕구 20대 여성 질문자',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '지하철이나 더운 곳에서 식은땀이 나며 쓰러진 적이 두 번 있는데 뇌 MRI는 정상이랍니다. 미주신경성 실신도 검사하고 치료할 수 있나요?',
-      replies: [
-        {
-          id: 'seed-a-syncope-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 뇌 구조가 정상이어도 자율신경 브레이크 오류로 혈관이 급격히 확장되면 뇌혈류가 일시 차단되어 실신이 반복됩니다. 심박변이도(HRV) 자율신경 검사와 말초혈관(APG) 검사로 원인을 진단하고, 미주신경 통로를 여는 상부 경추 추나와 혈관 탄력 한약으로 재발 예방과 회복을 도움드립니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-damjeok-indigestion-reflux-ibs-digestive-encyclopedia': [
-    {
-      id: 'seed-q-digest-1',
-      author: '유성구 봉명동 직장인',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '위내시경은 신경성 위염 정도라는데 명치가 돌처럼 딱딱하고 목에 뭐가 걸린 듯 답답합니다. 담적병 검사는 어떻게 진행되나요?',
-      replies: [
-        {
-          id: 'seed-a-digest-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 내시경은 위 안쪽 점막만 확인하므로 위장 바깥 근육층이 굳은 담적은 복부 정밀 초음파, 적외선 체열진단(DITI), 인후두 내시경 및 원장 복진을 통해 검사하고 진단합니다. 복부 심부 극초단파 온열 치료와 담적 용해 한약으로 위장 연동운동을 부드럽게 회복합니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-metabolic-detox-visceral-fat-diet-zero-encyclopedia': [
-    {
-      id: 'seed-q-gut-1',
-      author: '둔산동 30대 직장인',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '예전에 다른 다이어트 약을 먹고 손이 떨리고 잠을 설친 적이 있어 걱정됩니다. 바른한의원 다이어트 한약은 두근거림이나 간 부담이 없나요?',
-      replies: [
-        {
-          id: 'seed-a-gut-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 무리한 교감신경 흥분 방식이 아니라 사상체질과 HRV 검사를 바탕으로 자연스러운 포만감을 깨우는 처방입니다. 특히 복용 전후 원내 간(AST/ALT)·당 혈액 검사와 체성분(내장지방·골격근) 검사를 직접 시행하여 손 떨림 걱정 없이 건강하게 감량하도록 도움드립니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-uterine-fertility-ivf-menstrual-postpartum-encyclopedia': [
-    {
-      id: 'seed-q-uterus-1',
-      author: '서구 관저동 예비맘',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '다음 달 시험관(IVF) 이식을 앞두고 있는데 자궁내막이 얇고 아랫배가 늘 차갑습니다. 이식 전 한방 착상 치료를 병행해도 괜찮을까요?',
-      replies: [
-        {
-          id: 'seed-a-uterus-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 시험관 시술 일정에 맞춰 이식 전에는 자궁 나선동맥 혈류와 내막 두께·수용성(LIF)을 높이고, 이식 후에는 자궁 수축을 줄이는 단계별 착상·안태 프로토콜로 안전하게 병행 가능합니다. DITI 하복부 체열 검사로 냉증 정도를 정확히 진단하여 따뜻한 착상 환경을 회복합니다.'
-        }
-      ]
-    }
-  ],
-  'daejeon-prostate-urinary-incontinence-male-vitality-encyclopedia': [
-    {
-      id: 'seed-q-prostate-1',
-      author: '중구 태평동 50대 환자분',
-      date: '2026-10-25',
-      isDoctor: false,
-      content: '새벽마다 소변 때문에 2~3번씩 깨고 낮에도 잔뇨감이 심합니다. 진료나 자기장 치료 받을 때 옷을 벗어야 하는지 궁금합니다.',
-      replies: [
-        {
-          id: 'seed-a-prostate-1',
-          author: '안정위 대표원장 · 바른한의원 대전본점',
-          date: '2026-10-25',
-          isDoctor: true,
-          content: '안녕하세요, 안정위 대표원장입니다. 1:1 독립 진료실에서 프라이빗하게 상담 및 방광·하복부 초음파 검사를 진행하며, 골반저근과 괄약근을 강화하는 심부 자기장 치료 역시 평상복을 입은 채 편안히 의자에 앉아 받으실 수 있습니다. 전립선 감압·방광 온양 한약과 골반 추나로 편안한 통잠을 회복하도록 도움드립니다.'
-        }
-      ]
-    }
-  ]
-};
-
-function esc(str) {
-  return String(str || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+const mapPath = path.join(__dirname, 'wp-published-posts-map.json');
+let publishedMap = {};
+if (fs.existsSync(mapPath)) {
+  try {
+    publishedMap = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+  } catch (e) {}
 }
 
-function buildAskDoctorHtml() {
-  const postsWithWpMeta = INITIAL_DISEASE_BLOG_POSTS.map((p) => {
-    const wpInfo = WP_PUBLISHED_MAP[p.id] || {};
-    return {
-      ...p,
-      wpPostId: wpInfo.wpPostId || null,
-      canonicalUrl: wpInfo.link || (`https://www.bareunhaniwon.com/${p.slug}/`)
-    };
-  });
+const flagshipLiveMeta = publishedMap[FLAGSHIP_REPRESENTATIVE_POST.id] || {
+  wpPostId: 0,
+  slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
+  link: `https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/`
+};
 
-  // Hub-level JSON-LD for Google, Naver, Bing, ChatGPT Search & Perplexity
-  const hubJsonLd = {
+function buildAskDoctorHtml() {
+  const canonicalHub = 'https://www.bareunhaniwon.com/ask-doctor/';
+  const schemaGraph = {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': ['CollectionPage', 'Blog', 'MedicalWebPage'],
-        '@id': 'https://www.bareunhaniwon.com/ask-doctor/#blog',
-        'url': 'https://www.bareunhaniwon.com/ask-doctor/',
-        'name': '바른한의원 대전본점 · 무엇이든 물어보세요 (공식 의학백과 블로그 & 원장 Q&A)',
-        'alternateName': 'Bareun Korean Medicine Clinic Daejeon — Official Medical Encyclopedia Blog & Doctor Q&A',
-        'description': '대전 바른한의원 안정위 대표원장(아빠 한의사)이 직접 집필한 9대 질환 공식 의학백과 블로그 및 실시간 환자 질문·답변(Q&A) 허브. 소아성장·비만, 두피열·탈모, 허리디스크·골반추나, 황제공진단, 자율신경·실신·두통·불면, 담적·역류성식도염, 식욕ZERO 다이어트, 난임·생리통·산후풍, 전립선·요실금.',
-        'inLanguage': ['ko-KR', 'en-US'],
-        'author': {
-          '@type': 'Physician',
-          '@id': 'https://www.bareunhaniwon.com/director/#physician',
-          'name': '안정위 대표원장 (Dr. Jung-Wi Ahn)',
-          'url': 'https://www.bareunhaniwon.com/director/'
-        },
-        'publisher': {
-          '@type': 'MedicalClinic',
-          '@id': 'https://www.bareunhaniwon.com/#clinic',
-          'name': '바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon)',
-          'url': 'https://www.bareunhaniwon.com/',
-          'telephone': '+82-42-488-1075'
-        }
+        '@type': 'MedicalWebPage',
+        '@id': canonicalHub + '#journal-hub',
+        url: canonicalHub,
+        name: '바른 통합의학 인사이트 저널 & 질환별 1:1 비공개 Q&A',
+        inLanguage: 'ko-KR',
+        description: FLAGSHIP_REPRESENTATIVE_POST.summary,
+        citation: FLAGSHIP_REPRESENTATIVE_POST.internationalReferences
       },
       {
-        '@type': 'ItemList',
-        'name': '바른한의원 대전본점 공식 의학백과 & 임상칼럼 전체 목록',
-        'numberOfItems': postsWithWpMeta.length,
-        'itemListElement': postsWithWpMeta.map((p, i) => ({
-          '@type': 'ListItem',
-          'position': i + 1,
-          'name': p.title,
-          'url': p.canonicalUrl
+        '@type': 'ScholarlyArticle',
+        '@id': flagshipLiveMeta.link + '#article',
+        headline: FLAGSHIP_REPRESENTATIVE_POST.title,
+        alternativeHeadline: FLAGSHIP_REPRESENTATIVE_POST.subtitleEn,
+        datePublished: FLAGSHIP_REPRESENTATIVE_POST.publishedDate,
+        dateModified: FLAGSHIP_REPRESENTATIVE_POST.updatedDate,
+        inLanguage: 'ko-KR',
+        description: FLAGSHIP_REPRESENTATIVE_POST.summary,
+        citation: FLAGSHIP_REPRESENTATIVE_POST.internationalReferences
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': canonicalHub + '#faq',
+        mainEntity: FLAGSHIP_REPRESENTATIVE_POST.faqList.map(f => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a }
         }))
       }
     ]
   };
-
-  // Static Crawlable Directory Links (Domestic Naver Yeti + Global Google/Bing/AI Bots)
-  const staticDirectoryHtml = DISEASE_BLOG_CATEGORIES.map((cat) => {
-    const catPosts = postsWithWpMeta.filter(p => p.partId === cat.partId);
-    const items = catPosts.map(p =>
-      `<li>` +
-        `<a href="${esc(p.canonicalUrl)}" data-internal-slug="${esc(p.slug)}" onclick="if(!event.ctrlKey&&!event.metaKey){event.preventDefault();window.openArticleBySlug('${esc(p.slug)}');}">` +
-          `${p.isEncyclopediaMaster ? '<strong>[📘 공식 의학백과]</strong> ' : '[임상칼럼] '}${esc(p.title)}` +
-        `</a>` +
-        `<span class="seo-dir-en" lang="en"> — ${esc(p.enTitle || '')}</span>` +
-      `</li>`
-    ).join('\n          ');
-    return `
-      <div class="seo-dir-group">
-        <h3>${esc(cat.shortLabel)} · ${esc(cat.name)}</h3>
-        <ul>
-          ${items}
-        </ul>
-      </div>`;
-  }).join('\n');
 
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>무엇이든 물어보세요 · 공식 의학백과 블로그 & 원장 Q&A | 바른한의원 대전본점</title>
-  <meta name="description" content="바른한의원 대전본점 안정위 대표원장(아빠 한의사) 공식 의학백과 블로그 및 공개 문답(Q&A) 허브. 9대 질환(소아성장·비만, 탈모, 허리디스크 추나, 황제공진단, 자율신경·실신·두통, 담적·역류성식도염, 다이어트, 난임·생리통, 전립선·요실금) 백과와 블로그 답글 질문상담." />
-  <meta name="keywords" content="바른한의원 대전본점, 안정위 원장, 무엇이든 물어보세요, 한의원 의학백과, 대전 소아성장, 대전 탈모한의원, 대전 추나 허리디스크, 대전 공진단, 미주신경성 실신, 담적병, 대전 다이어트한의원, 대전 난임한의원, 전립선 요실금, Bareun Korean Medicine Clinic Daejeon" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <link rel="canonical" href="https://www.bareunhaniwon.com/ask-doctor/" />
-  <link rel="alternate" hreflang="ko-KR" href="https://www.bareunhaniwon.com/ask-doctor/" />
-  <link rel="alternate" hreflang="x-default" href="https://www.bareunhaniwon.com/ask-doctor/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="바른한의원 대전본점 (Bareun Korean Medicine Clinic)" />
-  <meta property="og:title" content="무엇이든 물어보세요 · 공식 의학백과 블로그 & 안정위 원장 Q&A | 바른한의원 대전본점" />
-  <meta property="og:description" content="9대 질환 공식 의학백과와 심층 임상칼럼을 한눈에 읽고, 발행된 블로그 글 아래 답글로 안정위 대표원장님께 바로 질문하세요." />
-  <meta property="og:url" content="https://www.bareunhaniwon.com/ask-doctor/" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/card_1_director.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <title>의학 인사이트 블로그 & 질환별 1:1 비공개 Q&A | 바른한의원 대전본점</title>
+  <meta name="description" content="해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews)와 통합생리학 논문을 기반으로 유익한 건강 정보를 전하는 대표 의학 칼럼 및 회원 전용 질환별 1:1 비공개 Q&A 센터입니다." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <link rel="canonical" href="${canonicalHub}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="application/ld+json">${JSON.stringify(hubJsonLd).replace(/<\//g, '<\\/')}</script>
+  <script type="application/ld+json">${JSON.stringify(schemaGraph)}</script>
   <style>
     :root {
-      --navy-950: #090E1A;
-      --navy-900: #0F172A;
-      --navy-800: #1E293B;
-      --slate-700: #334155;
-      --slate-600: #475569;
-      --slate-200: #E2E8F0;
-      --slate-100: #F1F5F9;
-      --slate-50: #F8FAFC;
-      --emerald-700: #047857;
+      --bg-page: #F4F6FB;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F8FAFC;
+      --ink-900: #0F172A;
+      --ink-700: #334155;
+      --ink-500: #64748B;
+      --line-200: #E2E8F0;
+      --line-300: #CBD5E1;
+      --blue-600: #2563EB;
+      --blue-700: #1D4ED8;
+      --blue-50: #EFF6FF;
+      --indigo-600: #4F46E5;
       --emerald-600: #059669;
-      --emerald-500: #10B981;
-      --emerald-100: #D1FAE5;
       --emerald-50: #ECFDF5;
-      --amber-700: #B45309;
-      --amber-100: #FEF3C7;
-      --ink-900: #111827;
-      --ink-800: #1F2937;
+      --amber-600: #D97706;
+      --amber-50: #FFFBEB;
+      --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 14px 36px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.14);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
       width: 100%;
-      min-height: 100%;
-      background: var(--slate-50);
+      min-height: 100vh;
+      background: var(--bg-page);
       color: var(--ink-900);
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      line-height: 1.6;
     }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; }
 
-    /* Hide standalone WP bar when rendered inside this integrated magazine reader */
-    .bblog-wp-only-bar, .bblog-wp-only-bar-cta { display: none !important; }
-
-    /* 1. STICKY TOP NAV */
-    .ask-topbar {
+    /* TOP GNB HEADER */
+    .journal-gnb {
       position: sticky;
       top: 0;
-      z-index: 300;
-      min-height: 64px;
-      background: rgba(15, 23, 42, 0.96);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 10px 24px;
+      z-index: 400;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line-200);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    }
+    .journal-gnb-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 11px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
     }
-    .ask-brand {
+    @media (min-width: 1180px) {
+      .journal-gnb-inner { flex-wrap: nowrap; }
+      .gnb-actions { flex-wrap: nowrap; flex-shrink: 0; }
+      .gnb-menu-tabs { flex-shrink: 0; }
+    }
+    @media (max-width: 1460px) {
+      .gnb-sub { display: none; }
+    }
+    .gnb-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: #FFFFFF;
+      gap: 11px;
     }
-    .ask-brand-badge {
+    .gnb-mark {
       width: 36px;
       height: 36px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-      color: #052E16;
+      background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+      color: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.05rem;
       font-weight: 800;
+      font-size: 0.95rem;
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
     }
-    .ask-brand-title {
+    .gnb-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .gnb-title {
       font-family: 'Noto Serif KR', serif;
       font-size: 1.02rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: var(--ink-900);
+      letter-spacing: -0.02em;
     }
-    .ask-top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .ask-top-btn {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 15px;
-      border-radius: 999px;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 800;
-      text-decoration: none;
-      cursor: pointer;
-      border: 1.5px solid rgba(255, 255, 255, 0.24);
-      background: rgba(255, 255, 255, 0.08);
-      color: #FFFFFF;
-      transition: all 0.2s ease;
-    }
-    .ask-top-btn:hover { background: rgba(255, 255, 255, 0.18); }
-    .ask-top-btn.gold-tips {
-      background: #FEF3C7;
-      border-color: #F59E0B;
-      color: #92400E;
-    }
-    .ask-top-btn.emerald-qna {
-      background: #10B981;
-      border-color: #34D399;
-      color: #052E16;
-    }
-
-    /* 2. ROYAL SLATE NAVY HERO LOUNGE */
-    .ask-hero {
-      background: radial-gradient(circle at 80% 20%, #1E3A5F 0%, #0F172A 58%, #090E1A 100%);
-      color: #FFFFFF;
-      padding: 44px 24px 36px;
-      border-bottom: 4px solid #10B981;
-    }
-    .ask-hero-inner {
-      max-width: 1220px;
-      margin: 0 auto;
-    }
-    .ask-hero-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.16);
-      border: 1px solid rgba(52, 211, 153, 0.45);
-      color: #6EE7B7;
-      font-size: 0.8rem;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-    .ask-hero-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.7rem, 2.8vw, 2.45rem);
-      font-weight: 800;
-      line-height: 1.32;
-      margin-bottom: 10px;
-      word-break: keep-all;
-    }
-    .ask-hero-sub {
-      font-size: 1rem;
-      color: #CBD5E1;
-      line-height: 1.68;
-      max-width: 880px;
-      margin-bottom: 24px;
-      word-break: keep-all;
-    }
-
-    /* Search + Quick Q&A Bar */
-    .ask-search-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      max-width: 920px;
-      margin-bottom: 20px;
-    }
-    .ask-search-input {
-      width: 100%;
-      padding: 15px 20px;
-      border-radius: 14px;
-      border: 2px solid rgba(255, 255, 255, 0.25);
-      background: #FFFFFF;
-      color: #111827;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.98rem;
+    .gnb-sub {
+      font-size: 0.74rem;
       font-weight: 600;
-      outline: none;
+      color: var(--ink-500);
     }
-    .ask-search-input:focus {
-      border-color: #10B981;
-      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
-    }
-    .ask-quick-question-btn {
-      appearance: none;
-      padding: 0 24px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-      color: #052E16;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      white-space: nowrap;
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.28);
-      transition: transform 0.18s ease;
-    }
-    .ask-quick-question-btn:hover { transform: translateY(-2px); }
 
-    /* Mode Tabs (All / Official Encyclopedia / Clinical Columns) */
-    .ask-mode-tabs {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .ask-mode-tab {
-      appearance: none;
-      padding: 10px 18px;
+    /* DUAL MENU SWITCHER IN GNB */
+    .gnb-menu-tabs {
+      display: inline-flex;
+      background: #EEF2FF;
+      padding: 4px;
       border-radius: 999px;
-      border: 1.5px solid rgba(255, 255, 255, 0.24);
-      background: rgba(255, 255, 255, 0.08);
-      color: #E2E8F0;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      border: 1px solid #C7D2FE;
+      gap: 4px;
     }
-    .ask-mode-tab.active {
-      background: #FFFFFF;
-      border-color: #FFFFFF;
-      color: #0F172A;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
-    }
-
-    /* 3. MAIN CONTAINER */
-    .ask-main {
-      max-width: 1220px;
-      margin: 0 auto;
-      padding: 26px 24px 64px;
-    }
-
-    /* 9-Disease Filter Chips */
-    .ask-part-strip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      margin-bottom: 22px;
-      scrollbar-width: thin;
-    }
-    .ask-part-chip {
+    .gnb-menu-tab {
       appearance: none;
-      padding: 9px 15px;
-      border-radius: 999px;
-      border: 1.5px solid #CBD5E1;
-      background: #FFFFFF;
-      color: #1E293B;
-      font-family: 'Pretendard', sans-serif;
+      border: none !important;
+      background: transparent !important;
+      color: #3730A3 !important;
       font-size: 0.84rem;
       font-weight: 800;
+      padding: 8px 15px;
+      border-radius: 999px;
+      cursor: pointer;
       white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-    .ask-part-chip:hover {
-      border-color: #0F172A;
-      background: #F1F5F9;
-    }
-    .ask-part-chip.active {
-      background: #0F172A;
-      border-color: #0F172A;
-      color: #FFFFFF;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
-    }
-
-    /* Cards Grid */
-    .ask-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(355px, 1fr));
-      gap: 20px;
-    }
-    .ask-post-card {
-      background: #FFFFFF;
-      border: 1.5px solid #CBD5E1;
-      border-radius: 20px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
       transition: all 0.22s ease;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-    }
-    .ask-post-card:hover {
-      transform: translateY(-4px);
-      border-color: #0F172A;
-      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
-    }
-    .ask-post-card.is-master {
-      border: 2px solid #059669;
-      box-shadow: 0 8px 24px rgba(5, 150, 105, 0.1);
-    }
-    .apc-thumb-box {
-      position: relative;
-      height: 196px;
-      background: #E2E8F0;
-      overflow: hidden;
-    }
-    .apc-thumb-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.35s ease;
-    }
-    .ask-post-card:hover .apc-thumb-img { transform: scale(1.04); }
-    .apc-type-ribbon {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 800;
-      background: rgba(15, 23, 42, 0.9);
-      color: #FFFFFF;
-      backdrop-filter: blur(6px);
-    }
-    .ask-post-card.is-master .apc-type-ribbon {
-      background: #065F46;
-      color: #ECFDF5;
-      border: 1px solid #6EE7B7;
-    }
-    .apc-body {
-      padding: 20px 22px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .apc-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #111827;
-      line-height: 1.44;
-      margin-bottom: 9px;
-      word-break: keep-all;
-    }
-    .apc-summary {
-      font-size: 0.92rem;
-      color: #374151;
-      line-height: 1.65;
-      margin-bottom: 14px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      word-break: keep-all;
-      flex: 1;
-    }
-    .apc-footer {
-      padding-top: 12px;
-      border-top: 1px dashed #CBD5E1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 0.82rem;
-      font-weight: 800;
-    }
-    .apc-qna-pill {
-      padding: 5px 11px;
-      border-radius: 999px;
-      background: #ECFDF5;
-      color: #065F46;
-      border: 1px solid #A7F3D0;
-    }
-    .apc-read-cta {
-      color: #0F172A;
-    }
-
-    /* 4. HIGH-CONTRAST 15:1 EDITORIAL READER + INTERACTIVE BLOG Q&A */
-    .ask-reader-wrap {
-      max-width: 920px;
-      margin: 0 auto;
-    }
-    .ask-reader-card {
-      background: #FFFFFF;
-      border: 2px solid #CBD5E1;
-      border-radius: 24px;
-      padding: 34px 40px;
-      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
-      margin-bottom: 24px;
-    }
-    .ask-reader-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding-bottom: 18px;
-      margin-bottom: 20px;
-      border-bottom: 1.5px solid #E2E8F0;
-    }
-    .ask-back-list-btn {
-      appearance: none;
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: 1.5px solid #0F172A;
-      background: #F8FAFC;
-      color: #0F172A;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.86rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .ask-back-list-btn:hover {
-      background: #0F172A;
-      color: #FFFFFF;
-    }
-    .ask-permalink-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+    }
+    .gnb-menu-tab.active {
+      background: var(--ink-900) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22);
+    }
+
+    .gnb-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .gnb-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
       border-radius: 999px;
-      background: #F1F5F9;
-      border: 1px solid #CBD5E1;
-      color: #334155;
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       font-weight: 700;
-      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid var(--line-300) !important;
+      background: #FFFFFF !important;
+      color: var(--ink-900) !important;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .ask-permalink-pill:hover {
-      background: #E2E8F0;
-      color: #0F172A;
+    .gnb-pill:hover {
+      border-color: var(--blue-600) !important;
+      color: var(--blue-600) !important;
     }
-    .ask-reader-h1 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.48rem, 2.3vw, 1.95rem);
+    .gnb-pill.vibrant-3d-btn {
+      background: linear-gradient(135deg, #DBEAFE 0%, #EDE9FE 100%) !important;
+      border-color: #93C5FD !important;
+      color: #1E3A8A !important;
       font-weight: 800;
-      color: #0F172A;
-      line-height: 1.38;
-      margin: 10px 0 14px;
+    }
+    .gnb-pill.auth-btn {
+      background: var(--blue-600) !important;
+      border-color: var(--blue-600) !important;
+      color: #FFFFFF !important;
+      font-weight: 800;
+    }
+    .gnb-pill.master-btn {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+      color: #FDE68A !important;
+      font-weight: 800;
+    }
+
+    /* HERO BANNER */
+    .hub-hero {
+      background: linear-gradient(135deg, #0B132B 0%, #1C2541 55%, #1E3A8A 100%);
+      color: #FFFFFF;
+      padding: 40px 24px 36px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hub-hero-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.32fr) 510px;
+      align-items: center;
+      gap: 28px;
+    }
+    @media (max-width: 1120px) {
+      .hub-hero-inner { grid-template-columns: 1fr; }
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 13px;
+      border-radius: 999px;
+      background: rgba(96, 165, 250, 0.18);
+      border: 1px solid rgba(147, 197, 253, 0.35);
+      color: #BFDBFE !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+    .hero-heading, .hub-hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.62rem, 2.5vw, 2.24rem);
+      font-weight: 800;
+      color: #FFFFFF !important;
+      line-height: 1.32;
+      margin: 0 0 10px 0 !important;
       word-break: keep-all;
     }
-    .ask-reader-meta {
+    .hero-lead {
+      font-size: 0.95rem;
+      color: #CBD5E1 !important;
+      max-width: 760px;
+      line-height: 1.68;
+      margin: 0 !important;
+      word-break: keep-all;
+    }
+    .hero-mode-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+    .hero-mode-card {
+      text-align: left;
+      padding: 16px 17px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.09) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
+      color: #FFFFFF !important;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+    .hero-mode-card:hover {
+      background: rgba(255, 255, 255, 0.16) !important;
+      transform: translateY(-2px);
+    }
+    .hero-mode-card.active {
+      background: #FFFFFF !important;
+      color: var(--ink-900) !important;
+      border-color: #93C5FD !important;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
+    }
+    .hmc-kicker {
+      font-size: 0.71rem;
+      font-weight: 800;
+      color: #93C5FD !important;
+      margin-bottom: 5px;
+    }
+    .hero-mode-card.active .hmc-kicker { color: var(--blue-600) !important; }
+    .hmc-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: inherit !important;
+      margin-bottom: 5px;
+      word-break: keep-all;
+    }
+    .hmc-desc {
+      font-size: 0.78rem;
+      color: inherit !important;
+      opacity: 0.84;
+      line-height: 1.46;
+      word-break: keep-all;
+    }
+
+    /* MAIN CONTAINER */
+    .hub-main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; animation: fadeIn 0.26s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ======================================================================
+       VIEW 1: EXPERT MEDICAL INSIGHT BLOG (ONLY 1 REPRESENTATIVE ARTICLE)
+       ====================================================================== */
+    .blog-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .blog-sidebar {
+      position: sticky;
+      top: 86px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sidebar-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--line-200);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .sidebar-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--blue-600);
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .toc-link {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--ink-700);
+      padding: 7px 10px;
+      border-radius: 10px;
+      transition: all 0.18s ease;
+    }
+    .toc-link:hover {
+      background: var(--blue-50);
+      color: var(--blue-700);
+    }
+    .journal-policy-badge {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.81rem;
+      color: var(--ink-700);
+      line-height: 1.58;
+    }
+
+    .flagship-article-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--line-200);
+      border-radius: 26px;
+      padding: 42px 46px;
+      box-shadow: var(--shadow-md);
+    }
+    .article-meta-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      padding-bottom: 18px;
-      margin-bottom: 24px;
-      border-bottom: 1.5px solid #E2E8F0;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #475569;
+      margin-bottom: 18px;
     }
-
-    /* Article Inner AI-SEO Styles (15:1 High Contrast) */
-    .bblog-aiseo-tldr {
-      margin: 0 0 18px;
-      padding: 18px 22px;
-      border-radius: 16px;
-      background: #F0FDF4;
-      border: 1.5px solid #86EFAC;
-      border-left: 6px solid #15803D;
-    }
-    .bblog-aiseo-tldr-badge {
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: #14532D;
-      margin-bottom: 8px;
-    }
-    .bblog-aiseo-tldr-list {
-      margin: 0;
-      padding-left: 18px;
-      color: #111827;
-      font-size: 0.97rem;
-      font-weight: 600;
-      line-height: 1.74;
-    }
-    .bblog-aiseo-tldr-list li { margin-bottom: 5px; }
-    .bblog-aiseo-en-box {
-      margin: 0 0 22px;
-      padding: 16px 20px;
-      border-radius: 14px;
-      background: #F8FAFC;
-      border: 1.5px solid #CBD5E1;
-    }
-    .bblog-aiseo-en-kicker {
-      font-size: 0.73rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      color: #334155;
-      margin-bottom: 4px;
-    }
-    .bblog-aiseo-en-title {
-      font-size: 0.98rem;
-      font-weight: 800;
-      color: #0F172A;
-      margin-bottom: 5px;
-    }
-    .bblog-aiseo-en-desc {
-      font-size: 0.88rem;
-      color: #334155;
-      line-height: 1.65;
-    }
-    .bblog-article-body {
-      color: #111827;
-      font-size: 1.04rem;
-      line-height: 1.85;
-      word-break: keep-all;
-    }
-    .bblog-article-body h3, .bblog-aiseo-table-sec h3, .bblog-aiseo-faq-sec h3 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.26rem;
-      font-weight: 800;
-      color: #0F172A;
-      margin: 28px 0 12px;
-      padding-left: 12px;
-      border-left: 4px solid #059669;
-      line-height: 1.4;
-    }
-    .bblog-article-body p {
-      margin: 0 0 15px;
-      color: #1F2937;
-      line-height: 1.85;
-    }
-    .bblog-sublead { color: #065F46 !important; font-size: 1.06rem !important; }
-    .bblog-hero-figure {
-      margin: 0 0 22px;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1.5px solid #CBD5E1;
-      background: #F8FAFC;
-    }
-    .bblog-hero-img {
-      width: 100%;
-      max-height: 430px;
-      object-fit: cover;
-      display: block;
-    }
-    .bblog-hero-caption {
-      padding: 11px 16px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: #334155;
-      background: #F1F5F9;
-    }
-    .bblog-lead-box, .bblog-qa-box, .bblog-selfcheck-box, .bblog-essay-lead {
-      margin: 0 0 20px;
-      padding: 18px 22px;
-      border-radius: 16px;
-      background: #F8FAFC;
-      border: 1.5px solid #CBD5E1;
-    }
-    .bblog-lead-badge {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: #065F46;
-      margin-bottom: 6px;
-    }
-    .bblog-qa-q {
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-      border-bottom: 1px dashed #CBD5E1;
-    }
-    .bblog-encyc-cards-grid, .bblog-mythfact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      margin: 16px 0 20px;
-    }
-    .bblog-encyc-card {
-      padding: 16px 18px;
-      border-radius: 14px;
-      background: #FFFFFF;
-      border: 1.5px solid #CBD5E1;
-    }
-    .bblog-encyc-card.tx {
-      background: #F0FDF4;
-      border-color: #86EFAC;
-    }
-    .bblog-encyc-card-tag {
-      font-size: 0.76rem;
-      font-weight: 800;
-      color: #065F46;
-      margin-bottom: 5px;
-    }
-    .bblog-encyc-card h4 {
-      font-size: 1rem;
-      font-weight: 800;
-      color: #0F172A;
-      margin-bottom: 6px;
-    }
-    .bblog-encyc-card p { font-size: 0.92rem !important; margin: 0 !important; line-height: 1.65 !important; }
-    .bblog-myth-card { padding: 16px; border-radius: 14px; background: #FEF2F2; border: 1.5px solid #FECACA; }
-    .bblog-fact-card { padding: 16px; border-radius: 14px; background: #ECFDF5; border: 1.5px solid #A7F3D0; }
-    .bblog-visual-split-card {
-      display: grid;
-      grid-template-columns: 230px 1fr;
-      gap: 18px;
+    .article-badge {
+      display: inline-flex;
       align-items: center;
-      margin: 18px 0;
-      padding: 18px;
-      border-radius: 16px;
-      background: #F8FAFC;
-      border: 1.5px solid #CBD5E1;
-    }
-    .bblog-visual-split-img {
-      width: 100%;
-      height: 156px;
-      object-fit: cover;
-      border-radius: 12px;
-      display: block;
-    }
-    .bblog-split-kicker, .bblog-physio-kicker {
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--blue-50);
+      border: 1px solid #BFDBFE;
+      color: var(--blue-700);
       font-size: 0.78rem;
       font-weight: 800;
-      color: #059669;
-      margin-bottom: 4px;
     }
-    .bblog-split-title, .bblog-physio-title {
-      font-size: 1.06rem;
+    .article-date {
+      font-size: 0.82rem;
+      color: var(--ink-500);
+      font-weight: 600;
+    }
+    .article-h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.6rem, 2.6vw, 2.18rem);
       font-weight: 800;
-      color: #0F172A;
-      margin-bottom: 8px;
+      line-height: 1.38;
+      color: var(--ink-900);
+      margin-bottom: 10px;
+      word-break: keep-all;
     }
-    .bblog-physio-card {
-      margin: 18px 0;
-      padding: 20px;
-      border-radius: 16px;
-      background: #F0FDF4;
+    .article-en-sub {
+      font-size: 0.9rem;
+      color: var(--ink-500);
+      font-weight: 500;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+    .article-journal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 26px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line-200);
+    }
+    .journal-chip {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: #F1F5F9;
+      color: #1E293B;
+      border: 1px solid #CBD5E1;
+    }
+    .tldr-box {
+      background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
       border: 1.5px solid #86EFAC;
+      border-radius: 20px;
+      padding: 24px 26px;
+      margin-bottom: 30px;
     }
-    .bblog-physio-highlight {
-      margin-top: 10px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: #FFFFFF;
-      border: 1px solid #BBF7D0;
-      font-size: 0.95rem;
-      color: #111827;
+    .tldr-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #065F46;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .bblog-sci-callout {
-      margin: 18px 0;
-      padding: 18px 20px;
-      border-radius: 16px;
-      background: #EFF6FF;
-      border: 1.5px solid #BFDBFE;
-      border-left: 5px solid #1D4ED8;
+    .tldr-list {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      font-size: 0.94rem;
+      color: #064E3B;
+      font-weight: 500;
+      line-height: 1.7;
     }
-    .bblog-sci-label { font-size: 0.8rem; font-weight: 800; color: #1E40AF; margin-bottom: 6px; }
-    .bblog-sci-paper-title { font-size: 0.98rem; font-weight: 800; color: #0F172A; margin-bottom: 6px; }
-    .bblog-sci-paper-list, .bblog-check-list { padding-left: 20px; line-height: 1.76; }
-    .bblog-aiseo-table-wrap {
+
+    .evidence-table-wrap {
       overflow-x: auto;
-      margin: 12px 0 20px;
-      border-radius: 14px;
-      border: 1.5px solid #CBD5E1;
+      border: 1px solid var(--line-200);
+      border-radius: 18px;
+      margin-bottom: 34px;
     }
-    .bblog-aiseo-table {
+    .evidence-table {
       width: 100%;
       border-collapse: collapse;
-      background: #FFFFFF;
-      font-size: 0.92rem;
-    }
-    .bblog-aiseo-table th {
-      background: #0F172A;
-      color: #FFFFFF;
-      font-weight: 800;
-      padding: 12px 14px;
+      font-size: 0.88rem;
       text-align: left;
     }
-    .bblog-aiseo-table td {
-      padding: 12px 14px;
-      border-top: 1px solid #E2E8F0;
-      color: #1E2937;
+    .evidence-table th {
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 13px 15px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .evidence-table td {
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--line-200);
       vertical-align: top;
+      line-height: 1.58;
     }
-    .bblog-faq-item {
-      padding: 15px 18px;
-      border-radius: 14px;
-      background: #F8FAFC;
-      border: 1.5px solid #E2E8F0;
-      margin-bottom: 10px;
+    .evidence-table tr:last-child td { border-bottom: none; }
+    .evidence-table tr:nth-child(even) td { background: #F8FAFC; }
+
+    .article-sec {
+      margin-bottom: 36px;
+      scroll-margin-top: 100px;
     }
-    .bblog-faq-q { font-weight: 800; color: #0F172A; font-size: 0.98rem; margin-bottom: 6px; }
-    .bblog-faq-a { color: #334155; font-size: 0.94rem; line-height: 1.72; }
-    .bblog-doctor-sign {
-      margin-top: 22px;
+    .sec-num {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--blue-600);
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+    .sec-h2 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.34rem;
+      font-weight: 800;
+      color: var(--ink-900);
+      margin-bottom: 14px;
+      line-height: 1.42;
+      word-break: keep-all;
+    }
+    .sec-p {
+      font-size: 1.01rem;
+      color: #1E293B;
+      line-height: 1.88;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .sec-quote {
+      margin: 18px 0;
       padding: 18px 22px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      color: #F8FAFC;
-      font-size: 0.94rem;
+      border-left: 4px solid var(--blue-600);
+      background: #F8FAFC;
+      border-radius: 0 14px 14px 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink-900);
       line-height: 1.72;
     }
-    .bblog-doctor-sign strong { color: #6EE7B7; }
 
-    /* 5. INTERACTIVE BLOG REPLY Q&A BOARD */
-    .qna-board-card {
-      background: #FFFFFF;
-      border: 2.5px solid #0F172A;
-      border-radius: 24px;
-      padding: 30px 34px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
-      margin-bottom: 28px;
+    .faq-box {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line-200);
     }
-    .qna-board-header {
+    .faq-item {
+      background: #F8FAFC;
+      border: 1px solid var(--line-200);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .faq-q {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--ink-900);
+      margin-bottom: 7px;
+    }
+    .faq-a {
+      font-size: 0.92rem;
+      color: var(--ink-700);
+      line-height: 1.7;
+    }
+
+    .refs-box {
+      margin-top: 32px;
+      padding: 24px 26px;
+      border-radius: 18px;
+      background: #0F172A;
+      color: #E2E8F0;
+    }
+    .refs-list {
+      list-style: none;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: #CBD5E1;
+      line-height: 1.62;
+    }
+
+    /* ======================================================================
+       VIEW 2: DISEASE-SPECIFIC 1:1 PRIVATE Q&A + FAST SOCIAL SIGNUP + MASTER
+       ====================================================================== */
+    .qna-cat-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .qna-cat-btn {
+      appearance: none;
+      border: 1.5px solid var(--line-300) !important;
+      background: #FFFFFF !important;
+      color: var(--ink-900) !important;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .qna-cat-btn:hover {
+      border-color: var(--blue-600) !important;
+      background: var(--blue-50) !important;
+      color: var(--blue-700) !important;
+    }
+    .qna-cat-btn.active {
+      background: var(--blue-600) !important;
+      border-color: var(--blue-600) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.26);
+    }
+
+    .disease-evidence-banner {
+      background: #FFFFFF;
+      border: 1.5px solid #BFDBFE;
+      border-radius: 22px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .deb-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      padding-bottom: 18px;
-      margin-bottom: 20px;
-      border-bottom: 1.5px solid #E2E8F0;
+      margin-bottom: 14px;
     }
-    .qna-thread-list {
+    .deb-papers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .deb-paper-card {
+      background: #F8FAFC;
+      border: 1px solid var(--line-200);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .deb-paper-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #DBEAFE;
+      color: #1E40AF;
+      margin-bottom: 6px;
+    }
+    .deb-paper-badge.integrative {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    /* Q&A WORKSPACE: LEFT COMPOSER/AUTH + RIGHT PRIVATE BOARD */
+    .qna-grid {
+      display: grid;
+      grid-template-columns: 410px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .qna-panel-card {
+      background: #FFFFFF;
+      border: 1px solid var(--line-200);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* SOCIAL SIGNUP BUTTONS */
+    .social-btn-stack {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 10px;
+      margin: 16px 0;
     }
-    .qna-question-item {
-      border: 1.5px solid #CBD5E1;
-      border-radius: 16px;
-      padding: 18px 20px;
+    .social-fast-btn {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 13px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      border: 1.5px solid transparent;
+    }
+    .social-fast-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1);
+    }
+    .social-fast-btn.google {
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      color: #1F2937 !important;
+    }
+    .social-fast-btn.kakao {
+      background: #FEE500 !important;
+      border-color: #FACC15 !important;
+      color: #191919 !important;
+    }
+    .social-fast-btn.naver {
+      background: #03C75A !important;
+      border-color: #02B350 !important;
+      color: #FFFFFF !important;
+    }
+
+    .form-field {
+      margin-bottom: 13px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.81rem;
+      font-weight: 800;
+      color: var(--ink-700);
+      margin-bottom: 5px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      height: auto !important;
+      line-height: 1.45 !important;
+      padding: 11px 13px !important;
+      border-radius: 12px;
+      border: 1.5px solid var(--line-300);
       background: #F8FAFC;
+      font-size: 0.9rem;
+      color: var(--ink-900);
+      outline: none;
+      transition: border-color 0.18s ease, background 0.18s ease;
     }
-    .qna-item-head {
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--blue-600);
+      background: #FFFFFF;
+    }
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .submit-primary-btn, button.submit-primary-btn[type="submit"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: none !important;
+      background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+      color: #FFFFFF !important;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.28);
+      transition: all 0.2s ease;
+    }
+    .submit-primary-btn.master-submit, button.submit-primary-btn.master-submit[type="submit"] {
+      background: linear-gradient(135deg, #0F172A 0%, #334155 100%) !important;
+      color: #FDE68A !important;
+    }
+    .submit-primary-btn:hover { transform: translateY(-1px); }
+
+    /* PRIVATE QNA BOARD ITEMS */
+    .qna-board-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line-200);
+    }
+    .qna-item-card {
+      border: 1.5px solid var(--line-200);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      background: #FFFFFF;
+      transition: all 0.2s ease;
+    }
+    .qna-item-card.readable {
+      border-color: #93C5FD;
+      background: #FCFDFE;
+    }
+    .qna-item-card.locked {
+      background: #F8FAFC;
+      cursor: pointer;
+    }
+    .qna-item-card.locked:hover {
+      border-color: #94A3B8;
+    }
+    .qna-item-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1017,221 +851,605 @@ function buildAskDoctorHtml() {
       gap: 8px;
       margin-bottom: 8px;
     }
-    .qna-user-badge {
+    .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.86rem;
+      gap: 4px;
+      font-size: 0.74rem;
       font-weight: 800;
-      color: #0F172A;
-    }
-    .qna-doctor-reply-item {
-      margin-top: 12px;
-      margin-left: 16px;
-      padding: 16px 18px;
-      border-radius: 14px;
-      background: #ECFDF5;
-      border: 1.5px solid #10B981;
-    }
-    .qna-doctor-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 11px;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: #0F172A;
-      color: #6EE7B7;
-      font-size: 0.78rem;
+    }
+    .status-pill.answered {
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .status-pill.waiting {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+    .provider-badge {
+      font-size: 0.72rem;
       font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #E2E8F0;
+      color: #334155;
     }
-    .qna-form-box {
-      background: #F1F5F9;
-      border: 1.5px solid #CBD5E1;
-      border-radius: 18px;
-      padding: 22px;
+    .provider-badge.kakao { background: #FEF08A; color: #713F12; }
+    .provider-badge.naver { background: #BBF7D0; color: #14532D; }
+    .provider-badge.google { background: #DBEAFE; color: #1E3A8A; }
+
+    /* MASTER CONSOLE & MEMBER DETAIL DOSSIER */
+    .master-console-bar {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border: 1.5px solid #F59E0B;
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow-md);
     }
-    .qna-form-row {
+    .member-dossier-box {
+      margin: 12px 0;
+      padding: 14px 16px;
+      border-radius: 13px;
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      font-size: 0.83rem;
+      color: #78350F;
       display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 8px 14px;
     }
-    .qna-input, .qna-textarea {
-      width: 100%;
-      padding: 12px 15px;
-      border-radius: 12px;
-      border: 1.5px solid #94A3B8;
+    .master-reply-view {
+      margin-top: 12px;
+      padding: 15px 18px;
+      border-radius: 14px;
+      background: #EFF6FF;
+      border-left: 4px solid var(--blue-600);
+      font-size: 0.91rem;
+      color: #1E3A8A;
+      line-height: 1.72;
+      white-space: pre-wrap;
+    }
+
+    /* MODAL FOR FAST SOCIAL SIGNUP / EMAIL LOGIN / MASTER LOGIN */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      background: rgba(15, 23, 42, 0.62);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .auth-modal-card {
+      width: min(480px, 100%);
+      max-height: 92vh;
+      overflow-y: auto;
       background: #FFFFFF;
-      color: #111827;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
     }
-    .qna-input:focus, .qna-textarea:focus {
-      border-color: #0F172A;
-      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--line-200) !important;
+      background: #F8FAFC !important;
+      color: var(--ink-900) !important;
+      padding: 0 !important;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 800;
     }
-    .qna-submit-btn {
-      appearance: none;
-      padding: 13px 26px;
-      border-radius: 999px;
-      border: none;
+    .modal-mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: #F1F5F9;
+      padding: 4px;
+      border-radius: 12px;
+      margin: 14px 0 18px;
+    }
+    .modal-mode-tab {
+      border: none !important;
+      background: transparent !important;
+      padding: 9px 8px;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--ink-500) !important;
+      cursor: pointer;
+    }
+    .modal-mode-tab.active {
+      background: #FFFFFF !important;
+      color: var(--ink-900) !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    .toast-banner {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
       background: #0F172A;
       color: #FFFFFF;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 0.94rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .qna-submit-btn:hover { background: #059669; }
-    .qna-toast {
-      margin-top: 12px;
-      padding: 12px 16px;
-      border-radius: 12px;
-      background: #ECFDF5;
-      border: 1.5px solid #10B981;
-      color: #065F46;
-      font-size: 0.9rem;
+      padding: 13px 20px;
+      border-radius: 14px;
+      font-size: 0.88rem;
       font-weight: 700;
-      display: none;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+    .toast-banner.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* 6. CRAWLABLE SEO DIRECTORY */
-    .seo-crawl-directory {
-      margin-top: 48px;
-      padding: 28px 30px;
-      border-radius: 20px;
-      background: #FFFFFF;
-      border: 1.5px solid #CBD5E1;
-    }
-    .seo-dir-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      margin-top: 16px;
-    }
-    .seo-dir-group h3 {
-      font-size: 0.96rem;
-      font-weight: 800;
-      color: #0F172A;
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1.5px solid #E2E8F0;
-    }
-    .seo-dir-group ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .seo-dir-group li {
-      font-size: 0.83rem;
-      line-height: 1.48;
-      color: #475569;
-    }
-    .seo-dir-group a {
-      color: #0F172A;
-      font-weight: 700;
-      text-decoration: none;
-    }
-    .seo-dir-group a:hover { color: #059669; text-decoration: underline; }
-    .seo-dir-en { font-size: 0.76rem; color: #64748B; }
-
-    @media (max-width: 820px) {
-      .ask-topbar { padding: 10px 14px; }
-      .ask-hero { padding: 30px 16px 26px; }
-      .ask-search-row, .qna-form-row, .bblog-visual-split-card { grid-template-columns: 1fr; }
-      .ask-quick-question-btn { padding: 14px 18px; }
-      .ask-main { padding: 20px 14px 48px; }
-      .ask-cards-grid { grid-template-columns: 1fr; }
-      .ask-reader-card, .qna-board-card { padding: 22px 18px; }
+    @media (max-width: 1024px) {
+      .blog-layout, .qna-grid, .deb-papers-grid { grid-template-columns: 1fr; }
+      .blog-sidebar { position: static; }
+      .flagship-article-card { padding: 26px 20px; }
+      .hero-mode-cards { grid-template-columns: 1fr; }
     }
   </style>
-  <link rel="icon" href="data:,">
 </head>
 <body>
 
-  <!-- STICKY TOP HEADER -->
-  <header class="ask-topbar">
-    <a href="ask-doctor.html" class="ask-brand" onclick="if(window.closeArticleReader){event.preventDefault();window.closeArticleReader();}">
-      <div class="ask-brand-badge">💬</div>
-      <span class="ask-brand-title">바른한의원 대전본점 · 무엇이든 물어보세요 (의학백과 블로그 & 원장 Q&A)</span>
-    </a>
-    <div class="ask-top-actions">
-      <a href="body-explorer.html?part=knee" class="ask-top-btn gold-tips" id="top-tips-bridge-btn">💡 3D 부위별 생활꿀팁 창고</a>
-      <button type="button" class="ask-top-btn emerald-qna" onclick="window.jumpStraightToQuestion()">✍️ 원장님께 바로 질문하기</button>
-      <a href="tel:042-488-1075" class="ask-top-btn">📞 042-488-1075</a>
-      <a href="story-3d.html" class="ask-top-btn">← 메인 쇼룸</a>
+  <!-- TOP NAVIGATION -->
+  <header class="journal-gnb">
+    <div class="journal-gnb-inner">
+      <a href="story-3d.html" class="gnb-brand">
+        <div class="gnb-mark">B</div>
+        <div class="gnb-title-wrap">
+          <span class="gnb-title">바른 통합의학 인사이트 &amp; 비공개 질환 Q&amp;A</span>
+          <span class="gnb-sub">International Medical Evidence Journal &amp; Private Member Consultation</span>
+        </div>
+      </a>
+
+      <div class="gnb-menu-tabs" role="tablist" aria-label="블로그 및 질환별 Q&A 메뉴 전환">
+        <button type="button" class="gnb-menu-tab active" id="gnb-tab-blog" onclick="window.switchMainMenu('blog')">
+          <span>📘 의학 인사이트 블로그 (대표글)</span>
+        </button>
+        <button type="button" class="gnb-menu-tab" id="gnb-tab-qna" onclick="window.switchMainMenu('qna')">
+          <span>🔒 질환별 1:1 비공개 Q&amp;A</span>
+        </button>
+      </div>
+
+      <div class="gnb-actions">
+        <a href="body-explorer.html" class="gnb-pill vibrant-3d-btn" id="gnb-3d-explorer-link">🧬 3D 인체·진료 모션 탐색 ↗</a>
+        <button type="button" class="gnb-pill auth-btn" id="gnb-member-btn" onclick="window.openAuthModal('social')">👤 빠른 회원가입 · 로그인</button>
+        <button type="button" class="gnb-pill master-btn" id="gnb-master-btn" onclick="window.openAuthModal('master')">👑 마스터</button>
+      </div>
     </div>
   </header>
 
-  <!-- ROYAL SLATE NAVY HERO -->
-  <section class="ask-hero">
-    <div class="ask-hero-inner">
-      <div class="ask-hero-kicker">
-        <span>📘 공식 의학백과 블로그 정식 발행 · 실시간 답글 Q&A 연동</span>
+  <!-- HERO BANNER -->
+  <section class="hub-hero">
+    <div class="hub-hero-inner">
+      <div>
+        <div class="hero-eyebrow" id="hero-eyebrow-badge">EVIDENCE-BASED INTEGRATIVE MEDICAL JOURNAL · 해외 SCI 및 통합의학 논문 기반</div>
+        <h1 class="hero-heading" id="hero-main-heading">시술 홍보를 덜어낸 순수 의학 인사이트 &amp; 질환별 비공개 Q&amp;A</h1>
+        <p class="hero-lead" id="hero-main-lead">
+          『Nature Medicine』, 『NEJM』, 『The Lancet』, 『JAMA』, 『Physiological Reviews』 등 해외 권위 의학 저널과 통합생리학 연구를 바탕으로 실생활에 꼭 필요한 건강 원리를 전달하며, 개인별 질환 상담은 회원 전용 100% 비공개 Q&amp;A 메뉴로 분리 운영합니다.
+        </p>
       </div>
-      <h1 class="ask-hero-title">무엇이든 물어보세요 — 안정위 대표원장 의학백과 & 공개 문답</h1>
-      <p class="ask-hero-sub">
-        ‘3D 생활꿀팁 창고’와 분리된 <strong>질환 심층 백과·문답 전용 공간</strong>입니다. 9대 질환 공식 의학백과와 임상 칼럼을 편하게 읽으시고, 궁금한 점은 각 발행글 하단 <strong>답글창에 로그인 없이 질문</strong>을 남겨주시면 안정위 대표원장실이 직접 답변해 도움드립니다.
-      </p>
-
-      <div class="ask-search-row">
-        <input type="search" id="ask-search-input" class="ask-search-input" placeholder="🔍 궁금한 증상·질환 검색 (예: 성장판, 성조숙, 두피열, 허리디스크, 공진단, 실신, 담적, 다이어트, 난임, 야간뇨...)" />
-        <button type="button" class="ask-quick-question-btn" onclick="window.jumpStraightToQuestion()">💬 내 증상 바로 질문하기 ↓</button>
-      </div>
-
-      <div class="ask-mode-tabs" role="tablist">
-        <button type="button" class="ask-mode-tab active" data-mode="all" onclick="window.setAskMode('all')">📚 전체 발행글 (<span id="count-all">36</span>편)</button>
-        <button type="button" class="ask-mode-tab" data-mode="encyclopedia" onclick="window.setAskMode('encyclopedia')">📘 공식 의학백과 마스터 (<span id="count-encyc">9</span>편)</button>
-        <button type="button" class="ask-mode-tab" data-mode="column" onclick="window.setAskMode('column')">📰 심층 임상칼럼 (<span id="count-col">27</span>편)</button>
+      <div class="hero-mode-cards">
+        <button type="button" class="hero-mode-card active" id="hero-card-blog" onclick="window.switchMainMenu('blog')">
+          <div class="hmc-kicker">REPRESENTATIVE JOURNAL · 단독 1편</div>
+          <div class="hmc-title">📘 전문 건강 인사이트 블로그</div>
+          <div class="hmc-desc">시술 광고 없이 해외 의학·생리학 논문으로 깊이 있게 정리한 대표 건강 가이드</div>
+        </button>
+        <button type="button" class="hero-mode-card" id="hero-card-qna" onclick="window.switchMainMenu('qna')">
+          <div class="hmc-kicker">MEMBERS ONLY · 100% PRIVATE</div>
+          <div class="hmc-title">🔒 질환별 1:1 비공개 Q&amp;A</div>
+          <div class="hmc-desc">9대 질환별 카테고리 · 구글/카카오/네이버 3초 가입 후 작성자·마스터만 열람</div>
+        </button>
       </div>
     </div>
   </section>
 
   <!-- MAIN CONTENT -->
-  <main class="ask-main">
-    <div class="ask-part-strip" id="ask-part-strip"></div>
-    <div id="ask-dynamic-stage"></div>
+  <main class="hub-main">
 
-    <!-- CRAWLABLE FULL CANONICAL DIRECTORY (Domestic Naver/Daum + Global Google/Bing/ChatGPT/Perplexity) -->
-    <nav class="seo-crawl-directory" aria-label="바른한의원 대전본점 공식 의학백과 및 임상칼럼 전체 색인 디렉토리">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <h2 style="font-family:'Noto Serif KR',serif;font-size:1.18rem;font-weight:800;color:#0F172A;">🌐 바른한의원 대전본점 공식 발행 의학백과 · 칼럼 전체 색인 (KR / EN Global Index)</h2>
-        <span style="font-size:0.8rem;font-weight:700;color:#059669;">국내·해외 검색엔진 및 AI 지식베이스 공식 연동</span>
+    <!-- ====================================================================
+         SECTION 1: REPRESENTATIVE EXPERT BLOG POST (ONLY 1 PUBLISHED ARTICLE)
+         ==================================================================== -->
+    <section class="tab-section active" id="section-blog-view">
+      <div class="blog-layout">
+        <aside class="blog-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-label">JOURNAL POLICY · 발행 원칙</div>
+            <div style="font-size:0.96rem;font-weight:800;color:var(--ink-900);margin-bottom:8px;">대표 아티클 단독 공개 체제</div>
+            <div class="journal-policy-badge">
+              <div>✔ 상업적 시술 홍보 문구 전면 배제</div>
+              <div>✔ 해외 SCI 의학저널 &amp; 통합생리학 교차 검증</div>
+              <div>✔ 대표 칼럼 1편 집중 아카이빙 (타 원고 비공개 보관)</div>
+              <div>✔ 개인 건강 질문은 <strong>[질환별 1:1 비공개 Q&amp;A]</strong>로 완전 분리</div>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <div class="sidebar-label">CONTENTS · 본문 목차</div>
+            <ul class="toc-list">
+              <li><a href="#sec-tldr" class="toc-link">핵심 의학 인사이트 요약 (TL;DR)</a></li>
+              <li><a href="#sec-matrix" class="toc-link">4대 생체 조절축 &amp; 해외 학술 근거표</a></li>
+              ${FLAGSHIP_REPRESENTATIVE_POST.sections.map(s => `<li><a href="#sec-${s.num}" class="toc-link">${s.num}. ${s.heading}</a></li>`).join('\n              ')}
+              <li><a href="#sec-faq" class="toc-link">자주 묻는 의학 생리 FAQ</a></li>
+              <li><a href="#sec-refs" class="toc-link">참고 해외·통합의학 논문 (10편)</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar-card" style="background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 100%);color:#FFFFFF;border:none;">
+            <div style="font-size:0.74rem;font-weight:800;color:#93C5FD;margin-bottom:6px;">PRIVATE Q&amp;A MENU</div>
+            <div style="font-size:1rem;font-weight:800;margin-bottom:8px;">내 증상에 맞는 질환별 비공개 질문하기</div>
+            <p style="font-size:0.82rem;color:#CBD5E1;line-height:1.58;margin-bottom:14px;">Google·카카오톡·네이버 3초 간편 회원가입 후 남기신 질문은 100% 비공개로 보호됩니다.</p>
+            <button type="button" onclick="window.switchMainMenu('qna')" style="width:100%;padding:11px 14px;border-radius:12px;border:none;background:#FFFFFF;color:#0F172A;font-weight:800;font-size:0.86rem;cursor:pointer;">🩺 질환별 비공개 Q&amp;A 이동 →</button>
+          </div>
+        </aside>
+
+        <article class="flagship-article-card">
+          <div class="article-meta-top">
+            <span class="article-badge">📘 ${FLAGSHIP_REPRESENTATIVE_POST.categoryBadge}</span>
+            <span class="article-date">${FLAGSHIP_REPRESENTATIVE_POST.readingTime} · 발행일 ${FLAGSHIP_REPRESENTATIVE_POST.publishedDate}</span>
+          </div>
+
+          <h2 class="article-h1">${FLAGSHIP_REPRESENTATIVE_POST.title}</h2>
+          <p class="article-en-sub">${FLAGSHIP_REPRESENTATIVE_POST.subtitleEn}</p>
+
+          <div class="article-journal-tags">
+            <span class="journal-chip">🌍 Nature Medicine (2019)</span>
+            <span class="journal-chip">🌍 Physiological Reviews (2019)</span>
+            <span class="journal-chip">🌍 NEJM (2009)</span>
+            <span class="journal-chip">🌍 The Lancet (2018)</span>
+            <span class="journal-chip">🌍 JAMA (2017)</span>
+            <span class="journal-chip">🌍 European Heart Journal (2018)</span>
+            <span class="journal-chip">🌍 Human Reproduction Update (2019)</span>
+            <span class="journal-chip">🌍 European Urology · JCEM · SCI 통합생리학</span>
+          </div>
+
+          <p class="sec-p" style="background:#F8FAFC;padding:18px 22px;border-radius:16px;border:1px solid var(--line-200);font-weight:500;">
+            ${FLAGSHIP_REPRESENTATIVE_POST.summary}
+          </p>
+
+          <div class="tldr-box" id="sec-tldr">
+            <div class="tldr-title">📌 핵심 의학 인사이트 요약 (Executive Summary)</div>
+            <ul class="tldr-list">
+              ${FLAGSHIP_REPRESENTATIVE_POST.tldrPoints.map(pt => `<li>${pt}</li>`).join('\n              ')}
+            </ul>
+          </div>
+
+          <div class="evidence-table-wrap" id="sec-matrix">
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>생체 조절축</th>
+                  <th>대표 일상 신호</th>
+                  <th>핵심 생리학 기전</th>
+                  <th>해외·통합 참고 저널</th>
+                  <th>일상 회복 핵심 루틴</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${FLAGSHIP_REPRESENTATIVE_POST.comparisonRows.map(r => `
+                <tr>
+                  <td style="font-weight:800;color:#0F172A;">${r.axis}</td>
+                  <td>${r.signal}</td>
+                  <td>${r.mechanism}</td>
+                  <td style="font-weight:700;color:#1D4ED8;">${r.journal}</td>
+                  <td style="font-weight:600;color:#065F46;">${r.action}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          ${FLAGSHIP_REPRESENTATIVE_POST.sections.map(s => `
+          <section class="article-sec" id="sec-${s.num}">
+            <div class="sec-num">PART ${s.num}</div>
+            <h3 class="sec-h2">${s.heading}</h3>
+            ${s.paragraphs.map(p => `<p class="sec-p">${p}</p>`).join('\n            ')}
+            ${s.highlightQuote ? `<blockquote class="sec-quote">${s.highlightQuote}</blockquote>` : ''}
+          </section>`).join('')}
+
+          <div class="faq-box" id="sec-faq">
+            <div class="sec-num">EVIDENCE FAQ</div>
+            <h3 class="sec-h2" style="margin-bottom:16px;">독자들이 자주 궁금해하는 의학·생리 Q&amp;A</h3>
+            ${FLAGSHIP_REPRESENTATIVE_POST.faqList.map(f => `
+            <div class="faq-item">
+              <div class="faq-q">Q. ${f.q}</div>
+              <div class="faq-a">${f.a}</div>
+            </div>`).join('')}
+          </div>
+
+          <div class="refs-box" id="sec-refs">
+            <div style="font-size:0.76rem;font-weight:800;color:#93C5FD;letter-spacing:0.06em;">INTERNATIONAL &amp; INTEGRATIVE BIBLIOGRAPHY</div>
+            <h3 style="font-size:1.15rem;font-weight:800;color:#FFFFFF;margin-top:4px;">참고 해외 의학 및 통합생리학 학술 문헌 (References)</h3>
+            <ul class="refs-list">
+              ${FLAGSHIP_REPRESENTATIVE_POST.internationalReferences.map((ref, i) => `<li>[${i + 1}] ${ref}</li>`).join('\n              ')}
+            </ul>
+          </div>
+
+          <div style="margin-top:28px;padding:24px 28px;border-radius:20px;background:linear-gradient(135deg,#EFF6FF 0%,#EEF2FF 100%);border:1.5px solid #93C5FD;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+              <div style="font-size:0.78rem;font-weight:800;color:#1D4ED8;margin-bottom:4px;">SEPARATED DISEASE Q&amp;A PORTAL</div>
+              <div style="font-size:1.08rem;font-weight:800;color:#0F172A;">질환별 개인 맞춤 상담이 필요하신가요? 전용 비공개 Q&amp;A 메뉴를 이용해 보세요.</div>
+              <div style="font-size:0.86rem;color:#475569;margin-top:2px;">9대 질환별 분류 · Google/카카오톡/네이버 빠른 회원가입 · 100% 비공개 보호</div>
+            </div>
+            <button type="button" onclick="window.switchMainMenu('qna')" style="padding:13px 22px;border-radius:999px;border:none;background:#1D4ED8;color:#FFFFFF;font-weight:800;font-size:0.92rem;cursor:pointer;box-shadow:0 6px 16px rgba(29,78,216,0.25);">🩺 질환별 1:1 비공개 Q&amp;A 열기 →</button>
+          </div>
+        </article>
       </div>
-      <div class="seo-dir-grid">
-        ${staticDirectoryHtml}
+    </section>
+
+    <!-- ====================================================================
+         SECTION 2: DISEASE-SPECIFIC 1:1 PRIVATE Q&A MENU + MASTER CONSOLE
+         ==================================================================== -->
+    <section class="tab-section" id="section-qna-view">
+
+      <!-- MASTER CONSOLE (Visible ONLY when Master is logged in) -->
+      <div class="master-console-bar" id="master-console-bar" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-size:0.75rem;font-weight:800;color:#FCD34D;letter-spacing:0.06em;">👑 MASTER ADMINISTRATOR MODE ACTIVE</div>
+            <div style="font-size:1.14rem;font-weight:800;margin-top:2px;">마스터 전체 비공개 질문 열람 &amp; 가입회원 상세정보 통합 콘솔</div>
+            <div style="font-size:0.84rem;color:#CBD5E1;margin-top:2px;" id="master-stats-line">모든 비공개 질문 원문, 회원 실명·연락처·소셜채널·연령대·IP 상세정보 확인 및 1:1 답변 작성이 활성화되었습니다.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="gnb-pill" onclick="window.toggleMasterMembersPanel()" style="background:#FEF3C7;border-color:#F59E0B;color:#78350F;font-weight:800;">👥 전체 가입회원 명부 상세열람</button>
+            <button type="button" class="gnb-pill" onclick="window.toggleOAuthConfigPanel()" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.28);color:#FFFFFF;">⚙️ 소셜 OAuth 키 설정</button>
+            <button type="button" class="gnb-pill" onclick="window.logoutBareunUser()" style="background:#EF4444;border-color:#EF4444;color:#FFFFFF;">로그아웃</button>
+          </div>
+        </div>
+
+        <!-- Master All Members Directory Drawer -->
+        <div id="master-members-drawer" style="display:none;margin-top:16px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.97);color:#0F172A;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <strong style="font-size:0.95rem;">👥 가입 회원 전체 상세 명부 (마스터 전용)</strong>
+            <button type="button" onclick="document.getElementById('master-members-drawer').style.display='none'" style="border:none;background:#E2E8F0;padding:4px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.78rem;">닫기</button>
+          </div>
+          <div id="master-members-table-wrap" style="overflow-x:auto;font-size:0.82rem;">로딩 중...</div>
+        </div>
+
+        <!-- Master OAuth Client ID Settings Drawer -->
+        <div id="master-oauth-drawer" style="display:none;margin-top:16px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.97);color:#0F172A;">
+          <div style="font-size:0.9rem;font-weight:800;margin-bottom:6px;">⚙️ 소셜 로그인 OAuth Client ID 연동 설정 (선택사항 — 미입력 시 3초 즉시 간편가입 모드 자동 작동)</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;">
+            <input type="text" id="oauth-google-id" class="form-input" placeholder="Google Client ID" />
+            <input type="text" id="oauth-kakao-key" class="form-input" placeholder="Kakao JavaScript Key" />
+            <input type="text" id="oauth-naver-id" class="form-input" placeholder="Naver Client ID" />
+          </div>
+          <button type="button" onclick="window.saveOAuthConfig()" style="margin-top:10px;padding:9px 18px;border-radius:10px;border:none;background:#2563EB;color:#FFFFFF;font-weight:800;font-size:0.84rem;cursor:pointer;">설정 저장</button>
+        </div>
       </div>
-    </nav>
+
+      <!-- 9 DISEASE CATEGORY FILTER TABS -->
+      <div class="qna-cat-strip" id="qna-category-strip" role="tablist" aria-label="9대 질환별 Q&A 카테고리">
+        <button type="button" class="qna-cat-btn active" data-qpart="all" onclick="window.selectQnaDisease('all')">📋 전체 질환 Q&amp;A</button>
+        ${DISEASE_QNA_CATEGORIES.map(c => `<button type="button" class="qna-cat-btn" data-qpart="${c.partId}" onclick="window.selectQnaDisease('${c.partId}')">${c.icon} ${c.shortName}</button>`).join('\n        ')}
+      </div>
+
+      <!-- DYNAMIC OVERSEAS + INTEGRATIVE PAPERS BANNER FOR SELECTED DISEASE -->
+      <div class="disease-evidence-banner" id="disease-evidence-banner"></div>
+
+      <!-- Q&A SPLIT WORKSPACE -->
+      <div class="qna-grid">
+        <!-- LEFT: MEMBER AUTH / PRIVATE QUESTION COMPOSER -->
+        <div class="qna-panel-card" id="qna-left-composer-box"></div>
+
+        <!-- RIGHT: STRICTLY PRIVATE Q&A BOARD -->
+        <div class="qna-panel-card">
+          <div class="qna-board-header">
+            <div>
+              <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);">STRICTLY CONFIDENTIAL · 비공개 보호 게시판</div>
+              <h2 style="font-size:1.18rem;font-weight:800;color:var(--ink-900);" id="qna-board-heading">질환별 1:1 비공개 상담 목록</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <select id="qna-status-filter" class="form-select" style="width:auto;padding:7px 12px;font-size:0.8rem;font-weight:700;" onchange="window.renderQnaList()">
+                <option value="all">전체 상태</option>
+                <option value="mine">내 질문만</option>
+                <option value="waiting">답변대기</option>
+                <option value="answered">답변완료</option>
+              </select>
+              <button type="button" class="gnb-pill" onclick="window.fetchQnaItems()" style="padding:7px 12px;">↻ 새로고침</button>
+            </div>
+          </div>
+
+          <div style="padding:11px 14px;border-radius:12px;background:#F8FAFC;border:1px solid var(--line-200);font-size:0.82rem;color:var(--ink-700);margin-bottom:14px;">
+            🔒 개인 의료·건강 프라이버시 보호를 위해 <strong>모든 질문과 답변은 100% 비공개</strong>로 운영됩니다. 작성자 본인으로 로그인하시거나 마스터 계정으로만 상세 내용을 열람하실 수 있습니다.
+          </div>
+
+          <div id="qna-items-container">
+            <div style="padding:32px;text-align:center;color:var(--ink-500);font-size:0.9rem;">비공개 Q&amp;A 목록을 불러오는 중입니다...</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- AUTHENTICATION MODAL (FAST GOOGLE / KAKAO / NAVER + EMAIL + MASTER) -->
+  <div class="modal-backdrop" id="auth-modal-backdrop" onclick="if(event.target===this) window.closeAuthModal()">
+    <div class="auth-modal-card">
+      <button type="button" class="modal-close-btn" onclick="window.closeAuthModal()" aria-label="닫기">✕</button>
+      <div style="font-size:0.74rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">MEMBER ACCESS · 빠른 회원가입 및 로그인</div>
+      <h3 style="font-size:1.26rem;font-weight:800;color:var(--ink-900);margin-top:4px;">바른 건강 인사이트 &amp; 비공개 Q&amp;A 회원 인증</h3>
+
+      <div class="modal-mode-tabs">
+        <button type="button" class="modal-mode-tab active" id="mtab-social" onclick="window.switchModalTab('social')">⚡ 소셜 3초 가입</button>
+        <button type="button" class="modal-mode-tab" id="mtab-email" onclick="window.switchModalTab('email')">✉️ 이메일 가입/로그인</button>
+        <button type="button" class="modal-mode-tab" id="mtab-master" onclick="window.switchModalTab('master')">👑 마스터 전용</button>
+      </div>
+
+      <!-- TAB 1: FAST SOCIAL SIGNUP (GOOGLE / KAKAO / NAVER) -->
+      <div id="modal-pane-social">
+        <p style="font-size:0.85rem;color:var(--ink-700);margin-bottom:12px;">
+          원하시는 소셜 채널을 선택하시면 복잡한 절차 없이 <strong>3초 만에 회원 등록 및 비공개 질문 권한</strong>이 활성화됩니다.
+        </p>
+        <div class="social-btn-stack">
+          <button type="button" class="social-fast-btn google" onclick="window.selectSocialProvider('google')">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 3 14.7 2 12 2 6.5 2 2 6.5 2 12s4.5 10 10 10c5.8 0 9.6-4.1 9.6-9.8 0-.7-.1-1.2-.2-1.8H12z"/></svg>
+            <span>Google 계정으로 빠른 시작</span>
+          </button>
+          <button type="button" class="social-fast-btn kakao" onclick="window.selectSocialProvider('kakao')">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.5 2 10.9c0 2.8 1.9 5.3 4.7 6.7-.2.7-.7 2.6-.8 3-.1.5.2.5.4.3.2-.1 2.9-1.9 4.1-2.7.5.1 1.1.1 1.6.1 5.5 0 10-3.5 10-7.9S17.5 3 12 3z"/></svg>
+            <span>카카오톡으로 3초 빠른 회원가입</span>
+          </button>
+          <button type="button" class="social-fast-btn naver" onclick="window.selectSocialProvider('naver')">
+            <span style="font-weight:900;font-size:1rem;font-family:Arial,sans-serif;">N</span>
+            <span>네이버 아이디로 빠른 회원가입</span>
+          </button>
+        </div>
+
+        <form id="social-express-form" onsubmit="window.submitSocialExpress(event)" style="margin-top:14px;padding:16px;border-radius:16px;background:#F8FAFC;border:1.5px solid #BFDBFE;">
+          <div style="font-size:0.82rem;font-weight:800;color:#1D4ED8;margin-bottom:10px;" id="social-selected-label">⚡ 선택한 소셜 채널: Google 간편 회원가입</div>
+          <input type="hidden" id="social-provider-input" value="google" />
+          <div class="form-row-2">
+            <div class="form-field">
+              <label class="form-label">성함 (또는 닉네임) *</label>
+              <input type="text" id="social-name" class="form-input" placeholder="예: 김바른" required />
+            </div>
+            <div class="form-field">
+              <label class="form-label">휴대폰 번호 (답변 알림·선택)</label>
+              <input type="tel" id="social-phone" class="form-input" placeholder="010-0000-0000" />
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label">소셜 이메일 (기존 내 질문 재열람 시 본인 식별키)</label>
+            <input type="email" id="social-email" class="form-input" placeholder="예: myid@gmail.com (미입력 시 자동 생성)" />
+          </div>
+          <div class="form-row-2">
+            <div class="form-field">
+              <label class="form-label">성별</label>
+              <select id="social-gender" class="form-select">
+                <option value="여성">여성</option>
+                <option value="남성">남성</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">연령대</label>
+              <select id="social-age" class="form-select">
+                <option value="초·중·고 자녀(보호자)">초·중·고 자녀(보호자)</option>
+                <option value="20대">20대</option>
+                <option value="30대" selected>30대</option>
+                <option value="40대">40대</option>
+                <option value="50대">50대</option>
+                <option value="60대 이상">60대 이상</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="submit-primary-btn" id="social-submit-btn">⚡ 3초 간편 회원가입 완료 및 질문하기</button>
+        </form>
+      </div>
+
+      <!-- TAB 2: EMAIL REGISTER / LOGIN -->
+      <div id="modal-pane-email" style="display:none;">
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button type="button" id="subtab-reg" class="gnb-pill active" onclick="window.toggleEmailMode('register')" style="flex:1;justify-content:center;background:#EFF6FF;border-color:#2563EB;color:#1D4ED8;">신규 이메일 회원가입</button>
+          <button type="button" id="subtab-log" class="gnb-pill" onclick="window.toggleEmailMode('login')" style="flex:1;justify-content:center;">기존 이메일 로그인</button>
+        </div>
+
+        <form id="email-auth-form" onsubmit="window.submitEmailAuth(event)">
+          <input type="hidden" id="email-mode-input" value="register" />
+          <div id="email-reg-extra">
+            <div class="form-row-2">
+              <div class="form-field">
+                <label class="form-label">성함 *</label>
+                <input type="text" id="em-name" class="form-input" placeholder="실명 입력" />
+              </div>
+              <div class="form-field">
+                <label class="form-label">휴대폰 번호</label>
+                <input type="tel" id="em-phone" class="form-input" placeholder="010-0000-0000" />
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-field">
+                <label class="form-label">성별</label>
+                <select id="em-gender" class="form-select">
+                  <option value="여성">여성</option>
+                  <option value="남성">남성</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">연령대</label>
+                <select id="em-age" class="form-select">
+                  <option value="초·중·고 자녀(보호자)">초·중·고 자녀(보호자)</option>
+                  <option value="20대">20대</option>
+                  <option value="30대" selected>30대</option>
+                  <option value="40대">40대</option>
+                  <option value="50대">50대</option>
+                  <option value="60대 이상">60대 이상</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label">이메일 주소 *</label>
+            <input type="email" id="em-email" class="form-input" placeholder="example@email.com" required />
+          </div>
+          <div class="form-field">
+            <label class="form-label">비밀번호 (4자 이상) *</label>
+            <input type="password" id="em-pass" class="form-input" placeholder="비밀번호 입력" required />
+          </div>
+          <button type="submit" class="submit-primary-btn" id="em-submit-btn">이메일 회원가입 및 로그인</button>
+        </form>
+      </div>
+
+      <!-- TAB 3: MASTER LOGIN -->
+      <div id="modal-pane-master" style="display:none;">
+        <div style="padding:12px 14px;border-radius:12px;background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;font-size:0.83rem;margin-bottom:14px;">
+          👑 <strong>마스터 관리자 전용 인증</strong>: 로그인 시 전 질환 비공개 질문 원문 열람, 질문 회원 상세정보(실명·소셜경로·이메일·연락처·연령대·IP) 조회 및 1:1 답변 등록이 활성화됩니다.
+        </div>
+        <form onsubmit="window.submitMasterLogin(event)">
+          <div class="form-field">
+            <label class="form-label">마스터 관리자 아이디</label>
+            <input type="text" id="master-id-input" class="form-input" placeholder="관리자 아이디" required />
+          </div>
+          <div class="form-field">
+            <label class="form-label">마스터 비밀번호</label>
+            <input type="password" id="master-pw-input" class="form-input" placeholder="관리자 비밀번호" required />
+          </div>
+          <button type="submit" class="submit-primary-btn master-submit">👑 마스터 전체 열람 모드 로그인</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-banner" id="bareun-toast"></div>
 
   <script>
   (function() {
-    const CATEGORIES = ${JSON.stringify(DISEASE_BLOG_CATEGORIES)};
-    const SEED_POSTS = ${JSON.stringify(postsWithWpMeta)};
-    const SEED_QNA = ${JSON.stringify(INITIAL_QNA_SEED)};
+    const QNA_CATEGORIES = ${JSON.stringify(DISEASE_QNA_CATEGORIES)};
+    const TOKEN_KEY = 'bareun_member_token_v5';
 
-    let allPosts = [];
-    let currentPart = 'all';
-    let currentMode = 'all'; // 'all' | 'encyclopedia' | 'column'
-    let searchQuery = '';
-    let activeSlug = null;
-    let replyParentId = 0;
-    let replyParentAuthor = '';
+    let currentMainTab = 'blog';
+    let currentDiseasePart = 'all';
+    let currentUser = null;
+    let qnaItems = [];
+    let oauthConfig = { googleClientId: '', kakaoJsKey: '', naverClientId: '' };
 
-    const partStripEl = document.getElementById('ask-part-strip');
-    const stageEl = document.getElementById('ask-dynamic-stage');
-    const searchInput = document.getElementById('ask-search-input');
-    const topTipsBridgeBtn = document.getElementById('top-tips-bridge-btn');
-
-    function formatDateOffset(daysAgo) {
-      const d = new Date(Date.now() - (daysAgo || 0) * 86400000);
-      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    function getToken() {
+      try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+    }
+    function setToken(tok) {
+      try {
+        if (tok) localStorage.setItem(TOKEN_KEY, tok);
+        else localStorage.removeItem(TOKEN_KEY);
+      } catch (e) {}
     }
 
-    function escapeHtml(s) {
+    function esc(s) {
       return String(s || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -1239,577 +1457,627 @@ function buildAskDoctorHtml() {
         .replace(/"/g, '&quot;');
     }
 
-    function stripHtml(s) {
-      return String(s || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    window.showToast = function(msg) {
+      const el = document.getElementById('bareun-toast');
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 3400);
+    };
+
+    async function apiCall(endpoint, method, bodyObj) {
+      const headers = { 'Accept': 'application/json' };
+      const tok = getToken();
+      if (tok) headers['X-Bareun-Token'] = tok;
+      if (bodyObj) headers['Content-Type'] = 'application/json';
+      const sep = endpoint.includes('?') ? '&' : '?';
+      const res = await fetch('/wp-json/bareun/v1' + endpoint + sep + '_t=' + Date.now(), {
+        method: method || 'GET',
+        headers,
+        credentials: 'same-origin',
+        body: bodyObj ? JSON.stringify(bodyObj) : undefined
+      });
+      const json = await res.json().catch(() => ({ ok: false, message: '서버 응답 오류' }));
+      return { status: res.status, data: json };
     }
 
-    function initStore() {
-      allPosts = SEED_POSTS.map((p, idx) => ({
-        ...p,
-        date: p.date || formatDateOffset(typeof p.dateOffsetDays === 'number' ? p.dateOffsetDays : (idx % 4))
-      }));
-      updateTabCounts();
+    function providerLabel(p) {
+      if (p === 'kakao') return '카카오톡 간편회원';
+      if (p === 'naver') return '네이버 간편회원';
+      if (p === 'google') return 'Google 간편회원';
+      if (p === 'master') return '👑 마스터 관리자';
+      return '이메일 정회원';
     }
 
-    function updateTabCounts() {
-      const total = allPosts.length;
-      const encyc = allPosts.filter(p => p.isEncyclopediaMaster).length;
-      const col = total - encyc;
-      const elAll = document.getElementById('count-all');
-      const elEnc = document.getElementById('count-encyc');
-      const elCol = document.getElementById('count-col');
-      if (elAll) elAll.textContent = String(total);
-      if (elEnc) elEnc.textContent = String(encyc);
-      if (elCol) elCol.textContent = String(col);
+    function getCategoryMeta(partId) {
+      return QNA_CATEGORIES.find(c => c.partId === partId) || null;
     }
 
-    function getCategoryByPart(partId) {
-      return CATEGORIES.find(c => c.partId === partId) || CATEGORIES[0];
-    }
+    // 1. SWITCH BETWEEN BLOG & DISEASE QNA
+    window.switchMainMenu = function(tab, optionalPart) {
+      currentMainTab = (tab === 'qna') ? 'qna' : 'blog';
+      document.getElementById('section-blog-view').classList.toggle('active', currentMainTab === 'blog');
+      document.getElementById('section-qna-view').classList.toggle('active', currentMainTab === 'qna');
+      document.getElementById('gnb-tab-blog').classList.toggle('active', currentMainTab === 'blog');
+      document.getElementById('gnb-tab-qna').classList.toggle('active', currentMainTab === 'qna');
+      document.getElementById('hero-card-blog').classList.toggle('active', currentMainTab === 'blog');
+      document.getElementById('hero-card-qna').classList.toggle('active', currentMainTab === 'qna');
 
-    function renderPartChips() {
-      const targetTipsPart = (currentPart && currentPart !== 'all') ? currentPart : 'knee';
-      if (topTipsBridgeBtn) {
-        topTipsBridgeBtn.setAttribute('href', 'body-explorer.html?part=' + targetTipsPart);
+      if (optionalPart) {
+        currentDiseasePart = optionalPart;
       }
 
-      const chips = [
-        '<button type="button" class="ask-part-chip' + (currentPart === 'all' ? ' active' : '') + '" onclick="window.setAskPart(\\'all\\')">전체 9대 질환 (' + allPosts.length + ')</button>'
-      ];
-      CATEGORIES.forEach((cat, idx) => {
-        const cnt = allPosts.filter(p => p.partId === cat.partId).length;
-        chips.push(
-          '<button type="button" class="ask-part-chip' + (currentPart === cat.partId ? ' active' : '') + '" onclick="window.setAskPart(\\'' + cat.partId + '\\')">' +
-            (idx + 1) + '. ' + escapeHtml(cat.shortLabel) + ' (' + cnt + ')' +
-          '</button>'
-        );
-      });
-      partStripEl.innerHTML = chips.join('');
-    }
-
-    function getFilteredPosts() {
-      return allPosts.filter(p => {
-        if (currentPart !== 'all' && p.partId !== currentPart) return false;
-        if (currentMode === 'encyclopedia' && !p.isEncyclopediaMaster) return false;
-        if (currentMode === 'column' && p.isEncyclopediaMaster) return false;
-        if (searchQuery) {
-          const q = searchQuery.toLowerCase();
-          const hay = [
-            p.title, p.summary, p.enTitle, p.enSummary,
-            (p.tags || []).join(' '), (p.tldr || []).join(' ')
-          ].join(' ').toLowerCase();
-          if (!hay.includes(q)) return false;
-        }
-        return true;
-      });
-    }
-
-    function syncUrlParams() {
-      try {
-        const url = new URL(window.location.href);
-        if (currentPart && currentPart !== 'all') url.searchParams.set('part', currentPart);
-        else url.searchParams.delete('part');
-        if (activeSlug) url.searchParams.set('post', activeSlug);
-        else url.searchParams.delete('post');
-        window.history.replaceState({}, '', url.toString());
-      } catch (e) {}
-    }
-
-    function renderStage() {
-      renderPartChips();
-      document.querySelectorAll('.ask-mode-tab').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-mode') === currentMode);
-      });
-
-      if (activeSlug) {
-        const post = allPosts.find(p => p.slug === activeSlug || p.id === activeSlug);
-        if (post) {
-          renderArticleReader(post);
-          return;
-        }
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', currentMainTab);
+      if (currentMainTab === 'qna' && currentDiseasePart !== 'all') {
+        url.searchParams.set('part', currentDiseasePart);
+      } else {
+        url.searchParams.delete('part');
       }
+      window.history.replaceState({}, '', url.toString());
 
-      const list = getFilteredPosts();
-      if (!list.length) {
-        stageEl.innerHTML =
-          '<div style="padding:48px 24px;text-align:center;background:#FFFFFF;border-radius:20px;border:1.5px solid #CBD5E1;">' +
-            '<div style="font-size:1.15rem;font-weight:800;color:#0F172A;margin-bottom:8px;">검색 조건에 맞는 의학백과·칼럼이 없습니다.</div>' +
-            '<p style="color:#475569;margin-bottom:16px;">전체 질환 보기로 전환하시거나 대표 백과 글에 바로 질문을 남겨주세요.</p>' +
-            '<button type="button" class="qna-submit-btn" onclick="window.resetAskFilters()">전체 발행글 다시 보기</button>' +
-          '</div>';
+      if (currentMainTab === 'qna') {
+        renderDiseaseBanner();
+        renderLeftComposer();
+        window.fetchQnaItems();
+      }
+    };
+
+    // 2. SELECT DISEASE CATEGORY IN QNA
+    window.selectQnaDisease = function(partId) {
+      currentDiseasePart = partId || 'all';
+      document.querySelectorAll('#qna-category-strip .qna-cat-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-qpart') === currentDiseasePart);
+      });
+      const gnb3d = document.getElementById('gnb-3d-explorer-link');
+      if (gnb3d) {
+        gnb3d.setAttribute('href', currentDiseasePart !== 'all' ? ('body-explorer.html?part=' + currentDiseasePart) : 'body-explorer.html');
+      }
+      renderDiseaseBanner();
+      renderLeftComposer();
+      window.fetchQnaItems();
+    };
+
+    function renderDiseaseBanner() {
+      const box = document.getElementById('disease-evidence-banner');
+      const heading = document.getElementById('qna-board-heading');
+      if (!box) return;
+
+      if (currentDiseasePart === 'all') {
+        if (heading) heading.textContent = '9대 전 질환 1:1 비공개 상담 목록';
+        box.innerHTML =
+          '<div class="deb-header">' +
+            '<div>' +
+              '<div style="font-size:0.74rem;font-weight:800;color:#2563EB;">DISEASE-SPECIFIC PRIVATE Q&amp;A · 9대 질환별 전문 문답 센터</div>' +
+              '<h2 style="font-size:1.25rem;font-weight:800;color:#0F172A;margin-top:3px;">상담을 원하시는 질환 카테고리를 선택하시면 관련 해외 SCI 논문 근거와 비공개 질문창이 맞춤 전환됩니다</h2>' +
+            '</div>' +
+          '</div>' +
+          '<p style="font-size:0.9rem;color:#475569;">소아 성장·성조숙, 경추·탈모, 척추·디스크, 만성피로, 자율신경·실신, 소화기·담적, 대사·다이어트, 자궁·난임(IVF), 전립선·야간뇨까지 9개 전문 질환별로 해외 의학 논문과 통합생리학 근거에 기반한 1:1 비공개 답변을 드립니다.</p>';
         return;
       }
 
-      const cardsHtml = list.map((post) => {
-        const seedCount = (SEED_QNA[post.slug] || []).length;
-        const ribbonText = post.isEncyclopediaMaster ? '📘 공식 의학백과 마스터' : ('📰 ' + (post.badge || '심층 임상칼럼'));
-        return (
-          '<article class="ask-post-card' + (post.isEncyclopediaMaster ? ' is-master' : '') + '" onclick="window.openArticleBySlug(\\'' + post.slug + '\\')">' +
-            '<div class="apc-thumb-box">' +
-              '<img src="' + escapeHtml(post.heroImg || 'card_1_director.jpg') + '" alt="' + escapeHtml(post.imageAlt || post.title) + '" class="apc-thumb-img" loading="lazy" />' +
-              '<span class="apc-type-ribbon">' + escapeHtml(ribbonText) + '</span>' +
-            '</div>' +
-            '<div class="apc-body">' +
-              '<div style="font-size:0.78rem;font-weight:700;color:#64748B;margin-bottom:6px;">📅 ' + escapeHtml(post.date) + ' · ⏱ ' + escapeHtml(post.readTime || '4분 칼럼') + '</div>' +
-              '<h2 class="apc-title">' + escapeHtml(post.title) + '</h2>' +
-              '<p class="apc-summary">' + escapeHtml(post.summary) + '</p>' +
-              '<div class="apc-footer">' +
-                '<span class="apc-qna-pill">💬 답글 질문 가능' + (seedCount ? ' · 문답 ' + seedCount + '+' : '') + '</span>' +
-                '<span class="apc-read-cta">전문 읽기 & 질문 →</span>' +
-              '</div>' +
-            '</div>' +
-          '</article>'
-        );
-      }).join('');
+      const cat = getCategoryMeta(currentDiseasePart) || QNA_CATEGORIES[0];
+      if (heading) heading.textContent = cat.icon + ' ' + cat.name + ' — 비공개 상담 목록';
 
-      stageEl.innerHTML = '<div class="ask-cards-grid">' + cardsHtml + '</div>';
-    }
+      const allPapers = [
+        ...(cat.overseasPapers || []).map(p => ({ ...p, isIntegrative: false })),
+        ...(cat.integrativePapers || []).map(p => ({ ...p, isIntegrative: true }))
+      ];
 
-    function renderArticleReader(post) {
-      const cat = getCategoryByPart(post.partId);
-      const samePartOthers = allPosts.filter(p => p.partId === post.partId && p.slug !== post.slug).slice(0, 3);
-      const relatedHtml = samePartOthers.map(rp =>
-        '<div style="padding:12px 16px;border-radius:12px;background:#F8FAFC;border:1px solid #CBD5E1;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;" onclick="window.openArticleBySlug(\\'' + rp.slug + '\\')">' +
-          '<span style="font-size:0.92rem;font-weight:700;color:#0F172A;">' + (rp.isEncyclopediaMaster ? '📘 ' : '📰 ') + escapeHtml(rp.title) + '</span>' +
-          '<span style="font-size:0.8rem;font-weight:800;color:#059669;flex-shrink:0;">읽기 →</span>' +
+      const papersHtml = allPapers.map(p =>
+        '<div class="deb-paper-card">' +
+          '<span class="deb-paper-badge' + (p.isIntegrative ? ' integrative' : '') + '">' + esc(p.badge) + '</span>' +
+          '<div style="font-size:0.86rem;font-weight:800;color:#0F172A;margin-bottom:4px;">' + esc(p.journal) + '</div>' +
+          '<div style="font-size:0.76rem;color:#64748B;margin-bottom:6px;">' + esc(p.citation) + '</div>' +
+          '<div style="font-size:0.82rem;color:#334155;line-height:1.55;">' + esc(p.finding) + '</div>' +
         '</div>'
       ).join('');
 
-      const canonicalHref = post.canonicalUrl || ('https://www.bareunhaniwon.com/' + post.slug + '/');
+      const clinicBtns = (cat.clinicLinks || []).map(cl =>
+        '<a href="' + cl.href + '" class="gnb-pill" style="background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;font-weight:800;">' + esc(cl.label) + ' ↗</a>'
+      ).join('');
 
-      stageEl.innerHTML =
-        '<div class="ask-reader-wrap">' +
-          '<article class="ask-reader-card">' +
-            '<div class="ask-reader-nav">' +
-              '<button type="button" class="ask-back-list-btn" onclick="window.closeArticleReader()">← 의학백과 · 칼럼 목록으로</button>' +
-              '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-                '<a href="body-explorer.html?part=' + escapeHtml(post.partId) + '" class="ask-permalink-pill" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;">💡 이 부위 3D 생활꿀팁 보기</a>' +
-                '<a href="' + escapeHtml(canonicalHref) + '" target="_blank" rel="noopener" class="ask-permalink-pill">🔗 단독 발행 주소 열기 ↗</a>' +
-              '</div>' +
-            '</div>' +
-
-            '<div style="display:inline-flex;align-items:center;gap:8px;padding:5px 13px;border-radius:999px;background:#ECFDF5;border:1px solid #6EE7B7;color:#065F46;font-size:0.8rem;font-weight:800;">' +
-              escapeHtml(post.badge || cat.shortLabel) +
-            '</div>' +
-            '<h1 class="ask-reader-h1">' + escapeHtml(post.title) + '</h1>' +
-            '<div class="ask-reader-meta">' +
-              '<span>👨‍⚕️ 집필·감수: 바른한의원 대전본점 안정위 대표원장 (아빠 한의사) · 📅 ' + escapeHtml(post.date) + '</span>' +
-              '<button type="button" class="ask-top-btn emerald-qna" onclick="document.getElementById(\\'qna-board-section\\').scrollIntoView({behavior:\\'smooth\\'})">💬 아래 답글로 질문하기 ↓</button>' +
-            '</div>' +
-
-            '<div class="ask-reader-body">' + post.contentHtml + '</div>' +
-
-            '<div style="margin-top:24px;padding-top:18px;border-top:1.5px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">' +
-              '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
-                (post.tags || []).map(t => '<span style="padding:5px 11px;border-radius:999px;background:#F1F5F9;color:#334155;font-size:0.8rem;font-weight:700;">#' + escapeHtml(t) + '</span>').join('') +
-              '</div>' +
-              '<a href="' + escapeHtml(cat.clinicLink || 'director.html') + '" style="padding:10px 18px;border-radius:999px;background:#0F172A;color:#FFFFFF;font-size:0.86rem;font-weight:800;text-decoration:none;">🏥 ' + escapeHtml(cat.shortLabel) + ' 클리닉 상세보기 →</a>' +
-            '</div>' +
-          '</article>' +
-
-          /* INTERACTIVE Q&A REPLY SECTION FOR THIS PUBLISHED BLOG POST */
-          '<section class="qna-board-card" id="qna-board-section" aria-label="발행 블로그 답글 질문 및 원장 답변">' +
-            '<div class="qna-board-header">' +
-              '<div>' +
-                '<div style="font-size:0.8rem;font-weight:800;color:#059669;margin-bottom:4px;">💬 발행 블로그 공개 문답 · Doctor Q&A</div>' +
-                '<h2 style="font-family:\\'Noto Serif KR\\',serif;font-size:1.35rem;font-weight:800;color:#0F172A;">이 글에 답글로 원장님께 질문하기</h2>' +
-                '<p style="font-size:0.9rem;color:#475569;margin-top:4px;">회원가입·로그인 없이 바로 질문을 남기실 수 있으며, 안정위 대표원장실이 확인 후 답글로 상세히 안내해 도움드립니다.</p>' +
-              '</div>' +
-              '<a href="tel:042-488-1075" style="padding:9px 16px;border-radius:999px;background:#F1F5F9;border:1px solid #CBD5E1;color:#0F172A;font-size:0.82rem;font-weight:800;text-decoration:none;">📞 급한 문의: 042-488-1075</a>' +
-            '</div>' +
-
-            '<div class="qna-thread-list" id="qna-thread-list">' +
-              '<div style="padding:16px;color:#64748B;font-size:0.9rem;">문답 내역을 불러오는 중입니다...</div>' +
-            '</div>' +
-
-            '<form class="qna-form-box" id="qna-question-form">' +
-              '<div id="qna-reply-target-bar" style="display:none;margin-bottom:10px;padding:8px 12px;border-radius:10px;background:#DBEAFE;color:#1E3A8A;font-size:0.84rem;font-weight:700;align-items:center;justify-content:space-between;">' +
-                '<span id="qna-reply-target-label"></span>' +
-                '<button type="button" onclick="window.cancelReplyTarget()" style="border:none;background:transparent;color:#1E3A8A;font-weight:800;cursor:pointer;">✕ 취소</button>' +
-              '</div>' +
-              '<div class="qna-form-row">' +
-                '<input type="text" id="qna-author-input" class="qna-input" placeholder="작성자 닉네임 (예: 둔산동 보호자)" maxlength="40" />' +
-                '<div style="display:flex;align-items:center;font-size:0.83rem;color:#475569;font-weight:600;">🔒 개인정보 보호를 위해 휴대폰 번호·실명 전체는 본문에 적지 마세요.</div>' +
-              '</div>' +
-              '<textarea id="qna-content-input" class="qna-textarea" rows="4" required placeholder="현재 겪고 계신 증상, 기간, 궁금하신 검사(초음파·체열·자율신경·성장판 등)나 한약·추나 치료 관련 질문을 편하게 적어주세요."></textarea>' +
-              '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px;">' +
-                '<span style="font-size:0.8rem;color:#64748B;">※ 온라인 문답은 건강 이해를 돕기 위한 안내이며, 정확한 진단은 내원 진찰을 통해 이루어집니다.</span>' +
-                '<button type="submit" class="qna-submit-btn" id="qna-submit-btn">💬 답글 질문 등록하기</button>' +
-              '</div>' +
-              '<div class="qna-toast" id="qna-toast"></div>' +
-            '</form>' +
-          '</section>' +
-
-          (relatedHtml ? (
-            '<div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-radius:20px;padding:22px 26px;">' +
-              '<div style="font-size:1rem;font-weight:800;color:#0F172A;margin-bottom:12px;">📚 함께 읽으면 좋은 ' + escapeHtml(cat.shortLabel) + ' 연관 발행글</div>' +
-              '<div style="display:flex;flex-direction:column;gap:8px;">' + relatedHtml + '</div>' +
-            '</div>'
-          ) : '') +
-        '</div>';
-
-      replyParentId = 0;
-      replyParentAuthor = '';
-      bindQuestionForm(post);
-      loadCommentsForPost(post);
+      box.innerHTML =
+        '<div class="deb-header">' +
+          '<div>' +
+            '<div style="font-size:0.75rem;font-weight:800;color:#2563EB;">' + esc(cat.code) + ' · ' + esc(cat.enName) + '</div>' +
+            '<h2 style="font-size:1.3rem;font-weight:800;color:#0F172A;margin-top:3px;">' + cat.icon + ' ' + esc(cat.name) + '</h2>' +
+          '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            '<a href="body-explorer.html?part=' + cat.partId + '" class="gnb-pill vibrant-3d-btn">🧬 3D 인체모형으로 보기 ↗</a>' +
+            clinicBtns +
+          '</div>' +
+        '</div>' +
+        '<p style="font-size:0.92rem;color:#334155;line-height:1.65;">' + esc(cat.summary) + '</p>' +
+        '<div class="deb-papers-grid">' + papersHtml + '</div>';
     }
 
-    function renderCommentThreadNodes(threads) {
-      const listEl = document.getElementById('qna-thread-list');
-      if (!listEl) return;
-      if (!threads || !threads.length) {
-        listEl.innerHTML =
-          '<div style="padding:18px 20px;border-radius:14px;background:#F8FAFC;border:1px dashed #CBD5E1;color:#475569;font-size:0.92rem;font-weight:600;">' +
-            '아직 등록된 질문이 없습니다. 첫 번째 질문을 남겨주시면 안정위 대표원장실이 정성껏 답변해 도움드립니다!' +
+    // 3. RENDER LEFT QUESTION COMPOSER OR FAST SOCIAL SIGNUP PROMPT
+    function renderLeftComposer() {
+      const box = document.getElementById('qna-left-composer-box');
+      if (!box) return;
+
+      const selectedPart = currentDiseasePart !== 'all' ? currentDiseasePart : 'lumbar';
+
+      if (!currentUser) {
+        box.innerHTML =
+          '<div style="font-size:0.75rem;font-weight:800;color:#2563EB;margin-bottom:4px;">MEMBERS ONLY · 회원 전용 질문 작성</div>' +
+          '<h3 style="font-size:1.2rem;font-weight:800;color:#0F172A;margin-bottom:8px;">회원가입 후 1:1 비공개 질문을 남기실 수 있습니다</h3>' +
+          '<p style="font-size:0.87rem;color:#475569;line-height:1.62;margin-bottom:14px;">' +
+            '무분별한 광고글을 차단하고 개인 민감 건강정보를 철저히 보호하기 위해 <strong>가입 회원 전용 비공개 상담제</strong>로 운영됩니다. 아래 소셜 버튼으로 3초 만에 시작하세요.' +
+          '</p>' +
+          '<div class="social-btn-stack">' +
+            '<button type="button" class="social-fast-btn google" onclick="window.openSocialModal(\\'google\\')">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 3 14.7 2 12 2 6.5 2 2 6.5 2 12s4.5 10 10 10c5.8 0 9.6-4.1 9.6-9.8 0-.7-.1-1.2-.2-1.8H12z"/></svg>' +
+              '<span>Google 3초 빠른 회원가입</span>' +
+            '</button>' +
+            '<button type="button" class="social-fast-btn kakao" onclick="window.openSocialModal(\\'kakao\\')">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.5 2 10.9c0 2.8 1.9 5.3 4.7 6.7-.2.7-.7 2.6-.8 3-.1.5.2.5.4.3.2-.1 2.9-1.9 4.1-2.7.5.1 1.1.1 1.6.1 5.5 0 10-3.5 10-7.9S17.5 3 12 3z"/></svg>' +
+              '<span>카카오톡 3초 빠른 회원가입</span>' +
+            '</button>' +
+            '<button type="button" class="social-fast-btn naver" onclick="window.openSocialModal(\\'naver\\')">' +
+              '<span style="font-weight:900;font-size:1rem;font-family:Arial,sans-serif;">N</span>' +
+              '<span>네이버 3초 빠른 회원가입</span>' +
+            '</button>' +
+          '</div>' +
+          '<div style="display:flex;gap:8px;margin-top:12px;">' +
+            '<button type="button" class="gnb-pill" style="flex:1;justify-content:center;" onclick="window.openAuthModal(\\'email\\')">✉️ 이메일 가입/로그인</button>' +
+            '<button type="button" class="gnb-pill" style="justify-content:center;" onclick="window.openAuthModal(\\'master\\')">👑 마스터 열람</button>' +
           '</div>';
         return;
       }
 
-      listEl.innerHTML = threads.map(item => {
-        const repliesHtml = (item.replies || []).map(rep =>
-          '<div class="qna-doctor-reply-item">' +
-            '<div class="qna-item-head">' +
-              (rep.isDoctor
-                ? '<span class="qna-doctor-badge">👨‍⚕️ ' + escapeHtml(rep.author) + ' · 공식 답변</span>'
-                : '<span class="qna-user-badge">↳ 💬 ' + escapeHtml(rep.author) + '</span>') +
-              '<span style="font-size:0.78rem;color:#475569;font-weight:600;">' + escapeHtml(rep.date) + '</span>' +
+      const catOptions = QNA_CATEGORIES.map(c =>
+        '<option value="' + c.partId + '"' + (c.partId === selectedPart ? ' selected' : '') + '>' + c.icon + ' ' + esc(c.name) + '</option>'
+      ).join('');
+
+      box.innerHTML =
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 13px;border-radius:12px;background:#EFF6FF;border:1px solid #BFDBFE;margin-bottom:16px;">' +
+          '<div style="font-size:0.83rem;font-weight:800;color:#1E3A8A;">👤 ' + esc(currentUser.name) + ' 님 <span style="font-weight:600;color:#2563EB;">(' + providerLabel(currentUser.provider) + ')</span></div>' +
+          '<button type="button" onclick="window.logoutBareunUser()" style="border:none;background:#DBEAFE;color:#1E40AF;padding:4px 10px;border-radius:8px;font-size:0.75rem;font-weight:800;cursor:pointer;">로그아웃</button>' +
+        '</div>' +
+        '<div style="font-size:0.74rem;font-weight:800;color:#059669;margin-bottom:4px;">🔒 100% PRIVATE CONSULTATION</div>' +
+        '<h3 style="font-size:1.15rem;font-weight:800;color:#0F172A;margin-bottom:14px;">질환별 1:1 비공개 질문 등록</h3>' +
+        '<form onsubmit="window.submitPrivateQuestion(event)">' +
+          '<div class="form-field">' +
+            '<label class="form-label">상담 질환 카테고리 *</label>' +
+            '<select id="q-part" class="form-select">' + catOptions + '</select>' +
+          '</div>' +
+          '<div class="form-row-2">' +
+            '<div class="form-field">' +
+              '<label class="form-label">증상 지속 기간</label>' +
+              '<select id="q-duration" class="form-select">' +
+                '<option value="1개월 미만">1개월 미만 (최근 발생)</option>' +
+                '<option value="1~6개월" selected>1개월 ~ 6개월</option>' +
+                '<option value="6개월~1년">6개월 ~ 1년</option>' +
+                '<option value="1년 이상 만성">1년 이상 만성 반복</option>' +
+              '</select>' +
             '</div>' +
-            '<div style="font-size:0.94rem;color:#111827;line-height:1.72;white-space:pre-line;">' + escapeHtml(rep.content) + '</div>' +
-          '</div>'
-        ).join('');
+            '<div class="form-field">' +
+              '<label class="form-label">연락처 (비공개·마스터 확인용)</label>' +
+              '<input type="tel" id="q-phone" class="form-input" value="' + esc(currentUser.phone || '') + '" placeholder="010-0000-0000" />' +
+            '</div>' +
+          '</div>' +
+          '<div class="form-field">' +
+            '<label class="form-label">질문 제목 *</label>' +
+            '<input type="text" id="q-title" class="form-input" placeholder="예: 아침 기상 직후 어지럼증과 뒷목 긴장 관련 문의드립니다" required />' +
+          '</div>' +
+          '<div class="form-field">' +
+            '<label class="form-label">상세 증상 및 궁금한 점 (작성자 본인·마스터 외 절대 비공개) *</label>' +
+            '<textarea id="q-content" class="form-textarea" rows="5" placeholder="증상이 나타나는 시간대, 동반 증상, 기존 검사 이력 등을 적어주시면 해외 및 통합의학 근거를 바탕으로 상세히 답변드립니다." required></textarea>' +
+          '</div>' +
+          '<button type="submit" class="submit-primary-btn" id="q-submit-btn">🔒 비공개 질문 안전하게 등록하기</button>' +
+        '</form>';
+    }
+
+    // 4. FETCH & RENDER PRIVATE QNA LIST
+    window.fetchQnaItems = async function() {
+      const partParam = encodeURIComponent(currentDiseasePart || 'all');
+      const res = await apiCall('/qna?part=' + partParam, 'GET');
+      if (res.data && res.data.ok) {
+        qnaItems = res.data.items || [];
+        window.renderQnaList();
+      }
+    };
+
+    window.renderQnaList = function() {
+      const container = document.getElementById('qna-items-container');
+      if (!container) return;
+
+      const statusFilter = document.getElementById('qna-status-filter')?.value || 'all';
+      const isMaster = Boolean(currentUser && currentUser.isMaster);
+
+      const masterBar = document.getElementById('master-console-bar');
+      if (masterBar) {
+        masterBar.style.display = isMaster ? 'block' : 'none';
+        if (isMaster) {
+          const waitCnt = qnaItems.filter(i => i.status !== 'answered').length;
+          const ansCnt = qnaItems.filter(i => i.status === 'answered').length;
+          const statsEl = document.getElementById('master-stats-line');
+          if (statsEl) {
+            statsEl.textContent = '현재 조회 카테고리 총 ' + qnaItems.length + '건 (답변대기 ' + waitCnt + '건 · 답변완료 ' + ansCnt + '건) — 전 항목 비공개 잠금 해제됨';
+          }
+        }
+      }
+
+      let filtered = qnaItems.slice();
+      if (statusFilter === 'mine') filtered = filtered.filter(i => i.isMine);
+      else if (statusFilter === 'waiting') filtered = filtered.filter(i => i.status !== 'answered');
+      else if (statusFilter === 'answered') filtered = filtered.filter(i => i.status === 'answered');
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="padding:36px 20px;text-align:center;color:#64748B;font-size:0.92rem;">조건에 해당하는 비공개 질문 내역이 없습니다.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const cat = getCategoryMeta(item.partId);
+        const catTag = cat ? (cat.icon + ' ' + cat.shortName) : item.partId;
+        const statusBadge = item.status === 'answered'
+          ? '<span class="status-pill answered">✔ 1:1 답변완료</span>'
+          : '<span class="status-pill waiting">⏳ 마스터 검토중</span>';
+        const provClass = ['kakao', 'naver', 'google'].includes(item.provider) ? (' ' + item.provider) : '';
+        const provText = item.provider === 'kakao' ? '카카오' : item.provider === 'naver' ? '네이버' : item.provider === 'google' ? 'Google' : '회원';
+
+        if (!item.canRead) {
+          return (
+            '<div class="qna-item-card locked" onclick="window.handleLockedClick()">' +
+              '<div class="qna-item-top">' +
+                '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+                  statusBadge +
+                  '<span style="font-size:0.76rem;font-weight:800;color:#2563EB;background:#EFF6FF;padding:3px 9px;border-radius:999px;">' + esc(catTag) + '</span>' +
+                  '<span class="provider-badge' + provClass + '">' + provText + '</span>' +
+                '</div>' +
+                '<span style="font-size:0.78rem;color:#64748B;">' + esc(item.maskedAuthor) + ' · ' + esc(item.createdAt) + '</span>' +
+              '</div>' +
+              '<div style="font-size:0.94rem;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px;">' +
+                '<span>' + esc(item.title) + '</span>' +
+              '</div>' +
+            '</div>'
+          );
+        }
+
+        // Readable by Author OR Master!
+        let masterDossierHtml = '';
+        let masterEditorHtml = '';
+        if (isMaster && item.memberDetail) {
+          const md = item.memberDetail;
+          masterDossierHtml =
+            '<div class="member-dossier-box">' +
+              '<div><strong>회원 성함:</strong> ' + esc(md.name) + ' (#' + esc(md.userId || 'Seed') + ')</div>' +
+              '<div><strong>가입 채널:</strong> ' + esc(providerLabel(md.provider)) + '</div>' +
+              '<div><strong>연락처:</strong> ' + esc(md.phone || '미기재') + '</div>' +
+              '<div><strong>이메일:</strong> ' + esc(md.email || '-') + '</div>' +
+              '<div><strong>성별 / 연령대:</strong> ' + esc((md.gender || '-') + ' / ' + (md.ageGroup || '-')) + '</div>' +
+              '<div><strong>증상 지속기간:</strong> ' + esc(md.symptomDuration || '-') + '</div>' +
+              '<div><strong>접속 IP:</strong> ' + esc(md.clientIp || '-') + '</div>' +
+              '<div><strong>접수 시각:</strong> ' + esc(md.createdAt || item.createdAt) + '</div>' +
+            '</div>';
+
+          masterEditorHtml =
+            '<div style="margin-top:14px;padding-top:12px;border-top:1px dashed #CBD5E1;">' +
+              '<label class="form-label" style="color:#1E3A8A;">👑 마스터 1:1 비공개 답변 작성 / 수정</label>' +
+              '<textarea id="mreply-' + item.id + '" class="form-textarea" rows="3" placeholder="질문 회원에게만 비공개로 표시될 전문 답변을 입력하세요...">' + esc(item.masterReply || '') + '</textarea>' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px;">' +
+                '<button type="button" onclick="window.saveMasterReply(' + item.id + ')" style="padding:8px 16px;border-radius:10px;border:none;background:#1D4ED8;color:#FFFFFF;font-size:0.82rem;font-weight:800;cursor:pointer;">💾 비공개 답변 저장·등록</button>' +
+                '<button type="button" onclick="window.deleteQnaItem(' + item.id + ')" style="padding:8px 12px;border-radius:10px;border:1px solid #FCA5A5;background:#FEF2F2;color:#B91C1C;font-size:0.78rem;font-weight:700;cursor:pointer;">삭제</button>' +
+              '</div>' +
+            '</div>';
+        }
+
+        const replyDisplayHtml = item.masterReply
+          ? '<div class="master-reply-view"><div style="font-size:0.76rem;font-weight:800;color:#2563EB;margin-bottom:4px;">🩺 바른 통합의학 전담 답변 (' + esc(item.repliedAt || '답변완료') + ')</div>' + esc(item.masterReply) + '</div>'
+          : '<div style="margin-top:10px;padding:11px 14px;border-radius:11px;background:#FFFBEB;color:#92400E;font-size:0.83rem;font-weight:700;">⏳ 질문이 비공개로 안전하게 접수되었으며, 전담 검토 후 1:1 답변이 등록됩니다.</div>';
+
+        const ownerDeleteBtn = (!isMaster && item.isMine)
+          ? '<div style="margin-top:8px;text-align:right;"><button type="button" onclick="window.deleteQnaItem(' + item.id + ')" style="border:none;background:transparent;color:#EF4444;font-size:0.78rem;font-weight:700;cursor:pointer;">내 질문 삭제</button></div>'
+          : '';
 
         return (
-          '<div class="qna-question-item">' +
-            '<div class="qna-item-head">' +
-              '<span class="qna-user-badge">' + (item.isDoctor ? '👨‍⚕️ ' : '🙋 질문 · ') + escapeHtml(item.author) + '</span>' +
-              '<div style="display:flex;align-items:center;gap:10px;">' +
-                '<span style="font-size:0.78rem;color:#64748B;font-weight:600;">' + escapeHtml(item.date) + '</span>' +
-                (item.wpCommentId ? '<button type="button" onclick="window.setReplyTarget(' + Number(item.wpCommentId) + ', \\'' + escapeHtml(item.author).replace(/'/g, '') + '\\')" style="border:none;background:#E2E8F0;color:#0F172A;padding:3px 9px;border-radius:999px;font-size:0.75rem;font-weight:800;cursor:pointer;">↳ 답글 달기</button>' : '') +
+          '<div class="qna-item-card readable">' +
+            '<div class="qna-item-top">' +
+              '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+                statusBadge +
+                (item.isMine ? '<span style="font-size:0.74rem;font-weight:800;background:#059669;color:#FFFFFF;padding:3px 9px;border-radius:999px;">🔓 내 비공개 질문</span>' : '<span style="font-size:0.74rem;font-weight:800;background:#1E293B;color:#FDE68A;padding:3px 9px;border-radius:999px;">👑 마스터 열람</span>') +
+                '<span style="font-size:0.76rem;font-weight:800;color:#2563EB;background:#EFF6FF;padding:3px 9px;border-radius:999px;">' + esc(catTag) + '</span>' +
               '</div>' +
+              '<span style="font-size:0.78rem;color:#64748B;">' + esc(item.maskedAuthor) + ' · ' + esc(item.createdAt) + '</span>' +
             '</div>' +
-            '<div style="font-size:0.96rem;color:#1F2937;line-height:1.72;white-space:pre-line;">' + escapeHtml(item.content) + '</div>' +
-            repliesHtml +
+            '<h4 style="font-size:1.02rem;font-weight:800;color:#0F172A;margin-bottom:8px;">🔓 ' + esc(item.title) + '</h4>' +
+            masterDossierHtml +
+            '<div style="font-size:0.92rem;color:#334155;line-height:1.72;white-space:pre-wrap;padding:12px 14px;background:#F8FAFC;border-radius:12px;border:1px solid #E2E8F0;">' + esc(item.content) + '</div>' +
+            replyDisplayHtml +
+            ownerDeleteBtn +
+            masterEditorHtml +
           '</div>'
         );
       }).join('');
-    }
-
-    async function ensureWpPostId(post) {
-      if (post.wpPostId) return post.wpPostId;
-      try {
-        const r = await fetch('/wp-json/wp/v2/posts?slug=' + encodeURIComponent(post.slug));
-        if (r.ok) {
-          const arr = await r.json();
-          if (Array.isArray(arr) && arr[0] && arr[0].id) {
-            post.wpPostId = arr[0].id;
-            return post.wpPostId;
-          }
-        }
-      } catch (e) {}
-      return null;
-    }
-
-    async function loadCommentsForPost(post) {
-      const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
-      const fallbackThreads = JSON.parse(JSON.stringify(SEED_QNA[post.slug] || []));
-
-      if (isLocal) {
-        try {
-          const r = await fetch('/api/blog-comments?postSlug=' + encodeURIComponent(post.slug) + '&_t=' + Date.now());
-          if (r.ok) {
-            const data = await r.json();
-            if (Array.isArray(data.threads) && data.threads.length) {
-              renderCommentThreadNodes(data.threads);
-              return;
-            }
-          }
-        } catch (e) {}
-        renderCommentThreadNodes(fallbackThreads);
-        return;
-      }
-
-      // Live WordPress REST API (/wp-json/wp/v2/comments?post=<id>)
-      try {
-        const wpId = await ensureWpPostId(post);
-        if (wpId) {
-          const r = await fetch('/wp-json/wp/v2/comments?post=' + wpId + '&per_page=100&order=asc&_t=' + Date.now());
-          if (r.ok) {
-            const wpComments = await r.json();
-            if (Array.isArray(wpComments) && wpComments.length > 0) {
-              const byId = {};
-              const roots = [];
-              wpComments.forEach(c => {
-                const authorName = c.author_name || '방문 질문자';
-                const isDoc = /안정위|대표원장|바른한의원/.test(authorName) || (Number(c.author) > 0 && !/보호자|직장인|환자|질문자|학부모|예비맘|방문/.test(authorName));
-                byId[c.id] = {
-                  id: 'wp-c-' + c.id,
-                  wpCommentId: c.id,
-                  parent: Number(c.parent || 0),
-                  author: authorName,
-                  date: String(c.date || '').slice(0, 10),
-                  isDoctor: isDoc,
-                  content: stripHtml(c.content && c.content.rendered),
-                  replies: []
-                };
-              });
-              Object.values(byId).forEach(node => {
-                if (node.parent && byId[node.parent]) {
-                  byId[node.parent].replies.push(node);
-                } else {
-                  roots.push(node);
-                }
-              });
-              renderCommentThreadNodes(roots);
-              return;
-            }
-          }
-        }
-      } catch (e) {}
-
-      renderCommentThreadNodes(fallbackThreads);
-    }
-
-    function bindQuestionForm(post) {
-      const form = document.getElementById('qna-question-form');
-      if (!form) return;
-
-      form.addEventListener('submit', async function(ev) {
-        ev.preventDefault();
-        const authorEl = document.getElementById('qna-author-input');
-        const contentEl = document.getElementById('qna-content-input');
-        const btnEl = document.getElementById('qna-submit-btn');
-        const toastEl = document.getElementById('qna-toast');
-
-        const author = (authorEl.value || '').trim() || '방문 질문자';
-        const content = (contentEl.value || '').trim();
-        if (!content) return;
-
-        btnEl.disabled = true;
-        btnEl.textContent = '질문 등록 중...';
-
-        const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
-
-        try {
-          if (isLocal) {
-            const resp = await fetch('/api/blog-comments', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                postSlug: post.slug,
-                author,
-                content,
-                parentId: replyParentId || 0
-              })
-            });
-            if (!resp.ok) throw new Error('local-post-failed');
-          } else {
-            const wpId = await ensureWpPostId(post);
-            if (!wpId) throw new Error('missing-wp-post-id');
-            const params = new URLSearchParams();
-            params.set('comment', content);
-            params.set('author', author);
-            params.set('email', '');
-            params.set('url', '');
-            params.set('comment_post_ID', String(wpId));
-            params.set('comment_parent', String(replyParentId || 0));
-
-            await fetch('/wp-comments-post.php', {
-              method: 'POST',
-              credentials: 'same-origin',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: params.toString()
-            });
-          }
-
-          contentEl.value = '';
-          window.cancelReplyTarget();
-          if (toastEl) {
-            toastEl.style.display = 'block';
-            toastEl.textContent = '✅ 질문이 성공적으로 등록되었습니다! 안정위 대표원장실이 확인 후 이 글의 답글로 정성껏 답변해 도움드립니다.';
-          }
-          await loadCommentsForPost(post);
-        } catch (err) {
-          if (toastEl) {
-            toastEl.style.display = 'block';
-            toastEl.textContent = '안내: 일시적 네트워크 지연이 발생했습니다. 단독 발행 주소를 새 창으로 열어 하단 답글창에 남겨주시면 즉시 접수됩니다.';
-          }
-        } finally {
-          btnEl.disabled = false;
-          btnEl.textContent = '💬 답글 질문 등록하기';
-        }
-      });
-    }
-
-    window.setReplyTarget = function(commentId, authorName) {
-      replyParentId = Number(commentId) || 0;
-      replyParentAuthor = authorName || '';
-      const bar = document.getElementById('qna-reply-target-bar');
-      const lbl = document.getElementById('qna-reply-target-label');
-      if (bar && lbl) {
-        bar.style.display = 'flex';
-        lbl.textContent = '↳ [' + replyParentAuthor + '] 님의 글에 추가 답글 작성 중';
-      }
-      document.getElementById('qna-content-input')?.focus();
     };
 
-    window.cancelReplyTarget = function() {
-      replyParentId = 0;
-      replyParentAuthor = '';
-      const bar = document.getElementById('qna-reply-target-bar');
-      if (bar) bar.style.display = 'none';
-    };
-
-    window.setAskMode = function(mode) {
-      currentMode = mode;
-      activeSlug = null;
-      syncUrlParams();
-      renderStage();
-    };
-
-    window.setAskPart = function(partId) {
-      currentPart = partId;
-      activeSlug = null;
-      syncUrlParams();
-      renderStage();
-    };
-
-    window.resetAskFilters = function() {
-      currentPart = 'all';
-      currentMode = 'all';
-      searchQuery = '';
-      if (searchInput) searchInput.value = '';
-      activeSlug = null;
-      syncUrlParams();
-      renderStage();
-    };
-
-    window.openArticleBySlug = function(slug, scrollToQna = false) {
-      activeSlug = slug;
-      syncUrlParams();
-      renderStage();
-      if (scrollToQna) {
-        setTimeout(() => {
-          document.getElementById('qna-board-section')?.scrollIntoView({ behavior: 'smooth' });
-          document.getElementById('qna-content-input')?.focus();
-        }, 120);
+    window.handleLockedClick = function() {
+      if (!currentUser) {
+        window.showToast('🔒 비공개 상담글입니다. 본인 질문 열람 또는 새 질문 작성은 로그인 후 가능합니다.');
+        window.openAuthModal('social');
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.showToast('🔒 타 회원의 비공개 건강 질문입니다. 작성자 본인과 마스터만 열람할 수 있습니다.');
       }
     };
 
-    window.closeArticleReader = function() {
-      activeSlug = null;
-      syncUrlParams();
-      renderStage();
-    };
-
-    window.jumpStraightToQuestion = function() {
-      if (activeSlug) {
-        document.getElementById('qna-board-section')?.scrollIntoView({ behavior: 'smooth' });
-        document.getElementById('qna-content-input')?.focus();
+    // 5. SUBMIT PRIVATE QUESTION
+    window.submitPrivateQuestion = async function(ev) {
+      ev.preventDefault();
+      if (!currentUser) {
+        window.openAuthModal('social');
         return;
       }
-      const targetPart = (currentPart && currentPart !== 'all') ? currentPart : 'knee';
-      const masterPost = allPosts.find(p => p.partId === targetPart && p.isEncyclopediaMaster) || allPosts[0];
-      if (masterPost) {
-        window.openArticleBySlug(masterPost.slug, true);
+      const btn = document.getElementById('q-submit-btn');
+      if (btn) btn.disabled = true;
+
+      const partId = document.getElementById('q-part').value;
+      const symptomDuration = document.getElementById('q-duration').value;
+      const phone = document.getElementById('q-phone').value.trim();
+      const title = document.getElementById('q-title').value.trim();
+      const content = document.getElementById('q-content').value.trim();
+
+      const res = await apiCall('/qna', 'POST', { partId, symptomDuration, phone, title, content });
+      if (btn) btn.disabled = false;
+
+      if (res.data && res.data.ok) {
+        document.getElementById('q-title').value = '';
+        document.getElementById('q-content').value = '';
+        window.showToast('🔒 1:1 비공개 질문이 안전하게 등록되었습니다.');
+        await window.fetchQnaItems();
+      } else {
+        window.showToast(res.data?.message || '질문 등록에 실패했습니다.');
       }
     };
 
-    if (searchInput) {
-      searchInput.addEventListener('input', function() {
-        searchQuery = this.value.trim();
-        activeSlug = null;
-        renderStage();
-      });
-    }
+    // 6. MASTER REPLY, DELETE, MEMBERS DIRECTORY & OAUTH SETTINGS
+    window.saveMasterReply = async function(id) {
+      const ta = document.getElementById('mreply-' + id);
+      if (!ta) return;
+      const res = await apiCall('/qna/reply', 'POST', { id, reply: ta.value.trim() });
+      if (res.data && res.data.ok) {
+        window.showToast('👑 1:1 비공개 답변이 저장되었습니다.');
+        await window.fetchQnaItems();
+      } else {
+        window.showToast(res.data?.message || '답변 저장 실패');
+      }
+    };
 
-    // Sync any newly auto-published daily WordPress posts seamlessly
-    async function syncLiveWpPosts() {
-      const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
-      if (isLocal) return;
-      try {
-        const resp = await fetch('/wp-json/wp/v2/posts?_embed&per_page=100');
-        if (!resp.ok) return;
-        const wpPosts = await resp.json();
-        if (!Array.isArray(wpPosts)) return;
+    window.deleteQnaItem = async function(id) {
+      const res = await apiCall('/qna/delete', 'POST', { id });
+      if (res.data && res.data.ok) {
+        window.showToast('질문이 삭제되었습니다.');
+        await window.fetchQnaItems();
+      } else {
+        window.showToast(res.data?.message || '삭제 실패');
+      }
+    };
 
-        let changed = false;
-        wpPosts.forEach(wp => {
-          const wpSlug = wp.slug || ('wp-' + wp.id);
-          const cleanTitle = stripHtml(wp.title && wp.title.rendered);
-          const normTitle = cleanTitle.replace(/^\\[[^\\]]+\\]\\s*/, '').trim();
-
-          const existing = allPosts.find(p =>
-            p.slug === wpSlug ||
-            p.title.replace(/^\\[[^\\]]+\\]\\s*/, '').trim() === normTitle
-          );
-          if (existing) {
-            if (!existing.wpPostId) {
-              existing.wpPostId = wp.id;
-              existing.canonicalUrl = wp.link || existing.canonicalUrl;
-              changed = true;
-            }
-            return;
-          }
-
-          // Newly published daily post (e.g. from Google Apps Script v4.0)!
-          const terms = (wp._embedded && wp._embedded['wp:term']) ? wp._embedded['wp:term'].flat() : [];
-          const catSlugs = terms.map(t => t && t.slug).filter(Boolean);
-          const slugMap = {
-            'blog-knee': 'knee', 'blog-cervical': 'cervical', 'blog-lumbar': 'lumbar',
-            'blog-gongjindan': 'gongjindan', 'blog-syncope': 'syncope', 'blog-digest': 'digest',
-            'blog-gut': 'gut', 'blog-uterus': 'uterus', 'blog-prostate': 'prostate'
-          };
-          let matchedPart = 'lumbar';
-          for (const s of catSlugs) {
-            if (slugMap[s]) { matchedPart = slugMap[s]; break; }
-          }
-          const rawHtml = (wp.content && wp.content.rendered) || '';
-          const imgMatch = rawHtml.match(/<img[^>]+src="([^"]+)"/i);
-          allPosts.unshift({
-            id: 'wp-' + wp.id,
-            wpPostId: wp.id,
-            slug: wpSlug,
-            partId: matchedPart,
-            isEncyclopediaMaster: /^\\[공식 의학백과\\]/.test(cleanTitle),
-            badge: '자동발행 임상칼럼',
-            title: cleanTitle,
-            summary: stripHtml(wp.excerpt && wp.excerpt.rendered).slice(0, 160) || cleanTitle,
-            date: String(wp.date || '').slice(0, 10),
-            readTime: '4분 칼럼',
-            heroImg: (imgMatch && imgMatch[1]) || 'card_1_director.jpg',
-            canonicalUrl: wp.link,
-            tags: terms.map(t => t && t.name).filter(Boolean).slice(0, 4),
-            contentHtml: rawHtml
-          });
-          changed = true;
-        });
-
-        if (changed) {
-          updateTabCounts();
-          renderStage();
+    window.toggleMasterMembersPanel = async function() {
+      const drawer = document.getElementById('master-members-drawer');
+      const wrap = document.getElementById('master-members-table-wrap');
+      if (!drawer || !wrap) return;
+      if (drawer.style.display === 'block') {
+        drawer.style.display = 'none';
+        return;
+      }
+      drawer.style.display = 'block';
+      wrap.innerHTML = '전체 회원 명부를 불러오는 중...';
+      const res = await apiCall('/master/members', 'GET');
+      if (res.data && res.data.ok) {
+        const list = res.data.members || [];
+        if (list.length === 0) {
+          wrap.innerHTML = '가입된 회원이 없습니다.';
+          return;
         }
-      } catch (e) {}
+        wrap.innerHTML =
+          '<table style="width:100%;border-collapse:collapse;text-align:left;">' +
+            '<thead><tr style="background:#F1F5F9;border-bottom:1.5px solid #CBD5E1;">' +
+              '<th style="padding:8px 10px;">#ID</th>' +
+              '<th style="padding:8px 10px;">성함</th>' +
+              '<th style="padding:8px 10px;">가입채널</th>' +
+              '<th style="padding:8px 10px;">이메일</th>' +
+              '<th style="padding:8px 10px;">휴대폰 연락처</th>' +
+              '<th style="padding:8px 10px;">성별/연령대</th>' +
+              '<th style="padding:8px 10px;">질문수</th>' +
+              '<th style="padding:8px 10px;">가입일시 / IP</th>' +
+            '</tr></thead><tbody>' +
+            list.map(m =>
+              '<tr style="border-bottom:1px solid #E2E8F0;">' +
+                '<td style="padding:8px 10px;font-weight:700;">#' + esc(m.id) + '</td>' +
+                '<td style="padding:8px 10px;font-weight:800;">' + esc(m.name) + '</td>' +
+                '<td style="padding:8px 10px;">' + esc(providerLabel(m.provider)) + '</td>' +
+                '<td style="padding:8px 10px;">' + esc(m.email) + '</td>' +
+                '<td style="padding:8px 10px;font-weight:700;color:#1D4ED8;">' + esc(m.phone || '-') + '</td>' +
+                '<td style="padding:8px 10px;">' + esc((m.gender || '-') + ' / ' + (m.ageGroup || '-')) + '</td>' +
+                '<td style="padding:8px 10px;font-weight:800;">' + esc(m.questionCount || 0) + '건</td>' +
+                '<td style="padding:8px 10px;color:#64748B;">' + esc(m.joinedAt || '') + ' (' + esc(m.lastIp || '-') + ')</td>' +
+              '</tr>'
+            ).join('') +
+            '</tbody></table>';
+      }
+    };
+
+    window.toggleOAuthConfigPanel = async function() {
+      const drawer = document.getElementById('master-oauth-drawer');
+      if (!drawer) return;
+      drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
+      if (drawer.style.display === 'block') {
+        const res = await apiCall('/oauth/config', 'GET');
+        if (res.data && res.data.config) {
+          oauthConfig = res.data.config;
+          document.getElementById('oauth-google-id').value = oauthConfig.googleClientId || '';
+          document.getElementById('oauth-kakao-key').value = oauthConfig.kakaoJsKey || '';
+          document.getElementById('oauth-naver-id').value = oauthConfig.naverClientId || '';
+        }
+      }
+    };
+
+    window.saveOAuthConfig = async function() {
+      const res = await apiCall('/oauth/config', 'POST', {
+        googleClientId: document.getElementById('oauth-google-id').value.trim(),
+        kakaoJsKey: document.getElementById('oauth-kakao-key').value.trim(),
+        naverClientId: document.getElementById('oauth-naver-id').value.trim()
+      });
+      if (res.data && res.data.ok) {
+        oauthConfig = res.data.config;
+        window.showToast('소셜 OAuth 설정이 저장되었습니다.');
+      }
+    };
+
+    // 7. AUTH MODAL & SOCIAL / EMAIL / MASTER HANDLERS
+    function syncHeaderUserButtons() {
+      const mbrBtn = document.getElementById('gnb-member-btn');
+      const mstBtn = document.getElementById('gnb-master-btn');
+      if (!mbrBtn) return;
+      if (currentUser) {
+        mbrBtn.textContent = (currentUser.isMaster ? '👑 ' : '👤 ') + currentUser.name + ' 님 (로그아웃)';
+        mbrBtn.onclick = () => window.logoutBareunUser();
+        if (mstBtn) mstBtn.style.display = currentUser.isMaster ? 'none' : 'inline-flex';
+      } else {
+        mbrBtn.textContent = '👤 빠른 회원가입 · 로그인';
+        mbrBtn.onclick = () => window.openAuthModal('social');
+        if (mstBtn) mstBtn.style.display = 'inline-flex';
+      }
     }
 
-    initStore();
+    window.openAuthModal = function(tab) {
+      document.getElementById('auth-modal-backdrop').classList.add('open');
+      window.switchModalTab(tab || 'social');
+    };
+    window.closeAuthModal = function() {
+      document.getElementById('auth-modal-backdrop').classList.remove('open');
+    };
+    window.openSocialModal = function(provider) {
+      window.openAuthModal('social');
+      window.selectSocialProvider(provider);
+    };
 
-    const params = new URLSearchParams(window.location.search);
-    const qPart = params.get('part');
-    const qPost = params.get('post');
-    const qAsk = params.get('ask');
-    if (qPart && CATEGORIES.some(c => c.partId === qPart)) {
-      currentPart = qPart;
-    }
-    if (qPost) {
-      activeSlug = qPost;
-    }
-    renderStage();
-    if (qAsk === '1') {
-      window.jumpStraightToQuestion();
-    }
-    syncLiveWpPosts();
+    window.switchModalTab = function(tab) {
+      ['social', 'email', 'master'].forEach(t => {
+        document.getElementById('mtab-' + t).classList.toggle('active', t === tab);
+        document.getElementById('modal-pane-' + t).style.display = (t === tab) ? 'block' : 'none';
+      });
+    };
+
+    window.selectSocialProvider = function(provider) {
+      document.getElementById('social-provider-input').value = provider;
+      const names = { google: 'Google 계정 간편 회원가입', kakao: '카카오톡 3초 간편 회원가입', naver: '네이버 아이디 간편 회원가입' };
+      const labelEl = document.getElementById('social-selected-label');
+      if (labelEl) labelEl.textContent = '⚡ 선택한 소셜 채널: ' + (names[provider] || names.google);
+      document.getElementById('social-name')?.focus();
+    };
+
+    window.submitSocialExpress = async function(ev) {
+      ev.preventDefault();
+      const provider = document.getElementById('social-provider-input').value;
+      const name = document.getElementById('social-name').value.trim();
+      const phone = document.getElementById('social-phone').value.trim();
+      const email = document.getElementById('social-email').value.trim();
+      const gender = document.getElementById('social-gender').value;
+      const ageGroup = document.getElementById('social-age').value;
+
+      const res = await apiCall('/auth/social', 'POST', { provider, name, phone, email, gender, ageGroup });
+      if (res.data && res.data.ok) {
+        setToken(res.data.token);
+        currentUser = res.data.user;
+        syncHeaderUserButtons();
+        window.closeAuthModal();
+        window.switchMainMenu('qna', currentDiseasePart);
+        window.showToast('🎉 ' + providerLabel(provider) + ' 인증 완료! 이제 비공개 질문을 작성하실 수 있습니다.');
+      } else {
+        window.showToast(res.data?.message || '소셜 간편 가입 중 오류가 발생했습니다.');
+      }
+    };
+
+    window.toggleEmailMode = function(mode) {
+      document.getElementById('email-mode-input').value = mode;
+      const isReg = (mode === 'register');
+      document.getElementById('email-reg-extra').style.display = isReg ? 'block' : 'none';
+      document.getElementById('em-submit-btn').textContent = isReg ? '이메일 회원가입 및 로그인' : '이메일 로그인';
+      document.getElementById('subtab-reg').style.background = isReg ? '#EFF6FF' : '#FFFFFF';
+      document.getElementById('subtab-log').style.background = !isReg ? '#EFF6FF' : '#FFFFFF';
+    };
+
+    window.submitEmailAuth = async function(ev) {
+      ev.preventDefault();
+      const mode = document.getElementById('email-mode-input').value;
+      const email = document.getElementById('em-email').value.trim();
+      const password = document.getElementById('em-pass').value;
+      const payload = { email, password };
+      if (mode === 'register') {
+        payload.name = document.getElementById('em-name').value.trim();
+        payload.phone = document.getElementById('em-phone').value.trim();
+        payload.gender = document.getElementById('em-gender').value;
+        payload.ageGroup = document.getElementById('em-age').value;
+      }
+      const res = await apiCall(mode === 'register' ? '/auth/register' : '/auth/login', 'POST', payload);
+      if (res.data && res.data.ok) {
+        setToken(res.data.token);
+        currentUser = res.data.user;
+        syncHeaderUserButtons();
+        window.closeAuthModal();
+        window.switchMainMenu('qna', currentDiseasePart);
+        window.showToast('환영합니다, ' + currentUser.name + ' 님!');
+      } else {
+        window.showToast(res.data?.message || '인증 정보를 다시 확인해 주세요.');
+      }
+    };
+
+    window.submitMasterLogin = async function(ev) {
+      ev.preventDefault();
+      const username = document.getElementById('master-id-input').value.trim();
+      const password = document.getElementById('master-pw-input').value;
+      const res = await apiCall('/auth/master-login', 'POST', { username, password });
+      if (res.data && res.data.ok) {
+        setToken(res.data.token);
+        currentUser = res.data.user;
+        syncHeaderUserButtons();
+        window.closeAuthModal();
+        window.switchMainMenu('qna', currentDiseasePart);
+        window.showToast('👑 마스터 전체 비공개 열람 및 회원 상세조회 모드가 활성화되었습니다.');
+      } else {
+        window.showToast(res.data?.message || '마스터 계정 정보가 올바르지 않습니다.');
+      }
+    };
+
+    window.logoutBareunUser = function() {
+      setToken('');
+      currentUser = null;
+      syncHeaderUserButtons();
+      renderLeftComposer();
+      window.fetchQnaItems();
+      window.showToast('안전하게 로그아웃되었습니다.');
+    };
+
+    // INITIAL BOOTSTRAP
+    (async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const urlTab = params.get('tab');
+      const urlPart = params.get('part');
+
+      if (urlPart && QNA_CATEGORIES.some(c => c.partId === urlPart)) {
+        currentDiseasePart = urlPart;
+        document.querySelectorAll('#qna-category-strip .qna-cat-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-qpart') === currentDiseasePart);
+        });
+      }
+
+      const meRes = await apiCall('/auth/me', 'GET');
+      if (meRes.data && meRes.data.ok && meRes.data.user) {
+        currentUser = meRes.data.user;
+        syncHeaderUserButtons();
+      }
+
+      if (urlTab === 'qna' || (urlPart && urlTab !== 'blog')) {
+        window.switchMainMenu('qna', currentDiseasePart);
+      } else {
+        window.switchMainMenu('blog');
+      }
+    })();
   })();
   </script>
 </body>
@@ -1819,4 +2087,4 @@ function buildAskDoctorHtml() {
 const outPath = path.join(__dirname, 'ask-doctor.html');
 const html = buildAskDoctorHtml();
 fs.writeFileSync(outPath, html, 'utf8');
-console.log('✅ Generated Ask-Doctor Hub (ask-doctor.html):', outPath, '(' + html.length + ' bytes)');
+console.log('✅ Generated Expert Medical Blog (1 Post) & Private Disease Q&A Hub (ask-doctor.html):', outPath, '(' + html.length + ' bytes)');

@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
+const { handleBareunApi } = require('./local-bareun-api.js');
 
 const PORT = 3000;
 const MIME_TYPES = {
@@ -490,6 +491,12 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     reqPath = '/body-explorer.html';
   } else if (reqPath === '/ask-doctor' || reqPath === '/ask-doctor/') {
     reqPath = '/ask-doctor.html';
+  }
+
+  if (reqPath.startsWith('/wp-json/bareun/v1/')) {
+    const urlObj = new URL(req.url || '/', 'http://localhost:' + PORT);
+    handleBareunApi(req, res, reqPath, urlObj);
+    return;
   }
 
   // API Endpoint: Blog Q&A Reply Comments (GET & POST)

@@ -9497,11 +9497,11 @@ function buildPageHtml(page) {
         </svg>
         <span>전체 클리닉</span>
       </a>
-      <a class="back-pill-btn" id="header-body-explorer-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href : 'body-explorer.html'}" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;font-weight:800;">
-        <span>💡 3D 생활꿀팁 ↗</span>
+      <a class="back-pill-btn" id="header-body-explorer-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href : 'body-explorer.html'}" style="background:#EFF6FF;border-color:#60A5FA;color:#1E3A8A;font-weight:800;">
+        <span>🧬 3D 인체탐색 ↗</span>
       </a>
-      <a class="back-pill-btn" id="header-ask-doctor-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href.replace('body-explorer.html', 'ask-doctor.html') : 'ask-doctor.html'}" style="background:#0F172A;border-color:#0F172A;color:#FFFFFF;font-weight:800;">
-        <span>💬 무엇이든 물어보세요 ↗</span>
+      <a class="back-pill-btn" id="header-ask-doctor-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href.replace('body-explorer.html?part=', 'ask-doctor.html?tab=qna&part=') : 'ask-doctor.html?tab=qna'}" style="background:#0F172A;border-color:#0F172A;color:#FFFFFF;font-weight:800;">
+        <span>🩺 질환별 비공개 Q&amp;A ↗</span>
       </a>
     </div>
 

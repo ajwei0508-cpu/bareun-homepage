@@ -10,3 +10,5 @@ homepage/wordpress-solapi-ready.php
 node_modules/
 homepage/reservations.json
 reservations.json
+homepage/private-qna-db.json
+private-qna-db.json

@@ -1,11 +1,34 @@
-# 📋 바른한의원 3D 시네마 & 6대 클리닉 상세페이지 & 글로벌 AI-SEO 백과 블로그·Q&A — 작업 인수인계서 (HANDOFF_LATEST)
+# 📋 바른한의원 풀스크린 Vibrant 3D 인체모형 그래픽모션 & 해외 SCI 대표 의학블로그(단독 1편) & 회원전용 비공개 질환 Q&A — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-10-26 (『3D 인체모형 · 부위별 생활 꿀팁 창고(`/body-explorer/`)』와 『무엇이든 물어보세요 · 공식 의학백과 블로그 & 원장 Q&A(`/ask-doctor/`)』 2개 페이지 100% 역할·디자인 분리 + 9대 공식 의학백과 & 27편 임상칼럼 총 **36편 워드프레스 고유 영문 퍼머링크 정식 발행** + 비회원 무로그인 답글 질문(Q&A) 시스템 + 한·영 이중언어 글로벌 AI-SEO/GEO `JSON-LD`·`llms.txt`·`IndexNow` 구축 및 카페24 실서버 배포 완료) · 2026-10-24 (소아 성장 상세페이지 04번 카드 3단계 수직 키 성장 모션 탑재 완료)
+> **최종 업데이트**: 2026-10-26 v5.0 (① 기존 36개 발행글 전수 비공개(Draft) 전환 및 시술 홍보를 완전히 배제한 **전문가 대표 의학 아티클 단 1편 단독 발행** · ② 블로그 Q&A 완전 분리 → **9대 질환별 1:1 비공개 Q&A 전용 메뉴** 신설 · ③ *Nature Medicine · NEJM · The Lancet · JAMA · Physiological Reviews · European Heart Journal* 등 **해외 권위 의학논문 전면 인용** · ④ **회원 전용 질문 + Google·카카오톡·네이버 3초 빠른 회원가입** · ⑤ **100% 비공개 질문 마스킹 + 마스터 전체 열람 및 가입회원 상세정보 조회 콘솔** · ⑥ **기존 3D 모형 100% 보존 + Vibrant Wellness 레퍼런스 풀스크린 3D 인체모형 & 우측 진료 메뉴 & 3D 그래픽모션 변화 & 연관 하위메뉴 순차 재활성화** 및 카페24 실서버 배포 완료)
 > **작성자**: 하이엔드 홈페이지 디렉터 **아트 (Art)**
 
 ---
 
-## 💎 00. 최신 완료 작업 요약 (2026-10-26 최신본 · 3D 생활꿀팁 vs 무엇이든 물어보세요(백과 블로그 & Q&A) 2개 페이지 완전 분리 + 36편 정식 블로그 발행 + 실시간 답글 질문 + 국내·해외 글로벌 AI-SEO 완비)
+## 💎 000. 최신 완료 작업 요약 (2026-10-26 v5.0 · Vibrant 풀스크린 3D 그래픽모션 + 해외 SCI 단독 대표 블로그 + 소셜 회원가입 & 마스터 전용 100% 비공개 Q&A)
+
+1. **모든 기존 발행글 비공개(Draft) 감춤 & 시술 홍보 배제 '대표 전문가 의학 아티클 단 1편' 단독 발행**:
+   - 기존 36개 워드프레스 발행 포스트 전체를 `status: 'draft'`(비공개 보관)로 전환하고 구버전 공개 댓글을 전수 정리하여, 실서버에는 오직 **대표 의학 리서치 아티클 단 1편(`https://www.bareunhaniwon.com/integrative-autonomic-circadian-gut-spine-health-review/`)**만 단독 공개.
+   - `"안정위 원장 시술"` 등 특정 의료인·시술 홍보 문구를 **0건(완전 삭제)**으로 배제하고, 순수 의학·생리학·예방의학 기반 전문가 저널(`바른 통합의학 리서치 에디토리얼`) 컨셉으로 확립 (`disease-blog-seed-data.js`, `llms.txt`, `google-apps-script-daily-blog.gs`).
+2. **블로그와 Q&A 메뉴 완전 분리 — 『9대 질환별 1:1 비공개 Q&A』 독립 메뉴 구축 (`ask-doctor.html` / `/ask-doctor/`)**:
+   - 상단 GNB 탭 및 히어로 스위처를 통해 **`📘 의학 인사이트 블로그 (대표글)`**(`?tab=blog`)과 **`🔒 질환별 1:1 비공개 Q&A`**(`?tab=qna`)를 명확히 분리 (`build-ask-doctor.js`).
+   - 9대 질환 카테고리(`성장·성조숙·면역`, `경추·두피열·탈모`, `척추·디스크·체형통증`, `만성피로·면역·뇌활력`, `자율신경·두통·실신`, `소화기·담적·역류식도염`, `대사·내장지방·다이어트`, `자궁·난임(IVF)·여성건강`, `전립선·배뇨·남성활력`)별로 독립된 비공개 상담 게시판 제공.
+3. **한의학·통합의학 논문 외 관련 해외 메이저 의학 논문 총망라 인용**:
+   - *Nature Medicine* (전신 만성염증·피로), *NEJM* (성인 갈색지방 열생산), *The Lancet* & *JAMA* (만성 요통·척추 수기치료 RCT 메타분석), *Physiological Reviews* (Microbiota-Gut-Brain Axis), *European Heart Journal* (ESC 미주신경성 실신 가이드라인), *JCEM* (서파수면 성장호르몬 생리), *Nature Reviews Disease Primers* (모낭 모유두 미세염증), *Human Reproduction Update* (자궁내막 수용성·나선동맥), *European Urology* (하부요로증상·야간뇨 가이드라인) 등 해외 권위 저널을 대표 블로그·질환별 Q&A 배너·3D 드로어 전 영역에 수록.
+4. **회원가입자 전용 질문 권한 & Google · 카카오톡 · 네이버 빠른 소셜 회원가입/로그인**:
+   - 워드프레스 커스텀 백엔드 플러그인(`wp-plugin/bareun-member-private-qna/bareun-member-private-qna.php` → `/wp-json/bareun/v1/*`) 및 로컬 미러 API(`local-bareun-api.js`) 구축.
+   - 비회원 질문 시 `401 Unauthorized` 원천 차단, **Google · 카카오톡 · 네이버 3초 원탭 소셜 가입/로그인** 및 이메일 회원가입 지원 (OAuth 키 설정 시 정식 팝업 인증 및 미설정 시 원탭 간편 소셜 가입 자동 지원).
+5. **모든 질문 100% 비공개 보호 & 마스터(`👑 마스터`) 전체 열람·상세 회원정보 조회·1:1 답변**:
+   - 비회원 및 타 회원에게는 서버 응답 단계부터 본문·개인정보가 완전히 제거된 마스킹 데이터(`🔒 비공개 건강 상담 질문입니다`)만 반환되며, 오직 **작성자 본인**과 **마스터 관리자(`wealthywei0508`)**만 열람 가능.
+   - 마스터 로그인 시 전 카테고리 비공개 잠금 해제 + **가입회원 상세정보 도시에(`성함, 가입채널(Google/Kakao/Naver/Email), 이메일, 휴대폰 연락처, 성별, 연령대, 증상 지속기간, 접속 IP, 등록일시`)** 확인 + **전체 가입회원 명부 상세열람** + **1:1 비공개 답변 등록/수정/삭제** 지원.
+6. **풀스크린 3D 인체모형 & 우측 바른한의원 진료 메뉴 & 3D 그래픽모션 & 연관 하위메뉴 순차 재활성화 (`body-explorer.html` / `/body-explorer/`)**:
+   - 기존 15종 3D GLB·프로시저럴 장기·척추·신경 모형(`skinF2.glb`, `skinMB2.glb`, `Skeleton.glb`, `spinalDiscs3D`, `brain`, `heart`, `liver`, `stomach`, `intestine`, `kidneys2`, `thyroid`, `Vascular`, `uterus3D`, `prostate3D`, `autonomicNerveGroup`, `gongjindanBridgeGroup`) **100% 그대로 보존**.
+   - `https://vibrant.noomoagency.com/` 레퍼런스 감성의 `100vw × 100vh` 전체화면 오로라 스테이지 + 진주빛 이리데슨트 3D 인체 + 상단 `[여성 ♀ | 남성 ♂]` 토글 + 인체 정중앙 화이트 더블링 핫스팟(`◉`) + 우측 반투명 글래스 『바른한의원 진료 살펴보기』 메뉴 독 구현 (`body-3d-webgl-engine.js`, `build-body-explorer.js`).
+   - 진료 메뉴 클릭 시 **3D 카메라 플라이투 + 3D 바이오 스캔 파동 + X-ray 유리 투시 전환 + 3D 이중 홀로그램 자이로 링 회전 + 3D 생체신호 입자 스트림** 그래픽모션이 즉시 작동하며, 이어서 **3D 세부 포커스 콜아웃 버튼 + 연관 세부 진료 클리닉 바로가기 + 생활꿀팁 드로어 + 해외 SCI 논문 드로어 + 질환별 1:1 비공개 Q&A 직통 버튼**이 순차 캐스케이딩 애니메이션으로 활성화됨.
+
+---
+
+## 💎 00. 직전 완료 작업 요약 (2026-10-26 초기본 · 3D 생활꿀팁 vs 무엇이든 물어보세요 2개 페이지 분리 기록)
 
 1. **시안성 극대화 & 혼돈 원천 제거 — 2개 페이지 100% 역할·컬러 분리**:
    - **페이지 ① `3D 인체모형 · 부위별 생활 꿀팁 창고` (`body-explorer.html` / `wordpress-body-explorer.html` / `/body-explorer/`)**:
@@ -158,7 +181,8 @@
 - **"1번 실행해줘"**: `wealthywei` 최신 `git pull` 후 로컬 서버 실행 (`바른리프팅 > 윤곽진단` 포함)
 - **"3번 실행해줘"**: `바른한의원 홈페이지` 최신 `git pull` 후 `node homepage/serve.js` (포트 `3000` / `3001`) 자동 실행
   - **메인 3D 시네마 (스크롤 자동 연동 3D 전후 스캔 HUD 포함)**: [http://localhost:3000/story-3d.html](http://localhost:3000/story-3d.html) (6대 클리닉 카드 바로 열기: [http://localhost:3000/story-3d.html?cards=1](http://localhost:3000/story-3d.html?cards=1))
-  - **🧬 3D 인체모형 질환·의학·SCI 논문 백과사전 (Vibrant Wellness 스타일 · 무릎 소아성장/감기케어 등 7대 부위)**: [http://localhost:3000/body-explorer.html](http://localhost:3000/body-explorer.html) (무릎 성장 바로가기: [http://localhost:3000/body-explorer.html?part=knee](http://localhost:3000/body-explorer.html?part=knee))
+  - **🧬 풀스크린 Vibrant 3D 인체모형 & 바른한의원 진료 모션 탐색기 (기존 3D 모형 100% 보존 · 3D 그래픽모션 & 연관 하위메뉴 순차 재활성화)**: [http://localhost:3000/body-explorer.html](http://localhost:3000/body-explorer.html) (실서버: [https://www.bareunhaniwon.com/body-explorer/](https://www.bareunhaniwon.com/body-explorer/))
+  - **📘 해외 SCI 대표 의학 인사이트 블로그(단독 1편) & 🔒 회원전용 질환별 1:1 비공개 Q&A (Google·카카오·네이버 3초 가입 & 마스터 상세열람)**: [http://localhost:3000/ask-doctor.html](http://localhost:3000/ask-doctor.html) / [http://localhost:3000/ask-doctor.html?tab=qna](http://localhost:3000/ask-doctor.html?tab=qna) (실서버: [https://www.bareunhaniwon.com/ask-doctor/](https://www.bareunhaniwon.com/ask-doctor/))
   - **01. 안정위 대표원장**: [http://localhost:3000/director.html](http://localhost:3000/director.html)
   - **02. 바른 추나 · 척추교정**: [http://localhost:3000/chuna.html](http://localhost:3000/chuna.html)
   - **03. 바른 성장 · 성조숙증**: [http://localhost:3000/growth.html](http://localhost:3000/growth.html)
