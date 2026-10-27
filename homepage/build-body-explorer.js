@@ -29,25 +29,87 @@ const {
   auditAnatomySystemsData
 } = require('./body-3d-anatomy-systems-data.js');
 
+function escAttrServer(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Editable Single-Source-of-Truth Menu Config (clinic-explore-menu-config.json)
+const MENU_CONFIG_PATH = path.join(__dirname, 'clinic-explore-menu-config.json');
+const MENU_CONFIG = fs.existsSync(MENU_CONFIG_PATH)
+  ? JSON.parse(fs.readFileSync(MENU_CONFIG_PATH, 'utf8'))
+  : {
+      header: { title: '바른한의원 진료 살펴보기', subMode: 'auto2day', customSubText: '2일 주기 신규 글 업데이트' },
+      items: CLINIC_EXPLORE_MENUS.map(m => ({ ...m, enabled: true, shortLabel: m.partLabel }))
+    };
+
+const ALL_CONFIG_ITEMS = Array.isArray(MENU_CONFIG.items) && MENU_CONFIG.items.length > 0
+  ? MENU_CONFIG.items
+  : CLINIC_EXPLORE_MENUS;
+const ENABLED_MENUS = ALL_CONFIG_ITEMS.filter(m => m && m.enabled !== false);
+if (ENABLED_MENUS.length === 0 && ALL_CONFIG_ITEMS.length > 0) {
+  ENABLED_MENUS.push(ALL_CONFIG_ITEMS[0]);
+}
+const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
+
 // 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행
 const FLATTENED_SEED_NOTES = [];
 for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
+  const overridePartLabel = MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel;
   for (const ep of episodes) {
-    const res = auditNoteThreeStage(ep);
+    const mergedEp = overridePartLabel ? { ...ep, partLabel: overridePartLabel } : ep;
+    const res = auditNoteThreeStage(mergedEp);
     if (!res.passed) {
       throw new Error(`[3-Stage Self-Correction Gate Failed] ${ep.id}: ${res.errors.join(' | ')}`);
     }
     FLATTENED_SEED_NOTES.push({
       id: ep.id,
       partId,
-      partLabel: ep.partLabel,
+      partLabel: mergedEp.partLabel,
       keyword: ep.keyword,
       publishDate: ep.publishDate,
+      pinnedTop: false,
       title: ep.questionTitle,
       empathy: ep.empathyLines,
       truth: ep.truthLines,
       myth: ep.mythLines,
       check: ep.checkList
+    });
+  }
+}
+
+// 표(clinic-explore-menu-config.json)에서 직접 수정하거나 새로 추가한 대표 건강 글 반영
+for (const m of ALL_CONFIG_ITEMS) {
+  const isCustomRow = !BODY_3D_AUTO_NOTES[m.id];
+  if ((m.leadNoteOverride || isCustomRow) && m.leadNote) {
+    const candidate = {
+      partLabel: m.partLabel || m.shortLabel || '주요 부위',
+      keyword: m.leadNote.keyword || '',
+      questionTitle: m.leadNote.questionTitle || '',
+      empathyLines: Array.isArray(m.leadNote.empathyLines) ? m.leadNote.empathyLines : [],
+      truthLines: Array.isArray(m.leadNote.truthLines) ? m.leadNote.truthLines : [],
+      mythLines: Array.isArray(m.leadNote.mythLines) ? m.leadNote.mythLines : [],
+      checkList: Array.isArray(m.leadNote.checkList) ? m.leadNote.checkList : []
+    };
+    const res = auditNoteThreeStage(candidate);
+    if (!res.passed) {
+      throw new Error(`[표 대표 건강 글 3단계 자가 검수 실패 - ${m.shortLabel || m.id}] ${res.errors.join(' | ')}`);
+    }
+    FLATTENED_SEED_NOTES.push({
+      id: `${m.id}-table-lead`,
+      partId: m.id,
+      partLabel: candidate.partLabel,
+      keyword: candidate.keyword,
+      publishDate: '',
+      pinnedTop: true,
+      title: candidate.questionTitle,
+      empathy: candidate.empathyLines,
+      truth: candidate.truthLines,
+      myth: candidate.mythLines,
+      check: candidate.checkList
     });
   }
 }
@@ -58,23 +120,18 @@ if (!sysAudit.passed) {
   throw new Error(`[Anatomy Systems Audit Failed] ${sysAudit.errors.join(' | ')}`);
 }
 
-const COMPACT_SHORT_LABELS = {
-  knee: '성장 · 성조숙증',
-  cervical: '일자목 · 경추 추나',
-  lumbar: '허리 디스크 · 골반',
-  gongjindan: '황제 공진단',
-  syncope: '미주신경성 실신',
-  digest: '신경성 위염 · 담적',
-  gut: '과민성 장 · 해독',
-  uterus: '자궁 · 난소 · 착상',
-  prostate: '전립선 · 배뇨 기능'
-};
-
 function buildBodyExplorerHtml() {
-  const rightCompactButtonsHtml = CLINIC_EXPLORE_MENUS.map((m, idx) => {
+  const headerCfg = MENU_CONFIG.header || {};
+  const rightHeaderTitle = headerCfg.title || '바른한의원 진료 살펴보기';
+  const rightHeaderSubInitial = headerCfg.subMode === 'custom'
+    ? (headerCfg.customSubText || '')
+    : '2일 주기 신규 글 업데이트';
+  const rightHeaderSubStyle = headerCfg.subMode === 'hidden' ? ' style="display:none;"' : '';
+
+  const rightCompactButtonsHtml = ENABLED_MENUS.map((m, idx) => {
     const num = String(idx + 1).padStart(2, '0');
-    const shortTitle = COMPACT_SHORT_LABELS[m.id] || m.partLabel;
-    return `<button type="button" class="vh-part-chip" data-part="${m.id}" title="${m.menuTitle} (${m.partLabel})"><span class="rcm-num">${num}</span><span class="rcm-label">${shortTitle}</span><span class="rcm-arrow">&rsaquo;</span></button>`;
+    const shortTitle = m.shortLabel || m.partLabel || m.id;
+    return `<button type="button" class="vh-part-chip" data-part="${escAttrServer(m.id)}" title="${escAttrServer(m.menuTitle || shortTitle)} (${escAttrServer(m.partLabel || shortTitle)})"><span class="rcm-num">${num}</span><span class="rcm-label">${escAttrServer(shortTitle)}</span><span class="rcm-arrow">&rsaquo;</span></button>`;
   }).join('\n      ');
 
   const bottomSystemButtonsHtml = ANATOMY_SYSTEM_TABS.map(sys =>
@@ -1343,11 +1400,11 @@ function buildBodyExplorerHtml() {
     <span class="stage-top-text" id="stage-active-part-label">하단 [근육·신경·관절·혈관] 또는 우측 진료 살펴보기 메뉴를 선택해 보세요</span>
   </div>
 
-  <!-- COMPACT RIGHT-SIDE VERTICAL MENU (우측 소형 나열 · WHITE · BLACK · GOLD) -->
-  <aside class="right-compact-menu" id="vh-part-quicknav" aria-label="바른한의원 진료 살펴보기 우측 소형 메뉴">
+  <!-- COMPACT RIGHT-SIDE VERTICAL MENU (우측 소형 나열 · WHITE · BLACK · GOLD · EDITABLE CONFIG DRIVEN) -->
+  <aside class="right-compact-menu" id="vh-part-quicknav" aria-label="${escAttrServer(rightHeaderTitle)} 우측 소형 메뉴">
     <div class="rcm-head">
-      <span class="rcm-head-title">바른한의원 진료 살펴보기</span>
-      <span class="rcm-head-sub" id="rcm-cycle-sub">2일 주기 신규 글 업데이트</span>
+      <span class="rcm-head-title" id="rcm-head-title">${escAttrServer(rightHeaderTitle)}</span>
+      <span class="rcm-head-sub" id="rcm-cycle-sub"${rightHeaderSubStyle}>${escAttrServer(rightHeaderSubInitial)}</span>
     </div>
     ${rightCompactButtonsHtml}
   </aside>
@@ -1383,7 +1440,8 @@ function buildBodyExplorerHtml() {
   <script>
   (async function() {
     const BODY_PARTS_DATA = ${JSON.stringify(BODY_PARTS)};
-    const CLINIC_MENUS = ${JSON.stringify(CLINIC_EXPLORE_MENUS)};
+    const CLINIC_HEADER_CFG = ${JSON.stringify(MENU_CONFIG.header || {})};
+    const CLINIC_MENUS = ${JSON.stringify(ENABLED_MENUS)};
     const SEED_NOTES = ${JSON.stringify(FLATTENED_SEED_NOTES)};
     const FORBIDDEN_PROMO = ${JSON.stringify(FORBIDDEN_PROMO_WORDS)};
     const FORBIDDEN_JARGON = ${JSON.stringify(FORBIDDEN_JARGON_WORDS)};
@@ -1396,18 +1454,6 @@ function buildBodyExplorerHtml() {
       window.location.replace('ask-doctor.html?tab=blog');
       return;
     }
-
-    const PART_CAMERA_PRESETS = {
-      knee:      { pos3D: [ 0.16, 1.20,  0.05], camPos: [ 0.14, 1.22, 2.05], camTarget: [0.06, 1.18, -0.06] },
-      cervical:  { pos3D: [-0.06, 3.92,  0.04], camPos: [ 0.20, 3.90, 1.85], camTarget: [0.00, 3.86, -0.02] },
-      lumbar:    { pos3D: [ 0.08, 2.75,  0.04], camPos: [-0.22, 2.62, 2.15], camTarget: [0.00, 2.58, -0.04] },
-      gongjindan:{ pos3D: [ 0.06, 3.62,  0.06], camPos: [ 0.16, 3.88, 2.40], camTarget: [0.00, 3.84,  0.00] },
-      syncope:   { pos3D: [ 0.08, 4.28,  0.04], camPos: [ 0.00, 2.28, 5.65], camTarget: [0.00, 2.26,  0.00] },
-      digest:    { pos3D: [ 0.08, 3.22,  0.08], camPos: [-0.16, 3.20, 2.04], camTarget: [0.00, 3.16,  0.02] },
-      gut:       { pos3D: [-0.08, 3.06,  0.08], camPos: [ 0.16, 3.08, 2.08], camTarget: [0.00, 3.06,  0.02] },
-      uterus:    { pos3D: [-0.10, 2.44,  0.05], camPos: [ 0.00, 2.44, 1.75], camTarget: [0.00, 2.42,  0.00] },
-      prostate:  { pos3D: [ 0.10, 2.26,  0.05], camPos: [ 0.00, 2.28, 1.72], camTarget: [0.00, 2.26,  0.00] }
-    };
 
     function getTodayKst() {
       try {
@@ -1427,7 +1473,20 @@ function buildBodyExplorerHtml() {
     }
 
     function fmtDotDate(d) {
-      return String(d || '').replace(/-/g, '.');
+      return String(d || todayKst || '').replace(/-/g, '.');
+    }
+
+    function applyRightHeaderSubText() {
+      if (!cycleSubEl) return;
+      if (CLINIC_HEADER_CFG && CLINIC_HEADER_CFG.subMode === 'hidden') {
+        cycleSubEl.style.display = 'none';
+      } else if (CLINIC_HEADER_CFG && CLINIC_HEADER_CFG.subMode === 'custom') {
+        cycleSubEl.style.display = '';
+        cycleSubEl.textContent = CLINIC_HEADER_CFG.customSubText || '';
+      } else {
+        cycleSubEl.style.display = '';
+        cycleSubEl.textContent = '2일 주기 · 다음 ' + fmtDotDate(nextUpdateKst);
+      }
     }
 
     function escHtml(str) {
@@ -1454,7 +1513,7 @@ function buildBodyExplorerHtml() {
     let nextUpdateKst = computeNextUpdateKst(todayKst);
     let dynamicNotes = [];
     let isPopupOpen = false;
-    let currentPartId = earlyParams.get('part') || 'knee';
+    let currentPartId = earlyParams.get('part') || (CLINIC_MENUS[0] ? CLINIC_MENUS[0].id : 'knee');
     let currentMenuTab = 0; // 0: 오늘의 건강 글, 1: 무엇이든 물어보세요, 2: 더 궁금하세요?
     let archiveScope = 'part';
     let selectedArchiveNoteId = null;
@@ -1482,10 +1541,6 @@ function buildBodyExplorerHtml() {
       });
     }
 
-    function getPartById(id) {
-      return BODY_PARTS_DATA.find(p => p.id === id) || BODY_PARTS_DATA[0];
-    }
-
     function getMenuMeta(id) {
       return CLINIC_MENUS.find(m => m.id === id) || CLINIC_MENUS[0];
     }
@@ -1496,12 +1551,14 @@ function buildBodyExplorerHtml() {
 
     function normalizeDynamicNote(raw) {
       if (!raw || typeof raw !== 'object') return null;
+      const m = CLINIC_MENUS.find(x => x.id === raw.partId);
       return {
         id: raw.id,
         partId: raw.partId || 'knee',
-        partLabel: raw.partLabel || '무릎 성장판',
+        partLabel: (m && m.partLabel) || raw.partLabel || '무릎 성장판',
         keyword: raw.keyword || '',
         publishDate: raw.publishDate || todayKst,
+        pinnedTop: Boolean(raw.pinnedTop),
         title: raw.title || raw.questionTitle || '',
         empathy: raw.empathy || raw.empathyLines || [],
         truth: raw.truth || raw.truthLines || [],
@@ -1520,12 +1577,15 @@ function buildBodyExplorerHtml() {
         if (n && passThreeStageGate(n)) mergedMap.set(n.id, n);
       }
       const list = Array.from(mergedMap.values()).filter(n => {
-        if (n.publishDate && n.publishDate > todayKst) return false;
+        if (!n.pinnedTop && n.publishDate && n.publishDate > todayKst) return false;
         if (partFilter && partFilter !== 'all' && n.partId !== partFilter) return false;
         return true;
       });
       list.sort((a, b) => {
-        if (b.publishDate !== a.publishDate) return b.publishDate.localeCompare(a.publishDate);
+        if (Boolean(b.pinnedTop) !== Boolean(a.pinnedTop)) return b.pinnedTop ? 1 : -1;
+        const da = a.publishDate || todayKst;
+        const db = b.publishDate || todayKst;
+        if (db !== da) return db.localeCompare(da);
         return String(b.id).localeCompare(String(a.id));
       });
       return list;
@@ -1632,9 +1692,7 @@ function buildBodyExplorerHtml() {
       if (stageLabelEl) {
         stageLabelEl.textContent = '하단 [근육·신경·관절·혈관] 또는 우측 진료 살펴보기 메뉴를 선택해 보세요';
       }
-      if (cycleSubEl) {
-        cycleSubEl.textContent = '2일 주기 · 다음 ' + fmtDotDate(nextUpdateKst);
-      }
+      applyRightHeaderSubText();
       applyCameraFraming();
     }
 
@@ -1728,7 +1786,9 @@ function buildBodyExplorerHtml() {
         const data = await res.json();
         if (data && Array.isArray(data.items)) {
           qnaCacheByPart[partId] = data.items;
-          if (isPopupOpen && !currentSystemMode && currentMenuTab === 1 && currentPartId === partId) {
+          const curMeta = getMenuMeta(currentPartId);
+          const curQnaKey = (curMeta && curMeta.qnaPartId) || currentPartId;
+          if (isPopupOpen && !currentSystemMode && currentMenuTab === 1 && curQnaKey === partId) {
             renderPopupPanel();
           }
         }
@@ -1743,6 +1803,7 @@ function buildBodyExplorerHtml() {
       document.body.classList.add('popup-open-mode');
       if (popupDrawer) popupDrawer.classList.add('open');
       const menuMeta = getMenuMeta(currentPartId);
+      const qnaPartKey = menuMeta.qnaPartId || currentPartId;
       const partNotes = getPublishedNotes(currentPartId);
       const allNotes = getPublishedNotes('all');
       const latestNote = partNotes[0] || allNotes[0];
@@ -1753,11 +1814,9 @@ function buildBodyExplorerHtml() {
       if (stageLabelEl) {
         stageLabelEl.textContent = '[' + menuMeta.partLabel + '] · ' + menuMeta.menuTitle;
       }
-      if (cycleSubEl) {
-        cycleSubEl.textContent = '2일 주기 · 다음 ' + fmtDotDate(nextUpdateKst);
-      }
+      applyRightHeaderSubText();
       if (topAskLink) {
-        topAskLink.setAttribute('href', 'ask-doctor.html?tab=qna&part=' + currentPartId);
+        topAskLink.setAttribute('href', 'ask-doctor.html?tab=qna&part=' + encodeURIComponent(qnaPartKey));
       }
       applyCameraFraming();
 
@@ -1768,9 +1827,9 @@ function buildBodyExplorerHtml() {
           ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기')
           : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>';
       } else if (currentMenuTab === 1) {
-        const items = qnaCacheByPart[currentPartId];
+        const items = qnaCacheByPart[qnaPartKey];
         if (!items) {
-          loadQnaForPart(currentPartId);
+          loadQnaForPart(qnaPartKey);
         }
         const qnaListHtml = (items && items.length > 0)
           ? items.slice(0, 6).map(q =>
@@ -1795,7 +1854,7 @@ function buildBodyExplorerHtml() {
                 '<p style="font-size:0.8rem;color:#57534E;margin-top:3px;">작성자 본인과 의료진만 열람 가능한 비공개 질문 공간입니다.</p>' +
               '</div>' +
               '<div style="display:flex;align-items:center;gap:6px;">' +
-                '<a href="ask-doctor.html?tab=qna&part=' + currentPartId + '" class="qna-write-btn">1:1 질문 남기기 &rarr;</a>' +
+                '<a href="ask-doctor.html?tab=qna&part=' + encodeURIComponent(qnaPartKey) + '" class="qna-write-btn">1:1 질문 남기기 &rarr;</a>' +
                 '<button type="button" class="ptc-back-btn" onclick="window.closeInfoPopup()">✕ 닫기</button>' +
               '</div>' +
             '</div>' +
@@ -2002,35 +2061,45 @@ ${WEBGL_PART_A}
       currentSystemMode = null;
       currentSystemRegionId = 'all';
       syncBottomSystemButtons();
-      const part = getPartById(partId);
-      currentPartId = part.id;
+      const menuMeta = getMenuMeta(partId);
+      currentPartId = menuMeta ? menuMeta.id : partId;
       currentMenuTab = 0;
       archiveScope = 'part';
       selectedArchiveNoteId = null;
       renderPopupPanel();
 
-      if (part.id === 'uterus') {
+      if (menuMeta && menuMeta.autoGender === 'female') {
         window.setDonginGender('female');
-      } else if (part.id === 'prostate') {
+      } else if (menuMeta && menuMeta.autoGender === 'male') {
         window.setDonginGender('male');
       }
 
-      const preset = PART_CAMERA_PRESETS[part.id];
-      if (preset && shouldFlyCamera) {
-        isOverviewCamera = (part.id === 'syncope');
-        camGoalPos.set(...preset.camPos);
-        camGoalTarget.set(...preset.camTarget);
+      if (shouldFlyCamera && menuMeta && Array.isArray(menuMeta.camPos) && Array.isArray(menuMeta.camTarget)) {
+        isOverviewCamera = Boolean(menuMeta.isOverview);
+        camGoalPos.set(menuMeta.camPos[0], menuMeta.camPos[1], menuMeta.camPos[2]);
+        camGoalTarget.set(menuMeta.camTarget[0], menuMeta.camTarget[1], menuMeta.camTarget[2]);
         isCameraFlying = true;
       }
 
       majorHotspotNodes.forEach(h => {
-        h.dom.classList.toggle('active', h.id === part.id);
+        h.dom.classList.toggle('active', h.id === currentPartId);
       });
 
       updateAnatomyHighlight();
     };
 
 ${WEBGL_PART_B}
+
+    // Live Preview Bridge for Clinic Menu Editable Table Studio (clinic-menu-editor.html)
+    window.addEventListener('message', (ev) => {
+      const msg = ev && ev.data;
+      if (!msg || typeof msg !== 'object') return;
+      if (msg.type === 'BAREUN_PREVIEW_SELECT_PART' && msg.partId) {
+        window.selectBodyPart(msg.partId, true);
+      } else if (msg.type === 'BAREUN_PREVIEW_RESET') {
+        window.closeInfoPopup();
+      }
+    });
 
     const urlSys = earlyParams.get('system');
     const urlPart = earlyParams.get('part');
@@ -2055,4 +2124,4 @@ ${WEBGL_PART_B}
 const outPath = path.join(__dirname, 'body-explorer.html');
 const html = buildBodyExplorerHtml();
 fs.writeFileSync(outPath, html, 'utf8');
-console.log('✅ Generated Fullscreen 3D Body Explorer (4-System Motions + Head-to-Toe Anatomy v5.6):', outPath, '(' + html.length + ' bytes)');
+console.log('✅ Generated Fullscreen 3D Body Explorer (Editable Menu Table Config + 4-System Motions v5.7):', outPath, '(' + html.length + ' bytes)');

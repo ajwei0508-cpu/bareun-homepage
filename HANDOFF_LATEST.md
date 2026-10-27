@@ -1,11 +1,25 @@
-# 📋 바른한의원 풀스크린 3D 인체모형(하단 근육·신경·관절·혈관 4대 계통 실시간 모션 & 머리~발가락 해부학 핵심 요약 + 우측 진료 살펴보기) — 작업 인수인계서 (HANDOFF_LATEST)
+# 📋 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 직접 수정·즉시 제작 표 스튜디오 + 하단 근육·신경·관절·혈관 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-10-27 v5.6 (① **하단 4대 해부학 계통 메뉴(`[근육 | 신경 | 관절 | 혈관]`) 신설 (`build-body-explorer.js`, `body-3d-anatomy-systems-data.js`)** · ② **선택 계통별 3D 인체 해부 시각화 및 동기화된 실시간 인체 모션(`body-3d-webgl-engine.js`)** — 근육(에코르셰 근섬유 + 팔 굽힘·흉곽 호흡·하체 수축 모션), 신경(뇌·척수·말초신경망 + 신경 전도 파동 & 경추·사지 반사 모션), 관절(`Skeleton.glb` 전신 9대 골격 + `Joints.glb` 전신 연골·디스크 + 관절 가동범위 ROM 모션), 혈관(박동하는 심장 + `Vascular.glb` 동정맥 혈류 파동 & 제2의 심장 종아리 펌프 모션) · ③ **해부학 교재 기준 머리(`01 머리·얼굴·턱`)에서 발가락(`12 발목·발바닥·발가락`)까지 12구간 × 4계통 = 48개 항목 한글 핵심 요약(`1. 기능·역할 / 2. 통증 / 3. 운동법`) 수록 및 카페24 실서버 배포 완료**)
+> **최종 업데이트**: 2026-10-27 v5.7 (① **우측 『바른한의원 진료 살펴보기』 메뉴 상세 구성표 직접 수정 · 즉시 제작 스튜디오 구축 (`homepage/clinic-menu-editor.html` · `http://localhost:3000/clinic-menu-editor.html` + `clinic-explore-menu-config.json`)** · ② **100% 데이터 연동형 3D 빌드 & 실서버 초고속 배포 파이프라인 (`build-body-explorer.js`, `body-3d-webgl-engine.js`, `serve.js` `/api/clinic-menu-config`, `deploy-body-explorer-fast.js`)** — 표에서 순서·노출·우측 버튼명·팝업 `[부위명]`·메뉴 타이틀·3D 활성 장기·3D 활성 골격/디스크·3D 카메라 줌인 프리셋·체형 자동전환·타깃 독자·대표 건강 글을 수정하면 클릭 한 번에 `body-explorer.html`, `wordpress-body-explorer.html`, 카페24 실서버(`bareunhaniwon.com/body-explorer/`)까지 즉시 자동 반영!)
 > **작성자**: 하이엔드 홈페이지 디렉터 **아트 (Art)**
 
 ---
 
-## 💎 000000000. 최신 완료 작업 요약 (2026-10-27 v5.6 · 하단 근육·신경·관절·혈관 4대 계통 모션 & 머리~발가락 해부학 핵심 요약 탑재)
+## 💎 0000000000. 최신 완료 작업 요약 (2026-10-27 v5.7 · 우측 『바른한의원 진료 살펴보기』 메뉴 상세 구성표 직접 수정 & 즉시 제작 스튜디오 구축)
+
+1. **단일 원본(Single Source of Truth) 메뉴 설정 JSON 분리 (`homepage/clinic-explore-menu-config.json` & `.default.json`)**:
+   - 기존 코드 내부에 고정되어 있던 우측 9개 진료 살펴보기 메뉴의 **헤더명 · 순서(`01`~`N`) · 노출 여부(`enabled`) · 파트 ID · 우측 버튼명(`shortLabel`) · 팝업 골드 태그(`[부위명]`) · 상단 상태바 타이틀(`menuTitle`) · 3D 내부 장기 13종 선택(`organs`) · 3D 골격 9종 + 척추디스크/반투명 옵션(`bones`, `showDiscs`, `supportBoneOpacity`) · 13종 3D 카메라 줌인 & 핫스팟 프리셋(`cameraPreset`) · 성별 자동 전환(`autoGender`) · 타깃 독자 · 대표 건강 글(`leadNote`)** 전체를 `clinic-explore-menu-config.json` 하나로 통합 연동.
+2. **웹 브라우저 실시간 편집 표 + 우측 3D 분할 미리보기 스튜디오 (`homepage/clinic-menu-editor.html`)**:
+   - 접속 주소: `http://localhost:3000/clinic-menu-editor.html` (`node serve.js` 실행 시 자동 활성화).
+   - 엑셀/노션처럼 표의 모든 셀을 즉시 클릭·수정하고, 3D 장기 칩과 3D 골격·디스크 칩을 원클릭으로 다중 ON/OFF 토글하며, `+ 메뉴 행 추가` / `▲▼ 순서 변경` / `복제` / `삭제` / `[✏️ 대표 건강 글 열람·수정]`(실시간 3단계 의료법·일상어 검수 내장)까지 한 화면에서 수행.
+   - 상단 **`[⚡ 표 수정대로 즉시 제작 (로컬 3D 반영)]`** 클릭 시 `/api/clinic-menu-config`가 1초 만에 `body-explorer.html` 및 `wordpress-body-explorer.html`을 자동 제작하고 우측 실시간 3D 인체모형 미리보기 창을 즉시 갱신.
+   - 상단 **`[🚀 카페24 실서버 즉시 배포]`** 클릭 시 `deploy-body-explorer-fast.js`가 작동하여 `https://www.bareunhaniwon.com/body-explorer/` 실서버 페이지 업데이트 및 WP Super Cache 초기화까지 원클릭으로 완료.
+3. **Antigravity 사이드 패널용 인터랙티브 수정 표 위젯 병행 제공 (`clinic_menu_editor_table.html`)**:
+   - IDE 아티팩트 패널에서도 즉시 표를 수정·복사·빌드 요청할 수 있도록 인터랙티브 테이블 아티팩트를 함께 제공.
+
+---
+
+## 💎 000000000. 직전 완료 작업 요약 (2026-10-27 v5.6 · 하단 근육·신경·관절·혈관 4대 계통 모션 & 머리~발가락 해부학 핵심 요약 탑재)
 
 1. **하단 4대 인체 계통 메뉴 추가 (`[근육 | 신경 | 관절 | 혈관]` — `homepage/build-body-explorer.js`)**:
    - 풀스크린 3D 스테이지 하단 컨트롤 바(`.stage-bottom-bar`)에 화이트·옵시디언 블랙·샴페인 골드 배색으로 **`근육` · `신경` · `관절` · `혈관`** 4개 계통 버튼을 추가 배치 (`[남성 체형 | 여성 체형 | 근육 · 신경 · 관절 · 혈관 | ↺ 전체 보기]`).

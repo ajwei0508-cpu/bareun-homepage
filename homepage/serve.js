@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
+const { execFileSync, execFile } = require('child_process');
 const { handleBareunApi } = require('./local-bareun-api.js');
 
 const PORT = 3000;
@@ -128,6 +129,136 @@ const server = http.createServer((req, res) => {
   }
 
   let reqPath = req.url.split('?')[0];
+
+  // API Endpoint: Editable Clinic Explore Menu Table Studio (Read / Instant Build / Fast Cafe24 Deploy / Reset)
+  if (reqPath === '/api/clinic-menu-config') {
+    const cfgPath = path.join(__dirname, 'clinic-explore-menu-config.json');
+    const defPath = path.join(__dirname, 'clinic-explore-menu-config.default.json');
+
+    if (req.method === 'GET') {
+      try {
+        const raw = fs.existsSync(cfgPath)
+          ? fs.readFileSync(cfgPath, 'utf8')
+          : fs.readFileSync(defPath, 'utf8');
+        const config = JSON.parse(raw);
+        const { FORBIDDEN_PROMO_WORDS, FORBIDDEN_JARGON_WORDS } = require('./body-3d-auto-notes-data.js');
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        });
+        res.end(JSON.stringify({
+          ok: true,
+          config,
+          forbiddenPromo: FORBIDDEN_PROMO_WORDS,
+          forbiddenJargon: FORBIDDEN_JARGON_WORDS
+        }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk.toString(); });
+      req.on('end', () => {
+        const prevBackup = fs.existsSync(cfgPath) ? fs.readFileSync(cfgPath, 'utf8') : null;
+        try {
+          const payload = JSON.parse(body || '{}');
+          const action = payload.action || 'save_build';
+
+          if (action === 'reset_default') {
+            if (!fs.existsSync(defPath)) {
+              throw new Error('기본 설정 백업 파일(clinic-explore-menu-config.default.json)이 없습니다.');
+            }
+            const defRaw = fs.readFileSync(defPath, 'utf8');
+            fs.writeFileSync(cfgPath, defRaw, 'utf8');
+            execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 20000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 25000 });
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({
+              ok: true,
+              config: JSON.parse(defRaw),
+              message: '초기 9개 메뉴 상세 구성표 기본값으로 복원하고 3D 페이지를 다시 제작했습니다.'
+            }));
+            return;
+          }
+
+          const nextCfg = payload.config;
+          if (!nextCfg || !Array.isArray(nextCfg.items) || nextCfg.items.length === 0) {
+            throw new Error('메뉴 항목이 최소 1개 이상 필요합니다.');
+          }
+          const seenIds = new Set();
+          for (const item of nextCfg.items) {
+            const cleanId = String(item.id || '').trim().replace(/[^a-zA-Z0-9_-]/g, '');
+            if (!cleanId) throw new Error('유효하지 않은 파트 ID가 있습니다. 영문 소문자/숫자로 지정해 주세요.');
+            if (seenIds.has(cleanId)) throw new Error('중복된 파트 ID가 있습니다: ' + cleanId);
+            seenIds.add(cleanId);
+            item.id = cleanId;
+          }
+          nextCfg.updatedAt = new Date().toISOString();
+          fs.writeFileSync(cfgPath, JSON.stringify(nextCfg, null, 2) + '\n', 'utf8');
+
+          // Run 3D Body Explorer build + WordPress standalone bundle
+          execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 20000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 25000 });
+
+          const enabledCount = nextCfg.items.filter(x => x.enabled !== false).length;
+
+          if (action === 'deploy_cafe24') {
+            execFile(
+              process.execPath,
+              [path.join(__dirname, 'deploy-body-explorer-fast.js')],
+              { cwd: __dirname, timeout: 95000 },
+              (depErr, stdout, stderr) => {
+                if (depErr) {
+                  res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+                  res.end(JSON.stringify({
+                    ok: false,
+                    builtLocally: true,
+                    error: '로컬 제작은 완료되었으나 카페24 실서버 배포 중 오류가 발생했습니다: ' + (stderr || depErr.message)
+                  }));
+                  return;
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+                res.end(JSON.stringify({
+                  ok: true,
+                  deployed: true,
+                  enabledCount,
+                  totalCount: nextCfg.items.length,
+                  liveUrl: 'https://www.bareunhaniwon.com/body-explorer/',
+                  localUrl: 'http://localhost:3000/body-explorer.html',
+                  config: nextCfg,
+                  message: '표 수정 내용대로 로컬 3D 제작 + 워드프레스 번들 + 카페24 실서버(https://www.bareunhaniwon.com/body-explorer/) 즉시 반영 완료!'
+                }));
+              }
+            );
+            return;
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            deployed: false,
+            enabledCount,
+            totalCount: nextCfg.items.length,
+            localUrl: 'http://localhost:3000/body-explorer.html',
+            wpFile: 'wordpress-body-explorer.html',
+            config: nextCfg,
+            message: `표에서 수정한 대로 우측 메뉴(${enabledCount}개 활성)가 3D 인체모형 및 워드프레스 파일에 즉시 제작·반영되었습니다!`
+          }));
+        } catch (err) {
+          if (prevBackup !== null) {
+            try { fs.writeFileSync(cfgPath, prevBackup, 'utf8'); } catch (e) {}
+          }
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
 
   // API Endpoint: Kakao Alimtalk Dispatch & Booking Recorder
   if (reqPath === '/api/send-alimtalk' && req.method === 'POST') {
@@ -636,7 +767,11 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
         res.end(`Server Error: ${err.code}`);
       }
     } else {
-      res.writeHead(200, { 'Content-Type': contentType });
+      const headers = { 'Content-Type': contentType };
+      if (ext === '.html' || ext === '.json') {
+        headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
+      }
+      res.writeHead(200, headers);
       res.end(content);
     }
   });
@@ -645,7 +780,9 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
 server.listen(PORT, () => {
   console.log(`✨ Bareun Main/After 3D Server running at: http://localhost:${PORT}`);
   console.log(`   - 3D Cinema (After): http://localhost:${PORT}/story-3d.html`);
-  console.log(`   - Before/After Compare Studio: http://localhost:${PORT}/compare.html`);
+  console.log(`   - 3D Body Explorer:  http://localhost:${PORT}/body-explorer.html`);
+  console.log(`   - 3D Menu Table Builder Studio: http://localhost:${PORT}/clinic-menu-editor.html`);
+  console.log(`   - Before/After Compare Studio:  http://localhost:${PORT}/compare.html`);
 });
 
 // Companion Before Comparison Server on Port 3001 (auto-started together with serve.js)
