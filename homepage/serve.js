@@ -493,9 +493,10 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     reqPath = '/ask-doctor.html';
   }
 
-  if (reqPath.startsWith('/wp-json/bareun/v1/')) {
+  if (reqPath.startsWith('/wp-json/bareun/v1/') || reqPath.startsWith('/api/bareun/v1/')) {
+    const normalizedApiPath = reqPath.replace(/^\/api\/bareun\/v1\//, '/wp-json/bareun/v1/');
     const urlObj = new URL(req.url || '/', 'http://localhost:' + PORT);
-    handleBareunApi(req, res, reqPath, urlObj);
+    handleBareunApi(req, res, normalizedApiPath, urlObj);
     return;
   }
 

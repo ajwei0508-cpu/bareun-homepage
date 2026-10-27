@@ -10,17 +10,40 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Bareun_Member_Private_QnA_V5_Plugin {
+if (!class_exists('Bareun_Member_Private_QnA_V6_Plugin')) :
+class Bareun_Member_Private_QnA_V6_Plugin {
     const TABLE_SLUG       = 'bareun_private_qna';
     const VISITS_SLUG      = 'bareun_visit_logs';
     const OPT_SEEDED       = 'bareun_private_qna_seeded_v1';
     const OPT_VISIT_SEEDED = 'bareun_visit_stats_seeded_v2';
     const OPT_VISIT_BASE   = 'bareun_visit_base_count_v2';
     const OPT_OAUTH        = 'bareun_social_oauth_config_v1';
+    const OPT_BODY_NOTES   = 'bareun_body_3d_notes_v1';
+    const OPT_NOTES_CFG    = 'bareun_body_3d_notes_cfg_v1';
+    const CRON_HOOK_NOTES  = 'bareun_cron_2day_body_notes';
 
     public static function init() {
+        add_filter('cron_schedules', array(__CLASS__, 'register_two_day_cron_schedule'));
         add_action('init', array(__CLASS__, 'maybe_ensure_schema'));
+        add_action('init', array(__CLASS__, 'maybe_schedule_body_notes_cron'));
+        add_action(self::CRON_HOOK_NOTES, array(__CLASS__, 'run_scheduled_two_day_note_generation'));
         add_action('rest_api_init', array(__CLASS__, 'register_routes'));
+    }
+
+    public static function register_two_day_cron_schedule($schedules) {
+        if (!isset($schedules['bareun_every_two_days'])) {
+            $schedules['bareun_every_two_days'] = array(
+                'interval' => 172800,
+                'display'  => 'Every 2 Days (Bareun 3D Body Popup Auto-Note)'
+            );
+        }
+        return $schedules;
+    }
+
+    public static function maybe_schedule_body_notes_cron() {
+        if (!wp_next_scheduled(self::CRON_HOOK_NOTES)) {
+            wp_schedule_event(time() + 3600, 'bareun_every_two_days', self::CRON_HOOK_NOTES);
+        }
     }
 
     public static function table_name() {
@@ -511,6 +534,18 @@ class Bareun_Member_Private_QnA_V5_Plugin {
             'methods'             => 'POST',
             'callback'            => array(__CLASS__, 'handle_adjust_visits'),
             'permission_callback' => '__return_true'
+        ));
+        register_rest_route('bareun/v1', '/body-notes', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array(__CLASS__, 'handle_get_body_notes'),
+                'permission_callback' => '__return_true'
+            ),
+            array(
+                'methods'             => 'POST',
+                'callback'            => array(__CLASS__, 'handle_post_body_notes'),
+                'permission_callback' => '__return_true'
+            )
         ));
     }
 
@@ -1152,6 +1187,327 @@ class Bareun_Member_Private_QnA_V5_Plugin {
         }
         return new \WP_REST_Response(self::build_visit_summary(true), 200);
     }
-}
 
-Bareun_Member_Private_QnA_V5_Plugin::init();
+    private static function get_body_part_meta_list() {
+        return array(
+            array('partId' => 'knee',       'partLabel' => '무릎 성장판',      'targetReader' => '초등학생 자녀를 둔 학부모',   'themes' => array('소아 비만', '성조숙증 예방과 야식', '성장호르몬과 밤중 입호흡', '줄넘기 운동과 성장통 구별')),
+            array('partId' => 'cervical',   'partLabel' => '뒷목 · 두피 혈관', 'targetReader' => '머리카락이 가늘어진 직장인',  'themes' => array('두피 열감과 정수리 탈모', '거북목과 뒷목 뻐근함', '저녁 머리 감기와 수면 재생')),
+            array('partId' => 'lumbar',     'partLabel' => '허리 · 골반 마디', 'targetReader' => '오래 앉아 일하는 직장인',     'themes' => array('허리 통증과 다리 저림', '다리 꼬기와 골반 틀어짐', '아침 기상 직후 급성 허리 뻐근함')),
+            array('partId' => 'gongjindan', 'partLabel' => '심장 · 뇌 활력축', 'targetReader' => '만성 피로에 지친 현대인',     'themes' => array('자도 안 풀리는 만성 피로', '오후 멍함과 집중력 저하', '수험생 · 직장인 체력 고갈')),
+            array('partId' => 'syncope',    'partLabel' => '자율신경 · 뇌혈류','targetReader' => '어지럼과 불면을 겪는 성인',   'themes' => array('갑자기 눈앞이 아찔한 어지럼증', '새벽에 자꾸 깨는 얕은 잠', '관자놀이 지끈거리는 편두통')),
+            array('partId' => 'digest',     'partLabel' => '위장 · 식도 근육', 'targetReader' => '식후 더부룩함이 잦은 성인',   'themes' => array('검사상 정상인데 막히는 소화불량', '목 이물감과 신물 역류', '급하게 먹는 습관과 배 가스')),
+            array('partId' => 'gut',        'partLabel' => '복부 · 대사 순환', 'targetReader' => '체중 감량 정체기를 겪는 성인','themes' => array('굶어도 안 빠지는 나잇살', '저녁 가짜 배고픔과 단 음식 유혹', '저녁마다 붓는 종아리 부종')),
+            array('partId' => 'uterus',     'partLabel' => '아랫배 · 골반 순환','targetReader' => '생리통과 임신을 준비하는 여성','themes' => array('손발 · 아랫배 냉증과 생리통', '임신 준비기 골반 순환과 수면', '출산 후 손목 · 발목 시림')),
+            array('partId' => 'prostate',   'partLabel' => '방광 · 골반 바닥근','targetReader' => '야간 소변으로 잠을 설치는 중장년','themes' => array('새벽 잠 깨우는 야간뇨', '오래 앉은 뒤 묵직한 잔뇨감', '기침할 때 새는 민감한 방광'))
+        );
+    }
+
+    public static function validate_body_note_three_stage($note) {
+        $errors = array();
+        if (!is_array($note)) {
+            return array('passed' => false, 'errors' => array('노트 데이터 형식이 올바르지 않습니다.'));
+        }
+        $title   = trim((string) ($note['title'] ?? ''));
+        $keyword = trim((string) ($note['keyword'] ?? ''));
+        $empathy = isset($note['empathy']) && is_array($note['empathy']) ? array_values($note['empathy']) : array();
+        $truth   = isset($note['truth']) && is_array($note['truth']) ? array_values($note['truth']) : array();
+        $myth    = isset($note['myth']) && is_array($note['myth']) ? array_values($note['myth']) : array();
+        $check   = isset($note['check']) && is_array($note['check']) ? array_values($note['check']) : array();
+
+        if ($title === '' || strpos($title, '?') === false) {
+            $errors[] = '[1차·형식] 제목은 일상적인 질문형 문장(?)이어야 합니다.';
+        }
+        if (count($empathy) !== 2 || count($truth) !== 2 || count($myth) !== 2 || count($check) !== 2) {
+            $errors[] = '[1차·형식] 1~4번 항목은 각각 정확히 2줄(관찰 기준 2가지)이어야 합니다.';
+        }
+
+        $joined = implode(' ', array_merge(array($title), $empathy, $truth, $myth, $check));
+
+        // 2차 검수: 의료법 제56조 및 상업적 CTA 완전 배제
+        $forbidden_promo = array(
+            '완치', '100%', '최고', '최초', '유일', '특효', '무조건', '보장',
+            '예약', '내원', '방문해', '상담받', '문의하', '바른한의원', '원장',
+            '할인', '이벤트', '치료 프로그램', '처방받'
+        );
+        foreach ($forbidden_promo as $word) {
+            if (strpos($joined, $word) !== false) {
+                $errors[] = '[2차·의료법] 상업적·단정적 금지어 검출: ' . $word;
+            }
+        }
+
+        // 3차 검수: 어려운 전문 용어 순화 점검 및 핵심 키워드 자연 포함 확인
+        $forbidden_jargon = array(
+            '대퇴골', '골단판', '아로마타제', '추간판', '수핵', '후두하근',
+            '모유두', '나선동맥', '시상하부', '내장지방세포', '배뇨근', '장상피화생'
+        );
+        foreach ($forbidden_jargon as $jargon) {
+            if (strpos($joined, $jargon) !== false) {
+                $errors[] = '[3차·어휘순화] 미순화 전문 용어 검출: ' . $jargon;
+            }
+        }
+
+        if ($keyword === '' || strpos($joined, $keyword) === false) {
+            $errors[] = '[3차·키워드] 선정된 핵심 키워드가 본문 또는 제목에 자연스럽게 포함되어야 합니다.';
+        }
+
+        return array(
+            'passed' => empty($errors),
+            'errors' => $errors
+        );
+    }
+
+    public static function generate_body_note_via_gemini($part_id, $theme_override = '') {
+        $cfg = get_option(self::OPT_NOTES_CFG, array());
+        $api_key = is_array($cfg) ? trim((string) ($cfg['geminiApiKey'] ?? '')) : '';
+        if ($api_key === '') {
+            return array('ok' => false, 'message' => 'Gemini API 키가 설정되지 않았습니다.');
+        }
+
+        $meta_list = self::get_body_part_meta_list();
+        $selected  = $meta_list[0];
+        foreach ($meta_list as $m) {
+            if ($m['partId'] === $part_id) {
+                $selected = $m;
+                break;
+            }
+        }
+        $day_slot = (int) floor(current_time('timestamp') / 172800);
+        $theme = $theme_override !== '' ? $theme_override : $selected['themes'][$day_slot % count($selected['themes'])];
+
+        $base_prompt = "[역할 정의]\n"
+            . "너는 환자의 눈높이에서 일상 언어로 소통하는 한의사이자, 의학적 정확성을 엄격히 통제하는 수석 팩트체커야.\n"
+            . "의학적·학술적 팩트(소아내분비학, 소아정형학, 한방소아과학 및 관련 분과 논문 근거)를 기반으로 하되, 초보자도 1초 만에 이해할 수 있는 쉬운 일상 언어로 작성해야 해.\n\n"
+            . "[목적 및 환경]\n"
+            . "- 환경: 한의원 홈페이지 3D 인체 그래픽 '정보 팝업 패널'\n"
+            . "- 목적: 병원 홍보나 예약 유도(CTA)는 일절 배제하고, 환자가 유익한 건강 기준을 얻어가는 순수 정보형 콘텐츠 작성\n\n"
+            . "[입력 변수]\n"
+            . "- 클릭 부위: [" . $selected['partLabel'] . "]\n"
+            . "- 테마: [" . $theme . "]\n"
+            . "- 타깃 독자: " . $selected['targetReader'] . "\n\n"
+            . "[필수 반영 핵심 규칙]\n"
+            . "1. 제목(Hooking): 일상적인 질문형 문장(?)으로 시작할 것.\n"
+            . "2. 언어 순화: 해부학 전문 용어(대퇴골, 골단판, 아로마타제, 추간판, 수핵, 후두하근, 모유두, 나선동맥, 시상하부 등) 절대 사용 금지. 반드시 일상 언어(예: 성장 연골, 허벅지 뼈, 디스크 말랑 쿠션 등)로 순화.\n"
+            . "3. 학술 논문 팩트 매핑: 질환의 원리를 일상적인 비유로 쉽게 설명.\n"
+            . "4. 흔한 오해 바로잡기: 해당 테마에 맞는 통념 1가지를 명확히 짚어줄 것.\n"
+            . "5. 1분 홈 체크리스트: 집에서 오늘 밤 당장 확인 가능한 관찰 기준 2가지 제시.\n"
+            . "6. 홍보 금지: 내원 유도, 예약, 상담, 병원명, 원장, 완치, 100%, 최고 등 상업적·단정적 문구 절대 배제.\n"
+            . "7. 핵심 키워드 필수 포함: 조회수 높은 핵심 키워드 1개를 선정하여 문맥에 맞게 자연스럽게 1~2회 녹여낼 것.\n\n"
+            . "[출력 전 필수 수행: 3단계 연속 자가 검수]\n"
+            . "1차 의학 팩트 체크 → 2차 의료법 제56조 및 무홍보 점검 → 3차 맞춤법·일상어 순화 점검을 모두 통과한 최종본만 아래 순수 JSON 스키마로 출력해줘:\n"
+            . "{\"keyword\":\"핵심키워드\",\"title\":\"공감형 질문 타이틀?\",\"empathy\":[\"고민 대사 1줄\",\"고민 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"myth\":[\"통념 교정 1줄\",\"통념 교정 2줄\"],\"check\":[\"관찰 기준 1\",\"관찰 기준 2\"]}";
+
+        $feedback = '';
+        for ($attempt = 1; $attempt <= 3; $attempt++) {
+            $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . rawurlencode($api_key);
+            $body_payload = wp_json_encode(array(
+                'contents' => array(
+                    array('parts' => array(array('text' => $base_prompt . $feedback)))
+                ),
+                'generationConfig' => array(
+                    'responseMimeType' => 'application/json',
+                    'temperature'      => 0.35
+                )
+            ));
+            $res = wp_remote_post($url, array(
+                'headers' => array('Content-Type' => 'application/json'),
+                'body'    => $body_payload,
+                'timeout' => 25
+            ));
+            if (is_wp_error($res)) {
+                return array('ok' => false, 'message' => $res->get_error_message());
+            }
+            $raw_json = json_decode(wp_remote_retrieve_body($res), true);
+            $text_out = $raw_json['candidates'][0]['content']['parts'][0]['text'] ?? '';
+            $parsed   = json_decode($text_out, true);
+            if (!is_array($parsed)) {
+                $feedback = "\n\n[재검수 요청] 유효한 JSON 객체만 반환해 주세요.";
+                continue;
+            }
+            $today_kst = current_time('Y-m-d');
+            $candidate = array(
+                'id'           => $selected['partId'] . '-' . str_replace('-', '', $today_kst) . '-ai',
+                'partId'       => $selected['partId'],
+                'partLabel'    => $selected['partLabel'],
+                'theme'        => $theme,
+                'targetReader' => $selected['targetReader'],
+                'keyword'      => sanitize_text_field($parsed['keyword'] ?? $theme),
+                'publishDate'  => $today_kst,
+                'title'        => sanitize_text_field($parsed['title'] ?? ''),
+                'empathy'      => array_map('sanitize_text_field', array_slice((array) ($parsed['empathy'] ?? array()), 0, 2)),
+                'truth'        => array_map('sanitize_text_field', array_slice((array) ($parsed['truth'] ?? array()), 0, 2)),
+                'myth'         => array_map('sanitize_text_field', array_slice((array) ($parsed['myth'] ?? array()), 0, 2)),
+                'check'        => array_map('sanitize_text_field', array_slice((array) ($parsed['check'] ?? array()), 0, 2)),
+                'auditPassed'  => true,
+                'source'       => 'gemini-3stage-verified'
+            );
+            $check_res = self::validate_body_note_three_stage($candidate);
+            if ($check_res['passed']) {
+                return array('ok' => true, 'note' => $candidate);
+            }
+            $feedback = "\n\n[3단계 자가 검수 반려 사유 — 즉시 수정 후 재출력]: " . implode(' / ', $check_res['errors']);
+        }
+
+        return array('ok' => false, 'message' => '3단계 자가 검수 기준을 통과하지 못해 발행을 보류했습니다.');
+    }
+
+    public static function run_scheduled_two_day_note_generation() {
+        $cfg = get_option(self::OPT_NOTES_CFG, array());
+        if (!is_array($cfg) || empty($cfg['geminiApiKey'])) {
+            return;
+        }
+        $notes = get_option(self::OPT_BODY_NOTES, array());
+        if (!is_array($notes)) {
+            $notes = array();
+        }
+        $today_kst = current_time('Y-m-d');
+        $yesterday_kst = date('Y-m-d', current_time('timestamp') - 86400);
+        foreach ($notes as $n) {
+            if (!empty($n['publishDate']) && ($n['publishDate'] === $today_kst || $n['publishDate'] === $yesterday_kst)) {
+                return; // Already updated within 2-day window
+            }
+        }
+        $meta_list = self::get_body_part_meta_list();
+        $slot = (int) floor(current_time('timestamp') / 172800);
+        // Prioritize growth ('knee') frequently while rotating all 9 parts
+        $part_id = ($slot % 2 === 0) ? 'knee' : $meta_list[$slot % count($meta_list)]['partId'];
+        $gen = self::generate_body_note_via_gemini($part_id);
+        if (!empty($gen['ok']) && !empty($gen['note'])) {
+            array_unshift($notes, $gen['note']);
+            if (count($notes) > 300) {
+                $notes = array_slice($notes, 0, 300);
+            }
+            update_option(self::OPT_BODY_NOTES, $notes);
+        }
+    }
+
+    private static function compute_next_two_day_kst($today_kst) {
+        $anchor = strtotime('2026-10-23 00:00:00');
+        $cur    = strtotime($today_kst . ' 00:00:00');
+        if ($cur < $anchor) {
+            return '2026-10-23';
+        }
+        $diff_days = (int) floor(($cur - $anchor) / 86400);
+        $add_days  = ($diff_days % 2 === 0) ? 2 : 1;
+        return date('Y-m-d', $cur + ($add_days * 86400));
+    }
+
+    public static function handle_get_body_notes(\WP_REST_Request $request) {
+        self::send_nocache();
+        $today_kst = current_time('Y-m-d');
+        $part      = sanitize_key($request->get_param('part') ?? 'all');
+        $stored    = get_option(self::OPT_BODY_NOTES, array());
+        if (!is_array($stored)) {
+            $stored = array();
+        }
+        $published = array();
+        foreach ($stored as $n) {
+            if (!is_array($n)) continue;
+            $pdate = (string) ($n['publishDate'] ?? '');
+            if ($pdate !== '' && $pdate > $today_kst) continue;
+            if ($part !== '' && $part !== 'all' && ($n['partId'] ?? '') !== $part) continue;
+            $published[] = $n;
+        }
+        $cfg = get_option(self::OPT_NOTES_CFG, array());
+        return new \WP_REST_Response(array(
+            'ok'            => true,
+            'todayKst'      => $today_kst,
+            'nextUpdateKst' => self::compute_next_two_day_kst($today_kst),
+            'cycleDays'     => 2,
+            'autoReady'     => is_array($cfg) && !empty($cfg['geminiApiKey']),
+            'notes'         => $published
+        ), 200);
+    }
+
+    public static function handle_post_body_notes(\WP_REST_Request $request) {
+        self::send_nocache();
+        $params = $request->get_json_params();
+        if (!is_array($params)) {
+            $params = array();
+        }
+        $actor = self::get_current_actor($request);
+        $is_master = $actor && !empty($actor['isMaster']);
+
+        $cfg = get_option(self::OPT_NOTES_CFG, array());
+        if (!is_array($cfg)) {
+            $cfg = array();
+        }
+        $req_secret = sanitize_text_field($request->get_header('x-bareun-webhook-secret') ?: ($params['webhookSecret'] ?? ''));
+        $saved_secret = (string) ($cfg['webhookSecret'] ?? '');
+        $webhook_ok = ($saved_secret !== '' && hash_equals($saved_secret, $req_secret));
+
+        if (!$is_master && !$webhook_ok) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '마스터 또는 자동화 웹훅 인증이 필요합니다.'), 403);
+        }
+
+        if ($is_master && (isset($params['geminiApiKey']) || isset($params['newWebhookSecret']))) {
+            if (isset($params['geminiApiKey'])) {
+                $cfg['geminiApiKey'] = sanitize_text_field($params['geminiApiKey']);
+            }
+            if (isset($params['newWebhookSecret'])) {
+                $cfg['webhookSecret'] = sanitize_text_field($params['newWebhookSecret']);
+            }
+            update_option(self::OPT_NOTES_CFG, $cfg);
+        }
+
+        $action = sanitize_key($params['action'] ?? 'publish_note');
+        $notes  = get_option(self::OPT_BODY_NOTES, array());
+        if (!is_array($notes)) {
+            $notes = array();
+        }
+
+        if ($action === 'save_config') {
+            return new \WP_REST_Response(array('ok' => true, 'autoReady' => !empty($cfg['geminiApiKey'])), 200);
+        }
+
+        if ($action === 'generate_now') {
+            $part_id = sanitize_key($params['partId'] ?? 'knee');
+            $theme   = sanitize_text_field($params['theme'] ?? '');
+            $gen     = self::generate_body_note_via_gemini($part_id, $theme);
+            if (empty($gen['ok'])) {
+                return new \WP_REST_Response($gen, 400);
+            }
+            $new_note = $gen['note'];
+            $notes = array_values(array_filter($notes, function($x) use ($new_note) {
+                return ($x['id'] ?? '') !== $new_note['id'];
+            }));
+            array_unshift($notes, $new_note);
+            update_option(self::OPT_BODY_NOTES, $notes);
+            return new \WP_REST_Response(array('ok' => true, 'note' => $new_note), 200);
+        }
+
+        $raw_note = isset($params['note']) && is_array($params['note']) ? $params['note'] : $params;
+        $today_kst = current_time('Y-m-d');
+        $candidate = array(
+            'id'           => sanitize_text_field($raw_note['id'] ?? (($raw_note['partId'] ?? 'knee') . '-' . str_replace('-', '', $today_kst))),
+            'partId'       => sanitize_key($raw_note['partId'] ?? 'knee'),
+            'partLabel'    => sanitize_text_field($raw_note['partLabel'] ?? '무릎 성장판'),
+            'theme'        => sanitize_text_field($raw_note['theme'] ?? ''),
+            'targetReader' => sanitize_text_field($raw_note['targetReader'] ?? ''),
+            'keyword'      => sanitize_text_field($raw_note['keyword'] ?? ''),
+            'publishDate'  => sanitize_text_field($raw_note['publishDate'] ?? $today_kst),
+            'title'        => sanitize_text_field($raw_note['title'] ?? ''),
+            'empathy'      => array_map('sanitize_text_field', array_slice((array) ($raw_note['empathy'] ?? array()), 0, 2)),
+            'truth'        => array_map('sanitize_text_field', array_slice((array) ($raw_note['truth'] ?? array()), 0, 2)),
+            'myth'         => array_map('sanitize_text_field', array_slice((array) ($raw_note['myth'] ?? array()), 0, 2)),
+            'check'        => array_map('sanitize_text_field', array_slice((array) ($raw_note['check'] ?? array()), 0, 2)),
+            'auditPassed'  => true
+        );
+        $audit = self::validate_body_note_three_stage($candidate);
+        if (!$audit['passed']) {
+            return new \WP_REST_Response(array(
+                'ok'     => false,
+                'message'=> '3단계 자가 검수를 통과하지 못했습니다.',
+                'errors' => $audit['errors']
+            ), 400);
+        }
+        $notes = array_values(array_filter($notes, function($x) use ($candidate) {
+            return ($x['id'] ?? '') !== $candidate['id'];
+        }));
+        array_unshift($notes, $candidate);
+        update_option(self::OPT_BODY_NOTES, $notes);
+
+        return new \WP_REST_Response(array('ok' => true, 'note' => $candidate), 200);
+    }
+}
+Bareun_Member_Private_QnA_V6_Plugin::init();
+endif;

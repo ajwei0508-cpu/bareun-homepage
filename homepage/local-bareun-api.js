@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { auditNoteThreeStage } = require('./body-3d-auto-notes-data.js');
 
 const DB_PATH = path.join(__dirname, 'private-qna-db.json');
 const LOCAL_SECRET = 'bareun-local-hmac-secret-2026';
@@ -747,6 +748,95 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       saveDb(db);
     }
     return sendJson(res, 200, buildVisitSummary(db, true));
+  }
+
+  if (route === '/body-notes' && req.method === 'GET') {
+    const todayKst = nowStr().slice(0, 10);
+    const anchorMs = Date.parse('2026-10-23T00:00:00Z');
+    const curMs = Date.parse(todayKst + 'T00:00:00Z');
+    const diffDays = curMs >= anchorMs ? Math.floor((curMs - anchorMs) / 86400000) : 0;
+    const addDays = (diffDays % 2 === 0) ? 2 : 1;
+    const nextUpdateKst = new Date(curMs + addDays * 86400000).toISOString().slice(0, 10);
+
+    const part = urlObj.searchParams.get('part') || 'all';
+    const stored = Array.isArray(db.bodyNotes) ? db.bodyNotes : [];
+    const notes = stored.filter(n => {
+      if (!n || typeof n !== 'object') return false;
+      if (n.publishDate && n.publishDate > todayKst) return false;
+      if (part !== 'all' && n.partId !== part) return false;
+      return true;
+    });
+
+    return sendJson(res, 200, {
+      ok: true,
+      todayKst,
+      nextUpdateKst,
+      cycleDays: 2,
+      autoReady: Boolean(db.notesConfig && db.notesConfig.geminiApiKey),
+      notes
+    });
+  }
+
+  if (route === '/body-notes' && req.method === 'POST') {
+    const actor = getActor(req, db);
+    const body = await readJsonBody(req);
+    const reqSecret = String(req.headers['x-bareun-webhook-secret'] || body.webhookSecret || '').trim();
+    const savedSecret = String((db.notesConfig && db.notesConfig.webhookSecret) || '').trim();
+    const webhookOk = Boolean(savedSecret && reqSecret === savedSecret);
+    if ((!actor || !actor.isMaster) && !webhookOk) {
+      return sendJson(res, 403, { ok: false, message: '마스터 또는 자동화 웹훅 인증이 필요합니다.' });
+    }
+
+    if (!db.notesConfig) db.notesConfig = { geminiApiKey: '', webhookSecret: '' };
+    if (actor && actor.isMaster) {
+      if (typeof body.geminiApiKey === 'string') db.notesConfig.geminiApiKey = body.geminiApiKey.trim();
+      if (typeof body.newWebhookSecret === 'string') db.notesConfig.webhookSecret = body.newWebhookSecret.trim();
+      if (body.action === 'save_config') {
+        saveDb(db);
+        return sendJson(res, 200, { ok: true, autoReady: Boolean(db.notesConfig.geminiApiKey) });
+      }
+    }
+
+    const rawNote = (body.note && typeof body.note === 'object') ? body.note : body;
+    const todayKst = nowStr().slice(0, 10);
+    const qTitle = String(rawNote.questionTitle || rawNote.title || '').trim();
+    const empathyArr = Array.isArray(rawNote.empathyLines || rawNote.empathy) ? (rawNote.empathyLines || rawNote.empathy).slice(0, 2).map(s => String(s).trim()) : [];
+    const truthArr = Array.isArray(rawNote.truthLines || rawNote.truth) ? (rawNote.truthLines || rawNote.truth).slice(0, 2).map(s => String(s).trim()) : [];
+    const mythArr = Array.isArray(rawNote.mythLines || rawNote.myth) ? (rawNote.mythLines || rawNote.myth).slice(0, 2).map(s => String(s).trim()) : [];
+    const checkArr = Array.isArray(rawNote.checkList || rawNote.check) ? (rawNote.checkList || rawNote.check).slice(0, 2).map(s => String(s).trim()) : [];
+    const candidate = {
+      id: String(rawNote.id || `${rawNote.partId || 'knee'}-${todayKst.replace(/-/g, '')}`),
+      partId: String(rawNote.partId || 'knee').trim(),
+      partLabel: String(rawNote.partLabel || '무릎 성장판').trim(),
+      theme: String(rawNote.theme || '').trim(),
+      targetReader: String(rawNote.targetReader || '').trim(),
+      keyword: String(rawNote.keyword || '').trim(),
+      publishDate: String(rawNote.publishDate || todayKst).trim(),
+      questionTitle: qTitle,
+      title: qTitle,
+      empathyLines: empathyArr,
+      empathy: empathyArr,
+      truthLines: truthArr,
+      truth: truthArr,
+      mythLines: mythArr,
+      myth: mythArr,
+      checkList: checkArr,
+      check: checkArr,
+      auditPassed: true
+    };
+    const audit = auditNoteThreeStage(candidate);
+    if (!audit.passed) {
+      return sendJson(res, 400, {
+        ok: false,
+        message: '3단계 자가 검수를 통과하지 못했습니다.',
+        errors: audit.errors
+      });
+    }
+    if (!Array.isArray(db.bodyNotes)) db.bodyNotes = [];
+    db.bodyNotes = db.bodyNotes.filter(x => x.id !== candidate.id);
+    db.bodyNotes.unshift(candidate);
+    saveDb(db);
+    return sendJson(res, 200, { ok: true, note: candidate });
   }
 
   return sendJson(res, 404, { ok: false, message: 'Not Found' });
