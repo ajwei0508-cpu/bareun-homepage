@@ -1,15 +1,14 @@
 /**
- * 바른한의원 대전본점 · 풀스크린 3D 인체모형(클릭 시 내부 장기 활성) & 우측 소형 화이트·블랙·골드 메뉴 + 3메뉴 정보 팝업 빌더 (v5.5)
+ * 바른한의원 대전본점 · 풀스크린 3D 인체모형(우측 진료 살펴보기 + 하단 근육·신경·관절·혈관 4대 계통 모션 & 머리~발가락 해부학 핵심 요약) 빌더 (v5.6)
  *
  * [핵심 설계]
- * 1. 전체화면(100vw × 100vh) 3D 인체모형 & 내부 장기 기본 감춤 / 메뉴 클릭 시 활성:
- *    - 초기 화면(및 닫기/전체보기 시)에는 내부 장기·골격·신경을 모두 감추고 매끄러운 도자(Porcelain) 3D 인체 외형만 품격 있게 노출
- *    - 우측 메뉴(또는 3D 포인트) 클릭 시 인체가 반투명 투시 모드로 전환되며 해당 메뉴의 내부 장기·골격·신경만 즉시 활성화
- * 2. 우측 소형 수직 메뉴 나열: 『바른한의원 진료 살펴보기』 9개 파트를 화면 우측에 작고 정갈하게 수직 배치
- * 3. 화이트 · 블랙 · 골드(White · Black · Champagne Gold) 하이엔드 배색:
- *    - 순백(#FFFFFF) · 옵시디언 블랙(#0D0D0F) · 샴페인 앤틱 골드(#C5A059 / #E5C67E) 3색 조화
- * 4. 클린 정보 팝업 규격:
- *    - 테마(Theme) 표기 전면 비노출 & 하단 3단계 검수 문구 전면 비노출 (내부 3단계 자가 검수 게이트는 백그라운드에서 엄격 수행)
+ * 1. 전체화면(100vw × 100vh) 3D 인체모형 & 내부 장기 기본 감춤 / 메뉴 클릭 시 활성
+ * 2. 우측 소형 수직 메뉴 나열: 『바른한의원 진료 살펴보기』 9개 파트 + 3탭 정보 팝업 유지
+ * 3. 하단 4대 해부학 계통 메뉴 추가: [근육 | 신경 | 관절 | 혈관]
+ *    - 선택 시 해당 계통 전용 3D 해부 시각화 및 실시간 전신 인체 모션(수축·호흡 / 신경전도·반사 / 관절 ROM / 심박·종아리펌프)으로 즉시 전환
+ *    - 해부학 교재 기준 머리(01 머리·얼굴·턱)에서 발가락(12 발목·발바닥·발가락)까지 전 부위 한글 핵심 요약 제공:
+ *      [1. 기능·역할 / 2. 통증 / 3. 운동법]
+ * 4. 화이트 · 블랙 · 골드(White · Black · Champagne Gold) 하이엔드 배색 일관 적용
  */
 const fs = require('fs');
 const path = require('path');
@@ -23,8 +22,14 @@ const {
   FORBIDDEN_JARGON_WORDS,
   auditNoteThreeStage
 } = require('./body-3d-auto-notes-data.js');
+const {
+  ANATOMY_SYSTEM_TABS,
+  ANATOMY_REGIONS_META,
+  ANATOMY_SYSTEMS_CONTENT,
+  auditAnatomySystemsData
+} = require('./body-3d-anatomy-systems-data.js');
 
-// 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행 (단 1건이라도 위반 시 빌드 즉시 중단)
+// 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행
 const FLATTENED_SEED_NOTES = [];
 for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
   for (const ep of episodes) {
@@ -47,6 +52,12 @@ for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
   }
 }
 
+// 4대 해부학 계통(근육·신경·관절·혈관 × 12부위 = 48개 항목) 무결성 및 의료법 게이트 검증
+const sysAudit = auditAnatomySystemsData();
+if (!sysAudit.passed) {
+  throw new Error(`[Anatomy Systems Audit Failed] ${sysAudit.errors.join(' | ')}`);
+}
+
 const COMPACT_SHORT_LABELS = {
   knee: '성장 · 성조숙증',
   cervical: '일자목 · 경추 추나',
@@ -66,13 +77,17 @@ function buildBodyExplorerHtml() {
     return `<button type="button" class="vh-part-chip" data-part="${m.id}" title="${m.menuTitle} (${m.partLabel})"><span class="rcm-num">${num}</span><span class="rcm-label">${shortTitle}</span><span class="rcm-arrow">&rsaquo;</span></button>`;
   }).join('\n      ');
 
+  const bottomSystemButtonsHtml = ANATOMY_SYSTEM_TABS.map(sys =>
+    `<button type="button" class="stage-ctrl-btn sys-mode-btn" id="btn-sys-${sys.id}" data-sys="${sys.id}" onclick="window.selectAnatomySystem('${sys.id}')">${sys.label}</button>`
+  ).join('\n    ');
+
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>바른한의원 대전본점 | 3D 인체모형 · 바른한의원 진료 살펴보기</title>
-  <meta name="description" content="풀스크린 3D 인체모형으로 살펴보는 부위별 순수 건강 기준 가이드. 2일마다 자동 업데이트되는 일상 언어 건강 정보, 무엇이든 물어보세요 Q&A, 누적 건강 칼럼 아카이브." />
+  <title>바른한의원 대전본점 | 3D 인체모형 · 근육·신경·관절·혈관 &amp; 진료 살펴보기</title>
+  <meta name="description" content="풀스크린 3D 인체모형으로 살펴보는 전신 근육·신경·관절·혈관 해부학 가이드(머리~발가락 기능·통증·운동법) 및 2일 주기 부위별 순수 건강 정보." />
   <link rel="canonical" href="https://www.bareunhaniwon.com/body-explorer/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,10 +96,10 @@ function buildBodyExplorerHtml() {
   {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": "3D 인체모형 · 바른한의원 진료 살펴보기 건강 정보 패널",
+    "name": "3D 인체모형 · 근육·신경·관절·혈관 해부 가이드 & 바른한의원 진료 살펴보기",
     "url": "https://www.bareunhaniwon.com/body-explorer/",
     "inLanguage": "ko-KR",
-    "description": "부위별 순수 건강 정보와 Q&A 공간입니다."
+    "description": "머리에서 발가락까지 근육·신경·관절·혈관의 기능·통증·운동법 요약과 부위별 순수 건강 정보 공간입니다."
   }
   </script>
   <style>
@@ -380,7 +395,7 @@ function buildBodyExplorerHtml() {
       color: var(--lux-gold-bright);
     }
 
-    /* 4. TOP STATUS & BOTTOM 3D CONTROLS (WHITE · BLACK · GOLD) */
+    /* 4. TOP STATUS & BOTTOM 3D CONTROLS + 4-SYSTEM ANATOMY DOCK (WHITE · BLACK · GOLD) */
     .stage-top-badge {
       position: fixed;
       top: 15px;
@@ -423,22 +438,29 @@ function buildBodyExplorerHtml() {
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 4px 6px;
+      padding: 5px 8px;
       border-radius: 999px;
       background: var(--lux-white-glass);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--lux-gold-border);
-      box-shadow: var(--lux-shadow-sm);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--lux-gold);
+      box-shadow: 0 12px 30px rgba(13, 13, 15, 0.13);
       transition: left 0.28s ease;
     }
     @media (min-width: 961px) {
       body.popup-open-mode .stage-bottom-bar {
-        left: 31%;
+        left: 30%;
       }
       body.popup-open-mode .stage-top-badge {
-        left: 31%;
+        left: 30%;
       }
+    }
+    .stage-bar-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--lux-gold-border);
+      margin: 0 2px;
+      flex-shrink: 0;
     }
     .stage-ctrl-btn {
       appearance: none;
@@ -446,9 +468,9 @@ function buildBodyExplorerHtml() {
       background: transparent;
       color: var(--lux-sub);
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.73rem;
+      font-size: 0.74rem;
       font-weight: 800;
-      padding: 6px 13px;
+      padding: 6px 12px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.18s ease;
@@ -462,6 +484,25 @@ function buildBodyExplorerHtml() {
       background: var(--lux-black);
       border-color: var(--lux-gold);
       color: var(--lux-gold-bright);
+    }
+    .stage-ctrl-btn.sys-mode-btn {
+      color: var(--lux-black);
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-gold-border);
+      padding: 6px 14px;
+      font-size: 0.76rem;
+      letter-spacing: -0.01em;
+    }
+    .stage-ctrl-btn.sys-mode-btn:hover {
+      background: var(--lux-gold-tint);
+      border-color: var(--lux-gold);
+      transform: translateY(-1px);
+    }
+    .stage-ctrl-btn.sys-mode-btn.active {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+      box-shadow: 0 4px 14px rgba(13, 13, 15, 0.24);
     }
     .stage-ctrl-btn.reset-btn {
       background: var(--lux-gold-tint);
@@ -523,6 +564,54 @@ function buildBodyExplorerHtml() {
     .body-3d-hotspot.active .hotspot-core-dot { background: var(--lux-gold-bright); }
     .hotspot-tag-pill { display: none; }
 
+    /* System 12 Head-to-Toe Numbered 3D Markers */
+    .hotspot-pulse-ring.sys-ring {
+      width: 22px;
+      height: 22px;
+      background: rgba(13, 13, 15, 0.88);
+      border: 1.5px solid var(--lux-gold-bright);
+    }
+    .sys-hotspot-num {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--lux-gold-bright);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .sys-hotspot-label {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--lux-gold-border);
+      color: var(--lux-black);
+      font-size: 0.66rem;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(13, 13, 15, 0.12);
+      opacity: 0;
+      transform: translateX(-3px);
+      transition: all 0.16s ease;
+      pointer-events: none;
+    }
+    .system-region-hotspot:hover .sys-hotspot-label,
+    .system-region-hotspot.active .sys-hotspot-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .system-region-hotspot.active .hotspot-pulse-ring.sys-ring {
+      background: var(--lux-gold);
+      border-color: var(--lux-black);
+      transform: scale(1.18);
+    }
+    .system-region-hotspot.active .sys-hotspot-num {
+      color: var(--lux-black);
+    }
+    .system-region-hotspot.active .sys-hotspot-label {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+    }
+
     #dongin-loader-overlay {
       position: absolute;
       inset: 0;
@@ -546,14 +635,14 @@ function buildBodyExplorerHtml() {
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* 6. FLOATING WHITE · BLACK · GOLD 3-MENU INFO POPUP PANEL */
+    /* 6. FLOATING WHITE · BLACK · GOLD INFO & ANATOMY SYSTEM POPUP PANEL */
     .explore-floating-popup {
       position: fixed;
       right: 208px;
-      top: 62px;
-      max-height: calc(100vh - 82px);
-      max-height: calc(100dvh - 82px);
-      width: min(505px, calc(100vw - 228px));
+      top: 60px;
+      max-height: calc(100vh - 80px);
+      max-height: calc(100dvh - 80px);
+      width: min(520px, calc(100vw - 228px));
       z-index: 218;
       overflow-y: auto;
       scrollbar-width: thin;
@@ -579,11 +668,23 @@ function buildBodyExplorerHtml() {
       gap: 8px;
     }
 
-    /* THE 3 CORE MENUS TAB BAR (WHITE · BLACK · GOLD) */
+    /* THE 3 CORE CLINIC MENUS TAB BAR & 4-SYSTEM SWITCHER BAR (WHITE · BLACK · GOLD) */
     .three-menu-nav {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
+      padding: 5px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--lux-gold);
+      box-shadow: var(--lux-shadow-sm);
+    }
+    .four-system-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
       padding: 5px;
       border-radius: 13px;
       background: rgba(255, 255, 255, 0.97);
@@ -618,7 +719,7 @@ function buildBodyExplorerHtml() {
       color: var(--lux-white);
     }
     .tmb-step {
-      font-size: 0.64rem;
+      font-size: 0.63rem;
       font-weight: 800;
       letter-spacing: 0.02em;
       color: var(--lux-gold-deep);
@@ -633,7 +734,7 @@ function buildBodyExplorerHtml() {
       letter-spacing: -0.02em;
     }
 
-    /* CLEAN OUTPUT BOX FOR MENU 1 & ARCHIVE READER (NO THEME STRIP · NO AUDIT FOOTER) */
+    /* CLEAN OUTPUT BOX FOR MENU 1, ARCHIVE READER & 4-SYSTEM ANATOMY PANEL */
     .health-info-popup-box {
       background: var(--lux-white);
       border: 1.5px solid var(--lux-gold);
@@ -665,9 +766,33 @@ function buildBodyExplorerHtml() {
       border-radius: 6px;
       background: linear-gradient(135deg, #E7C983 0%, #C59E50 100%);
       color: var(--lux-black);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
       white-space: nowrap;
+    }
+    .hip-motion-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(229, 198, 126, 0.14);
+      border: 1px solid rgba(229, 198, 126, 0.55);
+      color: var(--lux-gold-bright);
+      font-size: 0.69rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .hip-motion-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lux-gold-bright);
+      animation: pulseGold 1.4s ease-in-out infinite;
+    }
+    @keyframes pulseGold {
+      0%, 100% { opacity: 0.45; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
     .hip-divider {
       color: rgba(229, 198, 126, 0.50);
@@ -676,7 +801,7 @@ function buildBodyExplorerHtml() {
     }
     .hip-question-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.02rem;
+      font-size: 1.00rem;
       font-weight: 800;
       color: var(--lux-white);
       line-height: 1.42;
@@ -703,6 +828,194 @@ function buildBodyExplorerHtml() {
       border-color: var(--lux-gold-bright);
     }
 
+    /* 7. HEAD-TO-TOE 12-REGION ANATOMY EXPLORER STYLES (WHITE · BLACK · GOLD) */
+    .sys-region-bar {
+      padding: 11px 14px 10px;
+      background: var(--lux-ivory);
+      border-bottom: 1px solid var(--lux-border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .sys-region-bar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--lux-sub);
+    }
+    .sys-region-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .sys-reg-chip {
+      appearance: none;
+      border: 1px solid var(--lux-border-soft);
+      background: var(--lux-white);
+      color: var(--lux-ink);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.71rem;
+      font-weight: 800;
+      padding: 5px 8px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .sys-reg-chip:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .sys-reg-chip.active {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+    }
+
+    .sys-cards-body {
+      padding: 12px 14px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--lux-white);
+    }
+    .sys-region-card {
+      border-radius: 12px;
+      border: 1px solid var(--lux-gold-border);
+      background: var(--lux-ivory);
+      overflow: hidden;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+    .sys-region-card.focused {
+      border: 1.5px solid var(--lux-gold);
+      background: #FFFEFA;
+      box-shadow: 0 10px 24px rgba(13, 13, 15, 0.08);
+    }
+    .src-head {
+      padding: 10px 13px;
+      background: var(--lux-black);
+      color: var(--lux-white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.45);
+    }
+    .src-head-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+    .src-num-badge {
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #E7C983 0%, #C59E50 100%);
+      color: var(--lux-black);
+      font-size: 0.69rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .src-region-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--lux-white);
+      letter-spacing: -0.02em;
+    }
+    .src-zoom-btn {
+      appearance: none;
+      border: 1px solid rgba(229, 198, 126, 0.55);
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--lux-gold-bright);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.69rem;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+    .src-zoom-btn:hover {
+      background: var(--lux-gold);
+      color: var(--lux-black);
+    }
+    .src-structures-bar {
+      padding: 7px 13px;
+      background: var(--lux-gold-tint);
+      border-bottom: 1px solid var(--lux-border-soft);
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--lux-ink);
+      line-height: 1.42;
+      word-break: keep-all;
+    }
+    .src-structures-bar strong {
+      color: var(--lux-gold-deep);
+      font-weight: 800;
+      margin-right: 4px;
+    }
+    .src-points {
+      padding: 10px 12px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .src-point-row {
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: var(--lux-white);
+      border: 1px solid var(--lux-border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .src-point-row.pt-exercise {
+      border-left: 3px solid var(--lux-gold);
+      background: #FFFEFA;
+    }
+    .src-point-tag {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--lux-black);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .src-point-tag .pt-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+      font-size: 0.64rem;
+      font-weight: 800;
+    }
+    .src-point-desc {
+      margin: 0 !important;
+      font-size: 0.81rem;
+      font-weight: 600;
+      color: #262522;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+    .sys-step-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding-top: 2px;
+    }
+
+    /* CLINIC NOTE SECTIONS */
     .hip-sections {
       padding: 13px 15px 15px;
       display: flex;
@@ -866,7 +1179,7 @@ function buildBodyExplorerHtml() {
       line-height: 1.42;
     }
 
-    /* MENU 3: 더 궁금하세요? 누적 아카이브 (WHITE · BLACK · GOLD · 테마 비노출) */
+    /* MENU 3: 더 궁금하세요? 누적 아카이브 */
     .archive-scope-pills {
       display: flex;
       gap: 5px;
@@ -953,7 +1266,7 @@ function buildBodyExplorerHtml() {
       flex-shrink: 0;
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width: 1180px) {
       .stage-top-badge { display: none; }
     }
 
@@ -963,7 +1276,7 @@ function buildBodyExplorerHtml() {
       .vh-pill-btn { padding: 5px 10px; font-size: 0.71rem; }
       .right-compact-menu {
         right: 10px;
-        width: 148px;
+        width: 146px;
         padding: 5px;
         gap: 3px;
       }
@@ -976,9 +1289,21 @@ function buildBodyExplorerHtml() {
       }
       .vh-part-chip .rcm-num { display: none; }
       .stage-bottom-bar {
-        bottom: 12px;
-        left: 12px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
         transform: none;
+        border-radius: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+        padding: 6px;
+      }
+      .stage-bar-sep { display: none; }
+      .stage-ctrl-btn,
+      .stage-ctrl-btn.sys-mode-btn {
+        padding: 5px 9px;
+        font-size: 0.70rem;
       }
       .explore-floating-popup {
         left: 10px;
@@ -986,7 +1311,7 @@ function buildBodyExplorerHtml() {
         top: auto;
         bottom: 10px;
         width: auto;
-        max-height: 74dvh;
+        max-height: 75dvh;
         z-index: 235;
         transform: translateY(14px);
       }
@@ -1015,7 +1340,7 @@ function buildBodyExplorerHtml() {
   <!-- CENTER STATUS PILL -->
   <div class="stage-top-badge">
     <span class="stage-top-dot"></span>
-    <span class="stage-top-text" id="stage-active-part-label">우측 메뉴를 클릭하면 해당 내부 장기와 건강 정보가 열립니다</span>
+    <span class="stage-top-text" id="stage-active-part-label">하단 [근육·신경·관절·혈관] 또는 우측 진료 살펴보기 메뉴를 선택해 보세요</span>
   </div>
 
   <!-- COMPACT RIGHT-SIDE VERTICAL MENU (우측 소형 나열 · WHITE · BLACK · GOLD) -->
@@ -1040,14 +1365,17 @@ function buildBodyExplorerHtml() {
     </section>
   </main>
 
-  <!-- BOTTOM-CENTER 3D CONTROLS (WHITE · BLACK · GOLD) -->
-  <div class="stage-bottom-bar">
+  <!-- BOTTOM-CENTER 3D CONTROLS + 4-SYSTEM ANATOMY DOCK (근육 · 신경 · 관절 · 혈관) -->
+  <div class="stage-bottom-bar" role="toolbar" aria-label="3D 인체 체형 및 근육·신경·관절·혈관 해부 계통 선택">
     <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
     <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
+    <span class="stage-bar-sep" aria-hidden="true"></span>
+    ${bottomSystemButtonsHtml}
+    <span class="stage-bar-sep" aria-hidden="true"></span>
     <button type="button" class="stage-ctrl-btn reset-btn" id="btn-cam-reset" onclick="window.closeInfoPopup()">&#8634; 전체 보기</button>
   </div>
 
-  <!-- FLOATING WHITE · BLACK · GOLD 3-MENU INFO POPUP PANEL -->
+  <!-- FLOATING WHITE · BLACK · GOLD INFO & ANATOMY SYSTEM POPUP PANEL -->
   <section class="explore-floating-popup" id="encyclopedia-scroll-panel" aria-live="polite">
     <div id="encyclopedia-dynamic-content"></div>
   </section>
@@ -1059,6 +1387,9 @@ function buildBodyExplorerHtml() {
     const SEED_NOTES = ${JSON.stringify(FLATTENED_SEED_NOTES)};
     const FORBIDDEN_PROMO = ${JSON.stringify(FORBIDDEN_PROMO_WORDS)};
     const FORBIDDEN_JARGON = ${JSON.stringify(FORBIDDEN_JARGON_WORDS)};
+    const SYSTEM_TABS = ${JSON.stringify(ANATOMY_SYSTEM_TABS)};
+    const ANATOMY_REGIONS = ${JSON.stringify(ANATOMY_REGIONS_META)};
+    const SYSTEM_CONTENT = ${JSON.stringify(ANATOMY_SYSTEMS_CONTENT)};
 
     const earlyParams = new URLSearchParams(window.location.search);
     if (earlyParams.get('tab') === 'blog' || earlyParams.get('blog') === '1') {
@@ -1107,7 +1438,6 @@ function buildBodyExplorerHtml() {
         .replace(/"/g, '&quot;');
     }
 
-    // 보이지 않는 내부 3단계 자가 검수 게이트 (UI에는 검수 문구 비노출)
     function passThreeStageGate(note) {
       if (!note || !note.title || !String(note.title).includes('?')) return false;
       if (!Array.isArray(note.empathy) || note.empathy.length < 2) return false;
@@ -1125,14 +1455,19 @@ function buildBodyExplorerHtml() {
     let dynamicNotes = [];
     let isPopupOpen = false;
     let currentPartId = earlyParams.get('part') || 'knee';
-    let currentMenuTab = 0; // 0: 오늘의 건강 글(1개 노출), 1: 무엇이든 물어보세요, 2: 더 궁금하세요?(누적 글 목록)
-    let archiveScope = 'part'; // 'part' | 'all'
+    let currentMenuTab = 0; // 0: 오늘의 건강 글, 1: 무엇이든 물어보세요, 2: 더 궁금하세요?
+    let archiveScope = 'part';
     let selectedArchiveNoteId = null;
     let qnaCacheByPart = {};
+
+    // 4-System Bottom Menu State ('muscle' | 'nerve' | 'joint' | 'vessel' | null)
+    let currentSystemMode = null;
+    let currentSystemRegionId = 'all';
 
     const popupDrawer = document.getElementById('encyclopedia-scroll-panel');
     const contentBox = document.getElementById('encyclopedia-dynamic-content');
     const quickNavButtons = document.querySelectorAll('#vh-part-quicknav .vh-part-chip');
+    const bottomSysButtons = document.querySelectorAll('.stage-bottom-bar .sys-mode-btn');
     const stageLabelEl = document.getElementById('stage-active-part-label');
     const cycleSubEl = document.getElementById('rcm-cycle-sub');
     const stageEl = document.getElementById('vibrant-3d-stage');
@@ -1141,12 +1476,22 @@ function buildBodyExplorerHtml() {
     const loaderOverlay = document.getElementById('dongin-loader-overlay');
     const topAskLink = document.getElementById('vh-ask-doctor-link');
 
+    function syncBottomSystemButtons() {
+      bottomSysButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-sys') === currentSystemMode);
+      });
+    }
+
     function getPartById(id) {
       return BODY_PARTS_DATA.find(p => p.id === id) || BODY_PARTS_DATA[0];
     }
 
     function getMenuMeta(id) {
       return CLINIC_MENUS.find(m => m.id === id) || CLINIC_MENUS[0];
+    }
+
+    function getSystemMeta(sysId) {
+      return SYSTEM_TABS.find(s => s.id === sysId) || SYSTEM_TABS[0];
     }
 
     function normalizeDynamicNote(raw) {
@@ -1186,7 +1531,6 @@ function buildBodyExplorerHtml() {
       return list;
     }
 
-    // 최종 출력 양식 (테마 행 제거 & 하단 검수 문구 제거 · 순수 본문만 출력)
     function buildStandardNoteBoxHtml(note, closeActionJs, closeLabel) {
       return (
         '<article class="health-info-popup-box" aria-label="부위별 건강 정보 팝업">' +
@@ -1242,20 +1586,139 @@ function buildBodyExplorerHtml() {
       );
     }
 
+    // Build Head-to-Toe Region Card HTML (1. 기능·역할 / 2. 통증 / 3. 운동법)
+    function buildSystemRegionCardHtml(reg, item, isSingleFocused) {
+      const btnHtml = isSingleFocused
+        ? '<button type="button" class="src-zoom-btn" onclick="window.selectSystemRegion(\\'all\\', true)">전신 모션 보기</button>'
+        : '<button type="button" class="src-zoom-btn" onclick="window.selectSystemRegion(\\'' + reg.id + '\\', true)">3D 부위 확대 &rsaquo;</button>';
+      return (
+        '<section class="sys-region-card' + (isSingleFocused ? ' focused' : '') + '" data-reg-card="' + reg.id + '">' +
+          '<div class="src-head">' +
+            '<div class="src-head-left">' +
+              '<span class="src-num-badge">' + escHtml(reg.num) + '</span>' +
+              '<h3 class="src-region-title">' + escHtml(reg.regionLabel) + '</h3>' +
+            '</div>' +
+            btnHtml +
+          '</div>' +
+          '<div class="src-structures-bar"><strong>해부학 기준 ·</strong>' + escHtml(item.structures) + '</div>' +
+          '<div class="src-points">' +
+            '<div class="src-point-row">' +
+              '<div class="src-point-tag"><span class="pt-num">1</span>기능 · 역할</div>' +
+              '<p class="src-point-desc">' + escHtml(item.role) + '</p>' +
+            '</div>' +
+            '<div class="src-point-row">' +
+              '<div class="src-point-tag"><span class="pt-num">2</span>통증</div>' +
+              '<p class="src-point-desc">' + escHtml(item.pain) + '</p>' +
+            '</div>' +
+            '<div class="src-point-row pt-exercise">' +
+              '<div class="src-point-tag"><span class="pt-num">3</span>운동법</div>' +
+              '<p class="src-point-desc">' + escHtml(item.exercise) + '</p>' +
+            '</div>' +
+          '</div>' +
+        '</section>'
+      );
+    }
+
     let applyCameraFraming = function() {};
 
     function renderIdleState() {
       isPopupOpen = false;
+      currentSystemMode = null;
+      currentSystemRegionId = 'all';
       document.body.classList.remove('popup-open-mode');
       if (popupDrawer) popupDrawer.classList.remove('open');
       quickNavButtons.forEach(btn => btn.classList.remove('active'));
+      syncBottomSystemButtons();
       if (stageLabelEl) {
-        stageLabelEl.textContent = '우측 메뉴를 클릭하면 해당 내부 장기와 건강 정보가 열립니다';
+        stageLabelEl.textContent = '하단 [근육·신경·관절·혈관] 또는 우측 진료 살펴보기 메뉴를 선택해 보세요';
       }
       if (cycleSubEl) {
         cycleSubEl.textContent = '2일 주기 · 다음 ' + fmtDotDate(nextUpdateKst);
       }
       applyCameraFraming();
+    }
+
+    function renderSystemAnatomyPanel() {
+      if (!currentSystemMode) return;
+      isPopupOpen = true;
+      document.body.classList.add('popup-open-mode');
+      if (popupDrawer) popupDrawer.classList.add('open');
+      quickNavButtons.forEach(btn => btn.classList.remove('active'));
+      syncBottomSystemButtons();
+
+      const sysMeta = getSystemMeta(currentSystemMode);
+      const sysDataMap = SYSTEM_CONTENT[currentSystemMode] || {};
+      const activeReg = currentSystemRegionId !== 'all'
+        ? ANATOMY_REGIONS.find(r => r.id === currentSystemRegionId)
+        : null;
+
+      if (stageLabelEl) {
+        stageLabelEl.textContent = activeReg
+          ? '[' + sysMeta.label + ' 계통 · ' + activeReg.num + ' ' + activeReg.regionLabel + '] · ' + sysMeta.motionBadge
+          : '[' + sysMeta.fullTitle + '] · ' + sysMeta.motionBadge;
+      }
+      applyCameraFraming();
+
+      const topTabsHtml = SYSTEM_TABS.map(t =>
+        '<button type="button" class="three-menu-btn' + (t.id === currentSystemMode ? ' active' : '') + '" onclick="window.selectAnatomySystem(\\'' + t.id + '\\')">' +
+          '<span class="tmb-step">해부 계통</span>' +
+          '<span class="tmb-label">' + escHtml(t.label) + '</span>' +
+        '</button>'
+      ).join('');
+
+      const regionChipsHtml =
+        '<button type="button" class="sys-reg-chip' + (currentSystemRegionId === 'all' ? ' active' : '') + '" onclick="window.selectSystemRegion(\\'all\\', true)">전체 12부위</button>' +
+        ANATOMY_REGIONS.map(r =>
+          '<button type="button" class="sys-reg-chip' + (currentSystemRegionId === r.id ? ' active' : '') + '" onclick="window.selectSystemRegion(\\'' + r.id + '\\', true)">' +
+            escHtml(r.num + ' ' + r.shortLabel) +
+          '</button>'
+        ).join('');
+
+      let cardsHtml = '';
+      if (activeReg) {
+        const regIdx = ANATOMY_REGIONS.findIndex(r => r.id === activeReg.id);
+        const prevReg = ANATOMY_REGIONS[(regIdx - 1 + ANATOMY_REGIONS.length) % ANATOMY_REGIONS.length];
+        const nextReg = ANATOMY_REGIONS[(regIdx + 1) % ANATOMY_REGIONS.length];
+        const item = sysDataMap[activeReg.id];
+        cardsHtml =
+          buildSystemRegionCardHtml(activeReg, item, true) +
+          '<div class="sys-step-footer">' +
+            '<button type="button" class="ptc-back-btn" onclick="window.selectSystemRegion(\\'' + prevReg.id + '\\', true)">&larr; ' + escHtml(prevReg.num + ' ' + prevReg.shortLabel) + '</button>' +
+            '<button type="button" class="ptc-back-btn" onclick="window.selectSystemRegion(\\'all\\', true)">머리~발가락 전체 보기</button>' +
+            '<button type="button" class="ptc-back-btn" onclick="window.selectSystemRegion(\\'' + nextReg.id + '\\', true)">' + escHtml(nextReg.num + ' ' + nextReg.shortLabel) + ' &rarr;</button>' +
+          '</div>';
+      } else {
+        cardsHtml = ANATOMY_REGIONS.map(r => buildSystemRegionCardHtml(r, sysDataMap[r.id], false)).join('');
+      }
+
+      contentBox.innerHTML =
+        '<div class="popup-shell-wrap">' +
+          '<nav class="four-system-nav" role="tablist" aria-label="4대 인체 해부학 계통 전환">' +
+            topTabsHtml +
+          '</nav>' +
+          '<article class="health-info-popup-box" aria-label="' + escHtml(sysMeta.fullTitle) + ' 가이드">' +
+            '<div class="hip-header">' +
+              '<div style="display:flex;flex-direction:column;gap:6px;min-width:0;">' +
+                '<div class="hip-header-title-wrap">' +
+                  '<span class="hip-part-bracket">[' + escHtml(sysMeta.label) + ' 계통]</span>' +
+                  '<span class="hip-motion-pill"><span class="hip-motion-dot"></span>' + escHtml(sysMeta.motionBadge) + '</span>' +
+                '</div>' +
+                '<h2 class="hip-question-title">머리에서 발가락까지 · 기능 · 통증 · 운동법 핵심 요약</h2>' +
+              '</div>' +
+              '<button type="button" class="hip-close-btn" onclick="window.closeInfoPopup()">✕ 닫기</button>' +
+            '</div>' +
+            '<div class="sys-region-bar">' +
+              '<div class="sys-region-bar-top">' +
+                '<span>해부학 교재 기준 12구간 (클릭 시 3D 부위 확대)</span>' +
+                '<span style="color:#967128;">머리 &rarr; 발가락</span>' +
+              '</div>' +
+              '<div class="sys-region-grid">' + regionChipsHtml + '</div>' +
+            '</div>' +
+            '<div class="sys-cards-body">' + cardsHtml + '</div>' +
+          '</article>' +
+        '</div>';
+
+      if (popupDrawer) popupDrawer.scrollTop = 0;
     }
 
     async function loadQnaForPart(partId) {
@@ -1265,7 +1728,7 @@ function buildBodyExplorerHtml() {
         const data = await res.json();
         if (data && Array.isArray(data.items)) {
           qnaCacheByPart[partId] = data.items;
-          if (isPopupOpen && currentMenuTab === 1 && currentPartId === partId) {
+          if (isPopupOpen && !currentSystemMode && currentMenuTab === 1 && currentPartId === partId) {
             renderPopupPanel();
           }
         }
@@ -1273,6 +1736,9 @@ function buildBodyExplorerHtml() {
     }
 
     function renderPopupPanel() {
+      currentSystemMode = null;
+      currentSystemRegionId = 'all';
+      syncBottomSystemButtons();
       isPopupOpen = true;
       document.body.classList.add('popup-open-mode');
       if (popupDrawer) popupDrawer.classList.add('open');
@@ -1298,12 +1764,10 @@ function buildBodyExplorerHtml() {
       let activeBodyHtml = '';
 
       if (currentMenuTab === 0) {
-        // 메뉴 1: 최신 글 단 1개 노출
         activeBodyHtml = latestNote
           ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기')
           : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>';
       } else if (currentMenuTab === 1) {
-        // 메뉴 2: 무엇이든 물어보세요
         const items = qnaCacheByPart[currentPartId];
         if (!items) {
           loadQnaForPart(currentPartId);
@@ -1338,7 +1802,6 @@ function buildBodyExplorerHtml() {
             '<div style="display:flex;flex-direction:column;gap:8px;">' + qnaListHtml + '</div>' +
           '</div>';
       } else {
-        // 메뉴 3: 더 궁금하세요? (누적 글 목록 · 테마 배지 비노출)
         const targetList = archiveScope === 'all' ? allNotes : partNotes;
         const pickedNote = selectedArchiveNoteId
           ? targetList.find(n => n.id === selectedArchiveNoteId) || allNotes.find(n => n.id === selectedArchiveNoteId)
@@ -1426,6 +1889,47 @@ function buildBodyExplorerHtml() {
       renderPopupPanel();
     };
 
+    // 하단 [근육 · 신경 · 관절 · 혈관] 계통 선택 핸들러
+    window.selectAnatomySystem = function(sysId, keepRegion) {
+      const valid = SYSTEM_TABS.some(s => s.id === sysId);
+      if (!valid) return;
+      currentSystemMode = sysId;
+      if (!keepRegion) currentSystemRegionId = 'all';
+      selectedArchiveNoteId = null;
+      renderSystemAnatomyPanel();
+      if (typeof majorHotspotNodes !== 'undefined' && Array.isArray(majorHotspotNodes)) {
+        majorHotspotNodes.forEach(h => h.dom.classList.remove('active'));
+      }
+      if (currentSystemRegionId === 'all') {
+        if (typeof window.flyDonginCameraTo === 'function') {
+          window.flyDonginCameraTo([0.0, 2.28, 5.65], [0.0, 2.26, 0.0], true);
+        }
+      }
+      if (typeof window.syncDonginAnatomy === 'function') {
+        window.syncDonginAnatomy();
+      }
+    };
+
+    // 머리~발가락 12개 부위 선택 핸들러 (3D 카메라 이동 + 골드 포커스 하이라이트)
+    window.selectSystemRegion = function(regId, shouldFly) {
+      if (!currentSystemMode) return;
+      currentSystemRegionId = regId || 'all';
+      renderSystemAnatomyPanel();
+      if (shouldFly && typeof window.flyDonginCameraTo === 'function') {
+        if (currentSystemRegionId === 'all') {
+          window.flyDonginCameraTo([0.0, 2.28, 5.65], [0.0, 2.26, 0.0], true);
+        } else {
+          const reg = ANATOMY_REGIONS.find(r => r.id === currentSystemRegionId);
+          if (reg) {
+            window.flyDonginCameraTo(reg.camPos, reg.camTarget, false);
+          }
+        }
+      }
+      if (typeof window.syncDonginAnatomy === 'function') {
+        window.syncDonginAnatomy();
+      }
+    };
+
     window.closeInfoPopup = function() {
       selectedArchiveNoteId = null;
       renderIdleState();
@@ -1437,7 +1941,6 @@ function buildBodyExplorerHtml() {
       }
     };
 
-    // 백엔드(/wp-json/bareun/v1/body-notes)에서 2일 주기 동적 신규 글 실시간 동기화
     async function syncLiveServerNotes() {
       try {
         const res = await fetch('/wp-json/bareun/v1/body-notes', { cache: 'no-store' });
@@ -1449,13 +1952,20 @@ function buildBodyExplorerHtml() {
           if (Array.isArray(data.notes) && data.notes.length > 0) {
             dynamicNotes = data.notes;
           }
-          if (isPopupOpen) renderPopupPanel();
-          else renderIdleState();
+          if (isPopupOpen) {
+            if (currentSystemMode) renderSystemAnatomyPanel();
+            else renderPopupPanel();
+          } else {
+            renderIdleState();
+          }
         }
       } catch (e) {}
     }
 
-    if (earlyParams.get('part')) {
+    if (earlyParams.get('system')) {
+      currentSystemMode = earlyParams.get('system');
+      renderSystemAnatomyPanel();
+    } else if (earlyParams.get('part')) {
       renderPopupPanel();
     } else {
       renderIdleState();
@@ -1489,6 +1999,9 @@ ${WEBGL_PART_A}
     };
 
     window.selectBodyPart = function(partId, shouldFlyCamera = true) {
+      currentSystemMode = null;
+      currentSystemRegionId = 'all';
+      syncBottomSystemButtons();
       const part = getPartById(partId);
       currentPartId = part.id;
       currentMenuTab = 0;
@@ -1519,8 +2032,11 @@ ${WEBGL_PART_A}
 
 ${WEBGL_PART_B}
 
+    const urlSys = earlyParams.get('system');
     const urlPart = earlyParams.get('part');
-    if (urlPart) {
+    if (urlSys && SYSTEM_TABS.some(s => s.id === urlSys)) {
+      window.selectAnatomySystem(urlSys);
+    } else if (urlPart) {
       window.selectBodyPart(urlPart, true);
     } else {
       window.resetDonginView();
@@ -1539,4 +2055,4 @@ ${WEBGL_PART_B}
 const outPath = path.join(__dirname, 'body-explorer.html');
 const html = buildBodyExplorerHtml();
 fs.writeFileSync(outPath, html, 'utf8');
-console.log('✅ Generated Fullscreen 3D Body Explorer (Organs Hidden Until Clicked · White-Black-Gold v5.5):', outPath, '(' + html.length + ' bytes)');
+console.log('✅ Generated Fullscreen 3D Body Explorer (4-System Motions + Head-to-Toe Anatomy v5.6):', outPath, '(' + html.length + ' bytes)');
