@@ -19,14 +19,13 @@ window.CLINIC_TEMPLATE_CONFIG = {
   phone: '010-5631-1275',
   kakaoUrl: 'https://pf.kakao.com/_ykxcLK',
   naverBookingUrl: 'https://naver.me/5U1ELn8L',
-  address: '대전광역시 서구 둔산로 (둔산동, 바른한의원 대전본점 · 전용 주차장 완비)',
+  address: '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)',
 
   // 3. 진료 시간 안내 (환자 신뢰 & 시안성 정보)
   hours: [
-    { day: '평일 (월~금)', time: '09:30 ~ 20:30 (야간진료 운영)' },
-    { day: '토요일 · 공휴일', time: '09:30 ~ 15:00 (점심시간 없이 진료)' },
-    { day: '점심시간 (평일)', time: '13:00 ~ 14:00' },
-    { day: '정기휴진', time: '매주 일요일' }
+    { day: '평일 (월~금)', time: '09:00 ~ 19:00' },
+    { day: '토요일 · 공휴일', time: '09:00 ~ 14:00' },
+    { day: '정기휴진', time: '매주 일요일 휴진' }
   ],
 
   // 4. 기본 테마 & 시안성 프리셋 ('warm-hanji' | 'dark-royal' | 'high-visibility')

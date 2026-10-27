@@ -1,20 +1,35 @@
-# Bareun Integrative Medical Insight Journal & 3D Anatomy Portal
-> Evidence-based health insight journal citing international biomedical literature (Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews, European Heart Journal, JCEM, Human Reproduction Update, European Urology) alongside integrative physiology, paired with an interactive 3D Human Anatomy Clinic Explorer and a members-only private Disease Q&A hub.
+# 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon Main Branch)
+> 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 대표번호: 010-5631-1275 | 대표원장: 안정위
+> 진료시간: 평일(월~금) 09:00~19:00 · 토요일 및 공휴일 09:00~14:00 · 일요일 휴진
+> 해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews, European Heart Journal, JCEM, Human Reproduction Update, European Urology) 및 통합생리학 연구 근거 기반 9대 정밀검진 · 1:1 사상체질 한약 · 수기 추나 · 소아 키성장 · 식욕ZERO 다이어트 · 두피열 탈모 · 정품 사향 황제공진단 · 전립선 클리닉 & 풀스크린 3D 인체모형 건강 포털.
 
-## Flagship Medical Insight Column (Single Representative Publication)
-- [만성 피로·소화 장애·척추 통증은 왜 함께 찾아오는가: 해외 의학 논문으로 읽는 자율신경·장-뇌 축·생체역학 통합 가이드](https://www.bareunhaniwon.com/integrative-autonomic-circadian-gut-spine-health-review/): Comprehensive systems-biology review of Systemic Chronic Inflammation (Nature Medicine 2019), Microbiota-Gut-Brain Axis (Physiological Reviews 2019), Spinal Biomechanics (The Lancet 2018, JAMA 2017), Vasovagal Syncope (ESC 2018), Brown Adipose Thermogenesis (NEJM 2009), and Circadian Slow-Wave Sleep Growth/Reproductive/Urinary physiology.
+## Clinic Information (NAP & Official Channels)
+- Official Website: https://www.bareunhaniwon.com/
+- Clinic Name: 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon)
+- Chief Director: 안정위 대표원장 (Dr. Jung-Wi Ahn, KMD)
+- Address: 대전광역시 대덕구 비래동로7번길 1, 2층 (2F, 1, Biraedong-ro 7beon-gil, Daedeok-gu, Daejeon, 34417, Republic of Korea)
+- Telephone: 010-5631-1275 (+82-10-5631-1275)
+- Hours: Mon-Fri 09:00-19:00, Sat & Public Holidays 09:00-14:00, Closed on Sundays
+- Naver Place: https://naver.me/5U1ELn8L
+- Official Blog: https://blog.naver.com/wei0508
+- KakaoTalk Consultation: https://pf.kakao.com/_ykxcLK
 
-## Core Interactive Portals
-- [3D Full-Screen Human Anatomy & Clinic Motion Explorer](https://www.bareunhaniwon.com/body-explorer/): Interactive WebGL 3D body model with real-time anatomical graphic motion, cascading clinic navigation, lifestyle DO/DON'T protocols, and international SCI paper summaries.
-- [Expert Medical Insight Journal](https://www.bareunhaniwon.com/ask-doctor/?tab=blog): Non-promotional, evidence-based medical review hub.
-- [Disease-Specific 1:1 Private Q&A Hub](https://www.bareunhaniwon.com/ask-doctor/?tab=qna): Members-only strictly private Q&A categorized across 9 clinical domains (fast signup via Google, KakaoTalk, Naver).
+## Specialized Clinical Divisions
+- [메인 3D 환자 스토리 쇼룸](https://www.bareunhaniwon.com/): 아빠 한의사를 찾는 환자 스토리 및 6대 중점 클리닉 안내.
+- [안정위 대표원장 · 9대 정밀검진](https://www.bareunhaniwon.com/director/): 초음파, 적외선 체열진단, 이비인후 내시경, 사상체질, 체지방(InBody), 자율신경(HRV), 간·당 대사, 혈관 노화, 성장판 검사 및 원내 무균 탕전 시스템.
+- [바른 추나 · 척추교정 클리닉](https://www.bareunhaniwon.com/chuna/): 허리디스크, 목디스크, 거북목, 골반 불균형, 척추관협착증 비수술 대표원장 수기 추나요법 및 약침.
+- [바른 성장 · 성조숙증 클리닉](https://www.bareunhaniwon.com/growth/): 무방사선 초음파 성장판 분석, 소아비만 체지방-키 전환, 비염·구강호흡 점막 면역 및 성장 한약.
+- [바른 다이어트 · 식욕ZERO 클리닉](https://www.bareunhaniwon.com/diet-zero/): 갈색지방 대사 활성화, 근육 보존 체지방 감량, 부종·독소 배출 맞춤 한약 및 비대면 진료 지원.
+- [바른 탈모 · 모근재생 통합 클리닉](https://www.bareunhaniwon.com/hairloss/): 수승화강 두피 청열 한약, 경추 추나, 정제 발모 약침.
+  - [남성탈모 (M자·정수리)](https://www.bareunhaniwon.com/hairloss-male/)
+  - [원형탈모 (자가면역 복원)](https://www.bareunhaniwon.com/hairloss-alopecia/)
+  - [여성탈모 (가르마·볼륨)](https://www.bareunhaniwon.com/hairloss-female/)
+  - [지루성두피염 (두피 열독·모낭염 해독)](https://www.bareunhaniwon.com/hairloss-seborrheic/)
+- [바른 황제공진단 클리닉](https://www.bareunhaniwon.com/gongjindan/): 식약처 CITES 인증 정품 천연 사향(L-Muscone) 및 러시아산 원용 분골 녹용 대표원장 직접 수제 조제.
+- [바른 전립선 · 남성활력 클리닉](https://www.bareunhaniwon.com/prostate/): 만성 전립선염, 전립선비대증, 야간뇨, 과민성 방광, 골반저근 울혈 감압 치료.
+- [바른리프팅 시술 전후 윤곽진단](https://www.bareunhaniwon.com/lifting-compare/): 비수술 한방 매선·약침 안면 리프팅 및 3점 중심축 전후 윤곽 정밀 비교 스튜디오.
 
-## Specialized Clinical Divisions (Daejeon Main Branch)
-- [Main 3D Story Showroom](https://www.bareunhaniwon.com/)
-- [9-System Precision Diagnostics](https://www.bareunhaniwon.com/director/)
-- [Spine & Pelvic Biomechanical Chuna](https://www.bareunhaniwon.com/chuna/)
-- [Pediatric Growth, Puberty & Mucosal Immunity](https://www.bareunhaniwon.com/growth/)
-- [Metabolic Detox & Healthy Weight](https://www.bareunhaniwon.com/diet-zero/)
-- [Scalp Thermoregulation & Hair Follicle Care](https://www.bareunhaniwon.com/hairloss/)
-- [Chronic Fatigue & Neuro-Vitality](https://www.bareunhaniwon.com/gongjindan-2/)
-- [Prostate, LUTS & Pelvic Floor Care](https://www.bareunhaniwon.com/prostate/)
+## Interactive 3D Anatomy & Evidence-Based Medical Journal
+- [풀스크린 3D 인체모형 · 진료 살펴보기](https://www.bareunhaniwon.com/body-explorer/): 전신 근육·신경·관절·혈관 4대 계통 실시간 3D 모션 및 9대 부위별 2일 주기 순수 건강 정보 아카이브.
+- [통합의학 인사이트 저널 & 질환별 1:1 비공개 Q&A](https://www.bareunhaniwon.com/ask-doctor/): 해외 SCI 학술지 기반 의학 리뷰 및 회원 전용 100% 비공개 1:1 건강 상담.
+- [대표 학술 칼럼: 만성 피로·소화 장애·척추 통증 통합생리학 가이드](https://www.bareunhaniwon.com/integrative-autonomic-circadian-gut-spine-health-review/): 자율신경, 장-뇌 축(Microbiota-Gut-Brain Axis), 척추 생체역학의 상호작용 리뷰.

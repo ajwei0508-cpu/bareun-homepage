@@ -1385,7 +1385,7 @@ function buildBodyExplorerHtml() {
   <header class="vibrant-header">
     <a href="story-3d.html" class="vh-brand">
       <div class="vh-brand-mark">3D</div>
-      <span class="vh-brand-title">바른한의원 · 3D 인체모형</span>
+      <h1 class="vh-brand-title" style="margin:0;font-size:inherit;line-height:inherit;">바른한의원 대전본점 · 3D 인체모형</h1>
     </a>
 
     <div class="vh-right-actions">
@@ -1436,6 +1436,29 @@ function buildBodyExplorerHtml() {
   <section class="explore-floating-popup" id="encyclopedia-scroll-panel" aria-live="polite">
     <div id="encyclopedia-dynamic-content"></div>
   </section>
+
+  <!-- SEMANTIC 3D ANATOMY & CLINIC SUMMARY DIRECTORY (SSR INDEXABLE + ACCESSIBLE) -->
+  <details class="seo-anatomy-summary-drawer" style="position:fixed;left:16px;bottom:14px;z-index:95;max-width:340px;font-family:'Pretendard',sans-serif;">
+    <summary style="list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,0.92);border:1px solid rgba(197,160,89,0.45);color:#0D0D0F;font-size:0.74rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,0.08);">
+      <span>📖 해부학 가이드 · 진료안내</span>
+    </summary>
+    <div style="margin-top:8px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,0.97);border:1px solid rgba(13,13,15,0.12);box-shadow:0 12px 32px rgba(0,0,0,0.14);max-height:52vh;overflow-y:auto;color:#171614;font-size:0.78rem;line-height:1.6;">
+      <h2 style="margin:0 0 8px;font-size:0.88rem;font-weight:800;color:#0D0D0F;">전신 4대 해부 계통 및 9대 부위별 건강 가이드</h2>
+      <p style="margin:0 0 10px;">바른한의원 대전본점 풀스크린 3D 인체모형 포털은 전신 근육계, 자율·말초 신경계, 척추·사지 관절계, 심혈관 순환계의 입체적 상호작용을 실시간 3D 그래픽 모션으로 시각화하고 해외 SCI 의학 학술지 근거 기반 생활 건강 정보를 제공합니다.</p>
+      <h3 style="margin:8px 0 4px;font-size:0.8rem;font-weight:700;">부위별 주요 건강 탐색 주제</h3>
+      <ul style="margin:0 0 10px;padding-left:16px;">
+        <li><strong>무릎 성장판 · 소아성장</strong>: 서파수면 성장호르몬 생리, 소아비만 체지방 대사 관리, 구강호흡·비염 점막 면역과 키 성장의 연관성 안내.</li>
+        <li><strong>경추 · 두피열 · 탈모</strong>: 거북목(전방두부자세)에 따른 두피 미세혈류 저하, 상열하한 열조절 및 남성·여성·원형탈모·지루성두피염 두피 환경 관리.</li>
+        <li><strong>요추 · 골반 · 추나 생체역학</strong>: 추간판 압력 분산, 골반 경사 불균형 교정, 만성 요통·좌골신경통 완화를 위한 코어 안정화 원칙.</li>
+        <li><strong>뇌 · 심혈관 · 만성피로</strong>: 저등급 전신 만성염증, 브레인 포그, 수면-각성 일주기 리듬 회복과 신경 보호 영양 생리.</li>
+        <li><strong>자율신경 · 미주신경 · 어지럼증</strong>: 심박변이도(HRV) 균형, 기립성 어지럼증·두통·불면 완화를 위한 호흡 및 생활 루틴.</li>
+        <li><strong>위장 · 장-뇌 축 · 대사 해독</strong>: 기능성 소화불량, 위 배출 지연, 내장지방 갈색지방 열생산 활성화 및 식습관 교정.</li>
+        <li><strong>여성 자궁 · 남성 전립선 골반 순환</strong>: 골반강 미세혈류 개선, 야간뇨·배뇨 불편 완화 및 생애주기별 비뇨·생식기 건강 관리.</li>
+      </ul>
+      <h3 style="margin:8px 0 4px;font-size:0.8rem;font-weight:700;">바른한의원 대전본점 오시는 길 · 진료시간</h3>
+      <p style="margin:0;">주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 우편번호 34417) · 대표전화: <a href="tel:010-5631-1275" style="color:#0D0D0F;font-weight:700;">010-5631-1275</a> · 대표원장: 안정위<br>진료시간: 평일(월~금) 09:00~19:00 / 토요일·공휴일 09:00~14:00 / 일요일 휴진</p>
+    </div>
+  </details>
 
   <script>
   (async function() {

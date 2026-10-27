@@ -1511,3 +1511,641 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 }
 Bareun_Member_Private_QnA_V6_Plugin::init();
 endif;
+
+// === BAREUN MASTER SEO & CANONICAL ENGINE V1 ===
+if (!class_exists('Bareun_Master_SEO_Engine_V1')) :
+class Bareun_Master_SEO_Engine_V1 {
+    const OPT_VERIFY_CODES = 'bareun_seo_verification_codes_v1';
+    const OPT_OG_IMAGE_URL = 'bareun_official_og_image_url_v1';
+    const OPT_HTACCESS_VER = 'bareun_htaccess_sec_headers_v2';
+    const CANONICAL_HOST   = 'www.bareunhaniwon.com';
+    const CANONICAL_ORIGIN = 'https://www.bareunhaniwon.com';
+    const INDEXNOW_KEY     = 'bareunhaniwon2026aiseokey849201';
+
+    private static $cached_cfg = null;
+
+    public static function init() {
+        add_action('init', array(__CLASS__, 'maybe_sync_htaccess_headers'), 1);
+        add_action('init', array(__CLASS__, 'handle_early_canonical_and_virtual_endpoints'), 2);
+        add_action('init', array(__CLASS__, 'setup_head_cleanup'), 20);
+        add_action('send_headers', array(__CLASS__, 'send_security_headers'), 1);
+        add_filter('wp_headers', array(__CLASS__, 'filter_wp_headers'), 99);
+        add_filter('wp_robots', array(__CLASS__, 'filter_wp_robots'), 99);
+        add_filter('pre_get_document_title', array(__CLASS__, 'filter_document_title'), 99);
+        add_action('wp_head', array(__CLASS__, 'render_head_seo'), 1);
+
+        // Eliminate Astra theme duplicate H1 & oversized featured thumbnail in DOM
+        add_filter('astra_the_title_enabled', '__return_false', 99);
+        add_filter('astra_featured_image_enabled', '__return_false', 99);
+        add_filter('post_thumbnail_html', '__return_empty_string', 99);
+        add_filter('body_class', array(__CLASS__, 'filter_body_class'), 20);
+
+        // Clean XML Sitemap & AI-friendly robots.txt
+        add_filter('wp_sitemaps_add_provider', array(__CLASS__, 'filter_sitemap_providers'), 10, 2);
+        add_filter('wp_sitemaps_posts_entry', array(__CLASS__, 'filter_sitemap_post_entry'), 10, 3);
+        add_filter('robots_txt', array(__CLASS__, 'filter_robots_txt'), 99, 2);
+
+        // WP-Admin Search Console / Naver Search Advisor Verification Settings UI
+        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'));
+        add_action('rest_api_init', array(__CLASS__, 'register_seo_rest_routes'));
+    }
+
+    private static function get_master_cfg() {
+        if (self::$cached_cfg === null) {
+            $raw = base64_decode('eyJjYW5vbmljYWxPcmlnaW4iOiJodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbSIsImRlZmF1bHRPZ0ltYWdlIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvb2ctYmFyZXVuLTEyMDB4NjMwLmpwZyIsImNsaW5pY0Jhc2VPcmciOnsiQHR5cGUiOlsiTWVkaWNhbENsaW5pYyIsIk1lZGljYWxPcmdhbml6YXRpb24iLCJMb2NhbEJ1c2luZXNzIl0sIkBpZCI6Imh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyNjbGluaWMiLCJuYW1lIjoi67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImFsdGVybmF0ZU5hbWUiOlsiQmFyZXVuIEtvcmVhbiBNZWRpY2luZSBDbGluaWMgRGFlamVvbiIsIuuMgOyghCDrsJTrpbjtlZzsnZjsm5AiXSwidXJsIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vIiwibG9nbyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2FyZF8xX2RpcmVjdG9yLndlYnAiLCJpbWFnZSI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL29nLWJhcmV1bi0xMjAweDYzMC5qcGciLCJ0ZWxlcGhvbmUiOiIrODItMTAtNTYzMS0xMjc1IiwicHJpY2VSYW5nZSI6IuKCqeKCqSIsImFkZHJlc3MiOnsiQHR5cGUiOiJQb3N0YWxBZGRyZXNzIiwic3RyZWV0QWRkcmVzcyI6Iuu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSIsImFkZHJlc3NMb2NhbGl0eSI6IuuMgOuNleq1rCIsImFkZHJlc3NSZWdpb24iOiLrjIDsoITqtJHsl63si5wiLCJwb3N0YWxDb2RlIjoiMzQ0MTciLCJhZGRyZXNzQ291bnRyeSI6IktSIn0sImdlbyI6eyJAdHlwZSI6Ikdlb0Nvb3JkaW5hdGVzIiwibGF0aXR1ZGUiOjM2LjM1NTM2LCJsb25naXR1ZGUiOjEyNy40NDc3OH0sIm9wZW5pbmdIb3Vyc1NwZWNpZmljYXRpb24iOlt7IkB0eXBlIjoiT3BlbmluZ0hvdXJzU3BlY2lmaWNhdGlvbiIsImRheU9mV2VlayI6WyJNb25kYXkiLCJUdWVzZGF5IiwiV2VkbmVzZGF5IiwiVGh1cnNkYXkiLCJGcmlkYXkiXSwib3BlbnMiOiIwOTowMCIsImNsb3NlcyI6IjE5OjAwIn0seyJAdHlwZSI6Ik9wZW5pbmdIb3Vyc1NwZWNpZmljYXRpb24iLCJkYXlPZldlZWsiOlsiU2F0dXJkYXkiLCJQdWJsaWNIb2xpZGF5cyJdLCJvcGVucyI6IjA5OjAwIiwiY2xvc2VzIjoiMTQ6MDAifV0sInNhbWVBcyI6WyJodHRwczovL25hdmVyLm1lLzVVMUVMbjhMIiwiaHR0cHM6Ly9ibG9nLm5hdmVyLmNvbS93ZWkwNTA4IiwiaHR0cHM6Ly9wZi5rYWthby5jb20vX3lreGNMSyJdLCJmb3VuZGVyIjp7IkB0eXBlIjoiUGVyc29uIiwiQGlkIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vZGlyZWN0b3IvI3BoeXNpY2lhbiIsIm5hbWUiOiLslYjsoJXsnIQiLCJqb2JUaXRsZSI6IuuMgO2RnOybkOyepSAo7ZWc7J2Y7IKsKSJ9fSwid2Vic2l0ZU5vZGUiOnsiQHR5cGUiOiJXZWJTaXRlIiwiQGlkIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vI3dlYnNpdGUiLCJuYW1lIjoi67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsInVybCI6Imh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyIsImluTGFuZ3VhZ2UiOiJrby1LUiIsInB1Ymxpc2hlciI6eyJAaWQiOiJodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS8jY2xpbmljIn19LCJwYWdlcyI6eyJob21lIjp7ImZpbGUiOiJpbmRleC5odG1sIiwicGF0aCI6Ii8iLCJ0aXRsZSI6IuuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAgfCDrjIDrjZXqtawg67mE656Y64+ZIOy2lOuCmMK37ISx7J6lwrfri6TsnbTslrTtirjCt+2DiOuqqMK36rO17KeE64uoIiwiZGVzY3JpcHRpb24iOiLrjIDsoIQg64yA642V6rWsIOu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQKDAxMC01NjMxLTEyNzUpLiDslYjsoJXsnIQg64yA7ZGc7JuQ7J6l7J2YIOyLrOy4tSDrp6Xsp4TCtznrjIAg7KCV67CA6rKA7KeE6rO8IO2VmeyIoCDrhbzrrLgg6rKA7KadIOyViOyLrCDtlZzslb3snLzroZwg7LaU64KYwrftgqTshLHsnqXCt+uLpOydtOyWtO2KuMK37YOI66qowrftmansoJzqs7Xsp4Tri6jCt+yghOumveyEoOydhCDrp57stqQg7KeE66OM7ZWp64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2NhcmRfMV9kaXJlY3Rvci53ZWJwIiwiYnJlYWRjcnVtYk5hbWUiOiLtmYgifSwic3RvcnktM2QiOnsiZmlsZSI6InN0b3J5LTNkLmh0bWwiLCJwYXRoIjoiLyIsInRpdGxlIjoi67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCB8IOuMgOuNleq1rCDruYTrnpjrj5kg7LaU64KYwrfshLHsnqXCt+uLpOydtOyWtO2KuMK37YOI66qowrfqs7Xsp4Tri6giLCJkZXNjcmlwdGlvbiI6IuuMgOyghCDrjIDrjZXqtawg67mE656Y64+Z66GcN+uyiOq4uCAxLCAy7Li1IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAoMDEwLTU2MzEtMTI3NSkuIOyViOygleychCDrjIDtkZzsm5DsnqXsnZgg7Ius7Li1IOunpeynhMK3OeuMgCDsoJXrsIDqsoDsp4Tqs7wg7ZWZ7IigIOuFvOusuCDqsoDspp0g7JWI7IusIO2VnOyVveycvOuhnCDstpTrgpjCt+2CpOyEseyepcK364uk7J207Ja07Yq4wrftg4jrqqjCt+2ZqeygnOqzteynhOuLqMK37KCE66a97ISg7J2EIOunnuy2pCDsp4Tro4ztlanri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2FyZF8xX2RpcmVjdG9yLndlYnAiLCJicmVhZGNydW1iTmFtZSI6Iu2ZiCJ9LCJkaXJlY3RvciI6eyJmaWxlIjoiZGlyZWN0b3IuaHRtbCIsInBhdGgiOiIvZGlyZWN0b3IvIiwidGl0bGUiOiLslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIMK3IDnrjIAg7KCV67CA6rKA7KeEIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCDsgqzsg4HssrTsp4jCt+y0iOydjO2MjCIsImRlc2NyaXB0aW9uIjoi7LSI7J2M7YyMwrfssrTsl7Tsp4Tri6jCt+ydtOu5hOyduO2bhCDrgrTsi5zqsr3Ct+yCrOyDgeyytOyniMK37J6Q7Jyo7Iug6rK9KEhSVinCt+qwhOyImOy5mMK37ISx7J6l7YyQ6rmM7KeAIDnrjIAg7KCV67CA6rKA7KeE6rO8IOybkOuCtCDslYjsi6wg7YOV7KCEIOyLnOyKpO2FnOycvOuhnCDsp4jtmZjsnZgg67+M66as66W8IOywvuuKlCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIOyViOygleychCDrjIDtkZzsm5DsnqUg7KeE66OMIOyyoO2VmeydhCDshozqsJztlanri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2FyZF8xX2RpcmVjdG9yLndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuyViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4QiLCJpc1Byb2ZpbGUiOnRydWV9LCJjaHVuYSI6eyJmaWxlIjoiY2h1bmEuaHRtbCIsInBhdGgiOiIvY2h1bmEvIiwidGl0bGUiOiLrjIDsoIQg7LaU64KY7JqU67KVIMK3IO2XiOumrOuUlOyKpO2BrCDCtyDssrTtmJXqtZDsoJUg7YG066as64uJIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi7KeE7Ya17KCc66GcIO2GteymneunjCDqsIDrpqzsp4Ag7JWK6rOgIOuMgO2RnOybkOyepSAxOjEg7IiY6riwIOy2lOuCmOyZgCDslb3suajsnLzroZwg7YuA7Ja07KeEIOyymey2lMK36rOo67CYwrfqsbDrtoHrqqkg7KSR7Ius7LaV7J2EIOuwlOuhnOyeoeyKteuLiOuLpC4gSkFNQcK3TGFuY2V0IO2VmeyIoCDrhbzrrLgg6re86rGwIOq4sOuwmCDruYTsiJjsiKAg7LKZ7LaUwrfqtIDsoIgg7Ya17KadIOy5mOujjCDtgbTrpqzri4nsnoXri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2h1bmFfbWluaW1hbF9jYXJkMl9wYWlua2lsbGVyX2xpbWl0LndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluCDstpTrgpggwrcg7LKZ7LaU6rWQ7KCVIn0sImdyb3d0aCI6eyJmaWxlIjoiZ3Jvd3RoLmh0bWwiLCJwYXRoIjoiL2dyb3d0aC8iLCJ0aXRsZSI6IuuMgOyghCDshozslYQg7YKk7ISx7J6lIMK3IOyEseyhsOyImeymnSDCtyDruYTsl7wg7ISx7J6l7YG066as64uJIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg7KCV67CAIOqygOyCrOyZgCDqta3qsIDqs7Xsnbgg7JWI7IusIO2VnOyVveycvOuhnCDshLHtmLjrpbTrqqwg6rO87ZWt7KeEIOyXhuydtCDshLHsnqXtjJAg7Jew6rOoIOymneyLnSwg7IaM7JWE67mE66eMIOuMgOyCrCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOuptOyXreydhCDtlajqu5gg7YKk7Jqw64qUIOuMgOyghCDshozslYQg7ISx7J6lIO2BtOumrOuLieyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9ncm93dGgtZGlyZWN0b3Itc29uLWNvbXBhcmlzb24ud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0ifSwiZGlldC16ZXJvIjp7ImZpbGUiOiJkaWV0LXplcm8uaHRtbCIsInBhdGgiOiIvZGlldC16ZXJvLyIsInRpdGxlIjoi64yA7KCEIOuLpOydtOyWtO2KuCDtlZzsnZjsm5Agwrcg7Iud7JqVWkVSTyDqt7zsnKHri6TsnbTslrTtirggfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLrrLTsnpHsoJUg6rW264qUIOyalOyalCDsl4bsnbQg6riw7LSI64yA7IKs7JmAIOqwiOyDieyngOuwqSDsl7Dshozrpbwg6rmo7JuMIOq3vOycoeydgCDsp4DtgqTqs6Ag64K07J6l7KeA67CpwrfrtoDsooUg64+F7IaM66eMIOu5hOybjOuCtOuKlCDrsJTrpbgg7Iud7JqVWkVSTyDri6TsnbTslrTtirgg7ZWc7JW9LiDrjIDtkZzsm5DsnqUgMToxIOynhOunpSDrsI8g67mE64yA66m0IOyDgeuLtOydhCDsp4Dsm5Dtlanri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvZGlldF9taW5pbWFsX2NhcmQyX3N0YXJ2YXRpb25fbXVzY2xlX2xvc3Mud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOuLpOydtOyWtO2KuCDCtyDsi53smpVaRVJPIn0sImhhaXJsb3NzIjp7ImZpbGUiOiJoYWlybG9zcy5odG1sIiwicGF0aCI6Ii9oYWlybG9zcy8iLCJ0aXRsZSI6IuuMgOyghCDtg4jrqqgg7ZWc7J2Y7JuQIMK3IOuRkO2UvOyXtCDrqqjqt7zsnqzsg50gNOuMgCDtgbTrpqzri4kgfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLrqLjrpqzripQg65yo6rKB6rOgIOyGkOuwnOydgCDssKwg7IOB7Je07ZWY7ZWcIOuRkO2UvCDsgqzrp4ntmZTrpbwg7IiY7Iq57ZmU6rCVIOyyreyXtCDtlZzslb3Ct+qyvey2lCDstpTrgpjCt+uqqOuCrSDslb3suajsnLzroZwg64uk7Iqk66a964uI64ukLiDrgqjshLHCt+yXrOyEscK37JuQ7ZiV7YOI66qowrfsp4Dro6jshLHrkZDtlLzsl7wgNOuMgCDsnKDtmJXrs4Qg66ee7LakIOuqqOq3vOyerOyDnSDsuZjro4zrpbwg7Iuc7ZaJ7ZWp64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2RldGFpbF9oYWlyX3N0b3J5MV8zMGNtX3RlbnNpb24ud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IO2DiOuqqCDCtyDrqqjqt7zsnqzsg50ifSwiaGFpcmxvc3MtbWFsZSI6eyJmaWxlIjoiaGFpcmxvc3MtbWFsZS5odG1sIiwicGF0aCI6Ii9oYWlybG9zcy1tYWxlLyIsInRpdGxlIjoi64yA7KCEIOuCqOyEse2DiOuqqCDCtyBN7J6QIMK3IOygleyImOumrCDrqqjqt7zsnqzsg50gfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIO2DiOuqqCIsImRlc2NyaXB0aW9uIjoi7Zi466W066qsIOyWteygnCDrtoDri7TsnYQg642c6rOgIOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rGw67aB66qpIOqyvey2lCDstpTrgpgsIOygleygnCDrsJzrqqgg7JW97Lmo7Jy866GcIE3snpAg7J2066eI7JmAIOygleyImOumrCDqsIDripjslrTsp4Qg66qo6re87J2YIOyekOyDneugpeydhCDquajsmrDripQg64yA7KCEIOuCqOyEse2DiOuqqCDsp5HspJEg7YG066as64uJ7J6F64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2RldGFpbF9oYWlyX3N0b3J5MV8zMGNtX3RlbnNpb24ud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOuCqOyEse2DiOuqqCDCtyBN7J6QwrfsoJXsiJjrpqwifSwiaGFpcmxvc3MtYWxvcGVjaWEiOnsiZmlsZSI6ImhhaXJsb3NzLWFsb3BlY2lhLmh0bWwiLCJwYXRoIjoiL2hhaXJsb3NzLWFsb3BlY2lhLyIsInRpdGxlIjoi64yA7KCEIOybkO2Yle2DiOuqqCDCtyDsnpDqsIDrqbTsl60g65GQ7ZS8IOuzteybkCDtgbTrpqzri4kgfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLsiqTthYzroZzsnbTrk5wg7J2Y7KG06rO8IOyerOuwnCDqsbHsoJUg7JeG7J20IOyekOycqOyLoOqyvShIUlYpIOyViOygleqzvCDrqqjrgq0g7KO87JyEIOyekOqwgOuptOyXrSDqt6DtmJUg7ZqM67O17Jy866GcIOuPmeyghCDrqqjslpEg64uo67Cc7ISxwrfri6TrsJzshLHCt+yCrO2WieyEsSDsm5DtmJXtg4jrqqjsnZgg67+M66as66W8IOy5mOujjO2VmOuKlCDrqbTsl60g67O17JuQIO2BtOumrOuLieyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9kZXRhaWxfaGFpcl9mb2xsaWNsZV8zZC53ZWJwIiwiYnJlYWRjcnVtYk5hbWUiOiLrsJTrpbgg7JuQ7ZiV7YOI66qoIMK3IOuptOyXreuzteybkCJ9LCJoYWlybG9zcy1mZW1hbGUiOnsiZmlsZSI6ImhhaXJsb3NzLWZlbWFsZS5odG1sIiwicGF0aCI6Ii9oYWlybG9zcy1mZW1hbGUvIiwidGl0bGUiOiLrjIDsoIQg7Jes7ISx7YOI66qoIMK3IOygleyImOumrCDqsIDrpbTrp4gg67O866WoIO2BtOumrOuLiSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6Iuy2nOyCsMK36rCx64WE6riwwrfsiqTtirjroIjsiqTroZwg65GQ7ZS864qUIOucqOqygeqzoCDslYTrnqvrsLDripQg7LCsIOyXrOyEsSDsg4Hsl7TtlZjtlZzqs7wg7ZiI7ZeI66W8IOuLpOyKpOugpCDrhJPslrTsp4Qg6rCA66W066eIIOuwgOuPhOyZgCDsoJXsiJjrpqwg66qo67CcIOuzvOulqOydhCDqsbTqsJXtlZjqsowg65CY7IK066as64qUIOyXrOyEsSDrp57stqQg7YOI66qoIO2BtOumrOuLieyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9kZXRhaWxfaGFpcl9zdG9yeTFfZGF0ZV9ib3cud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOyXrOyEse2DiOuqqCDCtyDqsIDrpbTrp4jCt+uzvOulqCJ9LCJoYWlybG9zcy1zZWJvcnJoZWljIjp7ImZpbGUiOiJoYWlybG9zcy1zZWJvcnJoZWljLmh0bWwiLCJwYXRoIjoiL2hhaXJsb3NzLXNlYm9ycmhlaWMvIiwidGl0bGUiOiLrjIDsoIQg7KeA66Oo7ISx65GQ7ZS87Je8IMK3IOuRkO2UvCDtmY3rsJggwrcg66qo64Kt7Je8IO2VtOuPhSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6IuyDtO2RuMK37Jew6rOg66Gc64+EIOuwmOuzteuQmOuKlCDrkZDtlLwg7Je06rCQLCDrtonsnYAg7ZmN67CYLCDtmZTrho3shLEg66qo64Kt7Je8LCDqsIDroKTsm4Dqs7wg67mE65OsIOqwgeyniOydhCDsi6zrtoAg7LKt7Je07ZW064+FIO2VnOyVveqzvCDrkZDtlLwg7KeE7ZS8IOyepeuyvSDsvIDslrTroZwg7KeE7KCV7Iuc7YKk64qUIOyngOujqOyEseuRkO2UvOyXvCDtgbTrpqzri4nsnoXri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvZGV0YWlsX2hhaXJfdGhlcm1vZ3JhcGh5LndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluCDsp4Dro6jshLHrkZDtlLzsl7wgwrcg7Je064+F7ZW064+FIn0sImdvbmdqaW5kYW4iOnsiZmlsZSI6ImdvbmdqaW5kYW4uaHRtbCIsInBhdGgiOiIvZ29uZ2ppbmRhbi8iLCJ0aXRsZSI6IuuMgOyghCDqs7Xsp4Tri6ggwrcg7Iud7JW97LKYIOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi7Iud7JW97LKYIENJVEVTIOyduOymnSDsspzsl7Ag7IKs7ZalKEwtTXVzY29uZSnqs7wg65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57Jqp7J2EIOuMgO2RnOybkOyepeydtCDsoJXrsIAg6rOE65+JwrfsiJjsoJwg7KGw7KCc7ZWp64uI64ukLiDrp4zshLHtlLzroZzCt+uHjOyLoOqyvSDrs7TtmLjCt+uptOyXreugpcK37IiY7ZeY7IOdwrfrtoDrqqjri5gg6riw66ClIO2ajOuztSDrp57stqQg7LKY67CpLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2dvbmdqaW5kYW5fbWluaW1hbF9jYXJkM19jaXJjdWxhdGlvbl9hLndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluCDtmansoJzqs7Xsp4Tri6gifSwicHJvc3RhdGUiOnsiZmlsZSI6InByb3N0YXRlLmh0bWwiLCJwYXRoIjoiL3Byb3N0YXRlLyIsInRpdGxlIjoi64yA7KCEIOyghOumveyEoOyXvCDCtyDsoITrpr3shKDruYTrjIAgwrcg7JW86rCE64eoIO2BtOumrOuLiSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6IuuwmOuzteuQmOuKlCDsnpTrh6jqsJAsIOyDiOuyvSDslbzqsITrh6gsIOqzqOuwmMK37ZqM7J2M67aAIO2GteymneydhCDsoITrpr3shKAg7Jq47ZiIIOqwkOyVlSDtlZzslb0sIOqzqOuwmCDqtZDsoJUg7LaU64KYLCDrsKnqtJHCt+yLoOyepSDsmKjslpEg7JW97Lmo7Jy866GcIOuLpOyKpOugpCDsi5zsm5DtlZwg67Cw64eo7JmAIOq5iuydgCDsiJnrqbTsnYQg65CY7LC+7JWEIOuTnOumveuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9wcm9zdGF0ZV9taW5pbWFsX2NhcmQyX2FudGliaW90aWNfbGltaXQud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUifSwiYm9keS1leHBsb3JlciI6eyJmaWxlIjoiYm9keS1leHBsb3Jlci5odG1sIiwicGF0aCI6Ii9ib2R5LWV4cGxvcmVyLyIsInRpdGxlIjoiM0Qg7J247LK066qo7ZiVIO2VtOu2gO2VmSDqsIDsnbTrk5wgJiDsp4Tro4wg7IK07Y6067O06riwIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi7ZKA7Iqk7YGs66awIDNEIOyduOyytOuqqO2YleycvOuhnCDrqLjrpqzrtoDthLAg67Cc64Gd6rmM7KeAIOq3vOycocK37Iug6rK9wrfqtIDsoIjCt+2YiOq0gCDqtazsobDsmYAgOeuMgCDrtoDsnITrs4Qg7IOd7ZmcIOqxtOqwlSDqtIDrpqzrspUsIO2VtOyZuCBTQ0kg7J2Y7ZWZIOuFvOusuCDsmpTslb3snYQg7ZWc64iI7JeQIO2DkOyDie2VmOuKlCDsnbjthLDrnpnti7DruIwg6rG06rCVIO2PrO2EuOyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvb2ctYmFyZXVuLTEyMDB4NjMwLmpwZyIsImJyZWFkY3J1bWJOYW1lIjoiM0Qg7J247LK066qo7ZiVIOynhOujjCDsgrTtjrTrs7TquLAifSwiYXNrLWRvY3RvciI6eyJmaWxlIjoiYXNrLWRvY3Rvci5odG1sIiwicGF0aCI6Ii9hc2stZG9jdG9yLyIsInRpdGxlIjoi7Ya17ZWp7J2Y7ZWZIOyduOyCrOydtO2KuCDsoIDrhJAgJiAxOjEg67mE6rO16rCcIOqxtOqwlSBRJkEgfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiJOYXR1cmUgTWVkaWNpbmXCt05FSk3Ct0xhbmNldMK3SkFNQSDrk7Eg7ZW07Jm4IOydmO2VmSDsoIDrhJAg6riw67CYIOqxtOqwlSDsubzrn7zqs7wgOeuMgCDsp4jtmZgg7Lm07YWM6rOg66as67OEIDEwMCUg67mE6rO16rCcIDE6MSDsnZjro4zsp4Qg6rG06rCVIOyDgeuLtCjshozshZwg6rCE7Y64IOuhnOq3uOyduCkg6rO16rCE7J6F64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS9vZy1iYXJldW4tMTIwMHg2MzAuanBnIiwiYnJlYWRjcnVtYk5hbWUiOiLsnZjtlZkg7J247IKs7J207Yq4ICYgMToxIOu5hOqzteqwnCBRJkEiLCJoYXNGYXEiOnRydWV9LCJsaWZ0aW5nLWNvbXBhcmUiOnsiZmlsZSI6ImxpZnRpbmctY29tcGFyZS5odG1sIiwicGF0aCI6Ii9saWZ0aW5nLWNvbXBhcmUvIiwidGl0bGUiOiLrjIDsoIQg7ZWc67CpIOumrO2UhO2MhSDCtyDruYTsiJjsiKAg7KCE7ZuEIOycpOqzveynhOuLqCB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6IuyImOyIoCDsl4bsnbQg7LKY7KeEIO2EseyEoMK37YyU7J6QwrfslYjrqbQg67mE64yA7LmtIO2DhOugpeydhCDrs7Xsm5DtlZjripQg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCDtlZzrsKkg66ek7ISgwrfslb3suagg66as7ZSE7YyFIO2BtOumrOuLiSDrsI8gM+ygkCDspJHsi6zstpUg7KCV67CAIOyghO2bhCDsnKTqs70g67mE6rWQIOynhOuLqCDsiqTtipzrlJTsmKTsnoXri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL29nLWJhcmV1bi0xMjAweDYzMC5qcGciLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluOumrO2UhO2MhSDsi5zsiKAg7KCE7ZuEIOycpOqzveynhOuLqCJ9LCJpbnRlZ3JhdGl2ZS1hdXRvbm9taWMtY2lyY2FkaWFuLWd1dC1zcGluZS1oZWFsdGgtcmV2aWV3Ijp7ImZpbGUiOm51bGwsInBhdGgiOiIvaW50ZWdyYXRpdmUtYXV0b25vbWljLWNpcmNhZGlhbi1ndXQtc3BpbmUtaGVhbHRoLXJldmlldy8iLCJ0aXRsZSI6IuunjOyEse2UvOuhnMK37IaM7ZmU7J6l7JWgwrfsspnstpTthrXspp0g7Ya17ZWp7IOd66as7ZWZIOqwgOydtOuTnCB8IOuwlOuluCDthrXtlansnZjtlZkg7KCA64SQIiwiZGVzY3JpcHRpb24iOiLrp4zshLEg7ZS866GcLCDshoztmZQg67aI65+JLCDsspnstpQg7Ya17Kad7J20IOyZnCDrj5nsi5zsl5Ag64KY7YOA64KY64qU7KeAIO2VtOyZuCBTQ0kg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgSkFNQSwgTGFuY2V0KSDqt7zqsbDroZwg7J6Q7Jyo7Iug6rK9wrfsnqUt64eMIOy2lcK37IOd7LK07Jet7ZWZIOyXsOqysOqzoOumrOulvCDrtoTshJ3tlZwg7J2Y7ZWZIOumrOu3sOyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvb2ctYmFyZXVuLTEyMDB4NjMwLmpwZyIsImJyZWFkY3J1bWJOYW1lIjoi66eM7ISx7ZS866GcwrfshoztmZTsnqXslaDCt+yymey2lO2GteymnSDthrXtlansg53rpqztlZkg6rCA7J2065OcIiwiaXNBcnRpY2xlIjp0cnVlLCJkYXRlUHVibGlzaGVkIjoiMjAyNi0xMC0yNiIsImRhdGVNb2RpZmllZCI6IjIwMjYtMTAtMjcifX19');
+            $decoded = json_decode($raw, true);
+            self::$cached_cfg = is_array($decoded) ? $decoded : array();
+        }
+        return self::$cached_cfg;
+    }
+
+    public static function maybe_sync_htaccess_headers() {
+        if (get_option(self::OPT_HTACCESS_VER) === '2') {
+            return;
+        }
+        $ht_file = ABSPATH . '.htaccess';
+        if (file_exists($ht_file) && is_writable($ht_file)) {
+            $cur = @file_get_contents($ht_file);
+            if (is_string($cur)) {
+                $cur = preg_replace('/# BEGIN BareunSEOHeaders[\s\S]*?# END BareunSEOHeaders\s*/', '', $cur);
+                $block = "# BEGIN BareunSEOHeaders\n"
+                    . "<IfModule mod_headers.c>\n"
+                    . "Header always set Strict-Transport-Security \"max-age=31536000; includeSubDomains\"\n"
+                    . "Header always set Content-Security-Policy \"frame-ancestors 'self'; upgrade-insecure-requests\"\n"
+                    . "Header always set X-Content-Type-Options \"nosniff\"\n"
+                    . "Header always set X-Frame-Options \"SAMEORIGIN\"\n"
+                    . "Header always set Referrer-Policy \"strict-origin-when-cross-origin\"\n"
+                    . "</IfModule>\n"
+                    . "# END BareunSEOHeaders\n\n";
+                @file_put_contents($ht_file, $block . ltrim($cur));
+                update_option(self::OPT_HTACCESS_VER, '2');
+            }
+        }
+    }
+
+    private static function is_request_https() {
+        if (is_ssl()) {
+            return true;
+        }
+        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
+            return true;
+        }
+        if (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower((string) $_SERVER['HTTP_X_FORWARDED_SSL']) === 'on') {
+            return true;
+        }
+        return false;
+    }
+
+    public static function handle_early_canonical_and_virtual_endpoints() {
+        if (is_admin() || wp_doing_ajax() || wp_doing_cron() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('WP_CLI') && WP_CLI)) {
+            return;
+        }
+        $method = isset($_SERVER['REQUEST_METHOD']) ? strtoupper((string) $_SERVER['REQUEST_METHOD']) : 'GET';
+        if ($method !== 'GET' && $method !== 'HEAD') {
+            return;
+        }
+        $req_uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '/';
+        if (preg_match('#^/(wp-admin|wp-login\.php|wp-json|wp-cron\.php|xmlrpc\.php)#i', $req_uri)) {
+            return;
+        }
+
+        $host = isset($_SERVER['HTTP_HOST']) ? strtolower(trim((string) $_SERVER['HTTP_HOST'])) : '';
+        $host = preg_replace('/:\d+$/', '', $host);
+        $is_https = self::is_request_https();
+
+        $parsed = parse_url($req_uri);
+        $path = isset($parsed['path']) ? $parsed['path'] : '/';
+        $query = isset($parsed['query']) && $parsed['query'] !== '' ? ('?' . $parsed['query']) : '';
+
+        // Map legacy / thin archive paths to canonical targets in 1 hop
+        $target_path = $path;
+        if (preg_match('#^/gongjindan-[23](/.*)?$#i', $path)) {
+            $target_path = '/gongjindan/';
+        } elseif (preg_match('#^/46-2(/.*)?$#i', $path)) {
+            $target_path = '/';
+        } elseif (preg_match('#^/author(/.*)?$#i', $path)) {
+            $target_path = '/director/';
+        } elseif (preg_match('#^/(category|tag)(/.*)?$#i', $path)) {
+            $target_path = '/ask-doctor/';
+        }
+
+        // Enforce 1-hop 301 redirect to https://www.bareunhaniwon.com + canonical path
+        if (($host !== '' && $host !== self::CANONICAL_HOST) || !$is_https || $target_path !== $path) {
+            if (!defined('DONOTCACHEPAGE')) {
+                define('DONOTCACHEPAGE', true);
+            }
+            header('Cache-Control: no-store, no-cache, must-revalidate', true);
+            header('Location: ' . self::CANONICAL_ORIGIN . $target_path . $query, true, 301);
+            exit;
+        }
+
+        // Serve virtual /llms.txt (AI GEO C7)
+        if ($path === '/llms.txt') {
+            if (!defined('DONOTCACHEPAGE')) {
+                define('DONOTCACHEPAGE', true);
+            }
+            self::send_security_headers();
+            status_header(200);
+            header('Content-Type: text/plain; charset=utf-8', true);
+            header('Cache-Control: public, max-age=3600', true);
+            echo base64_decode('IyDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uIE1haW4gQnJhbmNoKQo+IOuMgOyghOq0keyXreyLnCDrjIDrjZXqtawg67mE656Y64+Z66GcN+uyiOq4uCAxLCAy7Li1ICjsmrDtjrjrsojtmLggMzQ0MTcpIHwg64yA7ZGc67KI7Zi4OiAwMTAtNTYzMS0xMjc1IHwg64yA7ZGc7JuQ7J6lOiDslYjsoJXsnIQKPiDsp4Tro4zsi5zqsIQ6IO2PieydvCjsm5R+6riIKSAwOTowMH4xOTowMCDCtyDthqDsmpTsnbwg67CPIOqzte2ctOydvCAwOTowMH4xNDowMCDCtyDsnbzsmpTsnbwg7Zy07KeECj4g7ZW07Jm4IOuplOydtOyggCDsnZjtlZkg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgTkVKTSwgVGhlIExhbmNldCwgSkFNQSwgUGh5c2lvbG9naWNhbCBSZXZpZXdzLCBFdXJvcGVhbiBIZWFydCBKb3VybmFsLCBKQ0VNLCBIdW1hbiBSZXByb2R1Y3Rpb24gVXBkYXRlLCBFdXJvcGVhbiBVcm9sb2d5KSDrsI8g7Ya17ZWp7IOd66as7ZWZIOyXsOq1rCDqt7zqsbAg6riw67CYIDnrjIAg7KCV67CA6rKA7KeEIMK3IDE6MSDsgqzsg4HssrTsp4gg7ZWc7JW9IMK3IOyImOq4sCDstpTrgpggwrcg7IaM7JWEIO2CpOyEseyepSDCtyDsi53smpVaRVJPIOuLpOydtOyWtO2KuCDCtyDrkZDtlLzsl7Qg7YOI66qoIMK3IOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIMK3IOyghOumveyEoCDtgbTrpqzri4kgJiDtkoDsiqTtgazrprAgM0Qg7J247LK066qo7ZiVIOqxtOqwlSDtj6zthLguCgojIyBDbGluaWMgSW5mb3JtYXRpb24gKE5BUCAmIE9mZmljaWFsIENoYW5uZWxzKQotIE9mZmljaWFsIFdlYnNpdGU6IGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLwotIENsaW5pYyBOYW1lOiDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uKQotIENoaWVmIERpcmVjdG9yOiDslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIChEci4gSnVuZy1XaSBBaG4sIEtNRCkKLSBBZGRyZXNzOiDrjIDsoITqtJHsl63si5wg64yA642V6rWsIOu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSAoMkYsIDEsIEJpcmFlZG9uZy1ybyA3YmVvbi1naWwsIERhZWRlb2stZ3UsIERhZWplb24sIDM0NDE3LCBSZXB1YmxpYyBvZiBLb3JlYSkKLSBUZWxlcGhvbmU6IDAxMC01NjMxLTEyNzUgKCs4Mi0xMC01NjMxLTEyNzUpCi0gSG91cnM6IE1vbi1GcmkgMDk6MDAtMTk6MDAsIFNhdCAmIFB1YmxpYyBIb2xpZGF5cyAwOTowMC0xNDowMCwgQ2xvc2VkIG9uIFN1bmRheXMKLSBOYXZlciBQbGFjZTogaHR0cHM6Ly9uYXZlci5tZS81VTFFTG44TAotIE9mZmljaWFsIEJsb2c6IGh0dHBzOi8vYmxvZy5uYXZlci5jb20vd2VpMDUwOAotIEtha2FvVGFsayBDb25zdWx0YXRpb246IGh0dHBzOi8vcGYua2FrYW8uY29tL195a3hjTEsKCiMjIFNwZWNpYWxpemVkIENsaW5pY2FsIERpdmlzaW9ucwotIFvrqZTsnbggM0Qg7ZmY7J6QIOyKpO2GoOumrCDsh7zro7hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyk6IOyVhOu5oCDtlZzsnZjsgqzrpbwg7LC+64qUIO2ZmOyekCDsiqTthqDrpqwg67CPIDbrjIAg7KSR7KCQIO2BtOumrOuLiSDslYjrgrQuCi0gW+yViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4RdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpcmVjdG9yLyk6IOy0iOydjO2MjCwg7KCB7Jm47ISgIOyytOyXtOynhOuLqCwg7J2067mE7J247ZuEIOuCtOyLnOqyvSwg7IKs7IOB7LK07KeILCDssrTsp4DrsKkoSW5Cb2R5KSwg7J6Q7Jyo7Iug6rK9KEhSViksIOqwhMK364u5IOuMgOyCrCwg7ZiI6rSAIOuFuO2ZlCwg7ISx7J6l7YyQIOqygOyCrCDrsI8g7JuQ64K0IOustOq3oCDtg5XsoIQg7Iuc7Iqk7YWcLgotIFvrsJTrpbgg7LaU64KYIMK3IOyymey2lOq1kOyglSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2NodW5hLyk6IO2XiOumrOuUlOyKpO2BrCwg66qp65SU7Iqk7YGsLCDqsbDrtoHrqqksIOqzqOuwmCDrtojqt6DtmJUsIOyymey2lOq0gO2YkeywqeymnSDruYTsiJjsiKAg64yA7ZGc7JuQ7J6lIOyImOq4sCDstpTrgpjsmpTrspUg67CPIOyVvey5qC4KLSBb67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0g7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9ncm93dGgvKTog66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg67aE7ISdLCDshozslYTruYTrp4wg7LK07KeA67CpLe2CpCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOygkOuniSDrqbTsl60g67CPIOyEseyepSDtlZzslb0uCi0gW+uwlOuluCDri6TsnbTslrTtirggwrcg7Iud7JqVWkVSTyDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpZXQtemVyby8pOiDqsIjsg4nsp4DrsKkg64yA7IKsIO2ZnOyEse2ZlCwg6re87JyhIOuztOyhtCDssrTsp4DrsKkg6rCQ65+JLCDrtoDsooXCt+uPheyGjCDrsLDstpwg66ee7LakIO2VnOyVvSDrsI8g67mE64yA66m0IOynhOujjCDsp4Dsm5AuCi0gW+uwlOuluCDtg4jrqqggwrcg66qo6re87J6s7IOdIO2Gte2VqSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLyk6IOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rK97LaUIOy2lOuCmCwg7KCV7KCcIOuwnOuqqCDslb3suaguCiAgLSBb64Ko7ISx7YOI66qoIChN7J6QwrfsoJXsiJjrpqwpXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1tYWxlLykKICAtIFvsm5DtmJXtg4jrqqggKOyekOqwgOuptOyXrSDrs7Xsm5ApXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1hbG9wZWNpYS8pCiAgLSBb7Jes7ISx7YOI66qoICjqsIDrpbTrp4jCt+uzvOulqCldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLWZlbWFsZS8pCiAgLSBb7KeA66Oo7ISx65GQ7ZS87Je8ICjrkZDtlLwg7Je064+Fwrfrqqjrgq3sl7wg7ZW064+FKV0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vaGFpcmxvc3Mtc2Vib3JyaGVpYy8pCi0gW+uwlOuluCDtmansoJzqs7Xsp4Tri6gg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9nb25namluZGFuLyk6IOyLneyVveyymCBDSVRFUyDsnbjspp0g7KCV7ZKIIOyynOyXsCDsgqztlqUoTC1NdXNjb25lKSDrsI8g65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57JqpIOuMgO2RnOybkOyepSDsp4HsoJEg7IiY7KCcIOyhsOygnC4KLSBb67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9wcm9zdGF0ZS8pOiDrp4zshLEg7KCE66a97ISg7Je8LCDsoITrpr3shKDruYTrjIDspp0sIOyVvOqwhOuHqCwg6rO866+87ISxIOuwqeq0kSwg6rOo67CY7KCA6re8IOyauO2YiCDqsJDslZUg7LmY66OMLgotIFvrsJTrpbjrpqztlITtjIUg7Iuc7IigIOyghO2bhCDsnKTqs73sp4Tri6hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2xpZnRpbmctY29tcGFyZS8pOiDruYTsiJjsiKAg7ZWc67CpIOunpOyEoMK37JW97LmoIOyViOuptCDrpqztlITtjIUg67CPIDPsoJAg7KSR7Ius7LaVIOyghO2bhCDsnKTqs70g7KCV67CAIOu5hOq1kCDsiqTtipzrlJTsmKQuCgojIyBJbnRlcmFjdGl2ZSAzRCBBbmF0b215ICYgRXZpZGVuY2UtQmFzZWQgTWVkaWNhbCBKb3VybmFsCi0gW+2SgOyKpO2BrOumsCAzRCDsnbjssrTrqqjtmJUgwrcg7KeE66OMIOyCtO2OtOuztOq4sF0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vYm9keS1leHBsb3Jlci8pOiDsoITsi6Ag6re87Jyhwrfsi6Dqsr3Ct+q0gOygiMK37ZiI6rSAIDTrjIAg6rOE7Ya1IOyLpOyLnOqwhCAzRCDrqqjshZgg67CPIDnrjIAg67aA7JyE67OEIDLsnbwg7KO86riwIOyInOyImCDqsbTqsJUg7KCV67O0IOyVhOy5tOydtOu4jC4KLSBb7Ya17ZWp7J2Y7ZWZIOyduOyCrOydtO2KuCDsoIDrhJAgJiDsp4jtmZjrs4QgMToxIOu5hOqzteqwnCBRJkFdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2Fzay1kb2N0b3IvKTog7ZW07Jm4IFNDSSDtlZnsiKDsp4Ag6riw67CYIOydmO2VmSDrpqzrt7Ag67CPIO2ajOybkCDsoITsmqkgMTAwJSDruYTqs7XqsJwgMToxIOqxtOqwlSDsg4Hri7QuCi0gW+uMgO2RnCDtlZnsiKAg7Lm865+8OiDrp4zshLEg7ZS866GcwrfshoztmZQg7J6l7JWgwrfsspnstpQg7Ya17KadIO2Gte2VqeyDneumrO2VmSDqsIDsnbTrk5xdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2ludGVncmF0aXZlLWF1dG9ub21pYy1jaXJjYWRpYW4tZ3V0LXNwaW5lLWhlYWx0aC1yZXZpZXcvKTog7J6Q7Jyo7Iug6rK9LCDsnqUt64eMIOy2lShNaWNyb2Jpb3RhLUd1dC1CcmFpbiBBeGlzKSwg7LKZ7LaUIOyDneyytOyXre2VmeydmCDsg4HtmLjsnpHsmqkg66as67ewLgo=');
+            exit;
+        }
+
+        // Serve virtual IndexNow key file (C5)
+        if ($path === '/' . self::INDEXNOW_KEY . '.txt') {
+            if (!defined('DONOTCACHEPAGE')) {
+                define('DONOTCACHEPAGE', true);
+            }
+            self::send_security_headers();
+            status_header(200);
+            header('Content-Type: text/plain; charset=utf-8', true);
+            header('Cache-Control: public, max-age=86400', true);
+            echo self::INDEXNOW_KEY;
+            exit;
+        }
+    }
+
+    public static function setup_head_cleanup() {
+        remove_action('wp_head', 'rel_canonical');
+        remove_action('wp_head', 'wp_shortlink_wp_head', 10);
+    }
+
+    public static function send_security_headers() {
+        if (headers_sent()) {
+            return;
+        }
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains', true);
+        header("Content-Security-Policy: frame-ancestors 'self'; upgrade-insecure-requests", true);
+        header('X-Content-Type-Options: nosniff', true);
+        header('X-Frame-Options: SAMEORIGIN', true);
+        header('Referrer-Policy: strict-origin-when-cross-origin', true);
+    }
+
+    public static function filter_wp_headers($headers) {
+        if (!is_array($headers)) {
+            $headers = array();
+        }
+        $headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+        $headers['Content-Security-Policy']   = "frame-ancestors 'self'; upgrade-insecure-requests";
+        $headers['X-Content-Type-Options']    = 'nosniff';
+        $headers['X-Frame-Options']           = 'SAMEORIGIN';
+        $headers['Referrer-Policy']           = 'strict-origin-when-cross-origin';
+        return $headers;
+    }
+
+    public static function filter_wp_robots($robots) {
+        if (!is_array($robots)) {
+            $robots = array();
+        }
+        if (is_404() || is_search()) {
+            $robots['noindex'] = true;
+            $robots['follow']  = true;
+            return $robots;
+        }
+        unset($robots['noindex'], $robots['nofollow']);
+        $robots['index']             = true;
+        $robots['follow']            = true;
+        $robots['max-snippet']       = -1;
+        $robots['max-image-preview'] = 'large';
+        $robots['max-video-preview'] = -1;
+        return $robots;
+    }
+
+    private static function resolve_current_page_seo() {
+        $master = self::get_master_cfg();
+        $pages  = isset($master['pages']) && is_array($master['pages']) ? $master['pages'] : array();
+        $og_opt = (string) get_option(self::OPT_OG_IMAGE_URL, '');
+        $default_og = $og_opt !== '' ? $og_opt : (isset($master['defaultOgImage']) ? $master['defaultOgImage'] : '');
+
+        if (is_front_page() || is_home()) {
+            $cfg = isset($pages['home']) ? $pages['home'] : array();
+            $cfg['ogImg'] = $default_og;
+            return $cfg;
+        }
+
+        if (is_singular()) {
+            $post = get_queried_object();
+            if ($post && !empty($post->post_name)) {
+                $slug = (string) $post->post_name;
+                if ($slug === 'gongjindan-2') {
+                    $slug = 'gongjindan';
+                } elseif ($slug === '46-2') {
+                    $slug = 'home';
+                }
+                if (isset($pages[$slug])) {
+                    $cfg = $pages[$slug];
+                    $cfg['ogImg'] = $default_og;
+                    return $cfg;
+                }
+                // Fallback for any newly created page or post
+                $rel_path = '/' . trim((string) wp_make_link_relative(get_permalink($post)), '/') . '/';
+                $raw_title = trim(wp_strip_all_tags(get_the_title($post))) . ' | 바른한의원 대전본점';
+                if (mb_strlen($raw_title, 'UTF-8') > 58) {
+                    $raw_title = mb_substr($raw_title, 0, 57, 'UTF-8') . '…';
+                }
+                $raw_desc = trim(wp_strip_all_tags(has_excerpt($post) ? get_the_excerpt($post) : wp_trim_words($post->post_content, 36, '')));
+                if ($raw_desc === '') {
+                    $raw_desc = '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점(010-5631-1275) 안정위 대표원장 맞춤 진료 및 건강 정보 안내입니다.';
+                }
+                if (mb_strlen($raw_desc, 'UTF-8') > 145) {
+                    $raw_desc = mb_substr($raw_desc, 0, 144, 'UTF-8') . '…';
+                }
+                return array(
+                    'path'           => $rel_path,
+                    'title'          => $raw_title,
+                    'description'    => $raw_desc,
+                    'preloadImg'     => '',
+                    'breadcrumbName' => trim(wp_strip_all_tags(get_the_title($post))),
+                    'isArticle'      => ($post->post_type === 'post'),
+                    'datePublished'  => get_the_date('Y-m-d', $post),
+                    'dateModified'   => get_the_modified_date('Y-m-d', $post),
+                    'ogImg'          => $default_og
+                );
+            }
+        }
+
+        $fallback = isset($pages['home']) ? $pages['home'] : array();
+        $fallback['ogImg'] = $default_og;
+        return $fallback;
+    }
+
+    public static function filter_document_title($title) {
+        if (is_admin()) {
+            return $title;
+        }
+        $cfg = self::resolve_current_page_seo();
+        if (!empty($cfg['title'])) {
+            return $cfg['title'];
+        }
+        return $title;
+    }
+
+    private static function build_json_ld($cfg) {
+        $master = self::get_master_cfg();
+        $path = !empty($cfg['path']) ? $cfg['path'] : '/';
+        $canonical_url = self::CANONICAL_ORIGIN . $path;
+        $og_img = !empty($cfg['ogImg']) ? $cfg['ogImg'] : $master['defaultOgImage'];
+
+        $org = $master['clinicBaseOrg'];
+        $org['image'] = $og_img;
+        $ws = $master['websiteNode'];
+
+        $graph = array($org, $ws);
+
+        if ($path !== '/') {
+            $graph[] = array(
+                '@type' => 'BreadcrumbList',
+                '@id'   => $canonical_url . '#breadcrumb',
+                'itemListElement' => array(
+                    array(
+                        '@type'    => 'ListItem',
+                        'position' => 1,
+                        'name'     => '바른한의원 대전본점',
+                        'item'     => self::CANONICAL_ORIGIN . '/'
+                    ),
+                    array(
+                        '@type'    => 'ListItem',
+                        'position' => 2,
+                        'name'     => !empty($cfg['breadcrumbName']) ? $cfg['breadcrumbName'] : $cfg['title'],
+                        'item'     => $canonical_url
+                    )
+                )
+            );
+        }
+
+        if (!empty($cfg['isProfile'])) {
+            $graph[] = array(
+                '@type' => 'ProfilePage',
+                '@id'   => $canonical_url . '#profile',
+                'url'   => $canonical_url,
+                'name'  => $cfg['title'],
+                'mainEntity' => array(
+                    '@type'    => 'Person',
+                    '@id'      => self::CANONICAL_ORIGIN . '/director/#physician',
+                    'name'     => '안정위',
+                    'jobTitle' => '바른한의원 대전본점 대표원장 (한의사)',
+                    'worksFor' => array('@id' => self::CANONICAL_ORIGIN . '/#clinic')
+                )
+            );
+        }
+
+        if (!empty($cfg['hasFaq'])) {
+            $graph[] = array(
+                '@type' => 'FAQPage',
+                '@id'   => $canonical_url . '#faq',
+                'mainEntity' => array(
+                    array(
+                        '@type' => 'Question',
+                        'name'  => '혈액검사와 내시경·MRI 결과가 정상인데도 왜 몸은 계속 피곤하고 아픈가요?',
+                        'acceptedAnswer' => array(
+                            '@type' => 'Answer',
+                            'text'  => '일반 영상·혈액검사는 장기 조직의 구조적 손상을 찾는 데 최적화되어 있습니다. 자율신경 변이도 저하, 위 배출 지연, 저등급 만성염증, 골반·척추의 기능적 불균형은 구조 손상 이전의 기능적 조절 장애이므로 수면·식습관·생체역학 평가가 함께 이루어져야 원인을 파악할 수 있습니다.'
+                        )
+                    ),
+                    array(
+                        '@type' => 'Question',
+                        'name'  => '바른한의원 대전본점의 위치와 진료시간은 어떻게 되나요?',
+                        'acceptedAnswer' => array(
+                            '@type' => 'Answer',
+                            'text'  => '대전광역시 대덕구 비래동로7번길 1, 2층(비래동)에 위치하고 있으며 대표전화는 010-5631-1275입니다. 평일(월~금)은 오전 9시부터 저녁 7시까지, 토요일 및 공휴일은 오전 9시부터 오후 2시까지 진료하며 일요일은 휴진입니다.'
+                        )
+                    )
+                )
+            );
+        }
+
+        if (!empty($cfg['isArticle'])) {
+            $graph[] = array(
+                '@type'         => 'Article',
+                '@id'           => $canonical_url . '#article',
+                'headline'      => $cfg['title'],
+                'description'   => $cfg['description'],
+                'image'         => array($og_img),
+                'datePublished' => !empty($cfg['datePublished']) ? $cfg['datePublished'] : '2026-10-26',
+                'dateModified'  => !empty($cfg['dateModified']) ? $cfg['dateModified'] : '2026-10-27',
+                'inLanguage'    => 'ko-KR',
+                'author'        => array(
+                    '@type' => 'Person',
+                    'name'  => '바른 통합의학 리서치 에디토리얼 (감수: 안정위 한의사)',
+                    'url'   => self::CANONICAL_ORIGIN . '/director/'
+                ),
+                'publisher'     => array('@id' => self::CANONICAL_ORIGIN . '/#clinic')
+            );
+            $graph[] = array(
+                '@type' => 'FAQPage',
+                '@id'   => $canonical_url . '#faq',
+                'mainEntity' => array(
+                    array(
+                        '@type' => 'Question',
+                        'name'  => '혈액검사와 내시경·MRI 결과가 정상인데도 왜 몸은 계속 피곤하고 아픈가요?',
+                        'acceptedAnswer' => array(
+                            '@type' => 'Answer',
+                            'text'  => '일반 영상·혈액검사는 장기 조직의 파괴나 종양·궤양 같은 구조적 병변을 찾아내는 데 최적화되어 있습니다. 반면 자율신경 변이도 저하, 위 배출 속도 지연, 저등급 만성염증, 근막·골반의 기능적 불균형은 구조적 손상 이전 단계인 기능적 조절 장애(Functional Dysregulation)에 해당하므로 수면·식습관·생체역학 평가가 함께 이루어져야 원인을 파악할 수 있습니다.'
+                        )
+                    ),
+                    array(
+                        '@type' => 'Question',
+                        'name'  => '만성 피로와 소화불량을 동시에 겪을 때 가장 먼저 바꾸어야 할 생활습관 한 가지는 무엇인가요?',
+                        'acceptedAnswer' => array(
+                            '@type' => 'Answer',
+                            'text'  => '취침 3시간 전 금식(야간 12시간 공복 유지)과 일정한 시각의 아침 자연광 노출입니다. 밤사이 위장관이 비워져야 미주신경 회복과 깊은 서파수면이 이루어지며, 다음 날 아침 코르티솔·세로토닌 일주기 리듬이 정상화되어 피로와 소화력이 함께 개선됩니다.'
+                        )
+                    )
+                )
+            );
+        }
+
+        return array(
+            '@context' => 'https://schema.org',
+            '@graph'   => $graph
+        );
+    }
+
+    public static function render_head_seo() {
+        if (is_admin()) {
+            return;
+        }
+        $cfg = self::resolve_current_page_seo();
+        $path = !empty($cfg['path']) ? $cfg['path'] : '/';
+        $canonical_url = self::CANONICAL_ORIGIN . $path;
+        $title = !empty($cfg['title']) ? $cfg['title'] : '바른한의원 대전본점';
+        $desc  = !empty($cfg['description']) ? $cfg['description'] : '';
+        $og_type = !empty($cfg['isArticle']) ? 'article' : 'website';
+        $og_img  = !empty($cfg['ogImg']) ? $cfg['ogImg'] : '';
+        $preload = !empty($cfg['preloadImg']) ? $cfg['preloadImg'] : '';
+
+        $verify = get_option(self::OPT_VERIFY_CODES, array());
+        $naver_code  = is_array($verify) && !empty($verify['naver']) ? trim((string) $verify['naver']) : '';
+        $google_code = is_array($verify) && !empty($verify['google']) ? trim((string) $verify['google']) : '';
+
+        echo "\n<!-- Bareun Master SEO & GEO Engine -->\n";
+        if ($desc !== '') {
+            echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
+        }
+        if ($naver_code !== '') {
+            echo '<meta name="naver-site-verification" content="' . esc_attr($naver_code) . '">' . "\n";
+        }
+        if ($google_code !== '') {
+            echo '<meta name="google-site-verification" content="' . esc_attr($google_code) . '">' . "\n";
+        }
+        echo '<link rel="canonical" href="' . esc_url($canonical_url) . '">' . "\n";
+        echo '<link rel="alternate" hreflang="ko-KR" href="' . esc_url($canonical_url) . '">' . "\n";
+        echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($canonical_url) . '">' . "\n";
+        echo '<meta property="og:locale" content="ko_KR">' . "\n";
+        echo '<meta property="og:type" content="' . esc_attr($og_type) . '">' . "\n";
+        echo '<meta property="og:site_name" content="바른한의원 대전본점">' . "\n";
+        echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
+        if ($desc !== '') {
+            echo '<meta property="og:description" content="' . esc_attr($desc) . '">' . "\n";
+        }
+        echo '<meta property="og:url" content="' . esc_url($canonical_url) . '">' . "\n";
+        if ($og_img !== '') {
+            echo '<meta property="og:image" content="' . esc_url($og_img) . '">' . "\n";
+            echo '<meta property="og:image:width" content="1200">' . "\n";
+            echo '<meta property="og:image:height" content="630">' . "\n";
+        }
+        echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+        echo '<meta name="twitter:title" content="' . esc_attr($title) . '">' . "\n";
+        if ($desc !== '') {
+            echo '<meta name="twitter:description" content="' . esc_attr($desc) . '">' . "\n";
+        }
+        if ($og_img !== '') {
+            echo '<meta name="twitter:image" content="' . esc_url($og_img) . '">' . "\n";
+        }
+        if ($preload !== '') {
+            echo '<link rel="preload" as="image" href="' . esc_url($preload) . '" fetchpriority="high">' . "\n";
+        }
+        $ld = self::build_json_ld($cfg);
+        echo '<script type="application/ld+json">' . wp_json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+        echo "<!-- /Bareun Master SEO & GEO Engine -->\n";
+    }
+
+    public static function filter_body_class($classes) {
+        if (!is_array($classes)) {
+            $classes = array();
+        }
+        if (is_singular('page')) {
+            $post = get_queried_object();
+            if ($post && !empty($post->post_name)) {
+                $hanji_slugs = array(
+                    'director', 'chuna', 'growth', 'diet-zero',
+                    'hairloss', 'hairloss-male', 'hairloss-alopecia',
+                    'hairloss-female', 'hairloss-seborrheic',
+                    'gongjindan', 'gongjindan-2', 'prostate'
+                );
+                if (in_array($post->post_name, $hanji_slugs, true) && !in_array('theme-hanji', $classes, true)) {
+                    $classes[] = 'theme-hanji';
+                }
+            }
+        }
+        return $classes;
+    }
+
+    public static function filter_sitemap_providers($provider, $name) {
+        if ($name === 'users' || $name === 'taxonomies') {
+            return false;
+        }
+        return $provider;
+    }
+
+    public static function filter_sitemap_post_entry($entry, $post, $post_type) {
+        if (!is_array($entry)) {
+            return $entry;
+        }
+        if (!empty($entry['loc'])) {
+            $entry['loc'] = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $entry['loc']);
+        }
+        if ($post && !empty($post->post_modified_gmt) && $post->post_modified_gmt !== '0000-00-00 00:00:00') {
+            $ts = strtotime($post->post_modified_gmt . ' UTC');
+            if ($ts) {
+                $entry['lastmod'] = wp_date('c', $ts);
+            }
+        } elseif ($post && !empty($post->post_modified)) {
+            $ts = strtotime($post->post_modified);
+            if ($ts) {
+                $entry['lastmod'] = wp_date('c', $ts);
+            }
+        }
+        if (empty($entry['lastmod'])) {
+            $entry['lastmod'] = wp_date('c');
+        }
+        return $entry;
+    }
+
+    public static function filter_robots_txt($output, $public) {
+        $lines = array(
+            'User-agent: *',
+            'Allow: /',
+            'Disallow: /wp-admin/',
+            'Allow: /wp-admin/admin-ajax.php',
+            '',
+            'User-agent: Googlebot',
+            'Allow: /',
+            '',
+            'User-agent: Yeti',
+            'Allow: /',
+            '',
+            'User-agent: GPTBot',
+            'Allow: /',
+            '',
+            'User-agent: OAI-SearchBot',
+            'Allow: /',
+            '',
+            'User-agent: ChatGPT-User',
+            'Allow: /',
+            '',
+            'User-agent: ClaudeBot',
+            'Allow: /',
+            '',
+            'User-agent: PerplexityBot',
+            'Allow: /',
+            '',
+            'User-agent: Google-Extended',
+            'Allow: /',
+            '',
+            'Sitemap: ' . self::CANONICAL_ORIGIN . '/wp-sitemap.xml',
+            ''
+        );
+        return implode("\n", $lines);
+    }
+
+    private static function extract_verification_token($raw) {
+        $str = trim( wp_unslash((string) $raw) );
+        if ($str === '') {
+            return '';
+        }
+        if (preg_match('/content\s*=\s*["\']([^"\']+)["\']/i', $str, $m)) {
+            return sanitize_text_field(trim($m[1]));
+        }
+        return sanitize_text_field($str);
+    }
+
+    public static function register_admin_menu() {
+        add_options_page(
+            '네이버·구글 검색등록 (SEO)',
+            '네이버·구글 검색등록',
+            'manage_options',
+            'bareun-seo-verify',
+            array(__CLASS__, 'render_admin_page')
+        );
+    }
+
+    public static function render_admin_page() {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+        $saved = false;
+        if (isset($_POST['bareun_seo_verify_nonce']) && wp_verify_nonce($_POST['bareun_seo_verify_nonce'], 'save_bareun_seo_verify')) {
+            $naver  = isset($_POST['naver_verify_code']) ? self::extract_verification_token($_POST['naver_verify_code']) : '';
+            $google = isset($_POST['google_verify_code']) ? self::extract_verification_token($_POST['google_verify_code']) : '';
+            update_option(self::OPT_VERIFY_CODES, array(
+                'naver'  => $naver,
+                'google' => $google
+            ));
+            $saved = true;
+        }
+        $verify = get_option(self::OPT_VERIFY_CODES, array());
+        $naver_val  = is_array($verify) && isset($verify['naver']) ? $verify['naver'] : '';
+        $google_val = is_array($verify) && isset($verify['google']) ? $verify['google'] : '';
+
+        echo '<div class="wrap" style="max-width:780px;">';
+        echo '<h1>🔍 바른한의원 대전본점 — 네이버 서치어드바이저 · 구글 서치콘솔 인증코드 등록</h1>';
+        if ($saved) {
+            echo '<div class="notice notice-success is-dismissible"><p><strong>저장 완료!</strong> 홈페이지 <code>&lt;head&gt;</code>에 소유권 확인 메타태그가 즉시 적용되었습니다. 이제 네이버/구글 화면에서 [소유확인] 버튼을 누르시면 됩니다. (캐시 플러그인 사용 시 상단 캐시 삭제 권장)</p></div>';
+        }
+        echo '<p style="font-size:14px;line-height:1.7;color:#334155;">네이버 서치어드바이저 또는 구글 서치콘솔에서 <strong>[HTML 태그]</strong> 방식을 선택하신 뒤,<br><code>&lt;meta name="naver-site-verification" content="..." /&gt;</code> <strong>태그 전체를 그대로 붙여넣으시거나</strong> <code>content</code> 안의 영문·숫자 코드만 입력하셔도 자동으로 인식됩니다.</p>';
+        echo '<form method="post" style="background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;margin-top:16px;">';
+        wp_nonce_field('save_bareun_seo_verify', 'bareun_seo_verify_nonce');
+        echo '<table class="form-table" role="presentation">';
+        echo '<tr><th scope="row"><label for="naver_verify_code">네이버 서치어드바이저<br><small style="color:#64748b;">(naver-site-verification)</small></label></th><td>';
+        echo '<input name="naver_verify_code" type="text" id="naver_verify_code" value="' . esc_attr($naver_val) . '" class="large-text code" placeholder="예: 1a2b3c4d5e... 또는 meta 태그 전체 붙여넣기">';
+        echo '<p class="description">발급처: <a href="https://searchadvisor.naver.com/" target="_blank" rel="noopener noreferrer">https://searchadvisor.naver.com/</a> → 웹마스터 도구 → 사이트 등록(<code>https://www.bareunhaniwon.com</code>)</p>';
+        echo '</td></tr>';
+        echo '<tr><th scope="row"><label for="google_verify_code">구글 서치콘솔<br><small style="color:#64748b;">(google-site-verification)</small></label></th><td>';
+        echo '<input name="google_verify_code" type="text" id="google_verify_code" value="' . esc_attr($google_val) . '" class="large-text code" placeholder="예: AbCdEfGhIjK... 또는 meta 태그 전체 붙여넣기">';
+        echo '<p class="description">발급처: <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">https://search.google.com/search-console</a> → URL 접두어(<code>https://www.bareunhaniwon.com</code>) → HTML 태그</p>';
+        echo '</td></tr>';
+        echo '</table>';
+        submit_button('인증코드 저장 및 즉시 적용');
+        echo '</form>';
+        echo '<div style="margin-top:18px;padding:16px 20px;background:#f8fafc;border-left:4px solid #2563eb;border-radius:4px;"><strong>📌 소유확인 완료 후 제출할 사이트맵 주소:</strong> <code>https://www.bareunhaniwon.com/wp-sitemap.xml</code></div>';
+        echo '</div>';
+    }
+
+    public static function register_seo_rest_routes() {
+        register_rest_route('bareun/v1', '/seo-verify', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () {
+                return current_user_can('manage_options');
+            },
+            'callback'            => function ($request) {
+                $params = $request->get_json_params();
+                if (!is_array($params)) {
+                    $params = array();
+                }
+                $cur = get_option(self::OPT_VERIFY_CODES, array());
+                if (!is_array($cur)) {
+                    $cur = array();
+                }
+                if (isset($params['naver'])) {
+                    $cur['naver'] = self::extract_verification_token($params['naver']);
+                }
+                if (isset($params['google'])) {
+                    $cur['google'] = self::extract_verification_token($params['google']);
+                }
+                update_option(self::OPT_VERIFY_CODES, $cur);
+                if (!empty($params['ogImageUrl'])) {
+                    update_option(self::OPT_OG_IMAGE_URL, esc_url_raw((string) $params['ogImageUrl']));
+                }
+                return new WP_REST_Response(array(
+                    'ok'      => true,
+                    'verify'  => $cur,
+                    'ogImage' => get_option(self::OPT_OG_IMAGE_URL, '')
+                ), 200);
+            }
+        ));
+    }
+}
+Bareun_Master_SEO_Engine_V1::init();
+endif;

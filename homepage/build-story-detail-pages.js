@@ -748,15 +748,15 @@ const PAGES = [
       glowB: 'rgba(16, 185, 129, 0.08)'
     },
     meta: {
-      eyebrow: 'MALE PATTERN HAIR LOSS · 아빠 한의사 학술 논문 검증 남성탈모',
-      title: '남성탈모 · M자·정수리 모근재생',
-      subtitleEn: 'Male Pattern Alopecia · Scalp Thermoregulation & Dermal Papilla Revival',
+      eyebrow: 'SCALP & HAIR FOLLICLE REVIVAL · 아빠 한의사 학술 논문 검증 4대 탈모 통합 클리닉',
+      title: '바른 탈모 · 4대 유형 모근재생',
+      subtitleEn: 'Integrative Alopecia Clinic · Male, Female, Alopecia Areata & Seborrheic Scalp Care',
       desc: [
-        '남편과 아버지, 내 가족에게 직접 처방하는 안전한 치료만 시행합니다. 호르몬 억제 약물의 부작용 걱정 없이 수승화강 두피 청열 한약과 경추 추나·약침으로 M자 이마와 정수리 모근의 자생력을 깨웁니다.'
+        '머리는 뜨겁고 손발은 찬 상열하한 두피 사막화를 수승화강 청열 한약과 경추 추나·정제 약침으로 다스립니다. 남성탈모·원형탈모·여성탈모·지루성두피염 4대 유형별 맞춤 모근재생 치료를 시행합니다.'
       ],
       ctaNudge: '👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 남성탈모 진행 단계와 치료 계획을 브리핑해 드립니다.',
       ctaText: '내 M자·정수리 모낭 상태 원장님께 진단받기',
-      reserveProgram: '바른 남성탈모 (M자·정수리·두피열) 모근재생 클리닉',
+      reserveProgram: '바른 탈모 4대 유형 (남성·원형·여성·지루성두피염) 통합 모근재생 클리닉',
       checklistTitle: '남성탈모 (M자 · 정수리 · 두피열) 체크리스트',
       checklistItems: [
         '[M자 헤어라인 후퇴] 이마 양옆 M자 라인이 점점 깊어지고 앞머리에 힘이 없다.',

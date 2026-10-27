@@ -5,7 +5,6 @@ const https = require('https');
 const { execFileSync } = require('child_process');
 const {
   DISEASE_BLOG_CATEGORIES,
-  INITIAL_DISEASE_BLOG_POSTS,
   FLAGSHIP_REPRESENTATIVE_POST,
   buildStandaloneWpPostHtml
 } = require('./disease-blog-seed-data.js');
@@ -29,9 +28,11 @@ function loadPuppeteer() {
 }
 const puppeteer = loadPuppeteer();
 
+const CANONICAL_ORIGIN = 'https://www.bareunhaniwon.com';
+
 const PAGES_TO_DEPLOY = [
-  { id: 46,   slug: '46-2',                title: '바른한의원 대전본점',                                     file: 'wordpress-main-home.html',           excerpt: '바른한의원 대전본점 — 심층 맥진과 국가공인 안심 한약, 학술 논문 근거 기반 사상체질·추나·성장·다이어트·탈모·공진단·전립선 맞춤 진료 클리닉' },
-  { id: 125,  slug: 'body-explorer',       title: '3D 인체모형 · 바른한의원 진료 살펴보기',                   file: 'wordpress-body-explorer.html',       excerpt: '과거 한지 도자 3D 인체모형에서 바른한의원 진료 살펴보기 클릭 시 2일마다 자동 업데이트되는 순수 건강 정보, 무엇이든 물어보세요, 누적 아카이브를 확인하세요.' },
+  { id: 46,   slug: 'home',                title: '바른한의원 대전본점',                                     file: 'wordpress-main-home.html',           excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점(010-5631-1275). 안정위 대표원장의 심층 맥진·9대 정밀검진과 학술 논문 검증 안심 한약으로 추나·성장·다이어트·탈모·공진단·전립선을 맞춤 진료합니다.' },
+  { id: 125,  slug: 'body-explorer',       title: '3D 인체모형 · 바른한의원 진료 살펴보기',                   file: 'wordpress-body-explorer.html',       excerpt: '풀스크린 3D 인체모형으로 근육·신경·관절·혈관 구조와 9대 부위별 생활 건강 관리법, 해외 SCI 의학 논문 요약을 한눈에 탐색하는 인터랙티브 건강 포털입니다.' },
   { id: null, slug: 'ask-doctor',          title: '의학 인사이트 블로그 & 질환별 1:1 비공개 Q&A',              file: 'wordpress-ask-doctor.html',          excerpt: '해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA) 및 통합생리학 기반 대표 의학 칼럼과 회원 전용 질환별 1:1 비공개 Q&A 센터입니다.' },
   { id: 126,  slug: 'director',            title: '안정위 대표원장 · 9대 정밀검진',                           file: 'wordpress-director.html',            excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사까지 9대 정밀 검진 시스템을 운영합니다.' },
   { id: 127,  slug: 'chuna',               title: '바른 추나 · 척추교정',                                    file: 'wordpress-chuna.html',               excerpt: 'The Lancet · JAMA 등 국제 학술 논문을 검수하여 유효성이 입증된 비수술 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
@@ -42,7 +43,7 @@ const PAGES_TO_DEPLOY = [
   { id: 409,  slug: 'hairloss-alopecia',   title: '바른 원형탈모 · 면역복원',                                file: 'wordpress-hairloss-alopecia.html',   excerpt: '자율신경 안정과 모낭 주위 자가면역 균형 회복으로 동전 모양·다발성 원형탈모를 케어합니다.' },
   { id: 410,  slug: 'hairloss-female',     title: '바른 여성탈모 · 가르마·볼륨',                             file: 'wordpress-hairloss-female.html',     excerpt: '여성 상열하한(上熱下寒)과 영양 불균형을 다스려 넓어진 가르마와 정수리 볼륨을 복원합니다.' },
   { id: 411,  slug: 'hairloss-seborrheic', title: '바른 지루성두피염 · 열독해독',                            file: 'wordpress-hairloss-seborrheic.html', excerpt: '반복되는 두피 홍반, 모낭염, 가려움과 각질을 청열해독 케어로 진정시키고 건강한 진피 장벽을 복원합니다.' },
-  { id: 96,   slug: 'gongjindan-2',        title: '바른 황제공진단',                                         file: 'wordpress-gongjindan.html',          excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
+  { id: 96,   slug: 'gongjindan',          title: '바른 황제공진단',                                         file: 'wordpress-gongjindan.html',          excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
   { id: 133,  slug: 'prostate',            title: '바른 전립선 · 남성활력',                                  file: 'wordpress-prostate.html',            excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' },
   { id: 134,  slug: 'lifting-compare',     title: '바른리프팅 시술 전후 윤곽진단',                            file: 'wordpress-lifting-compare.html',     excerpt: '비수술 한방 리프팅 전후 윤곽 비교 진단 시스템입니다.' }
 ];
@@ -53,7 +54,7 @@ function pingIndexNow(urls) {
       const payload = JSON.stringify({
         host: 'www.bareunhaniwon.com',
         key: 'bareunhaniwon2026aiseokey849201',
-        keyLocation: 'https://www.bareunhaniwon.com/ask-doctor/',
+        keyLocation: 'https://www.bareunhaniwon.com/bareunhaniwon2026aiseokey849201.txt',
         urlList: urls.slice(0, 100)
       });
       const req = https.request({
@@ -78,6 +79,51 @@ function pingIndexNow(urls) {
   });
 }
 
+function warmUrlOnce(url) {
+  return new Promise((resolve) => {
+    const req = https.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      },
+      timeout: 15000
+    }, (res) => {
+      res.resume();
+      res.on('end', () => resolve(res.statusCode));
+    });
+    req.on('error', () => resolve(0));
+    req.on('timeout', () => { req.destroy(); resolve(0); });
+  });
+}
+
+async function performWpLogin(page, loginUrl) {
+  await page.goto(loginUrl, { waitUntil: 'networkidle2', timeout: 30000 });
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    if (!page.url().includes('wp-login.php')) break;
+    const confirmBtn = await page.$('#correct-admin-email');
+    if (confirmBtn) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 20000 }).catch(() => {}),
+        confirmBtn.click()
+      ]);
+      break;
+    }
+    await page.waitForSelector('#user_login', { timeout: 15000 });
+    await page.evaluate(() => {
+      const u = document.getElementById('user_login');
+      const p = document.getElementById('user_pass');
+      if (u) u.value = '';
+      if (p) p.value = '';
+    });
+    await page.type('#user_login', 'wealthywei0508', { delay: 20 });
+    await page.type('#user_pass', 'A50tkf100djrA!', { delay: 20 });
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 25000 }).catch(() => {}),
+      page.click('#wp-submit')
+    ]);
+  }
+}
+
 (async () => {
   let browser;
   try {
@@ -86,7 +132,6 @@ function pingIndexNow(urls) {
     if (fs.existsSync(zipBuildScript)) {
       execFileSync(process.execPath, [zipBuildScript], { stdio: 'inherit' });
     }
-    const pluginZipPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna.zip');
 
     browser = await puppeteer.launch({
       executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -96,40 +141,59 @@ function pingIndexNow(urls) {
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
 
-    console.log('1) Logging in to https://bareunhaniwon.com/wp-login.php ...');
-    await page.goto('https://bareunhaniwon.com/wp-login.php', { waitUntil: 'networkidle2', timeout: 30000 });
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      if (!page.url().includes('wp-login.php')) break;
-      const confirmBtn = await page.$('#correct-admin-email');
-      if (confirmBtn) {
-        await Promise.all([
-          page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 20000 }).catch(() => {}),
-          confirmBtn.click()
-        ]);
-        break;
+    console.log('1) Logging in to WordPress Admin ...');
+    await performWpLogin(page, `${CANONICAL_ORIGIN}/wp-login.php`);
+    if (page.url().includes('wp-login.php')) {
+      await performWpLogin(page, 'https://bareunhaniwon.com/wp-login.php');
+    }
+    console.log('   Initial login ->', page.url());
+
+    // 1.2) Ensure WordPress General Settings siteurl & home are unified to https://www.bareunhaniwon.com + Asia/Seoul
+    const currentOrigin = new URL(page.url()).origin;
+    await page.goto(`${currentOrigin}/wp-admin/options-general.php`, { waitUntil: 'domcontentloaded', timeout: 25000 });
+    const migratedUrls = await page.evaluate((targetOrigin) => {
+      const siteurlEl = document.getElementById('siteurl');
+      const homeEl = document.getElementById('home');
+      const tzEl = document.getElementById('timezone_string');
+      const blogPublicEl = document.getElementById('blog_public');
+      let changed = false;
+      if (siteurlEl && siteurlEl.value !== targetOrigin) {
+        siteurlEl.value = targetOrigin;
+        changed = true;
       }
-      await page.waitForSelector('#user_login', { timeout: 15000 });
-      await page.evaluate(() => {
-        const u = document.getElementById('user_login');
-        const p = document.getElementById('user_pass');
-        if (u) u.value = '';
-        if (p) p.value = '';
-      });
-      await page.type('#user_login', 'wealthywei0508', { delay: 20 });
-      await page.type('#user_pass', 'A50tkf100djrA!', { delay: 20 });
+      if (homeEl && homeEl.value !== targetOrigin) {
+        homeEl.value = targetOrigin;
+        changed = true;
+      }
+      if (tzEl && tzEl.value !== 'Asia/Seoul') {
+        tzEl.value = 'Asia/Seoul';
+        changed = true;
+      }
+      if (blogPublicEl && blogPublicEl.checked) {
+        blogPublicEl.checked = false; // Ensure search engine indexing is NEVER discouraged
+        changed = true;
+      }
+      return changed;
+    }, CANONICAL_ORIGIN);
+
+    if (migratedUrls) {
+      console.log('1.2) Migrating WordPress siteurl & home -> https://www.bareunhaniwon.com (Asia/Seoul) ...');
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 25000 }).catch(() => {}),
-        page.click('#wp-submit')
+        page.click('#submit')
       ]);
+      await performWpLogin(page, `${CANONICAL_ORIGIN}/wp-login.php`);
+      console.log('   Re-authenticated on canonical www ->', page.url());
+    } else {
+      console.log('1.2) WordPress siteurl & home already unified on https://www.bareunhaniwon.com');
     }
-    console.log('   Logged in ->', page.url());
 
-    // 1.5) Sync & Activate Bareun Member Auth & Private QnA Backend via WPCode PHP Snippet (Cafe24 FTP-free!)
+    // 1.5) Sync & Activate Bareun Member Auth, Private QnA & Master SEO Engine via WPCode PHP Snippet
     const phpBackendPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna', 'bareun-member-private-qna.php');
     if (fs.existsSync(phpBackendPath)) {
-      console.log('1.5) Syncing & Activating Bareun Member Auth & Private Disease QnA v5 via WPCode ...');
+      console.log('1.5) Syncing & Activating Bareun Backend + Master SEO Engine via WPCode ...');
       const phpSnippetBody = fs.readFileSync(phpBackendPath, 'utf8').replace(/^<\?php\s*/, '').trim();
-      await page.goto('https://bareunhaniwon.com/wp-admin/admin.php?page=wpcode', { waitUntil: 'networkidle2', timeout: 25000 });
+      await page.goto(`${CANONICAL_ORIGIN}/wp-admin/admin.php?page=wpcode`, { waitUntil: 'networkidle2', timeout: 25000 });
       const existingSnippets = await page.evaluate(() => {
         return Array.from(document.querySelectorAll('table.wp-list-table tbody tr')).map(tr => ({
           title: tr.querySelector('.column-name a.row-title')?.textContent?.trim() || '',
@@ -138,8 +202,10 @@ function pingIndexNow(urls) {
       });
       const existingMatch = existingSnippets.find(s => s.title.includes('Bareun Member Auth') || s.title.includes('Private Disease QnA'));
       const targetUrl = existingMatch && existingMatch.editHref
-        ? (existingMatch.editHref.startsWith('http') ? existingMatch.editHref : 'https://bareunhaniwon.com/wp-admin/' + existingMatch.editHref.replace(/^\//, ''))
-        : 'https://bareunhaniwon.com/wp-admin/admin.php?page=wpcode-snippet-manager&custom=1';
+        ? (existingMatch.editHref.startsWith('http')
+            ? existingMatch.editHref.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)
+            : `${CANONICAL_ORIGIN}/wp-admin/` + existingMatch.editHref.replace(/^\//, ''))
+        : `${CANONICAL_ORIGIN}/wp-admin/admin.php?page=wpcode-snippet-manager&custom=1`;
       await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 30000 });
       await page.evaluate((codeStr) => {
         const titleInput = document.querySelector('#wpcode_snippet_title, input[name="wpcode_snippet_title"]');
@@ -175,12 +241,16 @@ function pingIndexNow(urls) {
           }
         })
       ]);
-      console.log('   WPCode PHP Backend Snippet is synced & ACTIVE!');
+      const isSnippetActive = await page.evaluate(() => {
+        const activeChk = document.querySelector('#wpcode_active, input[name="wpcode_active"]');
+        return activeChk ? !!activeChk.checked : true;
+      });
+      console.log('   WPCode PHP Backend Snippet synced! Active:', isSnippetActive);
     }
 
     // 2) Fetch WP REST Nonce
     console.log('2) Fetching WP REST Nonce ...');
-    await page.goto('https://bareunhaniwon.com/wp-admin/post-new.php?post_type=page', { waitUntil: 'domcontentloaded', timeout: 20000 });
+    await page.goto(`${CANONICAL_ORIGIN}/wp-admin/post-new.php?post_type=page`, { waitUntil: 'domcontentloaded', timeout: 20000 });
     const nonce = await page.evaluate(() => {
       if (window.wpApiSettings && window.wpApiSettings.nonce) return window.wpApiSettings.nonce;
       const html = document.documentElement.innerHTML;
@@ -190,14 +260,17 @@ function pingIndexNow(urls) {
     if (!nonce) throw new Error('Failed to get WP REST Nonce');
     console.log('   REST Nonce ->', nonce);
 
-    // 2.2) Update Site Profile (Editorial / Non-Promotional Journal Author) & Close Public Post Comments
-    await page.evaluate(async (wpNonce) => {
+    // 2.2) Update Site Profile & Upload Official 1200x630 (<90KB) OG Card to Media Library
+    const ogCardPath = path.join(__dirname, 'og-bareun-1200x630.jpg');
+    const ogCardB64 = fs.existsSync(ogCardPath) ? fs.readFileSync(ogCardPath).toString('base64') : '';
+
+    const mediaSetup = await page.evaluate(async ({ wpNonce, ogB64 }) => {
       await fetch('/wp-json/wp/v2/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
         body: JSON.stringify({
           title: '바른한의원 대전본점',
-          description: '통합의학 인사이트 저널 & 풀스크린 3D 인체모형 진료탐색 · 질환별 비공개 Q&A',
+          description: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점(010-5631-1275) · 안정위 대표원장 추나·성장·다이어트·탈모·공진단·전립선 맞춤 진료',
           default_comment_status: 'closed'
         })
       });
@@ -210,11 +283,85 @@ function pingIndexNow(urls) {
           description: '해외 SCI 의학저널 및 통합생리학 연구 근거 기반 건강 인사이트 에디토리얼'
         })
       });
-    }, nonce);
 
-    // 3) HIDE ALL PREVIOUSLY PUBLISHED POSTS (status -> 'draft'), DELETE PUBLIC COMMENTS,
-    //    AND PUBLISH ONLY THE 1 FLAGSHIP REPRESENTATIVE EXPERT POST!
-    console.log('3) Hiding all legacy posts -> draft, clearing public WP comments, and publishing ONLY 1 Flagship Article ...');
+      let ogMediaId = 51;
+      let ogMediaUrl = '';
+      const searchRes = await fetch('/wp-json/wp/v2/media?search=og-bareun-1200x630&per_page=10', {
+        headers: { 'X-WP-Nonce': wpNonce }
+      });
+      const existingMedia = await searchRes.json();
+      const foundOg = Array.isArray(existingMedia)
+        ? existingMedia.find(m => (m.slug && m.slug.includes('og-bareun-1200x630')) || (m.source_url && m.source_url.includes('og-bareun-1200x630')))
+        : null;
+
+      if (foundOg && foundOg.id) {
+        ogMediaId = foundOg.id;
+        ogMediaUrl = foundOg.source_url || '';
+      } else if (ogB64) {
+        const bin = Uint8Array.from(atob(ogB64), c => c.charCodeAt(0));
+        const blob = new Blob([bin], { type: 'image/jpeg' });
+        const upRes = await fetch('/wp-json/wp/v2/media', {
+          method: 'POST',
+          headers: {
+            'X-WP-Nonce': wpNonce,
+            'Content-Disposition': 'attachment; filename="og-bareun-1200x630.jpg"',
+            'Content-Type': 'image/jpeg'
+          },
+          body: blob
+        });
+        const upJson = await upRes.json();
+        if (upJson && upJson.id) {
+          ogMediaId = upJson.id;
+          ogMediaUrl = upJson.source_url || '';
+          await fetch('/wp-json/wp/v2/media/' + ogMediaId, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({
+              alt_text: '바른한의원 대전본점 공식 대표 카드 (010-5631-1275 · 대전 대덕구 비래동로7번길 1, 2층)',
+              title: '바른한의원 대전본점 공식 오픈그래프 이미지'
+            })
+          });
+        }
+      }
+
+      if (ogMediaUrl) {
+        ogMediaUrl = ogMediaUrl.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, 'https://www.bareunhaniwon.com');
+        await fetch('/wp-json/bareun/v1/seo-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+          body: JSON.stringify({ ogImageUrl: ogMediaUrl })
+        }).catch(() => {});
+      }
+
+      // Clean up duplicate gongjindan-3 (ID 132) or trashed gongjindan slugs so ID 96 takes /gongjindan/ cleanly
+      await fetch('/wp-json/wp/v2/pages/132?force=true', {
+        method: 'DELETE',
+        headers: { 'X-WP-Nonce': wpNonce }
+      }).catch(() => {});
+      const dupCheck = await (await fetch('/wp-json/wp/v2/pages?slug=gongjindan,gongjindan-2,gongjindan-3&status=any,trash&per_page=20', {
+        headers: { 'X-WP-Nonce': wpNonce }
+      })).json();
+      const deletedPages = [];
+      if (Array.isArray(dupCheck)) {
+        for (const dp of dupCheck) {
+          if (dp.id !== 96) {
+            const dr = await fetch(`/wp-json/wp/v2/pages/${dp.id}?force=true`, {
+              method: 'DELETE',
+              headers: { 'X-WP-Nonce': wpNonce }
+            });
+            if (dr.ok) deletedPages.push(dp.id + ':' + dp.slug);
+          }
+        }
+      }
+
+      return { ogMediaId, ogMediaUrl, deletedPages };
+    }, { wpNonce: nonce, ogB64: ogCardB64 });
+    console.log('2.2) Official OG Media & Duplicate Slug Cleanup:', mediaSetup);
+
+    const featuredMediaId = mediaSetup.ogMediaId || 51;
+
+    // 3) HIDE ALL PREVIOUSLY PUBLISHED POSTS -> draft & PUBLISH ONLY THE 1 FLAGSHIP ARTICLE
+    console.log('3) Hiding all legacy posts -> draft and publishing ONLY 1 Flagship Article ...');
     const flagshipPayload = {
       id: FLAGSHIP_REPRESENTATIVE_POST.id,
       slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
@@ -224,8 +371,7 @@ function pingIndexNow(urls) {
       standaloneHtml: buildStandaloneWpPostHtml(FLAGSHIP_REPRESENTATIVE_POST)
     };
 
-    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, flagship }) => {
-      // Ensure category
+    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, flagship, mediaId }) => {
       let catId = null;
       const catsRes = await fetch('/wp-json/wp/v2/categories?per_page=100', { headers: { 'X-WP-Nonce': wpNonce } });
       const cats = await catsRes.json();
@@ -242,7 +388,6 @@ function pingIndexNow(urls) {
         if (cr && cr.id) catId = cr.id;
       }
 
-      // Fetch ALL existing posts across pages
       let allExistingPosts = [];
       for (let pg = 1; pg <= 3; pg++) {
         const r = await fetch(`/wp-json/wp/v2/posts?per_page=100&page=${pg}&status=any`, {
@@ -273,7 +418,6 @@ function pingIndexNow(urls) {
         }
       }
 
-      // Delete all old public WP comments so zero public Q&A remains on blog posts
       let deletedComments = 0;
       const cmRes = await fetch('/wp-json/wp/v2/comments?per_page=100&status=any', {
         headers: { 'X-WP-Nonce': wpNonce }
@@ -289,7 +433,6 @@ function pingIndexNow(urls) {
         }
       }
 
-      // Publish/Update ONLY the 1 Flagship Representative Article
       const epUrl = flagshipMatchId ? ('/wp-json/wp/v2/posts/' + flagshipMatchId) : '/wp-json/wp/v2/posts';
       const pubRes = await fetch(epUrl, {
         method: 'POST',
@@ -302,25 +445,27 @@ function pingIndexNow(urls) {
           status: 'publish',
           comment_status: 'closed',
           ping_status: 'open',
-          featured_media: 51,
+          featured_media: mediaId,
           categories: catId ? [catId] : []
         })
       });
       const pubJson = await pubRes.json();
+      const canonicalFlagshipLink = 'https://www.bareunhaniwon.com/' + (pubJson?.slug || flagship.slug) + '/';
       const publishedMap = {};
       if (pubJson && pubJson.id) {
         publishedMap[flagship.id] = {
           wpPostId: pubJson.id,
           slug: pubJson.slug || flagship.slug,
-          link: pubJson.link || ('https://www.bareunhaniwon.com/' + flagship.slug + '/')
+          link: canonicalFlagshipLink
         };
       }
 
-      return { hiddenCount, deletedComments, flagshipPostId: pubJson?.id || null, flagshipLink: pubJson?.link || null, publishedMap };
+      return { hiddenCount, deletedComments, flagshipPostId: pubJson?.id || null, flagshipLink: canonicalFlagshipLink, publishedMap };
     }, {
       wpNonce: nonce,
       categoriesList: DISEASE_BLOG_CATEGORIES,
-      flagship: flagshipPayload
+      flagship: flagshipPayload,
+      mediaId: featuredMediaId
     });
 
     console.log('   [BLOG CLEANUP & SINGLE FLAGSHIP SYNC]:', blogCleanupAndSync);
@@ -347,6 +492,7 @@ function pingIndexNow(urls) {
       };
     }, nonce);
 
+    const deployedPageUrls = [];
     for (const item of PAGES_TO_DEPLOY) {
       const filePath = path.join(__dirname, item.file);
       if (!fs.existsSync(filePath)) continue;
@@ -386,41 +532,48 @@ function pingIndexNow(urls) {
         slug: item.slug,
         title: item.title,
         excerpt: item.excerpt,
-        featuredMedia: 51,
+        featuredMedia: featuredMediaId,
         content: blockContent,
         meta: existingInfo.refMeta,
         template: existingInfo.refTemplate
       });
 
+      if (res.link) deployedPageUrls.push(res.link);
       console.log(`   [PAGE DEPLOYED] ${item.slug.padEnd(20)} -> status ${res.status} | ID: ${res.id} | URL: ${res.link || res.err}`);
     }
 
-    // 5) Flush Permalinks (for custom REST routes) & Clear WP Super Cache
+    // 5) Flush Permalinks & Clear WP Super Cache
     console.log('5) Flushing Permalinks & Clearing WP Super Cache ...');
-    await page.goto('https://bareunhaniwon.com/wp-admin/options-permalink.php', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+    await page.goto(`${CANONICAL_ORIGIN}/wp-admin/options-permalink.php`, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {}),
       page.click('#submit').catch(() => {})
     ]);
 
-    await page.goto('https://bareunhaniwon.com/wp-admin/options-general.php?page=wpsupercache', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+    await page.goto(`${CANONICAL_ORIGIN}/wp-admin/options-general.php?page=wpsupercache`, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
     await page.evaluate(() => {
       const btn = document.querySelector('input[name="wp_delete_cache"], button[name="wp_delete_cache"]');
       if (btn && btn.form) btn.form.submit();
     }).catch(() => {});
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 2000));
+
+    // 5.5) Warm all canonical HTTPS www URLs so WP Super Cache serves identical warm responses (C10 + ultra-fast TTFB)
+    const allLiveUrls = Array.from(new Set([
+      `${CANONICAL_ORIGIN}/`,
+      ...deployedPageUrls.map(u => u.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)),
+      ...(blogCleanupAndSync.flagshipLink ? [blogCleanupAndSync.flagshipLink] : [])
+    ]));
+    console.log(`5.5) Warming ${allLiveUrls.length} canonical HTTPS URLs in WP Super Cache ...`);
+    for (const u of allLiveUrls) {
+      const st = await warmUrlOnce(u);
+      console.log(`   [WARMED] ${u.padEnd(85)} -> HTTP ${st}`);
+    }
 
     // 6) Ping IndexNow
-    const allLiveUrls = [
-      'https://www.bareunhaniwon.com/',
-      'https://www.bareunhaniwon.com/ask-doctor/',
-      'https://www.bareunhaniwon.com/body-explorer/',
-      ...(blogCleanupAndSync.flagshipLink ? [blogCleanupAndSync.flagshipLink] : [])
-    ];
     const indexNowStatus = await pingIndexNow(allLiveUrls);
     console.log(`6) IndexNow Search Engine Ping sent for ${allLiveUrls.length} URLs (HTTP ${indexNowStatus})!`);
 
-    console.log('✅ v5.0 DEPLOYMENT COMPLETE ON https://www.bareunhaniwon.com/ !');
+    console.log('✅ MASTER SEO + CANONICAL WWW DEPLOYMENT COMPLETE ON https://www.bareunhaniwon.com/ !');
   } catch (err) {
     console.error('[DEPLOY ERROR]', err);
     process.exitCode = 1;

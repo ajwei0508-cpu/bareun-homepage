@@ -343,7 +343,7 @@ const FLAGSHIP_REPRESENTATIVE_POST = {
   categoryBadge: 'FEATURED MEDICAL REVIEW · 대표 의학 리서치 저널 (단독 발행본)',
   readingTime: '약 9분 정독 · 해외 SCI 및 통합의학 논문 10편 수록',
   publishedDate: '2026-10-26',
-  updatedDate: '2026-10-26',
+  updatedDate: '2026-10-27',
   title: '만성 피로·소화 장애·척추 통증은 왜 함께 찾아오는가: 해외 의학 논문으로 읽는 자율신경·장-뇌 축·생체역학 통합 가이드',
   subtitleEn: 'Why Chronic Fatigue, Gut Dysmotility, and Spinal Pain Co-Occur: An Evidence-Based Synthesis of Autonomic, Microbiota–Gut–Brain, and Biomechanical Medicine',
   summary: '혈액검사와 영상검사에서 뚜렷한 구조적 이상이 없는데도 만성 피로, 식후 팽만감, 두피 열감, 어지럼증, 척추·골반 통증이 도미노처럼 이어지는 이유를 Nature Medicine, NEJM, The Lancet, Physiological Reviews 등 세계적 의학 저널과 통합생리학 연구 근거로 명쾌하게 해설합니다.',
@@ -474,38 +474,6 @@ function escapeHtml(str) {
 }
 
 function buildStandaloneWpPostHtml(post) {
-  const canonicalUrl = `https://www.bareunhaniwon.com/${post.slug}/`;
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'MedicalWebPage',
-        '@id': canonicalUrl + '#webpage',
-        url: canonicalUrl,
-        name: post.title,
-        headline: post.title,
-        alternativeHeadline: post.subtitleEn,
-        description: post.summary,
-        inLanguage: 'ko-KR',
-        datePublished: post.publishedDate,
-        dateModified: post.updatedDate,
-        citation: post.internationalReferences
-      },
-      {
-        '@type': 'FAQPage',
-        '@id': canonicalUrl + '#faq',
-        mainEntity: (post.faqList || []).map(f => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: f.a
-          }
-        }))
-      }
-    ]
-  };
-
   const tldrHtml = post.tldrPoints.map(pt => `<li style="margin-bottom:10px;line-height:1.72;">${escapeHtml(pt)}</li>`).join('');
   const tableRowsHtml = post.comparisonRows.map(r => `
     <tr>
@@ -523,15 +491,21 @@ function buildStandaloneWpPostHtml(post) {
       ${s.highlightQuote ? `<blockquote style="margin:18px 0;padding:16px 20px;border-left:4px solid #2563EB;background:#F8FAFC;border-radius:0 12px 12px 0;font-weight:600;color:#0F172A;line-height:1.72;">${escapeHtml(s.highlightQuote)}</blockquote>` : ''}
     </section>`).join('');
 
-  const refsHtml = post.internationalReferences.map((ref, idx) =>
-    `<li style="margin-bottom:8px;font-size:0.88rem;color:#475569;line-height:1.62;">[${idx + 1}] ${escapeHtml(ref)}</li>`
+  const refsHtml = post.internationalReferences.map((ref, idx2) =>
+    `<li style="margin-bottom:8px;font-size:0.88rem;color:#475569;line-height:1.62;">[${idx2 + 1}] ${escapeHtml(ref)}</li>`
   ).join('');
 
-  return `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+  return `<!-- wp:html -->
 <article style="max-width:880px;margin:36px auto;padding:36px 28px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:24px;font-family:'Pretendard',-apple-system,sans-serif;color:#0F172A;">
   <div style="display:inline-block;padding:6px 14px;border-radius:999px;background:#EFF6FF;color:#1D4ED8;font-size:0.8rem;font-weight:800;margin-bottom:14px;">${escapeHtml(post.categoryBadge)}</div>
   <h1 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;line-height:1.34;color:#0F172A;margin:0 0 10px;">${escapeHtml(post.title)}</h1>
-  <p style="font-size:0.92rem;color:#64748B;margin:0 0 22px;">${escapeHtml(post.subtitleEn)} · ${escapeHtml(post.readingTime)}</p>
+  <p style="font-size:0.92rem;color:#64748B;margin:0 0 16px;">${escapeHtml(post.subtitleEn)} · ${escapeHtml(post.readingTime)}</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:12px 16px;margin-bottom:22px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;font-size:0.84rem;color:#334155;">
+    <span data-seo="byline"><strong>작성:</strong> 바른 통합의학 리서치 에디토리얼</span>
+    <span data-seo="reviewed-by"><strong>의학 감수:</strong> <a href="/director/" style="color:#1D4ED8;font-weight:700;text-decoration:underline;">안정위 대표원장 (한의사 · 바른한의원 대전본점)</a></span>
+    <span data-seo="last-updated"><strong>최종 검토일:</strong> <time datetime="${escapeHtml(post.updatedDate)}">${escapeHtml(post.updatedDate)}</time></span>
+    <span style="flex-basis:100%;font-size:0.78rem;color:#64748B;">※ 본 아티클은 해외 SCI 학술지 근거 기반의 일반 의학·생리학 정보이며, 개인의 정확한 진단과 치료 계획은 의료진 대면 진료를 통해 결정됩니다.</span>
+  </div>
   <p style="font-size:1.06rem;line-height:1.8;color:#334155;padding:18px 20px;background:#F8FAFC;border-radius:16px;border:1px solid #E2E8F0;margin-bottom:26px;">${escapeHtml(post.summary)}</p>
 
   <div style="padding:22px 24px;border-radius:18px;background:#F0FDF4;border:1.5px solid #86EFAC;margin-bottom:28px;">
@@ -567,7 +541,8 @@ function buildStandaloneWpPostHtml(post) {
     </div>
     <a href="/ask-doctor/?tab=qna" style="display:inline-block;padding:11px 20px;border-radius:999px;background:#3B82F6;color:#FFFFFF;font-weight:800;font-size:0.9rem;text-decoration:none;">🩺 질환별 1:1 비공개 Q&amp;A 바로가기 →</a>
   </div>
-</article>`;
+</article>
+<!-- /wp:html -->`;
 }
 
 module.exports = {
