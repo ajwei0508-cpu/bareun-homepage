@@ -630,6 +630,7 @@
     const navTargets = [
       document.querySelector('.spatial-top-nav .nav-right-actions'),
       document.querySelector('.journal-gnb .gnb-actions'),
+      document.querySelector('.vibrant-header .vh-right-actions'),
       document.querySelector('.vibrant-top-bar .vtb-right'),
       document.querySelector('#header .header-right'),
       document.querySelector('.app-header .header-actions')

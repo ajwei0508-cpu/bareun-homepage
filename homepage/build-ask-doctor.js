@@ -239,9 +239,9 @@ function buildAskDoctorHtml() {
       color: var(--blue-600) !important;
     }
     .gnb-pill.vibrant-3d-btn {
-      background: linear-gradient(135deg, #DBEAFE 0%, #EDE9FE 100%) !important;
-      border-color: #93C5FD !important;
-      color: #1E3A8A !important;
+      background: #FEF3C7 !important;
+      border-color: #F59E0B !important;
+      color: #92400E !important;
       font-weight: 800;
     }
     .gnb-pill.auth-btn {
@@ -1030,7 +1030,7 @@ function buildAskDoctorHtml() {
       </div>
 
       <div class="gnb-actions">
-        <a href="body-explorer.html" class="gnb-pill vibrant-3d-btn" id="gnb-3d-explorer-link">🧬 3D 인체·진료 모션 탐색 ↗</a>
+        <a href="body-explorer.html" class="gnb-pill vibrant-3d-btn" id="gnb-3d-explorer-link">💡 3D 인체모형 · 생활꿀팁 ↗</a>
         <button type="button" class="gnb-pill auth-btn" id="gnb-member-btn" onclick="window.openAuthModal('social')">👤 빠른 회원가입 · 로그인</button>
         <button type="button" class="gnb-pill master-btn" id="gnb-master-btn" onclick="window.openAuthModal('master')">👑 마스터</button>
       </div>
@@ -1586,7 +1586,7 @@ function buildAskDoctorHtml() {
             '<h2 style="font-size:1.3rem;font-weight:800;color:#0F172A;margin-top:3px;">' + cat.icon + ' ' + esc(cat.name) + '</h2>' +
           '</div>' +
           '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-            '<a href="body-explorer.html?part=' + cat.partId + '" class="gnb-pill vibrant-3d-btn">🧬 3D 인체모형으로 보기 ↗</a>' +
+            '<a href="body-explorer.html?part=' + cat.partId + '" class="gnb-pill vibrant-3d-btn">💡 3D 인체모형 · 생활꿀팁 보기 ↗</a>' +
             clinicBtns +
           '</div>' +
         '</div>' +

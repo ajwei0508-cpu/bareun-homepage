@@ -31,7 +31,7 @@ const puppeteer = loadPuppeteer();
 
 const PAGES_TO_DEPLOY = [
   { id: 46,   slug: '46-2',                title: '바른한의원 대전본점',                                     file: 'wordpress-main-home.html',           excerpt: '바른한의원 대전본점 — 심층 맥진과 국가공인 안심 한약, 학술 논문 근거 기반 사상체질·추나·성장·다이어트·탈모·공진단·전립선 맞춤 진료 클리닉' },
-  { id: 125,  slug: 'body-explorer',       title: '3D 인체모형 & 바른한의원 진료 모션 탐색기',                 file: 'wordpress-body-explorer.html',       excerpt: '풀스크린 3D 인체모형과 함께 바른한의원 9대 진료를 그래픽모션으로 탐색하고 연관 클리닉·생활꿀팁·해외 SCI 논문 근거를 확인하세요.' },
+  { id: 125,  slug: 'body-explorer',       title: '3D 인체모형 · 부위별 생활 꿀팁 창고',                    file: 'wordpress-body-explorer.html',       excerpt: '따뜻한 한지 도자 3D 인체 해부 모형으로 살펴보는 9대 부위별 실천 DO/DON\'T, 하루 루틴, 추천 식단·지압법 및 해외 SCI 논문 근거 가이드입니다.' },
   { id: null, slug: 'ask-doctor',          title: '의학 인사이트 블로그 & 질환별 1:1 비공개 Q&A',              file: 'wordpress-ask-doctor.html',          excerpt: '해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA) 및 통합생리학 기반 대표 의학 칼럼과 회원 전용 질환별 1:1 비공개 Q&A 센터입니다.' },
   { id: 126,  slug: 'director',            title: '안정위 대표원장 · 9대 정밀검진',                           file: 'wordpress-director.html',            excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사까지 9대 정밀 검진 시스템을 운영합니다.' },
   { id: 127,  slug: 'chuna',               title: '바른 추나 · 척추교정',                                    file: 'wordpress-chuna.html',               excerpt: 'The Lancet · JAMA 등 국제 학술 논문을 검수하여 유효성이 입증된 비수술 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
