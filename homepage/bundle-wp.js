@@ -5,6 +5,9 @@ const vm = require('vm');
 const dir = __dirname;
 const indexHtml = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
 const story3d = fs.readFileSync(path.join(dir, 'story-3d.html'), 'utf8');
+const visitTrackerCode = fs.existsSync(path.join(dir, 'visit-tracker.js'))
+  ? fs.readFileSync(path.join(dir, 'visit-tracker.js'), 'utf8')
+  : '';
 
 const wpReset = [
   '',
@@ -52,7 +55,8 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp("loadLinearTex\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "loadLinearTex('" + ghBase + "$1')")
     .replace(new RegExp("openCleanLightbox\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "openCleanLightbox('" + ghBase + "$1')")
     .replace(new RegExp("handleGjdSlideClick\\((\\d+),\\s*'(" + assetPrefix + "[^']+)'\\)", 'g'), "handleGjdSlideClick($1, '" + ghBase + "$2')")
-    .replace(new RegExp('src="((?:clinic-template-config\\.js|' + assetPrefix + ')[^"]*)"', 'g'), 'src="' + ghBase + '$1"')
+    .replace(/<script\s+src="visit-tracker\.js"><\/script>/gi, () => visitTrackerCode ? `<script>\n${visitTrackerCode}\n</script>` : '')
+    .replace(new RegExp('src="((?:clinic-template-config\\.js|visit-tracker\\.js|' + assetPrefix + ')[^"]*)"', 'g'), 'src="' + ghBase + '$1"')
     .replace(new RegExp('data-img="(' + assetPrefix + '[^"]+)"', 'g'), 'data-img="' + ghBase + '$1"')
     .replace(new RegExp('poster="(' + assetPrefix + '[^"]+)"', 'g'), 'poster="' + ghBase + '$1"')
     .replace(/href="story-3d\.html(\?[^"]*)?"/g, 'href="/$1"')
@@ -125,7 +129,11 @@ const detailPages = [
 detailPages.forEach(([srcFile, outFile]) => {
   const fullSrc = path.join(dir, srcFile);
   if (fs.existsSync(fullSrc)) {
-    const raw = fs.readFileSync(fullSrc, 'utf8');
+    let raw = fs.readFileSync(fullSrc, 'utf8');
+    if (srcFile === 'lifting-compare.html' && !raw.includes('visit-tracker.js')) {
+      raw = raw.replace('</body>', '  <script src="visit-tracker.js"></script>\r\n</body>');
+      fs.writeFileSync(fullSrc, raw, 'utf8');
+    }
     const wpOut = rewriteAssetsForWP(raw, outFile).replace('<style>', '<style>' + wpReset);
     fs.writeFileSync(path.join(dir, outFile), wpOut, 'utf8');
     console.log('Successfully generated ' + outFile + ' (' + wpOut.length + ' bytes)');

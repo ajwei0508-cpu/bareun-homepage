@@ -1213,6 +1213,7 @@
             <div style="font-size:0.84rem;color:#CBD5E1;margin-top:2px;" id="master-stats-line">모든 비공개 질문 원문, 회원 실명·연락처·소셜채널·연령대·IP 상세정보 확인 및 1:1 답변 작성이 활성화되었습니다.</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="gnb-pill" onclick="window.openBareunVisitModal && window.openBareunVisitModal()" style="background:#DCFCE7;border-color:#10B981;color:#065F46;font-weight:800;">📊 홈페이지 방문 조회수 · IP 상세로그</button>
             <button type="button" class="gnb-pill" onclick="window.toggleMasterMembersPanel()" style="background:#FEF3C7;border-color:#F59E0B;color:#78350F;font-weight:800;">👥 전체 가입회원 명부 상세열람</button>
             <button type="button" class="gnb-pill" onclick="window.toggleOAuthConfigPanel()" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.28);color:#FFFFFF;">⚙️ 소셜 OAuth 키 설정</button>
             <button type="button" class="gnb-pill" onclick="window.logoutBareunUser()" style="background:#EF4444;border-color:#EF4444;color:#FFFFFF;">로그아웃</button>
@@ -2093,5 +2094,6 @@
     })();
   })();
   </script>
+  <script src="visit-tracker.js"></script>
 </body>
 </html>

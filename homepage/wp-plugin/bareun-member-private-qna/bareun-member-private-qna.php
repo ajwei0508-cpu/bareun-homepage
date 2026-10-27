@@ -10,10 +10,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Bareun_Member_Private_QnA_Plugin {
-    const TABLE_SLUG = 'bareun_private_qna';
-    const OPT_SEEDED = 'bareun_private_qna_seeded_v1';
-    const OPT_OAUTH  = 'bareun_social_oauth_config_v1';
+class Bareun_Member_Private_QnA_V5_Plugin {
+    const TABLE_SLUG       = 'bareun_private_qna';
+    const VISITS_SLUG      = 'bareun_visit_logs';
+    const OPT_SEEDED       = 'bareun_private_qna_seeded_v1';
+    const OPT_VISIT_SEEDED = 'bareun_visit_stats_seeded_v2';
+    const OPT_VISIT_BASE   = 'bareun_visit_base_count_v2';
+    const OPT_OAUTH        = 'bareun_social_oauth_config_v1';
 
     public static function init() {
         add_action('init', array(__CLASS__, 'maybe_ensure_schema'));
@@ -25,46 +28,140 @@ class Bareun_Member_Private_QnA_Plugin {
         return $wpdb->prefix . self::TABLE_SLUG;
     }
 
-    public static function maybe_ensure_schema() {
-        if (get_option(self::OPT_SEEDED) === '1') {
-            return;
-        }
+    public static function visits_table_name() {
         global $wpdb;
-        $table = self::table_name();
+        return $wpdb->prefix . self::VISITS_SLUG;
+    }
+
+    public static function maybe_ensure_schema() {
+        global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table} (
-            id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            part_id VARCHAR(32) NOT NULL DEFAULT 'lumbar',
-            user_id BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-            member_name VARCHAR(100) NOT NULL DEFAULT '',
-            member_email VARCHAR(160) NOT NULL DEFAULT '',
-            member_phone VARCHAR(40) NOT NULL DEFAULT '',
-            social_provider VARCHAR(32) NOT NULL DEFAULT 'email',
-            gender VARCHAR(20) NOT NULL DEFAULT '',
-            age_group VARCHAR(32) NOT NULL DEFAULT '',
-            symptom_duration VARCHAR(60) NOT NULL DEFAULT '',
-            title VARCHAR(255) NOT NULL DEFAULT '',
-            content LONGTEXT NOT NULL,
-            status VARCHAR(20) NOT NULL DEFAULT 'waiting',
-            master_reply LONGTEXT NULL,
-            client_ip VARCHAR(64) NOT NULL DEFAULT '',
-            created_at DATETIME NOT NULL,
-            replied_at DATETIME NULL,
-            PRIMARY KEY (id),
-            KEY idx_part_id (part_id),
-            KEY idx_user_id (user_id),
-            KEY idx_status (status)
-        ) {$charset_collate};";
+        if (get_option(self::OPT_SEEDED) !== '1') {
+            $table = self::table_name();
+            $sql = "CREATE TABLE IF NOT EXISTS {$table} (
+                id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                part_id VARCHAR(32) NOT NULL DEFAULT 'lumbar',
+                user_id BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+                member_name VARCHAR(100) NOT NULL DEFAULT '',
+                member_email VARCHAR(160) NOT NULL DEFAULT '',
+                member_phone VARCHAR(40) NOT NULL DEFAULT '',
+                social_provider VARCHAR(32) NOT NULL DEFAULT 'email',
+                gender VARCHAR(20) NOT NULL DEFAULT '',
+                age_group VARCHAR(32) NOT NULL DEFAULT '',
+                symptom_duration VARCHAR(60) NOT NULL DEFAULT '',
+                title VARCHAR(255) NOT NULL DEFAULT '',
+                content LONGTEXT NOT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'waiting',
+                master_reply LONGTEXT NULL,
+                client_ip VARCHAR(64) NOT NULL DEFAULT '',
+                created_at DATETIME NOT NULL,
+                replied_at DATETIME NULL,
+                PRIMARY KEY (id),
+                KEY idx_part_id (part_id),
+                KEY idx_user_id (user_id),
+                KEY idx_status (status)
+            ) {$charset_collate};";
 
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        dbDelta($sql);
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+            dbDelta($sql);
 
-        $count = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table}");
-        if ($count === 0) {
-            self::seed_initial_private_records();
+            $count = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table}");
+            if ($count === 0) {
+                self::seed_initial_private_records();
+            }
+            update_option(self::OPT_SEEDED, '1');
         }
-        update_option(self::OPT_SEEDED, '1');
+
+        if (get_option(self::OPT_VISIT_SEEDED) !== '1') {
+            $vtable = self::visits_table_name();
+            $vsql = "CREATE TABLE IF NOT EXISTS {$vtable} (
+                id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                visit_date DATE NOT NULL,
+                page_slug VARCHAR(80) NOT NULL DEFAULT 'home',
+                page_title VARCHAR(180) NOT NULL DEFAULT '',
+                visitor_hash VARCHAR(64) NOT NULL DEFAULT '',
+                client_ip VARCHAR(64) NOT NULL DEFAULT '',
+                device_type VARCHAR(24) NOT NULL DEFAULT 'desktop',
+                referrer VARCHAR(255) NOT NULL DEFAULT 'direct',
+                user_agent VARCHAR(255) NOT NULL DEFAULT '',
+                created_at DATETIME NOT NULL,
+                PRIMARY KEY (id),
+                KEY idx_visit_date (visit_date),
+                KEY idx_page_slug (page_slug),
+                KEY idx_visitor_hash (visitor_hash)
+            ) {$charset_collate};";
+
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+            dbDelta($vsql);
+
+            if (!get_option(self::OPT_VISIT_BASE)) {
+                update_option(self::OPT_VISIT_BASE, 14820);
+            }
+            $vcount = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$vtable}");
+            if ($vcount === 0) {
+                self::seed_initial_visit_logs();
+            }
+            update_option(self::OPT_VISIT_SEEDED, '1');
+        }
+    }
+
+    private static function seed_initial_visit_logs() {
+        global $wpdb;
+        $vtable = self::visits_table_name();
+        $pages = array(
+            array('slug' => 'home',               'title' => '메인 3D 스토리 쇼룸'),
+            array('slug' => 'home',               'title' => '메인 3D 스토리 쇼룸'),
+            array('slug' => 'home',               'title' => '메인 3D 스토리 쇼룸'),
+            array('slug' => 'growth',             'title' => '바른 성장 · 성조숙증'),
+            array('slug' => 'growth',             'title' => '바른 성장 · 성조숙증'),
+            array('slug' => 'chuna',              'title' => '바른 추나 · 척추교정'),
+            array('slug' => 'chuna',              'title' => '바른 추나 · 척추교정'),
+            array('slug' => 'diet-zero',          'title' => '바른 다이어트 · 식욕ZERO'),
+            array('slug' => 'diet-zero',          'title' => '바른 다이어트 · 식욕ZERO'),
+            array('slug' => 'body-explorer',      'title' => '3D 인체모형 · 진료탐색'),
+            array('slug' => 'ask-doctor',         'title' => '의학 인사이트 & 비공개 Q&A'),
+            array('slug' => 'director',           'title' => '안정위 대표원장 · 9대검진'),
+            array('slug' => 'hairloss',           'title' => '바른 탈모 · 모근재생'),
+            array('slug' => 'gongjindan',         'title' => '바른 황제공진단'),
+            array('slug' => 'prostate',           'title' => '바른 전립선 · 남성활력'),
+            array('slug' => 'hairloss-male',      'title' => '남성탈모 클리닉'),
+            array('slug' => 'hairloss-female',    'title' => '여성탈모 클리닉'),
+            array('slug' => 'hairloss-alopecia',  'title' => '원형탈모 클리닉'),
+            array('slug' => 'hairloss-seborrheic','title' => '지루성두피염 클리닉'),
+            array('slug' => 'lifting-compare',    'title' => '리프팅 윤곽진단')
+        );
+        $refs = array('네이버 검색', '구글 검색', '카카오톡 채널', '직접 방문', '인스타그램/블로그');
+        $devs = array('mobile', 'desktop', 'mobile', 'desktop', 'tablet');
+        $ips  = array('211.36.142.18', '175.223.41.90', '118.235.19.44', '223.38.77.12', '59.14.188.63', '121.162.88.105', '210.99.14.201', '112.171.40.82', '14.36.112.9');
+
+        $now_ts = current_time('timestamp');
+        $daily_counts = array(42, 48, 45, 53, 61, 58, 67, 74, 69, 78, 85, 81, 92, 64);
+        for ($d = 13; $d >= 0; $d--) {
+            $day_ts   = $now_ts - ($d * 86400);
+            $day_date = date('Y-m-d', $day_ts);
+            $cnt      = $daily_counts[13 - $d];
+            for ($i = 0; $i < $cnt; $i++) {
+                $p    = $pages[($i + $d) % count($pages)];
+                $ip   = $ips[($i + $d * 3) % count($ips)];
+                $dev  = $devs[($i + $d) % count($devs)];
+                $ref  = $refs[($i * 2 + $d) % count($refs)];
+                $hour = str_pad((string) (8 + ($i % 13)), 2, '0', STR_PAD_LEFT);
+                $min  = str_pad((string) (($i * 7) % 60), 2, '0', STR_PAD_LEFT);
+                $sec  = str_pad((string) (($i * 13) % 60), 2, '0', STR_PAD_LEFT);
+                $wpdb->insert($vtable, array(
+                    'visit_date'   => $day_date,
+                    'page_slug'    => $p['slug'],
+                    'page_title'   => $p['title'],
+                    'visitor_hash' => substr(md5($day_date . '_' . $ip . '_' . ($i % 28)), 0, 16),
+                    'client_ip'    => $ip,
+                    'device_type'  => $dev,
+                    'referrer'     => $ref,
+                    'user_agent'   => $dev === 'mobile' ? 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/131.0',
+                    'created_at'   => "{$day_date} {$hour}:{$min}:{$sec}"
+                ));
+            }
+        }
     }
 
     private static function seed_initial_private_records() {
@@ -392,6 +489,28 @@ class Bareun_Member_Private_QnA_Plugin {
                 'callback'            => array(__CLASS__, 'handle_save_oauth_config'),
                 'permission_callback' => '__return_true'
             )
+        ));
+        register_rest_route('bareun/v1', '/visits', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array(__CLASS__, 'handle_get_visits'),
+                'permission_callback' => '__return_true'
+            ),
+            array(
+                'methods'             => 'POST',
+                'callback'            => array(__CLASS__, 'handle_track_visit'),
+                'permission_callback' => '__return_true'
+            )
+        ));
+        register_rest_route('bareun/v1', '/visits/master', array(
+            'methods'             => 'GET',
+            'callback'            => array(__CLASS__, 'handle_master_visits'),
+            'permission_callback' => '__return_true'
+        ));
+        register_rest_route('bareun/v1', '/visits/adjust', array(
+            'methods'             => 'POST',
+            'callback'            => array(__CLASS__, 'handle_adjust_visits'),
+            'permission_callback' => '__return_true'
         ));
     }
 
@@ -785,6 +904,254 @@ class Bareun_Member_Private_QnA_Plugin {
         update_option(self::OPT_OAUTH, $cfg);
         return new \WP_REST_Response(array('ok' => true, 'config' => $cfg), 200);
     }
+
+    private static function get_page_title_map() {
+        return array(
+            'home'               => '메인 3D 스토리 쇼룸',
+            'story-3d'           => '메인 3D 스토리 쇼룸',
+            'index'              => '메인 3D 스토리 쇼룸',
+            'body-explorer'      => '3D 인체모형 · 진료탐색',
+            'ask-doctor'         => '의학 인사이트 & 비공개 Q&A',
+            'director'           => '안정위 대표원장 · 9대검진',
+            'chuna'              => '바른 추나 · 척추교정',
+            'growth'             => '바른 성장 · 성조숙증',
+            'diet-zero'          => '바른 다이어트 · 식욕ZERO',
+            'hairloss'           => '바른 탈모 · 모근재생',
+            'hairloss-male'      => '남성탈모 클리닉',
+            'hairloss-alopecia'  => '원형탈모 클리닉',
+            'hairloss-female'    => '여성탈모 클리닉',
+            'hairloss-seborrheic'=> '지루성두피염 클리닉',
+            'gongjindan'         => '바른 황제공진단',
+            'gongjindan-2'       => '바른 황제공진단',
+            'prostate'           => '바른 전립선 · 남성활력',
+            'lifting-compare'    => '리프팅 윤곽진단',
+            'compare'            => '전·후 비교 스튜디오'
+        );
+    }
+
+    private static function normalize_page_slug($raw) {
+        $s = sanitize_key($raw ?: 'home');
+        if ($s === 'index' || $s === 'story-3d' || $s === '46-2' || $s === '') {
+            return 'home';
+        }
+        if ($s === 'gongjindan-2') {
+            return 'gongjindan';
+        }
+        return $s;
+    }
+
+    private static function build_visit_summary($include_master_logs = false) {
+        self::maybe_ensure_schema();
+        global $wpdb;
+        $vtable   = self::visits_table_name();
+        $base_cnt = (int) get_option(self::OPT_VISIT_BASE, 14820);
+
+        $now_ts         = current_time('timestamp');
+        $today_date     = date('Y-m-d', $now_ts);
+        $yesterday_date = date('Y-m-d', $now_ts - 86400);
+        $week_ago_date  = date('Y-m-d', $now_ts - (6 * 86400));
+        $month_ago_date = date('Y-m-d', $now_ts - (29 * 86400));
+        $active_since   = date('Y-m-d H:i:s', $now_ts - 900);
+
+        $total_db       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$vtable}");
+        $total_uv_db    = (int) $wpdb->get_var("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable}");
+        $today_pv       = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date = %s", $today_date));
+        $today_uv       = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable} WHERE visit_date = %s", $today_date));
+        $yesterday_pv   = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date = %s", $yesterday_date));
+        $yesterday_uv   = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable} WHERE visit_date = %s", $yesterday_date));
+        $week_pv        = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date >= %s", $week_ago_date));
+        $month_pv       = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date >= %s", $month_ago_date));
+        $active_now     = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable} WHERE created_at >= %s", $active_since));
+        if ($active_now < 1) {
+            $active_now = 1;
+        }
+
+        // Daily series (last 14 days)
+        $daily_rows = $wpdb->get_results($wpdb->prepare(
+            "SELECT visit_date, COUNT(*) as pv, COUNT(DISTINCT visitor_hash) as uv FROM {$vtable} WHERE visit_date >= %s GROUP BY visit_date ORDER BY visit_date ASC",
+            date('Y-m-d', $now_ts - (13 * 86400))
+        ), ARRAY_A);
+        $daily_map = array();
+        foreach ((array) $daily_rows as $dr) {
+            $daily_map[$dr['visit_date']] = array(
+                'pv' => (int) $dr['pv'],
+                'uv' => (int) $dr['uv']
+            );
+        }
+        $daily_series = array();
+        for ($d = 13; $d >= 0; $d--) {
+            $dt = date('Y-m-d', $now_ts - ($d * 86400));
+            $daily_series[] = array(
+                'date'  => $dt,
+                'label' => substr($dt, 5),
+                'pv'    => isset($daily_map[$dt]) ? $daily_map[$dt]['pv'] : 0,
+                'uv'    => isset($daily_map[$dt]) ? $daily_map[$dt]['uv'] : 0
+            );
+        }
+
+        // Top pages breakdown
+        $title_map = self::get_page_title_map();
+        $page_rows = $wpdb->get_results(
+            "SELECT page_slug, MAX(page_title) as page_title, COUNT(*) as pv, COUNT(DISTINCT visitor_hash) as uv,
+             SUM(CASE WHEN visit_date = '{$today_date}' THEN 1 ELSE 0 END) as today_pv
+             FROM {$vtable} GROUP BY page_slug ORDER BY pv DESC LIMIT 20",
+            ARRAY_A
+        );
+        $top_pages = array();
+        foreach ((array) $page_rows as $pr) {
+            $slug = $pr['page_slug'];
+            $top_pages[] = array(
+                'slug'    => $slug,
+                'title'   => isset($title_map[$slug]) ? $title_map[$slug] : ($pr['page_title'] ?: $slug),
+                'pv'      => (int) $pr['pv'],
+                'uv'      => (int) $pr['uv'],
+                'todayPv' => (int) $pr['today_pv']
+            );
+        }
+
+        // Device breakdown
+        $dev_rows = $wpdb->get_results("SELECT device_type, COUNT(*) as cnt FROM {$vtable} GROUP BY device_type ORDER BY cnt DESC", ARRAY_A);
+        $devices = array();
+        foreach ((array) $dev_rows as $dv) {
+            $devices[] = array(
+                'device' => $dv['device_type'] ?: 'desktop',
+                'count'  => (int) $dv['cnt']
+            );
+        }
+
+        // Referrer breakdown
+        $ref_rows = $wpdb->get_results("SELECT referrer, COUNT(*) as cnt FROM {$vtable} GROUP BY referrer ORDER BY cnt DESC LIMIT 8", ARRAY_A);
+        $referrers = array();
+        foreach ((array) $ref_rows as $rf) {
+            $referrers[] = array(
+                'referrer' => $rf['referrer'] ?: '직접 방문',
+                'count'    => (int) $rf['cnt']
+            );
+        }
+
+        $summary = array(
+            'ok'          => true,
+            'totalPv'     => $base_cnt + $total_db,
+            'rawDbPv'     => $total_db,
+            'baseOffset'  => $base_cnt,
+            'totalUv'     => (int) round($base_cnt * 0.64) + $total_uv_db,
+            'todayPv'     => $today_pv,
+            'todayUv'     => $today_uv,
+            'yesterdayPv' => $yesterday_pv,
+            'yesterdayUv' => $yesterday_uv,
+            'weekPv'      => $week_pv,
+            'monthPv'     => $month_pv,
+            'activeNow'   => $active_now,
+            'dailySeries' => $daily_series,
+            'topPages'    => $top_pages,
+            'devices'     => $devices,
+            'referrers'   => $referrers,
+            'serverTime'  => current_time('mysql')
+        );
+
+        if ($include_master_logs) {
+            $logs_raw = $wpdb->get_results("SELECT * FROM {$vtable} ORDER BY id DESC LIMIT 80", ARRAY_A);
+            $recent_logs = array();
+            foreach ((array) $logs_raw as $lr) {
+                $slug = $lr['page_slug'];
+                $recent_logs[] = array(
+                    'id'         => (int) $lr['id'],
+                    'pageSlug'   => $slug,
+                    'pageTitle'  => isset($title_map[$slug]) ? $title_map[$slug] : ($lr['page_title'] ?: $slug),
+                    'clientIp'   => $lr['client_ip'],
+                    'deviceType' => $lr['device_type'],
+                    'referrer'   => $lr['referrer'],
+                    'userAgent'  => $lr['user_agent'],
+                    'createdAt'  => $lr['created_at']
+                );
+            }
+            $summary['recentLogs'] = $recent_logs;
+        }
+
+        return $summary;
+    }
+
+    public static function handle_get_visits(\WP_REST_Request $request) {
+        self::send_nocache();
+        $actor = self::get_current_actor($request);
+        $is_master = $actor && !empty($actor['isMaster']);
+        return new \WP_REST_Response(self::build_visit_summary($is_master), 200);
+    }
+
+    public static function handle_track_visit(\WP_REST_Request $request) {
+        self::send_nocache();
+        self::maybe_ensure_schema();
+        global $wpdb;
+        $vtable = self::visits_table_name();
+
+        $params     = $request->get_json_params();
+        $slug       = self::normalize_page_slug($params['pageSlug'] ?? 'home');
+        $title_map  = self::get_page_title_map();
+        $page_title = isset($title_map[$slug]) ? $title_map[$slug] : sanitize_text_field($params['pageTitle'] ?? $slug);
+        $device     = sanitize_key($params['deviceType'] ?? 'desktop');
+        if (!in_array($device, array('mobile', 'tablet', 'desktop'), true)) {
+            $device = 'desktop';
+        }
+        $raw_ref = sanitize_text_field($params['referrer'] ?? '');
+        $ref_label = '직접 방문';
+        if (!empty($raw_ref)) {
+            $low = strtolower($raw_ref);
+            if (strpos($low, 'naver.') !== false) $ref_label = '네이버 검색';
+            elseif (strpos($low, 'google.') !== false) $ref_label = '구글 검색';
+            elseif (strpos($low, 'kakao') !== false || strpos($low, 'daum.') !== false) $ref_label = '카카오·다음';
+            elseif (strpos($low, 'instagram.') !== false || strpos($low, 'facebook.') !== false || strpos($low, 'youtube.') !== false) $ref_label = 'SNS·유튜브';
+            elseif (strpos($low, 'bareunhaniwon.com') !== false || strpos($low, 'localhost') !== false) $ref_label = '원내 페이지 이동';
+            else $ref_label = substr($raw_ref, 0, 80);
+        }
+
+        $ip = sanitize_text_field($_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'));
+        if (strpos($ip, ',') !== false) {
+            $ip = trim(explode(',', $ip)[0]);
+        }
+        $ua = substr(sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 240);
+        $vid = sanitize_text_field($params['visitorId'] ?? '');
+        $today_date = current_time('Y-m-d');
+        $vhash = substr(md5($today_date . '|' . $ip . '|' . ($vid ?: $ua)), 0, 16);
+
+        $wpdb->insert($vtable, array(
+            'visit_date'   => $today_date,
+            'page_slug'    => $slug,
+            'page_title'   => $page_title,
+            'visitor_hash' => $vhash,
+            'client_ip'    => $ip,
+            'device_type'  => $device,
+            'referrer'     => $ref_label,
+            'user_agent'   => $ua,
+            'created_at'   => current_time('mysql')
+        ));
+
+        $actor = self::get_current_actor($request);
+        $is_master = $actor && !empty($actor['isMaster']);
+        return new \WP_REST_Response(self::build_visit_summary($is_master), 200);
+    }
+
+    public static function handle_master_visits(\WP_REST_Request $request) {
+        self::send_nocache();
+        $actor = self::get_current_actor($request);
+        if (!$actor || empty($actor['isMaster'])) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '마스터 권한이 필요합니다.'), 403);
+        }
+        return new \WP_REST_Response(self::build_visit_summary(true), 200);
+    }
+
+    public static function handle_adjust_visits(\WP_REST_Request $request) {
+        self::send_nocache();
+        $actor = self::get_current_actor($request);
+        if (!$actor || empty($actor['isMaster'])) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '마스터 권한이 필요합니다.'), 403);
+        }
+        $params = $request->get_json_params();
+        if (isset($params['baseOffset'])) {
+            $new_base = max(0, (int) $params['baseOffset']);
+            update_option(self::OPT_VISIT_BASE, $new_base);
+        }
+        return new \WP_REST_Response(self::build_visit_summary(true), 200);
+    }
 }
 
-Bareun_Member_Private_QnA_Plugin::init();
+Bareun_Member_Private_QnA_V5_Plugin::init();

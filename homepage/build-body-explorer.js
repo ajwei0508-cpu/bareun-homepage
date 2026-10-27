@@ -1381,6 +1381,7 @@ ${WEBGL_PART_B}
     animate();
   })();
   </script>
+  <script src="visit-tracker.js"></script>
 </body>
 </html>`;
 }

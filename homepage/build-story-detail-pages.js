@@ -13422,6 +13422,7 @@ function buildPageHtml(page) {
       requestAnimationFrame(animateAll);
     })();
   </script>
+  <script src="visit-tracker.js"></script>
 </body>
 </html>`;
 }
