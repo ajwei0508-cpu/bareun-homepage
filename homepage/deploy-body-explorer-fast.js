@@ -39,7 +39,7 @@ const puppeteer = loadPuppeteer();
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
 
-    await page.goto('https://bareunhaniwon.com/wp-login.php', { waitUntil: 'networkidle2', timeout: 30000 });
+    await page.goto('https://www.bareunhaniwon.com/wp-login.php', { waitUntil: 'networkidle2', timeout: 30000 });
     for (let attempt = 1; attempt <= 2; attempt++) {
       if (!page.url().includes('wp-login.php')) break;
       const confirmBtn = await page.$('#correct-admin-email');
@@ -65,7 +65,7 @@ const puppeteer = loadPuppeteer();
       ]);
     }
 
-    await page.goto('https://bareunhaniwon.com/wp-admin/post-new.php?post_type=page', { waitUntil: 'domcontentloaded', timeout: 20000 });
+    await page.goto('https://www.bareunhaniwon.com/wp-admin/post-new.php?post_type=page', { waitUntil: 'domcontentloaded', timeout: 20000 });
     const nonce = await page.evaluate(() => {
       if (window.wpApiSettings && window.wpApiSettings.nonce) return window.wpApiSettings.nonce;
       const html = document.documentElement.innerHTML;
@@ -99,7 +99,7 @@ const puppeteer = loadPuppeteer();
       return { status: r.status, id: j.id, link: j.link, err: j.message };
     }, { wpNonce: nonce, content: blockContent });
 
-    await page.goto('https://bareunhaniwon.com/wp-admin/options-general.php?page=wpsupercache', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+    await page.goto('https://www.bareunhaniwon.com/wp-admin/options-general.php?page=wpsupercache', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
     await page.evaluate(() => {
       const btn = document.querySelector('input[name="wp_delete_cache"], button[name="wp_delete_cache"]');
       if (btn && btn.form) btn.form.submit();

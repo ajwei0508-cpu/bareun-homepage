@@ -194,13 +194,29 @@ async function performWpLogin(page, loginUrl) {
       console.log('1.5) Syncing & Activating Bareun Backend + Master SEO Engine via WPCode ...');
       const phpSnippetBody = fs.readFileSync(phpBackendPath, 'utf8').replace(/^<\?php\s*/, '').trim();
       await page.goto(`${CANONICAL_ORIGIN}/wp-admin/admin.php?page=wpcode`, { waitUntil: 'networkidle2', timeout: 25000 });
-      const existingSnippets = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('table.wp-list-table tbody tr')).map(tr => ({
-          title: tr.querySelector('.column-name a.row-title')?.textContent?.trim() || '',
-          editHref: tr.querySelector('.column-name a.row-title')?.getAttribute('href') || ''
-        }));
+      const snippetRows = await page.evaluate(() => {
+        return Array.from(document.querySelectorAll('table.wp-list-table tbody tr')).map(tr => {
+          const editLink = tr.querySelector('a[href*="page=wpcode-snippet-manager&snippet_id="]');
+          const trashLink = tr.querySelector('a[href*="action=trash"]');
+          return {
+            title: editLink ? editLink.textContent.trim() : '',
+            editHref: editLink ? editLink.getAttribute('href') : '',
+            trashHref: trashLink ? trashLink.getAttribute('href') : ''
+          };
+        }).filter(r => r.title.includes('Bareun Member Auth') || r.title.includes('Private Disease QnA'));
       });
-      const existingMatch = existingSnippets.find(s => s.title.includes('Bareun Member Auth') || s.title.includes('Private Disease QnA'));
+      // Trash older duplicate Bareun snippets if more than 1 exist
+      if (snippetRows.length > 1) {
+        for (const dup of snippetRows.slice(1)) {
+          if (dup.trashHref) {
+            const th = dup.trashHref.startsWith('http')
+              ? dup.trashHref.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)
+              : `${CANONICAL_ORIGIN}/wp-admin/` + dup.trashHref.replace(/^\//, '');
+            await page.goto(th, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+          }
+        }
+      }
+      const existingMatch = snippetRows[0];
       const targetUrl = existingMatch && existingMatch.editHref
         ? (existingMatch.editHref.startsWith('http')
             ? existingMatch.editHref.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)
@@ -215,14 +231,22 @@ async function performWpLogin(page, loginUrl) {
           typeSelect.value = 'php';
           typeSelect.dispatchEvent(new Event('change', { bubbles: true }));
         }
+        const prioInput = document.querySelector('#wpcode_priority, input[name="wpcode_priority"]');
+        if (prioInput) prioInput.value = '1';
         const codeTa = document.querySelector('#wpcode_snippet_code, textarea[name="wpcode_snippet_code"]');
         if (codeTa) codeTa.value = codeStr;
+        const textTa = document.querySelector('#wpcode_snippet_text, textarea[name="wpcode_snippet_text"]');
+        if (textTa) textTa.value = codeStr;
         document.querySelectorAll('.CodeMirror').forEach(cmEl => {
           if (cmEl.CodeMirror) {
             cmEl.CodeMirror.setValue(codeStr);
             cmEl.CodeMirror.save();
           }
         });
+        if (window.wpcode_editor && window.wpcode_editor.codemirror) {
+          window.wpcode_editor.codemirror.setValue(codeStr);
+          window.wpcode_editor.codemirror.save();
+        }
         const activeChk = document.querySelector('#wpcode_active, input[name="wpcode_active"]');
         if (activeChk && !activeChk.checked) {
           activeChk.checked = true;
@@ -233,7 +257,8 @@ async function performWpLogin(page, loginUrl) {
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 30000 }).catch(() => {}),
         page.evaluate(() => {
-          const btn = document.querySelector('button[name="submit"], #publish, .wpcode-button[type="submit"], form#wpcode-snippet-manager-form button[type="submit"]');
+          // IMPORTANT: Click ONLY the real Publish/Update button (name="button" value="publish"), NEVER #wpcode_execute_now!
+          const btn = document.querySelector('button[name="button"][value="publish"], button[name="submit"], #publish');
           if (btn) btn.click();
           else {
             const f = document.querySelector('form#wpcode-snippet-manager-form, form[action*="wpcode"]');
@@ -331,6 +356,20 @@ async function performWpLogin(page, loginUrl) {
           headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
           body: JSON.stringify({ ogImageUrl: ogMediaUrl })
         }).catch(() => {});
+      }
+
+      // Free up 'gongjindan' slug if held by attachment media ID 50 (gongjindan.png)
+      const mediaGong = await (await fetch('/wp-json/wp/v2/media?slug=gongjindan', {
+        headers: { 'X-WP-Nonce': wpNonce }
+      })).json();
+      if (Array.isArray(mediaGong)) {
+        for (const mg of mediaGong) {
+          await fetch(`/wp-json/wp/v2/media/${mg.id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({ slug: 'gongjindan-media-asset' })
+          }).catch(() => {});
+        }
       }
 
       // Clean up duplicate gongjindan-3 (ID 132) or trashed gongjindan slugs so ID 96 takes /gongjindan/ cleanly

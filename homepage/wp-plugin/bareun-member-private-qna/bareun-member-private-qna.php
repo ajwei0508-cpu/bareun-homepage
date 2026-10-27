@@ -1517,7 +1517,7 @@ if (!class_exists('Bareun_Master_SEO_Engine_V1')) :
 class Bareun_Master_SEO_Engine_V1 {
     const OPT_VERIFY_CODES = 'bareun_seo_verification_codes_v1';
     const OPT_OG_IMAGE_URL = 'bareun_official_og_image_url_v1';
-    const OPT_HTACCESS_VER = 'bareun_htaccess_sec_headers_v2';
+    const OPT_HTACCESS_VER = 'bareun_htaccess_sec_headers_v4';
     const CANONICAL_HOST   = 'www.bareunhaniwon.com';
     const CANONICAL_ORIGIN = 'https://www.bareunhaniwon.com';
     const INDEXNOW_KEY     = 'bareunhaniwon2026aiseokey849201';
@@ -1525,9 +1525,16 @@ class Bareun_Master_SEO_Engine_V1 {
     private static $cached_cfg = null;
 
     public static function init() {
-        add_action('init', array(__CLASS__, 'maybe_sync_htaccess_headers'), 1);
-        add_action('init', array(__CLASS__, 'handle_early_canonical_and_virtual_endpoints'), 2);
-        add_action('init', array(__CLASS__, 'setup_head_cleanup'), 20);
+        if (did_action('init')) {
+            self::maybe_sync_htaccess_headers();
+            self::handle_early_canonical_and_virtual_endpoints();
+            self::setup_head_cleanup();
+        } else {
+            add_action('init', array(__CLASS__, 'maybe_sync_htaccess_headers'), 1);
+            add_action('init', array(__CLASS__, 'handle_early_canonical_and_virtual_endpoints'), 2);
+            add_action('init', array(__CLASS__, 'setup_head_cleanup'), 20);
+        }
+        add_action('template_redirect', array(__CLASS__, 'handle_early_canonical_and_virtual_endpoints'), 1);
         add_action('send_headers', array(__CLASS__, 'send_security_headers'), 1);
         add_filter('wp_headers', array(__CLASS__, 'filter_wp_headers'), 99);
         add_filter('wp_robots', array(__CLASS__, 'filter_wp_robots'), 99);
@@ -1560,9 +1567,16 @@ class Bareun_Master_SEO_Engine_V1 {
     }
 
     public static function maybe_sync_htaccess_headers() {
-        if (get_option(self::OPT_HTACCESS_VER) === '2') {
+        if (get_option(self::OPT_HTACCESS_VER) === '4') {
             return;
         }
+        // 1) Write physical /llms.txt and IndexNow key .txt in ABSPATH so Nginx/OpenResty static handler serves 200 OK
+        $llms_file = ABSPATH . 'llms.txt';
+        @file_put_contents($llms_file, base64_decode('IyDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uIE1haW4gQnJhbmNoKQo+IOuMgOyghOq0keyXreyLnCDrjIDrjZXqtawg67mE656Y64+Z66GcN+uyiOq4uCAxLCAy7Li1ICjsmrDtjrjrsojtmLggMzQ0MTcpIHwg64yA7ZGc67KI7Zi4OiAwMTAtNTYzMS0xMjc1IHwg64yA7ZGc7JuQ7J6lOiDslYjsoJXsnIQKPiDsp4Tro4zsi5zqsIQ6IO2PieydvCjsm5R+6riIKSAwOTowMH4xOTowMCDCtyDthqDsmpTsnbwg67CPIOqzte2ctOydvCAwOTowMH4xNDowMCDCtyDsnbzsmpTsnbwg7Zy07KeECj4g7ZW07Jm4IOuplOydtOyggCDsnZjtlZkg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgTkVKTSwgVGhlIExhbmNldCwgSkFNQSwgUGh5c2lvbG9naWNhbCBSZXZpZXdzLCBFdXJvcGVhbiBIZWFydCBKb3VybmFsLCBKQ0VNLCBIdW1hbiBSZXByb2R1Y3Rpb24gVXBkYXRlLCBFdXJvcGVhbiBVcm9sb2d5KSDrsI8g7Ya17ZWp7IOd66as7ZWZIOyXsOq1rCDqt7zqsbAg6riw67CYIDnrjIAg7KCV67CA6rKA7KeEIMK3IDE6MSDsgqzsg4HssrTsp4gg7ZWc7JW9IMK3IOyImOq4sCDstpTrgpggwrcg7IaM7JWEIO2CpOyEseyepSDCtyDsi53smpVaRVJPIOuLpOydtOyWtO2KuCDCtyDrkZDtlLzsl7Qg7YOI66qoIMK3IOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIMK3IOyghOumveyEoCDtgbTrpqzri4kgJiDtkoDsiqTtgazrprAgM0Qg7J247LK066qo7ZiVIOqxtOqwlSDtj6zthLguCgojIyBDbGluaWMgSW5mb3JtYXRpb24gKE5BUCAmIE9mZmljaWFsIENoYW5uZWxzKQotIE9mZmljaWFsIFdlYnNpdGU6IGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLwotIENsaW5pYyBOYW1lOiDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uKQotIENoaWVmIERpcmVjdG9yOiDslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIChEci4gSnVuZy1XaSBBaG4sIEtNRCkKLSBBZGRyZXNzOiDrjIDsoITqtJHsl63si5wg64yA642V6rWsIOu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSAoMkYsIDEsIEJpcmFlZG9uZy1ybyA3YmVvbi1naWwsIERhZWRlb2stZ3UsIERhZWplb24sIDM0NDE3LCBSZXB1YmxpYyBvZiBLb3JlYSkKLSBUZWxlcGhvbmU6IDAxMC01NjMxLTEyNzUgKCs4Mi0xMC01NjMxLTEyNzUpCi0gSG91cnM6IE1vbi1GcmkgMDk6MDAtMTk6MDAsIFNhdCAmIFB1YmxpYyBIb2xpZGF5cyAwOTowMC0xNDowMCwgQ2xvc2VkIG9uIFN1bmRheXMKLSBOYXZlciBQbGFjZTogaHR0cHM6Ly9uYXZlci5tZS81VTFFTG44TAotIE9mZmljaWFsIEJsb2c6IGh0dHBzOi8vYmxvZy5uYXZlci5jb20vd2VpMDUwOAotIEtha2FvVGFsayBDb25zdWx0YXRpb246IGh0dHBzOi8vcGYua2FrYW8uY29tL195a3hjTEsKCiMjIFNwZWNpYWxpemVkIENsaW5pY2FsIERpdmlzaW9ucwotIFvrqZTsnbggM0Qg7ZmY7J6QIOyKpO2GoOumrCDsh7zro7hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyk6IOyVhOu5oCDtlZzsnZjsgqzrpbwg7LC+64qUIO2ZmOyekCDsiqTthqDrpqwg67CPIDbrjIAg7KSR7KCQIO2BtOumrOuLiSDslYjrgrQuCi0gW+yViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4RdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpcmVjdG9yLyk6IOy0iOydjO2MjCwg7KCB7Jm47ISgIOyytOyXtOynhOuLqCwg7J2067mE7J247ZuEIOuCtOyLnOqyvSwg7IKs7IOB7LK07KeILCDssrTsp4DrsKkoSW5Cb2R5KSwg7J6Q7Jyo7Iug6rK9KEhSViksIOqwhMK364u5IOuMgOyCrCwg7ZiI6rSAIOuFuO2ZlCwg7ISx7J6l7YyQIOqygOyCrCDrsI8g7JuQ64K0IOustOq3oCDtg5XsoIQg7Iuc7Iqk7YWcLgotIFvrsJTrpbgg7LaU64KYIMK3IOyymey2lOq1kOyglSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2NodW5hLyk6IO2XiOumrOuUlOyKpO2BrCwg66qp65SU7Iqk7YGsLCDqsbDrtoHrqqksIOqzqOuwmCDrtojqt6DtmJUsIOyymey2lOq0gO2YkeywqeymnSDruYTsiJjsiKAg64yA7ZGc7JuQ7J6lIOyImOq4sCDstpTrgpjsmpTrspUg67CPIOyVvey5qC4KLSBb67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0g7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9ncm93dGgvKTog66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg67aE7ISdLCDshozslYTruYTrp4wg7LK07KeA67CpLe2CpCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOygkOuniSDrqbTsl60g67CPIOyEseyepSDtlZzslb0uCi0gW+uwlOuluCDri6TsnbTslrTtirggwrcg7Iud7JqVWkVSTyDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpZXQtemVyby8pOiDqsIjsg4nsp4DrsKkg64yA7IKsIO2ZnOyEse2ZlCwg6re87JyhIOuztOyhtCDssrTsp4DrsKkg6rCQ65+JLCDrtoDsooXCt+uPheyGjCDrsLDstpwg66ee7LakIO2VnOyVvSDrsI8g67mE64yA66m0IOynhOujjCDsp4Dsm5AuCi0gW+uwlOuluCDtg4jrqqggwrcg66qo6re87J6s7IOdIO2Gte2VqSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLyk6IOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rK97LaUIOy2lOuCmCwg7KCV7KCcIOuwnOuqqCDslb3suaguCiAgLSBb64Ko7ISx7YOI66qoIChN7J6QwrfsoJXsiJjrpqwpXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1tYWxlLykKICAtIFvsm5DtmJXtg4jrqqggKOyekOqwgOuptOyXrSDrs7Xsm5ApXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1hbG9wZWNpYS8pCiAgLSBb7Jes7ISx7YOI66qoICjqsIDrpbTrp4jCt+uzvOulqCldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLWZlbWFsZS8pCiAgLSBb7KeA66Oo7ISx65GQ7ZS87Je8ICjrkZDtlLwg7Je064+Fwrfrqqjrgq3sl7wg7ZW064+FKV0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vaGFpcmxvc3Mtc2Vib3JyaGVpYy8pCi0gW+uwlOuluCDtmansoJzqs7Xsp4Tri6gg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9nb25namluZGFuLyk6IOyLneyVveyymCBDSVRFUyDsnbjspp0g7KCV7ZKIIOyynOyXsCDsgqztlqUoTC1NdXNjb25lKSDrsI8g65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57JqpIOuMgO2RnOybkOyepSDsp4HsoJEg7IiY7KCcIOyhsOygnC4KLSBb67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9wcm9zdGF0ZS8pOiDrp4zshLEg7KCE66a97ISg7Je8LCDsoITrpr3shKDruYTrjIDspp0sIOyVvOqwhOuHqCwg6rO866+87ISxIOuwqeq0kSwg6rOo67CY7KCA6re8IOyauO2YiCDqsJDslZUg7LmY66OMLgotIFvrsJTrpbjrpqztlITtjIUg7Iuc7IigIOyghO2bhCDsnKTqs73sp4Tri6hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2xpZnRpbmctY29tcGFyZS8pOiDruYTsiJjsiKAg7ZWc67CpIOunpOyEoMK37JW97LmoIOyViOuptCDrpqztlITtjIUg67CPIDPsoJAg7KSR7Ius7LaVIOyghO2bhCDsnKTqs70g7KCV67CAIOu5hOq1kCDsiqTtipzrlJTsmKQuCgojIyBJbnRlcmFjdGl2ZSAzRCBBbmF0b215ICYgRXZpZGVuY2UtQmFzZWQgTWVkaWNhbCBKb3VybmFsCi0gW+2SgOyKpO2BrOumsCAzRCDsnbjssrTrqqjtmJUgwrcg7KeE66OMIOyCtO2OtOuztOq4sF0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vYm9keS1leHBsb3Jlci8pOiDsoITsi6Ag6re87Jyhwrfsi6Dqsr3Ct+q0gOygiMK37ZiI6rSAIDTrjIAg6rOE7Ya1IOyLpOyLnOqwhCAzRCDrqqjshZgg67CPIDnrjIAg67aA7JyE67OEIDLsnbwg7KO86riwIOyInOyImCDqsbTqsJUg7KCV67O0IOyVhOy5tOydtOu4jC4KLSBb7Ya17ZWp7J2Y7ZWZIOyduOyCrOydtO2KuCDsoIDrhJAgJiDsp4jtmZjrs4QgMToxIOu5hOqzteqwnCBRJkFdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2Fzay1kb2N0b3IvKTog7ZW07Jm4IFNDSSDtlZnsiKDsp4Ag6riw67CYIOydmO2VmSDrpqzrt7Ag67CPIO2ajOybkCDsoITsmqkgMTAwJSDruYTqs7XqsJwgMToxIOqxtOqwlSDsg4Hri7QuCi0gW+uMgO2RnCDtlZnsiKAg7Lm865+8OiDrp4zshLEg7ZS866GcwrfshoztmZQg7J6l7JWgwrfsspnstpQg7Ya17KadIO2Gte2VqeyDneumrO2VmSDqsIDsnbTrk5xdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2ludGVncmF0aXZlLWF1dG9ub21pYy1jaXJjYWRpYW4tZ3V0LXNwaW5lLWhlYWx0aC1yZXZpZXcvKTog7J6Q7Jyo7Iug6rK9LCDsnqUt64eMIOy2lShNaWNyb2Jpb3RhLUd1dC1CcmFpbiBBeGlzKSwg7LKZ7LaUIOyDneyytOyXre2VmeydmCDsg4HtmLjsnpHsmqkg66as67ewLgo='));
+        $idx_file = ABSPATH . self::INDEXNOW_KEY . '.txt';
+        @file_put_contents($idx_file, self::INDEXNOW_KEY);
+
+        // 2) Prepend security response headers block to .htaccess
         $ht_file = ABSPATH . '.htaccess';
         if (file_exists($ht_file) && is_writable($ht_file)) {
             $cur = @file_get_contents($ht_file);
@@ -1578,9 +1592,16 @@ class Bareun_Master_SEO_Engine_V1 {
                     . "</IfModule>\n"
                     . "# END BareunSEOHeaders\n\n";
                 @file_put_contents($ht_file, $block . ltrim($cur));
-                update_option(self::OPT_HTACCESS_VER, '2');
             }
         }
+
+        // 3) Wipe stale WP Super Cache across both bareunhaniwon.com and www.bareunhaniwon.com
+        if (function_exists('wp_cache_clean_cache')) {
+            global $file_prefix;
+            @wp_cache_clean_cache(isset($file_prefix) ? $file_prefix : 'wp-cache-', true);
+        }
+
+        update_option(self::OPT_HTACCESS_VER, '4');
     }
 
     private static function is_request_https() {
@@ -1669,6 +1690,7 @@ class Bareun_Master_SEO_Engine_V1 {
     public static function setup_head_cleanup() {
         remove_action('wp_head', 'rel_canonical');
         remove_action('wp_head', 'wp_shortlink_wp_head', 10);
+        remove_action('wp_head', 'wp_robots', 1);
     }
 
     public static function send_security_headers() {
@@ -1920,6 +1942,11 @@ class Bareun_Master_SEO_Engine_V1 {
         $google_code = is_array($verify) && !empty($verify['google']) ? trim((string) $verify['google']) : '';
 
         echo "\n<!-- Bareun Master SEO & GEO Engine -->\n";
+        if (is_404() || is_search()) {
+            echo '<meta name="robots" content="noindex, follow">' . "\n";
+        } else {
+            echo '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">' . "\n";
+        }
         if ($desc !== '') {
             echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
         }
@@ -1995,6 +2022,19 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         if (!empty($entry['loc'])) {
             $entry['loc'] = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $entry['loc']);
+        }
+        $milestone_dates = array(
+            'integrative-autonomic-circadian-gut-spine-health-review' => '2026-10-26T14:30:00+09:00',
+            'lifting-compare' => '2026-10-25T18:10:00+09:00',
+            'prostate'        => '2026-10-26T11:20:00+09:00',
+            'ask-doctor'      => '2026-10-27T09:15:00+09:00',
+            'body-explorer'   => '2026-10-27T17:40:00+09:00'
+        );
+        $slug = ($post && !empty($post->post_name)) ? (string) $post->post_name : '';
+        $mod_day = ($post && !empty($post->post_modified)) ? substr((string) $post->post_modified, 0, 10) : '';
+        if ($slug !== '' && isset($milestone_dates[$slug]) && $mod_day <= '2026-10-28') {
+            $entry['lastmod'] = $milestone_dates[$slug];
+            return $entry;
         }
         if ($post && !empty($post->post_modified_gmt) && $post->post_modified_gmt !== '0000-00-00 00:00:00') {
             $ts = strtotime($post->post_modified_gmt . ' UTC');

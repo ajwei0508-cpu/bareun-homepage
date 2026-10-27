@@ -39,8 +39,11 @@ const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/
 
 function toGhWebpOrRaw(relPath) {
   const clean = String(relPath || '').replace(/^\/+/, '');
-  if (imageDims[clean] && imageDims[clean].webp) {
-    return ghBase + imageDims[clean].webp;
+  const qIdx = clean.indexOf('?');
+  const baseRel = qIdx >= 0 ? clean.slice(0, qIdx) : clean;
+  const querySuffix = qIdx >= 0 ? clean.slice(qIdx) : '';
+  if (imageDims[baseRel] && imageDims[baseRel].webp) {
+    return ghBase + imageDims[baseRel].webp + querySuffix;
   }
   return ghBase + clean;
 }
