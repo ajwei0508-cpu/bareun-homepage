@@ -1,17 +1,15 @@
 /**
- * 바른한의원 대전본점 · 풀스크린 3D 인체모형 & 우측 소형 블랙·화이트 메뉴 + 3메뉴 정보 팝업 빌더 (v5.4)
+ * 바른한의원 대전본점 · 풀스크린 3D 인체모형(클릭 시 내부 장기 활성) & 우측 소형 화이트·블랙·골드 메뉴 + 3메뉴 정보 팝업 빌더 (v5.5)
  *
  * [핵심 설계]
- * 1. 전체화면(100vw × 100vh) 3D 인체모형: 과거 버전 한지 베이지 & 반투명 도자(Porcelain) 3D 인체모형 · 골격 · 신경 · 오장육부 100% 보존
- * 2. 우측 소형 수직 메뉴 나열: 『바른한의원 진료 살펴보기』 9개 진료 파트를 화면 우측에 작고 정갈하게 수직 배치
- * 3. 블랙 & 화이트(Black & White) 하이엔드 모노크롬 컬러 시스템:
- *    - 상단 바, 우측 소형 메뉴, 3D 컨트롤 바, 핫스팟 마커, 3메뉴 정보 팝업 패널 전 영역 블랙(#0A0A0A) & 화이트(#FFFFFF) 구성
- * 4. 3메뉴 정보 팝업 패널 (클릭 시 우측 메뉴 좌편 플로팅 오픈 + 3D 카메라 좌측 여백 자동 프레이밍):
- *    - 메뉴 ① 오늘의 건강 글 (AI 3단계 자가 검수 통과 최신 글 단 1편 노출 · 2일 주기 자동 업데이트)
- *    - 메뉴 ② 무엇이든 물어보세요 (부위별 1:1 질문·답변 목록 및 질문 등록 연결)
- *    - 메뉴 ③ 더 궁금하세요? (2일마다 누적된 검수 통과 건강 글 전체 아카이브 목록 & 열람)
- * 5. 의료법 제56조 및 무홍보 순수 정보 규격 엄수:
- *    - 팝업 건강 글 내부 병원 예약/내원 유도(CTA), 상업 문구, 단정적 표현('완치','100%','최고'), 어려운 전문용어 100% 배제
+ * 1. 전체화면(100vw × 100vh) 3D 인체모형 & 내부 장기 기본 감춤 / 메뉴 클릭 시 활성:
+ *    - 초기 화면(및 닫기/전체보기 시)에는 내부 장기·골격·신경을 모두 감추고 매끄러운 도자(Porcelain) 3D 인체 외형만 품격 있게 노출
+ *    - 우측 메뉴(또는 3D 포인트) 클릭 시 인체가 반투명 투시 모드로 전환되며 해당 메뉴의 내부 장기·골격·신경만 즉시 활성화
+ * 2. 우측 소형 수직 메뉴 나열: 『바른한의원 진료 살펴보기』 9개 파트를 화면 우측에 작고 정갈하게 수직 배치
+ * 3. 화이트 · 블랙 · 골드(White · Black · Champagne Gold) 하이엔드 배색:
+ *    - 순백(#FFFFFF) · 옵시디언 블랙(#0D0D0F) · 샴페인 앤틱 골드(#C5A059 / #E5C67E) 3색 조화
+ * 4. 클린 정보 팝업 규격:
+ *    - 테마(Theme) 표기 전면 비노출 & 하단 3단계 검수 문구 전면 비노출 (내부 3단계 자가 검수 게이트는 백그라운드에서 엄격 수행)
  */
 const fs = require('fs');
 const path = require('path');
@@ -26,7 +24,7 @@ const {
   auditNoteThreeStage
 } = require('./body-3d-auto-notes-data.js');
 
-// 빌드 시점 전수 3단계 자가 검수 게이트 실행 (단 1건이라도 위반 시 빌드 즉시 중단)
+// 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행 (단 1건이라도 위반 시 빌드 즉시 중단)
 const FLATTENED_SEED_NOTES = [];
 for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
   for (const ep of episodes) {
@@ -38,9 +36,7 @@ for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
       id: ep.id,
       partId,
       partLabel: ep.partLabel,
-      theme: ep.theme,
       keyword: ep.keyword,
-      academicBasis: ep.academicBasis || '',
       publishDate: ep.publishDate,
       title: ep.questionTitle,
       empathy: ep.empathyLines,
@@ -88,24 +84,26 @@ function buildBodyExplorerHtml() {
     "name": "3D 인체모형 · 바른한의원 진료 살펴보기 건강 정보 패널",
     "url": "https://www.bareunhaniwon.com/body-explorer/",
     "inLanguage": "ko-KR",
-    "description": "의학·학술 팩트체크 및 의료법 제56조 기준 3단계 자가 검수를 거친 부위별 순수 건강 정보와 Q&A 공간입니다."
+    "description": "부위별 순수 건강 정보와 Q&A 공간입니다."
   }
   </script>
   <style>
     :root {
-      --mono-black: #0A0A0A;
-      --mono-charcoal: #18181B;
-      --mono-ink: #111111;
-      --mono-sub: #52525B;
-      --mono-muted: #71717A;
-      --mono-white: #FFFFFF;
-      --mono-white-glass: rgba(255, 255, 255, 0.94);
-      --mono-surface: #FAFAFA;
-      --mono-surface-alt: #F4F4F5;
-      --mono-border: #D4D4D8;
-      --mono-border-soft: #E4E4E7;
-      --mono-shadow: 0 20px 48px rgba(0, 0, 0, 0.14);
-      --mono-shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.07);
+      --lux-white: #FFFFFF;
+      --lux-white-glass: rgba(255, 255, 255, 0.95);
+      --lux-ivory: #FCFBF8;
+      --lux-gold-tint: #FAF5EA;
+      --lux-black: #0D0D0F;
+      --lux-charcoal: #1A1A1E;
+      --lux-ink: #141416;
+      --lux-sub: #57534E;
+      --lux-gold: #C5A059;
+      --lux-gold-bright: #E5C67E;
+      --lux-gold-deep: #967128;
+      --lux-gold-border: #DFC99B;
+      --lux-border-soft: #EAE3D5;
+      --lux-shadow: 0 22px 50px rgba(13, 13, 15, 0.16);
+      --lux-shadow-sm: 0 8px 22px rgba(13, 13, 15, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -115,13 +113,13 @@ function buildBodyExplorerHtml() {
       margin: 0 !important;
       padding: 0 !important;
       overflow: hidden !important;
-      background: #F3EDE0;
-      color: var(--mono-ink);
+      background: #F5EFE2;
+      color: var(--lux-ink);
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 1. FULLSCREEN 3D HUMAN BODY MODEL STAGE (100vw × 100vh · 과거 한지 도자 버전 유지) */
+    /* 1. FULLSCREEN 3D HUMAN BODY MODEL STAGE (100vw × 100vh) */
     .vibrant-workspace {
       position: fixed;
       inset: 0;
@@ -143,7 +141,7 @@ function buildBodyExplorerHtml() {
       min-height: 100vh !important;
       margin: 0 !important;
       padding: 0 !important;
-      background: radial-gradient(circle at 50% 44%, #FFFDF9 0%, #F2EBDD 66%, #E5DCCB 100%);
+      background: radial-gradient(circle at 50% 44%, #FFFEFA 0%, #F5EFE2 66%, #E8DEC9 100%);
       overflow: hidden;
       user-select: none;
       z-index: 1;
@@ -159,7 +157,7 @@ function buildBodyExplorerHtml() {
     }
     #vibrant-body-canvas:active { cursor: grabbing; }
 
-    /* 2. FLOATING MINIMAL TOP HEADER (BLACK & WHITE) */
+    /* 2. FLOATING MINIMAL TOP HEADER (WHITE · BLACK · GOLD) */
     .vibrant-header {
       position: fixed;
       top: 0;
@@ -181,38 +179,39 @@ function buildBodyExplorerHtml() {
       display: inline-flex;
       align-items: center;
       gap: 9px;
-      padding: 5px 14px 5px 6px;
+      padding: 5px 15px 5px 6px;
       border-radius: 999px;
-      background: var(--mono-white-glass);
+      background: var(--lux-white-glass);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--mono-border);
-      box-shadow: var(--mono-shadow-sm);
+      border: 1px solid var(--lux-gold-border);
+      box-shadow: var(--lux-shadow-sm);
       text-decoration: none;
-      color: var(--mono-ink);
+      color: var(--lux-black);
       transition: all 0.18s ease;
     }
     .vh-brand:hover {
-      border-color: var(--mono-black);
-      background: var(--mono-white);
+      border-color: var(--lux-gold);
+      background: var(--lux-white);
     }
     .vh-brand-mark {
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border: 1px solid var(--lux-gold);
+      color: var(--lux-gold-bright);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       letter-spacing: -0.02em;
     }
     .vh-brand-title {
       font-size: 0.82rem;
       font-weight: 800;
-      color: var(--mono-ink);
+      color: var(--lux-black);
       letter-spacing: -0.02em;
       white-space: nowrap;
     }
@@ -229,76 +228,79 @@ function buildBodyExplorerHtml() {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 6px 12px;
+      padding: 6px 13px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 800;
       text-decoration: none;
-      border: 1px solid var(--mono-border);
-      background: var(--mono-white-glass);
+      border: 1px solid var(--lux-gold-border);
+      background: var(--lux-white-glass);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      color: var(--mono-ink);
+      color: var(--lux-black);
       cursor: pointer;
       transition: all 0.18s ease;
       white-space: nowrap;
       font-family: 'Pretendard', sans-serif;
-      box-shadow: var(--mono-shadow-sm);
+      box-shadow: var(--lux-shadow-sm);
     }
     .vh-pill-btn:hover {
-      background: var(--mono-black);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
 
-    /* Override visit-tracker.js pill inside header to strictly Black & White */
+    /* Override visit-tracker.js pill inside header to White · Black · Gold */
     html body header.vibrant-header .bareun-visit-pill-btn {
-      background: var(--mono-black) !important;
-      color: var(--mono-white) !important;
-      border: 1px solid var(--mono-black) !important;
-      box-shadow: var(--mono-shadow-sm) !important;
-      padding: 6px 12px !important;
+      background: var(--lux-black) !important;
+      color: var(--lux-white) !important;
+      border: 1px solid var(--lux-gold) !important;
+      box-shadow: var(--lux-shadow-sm) !important;
+      padding: 6px 13px !important;
       font-size: 0.74rem !important;
-      filter: grayscale(1);
     }
     html body header.vibrant-header .bareun-visit-pill-btn:hover {
-      background: #27272A !important;
-      border-color: #27272A !important;
+      background: var(--lux-charcoal) !important;
+      border-color: var(--lux-gold-bright) !important;
     }
+    html body header.vibrant-header .bareun-visit-pill-btn .bareun-visit-live-dot,
     html body header.vibrant-header .bareun-visit-pill-btn .bareun-visit-pill-dot {
-      background: var(--mono-white) !important;
-      box-shadow: none !important;
+      background: var(--lux-gold-bright) !important;
+      box-shadow: 0 0 8px rgba(229, 198, 126, 0.65) !important;
     }
     html body header.vibrant-header .bareun-visit-pill-btn .bareun-visit-pill-label,
-    html body header.vibrant-header .bareun-visit-pill-btn .bareun-visit-pill-num,
     html body header.vibrant-header .bareun-visit-pill-btn .bareun-visit-pill-sep {
-      color: var(--mono-white) !important;
+      color: rgba(255, 255, 255, 0.88) !important;
+    }
+    html body header.vibrant-header .bareun-visit-pill-btn .bareun-visit-pill-num {
+      color: var(--lux-gold-bright) !important;
     }
 
-    /* 3. COMPACT RIGHT-SIDE VERTICAL MENU STACK (작게 우측 나열 · BLACK & WHITE) */
+    /* 3. COMPACT RIGHT-SIDE VERTICAL MENU STACK (우측 소형 나열 · WHITE · BLACK · GOLD) */
     .right-compact-menu {
       position: fixed;
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 215;
-      width: 176px;
+      width: 178px;
       display: flex;
       flex-direction: column;
       gap: 4px;
       padding: 7px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.88);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.93);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--mono-border);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+      border: 1px solid var(--lux-gold-border);
+      box-shadow: 0 14px 36px rgba(13, 13, 15, 0.11);
     }
     .rcm-head {
-      background: var(--mono-black);
-      color: var(--mono-white);
-      border-radius: 9px;
-      padding: 7px 10px;
+      background: var(--lux-black);
+      color: var(--lux-white);
+      border: 1px solid rgba(197, 160, 89, 0.55);
+      border-radius: 10px;
+      padding: 8px 10px;
       margin-bottom: 2px;
       display: flex;
       flex-direction: column;
@@ -308,22 +310,22 @@ function buildBodyExplorerHtml() {
       font-size: 0.73rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: var(--mono-white);
+      color: var(--lux-white);
       line-height: 1.25;
     }
     .rcm-head-sub {
       font-size: 0.63rem;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.72);
+      font-weight: 700;
+      color: var(--lux-gold-bright);
       letter-spacing: -0.01em;
     }
 
     .vh-part-chip {
       appearance: none;
       width: 100%;
-      border: 1px solid var(--mono-border-soft);
-      background: var(--mono-white);
-      color: var(--mono-ink);
+      border: 1px solid var(--lux-border-soft);
+      background: var(--lux-white);
+      color: var(--lux-ink);
       font-family: 'Pretendard', sans-serif;
       font-size: 0.75rem;
       font-weight: 700;
@@ -341,7 +343,7 @@ function buildBodyExplorerHtml() {
     .vh-part-chip .rcm-num {
       font-size: 0.65rem;
       font-weight: 800;
-      color: var(--mono-muted);
+      color: var(--lux-gold-deep);
       font-variant-numeric: tabular-nums;
       flex-shrink: 0;
     }
@@ -354,35 +356,31 @@ function buildBodyExplorerHtml() {
       letter-spacing: -0.02em;
     }
     .vh-part-chip .rcm-arrow {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 700;
-      color: var(--mono-muted);
+      color: var(--lux-gold);
       flex-shrink: 0;
       line-height: 1;
     }
     .vh-part-chip:hover {
-      background: var(--mono-charcoal);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-gold-tint);
+      border-color: var(--lux-gold);
+      color: var(--lux-black);
       transform: translateX(-2px);
     }
-    .vh-part-chip:hover .rcm-num,
-    .vh-part-chip:hover .rcm-arrow {
-      color: rgba(255, 255, 255, 0.78);
-    }
     .vh-part-chip.active {
-      background: var(--mono-black);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+      background: var(--lux-black);
+      border: 1px solid var(--lux-gold);
+      color: var(--lux-white);
+      box-shadow: 0 7px 18px rgba(13, 13, 15, 0.24);
       transform: translateX(-3px);
     }
     .vh-part-chip.active .rcm-num,
     .vh-part-chip.active .rcm-arrow {
-      color: var(--mono-white);
+      color: var(--lux-gold-bright);
     }
 
-    /* 4. BOTTOM-CENTER 3D CONTROLS & STATUS BADGE (BLACK & WHITE) */
+    /* 4. TOP STATUS & BOTTOM 3D CONTROLS (WHITE · BLACK · GOLD) */
     .stage-top-badge {
       position: fixed;
       top: 15px;
@@ -392,25 +390,26 @@ function buildBodyExplorerHtml() {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 6px 14px;
+      padding: 6px 15px;
       border-radius: 999px;
-      background: var(--mono-white-glass);
+      background: var(--lux-white-glass);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--mono-border);
-      box-shadow: var(--mono-shadow-sm);
+      border: 1px solid var(--lux-gold-border);
+      box-shadow: var(--lux-shadow-sm);
       pointer-events: none;
+      transition: left 0.28s ease;
     }
     .stage-top-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--mono-black);
+      background: var(--lux-gold);
     }
     .stage-top-text {
       font-size: 0.74rem;
       font-weight: 800;
-      color: var(--mono-ink);
+      color: var(--lux-black);
       white-space: nowrap;
       letter-spacing: -0.01em;
     }
@@ -423,14 +422,14 @@ function buildBodyExplorerHtml() {
       z-index: 205;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       padding: 4px 6px;
       border-radius: 999px;
-      background: var(--mono-white-glass);
+      background: var(--lux-white-glass);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--mono-border);
-      box-shadow: var(--mono-shadow-sm);
+      border: 1px solid var(--lux-gold-border);
+      box-shadow: var(--lux-shadow-sm);
       transition: left 0.28s ease;
     }
     @media (min-width: 961px) {
@@ -443,38 +442,39 @@ function buildBodyExplorerHtml() {
     }
     .stage-ctrl-btn {
       appearance: none;
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
-      color: var(--mono-sub);
+      color: var(--lux-sub);
       font-family: 'Pretendard', sans-serif;
       font-size: 0.73rem;
       font-weight: 800;
-      padding: 6px 12px;
+      padding: 6px 13px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.18s ease;
       white-space: nowrap;
     }
     .stage-ctrl-btn:hover {
-      color: var(--mono-black);
-      background: var(--mono-surface-alt);
+      color: var(--lux-black);
+      background: var(--lux-gold-tint);
     }
     .stage-ctrl-btn.active {
-      background: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
     .stage-ctrl-btn.reset-btn {
-      background: var(--mono-surface-alt);
-      color: var(--mono-ink);
-      border: 1px solid var(--mono-border);
+      background: var(--lux-gold-tint);
+      color: var(--lux-black);
+      border: 1px solid var(--lux-gold-border);
     }
     .stage-ctrl-btn.reset-btn:hover {
-      background: var(--mono-black);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
 
-    /* 5. 3D HOTSPOTS & LOADER (BLACK & WHITE) */
+    /* 5. 3D HOTSPOTS & LOADER (WHITE · BLACK · GOLD) */
     #hotspot-overlay-layer {
       position: absolute;
       inset: 0;
@@ -493,12 +493,12 @@ function buildBodyExplorerHtml() {
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
     .hotspot-pulse-ring {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.96);
-      border: 1.5px solid var(--mono-black);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+      border: 1.5px solid var(--lux-gold);
+      box-shadow: 0 3px 10px rgba(13, 13, 15, 0.14);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -506,27 +506,28 @@ function buildBodyExplorerHtml() {
       transition: all 0.2s ease;
     }
     .hotspot-core-dot {
-      width: 3.5px;
-      height: 3.5px;
+      width: 3px;
+      height: 3px;
       border-radius: 50%;
-      background: var(--mono-black);
+      background: var(--lux-black);
     }
     .body-3d-hotspot:hover .hotspot-pulse-ring {
-      transform: scale(1.12);
+      transform: scale(1.14);
+      border-color: var(--lux-black);
     }
     .body-3d-hotspot.active .hotspot-pulse-ring {
-      background: var(--mono-black);
-      border-color: var(--mono-white);
-      box-shadow: 0 0 0 5px rgba(10, 10, 10, 0.20), 0 4px 14px rgba(0, 0, 0, 0.32);
+      background: var(--lux-black);
+      border-color: var(--lux-gold-bright);
+      box-shadow: 0 0 0 5px rgba(197, 160, 89, 0.30), 0 4px 14px rgba(13, 13, 15, 0.34);
     }
-    .body-3d-hotspot.active .hotspot-core-dot { background: var(--mono-white); }
+    .body-3d-hotspot.active .hotspot-core-dot { background: var(--lux-gold-bright); }
     .hotspot-tag-pill { display: none; }
 
     #dongin-loader-overlay {
       position: absolute;
       inset: 0;
       z-index: 60;
-      background: rgba(245, 240, 228, 0.90);
+      background: rgba(247, 242, 232, 0.90);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -539,24 +540,24 @@ function buildBodyExplorerHtml() {
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      border: 2.5px solid var(--mono-border);
-      border-top-color: var(--mono-black);
+      border: 2.5px solid var(--lux-gold-border);
+      border-top-color: var(--lux-gold-deep);
       animation: spin 0.85s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* 6. FLOATING BLACK & WHITE 3-MENU INFO POPUP PANEL */
+    /* 6. FLOATING WHITE · BLACK · GOLD 3-MENU INFO POPUP PANEL */
     .explore-floating-popup {
       position: fixed;
-      right: 206px;
-      top: 60px;
-      max-height: calc(100vh - 80px);
-      max-height: calc(100dvh - 80px);
-      width: min(510px, calc(100vw - 226px));
+      right: 208px;
+      top: 62px;
+      max-height: calc(100vh - 82px);
+      max-height: calc(100dvh - 82px);
+      width: min(505px, calc(100vw - 228px));
       z-index: 218;
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: #A1A1AA transparent;
+      scrollbar-color: var(--lux-gold) transparent;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -570,7 +571,7 @@ function buildBodyExplorerHtml() {
       transform: translateX(0) scale(1);
     }
     .explore-floating-popup::-webkit-scrollbar { width: 5px; }
-    .explore-floating-popup::-webkit-scrollbar-thumb { background: #A1A1AA; border-radius: 999px; }
+    .explore-floating-popup::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 999px; }
 
     .popup-shell-wrap {
       display: flex;
@@ -578,24 +579,24 @@ function buildBodyExplorerHtml() {
       gap: 8px;
     }
 
-    /* THE 3 CORE MENUS TAB BAR (BLACK & WHITE) */
+    /* THE 3 CORE MENUS TAB BAR (WHITE · BLACK · GOLD) */
     .three-menu-nav {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
       padding: 5px;
       border-radius: 13px;
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--mono-black);
-      box-shadow: var(--mono-shadow-sm);
+      border: 1.5px solid var(--lux-gold);
+      box-shadow: var(--lux-shadow-sm);
     }
     .three-menu-btn {
       appearance: none;
       border: 1px solid transparent;
       background: transparent;
-      color: var(--mono-ink);
+      color: var(--lux-ink);
       font-family: 'Pretendard', sans-serif;
       padding: 8px 6px;
       border-radius: 9px;
@@ -609,21 +610,21 @@ function buildBodyExplorerHtml() {
       text-align: center;
     }
     .three-menu-btn:hover {
-      background: var(--mono-surface-alt);
+      background: var(--lux-gold-tint);
     }
     .three-menu-btn.active {
-      background: var(--mono-black);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-white);
     }
     .tmb-step {
       font-size: 0.64rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.02em;
-      opacity: 0.72;
+      color: var(--lux-gold-deep);
     }
     .three-menu-btn.active .tmb-step {
-      opacity: 0.85;
+      color: var(--lux-gold-bright);
     }
     .tmb-label {
       font-size: 0.82rem;
@@ -632,29 +633,29 @@ function buildBodyExplorerHtml() {
       letter-spacing: -0.02em;
     }
 
-    /* EXACT OUTPUT BOX SPECIFICATION FOR MENU 1 & ARCHIVE READER (BLACK & WHITE) */
+    /* CLEAN OUTPUT BOX FOR MENU 1 & ARCHIVE READER (NO THEME STRIP · NO AUDIT FOOTER) */
     .health-info-popup-box {
-      background: var(--mono-white);
-      border: 1.5px solid var(--mono-black);
+      background: var(--lux-white);
+      border: 1.5px solid var(--lux-gold);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: var(--mono-shadow);
+      box-shadow: var(--lux-shadow);
     }
     .hip-header {
-      background: var(--mono-black);
-      color: var(--mono-white);
-      padding: 12px 16px;
+      background: var(--lux-black);
+      color: var(--lux-white);
+      padding: 13px 16px;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
-      border-bottom: 1px solid var(--mono-black);
+      border-bottom: 2px solid var(--lux-gold);
     }
     .hip-header-title-wrap {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 7px;
+      gap: 8px;
       min-width: 0;
     }
     .hip-part-bracket {
@@ -662,14 +663,14 @@ function buildBodyExplorerHtml() {
       align-items: center;
       padding: 3px 9px;
       border-radius: 6px;
-      background: var(--mono-white);
-      color: var(--mono-black);
+      background: linear-gradient(135deg, #E7C983 0%, #C59E50 100%);
+      color: var(--lux-black);
       font-size: 0.75rem;
       font-weight: 800;
       white-space: nowrap;
     }
     .hip-divider {
-      color: rgba(255, 255, 255, 0.38);
+      color: rgba(229, 198, 126, 0.50);
       font-weight: 600;
       font-size: 0.82rem;
     }
@@ -677,15 +678,15 @@ function buildBodyExplorerHtml() {
       font-family: 'Noto Serif KR', serif;
       font-size: 1.02rem;
       font-weight: 800;
-      color: var(--mono-white);
-      line-height: 1.4;
+      color: var(--lux-white);
+      line-height: 1.42;
       word-break: keep-all;
     }
     .hip-close-btn {
       appearance: none;
-      border: 1px solid rgba(255, 255, 255, 0.42);
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--mono-white);
+      border: 1px solid rgba(229, 198, 126, 0.65);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--lux-gold-bright);
       font-family: 'Pretendard', sans-serif;
       font-size: 0.74rem;
       font-weight: 800;
@@ -697,65 +698,33 @@ function buildBodyExplorerHtml() {
       transition: all 0.16s ease;
     }
     .hip-close-btn:hover {
-      background: var(--mono-white);
-      color: var(--mono-black);
-      border-color: var(--mono-white);
-    }
-
-    .hip-meta-strip {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 8px 16px;
-      background: var(--mono-surface-alt);
-      border-bottom: 1px solid var(--mono-border-soft);
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--mono-sub);
-    }
-    .hip-tag-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-    .hip-mini-tag {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--mono-white);
-      border: 1px solid var(--mono-border);
-      color: var(--mono-ink);
-      font-weight: 800;
-    }
-    .hip-mini-tag.kw {
-      background: var(--mono-black);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-gold);
+      color: var(--lux-black);
+      border-color: var(--lux-gold-bright);
     }
 
     .hip-sections {
-      padding: 12px 14px;
+      padding: 13px 15px 15px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      background: var(--mono-white);
+      gap: 9px;
+      background: var(--lux-white);
     }
     .hip-sec-card {
       border-radius: 11px;
       padding: 10px 13px;
-      border: 1px solid var(--mono-border-soft);
-      background: var(--mono-surface);
+      border: 1px solid var(--lux-border-soft);
+      background: var(--lux-ivory);
     }
     .hip-sec-card.sec-truth {
-      background: var(--mono-white);
-      border-color: var(--mono-ink);
+      background: #FFFEFA;
+      border: 1px solid var(--lux-gold-border);
+      border-left: 3px solid var(--lux-gold);
     }
     .hip-sec-heading {
       font-size: 0.82rem;
       font-weight: 800;
-      color: var(--mono-black);
+      color: var(--lux-black);
       margin-bottom: 5px;
       display: flex;
       align-items: center;
@@ -770,22 +739,22 @@ function buildBodyExplorerHtml() {
       margin: 0 !important;
       font-size: 0.83rem;
       font-weight: 600;
-      color: #27272A;
-      line-height: 1.5;
+      color: #262522;
+      line-height: 1.52;
       word-break: keep-all;
     }
     .hip-check-item {
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      padding: 6px 10px;
+      padding: 7px 10px;
       border-radius: 8px;
-      background: var(--mono-white);
-      border: 1px solid var(--mono-border-soft);
+      background: var(--lux-white);
+      border: 1px solid var(--lux-border-soft);
       cursor: pointer;
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--mono-ink);
+      color: var(--lux-ink);
       line-height: 1.46;
       word-break: keep-all;
     }
@@ -793,33 +762,19 @@ function buildBodyExplorerHtml() {
       width: 15px;
       height: 15px;
       margin-top: 2px;
-      accent-color: var(--mono-black);
+      accent-color: var(--lux-gold-deep);
       flex-shrink: 0;
       cursor: pointer;
     }
 
-    .hip-audit-footer {
-      padding: 9px 16px;
-      background: var(--mono-surface-alt);
-      border-top: 1px solid var(--mono-border-soft);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--mono-sub);
-    }
-
-    /* MENU 2: 무엇이든 물어보세요 (BLACK & WHITE) */
+    /* MENU 2 & MENU 3 PANELS (WHITE · BLACK · GOLD) */
     .qna-menu-panel,
     .archive-menu-panel {
-      background: var(--mono-white);
-      border: 1.5px solid var(--mono-black);
+      background: var(--lux-white);
+      border: 1.5px solid var(--lux-gold);
       border-radius: 16px;
       padding: 18px;
-      box-shadow: var(--mono-shadow);
+      box-shadow: var(--lux-shadow);
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -832,7 +787,7 @@ function buildBodyExplorerHtml() {
       flex-wrap: wrap;
       gap: 10px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--mono-border-soft);
+      border-bottom: 1px solid var(--lux-border-soft);
     }
     .qna-write-btn {
       display: inline-flex;
@@ -840,21 +795,23 @@ function buildBodyExplorerHtml() {
       gap: 6px;
       padding: 8px 14px;
       border-radius: 999px;
-      background: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border: 1px solid var(--lux-gold);
+      color: var(--lux-gold-bright);
       font-size: 0.78rem;
       font-weight: 800;
       text-decoration: none;
       transition: all 0.16s ease;
     }
     .qna-write-btn:hover {
-      background: #27272A;
+      background: var(--lux-gold);
+      color: var(--lux-black);
     }
     .ptc-back-btn {
       appearance: none;
-      border: 1px solid var(--mono-border);
-      background: var(--mono-white);
-      color: var(--mono-ink);
+      border: 1px solid var(--lux-gold-border);
+      background: var(--lux-white);
+      color: var(--lux-black);
       font-family: 'Pretendard', sans-serif;
       font-size: 0.74rem;
       font-weight: 800;
@@ -864,15 +821,15 @@ function buildBodyExplorerHtml() {
       transition: all 0.16s ease;
     }
     .ptc-back-btn:hover {
-      border-color: var(--mono-black);
-      background: var(--mono-black);
-      color: var(--mono-white);
+      border-color: var(--lux-gold);
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
     }
     .qna-item-row {
       padding: 12px 14px;
       border-radius: 11px;
-      background: var(--mono-surface);
-      border: 1px solid var(--mono-border-soft);
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -884,7 +841,7 @@ function buildBodyExplorerHtml() {
       gap: 8px;
       font-size: 0.72rem;
       font-weight: 700;
-      color: var(--mono-muted);
+      color: var(--lux-sub);
     }
     .qna-status-badge {
       padding: 2px 8px;
@@ -893,22 +850,23 @@ function buildBodyExplorerHtml() {
       font-weight: 800;
     }
     .qna-status-badge.answered {
-      background: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border: 1px solid var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
     .qna-status-badge.waiting {
-      background: var(--mono-surface-alt);
-      border: 1px solid var(--mono-border);
-      color: var(--mono-ink);
+      background: var(--lux-gold-tint);
+      border: 1px solid var(--lux-gold-border);
+      color: var(--lux-gold-deep);
     }
     .qna-item-title {
       font-size: 0.86rem;
       font-weight: 800;
-      color: var(--mono-ink);
+      color: var(--lux-ink);
       line-height: 1.42;
     }
 
-    /* MENU 3: 더 궁금하세요? 누적 아카이브 (BLACK & WHITE) */
+    /* MENU 3: 더 궁금하세요? 누적 아카이브 (WHITE · BLACK · GOLD · 테마 비노출) */
     .archive-scope-pills {
       display: flex;
       gap: 5px;
@@ -916,9 +874,9 @@ function buildBodyExplorerHtml() {
     }
     .archive-scope-btn {
       appearance: none;
-      border: 1px solid var(--mono-border);
-      background: var(--mono-surface);
-      color: var(--mono-ink);
+      border: 1px solid var(--lux-gold-border);
+      background: var(--lux-ivory);
+      color: var(--lux-ink);
       font-family: 'Pretendard', sans-serif;
       font-size: 0.74rem;
       font-weight: 800;
@@ -928,9 +886,9 @@ function buildBodyExplorerHtml() {
       transition: all 0.16s ease;
     }
     .archive-scope-btn.active {
-      background: var(--mono-black);
-      border-color: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
     .archive-list {
       display: flex;
@@ -941,8 +899,8 @@ function buildBodyExplorerHtml() {
       appearance: none;
       width: 100%;
       text-align: left;
-      background: var(--mono-surface);
-      border: 1px solid var(--mono-border-soft);
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
       border-radius: 11px;
       padding: 11px 13px;
       cursor: pointer;
@@ -954,8 +912,8 @@ function buildBodyExplorerHtml() {
       transition: all 0.16s ease;
     }
     .archive-card-btn:hover {
-      border-color: var(--mono-black);
-      background: var(--mono-white);
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
       transform: translateX(-2px);
     }
     .archive-card-tags {
@@ -970,33 +928,27 @@ function buildBodyExplorerHtml() {
     .archive-date-pill {
       padding: 2px 7px;
       border-radius: 5px;
-      background: var(--mono-black);
-      color: var(--mono-white);
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
     }
     .archive-part-pill {
       padding: 2px 7px;
       border-radius: 5px;
-      background: var(--mono-white);
-      border: 1px solid var(--mono-border);
-      color: var(--mono-ink);
-    }
-    .archive-theme-pill {
-      padding: 2px 7px;
-      border-radius: 5px;
-      background: var(--mono-surface-alt);
-      color: var(--mono-sub);
+      background: var(--lux-white);
+      border: 1px solid var(--lux-gold-border);
+      color: var(--lux-ink);
     }
     .archive-card-title {
       font-size: 0.87rem;
       font-weight: 800;
-      color: var(--mono-ink);
+      color: var(--lux-ink);
       line-height: 1.4;
       word-break: keep-all;
     }
     .archive-read-arrow {
       font-size: 0.75rem;
       font-weight: 800;
-      color: var(--mono-black);
+      color: var(--lux-gold-deep);
       white-space: nowrap;
       flex-shrink: 0;
     }
@@ -1047,7 +999,7 @@ function buildBodyExplorerHtml() {
 </head>
 <body>
 
-  <!-- MINIMAL FLOATING TOP BAR (BLACK & WHITE) -->
+  <!-- MINIMAL FLOATING TOP BAR (WHITE · BLACK · GOLD) -->
   <header class="vibrant-header">
     <a href="story-3d.html" class="vh-brand">
       <div class="vh-brand-mark">3D</div>
@@ -1063,10 +1015,10 @@ function buildBodyExplorerHtml() {
   <!-- CENTER STATUS PILL -->
   <div class="stage-top-badge">
     <span class="stage-top-dot"></span>
-    <span class="stage-top-text" id="stage-active-part-label">우측 메뉴 또는 3D 인체 포인트를 클릭하세요</span>
+    <span class="stage-top-text" id="stage-active-part-label">우측 메뉴를 클릭하면 해당 내부 장기와 건강 정보가 열립니다</span>
   </div>
 
-  <!-- COMPACT RIGHT-SIDE VERTICAL MENU (우측 소형 나열 · BLACK & WHITE) -->
+  <!-- COMPACT RIGHT-SIDE VERTICAL MENU (우측 소형 나열 · WHITE · BLACK · GOLD) -->
   <aside class="right-compact-menu" id="vh-part-quicknav" aria-label="바른한의원 진료 살펴보기 우측 소형 메뉴">
     <div class="rcm-head">
       <span class="rcm-head-title">바른한의원 진료 살펴보기</span>
@@ -1080,7 +1032,7 @@ function buildBodyExplorerHtml() {
     <section class="vibrant-3d-stage" id="vibrant-3d-stage">
       <div id="dongin-loader-overlay">
         <div class="loader-spinner"></div>
-        <div style="font-size:0.82rem;font-weight:800;color:#111111;">3D 인체모형 로딩 중...</div>
+        <div style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">3D 인체모형 준비 중...</div>
       </div>
 
       <canvas id="vibrant-body-canvas"></canvas>
@@ -1088,14 +1040,14 @@ function buildBodyExplorerHtml() {
     </section>
   </main>
 
-  <!-- BOTTOM-CENTER 3D CONTROLS (BLACK & WHITE) -->
+  <!-- BOTTOM-CENTER 3D CONTROLS (WHITE · BLACK · GOLD) -->
   <div class="stage-bottom-bar">
     <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
     <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
     <button type="button" class="stage-ctrl-btn reset-btn" id="btn-cam-reset" onclick="window.closeInfoPopup()">&#8634; 전체 보기</button>
   </div>
 
-  <!-- FLOATING BLACK & WHITE 3-MENU INFO POPUP PANEL -->
+  <!-- FLOATING WHITE · BLACK · GOLD 3-MENU INFO POPUP PANEL -->
   <section class="explore-floating-popup" id="encyclopedia-scroll-panel" aria-live="polite">
     <div id="encyclopedia-dynamic-content"></div>
   </section>
@@ -1155,7 +1107,7 @@ function buildBodyExplorerHtml() {
         .replace(/"/g, '&quot;');
     }
 
-    // 클라이언트 측 3단계 자가 검수 검증기
+    // 보이지 않는 내부 3단계 자가 검수 게이트 (UI에는 검수 문구 비노출)
     function passThreeStageGate(note) {
       if (!note || !note.title || !String(note.title).includes('?')) return false;
       if (!Array.isArray(note.empathy) || note.empathy.length < 2) return false;
@@ -1203,7 +1155,6 @@ function buildBodyExplorerHtml() {
         id: raw.id,
         partId: raw.partId || 'knee',
         partLabel: raw.partLabel || '무릎 성장판',
-        theme: raw.theme || '',
         keyword: raw.keyword || '',
         publishDate: raw.publishDate || todayKst,
         title: raw.title || raw.questionTitle || '',
@@ -1235,9 +1186,10 @@ function buildBodyExplorerHtml() {
       return list;
     }
 
+    // 최종 출력 양식 (테마 행 제거 & 하단 검수 문구 제거 · 순수 본문만 출력)
     function buildStandardNoteBoxHtml(note, closeActionJs, closeLabel) {
       return (
-        '<article class="health-info-popup-box" aria-label="3단계 검수 통과 순수 건강 정보 팝업">' +
+        '<article class="health-info-popup-box" aria-label="부위별 건강 정보 팝업">' +
           '<div class="hip-header">' +
             '<div class="hip-header-title-wrap">' +
               '<span class="hip-part-bracket">[' + escHtml(note.partLabel) + ']</span>' +
@@ -1245,14 +1197,6 @@ function buildBodyExplorerHtml() {
               '<h2 class="hip-question-title">&ldquo;' + escHtml(note.title) + '&rdquo;</h2>' +
             '</div>' +
             '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>' +
-          '</div>' +
-
-          '<div class="hip-meta-strip">' +
-            '<div class="hip-tag-row">' +
-              '<span class="hip-mini-tag">테마 · ' + escHtml(note.theme) + '</span>' +
-              '<span class="hip-mini-tag kw">키워드 · ' + escHtml(note.keyword) + '</span>' +
-            '</div>' +
-            '<span>' + fmtDotDate(note.publishDate) + ' · 다음 ' + fmtDotDate(nextUpdateKst) + '</span>' +
           '</div>' +
 
           '<div class="hip-sections">' +
@@ -1294,11 +1238,6 @@ function buildBodyExplorerHtml() {
               '</div>' +
             '</section>' +
           '</div>' +
-
-          '<div class="hip-audit-footer">' +
-            '<span>✔ 1차 학술 팩트 · 2차 의료법 제56조 · 3차 일상어 검수 통과</span>' +
-            '<span>2일 주기 자동 업데이트</span>' +
-          '</div>' +
         '</article>'
       );
     }
@@ -1311,7 +1250,7 @@ function buildBodyExplorerHtml() {
       if (popupDrawer) popupDrawer.classList.remove('open');
       quickNavButtons.forEach(btn => btn.classList.remove('active'));
       if (stageLabelEl) {
-        stageLabelEl.textContent = '우측 메뉴 또는 3D 인체 포인트를 클릭하세요';
+        stageLabelEl.textContent = '우측 메뉴를 클릭하면 해당 내부 장기와 건강 정보가 열립니다';
       }
       if (cycleSubEl) {
         cycleSubEl.textContent = '2일 주기 · 다음 ' + fmtDotDate(nextUpdateKst);
@@ -1359,7 +1298,7 @@ function buildBodyExplorerHtml() {
       let activeBodyHtml = '';
 
       if (currentMenuTab === 0) {
-        // 메뉴 1: 프롬프트로 작성된 최신 글 단 1개 노출
+        // 메뉴 1: 최신 글 단 1개 노출
         activeBodyHtml = latestNote
           ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기')
           : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>';
@@ -1387,9 +1326,9 @@ function buildBodyExplorerHtml() {
           '<div class="qna-menu-panel">' +
             '<div class="qna-panel-top">' +
               '<div>' +
-                '<div style="font-size:0.72rem;font-weight:800;color:#52525B;margin-bottom:3px;">[' + escHtml(menuMeta.partLabel) + '] · 1:1 건강 Q&amp;A</div>' +
-                '<h2 style="font-size:1.12rem;font-weight:800;color:#0A0A0A;">무엇이든 물어보세요</h2>' +
-                '<p style="font-size:0.8rem;color:#52525B;margin-top:3px;">작성자 본인과 의료진만 열람 가능한 비공개 질문 공간입니다.</p>' +
+                '<div style="font-size:0.72rem;font-weight:800;color:#967128;margin-bottom:3px;">[' + escHtml(menuMeta.partLabel) + '] · 1:1 건강 Q&amp;A</div>' +
+                '<h2 style="font-size:1.12rem;font-weight:800;color:#0D0D0F;">무엇이든 물어보세요</h2>' +
+                '<p style="font-size:0.8rem;color:#57534E;margin-top:3px;">작성자 본인과 의료진만 열람 가능한 비공개 질문 공간입니다.</p>' +
               '</div>' +
               '<div style="display:flex;align-items:center;gap:6px;">' +
                 '<a href="ask-doctor.html?tab=qna&part=' + currentPartId + '" class="qna-write-btn">1:1 질문 남기기 &rarr;</a>' +
@@ -1399,7 +1338,7 @@ function buildBodyExplorerHtml() {
             '<div style="display:flex;flex-direction:column;gap:8px;">' + qnaListHtml + '</div>' +
           '</div>';
       } else {
-        // 메뉴 3: 더 궁금하세요? (프롬프트로 누적된 글 목록 & 클릭 시 상세 열람)
+        // 메뉴 3: 더 궁금하세요? (누적 글 목록 · 테마 배지 비노출)
         const targetList = archiveScope === 'all' ? allNotes : partNotes;
         const pickedNote = selectedArchiveNoteId
           ? targetList.find(n => n.id === selectedArchiveNoteId) || allNotes.find(n => n.id === selectedArchiveNoteId)
@@ -1418,7 +1357,6 @@ function buildBodyExplorerHtml() {
                 '<div class="archive-card-tags">' +
                   '<span class="archive-date-pill">' + fmtDotDate(n.publishDate) + (idx === 0 && archiveScope === 'part' ? ' · 최신' : '') + '</span>' +
                   '<span class="archive-part-pill">[' + escHtml(n.partLabel) + ']</span>' +
-                  '<span class="archive-theme-pill">' + escHtml(n.theme) + '</span>' +
                 '</div>' +
                 '<div class="archive-card-title">&ldquo;' + escHtml(n.title) + '&rdquo;</div>' +
               '</div>' +
@@ -1430,8 +1368,8 @@ function buildBodyExplorerHtml() {
             '<div class="archive-menu-panel">' +
               '<div class="archive-filter-bar">' +
                 '<div>' +
-                  '<div style="font-size:0.72rem;font-weight:800;color:#52525B;margin-bottom:2px;">2일 주기 자동 누적 아카이브</div>' +
-                  '<h2 style="font-size:1.12rem;font-weight:800;color:#0A0A0A;">더 궁금하세요?</h2>' +
+                  '<div style="font-size:0.72rem;font-weight:800;color:#967128;margin-bottom:2px;">2일 주기 자동 누적 아카이브</div>' +
+                  '<h2 style="font-size:1.12rem;font-weight:800;color:#0D0D0F;">더 궁금하세요?</h2>' +
                 '</div>' +
                 '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
                   '<div class="archive-scope-pills">' +
@@ -1517,7 +1455,6 @@ function buildBodyExplorerHtml() {
       } catch (e) {}
     }
 
-    // 초기 화면 즉시 렌더링 (풀스크린 3D 중앙 대기 또는 ?part= 진입 시 즉시 오픈)
     if (earlyParams.get('part')) {
       renderPopupPanel();
     } else {
@@ -1531,7 +1468,7 @@ function buildBodyExplorerHtml() {
 
 ${WEBGL_PART_A}
 
-    // 풀스크린(16:9 / 16:10 / 모바일) 전 해상도에서 머리끝~발끝 전신이 한눈에 들어오도록 수직 시야각(vFOV) 및 좌우 프레이밍 제어
+    // 풀스크린 전 해상도에서 머리끝~발끝 전신이 한눈에 들어오도록 수직 시야각(vFOV) 및 좌우 프레이밍 제어
     camera.setFocalLength = function() {
       const w = Math.max(320, stageEl ? (stageEl.clientWidth || window.innerWidth) : window.innerWidth);
       const h = Math.max(320, stageEl ? (stageEl.clientHeight || window.innerHeight) : window.innerHeight);
@@ -1602,4 +1539,4 @@ ${WEBGL_PART_B}
 const outPath = path.join(__dirname, 'body-explorer.html');
 const html = buildBodyExplorerHtml();
 fs.writeFileSync(outPath, html, 'utf8');
-console.log('✅ Generated Fullscreen 3D Body Explorer & Right-Side B&W Menu (body-explorer.html):', outPath, '(' + html.length + ' bytes)');
+console.log('✅ Generated Fullscreen 3D Body Explorer (Organs Hidden Until Clicked · White-Black-Gold v5.5):', outPath, '(' + html.length + ' bytes)');
