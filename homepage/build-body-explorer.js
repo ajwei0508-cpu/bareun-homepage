@@ -105,23 +105,44 @@ for (const m of ALL_CONFIG_ITEMS) {
       throw new Error(`[표 대표 건강 글 검수 확인 - ${m.shortLabel || m.id}] ${res.errors.join(' | ')}`);
     }
     const normSecs = normalizeNoteSections(candidate, m.popupDesign && m.popupDesign.defaultSectionHeadings);
-    FLATTENED_SEED_NOTES.push({
-      id: `${m.id}-table-lead`,
-      partId: m.id,
-      partLabel: candidate.partLabel,
-      badgeOverride: candidate.badgeOverride,
-      subTitle: candidate.subTitle,
-      keyword: candidate.keyword,
-      publishDate: '',
-      pinnedTop: true,
-      isCustomLead: true,
-      title: candidate.questionTitle,
-      sections: normSecs,
-      empathy: candidate.empathyLines,
-      truth: candidate.truthLines,
-      myth: candidate.mythLines,
-      check: candidate.checkList
-    });
+    const existingIdx = FLATTENED_SEED_NOTES.findIndex(
+      x => x.partId === m.id && (x.title === candidate.questionTitle || x.id === `${m.id}-20261027`)
+    );
+    if (existingIdx >= 0) {
+      FLATTENED_SEED_NOTES[existingIdx] = {
+        ...FLATTENED_SEED_NOTES[existingIdx],
+        partLabel: candidate.partLabel,
+        badgeOverride: candidate.badgeOverride,
+        subTitle: candidate.subTitle,
+        keyword: candidate.keyword,
+        pinnedTop: false,
+        isCustomLead: true,
+        title: candidate.questionTitle,
+        sections: normSecs,
+        empathy: candidate.empathyLines,
+        truth: candidate.truthLines,
+        myth: candidate.mythLines,
+        check: candidate.checkList
+      };
+    } else {
+      FLATTENED_SEED_NOTES.push({
+        id: `${m.id}-table-lead`,
+        partId: m.id,
+        partLabel: candidate.partLabel,
+        badgeOverride: candidate.badgeOverride,
+        subTitle: candidate.subTitle,
+        keyword: candidate.keyword,
+        publishDate: '2026-10-27',
+        pinnedTop: true,
+        isCustomLead: true,
+        title: candidate.questionTitle,
+        sections: normSecs,
+        empathy: candidate.empathyLines,
+        truth: candidate.truthLines,
+        myth: candidate.mythLines,
+        check: candidate.checkList
+      });
+    }
   }
 }
 
@@ -1746,7 +1767,7 @@ function buildBodyExplorerHtml() {
     }
 
     function fmtDotDate(d) {
-      return String(d || todayKst || '').replace(/-/g, '.');
+      return String(d || '2026-10-27').replace(/-/g, '.');
     }
 
     function applyRightHeaderSubText() {
@@ -1862,18 +1883,27 @@ function buildBodyExplorerHtml() {
         const n = normalizeDynamicNote(raw);
         if (n && passThreeStageGate(n)) mergedMap.set(n.id, n);
       }
-      const list = Array.from(mergedMap.values()).filter(n => {
+      const rawList = Array.from(mergedMap.values()).filter(n => {
+        if (n.publishDate === '2026-10-28' || String(n.id || '').includes('20261028')) return false;
         if (!n.pinnedTop && n.publishDate && n.publishDate > todayKst) return false;
         if (partFilter && partFilter !== 'all' && n.partId !== partFilter) return false;
         return true;
       });
-      list.sort((a, b) => {
+      rawList.sort((a, b) => {
         if (Boolean(b.pinnedTop) !== Boolean(a.pinnedTop)) return b.pinnedTop ? 1 : -1;
-        const da = a.publishDate || todayKst;
-        const db = b.publishDate || todayKst;
+        const da = a.publishDate || '2026-10-27';
+        const db = b.publishDate || '2026-10-27';
         if (db !== da) return db.localeCompare(da);
         return String(b.id).localeCompare(String(a.id));
       });
+      const seenPartTitle = new Set();
+      const list = [];
+      for (const n of rawList) {
+        const key = String(n.partId || '') + '|' + String(n.title || '').trim();
+        if (seenPartTitle.has(key)) continue;
+        seenPartTitle.add(key);
+        list.push(n);
+      }
       return list;
     }
 

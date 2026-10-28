@@ -1,6 +1,6 @@
 {
   "version": "5.7",
-  "updatedAt": "2026-10-28T05:36:35.288Z",
+  "updatedAt": "2026-10-28T05:57:16.989Z",
   "header": {
     "title": "바른한의원 진료 살펴보기",
     "subMode": "auto2day",
@@ -429,7 +429,8 @@
             "type": "checklist",
             "spanFull": false
           }
-        ]
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -468,7 +469,7 @@
       ],
       "isOverview": false,
       "alignLeft": true,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "두피열",
         "questionTitle": "손발은 차가운데 유독 머리 꼭대기만 뜨끈한 이유, 그냥 체질 탓일까요?",
@@ -487,7 +488,60 @@
         "checkList": [
           "오늘 밤 손등 하나는 정수리 두피에, 다른 손등은 볼이나 손목에 동시에 대어 보았을 때 정수리가 유독 뜨겁게 느껴지는지 비교해 보세요.",
           "하얀 종이나 손끝으로 정수리 두피를 가볍게 비벼 보았을 때 노르스름한 기름기나 붉은 기운이 눈에 띄지 않는지 확인해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "오후만 되면 얼굴과 정수리로 열이 확 달아오르고 저녁 무렵엔 앞머리가 기름져 떡이 지곤 해요.",
+              "단순히 피곤해서 오르는 열인 줄 알았는데 이 두피열이 머리카락을 빨리 빠지게 한다는 말에 거울을 자꾸 보게 됩니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "스트레스와 수면 부족이 겹치면 몸의 열기가 아래로 골고루 돌지 못하고 굴뚝 연기처럼 머리 꼭대기로만 몰리게 됩니다.",
+              "사막처럼 뜨거워진 두피열 환경에서는 수분은 날아가고 기름기만 끈적하게 변해 머리카락 뿌리가 오래 버티지 못하고 일찍 힘을 잃습니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "머리가 뜨거울 때마다 얼음팩이나 아주 차가운 물로 두피를 갑자기 식히면 열이 쉽게 빠질 거라 생각하기 쉽습니다.",
+              "갑작스러운 냉자극은 오히려 혈관을 놀라게 할 수 있어, 발끝을 따뜻한 물에 담가 위쪽 열기를 자연스럽게 아래로 내려 주는 편이 훨씬 순리적입니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "오늘 밤 손등 하나는 정수리 두피에, 다른 손등은 볼이나 손목에 동시에 대어 보았을 때 정수리가 유독 뜨겁게 느껴지는지 비교해 보세요.",
+              "하얀 종이나 손끝으로 정수리 두피를 가볍게 비벼 보았을 때 노르스름한 기름기나 붉은 기운이 눈에 띄지 않는지 확인해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -507,7 +561,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -546,7 +631,7 @@
       ],
       "isOverview": false,
       "alignLeft": false,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "아침 허리 뻐근함",
         "questionTitle": "밤새 푹 잤는데도 아침에 눈뜨자마자 허리가 뻣뻣한 이유는 무엇일까요?",
@@ -565,7 +650,60 @@
         "checkList": [
           "오늘 밤 잠자리에 누웠을 때 무릎 아래에 얇은 베개를 하나 받쳐 허리와 이불 사이 들뜬 틈이 편안해지는지 직접 느껴 보세요.",
           "내일 아침 기상할 때 곧바로 상체를 일으키지 않고, 옆으로 몸을 먼저 돌린 뒤 팔 힘으로 바닥을 짚고 일어나는 동작을 실천해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "낮에 움직일 때는 그럭저럭 괜찮은데 아침에 알람 듣고 윗몸을 일으키는 순간 허리가 끊어질 듯 뻐근해요.",
+              "세수하려고 세면대 앞에서 허리를 살짝 숙일 때마다 찌릿해서 아침 허리 뻐근함이 덜컥 겁이 납니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "허리 뼈 사이에서 충격을 받아 주는 물렁뼈 쿠션은 밤사이 누워 자는 동안 수분을 듬뿍 빨아들여 물풍선처럼 통통하게 부풀어 오릅니다.",
+              "이렇게 팽팽해진 아침 첫 시간에 윗몸일으키기하듯 갑자기 허리를 굽히면 압력이 한곳으로 몰려 아침 허리 뻐근함과 갑작스러운 통증이 생기기 쉽습니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "아침에 굳은 허리를 빨리 풀겠다며 잠자리에서 일어나자마자 바닥에 손끝이 닿도록 앞으로 깊게 숙이는 스트레칭을 하곤 합니다.",
+              "자고 일어난 직후 1시간 동안은 앞으로 숙이는 동작이 오히려 허리 쿠션에 큰 부담을 주므로 옆으로 돌아 손으로 짚고 천천히 일어나는 것이 안전합니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "오늘 밤 잠자리에 누웠을 때 무릎 아래에 얇은 베개를 하나 받쳐 허리와 이불 사이 들뜬 틈이 편안해지는지 직접 느껴 보세요.",
+              "내일 아침 기상할 때 곧바로 상체를 일으키지 않고, 옆으로 몸을 먼저 돌린 뒤 팔 힘으로 바닥을 짚고 일어나는 동작을 실천해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -585,7 +723,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -626,7 +795,7 @@
       ],
       "isOverview": false,
       "alignLeft": false,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "브레인 포그",
         "questionTitle": "방금 하려던 말도 깜빡하고 머릿속에 안개가 낀 듯 멍한 건 나이 탓일까요?",
@@ -645,7 +814,60 @@
         "checkList": [
           "집중해서 일할 때 나도 모르게 숨을 얕게 참거나 어금니를 꽉 깨물어 가슴과 관자놀이가 긴장되어 있지 않은지 지금 바로 느껴 보세요.",
           "오늘 밤 잠들기 전 3분 동안 배가 천천히 부풀었다 가라앉도록 코로 들이마시고 길게 내쉬는 편안한 호흡이 잘 되는지 확인해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "중요한 서류나 책을 앞에 두고도 같은 줄만 세 번씩 읽고, 단어가 입안에서만 맴돌아 답답할 때가 많아졌어요.",
+              "잠도 그럭저럭 자는데 왜 머리가 맑지 않고 브레인 포그처럼 뿌연 느낌이 계속되는지 걱정됩니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "우리 뇌는 몸무게의 아주 작은 부분이지만 심장이 보내는 산소와 영양의 5분의 1을 쓸 만큼 에너지를 많이 소모하는 기관입니다.",
+              "긴장과 과로로 가슴과 목 주변 순환이 막히고 밤사이 뇌 속 피로 찌꺼기를 씻어 내지 못하면, 창문에 김이 서리듯 브레인 포그 현상이 나타납니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "머리가 멍하고 기억력이 떨어질 때는 책상에 더 오래 앉아 억지로 집중력을 쥐어짜야만 능률이 오른다고 생각하기 쉽습니다.",
+              "과열된 컴퓨터를 잠시 재부팅해야 빨라지듯, 50분 집중 후 5분간 창밖 먼 곳을 보며 깊게 숨을 내쉬어야 뇌 혈류가 다시 맑아집니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "집중해서 일할 때 나도 모르게 숨을 얕게 참거나 어금니를 꽉 깨물어 가슴과 관자놀이가 긴장되어 있지 않은지 지금 바로 느껴 보세요.",
+              "오늘 밤 잠들기 전 3분 동안 배가 천천히 부풀었다 가라앉도록 코로 들이마시고 길게 내쉬는 편안한 호흡이 잘 되는지 확인해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -665,7 +887,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -720,7 +973,7 @@
             "enabled": true,
             "icon": "🎒",
             "heading": "1. 일상 속 불편함",
-            "type": "bullets",
+            "type": "highlight",
             "spanFull": false,
             "lines": [
               "출근길 답답한 전철 안에서 가만히 서 있는데 갑자기 속이 메스껍고 귀가 멍해지면서 식은땀이 주르륵 흘렀어요.",
@@ -732,7 +985,7 @@
             "enabled": true,
             "icon": "💡",
             "heading": "2. 의학적 진실",
-            "type": "highlight",
+            "type": "bullets",
             "spanFull": false,
             "lines": [
               "덥고 밀폐된 곳에서 다리를 움직이지 않고 오래 서 있으면 심장으로 돌아와야 할 피가 부족해져 뇌가 잠시 과부하를 막으려고 몸의 긴장 스위치를 확 내려 버립니다.",
@@ -805,14 +1058,14 @@
             "enabled": true,
             "icon": "🎒",
             "heading": "1. 일상 속 불편함",
-            "type": "bullets",
+            "type": "highlight",
             "spanFull": false
           },
           {
             "enabled": true,
             "icon": "💡",
             "heading": "2. 의학적 진실",
-            "type": "highlight",
+            "type": "bullets",
             "spanFull": false
           },
           {
@@ -829,7 +1082,8 @@
             "type": "checklist",
             "spanFull": false
           }
-        ]
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -868,7 +1122,7 @@
       ],
       "isOverview": false,
       "alignLeft": false,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "명치 답답함",
         "questionTitle": "위장 속은 깨끗하다는데 왜 밥만 먹으면 명치 끝이 돌덩이처럼 단단하고 막힐까요?",
@@ -887,7 +1141,60 @@
         "checkList": [
           "배꼽과 가슴뼈 끝의 한가운데 지점을 따뜻한 손바닥으로 살살 눌렀을 때 유독 단단하고 꾸르륵 소리가 안 나는지 확인해 보세요.",
           "식사 직후 바로 의자에 구부정하게 앉거나 눕지 않고 집 안이라도 10분 이상 가볍게 걸어 주었는지 점검해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "속을 들여다보는 검사에서는 큰 상처가 없다는데 조금만 먹어도 윗배가 풍선처럼 차오르고 트림도 시원하게 안 나와요.",
+              "손으로 배 위쪽을 눌러 보면 단단하게 뭉친 느낌이 들고 답답한 명치 답답함 때문에 두통까지 따라옵니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "위장 안쪽 벽에 상처가 없더라도, 위장을 밖에서 주물러 주는 근육 층이 스트레스와 급한 식사로 차갑고 뻣뻣하게 굳어 버릴 수 있습니다.",
+              "마치 고무공이 얼어붙으면 잘 늘어나지 않는 것처럼, 위장 근육이 유연하게 움직이지 못해 음식물이 오래 머무르며 명치 답답함을 만듭니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "속이 답답하고 막힐 때마다 탄산음료를 마셔 억지로 트림을 빼내면 막힌 위장이 뚫린다고 믿기 쉽습니다.",
+              "차가운 탄산가스는 위장을 일시적으로 더 부풀리고 위장 입구 조임근만 느슨하게 만들어 신물 역류를 부추길 뿐입니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "배꼽과 가슴뼈 끝의 한가운데 지점을 따뜻한 손바닥으로 살살 눌렀을 때 유독 단단하고 꾸르륵 소리가 안 나는지 확인해 보세요.",
+              "식사 직후 바로 의자에 구부정하게 앉거나 눕지 않고 집 안이라도 10분 이상 가볍게 걸어 주었는지 점검해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -907,7 +1214,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -946,7 +1284,7 @@
       ],
       "isOverview": false,
       "alignLeft": true,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "가짜 배고픔",
         "questionTitle": "저녁밥을 든든히 먹었는데도 밤 10시만 넘으면 매운 야식과 단것이 미치도록 당기는 이유는 뭘까요?",
@@ -965,7 +1303,60 @@
         "checkList": [
           "지금 갑자기 무언가 먹고 싶다면 30분 전에 비해 서서히 배가 고파 온 것인지, 아니면 특정 자극적인 맛만 머릿속에 떠오르는 가짜 배고픔인지 구분해 보세요.",
           "미지근한 물 한 컵을 마시고 양치를 먼저 한 뒤 15분이 지났을 때도 여전히 배에서 꼬르륵 소리가 나는지 확인해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "낮에는 식단 관리를 잘 참아 내다가도 밤늦게 퇴근하고 나면 배가 고픈 것도 아닌데 배달 앱을 켜고 있어요.",
+              "먹고 나서 후회하면서도 밤마다 반복되는 이 가짜 배고픔을 의지력만으로는 도저히 이기기가 힘듭니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "잠이 부족하고 스트레스가 쌓이면 뇌에서 배부르다는 신호는 약해지고, 당장 달고 기름진 연료를 채우라는 식욕 경보 물질이 평소보다 훨씬 많이 뿜어져 나옵니다.",
+              "위장이 비어서 울리는 진짜 허기가 아니라 지친 뇌가 즉각적인 위로를 찾으며 보내는 가짜 배고픔이기 때문에 의지 탓만 할 일이 아닙니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "야식 유혹은 무조건 정신력으로만 버텨야 하며 잠을 줄여서라도 밤늦게 운동을 더 해야 살이 빠진다고 생각하기 쉽습니다.",
+              "미지근한 물 한 잔을 천천히 마신 뒤 평소보다 1시간 일찍 불을 끄고 7시간 이상 푹 자는 것이 밤 식욕 스위치를 끄는 가장 확실한 방법입니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "지금 갑자기 무언가 먹고 싶다면 30분 전에 비해 서서히 배가 고파 온 것인지, 아니면 특정 자극적인 맛만 머릿속에 떠오르는 가짜 배고픔인지 구분해 보세요.",
+              "미지근한 물 한 컵을 마시고 양치를 먼저 한 뒤 15분이 지났을 때도 여전히 배에서 꼬르륵 소리가 나는지 확인해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -985,7 +1376,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -1026,7 +1448,7 @@
       ],
       "isOverview": false,
       "alignLeft": true,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "아랫배 보온",
         "questionTitle": "소중한 아기를 기다리는 시기, 영양제만큼이나 중요한 아랫배와 밤잠 기준은 무엇일까요?",
@@ -1045,7 +1467,60 @@
         "checkList": [
           "뜨거운 배달 음식을 일회용 플라스틱 용기째로 먹지 않고 유리나 도자기 그릇에 옮겨 담아 환경호르몬 노출을 줄이고 있는지 점검해 보세요.",
           "잠들기 전 부부가 함께 휴대폰을 내려놓고 따뜻한 물로 발목을 데운 뒤 자정 전에 편안히 숙면에 들고 있는지 확인해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "임신을 준비하며 좋다는 영양제는 여러 가지 챙겨 먹고 있는데 정작 손발과 아랫배는 늘 얼음장처럼 차가워요.",
+              "밤늦게까지 일하고 잠도 불규칙한데 일상에서 아랫배 보온과 컨디션을 어떻게 다져야 할지 막막합니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "씨앗이 싹을 틔우려면 햇볕을 머금은 폭신하고 따뜻한 흙이 필요하듯, 아기집 역시 따뜻한 피가 풍성하게 돌 때 가장 포근한 이불처럼 준비됩니다.",
+              "꾸준한 아랫배 보온과 밤 11시 이전의 깊은 잠은 세포를 지키는 밤 호르몬을 채워 주어 부부 모두의 건강한 생체 리듬을 돕습니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "아랫배를 따뜻하게 해야 한다며 시기를 가리지 않고 매일 아주 뜨거운 열탕이나 고온 찜질방에 오래 들어가 있는 경우가 있습니다.",
+              "지나친 고온 사우나보다 평소 배꼽 아래를 포근히 덮어 주고 하루 20분 햇볕 아래를 걸으며 골반 피가 스스로 돌게 하는 것이 훨씬 안전하고 자연스럽습니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "뜨거운 배달 음식을 일회용 플라스틱 용기째로 먹지 않고 유리나 도자기 그릇에 옮겨 담아 환경호르몬 노출을 줄이고 있는지 점검해 보세요.",
+              "잠들기 전 부부가 함께 휴대폰을 내려놓고 따뜻한 물로 발목을 데운 뒤 자정 전에 편안히 숙면에 들고 있는지 확인해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -1065,7 +1540,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     },
     {
@@ -1107,7 +1613,7 @@
       ],
       "isOverview": false,
       "alignLeft": false,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "과민성 방광",
         "questionTitle": "외출만 하면 화장실 위치부터 찾게 되는 급한 소변 신호, 방광이 작아진 걸까요?",
@@ -1126,7 +1632,60 @@
         "checkList": [
           "하루 동안 낮에 소변보러 가는 횟수가 8번을 훌쩍 넘으면서 그때마다 마신 커피나 차, 탄산음료가 있지 않았는지 세어 보세요.",
           "갑자기 급한 신호가 올 때 당황해 뛰어가기보다, 제자리에 잠시 서서 항문과 요도 주변 근육을 5초간 지그시 조이며 숨을 고르면 급한 느낌이 가라앉는지 확인해 보세요."
-        ]
+        ],
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "물 흐르는 소리만 들어도 갑자기 신호가 오고 영화관이나 고속버스를 탈 때면 혹시 실수할까 봐 통로 쪽 자리만 골라 앉아요.",
+              "막상 화장실에 가 보면 양은 얼마 되지도 않는데 왜 이렇게 자주 급해지는 과민성 방광 증상이 생겼는지 답답합니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "방광의 실제 크기가 줄어든 것이 아니라, 방광 벽의 감각 신경이 예민해져서 소변이 절반도 안 찼는데 벌써 가득 찼다고 잘못된 경보를 울리는 상태입니다.",
+              "특히 커피의 카페인과 술, 탄산음료는 예민해진 방광 벽을 직접 콕콕 찌르는 자극제 역할을 해 과민성 방광 신호를 더욱 재촉합니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "급한 신호가 두려워 아직 마렵지도 않은데 30분마다 미리 화장실에 들러 소변을 비우는 습관이 안전하다고 생각하기 쉽습니다.",
+              "너무 자주 미리 비우면 방광이 소변을 넉넉히 담아 두는 연습 기회를 잃어 오히려 더 적은 양에도 신호를 보내게 됩니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "하루 동안 낮에 소변보러 가는 횟수가 8번을 훌쩍 넘으면서 그때마다 마신 커피나 차, 탄산음료가 있지 않았는지 세어 보세요.",
+              "갑자기 급한 신호가 올 때 당황해 뛰어가기보다, 제자리에 잠시 서서 항문과 요도 주변 근육을 5초간 지그시 조이며 숨을 고르면 급한 느낌이 가라앉는지 확인해 보세요."
+            ]
+          }
+        ],
+        "isCustomLead": true,
+        "strictQuestionMark": false,
+        "subTitle": ""
       },
       "popupDesign": {
         "colorPreset": "lux-gold",
@@ -1146,7 +1705,38 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ],
+        "commonSubTitle": ""
       }
     }
   ]
