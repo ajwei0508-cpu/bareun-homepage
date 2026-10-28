@@ -993,18 +993,23 @@
       내 컴퓨터(GTX 1070)에 무거운 프로그램을 깔지 않고 초고속 H100 클라우드 GPU로 전용 LoRA 학습과 안면 정밀 보정을 실행하기 위해 개인용 <code>FAL_KEY</code> 1개만 연결합니다.
     </p>
     <div style="background:#12100e;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:12.5px;color:#cfc6b9;margin-bottom:16px;">
-      <strong>30초 발급 방법:</strong><br/>
-      1. <a href="https://fal.ai/dashboard/keys" target="_blank" rel="noopener" style="color:var(--gold);">https://fal.ai/dashboard/keys</a> 접속 (구글/깃허브 간편 로그인)<br/>
-      2. 우측 상단 <strong>[Add key]</strong> 클릭 후 생성된 키 복사<br/>
-      3. 아래 칸에 붙여넣고 <strong>[저장하기]</strong> 클릭 (내 PC 로컬 파일에만 저장되며 외부로 절대 공유되지 않습니다)
+      <strong>30초 설정 & 잔액 충전 안내:</strong><br/>
+      1. <a href="https://fal.ai/dashboard/keys" target="_blank" rel="noopener" style="color:var(--gold);">https://fal.ai/dashboard/keys</a> 접속 → <strong>[Add key]</strong> 클릭 후 키 복사<br/>
+      2. 아래 칸에 붙여넣고 <strong>[저장하기]</strong> 클릭 (내 PC 로컬에만 보관)<br/>
+      3. ⚠️ <strong>Forbidden 오류 해결</strong>: 신규 계정은 초기 잔액이 $0이라 잠겨 있으므로 <a href="https://fal.ai/dashboard/billing" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">https://fal.ai/dashboard/billing</a> 에서 최소 크레딧($5~$10)을 충전하시면 즉시 작동합니다!
     </div>
     <div class="field">
       <label for="falKeyInput">FAL_KEY 입력</label>
-      <input type="password" id="falKeyInput" placeholder="예: 12345678-abcd-...:abcdef..." />
+      <input type="password" id="falKeyInput" placeholder="예: fal_sk_... 또는 key_id:secret..." />
     </div>
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px;">
-      <button type="button" class="btn-outline" onclick="document.getElementById('apiKeyDialog').close()">닫기</button>
-      <button type="button" class="btn-gold" onclick="saveApiKey()">저장하기</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:18px;flex-wrap:wrap;">
+      <a href="https://fal.ai/dashboard/billing" target="_blank" rel="noopener" style="text-decoration:none;">
+        <button type="button" class="btn-outline" style="border-color:var(--gold);color:var(--gold);">💳 fal.ai 크레딧 충전 페이지 열기</button>
+      </a>
+      <div style="display:flex;gap:8px;">
+        <button type="button" class="btn-outline" onclick="document.getElementById('apiKeyDialog').close()">닫기</button>
+        <button type="button" class="btn-gold" onclick="saveApiKey()">저장하기</button>
+      </div>
     </div>
   </dialog>
 

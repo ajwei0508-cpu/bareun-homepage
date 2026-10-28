@@ -102,6 +102,21 @@ function getFal() {
   return createFalClient({ credentials: falKey });
 }
 
+function formatFalError(err) {
+  const detail = (err && err.body && (err.body.detail || err.body.message)) || '';
+  const raw = String(detail || (err && err.message) || err || '');
+  if (/Exhausted balance|Top up your balance/i.test(raw)) {
+    return 'API 키는 정상 연결되었으나, 현재 fal.ai 계정의 선불 크레딧 잔액이 $0입니다.\n👉 https://fal.ai/dashboard/billing 페이지에서 최소 크레딧($5~$10)을 충전하시면 즉시 잠금(Forbidden)이 풀리고 바로 촬영됩니다!';
+  }
+  if (err && err.status === 401) {
+    return '입력하신 fal.ai API 키가 올바르지 않거나 만료되었습니다. https://fal.ai/dashboard/keys 에서 새 키를 발급해 다시 저장해 주세요.';
+  }
+  if (err && err.status === 403) {
+    return `fal.ai 접근 거부(403 Forbidden): ${detail || '계정 크레딧 잔액(https://fal.ai/dashboard/billing)을 확인해 주세요.'}`;
+  }
+  return detail ? `${err.message} (${detail})` : (err.message || String(err));
+}
+
 function mimeFromExt(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   if (ext === '.png') return 'image/png';
@@ -428,7 +443,7 @@ async function runLoraTrainingJob(job, { profileId, trainerType, steps }) {
     job.result = { loraUrl, localLoraName, profileId };
   } catch (err) {
     job.status = 'failed';
-    job.error = err.message || String(err);
+    job.error = formatFalError(err);
     job.stepText = '오류: ' + job.error;
     job.finishedAt = new Date().toISOString();
     appendJobLog(job, 'ERROR: ' + job.error);
@@ -589,7 +604,7 @@ async function runGenerateJob(job, payload) {
     job.result = entry;
   } catch (err) {
     job.status = 'failed';
-    job.error = err.message || String(err);
+    job.error = formatFalError(err);
     job.stepText = '오류: ' + job.error;
     job.finishedAt = new Date().toISOString();
     appendJobLog(job, 'ERROR: ' + job.error);
@@ -701,7 +716,7 @@ async function runFixExistingJob(job, payload) {
     job.result = entry;
   } catch (err) {
     job.status = 'failed';
-    job.error = err.message || String(err);
+    job.error = formatFalError(err);
     job.stepText = '오류: ' + job.error;
     job.finishedAt = new Date().toISOString();
     appendJobLog(job, 'ERROR: ' + job.error);
