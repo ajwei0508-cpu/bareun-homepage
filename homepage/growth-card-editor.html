@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바른한의원 | 성장 · 성조숙증 상세페이지 10대 카드 & 좌측 패널 편집 스튜디오</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --surface: #ffffff;
+      --surface-warm: #fcfaf6;
+      --ink: #191715;
+      --ink-sub: #5f584f;
+      --gold: #a97c38;
+      --gold-soft: #f5ebd9;
+      --border: #e3dcd1;
+      --green: #166534;
+      --green-bg: #dcfce7;
+      --danger: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+      padding-bottom: 80px;
+    }
+    header.top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(25, 23, 21, 0.96);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      padding: 14px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid rgba(212, 169, 98, 0.35);
+      flex-wrap: wrap;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .badge-studio {
+      background: linear-gradient(135deg, #d4a962, #a97c38);
+      color: #161412;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.06em;
+    }
+    .top-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .top-sub {
+      font-size: 12px;
+      color: #cbbfae;
+      margin-left: 6px;
+    }
+    .action-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button.btn {
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 9px 15px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button.btn-local {
+      background: #fff;
+      color: #191715;
+      border-color: #d4a962;
+    }
+    button.btn-local:hover { background: #fdf7ec; }
+    button.btn-deploy {
+      background: linear-gradient(135deg, #d4a962, #9b6c29);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(169, 124, 56, 0.35);
+    }
+    button.btn-deploy:hover { filter: brightness(1.06); }
+    button.btn-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #eee;
+      border-color: rgba(255,255,255,0.2);
+    }
+    button.btn-ghost:hover { background: rgba(255,255,255,0.18); }
+
+    .container {
+      max-width: 1460px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+
+    .status-banner {
+      display: none;
+      margin-bottom: 18px;
+      padding: 13px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .status-banner.ok {
+      display: block;
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid #86efac;
+    }
+    .status-banner.err {
+      display: block;
+      background: #fee2e2;
+      color: var(--danger);
+      border: 1px solid #fca5a5;
+    }
+
+    .section-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(25, 23, 21, 0.04);
+    }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--gold-soft);
+      color: var(--gold);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 14px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-sub);
+    }
+    .field input[type="text"],
+    .field textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid #d5ccbe;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--ink);
+    }
+    .field input[type="text"]:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(169, 124, 56, 0.16);
+    }
+    .field textarea {
+      min-height: 64px;
+      resize: vertical;
+    }
+
+    .checklist-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .checklist-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #191715;
+      color: #d4a962;
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Card table / list */
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card-editor-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-warm);
+      padding: 18px 20px;
+      transition: all 0.15s ease;
+    }
+    .card-editor-item.disabled-card {
+      opacity: 0.52;
+      background: #f1eee9;
+    }
+    .card-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #dcd3c5;
+      flex-wrap: wrap;
+    }
+    .card-top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .card-num-badge {
+      background: #191715;
+      color: #d4a962;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 4px 11px;
+      border-radius: 7px;
+      letter-spacing: 0.04em;
+    }
+    .card-type-badge {
+      background: #ede6da;
+      color: #554c40;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .card-label-title {
+      font-weight: 800;
+      font-size: 15px;
+      color: #191715;
+    }
+    .card-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mini-btn {
+      cursor: pointer;
+      border: 1px solid #d2c8b8;
+      background: #fff;
+      color: #332e28;
+      border-radius: 6px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .mini-btn:hover { background: #f5ebd9; }
+
+    .title-3col {
+      display: grid;
+      grid-template-columns: 1.2fr 1.2fr 0.8fr;
+      gap: 10px;
+    }
+    @media (max-width: 900px) {
+      .title-3col { grid-template-columns: 1fr; }
+    }
+    .highlight-input {
+      background: #fffdf7 !important;
+      border-color: #d4a962 !important;
+      font-weight: 700;
+      color: #8c6223 !important;
+    }
+    .preview-headline {
+      margin: 6px 0 12px;
+      padding: 9px 13px;
+      background: #1d1a16;
+      color: #f4efe6;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+    .preview-headline span.gold {
+      color: #d4a962;
+      font-weight: 800;
+    }
+    .son-extra-box {
+      margin-top: 12px;
+      padding: 14px 16px;
+      background: #fff;
+      border: 1px solid #e2d6c1;
+      border-radius: 10px;
+    }
+    .son-extra-box h4 {
+      margin: 0 0 10px;
+      font-size: 13.5px;
+      color: #8c6223;
+    }
+    .preview-iframe-wrap {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #141210;
+      height: 640px;
+    }
+    .preview-iframe-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="brand-group">
+      <span class="badge-studio">GROWTH PAGE STUDIO</span>
+      <div>
+        <span class="top-title">바른 성장 · 성조숙증 상세페이지 카드 편집 스튜디오</span>
+        <span class="top-sub">좌측 고정 패널 + 우측 10대 수평 카드(CARD 01 ~ 10) 실시간 편집 · 배포</span>
+      </div>
+    </div>
+    <div class="action-group">
+      <a href="/growth.html" target="_blank" style="text-decoration:none;">
+        <button type="button" class="btn btn-ghost">↗ 로컬 성장 페이지 새창 열기</button>
+      </a>
+      <a href="https://www.bareunhaniwon.com/growth/" target="_blank" style="text-decoration:none;">
+        <button type="button" class="btn btn-ghost">🌐 실서버(bareunhaniwon.com/growth) 열기</button>
+      </a>
+      <button type="button" class="btn btn-ghost" onclick="resetToDefault()">↺ 초기 기본값 복원</button>
+      <button type="button" class="btn btn-local" onclick="saveAndBuild('save_build')">💾 ① 로컬 페이지 즉시 적용</button>
+      <button type="button" class="btn btn-deploy" onclick="saveAndBuild('deploy_cafe24')">🚀 ② 카페24 실서버까지 원클릭 배포</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="statusBanner" class="status-banner"></div>
+
+    <!-- 1. 좌측 고정 패널 편집 -->
+    <section class="section-box">
+      <div class="section-head">
+        <h2>📌 1. 좌측 고정 소개 패널 & 5대 자가진단 체크리스트 <span class="pill">화면 좌측 고정 영역 (#project-details-meta)</span></h2>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>상단 배지 문구 (Eyebrow)</label>
+          <input type="text" id="lp_eyebrow" />
+        </div>
+        <div class="field">
+          <label>메인 대제목 (H1 Title)</label>
+          <input type="text" id="lp_title" />
+        </div>
+        <div class="field">
+          <label>영문 서브 타이틀 (Subtitle EN)</label>
+          <input type="text" id="lp_subtitleEn" />
+        </div>
+        <div class="field">
+          <label>하단 상담 예약 버튼 문구 (CTA Button)</label>
+          <input type="text" id="lp_ctaButtonText" />
+        </div>
+      </div>
+      <div class="field">
+        <label>대표 소개 설명문 (Description)</label>
+        <textarea id="lp_description"></textarea>
+      </div>
+
+      <div style="margin-top: 14px;">
+        <div class="grid-2">
+          <div class="field">
+            <label>체크리스트 박스 제목</label>
+            <input type="text" id="lp_checklistTitle" />
+          </div>
+          <div class="field">
+            <label>체크리스트 보조 안내문</label>
+            <input type="text" id="lp_checklistSub" />
+          </div>
+        </div>
+        <label style="font-size:12px;font-weight:700;color:var(--ink-sub);display:block;margin-bottom:8px;">우리 아이 성장 · 성조숙증 체크리스트 항목 (클릭 시 우측 상담창에 자동 담김)</label>
+        <div id="checklistContainer"></div>
+        <button type="button" class="mini-btn" onclick="addChecklistItem()">+ 체크리스트 문항 추가</button>
+      </div>
+    </section>
+
+    <!-- 2. 우측 10대 수평 카드 편집 -->
+    <section class="section-box">
+      <div class="section-head">
+        <h2>🎞️ 2. 우측 수평 스크롤 10대 카드 (`CARD 01 ~ CARD 10`) 상세 편집 <span class="pill">제목 · 골드 강조어 · 본문 설명 · 사진 · 순서</span></h2>
+        <span style="font-size:12.5px;color:var(--ink-sub);">💡 각 카드의 <strong>앞문구 + '골드 강조 문구' + 뒷문구</strong>와 하단 본문 설명을 자유롭게 수정하신 뒤 상단 <strong>[로컬 페이지 즉시 적용]</strong> 또는 <strong>[카페24 실서버 배포]</strong>를 누르세요.</span>
+      </div>
+      <div id="cardsContainer" class="cards-grid"></div>
+    </section>
+
+    <!-- 3. 실시간 미리보기 -->
+    <section class="section-box">
+      <div class="section-head">
+        <h2>🖥️ 3. 성장 · 성조숙증 상세페이지 실시간 미리보기 (`growth.html`)</h2>
+        <button type="button" class="mini-btn" onclick="reloadPreview()">🔄 미리보기 새로고침</button>
+      </div>
+      <div class="preview-iframe-wrap">
+        <iframe id="growthPreviewFrame" src="/growth.html"></iframe>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    let currentConfig = null;
+
+    function showStatus(msg, isErr) {
+      const el = document.getElementById('statusBanner');
+      el.className = 'status-banner ' + (isErr ? 'err' : 'ok');
+      el.textContent = msg;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function loadConfig() {
+      try {
+        const res = await fetch('/api/growth-cards-config');
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '설정 로드 실패');
+        currentConfig = data.config;
+        renderEditor();
+      } catch (err) {
+        showStatus('설정을 불러오지 못했습니다: ' + err.message, true);
+      }
+    }
+
+    function renderEditor() {
+      if (!currentConfig) return;
+      const lp = currentConfig.leftPanel || {};
+      document.getElementById('lp_eyebrow').value = lp.eyebrow || '';
+      document.getElementById('lp_title').value = lp.title || '';
+      document.getElementById('lp_subtitleEn').value = lp.subtitleEn || '';
+      document.getElementById('lp_ctaButtonText').value = lp.ctaButtonText || '';
+      document.getElementById('lp_description').value = lp.description || '';
+      document.getElementById('lp_checklistTitle').value = lp.checklistTitle || '';
+      document.getElementById('lp_checklistSub').value = lp.checklistSub || '';
+
+      renderChecklist();
+      renderCards();
+    }
+
+    function renderChecklist() {
+      const wrap = document.getElementById('checklistContainer');
+      wrap.innerHTML = '';
+      const items = (currentConfig.leftPanel && currentConfig.leftPanel.checklistItems) || [];
+      items.forEach((txt, idx) => {
+        const row = document.createElement('div');
+        row.className = 'checklist-row';
+        row.innerHTML = `
+          <span class="checklist-num">0${idx + 1}</span>
+          <input type="text" style="flex:1;padding:8px 11px;border:1px solid #d5ccbe;border-radius:7px;font-size:13.5px;" value="${escapeAttr(txt)}" oninput="currentConfig.leftPanel.checklistItems[${idx}] = this.value" />
+          <button type="button" class="mini-btn" onclick="removeChecklistItem(${idx})">삭제</button>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    function addChecklistItem() {
+      if (!currentConfig.leftPanel.checklistItems) currentConfig.leftPanel.checklistItems = [];
+      currentConfig.leftPanel.checklistItems.push('[새 체크항목] 증상 내용을 입력해 주세요.');
+      renderChecklist();
+    }
+
+    function removeChecklistItem(idx) {
+      currentConfig.leftPanel.checklistItems.splice(idx, 1);
+      renderChecklist();
+    }
+
+    function escapeAttr(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderCards() {
+      const wrap = document.getElementById('cardsContainer');
+      wrap.innerHTML = '';
+      const cards = currentConfig.cards || [];
+
+      cards.forEach((card, idx) => {
+        const numStr = String(idx + 1).padStart(2, '0');
+        card.num = numStr;
+        const box = document.createElement('div');
+        box.className = 'card-editor-item' + (card.enabled === false ? ' disabled-card' : '');
+
+        let imageFieldsHtml = '';
+        if (Array.isArray(card.seqImages)) {
+          imageFieldsHtml = `
+            <div class="field" style="margin-top:8px;">
+              <label>연속 모션/장면 이미지 파일명 (${card.seqImages.length}컷 · 쉼표로 구분)</label>
+              <input type="text" value="${escapeAttr(card.seqImages.join(', '))}" oninput="updateSeqImages(${idx}, this.value)" />
+            </div>
+          `;
+        } else if (card.type !== '3d-body-link') {
+          imageFieldsHtml = `
+            <div class="field" style="margin-top:8px;">
+              <label>카드 메인 이미지 파일명</label>
+              <input type="text" value="${escapeAttr(card.mainImage || '')}" oninput="currentConfig.cards[${idx}].mainImage = this.value" />
+            </div>
+          `;
+        }
+
+        let sonExtraHtml = '';
+        if (card.type === 'son-hero') {
+          const p0 = (card.letterParagraphs && card.letterParagraphs[0]) || '';
+          const p1 = (card.letterParagraphs && card.letterParagraphs[1]) || '';
+          const p2 = (card.letterParagraphs && card.letterParagraphs[2]) || '';
+          sonExtraHtml = `
+            <div class="son-extra-box">
+              <h4>✉️ 카드 01 전용 · 대표원장 친필 서약 편지 & 3대 마일스톤 칩 편집</h4>
+              <div class="grid-2">
+                <div class="field">
+                  <label>좌측 상단 골드 배지</label>
+                  <input type="text" value="${escapeAttr(card.badge || '')}" oninput="currentConfig.cards[${idx}].badge = this.value" />
+                </div>
+                <div class="field">
+                  <label>편지 상단 영문/한글 Eyebrow</label>
+                  <input type="text" value="${escapeAttr(card.letterEyebrow || '')}" oninput="currentConfig.cards[${idx}].letterEyebrow = this.value" />
+                </div>
+                <div class="field">
+                  <label>편지 헤드라인 1째줄</label>
+                  <input type="text" value="${escapeAttr(card.letterHeadlineLine1 || '')}" oninput="currentConfig.cards[${idx}].letterHeadlineLine1 = this.value" />
+                </div>
+                <div class="field">
+                  <label>편지 헤드라인 2째줄 (골드 강조)</label>
+                  <input type="text" value="${escapeAttr(card.letterHeadlineLine2 || '')}" oninput="currentConfig.cards[${idx}].letterHeadlineLine2 = this.value" />
+                </div>
+              </div>
+              <div class="field">
+                <label>친필 편지 1문단</label>
+                <textarea oninput="currentConfig.cards[${idx}].letterParagraphs[0] = this.value">${escapeAttr(p0)}</textarea>
+              </div>
+              <div class="field">
+                <label>친필 편지 2문단</label>
+                <textarea oninput="currentConfig.cards[${idx}].letterParagraphs[1] = this.value">${escapeAttr(p1)}</textarea>
+              </div>
+              <div class="field">
+                <label>친필 편지 3문단 (HTML &lt;strong&gt; 사용 가능)</label>
+                <textarea oninput="currentConfig.cards[${idx}].letterParagraphs[2] = this.value">${escapeAttr(p2)}</textarea>
+              </div>
+              <div class="grid-2">
+                <div class="field">
+                  <label>블로그 원문 버튼 문구</label>
+                  <input type="text" value="${escapeAttr(card.blogBtnText || '')}" oninput="currentConfig.cards[${idx}].blogBtnText = this.value" />
+                </div>
+                <div class="field">
+                  <label>블로그 원문 링크 URL</label>
+                  <input type="text" value="${escapeAttr(card.blogUrl || '')}" oninput="currentConfig.cards[${idx}].blogUrl = this.value" />
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        box.innerHTML = `
+          <div class="card-top-bar">
+            <div class="card-top-left">
+              <span class="card-num-badge">CARD ${numStr}</span>
+              <span class="card-label-title">${escapeAttr(card.label || '')}</span>
+              <span class="card-type-badge">레이아웃: ${escapeAttr(card.type)}</span>
+            </div>
+            <div class="card-top-actions">
+              <label style="font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;margin-right:8px;cursor:pointer;">
+                <input type="checkbox" ${card.enabled !== false ? 'checked' : ''} onchange="toggleCard(${idx}, this.checked)" />
+                화면 노출
+              </label>
+              <button type="button" class="mini-btn" onclick="moveCard(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}>▲ 위로</button>
+              <button type="button" class="mini-btn" onclick="moveCard(${idx}, 1)" ${idx === cards.length - 1 ? 'disabled' : ''}>▼ 아래로</button>
+            </div>
+          </div>
+
+          <div class="preview-headline" id="preview_hl_${idx}">
+            ${ escapeAttr(card.titlePrefix || '') }<span class="gold">${ escapeAttr(card.titleHighlight || '') }</span>${ escapeAttr(card.titleSuffix || '') }
+          </div>
+
+          <div class="title-3col">
+            <div class="field">
+              <label>① 제목 앞부분 (일반 흰색 텍스트)</label>
+              <input type="text" value="${escapeAttr(card.titlePrefix || '')}" oninput="updateCardTitle(${idx}, 'titlePrefix', this.value)" />
+            </div>
+            <div class="field">
+              <label>② 골드 강조 문구 (&lt;span&gt; 골드 하이라이트)</label>
+              <input type="text" class="highlight-input" value="${escapeAttr(card.titleHighlight || '')}" oninput="updateCardTitle(${idx}, 'titleHighlight', this.value)" />
+            </div>
+            <div class="field">
+              <label>③ 제목 뒷부분 (일반 텍스트 · 없으면 비움)</label>
+              <input type="text" value="${escapeAttr(card.titleSuffix || '')}" oninput="updateCardTitle(${idx}, 'titleSuffix', this.value)" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>④ 하단 본문 설명문 (Subtitle / Description)</label>
+            <textarea oninput="currentConfig.cards[${idx}].subtitle = this.value">${escapeAttr(card.subtitle || '')}</textarea>
+          </div>
+
+          ${imageFieldsHtml}
+          ${sonExtraHtml}
+        `;
+        wrap.appendChild(box);
+      });
+    }
+
+    function updateCardTitle(idx, key, val) {
+      currentConfig.cards[idx][key] = val;
+      const c = currentConfig.cards[idx];
+      const hl = document.getElementById('preview_hl_' + idx);
+      if (hl) {
+        hl.innerHTML = `${escapeAttr(c.titlePrefix || '')}<span class="gold">${escapeAttr(c.titleHighlight || '')}</span>${escapeAttr(c.titleSuffix || '')}`;
+      }
+    }
+
+    function updateSeqImages(idx, val) {
+      currentConfig.cards[idx].seqImages = val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    function toggleCard(idx, checked) {
+      currentConfig.cards[idx].enabled = checked;
+      renderCards();
+    }
+
+    function moveCard(idx, dir) {
+      const target = idx + dir;
+      if (target < 0 || target >= currentConfig.cards.length) return;
+      const tmp = currentConfig.cards[idx];
+      currentConfig.cards[idx] = currentConfig.cards[target];
+      currentConfig.cards[target] = tmp;
+      renderCards();
+    }
+
+    function syncLeftPanelFromInputs() {
+      if (!currentConfig.leftPanel) currentConfig.leftPanel = {};
+      currentConfig.leftPanel.eyebrow = document.getElementById('lp_eyebrow').value;
+      currentConfig.leftPanel.title = document.getElementById('lp_title').value;
+      currentConfig.leftPanel.subtitleEn = document.getElementById('lp_subtitleEn').value;
+      currentConfig.leftPanel.ctaButtonText = document.getElementById('lp_ctaButtonText').value;
+      currentConfig.leftPanel.description = document.getElementById('lp_description').value;
+      currentConfig.leftPanel.checklistTitle = document.getElementById('lp_checklistTitle').value;
+      currentConfig.leftPanel.checklistSub = document.getElementById('lp_checklistSub').value;
+    }
+
+    async function saveAndBuild(action) {
+      syncLeftPanelFromInputs();
+      showStatus(action === 'deploy_cafe24'
+        ? '⏳ 로컬 성장 페이지(growth.html) 빌드 및 카페24 실서버(https://www.bareunhaniwon.com/growth/) 배포 중입니다...'
+        : '⏳ 로컬 성장 페이지(growth.html) 및 워드프레스 번들 반영 중입니다...', false);
+      try {
+        const res = await fetch('/api/growth-cards-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, config: currentConfig })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '처리 실패');
+        currentConfig = data.config;
+        renderEditor();
+        reloadPreview();
+        showStatus('✅ ' + data.message, false);
+      } catch (err) {
+        showStatus('❌ 오류 발생: ' + err.message, true);
+      }
+    }
+
+    async function resetToDefault() {
+      if (!confirm('성장 상세페이지 좌측 패널과 10대 카드를 초기 기본값으로 복원하시겠습니까?')) return;
+      try {
+        const res = await fetch('/api/growth-cards-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'reset_default' })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '복원 실패');
+        currentConfig = data.config;
+        renderEditor();
+        reloadPreview();
+        showStatus('✅ ' + data.message, false);
+      } catch (err) {
+        showStatus('❌ 복원 실패: ' + err.message, true);
+      }
+    }
+
+    function reloadPreview() {
+      const f = document.getElementById('growthPreviewFrame');
+      if (f) f.src = '/growth.html?t=' + Date.now();
+    }
+
+    loadConfig();
+  </script>
+</body>
+</html>

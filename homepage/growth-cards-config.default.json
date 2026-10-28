@@ -1,0 +1,176 @@
+{
+  "updatedAt": "2026-10-28T16:28:00.000Z",
+  "leftPanel": {
+    "eyebrow": "PEDIATRIC GROWTH CLINIC · 학술 논문 검증 소아 성장·성조숙증",
+    "title": "바른 성장 · 성조숙증",
+    "subtitleEn": "Evidence-Based Epiphyseal Chondrocyte & Pediatric Immunity Care",
+    "description": "성호르몬 과항진 자극 없이 성장판 연골 증식과 호흡기·소화기 면역을 함께 깨웁니다. 학술 논문을 정밀 검수하여 안전성이 입증된 한방 성장 치료법을 시행합니다.",
+    "checklistTitle": "우리 아이 성장 · 성조숙증 체크리스트",
+    "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 보세요.",
+    "checklistItems": [
+      "[성장 속도 저하] 또래보다 작거나 최근 키가 자라는 속도가 눈에 띄게 더뎌졌다.",
+      "[비염·구강호흡] 감기·비염이 잦고 밤에 코가 막혀 입을 벌리고 뒤척이며 잔다.",
+      "[소화·식욕 부진] 편식이 심하거나 밥을 잘 안 먹고 배앓이·변비가 자주 있다.",
+      "[조기 사춘기 우려] 체중이 늘면서 사춘기 신체 변화가 또래보다 일찍 나타나는 것 같다.",
+      "[자세 불균형] 거북목·구부정한 자세로 인해 숨은 키가 손해 보는 것 같아 걱정된다."
+    ],
+    "ctaButtonText": "우리 아이 맞춤 성장 계획 원장님과 상담하기",
+    "extraLinkText": "📊 무릎 성장판 · 학술 논문 검증 의학백과 전체보기 ↗",
+    "extraLinkHref": "body-explorer.html?part=knee"
+  },
+  "cards": [
+    {
+      "id": "card01",
+      "num": "01",
+      "enabled": true,
+      "type": "son-hero",
+      "label": "카드 01 · 대표원장 친아들 실제 성장 스토리 & 친필 서약",
+      "badge": "MAIN RECORD · 대표원장 친아들 실제 성장 스토리",
+      "titlePrefix": "내 아이에게 먹이지 못할 약이라면, 세상 어떤 아이에게도 ",
+      "titleHighlight": "'처방하지 않습니다'",
+      "titleSuffix": "",
+      "subtitle": "안정위 대표원장이 친아들에게 직접 처방하며 입증한 바른 성장 한약입니다.",
+      "mainImage": "growth-director-son.png",
+      "letterEyebrow": "DIRECTOR'S HANDWRITTEN PLEDGE · 아빠의 마음으로 달인 성장한약",
+      "letterHeadlineLine1": "\"내 아이에게 먹이지 못할 약이라면,",
+      "letterHeadlineLine2": "세상 어떤 아이에게도 처방하지 않습니다\"",
+      "letterParagraphs": [
+        "아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.",
+        "잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.",
+        "체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."
+      ],
+      "chips": [
+        { "label": "기초 면역 리셋", "value": "비염 개선 · 소화 흡수 정상화" },
+        { "label": "성장판 골든타임", "value": "최상급 원용 분골 · 연골 증식" },
+        { "label": "탄탄한 피지컬 완성", "value": "성호르몬 균형 · 바른 골격 완성" }
+      ],
+      "signPrefix": "아빠같은 한의사",
+      "signName": "안 정 위",
+      "signSuffix": "대표원장 배상",
+      "blogBtnText": "📖 대표원장 아들 성장 스토리 원문 보러가기",
+      "blogUrl": "https://blog.naver.com/wei0508/223437892490"
+    },
+    {
+      "id": "card02",
+      "num": "02",
+      "enabled": true,
+      "type": "single-image",
+      "label": "카드 02 · 단순 칼슘·영양제의 한계",
+      "titlePrefix": "단순 칼슘·영양제만으로는 ",
+      "titleHighlight": "'닫혀가는 성장판과 면역 누수'",
+      "titleSuffix": "를 막지 못합니다",
+      "subtitle": "잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장판 연골 증식으로 에너지가 도달하지 못합니다.",
+      "mainImage": "detail_growth_story2_supplements_limit.jpg?v=grw2"
+    },
+    {
+      "id": "card03",
+      "num": "03",
+      "enabled": true,
+      "type": "obese-to-tall-motion",
+      "label": "카드 03 · 소아비만 체지방 감량 & 숨은 키 성장 (3단계 모션)",
+      "titlePrefix": "소아비만 체지방 감량 & 숨은 키 성장 — ",
+      "titleHighlight": "'살이 키로 가는 대사 전환으로 날씬해지면서 쑥쑥 크는 전신'",
+      "titleSuffix": "",
+      "subtitle": "성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장판 연골 증식에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.",
+      "seqImages": [
+        "growth_minimal_card3_obese_to_tall_a.jpg?v=grw3v2",
+        "growth_minimal_card3_obese_to_tall_b.jpg?v=grw3v2",
+        "growth_minimal_card3_obese_to_tall_c.jpg?v=grw3v2"
+      ]
+    },
+    {
+      "id": "card04",
+      "num": "04",
+      "enabled": true,
+      "type": "short-to-tall-motion",
+      "label": "카드 04 · 성장판 연골 증식 & 수직 골격 성장 (3단계 모션)",
+      "laserBadge": "▲ 성장판 연골 증식 · 수직 폭풍 성장 UP",
+      "titlePrefix": "성장판 연골 증식 & 수직 골격 성장 — ",
+      "titleHighlight": "'또래보다 작던 키에서 위로 쑥쑥 자라나는 폭풍 성장'",
+      "titleSuffix": "",
+      "subtitle": "성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여, 키가 작던 아이가 위로 훤칠하고 탄탄하게 성장합니다.",
+      "seqImages": [
+        "growth_minimal_card4_short_before.jpg?v=grw4v3",
+        "growth_minimal_card4_growing_mid.jpg?v=grw4v3",
+        "growth_minimal_card4_tall_after.jpg?v=grw4v3"
+      ]
+    },
+    {
+      "id": "card05",
+      "num": "05",
+      "enabled": true,
+      "type": "neuro-sleep-motion",
+      "label": "카드 05 · 성조숙증 호르몬 안정 & 깊은 성장 숙면",
+      "titlePrefix": "성조숙증 호르몬 안정 & 깊은 성장 숙면 — ",
+      "titleHighlight": "'성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'",
+      "titleSuffix": "",
+      "subtitle": "과열된 사춘기 성호르몬 신호와 야간 구강호흡·자율신경 긴장을 안정시켜 조기 골화를 늦추고 밤사이 성장호르몬 분비를 극대화합니다.",
+      "mainImage": "growth-child-sleep.jpg"
+    },
+    {
+      "id": "card06",
+      "num": "06",
+      "enabled": true,
+      "type": "single-image",
+      "label": "카드 06 · 스포츠 성장 클리닉 (선수 준비 주니어)",
+      "titlePrefix": "다양한 운동분야에서 선수 준비하는 아이들 전용 - ",
+      "titleHighlight": "'스포츠 성장 클리닉'",
+      "titleSuffix": "",
+      "subtitle": "펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 등 다양한 운동분야에서 엘리트 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 많이 내원하고 있습니다.",
+      "mainImage": "growth_minimal_card6_youth_athletes_v2.jpg?v=grw6v2"
+    },
+    {
+      "id": "card07",
+      "num": "07",
+      "enabled": true,
+      "type": "single-image",
+      "label": "카드 07 · 무방사선 안전한 초음파 성장판 검사",
+      "titlePrefix": "방사선 노출 성장 엑스레이 검사는 이제 그만 - ",
+      "titleHighlight": "'안전한 초음파 검사'",
+      "titleSuffix": "",
+      "subtitle": "걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측",
+      "mainImage": "growth_minimal_card7_ultrasound_noface.jpg?v=grw7v2"
+    },
+    {
+      "id": "card08",
+      "num": "08",
+      "enabled": true,
+      "type": "single-image",
+      "label": "카드 08 · 골든타임에 완성하는 성장 피지컬",
+      "titlePrefix": "골든타임에 완성하는 ",
+      "titleHighlight": "'또래보다 훤칠하고 탄탄한 성장 피지컬'",
+      "titleSuffix": "",
+      "subtitle": "호흡기·소화기 면역이 살아나고 성장판 연골 증식이 활발해지면 사춘기 끝까지 흔들림 없이 훤칠하고 바른 체격으로 자라납니다.",
+      "mainImage": "detail_growth_story5_tall_basketball.jpg?v=grw2"
+    },
+    {
+      "id": "card09",
+      "num": "09",
+      "enabled": true,
+      "type": "multi-frame-trouble",
+      "label": "카드 09 · 일상 속 3대 성장 고민 (작은 키·구강호흡·편식)",
+      "titlePrefix": "교실 맨 앞줄 작은 키 · 밤새 코 막힌 구강호흡 · 밥 안 먹는 편식 — ",
+      "titleHighlight": "'참 곤란하다'",
+      "titleSuffix": "",
+      "subtitle": "새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 골든타임이 흘러가 가장 애타고 곤란한 순간입니다.",
+      "stepBtnText": "다음 장면 ⟳",
+      "seqImages": [
+        "detail_growth_story1_wall_chart.jpg?v=grw1",
+        "detail_growth_story1_mouth_breathing.jpg?v=grw1",
+        "growth_minimal_card9_picky_eating.jpg?v=grw9"
+      ]
+    },
+    {
+      "id": "card10",
+      "num": "10",
+      "enabled": true,
+      "type": "3d-body-link",
+      "label": "카드 10 · 3D 인체모형 연동 마무리 카드 (성장 꿀팁)",
+      "titlePrefix": "성장 꿀팁",
+      "titleHighlight": "",
+      "titleSuffix": "",
+      "subtitle": "클릭 시 3D 인체모형 무릎 성장판 파트로 이동",
+      "linkHref": "body-explorer.html?part=knee"
+    }
+  ]
+}

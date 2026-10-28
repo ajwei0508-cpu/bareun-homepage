@@ -260,6 +260,122 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // API Endpoint: Editable Growth Detail Page Cards Studio (Read / Instant Build / Fast Cafe24 Deploy / Reset)
+  if (reqPath === '/api/growth-cards-config') {
+    const cfgPath = path.join(__dirname, 'growth-cards-config.json');
+    const defPath = path.join(__dirname, 'growth-cards-config.default.json');
+
+    if (req.method === 'GET') {
+      try {
+        const raw = fs.existsSync(cfgPath)
+          ? fs.readFileSync(cfgPath, 'utf8')
+          : fs.readFileSync(defPath, 'utf8');
+        const config = JSON.parse(raw);
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        });
+        res.end(JSON.stringify({ ok: true, config }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk.toString(); });
+      req.on('end', () => {
+        const prevBackup = fs.existsSync(cfgPath) ? fs.readFileSync(cfgPath, 'utf8') : null;
+        try {
+          const payload = JSON.parse(body || '{}');
+          const action = payload.action || 'save_build';
+
+          if (action === 'reset_default') {
+            if (!fs.existsSync(defPath)) {
+              throw new Error('기본 설정 백업 파일(growth-cards-config.default.json)이 없습니다.');
+            }
+            const defRaw = fs.readFileSync(defPath, 'utf8');
+            fs.writeFileSync(cfgPath, defRaw, 'utf8');
+            execFileSync(process.execPath, [path.join(__dirname, 'apply-growth-cards.js')], { cwd: __dirname, timeout: 20000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 25000 });
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({
+              ok: true,
+              config: JSON.parse(defRaw),
+              message: '바른 성장 · 성조숙증 상세페이지 초기 10대 카드 기본값으로 복원하고 로컬 파일을 다시 생성했습니다.'
+            }));
+            return;
+          }
+
+          const nextCfg = payload.config;
+          if (!nextCfg || !Array.isArray(nextCfg.cards) || nextCfg.cards.length === 0) {
+            throw new Error('카드 항목이 최소 1개 이상 필요합니다.');
+          }
+          nextCfg.updatedAt = new Date().toISOString();
+          fs.writeFileSync(cfgPath, JSON.stringify(nextCfg, null, 2) + '\n', 'utf8');
+
+          // Run growth.html card apply + WordPress standalone bundle
+          execFileSync(process.execPath, [path.join(__dirname, 'apply-growth-cards.js')], { cwd: __dirname, timeout: 20000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 25000 });
+
+          const enabledCount = nextCfg.cards.filter(x => x.enabled !== false).length;
+
+          if (action === 'deploy_cafe24') {
+            execFile(
+              process.execPath,
+              [path.join(__dirname, 'deploy-growth-fast.js')],
+              { cwd: __dirname, timeout: 95000 },
+              (depErr, stdout, stderr) => {
+                if (depErr) {
+                  res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+                  res.end(JSON.stringify({
+                    ok: false,
+                    builtLocally: true,
+                    error: '로컬 제작은 완료되었으나 카페24 실서버 배포 중 오류가 발생했습니다: ' + (stderr || depErr.message)
+                  }));
+                  return;
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+                res.end(JSON.stringify({
+                  ok: true,
+                  deployed: true,
+                  enabledCount,
+                  totalCount: nextCfg.cards.length,
+                  liveUrl: 'https://www.bareunhaniwon.com/growth/',
+                  localUrl: 'http://localhost:3000/growth.html',
+                  config: nextCfg,
+                  message: '표 수정 내용대로 로컬 성장 상세페이지 제작 + 워드프레스 번들 + 카페24 실서버(https://www.bareunhaniwon.com/growth/) 즉시 반영 완료!'
+                }));
+              }
+            );
+            return;
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            deployed: false,
+            enabledCount,
+            totalCount: nextCfg.cards.length,
+            localUrl: 'http://localhost:3000/growth.html',
+            wpFile: 'wordpress-growth.html',
+            config: nextCfg,
+            message: `수정하신 내용대로 성장 상세페이지(좌측 패널 + ${enabledCount}개 활성 카드)가 growth.html 및 wordpress-growth.html에 즉시 반영되었습니다!`
+          }));
+        } catch (err) {
+          if (prevBackup !== null) {
+            try { fs.writeFileSync(cfgPath, prevBackup, 'utf8'); } catch (e) {}
+          }
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+
   // API Endpoint: Kakao Alimtalk Dispatch & Booking Recorder
   if (reqPath === '/api/send-alimtalk' && req.method === 'POST') {
     let body = '';

@@ -1,7 +1,18 @@
 # 📋 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-10-28 v6.3 (① **네이버 서치어드바이저 80자 이내 기준 통과용 대표 사이트 설명(`meta description`) & 오픈그래프 설명(`og:description` · `twitter:description` · WP `blogdescription`) 76자 맞춤 문구(`정수리여성남성원형탈모병원치료성장클리닉성장판검사두통탈모약비대면성조숙증키성장담적축농증리프팅다이어트뱃살내장지방위염난임산후보약공진단대전진맥피부`) 즉시 반영 및 실서버 배포 완료** · ② **실서버(`/body-explorer/`) 3D 인체모형 GLB 에셋 로딩 복구 및 이중 폴백 엔진(`loadModelWithFallback`) 탑재 완료** · ③ **`POPUP 01 STUDIO` 모달 내 『🌐 제목 · 구조 · 본문 전체 메뉴 일괄 적용 메뉴』 탑재**)
+> **최종 업데이트**: 2026-10-28 v6.4 (① **바른 성장 · 성조숙증 상세페이지(`growth.html` / `/growth/`) 좌측 고정 패널 + 우측 10대 수평 카드(`CARD 01 ~ CARD 10`) 전체 구성 정리 및 실시간 편집·배포 스튜디오(`http://localhost:3000/growth-card-editor.html`) 구축** · ② **네이버 서치어드바이저 80자 이내 기준 통과용 대표 사이트 설명(`meta description`) & 오픈그래프 설명(`og:description` · `twitter:description` · WP `blogdescription`) 76자 맞춤 문구 즉시 반영 및 실서버 배포 완료** · ③ **실서버(`/body-explorer/`) 3D 인체모형 GLB 에셋 로딩 복구 및 이중 폴백 엔진(`loadModelWithFallback`) 탑재 완료**)
 > **작성자**: 하이엔드 홈페이지 디렉터 **아트 (Art)**
+
+---
+
+## 💎 00000000000000. 최신 완료 작업 요약 (2026-10-28 v6.4 · 바른 성장 · 성조숙증 상세페이지 좌측 패널 + 10대 카드 정리 및 실시간 편집 스튜디오 구축)
+
+1. **성장 상세페이지(`growth.html`) 마스터 설정 파일 분리 (`homepage/growth-cards-config.json`, `homepage/growth-cards-config.default.json`)**:
+   - 좌측 고정 패널(`#project-details-meta`: 상단 배지, 대제목, 영문 부제, 대표 설명문, 5대 자가진단 체크리스트, 하단 상담 예약 CTA 버튼)과 우측 수평 카드 트랙(`CARD 01 ~ CARD 10`: 제목 앞문구 + `'골드 강조 문구'` + 제목 뒷문구, 하단 본문 설명, 연결 이미지/3컷 모션 시퀀스, 카드 01 대표원장 친필 서약 편지 전문 및 3대 마일스톤 칩) 전체를 단일 JSON 설정 파일로 구조화.
+2. **자동 빌더(`homepage/apply-growth-cards.js`) & 성장 페이지 전용 초고속 실서버 배포기(`homepage/deploy-growth-fast.js`) 구축**:
+   - `node apply-growth-cards.js` 실행 시 `growth-cards-config.json`의 내용이 `growth.html` 내 `<main id="project-details">...</main>` 영역에 무손실 동기화되며, 이어서 `node bundle-wp.js` 및 `node deploy-growth-fast.js`로 카페24 워드프레스 실서버(`https://www.bareunhaniwon.com/growth/`, Page ID `105`)에 단독 초고속 반영.
+3. **웹 브라우저 시각 편집 스튜디오 (`http://localhost:3000/growth-card-editor.html`) 및 로컬 서버 API (`/api/growth-cards-config`) 탑재**:
+   - 브라우저에서 좌측 패널 문구·체크리스트 5문항·10대 카드 제목/골드 강조어/본문 설명/이미지/카드 순서(▲/▼)/노출 여부를 표 형태로 직접 수정하고, **`[💾 ① 로컬 페이지 즉시 적용]`** 또는 **`[🚀 ② 카페24 실서버까지 원클릭 배포]`** 버튼으로 즉시 반영 가능.
 
 ---
 
