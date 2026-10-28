@@ -31,7 +31,7 @@ const puppeteer = loadPuppeteer();
 const CANONICAL_ORIGIN = 'https://www.bareunhaniwon.com';
 
 const PAGES_TO_DEPLOY = [
-  { id: 46,   slug: 'home',                title: '바른한의원 대전본점',                                     file: 'wordpress-main-home.html',           excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점(010-5631-1275). 안정위 대표원장의 심층 맥진·9대 정밀검진과 학술 논문 검증 안심 한약으로 추나·성장·다이어트·탈모·공진단·전립선을 맞춤 진료합니다.' },
+  { id: 46,   slug: 'home',                title: '바른한의원 대전본점',                                     file: 'wordpress-main-home.html',           excerpt: '정수리여성남성원형탈모병원치료성장클리닉성장판검사두통탈모약비대면성조숙증키성장담적축농증리프팅다이어트뱃살내장지방위염난임산후보약공진단대전진맥피부' },
   { id: 125,  slug: 'body-explorer',       title: '3D 인체모형 · 바른한의원 진료 살펴보기',                   file: 'wordpress-body-explorer.html',       excerpt: '풀스크린 3D 인체모형으로 근육·신경·관절·혈관 구조와 9대 부위별 생활 건강 관리법, 해외 SCI 의학 논문 요약을 한눈에 탐색하는 인터랙티브 건강 포털입니다.' },
   { id: null, slug: 'ask-doctor',          title: '의학 인사이트 블로그 & 질환별 1:1 비공개 Q&A',              file: 'wordpress-ask-doctor.html',          excerpt: '해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA) 및 통합생리학 기반 대표 의학 칼럼과 회원 전용 질환별 1:1 비공개 Q&A 센터입니다.' },
   { id: 126,  slug: 'director',            title: '안정위 대표원장 · 9대 정밀검진',                           file: 'wordpress-director.html',            excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사까지 9대 정밀 검진 시스템을 운영합니다.' },
@@ -295,7 +295,7 @@ async function performWpLogin(page, loginUrl) {
         headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
         body: JSON.stringify({
           title: '바른한의원 대전본점',
-          description: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점(010-5631-1275) · 안정위 대표원장 추나·성장·다이어트·탈모·공진단·전립선 맞춤 진료',
+          description: '정수리여성남성원형탈모병원치료성장클리닉성장판검사두통탈모약비대면성조숙증키성장담적축농증리프팅다이어트뱃살내장지방위염난임산후보약공진단대전진맥피부',
           default_comment_status: 'closed'
         })
       });
