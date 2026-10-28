@@ -212,6 +212,7 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp('src=\\\\"(' + assetPrefix + '[^\\\\"]+)\\\\"', 'g'), (_, p) => 'src=\\"' + toGhWebpOrRaw(p) + '\\"')
     .replace(/setDecoderPath\('draco\/'\)/g, "setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')")
     .replace(/load\('((?:models\/|texture\/)[^']+)'\)/g, "load('" + ghBase + "$1')")
+    .replace(/(?:gltfLoader\.load|loadModelWithFallback)\('((?:models\/|texture\/)[^']+)'/g, (m, p1) => m.replace("'" + p1 + "'", "'" + ghBase + p1 + "'"))
     .replace(new RegExp("load\\('(" + assetPrefix + "[^']+)'\\)", 'g'), (_, p) => `load('${toGhWebpOrRaw(p)}')`)
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
     .replace(new RegExp("url\\('(" + assetPrefix + "[^']+)'\\)", 'g'), (_, p) => `url('${toGhWebpOrRaw(p)}')`)

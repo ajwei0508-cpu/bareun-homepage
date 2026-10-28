@@ -2482,10 +2482,21 @@
     controls.maxPolarAngle = Math.PI * 0.84;
     controls.minPolarAngle = Math.PI * 0.16;
 
+    const GH_MODEL_BASE = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+    const isRemoteHost = !/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname || '');
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('draco/');
+    dracoLoader.setDecoderPath(isRemoteHost ? 'https://www.gstatic.com/draco/versioned/decoders/1.5.7/' : 'draco/');
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
+    function loadModelWithFallback(url, onLoad) {
+      const rawStr = String(url || '');
+      const rel = rawStr.startsWith('http') ? rawStr.replace(GH_MODEL_BASE, '') : rawStr.replace(/^\/+/, '');
+      const primary = isRemoteHost ? (rawStr.startsWith('http') ? rawStr : (GH_MODEL_BASE + rel)) : rel;
+      const backup  = isRemoteHost ? rel : (GH_MODEL_BASE + rel);
+      gltfLoader.load(primary, onLoad, undefined, () => {
+        if (backup && backup !== primary) gltfLoader.load(backup, onLoad);
+      });
+    }
 
     // Shared reactive uniforms across all world-space shaders (synchronized 60fps motions + region focus)
     const sharedMotionUniforms = {
@@ -2813,7 +2824,7 @@
     let femaleBodyObj = null;
     let currentGender = 'male';
 
-    gltfLoader.load('models/skinMB2.glb', (gltf) => {
+    loadModelWithFallback('models/skinMB2.glb', (gltf) => {
       maleBodyObj = gltf.scene;
       maleBodyObj.traverse(c => {
         if (c.isMesh) {
@@ -2825,7 +2836,7 @@
       if (loaderOverlay) loaderOverlay.classList.add('hidden');
     });
 
-    gltfLoader.load('models/skinF2.glb', (gltf) => {
+    loadModelWithFallback('models/skinF2.glb', (gltf) => {
       femaleBodyObj = gltf.scene;
       femaleBodyObj.visible = false;
       femaleBodyObj.traverse(c => {
@@ -2921,7 +2932,7 @@
 
     // 2.3 Full Head-to-Toe Skeleton (Skeleton.glb — All 9 Anatomical Bone Groups) + Joints.glb Articular Cartilage
     const boneIllustrationMap = {};
-    gltfLoader.load('models/Skeleton.glb', (gltf) => {
+    loadModelWithFallback('models/Skeleton.glb', (gltf) => {
       gltf.scene.traverse(c => {
         if (c.isMesh) {
           const gName = c.name || c.parent?.name || '';
@@ -2946,7 +2957,7 @@
     // 2.3a Full-Body Articular Capsules, Menisci & Intervertebral Discs (Joints.glb: TMJ to Finger & Toe Joints)
     let jointsGlbGroup = null;
     const jointsGlbMats = [];
-    gltfLoader.load('models/Joints.glb', (gltf) => {
+    loadModelWithFallback('models/Joints.glb', (gltf) => {
       jointsGlbGroup = gltf.scene;
       jointsGlbGroup.visible = false;
       jointsGlbGroup.traverse(c => {
@@ -3060,7 +3071,7 @@
     ];
 
     STYLIZED_ORGANS.forEach(cfg => {
-      gltfLoader.load(cfg.file, (gltf) => {
+      loadModelWithFallback(cfg.file, (gltf) => {
         const mat = createToonClayMaterial(...cfg.activeCols, 0.96, cfg.smooth, cfg.pulse);
         const rootMesh = gltf.scene.children[0] || gltf.scene;
         if (cfg.key === 'brain' && rootMesh) {
@@ -3279,7 +3290,7 @@
     let vascularGroup = null;
     const vascularArtMat = createVascularMaterial('#EB665E', '#C73B35', '#8C1F1B', '#4D0E0B', 0.92, -1.0);
     const vascularVenMat = createVascularMaterial('#6EA7F0', '#3E76C2', '#224C87', '#112A4D', 0.89,  1.0);
-    gltfLoader.load('models/Vascular.glb', (gltf) => {
+    loadModelWithFallback('models/Vascular.glb', (gltf) => {
       vascularGroup = gltf.scene;
       vascularGroup.visible = false;
       vascularGroup.traverse(c => {
