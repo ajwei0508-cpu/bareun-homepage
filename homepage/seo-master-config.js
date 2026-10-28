@@ -4,7 +4,9 @@
  */
 const CANONICAL_ORIGIN = 'https://www.bareunhaniwon.com';
 const GH_RAW_BASE = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
-const DEFAULT_OG_IMAGE = GH_RAW_BASE + 'og-bareun-1200x630.jpg';
+const DEFAULT_OG_IMAGE = 'https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg';
+const NAVER_SITE_VERIFICATION = '4069e9810cb66fcbb9eb3955b54e627f5096ac30';
+const GOOGLE_SITE_VERIFICATION = '-OtjjERbe9ctyW4q9rwaFiNj9OvxGvOE7Bd1MBjSsX4';
 
 const CLINIC_BASE_ORG = {
   '@type': ['MedicalClinic', 'MedicalOrganization', 'LocalBusiness'],
@@ -205,7 +207,7 @@ const SEO_PAGES = {
     breadcrumbName: '만성피로·소화장애·척추통증 통합생리학 가이드',
     isArticle: true,
     datePublished: '2026-10-26',
-    dateModified: '2026-10-27'
+    dateModified: '2026-10-28'
   }
 };
 
@@ -217,7 +219,25 @@ function buildJsonLdForKey(key, customOgImg) {
   const orgNode = JSON.parse(JSON.stringify(CLINIC_BASE_ORG));
   orgNode.image = ogImg;
 
-  const graph = [orgNode, WEBSITE_NODE];
+  const webPageNode = {
+    '@type': 'MedicalWebPage',
+    '@id': canonicalUrl + '#webpage',
+    url: canonicalUrl,
+    name: cfg.title,
+    description: cfg.description,
+    inLanguage: 'ko-KR',
+    isPartOf: { '@id': CANONICAL_ORIGIN + '/#website' },
+    about: { '@id': CANONICAL_ORIGIN + '/#clinic' },
+    reviewedBy: {
+      '@type': 'Person',
+      '@id': CANONICAL_ORIGIN + '/director/#physician',
+      name: '안정위',
+      jobTitle: '바른한의원 대전본점 대표원장 (한의사)'
+    },
+    lastReviewed: '2026-10-28'
+  };
+
+  const graph = [orgNode, WEBSITE_NODE, webPageNode];
 
   if (cfg.path !== '/') {
     graph.push({
@@ -279,7 +299,7 @@ function buildJsonLdForKey(key, customOgImg) {
       description: cfg.description,
       image: [ogImg],
       datePublished: cfg.datePublished || '2026-10-26',
-      dateModified: cfg.dateModified || '2026-10-27',
+      dateModified: cfg.dateModified || '2026-10-28',
       inLanguage: 'ko-KR',
       author: {
         '@type': 'Person',
@@ -330,6 +350,8 @@ function buildHeadSeoTagsHtml(key, customOgImg) {
     `  <title>${esc(cfg.title)}</title>`,
     `  <meta name="description" content="${esc(cfg.description)}">`,
     `  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">`,
+    `  <meta name="naver-site-verification" content="${esc(NAVER_SITE_VERIFICATION)}">`,
+    `  <meta name="google-site-verification" content="${esc(GOOGLE_SITE_VERIFICATION)}">`,
     `  <link rel="canonical" href="${esc(canonicalUrl)}">`,
     `  <link rel="alternate" hreflang="ko-KR" href="${esc(canonicalUrl)}">`,
     `  <link rel="alternate" hreflang="x-default" href="${esc(canonicalUrl)}">`,
@@ -358,6 +380,8 @@ module.exports = {
   CANONICAL_ORIGIN,
   GH_RAW_BASE,
   DEFAULT_OG_IMAGE,
+  NAVER_SITE_VERIFICATION,
+  GOOGLE_SITE_VERIFICATION,
   CLINIC_BASE_ORG,
   WEBSITE_NODE,
   SEO_PAGES,

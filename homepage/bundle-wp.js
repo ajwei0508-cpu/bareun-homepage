@@ -75,7 +75,7 @@ function enrichStandaloneHtml(rawHtml, seoKey, srcFile) {
   html = html.replace(/<head([^>]*)>([\s\S]*?)<\/head>/i, (full, headAttrs, headInner) => {
     let cleaned = headInner
       .replace(/^\s*<title>[\s\S]*?<\/title>\s*$/gim, '')
-      .replace(/^\s*<meta\s+name=["'](?:description|keywords|robots|twitter:[^"']+)["'][^>]*>\s*$/gim, '')
+      .replace(/^\s*<meta\s+name=["'](?:description|keywords|robots|naver-site-verification|google-site-verification|twitter:[^"']+)["'][^>]*>\s*$/gim, '')
       .replace(/^\s*<meta\s+property=["']og:[^"']+["'][^>]*>\s*$/gim, '')
       .replace(/^\s*<link\s+rel=["']canonical["'][^>]*>\s*$/gim, '')
       .replace(/^\s*<link\s+rel=["']alternate["'][^>]*hreflang=[^>]*>\s*$/gim, '')
