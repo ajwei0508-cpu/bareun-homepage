@@ -6,7 +6,7 @@
   <title>바른한의원 | 우측 『진료 살펴보기』 메뉴 상세 구성표 · 실시간 제작 스튜디오</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --lux-white: #FFFFFF;
@@ -23,11 +23,13 @@
       --lux-gold-deep: #8C6720;
       --lux-gold-border: #DEC89A;
       --lux-border: #E5DEC9;
+      --lux-border-soft: #EDE7D7;
       --lux-ok: #156F46;
       --lux-ok-bg: #ECF9F2;
       --lux-warn: #A33A2A;
       --lux-warn-bg: #FDF0EE;
       --lux-shadow: 0 18px 42px rgba(13, 13, 15, 0.12);
+      --lux-shadow-sm: 0 8px 22px rgba(13, 13, 15, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -619,58 +621,149 @@
       color: #FFEAE8;
     }
 
-    /* MODAL FOR EDITING REPRESENTATIVE HEALTH ARTICLE */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 150;
-      background: rgba(13, 13, 15, 0.62);
-      backdrop-filter: blur(5px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    /* NATIVE <dialog> MODAL STUDIO FOR TITLE · CONTENT · STRUCTURE · LAYOUT · COLOR */
+    dialog:modal {
+      overscroll-behavior: contain;
     }
-    .modal-backdrop.open {
-      display: flex;
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background: rgba(13, 13, 15, 0.66);
+      backdrop-filter: blur(6px);
     }
-    .note-modal {
-      width: min(740px, 100%);
-      max-height: 90vh;
+    dialog.note-modal {
+      margin: auto;
+      padding: 0;
+      width: min(1320px, 96vw);
+      height: min(880px, 93vh);
+      max-width: 96vw;
+      max-height: 93vh;
       background: var(--lux-white);
       border: 2px solid var(--lux-gold);
       border-radius: 18px;
-      box-shadow: 0 28px 65px rgba(13, 13, 15, 0.35);
+      box-shadow: 0 32px 72px rgba(13, 13, 15, 0.42);
+      color: var(--lux-ink);
+      overflow: hidden;
+    }
+    dialog.note-modal[open] {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
     .nm-head {
       background: var(--lux-black);
       color: var(--lux-white);
-      padding: 15px 20px;
+      padding: 13px 20px;
       border-bottom: 2px solid var(--lux-gold);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      flex-shrink: 0;
     }
-    .nm-head h3 {
+    .nm-head-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .nm-head h2 {
       font-size: 0.98rem;
       font-weight: 800;
       color: var(--lux-gold-bright);
+      letter-spacing: -0.02em;
     }
-    .nm-body {
-      padding: 18px 20px;
-      overflow-y: auto;
+    .nm-head-badge {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(197, 160, 89, 0.16);
+      border: 1px solid rgba(230, 199, 127, 0.45);
+      color: #F4E1B1;
+      font-size: 0.7rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .nm-studio-grid {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(380px, 0.95fr);
+      background: var(--lux-bg);
+    }
+    @media (max-width: 1040px) {
+      .nm-studio-grid {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+      }
+    }
+    .nm-editor-pane {
       display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: var(--lux-white);
+      border-right: 1px solid var(--lux-border);
+    }
+    .nm-subtabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--lux-ivory);
+      border-bottom: 1px solid var(--lux-border);
+      flex-shrink: 0;
+    }
+    .nm-subtab-btn {
+      appearance: none;
+      border: 1px solid var(--lux-border);
+      background: var(--lux-white);
+      color: var(--lux-ink);
+      font-family: inherit;
+      font-size: 0.79rem;
+      font-weight: 800;
+      padding: 9px 10px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .nm-subtab-btn:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .nm-subtab-btn.active {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+      box-shadow: 0 4px 12px rgba(13, 13, 15, 0.14);
+    }
+    .nm-tab-panel {
+      display: none;
+      padding: 15px 18px 22px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
       flex-direction: column;
       gap: 13px;
     }
+    .nm-tab-panel.active {
+      display: flex;
+    }
+    .nm-gate-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
     .nm-gate-box {
-      padding: 10px 13px;
+      flex: 1;
+      min-width: 240px;
+      padding: 9px 12px;
       border-radius: 10px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       line-height: 1.45;
     }
@@ -679,6 +772,11 @@
       color: var(--lux-ok);
       border: 1px solid #A2DFC2;
     }
+    .nm-gate-box.warn {
+      background: #FFF9EB;
+      color: #8A5D10;
+      border: 1px solid #EBD094;
+    }
     .nm-gate-box.fail {
       background: var(--lux-warn-bg);
       color: var(--lux-warn);
@@ -686,25 +784,49 @@
     }
     .nm-row-2col {
       display: grid;
-      grid-template-columns: 180px 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
+    }
+    .nm-row-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+    @media (max-width: 680px) {
+      .nm-row-2col,
+      .nm-row-3col {
+        grid-template-columns: 1fr;
+      }
     }
     .nm-sec {
       background: var(--lux-ivory);
       border: 1px solid var(--lux-border);
-      border-radius: 10px;
-      padding: 11px 12px;
+      border-radius: 11px;
+      padding: 11px 13px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
+    }
+    .nm-sec.sec-disabled {
+      opacity: 0.56;
+      background: #F4F2EC;
     }
     .nm-sec-title {
-      font-size: 0.78rem;
+      font-size: 0.77rem;
       font-weight: 800;
       color: var(--lux-black);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nm-field-label {
+      font-size: 0.71rem;
+      font-weight: 800;
+      color: var(--lux-sub);
+      margin-bottom: 3px;
+      display: block;
     }
     .nm-textarea {
       width: 100%;
@@ -723,16 +845,726 @@
     }
     .nm-textarea:focus {
       border-color: var(--lux-gold-deep);
+      box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.18);
     }
+    /* Structure Preset Bar & Dynamic Section Builder */
+    .nm-preset-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      background: var(--lux-gold-tint);
+      border: 1px solid var(--lux-gold-border);
+      border-radius: 11px;
+    }
+    .nm-preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+    .nm-chip-btn {
+      appearance: none;
+      border: 1px solid var(--lux-gold-border);
+      background: var(--lux-white);
+      color: var(--lux-ink);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 5px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .nm-chip-btn:hover {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+    }
+    .nm-chip-btn.add-sec {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+      padding: 6px 12px;
+    }
+    .nm-sec-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nm-icon-input {
+      width: 46px !important;
+      text-align: center;
+      padding: 5px 4px !important;
+      font-size: 0.86rem !important;
+      flex-shrink: 0;
+    }
+    .nm-heading-input {
+      flex: 1;
+      min-width: 150px;
+      font-weight: 800 !important;
+    }
+    .nm-type-select {
+      width: auto !important;
+      min-width: 152px;
+      font-weight: 800 !important;
+      background: var(--lux-white);
+    }
+    .nm-line-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .nm-line-del {
+      appearance: none;
+      border: 1px solid var(--lux-border);
+      background: var(--lux-white);
+      color: var(--lux-muted);
+      border-radius: 6px;
+      width: 26px;
+      height: 28px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .nm-line-del:hover:not(:disabled) {
+      background: var(--lux-warn-bg);
+      color: var(--lux-warn);
+      border-color: #E5A499;
+    }
+    .nm-line-del:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .nm-add-line-btn {
+      align-self: flex-start;
+      appearance: none;
+      border: 1px dashed var(--lux-gold-deep);
+      background: var(--lux-white);
+      color: var(--lux-gold-deep);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    .nm-add-line-btn:hover {
+      background: var(--lux-gold-tint);
+    }
+    /* Layout Option Cards & Color Swatches */
+    .nm-opt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+      gap: 7px;
+    }
+    .nm-opt-card {
+      appearance: none;
+      border: 1.5px solid var(--lux-border);
+      background: var(--lux-white);
+      color: var(--lux-ink);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all 0.14s ease;
+    }
+    .nm-opt-card strong {
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+    .nm-opt-card span {
+      font-size: 0.67rem;
+      font-weight: 600;
+      color: var(--lux-muted);
+    }
+    .nm-opt-card:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .nm-opt-card.active {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+    }
+    .nm-opt-card.active span {
+      color: #DFC99B;
+    }
+    .nm-palette-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    @media (max-width: 640px) {
+      .nm-palette-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .nm-palette-btn {
+      appearance: none;
+      border: 1.5px solid var(--lux-border);
+      background: var(--lux-white);
+      border-radius: 10px;
+      padding: 9px 11px;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+    .nm-palette-btn:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .nm-palette-btn.active {
+      border: 2px solid var(--lux-black);
+      box-shadow: 0 0 0 2px var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .nm-palette-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .nm-swatch-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(13, 13, 15, 0.22);
+      display: inline-block;
+    }
+    .nm-color-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+    .nm-color-field {
+      background: var(--lux-white);
+      border: 1px solid var(--lux-border);
+      border-radius: 9px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nm-color-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .nm-color-ctrl input[type="color"] {
+      appearance: none;
+      width: 32px;
+      height: 30px;
+      border: 1px solid var(--lux-border);
+      border-radius: 6px;
+      padding: 1px;
+      background: var(--lux-white);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nm-hex-input {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace !important;
+      font-size: 0.76rem !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+    }
+
+    /* RIGHT LIVE POPUP 01-TAB PREVIEW PANE */
+    .nm-preview-pane {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: radial-gradient(circle at 50% 18%, #FAF6EC 0%, #EAE3D2 100%);
+    }
+    .nm-preview-bar {
+      padding: 10px 16px;
+      background: #16161B;
+      color: var(--lux-white);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    .nm-preview-bar-title {
+      font-size: 0.77rem;
+      font-weight: 800;
+      color: var(--lux-gold-bright);
+    }
+    .nm-preview-meta {
+      font-size: 0.69rem;
+      font-weight: 700;
+      color: #D2CABB;
+    }
+    .nm-preview-stage {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+    .nm-preview-frame {
+      width: 100%;
+      max-width: var(--preview-popup-w, 520px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: max-width 0.2s ease;
+    }
+
+    /* EXACT REPLICA OF POPUP 01-TAB NAV & BOX FROM build-body-explorer.js */
+    .three-menu-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      padding: 5px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.97);
+      border: 1.5px solid var(--tmn-accent, var(--lux-gold));
+      box-shadow: var(--lux-shadow-sm);
+    }
+    .three-menu-btn {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--lux-ink);
+      font-family: 'Pretendard', sans-serif;
+      padding: 8px 6px;
+      border-radius: 9px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      text-align: center;
+    }
+    .three-menu-btn.active {
+      background: var(--tmn-active-bg, var(--lux-black));
+      border-color: var(--tmn-accent, var(--lux-gold));
+      color: var(--tmn-active-text, var(--lux-white));
+    }
+    .tmb-step {
+      font-size: 0.63rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--lux-gold-deep);
+    }
+    .three-menu-btn.active .tmb-step {
+      color: var(--tmn-step-active, var(--lux-gold-bright));
+    }
+    .tmb-label {
+      font-size: 0.80rem;
+      font-weight: 800;
+      word-break: keep-all;
+      letter-spacing: -0.02em;
+    }
+    .health-info-popup-box {
+      --hip-header-bg: #0D0D0F;
+      --hip-header-text: #FFFFFF;
+      --hip-accent: #C5A059;
+      --hip-accent-ink: #0D0D0F;
+      --hip-body-bg: #FFFFFF;
+      --hip-card-bg: #FCFBF8;
+      --hip-body-text: #262522;
+      --hip-radius: 16px;
+      --hip-card-radius: 11px;
+      --hip-pad-hdr: 13px 16px;
+      --hip-pad-body: 13px 15px 15px;
+      --hip-pad-card: 10px 13px;
+      --hip-gap: 9px;
+      --hip-font-size: 0.83rem;
+      --hip-heading-size: 0.82rem;
+      --hip-title-size: 1.00rem;
+
+      background: var(--hip-body-bg);
+      border: 1.5px solid var(--hip-accent);
+      border-radius: var(--hip-radius);
+      overflow: hidden;
+      box-shadow: var(--lux-shadow);
+      color: var(--hip-body-text);
+    }
+    .hip-header {
+      position: relative;
+      background: var(--hip-header-bg);
+      color: var(--hip-header-text);
+      padding: var(--hip-pad-hdr);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 2px solid var(--hip-accent);
+    }
+    .hip-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+      flex: 1;
+    }
+    .hip-header-title-wrap {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 0;
+    }
+    .health-info-popup-box.hdr-stacked .hip-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .health-info-popup-box.hdr-stacked .hip-top-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+    .health-info-popup-box.hdr-centered .hip-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-top: 18px;
+      padding-bottom: 16px;
+      gap: 7px;
+    }
+    .health-info-popup-box.hdr-centered .hip-header-main {
+      align-items: center;
+      padding: 0 36px;
+    }
+    .health-info-popup-box.hdr-centered .hip-header-title-wrap {
+      justify-content: center;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .health-info-popup-box.hdr-centered .hip-close-btn {
+      position: absolute;
+      top: 11px;
+      right: 12px;
+    }
+    .hip-part-bracket,
+    .hip-num-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background-color: var(--hip-accent);
+      color: var(--hip-accent-ink, #0D0D0F);
+      font-size: 0.74rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    @supports (color: oklch(from red l c h)) {
+      .hip-part-bracket,
+      .hip-num-chip {
+        --threshold: 0.623;
+        --l: max(0, sign(var(--threshold) - l));
+        color: oklch(from var(--hip-accent) var(--l) 0 h);
+      }
+    }
+    @supports (color: contrast-color(red)) {
+      .hip-part-bracket,
+      .hip-num-chip {
+        color: contrast-color(var(--hip-accent));
+      }
+    }
+    .hip-divider {
+      color: color-mix(in srgb, var(--hip-accent) 65%, transparent);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .hip-question-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: var(--hip-title-size);
+      font-weight: 800;
+      color: var(--hip-header-text);
+      line-height: 1.42;
+      word-break: keep-all;
+      margin: 0;
+    }
+    .health-info-popup-box.title-sans .hip-question-title {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.02em;
+    }
+    .hip-subtitle {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: color-mix(in srgb, var(--hip-header-text) 78%, transparent);
+      line-height: 1.4;
+      word-break: keep-all;
+      margin: 0;
+    }
+    .hip-close-btn {
+      appearance: none;
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 68%, transparent);
+      background: color-mix(in srgb, var(--hip-header-text) 8%, transparent);
+      color: var(--hip-header-text);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 7px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hip-sections {
+      padding: var(--hip-pad-body);
+      display: flex;
+      flex-direction: column;
+      gap: var(--hip-gap);
+      background: var(--hip-body-bg);
+    }
+    .health-info-popup-box.layout-bento2 .hip-sections {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+    .health-info-popup-box.layout-bento2 .hip-sec-card.span-full {
+      grid-column: 1 / -1;
+    }
+    .hip-sec-card {
+      border-radius: var(--hip-card-radius);
+      padding: var(--hip-pad-card);
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 28%, rgba(13, 13, 15, 0.08));
+      background: var(--hip-card-bg);
+      color: var(--hip-body-text);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hip-sec-card.sec-highlight {
+      background: color-mix(in srgb, var(--hip-accent) 8%, var(--hip-card-bg));
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 52%, transparent);
+      border-left: 3.5px solid var(--hip-accent);
+    }
+    .health-info-popup-box.layout-minimal .hip-sec-card {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--hip-accent) 30%, rgba(13, 13, 15, 0.1));
+      border-radius: 0;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+    .health-info-popup-box.layout-minimal .hip-sec-card:last-child {
+      border-bottom: none;
+      padding-bottom: 2px;
+    }
+    .health-info-popup-box.layout-minimal .hip-sec-card.sec-highlight {
+      border-left: 3px solid var(--hip-accent);
+      padding-left: 11px;
+      background: color-mix(in srgb, var(--hip-accent) 6%, transparent);
+      border-radius: 6px;
+    }
+    details.hip-sec-card.hip-acc-card {
+      padding: 0;
+      overflow: hidden;
+    }
+    details.hip-sec-card.hip-acc-card > summary.hip-sec-heading {
+      margin: 0;
+      padding: var(--hip-pad-card);
+      cursor: pointer;
+      list-style: none;
+      justify-content: space-between;
+      user-select: none;
+    }
+    details.hip-sec-card.hip-acc-card > summary.hip-sec-heading::-webkit-details-marker {
+      display: none;
+    }
+    .hip-acc-chevron {
+      font-size: 0.72rem;
+      color: var(--hip-accent);
+      transition: transform 0.18s ease;
+    }
+    details.hip-sec-card.hip-acc-card[open] .hip-acc-chevron {
+      transform: rotate(180deg);
+    }
+    details.hip-sec-card.hip-acc-card .hip-acc-body {
+      padding: 9px 13px 11px;
+      border-top: 1px solid color-mix(in srgb, var(--hip-accent) 18%, transparent);
+    }
+    .hip-sec-heading {
+      font-size: var(--hip-heading-size);
+      font-weight: 800;
+      color: var(--hip-body-text);
+      margin-bottom: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.38;
+    }
+    .hip-two-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hip-line {
+      margin: 0;
+      font-size: var(--hip-font-size);
+      font-weight: 600;
+      color: var(--hip-body-text);
+      line-height: 1.54;
+      word-break: keep-all;
+    }
+    .hip-bullet-row,
+    .hip-num-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: var(--hip-font-size);
+      font-weight: 600;
+      color: var(--hip-body-text);
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+    .hip-bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--hip-accent);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    .hip-num-chip {
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      min-width: 22px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .hip-qa-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hip-qa-q,
+    .hip-qa-a {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: var(--hip-font-size);
+      font-weight: 600;
+      line-height: 1.48;
+      word-break: keep-all;
+    }
+    .hip-qa-q {
+      background: color-mix(in srgb, var(--hip-body-text) 5%, var(--hip-body-bg));
+      color: color-mix(in srgb, var(--hip-body-text) 85%, transparent);
+    }
+    .hip-qa-a {
+      background: color-mix(in srgb, var(--hip-accent) 11%, var(--hip-body-bg));
+      border-left: 3px solid var(--hip-accent);
+      color: var(--hip-body-text);
+    }
+    .hip-qa-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .hip-qa-q .hip-qa-tag {
+      background: color-mix(in srgb, var(--hip-body-text) 14%, transparent);
+      color: var(--hip-body-text);
+    }
+    .hip-qa-a .hip-qa-tag {
+      background: var(--hip-accent);
+      color: var(--hip-accent-ink, #0D0D0F);
+    }
+    .hip-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: var(--hip-body-bg);
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 26%, rgba(13, 13, 15, 0.08));
+      cursor: pointer;
+      font-size: calc(var(--hip-font-size) - 0.01rem);
+      font-weight: 600;
+      color: var(--hip-body-text);
+      line-height: 1.46;
+      word-break: keep-all;
+    }
+    .hip-check-item:has(input:checked) {
+      border-color: var(--hip-accent);
+      background: color-mix(in srgb, var(--hip-accent) 10%, var(--hip-body-bg));
+    }
+    .hip-check-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      margin-top: 2px;
+      accent-color: var(--hip-accent);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
     .nm-foot {
-      padding: 13px 20px;
+      padding: 12px 20px;
       background: var(--lux-ivory);
       border-top: 1px solid var(--lux-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    .nm-foot-toggles {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .nm-inline-alert {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--lux-warn);
+      display: none;
+    }
+    .nm-inline-alert.show {
+      display: inline-block;
+    }
+    .note-design-summary {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--lux-sub);
+      margin-top: 2px;
+    }
+    .note-design-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(13, 13, 15, 0.25);
+      display: inline-block;
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -830,63 +1662,188 @@
     </div>
   </div>
 
-  <!-- 대표 건강 글(01 오늘의 건강 글) 직접 열람·수정 모달 -->
-  <div class="modal-backdrop" id="note-modal-backdrop" role="dialog" aria-modal="true">
-    <div class="note-modal">
-      <div class="nm-head">
-        <h3 id="nm-modal-title">[무릎 성장판] 대표 건강 글(팝업 01탭) 직접 수정</h3>
-        <button type="button" class="st-btn" onclick="window.closeNoteModal()">✕ 닫기</button>
+  <!-- 대표 건강 글(01 오늘의 건강 글) 제목 · 내용 · 구조 · 레이아웃 · 색감 올인원 커스텀 모달 (Native <dialog>) -->
+  <dialog class="note-modal" id="note-modal-dialog" aria-labelledby="nm-modal-title">
+    <div class="nm-head">
+      <div class="nm-head-left">
+        <span class="nm-head-badge">POPUP 01 STUDIO</span>
+        <h2 id="nm-modal-title">[무릎 성장판] 대표 건강 글(팝업 01탭) 열람 · 커스텀</h2>
       </div>
-      <div class="nm-body">
-        <div id="nm-gate-status" class="nm-gate-box pass">✔ 3단계 자가 검수 통과 (질문형 제목 · 쉬운 일상어 · 의료법 준수)</div>
+      <form method="dialog" style="margin:0;">
+        <button type="submit" value="cancel" class="st-btn" aria-label="대표 건강 글 커스텀 창 닫기">✕ 닫기</button>
+      </form>
+    </div>
 
-        <div class="nm-row-2col">
-          <label class="nm-sec">
-            <span class="nm-sec-title">핵심 키워드 (본문 1회 이상)</span>
-            <input type="text" id="nm-keyword" class="cell-input" placeholder="예: 입호흡" />
-          </label>
-          <label class="nm-sec">
-            <span class="nm-sec-title">질문형 제목 (끝에 ? 필수)</span>
-            <input type="text" id="nm-question-title" class="cell-input" placeholder="예: 밤마다 입을 살짝 벌리고 자는 습관도 키 성장에 영향을 줄까요?" />
-          </label>
+    <div class="nm-studio-grid">
+      <!-- LEFT: CUSTOMIZER CONTROLS -->
+      <div class="nm-editor-pane">
+        <div class="nm-subtabs" role="tablist" aria-label="팝업 01탭 커스텀 항목">
+          <button type="button" class="nm-subtab-btn active" id="nm-tab-btn-content" onclick="window.switchModalTab('content')">📝 제목 · 구조 · 본문</button>
+          <button type="button" class="nm-subtab-btn" id="nm-tab-btn-layout" onclick="window.switchModalTab('layout')">📐 레이아웃 · 서체</button>
+          <button type="button" class="nm-subtab-btn" id="nm-tab-btn-color" onclick="window.switchModalTab('color')">🎨 색감 · 테마 팔레트</button>
         </div>
 
-        <div class="nm-sec">
-          <div class="nm-sec-title"><span>🎒 1. 일상 속 공감 상황 (2문장)</span></div>
-          <textarea id="nm-empathy-0" class="nm-textarea" rows="2"></textarea>
-          <textarea id="nm-empathy-1" class="nm-textarea" rows="2"></textarea>
+        <!-- TAB 1: TITLES · STRUCTURE · CONTENT -->
+        <div class="nm-tab-panel active" id="nm-panel-content">
+          <div class="nm-gate-row">
+            <div id="nm-gate-status" class="nm-gate-box pass">✔ 자가 검수 통과 (의료법 제56조 홍보배제 · 일상어 가독성 확인 완료)</div>
+            <label class="enable-toggle" style="font-size:0.73rem;color:var(--lux-sub);white-space:nowrap;">
+              <input type="checkbox" id="nm-strict-qmark" />
+              <span>질문형(?) 필수 체크</span>
+            </label>
+          </div>
+
+          <div class="nm-sec">
+            <div class="nm-sec-title">
+              <span>🏷️ 상단 탭 &amp; 헤드라인 제목 커스텀</span>
+              <label class="enable-toggle" style="font-size:0.72rem;color:var(--lux-ink);">
+                <input type="checkbox" id="nm-show-badge-chk" checked />
+                <span>상단 [부위명] 배지 표시</span>
+              </label>
+            </div>
+
+            <div class="nm-row-3col">
+              <div>
+                <label class="nm-field-label" for="nm-tab01-step">01탭 상단 보조 라벨</label>
+                <input type="text" id="nm-tab01-step" class="cell-input" placeholder="예: 01 · 최신 글 1편" />
+              </div>
+              <div>
+                <label class="nm-field-label" for="nm-tab01-label">01탭 메인 버튼명</label>
+                <input type="text" id="nm-tab01-label" class="cell-input" placeholder="예: 오늘의 건강 글" />
+              </div>
+              <div>
+                <label class="nm-field-label" for="nm-badge-override">이 글 전용 [배지명] (선택)</label>
+                <input type="text" id="nm-badge-override" class="cell-input" placeholder="비우면 기본 [부위명] 사용" />
+              </div>
+            </div>
+
+            <div class="nm-row-2col" style="grid-template-columns: 165px 1fr;">
+              <div>
+                <label class="nm-field-label" for="nm-keyword">핵심 키워드 (선택)</label>
+                <input type="text" id="nm-keyword" class="cell-input" placeholder="예: 가짜 배고픔" />
+              </div>
+              <div>
+                <label class="nm-field-label" for="nm-question-title">메인 제목 (질문형·칼럼형 모두 자유 입력)</label>
+                <input type="text" id="nm-question-title" class="cell-input" autofocus placeholder="예: 저녁밥을 든든히 먹었는데도 밤 10시만 넘으면 야식이 당기는 이유는?" />
+              </div>
+            </div>
+
+            <div>
+              <label class="nm-field-label" for="nm-sub-title">보조 부제목 (선택 · 입력 시 헤드라인 아래 표시)</label>
+              <input type="text" id="nm-sub-title" class="cell-input" placeholder="예: 의지력 부족이 아닌 수면·스트레스 식욕 신호의 원리와 1분 실천법" />
+            </div>
+          </div>
+
+          <div class="nm-preset-bar">
+            <div class="nm-preset-chips">
+              <span style="font-size:0.73rem;font-weight:800;color:var(--lux-black);margin-right:2px;">🧱 빠른 구조 프리셋:</span>
+              <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('standard4')">기본 4단 (공감·진실·오해·체크)</button>
+              <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('compact2')">컴팩트 2단 (핵심원리+체크)</button>
+              <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('magazine3')">3단 매거진 (공감·원인·루틴)</button>
+              <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('qacard3')">통념 Q&amp;A 대비형</button>
+              <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('column1')">1단 에세이 칼럼형</button>
+            </div>
+            <button type="button" class="nm-chip-btn add-sec" onclick="window.addNoteSection()">+ 새 섹션 블록 추가</button>
+          </div>
+
+          <div id="nm-sections-list" style="display:flex;flex-direction:column;gap:10px;"></div>
         </div>
 
-        <div class="nm-sec">
-          <div class="nm-sec-title"><span>💡 2. 몸속 연골/신경이 알려주는 진실 (2문장)</span></div>
-          <textarea id="nm-truth-0" class="nm-textarea" rows="2"></textarea>
-          <textarea id="nm-truth-1" class="nm-textarea" rows="2"></textarea>
+        <!-- TAB 2: LAYOUT & TYPOGRAPHY -->
+        <div class="nm-tab-panel" id="nm-panel-layout">
+          <div class="nm-sec">
+            <div class="nm-sec-title"><span>📏 1. 팝업 창 가로 폭 (Width)</span></div>
+            <div class="nm-opt-grid" id="nm-opt-widthMode"></div>
+          </div>
+
+          <div class="nm-sec">
+            <div class="nm-sec-title"><span>🗂️ 2. 본문 섹션 배치 레이아웃 (Section Layout)</span></div>
+            <div class="nm-opt-grid" id="nm-opt-sectionLayout"></div>
+          </div>
+
+          <div class="nm-sec">
+            <div class="nm-sec-title"><span>🎯 3. 상단 제목 헤더 정렬 (Header Alignment)</span></div>
+            <div class="nm-opt-grid" id="nm-opt-headerLayout"></div>
+          </div>
+
+          <div class="nm-sec">
+            <div class="nm-sec-title">
+              <span>✒️ 4. 제목 서체 스타일 &amp; 따옴표 장식</span>
+              <label class="enable-toggle" style="font-size:0.74rem;color:var(--lux-ink);">
+                <input type="checkbox" id="nm-title-quotes-chk" checked />
+                <span>제목 양옆 큰따옴표(“ ”) 표시</span>
+              </label>
+            </div>
+            <div class="nm-opt-grid" id="nm-opt-titleFont"></div>
+          </div>
+
+          <div class="nm-row-3col">
+            <div class="nm-sec">
+              <div class="nm-sec-title"><span>🔠 글자 크기</span></div>
+              <div class="nm-opt-grid" id="nm-opt-fontScale" style="grid-template-columns:1fr;"></div>
+            </div>
+            <div class="nm-sec">
+              <div class="nm-sec-title"><span>↕️ 여백 밀도</span></div>
+              <div class="nm-opt-grid" id="nm-opt-density" style="grid-template-columns:1fr;"></div>
+            </div>
+            <div class="nm-sec">
+              <div class="nm-sec-title"><span>⬜ 모서리 곡률</span></div>
+              <div class="nm-opt-grid" id="nm-opt-radius" style="grid-template-columns:1fr;"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="nm-sec">
-          <div class="nm-sec-title"><span>❌ 3. 흔히 하는 오해 바로잡기 (2문장)</span></div>
-          <textarea id="nm-myth-0" class="nm-textarea" rows="2"></textarea>
-          <textarea id="nm-myth-1" class="nm-textarea" rows="2"></textarea>
-        </div>
+        <!-- TAB 3: COLOR SCHEME & LUXURY PALETTES -->
+        <div class="nm-tab-panel" id="nm-panel-color">
+          <div class="nm-sec">
+            <div class="nm-sec-title">
+              <span>🎨 1. 하이엔드 원클릭 색감 프리셋 (8종)</span>
+              <button type="button" class="nm-chip-btn" onclick="window.resetPopupDesignToDefault()">↺ 기본 블랙&amp;골드 복원</button>
+            </div>
+            <div class="nm-palette-grid" id="nm-palette-grid"></div>
+          </div>
 
-        <div class="nm-sec">
-          <div class="nm-sec-title"><span>🔍 4. 오늘 밤 집에서 해보는 1분 체크 (2가지)</span></div>
-          <textarea id="nm-check-0" class="nm-textarea" rows="2"></textarea>
-          <textarea id="nm-check-1" class="nm-textarea" rows="2"></textarea>
+          <div class="nm-sec">
+            <div class="nm-sec-title">
+              <span>🖌️ 2. 영역별 세부 컬러 직접 커스텀 (HEX · 컬러피커)</span>
+              <button type="button" class="nm-chip-btn" onclick="window.autoHarmonizeTextContrast()">✨ 배경 대비 글자색 자동 보정</button>
+            </div>
+            <div class="nm-color-picker-grid" id="nm-color-picker-grid"></div>
+          </div>
         </div>
       </div>
-      <div class="nm-foot">
-        <label class="enable-toggle" style="font-size:0.78rem;color:#17171A;">
+
+      <!-- RIGHT: REAL-TIME POPUP 01-TAB LIVE PREVIEW -->
+      <aside class="nm-preview-pane" aria-label="실시간 팝업 01탭 미리보기">
+        <div class="nm-preview-bar">
+          <span class="nm-preview-bar-title">👁️ 실시간 팝업 01탭 LIVE 미리보기</span>
+          <span class="nm-preview-meta" id="nm-preview-meta-text">520px · 1열 카드 · 시그니처 블랙&amp;골드</span>
+        </div>
+        <div class="nm-preview-stage">
+          <div class="nm-preview-frame" id="nm-live-preview-mount"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="nm-foot">
+      <div class="nm-foot-toggles">
+        <label class="enable-toggle" style="font-size:0.77rem;color:#17171A;">
           <input type="checkbox" id="nm-override-chk" />
-          <span>이 대표 건강 글을 해당 메뉴의 최상단(01 오늘의 건강 글)으로 즉시 고정 반영</span>
+          <span>이 대표 건강 글을 최상단(01 오늘의 건강 글)으로 고정 반영</span>
         </label>
-        <div style="display:flex;gap:8px;">
-          <button type="button" class="st-btn" onclick="window.closeNoteModal()">취소</button>
-          <button type="button" class="st-btn primary-build" onclick="window.applyNoteModalChanges()">✔ 표에 반영하기</button>
-        </div>
+        <label class="enable-toggle" style="font-size:0.76rem;color:var(--lux-sub);">
+          <input type="checkbox" id="nm-apply-design-all-chk" />
+          <span>현재 레이아웃 · 색감 디자인을 전체 메뉴에 공통 적용</span>
+        </label>
+        <span class="nm-inline-alert" id="nm-inline-alert"></span>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="st-btn" onclick="window.closeNoteModal()">취소</button>
+        <button type="button" class="st-btn" style="border-color:var(--lux-gold);font-weight:800;" onclick="window.applyNoteModalChanges(false)">✔ 표에 반영하기</button>
+        <button type="button" class="st-btn primary-build" onclick="window.applyNoteModalChanges(true)">⚡ 표 반영 + 로컬 3D 즉시 제작</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <div class="studio-toast" id="studio-toast"></div>
 
@@ -1046,6 +2003,11 @@
 
         const noteTitle = (item.leadNote && item.leadNote.questionTitle) ? item.leadNote.questionTitle : '';
         const modeTag = item.leadNoteOverride ? '직접수정 고정' : '2일 자동순환';
+        const pd = Object.assign({ headerBg: '#0D0D0F', accentColor: '#C5A059', sectionLayout: 'stack', widthMode: 'standard' }, item.popupDesign || {});
+        const secCount = (item.leadNote && Array.isArray(item.leadNote.sections) && item.leadNote.sections.length > 0)
+          ? item.leadNote.sections.filter(s => s && s.enabled !== false).length
+          : 4;
+        const layoutShort = pd.sectionLayout === 'bento2' ? '2열 벤토' : (pd.sectionLayout === 'minimal' ? '미니멀' : (pd.sectionLayout === 'accordion' ? '아코디언' : '1열 카드'));
 
         return (
           '<tr class="' + (isOn ? '' : 'row-disabled') + '">' +
@@ -1101,8 +2063,13 @@
             '<td>' +
               '<input type="text" class="cell-input" value="' + esc(item.targetReader || '') + '" oninput="window.updateFieldSilent(' + idx + ', \'targetReader\', this.value)" placeholder="타깃 독자" />' +
               '<div class="note-preview-title">&ldquo;' + esc(noteTitle) + '&rdquo;</div>' +
+              '<div class="note-design-summary">' +
+                '<span class="note-design-dot" style="background:' + esc(pd.headerBg) + ';" title="헤더 배경색"></span>' +
+                '<span class="note-design-dot" style="background:' + esc(pd.accentColor) + ';" title="강조 포인트색"></span>' +
+                '<span>' + esc(layoutShort) + ' · ' + secCount + '섹션</span>' +
+              '</div>' +
               '<button type="button" class="note-edit-btn" onclick="window.openNoteModal(' + idx + ')">' +
-                '<span>✏️ 건강 글 수정</span>' +
+                '<span>🎨 글·구조·색감 커스텀</span>' +
                 '<span class="note-mode-tag">' + modeTag + '</span>' +
               '</button>' +
             '</td>' +
@@ -1278,120 +2245,936 @@
       renderTable();
     };
 
-    // Representative Health Note Modal Logic + Live 3-Stage Self-Correction Check
-    function validateNoteCandidate(partLabel, note) {
-      const errs = [];
-      if (!note.questionTitle || !note.questionTitle.trim().endsWith('?')) {
-        errs.push('질문형 제목 끝에 물음표(?)를 붙여주세요.');
-      }
-      ['empathyLines', 'truthLines', 'mythLines', 'checkList'].forEach(k => {
-        if (!Array.isArray(note[k]) || !note[k][0].trim() || !note[k][1].trim()) {
-          errs.push('4개 섹션 모두 2문장씩 빈칸 없이 입력해 주세요.');
-        }
-      });
-      const full = [
-        partLabel || '',
-        note.questionTitle || '',
-        ...(note.empathyLines || []),
-        ...(note.truthLines || []),
-        ...(note.mythLines || []),
-        ...(note.checkList || [])
-      ].join(' ');
-      for (const bad of FORBIDDEN_PROMO) {
-        if (full.includes(bad)) errs.push('의료법/홍보 금지어 감지: [' + bad + ']');
-      }
-      for (const jar of FORBIDDEN_JARGON) {
-        if (full.includes(jar)) errs.push('어려운 전문용어 감지(일상어로 순화 필요): [' + jar + ']');
-      }
-      if (note.keyword && note.keyword.trim() && !full.includes(note.keyword.trim())) {
-        errs.push('핵심 키워드 [' + note.keyword.trim() + ']가 본문 또는 제목에 1회 이상 포함되어야 합니다.');
-      }
-      return errs;
+    // =========================================================================
+    // Representative Health Note Studio (Title · Content · Structure · Layout · Color)
+    // =========================================================================
+    const DEFAULT_POPUP_DESIGN = {
+      colorPreset: 'lux-gold',
+      headerBg: '#0D0D0F',
+      headerText: '#FFFFFF',
+      accentColor: '#C5A059',
+      bodyBg: '#FFFFFF',
+      cardBg: '#FCFBF8',
+      bodyText: '#262522',
+      widthMode: 'standard',
+      headerLayout: 'inline',
+      sectionLayout: 'stack',
+      density: 'standard',
+      radius: 'rounded',
+      fontScale: 'md',
+      titleFont: 'serif',
+      titleQuotes: true,
+      showPartBadge: true,
+      tab01Step: '01 · 최신 글 1편',
+      tab01Label: '오늘의 건강 글'
+    };
+
+    const COLOR_PRESETS = [
+      { id: 'lux-gold',        label: '시그니처 블랙 & 골드', sub: '바른한의원 기본 하이엔드', headerBg: '#0D0D0F', headerText: '#FFFFFF', accentColor: '#C5A059', bodyBg: '#FFFFFF', cardBg: '#FCFBF8', bodyText: '#262522' },
+      { id: 'warm-hanji',      label: '웜 한지 & 앤틱 브론즈', sub: '따뜻한 한방 에디토리얼',   headerBg: '#2A231D', headerText: '#FAF6EE', accentColor: '#B88946', bodyBg: '#FDFBF6', cardBg: '#F5EFE2', bodyText: '#2B2520' },
+      { id: 'dark-onyx',       label: '다크 로얄 오닉스',     sub: '올다크 프리미엄 라운지',   headerBg: '#090A0D', headerText: '#F7F4EC', accentColor: '#D4AF37', bodyBg: '#14161B', cardBg: '#1E2129', bodyText: '#ECE8DF' },
+      { id: 'sage-emerald',    label: '포레스트 세이지 그린', sub: '편안한 자율신경·휴식 무드', headerBg: '#14261E', headerText: '#F4FBF7', accentColor: '#6BAE88', bodyBg: '#FFFFFF', cardBg: '#F3F8F5', bodyText: '#1E2B24' },
+      { id: 'slate-navy',      label: '로얄 슬레이트 네이비', sub: '신뢰감 있는 메디컬 저널',   headerBg: '#111E33', headerText: '#F5F8FC', accentColor: '#C8A464', bodyBg: '#FFFFFF', cardBg: '#F4F7FB', bodyText: '#1D2736' },
+      { id: 'rose-terracotta', label: '로즈 테라코타 크림',   sub: '부드러운 여성·순환 무드',   headerBg: '#38201E', headerText: '#FFF8F6', accentColor: '#D48C78', bodyBg: '#FFFDFC', cardBg: '#FBF3F0', bodyText: '#332220' },
+      { id: 'pure-mono',       label: '퓨어 화이트 에디토리얼', sub: '밝고 깔끔한 매거진 칼럼', headerBg: '#FAF8F4', headerText: '#141416', accentColor: '#9E7B36', bodyBg: '#FFFFFF', cardBg: '#F7F5F0', bodyText: '#22211F' },
+      { id: 'amber-herbal',    label: '앰버 허벌 에스프레소', sub: '깊이감 있는 보약·기력 무드', headerBg: '#1F1812', headerText: '#FDF8F0', accentColor: '#D69E4E', bodyBg: '#FCF9F4', cardBg: '#F4EDE1', bodyText: '#29211A' }
+    ];
+
+    const LAYOUT_OPTION_SPECS = {
+      widthMode: [
+        { val: 'compact',   title: '컴팩트 (440px)',   sub: '슬림하고 아담한 폭' },
+        { val: 'standard',  title: '스탠다드 (520px)', sub: '기본 황금비율 폭' },
+        { val: 'wide',      title: '와이드 (640px)',   sub: '2열 벤토 추천 폭' },
+        { val: 'ultrawide', title: '울트라 (740px)',   sub: '시원한 매거진 폭' }
+      ],
+      sectionLayout: [
+        { val: 'stack',     title: '1열 수직 카드형',  sub: '기본 정독형 카드 배치' },
+        { val: 'bento2',    title: '2열 벤토 그리드',  sub: '좌우 2단 한눈에 보기' },
+        { val: 'minimal',   title: '미니멀 디바이더',  sub: '구분선 중심 칼럼 스타일' },
+        { val: 'accordion', title: '아코디언 접기형',  sub: '소제목 클릭 시 펼침' }
+      ],
+      headerLayout: [
+        { val: 'inline',   title: '가로 인라인 (기본)', sub: '[배지] | 제목 한 줄 흐름' },
+        { val: 'stacked',  title: '상하 스택 매거진',   sub: '배지 상단 · 제목 하단 강조' },
+        { val: 'centered', title: '중앙 시네마틱 정렬', sub: '가운데 정렬 에디토리얼' }
+      ],
+      titleFont: [
+        { val: 'serif', title: '품격 명조체 (Noto Serif)', sub: '신뢰감 있는 칼럼 헤드라인' },
+        { val: 'sans',  title: '모던 고딕체 (Pretendard)', sub: '깔끔하고 현대적인 고딕' }
+      ],
+      fontScale: [
+        { val: 'sm', title: '작게 (SM)',   sub: '조밀한 텍스트' },
+        { val: 'md', title: '표준 (MD)',   sub: '기본 가독 크기' },
+        { val: 'lg', title: '크게 (LG)',   sub: '시원한 큰 글씨' }
+      ],
+      density: [
+        { val: 'compact',  title: '조밀 (Compact)',  sub: '컴팩트한 여백' },
+        { val: 'standard', title: '표준 (Standard)', sub: '균형 잡힌 여백' },
+        { val: 'relaxed',  title: '여유 (Relaxed)',  sub: '넉넉한 라운지 여백' }
+      ],
+      radius: [
+        { val: 'sharp',   title: '샤프 (6px)',    sub: '단정한 직각 엣지' },
+        { val: 'rounded', title: '라운드 (16px)', sub: '기본 품격 곡률' },
+        { val: 'soft',    title: '소프트 (24px)', sub: '부드러운 곡면' }
+      ]
+    };
+
+    const COLOR_FIELD_SPECS = [
+      { key: 'headerBg',    label: '상단 헤더 배경색' },
+      { key: 'headerText',  label: '상단 제목 글자색' },
+      { key: 'accentColor', label: '강조 포인트 · 배지 · 테두리색' },
+      { key: 'bodyBg',      label: '팝업 본문 바탕색' },
+      { key: 'cardBg',      label: '섹션 카드 배경색' },
+      { key: 'bodyText',    label: '본문 · 소제목 글자색' }
+    ];
+
+    const SECTION_TYPE_OPTIONS = [
+      { val: 'text',      label: '일반 줄글 문단' },
+      { val: 'highlight', label: '강조 핵심 박스 (좌측 포인트바)' },
+      { val: 'checklist', label: '자가 체크박스 리스트 (☑)' },
+      { val: 'bullets',   label: '불릿 포인트 리스트 (•)' },
+      { val: 'numbered',  label: '번호 스텝 리스트 (01·02)' },
+      { val: 'qa',        label: '통념 vs 핵심 대비 (Q&A)' }
+    ];
+
+    const modalDialog = document.getElementById('note-modal-dialog');
+    let modalDraft = null;
+    let activeModalTab = 'content';
+
+    function computeContrastInk(hex) {
+      const clean = String(hex || '').replace('#', '').trim();
+      if (clean.length !== 6) return '#0D0D0F';
+      const r = parseInt(clean.slice(0, 2), 16) / 255;
+      const g = parseInt(clean.slice(2, 4), 16) / 255;
+      const b = parseInt(clean.slice(4, 6), 16) / 255;
+      if (isNaN(r) || isNaN(g) || isNaN(b)) return '#0D0D0F';
+      const toLin = c => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+      const lum = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
+      return lum > 0.36 ? '#0D0D0F' : '#FFFFFF';
     }
 
-    function collectModalNote() {
-      return {
-        keyword: document.getElementById('nm-keyword').value.trim(),
-        questionTitle: document.getElementById('nm-question-title').value.trim(),
-        empathyLines: [
-          document.getElementById('nm-empathy-0').value.trim(),
-          document.getElementById('nm-empathy-1').value.trim()
-        ],
-        truthLines: [
-          document.getElementById('nm-truth-0').value.trim(),
-          document.getElementById('nm-truth-1').value.trim()
-        ],
-        mythLines: [
-          document.getElementById('nm-myth-0').value.trim(),
-          document.getElementById('nm-myth-1').value.trim()
-        ],
-        checkList: [
-          document.getElementById('nm-check-0').value.trim(),
-          document.getElementById('nm-check-1').value.trim()
-        ]
-      };
+    function normalizeHexColor(val, fallback) {
+      const s = String(val || '').trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(s)) return s.toUpperCase();
+      if (/^[0-9a-fA-F]{6}$/.test(s)) return ('#' + s).toUpperCase();
+      return fallback;
+    }
+
+    function buildInitialSectionsFromNote(note, popupDesign) {
+      if (note && Array.isArray(note.sections) && note.sections.length > 0) {
+        return note.sections.map((s, idx) => ({
+          id: s.id || ('sec_' + (idx + 1)),
+          enabled: s.enabled !== false,
+          icon: s.icon != null ? String(s.icon) : '',
+          heading: s.heading != null ? String(s.heading) : ('섹션 ' + (idx + 1)),
+          type: s.type || 'text',
+          spanFull: Boolean(s.spanFull),
+          lines: Array.isArray(s.lines) && s.lines.length > 0 ? s.lines.map(x => String(x || '')) : ['']
+        }));
+      }
+      const dh = (popupDesign && Array.isArray(popupDesign.defaultSectionHeadings)) ? popupDesign.defaultSectionHeadings : [];
+      const emp = (note && Array.isArray(note.empathyLines) && note.empathyLines.length) ? note.empathyLines.slice() : ['', ''];
+      const tru = (note && Array.isArray(note.truthLines) && note.truthLines.length) ? note.truthLines.slice() : ['', ''];
+      const myt = (note && Array.isArray(note.mythLines) && note.mythLines.length) ? note.mythLines.slice() : ['', ''];
+      const chk = (note && Array.isArray(note.checkList) && note.checkList.length) ? note.checkList.slice() : ['', ''];
+      return [
+        { id: 'sec_1', enabled: !(dh[0] && dh[0].enabled === false), icon: (dh[0] && dh[0].icon != null) ? dh[0].icon : '🎒', heading: (dh[0] && dh[0].heading) || '1. 일상 속 공감 상황', type: (dh[0] && dh[0].type) || 'text', spanFull: Boolean(dh[0] && dh[0].spanFull), lines: emp },
+        { id: 'sec_2', enabled: !(dh[1] && dh[1].enabled === false), icon: (dh[1] && dh[1].icon != null) ? dh[1].icon : '💡', heading: (dh[1] && dh[1].heading) || '2. 몸속 연골/신경이 알려주는 진실', type: (dh[1] && dh[1].type) || 'highlight', spanFull: Boolean(dh[1] && dh[1].spanFull), lines: tru },
+        { id: 'sec_3', enabled: !(dh[2] && dh[2].enabled === false), icon: (dh[2] && dh[2].icon != null) ? dh[2].icon : '❌', heading: (dh[2] && dh[2].heading) || '3. 흔히 하는 오해 바로잡기', type: (dh[2] && dh[2].type) || 'text', spanFull: Boolean(dh[2] && dh[2].spanFull), lines: myt },
+        { id: 'sec_4', enabled: !(dh[3] && dh[3].enabled === false), icon: (dh[3] && dh[3].icon != null) ? dh[3].icon : '🔍', heading: (dh[3] && dh[3].heading) || '4. 오늘 밤 집에서 해보는 1분 체크', type: (dh[3] && dh[3].type) || 'checklist', spanFull: Boolean(dh[3] && dh[3].spanFull), lines: chk }
+      ];
+    }
+
+    function showModalInlineAlert(msg) {
+      const el = document.getElementById('nm-inline-alert');
+      if (!el) return;
+      if (!msg) {
+        el.textContent = '';
+        el.classList.remove('show');
+        return;
+      }
+      el.textContent = '⚠ ' + msg;
+      el.classList.add('show');
+    }
+
+    function auditModalDraft() {
+      const hardErrors = [];
+      const softTips = [];
+      if (!modalDraft) return { hardErrors, softTips };
+      const item = state.items[editingRowIdx] || {};
+      const n = modalDraft.note;
+      const title = String(n.questionTitle || '').trim();
+      if (!title) {
+        hardErrors.push('메인 제목(헤드라인)을 입력해 주세요.');
+      } else if (n.strictQuestionMark && !title.endsWith('?')) {
+        hardErrors.push('질문형(?) 필수 체크가 켜져 있습니다. 제목 끝에 물음표(?)를 붙여주세요.');
+      }
+
+      const activeSecs = (n.sections || []).filter(s => s && s.enabled !== false);
+      if (activeSecs.length === 0) {
+        hardErrors.push('최소 1개 이상의 섹션 블록이 노출(ON) 상태여야 합니다.');
+      } else {
+        const hasEmptyActive = activeSecs.some(s => !(s.lines || []).some(l => String(l || '').trim().length > 0));
+        if (hasEmptyActive) {
+          hardErrors.push('노출(ON) 상태인 섹션에 최소 1문장 이상 본문을 입력해 주세요.');
+        }
+      }
+
+      const full = [
+        n.badgeOverride || item.partLabel || '',
+        title,
+        n.subTitle || '',
+        ...activeSecs.map(s => (s.heading || '') + ' ' + (s.lines || []).join(' '))
+      ].join(' ');
+
+      for (const bad of FORBIDDEN_PROMO) {
+        if (full.includes(bad)) {
+          hardErrors.push('의료법/홍보 금지어 감지: [' + bad + ']');
+        }
+      }
+      for (const jar of FORBIDDEN_JARGON) {
+        if (full.includes(jar)) {
+          softTips.push('전문용어 순화 권장: [' + jar + ']');
+        }
+      }
+      if (n.keyword && n.keyword.trim() && !full.includes(n.keyword.trim())) {
+        softTips.push('핵심 키워드 [' + n.keyword.trim() + ']가 제목·본문에 아직 포함되지 않았습니다.');
+      }
+      return { hardErrors, softTips };
     }
 
     function refreshModalGateBanner() {
-      if (editingRowIdx < 0 || !state.items[editingRowIdx]) return;
-      const item = state.items[editingRowIdx];
-      const note = collectModalNote();
-      const errs = validateNoteCandidate(item.partLabel, note);
       const box = document.getElementById('nm-gate-status');
-      if (errs.length === 0) {
-        box.className = 'nm-gate-box pass';
-        box.textContent = '✔ 3단계 자가 검수 통과 (1차 의학형식 · 2차 의료법 홍보배제 · 3차 일상어 순화 완료)';
-      } else {
+      if (!box || !modalDraft) return;
+      const { hardErrors, softTips } = auditModalDraft();
+      if (hardErrors.length > 0) {
         box.className = 'nm-gate-box fail';
-        box.textContent = '⚠ 검수 확인 필요: ' + errs.join(' / ');
+        box.textContent = '⚠ 반영 전 확인 필요: ' + hardErrors.join(' / ');
+      } else if (softTips.length > 0) {
+        box.className = 'nm-gate-box warn';
+        box.textContent = '✔ 저장 가능 (참고 팁: ' + softTips.join(' / ') + ')';
+        showModalInlineAlert('');
+      } else {
+        box.className = 'nm-gate-box pass';
+        box.textContent = '✔ 커스텀 검수 완료 (자유 제목 · 섹션 구조 · 의료법 준수 통과)';
+        showModalInlineAlert('');
       }
     }
 
-    ['nm-keyword', 'nm-question-title', 'nm-empathy-0', 'nm-empathy-1', 'nm-truth-0', 'nm-truth-1', 'nm-myth-0', 'nm-myth-1', 'nm-check-0', 'nm-check-1'].forEach(id => {
-      document.getElementById(id).addEventListener('input', refreshModalGateBanner);
+    function getPopupWidthPx(widthMode) {
+      if (widthMode === 'compact') return '440px';
+      if (widthMode === 'wide') return '640px';
+      if (widthMode === 'ultrawide') return '740px';
+      return '520px';
+    }
+
+    function buildPreviewSectionBodyHtml(sec) {
+      const lines = (Array.isArray(sec.lines) ? sec.lines : []).map(l => String(l || '').trim()).filter(Boolean);
+      const safeLines = lines.length ? lines : ['(이 섹션에 표시할 문장을 입력해 주세요)'];
+      const t = sec.type || 'text';
+      if (t === 'checklist') {
+        return '<div class="hip-two-lines">' + safeLines.map(line =>
+          '<label class="hip-check-item"><input type="checkbox" /><span>' + esc(line) + '</span></label>'
+        ).join('') + '</div>';
+      }
+      if (t === 'bullets') {
+        return '<div class="hip-two-lines">' + safeLines.map(line =>
+          '<div class="hip-bullet-row"><span class="hip-bullet-dot"></span><span>' + esc(line) + '</span></div>'
+        ).join('') + '</div>';
+      }
+      if (t === 'numbered') {
+        return '<div class="hip-two-lines">' + safeLines.map((line, i) =>
+          '<div class="hip-num-row"><span class="hip-num-chip">' + String(i + 1).padStart(2, '0') + '</span><span>' + esc(line) + '</span></div>'
+        ).join('') + '</div>';
+      }
+      if (t === 'qa') {
+        if (safeLines.length >= 2) {
+          let html = '<div class="hip-qa-pair">';
+          for (let i = 0; i < safeLines.length; i += 2) {
+            html += '<div class="hip-qa-q"><span class="hip-qa-tag">통념 · 질문</span><span>' + esc(safeLines[i]) + '</span></div>';
+            if (safeLines[i + 1]) {
+              html += '<div class="hip-qa-a"><span class="hip-qa-tag">핵심 해답</span><span>' + esc(safeLines[i + 1]) + '</span></div>';
+            }
+          }
+          html += '</div>';
+          return html;
+        }
+      }
+      return '<div class="hip-two-lines">' + safeLines.map(line => '<p class="hip-line">' + esc(line) + '</p>').join('') + '</div>';
+    }
+
+    function renderModalLivePreview() {
+      const mount = document.getElementById('nm-live-preview-mount');
+      const metaEl = document.getElementById('nm-preview-meta-text');
+      if (!mount || !modalDraft) return;
+
+      const item = state.items[editingRowIdx] || {};
+      const d = modalDraft.popupDesign;
+      const n = modalDraft.note;
+      const widthPx = getPopupWidthPx(d.widthMode);
+      mount.style.setProperty('--preview-popup-w', widthPx);
+
+      const radiusPx = d.radius === 'sharp' ? '6px' : (d.radius === 'soft' ? '24px' : '16px');
+      const cardRadiusPx = d.radius === 'sharp' ? '4px' : (d.radius === 'soft' ? '16px' : '11px');
+      const padHdr = d.density === 'compact' ? '10px 13px' : (d.density === 'relaxed' ? '17px 20px' : '13px 16px');
+      const padBody = d.density === 'compact' ? '10px 12px 12px' : (d.density === 'relaxed' ? '18px 18px 20px' : '13px 15px 15px');
+      const padCard = d.density === 'compact' ? '8px 10px' : (d.density === 'relaxed' ? '14px 16px' : '10px 13px');
+      const gapPx = d.density === 'compact' ? '6px' : (d.density === 'relaxed' ? '13px' : '9px');
+      const fontSize = d.fontScale === 'sm' ? '0.78rem' : (d.fontScale === 'lg' ? '0.90rem' : '0.83rem');
+      const headingSize = d.fontScale === 'sm' ? '0.77rem' : (d.fontScale === 'lg' ? '0.89rem' : '0.82rem');
+      const titleSize = d.fontScale === 'sm' ? '0.92rem' : (d.fontScale === 'lg' ? '1.10rem' : '1.00rem');
+      const accentInk = computeContrastInk(d.accentColor);
+
+      const styleVars = [
+        '--hip-header-bg:' + d.headerBg,
+        '--hip-header-text:' + d.headerText,
+        '--hip-accent:' + d.accentColor,
+        '--hip-accent-ink:' + accentInk,
+        '--hip-body-bg:' + d.bodyBg,
+        '--hip-card-bg:' + d.cardBg,
+        '--hip-body-text:' + d.bodyText,
+        '--hip-radius:' + radiusPx,
+        '--hip-card-radius:' + cardRadiusPx,
+        '--hip-pad-hdr:' + padHdr,
+        '--hip-pad-body:' + padBody,
+        '--hip-pad-card:' + padCard,
+        '--hip-gap:' + gapPx,
+        '--hip-font-size:' + fontSize,
+        '--hip-heading-size:' + headingSize,
+        '--hip-title-size:' + titleSize
+      ].join(';');
+
+      const boxClasses = [
+        'health-info-popup-box',
+        'hdr-' + (d.headerLayout || 'inline'),
+        'layout-' + (d.sectionLayout || 'stack'),
+        d.titleFont === 'sans' ? 'title-sans' : 'title-serif'
+      ].join(' ');
+
+      const badgeText = String(n.badgeOverride || item.partLabel || item.shortLabel || '부위명').trim();
+      const showBadge = d.showPartBadge !== false && badgeText.length > 0;
+      const rawTitle = String(n.questionTitle || '(제목을 입력해 주세요)').trim();
+      const titleHtml = d.titleQuotes !== false ? ('&ldquo;' + esc(rawTitle) + '&rdquo;') : esc(rawTitle);
+      const subTitle = String(n.subTitle || '').trim();
+      const subHtml = subTitle ? ('<p class="hip-subtitle">' + esc(subTitle) + '</p>') : '';
+
+      let headerInnerHtml = '';
+      if (d.headerLayout === 'stacked') {
+        headerInnerHtml =
+          '<div class="hip-top-strip">' +
+            '<div>' + (showBadge ? '<span class="hip-part-bracket">[' + esc(badgeText) + ']</span>' : '') + '</div>' +
+            '<button type="button" class="hip-close-btn">✕ 닫기</button>' +
+          '</div>' +
+          '<div class="hip-header-main">' +
+            '<h3 class="hip-question-title">' + titleHtml + '</h3>' +
+            subHtml +
+          '</div>';
+      } else if (d.headerLayout === 'centered') {
+        headerInnerHtml =
+          '<button type="button" class="hip-close-btn">✕ 닫기</button>' +
+          '<div class="hip-header-main">' +
+            '<div class="hip-header-title-wrap">' +
+              (showBadge ? '<span class="hip-part-bracket">[' + esc(badgeText) + ']</span>' : '') +
+              '<h3 class="hip-question-title">' + titleHtml + '</h3>' +
+            '</div>' +
+            subHtml +
+          '</div>';
+      } else {
+        headerInnerHtml =
+          '<div class="hip-header-main">' +
+            '<div class="hip-header-title-wrap">' +
+              (showBadge ? '<span class="hip-part-bracket">[' + esc(badgeText) + ']</span><span class="hip-divider">|</span>' : '') +
+              '<h3 class="hip-question-title">' + titleHtml + '</h3>' +
+            '</div>' +
+            subHtml +
+          '</div>' +
+          '<button type="button" class="hip-close-btn">✕ 닫기</button>';
+      }
+
+      const activeSecs = (n.sections || []).filter(s => s && s.enabled !== false);
+      const secsHtml = activeSecs.map((sec, idx) => {
+        const isHighlight = sec.type === 'highlight';
+        const spanCls = sec.spanFull ? ' span-full' : '';
+        const hlCls = isHighlight ? ' sec-highlight' : '';
+        const iconSpan = sec.icon ? ('<span>' + esc(sec.icon) + '</span>') : '';
+        const bodyHtml = buildPreviewSectionBodyHtml(sec);
+        if (d.sectionLayout === 'accordion') {
+          return (
+            '<details class="hip-sec-card hip-acc-card' + hlCls + spanCls + '"' + (idx < 2 ? ' open' : '') + '>' +
+              '<summary class="hip-sec-heading">' +
+                '<span style="display:inline-flex;align-items:center;gap:6px;">' + iconSpan + '<span>' + esc(sec.heading || '') + '</span></span>' +
+                '<span class="hip-acc-chevron">▼</span>' +
+              '</summary>' +
+              '<div class="hip-acc-body">' + bodyHtml + '</div>' +
+            '</details>'
+          );
+        }
+        return (
+          '<section class="hip-sec-card' + hlCls + spanCls + '">' +
+            (sec.heading ? '<div class="hip-sec-heading">' + iconSpan + '<span>' + esc(sec.heading) + '</span></div>' : '') +
+            bodyHtml +
+          '</section>'
+        );
+      }).join('');
+
+      const navStyle = [
+        '--tmn-active-bg:' + d.headerBg,
+        '--tmn-active-text:' + d.headerText,
+        '--tmn-accent:' + d.accentColor,
+        '--tmn-step-active:' + d.accentColor
+      ].join(';');
+
+      mount.innerHTML =
+        '<nav class="three-menu-nav" style="' + esc(navStyle) + '">' +
+          '<button type="button" class="three-menu-btn active">' +
+            '<span class="tmb-step">' + esc(d.tab01Step || '01 · 최신 글 1편') + '</span>' +
+            '<span class="tmb-label">' + esc(d.tab01Label || '오늘의 건강 글') + '</span>' +
+          '</button>' +
+          '<button type="button" class="three-menu-btn">' +
+            '<span class="tmb-step">02 · 1:1 질문</span>' +
+            '<span class="tmb-label">무엇이든 물어보세요</span>' +
+          '</button>' +
+          '<button type="button" class="three-menu-btn">' +
+            '<span class="tmb-step">03 · 누적 건강 글</span>' +
+            '<span class="tmb-label">더 궁금하세요?</span>' +
+          '</button>' +
+        '</nav>' +
+        '<article class="' + boxClasses + '" style="' + esc(styleVars) + '">' +
+          '<header class="hip-header">' + headerInnerHtml + '</header>' +
+          '<div class="hip-sections">' + secsHtml + '</div>' +
+        '</article>';
+
+      if (metaEl) {
+        const presetMatch = COLOR_PRESETS.find(p => p.id === d.colorPreset);
+        const layoutName = (LAYOUT_OPTION_SPECS.sectionLayout.find(o => o.val === d.sectionLayout) || {}).title || d.sectionLayout;
+        metaEl.textContent = widthPx + ' · ' + layoutName + ' · ' + (presetMatch ? presetMatch.label : '커스텀 컬러');
+      }
+    }
+
+    function renderSectionsBuilderDom() {
+      const container = document.getElementById('nm-sections-list');
+      if (!container || !modalDraft) return;
+      const secs = modalDraft.note.sections || [];
+      container.innerHTML = secs.map((sec, sIdx) => {
+        const isOn = sec.enabled !== false;
+        const typeOpts = SECTION_TYPE_OPTIONS.map(o =>
+          '<option value="' + o.val + '"' + ((sec.type || 'text') === o.val ? ' selected' : '') + '>' + esc(o.label) + '</option>'
+        ).join('');
+
+        const linesHtml = (sec.lines || ['']).map((lineVal, lIdx) =>
+          '<div class="nm-line-row">' +
+            '<textarea class="nm-textarea" rows="2" placeholder="문장 또는 항목 내용을 입력해 주세요" oninput="window.onSectionLineInput(' + sIdx + ', ' + lIdx + ', this.value)">' + esc(lineVal) + '</textarea>' +
+            '<button type="button" class="nm-line-del" title="이 줄 삭제" ' + ((sec.lines || []).length <= 1 ? 'disabled' : '') + ' onclick="window.removeSectionLine(' + sIdx + ', ' + lIdx + ')">✕</button>' +
+          '</div>'
+        ).join('');
+
+        return (
+          '<div class="nm-sec' + (isOn ? '' : ' sec-disabled') + '">' +
+            '<div class="nm-sec-toolbar">' +
+              '<span class="num-pill' + (isOn ? '' : ' off') + '" style="min-width:26px;">' + (sIdx + 1) + '</span>' +
+              '<button type="button" class="icon-mini-btn" title="위로" ' + (sIdx === 0 ? 'disabled' : '') + ' onclick="window.moveNoteSection(' + sIdx + ', -1)">▲</button>' +
+              '<button type="button" class="icon-mini-btn" title="아래로" ' + (sIdx === secs.length - 1 ? 'disabled' : '') + ' onclick="window.moveNoteSection(' + sIdx + ', 1)">▼</button>' +
+              '<label class="enable-toggle" style="margin-right:2px;">' +
+                '<input type="checkbox" ' + (isOn ? 'checked' : '') + ' onchange="window.toggleNoteSection(' + sIdx + ', this.checked)" />' +
+                '<span>노출</span>' +
+              '</label>' +
+              '<input type="text" class="cell-input nm-icon-input" value="' + esc(sec.icon || '') + '" placeholder="아이콘" title="섹션 아이콘 (비워두기 가능)" oninput="window.onSectionMetaInput(' + sIdx + ', \'icon\', this.value)" />' +
+              '<input type="text" class="cell-input nm-heading-input" value="' + esc(sec.heading || '') + '" placeholder="섹션 소제목 입력 (예: 1. 일상 속 공감 상황)" oninput="window.onSectionMetaInput(' + sIdx + ', \'heading\', this.value)" />' +
+              '<select class="cell-select nm-type-select" onchange="window.changeNoteSectionType(' + sIdx + ', this.value)">' + typeOpts + '</select>' +
+              '<label class="enable-toggle" title="2열 벤토 레이아웃 선택 시 이 섹션을 가로 전체폭으로 펼칩니다">' +
+                '<input type="checkbox" ' + (sec.spanFull ? 'checked' : '') + ' onchange="window.toggleNoteSectionSpan(' + sIdx + ', this.checked)" />' +
+                '<span>2열 전체폭</span>' +
+              '</label>' +
+              '<button type="button" class="nm-chip-btn" onclick="window.duplicateNoteSection(' + sIdx + ')">복제</button>' +
+              '<button type="button" class="nm-chip-btn" style="color:var(--lux-warn);" ' + (secs.length <= 1 ? 'disabled' : '') + ' onclick="window.removeNoteSection(' + sIdx + ')">삭제</button>' +
+            '</div>' +
+            linesHtml +
+            '<button type="button" class="nm-add-line-btn" onclick="window.addSectionLine(' + sIdx + ')">+ 문장 / 체크항목 1줄 추가</button>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function renderLayoutControlsDom() {
+      if (!modalDraft) return;
+      const d = modalDraft.popupDesign;
+      Object.keys(LAYOUT_OPTION_SPECS).forEach(prop => {
+        const el = document.getElementById('nm-opt-' + prop);
+        if (!el) return;
+        const opts = LAYOUT_OPTION_SPECS[prop];
+        el.innerHTML = opts.map(o => {
+          const act = (d[prop] === o.val) ? ' active' : '';
+          return (
+            '<button type="button" class="nm-opt-card' + act + '" onclick="window.setPopupDesignProp(\'' + prop + '\', \'' + o.val + '\')">' +
+              '<strong>' + esc(o.title) + '</strong>' +
+              '<span>' + esc(o.sub) + '</span>' +
+            '</button>'
+          );
+        }).join('');
+      });
+      const qChk = document.getElementById('nm-title-quotes-chk');
+      if (qChk) qChk.checked = d.titleQuotes !== false;
+      const bChk = document.getElementById('nm-show-badge-chk');
+      if (bChk) bChk.checked = d.showPartBadge !== false;
+    }
+
+    function renderColorControlsDom() {
+      if (!modalDraft) return;
+      const d = modalDraft.popupDesign;
+      const palGrid = document.getElementById('nm-palette-grid');
+      if (palGrid) {
+        palGrid.innerHTML = COLOR_PRESETS.map(p => {
+          const act = (d.colorPreset === p.id) ? ' active' : '';
+          return (
+            '<button type="button" class="nm-palette-btn' + act + '" onclick="window.applyColorPreset(\'' + p.id + '\')">' +
+              '<div>' +
+                '<div style="font-size:0.77rem;font-weight:800;color:var(--lux-black);">' + esc(p.label) + '</div>' +
+                '<div style="font-size:0.67rem;font-weight:600;color:var(--lux-sub);">' + esc(p.sub) + '</div>' +
+              '</div>' +
+              '<div class="nm-palette-dots">' +
+                '<span class="nm-swatch-dot" style="background:' + p.headerBg + ';" title="헤더"></span>' +
+                '<span class="nm-swatch-dot" style="background:' + p.accentColor + ';" title="포인트"></span>' +
+                '<span class="nm-swatch-dot" style="background:' + p.cardBg + ';" title="카드"></span>' +
+              '</div>' +
+            '</button>'
+          );
+        }).join('');
+      }
+
+      const pickerGrid = document.getElementById('nm-color-picker-grid');
+      if (pickerGrid) {
+        pickerGrid.innerHTML = COLOR_FIELD_SPECS.map(f => {
+          const val = normalizeHexColor(d[f.key], DEFAULT_POPUP_DESIGN[f.key]);
+          return (
+            '<div class="nm-color-field">' +
+              '<span class="nm-field-label" style="margin:0;">' + esc(f.label) + '</span>' +
+              '<div class="nm-color-ctrl">' +
+                '<input type="color" id="nm-cp-' + f.key + '" value="' + val + '" oninput="window.onCustomColorPick(\'' + f.key + '\', this.value)" />' +
+                '<input type="text" id="nm-hex-' + f.key + '" class="cell-input nm-hex-input" value="' + val + '" maxlength="7" oninput="window.onCustomHexInput(\'' + f.key + '\', this.value)" />' +
+              '</div>' +
+            '</div>'
+          );
+        }).join('');
+      }
+    }
+
+    window.switchModalTab = function(tabKey) {
+      activeModalTab = tabKey;
+      ['content', 'layout', 'color'].forEach(k => {
+        const btn = document.getElementById('nm-tab-btn-' + k);
+        const panel = document.getElementById('nm-panel-' + k);
+        if (btn) btn.classList.toggle('active', k === tabKey);
+        if (panel) panel.classList.toggle('active', k === tabKey);
+      });
+    };
+
+    window.onSectionMetaInput = function(sIdx, key, val) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      modalDraft.note.sections[sIdx][key] = val;
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.onSectionLineInput = function(sIdx, lIdx, val) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      modalDraft.note.sections[sIdx].lines[lIdx] = val;
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.changeNoteSectionType = function(sIdx, typeVal) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      modalDraft.note.sections[sIdx].type = typeVal;
+      renderModalLivePreview();
+    };
+
+    window.toggleNoteSection = function(sIdx, checked) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      modalDraft.note.sections[sIdx].enabled = Boolean(checked);
+      renderSectionsBuilderDom();
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.toggleNoteSectionSpan = function(sIdx, checked) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      modalDraft.note.sections[sIdx].spanFull = Boolean(checked);
+      renderModalLivePreview();
+    };
+
+    window.moveNoteSection = function(sIdx, delta) {
+      if (!modalDraft) return;
+      const secs = modalDraft.note.sections;
+      const target = sIdx + delta;
+      if (target < 0 || target >= secs.length) return;
+      const tmp = secs[sIdx];
+      secs[sIdx] = secs[target];
+      secs[target] = tmp;
+      renderSectionsBuilderDom();
+      renderModalLivePreview();
+    };
+
+    window.addNoteSection = function() {
+      if (!modalDraft) return;
+      const nextNum = modalDraft.note.sections.length + 1;
+      modalDraft.note.sections.push({
+        id: 'sec_' + Date.now(),
+        enabled: true,
+        icon: '✨',
+        heading: nextNum + '. 추가 핵심 안내 포인트',
+        type: 'bullets',
+        spanFull: false,
+        lines: ['여기에 추가하실 건강 가이드 문장이나 생활 수칙을 자유롭게 입력해 주세요.']
+      });
+      renderSectionsBuilderDom();
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.duplicateNoteSection = function(sIdx) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      const clone = JSON.parse(JSON.stringify(modalDraft.note.sections[sIdx]));
+      clone.id = 'sec_' + Date.now();
+      clone.heading = (clone.heading || '섹션') + ' (복사)';
+      modalDraft.note.sections.splice(sIdx + 1, 0, clone);
+      renderSectionsBuilderDom();
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.removeNoteSection = function(sIdx) {
+      if (!modalDraft || modalDraft.note.sections.length <= 1) return;
+      modalDraft.note.sections.splice(sIdx, 1);
+      renderSectionsBuilderDom();
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.addSectionLine = function(sIdx) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      modalDraft.note.sections[sIdx].lines.push('');
+      renderSectionsBuilderDom();
+      renderModalLivePreview();
+    };
+
+    window.removeSectionLine = function(sIdx, lIdx) {
+      if (!modalDraft || !modalDraft.note.sections[sIdx]) return;
+      const lines = modalDraft.note.sections[sIdx].lines;
+      if (lines.length <= 1) return;
+      lines.splice(lIdx, 1);
+      renderSectionsBuilderDom();
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.applyStructurePreset = function(presetKey) {
+      if (!modalDraft) return;
+      const curSecs = modalDraft.note.sections || [];
+      const flatLines = curSecs.reduce((acc, s) => acc.concat((s.lines || []).filter(Boolean)), []);
+      const pick = (i, fallback) => flatLines[i] || fallback;
+
+      if (presetKey === 'compact2') {
+        modalDraft.note.sections = [
+          { id: 'sec_1', enabled: true, icon: '💡', heading: '핵심 원리 한눈에 보기', type: 'highlight', spanFull: false, lines: [pick(2, pick(0, '몸이 보내는 신호의 원리를 먼저 이해하면 생활 관리가 훨씬 쉬워집니다.')), pick(3, pick(1, '작은 수면·호흡·자세 습관이 회복 리듬의 핵심 열쇠가 됩니다.'))] },
+          { id: 'sec_2', enabled: true, icon: '🔍', heading: '오늘 밤 1분 자가 체크', type: 'checklist', spanFull: false, lines: [pick(6, '오늘 하루 내 몸에 나타난 신호를 가볍게 점검해 보세요.'), pick(7, '무리 없는 작은 습관 하나부터 오늘 밤 바로 시작해 보세요.')] }
+        ];
+      } else if (presetKey === 'magazine3') {
+        modalDraft.note.sections = [
+          { id: 'sec_1', enabled: true, icon: '🎒', heading: '01. 일상 속 흔한 시그널', type: 'text', spanFull: true, lines: [pick(0, '바쁜 일상 속에서 누구나 한 번쯤 겪게 되는 몸의 신호입니다.')] },
+          { id: 'sec_2', enabled: true, icon: '💡', heading: '02. 몸속 순환과 구조의 원리', type: 'highlight', spanFull: false, lines: [pick(2, '단순한 기분 탓이 아니라 신경과 순환의 균형이 보내는 메시지입니다.'), pick(3, '근본 흐름을 살펴보면 훨씬 편안한 관리 방향이 보입니다.')] },
+          { id: 'sec_3', enabled: true, icon: '✨', heading: '03. 집에서 실천하는 회복 루틴', type: 'numbered', spanFull: false, lines: [pick(5, '잠들기 1시간 전 따뜻한 수분 보충과 이완 호흡을 실천해 보세요.'), pick(6, '내 몸의 컨디션 변화를 아침저녁으로 부드럽게 체크해 보세요.')] }
+        ];
+      } else if (presetKey === 'qacard3') {
+        modalDraft.note.sections = [
+          { id: 'sec_1', enabled: true, icon: '💬', heading: '흔한 통념 vs 몸속 진짜 원리', type: 'qa', spanFull: true, lines: [pick(4, '무조건 참거나 강하게 자극하면 빨리 풀릴 거라 생각하기 쉽습니다.'), pick(5, '과도한 자극보다 순환 길을 부드럽게 열어 주는 생활 습관이 훨씬 안전합니다.')] },
+          { id: 'sec_2', enabled: true, icon: '💡', heading: '기억해야 할 핵심 포인트', type: 'bullets', spanFull: false, lines: [pick(2, '증상이 나타나는 시간대와 자세를 먼저 살펴보세요.'), pick(3, '충분한 수면과 보온이 회복의 기초 체력을 만들어 줍니다.')] },
+          { id: 'sec_3', enabled: true, icon: '🔍', heading: '1분 자가 점검 리스트', type: 'checklist', spanFull: false, lines: [pick(6, '평소 생활 자세와 수면 습관을 체크해 보세요.'), pick(7, '반복되는 불편감이 있다면 기록해 두었다가 세심히 살펴보세요.')] }
+        ];
+      } else if (presetKey === 'column1') {
+        modalDraft.note.sections = [
+          { id: 'sec_1', enabled: true, icon: '✒️', heading: '바른 건강 칼럼 노트', type: 'text', spanFull: true, lines: [pick(0, '몸이 보내는 작은 불편함은 잠시 속도를 늦추어 달라는 다정한 신호일 때가 많습니다.'), pick(2, '원리를 이해하고 일상 속 작은 균형부터 바로잡아 가면 몸은 스스로 편안한 리듬을 되찾기 시작합니다.'), pick(5, '오늘 밤에는 내 몸의 호흡과 온기에 잠시 귀를 기울여 보시는 건 어떨까요.')] }
+        ];
+      } else {
+        modalDraft.note.sections = [
+          { id: 'sec_1', enabled: true, icon: '🎒', heading: '1. 일상 속 공감 상황', type: 'text', spanFull: false, lines: [pick(0, '일상에서 자주 겪는 공감 상황을 입력해 주세요.'), pick(1, '두 번째 공감 문장을 입력해 주세요.')] },
+          { id: 'sec_2', enabled: true, icon: '💡', heading: '2. 몸속 연골/신경이 알려주는 진실', type: 'highlight', spanFull: false, lines: [pick(2, '우리 몸속 구조와 순환 원리를 쉽게 설명해 주세요.'), pick(3, '핵심 원리 두 번째 문장을 입력해 주세요.')] },
+          { id: 'sec_3', enabled: true, icon: '❌', heading: '3. 흔히 하는 오해 바로잡기', type: 'text', spanFull: false, lines: [pick(4, '흔히 잘못 알고 있는 생활 습관을 짚어 주세요.'), pick(5, '올바른 생활 관리 방향을 안내해 주세요.')] },
+          { id: 'sec_4', enabled: true, icon: '🔍', heading: '4. 오늘 밤 집에서 해보는 1분 체크', type: 'checklist', spanFull: false, lines: [pick(6, '집에서 바로 해볼 수 있는 첫 번째 체크 항목입니다.'), pick(7, '집에서 바로 해볼 수 있는 두 번째 체크 항목입니다.')] }
+        ];
+      }
+      renderSectionsBuilderDom();
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    };
+
+    window.setPopupDesignProp = function(prop, val) {
+      if (!modalDraft) return;
+      modalDraft.popupDesign[prop] = val;
+      if (prop === 'sectionLayout' && val === 'bento2' && modalDraft.popupDesign.widthMode === 'compact') {
+        modalDraft.popupDesign.widthMode = 'wide';
+      }
+      renderLayoutControlsDom();
+      renderModalLivePreview();
+    };
+
+    window.applyColorPreset = function(presetId) {
+      if (!modalDraft) return;
+      const p = COLOR_PRESETS.find(x => x.id === presetId);
+      if (!p) return;
+      modalDraft.popupDesign.colorPreset = p.id;
+      modalDraft.popupDesign.headerBg = p.headerBg;
+      modalDraft.popupDesign.headerText = p.headerText;
+      modalDraft.popupDesign.accentColor = p.accentColor;
+      modalDraft.popupDesign.bodyBg = p.bodyBg;
+      modalDraft.popupDesign.cardBg = p.cardBg;
+      modalDraft.popupDesign.bodyText = p.bodyText;
+      renderColorControlsDom();
+      renderModalLivePreview();
+    };
+
+    window.onCustomColorPick = function(key, hexVal) {
+      if (!modalDraft) return;
+      const norm = normalizeHexColor(hexVal, DEFAULT_POPUP_DESIGN[key]);
+      modalDraft.popupDesign[key] = norm;
+      modalDraft.popupDesign.colorPreset = 'custom';
+      const hexInput = document.getElementById('nm-hex-' + key);
+      if (hexInput) hexInput.value = norm;
+      document.querySelectorAll('.nm-palette-btn').forEach(b => b.classList.remove('active'));
+      renderModalLivePreview();
+    };
+
+    window.onCustomHexInput = function(key, rawVal) {
+      if (!modalDraft) return;
+      const trimmed = String(rawVal || '').trim();
+      if (/^#?[0-9a-fA-F]{6}$/.test(trimmed)) {
+        const norm = trimmed.startsWith('#') ? trimmed.toUpperCase() : ('#' + trimmed.toUpperCase());
+        modalDraft.popupDesign[key] = norm;
+        modalDraft.popupDesign.colorPreset = 'custom';
+        const cp = document.getElementById('nm-cp-' + key);
+        if (cp) cp.value = norm;
+        document.querySelectorAll('.nm-palette-btn').forEach(b => b.classList.remove('active'));
+        renderModalLivePreview();
+      }
+    };
+
+    window.autoHarmonizeTextContrast = function() {
+      if (!modalDraft) return;
+      const d = modalDraft.popupDesign;
+      d.headerText = computeContrastInk(d.headerBg) === '#0D0D0F' ? '#141416' : '#FFFFFF';
+      d.bodyText = computeContrastInk(d.cardBg) === '#0D0D0F' ? '#242320' : '#F2EFE9';
+      renderColorControlsDom();
+      renderModalLivePreview();
+    };
+
+    window.resetPopupDesignToDefault = function() {
+      if (!modalDraft) return;
+      modalDraft.popupDesign = Object.assign({}, DEFAULT_POPUP_DESIGN);
+      document.getElementById('nm-tab01-step').value = modalDraft.popupDesign.tab01Step;
+      document.getElementById('nm-tab01-label').value = modalDraft.popupDesign.tab01Label;
+      renderLayoutControlsDom();
+      renderColorControlsDom();
+      renderModalLivePreview();
+    };
+
+    // Wire top-level static inputs inside modal
+    document.getElementById('nm-strict-qmark').addEventListener('change', function() {
+      if (!modalDraft) return;
+      modalDraft.note.strictQuestionMark = this.checked;
+      refreshModalGateBanner();
+    });
+    document.getElementById('nm-show-badge-chk').addEventListener('change', function() {
+      if (!modalDraft) return;
+      modalDraft.popupDesign.showPartBadge = this.checked;
+      renderModalLivePreview();
+    });
+    document.getElementById('nm-title-quotes-chk').addEventListener('change', function() {
+      if (!modalDraft) return;
+      modalDraft.popupDesign.titleQuotes = this.checked;
+      renderModalLivePreview();
+    });
+    document.getElementById('nm-tab01-step').addEventListener('input', function() {
+      if (!modalDraft) return;
+      modalDraft.popupDesign.tab01Step = this.value;
+      renderModalLivePreview();
+    });
+    document.getElementById('nm-tab01-label').addEventListener('input', function() {
+      if (!modalDraft) return;
+      modalDraft.popupDesign.tab01Label = this.value;
+      renderModalLivePreview();
+    });
+    document.getElementById('nm-badge-override').addEventListener('input', function() {
+      if (!modalDraft) return;
+      modalDraft.note.badgeOverride = this.value;
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    });
+    document.getElementById('nm-keyword').addEventListener('input', function() {
+      if (!modalDraft) return;
+      modalDraft.note.keyword = this.value;
+      refreshModalGateBanner();
+    });
+    document.getElementById('nm-question-title').addEventListener('input', function() {
+      if (!modalDraft) return;
+      modalDraft.note.questionTitle = this.value;
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    });
+    document.getElementById('nm-sub-title').addEventListener('input', function() {
+      if (!modalDraft) return;
+      modalDraft.note.subTitle = this.value;
+      refreshModalGateBanner();
+      renderModalLivePreview();
+    });
+
+    // Native <dialog> close lifecycle reset (Modern Web Guidance rule: reset returnValue = '')
+    modalDialog.addEventListener('close', () => {
+      modalDialog.returnValue = '';
+      editingRowIdx = -1;
+      modalDraft = null;
+      showModalInlineAlert('');
     });
 
     window.openNoteModal = function(idx) {
       const item = state.items[idx];
       if (!item) return;
       editingRowIdx = idx;
-      const n = item.leadNote || { keyword: '', questionTitle: '', empathyLines: ['', ''], truthLines: ['', ''], mythLines: ['', ''], checkList: ['', ''] };
-      document.getElementById('nm-modal-title').textContent = '[' + (item.partLabel || item.shortLabel) + '] 대표 건강 글(팝업 01탭) 열람 · 수정';
-      document.getElementById('nm-keyword').value = n.keyword || '';
-      document.getElementById('nm-question-title').value = n.questionTitle || '';
-      document.getElementById('nm-empathy-0').value = (n.empathyLines && n.empathyLines[0]) || '';
-      document.getElementById('nm-empathy-1').value = (n.empathyLines && n.empathyLines[1]) || '';
-      document.getElementById('nm-truth-0').value = (n.truthLines && n.truthLines[0]) || '';
-      document.getElementById('nm-truth-1').value = (n.truthLines && n.truthLines[1]) || '';
-      document.getElementById('nm-myth-0').value = (n.mythLines && n.mythLines[0]) || '';
-      document.getElementById('nm-myth-1').value = (n.mythLines && n.mythLines[1]) || '';
-      document.getElementById('nm-check-0').value = (n.checkList && n.checkList[0]) || '';
-      document.getElementById('nm-check-1').value = (n.checkList && n.checkList[1]) || '';
-      document.getElementById('nm-override-chk').checked = true;
+
+      const rawNote = item.leadNote || {};
+      const popupDesign = Object.assign({}, DEFAULT_POPUP_DESIGN, item.popupDesign || {});
+      const sections = buildInitialSectionsFromNote(rawNote, popupDesign);
+
+      modalDraft = {
+        popupDesign,
+        note: {
+          keyword: rawNote.keyword || '',
+          questionTitle: rawNote.questionTitle || '',
+          subTitle: rawNote.subTitle || '',
+          badgeOverride: rawNote.badgeOverride || '',
+          strictQuestionMark: Boolean(rawNote.strictQuestionMark),
+          sections
+        }
+      };
+
+      document.getElementById('nm-modal-title').textContent = '[' + (item.partLabel || item.shortLabel) + '] 대표 건강 글(팝업 01탭) 열람 · 커스텀';
+      document.getElementById('nm-strict-qmark').checked = modalDraft.note.strictQuestionMark;
+      document.getElementById('nm-show-badge-chk').checked = popupDesign.showPartBadge !== false;
+      document.getElementById('nm-tab01-step').value = popupDesign.tab01Step || DEFAULT_POPUP_DESIGN.tab01Step;
+      document.getElementById('nm-tab01-label').value = popupDesign.tab01Label || DEFAULT_POPUP_DESIGN.tab01Label;
+      document.getElementById('nm-badge-override').value = modalDraft.note.badgeOverride;
+      document.getElementById('nm-keyword').value = modalDraft.note.keyword;
+      document.getElementById('nm-question-title').value = modalDraft.note.questionTitle;
+      document.getElementById('nm-sub-title').value = modalDraft.note.subTitle;
+
+      // Default checked so user edits immediately reflect in 01 tab
+      document.getElementById('nm-override-chk').checked = item.leadNoteOverride !== undefined ? (item.leadNoteOverride || true) : true;
+      document.getElementById('nm-apply-design-all-chk').checked = false;
+      showModalInlineAlert('');
+
+      window.switchModalTab('content');
+      renderSectionsBuilderDom();
+      renderLayoutControlsDom();
+      renderColorControlsDom();
       refreshModalGateBanner();
-      document.getElementById('note-modal-backdrop').classList.add('open');
+      renderModalLivePreview();
+
+      if (!modalDialog.open) {
+        modalDialog.showModal();
+      }
     };
 
     window.closeNoteModal = function() {
-      editingRowIdx = -1;
-      document.getElementById('note-modal-backdrop').classList.remove('open');
+      if (modalDialog && modalDialog.open) {
+        modalDialog.close('cancel');
+      } else {
+        editingRowIdx = -1;
+        modalDraft = null;
+      }
     };
 
-    window.applyNoteModalChanges = function() {
-      if (editingRowIdx < 0 || !state.items[editingRowIdx]) return;
-      const item = state.items[editingRowIdx];
-      const note = collectModalNote();
-      const errs = validateNoteCandidate(item.partLabel, note);
-      if (errs.length > 0) {
-        showToast(errs[0], true);
+    window.applyNoteModalChanges = async function(runInstantBuild) {
+      if (editingRowIdx < 0 || !state.items[editingRowIdx] || !modalDraft) return;
+      const { hardErrors } = auditModalDraft();
+      if (hardErrors.length > 0) {
+        showModalInlineAlert(hardErrors[0]);
+        showToast(hardErrors[0], true);
         return;
       }
-      item.leadNote = note;
+
+      const targetIdx = editingRowIdx;
+      const item = state.items[targetIdx];
+      const d = JSON.parse(JSON.stringify(modalDraft.popupDesign));
+      const n = JSON.parse(JSON.stringify(modalDraft.note));
+
+      const cleanSections = (n.sections || []).map((s, idx) => ({
+        id: s.id || ('sec_' + (idx + 1)),
+        enabled: s.enabled !== false,
+        icon: String(s.icon == null ? '' : s.icon).trim(),
+        heading: String(s.heading || '').trim(),
+        type: s.type || 'text',
+        spanFull: Boolean(s.spanFull),
+        lines: (Array.isArray(s.lines) ? s.lines : []).map(l => String(l || '').trim()).filter(Boolean)
+      })).filter(s => s.lines.length > 0 || !s.enabled);
+
+      // Sync defaultSectionHeadings so 2-day rotating notes in this menu also inherit customized headings & types
+      d.defaultSectionHeadings = cleanSections.slice(0, 4).map(s => ({
+        enabled: s.enabled !== false,
+        icon: s.icon,
+        heading: s.heading,
+        type: s.type,
+        spanFull: Boolean(s.spanFull)
+      }));
+
+      // Keep legacy 4-key arrays populated for backward compatibility
+      const ensurePair = (secIdx, fallbackLine) => {
+        const lines = (cleanSections[secIdx] && cleanSections[secIdx].lines && cleanSections[secIdx].lines.length)
+          ? cleanSections[secIdx].lines
+          : [fallbackLine];
+        return [lines[0] || fallbackLine, lines[1] || lines[0] || fallbackLine];
+      };
+      const firstLineFallback = (cleanSections[0] && cleanSections[0].lines[0]) || n.questionTitle.trim();
+
+      item.leadNote = {
+        keyword: String(n.keyword || '').trim(),
+        questionTitle: String(n.questionTitle || '').trim(),
+        subTitle: String(n.subTitle || '').trim(),
+        badgeOverride: String(n.badgeOverride || '').trim(),
+        strictQuestionMark: Boolean(n.strictQuestionMark),
+        isCustomLead: true,
+        sections: cleanSections,
+        empathyLines: ensurePair(0, firstLineFallback),
+        truthLines: ensurePair(1, firstLineFallback),
+        mythLines: ensurePair(2, firstLineFallback),
+        checkList: ensurePair(3, firstLineFallback)
+      };
+
+      item.popupDesign = d;
       item.leadNoteOverride = document.getElementById('nm-override-chk').checked;
+
+      const applyDesignAll = document.getElementById('nm-apply-design-all-chk').checked;
+      if (applyDesignAll) {
+        const sharedKeys = [
+          'colorPreset', 'headerBg', 'headerText', 'accentColor', 'bodyBg', 'cardBg', 'bodyText',
+          'widthMode', 'headerLayout', 'sectionLayout', 'density', 'radius', 'fontScale',
+          'titleFont', 'titleQuotes', 'showPartBadge', 'tab01Step', 'tab01Label'
+        ];
+        state.items.forEach((other, oIdx) => {
+          if (oIdx === targetIdx) return;
+          other.popupDesign = Object.assign({}, DEFAULT_POPUP_DESIGN, other.popupDesign || {});
+          sharedKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+        });
+      }
+
+      const focusId = item.id;
+      const labelName = item.shortLabel || item.partLabel;
       window.closeNoteModal();
       markDirty(true);
       renderTable();
-      showToast('[' + item.shortLabel + '] 대표 건강 글이 표에 반영되었습니다. [즉시 제작]을 누르면 적용됩니다.');
+
+      if (runInstantBuild) {
+        await window.saveAndBuild('save_build', focusId);
+      } else {
+        showToast('[' + labelName + '] 제목·구조·레이아웃·색감이 표에 반영되었습니다. [즉시 제작] 클릭 시 3D에 반영됩니다!');
+      }
     };
 
     // Live 3D Preview Controls

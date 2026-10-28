@@ -20,7 +20,9 @@ const {
   BODY_3D_AUTO_NOTES,
   FORBIDDEN_PROMO_WORDS,
   FORBIDDEN_JARGON_WORDS,
-  auditNoteThreeStage
+  auditNoteThreeStage,
+  normalizeNoteSections,
+  auditCustomLeadNote
 } = require('./body-3d-auto-notes-data.js');
 const {
   ANATOMY_SYSTEM_TABS,
@@ -81,31 +83,40 @@ for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
   }
 }
 
-// 표(clinic-explore-menu-config.json)에서 직접 수정하거나 새로 추가한 대표 건강 글 반영
+// 표(clinic-explore-menu-config.json)에서 직접 수정하거나 새로 추가한 대표 건강 글 반영 (자유 제목·구조·레이아웃·색감 커스텀 지원)
 for (const m of ALL_CONFIG_ITEMS) {
   const isCustomRow = !BODY_3D_AUTO_NOTES[m.id];
   if ((m.leadNoteOverride || isCustomRow) && m.leadNote) {
     const candidate = {
       partLabel: m.partLabel || m.shortLabel || '주요 부위',
+      badgeOverride: m.leadNote.badgeOverride || '',
+      subTitle: m.leadNote.subTitle || '',
+      strictQuestionMark: Boolean(m.leadNote.strictQuestionMark),
       keyword: m.leadNote.keyword || '',
       questionTitle: m.leadNote.questionTitle || '',
+      sections: Array.isArray(m.leadNote.sections) ? m.leadNote.sections : null,
       empathyLines: Array.isArray(m.leadNote.empathyLines) ? m.leadNote.empathyLines : [],
       truthLines: Array.isArray(m.leadNote.truthLines) ? m.leadNote.truthLines : [],
       mythLines: Array.isArray(m.leadNote.mythLines) ? m.leadNote.mythLines : [],
       checkList: Array.isArray(m.leadNote.checkList) ? m.leadNote.checkList : []
     };
-    const res = auditNoteThreeStage(candidate);
+    const res = auditCustomLeadNote(candidate);
     if (!res.passed) {
-      throw new Error(`[표 대표 건강 글 3단계 자가 검수 실패 - ${m.shortLabel || m.id}] ${res.errors.join(' | ')}`);
+      throw new Error(`[표 대표 건강 글 검수 확인 - ${m.shortLabel || m.id}] ${res.errors.join(' | ')}`);
     }
+    const normSecs = normalizeNoteSections(candidate, m.popupDesign && m.popupDesign.defaultSectionHeadings);
     FLATTENED_SEED_NOTES.push({
       id: `${m.id}-table-lead`,
       partId: m.id,
       partLabel: candidate.partLabel,
+      badgeOverride: candidate.badgeOverride,
+      subTitle: candidate.subTitle,
       keyword: candidate.keyword,
       publishDate: '',
       pinnedTop: true,
+      isCustomLead: true,
       title: candidate.questionTitle,
+      sections: normSecs,
       empathy: candidate.empathyLines,
       truth: candidate.truthLines,
       myth: candidate.mythLines,
@@ -694,21 +705,22 @@ function buildBodyExplorerHtml() {
 
     /* 6. FLOATING WHITE · BLACK · GOLD INFO & ANATOMY SYSTEM POPUP PANEL */
     .explore-floating-popup {
+      --popup-custom-width: 520px;
       position: fixed;
       right: 208px;
       top: 60px;
       max-height: calc(100vh - 80px);
       max-height: calc(100dvh - 80px);
-      width: min(520px, calc(100vw - 228px));
+      width: min(var(--popup-custom-width, 520px), calc(100vw - 228px));
       z-index: 218;
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: var(--lux-gold) transparent;
+      scrollbar-color: var(--tmn-accent, var(--lux-gold)) transparent;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
       transform: translateX(14px) scale(0.99);
-      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, width 0.22s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .explore-floating-popup.open {
       opacity: 1;
@@ -717,7 +729,7 @@ function buildBodyExplorerHtml() {
       transform: translateX(0) scale(1);
     }
     .explore-floating-popup::-webkit-scrollbar { width: 5px; }
-    .explore-floating-popup::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 999px; }
+    .explore-floating-popup::-webkit-scrollbar-thumb { background: var(--tmn-accent, var(--lux-gold)); border-radius: 999px; }
 
     .popup-shell-wrap {
       display: flex;
@@ -725,7 +737,7 @@ function buildBodyExplorerHtml() {
       gap: 8px;
     }
 
-    /* THE 3 CORE CLINIC MENUS TAB BAR & 4-SYSTEM SWITCHER BAR (WHITE · BLACK · GOLD) */
+    /* THE 3 CORE CLINIC MENUS TAB BAR & 4-SYSTEM SWITCHER BAR */
     .three-menu-nav {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -735,7 +747,7 @@ function buildBodyExplorerHtml() {
       background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1.5px solid var(--lux-gold);
+      border: 1.5px solid var(--tmn-accent, var(--lux-gold));
       box-shadow: var(--lux-shadow-sm);
     }
     .four-system-nav {
@@ -771,9 +783,9 @@ function buildBodyExplorerHtml() {
       background: var(--lux-gold-tint);
     }
     .three-menu-btn.active {
-      background: var(--lux-black);
-      border-color: var(--lux-gold);
-      color: var(--lux-white);
+      background: var(--tmn-active-bg, var(--lux-black));
+      border-color: var(--tmn-accent, var(--lux-gold));
+      color: var(--tmn-active-text, var(--lux-white));
     }
     .tmb-step {
       font-size: 0.63rem;
@@ -782,7 +794,7 @@ function buildBodyExplorerHtml() {
       color: var(--lux-gold-deep);
     }
     .three-menu-btn.active .tmb-step {
-      color: var(--lux-gold-bright);
+      color: var(--tmn-step-active, var(--lux-gold-bright));
     }
     .tmb-label {
       font-size: 0.82rem;
@@ -791,23 +803,49 @@ function buildBodyExplorerHtml() {
       letter-spacing: -0.02em;
     }
 
-    /* CLEAN OUTPUT BOX FOR MENU 1, ARCHIVE READER & 4-SYSTEM ANATOMY PANEL */
+    /* CLEAN CUSTOMIZABLE OUTPUT BOX FOR MENU 1, ARCHIVE READER & 4-SYSTEM ANATOMY PANEL */
     .health-info-popup-box {
-      background: var(--lux-white);
-      border: 1.5px solid var(--lux-gold);
-      border-radius: 16px;
+      --hip-header-bg: #0D0D0F;
+      --hip-header-text: #FFFFFF;
+      --hip-accent: #C5A059;
+      --hip-accent-ink: #0D0D0F;
+      --hip-body-bg: #FFFFFF;
+      --hip-card-bg: #FCFBF8;
+      --hip-body-text: #262522;
+      --hip-radius: 16px;
+      --hip-card-radius: 11px;
+      --hip-pad-hdr: 13px 16px;
+      --hip-pad-body: 13px 15px 15px;
+      --hip-pad-card: 10px 13px;
+      --hip-gap: 9px;
+      --hip-font-size: 0.83rem;
+      --hip-heading-size: 0.82rem;
+      --hip-title-size: 1.00rem;
+
+      background: var(--hip-body-bg);
+      border: 1.5px solid var(--hip-accent);
+      border-radius: var(--hip-radius);
       overflow: hidden;
       box-shadow: var(--lux-shadow);
+      color: var(--hip-body-text);
     }
     .hip-header {
-      background: var(--lux-black);
-      color: var(--lux-white);
-      padding: 13px 16px;
+      position: relative;
+      background: var(--hip-header-bg);
+      color: var(--hip-header-text);
+      padding: var(--hip-pad-hdr);
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
-      border-bottom: 2px solid var(--lux-gold);
+      border-bottom: 2px solid var(--hip-accent);
+    }
+    .hip-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+      flex: 1;
     }
     .hip-header-title-wrap {
       display: flex;
@@ -816,16 +854,66 @@ function buildBodyExplorerHtml() {
       gap: 8px;
       min-width: 0;
     }
-    .hip-part-bracket {
+    .health-info-popup-box.hdr-stacked .hip-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .health-info-popup-box.hdr-stacked .hip-top-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+    .health-info-popup-box.hdr-centered .hip-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-top: 18px;
+      padding-bottom: 16px;
+      gap: 7px;
+    }
+    .health-info-popup-box.hdr-centered .hip-header-main {
+      align-items: center;
+      padding: 0 36px;
+    }
+    .health-info-popup-box.hdr-centered .hip-header-title-wrap {
+      justify-content: center;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .health-info-popup-box.hdr-centered .hip-close-btn {
+      position: absolute;
+      top: 11px;
+      right: 12px;
+    }
+    .hip-part-bracket,
+    .hip-num-chip {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       padding: 3px 9px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #E7C983 0%, #C59E50 100%);
-      color: var(--lux-black);
+      background-color: var(--hip-accent);
+      color: var(--hip-accent-ink, #0D0D0F);
       font-size: 0.74rem;
       font-weight: 800;
       white-space: nowrap;
+    }
+    @supports (color: oklch(from red l c h)) {
+      .hip-part-bracket,
+      .hip-num-chip {
+        --threshold: 0.623;
+        --l: max(0, sign(var(--threshold) - l));
+        color: oklch(from var(--hip-accent) var(--l) 0 h);
+      }
+    }
+    @supports (color: contrast-color(red)) {
+      .hip-part-bracket,
+      .hip-num-chip {
+        color: contrast-color(var(--hip-accent));
+      }
     }
     .hip-motion-pill {
       display: inline-flex;
@@ -852,23 +940,36 @@ function buildBodyExplorerHtml() {
       50% { opacity: 1; transform: scale(1.2); }
     }
     .hip-divider {
-      color: rgba(229, 198, 126, 0.50);
+      color: color-mix(in srgb, var(--hip-accent) 65%, transparent);
       font-weight: 600;
       font-size: 0.82rem;
     }
     .hip-question-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.00rem;
+      font-size: var(--hip-title-size);
       font-weight: 800;
-      color: var(--lux-white);
+      color: var(--hip-header-text);
       line-height: 1.42;
       word-break: keep-all;
+      margin: 0;
+    }
+    .health-info-popup-box.title-sans .hip-question-title {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.02em;
+    }
+    .hip-subtitle {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: color-mix(in srgb, var(--hip-header-text) 78%, transparent);
+      line-height: 1.4;
+      word-break: keep-all;
+      margin: 0;
     }
     .hip-close-btn {
       appearance: none;
-      border: 1px solid rgba(229, 198, 126, 0.65);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--lux-gold-bright);
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 68%, transparent);
+      background: color-mix(in srgb, var(--hip-header-text) 8%, transparent);
+      color: var(--hip-header-text);
       font-family: 'Pretendard', sans-serif;
       font-size: 0.74rem;
       font-weight: 800;
@@ -880,9 +981,9 @@ function buildBodyExplorerHtml() {
       transition: all 0.16s ease;
     }
     .hip-close-btn:hover {
-      background: var(--lux-gold);
-      color: var(--lux-black);
-      border-color: var(--lux-gold-bright);
+      background: var(--hip-accent);
+      color: var(--hip-accent-ink, #0D0D0F);
+      border-color: var(--hip-accent);
     }
 
     /* 7. HEAD-TO-TOE 12-REGION ANATOMY EXPLORER STYLES (WHITE · BLACK · GOLD) */
@@ -1072,46 +1173,190 @@ function buildBodyExplorerHtml() {
       padding-top: 2px;
     }
 
-    /* CLINIC NOTE SECTIONS */
+    /* CLINIC NOTE SECTIONS (CUSTOMIZABLE STRUCTURE · LAYOUT · TYPES · COLORS) */
     .hip-sections {
-      padding: 13px 15px 15px;
+      padding: var(--hip-pad-body);
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      background: var(--lux-white);
+      gap: var(--hip-gap);
+      background: var(--hip-body-bg);
+    }
+    .health-info-popup-box.layout-bento2 .hip-sections {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+    .health-info-popup-box.layout-bento2 .hip-sec-card.span-full {
+      grid-column: 1 / -1;
+    }
+    @media (max-width: 580px) {
+      .health-info-popup-box.layout-bento2 .hip-sections {
+        grid-template-columns: 1fr;
+      }
     }
     .hip-sec-card {
-      border-radius: 11px;
-      padding: 10px 13px;
-      border: 1px solid var(--lux-border-soft);
-      background: var(--lux-ivory);
+      border-radius: var(--hip-card-radius);
+      padding: var(--hip-pad-card);
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 28%, rgba(13, 13, 15, 0.08));
+      background: var(--hip-card-bg);
+      color: var(--hip-body-text);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
+    .hip-sec-card.sec-highlight,
     .hip-sec-card.sec-truth {
-      background: #FFFEFA;
-      border: 1px solid var(--lux-gold-border);
-      border-left: 3px solid var(--lux-gold);
+      background: color-mix(in srgb, var(--hip-accent) 8%, var(--hip-card-bg));
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 52%, transparent);
+      border-left: 3.5px solid var(--hip-accent);
+    }
+    .health-info-popup-box.layout-minimal .hip-sec-card {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--hip-accent) 30%, rgba(13, 13, 15, 0.1));
+      border-radius: 0;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+    .health-info-popup-box.layout-minimal .hip-sec-card:last-child {
+      border-bottom: none;
+      padding-bottom: 2px;
+    }
+    .health-info-popup-box.layout-minimal .hip-sec-card.sec-highlight,
+    .health-info-popup-box.layout-minimal .hip-sec-card.sec-truth {
+      border-left: 3px solid var(--hip-accent);
+      padding-left: 11px;
+      background: color-mix(in srgb, var(--hip-accent) 6%, transparent);
+      border-radius: 6px;
+    }
+    details.hip-sec-card.hip-acc-card {
+      padding: 0;
+      overflow: hidden;
+    }
+    details.hip-sec-card.hip-acc-card > summary.hip-sec-heading {
+      margin: 0;
+      padding: var(--hip-pad-card);
+      cursor: pointer;
+      list-style: none;
+      justify-content: space-between;
+      user-select: none;
+    }
+    details.hip-sec-card.hip-acc-card > summary.hip-sec-heading::-webkit-details-marker {
+      display: none;
+    }
+    .hip-acc-chevron {
+      font-size: 0.72rem;
+      color: var(--hip-accent);
+      transition: transform 0.18s ease;
+      flex-shrink: 0;
+    }
+    details.hip-sec-card.hip-acc-card[open] .hip-acc-chevron {
+      transform: rotate(180deg);
+    }
+    details.hip-sec-card.hip-acc-card .hip-acc-body {
+      padding: 0 13px 11px;
+      border-top: 1px solid color-mix(in srgb, var(--hip-accent) 18%, transparent);
+      padding-top: 9px;
     }
     .hip-sec-heading {
-      font-size: 0.82rem;
+      font-size: var(--hip-heading-size);
       font-weight: 800;
-      color: var(--lux-black);
-      margin-bottom: 5px;
+      color: var(--hip-body-text);
+      margin-bottom: 1px;
       display: flex;
       align-items: center;
       gap: 6px;
+      line-height: 1.38;
+    }
+    .hip-sec-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
     .hip-two-lines {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 5px;
     }
     .hip-line {
       margin: 0 !important;
-      font-size: 0.83rem;
+      font-size: var(--hip-font-size);
       font-weight: 600;
-      color: #262522;
-      line-height: 1.52;
+      color: var(--hip-body-text);
+      line-height: 1.54;
       word-break: keep-all;
+    }
+    .hip-bullet-row,
+    .hip-num-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: var(--hip-font-size);
+      font-weight: 600;
+      color: var(--hip-body-text);
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+    .hip-bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--hip-accent);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    .hip-num-chip {
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      min-width: 22px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .hip-qa-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hip-qa-q,
+    .hip-qa-a {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: var(--hip-font-size);
+      font-weight: 600;
+      line-height: 1.48;
+      word-break: keep-all;
+    }
+    .hip-qa-q {
+      background: color-mix(in srgb, var(--hip-body-text) 5%, var(--hip-body-bg));
+      color: color-mix(in srgb, var(--hip-body-text) 85%, transparent);
+    }
+    .hip-qa-a {
+      background: color-mix(in srgb, var(--hip-accent) 11%, var(--hip-body-bg));
+      border-left: 3px solid var(--hip-accent);
+      color: var(--hip-body-text);
+    }
+    .hip-qa-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .hip-qa-q .hip-qa-tag {
+      background: color-mix(in srgb, var(--hip-body-text) 14%, transparent);
+      color: var(--hip-body-text);
+    }
+    .hip-qa-a .hip-qa-tag {
+      background: var(--hip-accent);
+      color: var(--hip-accent-ink, #0D0D0F);
     }
     .hip-check-item {
       display: flex;
@@ -1119,20 +1364,25 @@ function buildBodyExplorerHtml() {
       gap: 8px;
       padding: 7px 10px;
       border-radius: 8px;
-      background: var(--lux-white);
-      border: 1px solid var(--lux-border-soft);
+      background: var(--hip-body-bg);
+      border: 1px solid color-mix(in srgb, var(--hip-accent) 26%, rgba(13, 13, 15, 0.08));
       cursor: pointer;
-      font-size: 0.82rem;
+      font-size: calc(var(--hip-font-size) - 0.01rem);
       font-weight: 600;
-      color: var(--lux-ink);
+      color: var(--hip-body-text);
       line-height: 1.46;
       word-break: keep-all;
+      transition: border-color 0.14s ease, background 0.14s ease;
+    }
+    .hip-check-item:has(input:checked) {
+      border-color: var(--hip-accent);
+      background: color-mix(in srgb, var(--hip-accent) 10%, var(--hip-body-bg));
     }
     .hip-check-item input[type="checkbox"] {
       width: 15px;
       height: 15px;
       margin-top: 2px;
-      accent-color: var(--lux-gold-deep);
+      accent-color: var(--hip-accent);
       flex-shrink: 0;
       cursor: pointer;
     }
@@ -1521,7 +1771,20 @@ function buildBodyExplorerHtml() {
     }
 
     function passThreeStageGate(note) {
-      if (!note || !note.title || !String(note.title).includes('?')) return false;
+      if (!note || !note.title || !String(note.title).trim()) return false;
+      if (note.isCustomLead || (Array.isArray(note.sections) && note.sections.length > 0)) {
+        const secs = Array.isArray(note.sections) ? note.sections.filter(s => s && s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim())) : [];
+        if (secs.length === 0) return false;
+        const allCustom = [
+          note.title,
+          note.subTitle || '',
+          note.badgeOverride || '',
+          ...secs.flatMap(s => [s.heading || '', ...(s.lines || [])])
+        ].join(' ');
+        for (const w of FORBIDDEN_PROMO) { if (allCustom.includes(w)) return false; }
+        return true;
+      }
+      if (!String(note.title).includes('?')) return false;
       if (!Array.isArray(note.empathy) || note.empathy.length < 2) return false;
       if (!Array.isArray(note.truth) || note.truth.length < 2) return false;
       if (!Array.isArray(note.myth) || note.myth.length < 2) return false;
@@ -1614,57 +1877,253 @@ function buildBodyExplorerHtml() {
       return list;
     }
 
-    function buildStandardNoteBoxHtml(note, closeActionJs, closeLabel) {
-      return (
-        '<article class="health-info-popup-box" aria-label="부위별 건강 정보 팝업">' +
-          '<div class="hip-header">' +
+    const DEFAULT_POPUP_DESIGN = {
+      themePreset: 'lux-gold',
+      headerBg: '#0D0D0F',
+      headerText: '#FFFFFF',
+      accentColor: '#C5A059',
+      bodyBg: '#FFFFFF',
+      cardBg: '#FCFBF8',
+      bodyText: '#262522',
+      widthMode: 'standard',
+      headerLayout: 'inline',
+      sectionLayout: 'stack',
+      density: 'standard',
+      radius: 'rounded',
+      fontScale: 'md',
+      titleFont: 'serif',
+      titleQuotes: true,
+      showPartBadge: true,
+      tab01Step: '01 · 최신 글 1편',
+      tab01Label: '오늘의 건강 글'
+    };
+
+    function computeContrastInk(hex) {
+      const clean = String(hex || '').replace('#', '').trim();
+      if (clean.length !== 6) return '#0D0D0F';
+      const r = parseInt(clean.slice(0, 2), 16) / 255;
+      const g = parseInt(clean.slice(2, 4), 16) / 255;
+      const b = parseInt(clean.slice(4, 6), 16) / 255;
+      if (isNaN(r) || isNaN(g) || isNaN(b)) return '#0D0D0F';
+      const toLin = c => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+      const lum = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
+      return lum > 0.36 ? '#0D0D0F' : '#FFFFFF';
+    }
+
+    function getPopupDesign(menuMeta) {
+      const raw = (menuMeta && menuMeta.popupDesign && typeof menuMeta.popupDesign === 'object') ? menuMeta.popupDesign : {};
+      return Object.assign({}, DEFAULT_POPUP_DESIGN, raw);
+    }
+
+    function getPopupWidthPx(widthMode) {
+      if (widthMode === 'compact') return '440px';
+      if (widthMode === 'wide') return '640px';
+      if (widthMode === 'ultrawide') return '740px';
+      return '520px';
+    }
+
+    function getNoteRenderSections(note, design) {
+      if (note && Array.isArray(note.sections) && note.sections.length > 0) {
+        return note.sections.filter(s => s && s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim()));
+      }
+      const dh = (design && Array.isArray(design.defaultSectionHeadings)) ? design.defaultSectionHeadings : [];
+      const fallbackSecs = [
+        {
+          id: 'sec_1',
+          enabled: !(dh[0] && dh[0].enabled === false),
+          icon: (dh[0] && dh[0].icon != null) ? dh[0].icon : '🎒',
+          heading: (dh[0] && dh[0].heading) ? dh[0].heading : '1. 일상 속 공감 상황',
+          type: (dh[0] && dh[0].type) ? dh[0].type : 'text',
+          spanFull: Boolean(dh[0] && dh[0].spanFull),
+          lines: Array.isArray(note.empathy) ? note.empathy : []
+        },
+        {
+          id: 'sec_2',
+          enabled: !(dh[1] && dh[1].enabled === false),
+          icon: (dh[1] && dh[1].icon != null) ? dh[1].icon : '💡',
+          heading: (dh[1] && dh[1].heading) ? dh[1].heading : '2. 몸속 연골/신경이 알려주는 진실',
+          type: (dh[1] && dh[1].type) ? dh[1].type : 'highlight',
+          spanFull: Boolean(dh[1] && dh[1].spanFull),
+          lines: Array.isArray(note.truth) ? note.truth : []
+        },
+        {
+          id: 'sec_3',
+          enabled: !(dh[2] && dh[2].enabled === false),
+          icon: (dh[2] && dh[2].icon != null) ? dh[2].icon : '❌',
+          heading: (dh[2] && dh[2].heading) ? dh[2].heading : '3. 흔히 하는 오해 바로잡기',
+          type: (dh[2] && dh[2].type) ? dh[2].type : 'text',
+          spanFull: Boolean(dh[2] && dh[2].spanFull),
+          lines: Array.isArray(note.myth) ? note.myth : []
+        },
+        {
+          id: 'sec_4',
+          enabled: !(dh[3] && dh[3].enabled === false),
+          icon: (dh[3] && dh[3].icon != null) ? dh[3].icon : '🔍',
+          heading: (dh[3] && dh[3].heading) ? dh[3].heading : '4. 오늘 밤 집에서 해보는 1분 체크',
+          type: (dh[3] && dh[3].type) ? dh[3].type : 'checklist',
+          spanFull: Boolean(dh[3] && dh[3].spanFull),
+          lines: Array.isArray(note.check) ? note.check : []
+        }
+      ];
+      return fallbackSecs.filter(s => s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim()));
+    }
+
+    function buildSectionBodyHtml(sec) {
+      const lines = (Array.isArray(sec.lines) ? sec.lines : []).map(l => String(l || '').trim()).filter(Boolean);
+      const t = sec.type || 'text';
+      if (t === 'checklist') {
+        return '<div class="hip-two-lines">' + lines.map(line =>
+          '<label class="hip-check-item"><input type="checkbox" /><span>' + escHtml(line) + '</span></label>'
+        ).join('') + '</div>';
+      }
+      if (t === 'bullets') {
+        return '<div class="hip-two-lines">' + lines.map(line =>
+          '<div class="hip-bullet-row"><span class="hip-bullet-dot"></span><span>' + escHtml(line) + '</span></div>'
+        ).join('') + '</div>';
+      }
+      if (t === 'numbered') {
+        return '<div class="hip-two-lines">' + lines.map((line, i) =>
+          '<div class="hip-num-row"><span class="hip-num-chip">' + String(i + 1).padStart(2, '0') + '</span><span>' + escHtml(line) + '</span></div>'
+        ).join('') + '</div>';
+      }
+      if (t === 'qa') {
+        return '<div class="hip-qa-pair">' + lines.map((line, i) => {
+          const isQ = (i === 0 && lines.length > 1);
+          return '<div class="' + (isQ ? 'hip-qa-q' : 'hip-qa-a') + '">' +
+            '<span class="hip-qa-tag">' + (isQ ? '통념 · Q' : '핵심 · A') + '</span>' +
+            '<span>' + escHtml(line) + '</span>' +
+          '</div>';
+        }).join('') + '</div>';
+      }
+      return '<div class="hip-two-lines">' + lines.map(line =>
+        '<p class="hip-line">' + escHtml(line) + '</p>'
+      ).join('') + '</div>';
+    }
+
+    function buildStandardNoteBoxHtml(note, closeActionJs, closeLabel, menuMetaOverride) {
+      const mMeta = menuMetaOverride || getMenuMeta(note.partId || currentPartId);
+      const d = getPopupDesign(mMeta);
+      const accentInk = computeContrastInk(d.accentColor);
+      const radiusMap = {
+        sharp: { box: '6px', card: '5px' },
+        rounded: { box: '16px', card: '11px' },
+        soft: { box: '24px', card: '16px' }
+      };
+      const densityMap = {
+        compact: { hdr: '10px 13px', body: '10px 12px 12px', card: '8px 10px', gap: '7px' },
+        standard: { hdr: '13px 16px', body: '13px 15px 15px', card: '10px 13px', gap: '9px' },
+        relaxed: { hdr: '17px 20px', body: '17px 19px 20px', card: '13px 16px', gap: '12px' }
+      };
+      const fontMap = {
+        sm: { body: '0.78rem', heading: '0.78rem', title: '0.93rem' },
+        md: { body: '0.83rem', heading: '0.82rem', title: '1.00rem' },
+        lg: { body: '0.91rem', heading: '0.90rem', title: '1.10rem' }
+      };
+      const rSet = radiusMap[d.radius] || radiusMap.rounded;
+      const pSet = densityMap[d.density] || densityMap.standard;
+      const fSet = fontMap[d.fontScale] || fontMap.md;
+
+      const inlineVars = [
+        '--hip-header-bg:' + escHtml(d.headerBg || '#0D0D0F'),
+        '--hip-header-text:' + escHtml(d.headerText || '#FFFFFF'),
+        '--hip-accent:' + escHtml(d.accentColor || '#C5A059'),
+        '--hip-accent-ink:' + accentInk,
+        '--hip-body-bg:' + escHtml(d.bodyBg || '#FFFFFF'),
+        '--hip-card-bg:' + escHtml(d.cardBg || '#FCFBF8'),
+        '--hip-body-text:' + escHtml(d.bodyText || '#262522'),
+        '--hip-radius:' + rSet.box,
+        '--hip-card-radius:' + rSet.card,
+        '--hip-pad-hdr:' + pSet.hdr,
+        '--hip-pad-body:' + pSet.body,
+        '--hip-pad-card:' + pSet.card,
+        '--hip-gap:' + pSet.gap,
+        '--hip-font-size:' + fSet.body,
+        '--hip-heading-size:' + fSet.heading,
+        '--hip-title-size:' + fSet.title
+      ].join(';');
+
+      const hdrMode = d.headerLayout || 'inline';
+      const secLayout = d.sectionLayout || 'stack';
+      const tFont = d.titleFont === 'sans' ? 'title-sans' : 'title-serif';
+      const boxClasses = ['health-info-popup-box', 'hdr-' + hdrMode, 'layout-' + secLayout, tFont].join(' ');
+
+      const badgeText = (note.badgeOverride && String(note.badgeOverride).trim())
+        ? String(note.badgeOverride).trim()
+        : (note.partLabel || (mMeta && mMeta.partLabel) || '주요 부위');
+      const showBadge = d.showPartBadge !== false;
+      const useQuotes = d.titleQuotes !== false;
+      const titleInner = useQuotes ? ('&ldquo;' + escHtml(note.title) + '&rdquo;') : escHtml(note.title);
+      const subTitleHtml = (note.subTitle && String(note.subTitle).trim())
+        ? '<p class="hip-subtitle">' + escHtml(String(note.subTitle).trim()) + '</p>'
+        : '';
+      const closeBtnHtml = '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>';
+
+      let headerInnerHtml = '';
+      if (hdrMode === 'stacked') {
+        headerInnerHtml =
+          '<div class="hip-top-strip">' +
+            (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '<span></span>') +
+            closeBtnHtml +
+          '</div>' +
+          '<div class="hip-header-main">' +
+            '<h2 class="hip-question-title">' + titleInner + '</h2>' +
+            subTitleHtml +
+          '</div>';
+      } else if (hdrMode === 'centered') {
+        headerInnerHtml =
+          closeBtnHtml +
+          '<div class="hip-header-main">' +
             '<div class="hip-header-title-wrap">' +
-              '<span class="hip-part-bracket">[' + escHtml(note.partLabel) + ']</span>' +
-              '<span class="hip-divider">|</span>' +
-              '<h2 class="hip-question-title">&ldquo;' + escHtml(note.title) + '&rdquo;</h2>' +
+              (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
+              '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
-            '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>' +
+            subTitleHtml +
+          '</div>';
+      } else {
+        headerInnerHtml =
+          '<div class="hip-header-main">' +
+            '<div class="hip-header-title-wrap">' +
+              (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span><span class="hip-divider">|</span>' : '') +
+              '<h2 class="hip-question-title">' + titleInner + '</h2>' +
+            '</div>' +
+            subTitleHtml +
           '</div>' +
+          closeBtnHtml;
+      }
 
-          '<div class="hip-sections">' +
-            '<section class="hip-sec-card sec-empathy">' +
-              '<div class="hip-sec-heading">🎒 1. 일상 속 공감 상황</div>' +
-              '<div class="hip-two-lines">' +
-                '<p class="hip-line">' + escHtml(note.empathy[0]) + '</p>' +
-                '<p class="hip-line">' + escHtml(note.empathy[1]) + '</p>' +
-              '</div>' +
-            '</section>' +
+      const secs = getNoteRenderSections(note, d);
+      const sectionsHtml = secs.map((sec, idx) => {
+        const isHi = sec.type === 'highlight';
+        const spanCls = sec.spanFull ? ' span-full' : '';
+        const hiCls = isHi ? ' sec-highlight' : '';
+        const iconSpan = (sec.icon && String(sec.icon).trim())
+          ? '<span class="hip-sec-icon">' + escHtml(String(sec.icon).trim()) + '</span>'
+          : '';
+        const bodyContent = buildSectionBodyHtml(sec);
+        if (secLayout === 'accordion') {
+          const openAttr = idx < 2 ? ' open' : '';
+          return (
+            '<details class="hip-sec-card hip-acc-card' + hiCls + spanCls + '"' + openAttr + '>' +
+              '<summary class="hip-sec-heading">' +
+                '<span style="display:inline-flex;align-items:center;gap:6px;">' + iconSpan + '<span>' + escHtml(sec.heading || '') + '</span></span>' +
+                '<span class="hip-acc-chevron">&#9662;</span>' +
+              '</summary>' +
+              '<div class="hip-acc-body">' + bodyContent + '</div>' +
+            '</details>'
+          );
+        }
+        return (
+          '<section class="hip-sec-card' + hiCls + spanCls + '">' +
+            (sec.heading ? '<div class="hip-sec-heading">' + iconSpan + '<span>' + escHtml(sec.heading) + '</span></div>' : '') +
+            bodyContent +
+          '</section>'
+        );
+      }).join('');
 
-            '<section class="hip-sec-card sec-truth">' +
-              '<div class="hip-sec-heading">💡 2. 몸속 연골/신경이 알려주는 진실</div>' +
-              '<div class="hip-two-lines">' +
-                '<p class="hip-line">' + escHtml(note.truth[0]) + '</p>' +
-                '<p class="hip-line">' + escHtml(note.truth[1]) + '</p>' +
-              '</div>' +
-            '</section>' +
-
-            '<section class="hip-sec-card sec-myth">' +
-              '<div class="hip-sec-heading">❌ 3. 흔히 하는 오해 바로잡기</div>' +
-              '<div class="hip-two-lines">' +
-                '<p class="hip-line">' + escHtml(note.myth[0]) + '</p>' +
-                '<p class="hip-line">' + escHtml(note.myth[1]) + '</p>' +
-              '</div>' +
-            '</section>' +
-
-            '<section class="hip-sec-card sec-check">' +
-              '<div class="hip-sec-heading">🔍 4. 오늘 밤 집에서 해보는 1분 체크</div>' +
-              '<div class="hip-two-lines">' +
-                '<label class="hip-check-item">' +
-                  '<input type="checkbox" />' +
-                  '<span>' + escHtml(note.check[0]) + '</span>' +
-                '</label>' +
-                '<label class="hip-check-item">' +
-                  '<input type="checkbox" />' +
-                  '<span>' + escHtml(note.check[1]) + '</span>' +
-                '</label>' +
-              '</div>' +
-            '</section>' +
-          '</div>' +
+      return (
+        '<article class="' + boxClasses + '" style="' + inlineVars + '" aria-label="부위별 건강 정보 팝업">' +
+          '<div class="hip-header">' + headerInnerHtml + '</div>' +
+          '<div class="hip-sections">' + sectionsHtml + '</div>' +
         '</article>'
       );
     }
@@ -1709,7 +2168,11 @@ function buildBodyExplorerHtml() {
       currentSystemMode = null;
       currentSystemRegionId = 'all';
       document.body.classList.remove('popup-open-mode');
-      if (popupDrawer) popupDrawer.classList.remove('open');
+      if (popupDrawer) {
+        popupDrawer.classList.remove('open');
+        popupDrawer.style.setProperty('--popup-custom-width', '520px');
+        popupDrawer.style.removeProperty('--tmn-accent');
+      }
       quickNavButtons.forEach(btn => btn.classList.remove('active'));
       syncBottomSystemButtons();
       if (stageLabelEl) {
@@ -1723,7 +2186,11 @@ function buildBodyExplorerHtml() {
       if (!currentSystemMode) return;
       isPopupOpen = true;
       document.body.classList.add('popup-open-mode');
-      if (popupDrawer) popupDrawer.classList.add('open');
+      if (popupDrawer) {
+        popupDrawer.classList.add('open');
+        popupDrawer.style.setProperty('--popup-custom-width', '520px');
+        popupDrawer.style.removeProperty('--tmn-accent');
+      }
       quickNavButtons.forEach(btn => btn.classList.remove('active'));
       syncBottomSystemButtons();
 
@@ -1824,8 +2291,16 @@ function buildBodyExplorerHtml() {
       syncBottomSystemButtons();
       isPopupOpen = true;
       document.body.classList.add('popup-open-mode');
-      if (popupDrawer) popupDrawer.classList.add('open');
       const menuMeta = getMenuMeta(currentPartId);
+      const pDesign = getPopupDesign(menuMeta);
+      if (popupDrawer) {
+        popupDrawer.classList.add('open');
+        popupDrawer.style.setProperty('--popup-custom-width', getPopupWidthPx(pDesign.widthMode));
+        popupDrawer.style.setProperty('--tmn-accent', pDesign.accentColor || '#C5A059');
+        popupDrawer.style.setProperty('--tmn-active-bg', pDesign.headerBg || '#0D0D0F');
+        popupDrawer.style.setProperty('--tmn-active-text', pDesign.headerText || '#FFFFFF');
+        popupDrawer.style.setProperty('--tmn-step-active', pDesign.accentColor || '#E5C67E');
+      }
       const qnaPartKey = menuMeta.qnaPartId || currentPartId;
       const partNotes = getPublishedNotes(currentPartId);
       const allNotes = getPublishedNotes('all');
@@ -1847,7 +2322,7 @@ function buildBodyExplorerHtml() {
 
       if (currentMenuTab === 0) {
         activeBodyHtml = latestNote
-          ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기')
+          ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기', menuMeta)
           : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>';
       } else if (currentMenuTab === 1) {
         const items = qnaCacheByPart[qnaPartKey];
@@ -1890,11 +2365,12 @@ function buildBodyExplorerHtml() {
           : null;
 
         if (pickedNote) {
+          const pickedMeta = getMenuMeta(pickedNote.partId || currentPartId);
           activeBodyHtml =
             '<div style="margin-bottom:2px;">' +
               '<button type="button" class="ptc-back-btn" onclick="window.backToArchiveList()">&larr; 누적 글 목록으로 돌아가기</button>' +
             '</div>' +
-            buildStandardNoteBoxHtml(pickedNote, 'window.backToArchiveList()', '✕ 목록으로');
+            buildStandardNoteBoxHtml(pickedNote, 'window.backToArchiveList()', '✕ 목록으로', pickedMeta);
         } else {
           const rowsHtml = targetList.map((n, idx) =>
             '<button type="button" class="archive-card-btn" onclick="window.openArchivedNote(\\'' + n.id + '\\')">' +
@@ -1929,12 +2405,15 @@ function buildBodyExplorerHtml() {
         }
       }
 
+      const tab01StepText = (pDesign.tab01Step && String(pDesign.tab01Step).trim()) ? pDesign.tab01Step : '01 · 최신 글 1편';
+      const tab01LabelText = (pDesign.tab01Label && String(pDesign.tab01Label).trim()) ? pDesign.tab01Label : '오늘의 건강 글';
+
       contentBox.innerHTML =
         '<div class="popup-shell-wrap">' +
           '<nav class="three-menu-nav" role="tablist" aria-label="정보 팝업 3대 메뉴">' +
             '<button type="button" class="three-menu-btn' + (currentMenuTab === 0 ? ' active' : '') + '" onclick="window.switchPopupMenu(0)">' +
-              '<span class="tmb-step">01 · 최신 글 1편</span>' +
-              '<span class="tmb-label">오늘의 건강 글</span>' +
+              '<span class="tmb-step">' + escHtml(tab01StepText) + '</span>' +
+              '<span class="tmb-label">' + escHtml(tab01LabelText) + '</span>' +
             '</button>' +
             '<button type="button" class="three-menu-btn' + (currentMenuTab === 1 ? ' active' : '') + '" onclick="window.switchPopupMenu(1)">' +
               '<span class="tmb-step">02 · 1:1 질문</span>' +
@@ -2068,7 +2547,14 @@ ${WEBGL_PART_A}
       this.aspect = aspect;
       this.fov = aspect < 0.65 ? Math.min(68, 55 * (0.65 / Math.max(0.42, aspect)) * 0.90) : 55;
       if (isPopupOpen && w > 960) {
-        this.setViewOffset(w, h, Math.round(w * 0.19), 0, w, h);
+        let shiftRatio = 0.19;
+        if (!currentSystemMode) {
+          const d = getPopupDesign(getMenuMeta(currentPartId));
+          if (d.widthMode === 'compact') shiftRatio = 0.16;
+          else if (d.widthMode === 'wide') shiftRatio = 0.22;
+          else if (d.widthMode === 'ultrawide') shiftRatio = 0.25;
+        }
+        this.setViewOffset(w, h, Math.round(w * shiftRatio), 0, w, h);
       } else {
         this.clearViewOffset();
       }
@@ -2147,4 +2633,4 @@ ${WEBGL_PART_B}
 const outPath = path.join(__dirname, 'body-explorer.html');
 const html = buildBodyExplorerHtml();
 fs.writeFileSync(outPath, html, 'utf8');
-console.log('✅ Generated Fullscreen 3D Body Explorer (Editable Menu Table Config + 4-System Motions v5.7):', outPath, '(' + html.length + ' bytes)');
+console.log('✅ Generated Fullscreen 3D Body Explorer (Custom Title/Layout/Structure/Color Popup + 4-System Motions v5.8):', outPath, '(' + html.length + ' bytes)');

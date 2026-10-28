@@ -94,6 +94,111 @@ function auditNoteThreeStage(note) {
   return { passed: errors.length === 0, errors };
 }
 
+function normalizeNoteSections(note, defaultHeadings) {
+  if (!note || typeof note !== 'object') return [];
+  const dh = Array.isArray(defaultHeadings) ? defaultHeadings : [];
+  if (Array.isArray(note.sections) && note.sections.length > 0) {
+    return note.sections.map((sec, idx) => ({
+      id: sec.id || ('sec_' + (idx + 1)),
+      enabled: sec.enabled !== false,
+      icon: sec.icon != null ? String(sec.icon) : '',
+      heading: sec.heading != null ? String(sec.heading) : ('섹션 ' + (idx + 1)),
+      type: sec.type || 'text',
+      spanFull: Boolean(sec.spanFull),
+      lines: Array.isArray(sec.lines) ? sec.lines.map(l => String(l == null ? '' : l)).filter(l => l.trim().length > 0) : []
+    }));
+  }
+  const eLines = Array.isArray(note.empathyLines) ? note.empathyLines : (Array.isArray(note.empathy) ? note.empathy : []);
+  const tLines = Array.isArray(note.truthLines) ? note.truthLines : (Array.isArray(note.truth) ? note.truth : []);
+  const mLines = Array.isArray(note.mythLines) ? note.mythLines : (Array.isArray(note.myth) ? note.myth : []);
+  const cLines = Array.isArray(note.checkList) ? note.checkList : (Array.isArray(note.check) ? note.check : []);
+  return [
+    {
+      id: 'sec_1',
+      enabled: true,
+      icon: (dh[0] && dh[0].icon != null) ? dh[0].icon : '🎒',
+      heading: (dh[0] && dh[0].heading) ? dh[0].heading : '1. 일상 속 공감 상황',
+      type: (dh[0] && dh[0].type) ? dh[0].type : 'text',
+      spanFull: Boolean(dh[0] && dh[0].spanFull),
+      lines: eLines.filter(Boolean)
+    },
+    {
+      id: 'sec_2',
+      enabled: true,
+      icon: (dh[1] && dh[1].icon != null) ? dh[1].icon : '💡',
+      heading: (dh[1] && dh[1].heading) ? dh[1].heading : '2. 몸속 연골/신경이 알려주는 진실',
+      type: (dh[1] && dh[1].type) ? dh[1].type : 'highlight',
+      spanFull: Boolean(dh[1] && dh[1].spanFull),
+      lines: tLines.filter(Boolean)
+    },
+    {
+      id: 'sec_3',
+      enabled: true,
+      icon: (dh[2] && dh[2].icon != null) ? dh[2].icon : '❌',
+      heading: (dh[2] && dh[2].heading) ? dh[2].heading : '3. 흔히 하는 오해 바로잡기',
+      type: (dh[2] && dh[2].type) ? dh[2].type : 'text',
+      spanFull: Boolean(dh[2] && dh[2].spanFull),
+      lines: mLines.filter(Boolean)
+    },
+    {
+      id: 'sec_4',
+      enabled: true,
+      icon: (dh[3] && dh[3].icon != null) ? dh[3].icon : '🔍',
+      heading: (dh[3] && dh[3].heading) ? dh[3].heading : '4. 오늘 밤 집에서 해보는 1분 체크',
+      type: (dh[3] && dh[3].type) ? dh[3].type : 'checklist',
+      spanFull: Boolean(dh[3] && dh[3].spanFull),
+      lines: cLines.filter(Boolean)
+    }
+  ];
+}
+
+function auditCustomLeadNote(note) {
+  const errors = [];
+  const warnings = [];
+  if (!note || typeof note !== 'object') {
+    return { passed: false, errors: ['빈 객체'], warnings };
+  }
+  const title = String(note.questionTitle || note.title || '').trim();
+  if (!title) {
+    errors.push('메인 제목을 입력해 주세요.');
+  } else if (note.strictQuestionMark && !title.endsWith('?')) {
+    errors.push('질문형 제목 옵션이 켜져 있습니다. 제목 끝에 물음표(?)를 붙여주세요.');
+  }
+
+  const sections = normalizeNoteSections(note);
+  const activeSections = sections.filter(s => s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => l.trim().length > 0));
+  if (activeSections.length === 0) {
+    errors.push('최소 1개 이상의 활성 섹션에 본문 문장을 입력해 주세요.');
+  }
+
+  const fullVisibleText = [
+    note.partLabel || '',
+    note.badgeOverride || '',
+    title,
+    note.subTitle || '',
+    ...activeSections.flatMap(s => [s.heading || '', ...(s.lines || [])])
+  ].join(' ');
+
+  for (const bad of FORBIDDEN_PROMO_WORDS) {
+    if (fullVisibleText.includes(bad)) {
+      errors.push('의료법/홍보 금지어 감지: ' + bad);
+    }
+  }
+  for (const jargon of FORBIDDEN_JARGON_WORDS) {
+    if (fullVisibleText.includes(jargon)) {
+      warnings.push('전문용어 순화 권장: ' + jargon);
+    }
+  }
+  if (note.keyword && String(note.keyword).trim()) {
+    const kw = String(note.keyword).trim();
+    if (!fullVisibleText.includes(kw)) {
+      warnings.push('핵심 키워드 미포함(권장): ' + kw);
+    }
+  }
+
+  return { passed: errors.length === 0, errors, warnings };
+}
+
 const CLINIC_EXPLORE_MENUS = [
   {
     id: 'knee',
@@ -1562,6 +1667,8 @@ module.exports = {
   FORBIDDEN_PROMO_WORDS,
   FORBIDDEN_JARGON_WORDS,
   auditNoteThreeStage,
+  normalizeNoteSections,
+  auditCustomLeadNote,
   CLINIC_EXPLORE_MENUS,
   BODY_3D_AUTO_NOTES
 };
