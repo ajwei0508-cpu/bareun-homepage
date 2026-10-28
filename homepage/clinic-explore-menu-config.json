@@ -1,6 +1,6 @@
 {
   "version": "5.7",
-  "updatedAt": "2026-10-27T09:48:53.791Z",
+  "updatedAt": "2026-10-28T02:55:58.782Z",
   "header": {
     "title": "바른한의원 진료 살펴보기",
     "subMode": "auto2day",
@@ -326,6 +326,26 @@
           "오늘 밤 샤워 후 아이 목 뒷부분과 겨드랑이 피부를 보았을 때, 때가 낀 것처럼 거뭇하고 두꺼워진 흔적이 있는지 살펴보세요.",
           "최근 반년 사이 바지 허리둘레가 급격히 작아지면서 또래보다 머리 냄새가 진해지거나 빠른 사춘기 신체 변화가 비치지 않는지 확인해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -384,6 +404,26 @@
           "오늘 밤 손등 하나는 정수리 두피에, 다른 손등은 볼이나 손목에 동시에 대어 보았을 때 정수리가 유독 뜨겁게 느껴지는지 비교해 보세요.",
           "하얀 종이나 손끝으로 정수리 두피를 가볍게 비벼 보았을 때 노르스름한 기름기나 붉은 기운이 눈에 띄지 않는지 확인해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -442,6 +482,26 @@
           "오늘 밤 잠자리에 누웠을 때 무릎 아래에 얇은 베개를 하나 받쳐 허리와 이불 사이 들뜬 틈이 편안해지는지 직접 느껴 보세요.",
           "내일 아침 기상할 때 곧바로 상체를 일으키지 않고, 옆으로 몸을 먼저 돌린 뒤 팔 힘으로 바닥을 짚고 일어나는 동작을 실천해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -502,6 +562,26 @@
           "집중해서 일할 때 나도 모르게 숨을 얕게 참거나 어금니를 꽉 깨물어 가슴과 관자놀이가 긴장되어 있지 않은지 지금 바로 느껴 보세요.",
           "오늘 밤 잠들기 전 3분 동안 배가 천천히 부풀었다 가라앉도록 코로 들이마시고 길게 내쉬는 편안한 호흡이 잘 되는지 확인해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -542,10 +622,64 @@
       ],
       "isOverview": true,
       "alignLeft": false,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "미주신경 어지럼",
         "questionTitle": "만원 지하철이나 더운 곳에 오래 서 있을 때 갑자기 식은땀이 나고 아찔한 이유는 뭘까요?",
+        "subTitle": "",
+        "badgeOverride": "",
+        "strictQuestionMark": false,
+        "isCustomLead": true,
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "출근길 답답한 전철 안에서 가만히 서 있는데 갑자기 속이 메스껍고 귀가 멍해지면서 식은땀이 주르륵 흘렀어요.",
+              "잠시 주저앉아 바람을 쐬니 괜찮아졌지만 언제 또 미주신경 어지럼이 찾아올지 몰라 사람 많은 곳이 두렵습니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "덥고 밀폐된 곳에서 다리를 움직이지 않고 오래 서 있으면 심장으로 돌아와야 할 피가 부족해져 뇌가 잠시 과부하를 막으려고 몸의 긴장 스위치를 확 내려 버립니다.",
+              "그 순간 혈압과 맥박이 동시에 뚝 떨어지면서 머리까지 올라가던 피가 줄어들어 시야가 좁아지는 미주신경 어지럼 신호가 나타납니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "눈앞이 하얘지고 식은땀이 날 때 남들 보기에 민망하다며 이를 악물고 끝까지 서서 버티려 하는 경우가 많습니다.",
+              "전조 신호가 올 때 서서 참으면 넘어져 크게 다칠 수 있으므로, 즉시 바닥에 쪼그려 앉거나 다리를 꼬고 허벅지와 엉덩이에 힘을 꽉 주어 피를 위로 올려야 합니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "오래 서 있어야 하는 날 아침 식사와 물 한 컵을 거르지 않았는지, 서 있는 동안 발뒤꿈치를 수시로 들었다 내리고 있는지 확인해 보세요.",
+              "아찔하기 직전에 하품이 연달아 나오거나 속이 울렁거리고 소리가 멀게 들리는 내 몸만의 사전 경고 신호가 있었는지 떠올려 보세요."
+            ]
+          }
+        ],
         "empathyLines": [
           "출근길 답답한 전철 안에서 가만히 서 있는데 갑자기 속이 메스껍고 귀가 멍해지면서 식은땀이 주르륵 흘렀어요.",
           "잠시 주저앉아 바람을 쐬니 괜찮아졌지만 언제 또 미주신경 어지럼이 찾아올지 몰라 사람 많은 곳이 두렵습니다."
@@ -561,6 +695,56 @@
         "checkList": [
           "오래 서 있어야 하는 날 아침 식사와 물 한 컵을 거르지 않았는지, 서 있는 동안 발뒤꿈치를 수시로 들었다 내리고 있는지 확인해 보세요.",
           "아찔하기 직전에 하품이 연달아 나오거나 속이 울렁거리고 소리가 멀게 들리는 내 몸만의 사전 경고 신호가 있었는지 떠올려 보세요."
+        ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
         ]
       }
     },
@@ -620,6 +804,26 @@
           "배꼽과 가슴뼈 끝의 한가운데 지점을 따뜻한 손바닥으로 살살 눌렀을 때 유독 단단하고 꾸르륵 소리가 안 나는지 확인해 보세요.",
           "식사 직후 바로 의자에 구부정하게 앉거나 눕지 않고 집 안이라도 10분 이상 가볍게 걸어 주었는지 점검해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -678,6 +882,26 @@
           "지금 갑자기 무언가 먹고 싶다면 30분 전에 비해 서서히 배가 고파 온 것인지, 아니면 특정 자극적인 맛만 머릿속에 떠오르는 가짜 배고픔인지 구분해 보세요.",
           "미지근한 물 한 컵을 마시고 양치를 먼저 한 뒤 15분이 지났을 때도 여전히 배에서 꼬르륵 소리가 나는지 확인해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -738,6 +962,26 @@
           "뜨거운 배달 음식을 일회용 플라스틱 용기째로 먹지 않고 유리나 도자기 그릇에 옮겨 담아 환경호르몬 노출을 줄이고 있는지 점검해 보세요.",
           "잠들기 전 부부가 함께 휴대폰을 내려놓고 따뜻한 물로 발목을 데운 뒤 자정 전에 편안히 숙면에 들고 있는지 확인해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     },
     {
@@ -799,6 +1043,26 @@
           "하루 동안 낮에 소변보러 가는 횟수가 8번을 훌쩍 넘으면서 그때마다 마신 커피나 차, 탄산음료가 있지 않았는지 세어 보세요.",
           "갑자기 급한 신호가 올 때 당황해 뛰어가기보다, 제자리에 잠시 서서 항문과 요도 주변 근육을 5초간 지그시 조이며 숨을 고르면 급한 느낌이 가라앉는지 확인해 보세요."
         ]
+      },
+      "popupDesign": {
+        "colorPreset": "lux-gold",
+        "headerBg": "#0D0D0F",
+        "headerText": "#FFFFFF",
+        "accentColor": "#C5A059",
+        "bodyBg": "#FFFFFF",
+        "cardBg": "#FCFBF8",
+        "bodyText": "#262522",
+        "widthMode": "standard",
+        "headerLayout": "inline",
+        "sectionLayout": "stack",
+        "density": "standard",
+        "radius": "rounded",
+        "fontScale": "md",
+        "titleFont": "serif",
+        "titleQuotes": true,
+        "showPartBadge": true,
+        "tab01Step": "01 · 최신 글 1편",
+        "tab01Label": "오늘의 건강 글"
       }
     }
   ]
