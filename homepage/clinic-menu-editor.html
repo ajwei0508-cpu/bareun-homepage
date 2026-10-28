@@ -1524,21 +1524,190 @@
     }
 
     .nm-foot {
-      padding: 12px 20px;
+      padding: 11px 18px;
       background: var(--lux-ivory);
       border-top: 1px solid var(--lux-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       flex-shrink: 0;
     }
     .nm-foot-toggles {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 11px;
       flex-wrap: wrap;
+    }
+    .nm-foot-chk-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: var(--lux-white);
+      border: 1px solid var(--lux-border);
+      font-size: 0.73rem;
+      font-weight: 800;
+      color: var(--lux-ink);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.14s ease;
+    }
+    .nm-foot-chk-pill:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .nm-foot-chk-pill:has(input:checked) {
+      background: #17171B;
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+    }
+    .nm-foot-chk-pill input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--lux-gold-deep);
+      cursor: pointer;
+      margin: 0;
+    }
+    .nm-global-apply-panel {
+      background: linear-gradient(135deg, #16161B 0%, #23211D 100%);
+      border: 1.5px solid var(--lux-gold);
+      border-radius: 12px;
+      padding: 11px 13px;
+      color: var(--lux-white);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 8px 20px rgba(13, 13, 15, 0.14);
+    }
+    .nm-global-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nm-global-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--lux-gold-bright);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nm-global-sub {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #D8CEB8;
+    }
+    .nm-global-btn-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    @media (max-width: 680px) {
+      .nm-global-btn-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .nm-global-btn {
+      appearance: none;
+      border: 1px solid rgba(197, 160, 89, 0.48);
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--lux-white);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all 0.15s ease;
+    }
+    .nm-global-btn:hover {
+      background: rgba(197, 160, 89, 0.22);
+      border-color: var(--lux-gold-bright);
+      transform: translateY(-1px);
+    }
+    .nm-global-btn.gold-solid {
+      background: linear-gradient(135deg, #DFBE78 0%, #C5A059 100%);
+      color: var(--lux-black);
+      border-color: #F3DC9E;
+    }
+    .nm-global-btn.gold-solid:hover {
+      filter: brightness(1.05);
+    }
+    .nm-global-btn strong {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--lux-gold-bright);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nm-global-btn.gold-solid strong {
+      color: var(--lux-black);
+    }
+    .nm-global-btn span {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: #D5CCB8;
+      line-height: 1.35;
+    }
+    .nm-global-btn.gold-solid span {
+      color: #2A2419;
+      font-weight: 700;
+    }
+    .nm-global-status {
+      display: none;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: rgba(22, 101, 52, 0.35);
+      border: 1px solid #6EE7B7;
+      color: #ECFDF5;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .nm-global-status.show {
+      display: block;
+    }
+    .nm-chip-btn.global-accent {
+      background: #1B1A17;
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
+    }
+    .nm-chip-btn.global-accent:hover {
+      background: var(--lux-gold);
+      color: var(--lux-black);
+    }
+    .row-sync-mini-btn {
+      margin-top: 4px;
+      width: 100%;
+      appearance: none;
+      border: 1px dashed var(--lux-gold-deep);
+      background: var(--lux-gold-tint);
+      color: #5C4416;
+      border-radius: 7px;
+      padding: 4px 7px;
+      font-family: inherit;
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.14s ease;
+    }
+    .row-sync-mini-btn:hover {
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+      border-style: solid;
+      border-color: var(--lux-gold);
     }
     .nm-inline-alert {
       font-size: 0.75rem;
@@ -1608,6 +1777,12 @@
           </select>
         </label>
         <input type="text" id="cfg-header-customsub" class="hcs-input" style="width:200px;display:none;" placeholder="보조문구 입력" />
+        <div class="hcs-field" style="border-left:1px solid var(--lux-border);padding-left:10px;gap:5px;">
+          <span class="hcs-label" style="color:var(--lux-gold-deep);">🌐 기준 메뉴 전체 적용</span>
+          <select id="cfg-sync-source-idx" class="hcs-select" style="min-width:135px;"></select>
+          <button type="button" class="nm-chip-btn global-accent" onclick="window.syncFromTopStrip('structure_design')" title="선택한 기준 메뉴의 섹션 구조(소제목·아이콘·유형)와 레이아웃·색감을 전체 메뉴에 통일합니다 (각 메뉴 본문 유지)">🧱 구조·디자인 전체 통일</button>
+          <button type="button" class="nm-chip-btn" onclick="window.syncFromTopStrip('full_all')" title="선택한 기준 메뉴의 제목·본문·구조·디자인을 전체 메뉴에 똑같이 복사합니다">📋 제목·본문·구조 전체 복사</button>
+        </div>
       </div>
       <div class="hcs-guide">
         표의 <strong>버튼명 · [부위명] · 3D 장기 · 3D 골격 · 줌인 위치 · 대표 건강 글</strong>을 수정한 뒤 <strong>[⚡ 표 수정대로 즉시 제작]</strong>을 누르면 1초 만에 3D 페이지가 완성됩니다.
@@ -1693,13 +1868,44 @@
             </label>
           </div>
 
+          <!-- 🌐 제목 · 구조 · 본문 전체 메뉴 일괄 적용 전용 메뉴 -->
+          <div class="nm-global-apply-panel" aria-label="제목 · 구조 · 본문 전체 메뉴 일괄 적용 메뉴">
+            <div class="nm-global-head">
+              <span class="nm-global-title">🌐 제목 · 구조 · 본문 전체 메뉴 일괄 적용 메뉴</span>
+              <span class="nm-global-sub">원클릭 시 9개 전체 메뉴에 즉시 동기화됩니다</span>
+            </div>
+            <div class="nm-global-btn-grid">
+              <button type="button" class="nm-global-btn" onclick="window.applyGlobalContentPreset('structure_only')">
+                <strong>🧱 1. 현재 [섹션 구조 · 소제목]만 전체 메뉴 적용</strong>
+                <span>섹션 개수·아이콘·소제목·표현방식 통일 (각 메뉴 고유 본문 유지)</span>
+              </button>
+              <button type="button" class="nm-global-btn" onclick="window.applyGlobalContentPreset('title_options')">
+                <strong>🏷️ 2. 현재 [탭 라벨 · 제목 옵션 · 부제목] 전체 적용</strong>
+                <span>01탭 이름 · 배지 표시 · 질문형 체크 · 보조 부제목 전체 메뉴 통일</span>
+              </button>
+              <button type="button" class="nm-global-btn" onclick="window.applyGlobalContentPreset('full_content')">
+                <strong>📋 3. 현재 [제목 + 구조 + 본문 내용] 통째로 전체 적용</strong>
+                <span>지금 입력된 메인 제목과 모든 문장·구조를 9개 메뉴에 똑같이 복사</span>
+              </button>
+              <button type="button" class="nm-global-btn gold-solid" onclick="window.applyGlobalContentPreset('all_in_one_structure')">
+                <strong>✨ 4. 올인원 전체 통일 (구조·탭·레이아웃·색감)</strong>
+                <span>각 부위 본문은 유지한 채 구조·소제목·레이아웃·색감을 전 메뉴 통일</span>
+              </button>
+            </div>
+            <div id="nm-global-sync-status" class="nm-global-status"></div>
+          </div>
+
           <div class="nm-sec">
             <div class="nm-sec-title">
               <span>🏷️ 상단 탭 &amp; 헤드라인 제목 커스텀</span>
-              <label class="enable-toggle" style="font-size:0.72rem;color:var(--lux-ink);">
-                <input type="checkbox" id="nm-show-badge-chk" checked />
-                <span>상단 [부위명] 배지 표시</span>
-              </label>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <label class="enable-toggle" style="font-size:0.72rem;color:var(--lux-ink);">
+                  <input type="checkbox" id="nm-show-badge-chk" checked />
+                  <span>상단 [부위명] 배지 표시</span>
+                </label>
+                <button type="button" class="nm-chip-btn global-accent" onclick="window.applyGlobalContentPreset('title_options')" title="01탭 라벨, 버튼명, 배지 표시 여부, 질문형 체크, 보조 부제목을 전체 메뉴에 공통 적용합니다">🌐 탭·제목옵션 전체 적용</button>
+                <button type="button" class="nm-chip-btn" onclick="window.applyGlobalContentPreset('headline_all')" title="메인 제목과 부제목, 키워드까지 모든 메뉴에 동일하게 적용합니다">🌐 메인 제목까지 전체 동일 적용</button>
+              </div>
             </div>
 
             <div class="nm-row-3col">
@@ -1743,7 +1949,11 @@
               <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('qacard3')">통념 Q&amp;A 대비형</button>
               <button type="button" class="nm-chip-btn" onclick="window.applyStructurePreset('column1')">1단 에세이 칼럼형</button>
             </div>
-            <button type="button" class="nm-chip-btn add-sec" onclick="window.addNoteSection()">+ 새 섹션 블록 추가</button>
+            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+              <button type="button" class="nm-chip-btn add-sec" onclick="window.addNoteSection()">+ 새 섹션 블록 추가</button>
+              <button type="button" class="nm-chip-btn global-accent" onclick="window.applyGlobalContentPreset('structure_only')" title="현재 섹션 구조(개수·소제목·아이콘·표현방식)를 9개 전체 메뉴에 적용합니다 (각 메뉴 본문 유지)">🌐 현재 구조 틀 전체 메뉴 적용</button>
+              <button type="button" class="nm-chip-btn" onclick="window.applyGlobalContentPreset('sections_and_body')" title="현재 섹션 구조와 본문 문장까지 9개 전체 메뉴에 똑같이 적용합니다">🌐 구조+본문 전체 메뉴 동일 적용</button>
+            </div>
           </div>
 
           <div id="nm-sections-list" style="display:flex;flex-direction:column;gap:10px;"></div>
@@ -1751,6 +1961,12 @@
 
         <!-- TAB 2: LAYOUT & TYPOGRAPHY -->
         <div class="nm-tab-panel" id="nm-panel-layout">
+          <div class="nm-sec" style="background:var(--lux-gold-tint);border-color:var(--lux-gold-border);">
+            <div class="nm-sec-title">
+              <span>🌐 레이아웃 · 서체 전체 메뉴 일괄 적용</span>
+              <button type="button" class="nm-chip-btn global-accent" onclick="window.applyGlobalContentPreset('layout_only')">📐 현재 레이아웃·서체를 9개 전체 메뉴에 즉시 적용</button>
+            </div>
+          </div>
           <div class="nm-sec">
             <div class="nm-sec-title"><span>📏 1. 팝업 창 가로 폭 (Width)</span></div>
             <div class="nm-opt-grid" id="nm-opt-widthMode"></div>
@@ -1795,6 +2011,12 @@
 
         <!-- TAB 3: COLOR SCHEME & LUXURY PALETTES -->
         <div class="nm-tab-panel" id="nm-panel-color">
+          <div class="nm-sec" style="background:var(--lux-gold-tint);border-color:var(--lux-gold-border);">
+            <div class="nm-sec-title">
+              <span>🌐 색감 · 테마 팔레트 전체 메뉴 일괄 적용</span>
+              <button type="button" class="nm-chip-btn global-accent" onclick="window.applyGlobalContentPreset('color_only')">🎨 현재 색감 팔레트를 9개 전체 메뉴에 즉시 적용</button>
+            </div>
+          </div>
           <div class="nm-sec">
             <div class="nm-sec-title">
               <span>🎨 1. 하이엔드 원클릭 색감 프리셋 (8종)</span>
@@ -1827,14 +2049,23 @@
 
     <div class="nm-foot">
       <div class="nm-foot-toggles">
-        <label class="enable-toggle" style="font-size:0.77rem;color:#17171A;">
+        <label class="nm-foot-chk-pill" title="체크 시 이 메뉴의 01 오늘의 건강 글에 현재 수정본이 최상단으로 고정 표시됩니다">
           <input type="checkbox" id="nm-override-chk" />
-          <span>이 대표 건강 글을 최상단(01 오늘의 건강 글)으로 고정 반영</span>
+          <span>📌 현재 메뉴 01탭 고정 반영</span>
         </label>
-        <label class="enable-toggle" style="font-size:0.76rem;color:var(--lux-sub);">
+        <label class="nm-foot-chk-pill" title="체크 후 반영 시, 현재 설정한 섹션 구조(개수·소제목·아이콘·표현방식)와 상단 탭 설정을 전체 9개 메뉴에 공통 적용합니다 (각 메뉴 본문 내용은 그대로 유지)">
+          <input type="checkbox" id="nm-apply-structure-all-chk" />
+          <span>🧱 [섹션 구조·소제목·탭 설정] 전체 메뉴 적용 (본문 유지)</span>
+        </label>
+        <label class="nm-foot-chk-pill" title="체크 후 반영 시, 현재 입력한 메인 제목·부제목·본문 문장·섹션 구조를 전체 9개 메뉴에 똑같이 일괄 적용합니다">
+          <input type="checkbox" id="nm-apply-content-all-chk" />
+          <span>📋 [제목 + 본문 + 구조] 전체 메뉴 동일 적용</span>
+        </label>
+        <label class="nm-foot-chk-pill" title="체크 후 반영 시, 현재 레이아웃·서체·색감 팔레트를 전체 9개 메뉴에 공통 적용합니다">
           <input type="checkbox" id="nm-apply-design-all-chk" />
-          <span>현재 레이아웃 · 색감 디자인을 전체 메뉴에 공통 적용</span>
+          <span>🎨 [레이아웃 · 색감 디자인] 전체 메뉴 적용</span>
         </label>
+        <button type="button" class="nm-chip-btn global-accent" onclick="window.toggleAllGlobalCheckboxes()" title="전체 메뉴 공통 적용 체크박스를 한 번에 켜거나 끕니다">✨ 전체 적용 모두 선택</button>
         <span class="nm-inline-alert" id="nm-inline-alert"></span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -1977,6 +2208,18 @@
       const cat = getPresetsCatalog();
       let activeSeq = 0;
 
+      const syncSelectEl = document.getElementById('cfg-sync-source-idx');
+      if (syncSelectEl) {
+        const prevVal = syncSelectEl.value;
+        syncSelectEl.innerHTML = items.map((m, i) => {
+          const num = String(i + 1).padStart(2, '0');
+          return '<option value="' + i + '">' + num + '. ' + esc(m.shortLabel || m.partLabel || m.id) + '</option>';
+        }).join('');
+        if (prevVal && items[Number(prevVal)]) {
+          syncSelectEl.value = prevVal;
+        }
+      }
+
       tbody.innerHTML = items.map((item, idx) => {
         const isOn = item.enabled !== false;
         if (isOn) activeSeq++;
@@ -2071,6 +2314,9 @@
               '<button type="button" class="note-edit-btn" onclick="window.openNoteModal(' + idx + ')">' +
                 '<span>🎨 글·구조·색감 커스텀</span>' +
                 '<span class="note-mode-tag">' + modeTag + '</span>' +
+              '</button>' +
+              '<button type="button" class="row-sync-mini-btn" onclick="window.syncRowToAllMenus(' + idx + ', \'structure_design\')" title="이 메뉴에 설정된 섹션 구조(소제목·아이콘·유형)와 레이아웃·색감을 9개 전체 메뉴에 일괄 적용합니다 (각 메뉴 본문 유지)">' +
+                '<span>🌐 이 행의 구조·디자인 전체 적용</span>' +
               '</button>' +
             '</td>' +
 
@@ -3067,7 +3313,14 @@
 
       // Default checked so user edits immediately reflect in 01 tab
       document.getElementById('nm-override-chk').checked = item.leadNoteOverride !== undefined ? (item.leadNoteOverride || true) : true;
+      document.getElementById('nm-apply-structure-all-chk').checked = false;
+      document.getElementById('nm-apply-content-all-chk').checked = false;
       document.getElementById('nm-apply-design-all-chk').checked = false;
+      const gStatusEl = document.getElementById('nm-global-sync-status');
+      if (gStatusEl) {
+        gStatusEl.textContent = '';
+        gStatusEl.classList.remove('show');
+      }
       showModalInlineAlert('');
 
       window.switchModalTab('content');
@@ -3091,6 +3344,285 @@
       }
     };
 
+    function sanitizeSectionsList(rawSecs) {
+      return (rawSecs || []).map((s, idx) => ({
+        id: s.id || ('sec_' + (idx + 1)),
+        enabled: s.enabled !== false,
+        icon: String(s.icon == null ? '' : s.icon).trim(),
+        heading: String(s.heading || '').trim() || ('섹션 ' + (idx + 1)),
+        type: s.type || 'text',
+        spanFull: Boolean(s.spanFull),
+        lines: (Array.isArray(s.lines) ? s.lines : []).map(l => String(l || '').trim()).filter(Boolean)
+      })).filter(s => s.lines.length > 0 || !s.enabled);
+    }
+
+    function extractItemLegacyPools(itemNote) {
+      const n = itemNote || {};
+      const secs = Array.isArray(n.sections) ? n.sections : [];
+      const emp = (Array.isArray(n.empathyLines) && n.empathyLines.filter(Boolean).length)
+        ? n.empathyLines.filter(Boolean)
+        : ((secs[0] && Array.isArray(secs[0].lines) && secs[0].lines.filter(Boolean).length) ? secs[0].lines.filter(Boolean) : ['일상에서 자주 겪는 몸의 신호를 가볍게 살펴보세요.']);
+      const tru = (Array.isArray(n.truthLines) && n.truthLines.filter(Boolean).length)
+        ? n.truthLines.filter(Boolean)
+        : ((secs[1] && Array.isArray(secs[1].lines) && secs[1].lines.filter(Boolean).length) ? secs[1].lines.filter(Boolean) : emp);
+      const myt = (Array.isArray(n.mythLines) && n.mythLines.filter(Boolean).length)
+        ? n.mythLines.filter(Boolean)
+        : ((secs[2] && Array.isArray(secs[2].lines) && secs[2].lines.filter(Boolean).length) ? secs[2].lines.filter(Boolean) : tru);
+      const chk = (Array.isArray(n.checkList) && n.checkList.filter(Boolean).length)
+        ? n.checkList.filter(Boolean)
+        : ((secs[3] && Array.isArray(secs[3].lines) && secs[3].lines.filter(Boolean).length) ? secs[3].lines.filter(Boolean) : tru);
+      return { emp, tru, myt, chk };
+    }
+
+    function mapStructureTemplateToTargetNote(templateSections, targetItemNote) {
+      const { emp, tru, myt, chk } = extractItemLegacyPools(targetItemNote);
+      const total = templateSections.length;
+      return templateSections.map((tSec, idx) => {
+        let mappedLines = [];
+        if (total === 1) {
+          mappedLines = [emp[0], tru[0], chk[0]].filter(Boolean);
+        } else if (total === 2) {
+          if (idx === 0) {
+            mappedLines = tSec.type === 'qa' ? myt.slice() : (tSec.type === 'highlight' ? tru.slice() : emp.slice());
+          } else {
+            mappedLines = (tSec.type === 'checklist' || (tSec.heading || '').includes('체크') || (tSec.heading || '').includes('루틴')) ? chk.slice() : tru.slice();
+          }
+        } else if (total === 3) {
+          if (idx === 0) {
+            mappedLines = tSec.type === 'qa' ? myt.slice() : ((tSec.lines && tSec.lines.length === 1 && emp[0]) ? [emp[0]] : emp.slice());
+          } else if (idx === 1) {
+            mappedLines = tru.slice();
+          } else {
+            mappedLines = chk.slice();
+          }
+        } else {
+          const pool = [emp, tru, myt, chk];
+          if (idx < 4) {
+            mappedLines = pool[idx].slice();
+          } else {
+            mappedLines = (Array.isArray(tSec.lines) && tSec.lines.length) ? tSec.lines.slice() : [tru[0] || emp[0]].filter(Boolean);
+          }
+        }
+        if (!mappedLines.length) {
+          mappedLines = (Array.isArray(tSec.lines) && tSec.lines.length) ? tSec.lines.slice() : ['오늘 하루 내 몸이 보내는 건강 신호를 가볍게 점검해 보세요.'];
+        }
+        return {
+          id: 'sec_' + (idx + 1),
+          enabled: tSec.enabled !== false,
+          icon: tSec.icon,
+          heading: tSec.heading,
+          type: tSec.type || 'text',
+          spanFull: Boolean(tSec.spanFull),
+          lines: mappedLines
+        };
+      });
+    }
+
+    function showGlobalSyncStatus(msg) {
+      const gStatusEl = document.getElementById('nm-global-sync-status');
+      if (!gStatusEl) return;
+      gStatusEl.textContent = msg;
+      gStatusEl.classList.add('show');
+    }
+
+    window.toggleAllGlobalCheckboxes = function() {
+      const c1 = document.getElementById('nm-apply-structure-all-chk');
+      const c2 = document.getElementById('nm-apply-content-all-chk');
+      const c3 = document.getElementById('nm-apply-design-all-chk');
+      if (!c1 || !c2 || !c3) return;
+      const shouldCheck = !(c1.checked && c3.checked);
+      c1.checked = shouldCheck;
+      c3.checked = shouldCheck;
+      if (!shouldCheck) c2.checked = false;
+      showToast(shouldCheck
+        ? '✨ [섹션 구조·소제목·탭 설정] + [레이아웃·색감 디자인] 전체 메뉴 공통 적용이 체크되었습니다!'
+        : '전체 메뉴 공통 적용 체크가 해제되었습니다.');
+    };
+
+    window.applyGlobalContentPreset = function(mode) {
+      if (!modalDraft) return;
+      const { hardErrors } = auditModalDraft();
+      if (hardErrors.length > 0) {
+        showModalInlineAlert(hardErrors[0]);
+        showToast(hardErrors[0], true);
+        return;
+      }
+
+      const d = JSON.parse(JSON.stringify(modalDraft.popupDesign));
+      const n = JSON.parse(JSON.stringify(modalDraft.note));
+      const cleanSections = sanitizeSectionsList(n.sections);
+      const defaultHeadings = cleanSections.map(s => ({
+        enabled: s.enabled !== false,
+        icon: s.icon,
+        heading: s.heading,
+        type: s.type,
+        spanFull: Boolean(s.spanFull)
+      }));
+
+      const layoutKeys = ['widthMode', 'headerLayout', 'sectionLayout', 'density', 'radius', 'fontScale', 'titleFont', 'titleQuotes'];
+      const colorKeys = ['colorPreset', 'headerBg', 'headerText', 'accentColor', 'bodyBg', 'cardBg', 'bodyText'];
+      const titleOptKeys = ['showPartBadge', 'tab01Step', 'tab01Label'];
+
+      state.items.forEach((other, oIdx) => {
+        other.popupDesign = Object.assign({}, DEFAULT_POPUP_DESIGN, other.popupDesign || {});
+        other.leadNote = other.leadNote || {};
+
+        if (mode === 'structure_only' || mode === 'all_in_one_structure') {
+          const mappedSecs = (oIdx === editingRowIdx)
+            ? JSON.parse(JSON.stringify(cleanSections))
+            : mapStructureTemplateToTargetNote(cleanSections, other.leadNote);
+          other.leadNote.sections = mappedSecs;
+          other.leadNote.isCustomLead = true;
+          other.leadNoteOverride = true;
+          other.popupDesign.defaultSectionHeadings = JSON.parse(JSON.stringify(defaultHeadings));
+        }
+
+        if (mode === 'sections_and_body') {
+          const clonedSecs = JSON.parse(JSON.stringify(cleanSections));
+          other.leadNote.sections = clonedSecs;
+          other.leadNote.isCustomLead = true;
+          other.leadNoteOverride = true;
+          other.popupDesign.defaultSectionHeadings = JSON.parse(JSON.stringify(defaultHeadings));
+          const ensurePair = (secIdx, fb) => {
+            const ls = (clonedSecs[secIdx] && clonedSecs[secIdx].lines && clonedSecs[secIdx].lines.length) ? clonedSecs[secIdx].lines : [fb];
+            return [ls[0] || fb, ls[1] || ls[0] || fb];
+          };
+          const fb0 = (clonedSecs[0] && clonedSecs[0].lines[0]) || other.leadNote.questionTitle || '건강 체크 포인트';
+          other.leadNote.empathyLines = ensurePair(0, fb0);
+          other.leadNote.truthLines = ensurePair(1, fb0);
+          other.leadNote.mythLines = ensurePair(2, fb0);
+          other.leadNote.checkList = ensurePair(3, fb0);
+        }
+
+        if (mode === 'title_options' || mode === 'all_in_one_structure' || mode === 'full_content' || mode === 'headline_all') {
+          titleOptKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+          other.leadNote.strictQuestionMark = Boolean(n.strictQuestionMark);
+          other.leadNote.subTitle = String(n.subTitle || '').trim();
+          other.popupDesign.commonSubTitle = String(n.subTitle || '').trim();
+          if (String(n.badgeOverride || '').trim()) {
+            other.leadNote.badgeOverride = String(n.badgeOverride || '').trim();
+          }
+        }
+
+        if (mode === 'headline_all' || mode === 'full_content') {
+          other.leadNote.keyword = String(n.keyword || '').trim();
+          other.leadNote.questionTitle = String(n.questionTitle || '').trim();
+          other.leadNote.subTitle = String(n.subTitle || '').trim();
+          other.leadNote.badgeOverride = String(n.badgeOverride || '').trim();
+          other.leadNote.strictQuestionMark = Boolean(n.strictQuestionMark);
+          other.leadNote.isCustomLead = true;
+          other.leadNoteOverride = true;
+        }
+
+        if (mode === 'full_content') {
+          const clonedSecs = JSON.parse(JSON.stringify(cleanSections));
+          other.leadNote.sections = clonedSecs;
+          other.popupDesign.defaultSectionHeadings = JSON.parse(JSON.stringify(defaultHeadings));
+          const ensurePair = (secIdx, fb) => {
+            const ls = (clonedSecs[secIdx] && clonedSecs[secIdx].lines && clonedSecs[secIdx].lines.length) ? clonedSecs[secIdx].lines : [fb];
+            return [ls[0] || fb, ls[1] || ls[0] || fb];
+          };
+          const fb0 = (clonedSecs[0] && clonedSecs[0].lines[0]) || n.questionTitle.trim();
+          other.leadNote.empathyLines = ensurePair(0, fb0);
+          other.leadNote.truthLines = ensurePair(1, fb0);
+          other.leadNote.mythLines = ensurePair(2, fb0);
+          other.leadNote.checkList = ensurePair(3, fb0);
+        }
+
+        if (mode === 'layout_only' || mode === 'all_in_one_structure') {
+          layoutKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+        }
+
+        if (mode === 'color_only' || mode === 'all_in_one_structure') {
+          colorKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+        }
+      });
+
+      // Sync footer checkboxes for visual clarity
+      if (mode === 'structure_only') {
+        document.getElementById('nm-apply-structure-all-chk').checked = true;
+      } else if (mode === 'full_content' || mode === 'sections_and_body' || mode === 'headline_all') {
+        document.getElementById('nm-apply-content-all-chk').checked = true;
+      } else if (mode === 'all_in_one_structure') {
+        document.getElementById('nm-apply-structure-all-chk').checked = true;
+        document.getElementById('nm-apply-design-all-chk').checked = true;
+      } else if (mode === 'layout_only' || mode === 'color_only') {
+        document.getElementById('nm-apply-design-all-chk').checked = true;
+      }
+
+      markDirty(true);
+      renderTable();
+
+      const msgMap = {
+        structure_only: '✔ 9개 전체 메뉴에 현재 [섹션 구조 · 소제목 · 아이콘 · 표현방식]이 일괄 적용되었습니다! (각 메뉴 고유 본문 유지)',
+        title_options: '✔ 9개 전체 메뉴에 현재 [01탭 라벨 · 버튼명 · 배지 표시 · 질문형 체크 · 보조 부제목]이 일괄 적용되었습니다!',
+        headline_all: '✔ 9개 전체 메뉴에 현재 [메인 제목 · 부제목 · 키워드 · 탭 설정]이 동일하게 일괄 적용되었습니다!',
+        sections_and_body: '✔ 9개 전체 메뉴에 현재 [섹션 구조 + 본문 문장 전체]가 동일하게 일괄 적용되었습니다!',
+        full_content: '✔ 9개 전체 메뉴에 현재 [제목 + 구조 + 본문 내용 전체]가 100% 동일하게 일괄 적용되었습니다!',
+        all_in_one_structure: '✔ 9개 전체 메뉴에 [섹션 구조·소제목 + 탭 설정 + 레이아웃·서체 + 색감 팔레트]가 올인원 통일되었습니다!',
+        layout_only: '✔ 9개 전체 메뉴에 현재 [레이아웃 · 서체] 설정이 일괄 적용되었습니다!',
+        color_only: '✔ 9개 전체 메뉴에 현재 [색감 · 테마 팔레트]가 일괄 적용되었습니다!'
+      };
+      const finalMsg = msgMap[mode] || '✔ 9개 전체 메뉴에 일괄 적용되었습니다!';
+      showGlobalSyncStatus(finalMsg + ' 하단 [⚡ 표 반영 + 로컬 3D 즉시 제작]을 누르면 3D 화면에 즉시 반영됩니다.');
+      showToast(finalMsg);
+    };
+
+    window.syncRowToAllMenus = function(sourceIdx, mode) {
+      const src = state.items[sourceIdx];
+      if (!src) return;
+      const srcDesign = Object.assign({}, DEFAULT_POPUP_DESIGN, src.popupDesign || {});
+      const srcNote = src.leadNote || {};
+      const srcSections = sanitizeSectionsList(buildInitialSectionsFromNote(srcNote, srcDesign));
+      const defaultHeadings = srcSections.map(s => ({
+        enabled: s.enabled !== false,
+        icon: s.icon,
+        heading: s.heading,
+        type: s.type,
+        spanFull: Boolean(s.spanFull)
+      }));
+
+      state.items.forEach((other, oIdx) => {
+        if (oIdx === sourceIdx) {
+          other.leadNote = other.leadNote || {};
+          other.leadNote.sections = JSON.parse(JSON.stringify(srcSections));
+          other.leadNoteOverride = true;
+          other.popupDesign = Object.assign({}, srcDesign, { defaultSectionHeadings: JSON.parse(JSON.stringify(defaultHeadings)) });
+          return;
+        }
+        other.popupDesign = Object.assign({}, srcDesign, {
+          defaultSectionHeadings: JSON.parse(JSON.stringify(defaultHeadings)),
+          commonSubTitle: String(srcNote.subTitle || '').trim()
+        });
+        other.leadNote = other.leadNote || {};
+        other.leadNote.strictQuestionMark = Boolean(srcNote.strictQuestionMark);
+        other.leadNote.subTitle = String(srcNote.subTitle || '').trim();
+        other.leadNote.isCustomLead = true;
+        other.leadNoteOverride = true;
+
+        if (mode === 'full_all') {
+          other.leadNote = JSON.parse(JSON.stringify(src.leadNote));
+          other.leadNote.sections = JSON.parse(JSON.stringify(srcSections));
+          other.leadNote.isCustomLead = true;
+        } else {
+          other.leadNote.sections = mapStructureTemplateToTargetNote(srcSections, other.leadNote);
+        }
+      });
+
+      markDirty(true);
+      renderTable();
+      const srcLabel = src.shortLabel || src.partLabel || src.id;
+      showToast(mode === 'full_all'
+        ? '📋 [' + srcLabel + '] 메뉴의 제목·본문·구조·디자인이 9개 전체 메뉴에 동일하게 복사되었습니다!'
+        : '🧱 [' + srcLabel + '] 메뉴의 섹션 구조·소제목·레이아웃·색감이 9개 전체 메뉴에 통일되었습니다! (각 메뉴 본문 유지)');
+    };
+
+    window.syncFromTopStrip = function(mode) {
+      const sel = document.getElementById('cfg-sync-source-idx');
+      const idx = sel ? Number(sel.value || 0) : 0;
+      window.syncRowToAllMenus(idx, mode);
+    };
+
     window.applyNoteModalChanges = async function(runInstantBuild) {
       if (editingRowIdx < 0 || !state.items[editingRowIdx] || !modalDraft) return;
       const { hardErrors } = auditModalDraft();
@@ -3105,24 +3637,17 @@
       const d = JSON.parse(JSON.stringify(modalDraft.popupDesign));
       const n = JSON.parse(JSON.stringify(modalDraft.note));
 
-      const cleanSections = (n.sections || []).map((s, idx) => ({
-        id: s.id || ('sec_' + (idx + 1)),
-        enabled: s.enabled !== false,
-        icon: String(s.icon == null ? '' : s.icon).trim(),
-        heading: String(s.heading || '').trim(),
-        type: s.type || 'text',
-        spanFull: Boolean(s.spanFull),
-        lines: (Array.isArray(s.lines) ? s.lines : []).map(l => String(l || '').trim()).filter(Boolean)
-      })).filter(s => s.lines.length > 0 || !s.enabled);
+      const cleanSections = sanitizeSectionsList(n.sections);
 
       // Sync defaultSectionHeadings so 2-day rotating notes in this menu also inherit customized headings & types
-      d.defaultSectionHeadings = cleanSections.slice(0, 4).map(s => ({
+      d.defaultSectionHeadings = cleanSections.map(s => ({
         enabled: s.enabled !== false,
         icon: s.icon,
         heading: s.heading,
         type: s.type,
         spanFull: Boolean(s.spanFull)
       }));
+      d.commonSubTitle = String(n.subTitle || '').trim();
 
       // Keep legacy 4-key arrays populated for backward compatibility
       const ensurePair = (secIdx, fallbackLine) => {
@@ -3150,17 +3675,47 @@
       item.popupDesign = d;
       item.leadNoteOverride = document.getElementById('nm-override-chk').checked;
 
+      const applyStructureAll = document.getElementById('nm-apply-structure-all-chk').checked;
+      const applyContentAll = document.getElementById('nm-apply-content-all-chk').checked;
       const applyDesignAll = document.getElementById('nm-apply-design-all-chk').checked;
-      if (applyDesignAll) {
-        const sharedKeys = [
+
+      if (applyStructureAll || applyContentAll || applyDesignAll) {
+        const designKeys = [
           'colorPreset', 'headerBg', 'headerText', 'accentColor', 'bodyBg', 'cardBg', 'bodyText',
           'widthMode', 'headerLayout', 'sectionLayout', 'density', 'radius', 'fontScale',
           'titleFont', 'titleQuotes', 'showPartBadge', 'tab01Step', 'tab01Label'
         ];
+        const tabTitleKeys = ['showPartBadge', 'tab01Step', 'tab01Label'];
+
         state.items.forEach((other, oIdx) => {
           if (oIdx === targetIdx) return;
           other.popupDesign = Object.assign({}, DEFAULT_POPUP_DESIGN, other.popupDesign || {});
-          sharedKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+          other.leadNote = other.leadNote || {};
+
+          if (applyDesignAll) {
+            designKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+          }
+
+          if (applyStructureAll) {
+            tabTitleKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+            other.popupDesign.defaultSectionHeadings = JSON.parse(JSON.stringify(d.defaultSectionHeadings));
+            other.popupDesign.commonSubTitle = String(n.subTitle || '').trim();
+            other.leadNote.strictQuestionMark = Boolean(n.strictQuestionMark);
+            if (String(n.subTitle || '').trim()) {
+              other.leadNote.subTitle = String(n.subTitle || '').trim();
+            }
+            other.leadNote.sections = mapStructureTemplateToTargetNote(cleanSections, other.leadNote);
+            other.leadNote.isCustomLead = true;
+            other.leadNoteOverride = true;
+          }
+
+          if (applyContentAll) {
+            tabTitleKeys.forEach(k => { other.popupDesign[k] = d[k]; });
+            other.popupDesign.defaultSectionHeadings = JSON.parse(JSON.stringify(d.defaultSectionHeadings));
+            other.popupDesign.commonSubTitle = String(n.subTitle || '').trim();
+            other.leadNote = JSON.parse(JSON.stringify(item.leadNote));
+            other.leadNoteOverride = true;
+          }
         });
       }
 
@@ -3173,7 +3728,14 @@
       if (runInstantBuild) {
         await window.saveAndBuild('save_build', focusId);
       } else {
-        showToast('[' + labelName + '] 제목·구조·레이아웃·색감이 표에 반영되었습니다. [즉시 제작] 클릭 시 3D에 반영됩니다!');
+        const appliedScopes = [];
+        if (applyContentAll) appliedScopes.push('제목·본문·구조 전체');
+        else if (applyStructureAll) appliedScopes.push('섹션 구조·소제목·탭 설정');
+        if (applyDesignAll) appliedScopes.push('레이아웃·색감 디자인');
+        const scopeTxt = appliedScopes.length > 0
+          ? '9개 전체 메뉴에 [' + appliedScopes.join(' + ') + ']가 일괄 반영되었습니다!'
+          : '[' + labelName + '] 제목·구조·레이아웃·색감이 표에 반영되었습니다.';
+        showToast(scopeTxt + ' [즉시 제작] 클릭 시 3D에 반영됩니다!');
       }
     };
 

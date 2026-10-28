@@ -112,10 +112,34 @@ function normalizeNoteSections(note, defaultHeadings) {
   const tLines = Array.isArray(note.truthLines) ? note.truthLines : (Array.isArray(note.truth) ? note.truth : []);
   const mLines = Array.isArray(note.mythLines) ? note.mythLines : (Array.isArray(note.myth) ? note.myth : []);
   const cLines = Array.isArray(note.checkList) ? note.checkList : (Array.isArray(note.check) ? note.check : []);
+  if (dh.length > 0 && dh.length !== 4) {
+    return dh.map((dSec, idx) => {
+      let lines = [];
+      if (dh.length === 1) {
+        lines = [eLines[0], tLines[0], cLines[0]].filter(Boolean);
+      } else if (dh.length === 2) {
+        lines = idx === 0 ? (dSec.type === 'qa' ? mLines : (dSec.type === 'highlight' ? tLines : eLines)) : (dSec.type === 'checklist' ? cLines : tLines);
+      } else if (dh.length === 3) {
+        lines = idx === 0 ? (dSec.type === 'qa' ? mLines : (eLines[0] ? [eLines[0]] : eLines)) : (idx === 1 ? tLines : cLines);
+      } else {
+        const pool = [eLines, tLines, mLines, cLines];
+        lines = pool[idx] || (Array.isArray(dSec.lines) ? dSec.lines : [tLines[0] || eLines[0]].filter(Boolean));
+      }
+      return {
+        id: 'sec_' + (idx + 1),
+        enabled: dSec.enabled !== false,
+        icon: dSec.icon != null ? String(dSec.icon) : '',
+        heading: dSec.heading || ('섹션 ' + (idx + 1)),
+        type: dSec.type || 'text',
+        spanFull: Boolean(dSec.spanFull),
+        lines: lines.filter(Boolean)
+      };
+    });
+  }
   return [
     {
       id: 'sec_1',
-      enabled: true,
+      enabled: !(dh[0] && dh[0].enabled === false),
       icon: (dh[0] && dh[0].icon != null) ? dh[0].icon : '🎒',
       heading: (dh[0] && dh[0].heading) ? dh[0].heading : '1. 일상 속 공감 상황',
       type: (dh[0] && dh[0].type) ? dh[0].type : 'text',
@@ -124,7 +148,7 @@ function normalizeNoteSections(note, defaultHeadings) {
     },
     {
       id: 'sec_2',
-      enabled: true,
+      enabled: !(dh[1] && dh[1].enabled === false),
       icon: (dh[1] && dh[1].icon != null) ? dh[1].icon : '💡',
       heading: (dh[1] && dh[1].heading) ? dh[1].heading : '2. 몸속 연골/신경이 알려주는 진실',
       type: (dh[1] && dh[1].type) ? dh[1].type : 'highlight',
@@ -133,7 +157,7 @@ function normalizeNoteSections(note, defaultHeadings) {
     },
     {
       id: 'sec_3',
-      enabled: true,
+      enabled: !(dh[2] && dh[2].enabled === false),
       icon: (dh[2] && dh[2].icon != null) ? dh[2].icon : '❌',
       heading: (dh[2] && dh[2].heading) ? dh[2].heading : '3. 흔히 하는 오해 바로잡기',
       type: (dh[2] && dh[2].type) ? dh[2].type : 'text',
@@ -142,7 +166,7 @@ function normalizeNoteSections(note, defaultHeadings) {
     },
     {
       id: 'sec_4',
-      enabled: true,
+      enabled: !(dh[3] && dh[3].enabled === false),
       icon: (dh[3] && dh[3].icon != null) ? dh[3].icon : '🔍',
       heading: (dh[3] && dh[3].heading) ? dh[3].heading : '4. 오늘 밤 집에서 해보는 1분 체크',
       type: (dh[3] && dh[3].type) ? dh[3].type : 'checklist',

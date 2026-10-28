@@ -1927,6 +1927,34 @@ function buildBodyExplorerHtml() {
         return note.sections.filter(s => s && s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim()));
       }
       const dh = (design && Array.isArray(design.defaultSectionHeadings)) ? design.defaultSectionHeadings : [];
+      const emp = Array.isArray(note.empathy) ? note.empathy : [];
+      const tru = Array.isArray(note.truth) ? note.truth : [];
+      const myt = Array.isArray(note.myth) ? note.myth : [];
+      const chk = Array.isArray(note.check) ? note.check : [];
+      if (dh.length > 0 && dh.length !== 4) {
+        return dh.map((dSec, idx) => {
+          let lines = [];
+          if (dh.length === 1) {
+            lines = [emp[0], tru[0], chk[0]].filter(Boolean);
+          } else if (dh.length === 2) {
+            lines = idx === 0 ? (dSec.type === 'qa' ? myt : (dSec.type === 'highlight' ? tru : emp)) : (dSec.type === 'checklist' ? chk : tru);
+          } else if (dh.length === 3) {
+            lines = idx === 0 ? (dSec.type === 'qa' ? myt : (emp[0] ? [emp[0]] : emp)) : (idx === 1 ? tru : chk);
+          } else {
+            const pool = [emp, tru, myt, chk];
+            lines = pool[idx] || (Array.isArray(dSec.lines) ? dSec.lines : [tru[0] || emp[0]].filter(Boolean));
+          }
+          return {
+            id: 'sec_' + (idx + 1),
+            enabled: dSec.enabled !== false,
+            icon: dSec.icon != null ? dSec.icon : '',
+            heading: dSec.heading || ('섹션 ' + (idx + 1)),
+            type: dSec.type || 'text',
+            spanFull: Boolean(dSec.spanFull),
+            lines
+          };
+        }).filter(s => s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim()));
+      }
       const fallbackSecs = [
         {
           id: 'sec_1',
@@ -1935,7 +1963,7 @@ function buildBodyExplorerHtml() {
           heading: (dh[0] && dh[0].heading) ? dh[0].heading : '1. 일상 속 공감 상황',
           type: (dh[0] && dh[0].type) ? dh[0].type : 'text',
           spanFull: Boolean(dh[0] && dh[0].spanFull),
-          lines: Array.isArray(note.empathy) ? note.empathy : []
+          lines: emp
         },
         {
           id: 'sec_2',
@@ -1944,7 +1972,7 @@ function buildBodyExplorerHtml() {
           heading: (dh[1] && dh[1].heading) ? dh[1].heading : '2. 몸속 연골/신경이 알려주는 진실',
           type: (dh[1] && dh[1].type) ? dh[1].type : 'highlight',
           spanFull: Boolean(dh[1] && dh[1].spanFull),
-          lines: Array.isArray(note.truth) ? note.truth : []
+          lines: tru
         },
         {
           id: 'sec_3',
@@ -1953,7 +1981,7 @@ function buildBodyExplorerHtml() {
           heading: (dh[2] && dh[2].heading) ? dh[2].heading : '3. 흔히 하는 오해 바로잡기',
           type: (dh[2] && dh[2].type) ? dh[2].type : 'text',
           spanFull: Boolean(dh[2] && dh[2].spanFull),
-          lines: Array.isArray(note.myth) ? note.myth : []
+          lines: myt
         },
         {
           id: 'sec_4',
@@ -1962,7 +1990,7 @@ function buildBodyExplorerHtml() {
           heading: (dh[3] && dh[3].heading) ? dh[3].heading : '4. 오늘 밤 집에서 해보는 1분 체크',
           type: (dh[3] && dh[3].type) ? dh[3].type : 'checklist',
           spanFull: Boolean(dh[3] && dh[3].spanFull),
-          lines: Array.isArray(note.check) ? note.check : []
+          lines: chk
         }
       ];
       return fallbackSecs.filter(s => s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim()));
@@ -2053,8 +2081,11 @@ function buildBodyExplorerHtml() {
       const showBadge = d.showPartBadge !== false;
       const useQuotes = d.titleQuotes !== false;
       const titleInner = useQuotes ? ('&ldquo;' + escHtml(note.title) + '&rdquo;') : escHtml(note.title);
-      const subTitleHtml = (note.subTitle && String(note.subTitle).trim())
-        ? '<p class="hip-subtitle">' + escHtml(String(note.subTitle).trim()) + '</p>'
+      const effSubTitle = (note.subTitle && String(note.subTitle).trim())
+        ? String(note.subTitle).trim()
+        : ((d.commonSubTitle && String(d.commonSubTitle).trim()) ? String(d.commonSubTitle).trim() : '');
+      const subTitleHtml = effSubTitle
+        ? '<p class="hip-subtitle">' + escHtml(effSubTitle) + '</p>'
         : '';
       const closeBtnHtml = '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>';
 

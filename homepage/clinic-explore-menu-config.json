@@ -1,6 +1,6 @@
 {
   "version": "5.7",
-  "updatedAt": "2026-10-28T02:55:58.782Z",
+  "updatedAt": "2026-10-28T05:36:35.288Z",
   "header": {
     "title": "바른한의원 진료 살펴보기",
     "subMode": "auto2day",
@@ -306,10 +306,64 @@
       ],
       "isOverview": false,
       "alignLeft": false,
-      "leadNoteOverride": false,
+      "leadNoteOverride": true,
       "leadNote": {
         "keyword": "소아비만",
         "questionTitle": "통통하게 오른 살이 정말 나중에 다 키로 갈까요?",
+        "subTitle": "",
+        "badgeOverride": "",
+        "strictQuestionMark": false,
+        "isCustomLead": true,
+        "sections": [
+          {
+            "id": "sec_1",
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false,
+            "lines": [
+              "한창 클 나이엔 잘 먹어야 키도 큰다는데, 요즘 아이 배와 허벅지에 살이 부쩍 올라 걱정이에요.",
+              "어른들은 어릴 때 찐 살은 다 키로 간다고 안심하라고 하시지만, 혹시 소아비만 때문에 키가 일찍 멈추진 않을지 마음이 쓰입니다."
+            ]
+          },
+          {
+            "id": "sec_2",
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false,
+            "lines": [
+              "몸속에 과도하게 쌓인 지방은 가만히 있지 않고, 뇌에 이제 어른 몸으로 빨리 자라라는 재촉 신호를 보내 무릎 성장 연골의 문 닫는 시계를 앞당깁니다.",
+              "마치 열 시간 동안 천천히 지어야 높게 올라갈 건물을 일찍 마감 공사에 들어가게 하는 것과 같아서, 소아비만이 지속되면 당장은 커 보여도 최종 키에서 손해를 보기 쉽습니다."
+            ]
+          },
+          {
+            "id": "sec_3",
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false,
+            "lines": [
+              "어릴 때 살이 곧 키가 된다는 말은 활동량이 아주 많고 먹을거리가 부족하던 시절에나 맞던 이야기입니다.",
+              "달고 기름진 간식이 흔한 요즘에는 남는 열량이 허벅지 뼈와 종아리 뼈 길이를 늘리는 대신 사춘기 시계만 빠르게 돌리고 무릎 관절에 무거운 짐을 얹을 뿐입니다."
+            ]
+          },
+          {
+            "id": "sec_4",
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false,
+            "lines": [
+              "오늘 밤 샤워 후 아이 목 뒷부분과 겨드랑이 피부를 보았을 때, 때가 낀 것처럼 거뭇하고 두꺼워진 흔적이 있는지 살펴보세요.",
+              "최근 반년 사이 바지 허리둘레가 급격히 작아지면서 또래보다 머리 냄새가 진해지거나 빠른 사춘기 신체 변화가 비치지 않는지 확인해 보세요."
+            ]
+          }
+        ],
         "empathyLines": [
           "한창 클 나이엔 잘 먹어야 키도 큰다는데, 요즘 아이 배와 허벅지에 살이 부쩍 올라 걱정이에요.",
           "어른들은 어릴 때 찐 살은 다 키로 간다고 안심하라고 하시지만, 혹시 소아비만 때문에 키가 일찍 멈추진 않을지 마음이 쓰입니다."
@@ -345,7 +399,37 @@
         "titleQuotes": true,
         "showPartBadge": true,
         "tab01Step": "01 · 최신 글 1편",
-        "tab01Label": "오늘의 건강 글"
+        "tab01Label": "오늘의 건강 글",
+        "defaultSectionHeadings": [
+          {
+            "enabled": true,
+            "icon": "🎒",
+            "heading": "1. 일상 속 불편함",
+            "type": "highlight",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "💡",
+            "heading": "2. 의학적 진실",
+            "type": "bullets",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "❌",
+            "heading": "3. 흔히 하는 오해",
+            "type": "numbered",
+            "spanFull": false
+          },
+          {
+            "enabled": true,
+            "icon": "🔍",
+            "heading": "4. 오늘 바로 해보는 1분 체크",
+            "type": "checklist",
+            "spanFull": false
+          }
+        ]
       }
     },
     {
