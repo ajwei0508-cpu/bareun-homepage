@@ -12,3 +12,8 @@ homepage/reservations.json
 reservations.json
 homepage/private-qna-db.json
 private-qna-db.json
+imagemaker/node_modules/
+imagemaker/data/settings.json
+imagemaker/data/upload-cache.json
+imagemaker/data/outputs/
+imagemaker/data/loras/

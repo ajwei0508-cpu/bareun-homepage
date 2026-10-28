@@ -1,0 +1,13 @@
+{
+  "name": "identity-photo-studio",
+  "version": "1.0.0",
+  "description": "Personal FLUX LoRA + Face Lock (InsightFace + CodeFormer) Portrait Studio",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js"
+  },
+  "dependencies": {
+    "@fal-ai/client": "^1.2.1",
+    "adm-zip": "^0.5.16"
+  }
+}

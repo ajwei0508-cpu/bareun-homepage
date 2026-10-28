@@ -1,7 +1,17 @@
 # 📋 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-10-28 v6.4 (① **바른 성장 · 성조숙증 상세페이지(`growth.html` / `/growth/`) 좌측 고정 패널 + 우측 10대 수평 카드(`CARD 01 ~ CARD 10`) 전체 구성 정리 및 실시간 편집·배포 스튜디오(`http://localhost:3000/growth-card-editor.html`) 구축** · ② **네이버 서치어드바이저 80자 이내 기준 통과용 대표 사이트 설명(`meta description`) & 오픈그래프 설명(`og:description` · `twitter:description` · WP `blogdescription`) 76자 맞춤 문구 즉시 반영 및 실서버 배포 완료** · ③ **실서버(`/body-explorer/`) 3D 인체모형 GLB 에셋 로딩 복구 및 이중 폴백 엔진(`loadModelWithFallback`) 탑재 완료**)
+> **최종 업데이트**: 2026-10-28 v6.5 (① **`imagemaker/` 폴더 신설 — 원장님 전용 인물 고정 AI 사진관 `Identity Lock Studio` (`http://localhost:4500`, 전용 FLUX Portrait LoRA + PuLID + 2차 Face Lock/CodeFormer + 기존 홈페이지 사진 30장 얼굴 100% 교정기) 구축 및 GitHub 푸시 완료** · ② **바른 성장 · 성조숙증 상세페이지(`growth.html` / `/growth/`) 10대 카드 & 좌측 패널 편집 스튜디오(`http://localhost:3000/growth-card-editor.html`) 구축** · ③ **네이버 서치어드바이저 80자 이내 사이트 설명 반영 및 3D 인체모형 실서버 GLB 복구 완료**)
 > **작성자**: 하이엔드 홈페이지 디렉터 **아트 (Art)**
+
+---
+
+## 💎 000000000000000. 최신 완료 작업 요약 (2026-10-28 v6.5 · `imagemaker/` 원장님 전용 인물 고정 AI 사진관 구축 및 GitHub 반영)
+
+1. **`imagemaker/` 전용 스튜디오 신설 (`http://localhost:4500`, `imagemaker/serve.js`, `imagemaker/index.html`, `imagemaker/start-studio.bat`)**:
+   - **탭 1 [새 상황 연출 촬영]**: 한글 상황 설명 → 85mm 실사 스튜디오 프롬프트 자동 변환 + 전용 FLUX LoRA(`fal-ai/flux-lora`) / 무학습 즉시 모드(`fal-ai/flux-pulid`) + **2차 실제 이목구비 정밀 고정(`fal-ai/face-swap` + `fal-ai/codeformer`)** 자동 실행.
+   - **탭 2 [기존 홈페이지 사진 얼굴 100% 교정]**: `homepage/` 내 원장님 이미지 30장 자동 연동, 배경·가운·손동작은 100% 보존한 채 얼굴만 실제 원장님 기준 사진으로 정밀 교체 및 원본 자동 백업 덮어쓰기(`_backup_director_faces/`).
+   - **탭 3 [전용 얼굴 금형(LoRA) 학습·관리]**: `director_real_reference.jpg` 및 `doctor.png` 기본 시딩 완료, 사진 15~20장 드래그 시 자동 ZIP 패키징 후 `fal-ai/flux-lora-portrait-trainer` 학습 및 로컬 `.safetensors` 영구 백업.
+   - API 키(`imagemaker/data/settings.json`) 및 대용량 출력물은 `.gitignore`로 완벽 분리하여 GitHub 보안 유지.
 
 ---
 

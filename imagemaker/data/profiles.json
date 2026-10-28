@@ -1,0 +1,18 @@
+[
+  {
+    "id": "director_ahn",
+    "name": "안정위 대표원장",
+    "triggerWord": "AHNJUNGWEI_PERSON",
+    "baseTraits": "a Korean male traditional Korean medicine doctor in his late 30s, wearing thin gold-rimmed rectangular glasses, neat natural black hair parted slightly, authentic Korean skin texture",
+    "masterPhoto": "director_real_reference.jpg",
+    "photos": [
+      "director_real_reference.jpg",
+      "doctor.png"
+    ],
+    "loraUrl": "",
+    "localLoraFile": "",
+    "trainedAt": null,
+    "trainerType": "",
+    "createdAt": "2026-10-28T10:07:13.076Z"
+  }
+]
