@@ -21,6 +21,7 @@ imagemaker/data/free-models/
 imagemaker/data/profiles/
 imagemaker/data/profiles.json
 imagemaker/data/gallery.json
+imagemaker/data/comparisons.json
 imagemaker/__pycache__/
 *.pyc
 *.npz

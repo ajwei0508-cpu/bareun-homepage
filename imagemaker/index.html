@@ -3,30 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IDENTITY LOCK STUDIO | 원장님 전용 0원 무료 인물 고정 AI 사진관</title>
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0f0e0d" />
+  <title>IDENTITY LOCK STUDIO | 🆓 무료 로컬 GPU & 👑 유료 PRO 품질 비교 사진관</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0f0e0d;
-      --panel: #181614;
+      --bg: #0e0d0c;
+      --panel: #171513;
       --panel-soft: #211e1b;
-      --panel-hover: #2a2622;
-      --border: #332e28;
-      --gold: #d4a962;
-      --gold-strong: #e5be7b;
-      --text: #f5f1ea;
-      --text-sub: #a89f93;
+      --panel-hover: #2b2723;
+      --border: #3a342c;
+
+      /* 🆓 Free Emerald Tokens */
       --green: #34d399;
-      --green-bg: rgba(52, 211, 153, 0.14);
-      --amber: #fbbf24;
+      --green-strong: #10b981;
+      --green-bg: color-mix(in oklab, #34d399 14%, #171513);
+      --green-border: #2bb884;
+
+      /* 👑 Paid PRO Royal Champagne Gold Tokens */
+      --gold: #e5be73;
+      --gold-strong: #f6d88c;
+      --gold-deep: #b5842f;
+      --gold-bg: color-mix(in oklab, #e5be73 14%, #171513);
+      --gold-bg-strong: color-mix(in oklab, #e5be73 22%, #171513);
+      --gold-border: #d9ae59;
+
+      --text: #f6f2eb;
+      --text-sub: #ada396;
       --danger: #f87171;
       accent-color: var(--gold);
-      scrollbar-color: #4a4238 #151311;
+      scrollbar-color: #4f463b #141210;
       scrollbar-width: thin;
     }
 
     ::selection {
-      background: rgba(212, 169, 98, 0.35);
+      background: rgba(229, 190, 115, 0.35);
       color: #ffffff;
     }
 
@@ -35,57 +47,73 @@
     body {
       margin: 0;
       font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      background: radial-gradient(circle at 15% 0%, #201c17 0%, var(--bg) 55%);
+      background: radial-gradient(circle at 12% 0%, #211d17 0%, var(--bg) 58%);
       color: var(--text);
       line-height: 1.55;
       min-height: 100vh;
-      padding-bottom: 72px;
+      padding-bottom: 80px;
     }
 
+    /* Legend Banner & Topbar */
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 50;
-      background: rgba(15, 14, 13, 0.92);
+      z-index: 60;
+      background: rgba(14, 13, 12, 0.93);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      padding: 14px 28px;
+      padding: 13px 26px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
     }
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
-    .brand-badge {
+    .badge-free {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       background: linear-gradient(135deg, #34d399, #059669);
-      color: #071912;
+      color: #051810;
       font-weight: 800;
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      padding: 5px 11px;
+      font-size: 11.5px;
+      padding: 4px 10px;
       border-radius: 999px;
-      user-select: none;
+      border: 1px solid #6ee7b7;
+    }
+    .badge-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, #f7dc96, #c6923a);
+      color: #191205;
+      font-weight: 800;
+      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #fae5ad;
     }
     .brand h1 {
       margin: 0;
       font-size: 17px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: -0.02em;
     }
     .brand-sub {
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--text-sub);
     }
 
     .topbar-controls {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
       flex-wrap: wrap;
     }
 
@@ -119,16 +147,16 @@
       border-radius: 999px;
       background: var(--green-bg);
       color: var(--green);
-      border: 1px solid rgba(52, 211, 153, 0.35);
+      border: 1px solid var(--green-border);
     }
 
     button {
       font-family: inherit;
       cursor: pointer;
-      border: 1px solid transparent;
-      border-radius: 9px;
+      border: 1.5px solid transparent;
+      border-radius: 10px;
       font-size: 13.5px;
-      font-weight: 700;
+      font-weight: 800;
       padding: 9px 15px;
       transition: all 0.16s ease;
       display: inline-flex;
@@ -140,65 +168,141 @@
       opacity: 0.45;
       cursor: not-allowed;
     }
-    .btn-gold {
-      background: linear-gradient(135deg, #e2ba75, #a97a34);
-      color: #161310;
-      box-shadow: 0 4px 16px rgba(212, 169, 98, 0.25);
+    button:focus-visible {
+      outline: 2px solid var(--gold-strong);
+      outline-offset: 2px;
     }
-    .btn-gold:hover:not(:disabled) {
-      filter: brightness(1.07);
-      transform: translateY(-1px);
-    }
+
+    /* 🆓 Free Emerald CTA */
     .btn-free {
       background: linear-gradient(135deg, #34d399, #059669);
-      color: #061810;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.28);
+      color: #051810;
+      border-color: #6ee7b7;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.26);
     }
     .btn-free:hover:not(:disabled) {
       filter: brightness(1.07);
       transform: translateY(-1px);
     }
+
+    /* 👑 Paid PRO Gold CTA & Gold Menu Button */
+    .btn-gold {
+      background: linear-gradient(135deg, #f6d992 0%, #d4a149 52%, #a87624 100%);
+      color: #191104;
+      border-color: #fbe5ad;
+      box-shadow: 0 5px 20px rgba(229, 190, 115, 0.32);
+    }
+    .btn-gold:hover:not(:disabled) {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-gold-outline {
+      background: var(--gold-bg);
+      color: var(--gold-strong);
+      border: 1.5px solid var(--gold-border);
+    }
+    .btn-gold-outline:hover:not(:disabled) {
+      background: var(--gold-bg-strong);
+      border-color: var(--gold-strong);
+    }
+
+    /* ⚖️ Dual Free + Paid Compare CTA */
+    .btn-dual {
+      background: linear-gradient(90deg, #10b981 0%, #34d399 42%, #e5be73 60%, #c9963b 100%);
+      color: #0e100c;
+      border-color: #f3d796;
+      box-shadow: 0 5px 22px rgba(212, 169, 98, 0.28);
+    }
+    .btn-dual:hover:not(:disabled) {
+      filter: brightness(1.07);
+      transform: translateY(-1px);
+    }
+
     .btn-outline {
       background: var(--panel-soft);
       color: var(--text);
       border-color: var(--border);
     }
     .btn-outline:hover:not(:disabled) {
-      border-color: var(--gold);
+      border-color: #6b6052;
       background: var(--panel-hover);
     }
 
     .container {
-      max-width: 1380px;
-      margin: 24px auto 0;
+      max-width: 1400px;
+      margin: 18px auto 0;
       padding: 0 24px;
     }
 
+    /* Color Legend Bar */
+    .legend-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 10px 16px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background: #141210;
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+    }
+    .legend-items {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .legend-chip-free {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-weight: 800;
+    }
+    .legend-chip-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold-strong);
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+    }
+
+    /* 4-Tab Navigation */
     .tabs-nav {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 22px;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 1080px) {
+      .tabs-nav { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
       .tabs-nav { grid-template-columns: 1fr; }
     }
     .tab-btn {
       background: var(--panel);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       color: var(--text-sub);
-      padding: 15px 18px;
-      border-radius: 12px;
+      padding: 14px 16px;
+      border-radius: 13px;
       text-align: left;
       justify-content: flex-start;
-      gap: 12px;
+      gap: 11px;
     }
     .tab-btn .tab-num {
       width: 28px;
       height: 28px;
       border-radius: 8px;
       background: var(--panel-soft);
-      color: var(--gold);
+      color: var(--green);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -212,23 +316,54 @@
       gap: 2px;
     }
     .tab-btn .tab-title {
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--text);
     }
     .tab-btn .tab-desc {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 500;
       color: var(--text-sub);
     }
     .tab-btn.active {
-      background: linear-gradient(180deg, rgba(52, 211, 153, 0.12), rgba(24, 22, 20, 0.96));
+      background: linear-gradient(180deg, rgba(52, 211, 153, 0.13), rgba(23, 21, 19, 0.96));
       border-color: var(--green);
       box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
     }
     .tab-btn.active .tab-num {
       background: var(--green);
-      color: #071912;
+      color: #061810;
+    }
+
+    /* Compare Tab Special Dual Styling */
+    .tab-btn.tab-compare {
+      border-color: #5c5338;
+    }
+    .tab-btn.tab-compare .tab-num {
+      background: linear-gradient(135deg, #34d399, #e5be73);
+      color: #12100b;
+    }
+    .tab-btn.tab-compare.active {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.12), rgba(229, 190, 115, 0.16));
+      border-color: var(--gold);
+    }
+
+    /* Gold Menu Tab Styling */
+    .tab-btn.tab-has-gold {
+      border-color: rgba(217, 174, 89, 0.55);
+    }
+    .tab-btn.tab-has-gold .tab-num {
+      background: var(--gold-bg);
+      color: var(--gold-strong);
+      border: 1px solid var(--gold-border);
+    }
+    .tab-btn.tab-has-gold.active {
+      background: linear-gradient(180deg, rgba(229, 190, 115, 0.16), rgba(23, 21, 19, 0.96));
+      border-color: var(--gold-strong);
+    }
+    .tab-btn.tab-has-gold.active .tab-num {
+      background: var(--gold);
+      color: #191104;
     }
 
     .tab-panel { display: none; }
@@ -246,11 +381,18 @@
 
     .card {
       background: var(--panel);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 16px;
       padding: 22px 24px;
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
     }
+    /* 👑 Gold Menu Container Box */
+    .card-gold-menu {
+      background: linear-gradient(180deg, rgba(229, 190, 115, 0.11) 0%, rgba(23, 21, 19, 0.98) 100%);
+      border: 1.5px solid var(--gold-border);
+      box-shadow: 0 10px 30px rgba(217, 174, 89, 0.12);
+    }
+
     .card-head {
       display: flex;
       align-items: center;
@@ -261,6 +403,9 @@
       border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
     }
+    .card-gold-menu .card-head {
+      border-bottom-color: rgba(217, 174, 89, 0.35);
+    }
     .card-head h2 {
       margin: 0;
       font-size: 16.5px;
@@ -270,16 +415,125 @@
       gap: 8px;
     }
 
+    /* Visual Engine Selector Cards (Free = Emerald, Paid = Gold, Compare = Split) */
+    .engine-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    @media (max-width: 640px) {
+      .engine-cards-grid { grid-template-columns: 1fr; }
+    }
+    .engine-card {
+      position: relative;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: #13110f;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .engine-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .engine-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .engine-card-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .engine-card-desc {
+      font-size: 11.5px;
+      color: var(--text-sub);
+      line-height: 1.45;
+    }
+
+    /* Free Engine Card */
+    .engine-card.tier-free:hover {
+      border-color: var(--green-border);
+    }
+    .engine-card.tier-free:has(:checked) {
+      border-color: var(--green);
+      background: var(--green-bg);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+    .engine-card.tier-free .tier-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.18);
+      color: var(--green);
+      border: 1px solid var(--green-border);
+    }
+
+    /* 👑 Paid Gold Menu Engine Card */
+    .engine-card.tier-gold {
+      background: linear-gradient(145deg, rgba(229, 190, 115, 0.10), rgba(19, 17, 15, 0.96));
+      border-color: rgba(217, 174, 89, 0.65);
+    }
+    .engine-card.tier-gold .engine-card-title {
+      color: var(--gold-strong);
+    }
+    .engine-card.tier-gold:hover {
+      border-color: var(--gold-strong);
+      background: var(--gold-bg);
+    }
+    .engine-card.tier-gold:has(:checked) {
+      border-color: var(--gold-strong);
+      background: var(--gold-bg-strong);
+      box-shadow: 0 0 0 1.5px var(--gold-strong), 0 6px 20px rgba(229, 190, 115, 0.18);
+    }
+    .engine-card.tier-gold .tier-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f6d88c, #c59138);
+      color: #191104;
+      border: 1px solid #fbe6af;
+    }
+
+    /* ⚖️ Dual Compare Engine Card */
+    .engine-card.tier-compare {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(229, 190, 115, 0.12));
+      border-color: rgba(229, 190, 115, 0.55);
+    }
+    .engine-card.tier-compare:has(:checked) {
+      border-color: var(--gold-strong);
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.16), rgba(229, 190, 115, 0.22));
+      box-shadow: 0 0 0 1.5px var(--gold);
+    }
+    .engine-card.tier-compare .tier-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #34d399, #f0cb78);
+      color: #12100a;
+    }
+
     .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
     }
     .field label {
       font-size: 12.5px;
       font-weight: 700;
-      color: #cfc6b9;
+      color: #d6cdbf;
     }
     input[type="text"],
     input[type="password"],
@@ -289,15 +543,15 @@
       width: 100%;
       background: #12100e;
       color: var(--text);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 11px 13px;
-      font-size: 14px;
+      padding: 10px 13px;
+      font-size: 13.5px;
       font-family: inherit;
     }
     textarea {
       field-sizing: content;
-      min-height: 88px;
+      min-height: 84px;
       resize: vertical;
       line-height: 1.6;
     }
@@ -305,14 +559,9 @@
     select.std-select:focus,
     textarea:focus {
       outline: none;
-      border-color: var(--green);
-      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(229, 190, 115, 0.22);
     }
-    input:not([type="range"]):user-invalid,
-    textarea:user-invalid {
-      border-color: var(--danger);
-    }
-    ::placeholder { color: #6f675d; }
 
     .preset-wrap {
       display: flex;
@@ -323,8 +572,8 @@
     .preset-chip {
       background: var(--panel-soft);
       border: 1px solid var(--border);
-      color: #dfd7cb;
-      font-size: 12.5px;
+      color: #e4dcd0;
+      font-size: 12px;
       font-weight: 600;
       padding: 6px 11px;
       border-radius: 999px;
@@ -348,17 +597,16 @@
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      padding: 14px 16px;
+      padding: 13px 15px;
       border-radius: 12px;
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       background: var(--panel-soft);
       cursor: pointer;
-      margin-bottom: 16px;
-      transition: all 0.16s ease;
+      margin-bottom: 15px;
     }
     .lock-toggle-card:has(:checked) {
       border-color: var(--green);
-      background: rgba(52, 211, 153, 0.09);
+      background: rgba(52, 211, 153, 0.08);
     }
     .lock-toggle-card input[type="checkbox"] {
       width: 18px;
@@ -366,26 +614,17 @@
       margin-top: 2px;
       flex-shrink: 0;
     }
-    .lock-toggle-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--green);
-      display: block;
-      margin-bottom: 2px;
-    }
-    .lock-toggle-sub {
-      font-size: 12.5px;
-      color: var(--text-sub);
-      display: block;
-    }
 
     .progress-box {
       display: none;
       margin-bottom: 16px;
-      padding: 15px 16px;
+      padding: 14px 16px;
       border-radius: 12px;
       background: #13110f;
-      border: 1px solid rgba(52, 211, 153, 0.45);
+      border: 1.5px solid var(--green-border);
+    }
+    .progress-box.gold-mode {
+      border-color: var(--gold-border);
     }
     .progress-box.active { display: block; }
     .progress-bar-bg {
@@ -394,7 +633,7 @@
       background: #29241e;
       border-radius: 999px;
       overflow: hidden;
-      margin: 10px 0 8px;
+      margin: 9px 0 8px;
     }
     .progress-bar-fill {
       height: 100%;
@@ -402,21 +641,24 @@
       background: linear-gradient(90deg, #10b981, #6ee7b7);
       transition: width 0.35s ease;
     }
+    .progress-box.gold-mode .progress-bar-fill {
+      background: linear-gradient(90deg, #c99438, #f7dc96);
+    }
     .progress-logs {
       max-height: 92px;
       overflow-y: auto;
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: 11.5px;
-      color: #9b9184;
+      color: #a49a8d;
       margin-top: 8px;
       white-space: pre-wrap;
     }
 
     .stage-viewer {
-      background: #11100e;
-      border: 1px solid var(--border);
+      background: #100f0d;
+      border: 1.5px solid var(--border);
       border-radius: 14px;
-      min-height: 410px;
+      min-height: 400px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -427,16 +669,16 @@
     }
     .stage-viewer img {
       max-width: 100%;
-      max-height: 540px;
+      max-height: 520px;
       border-radius: 10px;
       object-fit: contain;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
     }
     .stage-empty {
       text-align: center;
       color: var(--text-sub);
-      padding: 40px 20px;
-      font-size: 14px;
+      padding: 36px 20px;
+      font-size: 13.5px;
     }
     .compare-bar {
       display: flex;
@@ -446,11 +688,298 @@
       justify-content: center;
     }
 
+    /* ==============================================================
+       ⚖️ TAB 3: FREE vs PAID QUALITY COMPARISON ARENA
+    ============================================================== */
+    .cmp-history-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .cmp-pill-card {
+      flex-shrink: 0;
+      padding: 9px 14px;
+      border-radius: 11px;
+      background: #13110f;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      min-width: 220px;
+      text-align: left;
+    }
+    .cmp-pill-card.active {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.10), rgba(229, 190, 115, 0.14));
+    }
+
+    /* Interactive Split Curtain Viewer */
+    .curtain-stage {
+      position: relative;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;
+      background: #0d0c0a;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid var(--gold-border);
+      user-select: none;
+    }
+    .curtain-stage img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #0d0c0a;
+      pointer-events: none;
+    }
+    .curtain-left-layer {
+      position: absolute;
+      inset: 0;
+      clip-path: inset(0 50% 0 0);
+    }
+    .curtain-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: linear-gradient(180deg, var(--green), var(--gold-strong));
+      transform: translateX(-50%);
+      pointer-events: none;
+      box-shadow: 0 0 14px rgba(0, 0, 0, 0.85);
+    }
+    .curtain-handle-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #171513;
+      border: 2px solid var(--gold-strong);
+      color: var(--gold-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+      pointer-events: none;
+    }
+    .corner-tag-free {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 5;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(6, 28, 19, 0.88);
+      border: 1.5px solid var(--green);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      backdrop-filter: blur(6px);
+    }
+    .corner-tag-gold {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 5;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(28, 20, 6, 0.90);
+      border: 1.5px solid var(--gold-strong);
+      color: var(--gold-strong);
+      font-size: 12px;
+      font-weight: 800;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Native Accessible Range Slider (Modern Web Guidance `slider` spec) */
+    .curtain-slider-wrap {
+      max-width: 980px;
+      margin: 12px auto 0;
+      padding: 8px 14px;
+      background: #13110f;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    input[type="range"].ab-range {
+      --slider-track-size: 0.55rem;
+      --slider-thumb-size: 1.35rem;
+      --slider-track-radius: 999px;
+      --slider-thumb-radius: 50%;
+      --slider-track-color: #b5842f;
+      --slider-fill-color: #10b981;
+      --slider-thumb-color: #f6d88c;
+      --slider-direction: to right;
+      --attr-min: attr(min type(<number>), 0);
+      --attr-max: attr(max type(<number>), 100);
+      --control-value: attr(value type(<number>), 50);
+      --slider-progress: calc(
+        progress(var(--control-value), var(--attr-min), var(--attr-max)) * 100%
+      );
+      appearance: none;
+      inline-size: 100%;
+      block-size: 2.25rem;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: ew-resize;
+    }
+    @supports not (opacity: progress(1, 0, 100)) {
+      input[type="range"].ab-range {
+        --slider-progress: calc(
+          (var(--control-value) - var(--attr-min)) /
+          (var(--attr-max) - var(--attr-min)) * 100%
+        );
+      }
+    }
+    input[type="range"].ab-range::-webkit-slider-runnable-track {
+      block-size: var(--slider-track-size);
+      border: 0;
+      border-radius: var(--slider-track-radius);
+      background: linear-gradient(
+        var(--slider-direction),
+        var(--slider-fill-color) var(--slider-progress),
+        var(--slider-track-color) var(--slider-progress)
+      );
+    }
+    input[type="range"].ab-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      inline-size: var(--slider-thumb-size);
+      block-size: var(--slider-thumb-size);
+      margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2);
+      border: 2px solid #181307;
+      border-radius: var(--slider-thumb-radius);
+      background: var(--slider-thumb-color);
+    }
+    input[type="range"].ab-range::-moz-range-track {
+      block-size: var(--slider-track-size);
+      border: 0;
+      border-radius: var(--slider-track-radius);
+      background: var(--slider-track-color);
+    }
+    input[type="range"].ab-range::-moz-range-progress {
+      block-size: var(--slider-track-size);
+      border-radius: var(--slider-track-radius);
+      background: var(--slider-fill-color);
+    }
+    input[type="range"].ab-range::-moz-range-thumb {
+      inline-size: var(--slider-thumb-size);
+      block-size: var(--slider-thumb-size);
+      border: 2px solid #181307;
+      border-radius: var(--slider-thumb-radius);
+      background: var(--slider-thumb-color);
+    }
+    input[type="range"].ab-range:focus-visible {
+      outline: 2px solid var(--gold-strong);
+      outline-offset: 4px;
+    }
+
+    /* Side-by-Side Synchronized 2.5x Loupe Grid */
+    .sbs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    @media (max-width: 900px) {
+      .sbs-grid { grid-template-columns: 1fr; }
+    }
+    .sbs-pane {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0e0d0b;
+      position: relative;
+    }
+    .sbs-pane.pane-free {
+      border: 2px solid var(--green);
+    }
+    .sbs-pane.pane-gold {
+      border: 2px solid var(--gold-strong);
+      box-shadow: 0 8px 28px rgba(229, 190, 115, 0.14);
+    }
+    .sbs-img-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #0b0a09;
+      cursor: crosshair;
+      overflow: hidden;
+    }
+    .sbs-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .loupe-lens {
+      position: absolute;
+      width: 176px;
+      height: 176px;
+      border-radius: 50%;
+      pointer-events: none;
+      display: none;
+      background-repeat: no-repeat;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8);
+      transform: translate(-50%, -50%);
+      z-index: 15;
+    }
+    .pane-free .loupe-lens { border: 2.5px solid var(--green); }
+    .pane-gold .loupe-lens { border: 2.5px solid var(--gold-strong); }
+
+    /* Objective Metrics Comparison Table */
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 13.5px;
+    }
+    .metrics-table th,
+    .metrics-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .metrics-table th:first-child,
+    .metrics-table td:first-child {
+      text-align: left;
+      font-weight: 700;
+      color: #dfd7ca;
+    }
+    .metrics-table th.col-free {
+      color: var(--green);
+      background: rgba(52, 211, 153, 0.08);
+      border-top: 2px solid var(--green);
+    }
+    .metrics-table th.col-gold {
+      color: var(--gold-strong);
+      background: rgba(229, 190, 115, 0.12);
+      border-top: 2px solid var(--gold-strong);
+    }
+    .metrics-table td.col-free {
+      background: rgba(52, 211, 153, 0.03);
+      font-weight: 700;
+    }
+    .metrics-table td.col-gold {
+      background: rgba(229, 190, 115, 0.05);
+      font-weight: 700;
+      color: #f7e3b3;
+    }
+
+    /* Homepage & Reference Grids */
     .hp-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(142px, 1fr));
       gap: 10px;
-      max-height: 430px;
+      max-height: 390px;
       overflow-y: auto;
       padding-right: 4px;
       margin-bottom: 14px;
@@ -461,16 +990,14 @@
       overflow: hidden;
       background: #12100e;
       cursor: pointer;
-      transition: all 0.14s ease;
     }
-    .hp-item:hover { border-color: #4f8a70; }
     .hp-item.selected {
       border-color: var(--green);
       box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.28);
     }
     .hp-item img {
       width: 100%;
-      height: 108px;
+      height: 104px;
       object-fit: cover;
       display: block;
     }
@@ -486,11 +1013,10 @@
     .dropzone {
       border: 2px dashed #3f5d50;
       border-radius: 14px;
-      padding: 26px 20px;
+      padding: 24px 20px;
       text-align: center;
       background: rgba(52, 211, 153, 0.04);
       cursor: pointer;
-      transition: all 0.16s ease;
       margin-bottom: 16px;
     }
     .dropzone:hover, .dropzone.dragover {
@@ -499,12 +1025,13 @@
     }
     .ref-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
       margin-top: 12px;
     }
     .ref-card {
-      position: relative;
       border: 2px solid var(--border);
       border-radius: 11px;
       overflow: hidden;
@@ -513,7 +1040,7 @@
     .ref-card.is-master { border-color: var(--green); }
     .ref-card img {
       width: 100%;
-      height: 132px;
+      height: 118px;
       object-fit: cover;
       display: block;
     }
@@ -521,13 +1048,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 7px;
+      padding: 5px 6px;
       background: #181512;
       font-size: 11px;
     }
     .master-btn {
-      font-size: 11px;
-      padding: 3px 7px;
+      font-size: 10.5px;
+      padding: 3px 6px;
       border-radius: 6px;
       background: var(--panel-soft);
       color: var(--text-sub);
@@ -537,59 +1064,84 @@
       color: #061810;
     }
 
-    .gallery-section { margin-top: 32px; }
+    /* Gallery Cards (Emerald = Free, Gold = Paid PRO) */
+    .gallery-section { margin-top: 30px; }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
       gap: 14px;
     }
     .gal-card {
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 13px;
       overflow: hidden;
-      cursor: pointer;
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .gal-card:hover {
+    .gal-card.is-free {
+      border-color: rgba(52, 211, 153, 0.42);
+    }
+    .gal-card.is-free:hover {
       transform: translateY(-2px);
       border-color: var(--green);
+    }
+    .gal-card.is-paid {
+      border-color: var(--gold-border);
+      background: linear-gradient(180deg, rgba(229, 190, 115, 0.12), var(--panel));
+      box-shadow: 0 6px 22px rgba(217, 174, 89, 0.14);
+    }
+    .gal-card.is-paid:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold-strong);
     }
     .gal-card img {
       width: 100%;
       height: 168px;
       object-fit: cover;
       display: block;
+      cursor: pointer;
     }
     .gal-meta { padding: 10px 12px; }
     .gal-tag {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 800;
-      color: var(--green);
       display: block;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
+    .gal-card.is-free .gal-tag { color: var(--green); }
+    .gal-card.is-paid .gal-tag { color: var(--gold-strong); }
     .gal-prompt {
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 8px;
+    }
+    .gal-mini-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .gal-mini-actions button {
+      flex: 1;
+      padding: 5px 7px;
+      font-size: 11px;
+      border-radius: 7px;
     }
 
     dialog {
       background: var(--panel);
       color: var(--text);
-      border: 1px solid var(--green);
+      border: 1.5px solid var(--gold-border);
       border-radius: 16px;
       padding: 24px 26px;
-      max-width: 620px;
+      max-width: 650px;
       width: calc(100% - 32px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.78);
     }
     dialog.wide-dialog { max-width: 980px; }
     dialog::backdrop {
-      background-color: rgba(0, 0, 0, 0.72);
+      background-color: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
     }
 
@@ -599,85 +1151,117 @@
       right: 24px;
       z-index: 200;
       background: #1f1c18;
-      border: 1px solid var(--green);
+      border: 1.5px solid var(--gold);
       color: var(--text);
       padding: 12px 18px;
       border-radius: 10px;
       font-size: 13.5px;
       font-weight: 700;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
       display: none;
     }
     .toast.show { display: block; }
+
+    /* Forced Colors Mode Fallback (Windows High Contrast accessibility) */
+    @media (forced-colors: active) {
+      .engine-card:has(:checked),
+      .tab-btn.active,
+      .card-gold-menu,
+      .gal-card.is-paid {
+        outline: 2px solid Highlight;
+      }
+      .btn-gold, .btn-free, .btn-dual {
+        border: 2px solid ButtonText;
+      }
+    }
   </style>
 </head>
 <body>
 
   <header class="topbar">
     <div class="brand">
-      <span class="brand-badge">🆓 평생 0원 무료 GPU 가동 중</span>
+      <span class="badge-free">🆓 무료 GPU ON (0원)</span>
+      <span class="badge-gold">👑 유료 PRO 골드 지원</span>
       <div>
         <h1>원장님 전용 인물 고정 AI 사진관</h1>
-        <div class="brand-sub">무료 ZeroGPU PuLID-FLUX + 내 PC(GTX 1070) FaceFusion · GFPGAN 초고화질 안면 정밀 고정</div>
+        <div class="brand-sub">에메랄드 메뉴 = 평생 0원 무료 · 골드(금색) 메뉴 = 유료 클라우드 PRO · 1:1 화질 비교 지원</div>
       </div>
     </div>
 
     <div class="topbar-controls">
       <div class="profile-pill">
-        <span style="font-size:12px;color:var(--text-sub);">촬영 대상:</span>
+        <span style="font-size:12px;color:var(--text-sub);">대상 인물:</span>
         <select id="profileSelect" onchange="onProfileChange(this.value)"></select>
         <span id="loraStatusBadge" class="status-dot">무료 GPU 활성</span>
       </div>
       <button type="button" class="btn-outline" onclick="openNewProfileDialog()">+ 인물 추가</button>
-      <button type="button" id="apiKeyBtn" class="btn-outline" onclick="document.getElementById('apiKeyDialog').showModal()">
-        ⚙️ 선택 옵션 설정
+      <button type="button" id="apiKeyBtn" class="btn-gold-outline" onclick="document.getElementById('apiKeyDialog').showModal()">
+        👑 유료 PRO 설정 (키 · 크레딧)
       </button>
     </div>
   </header>
 
   <main class="container">
+    <!-- 색상 구분 안내 바 -->
+    <div class="legend-strip" role="region" aria-label="무료 및 유료 메뉴 색상 구분 안내">
+      <div class="legend-items">
+        <span class="legend-chip-free">🆓 초록(에메랄드) 메뉴 = 평생 0원 무료 (ZeroGPU + 내 PC GTX 1070)</span>
+        <span class="legend-chip-gold">👑 금색(골드) 메뉴 = 유료 PRO 클라우드 (fal.ai 크레딧 차감)</span>
+      </div>
+      <button type="button" class="btn-gold-outline" style="padding:5px 12px;font-size:12px;" onclick="switchTab('compare')">
+        ⚖️ 무료 vs 유료 품질 비교실 바로가기 →
+      </button>
+    </div>
+
+    <!-- 4대 메인 탭 -->
     <nav class="tabs-nav" aria-label="스튜디오 주요 기능 탭">
       <button type="button" class="tab-btn active" id="tabBtn_shoot" onclick="switchTab('shoot')">
         <span class="tab-num">1</span>
         <span class="tab-meta">
-          <span class="tab-title">🎬 새 상황 무료 연출 촬영 (0원)</span>
-          <span class="tab-desc">결제·API키 없이 한글로 적으면 내 얼굴 그대로 촬영</span>
+          <span class="tab-title">🎬 새 상황 연출 촬영</span>
+          <span class="tab-desc">🆓 무료(0원) · 👑 유료(골드) · ⚖️ 동시비교</span>
         </span>
       </button>
       <button type="button" class="tab-btn" id="tabBtn_fix" onclick="switchTab('fix')">
         <span class="tab-num">2</span>
         <span class="tab-meta">
-          <span class="tab-title">🛠️ 기존 홈페이지 사진 얼굴 100% 무료 교정</span>
-          <span class="tab-desc">내 PC 그래픽카드(GTX 1070)로 4초 만에 원장님 실제 얼굴로 교체</span>
+          <span class="tab-title">🛠️ 기존 사진 얼굴 100% 교정</span>
+          <span class="tab-desc">🆓 내 PC 4초 무료 · 👑 유료 CodeFormer</span>
         </span>
       </button>
-      <button type="button" class="tab-btn" id="tabBtn_train" onclick="switchTab('train')">
+      <button type="button" class="tab-btn tab-compare" id="tabBtn_compare" onclick="switchTab('compare')">
         <span class="tab-num">3</span>
         <span class="tab-meta">
-          <span class="tab-title">📷 다중 각도 기준 사진 관리 (무료 정확도 UP)</span>
-          <span class="tab-desc">여러 장 올릴수록 무료 모드의 입체 평균 골격 정확도가 상승</span>
+          <span class="tab-title">⚖️ 무료 vs 👑 유료 품질 비교실</span>
+          <span class="tab-desc">반반 커튼 슬라이더 · 2.5배 돋보기 · 일치율 표</span>
+        </span>
+      </button>
+      <button type="button" class="tab-btn tab-has-gold" id="tabBtn_train" onclick="switchTab('train')">
+        <span class="tab-num">👑</span>
+        <span class="tab-meta">
+          <span class="tab-title">📷 기준 사진 & <span style="color:var(--gold-strong);">👑 유료 LoRA 금형</span></span>
+          <span class="tab-desc">무료 다각도 사진 관리 + 골드 전용 LoRA 학습</span>
         </span>
       </button>
     </nav>
 
-    <!-- ==========================================
-         탭 1: 새 상황 무료 연출 촬영하기
-    =========================================== -->
+    <!-- ==========================================================
+         탭 1: 새 상황 연출 촬영 (무료 / 👑 유료 골드 / ⚖️ 1:1 동시 비교)
+    =========================================================== -->
     <section id="panel_shoot" class="tab-panel active">
       <div class="workspace-grid">
         <div class="card">
           <div class="card-head">
-            <h2>📸 어떤 상황의 사진을 무료로 찍을까요?</h2>
-            <span style="font-size:12px;color:var(--green);font-weight:700;">API 키 · 결제 불필요 (0원)</span>
+            <h2>📸 어떤 상황의 원장님 사진을 제작할까요?</h2>
+            <span id="shootTopCostTag" class="badge-free">🆓 현재 선택: 0원 무료</span>
           </div>
 
           <div class="preset-wrap">
             <button type="button" class="preset-chip" onclick="setScenePreset('따뜻한 아침 햇살이 나무 블라인드 사이로 스며드는 고급스러운 한의원 진료실에서 환자분의 손목 맥진을 양손으로 진지하고 따뜻하게 짚어주는 모습')">🩺 따뜻한 진료실 맥진</button>
             <button type="button" class="preset-chip" onclick="setScenePreset('차분하고 품격 있는 원목 한의원 상담실에서 책상 너머를 바라보며 신뢰감 있고 온화한 미소로 맞춤 치료 계획을 설명하는 정면 모습')">💬 온화한 진료 상담</button>
             <button type="button" class="preset-chip" onclick="setScenePreset('최신 한의원 정밀 검사실에서 초음파 성장판·체형 진단 모니터 화면을 가리키며 세심하게 판독하는 모습')">🖥️ 초음파 정밀 판독</button>
-            <button type="button" class="preset-chip" onclick="setScenePreset('청결한 통유리 한의원 탕전실에서 나무 트레이 위에 놓인 최상급 러시아 원용 분골(녹용)과 청정 한약재를 직접 손으로 들어 꼼꼼히 검수하는 모습')">🌿 탕전실 최상급 녹용 검수</button>
+            <button type="button" class="preset-chip" onclick="setScenePreset('청결한 통유리 한의원 탕전실에서 나무 트레이 위에 놓인 최상급 러시아 원용 분골(녹용)과 청정 한약재를 직접 손으로 들어 꼼꼼히 검수하는 모습')">🌿 탕전실 녹용 검수</button>
             <button type="button" class="preset-chip" onclick="setScenePreset('정갈하고 모던한 한의원 추나 치료실에서 척추·체형 교정 베드 옆에 서서 정밀하게 진료하는 프로페셔널한 모습')">🦴 추나 교정 클리닉</button>
-            <button type="button" class="preset-chip" onclick="setScenePreset('은은한 스탠드 조명이 켜진 원장 연구실 책상에서 의학 학술 논문과 한의서를 펼쳐놓고 깊이 연구하는 모습')">📚 학술 논문 연구</button>
             <button type="button" class="preset-chip" onclick="setScenePreset('고급스러운 의학 학술 세미나 강연장 단상 위에서 자신감 있고 지적인 표정으로 발표하는 모습')">🎤 의학 학회 강연</button>
             <button type="button" class="preset-chip" onclick="setScenePreset('깔끔하고 고급스러운 웜 베이지 톤 스튜디오 배경에서 가볍게 팔짱을 끼고 정면을 바라보며 든든하게 미소 짓는 대표원장 정면 프로필 사진')">🤍 대표원장 정면 프로필</button>
           </div>
@@ -691,12 +1275,12 @@
             <div class="field">
               <label for="outfitSelect">의상 스타일 고정</label>
               <select id="outfitSelect" class="std-select">
-                <option value="white_coat_shirt">한의사 흰 가운 + 블루 스트라이프 셔츠 (원장님 기본)</option>
+                <option value="white_coat_shirt">한의사 흰 가운 + 블루 스트라이프 셔츠 (기본)</option>
                 <option value="white_coat_tie">한의사 흰 가운 + 화이트 셔츠 & 네이비 타이</option>
                 <option value="modern_hanbok_gown">고급 한방 대표원장 차콜 한복형 진료복</option>
                 <option value="scrub_coat">네이비 진료복(스크럽) + 오픈 흰 가운</option>
                 <option value="navy_suit">학회·세미나용 다크 네이비 정장</option>
-                <option value="free">상황 설명에 적힌 의상 그대로 자유 연출</option>
+                <option value="free">상황 설명에 적힌 의상 그대로 연출</option>
               </select>
             </div>
             <div class="field">
@@ -706,38 +1290,72 @@
                 <option value="landscape_4_3">4:3 표준 가로 (블로그 · 칼럼 본문용)</option>
                 <option value="square_hd">1:1 정사각형 고화질 (인스타 · 썸네일용)</option>
                 <option value="portrait_4_3">3:4 세로 프로필 (원장 소개 프로필용)</option>
-                <option value="portrait_16_9">9:16 세로 풀화면 (릴스 · 쇼츠 배경용)</option>
+                <option value="portrait_16_9">9:16 세로 풀화면 (릴스 · 쇼츠용)</option>
               </select>
+            </div>
+          </div>
+
+          <!-- 시각적 무료(에메랄드) vs 유료(골드) 촬영 모드 카드 -->
+          <div class="field">
+            <label>제작 방식 선택 (유료 메뉴는 <span style="color:var(--gold-strong);">👑 금색</span>으로 표시됩니다)</label>
+            <div class="engine-cards-grid" role="radiogroup" aria-label="새 상황 촬영 엔진 선택">
+              <label class="engine-card tier-free">
+                <input type="radio" name="shootEngineRadio" value="free|pulid_best" checked onchange="syncShootModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">🆓 무료 최고품질 촬영</span>
+                  <span class="tier-pill">0원 무료</span>
+                </div>
+                <div class="engine-card-desc">무료 PuLID-FLUX + 내 PC GPU 334장 평균골격 · GFPGAN 복원</div>
+              </label>
+
+              <label class="engine-card tier-free">
+                <input type="radio" name="shootEngineRadio" value="free|schnell_fast" onchange="syncShootModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">🆓 무료 초고속 6초 촬영</span>
+                  <span class="tier-pill">0원 무료</span>
+                </div>
+                <div class="engine-card-desc">무료 FLUX Schnell + 내 PC GPU 실제 얼굴 정밀 이식</div>
+              </label>
+
+              <label class="engine-card tier-gold">
+                <input type="radio" name="shootEngineRadio" value="cloud_fal|auto" onchange="syncShootModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">👑 유료 PRO 클라우드 촬영</span>
+                  <span class="tier-pill">👑 약 95원/장</span>
+                </div>
+                <div class="engine-card-desc">fal.ai 전용 LoRA/PuLID (28스텝) + 클라우드 CodeFormer</div>
+              </label>
+
+              <label class="engine-card tier-compare">
+                <input type="radio" name="shootEngineRadio" value="compare_both|pulid_best" onchange="syncShootModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">⚖️ 무료 vs 👑 유료 동시 비교</span>
+                  <span class="tier-pill">1:1 품질 검증</span>
+                </div>
+                <div class="engine-card-desc">똑같은 조건으로 무료 1장 + 유료 1장을 동시에 뽑아 비교실 오픈!</div>
+              </label>
             </div>
           </div>
 
           <div class="row-2">
             <div class="field">
-              <label for="costEngineSelect">촬영 엔진 선택 (기본: 평생 0원 무료!)</label>
-              <select id="costEngineSelect" class="std-select">
-                <option value="free|pulid_best">🆓 100% 무료 최고품질 (무료 PuLID-FLUX + 내 PC GPU 안면고정)</option>
-                <option value="free|schnell_fast">🆓 100% 무료 초고속 (무료 FLUX 6초 + 내 PC GPU 안면고정)</option>
-                <option value="free|flux_dev">🆓 100% 무료 정밀조명 (무료 FLUX.1-dev + 내 PC GPU 안면고정)</option>
-                <option value="cloud_fal|auto">☁️ 유료 클라우드 모드 (fal.ai 크레딧 사용)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="enhanceBlendSelect">내 PC GPU 피부 모공·안경 복원 강도 (GFPGAN 1.4)</label>
+              <label for="enhanceBlendSelect">피부 모공 · 안경 선명도 복원 강도</label>
               <select id="enhanceBlendSelect" class="std-select">
                 <option value="0.82">0.82 · 실제 모공 + 선명한 안경테 표준 밸런스 (권장)</option>
                 <option value="0.92">0.92 · 초선명 스튜디오 프로필 보정</option>
                 <option value="0.68">0.68 · 은은한 필름 질감 우선</option>
               </select>
             </div>
+            <div class="field" style="justify-content:flex-end;">
+              <label class="lock-toggle-card" style="margin-bottom:0;">
+                <input type="checkbox" id="faceLockCheckbox" checked />
+                <span>
+                  <strong style="font-size:13px;color:var(--green);display:block;">🔒 2차 정밀 얼굴 고정 ON</strong>
+                  <span style="font-size:11.5px;color:var(--text-sub);">이목구비 오차를 99% 이상 잠급니다</span>
+                </span>
+              </label>
+            </div>
           </div>
-
-          <label class="lock-toggle-card">
-            <input type="checkbox" id="faceLockCheckbox" checked />
-            <span>
-              <span class="lock-toggle-title">🔒 내 컴퓨터 GPU(GTX 1070) 정밀 안면 이식 + 안경테 보호 + 모공 복원 (0원 무료)</span>
-              <span class="lock-toggle-sub">등록된 모든 원장님 사진의 <strong>512차원 평균 얼굴 골격(ArcFace)</strong>과 <strong>안경테 보호 마스크(BiSeNet)</strong>를 내 PC에서 직접 구동해 실제 얼굴 일치율 <strong>99% 이상</strong>으로 고정합니다.</span>
-            </span>
-          </label>
 
           <button type="button" id="btnShootStart" class="btn-free" style="width:100%;padding:14px;font-size:15px;" onclick="startGenerate()">
             🆓 0원 무료로 원장님 상황 사진 촬영하기
@@ -747,13 +1365,13 @@
         <div class="card">
           <div class="card-head">
             <h2>🖼️ 촬영 결과 모니터</h2>
-            <span id="shootResultModeTag" style="font-size:12px;color:var(--green);font-weight:700;">대기 중 (0원 무료 엔진 준비 완료)</span>
+            <span id="shootResultModeTag" style="font-size:12px;color:var(--green);font-weight:700;">대기 중</span>
           </div>
 
           <div id="shootProgressBox" class="progress-box">
             <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;">
               <span id="shootStepText">준비 중...</span>
-              <span id="shootPctText" style="color:var(--green);">0%</span>
+              <span id="shootPctText">0%</span>
             </div>
             <div class="progress-bar-bg"><div id="shootProgressBar" class="progress-bar-fill"></div></div>
             <div id="shootLogs" class="progress-logs"></div>
@@ -761,48 +1379,80 @@
 
           <div class="stage-viewer" id="shootStage">
             <div class="stage-empty">
-              좌측에서 원하는 상황을 고르고 <strong>[🆓 0원 무료로 촬영하기]</strong>를 누르면<br/>
-              API 키나 결제 없이 바로 고화질 원장님 사진이 완성됩니다.
+              좌측에서 <strong>🆓 무료</strong>, <strong style="color:var(--gold-strong);">👑 유료 PRO(금색)</strong>, 또는 <strong>⚖️ 무료 vs 유료 동시 비교</strong>를 선택해 실행해 보세요.
             </div>
           </div>
 
           <div class="compare-bar" id="shootCompareBar" style="display:none;">
-            <button type="button" class="btn-free" id="btnViewFinal" onclick="toggleShootPreview('final')">🔒 최종 정밀고정본 보기</button>
-            <button type="button" class="btn-outline" id="btnViewRaw" onclick="toggleShootPreview('raw')">🎞️ 1차 생성 원본 보기</button>
+            <button type="button" class="btn-free" id="btnViewFinal" onclick="toggleShootPreview('final')">🔒 최종 정밀본</button>
+            <button type="button" class="btn-outline" id="btnViewRaw" onclick="toggleShootPreview('raw')">🎞️ 1차 원본</button>
+            <button type="button" class="btn-gold-outline" onclick="sendItemToCompare(lastShootItem)">⚖️ 품질 비교실로 보내기</button>
             <a id="shootDownloadLink" href="#" download style="text-decoration:none;">
-              <button type="button" class="btn-outline">⬇️ 고화질 저장</button>
+              <button type="button" class="btn-outline">⬇️ 저장</button>
             </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================
-         탭 2: 기존 홈페이지 사진 얼굴 100% 무료 교정
-    =========================================== -->
+    <!-- ==========================================================
+         탭 2: 기존 사진 얼굴 100% 교정 (무료 / 👑 유료 골드 / ⚖️ 비교)
+    =========================================================== -->
     <section id="panel_fix" class="tab-panel">
       <div class="workspace-grid">
         <div class="card">
           <div class="card-head">
-            <h2>🛠️ 교정할 기존 사진 선택 (100% 내 PC 오프라인 무료)</h2>
-            <span style="font-size:12px;color:var(--green);font-weight:700;">장당 약 4초 · 비용 0원</span>
+            <h2>🛠️ 기존 사진 얼굴 100% 교정</h2>
+            <span id="fixTopCostTag" class="badge-free">🆓 내 PC 무료 GPU</span>
           </div>
 
           <div class="field">
-            <label>① 현재 『바른한의원 홈페이지』에 들어 있는 원장님 이미지 바로 선택 (클릭)</label>
+            <label>① 『바른한의원 홈페이지』 기존 원장님 이미지 선택 (클릭)</label>
             <div id="homepageImagesGrid" class="hp-grid"></div>
           </div>
 
           <div class="field">
-            <label for="customFixFileInput">② 또는 내 컴퓨터의 다른 사진 직접 불러오기 (무료 AI로 뽑은 대역 사진 등)</label>
+            <label for="customFixFileInput">② 또는 내 컴퓨터의 다른 사진 직접 불러오기</label>
             <input type="file" id="customFixFileInput" accept="image/*" onchange="onCustomFixFileSelected(this)" style="padding:8px;background:#12100e;border:1px solid var(--border);border-radius:10px;" />
             <div id="customFixSelectedLabel" style="font-size:12px;color:var(--green);margin-top:4px;"></div>
           </div>
 
           <div class="field">
-            <label for="fixEnhanceSelect">GFPGAN 초고화질 피부·안경테 복원 강도</label>
+            <label>교정 엔진 선택 (<span style="color:var(--gold-strong);">👑 유료 클라우드</span>는 금색으로 표시됩니다)</label>
+            <div class="engine-cards-grid" role="radiogroup" aria-label="기존 사진 교정 엔진 선택">
+              <label class="engine-card tier-free">
+                <input type="radio" name="fixEngineRadio" value="free" checked onchange="syncFixModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">🆓 내 PC 무료 GPU 교정</span>
+                  <span class="tier-pill">0원 · 약 4초</span>
+                </div>
+                <div class="engine-card-desc">GTX 1070 · 334장 평균골격 + BiSeNet 안경보호 + GFPGAN 1.4</div>
+              </label>
+
+              <label class="engine-card tier-gold">
+                <input type="radio" name="fixEngineRadio" value="cloud_fal" onchange="syncFixModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">👑 유료 PRO 클라우드 교정</span>
+                  <span class="tier-pill">👑 약 45원/장</span>
+                </div>
+                <div class="engine-card-desc">fal.ai Cloud Face-Swap + Cloud CodeFormer 모공 복원</div>
+              </label>
+
+              <label class="engine-card tier-compare" style="grid-column: 1 / -1;">
+                <input type="radio" name="fixEngineRadio" value="compare_both" onchange="syncFixModeUI()" />
+                <div class="engine-card-top">
+                  <span class="engine-card-title">⚖️ 같은 사진을 [🆓 무료 로컬 GPU vs 👑 유료 클라우드] 동시에 교정해 화질 비교하기</span>
+                  <span class="tier-pill">화질 차이 즉시 확인</span>
+                </div>
+                <div class="engine-card-desc">선택한 홈페이지 사진 1장을 무료와 유료 엔진 양쪽으로 각각 교정하여 [품질 비교실] 커튼 슬라이더와 2.5배 돋보기로 즉시 대조합니다.</div>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="fixEnhanceSelect">피부 모공 · 안경테 복원 강도</label>
             <select id="fixEnhanceSelect" class="std-select">
-              <option value="0.82">0.82 · 실제 이목구비 100% 충실 + 선명한 안경테·피부결 (권장)</option>
+              <option value="0.82">0.82 · 실제 이목구비 + 선명한 안경테·피부결 표준 (권장)</option>
               <option value="0.92">0.92 · 초선명 복원</option>
               <option value="0.65">0.65 · 원본 사진 질감 우선</option>
             </select>
@@ -815,154 +1465,372 @@
 
         <div class="card">
           <div class="card-head">
-            <h2>🔍 교정 전 · 후 비교 모니터</h2>
+            <h2>🔍 교정 전 · 후 모니터</h2>
             <span id="fixTargetLabel" style="font-size:12px;color:var(--green);font-weight:700;">대상 사진을 선택해 주세요</span>
           </div>
 
           <div id="fixProgressBox" class="progress-box">
             <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;">
               <span id="fixStepText">교정 준비 중...</span>
-              <span id="fixPctText" style="color:var(--green);">0%</span>
+              <span id="fixPctText">0%</span>
             </div>
             <div class="progress-bar-bg"><div id="fixProgressBar" class="progress-bar-fill"></div></div>
+            <div id="fixLogs" class="progress-logs"></div>
           </div>
 
           <div class="stage-viewer" id="fixStage">
             <div class="stage-empty">
-              좌측에서 홈페이지 이미지를 클릭한 뒤 <strong>[🆓 100% 교정하기]</strong>를 누르면<br/>
-              인터넷 결제 없이 내 PC GPU만으로 4초 안에 실제 원장님 얼굴로 바뀝니다.
+              좌측에서 교정할 사진을 고르고 실행해 주세요.<br/>
+              <strong>[⚖️ 무료 vs 유료 동시 교정]</strong>을 선택하면 두 방식의 화질 차이를 픽셀 단위로 바로 확인할 수 있습니다.
             </div>
           </div>
 
           <div class="compare-bar" id="fixActionBar" style="display:none;">
             <button type="button" class="btn-free" onclick="toggleFixPreview('after')">✅ 교정 완료본 (After)</button>
             <button type="button" class="btn-outline" onclick="toggleFixPreview('before')">👀 교정 전 원본 (Before)</button>
+            <button type="button" class="btn-gold-outline" onclick="openBeforeAfterInArena(lastFixItem)">⚖️ 비교실 돋보기로 확대 확인</button>
             <button type="button" id="btnApplyHomepage" class="btn-gold" style="display:none;" onclick="applyFixedToHomepage()">
               ⚡ 홈페이지 원본 백업 후 바로 덮어쓰기
             </button>
-            <a id="fixDownloadLink" href="#" download style="text-decoration:none;">
-              <button type="button" class="btn-outline">⬇️ 파일 저장</button>
-            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================
-         탭 3: 다중 각도 기준 사진 관리 & 선택형 LoRA
-    =========================================== -->
-    <section id="panel_train" class="tab-panel">
-      <div class="workspace-grid">
-        <div class="card">
-          <div class="card-head">
-            <h2>📷 실제 얼굴 기준 사진 보관함 (무료 다중 골격 평균 엔진 연동)</h2>
-            <span id="photoCountBadge" style="font-size:12.5px;color:var(--green);font-weight:800;">0장 등록됨</span>
+    <!-- ==========================================================
+         탭 3: ⚖️ 무료 vs 👑 유료 PRO A/B 품질 비교실
+    =========================================================== -->
+    <section id="panel_compare" class="tab-panel">
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-head">
+          <h2>⚖️ 🆓 무료 제작본 vs <span style="color:var(--gold-strong);">👑 유료 PRO 제작본</span> 정밀 품질 비교실</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" id="btnCmpModeCurtain" class="btn-free" onclick="setCompareViewMode('curtain')">↔️ 반반 커튼 슬라이더</button>
+            <button type="button" id="btnCmpModeLoupe" class="btn-gold-outline" onclick="setCompareViewMode('loupe')">🔍 좌우 나란히 + 2.5배 동시 돋보기</button>
+          </div>
+        </div>
+
+        <!-- 저장된 1:1 동시 비교 세트 목록 -->
+        <div id="cmpSavedHistoryWrap" style="margin-bottom:14px;display:none;">
+          <div style="font-size:12px;font-weight:700;color:var(--text-sub);margin-bottom:6px;">📌 최근 실행한 [무료 vs 유료] 1:1 동시 제작 세트 (클릭 시 바로 불러옴)</div>
+          <div id="cmpHistoryStrip" class="cmp-history-strip"></div>
+        </div>
+
+        <!-- 유료 슬롯 잔액 부족 대기 시 골드 안내 배너 -->
+        <div id="cmpPendingPaidBanner" class="card-gold-menu" style="display:none;padding:14px 18px;border-radius:12px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-weight:800;color:var(--gold-strong);font-size:14px;">👑 유료 PRO 비교 슬롯 대기 안내</div>
+              <div id="cmpPendingPaidMsg" style="font-size:12.5px;color:#e8decb;margin-top:3px;"></div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn-outline" onclick="document.getElementById('apiKeyDialog').showModal()">👑 키 · 충전 안내</button>
+              <button type="button" id="btnRetryPaidSlot" class="btn-gold" onclick="retryPendingPaidSlot()">👑 이 조건 그대로 유료 PRO 슬롯 생성</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 좌측(무료) vs 우측(유료/비교대상) 자유 선택 바 -->
+        <div class="row-2" style="margin-bottom:16px;">
+          <div style="padding:12px 14px;border-radius:12px;background:var(--green-bg);border:1.5px solid var(--green-border);">
+            <label for="cmpLeftSelect" style="font-size:12px;font-weight:800;color:var(--green);display:block;margin-bottom:6px;">
+              🆓 좌측(A) 이미지 선택 — 무료 제작본 / 교정본
+            </label>
+            <select id="cmpLeftSelect" class="std-select" onchange="onCompareSelectChange()"></select>
           </div>
 
-          <div style="font-size:13px;color:var(--text-sub);margin-bottom:14px;background:#13110f;padding:12px 14px;border-radius:10px;border:1px solid var(--border);">
-            💡 <strong>무료 모드 정확도를 극대화하는 꿀팁 (비용 0원!)</strong><br/>
-            • 여기에 원장님 실제 사진 <strong>5~15장(정면·살짝 옆모습·미소 등)</strong>을 올려두시기만 하면, 유료 LoRA 학습을 하지 않아도 내 PC 무료 엔진(`ArcFace w600k`)이 <strong>모든 사진의 512차원 입체 얼굴 골격 평균값을 자동으로 계산</strong>하여 측면·미소 촬영 시 정확도가 비약적으로 높아집니다!<br/>
-            • 사진 아래 <strong>[★ 대표 얼굴]</strong>로 지정된 1장이 정면 메인 기준(2배 가중치)이 됩니다.
+          <div style="padding:12px 14px;border-radius:12px;background:var(--gold-bg);border:1.5px solid var(--gold-border);">
+            <label for="cmpRightSelect" style="font-size:12px;font-weight:800;color:var(--gold-strong);display:block;margin-bottom:6px;">
+              👑 우측(B) 이미지 선택 — 유료 PRO 제작본 / 비교 원본
+            </label>
+            <select id="cmpRightSelect" class="std-select" onchange="onCompareSelectChange()"></select>
+          </div>
+        </div>
+
+        <!-- 뷰 1: 반반 커튼 슬라이더 -->
+        <div id="cmpCurtainContainer">
+          <div class="curtain-stage" id="curtainStage">
+            <img id="curtainRightImg" src="" alt="우측 비교 이미지" />
+            <div class="curtain-left-layer" id="curtainLeftLayer">
+              <img id="curtainLeftImg" src="" alt="좌측 무료 이미지" />
+            </div>
+            <div class="curtain-divider" id="curtainDivider"></div>
+            <div class="curtain-handle-badge" id="curtainHandle">↔</div>
+            <span class="corner-tag-free" id="curtainLeftTag">🆓 무료 (0원)</span>
+            <span class="corner-tag-gold" id="curtainRightTag">👑 유료 PRO / 비교본</span>
+          </div>
+
+          <div class="curtain-slider-wrap">
+            <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:4px;">
+              <span style="color:var(--green);">◀ 좌측: 🆓 무료 엔진 영역</span>
+              <span id="curtainValueLabel" style="color:var(--text-sub);">슬라이더를 좌우로 움직여 눈매·안경테·모공을 비교하세요 (50%)</span>
+              <span style="color:var(--gold-strong);">우측: 👑 유료 PRO / 비교 영역 ▶</span>
+            </div>
+            <label for="abCurtainSlider" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">무료 대 유료 화면 분할 비율</label>
+            <input type="range" id="abCurtainSlider" class="ab-range" min="0" max="100" step="1" value="50" aria-valuetext="50 퍼센트 분할" />
+          </div>
+        </div>
+
+        <!-- 뷰 2: 좌우 1:1 나란히 + 2.5배 동기화 픽셀 돋보기 -->
+        <div id="cmpLoupeContainer" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <span style="font-size:12.5px;color:var(--text-sub);">
+              💡 사진 위에 마우스를 올리면 <strong>양쪽 똑같은 위치(눈·안경·모공)가 2.5배 초근접 동시 확대</strong>됩니다!
+            </span>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn-outline" style="padding:5px 10px;font-size:12px;" onclick="jumpLoupeToLandmark('eyes')">👁️ 눈매 · 안경테 2.5배 확대</button>
+              <button type="button" class="btn-outline" style="padding:5px 10px;font-size:12px;" onclick="jumpLoupeToLandmark('nose')">👃 콧대 · 피부 모공 2.5배 확대</button>
+              <button type="button" class="btn-outline" style="padding:5px 10px;font-size:12px;" onclick="jumpLoupeToLandmark('mouth')">👄 입매 · 턱선 2.5배 확대</button>
+            </div>
+          </div>
+
+          <div class="sbs-grid">
+            <div class="sbs-pane pane-free">
+              <div style="padding:9px 14px;background:var(--green-bg);display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--green);">
+                <span id="sbsLeftTitle">🆓 무료 제작본</span>
+                <span id="sbsLeftBadge">0원</span>
+              </div>
+              <div class="sbs-img-box" id="sbsLeftBox">
+                <img id="sbsLeftImg" src="" alt="좌측 확대 비교 이미지" />
+                <div class="loupe-lens" id="loupeLeft"></div>
+              </div>
+            </div>
+
+            <div class="sbs-pane pane-gold">
+              <div style="padding:9px 14px;background:var(--gold-bg);display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--gold-strong);">
+                <span id="sbsRightTitle">👑 유료 PRO / 비교본</span>
+                <span id="sbsRightBadge">비교 대상</span>
+              </div>
+              <div class="sbs-img-box" id="sbsRightBox">
+                <img id="sbsRightImg" src="" alt="우측 확대 비교 이미지" />
+                <div class="loupe-lens" id="loupeRight"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 객관적 실측 수치 비교 성적표 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;flex-wrap:wrap;">
+          <h3 style="margin:0;font-size:15px;">📊 두 이미지 AI 정밀 품질 계측 성적표 (동일 ArcFace · 라플라시안 모공 계측 기준)</h3>
+          <button type="button" class="btn-outline" style="padding:6px 12px;font-size:12px;" onclick="reAnalyzeActivePair()">
+            🔄 현재 선택된 두 사진 실시간 정밀 재계측
+          </button>
+        </div>
+
+        <table class="metrics-table" aria-label="무료 대 유료 품질 수치 비교표">
+          <thead>
+            <tr>
+              <th>비교 항목</th>
+              <th class="col-free" id="tblHeadLeft">🆓 좌측 (무료 엔진)</th>
+              <th class="col-gold" id="tblHeadRight">👑 우측 (유료 PRO / 비교본)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>실제 원장님 얼굴 일치율 (ArcFace 334장 기준)</td>
+              <td class="col-free" id="tblSimLeft">-</td>
+              <td class="col-gold" id="tblSimRight">-</td>
+            </tr>
+            <tr>
+              <td>피부 모공 · 안경테 디테일 선명도 점수</td>
+              <td class="col-free" id="tblSharpLeft">-</td>
+              <td class="col-gold" id="tblSharpRight">-</td>
+            </tr>
+            <tr>
+              <td>출력 해상도 (가로 × 세로 px)</td>
+              <td class="col-free" id="tblResLeft">-</td>
+              <td class="col-gold" id="tblResRight">-</td>
+            </tr>
+            <tr>
+              <td>1장당 제작 비용 & 소요 시간</td>
+              <td class="col-free" id="tblCostLeft">-</td>
+              <td class="col-gold" id="tblCostRight">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 아트의 무료 vs 유료 실제 품질 차이 핵심 요약 가이드 -->
+      <div class="card">
+        <div class="card-head">
+          <h2>💡 한눈에 보는 🆓 무료 엔진 vs <span style="color:var(--gold-strong);">👑 유료 PRO(금색 메뉴)</span> 실제 품질 차이 가이드</h2>
+        </div>
+        <table class="metrics-table" style="margin-top:0;">
+          <thead>
+            <tr>
+              <th>세부 영역</th>
+              <th class="col-free">🆓 무료 하이브리드 (ZeroGPU + 내 PC GTX 1070)</th>
+              <th class="col-gold">👑 유료 PRO 클라우드 (fal.ai 전용 LoRA + CodeFormer)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>정면 · 15~30도 정측면 얼굴 일치율</td>
+              <td class="col-free"><strong>99% 이상 완벽 일치</strong> (등록된 334장 다각도 평균 골격 이식)</td>
+              <td class="col-gold"><strong>99% 이상 완벽 일치</strong> (전용 `.safetensors` 금형 학습 시)</td>
+            </tr>
+            <tr>
+              <td>45도 이상 깊은 옆모습 · 두상 · 귀 모양</td>
+              <td class="col-free">1차 PuLID 두상을 따르므로 깊은 옆모습에서 두상이 미세하게 달라질 수 있음</td>
+              <td class="col-gold"><strong>압도적 우위</strong> — 전용 LoRA 학습 시 뒷머리·귀·옆턱선까지 100% 동일</td>
+            </tr>
+            <tr>
+              <td>금테 안경 프레임 보존력</td>
+              <td class="col-free"><strong>매우 우수</strong> (내 PC `BiSeNet class 6` 안경테 전용 보호 마스크 작동)</td>
+              <td class="col-gold">우수 (전용 LoRA 학습 시 안경테 형태까지 자체 생성)</td>
+            </tr>
+            <tr>
+              <td>손가락(맥진) · 한의원 소품 디테일</td>
+              <td class="col-free">우수 (`ZeroGPU PuLID-FLUX` 20스텝)</td>
+              <td class="col-gold"><strong>약 10~15% 더 정교함</strong> (`FLUX.1-dev` 28스텝 풀옵션 렌더링)</td>
+            </tr>
+            <tr>
+              <td>기존 홈페이지 사진 얼굴만 교정할 때</td>
+              <td class="col-free"><strong>무료만으로도 최상급 (4초 · 0원)</strong> — 유료와 육안 차이 거의 없음</td>
+              <td class="col-gold">장당 약 45원 소모 (`CodeFormer` 특유의 필름 입자감 선호 시 선택)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         탭 4: 기준 사진 보관함 (무료) & 👑 유료 PRO LoRA 금형 학습 (골드 메뉴)
+    =========================================================== -->
+    <section id="panel_train" class="tab-panel">
+      <div class="workspace-grid">
+        <!-- 좌측: 무료 다각도 사진 관리 -->
+        <div class="card">
+          <div class="card-head">
+            <h2>📷 실제 얼굴 기준 사진 보관함</h2>
+            <span id="photoCountBadge" class="badge-free">0장 등록됨 (0원 무료 연동)</span>
+          </div>
+
+          <div style="font-size:13px;color:var(--text-sub);margin-bottom:14px;background:#13110f;padding:12px 14px;border-radius:10px;border:1px solid var(--green-border);">
+            🆓 <strong>무료 엔진에도 즉시 반영됩니다!</strong><br/>
+            등록된 다각도 사진들에서 입이 가려진 프레임을 자동 제외하고 <strong>512차원 입체 평균 얼굴 금형(`identity_bank.npz`)</strong>을 내 PC에 영구 캐싱합니다.
           </div>
 
           <div class="dropzone" id="photoDropzone" onclick="document.getElementById('refPhotosInput').click()">
-            <div style="font-size:26px;margin-bottom:6px;">📥</div>
-            <div style="font-weight:800;font-size:14.5px;color:var(--green);">여기를 클릭하거나 원장님 실제 사진 여러 장을 끌어다 놓으세요 (즉시 무료 반영)</div>
-            <div style="font-size:12px;color:var(--text-sub);margin-top:4px;">JPG · PNG · WEBP 다중 선택 지원 (내 컴퓨터에만 안전하게 보관됩니다)</div>
+            <div style="font-size:24px;margin-bottom:5px;">📥</div>
+            <div style="font-weight:800;font-size:14px;color:var(--green);">원장님 실제 사진 추가 업로드 (클릭 또는 드래그 · 무료)</div>
             <input type="file" id="refPhotosInput" accept="image/*" multiple hidden onchange="uploadReferenceFiles(this.files)" />
           </div>
 
           <div id="refPhotosGrid" class="ref-grid"></div>
         </div>
 
-        <div class="card">
-          <div class="card-head">
-            <h2>👤 인물 외형 설정 & 선택형 클라우드 LoRA</h2>
-          </div>
-
-          <div class="field">
-            <label for="profNameInput">인물 슬롯 이름</label>
-            <input type="text" id="profNameInput" />
-          </div>
-
-          <div class="field">
-            <label for="profTraitsInput">기본 인물 외형 특징 (영문 · 무료 생성 시 안경·연령·헤어스타일 자동 반영)</label>
-            <textarea id="profTraitsInput"></textarea>
-          </div>
-
-          <button type="button" class="btn-free" style="width:100%;margin-bottom:18px;" onclick="saveProfileMeta()">
-            💾 인물 기본 설정 저장
-          </button>
-
-          <details style="background:#12100e;border:1px solid var(--border);border-radius:12px;padding:14px;">
-            <summary style="cursor:pointer;font-weight:700;font-size:13.5px;color:var(--text-sub);">
-              ☁️ (선택 사항) 유료 fal.ai 클라우드 LoRA 금형 학습 메뉴 펼치기
-            </summary>
-            <div style="margin-top:14px;">
-              <div class="field">
-                <label for="profLoraUrlInput">외부 또는 학습된 LoRA 주소 (.safetensors)</label>
-                <input type="url" id="profLoraUrlInput" placeholder="무료 모드 사용 시 비워두셔도 됩니다" />
-              </div>
-              <div class="row-2">
-                <div class="field">
-                  <label for="trainerTypeSelect">학습 엔진</label>
-                  <select id="trainerTypeSelect" class="std-select">
-                    <option value="portrait">인물 전용 트레이너</option>
-                    <option value="fast">초고속 트레이너</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="trainStepsSelect">학습 Steps</label>
-                  <select id="trainStepsSelect" class="std-select">
-                    <option value="1000">1,000 Steps</option>
-                    <option value="1200">1,200 Steps</option>
-                  </select>
-                </div>
-              </div>
-              <div id="trainProgressBox" class="progress-box">
-                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;">
-                  <span id="trainStepText">준비 중...</span>
-                  <span id="trainPctText">0%</span>
-                </div>
-                <div class="progress-bar-bg"><div id="trainProgressBar" class="progress-bar-fill"></div></div>
-              </div>
-              <button type="button" id="btnTrainStart" class="btn-outline" style="width:100%;" onclick="startLoraTraining()">
-                ☁️ 클라우드 LoRA 생성 (유료 크레딧 필요)
-              </button>
+        <!-- 우측: 기본 프로필(무료) + 👑 유료 전용 LoRA 학습 골드 카드 -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="card">
+            <div class="card-head">
+              <h2>👤 기본 인물 외형 설정</h2>
+              <span class="badge-free">🆓 무료 공통</span>
             </div>
-          </details>
+            <div class="field">
+              <label for="profNameInput">인물 이름</label>
+              <input type="text" id="profNameInput" />
+            </div>
+            <div class="field">
+              <label for="profTraitsInput">기본 인물 외형 특징 (영문 · 안경/연령/헤어스타일)</label>
+              <textarea id="profTraitsInput"></textarea>
+            </div>
+            <button type="button" class="btn-free" style="width:100%;" onclick="saveProfileMeta()">
+              💾 기본 외형 설정 저장 (0원)
+            </button>
+          </div>
+
+          <!-- 👑 유료 골드 메뉴: 전용 FLUX Portrait LoRA 클라우드 학습 -->
+          <div class="card card-gold-menu">
+            <div class="card-head">
+              <h2 style="color:var(--gold-strong);">👑 전용 얼굴 금형(LoRA) 클라우드 학습</h2>
+              <span class="badge-gold">👑 유료 PRO · 약 3,000원/1회</span>
+            </div>
+
+            <p style="font-size:12.5px;color:#e3d6be;margin:0 0 14px;">
+              깊은 옆모습·전신·강연 단상 등 <strong>두상과 체형 전체를 AI 모델 자체에 각인</strong>시키고 싶을 때 사용하는 <strong>유료 클라우드 전용 골드 메뉴</strong>입니다. 1회 학습해 두면 `.safetensors` 금형 파일이 내 PC에도 영구 백업됩니다.
+            </p>
+
+            <div class="field">
+              <label for="profLoraUrlInput" style="color:var(--gold-strong);">학습된 전용 LoRA 금형 주소 (.safetensors)</label>
+              <input type="url" id="profLoraUrlInput" placeholder="학습 완료 시 자동 입력됩니다 (무료 모드는 비워두셔도 작동)" />
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label for="trainerTypeSelect" style="color:var(--gold-strong);">👑 유료 학습 엔진</label>
+                <select id="trainerTypeSelect" class="std-select" style="border-color:var(--gold-border);">
+                  <option value="portrait">👑 Portrait Trainer (인물 실사 최고품질 · 권장)</option>
+                  <option value="fast">👑 Fast Trainer (초고속 약 $2)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="trainStepsSelect" style="color:var(--gold-strong);">학습 정밀도 (Steps)</label>
+                <select id="trainStepsSelect" class="std-select" style="border-color:var(--gold-border);">
+                  <option value="1000">1,000 Steps (표준 권장)</option>
+                  <option value="1200">1,200 Steps (초정밀)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="trainProgressBox" class="progress-box gold-mode">
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--gold-strong);">
+                <span id="trainStepText">준비 중...</span>
+                <span id="trainPctText">0%</span>
+              </div>
+              <div class="progress-bar-bg"><div id="trainProgressBar" class="progress-bar-fill"></div></div>
+            </div>
+
+            <button type="button" id="btnTrainStart" class="btn-gold" style="width:100%;padding:13px;font-size:14.5px;" onclick="startLoraTraining()">
+              👑 유료 PRO 전용 얼굴 금형(LoRA) 학습 시작하기
+            </button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 하단 보관함 -->
+    <!-- 하단 보관함 (무료=에메랄드 카드 / 유료=골드 카드) -->
     <section class="gallery-section card">
       <div class="card-head">
-        <h2>🗂️ 내 촬영 · 얼굴 교정 보관함 (`data/outputs/`)</h2>
-        <span style="font-size:12px;color:var(--text-sub);">클릭하면 크게 비교 · 다운로드 · 홈페이지 즉시 적용이 가능합니다</span>
+        <h2>🗂️ 내 촬영 · 교정 보관함 (🆓 무료=초록 테두리 / <span style="color:var(--gold-strong);">👑 유료=금색 테두리</span>)</h2>
+        <span style="font-size:12px;color:var(--text-sub);">각 카드의 [좌측/우측 비교 담기] 버튼으로 언제든 두 사진을 비교실에 올릴 수 있습니다</span>
       </div>
       <div id="galleryGrid" class="gallery-grid"></div>
     </section>
   </main>
 
-  <!-- 모달 1: 선택형 옵션 설정 -->
+  <!-- 모달 1: 무료 & 👑 유료 PRO 키 설정 -->
   <dialog id="apiKeyDialog" closedby="any" aria-labelledby="apiKeyDialogTitle">
-    <h2 id="apiKeyDialogTitle" style="margin:0 0 10px;font-size:18px;">⚙️ 추가 토큰 설정 (완전 선택 사항 · 비워두셔도 무료 작동!)</h2>
-    <p style="font-size:13px;color:var(--text-sub);margin:0 0 14px;">
-      기본 <strong>[🆓 100% 무료 모드]</strong>는 아무 키도 입력하지 않아도 즉시 작동합니다.<br/>
-      하루에 수십 장 이상 대량 연속 촬영 시 무료 대기열 우선권을 받고 싶으실 때만 무료 Hugging Face 토큰(`hf_...`, 카드 등록 불필요·0원)을 넣어주시면 됩니다.
-    </p>
-    <div class="field">
-      <label for="hfTokenInput">무료 Hugging Face 토큰 (선택 · 0원 무료 · huggingface.co/settings/tokens)</label>
-      <input type="password" id="hfTokenInput" placeholder="비워두셔도 무료 촬영이 바로 작동합니다 (hf_...)" />
+    <h2 id="apiKeyDialogTitle" style="margin:0 0 12px;font-size:18px;">⚙️ 무료 옵션 & <span style="color:var(--gold-strong);">👑 유료 PRO 클라우드 설정</span></h2>
+
+    <!-- 무료 영역 -->
+    <div style="padding:14px;border-radius:12px;background:var(--green-bg);border:1.5px solid var(--green-border);margin-bottom:14px;">
+      <div style="font-weight:800;color:var(--green);font-size:13.5px;margin-bottom:6px;">🆓 무료 엔진 옵션 (비워두셔도 평생 0원 작동!)</div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="hfTokenInput">무료 Hugging Face 토큰 (선택 · 0원 · 대량 연속 촬영 시 대기열 완화용)</label>
+        <input type="password" id="hfTokenInput" placeholder="입력하지 않아도 무료 모드가 정상 작동합니다 (hf_...)" />
+      </div>
     </div>
-    <div class="field">
-      <label for="falKeyInput">유료 fal.ai API 키 (선택 · 클라우드 모드 전용)</label>
-      <input type="password" id="falKeyInput" placeholder="무료 모드 사용 시 입력 불필요" />
+
+    <!-- 👑 유료 골드 영역 -->
+    <div class="card-gold-menu" style="padding:16px;border-radius:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+        <span style="font-weight:800;color:var(--gold-strong);font-size:14px;">👑 유료 PRO 클라우드 설정 (금색 메뉴 전용)</span>
+        <span id="falKeyModalBadge" class="badge-gold">확인 중</span>
+      </div>
+      <p style="font-size:12px;color:#e3d6be;margin:0 0 10px;">
+        • 금색(`👑`)으로 표시된 유료 촬영(약 95원/장), 유료 교정(약 45원/장), 전용 LoRA 학습(약 3,000원/회) 및 <strong>[무료 vs 유료 동시 비교]의 유료 슬롯</strong>에서 사용됩니다.<br/>
+        • 크레딧 충전 페이지: <a href="https://fal.ai/dashboard/billing" target="_blank" rel="noopener" style="color:var(--gold-strong);font-weight:800;">https://fal.ai/dashboard/billing</a>
+      </p>
+      <div class="field" style="margin-bottom:0;">
+        <label for="falKeyInput" style="color:var(--gold-strong);">👑 fal.ai API Key</label>
+        <input type="password" id="falKeyInput" placeholder="key_id:key_secret 형식 입력 (이미 저장된 경우 비워두면 유지됨)" style="border-color:var(--gold-border);" />
+      </div>
     </div>
+
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px;">
       <button type="button" class="btn-outline" onclick="document.getElementById('apiKeyDialog').close()">닫기</button>
-      <button type="button" class="btn-free" onclick="saveApiKey()">저장하기</button>
+      <button type="button" class="btn-gold" onclick="saveApiKey()">👑 설정 저장하기</button>
     </div>
   </dialog>
 
@@ -1002,37 +1870,44 @@
         dialog.addEventListener('click', (event) => {
           if (event.target !== dialog) return;
           const rect = dialog.getBoundingClientRect();
-          const isDialogContent = (
+          const isDialogContent =
             rect.top <= event.clientY &&
             event.clientY <= rect.top + rect.height &&
             rect.left <= event.clientX &&
-            event.clientX <= rect.left + rect.width
-          );
+            event.clientX <= rect.left + rect.width;
           if (isDialogContent) return;
           dialog.close();
         });
       }
     });
 
-    let appState = { profiles: [], gallery: [], homepageImages: [] };
+    let appState = { profiles: [], gallery: [], comparisons: [], homepageImages: [], hasFalKey: false, maskedFalKey: '' };
     let currentProfileId = 'director_ahn';
     let lastShootItem = null;
     let lastFixItem = null;
     let selectedFixSource = { type: 'homepage', homepageFile: '', uploadDataUrl: '' };
+
+    // Quality Comparison Arena State
+    let activeComparisonId = null;
+    let compareViewMode = 'curtain';
+    let candidatePool = []; // Unified list of selectable items for Left/Right dropdowns
 
     function showToast(msg) {
       const el = document.getElementById('toast');
       el.textContent = msg;
       el.classList.add('show');
       clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 3800);
+      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 4000);
     }
 
     function switchTab(tab) {
-      ['shoot', 'fix', 'train'].forEach((t) => {
+      ['shoot', 'fix', 'compare', 'train'].forEach((t) => {
         document.getElementById('tabBtn_' + t).classList.toggle('active', t === tab);
         document.getElementById('panel_' + t).classList.toggle('active', t === tab);
       });
+      if (tab === 'compare') {
+        renderCompareArena();
+      }
     }
 
     function getActiveProfile() {
@@ -1059,6 +1934,8 @@
       renderTrainTab();
       renderHomepageGrid();
       renderGallery();
+      buildCompareCandidatePool();
+      renderCompareArena();
     }
 
     function renderTopBar() {
@@ -1068,9 +1945,21 @@
         .join('');
 
       const prof = getActiveProfile();
-      const badge = document.getElementById('loraStatusBadge');
       const cnt = (prof && prof.photos && prof.photos.length) || 0;
-      badge.textContent = `기준사진 ${cnt}장 · 0원 무료 GPU 준비완료`;
+      const hasLora = Boolean(prof && prof.loraUrl);
+      document.getElementById('loraStatusBadge').textContent = hasLora
+        ? `기준 ${cnt}장 + 👑 전용 LoRA 보유`
+        : `기준 ${cnt}장 · 무료 GPU 활성`;
+
+      const apiBtn = document.getElementById('apiKeyBtn');
+      apiBtn.innerHTML = appState.hasFalKey
+        ? `👑 유료 PRO 설정 (키 등록됨)`
+        : `👑 유료 PRO 설정 (키 · 크레딧)`;
+
+      const modalBadge = document.getElementById('falKeyModalBadge');
+      if (modalBadge) {
+        modalBadge.textContent = appState.hasFalKey ? `등록됨: ${appState.maskedFalKey}` : '키 미등록';
+      }
     }
 
     function onProfileChange(id) {
@@ -1083,13 +1972,72 @@
       document.getElementById('scenePromptInput').value = text;
     }
 
+    // Sync Shoot CTA button & badge color (Emerald vs Gold vs Dual)
+    function syncShootModeUI() {
+      const checked = document.querySelector('input[name="shootEngineRadio"]:checked');
+      const val = checked ? checked.value : 'free|pulid_best';
+      const [costMode] = val.split('|');
+      const btn = document.getElementById('btnShootStart');
+      const tag = document.getElementById('shootTopCostTag');
+      const pbox = document.getElementById('shootProgressBox');
+
+      if (costMode === 'cloud_fal') {
+        btn.className = 'btn-gold';
+        btn.textContent = '👑 유료 PRO 크레딧으로 원장님 상황 촬영하기 (골드 메뉴)';
+        tag.className = 'badge-gold';
+        tag.textContent = '👑 현재 선택: 유료 PRO (약 95원/장)';
+        pbox.classList.add('gold-mode');
+      } else if (costMode === 'compare_both') {
+        btn.className = 'btn-dual';
+        btn.textContent = '⚖️ 동일 조건 [🆓 무료 + 👑 유료] 동시 제작 후 품질 비교실 열기';
+        tag.className = 'badge-gold';
+        tag.textContent = '⚖️ 1:1 동시 비교 (무료 0원 + 유료 약 95원)';
+        pbox.classList.add('gold-mode');
+      } else {
+        btn.className = 'btn-free';
+        btn.textContent = '🆓 0원 무료로 원장님 상황 사진 촬영하기';
+        tag.className = 'badge-free';
+        tag.textContent = '🆓 현재 선택: 0원 무료';
+        pbox.classList.remove('gold-mode');
+      }
+    }
+
+    // Sync Fix CTA button & badge color (Emerald vs Gold vs Dual)
+    function syncFixModeUI() {
+      const checked = document.querySelector('input[name="fixEngineRadio"]:checked');
+      const costMode = checked ? checked.value : 'free';
+      const btn = document.getElementById('btnFixStart');
+      const tag = document.getElementById('fixTopCostTag');
+      const pbox = document.getElementById('fixProgressBox');
+
+      if (costMode === 'cloud_fal') {
+        btn.className = 'btn-gold';
+        btn.textContent = '👑 유료 PRO 클라우드(CodeFormer)로 얼굴 교정하기 (골드 메뉴)';
+        tag.className = 'badge-gold';
+        tag.textContent = '👑 유료 PRO 클라우드 (약 45원/장)';
+        pbox.classList.add('gold-mode');
+      } else if (costMode === 'compare_both') {
+        btn.className = 'btn-dual';
+        btn.textContent = '⚖️ [🆓 무료 로컬 GPU vs 👑 유료 클라우드] 동시 교정 후 화질 비교하기';
+        tag.className = 'badge-gold';
+        tag.textContent = '⚖️ 무료 vs 유료 동시 비교';
+        pbox.classList.add('gold-mode');
+      } else {
+        btn.className = 'btn-free';
+        btn.textContent = '🆓 내 PC 그래픽카드(0원)로 실제 원장님 얼굴 100% 교정하기';
+        tag.className = 'badge-free';
+        tag.textContent = '🆓 내 PC 무료 GPU (0원)';
+        pbox.classList.remove('gold-mode');
+      }
+    }
+
     function renderTrainTab() {
       const prof = getActiveProfile();
       if (!prof) return;
       document.getElementById('profNameInput').value = prof.name || '';
       document.getElementById('profTraitsInput').value = prof.baseTraits || '';
       document.getElementById('profLoraUrlInput').value = prof.loraUrl || '';
-      document.getElementById('photoCountBadge').textContent = `${(prof.photos || []).length}장 평균 골격 활성`;
+      document.getElementById('photoCountBadge').textContent = `🆓 ${(prof.photos || []).length}장 다각도 골격 활성`;
 
       const grid = document.getElementById('refPhotosGrid');
       const photos = prof.photos || [];
@@ -1097,23 +2045,30 @@
         grid.innerHTML = '<div style="grid-column:1/-1;color:var(--text-sub);font-size:13px;">원장님 실제 사진을 올려주세요.</div>';
         return;
       }
-      grid.innerHTML = photos
-        .map((fname) => {
-          const isMaster = prof.masterPhoto === fname;
-          const imgUrl = `/files/profiles/${encodeURIComponent(prof.id)}/${encodeURIComponent(fname)}`;
-          return `
-            <div class="ref-card ${isMaster ? 'is-master' : ''}">
-              <img src="${imgUrl}" alt="기준 사진" loading="lazy" />
-              <div class="ref-card-bar">
-                <button type="button" class="master-btn" onclick="setMasterPhoto('${fname}')">
-                  ${isMaster ? '★ 대표 얼굴' : '대표 지정'}
-                </button>
-                <button type="button" class="master-btn" style="color:#f87171;" onclick="deleteRefPhoto('${fname}')">삭제</button>
+      // Show master photo + up to 48 thumbnails to keep DOM super fast even with 334 frames
+      const displayPhotos = photos.slice(0, 48);
+      const hiddenCount = Math.max(0, photos.length - displayPhotos.length);
+      grid.innerHTML =
+        displayPhotos
+          .map((fname) => {
+            const isMaster = prof.masterPhoto === fname;
+            const imgUrl = `/files/profiles/${encodeURIComponent(prof.id)}/${encodeURIComponent(fname)}`;
+            return `
+              <div class="ref-card ${isMaster ? 'is-master' : ''}">
+                <img src="${imgUrl}" alt="기준 사진" loading="lazy" />
+                <div class="ref-card-bar">
+                  <button type="button" class="master-btn" onclick="setMasterPhoto('${fname}')">
+                    ${isMaster ? '★ 대표' : '대표지정'}
+                  </button>
+                  <button type="button" class="master-btn" style="color:#f87171;" onclick="deleteRefPhoto('${fname}')">삭제</button>
+                </div>
               </div>
-            </div>
-          `;
-        })
-        .join('');
+            `;
+          })
+          .join('') +
+        (hiddenCount > 0
+          ? `<div style="grid-column:1/-1;text-align:center;font-size:12px;color:var(--green);padding:8px;">+ 외 다각도 프레임 ${hiddenCount}장이 모두 512차원 평균 얼굴 금형에 반영되어 있습니다.</div>`
+          : '');
     }
 
     const dz = document.getElementById('photoDropzone');
@@ -1147,7 +2102,7 @@
       const data = await res.json();
       if (!data.ok) return alert(data.error);
       await loadState();
-      showToast(`✅ 사진 ${items.length}장이 무료 다중 골격 엔진에 반영되었습니다!`);
+      showToast(`✅ 사진 ${items.length}장이 반영되었습니다!`);
     }
 
     async function setMasterPhoto(fname) {
@@ -1253,14 +2208,16 @@
             clearInterval(timer);
             reject(e);
           }
-        }, 1000);
+        }, 900);
       });
     }
 
+    // Tab 1: Start Generate (Free / Paid Gold / 1:1 Dual Compare)
     async function startGenerate() {
       const prof = getActiveProfile();
       if (!prof) return;
-      const [costMode, freeGenEngine] = document.getElementById('costEngineSelect').value.split('|');
+      const checked = document.querySelector('input[name="shootEngineRadio"]:checked');
+      const [costMode, freeGenEngine] = (checked ? checked.value : 'free|pulid_best').split('|');
 
       const btn = document.getElementById('btnShootStart');
       const pbox = document.getElementById('shootProgressBox');
@@ -1285,20 +2242,34 @@
         const startData = await res.json();
         if (!startData.ok) throw new Error(startData.error);
 
-        const item = await pollJob(startData.jobId, (job) => {
+        const result = await pollJob(startData.jobId, (job) => {
           document.getElementById('shootStepText').textContent = job.stepText;
           document.getElementById('shootPctText').textContent = `${job.progress}%`;
           document.getElementById('shootProgressBar').style.width = `${job.progress}%`;
           document.getElementById('shootLogs').textContent = (job.logs || []).slice(-6).join('\n');
         });
 
-        lastShootItem = item;
-        const simLabel = item.similarityPct ? ` · 실제 얼굴 일치율 ${item.similarityPct}%` : '';
-        document.getElementById('shootResultModeTag').textContent = `${item.mode}${simLabel}`;
+        await loadState();
+
+        if (startData.isCompare) {
+          activeComparisonId = result.id;
+          switchTab('compare');
+          showToast(
+            result.paidItem
+              ? '⚖️ 무료 vs 유료 PRO 동시 제작 완료! 커튼 슬라이더로 비교해 보세요.'
+              : '🆓 무료 제작 완료! (유료 슬롯 안내를 비교실 상단에서 확인하세요)'
+          );
+          return;
+        }
+
+        lastShootItem = result;
+        const simLabel = result.similarityPct ? ` · 일치율 ${result.similarityPct}%` : '';
+        document.getElementById('shootResultModeTag').style.color =
+          result.tier === 'paid' ? 'var(--gold-strong)' : 'var(--green)';
+        document.getElementById('shootResultModeTag').textContent = `${result.mode}${simLabel}`;
         toggleShootPreview('final');
         document.getElementById('shootCompareBar').style.display = 'flex';
-        await loadState();
-        showToast(`🎉 무료 촬영 완료!${simLabel}`);
+        showToast(`🎉 촬영 완료!${simLabel}`);
       } catch (err) {
         alert(err.message);
       } finally {
@@ -1312,10 +2283,12 @@
       const url = which === 'raw' ? lastShootItem.rawUrl : lastShootItem.finalUrl;
       document.getElementById('shootStage').innerHTML = `<img src="${url}" alt="촬영 결과" />`;
       document.getElementById('shootDownloadLink').href = url;
-      document.getElementById('btnViewFinal').className = which === 'final' ? 'btn-free' : 'btn-outline';
+      document.getElementById('btnViewFinal').className =
+        which === 'final' ? (lastShootItem.tier === 'paid' ? 'btn-gold' : 'btn-free') : 'btn-outline';
       document.getElementById('btnViewRaw').className = which === 'raw' ? 'btn-free' : 'btn-outline';
     }
 
+    // Tab 2: Homepage Grid & Fix Existing
     function renderHomepageGrid() {
       const grid = document.getElementById('homepageImagesGrid');
       const list = appState.homepageImages || [];
@@ -1362,6 +2335,9 @@
     async function startFixExisting() {
       const prof = getActiveProfile();
       if (!prof) return;
+      const checked = document.querySelector('input[name="fixEngineRadio"]:checked');
+      const costMode = checked ? checked.value : 'free';
+
       const btn = document.getElementById('btnFixStart');
       const pbox = document.getElementById('fixProgressBox');
       btn.disabled = true;
@@ -1373,6 +2349,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             profileId: prof.id,
+            costMode,
             sourceType: selectedFixSource.type,
             homepageFile: selectedFixSource.homepageFile,
             uploadDataUrl: selectedFixSource.uploadDataUrl,
@@ -1382,24 +2359,39 @@
         const startData = await res.json();
         if (!startData.ok) throw new Error(startData.error);
 
-        const item = await pollJob(startData.jobId, (job) => {
+        const result = await pollJob(startData.jobId, (job) => {
           document.getElementById('fixStepText').textContent = job.stepText;
           document.getElementById('fixPctText').textContent = `${job.progress}%`;
           document.getElementById('fixProgressBar').style.width = `${job.progress}%`;
+          document.getElementById('fixLogs').textContent = (job.logs || []).slice(-5).join('\n');
         });
 
-        lastFixItem = item;
-        document.getElementById('fixTargetLabel').textContent = `✅ 무료 교정 완료 · 실제 얼굴 일치율 ${item.similarityPct || 99}%`;
+        await loadState();
+
+        if (startData.isCompare) {
+          activeComparisonId = result.id;
+          switchTab('compare');
+          showToast(
+            result.paidItem
+              ? '⚖️ 무료 GPU vs 👑 유료 클라우드 동시 교정 완료! 화질 차이를 확인하세요.'
+              : '🆓 무료 GPU 교정 완료! (유료 클라우드 슬롯 안내를 비교실 상단에서 확인하세요)'
+          );
+          return;
+        }
+
+        lastFixItem = result;
+        document.getElementById('fixTargetLabel').style.color =
+          result.tier === 'paid' ? 'var(--gold-strong)' : 'var(--green)';
+        document.getElementById('fixTargetLabel').textContent = `${result.mode} · 일치율 ${result.similarityPct || 99}%`;
         toggleFixPreview('after');
         document.getElementById('fixActionBar').style.display = 'flex';
-        document.getElementById('btnApplyHomepage').style.display = item.targetHomepageFile ? 'inline-flex' : 'none';
-        await loadState();
-        showToast(`✅ 내 PC 무료 GPU 교정 완료! (일치율 ${item.similarityPct || 99}%)`);
+        document.getElementById('btnApplyHomepage').style.display = result.targetHomepageFile ? 'inline-flex' : 'none';
+        showToast(`✅ 교정 완료! (실제 얼굴 일치율 ${result.similarityPct || 99}%)`);
       } catch (err) {
         alert(err.message);
       } finally {
         btn.disabled = false;
-        setTimeout(() => pbox.classList.remove('active'), 1500);
+        setTimeout(() => pbox.classList.remove('active'), 1600);
       }
     }
 
@@ -1407,12 +2399,11 @@
       if (!lastFixItem) return;
       const url = which === 'before' ? lastFixItem.rawUrl : lastFixItem.finalUrl;
       document.getElementById('fixStage').innerHTML = `<img src="${url}" alt="교정 비교" />`;
-      document.getElementById('fixDownloadLink').href = lastFixItem.finalUrl;
     }
 
     async function applyFixedToHomepage() {
       if (!lastFixItem || !lastFixItem.targetHomepageFile) return;
-      if (!confirm(`홈페이지의 '${lastFixItem.targetHomepageFile}' 원본을 자동 백업한 뒤, 방금 무료로 교정한 실제 원장님 얼굴 이미지로 즉시 교체하시겠습니까?`)) return;
+      if (!confirm(`홈페이지의 '${lastFixItem.targetHomepageFile}' 원본을 자동 백업한 뒤, 방금 교정한 이미지로 즉시 교체하시겠습니까?`)) return;
       const res = await fetch('/api/apply-to-homepage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1427,6 +2418,339 @@
       showToast('🎉 ' + data.message);
     }
 
+    // =========================================================================
+    // ⚖️ TAB 3: QUALITY COMPARISON ARENA LOGIC (Curtain Slider + 2.5x Loupe)
+    // =========================================================================
+    const abSlider = document.getElementById('abCurtainSlider');
+
+    function syncCurtainSlider() {
+      const min = Number(abSlider.min || 0);
+      const max = Number(abSlider.max || 100);
+      const val = Number(abSlider.value || 50);
+      abSlider.style.setProperty('--attr-min', String(min));
+      abSlider.style.setProperty('--attr-max', String(max));
+      abSlider.style.setProperty('--control-value', String(val));
+      abSlider.setAttribute('aria-valuetext', `${val} 퍼센트 분할`);
+
+      const rightInset = 100 - val;
+      document.getElementById('curtainLeftLayer').style.clipPath = `inset(0 ${rightInset}% 0 0)`;
+      document.getElementById('curtainDivider').style.left = `${val}%`;
+      document.getElementById('curtainHandle').style.left = `${val}%`;
+      document.getElementById('curtainValueLabel').textContent = `커튼 분할 위치: 좌측 무료 ${val}% / 우측 비교 ${100 - val}%`;
+    }
+    abSlider.addEventListener('input', syncCurtainSlider);
+    syncCurtainSlider();
+
+    function setCompareViewMode(mode) {
+      compareViewMode = mode;
+      document.getElementById('cmpCurtainContainer').style.display = mode === 'curtain' ? 'block' : 'none';
+      document.getElementById('cmpLoupeContainer').style.display = mode === 'loupe' ? 'block' : 'none';
+      document.getElementById('btnCmpModeCurtain').className = mode === 'curtain' ? 'btn-free' : 'btn-outline';
+      document.getElementById('btnCmpModeLoupe').className = mode === 'loupe' ? 'btn-gold' : 'btn-gold-outline';
+    }
+
+    function buildCompareCandidatePool() {
+      const pool = [];
+      for (const g of appState.gallery || []) {
+        const isPaid = g.tier === 'paid' || /유료|클라우드/.test(g.mode || '');
+        pool.push({
+          key: `gal_final_${g.id}`,
+          label: `${isPaid ? '👑 [유료 PRO]' : '🆓 [무료]'} ${g.mode} — ${(g.scenePrompt || '').slice(0, 26)}`,
+          shortTag: isPaid ? '👑 유료 PRO 결과본' : '🆓 무료 GPU 결과본',
+          tier: isPaid ? 'paid' : 'free',
+          url: g.finalUrl,
+          similarityPct: g.similarityPct,
+          sharpnessScore: g.sharpnessScore,
+          width: g.width,
+          height: g.height,
+          cost: g.cost || (isPaid ? '👑 유료 크레딧' : '0원 (무료)'),
+          elapsedSec: g.elapsedSec,
+          landmarksPct: g.landmarksPct
+        });
+        if (g.rawUrl && g.rawUrl !== g.finalUrl) {
+          pool.push({
+            key: `gal_raw_${g.id}`,
+            label: `🎞️ [교정 전 / 1차 원본] ${(g.scenePrompt || '').slice(0, 30)}`,
+            shortTag: '🎞️ 교정 전 왜곡 원본',
+            tier: 'raw',
+            url: g.rawUrl,
+            similarityPct: g.beforeSimilarityPct || null,
+            sharpnessScore: null,
+            width: g.width,
+            height: g.height,
+            cost: '교정 전 원본',
+            elapsedSec: null,
+            landmarksPct: g.landmarksPct
+          });
+        }
+      }
+      for (const hp of (appState.homepageImages || []).slice(0, 10)) {
+        pool.push({
+          key: `hp_${hp.fileName}`,
+          label: `🏠 [홈페이지 현재 원본] ${hp.fileName}`,
+          shortTag: `🏠 홈페이지 원본 (${hp.fileName})`,
+          tier: 'raw',
+          url: hp.previewUrl,
+          similarityPct: null,
+          sharpnessScore: null,
+          width: null,
+          height: null,
+          cost: '기존 홈페이지 이미지',
+          elapsedSec: null,
+          landmarksPct: null
+        });
+      }
+      candidatePool = pool;
+    }
+
+    function renderCompareArena() {
+      const comps = appState.comparisons || [];
+      const histWrap = document.getElementById('cmpSavedHistoryWrap');
+      const histStrip = document.getElementById('cmpHistoryStrip');
+
+      if (comps.length > 0) {
+        histWrap.style.display = 'block';
+        if (!activeComparisonId) activeComparisonId = comps[0].id;
+        histStrip.innerHTML = comps
+          .map((c) => {
+            const active = c.id === activeComparisonId;
+            const statusBadge =
+              c.status === 'complete'
+                ? '<span style="color:var(--gold-strong);font-size:11px;font-weight:800;">🆓 vs 👑 완료</span>'
+                : '<span style="color:var(--gold);font-size:11px;font-weight:800;">👑 유료 슬롯 대기</span>';
+            return `
+              <button type="button" class="cmp-pill-card ${active ? 'active' : ''}" onclick="selectSavedComparison('${c.id}')">
+                <div style="display:flex;justify-content:space-between;gap:8px;width:100%;">
+                  <span style="font-size:12.5px;font-weight:800;color:var(--text);">${escapeHtml(c.title)}</span>
+                  ${statusBadge}
+                </div>
+              </button>
+            `;
+          })
+          .join('');
+      } else {
+        histWrap.style.display = 'none';
+      }
+
+      const leftSel = document.getElementById('cmpLeftSelect');
+      const rightSel = document.getElementById('cmpRightSelect');
+      const prevLeft = leftSel.value;
+      const prevRight = rightSel.value;
+
+      const optionsHtml = candidatePool
+        .map((c) => `<option value="${c.key}">${escapeHtml(c.label)}</option>`)
+        .join('');
+      leftSel.innerHTML = optionsHtml;
+      rightSel.innerHTML = optionsHtml;
+
+      // Determine smart defaults
+      const activeComp = comps.find((c) => c.id === activeComparisonId);
+      const pendingBanner = document.getElementById('cmpPendingPaidBanner');
+
+      if (activeComp) {
+        if (activeComp.status === 'pending_paid') {
+          pendingBanner.style.display = 'block';
+          document.getElementById('cmpPendingPaidMsg').textContent =
+            activeComp.paidError || 'fal.ai 크레딧 충전 후 우측 버튼을 누르면 동일 조건의 유료 PRO 결과물이 생성됩니다.';
+        } else {
+          pendingBanner.style.display = 'none';
+        }
+
+        const freeKey = activeComp.freeItem ? `gal_final_${activeComp.freeItem.id}` : '';
+        const paidKey = activeComp.paidItem
+          ? `gal_final_${activeComp.paidItem.id}`
+          : activeComp.freeItem
+          ? `gal_raw_${activeComp.freeItem.id}`
+          : '';
+        if (freeKey && candidatePool.some((x) => x.key === freeKey)) leftSel.value = freeKey;
+        if (paidKey && candidatePool.some((x) => x.key === paidKey)) rightSel.value = paidKey;
+      } else {
+        pendingBanner.style.display = 'none';
+        if (prevLeft && candidatePool.some((x) => x.key === prevLeft)) {
+          leftSel.value = prevLeft;
+        } else {
+          const firstFree = candidatePool.find((x) => x.tier === 'free');
+          if (firstFree) leftSel.value = firstFree.key;
+        }
+        if (prevRight && candidatePool.some((x) => x.key === prevRight)) {
+          rightSel.value = prevRight;
+        } else {
+          const firstPaid = candidatePool.find((x) => x.tier === 'paid') || candidatePool.find((x) => x.tier === 'raw');
+          if (firstPaid) rightSel.value = firstPaid.key;
+        }
+      }
+
+      onCompareSelectChange();
+    }
+
+    function selectSavedComparison(compId) {
+      activeComparisonId = compId;
+      renderCompareArena();
+    }
+
+    async function retryPendingPaidSlot() {
+      if (!activeComparisonId) return;
+      const btn = document.getElementById('btnRetryPaidSlot');
+      btn.disabled = true;
+      btn.textContent = '👑 유료 PRO 생성 중...';
+      try {
+        const res = await fetch(`/api/comparisons/${encodeURIComponent(activeComparisonId)}/retry-paid`, { method: 'POST' });
+        const startData = await res.json();
+        if (!startData.ok) throw new Error(startData.error);
+        await pollJob(startData.jobId, (job) => {
+          btn.textContent = `👑 ${job.progress}%`;
+        });
+        await loadState();
+        showToast('👑 유료 PRO 결과물 매칭 완료! 지금 바로 무료와 비교해 보세요.');
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '👑 이 조건 그대로 유료 PRO 슬롯 생성';
+      }
+    }
+
+    function onCompareSelectChange() {
+      const leftKey = document.getElementById('cmpLeftSelect').value;
+      const rightKey = document.getElementById('cmpRightSelect').value;
+      const leftObj = candidatePool.find((x) => x.key === leftKey) || candidatePool[0];
+      const rightObj = candidatePool.find((x) => x.key === rightKey) || candidatePool[1] || candidatePool[0];
+      if (!leftObj || !rightObj) return;
+
+      // Update Curtain Slider Images & Corner Tags
+      document.getElementById('curtainLeftImg').src = leftObj.url;
+      document.getElementById('curtainRightImg').src = rightObj.url;
+      document.getElementById('curtainLeftTag').textContent = leftObj.shortTag;
+      document.getElementById('curtainRightTag').textContent = rightObj.shortTag;
+
+      // Update Side-by-Side Loupe Images
+      document.getElementById('sbsLeftImg').src = leftObj.url;
+      document.getElementById('sbsRightImg').src = rightObj.url;
+      document.getElementById('sbsLeftTitle').textContent = leftObj.shortTag;
+      document.getElementById('sbsLeftBadge').textContent = leftObj.cost || '';
+      document.getElementById('sbsRightTitle').textContent = rightObj.shortTag;
+      document.getElementById('sbsRightBadge').textContent = rightObj.cost || '';
+
+      // Update Metrics Table
+      document.getElementById('tblHeadLeft').textContent = leftObj.shortTag;
+      document.getElementById('tblHeadRight').textContent = rightObj.shortTag;
+      document.getElementById('tblSimLeft').textContent =
+        leftObj.similarityPct != null ? `${leftObj.similarityPct}% 일치` : '🔄 우측 상단 [정밀 재계측] 클릭';
+      document.getElementById('tblSimRight').textContent =
+        rightObj.similarityPct != null ? `${rightObj.similarityPct}% 일치` : '🔄 우측 상단 [정밀 재계측] 클릭';
+      document.getElementById('tblSharpLeft').textContent =
+        leftObj.sharpnessScore != null ? `${leftObj.sharpnessScore}점 (모공·안경 선명도)` : '-';
+      document.getElementById('tblSharpRight').textContent =
+        rightObj.sharpnessScore != null ? `${rightObj.sharpnessScore}점 (모공·안경 선명도)` : '-';
+      document.getElementById('tblResLeft').textContent =
+        leftObj.width && leftObj.height ? `${leftObj.width} × ${leftObj.height} px` : '원본 해상도';
+      document.getElementById('tblResRight').textContent =
+        rightObj.width && rightObj.height ? `${rightObj.width} × ${rightObj.height} px` : '원본 해상도';
+      document.getElementById('tblCostLeft').textContent =
+        `${leftObj.cost || '-'}${leftObj.elapsedSec ? ` · ${leftObj.elapsedSec}초` : ''}`;
+      document.getElementById('tblCostRight').textContent =
+        `${rightObj.cost || '-'}${rightObj.elapsedSec ? ` · ${rightObj.elapsedSec}초` : ''}`;
+
+      window.__activePair = { leftObj, rightObj };
+    }
+
+    async function reAnalyzeActivePair() {
+      if (!window.__activePair) return;
+      const prof = getActiveProfile();
+      const { leftObj, rightObj } = window.__activePair;
+      showToast('📊 두 이미지의 실제 얼굴 일치율 및 피부 모공 선명도를 계측 중입니다...');
+      try {
+        const [r1, r2] = await Promise.all([
+          fetch('/api/analyze-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profileId: prof?.id, imageUrl: leftObj.url })
+          }).then((r) => r.json()),
+          fetch('/api/analyze-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profileId: prof?.id, imageUrl: rightObj.url })
+          }).then((r) => r.json())
+        ]);
+        if (r1.ok && r1.metrics) Object.assign(leftObj, r1.metrics);
+        if (r2.ok && r2.metrics) Object.assign(rightObj, r2.metrics);
+        onCompareSelectChange();
+        showToast('✅ 두 사진의 동일 기준 AI 품질 계측이 완료되었습니다!');
+      } catch (e) {
+        alert('계측 오류: ' + e.message);
+      }
+    }
+
+    // Synchronized 2.5x Magnifier Loupe Handlers
+    function updateDualLoupes(pctX, pctY, show = true) {
+      const zoom = 2.5;
+      const pairs = [
+        { box: document.getElementById('sbsLeftBox'), img: document.getElementById('sbsLeftImg'), lens: document.getElementById('loupeLeft') },
+        { box: document.getElementById('sbsRightBox'), img: document.getElementById('sbsRightImg'), lens: document.getElementById('loupeRight') }
+      ];
+      for (const { box, img, lens } of pairs) {
+        if (!show || !img.src) {
+          lens.style.display = 'none';
+          continue;
+        }
+        const rect = box.getBoundingClientRect();
+        const x = (pctX / 100) * rect.width;
+        const y = (pctY / 100) * rect.height;
+        lens.style.display = 'block';
+        lens.style.left = `${x}px`;
+        lens.style.top = `${y}px`;
+        lens.style.backgroundImage = `url("${img.src}")`;
+        lens.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
+        lens.style.backgroundPosition = `${-(x * zoom - 88)}px ${-(y * zoom - 88)}px`;
+      }
+    }
+
+    ['sbsLeftBox', 'sbsRightBox'].forEach((id) => {
+      const box = document.getElementById(id);
+      box.addEventListener('mousemove', (e) => {
+        const rect = box.getBoundingClientRect();
+        const pctX = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+        const pctY = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+        updateDualLoupes(pctX, pctY, true);
+      });
+      box.addEventListener('mouseleave', () => updateDualLoupes(50, 50, false));
+    });
+
+    function jumpLoupeToLandmark(part) {
+      setCompareViewMode('loupe');
+      const lm =
+        window.__activePair?.leftObj?.landmarksPct?.[part] ||
+        window.__activePair?.rightObj?.landmarksPct?.[part] ||
+        (part === 'eyes' ? [50, 34] : part === 'nose' ? [50, 42] : [50, 50]);
+      setTimeout(() => updateDualLoupes(lm[0], lm[1], true), 60);
+    }
+
+    function sendItemToCompare(item, side = 'auto') {
+      if (!item) return;
+      activeComparisonId = null;
+      buildCompareCandidatePool();
+      switchTab('compare');
+      const key = `gal_final_${item.id}`;
+      const isPaid = item.tier === 'paid';
+      if (side === 'left' || (side === 'auto' && !isPaid)) {
+        document.getElementById('cmpLeftSelect').value = key;
+      } else {
+        document.getElementById('cmpRightSelect').value = key;
+      }
+      onCompareSelectChange();
+    }
+
+    function openBeforeAfterInArena(item) {
+      if (!item) return;
+      activeComparisonId = null;
+      buildCompareCandidatePool();
+      switchTab('compare');
+      document.getElementById('cmpLeftSelect').value = `gal_final_${item.id}`;
+      document.getElementById('cmpRightSelect').value = `gal_raw_${item.id}`;
+      onCompareSelectChange();
+    }
+
+    // Paid LoRA Training (👑 Gold Menu)
     async function startLoraTraining() {
       const prof = getActiveProfile();
       if (!prof) return;
@@ -1452,7 +2776,7 @@
           document.getElementById('trainProgressBar').style.width = `${job.progress}%`;
         });
         await loadState();
-        showToast('🎉 클라우드 LoRA 학습 완료!');
+        showToast('👑 유료 PRO 전용 얼굴 금형(LoRA) 학습 완료!');
       } catch (err) {
         alert(err.message);
       } finally {
@@ -1468,27 +2792,41 @@
         return;
       }
       grid.innerHTML = items
-        .map((it) => `
-          <div class="gal-card" onclick="openGalleryItem('${it.id}')">
-            <img src="${it.finalUrl}" alt="보관함 이미지" loading="lazy" />
-            <div class="gal-meta">
-              <span class="gal-tag">${escapeHtml(it.mode)}${it.similarityPct ? ` · ${it.similarityPct}%` : ''}</span>
-              <div class="gal-prompt">${escapeHtml(it.scenePrompt || '')}</div>
+        .map((it) => {
+          const isPaid = it.tier === 'paid' || /유료|클라우드/.test(it.mode || '');
+          return `
+            <div class="gal-card ${isPaid ? 'is-paid' : 'is-free'}">
+              <img src="${it.finalUrl}" alt="보관함 이미지" loading="lazy" onclick="openGalleryItem('${it.id}')" />
+              <div class="gal-meta">
+                <span class="gal-tag">${escapeHtml(it.mode)}${it.similarityPct ? ` · ${it.similarityPct}%` : ''}</span>
+                <div class="gal-prompt">${escapeHtml(it.scenePrompt || '')}</div>
+                <div class="gal-mini-actions">
+                  <button type="button" class="btn-outline" onclick="sendItemByIdToCompare('${it.id}', 'left')">🆓 좌측 비교</button>
+                  <button type="button" class="btn-gold-outline" onclick="sendItemByIdToCompare('${it.id}', 'right')">👑 우측 비교</button>
+                </div>
+              </div>
             </div>
-          </div>
-        `)
+          `;
+        })
         .join('');
+    }
+
+    function sendItemByIdToCompare(id, side) {
+      const it = (appState.gallery || []).find((x) => x.id === id);
+      if (it) sendItemToCompare(it, side);
     }
 
     function openGalleryItem(id) {
       const it = (appState.gallery || []).find((x) => x.id === id);
       if (!it) return;
-      document.getElementById('detailDialogTitle').textContent = `${it.profileName} · ${it.mode}`;
-      document.getElementById('detailImageWrap').innerHTML = `<img id="detailModalImg" src="${it.finalUrl}" style="max-width:100%;max-height:68vh;border-radius:10px;" alt="상세 이미지" />`;
+      const isPaid = it.tier === 'paid' || /유료|클라우드/.test(it.mode || '');
+      document.getElementById('detailDialogTitle').innerHTML = `${escapeHtml(it.profileName)} · <span style="color:${isPaid ? 'var(--gold-strong)' : 'var(--green)'}">${escapeHtml(it.mode)}</span>`;
+      document.getElementById('detailImageWrap').innerHTML = `<img id="detailModalImg" src="${it.finalUrl}" style="max-width:100%;max-height:66vh;border-radius:10px;" alt="상세 이미지" />`;
       document.getElementById('detailActions').innerHTML = `
-        <button type="button" class="btn-free" onclick="document.getElementById('detailModalImg').src='${it.finalUrl}'">🔒 최종 정밀본 보기</button>
-        <button type="button" class="btn-outline" onclick="document.getElementById('detailModalImg').src='${it.rawUrl}'">👀 1차/교정전 원본 보기</button>
-        <a href="${it.finalUrl}" download style="text-decoration:none;"><button type="button" class="btn-outline">⬇️ 다운로드</button></a>
+        <button type="button" class="${isPaid ? 'btn-gold' : 'btn-free'}" onclick="document.getElementById('detailModalImg').src='${it.finalUrl}'">🔒 최종 정밀본</button>
+        <button type="button" class="btn-outline" onclick="document.getElementById('detailModalImg').src='${it.rawUrl}'">👀 교정전/1차 원본</button>
+        <button type="button" class="btn-gold-outline" onclick="document.getElementById('detailDialog').close(); openBeforeAfterInArena((appState.gallery||[]).find(x=>x.id==='${it.id}'))">⚖️ 비교실에서 확대 대조</button>
+        <a href="${it.finalUrl}" download style="text-decoration:none;"><button type="button" class="btn-outline">⬇️ 저장</button></a>
         <button type="button" class="btn-outline" style="color:#f87171;" onclick="deleteGalleryItem('${it.id}')">🗑️ 삭제</button>
       `;
       document.getElementById('detailDialog').showModal();

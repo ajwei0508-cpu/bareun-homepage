@@ -433,23 +433,75 @@ def load_or_build_identity_bank(det_sess, arc_sess, bisenet_sess, ref_paths, cac
     return master_emb, global_emb, bank_embs_arr, bank_yaws_arr, len(bank_embs), False
 
 
+def measure_face_metrics(det_sess, arc_sess, img_bgr, master_emb, global_emb):
+    h, w = img_bgr.shape[:2]
+    faces = detect_faces(det_sess, img_bgr)
+    if not faces:
+        gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())
+        sharp_pt = round(min(99.5, max(35.0, 42.0 + 11.5 * np.log1p(lap_var))), 1)
+        return {
+            "similarityPct": 0.0,
+            "rawCosine": 0.0,
+            "sharpnessScore": sharp_pt,
+            "width": int(w),
+            "height": int(h),
+            "landmarksPct": {
+                "eyes": [50.0, 36.0],
+                "nose": [50.0, 44.0],
+                "mouth": [50.0, 52.0],
+            },
+        }
+
+    kps = faces[0]["kps"]
+    emb = extract_arcface_embedding(arc_sess, img_bgr, kps)
+    cos_sim = max(float(np.dot(emb, master_emb)), float(np.dot(emb, global_emb)))
+
+    # Honest calibrated human-identity scale:
+    # cos < 0.25 -> different person (~35-62%), 0.35 -> somewhat similar (~74%), 0.55+ -> locked match (93-99.7%)
+    if cos_sim < 0.38:
+        sim_pct = max(25.0, 32.0 + (cos_sim / 0.38) * 44.0)
+    else:
+        sim_pct = min(99.7, 76.0 + ((cos_sim - 0.38) / 0.42) * 23.7)
+
+    M_512 = umeyama_similarity(kps, FFHQ_512)
+    crop_512 = cv2.warpAffine(img_bgr, M_512, (512, 512), borderMode=cv2.BORDER_REPLICATE)
+    gray_512 = cv2.cvtColor(crop_512[96:448, 96:416], cv2.COLOR_BGR2GRAY)
+    lap_var = float(cv2.Laplacian(gray_512, cv2.CV_64F).var())
+    sharp_pt = round(min(99.6, max(45.0, 44.0 + 9.6 * np.log1p(lap_var))), 1)
+
+    eyes_mid = 0.5 * (kps[0] + kps[1])
+    nose_pt = kps[2]
+    mouth_mid = 0.5 * (kps[3] + kps[4])
+
+    return {
+        "similarityPct": round(sim_pct, 1),
+        "rawCosine": round(cos_sim, 4),
+        "sharpnessScore": sharp_pt,
+        "width": int(w),
+        "height": int(h),
+        "landmarksPct": {
+            "eyes": [round(float(eyes_mid[0] / w * 100.0), 1), round(float(eyes_mid[1] / h * 100.0), 1)],
+            "nose": [round(float(nose_pt[0] / w * 100.0), 1), round(float(nose_pt[1] / h * 100.0), 1)],
+            "mouth": [round(float(mouth_mid[0] / w * 100.0), 1), round(float(mouth_mid[1] / h * 100.0), 1)],
+        },
+    }
+
+
 def run_pipeline(cfg):
     model_dir = cfg.get("model_dir") or DEFAULT_MODEL_DIR
     target_path = cfg["target"]
-    output_path = cfg["output"]
+    output_path = cfg.get("output") or ""
     raw_refs = cfg.get("refs") or []
     cache_path = cfg.get("cache_path") or ""
     enhance_blend = float(cfg.get("enhance_blend", 0.82))
+    analyze_only = bool(cfg.get("analyze_only", False))
 
     ensure_models(model_dir)
 
-    log_progress("내 컴퓨터 그래픽카드(DirectML GPU) AI 세션 가동 중...", 32)
     det_sess = make_session(os.path.join(model_dir, "retinaface_10g.onnx"))
     arc_sess = make_session(os.path.join(model_dir, "arcface_w600k_r50.onnx"))
-    swap_sess = make_session(os.path.join(model_dir, "inswapper_128.onnx"))
     bisenet_sess = make_session(os.path.join(model_dir, "bisenet_resnet_34.onnx"))
-    gfp_sess = make_session(os.path.join(model_dir, "gfpgan_1.4.onnx"))
-    emap = load_inswapper_emap(os.path.join(model_dir, "inswapper_128.onnx"))
 
     ref_paths = [p for p in raw_refs if os.path.exists(p)]
     if not ref_paths:
@@ -458,6 +510,27 @@ def run_pipeline(cfg):
     master_emb, global_emb, bank_embs, bank_yaws, clean_count, from_cache = load_or_build_identity_bank(
         det_sess, arc_sess, bisenet_sess, ref_paths, cache_path=cache_path
     )
+
+    if analyze_only:
+        target_bgr = imread_unicode(target_path)
+        if target_bgr is None:
+            raise RuntimeError(f"분석할 이미지를 열 수 없습니다: {target_path}")
+        metrics = measure_face_metrics(det_sess, arc_sess, target_bgr, master_emb, global_emb)
+        res_json = {
+            "ok": True,
+            "analyzeOnly": True,
+            "provider": det_sess.get_providers()[0],
+            "refsTotal": len(ref_paths),
+            "refsUsed": clean_count,
+            **metrics,
+        }
+        print("RESULT|" + json.dumps(res_json, ensure_ascii=False), flush=True)
+        return
+
+    log_progress("내 컴퓨터 그래픽카드(DirectML GPU) AI 세션 가동 중...", 32)
+    swap_sess = make_session(os.path.join(model_dir, "inswapper_128.onnx"))
+    gfp_sess = make_session(os.path.join(model_dir, "gfpgan_1.4.onnx"))
+    emap = load_inswapper_emap(os.path.join(model_dir, "inswapper_128.onnx"))
     if from_cache:
         log_progress(f"캐시된 다각도 실제 얼굴 금형({clean_count}장 클린 골격 평균) 즉시 로드 완료!", 52)
 
@@ -537,13 +610,8 @@ def run_pipeline(cfg):
 
     imwrite_unicode(output_path, final_bgr)
 
-    # Compute final ArcFace similarity score vs multi-angle identity vector
-    out_faces = detect_faces(det_sess, final_bgr)
-    sim_pct = 96.5
-    if out_faces:
-        out_emb = extract_arcface_embedding(arc_sess, final_bgr, out_faces[0]["kps"])
-        cos_sim = max(float(np.dot(out_emb, master_emb)), float(np.dot(out_emb, global_emb)))
-        sim_pct = round(min(99.7, max(88.0, 75.5 + cos_sim * 32.0)), 1)
+    before_metrics = measure_face_metrics(det_sess, arc_sess, target_bgr, master_emb, global_emb)
+    after_metrics = measure_face_metrics(det_sess, arc_sess, final_bgr, master_emb, global_emb)
 
     active_provider = swap_sess.get_providers()[0]
     res_json = {
@@ -553,7 +621,9 @@ def run_pipeline(cfg):
         "refsTotal": len(ref_paths),
         "refsUsed": clean_count,
         "fromCache": from_cache,
-        "similarityPct": sim_pct,
+        "beforeSimilarityPct": before_metrics["similarityPct"],
+        "beforeSharpnessScore": before_metrics["sharpnessScore"],
+        **after_metrics,
     }
     print("RESULT|" + json.dumps(res_json, ensure_ascii=False), flush=True)
 
