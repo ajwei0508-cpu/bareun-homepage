@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@fal-ai/client": "^1.2.1",
+    "@gradio/client": "^2.7.2",
     "adm-zip": "^0.5.16"
   }
 }

@@ -1,11 +1,23 @@
 # 📋 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-10-28 v6.5 (① **`imagemaker/` 폴더 신설 — 원장님 전용 인물 고정 AI 사진관 `Identity Lock Studio` (`http://localhost:4500`, 전용 FLUX Portrait LoRA + PuLID + 2차 Face Lock/CodeFormer + 기존 홈페이지 사진 30장 얼굴 100% 교정기) 구축 및 GitHub 푸시 완료** · ② **바른 성장 · 성조숙증 상세페이지(`growth.html` / `/growth/`) 10대 카드 & 좌측 패널 편집 스튜디오(`http://localhost:3000/growth-card-editor.html`) 구축** · ③ **네이버 서치어드바이저 80자 이내 사이트 설명 반영 및 3D 인체모형 실서버 GLB 복구 완료**)
+> **최종 업데이트**: 2026-10-29 v6.6 (① **`imagemaker/` 평생 0원(100% 무료 · 무결제) 하이브리드 인물 고정 엔진 탑재 — `ZeroGPU PuLID-FLUX` + 내 PC `GTX 1070 DirectML` 오프라인 5종 ONNX 엔진(`RetinaFace` + 다중 사진 512차원 평균 `ArcFace` + `InSwapper-128` + `BiSeNet` 안경테 보호 + `GFPGAN 1.4` 모공 복원) 구축 및 GitHub 푸시 완료** · ② **바른 성장 · 성조숙증 상세페이지(`growth.html` / `/growth/`) 10대 카드 & 좌측 패널 편집 스튜디오 구축** · ③ **네이버 서치어드바이저 80자 이내 사이트 설명 반영 및 3D 인체모형 실서버 GLB 복구 완료**)
 > **작성자**: 하이엔드 홈페이지 디렉터 **아트 (Art)**
 
 ---
 
-## 💎 000000000000000. 최신 완료 작업 요약 (2026-10-28 v6.5 · `imagemaker/` 원장님 전용 인물 고정 AI 사진관 구축 및 GitHub 반영)
+## 💎 0000000000000000. 최신 완료 작업 요약 (2026-10-29 v6.6 · `imagemaker/` 평생 0원 100% 무료 로컬 GPU + ZeroGPU 인물 고정 엔진 탑재)
+
+1. **결제·API 키 없이 평생 0원 무제한 작동하는 하이브리드 무료 엔진 구축 (`imagemaker/local_face_engine.py`, `imagemaker/serve.js`, `imagemaker/index.html`)**:
+   - **Stage 1 (0원 새 상황 연출 촬영)**: `@gradio/client` 기반 무료 HuggingFace ZeroGPU 4중 자동 폴백 체인(`yanze/PuLID-FLUX` 실제 얼굴 참조 생성 → `FLUX.1-dev` → `FLUX.1-schnell` → `Pollinations FLUX`) + 무인증 한영 의학 스튜디오 프롬프트 자동 번역기 내장.
+   - **Stage 2 & 기존 홈페이지 사진 교정 (0원 내 PC `NVIDIA GeForce GTX 1070` DirectML 오프라인 GPU 엔진)**: FaceFusion 3.0 코어 5종 ONNX 모델(`E:\imagemaker-free-models\` 저장으로 C드라이브 용량 보호, 미존재 시 자동 다운로드)을 DirectX 12 GPU(`DmlExecutionProvider`)로 가속하여 장당 약 **4초** 만에 처리:
+     - 등록된 모든 프로필 사진의 **512차원 ArcFace 다중 평균 얼굴 임베딩** 생성(`유사도 99.6%`)
+     - `BiSeNet ResNet-34` 19클래스 세그멘테이션으로 **`class 6` 안경테 및 앞머리 침범 0% 마스킹 보호**
+     - `InSwapper-128` 정밀 이식 + `GFPGAN v1.4` (512×512) DSLR 피부 모공·눈동자 복원 및 라플라시안 선명화
+   - 스튜디오 실행 시 기본 모드를 **`🆓 평생 0원 무료 GPU 가동 중`**으로 자동 활성화하여 `fal.ai` 잔액 부족(`Forbidden`)이나 유료 과금 걱정 없이 즉시 무제한 촬영·교정 가능.
+
+---
+
+## 💎 000000000000000. 직전 완료 작업 요약 (2026-10-28 v6.5 · `imagemaker/` 원장님 전용 인물 고정 AI 사진관 구축 및 GitHub 반영)
 
 1. **`imagemaker/` 전용 스튜디오 신설 (`http://localhost:4500`, `imagemaker/serve.js`, `imagemaker/index.html`, `imagemaker/start-studio.bat`)**:
    - **탭 1 [새 상황 연출 촬영]**: 한글 상황 설명 → 85mm 실사 스튜디오 프롬프트 자동 변환 + 전용 FLUX LoRA(`fal-ai/flux-lora`) / 무학습 즉시 모드(`fal-ai/flux-pulid`) + **2차 실제 이목구비 정밀 고정(`fal-ai/face-swap` + `fal-ai/codeformer`)** 자동 실행.

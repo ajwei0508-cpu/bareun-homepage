@@ -3,3 +3,10 @@ data/settings.json
 data/upload-cache.json
 data/outputs/
 data/loras/
+data/free-models/
+data/profiles/
+data/profiles.json
+data/gallery.json
+__pycache__/
+*.pyc
+*.npz
