@@ -2131,10 +2131,10 @@ class Bareun_Master_SEO_Engine_V1 {
         if ($post) {
             $cfg = self::resolve_seo_for_post($post);
             if (!empty($cfg['title'])) {
-                return $cfg['title'];
+                return esc_html($cfg['title']);
             }
         }
-        return $title;
+        return esc_html($title);
     }
 
     public static function filter_rss_excerpt($excerpt) {
@@ -2142,10 +2142,10 @@ class Bareun_Master_SEO_Engine_V1 {
         if ($post) {
             $cfg = self::resolve_seo_for_post($post);
             if (!empty($cfg['description'])) {
-                return $cfg['description'];
+                return esc_html($cfg['description']);
             }
         }
-        return $excerpt;
+        return esc_html($excerpt);
     }
 
     public static function filter_rss_content($content) {
