@@ -219,13 +219,18 @@
       body.is-body-explorer-page #bareun-floating-visit-dock {
         display: none;
       }
-      @media (max-width: 900px) {
+      @media (max-width: 1024px) {
         .bareun-visit-pill-total-wrap {
           display: none;
         }
+        .bareun-visit-pill-btn {
+          padding: 5px 9px;
+          font-size: 10.5px;
+          gap: 5px;
+          flex-shrink: 0;
+        }
         #bareun-floating-visit-dock {
-          left: 12px;
-          bottom: 12px;
+          display: none !important;
         }
       }
 

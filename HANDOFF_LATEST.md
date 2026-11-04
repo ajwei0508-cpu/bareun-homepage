@@ -5,6 +5,23 @@
 
 ---
 
+## 💎 0000000000000000000. 최신 완료 작업 요약 (2026-11-04 v6.9 · 모바일·폴더블 메인 3D 쇼룸 & 7대 진료카드 레이아웃·비율 100% 정밀 교정)
+
+1. **모바일·폴더블(`.skt-finale-stage`, `.skt-finale-header`, `.skt-bento-grid`) 가로 쏠림 및 좌측 글자 잘림 현상 완전 해결 (`homepage/story-3d.html`, `homepage/index.html`)**:
+   - 기존 모바일(`@media (max-width: 1024px)`)에서 `.skt-finale-header` 내 좌측 타이틀 그룹(`.skt-finale-heading-group`)과 우측 4개 컨트롤 버튼(`.skt-finale-controls`, `flex-wrap: nowrap`)이 한 줄(`flex-direction: row`)에 배치되어 약 `620px+`의 가로 오버플로우를 유발하고 전체 레이아웃이 좌측으로 밀리던(`x < 0`) 문제를 해결.
+   - 모바일에서 `.skt-finale-header`를 `flex-direction: column`으로 전환하고 `.skt-finale-controls`를 `grid-template-columns: repeat(2, minmax(0, 1fr))` 2x2 균등 그리드로 재설계하여 가로 폭 `100%` 내부에 오차 없이 정렬.
+   - `.skt-bento-grid`에 `grid-template-columns: repeat(2, minmax(0, 1fr))` 및 카드별 명시적 높이(`156px` / `152px` / `166px`), `.skt-card-item`에 `min-width: 0; overflow: hidden`을 부여하여 카드 중첩 및 좌우 잘림 0% 달성(`scrollWidth === clientWidth`).
+2. **배경 레이어(`.skt-hero-bg`) 하단 끊김 해결 및 삼성 인터넷/안드로이드 강제 다크모드 이미지 보호**:
+   - 모바일 스크롤 시 `.skt-hero-bg`가 상단 55% 지점에서 끊기며 뒤쪽 WebGL 캔버스가 비치던 현상을 `position: fixed; inset: 0; width: 100%; height: 100dvh; transform: none !important;`로 고정하여 해결.
+   - `.skt-img-box`에 `color-scheme: light only; forced-color-adjust: none; background-color: #261E18;` 및 모바일 즉시 노출(`phase-ready` 직행) 로직을 적용해 모바일 강제 다크모드나 FLIP 전환 도중 카드 배경 사진이 누락되거나 어긋나는 현상 원천 차단.
+3. **상단 네비게이션(`.spatial-top-nav`) 및 하단 중복 방문자 카운터(`visit-tracker.js`) 모바일 최적화**:
+   - 상단 헤더 `.nav-right-actions`에 `flex: 1 1 auto; min-width: 0; overflow-x: auto;`를 부여해 우측 메뉴 영역이 화면 밖으로 밀리지 않고 부드럽게 가로 스와이프되도록 개선.
+   - 모바일에서 상단 헤더에 이미 실시간 조회수 배지(`📊 조회수 오늘 N`)가 표시되므로, 하단 카드 CTA 버튼을 가리던 좌측 하단 플로팅 배지(`#bareun-floating-visit-dock`)는 모바일(`max-width: 1024px`)에서 자동 숨김 처리.
+4. **3D 스토리 WebGL 셰이더(`getCoverUv`) 모바일 세로 비율(`9:16`) 초점 보정 및 실서버 자동 배포**:
+   - 세로형 모바일 화면에서 `16:9` 스토리 아트워크가 과도하게 확대·크롭되지 않도록 피사체 중심 초점(`uFocal.x`) 보정.
+   - `node bundle-wp.js` 및 `node deploy-cafe24.js`로 전 16개 워드프레스 번들 파일 및 카페24 실서버(`https://www.bareunhaniwon.com/`) 원스톱 동기화 완료.
+
+---
 ## 💎 000000000000000000. 최신 완료 작업 요약 (2026-11-01 v6.8 · 네이버 서치어드바이저 RSS XML 이스케이프 수정 & 사이트맵 등록 최적화)
 
 1. **RSS 2.0 피드 XML 문법 엄격화 및 W3C 유효성 검사 100% 통과 (`bareun-member-private-qna.php`)**:

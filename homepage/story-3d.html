@@ -26,6 +26,11 @@
   <meta name="twitter:image" content="https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg">
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","MedicalOrganization","LocalBusiness"],"@id":"https://www.bareunhaniwon.com/#clinic","name":"바른한의원 대전본점","alternateName":["Bareun Korean Medicine Clinic Daejeon","대전 바른한의원"],"url":"https://www.bareunhaniwon.com/","logo":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp","image":"https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg","telephone":"+82-10-5631-1275","priceRange":"₩₩","address":{"@type":"PostalAddress","streetAddress":"비래동로7번길 1, 2층","addressLocality":"대덕구","addressRegion":"대전광역시","postalCode":"34417","addressCountry":"KR"},"geo":{"@type":"GeoCoordinates","latitude":36.35536,"longitude":127.44778},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","PublicHolidays"],"opens":"09:00","closes":"14:00"}],"sameAs":["https://naver.me/5U1ELn8L","https://blog.naver.com/wei0508","https://pf.kakao.com/_ykxcLK"],"founder":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"대표원장 (한의사)"}},{"@type":"WebSite","@id":"https://www.bareunhaniwon.com/#website","name":"바른한의원 대전본점","url":"https://www.bareunhaniwon.com/","inLanguage":"ko-KR","publisher":{"@id":"https://www.bareunhaniwon.com/#clinic"}},{"@type":"MedicalWebPage","@id":"https://www.bareunhaniwon.com/#webpage","url":"https://www.bareunhaniwon.com/","name":"바른한의원 대전본점 | 대덕구 비래동 추나·성장·다이어트·탈모·공진단","description":"정수리여성남성원형탈모병원치료성장클리닉성장판검사두통탈모약비대면성조숙증키성장담적축농증리프팅다이어트뱃살내장지방위염난임산후보약공진단대전진맥피부","inLanguage":"ko-KR","isPartOf":{"@id":"https://www.bareunhaniwon.com/#website"},"about":{"@id":"https://www.bareunhaniwon.com/#clinic"},"reviewedBy":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)"},"lastReviewed":"2026-10-28"}]}</script>
+
+  
+
+  
+  
   
 
   
@@ -958,6 +963,7 @@
       display: block;
       width: 100%;
       height: 100%;
+      min-width: 0;
       border-radius: 20px;
       text-decoration: none;
       cursor: pointer;
@@ -972,10 +978,12 @@
       transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
     }
 
-    .skt-finale-stage.phase-ready .skt-card-item:hover {
-      border-color: var(--brand-green);
-      box-shadow: 0 22px 48px rgba(45, 90, 67, 0.26), 0 0 0 2px rgba(45, 90, 67, 0.18);
-      transform: translateY(-4px);
+    @media (hover: hover) and (pointer: fine) {
+      .skt-finale-stage.phase-ready .skt-card-item:hover {
+        border-color: var(--brand-green);
+        box-shadow: 0 22px 48px rgba(45, 90, 67, 0.26), 0 0 0 2px rgba(45, 90, 67, 0.18);
+        transform: translateY(-4px);
+      }
     }
 
     /* The Card Image Box that starts stacked at viewport center & FLIPs into place */
@@ -986,6 +994,7 @@
       height: 100%;
       border-radius: 20px;
       overflow: hidden;
+      background-color: #261E18;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -994,24 +1003,30 @@
       opacity: 0;
       transform-origin: center center;
       will-change: transform, opacity;
+      color-scheme: light only;
+      forced-color-adjust: none;
     }
 
     .skt-card-item .skt-img-box::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(23, 22, 20, 0.0) 0%, rgba(23, 22, 20, 0.08) 54%, rgba(23, 22, 20, 0.78) 100%);
+      background: linear-gradient(180deg, rgba(23, 22, 20, 0.04) 0%, rgba(23, 22, 20, 0.16) 48%, rgba(23, 22, 20, 0.84) 100%);
       transition: opacity 0.4s ease;
+      pointer-events: none;
     }
 
     /* SKT Hover Zoom on .skt-img-box when in ready state */
     .skt-finale-stage.phase-ready .skt-card-item .skt-img-box {
       border: none;
+      opacity: 1 !important;
       transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.3, 1.2) !important;
     }
 
-    .skt-finale-stage.phase-ready .skt-card-item:hover .skt-img-box {
-      transform: scale(1.09) !important;
+    @media (hover: hover) and (pointer: fine) {
+      .skt-finale-stage.phase-ready .skt-card-item:hover .skt-img-box {
+        transform: scale(1.09) !important;
+      }
     }
 
     /* Card Content Overlay (.box in sktelecom.com) */
@@ -1040,6 +1055,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
+      min-width: 0;
     }
 
     .skt-card-title {
@@ -1104,6 +1120,8 @@
     @media (max-width: 1024px) {
       html, body {
         overflow: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
         height: 100vh !important;
         height: 100dvh !important;
         overscroll-behavior: none !important;
@@ -1115,10 +1133,14 @@
       .spatial-top-nav {
         padding: 0 10px;
         height: 52px;
-        gap: 4px;
+        gap: 6px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden;
       }
       .nav-brand-logo {
-        font-size: 13px;
+        font-size: 12.5px;
         gap: 5px;
         white-space: nowrap;
         flex-shrink: 0;
@@ -1135,10 +1157,15 @@
       .nav-right-actions {
         gap: 4px;
         overflow-x: auto;
-        max-width: none;
-        flex-shrink: 0;
+        overflow-y: hidden;
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 100%;
+        justify-content: flex-start;
         scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
         touch-action: pan-x;
+        padding: 2px 0;
       }
       .nav-right-actions::-webkit-scrollbar {
         display: none;
@@ -1150,108 +1177,184 @@
         flex-shrink: 0;
       }
       .story-dialogue-stage {
-        left: 16px;
-        right: 16px;
+        left: 14px;
+        right: 14px;
         top: auto;
-        bottom: 52px;
+        bottom: 48px;
         transform: none;
         width: auto;
+        max-width: calc(100vw - 28px);
       }
       .dialogue-main-quote {
-        font-size: clamp(21px, 6vw, 29px);
+        font-size: clamp(20px, 5.6vw, 28px);
         line-height: 1.32;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
       .minimal-bottom-timeline {
-        left: 16px;
-        right: 16px;
-        bottom: 14px;
+        left: 14px;
+        right: 14px;
+        bottom: 12px;
       }
       .skt-finale-stage {
-        padding: 58px 12px 12px;
-        justify-content: flex-start;
-        overflow-y: auto;
+        padding: 58px 10px 24px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
       }
+      .skt-hero-bg {
+        position: fixed !important;
+        inset: 0 !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: 100dvh !important;
+        transform: none !important;
+      }
+      .skt-hero-headline {
+        width: 92vw;
+      }
       .skt-hero-headline .skt-headline-text {
-        font-size: clamp(28px, 8vw, 44px);
+        font-size: clamp(24px, 7vw, 40px);
         white-space: normal;
         word-break: keep-all;
       }
       .skt-finale-header {
-        width: 100%;
-        margin-bottom: 8px;
-        justify-content: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto 8px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+      }
+      .skt-finale-heading-group {
+        width: 100% !important;
+        min-width: 0 !important;
+        text-align: center;
+        align-items: center;
+        gap: 2px;
+      }
+      .skt-finale-eyebrow {
+        font-size: 9.5px !important;
+        letter-spacing: 0.06em !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+      .skt-finale-main-title {
+        font-size: clamp(15px, 4.2vw, 20px) !important;
+        line-height: 1.25 !important;
+        word-break: keep-all;
       }
       #btn-replay-skt-flip {
         display: none !important;
       }
       .skt-finale-controls {
-        width: 100%;
-        gap: 6px;
-        justify-content: space-between;
-        flex-wrap: nowrap;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 5px !important;
+        box-sizing: border-box !important;
       }
       .skt-ctrl-btn {
-        flex: 1;
-        text-align: center;
-        justify-content: center;
-        padding: 7px 8px;
-        font-size: 10.5px;
-        white-space: nowrap;
+        width: 100% !important;
+        min-width: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 6px 6px !important;
+        font-size: clamp(10px, 2.7vw, 11.5px) !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        box-sizing: border-box !important;
       }
       .skt-bento-grid {
-        width: 100%;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, minmax(132px, 1fr));
-        height: auto;
-        min-height: calc(100dvh - 106px);
-        gap: 8px;
-        padding-bottom: 16px;
+        width: 100% !important;
+        max-width: 100% !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-rows: auto !important;
+        grid-auto-rows: auto !important;
+        height: auto !important;
+        min-height: 0 !important;
+        gap: 8px !important;
+        padding-bottom: 24px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
       }
       .skt-bento-grid > .skt-card-item:nth-child(1) {
-        grid-column: 1 / -1;
+        grid-column: 1 / -1 !important;
+        height: 156px !important;
+        min-height: 156px !important;
       }
       .skt-bento-grid > .skt-card-item:nth-child(n+2) {
-        grid-column: span 1;
+        grid-column: span 1 !important;
+        height: 152px !important;
+        min-height: 152px !important;
+      }
+      .skt-bento-grid > .skt-card-item:nth-child(4),
+      .skt-bento-grid > .skt-card-item:nth-child(5) {
+        height: 166px !important;
+        min-height: 166px !important;
       }
       .skt-bento-grid > .skt-card-item:nth-child(n+4) .skt-card-box {
-        padding: 10px 11px;
+        padding: 10px 11px !important;
       }
       .skt-bento-grid > .skt-card-item:nth-child(n+4) .skt-card-title {
-        font-size: 16px;
+        font-size: clamp(14.5px, 3.8vw, 17px) !important;
       }
-      .skt-card-item,
+      .skt-card-item {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        border-radius: 14px !important;
+        box-sizing: border-box !important;
+      }
       .skt-card-item .skt-img-box {
-        border-radius: 14px;
+        border-radius: 14px !important;
+        opacity: 1 !important;
       }
       .skt-card-item .skt-card-box {
-        padding: 10px 11px;
+        padding: 10px 11px !important;
+        box-sizing: border-box !important;
       }
       .skt-card-bottom-info {
         gap: 3px !important;
+        min-width: 0 !important;
       }
       .skt-card-title {
-        font-size: 16px;
-        line-height: 1.15;
+        font-size: clamp(14.5px, 3.8vw, 17px) !important;
+        line-height: 1.18 !important;
+        word-break: keep-all;
       }
       .skt-card-desc {
-        font-size: 10.5px;
-        line-height: 1.28;
+        font-size: clamp(10px, 2.6vw, 11.5px) !important;
+        line-height: 1.28 !important;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
       .skt-card-actions-row {
-        gap: 4px;
-        margin-top: 4px;
-        flex-wrap: wrap;
+        gap: 3.5px !important;
+        margin-top: 3px !important;
+        flex-wrap: wrap !important;
+        max-width: 100% !important;
       }
       .skt-card-chip {
-        padding: 4px 8px;
-        font-size: 9.5px;
+        padding: 3px 6.5px !important;
+        font-size: 8.8px !important;
+        white-space: nowrap;
       }
       .daddy-intro-card {
         padding: 28px 20px !important;
@@ -2480,9 +2583,12 @@
           if (screenAspect > texAspect) {
             s.y = texAspect / screenAspect;
           } else {
-            s.x = screenAspect / texAspect;
+            // Portrait/mobile optimization: prevent extreme horizontal cropping on narrow 9:16 screens
+            float rawRatio = screenAspect / texAspect;
+            s.x = max(rawRatio, mix(rawRatio, 0.54, smoothstep(0.75, 0.42, screenAspect)));
           }
-          return (uv - 0.5) * s + 0.5;
+          vec2 centerAnchor = vec2(mix(0.5, clamp(uFocal.x, 0.32, 0.68), smoothstep(1.0, 0.55, screenAspect)), 0.5);
+          return (uv - centerAnchor) * s + centerAnchor;
         }
 
         // 12-Tap Golden-Angle Vogel Disk Bokeh Blur for Leica f/0.95 Focus-Pull
@@ -3983,14 +4089,43 @@
           stageEl.classList.remove('phase-headline', 'phase-stack', 'phase-spread', 'phase-ready');
           stageEl.classList.add('active');
 
+          if (window.innerWidth <= 1024) {
+            if (stageContainer) {
+              stageContainer.style.opacity = '0';
+              stageContainer.style.transition = 'opacity 0.25s ease';
+            }
+            cardEls.forEach((card) => {
+              const imgBox = card.querySelector('.skt-img-box');
+              if (imgBox) {
+                imgBox.style.transition = 'none';
+                imgBox.style.opacity = '1';
+                imgBox.style.zIndex = '1';
+                imgBox.style.transform = 'translate3d(0px, 0px, 0) scale(1, 1) rotate(0deg)';
+              }
+            });
+            stageEl.classList.add('phase-ready');
+            return;
+          }
+
           if (stageContainer) {
             stageContainer.style.opacity = '0';
             stageContainer.style.transition = 'opacity 0.35s ease';
           }
 
-          // Calculate FLIP center delta for each card slot relative to viewport center
-          const vwCenter = window.innerWidth * 0.5;
-          const vhCenter = window.innerHeight * 0.5;
+          // Reset any residual transform before measuring card rects
+          cardEls.forEach((card) => {
+            const imgBox = card.querySelector('.skt-img-box');
+            if (imgBox) {
+              imgBox.style.transition = 'none';
+              imgBox.style.transform = 'none';
+            }
+          });
+          void stageEl.offsetWidth;
+
+          // Calculate FLIP center delta for each card slot relative to stage center
+          const stageRect = stageEl.getBoundingClientRect();
+          const vwCenter = (stageRect.width || document.documentElement.clientWidth || window.innerWidth) * 0.5;
+          const vhCenter = (stageRect.height || document.documentElement.clientHeight || window.innerHeight) * 0.5;
 
           const cardMetrics = cardEls.map((card) => {
             const imgBox = card.querySelector('.skt-img-box');
@@ -4052,6 +4187,11 @@
           timers.push(setTimeout(() => {
             stageEl.classList.remove('phase-spread');
             stageEl.classList.add('phase-ready');
+            cardMetrics.forEach((m) => {
+              if (!m.imgBox) return;
+              m.imgBox.style.opacity = '1';
+              m.imgBox.style.transform = 'translate3d(0px, 0px, 0) scale(1, 1) rotate(0deg)';
+            });
           }, 1960));
         }
 
@@ -4145,6 +4285,10 @@
 
         function updateMouseParallax(mx, my) {
           if (!isActive || !heroBgEl) return;
+          if (window.innerWidth <= 1024) {
+            heroBgEl.style.transform = 'none';
+            return;
+          }
           const moveX = (mx - 0.5) * 28;
           const moveY = (my - 0.5) * 28;
           heroBgEl.style.transform = `translate(calc(-50% + ${moveX.toFixed(1)}px), calc(-50% + ${moveY.toFixed(1)}px))`;
@@ -4449,6 +4593,11 @@
 
       window.addEventListener('resize', () => {
         const w = window.innerWidth, h = window.innerHeight;
+        document.querySelectorAll('#skt-bento-grid .skt-img-box').forEach((box) => {
+          box.style.transition = 'none';
+          box.style.transform = 'translate3d(0px, 0px, 0) scale(1, 1) rotate(0deg)';
+          box.style.opacity = '1';
+        });
         if (glRenderer && glMaterial) {
           glRenderer.setSize(w, h);
           glMaterial.uniforms.uResolution.value.set(w, h);
