@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const https = require('https');
-const { spawn } = require('child_process');
+const zlib = require('zlib');
+const { spawn, execFileSync } = require('child_process');
 const { createFalClient } = require('@fal-ai/client');
 const AdmZip = require('adm-zip');
 
@@ -13,10 +14,12 @@ const DATA_DIR = path.join(ROOT_DIR, 'data');
 const PROFILES_DIR = path.join(DATA_DIR, 'profiles');
 const OUTPUTS_DIR = path.join(DATA_DIR, 'outputs');
 const LORAS_DIR = path.join(DATA_DIR, 'loras');
+const CRAWLED_DIR = path.join(DATA_DIR, 'crawled');
 const SETTINGS_PATH = path.join(DATA_DIR, 'settings.json');
 const PROFILES_JSON = path.join(DATA_DIR, 'profiles.json');
 const GALLERY_JSON = path.join(DATA_DIR, 'gallery.json');
 const COMPARISONS_JSON = path.join(DATA_DIR, 'comparisons.json');
+const CRAWLED_JSON = path.join(DATA_DIR, 'crawled-sites.json');
 const UPLOAD_CACHE_JSON = path.join(DATA_DIR, 'upload-cache.json');
 const LOCAL_ENGINE_PY = path.join(ROOT_DIR, 'local_face_engine.py');
 
@@ -24,7 +27,7 @@ const HOMEPAGE_DIR = fs.existsSync(path.resolve(ROOT_DIR, '..', 'homepage'))
   ? path.resolve(ROOT_DIR, '..', 'homepage')
   : path.resolve(ROOT_DIR, '..', '바른한의원 홈페이지', 'homepage');
 
-for (const dir of [DATA_DIR, PROFILES_DIR, OUTPUTS_DIR, LORAS_DIR]) {
+for (const dir of [DATA_DIR, PROFILES_DIR, OUTPUTS_DIR, LORAS_DIR, CRAWLED_DIR]) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
@@ -219,6 +222,419 @@ function listHomepageDirectorImages() {
         previewUrl: `/files/homepage/${encodeURIComponent(f)}?t=${Math.floor(stat.mtimeMs)}`
       };
     });
+}
+
+// ============================================================================
+// 🌐 HOMEPAGE URL IMAGE CRAWLER & SEQUENTIAL INSPECTOR HELPERS
+// ============================================================================
+function normalizeTargetSiteUrl(raw) {
+  let s = String(raw || '').trim();
+  if (!s) throw new Error('홈페이지 주소(URL)를 입력해 주세요.');
+  if (!/^https?:\/\//i.test(s)) {
+    const isLocal = /^(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(s);
+    s = (isLocal ? 'http://' : 'https://') + s;
+  }
+  let parsed;
+  try {
+    parsed = new URL(s);
+  } catch (e) {
+    throw new Error('올바른 홈페이지 주소 형식이 아닙니다. (예: https://www.bareunhaniwon.com)');
+  }
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new Error('http:// 또는 https:// 주소만 불러올 수 있습니다.');
+  }
+  return parsed.toString();
+}
+
+function decompressHttpBuffer(buf, encoding) {
+  const enc = String(encoding || '').toLowerCase().trim();
+  try {
+    if (enc === 'gzip' || enc === 'x-gzip') return zlib.gunzipSync(buf);
+    if (enc === 'deflate') return zlib.inflateSync(buf);
+    if (enc === 'br') return zlib.brotliDecompressSync(buf);
+  } catch (e) {}
+  return buf;
+}
+
+function fetchUrlBuffer(targetUrl, refererUrl = '', timeoutMs = 14000, maxBytes = 25 * 1024 * 1024) {
+  return new Promise((resolve, reject) => {
+    const request = (currUrl, redirectsLeft = 6) => {
+      let u;
+      try {
+        u = new URL(currUrl);
+      } catch (err) {
+        return reject(new Error('잘못된 URL: ' + currUrl));
+      }
+      const mod = u.protocol === 'https:' ? https : http;
+      const headers = {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+      };
+      if (refererUrl) headers.Referer = refererUrl;
+
+      const req = mod.get(u.toString(), { headers, timeout: timeoutMs }, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          res.resume();
+          if (redirectsLeft <= 0) return reject(new Error('리다이렉트 횟수 초과'));
+          const next = new URL(res.headers.location, u.toString()).toString();
+          return request(next, redirectsLeft - 1);
+        }
+        if (res.statusCode !== 200) {
+          res.resume();
+          return reject(new Error(`HTTP ${res.statusCode}`));
+        }
+        const chunks = [];
+        let total = 0;
+        res.on('data', (chunk) => {
+          total += chunk.length;
+          if (total > maxBytes) {
+            req.destroy();
+            return reject(new Error('파일 용량 한도 초과'));
+          }
+          chunks.push(chunk);
+        });
+        res.on('end', () => {
+          const rawBuf = Buffer.concat(chunks);
+          const finalBuf = decompressHttpBuffer(rawBuf, res.headers['content-encoding']);
+          resolve({
+            buffer: finalBuf,
+            contentType: String(res.headers['content-type'] || ''),
+            finalUrl: u.toString()
+          });
+        });
+      });
+
+      req.on('timeout', () => {
+        req.destroy();
+        reject(new Error('연결 시간 초과'));
+      });
+      req.on('error', reject);
+    };
+    request(targetUrl);
+  });
+}
+
+function parseImageBufferInfo(buf) {
+  if (!Buffer.isBuffer(buf) || buf.length < 24) return null;
+
+  // PNG: 89 50 4E 47 0D 0A 1A 0A
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
+    return {
+      ext: '.png',
+      width: buf.readUInt32BE(16),
+      height: buf.readUInt32BE(20)
+    };
+  }
+
+  // GIF: 'GIF87a' / 'GIF89a'
+  if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) {
+    return {
+      ext: '.gif',
+      width: buf.readUInt16LE(6),
+      height: buf.readUInt16LE(8)
+    };
+  }
+
+  // WebP: 'RIFF' .... 'WEBP'
+  if (
+    buf.length >= 30 &&
+    buf.toString('ascii', 0, 4) === 'RIFF' &&
+    buf.toString('ascii', 8, 12) === 'WEBP'
+  ) {
+    const chunkType = buf.toString('ascii', 12, 16);
+    if (chunkType === 'VP8 ' && buf.length >= 30) {
+      return {
+        ext: '.webp',
+        width: buf.readUInt16LE(26) & 0x3fff,
+        height: buf.readUInt16LE(28) & 0x3fff
+      };
+    }
+    if (chunkType === 'VP8L' && buf.length >= 25) {
+      const bits = buf.readUInt32LE(21);
+      return {
+        ext: '.webp',
+        width: (bits & 0x3fff) + 1,
+        height: ((bits >> 14) & 0x3fff) + 1
+      };
+    }
+    if (chunkType === 'VP8X' && buf.length >= 30) {
+      return {
+        ext: '.webp',
+        width: 1 + buf.readUIntLE(24, 3),
+        height: 1 + buf.readUIntLE(27, 3)
+      };
+    }
+    return { ext: '.webp', width: 0, height: 0 };
+  }
+
+  // JPEG: FF D8
+  if (buf[0] === 0xff && buf[1] === 0xd8) {
+    let offset = 2;
+    while (offset + 9 < buf.length) {
+      if (buf[offset] !== 0xff) {
+        offset++;
+        continue;
+      }
+      const marker = buf[offset + 1];
+      if (marker === 0xff) {
+        offset++;
+        continue;
+      }
+      if (marker === 0xd8 || marker === 0xd9 || (marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) {
+        offset += 2;
+        continue;
+      }
+      if (offset + 4 >= buf.length) break;
+      const segLen = buf.readUInt16BE(offset + 2);
+      if (segLen < 2) break;
+      const isSof =
+        (marker >= 0xc0 && marker <= 0xc3) ||
+        (marker >= 0xc5 && marker <= 0xc7) ||
+        (marker >= 0xc9 && marker <= 0xcb) ||
+        (marker >= 0xcd && marker <= 0xcf);
+      if (isSof && offset + 8 < buf.length) {
+        return {
+          ext: '.jpg',
+          height: buf.readUInt16BE(offset + 5),
+          width: buf.readUInt16BE(offset + 7)
+        };
+      }
+      offset += 2 + segLen;
+    }
+    return { ext: '.jpg', width: 0, height: 0 };
+  }
+
+  return null;
+}
+
+function findMatchingHomepageFile(stemOrFileName) {
+  if (!fs.existsSync(HOMEPAGE_DIR)) return { matchedHomepageFile: null, matchedHomepageWebp: null };
+  const rawBase = path.basename(String(stemOrFileName || '')).replace(/\?.*$/, '');
+  const stem = rawBase.replace(/\.[^.]+$/, '');
+  if (!stem) return { matchedHomepageFile: null, matchedHomepageWebp: null };
+
+  let matchedHomepageFile = null;
+  for (const candExt of ['.jpg', '.jpeg', '.png', '.webp']) {
+    const cand = stem + candExt;
+    if (fs.existsSync(path.join(HOMEPAGE_DIR, cand))) {
+      matchedHomepageFile = cand;
+      break;
+    }
+  }
+  const webpRel = path.join('webp', `${stem}.webp`);
+  const matchedHomepageWebp = fs.existsSync(path.join(HOMEPAGE_DIR, webpRel)) ? `${stem}.webp` : null;
+  return { matchedHomepageFile, matchedHomepageWebp };
+}
+
+function decodeHtmlEntitiesMinimal(str) {
+  return String(str || '')
+    .replace(/&amp;/gi, '&')
+    .replace(/&#038;/g, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function pickBestFromSrcset(srcsetValue) {
+  const parts = String(srcsetValue || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  let bestUrl = '';
+  let bestScore = -1;
+  for (const part of parts) {
+    const tokens = part.split(/\s+/);
+    const urlPart = tokens[0];
+    if (!urlPart) continue;
+    let score = 1;
+    const desc = tokens[1] || '';
+    const wMatch = desc.match(/^(\d+)w$/i);
+    const xMatch = desc.match(/^(\d+(?:\.\d+)?)x$/i);
+    if (wMatch) score = Number(wMatch[1]);
+    else if (xMatch) score = Number(xMatch[1]) * 1000;
+    if (score >= bestScore) {
+      bestScore = score;
+      bestUrl = urlPart;
+    }
+  }
+  return bestUrl;
+}
+
+function canonicalImageDedupKey(fullUrl) {
+  try {
+    const u = new URL(fullUrl);
+    if (/\.(jpg|jpeg|png|webp|gif|avif)$/i.test(u.pathname)) {
+      for (const k of ['v', 'ver', '_', 't', 'timestamp', 'cache']) {
+        u.searchParams.delete(k);
+      }
+    }
+    return u.toString();
+  } catch (e) {
+    return fullUrl;
+  }
+}
+
+function extractImageCandidatesFromHtml(htmlRaw, pageUrl) {
+  const html = String(htmlRaw || '');
+  const candidates = [];
+  const seenKeys = new Set();
+
+  let pagePath = '/';
+  try {
+    const pu = new URL(pageUrl);
+    pagePath = pu.pathname + (pu.search || '');
+  } catch (e) {}
+
+  const addCandidate = (rawRef, altText = '', sourceKind = 'img') => {
+    const cleaned = decodeHtmlEntitiesMinimal(String(rawRef || '').trim()).replace(/^['"]|['"]$/g, '');
+    if (!cleaned || cleaned.startsWith('javascript:') || cleaned.startsWith('about:') || cleaned.startsWith('#')) {
+      return;
+    }
+    if (cleaned.startsWith('data:image/')) {
+      if (/^data:image\/(svg|x-icon|vnd\.microsoft\.icon)/i.test(cleaned)) return;
+      const key = 'data:' + crypto.createHash('sha1').update(cleaned).digest('hex');
+      if (seenKeys.has(key)) return;
+      seenKeys.add(key);
+      candidates.push({ url: cleaned, isDataUri: true, alt: altText, pagePath, sourceKind });
+      return;
+    }
+
+    let absUrl = '';
+    try {
+      absUrl = new URL(cleaned, pageUrl).toString();
+    } catch (e) {
+      return;
+    }
+    if (!/^https?:\/\//i.test(absUrl)) return;
+    if (/\.(svg|ico|woff2?|ttf|eot|css|js|mp4|webm|pdf|xml)(\?|$)/i.test(absUrl)) return;
+    if (/s\.w\.org\/images\/core\/emoji|gravatar\.com\/avatar|1x1|spacer\.gif|pixel\.gif/i.test(absUrl)) return;
+
+    const dedupKey = canonicalImageDedupKey(absUrl);
+    if (seenKeys.has(dedupKey)) return;
+    seenKeys.add(dedupKey);
+    candidates.push({ url: absUrl, isDataUri: false, alt: altText, pagePath, sourceKind });
+  };
+
+  // 1. <img> tags (src, lazy-src, srcset, alt)
+  const imgTagRegex = /<img\b[^>]*>/gi;
+  let m;
+  while ((m = imgTagRegex.exec(html)) !== null) {
+    const tag = m[0];
+    const altMatch = tag.match(/\balt\s*=\s*(['"])(.*?)\1/i);
+    const alt = altMatch ? decodeHtmlEntitiesMinimal(altMatch[2]).trim() : '';
+
+    for (const srcsetAttr of ['data-srcset', 'srcset']) {
+      const ssMatch = tag.match(new RegExp(`\\b${srcsetAttr}\\s*=\\s*(['"])(.*?)\\1`, 'i'));
+      if (ssMatch && ssMatch[2]) {
+        const best = pickBestFromSrcset(ssMatch[2]);
+        if (best) addCandidate(best, alt, 'img-srcset');
+      }
+    }
+    for (const attr of ['data-orig-file', 'data-large_image', 'data-original', 'data-lazy-src', 'data-src', 'src']) {
+      const attrMatch = tag.match(new RegExp(`\\b${attr}\\s*=\\s*(['"])(.*?)\\1`, 'i'));
+      if (attrMatch && attrMatch[2]) {
+        addCandidate(attrMatch[2], alt, 'img');
+      }
+    }
+  }
+
+  // 2. <picture><source srcset="...">
+  const sourceTagRegex = /<source\b[^>]*>/gi;
+  while ((m = sourceTagRegex.exec(html)) !== null) {
+    const tag = m[0];
+    for (const attr of ['data-srcset', 'srcset']) {
+      const ssMatch = tag.match(new RegExp(`\\b${attr}\\s*=\\s*(['"])(.*?)\\1`, 'i'));
+      if (ssMatch && ssMatch[2]) {
+        const best = pickBestFromSrcset(ssMatch[2]);
+        if (best) addCandidate(best, '', 'picture');
+      }
+    }
+  }
+
+  // 3. CSS background-image / url(...)
+  const cssUrlRegex = /url\(\s*(['"]?)([^'")]+)\1\s*\)/gi;
+  while ((m = cssUrlRegex.exec(html)) !== null) {
+    if (m[2]) addCandidate(m[2], '', 'css-bg');
+  }
+
+  // 4. JS / JSON / Custom HTML attributes containing direct raster image URLs (unescape JSON \/ first)
+  const unescapedHtml = html.replace(/\\\//g, '/');
+  const absImgRegex = /https?:\/\/[^\s"'<>()\\]+\.(?:jpg|jpeg|png|webp)(?:\?[^\s"'<>()\\]*)?/gi;
+  while ((m = absImgRegex.exec(unescapedHtml)) !== null) {
+    addCandidate(m[0], '', 'script-url');
+  }
+  const relImgRegex = /(['"])(\/[a-zA-Z0-9_\-./%]+\.(?:jpg|jpeg|png|webp)(?:\?[^'"\s<>\\]*)?)\1/gi;
+  while ((m = relImgRegex.exec(unescapedHtml)) !== null) {
+    addCandidate(m[2], '', 'rel-url');
+  }
+
+  // 5. Inline data:image/(jpeg|png|webp);base64,... URIs
+  const dataUriRegex = /data:image\/(?:jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]{1200,}/gi;
+  while ((m = dataUriRegex.exec(html)) !== null) {
+    addCandidate(m[0], '', 'inline-base64');
+  }
+
+  // 6. OpenGraph representative image (placed last so actual in-page content comes first)
+  const ogMatch = html.match(/<meta\b[^>]*property\s*=\s*(['"])og:image\1[^>]*content\s*=\s*(['"])(.*?)\2/i);
+  if (ogMatch && ogMatch[3]) {
+    addCandidate(ogMatch[3], 'OG 대표 이미지', 'og-image');
+  }
+
+  return candidates;
+}
+
+function extractInternalSubpageUrls(htmlRaw, rootUrl, maxSubpages = 10) {
+  const html = String(htmlRaw || '');
+  let rootParsed;
+  try {
+    rootParsed = new URL(rootUrl);
+  } catch (e) {
+    return [];
+  }
+  const found = [];
+  const seen = new Set([rootParsed.origin + rootParsed.pathname.replace(/\/+$/, '')]);
+  const linkRegex = /<a\b[^>]*href\s*=\s*(['"])(.*?)\1/gi;
+  let m;
+  while ((m = linkRegex.exec(html)) !== null) {
+    const rawHref = decodeHtmlEntitiesMinimal(m[2] || '').trim();
+    if (!rawHref || rawHref.startsWith('#') || /^(mailto:|tel:|javascript:)/i.test(rawHref)) continue;
+    let u;
+    try {
+      u = new URL(rawHref, rootUrl);
+    } catch (e) {
+      continue;
+    }
+    if (u.origin !== rootParsed.origin) continue;
+    if (/\/(wp-admin|wp-login|wp-json|feed|cart|checkout|my-account|xmlrpc)/i.test(u.pathname)) continue;
+    if (/\.(jpg|jpeg|png|webp|gif|svg|pdf|zip|mp4|css|js|xml)$/i.test(u.pathname)) continue;
+    u.hash = '';
+    const normKey = u.origin + u.pathname.replace(/\/+$/, '') + (u.search || '');
+    if (seen.has(normKey)) continue;
+    seen.add(normKey);
+    found.push(u.toString());
+    if (found.length >= maxSubpages) break;
+  }
+  return found;
+}
+
+function markCrawledItemFixed(sessionId, itemId, fixEntry) {
+  if (!sessionId || !itemId || !fixEntry) return;
+  const sessions = readJsonSafe(CRAWLED_JSON, []);
+  const sess = sessions.find((s) => s.id === sessionId);
+  if (!sess || !Array.isArray(sess.images)) return;
+  const item = sess.images.find((img) => img.id === itemId || img.fileName === itemId);
+  if (!item) return;
+  item.fixedUrl = fixEntry.finalUrl;
+  item.fixedRawUrl = fixEntry.rawUrl;
+  item.fixedFileName = fixEntry.finalFileName;
+  item.fixedSimilarityPct = fixEntry.similarityPct || null;
+  item.fixedSharpnessScore = fixEntry.sharpnessScore || null;
+  item.fixedTier = fixEntry.tier || 'free';
+  item.fixedMode = fixEntry.mode || '';
+  item.fixedAt = fixEntry.createdAt || new Date().toISOString();
+  writeJsonSafe(CRAWLED_JSON, sessions);
 }
 
 const OUTFIT_MAP = {
@@ -512,6 +928,12 @@ function resolveLocalPathFromUrl(localUrl) {
   }
   if (clean.startsWith('/files/homepage/')) {
     return path.join(HOMEPAGE_DIR, path.basename(decodeURIComponent(clean.replace('/files/homepage/', ''))));
+  }
+  if (clean.startsWith('/files/crawled/')) {
+    const parts = clean.replace('/files/crawled/', '').split('/');
+    const sessId = path.basename(decodeURIComponent(parts[0] || ''));
+    const fName = path.basename(decodeURIComponent(parts[1] || ''));
+    if (sessId && fName) return path.join(CRAWLED_DIR, sessId, fName);
   }
   return '';
 }
@@ -842,10 +1264,8 @@ async function executeCloudFalGenerateCore(payload, onStep) {
 // ============================================================================
 // CORE ENGINE 3: 100% FREE Existing Photo Face Fix (Local GTX 1070)
 // ============================================================================
-function prepareExistingSourceFile(sourceType, homepageFile, uploadDataUrl, prefix) {
+function prepareExistingSourceFile(sourceType, homepageFile, uploadDataUrl, prefix, crawledInfo = {}) {
   const stamp = Date.now();
-  const beforeFileName = `${prefix}_${stamp}_before.png`;
-  const beforePath = path.join(OUTPUTS_DIR, beforeFileName);
 
   if (sourceType === 'homepage') {
     const safeName = path.basename(homepageFile);
@@ -853,13 +1273,35 @@ function prepareExistingSourceFile(sourceType, homepageFile, uploadDataUrl, pref
     if (!safeName || !fs.existsSync(srcPath)) {
       throw new Error(`홈페이지 원본 파일을 찾을 수 없습니다: ${safeName}`);
     }
+    const ext = path.extname(safeName).toLowerCase() || '.png';
+    const beforeFileName = `${prefix}_${stamp}_before${ext}`;
+    const beforePath = path.join(OUTPUTS_DIR, beforeFileName);
     fs.copyFileSync(srcPath, beforePath);
-  } else {
-    const match = String(uploadDataUrl || '').match(/^data:image\/[a-zA-Z0-9+.-]+;base64,(.+)$/);
-    if (!match) throw new Error('교정할 대상 사진을 선택해 주세요.');
-    fs.writeFileSync(beforePath, Buffer.from(match[1], 'base64'));
+    return { stamp, beforeFileName, beforePath, sourceLabel: `[홈페이지] ${safeName}` };
   }
-  return { stamp, beforeFileName, beforePath };
+
+  if (sourceType === 'crawled') {
+    const sessId = path.basename(String(crawledInfo.crawledSessionId || ''));
+    const fileName = path.basename(String(crawledInfo.crawledFileName || ''));
+    const srcPath = path.join(CRAWLED_DIR, sessId, fileName);
+    if (!sessId || !fileName || !fs.existsSync(srcPath)) {
+      throw new Error(`복사해온 홈페이지 사진을 찾을 수 없습니다: ${fileName}`);
+    }
+    const ext = path.extname(fileName).toLowerCase() || '.png';
+    const beforeFileName = `${prefix}_${stamp}_before${ext}`;
+    const beforePath = path.join(OUTPUTS_DIR, beforeFileName);
+    fs.copyFileSync(srcPath, beforePath);
+    return { stamp, beforeFileName, beforePath, sourceLabel: `[URL 복사본] ${fileName}` };
+  }
+
+  const match = String(uploadDataUrl || '').match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+  if (!match) throw new Error('교정할 대상 사진을 선택해 주세요.');
+  let ext = '.' + match[1].toLowerCase().replace('jpeg', 'jpg');
+  if (!['.jpg', '.png', '.webp'].includes(ext)) ext = '.png';
+  const beforeFileName = `${prefix}_${stamp}_before${ext}`;
+  const beforePath = path.join(OUTPUTS_DIR, beforeFileName);
+  fs.writeFileSync(beforePath, Buffer.from(match[2], 'base64'));
+  return { stamp, beforeFileName, beforePath, sourceLabel: '[내 PC 사진]' };
 }
 
 async function executeFreeFixCore(payload, onStep) {
@@ -869,6 +1311,10 @@ async function executeFreeFixCore(payload, onStep) {
     sourceType = 'homepage',
     homepageFile = '',
     uploadDataUrl = '',
+    crawledSessionId = '',
+    crawledFileName = '',
+    crawledItemId = '',
+    matchedHomepageFile = '',
     enhanceBlend = 0.82
   } = payload;
 
@@ -879,11 +1325,12 @@ async function executeFreeFixCore(payload, onStep) {
   const refPaths = getOrderedProfileRefPaths(profile);
   if (refPaths.length === 0) throw new Error('등록된 실제 기준 사진이 없습니다.');
 
-  const { stamp, beforeFileName, beforePath } = prepareExistingSourceFile(
+  const { stamp, beforeFileName, beforePath, sourceLabel } = prepareExistingSourceFile(
     sourceType,
     homepageFile,
     uploadDataUrl,
-    'fix_free'
+    'fix_free',
+    { crawledSessionId, crawledFileName }
   );
   const afterFileName = `fix_free_${stamp}_after.png`;
   const afterPath = path.join(OUTPUTS_DIR, afterFileName);
@@ -897,6 +1344,13 @@ async function executeFreeFixCore(payload, onStep) {
     enhanceBlend: Number(enhanceBlend) || 0.82,
     onProgress: (pct, msg) => onStep(Math.max(22, pct), `[내 PC 무료 GPU] ${msg}`)
   });
+
+  const resolvedTargetHomepage =
+    sourceType === 'homepage'
+      ? path.basename(homepageFile)
+      : sourceType === 'crawled' && matchedHomepageFile
+        ? path.basename(matchedHomepageFile)
+        : null;
 
   const elapsedSec = Number(((Date.now() - t0) / 1000).toFixed(1));
   const entry = {
@@ -915,18 +1369,23 @@ async function executeFreeFixCore(payload, onStep) {
     faceLocked: true,
     profileId,
     profileName: profile.name,
-    scenePrompt: sourceType === 'homepage' ? `[홈페이지 무료 교정] ${homepageFile}` : '[내 PC 사진 무료 교정]',
+    scenePrompt: `${sourceLabel} 무료 교정`,
     englishPrompt: '',
     imageSize: 'original',
     rawUrl: `/files/outputs/${beforeFileName}`,
     finalUrl: `/files/outputs/${afterFileName}`,
     rawFileName: beforeFileName,
     finalFileName: afterFileName,
-    targetHomepageFile: sourceType === 'homepage' ? path.basename(homepageFile) : null,
+    targetHomepageFile: resolvedTargetHomepage,
+    crawledSessionId: sourceType === 'crawled' ? crawledSessionId : null,
+    crawledItemId: sourceType === 'crawled' ? crawledItemId || crawledFileName : null,
     createdAt: new Date().toISOString()
   };
 
   saveToGallery(entry);
+  if (sourceType === 'crawled' && crawledSessionId) {
+    markCrawledItemFixed(crawledSessionId, crawledItemId || crawledFileName, entry);
+  }
   return entry;
 }
 
@@ -941,6 +1400,10 @@ async function executeCloudFalFixCore(payload, onStep) {
     sourceType = 'homepage',
     homepageFile = '',
     uploadDataUrl = '',
+    crawledSessionId = '',
+    crawledFileName = '',
+    crawledItemId = '',
+    matchedHomepageFile = '',
     loraScale = 1.0,
     loraStrength,
     glassesMode = 'lock',
@@ -955,11 +1418,12 @@ async function executeCloudFalFixCore(payload, onStep) {
   const refPaths = getOrderedProfileRefPaths(profile);
   if (refPaths.length === 0) throw new Error('등록된 실제 기준 사진이 없습니다.');
 
-  const { stamp, beforeFileName, beforePath } = prepareExistingSourceFile(
+  const { stamp, beforeFileName, beforePath, sourceLabel } = prepareExistingSourceFile(
     sourceType,
     homepageFile,
     uploadDataUrl,
-    'fix_paid'
+    'fix_paid',
+    { crawledSessionId, crawledFileName }
   );
   const afterFileName = `fix_paid_${stamp}_after.png`;
   const afterPath = path.join(OUTPUTS_DIR, afterFileName);
@@ -1068,6 +1532,13 @@ async function executeCloudFalFixCore(payload, onStep) {
     analyzeOnly: true
   });
 
+  const resolvedTargetHomepage =
+    sourceType === 'homepage'
+      ? path.basename(homepageFile)
+      : sourceType === 'crawled' && matchedHomepageFile
+        ? path.basename(matchedHomepageFile)
+        : null;
+
   const elapsedSec = Number(((Date.now() - t0) / 1000).toFixed(1));
   const entry = {
     id: 'fix_paid_' + stamp,
@@ -1088,18 +1559,23 @@ async function executeCloudFalFixCore(payload, onStep) {
     faceLocked: true,
     profileId,
     profileName: profile.name,
-    scenePrompt: sourceType === 'homepage' ? `[홈페이지 유료 PRO 교정] ${homepageFile}` : '[내 PC 사진 유료 PRO 교정]',
+    scenePrompt: `${sourceLabel} 유료 PRO 교정`,
     englishPrompt: '',
     imageSize: 'original',
     rawUrl: `/files/outputs/${beforeFileName}`,
     finalUrl: `/files/outputs/${afterFileName}`,
     rawFileName: beforeFileName,
     finalFileName: afterFileName,
-    targetHomepageFile: sourceType === 'homepage' ? path.basename(homepageFile) : null,
+    targetHomepageFile: resolvedTargetHomepage,
+    crawledSessionId: sourceType === 'crawled' ? crawledSessionId : null,
+    crawledItemId: sourceType === 'crawled' ? crawledItemId || crawledFileName : null,
     createdAt: new Date().toISOString()
   };
 
   saveToGallery(entry);
+  if (sourceType === 'crawled' && crawledSessionId) {
+    markCrawledItemFixed(crawledSessionId, crawledItemId || crawledFileName, entry);
+  }
   return entry;
 }
 
@@ -1216,7 +1692,7 @@ async function runDualCompareJob(job, compareKind, payload) {
       kind: compareKind,
       title:
         compareKind === 'fix'
-          ? `기존사진 얼굴 교정 비교 (${payload.homepageFile || '업로드 사진'})`
+          ? `기존사진 얼굴 교정 비교 (${payload.homepageFile || payload.crawledFileName || '업로드 사진'})`
           : String(payload.scenePrompt || '새 상황 연출 비교').slice(0, 48),
       status: paidItem ? 'complete' : 'pending_paid',
       freeItem,
@@ -1388,6 +1864,222 @@ async function runLoraTrainingJob(job, { profileId, trainerType, steps }) {
   }
 }
 
+// 🌐 Crawl All Photos from Any Homepage URL Job
+async function runCrawlUrlJob(job, payload) {
+  try {
+    const normalizedUrl = normalizeTargetSiteUrl(payload.url);
+    const includeSubpages = Boolean(payload.includeSubpages);
+    const maxImages = Math.max(10, Math.min(100, Number(payload.maxImages) || 72));
+    const rootParsed = new URL(normalizedUrl);
+
+    job.progress = 10;
+    job.stepText = `🌐 홈페이지(${rootParsed.host})에 접속하여 사진 목록을 분석하고 있습니다...`;
+    appendJobLog(job, `접속 대상: ${normalizedUrl}`);
+
+    const mainRes = await fetchUrlBuffer(normalizedUrl, rootParsed.origin, 16000);
+    const mainHtml = mainRes.buffer.toString('utf8');
+
+    const titleMatch = mainHtml.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    const rawTitle = titleMatch
+      ? decodeHtmlEntitiesMinimal(titleMatch[1].replace(/\s+/g, ' ').trim()).slice(0, 60)
+      : rootParsed.host;
+
+    let allCandidates = extractImageCandidatesFromHtml(mainHtml, mainRes.finalUrl || normalizedUrl);
+    appendJobLog(job, `메인 페이지에서 후보 이미지 ${allCandidates.length}개 발견`);
+
+    let crawledPageCount = 1;
+    if (includeSubpages) {
+      const subUrls = extractInternalSubpageUrls(mainHtml, mainRes.finalUrl || normalizedUrl, 10);
+      if (subUrls.length > 0) {
+        job.progress = 24;
+        job.stepText = `📂 하위 메뉴 페이지 ${subUrls.length}곳의 사진까지 함께 스캔 중...`;
+        appendJobLog(job, `하위 메뉴 ${subUrls.length}개 스캔 시작`);
+
+        for (let i = 0; i < subUrls.length; i += 4) {
+          const batch = subUrls.slice(i, i + 4);
+          const batchResults = await Promise.allSettled(
+            batch.map((su) => fetchUrlBuffer(su, normalizedUrl, 12000))
+          );
+          for (let b = 0; b < batchResults.length; b++) {
+            const r = batchResults[b];
+            if (r.status === 'fulfilled') {
+              crawledPageCount++;
+              const subHtml = r.value.buffer.toString('utf8');
+              const subCands = extractImageCandidatesFromHtml(subHtml, r.value.finalUrl || batch[b]);
+              allCandidates.push(...subCands);
+            }
+          }
+        }
+      }
+    }
+
+    // Deduplicate candidate URLs across pages while keeping discovery order
+    const uniqueCandidates = [];
+    const seenCandidateKeys = new Set();
+    for (const c of allCandidates) {
+      const k = c.isDataUri
+        ? 'data:' + crypto.createHash('sha1').update(c.url).digest('hex')
+        : canonicalImageDedupKey(c.url);
+      if (seenCandidateKeys.has(k)) continue;
+      seenCandidateKeys.add(k);
+      uniqueCandidates.push(c);
+    }
+
+    if (uniqueCandidates.length === 0) {
+      throw new Error('입력하신 주소에서 복사할 수 있는 이미지 파일을 찾지 못했습니다.');
+    }
+
+    const sessionId = 'site_' + Date.now();
+    const sessionDir = path.join(CRAWLED_DIR, sessionId);
+    fs.mkdirSync(sessionDir, { recursive: true });
+
+    const savedImages = [];
+    const seenContentHashes = new Set();
+    const targetCandidates = uniqueCandidates.slice(0, maxImages * 2);
+
+    let processedCount = 0;
+    const concurrency = 5;
+
+    for (let i = 0; i < targetCandidates.length && savedImages.length < maxImages; i += concurrency) {
+      const chunk = targetCandidates.slice(i, i + concurrency);
+      const fetchedChunk = await Promise.all(
+        chunk.map(async (cand) => {
+          try {
+            if (cand.isDataUri) {
+              const dm = cand.url.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+              if (!dm) return null;
+              return { cand, buffer: Buffer.from(dm[2], 'base64'), rawName: 'inline_image' };
+            }
+            const resObj = await fetchUrlBuffer(cand.url, rootParsed.origin + '/', 12000);
+            let rawName = 'photo';
+            try {
+              const cu = new URL(resObj.finalUrl || cand.url);
+              rawName = decodeURIComponent(path.basename(cu.pathname) || 'photo');
+            } catch (e) {}
+            return { cand, buffer: resObj.buffer, rawName };
+          } catch (e) {
+            return null;
+          }
+        })
+      );
+
+      for (const item of fetchedChunk) {
+        processedCount++;
+        if (!item || !item.buffer) continue;
+        if (savedImages.length >= maxImages) break;
+
+        // Skip tiny icons / 1x1 tracking pixels (< 3.2 KB)
+        if (item.buffer.length < 3200) continue;
+
+        const info = parseImageBufferInfo(item.buffer);
+        if (!info) continue;
+        if (info.width > 0 && info.height > 0 && (info.width < 96 || info.height < 96)) {
+          continue;
+        }
+
+        // Exact content hash deduplication across identical files/URLs
+        const sha = crypto.createHash('sha256').update(item.buffer).digest('hex');
+        if (seenContentHashes.has(sha)) continue;
+        seenContentHashes.add(sha);
+
+        const rawStem = String(item.rawName || 'photo')
+          .replace(/\.[^.]+$/, '')
+          .replace(/[^a-zA-Z0-9가-힣_-]/g, '_')
+          .replace(/_+/g, '_')
+          .replace(/^_|_$/g, '')
+          .slice(0, 46) || 'photo';
+
+        const seqNum = savedImages.length + 1;
+        const localFileName = `${String(seqNum).padStart(3, '0')}_${rawStem}${info.ext}`;
+        const localFilePath = path.join(sessionDir, localFileName);
+        fs.writeFileSync(localFilePath, item.buffer);
+
+        const { matchedHomepageFile, matchedHomepageWebp } = findMatchingHomepageFile(item.rawName);
+        const isDirectorHint = /director|doctor|원장|대표|진료|상담|프로필/i.test(
+          `${item.rawName} ${item.cand.alt || ''}`
+        );
+
+        savedImages.push({
+          id: `cimg_${seqNum}`,
+          index: seqNum,
+          fileName: localFileName,
+          originalName: item.rawName,
+          originalUrl: item.cand.isDataUri ? '(페이지 내장 이미지)' : item.cand.url,
+          pagePath: item.cand.pagePath || '/',
+          alt: item.cand.alt || '',
+          width: info.width || null,
+          height: info.height || null,
+          sizeBytes: item.buffer.length,
+          previewUrl: `/files/crawled/${encodeURIComponent(sessionId)}/${encodeURIComponent(localFileName)}`,
+          matchedHomepageFile,
+          matchedHomepageWebp,
+          isDirectorHint,
+          fixedUrl: null,
+          fixedRawUrl: null,
+          fixedFileName: null,
+          fixedSimilarityPct: null,
+          fixedSharpnessScore: null,
+          fixedTier: null,
+          fixedMode: null,
+          fixedAt: null
+        });
+      }
+
+      const pct = Math.min(94, 30 + Math.round((processedCount / Math.max(1, targetCandidates.length)) * 64));
+      job.progress = pct;
+      job.stepText = `📸 홈페이지 사진 내 PC로 복사 중... (${savedImages.length}장 확보 완료)`;
+    }
+
+    if (savedImages.length === 0) {
+      try {
+        fs.rmSync(sessionDir, { recursive: true, force: true });
+      } catch (e) {}
+      throw new Error('유효한 크기의 실사 사진(96px 이상)을 찾지 못했습니다. 주소를 다시 확인해 주세요.');
+    }
+
+    const sessionRecord = {
+      id: sessionId,
+      url: normalizedUrl,
+      host: rootParsed.host,
+      title: rawTitle || rootParsed.host,
+      includeSubpages,
+      crawledPageCount,
+      imageCount: savedImages.length,
+      images: savedImages,
+      createdAt: new Date().toISOString()
+    };
+
+    const existingSessions = readJsonSafe(CRAWLED_JSON, []);
+    existingSessions.unshift(sessionRecord);
+    const keptSessions = existingSessions.slice(0, 15);
+    const removedSessions = existingSessions.slice(15);
+    for (const old of removedSessions) {
+      if (old && old.id) {
+        try {
+          fs.rmSync(path.join(CRAWLED_DIR, path.basename(old.id)), { recursive: true, force: true });
+        } catch (e) {}
+      }
+    }
+    writeJsonSafe(CRAWLED_JSON, keptSessions);
+
+    appendJobLog(
+      job,
+      `✅ 총 ${crawledPageCount}개 페이지에서 중복 제거 후 고화질 사진 ${savedImages.length}장 복사 완료!`
+    );
+    job.progress = 100;
+    job.status = 'completed';
+    job.stepText = `🌐 총 ${savedImages.length}장의 홈페이지 사진 복사 완료! 1번부터 하나씩 살펴보며 교정하세요.`;
+    job.finishedAt = new Date().toISOString();
+    job.result = sessionRecord;
+  } catch (err) {
+    job.status = 'failed';
+    job.error = err.message || String(err);
+    job.stepText = '오류: ' + job.error;
+    job.finishedAt = new Date().toISOString();
+    appendJobLog(job, 'ERROR: ' + job.error);
+  }
+}
+
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -1438,12 +2130,26 @@ const server = http.createServer(async (req, res) => {
       return fs.createReadStream(fpath).pipe(res);
     }
 
+    if (req.method === 'GET' && pathname.startsWith('/files/crawled/')) {
+      const parts = pathname.replace('/files/crawled/', '').split('/');
+      const sessId = path.basename(parts[0] || '');
+      const fName = path.basename(parts[1] || '');
+      const fpath = path.join(CRAWLED_DIR, sessId, fName);
+      if (!sessId || !fName || !fs.existsSync(fpath)) {
+        res.writeHead(404);
+        return res.end('Not found');
+      }
+      res.writeHead(200, { 'Content-Type': mimeFromExt(fpath), 'Cache-Control': 'no-cache' });
+      return fs.createReadStream(fpath).pipe(res);
+    }
+
     if (req.method === 'GET' && pathname === '/api/state') {
       const { falKey, hfToken } = getSettings();
       const profiles = ensureDefaultProfile();
       const gallery = readJsonSafe(GALLERY_JSON, []);
       const comparisons = readJsonSafe(COMPARISONS_JSON, []);
       const homepageImages = listHomepageDirectorImages();
+      const crawledSites = readJsonSafe(CRAWLED_JSON, []);
       return sendJson(res, 200, {
         ok: true,
         localGpuReady: true,
@@ -1454,7 +2160,8 @@ const server = http.createServer(async (req, res) => {
         profiles,
         gallery,
         comparisons,
-        homepageImages
+        homepageImages,
+        crawledSites
       });
     }
 
@@ -1611,6 +2318,78 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, { ok: true, metrics });
     }
 
+    // Crawl all photos from a homepage URL for sequential inspection & editing
+    if (req.method === 'POST' && pathname === '/api/crawl-url') {
+      const body = await readBodyJson(req);
+      const rawUrl = String(body.url || '').trim();
+      if (!rawUrl) {
+        return sendJson(res, 400, { ok: false, error: '불러올 홈페이지 주소(URL)를 입력해 주세요.' });
+      }
+      const job = createJob('crawl_url', '🌐 홈페이지 전체 사진 복사');
+      runCrawlUrlJob(job, body);
+      return sendJson(res, 200, { ok: true, jobId: job.id });
+    }
+
+    if (req.method === 'DELETE' && /^\/api\/crawled\/[^/]+$/.test(pathname)) {
+      const sessId = path.basename(pathname.split('/')[3] || '');
+      let sessions = readJsonSafe(CRAWLED_JSON, []);
+      sessions = sessions.filter((s) => s.id !== sessId);
+      writeJsonSafe(CRAWLED_JSON, sessions);
+      try {
+        fs.rmSync(path.join(CRAWLED_DIR, sessId), { recursive: true, force: true });
+      } catch (e) {}
+      return sendJson(res, 200, { ok: true, crawledSites: sessions });
+    }
+
+    if (req.method === 'GET' && /^\/api\/crawled\/[^/]+\/download-zip$/.test(pathname)) {
+      const sessId = path.basename(pathname.split('/')[3] || '');
+      const mode = parsedUrl.searchParams.get('mode') || 'fixed'; // 'fixed' or 'all'
+      const sessions = readJsonSafe(CRAWLED_JSON, []);
+      const sess = sessions.find((s) => s.id === sessId);
+      if (!sess) {
+        res.writeHead(404);
+        return res.end('Session not found');
+      }
+      const zip = new AdmZip();
+      let addedCount = 0;
+      for (const img of sess.images || []) {
+        if (mode === 'fixed') {
+          if (!img.fixedFileName) continue;
+          const fp = path.join(OUTPUTS_DIR, path.basename(img.fixedFileName));
+          if (!fs.existsSync(fp)) continue;
+          const baseStem = String(img.originalName || img.fileName).replace(/\.[^.]+$/, '');
+          zip.addFile(`${String(img.index).padStart(2, '0')}_${baseStem}_fixed.png`, fs.readFileSync(fp));
+          addedCount++;
+        } else {
+          if (img.fixedFileName) {
+            const fp = path.join(OUTPUTS_DIR, path.basename(img.fixedFileName));
+            if (fs.existsSync(fp)) {
+              const baseStem = String(img.originalName || img.fileName).replace(/\.[^.]+$/, '');
+              zip.addFile(`fixed/${String(img.index).padStart(2, '0')}_${baseStem}_fixed.png`, fs.readFileSync(fp));
+              addedCount++;
+            }
+          }
+          const origFp = path.join(CRAWLED_DIR, sessId, path.basename(img.fileName));
+          if (fs.existsSync(origFp)) {
+            zip.addFile(`original/${img.fileName}`, fs.readFileSync(origFp));
+            addedCount++;
+          }
+        }
+      }
+      if (addedCount === 0) {
+        res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('아직 교정 완료된 사진이 없습니다.');
+      }
+      const zipBuf = zip.toBuffer();
+      const safeHost = String(sess.host || 'site').replace(/[^a-zA-Z0-9.-]/g, '_');
+      res.writeHead(200, {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': `attachment; filename="${safeHost}_${mode}_photos.zip"`,
+        'Content-Length': zipBuf.length
+      });
+      return res.end(zipBuf);
+    }
+
     // Paid Cloud LoRA Training (👑 Gold Menu)
     if (req.method === 'POST' && pathname === '/api/train') {
       const body = await readBodyJson(req);
@@ -1632,13 +2411,43 @@ const server = http.createServer(async (req, res) => {
 
       const backupDir = path.join(HOMEPAGE_DIR, '_backup_director_faces');
       fs.mkdirSync(backupDir, { recursive: true });
+      const nowStamp = Date.now();
       if (fs.existsSync(dstHome)) {
-        fs.copyFileSync(dstHome, path.join(backupDir, `${Date.now()}_${targetHomepageFile}`));
+        fs.copyFileSync(dstHome, path.join(backupDir, `${nowStamp}_${targetHomepageFile}`));
       }
-      fs.copyFileSync(srcOut, dstHome);
+
+      const stem = targetHomepageFile.replace(/\.[^.]+$/, '');
+      const dstWebp = path.join(HOMEPAGE_DIR, 'webp', `${stem}.webp`);
+      const hasWebpMirror = fs.existsSync(dstWebp);
+      if (hasWebpMirror) {
+        fs.copyFileSync(dstWebp, path.join(backupDir, `${nowStamp}_${stem}.webp`));
+      }
+
+      let convertedViaCv2 = false;
+      try {
+        const pyScript = [
+          'import sys, cv2, numpy as np',
+          'src, dst, webp_dst = sys.argv[1], sys.argv[2], sys.argv[3]',
+          'img = cv2.imdecode(np.fromfile(src, dtype=np.uint8), cv2.IMREAD_COLOR)',
+          'ext = "." + dst.rsplit(".", 1)[-1].lower()',
+          'params = [cv2.IMWRITE_JPEG_QUALITY, 95] if ext in (".jpg", ".jpeg") else ([cv2.IMWRITE_WEBP_QUALITY, 93] if ext == ".webp" else [])',
+          'ok, buf = cv2.imencode(ext, img, params)',
+          'if ok: buf.tofile(dst)',
+          'if webp_dst:',
+          '    ok2, buf2 = cv2.imencode(".webp", img, [cv2.IMWRITE_WEBP_QUALITY, 93])',
+          '    if ok2: buf2.tofile(webp_dst)'
+        ].join('\n');
+        execFileSync('python', ['-c', pyScript, srcOut, dstHome, hasWebpMirror ? dstWebp : ''], {
+          timeout: 10000
+        });
+        convertedViaCv2 = true;
+      } catch (e) {
+        fs.copyFileSync(srcOut, dstHome);
+      }
+
       return sendJson(res, 200, {
         ok: true,
-        message: `홈페이지 원본(${targetHomepageFile})을 백업한 뒤 선택하신 사진으로 즉시 교체했습니다!`
+        message: `홈페이지 원본(${targetHomepageFile}${hasWebpMirror && convertedViaCv2 ? ' + webp 버전' : ''})을 백업한 뒤 교정한 사진으로 즉시 교체했습니다!`
       });
     }
 
