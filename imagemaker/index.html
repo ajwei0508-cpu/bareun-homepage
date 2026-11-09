@@ -1449,13 +1449,46 @@
             </div>
           </div>
 
-          <div class="field">
-            <label for="fixEnhanceSelect">피부 모공 · 안경테 복원 강도</label>
-            <select id="fixEnhanceSelect" class="std-select">
-              <option value="0.82">0.82 · 실제 이목구비 + 선명한 안경테·피부결 표준 (권장)</option>
-              <option value="0.92">0.92 · 초선명 복원</option>
-              <option value="0.65">0.65 · 원본 사진 질감 우선</option>
-            </select>
+          <!-- 🎨 원장님 얼굴 맞춤 디자인 컨트롤 바 -->
+          <div style="background:#161310;border:1.5px solid rgba(229,190,115,0.4);padding:14px;border-radius:12px;margin-bottom:14px;">
+            <div style="font-weight:800;color:var(--gold-strong);font-size:13.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+              <span>🎨</span> 원장님 얼굴 디테일 직접 디자인하기
+            </div>
+
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="field" style="margin-bottom:0;">
+                <label for="designGlassesMode" style="font-size:11.5px;color:var(--text-sub);">👓 안경테 모양 보존</label>
+                <select id="designGlassesMode" class="std-select" style="font-size:12px;padding:7px 10px;border-color:rgba(229,190,115,0.4);">
+                  <option value="lock" selected>🔒 원본 금테 안경 100% 잠금 (왜곡 0%)</option>
+                  <option value="enhance">✨ 금테 렌즈 반사광 고해상도 렌더링</option>
+                </select>
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label for="designFaceShape" style="font-size:11.5px;color:var(--text-sub);">👤 얼굴형 · 턱선 윤곽</label>
+                <select id="designFaceShape" class="std-select" style="font-size:12px;padding:7px 10px;border-color:rgba(229,190,115,0.4);">
+                  <option value="exact" selected>🔒 실제 원장님 턱선 100% 불변</option>
+                  <option value="refined">✨ 턱선 라인 슬림·세련 보정</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-2">
+              <div class="field" style="margin-bottom:0;">
+                <label for="designSkinTone" style="font-size:11.5px;color:var(--text-sub);">✨ 피부 결 & 모공 스타일</label>
+                <select id="designSkinTone" class="std-select" style="font-size:12px;padding:7px 10px;border-color:rgba(229,190,115,0.4);">
+                  <option value="natural_pores" selected>📸 자연스러운 85mm DSLR 피부 모공</option>
+                  <option value="smooth_clean">🌟 맑고 단정한 프리미엄 스킨케어 톤</option>
+                </select>
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label for="fixEnhanceSelect" style="font-size:11.5px;color:var(--text-sub);">🔬 복원 선명도</label>
+                <select id="fixEnhanceSelect" class="std-select" style="font-size:12px;padding:7px 10px;border-color:rgba(229,190,115,0.4);">
+                  <option value="0.82" selected>0.82 · 표준 실사 (권장)</option>
+                  <option value="0.92">0.92 · 초선명 복원</option>
+                  <option value="0.65">0.65 · 부드러운 자연스러움</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           <button type="button" id="btnFixStart" class="btn-free" style="width:100%;padding:14px;font-size:15px;" onclick="startFixExisting()">
@@ -1476,6 +1509,12 @@
             </div>
             <div class="progress-bar-bg"><div id="fixProgressBar" class="progress-bar-fill"></div></div>
             <div id="fixLogs" class="progress-logs"></div>
+          </div>
+
+          <div id="previewStatusNotice" style="display:none;background:rgba(229,190,115,0.12);border:1px solid var(--gold-border);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:12.5px;color:#f3e8d2;line-height:1.5;">
+            👁️ <strong>[변화된 샘플 이미지 미리보기 화면입니다]</strong><br/>
+            이 화면에서 교정된 얼굴과 안경을 먼저 확인하실 수 있으며, 아직 홈페이지 원본은 변경되지 않았습니다.<br/>
+            <span style="color:var(--gold-strong);">[👀 교정 전 원본]</span>과 <span style="color:var(--green);">[✅ 교정 완료본]</span>을 번갈아 눌러 비교해 보시고, <strong>100% 마음에 드실 때만</strong> 아래 <span style="color:var(--gold-strong);">[⚡ 홈페이지 원본 백업 후 바로 덮어쓰기]</span>를 눌러주시면 됩니다!
           </div>
 
           <div class="stage-viewer" id="fixStage">
@@ -2353,7 +2392,10 @@
             sourceType: selectedFixSource.type,
             homepageFile: selectedFixSource.homepageFile,
             uploadDataUrl: selectedFixSource.uploadDataUrl,
-            enhanceBlend: Number(document.getElementById('fixEnhanceSelect').value)
+            enhanceBlend: Number(document.getElementById('fixEnhanceSelect')?.value || 0.82),
+            glassesMode: document.getElementById('designGlassesMode')?.value || 'lock',
+            faceShape: document.getElementById('designFaceShape')?.value || 'exact',
+            skinTone: document.getElementById('designSkinTone')?.value || 'natural_pores'
           })
         });
         const startData = await res.json();
@@ -2384,6 +2426,7 @@
           result.tier === 'paid' ? 'var(--gold-strong)' : 'var(--green)';
         document.getElementById('fixTargetLabel').textContent = `${result.mode} · 일치율 ${result.similarityPct || 99}%`;
         toggleFixPreview('after');
+        document.getElementById('previewStatusNotice').style.display = 'block';
         document.getElementById('fixActionBar').style.display = 'flex';
         document.getElementById('btnApplyHomepage').style.display = result.targetHomepageFile ? 'inline-flex' : 'none';
         showToast(`✅ 교정 완료! (실제 얼굴 일치율 ${result.similarityPct || 99}%)`);

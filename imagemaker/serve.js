@@ -930,7 +930,10 @@ async function executeCloudFalFixCore(payload, onStep) {
     homepageFile = '',
     uploadDataUrl = '',
     loraScale = 1.0,
-    loraStrength = 0.20
+    loraStrength,
+    glassesMode = 'lock',
+    faceShape = 'exact',
+    skinTone = 'natural_pores'
   } = payload;
 
   const profiles = readJsonSafe(PROFILES_JSON, []);
@@ -972,7 +975,17 @@ async function executeCloudFalFixCore(payload, onStep) {
     }
 
     onStep(60, '👑 [유료 PRO 2/2] 2단계: 전용 FLUX LoRA 금형 정밀 실사 재성형 (안경·얼굴형 원본 보존 + 모공·피부결 주입)...');
-    const fixPrompt = `${profile.triggerWord}, authentic Korean traditional medicine doctor, natural real human skin pores, authentic skin texture, sharp clear eyes, highly detailed 85mm photograph, preserve exact original facial structure and exact rectangular glasses, zero distortion, zero blur`;
+    const effectiveStrength = Number(loraStrength) || (glassesMode === 'lock' ? 0.18 : 0.25);
+    const skinPrompt = skinTone === 'smooth_clean'
+      ? 'clean smooth refined skin tone, subtle natural pores'
+      : 'natural real human skin pores, authentic skin texture, sharp clear eyes';
+    const shapePrompt = faceShape === 'exact'
+      ? 'preserve exact original facial contour, exact jawline and chin'
+      : 'refined slim elegant jawline';
+    const glassesPrompt = glassesMode === 'lock'
+      ? 'preserve exact original rectangular glasses frame, zero eyeglasses deformation'
+      : 'crisp clear gold-rimmed glasses with realistic lens reflections';
+    const fixPrompt = `${profile.triggerWord}, authentic Korean traditional medicine doctor, ${skinPrompt}, ${shapePrompt}, ${glassesPrompt}, highly detailed 85mm photograph, professional lighting, zero distortion, zero blur`;
 
     try {
       const loraRes = await falClient.subscribe('fal-ai/flux-lora/image-to-image', {
@@ -980,7 +993,7 @@ async function executeCloudFalFixCore(payload, onStep) {
           image_url: alignedUrl,
           prompt: fixPrompt,
           loras: [{ path: profile.loraUrl, scale: Number(loraScale) || 1.0 }],
-          strength: Number(loraStrength) || 0.20,
+          strength: effectiveStrength,
           guidance_scale: 3.5,
           num_inference_steps: 28,
           output_format: 'png',
