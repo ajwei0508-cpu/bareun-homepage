@@ -5,6 +5,15 @@
 
 ---
 
+## 💎 최신 완료 작업 요약 (2026-11-10 v7.2 · 비급여 동의용 3D 타임랩스 티칭 뷰어 chairside-3d.html & B2B 분양 랜딩 sales-pitch.html)
+
+1. **비급여 치료 동의용 하이엔드 한의학 3D 타임랩스 티칭 뷰어 (http://localhost:3000/chairside-3d.html, homepage/chairside-3d.html)**:
+   - 24만+ 폴리곤 정밀 해부학 스캔 모델(Skeleton.glb, Joints.glb, skinMB2.glb, Vascular.glb, rain.glb) + 독자 개발 GLSL 생체역학 변형 셰이더 기반.
+   - 에스프레소 골드 다크 글래스 테마 + 우측 6단계 세로 조직 투시 레일 + 포커스 스포트라이트 + 4대 질환(요추 디스크·회전근개·퇴행성 무릎관절염·15kg 거북목) 고통→추나·약침·도침→회복 타임랩스 슬라이더 + 아이패드 레이저 판서 펜 + 원장님 브리핑 텔레프롬프터 + 3단계 동의서 모달 + ?clinic=OO한의원 화이트라벨 내장.
+2. **한의사 원장님 대상 분양 안내 랜딩페이지 연동 (http://localhost:3000/sales-pitch.html, homepage/sales-pitch.html)**:
+   - 5대 실구동 엔진 쇼케이스 1번 탭에 3D 타임랩스 티칭 뷰어 실시간 연동 및 단독 구독(월 49,000원) / PRO·SIGNATURE 기본 탑재 모델 구축 완료.
+
+---
 ## 💎 000000000000000000000. 최신 완료 작업 요약 (2026-11-09 v7.1 · 11개 전 상세페이지 Sample A 일괄 적용 & 통합 커스텀 스튜디오 구축)
 
 1. **11개 모든 질환별 상세페이지에 Sample A (상단 순수 비주얼 + 하단 분리형 에디토리얼 박스) 전면 적용 (`homepage/build-story-detail-pages.js`, `homepage/detail-pages-config.json`)**:
