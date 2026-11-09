@@ -277,15 +277,15 @@ def is_clean_unoccluded_face(bisenet_sess, img_bgr, kps5):
     return nose_ratio >= 0.010 and lips_ratio >= 0.0065
 
 
-def parse_face_mask_512(bisenet_sess, face_bgr_512, protect_glasses=True):
+def parse_face_mask_512(bisenet_sess, face_bgr_512, protect_glasses=True, return_parsing=False):
     parsing = parse_bisenet_classes(bisenet_sess, face_bgr_512)
+    if parsing.shape != (512, 512):
+        parsing = cv2.resize(parsing.astype(np.uint8), (512, 512), interpolation=cv2.INTER_NEAREST)
     # Inner facial regions: skin(1), brows(2,3), eyes(4,5), nose(10), mouth/lips(11,12,13)
     valid_ids = [1, 2, 3, 4, 5, 10, 11, 12, 13]
     if not protect_glasses:
         valid_ids.append(6)
     mask = np.isin(parsing, valid_ids).astype(np.float32)
-    if mask.shape != (512, 512):
-        mask = cv2.resize(mask, (512, 512), interpolation=cv2.INTER_LINEAR)
 
     # Combine with soft inner oval boundary so outer jawline/forehead never shows hard seams
     oval = np.zeros((512, 512), dtype=np.float32)
@@ -295,7 +295,46 @@ def parse_face_mask_512(bisenet_sess, face_bgr_512, protect_glasses=True):
     mask = mask * oval
     mask = cv2.erode(mask, np.ones((5, 5), np.uint8), iterations=1)
     mask = cv2.GaussianBlur(mask, (31, 31), 11)
-    return np.clip(mask, 0.0, 1.0)[..., None]
+    mask_out = np.clip(mask, 0.0, 1.0)[..., None]
+    if return_parsing:
+        return mask_out, parsing
+    return mask_out
+
+
+def refine_dslr_micro_detail_512(enhanced_bgr_512, orig_bgr_512, parsing_512, blend=0.82):
+    """Restore crisp 85mm DSLR micro-contrast, real camera pore grain, and razor-sharp eyes/glasses."""
+    # 1. Preserve crisp original hair strands & thin gold eyeglass rims that GFPGAN slightly softens
+    keep_raw = np.isin(parsing_512, [6, 17]).astype(np.float32)
+    keep_mask = cv2.GaussianBlur(keep_raw, (9, 9), 2.5)[..., None] * 0.65
+    blended_bgr = (
+        orig_bgr_512.astype(np.float32) * keep_mask
+        + enhanced_bgr_512.astype(np.float32) * (1.0 - keep_mask)
+    ).astype(np.uint8)
+
+    # 2. Luminance-only (LAB L-channel) DSLR micro-texture & edge-aware prime lens sharpening
+    lab = cv2.cvtColor(blended_bgr, cv2.COLOR_BGR2LAB).astype(np.float32)
+    orig_lab = cv2.cvtColor(orig_bgr_512, cv2.COLOR_BGR2LAB).astype(np.float32)
+    L = lab[:, :, 0]
+    orig_L = orig_lab[:, :, 0]
+
+    skin_m = cv2.GaussianBlur(np.isin(parsing_512, [1, 10]).astype(np.float32), (15, 15), 5.0)
+    feat_m = cv2.GaussianBlur(
+        np.isin(parsing_512, [2, 3, 4, 5, 6, 11, 12, 13]).astype(np.float32), (9, 9), 2.8
+    )
+
+    # Transfer subtle high-frequency camera sensor/pore grain from original scene lighting
+    sensor_grain = np.clip(orig_L - cv2.GaussianBlur(orig_L, (0, 0), 0.95), -5.0, 5.0)
+    fine_detail = L - cv2.GaussianBlur(L, (0, 0), 1.1)
+    mid_detail = L - cv2.GaussianBlur(L, (0, 0), 2.2)
+
+    sharp_scale = float(np.clip((float(blend) - 0.50) / 0.32, 0.45, 1.35))
+    delta_L = sharp_scale * (
+        feat_m * (0.54 * fine_detail + 0.16 * mid_detail)
+        + skin_m * (0.28 * fine_detail + 0.10 * mid_detail + 0.30 * sensor_grain)
+    )
+
+    lab[:, :, 0] = np.clip(L + delta_L, 0.0, 255.0)
+    return cv2.cvtColor(lab.astype(np.uint8), cv2.COLOR_LAB2BGR)
 
 
 def match_skin_tone_lab(src_bgr_512, ref_bgr_512, mask_512):
@@ -577,11 +616,13 @@ def run_pipeline(cfg):
 
     M_128_to_512 = umeyama_similarity(get_arcface_template(128), FFHQ_512)
     swapped_512_bgr = cv2.warpAffine(
-        swapped_128_bgr, M_128_to_512, (512, 512), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE
+        swapped_128_bgr, M_128_to_512, (512, 512), flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE
     )
 
     # Parse occlusion mask on original 512 (protects target eyeglasses frames & hair bangs!)
-    mask_512 = parse_face_mask_512(bisenet_sess, orig_512_bgr, protect_glasses=True)
+    mask_512, parsing_512 = parse_face_mask_512(
+        bisenet_sess, orig_512_bgr, protect_glasses=True, return_parsing=True
+    )
 
     # Harmonize skin tone with scene lighting
     swapped_512_toned = match_skin_tone_lab(swapped_512_bgr, orig_512_bgr, mask_512)
@@ -591,17 +632,22 @@ def run_pipeline(cfg):
         swapped_512_toned.astype(np.float32) * mask_512 + orig_512_bgr.astype(np.float32) * (1.0 - mask_512)
     ).astype(np.uint8)
 
-    log_progress("GFPGAN 1.4 초고화질 피부 모공 · 눈동자 · 안경테 디테일 복원 중...", 88)
+    log_progress("GFPGAN 1.4 + 85mm DSLR 마이크로 모공 · 눈동자 · 금테 안경 초선명 복원 중...", 88)
     enhanced_512 = enhance_face_gfpgan(gfp_sess, comp_512, blend=enhance_blend)
+    enhanced_512 = refine_dslr_micro_detail_512(
+        enhanced_512, orig_512_bgr, parsing_512, blend=enhance_blend
+    )
 
-    # Soft outer feather paste back to full-resolution original image!
-    paste_mask_512 = np.zeros((512, 512), dtype=np.float32)
-    cv2.ellipse(paste_mask_512, (256, 266), (195, 224), 0, 0, 360, 1.0, -1)
-    paste_mask_512 = cv2.GaussianBlur(paste_mask_512, (61, 61), 22)
+    # Soft outer feather paste back to full-resolution original image (protecting native hair & background!)
+    face_region = np.isin(parsing_512, [1, 2, 3, 4, 5, 6, 10, 11, 12, 13]).astype(np.float32)
+    face_region = cv2.dilate(face_region, np.ones((15, 15), np.uint8), iterations=1)
+    paste_oval = np.zeros((512, 512), dtype=np.float32)
+    cv2.ellipse(paste_oval, (256, 266), (188, 218), 0, 0, 360, 1.0, -1)
+    paste_mask_512 = cv2.GaussianBlur(face_region * paste_oval, (45, 45), 16)
 
     IM_512 = cv2.invertAffineTransform(M_512)
     h, w = target_bgr.shape[:2]
-    warped_face = cv2.warpAffine(enhanced_512, IM_512, (w, h), flags=cv2.INTER_CUBIC)
+    warped_face = cv2.warpAffine(enhanced_512, IM_512, (w, h), flags=cv2.INTER_LANCZOS4)
     warped_mask = cv2.warpAffine(paste_mask_512, IM_512, (w, h), flags=cv2.INTER_LINEAR)[..., None]
 
     final_bgr = (

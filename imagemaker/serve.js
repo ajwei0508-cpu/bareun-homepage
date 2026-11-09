@@ -688,9 +688,18 @@ async function executeCloudFalGenerateCore(payload, onStep) {
     scenePrompt,
     outfitKey = 'white_coat_shirt',
     imageSize = 'landscape_16_9',
-    loraScale = 1.0,
+    loraScale = 0.84,
     faceLock = true
   } = payload;
+
+  const FAL_HD_DIMS = {
+    landscape_16_9: { width: 1376, height: 768 },
+    landscape_4_3: { width: 1280, height: 960 },
+    square_hd: { width: 1024, height: 1024 },
+    portrait_4_3: { width: 960, height: 1280 },
+    portrait_16_9: { width: 768, height: 1376 }
+  };
+  const falImageSize = FAL_HD_DIMS[imageSize] || FAL_HD_DIMS.landscape_16_9;
 
   const profiles = readJsonSafe(PROFILES_JSON, []);
   const profile = profiles.find((p) => p.id === profileId);
@@ -701,17 +710,20 @@ async function executeCloudFalGenerateCore(payload, onStep) {
   const useLora = Boolean(profile.loraUrl);
 
   onStep(15, '👑 [유료 PRO] 프롬프트 설계 및 마스터 기준 사진 클라우드 업로드 중...');
-  const finalPrompt = await buildFreePhotorealPrompt(profile, scenePrompt, outfitKey, useLora);
+  const basePrompt = await buildFreePhotorealPrompt(profile, scenePrompt, outfitKey, useLora);
+  const finalPrompt = useLora
+    ? `${basePrompt}, warm approachable natural expression, relaxed gentle smile, bright clean natural daylight`
+    : basePrompt;
   const masterCdnUrl = await uploadFileToFalCached(falClient, refPaths[0]);
 
   let rawImageUrl = '';
   if (useLora) {
-    onStep(35, '👑 [유료 PRO] fal.ai 전용 FLUX Portrait LoRA 28스텝 촬영 중...');
+    onStep(35, '👑 [유료 PRO] fal.ai 전용 FLUX Portrait LoRA 초고해상도(1376px) 28스텝 촬영 중...');
     const genRes = await falClient.subscribe('fal-ai/flux-lora', {
       input: {
         prompt: finalPrompt,
-        loras: [{ path: profile.loraUrl, scale: Number(loraScale) || 1.0 }],
-        image_size: imageSize,
+        loras: [{ path: profile.loraUrl, scale: Number(loraScale) || 0.84 }],
+        image_size: falImageSize,
         num_inference_steps: 28,
         guidance_scale: 3.5,
         num_images: 1,
