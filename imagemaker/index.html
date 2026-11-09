@@ -1370,7 +1370,16 @@
         border: 2px solid ButtonText;
       }
     }
-    /* Compact Prompt Extractor & Dual Action Bar */
+    /* Compact Prompt Extractor, Dual Action Bar & Batch Director Menu */
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background-color: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(3px);
+    }
     .paid-lock-pill {
       display: inline-flex;
       align-items: center;
@@ -1382,6 +1391,102 @@
       color: #fca5a5;
       font-size: 11.5px;
       font-weight: 800;
+    }
+    .batch-banner-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(6, 78, 59, 0.28));
+      border: 1.5px solid var(--green);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .batch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 10px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding: 4px 2px;
+      margin-top: 10px;
+    }
+    .batch-card {
+      background: #171412;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      padding: 8px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .batch-card.is-checked {
+      border-color: var(--green);
+      background: rgba(16, 185, 129, 0.07);
+    }
+    .batch-card.is-applied {
+      border-color: #34d399;
+    }
+    .batch-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .batch-card-thumb {
+      width: 100%;
+      height: 118px;
+      object-fit: cover;
+      border-radius: 7px;
+      background: #0c0a09;
+      cursor: pointer;
+    }
+    .batch-card-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .batch-card-sub {
+      font-size: 10.5px;
+      color: var(--text-sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .batch-status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .batch-status-pill.applied {
+      background: rgba(16, 185, 129, 0.22);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.5);
+    }
+    .batch-status-pill.fixed {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.45);
+    }
+    .batch-status-pill.unfixed {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-sub);
+      border: 1px solid var(--border);
+    }
+    .batch-status-pill.running {
+      background: rgba(245, 158, 11, 0.22);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.5);
     }
     .prompt-studio-box {
       background: linear-gradient(145deg, rgba(16, 185, 129, 0.08), rgba(20, 18, 16, 0.96));
@@ -1481,15 +1586,16 @@
 
     <div class="profile-bar">
       <label for="profileSelect" style="margin:0;font-size:12px;">대상:</label>
-      <select id="profileSelect" name="profileId" style="width:auto;min-width:160px;padding:6px 10px;" onchange="onProfileChange(this.value)"></select>
+      <select id="profileSelect" name="profileId" style="width:auto;min-width:150px;padding:6px 10px;" onchange="onProfileChange(this.value)"></select>
       <span id="loraStatusBadge" class="badge-free">374장 얼굴 잠금 ON</span>
+      <button type="button" class="btn-free" style="padding:6px 12px;font-size:12px;" onclick="openBatchDirectorModal()">⚡ 원장 사진 일괄 적용</button>
       <button type="button" id="btnToggleTrain" class="btn-outline" style="padding:6px 11px;font-size:12px;" onclick="toggleTrainPanel()">📷 기준 얼굴 (374장)</button>
     </div>
   </header>
 
   <main class="container">
     <!-- ========================================================= -->
-    <!-- MAIN WORKSPACE: TAB 2 (사진 복사 · 연출 추출 · 얼굴교정 · 연출변경) -->
+    <!-- MAIN WORKSPACE: TAB 2 (사진 복사 · 연출 추출 · 얼굴교정 · 연출변경 · 일괄적용) -->
     <!-- ========================================================= -->
     <section id="panel_fix" class="tab-panel active">
       <div class="workspace-grid">
@@ -1497,6 +1603,24 @@
           <div class="card-header-strip">
             <h2 class="card-title" style="margin:0;">🛠️ 사진 검수 · 연출 변경 · 얼굴 교정</h2>
             <span class="badge-free">🆓 0원 무료 GPU · 🔒 유료 잠금</span>
+          </div>
+
+          <!-- ⚡ 홈페이지 원장 사진 일괄 적용 바로가기 바 -->
+          <div class="batch-banner-box">
+            <div>
+              <div style="font-size:13px;font-weight:800;color:#6ee7b7;">⚡ 홈페이지 내 모든 원장님 사진 일괄 적용</div>
+              <div id="batchBannerSummaryText" style="font-size:11.5px;color:var(--text-sub);margin-top:2px;">
+                홈페이지 원장님 사진을 한 번에 교정하고 일괄 덮어씁니다.
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn-free" style="padding:7px 12px;font-size:12px;" onclick="openBatchDirectorModal()">
+                ⚡ 일괄 적용 메뉴 열기
+              </button>
+              <button type="button" class="btn-outline" style="padding:7px 10px;font-size:11.5px;border-color:var(--green-border);color:#6ee7b7;" onclick="quickApplyAllFixedToHomepage()">
+                ⚡ 교정완료분 즉시 일괄 덮어쓰기
+              </button>
+            </div>
           </div>
 
           <!-- ① 홈페이지 주소 사진 가져오기 -->
@@ -1580,7 +1704,7 @@
 
           <!-- 로컬 폴더 / 내 PC 파일 -->
           <details id="localSourceDetails" class="local-source-details">
-            <summary>📁 로컬 홈페이지 폴더 / 내 PC 사진 선택</summary>
+            <summary>📁 로컬 홈페이지 원장 사진 / 내 PC 파일 선택</summary>
             <div style="margin-top:8px;">
               <div id="homepageImagesGrid" class="hp-grid" style="max-height:175px;"></div>
               <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
@@ -1810,11 +1934,62 @@
     </section>
   </main>
 
-  <!-- 상세 보기 모달 -->
-  <dialog id="detailDialog" style="width:min(820px, 95vw);">
+  <!-- ⚡ 홈페이지 원장 사진 일괄 적용 전용 모달 메뉴 -->
+  <dialog id="batchDirectorDialog" closedby="any" aria-labelledby="batchDirectorTitle" style="width:min(1080px, 96vw);">
     <div class="modal-box">
       <div class="modal-head">
-        <strong id="detailDialogTitle">작업 이미지 상세</strong>
+        <div>
+          <h2 id="batchDirectorTitle" style="margin:0;font-size:17px;color:#6ee7b7;">⚡ 홈페이지 원장님 사진 일괄 교정 · 일괄 적용</h2>
+          <div id="batchModalStatsText" style="font-size:12px;color:var(--text-sub);margin-top:3px;">홈페이지 내 모든 원장님 사진을 한눈에 선택해 일괄 적용합니다.</div>
+        </div>
+        <button type="button" class="btn-outline" style="padding:5px 12px;" onclick="document.getElementById('batchDirectorDialog').close()">닫기</button>
+      </div>
+
+      <!-- 상단 선택 필터 + 원클릭 일괄 실행 버튼 -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;background:#141210;border:1px solid var(--border);border-radius:10px;">
+        <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;">
+          <button type="button" class="mini-btn" onclick="selectBatchItems('all')">☑️ 전체 선택</button>
+          <button type="button" class="mini-btn" onclick="selectBatchItems('unapplied')">⏳ 미적용만 선택</button>
+          <button type="button" class="mini-btn" onclick="selectBatchItems('fixed')">✨ 교정완료만 선택</button>
+          <button type="button" class="mini-btn" onclick="selectBatchItems('none')">⬜ 선택 해제</button>
+          <span id="batchSelectedCountBadge" class="badge-free" style="margin-left:4px;">0장 선택됨</span>
+        </div>
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" id="btnBatchFixAndApply" class="btn-free" style="padding:9px 14px;font-size:13px;" onclick="runBatchDirectorProcess(true)">
+            🚀 선택 사진 일괄 얼굴교정 + 홈페이지 즉시 적용 (0원)
+          </button>
+          <button type="button" id="btnBatchOnlyApply" class="btn-restyle" style="padding:9px 13px;font-size:12.5px;" onclick="quickApplyAllFixedToHomepage()">
+            ⚡ 교정 완료 사진만 홈페이지 일괄 덮어쓰기 (1초)
+          </button>
+          <button type="button" id="btnDeployLiveServer" class="btn-outline" style="padding:9px 12px;font-size:12px;border-color:var(--green-border);color:#6ee7b7;" onclick="deployHomepageToLiveServer()">
+            🌐 카페24 실서버(bareunhaniwon.com) 반영
+          </button>
+        </div>
+      </div>
+
+      <!-- 일괄 작업 진행 상태 바 -->
+      <div id="batchProgressBox" class="progress-box" style="margin-top:10px;">
+        <div class="progress-step">
+          <span id="batchStepText">일괄 작업 준비 중...</span>
+          <span id="batchPctText">0%</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div id="batchProgressBar" class="progress-bar" style="width:0%;"></div>
+        </div>
+        <div id="batchLogs" class="log-lines"></div>
+      </div>
+
+      <!-- 원장님 사진 카드 그리드 -->
+      <div id="batchDirectorGrid" class="batch-grid"></div>
+    </div>
+  </dialog>
+
+  <!-- 상세 보기 모달 -->
+  <dialog id="detailDialog" closedby="any" aria-labelledby="detailDialogTitle" style="width:min(820px, 95vw);">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2 id="detailDialogTitle" style="margin:0;font-size:16px;">작업 이미지 상세</h2>
         <button type="button" class="btn-outline" style="padding:4px 10px;" onclick="document.getElementById('detailDialog').close()">닫기</button>
       </div>
       <div id="detailImageWrap" style="text-align:center;background:#0a0908;border-radius:12px;padding:10px;max-height:70vh;overflow:auto;"></div>
@@ -1825,6 +2000,23 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    // Light-dismiss fallback for browsers without native dialog[closedby="any"] support
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      const outside = (e, dialog) => {
+        const r = dialog.getBoundingClientRect();
+        return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+      };
+      for (const dialog of document.querySelectorAll('dialog[closedby="any"]')) {
+        let pressedOutside = false;
+        dialog.addEventListener('pointerdown', (e) => {
+          pressedOutside = outside(e, dialog);
+        });
+        dialog.addEventListener('pointerup', (e) => {
+          if (pressedOutside && outside(e, dialog)) dialog.close();
+        });
+      }
+    }
+
     let appState = {
       profiles: [],
       outfits: {},
@@ -1839,6 +2031,8 @@
     let lastFixItem = null;
     let activeCrawledSessionId = '';
     let activeCrawlFilter = 'all';
+    let batchCheckedFiles = new Set();
+    let batchLiveStatusMap = {};
     let selectedFixSource = {
       type: 'homepage',
       homepageFile: '',
@@ -1902,10 +2096,18 @@
       } else if (sites.length === 0) {
         activeCrawledSessionId = '';
       }
+
+      // Initialize batchCheckedFiles on first load
+      const hpImgs = appState.homepageImages || [];
+      if (batchCheckedFiles.size === 0 && hpImgs.length > 0) {
+        hpImgs.forEach((img) => batchCheckedFiles.add(img.fileName));
+      }
+
       renderTopBar();
       renderTrainTab();
       renderCrawledSection();
       renderHomepageGrid();
+      renderBatchDirectorBannerAndModal();
       updateStepInspectorBar();
       renderGallery();
 
@@ -1918,8 +2120,8 @@
         const firstCrawled = getFilteredCrawledImages();
         if (firstCrawled.length > 0) {
           selectCrawledImage(activeCrawledSessionId, firstCrawled[0].id);
-        } else if ((appState.homepageImages || []).length > 0) {
-          const hp0 = appState.homepageImages[0];
+        } else if (hpImgs.length > 0) {
+          const hp0 = hpImgs[0];
           selectHomepageImage(hp0.fileName, hp0.previewUrl);
         }
       }
@@ -1944,6 +2146,305 @@
       currentProfileId = id;
       renderTopBar();
       renderTrainTab();
+    }
+
+    // =========================================================================
+    // ⚡ BATCH DIRECTOR PHOTO MANAGER (홈페이지 원장 사진 일괄 교정 · 일괄 적용)
+    // =========================================================================
+    function getUnifiedDirectorBatchList() {
+      const hpList = appState.homepageImages || [];
+      const sess = getActiveCrawledSession();
+      const crawledImgs = (sess && sess.images) || [];
+
+      return hpList.map((hp, idx) => {
+        const matchedCrawl = crawledImgs.find((c) => c.matchedHomepageFile === hp.fileName);
+        const fixedUrl = hp.latestFixedUrl || (matchedCrawl && matchedCrawl.fixedUrl) || null;
+        const fixedFileName = hp.latestFixedFileName || (matchedCrawl && matchedCrawl.fixedFileName) || null;
+        const similarityPct = hp.latestSimilarityPct || (matchedCrawl && matchedCrawl.fixedSimilarityPct) || null;
+        return {
+          index: idx + 1,
+          fileName: hp.fileName,
+          label: hp.label || hp.fileName,
+          previewUrl: hp.previewUrl,
+          fixedUrl,
+          fixedFileName,
+          similarityPct,
+          appliedToHomepage: Boolean(hp.appliedToHomepage),
+          appliedAt: hp.appliedAt || null
+        };
+      });
+    }
+
+    function renderBatchDirectorBannerAndModal() {
+      const list = getUnifiedDirectorBatchList();
+      const total = list.length;
+      const fixedCnt = list.filter((x) => Boolean(x.fixedFileName)).length;
+      const appliedCnt = list.filter((x) => x.appliedToHomepage).length;
+
+      const summaryEl = document.getElementById('batchBannerSummaryText');
+      if (summaryEl) {
+        summaryEl.textContent = `총 ${total}장 · ✨ 교정 완료 ${fixedCnt}장 · ✅ 홈페이지 적용 ${appliedCnt}장`;
+      }
+
+      const modalStatsEl = document.getElementById('batchModalStatsText');
+      if (modalStatsEl) {
+        modalStatsEl.textContent = `홈페이지 원장님 사진 총 ${total}장 (✨ 교정 완료 ${fixedCnt}장 · ✅ 홈페이지 반영 완료 ${appliedCnt}장)`;
+      }
+
+      const selCountEl = document.getElementById('batchSelectedCountBadge');
+      const checkedCount = list.filter((x) => batchCheckedFiles.has(x.fileName)).length;
+      if (selCountEl) {
+        selCountEl.textContent = `${checkedCount} / ${total}장 선택됨`;
+      }
+
+      const grid = document.getElementById('batchDirectorGrid');
+      if (!grid) return;
+
+      if (list.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;color:var(--text-sub);padding:20px;text-align:center;">홈페이지 원장님 사진을 찾지 못했습니다.</div>';
+        return;
+      }
+
+      grid.innerHTML = list
+        .map((item) => {
+          const isChecked = batchCheckedFiles.has(item.fileName);
+          const live = batchLiveStatusMap[item.fileName];
+          const thumbSrc = (live && live.finalUrl) || item.fixedUrl || item.previewUrl;
+
+          let statusHtml = '<span class="batch-status-pill unfixed">⏳ 미교정</span>';
+          if (live && live.state === 'running') {
+            statusHtml = '<span class="batch-status-pill running">🔄 교정 중...</span>';
+          } else if ((live && live.applied) || item.appliedToHomepage) {
+            statusHtml = '<span class="batch-status-pill applied">✅ 홈페이지 적용됨</span>';
+          } else if ((live && live.state === 'done') || item.fixedFileName) {
+            statusHtml = `<span class="batch-status-pill fixed">✨ 교정됨 (${item.similarityPct || 99}%)</span>`;
+          }
+
+          return `
+            <div class="batch-card ${isChecked ? 'is-checked' : ''} ${item.appliedToHomepage ? 'is-applied' : ''}">
+              <div class="batch-card-top">
+                <label style="margin:0;display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:11.5px;color:var(--text);">
+                  <input
+                    type="checkbox"
+                    name="batchDirectorItem"
+                    value="${escapeHtml(item.fileName)}"
+                    ${isChecked ? 'checked' : ''}
+                    style="width:15px;height:15px;accent-color:var(--green);"
+                    onchange="toggleBatchItemCheck('${escapeHtml(item.fileName)}', this.checked)"
+                  />
+                  <span>#${item.index}</span>
+                </label>
+                ${statusHtml}
+              </div>
+              <img
+                class="batch-card-thumb"
+                src="${thumbSrc}"
+                alt="${escapeHtml(item.label)}"
+                loading="lazy"
+                onclick="jumpToSingleInspectFromBatch('${escapeHtml(item.fileName)}', '${escapeHtml(item.previewUrl)}')"
+              />
+              <div class="batch-card-title" title="${escapeHtml(item.label)}">${escapeHtml(item.label)}</div>
+              <div class="batch-card-sub" title="${escapeHtml(item.fileName)}">${escapeHtml(item.fileName)}</div>
+              <div style="display:flex;gap:4px;margin-top:2px;">
+                <button
+                  type="button"
+                  class="mini-btn"
+                  style="flex:1;padding:4px 6px;font-size:10.5px;"
+                  onclick="jumpToSingleInspectFromBatch('${escapeHtml(item.fileName)}', '${escapeHtml(item.previewUrl)}')"
+                >
+                  🔍 상세 검수
+                </button>
+                ${
+                  item.fixedFileName
+                    ? `<button type="button" class="mini-btn" style="flex:1;padding:4px 6px;font-size:10.5px;color:#6ee7b7;border-color:var(--green-border);" onclick="applySingleBatchItem('${escapeHtml(item.fixedFileName)}', '${escapeHtml(item.fileName)}')">⚡ 즉시 적용</button>`
+                    : ''
+                }
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function openBatchDirectorModal() {
+      renderBatchDirectorBannerAndModal();
+      document.getElementById('batchDirectorDialog').showModal();
+    }
+
+    function toggleBatchItemCheck(fileName, checked) {
+      if (checked) batchCheckedFiles.add(fileName);
+      else batchCheckedFiles.delete(fileName);
+      renderBatchDirectorBannerAndModal();
+    }
+
+    function selectBatchItems(mode) {
+      const list = getUnifiedDirectorBatchList();
+      batchCheckedFiles.clear();
+      for (const item of list) {
+        if (mode === 'all') {
+          batchCheckedFiles.add(item.fileName);
+        } else if (mode === 'unapplied' && !item.appliedToHomepage) {
+          batchCheckedFiles.add(item.fileName);
+        } else if (mode === 'fixed' && item.fixedFileName) {
+          batchCheckedFiles.add(item.fileName);
+        }
+      }
+      renderBatchDirectorBannerAndModal();
+    }
+
+    function jumpToSingleInspectFromBatch(fileName, previewUrl) {
+      const dlg = document.getElementById('batchDirectorDialog');
+      if (dlg && dlg.open) dlg.close();
+      const fixPanel = document.getElementById('panel_fix');
+      const trainPanel = document.getElementById('panel_train');
+      if (trainPanel.classList.contains('active')) {
+        toggleTrainPanel();
+      }
+      selectHomepageImage(fileName, previewUrl);
+    }
+
+    async function applySingleBatchItem(outputFileName, targetHomepageFile) {
+      const res = await fetch('/api/apply-to-homepage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ outputFileName, targetHomepageFile })
+      });
+      const data = await res.json();
+      if (!data.ok) return alert(data.error);
+      await loadState();
+      showToast(`✅ ${targetHomepageFile} 홈페이지 적용 완료!`);
+    }
+
+    async function quickApplyAllFixedToHomepage() {
+      const list = getUnifiedDirectorBatchList();
+      const readyItems = list
+        .filter((x) => Boolean(x.fixedFileName))
+        .map((x) => ({
+          outputFileName: x.fixedFileName,
+          targetHomepageFile: x.fileName
+        }));
+
+      if (readyItems.length === 0) {
+        openBatchDirectorModal();
+        showToast('⚠️ 아직 교정된 원장님 사진이 없습니다. [🚀 선택 사진 일괄 얼굴교정 + 홈페이지 즉시 적용]을 눌러주세요!');
+        return;
+      }
+
+      if (!confirm(`이미 교정 완료된 원장님 사진 ${readyItems.length}장을 홈페이지 원본(+webp)에 일괄 덮어쓸까요?\n(기존 원본은 _backup_director_faces 폴더에 안전하게 자동 백업됩니다.)`)) {
+        return;
+      }
+
+      const res = await fetch('/api/batch-apply-homepage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: readyItems })
+      });
+      const data = await res.json();
+      if (!data.ok) return alert(data.error);
+      await loadState();
+      showToast(`🎉 ${data.message}`);
+    }
+
+    async function runBatchDirectorProcess(autoApplyHomepage = true) {
+      const prof = getActiveProfile();
+      if (!prof) return;
+
+      const list = getUnifiedDirectorBatchList();
+      const selected = list.filter((x) => batchCheckedFiles.has(x.fileName));
+      if (selected.length === 0) {
+        return alert('일괄 처리할 원장님 사진을 1장 이상 체크해 주세요.');
+      }
+
+      const confirmMsg = autoApplyHomepage
+        ? `선택한 원장님 사진 ${selected.length}장을 0원 무료 GPU로 일괄 얼굴 교정한 뒤 홈페이지 원본에 즉시 적용할까요?`
+        : `선택한 원장님 사진 ${selected.length}장을 0원 무료 GPU로 일괄 얼굴 교정할까요?`;
+      if (!confirm(confirmMsg)) return;
+
+      const btn1 = document.getElementById('btnBatchFixAndApply');
+      const btn2 = document.getElementById('btnBatchOnlyApply');
+      const pbox = document.getElementById('batchProgressBox');
+      btn1.disabled = true;
+      btn2.disabled = true;
+      pbox.classList.add('active');
+      batchLiveStatusMap = {};
+
+      try {
+        const res = await fetch('/api/batch-fix-director', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            profileId: prof.id,
+            autoApplyHomepage,
+            enhanceBlend: Number(document.getElementById('fixEnhanceSelect')?.value || 0.85),
+            glassesMode: document.getElementById('designGlassesMode')?.value || 'lock',
+            faceShape: document.getElementById('designFaceShape')?.value || 'exact',
+            skinTone: document.getElementById('designSkinTone')?.value || 'natural_pores',
+            targets: selected.map((x) => ({
+              sourceType: 'homepage',
+              homepageFile: x.fileName,
+              matchedHomepageFile: x.fileName,
+              label: x.label
+            }))
+          })
+        });
+        const startData = await res.json();
+        if (!startData.ok) throw new Error(startData.error);
+
+        const result = await pollJob(startData.jobId, (job) => {
+          document.getElementById('batchStepText').textContent = job.stepText;
+          document.getElementById('batchPctText').textContent = `${job.progress}%`;
+          document.getElementById('batchProgressBar').style.width = `${job.progress}%`;
+          document.getElementById('batchLogs').textContent = (job.logs || []).slice(-5).join('\n');
+          if (job.batchStatus) {
+            batchLiveStatusMap = job.batchStatus;
+            renderBatchDirectorBannerAndModal();
+          }
+        });
+
+        batchLiveStatusMap = {};
+        await loadState();
+        showToast(`🎉 원장님 사진 ${result.completedCount}장 일괄 교정 및 홈페이지 적용 완료!`);
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn1.disabled = false;
+        btn2.disabled = false;
+        setTimeout(() => pbox.classList.remove('active'), 2500);
+      }
+    }
+
+    async function deployHomepageToLiveServer() {
+      if (!confirm('현재 로컬 홈페이지에 적용된 원장님 사진들을 워드프레스 번들(bundle-wp.js)로 묶어 카페24 실서버(bareunhaniwon.com)에 즉시 반영할까요?')) {
+        return;
+      }
+      const btn = document.getElementById('btnDeployLiveServer');
+      const pbox = document.getElementById('batchProgressBox');
+      btn.disabled = true;
+      pbox.classList.add('active');
+
+      try {
+        const res = await fetch('/api/deploy-homepage-live', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const startData = await res.json();
+        if (!startData.ok) throw new Error(startData.error);
+
+        await pollJob(startData.jobId, (job) => {
+          document.getElementById('batchStepText').textContent = job.stepText;
+          document.getElementById('batchPctText').textContent = `${job.progress}%`;
+          document.getElementById('batchProgressBar').style.width = `${job.progress}%`;
+          document.getElementById('batchLogs').textContent = (job.logs || []).slice(-5).join('\n');
+        });
+
+        showToast('🌐 카페24 실서버(https://www.bareunhaniwon.com) 반영 완료!');
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        setTimeout(() => pbox.classList.remove('active'), 2500);
+      }
     }
 
     function renderTrainTab() {
@@ -2148,7 +2649,6 @@
       }
     }
 
-    // Clear auto-generated English prompt when user edits Korean prompt manually so backend translates fresh
     document.getElementById('fixScenePromptInput').addEventListener('input', () => {
       const tagEl = document.getElementById('extractedSceneTag');
       if (tagEl) tagEl.textContent = '✏️ 사용자 연출 수정됨';
@@ -2564,7 +3064,7 @@
         if (pos < 0) pos = 0;
         bar.style.display = 'flex';
         badge.textContent = `🏠 로컬 ${pos + 1} / ${hpList.length}`;
-        meta.textContent = hpList[pos].fileName;
+        meta.textContent = hpList[pos].label ? `${hpList[pos].label} (${hpList[pos].fileName})` : hpList[pos].fileName;
         return;
       }
 
@@ -2581,10 +3081,16 @@
       grid.innerHTML = list
         .map((img) => {
           const sel = selectedFixSource.type === 'homepage' && selectedFixSource.homepageFile === img.fileName;
+          const badge = img.appliedToHomepage
+            ? '<span class="hp-badge-status">✅ 적용</span>'
+            : img.latestFixedUrl
+              ? '<span class="hp-badge-status gold">✨ 교정</span>'
+              : '';
           return `
             <div class="hp-item ${sel ? 'selected' : ''}" onclick="selectHomepageImage('${img.fileName}', '${img.previewUrl}')">
-              <img src="${img.previewUrl}" alt="${escapeHtml(img.fileName)}" loading="lazy" />
-              <div class="hp-item-name" title="${escapeHtml(img.fileName)}">${escapeHtml(img.fileName)}</div>
+              ${badge}
+              <img src="${img.latestFixedUrl || img.previewUrl}" alt="${escapeHtml(img.label || img.fileName)}" loading="lazy" />
+              <div class="hp-item-name" title="${escapeHtml(img.label || img.fileName)}">${escapeHtml(img.label || img.fileName)}</div>
             </div>
           `;
         })
@@ -2592,6 +3098,7 @@
     }
 
     function selectHomepageImage(fileName, previewUrl) {
+      const hpObj = (appState.homepageImages || []).find((x) => x.fileName === fileName);
       selectedFixSource = {
         type: 'homepage',
         homepageFile: fileName,
@@ -2601,16 +3108,39 @@
         crawledItemId: '',
         matchedHomepageFile: fileName,
         originalName: fileName,
-        altText: '',
+        altText: hpObj ? hpObj.label || '' : '',
         pagePath: '/'
       };
-      lastFixItem = null;
       document.getElementById('customFixSelectedLabel').textContent = '';
-      document.getElementById('fixTargetLabel').style.color = 'var(--green)';
-      document.getElementById('fixTargetLabel').textContent = fileName;
-      document.getElementById('fixStage').innerHTML = `<img src="${previewUrl}" alt="원본" />`;
-      document.getElementById('previewStatusNotice').style.display = 'none';
-      document.getElementById('fixActionBar').style.display = 'none';
+
+      if (hpObj && hpObj.latestFixedUrl) {
+        lastFixItem = {
+          id: `hp_fix_${fileName}`,
+          tier: 'free',
+          mode: hpObj.appliedToHomepage ? '✅ 홈페이지 적용됨' : '✨ 교정 완료본',
+          similarityPct: hpObj.latestSimilarityPct || 99,
+          rawUrl: hpObj.previewUrl,
+          finalUrl: hpObj.latestFixedUrl,
+          finalFileName: hpObj.latestFixedFileName,
+          targetHomepageFile: fileName
+        };
+        document.getElementById('fixTargetLabel').style.color = 'var(--green)';
+        document.getElementById('fixTargetLabel').textContent = `${hpObj.label || fileName} · 일치율 ${hpObj.latestSimilarityPct || 99}%`;
+        toggleFixPreview('after');
+        document.getElementById('previewStatusNotice').style.display = 'block';
+        document.getElementById('fixActionBar').style.display = 'flex';
+        document.getElementById('btnDownloadFixed').href = hpObj.latestFixedUrl;
+        document.getElementById('btnApplyHomepage').style.display = 'inline-flex';
+        document.getElementById('btnQuickNextAfterFix').style.display = 'inline-flex';
+      } else {
+        lastFixItem = null;
+        document.getElementById('fixTargetLabel').style.color = 'var(--green)';
+        document.getElementById('fixTargetLabel').textContent = hpObj && hpObj.label ? hpObj.label : fileName;
+        document.getElementById('fixStage').innerHTML = `<img src="${previewUrl}" alt="원본" />`;
+        document.getElementById('previewStatusNotice').style.display = 'none';
+        document.getElementById('fixActionBar').style.display = 'none';
+      }
+
       renderCrawledSection();
       renderHomepageGrid();
       updateStepInspectorBar();

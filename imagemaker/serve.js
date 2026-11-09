@@ -20,6 +20,7 @@ const PROFILES_JSON = path.join(DATA_DIR, 'profiles.json');
 const GALLERY_JSON = path.join(DATA_DIR, 'gallery.json');
 const COMPARISONS_JSON = path.join(DATA_DIR, 'comparisons.json');
 const CRAWLED_JSON = path.join(DATA_DIR, 'crawled-sites.json');
+const APPLIED_HOMEPAGE_JSON = path.join(DATA_DIR, 'applied-homepage.json');
 const UPLOAD_CACHE_JSON = path.join(DATA_DIR, 'upload-cache.json');
 const LOCAL_ENGINE_PY = path.join(ROOT_DIR, 'local_face_engine.py');
 
@@ -199,23 +200,142 @@ function fetchJsonUrl(url, timeoutMs = 6000) {
   });
 }
 
+const DIRECTOR_FILE_LABELS = {
+  'card_1_director.jpg': '🏠 메인 — 대표원장 정면 프로필',
+  'doctor.png': '🏠 공통 — 대표원장 프로필',
+  'ba_director_before.jpg': '👨‍⚕️ 원장소개 — 비포 포트레이트',
+  'ba_director_after.jpg': '👨‍⚕️ 원장소개 — 애프터 포트레이트',
+  'detail_director_consult.jpg': '💬 원장소개 — 1:1 진료 상담',
+  'detail_director_pulse.jpg': '🩺 원장소개 — 맥진 진료',
+  'detail_director_herbs.jpg': '🌿 원장소개 — 한약재 검수',
+  'detail_director_story1_enter.jpg': '📖 스토리 1 — 진료실 맞이',
+  'detail_director_story1_clean.jpg': '📖 스토리 1 — 진료실 클린컷',
+  'detail_director_story2_both_wrists_pulse.jpg': '📖 스토리 2 — 양손 맥진 진료',
+  'detail_director_story2_clean.jpg': '📖 스토리 2 — 상담 클린컷',
+  'detail_director_story3_nod_design.jpg': '📖 스토리 3 — 맞춤 처방 설계',
+  'detail_director_story3_clean.jpg': '📖 스토리 3 — 차트 연구 클린컷',
+  'detail_director_story4_decoction_lab.jpg': '📖 스토리 4 — 탕전실 약재 검수',
+  'detail_director_story4_clean.jpg': '📖 스토리 4 — 약재 검수 클린컷',
+  'detail_director_story5_clean.jpg': '📖 스토리 5 — 안심 한약 클린컷',
+  'director_exam_card1_ultrasound.jpg': '🖥️ 정밀검진 1 — 초음파 진단',
+  'director_exam_card2_thermography.jpg': '🌡️ 정밀검진 2 — 적외선 체열',
+  'director_exam_card3_ent_endoscope.jpg': '🔬 정밀검진 3 — 이비인후 내시경',
+  'director_exam_card4_sasang_constitution.jpg': '📋 정밀검진 4 — 사상체질 분석',
+  'director_exam_card5_bodyfat_inbody.jpg': '⚖️ 정밀검진 5 — 체성분·인바디',
+  'director_exam_card6_autonomic_hrv.jpg': '💓 정밀검진 6 — 자율신경(HRV)',
+  'director_exam_card7_endocrine_liver_glucose.jpg': '🧪 정밀검진 7 — 간기능·내분비',
+  'director_exam_card8_vascular_toxin.jpg': '🩸 정밀검진 8 — 혈관·해독 진단',
+  'director_exam_card9_growth_check.jpg': '🌱 정밀검진 9 — 성장판 검진',
+  'growth-two-types-director.jpg': '🌱 성장클리닉 — 원장님 상담',
+  'growth_male_director_ultrasound_1791351314809.jpg': '🌱 성장클리닉 — 성장판 초음파',
+  'growth-director-son.png': '🌱 성장클리닉 — 원장님과 자녀',
+  'growth-director-son-comparison.png': '🌱 성장클리닉 — 성장 비교'
+};
+
 function listHomepageDirectorImages() {
   if (!fs.existsSync(HOMEPAGE_DIR)) return [];
   const all = fs.readdirSync(HOMEPAGE_DIR);
   const priorityPattern =
-    /^(card_1_director|ba_director_|detail_director_|director_exam_card|growth-two-types-director|growth_male_director_|growth_two_types_director_)/i;
+    /^(card_1_director|doctor\.png|ba_director_|detail_director_|director_exam_card|growth-two-types-director|growth-director-son|growth_male_director_|growth_two_types_director_)/i;
+  const excludePattern = /(no_director|loupe_pov|family_safety)/i;
+
+  const gallery = readJsonSafe(GALLERY_JSON, []);
+  const appliedMap = readJsonSafe(APPLIED_HOMEPAGE_JSON, {});
+
   return all
-    .filter((f) => priorityPattern.test(f) && /\.(jpg|jpeg|png|webp)$/i.test(f))
-    .sort()
+    .filter((f) => priorityPattern.test(f) && !excludePattern.test(f) && /\.(jpg|jpeg|png|webp)$/i.test(f))
+    .sort((a, b) => {
+      if (a === 'card_1_director.jpg') return -1;
+      if (b === 'card_1_director.jpg') return 1;
+      if (a === 'doctor.png') return -1;
+      if (b === 'doctor.png') return 1;
+      return a.localeCompare(b);
+    })
     .map((f) => {
       const full = path.join(HOMEPAGE_DIR, f);
       const stat = fs.statSync(full);
+      const latestFix = gallery.find(
+        (g) =>
+          g.targetHomepageFile === f &&
+          g.finalFileName &&
+          fs.existsSync(path.join(OUTPUTS_DIR, path.basename(g.finalFileName)))
+      );
+      const appliedInfo = appliedMap[f] || null;
       return {
         fileName: f,
+        label: DIRECTOR_FILE_LABELS[f] || `👨‍⚕️ 원장님 사진 (${f})`,
         sizeBytes: stat.size,
-        previewUrl: `/files/homepage/${encodeURIComponent(f)}?t=${Math.floor(stat.mtimeMs)}`
+        previewUrl: `/files/homepage/${encodeURIComponent(f)}?t=${Math.floor(stat.mtimeMs)}`,
+        latestFixedUrl: latestFix ? latestFix.finalUrl : null,
+        latestFixedFileName: latestFix ? latestFix.finalFileName : null,
+        latestSimilarityPct: latestFix ? latestFix.similarityPct || 99 : null,
+        appliedToHomepage: Boolean(appliedInfo),
+        appliedAt: appliedInfo ? appliedInfo.appliedAt : null
       };
     });
+}
+
+function applyOutputFileToHomepage(outputFileNameRaw, targetHomepageFileRaw) {
+  const outputFileName = path.basename(String(outputFileNameRaw || ''));
+  const targetHomepageFile = path.basename(String(targetHomepageFileRaw || ''));
+  if (!outputFileName || !targetHomepageFile) {
+    throw new Error('원본 파일명과 결과 파일명이 필요합니다.');
+  }
+  const srcOut = path.join(OUTPUTS_DIR, outputFileName);
+  const dstHome = path.join(HOMEPAGE_DIR, targetHomepageFile);
+  if (!fs.existsSync(srcOut)) {
+    throw new Error(`결과 파일(${outputFileName})을 찾을 수 없습니다.`);
+  }
+
+  const backupDir = path.join(HOMEPAGE_DIR, '_backup_director_faces');
+  fs.mkdirSync(backupDir, { recursive: true });
+  const nowStamp = Date.now();
+  if (fs.existsSync(dstHome)) {
+    fs.copyFileSync(dstHome, path.join(backupDir, `${nowStamp}_${targetHomepageFile}`));
+  }
+
+  const stem = targetHomepageFile.replace(/\.[^.]+$/, '');
+  const dstWebp = path.join(HOMEPAGE_DIR, 'webp', `${stem}.webp`);
+  const hasWebpMirror = fs.existsSync(dstWebp);
+  if (hasWebpMirror) {
+    fs.copyFileSync(dstWebp, path.join(backupDir, `${nowStamp}_${stem}.webp`));
+  }
+
+  let convertedViaCv2 = false;
+  try {
+    const pyScript = [
+      'import sys, cv2, numpy as np',
+      'src, dst, webp_dst = sys.argv[1], sys.argv[2], sys.argv[3]',
+      'img = cv2.imdecode(np.fromfile(src, dtype=np.uint8), cv2.IMREAD_COLOR)',
+      'ext = "." + dst.rsplit(".", 1)[-1].lower()',
+      'params = [cv2.IMWRITE_JPEG_QUALITY, 95] if ext in (".jpg", ".jpeg") else ([cv2.IMWRITE_WEBP_QUALITY, 93] if ext == ".webp" else [])',
+      'ok, buf = cv2.imencode(ext, img, params)',
+      'if ok: buf.tofile(dst)',
+      'if webp_dst:',
+      '    ok2, buf2 = cv2.imencode(".webp", img, [cv2.IMWRITE_WEBP_QUALITY, 93])',
+      '    if ok2: buf2.tofile(webp_dst)'
+    ].join('\n');
+    execFileSync('python', ['-c', pyScript, srcOut, dstHome, hasWebpMirror ? dstWebp : ''], {
+      timeout: 10000
+    });
+    convertedViaCv2 = true;
+  } catch (e) {
+    fs.copyFileSync(srcOut, dstHome);
+  }
+
+  const appliedMap = readJsonSafe(APPLIED_HOMEPAGE_JSON, {});
+  appliedMap[targetHomepageFile] = {
+    outputFileName,
+    hasWebpMirror: Boolean(hasWebpMirror && convertedViaCv2),
+    appliedAt: new Date().toISOString()
+  };
+  writeJsonSafe(APPLIED_HOMEPAGE_JSON, appliedMap);
+
+  return {
+    targetHomepageFile,
+    outputFileName,
+    hasWebpMirror: Boolean(hasWebpMirror && convertedViaCv2)
+  };
 }
 
 // ============================================================================
@@ -2438,6 +2558,184 @@ async function runCrawlUrlJob(job, payload) {
   }
 }
 
+// ⚡ Batch Fix All Selected Homepage Director Photos & Auto-Apply to Homepage
+async function runBatchFixDirectorJob(job, payload) {
+  try {
+    const profileId = String(payload.profileId || 'director_ahn');
+    const autoApplyHomepage = payload.autoApplyHomepage !== false;
+    const enhanceBlend = Number(payload.enhanceBlend || 0.85);
+    const glassesMode = String(payload.glassesMode || 'lock');
+    const faceShape = String(payload.faceShape || 'exact');
+    const skinTone = String(payload.skinTone || 'natural_pores');
+    const rawTargets = Array.isArray(payload.targets) ? payload.targets : [];
+
+    if (rawTargets.length === 0) {
+      throw new Error('일괄 처리할 원장님 사진을 1장 이상 선택해 주세요.');
+    }
+
+    job.batchStatus = {};
+    const completedItems = [];
+    const appliedFiles = [];
+    const skippedFiles = [];
+
+    for (let i = 0; i < rawTargets.length; i++) {
+      const t = rawTargets[i] || {};
+      const key = t.homepageFile || `${t.crawledSessionId || ''}:${t.crawledItemId || t.crawledFileName || i}`;
+      const displayName = t.label || t.homepageFile || t.originalName || t.crawledFileName || `사진 #${i + 1}`;
+      const basePct = Math.round((i / rawTargets.length) * 94) + 3;
+
+      job.progress = basePct;
+      job.stepText = `⚡ [${i + 1}/${rawTargets.length}] ${displayName} 얼굴 교정 중...`;
+      job.batchStatus[key] = { state: 'running', message: '교정 중...' };
+      appendJobLog(job, `▶️ [${i + 1}/${rawTargets.length}] ${displayName} 시작`);
+
+      try {
+        const subPayload = {
+          profileId,
+          costMode: 'free',
+          actionMode: 'fix',
+          sourceType: t.sourceType || (t.homepageFile ? 'homepage' : 'crawled'),
+          homepageFile: t.homepageFile || '',
+          crawledSessionId: t.crawledSessionId || '',
+          crawledFileName: t.crawledFileName || '',
+          crawledItemId: t.crawledItemId || '',
+          matchedHomepageFile: t.matchedHomepageFile || t.homepageFile || '',
+          enhanceBlend,
+          glassesMode,
+          faceShape,
+          skinTone
+        };
+
+        const entry = await executeFreeFixCore(subPayload, (subPct, msg) => {
+          if (subPct !== null && subPct !== undefined) {
+            const slice = 94 / rawTargets.length;
+            job.progress = Math.min(97, Math.round(basePct + (subPct / 100) * slice));
+          }
+          if (msg) {
+            job.stepText = `⚡ [${i + 1}/${rawTargets.length}] ${displayName} — ${msg}`;
+          }
+        });
+
+        let applied = false;
+        const targetHp = entry.targetHomepageFile || t.homepageFile || t.matchedHomepageFile || '';
+        if (autoApplyHomepage && targetHp && entry.finalFileName) {
+          applyOutputFileToHomepage(entry.finalFileName, targetHp);
+          applied = true;
+          appliedFiles.push(targetHp);
+        }
+
+        job.batchStatus[key] = {
+          state: 'done',
+          applied,
+          finalUrl: entry.finalUrl,
+          finalFileName: entry.finalFileName,
+          similarityPct: entry.similarityPct || 99
+        };
+        completedItems.push({
+          key,
+          fileName: targetHp || displayName,
+          finalUrl: entry.finalUrl,
+          finalFileName: entry.finalFileName,
+          similarityPct: entry.similarityPct || 99,
+          applied
+        });
+        appendJobLog(
+          job,
+          `✅ [${i + 1}/${rawTargets.length}] ${displayName} 완료 (일치율 ${entry.similarityPct || 99}%${applied ? ' · 홈페이지 즉시 반영' : ''})`
+        );
+      } catch (itemErr) {
+        const errMsg = itemErr.message || String(itemErr);
+        skippedFiles.push({ key, name: displayName, reason: errMsg });
+        job.batchStatus[key] = { state: 'skipped', message: errMsg };
+        appendJobLog(job, `ℹ️ [${i + 1}/${rawTargets.length}] ${displayName} 건너뜀 (${errMsg})`);
+      }
+    }
+
+    job.progress = 100;
+    job.status = 'completed';
+    job.stepText = autoApplyHomepage
+      ? `🎉 원장님 사진 ${completedItems.length}장 일괄 교정 및 홈페이지 덮어쓰기 완료!`
+      : `🎉 원장님 사진 ${completedItems.length}장 일괄 교정 완료!`;
+    job.finishedAt = new Date().toISOString();
+    job.result = {
+      totalCount: rawTargets.length,
+      completedCount: completedItems.length,
+      appliedCount: appliedFiles.length,
+      skippedCount: skippedFiles.length,
+      completedItems,
+      appliedFiles,
+      skippedFiles
+    };
+  } catch (err) {
+    job.status = 'failed';
+    job.error = err.message || String(err);
+    job.stepText = '오류: ' + job.error;
+    job.finishedAt = new Date().toISOString();
+    appendJobLog(job, 'ERROR: ' + job.error);
+  }
+}
+
+// 🌐 One-Click Bundle & Deploy Updated Homepage Photos to Live Cafe24 WordPress Server
+async function runDeployLiveServerJob(job) {
+  try {
+    const projectRoot = path.resolve(HOMEPAGE_DIR, '..');
+    const bundleScript = path.join(projectRoot, 'bundle-wp.js');
+    const deployScript = path.join(projectRoot, 'deploy-cafe24.js');
+
+    job.progress = 15;
+    job.stepText = '📦 1/2 워드프레스 올인원 번들(bundle-wp.js) 동기화 중...';
+    appendJobLog(job, 'node bundle-wp.js 실행 중...');
+
+    if (fs.existsSync(bundleScript)) {
+      const out1 = execFileSync('node', [bundleScript], {
+        cwd: projectRoot,
+        timeout: 60000
+      })
+        .toString('utf8')
+        .trim();
+      appendJobLog(job, out1.split('\n').slice(-4).join('\n'));
+    }
+
+    job.progress = 55;
+    job.stepText = '🌐 2/2 카페24 실서버(bareunhaniwon.com) 자동 업로드 및 캐시 초기화 중...';
+    appendJobLog(job, 'node deploy-cafe24.js 실행 중...');
+
+    if (fs.existsSync(deployScript)) {
+      await new Promise((resolve, reject) => {
+        const proc = spawn('node', [deployScript], { cwd: projectRoot });
+        proc.stdout.on('data', (chunk) => {
+          const line = chunk.toString('utf8').trim();
+          if (line) {
+            appendJobLog(job, line);
+            job.progress = Math.min(95, job.progress + 5);
+          }
+        });
+        proc.stderr.on('data', (chunk) => {
+          const line = chunk.toString('utf8').trim();
+          if (line) appendJobLog(job, line);
+        });
+        proc.on('close', (code) => {
+          if (code === 0) resolve();
+          else reject(new Error(`배포 스크립트 종료 코드: ${code}`));
+        });
+        proc.on('error', reject);
+      });
+    }
+
+    job.progress = 100;
+    job.status = 'completed';
+    job.stepText = '🎉 카페24 실서버(bareunhaniwon.com) 원장님 사진 일괄 배포 완료!';
+    job.finishedAt = new Date().toISOString();
+    job.result = { liveUrl: 'https://www.bareunhaniwon.com/' };
+  } catch (err) {
+    job.status = 'failed';
+    job.error = err.message || String(err);
+    job.stepText = '배포 오류: ' + job.error;
+    job.finishedAt = new Date().toISOString();
+    appendJobLog(job, 'ERROR: ' + job.error);
+  }
+}
+
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -2764,55 +3062,56 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'POST' && pathname === '/api/apply-to-homepage') {
       const body = await readBodyJson(req);
-      const outputFileName = path.basename(String(body.outputFileName || ''));
-      const targetHomepageFile = path.basename(String(body.targetHomepageFile || ''));
-      if (!outputFileName || !targetHomepageFile) {
-        return sendJson(res, 400, { ok: false, error: '원본 파일명과 결과 파일명이 필요합니다.' });
-      }
-      const srcOut = path.join(OUTPUTS_DIR, outputFileName);
-      const dstHome = path.join(HOMEPAGE_DIR, targetHomepageFile);
-      if (!fs.existsSync(srcOut)) return sendJson(res, 404, { ok: false, error: '결과 파일을 찾을 수 없습니다.' });
-
-      const backupDir = path.join(HOMEPAGE_DIR, '_backup_director_faces');
-      fs.mkdirSync(backupDir, { recursive: true });
-      const nowStamp = Date.now();
-      if (fs.existsSync(dstHome)) {
-        fs.copyFileSync(dstHome, path.join(backupDir, `${nowStamp}_${targetHomepageFile}`));
-      }
-
-      const stem = targetHomepageFile.replace(/\.[^.]+$/, '');
-      const dstWebp = path.join(HOMEPAGE_DIR, 'webp', `${stem}.webp`);
-      const hasWebpMirror = fs.existsSync(dstWebp);
-      if (hasWebpMirror) {
-        fs.copyFileSync(dstWebp, path.join(backupDir, `${nowStamp}_${stem}.webp`));
-      }
-
-      let convertedViaCv2 = false;
-      try {
-        const pyScript = [
-          'import sys, cv2, numpy as np',
-          'src, dst, webp_dst = sys.argv[1], sys.argv[2], sys.argv[3]',
-          'img = cv2.imdecode(np.fromfile(src, dtype=np.uint8), cv2.IMREAD_COLOR)',
-          'ext = "." + dst.rsplit(".", 1)[-1].lower()',
-          'params = [cv2.IMWRITE_JPEG_QUALITY, 95] if ext in (".jpg", ".jpeg") else ([cv2.IMWRITE_WEBP_QUALITY, 93] if ext == ".webp" else [])',
-          'ok, buf = cv2.imencode(ext, img, params)',
-          'if ok: buf.tofile(dst)',
-          'if webp_dst:',
-          '    ok2, buf2 = cv2.imencode(".webp", img, [cv2.IMWRITE_WEBP_QUALITY, 93])',
-          '    if ok2: buf2.tofile(webp_dst)'
-        ].join('\n');
-        execFileSync('python', ['-c', pyScript, srcOut, dstHome, hasWebpMirror ? dstWebp : ''], {
-          timeout: 10000
-        });
-        convertedViaCv2 = true;
-      } catch (e) {
-        fs.copyFileSync(srcOut, dstHome);
-      }
-
+      const resInfo = applyOutputFileToHomepage(body.outputFileName, body.targetHomepageFile);
       return sendJson(res, 200, {
         ok: true,
-        message: `홈페이지 원본(${targetHomepageFile}${hasWebpMirror && convertedViaCv2 ? ' + webp 버전' : ''})을 백업한 뒤 교정한 사진으로 즉시 교체했습니다!`
+        message: `홈페이지 원본(${resInfo.targetHomepageFile}${resInfo.hasWebpMirror ? ' + webp 버전' : ''})을 백업한 뒤 교정한 사진으로 즉시 교체했습니다!`
       });
+    }
+
+    // Batch Fix All Selected Director Photos (+ Optional Instant Homepage Overwrite)
+    if (req.method === 'POST' && pathname === '/api/batch-fix-director') {
+      const body = await readBodyJson(req);
+      const targets = Array.isArray(body.targets) ? body.targets : [];
+      if (targets.length === 0) {
+        return sendJson(res, 400, { ok: false, error: '일괄 적용할 원장님 사진을 1장 이상 선택해 주세요.' });
+      }
+      const job = createJob('batch_director', `⚡ 원장님 사진 ${targets.length}장 일괄 교정 · 적용`);
+      runBatchFixDirectorJob(job, body);
+      return sendJson(res, 200, { ok: true, jobId: job.id });
+    }
+
+    // Instant 1-Second Batch Overwrite of Already-Fixed Director Photos to Homepage
+    if (req.method === 'POST' && pathname === '/api/batch-apply-homepage') {
+      const body = await readBodyJson(req);
+      const items = Array.isArray(body.items) ? body.items : [];
+      if (items.length === 0) {
+        return sendJson(res, 400, { ok: false, error: '홈페이지에 덮어쓸 교정 완료 사진이 없습니다.' });
+      }
+      const applied = [];
+      const errors = [];
+      for (const it of items) {
+        try {
+          const info = applyOutputFileToHomepage(it.outputFileName, it.targetHomepageFile);
+          applied.push(info.targetHomepageFile);
+        } catch (e) {
+          errors.push({ file: it.targetHomepageFile, error: e.message });
+        }
+      }
+      return sendJson(res, 200, {
+        ok: true,
+        appliedCount: applied.length,
+        appliedFiles: applied,
+        errors,
+        message: `총 ${applied.length}장의 원장님 사진을 홈페이지 원본(+webp)에 일괄 덮어쓰기 완료했습니다!`
+      });
+    }
+
+    // One-Click Live Server Deploy (bundle-wp.js + deploy-cafe24.js)
+    if (req.method === 'POST' && pathname === '/api/deploy-homepage-live') {
+      const job = createJob('deploy_live', '🌐 카페24 실서버(bareunhaniwon.com) 일괄 배포');
+      runDeployLiveServerJob(job);
+      return sendJson(res, 200, { ok: true, jobId: job.id });
     }
 
     if (req.method === 'DELETE' && pathname.startsWith('/api/gallery/')) {
