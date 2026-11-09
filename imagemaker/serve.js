@@ -101,13 +101,7 @@ function maskKey(key) {
 }
 
 function getFal() {
-  const { falKey } = getSettings();
-  if (!falKey) {
-    throw new Error(
-      '유료 PRO(골드 메뉴)를 사용하시려면 우측 상단 [👑 유료 PRO 설정]에서 fal.ai API 키를 등록해 주세요. (무료 모드는 키 없이 바로 작동합니다!)'
-    );
-  }
-  return createFalClient({ credentials: falKey });
+  throw new Error('🔒 유료 모드가 모두 잠금 처리되었습니다. 현재 100% 무료(0원) 모드로만 안전하게 작동합니다.');
 }
 
 function formatFalError(err) {
@@ -631,10 +625,250 @@ function markCrawledItemFixed(sessionId, itemId, fixEntry) {
   item.fixedFileName = fixEntry.finalFileName;
   item.fixedSimilarityPct = fixEntry.similarityPct || null;
   item.fixedSharpnessScore = fixEntry.sharpnessScore || null;
-  item.fixedTier = fixEntry.tier || 'free';
+  item.fixedTier = 'free';
   item.fixedMode = fixEntry.mode || '';
   item.fixedAt = fixEntry.createdAt || new Date().toISOString();
+  if (fixEntry.scenePrompt) item.lastScenePrompt = fixEntry.scenePrompt;
   writeJsonSafe(CRAWLED_JSON, sessions);
+}
+
+function detectAspectRatioKey(width, height) {
+  if (!width || !height) return 'landscape_16_9';
+  const r = width / height;
+  if (r >= 1.52) return 'landscape_16_9';
+  if (r >= 1.15) return 'landscape_4_3';
+  if (r >= 0.88) return 'square_hd';
+  if (r >= 0.65) return 'portrait_4_3';
+  return 'portrait_16_9';
+}
+
+function analyzeVisualMoodQuick(localImagePath) {
+  try {
+    if (!localImagePath || !fs.existsSync(localImagePath)) return null;
+    const pyCode = [
+      'import sys, json, cv2, numpy as np',
+      'img = cv2.imdecode(np.fromfile(sys.argv[1], dtype=np.uint8), cv2.IMREAD_COLOR)',
+      'if img is None: print("{}"); sys.exit(0)',
+      'h, w = img.shape[:2]',
+      'b, g, r = [float(np.mean(img[:,:,i])) for i in range(3)]',
+      'luma = 0.299*r + 0.587*g + 0.114*b',
+      'warmth = r - b',
+      'lower = img[int(h*0.58):int(h*0.95), int(w*0.22):int(w*0.78)]',
+      'lower_luma = float(np.mean(lower)) if lower.size else luma',
+      'print(json.dumps({"w":w,"h":h,"luma":round(luma,1),"warmth":round(warmth,1),"lowerLuma":round(lower_luma,1)}))'
+    ].join('\n');
+    const out = execFileSync('python', ['-c', pyCode, localImagePath], { timeout: 4000 }).toString('utf8').trim();
+    return JSON.parse(out);
+  } catch (e) {
+    return null;
+  }
+}
+
+async function extractPhotoScenePrompt(payload) {
+  const {
+    profileId = 'director_ahn',
+    sourceType = 'homepage',
+    homepageFile = '',
+    crawledSessionId = '',
+    crawledFileName = '',
+    originalName = '',
+    altText = '',
+    pagePath = '',
+    uploadDataUrl = ''
+  } = payload || {};
+
+  const profiles = readJsonSafe(PROFILES_JSON, []);
+  const profile = profiles.find((p) => p.id === profileId) || profiles[0] || {};
+
+  let localPath = '';
+  let nameHint = String(originalName || homepageFile || crawledFileName || '').toLowerCase();
+  let buf = null;
+
+  if (sourceType === 'homepage' && homepageFile) {
+    localPath = path.join(HOMEPAGE_DIR, path.basename(homepageFile));
+    if (fs.existsSync(localPath)) buf = fs.readFileSync(localPath);
+  } else if (sourceType === 'crawled' && crawledSessionId && crawledFileName) {
+    localPath = path.join(CRAWLED_DIR, path.basename(crawledSessionId), path.basename(crawledFileName));
+    if (fs.existsSync(localPath)) buf = fs.readFileSync(localPath);
+  } else if (sourceType === 'upload' && uploadDataUrl) {
+    const m = String(uploadDataUrl).match(/^data:image\/[a-zA-Z0-9+.-]+;base64,(.+)$/);
+    if (m) buf = Buffer.from(m[1], 'base64');
+  }
+
+  const info = buf ? parseImageBufferInfo(buf) : null;
+  const width = (info && info.width) || 1280;
+  const height = (info && info.height) || 720;
+  const imageSize = detectAspectRatioKey(width, height);
+  const visual = localPath ? analyzeVisualMoodQuick(localPath) : null;
+
+  const combinedHint = `${nameHint} ${String(altText || '').toLowerCase()} ${String(pagePath || '').toLowerCase()}`;
+
+  const sceneRules = [
+    {
+      match: /card_1_director|정면|대표원장|프로필/,
+      kor: '따뜻한 원목과 은은한 채광이 어우러진 고급 한의원 진료실에서 흰 의사 가운을 입고 신뢰감 있는 미소로 정면을 바라보는 대표원장 상반신 프로필 모습',
+      outfit: 'white_coat_shirt',
+      tag: '대표원장 정면 프로필'
+    },
+    {
+      match: /both_wrists_pulse|pulse|맥진/,
+      kor: '따뜻한 햇살이 비치는 한의원 원목 진료 책상에서 환자분의 손목 맥진을 양손으로 정성스럽고 진지하게 짚어보는 진료 모습',
+      outfit: 'white_coat_shirt',
+      tag: '양손 맥진 진료'
+    },
+    {
+      match: /consult|상담|story2_clean/,
+      kor: '차분하고 품격 있는 원목 한의원 상담실에서 책상 너머 환자분에게 온화한 미소로 맞춤 치료 계획을 설명하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '원목 상담실 진료 상담'
+    },
+    {
+      match: /story1_enter|enter|맞이/,
+      kor: '밝고 정갈한 한의원 진료실로 들어서며 따뜻한 미소와 단정한 흰 가운 차림으로 환자분을 맞이하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '진료실 입장 · 인사'
+    },
+    {
+      match: /story3|nod_design|논문|차트|설계/,
+      kor: '원목 진료 데스크에서 정밀 진단 데이터와 처방 차트를 세심하게 검토하며 맞춤 한약을 설계하는 집중한 모습',
+      outfit: 'white_coat_shirt',
+      tag: '맞춤 처방 · 차트 연구'
+    },
+    {
+      match: /story4|decoction|loupe|탕전|약재|herbs|gongjindan|공진단|녹용/,
+      kor: '청결한 유리 탕전실과 약재 검수대에서 최상급 녹용과 청정 한약재를 직접 손으로 들고 꼼꼼하게 살피는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '프리미엄 약재 · 녹용 검수'
+    },
+    {
+      match: /ultrasound|exam_card1|초음파/,
+      kor: '현대적인 한의원 정밀 검진실에서 고해상도 초음파 진단 모니터 화면을 가리키며 세밀하게 판독하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '초음파 정밀 진단'
+    },
+    {
+      match: /thermography|exam_card2|체열/,
+      kor: '정밀 적외선 체열 진단실 모니터 앞에서 체열 분포 데이터를 분석하며 설명하는 전문적인 진료 모습',
+      outfit: 'white_coat_shirt',
+      tag: '적외선 체열 정밀 검사'
+    },
+    {
+      match: /endoscope|exam_card3|내시경/,
+      kor: '이비인후과·점막 정밀 내시경 모니터를 보며 정밀하게 상태를 진단하는 한의원 검진 모습',
+      outfit: 'white_coat_shirt',
+      tag: '내시경 정밀 검진'
+    },
+    {
+      match: /sasang|exam_card4|사상체질/,
+      kor: '사상체질 정밀 분석 차트와 진단 화면을 보며 체질별 맞춤 한방 치료법을 차분하게 설명하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '사상체질 정밀 분석'
+    },
+    {
+      match: /inbody|bodyfat|exam_card5|체성분/,
+      kor: '체성분·인바디 정밀 분석 결과지를 보며 체계적인 대사 및 체형 개선 방향을 안내하는 상담 모습',
+      outfit: 'white_coat_shirt',
+      tag: '체성분 · 인바디 분석'
+    },
+    {
+      match: /autonomic|hrv|exam_card6|자율신경/,
+      kor: '자율신경 및 스트레스 정밀 검사(HRV) 모니터를 확인하며 신경계 균형 치료를 설명하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '자율신경 정밀 검진'
+    },
+    {
+      match: /endocrine|liver|exam_card7|간기능|내분비/,
+      kor: '간기능·내분비 정밀 혈액 검사 수치를 세심하게 판독하며 안전한 한약 처방을 설명하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '간기능 · 내분비 검진'
+    },
+    {
+      match: /vascular|toxin|exam_card8|혈관|해독/,
+      kor: '혈관 건강 및 체내 해독 상태 진단 모니터를 보며 순환 개선 치료를 설명하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '혈관 · 해독 정밀 진단'
+    },
+    {
+      match: /growth|exam_card9|성장/,
+      kor: '성장 클리닉 정밀 진료실에서 성장판 검진 화면을 보며 따뜻하고 든든한 미소로 설명하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '성장클리닉 정밀 진료'
+    },
+    {
+      match: /chuna|추나/,
+      kor: '모던하고 정갈한 한의원 추나 교정 치료실에서 교정 베드 옆에 서서 척추·관절 균형을 정밀하게 진료하는 모습',
+      outfit: 'scrub_coat',
+      tag: '추나 척추 · 체형 교정'
+    },
+    {
+      match: /diet|다이어트/,
+      kor: '밝고 세련된 한의원 상담실에서 건강한 체중 감량과 대사 회복 한약 프로그램을 온화하게 상담하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '다이어트 맞춤 상담'
+    },
+    {
+      match: /hair|탈모|두피/,
+      kor: '정밀 두피·모낭 진단기가 갖춰진 진료실에서 두피 열감과 모낭 상태를 세심하게 체크하고 상담하는 모습',
+      outfit: 'white_coat_shirt',
+      tag: '탈모 · 두피 정밀 진료'
+    },
+    {
+      match: /prostate|전립선|남성/,
+      kor: '프라이빗하고 중후한 원목 한의원 상담실에서 깊이 있는 신뢰감과 진중한 표정으로 1:1 맞춤 진료를 진행하는 모습',
+      outfit: 'white_coat_tie',
+      tag: '프라이빗 1:1 심층 진료'
+    },
+    {
+      match: /ba_director|before|after/,
+      kor: '정갈한 한의원 원목 배경 앞에서 단정한 흰 의사 가운과 금테 안경을 착용하고 정면을 바라보는 깔끔한 인물 포트레이트',
+      outfit: 'white_coat_shirt',
+      tag: '원장님 클리닉 포트레이트'
+    }
+  ];
+
+  let matchedRule = sceneRules.find((r) => r.match.test(combinedHint));
+  let koreanPrompt = '';
+  let outfitKey = 'white_coat_shirt';
+  let sceneTag = '클리닉 인물 연출';
+
+  if (matchedRule) {
+    koreanPrompt = matchedRule.kor;
+    outfitKey = matchedRule.outfit;
+    sceneTag = matchedRule.tag;
+  } else {
+    const isWarm = !visual || visual.warmth >= 12;
+    const isBright = !visual || visual.luma >= 115;
+    const isWhiteCoat = !visual || visual.lowerLuma >= 135;
+    const bgDesc = isWarm
+      ? '따뜻한 원목 톤과 은은한 자연광이 감도는 고급 한의원 진료실 배경에서'
+      : '정갈하고 모던한 클리닉 스튜디오 배경에서';
+    const lightDesc = isBright ? '밝고 부드러운 조명 아래' : '차분하고 깊이감 있는 시네마틱 조명 아래';
+    outfitKey = isWhiteCoat ? 'white_coat_shirt' : 'modern_hanbok_gown';
+    koreanPrompt = `${bgDesc} ${lightDesc} 단정한 진료복 차림으로 신뢰감 있고 자연스러운 미소를 지으며 정면을 바라보는 상반신 모습`;
+    sceneTag = isWarm ? '따뜻한 원목 진료실' : '모던 클리닉 포트레이트';
+  }
+
+  const englishPrompt = await buildFreePhotorealPrompt(profile, koreanPrompt, outfitKey, false);
+  const ratioLabel =
+    imageSize === 'landscape_16_9'
+      ? '16:9 와이드'
+      : imageSize === 'landscape_4_3'
+        ? '4:3 가로'
+        : imageSize === 'square_hd'
+          ? '1:1 정사각'
+          : '세로 프로필';
+
+  return {
+    ok: true,
+    koreanPrompt,
+    englishPrompt,
+    outfitKey,
+    imageSize,
+    width,
+    height,
+    sceneTag,
+    ratioLabel
+  };
 }
 
 const OUTFIT_MAP = {
@@ -1390,6 +1624,130 @@ async function executeFreeFixCore(payload, onStep) {
 }
 
 // ============================================================================
+// CORE ENGINE 3-B: 100% FREE Photo Scene Restyle + Face Lock (0원 연출 변경)
+// ============================================================================
+async function executeFreeRestyleCore(payload, onStep) {
+  const t0 = Date.now();
+  const {
+    profileId,
+    sourceType = 'homepage',
+    homepageFile = '',
+    uploadDataUrl = '',
+    crawledSessionId = '',
+    crawledFileName = '',
+    crawledItemId = '',
+    matchedHomepageFile = '',
+    scenePrompt = '',
+    customEnglishPrompt = '',
+    outfitKey = 'white_coat_shirt',
+    imageSize: requestedSize = '',
+    enhanceBlend = 0.82
+  } = payload;
+
+  const profiles = readJsonSafe(PROFILES_JSON, []);
+  const profile = profiles.find((p) => p.id === profileId);
+  if (!profile) throw new Error('선택된 인물 프로필이 없습니다.');
+
+  const refPaths = getOrderedProfileRefPaths(profile);
+  if (refPaths.length === 0) throw new Error('등록된 실제 기준 사진이 없습니다.');
+
+  const { stamp, beforeFileName, beforePath, sourceLabel } = prepareExistingSourceFile(
+    sourceType,
+    homepageFile,
+    uploadDataUrl,
+    'restyle_free',
+    { crawledSessionId, crawledFileName }
+  );
+
+  // Match original photo aspect ratio unless explicitly specified
+  let imageSize = requestedSize;
+  if (!imageSize) {
+    try {
+      const info = parseImageBufferInfo(fs.readFileSync(beforePath));
+      imageSize = detectAspectRatioKey(info && info.width, info && info.height);
+    } catch (e) {
+      imageSize = 'landscape_16_9';
+    }
+  }
+
+  const { hfToken } = getSettings();
+  onStep(12, '1/3 입력하신 연출 프롬프트로 새로운 장면 설계 중 (0원)...');
+  const finalPrompt =
+    String(customEnglishPrompt || '').trim() ||
+    (await buildFreePhotorealPrompt(profile, scenePrompt || '따뜻한 한의원 진료실 정면 모습', outfitKey, false));
+
+  onStep(28, '2/3 무료 ZeroGPU로 새로운 연출 장면 촬영 중 (0원)...');
+  const stage1 = await generateFreeStage1Image({
+    prompt: finalPrompt,
+    masterPhotoPath: refPaths[0],
+    imageSize,
+    freeGenEngine: 'pulid_best',
+    hfToken,
+    onLog: (m) => onStep(null, m, true)
+  });
+
+  const stage1FileName = `restyle_free_${stamp}_stage1.png`;
+  const stage1Path = path.join(OUTPUTS_DIR, stage1FileName);
+  await downloadUrlToFile(stage1.url, stage1Path);
+
+  const afterFileName = `restyle_free_${stamp}_after.png`;
+  const afterPath = path.join(OUTPUTS_DIR, afterFileName);
+
+  onStep(62, '3/3 내 PC GPU(GTX 1070)로 원장님 실제 얼굴 100% 고정 & 85mm DSLR 복원 중 (0원)...');
+  const localRes = await runLocalFaceEngine({
+    profileId,
+    targetPath: stage1Path,
+    outputPath: afterPath,
+    refPaths,
+    enhanceBlend: Number(enhanceBlend) || 0.82,
+    onProgress: (pct, msg) => onStep(Math.max(62, pct), `[내 PC 무료 GPU] ${msg}`)
+  });
+
+  const resolvedTargetHomepage =
+    sourceType === 'homepage'
+      ? path.basename(homepageFile)
+      : sourceType === 'crawled' && matchedHomepageFile
+        ? path.basename(matchedHomepageFile)
+        : null;
+
+  const elapsedSec = Number(((Date.now() - t0) / 1000).toFixed(1));
+  const entry = {
+    id: 'restyle_free_' + stamp,
+    tier: 'free',
+    mode: '🎨 무료 연출 변경 + 얼굴 고정',
+    engineDetail: `${stage1.engineLabel} + 내 PC GTX 1070 DirectML 안면고정`,
+    cost: '0원 (평생 무료)',
+    elapsedSec,
+    similarityPct: localRes.similarityPct,
+    beforeSimilarityPct: localRes.beforeSimilarityPct,
+    sharpnessScore: localRes.sharpnessScore,
+    width: localRes.width,
+    height: localRes.height,
+    landmarksPct: localRes.landmarksPct,
+    faceLocked: true,
+    profileId,
+    profileName: profile.name,
+    scenePrompt: scenePrompt || `${sourceLabel} 연출 변경`,
+    englishPrompt: finalPrompt,
+    imageSize,
+    rawUrl: `/files/outputs/${beforeFileName}`,
+    finalUrl: `/files/outputs/${afterFileName}`,
+    rawFileName: beforeFileName,
+    finalFileName: afterFileName,
+    targetHomepageFile: resolvedTargetHomepage,
+    crawledSessionId: sourceType === 'crawled' ? crawledSessionId : null,
+    crawledItemId: sourceType === 'crawled' ? crawledItemId || crawledFileName : null,
+    createdAt: new Date().toISOString()
+  };
+
+  saveToGallery(entry);
+  if (sourceType === 'crawled' && crawledSessionId) {
+    markCrawledItemFixed(crawledSessionId, crawledItemId || crawledFileName, entry);
+  }
+  return entry;
+}
+
+// ============================================================================
 // CORE ENGINE 4: PAID PRO Cloud Existing Photo Face Fix (👑 fal.ai Cloud)
 // ============================================================================
 async function executeCloudFalFixCore(payload, onStep) {
@@ -1609,25 +1967,25 @@ async function runSingleGenerateJob(job, payload) {
 }
 
 async function runSingleFixJob(job, payload) {
-  const isPaid = payload.costMode === 'cloud_fal';
+  const isRestyle = payload.actionMode === 'restyle';
   try {
     const onStep = (pct, msg, logOnly = false) => {
       if (pct !== null && pct !== undefined) job.progress = pct;
       if (!logOnly && msg) job.stepText = msg;
       if (msg) appendJobLog(job, msg);
     };
-    const entry = isPaid
-      ? await executeCloudFalFixCore(payload, onStep)
+    const entry = isRestyle
+      ? await executeFreeRestyleCore(payload, onStep)
       : await executeFreeFixCore(payload, onStep);
 
     job.progress = 100;
     job.status = 'completed';
-    job.stepText = `${isPaid ? '👑 유료 PRO' : '🆓 무료 GPU'} 교정 완료! (일치율 ${entry.similarityPct}%)`;
+    job.stepText = `${isRestyle ? '🎨 무료 연출 변경' : '🆓 무료 얼굴 교정'} 완료! (일치율 ${entry.similarityPct}%)`;
     job.finishedAt = new Date().toISOString();
     job.result = entry;
   } catch (err) {
     job.status = 'failed';
-    job.error = isPaid ? formatFalError(err) : err.message || String(err);
+    job.error = err.message || String(err);
     job.stepText = '오류: ' + job.error;
     job.finishedAt = new Date().toISOString();
     appendJobLog(job, 'ERROR: ' + job.error);
@@ -2262,32 +2620,38 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, { ok: true, profile: p, profiles });
     }
 
-    // Generate Scene (Free, Paid Gold, or 1:1 Simultaneous Compare!)
+    // Extract scene staging prompt (Korean + English) from any selected photo
+    if (req.method === 'POST' && pathname === '/api/extract-prompt') {
+      const body = await readBodyJson(req);
+      const data = await extractPhotoScenePrompt(body);
+      return sendJson(res, 200, data);
+    }
+
+    // Generate Scene (Locked to 100% Free Mode)
     if (req.method === 'POST' && pathname === '/api/generate') {
       const body = await readBodyJson(req);
-      if (body.costMode === 'compare_both') {
-        const job = createJob('compare_generate', '⚖️ 무료 vs 👑 유료 1:1 동시 촬영 비교');
-        runDualCompareJob(job, 'generate', body);
-        return sendJson(res, 200, { ok: true, jobId: job.id, isCompare: true });
-      }
-      const isPaid = body.costMode === 'cloud_fal';
-      const job = createJob('generate', isPaid ? '👑 유료 PRO 클라우드 촬영' : '🆓 0원 무료 촬영');
+      body.costMode = 'free';
+      const job = createJob('generate', '🆓 0원 무료 촬영');
       runSingleGenerateJob(job, body);
       return sendJson(res, 200, { ok: true, jobId: job.id, isCompare: false });
     }
 
-    // Fix Existing Photo (Free Local GPU, Paid Gold Cloud, or 1:1 Simultaneous Compare!)
+    // Fix or Restyle Existing Photo (Locked to 100% Free Mode)
     if (req.method === 'POST' && pathname === '/api/fix-existing') {
       const body = await readBodyJson(req);
-      if (body.costMode === 'compare_both') {
-        const job = createJob('compare_fix', '⚖️ 무료 GPU vs 👑 유료 클라우드 동시 교정 비교');
-        runDualCompareJob(job, 'fix', body);
-        return sendJson(res, 200, { ok: true, jobId: job.id, isCompare: true });
-      }
-      const isPaid = body.costMode === 'cloud_fal';
-      const job = createJob('fix', isPaid ? '👑 유료 PRO 클라우드 얼굴 교정' : '🆓 내 PC 무료 GPU 얼굴 교정');
+      body.costMode = 'free';
+      const isRestyle = body.actionMode === 'restyle';
+      const job = createJob('fix', isRestyle ? '🎨 0원 무료 연출 변경 제작' : '🆓 0원 무료 얼굴 교정');
       runSingleFixJob(job, body);
       return sendJson(res, 200, { ok: true, jobId: job.id, isCompare: false });
+    }
+
+    // Paid Cloud LoRA Training -> Locked!
+    if (req.method === 'POST' && pathname === '/api/train') {
+      return sendJson(res, 403, {
+        ok: false,
+        error: '🔒 유료 기능이 모두 잠금 상태입니다. (현재 0원 무료 전용 모드)'
+      });
     }
 
     // Retry Paid Slot on an existing pending comparison
