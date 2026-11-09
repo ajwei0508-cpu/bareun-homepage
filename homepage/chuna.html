@@ -27,8 +27,6 @@
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/chuna_minimal_card2_painkiller_limit.webp" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","MedicalOrganization","LocalBusiness"],"@id":"https://www.bareunhaniwon.com/#clinic","name":"바른한의원 대전본점","alternateName":["Bareun Korean Medicine Clinic Daejeon","대전 바른한의원"],"url":"https://www.bareunhaniwon.com/","logo":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp","image":"https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg","telephone":"+82-10-5631-1275","priceRange":"₩₩","address":{"@type":"PostalAddress","streetAddress":"비래동로7번길 1, 2층","addressLocality":"대덕구","addressRegion":"대전광역시","postalCode":"34417","addressCountry":"KR"},"geo":{"@type":"GeoCoordinates","latitude":36.35536,"longitude":127.44778},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","PublicHolidays"],"opens":"09:00","closes":"14:00"}],"sameAs":["https://naver.me/5U1ELn8L","https://blog.naver.com/wei0508","https://pf.kakao.com/_ykxcLK"],"founder":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"대표원장 (한의사)"}},{"@type":"WebSite","@id":"https://www.bareunhaniwon.com/#website","name":"바른한의원 대전본점","url":"https://www.bareunhaniwon.com/","inLanguage":"ko-KR","publisher":{"@id":"https://www.bareunhaniwon.com/#clinic"}},{"@type":"MedicalWebPage","@id":"https://www.bareunhaniwon.com/chuna/#webpage","url":"https://www.bareunhaniwon.com/chuna/","name":"대전 추나요법 · 허리디스크 · 체형교정 클리닉 | 바른한의원 대전본점","description":"진통제로 통증만 가리지 않고 대표원장 1:1 수기 추나와 약침으로 틀어진 척추·골반·거북목 중심축을 바로잡습니다. JAMA·Lancet 학술 논문 근거 기반 비수술 척추·관절 통증 치료 클리닉입니다.","inLanguage":"ko-KR","isPartOf":{"@id":"https://www.bareunhaniwon.com/#website"},"about":{"@id":"https://www.bareunhaniwon.com/#clinic"},"reviewedBy":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)"},"lastReviewed":"2026-10-28"},{"@type":"BreadcrumbList","@id":"https://www.bareunhaniwon.com/chuna/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"바른한의원 대전본점","item":"https://www.bareunhaniwon.com/"},{"@type":"ListItem","position":2,"name":"바른 추나 · 척추교정","item":"https://www.bareunhaniwon.com/chuna/"}]}]}</script>
 
-  
-
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +47,15 @@
       --border-subtle: rgba(255, 255, 255, 0.09);
       --border-gold: rgba(212, 175, 55, 0.35);
       --left-col-width: 455px;
+      --sa-bg-top: #1b1815;
+      --sa-bg-bot: #13110f;
+      --sa-border: rgba(197, 160, 89, 0.44);
+      --sa-divider: rgba(212, 175, 55, 0.36);
+      --sa-title-color: #fdfbf7;
+      --sa-hl-color: #f5d36c;
+      --sa-body-color: rgba(245, 240, 232, 0.84);
+      --sa-title-size: clamp(1.24rem, 1.62vw, 1.52rem);
+      --sa-body-size: 0.92rem;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -183,7 +190,35 @@
       font-weight: 800;
     }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+    #header .header-left,
+    #header .header-right {
+      flex-shrink: 0;
+    }
+    #header .header-center {
+      min-width: 0;
+      flex: 1 1 auto;
+      justify-content: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #header .header-center::-webkit-scrollbar { display: none; }
+    #header .back-pill-btn,
+    #header .clinic-tab,
+    #header .header-studio-btn,
+    #header .header-vis-btn,
+    #header .header-talk-btn {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    @media (max-width: 1560px) and (min-width: 1025px) {
+      #header { padding-left: 16px !important; padding-right: 16px !important; gap: 8px !important; }
+      #header .back-pill-btn { padding: 6px 10px !important; font-size: 0.74rem !important; }
+      #header .clinic-tab { padding: 5px 9px !important; font-size: 0.73rem !important; }
+      #header .header-vis-btn,
+      #header .header-studio-btn,
+      #header .header-talk-btn { padding: 6px 12px !important; font-size: 0.75rem !important; }
+    }
+    .header-right { display: flex; align-items: center; gap: 8px; }
 
     .header-talk-btn {
       display: inline-flex;
@@ -6628,6 +6663,320 @@
         font-size: 0.68rem;
       }
     }
+
+    /* ============================================================================
+       SAMPLE A: 상·하단 완전 분리형 에디토리얼 프레임 (SEO 100% 크롤링 & 순수 비주얼 보존)
+       ============================================================================ */
+    body.hide-card-num-badge .tiny-card-num-badge {
+      display: none !important;
+    }
+
+    .project-details-item.has-separated-editorial {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 22px;
+      background: var(--sa-bg-bot, #13110f) !important;
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.44)) !important;
+      box-shadow: 0 28px 68px rgba(10, 8, 6, 0.42);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial {
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.46)) !important;
+      box-shadow: 0 26px 62px rgba(45, 34, 24, 0.24);
+    }
+
+    .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #D4AF37 !important;
+      box-shadow: 0 32px 80px rgba(10, 8, 6, 0.55), 0 0 0 1px rgba(245, 211, 108, 0.28);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #2D5A43 !important;
+      box-shadow: 0 30px 72px rgba(45, 90, 67, 0.24), 0 0 0 2px rgba(45, 90, 67, 0.16);
+    }
+
+    /* 1. 상단 순수 비주얼 영역 (글자/어두운 그라데이션 0% - 피사체 100% 선명 노출) */
+    .project-details-item.has-separated-editorial .pure-visual-zone {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      overflow: hidden;
+      background: #14110e;
+      border-bottom: 1.5px solid var(--sa-divider, rgba(212, 175, 55, 0.36));
+    }
+
+    .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 14px 18px !important;
+      background: radial-gradient(circle at 50% 48%, #211b16 0%, #100d0a 100%);
+    }
+
+    .plate-thumb-dock.is-visual-floating-dock {
+      position: absolute;
+      left: 16px;
+      bottom: 12px;
+      z-index: 9;
+      margin-bottom: 0;
+      max-width: calc(100% - 148px);
+    }
+
+    .visual-floating-step-wrap {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      z-index: 9;
+      pointer-events: auto;
+    }
+
+    /* 대표원장 9대 정밀검진 모션 카드도 상단 비주얼을 깨끗하게 개방 */
+    .project-details-item.has-separated-editorial.is-director-exam-plate .exam-cinema-scrim {
+      background: radial-gradient(circle at 50% 42%, transparent 48%, rgba(6, 10, 15, 0.28) 100%) !important;
+    }
+
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-top-hud-bar,
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      display: none !important;
+    }
+
+    body.show-exam-hud .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      bottom: 14px !important;
+    }
+
+    /* 2. 하단 독립 에디토리얼 텍스트 영역 (SEO 크롤링 100% & 마우스 드래그 복사 지원) */
+    .project-details-item.has-separated-editorial .editorial-text-zone {
+      flex: 0 0 auto;
+      width: 100%;
+      background: linear-gradient(180deg, var(--sa-bg-top, #1b1815) 0%, var(--sa-bg-bot, #13110f) 100%);
+      padding: 20px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      cursor: text;
+      position: relative;
+      z-index: 5;
+    }
+
+    .editorial-text-zone,
+    .editorial-text-zone *,
+    .father-letter-box,
+    .father-letter-box *,
+    #project-details-desc,
+    #project-details-desc * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+
+    .editorial-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 1px;
+    }
+
+    .editorial-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--sa-hl-color, #e6c875);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .editorial-category::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D4AF37;
+      box-shadow: 0 0 8px #D4AF37;
+    }
+
+    .editorial-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: var(--sa-title-size, clamp(1.24rem, 1.62vw, 1.52rem));
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: -0.025em;
+      color: var(--sa-title-color, #fdfbf7);
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .editorial-headline .hl-gold,
+    .editorial-headline .title-key-em {
+      color: var(--sa-hl-color, #f5d36c) !important;
+      background: linear-gradient(180deg, transparent 62%, rgba(212, 175, 55, 0.24) 62%);
+      padding: 0 2px;
+      text-decoration: none !important;
+    }
+
+    .editorial-body-copy {
+      font-size: var(--sa-body-size, 0.92rem);
+      line-height: 1.64;
+      color: var(--sa-body-color, rgba(245, 240, 232, 0.84));
+      font-weight: 400;
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .clinical-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pillar-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pillar-item .pillar-num {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #D4AF37;
+      letter-spacing: 0.06em;
+    }
+
+    .pillar-item strong {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fdfbf7;
+      line-height: 1.3;
+    }
+
+    .pillar-item span {
+      font-size: 0.73rem;
+      color: rgba(245, 240, 232, 0.72);
+      line-height: 1.4;
+    }
+
+    .seo-keyword-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin-top: 2px;
+      padding: 0;
+    }
+
+    .seo-keyword-footer li {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(230, 200, 117, 0.92);
+      background: rgba(212, 175, 55, 0.09);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* 큰글씨 고시안성 모드 대응 */
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-headline {
+      font-size: 1.56rem !important;
+      line-height: 1.38 !important;
+    }
+
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-body-copy {
+      font-size: 1.02rem !important;
+      line-height: 1.68 !important;
+      color: #FFFFFF !important;
+    }
+
+    /* 로컬 전용 페이지 커스텀 스튜디오 바로가기 버튼 */
+    .header-studio-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      border: 1px solid #FEF08A;
+      color: #120E0A !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .header-studio-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55);
+    }
+
+    /* 모바일·태블릿 세로형 완벽 최적화 (이미지 찌그러짐 및 하단 글자 잘림 0%) */
+    @media (max-width: 1024px) {
+      .project-details-item.has-separated-editorial,
+      .project-details-item.has-separated-editorial[data-fullscreen] {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .project-details-item.has-separated-editorial .pure-visual-zone {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 10 !important;
+        min-height: 215px !important;
+        flex: none !important;
+      }
+
+      .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+        padding: 10px 12px !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-text-zone {
+        padding: 16px 18px 18px !important;
+        gap: 7px !important;
+        height: auto !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-headline {
+        font-size: 1.08rem !important;
+        line-height: 1.36 !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-body-copy {
+        font-size: 0.83rem !important;
+        line-height: 1.56 !important;
+      }
+
+      .plate-thumb-dock.is-visual-floating-dock {
+        left: 10px;
+        bottom: 8px;
+        max-width: calc(100% - 115px);
+      }
+
+      .visual-floating-step-wrap {
+        right: 10px;
+        bottom: 8px;
+      }
+
+      .clinical-pillars {
+        grid-template-columns: 1fr !important;
+        gap: 7px !important;
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -6667,6 +7016,7 @@
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <a id="btn-open-detail-studio" class="header-studio-btn" href="detail-pages-editor.html?page=chuna.html" title="현재 상세페이지 카드·문구·디자인 커스텀 스튜디오 열기">🎨 커스텀</a>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -6775,55 +7125,42 @@
     <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
         
-        <!-- PLATE 01: Multi-Frame Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate is-active-plate" data-fullscreen>
+        <!-- PLATE 01: Sample A Separated Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate is-clean-plate has-separated-editorial is-active-plate" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">01</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             <div class="motion-video-stage" data-frames="chuna_minimal_card1_core_align_a.jpg|chuna_minimal_card1_core_align_b.jpg|chuna_minimal_card1_core_align_c.jpg" data-duration="6">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('chuna_minimal_card1_core_align_a.jpg');"></div>
               <div class="motion-frame-layer frame-layer-b" style="background-image: url('chuna_minimal_card1_core_align_b.jpg'); opacity: 0;"></div>
               <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
-            <div class="plate-gradient-scrim"></div>
-            <div class="plate-top-bar">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>CORE MOTION · 바른 정밀 수기 추나</span>
-              <span class="plate-metric-pill">수술 없이 척추·골반 정렬 ▲ · 신경 압박 통증 해소 ▼</span>
+            <div class="visual-floating-step-wrap">
+              <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
             </div>
-            
-            <div class="plate-bottom-caption">
-              <div>
-                
-                <h2 class="plate-caption-title">수술 없이 틀어진 척추·골반 중심축을 바로잡는 교정 — <span class="title-key-em">'정밀 수기 추나'</span></h2>
-                <p class="plate-caption-sub">진통제나 수술에 의존하지 않고, 대표원장의 정밀 수기(手技) 추나로 무너진 골반·척추 정렬을 바로잡아 디스크·신경 압박 통증의 뿌리를 해결합니다.</p>
-              </div>
-              <div class="plate-action-group">
-                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">수술 없이 틀어진 척추·골반 중심축을 바로잡는 교정 — <span class="title-key-em hl-gold">'정밀 수기 추나'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">진통제나 수술에 의존하지 않고, 대표원장의 정밀 수기(手技) 추나로 무너진 골반·척추 정렬을 바로잡아 디스크·신경 압박 통증의 뿌리를 해결합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 02: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 02: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">02</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="chuna_minimal_card2_painkiller_limit.jpg" alt="진통제와 파스는 경보음만 끌 뿐, '기울어진 척추·골반'은 그대로입니다" draggable="false" width="1280" height="714" fetchpriority="high">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                
-                <h2 class="plate-caption-title">진통제와 파스는 경보음만 끌 뿐, <span class="title-key-em">'기울어진 척추·골반'</span>은 그대로입니다</h2>
-                <p class="plate-caption-sub">일시적으로 통증 신호만 가리는 대증요법의 악순환을 끊고, 틀어진 골반과 눌린 추간판 공간을 구조적으로 복원합니다.</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="chuna_minimal_card2_painkiller_limit.jpg" alt="진통제와 파스는 경보음만 끌 뿐, '기울어진 척추·골반'은 그대로입니다" draggable="false" itemprop="image" width="1280" height="714" fetchpriority="high">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">진통제와 파스는 경보음만 끌 뿐, <span class="title-key-em hl-gold">'기울어진 척추·골반'</span>은 그대로입니다</h2>
+            <p class="editorial-body-copy" itemprop="description">일시적으로 통증 신호만 가리는 대증요법의 악순환을 끊고, 틀어진 골반과 눌린 추간판 공간을 구조적으로 복원합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 03: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
-        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
+        <!-- PLATE 03: Sample A Separated Diet Single-Stage Motion Card -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">03</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             
             <div class="efficacy-visual-frame detox-frame is-full-stage-frame is-edema-wring-motion">
               <div class="edema-wring-seq-stage">
@@ -6849,42 +7186,36 @@
               </div>
               <div class="efficacy-motion-overlay"></div>
             </div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">전신 체형·어혈 부종 완화 — <span class="title-key-em">'틀어지고 뭉친 전신에서 어혈·수독을 배출해 바른 체형으로'</span></h2>
-                <p class="plate-caption-sub">골반·어깨 비대칭으로 정체된 전신 어혈과 부종을 중심축 교정과 순환으로 풀어내어 가볍고 반듯한 전신 체형으로 변화시킵니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">전신 체형·어혈 부종 완화 — <span class="title-key-em hl-gold">'틀어지고 뭉친 전신에서 어혈·수독을 배출해 바른 체형으로'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">골반·어깨 비대칭으로 정체된 전신 어혈과 부종을 중심축 교정과 순환으로 풀어내어 가볍고 반듯한 전신 체형으로 변화시킵니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 04: Revived Before/After Biomedical Scan Plate with Custom Content -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- PLATE 04: Sample A Separated Before/After Biomedical Scan Plate -->
+        <article class="project-details-item is-image is-clean-plate is-ba-scan-plate has-separated-editorial" id="runway-scroll-ba-plate" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">04</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="chuna_minimal_card4_ba_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="chuna_minimal_card4_ba_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
+          <figure class="plate-media-inner pure-visual-zone" id="runway-ba-stage" style="position:relative;overflow:hidden;">
+            <img class="lusion-clean-media runway-ba-before-img" id="runway-ba-before-img" src="chuna_minimal_card4_ba_before.jpg" alt="추간판 감압 & 척추 정렬 — '굽은 등·거북목·틀어진 골반에서 바르게 펴지는 중심축 정렬'" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
+            <div class="runway-ba-after-clip" id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
+              <img class="lusion-clean-media runway-ba-after-img" id="runway-ba-after-img" src="chuna_minimal_card4_ba_after.jpg" alt="추간판 감압 & 척추 정렬 — '굽은 등·거북목·틀어진 골반에서 바르게 펴지는 중심축 정렬'" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
             </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">추간판 감압 & 척추 정렬 — <span class="title-key-em">'굽은 등·거북목·틀어진 골반에서 바르게 펴지는 중심축 정렬'</span></h2>
-                <p class="plate-caption-sub">눌려 있던 디스크(추간판) 공간을 추나 감압으로 넓혀주고, 굽은 등·거북목·요추 틀어짐을 바른 척추 정렬로 빠르게 복원합니다.</p>
-              </div>
-            </div>
+            <div class="runway-ba-laser" id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">추간판 감압 & 척추 정렬 — <span class="title-key-em hl-gold">'굽은 등·거북목·틀어진 골반에서 바르게 펴지는 중심축 정렬'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">눌려 있던 디스크(추간판) 공간을 추나 감압으로 넓혀주고, 굽은 등·거북목·요추 틀어짐을 바른 척추 정렬로 빠르게 복원합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 05: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
-        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
+        <!-- PLATE 05: Sample A Separated Diet Single-Stage Motion Card -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">05</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             
             <div class="efficacy-visual-frame neuro-frame is-full-stage-frame">
-              <img src="chuna_minimal_card5_stage1_nerve_calm.jpg" alt="1단계 식욕 중추 안정 모션" loading="lazy" draggable="false" width="1280" height="714">
+              <img src="chuna_minimal_card5_stage1_nerve_calm.jpg" alt="신경 압박·방사통 진정 — '찌릿한 디스크 신경염증과 근육 경직 차단'" loading="lazy" draggable="false" width="1280" height="714">
               <div class="electric-zap-layer" aria-hidden="true">
                 <div class="zap-pulse-core"></div>
                 <div class="zap-wave-ring"></div>
@@ -6902,94 +7233,70 @@
               </div>
               <div class="efficacy-motion-overlay"></div>
             </div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">신경 압박·방사통 진정 — <span class="title-key-em">'찌릿한 디스크 신경염증과 근육 경직 차단'</span></h2>
-                <p class="plate-caption-sub">과흥분된 척추 신경근 통증 신호와 심부 근육 경직을 안정시켜 목·허리 통증과 팔·다리 저림(방사통)을 빠르게 가라앉힙니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">신경 압박·방사통 진정 — <span class="title-key-em hl-gold">'찌릿한 디스크 신경염증과 근육 경직 차단'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">과흥분된 척추 신경근 통증 신호와 심부 근육 경직을 안정시켜 목·허리 통증과 팔·다리 저림(방사통)을 빠르게 가라앉힙니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 06: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 06: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">06</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="chuna_minimal_card6_physiotherapy.jpg?v=chuna6v4" alt="근육 인대 관절 통증을 제어해주는 최신 물리치료 + 진료 경험 15년 — '추나 환자 만족도 98.6%'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                
-                <h2 class="plate-caption-title">근육 인대 관절 통증을 제어해주는 최신 물리치료 + 진료 경험 15년 — <span class="title-key-em">'추나 환자 만족도 98.6%'</span></h2>
-                <p class="plate-caption-sub">통증이 발생하는 원인을 해결해 최상의 효과를 나타내기 위한 물리치료 시스템</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="chuna_minimal_card6_physiotherapy.jpg?v=chuna6v4" alt="근육 인대 관절 통증을 제어해주는 최신 물리치료 + 진료 경험 15년 — '추나 환자 만족도 98.6%'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">근육 인대 관절 통증을 제어해주는 최신 물리치료 + 진료 경험 15년 — <span class="title-key-em hl-gold">'추나 환자 만족도 98.6%'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">통증이 발생하는 원인을 해결해 최상의 효과를 나타내기 위한 물리치료 시스템</p>
           </div>
         </article>
 
-        <!-- PLATE 07: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 07: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">07</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="chuna_minimal_card7_hand_palpation_herb.jpg?v=chuna7v2" alt="기계가 대신할 수 없는 손끝 감각 — '대표원장 수기 추나 & 인대강화 한약'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                
-                <h2 class="plate-caption-title">기계가 대신할 수 없는 손끝 감각 — <span class="title-key-em">'대표원장 수기 추나 & 인대강화 한약'</span></h2>
-                <p class="plate-caption-sub">대표원장 정밀 촉진과 맥진으로 틀어진 관절을 맞추고, 약해진 척추 인대와 디스크 주변 근육을 단단하게 보강합니다.</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="chuna_minimal_card7_hand_palpation_herb.jpg?v=chuna7v2" alt="기계가 대신할 수 없는 손끝 감각 — '대표원장 수기 추나 & 인대강화 한약'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">기계가 대신할 수 없는 손끝 감각 — <span class="title-key-em hl-gold">'대표원장 수기 추나 & 인대강화 한약'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">대표원장 정밀 촉진과 맥진으로 틀어진 관절을 맞추고, 약해진 척추 인대와 디스크 주변 근육을 단단하게 보강합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 08: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 08: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">08</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="chuna_minimal_card8_upright_posture.jpg" alt="수술 없이 되찾는 '바르고 통증 없는 척추·체형 라인'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                
-                <h2 class="plate-caption-title">수술 없이 되찾는 <span class="title-key-em">'바르고 통증 없는 척추·체형 라인'</span></h2>
-                <p class="plate-caption-sub">골반과 척추 중심축이 바로 서고 코어 인대가 탄탄해지면 교정 후에도 통증 없이 반듯한 체형이 유지됩니다.</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="chuna_minimal_card8_upright_posture.jpg" alt="수술 없이 되찾는 '바르고 통증 없는 척추·체형 라인'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">수술 없이 되찾는 <span class="title-key-em hl-gold">'바르고 통증 없는 척추·체형 라인'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">골반과 척추 중심축이 바로 서고 코어 인대가 탄탄해지면 교정 후에도 통증 없이 반듯한 체형이 유지됩니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 09: Multi-Frame Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate" data-fullscreen>
+        <!-- PLATE 09: Sample A Separated Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">09</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             <div class="motion-video-stage" data-frames="chuna_minimal_card9_trouble_1_childcare.jpg|chuna_minimal_card9_trouble_2_office.jpg|chuna_minimal_card9_trouble_3_menopause.jpg" data-duration="6.6">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('chuna_minimal_card9_trouble_1_childcare.jpg');"></div>
               <div class="motion-frame-layer frame-layer-b" style="background-image: url('chuna_minimal_card9_trouble_2_office.jpg'); opacity: 0;"></div>
               <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
-            <div class="plate-gradient-scrim"></div>
-            
-            
-            <div class="plate-bottom-caption">
-              <div>
-                
-                <h2 class="plate-caption-title">육아 · 업무 · 갱년기로 갑자기 찾아온 목·허리·골반 통증 — <span class="title-key-em">'참 곤란하다'</span></h2>
-                <p class="plate-caption-sub">육아 중 아이를 안다 삐끗한 허리, 중요한 업무 중 굳어버린 거북목과 디스크 통증, 갱년기 갑자기 찾아온 골반·관절 통증까지 — 갑작스러운 통증으로 움직이지 못해 가장 난감하고 곤란한 순간입니다.</p>
-              </div>
-              <div class="plate-action-group">
-                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
-              </div>
+            <div class="visual-floating-step-wrap">
+              <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
             </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">육아 · 업무 · 갱년기로 갑자기 찾아온 목·허리·골반 통증 — <span class="title-key-em hl-gold">'참 곤란하다'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">육아 중 아이를 안다 삐끗한 허리, 중요한 업무 중 굳어버린 거북목과 디스크 통증, 갱년기 갑자기 찾아온 골반·관절 통증까지 — 갑작스러운 통증으로 움직이지 못해 가장 난감하고 곤란한 순간입니다.</p>
           </div>
         </article>
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
-        
-
-        <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
+        <!-- LAST CARD: Minimalist Honey-Tip Card Linked to 3D Body Model -->
         
         <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card" style="cursor:pointer;" onclick="if(!event.target.closest('a')){const a=this.querySelector('a');if(a)window.location.href=a.href;}">
           <span class="tiny-card-num-badge">10</span>
@@ -7361,11 +7668,14 @@
 
       window.applyInlineScrollBaPct = function(pct) {
         const c = Math.max(6, Math.min(96, pct));
-        const raClip = document.getElementById('runway-ba-after-clip');
-        const rLaser = document.getElementById('runway-ba-laser');
-
-        if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
-        if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
+        const clipVal = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        const leftVal = c.toFixed(1) + '%';
+        document.querySelectorAll('.runway-ba-after-clip, #runway-ba-after-clip').forEach(function(el) {
+          el.style.clipPath = clipVal;
+        });
+        document.querySelectorAll('.runway-ba-laser, #runway-ba-laser').forEach(function(el) {
+          el.style.left = leftVal;
+        });
       };
 
       function setDetailBaPct(pct) {
@@ -7438,6 +7748,14 @@
         const nextIdx = (VIS_MODES.indexOf(currentVisMode) + 1) % VIS_MODES.length;
         applyDetailVisMode(VIS_MODES[nextIdx]);
       };
+
+      (function initLocalStudioQuickLink() {
+        const h = window.location.hostname;
+        if (h === 'localhost' || h === '127.0.0.1') {
+          const stBtn = document.getElementById('btn-open-detail-studio');
+          if (stBtn) stBtn.style.display = 'inline-flex';
+        }
+      })();
 
       (function initDetailBrandAndMode() {
         const cfg = window.CLINIC_TEMPLATE_CONFIG || {};
@@ -7848,7 +8166,7 @@
 
       wrapper.addEventListener('pointerdown', (e) => {
         if (window.innerWidth <= 1024) return;
-        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -8009,7 +8327,7 @@
           plate.style.cursor = 'pointer';
           plate.addEventListener('click', (e) => {
             if (window.innerWidth <= 1024) return;
-            if (e.target.closest('button, a, video, .concierge-video-frame')) return;
+            if (e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box')) return;
             if (Math.abs(touchAccumDelta) > 14) return;
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
@@ -10394,7 +10712,7 @@
             const distY = (rect.top + rect.height * 0.5) - vpCenterY;
             if (Math.abs(distY) < minDistance) { minDistance = Math.abs(distY); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               cleanMedia.style.transform = 'none';
             }
           });
@@ -10433,7 +10751,7 @@
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               if (cleanMedia.classList.contains('is-contain-fit') || cleanMedia.classList.contains('is-video-contain-fit')) {
                 cleanMedia.style.transform = 'none';
               } else {

@@ -1751,79 +1751,184 @@ function buildPageHtml(page) {
               <span class="empathy-check-text">${item}</span>
             </label>`).join('');
 
-  const extraLinkHtml = page.meta.extraLink ? `
-        <a href="${page.meta.extraLink.href}" class="extra-detail-link">${page.meta.extraLink.text}</a>` : '';
+  const extraLinkHtml = (page.meta.extraLink && page.meta.extraLink.text) ? `
+        <a href="${page.meta.extraLink.href || 'body-explorer.html'}" class="extra-detail-link">${page.meta.extraLink.text}</a>` : '';
 
-  const formatTitleEmphasis = (t) => String(t || '').replace(/'([^']+)'/g, "<span class=\"title-key-em\">'$1'</span>");
+  const cardStyle = Object.assign({
+    layout: 'sample-a',
+    showTitle: true,
+    showBody: true,
+    showStepBadge: false,
+    showPillars: false,
+    showTags: false,
+    showNumBadge: true,
+    showExamHud: false,
+    panelPreset: 'espresso-gold',
+    bgTop: '#1b1815',
+    bgBot: '#13110f',
+    borderColor: 'rgba(197, 160, 89, 0.44)',
+    dividerColor: 'rgba(212, 175, 55, 0.36)',
+    titleColor: '#fdfbf7',
+    hlColor: '#f5d36c',
+    bodyColor: 'rgba(245, 240, 232, 0.84)',
+    titleSize: 'md',
+    bodySize: 'md'
+  }, page.cardStyle || {});
 
-  const platesHtml = page.plates.map((p, idx) => {
-    const numStr = `0${idx + 1}`;
-    const formattedTitle = formatTitleEmphasis(p.title);
+  const titleSizeCss = cardStyle.titleSize === 'sm'
+    ? '1.16rem'
+    : (cardStyle.titleSize === 'lg' ? 'clamp(1.42rem, 1.9vw, 1.76rem)' : 'clamp(1.24rem, 1.62vw, 1.52rem)');
+  const bodySizeCss = cardStyle.bodySize === 'sm'
+    ? '0.84rem'
+    : (cardStyle.bodySize === 'lg' ? '1.01rem' : '0.92rem');
+
+  const formatTitleEmphasis = (t) => String(t || '').replace(/'([^']+)'/g, "<span class=\"title-key-em hl-gold\">'$1'</span>");
+
+  function buildCardHeadlineHtml(p) {
+    if (p.titlePrefix || p.titleHighlight || p.titleSuffix) {
+      const pre = String(p.titlePrefix || '');
+      const hi = p.titleHighlight ? `<span class="title-key-em hl-gold">${p.titleHighlight}</span>` : '';
+      const suf = String(p.titleSuffix || '');
+      return `${pre}${hi}${suf}`;
+    }
+    return formatTitleEmphasis(p.title);
+  }
+
+  function renderEditorialTextZone(p) {
+    if (p.hideText) return '';
+    const showStep = (typeof p.showStepBadge === 'boolean') ? p.showStepBadge : Boolean(cardStyle.showStepBadge);
+    const showTit = (typeof p.showTitle === 'boolean') ? p.showTitle : (cardStyle.showTitle !== false);
+    const showBod = (typeof p.showBody === 'boolean') ? p.showBody : (cardStyle.showBody !== false);
+    const showPil = (typeof p.showPillars === 'boolean') ? p.showPillars : Boolean(cardStyle.showPillars);
+    const showTag = (typeof p.showTags === 'boolean') ? p.showTags : Boolean(cardStyle.showTags);
+
+    const headlineHtml = buildCardHeadlineHtml(p);
+    const bodyText = String(p.sub || '').trim();
+    const stepText = String(p.stepLabel || '').trim();
+    const pillarsList = Array.isArray(p.pillars) ? p.pillars.filter(x => x && (x.title || x.desc)) : [];
+    const rawTags = (Array.isArray(p.tags) && p.tags.length) ? p.tags : (Array.isArray(p.cleanTags) ? p.cleanTags : []);
+    const tagsList = rawTags.map(t => String(t || '').trim()).filter(Boolean);
+
+    const hasStep = showStep && Boolean(stepText);
+    const hasTitle = showTit && Boolean(headlineHtml.trim());
+    const hasBody = showBod && Boolean(bodyText);
+    const hasPillars = showPil && pillarsList.length > 0;
+    const hasTags = showTag && tagsList.length > 0;
+
+    if (!hasStep && !hasTitle && !hasBody && !hasPillars && !hasTags) return '';
+
+    const stepHtml = hasStep ? `
+            <div class="editorial-top-meta">
+              <span class="editorial-category">${stepText}</span>
+            </div>` : '';
+
+    const titleHtml = hasTitle ? `
+            <h2 class="editorial-headline" itemprop="headline">${headlineHtml}</h2>` : '';
+
+    const bodyHtml = hasBody ? `
+            <p class="editorial-body-copy" itemprop="description">${bodyText}</p>` : '';
+
+    const pillarsHtml = hasPillars ? `
+            <div class="clinical-pillars">
+              ${pillarsList.map((pl, pIdx) => `
+              <div class="pillar-item">
+                <span class="pillar-num">${pl.num || String(pIdx + 1).padStart(2, '0')}${pl.badge ? ' · ' + pl.badge : ''}</span>
+                <strong>${pl.title || ''}</strong>
+                <span>${pl.desc || ''}</span>
+              </div>`).join('')}
+            </div>` : '';
+
+    const tagsHtml = hasTags ? `
+            <ul class="seo-keyword-footer" aria-label="핵심 진료 키워드">
+              ${tagsList.map(tg => `<li>${tg.startsWith('#') ? tg : '#' + tg}</li>`).join('')}
+            </ul>` : '';
+
+    return `
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">${stepHtml}${titleHtml}${bodyHtml}${pillarsHtml}${tagsHtml}
+          </div>`;
+  }
+
+  const activePlates = (page.plates || []).filter(p => p && p.enabled !== false);
+  let baCardRenderedCount = 0;
+
+  const platesHtml = activePlates.map((p, idx) => {
+    const numStr = String(idx + 1).padStart(2, '0');
+    const formattedTitle = buildCardHeadlineHtml(p);
     if (p.type === 'growth-son-main-hero') {
+      const sonImg = p.imgSrc || p.mainImage || 'growth-director-son.png';
+      const sonBadge = p.badge || 'MAIN RECORD · 대표원장 친아들 실제 성장 스토리';
+      const sonEyebrow = p.letterEyebrow || "DIRECTOR'S HANDWRITTEN PLEDGE · 아빠의 마음으로 달인 성장한약";
+      const sonLine1 = p.letterHeadlineLine1 || '"내 아이에게 먹이지 못할 약이라면,';
+      const sonLine2 = p.letterHeadlineLine2 || '세상 어떤 아이에게도 처방하지 않습니다"';
+      const sonParasHtml = (Array.isArray(p.letterParagraphs) && p.letterParagraphs.length > 0)
+        ? `"${p.letterParagraphs.join('<br><br>\n                  ')}"`
+        : `"아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.<br><br>
+                  잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.<br>
+                  체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."`;
+      const sonChips = (Array.isArray(p.chips) && p.chips.length > 0) ? p.chips : [
+        { label: '기초 면역 리셋', value: '비염 개선 · 소화 흡수 정상화' },
+        { label: '성장판 골든타임', value: '최상급 원용 분골 · 연골 증식' },
+        { label: '탄탄한 피지컬 완성', value: '성호르몬 균형 · 바른 골격 완성' }
+      ];
+      const sonSignPrefix = p.signPrefix || '아빠같은 한의사';
+      const sonSignName = p.signName || '안 정 위';
+      const sonSignSuffix = p.signSuffix || '대표원장 배상';
+      const sonBlogText = p.blogBtnText || '📖 대표원장 아들 성장 스토리 원문 보러가기';
+      const sonBlogUrl = p.blogUrl || 'https://blog.naver.com/wei0508/223437892490';
       return `
         <!-- PLATE ${numStr}: Director's Son Growth Enlarged Original Image Hero & Handwritten Pledge -->
         <article class="project-details-item is-growth-son-hero is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
+          <span class="tiny-card-num-badge">${numStr}</span>
           <div class="plate-media-inner growth-son-hero-inner">
-            <div class="motion-video-stage is-son-ambient-stage" data-frames="growth-director-son.png" data-duration="6.4" style="background:transparent; pointer-events:none; z-index:0;">
+            <div class="motion-video-stage is-son-ambient-stage" data-frames="${sonImg}" data-duration="6.4" style="background:transparent; pointer-events:none; z-index:0;">
               <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
             <div class="growth-son-hero-grid" style="position:relative; z-index:2;">
-              <!-- LEFT: UNEDITED ORIGINAL SON GROWTH IMAGE ENLARGED SHOWCASE -->
-              <div class="son-growth-visual-col" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son.png')" title="클릭하여 원본 이미지 전체화면 확대">
+              <div class="son-growth-visual-col" onclick="event.stopPropagation(); window.openCleanLightbox('${sonImg}')" title="클릭하여 원본 이미지 전체화면 확대">
                 <div class="son-original-frame">
                   <img
                     class="son-original-full-img"
-                    src="growth-director-son.png"
+                    src="${sonImg}"
                     onerror="this.onerror=null; this.src='growth-director-son-comparison.png';"
                     alt="바른한의원 안정위 대표원장 친아들 성장한약 복용 비교 원본 이미지"
                     draggable="false">
-                  <button type="button" class="son-original-zoom-pill" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son.png')">
+                  <button type="button" class="son-original-zoom-pill" onclick="event.stopPropagation(); window.openCleanLightbox('${sonImg}')">
                     <span>🔍 원본 크게 확대보기</span>
                   </button>
                 </div>
               </div>
 
-              <!-- RIGHT: DIRECTOR'S HANDWRITTEN PLEDGE (원장 친필 서약 & 친아들 처방 기록 · 숫자 완전 제거) -->
-              <div class="father-letter-box">
+              <div class="father-letter-box" onclick="event.stopPropagation();">
                 <div class="letter-top-hero-banner">
-                  <span class="son-live-badge"><span class="son-live-dot"></span>MAIN RECORD · 대표원장 친아들 실제 성장 스토리</span>
+                  <span class="son-live-badge"><span class="son-live-dot"></span>${sonBadge}</span>
                   <h2 class="son-hero-main-title">${formattedTitle}</h2>
-                  <p class="son-hero-main-sub">${p.sub}</p>
+                  <p class="son-hero-main-sub">${p.sub || ''}</p>
                 </div>
 
                 <div class="letter-eyebrow">
                   <span class="letter-eyebrow-line"></span>
-                  <span>DIRECTOR'S HANDWRITTEN PLEDGE · 아빠의 마음으로 달인 성장한약</span>
+                  <span>${sonEyebrow}</span>
                 </div>
                 <h3 class="letter-headline">
-                  "내 아이에게 먹이지 못할 약이라면,<br>
-                  <span>세상 어떤 아이에게도 처방하지 않습니다"</span>
+                  ${sonLine1}<br>
+                  <span>${sonLine2}</span>
                 </h3>
                 <div class="letter-handwriting">
-                  "아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.<br><br>
-                  잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.<br>
-                  체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."
+                  ${sonParasHtml}
                 </div>
                 <div class="letter-milestone-row">
-                  <div class="letter-milestone-chip">
-                    <span class="lm-label">기초 면역 리셋</span>
-                    <strong class="lm-val">비염 개선 · 소화 흡수 정상화</strong>
-                  </div>
-                  <div class="letter-milestone-chip">
-                    <span class="lm-label">성장판 골든타임</span>
-                    <strong class="lm-val">최상급 원용 분골 · 연골 증식</strong>
-                  </div>
-                  <div class="letter-milestone-chip is-accent">
-                    <span class="lm-label">탄탄한 피지컬 완성</span>
-                    <strong class="lm-val">성호르몬 균형 · 바른 골격 완성</strong>
-                  </div>
+                  ${sonChips.map((ch, cIdx) => `
+                  <div class="letter-milestone-chip${cIdx === sonChips.length - 1 ? ' is-accent' : ''}">
+                    <span class="lm-label">${ch.label || ''}</span>
+                    <strong class="lm-val">${ch.value || ''}</strong>
+                  </div>`).join('')}
                 </div>
                 <div class="letter-sign-row">
                   <div class="letter-sign-info">
-                    <div class="letter-sign-text">아빠같은 한의사 <span>안 정 위</span> 대표원장 배상</div>
-                    <a href="https://blog.naver.com/wei0508/223437892490" target="_blank" rel="noopener" class="letter-blog-btn" onclick="event.stopPropagation();">
-                      <span>📖 대표원장 아들 성장 스토리 원문 보러가기</span>
+                    <div class="letter-sign-text">${sonSignPrefix} <span>${sonSignName}</span> ${sonSignSuffix}</div>
+                    <a href="${sonBlogUrl}" target="_blank" rel="noopener" class="letter-blog-btn" onclick="event.stopPropagation();">
+                      <span>${sonBlogText}</span>
                       <span>↗</span>
                     </a>
                   </div>
@@ -1843,7 +1948,7 @@ function buildPageHtml(page) {
     }
 
     if (p.type === 'gongjindan-panorama-archive') {
-      const brochureArchive = [
+      const brochureArchive = (Array.isArray(p.brochureArchive) && p.brochureArchive.length > 0) ? p.brochureArchive : [
         { num: 1, code: 'P.01', tag: '국가 특허 등록', short: '01 특허공진단', title: '유효 성분 손실을 최소화하는 특허 공진단', desc: '특허 제10-1744704호 공식 등록 · 원목 자개함 & 99.9% 순금박 수제 제환', img: 'brochure/brochure1.jpg' },
         { num: 2, code: 'P.02', tag: '황실 비방의 역사', short: '02 700년 황실비방', title: '황제의 공진단, 왜 지금 우리에게 필요할까?', desc: '700년 전 원나라 황실 비방이 현대인의 극심한 만성 피로와 번아웃을 다스리는 비결', img: 'brochure/brochure2.jpg' },
         { num: 3, code: 'P.03', tag: '특허 기술의 본질', short: '03 사향보존 공법', title: "공진단에 왜 '특허'가 필요할까?", desc: '휘발되기 쉬운 천연 사향의 향기와 약효를 100% 가두는 중심핵 조제 공법', img: 'brochure/brochure3.jpg' },
@@ -1858,30 +1963,29 @@ function buildPageHtml(page) {
       return `
         <!-- PLATE ${numStr}: Emperor Gongjindan 10-Page Brochure Panorama Archive Card -->
         <article class="project-details-item is-gongjindan-panorama-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" id="gjd-panorama-card" data-fullscreen>
+          <span class="tiny-card-num-badge">${numStr}</span>
           <div class="plate-media-inner gjd-panorama-inner" onclick="event.stopPropagation();">
-            <!-- Top Header & Panorama Controls -->
             <div class="gjd-pano-header">
               <div class="gjd-pano-title-group">
                 <span class="gjd-pano-eyebrow">📜 EMPEROR GONGJINDAN PANORAMA ARCHIVE · 과거 황제공진단 공식 브로슈어 10대 화보 한눈에 넘겨보기</span>
                 <h2 class="gjd-pano-main-title">${formattedTitle}</h2>
-                <p class="gjd-pano-sub">${p.sub}</p>
+                <p class="gjd-pano-sub">${p.sub || ''}</p>
               </div>
               <div class="gjd-pano-controls">
                 <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); window.stepGjdPanorama(-1)" title="이전 브로슈어 페이지">◀ 이전 장</button>
-                <span class="gjd-pano-counter" id="gjd-pano-counter">01 / 10</span>
+                <span class="gjd-pano-counter" id="gjd-pano-counter">01 / ${String(brochureArchive.length).padStart(2, '0')}</span>
                 <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); window.stepGjdPanorama(1)" title="다음 브로슈어 페이지">다음 장 ▶</button>
                 <button type="button" class="gjd-pano-auto-btn active" id="gjd-pano-auto-btn" onclick="event.stopPropagation(); window.toggleGjdPanoramaAuto()">⏯ 자동 파노라마 ON</button>
                 <button type="button" class="gjd-pano-zoom-btn" onclick="event.stopPropagation(); window.zoomActiveGjdPanorama()">🔍 현재 페이지 확대</button>
               </div>
             </div>
 
-            <!-- Horizontal Panorama Carousel Stage -->
             <div class="gjd-panorama-viewport" id="gjd-panorama-viewport">
               <div class="gjd-panorama-track" id="gjd-panorama-track">
                 ${brochureArchive.map((item, bIdx) => `
                 <div class="gjd-pano-slide${bIdx === 0 ? ' is-active' : ''}" data-idx="${bIdx}" data-img="${item.img}" data-code="${item.code}" data-tag="${item.tag}" data-short="${item.short}" data-title="${item.title}" data-desc="${item.desc}" onclick="event.stopPropagation(); window.handleGjdSlideClick(${bIdx}, '${item.img}')">
                   <div class="gjd-pano-slide-top">
-                    <span class="gjd-pano-page-pill">${item.code} / 10 · ${item.tag}</span>
+                    <span class="gjd-pano-page-pill">${item.code} / ${String(brochureArchive.length).padStart(2, '0')} · ${item.tag}</span>
                     <button type="button" class="gjd-pano-card-zoom" onclick="event.stopPropagation(); window.openGjdPanoramaLightbox(${bIdx})">🔍 원본 확대</button>
                   </div>
                   <div class="gjd-pano-img-wrap">
@@ -1895,7 +1999,6 @@ function buildPageHtml(page) {
               </div>
             </div>
 
-            <!-- Bottom 10-Page Quick Jump Filmstrip Bar -->
             <div class="gjd-pano-thumbs-bar" id="gjd-pano-thumbs-bar">
               ${brochureArchive.map((item, bIdx) => `
               <button type="button" class="gjd-pano-thumb-pill${bIdx === 0 ? ' active' : ''}" data-idx="${bIdx}" onclick="event.stopPropagation(); window.selectGjdPanorama(${bIdx}, true)">
@@ -1908,24 +2011,21 @@ function buildPageHtml(page) {
     }
 
     if (p.type === 'runway-ba-scan') {
+      baCardRenderedCount += 1;
+      const isFirstBa = baCardRenderedCount === 1;
+      const editorialHtml = renderEditorialTextZone(p);
+      const sepClass = editorialHtml ? ' has-separated-editorial' : '';
       return `
-        <!-- PLATE ${numStr}: Revived Before/After Biomedical Scan Plate with Custom Content -->
-        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- PLATE ${numStr}: Sample A Separated Before/After Biomedical Scan Plate -->
+        <article class="project-details-item is-image is-clean-plate is-ba-scan-plate${sepClass}${idx === 0 ? ' is-active-plate' : ''}"${isFirstBa ? ' id="runway-scroll-ba-plate"' : ''} data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">${numStr}</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="${p.beforeImg || 'diet_minimal_card9_ba_before_v2.jpg'}" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="${p.afterImg || 'diet_minimal_card9_ba_after.jpg'}" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <figure class="plate-media-inner pure-visual-zone"${isFirstBa ? ' id="runway-ba-stage"' : ''} style="position:relative;overflow:hidden;">
+            <img class="lusion-clean-media runway-ba-before-img"${isFirstBa ? ' id="runway-ba-before-img"' : ''} src="${p.beforeImg || 'diet_minimal_card9_ba_before_v2.jpg'}" alt="${(p.title || '치료 전 생체 비교').replace(/"/g, '&quot;')}" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <div class="runway-ba-after-clip"${isFirstBa ? ' id="runway-ba-after-clip"' : ''} style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
+              <img class="lusion-clean-media runway-ba-after-img"${isFirstBa ? ' id="runway-ba-after-img"' : ''} src="${p.afterImg || 'diet_minimal_card9_ba_after.jpg'}" alt="${(p.title || '치료 후 생체 비교').replace(/"/g, '&quot;')}" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
             </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-            </div>
-          </div>
+            <div class="runway-ba-laser"${isFirstBa ? ' id="runway-ba-laser"' : ''} style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
+          </figure>${editorialHtml}
         </article>`;
     }
 
@@ -1936,7 +2036,7 @@ function buildPageHtml(page) {
         const s1Img = p.imgSrc || 'diet_minimal_card3_stage1_neuro_calm.jpg';
         stageVisualHtml = `
             <div class="efficacy-visual-frame neuro-frame is-full-stage-frame">
-              <img src="${s1Img}" alt="1단계 식욕 중추 안정 모션" loading="lazy" draggable="false">
+              <img src="${s1Img}" alt="${(p.title || '1단계 신경 안정 모션').replace(/"/g, '&quot;')}" loading="lazy" draggable="false">
               <div class="electric-zap-layer" aria-hidden="true">
                 <div class="zap-pulse-core"></div>
                 <div class="zap-wave-ring"></div>
@@ -1999,7 +2099,7 @@ function buildPageHtml(page) {
               <div class="growth-tall-boost-layer" aria-hidden="true">
                 <div class="growth-epiphyseal-glow"></div>
                 <div class="growth-height-laser-bar">
-                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>▲ 성장판 연골 증식 · 수직 폭풍 성장 UP</span>
+                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>${p.laserBadge || '▲ 성장판 연골 증식 · 수직 폭풍 성장 UP'}</span>
                 </div>
                 <svg class="growth-upward-arrows-svg" viewBox="0 0 280 240" fill="none">
                   <path class="growth-up-arrow g-arr-1" d="M88 188 L88 54 M76 70 L88 54 L100 70" />
@@ -2046,20 +2146,15 @@ function buildPageHtml(page) {
               <div class="efficacy-motion-overlay"></div>
             </div>`;
       }
+      const editorialHtml = renderEditorialTextZone(p);
+      const sepClass = editorialHtml ? ' has-separated-editorial' : '';
       return `
-        <!-- PLATE ${numStr}: Diet Single-Stage Step-by-Step Motion Card (Top Text Deleted) -->
-        <article class="project-details-item is-diet-single-stage-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+        <!-- PLATE ${numStr}: Sample A Separated Diet Single-Stage Motion Card -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate${sepClass}${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen !== false ? ' data-fullscreen' : ''} itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">${numStr}</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             ${stageVisualHtml}
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-            </div>
-          </div>
+          </figure>${editorialHtml}
         </article>`;
     }
 
@@ -2072,7 +2167,7 @@ function buildPageHtml(page) {
               <div>
                 <span class="diet-3stage-eyebrow">⚡ 3-STAGE METABOLIC ACTION · 바른다이어트 3단계 핵심 작용 모션</span>
                 <h2 class="diet-3stage-title">${formattedTitle}</h2>
-                <p class="diet-3stage-sub">${p.sub}</p>
+                <p class="diet-3stage-sub">${p.sub || ''}</p>
               </div>
               <div class="diet-3stage-tabs" role="tablist">
                 <button type="button" class="diet-3stage-tab active" onclick="event.stopPropagation(); window.switchDietStage3(0)">전체 동시 가동</button>
@@ -2081,102 +2176,7 @@ function buildPageHtml(page) {
                 <button type="button" class="diet-3stage-tab" onclick="event.stopPropagation(); window.switchDietStage3(3)">03 붓기 & 독소 완화</button>
               </div>
             </div>
-
-            <div class="efficacy-3stage-grid" id="diet-3stage-grid">
-              <!-- STAGE 1: NEURO CALM (식욕 중추 안정 + 전기 스파크 모션) -->
-              <div class="efficacy-stage-card diet-3stage-card" data-stage="1" onclick="event.stopPropagation(); window.switchDietStage3(1)">
-                <div class="efficacy-visual-frame neuro-frame">
-                  <img src="efficacy-neuro-calm.jpg" alt="시상하부 식욕 중추 안정 및 가짜 배고픔 완화 모션" loading="lazy" draggable="false">
-                  <div class="electric-zap-layer" aria-hidden="true">
-                    <div class="zap-pulse-core"></div>
-                    <div class="zap-wave-ring"></div>
-                    <div class="zap-wave-ring ring-2"></div>
-                    <svg class="zap-lightning-svg" viewBox="0 0 200 200" fill="none">
-                      <path class="zap-bolt bolt-1" d="M100 72 L84 52 L92 42 L72 22" />
-                      <path class="zap-bolt bolt-2" d="M114 78 L138 62 L130 50 L156 34" />
-                      <path class="zap-bolt bolt-3" d="M88 86 L62 82 L68 70 L42 64" />
-                      <path class="zap-bolt bolt-4" d="M112 92 L142 96 L134 108 L162 114" />
-                    </svg>
-                    <span class="spark-dot s1"></span>
-                    <span class="spark-dot s2"></span>
-                    <span class="spark-dot s3"></span>
-                    <span class="spark-dot s4"></span>
-                  </div>
-                  <div class="efficacy-motion-overlay"></div>
-                  <span class="efficacy-step-pill"><span class="pulse-dot"></span>STAGE 01 · NEURO CALM</span>
-                  <span class="efficacy-metric-tag">렙틴 저항성 개선 · 가짜 식욕 <strong>-68%</strong></span>
-                </div>
-                <div class="efficacy-card-body">
-                  <div class="efficacy-card-title">
-                    <h4>식욕 중추 안정</h4>
-                    <span class="hanja-tag">食慾安定</span>
-                  </div>
-                  <p class="efficacy-card-desc">시상하부의 과흥분된 가짜 배고픔 신호를 부드럽게 진정시켜 억지 굶기 없이 자연스러운 포만감을 유도합니다.</p>
-                </div>
-              </div>
-
-              <!-- STAGE 2: CORE LIPOLYSIS (심부 체지방 분해 + 열대사 연소 수축 모션) -->
-              <div class="efficacy-stage-card diet-3stage-card" data-stage="2" onclick="event.stopPropagation(); window.switchDietStage3(2)">
-                <div class="efficacy-visual-frame thermal-frame">
-                  <img src="efficacy-core-lipolysis.jpg" alt="심부 체지방 분해 및 열대사 연소 수축 모션" loading="lazy" draggable="false">
-                  <div class="thermal-burn-layer" aria-hidden="true">
-                    <div class="combustion-fire-glow"></div>
-                    <div class="thermal-heat-haze"></div>
-                    <div class="fat-contract-ring c-ring-1"></div>
-                    <div class="fat-contract-ring c-ring-2"></div>
-                    <div class="fat-contract-ring c-ring-3"></div>
-                    <span class="ember-spark e1"></span>
-                    <span class="ember-spark e2"></span>
-                    <span class="ember-spark e3"></span>
-                    <span class="ember-spark e4"></span>
-                    <span class="ember-spark e5"></span>
-                    <span class="ember-spark e6"></span>
-                  </div>
-                  <div class="efficacy-motion-overlay"></div>
-                  <span class="efficacy-step-pill"><span class="pulse-dot"></span>STAGE 02 · LIPOLYSIS</span>
-                  <span class="efficacy-metric-tag">갈색지방 열발생 · 기초대사 <strong>+24%</strong></span>
-                </div>
-                <div class="efficacy-card-body">
-                  <div class="efficacy-card-title">
-                    <h4>심부 체지방 분해</h4>
-                    <span class="hanja-tag">體脂肪分解</span>
-                  </div>
-                  <p class="efficacy-card-desc">신진대사와 심부 체온을 끌어올려 가만히 있어도 에너지를 태우는 체질로 전환하고 고착된 내장지방을 연소합니다.</p>
-                </div>
-              </div>
-
-              <!-- STAGE 3: DETOX FLUSH (붓기 & 독소 완화 + 바디 슬리밍 드레이니지 모션) -->
-              <div class="efficacy-stage-card diet-3stage-card" data-stage="3" onclick="event.stopPropagation(); window.switchDietStage3(3)">
-                <div class="efficacy-visual-frame detox-frame">
-                  <div class="body-morph-wrapper">
-                    <img class="edema-ghost-outline" src="efficacy-detox-flush.jpg" alt="" aria-hidden="true" loading="lazy" draggable="false">
-                    <img class="slim-subject-img" src="efficacy-detox-flush.jpg" alt="림프 순환 및 부종 독소 배출 슬리밍 모션" loading="lazy" draggable="false">
-                  </div>
-                  <div class="detox-slim-layer" aria-hidden="true">
-                    <svg class="contour-cinch-guide" viewBox="0 0 240 240" fill="none">
-                      <path class="swollen-line-left" d="M58 55 Q34 120 58 185" />
-                      <path class="swollen-line-right" d="M182 55 Q206 120 182 185" />
-                      <path class="cinch-arrow left-arrow" d="M36 120 L66 120 M56 112 L66 120 L56 128" />
-                      <path class="cinch-arrow right-arrow" d="M204 120 L174 120 M184 112 L174 120 L184 128" />
-                    </svg>
-                    <span class="water-drop d1"></span>
-                    <span class="water-drop d2"></span>
-                    <span class="water-drop d3"></span>
-                    <span class="water-drop d4"></span>
-                  </div>
-                  <div class="efficacy-motion-overlay"></div>
-                  <span class="efficacy-step-pill"><span class="pulse-dot"></span>STAGE 03 · DETOX FLUSH</span>
-                  <span class="efficacy-metric-tag">림프 순환 · 수분 정체 <strong>즉각 완화</strong></span>
-                </div>
-                <div class="efficacy-card-body">
-                  <div class="efficacy-card-title">
-                    <h4>붓기 & 독소 완화</h4>
-                    <span class="hanja-tag">浮腫解毒</span>
-                  </div>
-                  <p class="efficacy-card-desc">정체된 림프 순환과 수분 대사를 열어 아침마다 붓는 얼굴·하체 부종과 혈관 속 노폐물(어혈·담음)을 배출합니다.</p>
-                </div>
-              </div>
-            </div>
+            <div class="efficacy-3stage-grid" id="diet-3stage-grid"></div>
           </div>
         </article>`;
     }
@@ -2195,6 +2195,7 @@ function buildPageHtml(page) {
         { strong: '1:1 전담 케어', span: '감량 후 요요방지 밀착 코칭' }
       ];
       const ctaTextLabel = p.ctaLabel || '📞 비대면 전화처방 바로 신청 ↗';
+      const teleVideoUrl = p.videoSrc || 'https://bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4#t=0.1';
       return `
         <!-- PLATE ${numStr}: Non-Face-to-Face Telemedicine & Express Delivery Video Suite -->
         <article class="project-details-item is-diet-tele-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
@@ -2207,7 +2208,6 @@ function buildPageHtml(page) {
                 </div>
               </div>
 
-              <!-- 4-Step Telemedicine & Delivery Flow -->
               <div class="concierge-steps-bar">
                 ${stepsData.map(st => `
                 <div class="concierge-step-chip">
@@ -2219,7 +2219,6 @@ function buildPageHtml(page) {
                 </div>`).join('')}
               </div>
 
-              <!-- Widescreen Cinema Video Frame (Click to Play) -->
               <div class="concierge-video-frame" onclick="event.stopPropagation(); if(!event.target.closest('.video-consult-trigger, video')){window.toggleDietTeleVideo(this);}">
                 <div class="video-top-overlay" style="justify-content:flex-end;">
                   <button type="button" class="video-consult-trigger" onclick="event.stopPropagation(); window.openConsultModal()">
@@ -2238,12 +2237,11 @@ function buildPageHtml(page) {
                   onplay="this.closest('.concierge-video-frame')?.classList.add('is-playing')"
                   onpause="this.closest('.concierge-video-frame')?.classList.remove('is-playing')"
                   onended="this.closest('.concierge-video-frame')?.classList.remove('is-playing')">
-                  <source src="https://bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4#t=0.1" type="video/mp4">
+                  <source src="${teleVideoUrl}" type="video/mp4">
                   브라우저가 비디오 태그를 지원하지 않습니다.
                 </video>
               </div>
 
-              <!-- Trust Metrics Ribbon (1. 15년을 일로 환산한 누적 치료경험: 5,475일+) -->
               <div class="concierge-trust-ribbon">
                 ${trustData.map(tr => `
                 <div class="trust-metric-box">
@@ -2259,10 +2257,6 @@ function buildPageHtml(page) {
     if (p.type === 'clean-video') {
       const isContainVideo = p.fit === 'contain';
       const hideAllText = Boolean(p.hideText);
-      const videoTagsHtml = (!hideAllText && p.cleanTags) ? `
-                <div class="clean-spec-tags">
-                  ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
-                </div>` : '';
       const posterAttr = p.poster ? ` poster="${p.poster}"` : '';
       const containCardClass = isContainVideo ? ' is-clean-video-contain' : '';
       const containVideoClass = isContainVideo ? ' is-video-contain-fit' : '';
@@ -2270,84 +2264,56 @@ function buildPageHtml(page) {
       const videoInlineStyle = isContainVideo
         ? ' style="position:absolute;inset:0 !important;width:100% !important;height:100% !important;object-fit:contain !important;object-position:center center !important;padding:0 !important;margin:0 !important;background:#000000 !important;transform:none !important;pointer-events:none;"'
         : '';
+      const editorialHtml = hideAllText ? '' : renderEditorialTextZone(p);
+      const sepClass = editorialHtml ? ' has-separated-editorial' : '';
       return `
-        <!-- PLATE ${numStr}: Clean Video Stage -->
-        <article class="project-details-item is-video is-motion-plate is-clean-plate${containCardClass}${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}${blackBgStyle}>
+        <!-- PLATE ${numStr}: Sample A Clean Video Stage -->
+        <article class="project-details-item is-video is-motion-plate is-clean-plate${containCardClass}${sepClass}${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen !== false ? ' data-fullscreen' : ''}${editorialHtml ? '' : blackBgStyle} itemscope itemtype="https://schema.org/MedicalWebPage">
           ${hideAllText ? '' : `<span class="tiny-card-num-badge">${numStr}</span>`}
-          <div class="plate-media-inner"${blackBgStyle}>
+          <figure class="plate-media-inner${editorialHtml ? ' pure-visual-zone' : ''}"${blackBgStyle}>
             <div class="motion-video-stage is-clean-video-stage" data-frames="${p.poster || ''}" data-duration="6.4"${blackBgStyle}>
               <video class="lusion-clean-media${containVideoClass}" src="${p.videoSrc}"${posterAttr} autoplay muted loop playsinline preload="auto"${videoInlineStyle}></video>
               ${hideAllText ? '' : `<canvas class="plate-fx-canvas" data-fx="${p.fx || 'warm-breath-zoom'}"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>`}
             </div>
-            ${hideAllText ? '' : `<div class="clean-plate-scrim"></div>
-            <div class="plate-top-bar" style="z-index:7;">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill || p.stepLabel || 'LIVE MOTION STORY'}</span>
+            ${hideAllText ? '' : `<div class="plate-top-bar" style="z-index:7;justify-content:flex-end;">
               <div style="display:flex;align-items:center;gap:6px;pointer-events:auto;">
-                ${p.metricPill ? `<span class="plate-metric-pill">${p.metricPill}</span>` : ''}
                 <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){v.muted=!v.muted; if(!v.muted)v.play(); this.textContent=v.muted?'🔇 소리 켜기':'🔊 소리 끄기';}">🔇 소리 켜기</button>
                 <button type="button" class="gjd-pano-nav-btn" onclick="event.stopPropagation(); const v=this.closest('.plate-media-inner').querySelector('video'); if(v){if(v.paused){v.play();this.textContent='⏸ 일시정지';}else{v.pause();this.textContent='▶ 영상 재생';}}">⏸ 일시정지</button>
               </div>
-            </div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                ${p.stepLabel ? `<span class="clean-step-label">${p.stepLabel}</span>` : ''}${videoTagsHtml}
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
             </div>`}
-          </div>
+          </figure>${editorialHtml}
         </article>`;
     }
 
     if (p.type === 'motion-story') {
       const framesList = (p.frames && p.frames.length) ? p.frames : [p.imgSrc || ''];
       const framesAttr = framesList.join('|');
-      const sciHtml = p.sciStats ? `
-            <div class="visual-sci-overlay">
-              ${p.sciStats.map(s => `
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">${s.num}</div>
-                <div class="sci-stat-label">${s.label}</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:${s.width}"></div></div>
-              </div>`).join('')}
-            </div>` : '';
       const motionThumbsHtml = (p.thumbs && p.thumbs.length > 1) ? `
-                <div class="plate-thumb-dock">
-                  ${p.thumbs.map((th, tIdx) => `
-                  <button type="button" class="plate-thumb-btn${tIdx === 0 ? ' active' : ''}" data-mode="motion" data-idx="${tIdx}" data-img="${th.img}" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="${th.img}" alt="${th.label}" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">${th.label}</span>
-                  </button>`).join('')}
-                </div>` : '';
+            <div class="plate-thumb-dock is-visual-floating-dock">
+              ${p.thumbs.map((th, tIdx) => `
+              <button type="button" class="plate-thumb-btn${tIdx === 0 ? ' active' : ''}" data-mode="motion" data-idx="${tIdx}" data-img="${th.img}" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="${th.img}" alt="${th.label}" loading="lazy" draggable="false">
+                <span class="plate-thumb-label">${th.label}</span>
+              </button>`).join('')}
+            </div>` : '';
+      const editorialHtml = renderEditorialTextZone(p);
+      const sepClass = editorialHtml ? ' has-separated-editorial' : '';
       return `
-        <!-- PLATE ${numStr}: Multi-Frame Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+        <!-- PLATE ${numStr}: Sample A Separated Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate is-clean-plate${sepClass}${idx === 0 ? ' is-active-plate' : ''}"${p.fullscreen !== false ? ' data-fullscreen' : ''} itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">${numStr}</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             <div class="motion-video-stage" data-frames="${framesAttr}" data-duration="${p.durationSec || 6.4}">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('${framesList[0]}');"></div>
               <div class="motion-frame-layer frame-layer-b" style="background-image: url('${framesList[1 % framesList.length]}'); opacity: 0;"></div>
               <canvas class="plate-fx-canvas" data-fx="${p.fx || 'sunlight-bokeh'}"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
+            </div>${motionThumbsHtml}
+            <div class="visual-floating-step-wrap">
+              <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">${p.stepBtnText || '다음 장면 ⟳'}</button>
             </div>
-            <div class="plate-gradient-scrim"></div>
-            ${p.hideTopBar ? '' : `<div class="plate-top-bar">
-              <span class="plate-index-pill"><span class="live-rec-dot"></span>${p.indexPill || p.stepLabel || 'STORY · LIVE MOTION'}</span>
-              ${p.metricPill ? `<span class="plate-metric-pill">${p.metricPill}</span>` : ''}
-            </div>`}
-            ${sciHtml}
-            <div class="plate-bottom-caption">
-              <div>
-                ${motionThumbsHtml}
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-              <div class="plate-action-group">
-                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
-              </div>
-            </div>
-          </div>
+          </figure>${editorialHtml}
         </article>`;
     }
 
@@ -2838,29 +2804,35 @@ function buildPageHtml(page) {
             { code: 'GROWTH 03 · 예상키', tag: 'FINAL HEIGHT ▲', title: '뼈길이 · 숨은 키 · 최종예상키', desc: '체형 불균형 숨은 키 복원 및 골든타임 맞춤 치료 시 최종예상키 산출', pct: '99%' }
           ]
         }
-      }[exId];
+      }[exId] || {
+        code: 'BAREUN PRECISION DIAGNOSTIC · 정밀 검진',
+        liveReadout: '실시간 생체 정밀 분석 가동 중',
+        themeCol: '#10B981',
+        accentCol: '#6EE7B7',
+        svgHtml: '',
+        metrics: []
+      };
 
+      const editorialHtml = renderEditorialTextZone(p);
+      const sepClass = editorialHtml ? ' has-separated-editorial' : '';
       return `
-        <!-- PLATE ${numStr}: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 0${exId}) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-${exId}${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen data-exam-id="${exId}">
+        <!-- PLATE ${numStr}: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 0${exId}) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-${exId}${sepClass}${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen data-exam-id="${exId}" itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">${numStr}</span>
-          <div class="plate-media-inner exam-media-stage">
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
-              <img class="lusion-clean-media exam-living-photo" src="${p.imgSrc}" alt="${p.title}" draggable="false">
+              <img class="lusion-clean-media exam-living-photo" src="${p.imgSrc}" alt="${(p.title || '').replace(/"/g, '&quot;')}" draggable="false">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="${p.imgSrc}" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-${exId}" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               ${EXAM_MOTION_SPEC.svgHtml}
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:${EXAM_MOTION_SPEC.themeCol};box-shadow:0 0 10px ${EXAM_MOTION_SPEC.themeCol};"></span>
@@ -2871,7 +2843,6 @@ function buildPageHtml(page) {
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               ${EXAM_MOTION_SPEC.metrics.map((m, mIdx) => `
               <div class="exam-bio-card">
@@ -2886,62 +2857,39 @@ function buildPageHtml(page) {
                 </div>
               </div>`).join('')}
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-            </div>
-          </div>
+          </figure>${editorialHtml}
         </article>`;
     }
 
     const isContain = p.fit === 'contain';
     const mainImgSrc = p.imgSrc || (p.frames && p.frames[0]) || '';
-    const tagsHtml = p.cleanTags ? `
-                <div class="clean-spec-tags">
-                  ${p.cleanTags.map(t => `<span class="clean-spec-tag">${t}</span>`).join('')}
-                </div>` : '';
     const cleanThumbsHtml = (p.thumbs && p.thumbs.length > 1) ? `
-                <div class="plate-thumb-dock">
-                  ${p.thumbs.map((th, tIdx) => `
-                  <button type="button" class="plate-thumb-btn${tIdx === 0 ? ' active' : ''}" data-mode="clean" data-img="${th.img}" data-fit="${th.fit || 'cover'}" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="${th.img}" alt="${th.label}" loading="lazy" draggable="false">
-                    <span class="plate-thumb-label">${th.label}</span>
-                  </button>`).join('')}
-                </div>` : '';
-    const cleanSciHtml = p.sciStats ? `
-            <div class="visual-sci-overlay">
-              ${p.sciStats.map(s => `
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">${s.num}</div>
-                <div class="sci-stat-label">${s.label}</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:${s.width}"></div></div>
-              </div>`).join('')}
+            <div class="plate-thumb-dock is-visual-floating-dock">
+              ${p.thumbs.map((th, tIdx) => `
+              <button type="button" class="plate-thumb-btn${tIdx === 0 ? ' active' : ''}" data-mode="clean" data-img="${th.img}" data-fit="${th.fit || 'cover'}" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="${th.img}" alt="${th.label}" loading="lazy" draggable="false">
+                <span class="plate-thumb-label">${th.label}</span>
+              </button>`).join('')}
             </div>` : '';
     const cleanFxCanvasHtml = p.fx ? `
             <div class="motion-video-stage is-clean-fx-overlay" data-frames="${mainImgSrc}" data-duration="${p.durationSec || 6.0}" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="${p.fx}" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>` : '';
+    const editorialHtml = renderEditorialTextZone(p);
+    const sepClass = editorialHtml ? ' has-separated-editorial' : '';
     return `
-        <!-- PLATE ${numStr}: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate${idx === 0 ? ' is-active-plate' : ''}${isContain ? ' has-contain-media' : ''}"${p.fullscreen ? ' data-fullscreen' : ''}>
+        <!-- PLATE ${numStr}: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate${sepClass}${idx === 0 ? ' is-active-plate' : ''}${isContain ? ' has-contain-media' : ''}"${p.fullscreen !== false ? ' data-fullscreen' : ''} itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">${numStr}</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media${isContain ? ' is-contain-fit' : ''}" src="${mainImgSrc}" alt="${p.title}" draggable="false">
-            <div class="clean-plate-scrim"></div>${cleanFxCanvasHtml}${cleanSciHtml}
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                ${p.stepLabel ? `<span class="clean-step-label">${p.stepLabel}</span>` : ''}${tagsHtml}${cleanThumbsHtml}
-                <h2 class="plate-caption-title">${formattedTitle}</h2>
-                <p class="plate-caption-sub">${p.sub}</p>
-              </div>
-            </div>
-          </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media${isContain ? ' is-contain-fit' : ''}" src="${mainImgSrc}" alt="${(p.title || '').replace(/"/g, '&quot;')}" draggable="false" itemprop="image">${cleanFxCanvasHtml}${cleanThumbsHtml}
+          </figure>${editorialHtml}
         </article>`;
   }).join('\n');
+
+  const bodyExtraClasses = ['theme-hanji'];
+  if (cardStyle.showNumBadge === false) bodyExtraClasses.push('hide-card-num-badge');
+  if (cardStyle.showExamHud === true) bodyExtraClasses.push('show-exam-hud');
 
   return `<!DOCTYPE html>
 <html lang="ko">
@@ -2949,12 +2897,12 @@ function buildPageHtml(page) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>${page.meta.title} — 바른한의원 대전본점 · 아빠 한의사 내 가족 주치의</title>
-  <meta name="description" content="아빠 한의사 · 내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 주치의 | ${page.meta.title} — ${page.meta.desc[0]}">
+  <meta name="description" content="아빠 한의사 · 내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 주치의 | ${page.meta.title} — ${(page.meta.desc && page.meta.desc[0]) || ''}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="바른한의원 대전본점 · 아빠 한의사">
   <meta property="og:title" content="${page.meta.title} — 바른한의원 대전본점 (아빠 한의사 · 내 가족 주치의)">
-  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 하는 아빠 한의사 · ${page.meta.desc[0]}">
-  <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/${page.bodyModelCard.bg}">
+  <meta property="og:description" content="내 가족에게 처방하고 시술한 치료만 하는 아빠 한의사 · ${(page.meta.desc && page.meta.desc[0]) || ''}">
+  <meta property="og:image" content="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/${(page.bodyModelCard && page.bodyModelCard.bg) || 'bareun_step4_pain_chuna_healing.jpg'}">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2975,6 +2923,15 @@ function buildPageHtml(page) {
       --border-subtle: rgba(255, 255, 255, 0.09);
       --border-gold: rgba(212, 175, 55, 0.35);
       --left-col-width: 455px;
+      --sa-bg-top: ${cardStyle.bgTop || '#1b1815'};
+      --sa-bg-bot: ${cardStyle.bgBot || '#13110f'};
+      --sa-border: ${cardStyle.borderColor || 'rgba(197, 160, 89, 0.44)'};
+      --sa-divider: ${cardStyle.dividerColor || 'rgba(212, 175, 55, 0.36)'};
+      --sa-title-color: ${cardStyle.titleColor || '#fdfbf7'};
+      --sa-hl-color: ${cardStyle.hlColor || '#f5d36c'};
+      --sa-body-color: ${cardStyle.bodyColor || 'rgba(245, 240, 232, 0.84)'};
+      --sa-title-size: ${titleSizeCss};
+      --sa-body-size: ${bodySizeCss};
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -3109,7 +3066,35 @@ function buildPageHtml(page) {
       font-weight: 800;
     }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+    #header .header-left,
+    #header .header-right {
+      flex-shrink: 0;
+    }
+    #header .header-center {
+      min-width: 0;
+      flex: 1 1 auto;
+      justify-content: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #header .header-center::-webkit-scrollbar { display: none; }
+    #header .back-pill-btn,
+    #header .clinic-tab,
+    #header .header-studio-btn,
+    #header .header-vis-btn,
+    #header .header-talk-btn {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    @media (max-width: 1560px) and (min-width: 1025px) {
+      #header { padding-left: 16px !important; padding-right: 16px !important; gap: 8px !important; }
+      #header .back-pill-btn { padding: 6px 10px !important; font-size: 0.74rem !important; }
+      #header .clinic-tab { padding: 5px 9px !important; font-size: 0.73rem !important; }
+      #header .header-vis-btn,
+      #header .header-studio-btn,
+      #header .header-talk-btn { padding: 6px 12px !important; font-size: 0.75rem !important; }
+    }
+    .header-right { display: flex; align-items: center; gap: 8px; }
 
     .header-talk-btn {
       display: inline-flex;
@@ -9554,10 +9539,324 @@ function buildPageHtml(page) {
         font-size: 0.68rem;
       }
     }
+
+    /* ============================================================================
+       SAMPLE A: 상·하단 완전 분리형 에디토리얼 프레임 (SEO 100% 크롤링 & 순수 비주얼 보존)
+       ============================================================================ */
+    body.hide-card-num-badge .tiny-card-num-badge {
+      display: none !important;
+    }
+
+    .project-details-item.has-separated-editorial {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 22px;
+      background: var(--sa-bg-bot, #13110f) !important;
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.44)) !important;
+      box-shadow: 0 28px 68px rgba(10, 8, 6, 0.42);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial {
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.46)) !important;
+      box-shadow: 0 26px 62px rgba(45, 34, 24, 0.24);
+    }
+
+    .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #D4AF37 !important;
+      box-shadow: 0 32px 80px rgba(10, 8, 6, 0.55), 0 0 0 1px rgba(245, 211, 108, 0.28);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #2D5A43 !important;
+      box-shadow: 0 30px 72px rgba(45, 90, 67, 0.24), 0 0 0 2px rgba(45, 90, 67, 0.16);
+    }
+
+    /* 1. 상단 순수 비주얼 영역 (글자/어두운 그라데이션 0% - 피사체 100% 선명 노출) */
+    .project-details-item.has-separated-editorial .pure-visual-zone {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      overflow: hidden;
+      background: #14110e;
+      border-bottom: 1.5px solid var(--sa-divider, rgba(212, 175, 55, 0.36));
+    }
+
+    .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 14px 18px !important;
+      background: radial-gradient(circle at 50% 48%, #211b16 0%, #100d0a 100%);
+    }
+
+    .plate-thumb-dock.is-visual-floating-dock {
+      position: absolute;
+      left: 16px;
+      bottom: 12px;
+      z-index: 9;
+      margin-bottom: 0;
+      max-width: calc(100% - 148px);
+    }
+
+    .visual-floating-step-wrap {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      z-index: 9;
+      pointer-events: auto;
+    }
+
+    /* 대표원장 9대 정밀검진 모션 카드도 상단 비주얼을 깨끗하게 개방 */
+    .project-details-item.has-separated-editorial.is-director-exam-plate .exam-cinema-scrim {
+      background: radial-gradient(circle at 50% 42%, transparent 48%, rgba(6, 10, 15, 0.28) 100%) !important;
+    }
+
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-top-hud-bar,
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      display: none !important;
+    }
+
+    body.show-exam-hud .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      bottom: 14px !important;
+    }
+
+    /* 2. 하단 독립 에디토리얼 텍스트 영역 (SEO 크롤링 100% & 마우스 드래그 복사 지원) */
+    .project-details-item.has-separated-editorial .editorial-text-zone {
+      flex: 0 0 auto;
+      width: 100%;
+      background: linear-gradient(180deg, var(--sa-bg-top, #1b1815) 0%, var(--sa-bg-bot, #13110f) 100%);
+      padding: 20px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      cursor: text;
+      position: relative;
+      z-index: 5;
+    }
+
+    .editorial-text-zone,
+    .editorial-text-zone *,
+    .father-letter-box,
+    .father-letter-box *,
+    #project-details-desc,
+    #project-details-desc * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+
+    .editorial-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 1px;
+    }
+
+    .editorial-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--sa-hl-color, #e6c875);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .editorial-category::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D4AF37;
+      box-shadow: 0 0 8px #D4AF37;
+    }
+
+    .editorial-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: var(--sa-title-size, clamp(1.24rem, 1.62vw, 1.52rem));
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: -0.025em;
+      color: var(--sa-title-color, #fdfbf7);
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .editorial-headline .hl-gold,
+    .editorial-headline .title-key-em {
+      color: var(--sa-hl-color, #f5d36c) !important;
+      background: linear-gradient(180deg, transparent 62%, rgba(212, 175, 55, 0.24) 62%);
+      padding: 0 2px;
+      text-decoration: none !important;
+    }
+
+    .editorial-body-copy {
+      font-size: var(--sa-body-size, 0.92rem);
+      line-height: 1.64;
+      color: var(--sa-body-color, rgba(245, 240, 232, 0.84));
+      font-weight: 400;
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .clinical-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pillar-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pillar-item .pillar-num {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #D4AF37;
+      letter-spacing: 0.06em;
+    }
+
+    .pillar-item strong {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fdfbf7;
+      line-height: 1.3;
+    }
+
+    .pillar-item span {
+      font-size: 0.73rem;
+      color: rgba(245, 240, 232, 0.72);
+      line-height: 1.4;
+    }
+
+    .seo-keyword-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin-top: 2px;
+      padding: 0;
+    }
+
+    .seo-keyword-footer li {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(230, 200, 117, 0.92);
+      background: rgba(212, 175, 55, 0.09);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* 큰글씨 고시안성 모드 대응 */
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-headline {
+      font-size: 1.56rem !important;
+      line-height: 1.38 !important;
+    }
+
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-body-copy {
+      font-size: 1.02rem !important;
+      line-height: 1.68 !important;
+      color: #FFFFFF !important;
+    }
+
+    /* 로컬 전용 페이지 커스텀 스튜디오 바로가기 버튼 */
+    .header-studio-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      border: 1px solid #FEF08A;
+      color: #120E0A !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .header-studio-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55);
+    }
+
+    /* 모바일·태블릿 세로형 완벽 최적화 (이미지 찌그러짐 및 하단 글자 잘림 0%) */
+    @media (max-width: 1024px) {
+      .project-details-item.has-separated-editorial,
+      .project-details-item.has-separated-editorial[data-fullscreen] {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .project-details-item.has-separated-editorial .pure-visual-zone {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 10 !important;
+        min-height: 215px !important;
+        flex: none !important;
+      }
+
+      .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+        padding: 10px 12px !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-text-zone {
+        padding: 16px 18px 18px !important;
+        gap: 7px !important;
+        height: auto !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-headline {
+        font-size: 1.08rem !important;
+        line-height: 1.36 !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-body-copy {
+        font-size: 0.83rem !important;
+        line-height: 1.56 !important;
+      }
+
+      .plate-thumb-dock.is-visual-floating-dock {
+        left: 10px;
+        bottom: 8px;
+        max-width: calc(100% - 115px);
+      }
+
+      .visual-floating-step-wrap {
+        right: 10px;
+        bottom: 8px;
+      }
+
+      .clinical-pillars {
+        grid-template-columns: 1fr !important;
+        gap: 7px !important;
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
-<body class="theme-hanji">
+<body class="${bodyExtraClasses.join(' ')}">
   <div class="ambient-bg"></div>
 
   <header id="header">
@@ -9587,6 +9886,7 @@ function buildPageHtml(page) {
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <a id="btn-open-detail-studio" class="header-studio-btn" href="detail-pages-editor.html?page=${page.file}" title="현재 상세페이지 카드·문구·디자인 커스텀 스튜디오 열기">🎨 커스텀</a>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -9617,7 +9917,7 @@ function buildPageHtml(page) {
             <span class="empathy-checklist-title">${page.meta.checklistTitle}</span>
             <span class="empathy-count-badge" id="empathy-count-badge">증상 체크 전</span>
           </div>
-          <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
+          <p class="empathy-checklist-sub">${page.meta.checklistSub || '내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.'}</p>
           <div class="empathy-checklist-list" id="empathy-checklist-list">
             ${checklistHtml}
           </div>
@@ -9651,148 +9951,32 @@ function buildPageHtml(page) {
       <div id="project-details-items-move-container">
         ${platesHtml}
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
-        ${(page.file === 'diet-zero.html' || page.file === 'chuna.html' || page.file === 'growth.html' || page.file === 'gongjindan.html' || page.file === 'prostate.html') ? '' : `<article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
-          <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-            </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>${page.file === 'growth.html' ? `
-            <!-- 4-CORE GROWTH BIOMETRIC COMPARISON ANALYSIS SUITE (연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키) -->
-            <div class="growth-4metrics-compare-overlay">
-              <div class="g4m-header-pill">
-                <span class="g4m-header-dot"></span>
-                <span>ULTRASOUND BIOMETRIC COMPARISON · 무방사선 초음파 4대 성장 지표 정밀 비교 분석</span>
-              </div>
-              <div class="growth-4metrics-grid">
-                <div class="g4m-card">
-                  <div class="g4m-top-row">
-                    <div class="g4m-title-group">
-                      <span class="g4m-icon-badge">지표 I</span>
-                      <h3 class="g4m-title">연령별 평균키 비교</h3>
-                    </div>
-                    <span class="g4m-vs-pill">표준 평균키 vs 현재 키</span>
-                  </div>
-                  <div class="g4m-compare-bars">
-                    <div class="g4m-bar-row">
-                      <span class="g4m-bar-label">현재 아이 키 위치</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:52%"></div></div>
-                    </div>
-                    <div class="g4m-bar-row is-after">
-                      <span class="g4m-bar-label">연령별 표준·목표</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:88%"></div></div>
-                    </div>
-                  </div>
-                  <p class="g4m-desc">동일 연령·성별 <strong>표준 평균키 대비 현재 우리 아이의 키 위치와 부족 편차</strong>를 정밀 비교하여 따라잡기 성장 속도를 설계합니다.</p>
-                </div>
-
-                <div class="g4m-card">
-                  <div class="g4m-top-row">
-                    <div class="g4m-title-group">
-                      <span class="g4m-icon-badge">지표 II</span>
-                      <h3 class="g4m-title">성장판 나이 비교</h3>
-                    </div>
-                    <span class="g4m-vs-pill">실제 나이 vs 뼈 나이</span>
-                  </div>
-                  <div class="g4m-compare-bars">
-                    <div class="g4m-bar-row">
-                      <span class="g4m-bar-label">실제 생년월일 나이</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:60%"></div></div>
-                    </div>
-                    <div class="g4m-bar-row is-after">
-                      <span class="g4m-bar-label">성장판 개방 활성도</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:90%"></div></div>
-                    </div>
-                  </div>
-                  <p class="g4m-desc">실제 나이와 <strong>초음파로 계측한 성장판 나이(골연령)</strong>를 비교하여 성조숙증에 의한 조기 폐쇄 위험과 남은 성장 기간을 판독합니다.</p>
-                </div>
-
-                <div class="g4m-card">
-                  <div class="g4m-top-row">
-                    <div class="g4m-title-group">
-                      <span class="g4m-icon-badge">지표 III</span>
-                      <h3 class="g4m-title">뼈길이 비교</h3>
-                    </div>
-                    <span class="g4m-vs-pill">정상 뼈길이 vs 실제 골길이</span>
-                  </div>
-                  <div class="g4m-compare-bars">
-                    <div class="g4m-bar-row">
-                      <span class="g4m-bar-label">검사 전 골격 밸런스</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:56%"></div></div>
-                    </div>
-                    <div class="g4m-bar-row is-after">
-                      <span class="g4m-bar-label">정상 뼈길이·연골층</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:92%"></div></div>
-                    </div>
-                  </div>
-                  <p class="g4m-desc">무릎 <strong>성장판 연골 두께 및 대퇴골·경골 실제 뼈길이</strong>를 정상 기준과 비교하고 좌우 골격 불균형으로 숨은 키를 찾아냅니다.</p>
-                </div>
-
-                <div class="g4m-card is-gold-card">
-                  <div class="g4m-top-row">
-                    <div class="g4m-title-group">
-                      <span class="g4m-icon-badge">지표 IV</span>
-                      <h3 class="g4m-title">최종예상키 비교</h3>
-                    </div>
-                    <span class="g4m-vs-pill">방치 시 vs 집중 치료 시</span>
-                  </div>
-                  <div class="g4m-compare-bars">
-                    <div class="g4m-bar-row">
-                      <span class="g4m-bar-label">현재 추세 예상키</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill b" style="width:58%"></div></div>
-                    </div>
-                    <div class="g4m-bar-row is-after">
-                      <span class="g4m-bar-label">골든타임 최종예상키</span>
-                      <div class="g4m-bar-track"><div class="g4m-bar-fill a" style="width:96%"></div></div>
-                    </div>
-                  </div>
-                  <p class="g4m-desc">현재 상태 방치 시 성인 예상키와 <strong>골든타임 맞춤 한약·추나 치료 시 도달 가능한 최종예상키</strong>를 입체적으로 비교 분석합니다.</p>
-                </div>
-              </div>
-            </div>` : ''}
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag" id="runway-ba-tag-b">${page.file === 'growth.html' ? '📊 연령별 평균키 · 성장판 나이 비교' : 'BEFORE · 치료 전'}</span>
-                  <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">${page.file === 'growth.html' ? '🎯 뼈길이 · 최종예상키 정밀 분석' : 'AFTER · 치료 후'}</span>
-                  <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
-                </div>
-                <h2 class="plate-caption-title">${page.file === 'growth.html' ? '연령별 평균키 · 성장판 나이 · 뼈길이 · 최종예상키 비교 분석' : `${page.meta.title} — 치료 전·후 비교`}</h2>
-                <p class="plate-caption-sub">${page.file === 'growth.html' ? '무방사선 정밀 초음파로 연령별 평균키, 성장판 나이, 뼈길이, 최종예상키를 종합 비교 분석하여 숨은 키 골든타임을 찾아냅니다.' : '실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.'}</p>
-              </div>
-            </div>
-          </div>
-        </article>`}
-
-        <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
-        ${page.bodyModelCard.extraInfoItems ? `
+        <!-- LAST CARD: Minimalist Honey-Tip Card Linked to 3D Body Model -->
+        ${(!page.bodyModelCard || page.bodyModelCard.enabled === false) ? '' : (page.bodyModelCard.extraInfoItems ? `
         <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card" style="cursor:pointer;" onclick="if(!event.target.closest('a')){const a=this.querySelector('a');if(a)window.location.href=a.href;}">
-          <span class="tiny-card-num-badge">${(page.plates.length + 1) < 10 ? '0' + (page.plates.length + 1) : '' + (page.plates.length + 1)}</span>
+          <span class="tiny-card-num-badge">${String(activePlates.length + 1).padStart(2, '0')}</span>
           <div class="diet-card10-3d-bg" id="diet-our-3d-body-stage" aria-hidden="true">
             <canvas id="diet-our-3d-body-canvas"></canvas>
           </div>
-          <a class="diet-honey-tip-only-center" href="${page.bodyModelCard.href}" aria-label="${page.bodyModelCard.honeyTipLabel || '다이어트 꿀팁'} - 3D 인체모형 바로가기">
-            <h2 class="diet-honey-tip-only-title">${page.bodyModelCard.honeyTipLabel || '다이어트 꿀팁'}</h2>
+          <a class="diet-honey-tip-only-center" href="${page.bodyModelCard.href || 'body-explorer.html'}" aria-label="${page.bodyModelCard.honeyTipLabel || '생활 꿀팁'} - 3D 인체모형 바로가기">
+            <h2 class="diet-honey-tip-only-title">${page.bodyModelCard.honeyTipLabel || '생활 꿀팁'}</h2>
           </a>
         </article>` : `
         <article id="project-details-preview" class="body-model-last-card">
-          <span class="tiny-card-num-badge">${(page.plates.length + 2) < 10 ? '0' + (page.plates.length + 2) : '' + (page.plates.length + 2)}</span>
-          <img class="next-portal-bg" src="${page.bodyModelCard.bg}" alt="${page.bodyModelCard.title}">
+          <span class="tiny-card-num-badge">${String(activePlates.length + 1).padStart(2, '0')}</span>
+          <img class="next-portal-bg" src="${page.bodyModelCard.bg}" alt="${page.bodyModelCard.title || ''}">
           <div class="next-portal-scrim"></div>
           <div class="body-model-holo-grid"></div>
 
           <div class="body-model-top-bar">
             <span class="body-model-badge-main">💡 3D 인체모형 · 부위별 생활 꿀팁 창고</span>
-            <span class="body-model-badge-sub">${page.bodyModelCard.partBadge}</span>
+            <span class="body-model-badge-sub">${page.bodyModelCard.partBadge || ''}</span>
           </div>
 
           <div class="body-model-bottom-stage">
-            <a id="project-details-preview-inner" href="${page.bodyModelCard.href}">
-              <h2 id="project-details-preview-title">${page.bodyModelCard.title}</h2>
-              <p class="next-portal-desc">${page.bodyModelCard.desc}</p>
+            <a id="project-details-preview-inner" href="${page.bodyModelCard.href || 'body-explorer.html'}">
+              <h2 id="project-details-preview-title">${page.bodyModelCard.title || ''}</h2>
+              <p class="next-portal-desc">${page.bodyModelCard.desc || ''}</p>
               <div class="body-model-feature-chips">
                 <span class="body-model-chip">✅ 실천 DO vs 주의 DON'T</span>
                 <span class="body-model-chip">⏰ 아침·낮·밤 하루 루틴</span>
@@ -9809,7 +9993,7 @@ function buildPageHtml(page) {
               </div>
             </a>
           </div>
-        </article>`}
+        </article>`)}
       </div>
     </section>
   </main>
@@ -10171,11 +10355,14 @@ function buildPageHtml(page) {
 
       window.applyInlineScrollBaPct = function(pct) {
         const c = Math.max(6, Math.min(96, pct));
-        const raClip = document.getElementById('runway-ba-after-clip');
-        const rLaser = document.getElementById('runway-ba-laser');
-
-        if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
-        if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
+        const clipVal = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        const leftVal = c.toFixed(1) + '%';
+        document.querySelectorAll('.runway-ba-after-clip, #runway-ba-after-clip').forEach(function(el) {
+          el.style.clipPath = clipVal;
+        });
+        document.querySelectorAll('.runway-ba-laser, #runway-ba-laser').forEach(function(el) {
+          el.style.left = leftVal;
+        });
       };
 
       function setDetailBaPct(pct) {
@@ -10248,6 +10435,14 @@ function buildPageHtml(page) {
         const nextIdx = (VIS_MODES.indexOf(currentVisMode) + 1) % VIS_MODES.length;
         applyDetailVisMode(VIS_MODES[nextIdx]);
       };
+
+      (function initLocalStudioQuickLink() {
+        const h = window.location.hostname;
+        if (h === 'localhost' || h === '127.0.0.1') {
+          const stBtn = document.getElementById('btn-open-detail-studio');
+          if (stBtn) stBtn.style.display = 'inline-flex';
+        }
+      })();
 
       (function initDetailBrandAndMode() {
         const cfg = window.CLINIC_TEMPLATE_CONFIG || {};
@@ -10658,7 +10853,7 @@ function buildPageHtml(page) {
 
       wrapper.addEventListener('pointerdown', (e) => {
         if (window.innerWidth <= 1024) return;
-        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -10819,7 +11014,7 @@ function buildPageHtml(page) {
           plate.style.cursor = 'pointer';
           plate.addEventListener('click', (e) => {
             if (window.innerWidth <= 1024) return;
-            if (e.target.closest('button, a, video, .concierge-video-frame')) return;
+            if (e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box')) return;
             if (Math.abs(touchAccumDelta) > 14) return;
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
@@ -13204,7 +13399,7 @@ function buildPageHtml(page) {
             const distY = (rect.top + rect.height * 0.5) - vpCenterY;
             if (Math.abs(distY) < minDistance) { minDistance = Math.abs(distY); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               cleanMedia.style.transform = 'none';
             }
           });
@@ -13243,7 +13438,7 @@ function buildPageHtml(page) {
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               if (cleanMedia.classList.contains('is-contain-fit') || cleanMedia.classList.contains('is-video-contain-fit')) {
                 cleanMedia.style.transform = 'none';
               } else {
@@ -13540,8 +13735,33 @@ function buildPageHtml(page) {
 }
 
 const outDir = __dirname;
-PAGES.forEach(p => {
-  const html = buildPageHtml(p);
+const masterCfgPath = path.join(outDir, 'detail-pages-config.json');
+let pagesSource = PAGES;
+let globalCardStyle = null;
+
+if (fs.existsSync(masterCfgPath)) {
+  try {
+    const parsedCfg = JSON.parse(fs.readFileSync(masterCfgPath, 'utf8'));
+    if (parsedCfg && Array.isArray(parsedCfg.pages) && parsedCfg.pages.length > 0) {
+      pagesSource = parsedCfg.pages;
+      globalCardStyle = parsedCfg.globalCardStyle || null;
+    }
+  } catch (err) {
+    console.warn('[WARN] Failed to parse detail-pages-config.json, falling back to PAGES:', err.message);
+  }
+}
+
+const cliPageArg = process.argv.find(a => a.startsWith('--page='));
+const targetPageFilter = cliPageArg ? cliPageArg.split('=')[1].trim() : null;
+
+pagesSource.forEach(p => {
+  if (targetPageFilter && p.file !== targetPageFilter && p.slug !== targetPageFilter) {
+    return;
+  }
+  const mergedPage = Object.assign({}, p, {
+    cardStyle: Object.assign({}, globalCardStyle || {}, p.cardStyle || {})
+  });
+  const html = buildPageHtml(mergedPage);
   fs.writeFileSync(path.join(outDir, p.file), html, 'utf8');
-  console.log('Generated motion storytelling detail page:', p.file, '(' + html.length + ' bytes)');
+  console.log('Generated Sample A detail page:', p.file, '(' + html.length + ' bytes)');
 });

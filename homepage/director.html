@@ -27,8 +27,6 @@
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","MedicalOrganization","LocalBusiness"],"@id":"https://www.bareunhaniwon.com/#clinic","name":"바른한의원 대전본점","alternateName":["Bareun Korean Medicine Clinic Daejeon","대전 바른한의원"],"url":"https://www.bareunhaniwon.com/","logo":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp","image":"https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg","telephone":"+82-10-5631-1275","priceRange":"₩₩","address":{"@type":"PostalAddress","streetAddress":"비래동로7번길 1, 2층","addressLocality":"대덕구","addressRegion":"대전광역시","postalCode":"34417","addressCountry":"KR"},"geo":{"@type":"GeoCoordinates","latitude":36.35536,"longitude":127.44778},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","PublicHolidays"],"opens":"09:00","closes":"14:00"}],"sameAs":["https://naver.me/5U1ELn8L","https://blog.naver.com/wei0508","https://pf.kakao.com/_ykxcLK"],"founder":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"대표원장 (한의사)"}},{"@type":"WebSite","@id":"https://www.bareunhaniwon.com/#website","name":"바른한의원 대전본점","url":"https://www.bareunhaniwon.com/","inLanguage":"ko-KR","publisher":{"@id":"https://www.bareunhaniwon.com/#clinic"}},{"@type":"MedicalWebPage","@id":"https://www.bareunhaniwon.com/director/#webpage","url":"https://www.bareunhaniwon.com/director/","name":"안정위 대표원장 · 9대 정밀검진 | 바른한의원 대전본점 사상체질·초음파","description":"초음파·체열진단·이비인후 내시경·사상체질·자율신경(HRV)·간수치·성장판까지 9대 정밀검진과 원내 안심 탕전 시스템으로 질환의 뿌리를 찾는 바른한의원 대전본점 안정위 대표원장 진료 철학을 소개합니다.","inLanguage":"ko-KR","isPartOf":{"@id":"https://www.bareunhaniwon.com/#website"},"about":{"@id":"https://www.bareunhaniwon.com/#clinic"},"reviewedBy":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)"},"lastReviewed":"2026-10-28"},{"@type":"BreadcrumbList","@id":"https://www.bareunhaniwon.com/director/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"바른한의원 대전본점","item":"https://www.bareunhaniwon.com/"},{"@type":"ListItem","position":2,"name":"안정위 대표원장 · 9대 정밀검진","item":"https://www.bareunhaniwon.com/director/"}]},{"@type":"ProfilePage","@id":"https://www.bareunhaniwon.com/director/#profile","url":"https://www.bareunhaniwon.com/director/","name":"안정위 대표원장 · 9대 정밀검진 | 바른한의원 대전본점 사상체질·초음파","mainEntity":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)","worksFor":{"@id":"https://www.bareunhaniwon.com/#clinic"}}}]}</script>
 
-  
-
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +47,15 @@
       --border-subtle: rgba(255, 255, 255, 0.09);
       --border-gold: rgba(212, 175, 55, 0.35);
       --left-col-width: 455px;
+      --sa-bg-top: #1b1815;
+      --sa-bg-bot: #13110f;
+      --sa-border: rgba(197, 160, 89, 0.44);
+      --sa-divider: rgba(212, 175, 55, 0.36);
+      --sa-title-color: #fdfbf7;
+      --sa-hl-color: #f5d36c;
+      --sa-body-color: rgba(245, 240, 232, 0.84);
+      --sa-title-size: clamp(1.24rem, 1.62vw, 1.52rem);
+      --sa-body-size: 0.92rem;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -183,7 +190,35 @@
       font-weight: 800;
     }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+    #header .header-left,
+    #header .header-right {
+      flex-shrink: 0;
+    }
+    #header .header-center {
+      min-width: 0;
+      flex: 1 1 auto;
+      justify-content: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #header .header-center::-webkit-scrollbar { display: none; }
+    #header .back-pill-btn,
+    #header .clinic-tab,
+    #header .header-studio-btn,
+    #header .header-vis-btn,
+    #header .header-talk-btn {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    @media (max-width: 1560px) and (min-width: 1025px) {
+      #header { padding-left: 16px !important; padding-right: 16px !important; gap: 8px !important; }
+      #header .back-pill-btn { padding: 6px 10px !important; font-size: 0.74rem !important; }
+      #header .clinic-tab { padding: 5px 9px !important; font-size: 0.73rem !important; }
+      #header .header-vis-btn,
+      #header .header-studio-btn,
+      #header .header-talk-btn { padding: 6px 12px !important; font-size: 0.75rem !important; }
+    }
+    .header-right { display: flex; align-items: center; gap: 8px; }
 
     .header-talk-btn {
       display: inline-flex;
@@ -6628,6 +6663,320 @@
         font-size: 0.68rem;
       }
     }
+
+    /* ============================================================================
+       SAMPLE A: 상·하단 완전 분리형 에디토리얼 프레임 (SEO 100% 크롤링 & 순수 비주얼 보존)
+       ============================================================================ */
+    body.hide-card-num-badge .tiny-card-num-badge {
+      display: none !important;
+    }
+
+    .project-details-item.has-separated-editorial {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 22px;
+      background: var(--sa-bg-bot, #13110f) !important;
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.44)) !important;
+      box-shadow: 0 28px 68px rgba(10, 8, 6, 0.42);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial {
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.46)) !important;
+      box-shadow: 0 26px 62px rgba(45, 34, 24, 0.24);
+    }
+
+    .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #D4AF37 !important;
+      box-shadow: 0 32px 80px rgba(10, 8, 6, 0.55), 0 0 0 1px rgba(245, 211, 108, 0.28);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #2D5A43 !important;
+      box-shadow: 0 30px 72px rgba(45, 90, 67, 0.24), 0 0 0 2px rgba(45, 90, 67, 0.16);
+    }
+
+    /* 1. 상단 순수 비주얼 영역 (글자/어두운 그라데이션 0% - 피사체 100% 선명 노출) */
+    .project-details-item.has-separated-editorial .pure-visual-zone {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      overflow: hidden;
+      background: #14110e;
+      border-bottom: 1.5px solid var(--sa-divider, rgba(212, 175, 55, 0.36));
+    }
+
+    .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 14px 18px !important;
+      background: radial-gradient(circle at 50% 48%, #211b16 0%, #100d0a 100%);
+    }
+
+    .plate-thumb-dock.is-visual-floating-dock {
+      position: absolute;
+      left: 16px;
+      bottom: 12px;
+      z-index: 9;
+      margin-bottom: 0;
+      max-width: calc(100% - 148px);
+    }
+
+    .visual-floating-step-wrap {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      z-index: 9;
+      pointer-events: auto;
+    }
+
+    /* 대표원장 9대 정밀검진 모션 카드도 상단 비주얼을 깨끗하게 개방 */
+    .project-details-item.has-separated-editorial.is-director-exam-plate .exam-cinema-scrim {
+      background: radial-gradient(circle at 50% 42%, transparent 48%, rgba(6, 10, 15, 0.28) 100%) !important;
+    }
+
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-top-hud-bar,
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      display: none !important;
+    }
+
+    body.show-exam-hud .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      bottom: 14px !important;
+    }
+
+    /* 2. 하단 독립 에디토리얼 텍스트 영역 (SEO 크롤링 100% & 마우스 드래그 복사 지원) */
+    .project-details-item.has-separated-editorial .editorial-text-zone {
+      flex: 0 0 auto;
+      width: 100%;
+      background: linear-gradient(180deg, var(--sa-bg-top, #1b1815) 0%, var(--sa-bg-bot, #13110f) 100%);
+      padding: 20px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      cursor: text;
+      position: relative;
+      z-index: 5;
+    }
+
+    .editorial-text-zone,
+    .editorial-text-zone *,
+    .father-letter-box,
+    .father-letter-box *,
+    #project-details-desc,
+    #project-details-desc * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+
+    .editorial-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 1px;
+    }
+
+    .editorial-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--sa-hl-color, #e6c875);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .editorial-category::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D4AF37;
+      box-shadow: 0 0 8px #D4AF37;
+    }
+
+    .editorial-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: var(--sa-title-size, clamp(1.24rem, 1.62vw, 1.52rem));
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: -0.025em;
+      color: var(--sa-title-color, #fdfbf7);
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .editorial-headline .hl-gold,
+    .editorial-headline .title-key-em {
+      color: var(--sa-hl-color, #f5d36c) !important;
+      background: linear-gradient(180deg, transparent 62%, rgba(212, 175, 55, 0.24) 62%);
+      padding: 0 2px;
+      text-decoration: none !important;
+    }
+
+    .editorial-body-copy {
+      font-size: var(--sa-body-size, 0.92rem);
+      line-height: 1.64;
+      color: var(--sa-body-color, rgba(245, 240, 232, 0.84));
+      font-weight: 400;
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .clinical-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pillar-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pillar-item .pillar-num {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #D4AF37;
+      letter-spacing: 0.06em;
+    }
+
+    .pillar-item strong {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fdfbf7;
+      line-height: 1.3;
+    }
+
+    .pillar-item span {
+      font-size: 0.73rem;
+      color: rgba(245, 240, 232, 0.72);
+      line-height: 1.4;
+    }
+
+    .seo-keyword-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin-top: 2px;
+      padding: 0;
+    }
+
+    .seo-keyword-footer li {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(230, 200, 117, 0.92);
+      background: rgba(212, 175, 55, 0.09);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* 큰글씨 고시안성 모드 대응 */
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-headline {
+      font-size: 1.56rem !important;
+      line-height: 1.38 !important;
+    }
+
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-body-copy {
+      font-size: 1.02rem !important;
+      line-height: 1.68 !important;
+      color: #FFFFFF !important;
+    }
+
+    /* 로컬 전용 페이지 커스텀 스튜디오 바로가기 버튼 */
+    .header-studio-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      border: 1px solid #FEF08A;
+      color: #120E0A !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .header-studio-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55);
+    }
+
+    /* 모바일·태블릿 세로형 완벽 최적화 (이미지 찌그러짐 및 하단 글자 잘림 0%) */
+    @media (max-width: 1024px) {
+      .project-details-item.has-separated-editorial,
+      .project-details-item.has-separated-editorial[data-fullscreen] {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .project-details-item.has-separated-editorial .pure-visual-zone {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 10 !important;
+        min-height: 215px !important;
+        flex: none !important;
+      }
+
+      .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+        padding: 10px 12px !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-text-zone {
+        padding: 16px 18px 18px !important;
+        gap: 7px !important;
+        height: auto !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-headline {
+        font-size: 1.08rem !important;
+        line-height: 1.36 !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-body-copy {
+        font-size: 0.83rem !important;
+        line-height: 1.56 !important;
+      }
+
+      .plate-thumb-dock.is-visual-floating-dock {
+        left: 10px;
+        bottom: 8px;
+        max-width: calc(100% - 115px);
+      }
+
+      .visual-floating-step-wrap {
+        right: 10px;
+        bottom: 8px;
+      }
+
+      .clinical-pillars {
+        grid-template-columns: 1fr !important;
+        gap: 7px !important;
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -6667,6 +7016,7 @@
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <a id="btn-open-detail-studio" class="header-studio-btn" href="detail-pages-editor.html?page=director.html" title="현재 상세페이지 카드·문구·디자인 커스텀 스튜디오 열기">🎨 커스텀</a>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -6775,143 +7125,108 @@
     <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
         
-        <!-- PLATE 01: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate is-active-plate" data-fullscreen>
+        <!-- PLATE 01: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial is-active-plate" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">01</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="card_1_director.jpg?v=dir1only" alt="병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다" draggable="false" width="1280" height="714" fetchpriority="high">
-            <div class="clean-plate-scrim"></div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="card_1_director.jpg?v=dir1only" alt="병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다" draggable="false" itemprop="image" width="1280" height="714" fetchpriority="high">
             <div class="motion-video-stage is-clean-fx-overlay" data-frames="card_1_director.jpg?v=dir1only" data-duration="6" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="warm-breath-zoom" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 대표원장 심층 검사</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="card_1_director.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="card_1_director.jpg?v=dir1only" alt="안정위 대표원장" loading="lazy" draggable="false" width="1280" height="714">
-                    <span class="plate-thumb-label">안정위 대표원장</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_director_story1_enter.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_story1_enter.jpg?v=dir1only" alt="따뜻한 맞이" loading="lazy" draggable="false" width="1280" height="714">
-                    <span class="plate-thumb-label">따뜻한 맞이</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_director_consult.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_consult.jpg?v=dir1only" alt="1:1 심층 문진" loading="lazy" draggable="false" width="1280" height="714">
-                    <span class="plate-thumb-label">1:1 심층 문진</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">병명 뒤에 가려진 <span class="title-key-em">'당신의 일상'</span>부터 먼저 묻습니다</h2>
-                <p class="plate-caption-sub">자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- PLATE 02: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
-          <span class="tiny-card-num-badge">02</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story2_clean.jpg?v=dir1only" alt="손끝으로 읽어내는 '오장육부와 자율신경'의 파동" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 양 손목 정밀 진맥</span>
-                <h2 class="plate-caption-title">손끝으로 읽어내는 <span class="title-key-em">'오장육부와 자율신경'</span>의 파동</h2>
-                <p class="plate-caption-sub">창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- PLATE 03: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate">
-          <span class="tiny-card-num-badge">03</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story3_clean.jpg?v=dir1only" alt="체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 사상체질 & 학술 근거 로드맵</span>
-                <h2 class="plate-caption-title">체질 의학과 실제 학술 논문을 결합한 <span class="title-key-em">'맞춤 치료 지도'</span></h2>
-                <p class="plate-caption-sub">타고난 사상체질과 현대 임상 논문 근거를 결합해 왜 아팠는지, 어떻게 회복되는지 명확히 안내합니다.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- PLATE 04: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
-          <span class="tiny-card-num-badge">04</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story4_clean.jpg?v=dir1only" alt="모든 처방을 직접 달이는 '정통 시스템'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · 압력 탕전 & 정품 약재 사용</span>
-                <h2 class="plate-caption-title">모든 처방을 직접 달이는 <span class="title-key-em">'정통 시스템'</span></h2>
-                <p class="plate-caption-sub">국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 정성껏 달여냅니다.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- PLATE 05: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate">
-          <span class="tiny-card-num-badge">05</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_director_story5_no_director.jpg?v=dir1only" alt="실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="visual-sci-overlay">
+            <div class="plate-thumb-dock is-visual-floating-dock">
               
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">SCI급 국제학술지 검증</div>
-                <div class="sci-stat-label">한약 복용 전후 간·신장 안전성 및 항산화 활성 입증</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:96%"></div></div>
-              </div>
-              <div class="sci-stat-card">
-                <div class="sci-stat-num">국제 민족약리학회지 등재</div>
-                <div class="sci-stat-label">체질 맞춤 처방의 자율신경 회복 기전 검증</div>
-                <div class="sci-bar-track"><div class="sci-bar-fill" style="width:94%"></div></div>
-              </div>
+              <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="card_1_director.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="card_1_director.jpg?v=dir1only" alt="안정위 대표원장" loading="lazy" draggable="false" width="1280" height="714">
+                <span class="plate-thumb-label">안정위 대표원장</span>
+              </button>
+              <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_director_story1_enter.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="detail_director_story1_enter.jpg?v=dir1only" alt="따뜻한 맞이" loading="lazy" draggable="false" width="1280" height="714">
+                <span class="plate-thumb-label">따뜻한 맞이</span>
+              </button>
+              <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="detail_director_consult.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="detail_director_consult.jpg?v=dir1only" alt="1:1 심층 문진" loading="lazy" draggable="false" width="1280" height="714">
+                <span class="plate-thumb-label">1:1 심층 문진</span>
+              </button>
             </div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <span class="clean-step-label">STORY · SCI급 학술 논문 검수 완료</span>
-                <div class="plate-thumb-dock">
-                  
-                  <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_director_story5_no_director.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="detail_director_story5_no_director.jpg?v=dir1only" alt="온 가족 안심 한약" loading="lazy" draggable="false" width="1280" height="714">
-                    <span class="plate-thumb-label">온 가족 안심 한약</span>
-                  </button>
-                  <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="ba_director_after.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
-                    <img class="plate-thumb-preview" src="ba_director_after.jpg?v=dir1only" alt="SCI급 안전성 입증" loading="lazy" draggable="false" width="1280" height="714">
-                    <span class="plate-thumb-label">SCI급 안전성 입증</span>
-                  </button>
-                </div>
-                <h2 class="plate-caption-title">실제 논문 검수로 안전성과 기전이 입증된 <span class="title-key-em">'맞춤 현대 한의학'</span></h2>
-                <p class="plate-caption-sub">학술 논문연구를 통한 안전성이 입증된 한약만을 처방합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">병명 뒤에 가려진 <span class="title-key-em hl-gold">'당신의 일상'</span>부터 먼저 묻습니다</h2>
+            <p class="editorial-body-copy" itemprop="description">자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 06: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 01) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-1" data-fullscreen data-exam-id="1">
+        <!-- PLATE 02: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">02</span>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="detail_director_story2_clean.jpg?v=dir1only" alt="손끝으로 읽어내는 '오장육부와 자율신경'의 파동" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">손끝으로 읽어내는 <span class="title-key-em hl-gold">'오장육부와 자율신경'</span>의 파동</h2>
+            <p class="editorial-body-copy" itemprop="description">창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.</p>
+          </div>
+        </article>
+
+        <!-- PLATE 03: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">03</span>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="detail_director_story3_clean.jpg?v=dir1only" alt="체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">체질 의학과 실제 학술 논문을 결합한 <span class="title-key-em hl-gold">'맞춤 치료 지도'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">타고난 사상체질과 현대 임상 논문 근거를 결합해 왜 아팠는지, 어떻게 회복되는지 명확히 안내합니다.</p>
+          </div>
+        </article>
+
+        <!-- PLATE 04: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">04</span>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="detail_director_story4_clean.jpg?v=dir1only" alt="모든 처방을 직접 달이는 '정통 시스템'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">모든 처방을 직접 달이는 <span class="title-key-em hl-gold">'정통 시스템'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 정성껏 달여냅니다.</p>
+          </div>
+        </article>
+
+        <!-- PLATE 05: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">05</span>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="detail_director_story5_no_director.jpg?v=dir1only" alt="실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'" draggable="false" itemprop="image" width="1280" height="714">
+            <div class="plate-thumb-dock is-visual-floating-dock">
+              
+              <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="detail_director_story5_no_director.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="detail_director_story5_no_director.jpg?v=dir1only" alt="온 가족 안심 한약" loading="lazy" draggable="false" width="1280" height="714">
+                <span class="plate-thumb-label">온 가족 안심 한약</span>
+              </button>
+              <button type="button" class="plate-thumb-btn" data-mode="clean" data-img="ba_director_after.jpg?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
+                <img class="plate-thumb-preview" src="ba_director_after.jpg?v=dir1only" alt="SCI급 안전성 입증" loading="lazy" draggable="false" width="1280" height="714">
+                <span class="plate-thumb-label">SCI급 안전성 입증</span>
+              </button>
+            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">실제 논문 검수로 안전성과 기전이 입증된 <span class="title-key-em hl-gold">'맞춤 현대 한의학'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">학술 논문연구를 통한 안전성이 입증된 한약만을 처방합니다.</p>
+          </div>
+        </article>
+
+        <!-- PLATE 06: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 01) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-1 has-separated-editorial" data-fullscreen data-exam-id="1" itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">06</span>
-          <div class="plate-media-inner exam-media-stage">
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card1_ultrasound.jpg?v=dir1only" alt="보이지 않는 통증과 오장육부 속까지 살피는 — '정밀 초음파 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card1_ultrasound.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-1" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-1" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -6977,7 +7292,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#10B981;box-shadow:0 0 10px #10B981;"></span>
@@ -6988,7 +7302,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7025,32 +7338,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">보이지 않는 통증과 오장육부 속까지 살피는 — <span class="title-key-em">'정밀 초음파 검사'</span></h2>
-                <p class="plate-caption-sub">근육·인대·관절의 심부 통증 부위부터 간·담낭·위장·방광 등 오장육부의 상태까지 방사선 노출 없이 실시간 영상으로 정밀하게 확인합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">보이지 않는 통증과 오장육부 속까지 살피는 — <span class="title-key-em hl-gold">'정밀 초음파 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">근육·인대·관절의 심부 통증 부위부터 간·담낭·위장·방광 등 오장육부의 상태까지 방사선 노출 없이 실시간 영상으로 정밀하게 확인합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 07: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 02) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-2" data-fullscreen data-exam-id="2">
+        <!-- PLATE 07: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 02) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-2 has-separated-editorial" data-fullscreen data-exam-id="2" itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">07</span>
-          <div class="plate-media-inner exam-media-stage">
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card2_thermography.jpg?v=dir1only" alt="면역력 · 혈액순환 · 생식기능의 온도를 읽는 — '적외선 체열진단기 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card2_thermography.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-2" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-2" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7106,7 +7413,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#F59E0B;box-shadow:0 0 10px #F59E0B;"></span>
@@ -7117,7 +7423,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7154,32 +7459,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">면역력 · 혈액순환 · 생식기능의 온도를 읽는 — <span class="title-key-em">'적외선 체열진단기 검사'</span></h2>
-                <p class="plate-caption-sub">상체로 몰린 열독과 손발·하복부의 냉증을 체표 온도 분포로 시각화하여 면역 저하, 혈액순환 정체, 자궁·전립선 생식기능 이상을 정확히 진단합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">면역력 · 혈액순환 · 생식기능의 온도를 읽는 — <span class="title-key-em hl-gold">'적외선 체열진단기 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">상체로 몰린 열독과 손발·하복부의 냉증을 체표 온도 분포로 시각화하여 면역 저하, 혈액순환 정체, 자궁·전립선 생식기능 이상을 정확히 진단합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 08: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 03) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-3" data-fullscreen data-exam-id="3">
+        <!-- PLATE 08: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 03) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-3 has-separated-editorial" data-fullscreen data-exam-id="3" itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">08</span>
-          <div class="plate-media-inner exam-media-stage">
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card3_ent_endoscope.jpg?v=dir1only" alt="귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — '이비인후 내시경 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card3_ent_endoscope.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-3" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-3" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7228,7 +7527,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#38BDF8;box-shadow:0 0 10px #38BDF8;"></span>
@@ -7239,7 +7537,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7276,32 +7573,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — <span class="title-key-em">'이비인후 내시경 검사'</span></h2>
-                <p class="plate-caption-sub">중이염 고막 상태, 비염·축농증으로 부어오른 코 점막, 편도와 인후두 충혈까지 고화질 내시경으로 세밀하게 관찰해 호흡기 질환의 뿌리를 찾습니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — <span class="title-key-em hl-gold">'이비인후 내시경 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">중이염 고막 상태, 비염·축농증으로 부어오른 코 점막, 편도와 인후두 충혈까지 고화질 내시경으로 세밀하게 관찰해 호흡기 질환의 뿌리를 찾습니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 09: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 04) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-4" data-fullscreen data-exam-id="4">
+        <!-- PLATE 09: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 04) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-4 has-separated-editorial" data-fullscreen data-exam-id="4" itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">09</span>
-          <div class="plate-media-inner exam-media-stage">
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card4_sasang_constitution.jpg?v=dir1only" alt="타고난 장부의 강약과 평생의 체질을 판별하는 — '사상체질 정밀 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card4_sasang_constitution.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-4" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-4" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7351,7 +7642,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#D4AF37;box-shadow:0 0 10px #D4AF37;"></span>
@@ -7362,7 +7652,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7399,32 +7688,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">타고난 장부의 강약과 평생의 체질을 판별하는 — <span class="title-key-em">'사상체질 정밀 검사'</span></h2>
-                <p class="plate-caption-sub">체형·성정·체질 분석과 대표원장의 정밀 맥진·복진을 결합하여 태양·태음·소양·소음 사상체질을 진단하고 내 몸에 꼭 맞는 맞춤 한약을 설계합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">타고난 장부의 강약과 평생의 체질을 판별하는 — <span class="title-key-em hl-gold">'사상체질 정밀 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">체형·성정·체질 분석과 대표원장의 정밀 맥진·복진을 결합하여 태양·태음·소양·소음 사상체질을 진단하고 내 몸에 꼭 맞는 맞춤 한약을 설계합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 010: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 05) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-5" data-fullscreen data-exam-id="5">
-          <span class="tiny-card-num-badge">010</span>
-          <div class="plate-media-inner exam-media-stage">
+        <!-- PLATE 10: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 05) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-5 has-separated-editorial" data-fullscreen data-exam-id="5" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">10</span>
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card5_bodyfat_inbody.jpg?v=dir1only" alt="소아비만부터 성인 복부비만·근육량까지 분석하는 — '체지방 · 체성분 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card5_bodyfat_inbody.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-5" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-5" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7475,7 +7758,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#10B981;box-shadow:0 0 10px #10B981;"></span>
@@ -7486,7 +7768,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7523,32 +7804,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">소아비만부터 성인 복부비만·근육량까지 분석하는 — <span class="title-key-em">'체지방 · 체성분 검사'</span></h2>
-                <p class="plate-caption-sub">체지방률과 복부 내장지방 레벨, 골격근량, 체수분 부종 밸런스를 정밀 계측하여 성장기 소아비만 관리와 근손실 없는 복부비만 감량 계획을 세웁니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">소아비만부터 성인 복부비만·근육량까지 분석하는 — <span class="title-key-em hl-gold">'체지방 · 체성분 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">체지방률과 복부 내장지방 레벨, 골격근량, 체수분 부종 밸런스를 정밀 계측하여 성장기 소아비만 관리와 근손실 없는 복부비만 감량 계획을 세웁니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 011: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 06) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-6" data-fullscreen data-exam-id="6">
-          <span class="tiny-card-num-badge">011</span>
-          <div class="plate-media-inner exam-media-stage">
+        <!-- PLATE 11: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 06) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-6 has-separated-editorial" data-fullscreen data-exam-id="6" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">11</span>
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card6_autonomic_hrv.jpg?v=dir1only" alt="두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — '자율신경 · 스트레스 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card6_autonomic_hrv.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-6" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-6" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7581,7 +7856,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#38BDF8;box-shadow:0 0 10px #38BDF8;"></span>
@@ -7592,7 +7866,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7629,32 +7902,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — <span class="title-key-em">'자율신경 · 스트레스 검사'</span></h2>
-                <p class="plate-caption-sub">심박변이도(HRV)와 자율신경 활성도를 측정해 교감신경 과열과 부교감신경 저하를 파악하고, 만성 두통·어지럼증·불면증의 근본 원인을 다스립니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — <span class="title-key-em hl-gold">'자율신경 · 스트레스 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">심박변이도(HRV)와 자율신경 활성도를 측정해 교감신경 과열과 부교감신경 저하를 파악하고, 만성 두통·어지럼증·불면증의 근본 원인을 다스립니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 012: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 07) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-7" data-fullscreen data-exam-id="7">
-          <span class="tiny-card-num-badge">012</span>
-          <div class="plate-media-inner exam-media-stage">
+        <!-- PLATE 12: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 07) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-7 has-separated-editorial" data-fullscreen data-exam-id="7" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">12</span>
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card7_endocrine_liver_glucose.jpg?v=dir1only" alt="대사질환 관리와 안전한 한약 처방을 위한 — '내분비 · 간 및 당 수치 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card7_endocrine_liver_glucose.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-7" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-7" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7689,7 +7956,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#10B981;box-shadow:0 0 10px #10B981;"></span>
@@ -7700,7 +7966,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7737,32 +8002,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">대사질환 관리와 안전한 한약 처방을 위한 — <span class="title-key-em">'내분비 · 간 및 당 수치 검사'</span></h2>
-                <p class="plate-caption-sub">한약 복용 전후 간 기능 수치(AST·ALT)와 혈당·당화혈색소·지질 대사 지표를 정밀하게 점검하여 대사질환을 관리하고 간 부담 없는 안심 처방을 시행합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">대사질환 관리와 안전한 한약 처방을 위한 — <span class="title-key-em hl-gold">'내분비 · 간 및 당 수치 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">한약 복용 전후 간 기능 수치(AST·ALT)와 혈당·당화혈색소·지질 대사 지표를 정밀하게 점검하여 대사질환을 관리하고 간 부담 없는 안심 처방을 시행합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 013: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 08) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-8" data-fullscreen data-exam-id="8">
-          <span class="tiny-card-num-badge">013</span>
-          <div class="plate-media-inner exam-media-stage">
+        <!-- PLATE 13: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 08) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-8 has-separated-editorial" data-fullscreen data-exam-id="8" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">13</span>
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card8_vascular_toxin.jpg?v=dir1only" alt="혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — '말초 혈관 상태 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card8_vascular_toxin.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-8" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-8" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7799,7 +8058,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#F43F5E;box-shadow:0 0 10px #F43F5E;"></span>
@@ -7810,7 +8068,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7847,32 +8104,26 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — <span class="title-key-em">'말초 혈관 상태 검사'</span></h2>
-                <p class="plate-caption-sub">가속도 맥파로 혈관 탄성도와 말초 혈액순환 속도, 혈관 내 어혈·독소 정체 정도를 단계별로 분석하여 손발 저림·수족냉증·만성 피로를 조기에 다스립니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — <span class="title-key-em hl-gold">'말초 혈관 상태 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">가속도 맥파로 혈관 탄성도와 말초 혈액순환 속도, 혈관 내 어혈·독소 정체 정도를 단계별로 분석하여 손발 저림·수족냉증·만성 피로를 조기에 다스립니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 014: Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 09) -->
-        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-9" data-fullscreen data-exam-id="9">
-          <span class="tiny-card-num-badge">014</span>
-          <div class="plate-media-inner exam-media-stage">
+        <!-- PLATE 14: Sample A Separated Director 9-Core Diagnostic Examination Cinema Motion Plate (Exam 09) -->
+        <article class="project-details-item is-image is-clean-plate is-director-exam-plate exam-theme-9 has-separated-editorial" data-fullscreen data-exam-id="9" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <span class="tiny-card-num-badge">14</span>
+          <figure class="plate-media-inner exam-media-stage pure-visual-zone">
             <div class="exam-photo-kenburns-wrap">
               <img class="lusion-clean-media exam-living-photo" src="director_exam_card9_growth_check.jpg?v=dir1only" alt="성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'" draggable="false" width="1280" height="714">
             </div>
             <div class="exam-cinema-scrim"></div>
 
-            <!-- 60fps Retina Particle & Wave Shader Canvas Layer -->
             <div class="motion-video-stage is-clean-fx-overlay is-exam-shader-stage" data-frames="director_exam_card9_growth_check.jpg?v=dir1only" data-duration="6.0" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="exam-retina-shader-9" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
 
-            <!-- Infinite-Resolution SVG Holographic Medical Vector Motion Layer -->
             <div class="exam-svg-motion-wrap" aria-hidden="true">
               
             <svg class="exam-vector-svg exam-svg-9" viewBox="0 0 960 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -7916,7 +8167,6 @@
             </svg>
             </div>
 
-            <!-- Top Glassmorphic Medical HUD Bar -->
             <div class="exam-top-hud-bar">
               <span class="exam-hud-badge">
                 <span class="exam-live-dot" style="background:#D4AF37;box-shadow:0 0 10px #D4AF37;"></span>
@@ -7927,7 +8177,6 @@
               </span>
             </div>
 
-            <!-- Lower-Middle 3-Column Glassmorphic Live Biometric Telemetry Dock -->
             <div class="exam-biometric-dock">
               
               <div class="exam-bio-card">
@@ -7964,42 +8213,30 @@
                 </div>
               </div>
             </div>
-
-            <!-- Main + Sub Text Caption -->
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — <span class="title-key-em">'소아 · 청소년 성장 검사'</span></h2>
-                <p class="plate-caption-sub">무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 골든타임을 찾아냅니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — <span class="title-key-em hl-gold">'소아 · 청소년 성장 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 골든타임을 찾아냅니다.</p>
           </div>
         </article>
 
-        <!-- EMBEDDED FULL-STAGE SCROLL-DRIVEN 3D BEFORE -> AFTER BIOMEDICAL SCAN PLATE (Omitted on diet-zero.html, chuna.html, and growth.html where Card 04 is the Before/After Scan Plate and Card 09 is the Trouble Scene Card) -->
-        <article class="project-details-item is-image is-clean-plate" id="runway-scroll-ba-plate" data-fullscreen>
+        <!-- PLATE 15: Sample A Separated Before/After Biomedical Scan Plate -->
+        <article class="project-details-item is-image is-clean-plate is-ba-scan-plate has-separated-editorial" id="runway-scroll-ba-plate" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">15</span>
-          <div class="plate-media-inner" id="runway-ba-stage" style="position:relative;overflow:hidden;">
-            <img class="lusion-clean-media" id="runway-ba-before-img" src="ba_chuna_before.jpg" alt="치료 전 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
-            <div id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
-              <img class="lusion-clean-media" id="runway-ba-after-img" src="ba_chuna_after.jpg" alt="치료 후 생체 비교" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
+          <figure class="plate-media-inner pure-visual-zone" id="runway-ba-stage" style="position:relative;overflow:hidden;">
+            <img class="lusion-clean-media runway-ba-before-img" id="runway-ba-before-img" src="ba_director_before.jpg" alt="안정위 대표원장 — '치료 전·후 비교'" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
+            <div class="runway-ba-after-clip" id="runway-ba-after-clip" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 50% 0 0);pointer-events:none;will-change:clip-path;">
+              <img class="lusion-clean-media runway-ba-after-img" id="runway-ba-after-img" src="ba_director_after.jpg" alt="안정위 대표원장 — '치료 전·후 비교'" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" width="1280" height="714">
             </div>
-            <div id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <div class="clean-spec-tags">
-                  <span class="clean-spec-tag" id="runway-ba-tag-b">BEFORE · 치료 전</span>
-                  <span class="clean-spec-tag" id="runway-ba-tag-a" style="border-color:rgba(110,231,183,0.6);color:#A7F3D0;">AFTER · 치료 후</span>
-                  <span class="clean-spec-tag" style="border-color:rgba(253,230,138,0.65);color:#FDE68A;">🔄 전·후 변화 자동 반복</span>
-                </div>
-                <h2 class="plate-caption-title">안정위 대표원장 — 치료 전·후 비교</h2>
-                <p class="plate-caption-sub">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
-              </div>
-            </div>
+            <div class="runway-ba-laser" id="runway-ba-laser" style="position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,#6EE7B7,#FFFFFF,#D4AF37,transparent);box-shadow:0 0 22px rgba(110,231,183,0.95);transform:translateX(-50%);z-index:6;pointer-events:none;"></div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">안정위 대표원장 — <span class="title-key-em hl-gold">'치료 전·후 비교'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.</p>
           </div>
         </article>
 
-        <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
+        <!-- LAST CARD: Minimalist Honey-Tip Card Linked to 3D Body Model -->
         
         <article id="project-details-preview" class="body-model-last-card">
           <span class="tiny-card-num-badge">16</span>
@@ -8394,11 +8631,14 @@
 
       window.applyInlineScrollBaPct = function(pct) {
         const c = Math.max(6, Math.min(96, pct));
-        const raClip = document.getElementById('runway-ba-after-clip');
-        const rLaser = document.getElementById('runway-ba-laser');
-
-        if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
-        if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
+        const clipVal = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        const leftVal = c.toFixed(1) + '%';
+        document.querySelectorAll('.runway-ba-after-clip, #runway-ba-after-clip').forEach(function(el) {
+          el.style.clipPath = clipVal;
+        });
+        document.querySelectorAll('.runway-ba-laser, #runway-ba-laser').forEach(function(el) {
+          el.style.left = leftVal;
+        });
       };
 
       function setDetailBaPct(pct) {
@@ -8471,6 +8711,14 @@
         const nextIdx = (VIS_MODES.indexOf(currentVisMode) + 1) % VIS_MODES.length;
         applyDetailVisMode(VIS_MODES[nextIdx]);
       };
+
+      (function initLocalStudioQuickLink() {
+        const h = window.location.hostname;
+        if (h === 'localhost' || h === '127.0.0.1') {
+          const stBtn = document.getElementById('btn-open-detail-studio');
+          if (stBtn) stBtn.style.display = 'inline-flex';
+        }
+      })();
 
       (function initDetailBrandAndMode() {
         const cfg = window.CLINIC_TEMPLATE_CONFIG || {};
@@ -8881,7 +9129,7 @@
 
       wrapper.addEventListener('pointerdown', (e) => {
         if (window.innerWidth <= 1024) return;
-        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -9042,7 +9290,7 @@
           plate.style.cursor = 'pointer';
           plate.addEventListener('click', (e) => {
             if (window.innerWidth <= 1024) return;
-            if (e.target.closest('button, a, video, .concierge-video-frame')) return;
+            if (e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box')) return;
             if (Math.abs(touchAccumDelta) > 14) return;
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
@@ -11427,7 +11675,7 @@
             const distY = (rect.top + rect.height * 0.5) - vpCenterY;
             if (Math.abs(distY) < minDistance) { minDistance = Math.abs(distY); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               cleanMedia.style.transform = 'none';
             }
           });
@@ -11466,7 +11714,7 @@
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               if (cleanMedia.classList.contains('is-contain-fit') || cleanMedia.classList.contains('is-video-contain-fit')) {
                 cleanMedia.style.transform = 'none';
               } else {

@@ -376,6 +376,231 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // === BEGIN 11 DETAIL PAGES CUSTOM STUDIO API ===
+  if (reqPath === '/api/upload-detail-image' && req.method === 'POST') {
+    const chunks = [];
+    let totalBytes = 0;
+    const MAX_BYTES = 35 * 1024 * 1024;
+    req.on('data', chunk => {
+      totalBytes += chunk.length;
+      if (totalBytes <= MAX_BYTES) chunks.push(chunk);
+    });
+    req.on('end', () => {
+      try {
+        if (totalBytes > MAX_BYTES) {
+          throw new Error('업로드 파일 용량이 너무 큽니다 (최대 25MB 이하 권장).');
+        }
+        const payload = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+        const origName = String(payload.fileName || 'image.jpg');
+        const dataUrl = String(payload.dataUrl || '');
+        const match = dataUrl.match(/^data:(image\/(?:jpeg|jpg|png|webp|gif|svg\+xml)|video\/mp4);base64,(.+)$/i);
+        if (!match) {
+          throw new Error('지원되는 이미지(JPG, PNG, WEBP, GIF, SVG) 또는 MP4 파일 형식이 아닙니다.');
+        }
+        const mime = match[1].toLowerCase();
+        const b64 = match[2];
+        let ext = path.extname(origName).toLowerCase().replace(/[^.a-z0-9]/g, '');
+        if (!ext) {
+          if (mime.includes('png')) ext = '.png';
+          else if (mime.includes('webp')) ext = '.webp';
+          else if (mime.includes('gif')) ext = '.gif';
+          else if (mime.includes('svg')) ext = '.svg';
+          else if (mime.includes('mp4')) ext = '.mp4';
+          else ext = '.jpg';
+        }
+        const baseRaw = path.basename(origName, path.extname(origName))
+          .replace(/[^a-zA-Z0-9_-]/g, '_')
+          .replace(/_+/g, '_')
+          .replace(/^_|_$/g, '')
+          .slice(0, 36) || 'asset';
+        const savedName = `detail_custom_${Date.now()}_${baseRaw}${ext}`;
+        const outPath = path.join(__dirname, savedName);
+        fs.writeFileSync(outPath, Buffer.from(b64, 'base64'));
+
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({
+          ok: true,
+          fileName: savedName,
+          url: savedName,
+          message: `파일 업로드 완료: ${savedName}`
+        }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  if (reqPath === '/api/detail-pages-config') {
+    const detailCfgPath = path.join(__dirname, 'detail-pages-config.json');
+    const detailDefPath = path.join(__dirname, 'detail-pages-config.default.json');
+
+    const listLocalMedia = () => {
+      try {
+        const all = fs.readdirSync(__dirname);
+        const imgs = all.filter(f => /\.(?:jpg|jpeg|png|webp|gif|svg)$/i.test(f));
+        const vids = all.filter(f => /\.mp4$/i.test(f));
+        imgs.sort((a, b) => {
+          const aCustom = a.startsWith('detail_custom_') ? 0 : (a.startsWith('detail_') ? 1 : 2);
+          const bCustom = b.startsWith('detail_custom_') ? 0 : (b.startsWith('detail_') ? 1 : 2);
+          if (aCustom !== bCustom) return aCustom - bCustom;
+          return a.localeCompare(b);
+        });
+        vids.sort();
+        return { availableImages: imgs, availableVideos: vids };
+      } catch (e) {
+        return { availableImages: [], availableVideos: [] };
+      }
+    };
+
+    if (req.method === 'GET') {
+      try {
+        const targetRead = fs.existsSync(detailCfgPath) ? detailCfgPath : detailDefPath;
+        if (!fs.existsSync(targetRead)) {
+          throw new Error('detail-pages-config.json 설정 파일을 찾을 수 없습니다.');
+        }
+        const cfg = JSON.parse(fs.readFileSync(targetRead, 'utf8'));
+        const media = listLocalMedia();
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        });
+        res.end(JSON.stringify({ ok: true, config: cfg, ...media }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      const chunks = [];
+      req.on('data', chunk => chunks.push(chunk));
+      req.on('end', () => {
+        const prevBackup = fs.existsSync(detailCfgPath) ? fs.readFileSync(detailCfgPath, 'utf8') : null;
+        try {
+          const payload = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+          const action = payload.action || 'save_build_one';
+          const targetPage = String(payload.targetPage || '').trim();
+
+          if (action === 'reset_all') {
+            if (!fs.existsSync(detailDefPath)) {
+              throw new Error('기본 설정 백업(detail-pages-config.default.json) 파일이 없습니다.');
+            }
+            const defRaw = fs.readFileSync(detailDefPath, 'utf8');
+            fs.writeFileSync(detailCfgPath, defRaw, 'utf8');
+            execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js')], { cwd: __dirname, timeout: 45000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({
+              ok: true,
+              config: JSON.parse(defRaw),
+              ...listLocalMedia(),
+              message: '11개 모든 상세페이지가 Sample A 초기 설정으로 복원되고 재제작되었습니다.'
+            }));
+            return;
+          }
+
+          if (action === 'reset_page') {
+            if (!fs.existsSync(detailDefPath)) {
+              throw new Error('기본 설정 백업(detail-pages-config.default.json) 파일이 없습니다.');
+            }
+            const defCfg = JSON.parse(fs.readFileSync(detailDefPath, 'utf8'));
+            const curCfg = fs.existsSync(detailCfgPath)
+              ? JSON.parse(fs.readFileSync(detailCfgPath, 'utf8'))
+              : JSON.parse(JSON.stringify(defCfg));
+            const defPage = (defCfg.pages || []).find(p => p.file === targetPage || p.slug === targetPage);
+            if (!defPage) {
+              throw new Error('초기화할 대상 상세페이지를 찾을 수 없습니다: ' + targetPage);
+            }
+            const idx = (curCfg.pages || []).findIndex(p => p.file === defPage.file || p.slug === defPage.slug);
+            if (idx >= 0) curCfg.pages[idx] = defPage;
+            else curCfg.pages.push(defPage);
+            curCfg.updatedAt = new Date().toISOString();
+            fs.writeFileSync(detailCfgPath, JSON.stringify(curCfg, null, 2) + '\n', 'utf8');
+            execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js'), `--page=${defPage.file}`], { cwd: __dirname, timeout: 30000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+            res.end(JSON.stringify({
+              ok: true,
+              config: curCfg,
+              ...listLocalMedia(),
+              message: `[${defPage.label}] 상세페이지를 Sample A 초기 상태로 복원하고 즉시 재제작했습니다.`
+            }));
+            return;
+          }
+
+          const nextCfg = payload.config;
+          if (!nextCfg || !Array.isArray(nextCfg.pages) || nextCfg.pages.length === 0) {
+            throw new Error('유효한 상세페이지 설정 데이터(pages)가 없습니다.');
+          }
+          nextCfg.updatedAt = new Date().toISOString();
+          fs.writeFileSync(detailCfgPath, JSON.stringify(nextCfg, null, 2) + '\n', 'utf8');
+
+          const buildSingleOnly = (action === 'save_build_one' || action === 'deploy_one') && Boolean(targetPage);
+          const buildArgs = [path.join(__dirname, 'build-story-detail-pages.js')];
+          if (buildSingleOnly) buildArgs.push(`--page=${targetPage}`);
+
+          execFileSync(process.execPath, buildArgs, { cwd: __dirname, timeout: 45000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+
+          const matchedPage = nextCfg.pages.find(p => p.file === targetPage || p.slug === targetPage) || nextCfg.pages[0];
+
+          if (action === 'deploy_one' || action === 'deploy_all') {
+            const deployArgs = [
+              path.join(__dirname, 'deploy-detail-page-fast.js'),
+              action === 'deploy_all' ? '--all' : `--slug=${matchedPage.slug}`
+            ];
+            const timeoutMs = action === 'deploy_all' ? 280000 : 120000;
+            execFile(process.execPath, deployArgs, { cwd: __dirname, timeout: timeoutMs }, (depErr, stdout, stderr) => {
+              if (depErr) {
+                res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+                res.end(JSON.stringify({
+                  ok: false,
+                  builtLocally: true,
+                  error: '로컬 파일 및 워드프레스 번들 생성은 완료되었으나 카페24 실서버 배포 중 오류가 발생했습니다: ' + (stderr || depErr.message)
+                }));
+                return;
+              }
+              res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+              res.end(JSON.stringify({
+                ok: true,
+                deployed: true,
+                config: nextCfg,
+                ...listLocalMedia(),
+                liveUrl: action === 'deploy_all' ? 'https://www.bareunhaniwon.com/' : matchedPage.liveUrl,
+                message: action === 'deploy_all'
+                  ? '11개 모든 상세페이지 로컬 제작 + 워드프레스 번들 + 카페24 실서버 일괄 배포가 완료되었습니다!'
+                  : `[${matchedPage.label}] 로컬 제작 및 카페24 실서버(${matchedPage.liveUrl}) 배포가 완료되었습니다!`
+              }));
+            });
+            return;
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            deployed: false,
+            config: nextCfg,
+            ...listLocalMedia(),
+            message: buildSingleOnly
+              ? `[${matchedPage.label}] 수정 사항이 ${matchedPage.file} 및 ${matchedPage.wpFile}에 즉시 반영되었습니다!`
+              : '11개 전체 상세페이지(.html + wordpress-*.html) 일괄 제작 반영이 완료되었습니다!'
+          }));
+        } catch (err) {
+          if (prevBackup !== null) {
+            try { fs.writeFileSync(detailCfgPath, prevBackup, 'utf8'); } catch (e) {}
+          }
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+  // === END 11 DETAIL PAGES CUSTOM STUDIO API ===
+
   // API Endpoint: Kakao Alimtalk Dispatch & Booking Recorder
   if (reqPath === '/api/send-alimtalk' && req.method === 'POST') {
     let body = '';
@@ -899,6 +1124,7 @@ server.listen(PORT, () => {
   console.log(`   - 3D Body Explorer:  http://localhost:${PORT}/body-explorer.html`);
   console.log(`   - 3D Menu Table Builder Studio: http://localhost:${PORT}/clinic-menu-editor.html`);
   console.log(`   - Before/After Compare Studio:  http://localhost:${PORT}/compare.html`);
+  console.log(`   - 11 Detail Pages Custom Studio: http://localhost:${PORT}/detail-pages-editor.html`);
 });
 
 // Companion Before Comparison Server on Port 3001 (auto-started together with serve.js)

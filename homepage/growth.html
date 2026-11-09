@@ -27,8 +27,6 @@
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/growth-director-son-comparison.webp" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","MedicalOrganization","LocalBusiness"],"@id":"https://www.bareunhaniwon.com/#clinic","name":"바른한의원 대전본점","alternateName":["Bareun Korean Medicine Clinic Daejeon","대전 바른한의원"],"url":"https://www.bareunhaniwon.com/","logo":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp","image":"https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg","telephone":"+82-10-5631-1275","priceRange":"₩₩","address":{"@type":"PostalAddress","streetAddress":"비래동로7번길 1, 2층","addressLocality":"대덕구","addressRegion":"대전광역시","postalCode":"34417","addressCountry":"KR"},"geo":{"@type":"GeoCoordinates","latitude":36.35536,"longitude":127.44778},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","PublicHolidays"],"opens":"09:00","closes":"14:00"}],"sameAs":["https://naver.me/5U1ELn8L","https://blog.naver.com/wei0508","https://pf.kakao.com/_ykxcLK"],"founder":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"대표원장 (한의사)"}},{"@type":"WebSite","@id":"https://www.bareunhaniwon.com/#website","name":"바른한의원 대전본점","url":"https://www.bareunhaniwon.com/","inLanguage":"ko-KR","publisher":{"@id":"https://www.bareunhaniwon.com/#clinic"}},{"@type":"MedicalWebPage","@id":"https://www.bareunhaniwon.com/growth/#webpage","url":"https://www.bareunhaniwon.com/growth/","name":"대전 소아 키성장 · 성조숙증 · 비염 성장클리닉 | 바른한의원 대전본점","description":"무방사선 초음파 성장판 정밀 검사와 국가공인 안심 한약으로 성호르몬 과항진 없이 성장판 연골 증식, 소아비만 대사 전환, 비염·구강호흡 면역을 함께 키우는 대전 소아 성장 클리닉입니다.","inLanguage":"ko-KR","isPartOf":{"@id":"https://www.bareunhaniwon.com/#website"},"about":{"@id":"https://www.bareunhaniwon.com/#clinic"},"reviewedBy":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)"},"lastReviewed":"2026-10-28"},{"@type":"BreadcrumbList","@id":"https://www.bareunhaniwon.com/growth/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"바른한의원 대전본점","item":"https://www.bareunhaniwon.com/"},{"@type":"ListItem","position":2,"name":"바른 성장 · 성조숙증","item":"https://www.bareunhaniwon.com/growth/"}]}]}</script>
 
-  
-
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +47,15 @@
       --border-subtle: rgba(255, 255, 255, 0.09);
       --border-gold: rgba(212, 175, 55, 0.35);
       --left-col-width: 455px;
+      --sa-bg-top: #1b1815;
+      --sa-bg-bot: #13110f;
+      --sa-border: rgba(197, 160, 89, 0.44);
+      --sa-divider: rgba(212, 175, 55, 0.36);
+      --sa-title-color: #fdfbf7;
+      --sa-hl-color: #f5d36c;
+      --sa-body-color: rgba(245, 240, 232, 0.84);
+      --sa-title-size: clamp(1.24rem, 1.62vw, 1.52rem);
+      --sa-body-size: 0.92rem;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -183,7 +190,35 @@
       font-weight: 800;
     }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+    #header .header-left,
+    #header .header-right {
+      flex-shrink: 0;
+    }
+    #header .header-center {
+      min-width: 0;
+      flex: 1 1 auto;
+      justify-content: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #header .header-center::-webkit-scrollbar { display: none; }
+    #header .back-pill-btn,
+    #header .clinic-tab,
+    #header .header-studio-btn,
+    #header .header-vis-btn,
+    #header .header-talk-btn {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    @media (max-width: 1560px) and (min-width: 1025px) {
+      #header { padding-left: 16px !important; padding-right: 16px !important; gap: 8px !important; }
+      #header .back-pill-btn { padding: 6px 10px !important; font-size: 0.74rem !important; }
+      #header .clinic-tab { padding: 5px 9px !important; font-size: 0.73rem !important; }
+      #header .header-vis-btn,
+      #header .header-studio-btn,
+      #header .header-talk-btn { padding: 6px 12px !important; font-size: 0.75rem !important; }
+    }
+    .header-right { display: flex; align-items: center; gap: 8px; }
 
     .header-talk-btn {
       display: inline-flex;
@@ -6628,6 +6663,320 @@
         font-size: 0.68rem;
       }
     }
+
+    /* ============================================================================
+       SAMPLE A: 상·하단 완전 분리형 에디토리얼 프레임 (SEO 100% 크롤링 & 순수 비주얼 보존)
+       ============================================================================ */
+    body.hide-card-num-badge .tiny-card-num-badge {
+      display: none !important;
+    }
+
+    .project-details-item.has-separated-editorial {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 22px;
+      background: var(--sa-bg-bot, #13110f) !important;
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.44)) !important;
+      box-shadow: 0 28px 68px rgba(10, 8, 6, 0.42);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial {
+      border: 2px solid var(--sa-border, rgba(197, 160, 89, 0.46)) !important;
+      box-shadow: 0 26px 62px rgba(45, 34, 24, 0.24);
+    }
+
+    .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #D4AF37 !important;
+      box-shadow: 0 32px 80px rgba(10, 8, 6, 0.55), 0 0 0 1px rgba(245, 211, 108, 0.28);
+    }
+
+    body.theme-hanji .project-details-item.has-separated-editorial.is-active-plate {
+      border-color: #2D5A43 !important;
+      box-shadow: 0 30px 72px rgba(45, 90, 67, 0.24), 0 0 0 2px rgba(45, 90, 67, 0.16);
+    }
+
+    /* 1. 상단 순수 비주얼 영역 (글자/어두운 그라데이션 0% - 피사체 100% 선명 노출) */
+    .project-details-item.has-separated-editorial .pure-visual-zone {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      overflow: hidden;
+      background: #14110e;
+      border-bottom: 1.5px solid var(--sa-divider, rgba(212, 175, 55, 0.36));
+    }
+
+    .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 14px 18px !important;
+      background: radial-gradient(circle at 50% 48%, #211b16 0%, #100d0a 100%);
+    }
+
+    .plate-thumb-dock.is-visual-floating-dock {
+      position: absolute;
+      left: 16px;
+      bottom: 12px;
+      z-index: 9;
+      margin-bottom: 0;
+      max-width: calc(100% - 148px);
+    }
+
+    .visual-floating-step-wrap {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      z-index: 9;
+      pointer-events: auto;
+    }
+
+    /* 대표원장 9대 정밀검진 모션 카드도 상단 비주얼을 깨끗하게 개방 */
+    .project-details-item.has-separated-editorial.is-director-exam-plate .exam-cinema-scrim {
+      background: radial-gradient(circle at 50% 42%, transparent 48%, rgba(6, 10, 15, 0.28) 100%) !important;
+    }
+
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-top-hud-bar,
+    body:not(.show-exam-hud) .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      display: none !important;
+    }
+
+    body.show-exam-hud .project-details-item.has-separated-editorial.is-director-exam-plate .exam-biometric-dock {
+      bottom: 14px !important;
+    }
+
+    /* 2. 하단 독립 에디토리얼 텍스트 영역 (SEO 크롤링 100% & 마우스 드래그 복사 지원) */
+    .project-details-item.has-separated-editorial .editorial-text-zone {
+      flex: 0 0 auto;
+      width: 100%;
+      background: linear-gradient(180deg, var(--sa-bg-top, #1b1815) 0%, var(--sa-bg-bot, #13110f) 100%);
+      padding: 20px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      cursor: text;
+      position: relative;
+      z-index: 5;
+    }
+
+    .editorial-text-zone,
+    .editorial-text-zone *,
+    .father-letter-box,
+    .father-letter-box *,
+    #project-details-desc,
+    #project-details-desc * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+
+    .editorial-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 1px;
+    }
+
+    .editorial-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--sa-hl-color, #e6c875);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .editorial-category::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D4AF37;
+      box-shadow: 0 0 8px #D4AF37;
+    }
+
+    .editorial-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: var(--sa-title-size, clamp(1.24rem, 1.62vw, 1.52rem));
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: -0.025em;
+      color: var(--sa-title-color, #fdfbf7);
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .editorial-headline .hl-gold,
+    .editorial-headline .title-key-em {
+      color: var(--sa-hl-color, #f5d36c) !important;
+      background: linear-gradient(180deg, transparent 62%, rgba(212, 175, 55, 0.24) 62%);
+      padding: 0 2px;
+      text-decoration: none !important;
+    }
+
+    .editorial-body-copy {
+      font-size: var(--sa-body-size, 0.92rem);
+      line-height: 1.64;
+      color: var(--sa-body-color, rgba(245, 240, 232, 0.84));
+      font-weight: 400;
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .clinical-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pillar-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pillar-item .pillar-num {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #D4AF37;
+      letter-spacing: 0.06em;
+    }
+
+    .pillar-item strong {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fdfbf7;
+      line-height: 1.3;
+    }
+
+    .pillar-item span {
+      font-size: 0.73rem;
+      color: rgba(245, 240, 232, 0.72);
+      line-height: 1.4;
+    }
+
+    .seo-keyword-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin-top: 2px;
+      padding: 0;
+    }
+
+    .seo-keyword-footer li {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(230, 200, 117, 0.92);
+      background: rgba(212, 175, 55, 0.09);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* 큰글씨 고시안성 모드 대응 */
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-headline {
+      font-size: 1.56rem !important;
+      line-height: 1.38 !important;
+    }
+
+    body.high-visibility-mode .project-details-item.has-separated-editorial .editorial-body-copy {
+      font-size: 1.02rem !important;
+      line-height: 1.68 !important;
+      color: #FFFFFF !important;
+    }
+
+    /* 로컬 전용 페이지 커스텀 스튜디오 바로가기 버튼 */
+    .header-studio-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+      border: 1px solid #FEF08A;
+      color: #120E0A !important;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .header-studio-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55);
+    }
+
+    /* 모바일·태블릿 세로형 완벽 최적화 (이미지 찌그러짐 및 하단 글자 잘림 0%) */
+    @media (max-width: 1024px) {
+      .project-details-item.has-separated-editorial,
+      .project-details-item.has-separated-editorial[data-fullscreen] {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .project-details-item.has-separated-editorial .pure-visual-zone {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 10 !important;
+        min-height: 215px !important;
+        flex: none !important;
+      }
+
+      .project-details-item.has-separated-editorial .lusion-clean-media.is-contain-fit {
+        padding: 10px 12px !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-text-zone {
+        padding: 16px 18px 18px !important;
+        gap: 7px !important;
+        height: auto !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-headline {
+        font-size: 1.08rem !important;
+        line-height: 1.36 !important;
+      }
+
+      .project-details-item.has-separated-editorial .editorial-body-copy {
+        font-size: 0.83rem !important;
+        line-height: 1.56 !important;
+      }
+
+      .plate-thumb-dock.is-visual-floating-dock {
+        left: 10px;
+        bottom: 8px;
+        max-width: calc(100% - 115px);
+      }
+
+      .visual-floating-step-wrap {
+        right: 10px;
+        bottom: 8px;
+      }
+
+      .clinical-pillars {
+        grid-template-columns: 1fr !important;
+        gap: 7px !important;
+      }
+    }
   </style>
   <script src="clinic-template-config.js"></script>
 </head>
@@ -6667,6 +7016,7 @@
     </div>
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <a id="btn-open-detail-studio" class="header-studio-btn" href="detail-pages-editor.html?page=growth.html" title="현재 상세페이지 카드·문구·디자인 커스텀 스튜디오 열기">🎨 커스텀</a>
       <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
         <span id="vis-mode-label">한지 베이지 (ON)</span>
       </button>
@@ -6685,7 +7035,7 @@
       <div>
         <div class="meta-eyebrow">PEDIATRIC GROWTH CLINIC · 학술 논문 검증 소아 성장·성조숙증</div>
         <h1 id="project-details-title">바른 성장 · 성조숙증</h1>
-        <div class="meta-subtitle-en">Evidence-Based Epiphyseal Chondrocyte &amp; Pediatric Immunity Care</div>
+        <div class="meta-subtitle-en">Evidence-Based Epiphyseal Chondrocyte & Pediatric Immunity Care</div>
 
         <div id="project-details-desc">
           <p>성호르몬 과항진 자극 없이 성장판 연골 증식과 호흡기·소화기 면역을 함께 깨웁니다. 학술 논문을 정밀 검수하여 안전성이 입증된 한방 성장 치료법을 시행합니다.</p>
@@ -6697,8 +7047,9 @@
             <span class="empathy-checklist-title">우리 아이 성장 · 성조숙증 체크리스트</span>
             <span class="empathy-count-badge" id="empathy-count-badge">증상 체크 전</span>
           </div>
-          <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 보세요.</p>
+          <p class="empathy-checklist-sub">내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요.</p>
           <div class="empathy-checklist-list" id="empathy-checklist-list">
+            
             <label class="empathy-check-item" data-idx="0">
               <input type="checkbox" class="empathy-check-input" value="[성장 속도 저하] 또래보다 작거나 최근 키가 자라는 속도가 눈에 띄게 더뎌졌다.">
               <span class="empathy-check-box">
@@ -6774,15 +7125,16 @@
     <!-- RIGHT HORIZONTAL CARD RUNWAY -->
     <section id="project-details-items-wrapper" aria-label="수평 카드 트랙">
       <div id="project-details-items-move-container">
+        
         <!-- PLATE 01: Director's Son Growth Enlarged Original Image Hero & Handwritten Pledge -->
         <article class="project-details-item is-growth-son-hero is-clean-plate is-active-plate" data-fullscreen>
+          <span class="tiny-card-num-badge">01</span>
           <div class="plate-media-inner growth-son-hero-inner">
             <div class="motion-video-stage is-son-ambient-stage" data-frames="growth-director-son.png" data-duration="6.4" style="background:transparent; pointer-events:none; z-index:0;">
               <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
             <div class="growth-son-hero-grid" style="position:relative; z-index:2;">
-              <!-- LEFT: UNEDITED ORIGINAL SON GROWTH IMAGE ENLARGED SHOWCASE -->
               <div class="son-growth-visual-col" onclick="event.stopPropagation(); window.openCleanLightbox('growth-director-son.png')" title="클릭하여 원본 이미지 전체화면 확대">
                 <div class="son-original-frame">
                   <img
@@ -6797,11 +7149,10 @@
                 </div>
               </div>
 
-              <!-- RIGHT: DIRECTOR'S HANDWRITTEN PLEDGE -->
-              <div class="father-letter-box">
+              <div class="father-letter-box" onclick="event.stopPropagation();">
                 <div class="letter-top-hero-banner">
                   <span class="son-live-badge"><span class="son-live-dot"></span>MAIN RECORD · 대표원장 친아들 실제 성장 스토리</span>
-                  <h2 class="son-hero-main-title">내 아이에게 먹이지 못할 약이라면, 세상 어떤 아이에게도 <span class="title-key-em">'처방하지 않습니다'</span></h2>
+                  <h2 class="son-hero-main-title">내 아이에게 먹이지 못할 약이라면, 세상 어떤 아이에게도 <span class="title-key-em hl-gold">'처방하지 않습니다'</span></h2>
                   <p class="son-hero-main-sub">안정위 대표원장이 친아들에게 직접 처방하며 입증한 바른 성장 한약입니다.</p>
                 </div>
 
@@ -6819,6 +7170,7 @@
                   체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."
                 </div>
                 <div class="letter-milestone-row">
+                  
                   <div class="letter-milestone-chip">
                     <span class="lm-label">기초 면역 리셋</span>
                     <strong class="lm-val">비염 개선 · 소화 흡수 정상화</strong>
@@ -6854,25 +7206,23 @@
           </div>
         </article>
 
-        <!-- PLATE 02: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 02: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">02</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_growth_story2_supplements_limit.jpg?v=grw2" alt="단순 칼슘·영양제만으로는 '닫혀가는 성장판과 면역 누수'를 막지 못합니다" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">단순 칼슘·영양제만으로는 <span class="title-key-em">'닫혀가는 성장판과 면역 누수'</span>를 막지 못합니다</h2>
-                <p class="plate-caption-sub">잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장판 연골 증식으로 에너지가 도달하지 못합니다.</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="detail_growth_story2_supplements_limit.jpg?v=grw2" alt="단순 칼슘·영양제만으로는 '닫혀가는 성장판과 면역 누수'를 막지 못합니다" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">단순 칼슘·영양제만으로는 <span class="title-key-em hl-gold">'닫혀가는 성장판과 면역 누수'</span>를 막지 못합니다</h2>
+            <p class="editorial-body-copy" itemprop="description">잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장판 연골 증식으로 에너지가 도달하지 못합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 03: Obese-to-Tall Step-by-Step Motion Card -->
-        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
+        <!-- PLATE 03: Sample A Separated Diet Single-Stage Motion Card -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">03</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
+            
             <div class="efficacy-visual-frame detox-frame is-full-stage-frame is-edema-wring-motion">
               <div class="edema-wring-seq-stage">
                 <img class="edema-seq-img seq-1" src="growth_minimal_card3_obese_to_tall_a.jpg?v=grw3v2" alt="물이 꽉 찬 부종 전신" loading="lazy" draggable="false" width="1280" height="714">
@@ -6897,20 +7247,18 @@
               </div>
               <div class="efficacy-motion-overlay"></div>
             </div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">소아비만 체지방 감량 &amp; 숨은 키 성장 — <span class="title-key-em">'살이 키로 가는 대사 전환으로 날씬해지면서 쑥쑥 크는 전신'</span></h2>
-                <p class="plate-caption-sub">성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장판 연골 증식에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">소아비만 체지방 감량 & 숨은 키 성장 — <span class="title-key-em hl-gold">'살이 키로 가는 대사 전환으로 날씬해지면서 쑥쑥 크는 전신'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장판 연골 증식에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 04: Short-to-Tall Step-by-Step Motion Card -->
-        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
+        <!-- PLATE 04: Sample A Separated Diet Single-Stage Motion Card -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">04</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
+            
             <div class="efficacy-visual-frame growth-tall-frame is-full-stage-frame is-growth-tall-motion">
               <div class="growth-tall-seq-stage">
                 <img class="growth-tall-seq-img seq-1" src="growth_minimal_card4_short_before.jpg?v=grw4v3" alt="또래보다 작던 키 (성장 전)" loading="lazy" draggable="false" width="1280" height="714">
@@ -6936,22 +7284,20 @@
               </div>
               <div class="efficacy-motion-overlay"></div>
             </div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">성장판 연골 증식 &amp; 수직 골격 성장 — <span class="title-key-em">'또래보다 작던 키에서 위로 쑥쑥 자라나는 폭풍 성장'</span></h2>
-                <p class="plate-caption-sub">성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여, 키가 작던 아이가 위로 훤칠하고 탄탄하게 성장합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">성장판 연골 증식 & 수직 골격 성장 — <span class="title-key-em hl-gold">'또래보다 작던 키에서 위로 쑥쑥 자라나는 폭풍 성장'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여, 키가 작던 아이가 위로 훤칠하고 탄탄하게 성장합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 05: Neuro-Sleep Motion Card -->
-        <article class="project-details-item is-diet-single-stage-plate is-clean-plate" data-fullscreen>
+        <!-- PLATE 05: Sample A Separated Diet Single-Stage Motion Card -->
+        <article class="project-details-item is-diet-single-stage-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">05</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
+            
             <div class="efficacy-visual-frame neuro-frame is-full-stage-frame">
-              <img src="growth-child-sleep.jpg" alt="성조숙증 호르몬 안정 &amp; 깊은 성장 숙면 — '성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'" loading="lazy" draggable="false" width="1280" height="714">
+              <img src="growth-child-sleep.jpg" alt="성조숙증 호르몬 안정 & 깊은 성장 숙면 — '성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'" loading="lazy" draggable="false" width="1280" height="714">
               <div class="electric-zap-layer" aria-hidden="true">
                 <div class="zap-pulse-core"></div>
                 <div class="zap-wave-ring"></div>
@@ -6969,85 +7315,71 @@
               </div>
               <div class="efficacy-motion-overlay"></div>
             </div>
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">성조숙증 호르몬 안정 &amp; 깊은 성장 숙면 — <span class="title-key-em">'성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'</span></h2>
-                <p class="plate-caption-sub">과열된 사춘기 성호르몬 신호와 야간 구강호흡·자율신경 긴장을 안정시켜 조기 골화를 늦추고 밤사이 성장호르몬 분비를 극대화합니다.</p>
-              </div>
-            </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">성조숙증 호르몬 안정 & 깊은 성장 숙면 — <span class="title-key-em hl-gold">'성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">과열된 사춘기 성호르몬 신호와 야간 구강호흡·자율신경 긴장을 안정시켜 조기 골화를 늦추고 밤사이 성장호르몬 분비를 극대화합니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 06: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 06: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">06</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="growth_minimal_card6_youth_athletes_v2.jpg?v=grw6v2" alt="다양한 운동분야에서 선수 준비하는 아이들 전용 - '스포츠 성장 클리닉'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">다양한 운동분야에서 선수 준비하는 아이들 전용 - <span class="title-key-em">'스포츠 성장 클리닉'</span></h2>
-                <p class="plate-caption-sub">펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 등 다양한 운동분야에서 엘리트 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 많이 내원하고 있습니다.</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="growth_minimal_card6_youth_athletes_v2.jpg?v=grw6v2" alt="다양한 운동분야에서 선수 준비하는 아이들 전용 - '스포츠 성장 클리닉'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">다양한 운동분야에서 선수 준비하는 아이들 전용 - <span class="title-key-em hl-gold">'스포츠 성장 클리닉'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 등 다양한 운동분야에서 엘리트 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 많이 내원하고 있습니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 07: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 07: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">07</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="growth_minimal_card7_ultrasound_noface.jpg?v=grw7v2" alt="방사선 노출 성장 엑스레이 검사는 이제 그만 - '안전한 초음파 검사'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">방사선 노출 성장 엑스레이 검사는 이제 그만 - <span class="title-key-em">'안전한 초음파 검사'</span></h2>
-                <p class="plate-caption-sub">걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="growth_minimal_card7_ultrasound_noface.jpg?v=grw7v2" alt="방사선 노출 성장 엑스레이 검사는 이제 그만 - '안전한 초음파 검사'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">방사선 노출 성장 엑스레이 검사는 이제 그만 - <span class="title-key-em hl-gold">'안전한 초음파 검사'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측</p>
           </div>
         </article>
 
-        <!-- PLATE 08: Single Main Image Plate -->
-        <article class="project-details-item is-image is-clean-plate" data-fullscreen>
+        <!-- PLATE 08: Sample A Separated Pure Image + Editorial Card -->
+        <article class="project-details-item is-image is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">08</span>
-          <div class="plate-media-inner">
-            <img class="lusion-clean-media" src="detail_growth_story5_tall_basketball.jpg?v=grw2" alt="골든타임에 완성하는 '또래보다 훤칠하고 탄탄한 성장 피지컬'" draggable="false" width="1280" height="714">
-            <div class="clean-plate-scrim"></div>
-            <div class="clean-plate-caption">
-              <div class="clean-plate-text">
-                <h2 class="plate-caption-title">골든타임에 완성하는 <span class="title-key-em">'또래보다 훤칠하고 탄탄한 성장 피지컬'</span></h2>
-                <p class="plate-caption-sub">호흡기·소화기 면역이 살아나고 성장판 연골 증식이 활발해지면 사춘기 끝까지 흔들림 없이 훤칠하고 바른 체격으로 자라납니다.</p>
-              </div>
-            </div>
+          <figure class="plate-media-inner pure-visual-zone">
+            <img class="lusion-clean-media" src="detail_growth_story5_tall_basketball.jpg?v=grw2" alt="골든타임에 완성하는 '또래보다 훤칠하고 탄탄한 성장 피지컬'" draggable="false" itemprop="image" width="1280" height="714">
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">골든타임에 완성하는 <span class="title-key-em hl-gold">'또래보다 훤칠하고 탄탄한 성장 피지컬'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">호흡기·소화기 면역이 살아나고 성장판 연골 증식이 활발해지면 사춘기 끝까지 흔들림 없이 훤칠하고 바른 체격으로 자라납니다.</p>
           </div>
         </article>
 
-        <!-- PLATE 09: Multi-Frame Motion Video Storytelling Stage -->
-        <article class="project-details-item is-motion-plate" data-fullscreen>
+        <!-- PLATE 09: Sample A Separated Multi-Frame Motion Video Storytelling Stage -->
+        <article class="project-details-item is-motion-plate is-clean-plate has-separated-editorial" data-fullscreen itemscope itemtype="https://schema.org/MedicalWebPage">
           <span class="tiny-card-num-badge">09</span>
-          <div class="plate-media-inner">
+          <figure class="plate-media-inner pure-visual-zone">
             <div class="motion-video-stage" data-frames="detail_growth_story1_wall_chart.jpg?v=grw1|detail_growth_story1_mouth_breathing.jpg?v=grw1|growth_minimal_card9_picky_eating.jpg?v=grw9" data-duration="6.6">
               <div class="motion-frame-layer frame-layer-a" style="background-image: url('detail_growth_story1_wall_chart.jpg?v=grw1');"></div>
               <div class="motion-frame-layer frame-layer-b" style="background-image: url('detail_growth_story1_mouth_breathing.jpg?v=grw1'); opacity: 0;"></div>
               <canvas class="plate-fx-canvas" data-fx="sunlight-bokeh"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>
             </div>
-            <div class="plate-gradient-scrim"></div>
-            <div class="plate-bottom-caption">
-              <div>
-                <h2 class="plate-caption-title">교실 맨 앞줄 작은 키 · 밤새 코 막힌 구강호흡 · 밥 안 먹는 편식 — <span class="title-key-em">'참 곤란하다'</span></h2>
-                <p class="plate-caption-sub">새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 골든타임이 흘러가 가장 애타고 곤란한 순간입니다.</p>
-              </div>
-              <div class="plate-action-group">
-                <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
-              </div>
+            <div class="visual-floating-step-wrap">
+              <button type="button" class="plate-step-btn" onclick="event.stopPropagation(); window.stepPlateFrame(this)">다음 장면 ⟳</button>
             </div>
+          </figure>
+          <div class="editorial-text-zone" onclick="event.stopPropagation();">
+            <h2 class="editorial-headline" itemprop="headline">교실 맨 앞줄 작은 키 · 밤새 코 막힌 구강호흡 · 밥 안 먹는 편식 — <span class="title-key-em hl-gold">'참 곤란하다'</span></h2>
+            <p class="editorial-body-copy" itemprop="description">새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 골든타임이 흘러가 가장 애타고 곤란한 순간입니다.</p>
           </div>
         </article>
 
-        <!-- LAST CARD (10th Card): Minimalist Honey-Tip Card Linked to 3D Body Model -->
+        <!-- LAST CARD: Minimalist Honey-Tip Card Linked to 3D Body Model -->
+        
         <article id="project-details-preview" class="body-model-last-card is-diet-body-extra-card" style="cursor:pointer;" onclick="if(!event.target.closest('a')){const a=this.querySelector('a');if(a)window.location.href=a.href;}">
           <span class="tiny-card-num-badge">10</span>
           <div class="diet-card10-3d-bg" id="diet-our-3d-body-stage" aria-hidden="true">
@@ -7418,11 +7750,14 @@
 
       window.applyInlineScrollBaPct = function(pct) {
         const c = Math.max(6, Math.min(96, pct));
-        const raClip = document.getElementById('runway-ba-after-clip');
-        const rLaser = document.getElementById('runway-ba-laser');
-
-        if (raClip) raClip.style.clipPath = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
-        if (rLaser) rLaser.style.left = c.toFixed(1) + '%';
+        const clipVal = 'inset(0 ' + (100 - c).toFixed(1) + '% 0 0)';
+        const leftVal = c.toFixed(1) + '%';
+        document.querySelectorAll('.runway-ba-after-clip, #runway-ba-after-clip').forEach(function(el) {
+          el.style.clipPath = clipVal;
+        });
+        document.querySelectorAll('.runway-ba-laser, #runway-ba-laser').forEach(function(el) {
+          el.style.left = leftVal;
+        });
       };
 
       function setDetailBaPct(pct) {
@@ -7495,6 +7830,14 @@
         const nextIdx = (VIS_MODES.indexOf(currentVisMode) + 1) % VIS_MODES.length;
         applyDetailVisMode(VIS_MODES[nextIdx]);
       };
+
+      (function initLocalStudioQuickLink() {
+        const h = window.location.hostname;
+        if (h === 'localhost' || h === '127.0.0.1') {
+          const stBtn = document.getElementById('btn-open-detail-studio');
+          if (stBtn) stBtn.style.display = 'inline-flex';
+        }
+      })();
 
       (function initDetailBrandAndMode() {
         const cfg = window.CLINIC_TEMPLATE_CONFIG || {};
@@ -7905,7 +8248,7 @@
 
       wrapper.addEventListener('pointerdown', (e) => {
         if (window.innerWidth <= 1024) return;
-        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
+        if (e.pointerType === 'touch' || e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box, #detail-daddy-intro-overlay, #gjd-panorama-viewport, #gjd-pano-thumbs-bar, #diet-our-3d-body-stage')) return;
         lastDetailInteractMs = performance.now();
         isDragging = true;
         touchInertiaVelX = 0;
@@ -8066,7 +8409,7 @@
           plate.style.cursor = 'pointer';
           plate.addEventListener('click', (e) => {
             if (window.innerWidth <= 1024) return;
-            if (e.target.closest('button, a, video, .concierge-video-frame')) return;
+            if (e.target.closest('button, a, video, .concierge-video-frame, .editorial-text-zone, .father-letter-box')) return;
             if (Math.abs(touchAccumDelta) > 14) return;
             const now = performance.now();
             if (now - lastPlateTapMs < 260) return;
@@ -10451,7 +10794,7 @@
             const distY = (rect.top + rect.height * 0.5) - vpCenterY;
             if (Math.abs(distY) < minDistance) { minDistance = Math.abs(distY); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               cleanMedia.style.transform = 'none';
             }
           });
@@ -10490,7 +10833,7 @@
             const dist = (plate.offsetLeft + plate.offsetWidth * 0.5) - viewportCenter;
             if (Math.abs(dist) < minDistance) { minDistance = Math.abs(dist); closestIdx = idx; }
             const cleanMedia = plate.querySelector('.lusion-clean-media');
-            if (cleanMedia && plate.id !== 'runway-scroll-ba-plate') {
+            if (cleanMedia && !plate.classList.contains('is-ba-scan-plate') && plate.id !== 'runway-scroll-ba-plate') {
               if (cleanMedia.classList.contains('is-contain-fit') || cleanMedia.classList.contains('is-video-contain-fit')) {
                 cleanMedia.style.transform = 'none';
               } else {

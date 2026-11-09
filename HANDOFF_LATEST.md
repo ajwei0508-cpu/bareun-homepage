@@ -1,7 +1,23 @@
 # 📋 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-09 v7.0 (① **상세페이지 이미지·글자 완전 분리형 SEO 하이엔드 카드 기획안 및 실물 샘플 3종(`sample_option_a_top_bottom.png`, `sample_option_b_split.png`, `sample_before_after_comparison.png`, `seo-card-sample.html`) 구축** · ② **다른 컴퓨터 인수인계 환경 세팅 완료**)
+> **최종 업데이트**: 2026-11-09 v7.1 (① **11개 전 상세페이지 Sample A 상·하단 완전 분리형 카드 일괄 적용 [하단 소제목·태그 없이 메인 제목+본문 설명만 정갈하게 노출]** · ② **11개 전 상세페이지 통합 실시간 커스텀 스튜디오(`detail-pages-editor.html`) + PC 이미지 업로드 + 원클릭 카페24 실서버 배포 파이프라인 구축 완료**)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
+
+---
+
+## 💎 000000000000000000000. 최신 완료 작업 요약 (2026-11-09 v7.1 · 11개 전 상세페이지 Sample A 일괄 적용 & 통합 커스텀 스튜디오 구축)
+
+1. **11개 모든 질환별 상세페이지에 Sample A (상단 순수 비주얼 + 하단 분리형 에디토리얼 박스) 전면 적용 (`homepage/build-story-detail-pages.js`, `homepage/detail-pages-config.json`)**:
+   - **적용 대상 11개 페이지 전체**: `director.html`, `chuna.html`, `growth.html`, `diet-zero.html`, `hairloss.html`, `hairloss-male.html`, `hairloss-alopecia.html`, `hairloss-female.html`, `hairloss-seborrheic.html`, `gongjindan.html`, `prostate.html` 및 대응 `wordpress-*.html` 번들 전체.
+   - **상단 순수 비주얼 영역 (`.pure-visual-zone`)**: 기존 사진 위를 가리던 어두운 그라데이션 스크림과 텍스트 캡션을 100% 제거하여 의학 일러스트·원내 사진·전후 스캔 영상이 가림 없이 선명하게 노출됨.
+   - **하단 분리형 에디토리얼 박스 (`.editorial-text-zone`)**: 요청사항("하단 제목과 태그 없이")에 맞춰 **메인 제목(`<h2>` + `'작은따옴표'` 골드 강조) + 핵심 본문 설명(`<p>`)만 깔끔하게 노출**하도록 기본 설계(`showTitle: true`, `showBody: true`, `showStepBadge: false`, `showPillars: false`, `showTags: false`, `showExamHud: false`).
+   - **검색엔진(SEO) & 텍스트 복사 최적화**: `itemscope itemtype="https://schema.org/MedicalWebPage"` 시맨틱 마크업 및 `user-select: text !important` 적용으로 마우스 드래그 복사 및 네이버·구글 크롤러 색인 완벽 지원.
+2. **11개 전 상세페이지 통합 커스텀 스튜디오 신설 (`http://localhost:3000/detail-pages-editor.html`, `homepage/serve.js`, `homepage/deploy-detail-page-fast.js`)**:
+   - **접속 경로**: 로컬 서버 실행 후 `http://localhost:3000/detail-pages-editor.html` 접속 또는 각 상세페이지 우측 상단의 **`🎨 커스텀`** 버튼(로컬 전용 노출, 실서버에서는 자동 숨김) 클릭.
+   - **스토리 카드 전체 커스텀**: 11개 상세페이지 각각의 모든 카드 순서 이동(`▲/▼`), 표시 ON/OFF, 새 카드 추가/복제/삭제, 카드 유형 변경(단일 이미지·전후 레이저 비교·다중 프레임 모션·비디오·친아들 편지·브로슈어 파노라마), 제목 `'골드 강조'` 원클릭 감싸기, 본문 수정, **내 PC 사진/MP4 직접 업로드(`/api/upload-detail-image`)** 지원.
+   - **Sample A 디자인 & 표시 항목 스위치**: 하단 메인 제목·본문·카드 번호·STEP 배지·3칸 소제목 박스·`#해시태그` 개별 ON/OFF 토글, 4종 럭셔리 컬러 프리셋 및 글자 크기 조절, **`[🎨 이 디자인·표시 설정을 11개 전 페이지에 동일 적용]`** 일괄 동기화 지원.
+   - **좌측 고정 패널 & 체크리스트 편집**: 진료과목 대제목, 소개글, 자가진단 체크리스트 문항 추가/삭제/이동, 예약 CTA 버튼 문구 및 테마 컬러 실시간 수정.
+   - **실시간 미리보기 & 원클릭 카페24 배포**: 우측 데스크톱/모바일(390px) 라이브 프리뷰 및 `[💾 현재 페이지 즉시 반영]`, `[✨ 11개 전체 일괄 반영]`, `[🚀 현재 페이지 카페24 배포]`, `[🌐 11개 전체 카페24 배포]`(내 PC에서 새로 올린 `detail_custom_*` 사진도 워드프레스 미디어 라이브러리에 자동 업로드 연동) 완비.
 
 ---
 

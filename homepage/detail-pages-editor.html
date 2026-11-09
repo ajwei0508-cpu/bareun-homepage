@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바른한의원 대전본점 | 11대 상세페이지 Sample A 통합 커스텀 스튜디오</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --surface: #ffffff;
+      --surface-soft: #faf8f4;
+      --surface-dark: #181512;
+      --ink: #191613;
+      --ink-sub: #655d53;
+      --gold: #b5893a;
+      --gold-bright: #eab95c;
+      --gold-soft: #f7eedb;
+      --border: #e2dacd;
+      --border-strong: #cfc3b0;
+      --green: #166534;
+      --green-bg: #dcfce7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --radius: 13px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Sticky Top Header */
+    header.studio-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(22, 19, 16, 0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.34);
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: #fff;
+    }
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .studio-badge {
+      background: linear-gradient(135deg, #ecc572, #b58532);
+      color: #171411;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .studio-title {
+      margin: 0;
+      font-size: 16.5px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fdfaf3;
+    }
+    .dirty-indicator {
+      display: none;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fcd34d;
+      background: rgba(252, 211, 77, 0.14);
+      border: 1px solid rgba(252, 211, 77, 0.38);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .dirty-indicator.active { display: inline-flex; align-items: center; gap: 5px; }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    button.btn, a.btn {
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 13px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+    button.btn:disabled { opacity: 0.5; cursor: wait; }
+    .btn-save-one {
+      background: #ffffff;
+      color: #181512;
+      border-color: #eab95c;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .btn-save-one:hover { background: #fff9eb; transform: translateY(-1px); }
+    .btn-save-all {
+      background: rgba(234, 185, 92, 0.18);
+      color: #fde3a7;
+      border-color: rgba(234, 185, 92, 0.45);
+    }
+    .btn-save-all:hover { background: rgba(234, 185, 92, 0.28); }
+    .btn-deploy-one {
+      background: linear-gradient(135deg, #e5ba64, #a67626);
+      color: #14110e;
+      box-shadow: 0 3px 10px rgba(181, 137, 58, 0.35);
+    }
+    .btn-deploy-one:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .btn-deploy-all {
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: #ffffff;
+    }
+    .btn-deploy-all:hover { filter: brightness(1.07); }
+    .btn-ghost-dark {
+      background: rgba(255,255,255,0.08);
+      color: #e7e1d8;
+      border-color: rgba(255,255,255,0.18);
+    }
+    .btn-ghost-dark:hover { background: rgba(255,255,255,0.16); }
+
+    /* 11 Page Switcher Bar */
+    .page-switcher-wrap {
+      background: #221e1a;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.24);
+      padding: 10px 22px;
+      position: sticky;
+      top: 57px;
+      z-index: 190;
+    }
+    .page-switcher-list {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+    }
+    .page-pill {
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: #dfd8cd;
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 12.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .page-pill:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .page-pill.active {
+      background: linear-gradient(135deg, #f0c978, #b88735);
+      color: #171410;
+      border-color: transparent;
+      box-shadow: 0 3px 12px rgba(212, 175, 55, 0.32);
+    }
+    .page-pill .cnt {
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.24);
+      color: inherit;
+    }
+    .page-pill.active .cnt {
+      background: rgba(23, 20, 16, 0.18);
+      font-weight: 800;
+    }
+
+    /* Status Toast / Banner */
+    .status-banner {
+      display: none;
+      margin: 14px 22px 0;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .status-banner.show { display: flex; }
+    .status-banner.ok {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid #86efac;
+    }
+    .status-banner.err {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #fca5a5;
+    }
+    .status-banner.working {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    /* Main 2-Column Workspace */
+    .studio-workspace {
+      display: grid;
+      grid-template-columns: minmax(540px, 1.08fr) minmax(420px, 0.92fr);
+      gap: 18px;
+      padding: 16px 22px 60px;
+      align-items: start;
+    }
+    @media (max-width: 1260px) {
+      .studio-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Editor Sub-Tabs */
+    .editor-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .editor-tab-btn {
+      flex: 1;
+      min-width: 165px;
+      cursor: pointer;
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--ink-sub);
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.16s ease;
+    }
+    .editor-tab-btn:hover {
+      border-color: var(--gold);
+      color: var(--ink);
+    }
+    .editor-tab-btn.active {
+      background: var(--surface-dark);
+      color: #f8d88c;
+      border-color: var(--surface-dark);
+      box-shadow: 0 4px 14px rgba(24, 21, 18, 0.14);
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Cards & Panels */
+    .panel-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(25, 22, 19, 0.04);
+    }
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .panel-head h2, .panel-head h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tag-pill {
+      font-size: 11px;
+      font-weight: 800;
+      background: var(--gold-soft);
+      color: #8f6823;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    /* Form Controls */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 11px;
+    }
+    .field label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ink-sub);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid #d4cab9;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--ink);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 68px;
+      line-height: 1.5;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(181, 137, 58, 0.14);
+    }
+    .helper-note {
+      font-size: 11.5px;
+      color: #7c7265;
+    }
+
+    /* Toggle Grid for Sample A Display Options */
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .toggle-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .toggle-card:hover { border-color: var(--gold); }
+    .toggle-card input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      margin-top: 2px;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+    .toggle-card .t-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+      display: block;
+    }
+    .toggle-card .t-desc {
+      font-size: 11.5px;
+      color: var(--ink-sub);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Preset Buttons */
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .preset-chip {
+      cursor: pointer;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .preset-chip.active {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      color: #6e4e15;
+    }
+    .swatch-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.25);
+      display: inline-block;
+    }
+
+    .color-input-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .color-input-row input[type="color"] {
+      width: 38px;
+      height: 35px;
+      padding: 2px;
+      border: 1px solid #d4cab9;
+      border-radius: 7px;
+      background: #fff;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Instant Sample A Mini Mockup */
+    .sample-a-mockup {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(197, 160, 89, 0.45);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+      margin-bottom: 16px;
+      background: #141210;
+    }
+    .mockup-visual {
+      height: 175px;
+      position: relative;
+      background: #1e1a17 center/cover no-repeat;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 12px 14px;
+    }
+    .mockup-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(18, 15, 12, 0.78);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #f5d36c;
+      font-weight: 800;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mockup-pure-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 13, 11, 0.72);
+      color: #f4e8ce;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .mockup-editorial {
+      padding: 16px 18px;
+      border-top: 1px solid rgba(212, 175, 55, 0.36);
+    }
+    .mockup-step {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #f5d36c;
+      border: 1px solid rgba(245, 211, 108, 0.4);
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 7px;
+    }
+    .mockup-h2 {
+      margin: 0 0 7px;
+      font-weight: 800;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+    .mockup-p {
+      margin: 0;
+      line-height: 1.55;
+    }
+    .mockup-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 11px;
+    }
+    .mockup-pillar-item {
+      padding: 7px 9px;
+      border-radius: 7px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 11px;
+      color: #e7dfd1;
+    }
+    .mockup-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .mockup-tags span {
+      font-size: 10.5px;
+      color: rgba(245, 211, 108, 0.85);
+      background: rgba(245, 211, 108, 0.1);
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    /* Story Card Accordion Items */
+    .story-card-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .story-card-item.expanded {
+      border-color: var(--gold);
+      box-shadow: 0 6px 20px rgba(25, 22, 19, 0.07);
+    }
+    .story-card-item.disabled-card {
+      opacity: 0.62;
+      background: #f5f2ec;
+    }
+    .story-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 14px;
+      background: var(--surface-soft);
+      cursor: pointer;
+      user-select: none;
+    }
+    .story-card-head-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+    .card-thumb-mini {
+      width: 56px;
+      height: 38px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #231f1b;
+      border: 1px solid var(--border-strong);
+      flex-shrink: 0;
+    }
+    .card-num-pill {
+      background: var(--surface-dark);
+      color: #f5d36c;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .card-type-pill {
+      background: #ece6da;
+      color: #5a5043;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+    .card-head-title {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--ink);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .story-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .mini-btn {
+      cursor: pointer;
+      border: 1px solid #d4cab9;
+      background: #fff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      font-family: inherit;
+    }
+    .mini-btn:hover { border-color: var(--gold); background: var(--gold-soft); }
+    .mini-btn.danger:hover { border-color: #ef4444; background: #fee2e2; color: #b91c1c; }
+    .mini-btn.gold-helper {
+      background: #fff8e6;
+      border-color: #e2b969;
+      color: #7c5614;
+    }
+
+    .story-card-body {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+    .story-card-item.expanded .story-card-body {
+      display: block;
+    }
+
+    .media-upload-box {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--surface-soft);
+      border: 1px dashed var(--border-strong);
+      margin-bottom: 12px;
+      align-items: center;
+    }
+    @media (max-width: 680px) {
+      .media-upload-box { grid-template-columns: 1fr; }
+    }
+    .media-preview-lg {
+      width: 150px;
+      height: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #1d1916;
+      border: 1px solid var(--border);
+    }
+
+    details.optional-drawer {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fcfbf8;
+      padding: 9px 12px;
+    }
+    details.optional-drawer summary {
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--ink-sub);
+    }
+
+    /* Right Sticky Live Preview Column */
+    .preview-sticky {
+      position: sticky;
+      top: 112px;
+      background: var(--surface-dark);
+      border-radius: var(--radius);
+      border: 1px solid rgba(212, 175, 55, 0.34);
+      overflow: hidden;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16);
+    }
+    .preview-toolbar {
+      padding: 10px 14px;
+      background: #12100e;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.24);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: #f3ece0;
+    }
+    .viewport-switch {
+      display: inline-flex;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .vp-btn {
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: #cbbfae;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 6px;
+    }
+    .vp-btn.active {
+      background: #eab95c;
+      color: #161310;
+    }
+    .preview-stage {
+      background: #0d0b0a;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      height: calc(100vh - 175px);
+      min-height: 580px;
+      padding: 0;
+      overflow: auto;
+    }
+    .preview-stage.mobile-mode {
+      padding: 16px 0;
+    }
+    #livePreviewFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #14110f;
+      transition: width 0.22s ease;
+    }
+    .preview-stage.mobile-mode #livePreviewFrame {
+      width: 390px;
+      height: 820px;
+      border-radius: 24px;
+      border: 3px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+    }
+
+    .list-row-inline {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+    .list-row-inline input { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="studio-header">
+    <div class="brand-left">
+      <span class="studio-badge">BAREUN STUDIO · SAMPLE A</span>
+      <h1 class="studio-title">11대 상세페이지 통합 커스텀 스튜디오</h1>
+      <span id="dirtyBadge" class="dirty-indicator">● 미저장 변경사항 있음</span>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn btn-save-one" id="btnSaveOne" onclick="runStudioAction('save_build_one')">
+        💾 현재 페이지 즉시 반영
+      </button>
+      <button type="button" class="btn btn-save-all" id="btnSaveAll" onclick="runStudioAction('save_build_all')">
+        ✨ 11개 전체 일괄 반영
+      </button>
+      <button type="button" class="btn btn-deploy-one" id="btnDeployOne" onclick="confirmAndDeploy('deploy_one')">
+        🚀 현재 페이지 카페24 배포
+      </button>
+      <button type="button" class="btn btn-deploy-all" id="btnDeployAll" onclick="confirmAndDeploy('deploy_all')">
+        🌐 11개 전체 카페24 배포
+      </button>
+      <button type="button" class="btn btn-ghost-dark" onclick="confirmResetPage()">
+        ↺ 현재 페이지 초기화
+      </button>
+      <a class="btn btn-ghost-dark" id="btnOpenPageNewTab" href="/chuna.html" target="_blank" rel="noopener">
+        ↗ 새 창 열기
+      </a>
+      <a class="btn btn-ghost-dark" href="/index.html" target="_blank" rel="noopener">
+        🏠 메인 홈
+      </a>
+    </div>
+  </header>
+
+  <!-- 11 Detail Pages Switcher -->
+  <nav class="page-switcher-wrap" aria-label="11개 상세페이지 선택">
+    <div class="page-switcher-list" id="pageSwitcherList"></div>
+  </nav>
+
+  <!-- Status Banner -->
+  <div id="statusBanner" class="status-banner" role="status">
+    <span id="statusText">준비 완료</span>
+    <button type="button" class="mini-btn" onclick="hideStatus()">닫기</button>
+  </div>
+
+  <!-- Shared Datalists for Existing Clinic Assets -->
+  <datalist id="existingImagesList"></datalist>
+  <datalist id="existingVideosList"></datalist>
+
+  <!-- Main Workspace -->
+  <main class="studio-workspace">
+    <!-- Left Editor Column -->
+    <section class="editor-column">
+      <div class="editor-tabs">
+        <button type="button" class="editor-tab-btn active" data-tab="cards" onclick="switchEditorTab('cards')">
+          📑 스토리 카드 편집 <span id="tabCardCount" class="tag-pill">0장</span>
+        </button>
+        <button type="button" class="editor-tab-btn" data-tab="style" onclick="switchEditorTab('style')">
+          🎨 Sample A 디자인 · 표시 항목
+        </button>
+        <button type="button" class="editor-tab-btn" data-tab="leftpanel" onclick="switchEditorTab('leftpanel')">
+          📋 좌측 안내 패널 · 체크리스트
+        </button>
+      </div>
+
+      <!-- TAB 1: Story Cards Editor -->
+      <div id="pane-cards" class="tab-pane active">
+        <div class="panel-box">
+          <div class="panel-head">
+            <div>
+              <h2 id="cardsPanelTitle">스토리 카드 목록</h2>
+              <div class="helper-note" style="margin-top:3px;">
+                모든 카드가 <strong>Sample A (상단 순수 비주얼 + 하단 분리형 에디토리얼 박스)</strong> 구조로 제작됩니다. 제목에서 <code>'작은따옴표'</code>로 감싼 구절은 자동으로 골드 강조 처리됩니다.
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" class="mini-btn" onclick="toggleExpandAllCards(true)">모두 펼치기</button>
+              <button type="button" class="mini-btn" onclick="toggleExpandAllCards(false)">모두 접기</button>
+              <button type="button" class="btn btn-save-one" style="padding:6px 12px;" onclick="addNewStoryCard()">+ 새 카드 추가</button>
+            </div>
+          </div>
+
+          <div id="storyCardsContainer"></div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+            <button type="button" class="btn btn-save-one" onclick="addNewStoryCard()">+ 맨 아래에 새 스토리 카드 추가</button>
+            <button type="button" class="btn btn-deploy-one" onclick="runStudioAction('save_build_one')">💾 변경사항 저장 &amp; 미리보기 반영</button>
+          </div>
+        </div>
+
+        <!-- Last Card: 3D Body Model Card -->
+        <div class="panel-box" id="bodyModelEditorBox"></div>
+      </div>
+
+      <!-- TAB 2: Sample A Card Design & Display Toggles -->
+      <div id="pane-style" class="tab-pane">
+        <div class="panel-box">
+          <div class="panel-head">
+            <h2>🎨 Sample A 상·하단 분리형 카드 실시간 디자인</h2>
+            <button type="button" class="btn btn-deploy-one" style="padding:7px 12px;" onclick="applyStyleToAllPages()">
+              🎨 이 디자인·표시 설정을 11개 전 페이지에 동일 적용
+            </button>
+          </div>
+
+          <!-- Instant 60fps Sample A Card Mockup -->
+          <div class="sample-a-mockup" id="styleMockupCard">
+            <div class="mockup-visual" id="styleMockupVisual">
+              <span class="mockup-num" id="styleMockupNum">01</span>
+              <span class="mockup-pure-tag">상단 100% 순수 이미지 존 (글자 겹침 0%)</span>
+            </div>
+            <div class="mockup-editorial" id="styleMockupEditorial">
+              <div class="mockup-step" id="styleMockupStep">STEP 01 · 핵심 치료 원리</div>
+              <h2 class="mockup-h2" id="styleMockupH2">
+                진통제는 경보음만 끌 뿐, <span id="styleMockupHl">'기울어진 척추·골반 중심축'</span>을 바로잡습니다
+              </h2>
+              <p class="mockup-p" id="styleMockupP">
+                사진을 가리지 않는 하단 전용 에디토리얼 영역에 핵심 제목과 설명만 정갈하게 배치하여 가독성과 검색엔진(SEO) 색인 품질을 동시에 높입니다.
+              </p>
+              <div class="mockup-pillars" id="styleMockupPillars">
+                <div class="mockup-pillar-item"><strong>01 정밀 추나</strong><br/>틀어진 골반 교정</div>
+                <div class="mockup-pillar-item"><strong>02 신경 감압</strong><br/>디스크 압박 해소</div>
+                <div class="mockup-pillar-item"><strong>03 인대 보강</strong><br/>재발 방지 한약</div>
+              </div>
+              <div class="mockup-tags" id="styleMockupTags">
+                <span>#대전추나한의원</span>
+                <span>#비수술척추교정</span>
+                <span>#바른한의원대전본점</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="styleControlsContainer"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Left Sticky Info Panel & Self-Checklist -->
+      <div id="pane-leftpanel" class="tab-pane">
+        <div class="panel-box" id="leftPanelEditorBox"></div>
+      </div>
+    </section>
+
+    <!-- Right Sticky Live Preview Column -->
+    <aside class="preview-sticky">
+      <div class="preview-toolbar">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div class="viewport-switch">
+            <button type="button" class="vp-btn active" id="vpDesktopBtn" onclick="setPreviewViewport('desktop')">🖥️ 데스크톱</button>
+            <button type="button" class="vp-btn" id="vpMobileBtn" onclick="setPreviewViewport('mobile')">📱 모바일 390px</button>
+          </div>
+          <span id="previewUrlLabel" style="font-size:12px; color:#cbbfae;">/chuna.html</span>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="mini-btn" onclick="reloadPreviewIframe()">🔄 새로고침</button>
+          <button type="button" class="mini-btn gold-helper" onclick="runStudioAction('save_build_one')">💾 저장·반영</button>
+        </div>
+      </div>
+      <div class="preview-stage" id="previewStage">
+        <iframe id="livePreviewFrame" title="상세페이지 실시간 미리보기" src="about:blank"></iframe>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const STYLE_PRESETS = {
+      'espresso-gold': {
+        label: '에스프레소 골드 (Sample A 기본)',
+        swatch: '#1b1815',
+        bgTop: '#1b1815',
+        bgBot: '#13110f',
+        borderColor: 'rgba(197, 160, 89, 0.44)',
+        dividerColor: 'rgba(212, 175, 55, 0.36)',
+        titleColor: '#fdfbf7',
+        hlColor: '#f5d36c',
+        bodyColor: 'rgba(245, 240, 232, 0.84)'
+      },
+      'forest-gold': {
+        label: '딥 포레스트 골드',
+        swatch: '#13201b',
+        bgTop: '#13201b',
+        bgBot: '#0c1512',
+        borderColor: 'rgba(186, 162, 96, 0.45)',
+        dividerColor: 'rgba(186, 162, 96, 0.35)',
+        titleColor: '#f7fbf9',
+        hlColor: '#edd27a',
+        bodyColor: 'rgba(230, 242, 236, 0.85)'
+      },
+      'charcoal-bronze': {
+        label: '로얄 차콜 브론즈',
+        swatch: '#191b20',
+        bgTop: '#191b20',
+        bgBot: '#111216',
+        borderColor: 'rgba(212, 169, 98, 0.42)',
+        dividerColor: 'rgba(212, 169, 98, 0.34)',
+        titleColor: '#ffffff',
+        hlColor: '#f5c96b',
+        bodyColor: 'rgba(235, 238, 245, 0.84)'
+      },
+      'walnut-warm': {
+        label: '웜 월넛 브라운',
+        swatch: '#241b14',
+        bgTop: '#241b14',
+        bgBot: '#17110c',
+        borderColor: 'rgba(220, 174, 96, 0.48)',
+        dividerColor: 'rgba(220, 174, 96, 0.38)',
+        titleColor: '#fffaf2',
+        hlColor: '#ffd97d',
+        bodyColor: 'rgba(248, 238, 224, 0.86)'
+      }
+    };
+
+    const CARD_TYPE_OPTIONS = [
+      { value: 'clean-image', label: '기본 이미지 카드 (Sample A 표준)' },
+      { value: 'runway-ba-scan', label: '전·후(B/A) 레이저 스캔 비교 카드' },
+      { value: 'motion-story', label: '다중 프레임 모션 스토리 카드' },
+      { value: 'diet-single-stage', label: '단계별 특수 모션/단일 이미지 카드' },
+      { value: 'director-exam-motion', label: '대표원장 9대 정밀검진 모션 카드' },
+      { value: 'clean-video', label: '클린 MP4 비디오 카드' },
+      { value: 'diet-tele-video', label: '비대면 전화처방 비디오 카드' },
+      { value: 'growth-son-main-hero', label: '성장 친아들 손편지 히어로 카드' },
+      { value: 'gongjindan-panorama-archive', label: '황제공진단 10장 브로슈어 파노라마' }
+    ];
+
+    let masterConfig = null;
+    let currentPageIdx = 0;
+    let expandedCards = new Set([0]);
+    let isDirty = false;
+    let availableImages = [];
+    let availableVideos = [];
+
+    function escHtml(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function hexForPicker(colorVal, fallback) {
+      const s = String(colorVal || '').trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(s)) return s;
+      if (/^#[0-9a-fA-F]{3}$/.test(s)) {
+        return '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      }
+      return fallback || '#1b1815';
+    }
+
+    function markDirty(flag = true) {
+      isDirty = flag;
+      const badge = document.getElementById('dirtyBadge');
+      if (badge) badge.classList.toggle('active', isDirty);
+    }
+
+    function showStatus(type, msg) {
+      const box = document.getElementById('statusBanner');
+      const txt = document.getElementById('statusText');
+      box.className = 'status-banner show ' + type;
+      txt.textContent = msg;
+    }
+
+    function hideStatus() {
+      document.getElementById('statusBanner').className = 'status-banner';
+    }
+
+    function getCurrentPage() {
+      if (!masterConfig || !Array.isArray(masterConfig.pages)) return null;
+      return masterConfig.pages[currentPageIdx] || masterConfig.pages[0];
+    }
+
+    function ensureCardStyle(page) {
+      const def = Object.assign({
+        layout: 'sample-a',
+        showTitle: true,
+        showBody: true,
+        showStepBadge: false,
+        showPillars: false,
+        showTags: false,
+        showNumBadge: true,
+        showExamHud: false,
+        panelPreset: 'espresso-gold',
+        bgTop: '#1b1815',
+        bgBot: '#13110f',
+        borderColor: 'rgba(197, 160, 89, 0.44)',
+        dividerColor: 'rgba(212, 175, 55, 0.36)',
+        titleColor: '#fdfbf7',
+        hlColor: '#f5d36c',
+        bodyColor: 'rgba(245, 240, 232, 0.84)',
+        titleSize: 'md',
+        bodySize: 'md'
+      }, masterConfig.globalCardStyle || {});
+      page.cardStyle = Object.assign(def, page.cardStyle || {});
+      return page.cardStyle;
+    }
+
+    function populateMediaDatalists() {
+      const imgList = document.getElementById('existingImagesList');
+      const vidList = document.getElementById('existingVideosList');
+      if (imgList) {
+        imgList.innerHTML = availableImages.map(f => `<option value="${escHtml(f)}"></option>`).join('');
+      }
+      if (vidList) {
+        vidList.innerHTML = availableVideos.map(f => `<option value="${escHtml(f)}"></option>`).join('');
+      }
+    }
+
+    async function loadStudioConfig() {
+      try {
+        showStatus('working', '11개 상세페이지 통합 설정을 불러오는 중입니다...');
+        const res = await fetch('/api/detail-pages-config?t=' + Date.now());
+        const data = await res.json();
+        if (!data.ok || !data.config) {
+          throw new Error(data.error || '설정 로드 실패');
+        }
+        masterConfig = data.config;
+        availableImages = data.availableImages || [];
+        availableVideos = data.availableVideos || [];
+        populateMediaDatalists();
+
+        const params = new URLSearchParams(window.location.search);
+        const targetParam = (params.get('page') || '').trim();
+        if (targetParam) {
+          const idx = masterConfig.pages.findIndex(p => p.file === targetParam || p.slug === targetParam);
+          if (idx >= 0) currentPageIdx = idx;
+        }
+
+        expandedCards = new Set([0]);
+        renderAll();
+        reloadPreviewIframe();
+        markDirty(false);
+        hideStatus();
+      } catch (err) {
+        showStatus('err', '설정 불러오기 오류: ' + err.message);
+      }
+    }
+
+    function selectPage(idx) {
+      if (idx === currentPageIdx) return;
+      currentPageIdx = idx;
+      expandedCards = new Set([0]);
+      const page = getCurrentPage();
+      if (page) {
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set('page', page.file);
+        window.history.replaceState({}, '', nextUrl.toString());
+      }
+      renderAll();
+      reloadPreviewIframe();
+    }
+
+    function switchEditorTab(tabKey) {
+      document.querySelectorAll('.editor-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
+      });
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === 'pane-' + tabKey);
+      });
+      if (tabKey === 'style') updateStyleMockup();
+    }
+
+    function renderAll() {
+      const page = getCurrentPage();
+      if (!page) return;
+      ensureCardStyle(page);
+
+      // Update top open link
+      const openBtn = document.getElementById('btnOpenPageNewTab');
+      if (openBtn) openBtn.href = '/' + page.file;
+      const urlLbl = document.getElementById('previewUrlLabel');
+      if (urlLbl) urlLbl.textContent = `/${page.file} (WP ID: ${page.wpId})`;
+
+      renderPageSwitcher();
+      renderStoryCardsPane();
+      renderBodyModelBox();
+      renderStylePane();
+      renderLeftPanelPane();
+    }
+
+    function renderPageSwitcher() {
+      const list = document.getElementById('pageSwitcherList');
+      list.innerHTML = masterConfig.pages.map((p, idx) => {
+        const activeCount = (p.plates || []).filter(c => c.enabled !== false).length;
+        return `
+          <button type="button" class="page-pill ${idx === currentPageIdx ? 'active' : ''}" onclick="selectPage(${idx})">
+            <span>${escHtml(p.label)}</span>
+            <span class="cnt">${activeCount}장</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function getCardPreviewThumb(card) {
+      if (card.imgSrc) return '/' + card.imgSrc;
+      if (card.afterImg) return '/' + card.afterImg;
+      if (card.beforeImg) return '/' + card.beforeImg;
+      if (Array.isArray(card.frames) && card.frames[0]) return '/' + card.frames[0];
+      if (card.poster) return '/' + card.poster;
+      if (Array.isArray(card.pages) && card.pages[0] && card.pages[0].img) return '/' + card.pages[0].img;
+      return '/bareun_step1_growth_spine.jpg';
+    }
+
+    function renderStoryCardsPane() {
+      const page = getCurrentPage();
+      const plates = page.plates || [];
+      const enabledCount = plates.filter(c => c.enabled !== false).length;
+
+      document.getElementById('tabCardCount').textContent = `${enabledCount}/${plates.length}장`;
+      document.getElementById('cardsPanelTitle').textContent = `[${page.label}] 가로 스토리 카드 편집 (${enabledCount}장 표시 중)`;
+
+      const container = document.getElementById('storyCardsContainer');
+      if (plates.length === 0) {
+        container.innerHTML = `<div class="helper-note" style="padding:20px; text-align:center;">등록된 카드가 없습니다. [+ 새 카드 추가] 버튼을 눌러 카드를 생성하세요.</div>`;
+        return;
+      }
+
+      container.innerHTML = plates.map((card, idx) => {
+        const isExpanded = expandedCards.has(idx);
+        const isEnabled = card.enabled !== false;
+        const numStr = String(idx + 1).padStart(2, '0');
+        const thumbUrl = getCardPreviewThumb(card);
+        const typeLabel = (CARD_TYPE_OPTIONS.find(o => o.value === card.type) || { label: card.type || 'clean-image' }).label.split(' ')[0];
+
+        return `
+          <div class="story-card-item ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled-card'}" id="card-item-${idx}">
+            <div class="story-card-head" onclick="toggleCardAccordion(${idx}, event)">
+              <div class="story-card-head-left">
+                <img class="card-thumb-mini" src="${escHtml(thumbUrl)}" alt="Card ${numStr}" onerror="this.style.opacity='0.25'" />
+                <span class="card-num-pill">CARD ${numStr}</span>
+                <span class="card-type-pill">${escHtml(typeLabel)}</span>
+                <span class="card-head-title">${escHtml(card.title || card.badge || '(제목 없음 - 비디오/특수 카드)')}</span>
+              </div>
+              <div class="story-card-actions" onclick="event.stopPropagation();">
+                <label style="display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; margin-right:4px; cursor:pointer;">
+                  <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateCardField(${idx}, 'enabled', this.checked, true)" />
+                  표시
+                </label>
+                <button type="button" class="mini-btn" title="위로 이동" onclick="moveStoryCard(${idx}, -1)">▲</button>
+                <button type="button" class="mini-btn" title="아래로 이동" onclick="moveStoryCard(${idx}, 1)">▼</button>
+                <button type="button" class="mini-btn" title="카드 복제" onclick="duplicateStoryCard(${idx})">복제</button>
+                <button type="button" class="mini-btn danger" title="카드 삭제" onclick="deleteStoryCard(${idx})">삭제</button>
+                <button type="button" class="mini-btn" onclick="toggleCardAccordion(${idx}, event)">${isExpanded ? '접기 ▲' : '편집 ▼'}</button>
+              </div>
+            </div>
+
+            <div class="story-card-body">
+              <div class="grid-2">
+                <div class="field">
+                  <label>카드 유형 (Type)</label>
+                  <select onchange="changeCardType(${idx}, this.value)">
+                    ${CARD_TYPE_OPTIONS.map(opt => `<option value="${escHtml(opt.value)}" ${card.type === opt.value ? 'selected' : ''}>${escHtml(opt.label)}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="field">
+                  <label>상단 이미지 비율 맞춤 (Object-Fit)</label>
+                  <select onchange="updateCardField(${idx}, 'fit', this.value, false)">
+                    <option value="cover" ${(card.fit || 'cover') === 'cover' ? 'selected' : ''}>꽉 차게 채우기 (cover · 기본 권장)</option>
+                    <option value="contain" ${card.fit === 'contain' ? 'selected' : ''}>잘림 없이 원본 전체 보기 (contain)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Headline + Gold Highlight Helper -->
+              <div class="field">
+                <label>
+                  <span>하단 메인 제목 (H2 · <code>'작은따옴표'</code> 구간 골드 하이라이트)</span>
+                  <button type="button" class="mini-btn gold-helper" onclick="wrapSelectedWithGoldQuote(${idx})">✨ 선택한 단어 '골드 강조' 감싸기</button>
+                </label>
+                <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
+                  placeholder="예: 수술 없이 틀어진 척추를 바로잡는 '정밀 수기 추나'"
+                  oninput="updateCardTitleLive(${idx}, this.value)" />
+              </div>
+
+              <!-- Body Copy -->
+              <div class="field">
+                <label>하단 본문 설명 (P · 핵심 치료 설명 문구)</label>
+                <textarea rows="2" placeholder="하단 에디토리얼 영역에 들어갈 상세 설명 문구를 입력하세요."
+                  oninput="updateCardField(${idx}, 'sub', this.value, false)">${escHtml(card.sub || '')}</textarea>
+              </div>
+
+              <!-- Type-Specific Media Controls -->
+              ${renderCardMediaControls(card, idx)}
+
+              <!-- Optional Advanced Drawer (STEP badge, 3 Pillars, #Tags) -->
+              <details class="optional-drawer">
+                <summary>⚙️ 선택 옵션 입력 (STEP 카테고리 배지 · 하단 3칸 포인트 · #해시태그 — 표시 ON 시 노출)</summary>
+                <div style="margin-top:12px;">
+                  <div class="grid-2">
+                    <div class="field">
+                      <label>상단 STEP 배지 라벨 (stepLabel)</label>
+                      <input type="text" value="${escHtml(card.stepLabel || '')}" placeholder="예: STEP 01 · 원인 진단"
+                        oninput="updateCardField(${idx}, 'stepLabel', this.value, false)" />
+                    </div>
+                    <div class="field">
+                      <label>하단 #해시태그 목록 (쉼표로 구분)</label>
+                      <input type="text" value="${escHtml((card.tags || []).join(', '))}" placeholder="예: #대전추나한의원, #척추교정, #바른한의원"
+                        oninput="updateCardTags(${idx}, this.value)" />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>하단 3칸 핵심 포인트 박스 (01 ~ 03 · 제목 | 설명)</label>
+                    ${[0, 1, 2].map(pIdx => {
+                      const pObj = (card.pillars && card.pillars[pIdx]) || { num: '0' + (pIdx + 1), title: '', desc: '' };
+                      return `
+                        <div class="list-row-inline">
+                          <span class="tag-pill">0${pIdx + 1}</span>
+                          <input type="text" placeholder="소제목 (예: 추간판 감압)" value="${escHtml(pObj.title || '')}"
+                            oninput="updateCardPillar(${idx}, ${pIdx}, 'title', this.value)" />
+                          <input type="text" placeholder="짧은 설명 (예: 눌린 신경 공간 확보)" value="${escHtml(pObj.desc || '')}"
+                            oninput="updateCardPillar(${idx}, ${pIdx}, 'desc', this.value)" />
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCardMediaControls(card, idx) {
+      const t = card.type || 'clean-image';
+
+      if (t === 'runway-ba-scan') {
+        return `
+          <div class="grid-2">
+            <div class="media-upload-box">
+              <img class="media-preview-lg" src="/${escHtml(card.beforeImg || '')}" alt="Before" onerror="this.style.opacity='0.2'" />
+              <div>
+                <div class="field" style="margin-bottom:6px;">
+                  <label>시술 전 (BEFORE) 이미지 파일명/경로</label>
+                  <input type="text" list="existingImagesList" value="${escHtml(card.beforeImg || '')}"
+                    oninput="updateCardField(${idx}, 'beforeImg', this.value, true)" />
+                </div>
+                <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'beforeImg')">📁 내 PC에서 BEFORE 사진 업로드</button>
+              </div>
+            </div>
+            <div class="media-upload-box">
+              <img class="media-preview-lg" src="/${escHtml(card.afterImg || '')}" alt="After" onerror="this.style.opacity='0.2'" />
+              <div>
+                <div class="field" style="margin-bottom:6px;">
+                  <label>시술 후 (AFTER) 이미지 파일명/경로</label>
+                  <input type="text" list="existingImagesList" value="${escHtml(card.afterImg || '')}"
+                    oninput="updateCardField(${idx}, 'afterImg', this.value, true)" />
+                </div>
+                <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'afterImg')">📁 내 PC에서 AFTER 사진 업로드</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (t === 'clean-video' || t === 'diet-tele-video') {
+        return `
+          <div class="media-upload-box">
+            <img class="media-preview-lg" src="/${escHtml(card.poster || '')}" alt="Video Poster" onerror="this.style.opacity='0.2'" />
+            <div>
+              <div class="grid-2">
+                <div class="field">
+                  <label>MP4 비디오 파일 (videoSrc)</label>
+                  <input type="text" list="existingVideosList" value="${escHtml(card.videoSrc || '')}"
+                    oninput="updateCardField(${idx}, 'videoSrc', this.value, false)" />
+                </div>
+                <div class="field">
+                  <label>포스터 썸네일 이미지 (poster)</label>
+                  <input type="text" list="existingImagesList" value="${escHtml(card.poster || '')}"
+                    oninput="updateCardField(${idx}, 'poster', this.value, true)" />
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'videoSrc', 'video/mp4')">📁 MP4 영상 업로드</button>
+                <button type="button" class="mini-btn" onclick="triggerAssetUpload(${idx}, 'poster')">🖼️ 포스터 이미지 업로드</button>
+                <label style="font-size:12px; font-weight:700; margin-left:8px; cursor:pointer;">
+                  <input type="checkbox" ${card.hideText ? 'checked' : ''} onchange="updateCardField(${idx}, 'hideText', this.checked, false)" />
+                  하단 제목·본문 영역 숨기기 (순수 전면 영상 카드)
+                </label>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (t === 'motion-story' || (t === 'diet-single-stage' && Array.isArray(card.frames) && card.frames.length > 0)) {
+        const frames = Array.isArray(card.frames) ? card.frames : (card.imgSrc ? [card.imgSrc] : ['']);
+        return `
+          <div class="panel-box" style="background:var(--surface-soft); padding:13px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <strong style="font-size:12.5px;">🎞️ 연속 전환 모션 프레임 이미지 목록 (${frames.length}장)</strong>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <span style="font-size:12px;">전환 주기(초):</span>
+                <input type="number" step="0.5" min="2" max="20" style="width:68px; padding:4px 7px;"
+                  value="${escHtml(card.durationSec || 6)}"
+                  oninput="updateCardField(${idx}, 'durationSec', parseFloat(this.value)||6, false)" />
+                <button type="button" class="mini-btn gold-helper" onclick="addCardFrame(${idx})">+ 프레임 추가</button>
+              </div>
+            </div>
+            ${frames.map((fr, fIdx) => `
+              <div class="list-row-inline">
+                <span class="tag-pill">#${fIdx + 1}</span>
+                <img src="/${escHtml(fr)}" alt="" style="width:44px; height:30px; object-fit:cover; border-radius:4px; background:#222;" onerror="this.style.opacity='0.2'" />
+                <input type="text" list="existingImagesList" value="${escHtml(fr)}"
+                  oninput="updateCardFrame(${idx}, ${fIdx}, this.value)" />
+                <button type="button" class="mini-btn" onclick="triggerFrameUpload(${idx}, ${fIdx})">📁 업로드</button>
+                <button type="button" class="mini-btn danger" onclick="removeCardFrame(${idx}, ${fIdx})">✕</button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      if (t === 'growth-son-main-hero') {
+        const paragraphs = Array.isArray(card.letterParagraphs) ? card.letterParagraphs.join('\n') : '';
+        const chips = Array.isArray(card.chips) ? card.chips : ['', '', ''];
+        return `
+          <div class="media-upload-box">
+            <img class="media-preview-lg" src="/${escHtml(card.imgSrc || '')}" alt="Hero" onerror="this.style.opacity='0.2'" />
+            <div>
+              <div class="field" style="margin-bottom:6px;">
+                <label>좌측 메인 사진 (imgSrc)</label>
+                <input type="text" list="existingImagesList" value="${escHtml(card.imgSrc || '')}"
+                  oninput="updateCardField(${idx}, 'imgSrc', this.value, true)" />
+              </div>
+              <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'imgSrc')">📁 내 PC에서 사진 업로드</button>
+            </div>
+          </div>
+          <div class="panel-box" style="background:#fcfaf5; padding:14px; margin-bottom:10px;">
+            <strong style="display:block; margin-bottom:10px; font-size:13px;">✉️ 우측 대표원장 친아들 손편지 영역 상세 편집</strong>
+            <div class="grid-2">
+              <div class="field">
+                <label>좌측 상단 배지 (badge)</label>
+                <input type="text" value="${escHtml(card.badge || '')}" oninput="updateCardField(${idx}, 'badge', this.value, false)" />
+              </div>
+              <div class="field">
+                <label>편지 상단 소제목 (letterEyebrow)</label>
+                <input type="text" value="${escHtml(card.letterEyebrow || '')}" oninput="updateCardField(${idx}, 'letterEyebrow', this.value, false)" />
+              </div>
+              <div class="field">
+                <label>편지 헤드라인 1줄</label>
+                <input type="text" value="${escHtml(card.letterHeadlineLine1 || '')}" oninput="updateCardField(${idx}, 'letterHeadlineLine1', this.value, false)" />
+              </div>
+              <div class="field">
+                <label>편지 헤드라인 2줄 (골드 강조)</label>
+                <input type="text" value="${escHtml(card.letterHeadlineLine2 || '')}" oninput="updateCardField(${idx}, 'letterHeadlineLine2', this.value, false)" />
+              </div>
+            </div>
+            <div class="field">
+              <label>편지 본문 문단 (줄바꿈마다 새 문단으로 표시됩니다)</label>
+              <textarea rows="4" oninput="updateCardLines(${idx}, 'letterParagraphs', this.value)">${escHtml(paragraphs)}</textarea>
+            </div>
+            <div class="grid-3">
+              ${[0, 1, 2].map(cIdx => `
+                <div class="field">
+                  <label>약속 칩 ${cIdx + 1}</label>
+                  <input type="text" value="${escHtml(chips[cIdx] || '')}" oninput="updateCardArrayItem(${idx}, 'chips', ${cIdx}, this.value)" />
+                </div>
+              `).join('')}
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <label>서명 직함/성함</label>
+                <input type="text" value="${escHtml(card.letterSignStrong || '')}" oninput="updateCardField(${idx}, 'letterSignStrong', this.value, false)" />
+              </div>
+              <div class="field">
+                <label>서명 보조 문구</label>
+                <input type="text" value="${escHtml(card.letterSignSpan || '')}" oninput="updateCardField(${idx}, 'letterSignSpan', this.value, false)" />
+              </div>
+              <div class="field">
+                <label>네이버 블로그 칼럼 링크</label>
+                <input type="text" value="${escHtml(card.blogUrl || '')}" oninput="updateCardField(${idx}, 'blogUrl', this.value, false)" />
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (t === 'gongjindan-panorama-archive') {
+        const pages = Array.isArray(card.pages) ? card.pages : [];
+        return `
+          <div class="panel-box" style="background:var(--surface-soft); padding:13px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <strong style="font-size:12.5px;">📜 황제공진단 공식 브로슈어 파노라마 페이지 (${pages.length}장)</strong>
+              <button type="button" class="mini-btn gold-helper" onclick="addBrochurePage(${idx})">+ 브로슈어 장 추가</button>
+            </div>
+            ${pages.map((pg, pIdx) => `
+              <div class="list-row-inline">
+                <span class="tag-pill">${escHtml(pg.tag || ('P.' + String(pIdx + 1).padStart(2, '0')))}</span>
+                <input type="text" style="max-width:150px;" placeholder="페이지 제목" value="${escHtml(pg.title || '')}"
+                  oninput="updateBrochurePage(${idx}, ${pIdx}, 'title', this.value)" />
+                <input type="text" list="existingImagesList" placeholder="이미지 경로" value="${escHtml(pg.img || '')}"
+                  oninput="updateBrochurePage(${idx}, ${pIdx}, 'img', this.value)" />
+                <button type="button" class="mini-btn" onclick="triggerBrochureUpload(${idx}, ${pIdx})">📁 업로드</button>
+                <button type="button" class="mini-btn danger" onclick="removeBrochurePage(${idx}, ${pIdx})">✕</button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Default: clean-image / director-exam-motion / single-image diet-single-stage
+      const thumbs = Array.isArray(card.thumbs) ? card.thumbs : [];
+      return `
+        <div class="media-upload-box">
+          <img class="media-preview-lg" src="/${escHtml(card.imgSrc || '')}" alt="Card Visual" onerror="this.style.opacity='0.2'" />
+          <div>
+            <div class="field" style="margin-bottom:8px;">
+              <label>상단 메인 비주얼 이미지 파일명 또는 URL (imgSrc)</label>
+              <input type="text" list="existingImagesList" value="${escHtml(card.imgSrc || '')}"
+                placeholder="예: chuna_minimal_card2_painkiller_limit.jpg"
+                oninput="updateCardField(${idx}, 'imgSrc', this.value, true)" />
+            </div>
+            <div style="display:flex; gap:7px; flex-wrap:wrap; align-items:center;">
+              <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'imgSrc')">📁 내 PC에서 새 사진 업로드</button>
+              <button type="button" class="mini-btn" onclick="addCardThumb(${idx})">+ 클릭 전환용 서브 썸네일 추가 (${thumbs.length})</button>
+            </div>
+          </div>
+        </div>
+        ${thumbs.length > 0 ? `
+          <div style="padding:10px 12px; background:#faf7f0; border:1px solid var(--border); border-radius:8px; margin-bottom:10px;">
+            <div style="font-size:12px; font-weight:800; margin-bottom:6px;">🖼️ 카드 내 서브 썸네일 목록 (${thumbs.length}개)</div>
+            ${thumbs.map((th, thIdx) => `
+              <div class="list-row-inline">
+                <input type="text" style="max-width:140px;" placeholder="라벨명" value="${escHtml(th.label || '')}"
+                  oninput="updateCardThumb(${idx}, ${thIdx}, 'label', this.value)" />
+                <input type="text" list="existingImagesList" placeholder="이미지 파일명" value="${escHtml(th.img || '')}"
+                  oninput="updateCardThumb(${idx}, ${thIdx}, 'img', this.value)" />
+                <button type="button" class="mini-btn" onclick="triggerThumbUpload(${idx}, ${thIdx})">📁 업로드</button>
+                <button type="button" class="mini-btn danger" onclick="removeCardThumb(${idx}, ${thIdx})">✕</button>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      `;
+    }
+
+    function renderBodyModelBox() {
+      const page = getCurrentPage();
+      const box = document.getElementById('bodyModelEditorBox');
+      if (!page.bodyModelCard) {
+        page.bodyModelCard = {
+          enabled: false,
+          href: 'body-explorer.html',
+          part: 'lumbar',
+          useOur3DBodyModel: true,
+          honeyTipLabel: '한의학 꿀팁',
+          partBadge: '3D 인체모형 탐색',
+          eyebrow: '3D HUMAN BODY MODEL',
+          title: '3D 인체모형으로 원인 연결하기',
+          desc: '인체모형에서 질환 구조와 학술 논문 근거 치료법을 한눈에 확인하세요.',
+          bg: 'illust_lumbar_pelvis.jpg'
+        };
+      }
+      const bm = page.bodyModelCard;
+      const bmEnabled = bm.enabled !== false;
+
+      box.innerHTML = `
+        <div class="panel-head">
+          <h3>🦴 마지막 카드 · 3D 인체모형 의학정보 연결 카드</h3>
+          <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; cursor:pointer;">
+            <input type="checkbox" ${bmEnabled ? 'checked' : ''} onchange="updateBodyModelField('enabled', this.checked)" />
+            마지막 카드로 표시
+          </label>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>꿀팁 라벨 (honeyTipLabel)</label>
+            <input type="text" value="${escHtml(bm.honeyTipLabel || '')}" oninput="updateBodyModelField('honeyTipLabel', this.value)" />
+          </div>
+          <div class="field">
+            <label>부위 배지 (partBadge)</label>
+            <input type="text" value="${escHtml(bm.partBadge || '')}" oninput="updateBodyModelField('partBadge', this.value)" />
+          </div>
+          <div class="field">
+            <label>카드 메인 제목 (title)</label>
+            <input type="text" value="${escHtml(bm.title || '')}" oninput="updateBodyModelField('title', this.value)" />
+          </div>
+          <div class="field">
+            <label>클릭 시 이동할 3D 페이지 주소 (href)</label>
+            <input type="text" value="${escHtml(bm.href || 'body-explorer.html')}" oninput="updateBodyModelField('href', this.value)" />
+          </div>
+        </div>
+        <div class="field">
+          <label>카드 하단 설명 (desc)</label>
+          <textarea rows="2" oninput="updateBodyModelField('desc', this.value)">${escHtml(bm.desc || '')}</textarea>
+        </div>
+        <div class="field">
+          <label>배경 일러스트 이미지 (bg)</label>
+          <div class="list-row-inline">
+            <input type="text" list="existingImagesList" value="${escHtml(bm.bg || '')}" oninput="updateBodyModelField('bg', this.value)" />
+            <button type="button" class="mini-btn gold-helper" onclick="triggerBodyModelBgUpload()">📁 배경 이미지 업로드</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStylePane() {
+      const page = getCurrentPage();
+      const cs = ensureCardStyle(page);
+      const wrap = document.getElementById('styleControlsContainer');
+
+      wrap.innerHTML = `
+        <h3 style="margin:0 0 10px; font-size:14.5px;">1) 하단 에디토리얼 박스 표시 항목 선택 (체크 시 노출)</h3>
+        <div class="toggle-grid">
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showTitle !== false ? 'checked' : ''} onchange="updateCardStyleField('showTitle', this.checked)" />
+            <span>
+              <span class="t-title">메인 제목 표시 (H2 + 골드 강조)</span>
+              <span class="t-desc">하단 분리 영역의 핵심 큰 제목 표시 (기본 ON)</span>
+            </span>
+          </label>
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showBody !== false ? 'checked' : ''} onchange="updateCardStyleField('showBody', this.checked)" />
+            <span>
+              <span class="t-title">하단 본문 설명 표시 (P)</span>
+              <span class="t-desc">메인 제목 아래 상세 설명 문단 표시 (기본 ON)</span>
+            </span>
+          </label>
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showNumBadge !== false ? 'checked' : ''} onchange="updateCardStyleField('showNumBadge', this.checked)" />
+            <span>
+              <span class="t-title">좌측 상단 카드 번호 (01, 02...)</span>
+              <span class="t-desc">사진 좌측 상단 원형 순서 번호 배지 (기본 ON)</span>
+            </span>
+          </label>
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showStepBadge === true ? 'checked' : ''} onchange="updateCardStyleField('showStepBadge', this.checked)" />
+            <span>
+              <span class="t-title">상단 STEP 카테고리 배지</span>
+              <span class="t-desc">제목 위 작은 STEP 분류 캡슐 배지 (기본 OFF)</span>
+            </span>
+          </label>
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showPillars === true ? 'checked' : ''} onchange="updateCardStyleField('showPillars', this.checked)" />
+            <span>
+              <span class="t-title">하단 3칸 핵심 포인트 소제목 박스</span>
+              <span class="t-desc">01·02·03 3단 요약 그리드 박스 (기본 OFF)</span>
+            </span>
+          </label>
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showTags === true ? 'checked' : ''} onchange="updateCardStyleField('showTags', this.checked)" />
+            <span>
+              <span class="t-title">하단 #해시태그 키워드</span>
+              <span class="t-desc">맨 아래 #키워드 태그 줄 노출 (기본 OFF)</span>
+            </span>
+          </label>
+          <label class="toggle-card">
+            <input type="checkbox" ${cs.showExamHud === true ? 'checked' : ''} onchange="updateCardStyleField('showExamHud', this.checked)" />
+            <span>
+              <span class="t-title">원장 9대검진 이미지 위 HUD 박스</span>
+              <span class="t-desc">검진 사진 위 보조 HUD 오버레이 노출 (기본 OFF)</span>
+            </span>
+          </label>
+        </div>
+
+        <h3 style="margin:18px 0 10px; font-size:14.5px;">2) 하단 에디토리얼 컬러 프리셋 &amp; 글자 크기</h3>
+        <div class="preset-row">
+          ${Object.entries(STYLE_PRESETS).map(([key, pr]) => `
+            <button type="button" class="preset-chip ${cs.panelPreset === key ? 'active' : ''}" onclick="applyStylePreset('${key}')">
+              <span class="swatch-dot" style="background:${pr.swatch};"></span>
+              <span>${escHtml(pr.label)}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="grid-3">
+          <div class="field">
+            <label>하단 박스 상단 배경색</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(cs.bgTop, '#1b1815')}" onchange="updateCardStyleField('bgTop', this.value)" />
+              <input type="text" value="${escHtml(cs.bgTop)}" oninput="updateCardStyleField('bgTop', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>하단 박스 하단 배경색</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(cs.bgBot, '#13110f')}" onchange="updateCardStyleField('bgBot', this.value)" />
+              <input type="text" value="${escHtml(cs.bgBot)}" oninput="updateCardStyleField('bgBot', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>카드 골드 테두리 색상</label>
+            <input type="text" value="${escHtml(cs.borderColor)}" oninput="updateCardStyleField('borderColor', this.value)" />
+          </div>
+          <div class="field">
+            <label>메인 제목 글자색</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(cs.titleColor, '#fdfbf7')}" onchange="updateCardStyleField('titleColor', this.value)" />
+              <input type="text" value="${escHtml(cs.titleColor)}" oninput="updateCardStyleField('titleColor', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>'강조 단어' 골드 하이라이트색</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(cs.hlColor, '#f5d36c')}" onchange="updateCardStyleField('hlColor', this.value)" />
+              <input type="text" value="${escHtml(cs.hlColor)}" oninput="updateCardStyleField('hlColor', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>본문 설명 글자색</label>
+            <input type="text" value="${escHtml(cs.bodyColor)}" oninput="updateCardStyleField('bodyColor', this.value)" />
+          </div>
+          <div class="field">
+            <label>메인 제목 글자 크기</label>
+            <select onchange="updateCardStyleField('titleSize', this.value)">
+              <option value="sm" ${cs.titleSize === 'sm' ? 'selected' : ''}>차분하게 (Small)</option>
+              <option value="md" ${(cs.titleSize || 'md') === 'md' ? 'selected' : ''}>표준 밸런스 (Medium · 권장)</option>
+              <option value="lg" ${cs.titleSize === 'lg' ? 'selected' : ''}>시원하고 크게 (Large)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>본문 설명 글자 크기</label>
+            <select onchange="updateCardStyleField('bodySize', this.value)">
+              <option value="sm" ${cs.bodySize === 'sm' ? 'selected' : ''}>작고 단정하게 (Small)</option>
+              <option value="md" ${(cs.bodySize || 'md') === 'md' ? 'selected' : ''}>표준 가독성 (Medium · 권장)</option>
+              <option value="lg" ${cs.bodySize === 'lg' ? 'selected' : ''}>크고 또렷하게 (Large)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>상·하단 경계선 색상</label>
+            <input type="text" value="${escHtml(cs.dividerColor)}" oninput="updateCardStyleField('dividerColor', this.value)" />
+          </div>
+        </div>
+      `;
+
+      updateStyleMockup();
+    }
+
+    function updateStyleMockup() {
+      const page = getCurrentPage();
+      if (!page) return;
+      const cs = ensureCardStyle(page);
+      const firstCard = (page.plates || []).find(c => c.enabled !== false) || {};
+      const sampleThumb = getCardPreviewThumb(firstCard);
+
+      const cardEl = document.getElementById('styleMockupCard');
+      const visEl = document.getElementById('styleMockupVisual');
+      const numEl = document.getElementById('styleMockupNum');
+      const edEl = document.getElementById('styleMockupEditorial');
+      const stepEl = document.getElementById('styleMockupStep');
+      const h2El = document.getElementById('styleMockupH2');
+      const hlEl = document.getElementById('styleMockupHl');
+      const pEl = document.getElementById('styleMockupP');
+      const pilEl = document.getElementById('styleMockupPillars');
+      const tagEl = document.getElementById('styleMockupTags');
+
+      if (!cardEl) return;
+      cardEl.style.borderColor = cs.borderColor || 'rgba(197, 160, 89, 0.44)';
+      visEl.style.backgroundImage = `url('${sampleThumb}')`;
+      numEl.style.display = cs.showNumBadge !== false ? 'flex' : 'none';
+
+      edEl.style.background = `linear-gradient(180deg, ${cs.bgTop || '#1b1815'} 0%, ${cs.bgBot || '#13110f'} 100%)`;
+      edEl.style.borderTopColor = cs.dividerColor || 'rgba(212, 175, 55, 0.36)';
+
+      stepEl.style.display = cs.showStepBadge ? 'inline-block' : 'none';
+      h2El.style.display = cs.showTitle !== false ? 'block' : 'none';
+      h2El.style.color = cs.titleColor || '#fdfbf7';
+      h2El.style.fontSize = cs.titleSize === 'sm' ? '16px' : (cs.titleSize === 'lg' ? '20.5px' : '18px');
+      if (hlEl) hlEl.style.color = cs.hlColor || '#f5d36c';
+
+      pEl.style.display = cs.showBody !== false ? 'block' : 'none';
+      pEl.style.color = cs.bodyColor || 'rgba(245, 240, 232, 0.84)';
+      pEl.style.fontSize = cs.bodySize === 'sm' ? '12.5px' : (cs.bodySize === 'lg' ? '15px' : '13.5px');
+
+      pilEl.style.display = cs.showPillars ? 'grid' : 'none';
+      tagEl.style.display = cs.showTags ? 'flex' : 'none';
+    }
+
+    function renderLeftPanelPane() {
+      const page = getCurrentPage();
+      const meta = page.meta || (page.meta = {});
+      const theme = page.theme || (page.theme = {});
+      const advice = meta.doctorAdvice || (meta.doctorAdvice = { caution: '주의 필요', severe: '집중 치료 권장' });
+      const extraLink = meta.extraLink || { text: '', href: '' };
+      const descText = Array.isArray(meta.desc) ? meta.desc.join('\n') : String(meta.desc || '');
+      const checkItems = Array.isArray(meta.checklistItems) ? meta.checklistItems : [];
+
+      const box = document.getElementById('leftPanelEditorBox');
+      box.innerHTML = `
+        <div class="panel-head">
+          <h2>📋 [${escHtml(page.label)}] 좌측 고정 안내 패널 &amp; 자가진단 체크리스트</h2>
+          <span class="tag-pill">${escHtml(page.file)}</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>상단 영문/학술 아이브로우 (eyebrow)</label>
+            <input type="text" value="${escHtml(meta.eyebrow || '')}" oninput="updateMetaField('eyebrow', this.value)" />
+          </div>
+          <div class="field">
+            <label>진료과목 메인 대제목 (title)</label>
+            <input type="text" value="${escHtml(meta.title || '')}" oninput="updateMetaField('title', this.value)" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>영문 서브타이틀 (subtitleEn)</label>
+          <input type="text" value="${escHtml(meta.subtitleEn || '')}" oninput="updateMetaField('subtitleEn', this.value)" />
+        </div>
+
+        <div class="field">
+          <label>핵심 진료 철학 소개문 (줄바꿈으로 문단 구분)</label>
+          <textarea rows="3" oninput="updateMetaDesc(this.value)">${escHtml(descText)}</textarea>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="margin:0; font-size:15px;">✅ 환자 자가진단 체크리스트 문항 편집 (${checkItems.length}개)</h3>
+          <button type="button" class="mini-btn gold-helper" onclick="addChecklistItem()">+ 체크 문항 추가</button>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>체크리스트 박스 제목 (checklistTitle)</label>
+            <input type="text" value="${escHtml(meta.checklistTitle || '')}" oninput="updateMetaField('checklistTitle', this.value)" />
+          </div>
+          <div class="field">
+            <label>체크리스트 보조 안내문 (checklistSub)</label>
+            <input type="text" value="${escHtml(meta.checklistSub || '')}" oninput="updateMetaField('checklistSub', this.value)" />
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          ${checkItems.map((item, cIdx) => `
+            <div class="list-row-inline">
+              <span class="tag-pill">${cIdx + 1}</span>
+              <input type="text" value="${escHtml(item)}" oninput="updateChecklistItem(${cIdx}, this.value)" />
+              <button type="button" class="mini-btn" onclick="moveChecklistItem(${cIdx}, -1)">▲</button>
+              <button type="button" class="mini-btn" onclick="moveChecklistItem(${cIdx}, 1)">▼</button>
+              <button type="button" class="mini-btn danger" onclick="removeChecklistItem(${cIdx})">✕</button>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>1~2개 체크 시 진단 배지 문구 (caution)</label>
+            <input type="text" value="${escHtml(advice.caution || '')}" oninput="updateAdviceField('caution', this.value)" />
+          </div>
+          <div class="field">
+            <label>3개 이상 체크 시 진단 배지 문구 (severe)</label>
+            <input type="text" value="${escHtml(advice.severe || '')}" oninput="updateAdviceField('severe', this.value)" />
+          </div>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        <h3 style="margin:0 0 10px; font-size:15px;">📞 하단 진료예약 버튼 &amp; 페이지 테마 색상</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>예약 버튼 메인 문구 (ctaText)</label>
+            <input type="text" value="${escHtml(meta.ctaText || '')}" oninput="updateMetaField('ctaText', this.value)" />
+          </div>
+          <div class="field">
+            <label>예약 모달 자동 선택 프로그램명 (reserveProgram)</label>
+            <input type="text" value="${escHtml(meta.reserveProgram || '')}" oninput="updateMetaField('reserveProgram', this.value)" />
+          </div>
+        </div>
+        <div class="field">
+          <label>예약 버튼 위 안내 문구 (ctaNudge)</label>
+          <input type="text" value="${escHtml(meta.ctaNudge || '')}" oninput="updateMetaField('ctaNudge', this.value)" />
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>보조 링크 버튼 문구 (선택 · 비워두면 숨김)</label>
+            <input type="text" value="${escHtml(extraLink.text || '')}" placeholder="예: 대표원장 진료철학 자세히 보기"
+              oninput="updateExtraLink('text', this.value)" />
+          </div>
+          <div class="field">
+            <label>보조 링크 이동 주소 (href)</label>
+            <input type="text" value="${escHtml(extraLink.href || '')}" placeholder="예: director.html"
+              oninput="updateExtraLink('href', this.value)" />
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="field">
+            <label>페이지 배경 다크 톤 (theme.bgDark)</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(theme.bgDark, '#1a1411')}" onchange="updateThemeField('bgDark', this.value)" />
+              <input type="text" value="${escHtml(theme.bgDark || '#1a1411')}" oninput="updateThemeField('bgDark', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>페이지 대표 포인트 컬러 (theme.accent)</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(theme.accent, '#D4AF37')}" onchange="updateThemeField('accent', this.value)" />
+              <input type="text" value="${escHtml(theme.accent || '#D4AF37')}" oninput="updateThemeField('accent', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>보조 포인트 컬러 (theme.secondary)</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(theme.secondary, '#10B981')}" onchange="updateThemeField('secondary', this.value)" />
+              <input type="text" value="${escHtml(theme.secondary || '#10B981')}" oninput="updateThemeField('secondary', this.value)" />
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* === Mutation Helpers === */
+    function toggleCardAccordion(idx, ev) {
+      if (ev) ev.stopPropagation();
+      if (expandedCards.has(idx)) expandedCards.delete(idx);
+      else expandedCards.add(idx);
+      renderStoryCardsPane();
+    }
+
+    function toggleExpandAllCards(expand) {
+      const page = getCurrentPage();
+      if (!expand) {
+        expandedCards.clear();
+      } else {
+        expandedCards = new Set((page.plates || []).map((_, i) => i));
+      }
+      renderStoryCardsPane();
+    }
+
+    function updateCardTitleLive(idx, val) {
+      const page = getCurrentPage();
+      page.plates[idx].title = val;
+      const itemEl = document.getElementById('card-item-' + idx);
+      if (itemEl) {
+        const titleSpan = itemEl.querySelector('.card-head-title');
+        if (titleSpan) titleSpan.textContent = val || '(제목 없음)';
+      }
+      markDirty(true);
+    }
+
+    function wrapSelectedWithGoldQuote(idx) {
+      const input = document.getElementById('card-title-input-' + idx);
+      if (!input) return;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const val = input.value;
+      if (start == null || end == null || start === end) {
+        alert('제목 입력칸에서 골드 색상으로 강조할 단어나 구절을 마우스로 먼저 드래그해 선택해 주세요!');
+        input.focus();
+        return;
+      }
+      const selected = val.slice(start, end).replace(/^'+|'+$/g, '');
+      const nextVal = val.slice(0, start) + "'" + selected + "'" + val.slice(end);
+      input.value = nextVal;
+      updateCardTitleLive(idx, nextVal);
+      input.focus();
+    }
+
+    function updateCardField(idx, key, val, rerenderRow) {
+      const page = getCurrentPage();
+      page.plates[idx][key] = val;
+      markDirty(true);
+      if (rerenderRow) {
+        renderPageSwitcher();
+        renderStoryCardsPane();
+      }
+    }
+
+    function changeCardType(idx, nextType) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      card.type = nextType;
+      if (nextType === 'runway-ba-scan') {
+        card.beforeImg = card.beforeImg || card.imgSrc || '';
+        card.afterImg = card.afterImg || card.imgSrc || '';
+      } else if (nextType === 'motion-story') {
+        if (!Array.isArray(card.frames) || card.frames.length === 0) {
+          card.frames = card.imgSrc ? [card.imgSrc] : [''];
+        }
+        card.durationSec = card.durationSec || 6;
+      }
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function updateCardTags(idx, csv) {
+      const page = getCurrentPage();
+      page.plates[idx].tags = csv
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+        .map(s => (s.startsWith('#') ? s : '#' + s));
+      markDirty(true);
+    }
+
+    function updateCardPillar(idx, pIdx, key, val) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      if (!Array.isArray(card.pillars)) card.pillars = [];
+      while (card.pillars.length <= pIdx) {
+        card.pillars.push({ num: '0' + (card.pillars.length + 1), title: '', desc: '' });
+      }
+      card.pillars[pIdx][key] = val;
+      markDirty(true);
+    }
+
+    function addCardFrame(idx) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      if (!Array.isArray(card.frames)) card.frames = card.imgSrc ? [card.imgSrc] : [];
+      card.frames.push('');
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function updateCardFrame(idx, fIdx, val) {
+      const page = getCurrentPage();
+      page.plates[idx].frames[fIdx] = val;
+      if (fIdx === 0) page.plates[idx].imgSrc = val;
+      markDirty(true);
+    }
+
+    function removeCardFrame(idx, fIdx) {
+      const page = getCurrentPage();
+      page.plates[idx].frames.splice(fIdx, 1);
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function addCardThumb(idx) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      if (!Array.isArray(card.thumbs)) card.thumbs = [];
+      card.thumbs.push({ label: '서브 뷰 ' + (card.thumbs.length + 1), img: card.imgSrc || '' });
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function updateCardThumb(idx, thIdx, key, val) {
+      const page = getCurrentPage();
+      page.plates[idx].thumbs[thIdx][key] = val;
+      markDirty(true);
+    }
+
+    function removeCardThumb(idx, thIdx) {
+      const page = getCurrentPage();
+      page.plates[idx].thumbs.splice(thIdx, 1);
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function updateCardLines(idx, key, rawText) {
+      const page = getCurrentPage();
+      page.plates[idx][key] = rawText.split('\n').map(s => s.trim()).filter(Boolean);
+      markDirty(true);
+    }
+
+    function updateCardArrayItem(idx, key, itemIdx, val) {
+      const page = getCurrentPage();
+      if (!Array.isArray(page.plates[idx][key])) page.plates[idx][key] = [];
+      page.plates[idx][key][itemIdx] = val;
+      markDirty(true);
+    }
+
+    function addBrochurePage(idx) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      if (!Array.isArray(card.pages)) card.pages = [];
+      const n = card.pages.length + 1;
+      card.pages.push({ tag: 'P.' + String(n).padStart(2, '0'), title: '새 브로슈어 페이지', img: '' });
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function updateBrochurePage(idx, pIdx, key, val) {
+      const page = getCurrentPage();
+      page.plates[idx].pages[pIdx][key] = val;
+      markDirty(true);
+    }
+
+    function removeBrochurePage(idx, pIdx) {
+      const page = getCurrentPage();
+      page.plates[idx].pages.splice(pIdx, 1);
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function addNewStoryCard() {
+      const page = getCurrentPage();
+      if (!Array.isArray(page.plates)) page.plates = [];
+      const nextNum = page.plates.length + 1;
+      page.plates.push({
+        id: 'card_custom_' + Date.now(),
+        enabled: true,
+        type: 'clean-image',
+        fullscreen: true,
+        fit: 'cover',
+        stepLabel: 'STORY 0' + nextNum,
+        title: "새 스토리 카드 제목 — '핵심 강조 키워드'를 입력하세요",
+        sub: '여기에 환자분들이 이해하기 쉬운 치료 원리와 임상 설명을 입력해 주세요.',
+        imgSrc: availableImages[0] || 'bareun_step1_growth_spine.jpg',
+        pillars: [],
+        tags: []
+      });
+      expandedCards.add(page.plates.length - 1);
+      markDirty(true);
+      renderPageSwitcher();
+      renderStoryCardsPane();
+    }
+
+    function duplicateStoryCard(idx) {
+      const page = getCurrentPage();
+      const clone = JSON.parse(JSON.stringify(page.plates[idx]));
+      clone.id = 'card_copy_' + Date.now();
+      clone.title = (clone.title || '카드') + ' (복사본)';
+      page.plates.splice(idx + 1, 0, clone);
+      expandedCards.add(idx + 1);
+      markDirty(true);
+      renderPageSwitcher();
+      renderStoryCardsPane();
+    }
+
+    function deleteStoryCard(idx) {
+      const page = getCurrentPage();
+      if (page.plates.length <= 1) {
+        alert('최소 1개 이상의 스토리 카드가 필요합니다. 숨기려면 [표시] 체크를 해제해 주세요.');
+        return;
+      }
+      if (!confirm(`CARD ${String(idx + 1).padStart(2, '0')} 카드를 삭제하시겠습니까?`)) return;
+      page.plates.splice(idx, 1);
+      expandedCards.clear();
+      markDirty(true);
+      renderPageSwitcher();
+      renderStoryCardsPane();
+    }
+
+    function moveStoryCard(idx, delta) {
+      const page = getCurrentPage();
+      const target = idx + delta;
+      if (target < 0 || target >= page.plates.length) return;
+      const tmp = page.plates[idx];
+      page.plates[idx] = page.plates[target];
+      page.plates[target] = tmp;
+      const wasOpen = expandedCards.has(idx);
+      expandedCards.delete(idx);
+      if (wasOpen) expandedCards.add(target);
+      markDirty(true);
+      renderStoryCardsPane();
+    }
+
+    function updateBodyModelField(key, val) {
+      const page = getCurrentPage();
+      if (!page.bodyModelCard) page.bodyModelCard = {};
+      page.bodyModelCard[key] = val;
+      markDirty(true);
+    }
+
+    /* === Style Tab Helpers === */
+    function updateCardStyleField(key, val) {
+      const page = getCurrentPage();
+      const cs = ensureCardStyle(page);
+      cs[key] = val;
+      if (['bgTop', 'bgBot', 'borderColor', 'titleColor', 'hlColor', 'bodyColor'].includes(key)) {
+        cs.panelPreset = 'custom';
+      }
+      markDirty(true);
+      renderStylePane();
+    }
+
+    function applyStylePreset(presetKey) {
+      const pr = STYLE_PRESETS[presetKey];
+      if (!pr) return;
+      const page = getCurrentPage();
+      const cs = ensureCardStyle(page);
+      cs.panelPreset = presetKey;
+      cs.bgTop = pr.bgTop;
+      cs.bgBot = pr.bgBot;
+      cs.borderColor = pr.borderColor;
+      cs.dividerColor = pr.dividerColor;
+      cs.titleColor = pr.titleColor;
+      cs.hlColor = pr.hlColor;
+      cs.bodyColor = pr.bodyColor;
+      markDirty(true);
+      renderStylePane();
+    }
+
+    function applyStyleToAllPages() {
+      const page = getCurrentPage();
+      const sourceStyle = JSON.parse(JSON.stringify(ensureCardStyle(page)));
+      masterConfig.globalCardStyle = JSON.parse(JSON.stringify(sourceStyle));
+      masterConfig.pages.forEach(p => {
+        p.cardStyle = JSON.parse(JSON.stringify(sourceStyle));
+      });
+      markDirty(true);
+      showStatus('ok', '현재 Sample A 카드 디자인 및 표시 항목 설정을 11개 전 상세페이지에 동일하게 복사했습니다! 상단의 [✨ 11개 전체 일괄 반영]을 누르면 모든 페이지 파일에 적용됩니다.');
+    }
+
+    /* === Left Panel Helpers === */
+    function updateMetaField(key, val) {
+      const page = getCurrentPage();
+      page.meta[key] = val;
+      markDirty(true);
+    }
+
+    function updateMetaDesc(raw) {
+      const page = getCurrentPage();
+      page.meta.desc = raw.split('\n').map(s => s.trim()).filter(Boolean);
+      markDirty(true);
+    }
+
+    function updateChecklistItem(cIdx, val) {
+      const page = getCurrentPage();
+      page.meta.checklistItems[cIdx] = val;
+      markDirty(true);
+    }
+
+    function addChecklistItem() {
+      const page = getCurrentPage();
+      if (!Array.isArray(page.meta.checklistItems)) page.meta.checklistItems = [];
+      page.meta.checklistItems.push('[새 체크 항목] 증상 문구를 입력해 주세요.');
+      markDirty(true);
+      renderLeftPanelPane();
+    }
+
+    function removeChecklistItem(cIdx) {
+      const page = getCurrentPage();
+      page.meta.checklistItems.splice(cIdx, 1);
+      markDirty(true);
+      renderLeftPanelPane();
+    }
+
+    function moveChecklistItem(cIdx, delta) {
+      const page = getCurrentPage();
+      const arr = page.meta.checklistItems;
+      const t = cIdx + delta;
+      if (t < 0 || t >= arr.length) return;
+      const tmp = arr[cIdx];
+      arr[cIdx] = arr[t];
+      arr[t] = tmp;
+      markDirty(true);
+      renderLeftPanelPane();
+    }
+
+    function updateAdviceField(key, val) {
+      const page = getCurrentPage();
+      if (!page.meta.doctorAdvice) page.meta.doctorAdvice = {};
+      page.meta.doctorAdvice[key] = val;
+      markDirty(true);
+    }
+
+    function updateExtraLink(key, val) {
+      const page = getCurrentPage();
+      if (!page.meta.extraLink) page.meta.extraLink = { text: '', href: '' };
+      page.meta.extraLink[key] = val;
+      if (!page.meta.extraLink.text && !page.meta.extraLink.href) {
+        delete page.meta.extraLink;
+      }
+      markDirty(true);
+    }
+
+    function updateThemeField(key, val) {
+      const page = getCurrentPage();
+      if (!page.theme) page.theme = {};
+      page.theme[key] = val;
+      markDirty(true);
+    }
+
+    /* === PC File Upload Helpers === */
+    function pickAndUploadFile(accept, onUploaded) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = accept || 'image/jpeg,image/png,image/webp,image/gif,image/svg+xml';
+      input.onchange = async () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        try {
+          showStatus('working', `[${file.name}] 파일을 업로드하는 중입니다...`);
+          const dataUrl = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(new Error('파일 읽기 실패'));
+            reader.readAsDataURL(file);
+          });
+          const res = await fetch('/api/upload-detail-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileName: file.name, dataUrl })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || '업로드 실패');
+
+          if (data.fileName.endsWith('.mp4')) {
+            if (!availableVideos.includes(data.fileName)) availableVideos.unshift(data.fileName);
+          } else {
+            if (!availableImages.includes(data.fileName)) availableImages.unshift(data.fileName);
+          }
+          populateMediaDatalists();
+          onUploaded(data.fileName);
+          markDirty(true);
+          showStatus('ok', `파일 업로드 완료 (${data.fileName})! [💾 현재 페이지 즉시 반영]을 클릭하면 실제 페이지에 적용됩니다.`);
+        } catch (err) {
+          showStatus('err', '파일 업로드 실패: ' + err.message);
+        }
+      };
+      input.click();
+    }
+
+    function triggerAssetUpload(cardIdx, fieldKey, accept) {
+      pickAndUploadFile(accept, savedName => {
+        const page = getCurrentPage();
+        page.plates[cardIdx][fieldKey] = savedName;
+        renderStoryCardsPane();
+      });
+    }
+
+    function triggerFrameUpload(cardIdx, frameIdx) {
+      pickAndUploadFile(null, savedName => {
+        const page = getCurrentPage();
+        page.plates[cardIdx].frames[frameIdx] = savedName;
+        if (frameIdx === 0) page.plates[cardIdx].imgSrc = savedName;
+        renderStoryCardsPane();
+      });
+    }
+
+    function triggerThumbUpload(cardIdx, thumbIdx) {
+      pickAndUploadFile(null, savedName => {
+        const page = getCurrentPage();
+        page.plates[cardIdx].thumbs[thumbIdx].img = savedName;
+        renderStoryCardsPane();
+      });
+    }
+
+    function triggerBrochureUpload(cardIdx, pageIdx) {
+      pickAndUploadFile(null, savedName => {
+        const page = getCurrentPage();
+        page.plates[cardIdx].pages[pageIdx].img = savedName;
+        renderStoryCardsPane();
+      });
+    }
+
+    function triggerBodyModelBgUpload() {
+      pickAndUploadFile(null, savedName => {
+        const page = getCurrentPage();
+        page.bodyModelCard.bg = savedName;
+        renderBodyModelBox();
+      });
+    }
+
+    /* === Preview Iframe Controls === */
+    function setPreviewViewport(mode) {
+      const stage = document.getElementById('previewStage');
+      document.getElementById('vpDesktopBtn').classList.toggle('active', mode === 'desktop');
+      document.getElementById('vpMobileBtn').classList.toggle('active', mode === 'mobile');
+      stage.classList.toggle('mobile-mode', mode === 'mobile');
+    }
+
+    function reloadPreviewIframe() {
+      const page = getCurrentPage();
+      if (!page) return;
+      const frame = document.getElementById('livePreviewFrame');
+      frame.src = '/' + page.file + '?studioPreview=' + Date.now();
+    }
+
+    /* === Save / Build / Deploy / Reset API Actions === */
+    function setButtonsBusy(busy) {
+      ['btnSaveOne', 'btnSaveAll', 'btnDeployOne', 'btnDeployAll'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = busy;
+      });
+    }
+
+    async function runStudioAction(action) {
+      const page = getCurrentPage();
+      if (!page) return;
+      setButtonsBusy(true);
+      const workingMessages = {
+        save_build_one: `[${page.label}] 로컬 상세페이지(.html) 및 워드프레스 번들을 생성 중입니다...`,
+        save_build_all: '11개 전 상세페이지(.html + wordpress-*.html)를 일괄 제작 중입니다...',
+        deploy_one: `[${page.label}] 로컬 제작 후 카페24 실서버(${page.liveUrl})로 배포 중입니다 (약 15~35초 소요)...`,
+        deploy_all: '11개 모든 상세페이지를 로컬 제작 후 카페24 실서버에 일괄 배포 중입니다 (약 1~2분 소요)...',
+        reset_page: `[${page.label}] 페이지를 Sample A 초기 기본값으로 복원 중입니다...`
+      };
+      showStatus('working', workingMessages[action] || '처리 중입니다...');
+
+      try {
+        const res = await fetch('/api/detail-pages-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action,
+            targetPage: page.file,
+            config: masterConfig
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          throw new Error(data.error || '작업 처리 중 오류가 발생했습니다.');
+        }
+        if (data.config) masterConfig = data.config;
+        if (data.availableImages) availableImages = data.availableImages;
+        if (data.availableVideos) availableVideos = data.availableVideos;
+        populateMediaDatalists();
+        markDirty(false);
+        renderAll();
+        reloadPreviewIframe();
+        showStatus('ok', data.message || '완료되었습니다!');
+      } catch (err) {
+        showStatus('err', err.message);
+      } finally {
+        setButtonsBusy(false);
+      }
+    }
+
+    function confirmAndDeploy(action) {
+      const page = getCurrentPage();
+      const msg = action === 'deploy_all'
+        ? '11개 모든 상세페이지의 현재 설정을 로컬 제작 후 카페24 실서버(https://www.bareunhaniwon.com/)에 즉시 일괄 배포하시겠습니까?'
+        : `[${page.label}] 페이지를 카페24 실서버(${page.liveUrl})에 즉시 배포하시겠습니까?`;
+      if (!confirm(msg)) return;
+      runStudioAction(action);
+    }
+
+    function confirmResetPage() {
+      const page = getCurrentPage();
+      if (!confirm(`[${page.label}] 페이지의 카드/문구/디자인 설정을 Sample A 초기 기본값으로 되돌리시겠습니까?`)) return;
+      runStudioAction('reset_page');
+    }
+
+    // Ctrl+S shortcut for quick single-page build
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        runStudioAction('save_build_one');
+      }
+    });
+
+    loadStudioConfig();
+  </script>
+</body>
+</html>

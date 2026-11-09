@@ -1,0 +1,2671 @@
+{
+  "version": "2.0.0",
+  "updatedAt": "2026-11-09T12:24:38.025Z",
+  "globalCardStyle": {
+    "layout": "sample-a",
+    "showTitle": true,
+    "showBody": true,
+    "showStepBadge": false,
+    "showPillars": false,
+    "showTags": false,
+    "showNumBadge": true,
+    "showExamHud": false,
+    "panelPreset": "espresso-gold",
+    "bgTop": "#1b1815",
+    "bgBot": "#13110f",
+    "borderColor": "rgba(197, 160, 89, 0.44)",
+    "dividerColor": "rgba(212, 175, 55, 0.36)",
+    "titleColor": "#fdfbf7",
+    "hlColor": "#f5d36c",
+    "bodyColor": "rgba(245, 240, 232, 0.84)",
+    "titleSize": "md",
+    "bodySize": "md"
+  },
+  "pages": [
+    {
+      "slug": "director",
+      "file": "director.html",
+      "wpFile": "wordpress-director.html",
+      "wpId": 126,
+      "liveUrl": "https://www.bareunhaniwon.com/director/",
+      "label": "01 · 대표원장 철학 · 9대검진",
+      "tabIdx": 0,
+      "hairlossSubType": null,
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#1a1411",
+        "bgPanel": "rgba(24, 18, 15, 0.96)",
+        "accent": "#D4AF37",
+        "accentLight": "#FFEDD7",
+        "secondary": "#10B981",
+        "glowA": "rgba(212, 175, 55, 0.08)",
+        "glowB": "rgba(220, 80, 0, 0.05)"
+      },
+      "meta": {
+        "eyebrow": "REPRESENTATIVE DIRECTOR PHILOSOPHY · 학술 논문 검증 통합 한의학",
+        "title": "안정위 대표원장",
+        "subtitleEn": "Dr. Ahn Jung-wi · Evidence-Based Sasang & Integrative Korean Medicine",
+        "desc": [
+          "깊이 있는 맥진과 국가인증 정품 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 검사와 안전성이 입증된 치료법만을 시행합니다."
+        ],
+        "ctaNudge": "📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 체질에 맞는 치료 방향 상담하기",
+        "reserveProgram": "안정위 대표원장 사상체질·통합진료 클리닉",
+        "checklistTitle": "사상체질 · 맞춤 한약 핵심 체크리스트",
+        "checklistItems": [
+          "[원인 미상 통증] 병원 검사는 정상인데 만성 통증· 피로가 반복된다.",
+          "[사상체질 진단] 내 타고난 체질과 체질별 맞춤 식단을 정확히 알고 싶다.",
+          "[심층 전담 진료] 내 이야기를 끝까지 듣고 원인을 쉽게 설명해 주는 주치의를 원한다.",
+          "[체질 맞춤 처방] 공용 한약이 아닌 내 맥상에 맞춘 정밀 단독 처방을 원한다.",
+          "[학술 안전성 검증] 간·신장 부담이나 중금속 걱정 없이 논문으로 검증된 한약을 원한다."
+        ],
+        "doctorAdvice": {
+          "caution": "장부불균형 주의",
+          "severe": "장부불균형 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 대표원장 심층 검사",
+          "indexPill": "REPRESENTATIVE DIRECTOR · 대표원장 심층 문진",
+          "metricPill": "자율신경 · 수면 · 소화 · 한열 입체 스캔",
+          "fx": "warm-breath-zoom",
+          "title": "병명 뒤에 가려진 '당신의 일상'부터 먼저 묻습니다",
+          "sub": "자율신경·수면·소화·스트레스까지 깊이 경청하며 영상 검사에 보이지 않는 병의 뿌리를 찾습니다.",
+          "caption": "[원장 임상 노트] 초진 시 자율신경·수면·소화·한열 반응을 입체 검사해 기능성 질환의 근본 원인을 파악합니다.",
+          "imgSrc": "card_1_director.jpg?v=dir1only",
+          "thumbs": [
+            {
+              "img": "card_1_director.jpg?v=dir1only",
+              "label": "안정위 대표원장"
+            },
+            {
+              "img": "detail_director_story1_enter.jpg?v=dir1only",
+              "label": "따뜻한 맞이"
+            },
+            {
+              "img": "detail_director_consult.jpg?v=dir1only",
+              "label": "1:1 심층 문진"
+            }
+          ],
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 양 손목 정밀 진맥",
+          "title": "손끝으로 읽어내는 '오장육부와 자율신경'의 파동",
+          "sub": "창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.",
+          "caption": "[원장 임상 노트] 창조한 眞(진)장부맥학으로 오장육부의 기능이상을 정밀하게 판독합니다.",
+          "imgSrc": "detail_director_story2_clean.jpg?v=dir1only",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "stepLabel": "STORY · 사상체질 & 학술 근거 로드맵",
+          "title": "체질 의학과 실제 학술 논문을 결합한 '맞춤 치료 지도'",
+          "sub": "타고난 사상체질과 현대 임상 논문 근거를 결합해 왜 아팠는지, 어떻게 회복되는지 명확히 안내합니다.",
+          "caption": "[원장 임상 노트] 태양·태음·소양·소음 사상체질의 장부 강약을 분석하여 학술적으로 검증된 처방을 설계합니다.",
+          "imgSrc": "detail_director_story3_clean.jpg?v=dir1only",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 압력 탕전 & 정품 약재 사용",
+          "title": "모든 처방을 직접 달이는 '정통 시스템'",
+          "sub": "국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 정성껏 달여냅니다.",
+          "caption": "[원장 임상 노트] 국가 유해성 검사를 통과한 청정 GMP 정품 한약재만을 원내에서 직접 달여냅니다.",
+          "imgSrc": "detail_director_story4_clean.jpg?v=dir1only",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "stepLabel": "STORY · SCI급 학술 논문 검수 완료",
+          "title": "실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'",
+          "sub": "학술 논문연구를 통한 안전성이 입증된 한약만을 처방합니다.",
+          "caption": "[학술 논문 검수] 국제 학술지 연구를 통해 한약 투여 후 간·신장 기능 안전성 및 항산화·자율신경 회복 기전이 검증되었습니다.",
+          "imgSrc": "detail_director_story5_no_director.jpg?v=dir1only",
+          "thumbs": [
+            {
+              "img": "detail_director_story5_no_director.jpg?v=dir1only",
+              "label": "온 가족 안심 한약"
+            },
+            {
+              "img": "ba_director_after.jpg?v=dir1only",
+              "label": "SCI급 안전성 입증"
+            }
+          ],
+          "sciStats": [
+            {
+              "num": "SCI급 국제학술지 검증",
+              "label": "한약 복용 전후 간·신장 안전성 및 항산화 활성 입증",
+              "width": "96%"
+            },
+            {
+              "num": "국제 민족약리학회지 등재",
+              "label": "체질 맞춤 처방의 자율신경 회복 기전 검증",
+              "width": "94%"
+            }
+          ],
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 1,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-1",
+          "title": "보이지 않는 통증과 오장육부 속까지 살피는 — '정밀 초음파 검사'",
+          "sub": "근육·인대·관절의 심부 통증 부위부터 간·담낭·위장·방광 등 오장육부의 상태까지 방사선 노출 없이 실시간 영상으로 정밀하게 확인합니다.",
+          "caption": "[초음파 검사 · 통증 & 오장육부] 근육·인대·관절 통증 원인과 오장육부 내부 상태를 실시간 초음파로 안전하고 정확하게 진단합니다.",
+          "imgSrc": "director_exam_card1_ultrasound.jpg?v=dir1only",
+          "id": "card06",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 2,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-2",
+          "title": "면역력 · 혈액순환 · 생식기능의 온도를 읽는 — '적외선 체열진단기 검사'",
+          "sub": "상체로 몰린 열독과 손발·하복부의 냉증을 체표 온도 분포로 시각화하여 면역 저하, 혈액순환 정체, 자궁·전립선 생식기능 이상을 정확히 진단합니다.",
+          "caption": "[체열진단기 검사 · 면역·순환·생식기능] 미세한 체표 온도 차이를 적외선으로 촬영하여 면역력·혈액순환·생식기능 밸런스를 입체 판독합니다.",
+          "imgSrc": "director_exam_card2_thermography.jpg?v=dir1only",
+          "id": "card07",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 3,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-3",
+          "title": "귀 · 코 · 목 점막 속 숨은 염증을 직접 확인하는 — '이비인후 내시경 검사'",
+          "sub": "중이염 고막 상태, 비염·축농증으로 부어오른 코 점막, 편도와 인후두 충혈까지 고화질 내시경으로 세밀하게 관찰해 호흡기 질환의 뿌리를 찾습니다.",
+          "caption": "[이비인후 내시경 검사 · 귀·코·목] 귀(고막)·코(비강 점막)·목(편도·인후) 상태를 내시경으로 직접 확인하여 만성 비염·감기 면역을 치료합니다.",
+          "imgSrc": "director_exam_card3_ent_endoscope.jpg?v=dir1only",
+          "id": "card08",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 4,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-4",
+          "title": "타고난 장부의 강약과 평생의 체질을 판별하는 — '사상체질 정밀 검사'",
+          "sub": "체형·성정·체질 분석과 대표원장의 정밀 맥진·복진을 결합하여 태양·태음·소양·소음 사상체질을 진단하고 내 몸에 꼭 맞는 맞춤 한약을 설계합니다.",
+          "caption": "[사상체질 검사 · 맞춤 체질의학] 타고난 사상체질과 오장육부 대소(大小) 강약을 분석하여 체질별 맞춤 처방과 섭생 기준을 제시합니다.",
+          "imgSrc": "director_exam_card4_sasang_constitution.jpg?v=dir1only",
+          "id": "card09",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 5,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-5",
+          "title": "소아비만부터 성인 복부비만·근육량까지 분석하는 — '체지방 · 체성분 검사'",
+          "sub": "체지방률과 복부 내장지방 레벨, 골격근량, 체수분 부종 밸런스를 정밀 계측하여 성장기 소아비만 관리와 근손실 없는 복부비만 감량 계획을 세웁니다.",
+          "caption": "[체지방 검사 · 소아 및 복부비만] 체지방·내장지방·골격근량·부종 수치를 정밀 분석하여 소아비만과 성인 복부비만을 과학적으로 관리합니다.",
+          "imgSrc": "director_exam_card5_bodyfat_inbody.jpg?v=dir1only",
+          "id": "card10",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 6,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-6",
+          "title": "두통 · 어지럼증 · 불면증의 신경계 원인을 찾는 — '자율신경 · 스트레스 검사'",
+          "sub": "심박변이도(HRV)와 자율신경 활성도를 측정해 교감신경 과열과 부교감신경 저하를 파악하고, 만성 두통·어지럼증·불면증의 근본 원인을 다스립니다.",
+          "caption": "[자율신경검사 · 두통·어지럼·불면] 교감·부교감 자율신경 균형도와 스트레스 저항도를 수치로 분석하여 두통·어지럼·불면증을 치료합니다.",
+          "imgSrc": "director_exam_card6_autonomic_hrv.jpg?v=dir1only",
+          "id": "card11",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 7,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-7",
+          "title": "대사질환 관리와 안전한 한약 처방을 위한 — '내분비 · 간 및 당 수치 검사'",
+          "sub": "한약 복용 전후 간 기능 수치(AST·ALT)와 혈당·당화혈색소·지질 대사 지표를 정밀하게 점검하여 대사질환을 관리하고 간 부담 없는 안심 처방을 시행합니다.",
+          "caption": "[내분비 간 및 당 수치 검사 · 대사질환] 간 수치와 혈당·당화혈색소 등 내분비 대사 지표를 확인하여 대사질환 관리와 안전한 한약 처방을 보장합니다.",
+          "imgSrc": "director_exam_card7_endocrine_liver_glucose.jpg?v=dir1only",
+          "id": "card12",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 8,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-8",
+          "title": "혈관 노화도와 혈액 속 어혈 · 독소를 찾아내는 — '말초 혈관 상태 검사'",
+          "sub": "가속도 맥파로 혈관 탄성도와 말초 혈액순환 속도, 혈관 내 어혈·독소 정체 정도를 단계별로 분석하여 손발 저림·수족냉증·만성 피로를 조기에 다스립니다.",
+          "caption": "[혈관 상태 검사 · 독소 & 혈류] 말초 혈관 탄성도와 혈액 내 어혈·독소 정체를 정밀 분석하여 전신 해독과 혈관 건강을 회복시킵니다.",
+          "imgSrc": "director_exam_card8_vascular_toxin.jpg?v=dir1only",
+          "id": "card13",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "director-exam-motion",
+          "examId": 9,
+          "fullscreen": true,
+          "fx": "exam-retina-shader-9",
+          "title": "성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'",
+          "sub": "무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 골든타임을 찾아냅니다.",
+          "caption": "[성장 검사 · 성장판 & 최종예상키] 성장판 개방 상태, 골연령, 뼈길이, 최종예상키를 종합 검사하여 우리 아이 맞춤 성장 솔루션을 설계합니다.",
+          "imgSrc": "director_exam_card9_growth_check.jpg?v=dir1only",
+          "id": "card14",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "id": "card15",
+          "enabled": true,
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "ba_director_before.jpg",
+          "afterImg": "ba_director_after.jpg",
+          "title": "안정위 대표원장 — '치료 전·후 비교'",
+          "sub": "실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.",
+          "stepLabel": "BEFORE & AFTER · 치료 전·후 비교",
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=syncope",
+        "part": "syncope",
+        "partBadge": "자율신경 · 사상체질 인체모형",
+        "eyebrow": "FINAL CARD · HUMAN BODY MODEL SHOWROOM",
+        "title": "인체모형으로 내 체질·원인 연결하기",
+        "desc": "인체모형에서 부위별 질환 원인과 실제 학술 논문으로 검증된 한약·홈케어 정보를 한눈에 확인하세요.",
+        "bg": "illust_syncope_autonomic.jpg"
+      },
+      "nextClinic": {
+        "href": "chuna.html",
+        "keyword": "추나 교정 궁금해?",
+        "eyebrow": "NEXT STORY · 바른 추나 클리닉",
+        "title": "바른 추나 · 척추교정",
+        "desc": "실제 학술 논문으로 검증된 원장 수기 추나로 무너진 골반·척추 중심축을 바로 세웁니다.",
+        "bg": "detail_chuna_story5_park_arms_wide.jpg?v=uniq1",
+        "caption": "[다음 클리닉 · 바른 추나] 학술 논문으로 검증된 원장 수기 추나로 척추·골반 중심축을 바로 세우는 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "chuna",
+      "file": "chuna.html",
+      "wpFile": "wordpress-chuna.html",
+      "wpId": 127,
+      "liveUrl": "https://www.bareunhaniwon.com/chuna/",
+      "label": "02 · 바른 추나 · 척추교정",
+      "tabIdx": 1,
+      "hairlossSubType": null,
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#121716",
+        "bgPanel": "rgba(18, 23, 22, 0.96)",
+        "accent": "#10B981",
+        "accentLight": "#D1FAE5",
+        "secondary": "#D4AF37",
+        "glowA": "rgba(16, 185, 129, 0.08)",
+        "glowB": "rgba(212, 175, 55, 0.05)"
+      },
+      "meta": {
+        "eyebrow": "CHUNA SPINAL REALIGNMENT · 학술 논문 검증 비수술 척추 치료",
+        "title": "바른 추나 · 척추교정",
+        "subtitleEn": "Evidence-Based Manual Chuna & Spinal Decompression Care",
+        "desc": [
+          "진통제로 통증만 가리지 않고, 대표원장 수기 추나로 틀어진 척추·골반 중심축을 바로잡습니다. 미국의학협회지(JAMA) 등 실제 학술 논문을 검수하여 유효성이 입증된 비수술 치료법을 시행합니다."
+        ],
+        "ctaNudge": "📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 체형에 맞는 교정 계획 원장님과 상담하기",
+        "reserveProgram": "추나 척추·전신통증 클리닉",
+        "checklistTitle": "척추 · 골반 불균형 자가 진단 체크리스트",
+        "checklistItems": [
+          "[만성 재발 통증] 진통제·주사를 맞아도 며칠 뒤 목·허리 통증이 다시 시작된다.",
+          "[체형 비대칭] 거울을 보면 양쪽 어깨 높이가 다르고 바지나 치마가 돌아간다.",
+          "[디스크·방사통] 허리와 뒷목이 뻐근하고 엉덩이·다리·팔까지 저릿한 증상이 있다.",
+          "[거북목·두통] 컴퓨터·스마트폰 사용 후 뒷목이 굳고 만성 두통과 눈 피로가 온다.",
+          "[비수술 근본 교정] 수술 없이 학술적으로 검증된 추나와 약침으로 치료받고 싶다."
+        ],
+        "doctorAdvice": {
+          "caution": "척추불균형 주의",
+          "severe": "척추불균형 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "indexPill": "CORE MOTION · 바른 정밀 수기 추나",
+          "metricPill": "수술 없이 척추·골반 정렬 ▲ · 신경 압박 통증 해소 ▼",
+          "title": "수술 없이 틀어진 척추·골반 중심축을 바로잡는 교정 — '정밀 수기 추나'",
+          "sub": "진통제나 수술에 의존하지 않고, 대표원장의 정밀 수기(手技) 추나로 무너진 골반·척추 정렬을 바로잡아 디스크·신경 압박 통증의 뿌리를 해결합니다.",
+          "caption": "[정밀 수기 추나 핵심 원리] 수술 없이 무너진 골반·척추 중심축을 바로잡아 디스크·신경 압박 통증을 근본부터 해소합니다.",
+          "frames": [
+            "chuna_minimal_card1_core_align_a.jpg",
+            "chuna_minimal_card1_core_align_b.jpg",
+            "chuna_minimal_card1_core_align_c.jpg"
+          ],
+          "fx": "sunlight-bokeh",
+          "durationSec": 6,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "진통제와 파스는 경보음만 끌 뿐, '기울어진 척추·골반'은 그대로입니다",
+          "sub": "일시적으로 통증 신호만 가리는 대증요법의 악순환을 끊고, 틀어진 골반과 눌린 추간판 공간을 구조적으로 복원합니다.",
+          "caption": "[재발 단절 핵심] 진통제로 통증 신호만 가리는 것이 아니라 기울어진 척추·골반 구조를 바로 세우는 것이 핵심입니다.",
+          "imgSrc": "chuna_minimal_card2_painkiller_limit.jpg",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 3,
+          "fullscreen": true,
+          "imgSrc": "chuna_minimal_card3_pelvis_tilted_a.jpg",
+          "frames": [
+            "chuna_minimal_card3_pelvis_tilted_a.jpg",
+            "chuna_minimal_card3_pelvis_correcting_b.jpg",
+            "chuna_minimal_card3_pelvis_aligned_c.jpg"
+          ],
+          "title": "전신 체형·어혈 부종 완화 — '틀어지고 뭉친 전신에서 어혈·수독을 배출해 바른 체형으로'",
+          "sub": "골반·어깨 비대칭으로 정체된 전신 어혈과 부종을 중심축 교정과 순환으로 풀어내어 가볍고 반듯한 전신 체형으로 변화시킵니다.",
+          "caption": "[전신 체형 & 어혈 완화] 틀어진 전신 불균형과 뭉친 어혈·부종을 배출해 바르고 늘씬한 전신 체형으로 바꿉니다.",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "chuna_minimal_card4_ba_before.jpg",
+          "afterImg": "chuna_minimal_card4_ba_after.jpg",
+          "title": "추간판 감압 & 척추 정렬 — '굽은 등·거북목·틀어진 골반에서 바르게 펴지는 중심축 정렬'",
+          "sub": "눌려 있던 디스크(추간판) 공간을 추나 감압으로 넓혀주고, 굽은 등·거북목·요추 틀어짐을 바른 척추 정렬로 빠르게 복원합니다.",
+          "caption": "[추간판 감압 & 척추 정렬] 정밀 수기 추나로 굽고 틀어진 체형을 반듯한 중심축 정렬로 복원합니다.",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 1,
+          "fullscreen": true,
+          "imgSrc": "chuna_minimal_card5_stage1_nerve_calm.jpg",
+          "title": "신경 압박·방사통 진정 — '찌릿한 디스크 신경염증과 근육 경직 차단'",
+          "sub": "과흥분된 척추 신경근 통증 신호와 심부 근육 경직을 안정시켜 목·허리 통증과 팔·다리 저림(방사통)을 빠르게 가라앉힙니다.",
+          "caption": "[신경 압박·방사통 진정] 눌린 신경근 염증과 근육 경직 신호를 진정시켜 통증을 완화합니다.",
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "근육 인대 관절 통증을 제어해주는 최신 물리치료 + 진료 경험 15년 — '추나 환자 만족도 98.6%'",
+          "sub": "통증이 발생하는 원인을 해결해 최상의 효과를 나타내기 위한 물리치료 시스템",
+          "caption": "[최신 물리치료 시스템] 통증이 발생하는 원인을 해결해 최상의 효과를 나타내기 위한 물리치료 시스템입니다.",
+          "imgSrc": "chuna_minimal_card6_physiotherapy.jpg?v=chuna6v4",
+          "id": "card06",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "기계가 대신할 수 없는 손끝 감각 — '대표원장 수기 추나 & 인대강화 한약'",
+          "sub": "대표원장 정밀 촉진과 맥진으로 틀어진 관절을 맞추고, 약해진 척추 인대와 디스크 주변 근육을 단단하게 보강합니다.",
+          "caption": "[인대·근육 보강 처방] 교정된 척추가 다시 틀어지지 않도록 인대와 심부 근육을 강화하는 맞춤 처방입니다.",
+          "imgSrc": "chuna_minimal_card7_hand_palpation_herb.jpg?v=chuna7v2",
+          "id": "card07",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "수술 없이 되찾는 '바르고 통증 없는 척추·체형 라인'",
+          "sub": "골반과 척추 중심축이 바로 서고 코어 인대가 탄탄해지면 교정 후에도 통증 없이 반듯한 체형이 유지됩니다.",
+          "caption": "[바른 체형 완성] 척추·골반 중심축 복원과 인대 강화로 통증 없는 반듯한 체형을 유지합니다.",
+          "imgSrc": "chuna_minimal_card8_upright_posture.jpg",
+          "id": "card08",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "hideTopBar": true,
+          "title": "육아 · 업무 · 갱년기로 갑자기 찾아온 목·허리·골반 통증 — '참 곤란하다'",
+          "sub": "육아 중 아이를 안다 삐끗한 허리, 중요한 업무 중 굳어버린 거북목과 디스크 통증, 갱년기 갑자기 찾아온 골반·관절 통증까지 — 갑작스러운 통증으로 움직이지 못해 가장 난감하고 곤란한 순간입니다.",
+          "caption": "[통증으로 곤란한 3대 상황] 육아 · 업무 · 갱년기로 갑자기 찾아온 목·허리·골반 통증 때문에 움직이기 힘들어 곤란한 순간입니다.",
+          "frames": [
+            "chuna_minimal_card9_trouble_1_childcare.jpg",
+            "chuna_minimal_card9_trouble_2_office.jpg",
+            "chuna_minimal_card9_trouble_3_menopause.jpg"
+          ],
+          "fx": "sunlight-bokeh",
+          "durationSec": 6.6,
+          "id": "card09",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=lumbar",
+        "part": "lumbar",
+        "useOur3DBodyModel": true,
+        "honeyTipLabel": "추나 꿀팁",
+        "partBadge": "요추 · 골반 · 추간판 인체모형",
+        "eyebrow": "3D HUMAN BODY MODEL · CHUNA HONEY-TIP WAREHOUSE",
+        "title": "인체모형으로 내 척추·골반 원인 연결하기",
+        "desc": "인체모형에서 요추·골반·디스크 구조와 실제 학술 논문으로 검증된 추나 치료법을 한눈에 확인하세요.",
+        "bg": "illust_lumbar_pelvis.jpg",
+        "extraInfoItems": [
+          {
+            "badge": "꿀팁 01 · 골반 중립 착석법",
+            "title": "다리 꼬기 멈추고 좌골로 바르게 앉기",
+            "desc": "골반 비대칭과 요추 추간판 압박을 줄여 교정된 척추 정렬이 오래 유지되도록 돕습니다."
+          }
+        ]
+      },
+      "nextClinic": {
+        "href": "growth.html",
+        "keyword": "아이 키성장 궁금해?",
+        "eyebrow": "NEXT STORY · 소아 성장 클리닉",
+        "title": "바른 성장 · 성조숙증",
+        "desc": "학술 논문으로 검증된 성장판 연골 증식 처방과 호흡기 면역 치료로 아이의 건강한 성장을 돕습니다.",
+        "bg": "detail_growth_portal_bg.jpg?v=uniq1",
+        "caption": "[다음 클리닉 · 소아 성장] 학술 논문으로 검증된 성장판 연골 증식 처방으로 아이의 건강한 성장을 돕는 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "growth",
+      "file": "growth.html",
+      "wpFile": "wordpress-growth.html",
+      "wpId": 105,
+      "liveUrl": "https://www.bareunhaniwon.com/growth/",
+      "label": "03 · 소아 성장 · 성조숙증",
+      "tabIdx": 2,
+      "hairlossSubType": null,
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#0F1713",
+        "bgPanel": "rgba(13, 23, 18, 0.94)",
+        "accent": "#C5A059",
+        "accentLight": "#FDE68A",
+        "secondary": "#10B981",
+        "glowA": "rgba(197, 160, 89, 0.12)",
+        "glowB": "rgba(16, 185, 129, 0.10)"
+      },
+      "meta": {
+        "eyebrow": "PEDIATRIC GROWTH CLINIC · 학술 논문 검증 소아 성장·성조숙증",
+        "title": "바른 성장 · 성조숙증",
+        "subtitleEn": "Evidence-Based Epiphyseal Chondrocyte & Pediatric Immunity Care",
+        "desc": [
+          "성호르몬 과항진 자극 없이 성장판 연골 증식과 호흡기·소화기 면역을 함께 깨웁니다. 학술 논문을 정밀 검수하여 안전성이 입증된 한방 성장 치료법을 시행합니다."
+        ],
+        "ctaNudge": "📝 체크한 항목을 바탕으로 원장님이 직접 우리 아이의 성장 계획표를 브리핑해 드립니다.",
+        "ctaText": "우리 아이 맞춤 성장 계획 원장님과 상담하기",
+        "reserveProgram": "소아·청소년 키성장 클리닉",
+        "checklistTitle": "우리 아이 성장 · 성조숙증 체크리스트",
+        "checklistItems": [
+          "[성장 속도 저하] 또래보다 작거나 최근 키가 자라는 속도가 눈에 띄게 더뎌졌다.",
+          "[비염·구강호흡] 감기·비염이 잦고 밤에 코가 막혀 입을 벌리고 뒤척이며 잔다.",
+          "[소화·식욕 부진] 편식이 심하거나 밥을 잘 안 먹고 배앓이·변비가 자주 있다.",
+          "[조기 사춘기 우려] 체중이 늘면서 사춘기 신체 변화가 또래보다 일찍 나타나는 것 같다.",
+          "[자세 불균형] 거북목·구부정한 자세로 인해 숨은 키가 손해 보는 것 같아 걱정된다."
+        ],
+        "doctorAdvice": {
+          "caution": "성장장애 주의",
+          "severe": "성장장애 심각"
+        },
+        "extraLink": {
+          "href": "body-explorer.html?part=knee",
+          "text": "📊 무릎 성장판 · 학술 논문 검증 의학백과 전체보기 ↗"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "growth-son-main-hero",
+          "fullscreen": true,
+          "stepLabel": "MAIN STORY · 대표원장 친아들 실제 성장 기록 & 친필 서약",
+          "title": "내 아이에게 먹이지 못할 약이라면, 세상 어떤 아이에게도 '처방하지 않습니다'",
+          "sub": "안정위 대표원장이 친아들에게 직접 처방하며 입증한 바른 성장 한약입니다.",
+          "caption": "[대표원장 친필 서약] 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 식약처 GMP 최상급 청정 규격 한약재로 정성껏 처방합니다.",
+          "id": "card01",
+          "enabled": true,
+          "imgSrc": "growth-director-son.png",
+          "badge": "MAIN RECORD · 대표원장 친아들 실제 성장 스토리",
+          "letterEyebrow": "DIRECTOR'S HANDWRITTEN PLEDGE · 아빠의 마음으로 달인 성장한약",
+          "letterHeadlineLine1": "\"내 아이에게 먹이지 못할 약이라면,",
+          "letterHeadlineLine2": "세상 어떤 아이에게도 처방하지 않습니다\"",
+          "letterParagraphs": [
+            "아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.",
+            "잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.",
+            "체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."
+          ],
+          "chips": [
+            {
+              "label": "기초 면역 리셋",
+              "value": "비염 개선 · 소화 흡수 정상화"
+            },
+            {
+              "label": "성장판 골든타임",
+              "value": "최상급 원용 분골 · 연골 증식"
+            },
+            {
+              "label": "탄탄한 피지컬 완성",
+              "value": "성호르몬 균형 · 바른 골격 완성"
+            }
+          ],
+          "signPrefix": "아빠같은 한의사",
+          "signName": "안 정 위",
+          "signSuffix": "대표원장 배상",
+          "blogBtnText": "📖 대표원장 아들 성장 스토리 원문 보러가기",
+          "blogUrl": "https://blog.naver.com/wei0508/223437892490",
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "단순 칼슘·영양제만으로는 '닫혀가는 성장판과 면역 누수'를 막지 못합니다",
+          "sub": "잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장판 연골 증식으로 에너지가 도달하지 못합니다.",
+          "caption": "[에너지 누수 차단 핵심] 비염·소화불량으로 새는 면역 에너지를 막고 성장판 연골 증식에 집중시키는 것이 핵심입니다.",
+          "imgSrc": "detail_growth_story2_supplements_limit.jpg?v=grw2",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 3,
+          "fullscreen": true,
+          "imgSrc": "growth_minimal_card3_obese_to_tall_a.jpg?v=grw3v2",
+          "frames": [
+            "growth_minimal_card3_obese_to_tall_a.jpg?v=grw3v2",
+            "growth_minimal_card3_obese_to_tall_b.jpg?v=grw3v2",
+            "growth_minimal_card3_obese_to_tall_c.jpg?v=grw3v2"
+          ],
+          "title": "소아비만 체지방 감량 & 숨은 키 성장 — '살이 키로 가는 대사 전환으로 날씬해지면서 쑥쑥 크는 전신'",
+          "sub": "성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장판 연골 증식에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.",
+          "caption": "[소아비만 감량 & 키 성장 모션] 성장판을 닫히게 하는 과도한 체지방은 줄이고 날씬해지면서 위로 쑥쑥 자라나게 만듭니다.",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 4,
+          "fullscreen": true,
+          "imgSrc": "growth_minimal_card4_short_before.jpg?v=grw4v3",
+          "frames": [
+            "growth_minimal_card4_short_before.jpg?v=grw4v3",
+            "growth_minimal_card4_growing_mid.jpg?v=grw4v3",
+            "growth_minimal_card4_tall_after.jpg?v=grw4v3"
+          ],
+          "title": "성장판 연골 증식 & 수직 골격 성장 — '또래보다 작던 키에서 위로 쑥쑥 자라나는 폭풍 성장'",
+          "sub": "성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여, 키가 작던 아이가 위로 훤칠하고 탄탄하게 성장합니다.",
+          "caption": "[수직 골격 성장 & 키 성장 완성] 닫혀가던 성장판 연골 증식을 깨워 작은 키에서 위로 훤칠하게 성장시킵니다.",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 1,
+          "fullscreen": true,
+          "imgSrc": "growth-child-sleep.jpg",
+          "title": "성조숙증 호르몬 안정 & 깊은 성장 숙면 — '성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'",
+          "sub": "과열된 사춘기 성호르몬 신호와 야간 구강호흡·자율신경 긴장을 안정시켜 조기 골화를 늦추고 밤사이 성장호르몬 분비를 극대화합니다.",
+          "caption": "[성조숙증 안정 & 성장 숙면] 사춘기 성호르몬 과항진을 진정시키고 깊은 숙면을 유도해 야간 성장호르몬 분비를 높입니다.",
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "다양한 운동분야에서 선수 준비하는 아이들 전용 - '스포츠 성장 클리닉'",
+          "sub": "펜싱 · 유도 · 태권도 · 럭비 · 스키 · 축구 · 농구 등 다양한 운동분야에서 엘리트 선수를 준비하는 아이들이 폭발적인 키 성장과 탄탄한 피지컬 완성, 도핑 걱정 없는 맞춤 한약 처방을 위해 많이 내원하고 있습니다.",
+          "caption": "[선수 준비하는 아이들 전용 - 스포츠 성장 클리닉] 다양한 운동분야에서 선수를 준비하는 아이들이 키 성장과 피지컬 강화를 위해 내원합니다.",
+          "imgSrc": "growth_minimal_card6_youth_athletes_v2.jpg?v=grw6v2",
+          "id": "card06",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "방사선 노출 성장 엑스레이 검사는 이제 그만 - '안전한 초음파 검사'",
+          "sub": "걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측",
+          "caption": "[방사선 노출 성장 엑스레이 검사는 이제 그만 - 안전한 초음파 검사] 걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측을 진행합니다.",
+          "imgSrc": "growth_minimal_card7_ultrasound_noface.jpg?v=grw7v2",
+          "id": "card07",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "골든타임에 완성하는 '또래보다 훤칠하고 탄탄한 성장 피지컬'",
+          "sub": "호흡기·소화기 면역이 살아나고 성장판 연골 증식이 활발해지면 사춘기 끝까지 흔들림 없이 훤칠하고 바른 체격으로 자라납니다.",
+          "caption": "[성장 피지컬 완성] 면역력과 성장판 활성으로 또래보다 훤칠하고 반듯한 체격을 완성합니다.",
+          "imgSrc": "detail_growth_story5_tall_basketball.jpg?v=grw2",
+          "id": "card08",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "hideTopBar": true,
+          "title": "교실 맨 앞줄 작은 키 · 밤새 코 막힌 구강호흡 · 밥 안 먹는 편식 — '참 곤란하다'",
+          "sub": "새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 골든타임이 흘러가 가장 애타고 곤란한 순간입니다.",
+          "caption": "[성장 정체로 곤란한 3대 상황] 또래보다 작은 키 · 비염 구강호흡 · 식욕 부진으로 부모님 마음이 가장 곤란한 순간입니다.",
+          "frames": [
+            "detail_growth_story1_wall_chart.jpg?v=grw1",
+            "detail_growth_story1_mouth_breathing.jpg?v=grw1",
+            "growth_minimal_card9_picky_eating.jpg?v=grw9"
+          ],
+          "fx": "sunlight-bokeh",
+          "durationSec": 6.6,
+          "id": "card09",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=knee",
+        "part": "knee",
+        "useOur3DBodyModel": true,
+        "honeyTipLabel": "성장 꿀팁",
+        "partBadge": "무릎 성장판 · 감기면역 인체모형",
+        "eyebrow": "3D HUMAN BODY MODEL · GROWTH HONEY-TIP WAREHOUSE",
+        "title": "알아두면 키가 더 잘 크는 '성장 꿀팁 창고'",
+        "desc": "성장판 연골 증식과 야간 성장호르몬 분비를 극대화하는 대표원장 실전 생활 꿀팁입니다.",
+        "bg": "illust_knee_growth_care.jpg",
+        "extraInfoItems": [
+          {
+            "badge": "꿀팁 01 · 밤 10시 숙면 골든타임",
+            "title": "밤 10시~새벽 2시 깊은 숙면으로 성장호르몬 깨우기",
+            "desc": "성장호르몬은 깊은 비렘수면 단계에서 가장 왕성하게 분비되므로 밤 10시 이전 취침 습관이 핵심입니다."
+          },
+          {
+            "badge": "꿀팁 02 · 비염·구강호흡 차단",
+            "title": "잠들기 전 코 점막 보습으로 구강호흡 막기",
+            "desc": "코가 막혀 입을 벌리고 자면 깊은 수면이 깨지고 성장인자(IGF-1) 분비가 저하되므로 비염 관리가 필수입니다."
+          },
+          {
+            "badge": "꿀팁 03 · 성장판 점프 자극",
+            "title": "하루 15분 가벼운 줄넘기·농구로 성장판 자극",
+            "desc": "무릎과 발목 성장판에 적당한 수직 압력 자극을 주면 연골모세포 분열과 골 기질 형성이 활발해집니다."
+          },
+          {
+            "badge": "꿀팁 04 · 성조숙증 식습관 관리",
+            "title": "야식·액상과당 줄이고 양질의 단백질 섭취",
+            "desc": "소아 체지방 증가는 성호르몬 조기 분비를 촉진해 성장판 폐쇄를 앞당기므로 균형 잡힌 식단이 중요합니다."
+          }
+        ]
+      },
+      "nextClinic": {
+        "href": "diet-zero.html",
+        "keyword": "다이어트 궁금해?",
+        "eyebrow": "NEXT STORY · 바른 다이어트 클리닉",
+        "title": "바른 다이어트 · 대사해독",
+        "desc": "학술 논문으로 검증된 위장·간 대사 활성화 처방으로 무리한 절식 없이 내장지방을 비워냅니다.",
+        "bg": "detail_diet_portal_bg.jpg?v=uniq1",
+        "caption": "[다음 클리닉 · 바른 다이어트] 학술 논문으로 검증된 대사 활성화 처방으로 내장지방을 비워내는 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "diet-zero",
+      "file": "diet-zero.html",
+      "wpFile": "wordpress-diet.html",
+      "wpId": 66,
+      "liveUrl": "https://www.bareunhaniwon.com/diet-zero/",
+      "label": "04 · 바른 다이어트 · 식욕ZERO",
+      "tabIdx": 3,
+      "hairlossSubType": null,
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#161114",
+        "bgPanel": "rgba(22, 16, 19, 0.94)",
+        "accent": "#DF7E8E",
+        "accentLight": "#FBE6EA",
+        "secondary": "#D4AF37",
+        "glowA": "rgba(223, 126, 142, 0.14)",
+        "glowB": "rgba(212, 175, 55, 0.09)"
+      },
+      "meta": {
+        "eyebrow": "MUSCLE & METABOLIC DIET · 운동 없이 근육량을 올려 뱃살지방을 분해하는 근육다이어트",
+        "title": "바른 근육다이어트 · 식욕ZERO",
+        "subtitleEn": "Muscle-Up & Belly Fat Lipolysis Without Exhausting Exercise",
+        "desc": [
+          "운동 없이 근육량을 올려 뱃살지방을 분해하는 바른 근육다이어트입니다. 무작정 굶는 요요를 끊어내고 기초대사 화로를 깨워 내장지방부터 스스로 타오르게 만듭니다."
+        ],
+        "ctaNudge": "📝 체크한 증상을 바탕으로 원장님이 직접 근육·대사 진단 및 감량 계획을 브리핑해 드립니다.",
+        "ctaText": "내 대사 상태 원장님께 진단받고 감량 계획 세우기",
+        "reserveProgram": "성인 비만·근육다이어트 클리닉",
+        "checklistTitle": "대사 저하 · 내장지방 자가 진단 체크리스트",
+        "checklistItems": [
+          "[복부 나잇살] 예전보다 적게 먹어도 살이 안 빠지고 아랫배와 옆구리만 찐다.",
+          "[가짜 배고픔] 스트레스나 피로가 쌓이면 밤마다 야식·단 음식을 참기 힘들다.",
+          "[만성 부종·피로] 아침마다 얼굴·다리가 붓고 몸이 물먹은 솜처럼 무겁다.",
+          "[부작용 걱정] 다이어트 약 복용 시 손 떨림·가슴 두근거림·불면증이 염려된다.",
+          "[반복된 요요] 굶는 다이어트 후 근육만 빠지고 체지방이 다시 늘어났다."
+        ],
+        "doctorAdvice": {
+          "caution": "대사저하 주의",
+          "severe": "대사저하 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "indexPill": "CORE MOTION · 바른 근육다이어트",
+          "metricPill": "운동 없이 근육량 ▲ · 뱃살지방 집중 분해 ▼",
+          "title": "운동 없이 근육량을 올려 뱃살지방을 분해하는 다이어트 — '근육다이어트'",
+          "sub": "억지로 굶거나 힘든 운동 없이, 체내 근육량을 끌어올려 기초대사 스스로 뱃살과 내장지방을 태우게 만드는 핵심 다이어트입니다.",
+          "caption": "[근육다이어트 핵심 원리] 운동 없이 근육량을 높여 기초대사량을 활성화하고 복부 뱃살지방을 집중 분해합니다.",
+          "frames": [
+            "diet_minimal_card1_muscle_burn_a.jpg",
+            "diet_minimal_card1_muscle_burn_b.jpg",
+            "diet_minimal_card1_muscle_burn_c.jpg"
+          ],
+          "fx": "muscle-diet-core-fx",
+          "durationSec": 6,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "무작정 굶으면 지방 대신 '근육과 수분'만 빠집니다",
+          "sub": "근손실로 기초대사가 무너지는 악순환을 끊고, 근육량을 지켜 요요 없는 감량을 완성합니다.",
+          "caption": "[요요 단절 핵심] 굶는 다이어트로 인한 근손실을 막고 기초대사를 지키는 것이 핵심입니다.",
+          "imgSrc": "diet_minimal_card2_starvation_muscle_loss.jpg",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 3,
+          "fullscreen": true,
+          "imgSrc": "diet_minimal_card3_edema_full_a.jpg",
+          "frames": [
+            "diet_minimal_card3_edema_full_a.jpg",
+            "diet_minimal_card3_edema_squeeze_b.jpg",
+            "diet_minimal_card3_edema_slim_c.jpg"
+          ],
+          "title": "붓기 & 독소 완화 — '물이 꽉 찬 전신에서 수독을 쥐어짜 배출해 늘씬한 전신으로'",
+          "sub": "물이 꽉 차 부어오른 전신 부종과 수독(노폐물)을 림프 순환으로 쥐어짜듯 배출하여 가볍고 늘씬한 전신 라인으로 변화시킵니다.",
+          "caption": "[붓기 & 독소 완화] 물이 꽉 찬 전신 부종에서 수분 독소를 쥐어짜 배출해 늘씬한 전신으로 바꿉니다.",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "diet_minimal_card9_ba_before_v2.jpg",
+          "afterImg": "diet_minimal_card9_ba_after.jpg",
+          "title": "심부 체지방 분해 — '비만형 복부에서 근육 대사열로 수축되는 늘씬한 복부'",
+          "sub": "근육량과 심부 대사열을 끌어올려 볼록하게 나온 비만형 복부 내장지방을 집중 연소하고 늘씬한 복부로 빠르게 수축시킵니다.",
+          "caption": "[심부 체지방 분해] 근육 대사열로 비만형 복부를 집중 연소하여 탄탄하고 늘씬한 복부로 수축시킵니다.",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 1,
+          "fullscreen": true,
+          "imgSrc": "diet_minimal_card3_stage1_neuro_calm.jpg",
+          "title": "식욕 중추 안정 — '가짜 배고픔과 야식 본능 차단'",
+          "sub": "과흥분된 뇌 식욕 신호를 안정시켜 억지로 참는 고통 없이 자연스러운 포만감을 유도합니다.",
+          "caption": "[식욕 중추 안정] 시상하부 가짜 배고픔 신호를 진정시켜 자연스러운 소식을 돕습니다.",
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-tele-video",
+          "fullscreen": true,
+          "title": "내원 없이 집에서 받는 '1:1 대표원장 전화 진료 & 전국 직배송'",
+          "sub": "",
+          "caption": "[비대면 진료 & 배송 가이드] 전국 어디서나 대표원장 1:1 전화 상담 후 맞춤 탕전하여 직배송합니다.",
+          "id": "card06",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "손 떨림·불면 걱정 없는 '1:1 체질 맞춤 근육다이어트 한약'",
+          "sub": "대표원장 정밀 진맥과 인바디 분석으로 근육은 채우고 뱃살 체지방만 안전하게 분해합니다.",
+          "caption": "[체질 맞춤 처방] 심장 부담 없이 근육량은 보존하고 체지방만 골라 감량하는 안심 처방입니다.",
+          "imgSrc": "diet_minimal_card7_custom_herb_pulse.jpg",
+          "id": "card07",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "운동 없이 되찾는 '탄탄하고 날씬한 바디라인'",
+          "sub": "근육량이 살아나 기초대사가 높아지면 감량 후에도 다시 찌지 않는 슬림한 라인이 유지됩니다.",
+          "caption": "[라인 회복 완성] 근육량 증가로 기초대사를 높여 감량 후에도 탄탄하고 날씬한 라인을 유지합니다.",
+          "imgSrc": "diet_minimal_card8_slim_woman.jpg",
+          "id": "card08",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "hideTopBar": true,
+          "title": "육아 · 결혼식 전 · 갱년기로 갑자기 불어난 체중 — '참 곤란하다'",
+          "sub": "출산·육아 중 안 잠기는 바지, 결혼식 코앞인데 끼는 웨딩드레스, 굶어도 배만 나오는 갱년기 나잇살까지 — 갑자기 늘어난 체중으로 가장 난감하고 곤란한 순간입니다.",
+          "caption": "[체중 증가로 곤란한 3대 상황] 육아 · 결혼식 전 · 갱년기로 체중이 늘어나 옷이 맞지 않아 곤란한 순간입니다.",
+          "frames": [
+            "diet_minimal_card9_trouble_1_childcare.jpg",
+            "diet_minimal_card9_trouble_2_wedding.jpg",
+            "diet_minimal_card9_trouble_3_menopause_v2.jpg"
+          ],
+          "fx": "sunlight-bokeh",
+          "durationSec": 6.6,
+          "id": "card09",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=gut",
+        "part": "gut",
+        "useOur3DBodyModel": true,
+        "partBadge": "바른 3D 인체모형 · 다이어트 꿀팁 창고",
+        "eyebrow": "3D HUMAN BODY MODEL · DIET HONEY-TIP WAREHOUSE",
+        "title": "알아두면 살이 더 잘 빠지는 '다이어트 꿀팁 창고'",
+        "desc": "운동 없이 근육량을 지키며 뱃살·내장지방 감량 속도를 높여주는 대표원장 실전 생활 꿀팁입니다.",
+        "bg": "illust_gut_metabolism.jpg",
+        "extraInfoItems": [
+          {
+            "badge": "꿀팁 01 · 공복 미온수 1잔",
+            "title": "기상 직후 따뜻한 물로 대사 스위치 켜기",
+            "desc": "밤새 굳은 위장·간 해독 대사와 혈액순환을 깨워 아침 기초대사량을 즉시 높여줍니다."
+          },
+          {
+            "badge": "꿀팁 02 · 거꾸로 식사법",
+            "title": "채소 ➔ 단백질 ➔ 탄수화물 순서로 식사",
+            "desc": "식이섬유와 단백질을 먼저 드시면 혈당 스파이크와 인슐린 뱃살 축적을 막고 근합성을 돕습니다."
+          },
+          {
+            "badge": "꿀팁 03 · 7시간 숙면 골든타임",
+            "title": "밤 11시~새벽 3시 깊은 수면으로 지방 분해",
+            "desc": "숙면 중 분비되는 성장·대사 호르몬이 식욕 중추를 안정시키고 복부 내장지방을 스스로 태웁니다."
+          },
+          {
+            "badge": "꿀팁 04 · 심부 체온 1°C 높이기",
+            "title": "찬 음료 대신 따뜻한 차로 근육 대사열 유지",
+            "desc": "체온이 1°C 오르면 기초대사량이 약 14% 상승해 운동 없이도 뱃살이 잘 빠지는 체질로 바뀝니다."
+          }
+        ]
+      },
+      "nextClinic": null
+    },
+    {
+      "slug": "hairloss",
+      "file": "hairloss.html",
+      "wpFile": "wordpress-hairloss.html",
+      "wpId": 130,
+      "liveUrl": "https://www.bareunhaniwon.com/hairloss/",
+      "label": "05 · 바른 탈모 (통합)",
+      "tabIdx": 4,
+      "hairlossSubType": "hub",
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#0E1318",
+        "bgPanel": "rgba(13, 18, 24, 0.95)",
+        "accent": "#38BDF8",
+        "accentLight": "#BAE6FD",
+        "secondary": "#D4AF37",
+        "glowA": "rgba(56, 189, 248, 0.12)",
+        "glowB": "rgba(16, 185, 129, 0.08)"
+      },
+      "meta": {
+        "eyebrow": "SCALP & HAIR FOLLICLE REVIVAL · 아빠 한의사 학술 논문 검증 4대 탈모 통합 클리닉",
+        "title": "바른 탈모 · 4대 유형 모근재생",
+        "subtitleEn": "Integrative Alopecia Clinic · Male, Female, Alopecia Areata & Seborrheic Scalp Care",
+        "desc": [
+          "머리는 뜨겁고 손발은 찬 상열하한 두피 사막화를 수승화강 청열 한약과 경추 추나·정제 약침으로 다스립니다. 남성탈모·원형탈모·여성탈모·지루성두피염 4대 유형별 맞춤 모근재생 치료를 시행합니다."
+        ],
+        "ctaNudge": "👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 남성탈모 진행 단계와 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 M자·정수리 모낭 상태 원장님께 진단받기",
+        "reserveProgram": "바른 탈모 4대 유형 (남성·원형·여성·지루성두피염) 통합 모근재생 클리닉",
+        "checklistTitle": "남성탈모 (M자 · 정수리 · 두피열) 체크리스트",
+        "checklistItems": [
+          "[M자 헤어라인 후퇴] 이마 양옆 M자 라인이 점점 깊어지고 앞머리에 힘이 없다.",
+          "[정수리 O자 빈모] 밝은 조명 아래나 사진에서 정수리 두피가 훤히 비쳐 보인다.",
+          "[과열된 두피·피지] 머리로 열이 자주 오르고 오후만 되면 두피에 기름기가 돈다.",
+          "[약물 부작용 우려] 먹는 탈모약의 부작용이나 중단 시 쉐딩·재탈모가 걱정된다.",
+          "[거북목·만성 피로] 과로와 스트레스로 뒷목·어깨가 굳고 두피까지 당기는 느낌이 든다."
+        ],
+        "doctorAdvice": {
+          "caution": "남성탈모 주의",
+          "severe": "남성탈모 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "indexPill": "STORY · 고개 숙일 때 신경 쓰이는 시선",
+          "metricPill": "M자 헤어라인 · 정수리 연모화 신호",
+          "title": "고개 숙일 때 신경 쓰이는 'M자와 정수리', 두피열이 보내는 신호입니다",
+          "sub": "유전 탓만 하기 전에, 모낭을 빠르게 위축시키는 두피 열독부터 잡아야 합니다.",
+          "caption": "[남성탈모 임상 노트] 과로와 스트레스로 상체에 몰린 열(上熱)이 DHT 민감도를 높이고 모낭 뿌리를 약화시킵니다.",
+          "frames": [
+            "detail_hair_story1_30cm_tension.jpg?v=30cm1",
+            "detail_hair_story1_date_bow.jpg?v=30cm1"
+          ],
+          "thumbs": [
+            {
+              "img": "detail_hair_story1_30cm_tension.jpg?v=30cm1",
+              "label": "정수리·M자 비어보임"
+            },
+            {
+              "img": "detail_hair_story1_date_bow.jpg?v=30cm1",
+              "label": "가까운 시선 위축감"
+            },
+            {
+              "img": "life_3a_hairloss.jpg",
+              "label": "남성 탈모 진행"
+            }
+          ],
+          "fx": "distance-30cm-tension",
+          "durationSec": 6.4,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 탈모 샴푸와 단순 억제제의 한계",
+          "title": "표피만 씻거나 호르몬만 누르면, '불타는 모근 뿌리'는 그대로입니다",
+          "sub": "두피 사막화를 부르는 상열(上熱)을 끄지 않으면 약을 멈추는 순간 다시 빠집니다.",
+          "caption": "[남성탈모 임상 노트] 모발이 자라나는 토양인 두피의 열독과 경추 혈류 병목을 함께 해결해야 재탈모를 막습니다.",
+          "imgSrc": "detail_hair_story2_cabinet_failure.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story2_cabinet_failure.jpg?v=30cm2",
+              "label": "표피 관리의 한계"
+            },
+            {
+              "img": "detail_hair_thermography.jpg",
+              "label": "두피 적외선 열화상"
+            },
+            {
+              "img": "life_3a_follicle_zoom.jpg",
+              "label": "모낭 열독 확대"
+            }
+          ],
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "stepLabel": "STORY · 수승화강(水昇火降) 두피 청열 & 모유두 보호",
+          "title": "머리의 열독은 내리고 '모유두세포 성장기'를 연장합니다",
+          "sub": "끓어오르는 두피 온도를 낮춰 모낭 미세염증과 모근 연모화를 동시에 차단합니다.",
+          "caption": "[남성탈모 임상 노트] 상열하한(上熱下寒) 불균형을 바로잡아 두피 미세염증을 가라앉히고 모낭 혈류를 회복합니다.",
+          "imgSrc": "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+              "label": "수승화강 두피 청열"
+            },
+            {
+              "img": "detail_hair_follicle_3d.jpg",
+              "label": "모유두세포 재생 3D"
+            },
+            {
+              "img": "illust_cervical_hairloss.jpg",
+              "label": "경추·두피열 기전"
+            }
+          ],
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 경추 감압 추나 & 고농축 모낭 약침",
+          "title": "거북목 혈류 병목을 추나로 열고, '모낭 약침'으로 뿌리를 채웁니다",
+          "sub": "아빠 한의사가 내 가족에게 시술하듯 경추 순환로와 모낭 진피층을 함께 다스립니다.",
+          "caption": "[남성탈모 임상 노트] 내치(청열 발모 한약)와 외치(경추 추나·모낭 약침)를 결합하여 가늘어진 모발을 굵고 탄탄하게 육모합니다.",
+          "imgSrc": "detail_hair_story4_pulse_routine.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story4_pulse_routine.jpg?v=30cm2",
+              "label": "두피열 맥진·한약"
+            },
+            {
+              "img": "detail_hair_pharmacopuncture.jpg",
+              "label": "모낭 재생 약침"
+            },
+            {
+              "img": "detail_chuna_cervical.jpg",
+              "label": "경추 혈류 수기추나"
+            }
+          ],
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "stepLabel": "STORY · 내 가족에게 처방하는 학술 논문 검증 남성탈모 치료",
+          "title": "실제 학술 논문 검수로 입증된 '아빠 한의사 남성 모근재생'",
+          "sub": "부작용 걱정 없이 모발 굵기와 정수리 볼륨을 되살리는 안전한 한방 발모 치료입니다.",
+          "caption": "[학술 논문 검수] 국제 학술지(Phytotherapy Research, J Dermatol Sci) 연구를 통해 모유두세포 활성 및 성장기 연장 기전이 검증되었습니다.",
+          "imgSrc": "detail_hair_story5_30cm_confidence.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story5_30cm_confidence.jpg?v=30cm2",
+              "label": "정수리 볼륨 자신감"
+            },
+            {
+              "img": "detail_hair_story5_date_smile.jpg",
+              "label": "가까운 시선 당당함"
+            },
+            {
+              "img": "ba_hair_after.jpg",
+              "label": "두피열·모근 회복"
+            }
+          ],
+          "sciStats": [
+            {
+              "num": "국제 식물요법학회지(Phytother Res) 검증",
+              "label": "Wnt/β-catenin 신호 활성화를 통한 모낭 성장기(Anagen) 연장 입증",
+              "width": "96%"
+            },
+            {
+              "num": "피부과학 저널(J Dermatol Sci) 등재",
+              "label": "두피 국소 열독 완화 및 남성 모유두세포 사멸 억제 검증",
+              "width": "94%"
+            }
+          ],
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "id": "card06",
+          "enabled": true,
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "ba_hair_before.jpg",
+          "afterImg": "ba_hair_after.jpg",
+          "title": "바른 탈모 · 4대 유형 모근재생 — '치료 전·후 비교'",
+          "sub": "실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.",
+          "stepLabel": "BEFORE & AFTER · 치료 전·후 비교",
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=cervical",
+        "part": "cervical",
+        "partBadge": "경추 · 두피열 · 모낭 인체모형",
+        "eyebrow": "FINAL CARD · HUMAN BODY MODEL SHOWROOM",
+        "title": "인체모형으로 내 경추·두피열 원인 연결하기",
+        "desc": "인체모형에서 거북목·두피열과 남성탈모의 상관관계 및 학술 논문으로 검증된 치료법을 확인하세요.",
+        "bg": "illust_cervical_hairloss.jpg"
+      },
+      "nextClinic": {
+        "href": "hairloss-alopecia.html",
+        "keyword": "원형탈모 궁금해?",
+        "eyebrow": "NEXT HAIRLOSS STORY · 원형탈모 클리닉",
+        "title": "원형탈모 · 자가면역 치료",
+        "desc": "동전 모양 탈락과 다발성 확산을 막는 자율신경·자가면역 근본 복원 스토리로 이동합니다.",
+        "bg": "detail_director_story2_both_wrists_pulse.jpg",
+        "caption": "[다음 탈모 유형 · 원형탈모] 스트레스와 면역 교란으로 인한 원형탈모 치료 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "hairloss-male",
+      "file": "hairloss-male.html",
+      "wpFile": "wordpress-hairloss-male.html",
+      "wpId": 408,
+      "liveUrl": "https://www.bareunhaniwon.com/hairloss-male/",
+      "label": "05-1 · 남성탈모 (M자·정수리)",
+      "tabIdx": 4,
+      "hairlossSubType": "male",
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#0E1318",
+        "bgPanel": "rgba(13, 18, 24, 0.95)",
+        "accent": "#38BDF8",
+        "accentLight": "#BAE6FD",
+        "secondary": "#D4AF37",
+        "glowA": "rgba(56, 189, 248, 0.12)",
+        "glowB": "rgba(16, 185, 129, 0.08)"
+      },
+      "meta": {
+        "eyebrow": "MALE PATTERN HAIR LOSS · 아빠 한의사 학술 논문 검증 남성탈모",
+        "title": "남성탈모 · M자·정수리 모근재생",
+        "subtitleEn": "Male Pattern Alopecia · Scalp Thermoregulation & Dermal Papilla Revival",
+        "desc": [
+          "남편과 아버지, 내 가족에게 직접 처방하는 안전한 치료만 시행합니다. 호르몬 억제 약물의 부작용 걱정 없이 수승화강 두피 청열 한약과 경추 추나·약침으로 M자 이마와 정수리 모근의 자생력을 깨웁니다."
+        ],
+        "ctaNudge": "👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 남성탈모 진행 단계와 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 M자·정수리 모낭 상태 원장님께 진단받기",
+        "reserveProgram": "바른 남성탈모 (M자·정수리·두피열) 모근재생 클리닉",
+        "checklistTitle": "남성탈모 (M자 · 정수리 · 두피열) 체크리스트",
+        "checklistItems": [
+          "[M자 헤어라인 후퇴] 이마 양옆 M자 라인이 점점 깊어지고 앞머리에 힘이 없다.",
+          "[정수리 O자 빈모] 밝은 조명 아래나 사진에서 정수리 두피가 훤히 비쳐 보인다.",
+          "[과열된 두피·피지] 머리로 열이 자주 오르고 오후만 되면 두피에 기름기가 돈다.",
+          "[약물 부작용 우려] 먹는 탈모약의 부작용이나 중단 시 쉐딩·재탈모가 걱정된다.",
+          "[거북목·만성 피로] 과로와 스트레스로 뒷목·어깨가 굳고 두피까지 당기는 느낌이 든다."
+        ],
+        "doctorAdvice": {
+          "caution": "남성탈모 주의",
+          "severe": "남성탈모 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "indexPill": "STORY · 고개 숙일 때 신경 쓰이는 시선",
+          "metricPill": "M자 헤어라인 · 정수리 연모화 신호",
+          "title": "고개 숙일 때 신경 쓰이는 'M자와 정수리', 두피열이 보내는 신호입니다",
+          "sub": "유전 탓만 하기 전에, 모낭을 빠르게 위축시키는 두피 열독부터 잡아야 합니다.",
+          "caption": "[남성탈모 임상 노트] 과로와 스트레스로 상체에 몰린 열(上熱)이 DHT 민감도를 높이고 모낭 뿌리를 약화시킵니다.",
+          "frames": [
+            "detail_hair_story1_30cm_tension.jpg?v=30cm1",
+            "detail_hair_story1_date_bow.jpg?v=30cm1"
+          ],
+          "thumbs": [
+            {
+              "img": "detail_hair_story1_30cm_tension.jpg?v=30cm1",
+              "label": "정수리·M자 비어보임"
+            },
+            {
+              "img": "detail_hair_story1_date_bow.jpg?v=30cm1",
+              "label": "가까운 시선 위축감"
+            },
+            {
+              "img": "life_3a_hairloss.jpg",
+              "label": "남성 탈모 진행"
+            }
+          ],
+          "fx": "distance-30cm-tension",
+          "durationSec": 6.4,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 탈모 샴푸와 단순 억제제의 한계",
+          "title": "표피만 씻거나 호르몬만 누르면, '불타는 모근 뿌리'는 그대로입니다",
+          "sub": "두피 사막화를 부르는 상열(上熱)을 끄지 않으면 약을 멈추는 순간 다시 빠집니다.",
+          "caption": "[남성탈모 임상 노트] 모발이 자라나는 토양인 두피의 열독과 경추 혈류 병목을 함께 해결해야 재탈모를 막습니다.",
+          "imgSrc": "detail_hair_story2_cabinet_failure.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story2_cabinet_failure.jpg?v=30cm2",
+              "label": "표피 관리의 한계"
+            },
+            {
+              "img": "detail_hair_thermography.jpg",
+              "label": "두피 적외선 열화상"
+            },
+            {
+              "img": "life_3a_follicle_zoom.jpg",
+              "label": "모낭 열독 확대"
+            }
+          ],
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "stepLabel": "STORY · 수승화강(水昇火降) 두피 청열 & 모유두 보호",
+          "title": "머리의 열독은 내리고 '모유두세포 성장기'를 연장합니다",
+          "sub": "끓어오르는 두피 온도를 낮춰 모낭 미세염증과 모근 연모화를 동시에 차단합니다.",
+          "caption": "[남성탈모 임상 노트] 상열하한(上熱下寒) 불균형을 바로잡아 두피 미세염증을 가라앉히고 모낭 혈류를 회복합니다.",
+          "imgSrc": "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+              "label": "수승화강 두피 청열"
+            },
+            {
+              "img": "detail_hair_follicle_3d.jpg",
+              "label": "모유두세포 재생 3D"
+            },
+            {
+              "img": "illust_cervical_hairloss.jpg",
+              "label": "경추·두피열 기전"
+            }
+          ],
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "stepLabel": "STORY · 경추 감압 추나 & 고농축 모낭 약침",
+          "title": "거북목 혈류 병목을 추나로 열고, '모낭 약침'으로 뿌리를 채웁니다",
+          "sub": "아빠 한의사가 내 가족에게 시술하듯 경추 순환로와 모낭 진피층을 함께 다스립니다.",
+          "caption": "[남성탈모 임상 노트] 내치(청열 발모 한약)와 외치(경추 추나·모낭 약침)를 결합하여 가늘어진 모발을 굵고 탄탄하게 육모합니다.",
+          "imgSrc": "detail_hair_story4_pulse_routine.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story4_pulse_routine.jpg?v=30cm2",
+              "label": "두피열 맥진·한약"
+            },
+            {
+              "img": "detail_hair_pharmacopuncture.jpg",
+              "label": "모낭 재생 약침"
+            },
+            {
+              "img": "detail_chuna_cervical.jpg",
+              "label": "경추 혈류 수기추나"
+            }
+          ],
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "stepLabel": "STORY · 내 가족에게 처방하는 학술 논문 검증 남성탈모 치료",
+          "title": "실제 학술 논문 검수로 입증된 '아빠 한의사 남성 모근재생'",
+          "sub": "부작용 걱정 없이 모발 굵기와 정수리 볼륨을 되살리는 안전한 한방 발모 치료입니다.",
+          "caption": "[학술 논문 검수] 국제 학술지(Phytotherapy Research, J Dermatol Sci) 연구를 통해 모유두세포 활성 및 성장기 연장 기전이 검증되었습니다.",
+          "imgSrc": "detail_hair_story5_30cm_confidence.jpg?v=30cm2",
+          "thumbs": [
+            {
+              "img": "detail_hair_story5_30cm_confidence.jpg?v=30cm2",
+              "label": "정수리 볼륨 자신감"
+            },
+            {
+              "img": "detail_hair_story5_date_smile.jpg",
+              "label": "가까운 시선 당당함"
+            },
+            {
+              "img": "ba_hair_after.jpg",
+              "label": "두피열·모근 회복"
+            }
+          ],
+          "sciStats": [
+            {
+              "num": "국제 식물요법학회지(Phytother Res) 검증",
+              "label": "Wnt/β-catenin 신호 활성화를 통한 모낭 성장기(Anagen) 연장 입증",
+              "width": "96%"
+            },
+            {
+              "num": "피부과학 저널(J Dermatol Sci) 등재",
+              "label": "두피 국소 열독 완화 및 남성 모유두세포 사멸 억제 검증",
+              "width": "94%"
+            }
+          ],
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "id": "card06",
+          "enabled": true,
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "ba_hair_before.jpg",
+          "afterImg": "ba_hair_after.jpg",
+          "title": "남성탈모 · M자·정수리 모근재생 — '치료 전·후 비교'",
+          "sub": "실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.",
+          "stepLabel": "BEFORE & AFTER · 치료 전·후 비교",
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=cervical",
+        "part": "cervical",
+        "partBadge": "경추 · 두피열 · 남성 모낭 인체모형",
+        "eyebrow": "FINAL CARD · HUMAN BODY MODEL SHOWROOM",
+        "title": "인체모형으로 내 경추·두피열 원인 연결하기",
+        "desc": "인체모형에서 거북목·두피열과 남성탈모의 상관관계 및 학술 논문으로 검증된 치료법을 확인하세요.",
+        "bg": "illust_cervical_hairloss.jpg"
+      },
+      "nextClinic": {
+        "href": "hairloss-alopecia.html",
+        "keyword": "원형탈모 궁금해?",
+        "eyebrow": "NEXT HAIRLOSS STORY · 원형탈모 클리닉",
+        "title": "원형탈모 · 자가면역 치료",
+        "desc": "동전 모양 탈락과 다발성 확산을 막는 자율신경·자가면역 근본 복원 스토리로 이동합니다.",
+        "bg": "detail_director_story2_both_wrists_pulse.jpg",
+        "caption": "[다음 탈모 유형 · 원형탈모] 스트레스와 면역 교란으로 인한 원형탈모 치료 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "hairloss-alopecia",
+      "file": "hairloss-alopecia.html",
+      "wpFile": "wordpress-hairloss-alopecia.html",
+      "wpId": 409,
+      "liveUrl": "https://www.bareunhaniwon.com/hairloss-alopecia/",
+      "label": "05-2 · 원형탈모 (면역복원)",
+      "tabIdx": 4,
+      "hairlossSubType": "alopecia",
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#0D1514",
+        "bgPanel": "rgba(13, 21, 20, 0.95)",
+        "accent": "#10B981",
+        "accentLight": "#A7F3D0",
+        "secondary": "#D4AF37",
+        "glowA": "rgba(16, 185, 129, 0.12)",
+        "glowB": "rgba(212, 175, 55, 0.08)"
+      },
+      "meta": {
+        "eyebrow": "ALOPECIA AREATA IMMUNE CARE · 아빠 한의사 학술 논문 검증 원형탈모",
+        "title": "원형탈모 · 자가면역 신경안정 치료",
+        "subtitleEn": "Alopecia Areata · Autoimmune Regulation & Neuro-Autonomic Recovery",
+        "desc": [
+          "내 아이와 가족에게 스테로이드 과용 대신 근본 면역 치료를 처방하는 아빠 한의사의 마음으로 진료합니다. 극심한 스트레스와 자율신경 실조로 내 면역세포가 모낭을 공격하는 원형탈모의 뿌리를 바로잡아 재발을 막습니다."
+        ],
+        "ctaNudge": "👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 원형탈모 면역 단계와 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 원형탈모·자율신경 상태 원장님께 진단받기",
+        "reserveProgram": "바른 원형탈모 (단발성·다발성·자가면역) 클리닉",
+        "checklistTitle": "원형탈모 · 자가면역 교란 체크리스트",
+        "checklistItems": [
+          "[동전 모양 탈락] 머리카락이 동전 크기로 동그랗게 빠져 두피가 매끈하게 드러났다.",
+          "[크기 확대·다발성] 원형탈모 부위가 점점 커지거나 2곳 이상 여러 개로 번지고 있다.",
+          "[극심한 스트레스·불면] 최근 큰 스트레스나 과로를 겪은 뒤 잠들기 어렵고 가슴이 답답하다.",
+          "[스테로이드 재발] 피부과 국소 주사나 연고를 써도 그때뿐이고 다른 부위에 다시 생긴다.",
+          "[소아·가족 안심 치료] 전신 면역력과 자율신경을 함께 회복하는 안전한 한방 치료를 원한다."
+        ],
+        "doctorAdvice": {
+          "caution": "원형탈모 주의",
+          "severe": "원형탈모 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "indexPill": "STORY · 동전 모양 탈락 · 자가면역 경보",
+          "metricPill": "스트레스 교감신경 과항진 · 모낭 면역 공격",
+          "title": "갑자기 동전처럼 비어버린 두피, 단순 피부병이 아닌 '면역 경보'입니다",
+          "sub": "극심한 스트레스와 피로로 혼란에 빠진 면역세포가 내 모낭을 공격하고 있다는 신호입니다.",
+          "caption": "[원형탈모 임상 노트] 스트레스와 자율신경 실조로 교란된 면역세포(T세포)가 성장기 모낭을 공격해 급성 탈락을 유발합니다.",
+          "frames": [
+            "life_3a_hairloss.jpg",
+            "detail_hair_follicle_3d.jpg",
+            "illust_syncope_autonomic.jpg"
+          ],
+          "thumbs": [
+            {
+              "img": "life_3a_hairloss.jpg",
+              "label": "동전 모양 급성 탈락"
+            },
+            {
+              "img": "detail_hair_follicle_3d.jpg",
+              "label": "자가면역 모낭 공격"
+            },
+            {
+              "img": "illust_syncope_autonomic.jpg",
+              "label": "자율신경 과항진 경보"
+            }
+          ],
+          "fx": "alopecia-immune-radar-fx",
+          "durationSec": 6.4,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "빠진 자리만 누르면, '교란된 자율신경과 면역 불씨'는 다른 곳으로 번집니다",
+          "sub": "두피 함몰 우려가 있는 잦은 염증 억제보다 무너진 전신 면역 체계를 먼저 바로잡아야 합니다.",
+          "imgSrc": "detail_hair_follicle_3d.jpg",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "title": "성난 면역세포를 진정시키고 '모낭 주변 미세혈류'를 다시 엽니다",
+          "sub": "심장의 울열(鬱熱)을 풀어 교감신경 과항진을 낮추고 모유두 재생 환경을 복원합니다.",
+          "imgSrc": "illust_syncope_autonomic.jpg",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "내 가족에게 처방하는 '안신(安神)·면역 한약'과 모낭 재생 약침",
+          "sub": "양 손목 정밀 맥진으로 장부 면역력을 깨우고 탈락 부위에 정제 약침으로 새순을 틔웁니다.",
+          "imgSrc": "detail_director_story2_both_wrists_pulse.jpg",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "title": "실제 학술 논문으로 검증된 '자가면역 안정 & 신생모 발모'",
+          "sub": "솜털부터 검고 굵은 정상 모발까지, 재발 없는 근본 회복을 아빠 한의사가 끝까지 동행합니다.",
+          "imgSrc": "life_3b_hair_restored.jpg",
+          "sciStats": [
+            {
+              "num": "국제 민족약리학회지(J Ethnopharmacol) 검증",
+              "label": "모낭 주위 자가면역 염증(IFN-γ·JAK) 억제 및 신생모 발모 촉진 입증",
+              "width": "96%"
+            },
+            {
+              "num": "자율신경 학술지(Auton Neurosci) 등재",
+              "label": "스트레스성 교감신경 과항진 완화 및 면역 항상성 회복 검증",
+              "width": "95%"
+            }
+          ],
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "id": "card06",
+          "enabled": true,
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "ba_hair_before.jpg",
+          "afterImg": "ba_hair_after.jpg",
+          "title": "원형탈모 · 자가면역 신경안정 치료 — '치료 전·후 비교'",
+          "sub": "실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.",
+          "stepLabel": "BEFORE & AFTER · 치료 전·후 비교",
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=syncope",
+        "part": "syncope",
+        "partBadge": "자율신경 · 면역 · 두피 인체모형",
+        "eyebrow": "HUMAN BODY MODEL SHOWROOM",
+        "title": "인체모형으로 내 자율신경·면역 원인 연결하기",
+        "desc": "인체모형에서 스트레스 자율신경 실조와 원형탈모의 상관관계 및 학술 검증 치료법을 확인하세요.",
+        "bg": "illust_syncope_autonomic.jpg"
+      },
+      "nextClinic": {
+        "href": "hairloss-female.html",
+        "keyword": "여성탈모 궁금해?",
+        "eyebrow": "여성탈모 클리닉",
+        "title": "여성탈모 · 가르마·산후 빈모",
+        "desc": "넓어진 가르마와 정수리 볼륨을 되살리는 여성 상열하한·보혈 모근재생 페이지로 이동합니다.",
+        "bg": "detail_hair_story5_date_smile.jpg",
+        "caption": "[다음 탈모 유형 · 여성탈모] 가르마 빈모·산후·갱년기 여성탈모 치료 페이지로 이동합니다."
+      }
+    },
+    {
+      "slug": "hairloss-female",
+      "file": "hairloss-female.html",
+      "wpFile": "wordpress-hairloss-female.html",
+      "wpId": 410,
+      "liveUrl": "https://www.bareunhaniwon.com/hairloss-female/",
+      "label": "05-3 · 여성탈모 (가르마·볼륨)",
+      "tabIdx": 4,
+      "hairlossSubType": "female",
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#171115",
+        "bgPanel": "rgba(23, 17, 21, 0.95)",
+        "accent": "#F472B6",
+        "accentLight": "#FBCFE8",
+        "secondary": "#D4AF37",
+        "glowA": "rgba(244, 114, 182, 0.12)",
+        "glowB": "rgba(212, 175, 55, 0.08)"
+      },
+      "meta": {
+        "eyebrow": "FEMALE PATTERN & POSTPARTUM HAIR LOSS · 아빠 한의사 학술 논문 검증 여성탈모",
+        "title": "여성탈모 · 가르마·산후·갱년기 빈모",
+        "subtitleEn": "Female Diffuse Alopecia · Blood Nourishment & Thermoregulation Care",
+        "desc": [
+          "아내와 어머니, 딸에게 처방하는 따뜻한 보혈(補血) 치료만 시행합니다. 두피는 뜨겁고 손발·아랫배는 차가운 여성 특유의 상열하한(上熱下寒)과 호르몬·영양 고갈을 다스려 휑해진 가르마와 정수리 볼륨을 풍성하게 되살립니다."
+        ],
+        "ctaNudge": "👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 여성탈모 원인과 맞춤 보혈 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 가르마·정수리 볼륨 원장님께 진단받기",
+        "reserveProgram": "바른 여성탈모 (가르마·산후·갱년기·빈모) 클리닉",
+        "checklistTitle": "여성탈모 · 상열하한 자가진단 체크리스트",
+        "checklistItems": [
+          "[가르마·정수리 확장] 가르마 선이 크리스마스트리 모양으로 넓어지고 정수리 볼륨이 죽었다.",
+          "[모발 가늘어짐] 머리카락이 솜털처럼 가늘어져 스타일링이 안 되고 배수구가 자주 막힌다.",
+          "[상열하한·수족냉증] 얼굴과 두피로는 열이 오르는데 손발과 아랫배는 늘 차갑고 생리불순이 있다.",
+          "[출산·다이어트·갱년기] 출산 후, 무리한 다이어트, 또는 갱년기 이후 급격히 머리숱이 줄었다.",
+          "[안전한 여성 맞춤 한약] 호르몬 부작용 없이 빈혈·어지럼증·피로까지 함께 돌보는 치료를 원한다."
+        ],
+        "doctorAdvice": {
+          "caution": "여성탈모 주의",
+          "severe": "여성탈모 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "indexPill": "STORY · 넓어지는 가르마 · 상열하한 경보",
+          "metricPill": "여성 정수리 빈모 · 보혈(補血) 고갈 신호",
+          "title": "가르마를 바꿔 타도 비어 보이는 두피, '여성 상열하한'이 원인입니다",
+          "sub": "헤어라인은 유지되지만 정수리와 가르마 전체가 가늘어지는 여성형 빈모의 시작입니다.",
+          "caption": "[여성탈모 임상 노트] 두피로 열이 치솟고 아랫배·손발은 차가운 상열하한과 혈(血) 부족이 가르마 모근을 약화시킵니다.",
+          "frames": [
+            "detail_hair_story1_date_bow.jpg?v=30cm1",
+            "detail_hair_thermography.jpg",
+            "detail_hair_story5_date_smile.jpg"
+          ],
+          "thumbs": [
+            {
+              "img": "detail_hair_story1_date_bow.jpg?v=30cm1",
+              "label": "가르마·정수리 빈모"
+            },
+            {
+              "img": "detail_hair_thermography.jpg",
+              "label": "상열하한 두피 열감"
+            },
+            {
+              "img": "detail_hair_story5_date_smile.jpg",
+              "label": "정수리 볼륨 회복"
+            }
+          ],
+          "fx": "distance-30cm-tension",
+          "durationSec": 6.4,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "가임기·갱년기 여성의 탈모는 '혈(血) 부족과 냉증'부터 채워야 합니다",
+          "sub": "출산·다이어트·폐경기로 고갈된 보혈(補血) 진액을 채우지 않으면 모근이 버티지 못합니다.",
+          "imgSrc": "detail_hair_thermography.jpg",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "title": "아랫배는 따뜻하게 데우고, '메마른 두피에 영양혈'을 공급합니다",
+          "sub": "한의학의 '발자혈지여(머리카락은 혈의 여분)' 원리로 모낭 뿌리에 진액을 채웁니다.",
+          "imgSrc": "detail_director_story4_decoction_lab.jpg?v=dir4new",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "아내와 어머니를 진료하듯, '체질 보혈한약과 모낭 약침'을 처방합니다",
+          "sub": "손발 냉증·만성 피로·수면의 질을 함께 높이며 가르마 모근을 굵고 탄력 있게 깨웁니다.",
+          "imgSrc": "detail_hair_pharmacopuncture.jpg",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "title": "실제 학술 논문으로 검증된 '여성 빈모·산후탈모 모근재생'",
+          "sub": "사진 찍을 때도, 바람 부는 날에도 당당한 정수리 볼륨과 윤기를 되찾아 드립니다.",
+          "imgSrc": "detail_hair_story5_date_smile.jpg",
+          "sciStats": [
+            {
+              "num": "국제 식물학술지(Phytomedicine) 검증",
+              "label": "보혈 한약 복합물의 모낭 혈관내피성장인자(VEGF) 발현 및 모발 굵기 증가 입증",
+              "width": "96%"
+            },
+            {
+              "num": "국제 피부과학회지(J Dermatol) 등재",
+              "label": "출산 후·갱년기 휴지기 탈모의 성장기 전환 및 두피 열감 완화 검증",
+              "width": "94%"
+            }
+          ],
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "id": "card06",
+          "enabled": true,
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "ba_hair_before.jpg",
+          "afterImg": "ba_hair_after.jpg",
+          "title": "여성탈모 · 가르마·산후·갱년기 빈모 — '치료 전·후 비교'",
+          "sub": "실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.",
+          "stepLabel": "BEFORE & AFTER · 치료 전·후 비교",
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=cervical",
+        "part": "cervical",
+        "partBadge": "경추 · 두피열 · 여성 기혈 인체모형",
+        "eyebrow": "HUMAN BODY MODEL SHOWROOM",
+        "title": "인체모형으로 내 상열하한·가르마 탈모 연결하기",
+        "desc": "인체모형에서 여성 상열하한·경추 순환과 여성탈모의 상관관계 및 학술 검증 치료법을 확인하세요.",
+        "bg": "illust_cervical_hairloss.jpg"
+      },
+      "nextClinic": {
+        "href": "hairloss-seborrheic.html",
+        "keyword": "지루성두피염 궁금해?",
+        "eyebrow": "지루성두피염 클리닉",
+        "title": "지루성두피염 · 두피열독·모낭염",
+        "desc": "붉은 두피 홍반, 화농성 모낭염, 가려움과 염증성 탈모를 잠재우는 청열해독 페이지로 이동합니다.",
+        "bg": "detail_hair_thermography.jpg",
+        "caption": "[다음 탈모 유형 · 지루성두피염] 두피 홍반·모낭염·각질을 치료하는 지루성두피염 페이지로 이동합니다."
+      }
+    },
+    {
+      "slug": "hairloss-seborrheic",
+      "file": "hairloss-seborrheic.html",
+      "wpFile": "wordpress-hairloss-seborrheic.html",
+      "wpId": 411,
+      "liveUrl": "https://www.bareunhaniwon.com/hairloss-seborrheic/",
+      "label": "05-4 · 지루성두피염 (열독해독)",
+      "tabIdx": 4,
+      "hairlossSubType": "seborrheic",
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#0C1618",
+        "bgPanel": "rgba(12, 22, 24, 0.95)",
+        "accent": "#2DD4BF",
+        "accentLight": "#99F6E4",
+        "secondary": "#38BDF8",
+        "glowA": "rgba(45, 212, 191, 0.12)",
+        "glowB": "rgba(56, 189, 248, 0.08)"
+      },
+      "meta": {
+        "eyebrow": "SEBORRHEIC SCALP DERMATITIS · 아빠 한의사 학술 논문 검증 지루성두피염",
+        "title": "지루성두피염 · 두피열독·모낭염 치료",
+        "subtitleEn": "Seborrheic Scalp Dermatitis · Anti-Inflammatory Detox & Barrier Care",
+        "desc": [
+          "내 가족의 피부에 독한 스테로이드를 반복해 바르지 않듯, 뿌리 깊은 열독과 피지 과다의 원인을 치료합니다. 붉게 달아오른 두피 홍반, 화농성 모낭염, 비듬·각질과 가려움을 가라앉혀 염증성 탈모로의 진행을 원천 차단합니다."
+        ],
+        "ctaNudge": "👨‍👧‍👦 체크한 증상을 바탕으로 아빠 한의사 원장님이 직접 지루성두피염·모낭염 단계와 치료 계획을 브리핑해 드립니다.",
+        "ctaText": "내 두피 홍반·모낭염 상태 원장님께 진단받기",
+        "reserveProgram": "바른 지루성두피염 · 모낭염 · 염증성탈모 클리닉",
+        "checklistTitle": "지루성두피염 · 두피염증 자가진단 체크리스트",
+        "checklistItems": [
+          "[홍반·열감·통증] 두피가 늘 붉게 충혈되어 있고 만지면 열감과 따가운 통증이 느껴진다.",
+          "[모낭염·뾰루지] 두피에 좁쌀이나 고름이 차는 화농성 뾰루지(모낭염)가 자꾸 올라온다.",
+          "[가려움·진물·딱지] 무의식중에 두피를 긁게 되고 진물이나 노란 기름 딱지가 앉는다.",
+          "[비듬·떡짐·냄새] 머리를 감아도 금세 기름지고 하얀 각질·비듬과 정수리 냄새가 심하다.",
+          "[염증성 탈모 동반] 스테로이드 물약을 바를 때만 잠깐 가라앉고 염증 부위 머리카락이 함께 빠진다."
+        ],
+        "doctorAdvice": {
+          "caution": "지루성두피염 주의",
+          "severe": "지루성두피염 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "indexPill": "STORY · 두피 홍반 · 화농성 모낭염 경보",
+          "metricPill": "두피 습열(濕熱) 독소 · 염증성 탈모 신호",
+          "title": "긁을수록 번지는 '두피 홍반·각질·모낭염', 방치하면 탈모로 이어집니다",
+          "sub": "만성 두피 염증은 모낭 뿌리를 직접 녹여 영구적인 염증성 탈모를 유발합니다.",
+          "caption": "[지루성두피염 임상 노트] 상체로 치솟는 열독과 피지 과잉이 결합된 두피 습열(濕熱)을 끄지 않으면 염증과 탈모가 반복됩니다.",
+          "frames": [
+            "detail_hair_thermography.jpg",
+            "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+            "bareun_step3_scalp_hair_revival.jpg"
+          ],
+          "thumbs": [
+            {
+              "img": "detail_hair_thermography.jpg",
+              "label": "두피 홍반·열독 스캔"
+            },
+            {
+              "img": "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+              "label": "습열 독소 청열 쿨링"
+            },
+            {
+              "img": "bareun_step3_scalp_hair_revival.jpg",
+              "label": "모낭염 진정·장벽복원"
+            }
+          ],
+          "fx": "thermal-cooling",
+          "durationSec": 6.4,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "바를 때만 가라앉고 끊으면 더 심해지는 '스테로이드 리바운드'의 덫",
+          "sub": "몸속에서 뿜어져 나오는 습열(濕熱)과 피지 과잉을 잡지 않으면 두피 장벽만 얇아집니다.",
+          "imgSrc": "detail_hair_story2_cabinet_failure.jpg?v=30cm2",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "title": "두피로 치솟는 '습열(濕熱) 독소'를 끄고 무너진 두피 면역장벽을 세웁니다",
+          "sub": "상체 열독과 소화기 습담을 함께 해독하여 피지 분비를 정상화하고 염증을 진정시킵니다.",
+          "imgSrc": "detail_hair_story3_boiling_pot_cooling.jpg?v=30cm2",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "아빠 한의사가 직접 달이는 '청열해독 한약'과 두피 항염 약침",
+          "sub": "스테로이드 없이 천연 생약 성분의 항염 약침과 맞춤 한약으로 맑고 깨끗한 두피를 되찾습니다.",
+          "imgSrc": "detail_hair_pharmacopuncture.jpg",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "title": "실제 학술 논문으로 검증된 '두피 항염·장벽 복원 & 모근 보호'",
+          "sub": "붉은 홍반과 가려움에서 벗어나 깨끗한 두피와 건강한 모발을 동시에 지킵니다.",
+          "imgSrc": "bareun_step3_scalp_hair_revival.jpg",
+          "sciStats": [
+            {
+              "num": "국제 약리학술지(Front Pharmacol) 검증",
+              "label": "청열해독 생약 추출물의 두피 염증 인자(IL-1β·TNF-α) 억제 및 모낭염 완화 입증",
+              "width": "96%"
+            },
+            {
+              "num": "피부과학 학술지(Exp Dermatol) 등재",
+              "label": "피지 분비 정상화 및 두피 표피 장벽(Filaggrin) 복원으로 재발 방지 검증",
+              "width": "95%"
+            }
+          ],
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "id": "card06",
+          "enabled": true,
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "ba_hair_before.jpg",
+          "afterImg": "ba_hair_after.jpg",
+          "title": "지루성두피염 · 두피열독·모낭염 치료 — '치료 전·후 비교'",
+          "sub": "실제 학술 논문을 검수하여 기전이 입증된 치료법의 전·후 원리를 안내합니다.",
+          "stepLabel": "BEFORE & AFTER · 치료 전·후 비교",
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=cervical",
+        "part": "cervical",
+        "partBadge": "경추 · 두피열독 · 피지염증 인체모형",
+        "eyebrow": "FINAL CARD · HUMAN BODY MODEL SHOWROOM",
+        "title": "인체모형으로 내 두피열독·지루성두피염 연결하기",
+        "desc": "인체모형에서 상체 열독·장내 습열과 지루성두피염의 상관관계 및 학술 검증 치료법을 확인하세요.",
+        "bg": "illust_cervical_hairloss.jpg"
+      },
+      "nextClinic": {
+        "href": "gongjindan.html",
+        "keyword": "황제공진단 궁금해?",
+        "eyebrow": "NEXT STORY · 황제공진단 클리닉",
+        "title": "바른 황제공진단",
+        "desc": "학술 논문으로 뇌신경 보호와 만성피로 개선 기전이 입증된 식약처 인증 정품 사향 공진단입니다.",
+        "bg": "detail_gongjindan_story5_morning_vitality.jpg?v=uniq1",
+        "caption": "[다음 클리닉 · 황제공진단] 학술 논문으로 검증된 식약처 정품 사향 황제공진단 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "gongjindan",
+      "file": "gongjindan.html",
+      "wpFile": "wordpress-gongjindan.html",
+      "wpId": 96,
+      "liveUrl": "https://www.bareunhaniwon.com/gongjindan/",
+      "label": "06 · 황제공진단 (특허사향)",
+      "tabIdx": 5,
+      "hairlossSubType": null,
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#14110E",
+        "bgPanel": "rgba(20, 17, 14, 0.94)",
+        "accent": "#D4AF37",
+        "accentLight": "#FDE68A",
+        "secondary": "#F59E0B",
+        "glowA": "rgba(212, 175, 55, 0.14)",
+        "glowB": "rgba(245, 158, 11, 0.09)"
+      },
+      "meta": {
+        "eyebrow": "EMPEROR GONGJINDAN · 4대 명품 약재 성분 기반 13대 적응증 학술 논문 검증",
+        "title": "바른 황제공진단",
+        "subtitleEn": "CITES-Certified Musk, Deer Antler, Angelica & Cornus — 13 Evidence-Based Indications",
+        "desc": [
+          "식약처 CITES 인증 천연 사향(L-Muscone)·러시아산 원용 분골 녹용(IGF-1·강글리오사이드)·참당귀(데커신)·산수유(로가닌·코르누사이드) 4대 핵심 성분의 SCI급 학술 논문 연구를 바탕으로, (1)항피부노화(연예인 복용) (2)치매·뇌출혈 (3)퇴행성관절염 (4)심혈관질환 (5)면역피로 (6)자궁불임 (7)정력강화 (8)간 보호 (9)기억력저하 (10)만성스트레스 (11)불안증후군 (12)암 후유증 (13)수험생 집중력까지 체질별 맞춤 처방합니다."
+        ],
+        "ctaNudge": "📝 체크하신 증상과 복용 목적을 원장님께 먼저 보내고 1:1 맞춤 공진단 처방 상담을 받습니다.",
+        "ctaText": "내 증상에 맞는 정품 황제공진단 처방 상담하기",
+        "reserveProgram": "황제공진단·기력보강 클리닉",
+        "checklistTitle": "황제공진단 13대 적응증 자가 진단 체크리스트",
+        "checklistItems": [
+          "[면역피로 · 간 보호 · 암 후유증] 만성 면역피로, 잦은 음주·과로로 인한 간 피로, 또는 큰 수술·항암 후유증 회복이 필요하다.",
+          "[치매·뇌출혈 · 심혈관질환] 뇌혈관(치매·뇌출혈 후유증) 및 심혈관 순환을 지키고 손발 저림·흉부 답답함을 예방하고 싶다.",
+          "[기억력저하 · 스트레스 · 불안 · 수험생] 기억력 감퇴, 만성스트레스·불안증후군, 또는 중요한 시험을 앞둔 수험생 체력·집중력이 절실하다.",
+          "[항피부노화(연예인 관리) · 퇴행성관절염] 푸석해진 피부 탄력·안색 노화를 되돌리거나 퇴행성 관절 염증과 뼈·연골 약화가 고민이다.",
+          "[자궁불임(난임) · 남성 정력강화] 여성 자궁 냉증·난임 착상 준비, 또는 남성 정력 저하와 갱년기 호르몬 활력 복원이 필요하다."
+        ],
+        "doctorAdvice": {
+          "caution": "기력·면역 저하 주의",
+          "severe": "전신 기능 고갈 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "indexPill": "01 · 면역피로 · 간 보호 · 암 후유증 회복",
+          "metricPill": "NK 면역세포·조혈 ▲ · 간세포 보호(AST/ALT) ▲",
+          "title": "단순 피로회복을 넘어 '면역피로 · 간 보호 · 암 후유증'까지 — '특허' 받은 황제공진단",
+          "sub": "NK 면역세포 활성 및 항암·방사선 치료 후 저하된 골수 조혈 기능 회복(암 후유증 완화)을 돕고, 간 기능(AST/ALT)을 보호",
+          "caption": "NK 면역세포 활성 및 항암·방사선 치료 후 저하된 골수 조혈 기능 회복(암 후유증 완화)을 돕고, 간 기능(AST/ALT)을 보호",
+          "frames": [
+            "gongjindan_minimal_card1_vitality_core_a.jpg",
+            "gongjindan_minimal_card1_vitality_core_b.jpg",
+            "gongjindan_minimal_card1_vitality_core_c.jpg"
+          ],
+          "fx": "battery-1pct-warning-fx",
+          "durationSec": 6,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "'치매 · 뇌출혈 질환' 신경 보호부터 '심혈관질환' 예방까지 — 막힌 혈관을 여는 정품 사향(L-Muscone)",
+          "sub": "정품사향은 뇌혈관장벽(BBB)을 직접 투과하여 뇌출혈·뇌허혈 후 신경세포 사멸과 치매 원인 단백질 독성을 억제하며, 관상동맥 확장 및 심근 허혈(심혈관질환)을 보호합니다.",
+          "caption": "정품사향은 뇌혈관장벽(BBB)을 직접 투과하여 뇌출혈·뇌허혈 후 신경세포 사멸과 치매 원인 단백질 독성을 억제하며, 관상동맥 확장 및 심근 허혈(심혈관질환)을 보호합니다.",
+          "imgSrc": "detail_gongjindan_story2_bottomless_glass.jpg?v=brainheart1",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "imgSrc": "gongjindan_minimal_card3_circulation_a.jpg?v=celeb4",
+          "title": "왜 연예인들이 공진단을 복용할까? 비결 '피부 주름 노화 회복'",
+          "sub": "밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 피부 콜라겐 손상을 막아 피부 탄력과 안색을 밝게 지켜주기 때문입니다.",
+          "caption": "밤샘 촬영과 조명 노출이 잦은 연예인들이 공진단을 즐겨 복용하는 이유는 피부 콜라겐 손상을 막아 피부 탄력과 안색을 밝게 지켜주기 때문입니다.",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "gongjindan_minimal_card4_ba_before.jpg?v=couple2",
+          "afterImg": "gongjindan_minimal_card4_ba_after.jpg?v=couple2",
+          "title": "여성 '자궁불임(난임) 착상' 강화 & 남성 '정자강화 · 호르몬 활력' 완성",
+          "sub": "아내의 아랫배 혈류를 열어 수정란이 편안히 뿌리내릴 따뜻한 자궁 환경을 만들고, 남편의 활력 호르몬과 순환력을 힘있게 깨웁니다. 부부의 건강한 임신 준비와 지친 생식 기력을 속부터 균형 있게 함께 채워줍니다.",
+          "caption": "아내의 아랫배 혈류를 열어 수정란이 편안히 뿌리내릴 따뜻한 자궁 환경을 만들고, 남편의 활력 호르몬과 순환력을 힘있게 깨웁니다. 부부의 건강한 임신 준비와 지친 생식 기력을 속부터 균형 있게 함께 채워줍니다.",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 1,
+          "fullscreen": true,
+          "imgSrc": "gongjindan_minimal_card5_stage1_brain_calm.jpg?v=student2",
+          "title": "'기억력저하 · 스트레스 · 불안증후군' 케어와 '수험생' 고도 집중력 향상",
+          "sub": "공진단은 뇌 해마의 신경을 활성화하여 장기 기억력과 깊은 집중력을 탄탄하게 끌어올립니다. 과도한 스트레스 호르몬을 낮추고 긴장된 신경을 안정시켜, 시험 불안을 덜고 최상의 두뇌 컨디션을 지켜줍니다.",
+          "caption": "공진단은 뇌 해마의 신경을 활성화하여 장기 기억력과 깊은 집중력을 탄탄하게 끌어올립니다. 과도한 스트레스 호르몬을 낮추고 긴장된 신경을 안정시켜, 시험 불안을 덜고 최상의 두뇌 컨디션을 지켜줍니다.",
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "gongjindan-panorama-archive",
+          "fullscreen": true,
+          "stepLabel": "ARCHIVE PANORAMA · 황제공진단 공식 브로슈어 10대 화보 파노라마",
+          "title": "한눈에 넘겨보는 '바른 황제공진단' 특허·성분·성적서 파노라마 아카이브",
+          "sub": "제조특허 제10-1744704호부터 사향 씨알 단면, 러시아산 원용 분골, 유해물질 0ppm 성적서, 황실 자개함까지 꽉 찬 화면으로 넘겨보세요.",
+          "caption": "[황제공진단 파노라마 아카이브] 공식 브로슈어 10장(P.01~P.10)을 카드 전체 화면으로 생생하게 넘기며 확인하실 수 있습니다.",
+          "id": "card06",
+          "enabled": true,
+          "brochureArchive": [
+            {
+              "num": 1,
+              "code": "P.01",
+              "tag": "국가 특허 등록",
+              "short": "01 특허공진단",
+              "title": "유효 성분 손실을 최소화하는 특허 공진단",
+              "desc": "특허 제10-1744704호 공식 등록 · 원목 자개함 & 99.9% 순금박 수제 제환",
+              "img": "brochure/brochure1.jpg"
+            },
+            {
+              "num": 2,
+              "code": "P.02",
+              "tag": "황실 비방의 역사",
+              "short": "02 700년 황실비방",
+              "title": "황제의 공진단, 왜 지금 우리에게 필요할까?",
+              "desc": "700년 전 원나라 황실 비방이 현대인의 극심한 만성 피로와 번아웃을 다스리는 비결",
+              "img": "brochure/brochure2.jpg"
+            },
+            {
+              "num": 3,
+              "code": "P.03",
+              "tag": "특허 기술의 본질",
+              "short": "03 사향보존 공법",
+              "title": "공진단에 왜 '특허'가 필요할까?",
+              "desc": "휘발되기 쉬운 천연 사향의 향기와 약효를 100% 가두는 중심핵 조제 공법",
+              "img": "brochure/brochure3.jpg"
+            },
+            {
+              "num": 4,
+              "code": "P.04",
+              "tag": "국내 유일 기술",
+              "short": "04 효능특허 훈장",
+              "title": "국내 유일 공진단 효능 관련 특허 기술",
+              "desc": "대한민국 특허청 정식 인장 및 금장 훈장이 증명하는 독보적 임상 가치",
+              "img": "brochure/brochure4.jpg"
+            },
+            {
+              "num": 5,
+              "code": "P.05",
+              "tag": "사향 씨알의 기적",
+              "short": "05 사향씨알 단면",
+              "title": "눈으로 확인하는 '사향 씨알' 특허 단면 & 함량 비교",
+              "desc": "중심에 온전히 보존된 사향 씨알 단면 비교 및 식약처 CITES 정품 사향 함유량",
+              "img": "brochure/brochure5.jpg"
+            },
+            {
+              "num": 6,
+              "code": "P.06",
+              "tag": "재생의 연료",
+              "short": "06 러시아산 분골",
+              "title": "러시아산 최상급 원용 분골 녹용 아낌없는 배합",
+              "desc": "세포·피부·신경 재생의 핵심, 원산지가 명확한 러시아산 최상단 분골·상대 엄선",
+              "img": "brochure/brochure6.jpg"
+            },
+            {
+              "num": 7,
+              "code": "P.07",
+              "tag": "100인 한의사 검증",
+              "short": "07 한의사 100인",
+              "title": "한의사 100인이 직접 검증한 압도적 효능",
+              "desc": "\"사향의 향 손실을 막고 균일한 약효를 발휘하는 획기적 발명\" 블라인드 평가 극찬",
+              "img": "brochure/brochure7.jpg"
+            },
+            {
+              "num": 8,
+              "code": "P.08",
+              "tag": "공인 시험성적서",
+              "short": "08 유해물질 0ppm",
+              "title": "동의한약분석센터 잔류농약·중금속 0ppm 불검출",
+              "desc": "납·비소·수은·잔류농약·곰팡이독소 불검출 국가 공인 시험성적서 원문 공개",
+              "img": "brochure/brochure8.jpg"
+            },
+            {
+              "num": 9,
+              "code": "P.09",
+              "tag": "황실 예우 패키징",
+              "short": "09 원목자개함",
+              "title": "마음을 움직이는 최고의 품격, 황실 예우 패키징",
+              "desc": "천연 원목 자개함 · 이중 비단보자기 · 정품 품질보증서 기프트 패키지",
+              "img": "brochure/brochure9.jpg"
+            },
+            {
+              "num": 10,
+              "code": "P.10",
+              "tag": "4대 명품 약재",
+              "short": "10 4대 명품약재",
+              "title": "황제의 보약을 완성하는 4대 명품 한약재 도감",
+              "desc": "천연 사향 · 러시아산 분골 녹용 · 참당귀 · 산수유 최상위 원재료 도감",
+              "img": "brochure/brochure10.jpg"
+            }
+          ],
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-video",
+          "fullscreen": true,
+          "fit": "contain",
+          "hideText": true,
+          "indexPill": "",
+          "stepLabel": "",
+          "title": "",
+          "sub": "",
+          "caption": "[황제공진단 조제 과정 영상] 천연 사향·러시아 녹용 분골·참당귀·산수유를 원내에서 직접 정량 계량하고 수제 제환하는 실제 조제 영상입니다.",
+          "videoSrc": "https://bareunhaniwon.com/wp-content/uploads/2026/10/%ED%99%A9%EC%A0%9C%EA%B3%B5%EC%A7%84%EB%8B%A8-%EC%A1%B0%EC%A0%9C-%EA%B3%BC%EC%A0%95-%EC%98%81%EC%83%81.mp4",
+          "poster": "",
+          "id": "card07",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "시리고 닳아가는 무릎 — '퇴행성 관절 염증'을 끄고 '연골 · 뼈 재생'을 채우다",
+          "sub": "닳아버린 무릎 연골과 약해진 뼈를 촘촘히 보강하여 관절의 기초 체력을 단단히 세웁니다. 관절을 갉아먹는 염증과 통증을 다스려, 계단을 오르내리거나 걸을 때 가볍고 편안한 움직임을 되찾아줍니다.",
+          "caption": "닳아버린 무릎 연골과 약해진 뼈를 촘촘히 보강하여 관절의 기초 체력을 단단히 세웁니다. 관절을 갉아먹는 염증과 통증을 다스려, 계단을 오르내리거나 걸을 때 가볍고 편안한 움직임을 되찾아줍니다.",
+          "imgSrc": "gongjindan_minimal_card8_vitality_finale.jpg?v=cartilage1",
+          "id": "card08",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "hideTopBar": true,
+          "title": "지친 우리 가족 — '건강을 선물하세요'",
+          "sub": "잠을 자도 몸이 천근만근 무거운 아침 피로, 중요한 회의와 시험을 앞두고 머리가 멍해지는 집중력 저하, 몰라보게 기력이 쇠약해진 부모님 건강까지 — 바닥난 원기로 가장 막막하고 곤란한 순간입니다.",
+          "caption": "잠을 자도 몸이 천근만근 무거운 아침 피로, 중요한 회의와 시험을 앞두고 머리가 멍해지는 집중력 저하, 몰라보게 기력이 쇠약해진 부모님 건강까지 — 바닥난 원기로 가장 막막하고 곤란한 순간입니다.",
+          "frames": [
+            "gongjindan_minimal_card9_trouble_3_parents.jpg?v=card9f1",
+            "gongjindan_minimal_card9_trouble_2_brainfog.jpg?v=card9f2",
+            "gongjindan_card9_frame3_pov_gift.jpg?v=card9f3"
+          ],
+          "fx": "sunlight-bokeh",
+          "durationSec": 6.6,
+          "id": "card09",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=gongjindan",
+        "part": "gongjindan",
+        "useOur3DBodyModel": true,
+        "honeyTipLabel": "공진단 꿀팁",
+        "partBadge": "13대 적응증 · 4대 약재 논문 인체모형",
+        "eyebrow": "3D HUMAN BODY MODEL · 13 INDICATIONS & INGREDIENT RESEARCH WAREHOUSE",
+        "title": "목적별 약효를 200% 끌어올리는 '황제공진단 맞춤 복용 꿀팁'",
+        "desc": "항피부노화·수험생·치매뇌출혈·심혈관·관절염·간보호·난임·정력·암후유증 등 복용 목적에 따라 약효 흡수율을 극대화하는 대표원장 실전 가이드입니다.",
+        "bg": "illust_gongjindan_heart_brain.jpg",
+        "extraInfoItems": [
+          {
+            "badge": "꿀팁 01 · 연예인 항피부노화 & 수험생·기억력 복용법",
+            "title": "아침 기상 직후 공복 미온수 복용 (시험·촬영 전에는 1시간 전)",
+            "desc": "콜라겐 합성과 해마 뇌신경성장인자(BDNF) 활성화를 위해 아침 공복에 복용하시고, 수험생 시험이나 중요한 촬영·발표 날에는 시작 1시간 전에 추가 복용하시면 집중력과 안색이 살아납니다."
+          },
+          {
+            "badge": "꿀팁 02 · 치매·뇌출혈·심혈관·불안·스트레스 개규 흡수법",
+            "title": "바로 삼키지 말고 1~2분간 입안에서 천천히 녹여 향 머금기",
+            "desc": "사향의 L-무스콘 성분은 구강 설하 점막과 후각 신경을 통해 뇌혈관장벽(BBB)과 관상동맥으로 가장 빠르게 전달되므로 오래 씹어 향을 충분히 머금으세요."
+          },
+          {
+            "badge": "꿀팁 03 · 간 보호·암 후유증·면역피로·퇴행성관절염 맞춤 수칙",
+            "title": "약효 중화 식품(녹두·숙주·찬물) 차단 & 체온 유지",
+            "desc": "항암 후 조혈·면역 회복이나 간 해독, 퇴행성 관절 염증 치료 중에는 녹두·숙주나물·알코올·찬 음료를 피하시고 따뜻한 미온수와 함께 복용하세요."
+          },
+          {
+            "badge": "꿀팁 04 · 자궁불임(난임 착상) & 남성 정력강화 시너지 루틴",
+            "title": "저녁 족욕·하복부 보온 병행 & 서늘한 상온 밀폐 보관",
+            "desc": "당귀·녹용·산수유의 자궁내막 혈류 및 남성 호르몬(테스토스테론) 활성 효과를 높이려면 하복부를 따뜻하게 유지하시고, 공진단은 냉동 대신 서늘한 상온에 밀폐 보관하세요."
+          }
+        ]
+      },
+      "nextClinic": {
+        "href": "prostate.html",
+        "keyword": "전립선 · 야간뇨 궁금해?",
+        "eyebrow": "NEXT STORY · 전립선 · 남성활력 클리닉",
+        "title": "바른 전립선 · 남성활력",
+        "desc": "학술 논문으로 검증된 전립선 울혈 감압 및 신장·방광 온양 치료로 시원한 배뇨와 숙면을 되찾아 드립니다.",
+        "bg": "illust_prostate_care.jpg",
+        "caption": "[다음 클리닉 · 전립선 클리닉] 학술 논문으로 검증된 전립선 감압 치료로 배뇨와 활력을 되찾는 스토리로 이동합니다."
+      }
+    },
+    {
+      "slug": "prostate",
+      "file": "prostate.html",
+      "wpFile": "wordpress-prostate.html",
+      "wpId": 133,
+      "liveUrl": "https://www.bareunhaniwon.com/prostate/",
+      "label": "07 · 전립선 · 남성활력",
+      "tabIdx": 6,
+      "hairlossSubType": null,
+      "cardStyle": {
+        "layout": "sample-a",
+        "showTitle": true,
+        "showBody": true,
+        "showStepBadge": false,
+        "showPillars": false,
+        "showTags": false,
+        "showNumBadge": true,
+        "showExamHud": false,
+        "panelPreset": "espresso-gold",
+        "bgTop": "#1b1815",
+        "bgBot": "#13110f",
+        "borderColor": "rgba(197, 160, 89, 0.44)",
+        "dividerColor": "rgba(212, 175, 55, 0.36)",
+        "titleColor": "#fdfbf7",
+        "hlColor": "#f5d36c",
+        "bodyColor": "rgba(245, 240, 232, 0.84)",
+        "titleSize": "md",
+        "bodySize": "md"
+      },
+      "theme": {
+        "bgDark": "#171310",
+        "bgPanel": "rgba(23, 19, 16, 0.96)",
+        "accent": "#C89B5B",
+        "accentLight": "#F5E1C0",
+        "secondary": "#2D5A43",
+        "glowA": "rgba(200, 155, 91, 0.12)",
+        "glowB": "rgba(45, 90, 67, 0.08)"
+      },
+      "meta": {
+        "eyebrow": "PROSTATE & URINARY CLINIC · 학술 논문 검증 전립선·남성활력",
+        "title": "바른 전립선 · 남성활력",
+        "subtitleEn": "Evidence-Based Prostate Decongestion, Bladder Control & Male Vitality",
+        "desc": [
+          "전립선 울혈 압박으로 부어오른 조직을 감압하고 차가운 방광과 신장 원기를 따뜻하게 데워 시원한 배뇨와 남성 활력을 되찾아 드립니다. 국제 비뇨의학 학술 논문을 정밀 검수하여 재발 없는 근본 치료를 시행합니다."
+        ],
+        "ctaNudge": "📝 체크하신 전립선·배뇨 증상을 바탕으로 원장님과 1:1 프라이빗 상담을 받습니다.",
+        "ctaText": "내 전립선·배뇨 상태 원장님과 프라이빗 상담하기",
+        "reserveProgram": "바른 남성 · 전립선 · 배뇨활력 클리닉",
+        "checklistTitle": "빈뇨 · 야간뇨 · 만성 전립선 자가 진단 체크리스트",
+        "checklistItems": [
+          "[잔뇨감·세뇨] 소변 줄기가 가늘어지고 화장실을 다녀와도 시원하지 않고 잔뇨가 남는다.",
+          "[야간뇨·수면분절] 밤에 소변 때문에 1~2회 이상 깨어나 아침까지 깊은 숙면을 취하기 어렵다.",
+          "[빈뇨·절박뇨] 소변이 자주 마렵거나 한 번 요의가 느껴지면 참기가 힘들다.",
+          "[만성 골반통증] 항생제를 먹어도 회음부·고환·아랫배가 묵직하고 뻐근하다.",
+          "[남성 발기 저하] 배뇨 불편감과 함께 만성 피로 및 하체·남성 활력 저하가 느껴진다."
+        ],
+        "doctorAdvice": {
+          "caution": "전립선장애 주의",
+          "severe": "전립선장애 심각"
+        },
+        "checklistSub": "내가 겪고 있는 일상 속 불편감을 클릭해 체크해 보세요."
+      },
+      "plates": [
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "indexPill": "CORE MOTION · 바른 전립선 · 남성활력",
+          "metricPill": "전립선 울혈 감압 ▲ · 방광 저장력 & 남성 활력 ▲",
+          "title": "부어오른 전립선 압박을 풀고 방광과 남성 활력을 깨우는 근본 치료 — '바른 전립선 · 남성활력'",
+          "sub": "항생제로도 반복되는 골반 울혈과 전립선 비대 압박을 근본적으로 감압하고, 차갑게 식은 방광과 신장 원기(腎陽)를 따뜻하게 채워 시원한 배뇨와 통잠을 되찾아 드립니다.",
+          "caption": "[전립선·남성활력 핵심 원리] 전립선 울혈 감압과 보신온양(방광·신장 원기 강화)으로 배뇨 기능과 남성 활력을 동시에 복원합니다.",
+          "frames": [
+            "prostate_minimal_card1_core_relief_a.jpg",
+            "prostate_minimal_card1_core_relief_b.jpg",
+            "prostate_minimal_card1_core_relief_c.jpg"
+          ],
+          "fx": "prostate-pressure-pulse-fx",
+          "durationSec": 6,
+          "id": "card01",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "항생제·배뇨약만으로는 '굳어버린 골반 울혈과 약해진 방광'을 해결하지 못합니다",
+          "sub": "만성 전립선염과 배뇨 장애의 대다수는 세균이 아닌 골반 근육 긴장과 하초 혈류 정체(비세균성 울혈)가 원인입니다. 막힌 골반 혈류를 열어야 재발의 고리가 끊어집니다.",
+          "caption": "[재발 단절 핵심] 일시적인 증상 억제가 아니라 골반 울혈을 풀고 방광 저장력을 회복하는 근본 치료가 핵심입니다.",
+          "imgSrc": "prostate_minimal_card2_antibiotic_limit.jpg",
+          "id": "card02",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "imgSrc": "prostate_minimal_card3_decongestion_a.jpg?v=ur1",
+          "title": "방광 압박 & 참을 수 없는 소변 — '걱정 없이 어디서든 편하게'",
+          "sub": "오래 앉아 굳어버린 전립선의 정체된 어혈·습담을 심부 온열 순환으로 묵직하고 뻐근하던 하복부를 상쾌하게 변화시킵니다.",
+          "caption": "[방광 압박 해소 & 쾌뇨 순환] 정체된 전립선 어혈·습담을 심부 온열 순환으로 풀어 묵직하고 뻐근하던 하복부를 상쾌하게 변화시킵니다.",
+          "id": "card03",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "runway-ba-scan",
+          "fullscreen": true,
+          "beforeImg": "prostate_minimal_card4_ba_before.jpg?v=stream1",
+          "afterImg": "prostate_minimal_card4_ba_after.jpg?v=stream1",
+          "title": "전립선 부종 잔뇨감 & 방광압박으로 요실금 — '시원한 쾌뇨'",
+          "sub": "부어오른 전립선 조직의 압력을 낮춰 좁아진 요도 길을 시원하게 넓혀주고, 차갑고 예민해진 방광 괄약근을 보강하여 밤새 깨지 않는 깊은 숙면을 되찾아 드립니다.",
+          "caption": "[전립선 감압 & 시원한 쾌뇨] 약해진 물줄기·잔뇨감과 방광 압박을 해소하여 시원한 쾌뇨와 깊은 숙면을 완성합니다.",
+          "id": "card04",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "diet-single-stage",
+          "stage": 1,
+          "fullscreen": true,
+          "imgSrc": "prostate_minimal_card5_stage1_bladder_calm.jpg",
+          "title": "과민성 방광 신경 안정 & 야간뇨 차단 — '예민한 배뇨 신경 진정과 아침까지 이어지는 깊은 숙면'",
+          "sub": "조금만 소변이 차도 요의를 느끼는 과민성 방광 자율신경 신호를 안정시키고 항이뇨·수면 리듬을 회복시켜, 화장실 걱정 없는 편안한 밤과 일상을 만들어 드립니다.",
+          "caption": "[방광 자율신경 안정 & 통잠 회복] 과민해진 방광 신경을 진정시켜 빈뇨·절박뇨·야간뇨를 근본적으로 줄여줍니다.",
+          "id": "card05",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "회음부 신경을 누르는 골반 틀어짐까지 바로잡는 — '골반 추나 & 전립선 약침'",
+          "sub": "전립선과 방광을 둘러싼 골반·천장관절의 구조적 비대칭을 대표원장 수기 추나로 정밀 교정하고, 고농축 정제 약침으로 하초 심부 혈류와 괄약근 탄력을 빠르게 깨웁니다.",
+          "caption": "[골반 추나 & 전립선 약침] 골반 구조 교정과 전립선 약침 치료를 병행하여 만성 골반통과 배뇨 장애를 입체적으로 다스립니다.",
+          "imgSrc": "prostate_minimal_card6_pelvic_chuna_care.jpg?v=noface2",
+          "id": "card06",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "남성호르몬 및 원기를 채우는 — '대표원장 1:1 프라이빗 진맥 & 정력 맞춤 한약'",
+          "sub": "1:1 독립 진료실에서 정밀 맥진과 초음파 검사를 결합한 개인 체질 맞춤 한약을 처방합니다.",
+          "caption": "[1:1 프라이빗 진맥 & 정력 맞춤 한약] 정밀 맥진과 초음파 검사를 결합하여 개인 체질에 맞춘 한약을 처방합니다.",
+          "imgSrc": "prostate_minimal_card7_pulse_custom_herb.jpg?v=noteapot1",
+          "id": "card07",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "clean-image",
+          "fullscreen": true,
+          "title": "국제 학술 논문 검수로 입증된 '시원한 배뇨 · 끊김 없는 통잠 · 당당한 남성 활력'",
+          "sub": "국제 비뇨의학 학술지에서 전립선 조직 감압과 하부요로증상 개선 기전이 입증된 한방 치료로, 밤잠 설치던 피로를 걷어내고 아침의 당당한 활력을 되찾습니다.",
+          "caption": "[배뇨 & 남성 활력 완성] 국제 학술지(Urology, Phytomedicine) 연구로 검증된 전립선 감압·온양 치료로 통잠과 남성 활력을 완성합니다.",
+          "imgSrc": "prostate_minimal_card8_vitality_finale.jpg",
+          "id": "card08",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        },
+        {
+          "type": "motion-story",
+          "fullscreen": true,
+          "hideTopBar": true,
+          "title": "젊을때는 고생하고 나이가드니 남성 갱년기 오듯 무력해진 나 — '참 곤란하다'",
+          "sub": "새벽마다 서너 번 깨고 · 운전·회의 중 급한 빈뇨 · 묵직한 회음부 통증과 활력 저하 누구에게 말하기도 힘들어 가장 답답하고 곤란한 순간입니다.",
+          "caption": "[남성 갱년기 & 배뇨 장애로 곤란한 순간] 무력해진 활력 · 운전·회의 중 급한 빈뇨 · 새벽 야간뇨로 가장 답답하고 곤란한 순간입니다.",
+          "frames": [
+            "prostate_minimal_card9_trouble_1_nocturia.jpg?v=c9v7",
+            "prostate_minimal_card9_trouble_2_driving.jpg?v=c9v7",
+            "prostate_minimal_card9_trouble_3_pelvicpain.jpg?v=c9v7"
+          ],
+          "fx": "sunlight-bokeh",
+          "durationSec": 6.6,
+          "id": "card09",
+          "enabled": true,
+          "pillars": [],
+          "tags": []
+        }
+      ],
+      "bodyModelCard": {
+        "href": "body-explorer.html?part=prostate",
+        "part": "prostate",
+        "useOur3DBodyModel": true,
+        "honeyTipLabel": "전립선 꿀팁",
+        "partBadge": "전립선 · 방광 · 골반 인체모형",
+        "eyebrow": "3D HUMAN BODY MODEL · PROSTATE HONEY-TIP WAREHOUSE",
+        "title": "알아두면 배뇨와 활력이 달라지는 '전립선 꿀팁 창고'",
+        "desc": "전립선 울혈을 줄이고 방광 저장력과 하체 남성 활력을 높이는 대표원장 실전 생활 꿀팁입니다.",
+        "bg": "illust_prostate_care.jpg",
+        "extraInfoItems": [
+          {
+            "badge": "꿀팁 01 · 온수 좌욕 10분 루틴",
+            "title": "매일 저녁 40°C 따뜻한 좌욕으로 골반 울혈 풀기",
+            "desc": "따뜻한 온수 좌욕은 굳어진 골반저 근육과 전립선 주위 괄약근을 이완시켜 회음부 통증과 잔뇨감을 빠르게 줄여줍니다."
+          },
+          {
+            "badge": "꿀팁 02 · 야간뇨 예방 수분 조절",
+            "title": "취침 3시간 전 수분·카페인·알코올 섭취 줄이기",
+            "desc": "저녁 늦은 시간의 커피·맥주·차가운 음료는 방광 점막을 자극하고 야간뇨를 악화시키므로 취침 전에는 입만 가볍게 적시세요."
+          },
+          {
+            "badge": "꿀팁 03 · 50분마다 골반 감압 스트레칭",
+            "title": "오래 앉아 있을 때 50분마다 일어나 골반 순환 깨우기",
+            "desc": "장시간 착석은 회음부와 전립선 혈관을 직접 압박하므로 1시간마다 자리에서 일어나 가벼운 스쿼트와 골반 스트레칭을 해주세요."
+          },
+          {
+            "badge": "꿀팁 04 · 전립선 항산화 식단",
+            "title": "익힌 토마토(라이코펜)·호박씨·마늘·산수유 챙기기",
+            "desc": "올리브유에 살짝 익힌 토마토의 라이코펜과 아연이 풍부한 음식은 전립선 염증을 낮추고 남성 호르몬과 활력 회복을 돕습니다."
+          }
+        ]
+      },
+      "nextClinic": {
+        "href": "director.html",
+        "keyword": "대표원장 진료철학 궁금해?",
+        "eyebrow": "FIRST STORY · 안정위 대표원장",
+        "title": "안정위 대표원장 철학",
+        "desc": "모든 클리닉의 정밀 맥진과 학술 논문 기반 처방을 직접 책임지는 안정위 대표원장 스토리입니다.",
+        "bg": "detail_director_consult.jpg?v=uniq1",
+        "caption": "[처음 클리닉 · 대표원장] 모든 클리닉의 진단과 처방을 직접 책임지는 안정위 대표원장 스토리로 이동합니다."
+      }
+    }
+  ]
+}
