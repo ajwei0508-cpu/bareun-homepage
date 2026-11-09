@@ -601,6 +601,96 @@ const server = http.createServer((req, res) => {
   }
   // === END 11 DETAIL PAGES CUSTOM STUDIO API ===
 
+  // === BEGIN B2B FRANCHISE SALES & ONBOARDING API ===
+  if (reqPath === '/api/b2b-franchise-inquiry') {
+    const inqPath = path.join(__dirname, 'b2b-inquiries.json');
+    if (req.method === 'GET') {
+      try {
+        const list = fs.existsSync(inqPath) ? JSON.parse(fs.readFileSync(inqPath, 'utf8') || '[]') : [];
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store'
+        });
+        res.end(JSON.stringify({ ok: true, inquiries: list }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      const chunks = [];
+      req.on('data', c => chunks.push(c));
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+          if (!payload.clinicName || !payload.directorName || !payload.phone) {
+            throw new Error('한의원 상호명, 원장님 성함, 연락처는 필수 입력 항목입니다.');
+          }
+          const now = new Date();
+          const inquiryId = 'B2B-' + now.toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+          const record = {
+            id: inquiryId,
+            createdAt: now.toISOString(),
+            createdAtKr: now.toLocaleString('ko-KR'),
+            packageTier: payload.packageTier || 'PRO (490만원 · 주력형)',
+            requestType: payload.requestType || '무료 AI 화보 + 대표카드 1장 선체험 & 분양 상담',
+            clinicName: String(payload.clinicName).trim(),
+            region: String(payload.region || '').trim(),
+            directorName: String(payload.directorName).trim(),
+            phone: String(payload.phone).trim(),
+            selectedPrograms: Array.isArray(payload.selectedPrograms) ? payload.selectedPrograms : [],
+            colorPreset: payload.colorPreset || 'espresso-gold',
+            heroPreset: payload.heroPreset || 'sasang-pulse',
+            clinicHours: String(payload.clinicHours || '').trim(),
+            address: String(payload.address || '').trim(),
+            uploadedPhoto: payload.uploadedPhoto || null,
+            memo: String(payload.memo || '').trim(),
+            onboardingConfig: {
+              clinicName: String(payload.clinicName).trim(),
+              directorName: String(payload.directorName).trim(),
+              phone: String(payload.phone).trim(),
+              region: String(payload.region || '').trim(),
+              colorPreset: payload.colorPreset || 'espresso-gold',
+              heroPreset: payload.heroPreset || 'sasang-pulse',
+              enabledSlugs: Array.isArray(payload.selectedPrograms) ? payload.selectedPrograms : []
+            }
+          };
+
+          let list = [];
+          if (fs.existsSync(inqPath)) {
+            try { list = JSON.parse(fs.readFileSync(inqPath, 'utf8') || '[]'); } catch (e) { list = []; }
+          }
+          list.unshift(record);
+          fs.writeFileSync(inqPath, JSON.stringify(list, null, 2) + '\n', 'utf8');
+
+          console.log('\n======================================================');
+          console.log('[한의원 홈페이지 B2B 분양·무료시안 신청 접수] 번호: ' + inquiryId);
+          console.log('• 신청 패키지 : ' + record.packageTier + ' (' + record.requestType + ')');
+          console.log('• 한의원 상호 : ' + record.clinicName + ' (' + (record.region || '지역 미기재') + ')');
+          console.log('• 대표원장님  : ' + record.directorName + ' (' + record.phone + ')');
+          console.log('• 선택 과목   : ' + (record.selectedPrograms.join(', ') || '전체 기본'));
+          console.log('• 컬러 테마   : ' + record.colorPreset);
+          console.log('======================================================\n');
+
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            inquiryId,
+            record,
+            message: `[${record.clinicName} ${record.directorName} 원장님] 분양 상담 및 무료 AI 시안 신청이 정상 접수되었습니다! (접수번호: ${inquiryId})`
+          }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+  // === END B2B FRANCHISE SALES & ONBOARDING API ===
+
   // API Endpoint: Kakao Alimtalk Dispatch & Booking Recorder
   if (reqPath === '/api/send-alimtalk' && req.method === 'POST') {
     let body = '';
@@ -1125,6 +1215,7 @@ server.listen(PORT, () => {
   console.log(`   - 3D Menu Table Builder Studio: http://localhost:${PORT}/clinic-menu-editor.html`);
   console.log(`   - Before/After Compare Studio:  http://localhost:${PORT}/compare.html`);
   console.log(`   - 11 Detail Pages Custom Studio: http://localhost:${PORT}/detail-pages-editor.html`);
+  console.log(`   - B2B Doctor Sales Landing Page: http://localhost:${PORT}/sales-pitch.html`);
 });
 
 // Companion Before Comparison Server on Port 3001 (auto-started together with serve.js)
