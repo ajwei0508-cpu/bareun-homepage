@@ -745,7 +745,7 @@ async function executeCloudFalGenerateCore(payload, onStep) {
   let finalFileName = rawFileName;
   let finalFilePath = rawFilePath;
 
-  if (faceLock) {
+  if (faceLock && !useLora) {
     onStep(68, '👑 [유료 PRO] fal.ai 클라우드 Face-Swap + CodeFormer 모공 복원 실행 중...');
     let lockedCloudUrl = rawImageUrl;
     try {
@@ -764,7 +764,7 @@ async function executeCloudFalGenerateCore(payload, onStep) {
       const cfRes = await falClient.subscribe('fal-ai/codeformer', {
         input: {
           image_url: lockedCloudUrl,
-          fidelity: 0.72,
+          fidelity: 0.88,
           upscale_factor: 1,
           face_upscale: true,
           only_center_face: false
@@ -780,6 +780,8 @@ async function executeCloudFalGenerateCore(payload, onStep) {
       finalFilePath = path.join(OUTPUTS_DIR, finalFileName);
       await downloadUrlToFile(lockedCloudUrl, finalFilePath);
     }
+  } else if (useLora) {
+    onStep(85, '👑 [유료 PRO] 전용 FLUX LoRA 금형 100% 원본 실사 디테일 유지 완료');
   }
 
   onStep(90, '📊 무료 vs 유료 동일 기준 객관적 얼굴 일치율 · 선명도 계측 중...');
@@ -794,11 +796,13 @@ async function executeCloudFalGenerateCore(payload, onStep) {
   const entry = {
     id: 'item_paid_' + stamp,
     tier: 'paid',
-    mode: useLora ? '👑 유료 PRO · 전용 LoRA + CodeFormer' : '👑 유료 PRO · fal.ai PuLID + CodeFormer',
+    mode: useLora
+      ? `👑 유료 PRO · fal.ai 전용 FLUX LoRA (${profile.name})`
+      : '👑 유료 PRO · fal.ai PuLID + CodeFormer',
     engineDetail: useLora
-      ? 'fal.ai FLUX Portrait LoRA (28 steps) + Cloud Face-Swap + Cloud CodeFormer'
+      ? 'fal.ai 전용 FLUX LoRA (28스텝 금형 100% 실사 촬영)'
       : 'fal.ai FLUX PuLID (28 steps) + Cloud Face-Swap + Cloud CodeFormer',
-    cost: useLora ? '👑 약 110원 ($0.08)' : '👑 약 95원 ($0.07)',
+    cost: useLora ? '👑 약 95원 ($0.07)' : '👑 약 95원 ($0.07)',
     elapsedSec,
     similarityPct: metrics.similarityPct,
     sharpnessScore: metrics.sharpnessScore,
@@ -924,7 +928,9 @@ async function executeCloudFalFixCore(payload, onStep) {
     profileId,
     sourceType = 'homepage',
     homepageFile = '',
-    uploadDataUrl = ''
+    uploadDataUrl = '',
+    loraScale = 1.0,
+    loraStrength = 0.40
   } = payload;
 
   const profiles = readJsonSafe(PROFILES_JSON, []);
@@ -947,32 +953,86 @@ async function executeCloudFalFixCore(payload, onStep) {
   const baseCdnUrl = await uploadFileToFalCached(falClient, beforePath);
   const masterCdnUrl = await uploadFileToFalCached(falClient, refPaths[0]);
 
-  onStep(48, '👑 [유료 PRO] fal.ai 클라우드 Face-Swap 정밀 교체 중...');
-  const swapRes = await falClient.subscribe('fal-ai/face-swap', {
-    input: {
-      base_image_url: baseCdnUrl,
-      swap_image_url: masterCdnUrl
-    }
-  });
-  let cloudOutUrl = swapRes?.data?.image?.url || swapRes?.data?.images?.[0]?.url || '';
-  if (!cloudOutUrl) throw new Error('클라우드 Face-Swap 결과 URL을 받지 못했습니다.');
+  const useLora = Boolean(profile.loraUrl);
+  let cloudOutUrl = '';
 
-  onStep(74, '👑 [유료 PRO] fal.ai 클라우드 CodeFormer 초고화질 모공·안경 복원 중...');
-  try {
-    const cfRes = await falClient.subscribe('fal-ai/codeformer', {
+  if (useLora) {
+    onStep(35, '👑 [유료 PRO 1/2] 1단계: 원장님 기준 사진과 원본 사진 랜드마크 3D 정렬 중...');
+    let alignedUrl = baseCdnUrl;
+    try {
+      const swapRes = await falClient.subscribe('fal-ai/face-swap', {
+        input: {
+          base_image_url: baseCdnUrl,
+          swap_image_url: masterCdnUrl
+        }
+      });
+      alignedUrl = swapRes?.data?.image?.url || swapRes?.data?.images?.[0]?.url || baseCdnUrl;
+    } catch (e) {
+      onStep(null, `1차 안면 정렬 생략 (${e.message.slice(0, 50)})`, true);
+    }
+
+    onStep(60, '👑 [유료 PRO 2/2] 2단계: 전용 FLUX LoRA 금형 28스텝 실사 재성형 (모공·안경·피부결 주입)...');
+    const fixPrompt = `${profile.triggerWord}, ${profile.baseTraits}, extremely detailed 85mm photograph of authentic Korean traditional medicine doctor in clinic, crisp gold-rimmed rectangular glasses, natural real human skin pores, hyperrealistic texture, sharp focus, 8k professional studio lighting, photorealistic, zero plastic, zero blur`;
+
+    try {
+      const loraRes = await falClient.subscribe('fal-ai/flux-lora/image-to-image', {
+        input: {
+          image_url: alignedUrl,
+          prompt: fixPrompt,
+          loras: [{ path: profile.loraUrl, scale: Number(loraScale) || 1.0 }],
+          strength: Number(loraStrength) || 0.40,
+          guidance_scale: 3.5,
+          num_inference_steps: 28,
+          output_format: 'png',
+          enable_safety_checker: false
+        }
+      });
+      cloudOutUrl = loraRes?.data?.images?.[0]?.url || loraRes?.data?.image?.url || '';
+    } catch (loraErr) {
+      onStep(null, `LoRA Image-to-Image 직접 변환 시도 (${loraErr.message.slice(0, 60)})`, true);
+      const loraRes2 = await falClient.subscribe('fal-ai/flux-lora/image-to-image', {
+        input: {
+          image_url: baseCdnUrl,
+          prompt: fixPrompt,
+          loras: [{ path: profile.loraUrl, scale: Number(loraScale) || 1.0 }],
+          strength: 0.48,
+          guidance_scale: 3.5,
+          num_inference_steps: 28,
+          output_format: 'png',
+          enable_safety_checker: false
+        }
+      });
+      cloudOutUrl = loraRes2?.data?.images?.[0]?.url || loraRes2?.data?.image?.url || '';
+    }
+  } else {
+    onStep(48, '👑 [유료 PRO] fal.ai 클라우드 Face-Swap 정밀 교체 중...');
+    const swapRes = await falClient.subscribe('fal-ai/face-swap', {
       input: {
-        image_url: cloudOutUrl,
-        fidelity: 0.72,
-        upscale_factor: 1,
-        face_upscale: true,
-        only_center_face: false
+        base_image_url: baseCdnUrl,
+        swap_image_url: masterCdnUrl
       }
     });
-    cloudOutUrl = cfRes?.data?.image?.url || cloudOutUrl;
-  } catch (e) {
-    onStep(null, `CodeFormer 추가 복원 생략 (${e.message.slice(0, 50)})`, true);
+    cloudOutUrl = swapRes?.data?.image?.url || swapRes?.data?.images?.[0]?.url || '';
+    if (!cloudOutUrl) throw new Error('클라우드 Face-Swap 결과 URL을 받지 못했습니다.');
+
+    onStep(74, '👑 [유료 PRO] fal.ai 클라우드 CodeFormer 모공 복원 중...');
+    try {
+      const cfRes = await falClient.subscribe('fal-ai/codeformer', {
+        input: {
+          image_url: cloudOutUrl,
+          fidelity: 0.88,
+          upscale_factor: 1,
+          face_upscale: true,
+          only_center_face: false
+        }
+      });
+      cloudOutUrl = cfRes?.data?.image?.url || cloudOutUrl;
+    } catch (e) {
+      onStep(null, `CodeFormer 복원 생략 (${e.message.slice(0, 50)})`, true);
+    }
   }
 
+  if (!cloudOutUrl) throw new Error('클라우드 교정 이미지를 받지 못했습니다.');
   await downloadUrlToFile(cloudOutUrl, afterPath);
 
   onStep(90, '📊 무료 vs 유료 동일 기준 객관적 얼굴 일치율 · 선명도 계측 중...');
@@ -987,9 +1047,13 @@ async function executeCloudFalFixCore(payload, onStep) {
   const entry = {
     id: 'fix_paid_' + stamp,
     tier: 'paid',
-    mode: '👑 유료 PRO 클라우드 얼굴 교정 (CodeFormer)',
-    engineDetail: 'fal.ai Cloud Face-Swap + Cloud CodeFormer Pro Restoration',
-    cost: '👑 약 45원 ($0.03)',
+    mode: useLora
+      ? `👑 유료 PRO · 전용 FLUX LoRA 실사 재성형 (${profile.name})`
+      : '👑 유료 PRO 클라우드 얼굴 교정',
+    engineDetail: useLora
+      ? 'fal.ai 3D 안면 정렬 + 전용 FLUX LoRA (28스텝 금형 100% 실사 재성형)'
+      : 'fal.ai Cloud Face-Swap + Cloud CodeFormer Pro Restoration',
+    cost: useLora ? '👑 약 95원 ($0.07)' : '👑 약 45원 ($0.03)',
     elapsedSec,
     similarityPct: metrics.similarityPct,
     sharpnessScore: metrics.sharpnessScore,

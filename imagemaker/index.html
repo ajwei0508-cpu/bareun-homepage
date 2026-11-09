@@ -1320,10 +1320,10 @@
               <label class="engine-card tier-gold">
                 <input type="radio" name="shootEngineRadio" value="cloud_fal|auto" onchange="syncShootModeUI()" />
                 <div class="engine-card-top">
-                  <span class="engine-card-title">👑 유료 PRO 클라우드 촬영</span>
-                  <span class="tier-pill">👑 약 95원/장</span>
+                  <span class="engine-card-title">👑 유료 PRO 전용 FLUX LoRA 촬영</span>
+                  <span class="tier-pill">👑 LoRA 기본 탑재</span>
                 </div>
-                <div class="engine-card-desc">fal.ai 전용 LoRA/PuLID (28스텝) + 클라우드 CodeFormer</div>
+                <div class="engine-card-desc">fal.ai 전용 FLUX LoRA 28스텝 고해상도 실사 촬영 (원장님 금형 100% 반영)</div>
               </label>
 
               <label class="engine-card tier-compare">
@@ -1432,10 +1432,10 @@
               <label class="engine-card tier-gold">
                 <input type="radio" name="fixEngineRadio" value="cloud_fal" onchange="syncFixModeUI()" />
                 <div class="engine-card-top">
-                  <span class="engine-card-title">👑 유료 PRO 클라우드 교정</span>
-                  <span class="tier-pill">👑 약 45원/장</span>
+                  <span class="engine-card-title">👑 유료 PRO FLUX LoRA 실사 재성형</span>
+                  <span class="tier-pill">👑 LoRA 기본 탑재</span>
                 </div>
-                <div class="engine-card-desc">fal.ai Cloud Face-Swap + Cloud CodeFormer 모공 복원</div>
+                <div class="engine-card-desc">fal.ai 전용 FLUX LoRA 금형 28스텝 실사 재성형 (원장님 얼굴·안경·피부결 100% 반영)</div>
               </label>
 
               <label class="engine-card tier-compare" style="grid-column: 1 / -1;">
@@ -1948,7 +1948,7 @@
       const cnt = (prof && prof.photos && prof.photos.length) || 0;
       const hasLora = Boolean(prof && prof.loraUrl);
       document.getElementById('loraStatusBadge').textContent = hasLora
-        ? `기준 ${cnt}장 + 👑 전용 LoRA 보유`
+        ? `기준 ${cnt}장 + 👑 전용 LoRA (모든 유료 메뉴 기본 적용)`
         : `기준 ${cnt}장 · 무료 GPU 활성`;
 
       const apiBtn = document.getElementById('apiKeyBtn');
@@ -1983,15 +1983,15 @@
 
       if (costMode === 'cloud_fal') {
         btn.className = 'btn-gold';
-        btn.textContent = '👑 유료 PRO 크레딧으로 원장님 상황 촬영하기 (골드 메뉴)';
+        btn.textContent = '👑 유료 PRO 전용 FLUX LoRA 금형으로 원장님 상황 촬영하기';
         tag.className = 'badge-gold';
-        tag.textContent = '👑 현재 선택: 유료 PRO (약 95원/장)';
+        tag.textContent = '👑 유료 PRO (전용 LoRA 금형 100% 기본 반영)';
         pbox.classList.add('gold-mode');
       } else if (costMode === 'compare_both') {
         btn.className = 'btn-dual';
-        btn.textContent = '⚖️ 동일 조건 [🆓 무료 + 👑 유료] 동시 제작 후 품질 비교실 열기';
+        btn.textContent = '⚖️ 동일 조건 [🆓 무료 GPU + 👑 유료 LoRA] 동시 제작 후 품질 비교실 열기';
         tag.className = 'badge-gold';
-        tag.textContent = '⚖️ 1:1 동시 비교 (무료 0원 + 유료 약 95원)';
+        tag.textContent = '⚖️ 1:1 동시 비교 (무료 0원 vs 유료 LoRA)';
         pbox.classList.add('gold-mode');
       } else {
         btn.className = 'btn-free';
@@ -2012,15 +2012,15 @@
 
       if (costMode === 'cloud_fal') {
         btn.className = 'btn-gold';
-        btn.textContent = '👑 유료 PRO 클라우드(CodeFormer)로 얼굴 교정하기 (골드 메뉴)';
+        btn.textContent = '👑 유료 PRO 전용 FLUX LoRA 금형으로 실사 재성형하기';
         tag.className = 'badge-gold';
-        tag.textContent = '👑 유료 PRO 클라우드 (약 45원/장)';
+        tag.textContent = '👑 유료 PRO (전용 LoRA 금형 100% 기본 반영)';
         pbox.classList.add('gold-mode');
       } else if (costMode === 'compare_both') {
         btn.className = 'btn-dual';
-        btn.textContent = '⚖️ [🆓 무료 로컬 GPU vs 👑 유료 클라우드] 동시 교정 후 화질 비교하기';
+        btn.textContent = '⚖️ [🆓 무료 로컬 GPU vs 👑 유료 LoRA 금형] 동시 교정 후 화질 비교하기';
         tag.className = 'badge-gold';
-        tag.textContent = '⚖️ 무료 vs 유료 동시 비교';
+        tag.textContent = '⚖️ 무료 GPU vs 유료 LoRA 동시 비교';
         pbox.classList.add('gold-mode');
       } else {
         btn.className = 'btn-free';
