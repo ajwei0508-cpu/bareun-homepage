@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바른한의원 | 이미지·텍스트 완전 분리형 SEO 하이엔드 카드 샘플</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #ede7df;
+      --card-dark: #151311;
+      --card-panel: #1b1815;
+      --gold-primary: #d4af37;
+      --gold-soft: #e6c875;
+      --gold-border: rgba(212, 175, 55, 0.32);
+      --text-white: #fdfbf7;
+      --text-muted: rgba(245, 240, 232, 0.82);
+      --text-subtle: rgba(215, 206, 192, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: #1f1b18;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 40px 24px 80px;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .showcase-wrapper {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    .showcase-header {
+      text-align: center;
+      padding: 28px 32px;
+      background: #181512;
+      color: #fdfbf7;
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      box-shadow: 0 20px 45px rgba(15, 12, 9, 0.16);
+    }
+
+    .showcase-header .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--gold-soft);
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .showcase-header h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .showcase-header p {
+      font-size: 15px;
+      color: rgba(245, 240, 232, 0.78);
+    }
+
+    .sample-section {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .section-Ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+    }
+
+    .section-Ribbon .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-Ribbon .badge-recommend {
+      background: linear-gradient(135deg, #c89d28, #e6c665);
+      color: #15120e;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .section-Ribbon h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: #1f1b17;
+      letter-spacing: -0.02em;
+    }
+
+    .section-Ribbon .seo-status {
+      font-size: 13px;
+      font-weight: 700;
+      color: #166534;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    /* =====================================================================
+       SAMPLE A: 상·하단 완전 분리형 에디토리얼 프레임 (추천안)
+       ===================================================================== */
+    #capture-option-a {
+      padding: 24px;
+      background: #e9e2d8;
+      border-radius: 26px;
+    }
+
+    .seo-card-vertical {
+      background: var(--card-dark);
+      border-radius: 22px;
+      overflow: hidden;
+      border: 2px solid rgba(197, 160, 89, 0.42);
+      box-shadow: 0 28px 64px rgba(15, 12, 9, 0.28);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 1. 상단 순수 이미지 영역 (글자/그림자 0% - 피사체 100% 보존) */
+    .seo-card-vertical .pure-visual-zone {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9.2;
+      background: #b8aba0;
+      overflow: hidden;
+      border-bottom: 1.5px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .seo-card-vertical .pure-visual-zone img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 42%;
+      display: block;
+    }
+
+    .card-num-pill {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      z-index: 3;
+      padding: 5px 13px;
+      border-radius: 999px;
+      background: rgba(20, 17, 14, 0.78);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #f3d47c;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      backdrop-filter: blur(8px);
+    }
+
+    .visual-clean-badge {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      z-index: 3;
+      padding: 5px 13px;
+      border-radius: 999px;
+      background: rgba(20, 17, 14, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 11.5px;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+
+    /* 2. 하단 독립 텍스트 영역 (검색 플랫폼 100% 크롤링 & 마우스 드래그 가능) */
+    .seo-card-vertical .editorial-text-zone {
+      background: linear-gradient(180deg, #1b1815 0%, #13110f 100%);
+      padding: 28px 34px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .editorial-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .editorial-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--gold-soft);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .editorial-category::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold-primary);
+      box-shadow: 0 0 10px var(--gold-primary);
+    }
+
+    .crawlable-indicator {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #a7f3d0;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .editorial-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 27px;
+      font-weight: 700;
+      line-height: 1.36;
+      letter-spacing: -0.025em;
+      color: var(--text-white);
+    }
+
+    .editorial-headline .hl-gold {
+      color: #f5d36c;
+      background: linear-gradient(180deg, transparent 62%, rgba(212, 175, 55, 0.24) 62%);
+      padding: 0 2px;
+    }
+
+    .editorial-body-copy {
+      font-size: 15.5px;
+      line-height: 1.68;
+      color: var(--text-muted);
+      letter-spacing: -0.01em;
+    }
+
+    .clinical-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 2px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .pillar-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      padding: 11px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pillar-item .pillar-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--gold-soft);
+    }
+
+    .pillar-item .pillar-desc {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #f4efe6;
+      line-height: 1.4;
+    }
+
+    .seo-keyword-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .keyword-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      list-style: none;
+    }
+
+    .keyword-tag-list li {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(235, 225, 208, 0.78);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 11px;
+      border-radius: 999px;
+    }
+
+    .evidence-ref {
+      font-size: 11.5px;
+      color: var(--text-subtle);
+      font-style: italic;
+    }
+
+    /* =====================================================================
+       SAMPLE B: 좌·우 매거진 스플릿 레이아웃 (62% 순수 이미지 + 38% 의학 칼럼)
+       ===================================================================== */
+    #capture-option-b {
+      padding: 24px;
+      background: #e9e2d8;
+      border-radius: 26px;
+    }
+
+    .seo-card-split {
+      background: var(--card-dark);
+      border-radius: 22px;
+      overflow: hidden;
+      border: 2px solid rgba(197, 160, 89, 0.42);
+      box-shadow: 0 28px 64px rgba(15, 12, 9, 0.28);
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      min-height: 540px;
+    }
+
+    .seo-card-split .split-visual-zone {
+      position: relative;
+      background: #b8aba0;
+      overflow: hidden;
+      border-right: 1.5px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .seo-card-split .split-visual-zone img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    .seo-card-split .split-text-zone {
+      background: linear-gradient(165deg, #1c1916 0%, #12100e 100%);
+      padding: 34px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .split-text-top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .split-headline {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.42;
+      color: var(--text-white);
+      letter-spacing: -0.025em;
+    }
+
+    .split-headline .hl-gold {
+      color: #f5d36c;
+    }
+
+    .split-body-copy {
+      font-size: 14.5px;
+      line-height: 1.72;
+      color: var(--text-muted);
+    }
+
+    .split-check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.035);
+      border-left: 3px solid var(--gold-primary);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .split-check-list li {
+      font-size: 13.5px;
+      color: #f3ede2;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .split-check-list li strong {
+      color: var(--gold-soft);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* =====================================================================
+       BEFORE vs AFTER 한눈에 비교 섹션
+       ===================================================================== */
+    #capture-comparison {
+      padding: 28px;
+      background: #181512;
+      border-radius: 26px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: #fdfbf7;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .compare-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .compare-col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .compare-col-header.is-before {
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .compare-col-header.is-after {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #6ee7b7;
+    }
+
+    /* 기존 카드 재현 */
+    .legacy-card-mock {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10.5;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .legacy-card-mock img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .legacy-card-mock .legacy-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 48px 22px 20px;
+      background: linear-gradient(to top, rgba(10, 8, 6, 0.92) 0%, rgba(10, 8, 6, 0.55) 60%, transparent 100%);
+    }
+
+    .legacy-card-mock .legacy-overlay h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .legacy-card-mock .legacy-overlay h3 span {
+      color: #f3d47c;
+      text-decoration: underline;
+    }
+
+    .legacy-card-mock .legacy-overlay p {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .problem-callout {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px dashed rgba(239, 68, 68, 0.4);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #fecaca;
+    }
+
+    .solution-callout {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px dashed rgba(16, 185, 129, 0.45);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #d1fae5;
+    }
+
+    /* 미니 분리형 카드 */
+    .mini-separated-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid rgba(212, 175, 55, 0.5);
+      background: #161310;
+    }
+
+    .mini-separated-card .mini-img {
+      aspect-ratio: 16 / 8.2;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .mini-separated-card .mini-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    .mini-separated-card .mini-txt {
+      padding: 14px 18px;
+    }
+
+    .mini-separated-card .mini-txt .cat {
+      font-size: 11px;
+      color: var(--gold-soft);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .mini-separated-card .mini-txt h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 16.5px;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .mini-separated-card .mini-txt h3 span {
+      color: #f5d36c;
+    }
+
+    .mini-separated-card .mini-txt p {
+      font-size: 12px;
+      color: rgba(245, 240, 232, 0.82);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="showcase-wrapper">
+    <header class="showcase-header">
+      <span class="eyebrow">BAREUN KOREAN MEDICINE · SEO &amp; VISUAL ARCHITECTURE SAMPLE</span>
+      <h1>이미지와 글자 완전 분리형 하이엔드 카드 샘플</h1>
+      <p>시각 피사체(척추·골반 그래픽)는 가림 없이 100% 살리고, 텍스트는 독립된 시맨틱 영역으로 분리해 검색 플랫폼(네이버·구글·AI) 수집률을 극대화합니다.</p>
+    </header>
+
+    <!-- ==========================================================
+         1. 추천안 (옵션 A): 상단 순수 비주얼 + 하단 에디토리얼 텍스트 보드
+         ========================================================== -->
+    <section class="sample-section">
+      <div class="section-Ribbon">
+        <div class="title-group">
+          <span class="badge-recommend">추천 · 샘플 A</span>
+          <h2>상·하단 완전 분리형 (상단 100% 클린 이미지 + 하단 독립 에디토리얼 텍스트 덱)</h2>
+        </div>
+        <span class="seo-status">✔ 네이버 Yeti · 구글봇 · 마우스 드래그 100% 수집 구조</span>
+      </div>
+
+      <div id="capture-option-a">
+        <article class="seo-card-vertical" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <!-- [ZONE 1] 순수 이미지 프레임 (글자/어두운 막 0%) -->
+          <figure class="pure-visual-zone">
+            <span class="card-num-pill">02</span>
+            <span class="visual-clean-badge">순수 비주얼 영역 (글자 간섭 ZERO)</span>
+            <img
+              src="chuna_minimal_card2_painkiller_limit.jpg"
+              alt="진통제와 파스 대증요법의 한계 - 기울어진 골반과 요추 추간판 압박을 보여주는 3D 의학 일러스트"
+              itemprop="image"
+            />
+          </figure>
+
+          <!-- [ZONE 2] 독립된 시맨틱 텍스트 보드 (검색엔진 100% 인덱싱 영역) -->
+          <div class="editorial-text-zone">
+            <div class="editorial-top-meta">
+              <span class="editorial-category">STEP 02 · 대증요법의 한계와 구조적 원인</span>
+              <span class="crawlable-indicator">HTML 시맨틱 독립 본문 · 텍스트 복사 및 검색 수집 활성</span>
+            </div>
+
+            <h2 class="editorial-headline" itemprop="headline">
+              진통제와 파스는 경보음만 끌 뿐, <span class="hl-gold">‘기울어진 척추·골반’</span>은 그대로입니다
+            </h2>
+
+            <p class="editorial-body-copy" itemprop="description">
+              일시적으로 뇌로 가는 통증 신호만 차단하는 대증요법의 악순환을 끊어야 합니다.
+              바른한의원 비수술 추나요법은 통증의 뿌리인 <strong>틀어진 골반 비대칭과 좁아진 요추 추간판(디스크) 공간</strong>을
+              한의사가 직접 손으로 밀고 당겨 구조적으로 복원합니다.
+            </p>
+
+            <div class="clinical-pillars">
+              <div class="pillar-item">
+                <span class="pillar-label">01. 원인 진단</span>
+                <span class="pillar-desc">골반 경사·요추 전만각 무너짐 및 신경 눌림 확인</span>
+              </div>
+              <div class="pillar-item">
+                <span class="pillar-label">02. 추간판 감압</span>
+                <span class="pillar-desc">눌려 있던 디스크 수핵 압력을 낮추고 공간 확보</span>
+              </div>
+              <div class="pillar-item">
+                <span class="pillar-label">03. 재발 방지 교정</span>
+                <span class="pillar-desc">척추 기립근·장요근 긴장 이완 및 중심축 정렬</span>
+              </div>
+            </div>
+
+            <div class="seo-keyword-footer">
+              <ul class="keyword-tag-list" aria-label="핵심 진료 키워드">
+                <li>#대전추나요법</li>
+                <li>#골반비대칭교정</li>
+                <li>#허리디스크비수술치료</li>
+                <li>#추간판감압추나</li>
+                <li>#만성요통근본치료</li>
+              </ul>
+              <span class="evidence-ref">Clinical Evidence · The Lancet &amp; JAMA Low Back Pain Guidelines</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         2. 대안 (옵션 B): 좌·우 매거진 스플릿 레이아웃
+         ========================================================== -->
+    <section class="sample-section">
+      <div class="section-Ribbon">
+        <div class="title-group">
+          <span class="badge-recommend" style="background: #2b2620; color: #f5d36c; border: 1px solid #d4af37;">샘플 B</span>
+          <h2>좌·우 매거진 스플릿형 (좌측 60% 클린 비주얼 + 우측 40% 심층 의학 칼럼)</h2>
+        </div>
+        <span class="seo-status">✔ 와이드 모니터 매거진 스타일 · 장문 칼럼 최적화</span>
+      </div>
+
+      <div id="capture-option-b">
+        <article class="seo-card-split">
+          <!-- 좌측 순수 이미지 -->
+          <figure class="split-visual-zone">
+            <span class="card-num-pill">02</span>
+            <img
+              src="chuna_minimal_card2_painkiller_limit.jpg"
+              alt="척추 골반 불균형과 진통제 파스의 한계"
+            />
+          </figure>
+
+          <!-- 우측 독립 칼럼 -->
+          <div class="split-text-zone">
+            <div class="split-text-top">
+              <span class="editorial-category">STEP 02 · STRUCTURAL CORRECTION</span>
+
+              <h2 class="split-headline">
+                진통제와 파스는 경보음만 끌 뿐,<br />
+                <span class="hl-gold">‘기울어진 척추·골반’</span>은 그대로입니다
+              </h2>
+
+              <p class="split-body-copy">
+                화재경보기가 울릴 때 경보기 전원만 끄면 불길은 더 커집니다.
+                반복되는 허리·골반 통증 역시 진통제로 신경 전달만 막을 것이 아니라,
+                하중이 한쪽으로 쏠리는 <strong>척추·골반의 구조적 왜곡</strong>을 바로잡아야 재발하지 않습니다.
+              </p>
+
+              <ul class="split-check-list">
+                <li>
+                  <strong>[한계점]</strong>
+                  <span>소염진통제·파스는 염증 매개 물질만 일시 억제할 뿐 물리적 신경 압박은 지속됨</span>
+                </li>
+                <li>
+                  <strong>[해결책]</strong>
+                  <span>정밀 추나요법으로 틀어진 천장관절과 요추 분절을 교정하여 추간판 내부 압력 감압</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="seo-keyword-footer">
+              <ul class="keyword-tag-list">
+                <li>#척추골반교정</li>
+                <li>#추나요법효과</li>
+                <li>#비수술척추치료</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         3. 기존 중첩 방식 vs 리뉴얼 분리 방식 한눈에 비교
+         ========================================================== -->
+    <section id="capture-comparison">
+      <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:14px;">
+        <div>
+          <span style="font-size:12px; color:#f5d36c; font-weight:700; letter-spacing:0.1em;">BEFORE &amp; AFTER COMPARISON</span>
+          <h2 style="font-family:'Noto Serif KR',serif; font-size:22px; margin-top:4px;">기존(이미지 위 글자 중첩) vs 리뉴얼(이미지와 글자 완전 분리) 구조 비교</h2>
+        </div>
+      </div>
+
+      <div class="compare-grid">
+        <!-- BEFORE -->
+        <div class="compare-col">
+          <div class="compare-col-header is-before">
+            <span>❌ 기존 구조 (이미지 내부에 글자 중첩)</span>
+            <span>검색 수집 불리</span>
+          </div>
+          <div class="legacy-card-mock">
+            <img src="chuna_minimal_card2_painkiller_limit.jpg" alt="기존 중첩 구조" />
+            <div class="legacy-overlay">
+              <h3>진통제와 파스는 경보음만 끌 뿐, <span>‘기울어진 척추·골반’</span>은 그대로입니다</h3>
+              <p>일시적으로 통증 신호만 가리는 대증요법의 악순환을 끊고, 틀어진 골반과 눌린 추간판 공간을 구조적으로 복원합니다.</p>
+            </div>
+          </div>
+          <div class="problem-callout">
+            • <strong>피사체 가림:</strong> 사진 핵심인 골반 뼈 그래픽 하단이 검은 그림자와 글자에 가려져 답답함<br />
+            • <strong>통이미지처럼 작동:</strong> 드래그 방지 및 클릭 시 사진 확대로 연결되어 텍스트 선택 불가<br />
+            • <strong>검색봇 한계:</strong> 사진 위 2줄 캡션만 존재하여 네이버·구글에서 '단순 이미지 페이지'로 저평가
+          </div>
+        </div>
+
+        <!-- AFTER -->
+        <div class="compare-col">
+          <div class="compare-col-header is-after">
+            <span>⭕ 리뉴얼 구조 (순수 이미지 + 독립 텍스트 보드 분리)</span>
+            <span>검색 100% 최적화</span>
+          </div>
+          <div class="mini-separated-card">
+            <div class="mini-img">
+              <img src="chuna_minimal_card2_painkiller_limit.jpg" alt="리뉴얼 분리 구조" />
+            </div>
+            <div class="mini-txt">
+              <div class="cat">STEP 02 · 대증요법의 한계와 구조적 원인</div>
+              <h3>진통제와 파스는 경보음만 끌 뿐, <span>‘기울어진 척추·골반’</span>은 그대로입니다</h3>
+              <p>일시적으로 통증 신호만 가리는 대증요법의 악순환을 끊고, 틀어진 골반과 눌린 추간판 공간을 구조적으로 복원합니다. (#대전추나요법 #골반교정 #추간판감압)</p>
+            </div>
+          </div>
+          <div class="solution-callout">
+            • <strong>시각적 개방감 100%:</strong> 이미지 위 글자·그림자를 완전 제거하여 골반·척추 일러스트가 선명하게 노출<br />
+            • <strong>독립 텍스트 영역:</strong> 이미지 밖 하단 전용 패널에 제목·상세 본문·치료 포인트·키워드 태그를 체계적 배치<br />
+            • <strong>검색 플랫폼 완벽 대응:</strong> 네이버 서치어드바이저·구글봇·AI 검색엔진이 전문 의학 아티클로 100% 수집
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

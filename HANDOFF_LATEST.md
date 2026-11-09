@@ -1,7 +1,21 @@
 # 📋 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-01 v6.8 (① **네이버 서치어드바이저 RSS XML 문법(`&amp;` 이스케이프) 오류 수정 및 W3C 국제 표준 무결성 통과 + 실서버 배포** · ② **`imagemaker/` 유료 메뉴 전 영역 👑 금색(골드) 구분 디자인 적용 + `⚖️ 무료 vs 유료 품질 비교실` 구축** · ③ **평생 0원 무료 로컬 GPU(`GTX 1070 DirectML` + 334장 다각도 평균 `ArcFace` + `BiSeNet` + `GFPGAN 1.4`) 엔진 탑재** · ④ **성장 상세페이지 10대 카드 편집 스튜디오 구축**)
-> **작성자**: 하이엔드 홈페이지 디렉터 **아트 (Art)**
+> **최종 업데이트**: 2026-11-09 v7.0 (① **상세페이지 이미지·글자 완전 분리형 SEO 하이엔드 카드 기획안 및 실물 샘플 3종(`sample_option_a_top_bottom.png`, `sample_option_b_split.png`, `sample_before_after_comparison.png`, `seo-card-sample.html`) 구축** · ② **다른 컴퓨터 인수인계 환경 세팅 완료**)
+> **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
+
+---
+
+## 💎 00000000000000000000. 최신 완료 작업 요약 (2026-11-09 v7.0 · 상세페이지 이미지-글자 완전 분리형 SEO 하이엔드 기획안 & 샘플 구축)
+
+1. **상세페이지 이미지·글자 완전 분리 아키텍처 수립 및 정밀 진단 (`SEO_CARD_SEPARATION_PROPOSAL.md`)**:
+   - **기존 한계 진단**: `chuna.html` 등 상세페이지 카드 내부 글자가 `position: absolute`로 이미지에 겹쳐 있고 `user-select: none` 및 카드 전체 라이트박스 팝업 이벤트로 묶여 있어, 사용자가 마우스로 글자를 선택·복사할 수 없고 검색 플랫폼(네이버 Yeti, 구글봇, AI 검색)에서 'Thin Content(단순 이미지 갤러리)'로 저평가되는 문제 규명.
+   - **해결 아키텍처**: 상단 100% 클린 이미지 영역(`<figure>`)과 하단 독립 에디토리얼 텍스트 패널(`<div class="editorial-text-zone">`)의 시맨틱 물리 분리 설계.
+2. **실물 샘플 3종 및 실시간 브라우저 프리뷰 구축 (`homepage/seo-card-sample.html`, `http://localhost:3000/seo-card-sample.html`)**:
+   - **【추천안】 샘플 A (`homepage/sample_option_a_top_bottom.png`)**: 상·하단 완전 분리형 에디토리얼 프레임. 상단은 글자/그림자 0% 순수 이미지로 척추·골반 투시 일러스트를 온전히 노출하고, 하단은 딥차콜/골드 보더 전용 패널에 제목 + 상세 본문 + 3단 임상 포인트 + `#키워드` 태그를 체계적 배치.
+   - **샘플 B (`homepage/sample_option_b_split.png`)**: 좌·우 매거진 스플릿형 프레임 (좌측 60% 비주얼 + 우측 40% 의학 칼럼).
+   - **비교안 (`homepage/sample_before_after_comparison.png`)**: 기존 중첩 방식 vs 리뉴얼 분리 방식 한눈에 비교 이미지.
+3. **다른 컴퓨터 인수인계 실행 가이드**:
+   - `git pull origin main` ➔ "3번 실행해줘" (또는 `node serve.js`) ➔ `http://localhost:3000/seo-card-sample.html`에서 샘플 확인 후 선택 확정 시 전 9개 페이지 일괄 빌드 및 카페24 실서버 배포 파이프라인 대기 중.
 
 ---
 
