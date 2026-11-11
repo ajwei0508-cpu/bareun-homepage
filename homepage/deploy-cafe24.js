@@ -9,6 +9,10 @@ const {
   FLAGSHIP_REPRESENTATIVE_POST,
   buildStandaloneWpPostHtml
 } = require('./disease-blog-seed-data.js');
+const {
+  syncNineDiseaseAutoNotes,
+  buildAllHealthNoteWpPayloads
+} = require('./auto-blog-engine.js');
 
 function loadPuppeteer() {
   const candidates = [
@@ -494,8 +498,9 @@ async function performWpLogin(page, loginUrl) {
 
     const featuredMediaId = mediaSetup.ogMediaId || 51;
 
-    // 3) PUBLISH ALL 9 DISEASE CATEGORIES + 36 CLINICAL BLOG POSTS + 1 FLAGSHIP ARTICLE
-    console.log('3) Syncing all 9 disease categories, 36 clinical columns, and 1 Flagship Article to WordPress ...');
+    // 3) PUBLISH ALL 9 DISEASE CATEGORIES + 36 CLINICAL BLOG POSTS + 1 FLAGSHIP ARTICLE + 72 HEALTH NOTES (SEO · AEO · GEO)
+    syncNineDiseaseAutoNotes();
+    console.log('3) Syncing all 9 disease categories, 36 clinical columns, 1 Flagship Article, and 72 Health Notes (109 total posts) + /llms.txt to WordPress ...');
     const flagshipPayload = {
       id: FLAGSHIP_REPRESENTATIVE_POST.id,
       slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
@@ -516,9 +521,25 @@ async function performWpLogin(page, loginUrl) {
       standaloneHtml: p.wpStandaloneHtml || p.bodyHtml || ''
     }));
 
-    const allPostsToPublish = [flagshipPayload, ...clinicalPayloads];
+    const healthNotePayloads = buildAllHealthNoteWpPayloads();
+    const allPostsToPublish = [flagshipPayload, ...clinicalPayloads, ...healthNotePayloads];
 
-    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId }) => {
+    const llmsTxtRaw = fs.existsSync(path.join(__dirname, 'llms.txt'))
+      ? fs.readFileSync(path.join(__dirname, 'llms.txt'), 'utf8')
+      : '';
+    const llmsFullTxtRaw = fs.existsSync(path.join(__dirname, 'llms-full.txt'))
+      ? fs.readFileSync(path.join(__dirname, 'llms-full.txt'), 'utf8')
+      : '';
+
+    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId, llmsTxt, llmsFullTxt }) => {
+      if (llmsTxt || llmsFullTxt) {
+        await fetch('/wp-json/bareun/v1/seo-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+          body: JSON.stringify({ llmsTxt, llmsFullTxt })
+        }).catch(() => {});
+      }
+
       const catIdMap = {};
       const catsRes = await fetch('/wp-json/wp/v2/categories?per_page=100', { headers: { 'X-WP-Nonce': wpNonce } });
       const cats = await catsRes.json();
@@ -537,7 +558,7 @@ async function performWpLogin(page, loginUrl) {
       }
 
       let allExistingPosts = [];
-      for (let pg = 1; pg <= 3; pg++) {
+      for (let pg = 1; pg <= 5; pg++) {
         const r = await fetch(`/wp-json/wp/v2/posts?per_page=100&page=${pg}&status=any`, {
           headers: { 'X-WP-Nonce': wpNonce }
         });
@@ -556,34 +577,38 @@ async function performWpLogin(page, loginUrl) {
       const publishedMap = {};
       let publishedCount = 0;
 
-      for (const postItem of postsToPublish) {
-        const matchId = existingBySlug[postItem.slug] || null;
-        const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
-        const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
-        const pubRes = await fetch(epUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-          body: JSON.stringify({
-            title: postItem.title,
-            slug: postItem.slug,
-            excerpt: postItem.summary,
-            content: postItem.standaloneHtml,
-            status: 'publish',
-            comment_status: 'closed',
-            ping_status: 'open',
-            featured_media: mediaId,
-            categories: cId ? [cId] : []
-          })
-        });
-        const pubJson = await pubRes.json();
-        if (pubJson && pubJson.id) {
-          publishedCount++;
-          publishedMap[postItem.id] = {
-            wpPostId: pubJson.id,
-            slug: pubJson.slug || postItem.slug,
-            link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
-          };
-        }
+      const batchSize = 6;
+      for (let i = 0; i < postsToPublish.length; i += batchSize) {
+        const chunk = postsToPublish.slice(i, i + batchSize);
+        await Promise.all(chunk.map(async (postItem) => {
+          const matchId = existingBySlug[postItem.slug] || null;
+          const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
+          const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
+          const pubRes = await fetch(epUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({
+              title: postItem.title,
+              slug: postItem.slug,
+              excerpt: postItem.summary,
+              content: postItem.standaloneHtml,
+              status: 'publish',
+              comment_status: 'closed',
+              ping_status: 'open',
+              featured_media: mediaId,
+              categories: cId ? [cId] : []
+            })
+          });
+          const pubJson = await pubRes.json();
+          if (pubJson && pubJson.id) {
+            publishedCount++;
+            publishedMap[postItem.id] = {
+              wpPostId: pubJson.id,
+              slug: pubJson.slug || postItem.slug,
+              link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
+            };
+          }
+        }));
       }
 
       return {
@@ -596,7 +621,9 @@ async function performWpLogin(page, loginUrl) {
       wpNonce: nonce,
       categoriesList: DISEASE_BLOG_CATEGORIES,
       postsToPublish: allPostsToPublish,
-      mediaId: featuredMediaId
+      mediaId: featuredMediaId,
+      llmsTxt: llmsTxtRaw,
+      llmsFullTxt: llmsFullTxtRaw
     });
 
     console.log('   [ALL 9 DISEASES BLOG SYNC RESULT]:', {

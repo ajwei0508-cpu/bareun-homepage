@@ -73,24 +73,22 @@ if (ENABLED_MENUS.length === 0 && ALL_CONFIG_ITEMS.length > 0) {
 }
 const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
 
-    // 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행
-    const BASE_NOTE_VIEWS_MAP = {
-      knee: 2840,
-      cervical: 2690,
-      lumbar: 3120,
-      gongjindan: 2450,
-      syncope: 2380,
-      digest: 2760,
-      gut: 2910,
-      uterus: 2540,
-      prostate: 2310
-    };
+    // 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행 + 실제 DB 조회수(noteViews) 연동
+    const LOCAL_DB_PATH = path.join(__dirname, 'private-qna-db.json');
+    let SAVED_NOTE_VIEWS = {};
+    if (fs.existsSync(LOCAL_DB_PATH)) {
+      try {
+        const parsedDb = JSON.parse(fs.readFileSync(LOCAL_DB_PATH, 'utf8'));
+        if (parsedDb && parsedDb.noteViews && typeof parsedDb.noteViews === 'object') {
+          SAVED_NOTE_VIEWS = parsedDb.noteViews;
+        }
+      } catch (e) {}
+    }
+
     const FLATTENED_SEED_NOTES = [];
     for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
       const overridePartLabel = MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel;
-      const baseViews = BASE_NOTE_VIEWS_MAP[partId] || 2400;
-      const viewOffsets = [820, 640, 950, 510, 430, 360, 290, 210];
-      episodes.forEach((ep, epIdx) => {
+      episodes.forEach((ep) => {
         const mergedEp = overridePartLabel ? { ...ep, partLabel: overridePartLabel } : ep;
         const res = auditNoteThreeStage(mergedEp);
         if (!res.passed) {
@@ -100,9 +98,11 @@ const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
           id: ep.id,
           partId,
           partLabel: mergedEp.partLabel,
+          theme: ep.theme || '',
           keyword: ep.keyword,
+          academicBasis: ep.academicBasis || '국제 SCI 의학저널 및 통합생리학 가이드라인',
           publishDate: ep.publishDate,
-          views: ep.views || (baseViews + (viewOffsets[epIdx] || 180)),
+          views: Number(SAVED_NOTE_VIEWS[ep.id]) || 0,
           pinnedTop: false,
           title: ep.questionTitle,
           empathy: ep.empathyLines,
@@ -200,27 +200,94 @@ function buildBodyExplorerHtml() {
     `<button type="button" class="stage-ctrl-btn sys-mode-btn" id="btn-sys-${sys.id}" data-sys="${sys.id}" onclick="window.selectAnatomySystem('${sys.id}')">${sys.label}</button>`
   ).join('\n    ');
 
+  // SEO · AEO · GEO 통합 구조화 데이터 (Schema.org @graph: MedicalWebPage + SpeakableSpecification + FAQPage + ItemList)
+  const latestNineNotesForFaq = ENABLED_MENUS.map(m => {
+    const pNotes = FLATTENED_SEED_NOTES.filter(n => n.partId === m.id);
+    return pNotes[pNotes.length - 1];
+  }).filter(Boolean);
+
+  const explorerSchemaGraph = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'MedicalWebPage',
+        '@id': 'https://www.bareunhaniwon.com/body-explorer/#webpage',
+        'name': '3D 인체모형 · 근육·신경·관절·혈관 해부 가이드 & 바른한의원 오늘의 건강 글(72선)',
+        'url': 'https://www.bareunhaniwon.com/body-explorer/',
+        'inLanguage': 'ko-KR',
+        'description': '풀스크린 3D 인체모형으로 살펴보는 전신 근육·신경·관절·혈관 해부학 가이드 및 해외 SCI 의학 학술지 근거 기반 9대 부위별 오늘의 건강 글(72편) 포털입니다.',
+        'isPartOf': { '@id': 'https://www.bareunhaniwon.com/#website' },
+        'reviewedBy': {
+          '@type': 'Person',
+          '@id': 'https://www.bareunhaniwon.com/director/#physician',
+          'name': '안정위',
+          'jobTitle': '바른한의원 대전본점 대표원장 (한의사)'
+        },
+        'speakable': {
+          '@type': 'SpeakableSpecification',
+          'cssSelector': ['.seo-anatomy-summary-drawer', '.seo-health-note-ssr-item', '.hip-question-title']
+        }
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': 'https://www.bareunhaniwon.com/body-explorer/#faq',
+        'mainEntity': latestNineNotesForFaq.map(n => ({
+          '@type': 'Question',
+          'name': n.title,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': `${(n.truth || []).join(' ')} ${(n.myth && n.myth[1]) || ''} (학술 근거: ${n.academicBasis || '국제 SCI 학술지'})`
+          }
+        }))
+      },
+      {
+        '@type': 'ItemList',
+        '@id': 'https://www.bareunhaniwon.com/body-explorer/#health-notes-list',
+        'name': '바른한의원 9대 부위별 오늘의 건강 글 72선 아카이브',
+        'numberOfItems': FLATTENED_SEED_NOTES.length,
+        'itemListElement': FLATTENED_SEED_NOTES.map((n, idx) => ({
+          '@type': 'ListItem',
+          'position': idx + 1,
+          'name': `[${n.partLabel}] ${n.title}`,
+          'url': `https://www.bareunhaniwon.com/health-note-${n.id}/`
+        }))
+      }
+    ]
+  };
+
+  const ssrHealthNotesDirectoryHtml = FLATTENED_SEED_NOTES.map(n => {
+    const slugUrl = `https://www.bareunhaniwon.com/health-note-${escAttrServer(n.id)}/`;
+    const deepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
+    return `<article class="seo-health-note-ssr-item" style="padding:10px 12px;margin-bottom:8px;border-radius:10px;background:#FCFBF8;border:1px solid #EAE3D5;">
+          <h3 style="margin:0 0 4px;font-size:0.8rem;font-weight:800;color:#0D0D0F;">
+            <a href="${slugUrl}" style="color:#0D0D0F;text-decoration:none;">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a>
+          </h3>
+          <p class="aeo-direct-answer" style="margin:0 0 4px;font-size:0.74rem;color:#262522;line-height:1.5;">
+            <strong>의학적 진실(AEO 요약):</strong> ${escAttrServer((n.truth || []).join(' '))} <strong>올바른 관리:</strong> ${escAttrServer((n.myth && n.myth[1]) || '')}
+          </p>
+          <div style="font-size:0.69rem;color:#6E685F;">
+            <span>학술 근거(GEO): ${escAttrServer(n.academicBasis || '')}</span> &middot;
+            <span>1분 체크: ${escAttrServer((n.check || []).join(' / '))}</span> &middot;
+            <a href="${slugUrl}" style="color:#967128;font-weight:700;">원문 칼럼 보기</a> &middot;
+            <a href="${deepUrl}" style="color:#0D0D0F;font-weight:700;">3D 모형 연동</a>
+          </div>
+        </article>`;
+  }).join('\n        ');
+
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>바른한의원 대전본점 | 3D 인체모형 · 근육·신경·관절·혈관 &amp; 진료 살펴보기</title>
-  <meta name="description" content="풀스크린 3D 인체모형으로 살펴보는 전신 근육·신경·관절·혈관 해부학 가이드(머리~발가락 기능·통증·운동법) 및 2일 주기 부위별 순수 건강 정보." />
+  <title>바른한의원 대전본점 | 3D 인체모형 · 근육·신경·관절·혈관 &amp; 오늘의 건강 글(72선)</title>
+  <meta name="description" content="풀스크린 3D 인체모형으로 살펴보는 전신 근육·신경·관절·혈관 해부학 가이드 및 해외 SCI 의학 학술지 근거 기반 9대 부위별 오늘의 건강 글(72편) 포털입니다." />
   <link rel="canonical" href="https://www.bareunhaniwon.com/body-explorer/" />
+  <link rel="alternate" type="text/plain" title="AI / LLM Knowledge Index (GEO)" href="https://www.bareunhaniwon.com/llms.txt" />
+  <link rel="alternate" type="text/plain" title="AI / LLM Full Medical Corpus (GEO)" href="https://www.bareunhaniwon.com/llms-full.txt" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": "3D 인체모형 · 근육·신경·관절·혈관 해부 가이드 & 바른한의원 진료 살펴보기",
-    "url": "https://www.bareunhaniwon.com/body-explorer/",
-    "inLanguage": "ko-KR",
-    "description": "머리에서 발가락까지 근육·신경·관절·혈관의 기능·통증·운동법 요약과 부위별 순수 건강 정보 공간입니다."
-  }
-  </script>
+  <script type="application/ld+json">${JSON.stringify(explorerSchemaGraph)}</script>
   <style>
     :root {
       --lux-white: #FFFFFF;
@@ -1831,7 +1898,11 @@ function buildBodyExplorerHtml() {
         <li><strong>여성 자궁 · 남성 전립선 골반 순환</strong>: 골반강 미세혈류 개선, 야간뇨·배뇨 불편 완화 및 생애주기별 비뇨·생식기 건강 관리.</li>
       </ul>
       <h2 style="margin:8px 0 4px;font-size:0.8rem;font-weight:700;">바른한의원 대전본점 오시는 길 · 진료시간</h2>
-      <p style="margin:0;">주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 우편번호 34417) · 대표전화: <a href="tel:010-5631-1275" style="color:#0D0D0F;font-weight:700;">010-5631-1275</a> · 대표원장: 안정위<br>진료시간: 평일(월~금) 09:00~19:00 / 토요일·공휴일 09:00~14:00 / 일요일 휴진</p>
+      <p style="margin:0 0 12px;">주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 우편번호 34417) · 대표전화: <a href="tel:010-5631-1275" style="color:#0D0D0F;font-weight:700;">010-5631-1275</a> · 대표원장: 안정위<br>진료시간: 평일(월~금) 09:00~19:00 / 토요일·공휴일 09:00~14:00 / 일요일 휴진</p>
+      <h2 style="margin:10px 0 6px;font-size:0.82rem;font-weight:800;color:#0D0D0F;">9대 부위별 오늘의 건강 글 72선 (SEO · AEO · GEO 통합 검색 아카이브)</h2>
+      <div class="seo-health-notes-ssr-list">
+        ${ssrHealthNotesDirectoryHtml}
+      </div>
     </div>
   </details>
 
@@ -1924,11 +1995,19 @@ function buildBodyExplorerHtml() {
     let todayKst = getTodayKst();
     let nextUpdateKst = computeNextUpdateKst(todayKst);
     let dynamicNotes = [];
+    let noteViewsMap = {};
+    SEED_NOTES.forEach(n => {
+      if (n && n.id) noteViewsMap[n.id] = Number(n.views) || 0;
+    });
+    let lastViewedNoteIdSession = '';
     let isPopupOpen = false;
     let currentPartId = earlyParams.get('part') || (CLINIC_MENUS[0] ? CLINIC_MENUS[0].id : 'knee');
     let currentMenuTab = 0; // 0: 오늘의 건강 글, 1: 무엇이든 물어보세요, 2: 더 궁금하세요?
     let archiveScope = 'part';
-    let selectedArchiveNoteId = null;
+    let selectedArchiveNoteId = earlyParams.get('note') || null;
+    if (selectedArchiveNoteId) {
+      currentMenuTab = 2;
+    }
     let qnaCacheByPart = {};
     let isQnaComposerOpen = false;
     let qnaWriteFeedback = '';
@@ -1966,13 +2045,16 @@ function buildBodyExplorerHtml() {
     function normalizeDynamicNote(raw) {
       if (!raw || typeof raw !== 'object') return null;
       const m = CLINIC_MENUS.find(x => x.id === raw.partId);
+      const nid = String(raw.id || '').trim();
+      const realV = (nid && noteViewsMap[nid] != null) ? Number(noteViewsMap[nid]) : (Number(raw.views) || 0);
       return {
-        id: raw.id,
+        id: nid,
         partId: raw.partId || 'knee',
         partLabel: (m && m.partLabel) || raw.partLabel || '무릎 성장판',
         keyword: raw.keyword || '',
+        academicBasis: raw.academicBasis || '',
         publishDate: raw.publishDate || todayKst,
-        views: Number(raw.views) || 2650,
+        views: realV,
         pinnedTop: Boolean(raw.pinnedTop),
         title: raw.title || raw.questionTitle || '',
         empathy: raw.empathy || raw.empathyLines || [],
@@ -1982,14 +2064,53 @@ function buildBodyExplorerHtml() {
       };
     }
 
+    async function recordActualNoteView(noteId) {
+      const nid = String(noteId || '').trim();
+      if (!nid || lastViewedNoteIdSession === nid) return;
+      lastViewedNoteIdSession = nid;
+      noteViewsMap[nid] = (Number(noteViewsMap[nid]) || 0) + 1;
+      document.querySelectorAll('[data-note-view-id="' + nid + '"]').forEach(el => {
+        el.textContent = '실제 조회수 ' + Number(noteViewsMap[nid]).toLocaleString() + '회';
+      });
+      try {
+        const res = await fetch('/wp-json/bareun/v1/body-notes/view', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ noteId: nid })
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.ok) {
+          if (data.noteViews && typeof data.noteViews === 'object') {
+            Object.entries(data.noteViews).forEach(([k, v]) => {
+              noteViewsMap[k] = Number(v) || 0;
+            });
+          } else if (typeof data.views === 'number') {
+            noteViewsMap[nid] = data.views;
+          }
+          document.querySelectorAll('[data-note-view-id="' + nid + '"]').forEach(el => {
+            el.textContent = '실제 조회수 ' + Number(noteViewsMap[nid] || 0).toLocaleString() + '회';
+          });
+        }
+      } catch (e) {}
+    }
+
     function getPublishedNotes(partFilter) {
       const mergedMap = new Map();
       for (const n of SEED_NOTES) {
-        if (passThreeStageGate(n)) mergedMap.set(n.id, n);
+        if (passThreeStageGate(n)) {
+          mergedMap.set(n.id, Object.assign({}, n, {
+            views: Number(noteViewsMap[n.id] != null ? noteViewsMap[n.id] : n.views) || 0
+          }));
+        }
       }
       for (const raw of dynamicNotes) {
         const n = normalizeDynamicNote(raw);
-        if (n && passThreeStageGate(n)) mergedMap.set(n.id, n);
+        if (n && passThreeStageGate(n)) {
+          mergedMap.set(n.id, Object.assign({}, n, {
+            views: Number(noteViewsMap[n.id] != null ? noteViewsMap[n.id] : n.views) || 0
+          }));
+        }
       }
       const rawList = Array.from(mergedMap.values()).filter(n => {
         if (n.publishDate === '2026-10-28' || String(n.id || '').includes('20261028')) return false;
@@ -2221,6 +2342,8 @@ function buildBodyExplorerHtml() {
       const latestRedTagHtml = isLatestRed
         ? '<span class="latest-red-badge"><span class="latest-red-dot"></span>NEW 최신글</span>'
         : '';
+      const realViewCount = Number(noteViewsMap[note.id] != null ? noteViewsMap[note.id] : (note.views || 0));
+      const realViewBadgeHtml = '<span data-note-view-id="' + escHtml(note.id) + '" style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(229,198,126,0.45);color:#E5C67E;font-size:0.68rem;font-weight:800;">실제 조회수 ' + realViewCount.toLocaleString() + '회</span>';
       const useQuotes = d.titleQuotes !== false;
       const titleInner = useQuotes ? ('&ldquo;' + escHtml(note.title) + '&rdquo;') : escHtml(note.title);
       const effSubTitle = (note.subTitle && String(note.subTitle).trim())
@@ -2235,9 +2358,10 @@ function buildBodyExplorerHtml() {
       if (hdrMode === 'stacked') {
         headerInnerHtml =
           '<div class="hip-top-strip">' +
-            '<span style="display:inline-flex;align-items:center;gap:6px;">' +
+            '<span style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
               latestRedTagHtml +
+              realViewBadgeHtml +
             '</span>' +
             closeBtnHtml +
           '</div>' +
@@ -2252,6 +2376,7 @@ function buildBodyExplorerHtml() {
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
               latestRedTagHtml +
+              realViewBadgeHtml +
               '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
             subTitleHtml +
@@ -2262,6 +2387,7 @@ function buildBodyExplorerHtml() {
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span><span class="hip-divider">|</span>' : '') +
               latestRedTagHtml +
+              realViewBadgeHtml +
               '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
             subTitleHtml +
@@ -2479,6 +2605,16 @@ function buildBodyExplorerHtml() {
         popupDrawer.style.setProperty('--tmn-step-active', pDesign.accentColor || '#E5C67E');
       }
       const qnaPartKey = menuMeta.qnaPartId || currentPartId;
+      const prePartNotes = getPublishedNotes(currentPartId);
+      const preAllNotes = getPublishedNotes('all');
+      const preLatestNote = prePartNotes[0] || preAllNotes[0];
+
+      if (currentMenuTab === 0 && preLatestNote && preLatestNote.id) {
+        recordActualNoteView(preLatestNote.id);
+      } else if (currentMenuTab === 2 && selectedArchiveNoteId) {
+        recordActualNoteView(selectedArchiveNoteId);
+      }
+
       const partNotes = getPublishedNotes(currentPartId);
       const allNotes = getPublishedNotes('all');
       const latestNote = partNotes[0] || allNotes[0];
@@ -2497,9 +2633,13 @@ function buildBodyExplorerHtml() {
 
       let activeBodyHtml = '';
 
-      // 4. 오늘의 건강글 중 심층 임상 칼럼 3선은 작성된 오늘의 건강글 범위 안에서 기존에 조회수가 많은 순으로 나열
+      // 4. 오늘의 건강글 중 심층 임상 칼럼 3선은 작성된 오늘의 건강글 범위 안에서 실제 조회수가 많은 순으로 나열
       const topViewedNotes3 = [...partNotes]
-        .sort((a, b) => (Number(b.views) || 0) - (Number(a.views) || 0))
+        .sort((a, b) => {
+          const vDiff = (Number(b.views) || 0) - (Number(a.views) || 0);
+          if (vDiff !== 0) return vDiff;
+          return String(b.publishDate || '').localeCompare(String(a.publishDate || ''));
+        })
         .slice(0, 3);
 
       const recommendedBlogBlockHtml = topViewedNotes3.length > 0
@@ -2507,7 +2647,7 @@ function buildBodyExplorerHtml() {
             '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">' +
               '<div style="display:flex;align-items:center;gap:6px;">' +
                 '<span style="display:inline-flex;padding:2px 7px;border-radius:6px;background:#0D0D0F;color:#E5C67E;font-size:0.68rem;font-weight:800;">심층 임상 칼럼 3선</span>' +
-                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 조회수 인기 BEST 3</strong>' +
+                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 실제 조회수 BEST 3</strong>' +
               '</div>' +
               '<button type="button" onclick="window.switchPopupMenu(2)" style="border:none;background:transparent;cursor:pointer;font-size:0.72rem;font-weight:800;color:#967128;">전체 건강글 (' + partNotes.length + '편) &rarr;</button>' +
             '</div>' +
@@ -2518,7 +2658,8 @@ function buildBodyExplorerHtml() {
                   '<div style="min-width:0;flex:1;">' +
                     '<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">' +
                       '<span style="font-size:0.66rem;font-weight:800;color:#E11D48;">BEST 0' + (bIdx + 1) + '</span>' +
-                      '<span style="font-size:0.66rem;font-weight:700;color:#6E685F;">조회수 ' + Number(np.views || 2400).toLocaleString() + '회 · ' + fmtDotDate(np.publishDate) + '</span>' +
+                      '<span data-note-view-id="' + escHtml(np.id) + '" style="font-size:0.66rem;font-weight:700;color:#6E685F;">실제 조회수 ' + Number(np.views || 0).toLocaleString() + '회</span>' +
+                      '<span style="font-size:0.66rem;font-weight:600;color:#8C857B;">· ' + fmtDotDate(np.publishDate) + '</span>' +
                       (isLatestItem ? '<span class="latest-red-badge" style="padding:1px 5px;font-size:0.6rem;">최신</span>' : '') +
                     '</div>' +
                     '<div style="font-size:0.78rem;font-weight:700;color:#0D0D0F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">&ldquo;' + escHtml(np.title) + '&rdquo;</div>' +
@@ -2641,7 +2782,7 @@ function buildBodyExplorerHtml() {
                 '<div class="archive-card-tags">' +
                   '<span class="archive-date-pill' + (isRowLatest ? ' is-latest-red' : '') + '">' + fmtDotDate(n.publishDate) + (isRowLatest ? ' · NEW 최신' : '') + '</span>' +
                   '<span class="archive-part-pill">[' + escHtml(n.partLabel) + ']</span>' +
-                  '<span style="font-size:0.68rem;color:#6E685F;font-weight:700;">조회수 ' + Number(n.views || 2400).toLocaleString() + '회</span>' +
+                  '<span data-note-view-id="' + escHtml(n.id) + '" style="font-size:0.68rem;color:#6E685F;font-weight:700;">실제 조회수 ' + Number(n.views || 0).toLocaleString() + '회</span>' +
                 '</div>' +
                 '<div class="archive-card-title">&ldquo;' + escHtml(n.title) + '&rdquo;</div>' +
               '</div>' +
@@ -2862,6 +3003,11 @@ function buildBodyExplorerHtml() {
         if (data && data.ok) {
           if (data.todayKst) todayKst = data.todayKst;
           if (data.nextUpdateKst) nextUpdateKst = data.nextUpdateKst;
+          if (data.noteViews && typeof data.noteViews === 'object') {
+            Object.entries(data.noteViews).forEach(([k, v]) => {
+              noteViewsMap[k] = Number(v) || 0;
+            });
+          }
           if (Array.isArray(data.notes) && data.notes.length > 0) {
             dynamicNotes = data.notes;
           }
@@ -2964,10 +3110,20 @@ ${WEBGL_PART_B}
 
     const urlSys = earlyParams.get('system');
     const urlPart = earlyParams.get('part');
+    const urlNote = earlyParams.get('note');
     if (urlSys && SYSTEM_TABS.some(s => s.id === urlSys)) {
       window.selectAnatomySystem(urlSys);
-    } else if (urlPart) {
-      window.selectBodyPart(urlPart, true);
+    } else if (urlPart || urlNote) {
+      const targetPart = urlPart || (urlNote ? String(urlNote).split('-')[0] : 'knee');
+      window.selectBodyPart(targetPart, true);
+      if (urlNote) {
+        const pNotes = getPublishedNotes(targetPart);
+        if (!pNotes[0] || pNotes[0].id !== urlNote) {
+          currentMenuTab = 2;
+          selectedArchiveNoteId = urlNote;
+          renderPopupPanel();
+        }
+      }
     } else {
       window.resetDonginView();
       majorHotspotNodes.forEach(h => h.dom.classList.remove('active'));
