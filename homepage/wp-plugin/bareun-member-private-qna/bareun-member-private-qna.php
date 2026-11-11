@@ -2297,3 +2297,445 @@ class Bareun_Master_SEO_Engine_V1 {
 }
 Bareun_Master_SEO_Engine_V1::init();
 endif;
+
+// ============================================================================
+// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE (WP-ADMIN & STANDALONE WEB APP)
+// ============================================================================
+if (!class_exists('Bareun_Custom_Studio_Engine_V1')) :
+class Bareun_Custom_Studio_Engine_V1 {
+    const OPT_DETAIL_CFG = 'bareun_detail_pages_config_v1';
+    
+    // Official Page IDs on Cafe24 WordPress (https://www.bareunhaniwon.com)
+    const PAGE_MAP = array(
+        'director'            => 126,
+        'chuna'               => 127,
+        'growth'              => 105,
+        'diet-zero'           => 66,
+        'hairloss'            => 130,
+        'hairloss-male'       => 408,
+        'hairloss-alopecia'   => 409,
+        'hairloss-female'     => 410,
+        'hairloss-seborrheic' => 411,
+        'gongjindan'          => 96,
+        'prostate'            => 133
+    );
+
+    public static function init() {
+        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'));
+        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'));
+        add_action('init', array(__CLASS__, 'handle_standalone_route'));
+    }
+
+    public static function register_admin_menu() {
+        add_menu_page(
+            '바른 커스텀 스튜디오',
+            '🎨 바른 커스텀 스튜디오',
+            'manage_options',
+            'bareun-custom-studio',
+            array(__CLASS__, 'render_admin_studio_page'),
+            'dashicons-art',
+            2
+        );
+    }
+
+    public static function handle_standalone_route() {
+        if (!isset($_GET['bareun_studio']) || $_GET['bareun_studio'] !== '1') {
+            return;
+        }
+        if (!current_user_can('manage_options')) {
+            auth_redirect();
+            exit;
+        }
+        self::render_standalone_studio();
+        exit;
+    }
+
+    public static function render_admin_studio_page() {
+        $standalone_url = add_query_arg('bareun_studio', '1', home_url('/'));
+        ?>
+        <style>
+          #wpcontent { padding-left: 0 !important; }
+          #wpbody-content { padding-bottom: 0 !important; }
+          .bareun-studio-host-dock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #15120f;
+            border-bottom: 2px solid #c5a059;
+            padding: 10px 18px;
+            color: #fff;
+            gap: 12px;
+            flex-wrap: wrap;
+          }
+          .bareun-studio-frame-wrap {
+            width: 100%;
+            height: calc(100vh - 85px);
+            background: #0f0d0b;
+            position: relative;
+          }
+          .bareun-studio-frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+          }
+          body.studio-fullscreen-active #adminmenumain,
+          body.studio-fullscreen-active #wpadminbar,
+          body.studio-fullscreen-active #wpfooter {
+            display: none !important;
+          }
+          body.studio-fullscreen-active #wpcontent {
+            margin-left: 0 !important;
+            padding: 0 !important;
+          }
+          body.studio-fullscreen-active .bareun-studio-frame-wrap {
+            height: 100vh !important;
+          }
+        </style>
+        <div class="bareun-studio-host-dock">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 온라인 엔진</span>
+            <strong style="font-size:15px;color:#fdfaf3;">바른한의원 11대 상세페이지 통합 커스텀 스튜디오</strong>
+            <span style="color:#b5a895;font-size:12px;">(PC 전원 무관 · 외부/태블릿/모바일 100% 자율 접속)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button type="button" class="button button-secondary" onclick="document.body.classList.toggle('studio-fullscreen-active');">⛶ 전체화면 확대</button>
+            <a href="<?php echo esc_url($standalone_url); ?>" target="_blank" rel="noopener" class="button button-primary" style="background:#b58532;border-color:#a67626;">🔗 독립 새 탭으로 열기</a>
+          </div>
+        </div>
+        <div class="bareun-studio-frame-wrap">
+          <iframe id="bareunStudioIframe" src="<?php echo esc_url($standalone_url); ?>" title="바른 커스텀 스튜디오"></iframe>
+        </div>
+        <?php
+    }
+
+    public static function render_standalone_studio() {
+        $upload_dir = wp_upload_dir();
+        $studio_file = $upload_dir['basedir'] . '/bareun-studio/detail-pages-editor.html';
+        $nonce = wp_create_nonce('wp_rest');
+
+        if (file_exists($studio_file)) {
+            $html = file_get_contents($studio_file);
+            $inject = '<script>' .
+                'window.BAREUN_WP_STUDIO = true;' .
+                'window.wpApiSettings = { nonce: "' . esc_js($nonce) . '", root: "' . esc_js(esc_url_raw(rest_url())) . '" };' .
+                '</script>';
+            $html = str_replace('<head>', '<head>' . $inject, $html);
+            header('Content-Type: text/html; charset=UTF-8');
+            echo $html;
+            return;
+        }
+
+        // Fallback: If not on disk yet, serve minimal bootstrap that loads from GitHub or syncs
+        header('Content-Type: text/html; charset=UTF-8');
+        ?>
+        <!DOCTYPE html>
+        <html lang="ko">
+        <head>
+          <meta charset="UTF-8">
+          <title>바른 커스텀 스튜디오 로딩 중...</title>
+          <script>
+            window.BAREUN_WP_STUDIO = true;
+            window.wpApiSettings = { nonce: "<?php echo esc_js($nonce); ?>", root: "<?php echo esc_js(esc_url_raw(rest_url())); ?>" };
+          </script>
+        </head>
+        <body style="background:#171411;color:#fff;font-family:sans-serif;padding:40px;text-align:center;">
+          <h2>🎨 바른 커스텀 스튜디오 초기 환경을 준비 중입니다...</h2>
+          <p style="color:#d4af37;">스튜디오 템플릿을 자동으로 동기화하고 있습니다. 잠시만 기다려 주세요.</p>
+          <script>
+            fetch('/wp-json/bareun/v1/studio/ensure-assets', {
+              method: 'POST',
+              headers: { 'X-WP-Nonce': window.wpApiSettings.nonce }
+            }).then(r => r.json()).then(data => {
+              if (data.ok) location.reload();
+              else document.body.innerHTML += '<p style="color:#ef4444;">동기화 오류: ' + (data.error || '알 수 없는 오류') + '</p>';
+            }).catch(e => {
+              document.body.innerHTML += '<p style="color:#ef4444;">연결 실패: ' + e.message + '</p>';
+            });
+          </script>
+        </body>
+        </html>
+        <?php
+    }
+
+    public static function register_rest_routes() {
+        register_rest_route('bareun/v1', '/studio/config', array(
+            'methods'             => array('GET', 'POST'),
+            'permission_callback' => function ($request) {
+                if ($request->get_method() === 'GET') {
+                    return true;
+                }
+                return current_user_can('manage_options');
+            },
+            'callback'            => array(__CLASS__, 'rest_handle_config')
+        ));
+
+        register_rest_route('bareun/v1', '/studio/save', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_save_single_page')
+        ));
+
+        register_rest_route('bareun/v1', '/studio/save-all', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_save_all_pages')
+        ));
+
+        register_rest_route('bareun/v1', '/studio/upload', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_handle_upload')
+        ));
+
+        register_rest_route('bareun/v1', '/studio/sync-studio-assets', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_sync_studio_assets')
+        ));
+
+        register_rest_route('bareun/v1', '/studio/ensure-assets', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_ensure_assets_from_github')
+        ));
+    }
+
+    public static function rest_handle_config($request) {
+        if ($request->get_method() === 'POST') {
+            $params = $request->get_json_params();
+            if (!is_array($params) || empty($params['config'])) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '유효한 config 데이터가 없습니다.'), 400);
+            }
+            update_option(self::OPT_DETAIL_CFG, $params['config']);
+            return new WP_REST_Response(array('ok' => true, 'config' => $params['config'], 'message' => '실서버 DB 설정 저장 완료'), 200);
+        }
+
+        $cfg = get_option(self::OPT_DETAIL_CFG);
+        if (empty($cfg) || !is_array($cfg)) {
+            $upload_dir = wp_upload_dir();
+            $disk_cfg_path = $upload_dir['basedir'] . '/bareun-studio/detail-pages-config.json';
+            if (file_exists($disk_cfg_path)) {
+                $raw = file_get_contents($disk_cfg_path);
+                $cfg = json_decode($raw, true);
+            }
+        }
+
+        $attachments = get_posts(array(
+            'post_type'      => 'attachment',
+            'post_mime_type' => 'image',
+            'post_status'    => 'inherit',
+            'posts_per_page' => 120
+        ));
+        $availableImages = array();
+        if (is_array($attachments)) {
+            foreach ($attachments as $att) {
+                $url = wp_get_attachment_url($att->ID);
+                if ($url) $availableImages[] = $url;
+            }
+        }
+
+        return new WP_REST_Response(array(
+            'ok'              => true,
+            'config'          => $cfg,
+            'availableImages' => $availableImages,
+            'availableVideos' => array()
+        ), 200);
+    }
+
+    public static function rest_save_single_page($request) {
+        $params = $request->get_json_params();
+        if (!is_array($params)) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '잘못된 요청 형식입니다.'), 400);
+        }
+
+        if (!empty($params['config']) && is_array($params['config'])) {
+            update_option(self::OPT_DETAIL_CFG, $params['config']);
+        }
+
+        $slug = isset($params['targetSlug']) ? sanitize_title($params['targetSlug']) : '';
+        if (empty($slug) && !empty($params['targetPage'])) {
+            $slug = preg_replace('/\.html$/i', '', basename($params['targetPage']));
+        }
+
+        $compiled = isset($params['compiledHtml']) ? (string)$params['compiledHtml'] : '';
+        if (!empty($compiled) && isset(self::PAGE_MAP[$slug])) {
+            $page_id = self::PAGE_MAP[$slug];
+            $update_res = wp_update_post(array(
+                'ID'           => $page_id,
+                'post_content' => $compiled
+            ));
+            if (is_wp_error($update_res)) {
+                return new WP_REST_Response(array('ok' => false, 'error' => $update_res->get_error_message()), 500);
+            }
+            wp_cache_flush();
+            if (has_action('litespeed_purge_all')) {
+                do_action('litespeed_purge_all');
+            }
+            return new WP_REST_Response(array(
+                'ok'       => true,
+                'deployed' => true,
+                'liveUrl'  => home_url('/' . $slug . '/'),
+                'message'  => "[{$slug}] 페이지가 카페24 실서버에 즉시 반영되었습니다!"
+            ), 200);
+        }
+
+        return new WP_REST_Response(array(
+            'ok'      => true,
+            'message' => '설정 데이터가 저장되었습니다.'
+        ), 200);
+    }
+
+    public static function rest_save_all_pages($request) {
+        $params = $request->get_json_params();
+        if (!is_array($params)) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '잘못된 요청 형식입니다.'), 400);
+        }
+
+        if (!empty($params['config']) && is_array($params['config'])) {
+            update_option(self::OPT_DETAIL_CFG, $params['config']);
+        }
+
+        $pages = isset($params['pages']) && is_array($params['pages']) ? $params['pages'] : array();
+        $updatedCount = 0;
+
+        foreach ($pages as $p) {
+            $slug = isset($p['slug']) ? sanitize_title($p['slug']) : '';
+            $compiled = isset($p['compiledHtml']) ? (string)$p['compiledHtml'] : '';
+            if ($slug && $compiled && isset(self::PAGE_MAP[$slug])) {
+                wp_update_post(array(
+                    'ID'           => self::PAGE_MAP[$slug],
+                    'post_content' => $compiled
+                ));
+                $updatedCount++;
+            }
+        }
+
+        wp_cache_flush();
+        if (has_action('litespeed_purge_all')) {
+            do_action('litespeed_purge_all');
+        }
+
+        return new WP_REST_Response(array(
+            'ok'           => true,
+            'deployed'     => true,
+            'updatedCount' => $updatedCount,
+            'message'      => "11개 전 상세페이지가 카페24 실서버에 일괄 배포되었습니다! ({$updatedCount}개 갱신 완료)"
+        ), 200);
+    }
+
+    public static function rest_handle_upload($request) {
+        $params = $request->get_json_params();
+        if (!is_array($params) || empty($params['dataUrl'])) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '업로드 데이터(dataUrl)가 없습니다.'), 400);
+        }
+
+        $orig_name = isset($params['fileName']) ? sanitize_file_name($params['fileName']) : 'image.jpg';
+        $data_url = (string)$params['dataUrl'];
+
+        if (!preg_match('/^data:(image\/(?:jpeg|jpg|png|webp|gif|svg\+xml)|video\/mp4);base64,(.+)$/i', $data_url, $m)) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '지원되는 이미지/비디오 형식이 아닙니다.'), 400);
+        }
+
+        $mime = strtolower($m[1]);
+        $bin = base64_decode($m[2]);
+        if ($bin === false) {
+            return new WP_REST_Response(array('ok' => false, 'error' => 'Base64 디코딩 실패'), 400);
+        }
+
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $clean_base = preg_replace('/[^a-zA-Z0-9_-]/', '_', pathinfo($orig_name, PATHINFO_FILENAME));
+        $ext = pathinfo($orig_name, PATHINFO_EXTENSION);
+        if (!$ext) $ext = 'jpg';
+        $unique_name = 'detail_custom_' . time() . '_' . substr($clean_base, 0, 30) . '.' . $ext;
+
+        $upload = wp_upload_bits($unique_name, null, $bin);
+        if (!empty($upload['error'])) {
+            return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
+        }
+
+        $attachment = array(
+            'guid'           => $upload['url'],
+            'post_mime_type' => $mime,
+            'post_title'     => preg_replace('/\.[^.]+$/', '', $unique_name),
+            'post_content'   => '',
+            'post_status'    => 'inherit'
+        );
+        $attach_id = wp_insert_attachment($attachment, $upload['file']);
+        if ($attach_id && function_exists('wp_generate_attachment_metadata')) {
+            $attach_data = wp_generate_attachment_metadata($attach_id, $upload['file']);
+            wp_update_attachment_metadata($attach_id, $attach_data);
+        }
+
+        return new WP_REST_Response(array(
+            'ok'       => true,
+            'fileName' => $unique_name,
+            'url'      => $upload['url'],
+            'message'  => '미디어 라이브러리 업로드 성공'
+        ), 200);
+    }
+
+    public static function rest_sync_studio_assets($request) {
+        $params = $request->get_json_params();
+        if (!is_array($params)) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '데이터가 없습니다.'), 400);
+        }
+
+        $upload_dir = wp_upload_dir();
+        $target_dir = $upload_dir['basedir'] . '/bareun-studio';
+        wp_mkdir_p($target_dir);
+
+        if (!empty($params['studioHtml'])) {
+            file_put_contents($target_dir . '/detail-pages-editor.html', (string)$params['studioHtml']);
+        }
+        if (!empty($params['compilerJs'])) {
+            file_put_contents($target_dir . '/bareun-detail-compiler.js', (string)$params['compilerJs']);
+        }
+        if (!empty($params['config']) && is_array($params['config'])) {
+            update_option(self::OPT_DETAIL_CFG, $params['config']);
+            file_put_contents($target_dir . '/detail-pages-config.json', json_encode($params['config'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
+
+        return new WP_REST_Response(array(
+            'ok'      => true,
+            'message' => '실서버 스튜디오 에셋 동기화 성공!'
+        ), 200);
+    }
+
+    public static function rest_ensure_assets_from_github($request) {
+        $upload_dir = wp_upload_dir();
+        $target_dir = $upload_dir['basedir'] . '/bareun-studio';
+        wp_mkdir_p($target_dir);
+
+        $gh_raw = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+        $files = array(
+            'detail-pages-editor.html',
+            'bareun-detail-compiler.js',
+            'detail-pages-config.json'
+        );
+
+        $downloaded = array();
+        foreach ($files as $f) {
+            $dest = $target_dir . '/' . $f;
+            if (!file_exists($dest)) {
+                $response = wp_remote_get($gh_raw . $f, array('timeout' => 20));
+                if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+                    file_put_contents($dest, wp_remote_retrieve_body($response));
+                    $downloaded[] = $f;
+                }
+            }
+        }
+
+        return new WP_REST_Response(array(
+            'ok'         => true,
+            'downloaded' => $downloaded
+        ), 200);
+    }
+}
+Bareun_Custom_Studio_Engine_V1::init();
+endif;
+
+

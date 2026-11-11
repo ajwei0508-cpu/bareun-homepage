@@ -34,6 +34,14 @@
       font-size: 14px;
       line-height: 1.5;
     }
+    body.is-fullscreen-app {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    body.is-wordpress-studio .studio-header {
+      top: 0;
+    }
 
     /* Sticky Top Header */
     header.studio-header {
@@ -784,13 +792,22 @@
       <button type="button" class="btn btn-deploy-all" id="btnDeployAll" onclick="confirmAndDeploy('deploy_all')">
         🌐 11개 전체 카페24 배포
       </button>
+      <button type="button" class="btn btn-ghost-dark" id="btnSyncWp" onclick="syncFromWpLive()" title="카페24 실서버의 최신 설정을 로컬로 가져옵니다">
+        🔄 실서버 설정 가져오기
+      </button>
+      <button type="button" class="btn btn-ghost-dark" id="btnDownloadJson" onclick="downloadConfigJson()" title="현재 설정을 JSON 백업 파일로 다운로드합니다">
+        📥 JSON 백업
+      </button>
       <button type="button" class="btn btn-ghost-dark" onclick="confirmResetPage()">
         ↺ 현재 페이지 초기화
+      </button>
+      <button type="button" class="btn btn-ghost-dark" id="btnToggleFs" onclick="toggleStudioFullscreen()" title="전체화면 몰입 모드">
+        ⛶ 전체화면
       </button>
       <a class="btn btn-ghost-dark" id="btnOpenPageNewTab" href="/chuna.html" target="_blank" rel="noopener">
         ↗ 새 창 열기
       </a>
-      <a class="btn btn-ghost-dark" href="/index.html" target="_blank" rel="noopener">
+      <a class="btn btn-ghost-dark" id="btnOpenMainHome" href="/index.html" target="_blank" rel="noopener">
         🏠 메인 홈
       </a>
     </div>
@@ -924,7 +941,27 @@
     </aside>
   </main>
 
+  <!-- Client-side Fast Compiler Engine (Supports Local & WordPress Online) -->
+  <script src="bareun-detail-compiler.js"></script>
   <script>
+    if (!window.BareunCompiler) {
+      document.write('<script src="/wp-content/uploads/bareun-studio/bareun-detail-compiler.js"><\\/script>');
+    }
+  </script>
+  <script>
+    if (!window.BareunCompiler) {
+      document.write('<script src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-homepage@main/homepage/bareun-detail-compiler.js"><\\/script>');
+    }
+  </script>
+
+  <script>
+    const IS_WORDPRESS = Boolean(
+      window.BAREUN_WP_STUDIO ||
+      window.wpApiSettings ||
+      location.hostname.includes('bareunhaniwon.com') ||
+      location.search.includes('bareun_studio')
+    );
+
     const STYLE_PRESETS = {
       'espresso-gold': {
         label: '에스프레소 골드 (Sample A 기본)',
@@ -1066,10 +1103,36 @@
       }
     }
 
+    function applyEnvironmentUi() {
+      if (IS_WORDPRESS) {
+        document.body.classList.add('is-wordpress-studio');
+        const badge = document.querySelector('.studio-badge');
+        if (badge) badge.textContent = 'ONLINE CLOUD · 24시간 실서버';
+        const btnSaveOne = document.getElementById('btnSaveOne');
+        if (btnSaveOne) btnSaveOne.innerHTML = '💾 현재 페이지 실서버 배포';
+        const btnSaveAll = document.getElementById('btnSaveAll');
+        if (btnSaveAll) btnSaveAll.innerHTML = '🌐 11개 전체 실서버 배포';
+        const deployOne = document.getElementById('btnDeployOne');
+        if (deployOne) deployOne.style.display = 'none';
+        const deployAll = document.getElementById('btnDeployAll');
+        if (deployAll) deployAll.style.display = 'none';
+        const syncBtn = document.getElementById('btnSyncWp');
+        if (syncBtn) syncBtn.style.display = 'none';
+      }
+    }
+
     async function loadStudioConfig() {
       try {
         showStatus('working', '11개 상세페이지 통합 설정을 불러오는 중입니다...');
-        const res = await fetch('/api/detail-pages-config?t=' + Date.now());
+        let url = '/api/detail-pages-config?t=' + Date.now();
+        const headers = {};
+        if (IS_WORDPRESS) {
+          url = '/wp-json/bareun/v1/studio/config?t=' + Date.now();
+          if (window.wpApiSettings && window.wpApiSettings.nonce) {
+            headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+          }
+        }
+        const res = await fetch(url, { headers });
         const data = await res.json();
         if (!data.ok || !data.config) {
           throw new Error(data.error || '설정 로드 실패');
@@ -1078,6 +1141,7 @@
         availableImages = data.availableImages || [];
         availableVideos = data.availableVideos || [];
         populateMediaDatalists();
+        applyEnvironmentUi();
 
         const params = new URLSearchParams(window.location.search);
         const targetParam = (params.get('page') || '').trim();
@@ -2234,23 +2298,35 @@
             reader.onerror = () => reject(new Error('파일 읽기 실패'));
             reader.readAsDataURL(file);
           });
-          const res = await fetch('/api/upload-detail-image', {
+
+          let uploadUrl = '/api/upload-detail-image';
+          const headers = { 'Content-Type': 'application/json' };
+          if (IS_WORDPRESS) {
+            uploadUrl = '/wp-json/bareun/v1/studio/upload';
+            if (window.wpApiSettings && window.wpApiSettings.nonce) {
+              headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+            }
+          }
+
+          const res = await fetch(uploadUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify({ fileName: file.name, dataUrl })
           });
           const data = await res.json();
           if (!data.ok) throw new Error(data.error || '업로드 실패');
 
-          if (data.fileName.endsWith('.mp4')) {
-            if (!availableVideos.includes(data.fileName)) availableVideos.unshift(data.fileName);
+          const savedAsset = data.url || data.fileName;
+
+          if (savedAsset.endsWith('.mp4')) {
+            if (!availableVideos.includes(savedAsset)) availableVideos.unshift(savedAsset);
           } else {
-            if (!availableImages.includes(data.fileName)) availableImages.unshift(data.fileName);
+            if (!availableImages.includes(savedAsset)) availableImages.unshift(savedAsset);
           }
           populateMediaDatalists();
-          onUploaded(data.fileName);
+          onUploaded(savedAsset);
           markDirty(true);
-          showStatus('ok', `파일 업로드 완료 (${data.fileName})! [💾 현재 페이지 즉시 반영]을 클릭하면 실제 페이지에 적용됩니다.`);
+          showStatus('ok', `파일 업로드 완료 (${savedAsset})! [💾 실서버 배포]를 클릭하면 실제 사이트에 즉시 적용됩니다.`);
         } catch (err) {
           showStatus('err', '파일 업로드 실패: ' + err.message);
         }
@@ -2311,12 +2387,73 @@
       const page = getCurrentPage();
       if (!page) return;
       const frame = document.getElementById('livePreviewFrame');
+      
+      // Instant Client-side Live Preview if compiler is loaded
+      if (window.BareunCompiler && typeof window.BareunCompiler.buildPageHtml === 'function') {
+        try {
+          const mergedPage = Object.assign({}, page, {
+            cardStyle: Object.assign({}, masterConfig.globalCardStyle || {}, page.cardStyle || {})
+          });
+          const html = window.BareunCompiler.buildPageHtml(mergedPage);
+          frame.srcdoc = html;
+          return;
+        } catch (e) {
+          console.warn('[Compiler fallback to url]:', e);
+        }
+      }
+
       frame.src = '/' + page.file + '?studioPreview=' + Date.now();
+    }
+
+    function toggleStudioFullscreen() {
+      if (document.body.classList.contains('is-fullscreen-app')) {
+        document.body.classList.remove('is-fullscreen-app');
+        if (document.exitFullscreen && document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
+      } else {
+        document.body.classList.add('is-fullscreen-app');
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      }
+    }
+
+    function downloadConfigJson() {
+      try {
+        const jsonStr = JSON.stringify(masterConfig, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `detail-pages-config-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showStatus('ok', '현재 설정 백업 JSON 파일이 성공적으로 다운로드되었습니다.');
+      } catch (err) {
+        showStatus('err', '다운로드 실패: ' + err.message);
+      }
+    }
+
+    async function syncFromWpLive() {
+      if (!confirm('카페24 실서버의 최신 설정을 가져와 로컬 파일(detail-pages-config.json)을 동기화하시겠습니까? (로컬의 미저장 내용은 덮어씌워집니다)')) return;
+      showStatus('working', '카페24 실서버에서 최신 설정을 불러오는 중입니다...');
+      try {
+        const res = await fetch('/api/sync-from-wp', { method: 'POST' });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '동기화 실패');
+        if (data.config) masterConfig = data.config;
+        renderAll();
+        reloadPreviewIframe();
+        markDirty(false);
+        showStatus('ok', '실서버 최신 설정으로 로컬 동기화 및 11개 페이지 재제작이 완료되었습니다!');
+      } catch (err) {
+        showStatus('err', '실서버 동기화 실패: ' + err.message);
+      }
     }
 
     /* === Save / Build / Deploy / Reset API Actions === */
     function setButtonsBusy(busy) {
-      ['btnSaveOne', 'btnSaveAll', 'btnDeployOne', 'btnDeployAll'].forEach(id => {
+      ['btnSaveOne', 'btnSaveAll', 'btnDeployOne', 'btnDeployAll', 'btnSyncWp', 'btnDownloadJson'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.disabled = busy;
       });
@@ -2326,6 +2463,11 @@
       const page = getCurrentPage();
       if (!page) return;
       setButtonsBusy(true);
+
+      if (IS_WORDPRESS) {
+        return runWpStudioAction(action, page);
+      }
+
       const workingMessages = {
         save_build_one: `[${page.label}] 로컬 상세페이지(.html) 및 워드프레스 번들을 생성 중입니다...`,
         save_build_all: '11개 전 상세페이지(.html + wordpress-*.html)를 일괄 제작 중입니다...',
@@ -2357,6 +2499,106 @@
         renderAll();
         reloadPreviewIframe();
         showStatus('ok', data.message || '완료되었습니다!');
+      } catch (err) {
+        showStatus('err', err.message);
+      } finally {
+        setButtonsBusy(false);
+      }
+    }
+
+    async function runWpStudioAction(action, page) {
+      const workingMessages = {
+        save_build_one: `[${page.label}] 변경사항을 실시간 컴파일하여 카페24 실서버에 즉시 배포 중입니다...`,
+        deploy_one: `[${page.label}] 변경사항을 실시간 컴파일하여 카페24 실서버에 즉시 배포 중입니다...`,
+        save_build_all: '11개 전 상세페이지를 실시간 컴파일하여 카페24 실서버에 일괄 배포 중입니다...',
+        deploy_all: '11개 전 상세페이지를 실시간 컴파일하여 카페24 실서버에 일괄 배포 중입니다...',
+        reset_page: `[${page.label}] 페이지를 Sample A 기본값으로 복원하고 실서버에 배포 중입니다...`
+      };
+      showStatus('working', workingMessages[action] || '실서버 반영 중입니다...');
+
+      try {
+        const nonce = window.wpApiSettings ? window.wpApiSettings.nonce : '';
+        const headers = { 'Content-Type': 'application/json' };
+        if (nonce) headers['X-WP-Nonce'] = nonce;
+
+        if (action === 'save_build_one' || action === 'deploy_one') {
+          if (!window.BareunCompiler || typeof window.BareunCompiler.buildCompleteWpPage !== 'function') {
+            throw new Error('컴파일러 엔진(BareunCompiler)을 불러오지 못했습니다. 잠시 후 새로고침 후 다시 시도해 주세요.');
+          }
+          const mergedPage = Object.assign({}, page, {
+            cardStyle: Object.assign({}, masterConfig.globalCardStyle || {}, page.cardStyle || {})
+          });
+          const wpBlock = window.BareunCompiler.buildCompleteWpPage(mergedPage);
+
+          const res = await fetch('/wp-json/bareun/v1/studio/save', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              action: 'deploy_one',
+              targetSlug: page.slug,
+              targetPage: page.file,
+              config: masterConfig,
+              compiledHtml: wpBlock
+            })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || '실서버 저장 중 오류가 발생했습니다.');
+
+          markDirty(false);
+          renderAll();
+          reloadPreviewIframe();
+          showStatus('ok', `[${page.label}] 카페24 실서버(${page.liveUrl || ('https://www.bareunhaniwon.com/' + page.slug + '/')})에 즉시 반영 완료되었습니다!`);
+          return;
+        }
+
+        if (action === 'save_build_all' || action === 'deploy_all') {
+          if (!window.BareunCompiler || typeof window.BareunCompiler.buildCompleteWpPage !== 'function') {
+            throw new Error('컴파일러 엔진(BareunCompiler)을 불러오지 못했습니다. 잠시 후 새로고침 후 다시 시도해 주세요.');
+          }
+          const pagesPayload = masterConfig.pages.map(p => {
+            const merged = Object.assign({}, p, {
+              cardStyle: Object.assign({}, masterConfig.globalCardStyle || {}, p.cardStyle || {})
+            });
+            return {
+              slug: p.slug,
+              file: p.file,
+              compiledHtml: window.BareunCompiler.buildCompleteWpPage(merged)
+            };
+          });
+
+          const res = await fetch('/wp-json/bareun/v1/studio/save-all', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              config: masterConfig,
+              pages: pagesPayload
+            })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || '실서버 일괄 배포 중 오류가 발생했습니다.');
+
+          markDirty(false);
+          renderAll();
+          reloadPreviewIframe();
+          showStatus('ok', `11개 전 상세페이지가 카페24 실서버에 즉시 일괄 배포되었습니다! (${data.updatedCount || 11}개 페이지 갱신 완료)`);
+          return;
+        }
+
+        if (action === 'reset_page') {
+          const defRes = await fetch('/detail-pages-config.default.json').catch(() => null);
+          let defCfg = null;
+          if (defRes && defRes.ok) defCfg = await defRes.json();
+          if (!defCfg && window.BAREUN_DEFAULT_CONFIG) defCfg = window.BAREUN_DEFAULT_CONFIG;
+          if (defCfg && Array.isArray(defCfg.pages)) {
+            const defP = defCfg.pages.find(p => p.slug === page.slug || p.file === page.file);
+            if (defP) {
+              const curIdx = masterConfig.pages.findIndex(p => p.slug === page.slug || p.file === page.file);
+              if (curIdx >= 0) masterConfig.pages[curIdx] = JSON.parse(JSON.stringify(defP));
+              return runWpStudioAction('deploy_one', masterConfig.pages[curIdx]);
+            }
+          }
+          throw new Error('기본 설정 템플릿을 찾을 수 없습니다.');
+        }
       } catch (err) {
         showStatus('err', err.message);
       } finally {

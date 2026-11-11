@@ -248,8 +248,11 @@ async function performWpLogin(page, loginUrl) {
           window.wpcode_editor.codemirror.save();
         }
         const activeChk = document.querySelector('#wpcode_active, input[name="wpcode_active"]');
+        const toggleSlider = document.querySelector('.wpcode-checkbox-toggle-slider, label.wpcode-checkbox-toggle');
         if (activeChk && !activeChk.checked) {
+          if (toggleSlider) toggleSlider.click();
           activeChk.checked = true;
+          activeChk.value = '1';
           activeChk.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }, phpSnippetBody);
@@ -284,6 +287,26 @@ async function performWpLogin(page, loginUrl) {
     });
     if (!nonce) throw new Error('Failed to get WP REST Nonce');
     console.log('   REST Nonce ->', nonce);
+
+    // 2.1) Sync 24/7 Online Custom Studio Engine Assets (HTML, Compiler JS & Config JSON) to WordPress Uploads
+    console.log('2.1) Syncing 24/7 Online Custom Studio Engine Assets to Cafe24 WordPress ...');
+    const studioHtml = fs.readFileSync(path.join(__dirname, 'detail-pages-editor.html'), 'utf8');
+    const compilerJs = fs.readFileSync(path.join(__dirname, 'bareun-detail-compiler.js'), 'utf8');
+    const masterCfgObj = JSON.parse(fs.readFileSync(path.join(__dirname, 'detail-pages-config.json'), 'utf8'));
+
+    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, masterCfgObj }) => {
+      const res = await fetch('/wp-json/bareun/v1/studio/sync-studio-assets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+        body: JSON.stringify({
+          studioHtml,
+          compilerJs,
+          config: masterCfgObj
+        })
+      });
+      return await res.json();
+    }, { wpNonce: nonce, studioHtml, compilerJs, masterCfgObj });
+    console.log('   Studio Online Assets Synced:', studioSyncRes);
 
     // 2.2) Update Site Profile & Upload Official 1200x630 (<90KB) OG Card to Media Library
     const ogCardPath = path.join(__dirname, 'og-bareun-1200x630.jpg');

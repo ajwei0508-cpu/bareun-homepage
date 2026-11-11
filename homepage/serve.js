@@ -377,6 +377,43 @@ const server = http.createServer((req, res) => {
   }
 
   // === BEGIN 11 DETAIL PAGES CUSTOM STUDIO API ===
+  // API Endpoint: Sync latest config from Cafe24 WordPress live server to local files
+  if (reqPath === '/api/sync-from-wp' && req.method === 'POST') {
+    const wpUrl = 'https://www.bareunhaniwon.com/wp-json/bareun/v1/studio/config';
+    https.get(wpUrl, { timeout: 15000 }, (resp) => {
+      let data = '';
+      resp.on('data', chunk => { data += chunk; });
+      resp.on('end', () => {
+        try {
+          const json = JSON.parse(data || '{}');
+          if (!json.ok || !json.config || !Array.isArray(json.config.pages)) {
+            throw new Error(json.error || '실서버 설정 데이터 형식이 올바르지 않습니다.');
+          }
+          const detailCfgPath = path.join(__dirname, 'detail-pages-config.json');
+          fs.writeFileSync(detailCfgPath, JSON.stringify(json.config, null, 2) + '\n', 'utf8');
+
+          // Rebuild pages and WordPress bundle
+          execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js')], { cwd: __dirname, timeout: 45000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            config: json.config,
+            message: '카페24 실서버의 최신 설정을 로컬 파일로 성공적으로 동기화하고 11개 페이지를 재제작했습니다!'
+          }));
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: '동기화 파싱/빌드 오류: ' + err.message }));
+        }
+      });
+    }).on('error', (err) => {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+      res.end(JSON.stringify({ ok: false, error: '실서버 연결 실패: ' + err.message }));
+    });
+    return;
+  }
+
   if (reqPath === '/api/upload-detail-image' && req.method === 'POST') {
     const chunks = [];
     let totalBytes = 0;
