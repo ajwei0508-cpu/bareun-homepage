@@ -2104,6 +2104,8 @@
     let qnaCacheByPart = {};
     let isQnaComposerOpen = false;
     let qnaWriteFeedback = '';
+    let qnaSearchKeyword = '';
+    let qnaUnlockTargetId = null;
 
     // 4-System Bottom Menu State ('muscle' | 'nerve' | 'joint' | 'vessel' | null)
     let currentSystemMode = null;
@@ -2809,23 +2811,56 @@
           ? '<div style="padding:9px 12px;border-radius:9px;background:#ECFDF5;border:1px solid #6EE7B7;color:#065F46;font-size:0.78rem;font-weight:800;">' + escHtml(qnaWriteFeedback) + '</div>'
           : '';
 
-        const qnaListHtml = (items && items.length > 0)
-          ? items.map(q => {
+        const filteredQnaItems = (items || []).filter(q => {
+          const kw = String(qnaSearchKeyword || '').trim().toLowerCase();
+          if (!kw) return true;
+          const pName = (partLabelLookup[q.partId] || '통합 건강').toLowerCase();
+          const t = String(q.title || '').toLowerCase();
+          const c = String(q.content || '').toLowerCase();
+          const r = String(q.masterReply || '').toLowerCase();
+          const a = String(q.maskedAuthor || '').toLowerCase();
+          return pName.includes(kw) || t.includes(kw) || c.includes(kw) || r.includes(kw) || a.includes(kw);
+        });
+
+        const searchBarHtml =
+          '<div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">' +
+            '<input type="search" id="qna-kw-input" class="qic-input" style="flex:1;padding:7px 11px;font-size:0.78rem;" placeholder="🔍 질환명·증상·작성자 키워드 검색 (예: 성장, 허리, 두피, 소화...)" value="' + escHtml(qnaSearchKeyword) + '" oninput="window.setInlineQnaKeyword(this.value)" />' +
+            (qnaSearchKeyword ? '<button type="button" class="ptc-back-btn" onclick="window.setInlineQnaKeyword(\'\')">초기화</button>' : '') +
+          '</div>';
+
+        const qnaListHtml = (filteredQnaItems && filteredQnaItems.length > 0)
+          ? filteredQnaItems.map(q => {
               const pName = partLabelLookup[q.partId] || '통합 건강';
-              return '<div class="qna-item-row">' +
+              const isLockedSecret = Boolean(q.isSecret && !q.canRead);
+              const unlockFormHtml = (isLockedSecret && qnaUnlockTargetId === q.id)
+                ? '<form onsubmit="window.submitUnlockQna(event, ' + Number(q.id) + ')" style="margin-top:6px;display:flex;align-items:center;gap:6px;">' +
+                    '<input type="password" id="qna-unlock-pw-' + Number(q.id) + '" class="qic-input" style="flex:1;padding:5px 9px;font-size:0.75rem;" placeholder="작성 시 설정한 비밀번호 입력" required />' +
+                    '<button type="submit" class="qna-write-btn" style="padding:5px 11px;font-size:0.74rem;cursor:pointer;">열람</button>' +
+                  '</form>'
+                : '';
+              return '<div class="qna-item-row" id="qna-row-' + Number(q.id) + '">' +
                 '<div class="qna-item-meta">' +
                   '<span><strong style="color:#967128;">[' + escHtml(pName) + ']</strong> · 작성자 ' + escHtml(q.maskedAuthor || '회원') + ' · ' + escHtml(q.createdAt || '') + '</span>' +
                   '<span class="qna-status-badge ' + (q.status === 'answered' ? 'answered' : 'waiting') + '">' +
                     (q.status === 'answered' ? '답변 완료' : '답변 대기') +
                   '</span>' +
                 '</div>' +
-                '<div class="qna-item-title">' + escHtml(q.title) + '</div>' +
+                '<div class="qna-item-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
+                  '<span>' + escHtml(q.title) + '</span>' +
+                  (isLockedSecret && q.hasPassword
+                    ? '<button type="button" onclick="window.toggleUnlockQna(' + Number(q.id) + ')" style="border:1px solid #DFC99B;background:#FAF5EA;color:#967128;border-radius:6px;padding:2px 7px;font-size:0.68rem;font-weight:800;cursor:pointer;flex-shrink:0;">🔑 비밀번호 열람</button>'
+                    : '') +
+                '</div>' +
+                unlockFormHtml +
+                (q.canRead && q.content
+                  ? '<div style="margin-top:4px;font-size:0.76rem;color:#57534E;line-height:1.45;">' + escHtml(q.content) + '</div>'
+                  : '') +
                 (q.canRead && q.masterReply
                   ? '<div style="margin-top:5px;padding:8px 10px;border-radius:8px;background:#FFFFFF;border-left:3px solid #C5A059;font-size:0.77rem;color:#262522;line-height:1.48;"><strong>원장실 답변 ·</strong> ' + escHtml(q.masterReply) + '</div>'
                   : '') +
               '</div>';
             }).join('')
-          : '<div class="qna-item-row"><div class="qna-item-title">전 질환 관련 궁금한 점을 바로 위 [1:1 질문 남기기] 버튼으로 편하게 작성해 보세요.</div></div>';
+          : '<div class="qna-item-row"><div class="qna-item-title">' + (qnaSearchKeyword ? '검색어와 일치하는 질문이 없습니다.' : '전 질환 관련 궁금한 점을 바로 위 [1:1 질문 남기기] 버튼으로 편하게 작성해 보세요.') + '</div></div>';
 
         activeBodyHtml =
           '<div class="qna-menu-panel">' +
@@ -2842,6 +2877,7 @@
             '</div>' +
             feedbackHtml +
             composerHtml +
+            searchBarHtml +
             '<div style="display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow-y:auto;padding-right:2px;">' + qnaListHtml + '</div>' +
           '</div>';
       } else {
@@ -2955,6 +2991,47 @@
       }
       qnaWriteFeedback = '';
       renderPopupPanel();
+    };
+
+    window.setInlineQnaKeyword = function(val) {
+      qnaSearchKeyword = String(val || '');
+      renderPopupPanel();
+      const inp = document.getElementById('qna-kw-input');
+      if (inp) {
+        inp.focus();
+        try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {}
+      }
+    };
+
+    window.toggleUnlockQna = function(qId) {
+      qnaUnlockTargetId = (qnaUnlockTargetId === qId) ? null : qId;
+      renderPopupPanel();
+    };
+
+    window.submitUnlockQna = async function(ev, qId) {
+      ev.preventDefault();
+      const pwInput = document.getElementById('qna-unlock-pw-' + qId);
+      const password = (pwInput && pwInput.value || '').trim();
+      if (!password) return;
+      try {
+        const res = await fetch('/wp-json/bareun/v1/qna/unlock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: qId, password })
+        });
+        const data = await res.json();
+        if (data && data.ok && data.item) {
+          const allList = qnaCacheByPart['all'] || [];
+          const idx = allList.findIndex(x => x.id === qId);
+          if (idx >= 0) allList[idx] = data.item;
+          qnaUnlockTargetId = null;
+          renderPopupPanel();
+        } else {
+          alert((data && data.message) || '비밀번호가 일치하지 않습니다.');
+        }
+      } catch (e) {
+        alert('비밀글 확인 중 오류가 발생했습니다.');
+      }
     };
 
     window.submitInlineQna = async function(ev) {
@@ -4642,14 +4719,17 @@
     const urlPart = earlyParams.get('part');
     const urlNote = earlyParams.get('note');
     const urlTab = earlyParams.get('tab');
+    const urlQnaId = earlyParams.get('qnaId');
     if (urlSys && SYSTEM_TABS.some(s => s.id === urlSys)) {
       window.selectAnatomySystem(urlSys);
-    } else if (urlTab === 'qna') {
+    } else if (urlTab === 'qna' || urlQnaId) {
       if (urlPart && urlPart !== 'all') {
         const menuMeta = getMenuMeta(urlPart);
         currentPartId = menuMeta ? menuMeta.id : urlPart;
       }
-      window.openQnaInPopup();
+      currentMenuTab = 1;
+      isQnaComposerOpen = !urlQnaId;
+      renderPopupPanel();
     } else if (urlPart || urlNote) {
       const targetPart = urlPart || (urlNote ? String(urlNote).split('-')[0] : 'knee');
       window.selectBodyPart(targetPart, true);

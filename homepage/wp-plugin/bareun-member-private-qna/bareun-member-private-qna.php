@@ -741,7 +741,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (!empty($email) && is_email($email) && strpos($email, '.member') === false) {
             $subject = sprintf('[바른한의원] %s님의 건강 질문에 대표원장님의 1:1 전문 답변이 등록되었습니다.', $name);
             $message = sprintf(
-                "안녕하세요, %s님.\n바른한의원 대전본점 안정위 대표원장실입니다.\n\n남겨주신 건강 질문에 1:1 전문 의학 답변이 등록되었습니다.\n\n▶ 질문 제목: %s\n▶ 답변 내용 미리보기:\n%s\n\n▶ 답변 전문 확인하기:\nhttps://www.bareunhaniwon.com/ask-doctor/?tab=qna&qnaId=%d\n\n바른한의원 대전본점 (042-825-1075)\n대전광역시 유성구 노은로 174",
+                "안녕하세요, %s님.\n바른한의원 대전본점 안정위 대표원장실입니다.\n\n남겨주신 건강 질문에 1:1 전문 의학 답변이 등록되었습니다.\n\n▶ 질문 제목: %s\n▶ 답변 내용 미리보기:\n%s\n\n▶ 답변 전문 확인하기:\nhttps://www.bareunhaniwon.com/body-explorer/?tab=qna&qnaId=%d\n\n바른한의원 대전본점 (010-5631-1275)\n대전광역시 대덕구 비래동로7번길 1, 2층",
                 $name,
                 $title,
                 wp_trim_words($reply, 30, '...'),
@@ -763,7 +763,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $authHeader = "HMAC-SHA256 apiKey={$apiKey}, date={$date}, salt={$salt}, signature={$sig}";
 
             $smsText = sprintf(
-                "[바른한의원] %s님, 남겨주신 질문에 안정위 대표원장님의 1:1 답변이 등록되었습니다.\n\n▶ 질문: %s\n▶ 확인: https://www.bareunhaniwon.com/ask-doctor/?tab=qna&qnaId=%d\n\n바른한의원 대전본점 042-825-1075",
+                "[바른한의원] %s님, 남겨주신 질문에 안정위 대표원장님의 1:1 답변이 등록되었습니다.\n\n▶ 질문: %s\n▶ 확인: https://www.bareunhaniwon.com/body-explorer/?tab=qna&qnaId=%d\n\n바른한의원 대전본점 010-5631-1275",
                 $name,
                 mb_substr($title, 0, 25) . '...',
                 $qId
@@ -1790,6 +1790,7 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('wp_robots', array(__CLASS__, 'filter_wp_robots'), 99);
         add_filter('pre_get_document_title', array(__CLASS__, 'filter_document_title'), 99);
         add_action('wp_head', array(__CLASS__, 'render_head_seo'), 1);
+        add_action('wp_footer', array(__CLASS__, 'render_footer_qna_ssr'), 99);
 
         // Eliminate Astra theme duplicate H1 & oversized featured thumbnail in DOM
         add_filter('astra_the_title_enabled', '__return_false', 99);
@@ -1951,6 +1952,22 @@ class Bareun_Master_SEO_Engine_V1 {
                 ? (string) get_option(self::OPT_LLMS_FULL_TXT, '')
                 : (string) get_option(self::OPT_LLMS_TXT, '');
             if ($custom_llms !== '') {
+                global $wpdb;
+                $qna_table = $wpdb->prefix . 'bareun_private_qna';
+                $pub_qnas = $wpdb->get_results(
+                    "SELECT id, part_id, title, content, master_reply FROM {$qna_table} WHERE is_secret = 0 AND status = 'answered' AND master_reply IS NOT NULL AND master_reply != '' ORDER BY id DESC LIMIT 50",
+                    ARRAY_A
+                );
+                if (is_array($pub_qnas) && !empty($pub_qnas)) {
+                    $custom_llms .= "\n## 무엇이든 물어보세요 (공개 1:1 건강 Q&A 질의응답)\n";
+                    foreach ($pub_qnas as $pq) {
+                        $qt = trim((string)($pq['title'] ?? ''));
+                        $qr = trim((string)($pq['master_reply'] ?? ''));
+                        if ($qt !== '' && $qr !== '') {
+                            $custom_llms .= '- [' . $qt . '](' . self::CANONICAL_ORIGIN . '/body-explorer/?tab=qna&qnaId=' . (int)$pq['id'] . '): ' . $qr . "\n";
+                        }
+                    }
+                }
                 echo $custom_llms;
                 exit;
             }
@@ -2169,7 +2186,64 @@ class Bareun_Master_SEO_Engine_V1 {
             );
         }
 
-        if (!empty($cfg['hasFaq'])) {
+        // Dynamic Q&A SEO/AEO/GEO: On /body-explorer/, include all public answered Q&A items AND 72 Health Notes in JSON-LD
+        if ($path === '/body-explorer/') {
+            global $wpdb;
+            $qna_table = $wpdb->prefix . 'bareun_private_qna';
+            $public_qnas = $wpdb->get_results(
+                "SELECT id, part_id, title, content, master_reply FROM {$qna_table} WHERE is_secret = 0 AND status = 'answered' AND master_reply IS NOT NULL AND master_reply != '' ORDER BY id DESC LIMIT 50",
+                ARRAY_A
+            );
+            $faq_entities = array(
+                array(
+                    '@type' => 'Question',
+                    'name'  => '초3 여아 야간 구강호흡과 또래 대비 성장 속도 지연 관련 문의드립니다',
+                    'acceptedAnswer' => array(
+                        '@type' => 'Answer',
+                        'text'  => '소아 내분비학 연구(JCEM)에 따르면 성장호르몬 일일 분비량의 약 70% 이상이 야간 깊은 서파수면(Slow-Wave Sleep) 단계에서 분비됩니다. 구강호흡은 야간 미세각성을 유발해 수면의 질을 떨어뜨리므로 실내 습도 50% 유지, 취침 2시간 전 당류 제한, 비강 호흡 환경 조성이 우선 권장됩니다.'
+                    )
+                ),
+                array(
+                    '@type' => 'Question',
+                    'name'  => '장시간 운전 후 반복되는 우측 둔부·종아리 당김 증상(디스크 방사통 vs 이상근 증후군)은 어떻게 구별하나요?',
+                    'acceptedAnswer' => array(
+                        '@type' => 'Answer',
+                        'text'  => 'The Lancet(2018) 및 JAMA 척추 가이드라인에서는 만성 요통·좌골신경통 평가 시 골반 경사와 이상근 긴장도를 함께 감별할 것을 권고합니다. 기침·배변 시 복압 상승으로 저림이 심해지면 요추 신경근 압박 가능성이 높고, 착석 압박 시 둔부 국소 통증이 두드러지면 이상근 긴장 가능성이 높습니다.'
+                    )
+                ),
+                array(
+                    '@type' => 'Question',
+                    'name'  => '위내시경 정상 소견 후에도 계속되는 식후 명치 팽만감과 목 이물감은 왜 생기나요?',
+                    'acceptedAnswer' => array(
+                        '@type' => 'Answer',
+                        'text'  => '소화기 신경생리학 리뷰(Physiological Reviews · Rome IV 기능성 소화불량 기준)에 따르면 위 점막 손상이 없더라도 위장 평활근의 배출 지연(Delayed Gastric Emptying)과 내장 과민성이 있으면 위 내 가스 압력이 상승해 하부식도괄약근을 자극합니다. 한 입 30회 저작, 식중 수분 제한, 취침 3시간 전 금식, 식후 15분 보행으로 위 배출 리듬부터 회복하는 것이 핵심입니다.'
+                    )
+                )
+            );
+            if (is_array($public_qnas)) {
+                foreach ($public_qnas as $qr) {
+                    $q_title = trim((string)($qr['title'] ?? ''));
+                    $q_reply = trim((string)($qr['master_reply'] ?? ''));
+                    if ($q_title !== '' && $q_reply !== '') {
+                        $faq_entities[] = array(
+                            '@type' => 'Question',
+                            'name'  => $q_title,
+                            'url'   => self::CANONICAL_ORIGIN . '/body-explorer/?tab=qna&qnaId=' . (int)$qr['id'],
+                            'acceptedAnswer' => array(
+                                '@type' => 'Answer',
+                                'text'  => $q_reply
+                            )
+                        );
+                    }
+                }
+            }
+            $graph[] = array(
+                '@type'      => 'FAQPage',
+                '@id'        => $canonical_url . '#faq',
+                'name'       => '바른한의원 대전본점 무엇이든 물어보세요 (1:1 건강 Q&A 질의응답)',
+                'mainEntity' => $faq_entities
+            );
+        } elseif (!empty($cfg['hasFaq'])) {
             $graph[] = array(
                 '@type' => 'FAQPage',
                 '@id'   => $canonical_url . '#faq',
@@ -2303,6 +2377,46 @@ class Bareun_Master_SEO_Engine_V1 {
         $ld = self::build_json_ld($cfg);
         echo '<script type="application/ld+json">' . wp_json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
         echo "<!-- /Bareun Master SEO & GEO Engine -->\n";
+    }
+
+    public static function render_footer_qna_ssr() {
+        if (is_admin()) {
+            return;
+        }
+        $cfg = self::resolve_current_page_seo();
+        $path = !empty($cfg['path']) ? $cfg['path'] : '/';
+        if ($path !== '/body-explorer/') {
+            return;
+        }
+        global $wpdb;
+        $qna_table = $wpdb->prefix . 'bareun_private_qna';
+        $rows = $wpdb->get_results(
+            "SELECT id, part_id, title, content, master_reply, created_at FROM {$qna_table} WHERE is_secret = 0 ORDER BY id DESC LIMIT 100",
+            ARRAY_A
+        );
+        if (!is_array($rows) || empty($rows)) {
+            return;
+        }
+        echo "\n" . '<div class="seo-qna-ssr-archive" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;pointer-events:none;" aria-hidden="true">' . "\n";
+        echo '  <h2>무엇이든 물어보세요 · 전 질환 통합 1:1 건강 Q&amp;A</h2>' . "\n";
+        foreach ($rows as $qr) {
+            $qid = (int)($qr['id'] ?? 0);
+            $qtitle = trim((string)($qr['title'] ?? ''));
+            $qcontent = trim((string)($qr['content'] ?? ''));
+            $qreply = trim((string)($qr['master_reply'] ?? ''));
+            if ($qtitle === '') continue;
+            $qurl = self::CANONICAL_ORIGIN . '/body-explorer/?tab=qna&qnaId=' . $qid;
+            echo '  <article class="seo-qna-ssr-item">' . "\n";
+            echo '    <h3><a href="' . esc_url($qurl) . '">' . esc_html($qtitle) . '</a></h3>' . "\n";
+            if ($qcontent !== '') {
+                echo '    <p>' . esc_html($qcontent) . '</p>' . "\n";
+            }
+            if ($qreply !== '') {
+                echo '    <p class="aeo-direct-answer">' . esc_html($qreply) . '</p>' . "\n";
+            }
+            echo '  </article>' . "\n";
+        }
+        echo '</div>' . "\n";
     }
 
     public static function filter_body_class($classes) {
