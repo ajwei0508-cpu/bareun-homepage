@@ -2303,7 +2303,8 @@ endif;
 // ============================================================================
 if (!class_exists('Bareun_Custom_Studio_Engine_V1')) :
 class Bareun_Custom_Studio_Engine_V1 {
-    const OPT_DETAIL_CFG = 'bareun_detail_pages_config_v1';
+    const OPT_DETAIL_CFG    = 'bareun_detail_pages_config_v1';
+    const OPT_ANGLE_SAMPLES = 'bareun_director_angle_samples_v1';
     
     // Official Page IDs on Cafe24 WordPress (https://www.bareunhaniwon.com)
     const PAGE_MAP = array(
@@ -2486,6 +2487,17 @@ class Bareun_Custom_Studio_Engine_V1 {
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_handle_upload')
+        ));
+
+        register_rest_route('bareun/v1', '/studio/angle-samples', array(
+            'methods'             => array('GET', 'POST'),
+            'permission_callback' => function ($request) {
+                if ($request->get_method() === 'GET') {
+                    return true;
+                }
+                return current_user_can('manage_options');
+            },
+            'callback'            => array(__CLASS__, 'rest_handle_angle_samples')
         ));
 
         register_rest_route('bareun/v1', '/studio/generate-image', array(
@@ -2710,6 +2722,133 @@ class Bareun_Custom_Studio_Engine_V1 {
         ), 200);
     }
 
+    private static function get_default_angle_slots() {
+        return array(
+            array('key' => 'front',        'label' => '정면 (0°)',        'desc' => '카메라 정면 응시',   'file' => 'angle_front.jpg'),
+            array('key' => 'left30',       'label' => '좌측 30° 사선',    'desc' => '왼쪽 반측면 시선',   'file' => 'angle_left30.jpg'),
+            array('key' => 'right30',      'label' => '우측 30° 사선',    'desc' => '오른쪽 반측면 시선', 'file' => 'angle_right30.jpg'),
+            array('key' => 'leftProfile',  'label' => '좌측 측면 (45°+)', 'desc' => '왼쪽 깊은 측면',     'file' => 'angle_left_profile.jpg'),
+            array('key' => 'rightProfile', 'label' => '우측 측면 (45°+)', 'desc' => '오른쪽 깊은 측면',   'file' => 'angle_right_profile.jpg')
+        );
+    }
+
+    public static function rest_handle_angle_samples($request) {
+        $slots = self::get_default_angle_slots();
+        $saved = get_option(self::OPT_ANGLE_SAMPLES, array());
+        if (!is_array($saved)) {
+            $saved = array();
+        }
+
+        if ($request->get_method() === 'POST') {
+            $params = $request->get_json_params();
+            if (!is_array($params) || empty($params['angleKey']) || empty($params['dataUrl'])) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '각도 키(angleKey)와 사진 데이터(dataUrl)가 필요합니다.'), 400);
+            }
+            $angle_key = sanitize_text_field((string)$params['angleKey']);
+            $valid = false;
+            foreach ($slots as $sl) {
+                if ($sl['key'] === $angle_key) {
+                    $valid = true;
+                    break;
+                }
+            }
+            if (!$valid) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '유효하지 않은 각도 슬롯입니다.'), 400);
+            }
+
+            $data_url = (string)$params['dataUrl'];
+            if (!preg_match('/^data:(image\/(?:jpeg|jpg|png|webp));base64,(.+)$/i', $data_url, $m)) {
+                return new WP_REST_Response(array('ok' => false, 'error' => 'JPG, PNG, WEBP 형식의 얼굴 사진을 선택해 주세요.'), 400);
+            }
+            $mime = strtolower($m[1]);
+            $bin  = base64_decode($m[2]);
+            if ($bin === false || strlen($bin) < 1024) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '유효한 이미지 데이터가 아닙니다.'), 400);
+            }
+
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+
+            $ext = strpos($mime, 'png') !== false ? 'png' : (strpos($mime, 'webp') !== false ? 'webp' : 'jpg');
+            $unique_name = 'director_angle_' . strtolower($angle_key) . '_' . time() . '.' . $ext;
+            $upload = wp_upload_bits($unique_name, null, $bin);
+            if (!empty($upload['error'])) {
+                return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
+            }
+
+            $saved[$angle_key] = array(
+                'fileName'  => $upload['url'],
+                'updatedAt' => current_time('c')
+            );
+            update_option(self::OPT_ANGLE_SAMPLES, $saved);
+        }
+
+        $upload_dir = wp_upload_dir();
+        $studio_angle_dir = $upload_dir['basedir'] . '/bareun-studio/director-angle-refs';
+        $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
+        $gh_angle_base = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
+
+        $out_angles = array();
+        foreach ($slots as $sl) {
+            $k = $sl['key'];
+            $default_url = file_exists($studio_angle_dir . '/' . $sl['file'])
+                ? ($studio_angle_url . '/' . $sl['file'])
+                : ($gh_angle_base . '/' . $sl['file']);
+            $custom_url = (!empty($saved[$k]['fileName'])) ? $saved[$k]['fileName'] : $default_url;
+            $out_angles[] = array(
+                'key'       => $k,
+                'label'     => $sl['label'],
+                'desc'      => $sl['desc'],
+                'fileName'  => $custom_url,
+                'updatedAt' => isset($saved[$k]['updatedAt']) ? $saved[$k]['updatedAt'] : null
+            );
+        }
+
+        return new WP_REST_Response(array(
+            'ok'        => true,
+            'profileId' => 'director_ahn',
+            'name'      => '안정위 대표원장',
+            'angles'    => $out_angles
+        ), 200);
+    }
+
+    private static function call_hf_gradio_flux($space_base, $payload_data, $timeout_sec = 45) {
+        $call_res = wp_remote_post($space_base . '/gradio_api/call/infer', array(
+            'timeout' => 20,
+            'headers' => array('Content-Type' => 'application/json'),
+            'body'    => wp_json_encode(array('data' => $payload_data))
+        ));
+        if (is_wp_error($call_res) || wp_remote_retrieve_response_code($call_res) !== 200) {
+            return null;
+        }
+        $call_json = json_decode(wp_remote_retrieve_body($call_res), true);
+        if (empty($call_json['event_id'])) {
+            return null;
+        }
+        $sse_res = wp_remote_get($space_base . '/gradio_api/call/infer/' . rawurlencode($call_json['event_id']), array(
+            'timeout' => $timeout_sec
+        ));
+        if (is_wp_error($sse_res) || wp_remote_retrieve_response_code($sse_res) !== 200) {
+            return null;
+        }
+        $sse_body = wp_remote_retrieve_body($sse_res);
+        $lines = preg_split('/\r?\n/', (string)$sse_body);
+        $last_event = '';
+        foreach ($lines as $ln) {
+            if (strpos($ln, 'event:') === 0) {
+                $last_event = trim(substr($ln, 6));
+            } elseif (strpos($ln, 'data:') === 0 && $last_event === 'complete') {
+                $json_str = trim(substr($ln, 5));
+                $arr = json_decode($json_str, true);
+                if (is_array($arr) && !empty($arr[0]['url'])) {
+                    return (string)$arr[0]['url'];
+                }
+            }
+        }
+        return null;
+    }
+
     public static function rest_generate_ai_image($request) {
         $params = $request->get_json_params();
         if (!is_array($params) || empty($params['prompt'])) {
@@ -2717,30 +2856,44 @@ class Bareun_Custom_Studio_Engine_V1 {
         }
 
         $prompt = trim((string)$params['prompt']);
-        $width  = isset($params['width']) ? max(512, min(1536, (int)$params['width'])) : 1280;
-        $height = isset($params['height']) ? max(512, min(1536, (int)$params['height'])) : 720;
-        $seed   = isset($params['seed']) ? (int)$params['seed'] : wp_rand(10000, 99999999);
-        $prefix = isset($params['filePrefix']) ? preg_replace('/[^a-zA-Z0-9_-]/', '_', (string)$params['filePrefix']) : 'ai_scene';
+        $width  = isset($params['width']) ? max(512, min(1536, (int)(round(((int)$params['width']) / 32) * 32))) : 1280;
+        $height = isset($params['height']) ? max(512, min(1536, (int)(round(((int)$params['height']) / 32) * 32))) : 800;
+        $seed   = isset($params['seed']) ? max(1, (int)$params['seed']) : wp_rand(10000, 99999999);
+        $prefix = isset($params['filePrefix']) ? preg_replace('/[^a-zA-Z0-9_-]/', '_', (string)$params['filePrefix']) : 'bareun_scene';
 
-        $poll_url = 'https://image.pollinations.ai/prompt/' . rawurlencode($prompt)
-            . '?model=flux&width=' . $width . '&height=' . $height . '&seed=' . $seed . '&nologo=true&enhance=true';
+        // Official Black Forest Labs FLUX.1-dev (28-step) -> fallback FLUX.1-schnell (100% Watermark-Free!)
+        $out_img_url = self::call_hf_gradio_flux(
+            'https://black-forest-labs-flux-1-dev.hf.space',
+            array($prompt, $seed, false, $width, $height, 3.5, 28),
+            55
+        );
+        if (!$out_img_url) {
+            $out_img_url = self::call_hf_gradio_flux(
+                'https://black-forest-labs-flux-1-schnell.hf.space',
+                array($prompt, $seed, false, $width, $height, 4),
+                35
+            );
+        }
+        if (!$out_img_url) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '고화질 FLUX 스튜디오 서버 응답 대기 시간 초과 — 다시 시도해 주세요.'), 500);
+        }
 
-        $response = wp_remote_get($poll_url, array(
-            'timeout' => 55,
+        $response = wp_remote_get($out_img_url, array(
+            'timeout' => 45,
             'headers' => array(
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/2.0'
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/3.0'
             )
         ));
 
         if (is_wp_error($response)) {
-            return new WP_REST_Response(array('ok' => false, 'error' => 'AI 이미지 서버 연결 실패: ' . $response->get_error_message()), 500);
+            return new WP_REST_Response(array('ok' => false, 'error' => '생성된 이미지 다운로드 실패: ' . $response->get_error_message()), 500);
         }
 
         $code = wp_remote_retrieve_response_code($response);
         $bin  = wp_remote_retrieve_body($response);
 
         if ($code !== 200 || strlen($bin) < 4000) {
-            return new WP_REST_Response(array('ok' => false, 'error' => 'AI 이미지 생성 응답 오류 (HTTP ' . $code . ')'), 500);
+            return new WP_REST_Response(array('ok' => false, 'error' => '생성된 이미지 데이터 수신 오류 (HTTP ' . $code . ')'), 500);
         }
 
         require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -2771,7 +2924,7 @@ class Bareun_Custom_Studio_Engine_V1 {
             'fileName' => $unique_name,
             'url'      => $upload['url'],
             'seed'     => $seed,
-            'message'  => '상황별 AI 이미지 생성 및 실서버 미디어 등록 완료!'
+            'message'  => '최고화질 무워터마크 AI 이미지 생성 및 실서버 등록 완료!'
         ), 200);
     }
 
@@ -2790,6 +2943,20 @@ class Bareun_Custom_Studio_Engine_V1 {
         }
         if (!empty($params['compilerJs'])) {
             file_put_contents($target_dir . '/bareun-detail-compiler.js', (string)$params['compilerJs']);
+        }
+        if (!empty($params['cardPromptsJs'])) {
+            file_put_contents($target_dir . '/card-image-prompts.js', (string)$params['cardPromptsJs']);
+        }
+        if (!empty($params['angleRefs']) && is_array($params['angleRefs'])) {
+            $angle_dir = $target_dir . '/director-angle-refs';
+            wp_mkdir_p($angle_dir);
+            foreach ($params['angleRefs'] as $fname => $b64) {
+                $safe_f = sanitize_file_name((string)$fname);
+                $decoded = base64_decode((string)$b64);
+                if ($safe_f && $decoded !== false && strlen($decoded) > 512) {
+                    file_put_contents($angle_dir . '/' . $safe_f, $decoded);
+                }
+            }
         }
         if (!empty($params['config']) && is_array($params['config'])) {
             update_option(self::OPT_DETAIL_CFG, $params['config']);
@@ -2811,6 +2978,7 @@ class Bareun_Custom_Studio_Engine_V1 {
         $files = array(
             'detail-pages-editor.html',
             'bareun-detail-compiler.js',
+            'card-image-prompts.js',
             'detail-pages-config.json'
         );
 
@@ -2822,6 +2990,26 @@ class Bareun_Custom_Studio_Engine_V1 {
                 if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
                     file_put_contents($dest, wp_remote_retrieve_body($response));
                     $downloaded[] = $f;
+                }
+            }
+        }
+
+        $angle_dir = $target_dir . '/director-angle-refs';
+        wp_mkdir_p($angle_dir);
+        $angle_files = array(
+            'angle_front.jpg',
+            'angle_left30.jpg',
+            'angle_right30.jpg',
+            'angle_left_profile.jpg',
+            'angle_right_profile.jpg'
+        );
+        foreach ($angle_files as $af) {
+            $dest = $angle_dir . '/' . $af;
+            if (!file_exists($dest)) {
+                $response = wp_remote_get($gh_raw . 'director-angle-refs/' . $af, array('timeout' => 20));
+                if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+                    file_put_contents($dest, wp_remote_retrieve_body($response));
+                    $downloaded[] = 'director-angle-refs/' . $af;
                 }
             }
         }

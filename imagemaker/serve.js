@@ -1042,7 +1042,7 @@ function domainKoreanSceneEnhancer(korText) {
 async function buildFreePhotorealPrompt(profile, scenePrompt, outfitKey, includeTrigger = false) {
   const baseTraits =
     profile.baseTraits ||
-    'a Korean male doctor in his late 30s wearing thin gold-rimmed rectangular glasses, neat black hair';
+    'a Korean male medical director in his late 30s to early 40s with neat short black hair swept back cleanly revealing an open forehead (no bangs covering forehead), wearing thin gold-rimmed rectangular glasses';
   const outfitDesc = OUTFIT_MAP[outfitKey] || '';
   const rawScene = String(scenePrompt || '').trim();
   const hasKorean = /[가-힣]/.test(rawScene);
@@ -1052,20 +1052,29 @@ async function buildFreePhotorealPrompt(profile, scenePrompt, outfitKey, include
     const domainHints = domainKoreanSceneEnhancer(rawScene);
     let translated = '';
     try {
-      const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(rawScene)}&langpair=ko|en`;
-      const data = await fetchJsonUrl(apiUrl, 5000);
-      const cand = data?.responseData?.translatedText || '';
-      if (cand && !/MYMEMORY WARNING/i.test(cand)) {
-        translated = cand.trim();
+      const gtxUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=${encodeURIComponent(rawScene)}`;
+      const gtxData = await fetchJsonUrl(gtxUrl, 6000);
+      if (Array.isArray(gtxData) && Array.isArray(gtxData[0])) {
+        translated = gtxData[0].map((seg) => (Array.isArray(seg) ? seg[0] : '')).join('').trim();
       }
     } catch (e) {}
+    if (!translated) {
+      try {
+        const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(rawScene)}&langpair=ko|en`;
+        const data = await fetchJsonUrl(apiUrl, 5000);
+        const cand = data?.responseData?.translatedText || '';
+        if (cand && !/MYMEMORY WARNING/i.test(cand)) {
+          translated = cand.trim();
+        }
+      } catch (e) {}
+    }
 
     if (domainHints.length > 0 && translated) {
       englishScene = `${translated}, ${domainHints.join(', ')}`;
-    } else if (domainHints.length > 0) {
-      englishScene = domainHints.join(', ');
     } else if (translated) {
       englishScene = translated;
+    } else if (domainHints.length > 0) {
+      englishScene = domainHints.join(', ');
     }
   }
 
@@ -1073,13 +1082,29 @@ async function buildFreePhotorealPrompt(profile, scenePrompt, outfitKey, include
     includeTrigger && profile.triggerWord ? `${profile.triggerWord}, ${baseTraits}` : baseTraits;
 
   return [
-    `Candid editorial medium portrait photograph of ${subjectLead}`,
+    `Authentic unretouched editorial photograph of ${subjectLead}`,
     outfitDesc,
     englishScene,
-    'facing toward camera clearly, Shot on Canon EOS R5 with RF 85mm f/1.8 lens, natural soft key lighting, authentic human skin pores and natural micro-texture, crisp thin gold eyeglass frame, natural depth of field, photorealistic, zero CGI, zero illustration'
+    'captured on Hasselblad X2D 100C with 80mm f/1.9 prime lens, natural soft key lighting, authentic human skin pores and natural micro-texture, crisp thin gold eyeglass frame, natural depth of field, photorealistic, strictly NO text, NO logos, NO watermark'
   ]
     .filter(Boolean)
     .join(', ');
+}
+
+function getDefaultDirectorAngleRefsMap() {
+  const angleDir = path.resolve(ROOT_DIR, '..', 'homepage', 'director-angle-refs');
+  const map = {
+    front: path.join(angleDir, 'angle_front.jpg'),
+    left30: path.join(angleDir, 'angle_left30.jpg'),
+    right30: path.join(angleDir, 'angle_right30.jpg'),
+    leftProfile: path.join(angleDir, 'angle_left_profile.jpg'),
+    rightProfile: path.join(angleDir, 'angle_right_profile.jpg')
+  };
+  const valid = {};
+  for (const [k, p] of Object.entries(map)) {
+    if (fs.existsSync(p)) valid[k] = p;
+  }
+  return valid;
 }
 
 // Run Local Python GTX 1070 DirectML FaceFusion ONNX Engine (or Objective Metric Analyzer)
@@ -1098,10 +1123,12 @@ function runLocalFaceEngine({
       `_tmp_job_${Date.now()}_${Math.random().toString(36).slice(2, 7)}.json`
     );
     const cachePath = path.join(PROFILES_DIR, profileId, 'identity_bank.npz');
+    const angleRefs = profileId === 'director_ahn' ? getDefaultDirectorAngleRefsMap() : {};
     writeJsonSafe(jobJsonPath, {
       target: targetPath,
       output: outputPath,
       refs: refPaths,
+      angle_refs: angleRefs,
       cache_path: cachePath,
       enhance_blend: Number(enhanceBlend) || 0.82,
       analyze_only: Boolean(analyzeOnly)
@@ -1223,28 +1250,42 @@ async function generateFreeStage1Image({ prompt, masterPhotoPath, imageSize, fre
     }
   }
 
+  // Official Black Forest Labs FLUX.1-dev -> FLUX.1-schnell (100% Watermark-Free, Zero Pollinations)
   try {
-    onLog('무료 ZeroGPU [FLUX.1-schnell 초고속 엔진] 촬영 중...');
-    const client = await Client.connect('black-forest-labs/FLUX.1-schnell', connectOpts);
+    onLog('무료 ZeroGPU [FLUX.1-dev 28-Step DSLR 엔진] 촬영 중 (워터마크 ZERO)...');
+    const client = await Client.connect('black-forest-labs/FLUX.1-dev', connectOpts);
     const res = await client.predict('/infer', {
       prompt,
       seed: 0,
       randomize_seed: true,
       width: dims.width,
       height: dims.height,
-      num_inference_steps: 4
+      guidance_scale: 3.5,
+      num_inference_steps: 28
     });
     const outUrl = res?.data?.[0]?.url;
     if (outUrl) {
-      return { url: outUrl, engineLabel: '무료 FLUX.1-schnell' };
+      return { url: outUrl, engineLabel: '무료 FLUX.1-dev (워터마크 ZERO)' };
     }
   } catch (e) {
-    onLog(`ZeroGPU 일시 한도 도달 -> Pollinations 무료 FLUX 백업 서버로 촬영합니다`);
+    onLog(`FLUX.1-dev 대기열 혼잡 -> FLUX.1-schnell 정품 엔진으로 전환합니다`);
   }
 
-  const seed = Math.floor(Math.random() * 99999999);
-  const pollUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux&width=${dims.width}&height=${dims.height}&seed=${seed}&nologo=true`;
-  return { url: pollUrl, engineLabel: '무료 Pollinations FLUX' };
+  onLog('무료 ZeroGPU [FLUX.1-schnell 초고속 정품 엔진] 촬영 중 (워터마크 ZERO)...');
+  const client = await Client.connect('black-forest-labs/FLUX.1-schnell', connectOpts);
+  const res = await client.predict('/infer', {
+    prompt,
+    seed: 0,
+    randomize_seed: true,
+    width: dims.width,
+    height: dims.height,
+    num_inference_steps: 4
+  });
+  const outUrl = res?.data?.[0]?.url;
+  if (outUrl) {
+    return { url: outUrl, engineLabel: '무료 FLUX.1-schnell (워터마크 ZERO)' };
+  }
+  throw new Error('고화질 FLUX 스튜디오 서버가 일시 혼잡합니다. 잠시 후 다시 시도해 주세요.');
 }
 
 function getOrderedProfileRefPaths(profile) {

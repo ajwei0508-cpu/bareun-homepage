@@ -527,11 +527,37 @@ def measure_face_metrics(det_sess, arc_sess, img_bgr, master_emb, global_emb):
     }
 
 
+def extract_angle_slot_bank(det_sess, arc_sess, angle_ref_paths):
+    """Extract ArcFace embeddings and exact 3D head yaws for user-registered per-angle sample photos."""
+    slot_embs = []
+    slot_yaws = []
+    slot_names = []
+    for p in angle_ref_paths:
+        if not p or not os.path.exists(p):
+            continue
+        img = imread_unicode(p)
+        if img is None:
+            continue
+        faces = detect_faces(det_sess, img, thresh=0.45)
+        if not faces:
+            continue
+        kps = faces[0]["kps"]
+        emb = extract_arcface_embedding(arc_sess, img, kps)
+        yaw = float(compute_head_yaw(kps))
+        slot_embs.append(emb)
+        slot_yaws.append(yaw)
+        slot_names.append(os.path.basename(p))
+    if not slot_embs:
+        return np.empty((0, 512), dtype=np.float32), np.empty((0,), dtype=np.float32), []
+    return np.stack(slot_embs, axis=0), np.array(slot_yaws, dtype=np.float32), slot_names
+
+
 def run_pipeline(cfg):
     model_dir = cfg.get("model_dir") or DEFAULT_MODEL_DIR
     target_path = cfg["target"]
     output_path = cfg.get("output") or ""
     raw_refs = cfg.get("refs") or []
+    raw_angle_refs = cfg.get("angle_refs") or []
     cache_path = cfg.get("cache_path") or ""
     enhance_blend = float(cfg.get("enhance_blend", 0.82))
     analyze_only = bool(cfg.get("analyze_only", False))
@@ -542,13 +568,17 @@ def run_pipeline(cfg):
     arc_sess = make_session(os.path.join(model_dir, "arcface_w600k_r50.onnx"))
     bisenet_sess = make_session(os.path.join(model_dir, "bisenet_resnet_34.onnx"))
 
-    ref_paths = [p for p in raw_refs if os.path.exists(p)]
+    angle_ref_paths = [p for p in raw_angle_refs if p and os.path.exists(p)]
+    ref_paths = [p for p in raw_refs if p and os.path.exists(p)]
+    if not ref_paths and angle_ref_paths:
+        ref_paths = list(angle_ref_paths)
     if not ref_paths:
         raise RuntimeError("유효한 기준 얼굴 사진이 없습니다.")
 
     master_emb, global_emb, bank_embs, bank_yaws, clean_count, from_cache = load_or_build_identity_bank(
         det_sess, arc_sess, bisenet_sess, ref_paths, cache_path=cache_path
     )
+    slot_embs, slot_yaws, slot_names = extract_angle_slot_bank(det_sess, arc_sess, angle_ref_paths)
 
     if analyze_only:
         target_bgr = imread_unicode(target_path)
@@ -582,17 +612,54 @@ def run_pipeline(cfg):
     if not tfaces:
         raise RuntimeError("대상 이미지에서 교정할 인물 얼굴을 찾지 못했습니다.")
 
+    # When multiple people appear in frame (e.g., Doctor + Patient), intelligently select the Doctor's face!
     tface = tfaces[0]
+    if len(tfaces) >= 2:
+        max_area = max(
+            float((f["bbox"][2] - f["bbox"][0]) * (f["bbox"][3] - f["bbox"][1])) for f in tfaces
+        )
+        best_doc_score = -999.0
+        for cand_f in tfaces[:4]:
+            ckps = cand_f["kps"]
+            c_emb = extract_arcface_embedding(arc_sess, target_bgr, ckps)
+            sim_doc = float(np.dot(c_emb, global_emb))
+            c_M512 = umeyama_similarity(ckps, FFHQ_512)
+            c_512 = cv2.warpAffine(target_bgr, c_M512, (512, 512), borderMode=cv2.BORDER_REPLICATE)
+            c_parse = parse_bisenet_classes(bisenet_sess, c_512)
+            has_glasses = float((c_parse == 6).sum()) / float(c_parse.size) > 0.008
+            area_ratio = float(
+                (cand_f["bbox"][2] - cand_f["bbox"][0]) * (cand_f["bbox"][3] - cand_f["bbox"][1])
+            ) / max(max_area, 1.0)
+            doc_score = sim_doc * 2.4 + (0.45 if has_glasses else 0.0) + 0.25 * area_ratio
+            if doc_score > best_doc_score:
+                best_doc_score = doc_score
+                tface = cand_f
+
     tkps = tface["kps"]
     target_yaw = compute_head_yaw(tkps)
+    matched_angle_ref = ""
 
-    # Match target head angle to closest real frames of the person + fuse with global multi-angle average!
-    if len(bank_embs) >= 3:
+    # Priority 1: Explicit registered per-angle sample bank (0°, ±30°, ±45°+) for zero angular error!
+    if len(slot_embs) >= 1:
+        slot_diffs = np.abs(slot_yaws - target_yaw)
+        best_s_idx = int(np.argmin(slot_diffs))
+        best_slot_emb = slot_embs[best_s_idx]
+        matched_angle_ref = slot_names[best_s_idx]
+        if len(bank_embs) >= 3:
+            yaw_diffs = np.abs(bank_yaws - target_yaw)
+            top_idx = np.argsort(yaw_diffs)[: min(4, len(bank_embs))]
+            angle_bank_emb = np.mean(bank_embs[top_idx], axis=0)
+            angle_bank_emb = angle_bank_emb / (np.linalg.norm(angle_bank_emb) + 1e-8)
+            fused_emb = 0.52 * best_slot_emb + 0.28 * angle_bank_emb + 0.20 * global_emb
+        else:
+            fused_emb = 0.72 * best_slot_emb + 0.28 * global_emb
+        fused_emb = (fused_emb / (np.linalg.norm(fused_emb) + 1e-8)).astype(np.float32)
+    elif len(bank_embs) >= 3:
         yaw_diffs = np.abs(bank_yaws - target_yaw)
         top_idx = np.argsort(yaw_diffs)[: min(4, len(bank_embs))]
         angle_emb = np.mean(bank_embs[top_idx], axis=0)
         angle_emb = angle_emb / (np.linalg.norm(angle_emb) + 1e-8)
-        fused_emb = 0.68 * global_emb + 0.32 * angle_emb
+        fused_emb = 0.55 * global_emb + 0.45 * angle_emb
         fused_emb = (fused_emb / (np.linalg.norm(fused_emb) + 1e-8)).astype(np.float32)
     else:
         fused_emb = global_emb
@@ -667,6 +734,8 @@ def run_pipeline(cfg):
         "refsTotal": len(ref_paths),
         "refsUsed": clean_count,
         "fromCache": from_cache,
+        "targetYaw": round(float(target_yaw), 3),
+        "matchedAngleRef": matched_angle_ref,
         "beforeSimilarityPct": before_metrics["similarityPct"],
         "beforeSharpnessScore": before_metrics["sharpnessScore"],
         **after_metrics,

@@ -5,6 +5,7 @@ const path = require('path');
 const querystring = require('querystring');
 const { execFileSync, execFile } = require('child_process');
 const { handleBareunApi } = require('./local-bareun-api.js');
+const studioAiEngine = require('./studio-ai-engine.js');
 
 const PORT = 3000;
 const MIME_TYPES = {
@@ -414,61 +415,79 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (reqPath === '/api/director-angle-samples') {
+    if (req.method === 'GET') {
+      try {
+        const result = studioAiEngine.getDirectorAngleSamples();
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        });
+        res.end(JSON.stringify(result));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      const chunks = [];
+      let totalBytes = 0;
+      const MAX_BYTES = 25 * 1024 * 1024;
+      req.on('data', chunk => {
+        totalBytes += chunk.length;
+        if (totalBytes <= MAX_BYTES) chunks.push(chunk);
+      });
+      req.on('end', () => {
+        try {
+          if (totalBytes > MAX_BYTES) throw new Error('업로드 파일 용량이 너무 큽니다.');
+          const payload = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+          const angleKey = String(payload.angleKey || '').trim();
+          const dataUrl = String(payload.dataUrl || '');
+          const fileName = String(payload.fileName || 'angle.jpg');
+          const updated = studioAiEngine.updateDirectorAngleSample(angleKey, dataUrl, fileName);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ...updated,
+            message: `[${angleKey}] 각도 기준 얼굴 사진이 성공적으로 등록되었습니다!`
+          }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+
   if (reqPath === '/api/studio-generate-image' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
-    req.on('end', () => {
+    req.on('end', async () => {
       try {
         const payload = JSON.parse(body || '{}');
-        const prompt = String(payload.prompt || '').trim();
-        if (!prompt) throw new Error('생성할 영문 프롬프트(prompt)가 필요합니다.');
+        const userPrompt = String(payload.userPrompt || payload.prompt || '').trim();
+        if (!userPrompt) throw new Error('생성할 프롬프트를 입력해 주세요.');
+        const useDirectorFace = Boolean(payload.useDirectorFace);
         const width = Math.max(512, Math.min(1536, Number(payload.width) || 1280));
-        const height = Math.max(512, Math.min(1536, Number(payload.height) || 720));
+        const height = Math.max(512, Math.min(1536, Number(payload.height) || 800));
         const seed = Number(payload.seed) || Math.floor(Math.random() * 89999999 + 10000000);
-        const prefix = String(payload.filePrefix || 'ai_scene').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 24) || 'ai_scene';
-        const pollUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux&width=${width}&height=${height}&seed=${seed}&nologo=true&enhance=true`;
+        const prefix = String(payload.filePrefix || 'bareun_scene').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 24) || 'bareun_scene';
 
-        const fetchBufferWithRedirects = (url, redirectsLeft = 5) => new Promise((resolve, reject) => {
-          const mod = url.startsWith('https') ? https : http;
-          const reqGet = mod.get(url, {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/2.0' },
-            timeout: 55000
-          }, (r) => {
-            if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) {
-              r.resume();
-              if (redirectsLeft <= 0) return reject(new Error('Too many redirects'));
-              return resolve(fetchBufferWithRedirects(new URL(r.headers.location, url).toString(), redirectsLeft - 1));
-            }
-            if (r.statusCode !== 200) {
-              r.resume();
-              return reject(new Error('AI 이미지 서버 응답 코드: HTTP ' + r.statusCode));
-            }
-            const chunks = [];
-            r.on('data', c => chunks.push(c));
-            r.on('end', () => resolve(Buffer.concat(chunks)));
-          });
-          reqGet.on('timeout', () => { reqGet.destroy(); reject(new Error('AI 이미지 생성 시간 초과')); });
-          reqGet.on('error', reject);
+        const genResult = await studioAiEngine.generateStudioImageComplete({
+          userPrompt,
+          useDirectorFace,
+          width,
+          height,
+          seed,
+          filePrefix: prefix
         });
 
-        fetchBufferWithRedirects(pollUrl).then(buf => {
-          if (!buf || buf.length < 4000) throw new Error('유효한 이미지 데이터를 받지 못했습니다.');
-          const savedName = `bareun_im_${prefix}_${Date.now()}.jpg`;
-          fs.writeFileSync(path.join(__dirname, savedName), buf);
-          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({
-            ok: true,
-            fileName: savedName,
-            url: savedName,
-            seed,
-            message: `상황별 AI 이미지 제작 완료 (${savedName})`
-          }));
-        }).catch(err => {
-          res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
-          res.end(JSON.stringify({ ok: false, error: err.message }));
-        });
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify(genResult));
       } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
         res.end(JSON.stringify({ ok: false, error: err.message }));
       }
     });

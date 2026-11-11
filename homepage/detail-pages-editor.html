@@ -841,75 +841,165 @@
       background: linear-gradient(135deg, #16231e 0%, #181512 100%);
       color: #f8f5ee;
       border-radius: 13px;
-      padding: 18px 20px;
-      border: 1px solid rgba(52, 211, 153, 0.4);
-      margin-bottom: 16px;
+      padding: 16px 20px;
+      border: 1px solid rgba(52, 211, 153, 0.42);
+      margin-bottom: 14px;
     }
-    .im-target-card-box {
+    .im-studio-hero h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .im-studio-hero p {
+      margin: 0;
+      font-size: 12.5px;
+      color: #d6cec2;
+    }
+    .im-mode-switch {
       display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 11px;
-      padding: 12px;
-      margin-top: 12px;
-      align-items: center;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
     }
     @media (max-width: 680px) {
-      .im-target-card-box { grid-template-columns: 1fr; }
+      .im-mode-switch { grid-template-columns: 1fr; }
     }
-    .im-preset-group-title {
-      font-size: 12.5px;
-      font-weight: 800;
-      color: var(--ink);
-      margin: 12px 0 7px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .im-preset-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .im-scene-chip {
+    .im-mode-btn {
       cursor: pointer;
-      padding: 6px 11px;
-      border-radius: 999px;
-      border: 1px solid #d4cab9;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #d4cab9;
       background: var(--surface-soft);
       color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+    .im-mode-btn:hover {
+      border-color: #059669;
+      background: #f0fdf4;
+    }
+    .im-mode-btn.active {
+      border-color: #059669;
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      color: #064e3b;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.15);
+    }
+    .im-mode-btn span.sub {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #57534e;
+    }
+    .im-director-box {
+      border: 1.5px solid #d4cab9;
+      border-radius: 11px;
+      padding: 13px 15px;
+      background: #fcfaf5;
+      margin-bottom: 14px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .im-director-box.active {
+      border-color: #059669;
+      background: #f3fcf7;
+    }
+    .im-angle-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 12px;
+    }
+    @media (max-width: 820px) {
+      .im-angle-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .im-angle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .im-angle-slot {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .im-angle-slot img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 7px;
+      background: #181512;
+      border: 1px solid #e2dacd;
+      cursor: zoom-in;
+    }
+    .im-angle-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .im-angle-desc {
+      font-size: 10.5px;
+      color: #64748b;
+      line-height: 1.2;
+    }
+    .im-example-box {
+      background: #faf7f0;
+      border: 1px solid #e2d5be;
+      border-left: 4px solid var(--gold);
+      border-radius: 9px;
+      padding: 11px 14px;
+      margin-top: 10px;
       font-size: 12px;
-      font-weight: 700;
-      transition: all 0.14s ease;
+      color: #3f3830;
+      line-height: 1.55;
     }
-    .im-scene-chip:hover {
-      border-color: #10b981;
-      background: #ecfdf5;
-      color: #065f46;
+    .im-example-item {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed #e5dccb;
+    }
+    .im-example-item:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+    .btn-im-generate {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #ffffff !important;
+      border: 1px solid #10b981 !important;
+      padding: 12px 22px !important;
+      font-size: 14px !important;
+      font-weight: 800 !important;
+      border-radius: 10px !important;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+    .btn-im-generate:hover:not(:disabled) {
+      filter: brightness(1.08);
       transform: translateY(-1px);
-    }
-    .im-scene-chip.active {
-      background: #059669;
-      color: #fff;
-      border-color: #047857;
     }
     .im-stage-box {
       background: #141210;
       border: 1.5px solid rgba(212, 175, 55, 0.42);
       border-radius: 13px;
-      min-height: 290px;
+      min-height: 280px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 14px;
       color: #e7dfd1;
       text-align: center;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
     .im-stage-box img {
       max-width: 100%;
@@ -924,27 +1014,34 @@
       gap: 10px;
       margin-top: 10px;
     }
-    .im-hist-card {
+    .im-history-card {
       border: 1px solid var(--border-strong);
       border-radius: 9px;
       overflow: hidden;
       background: #fff;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      transition: all 0.14s ease;
     }
-    .im-hist-card img {
+    .im-history-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .im-history-card img {
       width: 100%;
       height: 100px;
       object-fit: cover;
       background: #1a1714;
-      cursor: pointer;
     }
-    .im-hist-meta {
-      padding: 7px 8px;
+    .im-h-meta {
+      padding: 6px 8px;
       font-size: 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Visual Asset Library & Lightbox Modals */
@@ -1237,7 +1334,7 @@
     </div>
   </div>
 
-  <!-- Client-side Fast Compiler Engine (Supports Local & WordPress Online) -->
+  <!-- Client-side Fast Compiler Engine & Exact Card Image Prompts Map (Supports Local & WordPress Online) -->
   <script src="bareun-detail-compiler.js"></script>
   <script>
     if (!window.BareunCompiler) {
@@ -1247,6 +1344,17 @@
   <script>
     if (!window.BareunCompiler) {
       document.write('<script src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-homepage@main/homepage/bareun-detail-compiler.js"><\\/script>');
+    }
+  </script>
+  <script src="card-image-prompts.js"></script>
+  <script>
+    if (!window.BareunCardPrompts) {
+      document.write('<script src="/wp-content/uploads/bareun-studio/card-image-prompts.js"><\\/script>');
+    }
+  </script>
+  <script>
+    if (!window.BareunCardPrompts) {
+      document.write('<script src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-homepage@main/homepage/card-image-prompts.js"><\\/script>');
     }
   </script>
 
@@ -1508,6 +1616,8 @@
         }
 
         expandedCards = new Set([0]);
+        await loadDirectorAngleSamples();
+        syncImPromptFromCurrentCard(0);
         renderAll();
         reloadPreviewIframe();
         markDirty(false);
@@ -1521,6 +1631,7 @@
       if (idx === currentPageIdx) return;
       currentPageIdx = idx;
       expandedCards = new Set([0]);
+      syncImPromptFromCurrentCard(0);
       const page = getCurrentPage();
       if (page) {
         const nextUrl = new URL(window.location.href);
@@ -3050,304 +3161,41 @@
     }
 
     /* =========================================================================
-       📸 SITUATIONAL AI IMAGEMAKER ENGINE (24 CLINICAL/STORY PRESETS + HYBRID AI)
+       📸 BAREUN ULTRA-SIMPLE HIGH-END AI IMAGEMAKER ENGINE
+       - 0 Templates / 0 Clutter Options / 0 Watermark (FLUX.1-dev + Multi-Angle Face Lock)
+       - Reads ONLY the current card's image prompt for direct modification OR direct new prompt input
+       - Multi-Angle (5-Slot) Sampled Face Registration for Zero-Error Director Synthesis
        ========================================================================= */
-    const IM_SITUATIONAL_PRESETS = [
-      // Category A: 대표원장 진료·상담 (6)
-      {
-        id: 'dir_consult',
-        cat: 'director',
-        icon: '🩺',
-        title: '대표원장 1:1 심층 문진·경청',
-        desc: '따뜻한 한지 진료실에서 환자의 눈을 맞추며 일상을 경청하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '안정위 대표원장님이 고급스러운 한지 톤 진료실 원목 책상에서 환자분의 이야기를 따뜻하게 경청하며 차트를 기록하는 1:1 심층 문진 장면',
-        enPrompt: 'Warm Korean medicine clinic consultation room with traditional Hanji paper screen and dark walnut desk, male Korean medical director in his early 40s with neat hair and warm trustworthy smile wearing crisp white doctor coat over navy tie, attentively listening to a patient sitting across the desk, warm sunlit bokeh, editorial medical photography'
-      },
-      {
-        id: 'dir_pulse',
-        cat: 'director',
-        icon: '✋',
-        title: '정밀 맥진 (27맥상 진맥)',
-        desc: '손끝으로 환자의 양 손목 맥상과 자율신경 파동을 읽는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '대표원장님이 진맥 쿠션 위에 놓인 환자분의 손목에 세 손가락을 얹고 깊이 집중하여 오장육부와 자율신경의 맥박 파동을 읽는 정밀 진맥 장면',
-        enPrompt: 'Close-up editorial shot in a luxury Korean medicine clinic, male Korean doctor in white coat gently placing three fingers on a patient wrist resting on a silk pulse diagnosis cushion on a wooden desk, calm focused expression, soft warm ambient light, shallow depth of field'
-      },
-      {
-        id: 'dir_abdomen',
-        cat: 'director',
-        icon: '🤲',
-        title: '한방 복진·촉진 검진',
-        desc: '오장육부 압통과 복부 냉증·긴장도를 정밀 촉진하는 장면',
-        subject: 'director_patient',
-        outfit: 'scrub_coat',
-        koSituation: '진료 베드에 편안히 누운 환자분의 복부(명치·배꼽 주변)를 대표원장님이 따뜻하고 정밀한 손길로 촉진하며 장부 기능을 진찰하는 복진 장면',
-        enPrompt: 'Korean medicine clinical examination room, male Korean doctor in white doctor coat over dark scrubs gently performing abdominal palpation diagnosis on a patient lying comfortably on a clean examination bed, warm clinical lighting, high trust medical photography'
-      },
-      {
-        id: 'dir_research',
-        cat: 'director',
-        icon: '📑',
-        title: 'SCI 학술 논문·고전 처방 연구',
-        desc: '학술 논문과 의서를 대조하며 환자 맞춤 치료 지도를 설계하는 장면',
-        subject: 'director_solo',
-        outfit: 'navy_suit',
-        koSituation: '서재형 원장 연구실에서 SCI급 국제 학술 논문과 한의학 고전 의서를 펼쳐놓고 안경/펜을 든 채 환자별 맞춤 처방 데이터를 분석하는 장면',
-        enPrompt: 'Distinguished male Korean medical director in white coat over tailored navy suit sitting in a warm wood-paneled study room, reviewing medical research papers and laptop charts alongside classic Korean medicine books, golden desk lamp light, cinematic scholarly atmosphere'
-      },
-      {
-        id: 'dir_decoction',
-        cat: 'director',
-        icon: '🍵',
-        title: '원내 무균 탕전실 직접 검수·탕전',
-        desc: '새벽 탕전실에서 청정 약재를 직접 살피고 정성껏 달이는 장면',
-        subject: 'director_solo',
-        outfit: 'hanbok_coat',
-        koSituation: '깨끗한 유리 통창 원내 무균 탕전실에서 대표원장님이 최상급 한약재의 향과 상태를 직접 검수하고 전통 약탕기/현대식 탕전기 앞에서 정성껏 한약을 달이는 장면',
-        enPrompt: 'Clean modern herbal decoction room in a premium Korean medicine clinic, male Korean medical director examining premium dried medicinal herbs and deer antler slices on a wooden tray, subtle warm herbal steam rising, warm cinematic lighting, ultra-clean pharmaceutical grade environment'
-      },
-      {
-        id: 'dir_briefing',
-        cat: 'director',
-        icon: '🖥️',
-        title: '대형 모니터 검진 데이터 브리핑',
-        desc: '검사 결과 화면을 가리키며 환자에게 치료 원리를 설명하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '진료실 대형 고해상도 모니터에 체열·자율신경·체형 검사 데이터를 띄워놓고 대표원장님이 펜으로 짚어가며 환자분께 알기 쉽게 병의 원인을 설명하는 장면',
-        enPrompt: 'Modern Korean medicine clinic consultation room, male Korean doctor in white coat pointing with a stylus at a large medical monitor displaying spine posture and thermal diagnostic charts while explaining to an attentive patient, warm refined interior'
-      },
-
-      // Category B: 9대 정밀검진 기기 상황 (6)
-      {
-        id: 'exam_ultrasound',
-        cat: 'exam',
-        icon: '📡',
-        title: '정밀 초음파 진단기 검사',
-        desc: '초음파 프로브로 관절·인대·연부조직·내장기를 정밀 스캔하는 장면',
-        subject: 'director_patient',
-        outfit: 'scrub_coat',
-        koSituation: '대표원장님이 최신 한방 정밀 초음파 진단기 프로브를 환자 부위에 대고 실시간 초음파 모니터로 근육·인대·염증 깊이를 정밀 판독하는 장면',
-        enPrompt: 'High-tech Korean medicine diagnostic room, male Korean doctor in white coat holding an ultrasound transducer probe examining a patient shoulder and spine while looking at a high-resolution diagnostic ultrasound monitor, clean warm medical lighting'
-      },
-      {
-        id: 'exam_thermo',
-        cat: 'exam',
-        icon: '🌡️',
-        title: '적외선 체열진단기(IR) 검사',
-        desc: '전신 혈류 순환·수족냉증·상열하한 체열 분포를 촬영·판독하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '적외선 체열진단기(DITI) 모니터에 나타난 전신 열화상(상열하한·냉증·통증 부위 온도차)을 보며 대표원장님이 혈액순환과 면역 온도를 분석하는 장면',
-        enPrompt: 'Korean medicine diagnostic room featuring an infrared thermography body heat map monitor showing red and blue thermal circulation patterns, male Korean doctor in white coat analyzing the thermal scan with a patient, cinematic clinical lighting'
-      },
-      {
-        id: 'exam_hrv',
-        cat: 'exam',
-        icon: '💓',
-        title: '자율신경·뇌파·맥파 스트레스 검사',
-        desc: 'HRV 자율신경 균형도·혈관 노화도·만성 피로도를 정밀 측정하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '자율신경계 및 맥파(HRV) 정밀 진단기로 교감·부교감 신경 균형과 스트레스 지수를 측정하고 대표원장님이 파형 그래프를 판독하는 장면',
-        enPrompt: 'Modern Korean medicine clinic, patient sitting comfortably with finger pulse wave and autonomic nervous system HRV sensor attached, male Korean doctor in white coat reviewing heart rate variability wave graphs on screen, calm healing ambiance'
-      },
-      {
-        id: 'exam_posture3d',
-        cat: 'exam',
-        icon: '🧍',
-        title: '3D 전신 체형·척추·골반 분석',
-        desc: '거북목·라운드숄더·골반 틀어짐·다리 길이 차이를 스캔하는 장면',
-        subject: 'director_patient',
-        outfit: 'scrub_coat',
-        koSituation: '3D 체형 분석 장비 앞에서 환자의 경추 거북목 각도, 척추 측만, 골반 경사와 좌우 밸런스를 레이저 그리드로 정밀 측정하고 원장님이 체크하는 장면',
-        enPrompt: 'Orthopedic posture analysis studio in a Korean medicine clinic, male Korean doctor in white coat assessing a patient standing posture alignment with subtle calibration grid and 3D spine alignment display screen, crisp editorial photography'
-      },
-      {
-        id: 'exam_growth_inbody',
-        cat: 'exam',
-        icon: '📏',
-        title: '소아 성장판 초음파 & 체성분 측정',
-        desc: '아이의 성장판 열림 정도와 근육·골격 밸런스를 정밀 검사하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '대표원장님이 밝고 다정한 미소로 어린이/청소년 환자의 무릎·손목 성장판 초음파 및 체성분(InBody) 성장 그래프를 부모님과 함께 설명하는 장면',
-        enPrompt: 'Warm pediatric Korean medicine clinic, kind male Korean doctor in white coat smiling warmly while showing a child growth plate scan and height percentile chart to a young child and mother, bright natural daylight'
-      },
-      {
-        id: 'exam_scalp_scope',
-        cat: 'exam',
-        icon: '🔬',
-        title: '고배율 두피·모낭·모세혈관 현미경 진단',
-        desc: '두피 열독·모낭염·모근 밀도를 200배율 카메라로 정밀 진단하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '고배율 두피 현미경 진단기로 환자의 정수리·M자 부위 모낭 건강도와 두피 충혈(열독) 상태를 모니터에 크게 띄워 정밀 진단하는 장면',
-        enPrompt: 'Hair and scalp clinic room in a Korean medicine hospital, male Korean doctor in white coat using a handheld digital trichoscope camera on a patient scalp while high-magnification hair follicle images appear on a monitor, clean luxury clinic'
-      },
-
-      // Category C: 클리닉별 치료·시술 상황 (6)
-      {
-        id: 'tx_chuna',
-        cat: 'clinic',
-        icon: '🦴',
-        title: '대표원장 1:1 정밀 수기 추나요법',
-        desc: '추나 베드에서 틀어진 경추·요추·골반을 손으로 정교하게 교정하는 장면',
-        subject: 'director_patient',
-        outfit: 'scrub_coat',
-        koSituation: '전용 추나 교정 테이블에서 대표원장님이 숙련된 양손 수기 기법으로 환자분의 틀어진 경추·요추·골반 관절을 부드럽고 정교하게 교정하는 추나요법 장면',
-        enPrompt: 'Spacious Chuna manual therapy room in a premium Korean medicine clinic, male Korean doctor in white coat over dark scrubs performing precise hands-on spinal and pelvic Chuna adjustment on a patient on a specialized chiropractic table, warm natural window light'
-      },
-      {
-        id: 'tx_acupuncture',
-        cat: 'clinic',
-        icon: '🪡',
-        title: '정밀 약침·침구 신경감압 치료',
-        desc: '경혈과 심부 근육·신경 포착 부위에 정밀 약침을 시술하는 장면',
-        subject: 'director_patient',
-        outfit: 'scrub_coat',
-        koSituation: '대표원장님이 정제된 한방 약침/침구로 환자분의 목·어깨·허리 심부 경혈을 세밀하게 치료하며 통증과 염증을 가라앉히는 집중 시술 장면',
-        enPrompt: 'Serene treatment room in a Korean medicine clinic, male Korean doctor in white coat carefully performing precise pharmacopuncture and acupuncture therapy on a patient neck and shoulder, warm wooden slatted walls, calm healing lighting'
-      },
-      {
-        id: 'tx_growth_son',
-        cat: 'clinic',
-        icon: '🌱',
-        title: '소아·청소년 맞춤 성장·성조숙증 진료',
-        desc: '아이의 눈높이에서 맥을 짚고 성장 한약을 따뜻하게 안내하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '아빠 같은 다정한 눈빛의 대표원장님이 어린이 환자의 손목 맥을 짚어주며 어머니께 성장판 골든타임과 녹용 성장 한약 처방을 설명하는 장면',
-        enPrompt: 'Heartwarming scene in a luxury Korean medicine clinic, gentle male Korean medical director in white coat checking the pulse of a smiling elementary school boy while his mother watches with trust, warm golden sunlight, editorial portrait'
-      },
-      {
-        id: 'tx_diet_zero',
-        cat: 'clinic',
-        icon: '⚖️',
-        title: '식욕ZERO 다이어트 대사 리셋 상담',
-        desc: '체지방·내장지방 분석표와 맞춤 다이어트 한약/캡슐을 설계하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '밝고 세련된 다이어트 클리닉 상담실에서 대표원장님이 여성 환자분께 체성분 대사 차트와 소형 맞춤 다이어트 한약 파우치·캡슐 프로그램을 안내하는 장면',
-        enPrompt: 'Modern aesthetic Korean medicine clinic consultation, male Korean doctor in white coat presenting a personalized metabolic weight loss plan and sleek herbal medicine pouches on a wooden tray to a happy female patient, bright editorial style'
-      },
-      {
-        id: 'tx_hairloss',
-        cat: 'clinic',
-        icon: '🌿',
-        title: '탈모·지루성두피열 모근 재생 치료',
-        desc: '상열하한 두피 열을 내리고 모낭 재생 약침·한약을 처방하는 장면',
-        subject: 'director_patient',
-        outfit: 'white_coat',
-        koSituation: '탈모 집중 치료실에서 대표원장님이 환자분의 두피 모근 상태를 세심히 살피며 두피 열독 완화 및 발모 한약·약침 치료 과정을 설명하는 장면',
-        enPrompt: 'Premium hair restoration room in a Korean medicine clinic, male Korean doctor in white coat examining a patient scalp and explaining hair follicle regeneration therapy with before-and-after density charts, warm refined lighting'
-      },
-      {
-        id: 'tx_prostate',
-        cat: 'clinic',
-        icon: '🦁',
-        title: '전립선·남성 활력 프라이빗 VIP 상담',
-        desc: '독립된 VIP 진료실에서 중장년 남성과 깊이 있게 1:1 상담하는 장면',
-        subject: 'director_patient',
-        outfit: 'navy_suit',
-        koSituation: '방음이 완비된 프라이빗 VIP 진료실에서 대표원장님이 중장년 남성 환자분과 차분하고 신뢰감 있게 전립선·방광·남성 활력 회복 처방을 1:1로 상담하는 장면',
-        enPrompt: 'Private VIP consultation room in a high-end Korean medicine clinic with dark walnut and warm Hanji interior, male Korean medical director in white coat over navy suit having a confidential respectful 1-on-1 consultation with a middle-aged male patient'
-      },
-
-      // Category D: 프리미엄 한약·공간·환자 일상 공감 (6)
-      {
-        id: 'obj_gongjindan',
-        cat: 'herb',
-        icon: '👑',
-        title: '황제공진단 금박 수제 조제·목함 포장',
-        desc: '순금박을 입힌 원방 사향 공진단과 고급 원목 단상자 클로즈업',
-        subject: 'object_clinic',
-        outfit: 'hanbok_coat',
-        koSituation: '고급 원목 테이블 위에 정교하게 순금박을 입힌 황제공진단 환약들과 러시아 원용 녹용, 사향, 당귀, 산수유 약재가 품격 있게 놓인 하이엔드 스틸컷',
-        enPrompt: 'Luxury product photography of traditional Korean Gongjindan herbal pills wrapped in pure 24k gold leaf inside a handcrafted dark walnut wooden box, surrounded by premium deer antler slices and medicinal herbs on warm Hanji paper, dramatic golden rim lighting'
-      },
-      {
-        id: 'obj_deer_antler',
-        cat: 'herb',
-        icon: '🦌',
-        title: '최상급 러시아 원용 분골·청정 약재 선별',
-        desc: '식약처 인증 GMP 청정 한약재와 러시아산 원용 분골 클로즈업',
-        subject: 'object_clinic',
-        outfit: 'white_coat',
-        koSituation: '한지 트레이 위에 놓인 최상급 러시아 원용 녹용 분골 절편과 깨끗하게 정선된 GMP 규격 한약재, 그리고 맑고 깊은 빛깔의 한약 찻잔 클로즈업',
-        enPrompt: 'Editorial macro photography of top-grade Russian deer antler tip slices (Nokyong), ginseng, and clean GMP medicinal herbs arranged artistically on a wooden tray with a ceramic cup of rich herbal decoction tea, warm morning sunlight'
-      },
-      {
-        id: 'life_pain_before',
-        cat: 'herb',
-        icon: '😣',
-        title: '환자 일상 통증·피로 공감 (Before 상황)',
-        desc: '오피스/일상에서 뒷목·허리 통증이나 만성 피로로 힘들어하는 장면',
-        subject: 'patient_empathy',
-        outfit: 'white_coat',
-        koSituation: '늦은 오후 사무실 책상 앞에서 모니터를 보다가 뻐근한 뒷목과 어깨·허리 통증으로 손을 짚으며 피로해하는 한국인 직장인의 현실 공감 장면',
-        enPrompt: 'Cinematic lifestyle photography of a Korean office professional in their 30s sitting at a modern desk, gently holding their stiff neck and lower back in discomfort from chronic pain and fatigue, moody warm afternoon window light'
-      },
-      {
-        id: 'life_recovery_after',
-        cat: 'herb',
-        icon: '😊',
-        title: '치료 후 가벼워진 몸과 활기찬 일상 (After)',
-        desc: '통증에서 벗어나 상쾌하게 기지개를 켜며 미소 짓는 회복 장면',
-        subject: 'patient_empathy',
-        outfit: 'white_coat',
-        koSituation: '햇살이 가득 들어오는 창가에서 통증 없이 바른 자세로 상쾌하게 어깨를 펴고 편안한 미소를 짓는 건강한 한국인 환자의 회복 후 일상 장면',
-        enPrompt: 'Bright uplifting lifestyle photography of a healthy Korean adult standing by a sunlit window with upright posture, stretching comfortably with a relieved genuine smile, warm golden morning light, high-end wellness editorial'
-      },
-      {
-        id: 'space_hanji_lounge',
-        cat: 'herb',
-        icon: '🏛️',
-        title: '바른한의원 웜 한지·원목 힐링 라운지',
-        desc: '마음이 편안해지는 한지 조명과 원목 인테리어 병원 공간 전경',
-        subject: 'object_clinic',
-        outfit: 'white_coat',
-        koSituation: '따뜻한 한지 간접조명과 원목 루버, 은은한 약초 향기가 어우러진 바른한의원의 고급스럽고 아늑한 대기 라운지 및 진료실 복도 공간 전경',
-        enPrompt: 'Architectural interior photography of a luxury modern Korean medicine clinic lounge featuring warm Hanji paper lanterns, natural oak wood louver walls, indoor pine bonsai, and serene minimalist seating, warm golden hour lighting'
-      },
-      {
-        id: 'tx_tele_consult',
-        cat: 'herb',
-        icon: '📞',
-        title: '전국 비대면 전화처방 1:1 심층 문진',
-        desc: '멀리 계신 환자분과 전화/모니터로 세심하게 문진·처방하는 장면',
-        subject: 'director_solo',
-        outfit: 'white_coat',
-        koSituation: '대표원장님이 진료실에서 전자차트와 체질 설문 데이터를 보며 전화/헤드셋으로 타 지역 비대면 환자분과 세심하게 1:1 문진 상담을 진행하는 장면',
-        enPrompt: 'Male Korean medical director in crisp white doctor coat sitting at a sleek wooden clinic desk with a subtle headset and digital medical chart screen, conducting a warm attentive telemedicine phone consultation, warm editorial lighting'
-      }
+    const DEFAULT_DIRECTOR_ANGLES = [
+      { key: 'front',        label: '정면 (0°)',        desc: '카메라 정면 응시',   fileName: 'director-angle-refs/angle_front.jpg' },
+      { key: 'left30',       label: '좌측 30° 사선',    'desc': '왼쪽 반측면 시선', fileName: 'director-angle-refs/angle_left30.jpg' },
+      { key: 'right30',      label: '우측 30° 사선',    'desc': '오른쪽 반측면 시선', fileName: 'director-angle-refs/angle_right30.jpg' },
+      { key: 'leftProfile',  label: '좌측 측면 (45°+)', 'desc': '왼쪽 깊은 측면',   fileName: 'director-angle-refs/angle_left_profile.jpg' },
+      { key: 'rightProfile', label: '우측 측면 (45°+)', 'desc': '오른쪽 깊은 측면', fileName: 'director-angle-refs/angle_right_profile.jpg' }
     ];
 
     let imState = {
       targetCardIdx: 0,
       targetMode: 'replace_card', // 'replace_card' | 'add_new_card' | 'add_sub_thumb'
       targetField: 'imgSrc',
-      selectedCat: 'all',
-      selectedPresetId: 'dir_consult',
-      subjectMode: 'director_patient',
-      outfitMode: 'white_coat',
-      aspectRatio: '16:10',
-      engineMode: 'cloud_flux', // 'cloud_flux' | 'local_pulid'
-      koSituation: IM_SITUATIONAL_PRESETS[0].koSituation,
-      enPrompt: IM_SITUATIONAL_PRESETS[0].enPrompt,
+      workMode: 'edit_current',   // 'edit_current' | 'write_new'
+      promptText: '',
+      loadedCardPrompt: '',
+      loadedImageKey: '',
+      useDirectorFace: false,
+      angleSamples: DEFAULT_DIRECTOR_ANGLES.map(a => ({ ...a })),
+      uploadingAngleKey: '',
       newCardTitle: '',
       newCardSub: '',
       isGenerating: false,
+      genStepText: '',
       lastGeneratedUrl: '',
       lastGeneratedFileName: '',
       history: []
     };
 
     try {
-      const savedHist = localStorage.getItem('bareun_studio_im_history_v1');
+      const savedHist = localStorage.getItem('bareun_studio_im_history_v2');
       if (savedHist) {
         const parsed = JSON.parse(savedHist);
         if (Array.isArray(parsed)) imState.history = parsed;
@@ -3356,8 +3204,133 @@
 
     function saveImHistory() {
       try {
-        localStorage.setItem('bareun_studio_im_history_v1', JSON.stringify(imState.history.slice(0, 24)));
+        localStorage.setItem('bareun_studio_im_history_v2', JSON.stringify(imState.history.slice(0, 24)));
       } catch (e) {}
+    }
+
+    async function loadDirectorAngleSamples() {
+      try {
+        let url = '/api/director-angle-samples';
+        const headers = {};
+        if (IS_WORDPRESS) {
+          url = '/wp-json/bareun/v1/studio/angle-samples';
+          if (window.wpApiSettings && window.wpApiSettings.nonce) {
+            headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+          }
+        }
+        const res = await fetch(url, { headers, cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.ok && Array.isArray(data.angles) && data.angles.length > 0) {
+          imState.angleSamples = data.angles.map((slot, idx) => ({
+            key: slot.key || DEFAULT_DIRECTOR_ANGLES[idx]?.key || ('slot_' + idx),
+            label: slot.label || DEFAULT_DIRECTOR_ANGLES[idx]?.label || '',
+            desc: slot.desc || DEFAULT_DIRECTOR_ANGLES[idx]?.desc || '',
+            fileName: slot.fileName || DEFAULT_DIRECTOR_ANGLES[idx]?.fileName || '',
+            updatedAt: slot.updatedAt || null
+          }));
+        }
+      } catch (e) {
+        console.warn('[Angle Samples Load Fallback]:', e);
+      }
+    }
+
+    function triggerAngleSampleUpload(angleKey) {
+      const slot = imState.angleSamples.find(s => s.key === angleKey);
+      if (!slot) return;
+      const inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = 'image/jpeg,image/png,image/webp';
+      inp.onchange = async () => {
+        const file = inp.files && inp.files[0];
+        if (!file) return;
+        imState.uploadingAngleKey = angleKey;
+        renderImageMakerPane();
+        showStatus('working', `📷 [${slot.label}] 원장님 샘플 얼굴 사진을 등록하고 있습니다...`);
+        try {
+          const dataUrl = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(new Error('파일 읽기 실패'));
+            reader.readAsDataURL(file);
+          });
+          let url = '/api/director-angle-samples';
+          const headers = { 'Content-Type': 'application/json' };
+          if (IS_WORDPRESS) {
+            url = '/wp-json/bareun/v1/studio/angle-samples';
+            if (window.wpApiSettings && window.wpApiSettings.nonce) {
+              headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+            }
+          }
+          const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ angleKey, fileName: file.name, dataUrl })
+          });
+          const data = await res.json();
+          if (!data || !data.ok) throw new Error((data && data.error) || '각도 샘플 등록 실패');
+          if (Array.isArray(data.angles)) {
+            imState.angleSamples = data.angles;
+          }
+          imState.uploadingAngleKey = '';
+          renderImageMakerPane();
+          showStatus('ok', `✅ [${slot.label}] 각도 원장님 샘플 얼굴 사진이 등록되었습니다! 이제 해당 각도 합성 시 오차 없이 반영됩니다.`);
+        } catch (err) {
+          imState.uploadingAngleKey = '';
+          renderImageMakerPane();
+          showStatus('err', '각도 얼굴 샘플 등록 오류: ' + err.message);
+        }
+      };
+      inp.click();
+    }
+
+    function readTargetCardPromptData(card, page, fieldOverride) {
+      if (!card) {
+        return { prompt: '', imageKey: '', hasDirectorFace: false };
+      }
+      const cp = window.BareunCardPrompts;
+      if (fieldOverride && (fieldOverride === 'beforeImg' || fieldOverride === 'afterImg' || fieldOverride === 'poster') && card[fieldOverride]) {
+        const key = cp ? cp.normalizeImgKey(card[fieldOverride]) : String(card[fieldOverride]).split('?')[0].split('/').pop();
+        if (cp && cp.CARD_IMAGE_PROMPT_MAP && cp.CARD_IMAGE_PROMPT_MAP[key]) {
+          return {
+            prompt: cp.CARD_IMAGE_PROMPT_MAP[key],
+            imageKey: key,
+            hasDirectorFace: Boolean(cp.DIRECTOR_FACE_IMAGES && cp.DIRECTOR_FACE_IMAGES.has(key))
+          };
+        }
+      }
+      if (cp && typeof cp.readCardImagePrompt === 'function') {
+        return cp.readCardImagePrompt(card, page);
+      }
+      const cleanTitle = String(card.title || '').replace(/'/g, '').trim();
+      const cleanSub = String(card.sub || '').trim();
+      return {
+        prompt: [cleanTitle, cleanSub].filter(Boolean).join(' — ') || '따뜻한 자연광이 비치는 한의원 원목 진료실 에디토리얼 실사 사진',
+        imageKey: getCardPreviewRawPath(card),
+        hasDirectorFace: false
+      };
+    }
+
+    function syncImPromptFromCurrentCard(cardIdx, notify = false) {
+      const page = getCurrentPage();
+      if (!page || !Array.isArray(page.plates) || !page.plates.length) return;
+      const safeIdx = Math.max(0, Math.min(page.plates.length - 1, Number(cardIdx) || 0));
+      imState.targetCardIdx = safeIdx;
+      const card = page.plates[safeIdx];
+      const info = readTargetCardPromptData(card, page, imState.targetField);
+
+      imState.workMode = 'edit_current';
+      imState.loadedCardPrompt = info.prompt || '';
+      imState.promptText = info.prompt || '';
+      imState.loadedImageKey = info.imageKey || getCardPreviewRawPath(card);
+      imState.useDirectorFace = Boolean(info.hasDirectorFace);
+      imState.newCardTitle = card.title || '';
+      imState.newCardSub = card.sub || '';
+
+      if (notify) {
+        renderImageMakerPane();
+        showStatus('ok', `📋 CARD ${String(safeIdx + 1).padStart(2, '0')} 현재 설정된 이미지의 원본 프롬프트를 정확히 불러왔습니다. 필요한 부분만 수정해 제작하세요!`);
+      }
     }
 
     function openImageMakerForCard(cardIdx, modeOrField) {
@@ -3377,126 +3350,254 @@
         imState.targetField = 'imgSrc';
       }
 
-      extractSituationFromTargetCard(safeIdx, false);
+      syncImPromptFromCurrentCard(safeIdx, false);
       switchEditorTab('imagemaker');
       const editorScroll = document.querySelector('.editor-scroll');
       if (editorScroll) editorScroll.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function extractSituationFromTargetCard(cardIdx, notify = true) {
-      const page = getCurrentPage();
-      if (!page || !page.plates || !page.plates[cardIdx]) return;
-      const card = page.plates[cardIdx];
-      const cleanTitle = String(card.title || '').replace(/'/g, '');
-      const cleanSub = String(card.sub || '');
-
-      imState.newCardTitle = card.title || '';
-      imState.newCardSub = card.sub || '';
-
-      // Auto-match best preset from keywords
-      const combined = (page.label + ' ' + cleanTitle + ' ' + cleanSub).toLowerCase();
-      let matchedPreset = IM_SITUATIONAL_PRESETS[0];
-      if (combined.includes('초음파')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'exam_ultrasound') || matchedPreset;
-      else if (combined.includes('체열') || combined.includes('온도') || combined.includes('냉증')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'exam_thermo') || matchedPreset;
-      else if (combined.includes('자율신경') || combined.includes('스트레스') || combined.includes('맥파')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'exam_hrv') || matchedPreset;
-      else if (combined.includes('체형') || combined.includes('거북목') || combined.includes('골반')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'exam_posture3d') || matchedPreset;
-      else if (combined.includes('맥진') || combined.includes('손끝') || combined.includes('진맥')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'dir_pulse') || matchedPreset;
-      else if (combined.includes('복진')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'dir_abdomen') || matchedPreset;
-      else if (combined.includes('논문') || combined.includes('연구') || combined.includes('학술')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'dir_research') || matchedPreset;
-      else if (combined.includes('탕전') || combined.includes('달이는') || combined.includes('정수')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'dir_decoction') || matchedPreset;
-      else if (combined.includes('추나') || combined.includes('척추') || combined.includes('디스크')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'tx_chuna') || matchedPreset;
-      else if (combined.includes('성장') || combined.includes('아이') || combined.includes('아들')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'tx_growth_son') || matchedPreset;
-      else if (combined.includes('다이어트') || combined.includes('식욕') || combined.includes('체중')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'tx_diet_zero') || matchedPreset;
-      else if (combined.includes('탈모') || combined.includes('두피') || combined.includes('모낭')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'tx_hairloss') || matchedPreset;
-      else if (combined.includes('공진단') || combined.includes('사향')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'obj_gongjindan') || matchedPreset;
-      else if (combined.includes('전립선') || combined.includes('배뇨') || combined.includes('활력')) matchedPreset = IM_SITUATIONAL_PRESETS.find(p => p.id === 'tx_prostate') || matchedPreset;
-
-      imState.selectedPresetId = matchedPreset.id;
-      imState.subjectMode = matchedPreset.subject;
-      imState.outfitMode = matchedPreset.outfit;
-      imState.koSituation = `[${page.label} · CARD ${String(cardIdx + 1).padStart(2, '0')}] "${cleanTitle}" — ${cleanSub || matchedPreset.koSituation}`;
-      imState.enPrompt = buildEnglishPromptFromKoSituation(imState.koSituation, matchedPreset);
-
-      if (notify) {
-        renderImageMakerPane();
-        showStatus('ok', `CARD ${String(cardIdx + 1).padStart(2, '0')}의 제목·본문 내용을 분석하여 최적의 상황 프롬프트를 자동 구성했습니다!`);
+    function setImWorkMode(mode) {
+      imState.workMode = mode === 'write_new' ? 'write_new' : 'edit_current';
+      if (imState.workMode === 'edit_current') {
+        syncImPromptFromCurrentCard(imState.targetCardIdx, false);
+      } else {
+        imState.promptText = '';
       }
+      renderImageMakerPane();
+      setTimeout(() => {
+        const ta = document.getElementById('imMainPromptTextarea');
+        if (ta) ta.focus();
+      }, 40);
     }
 
-    function buildEnglishPromptFromKoSituation(koText, basePreset) {
-      const t = String(koText || '');
-      const presetPrompt = basePreset ? basePreset.enPrompt : IM_SITUATIONAL_PRESETS[0].enPrompt;
-
-      const outfitMap = {
-        white_coat: 'wearing a tailored crisp white medical doctor coat over a formal shirt and navy tie',
-        hanbok_coat: 'wearing a refined modern Korean traditional medical director coat (luxury charcoal/ivory Hanbok-inspired doctor coat)',
-        navy_suit: 'wearing a bespoke dark navy suit with a crisp white medical coat',
-        scrub_coat: 'wearing dark navy clinical scrubs under a crisp white doctor coat'
-      };
-
-      const subjectMap = {
-        director_solo: 'Korean male medical director in his early 40s with neat hair, warm trustworthy expression, solo focus',
-        director_patient: 'Korean male medical director in his early 40s interacting warmly and professionally with a Korean patient in a 1-on-1 clinical scene',
-        patient_empathy: 'Photorealistic Korean adult patient in a natural lifestyle or wellness clinic moment (no doctor in frame)',
-        object_clinic: 'High-end still life / architectural interior photography of luxury Korean medicine clinic and herbal medicine (no people)'
-      };
-
-      const extraKeywords = [];
-      if (t.includes('초음파')) extraKeywords.push('diagnostic ultrasound probe and high-resolution medical ultrasound monitor');
-      if (t.includes('체열') || t.includes('열화상')) extraKeywords.push('infrared thermography body heat map monitor');
-      if (t.includes('맥진') || t.includes('진맥') || t.includes('손끝')) extraKeywords.push('three fingers gently checking pulse on patient wrist over silk cushion');
-      if (t.includes('복진')) extraKeywords.push('gentle abdominal palpation exam on clinical bed');
-      if (t.includes('추나') || t.includes('교정')) extraKeywords.push('hands-on Chuna spinal adjustment therapy on specialized chiropractic table');
-      if (t.includes('탕전') || t.includes('달이')) extraKeywords.push('herbal decoction room with rising warm steam and premium medicinal herbs');
-      if (t.includes('논문') || t.includes('연구')) extraKeywords.push('medical research papers, academic journals, and clinical charts');
-      if (t.includes('공진단')) extraKeywords.push('24k gold-leaf wrapped Gongjindan herbal pills in luxury walnut wooden box');
-      if (t.includes('녹용')) extraKeywords.push('premium Russian deer antler slices (Nokyong) on wooden tray');
-      if (t.includes('성장') || t.includes('아이') || t.includes('어린이')) extraKeywords.push('pediatric growth consultation with a smiling Korean child and mother');
-      if (t.includes('다이어트') || t.includes('체성분')) extraKeywords.push('body composition analyzer chart and sleek herbal diet pouches');
-      if (t.includes('탈모') || t.includes('두피')) extraKeywords.push('digital scalp trichoscope and hair follicle density screen');
-      if (t.includes('전립선') || t.includes('남성')) extraKeywords.push('private VIP consultation room with middle-aged male patient');
-
-      return [
-        subjectMap[imState.subjectMode] || subjectMap.director_patient,
-        imState.subjectMode.startsWith('director') ? (outfitMap[imState.outfitMode] || outfitMap.white_coat) : '',
-        presetPrompt,
-        extraKeywords.join(', '),
-        'Bareun Korean Medicine Clinic aesthetic, warm Hanji paper and dark walnut wood interior, soft golden natural light, shot on Hasselblad H6D 80mm f/2.8, photorealistic, no text, no watermark'
-      ].filter(Boolean).join(', ');
-    }
-
-    function selectImPreset(presetId) {
-      const pr = IM_SITUATIONAL_PRESETS.find(p => p.id === presetId);
-      if (!pr) return;
-      imState.selectedPresetId = pr.id;
-      imState.subjectMode = pr.subject;
-      imState.outfitMode = pr.outfit;
-      imState.koSituation = pr.koSituation;
-      imState.enPrompt = buildEnglishPromptFromKoSituation(pr.koSituation, pr);
-      if (!imState.newCardTitle) {
-        imState.newCardTitle = `${pr.title} — '맞춤 정밀 진료'`;
-      }
-      if (!imState.newCardSub) {
-        imState.newCardSub = pr.desc;
-      }
+    function toggleImDirectorFace(checked) {
+      imState.useDirectorFace = Boolean(checked);
       renderImageMakerPane();
     }
 
     function updateImOption(key, val) {
-      imState[key] = val;
-      const pr = IM_SITUATIONAL_PRESETS.find(p => p.id === imState.selectedPresetId) || IM_SITUATIONAL_PRESETS[0];
       if (key === 'targetCardIdx') {
         imState.targetCardIdx = parseInt(val, 10) || 0;
-        extractSituationFromTargetCard(imState.targetCardIdx, false);
-      } else if (['subjectMode', 'outfitMode', 'koSituation'].includes(key)) {
-        imState.enPrompt = buildEnglishPromptFromKoSituation(imState.koSituation, pr);
-      }
-      if (key !== 'koSituation' && key !== 'enPrompt' && key !== 'newCardTitle' && key !== 'newCardSub') {
+        syncImPromptFromCurrentCard(imState.targetCardIdx, false);
         renderImageMakerPane();
-      } else {
-        const enBox = document.getElementById('imEnPromptInput');
-        if (enBox && key === 'koSituation') enBox.value = imState.enPrompt;
+        return;
       }
+      imState[key] = val;
+      if (key === 'targetMode') {
+        renderImageMakerPane();
+      }
+    }
+
+    function pickBestAngleSampleForPrompt(promptStr) {
+      const t = String(promptStr || '').toLowerCase();
+      const findSlot = (k) => imState.angleSamples.find(s => s.key === k) || imState.angleSamples[0];
+      if (/좌측\s*측면|왼쪽\s*옆모습|왼쪽\s*측면|left\s*profile/i.test(t)) return findSlot('leftProfile');
+      if (/우측\s*측면|오른쪽\s*옆모습|오른쪽\s*측면|right\s*profile/i.test(t)) return findSlot('rightProfile');
+      if (/좌측|왼쪽|left\s*30|left\s*three/i.test(t)) return findSlot('left30');
+      if (/우측|오른쪽|모니터|초음파|진맥|상담|문진|right\s*30|three-quarter/i.test(t)) return findSlot('right30');
+      return findSlot('front');
+    }
+
+    function preprocessKoMedicalPromptBrowser(rawPrompt) {
+      const rules = [
+        [/2\s*[,·ㆍ/\-]?\s*3\s*[,·ㆍ/\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/g, '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers gently side-by-side)'],
+        [/요골\s*동맥/g, '손목 엄지 아래쪽 요골동맥 부위(the radial artery on the inner thumb-side of the patient wrist)'],
+        [/진맥\s*쿠션/g, '전통 비단 진맥 쿠션(a beige woven-silk pulse diagnosis wrist cushion)'],
+        [/맥진|진맥/g, '전통 한의학 손목 맥진(traditional Korean medicine radial pulse diagnosis on the wrist)'],
+        [/복진/g, '진료 베드에 누운 환자의 복부를 손바닥으로 부드럽게 촉진하는 복진(gentle abdominal palpation diagnosis on an examination bed)'],
+        [/추나\s*요법|추나\s*교정|추나/g, '추나 교정 테이블에서 척추와 골반 정렬을 양손으로 정교하게 교정하는 수기 추나 치료(precise hands-on Chuna manual spinal and pelvic alignment therapy)'],
+        [/약침/g, '멸균 한방 약침 주사 시술(sterile herbal pharmacopuncture point therapy)'],
+        [/탕전실/g, '위생적인 유리 통창 원내 한약 탕전실(clean modern glass-walled clinic herbal decoction room)'],
+        [/황제\s*공진단|공진단/g, '24K 순금박으로 감싼 황제공진단 환약과 고급 원목 목함(24K pure gold-leaf wrapped Gongjindan herbal pills inside a dark walnut wooden box)'],
+        [/녹용\s*분골|러시아\s*녹용|녹용/g, '최상급 러시아산 녹용 분골 절편(top-grade sliced Russian velvet deer antler tips)'],
+        [/체열\s*진단기|적외선\s*체열/g, '전신 적외선 체열진단 열화상 모니터(medical infrared thermography body heat-map monitor)'],
+        [/초음파\s*진단기|초음파\s*모니터|초음파/g, '정밀 초음파 진단 프로브와 실시간 초음파 영상 모니터(medical diagnostic ultrasound transducer probe and live grayscale ultrasound monitor)']
+      ];
+      let text = String(rawPrompt || '').trim();
+      const tokens = [];
+      for (const [regex, replacement] of rules) {
+        text = text.replace(regex, () => {
+          const id = `__BMED_${tokens.length}__`;
+          tokens.push(replacement);
+          return id;
+        });
+      }
+      for (let i = 0; i < tokens.length; i++) {
+        text = text.split(`__BMED_${i}__`).join(tokens[i]);
+      }
+      return text;
+    }
+
+    async function translateKoToEnBrowser(rawPrompt, useDirectorFace) {
+      const prepped = preprocessKoMedicalPromptBrowser(rawPrompt);
+      let translated = prepped;
+      if (/[가-힣]/.test(prepped)) {
+        try {
+          const gUrl = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' + encodeURIComponent(prepped);
+          const res = await fetch(gUrl);
+          if (res.ok) {
+            const arr = await res.json();
+            if (Array.isArray(arr) && Array.isArray(arr[0])) {
+              translated = arr[0].map(seg => (Array.isArray(seg) ? seg[0] : '')).join('').trim() || prepped;
+            }
+          }
+        } catch (e) {}
+      }
+      const directorLead = useDirectorFace
+        ? 'Korean male medical director in his late 30s to early 40s with neat short black hair swept back cleanly revealing an open forehead (no bangs covering forehead), wearing thin gold-rimmed rectangular glasses and a crisp white medical coat over a blue-and-white striped dress shirt, warm trustworthy expression'
+        : '';
+      return [
+        'Authentic unretouched editorial photograph captured on Hasselblad X2D 100C with 80mm f/1.9 prime lens',
+        directorLead,
+        translated,
+        'refined warm Korean medicine clinic atmosphere with natural oak wood and soft Hanji daylight, realistic anatomical hands and fingers, authentic skin pores and natural fabric weave, cinematic shallow depth of field, ultra-clean composition, strictly NO text, NO logos, NO watermarks'
+      ].filter(Boolean).join(', ');
+    }
+
+    async function blobToCleanJpegDataUrl(blob, targetW = 1280, targetH = 800) {
+      const bmpUrl = URL.createObjectURL(blob);
+      try {
+        const img = await new Promise((resolve, reject) => {
+          const el = new Image();
+          el.crossOrigin = 'anonymous';
+          el.onload = () => resolve(el);
+          el.onerror = () => reject(new Error('생성 이미지 디코딩 실패'));
+          el.src = bmpUrl;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        const ctx = canvas.getContext('2d');
+        const srcRatio = img.width / img.height;
+        const dstRatio = targetW / targetH;
+        let sx = 0, sy = 0, sw = img.width, sh = img.height;
+        if (srcRatio > dstRatio) {
+          sw = Math.round(img.height * dstRatio);
+          sx = Math.round((img.width - sw) / 2);
+        } else if (srcRatio < dstRatio) {
+          sh = Math.round(img.width / dstRatio);
+          sy = Math.round((img.height - sh) / 2);
+        }
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
+        return canvas.toDataURL('image/jpeg', 0.95);
+      } finally {
+        URL.revokeObjectURL(bmpUrl);
+      }
+    }
+
+    async function generateViaBrowserCloudFlux(enPrompt, useDirectorFace, seed, onStep) {
+      const { Client } = await import('https://cdn.jsdelivr.net/npm/@gradio/client/+esm');
+      let baseImgBlob = null;
+      let engineUsed = 'FLUX.1-dev (28-Step DSLR)';
+
+      let angleBlob = null;
+      let matchedSlot = null;
+      if (useDirectorFace) {
+        matchedSlot = pickBestAngleSampleForPrompt(imState.promptText);
+        if (matchedSlot && matchedSlot.fileName) {
+          try {
+            const refUrl = resolveStudioAssetUrl(matchedSlot.fileName);
+            const refRes = await fetch(refUrl);
+            if (refRes.ok) angleBlob = await refRes.blob();
+          } catch (e) {}
+        }
+      }
+
+      // 1) Try official Black Forest Labs FLUX.1-dev (28 steps, top photorealism, zero watermark)
+      try {
+        onStep('1/2 FLUX.1-dev 하이엔드 실사 스튜디오 촬영 중 (워터마크 ZERO)...');
+        const fluxDev = await Client.connect('black-forest-labs/FLUX.1-dev');
+        const devRes = await fluxDev.predict('/infer', {
+          prompt: enPrompt,
+          seed: seed % 2147483647,
+          randomize_seed: false,
+          width: 1280,
+          height: 800,
+          guidance_scale: 3.5,
+          num_inference_steps: 28
+        });
+        const outUrl = devRes?.data?.[0]?.url;
+        if (outUrl) {
+          baseImgBlob = await fetch(outUrl).then(r => r.blob());
+        }
+      } catch (e1) {
+        console.warn('[Cloud FLUX.1-dev busy, trying PuLID-FLUX / Schnell]:', e1);
+      }
+
+      // 2) If Director Face is ON and FLUX.1-dev was busy, try PuLID-FLUX directly with angle sample
+      if (!baseImgBlob && useDirectorFace && angleBlob) {
+        try {
+          onStep(`1/2 PuLID-FLUX 원장님 [${matchedSlot.label}] 얼굴 고정 촬영 중...`);
+          const pulid = await Client.connect('yanze/PuLID-FLUX');
+          const pRes = await pulid.predict('/generate_image', {
+            prompt: enPrompt,
+            id_image: angleBlob,
+            start_step: 0,
+            guidance: 4,
+            seed: String(seed % 2147483647),
+            true_cfg: 1,
+            width: 1280,
+            height: 800,
+            num_steps: 20,
+            id_weight: 1.08,
+            neg_prompt: 'watermark, logo, text, signature, cartoon, illustration, 3d render, plastic skin, bangs covering forehead, extra fingers',
+            timestep_to_start_cfg: 1,
+            max_sequence_length: 256
+          });
+          const pUrl = pRes?.data?.[0]?.url;
+          if (pUrl) {
+            baseImgBlob = await fetch(pUrl).then(r => r.blob());
+            engineUsed = `PuLID-FLUX (${matchedSlot.label} 인물고정)`;
+          }
+        } catch (e2) {
+          console.warn('[PuLID-FLUX fallback]:', e2);
+        }
+      }
+
+      // 3) Fallback to official Black Forest Labs FLUX.1-schnell (zero watermark)
+      if (!baseImgBlob) {
+        onStep('1/2 FLUX.1-schnell 고해상도 실사 촬영 중 (워터마크 ZERO)...');
+        const schnell = await Client.connect('black-forest-labs/FLUX.1-schnell');
+        const sRes = await schnell.predict('/infer', {
+          prompt: enPrompt,
+          seed: seed % 2147483647,
+          randomize_seed: false,
+          width: 1280,
+          height: 800,
+          num_inference_steps: 4
+        });
+        const sUrl = sRes?.data?.[0]?.url;
+        if (!sUrl) throw new Error('클라우드 FLUX 이미지 생성 응답 없음');
+        baseImgBlob = await fetch(sUrl).then(r => r.blob());
+        engineUsed = 'FLUX.1-schnell (고해상도 실사)';
+      }
+
+      // 4) If Director Face is ON, apply angle-matched ZeroGPU Face Lock synthesis
+      if (useDirectorFace && angleBlob) {
+        onStep(`2/2 원장님 [${matchedSlot.label}] 샘플링 얼굴 오차 ZERO 정밀 합성 중...`);
+        const swapSpaces = [
+          { space: 'Felixrosberg/face-swap', fn: '/run_inference', buildArgs: (src, dst) => ({ source: src, target: dst, slider: 100, adv_slider: 100, settings: [] }) },
+          { space: 'TonyAssi/Face-Swap', fn: '/swap_faces', buildArgs: (src, dst) => ({ src_img: src, dest_img: dst }) }
+        ];
+        for (const sp of swapSpaces) {
+          try {
+            const swClient = await Client.connect(sp.space);
+            const swRes = await swClient.predict(sp.fn, sp.buildArgs(angleBlob, baseImgBlob));
+            const swItem = Array.isArray(swRes?.data) ? swRes.data[0] : swRes?.data;
+            const swUrl = swItem?.url || (typeof swItem === 'string' ? swItem : '');
+            if (swUrl) {
+              baseImgBlob = await fetch(swUrl).then(r => r.blob());
+              engineUsed = `${engineUsed} + [${matchedSlot.label}] 얼굴 정밀 합성`;
+              break;
+            }
+          } catch (swErr) {
+            console.warn(`[Cloud FaceSwap ${sp.space} skipped]:`, swErr);
+          }
+        }
+      }
+
+      const cleanDataUrl = await blobToCleanJpegDataUrl(baseImgBlob, 1280, 800);
+      return { dataUrl: cleanDataUrl, engineLabel: engineUsed };
     }
 
     async function generateSituationalImage() {
@@ -3504,109 +3605,93 @@
       const page = getCurrentPage();
       if (!page) return;
 
-      imState.isGenerating = true;
-      renderImageMakerPane();
-      showStatus('working', '📸 상황별 맞춤 이미지를 AI로 제작하고 있습니다 (약 6~15초 소요)...');
+      const cleanPrompt = String(imState.promptText || '').trim();
+      if (!cleanPrompt) {
+        alert('제작할 이미지 프롬프트를 입력하거나 [현재 카드 프롬프트 불러오기]를 눌러주세요.');
+        const ta = document.getElementById('imMainPromptTextarea');
+        if (ta) ta.focus();
+        return;
+      }
 
-      const ratioMap = {
-        '16:10': { width: 1280, height: 800 },
-        '16:9': { width: 1280, height: 720 },
-        '4:3': { width: 1200, height: 900 }
-      };
-      const dims = ratioMap[imState.aspectRatio] || ratioMap['16:10'];
-      const seed = Math.floor(100000 + Math.random() * 899999);
-      const fileStem = `studio_${page.slug || 'clinic'}_${imState.selectedPresetId}_${seed}`;
+      imState.isGenerating = true;
+      imState.genStepText = imState.useDirectorFace
+        ? '원장님 각도별 샘플 얼굴 매칭 및 하이엔드 DSLR 실사 촬영 준비 중...'
+        : '하이엔드 DSLR 에디토리얼 실사 이미지 촬영 중 (워터마크 ZERO)...';
+      renderImageMakerPane();
+      showStatus('working', `📸 ${imState.genStepText}`);
+
+      const seed = Math.floor(10000000 + Math.random() * 89999999);
+      const fileStem = `bareun_im_${page.slug || 'clinic'}_${seed}`;
 
       try {
-        // 1) If user selected local_pulid (or wants to try local Identity Lock Studio on port 4500 first)
-        if (imState.engineMode === 'local_pulid') {
-          try {
-            const outfitKeyMap = {
-              white_coat: 'white_coat_tie',
-              hanbok_coat: 'modern_hanbok_gown',
-              navy_suit: 'navy_suit',
-              scrub_coat: 'scrub_coat'
-            };
-            const localRes = await fetch('http://localhost:4500/api/generate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                profileId: 'director_ahn',
-                scenePrompt: imState.koSituation || imState.enPrompt,
-                outfitKey: outfitKeyMap[imState.outfitMode] || 'white_coat_tie',
-                imageSize: imState.aspectRatio === '4:3' ? 'landscape_4_3' : 'landscape_16_9',
-                faceLock: imState.subjectMode.startsWith('director'),
-                enhanceBlend: 0.85
-              })
-            });
-            const startData = await localRes.json();
-            if (startData && startData.ok && startData.jobId) {
-              let completedEntry = null;
-              for (let poll = 0; poll < 90; poll++) {
-                await new Promise(r => setTimeout(r, 1500));
-                const jr = await fetch('http://localhost:4500/api/jobs/' + startData.jobId).then(r => r.json());
-                if (jr && jr.ok && jr.job) {
-                  if (jr.job.stepText) {
-                    showStatus('working', `🔒 [로컬 4500번 사진관] ${jr.job.stepText} (${jr.job.progress || 0}%)`);
-                  }
-                  if (jr.job.status === 'completed' && jr.job.result) {
-                    completedEntry = jr.job.result;
-                    break;
-                  }
-                  if (jr.job.status === 'failed') {
-                    throw new Error(jr.job.error || '로컬 생성 실패');
-                  }
-                }
-              }
-              if (completedEntry && completedEntry.finalUrl) {
-                const imgBlob = await fetch('http://localhost:4500' + completedEntry.finalUrl).then(r => r.blob());
-                const dataUrl = await new Promise((resolve) => {
-                  const reader = new FileReader();
-                  reader.onload = () => resolve(reader.result);
-                  reader.readAsDataURL(imgBlob);
-                });
-                const saved = await uploadDataUrlToStudio(`${fileStem}.png`, dataUrl);
-                finishSituationalGeneration(saved, `${fileStem}.png`, 'GTX 1070 원장님 374장 얼굴고정 엔진');
-                return;
-              }
-            }
-          } catch (localErr) {
-            console.warn('[Local 4500 not reachable, falling back to 24/7 Cloud AI]:', localErr);
+        // Path A: Local Custom Studio (serve.js + studio-ai-engine.js + GTX 1070 Multi-Angle ArcFace/GFPGAN)
+        if (!IS_WORDPRESS) {
+          const res = await fetch('/api/studio-generate-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userPrompt: cleanPrompt,
+              prompt: cleanPrompt,
+              useDirectorFace: imState.useDirectorFace,
+              width: 1280,
+              height: 800,
+              seed,
+              filePrefix: fileStem
+            })
+          });
+          const data = await res.json();
+          if (!data || !data.ok || !(data.fileName || data.url)) {
+            throw new Error((data && data.error) || '로컬 스튜디오 이미지 생성 실패');
           }
+          const finalAsset = data.fileName || data.url;
+          finishSituationalGeneration(finalAsset, data.fileName || finalAsset, data.engine || 'FLUX.1-dev 하이엔드 스튜디오');
+          return;
         }
 
-        // 2) 24/7 Server-side Cloud Generation (WordPress REST or Local serve.js)
-        let apiEndpoint = '/api/studio-generate-image';
+        // Path B: 24/7 Cloud WordPress Studio (Browser ZeroGPU FLUX.1-dev + Angle Face Lock -> WP Media Upload)
+        const enPrompt = await translateKoToEnBrowser(cleanPrompt, imState.useDirectorFace);
+        try {
+          const cloudOut = await generateViaBrowserCloudFlux(enPrompt, imState.useDirectorFace, seed, (stepMsg) => {
+            imState.genStepText = stepMsg;
+            showStatus('working', `📸 ${stepMsg}`);
+            const stEl = document.getElementById('imLiveStepLabel');
+            if (stEl) stEl.textContent = stepMsg;
+          });
+          const savedUrl = await uploadDataUrlToStudio(`${fileStem}.jpg`, cloudOut.dataUrl);
+          finishSituationalGeneration(savedUrl, `${fileStem}.jpg`, cloudOut.engineLabel);
+          return;
+        } catch (browserCloudErr) {
+          console.warn('[Browser Gradio ESM fallback to WP REST HF FLUX]:', browserCloudErr);
+        }
+
+        // Fallback C: Server-side WordPress REST HF FLUX.1-dev / FLUX.1-schnell (still 100% Watermark-Free)
         const headers = { 'Content-Type': 'application/json' };
-        if (IS_WORDPRESS) {
-          apiEndpoint = '/wp-json/bareun/v1/studio/generate-image';
-          if (window.wpApiSettings && window.wpApiSettings.nonce) {
-            headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
-          }
+        if (window.wpApiSettings && window.wpApiSettings.nonce) {
+          headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
         }
-
-        const res = await fetch(apiEndpoint, {
+        const wpRes = await fetch('/wp-json/bareun/v1/studio/generate-image', {
           method: 'POST',
           headers,
           body: JSON.stringify({
-            prompt: imState.enPrompt,
-            width: dims.width,
-            height: dims.height,
+            prompt: enPrompt,
+            width: 1280,
+            height: 800,
             seed,
             filePrefix: fileStem
           })
         });
-        const data = await res.json();
-        if (data && data.ok && (data.url || data.fileName)) {
-          const finalAsset = IS_WORDPRESS ? (data.url || data.fileName) : (data.fileName || data.url);
-          finishSituationalGeneration(finalAsset, data.fileName || finalAsset, '24시간 클라우드 FLUX 스튜디오');
+        const wpData = await wpRes.json();
+        if (wpData && wpData.ok && (wpData.url || wpData.fileName)) {
+          const finalAsset = wpData.url || wpData.fileName;
+          finishSituationalGeneration(finalAsset, wpData.fileName || finalAsset, '24시간 클라우드 FLUX.1 스튜디오');
           return;
         }
-        throw new Error((data && data.error) || '이미지 생성 서버 응답 오류');
+        throw new Error((wpData && wpData.error) || '클라우드 이미지 생성 서버 응답 오류');
       } catch (err) {
         imState.isGenerating = false;
+        imState.genStepText = '';
         renderImageMakerPane();
-        showStatus('err', '상황 이미지 생성 실패: ' + err.message);
+        showStatus('err', '이미지 제작 실패: ' + err.message);
       }
     }
 
@@ -3631,6 +3716,7 @@
 
     function finishSituationalGeneration(assetPath, fileName, engineLabel) {
       imState.isGenerating = false;
+      imState.genStepText = '';
       imState.lastGeneratedUrl = assetPath;
       imState.lastGeneratedFileName = fileName;
 
@@ -3645,20 +3731,20 @@
         assetPath,
         fileName,
         pageLabel: page ? page.label : '',
-        presetId: imState.selectedPresetId,
-        koSituation: imState.koSituation,
+        promptText: imState.promptText,
+        useDirectorFace: imState.useDirectorFace,
         createdAt: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
       });
       saveImHistory();
 
       renderImageMakerPane();
-      showStatus('ok', `✨ [${engineLabel}] 새 상황 이미지가 성공적으로 제작되었습니다! 아래 버튼으로 카드에 바로 반영하거나 새 카드로 추가하세요.`);
+      showStatus('ok', `✨ [${engineLabel}] 워터마크 없는 최상급 실사 이미지가 완성되었습니다! 아래 반영 버튼을 눌러 카드에 바로 적용하세요.`);
     }
 
     function applyGeneratedImageToCard(modeOverride, customAssetPath) {
       const assetToUse = customAssetPath || imState.lastGeneratedUrl;
       if (!assetToUse) {
-        alert('먼저 상황 이미지를 생성하거나 아래 히스토리에서 이미지를 선택해 주세요.');
+        alert('먼저 이미지를 제작하거나 아래 최근 보관함에서 이미지를 선택해 주세요.');
         return;
       }
       const page = getCurrentPage();
@@ -3668,7 +3754,6 @@
 
       if (mode === 'add_new_card') {
         const nextNum = (page.plates || []).length + 1;
-        const pr = IM_SITUATIONAL_PRESETS.find(p => p.id === imState.selectedPresetId) || IM_SITUATIONAL_PRESETS[0];
         const newCard = {
           id: 'card_im_' + Date.now(),
           enabled: true,
@@ -3676,9 +3761,12 @@
           fullscreen: true,
           fit: 'cover',
           stepLabel: 'STORY ' + String(nextNum).padStart(2, '0'),
-          title: imState.newCardTitle || `${pr.title} — '맞춤 정밀 치료'`,
-          sub: imState.newCardSub || imState.koSituation,
+          title: imState.newCardTitle || `맞춤 진료 스토리 — '정밀 케어'`,
+          sub: imState.newCardSub || imState.promptText,
           imgSrc: assetToUse,
+          imagePrompt: imState.promptText,
+          imagePromptAsset: assetToUse,
+          imagePromptDirectorFace: imState.useDirectorFace,
           pillars: [],
           tags: []
         };
@@ -3688,23 +3776,22 @@
         markDirty(true);
         renderAll();
         reloadPreviewIframe();
-        showStatus('ok', `➕ [${page.label}] 페이지의 CARD ${String(page.plates.length).padStart(2, '0')}번으로 새 상황 스토리 카드가 추가되었습니다!`);
+        showStatus('ok', `➕ [${page.label}] 페이지의 CARD ${String(page.plates.length).padStart(2, '0')}번으로 새 스토리 카드가 추가되었습니다!`);
         return;
       }
 
       if (mode === 'add_sub_thumb') {
         const card = page.plates[idx];
         if (!Array.isArray(card.thumbs)) card.thumbs = [];
-        const pr = IM_SITUATIONAL_PRESETS.find(p => p.id === imState.selectedPresetId) || IM_SITUATIONAL_PRESETS[0];
         card.thumbs.push({
-          label: pr.title.slice(0, 10),
+          label: '추가 장면 ' + (card.thumbs.length + 1),
           img: assetToUse
         });
         expandedCards.add(idx);
         markDirty(true);
         renderAll();
         reloadPreviewIframe();
-        showStatus('ok', `🖼️ CARD ${String(idx + 1).padStart(2, '0')}의 서브 썸네일 목록에 새 상황 이미지가 추가되었습니다!`);
+        showStatus('ok', `🖼️ CARD ${String(idx + 1).padStart(2, '0')}의 서브 썸네일 목록에 새 이미지가 추가되었습니다!`);
         return;
       }
 
@@ -3713,11 +3800,14 @@
       if (!card) return;
       const field = imState.targetField || 'imgSrc';
       card[field] = assetToUse;
+      card.imagePrompt = imState.promptText;
+      card.imagePromptAsset = assetToUse;
+      card.imagePromptDirectorFace = imState.useDirectorFace;
       expandedCards.add(idx);
       markDirty(true);
       renderAll();
       reloadPreviewIframe();
-      showStatus('ok', `✅ CARD ${String(idx + 1).padStart(2, '0')}의 [${field}] 이미지가 새로 제작한 상황 이미지로 교체되었습니다!`);
+      showStatus('ok', `✅ CARD ${String(idx + 1).padStart(2, '0')}의 이미지가 새로 제작한 고화질 이미지로 교체되었습니다!`);
     }
 
     function renderImageMakerPane() {
@@ -3727,193 +3817,195 @@
       if (!page) return;
       const plates = page.plates || [];
       if (imState.targetCardIdx >= plates.length) imState.targetCardIdx = Math.max(0, plates.length - 1);
+      if (!imState.promptText && imState.workMode === 'edit_current' && plates.length > 0) {
+        syncImPromptFromCurrentCard(imState.targetCardIdx, false);
+      }
+
       const targetCard = plates[imState.targetCardIdx] || {};
-      const currentRawImg = getCardPreviewRawPath(targetCard);
+      const currentRawImg = (imState.targetField && targetCard[imState.targetField])
+        ? targetCard[imState.targetField]
+        : getCardPreviewRawPath(targetCard);
       const currentImgUrl = resolveStudioAssetUrl(currentRawImg);
       const generatedImgUrl = imState.lastGeneratedUrl ? resolveStudioAssetUrl(imState.lastGeneratedUrl) : '';
-
-      const catFilter = imState.selectedCat || 'all';
-      const filteredPresets = catFilter === 'all'
-        ? IM_SITUATIONAL_PRESETS
-        : IM_SITUATIONAL_PRESETS.filter(p => p.cat === catFilter);
+      const cardNumStr = String(imState.targetCardIdx + 1).padStart(2, '0');
 
       box.innerHTML = `
         <div class="im-studio-hero">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
             <div>
-              <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:rgba(212,175,55,0.22); border:1px solid rgba(212,175,55,0.55); color:#fde68a; font-size:11px; font-weight:900; margin-bottom:6px;">
-                📸 BAREUN SITUATIONAL AI IMAGEMAKER · 상황별 맞춤 이미지 제작 스튜디오
+              <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:rgba(16,185,129,0.22); border:1px solid rgba(52,211,153,0.55); color:#a7f3d0; font-size:11px; font-weight:900; margin-bottom:6px;">
+                📸 BAREUN HIGH-END RAW STUDIO · 워터마크 ZERO · 다각도 인물 고정
               </span>
-              <h3>[${escHtml(page.label)}] 상황에 맞는 새 이미지를 즉시 제작해 카드에 추가하세요</h3>
-              <p>24가지 진료·검진·치료·한약 상황 프리셋을 선택하거나 원하는 상황을 한국어로 적으면, Sample A 스토리 카드 비율에 맞춘 고해상도 이미지를 생성합니다.</p>
-            </div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap;">
-              <a href="http://localhost:4500" target="_blank" rel="noopener" class="btn" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3); font-size:11.5px; text-decoration:none;">
-                🔒 로컬 4500번 사진관 전체창 열기 ↗
-              </a>
+              <h3>[${escHtml(page.label)}] 카드 프롬프트 직독·수정 &amp; 상황 이미지 제작</h3>
+              <p>복잡한 템플릿 없이 현재 카드 이미지의 프롬프트를 그대로 읽어와 수정하거나, 새 상황을 직접 적어 기존 카드 수준의 DSLR 실사로 제작합니다.</p>
             </div>
           </div>
         </div>
 
-        <!-- STEP 1: Target Card & Current Image Preview -->
+        <!-- STEP 1: Target Card Selection -->
         <div class="panel-box" style="background:#fcfaf5; padding:14px; margin-bottom:14px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-            <strong style="font-size:13.5px;">1️⃣ 적용할 대상 카드 선택 &amp; 현재 사용중인 이미지 확인</strong>
-            <button type="button" class="mini-btn gold-helper" onclick="extractSituationFromTargetCard(imState.targetCardIdx, true)">
-              🪄 선택 카드의 제목·본문에서 상황 자동 추출
-            </button>
-          </div>
-
-          <div class="grid-2">
-            <div class="field">
-              <label>대상 스토리 카드 선택 (${plates.length}장 중 선택)</label>
+          <div class="grid-2" style="margin-bottom:0;">
+            <div class="field" style="margin-bottom:0;">
+              <label>1️⃣ 작업할 대상 스토리 카드 선택 (${plates.length}장 중 선택 시 해당 이미지 프롬프트 자동 로드)</label>
               <select onchange="updateImOption('targetCardIdx', this.value)">
                 ${plates.map((c, cIdx) => `
                   <option value="${cIdx}" ${cIdx === imState.targetCardIdx ? 'selected' : ''}>
-                    CARD ${String(cIdx + 1).padStart(2, '0')} · ${(c.title || c.badge || '카드').replace(/'/g, '')}
+                    CARD ${String(cIdx + 1).padStart(2, '0')} · ${(c.title || c.badge || '스토리 카드').replace(/'/g, '')}
                   </option>
                 `).join('')}
               </select>
             </div>
-            <div class="field">
-              <label>제작 후 반영 방식 선택</label>
+            <div class="field" style="margin-bottom:0;">
+              <label>제작 후 반영 방식</label>
               <select onchange="updateImOption('targetMode', this.value)">
-                <option value="replace_card" ${imState.targetMode === 'replace_card' ? 'selected' : ''}>🔄 선택한 카드(CARD ${String(imState.targetCardIdx + 1).padStart(2, '0')})의 메인 이미지 교체</option>
-                <option value="add_new_card" ${imState.targetMode === 'add_new_card' ? 'selected' : ''}>➕ 현재 페이지에 '새 스토리 카드'로 추가</option>
-                <option value="add_sub_thumb" ${imState.targetMode === 'add_sub_thumb' ? 'selected' : ''}>🖼️ 선택한 카드의 '클릭 전환용 서브 썸네일'로 추가</option>
+                <option value="replace_card" ${imState.targetMode === 'replace_card' ? 'selected' : ''}>🔄 현재 CARD ${cardNumStr} 이미지 교체</option>
+                <option value="add_new_card" ${imState.targetMode === 'add_new_card' ? 'selected' : ''}>➕ 현재 페이지에 새 스토리 카드로 추가</option>
+                <option value="add_sub_thumb" ${imState.targetMode === 'add_sub_thumb' ? 'selected' : ''}>🖼️ 현재 CARD ${cardNumStr} 서브 썸네일로 추가</option>
               </select>
             </div>
           </div>
 
           ${imState.targetMode === 'add_new_card' ? `
-            <div class="grid-2" style="margin-top:6px; padding-top:10px; border-top:1px dashed var(--border);">
-              <div class="field">
-                <label>추가할 새 카드 제목 (H2 · <code>'골드 강조'</code> 지원)</label>
-                <input type="text" value="${escHtml(imState.newCardTitle)}" placeholder="예: 보이지 않는 통증 뿌리를 찾는 '1:1 맞춤 정밀 진료'"
+            <div class="grid-2" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);">
+              <div class="field" style="margin-bottom:0;">
+                <label>새 카드 제목 (H2 · <code>'골드 강조'</code> 지원)</label>
+                <input type="text" value="${escHtml(imState.newCardTitle)}" placeholder="예: 손끝으로 읽어내는 '오장육부와 자율신경'의 파동"
                   oninput="updateImOption('newCardTitle', this.value)" />
               </div>
-              <div class="field">
-                <label>추가할 새 카드 하단 본문 설명 (P)</label>
-                <input type="text" value="${escHtml(imState.newCardSub)}" placeholder="예: 증상 너머의 생활습관과 체질까지 깊이 있게 살핍니다."
+              <div class="field" style="margin-bottom:0;">
+                <label>새 카드 본문 설명 (P)</label>
+                <input type="text" value="${escHtml(imState.newCardSub)}" placeholder="예: 증상 너머의 근본 원인을 정밀하게 살핍니다."
                   oninput="updateImOption('newCardSub', this.value)" />
               </div>
             </div>
           ` : ''}
         </div>
 
-        <!-- STEP 2: 24 Situational Presets -->
-        <div class="panel-box" style="padding:14px; margin-bottom:14px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-            <strong style="font-size:13.5px;">2️⃣ 어떤 상황의 이미지를 제작할까요? (24종 임상·스토리 상황 템플릿)</strong>
-            <div style="display:flex; gap:5px; flex-wrap:wrap;">
-              <button type="button" class="mini-btn ${catFilter === 'all' ? 'gold-helper' : ''}" onclick="updateImOption('selectedCat', 'all')">전체 (24)</button>
-              <button type="button" class="mini-btn ${catFilter === 'director' ? 'gold-helper' : ''}" onclick="updateImOption('selectedCat', 'director')">🩺 대표원장 진료·탕전 (6)</button>
-              <button type="button" class="mini-btn ${catFilter === 'exam' ? 'gold-helper' : ''}" onclick="updateImOption('selectedCat', 'exam')">📡 9대 정밀검진 (6)</button>
-              <button type="button" class="mini-btn ${catFilter === 'clinic' ? 'gold-helper' : ''}" onclick="updateImOption('selectedCat', 'clinic')">🦴 클리닉별 시술·상담 (6)</button>
-              <button type="button" class="mini-btn ${catFilter === 'herb' ? 'gold-helper' : ''}" onclick="updateImOption('selectedCat', 'herb')">👑 한약·공간·일상공감 (6)</button>
-            </div>
+        <!-- STEP 2: Director Multi-Angle Sampled Face Registration -->
+        <div class="im-director-box ${imState.useDirectorFace ? 'active' : ''}">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <label style="display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13.5px; font-weight:800; color:var(--ink); margin:0;">
+              <input type="checkbox" style="width:18px; height:18px; accent-color:#059669; cursor:pointer;"
+                ${imState.useDirectorFace ? 'checked' : ''}
+                onchange="toggleImDirectorFace(this.checked)" />
+              <span>👨‍⚕️ 안정위 대표원장님 얼굴 합성하기 (각도별 샘플링 얼굴 오차 ZERO 매칭)</span>
+            </label>
+            <span style="font-size:11.5px; color:${imState.useDirectorFace ? '#047857' : 'var(--text-muted)'}; font-weight:700;">
+              ${imState.useDirectorFace ? '✅ 활성화됨 · 프롬프트 각도에 맞춰 아래 5각도 실제 얼굴이 정밀 합성됩니다' : '체크 해제 시 원장님 얼굴 없이 일반 진료·손동작·환자·약재 상황 실사로 생성됩니다'}
+            </span>
           </div>
 
-          <div class="im-preset-cats">
-            ${filteredPresets.map(pr => `
-              <div class="im-scene-chip ${imState.selectedPresetId === pr.id ? 'active' : ''}" onclick="selectImPreset('${pr.id}')">
-                <span class="sc-title">${pr.icon} ${escHtml(pr.title)}</span>
-                <span class="sc-desc">${escHtml(pr.desc)}</span>
+          ${imState.useDirectorFace ? `
+            <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #b7e4c7;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+                <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 각도별 등록된 대표원장 샘플링 얼굴 사진 (클릭 시 확대 · 각도별 새 사진 교체 등록 가능)</span>
+                <span style="font-size:11px; color:#047857;">정면·좌우 30° 사선·좌우 측면 5각도 골격 기준</span>
               </div>
-            `).join('')}
-          </div>
+              <div class="im-angle-grid">
+                ${imState.angleSamples.map(slot => {
+                  const slotUrl = resolveStudioAssetUrl(slot.fileName);
+                  const isUploading = imState.uploadingAngleKey === slot.key;
+                  return `
+                    <div class="im-angle-slot">
+                      <img src="${escHtml(slotUrl)}" data-raw-path="${escHtml(slot.fileName)}" alt="${escHtml(slot.label)}"
+                        onclick="openImageLightbox('${escHtml(slot.fileName)}', '원장님 ${escHtml(slot.label)} 기준 샘플')"
+                        onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                      <div class="im-angle-label">${escHtml(slot.label)}</div>
+                      <div class="im-angle-desc">${escHtml(slot.desc)}</div>
+                      <button type="button" class="mini-btn" style="width:100%; justify-content:center; font-size:10.5px; padding:4px 6px;"
+                        onclick="triggerAngleSampleUpload('${slot.key}')" ${isUploading ? 'disabled' : ''}>
+                        ${isUploading ? '등록 중...' : '📷 사진 변경'}
+                      </button>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          ` : ''}
         </div>
 
-        <!-- STEP 3: Detailed Situation Options & Korean Description -->
+        <!-- STEP 3: Ultra-Simple Prompt Read/Modify or Direct Write + Example Guide -->
         <div class="panel-box" style="padding:14px; margin-bottom:14px;">
-          <strong style="display:block; font-size:13.5px; margin-bottom:10px;">3️⃣ 세부 연출 옵션 및 한국어 상황 설명 입력</strong>
-
-          <div class="grid-2">
-            <div class="field">
-              <label>등장 인물 / 구도 모드</label>
-              <select onchange="updateImOption('subjectMode', this.value)">
-                <option value="director_patient" ${imState.subjectMode === 'director_patient' ? 'selected' : ''}>👨‍⚕️+🧑 대표원장 + 환자 1:1 진료·상담·검진 구도</option>
-                <option value="director_solo" ${imState.subjectMode === 'director_solo' ? 'selected' : ''}>👨‍⚕️ 안정위 대표원장 단독 (연구·탕전·브리핑)</option>
-                <option value="patient_empathy" ${imState.subjectMode === 'patient_empathy' ? 'selected' : ''}>🧑 환자 단독 일상 통증 공감 / 회복 애프터 (원장 미등장)</option>
-                <option value="object_clinic" ${imState.subjectMode === 'object_clinic' ? 'selected' : ''}>🍵 한약재·공진단·진단기기·한의원 공간 클로즈업 (인물 없음)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>대표원장 의상 스타일</label>
-              <select onchange="updateImOption('outfitMode', this.value)" ${!imState.subjectMode.startsWith('director') ? 'disabled' : ''}>
-                <option value="white_coat" ${imState.outfitMode === 'white_coat' ? 'selected' : ''}>🥼 프리미엄 화이트 닥터 가운 + 네이비 타이 (표준 신뢰)</option>
-                <option value="hanbok_coat" ${imState.outfitMode === 'hanbok_coat' ? 'selected' : ''}>👘 모던 한의사 철릭/한복 가운 (전통·탕전·공진단)</option>
-                <option value="navy_suit" ${imState.outfitMode === 'navy_suit' ? 'selected' : ''}>👔 네이비 맞춤 정장 + 화이트 가운 (학술·VIP 상담)</option>
-                <option value="scrub_coat" ${imState.outfitMode === 'scrub_coat' ? 'selected' : ''}>🩺 정밀 시술용 네이비 스크럽 + 닥터 가운 (추나·초음파)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>화면 비율 (Sample A 카드 규격)</label>
-              <select onchange="updateImOption('aspectRatio', this.value)">
-                <option value="16:10" ${imState.aspectRatio === '16:10' ? 'selected' : ''}>16:10 와이드 에디토리얼 (1280×800 · Sample A 기본 권장)</option>
-                <option value="16:9" ${imState.aspectRatio === '16:9' ? 'selected' : ''}>16:9 시네마틱 와이드 (1280×720)</option>
-                <option value="4:3" ${imState.aspectRatio === '4:3' ? 'selected' : ''}>4:3 클래식 가로형 (1200×900)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>AI 이미지 생성 엔진 선택</label>
-              <select onchange="updateImOption('engineMode', this.value)">
-                <option value="cloud_flux" ${imState.engineMode === 'cloud_flux' ? 'selected' : ''}>🌐 24시간 클라우드 AI 즉시 생성 (외부·모바일·실서버 자동 저장)</option>
-                <option value="local_pulid" ${imState.engineMode === 'local_pulid' ? 'selected' : ''}>🔒 로컬 GTX 1070 원장님 374장 얼굴 고정 엔진 (로컬 4500번 구동 시)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>
-              <span>연출할 상황 설명 (한국어로 자유롭게 적어주세요 · 핵심 단어 자동 반영)</span>
-              <span style="font-size:11px; color:var(--brand);">예: 초음파 기기로 환자 어깨를 검사하며 모니터를 설명하는 장면</span>
-            </label>
-            <textarea rows="2" placeholder="원하시는 진료·검진·상담·약재 상황을 한국어로 자세히 적어주세요."
-              oninput="updateImOption('koSituation', this.value)">${escHtml(imState.koSituation)}</textarea>
-          </div>
-
-          <details class="optional-drawer" style="margin-top:6px;">
-            <summary>🔧 AI 영문 상세 프롬프트 직접 확인/수정 (자동 생성됨)</summary>
-            <div class="field" style="margin-top:8px; margin-bottom:0;">
-              <textarea id="imEnPromptInput" rows="3" oninput="updateImOption('enPrompt', this.value)">${escHtml(imState.enPrompt)}</textarea>
-            </div>
-          </details>
-
-          <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <button type="button" class="btn primary" style="padding:11px 22px; font-size:13.5px;"
-              onclick="generateSituationalImage()" ${imState.isGenerating ? 'disabled' : ''}>
-              ${imState.isGenerating ? '⏳ AI 상황 이미지 제작 중입니다...' : '✨ 이 상황으로 새 이미지 즉시 제작하기'}
+          <div class="im-mode-switch">
+            <button type="button" class="im-mode-btn ${imState.workMode === 'edit_current' ? 'active' : ''}" onclick="setImWorkMode('edit_current')">
+              <span>📋 현재 CARD ${cardNumStr} 이미지 프롬프트 불러와 수정</span>
+              <span class="sub">현재 카드에 설정된 이미지의 프롬프트를 읽어서 필요한 부분만 고쳐 새 작업</span>
             </button>
-            <span style="font-size:12px; color:var(--text-muted);">
-              생성된 이미지는 자동으로 서버(미디어 라이브러리 / homepage 폴더)에 저장됩니다.
+            <button type="button" class="im-mode-btn ${imState.workMode === 'write_new' ? 'active' : ''}" onclick="setImWorkMode('write_new')">
+              <span>✍️ 새 상황 이미지 프롬프트 직접 작성</span>
+              <span class="sub">빈 입력창에 원하는 진료·치료·환자·한약 장면을 처음부터 자유롭게 작성</span>
+            </button>
+          </div>
+
+          <div class="field" style="margin-bottom:8px;">
+            <label style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:13px; font-weight:800;">
+                ${imState.workMode === 'edit_current'
+                  ? `📝 현재 CARD ${cardNumStr} (${escHtml(currentRawImg.split('?')[0])}) 이미지 프롬프트 확인 및 수정`
+                  : '📝 새로 제작할 상황 이미지 프롬프트 직접 입력'}
+              </span>
+              <button type="button" class="mini-btn gold-helper" onclick="syncImPromptFromCurrentCard(imState.targetCardIdx, true)">
+                🔄 현재 카드 원본 프롬프트 다시 읽어오기
+              </button>
+            </label>
+            <textarea id="imMainPromptTextarea" rows="4"
+              style="font-size:13px; line-height:1.6; padding:11px 13px;"
+              placeholder="예: 따뜻한 한의원 원목 진료 책상 위 비단 진맥 쿠션에 놓인 환자 손목의 요골동맥 부위에 흰 가운을 입은 한의사가 2, 3, 4지 세 손가락을 나란히 얹어 정밀하게 맥을 짚는 클로즈업 실사 사진"
+              oninput="updateImOption('promptText', this.value)">${escHtml(imState.promptText)}</textarea>
+          </div>
+
+          <div class="im-example-box">
+            <strong style="color:#78350f; font-size:12.5px;">💡 어떻게 적으면 되나요? (작업 예시 가이드)</strong>
+            <div class="im-example-item">
+              <strong>① 현재 카드 프롬프트를 수정할 때:</strong> 위 입력창에 자동으로 읽어온 문장에서 <u>동작·부위·소품만 원하는 대로 고쳐 적으세요.</u><br/>
+              <span style="color:#57534e;">예) <code>...진맥 쿠션 위 환자 손목의 요골동맥에 검지·중지·약지(2,3,4지) 세 손가락을 나란히 모아서 정밀하게 진맥하는 클로즈업 실사 사진</code></span>
+            </div>
+            <div class="im-example-item">
+              <strong>② 새 상황을 직접 작성할 때 (인물 없는 약재·손 클로즈업·환자 공감):</strong> <u>[공간/조명] + [핵심 장면] + [구도]</u>만 편하게 적어주세요.<br/>
+              <span style="color:#57534e;">예) <code>따뜻한 한지 조명이 비치는 원목 테이블 위에 순금박 황제공진단 목함과 러시아 녹용 분골 절편, 한약 찻잔이 정갈하게 놓인 클로즈업 실사 사진</code></span>
+            </div>
+            <div class="im-example-item">
+              <strong>③ 원장님 얼굴 합성 체크 시:</strong> 위 <code>[안정위 대표원장님 얼굴 합성하기]</code>를 켜고 <u>원하는 얼굴 각도(정면 / 좌·우 30° 사선 / 측면)</u>를 함께 적어주시면 오차 없이 매칭됩니다.<br/>
+              <span style="color:#57534e;">예) <code>진료실에서 우측 30도 사선 각도로 환자분께 초음파 모니터 화면을 가리키며 따뜻하게 설명하는 안정위 대표원장님</code></span>
+            </div>
+          </div>
+
+          <div style="margin-top:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+            <button type="button" class="btn btn-im-generate"
+              onclick="generateSituationalImage()" ${imState.isGenerating ? 'disabled' : ''}>
+              ${imState.isGenerating ? '⏳ 최상급 실사 이미지 촬영 중입니다...' : '✨ 이 프롬프트로 최상급 실사 이미지 제작하기'}
+            </button>
+            <span id="imLiveStepLabel" style="font-size:12px; color:var(--text-muted); font-weight:600;">
+              ${imState.isGenerating
+                ? escHtml(imState.genStepText)
+                : '워터마크 ZERO · 1280×800 에디토리얼 DSLR 화질 · 서버 자동 저장'}
             </span>
           </div>
         </div>
 
-        <!-- STEP 4: Side-by-Side Current vs Newly Generated Image & 1-Click Apply -->
+        <!-- STEP 4: Side-by-Side Comparison & 1-Click Apply -->
         <div class="panel-box" style="padding:14px; margin-bottom:14px;">
-          <strong style="display:block; font-size:13.5px; margin-bottom:10px;">4️⃣ 현재 카드 이미지 vs 새로 제작한 상황 이미지 비교 &amp; 즉시 반영</strong>
+          <strong style="display:block; font-size:13.5px; margin-bottom:10px;">4️⃣ 현재 카드 이미지 vs 새로 제작된 이미지 비교 &amp; 즉시 반영</strong>
           <div class="grid-2">
             <div>
               <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--text-muted);">
-                📌 현재 CARD ${String(imState.targetCardIdx + 1).padStart(2, '0')} 사용중인 이미지 (${escHtml(currentRawImg)})
+                📌 현재 CARD ${cardNumStr} 설정된 이미지 (${escHtml(currentRawImg)})
               </div>
-              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 CARD ${String(imState.targetCardIdx + 1).padStart(2, '0')} 이미지')">
+              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 CARD ${cardNumStr} 이미지')">
                 <img src="${escHtml(currentImgUrl)}" data-raw-path="${escHtml(currentRawImg)}" alt="Current Card Image"
                   onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
               </div>
             </div>
             <div>
-              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--green);">
-                ✨ 새로 제작된 상황 이미지 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''}
+              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:#047857;">
+                ✨ 새로 제작된 이미지 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''}
               </div>
-              <div class="im-stage-box" ${imState.lastGeneratedUrl ? `onclick="openImageLightbox('${escHtml(imState.lastGeneratedUrl)}', '새로 제작된 상황 이미지')"` : ''}>
+              <div class="im-stage-box" ${imState.lastGeneratedUrl ? `onclick="openImageLightbox('${escHtml(imState.lastGeneratedUrl)}', '새로 제작된 이미지')"` : ''}>
                 ${imState.isGenerating ? `
                   <div class="im-empty">
                     <div style="font-size:28px; margin-bottom:8px;">⏳</div>
-                    <strong>상황에 맞는 고해상도 이미지를 제작하고 있습니다...</strong>
-                    <p style="margin:6px 0 0; font-size:11.5px; opacity:0.8;">완료되면 이 자리에 즉시 표시됩니다.</p>
+                    <strong>기존 카드 수준의 고화질 DSLR 실사 이미지를 촬영하고 있습니다...</strong>
+                    <p style="margin:6px 0 0; font-size:11.5px; opacity:0.85;">${escHtml(imState.genStepText || '약 10~25초 내외 소요됩니다.')}</p>
                   </div>
                 ` : (generatedImgUrl ? `
                   <img src="${escHtml(generatedImgUrl)}" data-raw-path="${escHtml(imState.lastGeneratedUrl)}" alt="Generated Situational Image"
@@ -3921,8 +4013,8 @@
                 ` : `
                   <div class="im-empty">
                     <div style="font-size:26px; margin-bottom:6px;">📸</div>
-                    <strong>위의 [✨ 이 상황으로 새 이미지 즉시 제작하기] 버튼을 눌러주세요</strong>
-                    <p style="margin:4px 0 0; font-size:11.5px; opacity:0.75;">제작 완료 후 버튼 한 번으로 기존 카드 교체 또는 새 카드 추가가 가능합니다.</p>
+                    <strong>위 프롬프트를 수정하거나 작성한 뒤 [제작하기] 버튼을 눌러주세요</strong>
+                    <p style="margin:4px 0 0; font-size:11.5px; opacity:0.75;">우측 하단 워터마크 없이 깨끗한 고화질 실사 이미지가 생성됩니다.</p>
                   </div>
                 `)}
               </div>
@@ -3931,16 +4023,16 @@
 
           <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
             <button type="button" class="btn gold" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
-              🔄 CARD ${String(imState.targetCardIdx + 1).padStart(2, '0')} 메인 이미지로 즉시 교체
+              🔄 CARD ${cardNumStr} 이미지로 즉시 교체
             </button>
             <button type="button" class="btn primary" onclick="applyGeneratedImageToCard('add_new_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
               ➕ 현재 페이지에 새 스토리 카드로 추가
             </button>
             <button type="button" class="btn" onclick="applyGeneratedImageToCard('add_sub_thumb')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
-              🖼️ CARD ${String(imState.targetCardIdx + 1).padStart(2, '0')} 서브 썸네일로 추가
+              🖼️ CARD ${cardNumStr} 서브 썸네일로 추가
             </button>
             ${imState.lastGeneratedUrl ? `
-              <a href="${escHtml(generatedImgUrl)}" download="${escHtml(imState.lastGeneratedFileName || 'bareun_situation.jpg')}" target="_blank" class="btn" style="text-decoration:none;">
+              <a href="${escHtml(generatedImgUrl)}" download="${escHtml(imState.lastGeneratedFileName || 'bareun_studio_image.jpg')}" target="_blank" class="btn" style="text-decoration:none;">
                 💾 이미지 다운로드
               </a>
             ` : ''}
@@ -3951,12 +4043,12 @@
         ${imState.history.length > 0 ? `
           <div class="panel-box" style="padding:14px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <strong style="font-size:13px;">🗂️ 최근 제작한 상황 이미지 보관함 (클릭하여 바로 불러오기)</strong>
+              <strong style="font-size:13px;">🗂️ 최근 제작한 이미지 보관함 (클릭 시 우측 미리보기 및 프롬프트 복원)</strong>
               <span class="tag-pill">${imState.history.length}장</span>
             </div>
             <div class="im-history-grid">
               ${imState.history.map((h, hIdx) => `
-                <div class="im-history-card" onclick="selectHistoryImage(${hIdx})" title="${escHtml(h.koSituation || h.fileName)}">
+                <div class="im-history-card" onclick="selectHistoryImage(${hIdx})" title="${escHtml(h.promptText || h.fileName)}">
                   <img src="${escHtml(resolveStudioAssetUrl(h.assetPath))}" data-raw-path="${escHtml(h.assetPath)}" alt="${escHtml(h.fileName)}"
                     onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
                   <div class="im-h-meta">${escHtml(h.createdAt || '')} · ${escHtml(h.fileName || '')}</div>
@@ -3973,8 +4065,9 @@
       if (!item) return;
       imState.lastGeneratedUrl = item.assetPath;
       imState.lastGeneratedFileName = item.fileName;
+      if (item.promptText) imState.promptText = item.promptText;
       renderImageMakerPane();
-      showStatus('ok', `히스토리 이미지(${item.fileName})를 불러왔습니다. 원하는 반영 버튼을 클릭하세요!`);
+      showStatus('ok', `보관함 이미지(${item.fileName})를 불러왔습니다. 원하는 반영 버튼을 눌러 카드에 적용하세요!`);
     }
 
     function toggleStudioFullscreen() {

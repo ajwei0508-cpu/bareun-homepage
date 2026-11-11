@@ -1880,84 +1880,44 @@
     </section>
 
     <!-- ========================================================= -->
-    <!-- ✨ TAB: 상황별 새 이미지 추가 제작 (NEW SITUATIONAL IMAGE CREATOR) -->
+    <!-- ✨ TAB: 상황별 새 이미지 직접 제작 (ULTRA-SIMPLE DIRECT PROMPT) -->
     <!-- ========================================================= -->
     <section id="panel_create" class="tab-panel">
       <div class="workspace-grid">
         <div class="card card-gold-menu">
           <div class="card-header-strip">
-            <h2 class="card-title" style="margin:0;color:var(--gold-strong);">✨ 상황별 새 이미지 추가 제작 (374장 원장님 얼굴 고정)</h2>
-            <span class="badge-free">🆓 0원 무료 GPU · 상황 맞춤 생성</span>
+            <h2 class="card-title" style="margin:0;color:var(--gold-strong);">✨ 상황 이미지 직접 프롬프트 제작 (다각도 얼굴 고정 · 워터마크 ZERO)</h2>
+            <span class="badge-free">🆓 FLUX.1-dev + 5각도 골격 고정</span>
           </div>
 
-          <p style="font-size:12.5px;color:var(--text-sub);margin:0 0 12px;">
-            기존 사진을 고치는 것을 넘어, 상세페이지나 홈페이지에 새로 넣을 <strong>진료·검진·상담·탕전·치료 상황 이미지</strong>를 새로 촬영해 바로 추가합니다.
+          <p style="font-size:12.5px;color:var(--text-sub);margin:0 0 14px;">
+            불필요한 템플릿과 복잡한 세부 옵션 없이, 원하는 상황을 직접 프롬프트로 작성하여 워터마크 없는 최상급 DSLR 실사로 제작합니다.
           </p>
 
-          <div style="margin-bottom:10px;">
-            <label style="font-size:12px;color:var(--gold-strong);margin-bottom:6px;display:block;">① 자주 쓰는 한의원 임상·스토리 상황 프리셋 (클릭 시 자동 입력)</label>
-            <div class="preset-chips" style="gap:6px;">
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('맥진 진료', '따뜻한 원목 한의원 진료실에서 환자 손목의 맥을 짚으며 온화하게 미소 짓는 안정위 대표원장님', 'white_coat_tie')">🩺 정밀 맥진 진료</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('1:1 심층 문진', '한의원 진료실 책상에서 차트를 보며 환자의 일상과 통증 원인을 깊이 경청하고 상담하는 원장님', 'white_coat_shirt')">💬 1:1 심층 문진·경청</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('초음파 정밀검진', '최신 정밀 초음파 진단기 모니터 화면을 가리키며 근육과 인대 상태를 설명하는 원장님', 'scrub_coat')">📡 초음파 정밀검진</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('체열진단 분석', '적외선 체열진단기 모니터의 전신 열화상 데이터를 보며 혈액순환과 수족냉증을 설명하는 원장님', 'white_coat_shirt')">🌡️ 적외선 체열진단</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('자율신경 스트레스 검사', '자율신경 및 맥파(HRV) 스트레스 검사 그래프를 보며 교감·부교감 신경 균형을 설명하는 원장님', 'white_coat_shirt')">💓 자율신경·맥파 검진</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('수기 추나요법', '모던한 추나 교정 치료실에서 추나 베드 옆에 서서 척추·골반 정렬을 정교하게 진료하는 원장님', 'scrub_coat')">🦴 수기 추나·척추교정</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('원내 탕전·녹용검수', '깨끗한 원내 탕전실과 약재실에서 최상급 러시아 녹용 분골과 청정 한약재를 직접 검수하는 원장님', 'modern_hanbok_gown')">🍵 원내 탕전·녹용 검수</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('학술 논문 연구', '햇살이 비치는 원장 연구실에서 학술 논문과 의학 서적을 펼쳐놓고 맞춤 처방을 연구하는 원장님', 'navy_suit')">📑 학술 논문·처방 연구</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('소아 성장클리닉', '성장클리닉 진료실에서 성장판 검진 화면을 보며 아빠 같은 따뜻한 미소로 설명하는 원장님', 'white_coat_shirt')">🌱 소아 성장클리닉 진료</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('다이어트 대사 상담', '세련된 다이어트 상담실에서 인바디 체성분표와 식욕조절 한약 프로그램을 안내하는 원장님', 'white_coat_shirt')">⚖️ 다이어트 맞춤 상담</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('탈모·두피 정밀진료', '정밀 두피 현미경 진단기가 갖춰진 진료실에서 모낭 건강과 두피 열독 치료를 상담하는 원장님', 'white_coat_shirt')">🌿 탈모·두피 정밀진료</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('전립선 VIP 심층진료', '프라이빗하고 중후한 VIP 원목 진료실에서 진중한 신뢰감으로 1:1 남성 활력 진료를 진행하는 원장님', 'white_coat_tie')">🦁 전립선 VIP 심층진료</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('황제공진단 수제 조제', '품격 있는 원목 한방 조제실에서 금박 황제공진단과 사향·녹용 약재를 정성껏 살피는 원장님', 'modern_hanbok_gown')">👑 황제공진단 조제·검수</button>
-              <button type="button" class="chip" onclick="selectCreateSituationPreset('비대면 전화처방 문진', '진료실 전자차트 모니터 앞에서 타 지역 비대면 환자와 세심하게 전화 문진을 진행하는 원장님', 'white_coat_shirt')">📞 비대면 전화처방 문진</button>
+          <div style="margin-bottom:14px; padding:12px 14px; border-radius:10px; border:1px solid rgba(212,175,55,0.4); background:rgba(255,255,255,0.03);">
+            <label style="display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13.5px; font-weight:800; color:var(--text-main); margin:0;">
+              <input type="checkbox" id="createFaceLockCheckbox" checked style="width:18px; height:18px; accent-color:#10b981; cursor:pointer;" />
+              <span>👨‍⚕️ 안정위 대표원장님 다각도 샘플링 얼굴 정밀 합성 (정면·좌우 30°·측면 5각도 오차 ZERO)</span>
+            </label>
+            <div style="font-size:11.5px; color:var(--text-sub); margin-top:5px; padding-left:27px;">
+              체크 해제 시 원장님 얼굴 없이 손동작 클로즈업·환자 공감·한약재/공간 실사 이미지로 제작됩니다.
             </div>
           </div>
 
           <div class="form-row">
-            <label for="createSituationPrompt">② 제작할 상황 설명 (한국어로 원하는 장면을 자유롭게 적어주세요)</label>
-            <textarea id="createSituationPrompt" rows="3" placeholder="예: 따뜻한 한의원 진료실에서 환자 손목의 맥을 짚으며 온화하게 미소 짓는 원장님">따뜻한 원목 한의원 진료실에서 환자 손목의 맥을 짚으며 온화하게 미소 짓는 안정위 대표원장님</textarea>
+            <label for="createSituationPrompt">📝 제작할 상황 프롬프트 직접 작성</label>
+            <textarea id="createSituationPrompt" rows="4" placeholder="예: 따뜻한 한의원 원목 진료 책상 위 진맥 쿠션에 놓인 환자 손목 요골동맥에 2, 3, 4지 세 손가락을 나란히 얹어 집중해서 맥을 짚는 클로즈업 실사 사진">따뜻한 원목 한의원 진료실에서 우측 30도 사선 각도로 환자 손목의 요골동맥을 2, 3, 4지 세 손가락으로 정밀하게 진맥하는 안정위 대표원장님</textarea>
           </div>
 
-          <div class="compact-options-grid" style="margin-bottom:12px;">
-            <div>
-              <label for="createOutfitSelect">🥼 의상 스타일</label>
-              <select id="createOutfitSelect">
-                <option value="white_coat_tie" selected>흰색 가운 + 정장 타이</option>
-                <option value="white_coat_shirt">흰색 가운 + 셔츠</option>
-                <option value="modern_hanbok_gown">한방 원장 철릭/가운</option>
-                <option value="scrub_coat">네이비 진료복 + 가운</option>
-                <option value="navy_suit">프리미엄 네이비 정장</option>
-              </select>
-            </div>
-            <div>
-              <label for="createSizeSelect">📐 화면 비율</label>
-              <select id="createSizeSelect">
-                <option value="landscape_16_9" selected>16:9 가로 스토리 카드용</option>
-                <option value="landscape_4_3">4:3 가로 에디토리얼</option>
-                <option value="square_hd">1:1 정사각형</option>
-                <option value="portrait_4_3">3:4 세로 프로필</option>
-              </select>
-            </div>
-            <div>
-              <label for="createFaceLockSelect">👤 원장님 얼굴 잠금</label>
-              <select id="createFaceLockSelect">
-                <option value="true" selected>374장 실제 얼굴 100% 고정</option>
-                <option value="false">인물 고정 해제 (일반 상황)</option>
-              </select>
-            </div>
-            <div>
-              <label for="createEnhanceSelect">🔬 피부·모공 선명도</label>
-              <select id="createEnhanceSelect">
-                <option value="0.85" selected>선명 85% (추천)</option>
-                <option value="0.70">자연 70%</option>
-                <option value="1.0">최대 100%</option>
-              </select>
-            </div>
+          <div style="margin-bottom:14px; padding:11px 14px; border-radius:9px; background:rgba(212,175,55,0.08); border-left:3px solid var(--gold-strong); font-size:12px; line-height:1.6; color:var(--text-sub);">
+            <strong style="color:var(--gold-strong); display:block; margin-bottom:4px;">💡 어떻게 적으면 되나요? (작업 예시 가이드)</strong>
+            <div>• <strong>원장님 합성 시:</strong> <code>진료실에서 우측 30도 사선 각도로 환자분께 초음파 모니터 화면을 가리키며 설명하는 안정위 대표원장님</code></div>
+            <div>• <strong>손·시술 클로즈업 (원장 얼굴 해제):</strong> <code>진맥 쿠션 위 환자 손목 요골동맥에 검지·중지·약지(2,3,4지) 세 손가락을 나란히 모아 진맥하는 클로즈업 실사 사진</code></div>
+            <div>• <strong>약재·공간 실사 (원장 얼굴 해제):</strong> <code>따뜻한 한지 조명 아래 원목 테이블 위 순금박 황제공진단 목함과 러시아 녹용 절편 클로즈업 사진</code></div>
           </div>
 
           <button type="button" id="btnStartCreateSituation" class="btn-free" style="width:100%;padding:14px;font-size:14.5px;" onclick="startCreateSituationalImage()">
-            ✨ 이 상황으로 새 이미지 추가 제작하기 (0원 · GTX 1070 안면고정)
+            ✨ 이 프롬프트로 최상급 실사 이미지 제작하기 (워터마크 ZERO)
           </button>
 
           <div id="createProgressBox" class="progress-box" style="margin-top:10px;">
@@ -3497,28 +3457,17 @@
       if (btnTrain) btnTrain.className = panelKey === 'train' ? 'btn-free' : 'btn-outline';
     }
 
-    function selectCreateSituationPreset(title, korPrompt, outfitKey) {
-      const promptEl = document.getElementById('createSituationPrompt');
-      const outfitEl = document.getElementById('createOutfitSelect');
-      const titleEl = document.getElementById('createCardTitleInput');
-      const subEl = document.getElementById('createCardSubInput');
-      if (promptEl) promptEl.value = korPrompt;
-      if (outfitEl && outfitKey) outfitEl.value = outfitKey;
-      if (titleEl) titleEl.value = `${title} — '맞춤 정밀 치료'`;
-      if (subEl) subEl.value = korPrompt;
-      showToast(`✨ [${title}] 상황 프리셋이 적용되었습니다.`);
-    }
-
     async function startCreateSituationalImage() {
       const scenePrompt = (document.getElementById('createSituationPrompt')?.value || '').trim();
       if (!scenePrompt) {
-        alert('제작할 상황 설명을 입력해 주세요.');
+        alert('제작할 상황 프롬프트를 입력해 주세요.');
         return;
       }
-      const outfitKey = document.getElementById('createOutfitSelect')?.value || 'white_coat_tie';
-      const imageSize = document.getElementById('createSizeSelect')?.value || 'landscape_16_9';
-      const faceLock = document.getElementById('createFaceLockSelect')?.value !== 'false';
-      const enhanceBlend = parseFloat(document.getElementById('createEnhanceSelect')?.value || '0.85');
+      const faceLockEl = document.getElementById('createFaceLockCheckbox');
+      const faceLock = faceLockEl ? Boolean(faceLockEl.checked) : true;
+      const outfitKey = faceLock ? 'white_coat_shirt' : '';
+      const imageSize = 'landscape_16_9';
+      const enhanceBlend = 0.85;
 
       const btn = document.getElementById('btnStartCreateSituation');
       const pbox = document.getElementById('createProgressBox');
