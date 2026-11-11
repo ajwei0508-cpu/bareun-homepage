@@ -632,6 +632,20 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       filtered = filtered.filter(q => q.isSecret === false);
     }
 
+    if (keyword) {
+      filtered = filtered.filter(r => {
+        const hay = [
+          r.partId || '',
+          r.memberName || '',
+          r.title || '',
+          r.content || '',
+          r.masterReply || '',
+          r.symptomDuration || ''
+        ].join(' ').toLowerCase();
+        return hay.includes(keyword);
+      });
+    }
+
     const items = [...filtered].sort((a, b) => b.id - a.id).map(r => {
       const isMine = actorId > 0 && r.userId === actorId;
       const isSecret = r.isSecret !== false; // 기본값 비밀글
@@ -674,17 +688,6 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
         };
       }
       return entry;
-    }).filter(entry => {
-      if (!keyword) return true;
-      const hay = [
-        entry.partId,
-        entry.maskedAuthor,
-        entry.title,
-        entry.content || '',
-        entry.masterReply || '',
-        entry.symptomDuration || ''
-      ].join(' ').toLowerCase();
-      return hay.includes(keyword);
     });
 
     return sendJson(res, 200, { ok: true, isMaster, totalCount: db.qna.length, filteredCount: items.length, items });
@@ -726,9 +729,31 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
   }
 
   if (route === '/qna' && req.method === 'POST') {
-    const actor = getActor(req, db);
-    if (!actor) return sendJson(res, 401, { ok: false, message: '회원가입 및 로그인 후 질문을 작성하실 수 있습니다.' });
+    let actor = getActor(req, db);
     const body = await readJsonBody(req);
+    if (!actor) {
+      // 비로그인 사용자도 성함/연락처 입력 시 바로 간편 등록 지원
+      const guestName = String(body.name || '').trim();
+      if (!guestName) {
+        return sendJson(res, 401, { ok: false, message: '성함(또는 닉네임)을 입력하시거나 회원 로그인 후 질문을 등록해 주세요.' });
+      }
+      const guestPhone = String(body.phone || '').trim();
+      const guestEmail = String(body.email || '').trim() || `guest_${Date.now()}@bareunhaniwon.com`;
+      actor = {
+        id: db.nextUserId++,
+        name: guestName,
+        email: guestEmail,
+        password: '',
+        phone: guestPhone,
+        gender: String(body.gender || '미기재'),
+        ageGroup: String(body.ageGroup || '30대'),
+        provider: 'guest',
+        joinedAt: nowStr(),
+        lastIp: req.socket?.remoteAddress || '127.0.0.1',
+        isMaster: false
+      };
+      db.users.unshift(actor);
+    }
     const partId = String(body.partId || 'lumbar').trim();
     const title = String(body.title || '').trim();
     const content = String(body.content || '').trim();

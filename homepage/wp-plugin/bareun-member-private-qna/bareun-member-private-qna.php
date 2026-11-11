@@ -869,15 +869,15 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 );
             }
 
-            // Keyword filtering
+            // Keyword filtering based on raw record fields
             if ($keyword !== '') {
                 $haystack = strtolower(implode(' ', array(
-                    $entry['partId'],
-                    $entry['maskedAuthor'],
-                    $entry['title'],
-                    $entry['content'] ?? '',
-                    $entry['masterReply'] ?? '',
-                    $entry['symptomDuration'] ?? ''
+                    $r['part_id'] ?? '',
+                    $r['member_name'] ?? '',
+                    $r['title'] ?? '',
+                    $r['content'] ?? '',
+                    $r['master_reply'] ?? '',
+                    $r['symptom_duration'] ?? ''
                 )));
                 if (strpos($haystack, strtolower($keyword)) === false) {
                     continue;
@@ -944,11 +944,30 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         self::send_nocache();
         self::maybe_ensure_schema();
         $actor = self::get_current_actor($request);
+        $params    = $request->get_json_params();
+
         if (!$actor) {
-            return new \WP_REST_Response(array('ok' => false, 'message' => '회원가입 및 로그인 후 질문을 작성하실 수 있습니다.'), 401);
+            $guest_name = sanitize_text_field($params['name'] ?? '');
+            if (empty($guest_name)) {
+                return new \WP_REST_Response(array('ok' => false, 'message' => '성함(또는 닉네임)을 입력하시거나 회원 로그인 후 질문을 등록해 주세요.'), 401);
+            }
+            $guest_phone = sanitize_text_field($params['phone'] ?? '');
+            $guest_email = sanitize_email($params['email'] ?? '');
+            if (empty($guest_email)) {
+                $guest_email = 'guest_' . time() . '@bareunhaniwon.com';
+            }
+            $actor = array(
+                'id'       => 0,
+                'name'     => $guest_name,
+                'email'    => $guest_email,
+                'phone'    => $guest_phone,
+                'provider' => 'guest',
+                'gender'   => sanitize_text_field($params['gender'] ?? '미기재'),
+                'ageGroup' => sanitize_text_field($params['ageGroup'] ?? '30대'),
+                'isMaster' => false
+            );
         }
 
-        $params    = $request->get_json_params();
         $part_id   = sanitize_key($params['partId'] ?? 'lumbar');
         $title     = sanitize_text_field($params['title'] ?? '');
         $content   = sanitize_textarea_field($params['content'] ?? '');
@@ -964,9 +983,11 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             return new \WP_REST_Response(array('ok' => false, 'message' => '질문 제목과 상세 증상 내용을 모두 입력해 주세요.'), 400);
         }
 
-        if ($phone !== '') update_user_meta($actor['id'], 'bareun_phone', $phone);
-        if ($age_grp !== '') update_user_meta($actor['id'], 'bareun_age_group', $age_grp);
-        if ($gender !== '') update_user_meta($actor['id'], 'bareun_gender', $gender);
+        if ($actor['id'] > 0) {
+            if ($phone !== '') update_user_meta($actor['id'], 'bareun_phone', $phone);
+            if ($age_grp !== '') update_user_meta($actor['id'], 'bareun_age_group', $age_grp);
+            if ($gender !== '') update_user_meta($actor['id'], 'bareun_gender', $gender);
+        }
 
         global $wpdb;
         $table = self::table_name();
@@ -2486,10 +2507,10 @@ Bareun_Master_SEO_Engine_V1::init();
 endif;
 
 // ============================================================================
-// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE (WP-ADMIN & STANDALONE WEB APP)
+// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE V2 (WP-ADMIN & STANDALONE WEB APP)
 // ============================================================================
-if (!class_exists('Bareun_Custom_Studio_Engine_V1')) :
-class Bareun_Custom_Studio_Engine_V1 {
+if (!class_exists('Bareun_Custom_Studio_Engine_V2')) :
+class Bareun_Custom_Studio_Engine_V2 {
     const OPT_DETAIL_CFG    = 'bareun_detail_pages_config_v1';
     const OPT_ANGLE_SAMPLES = 'bareun_director_angle_samples_v1';
     
@@ -2509,9 +2530,14 @@ class Bareun_Custom_Studio_Engine_V1 {
     );
 
     public static function init() {
-        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'));
-        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'));
-        add_action('init', array(__CLASS__, 'handle_standalone_route'));
+        if (class_exists('Bareun_Custom_Studio_Engine_V1')) {
+            remove_action('admin_menu', array('Bareun_Custom_Studio_Engine_V1', 'register_admin_menu'));
+            remove_action('rest_api_init', array('Bareun_Custom_Studio_Engine_V1', 'register_rest_routes'));
+            remove_action('init', array('Bareun_Custom_Studio_Engine_V1', 'handle_standalone_route'));
+        }
+        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'), 20);
+        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'), 20);
+        add_action('init', array(__CLASS__, 'handle_standalone_route'), 5);
     }
 
     public static function register_admin_menu() {
@@ -2539,62 +2565,31 @@ class Bareun_Custom_Studio_Engine_V1 {
     }
 
     public static function render_admin_studio_page() {
-        $standalone_url = add_query_arg('bareun_studio', '1', home_url('/'));
-        ?>
-        <style>
-          #wpcontent { padding-left: 0 !important; }
-          #wpbody-content { padding-bottom: 0 !important; }
-          .bareun-studio-host-dock {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #15120f;
-            border-bottom: 2px solid #c5a059;
-            padding: 10px 18px;
-            color: #fff;
-            gap: 12px;
-            flex-wrap: wrap;
-          }
-          .bareun-studio-frame-wrap {
-            width: 100%;
-            height: calc(100vh - 85px);
-            background: #0f0d0b;
-            position: relative;
-          }
-          .bareun-studio-frame-wrap iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            display: block;
-          }
-          body.studio-fullscreen-active #adminmenumain,
-          body.studio-fullscreen-active #wpadminbar,
-          body.studio-fullscreen-active #wpfooter {
-            display: none !important;
-          }
-          body.studio-fullscreen-active #wpcontent {
-            margin-left: 0 !important;
-            padding: 0 !important;
-          }
-          body.studio-fullscreen-active .bareun-studio-frame-wrap {
-            height: 100vh !important;
-          }
-        </style>
-        <div class="bareun-studio-host-dock">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 온라인 엔진</span>
-            <strong style="font-size:15px;color:#fdfaf3;">바른한의원 11대 상세페이지 통합 커스텀 스튜디오</strong>
-            <span style="color:#b5a895;font-size:12px;">(PC 전원 무관 · 외부/태블릿/모바일 100% 자율 접속)</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <button type="button" class="button button-secondary" onclick="document.body.classList.toggle('studio-fullscreen-active');">⛶ 전체화면 확대</button>
-            <a href="<?php echo esc_url($standalone_url); ?>" target="_blank" rel="noopener" class="button button-primary" style="background:#b58532;border-color:#a67626;">🔗 독립 새 탭으로 열기</a>
-          </div>
-        </div>
-        <div class="bareun-studio-frame-wrap">
-          <iframe id="bareunStudioIframe" src="<?php echo esc_url($standalone_url); ?>" title="바른 커스텀 스튜디오"></iframe>
-        </div>
-        <?php
+        $standalone_url = esc_url(add_query_arg('bareun_studio', '1', home_url('/')));
+        echo '<style>';
+        echo '#wpcontent { padding-left: 0 !important; }';
+        echo '#wpbody-content { padding-bottom: 0 !important; }';
+        echo '.bareun-studio-host-dock { display:flex; align-items:center; justify-content:space-between; background:#15120f; border-bottom:2px solid #c5a059; padding:10px 18px; color:#fff; gap:12px; flex-wrap:wrap; }';
+        echo '.bareun-studio-frame-wrap { width:100%; height:calc(100vh - 85px); background:#0f0d0b; position:relative; }';
+        echo '.bareun-studio-frame-wrap iframe { width:100%; height:100%; border:0; display:block; }';
+        echo 'body.studio-fullscreen-active #adminmenumain, body.studio-fullscreen-active #wpadminbar, body.studio-fullscreen-active #wpfooter { display:none !important; }';
+        echo 'body.studio-fullscreen-active #wpcontent { margin-left:0 !important; padding:0 !important; }';
+        echo 'body.studio-fullscreen-active .bareun-studio-frame-wrap { height:100vh !important; }';
+        echo '</style>';
+        echo '<div class="bareun-studio-host-dock">';
+        echo '<div style="display:flex;align-items:center;gap:10px;">';
+        echo '<span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 온라인 엔진</span>';
+        echo '<strong style="font-size:15px;color:#fdfaf3;">바른한의원 11대 상세페이지 통합 커스텀 스튜디오</strong>';
+        echo '<span style="color:#b5a895;font-size:12px;">(PC 전원 무관 · 외부/태블릿/모바일 100% 자율 접속)</span>';
+        echo '</div>';
+        echo '<div style="display:flex;align-items:center;gap:8px;">';
+        echo '<button type="button" class="button button-secondary" onclick="document.body.classList.toggle(\'studio-fullscreen-active\');">⛶ 전체화면 확대</button>';
+        echo '<a href="' . $standalone_url . '" target="_blank" rel="noopener" class="button button-primary" style="background:#b58532;border-color:#a67626;">🔗 독립 새 탭으로 열기</a>';
+        echo '</div>';
+        echo '</div>';
+        echo '<div class="bareun-studio-frame-wrap">';
+        echo '<iframe id="bareunStudioIframe" src="' . $standalone_url . '" title="바른 커스텀 스튜디오"></iframe>';
+        echo '</div>';
     }
 
     public static function render_standalone_studio() {
@@ -2616,34 +2611,15 @@ class Bareun_Custom_Studio_Engine_V1 {
 
         // Fallback: If not on disk yet, serve minimal bootstrap that loads from GitHub or syncs
         header('Content-Type: text/html; charset=UTF-8');
-        ?>
-        <!DOCTYPE html>
-        <html lang="ko">
-        <head>
-          <meta charset="UTF-8">
-          <title>바른 커스텀 스튜디오 로딩 중...</title>
-          <script>
-            window.BAREUN_WP_STUDIO = true;
-            window.wpApiSettings = { nonce: "<?php echo esc_js($nonce); ?>", root: "<?php echo esc_js(esc_url_raw(rest_url())); ?>" };
-          </script>
-        </head>
-        <body style="background:#171411;color:#fff;font-family:sans-serif;padding:40px;text-align:center;">
-          <h2>🎨 바른 커스텀 스튜디오 초기 환경을 준비 중입니다...</h2>
-          <p style="color:#d4af37;">스튜디오 템플릿을 자동으로 동기화하고 있습니다. 잠시만 기다려 주세요.</p>
-          <script>
-            fetch('/wp-json/bareun/v1/studio/ensure-assets', {
-              method: 'POST',
-              headers: { 'X-WP-Nonce': window.wpApiSettings.nonce }
-            }).then(r => r.json()).then(data => {
-              if (data.ok) location.reload();
-              else document.body.innerHTML += '<p style="color:#ef4444;">동기화 오류: ' + (data.error || '알 수 없는 오류') + '</p>';
-            }).catch(e => {
-              document.body.innerHTML += '<p style="color:#ef4444;">연결 실패: ' + e.message + '</p>';
-            });
-          </script>
-        </body>
-        </html>
-        <?php
+        $safe_nonce = esc_js($nonce);
+        $safe_root  = esc_js(esc_url_raw(rest_url()));
+        echo '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>바른 커스텀 스튜디오 로딩 중...</title>';
+        echo '<script>window.BAREUN_WP_STUDIO = true; window.wpApiSettings = { nonce: "' . $safe_nonce . '", root: "' . $safe_root . '" };</script>';
+        echo '</head><body style="background:#171411;color:#fff;font-family:sans-serif;padding:40px;text-align:center;">';
+        echo '<h2>🎨 바른 커스텀 스튜디오 초기 환경을 준비 중입니다...</h2>';
+        echo '<p style="color:#d4af37;">스튜디오 템플릿을 자동으로 동기화하고 있습니다. 잠시만 기다려 주세요.</p>';
+        echo '<script>fetch("/wp-json/bareun/v1/studio/ensure-assets", { method: "POST", headers: { "X-WP-Nonce": window.wpApiSettings.nonce } }).then(function(r){return r.json();}).then(function(data){ if(data.ok) location.reload(); else document.body.innerHTML += "<p style=\"color:#ef4444;\">동기화 오류: " + (data.error || "알 수 없는 오류") + "</p>"; }).catch(function(e){ document.body.innerHTML += "<p style=\"color:#ef4444;\">연결 실패: " + e.message + "</p>"; });</script>';
+        echo '</body></html>';
     }
 
     public static function register_rest_routes() {
@@ -2656,25 +2632,25 @@ class Bareun_Custom_Studio_Engine_V1 {
                 return current_user_can('manage_options');
             },
             'callback'            => array(__CLASS__, 'rest_handle_config')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/save', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_save_single_page')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/save-all', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_save_all_pages')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/upload', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_handle_upload')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/angle-samples', array(
             'methods'             => array('GET', 'POST'),
@@ -2685,25 +2661,25 @@ class Bareun_Custom_Studio_Engine_V1 {
                 return current_user_can('manage_options');
             },
             'callback'            => array(__CLASS__, 'rest_handle_angle_samples')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/generate-image', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_generate_ai_image')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/sync-studio-assets', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_sync_studio_assets')
-        ));
+        ), true);
 
         register_rest_route('bareun/v1', '/studio/ensure-assets', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_ensure_assets_from_github')
-        ));
+        ), true);
     }
 
     public static function rest_handle_config($request) {
@@ -3150,9 +3126,17 @@ class Bareun_Custom_Studio_Engine_V1 {
             file_put_contents($target_dir . '/detail-pages-config.json', json_encode($params['config'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
 
+        if (!empty($params['pluginPhp'])) {
+            $installed_plugin_file = WP_PLUGIN_DIR . '/bareun-member-private-qna/bareun-member-private-qna.php';
+            if (file_exists($installed_plugin_file) && is_writable($installed_plugin_file)) {
+                @file_put_contents($installed_plugin_file, (string)$params['pluginPhp']);
+            }
+        }
+
         return new WP_REST_Response(array(
             'ok'      => true,
-            'message' => '실서버 스튜디오 에셋 동기화 성공!'
+            'version' => 'v2',
+            'message' => '실서버 스튜디오 V2 에셋 동기화 성공!'
         ), 200);
     }
 
@@ -3207,7 +3191,7 @@ class Bareun_Custom_Studio_Engine_V1 {
         ), 200);
     }
 }
-Bareun_Custom_Studio_Engine_V1::init();
+Bareun_Custom_Studio_Engine_V2::init();
 endif;
 
 

@@ -304,8 +304,9 @@ async function performWpLogin(page, loginUrl) {
       }
     }
     const masterCfgObj = JSON.parse(fs.readFileSync(path.join(__dirname, 'detail-pages-config.json'), 'utf8'));
+    const fullPluginPhp = fs.existsSync(phpBackendPath) ? fs.readFileSync(phpBackendPath, 'utf8') : '';
 
-    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj }) => {
+    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp }) => {
       const res = await fetch('/wp-json/bareun/v1/studio/sync-studio-assets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
@@ -314,11 +315,12 @@ async function performWpLogin(page, loginUrl) {
           compilerJs,
           cardPromptsJs,
           angleRefs,
+          pluginPhp: fullPluginPhp,
           config: masterCfgObj
         })
       });
       return await res.json();
-    }, { wpNonce: nonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj });
+    }, { wpNonce: nonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp });
     console.log('   Studio Online Assets Synced:', studioSyncRes);
 
     // 2.2) Update Site Profile & Upload Official 1200x630 (<90KB) OG Card to Media Library
@@ -478,18 +480,11 @@ async function performWpLogin(page, loginUrl) {
       let hiddenCount = 0;
       let flagshipMatchId = null;
 
+      // 블로그 자동화 및 질환별 포스트 보존: 대표글 외 기존 포스트를 강제로 draft 전환하던 루프를 해제하여 모든 질환 블로그가 정상 발행 유지되도록 함
       for (const ep of allExistingPosts) {
         if (ep.slug === flagship.slug) {
           flagshipMatchId = ep.id;
-          continue;
-        }
-        if (ep.status === 'publish' || ep.status === 'private' || ep.status === 'future') {
-          const hideRes = await fetch('/wp-json/wp/v2/posts/' + ep.id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-            body: JSON.stringify({ status: 'draft', comment_status: 'closed' })
-          });
-          if (hideRes.ok) hiddenCount++;
+          break;
         }
       }
 

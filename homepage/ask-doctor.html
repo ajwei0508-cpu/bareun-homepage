@@ -579,6 +579,99 @@
     /* ======================================================================
        VIEW 2: DISEASE-SPECIFIC 1:1 PRIVATE Q&A + FAST SOCIAL SIGNUP + MASTER
        ====================================================================== */
+    .qna-search-wrap {
+      background: #FFFFFF;
+      border: 1.5px solid var(--blue-600);
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
+    }
+    .qna-search-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .qna-search-input {
+      flex: 1;
+      min-width: 220px;
+      border: 1.5px solid var(--line-300);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink-900);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .qna-search-input:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .qna-search-btn {
+      padding: 12px 22px;
+      border-radius: 12px;
+      border: none;
+      background: var(--blue-600);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .qna-search-btn:hover {
+      background: var(--blue-700);
+    }
+    .qna-reset-btn {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line-300);
+      background: #F8FAFC;
+      color: var(--ink-700);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .badge-secret {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .badge-public {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .badge-notify-tag {
+      background: #F0FDF4;
+      color: #166534;
+      border: 1px solid #BBF7D0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
     .qna-cat-strip {
       display: flex;
       flex-wrap: wrap;
@@ -974,7 +1067,7 @@
           <span>📘 의학 인사이트 블로그 (대표글)</span>
         </button>
         <button type="button" class="gnb-menu-tab" id="gnb-tab-qna" onclick="window.switchMainMenu('qna')">
-          <span>🔒 질환별 1:1 비공개 Q&amp;A</span>
+          <span>💬 무엇이든 물어보세요 (전 질환 통합게시판)</span>
         </button>
       </div>
 
@@ -1003,9 +1096,9 @@
           <div class="hmc-desc">시술 광고 없이 해외 의학·생리학 논문으로 깊이 있게 정리한 대표 건강 가이드</div>
         </button>
         <button type="button" class="hero-mode-card" id="hero-card-qna" onclick="window.switchMainMenu('qna')">
-          <div class="hmc-kicker">MEMBERS ONLY · 100% PRIVATE</div>
-          <div class="hmc-title">🔒 질환별 1:1 비공개 Q&amp;A</div>
-          <div class="hmc-desc">9대 질환별 카테고리 · 구글/카카오/네이버 3초 가입 후 작성자·마스터만 열람</div>
+          <div class="hmc-kicker">ALL DISEASES INTEGRATED · 통합게시판</div>
+          <div class="hmc-title">💬 무엇이든 물어보세요 (통합)</div>
+          <div class="hmc-desc">전 질환 통합 Q&amp;A · 비밀글/공개글 지원 · 키워드 검색 · 답변 시 카톡/이메일 전송</div>
         </button>
       </div>
     </div>
@@ -1027,7 +1120,7 @@
               <div>✔ 상업적 시술 홍보 문구 전면 배제</div>
               <div>✔ 해외 SCI 의학저널 &amp; 통합생리학 교차 검증</div>
               <div>✔ 대표 칼럼 1편 집중 아카이빙 (타 원고 비공개 보관)</div>
-              <div>✔ 개인 건강 질문은 <strong>[질환별 1:1 비공개 Q&amp;A]</strong>로 완전 분리</div>
+              <div>✔ 개인 건강 질문은 <strong>[무엇이든 물어보세요 (통합)]</strong>로 완전 분리</div>
             </div>
           </div>
 
@@ -1047,10 +1140,10 @@
           </div>
 
           <div class="sidebar-card" style="background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 100%);color:#FFFFFF;border:none;">
-            <div style="font-size:0.74rem;font-weight:800;color:#93C5FD;margin-bottom:6px;">PRIVATE Q&amp;A MENU</div>
-            <div style="font-size:1rem;font-weight:800;margin-bottom:8px;">내 증상에 맞는 질환별 비공개 질문하기</div>
-            <p style="font-size:0.82rem;color:#CBD5E1;line-height:1.58;margin-bottom:14px;">Google·카카오톡·네이버 3초 간편 회원가입 후 남기신 질문은 100% 비공개로 보호됩니다.</p>
-            <button type="button" onclick="window.switchMainMenu('qna')" style="width:100%;padding:11px 14px;border-radius:12px;border:none;background:#FFFFFF;color:#0F172A;font-weight:800;font-size:0.86rem;cursor:pointer;">🩺 질환별 비공개 Q&amp;A 이동 →</button>
+            <div style="font-size:0.74rem;font-weight:800;color:#93C5FD;margin-bottom:6px;">INTEGRATED Q&amp;A MENU</div>
+            <div style="font-size:1rem;font-weight:800;margin-bottom:8px;">전 질환 통합 1:1 상담 질문하기</div>
+            <p style="font-size:0.82rem;color:#CBD5E1;line-height:1.58;margin-bottom:14px;">비밀글 또는 공개글로 편하게 질문을 남겨주시면 대표원장실에서 답변을 등록해 드립니다 (답변 완료 시 카톡·메일 즉시 전송).</p>
+            <button type="button" onclick="window.switchMainMenu('qna')" style="width:100%;padding:11px 14px;border-radius:12px;border:none;background:#FFFFFF;color:#0F172A;font-weight:800;font-size:0.86rem;cursor:pointer;">💬 무엇이든 물어보세요 이동 →</button>
           </div>
         </aside>
 
@@ -1209,28 +1302,49 @@
 
           <div style="margin-top:28px;padding:24px 28px;border-radius:20px;background:linear-gradient(135deg,#EFF6FF 0%,#EEF2FF 100%);border:1.5px solid #93C5FD;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
             <div>
-              <div style="font-size:0.78rem;font-weight:800;color:#1D4ED8;margin-bottom:4px;">SEPARATED DISEASE Q&amp;A PORTAL</div>
-              <div style="font-size:1.08rem;font-weight:800;color:#0F172A;">질환별 개인 맞춤 상담이 필요하신가요? 전용 비공개 Q&amp;A 메뉴를 이용해 보세요.</div>
-              <div style="font-size:0.86rem;color:#475569;margin-top:2px;">9대 질환별 분류 · Google/카카오톡/네이버 빠른 회원가입 · 100% 비공개 보호</div>
+              <div style="font-size:0.78rem;font-weight:800;color:#1D4ED8;margin-bottom:4px;">ALL DISEASES INTEGRATED Q&amp;A</div>
+              <div style="font-size:1.08rem;font-weight:800;color:#0F172A;">질환별 개인 맞춤 상담이 필요하신가요? 무엇이든 물어보세요 통합게시판을 이용해 보세요.</div>
+              <div style="font-size:0.86rem;color:#475569;margin-top:2px;">전 질환 통합 리스트 · 비밀글/공개글 지원 · 실시간 키워드 검색 · 답변 시 카카오톡/이메일 알림 자동 전송</div>
             </div>
-            <button type="button" onclick="window.switchMainMenu('qna')" style="padding:13px 22px;border-radius:999px;border:none;background:#1D4ED8;color:#FFFFFF;font-weight:800;font-size:0.92rem;cursor:pointer;box-shadow:0 6px 16px rgba(29,78,216,0.25);">🩺 질환별 1:1 비공개 Q&amp;A 열기 →</button>
+            <button type="button" onclick="window.switchMainMenu('qna')" style="padding:13px 22px;border-radius:999px;border:none;background:#1D4ED8;color:#FFFFFF;font-weight:800;font-size:0.92rem;cursor:pointer;box-shadow:0 6px 16px rgba(29,78,216,0.25);">💬 무엇이든 물어보세요 열기 →</button>
           </div>
         </article>
       </div>
     </section>
 
     <!-- ====================================================================
-         SECTION 2: DISEASE-SPECIFIC 1:1 PRIVATE Q&A MENU + MASTER CONSOLE
+         SECTION 2: ALL DISEASES INTEGRATED Q&A BOARD + REAL-TIME SEARCH + MASTER CONSOLE
          ==================================================================== -->
     <section class="tab-section" id="section-qna-view">
+
+      <!-- TOP INTEGRATED SEARCH & ACTIONS BAR -->
+      <div class="qna-search-wrap">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+          <div>
+            <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">ALL DISEASES INTEGRATED MEDICAL Q&amp;A BOARD</div>
+            <h2 style="font-size:1.26rem;font-weight:800;color:var(--ink-900);margin-top:2px;">💬 무엇이든 물어보세요 · 전 질환 통합 건강 게시판</h2>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.82rem;font-weight:700;color:#059669;">
+            <span class="badge-notify-tag">🔒 비밀글 가능</span>
+            <span class="badge-notify-tag">🌐 공개글 가능</span>
+            <span class="badge-notify-tag">🔍 키워드 검색</span>
+            <span class="badge-notify-tag">📱 답변 시 카톡·메일 전송</span>
+          </div>
+        </div>
+        <div class="qna-search-row">
+          <input type="text" id="qna-search-input" class="qna-search-input" placeholder="🔍 궁금한 증상, 질환, 질문 제목, 답변 키워드로 실시간 검색... (예: 어지럼증, 성장판, 생리통, 야간뇨 등)" onkeydown="if(event.key==='Enter'){event.preventDefault();window.applyQnaSearch();}" />
+          <button type="button" class="qna-search-btn" onclick="window.applyQnaSearch()">검색하기</button>
+          <button type="button" class="qna-reset-btn" onclick="window.resetQnaSearch()">전체보기</button>
+        </div>
+      </div>
 
       <!-- MASTER CONSOLE (Visible ONLY when Master is logged in) -->
       <div class="master-console-bar" id="master-console-bar" style="display:none;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
           <div>
             <div style="font-size:0.75rem;font-weight:800;color:#FCD34D;letter-spacing:0.06em;">👑 MASTER ADMINISTRATOR MODE ACTIVE</div>
-            <div style="font-size:1.14rem;font-weight:800;margin-top:2px;">마스터 전체 비공개 질문 열람 &amp; 가입회원 상세정보 통합 콘솔</div>
-            <div style="font-size:0.84rem;color:#CBD5E1;margin-top:2px;" id="master-stats-line">모든 비공개 질문 원문, 회원 실명·연락처·소셜채널·연령대·IP 상세정보 확인 및 1:1 답변 작성이 활성화되었습니다.</div>
+            <div style="font-size:1.14rem;font-weight:800;margin-top:2px;">마스터 전체 질문 열람 &amp; 1:1 답변 등록 (카톡·이메일 자동 발송) 콘솔</div>
+            <div style="font-size:0.84rem;color:#CBD5E1;margin-top:2px;" id="master-stats-line">모든 비밀글/공개글 원문, 회원 실명·연락처·소셜채널·연령대·IP 상세정보 확인 및 1:1 답변 작성이 활성화되었습니다.</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <button type="button" class="gnb-pill" onclick="window.openBareunVisitModal && window.openBareunVisitModal()" style="background:#DCFCE7;border-color:#10B981;color:#065F46;font-weight:800;">📊 홈페이지 방문 조회수 · IP 상세로그</button>
@@ -1263,7 +1377,7 @@
 
       <!-- 9 DISEASE CATEGORY FILTER TABS -->
       <div class="qna-cat-strip" id="qna-category-strip" role="tablist" aria-label="9대 질환별 Q&A 카테고리">
-        <button type="button" class="qna-cat-btn active" data-qpart="all" onclick="window.selectQnaDisease('all')">📋 전체 질환 Q&amp;A</button>
+        <button type="button" class="qna-cat-btn active" data-qpart="all" onclick="window.selectQnaDisease('all')">📋 전체 질환 통합보기</button>
         <button type="button" class="qna-cat-btn" data-qpart="knee" onclick="window.selectQnaDisease('knee')">🌱 성장 · 성조숙 · 면역</button>
         <button type="button" class="qna-cat-btn" data-qpart="cervical" onclick="window.selectQnaDisease('cervical')">🧬 경추 · 두피열 · 탈모</button>
         <button type="button" class="qna-cat-btn" data-qpart="lumbar" onclick="window.selectQnaDisease('lumbar')">🦴 척추 · 디스크 · 체형통증</button>
@@ -1280,33 +1394,36 @@
 
       <!-- Q&A SPLIT WORKSPACE -->
       <div class="qna-grid">
-        <!-- LEFT: MEMBER AUTH / PRIVATE QUESTION COMPOSER -->
+        <!-- LEFT: MEMBER AUTH / QUESTION COMPOSER -->
         <div class="qna-panel-card" id="qna-left-composer-box"></div>
 
-        <!-- RIGHT: STRICTLY PRIVATE Q&A BOARD -->
+        <!-- RIGHT: STRICTLY INTEGRATED Q&A BOARD -->
         <div class="qna-panel-card">
           <div class="qna-board-header">
             <div>
-              <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);">STRICTLY CONFIDENTIAL · 비공개 보호 게시판</div>
-              <h2 style="font-size:1.18rem;font-weight:800;color:var(--ink-900);" id="qna-board-heading">질환별 1:1 비공개 상담 목록</h2>
+              <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);">ALL-IN-ONE BOARD · 통합 건강 상담 게시판</div>
+              <h2 style="font-size:1.18rem;font-weight:800;color:var(--ink-900);" id="qna-board-heading">전 질환 통합 상담 목록</h2>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
               <select id="qna-status-filter" class="form-select" style="width:auto;padding:7px 12px;font-size:0.8rem;font-weight:700;" onchange="window.renderQnaList()">
                 <option value="all">전체 상태</option>
                 <option value="mine">내 질문만</option>
                 <option value="waiting">답변대기</option>
                 <option value="answered">답변완료</option>
+                <option value="secret">🔒 비밀글만</option>
+                <option value="public">🌐 공개글만</option>
               </select>
               <button type="button" class="gnb-pill" onclick="window.fetchQnaItems()" style="padding:7px 12px;">↻ 새로고침</button>
             </div>
           </div>
 
-          <div style="padding:11px 14px;border-radius:12px;background:#F8FAFC;border:1px solid var(--line-200);font-size:0.82rem;color:var(--ink-700);margin-bottom:14px;">
-            🔒 개인 의료·건강 프라이버시 보호를 위해 <strong>모든 질문과 답변은 100% 비공개</strong>로 운영됩니다. 작성자 본인으로 로그인하시거나 마스터 계정으로만 상세 내용을 열람하실 수 있습니다.
+          <div style="padding:11px 14px;border-radius:12px;background:#F8FAFC;border:1px solid var(--line-200);font-size:0.82rem;color:var(--ink-700);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <span>💡 <strong>비밀글</strong>은 작성자와 마스터만 열람되며, <strong>공개글</strong>은 누구나 질문과 답변을 함께 읽고 도움받으실 수 있습니다.</span>
+            <span style="color:#059669;font-weight:700;">답변 시 카톡·이메일 알림 전송</span>
           </div>
 
           <div id="qna-items-container">
-            <div style="padding:32px;text-align:center;color:var(--ink-500);font-size:0.9rem;">비공개 Q&amp;A 목록을 불러오는 중입니다...</div>
+            <div style="padding:32px;text-align:center;color:var(--ink-500);font-size:0.9rem;">통합 Q&amp;A 목록을 불러오는 중입니다...</div>
           </div>
         </div>
       </div>
@@ -1460,6 +1577,26 @@
     </div>
   </div>
 
+  <!-- MODAL: SECRET QNA UNLOCK -->
+  <div class="modal-backdrop" id="qna-unlock-modal-backdrop" onclick="if(event.target===this) window.closeUnlockModal()">
+    <div class="auth-modal-card" style="max-width:420px;">
+      <button type="button" class="modal-close-btn" onclick="window.closeUnlockModal()" aria-label="닫기">✕</button>
+      <div style="font-size:0.74rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">SECURITY UNLOCK · 비밀글 열람 인증</div>
+      <h3 style="font-size:1.2rem;font-weight:800;color:var(--ink-900);margin-top:4px;">🔒 비밀번호 입력</h3>
+      <p style="font-size:0.85rem;color:var(--ink-700);line-height:1.55;margin:8px 0 16px;">
+        작성 시 설정하신 <strong>비밀번호</strong>를 입력하시면 비밀글의 원문과 원장님의 1:1 전문 답변을 즉시 확인하실 수 있습니다.
+      </p>
+      <form onsubmit="window.submitSecretUnlock(event)">
+        <input type="hidden" id="unlock-qna-id" value="" />
+        <div class="form-field">
+          <label class="form-label">설정한 비밀글 비밀번호 *</label>
+          <input type="password" id="unlock-qna-password" class="form-input" placeholder="비밀번호 입력" required />
+        </div>
+        <button type="submit" class="submit-primary-btn" id="unlock-submit-btn">🔓 비밀글 잠금 해제 및 열람</button>
+      </form>
+    </div>
+  </div>
+
   <div class="toast-banner" id="bareun-toast"></div>
 
   <script>
@@ -1528,6 +1665,9 @@
       return QNA_CATEGORIES.find(c => c.partId === partId) || null;
     }
 
+    let currentSearchKeyword = '';
+    let currentUnlockedIds = new Set();
+
     // 1. SWITCH BETWEEN BLOG & DISEASE QNA
     window.switchMainMenu = function(tab, optionalPart) {
       currentMainTab = (tab === 'qna') ? 'qna' : 'blog';
@@ -1573,26 +1713,88 @@
       window.fetchQnaItems();
     };
 
+    // 2-1. REAL-TIME & KEYWORD SEARCH HANDLERS
+    window.applyQnaSearch = function() {
+      const input = document.getElementById('qna-search-input');
+      currentSearchKeyword = (input ? input.value : '').trim();
+      window.fetchQnaItems();
+    };
+
+    window.resetQnaSearch = function() {
+      const input = document.getElementById('qna-search-input');
+      if (input) input.value = '';
+      currentSearchKeyword = '';
+      window.fetchQnaItems();
+    };
+
+    // 2-2. SECRET PASSWORD INPUT TOGGLE
+    window.toggleSecretInput = function(isSecret) {
+      const pwBox = document.getElementById('q-secret-pw-box');
+      if (pwBox) {
+        pwBox.style.display = isSecret ? 'block' : 'none';
+      }
+    };
+
+    // 2-3. SECRET UNLOCK MODAL HANDLERS
+    window.openSecretUnlockModal = function(qnaId) {
+      const modal = document.getElementById('qna-unlock-modal-backdrop');
+      const idInput = document.getElementById('unlock-qna-id');
+      const pwInput = document.getElementById('unlock-qna-password');
+      if (!modal || !idInput || !pwInput) return;
+      idInput.value = qnaId;
+      pwInput.value = '';
+      modal.classList.add('open');
+      setTimeout(() => pwInput.focus(), 150);
+    };
+
+    window.closeUnlockModal = function() {
+      const modal = document.getElementById('qna-unlock-modal-backdrop');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.submitSecretUnlock = async function(ev) {
+      ev.preventDefault();
+      const id = document.getElementById('unlock-qna-id').value;
+      const password = document.getElementById('unlock-qna-password').value.trim();
+      if (!password) {
+        window.showToast('비밀번호를 입력해 주세요.');
+        return;
+      }
+      const res = await apiCall('/qna/unlock', 'POST', { id, password });
+      if (res.data && res.data.ok && res.data.item) {
+        currentUnlockedIds.add(Number(id));
+        const idx = qnaItems.findIndex(q => q.id === Number(id));
+        if (idx !== -1) {
+          qnaItems[idx] = { ...qnaItems[idx], ...res.data.item, canRead: true };
+        }
+        window.closeUnlockModal();
+        window.renderQnaList();
+        window.showToast('🔓 비밀글 잠금이 안전하게 해제되었습니다.');
+      } else {
+        window.showToast(res.data?.message || '비밀번호가 일치하지 않습니다.');
+      }
+    };
+
     function renderDiseaseBanner() {
       const box = document.getElementById('disease-evidence-banner');
       const heading = document.getElementById('qna-board-heading');
       if (!box) return;
 
       if (currentDiseasePart === 'all') {
-        if (heading) heading.textContent = '9대 전 질환 1:1 비공개 상담 목록';
+        if (heading) heading.textContent = '전 질환 통합 1:1 건강 상담 게시판';
         box.innerHTML =
           '<div class="deb-header">' +
             '<div>' +
-              '<div style="font-size:0.74rem;font-weight:800;color:#2563EB;">DISEASE-SPECIFIC PRIVATE Q&amp;A · 9대 질환별 전문 문답 센터</div>' +
-              '<h2 style="font-size:1.25rem;font-weight:800;color:#0F172A;margin-top:3px;">상담을 원하시는 질환 카테고리를 선택하시면 관련 해외 SCI 논문 근거와 비공개 질문창이 맞춤 전환됩니다</h2>' +
+              '<div style="font-size:0.74rem;font-weight:800;color:#2563EB;">ALL DISEASES INTEGRATED MEDICAL Q&amp;A · 전 질환 통합 상담 센터</div>' +
+              '<h2 style="font-size:1.25rem;font-weight:800;color:#0F172A;margin-top:3px;">모든 질환에 대해 비밀글 또는 공개글로 편하게 문의해 보세요</h2>' +
             '</div>' +
           '</div>' +
-          '<p style="font-size:0.9rem;color:#475569;">소아 성장·성조숙, 경추·탈모, 척추·디스크, 만성피로, 자율신경·실신, 소화기·담적, 대사·다이어트, 자궁·난임(IVF), 전립선·야간뇨까지 9개 전문 질환별로 해외 의학 논문과 통합생리학 근거에 기반한 1:1 비공개 답변을 드립니다.</p>';
+          '<p style="font-size:0.9rem;color:#475569;">소아 성장·성조숙, 경추·탈모, 척추·디스크, 만성피로, 자율신경·실신, 소화기·담적, 대사·다이어트, 자궁·난임(IVF), 전립선·야간뇨까지 해외 권위 의학 논문과 통합생리학 근거를 바탕으로 대표원장이 1:1 직접 답변을 드립니다 (답변 완료 시 카톡·이메일 알림 전송).</p>';
         return;
       }
 
       const cat = getCategoryMeta(currentDiseasePart) || QNA_CATEGORIES[0];
-      if (heading) heading.textContent = cat.icon + ' ' + cat.name + ' — 비공개 상담 목록';
+      if (heading) heading.textContent = cat.icon + ' ' + cat.name + ' — 건강 상담 목록';
 
       const allPapers = [
         ...(cat.overseasPapers || []).map(p => ({ ...p, isIntegrative: false })),
@@ -1627,58 +1829,40 @@
         '<div class="deb-papers-grid">' + papersHtml + '</div>';
     }
 
-    // 3. RENDER LEFT QUESTION COMPOSER OR FAST SOCIAL SIGNUP PROMPT
+    // 3. RENDER LEFT QUESTION COMPOSER (SUPPORTS BOTH GUEST & LOGGED-IN MEMBERS)
     function renderLeftComposer() {
       const box = document.getElementById('qna-left-composer-box');
       if (!box) return;
 
       const selectedPart = currentDiseasePart !== 'all' ? currentDiseasePart : 'lumbar';
-
-      if (!currentUser) {
-        box.innerHTML =
-          '<div style="font-size:0.75rem;font-weight:800;color:#2563EB;margin-bottom:4px;">MEMBERS ONLY · 회원 전용 질문 작성</div>' +
-          '<h3 style="font-size:1.2rem;font-weight:800;color:#0F172A;margin-bottom:8px;">회원가입 후 1:1 비공개 질문을 남기실 수 있습니다</h3>' +
-          '<p style="font-size:0.87rem;color:#475569;line-height:1.62;margin-bottom:14px;">' +
-            '무분별한 광고글을 차단하고 개인 민감 건강정보를 철저히 보호하기 위해 <strong>가입 회원 전용 비공개 상담제</strong>로 운영됩니다. 아래 소셜 버튼으로 3초 만에 시작하세요.' +
-          '</p>' +
-          '<div class="social-btn-stack">' +
-            '<button type="button" class="social-fast-btn google" onclick="window.openSocialModal(\'google\')">' +
-              '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 3 14.7 2 12 2 6.5 2 2 6.5 2 12s4.5 10 10 10c5.8 0 9.6-4.1 9.6-9.8 0-.7-.1-1.2-.2-1.8H12z"/></svg>' +
-              '<span>Google 3초 빠른 회원가입</span>' +
-            '</button>' +
-            '<button type="button" class="social-fast-btn kakao" onclick="window.openSocialModal(\'kakao\')">' +
-              '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.5 2 10.9c0 2.8 1.9 5.3 4.7 6.7-.2.7-.7 2.6-.8 3-.1.5.2.5.4.3.2-.1 2.9-1.9 4.1-2.7.5.1 1.1.1 1.6.1 5.5 0 10-3.5 10-7.9S17.5 3 12 3z"/></svg>' +
-              '<span>카카오톡 3초 빠른 회원가입</span>' +
-            '</button>' +
-            '<button type="button" class="social-fast-btn naver" onclick="window.openSocialModal(\'naver\')">' +
-              '<span style="font-weight:900;font-size:1rem;font-family:Arial,sans-serif;">N</span>' +
-              '<span>네이버 3초 빠른 회원가입</span>' +
-            '</button>' +
-          '</div>' +
-          '<div style="display:flex;gap:8px;margin-top:12px;">' +
-            '<button type="button" class="gnb-pill" style="flex:1;justify-content:center;" onclick="window.openAuthModal(\'email\')">✉️ 이메일 가입/로그인</button>' +
-            '<button type="button" class="gnb-pill" style="justify-content:center;" onclick="window.openAuthModal(\'master\')">👑 마스터 열람</button>' +
-          '</div>';
-        return;
-      }
-
       const catOptions = QNA_CATEGORIES.map(c =>
         '<option value="' + c.partId + '"' + (c.partId === selectedPart ? ' selected' : '') + '>' + c.icon + ' ' + esc(c.name) + '</option>'
       ).join('');
 
+      const userBadgeHtml = currentUser
+        ? '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 13px;border-radius:12px;background:#EFF6FF;border:1px solid #BFDBFE;margin-bottom:14px;">' +
+            '<div style="font-size:0.83rem;font-weight:800;color:#1E3A8A;">👤 ' + esc(currentUser.name) + ' 님 <span style="font-weight:600;color:#2563EB;">(' + providerLabel(currentUser.provider) + ')</span></div>' +
+            '<button type="button" onclick="window.logoutBareunUser()" style="border:none;background:#DBEAFE;color:#1E40AF;padding:4px 10px;border-radius:8px;font-size:0.75rem;font-weight:800;cursor:pointer;">로그아웃</button>' +
+          '</div>'
+        : '<div style="margin-bottom:14px;padding:11px 13px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">' +
+            '<span style="font-size:0.8rem;color:#475569;font-weight:600;">⚡ 간편 작성 또는 3초 소셜 로그인</span>' +
+            '<button type="button" class="gnb-pill auth-btn" style="padding:5px 11px;font-size:0.76rem;" onclick="window.openAuthModal(\'social\')">소셜 3초 로그인</button>' +
+          '</div>';
+
       box.innerHTML =
-        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 13px;border-radius:12px;background:#EFF6FF;border:1px solid #BFDBFE;margin-bottom:16px;">' +
-          '<div style="font-size:0.83rem;font-weight:800;color:#1E3A8A;">👤 ' + esc(currentUser.name) + ' 님 <span style="font-weight:600;color:#2563EB;">(' + providerLabel(currentUser.provider) + ')</span></div>' +
-          '<button type="button" onclick="window.logoutBareunUser()" style="border:none;background:#DBEAFE;color:#1E40AF;padding:4px 10px;border-radius:8px;font-size:0.75rem;font-weight:800;cursor:pointer;">로그아웃</button>' +
-        '</div>' +
-        '<div style="font-size:0.74rem;font-weight:800;color:#059669;margin-bottom:4px;">🔒 100% PRIVATE CONSULTATION</div>' +
-        '<h3 style="font-size:1.15rem;font-weight:800;color:#0F172A;margin-bottom:14px;">질환별 1:1 비공개 질문 등록</h3>' +
+        '<div style="font-size:0.74rem;font-weight:800;color:#059669;margin-bottom:4px;">💬 무엇이든 물어보세요 · 1:1 맞춤 상담</div>' +
+        '<h3 style="font-size:1.18rem;font-weight:800;color:#0F172A;margin-bottom:12px;">건강 질문 등록하기</h3>' +
+        userBadgeHtml +
         '<form onsubmit="window.submitPrivateQuestion(event)">' +
           '<div class="form-field">' +
             '<label class="form-label">상담 질환 카테고리 *</label>' +
             '<select id="q-part" class="form-select">' + catOptions + '</select>' +
           '</div>' +
           '<div class="form-row-2">' +
+            '<div class="form-field">' +
+              '<label class="form-label">성함 (또는 닉네임) *</label>' +
+              '<input type="text" id="q-name" class="form-input" value="' + esc(currentUser ? currentUser.name : '') + '" placeholder="예: 김바른" required />' +
+            '</div>' +
             '<div class="form-field">' +
               '<label class="form-label">증상 지속 기간</label>' +
               '<select id="q-duration" class="form-select">' +
@@ -1688,9 +1872,26 @@
                 '<option value="1년 이상 만성">1년 이상 만성 반복</option>' +
               '</select>' +
             '</div>' +
+          '</div>' +
+          '<div class="form-row-2">' +
             '<div class="form-field">' +
-              '<label class="form-label">연락처 (비공개·마스터 확인용)</label>' +
-              '<input type="tel" id="q-phone" class="form-input" value="' + esc(currentUser.phone || '') + '" placeholder="010-0000-0000" />' +
+              '<label class="form-label">휴대폰 번호 (답변 카톡 알림톡/SMS 수신) *</label>' +
+              '<input type="tel" id="q-phone" class="form-input" value="' + esc(currentUser ? (currentUser.phone || '') : '') + '" placeholder="010-0000-0000" required />' +
+            '</div>' +
+            '<div class="form-field">' +
+              '<label class="form-label">이메일 주소 (답변 메일 수신)</label>' +
+              '<input type="email" id="q-email" class="form-input" value="' + esc(currentUser ? (currentUser.email || '') : '') + '" placeholder="example@email.com" />' +
+            '</div>' +
+          '</div>' +
+          '<div style="margin:12px 0;padding:12px 14px;border-radius:12px;background:#F8FAFC;border:1.5px solid #CBD5E1;">' +
+            '<label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;font-weight:800;color:#1E293B;cursor:pointer;">' +
+              '<input type="checkbox" id="q-is-secret" checked onchange="window.toggleSecretInput(this.checked)" style="width:17px;height:17px;accent-color:#2563EB;" />' +
+              '<span>🔒 비밀글로 등록 (본인 및 마스터만 열람)</span>' +
+            '</label>' +
+            '<div id="q-secret-pw-box" style="margin-top:10px;">' +
+              '<label class="form-label" style="font-size:0.77rem;color:#475569;">비밀글 열람용 비밀번호 (4자리 이상) *</label>' +
+              '<input type="password" id="q-secret-password" class="form-input" placeholder="비밀번호 설정" value="1234" />' +
+              '<div style="font-size:0.73rem;color:#64748B;margin-top:4px;">* 체크 해제 시 전체 방문자가 함께 읽을 수 있는 <strong>[🌐 공개글]</strong>로 등록됩니다.</div>' +
             '</div>' +
           '</div>' +
           '<div class="form-field">' +
@@ -1698,17 +1899,21 @@
             '<input type="text" id="q-title" class="form-input" placeholder="예: 아침 기상 직후 어지럼증과 뒷목 긴장 관련 문의드립니다" required />' +
           '</div>' +
           '<div class="form-field">' +
-            '<label class="form-label">상세 증상 및 궁금한 점 (작성자 본인·마스터 외 절대 비공개) *</label>' +
-            '<textarea id="q-content" class="form-textarea" rows="5" placeholder="증상이 나타나는 시간대, 동반 증상, 기존 검사 이력 등을 적어주시면 해외 및 통합의학 근거를 바탕으로 상세히 답변드립니다." required></textarea>' +
+            '<label class="form-label">상세 증상 및 궁금한 점 *</label>' +
+            '<textarea id="q-content" class="form-textarea" rows="4" placeholder="증상이 나타나는 시간대, 기존 검사 이력, 생활 패턴 등을 적어주시면 대표원장실에서 해외 SCI 및 통합의학 근거를 바탕으로 상세히 답변드립니다." required></textarea>' +
           '</div>' +
-          '<button type="submit" class="submit-primary-btn" id="q-submit-btn">🔒 비공개 질문 안전하게 등록하기</button>' +
+          '<div style="margin-bottom:12px;padding:9px 12px;border-radius:10px;background:#ECFDF5;border:1px solid #A7F3D0;font-size:0.76rem;color:#065F46;font-weight:700;">' +
+            '📱 1:1 답변 등록 시 기재하신 <strong>휴대폰(카톡 알림톡/SMS)</strong>과 <strong>이메일</strong>로 즉시 알림이 발송됩니다.' +
+          '</div>' +
+          '<button type="submit" class="submit-primary-btn" id="q-submit-btn">💬 건강 질문 등록하기 (카톡·메일 전송)</button>' +
         '</form>';
     }
 
-    // 4. FETCH & RENDER PRIVATE QNA LIST
+    // 4. FETCH & RENDER INTEGRATED QNA LIST
     window.fetchQnaItems = async function() {
       const partParam = encodeURIComponent(currentDiseasePart || 'all');
-      const res = await apiCall('/qna?part=' + partParam, 'GET');
+      const kwParam = encodeURIComponent(currentSearchKeyword || '');
+      const res = await apiCall('/qna?part=' + partParam + '&keyword=' + kwParam, 'GET');
       if (res.data && res.data.ok) {
         qnaItems = res.data.items || [];
         window.renderQnaList();
@@ -1730,7 +1935,7 @@
           const ansCnt = qnaItems.filter(i => i.status === 'answered').length;
           const statsEl = document.getElementById('master-stats-line');
           if (statsEl) {
-            statsEl.textContent = '현재 조회 카테고리 총 ' + qnaItems.length + '건 (답변대기 ' + waitCnt + '건 · 답변완료 ' + ansCnt + '건) — 전 항목 비공개 잠금 해제됨';
+            statsEl.textContent = '현재 조회 총 ' + qnaItems.length + '건 (답변대기 ' + waitCnt + '건 · 답변완료 ' + ansCnt + '건) — 전 항목 비밀글 잠금 해제됨';
           }
         }
       }
@@ -1739,40 +1944,58 @@
       if (statusFilter === 'mine') filtered = filtered.filter(i => i.isMine);
       else if (statusFilter === 'waiting') filtered = filtered.filter(i => i.status !== 'answered');
       else if (statusFilter === 'answered') filtered = filtered.filter(i => i.status === 'answered');
+      else if (statusFilter === 'secret') filtered = filtered.filter(i => i.isSecret !== false);
+      else if (statusFilter === 'public') filtered = filtered.filter(i => i.isSecret === false);
+
+      let searchHeaderHtml = '';
+      if (currentSearchKeyword) {
+        searchHeaderHtml =
+          '<div style="margin-bottom:14px;padding:11px 16px;border-radius:12px;background:#EFF6FF;border:1.5px solid #93C5FD;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">' +
+            '<span style="font-size:0.88rem;color:#1E3A8A;font-weight:800;">🔍 <strong>&ldquo;' + esc(currentSearchKeyword) + '&rdquo;</strong> 키워드 검색 결과: 총 ' + filtered.length + '건</span>' +
+            '<button type="button" onclick="window.resetQnaSearch()" style="border:none;background:#2563EB;color:#FFFFFF;padding:5px 12px;border-radius:8px;font-size:0.78rem;font-weight:800;cursor:pointer;">검색 초기화</button>' +
+          '</div>';
+      }
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div style="padding:36px 20px;text-align:center;color:#64748B;font-size:0.92rem;">조건에 해당하는 비공개 질문 내역이 없습니다.</div>';
+        container.innerHTML = searchHeaderHtml + '<div style="padding:36px 20px;text-align:center;color:#64748B;font-size:0.92rem;">조건에 해당하는 건강 상담 질문이 없습니다.</div>';
         return;
       }
 
-      container.innerHTML = filtered.map(item => {
+      const listHtml = filtered.map(item => {
         const cat = getCategoryMeta(item.partId);
         const catTag = cat ? (cat.icon + ' ' + cat.shortName) : item.partId;
         const statusBadge = item.status === 'answered'
           ? '<span class="status-pill answered">✔ 1:1 답변완료</span>'
           : '<span class="status-pill waiting">⏳ 마스터 검토중</span>';
+        const secretBadge = (item.isSecret !== false)
+          ? '<span class="badge-secret">🔒 비밀글</span>'
+          : '<span class="badge-public">🌐 공개글</span>';
         const provClass = ['kakao', 'naver', 'google'].includes(item.provider) ? (' ' + item.provider) : '';
-        const provText = item.provider === 'kakao' ? '카카오' : item.provider === 'naver' ? '네이버' : item.provider === 'google' ? 'Google' : '회원';
+        const provText = item.provider === 'kakao' ? '카카오' : item.provider === 'naver' ? '네이버' : item.provider === 'google' ? 'Google' : '고객';
 
-        if (!item.canRead) {
+        const canRead = isMaster || item.isMine || (item.isSecret === false) || currentUnlockedIds.has(item.id);
+
+        if (!canRead) {
           return (
-            '<div class="qna-item-card locked" onclick="window.handleLockedClick()">' +
+            '<div class="qna-item-card locked" onclick="window.openSecretUnlockModal(' + item.id + ')">' +
               '<div class="qna-item-top">' +
                 '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
                   statusBadge +
+                  secretBadge +
                   '<span style="font-size:0.76rem;font-weight:800;color:#2563EB;background:#EFF6FF;padding:3px 9px;border-radius:999px;">' + esc(catTag) + '</span>' +
                   '<span class="provider-badge' + provClass + '">' + provText + '</span>' +
                 '</div>' +
                 '<span style="font-size:0.78rem;color:#64748B;">' + esc(item.maskedAuthor) + ' · ' + esc(item.createdAt) + '</span>' +
               '</div>' +
-              '<div style="font-size:0.94rem;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px;">' +
-                '<span>' + esc(item.title) + '</span>' +
+              '<div style="font-size:0.95rem;font-weight:800;color:#334155;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;">' +
+                '<span>🔒 비밀글입니다 (작성자 본인 및 마스터 전용)</span>' +
+                '<button type="button" class="gnb-pill" style="padding:4px 10px;font-size:0.74rem;background:#F1F5F9;border-color:#CBD5E1;">비밀번호 열람 🔑</button>' +
               '</div>' +
             '</div>'
           );
         }
 
-        // Readable by Author OR Master!
+        // Readable by Author, Public viewers, Unlocked viewers, or Master!
         let masterDossierHtml = '';
         let masterEditorHtml = '';
         if (isMaster && item.memberDetail) {
@@ -1791,18 +2014,21 @@
 
           masterEditorHtml =
             '<div style="margin-top:14px;padding-top:12px;border-top:1px dashed #CBD5E1;">' +
-              '<label class="form-label" style="color:#1E3A8A;">👑 마스터 1:1 비공개 답변 작성 / 수정</label>' +
-              '<textarea id="mreply-' + item.id + '" class="form-textarea" rows="3" placeholder="질문 회원에게만 비공개로 표시될 전문 답변을 입력하세요...">' + esc(item.masterReply || '') + '</textarea>' +
+              '<label class="form-label" style="color:#1E3A8A;display:flex;align-items:center;justify-content:space-between;">' +
+                '<span>👑 마스터 1:1 답변 작성 (저장 시 등록된 카카오톡·이메일로 즉시 자동 전송)</span>' +
+                '<span style="font-size:0.75rem;color:#059669;font-weight:700;">📱 SMS/알림톡 &amp; ✉️ 메일 연동</span>' +
+              '</label>' +
+              '<textarea id="mreply-' + item.id + '" class="form-textarea" rows="3" placeholder="질문 회원에게 전송될 전문 의학 답변을 입력하세요...">' + esc(item.masterReply || '') + '</textarea>' +
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px;">' +
-                '<button type="button" onclick="window.saveMasterReply(' + item.id + ')" style="padding:8px 16px;border-radius:10px;border:none;background:#1D4ED8;color:#FFFFFF;font-size:0.82rem;font-weight:800;cursor:pointer;">💾 비공개 답변 저장·등록</button>' +
+                '<button type="button" onclick="window.saveMasterReply(' + item.id + ')" style="padding:9px 18px;border-radius:10px;border:none;background:#1D4ED8;color:#FFFFFF;font-size:0.84rem;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(29,78,216,0.25);">💾 답변 저장 및 카톡·메일 전송</button>' +
                 '<button type="button" onclick="window.deleteQnaItem(' + item.id + ')" style="padding:8px 12px;border-radius:10px;border:1px solid #FCA5A5;background:#FEF2F2;color:#B91C1C;font-size:0.78rem;font-weight:700;cursor:pointer;">삭제</button>' +
               '</div>' +
             '</div>';
         }
 
         const replyDisplayHtml = item.masterReply
-          ? '<div class="master-reply-view"><div style="font-size:0.76rem;font-weight:800;color:#2563EB;margin-bottom:4px;">🩺 바른 통합의학 전담 답변 (' + esc(item.repliedAt || '답변완료') + ')</div>' + esc(item.masterReply) + '</div>'
-          : '<div style="margin-top:10px;padding:11px 14px;border-radius:11px;background:#FFFBEB;color:#92400E;font-size:0.83rem;font-weight:700;">⏳ 질문이 비공개로 안전하게 접수되었으며, 전담 검토 후 1:1 답변이 등록됩니다.</div>';
+          ? '<div class="master-reply-view"><div style="font-size:0.76rem;font-weight:800;color:#2563EB;margin-bottom:4px;">🩺 바른 통합의학 전담 1:1 답변 (' + esc(item.repliedAt || '답변완료') + ')</div>' + esc(item.masterReply) + '</div>'
+          : '<div style="margin-top:10px;padding:11px 14px;border-radius:11px;background:#FFFBEB;color:#92400E;font-size:0.83rem;font-weight:700;">⏳ 질문이 안전하게 접수되었으며, 대표원장실 검토 후 1:1 답변이 등록됩니다 (등록 시 카톡/메일 알림 전송).</div>';
 
         const ownerDeleteBtn = (!isMaster && item.isMine)
           ? '<div style="margin-top:8px;text-align:right;"><button type="button" onclick="window.deleteQnaItem(' + item.id + ')" style="border:none;background:transparent;color:#EF4444;font-size:0.78rem;font-weight:700;cursor:pointer;">내 질문 삭제</button></div>'
@@ -1813,12 +2039,14 @@
             '<div class="qna-item-top">' +
               '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
                 statusBadge +
-                (item.isMine ? '<span style="font-size:0.74rem;font-weight:800;background:#059669;color:#FFFFFF;padding:3px 9px;border-radius:999px;">🔓 내 비공개 질문</span>' : '<span style="font-size:0.74rem;font-weight:800;background:#1E293B;color:#FDE68A;padding:3px 9px;border-radius:999px;">👑 마스터 열람</span>') +
+                secretBadge +
+                (item.isMine ? '<span style="font-size:0.74rem;font-weight:800;background:#059669;color:#FFFFFF;padding:3px 9px;border-radius:999px;">내 질문</span>' : '') +
+                (isMaster ? '<span style="font-size:0.74rem;font-weight:800;background:#1E293B;color:#FDE68A;padding:3px 9px;border-radius:999px;">👑 마스터</span>' : '') +
                 '<span style="font-size:0.76rem;font-weight:800;color:#2563EB;background:#EFF6FF;padding:3px 9px;border-radius:999px;">' + esc(catTag) + '</span>' +
               '</div>' +
               '<span style="font-size:0.78rem;color:#64748B;">' + esc(item.maskedAuthor) + ' · ' + esc(item.createdAt) + '</span>' +
             '</div>' +
-            '<h4 style="font-size:1.02rem;font-weight:800;color:#0F172A;margin-bottom:8px;">🔓 ' + esc(item.title) + '</h4>' +
+            '<h4 style="font-size:1.04rem;font-weight:800;color:#0F172A;margin-bottom:8px;">' + (item.isSecret !== false ? '🔒 ' : '🌐 ') + esc(item.title) + '</h4>' +
             masterDossierHtml +
             '<div style="font-size:0.92rem;color:#334155;line-height:1.72;white-space:pre-wrap;padding:12px 14px;background:#F8FAFC;border-radius:12px;border:1px solid #E2E8F0;">' + esc(item.content) + '</div>' +
             replyDisplayHtml +
@@ -1827,40 +2055,42 @@
           '</div>'
         );
       }).join('');
+
+      container.innerHTML = searchHeaderHtml + listHtml;
     };
 
-    window.handleLockedClick = function() {
-      if (!currentUser) {
-        window.showToast('🔒 비공개 상담글입니다. 본인 질문 열람 또는 새 질문 작성은 로그인 후 가능합니다.');
-        window.openAuthModal('social');
-      } else {
-        window.showToast('🔒 타 회원의 비공개 건강 질문입니다. 작성자 본인과 마스터만 열람할 수 있습니다.');
-      }
-    };
-
-    // 5. SUBMIT PRIVATE QUESTION
+    // 5. SUBMIT QUESTION (SUPPORTS BOTH GUEST & LOGGED-IN MEMBERS)
     window.submitPrivateQuestion = async function(ev) {
       ev.preventDefault();
-      if (!currentUser) {
-        window.openAuthModal('social');
-        return;
-      }
       const btn = document.getElementById('q-submit-btn');
       if (btn) btn.disabled = true;
 
       const partId = document.getElementById('q-part').value;
+      const name = document.getElementById('q-name').value.trim();
       const symptomDuration = document.getElementById('q-duration').value;
       const phone = document.getElementById('q-phone').value.trim();
+      const email = document.getElementById('q-email').value.trim();
+      const isSecret = document.getElementById('q-is-secret').checked;
+      const secretPassword = isSecret ? document.getElementById('q-secret-password').value.trim() : '';
       const title = document.getElementById('q-title').value.trim();
       const content = document.getElementById('q-content').value.trim();
 
-      const res = await apiCall('/qna', 'POST', { partId, symptomDuration, phone, title, content });
+      if (isSecret && secretPassword.length < 4) {
+        window.showToast('비밀글 비밀번호를 4자리 이상 입력해 주세요.');
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      const res = await apiCall('/qna', 'POST', {
+        partId, name, phone, email, symptomDuration, isSecret, secretPassword, title, content
+      });
       if (btn) btn.disabled = false;
 
       if (res.data && res.data.ok) {
         document.getElementById('q-title').value = '';
         document.getElementById('q-content').value = '';
-        window.showToast('🔒 1:1 비공개 질문이 안전하게 등록되었습니다.');
+        if (res.data.id) currentUnlockedIds.add(res.data.id);
+        window.showToast(isSecret ? '🔒 비밀글로 안전하게 등록되었습니다. (답변 시 카톡·메일 전송)' : '🌐 공개 질문으로 등록되었습니다. (답변 시 카톡·메일 전송)');
         await window.fetchQnaItems();
       } else {
         window.showToast(res.data?.message || '질문 등록에 실패했습니다.');
@@ -1873,7 +2103,7 @@
       if (!ta) return;
       const res = await apiCall('/qna/reply', 'POST', { id, reply: ta.value.trim() });
       if (res.data && res.data.ok) {
-        window.showToast('👑 1:1 비공개 답변이 저장되었습니다.');
+        window.showToast('👑 1:1 답변이 저장되었으며, 등록된 연락처(카카오톡) 및 메일로 알림이 발송되었습니다.');
         await window.fetchQnaItems();
       } else {
         window.showToast(res.data?.message || '답변 저장 실패');
@@ -1881,6 +2111,7 @@
     };
 
     window.deleteQnaItem = async function(id) {
+      if (!confirm('정말 삭제하시겠습니까?')) return;
       const res = await apiCall('/qna/delete', 'POST', { id });
       if (res.data && res.data.ok) {
         window.showToast('질문이 삭제되었습니다.');
