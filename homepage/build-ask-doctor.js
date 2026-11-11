@@ -630,6 +630,99 @@ function buildAskDoctorHtml() {
     /* ======================================================================
        VIEW 2: DISEASE-SPECIFIC 1:1 PRIVATE Q&A + FAST SOCIAL SIGNUP + MASTER
        ====================================================================== */
+    .qna-search-wrap {
+      background: #FFFFFF;
+      border: 1.5px solid var(--blue-600);
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
+    }
+    .qna-search-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .qna-search-input {
+      flex: 1;
+      min-width: 220px;
+      border: 1.5px solid var(--line-300);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink-900);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .qna-search-input:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .qna-search-btn {
+      padding: 12px 22px;
+      border-radius: 12px;
+      border: none;
+      background: var(--blue-600);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .qna-search-btn:hover {
+      background: var(--blue-700);
+    }
+    .qna-reset-btn {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line-300);
+      background: #F8FAFC;
+      color: var(--ink-700);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .badge-secret {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .badge-public {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .badge-notify-tag {
+      background: #F0FDF4;
+      color: #166534;
+      border: 1px solid #BBF7D0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
     .qna-cat-strip {
       display: flex;
       flex-wrap: wrap;

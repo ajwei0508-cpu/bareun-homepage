@@ -75,6 +75,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 symptom_duration VARCHAR(60) NOT NULL DEFAULT '',
                 title VARCHAR(255) NOT NULL DEFAULT '',
                 content LONGTEXT NOT NULL,
+                is_secret TINYINT(1) NOT NULL DEFAULT 1,
+                secret_password VARCHAR(100) NOT NULL DEFAULT '',
                 status VARCHAR(20) NOT NULL DEFAULT 'waiting',
                 master_reply LONGTEXT NULL,
                 client_ip VARCHAR(64) NOT NULL DEFAULT '',
@@ -83,6 +85,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 PRIMARY KEY (id),
                 KEY idx_part_id (part_id),
                 KEY idx_user_id (user_id),
+                KEY idx_is_secret (is_secret),
                 KEY idx_status (status)
             ) {$charset_collate};";
 
@@ -94,6 +97,18 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 self::seed_initial_private_records();
             }
             update_option(self::OPT_SEEDED, '1');
+        } else {
+            // 컬럼 유무 확인 및 자동 추가
+            $table = self::table_name();
+            $cols = $wpdb->get_col("DESC {$table}", 0);
+            if (is_array($cols)) {
+                if (!in_array('is_secret', $cols)) {
+                    $wpdb->query("ALTER TABLE {$table} ADD COLUMN is_secret TINYINT(1) NOT NULL DEFAULT 1 AFTER content");
+                }
+                if (!in_array('secret_password', $cols)) {
+                    $wpdb->query("ALTER TABLE {$table} ADD COLUMN secret_password VARCHAR(100) NOT NULL DEFAULT '' AFTER is_secret");
+                }
+            }
         }
 
         if (get_option(self::OPT_VISIT_SEEDED) !== '1') {
@@ -491,6 +506,11 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'callback'            => array(__CLASS__, 'handle_master_reply'),
             'permission_callback' => '__return_true'
         ));
+        register_rest_route('bareun/v1', '/qna/unlock', array(
+            'methods'             => 'POST',
+            'callback'            => array(__CLASS__, 'handle_unlock_qna'),
+            'permission_callback' => '__return_true'
+        ));
         register_rest_route('bareun/v1', '/qna/delete', array(
             'methods'             => 'POST',
             'callback'            => array(__CLASS__, 'handle_delete_qna'),
@@ -704,6 +724,64 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         ), 200);
     }
 
+    public static function dispatch_qna_reply_notifications($r, $reply) {
+        $email = trim((string)($r['member_email'] ?? ''));
+        $phone = preg_replace('/[^0-9]/', '', (string)($r['member_phone'] ?? ''));
+        $name  = trim((string)($r['member_name'] ?? '고객'));
+        $title = trim((string)($r['title'] ?? ''));
+        $qId   = (int)($r['id'] ?? 0);
+
+        // 1. 등록된 이메일로 답변 알림 전송 (WordPress wp_mail)
+        if (!empty($email) && is_email($email) && strpos($email, '.member') === false) {
+            $subject = sprintf('[바른한의원] %s님의 건강 질문에 대표원장님의 1:1 전문 답변이 등록되었습니다.', $name);
+            $message = sprintf(
+                "안녕하세요, %s님.\n바른한의원 대전본점 안정위 대표원장실입니다.\n\n남겨주신 건강 질문에 1:1 전문 의학 답변이 등록되었습니다.\n\n▶ 질문 제목: %s\n▶ 답변 내용 미리보기:\n%s\n\n▶ 답변 전문 확인하기:\nhttps://www.bareunhaniwon.com/ask-doctor/?tab=qna&qnaId=%d\n\n바른한의원 대전본점 (042-825-1075)\n대전광역시 유성구 노은로 174",
+                $name,
+                $title,
+                wp_trim_words($reply, 30, '...'),
+                $qId
+            );
+            $headers = array('Content-Type: text/plain; charset=UTF-8', 'From: 바른한의원 대전본점 <master@bareunhaniwon.com>');
+            @wp_mail($email, $subject, $message, $headers);
+        }
+
+        // 2. 등록된 휴대폰 번호로 카카오톡 알림톡 / SMS 전송 (Solapi API)
+        if (!empty($phone) && strlen($phone) >= 10) {
+            $apiKey    = 'NCSGZXQKB2DDI8AU';
+            $apiSecret = 'DXYGBFMQ78X1RVWBHF1TJDUD3E03B78N';
+            $sender    = '01056311275';
+
+            $date = gmdate('Y-m-d\TH:i:s\Z');
+            $salt = bin2hex(random_bytes(16));
+            $sig  = hash_hmac('sha256', $date . $salt, $apiSecret);
+            $authHeader = "HMAC-SHA256 apiKey={$apiKey}, date={$date}, salt={$salt}, signature={$sig}";
+
+            $smsText = sprintf(
+                "[바른한의원] %s님, 남겨주신 질문에 안정위 대표원장님의 1:1 답변이 등록되었습니다.\n\n▶ 질문: %s\n▶ 확인: https://www.bareunhaniwon.com/ask-doctor/?tab=qna&qnaId=%d\n\n바른한의원 대전본점 042-825-1075",
+                $name,
+                mb_substr($title, 0, 25) . '...',
+                $qId
+            );
+
+            $payload = wp_json_encode(array(
+                'message' => array(
+                    'to'   => $phone,
+                    'from' => $sender,
+                    'text' => $smsText
+                )
+            ));
+
+            wp_remote_post('https://api.solapi.com/messages/v4/send', array(
+                'headers' => array(
+                    'Authorization' => $authHeader,
+                    'Content-Type'  => 'application/json'
+                ),
+                'body'    => $payload,
+                'timeout' => 10
+            ));
+        }
+    }
+
     public static function handle_get_qna(\WP_REST_Request $request) {
         self::send_nocache();
         self::maybe_ensure_schema();
@@ -713,18 +791,43 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         $is_master = $actor && !empty($actor['isMaster']);
         $actor_id  = $actor ? (int) $actor['id'] : 0;
 
-        $part = sanitize_key($request->get_param('part') ?? 'all');
+        $part    = sanitize_key($request->get_param('part') ?? 'all');
+        $keyword = sanitize_text_field($request->get_param('keyword') ?? '');
+        $status  = sanitize_text_field($request->get_param('status') ?? 'all');
+
+        $where = array('1=1');
+        $values = array();
+
         if ($part && $part !== 'all') {
-            $rows = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$table} WHERE part_id = %s ORDER BY id DESC LIMIT 200", $part), ARRAY_A);
-        } else {
-            $rows = $wpdb->get_results("SELECT * FROM {$table} ORDER BY id DESC LIMIT 300", ARRAY_A);
+            $where[] = "part_id = %s";
+            $values[] = $part;
         }
 
+        if ($status === 'waiting') {
+            $where[] = "status != 'answered'";
+        } elseif ($status === 'answered') {
+            $where[] = "status = 'answered'";
+        } elseif ($status === 'secret') {
+            $where[] = "(is_secret = 1 OR is_secret IS NULL)";
+        } elseif ($status === 'public') {
+            $where[] = "is_secret = 0";
+        }
+
+        $where_sql = implode(' AND ', $where);
+        if (!empty($values)) {
+            $sql = $wpdb->prepare("SELECT * FROM {$table} WHERE {$where_sql} ORDER BY id DESC LIMIT 300", $values);
+        } else {
+            $sql = "SELECT * FROM {$table} WHERE {$where_sql} ORDER BY id DESC LIMIT 300";
+        }
+
+        $rows = $wpdb->get_results($sql, ARRAY_A);
         $items = array();
+
         foreach ((array) $rows as $r) {
-            $owner_id = (int) $r['user_id'];
-            $is_mine  = ($actor_id > 0 && $owner_id === $actor_id);
-            $can_read = $is_master || $is_mine;
+            $owner_id  = (int) $r['user_id'];
+            $is_mine   = ($actor_id > 0 && $owner_id === $actor_id);
+            $is_secret = !isset($r['is_secret']) || (int)$r['is_secret'] === 1;
+            $can_read  = $is_master || $is_mine || !$is_secret;
 
             $entry = array(
                 'id'           => (int) $r['id'],
@@ -734,7 +837,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'status'       => $r['status'],
                 'createdAt'    => substr($r['created_at'], 0, 16),
                 'repliedAt'    => $r['replied_at'] ? substr($r['replied_at'], 0, 16) : null,
-                'isPrivate'    => true,
+                'isSecret'     => $is_secret,
+                'hasPassword'  => !empty($r['secret_password']),
                 'isMine'       => $is_mine,
                 'canRead'      => $can_read
             );
@@ -745,7 +849,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 $entry['symptomDuration'] = $r['symptom_duration'];
                 $entry['masterReply']     = $r['master_reply'];
             } else {
-                $entry['title'] = '🔒 비공개 건강 상담 질문입니다 (작성자 본인 · 마스터 전용)';
+                $entry['title'] = '🔒 비밀글입니다 (작성자 본인 · 마스터 전용)';
             }
 
             if ($is_master) {
@@ -759,9 +863,27 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                     'ageGroup'        => $r['age_group'],
                     'symptomDuration' => $r['symptom_duration'],
                     'clientIp'        => $r['client_ip'],
-                    'createdAt'       => $r['created_at']
+                    'createdAt'       => $r['created_at'],
+                    'isSecret'        => $is_secret,
+                    'hasPassword'     => !empty($r['secret_password'])
                 );
             }
+
+            // Keyword filtering
+            if ($keyword !== '') {
+                $haystack = strtolower(implode(' ', array(
+                    $entry['partId'],
+                    $entry['maskedAuthor'],
+                    $entry['title'],
+                    $entry['content'] ?? '',
+                    $entry['masterReply'] ?? '',
+                    $entry['symptomDuration'] ?? ''
+                )));
+                if (strpos($haystack, strtolower($keyword)) === false) {
+                    continue;
+                }
+            }
+
             $items[] = $entry;
         }
 
@@ -772,6 +894,52 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         ), 200);
     }
 
+    public static function handle_unlock_qna(\WP_REST_Request $request) {
+        self::send_nocache();
+        self::maybe_ensure_schema();
+        global $wpdb;
+        $table = self::table_name();
+        $actor = self::get_current_actor($request);
+        $is_master = $actor && !empty($actor['isMaster']);
+        $actor_id  = $actor ? (int) $actor['id'] : 0;
+
+        $params = $request->get_json_params();
+        $id     = (int) ($params['id'] ?? 0);
+        $pwd    = sanitize_text_field($params['password'] ?? '');
+
+        $r = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table} WHERE id = %d", $id), ARRAY_A);
+        if (!$r) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '질문을 찾을 수 없습니다.'), 404);
+        }
+
+        $owner_id  = (int) $r['user_id'];
+        $is_mine   = ($actor_id > 0 && $owner_id === $actor_id);
+        $is_secret = !isset($r['is_secret']) || (int)$r['is_secret'] === 1;
+        $pass_ok   = (!empty($r['secret_password']) && $r['secret_password'] === $pwd);
+
+        if ($is_master || $is_mine || !$is_secret || $pass_ok) {
+            return new \WP_REST_Response(array(
+                'ok'   => true,
+                'item' => array(
+                    'id'              => (int) $r['id'],
+                    'partId'          => $r['part_id'],
+                    'title'           => $r['title'],
+                    'content'         => $r['content'],
+                    'symptomDuration' => $r['symptom_duration'],
+                    'masterReply'     => $r['master_reply'],
+                    'maskedAuthor'    => self::mask_name($r['member_name']),
+                    'createdAt'       => substr($r['created_at'], 0, 16),
+                    'repliedAt'       => $r['replied_at'] ? substr($r['replied_at'], 0, 16) : null,
+                    'status'          => $r['status'],
+                    'isSecret'        => $is_secret,
+                    'canRead'         => true
+                )
+            ), 200);
+        }
+
+        return new \WP_REST_Response(array('ok' => false, 'message' => '비밀번호가 일치하지 않거나 열람 권한이 없습니다.'), 403);
+    }
+
     public static function handle_create_qna(\WP_REST_Request $request) {
         self::send_nocache();
         self::maybe_ensure_schema();
@@ -780,14 +948,17 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             return new \WP_REST_Response(array('ok' => false, 'message' => '회원가입 및 로그인 후 질문을 작성하실 수 있습니다.'), 401);
         }
 
-        $params   = $request->get_json_params();
-        $part_id  = sanitize_key($params['partId'] ?? 'lumbar');
-        $title    = sanitize_text_field($params['title'] ?? '');
-        $content  = sanitize_textarea_field($params['content'] ?? '');
-        $duration = sanitize_text_field($params['symptomDuration'] ?? '1~6개월');
-        $phone    = sanitize_text_field($params['phone'] ?? $actor['phone']);
-        $age_grp  = sanitize_text_field($params['ageGroup'] ?? $actor['ageGroup']);
-        $gender   = sanitize_text_field($params['gender'] ?? $actor['gender']);
+        $params    = $request->get_json_params();
+        $part_id   = sanitize_key($params['partId'] ?? 'lumbar');
+        $title     = sanitize_text_field($params['title'] ?? '');
+        $content   = sanitize_textarea_field($params['content'] ?? '');
+        $duration  = sanitize_text_field($params['symptomDuration'] ?? '1~6개월');
+        $phone     = sanitize_text_field($params['phone'] ?? $actor['phone']);
+        $email     = sanitize_email($params['email'] ?? $actor['email']);
+        $age_grp   = sanitize_text_field($params['ageGroup'] ?? $actor['ageGroup']);
+        $gender    = sanitize_text_field($params['gender'] ?? $actor['gender']);
+        $is_secret = isset($params['isSecret']) ? ($params['isSecret'] ? 1 : 0) : 1;
+        $secret_pw = sanitize_text_field($params['secretPassword'] ?? '');
 
         if (empty($title) || empty($content)) {
             return new \WP_REST_Response(array('ok' => false, 'message' => '질문 제목과 상세 증상 내용을 모두 입력해 주세요.'), 400);
@@ -805,7 +976,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'part_id'          => $part_id,
             'user_id'          => (int) $actor['id'],
             'member_name'      => $actor['name'],
-            'member_email'     => $actor['email'],
+            'member_email'     => $email ?: $actor['email'],
             'member_phone'     => $phone,
             'social_provider'  => $actor['provider'],
             'gender'           => $gender,
@@ -813,6 +984,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'symptom_duration' => $duration,
             'title'            => $title,
             'content'          => $content,
+            'is_secret'        => $is_secret,
+            'secret_password'  => $secret_pw,
             'status'           => 'waiting',
             'master_reply'     => '',
             'client_ip'        => sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? ''),
@@ -823,7 +996,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         return new \WP_REST_Response(array(
             'ok'      => true,
             'id'      => (int) $wpdb->insert_id,
-            'message' => '비공개 질문이 안전하게 등록되었습니다.'
+            'isSecret'=> (bool)$is_secret,
+            'message' => $is_secret ? '비밀글로 안전하게 등록되었습니다.' : '공개 질문으로 안전하게 등록되었습니다.'
         ), 200);
     }
 
@@ -844,17 +1018,30 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         global $wpdb;
         $table = self::table_name();
         $status = trim($reply) !== '' ? 'answered' : 'waiting';
+        $now_str = trim($reply) !== '' ? current_time('mysql') : null;
+
         $wpdb->update(
             $table,
             array(
                 'master_reply' => $reply,
                 'status'       => $status,
-                'replied_at'   => trim($reply) !== '' ? current_time('mysql') : null
+                'replied_at'   => $now_str
             ),
             array('id' => $id)
         );
 
-        return new \WP_REST_Response(array('ok' => true, 'status' => $status), 200);
+        if ($status === 'answered') {
+            $record = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table} WHERE id = %d", $id), ARRAY_A);
+            if ($record) {
+                self::dispatch_qna_reply_notifications($record, $reply);
+            }
+        }
+
+        return new \WP_REST_Response(array(
+            'ok'      => true,
+            'status'  => $status,
+            'message' => '1:1 답변이 저장되었으며, 등록된 이메일 및 카카오톡으로 답변 알림이 자동 전송되었습니다.'
+        ), 200);
     }
 
     public static function handle_delete_qna(\WP_REST_Request $request) {

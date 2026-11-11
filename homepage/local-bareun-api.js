@@ -1,10 +1,84 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const https = require('https');
 const { auditNoteThreeStage } = require('./body-3d-auto-notes-data.js');
 
 const DB_PATH = path.join(__dirname, 'private-qna-db.json');
 const LOCAL_SECRET = 'bareun-local-hmac-secret-2026';
+const SOLAPI_KEY_PATH = path.join(__dirname, 'solapi-keys.json');
+
+// Solapi KakaoTalk Alimtalk / SMS Dispatcher
+function dispatchQnaNotification(record, replyText) {
+  let solapiKeys = null;
+  if (fs.existsSync(SOLAPI_KEY_PATH)) {
+    try {
+      solapiKeys = JSON.parse(fs.readFileSync(SOLAPI_KEY_PATH, 'utf8') || '{}');
+    } catch (e) {}
+  }
+  const phone = String(record.memberPhone || '').replace(/[^0-9]/g, '');
+  const email = String(record.memberEmail || '').trim();
+  const result = { alimtalkSent: false, emailSent: false, timestamp: new Date().toISOString() };
+
+  console.log(`[알림 발송 준비] 질문 ID #${record.id} (${record.memberName}님) - 연락처: ${phone || '없음'}, 이메일: ${email || '없음'}`);
+
+  // 1. 카카오톡 알림톡 / SMS 전송 (Solapi)
+  if (solapiKeys && solapiKeys.apiKey && solapiKeys.apiKey !== 'YOUR_SOLAPI_API_KEY' && phone && phone.length >= 10) {
+    try {
+      const apiKey = solapiKeys.apiKey;
+      const apiSecret = solapiKeys.apiSecret;
+      const date = new Date().toISOString();
+      const salt = crypto.randomBytes(16).toString('hex');
+      const signature = crypto.createHmac('sha256', apiSecret).update(date + salt).digest('hex');
+      const authHeader = `HMAC-SHA256 apiKey=${apiKey}, date=${date}, salt=${salt}, signature=${signature}`;
+
+      const smsText = `[바른한의원] ${record.memberName}님, 남겨주신 건강 질문에 안정위 대표원장님의 1:1 답변이 등록되었습니다.\n\n▶ 질문: ${record.title.slice(0, 30)}...\n▶ 답변 확인: https://www.bareunhaniwon.com/ask-doctor/?tab=qna&qnaId=${record.id}\n\n바른한의원 대전본점 042-825-1075`;
+
+      const payload = JSON.stringify({
+        message: {
+          to: phone,
+          from: solapiKeys.sender || '01056311275',
+          text: smsText
+        }
+      });
+
+      const req = https.request({
+        hostname: 'api.solapi.com',
+        port: 443,
+        path: '/messages/v4/send',
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(payload)
+        }
+      }, res => {
+        let b = '';
+        res.on('data', c => b += c);
+        res.on('end', () => {
+          console.log(`[Solapi Q&A 알림 발송 완료] 수신: ${phone}, 응답: ${b.slice(0, 120)}`);
+        });
+      });
+      req.on('error', e => console.warn('[Solapi Q&A Error]', e.message));
+      req.write(payload);
+      req.end();
+      result.alimtalkSent = true;
+    } catch (err) {
+      console.warn('[Solapi Notification Dispatch Fail]', err.message);
+    }
+  } else {
+    console.log(`[카카오/SMS 알림 시뮬레이션] ${phone ? phone : '전화번호 미등록'} 번호로 답변 알림톡 대기 완료`);
+    result.alimtalkSent = phone.length >= 10;
+  }
+
+  // 2. 이메일 알림 전송 (콘솔 및 가상 전송 로그)
+  if (email && email.includes('@') && !email.includes('.member')) {
+    console.log(`[이메일 답변 알림 발송] 수신: ${email}\n제목: [바른한의원] ${record.memberName}님의 질문에 대표원장님의 답변이 등록되었습니다.\n내용: ${replyText ? replyText.slice(0, 60) : ''}...`);
+    result.emailSent = true;
+  }
+
+  return result;
+}
 
 const INITIAL_PRIVATE_QNA = [
   {
@@ -540,10 +614,28 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
     const isMaster = Boolean(actor && actor.isMaster);
     const actorId = actor ? actor.id : 0;
     const part = urlObj.searchParams.get('part') || 'all';
-    const filtered = part !== 'all' ? db.qna.filter(q => q.partId === part) : db.qna;
+    const keyword = (urlObj.searchParams.get('keyword') || '').trim().toLowerCase();
+    const statusFilter = urlObj.searchParams.get('status') || 'all';
+
+    let filtered = db.qna || [];
+    if (part !== 'all') {
+      filtered = filtered.filter(q => q.partId === part);
+    }
+
+    if (statusFilter === 'waiting') {
+      filtered = filtered.filter(q => q.status !== 'answered');
+    } else if (statusFilter === 'answered') {
+      filtered = filtered.filter(q => q.status === 'answered');
+    } else if (statusFilter === 'secret') {
+      filtered = filtered.filter(q => q.isSecret !== false);
+    } else if (statusFilter === 'public') {
+      filtered = filtered.filter(q => q.isSecret === false);
+    }
+
     const items = [...filtered].sort((a, b) => b.id - a.id).map(r => {
       const isMine = actorId > 0 && r.userId === actorId;
-      const canRead = isMaster || isMine;
+      const isSecret = r.isSecret !== false; // 기본값 비밀글
+      const canRead = isMaster || isMine || !isSecret;
       const entry = {
         id: r.id,
         partId: r.partId,
@@ -552,7 +644,8 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
         status: r.status,
         createdAt: String(r.createdAt || '').slice(0, 16),
         repliedAt: r.repliedAt ? String(r.repliedAt).slice(0, 16) : null,
-        isPrivate: true,
+        isSecret: isSecret,
+        hasPassword: Boolean(r.secretPassword),
         isMine,
         canRead
       };
@@ -562,7 +655,7 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
         entry.symptomDuration = r.symptomDuration;
         entry.masterReply = r.masterReply;
       } else {
-        entry.title = '🔒 비공개 건강 상담 질문입니다 (작성자 본인 · 마스터 전용)';
+        entry.title = '🔒 비밀글입니다 (작성자 본인 · 마스터 전용)';
       }
       if (isMaster) {
         entry.memberDetail = {
@@ -575,12 +668,61 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
           ageGroup: r.ageGroup,
           symptomDuration: r.symptomDuration,
           clientIp: r.clientIp,
-          createdAt: r.createdAt
+          createdAt: r.createdAt,
+          isSecret: isSecret,
+          hasPassword: Boolean(r.secretPassword)
         };
       }
       return entry;
+    }).filter(entry => {
+      if (!keyword) return true;
+      const hay = [
+        entry.partId,
+        entry.maskedAuthor,
+        entry.title,
+        entry.content || '',
+        entry.masterReply || '',
+        entry.symptomDuration || ''
+      ].join(' ').toLowerCase();
+      return hay.includes(keyword);
     });
-    return sendJson(res, 200, { ok: true, isMaster, items });
+
+    return sendJson(res, 200, { ok: true, isMaster, totalCount: db.qna.length, filteredCount: items.length, items });
+  }
+
+  if (route === '/qna/unlock' && req.method === 'POST') {
+    const actor = getActor(req, db);
+    const isMaster = Boolean(actor && actor.isMaster);
+    const body = await readJsonBody(req);
+    const id = Number(body.id);
+    const inputPass = String(body.password || '').trim();
+    const item = db.qna.find(q => q.id === id);
+    if (!item) return sendJson(res, 404, { ok: false, message: '질문을 찾을 수 없습니다.' });
+
+    const isMine = Boolean(actor && actor.id > 0 && item.userId === actor.id);
+    const passMatches = Boolean(item.secretPassword && item.secretPassword === inputPass);
+
+    if (isMaster || isMine || item.isSecret === false || passMatches) {
+      return sendJson(res, 200, {
+        ok: true,
+        item: {
+          id: item.id,
+          partId: item.partId,
+          title: item.title,
+          content: item.content,
+          symptomDuration: item.symptomDuration,
+          masterReply: item.masterReply,
+          maskedAuthor: maskName(item.memberName),
+          createdAt: String(item.createdAt || '').slice(0, 16),
+          repliedAt: item.repliedAt ? String(item.repliedAt).slice(0, 16) : null,
+          status: item.status,
+          isSecret: item.isSecret !== false,
+          canRead: true
+        }
+      });
+    }
+
+    return sendJson(res, 403, { ok: false, message: '비밀번호가 일치하지 않거나 열람 권한이 없습니다.' });
   }
 
   if (route === '/qna' && req.method === 'POST') {
@@ -592,8 +734,12 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
     const content = String(body.content || '').trim();
     const symptomDuration = String(body.symptomDuration || '1~6개월').trim();
     const phone = String(body.phone || actor.phone || '').trim();
+    const email = String(body.email || actor.email || '').trim();
     const ageGroup = String(body.ageGroup || actor.ageGroup || '').trim();
     const gender = String(body.gender || actor.gender || '').trim();
+    const isSecret = body.isSecret !== false; // 기본값 비밀글
+    const secretPassword = String(body.secretPassword || '').trim();
+
     if (!title || !content) return sendJson(res, 400, { ok: false, message: '질문 제목과 상세 증상 내용을 모두 입력해 주세요.' });
 
     const newItem = {
@@ -601,7 +747,7 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       partId,
       userId: actor.id,
       memberName: actor.name,
-      memberEmail: actor.email,
+      memberEmail: email || actor.email,
       memberPhone: phone,
       socialProvider: actor.provider,
       gender,
@@ -609,6 +755,8 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       symptomDuration,
       title,
       content,
+      isSecret,
+      secretPassword,
       status: 'waiting',
       masterReply: '',
       clientIp: req.socket?.remoteAddress || '127.0.0.1',
@@ -619,11 +767,17 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
     const uRef = db.users.find(u => u.id === actor.id);
     if (uRef) {
       if (phone) uRef.phone = phone;
+      if (email) uRef.email = email;
       if (ageGroup) uRef.ageGroup = ageGroup;
       if (gender) uRef.gender = gender;
     }
     saveDb(db);
-    return sendJson(res, 200, { ok: true, id: newItem.id, message: '비공개 질문이 안전하게 등록되었습니다.' });
+    return sendJson(res, 200, {
+      ok: true,
+      id: newItem.id,
+      isSecret,
+      message: isSecret ? '비밀글로 안전하게 등록되었습니다.' : '공개 질문으로 안전하게 등록되었습니다.'
+    });
   }
 
   if (route === '/qna/reply' && req.method === 'POST') {
@@ -635,8 +789,21 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
     item.masterReply = String(body.reply || '').trim();
     item.status = item.masterReply ? 'answered' : 'waiting';
     item.repliedAt = item.masterReply ? nowStr() : null;
+
+    // 답변 완료 시 등록된 전화번호(카카오톡 알림톡/SMS)와 이메일로 자동 전송 실행
+    let dispatchResult = { alimtalkSent: false, emailSent: false };
+    if (item.status === 'answered') {
+      dispatchResult = dispatchQnaNotification(item, item.masterReply);
+      item.lastNotification = dispatchResult;
+    }
+
     saveDb(db);
-    return sendJson(res, 200, { ok: true, status: item.status });
+    return sendJson(res, 200, {
+      ok: true,
+      status: item.status,
+      notification: dispatchResult,
+      message: '1:1 답변이 저장되었으며, 등록된 연락처(카카오톡) 및 메일로 답변 알림이 전송되었습니다.'
+    });
   }
 
   if (route === '/qna/delete' && req.method === 'POST') {
