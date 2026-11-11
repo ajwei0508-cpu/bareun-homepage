@@ -249,28 +249,18 @@ function buildBodyExplorerHtml() {
           '@type': 'ListItem',
           'position': idx + 1,
           'name': `[${n.partLabel}] ${n.title}`,
-          'url': `https://www.bareunhaniwon.com/ask-doctor/?part=${n.partId}&note=${n.id}`
+          'url': `https://www.bareunhaniwon.com/body-explorer/?part=${n.partId}&note=${n.id}`
         }))
       }
     ]
   };
 
   const ssrHealthNotesDirectoryHtml = FLATTENED_SEED_NOTES.map(n => {
-    const slugUrl = `https://www.bareunhaniwon.com/ask-doctor/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
     const deepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
-    return `<article class="seo-health-note-ssr-item" style="padding:10px 12px;margin-bottom:8px;border-radius:10px;background:#FCFBF8;border:1px solid #EAE3D5;">
-          <h3 style="margin:0 0 4px;font-size:0.8rem;font-weight:800;color:#0D0D0F;">
-            <a href="${slugUrl}" style="color:#0D0D0F;text-decoration:none;">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a>
-          </h3>
-          <p class="aeo-direct-answer" style="margin:0 0 4px;font-size:0.74rem;color:#262522;line-height:1.5;">
-            <strong>의학적 진실(AEO 요약):</strong> ${escAttrServer((n.truth || []).join(' '))} <strong>올바른 관리:</strong> ${escAttrServer((n.myth && n.myth[1]) || '')}
-          </p>
-          <div style="font-size:0.69rem;color:#6E685F;">
-            <span>학술 근거(GEO): ${escAttrServer(n.academicBasis || '')}</span> &middot;
-            <span>1분 체크: ${escAttrServer((n.check || []).join(' / '))}</span> &middot;
-            <a href="${slugUrl}" style="color:#967128;font-weight:700;">단독 페이지로 보기</a> &middot;
-            <a href="${deepUrl}" style="color:#0D0D0F;font-weight:700;">3D 모형 연동</a>
-          </div>
+    return `<article class="seo-health-note-ssr-item">
+          <h3><a href="${deepUrl}">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a></h3>
+          <p class="aeo-direct-answer">${escAttrServer((n.empathy || []).join(' '))} ${escAttrServer((n.truth || []).join(' '))} ${escAttrServer((n.myth && n.myth[1]) || '')}</p>
+          <p>${escAttrServer((n.check || []).join(' / '))}</p>
         </article>`;
   }).join('\n        ');
 
@@ -1831,7 +1821,6 @@ function buildBodyExplorerHtml() {
     </a>
 
     <div class="vh-right-actions">
-      <a href="ask-doctor.html" class="vh-pill-btn" id="vh-standalone-notes-link" style="background:#0D0D0F;color:#E5C67E;border-color:#C5A059;">📄 건강글 단독 페이지</a>
       <button type="button" onclick="window.openQnaInPopup()" class="vh-pill-btn" id="vh-ask-doctor-link" style="cursor:pointer;">무엇이든 물어보세요</button>
       <a href="story-3d.html" class="vh-pill-btn">&larr; 메인 홈</a>
     </div>
@@ -1880,32 +1869,14 @@ function buildBodyExplorerHtml() {
     <div id="encyclopedia-dynamic-content"></div>
   </section>
 
-  <!-- SEMANTIC 3D ANATOMY & CLINIC SUMMARY DIRECTORY (SSR INDEXABLE + ACCESSIBLE) -->
-  <details class="seo-anatomy-summary-drawer" style="position:fixed;left:16px;bottom:14px;z-index:95;max-width:340px;font-family:'Pretendard',sans-serif;">
-    <summary style="list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,0.92);border:1px solid rgba(197,160,89,0.45);color:#0D0D0F;font-size:0.74rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,0.08);">
-      <span>📖 해부학 가이드 · 진료안내</span>
-    </summary>
-    <div style="margin-top:8px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,0.97);border:1px solid rgba(13,13,15,0.12);box-shadow:0 12px 32px rgba(0,0,0,0.14);max-height:52vh;overflow-y:auto;color:#171614;font-size:0.78rem;line-height:1.6;">
-      <h2 style="margin:0 0 8px;font-size:0.88rem;font-weight:800;color:#0D0D0F;">전신 4대 해부 계통 및 9대 부위별 건강 가이드</h2>
-      <p style="margin:0 0 10px;">바른한의원 대전본점 풀스크린 3D 인체모형 포털은 전신 근육계, 자율·말초 신경계, 척추·사지 관절계, 심혈관 순환계의 입체적 상호작용을 실시간 3D 그래픽 모션으로 시각화하고 해외 SCI 의학 학술지 근거 기반 생활 건강 정보를 제공합니다.</p>
-      <h2 style="margin:8px 0 4px;font-size:0.8rem;font-weight:700;">부위별 주요 건강 탐색 주제</h2>
-      <ul style="margin:0 0 10px;padding-left:16px;">
-        <li><strong>무릎 성장판 · 소아성장</strong>: 서파수면 성장호르몬 생리, 소아비만 체지방 대사 관리, 구강호흡·비염 점막 면역과 키 성장의 연관성 안내.</li>
-        <li><strong>경추 · 두피열 · 탈모</strong>: 거북목(전방두부자세)에 따른 두피 미세혈류 저하, 상열하한 열조절 및 남성·여성·원형탈모·지루성두피염 두피 환경 관리.</li>
-        <li><strong>요추 · 골반 · 추나 생체역학</strong>: 추간판 압력 분산, 골반 경사 불균형 교정, 만성 요통·좌골신경통 완화를 위한 코어 안정화 원칙.</li>
-        <li><strong>뇌 · 심혈관 · 만성피로</strong>: 저등급 전신 만성염증, 브레인 포그, 수면-각성 일주기 리듬 회복과 신경 보호 영양 생리.</li>
-        <li><strong>자율신경 · 미주신경 · 어지럼증</strong>: 심박변이도(HRV) 균형, 기립성 어지럼증·두통·불면 완화를 위한 호흡 및 생활 루틴.</li>
-        <li><strong>위장 · 장-뇌 축 · 대사 해독</strong>: 기능성 소화불량, 위 배출 지연, 내장지방 갈색지방 열생산 활성화 및 식습관 교정.</li>
-        <li><strong>여성 자궁 · 남성 전립선 골반 순환</strong>: 골반강 미세혈류 개선, 야간뇨·배뇨 불편 완화 및 생애주기별 비뇨·생식기 건강 관리.</li>
-      </ul>
-      <h2 style="margin:8px 0 4px;font-size:0.8rem;font-weight:700;">바른한의원 대전본점 오시는 길 · 진료시간</h2>
-      <p style="margin:0 0 12px;">주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 우편번호 34417) · 대표전화: <a href="tel:010-5631-1275" style="color:#0D0D0F;font-weight:700;">010-5631-1275</a> · 대표원장: 안정위<br>진료시간: 평일(월~금) 09:00~19:00 / 토요일·공휴일 09:00~14:00 / 일요일 휴진</p>
-      <h2 style="margin:10px 0 6px;font-size:0.82rem;font-weight:800;color:#0D0D0F;">9대 부위별 오늘의 건강 글 72선 (SEO · AEO · GEO 통합 검색 아카이브)</h2>
-      <div class="seo-health-notes-ssr-list">
-        ${ssrHealthNotesDirectoryHtml}
-      </div>
+  <!-- VISUALLY HIDDEN SEARCH ARCHIVE (HIDDEN FROM CONSUMERS) -->
+  <div class="seo-anatomy-summary-drawer" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;pointer-events:none;" aria-hidden="true">
+    <h2>전신 4대 해부 계통 및 9대 부위별 건강 가이드</h2>
+    <p>바른한의원 대전본점 풀스크린 3D 인체모형 포털은 전신 근육계, 자율·말초 신경계, 척추·사지 관절계, 심혈관 순환계의 입체적 상호작용을 실시간 3D 그래픽 모션으로 시각화하고 생활 건강 정보를 제공합니다.</p>
+    <div class="seo-health-notes-ssr-list">
+      ${ssrHealthNotesDirectoryHtml}
     </div>
-  </details>
+  </div>
 
   <script>
   (async function() {
@@ -1921,10 +1892,6 @@ function buildBodyExplorerHtml() {
     const CLINICAL_BLOGS = ${JSON.stringify(CLINICAL_BLOGS_LITE)};
 
     const earlyParams = new URLSearchParams(window.location.search);
-    if (earlyParams.get('tab') === 'blog' || earlyParams.get('blog') === '1') {
-      window.location.replace('ask-doctor.html?tab=blog');
-      return;
-    }
 
     function getTodayKst() {
       try {
@@ -2071,7 +2038,7 @@ function buildBodyExplorerHtml() {
       lastViewedNoteIdSession = nid;
       noteViewsMap[nid] = (Number(noteViewsMap[nid]) || 0) + 1;
       document.querySelectorAll('[data-note-view-id="' + nid + '"]').forEach(el => {
-        el.textContent = '실제 조회수 ' + Number(noteViewsMap[nid]).toLocaleString() + '회';
+        el.textContent = '조회수 ' + Number(noteViewsMap[nid]).toLocaleString() + '회';
       });
       try {
         const res = await fetch('/wp-json/bareun/v1/body-notes/view', {
@@ -2090,7 +2057,7 @@ function buildBodyExplorerHtml() {
             noteViewsMap[nid] = data.views;
           }
           document.querySelectorAll('[data-note-view-id="' + nid + '"]').forEach(el => {
-            el.textContent = '실제 조회수 ' + Number(noteViewsMap[nid] || 0).toLocaleString() + '회';
+            el.textContent = '조회수 ' + Number(noteViewsMap[nid] || 0).toLocaleString() + '회';
           });
         }
       } catch (e) {}
@@ -2343,8 +2310,6 @@ function buildBodyExplorerHtml() {
       const latestRedTagHtml = isLatestRed
         ? '<span class="latest-red-badge"><span class="latest-red-dot"></span>NEW 최신글</span>'
         : '';
-      const realViewCount = Number(noteViewsMap[note.id] != null ? noteViewsMap[note.id] : (note.views || 0));
-      const realViewBadgeHtml = '<span data-note-view-id="' + escHtml(note.id) + '" style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(229,198,126,0.45);color:#E5C67E;font-size:0.68rem;font-weight:800;">실제 조회수 ' + realViewCount.toLocaleString() + '회</span>';
       const useQuotes = d.titleQuotes !== false;
       const titleInner = useQuotes ? ('&ldquo;' + escHtml(note.title) + '&rdquo;') : escHtml(note.title);
       const effSubTitle = (note.subTitle && String(note.subTitle).trim())
@@ -2353,8 +2318,7 @@ function buildBodyExplorerHtml() {
       const subTitleHtml = effSubTitle
         ? '<p class="hip-subtitle">' + escHtml(effSubTitle) + '</p>'
         : '';
-      const standaloneUrl = 'ask-doctor.html?part=' + encodeURIComponent(note.partId || currentPartId) + '&note=' + encodeURIComponent(note.id || '');
-      const closeBtnHtml = '<div style="display:inline-flex;align-items:center;gap:5px;flex-shrink:0;"><a href="' + escHtml(standaloneUrl) + '" class="hip-close-btn" style="text-decoration:none;border-color:rgba(229,198,126,0.75);color:#E5C67E;">단독 페이지 &#8599;</a><button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button></div>';
+      const closeBtnHtml = '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>';
 
       let headerInnerHtml = '';
       if (hdrMode === 'stacked') {
@@ -2363,7 +2327,6 @@ function buildBodyExplorerHtml() {
             '<span style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
               latestRedTagHtml +
-              realViewBadgeHtml +
             '</span>' +
             closeBtnHtml +
           '</div>' +
@@ -2378,7 +2341,6 @@ function buildBodyExplorerHtml() {
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
               latestRedTagHtml +
-              realViewBadgeHtml +
               '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
             subTitleHtml +
@@ -2389,7 +2351,6 @@ function buildBodyExplorerHtml() {
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span><span class="hip-divider">|</span>' : '') +
               latestRedTagHtml +
-              realViewBadgeHtml +
               '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
             subTitleHtml +
@@ -2628,14 +2589,11 @@ function buildBodyExplorerHtml() {
         stageLabelEl.textContent = '[' + menuMeta.partLabel + '] · ' + menuMeta.menuTitle;
       }
       applyRightHeaderSubText();
-      if (topAskLink) {
-        topAskLink.setAttribute('href', 'ask-doctor.html?tab=qna&part=all');
-      }
       applyCameraFraming();
 
       let activeBodyHtml = '';
 
-      // 4. 오늘의 건강글 중 심층 임상 칼럼 3선은 작성된 오늘의 건강글 범위 안에서 실제 조회수가 많은 순으로 나열
+      // 4. 오늘의 건강글 중 심층 임상 칼럼 3선은 작성된 오늘의 건강글 범위 안에서 조회수가 많은 순으로 나열
       const topViewedNotes3 = [...partNotes]
         .sort((a, b) => {
           const vDiff = (Number(b.views) || 0) - (Number(a.views) || 0);
@@ -2649,7 +2607,7 @@ function buildBodyExplorerHtml() {
             '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">' +
               '<div style="display:flex;align-items:center;gap:6px;">' +
                 '<span style="display:inline-flex;padding:2px 7px;border-radius:6px;background:#0D0D0F;color:#E5C67E;font-size:0.68rem;font-weight:800;">심층 임상 칼럼 3선</span>' +
-                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 실제 조회수 BEST 3</strong>' +
+                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 많이 읽은 건강글 BEST 3</strong>' +
               '</div>' +
               '<button type="button" onclick="window.switchPopupMenu(2)" style="border:none;background:transparent;cursor:pointer;font-size:0.72rem;font-weight:800;color:#967128;">전체 건강글 (' + partNotes.length + '편) &rarr;</button>' +
             '</div>' +
@@ -2660,7 +2618,7 @@ function buildBodyExplorerHtml() {
                   '<div style="min-width:0;flex:1;">' +
                     '<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">' +
                       '<span style="font-size:0.66rem;font-weight:800;color:#E11D48;">BEST 0' + (bIdx + 1) + '</span>' +
-                      '<span data-note-view-id="' + escHtml(np.id) + '" style="font-size:0.66rem;font-weight:700;color:#6E685F;">실제 조회수 ' + Number(np.views || 0).toLocaleString() + '회</span>' +
+                      '<span data-note-view-id="' + escHtml(np.id) + '" style="font-size:0.66rem;font-weight:700;color:#6E685F;">조회수 ' + Number(np.views || 0).toLocaleString() + '회</span>' +
                       '<span style="font-size:0.66rem;font-weight:600;color:#8C857B;">· ' + fmtDotDate(np.publishDate) + '</span>' +
                       (isLatestItem ? '<span class="latest-red-badge" style="padding:1px 5px;font-size:0.6rem;">최신</span>' : '') +
                     '</div>' +
@@ -2784,7 +2742,7 @@ function buildBodyExplorerHtml() {
                 '<div class="archive-card-tags">' +
                   '<span class="archive-date-pill' + (isRowLatest ? ' is-latest-red' : '') + '">' + fmtDotDate(n.publishDate) + (isRowLatest ? ' · NEW 최신' : '') + '</span>' +
                   '<span class="archive-part-pill">[' + escHtml(n.partLabel) + ']</span>' +
-                  '<span data-note-view-id="' + escHtml(n.id) + '" style="font-size:0.68rem;color:#6E685F;font-weight:700;">실제 조회수 ' + Number(n.views || 0).toLocaleString() + '회</span>' +
+                  '<span data-note-view-id="' + escHtml(n.id) + '" style="font-size:0.68rem;color:#6E685F;font-weight:700;">조회수 ' + Number(n.views || 0).toLocaleString() + '회</span>' +
                 '</div>' +
                 '<div class="archive-card-title">&ldquo;' + escHtml(n.title) + '&rdquo;</div>' +
               '</div>' +
@@ -3113,8 +3071,15 @@ ${WEBGL_PART_B}
     const urlSys = earlyParams.get('system');
     const urlPart = earlyParams.get('part');
     const urlNote = earlyParams.get('note');
+    const urlTab = earlyParams.get('tab');
     if (urlSys && SYSTEM_TABS.some(s => s.id === urlSys)) {
       window.selectAnatomySystem(urlSys);
+    } else if (urlTab === 'qna') {
+      if (urlPart && urlPart !== 'all') {
+        const menuMeta = getMenuMeta(urlPart);
+        currentPartId = menuMeta ? menuMeta.id : urlPart;
+      }
+      window.openQnaInPopup();
     } else if (urlPart || urlNote) {
       const targetPart = urlPart || (urlNote ? String(urlNote).split('-')[0] : 'knee');
       window.selectBodyPart(targetPart, true);

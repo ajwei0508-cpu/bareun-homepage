@@ -233,7 +233,8 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp('"href":"' + pageSlugUnion + '\\.html(\\?[^"]*)?"', 'g'), '"href":"/$1/$2"')
     .replace(new RegExp("href\\s*=\\s*'" + pageSlugUnion + "\\.html(\\?[^']*)?'", 'g'), "href = '/$1/$2'")
     .replace(/'body-explorer\.html(\?[^']*)?'/g, "'/body-explorer/$1'")
-    .replace(/'ask-doctor\.html(\?[^']*)?'/g, "'/ask-doctor/$1'")
+    .replace(/'ask-doctor\.html(\?[^']*)?'/g, "'/body-explorer/$1'")
+    .replace(/href="\/ask-doctor\/(\?[^"]*)?"/g, 'href="/body-explorer/$1"')
     .replace(new RegExp('"clinicLink":"' + pageSlugUnion + '\\.html"', 'g'), '"clinicLink":"/$1/"')
     .replace(new RegExp('"ctaHref":"' + pageSlugUnion + '\\.html"', 'g'), '"ctaHref":"/$1/"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
@@ -276,7 +277,6 @@ const ALL_BUNDLES = [
   ['gongjindan.html', 'wordpress-gongjindan.html', 'gongjindan'],
   ['prostate.html', 'wordpress-prostate.html', 'prostate'],
   ['body-explorer.html', 'wordpress-body-explorer.html', 'body-explorer'],
-  ['ask-doctor.html', 'wordpress-ask-doctor.html', 'ask-doctor'],
   ['lifting-compare.html', 'wordpress-lifting-compare.html', 'lifting-compare']
 ];
 

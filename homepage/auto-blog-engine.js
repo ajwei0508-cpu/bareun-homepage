@@ -956,7 +956,7 @@ function generateLlmsTxtFiles() {
     '# 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon Main Branch) — SEO · AEO · GEO Official Knowledge Index',
     '> 주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 대표전화: 010-5631-1275 | 대표원장: 안정위 (한의사)',
     '> 진료시간: 평일(월~금) 09:00~19:00 · 토요일 및 공휴일 09:00~14:00 · 일요일 휴진',
-    '> 공식 도메인: https://www.bareunhaniwon.com/ | 3D 인체 백과사전: https://www.bareunhaniwon.com/body-explorer/ | 통합 1:1 Q&A 및 의학칼럼: https://www.bareunhaniwon.com/ask-doctor/',
+    '> 공식 도메인: https://www.bareunhaniwon.com/ | 3D 인체 백과사전 (오늘의 건강 글 72편 · 통합 1:1 Q&A): https://www.bareunhaniwon.com/body-explorer/',
     '> 해외 SCI 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews, European Heart Journal, JCEM, Human Reproduction Update, European Urology 등) 근거 기반 9대 정밀검진 · 6대 물리치료 · 맞춤 한약·추나·성장·다이어트·탈모·공진단·전립선 클리닉',
     '',
     '## 1. Clinic Entity & Official Channels (기관 표준 정보)',
@@ -971,11 +971,10 @@ function generateLlmsTxtFiles() {
     '- Official Blog: https://blog.naver.com/wei0508',
     '- KakaoTalk Consultation: https://pf.kakao.com/_ykxcLK',
     '',
-    '## 2. Core Specialized Clinic Pages (15대 핵심 클리닉 페이지)',
+    '## 2. Core Specialized Clinic Pages (핵심 클리닉 페이지)',
     '- [메인 3D 스토리 쇼룸](https://www.bareunhaniwon.com/): 환자 증상 공감 스토리 및 9대 정밀검진·6대 물리치료 안내',
     '- [안정위 대표원장 · 9대 정밀검진](https://www.bareunhaniwon.com/director/): 초음파, 적외선 체열진단, 두피현미경, 모아레 체형측정, 인바디, 자율신경(HRV), 간·당 대사, 혈관 노화, 성장판 검사',
-    '- [풀스크린 3D 인체모형 · 진료 살펴보기](https://www.bareunhaniwon.com/body-explorer/): 근육·신경·관절·혈관 4대 계통 3D 모션 및 9대 부위별 오늘의 건강 글(72편) 실시간 조회수 연동 포털',
-    '- [3D 백과사전 오늘의 건강 글 단독 페이지 & 통합 1:1 Q&A](https://www.bareunhaniwon.com/ask-doctor/): 9대 부위 오늘의 건강 글 72편 단독 페이지 열람 및 전 질환 통합 1:1 질문 게시판(비밀글·키워드검색·카카오톡 및 이메일 답변 알림)',
+    '- [풀스크린 3D 인체모형 · 오늘의 건강 글(72편) · 무엇이든 물어보세요](https://www.bareunhaniwon.com/body-explorer/): 근육·신경·관절·혈관 4대 계통 3D 모션 및 9대 부위별 오늘의 건강 글(72편), 전 질환 통합 1:1 질문 게시판(비밀글·키워드검색·카카오톡 및 이메일 답변 알림)',
     '- [바른 추나 · 척추교정 클리닉](https://www.bareunhaniwon.com/chuna/): 허리디스크, 목디스크, 골반불균형, 좌골신경통, 체형교정',
     '- [바른 성장 · 성조숙증 클리닉](https://www.bareunhaniwon.com/growth/): 무방사선 초음파 성장판 분석, 소아비만·성조숙증 예방, 비염·구강호흡 수면 성장 치료',
     '- [바른 다이어트 · 식욕ZERO 클리닉](https://www.bareunhaniwon.com/diet-zero/): 기초대사량 보존, 갈색지방 활성화, 내장지방·부종 해독 다이어트',
@@ -984,8 +983,8 @@ function generateLlmsTxtFiles() {
     '- [바른 전립선 · 남성활력 클리닉](https://www.bareunhaniwon.com/prostate/): 만성 전립선염, 전립선비대증, 야간뇨, 과민성 방광, 골반저 순환 치료',
     '- [바른 매선 · 리프팅 윤곽진단](https://www.bareunhaniwon.com/lifting-compare/): 비수술 한방 안면 매선 리프팅 및 윤곽 대칭 교정',
     '',
-    '## 3. 3D Body Explorer — 72 "오늘의 건강 글" Standalone Page Index (SEO · AEO · GEO Direct Q&A)',
-    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/ask-doctor/?part=${p.partId}&note=${p.id}): ${p.summary}`),
+    '## 3. 3D Body Explorer — 72 "오늘의 건강 글" Index',
+    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/body-explorer/?part=${p.partId}&note=${p.id}): ${p.summary}`),
     '',
     '## 4. Representative Integrative Medicine Review',
     `- [${FLAGSHIP_REPRESENTATIVE_POST.title}](https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/): ${FLAGSHIP_REPRESENTATIVE_POST.summary}`
@@ -1007,8 +1006,7 @@ function generateLlmsTxtFiles() {
     for (const ep of eps) {
       fullLines.push('');
       fullLines.push(`### [${ep.partLabel} · ${ep.keyword}] ${ep.questionTitle}`);
-      fullLines.push(`- Standalone Page URL: https://www.bareunhaniwon.com/ask-doctor/?part=${partId}&note=${ep.id}`);
-      fullLines.push(`- 3D Explorer URL: https://www.bareunhaniwon.com/body-explorer/?part=${partId}&note=${ep.id}`);
+      fullLines.push(`- Direct URL: https://www.bareunhaniwon.com/body-explorer/?part=${partId}&note=${ep.id}`);
       fullLines.push(`- Publish Date: ${ep.publishDate}`);
       fullLines.push(`- SCI Academic Basis: ${ep.academicBasis || '국제 SCI 의학저널 근거'}`);
       fullLines.push(`- 1. 일상 속 불편함: ${(ep.empathyLines || []).join(' ')}`);

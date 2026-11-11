@@ -176,18 +176,18 @@ const SEO_PAGES = {
   'body-explorer': {
     file: 'body-explorer.html',
     path: '/body-explorer/',
-    title: '3D 인체모형 해부학 가이드 & 진료 살펴보기 | 바른한의원 대전본점',
-    description: '풀스크린 3D 인체모형으로 머리부터 발끝까지 근육·신경·관절·혈관 구조와 9대 부위별 생활 건강 관리법, 해외 SCI 의학 논문 요약을 한눈에 탐색하는 인터랙티브 건강 포털입니다.',
+    title: '3D 인체모형 진료 살펴보기 · 오늘의 건강 글 · 무엇이든 물어보세요 | 바른한의원 대전본점',
+    description: '풀스크린 3D 인체모형으로 머리부터 발끝까지 근육·신경·관절·혈관 구조와 9대 부위별 오늘의 건강 글(72편), 전 질환 통합 1:1 질문(무엇이든 물어보세요)을 한눈에 살펴보는 건강 포털입니다.',
     preloadImg: DEFAULT_OG_IMAGE,
     breadcrumbName: '3D 인체모형 진료 살펴보기'
   },
   'ask-doctor': {
     file: 'ask-doctor.html',
-    path: '/ask-doctor/',
-    title: '3D 백과사전 오늘의 건강 글(72선) & 무엇이든 물어보세요 (단독 페이지) | 바른한의원 대전본점',
-    description: '척추·골반, 위·장, 무릎 성장판, 간·해독, 자율신경, 하복부·대사, 두피·모낭, 원기·면역, 전립선·방광 등 9대 부위별 오늘의 건강 글(72편)과 해외 SCI 학술지 근거 의학 정보, 전 질환 통합 1:1 질문 게시판을 한눈에 볼 수 있는 단독 페이지입니다.',
+    path: '/body-explorer/',
+    title: '3D 인체모형 진료 살펴보기 · 오늘의 건강 글 · 무엇이든 물어보세요 | 바른한의원 대전본점',
+    description: '풀스크린 3D 인체모형으로 머리부터 발끝까지 근육·신경·관절·혈관 구조와 9대 부위별 오늘의 건강 글(72편), 전 질환 통합 1:1 질문(무엇이든 물어보세요)을 한눈에 살펴보는 건강 포털입니다.',
     preloadImg: DEFAULT_OG_IMAGE,
-    breadcrumbName: '3D 백과사전 오늘의 건강 글 단독 페이지',
+    breadcrumbName: '3D 인체모형 진료 살펴보기',
     hasFaq: true
   },
   'lifting-compare': {
@@ -309,13 +309,13 @@ function buildJsonLdForKey(key, customOgImg) {
         graph.push({
           '@type': 'ItemList',
           '@id': canonicalUrl + '#health-notes-72',
-          name: '바른한의원 3D 백과사전 오늘의 건강 글 72선 단독 아카이브',
+          name: '바른한의원 3D 백과사전 오늘의 건강 글 72선 아카이브',
           numberOfItems: all72.length,
           itemListElement: all72.map((n, idx) => ({
             '@type': 'ListItem',
             position: idx + 1,
             name: `[${n.partLabel} · ${n.keyword}] ${n.title}`,
-            url: `${CANONICAL_ORIGIN}/ask-doctor/?part=${n.partId}&note=${n.id}`
+            url: `${CANONICAL_ORIGIN}/body-explorer/?part=${n.partId}&note=${n.id}`
           }))
         });
       }

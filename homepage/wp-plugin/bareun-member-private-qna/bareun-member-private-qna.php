@@ -1918,13 +1918,13 @@ class Bareun_Master_SEO_Engine_V1 {
             $target_path = '/';
         } elseif (preg_match('#^/author(/.*)?$#i', $path)) {
             $target_path = '/director/';
-        } elseif (preg_match('#^/(category|tag|health-notes)(/.*)?$#i', $path)) {
-            $target_path = '/ask-doctor/';
+        } elseif (preg_match('#^/(category|tag|health-notes|ask-doctor)(/.*)?$#i', $path)) {
+            $target_path = '/body-explorer/';
         } elseif (preg_match('#^/health-note-([a-z0-9\-]+?)(/.*)?$#i', $path, $hn_m)) {
             $hn_id = strtolower($hn_m[1]);
             $hn_parts = explode('-', $hn_id);
             $hn_part = !empty($hn_parts[0]) ? $hn_parts[0] : 'knee';
-            $target_path = '/ask-doctor/';
+            $target_path = '/body-explorer/';
             $query = '?part=' . rawurlencode($hn_part) . '&note=' . rawurlencode($hn_id);
         }
 
