@@ -188,6 +188,40 @@ async function performWpLogin(page, loginUrl) {
       console.log('1.2) WordPress siteurl & home already unified on https://www.bareunhaniwon.com');
     }
 
+    // 1.4) Upload & Activate Bareun WordPress Plugin ZIP via plugin-install.php?tab=upload
+    const pluginZipPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna.zip');
+    if (fs.existsSync(pluginZipPath)) {
+      console.log('1.4) Uploading & Activating Bareun Plugin ZIP via WordPress Plugin Installer ...');
+      await page.goto(`${CANONICAL_ORIGIN}/wp-admin/plugin-install.php?tab=upload`, { waitUntil: 'networkidle2', timeout: 25000 }).catch(() => {});
+      const zipInput = await page.$('input[type="file"][name="pluginzip"]');
+      if (zipInput) {
+        await zipInput.uploadFile(pluginZipPath);
+        await page.evaluate(() => {
+          const btn = document.getElementById('install-plugin-submit');
+          if (btn) btn.disabled = false;
+        });
+        await Promise.all([
+          page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 35000 }).catch(() => {}),
+          page.click('#install-plugin-submit')
+        ]);
+        const overwriteBtn = await page.$('a.update-from-upload-overwrite, a[href*="overwrite=update-plugin"]');
+        if (overwriteBtn) {
+          await Promise.all([
+            page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 35000 }).catch(() => {}),
+            overwriteBtn.click()
+          ]);
+        }
+        const activateBtn = await page.$('a[href*="action=activate"]');
+        if (activateBtn) {
+          await Promise.all([
+            page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 25000 }).catch(() => {}),
+            activateBtn.click()
+          ]);
+        }
+        console.log('   WordPress Plugin ZIP uploaded & active!');
+      }
+    }
+
     // 1.5) Sync & Activate Bareun Member Auth, Private QnA & Master SEO Engine via WPCode PHP Snippet
     const phpBackendPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna', 'bareun-member-private-qna.php');
     if (fs.existsSync(phpBackendPath)) {
