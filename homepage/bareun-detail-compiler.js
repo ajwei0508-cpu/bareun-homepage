@@ -12066,10 +12066,14 @@ const BAREUN_GH_BASE = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-h
 
 function toGhAssetUrl(relPath) {
   if (!relPath) return '';
-  if (relPath.startsWith('http://') || relPath.startsWith('https://') || relPath.startsWith('data:')) {
-    return relPath;
+  const s = String(relPath).trim();
+  if (s.startsWith('http://') || s.startsWith('https://') || s.startsWith('data:')) {
+    return s;
   }
-  const clean = String(relPath).replace(/^\/+/, '');
+  if (s.startsWith('/wp-content/') || s.startsWith('wp-content/')) {
+    return s.startsWith('/') ? s : '/' + s;
+  }
+  const clean = s.replace(/^\/+/, '');
   return BAREUN_GH_BASE + clean;
 }
 
@@ -12122,7 +12126,7 @@ function stripOuterDocumentForWP(fullHtml) {
 }
 
 function rewriteAssetsForWP(html) {
-  const assetPrefix = '(?:brochure\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|empathy-|empathy_|efficacy-)';
+  const assetPrefix = '(?:brochure\\/|webp\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|diet-|diet_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|hairloss-|hairloss_|empathy-|empathy_|efficacy-|studio_|im_|custom_)';
   const pageSlugUnion = '(ask-doctor|body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|gongjindan|prostate|lifting-compare)';
 
   let out = html

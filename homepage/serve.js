@@ -414,6 +414,67 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (reqPath === '/api/studio-generate-image' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const prompt = String(payload.prompt || '').trim();
+        if (!prompt) throw new Error('생성할 영문 프롬프트(prompt)가 필요합니다.');
+        const width = Math.max(512, Math.min(1536, Number(payload.width) || 1280));
+        const height = Math.max(512, Math.min(1536, Number(payload.height) || 720));
+        const seed = Number(payload.seed) || Math.floor(Math.random() * 89999999 + 10000000);
+        const prefix = String(payload.filePrefix || 'ai_scene').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 24) || 'ai_scene';
+        const pollUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux&width=${width}&height=${height}&seed=${seed}&nologo=true&enhance=true`;
+
+        const fetchBufferWithRedirects = (url, redirectsLeft = 5) => new Promise((resolve, reject) => {
+          const mod = url.startsWith('https') ? https : http;
+          const reqGet = mod.get(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/2.0' },
+            timeout: 55000
+          }, (r) => {
+            if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) {
+              r.resume();
+              if (redirectsLeft <= 0) return reject(new Error('Too many redirects'));
+              return resolve(fetchBufferWithRedirects(new URL(r.headers.location, url).toString(), redirectsLeft - 1));
+            }
+            if (r.statusCode !== 200) {
+              r.resume();
+              return reject(new Error('AI 이미지 서버 응답 코드: HTTP ' + r.statusCode));
+            }
+            const chunks = [];
+            r.on('data', c => chunks.push(c));
+            r.on('end', () => resolve(Buffer.concat(chunks)));
+          });
+          reqGet.on('timeout', () => { reqGet.destroy(); reject(new Error('AI 이미지 생성 시간 초과')); });
+          reqGet.on('error', reject);
+        });
+
+        fetchBufferWithRedirects(pollUrl).then(buf => {
+          if (!buf || buf.length < 4000) throw new Error('유효한 이미지 데이터를 받지 못했습니다.');
+          const savedName = `bareun_im_${prefix}_${Date.now()}.jpg`;
+          fs.writeFileSync(path.join(__dirname, savedName), buf);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            fileName: savedName,
+            url: savedName,
+            seed,
+            message: `상황별 AI 이미지 제작 완료 (${savedName})`
+          }));
+        }).catch(err => {
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        });
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
   if (reqPath === '/api/upload-detail-image' && req.method === 'POST') {
     const chunks = [];
     let totalBytes = 0;

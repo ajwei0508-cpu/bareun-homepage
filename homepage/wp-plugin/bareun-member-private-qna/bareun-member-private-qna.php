@@ -2488,6 +2488,12 @@ class Bareun_Custom_Studio_Engine_V1 {
             'callback'            => array(__CLASS__, 'rest_handle_upload')
         ));
 
+        register_rest_route('bareun/v1', '/studio/generate-image', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_generate_ai_image')
+        ));
+
         register_rest_route('bareun/v1', '/studio/sync-studio-assets', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
@@ -2532,6 +2538,32 @@ class Bareun_Custom_Studio_Engine_V1 {
             foreach ($attachments as $att) {
                 $url = wp_get_attachment_url($att->ID);
                 if ($url) $availableImages[] = $url;
+            }
+        }
+        if (is_array($cfg) && !empty($cfg['pages']) && is_array($cfg['pages'])) {
+            foreach ($cfg['pages'] as $pg) {
+                if (!empty($pg['plates']) && is_array($pg['plates'])) {
+                    foreach ($pg['plates'] as $pl) {
+                        foreach (array('imgSrc', 'beforeImg', 'afterImg', 'poster') as $k) {
+                            if (!empty($pl[$k])) {
+                                $clean = explode('?', (string)$pl[$k])[0];
+                                if ($clean && !in_array($clean, $availableImages, true)) {
+                                    $availableImages[] = $clean;
+                                }
+                            }
+                        }
+                        if (!empty($pl['thumbs']) && is_array($pl['thumbs'])) {
+                            foreach ($pl['thumbs'] as $th) {
+                                if (!empty($th['img'])) {
+                                    $clean = explode('?', (string)$th['img'])[0];
+                                    if ($clean && !in_array($clean, $availableImages, true)) {
+                                        $availableImages[] = $clean;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -2675,6 +2707,71 @@ class Bareun_Custom_Studio_Engine_V1 {
             'fileName' => $unique_name,
             'url'      => $upload['url'],
             'message'  => '미디어 라이브러리 업로드 성공'
+        ), 200);
+    }
+
+    public static function rest_generate_ai_image($request) {
+        $params = $request->get_json_params();
+        if (!is_array($params) || empty($params['prompt'])) {
+            return new WP_REST_Response(array('ok' => false, 'error' => '생성할 프롬프트(prompt)가 필요합니다.'), 400);
+        }
+
+        $prompt = trim((string)$params['prompt']);
+        $width  = isset($params['width']) ? max(512, min(1536, (int)$params['width'])) : 1280;
+        $height = isset($params['height']) ? max(512, min(1536, (int)$params['height'])) : 720;
+        $seed   = isset($params['seed']) ? (int)$params['seed'] : wp_rand(10000, 99999999);
+        $prefix = isset($params['filePrefix']) ? preg_replace('/[^a-zA-Z0-9_-]/', '_', (string)$params['filePrefix']) : 'ai_scene';
+
+        $poll_url = 'https://image.pollinations.ai/prompt/' . rawurlencode($prompt)
+            . '?model=flux&width=' . $width . '&height=' . $height . '&seed=' . $seed . '&nologo=true&enhance=true';
+
+        $response = wp_remote_get($poll_url, array(
+            'timeout' => 55,
+            'headers' => array(
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/2.0'
+            )
+        ));
+
+        if (is_wp_error($response)) {
+            return new WP_REST_Response(array('ok' => false, 'error' => 'AI 이미지 서버 연결 실패: ' . $response->get_error_message()), 500);
+        }
+
+        $code = wp_remote_retrieve_response_code($response);
+        $bin  = wp_remote_retrieve_body($response);
+
+        if ($code !== 200 || strlen($bin) < 4000) {
+            return new WP_REST_Response(array('ok' => false, 'error' => 'AI 이미지 생성 응답 오류 (HTTP ' . $code . ')'), 500);
+        }
+
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $unique_name = 'bareun_im_' . substr($prefix, 0, 24) . '_' . time() . '_' . wp_rand(100, 999) . '.jpg';
+        $upload = wp_upload_bits($unique_name, null, $bin);
+        if (!empty($upload['error'])) {
+            return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
+        }
+
+        $attachment = array(
+            'guid'           => $upload['url'],
+            'post_mime_type' => 'image/jpeg',
+            'post_title'     => preg_replace('/\.[^.]+$/', '', $unique_name),
+            'post_content'   => $prompt,
+            'post_status'    => 'inherit'
+        );
+        $attach_id = wp_insert_attachment($attachment, $upload['file']);
+        if ($attach_id && function_exists('wp_generate_attachment_metadata')) {
+            $attach_data = wp_generate_attachment_metadata($attach_id, $upload['file']);
+            wp_update_attachment_metadata($attach_id, $attach_data);
+        }
+
+        return new WP_REST_Response(array(
+            'ok'       => true,
+            'fileName' => $unique_name,
+            'url'      => $upload['url'],
+            'seed'     => $seed,
+            'message'  => '상황별 AI 이미지 생성 및 실서버 미디어 등록 완료!'
         ), 200);
     }
 

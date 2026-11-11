@@ -3069,6 +3069,64 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
+    if (req.method === 'POST' && pathname === '/api/save-new-to-homepage') {
+      const body = await readBodyJson(req);
+      const outName = path.basename(String(body.outputFileName || ''));
+      const srcPath = path.join(OUTPUTS_DIR, outName);
+      if (!outName || !fs.existsSync(srcPath)) {
+        return sendJson(res, 404, { ok: false, error: '저장할 생성 결과 이미지를 찾을 수 없습니다.' });
+      }
+      const customBase = String(body.newFileName || `situation_${Date.now()}.png`)
+        .replace(/[^a-zA-Z0-9._-]/g, '_');
+      const finalHpName = /\.(png|jpg|jpeg|webp)$/i.test(customBase) ? customBase : `${customBase}.png`;
+      const destPath = path.join(HOMEPAGE_DIR, finalHpName);
+      fs.copyFileSync(srcPath, destPath);
+
+      let addedToPageLabel = '';
+      if (body.targetPageFile) {
+        const cfgPath = path.join(HOMEPAGE_DIR, 'detail-pages-config.json');
+        if (fs.existsSync(cfgPath)) {
+          try {
+            const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+            const pg = (cfg.pages || []).find((p) => p.file === body.targetPageFile || p.slug === body.targetPageFile);
+            if (pg) {
+              if (!Array.isArray(pg.plates)) pg.plates = [];
+              pg.plates.push({
+                id: 'card_im_' + Date.now(),
+                enabled: true,
+                type: 'clean-image',
+                fullscreen: true,
+                fit: 'cover',
+                stepLabel: 'STORY ' + String(pg.plates.length + 1).padStart(2, '0'),
+                title: body.cardTitle || "새 상황 맞춤 진료 — '정밀 한방 치료'",
+                sub: body.cardSub || '원장님 1:1 맞춤 진단과 처방으로 근본 원인을 치료합니다.',
+                imgSrc: finalHpName,
+                pillars: [],
+                tags: []
+              });
+              fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2), 'utf8');
+              addedToPageLabel = pg.label;
+              const buildScript = path.join(HOMEPAGE_DIR, 'build-detail-pages.js');
+              if (fs.existsSync(buildScript)) {
+                try {
+                  execFileSync('node', [buildScript, pg.file], { cwd: HOMEPAGE_DIR, timeout: 30000 });
+                } catch (e) {}
+              }
+            }
+          } catch (e) {}
+        }
+      }
+
+      return sendJson(res, 200, {
+        ok: true,
+        fileName: finalHpName,
+        addedToPageLabel,
+        message: addedToPageLabel
+          ? `[${addedToPageLabel}] 페이지에 새 스토리 카드(${finalHpName})로 즉시 추가 및 반영되었습니다!`
+          : `홈페이지 이미지 폴더에 새 상황 이미지(${finalHpName})로 저장되었습니다!`
+      });
+    }
+
     // Batch Fix All Selected Director Photos (+ Optional Instant Homepage Overwrite)
     if (req.method === 'POST' && pathname === '/api/batch-fix-director') {
       const body = await readBodyJson(req);

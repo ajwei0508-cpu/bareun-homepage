@@ -1585,11 +1585,13 @@
     </div>
 
     <div class="profile-bar">
+      <button type="button" id="btnNavFix" class="btn-free" style="padding:6px 12px;font-size:12px;" onclick="switchMainPanel('fix')">🛠️ 기존 사진 검수·교정</button>
+      <button type="button" id="btnNavCreate" class="btn-outline" style="padding:6px 12px;font-size:12px;border-color:var(--gold-border);color:var(--gold-strong);" onclick="switchMainPanel('create')">✨ 상황별 새 이미지 추가 제작</button>
       <label for="profileSelect" style="margin:0;font-size:12px;">대상:</label>
       <select id="profileSelect" name="profileId" style="width:auto;min-width:150px;padding:6px 10px;" onchange="onProfileChange(this.value)"></select>
       <span id="loraStatusBadge" class="badge-free">374장 얼굴 잠금 ON</span>
       <button type="button" class="btn-free" style="padding:6px 12px;font-size:12px;" onclick="openBatchDirectorModal()">⚡ 원장 사진 일괄 적용</button>
-      <button type="button" id="btnToggleTrain" class="btn-outline" style="padding:6px 11px;font-size:12px;" onclick="toggleTrainPanel()">📷 기준 얼굴 (374장)</button>
+      <button type="button" id="btnToggleTrain" class="btn-outline" style="padding:6px 11px;font-size:12px;" onclick="switchMainPanel('train')">📷 기준 얼굴 (374장)</button>
     </div>
   </header>
 
@@ -1872,6 +1874,163 @@
             <button type="button" id="btnQuickNextAfterFix" class="btn-outline" onclick="stepInspectPhoto(1)">
               다음 사진 ▶
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- ✨ TAB: 상황별 새 이미지 추가 제작 (NEW SITUATIONAL IMAGE CREATOR) -->
+    <!-- ========================================================= -->
+    <section id="panel_create" class="tab-panel">
+      <div class="workspace-grid">
+        <div class="card card-gold-menu">
+          <div class="card-header-strip">
+            <h2 class="card-title" style="margin:0;color:var(--gold-strong);">✨ 상황별 새 이미지 추가 제작 (374장 원장님 얼굴 고정)</h2>
+            <span class="badge-free">🆓 0원 무료 GPU · 상황 맞춤 생성</span>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--text-sub);margin:0 0 12px;">
+            기존 사진을 고치는 것을 넘어, 상세페이지나 홈페이지에 새로 넣을 <strong>진료·검진·상담·탕전·치료 상황 이미지</strong>를 새로 촬영해 바로 추가합니다.
+          </p>
+
+          <div style="margin-bottom:10px;">
+            <label style="font-size:12px;color:var(--gold-strong);margin-bottom:6px;display:block;">① 자주 쓰는 한의원 임상·스토리 상황 프리셋 (클릭 시 자동 입력)</label>
+            <div class="preset-chips" style="gap:6px;">
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('맥진 진료', '따뜻한 원목 한의원 진료실에서 환자 손목의 맥을 짚으며 온화하게 미소 짓는 안정위 대표원장님', 'white_coat_tie')">🩺 정밀 맥진 진료</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('1:1 심층 문진', '한의원 진료실 책상에서 차트를 보며 환자의 일상과 통증 원인을 깊이 경청하고 상담하는 원장님', 'white_coat_shirt')">💬 1:1 심층 문진·경청</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('초음파 정밀검진', '최신 정밀 초음파 진단기 모니터 화면을 가리키며 근육과 인대 상태를 설명하는 원장님', 'scrub_coat')">📡 초음파 정밀검진</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('체열진단 분석', '적외선 체열진단기 모니터의 전신 열화상 데이터를 보며 혈액순환과 수족냉증을 설명하는 원장님', 'white_coat_shirt')">🌡️ 적외선 체열진단</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('자율신경 스트레스 검사', '자율신경 및 맥파(HRV) 스트레스 검사 그래프를 보며 교감·부교감 신경 균형을 설명하는 원장님', 'white_coat_shirt')">💓 자율신경·맥파 검진</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('수기 추나요법', '모던한 추나 교정 치료실에서 추나 베드 옆에 서서 척추·골반 정렬을 정교하게 진료하는 원장님', 'scrub_coat')">🦴 수기 추나·척추교정</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('원내 탕전·녹용검수', '깨끗한 원내 탕전실과 약재실에서 최상급 러시아 녹용 분골과 청정 한약재를 직접 검수하는 원장님', 'modern_hanbok_gown')">🍵 원내 탕전·녹용 검수</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('학술 논문 연구', '햇살이 비치는 원장 연구실에서 학술 논문과 의학 서적을 펼쳐놓고 맞춤 처방을 연구하는 원장님', 'navy_suit')">📑 학술 논문·처방 연구</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('소아 성장클리닉', '성장클리닉 진료실에서 성장판 검진 화면을 보며 아빠 같은 따뜻한 미소로 설명하는 원장님', 'white_coat_shirt')">🌱 소아 성장클리닉 진료</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('다이어트 대사 상담', '세련된 다이어트 상담실에서 인바디 체성분표와 식욕조절 한약 프로그램을 안내하는 원장님', 'white_coat_shirt')">⚖️ 다이어트 맞춤 상담</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('탈모·두피 정밀진료', '정밀 두피 현미경 진단기가 갖춰진 진료실에서 모낭 건강과 두피 열독 치료를 상담하는 원장님', 'white_coat_shirt')">🌿 탈모·두피 정밀진료</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('전립선 VIP 심층진료', '프라이빗하고 중후한 VIP 원목 진료실에서 진중한 신뢰감으로 1:1 남성 활력 진료를 진행하는 원장님', 'white_coat_tie')">🦁 전립선 VIP 심층진료</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('황제공진단 수제 조제', '품격 있는 원목 한방 조제실에서 금박 황제공진단과 사향·녹용 약재를 정성껏 살피는 원장님', 'modern_hanbok_gown')">👑 황제공진단 조제·검수</button>
+              <button type="button" class="chip" onclick="selectCreateSituationPreset('비대면 전화처방 문진', '진료실 전자차트 모니터 앞에서 타 지역 비대면 환자와 세심하게 전화 문진을 진행하는 원장님', 'white_coat_shirt')">📞 비대면 전화처방 문진</button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="createSituationPrompt">② 제작할 상황 설명 (한국어로 원하는 장면을 자유롭게 적어주세요)</label>
+            <textarea id="createSituationPrompt" rows="3" placeholder="예: 따뜻한 한의원 진료실에서 환자 손목의 맥을 짚으며 온화하게 미소 짓는 원장님">따뜻한 원목 한의원 진료실에서 환자 손목의 맥을 짚으며 온화하게 미소 짓는 안정위 대표원장님</textarea>
+          </div>
+
+          <div class="compact-options-grid" style="margin-bottom:12px;">
+            <div>
+              <label for="createOutfitSelect">🥼 의상 스타일</label>
+              <select id="createOutfitSelect">
+                <option value="white_coat_tie" selected>흰색 가운 + 정장 타이</option>
+                <option value="white_coat_shirt">흰색 가운 + 셔츠</option>
+                <option value="modern_hanbok_gown">한방 원장 철릭/가운</option>
+                <option value="scrub_coat">네이비 진료복 + 가운</option>
+                <option value="navy_suit">프리미엄 네이비 정장</option>
+              </select>
+            </div>
+            <div>
+              <label for="createSizeSelect">📐 화면 비율</label>
+              <select id="createSizeSelect">
+                <option value="landscape_16_9" selected>16:9 가로 스토리 카드용</option>
+                <option value="landscape_4_3">4:3 가로 에디토리얼</option>
+                <option value="square_hd">1:1 정사각형</option>
+                <option value="portrait_4_3">3:4 세로 프로필</option>
+              </select>
+            </div>
+            <div>
+              <label for="createFaceLockSelect">👤 원장님 얼굴 잠금</label>
+              <select id="createFaceLockSelect">
+                <option value="true" selected>374장 실제 얼굴 100% 고정</option>
+                <option value="false">인물 고정 해제 (일반 상황)</option>
+              </select>
+            </div>
+            <div>
+              <label for="createEnhanceSelect">🔬 피부·모공 선명도</label>
+              <select id="createEnhanceSelect">
+                <option value="0.85" selected>선명 85% (추천)</option>
+                <option value="0.70">자연 70%</option>
+                <option value="1.0">최대 100%</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="button" id="btnStartCreateSituation" class="btn-free" style="width:100%;padding:14px;font-size:14.5px;" onclick="startCreateSituationalImage()">
+            ✨ 이 상황으로 새 이미지 추가 제작하기 (0원 · GTX 1070 안면고정)
+          </button>
+
+          <div id="createProgressBox" class="progress-box" style="margin-top:10px;">
+            <div class="progress-step">
+              <span id="createStepText">상황 이미지 제작 준비 중...</span>
+              <span id="createPctText">10%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div id="createProgressBar" class="progress-bar" style="width:10%;"></div>
+            </div>
+            <div id="createLogs" class="log-lines"></div>
+          </div>
+        </div>
+
+        <!-- 우측: 생성된 새 상황 이미지 확인 & 홈페이지 상세페이지 바로 추가 -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span class="card-title" style="margin:0;">📸 새로 제작된 상황 이미지 모니터</span>
+            <span id="createResultBadge" style="font-size:12px;color:var(--gold-strong);font-weight:700;">상황을 선택하고 제작을 눌러주세요</span>
+          </div>
+
+          <div id="createStage" class="preview-stage">
+            <div class="preview-placeholder">
+              좌측에서 원하는 진료·검진·상담 상황을 선택하고 [✨ 이 상황으로 새 이미지 추가 제작하기]를 클릭하세요.
+            </div>
+          </div>
+
+          <!-- 홈페이지 상세페이지에 새 스토리 카드로 바로 추가하거나 파일 저장 -->
+          <div id="createApplyBox" style="display:none;margin-top:12px;padding:12px;background:#141210;border:1.5px solid var(--green-border);border-radius:12px;">
+            <div style="font-size:13px;font-weight:800;color:#6ee7b7;margin-bottom:8px;">
+              ➕ 제작된 상황 이미지를 홈페이지 상세페이지에 즉시 추가 / 저장
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <div>
+                <label style="font-size:11px;">저장할 파일명 (homepage 폴더)</label>
+                <input type="text" id="createSaveFileNameInput" placeholder="예: director_situation_new.png" style="padding:6px 9px;font-size:12px;" />
+              </div>
+              <div>
+                <label style="font-size:11px;">새 카드로 추가할 상세페이지 (선택)</label>
+                <select id="createTargetPageSelect" style="padding:6px 9px;font-size:12px;">
+                  <option value="">파일만 homepage 폴더에 저장 (카드 추가 안함)</option>
+                  <option value="director.html">01 · 대표원장 철학 · 9대검진 (director.html)</option>
+                  <option value="chuna.html">02 · 바른 추나 · 척추교정 (chuna.html)</option>
+                  <option value="growth.html">03 · 소아 성장 · 성조숙증 (growth.html)</option>
+                  <option value="diet-zero.html">04 · 바른 다이어트 · 식욕ZERO (diet-zero.html)</option>
+                  <option value="hairloss.html">05 · 바른 탈모 · 종합 (hairloss.html)</option>
+                  <option value="hairloss-male.html">06 · 남성탈모 M자·정수리 (hairloss-male.html)</option>
+                  <option value="hairloss-alopecia.html">07 · 원형탈모 면역리셋 (hairloss-alopecia.html)</option>
+                  <option value="hairloss-female.html">08 · 여성탈모 가르마·산후 (hairloss-female.html)</option>
+                  <option value="hairloss-seborrheic.html">09 · 지루성두피염 열독해소 (hairloss-seborrheic.html)</option>
+                  <option value="gongjindan.html">10 · 황제공진단 (gongjindan.html)</option>
+                  <option value="prostate.html">11 · 전립선 · 남성활력 (prostate.html)</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+              <div>
+                <label style="font-size:11px;">새 카드 제목 (H2 · '골드강조')</label>
+                <input type="text" id="createCardTitleInput" placeholder="예: 손끝으로 읽어내는 '오장육부와 자율신경'의 파동" style="padding:6px 9px;font-size:12px;" />
+              </div>
+              <div>
+                <label style="font-size:11px;">새 카드 본문 설명 (P)</label>
+                <input type="text" id="createCardSubInput" placeholder="예: 1:1 정밀 진맥과 검진으로 병의 근본 뿌리를 찾습니다." style="padding:6px 9px;font-size:12px;" />
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn-free" style="flex:1;padding:9px 12px;font-size:12.5px;" onclick="saveCreatedSituationToHomepage()">
+                🚀 홈페이지 폴더 저장 / 상세페이지 새 카드로 즉시 반영
+              </button>
+              <a id="btnDownloadCreatedSituation" href="#" download style="text-decoration:none;">
+                <button type="button" class="btn-outline" style="padding:9px 12px;font-size:12.5px;">⬇️ 내 PC 저장</button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -3321,6 +3480,140 @@
         <button type="button" class="btn-outline" style="color:#f87171;" onclick="deleteGalleryItem('${it.id}')">🗑️ 삭제</button>
       `;
       document.getElementById('detailDialog').showModal();
+    }
+
+    let lastCreatedSituationItem = null;
+
+    function switchMainPanel(panelKey) {
+      ['fix', 'create', 'train'].forEach((k) => {
+        const p = document.getElementById('panel_' + k);
+        if (p) p.classList.toggle('active', k === panelKey);
+      });
+      const btnFix = document.getElementById('btnNavFix');
+      const btnCreate = document.getElementById('btnNavCreate');
+      const btnTrain = document.getElementById('btnToggleTrain');
+      if (btnFix) btnFix.className = panelKey === 'fix' ? 'btn-free' : 'btn-outline';
+      if (btnCreate) btnCreate.className = panelKey === 'create' ? 'btn-free' : 'btn-outline';
+      if (btnTrain) btnTrain.className = panelKey === 'train' ? 'btn-free' : 'btn-outline';
+    }
+
+    function selectCreateSituationPreset(title, korPrompt, outfitKey) {
+      const promptEl = document.getElementById('createSituationPrompt');
+      const outfitEl = document.getElementById('createOutfitSelect');
+      const titleEl = document.getElementById('createCardTitleInput');
+      const subEl = document.getElementById('createCardSubInput');
+      if (promptEl) promptEl.value = korPrompt;
+      if (outfitEl && outfitKey) outfitEl.value = outfitKey;
+      if (titleEl) titleEl.value = `${title} — '맞춤 정밀 치료'`;
+      if (subEl) subEl.value = korPrompt;
+      showToast(`✨ [${title}] 상황 프리셋이 적용되었습니다.`);
+    }
+
+    async function startCreateSituationalImage() {
+      const scenePrompt = (document.getElementById('createSituationPrompt')?.value || '').trim();
+      if (!scenePrompt) {
+        alert('제작할 상황 설명을 입력해 주세요.');
+        return;
+      }
+      const outfitKey = document.getElementById('createOutfitSelect')?.value || 'white_coat_tie';
+      const imageSize = document.getElementById('createSizeSelect')?.value || 'landscape_16_9';
+      const faceLock = document.getElementById('createFaceLockSelect')?.value !== 'false';
+      const enhanceBlend = parseFloat(document.getElementById('createEnhanceSelect')?.value || '0.85');
+
+      const btn = document.getElementById('btnStartCreateSituation');
+      const pbox = document.getElementById('createProgressBox');
+      const stepTxt = document.getElementById('createStepText');
+      const pctTxt = document.getElementById('createPctText');
+      const bar = document.getElementById('createProgressBar');
+      const logsEl = document.getElementById('createLogs');
+
+      if (btn) btn.disabled = true;
+      if (pbox) pbox.classList.add('active');
+      if (logsEl) logsEl.innerHTML = '';
+
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            profileId: currentProfileId,
+            scenePrompt,
+            outfitKey,
+            imageSize,
+            faceLock,
+            enhanceBlend
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '상황 이미지 생성 요청 실패');
+
+        const jobId = data.jobId;
+        while (true) {
+          await new Promise((r) => setTimeout(r, 1200));
+          const jr = await fetch(`/api/jobs/${encodeURIComponent(jobId)}`).then((r) => r.json());
+          if (!jr.ok || !jr.job) break;
+          const job = jr.job;
+          if (stepTxt) stepTxt.textContent = job.stepText || '작업 중...';
+          if (pctTxt) pctTxt.textContent = `${job.progress || 10}%`;
+          if (bar) bar.style.width = `${job.progress || 10}%`;
+          if (logsEl && Array.isArray(job.logs)) {
+            logsEl.innerHTML = job.logs.slice(-6).map((l) => `<div>${escapeHtml(l)}</div>`).join('');
+          }
+          if (job.status === 'completed' && job.result) {
+            lastCreatedSituationItem = job.result;
+            const stage = document.getElementById('createStage');
+            if (stage) {
+              stage.innerHTML = `<img src="${job.result.finalUrl}" alt="생성된 상황 이미지" />`;
+            }
+            const badge = document.getElementById('createResultBadge');
+            if (badge) badge.textContent = `✅ 제작 완료 (얼굴 일치율 ${job.result.similarityPct || 99}%)`;
+            const applyBox = document.getElementById('createApplyBox');
+            if (applyBox) applyBox.style.display = 'block';
+            const dlBtn = document.getElementById('btnDownloadCreatedSituation');
+            if (dlBtn) dlBtn.href = job.result.finalUrl;
+            const saveNameInp = document.getElementById('createSaveFileNameInput');
+            if (saveNameInp) saveNameInp.value = `situation_${Date.now()}.png`;
+            await loadState();
+            showToast('🎉 새 상황 이미지 제작이 완료되었습니다!');
+            break;
+          }
+          if (job.status === 'failed') {
+            throw new Error(job.error || '생성 실패');
+          }
+        }
+      } catch (err) {
+        alert('생성 오류: ' + err.message);
+      } finally {
+        if (btn) btn.disabled = false;
+        setTimeout(() => { if (pbox) pbox.classList.remove('active'); }, 1500);
+      }
+    }
+
+    async function saveCreatedSituationToHomepage() {
+      if (!lastCreatedSituationItem || !lastCreatedSituationItem.finalFileName) {
+        alert('먼저 상황 이미지를 제작해 주세요.');
+        return;
+      }
+      const newFileName = (document.getElementById('createSaveFileNameInput')?.value || `situation_${Date.now()}.png`).trim();
+      const targetPageFile = document.getElementById('createTargetPageSelect')?.value || '';
+      const cardTitle = (document.getElementById('createCardTitleInput')?.value || '').trim();
+      const cardSub = (document.getElementById('createCardSubInput')?.value || '').trim();
+
+      const res = await fetch('/api/save-new-to-homepage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          outputFileName: lastCreatedSituationItem.finalFileName,
+          newFileName,
+          targetPageFile,
+          cardTitle,
+          cardSub
+        })
+      });
+      const data = await res.json();
+      if (!data.ok) return alert(data.error || '저장 실패');
+      await loadState();
+      showToast('🚀 ' + data.message);
     }
 
     async function deleteGalleryItem(id) {
