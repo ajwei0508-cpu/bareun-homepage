@@ -19,6 +19,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     const OPT_VISIT_BASE   = 'bareun_visit_base_count_v2';
     const OPT_OAUTH        = 'bareun_social_oauth_config_v1';
     const OPT_BODY_NOTES   = 'bareun_body_3d_notes_v1';
+    const OPT_NOTE_VIEWS   = 'bareun_body_note_views_v1';
     const OPT_NOTES_CFG    = 'bareun_body_3d_notes_cfg_v1';
     const CRON_HOOK_NOTES  = 'bareun_cron_2day_body_notes';
 
@@ -566,6 +567,11 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'callback'            => array(__CLASS__, 'handle_post_body_notes'),
                 'permission_callback' => '__return_true'
             )
+        ));
+        register_rest_route('bareun/v1', '/body-notes/view', array(
+            'methods'             => 'POST',
+            'callback'            => array(__CLASS__, 'handle_increment_body_note_view'),
+            'permission_callback' => '__return_true'
         ));
     }
 
@@ -1601,11 +1607,15 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
     public static function handle_get_body_notes(\WP_REST_Request $request) {
         self::send_nocache();
-        $today_kst = current_time('Y-m-d');
-        $part      = sanitize_key($request->get_param('part') ?? 'all');
-        $stored    = get_option(self::OPT_BODY_NOTES, array());
+        $today_kst  = current_time('Y-m-d');
+        $part       = sanitize_key($request->get_param('part') ?? 'all');
+        $stored     = get_option(self::OPT_BODY_NOTES, array());
+        $note_views = get_option(self::OPT_NOTE_VIEWS, array());
         if (!is_array($stored)) {
             $stored = array();
+        }
+        if (!is_array($note_views)) {
+            $note_views = array();
         }
         $published = array();
         foreach ($stored as $n) {
@@ -1613,6 +1623,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $pdate = (string) ($n['publishDate'] ?? '');
             if ($pdate !== '' && $pdate > $today_kst) continue;
             if ($part !== '' && $part !== 'all' && ($n['partId'] ?? '') !== $part) continue;
+            $nid = (string) ($n['id'] ?? '');
+            $n['views'] = ($nid !== '' && isset($note_views[$nid])) ? (int) $note_views[$nid] : 0;
             $published[] = $n;
         }
         $cfg = get_option(self::OPT_NOTES_CFG, array());
@@ -1622,7 +1634,33 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'nextUpdateKst' => self::compute_next_two_day_kst($today_kst),
             'cycleDays'     => 2,
             'autoReady'     => is_array($cfg) && !empty($cfg['geminiApiKey']),
+            'noteViews'     => $note_views,
             'notes'         => $published
+        ), 200);
+    }
+
+    public static function handle_increment_body_note_view(\WP_REST_Request $request) {
+        self::send_nocache();
+        $params = $request->get_json_params();
+        if (!is_array($params)) {
+            $params = array();
+        }
+        $note_id = sanitize_text_field($params['noteId'] ?? ($params['id'] ?? ''));
+        if ($note_id === '') {
+            return new \WP_REST_Response(array('ok' => false, 'message' => 'noteId is required'), 400);
+        }
+        $note_views = get_option(self::OPT_NOTE_VIEWS, array());
+        if (!is_array($note_views)) {
+            $note_views = array();
+        }
+        $note_views[$note_id] = (isset($note_views[$note_id]) ? (int) $note_views[$note_id] : 0) + 1;
+        update_option(self::OPT_NOTE_VIEWS, $note_views, false);
+
+        return new \WP_REST_Response(array(
+            'ok'        => true,
+            'noteId'    => $note_id,
+            'views'     => $note_views[$note_id],
+            'noteViews' => $note_views
         ), 200);
     }
 
@@ -1725,6 +1763,8 @@ if (!class_exists('Bareun_Master_SEO_Engine_V1')) :
 class Bareun_Master_SEO_Engine_V1 {
     const OPT_VERIFY_CODES     = 'bareun_seo_verification_codes_v1';
     const OPT_OG_IMAGE_URL     = 'bareun_official_og_image_url_v1';
+    const OPT_LLMS_TXT         = 'bareun_custom_llms_txt_v1';
+    const OPT_LLMS_FULL_TXT    = 'bareun_custom_llms_full_txt_v1';
     const OPT_HTACCESS_VER     = 'bareun_htaccess_sec_headers_v5';
     const CANONICAL_HOST       = 'www.bareunhaniwon.com';
     const CANONICAL_ORIGIN     = 'https://www.bareunhaniwon.com';
@@ -1892,8 +1932,8 @@ class Bareun_Master_SEO_Engine_V1 {
             exit;
         }
 
-        // Serve virtual /llms.txt (AI GEO C7)
-        if ($path === '/llms.txt') {
+        // Serve virtual /llms.txt & /llms-full.txt (AI GEO C7)
+        if ($path === '/llms.txt' || $path === '/llms-full.txt') {
             if (!defined('DONOTCACHEPAGE')) {
                 define('DONOTCACHEPAGE', true);
             }
@@ -1901,6 +1941,13 @@ class Bareun_Master_SEO_Engine_V1 {
             status_header(200);
             header('Content-Type: text/plain; charset=utf-8', true);
             header('Cache-Control: public, max-age=3600', true);
+            $custom_llms = ($path === '/llms-full.txt')
+                ? (string) get_option(self::OPT_LLMS_FULL_TXT, '')
+                : (string) get_option(self::OPT_LLMS_TXT, '');
+            if ($custom_llms !== '') {
+                echo $custom_llms;
+                exit;
+            }
             echo base64_decode('IyDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uIE1haW4gQnJhbmNoKQo+IOuMgOyghOq0keyXreyLnCDrjIDrjZXqtawg67mE656Y64+Z66GcN+uyiOq4uCAxLCAy7Li1ICjsmrDtjrjrsojtmLggMzQ0MTcpIHwg64yA7ZGc67KI7Zi4OiAwMTAtNTYzMS0xMjc1IHwg64yA7ZGc7JuQ7J6lOiDslYjsoJXsnIQKPiDsp4Tro4zsi5zqsIQ6IO2PieydvCjsm5R+6riIKSAwOTowMH4xOTowMCDCtyDthqDsmpTsnbwg67CPIOqzte2ctOydvCAwOTowMH4xNDowMCDCtyDsnbzsmpTsnbwg7Zy07KeECj4g7ZW07Jm4IOuplOydtOyggCDsnZjtlZkg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgTkVKTSwgVGhlIExhbmNldCwgSkFNQSwgUGh5c2lvbG9naWNhbCBSZXZpZXdzLCBFdXJvcGVhbiBIZWFydCBKb3VybmFsLCBKQ0VNLCBIdW1hbiBSZXByb2R1Y3Rpb24gVXBkYXRlLCBFdXJvcGVhbiBVcm9sb2d5KSDrsI8g7Ya17ZWp7IOd66as7ZWZIOyXsOq1rCDqt7zqsbAg6riw67CYIDnrjIAg7KCV67CA6rKA7KeEIMK3IDE6MSDsgqzsg4HssrTsp4gg7ZWc7JW9IMK3IOyImOq4sCDstpTrgpggwrcg7IaM7JWEIO2CpOyEseyepSDCtyDsi53smpVaRVJPIOuLpOydtOyWtO2KuCDCtyDrkZDtlLzsl7Qg7YOI66qoIMK3IOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIMK3IOyghOumveyEoCDtgbTrpqzri4kgJiDtkoDsiqTtgazrprAgM0Qg7J247LK066qo7ZiVIOqxtOqwlSDtj6zthLguCgojIyBDbGluaWMgSW5mb3JtYXRpb24gKE5BUCAmIE9mZmljaWFsIENoYW5uZWxzKQotIE9mZmljaWFsIFdlYnNpdGU6IGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLwotIENsaW5pYyBOYW1lOiDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uKQotIENoaWVmIERpcmVjdG9yOiDslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIChEci4gSnVuZy1XaSBBaG4sIEtNRCkKLSBBZGRyZXNzOiDrjIDsoITqtJHsl63si5wg64yA642V6rWsIOu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSAoMkYsIDEsIEJpcmFlZG9uZy1ybyA3YmVvbi1naWwsIERhZWRlb2stZ3UsIERhZWplb24sIDM0NDE3LCBSZXB1YmxpYyBvZiBLb3JlYSkKLSBUZWxlcGhvbmU6IDAxMC01NjMxLTEyNzUgKCs4Mi0xMC01NjMxLTEyNzUpCi0gSG91cnM6IE1vbi1GcmkgMDk6MDAtMTk6MDAsIFNhdCAmIFB1YmxpYyBIb2xpZGF5cyAwOTowMC0xNDowMCwgQ2xvc2VkIG9uIFN1bmRheXMKLSBOYXZlciBQbGFjZTogaHR0cHM6Ly9uYXZlci5tZS81VTFFTG44TAotIE9mZmljaWFsIEJsb2c6IGh0dHBzOi8vYmxvZy5uYXZlci5jb20vd2VpMDUwOAotIEtha2FvVGFsayBDb25zdWx0YXRpb246IGh0dHBzOi8vcGYua2FrYW8uY29tL195a3hjTEsKCiMjIFNwZWNpYWxpemVkIENsaW5pY2FsIERpdmlzaW9ucwotIFvrqZTsnbggM0Qg7ZmY7J6QIOyKpO2GoOumrCDsh7zro7hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyk6IOyVhOu5oCDtlZzsnZjsgqzrpbwg7LC+64qUIO2ZmOyekCDsiqTthqDrpqwg67CPIDbrjIAg7KSR7KCQIO2BtOumrOuLiSDslYjrgrQuCi0gW+yViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4RdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpcmVjdG9yLyk6IOy0iOydjO2MjCwg7KCB7Jm47ISgIOyytOyXtOynhOuLqCwg7J2067mE7J247ZuEIOuCtOyLnOqyvSwg7IKs7IOB7LK07KeILCDssrTsp4DrsKkoSW5Cb2R5KSwg7J6Q7Jyo7Iug6rK9KEhSViksIOqwhMK364u5IOuMgOyCrCwg7ZiI6rSAIOuFuO2ZlCwg7ISx7J6l7YyQIOqygOyCrCDrsI8g7JuQ64K0IOustOq3oCDtg5XsoIQg7Iuc7Iqk7YWcLgotIFvrsJTrpbgg7LaU64KYIMK3IOyymey2lOq1kOyglSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2NodW5hLyk6IO2XiOumrOuUlOyKpO2BrCwg66qp65SU7Iqk7YGsLCDqsbDrtoHrqqksIOqzqOuwmCDrtojqt6DtmJUsIOyymey2lOq0gO2YkeywqeymnSDruYTsiJjsiKAg64yA7ZGc7JuQ7J6lIOyImOq4sCDstpTrgpjsmpTrspUg67CPIOyVvey5qC4KLSBb67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0g7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9ncm93dGgvKTog66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg67aE7ISdLCDshozslYTruYTrp4wg7LK07KeA67CpLe2CpCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOygkOuniSDrqbTsl60g67CPIOyEseyepSDtlZzslb0uCi0gW+uwlOuluCDri6TsnbTslrTtirggwrcg7Iud7JqVWkVSTyDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpZXQtemVyby8pOiDqsIjsg4nsp4DrsKkg64yA7IKsIO2ZnOyEse2ZlCwg6re87JyhIOuztOyhtCDssrTsp4DrsKkg6rCQ65+JLCDrtoDsooXCt+uPheyGjCDrsLDstpwg66ee7LakIO2VnOyVvSDrsI8g67mE64yA66m0IOynhOujjCDsp4Dsm5AuCi0gW+uwlOuluCDtg4jrqqggwrcg66qo6re87J6s7IOdIO2Gte2VqSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLyk6IOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rK97LaUIOy2lOuCmCwg7KCV7KCcIOuwnOuqqCDslb3suaguCiAgLSBb64Ko7ISx7YOI66qoIChN7J6QwrfsoJXsiJjrpqwpXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1tYWxlLykKICAtIFvsm5DtmJXtg4jrqqggKOyekOqwgOuptOyXrSDrs7Xsm5ApXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1hbG9wZWNpYS8pCiAgLSBb7Jes7ISx7YOI66qoICjqsIDrpbTrp4jCt+uzvOulqCldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLWZlbWFsZS8pCiAgLSBb7KeA66Oo7ISx65GQ7ZS87Je8ICjrkZDtlLwg7Je064+Fwrfrqqjrgq3sl7wg7ZW064+FKV0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vaGFpcmxvc3Mtc2Vib3JyaGVpYy8pCi0gW+uwlOuluCDtmansoJzqs7Xsp4Tri6gg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9nb25namluZGFuLyk6IOyLneyVveyymCBDSVRFUyDsnbjspp0g7KCV7ZKIIOyynOyXsCDsgqztlqUoTC1NdXNjb25lKSDrsI8g65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57JqpIOuMgO2RnOybkOyepSDsp4HsoJEg7IiY7KCcIOyhsOygnC4KLSBb67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9wcm9zdGF0ZS8pOiDrp4zshLEg7KCE66a97ISg7Je8LCDsoITrpr3shKDruYTrjIDspp0sIOyVvOqwhOuHqCwg6rO866+87ISxIOuwqeq0kSwg6rOo67CY7KCA6re8IOyauO2YiCDqsJDslZUg7LmY66OMLgotIFvrsJTrpbjrpqztlITtjIUg7Iuc7IigIOyghO2bhCDsnKTqs73sp4Tri6hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2xpZnRpbmctY29tcGFyZS8pOiDruYTsiJjsiKAg7ZWc67CpIOunpOyEoMK37JW97LmoIOyViOuptCDrpqztlITtjIUg67CPIDPsoJAg7KSR7Ius7LaVIOyghO2bhCDsnKTqs70g7KCV67CAIOu5hOq1kCDsiqTtipzrlJTsmKQuCgojIyBJbnRlcmFjdGl2ZSAzRCBBbmF0b215ICYgRXZpZGVuY2UtQmFzZWQgTWVkaWNhbCBKb3VybmFsCi0gW+2SgOyKpO2BrOumsCAzRCDsnbjssrTrqqjtmJUgwrcg7KeE66OMIOyCtO2OtOuztOq4sF0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vYm9keS1leHBsb3Jlci8pOiDsoITsi6Ag6re87Jyhwrfsi6Dqsr3Ct+q0gOygiMK37ZiI6rSAIDTrjIAg6rOE7Ya1IOyLpOyLnOqwhCAzRCDrqqjshZgg67CPIDnrjIAg67aA7JyE67OEIDLsnbwg7KO86riwIOyInOyImCDqsbTqsJUg7KCV67O0IOyVhOy5tOydtOu4jC4KLSBb7Ya17ZWp7J2Y7ZWZIOyduOyCrOydtO2KuCDsoIDrhJAgJiDsp4jtmZjrs4QgMToxIOu5hOqzteqwnCBRJkFdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2Fzay1kb2N0b3IvKTog7ZW07Jm4IFNDSSDtlZnsiKDsp4Ag6riw67CYIOydmO2VmSDrpqzrt7Ag67CPIO2ajOybkCDsoITsmqkgMTAwJSDruYTqs7XqsJwgMToxIOqxtOqwlSDsg4Hri7QuCi0gW+uMgO2RnCDtlZnsiKAg7Lm865+8OiDrp4zshLEg7ZS866GcwrfshoztmZQg7J6l7JWgwrfsspnstpQg7Ya17KadIO2Gte2VqeyDneumrO2VmSDqsIDsnbTrk5xdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2ludGVncmF0aXZlLWF1dG9ub21pYy1jaXJjYWRpYW4tZ3V0LXNwaW5lLWhlYWx0aC1yZXZpZXcvKTog7J6Q7Jyo7Iug6rK9LCDsnqUt64eMIOy2lShNaWNyb2Jpb3RhLUd1dC1CcmFpbiBBeGlzKSwg7LKZ7LaUIOyDneyytOyXre2VmeydmCDsg4HtmLjsnpHsmqkg66as67ewLgo=');
             exit;
         }
@@ -2382,6 +2429,12 @@ class Bareun_Master_SEO_Engine_V1 {
             'User-agent: Yeti',
             'Allow: /',
             '',
+            'User-agent: Bingbot',
+            'Allow: /',
+            '',
+            'User-agent: Applebot',
+            'Allow: /',
+            '',
             'User-agent: GPTBot',
             'Allow: /',
             '',
@@ -2394,13 +2447,22 @@ class Bareun_Master_SEO_Engine_V1 {
             'User-agent: ClaudeBot',
             'Allow: /',
             '',
+            'User-agent: Claude-Web',
+            'Allow: /',
+            '',
             'User-agent: PerplexityBot',
             'Allow: /',
             '',
             'User-agent: Google-Extended',
             'Allow: /',
             '',
+            'User-agent: cohere-ai',
+            'Allow: /',
+            '',
             'Sitemap: ' . self::CANONICAL_ORIGIN . '/wp-sitemap.xml',
+            '# AI / LLM Generative Engine Optimization (GEO) Knowledge Index',
+            '# ' . self::CANONICAL_ORIGIN . '/llms.txt',
+            '# ' . self::CANONICAL_ORIGIN . '/llms-full.txt',
             ''
         );
         return implode("\n", $lines);
@@ -2494,10 +2556,21 @@ class Bareun_Master_SEO_Engine_V1 {
                 if (!empty($params['ogImageUrl'])) {
                     update_option(self::OPT_OG_IMAGE_URL, esc_url_raw((string) $params['ogImageUrl']));
                 }
+                if (!empty($params['llmsTxt'])) {
+                    $llms_raw = (string) $params['llmsTxt'];
+                    update_option(self::OPT_LLMS_TXT, $llms_raw, false);
+                    @file_put_contents(ABSPATH . 'llms.txt', $llms_raw);
+                }
+                if (!empty($params['llmsFullTxt'])) {
+                    $llms_full_raw = (string) $params['llmsFullTxt'];
+                    update_option(self::OPT_LLMS_FULL_TXT, $llms_full_raw, false);
+                    @file_put_contents(ABSPATH . 'llms-full.txt', $llms_full_raw);
+                }
                 return new WP_REST_Response(array(
-                    'ok'      => true,
-                    'verify'  => $cur,
-                    'ogImage' => get_option(self::OPT_OG_IMAGE_URL, '')
+                    'ok'          => true,
+                    'verify'      => $cur,
+                    'ogImage'     => get_option(self::OPT_OG_IMAGE_URL, ''),
+                    'llmsUpdated' => !empty($params['llmsTxt']) || !empty($params['llmsFullTxt'])
                 ), 200);
             }
         ));
@@ -2507,12 +2580,13 @@ Bareun_Master_SEO_Engine_V1::init();
 endif;
 
 // ============================================================================
-// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE V2 (WP-ADMIN & STANDALONE WEB APP)
+// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE V3 (ARGON HIGH 2K + STANDALONE APP)
 // ============================================================================
-if (!class_exists('Bareun_Custom_Studio_Engine_V2')) :
-class Bareun_Custom_Studio_Engine_V2 {
-    const OPT_DETAIL_CFG    = 'bareun_detail_pages_config_v1';
-    const OPT_ANGLE_SAMPLES = 'bareun_director_angle_samples_v1';
+if (!class_exists('Bareun_Custom_Studio_Engine_V3')) :
+class Bareun_Custom_Studio_Engine_V3 {
+    const OPT_DETAIL_CFG     = 'bareun_detail_pages_config_v1';
+    const OPT_ANGLE_SAMPLES  = 'bareun_director_angle_samples_v1';
+    const OPT_STUDIO_AI_KEYS = 'bareun_studio_ai_keys_v1';
     
     // Official Page IDs on Cafe24 WordPress (https://www.bareunhaniwon.com)
     const PAGE_MAP = array(
@@ -2530,14 +2604,19 @@ class Bareun_Custom_Studio_Engine_V2 {
     );
 
     public static function init() {
-        if (class_exists('Bareun_Custom_Studio_Engine_V1')) {
-            remove_action('admin_menu', array('Bareun_Custom_Studio_Engine_V1', 'register_admin_menu'));
-            remove_action('rest_api_init', array('Bareun_Custom_Studio_Engine_V1', 'register_rest_routes'));
-            remove_action('init', array('Bareun_Custom_Studio_Engine_V1', 'handle_standalone_route'));
+        foreach (array('Bareun_Custom_Studio_Engine_V1', 'Bareun_Custom_Studio_Engine_V2') as $legacy_cls) {
+            if (class_exists($legacy_cls)) {
+                remove_action('admin_menu', array($legacy_cls, 'register_admin_menu'));
+                remove_action('admin_menu', array($legacy_cls, 'register_admin_menu'), 20);
+                remove_action('rest_api_init', array($legacy_cls, 'register_rest_routes'));
+                remove_action('rest_api_init', array($legacy_cls, 'register_rest_routes'), 20);
+                remove_action('init', array($legacy_cls, 'handle_standalone_route'));
+                remove_action('init', array($legacy_cls, 'handle_standalone_route'), 5);
+            }
         }
-        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'), 20);
-        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'), 20);
-        add_action('init', array(__CLASS__, 'handle_standalone_route'), 5);
+        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'), 25);
+        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'), 25);
+        add_action('init', array(__CLASS__, 'handle_standalone_route'), 4);
     }
 
     public static function register_admin_menu() {
@@ -2565,7 +2644,7 @@ class Bareun_Custom_Studio_Engine_V2 {
     }
 
     public static function render_admin_studio_page() {
-        $standalone_url = esc_url(add_query_arg('bareun_studio', '1', home_url('/')));
+        $standalone_url = esc_url(add_query_arg(array('bareun_studio' => '1', '_sv' => time()), home_url('/')));
         echo '<style>';
         echo '#wpcontent { padding-left: 0 !important; }';
         echo '#wpbody-content { padding-bottom: 0 !important; }';
@@ -2578,7 +2657,7 @@ class Bareun_Custom_Studio_Engine_V2 {
         echo '</style>';
         echo '<div class="bareun-studio-host-dock">';
         echo '<div style="display:flex;align-items:center;gap:10px;">';
-        echo '<span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 온라인 엔진</span>';
+        echo '<span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 아르곤 하이 2K 엔진</span>';
         echo '<strong style="font-size:15px;color:#fdfaf3;">바른한의원 11대 상세페이지 통합 커스텀 스튜디오</strong>';
         echo '<span style="color:#b5a895;font-size:12px;">(PC 전원 무관 · 외부/태블릿/모바일 100% 자율 접속)</span>';
         echo '</div>';
@@ -2593,23 +2672,27 @@ class Bareun_Custom_Studio_Engine_V2 {
     }
 
     public static function render_standalone_studio() {
+        nocache_headers();
         $upload_dir = wp_upload_dir();
         $studio_file = $upload_dir['basedir'] . '/bareun-studio/detail-pages-editor.html';
         $nonce = wp_create_nonce('wp_rest');
 
         if (file_exists($studio_file)) {
+            $ver = @filemtime($studio_file);
+            if (!$ver) $ver = time();
             $html = file_get_contents($studio_file);
             $inject = '<script>' .
                 'window.BAREUN_WP_STUDIO = true;' .
                 'window.wpApiSettings = { nonce: "' . esc_js($nonce) . '", root: "' . esc_js(esc_url_raw(rest_url())) . '" };' .
                 '</script>';
             $html = str_replace('<head>', '<head>' . $inject, $html);
+            $html = str_replace('bareun-detail-compiler.js"', 'bareun-detail-compiler.js?v=' . $ver . '"', $html);
+            $html = str_replace('card-image-prompts.js"', 'card-image-prompts.js?v=' . $ver . '"', $html);
             header('Content-Type: text/html; charset=UTF-8');
             echo $html;
             return;
         }
 
-        // Fallback: If not on disk yet, serve minimal bootstrap that loads from GitHub or syncs
         header('Content-Type: text/html; charset=UTF-8');
         $safe_nonce = esc_js($nonce);
         $safe_root  = esc_js(esc_url_raw(rest_url()));
@@ -2663,6 +2746,17 @@ class Bareun_Custom_Studio_Engine_V2 {
             'callback'            => array(__CLASS__, 'rest_handle_angle_samples')
         ), true);
 
+        register_rest_route('bareun/v1', '/studio/ai-key', array(
+            'methods'             => array('GET', 'POST'),
+            'permission_callback' => function ($request) {
+                if ($request->get_method() === 'GET') {
+                    return true;
+                }
+                return current_user_can('manage_options');
+            },
+            'callback'            => array(__CLASS__, 'rest_handle_ai_key')
+        ), true);
+
         register_rest_route('bareun/v1', '/studio/generate-image', array(
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
@@ -2680,6 +2774,84 @@ class Bareun_Custom_Studio_Engine_V2 {
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_ensure_assets_from_github')
         ), true);
+    }
+
+    private static function mask_secret_key($raw) {
+        $s = trim((string)$raw);
+        if ($s === '') return '';
+        if (strlen($s) <= 10) return substr($s, 0, 3) . '***';
+        return substr($s, 0, 7) . '...' . substr($s, -4);
+    }
+
+    private static function get_raw_ai_keys() {
+        $saved = get_option(self::OPT_STUDIO_AI_KEYS, array());
+        if (!is_array($saved)) $saved = array();
+        return array(
+            'geminiKey' => isset($saved['geminiKey']) ? trim((string)$saved['geminiKey']) : '',
+            'falKey'    => isset($saved['falKey']) ? trim((string)$saved['falKey']) : ''
+        );
+    }
+
+    private static function build_ai_key_status_payload() {
+        $keys = self::get_raw_ai_keys();
+        $has_g = ($keys['geminiKey'] !== '');
+        $has_f = ($keys['falKey'] !== '');
+        $has_argon = ($has_g || $has_f);
+        $provider = 'free-flux';
+        $label = '무료 기본 FLUX 엔진 (아르곤 하이 미연결)';
+        if ($has_g) {
+            $provider = 'google-gemini-pro';
+            $label = '아르곤 하이 정품 엔진 (Google Gemini 3 Pro Image · 2K 초고화질)';
+        } elseif ($has_f) {
+            $provider = 'fal-nano-banana-pro';
+            $label = '아르곤 하이 정품 엔진 (Nano Banana Pro · Gemini 3 Pro Image 2K)';
+        }
+        return array(
+            'ok'              => true,
+            'hasArgonEngine'  => $has_argon,
+            'hasGeminiKey'    => $has_g,
+            'hasFalKey'       => $has_f,
+            'activeProvider'  => $provider,
+            'activeLabel'     => $label,
+            'maskedGeminiKey' => self::mask_secret_key($keys['geminiKey']),
+            'maskedFalKey'    => self::mask_secret_key($keys['falKey'])
+        );
+    }
+
+    public static function rest_handle_ai_key($request) {
+        nocache_headers();
+        if ($request->get_method() === 'POST') {
+            $params = $request->get_json_params();
+            if (!is_array($params)) $params = array();
+            $saved = self::get_raw_ai_keys();
+
+            if (!empty($params['apiKey'])) {
+                $single = trim((string)$params['apiKey']);
+                if (stripos($single, 'AIza') === 0) {
+                    $saved['geminiKey'] = $single;
+                } elseif (strpos($single, ':') !== false || stripos($single, 'fal_') === 0) {
+                    $saved['falKey'] = $single;
+                } else {
+                    $saved['geminiKey'] = $single;
+                }
+            }
+            if (isset($params['geminiKey'])) {
+                $gk = trim((string)$params['geminiKey']);
+                if ($gk === '__CLEAR__') $saved['geminiKey'] = '';
+                elseif ($gk !== '') $saved['geminiKey'] = $gk;
+            }
+            if (isset($params['falKey'])) {
+                $fk = trim((string)$params['falKey']);
+                if ($fk === '__CLEAR__') $saved['falKey'] = '';
+                elseif ($fk !== '') $saved['falKey'] = $fk;
+            }
+            update_option(self::OPT_STUDIO_AI_KEYS, $saved, false);
+            $out = self::build_ai_key_status_payload();
+            $out['message'] = '아르곤 하이(Gemini 3 Pro Image 2K) 엔진 키가 실서버에 안전하게 저장되었습니다!';
+            return new WP_REST_Response($out, 200);
+        }
+
+        return new WP_REST_Response(self::build_ai_key_status_payload(), 200);
     }
 
     public static function rest_handle_config($request) {
@@ -2976,9 +3148,375 @@ class Bareun_Custom_Studio_Engine_V2 {
         ), 200);
     }
 
-    private static function call_hf_gradio_flux($space_base, $payload_data, $timeout_sec = 45) {
+    private static function guess_preferred_angle_key($prompt_text) {
+        $s = mb_strtolower((string)$prompt_text, 'UTF-8');
+        if (preg_match('/좌측\s*측면|왼쪽\s*옆모습|왼쪽\s*측면|left\s*profile/u', $s)) return 'leftProfile';
+        if (preg_match('/우측\s*측면|오른쪽\s*옆모습|오른쪽\s*측면|측면|옆모습|side\s*profile|right\s*profile/u', $s)) return 'rightProfile';
+        if (preg_match('/좌측|왼쪽|left/u', $s)) return 'left30';
+        if (preg_match('/우측|오른쪽|사선|어깨너머|대각선|상담|초음파|진맥|맥진/u', $s)) return 'right30';
+        return 'front';
+    }
+
+    private static function resolve_wp_studio_ref_image($raw_ref) {
+        $parts = explode('?', trim((string)$raw_ref));
+        $clean = explode('#', $parts[0])[0];
+        if ($clean === '' || preg_match('/\.(mp4|webm|mov|svg)$/i', $clean)) {
+            return null;
+        }
+
+        if (preg_match('/^data:(image\/(?:jpeg|jpg|png|webp));base64,(.+)$/i', $clean, $dm)) {
+            $mime = str_replace('image/jpg', 'image/jpeg', strtolower($dm[1]));
+            $b64  = $dm[2];
+            return array(
+                'mimeType'  => $mime,
+                'base64'    => $b64,
+                'dataUri'   => 'data:' . $mime . ';base64,' . $b64,
+                'publicUrl' => ''
+            );
+        }
+
+        $upload_dir = wp_upload_dir();
+        $basedir = $upload_dir['basedir'];
+        $baseurl = $upload_dir['baseurl'];
+        $gh_raw  = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+
+        // 1) Direct URL under WordPress uploads
+        if (stripos($clean, $baseurl . '/') === 0) {
+            $rel = substr($clean, strlen($baseurl . '/'));
+            $disk_path = $basedir . '/' . $rel;
+            if (file_exists($disk_path) && is_file($disk_path)) {
+                $bin = @file_get_contents($disk_path);
+                if ($bin && strlen($bin) > 512) {
+                    $mime = preg_match('/\.png$/i', $disk_path) ? 'image/png' : (preg_match('/\.webp$/i', $disk_path) ? 'image/webp' : 'image/jpeg');
+                    $b64  = base64_encode($bin);
+                    return array(
+                        'mimeType'  => $mime,
+                        'base64'    => $b64,
+                        'dataUri'   => 'data:' . $mime . ';base64,' . $b64,
+                        'publicUrl' => $clean
+                    );
+                }
+            }
+        }
+
+        // 2) Full external HTTPS URL
+        if (preg_match('/^https?:\/\//i', $clean)) {
+            $res = wp_remote_get($clean, array('timeout' => 25));
+            if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
+                $bin = wp_remote_retrieve_body($res);
+                if ($bin && strlen($bin) > 512) {
+                    $mime = preg_match('/\.png$/i', $clean) ? 'image/png' : (preg_match('/\.webp$/i', $clean) ? 'image/webp' : 'image/jpeg');
+                    $b64  = base64_encode($bin);
+                    return array(
+                        'mimeType'  => $mime,
+                        'base64'    => $b64,
+                        'dataUri'   => 'data:' . $mime . ';base64,' . $b64,
+                        'publicUrl' => $clean
+                    );
+                }
+            }
+            return null;
+        }
+
+        // 3) Relative studio/homepage filename (e.g. detail_director_story2_clean.jpg or director-angle-refs/angle_front.jpg)
+        $rel_clean = ltrim($clean, '/');
+        $disk_candidates = array(
+            $basedir . '/bareun-studio/' . $rel_clean,
+            $basedir . '/bareun-studio/' . basename($rel_clean)
+        );
+        foreach ($disk_candidates as $dp) {
+            if (file_exists($dp) && is_file($dp)) {
+                $bin = @file_get_contents($dp);
+                if ($bin && strlen($bin) > 512) {
+                    $mime = preg_match('/\.png$/i', $dp) ? 'image/png' : (preg_match('/\.webp$/i', $dp) ? 'image/webp' : 'image/jpeg');
+                    $b64  = base64_encode($bin);
+                    $pub  = str_replace($basedir, $baseurl, $dp);
+                    return array(
+                        'mimeType'  => $mime,
+                        'base64'    => $b64,
+                        'dataUri'   => 'data:' . $mime . ';base64,' . $b64,
+                        'publicUrl' => $pub
+                    );
+                }
+            }
+        }
+
+        // 4) Fallback to GitHub raw official homepage asset
+        $gh_url = $gh_raw . str_replace('%2F', '/', rawurlencode($rel_clean));
+        $res = wp_remote_get($gh_url, array('timeout' => 25));
+        if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
+            $bin = wp_remote_retrieve_body($res);
+            if ($bin && strlen($bin) > 512) {
+                $mime = preg_match('/\.png$/i', $rel_clean) ? 'image/png' : (preg_match('/\.webp$/i', $rel_clean) ? 'image/webp' : 'image/jpeg');
+                $b64  = base64_encode($bin);
+                return array(
+                    'mimeType'  => $mime,
+                    'base64'    => $b64,
+                    'dataUri'   => 'data:' . $mime . ';base64,' . $b64,
+                    'publicUrl' => $gh_url
+                );
+            }
+        }
+
+        return null;
+    }
+
+    private static function build_argon_high_prompt_php($user_prompt, $orig_prompt, $work_mode, $use_director_face, $has_source_ref, $angle_label) {
+        $clean_user = trim((string)$user_prompt);
+        $clean_orig = trim((string)$orig_prompt);
+        $is_modified = ($clean_orig !== '' && $clean_orig !== $clean_user);
+        $lines = array();
+
+        if ($work_mode === 'edit_current' && $has_source_ref) {
+            if ($is_modified) {
+                $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 원본 카드 기반 정밀 수정 촬영]';
+                $lines[] = '첨부된 첫 번째 사진은 현재 홈페이지 카드에 설정되어 있는 원본 이미지입니다.';
+                $lines[] = '첫 번째 원본 사진의 고급스러운 한의원 자연 채광, 따뜻한 원목/한지 톤앤매너, 카메라 렌즈 심도(Canon EOS R5 85mm f/1.8L)와 전체 공간 품격은 그대로 유지하되, 사용자가 수정한 아래 [최종 연출 프롬프트]의 변경 내용(손가락 위치·개수, 동작, 소품, 구도, 시선 등)을 최우선으로 오차 없이 정확하게 반영하여 새롭게 촬영해 주세요.';
+                $lines[] = '[기존 카드 설명 (참고용)]: ' . $clean_orig;
+                $lines[] = '[최종 연출 프롬프트 (최우선 반영 필수)]: ' . $clean_user;
+            } else {
+                $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 원본 카드 품격 계승 재촬영]';
+                $lines[] = '첨부된 첫 번째 원본 카드 사진의 고급 한의원 조명·원목 질감·색감·구도 품격을 그대로 계승하면서, 디테일과 생동감이 한층 자연스럽게 새로 촬영된 초고화질 DSLR 실사 사진으로 제작해 주세요.';
+                $lines[] = '[장면 연출 지시]: ' . $clean_user;
+            }
+        } else {
+            $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 최상급 DSLR 실사 촬영]';
+            $lines[] = '따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원)의 실제 에디토리얼 화보 수준(Canon EOS R5, RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 모공과 원단 직조 질감)으로 아래 장면을 촬영해 주세요.';
+            $lines[] = '[장면 연출 지시]: ' . $clean_user;
+        }
+
+        if (preg_match('/진맥|맥진|요골\s*동맥|손목/u', $clean_user)) {
+            $lines[] = '[해부학 및 인물 배치 필수 규칙]: 반드시 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 편안한 일상복 소매의 환자 팔/손목, 반대쪽은 깔끔한 흰 의사 가운과 스트라이프 셔츠 소매의 한의사 손)로 정확히 분리하여 표현하세요. 절대로 한 사람이 자기 자신의 손목을 짚는 구도가 되어서는 안 됩니다. 손가락 개수(엄지~새끼손가락 5개 해부학 비례, 특히 2·3·4지 검지·중지·약지 지시 시 세 손가락을 나란히 가지런히 요골동맥 위에 얹는 정통 맥진 자세)를 100% 정확하게 표현하세요.';
+        }
+
+        if ($use_director_face) {
+            $ref_prefix = $has_source_ref ? '두 번째 이후 첨부된 인물 사진들은' : '첨부된 인물 기준 사진들은';
+            $lines[] = '[안정위 대표원장 다각도 샘플 얼굴 오차 ZERO 고정]: ' . $ref_prefix . ' 모두 동일한 한 명의 한국인 남성 한의사(안정위 대표원장)를 각도별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도(권장 기준: ' . $angle_label . ')에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.';
+        }
+
+        $lines[] = '[화질 및 클린 마감 절대 원칙]: 워터마크, 로고, 서명, 자막 텍스트를 절대 넣지 마세요. 흰 의사 가운 가슴 주머니에도 깨진 글자나 자수 명찰 없이 깨끗한 순백색 무지 고급 가운으로 표현하세요. 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 무보정 RAW 에디토리얼 실사 사진이어야 합니다.';
+
+        return implode("\n", $lines);
+    }
+
+    private static function extract_b64_from_gemini_json($json) {
+        if (!is_array($json)) return null;
+        if (!empty($json['output_image']['data'])) {
+            return base64_decode((string)$json['output_image']['data']);
+        }
+        if (!empty($json['steps']) && is_array($json['steps'])) {
+            for ($i = count($json['steps']) - 1; $i >= 0; $i--) {
+                $content = isset($json['steps'][$i]['content']) ? $json['steps'][$i]['content'] : null;
+                if (is_array($content)) {
+                    for ($j = count($content) - 1; $j >= 0; $j--) {
+                        if (!empty($content[$j]['type']) && $content[$j]['type'] === 'image' && !empty($content[$j]['data'])) {
+                            return base64_decode((string)$content[$j]['data']);
+                        }
+                    }
+                }
+            }
+        }
+        if (!empty($json['outputs']) && is_array($json['outputs'])) {
+            for ($i = count($json['outputs']) - 1; $i >= 0; $i--) {
+                if (!empty($json['outputs'][$i]['type']) && $json['outputs'][$i]['type'] === 'image' && !empty($json['outputs'][$i]['data'])) {
+                    return base64_decode((string)$json['outputs'][$i]['data']);
+                }
+            }
+        }
+        if (!empty($json['candidates'][0]['content']['parts']) && is_array($json['candidates'][0]['content']['parts'])) {
+            $parts = $json['candidates'][0]['content']['parts'];
+            for ($i = count($parts) - 1; $i >= 0; $i--) {
+                $inline = isset($parts[$i]['inlineData']) ? $parts[$i]['inlineData'] : (isset($parts[$i]['inline_data']) ? $parts[$i]['inline_data'] : null);
+                if (is_array($inline) && !empty($inline['data'])) {
+                    return base64_decode((string)$inline['data']);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static function call_google_gemini_direct_php($gemini_key, $prompt_text, $ref_images) {
+        $models = array(
+            array('id' => 'gemini-3-pro-image',     'label' => 'Google Gemini 3 Pro Image (아르곤 하이 정품 2K)', 'size' => true),
+            array('id' => 'gemini-nano-banana-2.1', 'label' => 'Google Gemini Nano Banana 2.1 (아르곤 하이 2K)',  'size' => true),
+            array('id' => 'gemini-3.1-flash-image', 'label' => 'Google Gemini 3.1 Flash Image (2K)',              'size' => true),
+            array('id' => 'gemini-2.5-flash-image', 'label' => 'Google Gemini 2.5 Flash Image',                   'size' => false)
+        );
+
+        $input_blocks = array();
+        $slice_refs = array_slice((array)$ref_images, 0, 8);
+        foreach ($slice_refs as $rf) {
+            if (!empty($rf['base64'])) {
+                $input_blocks[] = array(
+                    'type'      => 'image',
+                    'mime_type' => !empty($rf['mimeType']) ? $rf['mimeType'] : 'image/jpeg',
+                    'data'      => $rf['base64']
+                );
+            }
+        }
+        $input_blocks[] = array(
+            'type' => 'text',
+            'text' => $prompt_text
+        );
+
+        foreach ($models as $m) {
+            $resp_fmt = $m['size']
+                ? array('type' => 'image', 'aspect_ratio' => '16:9', 'image_size' => '2K')
+                : array('type' => 'image', 'aspect_ratio' => '16:9');
+
+            $res = wp_remote_post('https://generativelanguage.googleapis.com/v1beta/interactions', array(
+                'timeout' => 125,
+                'headers' => array(
+                    'Content-Type'   => 'application/json',
+                    'x-goog-api-key' => $gemini_key,
+                    'Api-Revision'   => '2026-05-20'
+                ),
+                'body' => wp_json_encode(array(
+                    'model'           => $m['id'],
+                    'input'           => $input_blocks,
+                    'response_format' => $resp_fmt
+                ))
+            ));
+
+            if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
+                $json = json_decode(wp_remote_retrieve_body($res), true);
+                $bin  = self::extract_b64_from_gemini_json($json);
+                if ($bin && strlen($bin) > 8000) {
+                    return array('bin' => $bin, 'engine' => $m['label']);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static function call_fal_nano_banana_pro_php($fal_key, $prompt_text, $ref_images, $has_source_ref, $seed) {
+        $img_urls = array();
+        $slice_refs = array_slice((array)$ref_images, 0, 8);
+        foreach ($slice_refs as $rf) {
+            if (!empty($rf['publicUrl']) && preg_match('/^https:\/\//i', $rf['publicUrl'])) {
+                $img_urls[] = $rf['publicUrl'];
+            } elseif (!empty($rf['dataUri'])) {
+                $img_urls[] = $rf['dataUri'];
+            }
+        }
+
+        $is_edit = (count($img_urls) > 0);
+        $endpoints = $is_edit
+            ? array(
+                array('path' => 'fal-ai/nano-banana-pro/edit', 'label' => '아르곤 하이 정품 (Gemini 3 Pro Image · 2K 원본참조 에디팅)'),
+                array('path' => 'google/nano-banana-2.1/edit', 'label' => '아르곤 하이 정품 (Gemini Nano Banana 2.1 · 2K 에디팅)')
+            )
+            : array(
+                array('path' => 'fal-ai/nano-banana-pro', 'label' => '아르곤 하이 정품 (Gemini 3 Pro Image · 2K 실사 촬영)'),
+                array('path' => 'google/nano-banana-2.1', 'label' => '아르곤 하이 정품 (Gemini Nano Banana 2.1 · 2K 실사 촬영)')
+            );
+
+        foreach ($endpoints as $ep) {
+            $payload = array(
+                'prompt'        => $prompt_text,
+                'resolution'    => '2K',
+                'aspect_ratio'  => $has_source_ref ? 'auto' : '16:9',
+                'output_format' => 'jpeg',
+                'seed'          => (int)($seed % 2147483647)
+            );
+            if ($is_edit) {
+                $payload['image_urls'] = $img_urls;
+            }
+
+            $res = wp_remote_post('https://fal.run/' . $ep['path'], array(
+                'timeout' => 130,
+                'headers' => array(
+                    'Authorization' => 'Key ' . $fal_key,
+                    'Content-Type'  => 'application/json'
+                ),
+                'body' => wp_json_encode($payload)
+            ));
+
+            if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
+                $json = json_decode(wp_remote_retrieve_body($res), true);
+                $out_url = '';
+                if (!empty($json['images'][0]['url'])) {
+                    $out_url = (string)$json['images'][0]['url'];
+                } elseif (!empty($json['image']['url'])) {
+                    $out_url = (string)$json['image']['url'];
+                }
+                if ($out_url !== '') {
+                    $dl = wp_remote_get($out_url, array('timeout' => 55));
+                    if (!is_wp_error($dl) && wp_remote_retrieve_response_code($dl) === 200) {
+                        $bin = wp_remote_retrieve_body($dl);
+                        if ($bin && strlen($bin) > 8000) {
+                            return array('bin' => $bin, 'engine' => $ep['label']);
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static function translate_ko_medical_prompt_server($raw_prompt, $use_director_face) {
+        $text = trim((string)$raw_prompt);
+        $replacements = array(
+            '/2\s*[,·ㆍ\/\.\-]?\s*3\s*[,·ㆍ\/\.\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/u' => '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers gently side-by-side)',
+            '/요골\s*동맥/u' => '환자 손목 안쪽 요골동맥 부위(the radial artery pulse point on the inner wrist of the patient)',
+            '/진맥\s*쿠션|맥진\s*쿠션/u' => '아이보리 명주 손목 받침 쿠션(ivory woven-silk wrist pulse cushion)',
+            '/진맥|맥진/u' => '전통 한의학 손목 맥진(traditional Korean medicine radial pulse diagnosis on the wrist)',
+            '/복진/u' => '진료 베드에 누운 환자의 복부를 부드럽게 촉진하는 복진(gentle clinical abdominal palpation on an examination bed)',
+            '/추나\s*요법|수기\s*추나|추나/u' => '수기 척추교정 추나 치료(precise hands-on Chuna spinal and pelvic manual therapy)',
+            '/약침/u' => '멸균 한방 약침 시술(precise sterile herbal pharmacopuncture therapy)',
+            '/탕전실/u' => '유리 통창 원내 한약 조제실(clean modern glass-walled clinic herbal decoction lab)',
+            '/황제\s*공진단|공진단/u' => '24K 순금박으로 감싼 황제공진단 환약과 원목 목함(24K pure gold-leaf wrapped Gongjindan herbal pills inside a dark walnut wooden box)',
+            '/녹용\s*분골|러시아\s*녹용|녹용/u' => '최상급 러시아 녹용 분골 절편(top-grade sliced Russian velvet deer antler tips)',
+            '/초음파\s*진단기|초음파\s*모니터|초음파/u' => '정밀 초음파 진단 프로브와 실시간 초음파 영상 모니터(medical ultrasound transducer probe and live grayscale ultrasound monitor)',
+            '/체열\s*진단기|적외선\s*체열/u' => '적외선 체열진단 열화상 모니터(medical infrared thermography body heat-map monitor)'
+        );
+        foreach ($replacements as $pat => $rep) {
+            $text = preg_replace($pat, $rep, $text);
+        }
+
+        $translated = $text;
+        if (preg_match('/[가-힣]/u', $text)) {
+            $g_url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' . rawurlencode($text);
+            $g_res = wp_remote_get($g_url, array('timeout' => 8));
+            if (!is_wp_error($g_res) && wp_remote_retrieve_response_code($g_res) === 200) {
+                $arr = json_decode(wp_remote_retrieve_body($g_res), true);
+                if (is_array($arr) && !empty($arr[0]) && is_array($arr[0])) {
+                    $chunks = array();
+                    foreach ($arr[0] as $seg) {
+                        if (is_array($seg) && isset($seg[0])) {
+                            $chunks[] = (string)$seg[0];
+                        }
+                    }
+                    $joined = trim(implode('', $chunks));
+                    if ($joined !== '') $translated = $joined;
+                }
+            }
+        }
+
+        $two_person = '';
+        if (preg_match('/진맥|맥진|요골|손목|radial artery|pulse/iu', $raw_prompt . ' ' . $translated)) {
+            $two_person = 'two separate distinct people sitting across a warm walnut consultation table from opposite sides: a patient in dark navy knitwear extending their bare wrist from the left side onto an ivory silk cushion, and a Korean medicine doctor in a plain unembroidered crisp white coat over a blue-and-white striped dress shirt reaching from the right side to palpate the patient wrist';
+        }
+
+        $director_lead = $use_director_face
+            ? 'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp white medical coat over a blue-and-white striped dress shirt'
+            : '';
+
+        $parts = array_filter(array(
+            'Authentic raw candid editorial photograph captured on Canon EOS R5 with RF 85mm f/1.8L USM lens',
+            $director_lead,
+            $two_person,
+            $translated,
+            'warm refined Korean medicine clinic interior with natural honey-oak wood and soft Hanji daylight, ultra-realistic skin pores and natural fabric weave, accurate 5-finger hand anatomy, shallow depth of field, zero CGI, strictly NO text, NO logos, NO watermarks'
+        ));
+
+        return implode(', ', $parts);
+    }
+
+    private static function call_hf_gradio_flux($space_base, $payload_data, $timeout_sec = 90) {
         $call_res = wp_remote_post($space_base . '/gradio_api/call/infer', array(
-            'timeout' => 20,
+            'timeout' => 25,
             'headers' => array('Content-Type' => 'application/json'),
             'body'    => wp_json_encode(array('data' => $payload_data))
         ));
@@ -3013,57 +3551,153 @@ class Bareun_Custom_Studio_Engine_V2 {
     }
 
     public static function rest_generate_ai_image($request) {
+        @set_time_limit(180);
         $params = $request->get_json_params();
-        if (!is_array($params) || empty($params['prompt'])) {
-            return new WP_REST_Response(array('ok' => false, 'error' => '생성할 프롬프트(prompt)가 필요합니다.'), 400);
+        if (!is_array($params)) $params = array();
+
+        $user_prompt = trim((string)($params['userPrompt'] ?? $params['prompt'] ?? ''));
+        if ($user_prompt === '') {
+            return new WP_REST_Response(array('ok' => false, 'error' => '생성할 이미지 프롬프트를 입력해 주세요.'), 400);
         }
 
-        $prompt = trim((string)$params['prompt']);
-        $width  = isset($params['width']) ? max(512, min(1536, (int)(round(((int)$params['width']) / 32) * 32))) : 1280;
-        $height = isset($params['height']) ? max(512, min(1536, (int)(round(((int)$params['height']) / 32) * 32))) : 800;
-        $seed   = isset($params['seed']) ? max(1, (int)$params['seed']) : wp_rand(10000, 99999999);
-        $prefix = isset($params['filePrefix']) ? preg_replace('/[^a-zA-Z0-9_-]/', '_', (string)$params['filePrefix']) : 'bareun_scene';
+        $orig_prompt       = trim((string)($params['originalCardPrompt'] ?? ''));
+        $work_mode         = (isset($params['workMode']) && $params['workMode'] === 'write_new') ? 'write_new' : 'edit_current';
+        $source_image      = trim((string)($params['sourceImage'] ?? ''));
+        $use_director_face = !empty($params['useDirectorFace']);
+        $width             = isset($params['width']) ? max(512, min(1536, (int)(round(((int)$params['width']) / 32) * 32))) : 1280;
+        $height            = isset($params['height']) ? max(512, min(1536, (int)(round(((int)$params['height']) / 32) * 32))) : 800;
+        $seed              = isset($params['seed']) ? max(1, (int)$params['seed']) : wp_rand(10000000, 99999999);
+        $raw_prefix        = isset($params['filePrefix']) ? (string)$params['filePrefix'] : 'clinic';
+        $raw_prefix        = preg_replace('/^bareun_im_/i', '', $raw_prefix);
+        $prefix            = preg_replace('/[^a-zA-Z0-9_-]/', '_', $raw_prefix);
+        if ($prefix === '') $prefix = 'clinic';
 
-        // Official Black Forest Labs FLUX.1-dev (28-step) -> fallback FLUX.1-schnell (100% Watermark-Free!)
-        $out_img_url = self::call_hf_gradio_flux(
-            'https://black-forest-labs-flux-1-dev.hf.space',
-            array($prompt, $seed, false, $width, $height, 3.5, 28),
-            55
-        );
-        if (!$out_img_url) {
-            $out_img_url = self::call_hf_gradio_flux(
-                'https://black-forest-labs-flux-1-schnell.hf.space',
-                array($prompt, $seed, false, $width, $height, 4),
-                35
+        $bin = null;
+        $engine_used = '';
+
+        // 1) Try Argon High Native Engine (Google Gemini 3 Pro Image 2K / Nano Banana Pro 2K)
+        $ai_keys = self::get_raw_ai_keys();
+        if ($ai_keys['geminiKey'] !== '' || $ai_keys['falKey'] !== '') {
+            $ref_images = array();
+            $has_source_ref = false;
+
+            if ($work_mode === 'edit_current' && $source_image !== '') {
+                $src_ref = self::resolve_wp_studio_ref_image($source_image);
+                if ($src_ref) {
+                    $ref_images[] = $src_ref;
+                    $has_source_ref = true;
+                }
+            }
+
+            $preferred_angle_key = self::guess_preferred_angle_key($user_prompt);
+            $preferred_angle_label = '정면 (0°)';
+
+            if ($use_director_face) {
+                $slots = self::get_default_angle_slots();
+                $saved_angles = get_option(self::OPT_ANGLE_SAMPLES, array());
+                if (!is_array($saved_angles)) $saved_angles = array();
+
+                $upload_dir = wp_upload_dir();
+                $studio_angle_dir = $upload_dir['basedir'] . '/bareun-studio/director-angle-refs';
+                $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
+                $gh_angle_base    = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
+
+                $ordered_slots = array();
+                foreach ($slots as $sl) {
+                    if ($sl['key'] === $preferred_angle_key) {
+                        $preferred_angle_label = $sl['label'];
+                        array_unshift($ordered_slots, $sl);
+                    } else {
+                        $ordered_slots[] = $sl;
+                    }
+                }
+
+                foreach ($ordered_slots as $sl) {
+                    $k = $sl['key'];
+                    $default_ref = file_exists($studio_angle_dir . '/' . $sl['file'])
+                        ? ($studio_angle_url . '/' . $sl['file'])
+                        : ($gh_angle_base . '/' . $sl['file']);
+                    $slot_url = !empty($saved_angles[$k]['fileName']) ? $saved_angles[$k]['fileName'] : $default_ref;
+                    $ang_ref = self::resolve_wp_studio_ref_image($slot_url);
+                    if ($ang_ref) {
+                        $ref_images[] = $ang_ref;
+                    }
+                }
+            }
+
+            $argon_prompt = self::build_argon_high_prompt_php(
+                $user_prompt,
+                $orig_prompt,
+                $work_mode,
+                $use_director_face,
+                $has_source_ref,
+                $preferred_angle_label
             );
+
+            if ($ai_keys['geminiKey'] !== '') {
+                $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, $ref_images);
+                if (is_array($g_out) && !empty($g_out['bin'])) {
+                    $bin = $g_out['bin'];
+                    $engine_used = $g_out['engine'] . ($use_director_face ? ' + 5각도 원장님 얼굴 고정' : '');
+                }
+            }
+
+            if (!$bin && $ai_keys['falKey'] !== '') {
+                $f_out = self::call_fal_nano_banana_pro_php($ai_keys['falKey'], $argon_prompt, $ref_images, $has_source_ref, $seed);
+                if (is_array($f_out) && !empty($f_out['bin'])) {
+                    $bin = $f_out['bin'];
+                    $engine_used = $f_out['engine'] . ($use_director_face ? ' + 5각도 원장님 얼굴 고정' : '');
+                }
+            }
         }
-        if (!$out_img_url) {
-            return new WP_REST_Response(array('ok' => false, 'error' => '고화질 FLUX 스튜디오 서버 응답 대기 시간 초과 — 다시 시도해 주세요.'), 500);
-        }
 
-        $response = wp_remote_get($out_img_url, array(
-            'timeout' => 45,
-            'headers' => array(
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/3.0'
-            )
-        ));
+        // 2) Fallback: Server-Translated Watermark-Free FLUX.1-dev (90s SSE) -> FLUX.1-schnell
+        if (!$bin) {
+            $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, $use_director_face);
+            $out_img_url = self::call_hf_gradio_flux(
+                'https://black-forest-labs-flux-1-dev.hf.space',
+                array($en_prompt, $seed % 2147483647, false, $width, $height, 3.5, 28),
+                90
+            );
+            $engine_used = 'FLUX.1-dev (28-Step DSLR 실사)';
 
-        if (is_wp_error($response)) {
-            return new WP_REST_Response(array('ok' => false, 'error' => '생성된 이미지 다운로드 실패: ' . $response->get_error_message()), 500);
-        }
+            if (!$out_img_url) {
+                $out_img_url = self::call_hf_gradio_flux(
+                    'https://black-forest-labs-flux-1-schnell.hf.space',
+                    array($en_prompt, $seed % 2147483647, false, $width, $height, 4),
+                    45
+                );
+                $engine_used = 'FLUX.1-schnell (고해상도 클린 실사)';
+            }
 
-        $code = wp_remote_retrieve_response_code($response);
-        $bin  = wp_remote_retrieve_body($response);
+            if (!$out_img_url) {
+                return new WP_REST_Response(array('ok' => false, 'error' => 'AI 이미지 엔진 연결 지연 — 잠시 후 다시 시도해 주세요.'), 500);
+            }
 
-        if ($code !== 200 || strlen($bin) < 4000) {
-            return new WP_REST_Response(array('ok' => false, 'error' => '생성된 이미지 데이터 수신 오류 (HTTP ' . $code . ')'), 500);
+            $response = wp_remote_get($out_img_url, array(
+                'timeout' => 50,
+                'headers' => array(
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/4.0'
+                )
+            ));
+
+            if (is_wp_error($response)) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '생성된 이미지 다운로드 실패: ' . $response->get_error_message()), 500);
+            }
+
+            $code = wp_remote_retrieve_response_code($response);
+            $dl_bin = wp_remote_retrieve_body($response);
+            if ($code !== 200 || strlen($dl_bin) < 4000) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '생성된 이미지 데이터 수신 오류 (HTTP ' . $code . ')'), 500);
+            }
+            $bin = $dl_bin;
         }
 
         require_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/media.php';
         require_once ABSPATH . 'wp-admin/includes/image.php';
 
-        $unique_name = 'bareun_im_' . substr($prefix, 0, 24) . '_' . time() . '_' . wp_rand(100, 999) . '.jpg';
+        $unique_name = 'bareun_im_' . substr($prefix, 0, 20) . '_' . time() . '_' . wp_rand(100, 999) . '.jpg';
         $upload = wp_upload_bits($unique_name, null, $bin);
         if (!empty($upload['error'])) {
             return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
@@ -3073,7 +3707,7 @@ class Bareun_Custom_Studio_Engine_V2 {
             'guid'           => $upload['url'],
             'post_mime_type' => 'image/jpeg',
             'post_title'     => preg_replace('/\.[^.]+$/', '', $unique_name),
-            'post_content'   => $prompt,
+            'post_content'   => $user_prompt,
             'post_status'    => 'inherit'
         );
         $attach_id = wp_insert_attachment($attachment, $upload['file']);
@@ -3087,7 +3721,8 @@ class Bareun_Custom_Studio_Engine_V2 {
             'fileName' => $unique_name,
             'url'      => $upload['url'],
             'seed'     => $seed,
-            'message'  => '최고화질 무워터마크 AI 이미지 생성 및 실서버 등록 완료!'
+            'engine'   => $engine_used,
+            'message'  => '[' . $engine_used . '] 최상급 실사 이미지 생성 및 실서버 등록 완료!'
         ), 200);
     }
 
@@ -3121,6 +3756,16 @@ class Bareun_Custom_Studio_Engine_V2 {
                 }
             }
         }
+        if (!empty($params['studioAiKeys']) && is_array($params['studioAiKeys'])) {
+            $saved_keys = self::get_raw_ai_keys();
+            if (!empty($params['studioAiKeys']['geminiKey'])) {
+                $saved_keys['geminiKey'] = trim((string)$params['studioAiKeys']['geminiKey']);
+            }
+            if (!empty($params['studioAiKeys']['falKey'])) {
+                $saved_keys['falKey'] = trim((string)$params['studioAiKeys']['falKey']);
+            }
+            update_option(self::OPT_STUDIO_AI_KEYS, $saved_keys, false);
+        }
         if (!empty($params['config']) && is_array($params['config'])) {
             update_option(self::OPT_DETAIL_CFG, $params['config']);
             file_put_contents($target_dir . '/detail-pages-config.json', json_encode($params['config'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
@@ -3134,9 +3779,10 @@ class Bareun_Custom_Studio_Engine_V2 {
         }
 
         return new WP_REST_Response(array(
-            'ok'      => true,
-            'version' => 'v2',
-            'message' => '실서버 스튜디오 V2 에셋 동기화 성공!'
+            'ok'         => true,
+            'version'    => 'v3-argon-high',
+            'aiKeyState' => self::build_ai_key_status_payload(),
+            'message'    => '실서버 스튜디오 V3 (아르곤 하이 2K 엔진) 에셋 동기화 성공!'
         ), 200);
     }
 
@@ -3191,7 +3837,7 @@ class Bareun_Custom_Studio_Engine_V2 {
         ), 200);
     }
 }
-Bareun_Custom_Studio_Engine_V2::init();
+Bareun_Custom_Studio_Engine_V3::init();
 endif;
 
 

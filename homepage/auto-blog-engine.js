@@ -656,6 +656,10 @@ function syncNineDiseaseAutoNotes() {
     }
   }
 
+  const llmsStats = generateLlmsTxtFiles();
+  report.llmsTxtGenerated = true;
+  report.healthNoteSeoPayloadsCount = llmsStats.totalHealthNotes;
+
   fs.writeFileSync(AUTO_LOG_PATH, JSON.stringify({
     ...report,
     blogCategoriesCount: DISEASE_BLOG_CATEGORIES.length,
@@ -664,6 +668,366 @@ function syncNineDiseaseAutoNotes() {
   }, null, 2), 'utf8');
 
   return report;
+}
+
+function escHtmlServer(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * 3) 72편 '오늘의 건강 글' 개별 SEO(구글·네이버) + AEO(답변엔진·스니펫·음성검색) + GEO(ChatGPT·Perplexity·Gemini 인용) 통합 워드프레스 포스트 빌더
+ */
+function buildHealthNoteSeoAeoGeoPost(ep, partId) {
+  const slug = 'health-note-' + ep.id;
+  const canonicalUrl = `https://www.bareunhaniwon.com/${slug}/`;
+  const explorerDeepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${encodeURIComponent(partId)}&note=${encodeURIComponent(ep.id)}`;
+  const askDoctorUrl = `https://www.bareunhaniwon.com/ask-doctor/?tab=qna&part=all`;
+  const partLabel = ep.partLabel || partId;
+  const keyword = ep.keyword || partLabel;
+  const theme = ep.theme || keyword;
+  const academicBasis = ep.academicBasis || '국제 SCI 의학저널 및 통합생리학 임상 가이드라인';
+  const empathyLines = Array.isArray(ep.empathyLines) ? ep.empathyLines : [];
+  const truthLines = Array.isArray(ep.truthLines) ? ep.truthLines : [];
+  const mythLines = Array.isArray(ep.mythLines) ? ep.mythLines : [];
+  const checkList = Array.isArray(ep.checkList) ? ep.checkList : [];
+
+  const directAnswerSummary = `${truthLines.join(' ')} ${mythLines[1] || ''}`.trim();
+  const postTitle = `${ep.questionTitle} [${partLabel} · ${keyword} 건강백과]`;
+
+  const schemaGraph = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'MedicalWebPage',
+        '@id': `${canonicalUrl}#webpage`,
+        'url': canonicalUrl,
+        'name': postTitle,
+        'headline': ep.questionTitle,
+        'description': directAnswerSummary,
+        'inLanguage': 'ko-KR',
+        'datePublished': ep.publishDate || '2026-10-27',
+        'dateModified': ep.publishDate || '2026-11-11',
+        'isPartOf': { '@id': 'https://www.bareunhaniwon.com/#website' },
+        'about': {
+          '@type': 'AnatomicalStructure',
+          'name': partLabel
+        },
+        'reviewedBy': {
+          '@type': 'Person',
+          '@id': 'https://www.bareunhaniwon.com/director/#physician',
+          'name': '안정위',
+          'jobTitle': '바른한의원 대전본점 대표원장 (한의사)'
+        },
+        'speakable': {
+          '@type': 'SpeakableSpecification',
+          'cssSelector': ['.aeo-direct-answer', '.geo-fact-table', '.hn-truth-section']
+        }
+      },
+      {
+        '@type': 'MedicalScholarlyArticle',
+        '@id': `${canonicalUrl}#article`,
+        'headline': ep.questionTitle,
+        'alternativeHeadline': `${partLabel} · ${theme} (${keyword}) 의학 가이드`,
+        'description': directAnswerSummary,
+        'datePublished': ep.publishDate || '2026-10-27',
+        'dateModified': ep.publishDate || '2026-11-11',
+        'inLanguage': 'ko-KR',
+        'keywords': `${keyword}, ${partLabel}, ${theme}, 바른한의원 대전본점, 오늘의 건강 글`,
+        'citation': academicBasis,
+        'author': {
+          '@type': 'Person',
+          '@id': 'https://www.bareunhaniwon.com/director/#physician',
+          'name': '안정위 대표원장 (바른한의원 대전본점)'
+        },
+        'publisher': {
+          '@type': 'MedicalOrganization',
+          '@id': 'https://www.bareunhaniwon.com/#clinic',
+          'name': '바른한의원 대전본점',
+          'telephone': '+82-10-5631-1275',
+          'address': '대전광역시 대덕구 비래동로7번길 1, 2층'
+        }
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${canonicalUrl}#faq`,
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': ep.questionTitle,
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': `${truthLines.join(' ')} (학술 근거: ${academicBasis})`
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': `${partLabel}(${keyword}) 관련 일상 속 대표적인 불편 증상은 무엇인가요?`,
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': empathyLines.join(' ')
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': `${keyword}에 대해 흔히 잘못 알고 있는 상식(${mythLines[0] || ''})은 사실인가요?`,
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': `흔히 하는 오해입니다. ${mythLines[1] || ''}`
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': `오늘 바로 집에서 실천할 수 있는 ${partLabel}(${keyword}) 1분 자가 체크 방법은 무엇인가요?`,
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': `첫째, ${checkList[0] || ''} 둘째, ${checkList[1] || ''}`
+            }
+          }
+        ]
+      },
+      {
+        '@type': 'HowTo',
+        '@id': `${canonicalUrl}#howto`,
+        'name': `${partLabel} · ${keyword} 오늘 바로 해보는 1분 자가 체크`,
+        'description': `집에서 1분 만에 점검하는 ${partLabel}(${keyword}) 생활 건강 체크리스트`,
+        'totalTime': 'PT1M',
+        'step': checkList.map((chk, idx) => ({
+          '@type': 'HowToStep',
+          'position': idx + 1,
+          'name': `1분 자가 체크 0${idx + 1}`,
+          'text': chk
+        }))
+      }
+    ]
+  };
+
+  const standaloneHtml = `<!-- wp:html -->
+<script type="application/ld+json">${JSON.stringify(schemaGraph)}</script>
+<article class="bareun-health-note-seo-article" itemscope itemtype="https://schema.org/MedicalWebPage" style="max-width:860px;margin:0 auto;padding:36px 20px 64px;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;color:#171614;line-height:1.75;">
+  <header style="padding:28px 26px;border-radius:20px;background:#0D0D0F;color:#FFFFFF;border:2px solid #C5A059;margin-bottom:24px;box-shadow:0 16px 40px rgba(13,13,15,0.14);">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+      <span style="display:inline-flex;padding:4px 11px;border-radius:7px;background:#C5A059;color:#0D0D0F;font-size:0.78rem;font-weight:800;">[${escHtmlServer(partLabel)}] 오늘의 건강 글</span>
+      <span style="display:inline-flex;padding:4px 10px;border-radius:7px;background:rgba(225,29,72,0.18);border:1px solid #FB7185;color:#FFE4E6;font-size:0.75rem;font-weight:800;">핵심 키워드: ${escHtmlServer(keyword)}</span>
+      <time datetime="${escHtmlServer(ep.publishDate)}" style="font-size:0.78rem;color:#D6D3CD;font-weight:600;">발행일: ${escHtmlServer(ep.publishDate)}</time>
+    </div>
+    <h1 itemprop="headline" style="margin:0 0 12px;font-family:'Noto Serif KR',serif;font-size:clamp(1.32rem,2.6vw,1.78rem);font-weight:800;color:#FFFFFF;line-height:1.42;word-break:keep-all;">&ldquo;${escHtmlServer(ep.questionTitle)}&rdquo;</h1>
+    <p style="margin:0;font-size:0.84rem;color:#E5C67E;font-weight:600;">의학 감수: 바른한의원 대전본점 안정위 대표원장 &middot; 학술 근거: ${escHtmlServer(academicBasis)}</p>
+  </header>
+
+  <!-- AEO (Answer Engine Optimization) 핵심 3문장 요약 답변 박스 (구글 스니펫 · 네이버 스마트블록/Cue: · 음성검색 최적화) -->
+  <section class="aeo-direct-answer" aria-label="핵심 의학 답변 요약" style="padding:20px 22px;border-radius:16px;background:#FAF5EA;border:1.5px solid #C5A059;border-left:5px solid #0D0D0F;margin-bottom:24px;">
+    <div style="font-size:0.76rem;font-weight:800;color:#967128;letter-spacing:0.02em;margin-bottom:6px;">⚡ AEO 핵심 답변 요약 (Direct Medical Answer)</div>
+    <p itemprop="description" style="margin:0;font-size:0.96rem;font-weight:700;color:#0D0D0F;line-height:1.68;word-break:keep-all;">
+      <strong>${escHtmlServer(ep.questionTitle)}</strong>에 대한 의학적 핵심은 다음과 같습니다. ${escHtmlServer(truthLines.join(' '))} 따라서 ${escHtmlServer(mythLines[1] || '')}
+    </p>
+  </section>
+
+  <!-- 1~4단 오늘의 건강 글 본문 섹션 -->
+  <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px;">
+    <section style="padding:20px 22px;border-radius:15px;background:#FCFBF8;border:1px solid #EAE3D5;">
+      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">🎒 1. 일상 속 불편함 (${escHtmlServer(theme)})</h2>
+      ${empathyLines.map(l => `<p style="margin:0 0 8px;font-size:0.94rem;font-weight:600;color:#262522;word-break:keep-all;">${escHtmlServer(l)}</p>`).join('')}
+    </section>
+
+    <section class="hn-truth-section" style="padding:20px 22px;border-radius:15px;background:#FFFDF7;border:1.5px solid #C5A059;border-left:4px solid #C5A059;">
+      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">💡 2. 의학적 진실 (해외 SCI 학술지 근거)</h2>
+      <ul style="margin:0 0 10px;padding-left:20px;font-size:0.94rem;font-weight:600;color:#141416;">
+        ${truthLines.map(l => `<li style="margin-bottom:8px;word-break:keep-all;">${escHtmlServer(l)}</li>`).join('')}
+      </ul>
+      <div style="padding:9px 13px;border-radius:9px;background:#FAF5EA;font-size:0.8rem;font-weight:700;color:#785A1E;">
+        📚 <strong>참고 학술 근거 (Academic Basis):</strong> ${escHtmlServer(academicBasis)}
+      </div>
+    </section>
+
+    <section style="padding:20px 22px;border-radius:15px;background:#FCFBF8;border:1px solid #EAE3D5;">
+      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">❌ 3. 흔히 하는 오해 바로잡기</h2>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:10px 14px;border-radius:10px;background:#FFF1F2;border:1px solid #FECDD3;font-size:0.91rem;font-weight:700;color:#881337;">
+          <strong>[흔한 통념 · 01]</strong> ${escHtmlServer(mythLines[0] || '')}
+        </div>
+        <div style="padding:10px 14px;border-radius:10px;background:#ECFDF5;border:1px solid #A7F3D0;font-size:0.91rem;font-weight:700;color:#065F46;">
+          <strong>[올바른 관리 · 02]</strong> ${escHtmlServer(mythLines[1] || '')}
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:20px 22px;border-radius:15px;background:#FCFBF8;border:1px solid #EAE3D5;">
+      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">🔍 4. 오늘 바로 해보는 1분 체크</h2>
+      <ul style="margin:0;padding-left:20px;font-size:0.94rem;font-weight:600;color:#262522;">
+        ${checkList.map(l => `<li style="margin-bottom:8px;word-break:keep-all;">${escHtmlServer(l)}</li>`).join('')}
+      </ul>
+    </section>
+  </div>
+
+  <!-- GEO (Generative Engine Optimization) AI 검색엔진(ChatGPT·Perplexity·Gemini·Claude) 인용 표준 팩트 테이블 -->
+  <section style="margin-bottom:28px;">
+    <h2 style="margin:0 0 10px;font-size:1.04rem;font-weight:800;color:#0D0D0F;">📊 [${escHtmlServer(partLabel)}] ${escHtmlServer(keyword)} 의학 팩트 시트 (GEO · AI 인용 표준 요약)</h2>
+    <div style="overflow-x:auto;border-radius:14px;border:1px solid #DFC99B;">
+      <table class="geo-fact-table" style="width:100%;border-collapse:collapse;font-size:0.86rem;background:#FFFFFF;">
+        <caption style="padding:10px 14px;background:#0D0D0F;color:#E5C67E;font-weight:800;text-align:left;">바른한의원 대전본점 · ${escHtmlServer(partLabel)} (${escHtmlServer(keyword)}) 핵심 근거 데이터</caption>
+        <tbody>
+          <tr style="border-bottom:1px solid #EAE3D5;">
+            <th scope="row" style="width:28%;padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">해부학 부위 및 분류</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">${escHtmlServer(partLabel)} &middot; ${escHtmlServer(theme)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #EAE3D5;">
+            <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">핵심 검색 키워드</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:700;">${escHtmlServer(keyword)}, ${escHtmlServer(partLabel)}, 대전 바른한의원</td>
+          </tr>
+          <tr style="border-bottom:1px solid #EAE3D5;">
+            <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">해외 의학저널 근거</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">${escHtmlServer(academicBasis)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #EAE3D5;">
+            <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">핵심 생리 기전</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">${escHtmlServer(truthLines[0] || '')}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #EAE3D5;">
+            <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">생활 교정 핵심 원칙</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">${escHtmlServer(mythLines[1] || '')}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">감수 의료기관 정보</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">바른한의원 대전본점 (대표원장 안정위 &middot; 대전 대덕구 비래동로7번길 1, 2층 &middot; 010-5631-1275)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3D 인체모형 & 1:1 통합 Q&A 바로가기 브릿지 -->
+  <footer style="padding:22px 24px;border-radius:16px;background:#0D0D0F;color:#FFFFFF;border:1.5px solid #C5A059;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
+    <div>
+      <div style="font-size:0.76rem;font-weight:800;color:#E5C67E;margin-bottom:4px;">풀스크린 3D 인체모형 &amp; 1:1 통합 질문 게시판 연동</div>
+      <div style="font-size:0.96rem;font-weight:800;color:#FFFFFF;">[${escHtmlServer(partLabel)}] 3D 해부학 모션과 전체 누적 건강글을 한눈에 확인해 보세요</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <a href="${escHtmlServer(explorerDeepUrl)}" style="display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;background:#C5A059;color:#0D0D0F;font-size:0.82rem;font-weight:800;text-decoration:none;">3D 인체모형에서 이 글 열기 &rarr;</a>
+      <a href="${escHtmlServer(askDoctorUrl)}" style="display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid #C5A059;color:#FFFFFF;font-size:0.82rem;font-weight:800;text-decoration:none;">무엇이든 물어보세요 (1:1 질문) &rarr;</a>
+    </div>
+  </footer>
+</article>
+<script>
+(function(){
+  try {
+    fetch('/wp-json/bareun/v1/body-notes/view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ noteId: ${JSON.stringify(ep.id)} })
+    }).catch(function(){});
+  } catch (e) {}
+})();
+</script>
+<!-- /wp:html -->`;
+
+  return {
+    id: ep.id,
+    slug,
+    partId,
+    categorySlug: 'blog-' + partId,
+    title: postTitle,
+    summary: directAnswerSummary,
+    publishDate: ep.publishDate,
+    standaloneHtml
+  };
+}
+
+function buildAllHealthNoteWpPayloads() {
+  const payloads = [];
+  for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES)) {
+    if (!Array.isArray(eps)) continue;
+    for (const ep of eps) {
+      payloads.push(buildHealthNoteSeoAeoGeoPost(ep, partId));
+    }
+  }
+  return payloads;
+}
+
+/**
+ * 4) AI 검색엔진(ChatGPT Search, Perplexity, Gemini, Claude, Copilot) 전용 /llms.txt 및 /llms-full.txt 생성
+ */
+function generateLlmsTxtFiles() {
+  const allHealthPayloads = buildAllHealthNoteWpPayloads();
+  const headerLines = [
+    '# 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon Main Branch) — SEO · AEO · GEO Official Knowledge Index',
+    '> 주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 대표전화: 010-5631-1275 | 대표원장: 안정위 (한의사)',
+    '> 진료시간: 평일(월~금) 09:00~19:00 · 토요일 및 공휴일 09:00~14:00 · 일요일 휴진',
+    '> 공식 도메인: https://www.bareunhaniwon.com/ | 3D 인체 백과사전: https://www.bareunhaniwon.com/body-explorer/ | 통합 1:1 Q&A 및 의학칼럼: https://www.bareunhaniwon.com/ask-doctor/',
+    '> 해외 SCI 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews, European Heart Journal, JCEM, Human Reproduction Update, European Urology 등) 근거 기반 9대 정밀검진 · 6대 물리치료 · 맞춤 한약·추나·성장·다이어트·탈모·공진단·전립선 클리닉',
+    '',
+    '## 1. Clinic Entity & Official Channels (기관 표준 정보)',
+    '- Official Website: https://www.bareunhaniwon.com/',
+    '- Full AI Knowledge Base (Full-Text GEO): https://www.bareunhaniwon.com/llms-full.txt',
+    '- XML Sitemap: https://www.bareunhaniwon.com/wp-sitemap.xml',
+    '- RSS 2.0 Feed: https://www.bareunhaniwon.com/feed/',
+    '- Chief Director: 안정위 대표원장 (Dr. Jung-Wi Ahn, KMD)',
+    '- Address: 대전광역시 대덕구 비래동로7번길 1, 2층 (2F, 1, Biraedong-ro 7beon-gil, Daedeok-gu, Daejeon, 34417, Republic of Korea)',
+    '- Telephone: 010-5631-1275 (+82-10-5631-1275)',
+    '- Naver Place: https://naver.me/5U1ELn8L',
+    '- Official Blog: https://blog.naver.com/wei0508',
+    '- KakaoTalk Consultation: https://pf.kakao.com/_ykxcLK',
+    '',
+    '## 2. Core Specialized Clinic Pages (15대 핵심 클리닉 페이지)',
+    '- [메인 3D 스토리 쇼룸](https://www.bareunhaniwon.com/): 환자 증상 공감 스토리 및 9대 정밀검진·6대 물리치료 안내',
+    '- [안정위 대표원장 · 9대 정밀검진](https://www.bareunhaniwon.com/director/): 초음파, 적외선 체열진단, 두피현미경, 모아레 체형측정, 인바디, 자율신경(HRV), 간·당 대사, 혈관 노화, 성장판 검사',
+    '- [풀스크린 3D 인체모형 · 진료 살펴보기](https://www.bareunhaniwon.com/body-explorer/): 근육·신경·관절·혈관 4대 계통 3D 모션 및 9대 부위별 오늘의 건강 글(72편) 실시간 조회수 연동 포털',
+    '- [무엇이든 물어보세요 · 통합 1:1 Q&A & 의학 저널](https://www.bareunhaniwon.com/ask-doctor/): 전 질환 통합 1:1 질문 게시판(비밀글·키워드검색·카카오톡 및 이메일 답변 알림) 및 37편 심층 임상 칼럼',
+    '- [바른 추나 · 척추교정 클리닉](https://www.bareunhaniwon.com/chuna/): 허리디스크, 목디스크, 골반불균형, 좌골신경통, 체형교정',
+    '- [바른 성장 · 성조숙증 클리닉](https://www.bareunhaniwon.com/growth/): 무방사선 초음파 성장판 분석, 소아비만·성조숙증 예방, 비염·구강호흡 수면 성장 치료',
+    '- [바른 다이어트 · 식욕ZERO 클리닉](https://www.bareunhaniwon.com/diet-zero/): 기초대사량 보존, 갈색지방 활성화, 내장지방·부종 해독 다이어트',
+    '- [바른 탈모 · 모근재생 클리닉](https://www.bareunhaniwon.com/hairloss/): 두피열 하강, 경추 추나, 약침·모근 재생 ([남성탈모](https://www.bareunhaniwon.com/hairloss-male/), [여성탈모](https://www.bareunhaniwon.com/hairloss-female/), [원형탈모](https://www.bareunhaniwon.com/hairloss-alopecia/), [지루성두피염](https://www.bareunhaniwon.com/hairloss-seborrheic/))',
+    '- [바른 황제공진단 클리닉](https://www.bareunhaniwon.com/gongjindan/): 식약처 CITES 정품 사향(L-Muscone) 및 러시아산 녹용 원장 직접 조제',
+    '- [바른 전립선 · 남성활력 클리닉](https://www.bareunhaniwon.com/prostate/): 만성 전립선염, 전립선비대증, 야간뇨, 과민성 방광, 골반저 순환 치료',
+    '- [바른 매선 · 리프팅 윤곽진단](https://www.bareunhaniwon.com/lifting-compare/): 비수술 한방 안면 매선 리프팅 및 윤곽 대칭 교정',
+    '',
+    '## 3. 3D Body Explorer — 72 "오늘의 건강 글" (SEO · AEO · GEO Direct Q&A Index)',
+    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/${p.slug}/): ${p.summary}`),
+    '',
+    '## 4. 37 Evidence-Based Clinical Columns (9대 질환 심층 임상 칼럼)',
+    `- [${FLAGSHIP_REPRESENTATIVE_POST.title}](https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/): ${FLAGSHIP_REPRESENTATIVE_POST.summary}`,
+    ...(Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => `- [${p.title}](https://www.bareunhaniwon.com/${p.slug}/): ${p.summary}`)
+  ];
+
+  const llmsTxtContent = headerLines.join('\n') + '\n';
+  fs.writeFileSync(path.join(__dirname, 'llms.txt'), llmsTxtContent, 'utf8');
+
+  const fullLines = [
+    ...headerLines,
+    '',
+    '================================================================================',
+    '## 5. FULL-TEXT AEO / GEO MEDICAL QA CORPUS (72 Health Notes Complete Facts)',
+    '================================================================================'
+  ];
+
+  for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES)) {
+    if (!Array.isArray(eps)) continue;
+    for (const ep of eps) {
+      const slug = 'health-note-' + ep.id;
+      fullLines.push('');
+      fullLines.push(`### [${ep.partLabel} · ${ep.keyword}] ${ep.questionTitle}`);
+      fullLines.push(`- Canonical URL: https://www.bareunhaniwon.com/${slug}/`);
+      fullLines.push(`- 3D Explorer URL: https://www.bareunhaniwon.com/body-explorer/?part=${partId}&note=${ep.id}`);
+      fullLines.push(`- Publish Date: ${ep.publishDate}`);
+      fullLines.push(`- SCI Academic Basis: ${ep.academicBasis || '국제 SCI 의학저널 근거'}`);
+      fullLines.push(`- 1. 일상 속 불편함: ${(ep.empathyLines || []).join(' ')}`);
+      fullLines.push(`- 2. 의학적 진실 (Direct Answer): ${(ep.truthLines || []).join(' ')}`);
+      fullLines.push(`- 3. 흔히 하는 오해와 진실: [오해] ${(ep.mythLines && ep.mythLines[0]) || ''} -> [진실] ${(ep.mythLines && ep.mythLines[1]) || ''}`);
+      fullLines.push(`- 4. 오늘 바로 해보는 1분 체크: ① ${(ep.checkList && ep.checkList[0]) || ''} / ② ${(ep.checkList && ep.checkList[1]) || ''}`);
+    }
+  }
+
+  const llmsFullTxtContent = fullLines.join('\n') + '\n';
+  fs.writeFileSync(path.join(__dirname, 'llms-full.txt'), llmsFullTxtContent, 'utf8');
+
+  return {
+    totalHealthNotes: allHealthPayloads.length,
+    llmsTxtBytes: Buffer.byteLength(llmsTxtContent, 'utf8'),
+    llmsFullTxtBytes: Buffer.byteLength(llmsFullTxtContent, 'utf8')
+  };
 }
 
 /**
@@ -694,5 +1058,8 @@ if (require.main === module) {
 module.exports = {
   NOVEMBER_AUTO_EPISODES,
   syncNineDiseaseAutoNotes,
-  startAutoBlogScheduler
+  startAutoBlogScheduler,
+  buildHealthNoteSeoAeoGeoPost,
+  buildAllHealthNoteWpPayloads,
+  generateLlmsTxtFiles
 };

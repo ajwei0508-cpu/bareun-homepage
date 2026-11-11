@@ -276,6 +276,10 @@ function loadDb() {
         parsed.visitBaseOffset = 14820;
         changed = true;
       }
+      if (!parsed.noteViews || typeof parsed.noteViews !== 'object') {
+        parsed.noteViews = {};
+        changed = true;
+      }
       if (changed) saveDb(parsed);
       return parsed;
     } catch (e) {}
@@ -299,6 +303,7 @@ function loadDb() {
     nextQnaId: 10,
     nextVisitId: initVisits.length + 1,
     visitBaseOffset: 14820,
+    noteViews: {},
     oauthConfig: { googleClientId: '', kakaoJsKey: '', naverClientId: '' },
     users: initialUsers,
     qna: INITIAL_PRIVATE_QNA,
@@ -958,12 +963,16 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       const reloaded = loadDb();
       stored = Array.isArray(reloaded.bodyNotes) ? reloaded.bodyNotes : [];
     }
+    const noteViews = (db.noteViews && typeof db.noteViews === 'object') ? db.noteViews : {};
     const notes = stored.filter(n => {
       if (!n || typeof n !== 'object') return false;
       if (n.publishDate && n.publishDate > todayKst) return false;
       if (part !== 'all' && n.partId !== part) return false;
       return true;
-    });
+    }).map(n => ({
+      ...n,
+      views: Number(noteViews[n.id]) || 0
+    }));
 
     return sendJson(res, 200, {
       ok: true,
@@ -971,7 +980,27 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       nextUpdateKst,
       cycleDays: 2,
       autoReady: true,
+      noteViews,
       notes
+    });
+  }
+
+  if (route === '/body-notes/view' && req.method === 'POST') {
+    const body = await readJsonBody(req);
+    const noteId = String(body.noteId || body.id || '').trim();
+    if (!noteId) return sendJson(res, 400, { ok: false, message: 'noteId is required' });
+    if (!db.noteViews || typeof db.noteViews !== 'object') db.noteViews = {};
+    db.noteViews[noteId] = (Number(db.noteViews[noteId]) || 0) + 1;
+    if (Array.isArray(db.bodyNotes)) {
+      const targetNote = db.bodyNotes.find(x => x && x.id === noteId);
+      if (targetNote) targetNote.views = db.noteViews[noteId];
+    }
+    saveDb(db);
+    return sendJson(res, 200, {
+      ok: true,
+      noteId,
+      views: db.noteViews[noteId],
+      noteViews: db.noteViews
     });
   }
 

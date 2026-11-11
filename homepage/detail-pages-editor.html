@@ -1616,7 +1616,10 @@
         }
 
         expandedCards = new Set([0]);
-        await loadDirectorAngleSamples();
+        await Promise.all([
+          loadDirectorAngleSamples(),
+          loadStudioAiKeyStatus()
+        ]);
         syncImPromptFromCurrentCard(0);
         renderAll();
         reloadPreviewIframe();
@@ -3191,6 +3194,18 @@
       genStepText: '',
       lastGeneratedUrl: '',
       lastGeneratedFileName: '',
+      lastEngineLabel: '',
+      showKeyEditor: false,
+      apiKeyInput: '',
+      aiKeyState: {
+        hasArgonEngine: false,
+        hasGeminiKey: false,
+        hasFalKey: false,
+        activeProvider: '',
+        activeLabel: '',
+        maskedGeminiKey: '',
+        maskedFalKey: ''
+      },
       history: []
     };
 
@@ -3206,6 +3221,81 @@
       try {
         localStorage.setItem('bareun_studio_im_history_v2', JSON.stringify(imState.history.slice(0, 24)));
       } catch (e) {}
+    }
+
+    async function loadStudioAiKeyStatus() {
+      try {
+        let url = '/api/studio-ai-key';
+        const headers = {};
+        if (IS_WORDPRESS) {
+          url = '/wp-json/bareun/v1/studio/ai-key';
+          if (window.wpApiSettings && window.wpApiSettings.nonce) {
+            headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+          }
+        }
+        const res = await fetch(url, { headers, cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.ok) {
+          imState.aiKeyState = {
+            hasArgonEngine: Boolean(data.hasArgonEngine),
+            hasGeminiKey: Boolean(data.hasGeminiKey),
+            hasFalKey: Boolean(data.hasFalKey),
+            activeProvider: data.activeProvider || '',
+            activeLabel: data.activeLabel || '',
+            maskedGeminiKey: data.maskedGeminiKey || '',
+            maskedFalKey: data.maskedFalKey || ''
+          };
+        }
+      } catch (e) {
+        console.warn('[Studio AI Key Status Fallback]:', e);
+      }
+    }
+
+    function toggleImKeyEditor() {
+      imState.showKeyEditor = !imState.showKeyEditor;
+      renderImageMakerPane();
+    }
+
+    async function saveStudioAiKeyFromUi() {
+      const raw = String(imState.apiKeyInput || '').trim();
+      if (!raw) {
+        alert('등록할 Google AI Studio API 키(AIza...) 또는 아르곤 하이 엔진 키를 입력해 주세요.');
+        return;
+      }
+      showStatus('working', '🔑 아르곤 하이(Gemini 3 Pro Image 2K) 엔진 키를 저장하고 있습니다...');
+      try {
+        let url = '/api/studio-ai-key';
+        const headers = { 'Content-Type': 'application/json' };
+        if (IS_WORDPRESS) {
+          url = '/wp-json/bareun/v1/studio/ai-key';
+          if (window.wpApiSettings && window.wpApiSettings.nonce) {
+            headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+          }
+        }
+        const res = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ apiKey: raw })
+        });
+        const data = await res.json();
+        if (!data || !data.ok) throw new Error((data && data.error) || '키 저장 실패');
+        imState.aiKeyState = {
+          hasArgonEngine: Boolean(data.hasArgonEngine),
+          hasGeminiKey: Boolean(data.hasGeminiKey),
+          hasFalKey: Boolean(data.hasFalKey),
+          activeProvider: data.activeProvider || '',
+          activeLabel: data.activeLabel || '',
+          maskedGeminiKey: data.maskedGeminiKey || '',
+          maskedFalKey: data.maskedFalKey || ''
+        };
+        imState.apiKeyInput = '';
+        imState.showKeyEditor = false;
+        renderImageMakerPane();
+        showStatus('ok', data.message || '✅ 아르곤 하이 2K 정품 엔진 키가 저장되었습니다!');
+      } catch (err) {
+        showStatus('err', '엔진 키 저장 오류: ' + err.message);
+      }
     }
 
     async function loadDirectorAngleSamples() {
@@ -3613,58 +3703,59 @@
         return;
       }
 
+      const plates = page.plates || [];
+      const targetCard = plates[imState.targetCardIdx] || {};
+      const currentRawImg = (imState.targetField && targetCard[imState.targetField])
+        ? targetCard[imState.targetField]
+        : getCardPreviewRawPath(targetCard);
+
+      const isArgonConnected = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
       imState.isGenerating = true;
-      imState.genStepText = imState.useDirectorFace
-        ? '원장님 각도별 샘플 얼굴 매칭 및 하이엔드 DSLR 실사 촬영 준비 중...'
-        : '하이엔드 DSLR 에디토리얼 실사 이미지 촬영 중 (워터마크 ZERO)...';
+      if (isArgonConnected) {
+        imState.genStepText = imState.workMode === 'edit_current'
+          ? '아르곤 하이(Gemini 3 Pro Image · 2K) 정품 엔진이 원본 카드 사진을 참조하여 수정 프롬프트를 정밀 촬영 중입니다...'
+          : '아르곤 하이(Gemini 3 Pro Image · 2K) 정품 엔진이 최상급 DSLR 에디토리얼 실사를 촬영 중입니다...';
+      } else {
+        imState.genStepText = imState.useDirectorFace
+          ? '원장님 각도별 샘플 얼굴 매칭 및 하이엔드 DSLR 실사 촬영 준비 중...'
+          : '하이엔드 DSLR 에디토리얼 실사 이미지 촬영 중 (워터마크 ZERO)...';
+      }
       renderImageMakerPane();
       showStatus('working', `📸 ${imState.genStepText}`);
 
       const seed = Math.floor(10000000 + Math.random() * 89999999);
-      const fileStem = `bareun_im_${page.slug || 'clinic'}_${seed}`;
+      const cleanSlug = String(page.slug || 'clinic').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const reqPayload = {
+        userPrompt: cleanPrompt,
+        prompt: cleanPrompt,
+        originalCardPrompt: imState.loadedCardPrompt || '',
+        workMode: imState.workMode,
+        sourceImage: imState.workMode === 'edit_current' ? currentRawImg : '',
+        useDirectorFace: imState.useDirectorFace,
+        width: 1280,
+        height: 800,
+        seed,
+        filePrefix: `${cleanSlug}_${seed}`
+      };
 
       try {
-        // Path A: Local Custom Studio (serve.js + studio-ai-engine.js + GTX 1070 Multi-Angle ArcFace/GFPGAN)
+        // Path A: Local Custom Studio (serve.js + studio-ai-engine.js: Argon High 2K / Local Multi-Angle Face Lock)
         if (!IS_WORDPRESS) {
           const res = await fetch('/api/studio-generate-image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userPrompt: cleanPrompt,
-              prompt: cleanPrompt,
-              useDirectorFace: imState.useDirectorFace,
-              width: 1280,
-              height: 800,
-              seed,
-              filePrefix: fileStem
-            })
+            body: JSON.stringify(reqPayload)
           });
           const data = await res.json();
           if (!data || !data.ok || !(data.fileName || data.url)) {
             throw new Error((data && data.error) || '로컬 스튜디오 이미지 생성 실패');
           }
           const finalAsset = data.fileName || data.url;
-          finishSituationalGeneration(finalAsset, data.fileName || finalAsset, data.engine || 'FLUX.1-dev 하이엔드 스튜디오');
+          finishSituationalGeneration(finalAsset, data.fileName || finalAsset, data.engine || '아르곤 하이 2K 스튜디오');
           return;
         }
 
-        // Path B: 24/7 Cloud WordPress Studio (Browser ZeroGPU FLUX.1-dev + Angle Face Lock -> WP Media Upload)
-        const enPrompt = await translateKoToEnBrowser(cleanPrompt, imState.useDirectorFace);
-        try {
-          const cloudOut = await generateViaBrowserCloudFlux(enPrompt, imState.useDirectorFace, seed, (stepMsg) => {
-            imState.genStepText = stepMsg;
-            showStatus('working', `📸 ${stepMsg}`);
-            const stEl = document.getElementById('imLiveStepLabel');
-            if (stEl) stEl.textContent = stepMsg;
-          });
-          const savedUrl = await uploadDataUrlToStudio(`${fileStem}.jpg`, cloudOut.dataUrl);
-          finishSituationalGeneration(savedUrl, `${fileStem}.jpg`, cloudOut.engineLabel);
-          return;
-        } catch (browserCloudErr) {
-          console.warn('[Browser Gradio ESM fallback to WP REST HF FLUX]:', browserCloudErr);
-        }
-
-        // Fallback C: Server-side WordPress REST HF FLUX.1-dev / FLUX.1-schnell (still 100% Watermark-Free)
+        // Path B: 24/7 Cloud WordPress Studio — Direct Server-Side Argon High 2K (Gemini 3 Pro Image / Nano Banana Pro + Original Card Reference + 0% Browser CORS)
         const headers = { 'Content-Type': 'application/json' };
         if (window.wpApiSettings && window.wpApiSettings.nonce) {
           headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
@@ -3672,18 +3763,12 @@
         const wpRes = await fetch('/wp-json/bareun/v1/studio/generate-image', {
           method: 'POST',
           headers,
-          body: JSON.stringify({
-            prompt: enPrompt,
-            width: 1280,
-            height: 800,
-            seed,
-            filePrefix: fileStem
-          })
+          body: JSON.stringify(reqPayload)
         });
         const wpData = await wpRes.json();
         if (wpData && wpData.ok && (wpData.url || wpData.fileName)) {
           const finalAsset = wpData.url || wpData.fileName;
-          finishSituationalGeneration(finalAsset, wpData.fileName || finalAsset, '24시간 클라우드 FLUX.1 스튜디오');
+          finishSituationalGeneration(finalAsset, wpData.fileName || finalAsset, wpData.engine || '아르곤 하이 2K 클라우드 스튜디오');
           return;
         }
         throw new Error((wpData && wpData.error) || '클라우드 이미지 생성 서버 응답 오류');
@@ -3719,6 +3804,7 @@
       imState.genStepText = '';
       imState.lastGeneratedUrl = assetPath;
       imState.lastGeneratedFileName = fileName;
+      imState.lastEngineLabel = engineLabel || '';
 
       if (!availableImages.includes(assetPath)) {
         availableImages.unshift(assetPath);
@@ -3730,6 +3816,7 @@
         id: 'im_' + Date.now(),
         assetPath,
         fileName,
+        engineLabel: engineLabel || '',
         pageLabel: page ? page.label : '',
         promptText: imState.promptText,
         useDirectorFace: imState.useDirectorFace,
@@ -3738,7 +3825,7 @@
       saveImHistory();
 
       renderImageMakerPane();
-      showStatus('ok', `✨ [${engineLabel}] 워터마크 없는 최상급 실사 이미지가 완성되었습니다! 아래 반영 버튼을 눌러 카드에 바로 적용하세요.`);
+      showStatus('ok', `✨ [${engineLabel}] 워터마크 없는 최상급 2K 실사 이미지가 완성되었습니다! 아래 반영 버튼을 눌러 카드에 바로 적용하세요.`);
     }
 
     function applyGeneratedImageToCard(modeOverride, customAssetPath) {
@@ -3829,17 +3916,41 @@
       const generatedImgUrl = imState.lastGeneratedUrl ? resolveStudioAssetUrl(imState.lastGeneratedUrl) : '';
       const cardNumStr = String(imState.targetCardIdx + 1).padStart(2, '0');
 
+      const isArgonActive = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
+      const maskedActiveKey = imState.aiKeyState?.maskedGeminiKey || imState.aiKeyState?.maskedFalKey || '';
+
       box.innerHTML = `
         <div class="im-studio-hero">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
             <div>
-              <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:rgba(16,185,129,0.22); border:1px solid rgba(52,211,153,0.55); color:#a7f3d0; font-size:11px; font-weight:900; margin-bottom:6px;">
-                📸 BAREUN HIGH-END RAW STUDIO · 워터마크 ZERO · 다각도 인물 고정
+              <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:${isArgonActive ? 'rgba(16,185,129,0.25)' : 'rgba(245,158,11,0.25)'}; border:1px solid ${isArgonActive ? 'rgba(52,211,153,0.65)' : 'rgba(251,191,36,0.65)'}; color:${isArgonActive ? '#a7f3d0' : '#fde68a'}; font-size:11px; font-weight:900; margin-bottom:6px;">
+                ${isArgonActive
+                  ? '🟢 아르곤 하이 정품 엔진 가동 중 (Gemini 3 Pro Image · 2K 원본참조 에디팅 · 워터마크 ZERO)'
+                  : '⚪ 기본 무료 엔진 모드 — [엔진 키 설정]에서 아르곤 하이(Gemini Pro Image) 키를 연결할 수 있습니다'}
               </span>
               <h3>[${escHtml(page.label)}] 카드 프롬프트 직독·수정 &amp; 상황 이미지 제작</h3>
-              <p>복잡한 템플릿 없이 현재 카드 이미지의 프롬프트를 그대로 읽어와 수정하거나, 새 상황을 직접 적어 기존 카드 수준의 DSLR 실사로 제작합니다.</p>
+              <p>좌측 기존 카드와 동일한 <strong>아르곤 하이(Gemini 3 Pro Image 2K)</strong> 엔진으로 원본 카드 사진을 직접 참조해 프롬프트 수정 사항을 오차 없이 반영합니다.</p>
             </div>
+            <button type="button" class="mini-btn" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.24); color:#fdfaf3; padding:6px 11px;"
+              onclick="toggleImKeyEditor()">
+              🔑 엔진 키 ${isArgonActive ? '관리' : '등록'} ${maskedActiveKey ? `(${escHtml(maskedActiveKey)})` : ''}
+            </button>
           </div>
+
+          ${(imState.showKeyEditor || !isArgonActive) ? `
+            <div style="margin-top:12px; padding:11px 13px; border-radius:8px; background:rgba(0,0,0,0.34); border:1px solid rgba(255,255,255,0.16); display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <span style="font-size:11.5px; color:#f3ead8; font-weight:700;">
+                🔑 Google AI Studio (<code>AIza...</code>) 또는 아르곤 하이 엔진 키:
+              </span>
+              <input type="password" value="${escHtml(imState.apiKeyInput)}"
+                placeholder="새 API 키 입력 시 즉시 교체 저장 (Google AI Studio AIza... 지원)"
+                oninput="imState.apiKeyInput = this.value"
+                style="flex:1; min-width:240px; padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.25); background:#14110e; color:#fff; font-size:12px;" />
+              <button type="button" class="mini-btn gold-helper" onclick="saveStudioAiKeyFromUi()">💾 키 저장</button>
+              <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"
+                style="font-size:11px; color:#fcd34d; text-decoration:underline;">Google AI 키 발급 ↗</a>
+            </div>
+          ` : ''}
         </div>
 
         <!-- STEP 1: Target Card Selection -->
@@ -3973,12 +4084,14 @@
           <div style="margin-top:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
             <button type="button" class="btn btn-im-generate"
               onclick="generateSituationalImage()" ${imState.isGenerating ? 'disabled' : ''}>
-              ${imState.isGenerating ? '⏳ 최상급 실사 이미지 촬영 중입니다...' : '✨ 이 프롬프트로 최상급 실사 이미지 제작하기'}
+              ${imState.isGenerating ? '⏳ 아르곤 하이 2K 실사 촬영 중입니다...' : '✨ 이 프롬프트로 최상급 실사 이미지 제작하기'}
             </button>
             <span id="imLiveStepLabel" style="font-size:12px; color:var(--text-muted); font-weight:600;">
               ${imState.isGenerating
                 ? escHtml(imState.genStepText)
-                : '워터마크 ZERO · 1280×800 에디토리얼 DSLR 화질 · 서버 자동 저장'}
+                : (isArgonActive
+                  ? `워터마크 ZERO · 아르곤 하이(Gemini 3 Pro Image) 2K(2752×1536) · ${imState.workMode === 'edit_current' ? '원본 카드 시각 참조 적용' : '새 상황 직촬'}`
+                  : '워터마크 ZERO · 에디토리얼 DSLR 화질 · 서버 자동 저장')}
             </span>
           </div>
         </div>
@@ -3998,7 +4111,7 @@
             </div>
             <div>
               <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:#047857;">
-                ✨ 새로 제작된 이미지 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''}
+                ✨ 새로 제작된 이미지 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''} ${imState.lastEngineLabel ? `· <span style="color:#065f46;">${escHtml(imState.lastEngineLabel)}</span>` : ''}
               </div>
               <div class="im-stage-box" ${imState.lastGeneratedUrl ? `onclick="openImageLightbox('${escHtml(imState.lastGeneratedUrl)}', '새로 제작된 이미지')"` : ''}>
                 ${imState.isGenerating ? `

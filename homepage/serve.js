@@ -24,7 +24,9 @@ const MIME_TYPES = {
   '.mp4': 'video/mp4',
   '.woff2': 'font/woff2',
   '.wasm': 'application/wasm',
-  '.glb': 'model/gltf-binary'
+  '.glb': 'model/gltf-binary',
+  '.txt': 'text/plain; charset=UTF-8',
+  '.xml': 'application/xml; charset=UTF-8'
 };
 
 const brainDir = path.resolve('C:/Users/0508a/.gemini/antigravity/brain/876cd643-a906-469f-8561-63b60bf0a819');
@@ -465,6 +467,43 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  if (reqPath === '/api/studio-ai-key') {
+    if (req.method === 'GET') {
+      try {
+        const cfg = studioAiEngine.getStudioAiKeyConfig();
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        });
+        res.end(JSON.stringify(cfg));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk.toString(); });
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(body || '{}');
+          const updated = studioAiEngine.saveStudioAiKeyConfig(payload);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ...updated,
+            message: '아르곤 하이(Gemini 3 Pro Image 2K) 엔진 키 설정이 저장되었습니다!'
+          }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+
   if (reqPath === '/api/studio-generate-image' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
@@ -473,14 +512,20 @@ const server = http.createServer((req, res) => {
         const payload = JSON.parse(body || '{}');
         const userPrompt = String(payload.userPrompt || payload.prompt || '').trim();
         if (!userPrompt) throw new Error('생성할 프롬프트를 입력해 주세요.');
+        const originalCardPrompt = String(payload.originalCardPrompt || '').trim();
+        const workMode = payload.workMode === 'write_new' ? 'write_new' : 'edit_current';
+        const sourceImage = String(payload.sourceImage || '').trim();
         const useDirectorFace = Boolean(payload.useDirectorFace);
         const width = Math.max(512, Math.min(1536, Number(payload.width) || 1280));
         const height = Math.max(512, Math.min(1536, Number(payload.height) || 800));
         const seed = Number(payload.seed) || Math.floor(Math.random() * 89999999 + 10000000);
-        const prefix = String(payload.filePrefix || 'bareun_scene').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 24) || 'bareun_scene';
+        const prefix = String(payload.filePrefix || 'clinic').replace(/^bareun_im_/i, '').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 24) || 'clinic';
 
         const genResult = await studioAiEngine.generateStudioImageComplete({
           userPrompt,
+          originalCardPrompt,
+          workMode,
+          sourceImage,
           useDirectorFace,
           width,
           height,

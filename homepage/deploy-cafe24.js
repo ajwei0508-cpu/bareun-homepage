@@ -189,8 +189,20 @@ async function performWpLogin(page, loginUrl) {
       console.log('1.2) WordPress siteurl & home already unified on https://www.bareunhaniwon.com');
     }
 
-    // 1.4) Upload & Activate Bareun WordPress Plugin ZIP via plugin-install.php?tab=upload
+    // 1.4) Rebuild & Upload Bareun WordPress Plugin ZIP via plugin-install.php?tab=upload
     const pluginZipPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna.zip');
+    const pluginPhpSource = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna', 'bareun-member-private-qna.php');
+    if (fs.existsSync(pluginPhpSource)) {
+      try {
+        const AdmZip = require(path.join(__dirname, '..', 'imagemaker', 'node_modules', 'adm-zip'));
+        const zip = new AdmZip();
+        zip.addFile('bareun-member-private-qna/bareun-member-private-qna.php', fs.readFileSync(pluginPhpSource));
+        zip.writeZip(pluginZipPath);
+        console.log('   Rebuilt clean POSIX plugin ZIP ->', pluginZipPath);
+      } catch (zErr) {
+        console.warn('   Plugin ZIP rebuild fallback:', zErr.message);
+      }
+    }
     if (fs.existsSync(pluginZipPath)) {
       console.log('1.4) Uploading & Activating Bareun Plugin ZIP via WordPress Plugin Installer ...');
       await page.goto(`${CANONICAL_ORIGIN}/wp-admin/plugin-install.php?tab=upload`, { waitUntil: 'networkidle2', timeout: 25000 }).catch(() => {});
@@ -340,8 +352,17 @@ async function performWpLogin(page, loginUrl) {
     }
     const masterCfgObj = JSON.parse(fs.readFileSync(path.join(__dirname, 'detail-pages-config.json'), 'utf8'));
     const fullPluginPhp = fs.existsSync(phpBackendPath) ? fs.readFileSync(phpBackendPath, 'utf8') : '';
+    let localStudioAiKeys = {};
+    try {
+      const localSettingsPath = path.join(__dirname, '..', 'imagemaker', 'data', 'settings.json');
+      if (fs.existsSync(localSettingsPath)) {
+        const rawSet = JSON.parse(fs.readFileSync(localSettingsPath, 'utf8')) || {};
+        if (rawSet.geminiKey) localStudioAiKeys.geminiKey = String(rawSet.geminiKey).trim();
+        if (rawSet.falKey) localStudioAiKeys.falKey = String(rawSet.falKey).trim();
+      }
+    } catch (e) {}
 
-    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp }) => {
+    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp, localStudioAiKeys }) => {
       const res = await fetch('/wp-json/bareun/v1/studio/sync-studio-assets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
@@ -350,12 +371,13 @@ async function performWpLogin(page, loginUrl) {
           compilerJs,
           cardPromptsJs,
           angleRefs,
+          studioAiKeys: localStudioAiKeys,
           pluginPhp: fullPluginPhp,
           config: masterCfgObj
         })
       });
       return await res.json();
-    }, { wpNonce: nonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp });
+    }, { wpNonce: nonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp, localStudioAiKeys });
     console.log('   Studio Online Assets Synced:', studioSyncRes);
 
     // 2.2) Update Site Profile & Upload Official 1200x630 (<90KB) OG Card to Media Library
