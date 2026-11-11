@@ -1,51 +1,95 @@
 {
   "profileId": "director_ahn",
   "name": "안정위 대표원장",
+  "version": "v2-8slot-antipuff-smile",
   "angles": {
     "front": {
       "key": "front",
-      "label": "정면 (0°)",
+      "label": "정면 (0° · 기본)",
+      "desc": "85mm 정면 · 단정한 기본",
       "fileName": "director-angle-refs/angle_front.jpg",
       "sourceRef": "director_real_reference.jpg",
-      "yaw": -0.023,
-      "similarity": 1.0,
-      "sharpness": 696.2
+      "yaw": 0.0,
+      "similarityPct": 97.5,
+      "rawCosine": 0.85,
+      "sharpness": 91.7
+    },
+    "frontSmile": {
+      "key": "frontSmile",
+      "label": "정면 미소 (0°)",
+      "desc": "온화한 눈웃음 · 미소",
+      "fileName": "director-angle-refs/angle_front_smile.jpg",
+      "sourceRef": "ezgif-frame-251_1793231831539_k1l.jpg",
+      "yaw": -0.032,
+      "similarityPct": 99.7,
+      "rawCosine": 0.8654,
+      "sharpness": 89.1
+    },
+    "left15Smile": {
+      "key": "left15Smile",
+      "label": "좌측 15° 미소",
+      "desc": "좌측 사선 · 진료 상담 미소",
+      "fileName": "director-angle-refs/angle_left15_smile.jpg",
+      "sourceRef": "detail_director_consult.jpg",
+      "yaw": -0.279,
+      "similarityPct": 96.0,
+      "rawCosine": 0.7339,
+      "sharpness": 98.3
+    },
+    "right15Smile": {
+      "key": "right15Smile",
+      "label": "우측 15° 미소",
+      "desc": "우측 사선 · 진료 설명 미소",
+      "fileName": "director-angle-refs/angle_right15_smile.jpg",
+      "sourceRef": "detail_director_story3_nod_design.jpg",
+      "yaw": 0.477,
+      "similarityPct": 96.4,
+      "rawCosine": 0.7413,
+      "sharpness": 94.7
     },
     "left30": {
       "key": "left30",
-      "label": "좌측 사선 (15~30°)",
+      "label": "좌측 30° 사선",
+      "desc": "왼쪽 반측면 · 골격 기준",
       "fileName": "director-angle-refs/angle_left30.jpg",
       "sourceRef": "ezgif-frame-101_1793231831433_70n.jpg",
-      "yaw": -0.195,
-      "similarity": 0.725,
-      "sharpness": 108.7
+      "yaw": -0.21,
+      "similarityPct": 99.7,
+      "rawCosine": 0.8927,
+      "sharpness": 84.1
     },
     "right30": {
       "key": "right30",
-      "label": "우측 사선 (15~30°)",
+      "label": "우측 30° 사선",
+      "desc": "오른쪽 반측면 · 골격 기준",
       "fileName": "director-angle-refs/angle_right30.jpg",
       "sourceRef": "ezgif-frame-062_1793231831405_g1p.jpg",
-      "yaw": 0.228,
-      "similarity": 0.722,
-      "sharpness": 56.1
+      "yaw": 0.24,
+      "similarityPct": 99.7,
+      "rawCosine": 0.8744,
+      "sharpness": 85.0
     },
     "leftProfile": {
       "key": "leftProfile",
       "label": "좌측 측면 (45°+)",
+      "desc": "왼쪽 깊은 측면 · 콧대·턱선",
       "fileName": "director-angle-refs/angle_left_profile.jpg",
-      "sourceRef": "ezgif-frame-079_1793231831418_t9n.jpg",
-      "yaw": -0.45,
-      "similarity": 0.734,
-      "sharpness": 83.3
+      "sourceRef": "ezgif-frame-098_1793231831431_kc1.jpg",
+      "yaw": -0.421,
+      "similarityPct": 99.7,
+      "rawCosine": 0.8502,
+      "sharpness": 83.4
     },
     "rightProfile": {
       "key": "rightProfile",
       "label": "우측 측면 (45°+)",
+      "desc": "오른쪽 깊은 측면 · 콧대·턱선",
       "fileName": "director-angle-refs/angle_right_profile.jpg",
       "sourceRef": "ezgif-frame-032_1793231831380_b81.jpg",
-      "yaw": 0.429,
-      "similarity": 0.724,
-      "sharpness": 51.6
+      "yaw": 0.438,
+      "similarityPct": 99.7,
+      "rawCosine": 0.8785,
+      "sharpness": 83.1
     }
   }
 }

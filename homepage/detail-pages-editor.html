@@ -909,12 +909,12 @@
     }
     .im-angle-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 9px;
       margin-top: 12px;
     }
     @media (max-width: 820px) {
-      .im-angle-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .im-angle-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     @media (max-width: 520px) {
       .im-angle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -3170,11 +3170,14 @@
        - Multi-Angle (5-Slot) Sampled Face Registration for Zero-Error Director Synthesis
        ========================================================================= */
     const DEFAULT_DIRECTOR_ANGLES = [
-      { key: 'front',        label: '정면 (0°)',        desc: '카메라 정면 응시',   fileName: 'director-angle-refs/angle_front.jpg' },
-      { key: 'left30',       label: '좌측 30° 사선',    'desc': '왼쪽 반측면 시선', fileName: 'director-angle-refs/angle_left30.jpg' },
-      { key: 'right30',      label: '우측 30° 사선',    'desc': '오른쪽 반측면 시선', fileName: 'director-angle-refs/angle_right30.jpg' },
-      { key: 'leftProfile',  label: '좌측 측면 (45°+)', 'desc': '왼쪽 깊은 측면',   fileName: 'director-angle-refs/angle_left_profile.jpg' },
-      { key: 'rightProfile', label: '우측 측면 (45°+)', 'desc': '오른쪽 깊은 측면', fileName: 'director-angle-refs/angle_right_profile.jpg' }
+      { key: 'front',        label: '정면 (0° · 기본)',     desc: '85mm 정면 · 단정한 기본',      fileName: 'director-angle-refs/angle_front.jpg' },
+      { key: 'frontSmile',   label: '정면 미소 (0°)',       desc: '온화한 눈웃음 · 미소',          fileName: 'director-angle-refs/angle_front_smile.jpg' },
+      { key: 'left15Smile',  label: '좌측 15° 미소',        desc: '좌측 사선 · 진료 상담 미소',   fileName: 'director-angle-refs/angle_left15_smile.jpg' },
+      { key: 'right15Smile', label: '우측 15° 미소',        desc: '우측 사선 · 진료 설명 미소',   fileName: 'director-angle-refs/angle_right15_smile.jpg' },
+      { key: 'left30',       label: '좌측 30° 사선',        desc: '왼쪽 반측면 · 골격 기준',      fileName: 'director-angle-refs/angle_left30.jpg' },
+      { key: 'right30',      label: '우측 30° 사선',        desc: '오른쪽 반측면 · 골격 기준',    fileName: 'director-angle-refs/angle_right30.jpg' },
+      { key: 'leftProfile',  label: '좌측 측면 (45°+)',     desc: '왼쪽 깊은 측면 · 콧대·턱선',   fileName: 'director-angle-refs/angle_left_profile.jpg' },
+      { key: 'rightProfile', label: '우측 측면 (45°+)',     desc: '오른쪽 깊은 측면 · 콧대·턱선', fileName: 'director-angle-refs/angle_right_profile.jpg' }
     ];
 
     let imState = {
@@ -3481,10 +3484,14 @@
     function pickBestAngleSampleForPrompt(promptStr) {
       const t = String(promptStr || '').toLowerCase();
       const findSlot = (k) => imState.angleSamples.find(s => s.key === k) || imState.angleSamples[0];
+      const isWarmOrSmile = /미소|웃음|눈웃음|따뜻|온화|친절|상담|설명|문진|경청|맞이|인사|브리핑|환자/i.test(t);
       if (/좌측\s*측면|왼쪽\s*옆모습|왼쪽\s*측면|left\s*profile/i.test(t)) return findSlot('leftProfile');
       if (/우측\s*측면|오른쪽\s*옆모습|오른쪽\s*측면|right\s*profile/i.test(t)) return findSlot('rightProfile');
+      if (/좌측\s*15|왼쪽\s*15/i.test(t) || (/좌측|왼쪽|left/i.test(t) && isWarmOrSmile)) return findSlot('left15Smile');
+      if (/우측\s*15|오른쪽\s*15/i.test(t) || (/우측|오른쪽|모니터|초음파|상담|문진|설명|브리핑/i.test(t) && isWarmOrSmile)) return findSlot('right15Smile');
       if (/좌측|왼쪽|left\s*30|left\s*three/i.test(t)) return findSlot('left30');
-      if (/우측|오른쪽|모니터|초음파|진맥|상담|문진|right\s*30|three-quarter/i.test(t)) return findSlot('right30');
+      if (/우측|오른쪽|진맥|맥진|right\s*30|three-quarter/i.test(t)) return findSlot('right30');
+      if (isWarmOrSmile) return findSlot('frontSmile');
       return findSlot('front');
     }
 
@@ -3999,18 +4006,18 @@
               <input type="checkbox" style="width:18px; height:18px; accent-color:#059669; cursor:pointer;"
                 ${imState.useDirectorFace ? 'checked' : ''}
                 onchange="toggleImDirectorFace(this.checked)" />
-              <span>👨‍⚕️ 안정위 대표원장님 얼굴 합성하기 (각도별 샘플링 얼굴 오차 ZERO 매칭)</span>
+              <span>👨‍⚕️ 안정위 대표원장님 얼굴 합성하기 (8종 각도·미소 샘플링 · 85mm 윤곽 보정 · 부종 ZERO)</span>
             </label>
             <span style="font-size:11.5px; color:${imState.useDirectorFace ? '#047857' : 'var(--text-muted)'}; font-weight:700;">
-              ${imState.useDirectorFace ? '✅ 활성화됨 · 프롬프트 각도에 맞춰 아래 5각도 실제 얼굴이 정밀 합성됩니다' : '체크 해제 시 원장님 얼굴 없이 일반 진료·손동작·환자·약재 상황 실사로 생성됩니다'}
+              ${imState.useDirectorFace ? '✅ 활성화됨 · 프롬프트 각도 및 미소 표정에 맞춰 아래 8종 실제 얼굴이 정밀 합성됩니다' : '체크 해제 시 원장님 얼굴 없이 일반 진료·손동작·환자·약재 상황 실사로 생성됩니다'}
             </span>
           </div>
 
           ${imState.useDirectorFace ? `
             <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #b7e4c7;">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-                <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 각도별 등록된 대표원장 샘플링 얼굴 사진 (클릭 시 확대 · 각도별 새 사진 교체 등록 가능)</span>
-                <span style="font-size:11px; color:#047857;">정면·좌우 30° 사선·좌우 측면 5각도 골격 기준</span>
+                <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 8종 각도·미소 표정별 등록된 대표원장 샘플링 얼굴 사진 (클릭 시 확대 · 각 슬롯별 새 사진 교체 등록 가능)</span>
+                <span style="font-size:11px; color:#047857;">정면·온화한 미소·좌우 15° 진료 미소·좌우 30° 사선·좌우 45°+ 측면 (85mm 부종 보정 적용)</span>
               </div>
               <div class="im-angle-grid">
                 ${imState.angleSamples.map(slot => {

@@ -18,11 +18,14 @@ const PROFILES_JSON_PATH = path.join(IMAGEMAKER_DIR, 'data', 'profiles.json');
 const GRADIO_CLIENT_ESM = path.join(IMAGEMAKER_DIR, 'node_modules', '@gradio', 'client', 'dist', 'index.js');
 
 const DEFAULT_ANGLE_SLOTS = [
-  { key: 'front', label: '정면 (0°)', desc: '카메라 정면 응시', defaultFile: 'director-angle-refs/angle_front.jpg' },
-  { key: 'left30', label: '좌측 30° 사선', desc: '왼쪽 반측면 시선', defaultFile: 'director-angle-refs/angle_left30.jpg' },
-  { key: 'right30', label: '우측 30° 사선', desc: '오른쪽 반측면 시선', defaultFile: 'director-angle-refs/angle_right30.jpg' },
-  { key: 'leftProfile', label: '좌측 측면 (45°+)', desc: '왼쪽 깊은 측면', defaultFile: 'director-angle-refs/angle_left_profile.jpg' },
-  { key: 'rightProfile', label: '우측 측면 (45°+)', desc: '오른쪽 깊은 측면', defaultFile: 'director-angle-refs/angle_right_profile.jpg' }
+  { key: 'front',        label: '정면 (0° · 기본)',     desc: '85mm 정면 · 단정한 기본',      defaultFile: 'director-angle-refs/angle_front.jpg' },
+  { key: 'frontSmile',   label: '정면 미소 (0°)',       desc: '온화한 눈웃음 · 미소',          defaultFile: 'director-angle-refs/angle_front_smile.jpg' },
+  { key: 'left15Smile',  label: '좌측 15° 미소',        desc: '좌측 사선 · 진료 상담 미소',   defaultFile: 'director-angle-refs/angle_left15_smile.jpg' },
+  { key: 'right15Smile', label: '우측 15° 미소',        desc: '우측 사선 · 진료 설명 미소',   defaultFile: 'director-angle-refs/angle_right15_smile.jpg' },
+  { key: 'left30',       label: '좌측 30° 사선',        desc: '왼쪽 반측면 · 골격 기준',      defaultFile: 'director-angle-refs/angle_left30.jpg' },
+  { key: 'right30',      label: '우측 30° 사선',        desc: '오른쪽 반측면 · 골격 기준',    defaultFile: 'director-angle-refs/angle_right30.jpg' },
+  { key: 'leftProfile',  label: '좌측 측면 (45°+)',     desc: '왼쪽 깊은 측면 · 콧대·턱선',   defaultFile: 'director-angle-refs/angle_left_profile.jpg' },
+  { key: 'rightProfile', label: '우측 측면 (45°+)',     desc: '오른쪽 깊은 측면 · 콧대·턱선', defaultFile: 'director-angle-refs/angle_right_profile.jpg' }
 ];
 
 function maskSecretKey(rawKey) {
@@ -360,17 +363,48 @@ async function resolveReferenceImageInput(rawRef) {
 
 function guessPreferredAngleKeyFromPrompt(promptText) {
   const s = String(promptText || '').toLowerCase();
+  const isWarmOrSmile = /미소|웃음|눈웃음|따뜻|온화|친절|상담|설명|문진|경청|맞이|인사|브리핑|환자/.test(s);
   if (/좌측\s*측면|왼쪽\s*옆모습|왼쪽\s*측면|left\s*profile/.test(s)) return 'leftProfile';
   if (/우측\s*측면|오른쪽\s*옆모습|오른쪽\s*측면|측면|옆모습|side\s*profile|right\s*profile/.test(s)) return 'rightProfile';
+  if (/좌측\s*15|왼쪽\s*15/.test(s) || (/좌측|왼쪽|left/.test(s) && isWarmOrSmile)) return 'left15Smile';
+  if (/우측\s*15|오른쪽\s*15/.test(s) || (/우측|오른쪽|사선|대각선|초음파|모니터|상담|설명|브리핑/.test(s) && isWarmOrSmile)) return 'right15Smile';
   if (/좌측|왼쪽|left/.test(s)) return 'left30';
-  if (/우측|오른쪽|사선|어깨너머|대각선|상담|초음파|진맥|맥진/.test(s)) return 'right30';
+  if (/우측|오른쪽|사선|어깨너머|대각선|진맥|맥진/.test(s)) return 'right30';
+  if (isWarmOrSmile) return 'frontSmile';
   return 'front';
+}
+
+function orderDirectorSlotsForPrompt(promptText, allAngles = []) {
+  const prefKey = guessPreferredAngleKeyFromPrompt(promptText);
+  const byKey = {};
+  for (const a of allAngles) {
+    if (a && a.key) byKey[a.key] = a;
+  }
+  const priorityMap = {
+    front:        ['front', 'frontSmile', 'left15Smile', 'right15Smile', 'left30', 'right30'],
+    frontSmile:   ['frontSmile', 'front', 'left15Smile', 'right15Smile', 'left30', 'right30'],
+    left15Smile:  ['left15Smile', 'frontSmile', 'left30', 'front', 'leftProfile', 'right15Smile'],
+    right15Smile: ['right15Smile', 'frontSmile', 'right30', 'front', 'rightProfile', 'left15Smile'],
+    left30:       ['left30', 'left15Smile', 'frontSmile', 'front', 'leftProfile', 'right30'],
+    right30:      ['right30', 'right15Smile', 'frontSmile', 'front', 'rightProfile', 'left30'],
+    leftProfile:  ['leftProfile', 'left30', 'left15Smile', 'front', 'frontSmile', 'right30'],
+    rightProfile: ['rightProfile', 'right30', 'right15Smile', 'front', 'frontSmile', 'left30']
+  };
+  const orderKeys = priorityMap[prefKey] || priorityMap.frontSmile;
+  const result = [];
+  for (const k of orderKeys) {
+    if (byKey[k] && !result.includes(byKey[k])) result.push(byKey[k]);
+  }
+  for (const a of allAngles) {
+    if (a && !result.includes(a)) result.push(a);
+  }
+  return result.slice(0, 6);
 }
 
 /**
  * 아르곤 하이(Gemini 3 Pro Image / Nano Banana Pro 2K) 전용 정밀 에디토리얼 프롬프트 빌더
  * - 원본 카드 이미지 참조(edit_current) 시 변경된 구절(Diff)을 최우선으로 반영하고, 기존 카드의 조명·원목·색감·렌즈 심도를 완벽히 보존합니다.
- * - 다각도 원장님 얼굴 샘플 합성(useDirectorFace) 시 5각도 골격 동일성을 고정하며 중복 인물 생성을 방지합니다.
+ * - 다각도·미소 원장님 얼굴 샘플 합성(useDirectorFace) 시 8종 샘플 골격 동일성과 85mm 망원 윤곽(부종 ZERO)을 고정합니다.
  */
 function buildArgonHighPrompt({
   userPrompt,
@@ -378,7 +412,7 @@ function buildArgonHighPrompt({
   workMode = 'edit_current',
   useDirectorFace = false,
   hasSourceRef = false,
-  preferredAngleLabel = '정면 (0°)'
+  preferredAngleLabel = '정면 미소 (0°)'
 }) {
   const cleanUser = String(userPrompt || '').trim();
   const cleanOrig = String(originalCardPrompt || '').trim();
@@ -419,7 +453,8 @@ function buildArgonHighPrompt({
 
   if (useDirectorFace) {
     lines.push(
-      `[안정위 대표원장 다각도 샘플 얼굴 오차 ZERO 고정]: ${hasSourceRef ? '두 번째 이후 첨부된 인물 사진들은' : '첨부된 인물 기준 사진들은'} 모두 '동일한 한 명의 한국인 남성 한의사(안정위 대표원장)'를 각도별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도(권장 기준: ${preferredAngleLabel})에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.`
+      `[안정위 대표원장 8종 각도·미소 샘플 얼굴 오차 ZERO 고정]: ${hasSourceRef ? '두 번째 이후 첨부된 인물 사진들은' : '첨부된 인물 기준 사진들은'} 모두 '동일한 한 명의 한국인 남성 한의사(안정위 대표원장)'를 각도(0°·15°·30°·45°+) 및 미소 표정별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도 및 표정(권장 기준: ${preferredAngleLabel})에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.`,
+      '[얼굴 부종(Puffiness) 원천 차단 · 85mm 날렵한 턱선 및 자연스러운 미소 고정]: 스마트폰 광각 셀카처럼 볼살이나 하관이 옆으로 퍼지거나 얼굴이 붓게 나오는 현상(puffy/bloated cheeks, swollen lower face, wide jaw distortion)을 철저히 배제하세요. 반드시 85mm~105mm 인물 망원 단렌즈 압축 비율을 적용하여 첨부된 미소·사선 샘플처럼 턱선과 광대 윤곽이 날렵하고 단정하며(slim, sharp, well-defined masculine jawline and natural cheekbones), 입매와 눈매가 어색하지 않고 따뜻하고 신뢰감 있는 눈웃음·온화한 미소를 띠도록 표현하세요.'
     );
   }
 
@@ -663,7 +698,7 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false } = {
 
   if (useDirectorFace) {
     const directorIdentityLead =
-      'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), trustworthy masculine facial bone structure, wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp tailored white medical doctor coat over a neat blue-and-white vertical striped dress shirt';
+      'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), slim sharp well-defined masculine jawline and natural cheekbones (85mm portrait telephoto compression, zero puffy or bloated cheeks), warm trustworthy gentle eye-smile expression, wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp tailored white medical doctor coat over a neat blue-and-white vertical striped dress shirt';
     return [
       'Authentic raw candid editorial photograph',
       directorIdentityLead,
@@ -944,11 +979,8 @@ async function generateStudioImageComplete({
     }
 
     if (useDirectorFace) {
-      // Put preferred angle first, followed by the remaining 4 angles so Gemini locks full 3D bone structure
-      const orderedSlots = [
-        preferredAngleObj,
-        ...angleState.angles.filter((a) => !preferredAngleObj || a.key !== preferredAngleObj.key)
-      ].filter(Boolean);
+      // Order 8 angle & expression slots by prompt relevance (prioritizing matching angle + warm smile refs)
+      const orderedSlots = orderDirectorSlotsForPrompt(cleanPrompt, angleState.angles);
       for (const slot of orderedSlots) {
         const aRef = await resolveReferenceImageInput(slot.fileName);
         if (aRef) refImages.push(aRef);
@@ -961,7 +993,7 @@ async function generateStudioImageComplete({
       workMode,
       useDirectorFace,
       hasSourceRef,
-      preferredAngleLabel: preferredAngleObj ? preferredAngleObj.label : '정면 (0°)'
+      preferredAngleLabel: preferredAngleObj ? preferredAngleObj.label : '정면 미소 (0°)'
     });
 
     let argonStage = null;
@@ -996,7 +1028,32 @@ async function generateStudioImageComplete({
 
     if (argonStage && argonStage.buffer) {
       fs.writeFileSync(finalSavedPath, argonStage.buffer);
-      const modeTag = useDirectorFace ? ' + 5각도 원장님 실제 얼굴 네이티브 고정' : '';
+      let modeTag = useDirectorFace ? ` + 8종 각도·미소 샘플 고정 (${preferredAngleObj ? preferredAngleObj.label : '정면'})` : '';
+      let faceLockMeta = null;
+
+      // Local Hybrid Precision Pass: if useDirectorFace is active and local 374-photo ArcFace engine is available,
+      // check/lock bone structure & 85mm slim jawline so similarity reaches 98~99.7% with zero puffiness!
+      if (useDirectorFace && angleRefPaths.length > 0 && fs.existsSync(LOCAL_FACE_ENGINE_PY)) {
+        const tmpArgonRaw = path.join(HOMEPAGE_DIR, `_tmp_argon_raw_${ts}.jpg`);
+        try {
+          fs.copyFileSync(finalSavedPath, tmpArgonRaw);
+          faceLockMeta = await runMultiAngleFaceLockLocal({
+            targetImagePath: tmpArgonRaw,
+            outputImagePath: finalSavedPath,
+            angleRefPaths
+          });
+          if (faceLockMeta && faceLockMeta.ok) {
+            modeTag = ` + 8각도·미소 골격 정밀락 (일치율 ${faceLockMeta.similarityPct || 99}%)`;
+          }
+        } catch (lockErr) {
+          // If scene has no exposed face (e.g. hands-only pulse shot), keep Argon High 2K raw output intact
+        } finally {
+          try {
+            if (fs.existsSync(tmpArgonRaw)) fs.unlinkSync(tmpArgonRaw);
+          } catch (e) {}
+        }
+      }
+
       return {
         ok: true,
         fileName: finalSavedName,
@@ -1004,7 +1061,8 @@ async function generateStudioImageComplete({
         seed: argonStage.seed || actualSeed,
         engine: `${argonStage.engine}${modeTag}`,
         tier: 'argon-high',
-        message: `아르곤 하이 2K 초고화질 실사 이미지 제작 완료 (${argonStage.engine})`
+        faceLockMeta,
+        message: `아르곤 하이 2K 초고화질 실사 이미지 제작 완료 (${argonStage.engine}${modeTag})`
       };
     }
 

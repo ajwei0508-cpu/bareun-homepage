@@ -3179,11 +3179,14 @@ class Bareun_Custom_Studio_Engine_V3 {
 
     private static function get_default_angle_slots() {
         return array(
-            array('key' => 'front',        'label' => '정면 (0°)',        'desc' => '카메라 정면 응시',   'file' => 'angle_front.jpg'),
-            array('key' => 'left30',       'label' => '좌측 30° 사선',    'desc' => '왼쪽 반측면 시선',   'file' => 'angle_left30.jpg'),
-            array('key' => 'right30',      'label' => '우측 30° 사선',    'desc' => '오른쪽 반측면 시선', 'file' => 'angle_right30.jpg'),
-            array('key' => 'leftProfile',  'label' => '좌측 측면 (45°+)', 'desc' => '왼쪽 깊은 측면',     'file' => 'angle_left_profile.jpg'),
-            array('key' => 'rightProfile', 'label' => '우측 측면 (45°+)', 'desc' => '오른쪽 깊은 측면',   'file' => 'angle_right_profile.jpg')
+            array('key' => 'front',        'label' => '정면 (0° · 기본)', 'desc' => '85mm 정면 · 단정한 기본',      'file' => 'angle_front.jpg'),
+            array('key' => 'frontSmile',   'label' => '정면 미소 (0°)',   'desc' => '온화한 눈웃음 · 미소',          'file' => 'angle_front_smile.jpg'),
+            array('key' => 'left15Smile',  'label' => '좌측 15° 미소',    'desc' => '좌측 사선 · 진료 상담 미소',   'file' => 'angle_left15_smile.jpg'),
+            array('key' => 'right15Smile', 'label' => '우측 15° 미소',    'desc' => '우측 사선 · 진료 설명 미소',   'file' => 'angle_right15_smile.jpg'),
+            array('key' => 'left30',       'label' => '좌측 30° 사선',    'desc' => '왼쪽 반측면 · 골격 기준',      'file' => 'angle_left30.jpg'),
+            array('key' => 'right30',      'label' => '우측 30° 사선',    'desc' => '오른쪽 반측면 · 골격 기준',    'file' => 'angle_right30.jpg'),
+            array('key' => 'leftProfile',  'label' => '좌측 측면 (45°+)', 'desc' => '왼쪽 깊은 측면 · 콧대·턱선',   'file' => 'angle_left_profile.jpg'),
+            array('key' => 'rightProfile', 'label' => '우측 측면 (45°+)', 'desc' => '오른쪽 깊은 측면 · 콧대·턱선', 'file' => 'angle_right_profile.jpg')
         );
     }
 
@@ -3270,11 +3273,41 @@ class Bareun_Custom_Studio_Engine_V3 {
 
     private static function guess_preferred_angle_key($prompt_text) {
         $s = mb_strtolower((string)$prompt_text, 'UTF-8');
+        $is_warm = (bool)preg_match('/미소|웃음|눈웃음|따뜻|온화|친절|상담|설명|문진|경청|맞이|인사|브리핑|환자/u', $s);
         if (preg_match('/좌측\s*측면|왼쪽\s*옆모습|왼쪽\s*측면|left\s*profile/u', $s)) return 'leftProfile';
         if (preg_match('/우측\s*측면|오른쪽\s*옆모습|오른쪽\s*측면|측면|옆모습|side\s*profile|right\s*profile/u', $s)) return 'rightProfile';
+        if (preg_match('/좌측\s*15|왼쪽\s*15/u', $s) || (preg_match('/좌측|왼쪽|left/u', $s) && $is_warm)) return 'left15Smile';
+        if (preg_match('/우측\s*15|오른쪽\s*15/u', $s) || (preg_match('/우측|오른쪽|사선|대각선|초음파|모니터|상담|설명|브리핑/u', $s) && $is_warm)) return 'right15Smile';
         if (preg_match('/좌측|왼쪽|left/u', $s)) return 'left30';
-        if (preg_match('/우측|오른쪽|사선|어깨너머|대각선|상담|초음파|진맥|맥진/u', $s)) return 'right30';
+        if (preg_match('/우측|오른쪽|사선|어깨너머|대각선|진맥|맥진/u', $s)) return 'right30';
+        if ($is_warm) return 'frontSmile';
         return 'front';
+    }
+
+    private static function order_director_slots_for_prompt($prompt_text, $slots) {
+        $pref = self::guess_preferred_angle_key($prompt_text);
+        $by_key = array();
+        foreach ($slots as $sl) {
+            $by_key[$sl['key']] = $sl;
+        }
+        $priority_map = array(
+            'front'        => array('front', 'frontSmile', 'left15Smile', 'right15Smile', 'left30', 'right30'),
+            'frontSmile'   => array('frontSmile', 'front', 'left15Smile', 'right15Smile', 'left30', 'right30'),
+            'left15Smile'  => array('left15Smile', 'frontSmile', 'left30', 'front', 'leftProfile', 'right15Smile'),
+            'right15Smile' => array('right15Smile', 'frontSmile', 'right30', 'front', 'rightProfile', 'left15Smile'),
+            'left30'       => array('left30', 'left15Smile', 'frontSmile', 'front', 'leftProfile', 'right30'),
+            'right30'      => array('right30', 'right15Smile', 'frontSmile', 'front', 'rightProfile', 'left30'),
+            'leftProfile'  => array('leftProfile', 'left30', 'left15Smile', 'front', 'frontSmile', 'right30'),
+            'rightProfile' => array('rightProfile', 'right30', 'right15Smile', 'front', 'frontSmile', 'left30')
+        );
+        $order_keys = isset($priority_map[$pref]) ? $priority_map[$pref] : $priority_map['frontSmile'];
+        $ordered = array();
+        foreach ($order_keys as $k) {
+            if (isset($by_key[$k])) {
+                $ordered[] = $by_key[$k];
+            }
+        }
+        return array_slice($ordered, 0, 6);
     }
 
     private static function resolve_wp_studio_ref_image($raw_ref) {
@@ -3411,7 +3444,8 @@ class Bareun_Custom_Studio_Engine_V3 {
 
         if ($use_director_face) {
             $ref_prefix = $has_source_ref ? '두 번째 이후 첨부된 인물 사진들은' : '첨부된 인물 기준 사진들은';
-            $lines[] = '[안정위 대표원장 다각도 샘플 얼굴 오차 ZERO 고정]: ' . $ref_prefix . ' 모두 동일한 한 명의 한국인 남성 한의사(안정위 대표원장)를 각도별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도(권장 기준: ' . $angle_label . ')에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.';
+            $lines[] = '[안정위 대표원장 8종 각도·미소 샘플 얼굴 오차 ZERO 고정]: ' . $ref_prefix . ' 모두 동일한 한 명의 한국인 남성 한의사(안정위 대표원장)를 각도(0°·15°·30°·45°+) 및 미소 표정별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도 및 표정(권장 기준: ' . $angle_label . ')에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.';
+            $lines[] = '[얼굴 부종(Puffiness) 원천 차단 · 85mm 날렵한 턱선 및 자연스러운 미소 고정]: 스마트폰 광각 셀카처럼 볼살이나 하관이 옆으로 퍼지거나 얼굴이 붓게 나오는 현상(puffy/bloated cheeks, swollen lower face, wide jaw distortion)을 철저히 배제하세요. 반드시 85mm~105mm 인물 망원 단렌즈 압축 비율을 적용하여 첨부된 미소·사선 샘플처럼 턱선과 광대 윤곽이 날렵하고 단정하며(slim, sharp, well-defined masculine jawline and natural cheekbones), 입매와 눈매가 어색하지 않고 따뜻하고 신뢰감 있는 눈웃음·온화한 미소를 띠도록 표현하세요.';
         }
 
         $lines[] = '[화질 및 클린 마감 절대 원칙]: 워터마크, 로고, 서명, 자막 텍스트를 절대 넣지 마세요. 흰 의사 가운 가슴 주머니에도 깨진 글자나 자수 명찰 없이 깨끗한 순백색 무지 고급 가운으로 표현하세요. 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 무보정 RAW 에디토리얼 실사 사진이어야 합니다.';
@@ -3620,7 +3654,7 @@ class Bareun_Custom_Studio_Engine_V3 {
         }
 
         $director_lead = $use_director_face
-            ? 'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp white medical coat over a blue-and-white striped dress shirt'
+            ? 'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), slim sharp well-defined masculine jawline and natural cheekbones (85mm portrait telephoto compression, zero puffy or bloated cheeks), warm trustworthy gentle eye-smile expression, wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp white medical coat over a blue-and-white striped dress shirt'
             : '';
 
         $parts = array_filter(array(
@@ -3722,14 +3756,9 @@ class Bareun_Custom_Studio_Engine_V3 {
                 $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
                 $gh_angle_base    = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
 
-                $ordered_slots = array();
-                foreach ($slots as $sl) {
-                    if ($sl['key'] === $preferred_angle_key) {
-                        $preferred_angle_label = $sl['label'];
-                        array_unshift($ordered_slots, $sl);
-                    } else {
-                        $ordered_slots[] = $sl;
-                    }
+                $ordered_slots = self::order_director_slots_for_prompt($user_prompt, $slots);
+                if (!empty($ordered_slots[0]['label'])) {
+                    $preferred_angle_label = $ordered_slots[0]['label'];
                 }
 
                 foreach ($ordered_slots as $sl) {
@@ -3758,7 +3787,7 @@ class Bareun_Custom_Studio_Engine_V3 {
                 $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, $ref_images);
                 if (is_array($g_out) && !empty($g_out['bin'])) {
                     $bin = $g_out['bin'];
-                    $engine_used = $g_out['engine'] . ($use_director_face ? ' + 5각도 원장님 얼굴 고정' : '');
+                    $engine_used = $g_out['engine'] . ($use_director_face ? ' + 8각도·미소 원장님 얼굴 고정' : '');
                 }
             }
 
@@ -3766,7 +3795,7 @@ class Bareun_Custom_Studio_Engine_V3 {
                 $f_out = self::call_fal_nano_banana_pro_php($ai_keys['falKey'], $argon_prompt, $ref_images, $has_source_ref, $seed);
                 if (is_array($f_out) && !empty($f_out['bin'])) {
                     $bin = $f_out['bin'];
-                    $engine_used = $f_out['engine'] . ($use_director_face ? ' + 5각도 원장님 얼굴 고정' : '');
+                    $engine_used = $f_out['engine'] . ($use_director_face ? ' + 8각도·미소 원장님 얼굴 고정' : '');
                 }
             }
         }
@@ -3935,6 +3964,9 @@ class Bareun_Custom_Studio_Engine_V3 {
         wp_mkdir_p($angle_dir);
         $angle_files = array(
             'angle_front.jpg',
+            'angle_front_smile.jpg',
+            'angle_left15_smile.jpg',
+            'angle_right15_smile.jpg',
             'angle_left30.jpg',
             'angle_right30.jpg',
             'angle_left_profile.jpg',

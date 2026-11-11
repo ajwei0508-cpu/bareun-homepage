@@ -691,12 +691,19 @@ def run_pipeline(cfg):
         bisenet_sess, orig_512_bgr, protect_glasses=True, return_parsing=True
     )
 
+    # Preserve 30% of the target scene's natural smiling mouth/lip curvature so warm smiles never stiffen
+    mouth_mask = cv2.GaussianBlur(
+        np.isin(parsing_512, [11, 12, 13]).astype(np.float32), (21, 21), 7.0
+    )[..., None]
+    effective_mask = mask_512 * (1.0 - 0.30 * mouth_mask)
+
     # Harmonize skin tone with scene lighting
-    swapped_512_toned = match_skin_tone_lab(swapped_512_bgr, orig_512_bgr, mask_512)
+    swapped_512_toned = match_skin_tone_lab(swapped_512_bgr, orig_512_bgr, effective_mask)
 
     # Pre-composite in 512 space before GFPGAN so skin + glasses + hair restore cohesively!
     comp_512 = (
-        swapped_512_toned.astype(np.float32) * mask_512 + orig_512_bgr.astype(np.float32) * (1.0 - mask_512)
+        swapped_512_toned.astype(np.float32) * effective_mask
+        + orig_512_bgr.astype(np.float32) * (1.0 - effective_mask)
     ).astype(np.uint8)
 
     log_progress("GFPGAN 1.4 + 85mm DSLR 마이크로 모공 · 눈동자 · 금테 안경 초선명 복원 중...", 88)
@@ -705,12 +712,12 @@ def run_pipeline(cfg):
         enhanced_512, orig_512_bgr, parsing_512, blend=enhance_blend
     )
 
-    # Soft outer feather paste back to full-resolution original image (protecting native hair & background!)
+    # Strict inner facial feather paste back to full-resolution original image (protecting native hair & background wall without halo!)
     face_region = np.isin(parsing_512, [1, 2, 3, 4, 5, 6, 10, 11, 12, 13]).astype(np.float32)
-    face_region = cv2.dilate(face_region, np.ones((15, 15), np.uint8), iterations=1)
+    face_region = cv2.erode(face_region, np.ones((5, 5), np.uint8), iterations=1)
     paste_oval = np.zeros((512, 512), dtype=np.float32)
-    cv2.ellipse(paste_oval, (256, 266), (188, 218), 0, 0, 360, 1.0, -1)
-    paste_mask_512 = cv2.GaussianBlur(face_region * paste_oval, (45, 45), 16)
+    cv2.ellipse(paste_oval, (256, 266), (178, 208), 0, 0, 360, 1.0, -1)
+    paste_mask_512 = cv2.GaussianBlur(face_region * paste_oval, (33, 33), 11)
 
     IM_512 = cv2.invertAffineTransform(M_512)
     h, w = target_bgr.shape[:2]
@@ -720,6 +727,22 @@ def run_pipeline(cfg):
     final_bgr = (
         warped_face.astype(np.float32) * warped_mask + target_bgr.astype(np.float32) * (1.0 - warped_mask)
     ).astype(np.uint8)
+
+    # Apply subtle 85mm telephoto anti-puffiness jawline contour refinement around the Doctor's cheeks/jaw
+    nose_x, nose_y = float(tkps[2][0]), float(tkps[2][1])
+    eye_y = 0.5 * float(tkps[0][1] + tkps[1][1])
+    mouth_y = 0.5 * float(tkps[3][1] + tkps[4][1])
+    face_w = max(float(np.linalg.norm(tkps[1] - tkps[0])) * 2.15, 40.0)
+    face_h = max((mouth_y - eye_y) * 2.35, 40.0)
+    grid_y, grid_x = np.mgrid[0:h, 0:w].astype(np.float32)
+    dx = (grid_x - nose_x) / face_w
+    dy = (grid_y - nose_y) / face_h
+    vert_w = np.exp(-((dy - 0.28) ** 2) / (2.0 * (0.38 ** 2)))
+    horiz_w = np.exp(-(dx ** 2) / (2.0 * (0.65 ** 2)))
+    edge_g = np.clip(np.minimum(np.minimum(grid_x, (w - 1) - grid_x), np.minimum(grid_y, (h - 1) - grid_y)) / 32.0, 0.0, 1.0)
+    scale_x = 1.0 + 0.048 * vert_w * horiz_w * edge_g
+    map_x = np.clip(nose_x + (grid_x - nose_x) * scale_x, 0.0, float(w - 1))
+    final_bgr = cv2.remap(final_bgr, map_x, grid_y, interpolation=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT_101)
 
     imwrite_unicode(output_path, final_bgr)
 
