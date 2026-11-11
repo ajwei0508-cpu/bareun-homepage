@@ -249,14 +249,14 @@ function buildBodyExplorerHtml() {
           '@type': 'ListItem',
           'position': idx + 1,
           'name': `[${n.partLabel}] ${n.title}`,
-          'url': `https://www.bareunhaniwon.com/health-note-${n.id}/`
+          'url': `https://www.bareunhaniwon.com/ask-doctor/?part=${n.partId}&note=${n.id}`
         }))
       }
     ]
   };
 
   const ssrHealthNotesDirectoryHtml = FLATTENED_SEED_NOTES.map(n => {
-    const slugUrl = `https://www.bareunhaniwon.com/health-note-${escAttrServer(n.id)}/`;
+    const slugUrl = `https://www.bareunhaniwon.com/ask-doctor/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
     const deepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
     return `<article class="seo-health-note-ssr-item" style="padding:10px 12px;margin-bottom:8px;border-radius:10px;background:#FCFBF8;border:1px solid #EAE3D5;">
           <h3 style="margin:0 0 4px;font-size:0.8rem;font-weight:800;color:#0D0D0F;">
@@ -268,7 +268,7 @@ function buildBodyExplorerHtml() {
           <div style="font-size:0.69rem;color:#6E685F;">
             <span>학술 근거(GEO): ${escAttrServer(n.academicBasis || '')}</span> &middot;
             <span>1분 체크: ${escAttrServer((n.check || []).join(' / '))}</span> &middot;
-            <a href="${slugUrl}" style="color:#967128;font-weight:700;">원문 칼럼 보기</a> &middot;
+            <a href="${slugUrl}" style="color:#967128;font-weight:700;">단독 페이지로 보기</a> &middot;
             <a href="${deepUrl}" style="color:#0D0D0F;font-weight:700;">3D 모형 연동</a>
           </div>
         </article>`;
@@ -1831,6 +1831,7 @@ function buildBodyExplorerHtml() {
     </a>
 
     <div class="vh-right-actions">
+      <a href="ask-doctor.html" class="vh-pill-btn" id="vh-standalone-notes-link" style="background:#0D0D0F;color:#E5C67E;border-color:#C5A059;">📄 건강글 단독 페이지</a>
       <button type="button" onclick="window.openQnaInPopup()" class="vh-pill-btn" id="vh-ask-doctor-link" style="cursor:pointer;">무엇이든 물어보세요</button>
       <a href="story-3d.html" class="vh-pill-btn">&larr; 메인 홈</a>
     </div>
@@ -2352,7 +2353,8 @@ function buildBodyExplorerHtml() {
       const subTitleHtml = effSubTitle
         ? '<p class="hip-subtitle">' + escHtml(effSubTitle) + '</p>'
         : '';
-      const closeBtnHtml = '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>';
+      const standaloneUrl = 'ask-doctor.html?part=' + encodeURIComponent(note.partId || currentPartId) + '&note=' + encodeURIComponent(note.id || '');
+      const closeBtnHtml = '<div style="display:inline-flex;align-items:center;gap:5px;flex-shrink:0;"><a href="' + escHtml(standaloneUrl) + '" class="hip-close-btn" style="text-decoration:none;border-color:rgba(229,198,126,0.75);color:#E5C67E;">단독 페이지 &#8599;</a><button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button></div>';
 
       let headerInnerHtml = '';
       if (hdrMode === 'stacked') {

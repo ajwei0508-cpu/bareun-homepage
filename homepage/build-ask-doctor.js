@@ -1,2460 +1,1626 @@
 /**
- * 바른한의원 대전본점 · 전문 의학 인사이트 블로그(대표글 1편) & 질환별 1:1 비공개 Q&A 빌더 (v5.0)
+ * 바른한의원 대전본점 · 3D 백과사전 오늘의 건강 글 & 무엇이든 물어보세요 단독 페이지 빌더 (v6.0)
  *
- * [사용자 6대 핵심 요구사항 반영]
- * 1. 모든 기존 홍보성 발행글 비공개 전환 & 오직 '전문가 대표 글 단 1편'만 단독 발행 노출
- * 2. '안정위 원장 시술' 등 시술 홍보 문구 전면 삭제 → 유익한 의학·생리학 정보를 주는 전문가 저널 컨셉
- * 3. 한의학 논문 외 해외 메이저 의학 논문(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews,
- *    European Heart Journal, JCEM, Human Reproduction Update, European Urology 등) 전면 참고·인용
- * 4. 블로그와 Q&A 분리 → 질환별(9대 카테고리) 전용 Q&A 메뉴 독립 구성
- * 5. 질문은 회원가입자만 작성 가능 → Google · 카카오톡 · 네이버 3초 빠른 회원가입 지원
- * 6. 모든 질문 100% 비공개 처리 → 작성자 본인 열람 및 마스터(관리자) 전체 열람 + 회원 상세정보 확인 가능
+ * [핵심 설계]
+ * 1. 워드프레스에 72개의 개별 글 페이지를 생성하지 않고, 단 1개의 단독 페이지(/ask-doctor/ 및 /health-notes/)에서
+ *    3D 백과사전 건강글(9대 부위 × 8편 = 72편) 전체를 깔끔하게 노출 및 검색 유입(SEO · AEO · GEO 통합) 처리
+ * 2. 3D 백과사전 팝업과 100% 동일한 화이트 · 블랙 · 샴페인골드 하이엔드 3탭 카드 UI를 단독 풀페이지로 구현:
+ *    - [01 · 최신 글 1편 | 오늘의 건강 글]: 최신글 붉은 포인트 배지 + 실시간 DB 실제 조회수(+1) + 1~4단 구조 + AEO 요약 & GEO 팩트 시트 + 심층 임상 칼럼 3선(실제 조회수 BEST 3)
+ *    - [02 · 1:1 질문 | 무엇이든 물어보세요]: 전 질환 통합게시판 + 키워드 검색 + 비밀글 + 페이지 이동 없이 현재 창 바로 작성 + 답글 등록 시 이메일·카톡 알림 전송
+ *    - [03 · 누적 8편 | 더 궁금하세요?]: 부위별/전체 누적 건강글 아카이브(실제 조회수 반영)
  */
 
 const fs = require('fs');
 const path = require('path');
+
 const {
-  DISEASE_QNA_CATEGORIES,
-  FLAGSHIP_REPRESENTATIVE_POST,
-  DISEASE_BLOG_CATEGORIES,
-  INITIAL_DISEASE_BLOG_POSTS
-} = require('./disease-blog-seed-data.js');
+  CLINIC_EXPLORE_MENUS,
+  BODY_3D_AUTO_NOTES,
+  FORBIDDEN_PROMO_WORDS,
+  FORBIDDEN_JARGON_WORDS,
+  auditNoteThreeStage,
+  normalizeNoteSections,
+  auditCustomLeadNote
+} = require('./body-3d-auto-notes-data.js');
 
-const CLINICAL_POSTS_FOR_CLIENT = (Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => ({
-  id: p.id,
-  slug: p.slug,
-  partId: p.partId,
-  categorySlug: p.categorySlug,
-  categoryName: p.categoryName,
-  title: p.title,
-  date: p.date,
-  readTime: p.readTime,
-  badge: p.badge,
-  isEncyclopediaMaster: Boolean(p.isEncyclopediaMaster),
-  keywords: Array.isArray(p.keywords) ? p.keywords : [],
-  summary: p.summary,
-  tldrPoints: Array.isArray(p.tldrPoints) ? p.tldrPoints : [],
-  faqList: Array.isArray(p.faqList) ? p.faqList : [],
-  detailPageLink: p.detailPageLink || 'story-3d.html',
-  detailPageLabel: p.detailPageLabel || '전용 클리닉 바로가기',
-  cards: Array.isArray(p.cards) ? p.cards : []
-}));
+function escServer(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
-const mapPath = path.join(__dirname, 'wp-published-posts-map.json');
-let publishedMap = {};
-if (fs.existsSync(mapPath)) {
+const MENU_CONFIG_PATH = path.join(__dirname, 'clinic-explore-menu-config.json');
+const MENU_CONFIG = fs.existsSync(MENU_CONFIG_PATH)
+  ? JSON.parse(fs.readFileSync(MENU_CONFIG_PATH, 'utf8'))
+  : {
+      header: { title: '바른한의원 진료 살펴보기', subMode: 'auto2day', customSubText: '2일 주기 신규 글 업데이트' },
+      items: CLINIC_EXPLORE_MENUS.map(m => ({ ...m, enabled: true, shortLabel: m.partLabel }))
+    };
+
+const ALL_CONFIG_ITEMS = Array.isArray(MENU_CONFIG.items) && MENU_CONFIG.items.length > 0
+  ? MENU_CONFIG.items
+  : CLINIC_EXPLORE_MENUS;
+const ENABLED_MENUS = ALL_CONFIG_ITEMS.filter(m => m && m.enabled !== false);
+if (ENABLED_MENUS.length === 0 && ALL_CONFIG_ITEMS.length > 0) {
+  ENABLED_MENUS.push(ALL_CONFIG_ITEMS[0]);
+}
+const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
+
+const LOCAL_DB_PATH = path.join(__dirname, 'private-qna-db.json');
+let SAVED_NOTE_VIEWS = {};
+if (fs.existsSync(LOCAL_DB_PATH)) {
   try {
-    publishedMap = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+    const parsedDb = JSON.parse(fs.readFileSync(LOCAL_DB_PATH, 'utf8'));
+    if (parsedDb && parsedDb.noteViews && typeof parsedDb.noteViews === 'object') {
+      SAVED_NOTE_VIEWS = parsedDb.noteViews;
+    }
   } catch (e) {}
 }
 
-const flagshipLiveMeta = publishedMap[FLAGSHIP_REPRESENTATIVE_POST.id] || {
-  wpPostId: 0,
-  slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
-  link: `https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/`
-};
+const FLATTENED_SEED_NOTES = [];
+for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
+  const overridePartLabel = MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel;
+  episodes.forEach((ep) => {
+    const mergedEp = overridePartLabel ? { ...ep, partLabel: overridePartLabel } : ep;
+    const res = auditNoteThreeStage(mergedEp);
+    if (!res.passed) {
+      throw new Error(`[3-Stage Self-Correction Gate Failed] ${ep.id}: ${res.errors.join(' | ')}`);
+    }
+    FLATTENED_SEED_NOTES.push({
+      id: ep.id,
+      partId,
+      partLabel: mergedEp.partLabel,
+      theme: ep.theme || '',
+      keyword: ep.keyword,
+      academicBasis: ep.academicBasis || '국제 SCI 의학저널 및 통합생리학 가이드라인',
+      publishDate: ep.publishDate,
+      views: Number(SAVED_NOTE_VIEWS[ep.id]) || 0,
+      pinnedTop: false,
+      title: ep.questionTitle,
+      empathy: ep.empathyLines,
+      truth: ep.truthLines,
+      myth: ep.mythLines,
+      check: ep.checkList
+    });
+  });
+}
 
-function buildAskDoctorHtml() {
+for (const m of ALL_CONFIG_ITEMS) {
+  const isCustomRow = !BODY_3D_AUTO_NOTES[m.id];
+  if ((m.leadNoteOverride || isCustomRow) && m.leadNote) {
+    const candidate = {
+      partLabel: m.partLabel || m.shortLabel || '주요 부위',
+      badgeOverride: m.leadNote.badgeOverride || '',
+      subTitle: m.leadNote.subTitle || '',
+      strictQuestionMark: Boolean(m.leadNote.strictQuestionMark),
+      keyword: m.leadNote.keyword || '',
+      questionTitle: m.leadNote.questionTitle || '',
+      sections: Array.isArray(m.leadNote.sections) ? m.leadNote.sections : null,
+      empathyLines: Array.isArray(m.leadNote.empathyLines) ? m.leadNote.empathyLines : [],
+      truthLines: Array.isArray(m.leadNote.truthLines) ? m.leadNote.truthLines : [],
+      mythLines: Array.isArray(m.leadNote.mythLines) ? m.leadNote.mythLines : [],
+      checkList: Array.isArray(m.leadNote.checkList) ? m.leadNote.checkList : []
+    };
+    const res = auditCustomLeadNote(candidate);
+    if (!res.passed) {
+      throw new Error(`[표 대표 건강 글 검수 확인 - ${m.shortLabel || m.id}] ${res.errors.join(' | ')}`);
+    }
+    const normSecs = normalizeNoteSections(candidate, m.popupDesign && m.popupDesign.defaultSectionHeadings);
+    const existingIdx = FLATTENED_SEED_NOTES.findIndex(
+      x => x.partId === m.id && (x.title === candidate.questionTitle || x.id === `${m.id}-20261027`)
+    );
+    if (existingIdx >= 0) {
+      FLATTENED_SEED_NOTES[existingIdx] = {
+        ...FLATTENED_SEED_NOTES[existingIdx],
+        partLabel: candidate.partLabel,
+        badgeOverride: candidate.badgeOverride,
+        subTitle: candidate.subTitle,
+        keyword: candidate.keyword,
+        pinnedTop: false,
+        isCustomLead: true,
+        title: candidate.questionTitle,
+        sections: normSecs,
+        empathy: candidate.empathyLines,
+        truth: candidate.truthLines,
+        myth: candidate.mythLines,
+        check: candidate.checkList
+      };
+    } else {
+      FLATTENED_SEED_NOTES.push({
+        id: `${m.id}-table-lead`,
+        partId: m.id,
+        partLabel: candidate.partLabel,
+        badgeOverride: candidate.badgeOverride,
+        subTitle: candidate.subTitle,
+        keyword: candidate.keyword,
+        publishDate: '2026-10-27',
+        views: Number(SAVED_NOTE_VIEWS[`${m.id}-table-lead`]) || 0,
+        pinnedTop: true,
+        isCustomLead: true,
+        title: candidate.questionTitle,
+        sections: normSecs,
+        empathy: candidate.empathyLines,
+        truth: candidate.truthLines,
+        myth: candidate.mythLines,
+        check: candidate.checkList
+      });
+    }
+  }
+}
+
+function buildStandaloneHealthNotesHtml() {
   const canonicalHub = 'https://www.bareunhaniwon.com/ask-doctor/';
+
+  const latestNineNotes = ENABLED_MENUS.map(m => {
+    const pNotes = FLATTENED_SEED_NOTES.filter(n => n.partId === m.id);
+    return pNotes[pNotes.length - 1];
+  }).filter(Boolean);
+
+  // 단 1개의 단독 페이지에서 SEO(구글·네이버) + AEO(즉답 스니펫·음성검색) + GEO(ChatGPT·Perplexity·Gemini) 통합 노출 스키마
   const schemaGraph = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'MedicalWebPage',
-        '@id': canonicalHub + '#journal-hub',
+        '@id': canonicalHub + '#webpage',
         url: canonicalHub,
-        name: '바른 통합의학 인사이트 저널 & 질환별 1:1 비공개 Q&A',
+        name: '3D 백과사전 오늘의 건강 글(72선) & 1:1 통합 건강 Q&A | 바른한의원 대전본점',
+        headline: '바른한의원 대전본점 3D 백과사전 오늘의 건강 글 단독 페이지 & 전 질환 1:1 질문 센터',
         inLanguage: 'ko-KR',
-        description: FLAGSHIP_REPRESENTATIVE_POST.summary,
-        citation: FLAGSHIP_REPRESENTATIVE_POST.internationalReferences
-      },
-      {
-        '@type': 'ScholarlyArticle',
-        '@id': flagshipLiveMeta.link + '#article',
-        headline: FLAGSHIP_REPRESENTATIVE_POST.title,
-        alternativeHeadline: FLAGSHIP_REPRESENTATIVE_POST.subtitleEn,
-        datePublished: FLAGSHIP_REPRESENTATIVE_POST.publishedDate,
-        dateModified: FLAGSHIP_REPRESENTATIVE_POST.updatedDate,
-        inLanguage: 'ko-KR',
-        description: FLAGSHIP_REPRESENTATIVE_POST.summary,
-        citation: FLAGSHIP_REPRESENTATIVE_POST.internationalReferences
+        description: '척추·골반, 위·장, 무릎 성장판, 간·해독, 자율신경, 하복부·대사, 두피·모낭, 원기·면역, 전립선·방광 등 9대 부위별 오늘의 건강 글(72편)과 해외 SCI 학술지 근거 의학 정보, 전 질환 통합 1:1 질문 게시판을 한눈에 볼 수 있는 단독 페이지입니다.',
+        isPartOf: { '@id': 'https://www.bareunhaniwon.com/#website' },
+        reviewedBy: {
+          '@type': 'Person',
+          '@id': 'https://www.bareunhaniwon.com/director/#physician',
+          name: '안정위',
+          jobTitle: '바른한의원 대전본점 대표원장 (한의사)'
+        },
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['.aeo-direct-answer', '.geo-fact-table', '.hip-question-title', '.seo-standalone-note-item']
+        }
       },
       {
         '@type': 'FAQPage',
         '@id': canonicalHub + '#faq',
-        mainEntity: FLAGSHIP_REPRESENTATIVE_POST.faqList.map(f => ({
+        mainEntity: latestNineNotes.map(n => ({
           '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a }
+          name: `[${n.partLabel}] ${n.title}`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `${(n.truth || []).join(' ')} 올바른 관리: ${(n.myth && n.myth[1]) || ''} 1분 자가 체크: ${(n.check || []).join(' / ')} (참고 학술지: ${n.academicBasis || '국제 SCI 학술지'})`
+          }
+        }))
+      },
+      {
+        '@type': 'ItemList',
+        '@id': canonicalHub + '#health-notes-72',
+        name: '바른한의원 3D 백과사전 오늘의 건강 글 72선 단독 아카이브',
+        numberOfItems: FLATTENED_SEED_NOTES.length,
+        itemListElement: FLATTENED_SEED_NOTES.map((n, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: `[${n.partLabel} · ${n.keyword}] ${n.title}`,
+          url: `${canonicalHub}?part=${n.partId}&note=${n.id}`
         }))
       }
     ]
   };
+
+  const partChipsServerHtml = ENABLED_MENUS.map((m, idx) => {
+    const num = String(idx + 1).padStart(2, '0');
+    const label = m.shortLabel || m.partLabel || m.id;
+    return `<button type="button" class="sp-part-chip" data-part="${escServer(m.id)}" onclick="window.selectStandalonePart('${escServer(m.id)}')"><span class="sp-chip-num">${num}</span><span>${escServer(label)}</span></button>`;
+  }).join('\n        ');
+
+  // 단일 페이지 내 72편 전체 SSR 시맨틱 아카이브 (구글·네이버 크롤러 및 ChatGPT·Perplexity·Gemini 직접 색인용)
+  const ssrAllNotesArticlesHtml = FLATTENED_SEED_NOTES.map(n => {
+    const deepHref = `?part=${escServer(n.partId)}&amp;note=${escServer(n.id)}`;
+    const canonicalNoteUrl = `${canonicalHub}?part=${escServer(n.partId)}&amp;note=${escServer(n.id)}`;
+    return `<article id="note-${escServer(n.id)}" class="seo-standalone-note-item" itemscope itemtype="https://schema.org/MedicalWebPage">
+          <div class="ssni-head">
+            <div class="ssni-badges">
+              <span class="ssni-part">[${escServer(n.partLabel)}]</span>
+              <span class="ssni-kw">핵심 키워드: ${escServer(n.keyword)}</span>
+              <time datetime="${escServer(n.publishDate)}" class="ssni-date">${escServer(n.publishDate)}</time>
+              <span data-note-view-id="${escServer(n.id)}" class="ssni-views">실제 조회수 ${Number(n.views || 0).toLocaleString()}회</span>
+            </div>
+            <h3 itemprop="headline" class="ssni-title">
+              <a href="${deepHref}" onclick="window.openNoteById('${escServer(n.id)}'); return false;">&ldquo;${escServer(n.title)}&rdquo;</a>
+            </h3>
+          </div>
+          <p itemprop="description" class="aeo-direct-answer ssni-aeo">
+            <strong>⚡ AEO 핵심 의학 답변:</strong> ${escServer((n.truth || []).join(' '))}
+            <strong>올바른 생활 교정:</strong> ${escServer((n.myth && n.myth[1]) || '')}
+          </p>
+          <div class="ssni-meta-grid">
+            <div><strong>🎒 일상 불편 증상:</strong> ${escServer((n.empathy || []).join(' '))}</div>
+            <div><strong>🔍 1분 자가 체크:</strong> ${escServer((n.check || []).join(' / '))}</div>
+            <div><strong>📚 해외 SCI 학술 근거(GEO):</strong> ${escServer(n.academicBasis || '')} · <strong>감수:</strong> 바른한의원 대전본점 안정위 대표원장</div>
+          </div>
+          <div class="ssni-foot">
+            <button type="button" class="ssni-read-btn" onclick="window.openNoteById('${escServer(n.id)}')">단독 카드 본문으로 크게 열람하기 &uarr;</button>
+            <a href="${canonicalNoteUrl}" class="ssni-permalink">고유 링크(#${escServer(n.id)})</a>
+          </div>
+        </article>`;
+  }).join('\n        ');
 
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>의학 인사이트 블로그 & 질환별 1:1 비공개 Q&A | 바른한의원 대전본점</title>
-  <meta name="description" content="해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews)와 통합생리학 논문을 기반으로 유익한 건강 정보를 전하는 대표 의학 칼럼 및 회원 전용 질환별 1:1 비공개 Q&A 센터입니다." />
+  <title>3D 백과사전 오늘의 건강 글 &amp; 무엇이든 물어보세요 (단독 페이지) | 바른한의원 대전본점</title>
+  <meta name="description" content="척추·골반, 위·장, 무릎 성장판, 간·해독, 자율신경, 하복부·대사, 두피·모낭, 원기·면역, 전립선·방광 등 9대 부위별 오늘의 건강 글(72편)과 전 질환 통합 1:1 질문 게시판을 한눈에 볼 수 있는 단독 페이지입니다." />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="canonical" href="${canonicalHub}" />
+  <link rel="alternate" type="text/plain" title="AI / LLM Knowledge Index (GEO)" href="https://www.bareunhaniwon.com/llms.txt" />
+  <link rel="alternate" type="text/plain" title="AI / LLM Full Medical Corpus (GEO)" href="https://www.bareunhaniwon.com/llms-full.txt" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">${JSON.stringify(schemaGraph)}</script>
   <style>
     :root {
-      --bg-page: #F4F6FB;
-      --bg-surface: #FFFFFF;
-      --bg-subtle: #F8FAFC;
-      --ink-900: #0F172A;
-      --ink-700: #334155;
-      --ink-500: #64748B;
-      --line-200: #E2E8F0;
-      --line-300: #CBD5E1;
-      --blue-600: #2563EB;
-      --blue-700: #1D4ED8;
-      --blue-50: #EFF6FF;
-      --indigo-600: #4F46E5;
-      --emerald-600: #059669;
-      --emerald-50: #ECFDF5;
-      --amber-600: #D97706;
-      --amber-50: #FFFBEB;
-      --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.05);
-      --shadow-md: 0 14px 36px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.14);
+      --lux-white: #FFFFFF;
+      --lux-ivory: #FCFBF8;
+      --lux-gold-tint: #FAF5EA;
+      --lux-black: #0D0D0F;
+      --lux-charcoal: #1A1A1E;
+      --lux-ink: #141416;
+      --lux-sub: #57534E;
+      --lux-gold: #C5A059;
+      --lux-gold-bright: #E5C67E;
+      --lux-gold-deep: #967128;
+      --lux-gold-border: #DFC99B;
+      --lux-border-soft: #EAE3D5;
+      --lux-shadow: 0 22px 50px rgba(13, 13, 15, 0.12);
+      --lux-shadow-sm: 0 8px 22px rgba(13, 13, 15, 0.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
       width: 100%;
       min-height: 100vh;
-      background: var(--bg-page);
-      color: var(--ink-900);
+      background: radial-gradient(circle at 50% 0%, #FFFEFA 0%, #F5EFE2 65%, #ECE3D0 100%);
+      color: var(--lux-ink);
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
       line-height: 1.6;
     }
     a { color: inherit; text-decoration: none; }
-    button, input, select, textarea { font-family: inherit; }
 
-    /* TOP GNB HEADER */
-    .journal-gnb {
+    /* TOP LUXURY NAVIGATION BAR */
+    .sp-topbar {
       position: sticky;
       top: 0;
-      z-index: 400;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--line-200);
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid var(--lux-gold-border);
+      box-shadow: 0 6px 20px rgba(13, 13, 15, 0.06);
+      padding: 12px 20px;
     }
-    .journal-gnb-inner {
-      max-width: 1400px;
+    .sp-topbar-inner {
+      max-width: 980px;
       margin: 0 auto;
-      padding: 11px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
     }
-    @media (min-width: 1180px) {
-      .journal-gnb-inner { flex-wrap: nowrap; }
-      .gnb-actions { flex-wrap: nowrap; flex-shrink: 0; }
-      .gnb-menu-tabs { flex-shrink: 0; }
-    }
-    @media (max-width: 1460px) {
-      .gnb-sub { display: none; }
-    }
-    .gnb-brand {
-      display: flex;
+    .sp-brand {
+      display: inline-flex;
       align-items: center;
-      gap: 11px;
+      gap: 10px;
     }
-    .gnb-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .sp-brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: var(--lux-black);
+      border: 1px solid var(--lux-gold);
+      color: var(--lux-gold-bright);
       font-weight: 800;
-      font-size: 0.95rem;
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+      font-size: 0.78rem;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
     }
-    .gnb-title-wrap {
+    .sp-brand-text {
       display: flex;
       flex-direction: column;
     }
-    .gnb-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.02rem;
+    .sp-brand-sub {
+      font-size: 0.68rem;
       font-weight: 800;
-      color: var(--ink-900);
+      color: var(--lux-gold-deep);
+      letter-spacing: 0.02em;
+    }
+    .sp-brand-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--lux-black);
       letter-spacing: -0.02em;
     }
-    .gnb-sub {
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--ink-500);
-    }
-
-    /* DUAL MENU SWITCHER IN GNB */
-    .gnb-menu-tabs {
-      display: inline-flex;
-      background: #EEF2FF;
-      padding: 4px;
-      border-radius: 999px;
-      border: 1px solid #C7D2FE;
-      gap: 4px;
-    }
-    .gnb-menu-tab {
-      appearance: none;
-      border: none !important;
-      background: transparent !important;
-      color: #3730A3 !important;
-      font-size: 0.84rem;
-      font-weight: 800;
-      padding: 8px 15px;
-      border-radius: 999px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.22s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .gnb-menu-tab.active {
-      background: var(--ink-900) !important;
-      color: #FFFFFF !important;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.22);
-    }
-
-    .gnb-actions {
+    .sp-top-actions {
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
-    .gnb-pill {
+    .sp-nav-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 13px;
+      padding: 8px 14px;
       border-radius: 999px;
-      font-size: 0.79rem;
-      font-weight: 700;
-      white-space: nowrap;
-      border: 1px solid var(--line-300) !important;
-      background: #FFFFFF !important;
-      color: var(--ink-900) !important;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .gnb-pill:hover {
-      border-color: var(--blue-600) !important;
-      color: var(--blue-600) !important;
-    }
-    .gnb-pill.vibrant-3d-btn {
-      background: #FEF3C7 !important;
-      border-color: #F59E0B !important;
-      color: #92400E !important;
-      font-weight: 800;
-    }
-    .gnb-pill.auth-btn {
-      background: var(--blue-600) !important;
-      border-color: var(--blue-600) !important;
-      color: #FFFFFF !important;
-      font-weight: 800;
-    }
-    .gnb-pill.master-btn {
-      background: #1E293B !important;
-      border-color: #334155 !important;
-      color: #FDE68A !important;
-      font-weight: 800;
-    }
-
-    /* HERO BANNER */
-    .hub-hero {
-      background: linear-gradient(135deg, #0B132B 0%, #1C2541 55%, #1E3A8A 100%);
-      color: #FFFFFF;
-      padding: 40px 24px 36px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .hub-hero-inner {
-      max-width: 1320px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1.32fr) 510px;
-      align-items: center;
-      gap: 28px;
-    }
-    @media (max-width: 1120px) {
-      .hub-hero-inner { grid-template-columns: 1fr; }
-    }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 13px;
-      border-radius: 999px;
-      background: rgba(96, 165, 250, 0.18);
-      border: 1px solid rgba(147, 197, 253, 0.35);
-      color: #BFDBFE !important;
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      margin-bottom: 12px;
-    }
-    .hero-heading, .hub-hero h1 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.62rem, 2.5vw, 2.24rem);
-      font-weight: 800;
-      color: #FFFFFF !important;
-      line-height: 1.32;
-      margin: 0 0 10px 0 !important;
-      word-break: keep-all;
-    }
-    .hero-lead {
-      font-size: 0.95rem;
-      color: #CBD5E1 !important;
-      max-width: 760px;
-      line-height: 1.68;
-      margin: 0 !important;
-      word-break: keep-all;
-    }
-    .hero-mode-cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      width: 100%;
-    }
-    .hero-mode-card {
-      text-align: left;
-      padding: 16px 17px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.09) !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
-      color: #FFFFFF !important;
-      cursor: pointer;
-      transition: all 0.22s ease;
-    }
-    .hero-mode-card:hover {
-      background: rgba(255, 255, 255, 0.16) !important;
-      transform: translateY(-2px);
-    }
-    .hero-mode-card.active {
-      background: #FFFFFF !important;
-      color: var(--ink-900) !important;
-      border-color: #93C5FD !important;
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
-    }
-    .hmc-kicker {
-      font-size: 0.71rem;
-      font-weight: 800;
-      color: #93C5FD !important;
-      margin-bottom: 5px;
-    }
-    .hero-mode-card.active .hmc-kicker { color: var(--blue-600) !important; }
-    .hmc-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: inherit !important;
-      margin-bottom: 5px;
-      word-break: keep-all;
-    }
-    .hmc-desc {
+      background: var(--lux-white);
+      border: 1px solid var(--lux-gold-border);
+      color: var(--lux-ink);
       font-size: 0.78rem;
-      color: inherit !important;
-      opacity: 0.84;
-      line-height: 1.46;
-      word-break: keep-all;
-    }
-
-    /* MAIN CONTAINER */
-    .hub-main {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-    }
-    .tab-section { display: none; }
-    .tab-section.active { display: block; animation: fadeIn 0.26s ease-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ======================================================================
-       VIEW 1: EXPERT MEDICAL INSIGHT BLOG (ONLY 1 REPRESENTATIVE ARTICLE)
-       ====================================================================== */
-    .blog-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 28px;
-      align-items: start;
-    }
-    .blog-sidebar {
-      position: sticky;
-      top: 86px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .sidebar-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--line-200);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-    }
-    .sidebar-label {
-      font-size: 0.74rem;
       font-weight: 800;
-      color: var(--blue-600);
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.16s ease;
     }
-    .toc-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 8px;
+    .sp-nav-btn:hover {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
-    .toc-link {
-      display: block;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--ink-700);
-      padding: 7px 10px;
-      border-radius: 10px;
-      transition: all 0.18s ease;
-    }
-    .toc-link:hover {
-      background: var(--blue-50);
-      color: var(--blue-700);
-    }
-    .journal-policy-badge {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 0.81rem;
-      color: var(--ink-700);
-      line-height: 1.58;
+    .sp-nav-btn.primary {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-gold-bright);
     }
 
-    .flagship-article-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--line-200);
-      border-radius: 26px;
-      padding: 42px 46px;
-      box-shadow: var(--shadow-md);
+    /* MAIN STANDALONE CONTAINER */
+    .sp-main-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
     }
-    .article-meta-top {
+
+    /* 9 BODY PARTS SELECTOR BAR */
+    .sp-parts-bar {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1.5px solid var(--lux-gold-border);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: var(--lux-shadow-sm);
+    }
+    .sp-parts-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
-    .article-badge {
+    .sp-parts-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--lux-black);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .sp-parts-sub {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--lux-gold-deep);
+    }
+    .sp-parts-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .sp-part-chip {
+      appearance: none;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: var(--blue-50);
-      border: 1px solid #BFDBFE;
-      color: var(--blue-700);
-      font-size: 0.78rem;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
+      color: var(--lux-ink);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.8rem;
       font-weight: 800;
+      cursor: pointer;
+      transition: all 0.16s ease;
     }
-    .article-date {
-      font-size: 0.82rem;
-      color: var(--ink-500);
-      font-weight: 600;
+    .sp-part-chip:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
     }
-    .article-h1 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(1.6rem, 2.6vw, 2.18rem);
+    .sp-part-chip.active {
+      background: var(--lux-black);
+      border-color: var(--lux-gold);
+      color: var(--lux-white);
+      box-shadow: 0 6px 16px rgba(13, 13, 15, 0.15);
+    }
+    .sp-chip-num {
+      font-size: 0.68rem;
       font-weight: 800;
-      line-height: 1.38;
-      color: var(--ink-900);
-      margin-bottom: 10px;
-      word-break: keep-all;
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: rgba(197, 160, 89, 0.18);
+      color: var(--lux-gold-deep);
     }
-    .article-en-sub {
-      font-size: 0.9rem;
-      color: var(--ink-500);
-      font-weight: 500;
-      margin-bottom: 22px;
-      line-height: 1.5;
+    .sp-part-chip.active .sp-chip-num {
+      background: var(--lux-gold);
+      color: var(--lux-black);
     }
-    .article-journal-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 26px;
-      padding-bottom: 22px;
-      border-bottom: 1px solid var(--line-200);
-    }
-    .journal-chip {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 5px 11px;
-      border-radius: 999px;
-      background: #F1F5F9;
-      color: #1E293B;
-      border: 1px solid #CBD5E1;
-    }
-    .tldr-box {
-      background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
-      border: 1.5px solid #86EFAC;
-      border-radius: 20px;
-      padding: 24px 26px;
-      margin-bottom: 30px;
-    }
-    .tldr-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: #065F46;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
+
+    /* 3-TAB LUXURY NAVIGATION (EXACT MATCH TO 3D ENCYCLOPEDIA CARD) */
+    .three-menu-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
+      padding: 8px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.98);
+      border: 1.5px solid var(--lux-gold-border);
+      box-shadow: var(--lux-shadow-sm);
     }
-    .tldr-list {
-      padding-left: 20px;
+    .three-menu-btn {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--lux-sub);
+      font-family: 'Pretendard', sans-serif;
+      padding: 12px 10px;
+      border-radius: 12px;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      font-size: 0.94rem;
-      color: #064E3B;
-      font-weight: 500;
-      line-height: 1.7;
-    }
-
-    .evidence-table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line-200);
-      border-radius: 18px;
-      margin-bottom: 34px;
-    }
-    .evidence-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-      text-align: left;
-    }
-    .evidence-table th {
-      background: #0F172A;
-      color: #FFFFFF;
-      padding: 13px 15px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .evidence-table td {
-      padding: 13px 15px;
-      border-bottom: 1px solid var(--line-200);
-      vertical-align: top;
-      line-height: 1.58;
-    }
-    .evidence-table tr:last-child td { border-bottom: none; }
-    .evidence-table tr:nth-child(even) td { background: #F8FAFC; }
-
-    .article-sec {
-      margin-bottom: 36px;
-      scroll-margin-top: 100px;
-    }
-    .sec-num {
-      font-size: 0.76rem;
-      font-weight: 800;
-      color: var(--blue-600);
-      letter-spacing: 0.08em;
-      margin-bottom: 5px;
-    }
-    .sec-h2 {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.34rem;
-      font-weight: 800;
-      color: var(--ink-900);
-      margin-bottom: 14px;
-      line-height: 1.42;
-      word-break: keep-all;
-    }
-    .sec-p {
-      font-size: 1.01rem;
-      color: #1E293B;
-      line-height: 1.88;
-      margin-bottom: 14px;
-      word-break: keep-all;
-    }
-    .sec-quote {
-      margin: 18px 0;
-      padding: 18px 22px;
-      border-left: 4px solid var(--blue-600);
-      background: #F8FAFC;
-      border-radius: 0 14px 14px 0;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--ink-900);
-      line-height: 1.72;
-    }
-
-    .faq-box {
-      margin-top: 34px;
-      padding-top: 28px;
-      border-top: 1px solid var(--line-200);
-    }
-    .faq-item {
-      background: #F8FAFC;
-      border: 1px solid var(--line-200);
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 12px;
-    }
-    .faq-q {
-      font-size: 0.98rem;
-      font-weight: 800;
-      color: var(--ink-900);
-      margin-bottom: 7px;
-    }
-    .faq-a {
-      font-size: 0.92rem;
-      color: var(--ink-700);
-      line-height: 1.7;
-    }
-
-    .refs-box {
-      margin-top: 32px;
-      padding: 24px 26px;
-      border-radius: 18px;
-      background: #0F172A;
-      color: #E2E8F0;
-    }
-    .refs-list {
-      list-style: none;
-      margin-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 0.84rem;
-      color: #CBD5E1;
-      line-height: 1.62;
-    }
-
-    /* ======================================================================
-       VIEW 2: DISEASE-SPECIFIC 1:1 PRIVATE Q&A + FAST SOCIAL SIGNUP + MASTER
-       ====================================================================== */
-    .qna-search-wrap {
-      background: #FFFFFF;
-      border: 1.5px solid var(--blue-600);
-      border-radius: 20px;
-      padding: 18px 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
-    }
-    .qna-search-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .qna-search-input {
-      flex: 1;
-      min-width: 220px;
-      border: 1.5px solid var(--line-300);
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--ink-900);
-      outline: none;
-      transition: all 0.2s ease;
-    }
-    .qna-search-input:focus {
-      border-color: var(--blue-600);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-    .qna-search-btn {
-      padding: 12px 22px;
-      border-radius: 12px;
-      border: none;
-      background: var(--blue-600);
-      color: #FFFFFF;
-      font-weight: 800;
-      font-size: 0.92rem;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-    .qna-search-btn:hover {
-      background: var(--blue-700);
-    }
-    .qna-reset-btn {
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--line-300);
-      background: #F8FAFC;
-      color: var(--ink-700);
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .badge-secret {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: #FEF3C7;
-      color: #92400E;
-      border: 1px solid #FCD34D;
-      font-size: 0.74rem;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 6px;
-    }
-    .badge-public {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: #EFF6FF;
-      color: #1D4ED8;
-      border: 1px solid #BFDBFE;
-      font-size: 0.74rem;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 6px;
-    }
-    .badge-notify-tag {
-      background: #F0FDF4;
-      color: #166534;
-      border: 1px solid #BBF7D0;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 4px;
-      display: inline-flex;
       align-items: center;
       gap: 3px;
+      transition: all 0.16s ease;
+    }
+    .three-menu-btn:hover {
+      background: var(--lux-gold-tint);
+      color: var(--lux-black);
+    }
+    .three-menu-btn.active {
+      background: var(--lux-black);
+      color: var(--lux-white);
+      border-color: var(--lux-gold);
+      box-shadow: 0 8px 20px rgba(13, 13, 15, 0.18);
+    }
+    .tmb-step {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--lux-gold-deep);
+      letter-spacing: 0.01em;
+    }
+    .three-menu-btn.active .tmb-step {
+      color: var(--lux-gold-bright);
+    }
+    .tmb-label {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
-    .qna-cat-strip {
+    /* LATEST POST RED POINT BADGE */
+    .latest-red-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+      color: #FFFFFF !important;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      box-shadow: 0 3px 10px rgba(225, 29, 72, 0.32);
+    }
+    .latest-red-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFE4E6;
+      display: inline-block;
+    }
+
+    /* STANDALONE HEALTH INFO CARD (EXACT MATCH TO ATTACHMENT 1) */
+    .health-info-popup-box {
+      border-radius: 20px;
+      background: var(--lux-white);
+      border: 1.5px solid var(--lux-gold);
+      box-shadow: var(--lux-shadow);
+      overflow: hidden;
+      color: var(--lux-ink);
+    }
+    .hip-header {
+      padding: 22px 24px;
+      background: var(--lux-black);
+      color: var(--lux-white);
+      border-bottom: 1.5px solid rgba(197, 160, 89, 0.55);
       display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .hip-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+    .hip-header-title-wrap {
+      display: flex;
+      align-items: center;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 22px;
     }
-    .qna-cat-btn {
+    .hip-part-bracket {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 7px;
+      background: rgba(197, 160, 89, 0.18);
+      border: 1px solid rgba(229, 198, 126, 0.55);
+      color: var(--lux-gold-bright);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+    .hip-question-title {
+      width: 100%;
+      margin: 2px 0 0;
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.18rem, 2.2vw, 1.48rem);
+      font-weight: 800;
+      color: var(--lux-white);
+      line-height: 1.44;
+      letter-spacing: -0.02em;
+      word-break: keep-all;
+    }
+    .hip-sections {
+      padding: 20px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--lux-white);
+    }
+    .hip-sec-card {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
+    }
+    .hip-sec-card.sec-highlight {
+      background: #FFFDF7;
+      border: 1.5px solid var(--lux-gold);
+      border-left: 4px solid var(--lux-gold);
+    }
+    .hip-sec-heading {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--lux-black);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .hip-two-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .hip-line {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #262522;
+      line-height: 1.62;
+      word-break: keep-all;
+    }
+    .hip-bullet-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #141416;
+      line-height: 1.62;
+      word-break: keep-all;
+    }
+    .hip-bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lux-gold-deep);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .hip-num-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1F1E1B;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+    .hip-num-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #E7C983;
+      color: #0D0D0F;
+      font-size: 0.72rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .hip-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 11px 13px;
+      border-radius: 10px;
+      background: var(--lux-white);
+      border: 1px solid #E5DEC9;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--lux-ink);
+      line-height: 1.55;
+      cursor: pointer;
+    }
+    .hip-check-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      accent-color: var(--lux-black);
+      flex-shrink: 0;
+    }
+
+    /* AEO & GEO SUMMARY BLOCK INSIDE STANDALONE CARD */
+    .sp-aeo-geo-box {
+      margin-top: 4px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--lux-gold-tint);
+      border: 1px solid var(--lux-gold-border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .geo-fact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      background: var(--lux-white);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .geo-fact-table th {
+      width: 26%;
+      padding: 8px 12px;
+      background: #F7F3E8;
+      border-bottom: 1px solid #EAE3D5;
+      text-align: left;
+      font-weight: 800;
+      color: var(--lux-black);
+    }
+    .geo-fact-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #EAE3D5;
+      font-weight: 600;
+      color: #262522;
+    }
+
+    /* Q&A PANEL & ARCHIVE PANEL */
+    .qna-menu-panel, .archive-menu-panel {
+      border-radius: 20px;
+      background: var(--lux-white);
+      border: 1.5px solid var(--lux-gold);
+      box-shadow: var(--lux-shadow);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .qna-panel-top, .archive-filter-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--lux-border-soft);
+      flex-wrap: wrap;
+    }
+    .qna-write-btn {
       appearance: none;
-      border: 1.5px solid var(--line-300) !important;
-      background: #FFFFFF !important;
-      color: var(--ink-900) !important;
-      font-size: 0.85rem;
+      border: 1px solid var(--lux-gold);
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.84rem;
       font-weight: 800;
       padding: 10px 16px;
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
-    .qna-cat-btn:hover {
-      border-color: var(--blue-600) !important;
-      background: var(--blue-50) !important;
-      color: var(--blue-700) !important;
-    }
-    .qna-cat-btn.active {
-      background: var(--blue-600) !important;
-      border-color: var(--blue-600) !important;
-      color: #FFFFFF !important;
-      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.26);
-    }
-
-    .disease-evidence-banner {
-      background: #FFFFFF;
-      border: 1.5px solid #BFDBFE;
-      border-radius: 22px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-sm);
-    }
-    .deb-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .deb-papers-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-    .deb-paper-card {
-      background: #F8FAFC;
-      border: 1px solid var(--line-200);
+    .qna-inline-composer {
+      padding: 16px;
       border-radius: 14px;
-      padding: 14px 16px;
-    }
-    .deb-paper-badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: #DBEAFE;
-      color: #1E40AF;
-      margin-bottom: 6px;
-    }
-    .deb-paper-badge.integrative {
-      background: #D1FAE5;
-      color: #065F46;
-    }
-
-    /* Q&A WORKSPACE: LEFT COMPOSER/AUTH + RIGHT PRIVATE BOARD */
-    .qna-grid {
-      display: grid;
-      grid-template-columns: 410px 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-    .qna-panel-card {
-      background: #FFFFFF;
-      border: 1px solid var(--line-200);
-      border-radius: 22px;
-      padding: 26px;
-      box-shadow: var(--shadow-md);
-    }
-
-    /* SOCIAL SIGNUP BUTTONS */
-    .social-btn-stack {
+      background: #FAF5EA;
+      border: 1.5px solid var(--lux-gold);
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin: 16px 0;
     }
-    .social-fast-btn {
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 13px;
-      font-size: 0.92rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
-      border: 1.5px solid transparent;
-    }
-    .social-fast-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1);
-    }
-    .social-fast-btn.google {
-      background: #FFFFFF !important;
-      border-color: #CBD5E1 !important;
-      color: #1F2937 !important;
-    }
-    .social-fast-btn.kakao {
-      background: #FEE500 !important;
-      border-color: #FACC15 !important;
-      color: #191919 !important;
-    }
-    .social-fast-btn.naver {
-      background: #03C75A !important;
-      border-color: #02B350 !important;
-      color: #FFFFFF !important;
-    }
-
-    .form-field {
-      margin-bottom: 13px;
-    }
-    .form-label {
-      display: block;
-      font-size: 0.81rem;
-      font-weight: 800;
-      color: var(--ink-700);
-      margin-bottom: 5px;
-    }
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      height: auto !important;
-      line-height: 1.45 !important;
-      padding: 11px 13px !important;
-      border-radius: 12px;
-      border: 1.5px solid var(--line-300);
-      background: #F8FAFC;
-      font-size: 0.9rem;
-      color: var(--ink-900);
-      outline: none;
-      transition: border-color 0.18s ease, background 0.18s ease;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--blue-600);
-      background: #FFFFFF;
-    }
-    .form-row-2 {
+    .qic-row-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .submit-primary-btn, button.submit-primary-btn[type="submit"] {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: none !important;
-      background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
-      color: #FFFFFF !important;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.28);
-      transition: all 0.2s ease;
-    }
-    .submit-primary-btn.master-submit, button.submit-primary-btn.master-submit[type="submit"] {
-      background: linear-gradient(135deg, #0F172A 0%, #334155 100%) !important;
-      color: #FDE68A !important;
-    }
-    .submit-primary-btn:hover { transform: translateY(-1px); }
-
-    /* PRIVATE QNA BOARD ITEMS */
-    .qna-board-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line-200);
-    }
-    .qna-item-card {
-      border: 1.5px solid var(--line-200);
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-bottom: 12px;
-      background: #FFFFFF;
-      transition: all 0.2s ease;
-    }
-    .qna-item-card.readable {
-      border-color: #93C5FD;
-      background: #FCFDFE;
-    }
-    .qna-item-card.locked {
-      background: #F8FAFC;
-      cursor: pointer;
-    }
-    .qna-item-card.locked:hover {
-      border-color: #94A3B8;
-    }
-    .qna-item-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 8px;
     }
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.74rem;
+    .qic-input, .qic-select, .qic-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 9px;
+      border: 1px solid #DFC99B;
+      background: #FFFFFF;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #141416;
+    }
+    .qic-submit-btn {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--lux-gold);
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.88rem;
       font-weight: 800;
-      padding: 4px 10px;
+      cursor: pointer;
+    }
+    .qna-item-row {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .qna-item-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--lux-sub);
+    }
+    .qna-status-badge {
+      padding: 3px 9px;
       border-radius: 999px;
-    }
-    .status-pill.answered {
-      background: #DCFCE7;
-      color: #166534;
-    }
-    .status-pill.waiting {
-      background: #FEF3C7;
-      color: #92400E;
-    }
-    .provider-badge {
       font-size: 0.72rem;
       font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: #E2E8F0;
-      color: #334155;
     }
-    .provider-badge.kakao { background: #FEF08A; color: #713F12; }
-    .provider-badge.naver { background: #BBF7D0; color: #14532D; }
-    .provider-badge.google { background: #DBEAFE; color: #1E3A8A; }
+    .qna-status-badge.answered {
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+    }
+    .qna-status-badge.waiting {
+      background: var(--lux-gold-tint);
+      color: var(--lux-gold-deep);
+      border: 1px solid var(--lux-gold-border);
+    }
+    .qna-item-title {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: var(--lux-ink);
+    }
 
-    /* MASTER CONSOLE & MEMBER DETAIL DOSSIER */
-    .master-console-bar {
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      color: #FFFFFF;
-      border: 1.5px solid #F59E0B;
-      border-radius: 20px;
-      padding: 20px 24px;
-      margin-bottom: 22px;
-      box-shadow: var(--shadow-md);
+    .archive-scope-pills {
+      display: inline-flex;
+      border-radius: 10px;
+      background: var(--lux-ivory);
+      padding: 3px;
+      border: 1px solid var(--lux-border-soft);
     }
-    .member-dossier-box {
-      margin: 12px 0;
+    .archive-scope-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--lux-sub);
+      cursor: pointer;
+    }
+    .archive-scope-btn.active {
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+    }
+    .archive-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .archive-card-btn {
+      width: 100%;
+      text-align: left;
       padding: 14px 16px;
       border-radius: 13px;
-      background: #FFFBEB;
-      border: 1.5px solid #FCD34D;
-      font-size: 0.83rem;
-      color: #78350F;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 8px 14px;
-    }
-    .master-reply-view {
-      margin-top: 12px;
-      padding: 15px 18px;
-      border-radius: 14px;
-      background: #EFF6FF;
-      border-left: 4px solid var(--blue-600);
-      font-size: 0.91rem;
-      color: #1E3A8A;
-      line-height: 1.72;
-      white-space: pre-wrap;
-    }
-
-    /* MODAL FOR FAST SOCIAL SIGNUP / EMAIL LOGIN / MASTER LOGIN */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 900;
-      background: rgba(15, 23, 42, 0.62);
-      backdrop-filter: blur(8px);
-      display: none;
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
+      display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-backdrop.open { display: flex; }
-    .auth-modal-card {
-      width: min(480px, 100%);
-      max-height: 92vh;
-      overflow-y: auto;
-      background: #FFFFFF;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-    }
-    .modal-close-btn {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--line-200) !important;
-      background: #F8FAFC !important;
-      color: var(--ink-900) !important;
-      padding: 0 !important;
+      justify-content: space-between;
+      gap: 12px;
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: 800;
+      transition: all 0.16s ease;
     }
-    .modal-mode-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .archive-card-btn:hover {
+      border-color: var(--lux-gold);
+      background: var(--lux-gold-tint);
+    }
+    .archive-card-tags {
+      display: flex;
+      align-items: center;
       gap: 6px;
-      background: #F1F5F9;
-      padding: 4px;
-      border-radius: 12px;
-      margin: 14px 0 18px;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
     }
-    .modal-mode-tab {
-      border: none !important;
-      background: transparent !important;
-      padding: 9px 8px;
-      border-radius: 9px;
-      font-size: 0.82rem;
+    .archive-date-pill {
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #F0EAE1;
+      color: #57534E;
+      font-size: 0.72rem;
       font-weight: 800;
-      color: var(--ink-500) !important;
+    }
+    .archive-date-pill.is-latest-red {
+      background: #E11D48;
+      color: #FFFFFF;
+    }
+    .archive-part-pill {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--lux-gold-deep);
+    }
+    .archive-card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--lux-black);
+    }
+    .archive-read-arrow {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--lux-gold-deep);
+      flex-shrink: 0;
+    }
+
+    /* SINGLE-PAGE ALL 72 HEALTH NOTES SEO · AEO · GEO DIRECTORY */
+    .seo-all-notes-hub {
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1.5px solid var(--lux-gold-border);
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: var(--lux-shadow-sm);
+    }
+    .seo-all-notes-hub summary {
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--lux-black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .seo-standalone-note-item {
+      padding: 14px 16px;
+      margin-top: 12px;
+      border-radius: 12px;
+      background: var(--lux-ivory);
+      border: 1px solid var(--lux-border-soft);
+    }
+    .ssni-badges {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+    .ssni-part { color: var(--lux-gold-deep); }
+    .ssni-kw { color: #BE123C; }
+    .ssni-date, .ssni-views { color: var(--lux-sub); }
+    .ssni-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--lux-black);
+      margin-bottom: 6px;
+    }
+    .ssni-aeo {
+      font-size: 0.84rem;
+      color: #262522;
+      margin-bottom: 6px;
+      line-height: 1.58;
+    }
+    .ssni-meta-grid {
+      font-size: 0.78rem;
+      color: var(--lux-sub);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 8px;
+    }
+    .ssni-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .ssni-read-btn {
+      padding: 5px 11px;
+      border-radius: 7px;
+      border: 1px solid var(--lux-gold);
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+      font-size: 0.74rem;
+      font-weight: 800;
       cursor: pointer;
     }
-    .modal-mode-tab.active {
-      background: #FFFFFF !important;
-      color: var(--ink-900) !important;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-    }
-
-    .toast-banner {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 1000;
-      background: #0F172A;
-      color: #FFFFFF;
-      padding: 13px 20px;
-      border-radius: 14px;
-      font-size: 0.88rem;
+    .ssni-permalink {
+      font-size: 0.72rem;
       font-weight: 700;
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      transform: translateY(12px);
-      pointer-events: none;
-      transition: all 0.25s ease;
-    }
-    .toast-banner.show {
-      opacity: 1;
-      transform: translateY(0);
+      color: var(--lux-gold-deep);
     }
 
-    @media (max-width: 1024px) {
-      .blog-layout, .qna-grid, .deb-papers-grid { grid-template-columns: 1fr; }
-      .blog-sidebar { position: static; }
-      .flagship-article-card { padding: 26px 20px; }
-      .hero-mode-cards { grid-template-columns: 1fr; }
+    @media (max-width: 640px) {
+      .qic-row-2 { grid-template-columns: 1fr; }
+      .hip-header { padding: 18px 16px; }
+      .hip-sections { padding: 16px 14px; }
+      .tmb-label { font-size: 0.82rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- TOP NAVIGATION -->
-  <header class="journal-gnb">
-    <div class="journal-gnb-inner">
-      <a href="story-3d.html" class="gnb-brand">
-        <div class="gnb-mark">B</div>
-        <div class="gnb-title-wrap">
-          <span class="gnb-title">바른 통합의학 인사이트 &amp; 비공개 질환 Q&amp;A</span>
-          <span class="gnb-sub">International Medical Evidence Journal &amp; Private Member Consultation</span>
+  <!-- TOP LUXURY STANDALONE HEADER -->
+  <header class="sp-topbar">
+    <div class="sp-topbar-inner">
+      <a href="story-3d.html" class="sp-brand">
+        <div class="sp-brand-mark">3D</div>
+        <div class="sp-brand-text">
+          <span class="sp-brand-sub">BAREUN MEDICAL ENCYCLOPEDIA · STANDALONE HUB</span>
+          <h1 class="sp-brand-title">바른한의원 3D 백과사전 · 오늘의 건강 글 단독 페이지</h1>
         </div>
       </a>
-
-      <div class="gnb-menu-tabs" role="tablist" aria-label="블로그 및 질환별 Q&A 메뉴 전환">
-        <button type="button" class="gnb-menu-tab active" id="gnb-tab-blog" onclick="window.switchMainMenu('blog')">
-          <span>📘 의학 인사이트 블로그 (대표글)</span>
-        </button>
-        <button type="button" class="gnb-menu-tab" id="gnb-tab-qna" onclick="window.switchMainMenu('qna')">
-          <span>💬 무엇이든 물어보세요 (전 질환 통합게시판)</span>
-        </button>
-      </div>
-
-      <div class="gnb-actions">
-        <a href="body-explorer.html" class="gnb-pill vibrant-3d-btn" id="gnb-3d-explorer-link">💡 3D 인체모형 · 생활꿀팁 ↗</a>
-        <button type="button" class="gnb-pill auth-btn" id="gnb-member-btn" onclick="window.openAuthModal('social')">👤 빠른 회원가입 · 로그인</button>
-        <button type="button" class="gnb-pill master-btn" id="gnb-master-btn" onclick="window.openAuthModal('master')">👑 마스터</button>
+      <div class="sp-top-actions">
+        <a href="body-explorer.html" id="sp-link-3d-model" class="sp-nav-btn">🧊 3D 인체모형과 함께 보기</a>
+        <button type="button" class="sp-nav-btn primary" onclick="window.openQnaTabDirect()">✍️ 무엇이든 물어보세요</button>
+        <a href="story-3d.html" class="sp-nav-btn">&larr; 메인 홈</a>
       </div>
     </div>
   </header>
 
-  <!-- HERO BANNER -->
-  <section class="hub-hero">
-    <div class="hub-hero-inner">
-      <div>
-        <div class="hero-eyebrow" id="hero-eyebrow-badge">EVIDENCE-BASED INTEGRATIVE MEDICAL JOURNAL · 해외 SCI 및 통합의학 논문 기반</div>
-        <h1 class="hero-heading" id="hero-main-heading">시술 홍보를 덜어낸 순수 의학 인사이트 &amp; 질환별 비공개 Q&amp;A</h1>
-        <p class="hero-lead" id="hero-main-lead">
-          『Nature Medicine』, 『NEJM』, 『The Lancet』, 『JAMA』, 『Physiological Reviews』 등 해외 권위 의학 저널과 통합생리학 연구를 바탕으로 실생활에 꼭 필요한 건강 원리를 전달하며, 개인별 질환 상담은 회원 전용 100% 비공개 Q&amp;A 메뉴로 분리 운영합니다.
-        </p>
-      </div>
-      <div class="hero-mode-cards">
-        <button type="button" class="hero-mode-card active" id="hero-card-blog" onclick="window.switchMainMenu('blog')">
-          <div class="hmc-kicker">REPRESENTATIVE JOURNAL · 단독 1편</div>
-          <div class="hmc-title">📘 전문 건강 인사이트 블로그</div>
-          <div class="hmc-desc">시술 광고 없이 해외 의학·생리학 논문으로 깊이 있게 정리한 대표 건강 가이드</div>
-        </button>
-        <button type="button" class="hero-mode-card" id="hero-card-qna" onclick="window.switchMainMenu('qna')">
-          <div class="hmc-kicker">ALL DISEASES INTEGRATED · 통합게시판</div>
-          <div class="hmc-title">💬 무엇이든 물어보세요 (통합)</div>
-          <div class="hmc-desc">전 질환 통합 Q&amp;A · 비밀글/공개글 지원 · 키워드 검색 · 답변 시 카톡/이메일 전송</div>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- MAIN CONTENT -->
-  <main class="hub-main">
-
-    <!-- ====================================================================
-         SECTION 1: REPRESENTATIVE EXPERT BLOG POST (ONLY 1 PUBLISHED ARTICLE)
-         ==================================================================== -->
-    <section class="tab-section active" id="section-blog-view">
-      <!-- 9대 질환 36편 임상 백과 & 심층 블로그 아카이브 섹션 -->
-      <div class="clinical-blog-archive-wrap" style="background:#FFFFFF;border:1.5px solid #BFDBFE;border-radius:22px;padding:24px 28px;margin-bottom:26px;box-shadow:var(--shadow-sm);">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-          <div>
-            <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">9 DISEASES CLINICAL BLOG AUTOMATION · 총 ${CLINICAL_POSTS_FOR_CLIENT.length}편 정식 발행</div>
-            <h2 style="font-size:1.28rem;font-weight:800;color:var(--ink-900);margin-top:2px;">📚 9대 질환별 공식 의학 백과 &amp; 심층 임상 칼럼</h2>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span class="badge-notify-tag">🤖 자동화 엔진 가동 중</span>
-            <span class="badge-notify-tag">📘 9대 질환 공식 백과 마스터 9편 + 심층 칼럼 27편</span>
-          </div>
+  <main class="sp-main-wrap">
+    <!-- 9대 질환 부위 선택 바 -->
+    <section class="sp-parts-bar" aria-label="9대 진료 부위 선택">
+      <div class="sp-parts-head">
+        <div class="sp-parts-title">
+          <span>📍 부위별 오늘의 건강 글 선택</span>
         </div>
-
-        <div class="qna-cat-strip" id="blog-category-strip" style="margin-bottom:16px;">
-          <button type="button" class="qna-cat-btn active" data-bpart="all" onclick="window.filterClinicalBlog('all')">📋 전체 질환 칼럼 (${CLINICAL_POSTS_FOR_CLIENT.length})</button>
-          ${DISEASE_QNA_CATEGORIES.map(c => {
-            const cnt = CLINICAL_POSTS_FOR_CLIENT.filter(x => x.partId === c.partId).length;
-            return `<button type="button" class="qna-cat-btn" data-bpart="${c.partId}" onclick="window.filterClinicalBlog('${c.partId}')">${c.icon} ${c.shortName} (${cnt})</button>`;
-          }).join('\n          ')}
-        </div>
-
-        <!-- 선택된 임상 칼럼 전문 리더 모달/패널 -->
-        <div id="clinical-blog-reader-box" style="display:none;margin-bottom:20px;padding:26px;border-radius:18px;background:#F8FAFC;border:2px solid #2563EB;"></div>
-
-        <!-- 임상 칼럼 카드 그리드 -->
-        <div id="clinical-blog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;"></div>
+        <span class="sp-parts-sub">부위를 선택하면 해당 부위의 최신 건강글 · 조회수 BEST 3 · 누적 칼럼이 즉시 전환됩니다</span>
       </div>
-
-      <div class="blog-layout">
-        <aside class="blog-sidebar">
-          <div class="sidebar-card">
-            <div class="sidebar-label">JOURNAL POLICY · 발행 원칙</div>
-            <div style="font-size:0.96rem;font-weight:800;color:var(--ink-900);margin-bottom:8px;">대표 아티클 단독 공개 체제</div>
-            <div class="journal-policy-badge">
-              <div>✔ 상업적 시술 홍보 문구 전면 배제</div>
-              <div>✔ 해외 SCI 의학저널 &amp; 통합생리학 교차 검증</div>
-              <div>✔ 대표 칼럼 1편 집중 아카이빙 (타 원고 비공개 보관)</div>
-              <div>✔ 개인 건강 질문은 <strong>[무엇이든 물어보세요 (통합)]</strong>로 완전 분리</div>
-            </div>
-          </div>
-
-          <div class="sidebar-card">
-            <div class="sidebar-label">CONTENTS · 본문 목차</div>
-            <ul class="toc-list">
-              <li><a href="#sec-tldr" class="toc-link">핵심 의학 인사이트 요약 (TL;DR)</a></li>
-              <li><a href="#sec-matrix" class="toc-link">4대 생체 조절축 &amp; 해외 학술 근거표</a></li>
-              ${FLAGSHIP_REPRESENTATIVE_POST.sections.map(s => `<li><a href="#sec-${s.num}" class="toc-link">${s.num}. ${s.heading}</a></li>`).join('\n              ')}
-              <li><a href="#sec-faq" class="toc-link">자주 묻는 의학 생리 FAQ</a></li>
-              <li><a href="#sec-refs" class="toc-link">참고 해외·통합의학 논문 (10편)</a></li>
-            </ul>
-          </div>
-
-          <div class="sidebar-card" style="background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 100%);color:#FFFFFF;border:none;">
-            <div style="font-size:0.74rem;font-weight:800;color:#93C5FD;margin-bottom:6px;">INTEGRATED Q&amp;A MENU</div>
-            <div style="font-size:1rem;font-weight:800;margin-bottom:8px;">전 질환 통합 1:1 상담 질문하기</div>
-            <p style="font-size:0.82rem;color:#CBD5E1;line-height:1.58;margin-bottom:14px;">비밀글 또는 공개글로 편하게 질문을 남겨주시면 대표원장실에서 답변을 등록해 드립니다 (답변 완료 시 카톡·메일 즉시 전송).</p>
-            <button type="button" onclick="window.switchMainMenu('qna')" style="width:100%;padding:11px 14px;border-radius:12px;border:none;background:#FFFFFF;color:#0F172A;font-weight:800;font-size:0.86rem;cursor:pointer;">💬 무엇이든 물어보세요 이동 →</button>
-          </div>
-        </aside>
-
-        <article class="flagship-article-card">
-          <div class="article-meta-top">
-            <span class="article-badge">📘 ${FLAGSHIP_REPRESENTATIVE_POST.categoryBadge}</span>
-            <span class="article-date">${FLAGSHIP_REPRESENTATIVE_POST.readingTime} · 발행일 ${FLAGSHIP_REPRESENTATIVE_POST.publishedDate}</span>
-          </div>
-
-          <h2 class="article-h1">${FLAGSHIP_REPRESENTATIVE_POST.title}</h2>
-          <p class="article-en-sub">${FLAGSHIP_REPRESENTATIVE_POST.subtitleEn}</p>
-
-          <div class="article-journal-tags">
-            <span class="journal-chip">🌍 Nature Medicine (2019)</span>
-            <span class="journal-chip">🌍 Physiological Reviews (2019)</span>
-            <span class="journal-chip">🌍 NEJM (2009)</span>
-            <span class="journal-chip">🌍 The Lancet (2018)</span>
-            <span class="journal-chip">🌍 JAMA (2017)</span>
-            <span class="journal-chip">🌍 European Heart Journal (2018)</span>
-            <span class="journal-chip">🌍 Human Reproduction Update (2019)</span>
-            <span class="journal-chip">🌍 European Urology · JCEM · SCI 통합생리학</span>
-          </div>
-
-          <p class="sec-p" style="background:#F8FAFC;padding:18px 22px;border-radius:16px;border:1px solid var(--line-200);font-weight:500;">
-            ${FLAGSHIP_REPRESENTATIVE_POST.summary}
-          </p>
-
-          <div class="tldr-box" id="sec-tldr">
-            <div class="tldr-title">📌 핵심 의학 인사이트 요약 (Executive Summary)</div>
-            <ul class="tldr-list">
-              ${FLAGSHIP_REPRESENTATIVE_POST.tldrPoints.map(pt => `<li>${pt}</li>`).join('\n              ')}
-            </ul>
-          </div>
-
-          <div class="evidence-table-wrap" id="sec-matrix">
-            <table class="evidence-table">
-              <thead>
-                <tr>
-                  <th>생체 조절축</th>
-                  <th>대표 일상 신호</th>
-                  <th>핵심 생리학 기전</th>
-                  <th>해외·통합 참고 저널</th>
-                  <th>일상 회복 핵심 루틴</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${FLAGSHIP_REPRESENTATIVE_POST.comparisonRows.map(r => `
-                <tr>
-                  <td style="font-weight:800;color:#0F172A;">${r.axis}</td>
-                  <td>${r.signal}</td>
-                  <td>${r.mechanism}</td>
-                  <td style="font-weight:700;color:#1D4ED8;">${r.journal}</td>
-                  <td style="font-weight:600;color:#065F46;">${r.action}</td>
-                </tr>`).join('')}
-              </tbody>
-            </table>
-          </div>
-
-          ${FLAGSHIP_REPRESENTATIVE_POST.sections.map(s => `
-          <section class="article-sec" id="sec-${s.num}">
-            <div class="sec-num">PART ${s.num}</div>
-            <h3 class="sec-h2">${s.heading}</h3>
-            ${s.paragraphs.map(p => `<p class="sec-p">${p}</p>`).join('\n            ')}
-            ${s.highlightQuote ? `<blockquote class="sec-quote">${s.highlightQuote}</blockquote>` : ''}
-          </section>`).join('')}
-
-          <div class="faq-box" id="sec-faq">
-            <div class="sec-num">EVIDENCE FAQ</div>
-            <h3 class="sec-h2" style="margin-bottom:16px;">독자들이 자주 궁금해하는 의학·생리 Q&amp;A</h3>
-            ${FLAGSHIP_REPRESENTATIVE_POST.faqList.map(f => `
-            <div class="faq-item">
-              <div class="faq-q">Q. ${f.q}</div>
-              <div class="faq-a">${f.a}</div>
-            </div>`).join('')}
-          </div>
-
-          <div class="refs-box" id="sec-refs">
-            <div style="font-size:0.76rem;font-weight:800;color:#93C5FD;letter-spacing:0.06em;">INTERNATIONAL &amp; INTEGRATIVE BIBLIOGRAPHY</div>
-            <h3 style="font-size:1.15rem;font-weight:800;color:#FFFFFF;margin-top:4px;">참고 해외 의학 및 통합생리학 학술 문헌 (References)</h3>
-            <ul class="refs-list">
-              ${FLAGSHIP_REPRESENTATIVE_POST.internationalReferences.map((ref, i) => `<li>[${i + 1}] ${ref}</li>`).join('\n              ')}
-            </ul>
-          </div>
-
-          <div style="margin-top:28px;padding:24px 28px;border-radius:20px;background:linear-gradient(135deg,#EFF6FF 0%,#EEF2FF 100%);border:1.5px solid #93C5FD;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-            <div>
-              <div style="font-size:0.78rem;font-weight:800;color:#1D4ED8;margin-bottom:4px;">ALL DISEASES INTEGRATED Q&amp;A</div>
-              <div style="font-size:1.08rem;font-weight:800;color:#0F172A;">질환별 개인 맞춤 상담이 필요하신가요? 무엇이든 물어보세요 통합게시판을 이용해 보세요.</div>
-              <div style="font-size:0.86rem;color:#475569;margin-top:2px;">전 질환 통합 리스트 · 비밀글/공개글 지원 · 실시간 키워드 검색 · 답변 시 카카오톡/이메일 알림 자동 전송</div>
-            </div>
-            <button type="button" onclick="window.switchMainMenu('qna')" style="padding:13px 22px;border-radius:999px;border:none;background:#1D4ED8;color:#FFFFFF;font-weight:800;font-size:0.92rem;cursor:pointer;box-shadow:0 6px 16px rgba(29,78,216,0.25);">💬 무엇이든 물어보세요 열기 →</button>
-          </div>
-        </article>
+      <div class="sp-parts-grid" id="sp-parts-chip-container">
+        ${partChipsServerHtml}
       </div>
     </section>
 
-    <!-- ====================================================================
-         SECTION 2: ALL DISEASES INTEGRATED Q&A BOARD + REAL-TIME SEARCH + MASTER CONSOLE
-         ==================================================================== -->
-    <section class="tab-section" id="section-qna-view">
+    <!-- 3D 백과사전 건강글 3탭 단독 컨테이너 -->
+    <div id="standalone-dynamic-container"></div>
 
-      <!-- TOP INTEGRATED SEARCH & ACTIONS BAR -->
-      <div class="qna-search-wrap">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
-          <div>
-            <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">ALL DISEASES INTEGRATED MEDICAL Q&amp;A BOARD</div>
-            <h2 style="font-size:1.26rem;font-weight:800;color:var(--ink-900);margin-top:2px;">💬 무엇이든 물어보세요 · 전 질환 통합 건강 게시판</h2>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.82rem;font-weight:700;color:#059669;">
-            <span class="badge-notify-tag">🔒 비밀글 가능</span>
-            <span class="badge-notify-tag">🌐 공개글 가능</span>
-            <span class="badge-notify-tag">🔍 키워드 검색</span>
-            <span class="badge-notify-tag">📱 답변 시 카톡·메일 전송</span>
-          </div>
-        </div>
-        <div class="qna-search-row">
-          <input type="text" id="qna-search-input" class="qna-search-input" placeholder="🔍 궁금한 증상, 질환, 질문 제목, 답변 키워드로 실시간 검색... (예: 어지럼증, 성장판, 생리통, 야간뇨 등)" onkeydown="if(event.key==='Enter'){event.preventDefault();window.applyQnaSearch();}" />
-          <button type="button" class="qna-search-btn" onclick="window.applyQnaSearch()">검색하기</button>
-          <button type="button" class="qna-reset-btn" onclick="window.resetQnaSearch()">전체보기</button>
-        </div>
+    <!-- 단 1개의 단독 페이지에서 72편 전체를 검색엔진(SEO·AEO·GEO)에 노출시키는 통합 시맨틱 아카이브 -->
+    <details class="seo-all-notes-hub">
+      <summary>
+        <span>📚 9대 부위 · 오늘의 건강 글 72선 전체 통합 색인 (SEO · AEO · GEO 학술 아카이브)</span>
+        <span style="font-size:0.76rem;color:#967128;">클릭하여 전체 펼치기 &#9662;</span>
+      </summary>
+      <div style="margin-top:10px;">
+        ${ssrAllNotesArticlesHtml}
       </div>
-
-      <!-- MASTER CONSOLE (Visible ONLY when Master is logged in) -->
-      <div class="master-console-bar" id="master-console-bar" style="display:none;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div>
-            <div style="font-size:0.75rem;font-weight:800;color:#FCD34D;letter-spacing:0.06em;">👑 MASTER ADMINISTRATOR MODE ACTIVE</div>
-            <div style="font-size:1.14rem;font-weight:800;margin-top:2px;">마스터 전체 질문 열람 &amp; 1:1 답변 등록 (카톡·이메일 자동 발송) 콘솔</div>
-            <div style="font-size:0.84rem;color:#CBD5E1;margin-top:2px;" id="master-stats-line">모든 비밀글/공개글 원문, 회원 실명·연락처·소셜채널·연령대·IP 상세정보 확인 및 1:1 답변 작성이 활성화되었습니다.</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <button type="button" class="gnb-pill" onclick="window.openBareunVisitModal && window.openBareunVisitModal()" style="background:#DCFCE7;border-color:#10B981;color:#065F46;font-weight:800;">📊 홈페이지 방문 조회수 · IP 상세로그</button>
-            <button type="button" class="gnb-pill" onclick="window.toggleMasterMembersPanel()" style="background:#FEF3C7;border-color:#F59E0B;color:#78350F;font-weight:800;">👥 전체 가입회원 명부 상세열람</button>
-            <button type="button" class="gnb-pill" onclick="window.toggleOAuthConfigPanel()" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.28);color:#FFFFFF;">⚙️ 소셜 OAuth 키 설정</button>
-            <button type="button" class="gnb-pill" onclick="window.logoutBareunUser()" style="background:#EF4444;border-color:#EF4444;color:#FFFFFF;">로그아웃</button>
-          </div>
-        </div>
-
-        <!-- Master All Members Directory Drawer -->
-        <div id="master-members-drawer" style="display:none;margin-top:16px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.97);color:#0F172A;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <strong style="font-size:0.95rem;">👥 가입 회원 전체 상세 명부 (마스터 전용)</strong>
-            <button type="button" onclick="document.getElementById('master-members-drawer').style.display='none'" style="border:none;background:#E2E8F0;padding:4px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.78rem;">닫기</button>
-          </div>
-          <div id="master-members-table-wrap" style="overflow-x:auto;font-size:0.82rem;">로딩 중...</div>
-        </div>
-
-        <!-- Master OAuth Client ID Settings Drawer -->
-        <div id="master-oauth-drawer" style="display:none;margin-top:16px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.97);color:#0F172A;">
-          <div style="font-size:0.9rem;font-weight:800;margin-bottom:6px;">⚙️ 소셜 로그인 OAuth Client ID 연동 설정 (선택사항 — 미입력 시 3초 즉시 간편가입 모드 자동 작동)</div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;">
-            <input type="text" id="oauth-google-id" class="form-input" placeholder="Google Client ID" />
-            <input type="text" id="oauth-kakao-key" class="form-input" placeholder="Kakao JavaScript Key" />
-            <input type="text" id="oauth-naver-id" class="form-input" placeholder="Naver Client ID" />
-          </div>
-          <button type="button" onclick="window.saveOAuthConfig()" style="margin-top:10px;padding:9px 18px;border-radius:10px;border:none;background:#2563EB;color:#FFFFFF;font-weight:800;font-size:0.84rem;cursor:pointer;">설정 저장</button>
-        </div>
-      </div>
-
-      <!-- 9 DISEASE CATEGORY FILTER TABS -->
-      <div class="qna-cat-strip" id="qna-category-strip" role="tablist" aria-label="9대 질환별 Q&A 카테고리">
-        <button type="button" class="qna-cat-btn active" data-qpart="all" onclick="window.selectQnaDisease('all')">📋 전체 질환 통합보기</button>
-        ${DISEASE_QNA_CATEGORIES.map(c => `<button type="button" class="qna-cat-btn" data-qpart="${c.partId}" onclick="window.selectQnaDisease('${c.partId}')">${c.icon} ${c.shortName}</button>`).join('\n        ')}
-      </div>
-
-      <!-- DYNAMIC OVERSEAS + INTEGRATIVE PAPERS BANNER FOR SELECTED DISEASE -->
-      <div class="disease-evidence-banner" id="disease-evidence-banner"></div>
-
-      <!-- Q&A SPLIT WORKSPACE -->
-      <div class="qna-grid">
-        <!-- LEFT: MEMBER AUTH / QUESTION COMPOSER -->
-        <div class="qna-panel-card" id="qna-left-composer-box"></div>
-
-        <!-- RIGHT: STRICTLY INTEGRATED Q&A BOARD -->
-        <div class="qna-panel-card">
-          <div class="qna-board-header">
-            <div>
-              <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);">ALL-IN-ONE BOARD · 통합 건강 상담 게시판</div>
-              <h2 style="font-size:1.18rem;font-weight:800;color:var(--ink-900);" id="qna-board-heading">전 질환 통합 상담 목록</h2>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <select id="qna-status-filter" class="form-select" style="width:auto;padding:7px 12px;font-size:0.8rem;font-weight:700;" onchange="window.renderQnaList()">
-                <option value="all">전체 상태</option>
-                <option value="mine">내 질문만</option>
-                <option value="waiting">답변대기</option>
-                <option value="answered">답변완료</option>
-                <option value="secret">🔒 비밀글만</option>
-                <option value="public">🌐 공개글만</option>
-              </select>
-              <button type="button" class="gnb-pill" onclick="window.fetchQnaItems()" style="padding:7px 12px;">↻ 새로고침</button>
-            </div>
-          </div>
-
-          <div style="padding:11px 14px;border-radius:12px;background:#F8FAFC;border:1px solid var(--line-200);font-size:0.82rem;color:var(--ink-700);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-            <span>💡 <strong>비밀글</strong>은 작성자와 마스터만 열람되며, <strong>공개글</strong>은 누구나 질문과 답변을 함께 읽고 도움받으실 수 있습니다.</span>
-            <span style="color:#059669;font-weight:700;">답변 시 카톡·이메일 알림 전송</span>
-          </div>
-
-          <div id="qna-items-container">
-            <div style="padding:32px;text-align:center;color:var(--ink-500);font-size:0.9rem;">통합 Q&amp;A 목록을 불러오는 중입니다...</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </details>
   </main>
-
-  <!-- AUTHENTICATION MODAL (FAST GOOGLE / KAKAO / NAVER + EMAIL + MASTER) -->
-  <div class="modal-backdrop" id="auth-modal-backdrop" onclick="if(event.target===this) window.closeAuthModal()">
-    <div class="auth-modal-card">
-      <button type="button" class="modal-close-btn" onclick="window.closeAuthModal()" aria-label="닫기">✕</button>
-      <div style="font-size:0.74rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">MEMBER ACCESS · 빠른 회원가입 및 로그인</div>
-      <h3 style="font-size:1.26rem;font-weight:800;color:var(--ink-900);margin-top:4px;">바른 건강 인사이트 &amp; 비공개 Q&amp;A 회원 인증</h3>
-
-      <div class="modal-mode-tabs">
-        <button type="button" class="modal-mode-tab active" id="mtab-social" onclick="window.switchModalTab('social')">⚡ 소셜 3초 가입</button>
-        <button type="button" class="modal-mode-tab" id="mtab-email" onclick="window.switchModalTab('email')">✉️ 이메일 가입/로그인</button>
-        <button type="button" class="modal-mode-tab" id="mtab-master" onclick="window.switchModalTab('master')">👑 마스터 전용</button>
-      </div>
-
-      <!-- TAB 1: FAST SOCIAL SIGNUP (GOOGLE / KAKAO / NAVER) -->
-      <div id="modal-pane-social">
-        <p style="font-size:0.85rem;color:var(--ink-700);margin-bottom:12px;">
-          원하시는 소셜 채널을 선택하시면 복잡한 절차 없이 <strong>3초 만에 회원 등록 및 비공개 질문 권한</strong>이 활성화됩니다.
-        </p>
-        <div class="social-btn-stack">
-          <button type="button" class="social-fast-btn google" onclick="window.selectSocialProvider('google')">
-            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 3 14.7 2 12 2 6.5 2 2 6.5 2 12s4.5 10 10 10c5.8 0 9.6-4.1 9.6-9.8 0-.7-.1-1.2-.2-1.8H12z"/></svg>
-            <span>Google 계정으로 빠른 시작</span>
-          </button>
-          <button type="button" class="social-fast-btn kakao" onclick="window.selectSocialProvider('kakao')">
-            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.5 2 10.9c0 2.8 1.9 5.3 4.7 6.7-.2.7-.7 2.6-.8 3-.1.5.2.5.4.3.2-.1 2.9-1.9 4.1-2.7.5.1 1.1.1 1.6.1 5.5 0 10-3.5 10-7.9S17.5 3 12 3z"/></svg>
-            <span>카카오톡으로 3초 빠른 회원가입</span>
-          </button>
-          <button type="button" class="social-fast-btn naver" onclick="window.selectSocialProvider('naver')">
-            <span style="font-weight:900;font-size:1rem;font-family:Arial,sans-serif;">N</span>
-            <span>네이버 아이디로 빠른 회원가입</span>
-          </button>
-        </div>
-
-        <form id="social-express-form" onsubmit="window.submitSocialExpress(event)" style="margin-top:14px;padding:16px;border-radius:16px;background:#F8FAFC;border:1.5px solid #BFDBFE;">
-          <div style="font-size:0.82rem;font-weight:800;color:#1D4ED8;margin-bottom:10px;" id="social-selected-label">⚡ 선택한 소셜 채널: Google 간편 회원가입</div>
-          <input type="hidden" id="social-provider-input" value="google" />
-          <div class="form-row-2">
-            <div class="form-field">
-              <label class="form-label">성함 (또는 닉네임) *</label>
-              <input type="text" id="social-name" class="form-input" placeholder="예: 김바른" required />
-            </div>
-            <div class="form-field">
-              <label class="form-label">휴대폰 번호 (답변 알림·선택)</label>
-              <input type="tel" id="social-phone" class="form-input" placeholder="010-0000-0000" />
-            </div>
-          </div>
-          <div class="form-field">
-            <label class="form-label">소셜 이메일 (기존 내 질문 재열람 시 본인 식별키)</label>
-            <input type="email" id="social-email" class="form-input" placeholder="예: myid@gmail.com (미입력 시 자동 생성)" />
-          </div>
-          <div class="form-row-2">
-            <div class="form-field">
-              <label class="form-label">성별</label>
-              <select id="social-gender" class="form-select">
-                <option value="여성">여성</option>
-                <option value="남성">남성</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label class="form-label">연령대</label>
-              <select id="social-age" class="form-select">
-                <option value="초·중·고 자녀(보호자)">초·중·고 자녀(보호자)</option>
-                <option value="20대">20대</option>
-                <option value="30대" selected>30대</option>
-                <option value="40대">40대</option>
-                <option value="50대">50대</option>
-                <option value="60대 이상">60대 이상</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="submit-primary-btn" id="social-submit-btn">⚡ 3초 간편 회원가입 완료 및 질문하기</button>
-        </form>
-      </div>
-
-      <!-- TAB 2: EMAIL REGISTER / LOGIN -->
-      <div id="modal-pane-email" style="display:none;">
-        <div style="display:flex;gap:8px;margin-bottom:12px;">
-          <button type="button" id="subtab-reg" class="gnb-pill active" onclick="window.toggleEmailMode('register')" style="flex:1;justify-content:center;background:#EFF6FF;border-color:#2563EB;color:#1D4ED8;">신규 이메일 회원가입</button>
-          <button type="button" id="subtab-log" class="gnb-pill" onclick="window.toggleEmailMode('login')" style="flex:1;justify-content:center;">기존 이메일 로그인</button>
-        </div>
-
-        <form id="email-auth-form" onsubmit="window.submitEmailAuth(event)">
-          <input type="hidden" id="email-mode-input" value="register" />
-          <div id="email-reg-extra">
-            <div class="form-row-2">
-              <div class="form-field">
-                <label class="form-label">성함 *</label>
-                <input type="text" id="em-name" class="form-input" placeholder="실명 입력" />
-              </div>
-              <div class="form-field">
-                <label class="form-label">휴대폰 번호</label>
-                <input type="tel" id="em-phone" class="form-input" placeholder="010-0000-0000" />
-              </div>
-            </div>
-            <div class="form-row-2">
-              <div class="form-field">
-                <label class="form-label">성별</label>
-                <select id="em-gender" class="form-select">
-                  <option value="여성">여성</option>
-                  <option value="남성">남성</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label class="form-label">연령대</label>
-                <select id="em-age" class="form-select">
-                  <option value="초·중·고 자녀(보호자)">초·중·고 자녀(보호자)</option>
-                  <option value="20대">20대</option>
-                  <option value="30대" selected>30대</option>
-                  <option value="40대">40대</option>
-                  <option value="50대">50대</option>
-                  <option value="60대 이상">60대 이상</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="form-field">
-            <label class="form-label">이메일 주소 *</label>
-            <input type="email" id="em-email" class="form-input" placeholder="example@email.com" required />
-          </div>
-          <div class="form-field">
-            <label class="form-label">비밀번호 (4자 이상) *</label>
-            <input type="password" id="em-pass" class="form-input" placeholder="비밀번호 입력" required />
-          </div>
-          <button type="submit" class="submit-primary-btn" id="em-submit-btn">이메일 회원가입 및 로그인</button>
-        </form>
-      </div>
-
-      <!-- TAB 3: MASTER LOGIN -->
-      <div id="modal-pane-master" style="display:none;">
-        <div style="padding:12px 14px;border-radius:12px;background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;font-size:0.83rem;margin-bottom:14px;">
-          👑 <strong>마스터 관리자 전용 인증</strong>: 로그인 시 전 질환 비공개 질문 원문 열람, 질문 회원 상세정보(실명·소셜경로·이메일·연락처·연령대·IP) 조회 및 1:1 답변 등록이 활성화됩니다.
-        </div>
-        <form onsubmit="window.submitMasterLogin(event)">
-          <div class="form-field">
-            <label class="form-label">마스터 관리자 아이디</label>
-            <input type="text" id="master-id-input" class="form-input" placeholder="관리자 아이디" required />
-          </div>
-          <div class="form-field">
-            <label class="form-label">마스터 비밀번호</label>
-            <input type="password" id="master-pw-input" class="form-input" placeholder="관리자 비밀번호" required />
-          </div>
-          <button type="submit" class="submit-primary-btn master-submit">👑 마스터 전체 열람 모드 로그인</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: SECRET QNA UNLOCK -->
-  <div class="modal-backdrop" id="qna-unlock-modal-backdrop" onclick="if(event.target===this) window.closeUnlockModal()">
-    <div class="auth-modal-card" style="max-width:420px;">
-      <button type="button" class="modal-close-btn" onclick="window.closeUnlockModal()" aria-label="닫기">✕</button>
-      <div style="font-size:0.74rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">SECURITY UNLOCK · 비밀글 열람 인증</div>
-      <h3 style="font-size:1.2rem;font-weight:800;color:var(--ink-900);margin-top:4px;">🔒 비밀번호 입력</h3>
-      <p style="font-size:0.85rem;color:var(--ink-700);line-height:1.55;margin:8px 0 16px;">
-        작성 시 설정하신 <strong>비밀번호</strong>를 입력하시면 비밀글의 원문과 원장님의 1:1 전문 답변을 즉시 확인하실 수 있습니다.
-      </p>
-      <form onsubmit="window.submitSecretUnlock(event)">
-        <input type="hidden" id="unlock-qna-id" value="" />
-        <div class="form-field">
-          <label class="form-label">설정한 비밀글 비밀번호 *</label>
-          <input type="password" id="unlock-qna-password" class="form-input" placeholder="비밀번호 입력" required />
-        </div>
-        <button type="submit" class="submit-primary-btn" id="unlock-submit-btn">🔓 비밀글 잠금 해제 및 열람</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="toast-banner" id="bareun-toast"></div>
 
   <script>
   (function() {
-    const QNA_CATEGORIES = ${JSON.stringify(DISEASE_QNA_CATEGORIES)};
-    const CLINICAL_POSTS = ${JSON.stringify(CLINICAL_POSTS_FOR_CLIENT)};
-    const TOKEN_KEY = 'bareun_member_token_v5';
+    const CLINIC_MENUS = ${JSON.stringify(ENABLED_MENUS)};
+    const SEED_NOTES = ${JSON.stringify(FLATTENED_SEED_NOTES)};
+    const FORBIDDEN_PROMO = ${JSON.stringify(FORBIDDEN_PROMO_WORDS)};
+    const FORBIDDEN_JARGON = ${JSON.stringify(FORBIDDEN_JARGON_WORDS)};
 
-    let currentMainTab = 'blog';
-    let currentDiseasePart = 'all';
-    let currentBlogPart = 'all';
-    let currentOpenPostSlug = '';
-    let currentUser = null;
-    let qnaItems = [];
-    let oauthConfig = { googleClientId: '', kakaoJsKey: '', naverClientId: '' };
-
-    function getToken() {
-      try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
-    }
-    function setToken(tok) {
-      try {
-        if (tok) localStorage.setItem(TOKEN_KEY, tok);
-        else localStorage.removeItem(TOKEN_KEY);
-      } catch (e) {}
-    }
-
-    function esc(s) {
-      return String(s || '')
+    function escHtml(str) {
+      return String(str == null ? '' : str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
     }
 
-    window.showToast = function(msg) {
-      const el = document.getElementById('bareun-toast');
-      if (!el) return;
-      el.textContent = msg;
-      el.classList.add('show');
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 3400);
-    };
+    function fmtDotDate(d) {
+      return String(d || '').replace(/-/g, '.');
+    }
 
-    async function apiCall(endpoint, method, bodyObj) {
-      const headers = { 'Accept': 'application/json' };
-      const tok = getToken();
-      if (tok) headers['X-Bareun-Token'] = tok;
-      if (bodyObj) headers['Content-Type'] = 'application/json';
-      const sep = endpoint.includes('?') ? '&' : '?';
-      const res = await fetch('/wp-json/bareun/v1' + endpoint + sep + '_t=' + Date.now(), {
-        method: method || 'GET',
-        headers,
-        credentials: 'same-origin',
-        body: bodyObj ? JSON.stringify(bodyObj) : undefined
+    function getTodayKst() {
+      try {
+        return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+      } catch (e) {
+        return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+      }
+    }
+
+    function passThreeStageGate(note) {
+      if (!note || !note.title) return false;
+      const all = [
+        note.title,
+        ...(note.empathy || []),
+        ...(note.truth || []),
+        ...(note.myth || []),
+        ...(note.check || [])
+      ].join(' ');
+      for (const w of FORBIDDEN_PROMO) { if (all.includes(w)) return false; }
+      for (const j of FORBIDDEN_JARGON) { if (all.includes(j)) return false; }
+      return true;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    let todayKst = getTodayKst();
+    let dynamicNotes = [];
+    let noteViewsMap = {};
+    SEED_NOTES.forEach(n => {
+      if (n && n.id) noteViewsMap[n.id] = Number(n.views) || 0;
+    });
+    let lastViewedNoteIdSession = '';
+
+    const initNoteParam = params.get('note') || '';
+    const initPartFromNote = initNoteParam ? initNoteParam.split('-')[0] : '';
+    const initPartParam = params.get('part') || initPartFromNote || (CLINIC_MENUS[0] ? CLINIC_MENUS[0].id : 'knee');
+    let currentPartId = CLINIC_MENUS.some(m => m.id === initPartParam) ? initPartParam : (CLINIC_MENUS[0] ? CLINIC_MENUS[0].id : 'knee');
+    let currentMenuTab = params.get('tab') === 'qna' ? 1 : (params.get('tab') === 'archive' ? 2 : 0);
+    let selectedNoteId = initNoteParam || null;
+    let archiveScope = 'part';
+    let qnaItems = null;
+    let qnaSearchQuery = '';
+    let isQnaComposerOpen = params.get('write') === '1';
+    let qnaWriteFeedback = '';
+
+    function getMenuMeta(id) {
+      return CLINIC_MENUS.find(m => m.id === id) || CLINIC_MENUS[0];
+    }
+
+    async function recordActualNoteView(noteId) {
+      const nid = String(noteId || '').trim();
+      if (!nid || lastViewedNoteIdSession === nid) return;
+      lastViewedNoteIdSession = nid;
+      noteViewsMap[nid] = (Number(noteViewsMap[nid]) || 0) + 1;
+      document.querySelectorAll('[data-note-view-id="' + nid + '"]').forEach(el => {
+        el.textContent = '실제 조회수 ' + Number(noteViewsMap[nid]).toLocaleString() + '회';
       });
-      const json = await res.json().catch(() => ({ ok: false, message: '서버 응답 오류' }));
-      return { status: res.status, data: json };
-    }
-
-    function providerLabel(p) {
-      if (p === 'kakao') return '카카오톡 간편회원';
-      if (p === 'naver') return '네이버 간편회원';
-      if (p === 'google') return 'Google 간편회원';
-      if (p === 'master') return '👑 마스터 관리자';
-      return '이메일 정회원';
-    }
-
-    function getCategoryMeta(partId) {
-      return QNA_CATEGORIES.find(c => c.partId === partId) || null;
-    }
-
-    let currentSearchKeyword = '';
-    let currentUnlockedIds = new Set();
-
-    // 1. SWITCH BETWEEN BLOG & DISEASE QNA
-    window.switchMainMenu = function(tab, optionalPart) {
-      currentMainTab = (tab === 'qna') ? 'qna' : 'blog';
-      document.getElementById('section-blog-view').classList.toggle('active', currentMainTab === 'blog');
-      document.getElementById('section-qna-view').classList.toggle('active', currentMainTab === 'qna');
-      document.getElementById('gnb-tab-blog').classList.toggle('active', currentMainTab === 'blog');
-      document.getElementById('gnb-tab-qna').classList.toggle('active', currentMainTab === 'qna');
-      document.getElementById('hero-card-blog').classList.toggle('active', currentMainTab === 'blog');
-      document.getElementById('hero-card-qna').classList.toggle('active', currentMainTab === 'qna');
-
-      if (optionalPart) {
-        currentDiseasePart = optionalPart;
-      }
-
-      const url = new URL(window.location.href);
-      url.searchParams.set('tab', currentMainTab);
-      if (currentMainTab === 'qna' && currentDiseasePart !== 'all') {
-        url.searchParams.set('part', currentDiseasePart);
-      } else {
-        url.searchParams.delete('part');
-      }
-      window.history.replaceState({}, '', url.toString());
-
-      if (currentMainTab === 'qna') {
-        renderDiseaseBanner();
-        renderLeftComposer();
-        window.fetchQnaItems();
-      }
-    };
-
-    // 2. SELECT DISEASE CATEGORY IN QNA
-    window.selectQnaDisease = function(partId) {
-      currentDiseasePart = partId || 'all';
-      document.querySelectorAll('#qna-category-strip .qna-cat-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-qpart') === currentDiseasePart);
-      });
-      const gnb3d = document.getElementById('gnb-3d-explorer-link');
-      if (gnb3d) {
-        gnb3d.setAttribute('href', currentDiseasePart !== 'all' ? ('body-explorer.html?part=' + currentDiseasePart) : 'body-explorer.html');
-      }
-      renderDiseaseBanner();
-      renderLeftComposer();
-      window.fetchQnaItems();
-    };
-
-    // 2-1. REAL-TIME & KEYWORD SEARCH HANDLERS
-    window.applyQnaSearch = function() {
-      const input = document.getElementById('qna-search-input');
-      currentSearchKeyword = (input ? input.value : '').trim();
-      window.fetchQnaItems();
-    };
-
-    window.resetQnaSearch = function() {
-      const input = document.getElementById('qna-search-input');
-      if (input) input.value = '';
-      currentSearchKeyword = '';
-      window.fetchQnaItems();
-    };
-
-    // 2-2. SECRET PASSWORD INPUT TOGGLE
-    window.toggleSecretInput = function(isSecret) {
-      const pwBox = document.getElementById('q-secret-pw-box');
-      if (pwBox) {
-        pwBox.style.display = isSecret ? 'block' : 'none';
-      }
-    };
-
-    // 2-3. SECRET UNLOCK MODAL HANDLERS
-    window.openSecretUnlockModal = function(qnaId) {
-      const modal = document.getElementById('qna-unlock-modal-backdrop');
-      const idInput = document.getElementById('unlock-qna-id');
-      const pwInput = document.getElementById('unlock-qna-password');
-      if (!modal || !idInput || !pwInput) return;
-      idInput.value = qnaId;
-      pwInput.value = '';
-      modal.classList.add('open');
-      setTimeout(() => pwInput.focus(), 150);
-    };
-
-    window.closeUnlockModal = function() {
-      const modal = document.getElementById('qna-unlock-modal-backdrop');
-      if (modal) modal.classList.remove('open');
-    };
-
-    window.submitSecretUnlock = async function(ev) {
-      ev.preventDefault();
-      const id = document.getElementById('unlock-qna-id').value;
-      const password = document.getElementById('unlock-qna-password').value.trim();
-      if (!password) {
-        window.showToast('비밀번호를 입력해 주세요.');
-        return;
-      }
-      const res = await apiCall('/qna/unlock', 'POST', { id, password });
-      if (res.data && res.data.ok && res.data.item) {
-        currentUnlockedIds.add(Number(id));
-        const idx = qnaItems.findIndex(q => q.id === Number(id));
-        if (idx !== -1) {
-          qnaItems[idx] = { ...qnaItems[idx], ...res.data.item, canRead: true };
-        }
-        window.closeUnlockModal();
-        window.renderQnaList();
-        window.showToast('🔓 비밀글 잠금이 안전하게 해제되었습니다.');
-      } else {
-        window.showToast(res.data?.message || '비밀번호가 일치하지 않습니다.');
-      }
-    };
-
-    function renderDiseaseBanner() {
-      const box = document.getElementById('disease-evidence-banner');
-      const heading = document.getElementById('qna-board-heading');
-      if (!box) return;
-
-      if (currentDiseasePart === 'all') {
-        if (heading) heading.textContent = '전 질환 통합 1:1 건강 상담 게시판';
-        box.innerHTML =
-          '<div class="deb-header">' +
-            '<div>' +
-              '<div style="font-size:0.74rem;font-weight:800;color:#2563EB;">ALL DISEASES INTEGRATED MEDICAL Q&amp;A · 전 질환 통합 상담 센터</div>' +
-              '<h2 style="font-size:1.25rem;font-weight:800;color:#0F172A;margin-top:3px;">모든 질환에 대해 비밀글 또는 공개글로 편하게 문의해 보세요</h2>' +
-            '</div>' +
-          '</div>' +
-          '<p style="font-size:0.9rem;color:#475569;">소아 성장·성조숙, 경추·탈모, 척추·디스크, 만성피로, 자율신경·실신, 소화기·담적, 대사·다이어트, 자궁·난임(IVF), 전립선·야간뇨까지 해외 권위 의학 논문과 통합생리학 근거를 바탕으로 대표원장이 1:1 직접 답변을 드립니다 (답변 완료 시 카톡·이메일 알림 전송).</p>';
-        return;
-      }
-
-      const cat = getCategoryMeta(currentDiseasePart) || QNA_CATEGORIES[0];
-      if (heading) heading.textContent = cat.icon + ' ' + cat.name + ' — 건강 상담 목록';
-
-      const allPapers = [
-        ...(cat.overseasPapers || []).map(p => ({ ...p, isIntegrative: false })),
-        ...(cat.integrativePapers || []).map(p => ({ ...p, isIntegrative: true }))
-      ];
-
-      const papersHtml = allPapers.map(p =>
-        '<div class="deb-paper-card">' +
-          '<span class="deb-paper-badge' + (p.isIntegrative ? ' integrative' : '') + '">' + esc(p.badge) + '</span>' +
-          '<div style="font-size:0.86rem;font-weight:800;color:#0F172A;margin-bottom:4px;">' + esc(p.journal) + '</div>' +
-          '<div style="font-size:0.76rem;color:#64748B;margin-bottom:6px;">' + esc(p.citation) + '</div>' +
-          '<div style="font-size:0.82rem;color:#334155;line-height:1.55;">' + esc(p.finding) + '</div>' +
-        '</div>'
-      ).join('');
-
-      const clinicBtns = (cat.clinicLinks || []).map(cl =>
-        '<a href="' + cl.href + '" class="gnb-pill" style="background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;font-weight:800;">' + esc(cl.label) + ' ↗</a>'
-      ).join('');
-
-      box.innerHTML =
-        '<div class="deb-header">' +
-          '<div>' +
-            '<div style="font-size:0.75rem;font-weight:800;color:#2563EB;">' + esc(cat.code) + ' · ' + esc(cat.enName) + '</div>' +
-            '<h2 style="font-size:1.3rem;font-weight:800;color:#0F172A;margin-top:3px;">' + cat.icon + ' ' + esc(cat.name) + '</h2>' +
-          '</div>' +
-          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-            '<a href="body-explorer.html?part=' + cat.partId + '" class="gnb-pill vibrant-3d-btn">💡 3D 인체모형 · 생활꿀팁 보기 ↗</a>' +
-            clinicBtns +
-          '</div>' +
-        '</div>' +
-        '<p style="font-size:0.92rem;color:#334155;line-height:1.65;">' + esc(cat.summary) + '</p>' +
-        '<div class="deb-papers-grid">' + papersHtml + '</div>';
-    }
-
-    // 3. RENDER LEFT QUESTION COMPOSER (SUPPORTS BOTH GUEST & LOGGED-IN MEMBERS)
-    function renderLeftComposer() {
-      const box = document.getElementById('qna-left-composer-box');
-      if (!box) return;
-
-      const selectedPart = currentDiseasePart !== 'all' ? currentDiseasePart : 'lumbar';
-      const catOptions = QNA_CATEGORIES.map(c =>
-        '<option value="' + c.partId + '"' + (c.partId === selectedPart ? ' selected' : '') + '>' + c.icon + ' ' + esc(c.name) + '</option>'
-      ).join('');
-
-      const userBadgeHtml = currentUser
-        ? '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 13px;border-radius:12px;background:#EFF6FF;border:1px solid #BFDBFE;margin-bottom:14px;">' +
-            '<div style="font-size:0.83rem;font-weight:800;color:#1E3A8A;">👤 ' + esc(currentUser.name) + ' 님 <span style="font-weight:600;color:#2563EB;">(' + providerLabel(currentUser.provider) + ')</span></div>' +
-            '<button type="button" onclick="window.logoutBareunUser()" style="border:none;background:#DBEAFE;color:#1E40AF;padding:4px 10px;border-radius:8px;font-size:0.75rem;font-weight:800;cursor:pointer;">로그아웃</button>' +
-          '</div>'
-        : '<div style="margin-bottom:14px;padding:11px 13px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">' +
-            '<span style="font-size:0.8rem;color:#475569;font-weight:600;">⚡ 간편 작성 또는 3초 소셜 로그인</span>' +
-            '<button type="button" class="gnb-pill auth-btn" style="padding:5px 11px;font-size:0.76rem;" onclick="window.openAuthModal(\\'social\\')">소셜 3초 로그인</button>' +
-          '</div>';
-
-      box.innerHTML =
-        '<div style="font-size:0.74rem;font-weight:800;color:#059669;margin-bottom:4px;">💬 무엇이든 물어보세요 · 1:1 맞춤 상담</div>' +
-        '<h3 style="font-size:1.18rem;font-weight:800;color:#0F172A;margin-bottom:12px;">건강 질문 등록하기</h3>' +
-        userBadgeHtml +
-        '<form onsubmit="window.submitPrivateQuestion(event)">' +
-          '<div class="form-field">' +
-            '<label class="form-label">상담 질환 카테고리 *</label>' +
-            '<select id="q-part" class="form-select">' + catOptions + '</select>' +
-          '</div>' +
-          '<div class="form-row-2">' +
-            '<div class="form-field">' +
-              '<label class="form-label">성함 (또는 닉네임) *</label>' +
-              '<input type="text" id="q-name" class="form-input" value="' + esc(currentUser ? currentUser.name : '') + '" placeholder="예: 김바른" required />' +
-            '</div>' +
-            '<div class="form-field">' +
-              '<label class="form-label">증상 지속 기간</label>' +
-              '<select id="q-duration" class="form-select">' +
-                '<option value="1개월 미만">1개월 미만 (최근 발생)</option>' +
-                '<option value="1~6개월" selected>1개월 ~ 6개월</option>' +
-                '<option value="6개월~1년">6개월 ~ 1년</option>' +
-                '<option value="1년 이상 만성">1년 이상 만성 반복</option>' +
-              '</select>' +
-            '</div>' +
-          '</div>' +
-          '<div class="form-row-2">' +
-            '<div class="form-field">' +
-              '<label class="form-label">휴대폰 번호 (답변 카톡 알림톡/SMS 수신) *</label>' +
-              '<input type="tel" id="q-phone" class="form-input" value="' + esc(currentUser ? (currentUser.phone || '') : '') + '" placeholder="010-0000-0000" required />' +
-            '</div>' +
-            '<div class="form-field">' +
-              '<label class="form-label">이메일 주소 (답변 메일 수신)</label>' +
-              '<input type="email" id="q-email" class="form-input" value="' + esc(currentUser ? (currentUser.email || '') : '') + '" placeholder="example@email.com" />' +
-            '</div>' +
-          '</div>' +
-          '<div style="margin:12px 0;padding:12px 14px;border-radius:12px;background:#F8FAFC;border:1.5px solid #CBD5E1;">' +
-            '<label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;font-weight:800;color:#1E293B;cursor:pointer;">' +
-              '<input type="checkbox" id="q-is-secret" checked onchange="window.toggleSecretInput(this.checked)" style="width:17px;height:17px;accent-color:#2563EB;" />' +
-              '<span>🔒 비밀글로 등록 (본인 및 마스터만 열람)</span>' +
-            '</label>' +
-            '<div id="q-secret-pw-box" style="margin-top:10px;">' +
-              '<label class="form-label" style="font-size:0.77rem;color:#475569;">비밀글 열람용 비밀번호 (4자리 이상) *</label>' +
-              '<input type="password" id="q-secret-password" class="form-input" placeholder="비밀번호 설정" value="1234" />' +
-              '<div style="font-size:0.73rem;color:#64748B;margin-top:4px;">* 체크 해제 시 전체 방문자가 함께 읽을 수 있는 <strong>[🌐 공개글]</strong>로 등록됩니다.</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="form-field">' +
-            '<label class="form-label">질문 제목 *</label>' +
-            '<input type="text" id="q-title" class="form-input" placeholder="예: 아침 기상 직후 어지럼증과 뒷목 긴장 관련 문의드립니다" required />' +
-          '</div>' +
-          '<div class="form-field">' +
-            '<label class="form-label">상세 증상 및 궁금한 점 *</label>' +
-            '<textarea id="q-content" class="form-textarea" rows="4" placeholder="증상이 나타나는 시간대, 기존 검사 이력, 생활 패턴 등을 적어주시면 대표원장실에서 해외 SCI 및 통합의학 근거를 바탕으로 상세히 답변드립니다." required></textarea>' +
-          '</div>' +
-          '<div style="margin-bottom:12px;padding:9px 12px;border-radius:10px;background:#ECFDF5;border:1px solid #A7F3D0;font-size:0.76rem;color:#065F46;font-weight:700;">' +
-            '📱 1:1 답변 등록 시 기재하신 <strong>휴대폰(카톡 알림톡/SMS)</strong>과 <strong>이메일</strong>로 즉시 알림이 발송됩니다.' +
-          '</div>' +
-          '<button type="submit" class="submit-primary-btn" id="q-submit-btn">💬 건강 질문 등록하기 (카톡·메일 전송)</button>' +
-        '</form>';
-    }
-
-    // 4. FETCH & RENDER INTEGRATED QNA LIST
-    window.fetchQnaItems = async function() {
-      const partParam = encodeURIComponent(currentDiseasePart || 'all');
-      const kwParam = encodeURIComponent(currentSearchKeyword || '');
-      const res = await apiCall('/qna?part=' + partParam + '&keyword=' + kwParam, 'GET');
-      if (res.data && res.data.ok) {
-        qnaItems = res.data.items || [];
-        window.renderQnaList();
-      }
-    };
-
-    window.renderQnaList = function() {
-      const container = document.getElementById('qna-items-container');
-      if (!container) return;
-
-      const statusFilter = document.getElementById('qna-status-filter')?.value || 'all';
-      const isMaster = Boolean(currentUser && currentUser.isMaster);
-
-      const masterBar = document.getElementById('master-console-bar');
-      if (masterBar) {
-        masterBar.style.display = isMaster ? 'block' : 'none';
-        if (isMaster) {
-          const waitCnt = qnaItems.filter(i => i.status !== 'answered').length;
-          const ansCnt = qnaItems.filter(i => i.status === 'answered').length;
-          const statsEl = document.getElementById('master-stats-line');
-          if (statsEl) {
-            statsEl.textContent = '현재 조회 총 ' + qnaItems.length + '건 (답변대기 ' + waitCnt + '건 · 답변완료 ' + ansCnt + '건) — 전 항목 비밀글 잠금 해제됨';
+      try {
+        const res = await fetch('/wp-json/bareun/v1/body-notes/view', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ noteId: nid })
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.ok) {
+          if (data.noteViews && typeof data.noteViews === 'object') {
+            Object.entries(data.noteViews).forEach(([k, v]) => {
+              noteViewsMap[k] = Number(v) || 0;
+            });
+          } else if (typeof data.views === 'number') {
+            noteViewsMap[nid] = data.views;
           }
+          document.querySelectorAll('[data-note-view-id="' + nid + '"]').forEach(el => {
+            el.textContent = '실제 조회수 ' + Number(noteViewsMap[nid] || 0).toLocaleString() + '회';
+          });
         }
-      }
-
-      let filtered = qnaItems.slice();
-      if (statusFilter === 'mine') filtered = filtered.filter(i => i.isMine);
-      else if (statusFilter === 'waiting') filtered = filtered.filter(i => i.status !== 'answered');
-      else if (statusFilter === 'answered') filtered = filtered.filter(i => i.status === 'answered');
-      else if (statusFilter === 'secret') filtered = filtered.filter(i => i.isSecret !== false);
-      else if (statusFilter === 'public') filtered = filtered.filter(i => i.isSecret === false);
-
-      let searchHeaderHtml = '';
-      if (currentSearchKeyword) {
-        searchHeaderHtml =
-          '<div style="margin-bottom:14px;padding:11px 16px;border-radius:12px;background:#EFF6FF;border:1.5px solid #93C5FD;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">' +
-            '<span style="font-size:0.88rem;color:#1E3A8A;font-weight:800;">🔍 <strong>&ldquo;' + esc(currentSearchKeyword) + '&rdquo;</strong> 키워드 검색 결과: 총 ' + filtered.length + '건</span>' +
-            '<button type="button" onclick="window.resetQnaSearch()" style="border:none;background:#2563EB;color:#FFFFFF;padding:5px 12px;border-radius:8px;font-size:0.78rem;font-weight:800;cursor:pointer;">검색 초기화</button>' +
-          '</div>';
-      }
-
-      if (filtered.length === 0) {
-        container.innerHTML = searchHeaderHtml + '<div style="padding:36px 20px;text-align:center;color:#64748B;font-size:0.92rem;">조건에 해당하는 건강 상담 질문이 없습니다.</div>';
-        return;
-      }
-
-      const listHtml = filtered.map(item => {
-        const cat = getCategoryMeta(item.partId);
-        const catTag = cat ? (cat.icon + ' ' + cat.shortName) : item.partId;
-        const statusBadge = item.status === 'answered'
-          ? '<span class="status-pill answered">✔ 1:1 답변완료</span>'
-          : '<span class="status-pill waiting">⏳ 마스터 검토중</span>';
-        const secretBadge = (item.isSecret !== false)
-          ? '<span class="badge-secret">🔒 비밀글</span>'
-          : '<span class="badge-public">🌐 공개글</span>';
-        const provClass = ['kakao', 'naver', 'google'].includes(item.provider) ? (' ' + item.provider) : '';
-        const provText = item.provider === 'kakao' ? '카카오' : item.provider === 'naver' ? '네이버' : item.provider === 'google' ? 'Google' : '고객';
-
-        const canRead = isMaster || item.isMine || (item.isSecret === false) || currentUnlockedIds.has(item.id);
-
-        if (!canRead) {
-          return (
-            '<div class="qna-item-card locked" onclick="window.openSecretUnlockModal(' + item.id + ')">' +
-              '<div class="qna-item-top">' +
-                '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
-                  statusBadge +
-                  secretBadge +
-                  '<span style="font-size:0.76rem;font-weight:800;color:#2563EB;background:#EFF6FF;padding:3px 9px;border-radius:999px;">' + esc(catTag) + '</span>' +
-                  '<span class="provider-badge' + provClass + '">' + provText + '</span>' +
-                '</div>' +
-                '<span style="font-size:0.78rem;color:#64748B;">' + esc(item.maskedAuthor) + ' · ' + esc(item.createdAt) + '</span>' +
-              '</div>' +
-              '<div style="font-size:0.95rem;font-weight:800;color:#334155;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;">' +
-                '<span>🔒 비밀글입니다 (작성자 본인 및 마스터 전용)</span>' +
-                '<button type="button" class="gnb-pill" style="padding:4px 10px;font-size:0.74rem;background:#F1F5F9;border-color:#CBD5E1;">비밀번호 열람 🔑</button>' +
-              '</div>' +
-            '</div>'
-          );
-        }
-
-        // Readable by Author, Public viewers, Unlocked viewers, or Master!
-        let masterDossierHtml = '';
-        let masterEditorHtml = '';
-        if (isMaster && item.memberDetail) {
-          const md = item.memberDetail;
-          masterDossierHtml =
-            '<div class="member-dossier-box">' +
-              '<div><strong>회원 성함:</strong> ' + esc(md.name) + ' (#' + esc(md.userId || 'Seed') + ')</div>' +
-              '<div><strong>가입 채널:</strong> ' + esc(providerLabel(md.provider)) + '</div>' +
-              '<div><strong>연락처:</strong> ' + esc(md.phone || '미기재') + '</div>' +
-              '<div><strong>이메일:</strong> ' + esc(md.email || '-') + '</div>' +
-              '<div><strong>성별 / 연령대:</strong> ' + esc((md.gender || '-') + ' / ' + (md.ageGroup || '-')) + '</div>' +
-              '<div><strong>증상 지속기간:</strong> ' + esc(md.symptomDuration || '-') + '</div>' +
-              '<div><strong>접속 IP:</strong> ' + esc(md.clientIp || '-') + '</div>' +
-              '<div><strong>접수 시각:</strong> ' + esc(md.createdAt || item.createdAt) + '</div>' +
-            '</div>';
-
-          masterEditorHtml =
-            '<div style="margin-top:14px;padding-top:12px;border-top:1px dashed #CBD5E1;">' +
-              '<label class="form-label" style="color:#1E3A8A;display:flex;align-items:center;justify-content:space-between;">' +
-                '<span>👑 마스터 1:1 답변 작성 (저장 시 등록된 카카오톡·이메일로 즉시 자동 전송)</span>' +
-                '<span style="font-size:0.75rem;color:#059669;font-weight:700;">📱 SMS/알림톡 &amp; ✉️ 메일 연동</span>' +
-              '</label>' +
-              '<textarea id="mreply-' + item.id + '" class="form-textarea" rows="3" placeholder="질문 회원에게 전송될 전문 의학 답변을 입력하세요...">' + esc(item.masterReply || '') + '</textarea>' +
-              '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px;">' +
-                '<button type="button" onclick="window.saveMasterReply(' + item.id + ')" style="padding:9px 18px;border-radius:10px;border:none;background:#1D4ED8;color:#FFFFFF;font-size:0.84rem;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(29,78,216,0.25);">💾 답변 저장 및 카톡·메일 전송</button>' +
-                '<button type="button" onclick="window.deleteQnaItem(' + item.id + ')" style="padding:8px 12px;border-radius:10px;border:1px solid #FCA5A5;background:#FEF2F2;color:#B91C1C;font-size:0.78rem;font-weight:700;cursor:pointer;">삭제</button>' +
-              '</div>' +
-            '</div>';
-        }
-
-        const replyDisplayHtml = item.masterReply
-          ? '<div class="master-reply-view"><div style="font-size:0.76rem;font-weight:800;color:#2563EB;margin-bottom:4px;">🩺 바른 통합의학 전담 1:1 답변 (' + esc(item.repliedAt || '답변완료') + ')</div>' + esc(item.masterReply) + '</div>'
-          : '<div style="margin-top:10px;padding:11px 14px;border-radius:11px;background:#FFFBEB;color:#92400E;font-size:0.83rem;font-weight:700;">⏳ 질문이 안전하게 접수되었으며, 대표원장실 검토 후 1:1 답변이 등록됩니다 (등록 시 카톡/메일 알림 전송).</div>';
-
-        const ownerDeleteBtn = (!isMaster && item.isMine)
-          ? '<div style="margin-top:8px;text-align:right;"><button type="button" onclick="window.deleteQnaItem(' + item.id + ')" style="border:none;background:transparent;color:#EF4444;font-size:0.78rem;font-weight:700;cursor:pointer;">내 질문 삭제</button></div>'
-          : '';
-
-        return (
-          '<div class="qna-item-card readable">' +
-            '<div class="qna-item-top">' +
-              '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
-                statusBadge +
-                secretBadge +
-                (item.isMine ? '<span style="font-size:0.74rem;font-weight:800;background:#059669;color:#FFFFFF;padding:3px 9px;border-radius:999px;">내 질문</span>' : '') +
-                (isMaster ? '<span style="font-size:0.74rem;font-weight:800;background:#1E293B;color:#FDE68A;padding:3px 9px;border-radius:999px;">👑 마스터</span>' : '') +
-                '<span style="font-size:0.76rem;font-weight:800;color:#2563EB;background:#EFF6FF;padding:3px 9px;border-radius:999px;">' + esc(catTag) + '</span>' +
-              '</div>' +
-              '<span style="font-size:0.78rem;color:#64748B;">' + esc(item.maskedAuthor) + ' · ' + esc(item.createdAt) + '</span>' +
-            '</div>' +
-            '<h4 style="font-size:1.04rem;font-weight:800;color:#0F172A;margin-bottom:8px;">' + (item.isSecret !== false ? '🔒 ' : '🌐 ') + esc(item.title) + '</h4>' +
-            masterDossierHtml +
-            '<div style="font-size:0.92rem;color:#334155;line-height:1.72;white-space:pre-wrap;padding:12px 14px;background:#F8FAFC;border-radius:12px;border:1px solid #E2E8F0;">' + esc(item.content) + '</div>' +
-            replyDisplayHtml +
-            ownerDeleteBtn +
-            masterEditorHtml +
-          '</div>'
-        );
-      }).join('');
-
-      container.innerHTML = searchHeaderHtml + listHtml;
-    };
-
-    // 5. SUBMIT QUESTION (SUPPORTS BOTH GUEST & LOGGED-IN MEMBERS)
-    window.submitPrivateQuestion = async function(ev) {
-      ev.preventDefault();
-      const btn = document.getElementById('q-submit-btn');
-      if (btn) btn.disabled = true;
-
-      const partId = document.getElementById('q-part').value;
-      const name = document.getElementById('q-name').value.trim();
-      const symptomDuration = document.getElementById('q-duration').value;
-      const phone = document.getElementById('q-phone').value.trim();
-      const email = document.getElementById('q-email').value.trim();
-      const isSecret = document.getElementById('q-is-secret').checked;
-      const secretPassword = isSecret ? document.getElementById('q-secret-password').value.trim() : '';
-      const title = document.getElementById('q-title').value.trim();
-      const content = document.getElementById('q-content').value.trim();
-
-      if (isSecret && secretPassword.length < 4) {
-        window.showToast('비밀글 비밀번호를 4자리 이상 입력해 주세요.');
-        if (btn) btn.disabled = false;
-        return;
-      }
-
-      const res = await apiCall('/qna', 'POST', {
-        partId, name, phone, email, symptomDuration, isSecret, secretPassword, title, content
-      });
-      if (btn) btn.disabled = false;
-
-      if (res.data && res.data.ok) {
-        document.getElementById('q-title').value = '';
-        document.getElementById('q-content').value = '';
-        if (res.data.id) currentUnlockedIds.add(res.data.id);
-        window.showToast(isSecret ? '🔒 비밀글로 안전하게 등록되었습니다. (답변 시 카톡·메일 전송)' : '🌐 공개 질문으로 등록되었습니다. (답변 시 카톡·메일 전송)');
-        await window.fetchQnaItems();
-      } else {
-        window.showToast(res.data?.message || '질문 등록에 실패했습니다.');
-      }
-    };
-
-    // 6. MASTER REPLY, DELETE, MEMBERS DIRECTORY & OAUTH SETTINGS
-    window.saveMasterReply = async function(id) {
-      const ta = document.getElementById('mreply-' + id);
-      if (!ta) return;
-      const res = await apiCall('/qna/reply', 'POST', { id, reply: ta.value.trim() });
-      if (res.data && res.data.ok) {
-        window.showToast('👑 1:1 답변이 저장되었으며, 등록된 연락처(카카오톡) 및 메일로 알림이 발송되었습니다.');
-        await window.fetchQnaItems();
-      } else {
-        window.showToast(res.data?.message || '답변 저장 실패');
-      }
-    };
-
-    window.deleteQnaItem = async function(id) {
-      if (!confirm('정말 삭제하시겠습니까?')) return;
-      const res = await apiCall('/qna/delete', 'POST', { id });
-      if (res.data && res.data.ok) {
-        window.showToast('질문이 삭제되었습니다.');
-        await window.fetchQnaItems();
-      } else {
-        window.showToast(res.data?.message || '삭제 실패');
-      }
-    };
-
-    window.toggleMasterMembersPanel = async function() {
-      const drawer = document.getElementById('master-members-drawer');
-      const wrap = document.getElementById('master-members-table-wrap');
-      if (!drawer || !wrap) return;
-      if (drawer.style.display === 'block') {
-        drawer.style.display = 'none';
-        return;
-      }
-      drawer.style.display = 'block';
-      wrap.innerHTML = '전체 회원 명부를 불러오는 중...';
-      const res = await apiCall('/master/members', 'GET');
-      if (res.data && res.data.ok) {
-        const list = res.data.members || [];
-        if (list.length === 0) {
-          wrap.innerHTML = '가입된 회원이 없습니다.';
-          return;
-        }
-        wrap.innerHTML =
-          '<table style="width:100%;border-collapse:collapse;text-align:left;">' +
-            '<thead><tr style="background:#F1F5F9;border-bottom:1.5px solid #CBD5E1;">' +
-              '<th style="padding:8px 10px;">#ID</th>' +
-              '<th style="padding:8px 10px;">성함</th>' +
-              '<th style="padding:8px 10px;">가입채널</th>' +
-              '<th style="padding:8px 10px;">이메일</th>' +
-              '<th style="padding:8px 10px;">휴대폰 연락처</th>' +
-              '<th style="padding:8px 10px;">성별/연령대</th>' +
-              '<th style="padding:8px 10px;">질문수</th>' +
-              '<th style="padding:8px 10px;">가입일시 / IP</th>' +
-            '</tr></thead><tbody>' +
-            list.map(m =>
-              '<tr style="border-bottom:1px solid #E2E8F0;">' +
-                '<td style="padding:8px 10px;font-weight:700;">#' + esc(m.id) + '</td>' +
-                '<td style="padding:8px 10px;font-weight:800;">' + esc(m.name) + '</td>' +
-                '<td style="padding:8px 10px;">' + esc(providerLabel(m.provider)) + '</td>' +
-                '<td style="padding:8px 10px;">' + esc(m.email) + '</td>' +
-                '<td style="padding:8px 10px;font-weight:700;color:#1D4ED8;">' + esc(m.phone || '-') + '</td>' +
-                '<td style="padding:8px 10px;">' + esc((m.gender || '-') + ' / ' + (m.ageGroup || '-')) + '</td>' +
-                '<td style="padding:8px 10px;font-weight:800;">' + esc(m.questionCount || 0) + '건</td>' +
-                '<td style="padding:8px 10px;color:#64748B;">' + esc(m.joinedAt || '') + ' (' + esc(m.lastIp || '-') + ')</td>' +
-              '</tr>'
-            ).join('') +
-            '</tbody></table>';
-      }
-    };
-
-    window.toggleOAuthConfigPanel = async function() {
-      const drawer = document.getElementById('master-oauth-drawer');
-      if (!drawer) return;
-      drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
-      if (drawer.style.display === 'block') {
-        const res = await apiCall('/oauth/config', 'GET');
-        if (res.data && res.data.config) {
-          oauthConfig = res.data.config;
-          document.getElementById('oauth-google-id').value = oauthConfig.googleClientId || '';
-          document.getElementById('oauth-kakao-key').value = oauthConfig.kakaoJsKey || '';
-          document.getElementById('oauth-naver-id').value = oauthConfig.naverClientId || '';
-        }
-      }
-    };
-
-    window.saveOAuthConfig = async function() {
-      const res = await apiCall('/oauth/config', 'POST', {
-        googleClientId: document.getElementById('oauth-google-id').value.trim(),
-        kakaoJsKey: document.getElementById('oauth-kakao-key').value.trim(),
-        naverClientId: document.getElementById('oauth-naver-id').value.trim()
-      });
-      if (res.data && res.data.ok) {
-        oauthConfig = res.data.config;
-        window.showToast('소셜 OAuth 설정이 저장되었습니다.');
-      }
-    };
-
-    // 7. AUTH MODAL & SOCIAL / EMAIL / MASTER HANDLERS
-    function syncHeaderUserButtons() {
-      const mbrBtn = document.getElementById('gnb-member-btn');
-      const mstBtn = document.getElementById('gnb-master-btn');
-      if (!mbrBtn) return;
-      if (currentUser) {
-        mbrBtn.textContent = (currentUser.isMaster ? '👑 ' : '👤 ') + currentUser.name + ' 님 (로그아웃)';
-        mbrBtn.onclick = () => window.logoutBareunUser();
-        if (mstBtn) mstBtn.style.display = currentUser.isMaster ? 'none' : 'inline-flex';
-      } else {
-        mbrBtn.textContent = '👤 빠른 회원가입 · 로그인';
-        mbrBtn.onclick = () => window.openAuthModal('social');
-        if (mstBtn) mstBtn.style.display = 'inline-flex';
-      }
+      } catch (e) {}
     }
 
-    window.openAuthModal = function(tab) {
-      document.getElementById('auth-modal-backdrop').classList.add('open');
-      window.switchModalTab(tab || 'social');
-    };
-    window.closeAuthModal = function() {
-      document.getElementById('auth-modal-backdrop').classList.remove('open');
-    };
-    window.openSocialModal = function(provider) {
-      window.openAuthModal('social');
-      window.selectSocialProvider(provider);
-    };
-
-    window.switchModalTab = function(tab) {
-      ['social', 'email', 'master'].forEach(t => {
-        document.getElementById('mtab-' + t).classList.toggle('active', t === tab);
-        document.getElementById('modal-pane-' + t).style.display = (t === tab) ? 'block' : 'none';
+    function getPublishedNotes(partFilter) {
+      const mergedMap = new Map();
+      for (const n of SEED_NOTES) {
+        if (passThreeStageGate(n)) {
+          mergedMap.set(n.id, Object.assign({}, n, {
+            views: Number(noteViewsMap[n.id] != null ? noteViewsMap[n.id] : n.views) || 0
+          }));
+        }
+      }
+      for (const raw of dynamicNotes) {
+        if (raw && raw.id && passThreeStageGate(raw)) {
+          mergedMap.set(raw.id, Object.assign({}, raw, {
+            views: Number(noteViewsMap[raw.id] != null ? noteViewsMap[raw.id] : raw.views) || 0
+          }));
+        }
+      }
+      const rawList = Array.from(mergedMap.values()).filter(n => {
+        if (n.publishDate === '2026-10-28' || String(n.id || '').includes('20261028')) return false;
+        if (!n.pinnedTop && n.publishDate && n.publishDate > todayKst) return false;
+        if (partFilter && partFilter !== 'all' && n.partId !== partFilter) return false;
+        return true;
       });
-    };
-
-    window.selectSocialProvider = function(provider) {
-      document.getElementById('social-provider-input').value = provider;
-      const names = { google: 'Google 계정 간편 회원가입', kakao: '카카오톡 3초 간편 회원가입', naver: '네이버 아이디 간편 회원가입' };
-      const labelEl = document.getElementById('social-selected-label');
-      if (labelEl) labelEl.textContent = '⚡ 선택한 소셜 채널: ' + (names[provider] || names.google);
-      document.getElementById('social-name')?.focus();
-    };
-
-    window.submitSocialExpress = async function(ev) {
-      ev.preventDefault();
-      const provider = document.getElementById('social-provider-input').value;
-      const name = document.getElementById('social-name').value.trim();
-      const phone = document.getElementById('social-phone').value.trim();
-      const email = document.getElementById('social-email').value.trim();
-      const gender = document.getElementById('social-gender').value;
-      const ageGroup = document.getElementById('social-age').value;
-
-      const res = await apiCall('/auth/social', 'POST', { provider, name, phone, email, gender, ageGroup });
-      if (res.data && res.data.ok) {
-        setToken(res.data.token);
-        currentUser = res.data.user;
-        syncHeaderUserButtons();
-        window.closeAuthModal();
-        window.switchMainMenu('qna', currentDiseasePart);
-        window.showToast('🎉 ' + providerLabel(provider) + ' 인증 완료! 이제 비공개 질문을 작성하실 수 있습니다.');
-      } else {
-        window.showToast(res.data?.message || '소셜 간편 가입 중 오류가 발생했습니다.');
-      }
-    };
-
-    window.toggleEmailMode = function(mode) {
-      document.getElementById('email-mode-input').value = mode;
-      const isReg = (mode === 'register');
-      document.getElementById('email-reg-extra').style.display = isReg ? 'block' : 'none';
-      document.getElementById('em-submit-btn').textContent = isReg ? '이메일 회원가입 및 로그인' : '이메일 로그인';
-      document.getElementById('subtab-reg').style.background = isReg ? '#EFF6FF' : '#FFFFFF';
-      document.getElementById('subtab-log').style.background = !isReg ? '#EFF6FF' : '#FFFFFF';
-    };
-
-    window.submitEmailAuth = async function(ev) {
-      ev.preventDefault();
-      const mode = document.getElementById('email-mode-input').value;
-      const email = document.getElementById('em-email').value.trim();
-      const password = document.getElementById('em-pass').value;
-      const payload = { email, password };
-      if (mode === 'register') {
-        payload.name = document.getElementById('em-name').value.trim();
-        payload.phone = document.getElementById('em-phone').value.trim();
-        payload.gender = document.getElementById('em-gender').value;
-        payload.ageGroup = document.getElementById('em-age').value;
-      }
-      const res = await apiCall(mode === 'register' ? '/auth/register' : '/auth/login', 'POST', payload);
-      if (res.data && res.data.ok) {
-        setToken(res.data.token);
-        currentUser = res.data.user;
-        syncHeaderUserButtons();
-        window.closeAuthModal();
-        window.switchMainMenu('qna', currentDiseasePart);
-        window.showToast('환영합니다, ' + currentUser.name + ' 님!');
-      } else {
-        window.showToast(res.data?.message || '인증 정보를 다시 확인해 주세요.');
-      }
-    };
-
-    window.submitMasterLogin = async function(ev) {
-      ev.preventDefault();
-      const username = document.getElementById('master-id-input').value.trim();
-      const password = document.getElementById('master-pw-input').value;
-      const res = await apiCall('/auth/master-login', 'POST', { username, password });
-      if (res.data && res.data.ok) {
-        setToken(res.data.token);
-        currentUser = res.data.user;
-        syncHeaderUserButtons();
-        window.closeAuthModal();
-        window.switchMainMenu('qna', currentDiseasePart);
-        window.showToast('👑 마스터 전체 비공개 열람 및 회원 상세조회 모드가 활성화되었습니다.');
-      } else {
-        window.showToast(res.data?.message || '마스터 계정 정보가 올바르지 않습니다.');
-      }
-    };
-
-    window.logoutBareunUser = function() {
-      setToken('');
-      currentUser = null;
-      syncHeaderUserButtons();
-      renderLeftComposer();
-      window.fetchQnaItems();
-      window.showToast('안전하게 로그아웃되었습니다.');
-    };
-
-    window.filterClinicalBlog = function(partId, openSlug) {
-      currentBlogPart = partId || 'all';
-      document.querySelectorAll('#blog-category-strip .qna-cat-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-bpart') === currentBlogPart);
+      rawList.sort((a, b) => {
+        if (Boolean(b.pinnedTop) !== Boolean(a.pinnedTop)) return b.pinnedTop ? 1 : -1;
+        const da = a.publishDate || '2026-10-27';
+        const db = b.publishDate || '2026-10-27';
+        if (db !== da) return db.localeCompare(da);
+        return String(b.id).localeCompare(String(a.id));
       });
-      const gridEl = document.getElementById('clinical-blog-grid');
-      if (!gridEl) return;
-      const list = currentBlogPart === 'all'
-        ? CLINICAL_POSTS
-        : CLINICAL_POSTS.filter(p => p.partId === currentBlogPart);
+      const seen = new Set();
+      const list = [];
+      for (const n of rawList) {
+        const key = String(n.partId || '') + '|' + String(n.title || '').trim();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        list.push(n);
+      }
+      return list;
+    }
 
-      gridEl.innerHTML = list.map(p => {
-        const isSelected = p.slug === currentOpenPostSlug;
-        return '<article onclick="window.openClinicalPost(\\'' + esc(p.slug) + '\\')" style="cursor:pointer;padding:18px;border-radius:16px;background:' + (isSelected ? '#EFF6FF' : '#FFFFFF') + ';border:1.5px solid ' + (isSelected ? '#2563EB' : '#E2E8F0') + ';display:flex;flex-direction:column;justify-content:space-between;gap:10px;transition:all 0.18s ease;">' +
-          '<div>' +
-            '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;">' +
-              '<span style="font-size:0.7rem;font-weight:800;padding:3px 8px;border-radius:6px;background:' + (p.isEncyclopediaMaster ? '#1E3A8A' : '#EFF6FF') + ';color:' + (p.isEncyclopediaMaster ? '#FFFFFF' : '#1D4ED8') + ';">' + esc(p.badge || p.categoryName) + '</span>' +
-              '<span style="font-size:0.72rem;color:#64748B;font-weight:600;">' + esc(p.date) + ' · ' + esc(p.readTime) + '</span>' +
+    function buildNoteCardHtml(note, isLatestRed) {
+      const realViews = Number(noteViewsMap[note.id] != null ? noteViewsMap[note.id] : (note.views || 0));
+      const badgeHtml = isLatestRed
+        ? '<span class="latest-red-badge"><span class="latest-red-dot"></span>NEW 최신글</span>'
+        : '<span style="display:inline-flex;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,0.12);color:#D6D3CD;font-size:0.7rem;font-weight:700;">발행일 ' + fmtDotDate(note.publishDate) + '</span>';
+      const viewBadgeHtml = '<span data-note-view-id="' + escHtml(note.id) + '" style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(229,198,126,0.5);color:#E5C67E;font-size:0.72rem;font-weight:800;">실제 조회수 ' + realViews.toLocaleString() + '회</span>';
+
+      const empLines = (note.empathy || []).map(l => '<p class="hip-line">' + escHtml(l) + '</p>').join('');
+      const truthLines = (note.truth || []).map(l => '<div class="hip-bullet-row"><span class="hip-bullet-dot"></span><span>' + escHtml(l) + '</span></div>').join('');
+      const mythLines = (note.myth || []).map((l, i) => '<div class="hip-num-row"><span class="hip-num-chip">' + String(i + 1).padStart(2, '0') + '</span><span>' + escHtml(l) + '</span></div>').join('');
+      const checkLines = (note.check || []).map(l => '<label class="hip-check-item"><input type="checkbox" /><span>' + escHtml(l) + '</span></label>').join('');
+
+      const aeoAnswer = (note.truth || []).join(' ') + ' ' + ((note.myth && note.myth[1]) || '');
+
+      return (
+        '<article class="health-info-popup-box" itemscope itemtype="https://schema.org/MedicalWebPage">' +
+          '<div class="hip-header">' +
+            '<div class="hip-header-main">' +
+              '<div class="hip-header-title-wrap">' +
+                '<span class="hip-part-bracket">[' + escHtml(note.partLabel) + ']</span>' +
+                badgeHtml +
+                viewBadgeHtml +
+              '</div>' +
+              '<h2 itemprop="headline" class="hip-question-title">&ldquo;' + escHtml(note.title) + '&rdquo;</h2>' +
             '</div>' +
-            '<h3 style="font-size:0.96rem;font-weight:800;color:#0F172A;line-height:1.42;margin-bottom:6px;">' + esc(p.title) + '</h3>' +
-            '<p style="font-size:0.81rem;color:#475569;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + esc(p.summary) + '</p>' +
           '</div>' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid #F1F5F9;">' +
-            '<span style="font-size:0.74rem;font-weight:700;color:#64748B;">' + esc(p.categoryName) + '</span>' +
-            '<span style="font-size:0.78rem;font-weight:800;color:#2563EB;">전문 읽기 &rarr;</span>' +
+          '<div class="hip-sections">' +
+            '<section class="hip-sec-card">' +
+              '<div class="hip-sec-heading"><span>🎒</span><span>1. 일상 속 불편함</span></div>' +
+              '<div class="hip-two-lines">' + empLines + '</div>' +
+            '</section>' +
+            '<section class="hip-sec-card sec-highlight">' +
+              '<div class="hip-sec-heading"><span>💡</span><span>2. 의학적 진실</span></div>' +
+              '<div class="hip-two-lines">' + truthLines + '</div>' +
+              (note.academicBasis
+                ? '<div style="margin-top:10px;padding:8px 12px;border-radius:8px;background:#FAF5EA;font-size:0.78rem;font-weight:700;color:#785A1E;">📚 참고 학술 근거: ' + escHtml(note.academicBasis) + '</div>'
+                : '') +
+            '</section>' +
+            '<section class="hip-sec-card">' +
+              '<div class="hip-sec-heading"><span>❌</span><span>3. 흔히 하는 오해</span></div>' +
+              '<div class="hip-two-lines">' + mythLines + '</div>' +
+            '</section>' +
+            '<section class="hip-sec-card">' +
+              '<div class="hip-sec-heading"><span>🔍</span><span>4. 오늘 바로 해보는 1분 체크</span></div>' +
+              '<div class="hip-two-lines">' + checkLines + '</div>' +
+            '</section>' +
+            '<section class="sp-aeo-geo-box" aria-label="AEO 즉답 요약 및 GEO 의학 팩트 시트">' +
+              '<div class="aeo-direct-answer" itemprop="description" style="font-size:0.84rem;font-weight:700;color:#141416;line-height:1.6;">' +
+                '<strong style="color:#967128;">⚡ AEO 핵심 의학 요약:</strong> ' + escHtml(aeoAnswer) +
+              '</div>' +
+              '<table class="geo-fact-table">' +
+                '<tbody>' +
+                  '<tr><th>진료 부위 · 키워드</th><td>' + escHtml(note.partLabel) + ' · ' + escHtml(note.keyword || '') + '</td></tr>' +
+                  '<tr><th>해외 SCI 학술지 근거</th><td>' + escHtml(note.academicBasis || '국제 SCI 의학저널 및 통합생리학 가이드라인') + '</td></tr>' +
+                  '<tr><th>의학 감수 기관</th><td>바른한의원 대전본점 (대표원장 안정위 · 010-5631-1275)</td></tr>' +
+                '</tbody>' +
+              '</table>' +
+            '</section>' +
           '</div>' +
-        '</article>';
-      }).join('');
+        '</article>'
+      );
+    }
 
-      if (openSlug) {
-        window.openClinicalPost(openSlug);
+    async function loadQnaAll() {
+      try {
+        const res = await fetch('/wp-json/bareun/v1/qna?part=all', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && Array.isArray(data.items)) {
+          qnaItems = data.items;
+          if (currentMenuTab === 1) renderStandalone();
+        }
+      } catch (e) {}
+    }
+
+    function renderStandalone() {
+      // Sync 9 part chips
+      document.querySelectorAll('#sp-parts-chip-container .sp-part-chip').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-part') === currentPartId);
+      });
+
+      const link3d = document.getElementById('sp-link-3d-model');
+      if (link3d) {
+        link3d.setAttribute('href', 'body-explorer.html?part=' + encodeURIComponent(currentPartId) + (selectedNoteId ? '&note=' + encodeURIComponent(selectedNoteId) : ''));
       }
-    };
 
-    window.openClinicalPost = function(slug) {
-      const post = CLINICAL_POSTS.find(p => p.slug === slug);
-      const readerEl = document.getElementById('clinical-blog-reader-box');
-      if (!post || !readerEl) return;
-      currentOpenPostSlug = slug;
-      readerEl.style.display = 'block';
+      const menuMeta = getMenuMeta(currentPartId);
+      const partNotes = getPublishedNotes(currentPartId);
+      const allNotes = getPublishedNotes('all');
+      const latestNote = partNotes[0] || allNotes[0];
 
-      const tldrHtml = (Array.isArray(post.tldrPoints) && post.tldrPoints.length > 0)
-        ? '<div style="margin:14px 0;padding:16px 18px;border-radius:14px;background:#FFFFFF;border:1px solid #BFDBFE;">' +
-            '<div style="font-size:0.82rem;font-weight:800;color:#1D4ED8;margin-bottom:8px;">📌 3줄 핵심 의학 요약 (TL;DR)</div>' +
-            '<ul style="padding-left:18px;font-size:0.86rem;color:#1E293B;display:flex;flex-direction:column;gap:5px;">' +
-              post.tldrPoints.map(pt => '<li>' + esc(pt) + '</li>').join('') +
-            '</ul>' +
-          '</div>'
+      // Determine active note for Tab 01
+      const activeNote = (selectedNoteId && (partNotes.find(n => n.id === selectedNoteId) || allNotes.find(n => n.id === selectedNoteId))) || latestNote;
+
+      if (currentMenuTab === 0 && activeNote && activeNote.id) {
+        recordActualNoteView(activeNote.id);
+      }
+
+      // Refresh after view increment
+      const refreshedPartNotes = getPublishedNotes(currentPartId);
+      const refreshedLatest = refreshedPartNotes[0] || latestNote;
+      const refreshedActive = (activeNote && refreshedPartNotes.find(n => n.id === activeNote.id)) || activeNote;
+
+      // Update document title dynamically for SEO/AEO/GEO
+      if (refreshedActive && refreshedActive.title) {
+        document.title = refreshedActive.title + ' [' + refreshedActive.partLabel + ' · 오늘의 건강 글] | 바른한의원 대전본점';
+      }
+
+      // 심층 임상 칼럼 3선 (작성된 오늘의 건강글 범위 안에서 실제 조회수 많은 순 정렬)
+      const topViewedNotes3 = [...refreshedPartNotes]
+        .sort((a, b) => {
+          const vDiff = (Number(b.views) || 0) - (Number(a.views) || 0);
+          if (vDiff !== 0) return vDiff;
+          return String(b.publishDate || '').localeCompare(String(a.publishDate || ''));
+        })
+        .slice(0, 3);
+
+      const top3Html = topViewedNotes3.length > 0
+        ? '<section style="margin-top:14px;padding:18px 20px;border-radius:18px;background:#FFFFFF;border:1.5px solid #DFC99B;box-shadow:0 8px 22px rgba(13,13,15,0.06);">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap;">' +
+              '<div style="display:flex;align-items:center;gap:8px;">' +
+                '<span style="display:inline-flex;padding:3px 9px;border-radius:7px;background:#0D0D0F;color:#E5C67E;font-size:0.74rem;font-weight:800;">심층 임상 칼럼 3선</span>' +
+                '<strong style="font-size:0.92rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 작성된 오늘의 건강글 실제 조회수 BEST 3</strong>' +
+              '</div>' +
+              '<button type="button" onclick="window.switchStandaloneTab(2)" style="border:none;background:transparent;cursor:pointer;font-size:0.78rem;font-weight:800;color:#967128;">누적 건강글 전체 (' + refreshedPartNotes.length + '편) &rarr;</button>' +
+            '</div>' +
+            '<div style="display:flex;flex-direction:column;gap:8px;">' +
+              topViewedNotes3.map((np, bIdx) => {
+                const isLatestItem = refreshedLatest && np.id === refreshedLatest.id;
+                const isCurrentItem = refreshedActive && np.id === refreshedActive.id;
+                return '<button type="button" onclick="window.openNoteById(\\'' + escHtml(np.id) + '\\')" style="width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:11px;background:' + (isCurrentItem ? '#FAF5EA' : '#FCFBF8') + ';border:1.5px solid ' + (isLatestItem ? '#FDA4AF' : (isCurrentItem ? '#C5A059' : '#EAE3D5')) + ';color:#141416;transition:all 0.16s ease;">' +
+                  '<div style="min-width:0;flex:1;">' +
+                    '<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;flex-wrap:wrap;">' +
+                      '<span style="font-size:0.72rem;font-weight:800;color:#E11D48;">BEST 0' + (bIdx + 1) + '</span>' +
+                      '<span data-note-view-id="' + escHtml(np.id) + '" style="font-size:0.72rem;font-weight:800;color:#57534E;">실제 조회수 ' + Number(np.views || 0).toLocaleString() + '회</span>' +
+                      '<span style="font-size:0.72rem;font-weight:600;color:#8C857B;">· ' + fmtDotDate(np.publishDate) + '</span>' +
+                      (isLatestItem ? '<span class="latest-red-badge" style="padding:1px 6px;font-size:0.64rem;">최신글</span>' : '') +
+                    '</div>' +
+                    '<div style="font-size:0.88rem;font-weight:800;color:#0D0D0F;">&ldquo;' + escHtml(np.title) + '&rdquo;</div>' +
+                  '</div>' +
+                  '<span style="font-size:0.78rem;font-weight:800;color:#967128;flex-shrink:0;">바로 읽기 &rsaquo;</span>' +
+                '</button>';
+              }).join('') +
+            '</div>' +
+          '</section>'
         : '';
 
-      const cardsHtml = (Array.isArray(post.cards) ? post.cards : []).map(c =>
-        '<div style="padding:16px 18px;border-radius:14px;background:#FFFFFF;border:1px solid #E2E8F0;">' +
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
-            '<span style="font-size:0.7rem;font-weight:800;padding:2px 8px;border-radius:999px;background:#DBEAFE;color:#1E40AF;">STEP ' + esc(c.num) + ' · ' + esc(c.phase) + '</span>' +
-            '<span style="font-size:0.75rem;font-weight:700;color:#64748B;">' + esc(c.tag) + '</span>' +
-          '</div>' +
-          '<h4 style="font-size:0.98rem;font-weight:800;color:#0F172A;margin-bottom:6px;">' + esc(c.headline) + '</h4>' +
-          '<p style="font-size:0.86rem;color:#334155;line-height:1.68;">' + esc(c.body) + '</p>' +
-          (c.highlight ? '<div style="margin-top:8px;padding:8px 12px;border-radius:8px;background:#EFF6FF;color:#1E3A8A;font-size:0.8rem;font-weight:700;">💡 ' + esc(c.highlight) + '</div>' : '') +
-        '</div>'
-      ).join('');
-
-      readerEl.innerHTML =
-        '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;">' +
-          '<div>' +
-            '<span style="display:inline-block;font-size:0.72rem;font-weight:800;padding:4px 10px;border-radius:999px;background:#1D4ED8;color:#FFFFFF;margin-bottom:6px;">' + esc(post.categoryName) + ' · ' + esc(post.badge) + '</span>' +
-            '<h3 style="font-size:1.3rem;font-weight:800;color:#0F172A;line-height:1.35;">' + esc(post.title) + '</h3>' +
-            '<div style="font-size:0.8rem;color:#64748B;margin-top:4px;">발행일 ' + esc(post.date) + ' · ' + esc(post.readTime) + '</div>' +
-          '</div>' +
-          '<button type="button" onclick="window.closeClinicalPost()" style="padding:7px 14px;border-radius:999px;border:1px solid #CBD5E1;background:#FFFFFF;font-weight:800;font-size:0.8rem;cursor:pointer;">✕ 칼럼 닫기</button>' +
-        '</div>' +
-        '<p style="font-size:0.9rem;color:#334155;line-height:1.65;">' + esc(post.summary) + '</p>' +
-        tldrHtml +
-        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:14px;">' + cardsHtml + '</div>' +
-        '<div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:14px;border-top:1px solid #CBD5E1;">' +
-          '<a href="' + esc(post.detailPageLink || 'story-3d.html') + '" style="padding:10px 18px;border-radius:999px;background:#0F172A;color:#FFFFFF;font-size:0.84rem;font-weight:800;">🏥 ' + esc(post.detailPageLabel || '전용 클리닉 자세히 보기') + ' &rarr;</a>' +
-          '<button type="button" onclick="window.switchMainMenu(\\'qna\\', \\'' + esc(post.partId) + '\\')" style="padding:10px 18px;border-radius:999px;border:none;background:#2563EB;color:#FFFFFF;font-size:0.84rem;font-weight:800;cursor:pointer;">💬 이 질환 1:1 질문 남기기 &rarr;</button>' +
-        '</div>';
-
-      readerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    };
-
-    window.closeClinicalPost = function() {
-      currentOpenPostSlug = '';
-      const readerEl = document.getElementById('clinical-blog-reader-box');
-      if (readerEl) readerEl.style.display = 'none';
-      window.filterClinicalBlog(currentBlogPart);
-    };
-
-    // INITIAL BOOTSTRAP
-    (async function init() {
-      const params = new URLSearchParams(window.location.search);
-      const urlTab = params.get('tab');
-      const urlPart = params.get('part');
-      const urlPost = params.get('post');
-
-      window.filterClinicalBlog((urlTab === 'blog' && urlPart) ? urlPart : 'all', urlPost || '');
-
-      if (urlPart && QNA_CATEGORIES.some(c => c.partId === urlPart)) {
-        currentDiseasePart = urlPart;
-        document.querySelectorAll('#qna-category-strip .qna-cat-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-qpart') === currentDiseasePart);
+      let bodyHtml = '';
+      if (currentMenuTab === 0) {
+        const isLatestActive = Boolean(refreshedLatest && refreshedActive && refreshedActive.id === refreshedLatest.id);
+        bodyHtml = (refreshedActive ? buildNoteCardHtml(refreshedActive, isLatestActive) : '') + top3Html;
+      } else if (currentMenuTab === 1) {
+        if (!qnaItems) loadQnaAll();
+        const partLabelLookup = {};
+        CLINIC_MENUS.forEach(m => {
+          partLabelLookup[m.id] = m.partLabel || m.shortLabel || m.id;
+          if (m.qnaPartId) partLabelLookup[m.qnaPartId] = m.partLabel || m.shortLabel || m.id;
         });
-      }
+        const qnaPartKey = menuMeta.qnaPartId || currentPartId;
 
-      const meRes = await apiCall('/auth/me', 'GET');
-      if (meRes.data && meRes.data.ok && meRes.data.user) {
-        currentUser = meRes.data.user;
-        syncHeaderUserButtons();
-      }
+        const filteredQna = (qnaItems || []).filter(q => {
+          if (!qnaSearchQuery) return true;
+          const kw = qnaSearchQuery.toLowerCase();
+          const pName = (partLabelLookup[q.partId] || '').toLowerCase();
+          return String(q.title || '').toLowerCase().includes(kw) ||
+                 String(q.maskedAuthor || '').toLowerCase().includes(kw) ||
+                 pName.includes(kw);
+        });
 
-      if (urlTab === 'qna' || (urlPart && urlTab !== 'blog')) {
-        window.switchMainMenu('qna', currentDiseasePart);
+        const composerHtml = isQnaComposerOpen
+          ? '<form class="qna-inline-composer" onsubmit="window.submitStandaloneQna(event)">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
+                '<strong style="font-size:0.9rem;font-weight:800;color:#0D0D0F;">✍️ 현재 페이지에서 바로 1:1 질문 작성하기</strong>' +
+                '<button type="button" onclick="window.toggleStandaloneQnaComposer(false)" style="border:none;background:transparent;font-size:0.78rem;font-weight:800;color:#57534E;cursor:pointer;">접기 ▲</button>' +
+              '</div>' +
+              '<div class="qic-row-2">' +
+                '<select id="sqic-part" class="qic-select">' +
+                  CLINIC_MENUS.map(m => {
+                    const pVal = m.qnaPartId || m.id;
+                    const sel = (pVal === qnaPartKey) ? ' selected' : '';
+                    return '<option value="' + escHtml(pVal) + '"' + sel + '>[' + escHtml(m.partLabel || m.shortLabel) + '] 관련 질문</option>';
+                  }).join('') +
+                '</select>' +
+                '<input type="text" id="sqic-name" class="qic-input" placeholder="작성자 성함 (또는 닉네임) *" required />' +
+              '</div>' +
+              '<div class="qic-row-2">' +
+                '<input type="tel" id="sqic-phone" class="qic-input" placeholder="연락처 (카톡 답변 알림용)" />' +
+                '<input type="email" id="sqic-email" class="qic-input" placeholder="이메일 (메일 답변 알림용)" />' +
+              '</div>' +
+              '<div class="qic-row-2" style="align-items:center;">' +
+                '<label style="display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;color:#0D0D0F;cursor:pointer;">' +
+                  '<input type="checkbox" id="sqic-secret" checked />' +
+                  '<span>🔒 비밀글로 보호 (체크 해제 시 공개글)</span>' +
+                '</label>' +
+                '<input type="password" id="sqic-password" class="qic-input" placeholder="비밀글 열람 비밀번호 (선택)" />' +
+              '</div>' +
+              '<input type="text" id="sqic-title" class="qic-input" placeholder="질문 제목을 입력해 주세요 *" required />' +
+              '<textarea id="sqic-content" class="qic-textarea" rows="4" placeholder="불편하신 증상과 궁금한 점을 남겨주시면 대표원장님의 답변이 등록된 이메일과 카카오톡으로 전송됩니다. *" required></textarea>' +
+              '<button type="submit" class="qic-submit-btn" id="sqic-submit-btn">1:1 질문 즉시 등록하기 &rarr;</button>' +
+            '</form>'
+          : '';
+
+        const feedbackHtml = qnaWriteFeedback
+          ? '<div style="padding:11px 14px;border-radius:10px;background:#ECFDF5;border:1px solid #6EE7B7;color:#065F46;font-size:0.84rem;font-weight:800;">' + escHtml(qnaWriteFeedback) + '</div>'
+          : '';
+
+        const listHtml = filteredQna.length > 0
+          ? filteredQna.map(q => {
+              const pName = partLabelLookup[q.partId] || '통합 건강';
+              return '<div class="qna-item-row">' +
+                '<div class="qna-item-meta">' +
+                  '<span><strong style="color:#967128;">[' + escHtml(pName) + ']</strong> · 작성자 ' + escHtml(q.maskedAuthor || '회원') + ' · ' + escHtml(q.createdAt || '') + '</span>' +
+                  '<span class="qna-status-badge ' + (q.status === 'answered' ? 'answered' : 'waiting') + '">' +
+                    (q.status === 'answered' ? '답변 완료' : '답변 대기') +
+                  '</span>' +
+                '</div>' +
+                '<div class="qna-item-title">' + escHtml(q.title) + '</div>' +
+                (q.canRead && q.masterReply
+                  ? '<div style="margin-top:6px;padding:10px 12px;border-radius:9px;background:#FFFFFF;border-left:3px solid #C5A059;font-size:0.84rem;color:#262522;line-height:1.55;"><strong>원장실 답변 ·</strong> ' + escHtml(q.masterReply) + '</div>'
+                  : '') +
+              '</div>';
+            }).join('')
+          : '<div class="qna-item-row"><div class="qna-item-title">검색 결과가 없거나 등록된 질문이 없습니다. 위 [1:1 질문 남기기] 버튼으로 바로 작성해 보세요.</div></div>';
+
+        bodyHtml =
+          '<section class="qna-menu-panel">' +
+            '<div class="qna-panel-top">' +
+              '<div>' +
+                '<div style="font-size:0.76rem;font-weight:800;color:#967128;margin-bottom:4px;">전 질환 통합 게시판 · 비밀글 · 이메일/카톡 답변 알림 (' + (qnaItems ? qnaItems.length : 0) + '건)</div>' +
+                '<h2 style="font-size:1.25rem;font-weight:800;color:#0D0D0F;">무엇이든 물어보세요</h2>' +
+                '<p style="font-size:0.84rem;color:#57534E;margin-top:3px;">모든 질환 질문이 하나로 통합되어 있으며, 링크 이동 없이 현재 페이지에서 바로 질문을 작성하실 수 있습니다.</p>' +
+              '</div>' +
+              '<button type="button" onclick="window.toggleStandaloneQnaComposer()" class="qna-write-btn">' + (isQnaComposerOpen ? '✕ 작성창 닫기' : '✍️ 1:1 질문 남기기 &rarr;') + '</button>' +
+            '</div>' +
+            '<div style="display:flex;gap:8px;">' +
+              '<input type="search" id="sqna-search-input" class="qic-input" placeholder="🔍 질환명·증상·키워드로 통합 질문 검색..." value="' + escHtml(qnaSearchQuery) + '" oninput="window.filterStandaloneQna(this.value)" />' +
+            '</div>' +
+            feedbackHtml +
+            composerHtml +
+            '<div style="display:flex;flex-direction:column;gap:9px;">' + listHtml + '</div>' +
+          '</section>';
       } else {
-        window.switchMainMenu('blog');
+        const targetList = archiveScope === 'all' ? getPublishedNotes('all') : refreshedPartNotes;
+        const rowsHtml = targetList.map((n, idx) => {
+          const isRowLatest = (idx === 0 && archiveScope === 'part') || (refreshedLatest && n.id === refreshedLatest.id);
+          return '<button type="button" class="archive-card-btn" onclick="window.openNoteById(\\'' + escHtml(n.id) + '\\')">' +
+            '<div>' +
+              '<div class="archive-card-tags">' +
+                '<span class="archive-date-pill' + (isRowLatest ? ' is-latest-red' : '') + '">' + fmtDotDate(n.publishDate) + (isRowLatest ? ' · NEW 최신글' : '') + '</span>' +
+                '<span class="archive-part-pill">[' + escHtml(n.partLabel) + ']</span>' +
+                '<span data-note-view-id="' + escHtml(n.id) + '" style="font-size:0.74rem;color:#6E685F;font-weight:800;">실제 조회수 ' + Number(n.views || 0).toLocaleString() + '회</span>' +
+              '</div>' +
+              '<div class="archive-card-title">&ldquo;' + escHtml(n.title) + '&rdquo;</div>' +
+            '</div>' +
+            '<span class="archive-read-arrow">단독 열람 &rarr;</span>' +
+          '</button>';
+        }).join('');
+
+        bodyHtml =
+          '<section class="archive-menu-panel">' +
+            '<div class="archive-filter-bar">' +
+              '<div>' +
+                '<div style="font-size:0.76rem;font-weight:800;color:#967128;margin-bottom:3px;">2일 주기 자동 누적 건강 아카이브</div>' +
+                '<h2 style="font-size:1.25rem;font-weight:800;color:#0D0D0F;">더 궁금하세요?</h2>' +
+              '</div>' +
+              '<div class="archive-scope-pills">' +
+                '<button type="button" class="archive-scope-btn' + (archiveScope === 'part' ? ' active' : '') + '" onclick="window.setStandaloneArchiveScope(\\'part\\')">[' + escHtml(menuMeta.partLabel) + '] (' + refreshedPartNotes.length + '편)</button>' +
+                '<button type="button" class="archive-scope-btn' + (archiveScope === 'all' ? ' active' : '') + '" onclick="window.setStandaloneArchiveScope(\\'all\\')">전체 9대 부위 (' + allNotes.length + '편)</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="archive-list">' + rowsHtml + '</div>' +
+          '</section>';
       }
-    })();
+
+      const container = document.getElementById('standalone-dynamic-container');
+      container.innerHTML =
+        '<nav class="three-menu-nav" role="tablist" aria-label="3D 백과사전 건강글 3대 탭" style="margin-bottom:14px;">' +
+          '<button type="button" class="three-menu-btn' + (currentMenuTab === 0 ? ' active' : '') + '" onclick="window.switchStandaloneTab(0)">' +
+            '<span class="tmb-step" style="display:inline-flex;align-items:center;gap:4px;"><span class="latest-red-dot"></span><span style="color:#E11D48;font-weight:900;">01 · 최신 글 1편</span></span>' +
+            '<span class="tmb-label">오늘의 건강 글</span>' +
+          '</button>' +
+          '<button type="button" class="three-menu-btn' + (currentMenuTab === 1 ? ' active' : '') + '" onclick="window.switchStandaloneTab(1)">' +
+            '<span class="tmb-step">02 · 1:1 질문</span>' +
+            '<span class="tmb-label">무엇이든 물어보세요</span>' +
+          '</button>' +
+          '<button type="button" class="three-menu-btn' + (currentMenuTab === 2 ? ' active' : '') + '" onclick="window.switchStandaloneTab(2)">' +
+            '<span class="tmb-step">03 · 누적 ' + refreshedPartNotes.length + '편</span>' +
+            '<span class="tmb-label">더 궁금하세요?</span>' +
+          '</button>' +
+        '</nav>' +
+        bodyHtml;
+    }
+
+    window.selectStandalonePart = function(partId) {
+      currentPartId = partId;
+      selectedNoteId = null;
+      currentMenuTab = 0;
+      renderStandalone();
+      try {
+        window.history.replaceState(null, '', '?part=' + encodeURIComponent(partId));
+      } catch (e) {}
+    };
+
+    window.switchStandaloneTab = function(tabIdx) {
+      currentMenuTab = tabIdx;
+      renderStandalone();
+    };
+
+    window.openQnaTabDirect = function() {
+      currentMenuTab = 1;
+      isQnaComposerOpen = true;
+      renderStandalone();
+    };
+
+    window.openNoteById = function(noteId) {
+      const all = getPublishedNotes('all');
+      const found = all.find(n => n.id === noteId);
+      if (found) {
+        currentPartId = found.partId;
+        selectedNoteId = found.id;
+      } else {
+        selectedNoteId = noteId;
+      }
+      currentMenuTab = 0;
+      lastViewedNoteIdSession = '';
+      renderStandalone();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      try {
+        window.history.replaceState(null, '', '?part=' + encodeURIComponent(currentPartId) + '&note=' + encodeURIComponent(selectedNoteId));
+      } catch (e) {}
+    };
+
+    window.setStandaloneArchiveScope = function(scope) {
+      archiveScope = scope;
+      renderStandalone();
+    };
+
+    window.toggleStandaloneQnaComposer = function(force) {
+      isQnaComposerOpen = typeof force === 'boolean' ? force : !isQnaComposerOpen;
+      qnaWriteFeedback = '';
+      renderStandalone();
+    };
+
+    window.filterStandaloneQna = function(val) {
+      qnaSearchQuery = String(val || '');
+      renderStandalone();
+      const input = document.getElementById('sqna-search-input');
+      if (input) {
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+      }
+    };
+
+    window.submitStandaloneQna = async function(ev) {
+      ev.preventDefault();
+      const partEl = document.getElementById('sqic-part');
+      const nameEl = document.getElementById('sqic-name');
+      const phoneEl = document.getElementById('sqic-phone');
+      const emailEl = document.getElementById('sqic-email');
+      const secEl = document.getElementById('sqic-secret');
+      const passEl = document.getElementById('sqic-password');
+      const titleEl = document.getElementById('sqic-title');
+      const contentEl = document.getElementById('sqic-content');
+      const btnEl = document.getElementById('sqic-submit-btn');
+
+      const name = (nameEl && nameEl.value || '').trim();
+      const title = (titleEl && titleEl.value || '').trim();
+      const content = (contentEl && contentEl.value || '').trim();
+      if (!name || !title || !content) return;
+
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = '질문 등록 중...';
+      }
+
+      try {
+        const res = await fetch('/wp-json/bareun/v1/qna', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            partId: (partEl && partEl.value) || currentPartId,
+            name,
+            phone: (phoneEl && phoneEl.value || '').trim(),
+            email: (emailEl && emailEl.value || '').trim(),
+            isSecret: secEl ? Boolean(secEl.checked) : true,
+            secretPassword: (passEl && passEl.value || '').trim(),
+            title,
+            content
+          })
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          isQnaComposerOpen = false;
+          qnaWriteFeedback = '✅ 질문이 등록되었습니다! 대표원장님 답변 등록 시 입력하신 이메일과 카카오톡으로 즉시 알림이 전송됩니다.';
+          await loadQnaAll();
+          renderStandalone();
+        } else {
+          alert((data && data.message) || '질문 등록 중 오류가 발생했습니다.');
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = '1:1 질문 즉시 등록하기 →';
+          }
+        }
+      } catch (e) {
+        alert('네트워크 통신 중 오류가 발생했습니다.');
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.textContent = '1:1 질문 즉시 등록하기 →';
+        }
+      }
+    };
+
+    async function syncLiveServerNotes() {
+      try {
+        const res = await fetch('/wp-json/bareun/v1/body-notes', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.ok) {
+          if (data.todayKst) todayKst = data.todayKst;
+          if (data.noteViews && typeof data.noteViews === 'object') {
+            Object.entries(data.noteViews).forEach(([k, v]) => {
+              noteViewsMap[k] = Number(v) || 0;
+            });
+          }
+          if (Array.isArray(data.notes) && data.notes.length > 0) {
+            dynamicNotes = data.notes;
+          }
+          renderStandalone();
+        }
+      } catch (e) {}
+    }
+
+    renderStandalone();
+    syncLiveServerNotes();
+    loadQnaAll();
   })();
   </script>
   <script src="visit-tracker.js"></script>
@@ -2463,6 +1629,6 @@ function buildAskDoctorHtml() {
 }
 
 const outPath = path.join(__dirname, 'ask-doctor.html');
-const html = buildAskDoctorHtml();
+const html = buildStandaloneHealthNotesHtml();
 fs.writeFileSync(outPath, html, 'utf8');
-console.log('✅ Generated Expert Medical Blog (1 Post) & Private Disease Q&A Hub (ask-doctor.html):', outPath, '(' + html.length + ' bytes)');
+console.log('✅ Generated Standalone 3D Encyclopedia Health Notes Hub (ask-doctor.html):', outPath, '(' + html.length + ' bytes)');

@@ -38,7 +38,7 @@ const CANONICAL_ORIGIN = 'https://www.bareunhaniwon.com';
 const PAGES_TO_DEPLOY = [
   { id: 46,   slug: 'home',                title: '바른한의원 대전본점',                                     file: 'wordpress-main-home.html',           excerpt: '정수리여성남성원형탈모병원치료성장클리닉성장판검사두통탈모약비대면성조숙증키성장담적축농증리프팅다이어트뱃살내장지방위염난임산후보약공진단대전진맥피부' },
   { id: 125,  slug: 'body-explorer',       title: '3D 인체모형 · 바른한의원 진료 살펴보기',                   file: 'wordpress-body-explorer.html',       excerpt: '풀스크린 3D 인체모형으로 근육·신경·관절·혈관 구조와 9대 부위별 생활 건강 관리법, 해외 SCI 의학 논문 요약을 한눈에 탐색하는 인터랙티브 건강 포털입니다.' },
-  { id: null, slug: 'ask-doctor',          title: '의학 인사이트 블로그 & 질환별 1:1 비공개 Q&A',              file: 'wordpress-ask-doctor.html',          excerpt: '해외 메이저 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA) 및 통합생리학 기반 대표 의학 칼럼과 회원 전용 질환별 1:1 비공개 Q&A 센터입니다.' },
+  { id: null, slug: 'ask-doctor',          title: '3D 백과사전 오늘의 건강 글 & 무엇이든 물어보세요',          file: 'wordpress-ask-doctor.html',          excerpt: '척추·골반, 위·장, 무릎 성장판, 간·해독, 자율신경, 하복부·대사, 두피·모낭, 원기·면역, 전립선·방광 등 9대 부위별 오늘의 건강 글(72편)과 전 질환 통합 1:1 질문 게시판을 한눈에 볼 수 있는 단독 페이지입니다.' },
   { id: 126,  slug: 'director',            title: '안정위 대표원장 · 9대 정밀검진',                           file: 'wordpress-director.html',            excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사까지 9대 정밀 검진 시스템을 운영합니다.' },
   { id: 127,  slug: 'chuna',               title: '바른 추나 · 척추교정',                                    file: 'wordpress-chuna.html',               excerpt: 'The Lancet · JAMA 등 국제 학술 논문을 검수하여 유효성이 입증된 비수술 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
   { id: 105,  slug: 'growth',              title: '바른 성장 · 성조숙증',                                    file: 'wordpress-growth.html',              excerpt: '소아내분비학 및 약리학 학술 논문 근거를 바탕으로 성장판 연골 증식과 호흡기 면역을 함께 돌봅니다.' },
@@ -498,9 +498,9 @@ async function performWpLogin(page, loginUrl) {
 
     const featuredMediaId = mediaSetup.ogMediaId || 51;
 
-    // 3) PUBLISH ALL 9 DISEASE CATEGORIES + 36 CLINICAL BLOG POSTS + 1 FLAGSHIP ARTICLE + 72 HEALTH NOTES (SEO · AEO · GEO)
+    // 3) CLEAN UP EXTRA INDIVIDUAL POSTS & SYNC /llms.txt (All 72 Health Notes consolidated into 1 Standalone Page: /ask-doctor/)
     syncNineDiseaseAutoNotes();
-    console.log('3) Syncing all 9 disease categories, 36 clinical columns, 1 Flagship Article, and 72 Health Notes (109 total posts) + /llms.txt to WordPress ...');
+    console.log('3) Cleaning up extra individual posts & syncing 72 Health Notes into 1 Standalone Page (/ask-doctor/) + /llms.txt ...');
     const flagshipPayload = {
       id: FLAGSHIP_REPRESENTATIVE_POST.id,
       slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
@@ -511,18 +511,7 @@ async function performWpLogin(page, loginUrl) {
       standaloneHtml: buildStandaloneWpPostHtml(FLAGSHIP_REPRESENTATIVE_POST)
     };
 
-    const clinicalPayloads = (Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => ({
-      id: p.id,
-      slug: p.slug,
-      partId: p.partId,
-      categorySlug: p.categorySlug,
-      title: p.title,
-      summary: p.summary,
-      standaloneHtml: p.wpStandaloneHtml || p.bodyHtml || ''
-    }));
-
-    const healthNotePayloads = buildAllHealthNoteWpPayloads();
-    const allPostsToPublish = [flagshipPayload, ...clinicalPayloads, ...healthNotePayloads];
+    const allPostsToPublish = [flagshipPayload];
 
     const llmsTxtRaw = fs.existsSync(path.join(__dirname, 'llms.txt'))
       ? fs.readFileSync(path.join(__dirname, 'llms.txt'), 'utf8')
@@ -547,19 +536,12 @@ async function performWpLogin(page, loginUrl) {
         const foundCat = Array.isArray(cats) ? cats.find(c => c.slug === catMeta.slug) : null;
         if (foundCat) {
           catIdMap[catMeta.slug] = foundCat.id;
-        } else {
-          const cr = await (await fetch('/wp-json/wp/v2/categories', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-            body: JSON.stringify({ name: catMeta.name, slug: catMeta.slug })
-          })).json();
-          if (cr && cr.id) catIdMap[catMeta.slug] = cr.id;
         }
       }
 
       let allExistingPosts = [];
       for (let pg = 1; pg <= 5; pg++) {
-        const r = await fetch(`/wp-json/wp/v2/posts?per_page=100&page=${pg}&status=any`, {
+        const r = await fetch(`/wp-json/wp/v2/posts?per_page=100&page=${pg}&status=any,trash`, {
           headers: { 'X-WP-Nonce': wpNonce }
         });
         if (!r.ok) break;
@@ -569,52 +551,62 @@ async function performWpLogin(page, loginUrl) {
         if (arr.length < 100) break;
       }
 
+      const keepSlugs = new Set(postsToPublish.map(p => p.slug));
+      const toDelete = allExistingPosts.filter(ep => ep && !keepSlugs.has(ep.slug));
+      let deletedPostsCount = 0;
+      const delBatch = 8;
+      for (let i = 0; i < toDelete.length; i += delBatch) {
+        const chunk = toDelete.slice(i, i + delBatch);
+        await Promise.all(chunk.map(async (ep) => {
+          const dr = await fetch(`/wp-json/wp/v2/posts/${ep.id}?force=true`, {
+            method: 'DELETE',
+            headers: { 'X-WP-Nonce': wpNonce }
+          });
+          if (dr.ok) deletedPostsCount++;
+        }));
+      }
+
       const existingBySlug = {};
       for (const ep of allExistingPosts) {
-        if (ep && ep.slug) existingBySlug[ep.slug] = ep.id;
+        if (ep && ep.slug && keepSlugs.has(ep.slug)) existingBySlug[ep.slug] = ep.id;
       }
 
       const publishedMap = {};
       let publishedCount = 0;
 
-      const batchSize = 6;
-      for (let i = 0; i < postsToPublish.length; i += batchSize) {
-        const chunk = postsToPublish.slice(i, i + batchSize);
-        await Promise.all(chunk.map(async (postItem) => {
-          const matchId = existingBySlug[postItem.slug] || null;
-          const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
-          const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
-          const pubRes = await fetch(epUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-            body: JSON.stringify({
-              title: postItem.title,
-              slug: postItem.slug,
-              excerpt: postItem.summary,
-              content: postItem.standaloneHtml,
-              status: 'publish',
-              comment_status: 'closed',
-              ping_status: 'open',
-              featured_media: mediaId,
-              categories: cId ? [cId] : []
-            })
-          });
-          const pubJson = await pubRes.json();
-          if (pubJson && pubJson.id) {
-            publishedCount++;
-            publishedMap[postItem.id] = {
-              wpPostId: pubJson.id,
-              slug: pubJson.slug || postItem.slug,
-              link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
-            };
-          }
-        }));
+      for (const postItem of postsToPublish) {
+        const matchId = existingBySlug[postItem.slug] || null;
+        const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
+        const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
+        const pubRes = await fetch(epUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+          body: JSON.stringify({
+            title: postItem.title,
+            slug: postItem.slug,
+            excerpt: postItem.summary,
+            content: postItem.standaloneHtml,
+            status: 'publish',
+            comment_status: 'closed',
+            ping_status: 'open',
+            featured_media: mediaId,
+            categories: cId ? [cId] : []
+          })
+        });
+        const pubJson = await pubRes.json();
+        if (pubJson && pubJson.id) {
+          publishedCount++;
+          publishedMap[postItem.id] = {
+            wpPostId: pubJson.id,
+            slug: pubJson.slug || postItem.slug,
+            link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
+          };
+        }
       }
 
       return {
-        categoriesSynced: Object.keys(catIdMap).length,
+        deletedPostsCount,
         publishedCount,
-        totalRequested: postsToPublish.length,
         publishedMap
       };
     }, {
@@ -626,10 +618,9 @@ async function performWpLogin(page, loginUrl) {
       llmsFullTxt: llmsFullTxtRaw
     });
 
-    console.log('   [ALL 9 DISEASES BLOG SYNC RESULT]:', {
-      categoriesSynced: blogCleanupAndSync.categoriesSynced,
-      publishedCount: blogCleanupAndSync.publishedCount,
-      totalRequested: blogCleanupAndSync.totalRequested
+    console.log('   [STANDALONE CONSOLIDATION & CLEANUP RESULT]:', {
+      deletedExtraPostsCount: blogCleanupAndSync.deletedPostsCount,
+      remainingFlagshipPosts: blogCleanupAndSync.publishedCount
     });
 
     fs.writeFileSync(

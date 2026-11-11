@@ -184,10 +184,10 @@ const SEO_PAGES = {
   'ask-doctor': {
     file: 'ask-doctor.html',
     path: '/ask-doctor/',
-    title: '통합의학 인사이트 저널 & 1:1 비공개 건강 Q&A | 바른한의원 대전본점',
-    description: 'Nature Medicine·NEJM·Lancet·JAMA 등 해외 의학 저널 기반 건강 칼럼과 9대 질환 카테고리별 100% 비공개 1:1 의료진 건강 상담(소셜 간편 로그인) 공간입니다.',
+    title: '3D 백과사전 오늘의 건강 글(72선) & 무엇이든 물어보세요 (단독 페이지) | 바른한의원 대전본점',
+    description: '척추·골반, 위·장, 무릎 성장판, 간·해독, 자율신경, 하복부·대사, 두피·모낭, 원기·면역, 전립선·방광 등 9대 부위별 오늘의 건강 글(72편)과 해외 SCI 학술지 근거 의학 정보, 전 질환 통합 1:1 질문 게시판을 한눈에 볼 수 있는 단독 페이지입니다.',
     preloadImg: DEFAULT_OG_IMAGE,
-    breadcrumbName: '의학 인사이트 & 1:1 비공개 Q&A',
+    breadcrumbName: '3D 백과사전 오늘의 건강 글 단독 페이지',
     hasFaq: true
   },
   'lifting-compare': {
@@ -266,7 +266,61 @@ function buildJsonLdForKey(key, customOgImg) {
     });
   }
 
-  if (cfg.hasFaq) {
+  if (key === 'ask-doctor' || key === 'body-explorer') {
+    webPageNode.speakable = {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.aeo-direct-answer', '.geo-fact-table', '.hip-question-title', '.seo-standalone-note-item']
+    };
+    try {
+      const { BODY_3D_AUTO_NOTES } = require('./body-3d-auto-notes-data.js');
+      const all72 = [];
+      const latest9Faq = [];
+      for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES || {})) {
+        if (!Array.isArray(eps) || eps.length === 0) continue;
+        eps.forEach(ep => {
+          all72.push({
+            id: ep.id,
+            partId,
+            partLabel: ep.partLabel,
+            keyword: ep.keyword,
+            title: ep.questionTitle
+          });
+        });
+        const latestEp = eps[eps.length - 1];
+        if (latestEp) {
+          latest9Faq.push({
+            '@type': 'Question',
+            name: `[${latestEp.partLabel}] ${latestEp.questionTitle}`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: `${(latestEp.truthLines || []).join(' ')} 올바른 관리: ${(latestEp.mythLines && latestEp.mythLines[1]) || ''} 1분 체크: ${(latestEp.checkList || []).join(' / ')} (학술 근거: ${latestEp.academicBasis || '국제 SCI 학술지'})`
+            }
+          });
+        }
+      }
+      if (latest9Faq.length > 0) {
+        graph.push({
+          '@type': 'FAQPage',
+          '@id': canonicalUrl + '#faq',
+          mainEntity: latest9Faq
+        });
+      }
+      if (all72.length > 0) {
+        graph.push({
+          '@type': 'ItemList',
+          '@id': canonicalUrl + '#health-notes-72',
+          name: '바른한의원 3D 백과사전 오늘의 건강 글 72선 단독 아카이브',
+          numberOfItems: all72.length,
+          itemListElement: all72.map((n, idx) => ({
+            '@type': 'ListItem',
+            position: idx + 1,
+            name: `[${n.partLabel} · ${n.keyword}] ${n.title}`,
+            url: `${CANONICAL_ORIGIN}/ask-doctor/?part=${n.partId}&note=${n.id}`
+          }))
+        });
+      }
+    } catch (e) {}
+  } else if (cfg.hasFaq) {
     graph.push({
       '@type': 'FAQPage',
       '@id': canonicalUrl + '#faq',

@@ -975,7 +975,7 @@ function generateLlmsTxtFiles() {
     '- [메인 3D 스토리 쇼룸](https://www.bareunhaniwon.com/): 환자 증상 공감 스토리 및 9대 정밀검진·6대 물리치료 안내',
     '- [안정위 대표원장 · 9대 정밀검진](https://www.bareunhaniwon.com/director/): 초음파, 적외선 체열진단, 두피현미경, 모아레 체형측정, 인바디, 자율신경(HRV), 간·당 대사, 혈관 노화, 성장판 검사',
     '- [풀스크린 3D 인체모형 · 진료 살펴보기](https://www.bareunhaniwon.com/body-explorer/): 근육·신경·관절·혈관 4대 계통 3D 모션 및 9대 부위별 오늘의 건강 글(72편) 실시간 조회수 연동 포털',
-    '- [무엇이든 물어보세요 · 통합 1:1 Q&A & 의학 저널](https://www.bareunhaniwon.com/ask-doctor/): 전 질환 통합 1:1 질문 게시판(비밀글·키워드검색·카카오톡 및 이메일 답변 알림) 및 37편 심층 임상 칼럼',
+    '- [3D 백과사전 오늘의 건강 글 단독 페이지 & 통합 1:1 Q&A](https://www.bareunhaniwon.com/ask-doctor/): 9대 부위 오늘의 건강 글 72편 단독 페이지 열람 및 전 질환 통합 1:1 질문 게시판(비밀글·키워드검색·카카오톡 및 이메일 답변 알림)',
     '- [바른 추나 · 척추교정 클리닉](https://www.bareunhaniwon.com/chuna/): 허리디스크, 목디스크, 골반불균형, 좌골신경통, 체형교정',
     '- [바른 성장 · 성조숙증 클리닉](https://www.bareunhaniwon.com/growth/): 무방사선 초음파 성장판 분석, 소아비만·성조숙증 예방, 비염·구강호흡 수면 성장 치료',
     '- [바른 다이어트 · 식욕ZERO 클리닉](https://www.bareunhaniwon.com/diet-zero/): 기초대사량 보존, 갈색지방 활성화, 내장지방·부종 해독 다이어트',
@@ -984,12 +984,11 @@ function generateLlmsTxtFiles() {
     '- [바른 전립선 · 남성활력 클리닉](https://www.bareunhaniwon.com/prostate/): 만성 전립선염, 전립선비대증, 야간뇨, 과민성 방광, 골반저 순환 치료',
     '- [바른 매선 · 리프팅 윤곽진단](https://www.bareunhaniwon.com/lifting-compare/): 비수술 한방 안면 매선 리프팅 및 윤곽 대칭 교정',
     '',
-    '## 3. 3D Body Explorer — 72 "오늘의 건강 글" (SEO · AEO · GEO Direct Q&A Index)',
-    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/${p.slug}/): ${p.summary}`),
+    '## 3. 3D Body Explorer — 72 "오늘의 건강 글" Standalone Page Index (SEO · AEO · GEO Direct Q&A)',
+    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/ask-doctor/?part=${p.partId}&note=${p.id}): ${p.summary}`),
     '',
-    '## 4. 37 Evidence-Based Clinical Columns (9대 질환 심층 임상 칼럼)',
-    `- [${FLAGSHIP_REPRESENTATIVE_POST.title}](https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/): ${FLAGSHIP_REPRESENTATIVE_POST.summary}`,
-    ...(Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => `- [${p.title}](https://www.bareunhaniwon.com/${p.slug}/): ${p.summary}`)
+    '## 4. Representative Integrative Medicine Review',
+    `- [${FLAGSHIP_REPRESENTATIVE_POST.title}](https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/): ${FLAGSHIP_REPRESENTATIVE_POST.summary}`
   ];
 
   const llmsTxtContent = headerLines.join('\n') + '\n';
@@ -1006,10 +1005,9 @@ function generateLlmsTxtFiles() {
   for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES)) {
     if (!Array.isArray(eps)) continue;
     for (const ep of eps) {
-      const slug = 'health-note-' + ep.id;
       fullLines.push('');
       fullLines.push(`### [${ep.partLabel} · ${ep.keyword}] ${ep.questionTitle}`);
-      fullLines.push(`- Canonical URL: https://www.bareunhaniwon.com/${slug}/`);
+      fullLines.push(`- Standalone Page URL: https://www.bareunhaniwon.com/ask-doctor/?part=${partId}&note=${ep.id}`);
       fullLines.push(`- 3D Explorer URL: https://www.bareunhaniwon.com/body-explorer/?part=${partId}&note=${ep.id}`);
       fullLines.push(`- Publish Date: ${ep.publishDate}`);
       fullLines.push(`- SCI Academic Basis: ${ep.academicBasis || '국제 SCI 의학저널 근거'}`);
