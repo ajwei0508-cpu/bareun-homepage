@@ -1,0 +1,21 @@
+{
+  "executedAt": "2026-11-11 12:50:57",
+  "todayKst": "2026-11-11",
+  "addedNotesCount": 0,
+  "totalNotesByPart": {
+    "knee": 8,
+    "cervical": 8,
+    "lumbar": 8,
+    "gongjindan": 8,
+    "syncope": 8,
+    "digest": 8,
+    "gut": 8,
+    "uterus": 8,
+    "prostate": 8
+  },
+  "auditPassedAll": true,
+  "auditErrors": [],
+  "blogCategoriesCount": 9,
+  "clinicalBlogPostsCount": 36,
+  "flagshipPostSlug": "integrative-autonomic-circadian-gut-spine-health-review"
+}

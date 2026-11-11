@@ -5,6 +5,7 @@ const https = require('https');
 const { execFileSync } = require('child_process');
 const {
   DISEASE_BLOG_CATEGORIES,
+  INITIAL_DISEASE_BLOG_POSTS,
   FLAGSHIP_REPRESENTATIVE_POST,
   buildStandaloneWpPostHtml
 } = require('./disease-blog-seed-data.js');
@@ -471,32 +472,46 @@ async function performWpLogin(page, loginUrl) {
 
     const featuredMediaId = mediaSetup.ogMediaId || 51;
 
-    // 3) HIDE ALL PREVIOUSLY PUBLISHED POSTS -> draft & PUBLISH ONLY THE 1 FLAGSHIP ARTICLE
-    console.log('3) Hiding all legacy posts -> draft and publishing ONLY 1 Flagship Article ...');
+    // 3) PUBLISH ALL 9 DISEASE CATEGORIES + 36 CLINICAL BLOG POSTS + 1 FLAGSHIP ARTICLE
+    console.log('3) Syncing all 9 disease categories, 36 clinical columns, and 1 Flagship Article to WordPress ...');
     const flagshipPayload = {
       id: FLAGSHIP_REPRESENTATIVE_POST.id,
       slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
       partId: FLAGSHIP_REPRESENTATIVE_POST.partId,
+      categorySlug: 'blog-lumbar',
       title: FLAGSHIP_REPRESENTATIVE_POST.title,
       summary: FLAGSHIP_REPRESENTATIVE_POST.summary,
       standaloneHtml: buildStandaloneWpPostHtml(FLAGSHIP_REPRESENTATIVE_POST)
     };
 
-    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, flagship, mediaId }) => {
-      let catId = null;
+    const clinicalPayloads = (Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => ({
+      id: p.id,
+      slug: p.slug,
+      partId: p.partId,
+      categorySlug: p.categorySlug,
+      title: p.title,
+      summary: p.summary,
+      standaloneHtml: p.wpStandaloneHtml || p.bodyHtml || ''
+    }));
+
+    const allPostsToPublish = [flagshipPayload, ...clinicalPayloads];
+
+    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId }) => {
+      const catIdMap = {};
       const catsRes = await fetch('/wp-json/wp/v2/categories?per_page=100', { headers: { 'X-WP-Nonce': wpNonce } });
       const cats = await catsRes.json();
-      const catMeta = categoriesList[0];
-      const foundCat = Array.isArray(cats) ? cats.find(c => c.slug === catMeta.slug) : null;
-      if (foundCat) {
-        catId = foundCat.id;
-      } else {
-        const cr = await (await fetch('/wp-json/wp/v2/categories', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-          body: JSON.stringify({ name: catMeta.name, slug: catMeta.slug })
-        })).json();
-        if (cr && cr.id) catId = cr.id;
+      for (const catMeta of categoriesList) {
+        const foundCat = Array.isArray(cats) ? cats.find(c => c.slug === catMeta.slug) : null;
+        if (foundCat) {
+          catIdMap[catMeta.slug] = foundCat.id;
+        } else {
+          const cr = await (await fetch('/wp-json/wp/v2/categories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({ name: catMeta.name, slug: catMeta.slug })
+          })).json();
+          if (cr && cr.id) catIdMap[catMeta.slug] = cr.id;
+        }
       }
 
       let allExistingPosts = [];
@@ -511,68 +526,62 @@ async function performWpLogin(page, loginUrl) {
         if (arr.length < 100) break;
       }
 
-      let hiddenCount = 0;
-      let flagshipMatchId = null;
-
-      // 블로그 자동화 및 질환별 포스트 보존: 대표글 외 기존 포스트를 강제로 draft 전환하던 루프를 해제하여 모든 질환 블로그가 정상 발행 유지되도록 함
+      const existingBySlug = {};
       for (const ep of allExistingPosts) {
-        if (ep.slug === flagship.slug) {
-          flagshipMatchId = ep.id;
-          break;
-        }
+        if (ep && ep.slug) existingBySlug[ep.slug] = ep.id;
       }
 
-      let deletedComments = 0;
-      const cmRes = await fetch('/wp-json/wp/v2/comments?per_page=100&status=any', {
-        headers: { 'X-WP-Nonce': wpNonce }
-      });
-      const cmList = await cmRes.json();
-      if (Array.isArray(cmList)) {
-        for (const c of cmList) {
-          const dr = await fetch('/wp-json/wp/v2/comments/' + c.id + '?force=true', {
-            method: 'DELETE',
-            headers: { 'X-WP-Nonce': wpNonce }
-          });
-          if (dr.ok) deletedComments++;
-        }
-      }
-
-      const epUrl = flagshipMatchId ? ('/wp-json/wp/v2/posts/' + flagshipMatchId) : '/wp-json/wp/v2/posts';
-      const pubRes = await fetch(epUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-        body: JSON.stringify({
-          title: flagship.title,
-          slug: flagship.slug,
-          excerpt: flagship.summary,
-          content: flagship.standaloneHtml,
-          status: 'publish',
-          comment_status: 'closed',
-          ping_status: 'open',
-          featured_media: mediaId,
-          categories: catId ? [catId] : []
-        })
-      });
-      const pubJson = await pubRes.json();
-      const canonicalFlagshipLink = 'https://www.bareunhaniwon.com/' + (pubJson?.slug || flagship.slug) + '/';
       const publishedMap = {};
-      if (pubJson && pubJson.id) {
-        publishedMap[flagship.id] = {
-          wpPostId: pubJson.id,
-          slug: pubJson.slug || flagship.slug,
-          link: canonicalFlagshipLink
-        };
+      let publishedCount = 0;
+
+      for (const postItem of postsToPublish) {
+        const matchId = existingBySlug[postItem.slug] || null;
+        const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
+        const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
+        const pubRes = await fetch(epUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+          body: JSON.stringify({
+            title: postItem.title,
+            slug: postItem.slug,
+            excerpt: postItem.summary,
+            content: postItem.standaloneHtml,
+            status: 'publish',
+            comment_status: 'closed',
+            ping_status: 'open',
+            featured_media: mediaId,
+            categories: cId ? [cId] : []
+          })
+        });
+        const pubJson = await pubRes.json();
+        if (pubJson && pubJson.id) {
+          publishedCount++;
+          publishedMap[postItem.id] = {
+            wpPostId: pubJson.id,
+            slug: pubJson.slug || postItem.slug,
+            link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
+          };
+        }
       }
 
-      return { hiddenCount, deletedComments, flagshipPostId: pubJson?.id || null, flagshipLink: canonicalFlagshipLink, publishedMap };
+      return {
+        categoriesSynced: Object.keys(catIdMap).length,
+        publishedCount,
+        totalRequested: postsToPublish.length,
+        publishedMap
+      };
     }, {
       wpNonce: nonce,
       categoriesList: DISEASE_BLOG_CATEGORIES,
-      flagship: flagshipPayload,
+      postsToPublish: allPostsToPublish,
       mediaId: featuredMediaId
     });
 
-    console.log('   [BLOG CLEANUP & SINGLE FLAGSHIP SYNC]:', blogCleanupAndSync);
+    console.log('   [ALL 9 DISEASES BLOG SYNC RESULT]:', {
+      categoriesSynced: blogCleanupAndSync.categoriesSynced,
+      publishedCount: blogCleanupAndSync.publishedCount,
+      totalRequested: blogCleanupAndSync.totalRequested
+    });
 
     fs.writeFileSync(
       path.join(__dirname, 'wp-published-posts-map.json'),

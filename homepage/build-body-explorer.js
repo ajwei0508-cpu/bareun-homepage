@@ -30,6 +30,22 @@ const {
   ANATOMY_SYSTEMS_CONTENT,
   auditAnatomySystemsData
 } = require('./body-3d-anatomy-systems-data.js');
+const {
+  INITIAL_DISEASE_BLOG_POSTS
+} = require('./disease-blog-seed-data.js');
+
+const CLINICAL_BLOGS_LITE = (Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => ({
+  slug: p.slug,
+  partId: p.partId,
+  categoryName: p.categoryName,
+  title: p.title,
+  date: p.date,
+  readTime: p.readTime,
+  badge: p.badge,
+  isEncyclopediaMaster: Boolean(p.isEncyclopediaMaster),
+  summary: p.summary,
+  keywords: Array.isArray(p.keywords) ? p.keywords.slice(0, 3) : []
+}));
 
 function escAttrServer(str) {
   return String(str == null ? '' : str)
@@ -1742,6 +1758,7 @@ function buildBodyExplorerHtml() {
     const SYSTEM_TABS = ${JSON.stringify(ANATOMY_SYSTEM_TABS)};
     const ANATOMY_REGIONS = ${JSON.stringify(ANATOMY_REGIONS_META)};
     const SYSTEM_CONTENT = ${JSON.stringify(ANATOMY_SYSTEMS_CONTENT)};
+    const CLINICAL_BLOGS = ${JSON.stringify(CLINICAL_BLOGS_LITE)};
 
     const earlyParams = new URLSearchParams(window.location.search);
     if (earlyParams.get('tab') === 'blog' || earlyParams.get('blog') === '1') {
@@ -2381,10 +2398,41 @@ function buildBodyExplorerHtml() {
 
       let activeBodyHtml = '';
 
+      const partClinicalBlogs = (Array.isArray(CLINICAL_BLOGS) ? CLINICAL_BLOGS : [])
+        .filter(b => b.partId === qnaPartKey)
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+        .slice(0, 3);
+
+      const recommendedBlogBlockHtml = partClinicalBlogs.length > 0
+        ? '<div class="rec-blog-strip" style="margin-top:10px;padding:12px 14px;border-radius:14px;background:#FFFFFF;border:1px solid #DFC99B;box-shadow:0 6px 18px rgba(13,13,15,0.06);">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">' +
+              '<div style="display:flex;align-items:center;gap:6px;">' +
+                '<span style="display:inline-flex;padding:2px 7px;border-radius:6px;background:#0D0D0F;color:#E5C67E;font-size:0.68rem;font-weight:800;">심층 임상 칼럼 3선</span>' +
+                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 최신 블로그</strong>' +
+              '</div>' +
+              '<a href="ask-doctor.html?tab=blog&part=' + encodeURIComponent(qnaPartKey) + '" style="font-size:0.72rem;font-weight:800;color:#967128;text-decoration:none;">전체 칼럼 보기 &rarr;</a>' +
+            '</div>' +
+            '<div style="display:flex;flex-direction:column;gap:6px;">' +
+              partClinicalBlogs.map((bp, bIdx) =>
+                '<a href="ask-doctor.html?tab=blog&part=' + encodeURIComponent(qnaPartKey) + '&post=' + encodeURIComponent(bp.slug) + '" style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:9px;background:#FCFBF8;border:1px solid #EAE3D5;text-decoration:none;color:#141416;transition:all 0.16s ease;">' +
+                  '<div style="min-width:0;flex:1;">' +
+                    '<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">' +
+                      '<span style="font-size:0.66rem;font-weight:800;color:#967128;">0' + (bIdx + 1) + '</span>' +
+                      '<span style="font-size:0.66rem;font-weight:700;color:#6E685F;">' + escHtml(bp.badge || bp.date) + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:0.78rem;font-weight:700;color:#0D0D0F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(bp.title) + '</div>' +
+                  '</div>' +
+                  '<span style="font-size:0.72rem;font-weight:800;color:#967128;flex-shrink:0;">열람 &rsaquo;</span>' +
+                '</a>'
+              ).join('') +
+            '</div>' +
+          '</div>'
+        : '';
+
       if (currentMenuTab === 0) {
-        activeBodyHtml = latestNote
+        activeBodyHtml = (latestNote
           ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기', menuMeta)
-          : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>';
+          : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>') + recommendedBlogBlockHtml;
       } else if (currentMenuTab === 1) {
         const items = qnaCacheByPart[qnaPartKey];
         if (!items) {

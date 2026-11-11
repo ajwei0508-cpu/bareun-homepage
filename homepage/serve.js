@@ -5,6 +5,10 @@ const path = require('path');
 const querystring = require('querystring');
 const { execFileSync, execFile } = require('child_process');
 const { handleBareunApi } = require('./local-bareun-api.js');
+const { startAutoBlogScheduler } = require('./auto-blog-engine.js');
+
+// 서버 기동 시 9대 질환 블로그 & 3D 건강노트 자동화 엔진 스케줄러 즉시 시작
+startAutoBlogScheduler();
 const studioAiEngine = require('./studio-ai-engine.js');
 
 const PORT = 3000;

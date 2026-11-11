@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const https = require('https');
-const { auditNoteThreeStage } = require('./body-3d-auto-notes-data.js');
+const { auditNoteThreeStage, BODY_3D_AUTO_NOTES } = require('./body-3d-auto-notes-data.js');
+const { syncNineDiseaseAutoNotes } = require('./auto-blog-engine.js');
 
 const DB_PATH = path.join(__dirname, 'private-qna-db.json');
 const LOCAL_SECRET = 'bareun-local-hmac-secret-2026';
@@ -951,7 +952,12 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
     const nextUpdateKst = new Date(curMs + addDays * 86400000).toISOString().slice(0, 10);
 
     const part = urlObj.searchParams.get('part') || 'all';
-    const stored = Array.isArray(db.bodyNotes) ? db.bodyNotes : [];
+    let stored = Array.isArray(db.bodyNotes) ? db.bodyNotes : [];
+    if (stored.length < 72) {
+      syncNineDiseaseAutoNotes();
+      const reloaded = loadDb();
+      stored = Array.isArray(reloaded.bodyNotes) ? reloaded.bodyNotes : [];
+    }
     const notes = stored.filter(n => {
       if (!n || typeof n !== 'object') return false;
       if (n.publishDate && n.publishDate > todayKst) return false;
@@ -964,9 +970,22 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       todayKst,
       nextUpdateKst,
       cycleDays: 2,
-      autoReady: Boolean(db.notesConfig && db.notesConfig.geminiApiKey),
+      autoReady: true,
       notes
     });
+  }
+
+  if (route === '/auto-blog/status' && req.method === 'GET') {
+    const logPath = path.join(__dirname, 'auto-blog-run-log.json');
+    const logData = fs.existsSync(logPath)
+      ? JSON.parse(fs.readFileSync(logPath, 'utf8'))
+      : syncNineDiseaseAutoNotes();
+    return sendJson(res, 200, { ok: true, status: logData });
+  }
+
+  if (route === '/auto-blog/run' && req.method === 'POST') {
+    const report = syncNineDiseaseAutoNotes();
+    return sendJson(res, 200, { ok: true, report });
   }
 
   if (route === '/body-notes' && req.method === 'POST') {

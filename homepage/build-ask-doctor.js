@@ -15,8 +15,30 @@ const fs = require('fs');
 const path = require('path');
 const {
   DISEASE_QNA_CATEGORIES,
-  FLAGSHIP_REPRESENTATIVE_POST
+  FLAGSHIP_REPRESENTATIVE_POST,
+  DISEASE_BLOG_CATEGORIES,
+  INITIAL_DISEASE_BLOG_POSTS
 } = require('./disease-blog-seed-data.js');
+
+const CLINICAL_POSTS_FOR_CLIENT = (Array.isArray(INITIAL_DISEASE_BLOG_POSTS) ? INITIAL_DISEASE_BLOG_POSTS : []).map(p => ({
+  id: p.id,
+  slug: p.slug,
+  partId: p.partId,
+  categorySlug: p.categorySlug,
+  categoryName: p.categoryName,
+  title: p.title,
+  date: p.date,
+  readTime: p.readTime,
+  badge: p.badge,
+  isEncyclopediaMaster: Boolean(p.isEncyclopediaMaster),
+  keywords: Array.isArray(p.keywords) ? p.keywords : [],
+  summary: p.summary,
+  tldrPoints: Array.isArray(p.tldrPoints) ? p.tldrPoints : [],
+  faqList: Array.isArray(p.faqList) ? p.faqList : [],
+  detailPageLink: p.detailPageLink || 'story-3d.html',
+  detailPageLabel: p.detailPageLabel || '전용 클리닉 바로가기',
+  cards: Array.isArray(p.cards) ? p.cards : []
+}));
 
 const mapPath = path.join(__dirname, 'wp-published-posts-map.json');
 let publishedMap = {};
@@ -1162,6 +1184,34 @@ function buildAskDoctorHtml() {
          SECTION 1: REPRESENTATIVE EXPERT BLOG POST (ONLY 1 PUBLISHED ARTICLE)
          ==================================================================== -->
     <section class="tab-section active" id="section-blog-view">
+      <!-- 9대 질환 36편 임상 백과 & 심층 블로그 아카이브 섹션 -->
+      <div class="clinical-blog-archive-wrap" style="background:#FFFFFF;border:1.5px solid #BFDBFE;border-radius:22px;padding:24px 28px;margin-bottom:26px;box-shadow:var(--shadow-sm);">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+          <div>
+            <div style="font-size:0.75rem;font-weight:800;color:var(--blue-600);letter-spacing:0.06em;">9 DISEASES CLINICAL BLOG AUTOMATION · 총 ${CLINICAL_POSTS_FOR_CLIENT.length}편 정식 발행</div>
+            <h2 style="font-size:1.28rem;font-weight:800;color:var(--ink-900);margin-top:2px;">📚 9대 질환별 공식 의학 백과 &amp; 심층 임상 칼럼</h2>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="badge-notify-tag">🤖 자동화 엔진 가동 중</span>
+            <span class="badge-notify-tag">📘 9대 질환 공식 백과 마스터 9편 + 심층 칼럼 27편</span>
+          </div>
+        </div>
+
+        <div class="qna-cat-strip" id="blog-category-strip" style="margin-bottom:16px;">
+          <button type="button" class="qna-cat-btn active" data-bpart="all" onclick="window.filterClinicalBlog('all')">📋 전체 질환 칼럼 (${CLINICAL_POSTS_FOR_CLIENT.length})</button>
+          ${DISEASE_QNA_CATEGORIES.map(c => {
+            const cnt = CLINICAL_POSTS_FOR_CLIENT.filter(x => x.partId === c.partId).length;
+            return `<button type="button" class="qna-cat-btn" data-bpart="${c.partId}" onclick="window.filterClinicalBlog('${c.partId}')">${c.icon} ${c.shortName} (${cnt})</button>`;
+          }).join('\n          ')}
+        </div>
+
+        <!-- 선택된 임상 칼럼 전문 리더 모달/패널 -->
+        <div id="clinical-blog-reader-box" style="display:none;margin-bottom:20px;padding:26px;border-radius:18px;background:#F8FAFC;border:2px solid #2563EB;"></div>
+
+        <!-- 임상 칼럼 카드 그리드 -->
+        <div id="clinical-blog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;"></div>
+      </div>
+
       <div class="blog-layout">
         <aside class="blog-sidebar">
           <div class="sidebar-card">
@@ -1569,10 +1619,13 @@ function buildAskDoctorHtml() {
   <script>
   (function() {
     const QNA_CATEGORIES = ${JSON.stringify(DISEASE_QNA_CATEGORIES)};
+    const CLINICAL_POSTS = ${JSON.stringify(CLINICAL_POSTS_FOR_CLIENT)};
     const TOKEN_KEY = 'bareun_member_token_v5';
 
     let currentMainTab = 'blog';
     let currentDiseasePart = 'all';
+    let currentBlogPart = 'all';
+    let currentOpenPostSlug = '';
     let currentUser = null;
     let qnaItems = [];
     let oauthConfig = { googleClientId: '', kakaoJsKey: '', naverClientId: '' };
@@ -2285,11 +2338,103 @@ function buildAskDoctorHtml() {
       window.showToast('안전하게 로그아웃되었습니다.');
     };
 
+    window.filterClinicalBlog = function(partId, openSlug) {
+      currentBlogPart = partId || 'all';
+      document.querySelectorAll('#blog-category-strip .qna-cat-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-bpart') === currentBlogPart);
+      });
+      const gridEl = document.getElementById('clinical-blog-grid');
+      if (!gridEl) return;
+      const list = currentBlogPart === 'all'
+        ? CLINICAL_POSTS
+        : CLINICAL_POSTS.filter(p => p.partId === currentBlogPart);
+
+      gridEl.innerHTML = list.map(p => {
+        const isSelected = p.slug === currentOpenPostSlug;
+        return '<article onclick="window.openClinicalPost(\\'' + esc(p.slug) + '\\')" style="cursor:pointer;padding:18px;border-radius:16px;background:' + (isSelected ? '#EFF6FF' : '#FFFFFF') + ';border:1.5px solid ' + (isSelected ? '#2563EB' : '#E2E8F0') + ';display:flex;flex-direction:column;justify-content:space-between;gap:10px;transition:all 0.18s ease;">' +
+          '<div>' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;">' +
+              '<span style="font-size:0.7rem;font-weight:800;padding:3px 8px;border-radius:6px;background:' + (p.isEncyclopediaMaster ? '#1E3A8A' : '#EFF6FF') + ';color:' + (p.isEncyclopediaMaster ? '#FFFFFF' : '#1D4ED8') + ';">' + esc(p.badge || p.categoryName) + '</span>' +
+              '<span style="font-size:0.72rem;color:#64748B;font-weight:600;">' + esc(p.date) + ' · ' + esc(p.readTime) + '</span>' +
+            '</div>' +
+            '<h3 style="font-size:0.96rem;font-weight:800;color:#0F172A;line-height:1.42;margin-bottom:6px;">' + esc(p.title) + '</h3>' +
+            '<p style="font-size:0.81rem;color:#475569;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + esc(p.summary) + '</p>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid #F1F5F9;">' +
+            '<span style="font-size:0.74rem;font-weight:700;color:#64748B;">' + esc(p.categoryName) + '</span>' +
+            '<span style="font-size:0.78rem;font-weight:800;color:#2563EB;">전문 읽기 &rarr;</span>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+
+      if (openSlug) {
+        window.openClinicalPost(openSlug);
+      }
+    };
+
+    window.openClinicalPost = function(slug) {
+      const post = CLINICAL_POSTS.find(p => p.slug === slug);
+      const readerEl = document.getElementById('clinical-blog-reader-box');
+      if (!post || !readerEl) return;
+      currentOpenPostSlug = slug;
+      readerEl.style.display = 'block';
+
+      const tldrHtml = (Array.isArray(post.tldrPoints) && post.tldrPoints.length > 0)
+        ? '<div style="margin:14px 0;padding:16px 18px;border-radius:14px;background:#FFFFFF;border:1px solid #BFDBFE;">' +
+            '<div style="font-size:0.82rem;font-weight:800;color:#1D4ED8;margin-bottom:8px;">📌 3줄 핵심 의학 요약 (TL;DR)</div>' +
+            '<ul style="padding-left:18px;font-size:0.86rem;color:#1E293B;display:flex;flex-direction:column;gap:5px;">' +
+              post.tldrPoints.map(pt => '<li>' + esc(pt) + '</li>').join('') +
+            '</ul>' +
+          '</div>'
+        : '';
+
+      const cardsHtml = (Array.isArray(post.cards) ? post.cards : []).map(c =>
+        '<div style="padding:16px 18px;border-radius:14px;background:#FFFFFF;border:1px solid #E2E8F0;">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+            '<span style="font-size:0.7rem;font-weight:800;padding:2px 8px;border-radius:999px;background:#DBEAFE;color:#1E40AF;">STEP ' + esc(c.num) + ' · ' + esc(c.phase) + '</span>' +
+            '<span style="font-size:0.75rem;font-weight:700;color:#64748B;">' + esc(c.tag) + '</span>' +
+          '</div>' +
+          '<h4 style="font-size:0.98rem;font-weight:800;color:#0F172A;margin-bottom:6px;">' + esc(c.headline) + '</h4>' +
+          '<p style="font-size:0.86rem;color:#334155;line-height:1.68;">' + esc(c.body) + '</p>' +
+          (c.highlight ? '<div style="margin-top:8px;padding:8px 12px;border-radius:8px;background:#EFF6FF;color:#1E3A8A;font-size:0.8rem;font-weight:700;">💡 ' + esc(c.highlight) + '</div>' : '') +
+        '</div>'
+      ).join('');
+
+      readerEl.innerHTML =
+        '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;">' +
+          '<div>' +
+            '<span style="display:inline-block;font-size:0.72rem;font-weight:800;padding:4px 10px;border-radius:999px;background:#1D4ED8;color:#FFFFFF;margin-bottom:6px;">' + esc(post.categoryName) + ' · ' + esc(post.badge) + '</span>' +
+            '<h3 style="font-size:1.3rem;font-weight:800;color:#0F172A;line-height:1.35;">' + esc(post.title) + '</h3>' +
+            '<div style="font-size:0.8rem;color:#64748B;margin-top:4px;">발행일 ' + esc(post.date) + ' · ' + esc(post.readTime) + '</div>' +
+          '</div>' +
+          '<button type="button" onclick="window.closeClinicalPost()" style="padding:7px 14px;border-radius:999px;border:1px solid #CBD5E1;background:#FFFFFF;font-weight:800;font-size:0.8rem;cursor:pointer;">✕ 칼럼 닫기</button>' +
+        '</div>' +
+        '<p style="font-size:0.9rem;color:#334155;line-height:1.65;">' + esc(post.summary) + '</p>' +
+        tldrHtml +
+        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:14px;">' + cardsHtml + '</div>' +
+        '<div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:14px;border-top:1px solid #CBD5E1;">' +
+          '<a href="' + esc(post.detailPageLink || 'story-3d.html') + '" style="padding:10px 18px;border-radius:999px;background:#0F172A;color:#FFFFFF;font-size:0.84rem;font-weight:800;">🏥 ' + esc(post.detailPageLabel || '전용 클리닉 자세히 보기') + ' &rarr;</a>' +
+          '<button type="button" onclick="window.switchMainMenu(\\'qna\\', \\'' + esc(post.partId) + '\\')" style="padding:10px 18px;border-radius:999px;border:none;background:#2563EB;color:#FFFFFF;font-size:0.84rem;font-weight:800;cursor:pointer;">💬 이 질환 1:1 질문 남기기 &rarr;</button>' +
+        '</div>';
+
+      readerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    window.closeClinicalPost = function() {
+      currentOpenPostSlug = '';
+      const readerEl = document.getElementById('clinical-blog-reader-box');
+      if (readerEl) readerEl.style.display = 'none';
+      window.filterClinicalBlog(currentBlogPart);
+    };
+
     // INITIAL BOOTSTRAP
     (async function init() {
       const params = new URLSearchParams(window.location.search);
       const urlTab = params.get('tab');
       const urlPart = params.get('part');
+      const urlPost = params.get('post');
+
+      window.filterClinicalBlog((urlTab === 'blog' && urlPart) ? urlPart : 'all', urlPost || '');
 
       if (urlPart && QNA_CATEGORIES.some(c => c.partId === urlPart)) {
         currentDiseasePart = urlPart;
