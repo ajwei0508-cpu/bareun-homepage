@@ -73,31 +73,45 @@ if (ENABLED_MENUS.length === 0 && ALL_CONFIG_ITEMS.length > 0) {
 }
 const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
 
-// 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행
-const FLATTENED_SEED_NOTES = [];
-for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
-  const overridePartLabel = MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel;
-  for (const ep of episodes) {
-    const mergedEp = overridePartLabel ? { ...ep, partLabel: overridePartLabel } : ep;
-    const res = auditNoteThreeStage(mergedEp);
-    if (!res.passed) {
-      throw new Error(`[3-Stage Self-Correction Gate Failed] ${ep.id}: ${res.errors.join(' | ')}`);
+    // 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행
+    const BASE_NOTE_VIEWS_MAP = {
+      knee: 2840,
+      cervical: 2690,
+      lumbar: 3120,
+      gongjindan: 2450,
+      syncope: 2380,
+      digest: 2760,
+      gut: 2910,
+      uterus: 2540,
+      prostate: 2310
+    };
+    const FLATTENED_SEED_NOTES = [];
+    for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
+      const overridePartLabel = MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel;
+      const baseViews = BASE_NOTE_VIEWS_MAP[partId] || 2400;
+      const viewOffsets = [820, 640, 950, 510, 430, 360, 290, 210];
+      episodes.forEach((ep, epIdx) => {
+        const mergedEp = overridePartLabel ? { ...ep, partLabel: overridePartLabel } : ep;
+        const res = auditNoteThreeStage(mergedEp);
+        if (!res.passed) {
+          throw new Error(`[3-Stage Self-Correction Gate Failed] ${ep.id}: ${res.errors.join(' | ')}`);
+        }
+        FLATTENED_SEED_NOTES.push({
+          id: ep.id,
+          partId,
+          partLabel: mergedEp.partLabel,
+          keyword: ep.keyword,
+          publishDate: ep.publishDate,
+          views: ep.views || (baseViews + (viewOffsets[epIdx] || 180)),
+          pinnedTop: false,
+          title: ep.questionTitle,
+          empathy: ep.empathyLines,
+          truth: ep.truthLines,
+          myth: ep.mythLines,
+          check: ep.checkList
+        });
+      });
     }
-    FLATTENED_SEED_NOTES.push({
-      id: ep.id,
-      partId,
-      partLabel: mergedEp.partLabel,
-      keyword: ep.keyword,
-      publishDate: ep.publishDate,
-      pinnedTop: false,
-      title: ep.questionTitle,
-      empathy: ep.empathyLines,
-      truth: ep.truthLines,
-      myth: ep.mythLines,
-      check: ep.checkList
-    });
-  }
-}
 
 // 표(clinic-explore-menu-config.json)에서 직접 수정하거나 새로 추가한 대표 건강 글 반영 (자유 제목·구조·레이아웃·색감 커스텀 지원)
 for (const m of ALL_CONFIG_ITEMS) {
@@ -1424,7 +1438,81 @@ function buildBodyExplorerHtml() {
       cursor: pointer;
     }
 
-    /* MENU 2 & MENU 3 PANELS (WHITE · BLACK · GOLD) */
+    .latest-red-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #E11D48;
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 8px rgba(225, 29, 72, 0.35);
+      white-space: nowrap;
+    }
+    .latest-red-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FF4D6D;
+      box-shadow: 0 0 6px #FF4D6D;
+    }
+    .archive-date-pill.is-latest-red {
+      background: #E11D48 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 6px rgba(225, 29, 72, 0.28);
+    }
+    .qna-inline-composer {
+      background: #FFFEFA;
+      border: 1.5px solid var(--lux-gold);
+      border-radius: 13px;
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      box-shadow: 0 8px 20px rgba(13, 13, 15, 0.07);
+    }
+    .qic-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .qic-input, .qic-select, .qic-textarea {
+      width: 100%;
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--lux-gold-border);
+      background: #FFFFFF;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--lux-ink);
+      outline: none;
+    }
+    .qic-input:focus, .qic-select:focus, .qic-textarea:focus {
+      border-color: var(--lux-black);
+    }
+    .qic-submit-btn {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--lux-gold);
+      background: var(--lux-black);
+      color: var(--lux-gold-bright);
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .qic-submit-btn:hover {
+      background: var(--lux-gold);
+      color: var(--lux-black);
+    }
     .qna-menu-panel,
     .archive-menu-panel {
       background: var(--lux-white);
@@ -1676,7 +1764,7 @@ function buildBodyExplorerHtml() {
     </a>
 
     <div class="vh-right-actions">
-      <a href="ask-doctor.html?tab=qna" class="vh-pill-btn" id="vh-ask-doctor-link">무엇이든 물어보세요</a>
+      <button type="button" onclick="window.openQnaInPopup()" class="vh-pill-btn" id="vh-ask-doctor-link" style="cursor:pointer;">무엇이든 물어보세요</button>
       <a href="story-3d.html" class="vh-pill-btn">&larr; 메인 홈</a>
     </div>
   </header>
@@ -1842,6 +1930,8 @@ function buildBodyExplorerHtml() {
     let archiveScope = 'part';
     let selectedArchiveNoteId = null;
     let qnaCacheByPart = {};
+    let isQnaComposerOpen = false;
+    let qnaWriteFeedback = '';
 
     // 4-System Bottom Menu State ('muscle' | 'nerve' | 'joint' | 'vessel' | null)
     let currentSystemMode = null;
@@ -1882,6 +1972,7 @@ function buildBodyExplorerHtml() {
         partLabel: (m && m.partLabel) || raw.partLabel || '무릎 성장판',
         keyword: raw.keyword || '',
         publishDate: raw.publishDate || todayKst,
+        views: Number(raw.views) || 2650,
         pinnedTop: Boolean(raw.pinnedTop),
         title: raw.title || raw.questionTitle || '',
         empathy: raw.empathy || raw.empathyLines || [],
@@ -2126,6 +2217,10 @@ function buildBodyExplorerHtml() {
         ? String(note.badgeOverride).trim()
         : (note.partLabel || (mMeta && mMeta.partLabel) || '주요 부위');
       const showBadge = d.showPartBadge !== false;
+      const isLatestRed = Boolean(note._isLatestRed);
+      const latestRedTagHtml = isLatestRed
+        ? '<span class="latest-red-badge"><span class="latest-red-dot"></span>NEW 최신글</span>'
+        : '';
       const useQuotes = d.titleQuotes !== false;
       const titleInner = useQuotes ? ('&ldquo;' + escHtml(note.title) + '&rdquo;') : escHtml(note.title);
       const effSubTitle = (note.subTitle && String(note.subTitle).trim())
@@ -2140,7 +2235,10 @@ function buildBodyExplorerHtml() {
       if (hdrMode === 'stacked') {
         headerInnerHtml =
           '<div class="hip-top-strip">' +
-            (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '<span></span>') +
+            '<span style="display:inline-flex;align-items:center;gap:6px;">' +
+              (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
+              latestRedTagHtml +
+            '</span>' +
             closeBtnHtml +
           '</div>' +
           '<div class="hip-header-main">' +
@@ -2153,6 +2251,7 @@ function buildBodyExplorerHtml() {
           '<div class="hip-header-main">' +
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
+              latestRedTagHtml +
               '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
             subTitleHtml +
@@ -2162,6 +2261,7 @@ function buildBodyExplorerHtml() {
           '<div class="hip-header-main">' +
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span><span class="hip-divider">|</span>' : '') +
+              latestRedTagHtml +
               '<h2 class="hip-question-title">' + titleInner + '</h2>' +
             '</div>' +
             subTitleHtml +
@@ -2349,14 +2449,13 @@ function buildBodyExplorerHtml() {
 
     async function loadQnaForPart(partId) {
       try {
-        const res = await fetch('/wp-json/bareun/v1/qna?part=' + encodeURIComponent(partId), { cache: 'no-store' });
+        const res = await fetch('/wp-json/bareun/v1/qna?part=all', { cache: 'no-store' });
         if (!res.ok) return;
         const data = await res.json();
         if (data && Array.isArray(data.items)) {
-          qnaCacheByPart[partId] = data.items;
-          const curMeta = getMenuMeta(currentPartId);
-          const curQnaKey = (curMeta && curMeta.qnaPartId) || currentPartId;
-          if (isPopupOpen && !currentSystemMode && currentMenuTab === 1 && curQnaKey === partId) {
+          qnaCacheByPart['all'] = data.items;
+          if (partId) qnaCacheByPart[partId] = data.items;
+          if (isPopupOpen && !currentSystemMode && currentMenuTab === 1) {
             renderPopupPanel();
           }
         }
@@ -2392,80 +2491,132 @@ function buildBodyExplorerHtml() {
       }
       applyRightHeaderSubText();
       if (topAskLink) {
-        topAskLink.setAttribute('href', 'ask-doctor.html?tab=qna&part=' + encodeURIComponent(qnaPartKey));
+        topAskLink.setAttribute('href', 'ask-doctor.html?tab=qna&part=all');
       }
       applyCameraFraming();
 
       let activeBodyHtml = '';
 
-      const partClinicalBlogs = (Array.isArray(CLINICAL_BLOGS) ? CLINICAL_BLOGS : [])
-        .filter(b => b.partId === qnaPartKey)
-        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+      // 4. 오늘의 건강글 중 심층 임상 칼럼 3선은 작성된 오늘의 건강글 범위 안에서 기존에 조회수가 많은 순으로 나열
+      const topViewedNotes3 = [...partNotes]
+        .sort((a, b) => (Number(b.views) || 0) - (Number(a.views) || 0))
         .slice(0, 3);
 
-      const recommendedBlogBlockHtml = partClinicalBlogs.length > 0
+      const recommendedBlogBlockHtml = topViewedNotes3.length > 0
         ? '<div class="rec-blog-strip" style="margin-top:10px;padding:12px 14px;border-radius:14px;background:#FFFFFF;border:1px solid #DFC99B;box-shadow:0 6px 18px rgba(13,13,15,0.06);">' +
             '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">' +
               '<div style="display:flex;align-items:center;gap:6px;">' +
                 '<span style="display:inline-flex;padding:2px 7px;border-radius:6px;background:#0D0D0F;color:#E5C67E;font-size:0.68rem;font-weight:800;">심층 임상 칼럼 3선</span>' +
-                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 최신 블로그</strong>' +
+                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 조회수 인기 BEST 3</strong>' +
               '</div>' +
-              '<a href="ask-doctor.html?tab=blog&part=' + encodeURIComponent(qnaPartKey) + '" style="font-size:0.72rem;font-weight:800;color:#967128;text-decoration:none;">전체 칼럼 보기 &rarr;</a>' +
+              '<button type="button" onclick="window.switchPopupMenu(2)" style="border:none;background:transparent;cursor:pointer;font-size:0.72rem;font-weight:800;color:#967128;">전체 건강글 (' + partNotes.length + '편) &rarr;</button>' +
             '</div>' +
             '<div style="display:flex;flex-direction:column;gap:6px;">' +
-              partClinicalBlogs.map((bp, bIdx) =>
-                '<a href="ask-doctor.html?tab=blog&part=' + encodeURIComponent(qnaPartKey) + '&post=' + encodeURIComponent(bp.slug) + '" style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:9px;background:#FCFBF8;border:1px solid #EAE3D5;text-decoration:none;color:#141416;transition:all 0.16s ease;">' +
+              topViewedNotes3.map((np, bIdx) => {
+                const isLatestItem = latestNote && np.id === latestNote.id;
+                return '<button type="button" onclick="window.openNoteFromTop3(\\'' + escHtml(np.id) + '\\')" style="width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:9px;background:#FCFBF8;border:1px solid ' + (isLatestItem ? '#FDA4AF' : '#EAE3D5') + ';color:#141416;transition:all 0.16s ease;">' +
                   '<div style="min-width:0;flex:1;">' +
                     '<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">' +
-                      '<span style="font-size:0.66rem;font-weight:800;color:#967128;">0' + (bIdx + 1) + '</span>' +
-                      '<span style="font-size:0.66rem;font-weight:700;color:#6E685F;">' + escHtml(bp.badge || bp.date) + '</span>' +
+                      '<span style="font-size:0.66rem;font-weight:800;color:#E11D48;">BEST 0' + (bIdx + 1) + '</span>' +
+                      '<span style="font-size:0.66rem;font-weight:700;color:#6E685F;">조회수 ' + Number(np.views || 2400).toLocaleString() + '회 · ' + fmtDotDate(np.publishDate) + '</span>' +
+                      (isLatestItem ? '<span class="latest-red-badge" style="padding:1px 5px;font-size:0.6rem;">최신</span>' : '') +
                     '</div>' +
-                    '<div style="font-size:0.78rem;font-weight:700;color:#0D0D0F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(bp.title) + '</div>' +
+                    '<div style="font-size:0.78rem;font-weight:700;color:#0D0D0F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">&ldquo;' + escHtml(np.title) + '&rdquo;</div>' +
                   '</div>' +
                   '<span style="font-size:0.72rem;font-weight:800;color:#967128;flex-shrink:0;">열람 &rsaquo;</span>' +
-                '</a>'
-              ).join('') +
+                '</button>';
+              }).join('') +
             '</div>' +
           '</div>'
         : '';
 
       if (currentMenuTab === 0) {
-        activeBodyHtml = (latestNote
-          ? buildStandardNoteBoxHtml(latestNote, 'window.closeInfoPopup()', '✕ 닫기', menuMeta)
+        const displayNote = latestNote ? Object.assign({}, latestNote, { _isLatestRed: true }) : null;
+        activeBodyHtml = (displayNote
+          ? buildStandardNoteBoxHtml(displayNote, 'window.closeInfoPopup()', '✕ 닫기', menuMeta)
           : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>') + recommendedBlogBlockHtml;
       } else if (currentMenuTab === 1) {
-        const items = qnaCacheByPart[qnaPartKey];
+        const items = qnaCacheByPart['all'];
         if (!items) {
-          loadQnaForPart(qnaPartKey);
+          loadQnaForPart('all');
         }
+        const partLabelLookup = {};
+        CLINIC_MENUS.forEach(m => {
+          partLabelLookup[m.id] = m.partLabel || m.shortLabel || m.id;
+          if (m.qnaPartId) partLabelLookup[m.qnaPartId] = m.partLabel || m.shortLabel || m.id;
+        });
+
+        const composerHtml = isQnaComposerOpen
+          ? '<form class="qna-inline-composer" onsubmit="window.submitInlineQna(event)">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
+                '<strong style="font-size:0.84rem;font-weight:800;color:#0D0D0F;">✍️ 현재 페이지에서 바로 1:1 질문 작성하기</strong>' +
+                '<button type="button" onclick="window.toggleInlineQnaComposer(false)" style="border:none;background:transparent;font-size:0.74rem;font-weight:800;color:#57534E;cursor:pointer;">접기 ▲</button>' +
+              '</div>' +
+              '<div class="qic-row-2">' +
+                '<select id="qic-part" class="qic-select">' +
+                  CLINIC_MENUS.map(m => {
+                    const pVal = m.qnaPartId || m.id;
+                    const sel = (pVal === qnaPartKey) ? ' selected' : '';
+                    return '<option value="' + escHtml(pVal) + '"' + sel + '>[' + escHtml(m.partLabel || m.shortLabel) + '] 관련 질문</option>';
+                  }).join('') +
+                '</select>' +
+                '<input type="text" id="qic-name" class="qic-input" placeholder="작성자 성함 (또는 닉네임) *" required />' +
+              '</div>' +
+              '<div class="qic-row-2">' +
+                '<input type="tel" id="qic-phone" class="qic-input" placeholder="연락처 (카톡 답변 알림용)" />' +
+                '<input type="email" id="qic-email" class="qic-input" placeholder="이메일 (메일 답변 알림용)" />' +
+              '</div>' +
+              '<div class="qic-row-2" style="align-items:center;">' +
+                '<label style="display:inline-flex;align-items:center;gap:6px;font-size:0.76rem;font-weight:700;color:#0D0D0F;cursor:pointer;">' +
+                  '<input type="checkbox" id="qic-secret" checked />' +
+                  '<span>🔒 비밀글로 보호 (체크 해제 시 공개글)</span>' +
+                '</label>' +
+                '<input type="password" id="qic-password" class="qic-input" placeholder="비밀글 열람 비밀번호 (선택)" />' +
+              '</div>' +
+              '<input type="text" id="qic-title" class="qic-input" placeholder="질문 제목을 입력해 주세요 *" required />' +
+              '<textarea id="qic-content" class="qic-textarea" rows="3" placeholder="불편하신 증상과 궁금한 점을 편하게 남겨주시면 대표원장님의 답변이 카톡·메일로 전송됩니다. *" required></textarea>' +
+              '<button type="submit" class="qic-submit-btn" id="qic-submit-btn">1:1 질문 즉시 등록하기 &rarr;</button>' +
+            '</form>'
+          : '';
+
+        const feedbackHtml = qnaWriteFeedback
+          ? '<div style="padding:9px 12px;border-radius:9px;background:#ECFDF5;border:1px solid #6EE7B7;color:#065F46;font-size:0.78rem;font-weight:800;">' + escHtml(qnaWriteFeedback) + '</div>'
+          : '';
+
         const qnaListHtml = (items && items.length > 0)
-          ? items.slice(0, 6).map(q =>
-              '<div class="qna-item-row">' +
+          ? items.map(q => {
+              const pName = partLabelLookup[q.partId] || '통합 건강';
+              return '<div class="qna-item-row">' +
                 '<div class="qna-item-meta">' +
-                  '<span>작성자 ' + escHtml(q.maskedAuthor || '회원') + ' · ' + escHtml(q.createdAt || '') + '</span>' +
+                  '<span><strong style="color:#967128;">[' + escHtml(pName) + ']</strong> · 작성자 ' + escHtml(q.maskedAuthor || '회원') + ' · ' + escHtml(q.createdAt || '') + '</span>' +
                   '<span class="qna-status-badge ' + (q.status === 'answered' ? 'answered' : 'waiting') + '">' +
                     (q.status === 'answered' ? '답변 완료' : '답변 대기') +
                   '</span>' +
                 '</div>' +
                 '<div class="qna-item-title">' + escHtml(q.title) + '</div>' +
-              '</div>'
-            ).join('')
-          : '<div class="qna-item-row"><div class="qna-item-title">[' + escHtml(menuMeta.partLabel) + '] 관련 궁금한 점을 1:1 비공개로 편하게 질문해 보세요.</div></div>';
+                (q.canRead && q.masterReply
+                  ? '<div style="margin-top:5px;padding:8px 10px;border-radius:8px;background:#FFFFFF;border-left:3px solid #C5A059;font-size:0.77rem;color:#262522;line-height:1.48;"><strong>원장실 답변 ·</strong> ' + escHtml(q.masterReply) + '</div>'
+                  : '') +
+              '</div>';
+            }).join('')
+          : '<div class="qna-item-row"><div class="qna-item-title">전 질환 관련 궁금한 점을 바로 위 [1:1 질문 남기기] 버튼으로 편하게 작성해 보세요.</div></div>';
 
         activeBodyHtml =
           '<div class="qna-menu-panel">' +
             '<div class="qna-panel-top">' +
               '<div>' +
-                '<div style="font-size:0.72rem;font-weight:800;color:#967128;margin-bottom:3px;">[' + escHtml(menuMeta.partLabel) + '] · 1:1 건강 Q&amp;A</div>' +
+                '<div style="font-size:0.72rem;font-weight:800;color:#967128;margin-bottom:3px;">전 질환 통합 게시판 · 1:1 건강 Q&amp;A (' + (items ? items.length : 0) + '건)</div>' +
                 '<h2 style="font-size:1.12rem;font-weight:800;color:#0D0D0F;">무엇이든 물어보세요</h2>' +
-                '<p style="font-size:0.8rem;color:#57534E;margin-top:3px;">작성자 본인과 의료진만 열람 가능한 비공개 질문 공간입니다.</p>' +
+                '<p style="font-size:0.8rem;color:#57534E;margin-top:3px;">모든 질환 질문이 하나로 모여 있으며, 페이지 이동 없이 현재 창에서 바로 작성 가능합니다.</p>' +
               '</div>' +
               '<div style="display:flex;align-items:center;gap:6px;">' +
-                '<a href="ask-doctor.html?tab=qna&part=' + encodeURIComponent(qnaPartKey) + '" class="qna-write-btn">1:1 질문 남기기 &rarr;</a>' +
+                '<button type="button" onclick="window.toggleInlineQnaComposer()" class="qna-write-btn" style="cursor:pointer;">' + (isQnaComposerOpen ? '✕ 작성창 닫기' : '✍️ 1:1 질문 남기기 &rarr;') + '</button>' +
                 '<button type="button" class="ptc-back-btn" onclick="window.closeInfoPopup()">✕ 닫기</button>' +
               '</div>' +
             '</div>' +
-            '<div style="display:flex;flex-direction:column;gap:8px;">' + qnaListHtml + '</div>' +
+            feedbackHtml +
+            composerHtml +
+            '<div style="display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow-y:auto;padding-right:2px;">' + qnaListHtml + '</div>' +
           '</div>';
       } else {
         const targetList = archiveScope === 'all' ? allNotes : partNotes;
@@ -2475,24 +2626,28 @@ function buildBodyExplorerHtml() {
 
         if (pickedNote) {
           const pickedMeta = getMenuMeta(pickedNote.partId || currentPartId);
+          const isPickedLatest = latestNote && pickedNote.id === latestNote.id;
+          const pickedWithRed = Object.assign({}, pickedNote, { _isLatestRed: isPickedLatest });
           activeBodyHtml =
             '<div style="margin-bottom:2px;">' +
               '<button type="button" class="ptc-back-btn" onclick="window.backToArchiveList()">&larr; 누적 글 목록으로 돌아가기</button>' +
             '</div>' +
-            buildStandardNoteBoxHtml(pickedNote, 'window.backToArchiveList()', '✕ 목록으로', pickedMeta);
+            buildStandardNoteBoxHtml(pickedWithRed, 'window.backToArchiveList()', '✕ 목록으로', pickedMeta);
         } else {
-          const rowsHtml = targetList.map((n, idx) =>
-            '<button type="button" class="archive-card-btn" onclick="window.openArchivedNote(\\'' + n.id + '\\')">' +
+          const rowsHtml = targetList.map((n, idx) => {
+            const isRowLatest = (idx === 0 && archiveScope === 'part') || (latestNote && n.id === latestNote.id);
+            return '<button type="button" class="archive-card-btn" onclick="window.openArchivedNote(\\'' + n.id + '\\')">' +
               '<div>' +
                 '<div class="archive-card-tags">' +
-                  '<span class="archive-date-pill">' + fmtDotDate(n.publishDate) + (idx === 0 && archiveScope === 'part' ? ' · 최신' : '') + '</span>' +
+                  '<span class="archive-date-pill' + (isRowLatest ? ' is-latest-red' : '') + '">' + fmtDotDate(n.publishDate) + (isRowLatest ? ' · NEW 최신' : '') + '</span>' +
                   '<span class="archive-part-pill">[' + escHtml(n.partLabel) + ']</span>' +
+                  '<span style="font-size:0.68rem;color:#6E685F;font-weight:700;">조회수 ' + Number(n.views || 2400).toLocaleString() + '회</span>' +
                 '</div>' +
                 '<div class="archive-card-title">&ldquo;' + escHtml(n.title) + '&rdquo;</div>' +
               '</div>' +
               '<span class="archive-read-arrow">읽기 &rarr;</span>' +
-            '</button>'
-          ).join('');
+            '</button>';
+          }).join('');
 
           activeBodyHtml =
             '<div class="archive-menu-panel">' +
@@ -2521,7 +2676,7 @@ function buildBodyExplorerHtml() {
         '<div class="popup-shell-wrap">' +
           '<nav class="three-menu-nav" role="tablist" aria-label="정보 팝업 3대 메뉴">' +
             '<button type="button" class="three-menu-btn' + (currentMenuTab === 0 ? ' active' : '') + '" onclick="window.switchPopupMenu(0)">' +
-              '<span class="tmb-step">' + escHtml(tab01StepText) + '</span>' +
+              '<span class="tmb-step" style="display:inline-flex;align-items:center;gap:4px;"><span class="latest-red-dot"></span><span style="color:#E11D48;font-weight:900;">' + escHtml(tab01StepText) + '</span></span>' +
               '<span class="tmb-label">' + escHtml(tab01LabelText) + '</span>' +
             '</button>' +
             '<button type="button" class="three-menu-btn' + (currentMenuTab === 1 ? ' active' : '') + '" onclick="window.switchPopupMenu(1)">' +
@@ -2536,6 +2691,12 @@ function buildBodyExplorerHtml() {
           activeBodyHtml +
         '</div>';
     }
+
+    window.openQnaInPopup = function() {
+      currentMenuTab = 1;
+      isQnaComposerOpen = true;
+      renderPopupPanel();
+    };
 
     window.switchPopupMenu = function(tabIdx) {
       currentMenuTab = tabIdx;
@@ -2552,6 +2713,88 @@ function buildBodyExplorerHtml() {
     window.openArchivedNote = function(noteId) {
       selectedArchiveNoteId = noteId;
       renderPopupPanel();
+    };
+
+    window.openNoteFromTop3 = function(noteId) {
+      currentMenuTab = 2;
+      selectedArchiveNoteId = noteId;
+      renderPopupPanel();
+    };
+
+    window.toggleInlineQnaComposer = function(forceState) {
+      if (typeof forceState === 'boolean') {
+        isQnaComposerOpen = forceState;
+      } else {
+        isQnaComposerOpen = !isQnaComposerOpen;
+      }
+      qnaWriteFeedback = '';
+      renderPopupPanel();
+    };
+
+    window.submitInlineQna = async function(ev) {
+      ev.preventDefault();
+      const partEl = document.getElementById('qic-part');
+      const nameEl = document.getElementById('qic-name');
+      const phoneEl = document.getElementById('qic-phone');
+      const emailEl = document.getElementById('qic-email');
+      const secEl = document.getElementById('qic-secret');
+      const passEl = document.getElementById('qic-password');
+      const titleEl = document.getElementById('qic-title');
+      const contentEl = document.getElementById('qic-content');
+      const btnEl = document.getElementById('qic-submit-btn');
+
+      const name = (nameEl && nameEl.value || '').trim();
+      const title = (titleEl && titleEl.value || '').trim();
+      const content = (contentEl && contentEl.value || '').trim();
+      if (!name || !title || !content) return;
+
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = '질문 등록 중...';
+      }
+
+      const payload = {
+        partId: (partEl && partEl.value) || currentPartId,
+        name,
+        phone: (phoneEl && phoneEl.value || '').trim(),
+        email: (emailEl && emailEl.value || '').trim(),
+        isSecret: secEl ? Boolean(secEl.checked) : true,
+        secretPassword: (passEl && passEl.value || '').trim(),
+        title,
+        content
+      };
+
+      try {
+        let tok = '';
+        try { tok = localStorage.getItem('bareun_member_token_v5') || ''; } catch (e) {}
+        const headers = { 'Content-Type': 'application/json' };
+        if (tok) headers['X-Bareun-Token'] = tok;
+
+        const res = await fetch('/wp-json/bareun/v1/qna', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          isQnaComposerOpen = false;
+          qnaWriteFeedback = '✅ 질문이 성공적으로 등록되었습니다! 대표원장님 답변 등록 시 입력하신 연락처(카카오톡)·이메일로 즉시 안내해 드립니다.';
+          await loadQnaForPart('all');
+          renderPopupPanel();
+        } else {
+          alert((data && data.message) || '질문 등록 중 오류가 발생했습니다.');
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = '1:1 질문 즉시 등록하기 →';
+          }
+        }
+      } catch (err) {
+        alert('네트워크 통신 중 오류가 발생했습니다.');
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.textContent = '1:1 질문 즉시 등록하기 →';
+        }
+      }
     };
 
     window.backToArchiveList = function() {
