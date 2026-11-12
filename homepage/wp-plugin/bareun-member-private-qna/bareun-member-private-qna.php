@@ -2700,16 +2700,23 @@ Bareun_Master_SEO_Engine_V1::init();
 endif;
 
 // ============================================================================
-// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE V3 (ARGON HIGH 2K + STANDALONE APP)
+// BAREUN 24/7 ONLINE CUSTOM STUDIO ENGINE V4
+// - Strict No-Face Directive Compliance (0% Face Exposure Guard)
+// - Calibrated Upright Multi-Angle Director Ahn Likeness Synthesis
+// - Fresh Scene Reasoning by Default (useSourceImageRef = false unless opted in)
+// - Sub-Thumbnail Prompt Generation + Homepage Opening Story (WP ID 46) Support
+// - Real-Time Argon High 2K Daily Free Usage & Remaining Quota Tracker
 // ============================================================================
-if (!class_exists('Bareun_Custom_Studio_Engine_V3')) :
-class Bareun_Custom_Studio_Engine_V3 {
-    const OPT_DETAIL_CFG     = 'bareun_detail_pages_config_v1';
-    const OPT_ANGLE_SAMPLES  = 'bareun_director_angle_samples_v1';
-    const OPT_STUDIO_AI_KEYS = 'bareun_studio_ai_keys_v1';
-    
+if (!class_exists('Bareun_Custom_Studio_Engine_V4')) :
+class Bareun_Custom_Studio_Engine_V4 {
+    const OPT_DETAIL_CFG      = 'bareun_detail_pages_config_v1';
+    const OPT_ANGLE_SAMPLES   = 'bareun_director_angle_samples_v1';
+    const OPT_STUDIO_AI_KEYS  = 'bareun_studio_ai_keys_v1';
+    const OPT_STUDIO_AI_USAGE = 'bareun_studio_ai_usage_v1';
+
     // Official Page IDs on Cafe24 WordPress (https://www.bareunhaniwon.com)
     const PAGE_MAP = array(
+        'home'                => 46,
         'director'            => 126,
         'chuna'               => 127,
         'growth'              => 105,
@@ -2724,19 +2731,20 @@ class Bareun_Custom_Studio_Engine_V3 {
     );
 
     public static function init() {
-        foreach (array('Bareun_Custom_Studio_Engine_V1', 'Bareun_Custom_Studio_Engine_V2') as $legacy_cls) {
+        foreach (array('Bareun_Custom_Studio_Engine_V1', 'Bareun_Custom_Studio_Engine_V2', 'Bareun_Custom_Studio_Engine_V3') as $legacy_cls) {
             if (class_exists($legacy_cls)) {
-                remove_action('admin_menu', array($legacy_cls, 'register_admin_menu'));
-                remove_action('admin_menu', array($legacy_cls, 'register_admin_menu'), 20);
-                remove_action('rest_api_init', array($legacy_cls, 'register_rest_routes'));
-                remove_action('rest_api_init', array($legacy_cls, 'register_rest_routes'), 20);
-                remove_action('init', array($legacy_cls, 'handle_standalone_route'));
-                remove_action('init', array($legacy_cls, 'handle_standalone_route'), 5);
+                foreach (array(10, 20, 25) as $prio) {
+                    remove_action('admin_menu', array($legacy_cls, 'register_admin_menu'), $prio);
+                    remove_action('rest_api_init', array($legacy_cls, 'register_rest_routes'), $prio);
+                }
+                foreach (array(4, 5, 10) as $prio) {
+                    remove_action('init', array($legacy_cls, 'handle_standalone_route'), $prio);
+                }
             }
         }
-        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'), 25);
-        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'), 25);
-        add_action('init', array(__CLASS__, 'handle_standalone_route'), 4);
+        add_action('admin_menu', array(__CLASS__, 'register_admin_menu'), 30);
+        add_action('rest_api_init', array(__CLASS__, 'register_rest_routes'), 30);
+        add_action('init', array(__CLASS__, 'handle_standalone_route'), 3);
     }
 
     public static function register_admin_menu() {
@@ -2777,8 +2785,8 @@ class Bareun_Custom_Studio_Engine_V3 {
         echo '</style>';
         echo '<div class="bareun-studio-host-dock">';
         echo '<div style="display:flex;align-items:center;gap:10px;">';
-        echo '<span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 아르곤 하이 2K 엔진</span>';
-        echo '<strong style="font-size:15px;color:#fdfaf3;">바른한의원 11대 상세페이지 통합 커스텀 스튜디오</strong>';
+        echo '<span style="background:linear-gradient(135deg,#e5ba64,#a67626);color:#111;font-weight:800;font-size:11px;padding:3px 9px;border-radius:999px;">24시간 아르곤 하이 2K V4 엔진</span>';
+        echo '<strong style="font-size:15px;color:#fdfaf3;">바른한의원 메인 홈 &amp; 상세페이지 통합 커스텀 스튜디오</strong>';
         echo '<span style="color:#b5a895;font-size:12px;">(PC 전원 무관 · 외부/태블릿/모바일 100% 자율 접속)</span>';
         echo '</div>';
         echo '<div style="display:flex;align-items:center;gap:8px;">';
@@ -2829,9 +2837,7 @@ class Bareun_Custom_Studio_Engine_V3 {
         register_rest_route('bareun/v1', '/studio/config', array(
             'methods'             => array('GET', 'POST'),
             'permission_callback' => function ($request) {
-                if ($request->get_method() === 'GET') {
-                    return true;
-                }
+                if ($request->get_method() === 'GET') return true;
                 return current_user_can('manage_options');
             },
             'callback'            => array(__CLASS__, 'rest_handle_config')
@@ -2858,9 +2864,7 @@ class Bareun_Custom_Studio_Engine_V3 {
         register_rest_route('bareun/v1', '/studio/angle-samples', array(
             'methods'             => array('GET', 'POST'),
             'permission_callback' => function ($request) {
-                if ($request->get_method() === 'GET') {
-                    return true;
-                }
+                if ($request->get_method() === 'GET') return true;
                 return current_user_can('manage_options');
             },
             'callback'            => array(__CLASS__, 'rest_handle_angle_samples')
@@ -2869,12 +2873,19 @@ class Bareun_Custom_Studio_Engine_V3 {
         register_rest_route('bareun/v1', '/studio/ai-key', array(
             'methods'             => array('GET', 'POST'),
             'permission_callback' => function ($request) {
-                if ($request->get_method() === 'GET') {
-                    return true;
-                }
+                if ($request->get_method() === 'GET') return true;
                 return current_user_can('manage_options');
             },
             'callback'            => array(__CLASS__, 'rest_handle_ai_key')
+        ), true);
+
+        register_rest_route('bareun/v1', '/studio/ai-usage', array(
+            'methods'             => array('GET', 'POST'),
+            'permission_callback' => function ($request) {
+                if ($request->get_method() === 'GET') return true;
+                return current_user_can('manage_options');
+            },
+            'callback'            => array(__CLASS__, 'rest_handle_ai_usage')
         ), true);
 
         register_rest_route('bareun/v1', '/studio/generate-image', array(
@@ -2894,6 +2905,95 @@ class Bareun_Custom_Studio_Engine_V3 {
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_ensure_assets_from_github')
         ), true);
+    }
+
+    private static function get_kst_today_str_php() {
+        try {
+            $dt = new DateTime('now', new DateTimeZone('Asia/Seoul'));
+            return $dt->format('Y-m-d');
+        } catch (Exception $e) {
+            return gmdate('Y-m-d', time() + 9 * 3600);
+        }
+    }
+
+    private static function get_studio_ai_usage_php() {
+        $today = self::get_kst_today_str_php();
+        $saved = get_option(self::OPT_STUDIO_AI_USAGE, array());
+        if (!is_array($saved)) $saved = array();
+
+        $limit = isset($saved['dailyFreeLimit']) ? max(1, (int)$saved['dailyFreeLimit']) : 50;
+        $saved_date = isset($saved['todayDate']) ? (string)$saved['todayDate'] : '';
+        $today_used = isset($saved['argonHighTodayUsed']) ? max(0, (int)$saved['argonHighTodayUsed']) : 0;
+        $total_used = isset($saved['argonHighTotalUsed']) ? max(0, (int)$saved['argonHighTotalUsed']) : 0;
+        $exhausted  = !empty($saved['quotaExhaustedToday']);
+
+        if ($saved_date !== $today) {
+            $saved_date = $today;
+            $today_used = 0;
+            $exhausted  = false;
+            $saved['todayDate'] = $today;
+            $saved['argonHighTodayUsed'] = 0;
+            $saved['quotaExhaustedToday'] = false;
+            $saved['dailyFreeLimit'] = $limit;
+            $saved['argonHighTotalUsed'] = $total_used;
+            update_option(self::OPT_STUDIO_AI_USAGE, $saved, false);
+        }
+
+        $free_rem = $exhausted ? 0 : max(0, $limit - $today_used);
+        return array(
+            'todayDate'           => $saved_date,
+            'dailyFreeLimit'      => $limit,
+            'argonHighTodayUsed'  => $today_used,
+            'argonHighTotalUsed'  => $total_used,
+            'freeRemaining'       => $free_rem,
+            'quotaExhaustedToday' => $exhausted,
+            'lastUsedAt'          => isset($saved['lastUsedAt']) ? $saved['lastUsedAt'] : null,
+            'lastModel'           => isset($saved['lastModel']) ? $saved['lastModel'] : 'gemini-3-pro-image'
+        );
+    }
+
+    private static function record_studio_ai_usage_php($is_argon, $model_id, $mark_exhausted = false) {
+        $cur = self::get_studio_ai_usage_php();
+        $saved = get_option(self::OPT_STUDIO_AI_USAGE, array());
+        if (!is_array($saved)) $saved = array();
+
+        $saved['todayDate'] = $cur['todayDate'];
+        $saved['dailyFreeLimit'] = $cur['dailyFreeLimit'];
+        $saved['argonHighTodayUsed'] = $cur['argonHighTodayUsed'] + ($is_argon ? 1 : 0);
+        $saved['argonHighTotalUsed'] = $cur['argonHighTotalUsed'] + ($is_argon ? 1 : 0);
+        $saved['quotaExhaustedToday'] = $mark_exhausted ? true : $cur['quotaExhaustedToday'];
+        $saved['lastUsedAt'] = current_time('c');
+        if ($model_id) $saved['lastModel'] = (string)$model_id;
+
+        update_option(self::OPT_STUDIO_AI_USAGE, $saved, false);
+        return self::get_studio_ai_usage_php();
+    }
+
+    public static function rest_handle_ai_usage($request) {
+        nocache_headers();
+        if ($request->get_method() === 'POST') {
+            $params = $request->get_json_params();
+            if (!is_array($params)) $params = array();
+            $cur = self::get_studio_ai_usage_php();
+            $saved = get_option(self::OPT_STUDIO_AI_USAGE, array());
+            if (!is_array($saved)) $saved = array();
+            $saved['todayDate'] = $cur['todayDate'];
+            $saved['dailyFreeLimit'] = isset($params['dailyFreeLimit'])
+                ? max(1, min(5000, (int)$params['dailyFreeLimit']))
+                : $cur['dailyFreeLimit'];
+            $saved['argonHighTodayUsed'] = !empty($params['resetToday']) ? 0 : $cur['argonHighTodayUsed'];
+            $saved['argonHighTotalUsed'] = $cur['argonHighTotalUsed'];
+            $saved['quotaExhaustedToday'] = !empty($params['resetToday']) ? false : $cur['quotaExhaustedToday'];
+            update_option(self::OPT_STUDIO_AI_USAGE, $saved, false);
+            return new WP_REST_Response(array(
+                'ok'    => true,
+                'usage' => self::get_studio_ai_usage_php()
+            ), 200);
+        }
+        return new WP_REST_Response(array(
+            'ok'    => true,
+            'usage' => self::get_studio_ai_usage_php()
+        ), 200);
     }
 
     private static function mask_secret_key($raw) {
@@ -2934,7 +3034,8 @@ class Bareun_Custom_Studio_Engine_V3 {
             'activeProvider'  => $provider,
             'activeLabel'     => $label,
             'maskedGeminiKey' => self::mask_secret_key($keys['geminiKey']),
-            'maskedFalKey'    => self::mask_secret_key($keys['falKey'])
+            'maskedFalKey'    => self::mask_secret_key($keys['falKey']),
+            'usage'           => self::get_studio_ai_usage_php()
         );
     }
 
@@ -2998,7 +3099,7 @@ class Bareun_Custom_Studio_Engine_V3 {
             'post_type'      => 'attachment',
             'post_mime_type' => 'image',
             'post_status'    => 'inherit',
-            'posts_per_page' => 120
+            'posts_per_page' => 140
         ));
         $availableImages = array();
         if (is_array($attachments)) {
@@ -3056,6 +3157,9 @@ class Bareun_Custom_Studio_Engine_V3 {
         if (empty($slug) && !empty($params['targetPage'])) {
             $slug = preg_replace('/\.html$/i', '', basename($params['targetPage']));
         }
+        if ($slug === 'index' || $slug === 'story-3d') {
+            $slug = 'home';
+        }
 
         $compiled = isset($params['compiledHtml']) ? (string)$params['compiledHtml'] : '';
         if (!empty($compiled) && isset(self::PAGE_MAP[$slug])) {
@@ -3071,10 +3175,11 @@ class Bareun_Custom_Studio_Engine_V3 {
             if (has_action('litespeed_purge_all')) {
                 do_action('litespeed_purge_all');
             }
+            $live_url = ($slug === 'home') ? home_url('/') : home_url('/' . $slug . '/');
             return new WP_REST_Response(array(
                 'ok'       => true,
                 'deployed' => true,
-                'liveUrl'  => home_url('/' . $slug . '/'),
+                'liveUrl'  => $live_url,
                 'message'  => "[{$slug}] 페이지가 카페24 실서버에 즉시 반영되었습니다!"
             ), 200);
         }
@@ -3100,6 +3205,7 @@ class Bareun_Custom_Studio_Engine_V3 {
 
         foreach ($pages as $p) {
             $slug = isset($p['slug']) ? sanitize_title($p['slug']) : '';
+            if ($slug === 'index' || $slug === 'story-3d') $slug = 'home';
             $compiled = isset($p['compiledHtml']) ? (string)$p['compiledHtml'] : '';
             if ($slug && $compiled && isset(self::PAGE_MAP[$slug])) {
                 wp_update_post(array(
@@ -3119,7 +3225,7 @@ class Bareun_Custom_Studio_Engine_V3 {
             'ok'           => true,
             'deployed'     => true,
             'updatedCount' => $updatedCount,
-            'message'      => "11개 전 상세페이지가 카페24 실서버에 일괄 배포되었습니다! ({$updatedCount}개 갱신 완료)"
+            'message'      => "전체 페이지가 카페24 실서버에 일괄 배포되었습니다! ({$updatedCount}개 페이지 갱신 완료)"
         ), 200);
     }
 
@@ -3235,6 +3341,18 @@ class Bareun_Custom_Studio_Engine_V3 {
                 return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
             }
 
+            // Auto-orient EXIF & normalize <=1024px so smartphone portraits are NEVER sideways!
+            if (function_exists('wp_get_image_editor')) {
+                $editor = wp_get_image_editor($upload['file']);
+                if (!is_wp_error($editor)) {
+                    if (method_exists($editor, 'maybe_exif_rotate')) {
+                        $editor->maybe_exif_rotate();
+                    }
+                    $editor->resize(1024, 1024, false);
+                    $editor->save($upload['file']);
+                }
+            }
+
             $saved[$angle_key] = array(
                 'fileName'  => $upload['url'],
                 'updatedAt' => current_time('c')
@@ -3271,6 +3389,12 @@ class Bareun_Custom_Studio_Engine_V3 {
         ), 200);
     }
 
+    private static function detect_no_face_directive_php($raw_text) {
+        $compact = preg_replace('/\s+/u', '', (string)$raw_text);
+        if ($compact === '') return false;
+        return (bool)preg_match('/얼굴미노출|얼굴비노출|얼굴없이|얼굴없는|얼굴안나오|얼굴안보이|얼굴제외|얼굴가리|얼굴크롭|얼굴생략|뒷모습만|손만클로즈업|손클로즈업만|목아래만|어깨아래만|noface|faceless|withoutface/iu', $compact);
+    }
+
     private static function guess_preferred_angle_key($prompt_text) {
         $s = mb_strtolower((string)$prompt_text, 'UTF-8');
         $is_warm = (bool)preg_match('/미소|웃음|눈웃음|따뜻|온화|친절|상담|설명|문진|경청|맞이|인사|브리핑|환자/u', $s);
@@ -3291,14 +3415,14 @@ class Bareun_Custom_Studio_Engine_V3 {
             $by_key[$sl['key']] = $sl;
         }
         $priority_map = array(
-            'front'        => array('front', 'frontSmile', 'left15Smile', 'right15Smile', 'left30', 'right30'),
-            'frontSmile'   => array('frontSmile', 'front', 'left15Smile', 'right15Smile', 'left30', 'right30'),
-            'left15Smile'  => array('left15Smile', 'frontSmile', 'left30', 'front', 'leftProfile', 'right15Smile'),
-            'right15Smile' => array('right15Smile', 'frontSmile', 'right30', 'front', 'rightProfile', 'left15Smile'),
-            'left30'       => array('left30', 'left15Smile', 'frontSmile', 'front', 'leftProfile', 'right30'),
-            'right30'      => array('right30', 'right15Smile', 'frontSmile', 'front', 'rightProfile', 'left30'),
-            'leftProfile'  => array('leftProfile', 'left30', 'left15Smile', 'front', 'frontSmile', 'right30'),
-            'rightProfile' => array('rightProfile', 'right30', 'right15Smile', 'front', 'frontSmile', 'left30')
+            'front'        => array('front', 'frontSmile', 'right15Smile'),
+            'frontSmile'   => array('frontSmile', 'front', 'right15Smile'),
+            'left15Smile'  => array('left15Smile', 'frontSmile', 'left30'),
+            'right15Smile' => array('right15Smile', 'frontSmile', 'right30'),
+            'left30'       => array('left30', 'left15Smile', 'front'),
+            'right30'      => array('right30', 'right15Smile', 'front'),
+            'leftProfile'  => array('leftProfile', 'left30', 'front'),
+            'rightProfile' => array('rightProfile', 'right30', 'front')
         );
         $order_keys = isset($priority_map[$pref]) ? $priority_map[$pref] : $priority_map['frontSmile'];
         $ordered = array();
@@ -3307,7 +3431,7 @@ class Bareun_Custom_Studio_Engine_V3 {
                 $ordered[] = $by_key[$k];
             }
         }
-        return array_slice($ordered, 0, 6);
+        return array_slice($ordered, 0, 3);
     }
 
     private static function resolve_wp_studio_ref_image($raw_ref) {
@@ -3333,7 +3457,6 @@ class Bareun_Custom_Studio_Engine_V3 {
         $baseurl = $upload_dir['baseurl'];
         $gh_raw  = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
 
-        // 1) Direct URL under WordPress uploads
         if (stripos($clean, $baseurl . '/') === 0) {
             $rel = substr($clean, strlen($baseurl . '/'));
             $disk_path = $basedir . '/' . $rel;
@@ -3352,7 +3475,6 @@ class Bareun_Custom_Studio_Engine_V3 {
             }
         }
 
-        // 2) Full external HTTPS URL
         if (preg_match('/^https?:\/\//i', $clean)) {
             $res = wp_remote_get($clean, array('timeout' => 25));
             if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
@@ -3371,7 +3493,6 @@ class Bareun_Custom_Studio_Engine_V3 {
             return null;
         }
 
-        // 3) Relative studio/homepage filename (e.g. detail_director_story2_clean.jpg or director-angle-refs/angle_front.jpg)
         $rel_clean = ltrim($clean, '/');
         $disk_candidates = array(
             $basedir . '/bareun-studio/' . $rel_clean,
@@ -3394,7 +3515,6 @@ class Bareun_Custom_Studio_Engine_V3 {
             }
         }
 
-        // 4) Fallback to GitHub raw official homepage asset
         $gh_url = $gh_raw . str_replace('%2F', '/', rawurlencode($rel_clean));
         $res = wp_remote_get($gh_url, array('timeout' => 25));
         if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
@@ -3414,43 +3534,40 @@ class Bareun_Custom_Studio_Engine_V3 {
         return null;
     }
 
-    private static function build_argon_high_prompt_php($user_prompt, $orig_prompt, $work_mode, $use_director_face, $has_source_ref, $angle_label) {
+    private static function build_argon_high_prompt_php($user_prompt, $orig_prompt, $has_source_ref, $use_director_face, $no_face_directive, $angle_label) {
         $clean_user = trim((string)$user_prompt);
         $clean_orig = trim((string)$orig_prompt);
-        $is_modified = ($clean_orig !== '' && $clean_orig !== $clean_user);
         $lines = array();
 
-        if ($work_mode === 'edit_current' && $has_source_ref) {
-            if ($is_modified) {
-                $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 원본 카드 기반 정밀 수정 촬영]';
-                $lines[] = '첨부된 첫 번째 사진은 현재 홈페이지 카드에 설정되어 있는 원본 이미지입니다.';
-                $lines[] = '첫 번째 원본 사진의 고급스러운 한의원 자연 채광, 따뜻한 원목/한지 톤앤매너, 카메라 렌즈 심도(Canon EOS R5 85mm f/1.8L)와 전체 공간 품격은 그대로 유지하되, 사용자가 수정한 아래 [최종 연출 프롬프트]의 변경 내용(손가락 위치·개수, 동작, 소품, 구도, 시선 등)을 최우선으로 오차 없이 정확하게 반영하여 새롭게 촬영해 주세요.';
-                $lines[] = '[기존 카드 설명 (참고용)]: ' . $clean_orig;
-                $lines[] = '[최종 연출 프롬프트 (최우선 반영 필수)]: ' . $clean_user;
-            } else {
-                $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 원본 카드 품격 계승 재촬영]';
-                $lines[] = '첨부된 첫 번째 원본 카드 사진의 고급 한의원 조명·원목 질감·색감·구도 품격을 그대로 계승하면서, 디테일과 생동감이 한층 자연스럽게 새로 촬영된 초고화질 DSLR 실사 사진으로 제작해 주세요.';
-                $lines[] = '[장면 연출 지시]: ' . $clean_user;
+        if ($has_source_ref) {
+            $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 밑그림 참조 부분 수정 촬영]';
+            $lines[] = '사용자가 기존 슬롯 이미지를 밑그림으로 참조하기를 선택했습니다. 첫 번째 첨부된 장면 사진의 조명과 공간 톤앤매너를 참고하되, 아래 [최종 연출 프롬프트]에서 지시한 변경 사항을 최우선으로 반영하여 초고화질 DSLR 실사 사진으로 촬영해 주세요.';
+            if ($clean_orig !== '' && $clean_orig !== $clean_user) {
+                $lines[] = '[기존 슬롯 설명 (참고용)]: ' . $clean_orig;
             }
+            $lines[] = '[최종 연출 프롬프트 (최우선 반영 필수)]: ' . $clean_user;
         } else {
-            $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 최상급 DSLR 실사 촬영]';
-            $lines[] = '따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원)의 실제 에디토리얼 화보 수준(Canon EOS R5, RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 모공과 원단 직조 질감)으로 아래 장면을 촬영해 주세요.';
-            $lines[] = '[장면 연출 지시]: ' . $clean_user;
+            $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 백지 상태 100% 새 구도 독립 촬영]';
+            $lines[] = '이전 카드 이미지의 구도에 전혀 얽매이지 말고, 오직 아래 [장면 연출 지시] 문장 하나만을 근거로 카메라 앵글, 피사체 배치, 모니터/소품 구성, 손동작을 처음부터 새롭게 사고하여 촬영하세요.';
+            $lines[] = '따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원)의 실제 에디토리얼 화보 수준(Canon EOS R5, RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 모공과 원단 직조 질감)으로 표현하세요.';
+            $lines[] = '[장면 연출 지시 (100% 정확히 구현 필수)]: ' . $clean_user;
+        }
+
+        if ($no_face_directive) {
+            $lines[] = '[절대 최우선 규칙 — 얼굴 미노출(Faceless / Neck-down Crop / Over-the-Shoulder) 100% 준수]: 사용자가 명시적으로 얼굴 미노출을 지시했습니다! 한의사(원장)의 얼굴, 눈·코·입, 안경, 옆모습, 이마, 턱선, 심지어 모니터나 유리에 비친 반사상까지 어떠한 형태로도 절대 화면에 노출하지 마십시오(얼굴 노출 0%). 반드시 ① 목·어깨 아래 흰 한의사 가운과 팔·손가락 동작만 프레임에 담는 크롭 구도, 또는 ② 원장의 등 뒤 정후면 어깨너머(strictly from behind over-the-shoulder, head cropped out or pure back of shoulder)에서 모니터·진료 도구를 함께 바라보는 구도로만 촬영하세요.';
+        } elseif ($use_director_face) {
+            $lines[] = '[안정위 대표원장 실제 인물 100% 동일 얼굴 고정]: 함께 첨부된 인물 참조 사진들(정방향 보정 완료된 안정위 대표원장 실제 포트레이트)은 모두 동일한 한 명의 한국인 남성 한의사입니다. 결과 사진 속 한의사는 반드시 1명만 등장하며, 권장 각도(' . $angle_label . ')에서 첨부된 참조 사진과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 안경, 앞머리로 이마를 가리지 않고 단정하게 넘긴 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 촬영하세요.';
+            $lines[] = '[복장 및 85mm 인물 렌즈 비례 필수]: 원장님은 반드시 깨끗하고 단정한 순백색 한의사 가운(crisp plain white medical doctor coat)을 착용해야 합니다. 볼이나 하관이 붓거나 넓어 보이는 왜곡 없이 85mm 인물 단렌즈 압축 비율의 날렵하고 단정한 턱선과 자연스럽고 따뜻한 미소를 유지하세요.';
         }
 
         if (preg_match('/진맥|맥진|요골\s*동맥|손목/u', $clean_user)) {
-            $lines[] = '[해부학 및 인물 배치 필수 규칙]: 반드시 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 편안한 일상복 소매의 환자 팔/손목, 반대쪽은 깔끔한 흰 의사 가운과 스트라이프 셔츠 소매의 한의사 손)로 정확히 분리하여 표현하세요. 절대로 한 사람이 자기 자신의 손목을 짚는 구도가 되어서는 안 됩니다. 손가락 개수(엄지~새끼손가락 5개 해부학 비례, 특히 2·3·4지 검지·중지·약지 지시 시 세 손가락을 나란히 가지런히 요골동맥 위에 얹는 정통 맥진 자세)를 100% 정확하게 표현하세요.';
+            $lines[] = '[해부학 및 인물 배치 필수 규칙]: 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 일상복 소매의 환자 팔/손목, 반대쪽은 순백색 의사 가운 소매의 한의사 손)로 정확히 분리하여 표현하세요. 손가락 5개 해부학 비례를 정확히 지키세요.';
         }
 
-        if ($use_director_face) {
-            $ref_prefix = $has_source_ref ? '두 번째 이후 첨부된 인물 사진들은' : '첨부된 인물 기준 사진들은';
-            $lines[] = '[안정위 대표원장 8종 각도·미소 샘플 얼굴 오차 ZERO 고정]: ' . $ref_prefix . ' 모두 동일한 한 명의 한국인 남성 한의사(안정위 대표원장)를 각도(0°·15°·30°·45°+) 및 미소 표정별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도 및 표정(권장 기준: ' . $angle_label . ')에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.';
-            $lines[] = '[얼굴 부종(Puffiness) 원천 차단 · 85mm 날렵한 턱선 및 자연스러운 미소 고정]: 스마트폰 광각 셀카처럼 볼살이나 하관이 옆으로 퍼지거나 얼굴이 붓게 나오는 현상(puffy/bloated cheeks, swollen lower face, wide jaw distortion)을 철저히 배제하세요. 반드시 85mm~105mm 인물 망원 단렌즈 압축 비율을 적용하여 첨부된 미소·사선 샘플처럼 턱선과 광대 윤곽이 날렵하고 단정하며(slim, sharp, well-defined masculine jawline and natural cheekbones), 입매와 눈매가 어색하지 않고 따뜻하고 신뢰감 있는 눈웃음·온화한 미소를 띠도록 표현하세요.';
-        }
+        $lines[] = '[화질 및 클린 마감 원칙]: 사진 모서리 워터마크, 브랜드 로고, 서명 텍스트를 넣지 마세요(단, 프롬프트에서 모니터 화면 속 사상체질 분류표 등 정보 화면을 지시한 경우에는 모니터 화면 내부 그래픽만 깔끔하고 선명하게 표현하세요). 3D 일러스트 느낌 없이 100% 실제 카메라로 촬영한 RAW 실사 사진이어야 합니다.';
 
-        $lines[] = '[화질 및 클린 마감 절대 원칙]: 워터마크, 로고, 서명, 자막 텍스트를 절대 넣지 마세요. 흰 의사 가운 가슴 주머니에도 깨진 글자나 자수 명찰 없이 깨끗한 순백색 무지 고급 가운으로 표현하세요. 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 무보정 RAW 에디토리얼 실사 사진이어야 합니다.';
-
-        return implode("\n", $lines);
+        return implode("
+", $lines);
     }
 
     private static function extract_b64_from_gemini_json($json) {
@@ -3491,16 +3608,31 @@ class Bareun_Custom_Studio_Engine_V3 {
 
     private static function call_google_gemini_direct_php($gemini_key, $prompt_text, $ref_images) {
         $models = array(
-            array('id' => 'gemini-3-pro-image',     'label' => 'Google Gemini 3 Pro Image (아르곤 하이 정품 2K)', 'size' => true),
-            array('id' => 'gemini-nano-banana-2.1', 'label' => 'Google Gemini Nano Banana 2.1 (아르곤 하이 2K)',  'size' => true),
-            array('id' => 'gemini-3.1-flash-image', 'label' => 'Google Gemini 3.1 Flash Image (2K)',              'size' => true),
-            array('id' => 'gemini-2.5-flash-image', 'label' => 'Google Gemini 2.5 Flash Image',                   'size' => false)
+            array('id' => 'gemini-3-pro-image',     'label' => 'Google Gemini 3 Pro Image (아르곤 하이 정품 2K)', 'size' => true,  'argon' => true),
+            array('id' => 'gemini-nano-banana-2.1', 'label' => 'Google Gemini Nano Banana 2.1 (아르곤 하이 2K)',  'size' => true,  'argon' => true),
+            array('id' => 'gemini-3.1-flash-image', 'label' => 'Google Gemini 3.1 Flash Image (2K)',              'size' => true,  'argon' => false),
+            array('id' => 'gemini-2.5-flash-image', 'label' => 'Google Gemini 2.5 Flash Image',                   'size' => false, 'argon' => false)
         );
 
         $input_blocks = array();
-        $slice_refs = array_slice((array)$ref_images, 0, 8);
+        $slice_refs = array_slice((array)$ref_images, 0, 5);
+        $dir_idx = 0;
         foreach ($slice_refs as $rf) {
             if (!empty($rf['base64'])) {
+                $role = isset($rf['role']) ? $rf['role'] : 'ref';
+                if ($role === 'source') {
+                    $input_blocks[] = array(
+                        'type' => 'text',
+                        'text' => '[참조 밑그림 이미지: 사용자가 부분 수정을 위해 선택한 현재 슬롯 이미지입니다]'
+                    );
+                } elseif ($role === 'director') {
+                    $dir_idx++;
+                    $lbl = !empty($rf['label']) ? $rf['label'] : ('각도 #' . $dir_idx);
+                    $input_blocks[] = array(
+                        'type' => 'text',
+                        'text' => '[참조 인물 사진 #' . $dir_idx . ' — 안정위 대표원장 실제 정방향 얼굴 (' . $lbl . '): 결과 사진 속 한의사의 얼굴 골격·눈매·콧대·금테 안경·이마가 드러나는 단정한 검은 머리 스타일을 이 인물과 100% 동일 인물로 촬영하세요]'
+                    );
+                }
                 $input_blocks[] = array(
                     'type'      => 'image',
                     'mime_type' => !empty($rf['mimeType']) ? $rf['mimeType'] : 'image/jpeg',
@@ -3532,11 +3664,18 @@ class Bareun_Custom_Studio_Engine_V3 {
                 ))
             ));
 
-            if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
-                $json = json_decode(wp_remote_retrieve_body($res), true);
-                $bin  = self::extract_b64_from_gemini_json($json);
-                if ($bin && strlen($bin) > 8000) {
-                    return array('bin' => $bin, 'engine' => $m['label']);
+            if (!is_wp_error($res)) {
+                $http_code = wp_remote_retrieve_response_code($res);
+                $body_str  = wp_remote_retrieve_body($res);
+                if ($http_code === 200) {
+                    $json = json_decode($body_str, true);
+                    $bin  = self::extract_b64_from_gemini_json($json);
+                    if ($bin && strlen($bin) > 8000) {
+                        self::record_studio_ai_usage_php(!empty($m['argon']), $m['id'], false);
+                        return array('bin' => $bin, 'engine' => $m['label']);
+                    }
+                } elseif ($http_code === 429 && $m['id'] === 'gemini-3-pro-image') {
+                    self::record_studio_ai_usage_php(false, $m['id'], true);
                 }
             }
         }
@@ -3545,7 +3684,7 @@ class Bareun_Custom_Studio_Engine_V3 {
 
     private static function call_fal_nano_banana_pro_php($fal_key, $prompt_text, $ref_images, $has_source_ref, $seed) {
         $img_urls = array();
-        $slice_refs = array_slice((array)$ref_images, 0, 8);
+        $slice_refs = array_slice((array)$ref_images, 0, 5);
         foreach ($slice_refs as $rf) {
             if (!empty($rf['publicUrl']) && preg_match('/^https:\/\//i', $rf['publicUrl'])) {
                 $img_urls[] = $rf['publicUrl'];
@@ -3557,7 +3696,7 @@ class Bareun_Custom_Studio_Engine_V3 {
         $is_edit = (count($img_urls) > 0);
         $endpoints = $is_edit
             ? array(
-                array('path' => 'fal-ai/nano-banana-pro/edit', 'label' => '아르곤 하이 정품 (Gemini 3 Pro Image · 2K 원본참조 에디팅)'),
+                array('path' => 'fal-ai/nano-banana-pro/edit', 'label' => '아르곤 하이 정품 (Gemini 3 Pro Image · 2K 에디팅)'),
                 array('path' => 'google/nano-banana-2.1/edit', 'label' => '아르곤 하이 정품 (Gemini Nano Banana 2.1 · 2K 에디팅)')
             )
             : array(
@@ -3599,6 +3738,7 @@ class Bareun_Custom_Studio_Engine_V3 {
                     if (!is_wp_error($dl) && wp_remote_retrieve_response_code($dl) === 200) {
                         $bin = wp_remote_retrieve_body($dl);
                         if ($bin && strlen($bin) > 8000) {
+                            self::record_studio_ai_usage_php(true, $ep['path'], false);
                             return array('bin' => $bin, 'engine' => $ep['label']);
                         }
                     }
@@ -3609,9 +3749,10 @@ class Bareun_Custom_Studio_Engine_V3 {
         return null;
     }
 
-    private static function translate_ko_medical_prompt_server($raw_prompt, $use_director_face) {
+    private static function translate_ko_medical_prompt_server($raw_prompt, $use_director_face, $no_face_directive = false) {
         $text = trim((string)$raw_prompt);
         $replacements = array(
+            '/얼굴\s*미노출|얼굴\s*비노출|얼굴\s*없이/u' => 'strictly faceless neck-down or over-the-shoulder from behind framing with ZERO face visible',
             '/2\s*[,·ㆍ\/\.\-]?\s*3\s*[,·ㆍ\/\.\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/u' => '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers gently side-by-side)',
             '/요골\s*동맥/u' => '환자 손목 안쪽 요골동맥 부위(the radial artery pulse point on the inner wrist of the patient)',
             '/진맥\s*쿠션|맥진\s*쿠션/u' => '아이보리 명주 손목 받침 쿠션(ivory woven-silk wrist pulse cushion)',
@@ -3648,21 +3789,20 @@ class Bareun_Custom_Studio_Engine_V3 {
             }
         }
 
-        $two_person = '';
-        if (preg_match('/진맥|맥진|요골|손목|radial artery|pulse/iu', $raw_prompt . ' ' . $translated)) {
-            $two_person = 'two separate distinct people sitting across a warm walnut consultation table from opposite sides: a patient in dark navy knitwear extending their bare wrist from the left side onto an ivory silk cushion, and a Korean medicine doctor in a plain unembroidered crisp white coat over a blue-and-white striped dress shirt reaching from the right side to palpate the patient wrist';
-        }
+        $faceless_lead = $no_face_directive
+            ? 'strictly faceless neck-down crop or over-the-shoulder shot from behind the doctor in a crisp white coat so ZERO doctor face, head, or side profile is visible in frame'
+            : '';
 
-        $director_lead = $use_director_face
-            ? 'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), slim sharp well-defined masculine jawline and natural cheekbones (85mm portrait telephoto compression, zero puffy or bloated cheeks), warm trustworthy gentle eye-smile expression, wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp white medical coat over a blue-and-white striped dress shirt'
+        $director_lead = (!$no_face_directive && $use_director_face)
+            ? 'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead, slim sharp masculine jawline, warm gentle eye-smile expression, wearing thin gold-rimmed rectangular glasses and a plain crisp white medical coat'
             : '';
 
         $parts = array_filter(array(
             'Authentic raw candid editorial photograph captured on Canon EOS R5 with RF 85mm f/1.8L USM lens',
+            $faceless_lead,
             $director_lead,
-            $two_person,
             $translated,
-            'warm refined Korean medicine clinic interior with natural honey-oak wood and soft Hanji daylight, ultra-realistic skin pores and natural fabric weave, accurate 5-finger hand anatomy, shallow depth of field, zero CGI, strictly NO text, NO logos, NO watermarks'
+            'warm refined Korean medicine clinic interior with natural honey-oak wood and soft Hanji daylight, ultra-realistic skin pores and natural fabric weave, accurate 5-finger hand anatomy, shallow depth of field, zero CGI, strictly NO watermarks'
         ));
 
         return implode(', ', $parts);
@@ -3714,39 +3854,42 @@ class Bareun_Custom_Studio_Engine_V3 {
             return new WP_REST_Response(array('ok' => false, 'error' => '생성할 이미지 프롬프트를 입력해 주세요.'), 400);
         }
 
-        $orig_prompt       = trim((string)($params['originalCardPrompt'] ?? ''));
-        $work_mode         = (isset($params['workMode']) && $params['workMode'] === 'write_new') ? 'write_new' : 'edit_current';
-        $source_image      = trim((string)($params['sourceImage'] ?? ''));
-        $use_director_face = !empty($params['useDirectorFace']);
-        $width             = isset($params['width']) ? max(512, min(1536, (int)(round(((int)$params['width']) / 32) * 32))) : 1280;
-        $height            = isset($params['height']) ? max(512, min(1536, (int)(round(((int)$params['height']) / 32) * 32))) : 800;
-        $seed              = isset($params['seed']) ? max(1, (int)$params['seed']) : wp_rand(10000000, 99999999);
-        $raw_prefix        = isset($params['filePrefix']) ? (string)$params['filePrefix'] : 'clinic';
-        $raw_prefix        = preg_replace('/^bareun_im_/i', '', $raw_prefix);
-        $prefix            = preg_replace('/[^a-zA-Z0-9_-]/', '_', $raw_prefix);
+        $orig_prompt          = trim((string)($params['originalCardPrompt'] ?? ''));
+        $source_image         = trim((string)($params['sourceImage'] ?? ''));
+        $use_source_image_ref = !empty($params['useSourceImageRef']); // Default FALSE: never copy old image unless explicitly checked!
+        $no_face_directive    = self::detect_no_face_directive_php($user_prompt);
+        $use_director_face    = $no_face_directive ? false : !empty($params['useDirectorFace']);
+
+        $width      = isset($params['width']) ? max(512, min(1536, (int)(round(((int)$params['width']) / 32) * 32))) : 1280;
+        $height     = isset($params['height']) ? max(512, min(1536, (int)(round(((int)$params['height']) / 32) * 32))) : 800;
+        $seed       = isset($params['seed']) ? max(1, (int)$params['seed']) : wp_rand(10000000, 99999999);
+        $raw_prefix = isset($params['filePrefix']) ? (string)$params['filePrefix'] : 'clinic';
+        $raw_prefix = preg_replace('/^bareun_im_/i', '', $raw_prefix);
+        $prefix     = preg_replace('/[^a-zA-Z0-9_-]/', '_', $raw_prefix);
         if ($prefix === '') $prefix = 'clinic';
 
         $bin = null;
         $engine_used = '';
 
-        // 1) Try Argon High Native Engine (Google Gemini 3 Pro Image 2K / Nano Banana Pro 2K)
+        // 1) Argon High Native Engine (Google Gemini 3 Pro Image 2K / Nano Banana Pro 2K)
         $ai_keys = self::get_raw_ai_keys();
         if ($ai_keys['geminiKey'] !== '' || $ai_keys['falKey'] !== '') {
             $ref_images = array();
             $has_source_ref = false;
 
-            if ($work_mode === 'edit_current' && $source_image !== '') {
+            if ($use_source_image_ref && $source_image !== '') {
                 $src_ref = self::resolve_wp_studio_ref_image($source_image);
                 if ($src_ref) {
+                    $src_ref['role'] = 'source';
+                    $src_ref['label'] = '기존 슬롯 밑그림';
                     $ref_images[] = $src_ref;
                     $has_source_ref = true;
                 }
             }
 
-            $preferred_angle_key = self::guess_preferred_angle_key($user_prompt);
             $preferred_angle_label = '정면 (0°)';
 
-            if ($use_director_face) {
+            if ($use_director_face && !$no_face_directive) {
                 $slots = self::get_default_angle_slots();
                 $saved_angles = get_option(self::OPT_ANGLE_SAMPLES, array());
                 if (!is_array($saved_angles)) $saved_angles = array();
@@ -3769,6 +3912,8 @@ class Bareun_Custom_Studio_Engine_V3 {
                     $slot_url = !empty($saved_angles[$k]['fileName']) ? $saved_angles[$k]['fileName'] : $default_ref;
                     $ang_ref = self::resolve_wp_studio_ref_image($slot_url);
                     if ($ang_ref) {
+                        $ang_ref['role'] = 'director';
+                        $ang_ref['label'] = $sl['label'];
                         $ref_images[] = $ang_ref;
                     }
                 }
@@ -3777,17 +3922,21 @@ class Bareun_Custom_Studio_Engine_V3 {
             $argon_prompt = self::build_argon_high_prompt_php(
                 $user_prompt,
                 $orig_prompt,
-                $work_mode,
-                $use_director_face,
                 $has_source_ref,
+                $use_director_face,
+                $no_face_directive,
                 $preferred_angle_label
             );
+
+            $mode_suffix = $no_face_directive
+                ? ' · 얼굴미노출 엄격 보호(0%)'
+                : ($use_director_face ? ' + 정방향 원장님 다각도 인물 고정' : ' · 새 구도 독립 촬영');
 
             if ($ai_keys['geminiKey'] !== '') {
                 $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, $ref_images);
                 if (is_array($g_out) && !empty($g_out['bin'])) {
                     $bin = $g_out['bin'];
-                    $engine_used = $g_out['engine'] . ($use_director_face ? ' + 8각도·미소 원장님 얼굴 고정' : '');
+                    $engine_used = $g_out['engine'] . $mode_suffix;
                 }
             }
 
@@ -3795,14 +3944,14 @@ class Bareun_Custom_Studio_Engine_V3 {
                 $f_out = self::call_fal_nano_banana_pro_php($ai_keys['falKey'], $argon_prompt, $ref_images, $has_source_ref, $seed);
                 if (is_array($f_out) && !empty($f_out['bin'])) {
                     $bin = $f_out['bin'];
-                    $engine_used = $f_out['engine'] . ($use_director_face ? ' + 8각도·미소 원장님 얼굴 고정' : '');
+                    $engine_used = $f_out['engine'] . $mode_suffix;
                 }
             }
         }
 
-        // 2) Fallback: Server-Translated Watermark-Free FLUX.1-dev (90s SSE) -> FLUX.1-schnell
+        // 2) Fallback: Server-Translated Watermark-Free FLUX.1-dev -> FLUX.1-schnell
         if (!$bin) {
-            $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, $use_director_face);
+            $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, $use_director_face, $no_face_directive);
             $out_img_url = self::call_hf_gradio_flux(
                 'https://black-forest-labs-flux-1-dev.hf.space',
                 array($en_prompt, $seed % 2147483647, false, $width, $height, 3.5, 28),
@@ -3820,7 +3969,11 @@ class Bareun_Custom_Studio_Engine_V3 {
             }
 
             if (!$out_img_url) {
-                return new WP_REST_Response(array('ok' => false, 'error' => 'AI 이미지 엔진 연결 지연 — 잠시 후 다시 시도해 주세요.'), 500);
+                return new WP_REST_Response(array(
+                    'ok'    => false,
+                    'usage' => self::get_studio_ai_usage_php(),
+                    'error' => 'AI 이미지 엔진 연결 지연 — 잠시 후 다시 시도해 주세요.'
+                ), 500);
             }
 
             $response = wp_remote_get($out_img_url, array(
@@ -3866,12 +4019,14 @@ class Bareun_Custom_Studio_Engine_V3 {
         }
 
         return new WP_REST_Response(array(
-            'ok'       => true,
-            'fileName' => $unique_name,
-            'url'      => $upload['url'],
-            'seed'     => $seed,
-            'engine'   => $engine_used,
-            'message'  => '[' . $engine_used . '] 최상급 실사 이미지 생성 및 실서버 등록 완료!'
+            'ok'              => true,
+            'fileName'        => $unique_name,
+            'url'             => $upload['url'],
+            'seed'            => $seed,
+            'engine'          => $engine_used,
+            'noFaceDirective' => $no_face_directive,
+            'usage'           => self::get_studio_ai_usage_php(),
+            'message'         => '[' . $engine_used . '] 최상급 실사 이미지 생성 및 실서버 등록 완료!'
         ), 200);
     }
 
@@ -3884,6 +4039,10 @@ class Bareun_Custom_Studio_Engine_V3 {
         $upload_dir = wp_upload_dir();
         $target_dir = $upload_dir['basedir'] . '/bareun-studio';
         wp_mkdir_p($target_dir);
+
+        if (!empty($params['resetAngleSamples'])) {
+            delete_option(self::OPT_ANGLE_SAMPLES);
+        }
 
         if (!empty($params['studioHtml'])) {
             file_put_contents($target_dir . '/detail-pages-editor.html', (string)$params['studioHtml']);
@@ -3929,9 +4088,10 @@ class Bareun_Custom_Studio_Engine_V3 {
 
         return new WP_REST_Response(array(
             'ok'         => true,
-            'version'    => 'v3-argon-high',
+            'version'    => 'v4-argon-high-complete',
             'aiKeyState' => self::build_ai_key_status_payload(),
-            'message'    => '실서버 스튜디오 V3 (아르곤 하이 2K 엔진) 에셋 동기화 성공!'
+            'usage'      => self::get_studio_ai_usage_php(),
+            'message'    => '실서버 스튜디오 V4 (얼굴미노출 가드 · 정방향 인물 고정 · 홈 스토리 · 무료 잔여량 측정) 에셋 동기화 성공!'
         ), 200);
     }
 
@@ -3989,7 +4149,6 @@ class Bareun_Custom_Studio_Engine_V3 {
         ), 200);
     }
 }
-Bareun_Custom_Studio_Engine_V3::init();
+Bareun_Custom_Studio_Engine_V4::init();
 endif;
-
 

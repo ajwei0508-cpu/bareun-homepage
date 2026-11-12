@@ -374,6 +374,7 @@ async function performWpLogin(page, loginUrl) {
           compilerJs,
           cardPromptsJs,
           angleRefs,
+          resetAngleSamples: true,
           studioAiKeys: localStudioAiKeys,
           pluginPhp: fullPluginPhp,
           config: masterCfgObj

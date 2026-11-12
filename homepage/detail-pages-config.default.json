@@ -23,6 +23,635 @@
   },
   "pages": [
     {
+      "slug": "home",
+      "file": "index.html",
+      "wpFile": "wordpress-main-home.html",
+      "wpId": 46,
+      "label": "🏠 00 · 메인 홈 시작 스토리",
+      "liveUrl": "https://www.bareunhaniwon.com/",
+      "isHomeStory": true,
+      "tabIdx": -1,
+      "theme": {
+        "bgDark": "#F5F1E8",
+        "bgPanel": "#EFE9DC",
+        "accent": "#2D5A43",
+        "accentLight": "#D4AF37",
+        "secondary": "#4A3525"
+      },
+      "meta": {
+        "eyebrow": "FATHER DOCTOR PHILOSOPHY · 메인 홈 오프닝 시네마 스토리",
+        "title": "바른한의원 대전본점 · 아빠 한의사를 찾는 환자 스토리",
+        "subtitle": "홈페이지 첫 시작 오프닝 슬로건 · 24컷 3D 환자 스토리 카드 · 피날레 7대 진료 벤토 카드 통합 편집",
+        "desc": [
+          "내 가족에게 직접 처방하고 시술한 치료만 시행하며 모든 환자를 내 가족처럼 진료하는 아빠 한의사 바른한의원 대전본점 메인 오프닝 스토리입니다."
+        ],
+        "checklistTitle": "메인 홈 오프닝 구성",
+        "checklistItems": [],
+        "stats": [],
+        "ctaLabel": "예약·상담 ↗"
+      },
+      "homeStory": {
+        "brandTitle": "바른한의원 대전본점",
+        "brandSub": "👨‍👧‍👦 아빠 한의사 · 내 가족에게 처방·시술한 치료만 합니다",
+        "introLine1": "아빠 한의사를 찾는",
+        "introLine2": "환자 스토리 공개",
+        "conceptPill": "아빠 한의사 · 내 가족에게 처방·시술한 치료만 합니다",
+        "finaleHeadline": "아빠 한의사 · 바른한의원 대전본점",
+        "finaleHeadlineSub": "내 가족에게 처방하고 시술한 치료만 하는 내 가족 주치의",
+        "finaleEyebrow": "FATHER DOCTOR PHILOSOPHY · 내 가족에게 처방하고 시술한 치료만 시행합니다",
+        "finaleMainTitle": "모든 환자를 내 가족처럼 진료하는 ‘아빠 한의사’ 6대 클리닉",
+        "chapters": [
+          {
+            "id": 1,
+            "numLabel": "STORY 01 / 08 · 바른 난임·착상 치료",
+            "quote": "임신이 되지 않아 힘들게 얻은 선물"
+          },
+          {
+            "id": 2,
+            "numLabel": "STORY 02 / 08 · 바른 소아 면역강화 치료",
+            "quote": "사랑하는 아이가 건강하기를 바라면서"
+          },
+          {
+            "id": 3,
+            "numLabel": "STORY 03 / 08 · 바른 성장판·키성장 치료",
+            "quote": "멋지게 성장하는 꿈을 꾸며"
+          },
+          {
+            "id": 4,
+            "numLabel": "STORY 04 / 08 · 바른 성인 비만·체형 치료",
+            "quote": "날씬하고 건강해서 예쁘게"
+          },
+          {
+            "id": 5,
+            "numLabel": "STORY 05 / 08 · 바른 30대 탈모·모근 치료",
+            "quote": "사회에서 인정받기 위해 탈모"
+          },
+          {
+            "id": 6,
+            "numLabel": "STORY 06 / 08 · 바른 추나 척추·전신 통증치료",
+            "quote": "열심히 근무하면서 생긴 통증"
+          },
+          {
+            "id": 7,
+            "numLabel": "STORY 07 / 08 · 바른 황제공진단 기력보강",
+            "quote": "약해진 기력을 보강해야할 나이가 오고"
+          },
+          {
+            "id": 8,
+            "numLabel": "STORY 08 / 08 · 평생 주치의 바른한의원 대전본점",
+            "quote": "건강한 인생이 될 수 있게 도와드립니다."
+          }
+        ]
+      },
+      "plates": [
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1a0_infertility_before.jpg?v=pov11",
+          "chapter": 1,
+          "title": "간절한 기다림",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 0,
+          "warmth": 1.06,
+          "focal": [
+            0.52,
+            0.56
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1a1_infertility_treatment.jpg?v=pov7",
+          "chapter": 1,
+          "title": "난임으로 찾게 된 한의원",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 5,
+          "warmth": 1.1,
+          "focal": [
+            0.52,
+            0.48
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1a_fertilization.jpg?v=pov11",
+          "chapter": 1,
+          "title": "힘들게 얻은 선물",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 6,
+          "warmth": 1.08,
+          "focal": [
+            0.52,
+            0.5
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1b_birth.jpg?v=pov7",
+          "chapter": 1,
+          "title": "소중한 탄생",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 7,
+          "warmth": 1.12,
+          "focal": [
+            0.52,
+            0.54
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1c_cold_before.jpg?v=pov7",
+          "chapter": 2,
+          "title": "자꾸만 아픈 우리 아이",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 0,
+          "warmth": 1.04,
+          "focal": [
+            0.52,
+            0.52
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1c_clinic_exam.jpg?v=pov15",
+          "chapter": 2,
+          "title": "다시 찾은 한의원",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 5,
+          "warmth": 1.06,
+          "focal": [
+            0.5,
+            0.45
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1c_immunity.jpg?v=pov7",
+          "chapter": 2,
+          "title": "으랏차차",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 6,
+          "warmth": 1.1,
+          "focal": [
+            0.54,
+            0.48
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1d_growth_short.jpg?v=pov7",
+          "chapter": 3,
+          "title": "친구보다 너무 작은 우리 아이",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 7,
+          "warmth": 1.08,
+          "focal": [
+            0.53,
+            0.48
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_1d_growth_clinic.jpg?v=pov7",
+          "chapter": 3,
+          "title": "성장클리닉을 하다",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 1,
+          "warmth": 1.09,
+          "focal": [
+            0.52,
+            0.48
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "specialRole": "growth_tall",
+          "imgSrc": "life_1d_growth_peers.jpg?v=pov7",
+          "chapter": 3,
+          "title": "쑥쑥 자란 우리 아이",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 6,
+          "warmth": 1.1,
+          "focal": [
+            0.5,
+            0.36
+          ],
+          "thumbs": [
+            {
+              "label": "성장 1단계 (25%)",
+              "img": "life_1d_growth_step1.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "성장 2단계 (50%)",
+              "img": "life_1d_growth_step2.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "성장 3단계 (75%)",
+              "img": "life_1d_growth_step3.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "성장 4단계 (96%)",
+              "img": "life_1d_growth_step4.jpg?v=pov12",
+              "fit": "cover"
+            }
+          ]
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_2a_obesity.jpg?v=pov7",
+          "chapter": 4,
+          "title": "육아로 뱃살만...",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 0,
+          "warmth": 1.05,
+          "focal": [
+            0.52,
+            0.5
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_2a_treatment.jpg?v=pov7",
+          "chapter": 4,
+          "title": "결심했어!!",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 2,
+          "warmth": 1.09,
+          "focal": [
+            0.5,
+            0.52
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_2b_slim_therapy.jpg?v=pov11",
+          "chapter": 4,
+          "title": "늘씬한 내가 되자",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 7,
+          "warmth": 1.05,
+          "focal": [
+            0.58,
+            0.42
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_3a_hairloss.jpg?v=pov12",
+          "chapter": 5,
+          "title": "심해진 탈모",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 6,
+          "warmth": 1.03,
+          "focal": [
+            0.5,
+            0.38
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_3a_treatment.jpg?v=pov12",
+          "chapter": 5,
+          "title": "한의원에서 탈모검사 중",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 4,
+          "warmth": 1.08,
+          "focal": [
+            0.455,
+            0.33
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_3a_follicle_zoom.jpg?v=pov7",
+          "chapter": 5,
+          "title": "탈모 두피 치료",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 5,
+          "warmth": 1.06,
+          "focal": [
+            0.5,
+            0.5
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_3b_hair_restored.jpg?v=pov12",
+          "chapter": 5,
+          "title": "자신감 회복",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 7,
+          "warmth": 1.03,
+          "focal": [
+            0.5,
+            0.36
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "specialRole": "ch6_pain_start",
+          "imgSrc": "life_4a_work_spine_pain.jpg?v=pov7",
+          "chapter": 6,
+          "title": "일하면서 온몸이 아파진 나",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 3,
+          "warmth": 1.04,
+          "focal": [
+            0.54,
+            0.52
+          ],
+          "thumbs": [
+            {
+              "label": "통증 전 바른자세 (0%)",
+              "img": "life_4a_pain_step0.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "어깨 뻐근함 시작 (25%)",
+              "img": "life_4a_pain_step0_5.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "목·경추 통증 (50%)",
+              "img": "life_4a_pain_step1.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "허리·척추 통증 (75%)",
+              "img": "life_4a_pain_step2.jpg?v=pov12",
+              "fit": "cover"
+            }
+          ]
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_4a_treatment.jpg?v=pov8",
+          "chapter": 6,
+          "title": "한의원에서 추나 치료",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 6,
+          "warmth": 1.08,
+          "focal": [
+            0.52,
+            0.52
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_4a2_ankle_acupuncture.jpg?v=pov8",
+          "chapter": 6,
+          "title": "통증 치료",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 5,
+          "warmth": 1.09,
+          "focal": [
+            0.5,
+            0.54
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "specialRole": "ch6_recovered",
+          "imgSrc": "life_4b_chuna_recovery.jpg?v=pov7",
+          "chapter": 6,
+          "title": "관절 튼튼 회복",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 0,
+          "warmth": 1.1,
+          "focal": [
+            0.54,
+            0.5
+          ],
+          "thumbs": [
+            {
+              "label": "양팔 들어올림 중간모션",
+              "img": "life_4b_chuna_manse_mid.jpg?v=pov12",
+              "fit": "cover"
+            },
+            {
+              "label": "활짝 만세 회복 완료컷",
+              "img": "life_4b_chuna_manse.jpg?v=pov12",
+              "fit": "cover"
+            }
+          ]
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_5a_aging_fatigue.jpg?v=pov7",
+          "chapter": 7,
+          "title": "어느새 기력이 쇠약해지고",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 7,
+          "warmth": 1.06,
+          "focal": [
+            0.58,
+            0.46
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_5b_gongjindan_vitality.jpg?v=pov14",
+          "chapter": 7,
+          "title": "황제공진단으로 기력충전",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 5,
+          "warmth": 1.14,
+          "focal": [
+            0.58,
+            0.46
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-story-frame",
+          "imgSrc": "life_5c_graceful_elder.jpg?v=pov7",
+          "chapter": 8,
+          "title": "건강한 백세 인생",
+          "sub": "",
+          "povBadge": "",
+          "stepLabel": "",
+          "mode": 5,
+          "warmth": 1.15,
+          "focal": [
+            0.58,
+            0.45
+          ],
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_1_director.jpg?v=card1",
+          "bgPos": "center 20%",
+          "rot": 0,
+          "linkHref": "director.html",
+          "dataLink": "director.html",
+          "reserveProg": "난임·착상·임신준비 클리닉",
+          "chapter": 2,
+          "title": "안정위원장 · 아빠 한의사",
+          "sub": "내 가족에게 처방한 정품 한약 · 모든 환자를 내 가족처럼 진료하는 주치의",
+          "chipLabel": "상세페이지 보기 →",
+          "isHairlossModal": false,
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_2_chuna.jpg?v=card1",
+          "bgPos": "center center",
+          "rot": 5,
+          "linkHref": "chuna.html",
+          "dataLink": "chuna.html",
+          "reserveProg": "추나 척추·전신통증 클리닉",
+          "chapter": 6,
+          "title": "추나",
+          "sub": "내 가족의 척추를 바로잡는 마음 · 원장 직접 수기 추나·디스크 감압",
+          "chipLabel": "상세페이지 보기 →",
+          "isHairlossModal": false,
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_3_growth.jpg?v=card1",
+          "bgPos": "center 22%",
+          "rot": 7,
+          "linkHref": "growth.html",
+          "dataLink": "growth.html",
+          "reserveProg": "소아·청소년 키성장 클리닉",
+          "chapter": 3,
+          "title": "성장",
+          "sub": "실제 원장님 아들이 복용한 성장한약 · 키성장 골든타임 & 비염면역",
+          "chipLabel": "상세페이지 보기 →",
+          "isHairlossModal": false,
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_4_diet.jpg?v=card1",
+          "bgPos": "center 25%",
+          "rot": -7,
+          "linkHref": "diet-zero.html",
+          "dataLink": "diet-zero.html",
+          "reserveProg": "성인 비만·다이어트 클리닉",
+          "chapter": 4,
+          "title": "다이어트",
+          "sub": "내 가족도 안심하는 무부작용 대사 리셋 · 내장지방·독소 해독 감량",
+          "chipLabel": "상세페이지 보기 →",
+          "isHairlossModal": false,
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_5_hairloss.jpg?v=pov12",
+          "bgPos": "center center",
+          "rot": -5,
+          "linkHref": "#hairloss-select",
+          "dataLink": "hairloss-modal",
+          "reserveProg": "30대 탈모·모근재생 클리닉",
+          "chapter": 5,
+          "title": "탈모 · 4대 유형 맞춤",
+          "sub": "내 가족에게 시술한 두피열 쿨링 · 남성/원형/여성/지루성두피염 선택",
+          "chipLabel": "4가지 유형 선택 ⊞",
+          "isHairlossModal": true,
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_6_gongjindan.jpg?v=card1",
+          "bgPos": "center center",
+          "rot": 4,
+          "linkHref": "gongjindan.html",
+          "dataLink": "gongjindan.html",
+          "reserveProg": "황제공진단·기력보강 클리닉",
+          "chapter": 7,
+          "title": "황제공진단",
+          "sub": "내 부모님께 드리는 CITES 정품 사향 · 뇌·심장 원기 회복 & 만성 번아웃",
+          "chipLabel": "상세페이지 보기 →",
+          "isHairlossModal": false,
+          "thumbs": []
+        },
+        {
+          "type": "home-bento-card",
+          "imgSrc": "card_7_prostate.jpg?v=card1",
+          "bgPos": "center 22%",
+          "rot": -4,
+          "linkHref": "prostate.html",
+          "dataLink": "prostate.html",
+          "reserveProg": "전립선·배뇨·남성활력 클리닉",
+          "chapter": 7,
+          "title": "전립선 · 남성활력",
+          "sub": "반복되는 야간뇨·잔뇨감·회음부 통증 · 전립선 울혈 감압 & 신장·방광 온양",
+          "chipLabel": "상세페이지 보기 →",
+          "isHairlossModal": false,
+          "thumbs": []
+        }
+      ]
+    },
+    {
       "slug": "director",
       "file": "director.html",
       "wpFile": "wordpress-director.html",

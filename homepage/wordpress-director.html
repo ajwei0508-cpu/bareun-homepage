@@ -1184,6 +1184,17 @@
     .plate-thumb-btn.active .plate-thumb-label {
       color: #FEF08A;
     }
+    .exam-media-stage .plate-thumb-dock.is-visual-floating-dock {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 14px;
+      z-index: 12;
+      pointer-events: auto;
+    }
+    body.show-exam-hud .exam-media-stage .plate-thumb-dock.is-visual-floating-dock {
+      bottom: 132px;
+    }
 
     @media (max-width: 1024px) {
       .lusion-clean-media.is-contain-fit {
@@ -7121,7 +7132,7 @@
             <div class="motion-video-stage is-clean-fx-overlay" data-frames="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/bareun_im_director_87640693_1794449660273.jpg" data-duration="6" style="position:absolute;inset:0;pointer-events:none;z-index:3;background:transparent;">
               <canvas class="plate-fx-canvas" data-fx="warm-breath-zoom" style="width:100%;height:100%;display:block;pointer-events:none;"></canvas>
             </div>
-            <div class="plate-thumb-dock is-visual-floating-dock">
+            <div class="plate-thumb-dock is-visual-floating-dock" style="z-index:12;">
               
               <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
                 <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp?v=dir1only" alt="안정위 대표원장" loading="lazy" draggable="false" width="1280" height="714">
@@ -7184,7 +7195,7 @@
           <span class="tiny-card-num-badge">05</span>
           <figure class="plate-media-inner pure-visual-zone">
             <img class="lusion-clean-media" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/detail_director_story5_no_director.webp?v=dir1only" alt="실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'" draggable="false" itemprop="image" width="1280" height="714">
-            <div class="plate-thumb-dock is-visual-floating-dock">
+            <div class="plate-thumb-dock is-visual-floating-dock" style="z-index:12;">
               
               <button type="button" class="plate-thumb-btn active" data-mode="clean" data-img="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/detail_director_story5_no_director.webp?v=dir1only" data-fit="cover" onclick="window.switchPlateThumb(event, this)">
                 <img class="plate-thumb-preview" src="https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/detail_director_story5_no_director.webp?v=dir1only" alt="온 가족 안심 한약" loading="lazy" draggable="false" width="1280" height="714">

@@ -199,7 +199,7 @@ function stripOuterDocumentForWP(fullHtml) {
 }
 
 function rewriteAssetsForWP(html, label) {
-  const assetPrefix = '(?:brochure\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|empathy-|empathy_|efficacy-)';
+  const assetPrefix = '(?:brochure\\/|webp\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|diet-|diet_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|hairloss-|hairloss_|empathy-|empathy_|efficacy-|studio_|im_|custom_)';
   const pageSlugUnion = '(ask-doctor|body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|gongjindan|prostate|lifting-compare)';
 
   let out = html
@@ -208,6 +208,7 @@ function rewriteAssetsForWP(html, label) {
     .replace(/<script\s+src="visit-tracker\.js"><\/script>/gi, () => visitTrackerCode ? `<script>\n${visitTrackerCode}\n</script>` : '')
     // Rewrite image & asset paths to compressed <92KB WebP on GitHub Raw CDN
     .replace(new RegExp("(src|before|after|beforeImg|afterImg):\\s*'(" + assetPrefix + "[^']+)'", 'g'), (_, k, p) => `${k}: '${toGhWebpOrRaw(p)}'`)
+    .replace(new RegExp('"(src|before|after|beforeImg|afterImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(/"(illustration|illustImg|baBeforeImg|baAfterImg)":"((?:illust_|ba_)[^"]+)"/g, (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(new RegExp('"(heroImg|subImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(new RegExp('src=\\\\"(' + assetPrefix + '[^\\\\"]+)\\\\"', 'g'), (_, p) => 'src=\\"' + toGhWebpOrRaw(p) + '\\"')
@@ -238,7 +239,7 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp('"clinicLink":"' + pageSlugUnion + '\\.html"', 'g'), '"clinicLink":"/$1/"')
     .replace(new RegExp('"ctaHref":"' + pageSlugUnion + '\\.html"', 'g'), '"ctaHref":"/$1/"')
     .replace(/data-frames="([^"]+)"/g, (match, p1) => {
-      const rewritten = p1.split('|').map(f => f.startsWith('http') ? f : toGhWebpOrRaw(f)).join('|');
+      const rewritten = p1.split('|').map(f => (f.startsWith('http') || f.startsWith('/wp-content/')) ? f : toGhWebpOrRaw(f)).join('|');
       return 'data-frames="' + rewritten + '"';
     });
 

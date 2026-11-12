@@ -1184,6 +1184,17 @@
     .plate-thumb-btn.active .plate-thumb-label {
       color: #FEF08A;
     }
+    .exam-media-stage .plate-thumb-dock.is-visual-floating-dock {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 14px;
+      z-index: 12;
+      pointer-events: auto;
+    }
+    body.show-exam-hud .exam-media-stage .plate-thumb-dock.is-visual-floating-dock {
+      bottom: 132px;
+    }
 
     @media (max-width: 1024px) {
       .lusion-clean-media.is-contain-fit {

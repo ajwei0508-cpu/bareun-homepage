@@ -4,18 +4,142 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
-const { spawn } = require('child_process');
+const { spawn, execFileSync } = require('child_process');
 const { pathToFileURL } = require('url');
 
 const HOMEPAGE_DIR = __dirname;
 const IMAGEMAKER_DIR = path.resolve(__dirname, '..', 'imagemaker');
 const SETTINGS_JSON_PATH = path.join(IMAGEMAKER_DIR, 'data', 'settings.json');
+const STUDIO_USAGE_JSON_PATH = path.join(HOMEPAGE_DIR, 'studio-ai-usage.json');
 const ANGLE_REFS_DIR = path.join(HOMEPAGE_DIR, 'director-angle-refs');
 const ANGLE_MANIFEST_PATH = path.join(ANGLE_REFS_DIR, 'manifest.json');
 const LOCAL_FACE_ENGINE_PY = path.join(IMAGEMAKER_DIR, 'local_face_engine.py');
 const DIRECTOR_PROFILE_DIR = path.join(IMAGEMAKER_DIR, 'data', 'profiles', 'director_ahn');
 const PROFILES_JSON_PATH = path.join(IMAGEMAKER_DIR, 'data', 'profiles.json');
 const GRADIO_CLIENT_ESM = path.join(IMAGEMAKER_DIR, 'node_modules', '@gradio', 'client', 'dist', 'index.js');
+
+const DEFAULT_DAILY_FREE_LIMIT = 50;
+
+function getTodayKstDateString() {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(new Date());
+  } catch (e) {
+    const kst = new Date(Date.now() + 9 * 3600 * 1000);
+    return kst.toISOString().slice(0, 10);
+  }
+}
+
+function readRawStudioUsage() {
+  const today = getTodayKstDateString();
+  let data = {
+    dateKst: today,
+    dailyFreeLimit: DEFAULT_DAILY_FREE_LIMIT,
+    argonHighTodayUsed: 0,
+    argonHighTotalUsed: 0,
+    fallbackTodayUsed: 0,
+    quotaExhaustedToday: false,
+    lastModel: '',
+    lastUsedAt: null
+  };
+  try {
+    if (fs.existsSync(STUDIO_USAGE_JSON_PATH)) {
+      const parsed = JSON.parse(fs.readFileSync(STUDIO_USAGE_JSON_PATH, 'utf8')) || {};
+      data = { ...data, ...parsed };
+    }
+  } catch (e) {}
+
+  data.dailyFreeLimit = Math.max(1, Math.min(5000, Number(data.dailyFreeLimit) || DEFAULT_DAILY_FREE_LIMIT));
+  data.argonHighTotalUsed = Math.max(0, Number(data.argonHighTotalUsed) || 0);
+
+  if (data.dateKst !== today) {
+    data.dateKst = today;
+    data.argonHighTodayUsed = 0;
+    data.fallbackTodayUsed = 0;
+    data.quotaExhaustedToday = false;
+    try {
+      fs.writeFileSync(STUDIO_USAGE_JSON_PATH, JSON.stringify(data, null, 2) + '\n', 'utf8');
+    } catch (e) {}
+  } else {
+    data.argonHighTodayUsed = Math.max(0, Number(data.argonHighTodayUsed) || 0);
+    data.fallbackTodayUsed = Math.max(0, Number(data.fallbackTodayUsed) || 0);
+    data.quotaExhaustedToday = Boolean(data.quotaExhaustedToday);
+  }
+  return data;
+}
+
+function formatStudioUsagePayload(raw) {
+  const d = raw || readRawStudioUsage();
+  const limit = Math.max(1, Number(d.dailyFreeLimit) || DEFAULT_DAILY_FREE_LIMIT);
+  const used = Math.max(0, Number(d.argonHighTodayUsed) || 0);
+  const freeRemaining = d.quotaExhaustedToday ? 0 : Math.max(0, limit - used);
+  const usedPct = Math.min(100, Math.round((used / limit) * 100));
+  return {
+    todayDate: d.dateKst,
+    dateKst: d.dateKst,
+    dailyFreeLimit: limit,
+    argonHighTodayUsed: used,
+    argonHighTotalUsed: Math.max(0, Number(d.argonHighTotalUsed) || 0),
+    fallbackTodayUsed: Math.max(0, Number(d.fallbackTodayUsed) || 0),
+    freeRemaining,
+    usedPct,
+    quotaExhaustedToday: Boolean(d.quotaExhaustedToday),
+    lastModel: d.lastModel || '',
+    lastUsedAt: d.lastUsedAt || null
+  };
+}
+
+function getStudioAiUsage() {
+  return formatStudioUsagePayload(readRawStudioUsage());
+}
+
+function updateStudioAiUsageConfig({ dailyFreeLimit, resetToday } = {}) {
+  const d = readRawStudioUsage();
+  if (dailyFreeLimit !== undefined && dailyFreeLimit !== null && dailyFreeLimit !== '') {
+    const n = Number(dailyFreeLimit);
+    if (!Number.isNaN(n) && n >= 1) {
+      d.dailyFreeLimit = Math.max(1, Math.min(5000, Math.round(n)));
+    }
+  }
+  if (resetToday) {
+    d.dateKst = getTodayKstDateString();
+    d.argonHighTodayUsed = 0;
+    d.fallbackTodayUsed = 0;
+    d.quotaExhaustedToday = false;
+  }
+  fs.writeFileSync(STUDIO_USAGE_JSON_PATH, JSON.stringify(d, null, 2) + '\n', 'utf8');
+  return formatStudioUsagePayload(d);
+}
+
+function recordStudioAiGeneration({ tier = 'argon-high', modelLabel = '', quotaExhausted = false } = {}) {
+  const d = readRawStudioUsage();
+  d.dateKst = getTodayKstDateString();
+  if (quotaExhausted) {
+    d.quotaExhaustedToday = true;
+  } else if (tier === 'argon-high') {
+    d.argonHighTodayUsed = (Number(d.argonHighTodayUsed) || 0) + 1;
+    d.argonHighTotalUsed = (Number(d.argonHighTotalUsed) || 0) + 1;
+    d.quotaExhaustedToday = false;
+  } else {
+    d.fallbackTodayUsed = (Number(d.fallbackTodayUsed) || 0) + 1;
+  }
+  if (modelLabel) d.lastModel = String(modelLabel);
+  d.lastUsedAt = new Date().toISOString();
+  try {
+    fs.writeFileSync(STUDIO_USAGE_JSON_PATH, JSON.stringify(d, null, 2) + '\n', 'utf8');
+  } catch (e) {}
+  return formatStudioUsagePayload(d);
+}
+
+function detectNoFaceDirective(promptText) {
+  const s = String(promptText || '').trim();
+  if (!s) return false;
+  return /얼굴\s*미노출|얼굴\s*비노출|얼굴\s*노출\s*(?:금지|없이|제외|안|불가|x)|얼굴\s*없이|얼굴이?\s*(?:안|보이지)\s*(?:보이|않|나오)|얼굴이?\s*나오지\s*않|얼굴\s*제외|얼굴\s*가리|얼굴\s*크롭|목\s*아래만|어깨\s*아래만|손만\s*클로즈업|뒷모습만|등\s*뒤에서만|no[\s_-]*face|faceless|without\s+face/i.test(s);
+}
 
 const DEFAULT_ANGLE_SLOTS = [
   { key: 'front',        label: '정면 (0° · 기본)',     desc: '85mm 정면 · 단정한 기본',      defaultFile: 'director-angle-refs/angle_front.jpg' },
@@ -73,11 +197,12 @@ function getStudioAiKeyConfig() {
     activeProvider,
     activeLabel,
     maskedGeminiKey: maskSecretKey(geminiKey),
-    maskedFalKey: maskSecretKey(falKey)
+    maskedFalKey: maskSecretKey(falKey),
+    usage: getStudioAiUsage()
   };
 }
 
-function saveStudioAiKeyConfig({ geminiKey, falKey, apiKey } = {}) {
+function saveStudioAiKeyConfig({ geminiKey, falKey, apiKey, dailyFreeLimit, resetUsageToday } = {}) {
   const s = readRawSettingsJson();
   const singleKey = String(apiKey || '').trim();
   if (singleKey) {
@@ -104,6 +229,9 @@ function saveStudioAiKeyConfig({ geminiKey, falKey, apiKey } = {}) {
     fs.mkdirSync(dir, { recursive: true });
   }
   fs.writeFileSync(SETTINGS_JSON_PATH, JSON.stringify(s, null, 2) + '\n', 'utf8');
+  if (dailyFreeLimit !== undefined || resetUsageToday) {
+    updateStudioAiUsageConfig({ dailyFreeLimit, resetToday: Boolean(resetUsageToday) });
+  }
   return getStudioAiKeyConfig();
 }
 
@@ -180,6 +308,19 @@ function updateDirectorAngleSample(angleKey, dataUrl, origName = 'angle.jpg') {
   const outRel = `director-angle-refs/${outName}`;
   const outFull = path.join(ANGLE_REFS_DIR, outName);
   fs.writeFileSync(outFull, buf);
+
+  // Auto-orient EXIF upright & resize <=1024px so smartphone portrait uploads never rotate sideways
+  try {
+    execFileSync(
+      'python',
+      [
+        '-c',
+        'import sys; from PIL import Image, ImageOps; p=sys.argv[1]; im=ImageOps.exif_transpose(Image.open(p)).convert("RGB"); im.thumbnail((1024,1024), Image.Resampling.LANCZOS); im.save(p, quality=95)',
+        outFull
+      ],
+      { timeout: 12000 }
+    );
+  } catch (e) {}
 
   try {
     const profRefsDir = path.join(DIRECTOR_PROFILE_DIR, 'refs');
@@ -374,21 +515,21 @@ function guessPreferredAngleKeyFromPrompt(promptText) {
   return 'front';
 }
 
-function orderDirectorSlotsForPrompt(promptText, allAngles = []) {
+function orderDirectorSlotsForPrompt(promptText, allAngles = [], maxCount = 3) {
   const prefKey = guessPreferredAngleKeyFromPrompt(promptText);
   const byKey = {};
   for (const a of allAngles) {
     if (a && a.key) byKey[a.key] = a;
   }
   const priorityMap = {
-    front:        ['front', 'frontSmile', 'left15Smile', 'right15Smile', 'left30', 'right30'],
-    frontSmile:   ['frontSmile', 'front', 'left15Smile', 'right15Smile', 'left30', 'right30'],
-    left15Smile:  ['left15Smile', 'frontSmile', 'left30', 'front', 'leftProfile', 'right15Smile'],
-    right15Smile: ['right15Smile', 'frontSmile', 'right30', 'front', 'rightProfile', 'left15Smile'],
-    left30:       ['left30', 'left15Smile', 'frontSmile', 'front', 'leftProfile', 'right30'],
-    right30:      ['right30', 'right15Smile', 'frontSmile', 'front', 'rightProfile', 'left30'],
-    leftProfile:  ['leftProfile', 'left30', 'left15Smile', 'front', 'frontSmile', 'right30'],
-    rightProfile: ['rightProfile', 'right30', 'right15Smile', 'front', 'frontSmile', 'left30']
+    front:        ['front', 'frontSmile', 'right15Smile', 'left15Smile', 'right30', 'left30'],
+    frontSmile:   ['frontSmile', 'front', 'right15Smile', 'left15Smile', 'right30', 'left30'],
+    left15Smile:  ['left15Smile', 'frontSmile', 'front', 'left30', 'leftProfile', 'right15Smile'],
+    right15Smile: ['right15Smile', 'frontSmile', 'front', 'right30', 'rightProfile', 'left15Smile'],
+    left30:       ['left30', 'left15Smile', 'front', 'frontSmile', 'leftProfile', 'right30'],
+    right30:      ['right30', 'right15Smile', 'front', 'frontSmile', 'rightProfile', 'left30'],
+    leftProfile:  ['leftProfile', 'left30', 'front', 'left15Smile', 'frontSmile', 'right30'],
+    rightProfile: ['rightProfile', 'right30', 'front', 'right15Smile', 'frontSmile', 'left30']
   };
   const orderKeys = priorityMap[prefKey] || priorityMap.frontSmile;
   const result = [];
@@ -398,19 +539,22 @@ function orderDirectorSlotsForPrompt(promptText, allAngles = []) {
   for (const a of allAngles) {
     if (a && !result.includes(a)) result.push(a);
   }
-  return result.slice(0, 6);
+  return result.slice(0, Math.max(1, maxCount));
 }
 
 /**
  * 아르곤 하이(Gemini 3 Pro Image / Nano Banana Pro 2K) 전용 정밀 에디토리얼 프롬프트 빌더
- * - 원본 카드 이미지 참조(edit_current) 시 변경된 구절(Diff)을 최우선으로 반영하고, 기존 카드의 조명·원목·색감·렌즈 심도를 완벽히 보존합니다.
- * - 다각도·미소 원장님 얼굴 샘플 합성(useDirectorFace) 시 8종 샘플 골격 동일성과 85mm 망원 윤곽(부종 ZERO)을 고정합니다.
+ * - 기본값(hasSourceRef === false): 기존 카드 이미지를 전혀 참조하지 않고 100% 백지상태에서 프롬프트를 깊이 사고해 완전히 새로운 구도로 촬영합니다.
+ * - 부분 수정(hasSourceRef === true): 사용자가 명시적으로 밑그림 참조를 켠 경우에만 기존 이미지 톤·배경을 유지하며 수정합니다.
+ * - 얼굴미노출(noFaceDirective === true): 원장님 얼굴 참조를 완전 차단하고 어깨/목 아래 또는 등 뒤 오버더숄더 비노출 구도를 강제합니다.
+ * - 원장님 얼굴 합성(useDirectorFace === true): 정방향 보정된 핵심 각도 실사 포트레이트와 1:1 동일 골격·안경·가르마·흰 가운을 정밀 고정합니다.
  */
 function buildArgonHighPrompt({
   userPrompt,
   originalCardPrompt = '',
   workMode = 'edit_current',
   useDirectorFace = false,
+  noFaceDirective = false,
   hasSourceRef = false,
   preferredAngleLabel = '정면 미소 (0°)'
 }) {
@@ -420,46 +564,54 @@ function buildArgonHighPrompt({
 
   const lines = [];
 
-  if (workMode === 'edit_current' && hasSourceRef) {
+  if (hasSourceRef) {
     if (isPromptModified) {
       lines.push(
-        '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 원본 카드 기반 정밀 수정 촬영]',
-        '첨부된 첫 번째 사진은 현재 홈페이지 카드에 설정되어 있는 원본 이미지입니다.',
-        '첫 번째 원본 사진의 고급스러운 한의원 자연 채광, 따뜻한 원목/한지 톤앤매너, 카메라 렌즈 심도(Canon EOS R5 85mm f/1.8L)와 전체 공간 품격은 그대로 유지하되, 사용자가 수정한 아래 [최종 연출 프롬프트]의 변경 내용(손가락 위치·개수, 동작, 소품, 구도, 시선 등)을 최우선으로 오차 없이 정확하게 반영하여 새롭게 촬영해 주세요.',
-        `[기존 카드 설명 (참고용)]: ${cleanOrig}`,
+        '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 참조 밑그림 기반 부분 수정 촬영]',
+        '첨부된 [참조 밑그림 사진]의 한의원 자연 채광과 공간 톤앤매너는 유지하되, 아래 [최종 연출 프롬프트]에서 지시한 동작·피사체·구도·소품 변경 사항을 최우선으로 정확히 반영하여 새롭게 촬영해 주세요.',
+        `[기존 장면 참고]: ${cleanOrig}`,
         `[최종 연출 프롬프트 (최우선 반영 필수)]: ${cleanUser}`
       );
     } else {
       lines.push(
-        '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 원본 카드 품격 계승 재촬영]',
-        '첨부된 첫 번째 원본 카드 사진의 고급 한의원 조명·원목 질감·색감·구도 품격을 그대로 계승하면서, 디테일과 생동감이 한층 자연스럽게 새로 촬영된 초고화질 DSLR 실사 사진으로 제작해 주세요.',
+        '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 참조 밑그림 품격 계승 재촬영]',
+        '첨부된 [참조 밑그림 사진]의 고급 한의원 조명·원목 질감·색감을 계승하면서, 아래 연출 지시를 초고화질 DSLR 실사 사진으로 촬영해 주세요.',
         `[장면 연출 지시]: ${cleanUser}`
       );
     }
   } else {
     lines.push(
-      '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 최상급 DSLR 실사 촬영]',
-      '따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원)의 실제 에디토리얼 화보 수준(Canon EOS R5, RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 모공과 원단 직조 질감)으로 아래 장면을 촬영해 주세요.',
-      `[장면 연출 지시]: ${cleanUser}`
+      '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 백지상태 신규 구도 기획 & 최상급 DSLR 실사 촬영]',
+      '이전 이미지나 정형화된 클리닉 스톡 구도에 전혀 얽매이지 말고, 아래 [장면 연출 지시] 문장의 상황·공간·피사체·시선·손동작을 처음부터 깊이 있게 해석하여 가장 설득력 있고 감각적인 에디토리얼 구도로 새롭게 촬영해 주세요.',
+      '촬영 스펙: 따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원), Canon EOS R5 + RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 결과 원단 직조 질감이 살아있는 무보정 RAW 실사 화보.',
+      `[장면 연출 지시 (100% 정확히 구현 필수)]: ${cleanUser}`
+    );
+  }
+
+  // [최우선 규칙 1] 얼굴미노출 지시 감지 시 원장(의사) 얼굴 노출 0% 원천 차단
+  if (noFaceDirective) {
+    lines.push(
+      '[절대 구도 규칙 — 원장(의사) 얼굴 100% 완전 미노출(NO DOCTOR FACE) 강제]: 프롬프트에 의사(원장) 얼굴 미노출 지시가 포함되어 있습니다. 화면 어디에도 의사(원장)의 얼굴·눈·코·입·옆모습(측면 실루엣 포함)·턱선·모니터/유리 반사상이 단 1%도 노출되어서는 절대 안 됩니다! 반드시 카메라를 의사의 등·어깨 뒤편에서 모니터나 테이블을 내려다보는 오버더숄더(Over-the-shoulder from behind) 구도로 잡거나, 프레임을 의사의 어깨·목 아래(깔끔한 흰 의사 가운 소매와 팔·손·손가락 클로즈업)로 과감하게 크롭하여 촬영하세요.'
     );
   }
 
   // 진맥/맥진·상담 등 한의사와 환자가 함께 나오는 동작에서 자가 손목 잡기 오류 원천 차단
   if (/진맥|맥진|요골\s*동맥|손목/.test(cleanUser)) {
     lines.push(
-      '[해부학 및 인물 배치 필수 규칙]: 반드시 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 편안한 일상복 소매의 환자 팔/손목, 반대쪽은 깔끔한 흰 의사 가운과 스트라이프 셔츠 소매의 한의사 손)로 정확히 분리하여 표현하세요. 절대로 한 사람이 자기 자신의 손목을 짚는 구도가 되어서는 안 됩니다. 손가락 개수(엄지~새끼손가락 5개 해부학 비례, 특히 2·3·4지 검지·중지·약지 지시 시 세 손가락을 나란히 가지런히 요골동맥 위에 얹는 정통 맥진 자세)를 100% 정확하게 표현하세요.'
+      '[해부학 및 인물 배치 필수 규칙]: 반드시 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 편안한 일상복 소매의 환자 팔/손목, 반대쪽은 깔끔한 흰 의사 가운 소매의 한의사 손)로 정확히 분리하여 표현하세요. 절대로 한 사람이 자기 자신의 손목을 짚는 구도가 되어서는 안 됩니다. 손가락 개수(엄지~새끼손가락 5개 해부학 비례, 특히 2·3·4지 검지·중지·약지 지시 시 세 손가락을 나란히 가지런히 요골동맥 위에 얹는 정통 맥진 자세)를 100% 정확하게 표현하세요.'
     );
   }
 
-  if (useDirectorFace) {
+  if (useDirectorFace && !noFaceDirective) {
     lines.push(
-      `[안정위 대표원장 8종 각도·미소 샘플 얼굴 오차 ZERO 고정]: ${hasSourceRef ? '두 번째 이후 첨부된 인물 사진들은' : '첨부된 인물 기준 사진들은'} 모두 '동일한 한 명의 한국인 남성 한의사(안정위 대표원장)'를 각도(0°·15°·30°·45°+) 및 미소 표정별로 촬영한 실제 얼굴 샘플입니다. 결과 사진에는 대표원장 1명만 등장시켜야 하며(기준 인물을 여러 명으로 복제 금지), 프롬프트 구도에 맞는 각도 및 표정(권장 기준: ${preferredAngleLabel})에서 첨부 샘플과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 직사각형 안경, 앞머리로 이마를 덮지 않고 깔끔하게 넘긴 단정한 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 표현하세요.`,
-      '[얼굴 부종(Puffiness) 원천 차단 · 85mm 날렵한 턱선 및 자연스러운 미소 고정]: 스마트폰 광각 셀카처럼 볼살이나 하관이 옆으로 퍼지거나 얼굴이 붓게 나오는 현상(puffy/bloated cheeks, swollen lower face, wide jaw distortion)을 철저히 배제하세요. 반드시 85mm~105mm 인물 망원 단렌즈 압축 비율을 적용하여 첨부된 미소·사선 샘플처럼 턱선과 광대 윤곽이 날렵하고 단정하며(slim, sharp, well-defined masculine jawline and natural cheekbones), 입매와 눈매가 어색하지 않고 따뜻하고 신뢰감 있는 눈웃음·온화한 미소를 띠도록 표현하세요.'
+      `[안정위 대표원장 실제 인물 사진 1:1 동일 인물 고정 (IDENTITY LOCK)]: 첨부된 [참조 인물 사진 #1~#3]은 모두 오늘 촬영할 주인공인 '안정위 대표원장(30대 후반~40대 초반 한국인 남성 한의사)' 동일 인물의 실제 정방향 얼굴 사진입니다. 임의의 다른 남성 의사 얼굴을 생성하지 말고, 반드시 첨부된 참조 인물 사진 속 안정위 원장 본인의 얼굴 골격, 부드러우면서 또렷한 눈매와 눈웃음, 콧대, 입매, 피부톤, 얇은 샴페인 골드 다각형/직사각 메탈 안경테, 앞머리로 이마를 가리지 않고 깔끔하게 가르마 타서 넘긴 단정한 검은 생머리 헤어스타일을 장면 각도(권장 기준: ${preferredAngleLabel})에 맞춰 100% 동일 인물로 정밀하게 재현하세요.`,
+      '[의상 및 체형 필수 지시]: 참조 인물 사진에서 입고 있는 검은색 외투/사복을 그대로 입히지 말고, 한의원 진료 상황에 맞게 반드시 깨끗하고 품격 있는 순백색 한의사 진료 가운(안에 단정한 셔츠 착용, 가슴에 깨진 글자·명찰 없는 무지 화이트 가운)을 착용한 모습으로 촬영하세요. 결과 사진에는 대표원장 1명만 등장시켜야 합니다(동일 얼굴 복제 금지).',
+      '[85mm 망원 렌즈 윤곽 고정 · 부종 ZERO]: 광각 왜곡으로 볼이나 하관이 넓어지거나 붓지 않도록 85mm~105mm 인물 망원 단렌즈 비례를 적용하여 참조 인물 사진처럼 날렵하고 단정한 턱선과 자연스럽고 따뜻한 미소를 표현하세요.'
     );
   }
 
   lines.push(
-    '[화질 및 클린 마감 절대 원칙]: 워터마크, 로고, 서명, 자막 텍스트를 절대 넣지 마세요. 흰 의사 가운 가슴 주머니에도 깨진 글자나 자수 명찰 없이 깨끗한 순백색 무지 고급 가운으로 표현하세요. 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 무보정 RAW 에디토리얼 실사 사진이어야 합니다.'
+    '[화질 및 클린 마감 절대 원칙]: 이미지 모서리의 워터마크, 브랜드 로고, 서명, 인위적인 자막 오버레이를 절대 넣지 마세요(단, 프롬프트에서 모니터·태블릿·차트 화면 안에 표시하도록 직접 지시한 의학 분류표나 그래픽 UI는 깨진 글자 없이 정갈하고 선명하게 표현하세요). 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 초고화질 에디토리얼 실사 사진이어야 합니다.'
   );
 
   return lines.join('\n');
@@ -505,15 +657,21 @@ function extractBase64FromGeminiInteractionResponse(json) {
 
 async function generateViaGoogleGeminiDirect({ geminiKey, promptText, refImages = [], seed = 0 }) {
   const models = [
-    { id: 'gemini-3-pro-image', label: 'Google Gemini 3 Pro Image (아르곤 하이 정품 2K)', supportsSize: true },
-    { id: 'gemini-nano-banana-2.1', label: 'Google Gemini Nano Banana 2.1 (아르곤 하이 2K)', supportsSize: true },
-    { id: 'gemini-3.1-flash-image', label: 'Google Gemini 3.1 Flash Image (2K)', supportsSize: true },
-    { id: 'gemini-2.5-flash-image', label: 'Google Gemini 2.5 Flash Image', supportsSize: false }
+    { id: 'gemini-3-pro-image', label: 'Google Gemini 3 Pro Image (아르곤 하이 정품 2K)', supportsSize: true, isArgonHigh: true },
+    { id: 'gemini-nano-banana-2.1', label: 'Google Gemini Nano Banana 2.1 (아르곤 하이 2K)', supportsSize: true, isArgonHigh: true },
+    { id: 'gemini-3.1-flash-image', label: 'Google Gemini 3.1 Flash Image (2K)', supportsSize: true, isArgonHigh: false },
+    { id: 'gemini-2.5-flash-image', label: 'Google Gemini 2.5 Flash Image', supportsSize: false, isArgonHigh: false }
   ];
 
   const inputBlocks = [];
-  for (const img of refImages.slice(0, 8)) {
+  for (const img of refImages.slice(0, 6)) {
     if (img && img.base64) {
+      if (img.roleLabel) {
+        inputBlocks.push({
+          type: 'text',
+          text: String(img.roleLabel)
+        });
+      }
       inputBlocks.push({
         type: 'image',
         mime_type: img.mimeType || 'image/jpeg',
@@ -527,6 +685,7 @@ async function generateViaGoogleGeminiDirect({ geminiKey, promptText, refImages 
   });
 
   const errs = [];
+  let sawArgonQuotaExhausted = false;
   for (const m of models) {
     try {
       const responseFormat = m.supportsSize
@@ -550,16 +709,22 @@ async function generateViaGoogleGeminiDirect({ geminiKey, promptText, refImages 
       if (res.statusCode === 200 && res.json) {
         const imgBuf = extractBase64FromGeminiInteractionResponse(res.json);
         if (imgBuf && imgBuf.length > 8000) {
-          return { buffer: imgBuf, engine: m.label, seed };
+          return { buffer: imgBuf, engine: m.label, modelId: m.id, isArgonHigh: m.isArgonHigh, seed };
         }
       }
       const errMsg = res.json?.error?.message || res.rawText?.slice(0, 180) || `HTTP ${res.statusCode}`;
+      if (m.id === 'gemini-3-pro-image' && (res.statusCode === 429 || /RESOURCE_EXHAUSTED|quota/i.test(errMsg))) {
+        sawArgonQuotaExhausted = true;
+      }
       errs.push(`${m.id}: ${errMsg}`);
     } catch (e) {
       errs.push(`${m.id}: ${e.message}`);
     }
   }
 
+  if (sawArgonQuotaExhausted) {
+    recordStudioAiGeneration({ tier: 'argon-high', quotaExhausted: true });
+  }
   throw new Error('Google Gemini 이미지 엔진 호출 오류: ' + errs.join(' | '));
 }
 
@@ -686,7 +851,7 @@ async function translateKoreanToEnglishSentence(text) {
   return prepared;
 }
 
-async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false } = {}) {
+async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFaceDirective = false } = {}) {
   const cleanUser = String(userPrompt || '').trim();
   const translatedScene = await translateKoreanToEnglishSentence(cleanUser);
   const sanitizedScene = translatedScene.replace(/\b(watermark|logo|text overlay)\b/gi, '').trim();
@@ -695,8 +860,11 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false } = {
   const twoPersonClause = needsTwoPersonPulseSeparation
     ? 'two separate distinct people sitting across a warm walnut consultation table from opposite sides: a patient in dark navy knitwear extending their bare wrist from the left side onto an ivory silk cushion, and a Korean medicine doctor in a plain unembroidered crisp white coat over a blue-and-white striped dress shirt reaching from the right side to palpate the patient wrist'
     : '';
+  const noFaceClause = noFaceDirective
+    ? 'strictly faceless framing of the doctor from behind over-the-shoulder or cropped below the neck showing ONLY the crisp white medical coat sleeve forearm and pointing hand, zero doctor face visible anywhere'
+    : '';
 
-  if (useDirectorFace) {
+  if (useDirectorFace && !noFaceDirective) {
     const directorIdentityLead =
       'Korean male medical director in his early 40s with neat swept-back short black hair revealing a clean open forehead (no bangs covering forehead), slim sharp well-defined masculine jawline and natural cheekbones (85mm portrait telephoto compression, zero puffy or bloated cheeks), warm trustworthy gentle eye-smile expression, wearing thin gold-rimmed rectangular glasses and a plain unembroidered crisp tailored white medical doctor coat over a neat blue-and-white vertical striped dress shirt';
     return [
@@ -712,9 +880,10 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false } = {
 
   return [
     'Authentic raw editorial photograph',
+    noFaceClause,
     twoPersonClause,
     sanitizedScene,
-    'warm refined Korean medicine clinic aesthetic, natural soft key lighting, shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin texture and fine material detail, accurate anatomical hands and fingers, shallow depth of field, warm natural color grading, photorealistic, zero CGI, no text, no watermark, no logo'
+    'warm refined Korean medicine clinic aesthetic, natural soft key lighting, shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin texture and fine material detail, accurate anatomical hands and fingers, shallow depth of field, warm natural color grading, photorealistic, zero CGI, no watermark, no logo'
   ]
     .filter(Boolean)
     .join(', ');
@@ -822,35 +991,16 @@ async function generateWatermarkFreeFluxImage({
   throw new Error('고화질 AI 스튜디오 엔진 연결 지연: ' + errors.join(' | '));
 }
 
-function runMultiAngleFaceLockLocal({ targetImagePath, outputImagePath, angleRefPaths }) {
+function runMultiAngleFaceLockLocal({ targetImagePath, outputImagePath = '', angleRefPaths, analyzeOnly = false }) {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(LOCAL_FACE_ENGINE_PY)) {
       return reject(new Error('로컬 다각도 안면 엔진 파일을 찾을 수 없습니다.'));
     }
 
-    let fullRefPaths = [];
-    try {
-      if (fs.existsSync(PROFILES_JSON_PATH)) {
-        const profiles = JSON.parse(fs.readFileSync(PROFILES_JSON_PATH, 'utf8'));
-        const dirProf = (profiles || []).find((p) => p.id === 'director_ahn') || profiles[0];
-        if (dirProf && Array.isArray(dirProf.photos)) {
-          const refsDir = path.join(DIRECTOR_PROFILE_DIR, 'refs');
-          if (dirProf.masterPhoto && fs.existsSync(path.join(refsDir, dirProf.masterPhoto))) {
-            fullRefPaths.push(path.join(refsDir, dirProf.masterPhoto));
-          }
-          for (const f of dirProf.photos) {
-            const p = path.join(refsDir, f);
-            if (fs.existsSync(p) && !fullRefPaths.includes(p)) fullRefPaths.push(p);
-          }
-        }
-      }
-    } catch (e) {}
-
-    if (fullRefPaths.length === 0) {
-      fullRefPaths = [...angleRefPaths];
-    }
-
-    const cachePath = path.join(DIRECTOR_PROFILE_DIR, 'identity_bank.npz');
+    const fullRefPaths = (Array.isArray(angleRefPaths) && angleRefPaths.length > 0)
+      ? [...angleRefPaths]
+      : [];
+    const cachePath = path.join(ANGLE_REFS_DIR, 'studio_angle_bank.npz');
     const tmpJobJson = path.join(
       HOMEPAGE_DIR,
       `_tmp_angle_job_${Date.now()}_${Math.random().toString(36).slice(2, 7)}.json`
@@ -866,7 +1016,7 @@ function runMultiAngleFaceLockLocal({ targetImagePath, outputImagePath, angleRef
           angle_refs: angleRefPaths,
           cache_path: cachePath,
           enhance_blend: 0.85,
-          analyze_only: false
+          analyze_only: Boolean(analyzeOnly)
         },
         null,
         2
@@ -931,6 +1081,7 @@ async function generateStudioImageComplete({
   originalCardPrompt = '',
   workMode = 'edit_current',
   sourceImage = '',
+  useSourceImageRef = false,
   useDirectorFace = false,
   width = 1280,
   height = 800,
@@ -941,6 +1092,10 @@ async function generateStudioImageComplete({
   if (!cleanPrompt) {
     throw new Error('생성할 이미지 프롬프트를 입력해 주세요.');
   }
+
+  const noFaceDirective = detectNoFaceDirective(cleanPrompt);
+  const effectiveUseDirectorFace = noFaceDirective ? false : Boolean(useDirectorFace);
+  const effectiveUseSourceRef = Boolean(useSourceImageRef && sourceImage);
 
   const actualSeed = seed > 0 ? Math.floor(seed % 2147483647) : Math.floor(Math.random() * 89999999 + 10000000);
   const angleState = getDirectorAngleSamples();
@@ -970,28 +1125,36 @@ async function generateStudioImageComplete({
     const refImages = [];
     let hasSourceRef = false;
 
-    if (workMode === 'edit_current' && sourceImage) {
+    // Only attach existing card image when the user explicitly opted into partial image reference!
+    if (effectiveUseSourceRef) {
       const srcRef = await resolveReferenceImageInput(sourceImage);
       if (srcRef) {
+        srcRef.roleLabel = '[참조 밑그림 사진 — 부분 수정 대상 원본 이미지 (조명·배경 참고용)]';
         refImages.push(srcRef);
         hasSourceRef = true;
       }
     }
 
-    if (useDirectorFace) {
-      // Order 8 angle & expression slots by prompt relevance (prioritizing matching angle + warm smile refs)
-      const orderedSlots = orderDirectorSlotsForPrompt(cleanPrompt, angleState.angles);
+    if (effectiveUseDirectorFace) {
+      // Attach top 3 upright calibrated portraits with interleaved text labels so Gemini 3 Pro Image locks exact identity
+      const orderedSlots = orderDirectorSlotsForPrompt(cleanPrompt, angleState.angles, 3);
+      let refIdx = 1;
       for (const slot of orderedSlots) {
         const aRef = await resolveReferenceImageInput(slot.fileName);
-        if (aRef) refImages.push(aRef);
+        if (aRef) {
+          aRef.roleLabel = `[참조 인물 사진 #${refIdx} — 안정위 대표원장 (${slot.label}) 실제 정방향 얼굴 골격·안경·가르마 기준]`;
+          refImages.push(aRef);
+          refIdx++;
+        }
       }
     }
 
     const argonPrompt = buildArgonHighPrompt({
       userPrompt: cleanPrompt,
-      originalCardPrompt,
+      originalCardPrompt: hasSourceRef ? originalCardPrompt : '',
       workMode,
-      useDirectorFace,
+      useDirectorFace: effectiveUseDirectorFace,
+      noFaceDirective,
       hasSourceRef,
       preferredAngleLabel: preferredAngleObj ? preferredAngleObj.label : '정면 미소 (0°)'
     });
@@ -1021,6 +1184,7 @@ async function generateStudioImageComplete({
           hasSourceRef,
           seed: actualSeed
         });
+        if (argonStage) argonStage.isArgonHigh = true;
       } catch (fErr) {
         argonErrors.push(fErr.message);
       }
@@ -1028,31 +1192,52 @@ async function generateStudioImageComplete({
 
     if (argonStage && argonStage.buffer) {
       fs.writeFileSync(finalSavedPath, argonStage.buffer);
-      let modeTag = useDirectorFace ? ` + 8종 각도·미소 샘플 고정 (${preferredAngleObj ? preferredAngleObj.label : '정면'})` : '';
+      let modeTag = noFaceDirective
+        ? ' · [얼굴 미노출 구도 강제 적용]'
+        : (effectiveUseDirectorFace
+            ? ` + 안정위 원장님 정방향 얼굴 고정 (${preferredAngleObj ? preferredAngleObj.label : '정면'})`
+            : '');
       let faceLockMeta = null;
 
-      // Local Hybrid Precision Pass: if useDirectorFace is active and local 374-photo ArcFace engine is available,
-      // check/lock bone structure & 85mm slim jawline so similarity reaches 98~99.7% with zero puffiness!
-      if (useDirectorFace && angleRefPaths.length > 0 && fs.existsSync(LOCAL_FACE_ENGINE_PY)) {
+      // Local Hybrid Precision Pass: fast ArcFace check first (~1s); preserve razor-sharp native 2K Gemini portrait when identity >= 70%!
+      if (effectiveUseDirectorFace && angleRefPaths.length > 0 && fs.existsSync(LOCAL_FACE_ENGINE_PY)) {
         const tmpArgonRaw = path.join(HOMEPAGE_DIR, `_tmp_argon_raw_${ts}.jpg`);
+        const tmpArgonLocked = path.join(HOMEPAGE_DIR, `_tmp_argon_locked_${ts}.jpg`);
         try {
           fs.copyFileSync(finalSavedPath, tmpArgonRaw);
-          faceLockMeta = await runMultiAngleFaceLockLocal({
+          const checkMeta = await runMultiAngleFaceLockLocal({
             targetImagePath: tmpArgonRaw,
-            outputImagePath: finalSavedPath,
-            angleRefPaths
+            angleRefPaths,
+            analyzeOnly: true
           });
-          if (faceLockMeta && faceLockMeta.ok) {
-            modeTag = ` + 8각도·미소 골격 정밀락 (일치율 ${faceLockMeta.similarityPct || 99}%)`;
+          const nativeSim = Number(checkMeta && checkMeta.similarityPct) || 0;
+          if (nativeSim >= 70) {
+            faceLockMeta = checkMeta;
+            modeTag = ` + 안정위 원장님 2K 네이티브 얼굴 정밀 매칭 (일치율 ${nativeSim}%)`;
+          } else {
+            faceLockMeta = await runMultiAngleFaceLockLocal({
+              targetImagePath: tmpArgonRaw,
+              outputImagePath: tmpArgonLocked,
+              angleRefPaths,
+              analyzeOnly: false
+            });
+            if (faceLockMeta && faceLockMeta.ok && fs.existsSync(tmpArgonLocked)) {
+              fs.copyFileSync(tmpArgonLocked, finalSavedPath);
+              modeTag = ` + 8각도·미소 골격 정밀보정 (일치율 ${faceLockMeta.similarityPct || 98}%)`;
+            }
           }
         } catch (lockErr) {
-          // If scene has no exposed face (e.g. hands-only pulse shot), keep Argon High 2K raw output intact
+          // Keep Argon High 2K raw output intact
         } finally {
-          try {
-            if (fs.existsSync(tmpArgonRaw)) fs.unlinkSync(tmpArgonRaw);
-          } catch (e) {}
+          try { if (fs.existsSync(tmpArgonRaw)) fs.unlinkSync(tmpArgonRaw); } catch (e) {}
+          try { if (fs.existsSync(tmpArgonLocked)) fs.unlinkSync(tmpArgonLocked); } catch (e) {}
         }
       }
+
+      const usage = recordStudioAiGeneration({
+        tier: argonStage.isArgonHigh !== false ? 'argon-high' : 'gemini-flash',
+        modelLabel: argonStage.engine
+      });
 
       return {
         ok: true,
@@ -1061,7 +1246,11 @@ async function generateStudioImageComplete({
         seed: argonStage.seed || actualSeed,
         engine: `${argonStage.engine}${modeTag}`,
         tier: 'argon-high',
+        noFaceDirective,
+        effectiveUseDirectorFace,
+        usedSourceImageRef: hasSourceRef,
         faceLockMeta,
+        usage,
         message: `아르곤 하이 2K 초고화질 실사 이미지 제작 완료 (${argonStage.engine}${modeTag})`
       };
     }
@@ -1070,23 +1259,26 @@ async function generateStudioImageComplete({
   }
 
   // Fallback: Watermark-Free FLUX.1-dev + Local Multi-Angle Face Lock
-  const masterPrompt = await buildMasterFluxPrompt(cleanPrompt, { useDirectorFace });
+  const masterPrompt = await buildMasterFluxPrompt(cleanPrompt, {
+    useDirectorFace: effectiveUseDirectorFace,
+    noFaceDirective
+  });
   const stage1 = await generateWatermarkFreeFluxImage({
     masterPrompt,
     width,
     height,
     seed: actualSeed,
-    useDirectorFace,
-    preferredAnglePath
+    useDirectorFace: effectiveUseDirectorFace,
+    preferredAnglePath: effectiveUseDirectorFace ? preferredAnglePath : ''
   });
 
   const rawStage1Path = path.join(HOMEPAGE_DIR, `_tmp_stage1_${ts}.jpg`);
   fs.writeFileSync(rawStage1Path, stage1.buffer);
 
   let faceLockMeta = null;
-  let engineSummary = stage1.engine;
+  let engineSummary = stage1.engine + (noFaceDirective ? ' · [얼굴 미노출 구도 적용]' : '');
 
-  if (useDirectorFace && angleRefPaths.length > 0) {
+  if (effectiveUseDirectorFace && angleRefPaths.length > 0) {
     try {
       faceLockMeta = await runMultiAngleFaceLockLocal({
         targetImagePath: rawStage1Path,
@@ -1099,11 +1291,16 @@ async function generateStudioImageComplete({
       } catch (e) {}
     } catch (faceErr) {
       fs.renameSync(rawStage1Path, finalSavedPath);
-      engineSummary = `${stage1.engine} (얼굴 미노출 구도 원본 유지)`;
+      engineSummary = `${stage1.engine} (원본 유지)`;
     }
   } else {
     fs.renameSync(rawStage1Path, finalSavedPath);
   }
+
+  const usage = recordStudioAiGeneration({
+    tier: 'free-flux',
+    modelLabel: stage1.engine
+  });
 
   return {
     ok: true,
@@ -1112,14 +1309,22 @@ async function generateStudioImageComplete({
     seed: stage1.seed,
     engine: engineSummary,
     tier: 'free-flux',
+    noFaceDirective,
+    effectiveUseDirectorFace,
+    usedSourceImageRef: false,
     masterPrompt,
     faceLockMeta,
+    usage,
     message: `무워터마크 이미지 제작 완료 (${engineSummary})`
   };
 }
 
 module.exports = {
   DEFAULT_ANGLE_SLOTS,
+  detectNoFaceDirective,
+  getStudioAiUsage,
+  updateStudioAiUsageConfig,
+  recordStudioAiGeneration,
   getRawStudioAiKeys,
   getStudioAiKeyConfig,
   saveStudioAiKeyConfig,

@@ -247,7 +247,83 @@
     'prostate_minimal_card9_trouble_2_driving.jpg':
       '운전석이나 중요한 회의 도중 갑자기 참기 힘든 급박뇨·빈뇨 신호가 찾아와 진땀을 흘리며 곤란해하는 남성의 공감 실사 사진',
     'prostate_minimal_card9_trouble_3_pelvicpain.jpg':
-      '오후 사무실 의자에 오래 앉아 있다가 묵직한 회음부·골반 불쾌감과 만성 피로감에 허리와 아랫배를 짚는 중년 남성의 공감 실사 사진'
+      '오후 사무실 의자에 오래 앉아 있다가 묵직한 회음부·골반 불쾌감과 만성 피로감에 허리와 아랫배를 짚는 중년 남성의 공감 실사 사진',
+
+    // === 00. 메인 홈 시작 오프닝 스토리 24컷 & 7대 진료 벤토 카드 (index.html / story-3d.html) ===
+    'life_1a0_infertility_before.jpg':
+      '은은한 저녁 햇살이 감도는 따뜻한 거실 창가에서 아이를 간절히 기다리는 젊은 한국인 부부가 서로의 두 손을 다정하게 맞잡고 희망을 품는 감성 시네마틱 실사 사진',
+    'life_1a1_infertility_treatment.jpg':
+      '따뜻한 원목과 한지 채광이 비치는 한의원 진료실에서 흰 가운을 입은 남성 한의사가 난임 부부의 손목 요골동맥을 정성스럽게 진맥하며 착상 한약 처방을 설명하는 실사 사진',
+    'life_1a_fertilization.jpg':
+      '따뜻한 산부인과·클리닉 초음파 모니터 화면 속 아기집을 바라보며 마침내 찾아온 임신 소식에 감격의 미소를 짓는 한국인 부부의 시네마틱 실사 사진',
+    'life_1b_birth.jpg':
+      '포근한 아침 햇살이 스며드는 방에서 갓 태어난 신생아 아기를 품에 안고 행복하게 바라보는 엄마와 아빠의 따뜻한 탄생 실사 사진',
+    'life_1c_cold_before.jpg':
+      '포근한 아이 방 침대에서 잦은 감기와 비염 코막힘으로 열이 나 지쳐 누워 있는 어린 아이의 이마를 엄마가 걱정스럽게 짚어보는 실사 사진',
+    'life_1c_clinic_exam.jpg':
+      '밝고 따뜻한 우드톤 한의원 소아 진료실에서 흰 가운을 입은 남성 한의사가 어린 아이의 호흡기와 맥을 다정하게 살피며 면역 치료를 진행하는 실사 사진',
+    'life_1c_immunity.jpg':
+      '맑은 햇살이 가득한 공원에서 면역력을 회복한 어린 아이가 두 팔을 활짝 벌리고 씩씩하고 건강하게 뛰어노는 생동감 넘치는 실사 사진',
+    'life_1d_growth_short.jpg':
+      '밝은 초등학교 교실이나 운동장에서 또래 친구들 사이에 서 있는 작고 왜소한 키의 한국인 아이가 위를 올려다보는 공감 실사 사진',
+    'life_1d_growth_clinic.jpg':
+      '따뜻한 한의원 성장클리닉 검진실에서 남성 한의사가 성장판 초음파와 체형 검사를 통해 아이의 숨은 키 성장 잠재력을 정밀 진단하는 실사 사진',
+    'life_1d_growth_peers.jpg':
+      '햇살 가득한 학교 캠퍼스에서 친구들 사이에서도 훤칠하고 당당하게 쑥쑥 자라나 환하게 웃고 있는 한국인 청소년의 성장 후 실사 사진',
+    'life_1d_growth_step1.jpg':
+      '따뜻한 자연광 배경에서 바른 자세로 서서 조금씩 키가 자라나기 시작하는 한국인 초등학생의 성장 1단계 전신 실사 사진',
+    'life_1d_growth_step2.jpg':
+      '따뜻한 자연광 배경에서 균형 잡힌 체형으로 한 뼘 더 자라난 한국인 어린이의 성장 2단계 전신 실사 사진',
+    'life_1d_growth_step3.jpg':
+      '따뜻한 자연광 배경에서 무릎과 척추 성장판이 열리며 몰라보게 키가 커진 청소년기 초입의 성장 3단계 전신 실사 사진',
+    'life_1d_growth_step4.jpg':
+      '따뜻한 자연광 배경에서 훤칠하고 탄탄한 비율로 폭풍 성장한 한국인 청소년의 성장 4단계 전신 실사 사진',
+    'life_2a_obesity.jpg':
+      '밝은 침실 전신 거울 앞에서 출산과 육아 후 늘어난 복부 뱃살과 무거워진 체형을 보며 고민하는 한국인 여성의 일상 공감 실사 사진',
+    'life_2a_treatment.jpg':
+      '따뜻한 원목 테이블 위에 정갈하게 놓인 체질 맞춤 다이어트 한약 파우치와 맑은 한방차를 두 손으로 들며 건강한 감량을 결심하는 1인칭 시점(POV) 실사 사진',
+    'life_2b_slim_therapy.jpg':
+      '화사한 아침 햇살이 드는 공간에서 건강하게 체지방을 비워내고 가볍고 늘씬해진 바디라인으로 환하게 미소 짓는 한국인 여성의 회복 후 실사 사진',
+    'life_3a_treatment.jpg':
+      '정갈한 한의원 두피 검진실에서 남성 한의사가 고배율 두피 진단 현미경 스코프로 30대 직장인 환자의 정수리 모낭과 두피열 상태를 정밀 검사하는 실사 사진',
+    'life_4a_work_spine_pain.jpg':
+      '늦은 오후 오피스 책상 앞에서 장시간 근무로 인해 목·어깨·허리 척추 전체에 뻐근한 통증이 몰려와 허리와 뒷목을 짚는 직장인의 실사 사진',
+    'life_4a_pain_step0.jpg':
+      '업무 시작 전 단정한 자세로 서 있는 직장인의 통증 전 초기 체형 실사 사진',
+    'life_4a_pain_step0_5.jpg':
+      '반복되는 업무 긴장으로 어깨와 승모근이 서서히 굳어지기 시작하는 직장인의 실사 사진',
+    'life_4a_pain_step1.jpg':
+      '거북목과 뒷목 경추 뻐근함으로 목 뒤를 손으로 짚는 직장인의 목 통증 단계 실사 사진',
+    'life_4a_pain_step2.jpg':
+      '목에서 허리 요추·골반까지 통증이 내려가 허리를 숙이며 통증을 호소하는 직장인의 실사 사진',
+    'life_4a_treatment.jpg':
+      '따뜻한 원목 한의원 추나 치료실에서 흰 가운을 입은 남성 한의사가 추나 베드 위 환자의 틀어진 척추와 골반 중심축을 정교하게 수기 추나 교정하는 실사 사진',
+    'life_4a2_ankle_acupuncture.jpg':
+      '편안한 한의원 치료 베드에서 긴장된 발목과 관절 경혈 자리에 정밀 약침·침 치료를 받으며 뭉친 통증이 시원하게 풀리는 1인칭 시점(POV) 실사 사진',
+    'life_4b_chuna_recovery.jpg':
+      '상쾌한 야외 햇살 아래 척추와 관절 통증에서 완전히 벗어나 반듯하고 가벼운 자세로 활짝 웃고 있는 성인의 회복 실사 사진',
+    'life_4b_chuna_manse_mid.jpg':
+      '맑은 자연광 속에서 통증 없이 가벼워진 어깨와 두 팔을 어깨 높이로 시원하게 들어 올리는 회복 중간 동작 실사 사진',
+    'life_4b_chuna_manse.jpg':
+      '맑은 햇살 아래 목·어깨·허리 통증이 말끔히 사라져 두 팔을 하늘 높이 시원하게 뻗어 만세 자세로 기지개를 켜는 활기찬 회복 실사 사진',
+    'life_5a_aging_fatigue.jpg':
+      '고즈넉한 소나무 정원 창가에서 세월이 흐르며 부쩍 기력이 약해지고 깊은 피로감을 느끼는 중장년 어르신의 차분한 실사 포트레이트',
+    'life_5b_gongjindan_vitality.jpg':
+      '품격 있는 원목 다탁 위 고급 목함에 담긴 24K 순금박 황제공진단과 따뜻한 차를 통해 깊은 원기와 활력을 채우는 하이엔드 에디토리얼 실사 사진',
+    'life_5c_graceful_elder.jpg':
+      '푸른 소나무 정원과 따뜻한 햇살을 배경으로 맑은 혈색과 정정한 기력으로 온화하고 품격 있게 미소 짓는 건강한 백세 인생 시니어 부부의 실사 포트레이트',
+    'card_2_chuna.jpg':
+      '따뜻한 한의원 추나 교정실에서 흰 가운을 입은 한의사가 환자의 틀어진 척추와 골반 정렬을 양손 수기 추나로 정밀하게 바로잡는 실사 사진',
+    'card_3_growth.jpg':
+      '밝은 자연광이 비치는 공간에서 바른 자세로 건강하고 훤칠하게 자라나는 어린이·청소년 키성장 클리닉 대표 실사 사진',
+    'card_4_diet.jpg':
+      '세련된 웜 베이지 자연광 스튜디오에서 건강한 대사 리셋으로 가볍고 탄탄한 슬림 라인을 되찾은 한국인 여성의 다이어트 클리닉 대표 실사 사진',
+    'card_5_hairloss.jpg':
+      '따뜻한 채광 아래 두피열 쿨링과 모근 재생 치료로 정수리와 앞머리 볼륨이 풍성하고 윤기 있게 회복된 탈모 클리닉 대표 실사 사진',
+    'card_6_gongjindan.jpg':
+      '중후한 원목 테이블 위 고급 목함에 정갈하게 담긴 24K 순금박 식약처 인증 정품 사향 황제공진단 대표 실사 사진',
+    'card_7_prostate.jpg':
+      '따뜻한 아침 햇살이 드는 모던한 공간에서 야간뇨와 배뇨 불편 없이 활력과 당당한 자신감을 되찾은 중년 남성의 전립선 클리닉 대표 실사 사진'
   };
 
   // 원장님 실제 얼굴이 정면/반측면으로 직접 등장하는 대표 카드 이미지 목록
@@ -258,6 +334,12 @@
     'ba_director_after.jpg',
     'growth-director-son.png'
   ]);
+
+  function detectNoFaceDirective(promptText) {
+    const s = String(promptText || '').trim();
+    if (!s) return false;
+    return /얼굴\s*미노출|얼굴\s*비노출|얼굴\s*노출\s*(?:금지|없이|제외|안|불가|x)|얼굴\s*없이|얼굴이?\s*(?:안|보이지)\s*(?:보이|않|나오)|얼굴이?\s*나오지\s*않|얼굴\s*제외|얼굴\s*가리|얼굴\s*크롭|목\s*아래만|어깨\s*아래만|손만\s*클로즈업|뒷모습만|등\s*뒤에서만|no[\s_-]*face|faceless|without\s+face/i.test(s);
+  }
 
   function normalizeImgKey(rawPath) {
     if (!rawPath) return '';
@@ -271,7 +353,8 @@
         prompt: '따뜻한 자연광이 비치는 한의원 원목 진료실에서 정갈하고 품격 있는 진료 장면을 담은 실사 사진',
         source: 'default',
         imageKey: '',
-        hasDirectorFace: false
+        hasDirectorFace: false,
+        noFaceDirective: false
       };
     }
 
@@ -288,22 +371,28 @@
     // 1) 사용자가 이전에 직접 수정/생성하며 저장해둔 카드 전용 프롬프트가 있고 이미지 파일도 동일하면 최우선 반환
     if (card.imagePrompt && String(card.imagePrompt).trim()) {
       if (!card.imagePromptAsset || normalizeImgKey(card.imagePromptAsset) === imgKey) {
+        const savedPrompt = String(card.imagePrompt).trim();
+        const noFace = detectNoFaceDirective(savedPrompt);
         return {
-          prompt: String(card.imagePrompt).trim(),
+          prompt: savedPrompt,
           source: 'saved_card_prompt',
           imageKey: imgKey,
-          hasDirectorFace: Boolean(card.imagePromptDirectorFace) || DIRECTOR_FACE_IMAGES.has(imgKey)
+          hasDirectorFace: noFace ? false : (Boolean(card.imagePromptDirectorFace) || DIRECTOR_FACE_IMAGES.has(imgKey)),
+          noFaceDirective: noFace
         };
       }
     }
 
-    // 2) 사전 등록된 111개 카드 이미지 실제 시각 프롬프트 매칭
+    // 2) 사전 등록된 카드 이미지 실제 시각 프롬프트 매칭
     if (imgKey && CARD_IMAGE_PROMPT_MAP[imgKey]) {
+      const mapped = CARD_IMAGE_PROMPT_MAP[imgKey];
+      const noFace = detectNoFaceDirective(mapped);
       return {
-        prompt: CARD_IMAGE_PROMPT_MAP[imgKey],
+        prompt: mapped,
         source: 'exact_image_map',
         imageKey: imgKey,
-        hasDirectorFace: DIRECTOR_FACE_IMAGES.has(imgKey)
+        hasDirectorFace: noFace ? false : DIRECTOR_FACE_IMAGES.has(imgKey),
+        noFaceDirective: noFace
       };
     }
 
@@ -319,14 +408,120 @@
       prompt: fallbackPrompt,
       source: 'card_context_fallback',
       imageKey: imgKey,
-      hasDirectorFace: DIRECTOR_FACE_IMAGES.has(imgKey)
+      hasDirectorFace: DIRECTOR_FACE_IMAGES.has(imgKey),
+      noFaceDirective: detectNoFaceDirective(fallbackPrompt)
     };
+  }
+
+  /**
+   * 대표 메인 이미지뿐만 아니라 서브 썸네일(thumbs[i]), 모션 프레임(frames[i]), 전후 비교(beforeImg/afterImg), 브로슈어(pages[i])까지
+   * 각 슬롯별 프롬프트를 정확히 읽고 반환합니다.
+   */
+  function readSlotImagePrompt(card, page, slotType = 'main', slotIdx = 0) {
+    if (!card) return readCardImagePrompt(null, page);
+    const cleanTitle = String(card.title || '').replace(/'/g, '').trim();
+    const pageName = (page && page.label) ? page.label : '바른한의원';
+
+    if (slotType === 'thumb') {
+      const th = Array.isArray(card.thumbs) ? card.thumbs[slotIdx] : null;
+      if (th) {
+        const rawImg = th.img || '';
+        const imgKey = normalizeImgKey(rawImg);
+        if (th.imagePrompt && String(th.imagePrompt).trim() && (!th.imagePromptAsset || normalizeImgKey(th.imagePromptAsset) === imgKey)) {
+          const p = String(th.imagePrompt).trim();
+          const nf = detectNoFaceDirective(p);
+          return { prompt: p, source: 'saved_thumb_prompt', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: nf ? false : Boolean(th.imagePromptDirectorFace), noFaceDirective: nf };
+        }
+        if (imgKey && CARD_IMAGE_PROMPT_MAP[imgKey]) {
+          const p = CARD_IMAGE_PROMPT_MAP[imgKey];
+          const nf = detectNoFaceDirective(p);
+          return { prompt: p, source: 'exact_image_map', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: nf ? false : DIRECTOR_FACE_IMAGES.has(imgKey), noFaceDirective: nf };
+        }
+        const thLabel = String(th.label || `서브 장면 ${slotIdx + 1}`).trim();
+        const fb = `따뜻한 자연광이 감도는 ${pageName} 진료 환경에서 "${thLabel}"${cleanTitle ? ' (' + cleanTitle + ')' : ''} 장면을 정갈한 아웃포커싱으로 담아낸 클리닉 에디토리얼 실사 사진`;
+        return { prompt: fb, source: 'thumb_fallback', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: false, noFaceDirective: detectNoFaceDirective(fb) };
+      }
+    }
+
+    if (slotType === 'new_thumb') {
+      const nextNo = (Array.isArray(card.thumbs) ? card.thumbs.length : 0) + 1;
+      const fb = cleanTitle
+        ? `따뜻한 자연광과 원목 인테리어의 ${pageName}에서 "${cleanTitle}" 치료 과정을 보완해 보여주는 서브 장면 #${nextNo} 클로즈업 에디토리얼 실사 사진`
+        : `따뜻한 원목과 한지 채광이 어우러진 ${pageName}의 정밀 진료 디테일 클로즈업 실사 사진`;
+      return { prompt: fb, source: 'new_thumb_template', imageKey: '', rawPath: card.imgSrc || '', hasDirectorFace: false, noFaceDirective: false };
+    }
+
+    if (slotType === 'frame') {
+      const fr = Array.isArray(card.frames) ? card.frames[slotIdx] : '';
+      const imgKey = normalizeImgKey(fr);
+      const savedFramePrompts = Array.isArray(card.framePrompts) ? card.framePrompts : [];
+      if (savedFramePrompts[slotIdx] && String(savedFramePrompts[slotIdx]).trim()) {
+        const p = String(savedFramePrompts[slotIdx]).trim();
+        const nf = detectNoFaceDirective(p);
+        return { prompt: p, source: 'saved_frame_prompt', imageKey: imgKey, rawPath: fr, hasDirectorFace: nf ? false : DIRECTOR_FACE_IMAGES.has(imgKey), noFaceDirective: nf };
+      }
+      if (imgKey && CARD_IMAGE_PROMPT_MAP[imgKey]) {
+        const p = CARD_IMAGE_PROMPT_MAP[imgKey];
+        const nf = detectNoFaceDirective(p);
+        return { prompt: p, source: 'exact_image_map', imageKey: imgKey, rawPath: fr, hasDirectorFace: nf ? false : DIRECTOR_FACE_IMAGES.has(imgKey), noFaceDirective: nf };
+      }
+      const fb = `따뜻한 톤앤매너의 ${pageName}에서 "${cleanTitle || '단계별 치료 변화'}" 모션 ${slotIdx + 1}단계 장면을 담은 에디토리얼 실사 사진`;
+      return { prompt: fb, source: 'frame_fallback', imageKey: imgKey, rawPath: fr, hasDirectorFace: false, noFaceDirective: false };
+    }
+
+    if (slotType === 'brochure') {
+      const pg = Array.isArray(card.pages) ? card.pages[slotIdx] : null;
+      if (pg) {
+        const rawImg = pg.img || '';
+        const imgKey = normalizeImgKey(rawImg);
+        if (pg.imagePrompt && String(pg.imagePrompt).trim()) {
+          const p = String(pg.imagePrompt).trim();
+          const nf = detectNoFaceDirective(p);
+          return { prompt: p, source: 'saved_brochure_prompt', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: false, noFaceDirective: nf };
+        }
+        if (imgKey && CARD_IMAGE_PROMPT_MAP[imgKey]) {
+          const p = CARD_IMAGE_PROMPT_MAP[imgKey];
+          return { prompt: p, source: 'exact_image_map', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: DIRECTOR_FACE_IMAGES.has(imgKey), noFaceDirective: detectNoFaceDirective(p) };
+        }
+        const fb = `품격 있는 ${pageName} 브로슈어 "${pg.title || ('페이지 ' + (slotIdx + 1))}" 에디토리얼 실사 이미지`;
+        return { prompt: fb, source: 'brochure_fallback', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: false, noFaceDirective: false };
+      }
+    }
+
+    if (slotType === 'beforeImg' || slotType === 'afterImg' || slotType === 'poster') {
+      const rawImg = card[slotType] || '';
+      const imgKey = normalizeImgKey(rawImg);
+      const savedKey = slotType + 'Prompt';
+      if (card[savedKey] && String(card[savedKey]).trim()) {
+        const p = String(card[savedKey]).trim();
+        const nf = detectNoFaceDirective(p);
+        return { prompt: p, source: 'saved_field_prompt', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: nf ? false : DIRECTOR_FACE_IMAGES.has(imgKey), noFaceDirective: nf };
+      }
+      if (imgKey && CARD_IMAGE_PROMPT_MAP[imgKey]) {
+        const p = CARD_IMAGE_PROMPT_MAP[imgKey];
+        const nf = detectNoFaceDirective(p);
+        return { prompt: p, source: 'exact_image_map', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: nf ? false : DIRECTOR_FACE_IMAGES.has(imgKey), noFaceDirective: nf };
+      }
+      const roleKo = slotType === 'beforeImg' ? '치료 전(BEFORE)' : (slotType === 'afterImg' ? '치료 후(AFTER)' : '포스터 썸네일');
+      const fb = `따뜻한 우드·베이지 톤의 ${pageName}에서 "${cleanTitle || roleKo}" ${roleKo} 상태를 사실적으로 보여주는 에디토리얼 실사 사진`;
+      return { prompt: fb, source: 'field_fallback', imageKey: imgKey, rawPath: rawImg, hasDirectorFace: false, noFaceDirective: false };
+    }
+
+    const base = readCardImagePrompt(card, page);
+    return { ...base, rawPath: card.imgSrc || getFallbackRaw(card) };
+  }
+
+  function getFallbackRaw(card) {
+    if (!card) return '';
+    return card.imgSrc || card.afterImg || card.beforeImg || (Array.isArray(card.frames) && card.frames[0]) || card.poster || '';
   }
 
   return {
     CARD_IMAGE_PROMPT_MAP,
     DIRECTOR_FACE_IMAGES,
+    detectNoFaceDirective,
     normalizeImgKey,
-    readCardImagePrompt
+    readCardImagePrompt,
+    readSlotImagePrompt
   };
 });

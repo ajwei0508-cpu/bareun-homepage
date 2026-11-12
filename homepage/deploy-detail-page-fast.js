@@ -23,6 +23,7 @@ function loadPuppeteer() {
 const puppeteer = loadPuppeteer();
 
 const WP_DETAIL_PAGES = [
+  { id: 46, slug: 'home', file: 'index.html', wpFile: 'wordpress-main-home.html', title: '바른한의원 대전본점', excerpt: '정수리여성남성원형탈모병원치료성장클리닉성장판검사두통탈모약비대면성조숙증키성장담적축농증리프팅다이어트뱃살내장지방위염난임산후보약공진단대전진맥피부' },
   { id: 126, slug: 'director', file: 'director.html', wpFile: 'wordpress-director.html', title: '안정위 대표원장 · 9대 정밀검진', excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사까지 9대 정밀 검진 시스템을 운영합니다.' },
   { id: 127, slug: 'chuna', file: 'chuna.html', wpFile: 'wordpress-chuna.html', title: '바른 추나 · 척추교정', excerpt: 'The Lancet · JAMA 등 국제 학술 논문을 검수하여 유효성이 입증된 비수술 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
   { id: 105, slug: 'growth', file: 'growth.html', wpFile: 'wordpress-growth.html', title: '바른 성장 · 성조숙증', excerpt: '소아내분비학 및 약리학 학술 논문 근거를 바탕으로 성장판 연골 증식과 호흡기 면역을 함께 돌봅니다.' },
@@ -137,8 +138,8 @@ function getMimeType(fileName) {
     for (const target of targets) {
       let rawHtml = fs.readFileSync(path.join(__dirname, target.wpFile), 'utf8');
 
-      // Upload any local detail_custom_* assets directly to WP Media Library so live site never 404s before git push
-      const customMatches = Array.from(new Set(rawHtml.match(/detail_custom_[A-Za-z0-9_.-]+\.(?:jpg|jpeg|png|webp|gif|svg|mp4)/gi) || []));
+      // Upload any local detail_custom_* or bareun_im_* assets directly to WP Media Library so live site never 404s before git push
+      const customMatches = Array.from(new Set(rawHtml.match(/(?:detail_custom_|bareun_im_)[A-Za-z0-9_.-]+\.(?:jpg|jpeg|png|webp|gif|svg|mp4)/gi) || []));
       for (const fileName of customMatches) {
         const localAssetPath = path.join(__dirname, fileName);
         if (!fs.existsSync(localAssetPath)) continue;
@@ -205,7 +206,7 @@ function getMimeType(fileName) {
           status: r.status,
           slug: target.slug,
           id: j.id || target.id,
-          link: j.link || `https://www.bareunhaniwon.com/${target.slug}/`,
+          link: j.link || (target.slug === 'home' ? 'https://www.bareunhaniwon.com/' : `https://www.bareunhaniwon.com/${target.slug}/`),
           err: j.message || null
         };
       }, { wpNonce: nonce, target, content: blockContent, refInfo });

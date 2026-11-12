@@ -7,7 +7,7 @@
       "key": "front",
       "label": "정면 (0° · 기본)",
       "desc": "85mm 정면 · 단정한 기본",
-      "fileName": "director-angle-refs/angle_front_custom_1794448964783.jpg",
+      "fileName": "director-angle-refs/angle_front.jpg",
       "sourceRef": "KakaoTalk_20261111_172302143.jpg",
       "updatedAt": "2026-11-12T02:02:44.786Z"
     },
@@ -15,7 +15,7 @@
       "key": "frontSmile",
       "label": "정면 미소 (0°)",
       "desc": "온화한 눈웃음 · 미소",
-      "fileName": "director-angle-refs/angle_frontSmile_custom_1794449266847.jpg",
+      "fileName": "director-angle-refs/angle_front_smile.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_05.jpg",
       "updatedAt": "2026-11-12T02:07:46.853Z"
     },
@@ -23,7 +23,7 @@
       "key": "left15Smile",
       "label": "좌측 15° 미소",
       "desc": "좌측 사선 · 진료 상담 미소",
-      "fileName": "director-angle-refs/angle_left15Smile_custom_1794449009860.jpg",
+      "fileName": "director-angle-refs/angle_left15_smile.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_09.jpg",
       "updatedAt": "2026-11-12T02:03:29.866Z"
     },
@@ -31,7 +31,7 @@
       "key": "right15Smile",
       "label": "우측 15° 미소",
       "desc": "우측 사선 · 진료 설명 미소",
-      "fileName": "director-angle-refs/angle_right15Smile_custom_1794449019476.jpg",
+      "fileName": "director-angle-refs/angle_right15_smile.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_11.jpg",
       "updatedAt": "2026-11-12T02:03:39.482Z"
     },
@@ -39,7 +39,7 @@
       "key": "left30",
       "label": "좌측 30° 사선",
       "desc": "왼쪽 반측면 · 골격 기준",
-      "fileName": "director-angle-refs/angle_left30_custom_1794449030103.jpg",
+      "fileName": "director-angle-refs/angle_left30.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_02.jpg",
       "updatedAt": "2026-11-12T02:03:50.109Z"
     },
@@ -47,7 +47,7 @@
       "key": "right30",
       "label": "우측 30° 사선",
       "desc": "오른쪽 반측면 · 골격 기준",
-      "fileName": "director-angle-refs/angle_right30_custom_1794449033034.jpg",
+      "fileName": "director-angle-refs/angle_right30.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_01.jpg",
       "updatedAt": "2026-11-12T02:03:53.041Z"
     },
@@ -55,7 +55,7 @@
       "key": "leftProfile",
       "label": "좌측 측면 (45°+)",
       "desc": "왼쪽 깊은 측면 · 콧대·턱선",
-      "fileName": "director-angle-refs/angle_leftProfile_custom_1794449040164.jpg",
+      "fileName": "director-angle-refs/angle_left_profile.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_03.jpg",
       "updatedAt": "2026-11-12T02:04:00.170Z"
     },
@@ -63,7 +63,7 @@
       "key": "rightProfile",
       "label": "우측 측면 (45°+)",
       "desc": "오른쪽 깊은 측면 · 콧대·턱선",
-      "fileName": "director-angle-refs/angle_rightProfile_custom_1794449046537.jpg",
+      "fileName": "director-angle-refs/angle_right_profile.jpg",
       "sourceRef": "KakaoTalk_20261112_110108525_04.jpg",
       "updatedAt": "2026-11-12T02:04:06.544Z"
     }

@@ -27,3 +27,4 @@ imagemaker/data/crawled-sites.json
 imagemaker/__pycache__/
 *.pyc
 *.npz
+homepage/studio-ai-usage.json

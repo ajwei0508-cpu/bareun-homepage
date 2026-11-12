@@ -61,8 +61,15 @@ def log_progress(step, pct):
 
 
 def imread_unicode(path):
-    data = np.fromfile(path, dtype=np.uint8)
-    return cv2.imdecode(data, cv2.IMREAD_COLOR)
+    try:
+        from PIL import Image, ImageOps
+        with Image.open(path) as im:
+            im = ImageOps.exif_transpose(im).convert("RGB")
+            arr = np.array(im, dtype=np.uint8)
+            return cv2.cvtColor(arr, cv2.COLOR_RGB2BGR)
+    except Exception:
+        data = np.fromfile(path, dtype=np.uint8)
+        return cv2.imdecode(data, cv2.IMREAD_COLOR)
 
 
 def imwrite_unicode(path, img):
@@ -472,10 +479,10 @@ def load_or_build_identity_bank(det_sess, arc_sess, bisenet_sess, ref_paths, cac
     return master_emb, global_emb, bank_embs_arr, bank_yaws_arr, len(bank_embs), False
 
 
-def measure_face_metrics(det_sess, arc_sess, img_bgr, master_emb, global_emb):
+def measure_face_metrics(det_sess, arc_sess, img_bgr, master_emb, global_emb, target_kps=None):
     h, w = img_bgr.shape[:2]
     faces = detect_faces(det_sess, img_bgr)
-    if not faces:
+    if not faces and target_kps is None:
         gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())
         sharp_pt = round(min(99.5, max(35.0, 42.0 + 11.5 * np.log1p(lap_var))), 1)
@@ -492,7 +499,22 @@ def measure_face_metrics(det_sess, arc_sess, img_bgr, master_emb, global_emb):
             },
         }
 
-    kps = faces[0]["kps"]
+    if target_kps is not None:
+        kps = target_kps
+        if faces:
+            # Snap to re-detected landmarks of the SAME person (closest nose distance)
+            best_f = min(faces, key=lambda f: float(np.linalg.norm(f["kps"][2] - target_kps[2])))
+            if float(np.linalg.norm(best_f["kps"][2] - target_kps[2])) < max(w, h) * 0.12:
+                kps = best_f["kps"]
+    elif len(faces) >= 2:
+        # In multi-person scenes (Doctor + Patient), evaluate the face matching the identity bank
+        best_f = max(
+            faces[:4],
+            key=lambda f: float(np.dot(extract_arcface_embedding(arc_sess, img_bgr, f["kps"]), global_emb)),
+        )
+        kps = best_f["kps"]
+    else:
+        kps = faces[0]["kps"]
     emb = extract_arcface_embedding(arc_sess, img_bgr, kps)
     cos_sim = max(float(np.dot(emb, master_emb)), float(np.dot(emb, global_emb)))
 
@@ -746,8 +768,8 @@ def run_pipeline(cfg):
 
     imwrite_unicode(output_path, final_bgr)
 
-    before_metrics = measure_face_metrics(det_sess, arc_sess, target_bgr, master_emb, global_emb)
-    after_metrics = measure_face_metrics(det_sess, arc_sess, final_bgr, master_emb, global_emb)
+    before_metrics = measure_face_metrics(det_sess, arc_sess, target_bgr, master_emb, global_emb, target_kps=tkps)
+    after_metrics = measure_face_metrics(det_sess, arc_sess, final_bgr, master_emb, global_emb, target_kps=tkps)
 
     active_provider = swap_sess.get_providers()[0]
     res_json = {

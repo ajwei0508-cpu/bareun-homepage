@@ -504,6 +504,49 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  if (reqPath === '/api/studio-ai-usage') {
+    if (req.method === 'GET') {
+      try {
+        const usage = studioAiEngine.getStudioAiUsage();
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        });
+        res.end(JSON.stringify({ ok: true, usage }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk.toString(); });
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(body || '{}');
+          const usage = studioAiEngine.updateStudioAiUsageConfig({
+            dailyFreeLimit: payload.dailyFreeLimit,
+            resetToday: Boolean(payload.resetToday)
+          });
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            usage,
+            message: payload.resetToday
+              ? `오늘 아르곤 하이 사용량이 초기화되었습니다! (무료 ${usage.freeRemaining}회 남음)`
+              : `아르곤 하이 일일 무료 한도가 ${usage.dailyFreeLimit}회로 설정되었습니다!`
+          }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+
   if (reqPath === '/api/studio-generate-image' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
@@ -515,6 +558,7 @@ const server = http.createServer((req, res) => {
         const originalCardPrompt = String(payload.originalCardPrompt || '').trim();
         const workMode = payload.workMode === 'write_new' ? 'write_new' : 'edit_current';
         const sourceImage = String(payload.sourceImage || '').trim();
+        const useSourceImageRef = Boolean(payload.useSourceImageRef);
         const useDirectorFace = Boolean(payload.useDirectorFace);
         const width = Math.max(512, Math.min(1536, Number(payload.width) || 1280));
         const height = Math.max(512, Math.min(1536, Number(payload.height) || 800));
@@ -526,6 +570,7 @@ const server = http.createServer((req, res) => {
           originalCardPrompt,
           workMode,
           sourceImage,
+          useSourceImageRef,
           useDirectorFace,
           width,
           height,
@@ -737,7 +782,7 @@ const server = http.createServer((req, res) => {
                 ...listLocalMedia(),
                 liveUrl: action === 'deploy_all' ? 'https://www.bareunhaniwon.com/' : matchedPage.liveUrl,
                 message: action === 'deploy_all'
-                  ? '11개 모든 상세페이지 로컬 제작 + 워드프레스 번들 + 카페24 실서버 일괄 배포가 완료되었습니다!'
+                  ? `메인 홈 포함 ${nextCfg.pages.length}개 전 페이지 로컬 제작 + 워드프레스 번들 + 카페24 실서버 일괄 배포가 완료되었습니다!`
                   : `[${matchedPage.label}] 로컬 제작 및 카페24 실서버(${matchedPage.liveUrl}) 배포가 완료되었습니다!`
               }));
             });
@@ -752,7 +797,7 @@ const server = http.createServer((req, res) => {
             ...listLocalMedia(),
             message: buildSingleOnly
               ? `[${matchedPage.label}] 수정 사항이 ${matchedPage.file} 및 ${matchedPage.wpFile}에 즉시 반영되었습니다!`
-              : '11개 전체 상세페이지(.html + wordpress-*.html) 일괄 제작 반영이 완료되었습니다!'
+              : `메인 홈 포함 ${nextCfg.pages.length}개 전체 페이지(.html + wordpress-*.html) 일괄 제작 반영이 완료되었습니다!`
           }));
         } catch (err) {
           if (prevBackup !== null) {

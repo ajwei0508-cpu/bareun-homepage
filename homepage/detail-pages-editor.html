@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>바른한의원 대전본점 | 11대 상세페이지 Sample A 통합 커스텀 스튜디오</title>
+  <title>바른한의원 대전본점 | 메인 홈 &amp; 11대 상세페이지 통합 커스텀 스튜디오</title>
   <style>
     :root {
       --bg: #f4f1ea;
@@ -145,6 +145,76 @@
       border-color: rgba(255,255,255,0.18);
     }
     .btn-ghost-dark:hover { background: rgba(255,255,255,0.16); }
+    .argon-quota-pill {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid rgba(52, 211, 153, 0.55);
+      background: rgba(6, 95, 70, 0.45);
+      color: #d1fae5;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .argon-quota-pill:hover {
+      background: rgba(6, 95, 70, 0.72);
+      transform: translateY(-1px);
+    }
+    .argon-quota-pill.low {
+      border-color: rgba(251, 191, 36, 0.65);
+      background: rgba(146, 64, 14, 0.48);
+      color: #fde68a;
+    }
+    .argon-quota-pill.exhausted {
+      border-color: rgba(248, 113, 113, 0.75);
+      background: rgba(153, 27, 27, 0.55);
+      color: #fecaca;
+    }
+    .im-noface-banner {
+      display: none;
+      margin-top: 8px;
+      padding: 10px 13px;
+      border-radius: 9px;
+      background: #fffbeb;
+      border: 1.5px solid #f59e0b;
+      color: #92400e;
+      font-size: 12.5px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+    .im-noface-banner.show {
+      display: block;
+    }
+    .im-ref-toggle-box {
+      margin-top: 10px;
+      padding: 10px 13px;
+      border-radius: 9px;
+      border: 1.5px solid #d6d3d1;
+      background: #f8fafc;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+    }
+    .im-ref-toggle-box.active {
+      border-color: #6366f1;
+      background: #eef2ff;
+    }
+    .home-quick-bar {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #faf5eb, #f3ede0);
+      border: 1px solid #decba8;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     /* 11 Page Switcher Bar */
     .page-switcher-wrap {
@@ -1123,25 +1193,28 @@
   <!-- Top Sticky Header -->
   <header class="studio-header">
     <div class="brand-left">
-      <span class="studio-badge">BAREUN STUDIO · SAMPLE A</span>
-      <h1 class="studio-title">11대 상세페이지 통합 커스텀 스튜디오</h1>
+      <span class="studio-badge">BAREUN STUDIO · ALL-IN-ONE</span>
+      <h1 class="studio-title">메인 홈 &amp; 상세페이지 통합 커스텀 스튜디오</h1>
       <span id="dirtyBadge" class="dirty-indicator">● 미저장 변경사항 있음</span>
     </div>
     <div class="header-actions">
-      <button type="button" class="btn btn-deploy-all" onclick="switchEditorTab('imagemaker')" title="원하는 상황의 원장님·클리닉 이미지를 AI로 즉시 추가 제작합니다">
+      <button type="button" id="headerArgonQuotaBadge" class="argon-quota-pill" onclick="openArgonQuotaSettings()" title="아르곤 하이(Gemini 3 Pro Image 2K) 오늘 사용량 및 무료 잔여 횟수 · 클릭 시 상세 관리">
+        ⚡ 아르곤 하이 2K · 무료 잔여 확인중...
+      </button>
+      <button type="button" class="btn btn-deploy-all" onclick="switchEditorTab('imagemaker')" title="대표카드 및 서브 썸네일 이미지를 프롬프트로 즉시 제작합니다">
         📸 상황별 이미지메이커
       </button>
       <button type="button" class="btn btn-save-one" id="btnSaveOne" onclick="runStudioAction('save_build_one')">
         💾 현재 페이지 즉시 반영
       </button>
       <button type="button" class="btn btn-save-all" id="btnSaveAll" onclick="runStudioAction('save_build_all')">
-        ✨ 11개 전체 일괄 반영
+        ✨ 전체 페이지 일괄 반영
       </button>
       <button type="button" class="btn btn-deploy-one" id="btnDeployOne" onclick="confirmAndDeploy('deploy_one')">
         🚀 현재 페이지 카페24 배포
       </button>
       <button type="button" class="btn btn-deploy-all" id="btnDeployAll" onclick="confirmAndDeploy('deploy_all')">
-        🌐 11개 전체 카페24 배포
+        🌐 전체 페이지 카페24 배포
       </button>
       <button type="button" class="btn btn-ghost-dark" id="btnSyncWp" onclick="syncFromWpLive()" title="카페24 실서버의 최신 설정을 로컬로 가져옵니다">
         🔄 실서버 설정 가져오기
@@ -1185,16 +1258,16 @@
     <section class="editor-column">
       <div class="editor-tabs">
         <button type="button" class="editor-tab-btn active" data-tab="cards" onclick="switchEditorTab('cards')">
-          📑 스토리 카드 편집 <span id="tabCardCount" class="tag-pill">0장</span>
+          <span id="tabCardsLabelText">📑 스토리 카드 편집</span> <span id="tabCardCount" class="tag-pill">0장</span>
         </button>
         <button type="button" class="editor-tab-btn tab-imagemaker" data-tab="imagemaker" onclick="switchEditorTab('imagemaker')">
-          📸 이미지메이커 · 상황 이미지 제작
+          📸 이미지메이커 · 프롬프트 제작
         </button>
-        <button type="button" class="editor-tab-btn" data-tab="style" onclick="switchEditorTab('style')">
+        <button type="button" class="editor-tab-btn" data-tab="style" id="tabBtnStyle" onclick="switchEditorTab('style')">
           🎨 Sample A 디자인 · 표시 항목
         </button>
         <button type="button" class="editor-tab-btn" data-tab="leftpanel" onclick="switchEditorTab('leftpanel')">
-          📋 좌측 안내 패널 · 체크리스트
+          <span id="tabLeftPanelLabelText">📋 좌측 안내 패널 · 체크리스트</span>
         </button>
       </div>
 
@@ -1422,8 +1495,25 @@
       { value: 'clean-video', label: '클린 MP4 비디오 카드' },
       { value: 'diet-tele-video', label: '비대면 전화처방 비디오 카드' },
       { value: 'growth-son-main-hero', label: '성장 친아들 손편지 히어로 카드' },
-      { value: 'gongjindan-panorama-archive', label: '황제공진단 10장 브로슈어 파노라마' }
+      { value: 'gongjindan-panorama-archive', label: '황제공진단 10장 브로슈어 파노라마' },
+      { value: 'home-story-frame', label: '홈 오프닝 3D 환자 스토리 장면' },
+      { value: 'home-bento-card', label: '홈 피날레 핵심 진료 벤토 카드' }
     ];
+
+    const HOME_MOTION_MODE_OPTIONS = [
+      { value: 0, label: 'Mode 0 · 리퀴드 실크 디졸브 (부드러운 기본 전환)' },
+      { value: 1, label: 'Mode 1 · 소아 키성장 수직 상승 스트레치' },
+      { value: 2, label: 'Mode 2 · 다이어트 S라인 실루엣 리본 모프' },
+      { value: 3, label: 'Mode 3 · 전신 추나 메리디안 레이저 스캔' },
+      { value: 4, label: 'Mode 4 · 두피 현미경 200배 광학 줌인 (탈모)' },
+      { value: 5, label: 'Mode 5 · 아나모픽 골든 라이트 스윕' },
+      { value: 6, label: 'Mode 6 · 아이리스 보케 포커스 풀' },
+      { value: 7, label: 'Mode 7 · 3D 시차 패럴랙스 푸시' }
+    ];
+
+    function isHomeStoryPage(page) {
+      return Boolean(page && (page.isHomeStory || page.slug === 'home' || page.file === 'index.html'));
+    }
 
     let masterConfig = null;
     let currentPageIdx = 0;
@@ -1576,7 +1666,8 @@
         const btnSaveOne = document.getElementById('btnSaveOne');
         if (btnSaveOne) btnSaveOne.innerHTML = '💾 현재 페이지 실서버 배포';
         const btnSaveAll = document.getElementById('btnSaveAll');
-        if (btnSaveAll) btnSaveAll.innerHTML = '🌐 11개 전체 실서버 배포';
+        const totalCnt = (masterConfig && Array.isArray(masterConfig.pages)) ? masterConfig.pages.length : 12;
+        if (btnSaveAll) btnSaveAll.innerHTML = '🌐 ' + totalCnt + '개 전체 실서버 배포';
         const deployOne = document.getElementById('btnDeployOne');
         if (deployOne) deployOne.style.display = 'none';
         const deployAll = document.getElementById('btnDeployAll');
@@ -1671,6 +1762,21 @@
       const urlLbl = document.getElementById('previewUrlLabel');
       if (urlLbl) urlLbl.textContent = `/${page.file} (WP ID: ${page.wpId})`;
 
+      const isHome = isHomeStoryPage(page);
+      const tabCardsLbl = document.getElementById('tabCardsLabelText');
+      if (tabCardsLbl) tabCardsLbl.textContent = isHome ? '🏠 홈 시작 스토리 · 진료카드' : '📑 스토리 카드 편집';
+      const tabLeftLbl = document.getElementById('tabLeftPanelLabelText');
+      if (tabLeftLbl) tabLeftLbl.textContent = isHome ? '🎬 오프닝 슬로건 · 8대 챕터 대사' : '📋 좌측 안내 패널 · 체크리스트';
+      const tabStyleBtn = document.getElementById('tabBtnStyle');
+      if (tabStyleBtn) tabStyleBtn.style.display = isHome ? 'none' : '';
+
+      const totalCnt = (masterConfig && Array.isArray(masterConfig.pages)) ? masterConfig.pages.length : 12;
+      const btnSaveAll = document.getElementById('btnSaveAll');
+      if (btnSaveAll && !IS_WORDPRESS) btnSaveAll.innerHTML = `✨ ${totalCnt}개 전체 일괄 반영`;
+      const btnDeployAll = document.getElementById('btnDeployAll');
+      if (btnDeployAll && !IS_WORDPRESS) btnDeployAll.innerHTML = `🌐 ${totalCnt}개 전체 카페24 배포`;
+
+      renderHeaderArgonBadge();
       renderPageSwitcher();
       renderStoryCardsPane();
       renderBodyModelBox();
@@ -1707,13 +1813,50 @@
       return resolveStudioAssetUrl(getCardPreviewRawPath(card));
     }
 
+    function syncHomePreviewToCard(idx) {
+      const page = getCurrentPage();
+      if (!isHomeStoryPage(page)) return;
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame || !frame.contentWindow) return;
+      const plates = page.plates || [];
+      const card = plates[idx];
+      if (!card) return;
+      if (card.type === 'home-bento-card') {
+        frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
+      } else {
+        let storyFrameIdx = 0;
+        for (let i = 0; i < idx; i++) {
+          if (plates[i] && plates[i].type !== 'home-bento-card') storyFrameIdx++;
+        }
+        frame.contentWindow.postMessage({ type: 'SYNC_FRAME', frameIndex: storyFrameIdx }, '*');
+      }
+    }
+
+    function scrollEditorToBentoSection() {
+      const page = getCurrentPage();
+      if (!page || !Array.isArray(page.plates)) return;
+      const firstBentoIdx = page.plates.findIndex(c => c && c.type === 'home-bento-card');
+      if (firstBentoIdx >= 0) {
+        expandedCards.add(firstBentoIdx);
+        renderStoryCardsPane();
+        syncHomePreviewToCard(firstBentoIdx);
+        setTimeout(() => {
+          const el = document.getElementById('card-item-' + firstBentoIdx);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    }
+
     function renderStoryCardsPane() {
       const page = getCurrentPage();
       const plates = page.plates || [];
+      const isHome = isHomeStoryPage(page);
       const enabledCount = plates.filter(c => c.enabled !== false).length;
 
       document.getElementById('tabCardCount').textContent = `${enabledCount}/${plates.length}장`;
-      document.getElementById('cardsPanelTitle').textContent = `[${page.label}] 가로 스토리 카드 편집 (${enabledCount}장 표시 중)`;
+      document.getElementById('cardsPanelTitle').textContent = isHome
+        ? `[🏠 메인 홈 시작 스토리] 오프닝 3D 환자 스토리 컷 & 피날레 진료카드 편집 (${enabledCount}장)`
+        : `[${page.label}] 가로 스토리 카드 편집 (${enabledCount}장 표시 중)`;
 
       const container = document.getElementById('storyCardsContainer');
       if (plates.length === 0) {
@@ -1721,15 +1864,201 @@
         return;
       }
 
-      container.innerHTML = plates.map((card, idx) => {
+      const storyFrameCount = isHome ? plates.filter(c => c.type !== 'home-bento-card').length : 0;
+      const bentoCardCount = isHome ? plates.filter(c => c.type === 'home-bento-card').length : 0;
+      const chaptersList = (page.homeStory && Array.isArray(page.homeStory.chapters)) ? page.homeStory.chapters : [];
+
+      const homeQuickBarHtml = isHome ? `
+        <div class="home-quick-bar">
+          <div style="font-size:12.5px; font-weight:800; color:#5a3e1b;">
+            🏠 홈페이지 시작 스토리 장면 <strong>${storyFrameCount}컷</strong> + 피날레 핵심 진료카드 <strong>${bentoCardCount}장</strong>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="mini-btn gold-helper" onclick="switchEditorTab('leftpanel')">🎬 오프닝 슬로건 · 8대 챕터 대사 편집</button>
+            <button type="button" class="mini-btn" onclick="scrollEditorToBentoSection()">🃏 피날레 진료카드(${bentoCardCount}장)로 이동</button>
+          </div>
+        </div>
+      ` : '';
+
+      let seenFirstBento = false;
+      container.innerHTML = homeQuickBarHtml + plates.map((card, idx) => {
         const isExpanded = expandedCards.has(idx);
         const isEnabled = card.enabled !== false;
         const numStr = String(idx + 1).padStart(2, '0');
         const rawThumbPath = getCardPreviewRawPath(card);
         const thumbUrl = resolveStudioAssetUrl(rawThumbPath);
-        const typeLabel = (CARD_TYPE_OPTIONS.find(o => o.value === card.type) || { label: card.type || 'clean-image' }).label.split(' ')[0];
+        const isHomeStoryCard = card.type === 'home-story-frame';
+        const isHomeBentoCard = card.type === 'home-bento-card';
+
+        let sectionDividerHtml = '';
+        if (isHome && isHomeBentoCard && !seenFirstBento) {
+          seenFirstBento = true;
+          sectionDividerHtml = `
+            <div style="margin:18px 0 10px; padding:10px 14px; border-radius:10px; background:#181512; color:#f8d88c; font-weight:800; font-size:13px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🃏 스토리 완료 후 펼쳐지는 피날레 핵심 진료 벤토 카드 (${bentoCardCount}장)</span>
+              <button type="button" class="mini-btn gold-helper" onclick="syncHomePreviewToCard(${idx})">👁️ 우측 미리보기에서 벤토 카드 펼치기</button>
+            </div>
+          `;
+        }
+
+        const typeLabel = isHomeStoryCard
+          ? ('STORY 0' + (card.chapter || 1))
+          : (isHomeBentoCard
+            ? '피날레 진료카드'
+            : (CARD_TYPE_OPTIONS.find(o => o.value === card.type) || { label: card.type || 'clean-image' }).label.split(' ')[0]);
+
+        let bodyInnerHtml = '';
+        if (isHomeStoryCard) {
+          bodyInnerHtml = `
+            <div class="grid-2">
+              <div class="field">
+                <label>소속 스토리 챕터 (STORY 01 ~ 08)</label>
+                <select onchange="updateCardField(${idx}, 'chapter', parseInt(this.value, 10) || 1, true)">
+                  ${[1,2,3,4,5,6,7,8].map(chNum => {
+                    const chObj = chaptersList.find(x => Number(x.id) === chNum) || {};
+                    return `<option value="${chNum}" ${Number(card.chapter || 1) === chNum ? 'selected' : ''}>STORY 0${chNum} · ${escHtml(chObj.quote || chObj.numLabel || '')}</option>`;
+                  }).join('')}
+                </select>
+              </div>
+              <div class="field">
+                <label>장면 전환 3D 시네마 모션 효과 (Shader Mode)</label>
+                <select onchange="updateCardField(${idx}, 'mode', parseInt(this.value, 10) || 0, false)">
+                  ${HOME_MOTION_MODE_OPTIONS.map(m => `<option value="${m.value}" ${Number(card.mode || 0) === m.value ? 'selected' : ''}>${escHtml(m.label)}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>
+                  <span>장면 중앙 메인 스토리 대사 (quote)</span>
+                  <button type="button" class="mini-btn" onclick="syncHomePreviewToCard(${idx})">👁️ 미리보기에서 이 장면 보기</button>
+                </label>
+                <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
+                  placeholder="예: 간절한 기다림 / 난임으로 찾게 된 한의원"
+                  oninput="updateCardTitleLive(${idx}, this.value); scheduleLivePreviewReload();" />
+              </div>
+              <div class="field">
+                <label>하단 보조 설명 문구 (whisper · 비워두면 메인 대사만 깔끔하게 노출)</label>
+                <input type="text" value="${escHtml(card.sub || '')}"
+                  placeholder="선택 입력: 장면 아래 잔잔하게 노출할 보조 문구"
+                  oninput="updateCardField(${idx}, 'sub', this.value, false)" />
+              </div>
+            </div>
+            ${renderCardMediaControls(card, idx)}
+          `;
+        } else if (isHomeBentoCard) {
+          bodyInnerHtml = `
+            <div class="grid-2">
+              <div class="field">
+                <label>
+                  <span>피날레 진료카드 제목 (예: 추나 / 성장 / 다이어트)</span>
+                  <button type="button" class="mini-btn" onclick="syncHomePreviewToCard(${idx})">👁️ 벤토 카드 미리보기</button>
+                </label>
+                <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
+                  oninput="updateCardTitleLive(${idx}, this.value); scheduleLivePreviewReload();" />
+              </div>
+              <div class="field">
+                <label>클릭 시 이동할 상세페이지 주소 (linkHref)</label>
+                <input type="text" value="${escHtml(card.linkHref || '')}" placeholder="예: chuna.html"
+                  oninput="updateCardField(${idx}, 'linkHref', this.value, false); updateCardField(${idx}, 'dataLink', this.value, false);" />
+              </div>
+            </div>
+            <div class="field">
+              <label>진료카드 핵심 설명 문구 (sub)</label>
+              <input type="text" value="${escHtml(card.sub || '')}"
+                oninput="updateCardField(${idx}, 'sub', this.value, false)" />
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>버튼 칩 라벨 (chipLabel)</label>
+                <input type="text" value="${escHtml(card.chipLabel || '상세페이지 보기 →')}"
+                  oninput="updateCardField(${idx}, 'chipLabel', this.value, false)" />
+              </div>
+              <div class="field">
+                <label>이미지 초점 위치 (background-position)</label>
+                <input type="text" value="${escHtml(card.bgPos || 'center center')}" placeholder="예: center 20%"
+                  oninput="updateCardField(${idx}, 'bgPos', this.value, false)" />
+              </div>
+            </div>
+            ${renderCardMediaControls(card, idx)}
+          `;
+        } else {
+          bodyInnerHtml = `
+            <div class="grid-2">
+              <div class="field">
+                <label>카드 유형 (Type)</label>
+                <select onchange="changeCardType(${idx}, this.value)">
+                  ${CARD_TYPE_OPTIONS.filter(o => !o.value.startsWith('home-')).map(opt => `<option value="${escHtml(opt.value)}" ${card.type === opt.value ? 'selected' : ''}>${escHtml(opt.label)}</option>`).join('')}
+                </select>
+              </div>
+              <div class="field">
+                <label>상단 이미지 비율 맞춤 (Object-Fit)</label>
+                <select onchange="updateCardField(${idx}, 'fit', this.value, false)">
+                  <option value="cover" ${(card.fit || 'cover') === 'cover' ? 'selected' : ''}>꽉 차게 채우기 (cover · 기본 권장)</option>
+                  <option value="contain" ${card.fit === 'contain' ? 'selected' : ''}>잘림 없이 원본 전체 보기 (contain)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Headline + Gold Highlight Helper -->
+            <div class="field">
+              <label>
+                <span>하단 메인 제목 (H2 · <code>'작은따옴표'</code> 구간 골드 하이라이트)</span>
+                <button type="button" class="mini-btn gold-helper" onclick="wrapSelectedWithGoldQuote(${idx})">✨ 선택한 단어 '골드 강조' 감싸기</button>
+              </label>
+              <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
+                placeholder="예: 수술 없이 틀어진 척추를 바로잡는 '정밀 수기 추나'"
+                oninput="updateCardTitleLive(${idx}, this.value)" />
+            </div>
+
+            <!-- Body Copy -->
+            <div class="field">
+              <label>하단 본문 설명 (P · 핵심 치료 설명 문구)</label>
+              <textarea rows="2" placeholder="하단 에디토리얼 영역에 들어갈 상세 설명 문구를 입력하세요."
+                oninput="updateCardField(${idx}, 'sub', this.value, false)">${escHtml(card.sub || '')}</textarea>
+            </div>
+
+            <!-- Type-Specific Media Controls -->
+            ${renderCardMediaControls(card, idx)}
+
+            <!-- Optional Advanced Drawer (STEP badge, 3 Pillars, #Tags) -->
+            <details class="optional-drawer">
+              <summary>⚙️ 선택 옵션 입력 (STEP 카테고리 배지 · 하단 3칸 포인트 · #해시태그 — 표시 ON 시 노출)</summary>
+              <div style="margin-top:12px;">
+                <div class="grid-2">
+                  <div class="field">
+                    <label>상단 STEP 배지 라벨 (stepLabel)</label>
+                    <input type="text" value="${escHtml(card.stepLabel || '')}" placeholder="예: STEP 01 · 원인 진단"
+                      oninput="updateCardField(${idx}, 'stepLabel', this.value, false)" />
+                  </div>
+                  <div class="field">
+                    <label>하단 #해시태그 목록 (쉼표로 구분)</label>
+                    <input type="text" value="${escHtml((card.tags || []).join(', '))}" placeholder="예: #대전추나한의원, #척추교정, #바른한의원"
+                      oninput="updateCardTags(${idx}, this.value)" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>하단 3칸 핵심 포인트 박스 (01 ~ 03 · 제목 | 설명)</label>
+                  ${[0, 1, 2].map(pIdx => {
+                    const pObj = (card.pillars && card.pillars[pIdx]) || { num: '0' + (pIdx + 1), title: '', desc: '' };
+                    return `
+                      <div class="list-row-inline">
+                        <span class="tag-pill">0${pIdx + 1}</span>
+                        <input type="text" placeholder="소제목 (예: 추간판 감압)" value="${escHtml(pObj.title || '')}"
+                          oninput="updateCardPillar(${idx}, ${pIdx}, 'title', this.value)" />
+                        <input type="text" placeholder="짧은 설명 (예: 눌린 신경 공간 확보)" value="${escHtml(pObj.desc || '')}"
+                          oninput="updateCardPillar(${idx}, ${pIdx}, 'desc', this.value)" />
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            </details>
+          `;
+        }
 
         return `
+          ${sectionDividerHtml}
           <div class="story-card-item ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled-card'}" id="card-item-${idx}">
             <div class="story-card-head" onclick="toggleCardAccordion(${idx}, event)">
               <div class="story-card-head-left">
@@ -1741,11 +2070,13 @@
                 <span class="card-head-title">${escHtml(card.title || card.badge || '(제목 없음 - 비디오/특수 카드)')}</span>
               </div>
               <div class="story-card-actions" onclick="event.stopPropagation();">
-                <label style="display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; margin-right:4px; cursor:pointer;">
-                  <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateCardField(${idx}, 'enabled', this.checked, true)" />
-                  표시
-                </label>
-                <button type="button" class="mini-btn gold-helper" title="이 카드 상황에 맞는 새 AI 이미지 제작" onclick="openImageMakerForCard(${idx})">📸 상황이미지 제작</button>
+                ${isHome ? `<button type="button" class="mini-btn" title="우측 미리보기에서 바로 확인" onclick="syncHomePreviewToCard(${idx})">👁️</button>` : `
+                  <label style="display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; margin-right:4px; cursor:pointer;">
+                    <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateCardField(${idx}, 'enabled', this.checked, true)" />
+                    표시
+                  </label>
+                `}
+                <button type="button" class="mini-btn gold-helper" title="이 카드 상황에 맞는 새 AI 이미지 제작" onclick="openImageMakerForCard(${idx}, 'main')">📸 상황이미지 제작</button>
                 <button type="button" class="mini-btn" title="위로 이동" onclick="moveStoryCard(${idx}, -1)">▲</button>
                 <button type="button" class="mini-btn" title="아래로 이동" onclick="moveStoryCard(${idx}, 1)">▼</button>
                 <button type="button" class="mini-btn" title="카드 복제" onclick="duplicateStoryCard(${idx})">복제</button>
@@ -1755,76 +2086,7 @@
             </div>
 
             <div class="story-card-body">
-              <div class="grid-2">
-                <div class="field">
-                  <label>카드 유형 (Type)</label>
-                  <select onchange="changeCardType(${idx}, this.value)">
-                    ${CARD_TYPE_OPTIONS.map(opt => `<option value="${escHtml(opt.value)}" ${card.type === opt.value ? 'selected' : ''}>${escHtml(opt.label)}</option>`).join('')}
-                  </select>
-                </div>
-                <div class="field">
-                  <label>상단 이미지 비율 맞춤 (Object-Fit)</label>
-                  <select onchange="updateCardField(${idx}, 'fit', this.value, false)">
-                    <option value="cover" ${(card.fit || 'cover') === 'cover' ? 'selected' : ''}>꽉 차게 채우기 (cover · 기본 권장)</option>
-                    <option value="contain" ${card.fit === 'contain' ? 'selected' : ''}>잘림 없이 원본 전체 보기 (contain)</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Headline + Gold Highlight Helper -->
-              <div class="field">
-                <label>
-                  <span>하단 메인 제목 (H2 · <code>'작은따옴표'</code> 구간 골드 하이라이트)</span>
-                  <button type="button" class="mini-btn gold-helper" onclick="wrapSelectedWithGoldQuote(${idx})">✨ 선택한 단어 '골드 강조' 감싸기</button>
-                </label>
-                <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
-                  placeholder="예: 수술 없이 틀어진 척추를 바로잡는 '정밀 수기 추나'"
-                  oninput="updateCardTitleLive(${idx}, this.value)" />
-              </div>
-
-              <!-- Body Copy -->
-              <div class="field">
-                <label>하단 본문 설명 (P · 핵심 치료 설명 문구)</label>
-                <textarea rows="2" placeholder="하단 에디토리얼 영역에 들어갈 상세 설명 문구를 입력하세요."
-                  oninput="updateCardField(${idx}, 'sub', this.value, false)">${escHtml(card.sub || '')}</textarea>
-              </div>
-
-              <!-- Type-Specific Media Controls -->
-              ${renderCardMediaControls(card, idx)}
-
-              <!-- Optional Advanced Drawer (STEP badge, 3 Pillars, #Tags) -->
-              <details class="optional-drawer">
-                <summary>⚙️ 선택 옵션 입력 (STEP 카테고리 배지 · 하단 3칸 포인트 · #해시태그 — 표시 ON 시 노출)</summary>
-                <div style="margin-top:12px;">
-                  <div class="grid-2">
-                    <div class="field">
-                      <label>상단 STEP 배지 라벨 (stepLabel)</label>
-                      <input type="text" value="${escHtml(card.stepLabel || '')}" placeholder="예: STEP 01 · 원인 진단"
-                        oninput="updateCardField(${idx}, 'stepLabel', this.value, false)" />
-                    </div>
-                    <div class="field">
-                      <label>하단 #해시태그 목록 (쉼표로 구분)</label>
-                      <input type="text" value="${escHtml((card.tags || []).join(', '))}" placeholder="예: #대전추나한의원, #척추교정, #바른한의원"
-                        oninput="updateCardTags(${idx}, this.value)" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label>하단 3칸 핵심 포인트 박스 (01 ~ 03 · 제목 | 설명)</label>
-                    ${[0, 1, 2].map(pIdx => {
-                      const pObj = (card.pillars && card.pillars[pIdx]) || { num: '0' + (pIdx + 1), title: '', desc: '' };
-                      return `
-                        <div class="list-row-inline">
-                          <span class="tag-pill">0${pIdx + 1}</span>
-                          <input type="text" placeholder="소제목 (예: 추간판 감압)" value="${escHtml(pObj.title || '')}"
-                            oninput="updateCardPillar(${idx}, ${pIdx}, 'title', this.value)" />
-                          <input type="text" placeholder="짧은 설명 (예: 눌린 신경 공간 확보)" value="${escHtml(pObj.desc || '')}"
-                            oninput="updateCardPillar(${idx}, ${pIdx}, 'desc', this.value)" />
-                        </div>
-                      `;
-                    }).join('')}
-                  </div>
-                </div>
-              </details>
+              ${bodyInnerHtml}
             </div>
           </div>
         `;
@@ -1940,6 +2202,7 @@
                   onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
                 <input type="text" list="existingImagesList" value="${escHtml(fr)}"
                   oninput="updateCardFrameLive(${idx}, ${fIdx}, this.value)" />
+                <button type="button" class="mini-btn im-helper" onclick="openImageMakerForCard(${idx}, 'frame', ${fIdx})">✨ 프롬프트 제작</button>
                 <button type="button" class="mini-btn" onclick="triggerFrameUpload(${idx}, ${fIdx})">📁 업로드</button>
                 <button type="button" class="mini-btn" onclick="openAssetPickerModal(${idx}, 'frame', ${fIdx})">🖼️ 선택</button>
                 <button type="button" class="mini-btn danger" onclick="removeCardFrame(${idx}, ${fIdx})">✕</button>
@@ -2041,6 +2304,7 @@
                   oninput="updateBrochurePage(${idx}, ${pIdx}, 'title', this.value)" />
                 <input type="text" list="existingImagesList" placeholder="이미지 경로" value="${escHtml(pg.img || '')}"
                   oninput="updateBrochurePageLive(${idx}, ${pIdx}, this.value)" />
+                <button type="button" class="mini-btn im-helper" onclick="openImageMakerForCard(${idx}, 'brochure', ${pIdx})">✨ 프롬프트 제작</button>
                 <button type="button" class="mini-btn" onclick="triggerBrochureUpload(${idx}, ${pIdx})">📁 업로드</button>
                 <button type="button" class="mini-btn" onclick="openAssetPickerModal(${idx}, 'brochure', ${pIdx})">🖼️ 선택</button>
                 <button type="button" class="mini-btn danger" onclick="removeBrochurePage(${idx}, ${pIdx})">✕</button>
@@ -2071,21 +2335,27 @@
                 oninput="updateCardImageLive(${idx}, 'imgSrc', this.value, 'card-prev-main-${idx}')" />
             </div>
             <div style="display:flex; gap:7px; flex-wrap:wrap; align-items:center;">
-              <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'imgSrc')">📁 내 PC에서 새 사진 업로드</button>
-              <button type="button" class="mini-btn" onclick="openAssetPickerModal(${idx}, 'imgSrc')">🖼️ 보관함 사진 보고 선택</button>
-              <button type="button" class="mini-btn" style="background:#f3e8ff; border-color:#c084fc; color:#581c87;" onclick="openImageMakerForCard(${idx})">📸 이미지메이커로 이 상황 제작</button>
-              <button type="button" class="mini-btn" onclick="addCardThumb(${idx})">+ 클릭 전환용 서브 썸네일 추가 (${thumbs.length})</button>
+              <button type="button" class="mini-btn gold-helper" onclick="triggerAssetUpload(${idx}, 'imgSrc')">📁 PC 사진 업로드</button>
+              <button type="button" class="mini-btn" onclick="openAssetPickerModal(${idx}, 'imgSrc')">🖼️ 보관함 선택</button>
+              <button type="button" class="mini-btn" style="background:#f3e8ff; border-color:#c084fc; color:#581c87;" onclick="openImageMakerForCard(${idx}, 'main')">📸 대표 이미지 프롬프트 제작</button>
+              ${t !== 'home-bento-card' ? `
+                <button type="button" class="mini-btn im-helper" onclick="openImageMakerForCard(${idx}, 'new_thumb')">✨ 프롬프트로 서브 썸네일 제작</button>
+                <button type="button" class="mini-btn" onclick="addCardThumb(${idx})">+ 서브 썸네일 슬롯 추가 (${thumbs.length})</button>
+              ` : ''}
             </div>
           </div>
         </div>
         ${thumbs.length > 0 ? `
           <div style="padding:10px 12px; background:#faf7f0; border:1px solid var(--border); border-radius:8px; margin-bottom:10px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <span style="font-size:12px; font-weight:800;">🖼️ 카드 내 서브 썸네일 목록 (${thumbs.length}개 · 썸네일 클릭 시 원본 확대)</span>
-              <button type="button" class="mini-btn gold-helper" onclick="openImageMakerForCard(${idx}, 'sub_thumb')">+ 📸 이미지메이커로 서브 썸네일 상황 추가 제작</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:12px; font-weight:800;">
+                🖼️ ${t === 'home-story-frame' ? '다단계 연속 모션 · 서브 프레임 목록' : '카드 내 클릭 전환 서브 썸네일 목록'} (${thumbs.length}개 · 각 썸네일도 대표카드처럼 프롬프트로 개별 제작 가능!)
+              </span>
+              <button type="button" class="mini-btn im-helper" onclick="openImageMakerForCard(${idx}, 'new_thumb')">+ ✨ 새 서브 썸네일 프롬프트 제작</button>
             </div>
             ${thumbs.map((th, thIdx) => `
-              <div class="list-row-inline">
+              <div class="list-row-inline" style="flex-wrap:wrap;">
+                <span class="tag-pill">#${thIdx + 1}</span>
                 <img id="card-subthumb-prev-${idx}-${thIdx}" class="sub-thumb-preview"
                   src="${escHtml(resolveStudioAssetUrl(th.img || ''))}"
                   data-raw-path="${escHtml(th.img || '')}"
@@ -2093,10 +2363,11 @@
                   title="클릭하여 원본 확대 보기"
                   onclick="openImageLightbox(this.getAttribute('data-raw-path'), '${escHtml(th.label || ('서브 썸네일 #' + (thIdx + 1)))}')"
                   onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
-                <input type="text" style="max-width:135px;" placeholder="라벨명" value="${escHtml(th.label || '')}"
+                <input type="text" style="max-width:130px;" placeholder="버튼 라벨명" value="${escHtml(th.label || '')}"
                   oninput="updateCardThumb(${idx}, ${thIdx}, 'label', this.value)" />
                 <input type="text" list="existingImagesList" placeholder="이미지 파일명" value="${escHtml(th.img || '')}"
                   oninput="updateCardThumbLive(${idx}, ${thIdx}, this.value)" />
+                <button type="button" class="mini-btn im-helper" title="이 서브 썸네일 이미지를 AI 프롬프트로 직접 제작·교체합니다" onclick="openImageMakerForCard(${idx}, 'thumb', ${thIdx})">✨ 프롬프트 제작</button>
                 <button type="button" class="mini-btn" onclick="triggerThumbUpload(${idx}, ${thIdx})">📁 업로드</button>
                 <button type="button" class="mini-btn" onclick="openAssetPickerModal(${idx}, 'thumb', ${thIdx})">🖼️ 선택</button>
                 <button type="button" class="mini-btn danger" onclick="removeCardThumb(${idx}, ${thIdx})">✕</button>
@@ -2110,6 +2381,12 @@
     function renderBodyModelBox() {
       const page = getCurrentPage();
       const box = document.getElementById('bodyModelEditorBox');
+      if (!box) return;
+      if (isHomeStoryPage(page)) {
+        box.style.display = 'none';
+        return;
+      }
+      box.style.display = '';
       if (!page.bodyModelCard) {
         page.bodyModelCard = {
           enabled: false,
@@ -2344,16 +2621,122 @@
       tagEl.style.display = cs.showTags ? 'flex' : 'none';
     }
 
+    function updateHomeStoryField(key, val) {
+      const page = getCurrentPage();
+      if (!page.homeStory) page.homeStory = {};
+      page.homeStory[key] = val;
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    function updateHomeChapterField(chIdx, key, val) {
+      const page = getCurrentPage();
+      if (!page.homeStory) page.homeStory = {};
+      if (!Array.isArray(page.homeStory.chapters)) page.homeStory.chapters = [];
+      if (!page.homeStory.chapters[chIdx]) {
+        page.homeStory.chapters[chIdx] = { id: chIdx + 1, numLabel: 'STORY 0' + (chIdx + 1) + ' / 08', quote: '' };
+      }
+      page.homeStory.chapters[chIdx][key] = val;
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
     function renderLeftPanelPane() {
       const page = getCurrentPage();
+      const box = document.getElementById('leftPanelEditorBox');
+      if (isHomeStoryPage(page)) {
+        const hs = page.homeStory || (page.homeStory = {});
+        const chapters = Array.isArray(hs.chapters) ? hs.chapters : [];
+        box.innerHTML = `
+          <div class="panel-head">
+            <h2>🎬 [메인 홈 시작 스토리] 첫 화면 오프닝 슬로건 · 상단 헤더 · 8대 챕터 대사 편집</h2>
+            <span class="tag-pill">index.html · WP ID: 46</span>
+          </div>
+
+          <h3 style="margin:0 0 10px; font-size:14.5px;">1) 홈페이지 첫 진입 시네마틱 오프닝 타이포그래피</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label>오프닝 슬로건 1줄 (골드 포인트 시작 문구)</label>
+              <input type="text" value="${escHtml(hs.introLine1 || '')}" placeholder="예: 아빠 한의사를 찾는"
+                oninput="updateHomeStoryField('introLine1', this.value)" />
+            </div>
+            <div class="field">
+              <label>오프닝 슬로건 2줄</label>
+              <input type="text" value="${escHtml(hs.introLine2 || '')}" placeholder="예: 환자 스토리 공개"
+                oninput="updateHomeStoryField('introLine2', this.value)" />
+            </div>
+          </div>
+
+          <h3 style="margin:16px 0 10px; font-size:14.5px;">2) 상단 네비게이션 브랜드 로고 &amp; 스토리 상단 철학 캡슐</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label>상단 로고 한의원명 (brandTitle)</label>
+              <input type="text" value="${escHtml(hs.brandTitle || '')}"
+                oninput="updateHomeStoryField('brandTitle', this.value)" />
+            </div>
+            <div class="field">
+              <label>상단 로고 보조 슬로건 (brandSub)</label>
+              <input type="text" value="${escHtml(hs.brandSub || '')}"
+                oninput="updateHomeStoryField('brandSub', this.value)" />
+            </div>
+          </div>
+          <div class="field">
+            <label>스토리 대사 상단 철학 캡슐 배지 (conceptPill)</label>
+            <input type="text" value="${escHtml(hs.conceptPill || '')}"
+              oninput="updateHomeStoryField('conceptPill', this.value)" />
+          </div>
+
+          <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+          <h3 style="margin:0 0 10px; font-size:14.5px;">3) 8대 생애주기 스토리 챕터 상단 라벨 &amp; 대표 대사</h3>
+          <div style="margin-bottom:14px;">
+            ${chapters.map((ch, cIdx) => `
+              <div class="list-row-inline" style="margin-bottom:8px;">
+                <span class="tag-pill">CH 0${cIdx + 1}</span>
+                <input type="text" style="max-width:250px;" value="${escHtml(ch.numLabel || '')}" placeholder="챕터 상단 라벨"
+                  oninput="updateHomeChapterField(${cIdx}, 'numLabel', this.value)" />
+                <input type="text" value="${escHtml(ch.quote || '')}" placeholder="챕터 대표 대사"
+                  oninput="updateHomeChapterField(${cIdx}, 'quote', this.value)" />
+              </div>
+            `).join('')}
+          </div>
+
+          <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+          <h3 style="margin:0 0 10px; font-size:14.5px;">4) 스토리 완주 후 피날레 진료카드 섹션 타이틀</h3>
+          <div class="grid-2">
+            <div class="field">
+              <label>피날레 인트로 헤드라인 (finaleHeadline)</label>
+              <input type="text" value="${escHtml(hs.finaleHeadline || '')}"
+                oninput="updateHomeStoryField('finaleHeadline', this.value)" />
+            </div>
+            <div class="field">
+              <label>피날레 인트로 서브문구 (finaleHeadlineSub)</label>
+              <input type="text" value="${escHtml(hs.finaleHeadlineSub || '')}"
+                oninput="updateHomeStoryField('finaleHeadlineSub', this.value)" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label>벤토 그리드 상단 영문/철학 라벨 (finaleEyebrow)</label>
+              <input type="text" value="${escHtml(hs.finaleEyebrow || '')}"
+                oninput="updateHomeStoryField('finaleEyebrow', this.value)" />
+            </div>
+            <div class="field">
+              <label>벤토 그리드 메인 타이틀 (finaleMainTitle)</label>
+              <input type="text" value="${escHtml(hs.finaleMainTitle || '')}"
+                oninput="updateHomeStoryField('finaleMainTitle', this.value)" />
+            </div>
+          </div>
+        `;
+        return;
+      }
       const meta = page.meta || (page.meta = {});
       const theme = page.theme || (page.theme = {});
       const advice = meta.doctorAdvice || (meta.doctorAdvice = { caution: '주의 필요', severe: '집중 치료 권장' });
       const extraLink = meta.extraLink || { text: '', href: '' };
       const descText = Array.isArray(meta.desc) ? meta.desc.join('\n') : String(meta.desc || '');
       const checkItems = Array.isArray(meta.checklistItems) ? meta.checklistItems : [];
-
-      const box = document.getElementById('leftPanelEditorBox');
       box.innerHTML = `
         <div class="panel-head">
           <h2>📋 [${escHtml(page.label)}] 좌측 고정 안내 패널 &amp; 자가진단 체크리스트</h2>
@@ -2482,8 +2865,12 @@
     /* === Mutation Helpers === */
     function toggleCardAccordion(idx, ev) {
       if (ev) ev.stopPropagation();
-      if (expandedCards.has(idx)) expandedCards.delete(idx);
-      else expandedCards.add(idx);
+      if (expandedCards.has(idx)) {
+        expandedCards.delete(idx);
+      } else {
+        expandedCards.add(idx);
+        syncHomePreviewToCard(idx);
+      }
       renderStoryCardsPane();
     }
 
@@ -2740,6 +3127,30 @@
     function addNewStoryCard() {
       const page = getCurrentPage();
       if (!Array.isArray(page.plates)) page.plates = [];
+      if (isHomeStoryPage(page)) {
+        const firstBentoIdx = page.plates.findIndex(c => c && c.type === 'home-bento-card');
+        const insertIdx = firstBentoIdx >= 0 ? firstBentoIdx : page.plates.length;
+        const newHomeFrame = {
+          type: 'home-story-frame',
+          imgSrc: 'life_5c_graceful_elder.jpg?v=pov7',
+          chapter: 8,
+          title: '새로운 환자 스토리 대사를 입력하세요',
+          sub: '',
+          povBadge: '',
+          stepLabel: '',
+          mode: 5,
+          warmth: 1.10,
+          focal: [0.52, 0.50],
+          thumbs: []
+        };
+        page.plates.splice(insertIdx, 0, newHomeFrame);
+        expandedCards.add(insertIdx);
+        markDirty(true);
+        renderPageSwitcher();
+        renderStoryCardsPane();
+        reloadPreviewIframe();
+        return;
+      }
       const nextNum = page.plates.length + 1;
       page.plates.push({
         id: 'card_custom_' + Date.now(),
@@ -2844,7 +3255,7 @@
         p.cardStyle = JSON.parse(JSON.stringify(sourceStyle));
       });
       markDirty(true);
-      showStatus('ok', '현재 Sample A 카드 디자인 및 표시 항목 설정을 11개 전 상세페이지에 동일하게 복사했습니다! 상단의 [✨ 11개 전체 일괄 반영]을 누르면 모든 페이지 파일에 적용됩니다.');
+      showStatus('ok', '현재 Sample A 카드 디자인 및 표시 항목 설정을 전체 페이지에 동일하게 복사했습니다! 상단의 [✨ 11개 전체 일괄 반영]을 누르면 모든 페이지 파일에 적용됩니다.');
     }
 
     /* === Left Panel Helpers === */
@@ -3031,6 +3442,7 @@
           });
           let html = window.BareunCompiler.buildPageHtml(mergedPage);
           if (IS_WORDPRESS) {
+            if (typeof window.BareunCompiler.rewriteAssetsForWP === 'function') { html = window.BareunCompiler.rewriteAssetsForWP(html); }
             html = html.replace(/<head([^>]*)>/i, `<head$1><base href="${STUDIO_GH_RAW_BASE}">`);
           }
           frame.srcdoc = html;
@@ -3184,11 +3596,15 @@
       targetCardIdx: 0,
       targetMode: 'replace_card', // 'replace_card' | 'add_new_card' | 'add_sub_thumb'
       targetField: 'imgSrc',
+      targetSlotType: 'main',     // 'main' | 'thumb' | 'new_thumb' | 'frame' | 'brochure' | 'beforeImg' | 'afterImg' | 'poster'
+      targetSlotIdx: 0,
+      subThumbLabel: '',
       workMode: 'edit_current',   // 'edit_current' | 'write_new'
       promptText: '',
       loadedCardPrompt: '',
       loadedImageKey: '',
       useDirectorFace: false,
+      useSourceImageRef: false,   // Default FALSE: never blindly copy existing image composition unless user explicitly checks opt-in!
       angleSamples: DEFAULT_DIRECTOR_ANGLES.map(a => ({ ...a })),
       uploadingAngleKey: '',
       newCardTitle: '',
@@ -3200,6 +3616,7 @@
       lastEngineLabel: '',
       showKeyEditor: false,
       apiKeyInput: '',
+      dailyLimitInput: 50,
       aiKeyState: {
         hasArgonEngine: false,
         hasGeminiKey: false,
@@ -3208,6 +3625,16 @@
         activeLabel: '',
         maskedGeminiKey: '',
         maskedFalKey: ''
+      },
+      aiUsage: {
+        todayDate: '',
+        dailyFreeLimit: 50,
+        argonHighTodayUsed: 0,
+        argonHighTotalUsed: 0,
+        freeRemaining: 50,
+        quotaExhaustedToday: false,
+        lastUsedAt: null,
+        lastModel: 'gemini-3-pro-image'
       },
       history: []
     };
@@ -3224,6 +3651,66 @@
       try {
         localStorage.setItem('bareun_studio_im_history_v2', JSON.stringify(imState.history.slice(0, 24)));
       } catch (e) {}
+    }
+
+    function detectNoFaceDirectiveUi(rawText) {
+      if (window.BareunCardPrompts && typeof window.BareunCardPrompts.detectNoFaceDirective === 'function') {
+        return window.BareunCardPrompts.detectNoFaceDirective(rawText);
+      }
+      const t = String(rawText || '').replace(/\s+/g, '');
+      return /얼굴미노출|얼굴비노출|얼굴없이|얼굴없는|얼굴안나오|얼굴안보이|얼굴제외|얼굴가리|얼굴크롭|얼굴생략|뒷모습만|손만클로즈업|손클로즈업만|목아래만|어깨아래만|noface|faceless|withoutface/i.test(t);
+    }
+
+    function applyUsagePayload(u) {
+      if (!u || typeof u !== 'object') return;
+      const limit = Math.max(1, Number(u.dailyFreeLimit) || 50);
+      const used = Math.max(0, Number(u.argonHighTodayUsed) || 0);
+      const exhausted = Boolean(u.quotaExhaustedToday);
+      const rem = exhausted ? 0 : (u.freeRemaining != null ? Math.max(0, Number(u.freeRemaining)) : Math.max(0, limit - used));
+      imState.aiUsage = {
+        todayDate: u.todayDate || u.dateKst || '',
+        dailyFreeLimit: limit,
+        argonHighTodayUsed: used,
+        argonHighTotalUsed: Math.max(0, Number(u.argonHighTotalUsed) || 0),
+        freeRemaining: rem,
+        quotaExhaustedToday: exhausted,
+        lastUsedAt: u.lastUsedAt || null,
+        lastModel: u.lastModel || 'gemini-3-pro-image'
+      };
+      imState.dailyLimitInput = limit;
+      renderHeaderArgonBadge();
+    }
+
+    function renderHeaderArgonBadge() {
+      const btn = document.getElementById('headerArgonQuotaBadge');
+      if (!btn) return;
+      const isArgon = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
+      const u = imState.aiUsage || {};
+      const limit = Math.max(1, Number(u.dailyFreeLimit) || 50);
+      const used = Math.max(0, Number(u.argonHighTodayUsed) || 0);
+      const rem = u.quotaExhaustedToday ? 0 : Math.max(0, limit - used);
+
+      btn.classList.remove('low', 'exhausted');
+      if (!isArgon) {
+        btn.classList.add('low');
+        btn.innerHTML = `⚪ 아르곤 하이 키 미연결 · 클릭하여 설정`;
+        return;
+      }
+      if (rem <= 0 || u.quotaExhaustedToday) {
+        btn.classList.add('exhausted');
+        btn.innerHTML = `🔴 아르곤 하이 2K · 오늘 무료 소진 (오늘 ${used}/${limit}회)`;
+      } else if (rem <= 10) {
+        btn.classList.add('low');
+        btn.innerHTML = `🟡 아르곤 하이 2K · 무료 <strong>${rem}회</strong> 남음 (오늘 ${used}/${limit}회)`;
+      } else {
+        btn.innerHTML = `⚡ 아르곤 하이 2K · 무료 <strong>${rem}회</strong> 남음 (오늘 ${used}/${limit}회)`;
+      }
+    }
+
+    function openArgonQuotaSettings() {
+      imState.showKeyEditor = true;
+      switchEditorTab('imagemaker');
+      renderImageMakerPane();
     }
 
     async function loadStudioAiKeyStatus() {
@@ -3249,9 +3736,38 @@
             maskedGeminiKey: data.maskedGeminiKey || '',
             maskedFalKey: data.maskedFalKey || ''
           };
+          if (data.usage) applyUsagePayload(data.usage);
+          renderHeaderArgonBadge();
         }
       } catch (e) {
         console.warn('[Studio AI Key Status Fallback]:', e);
+      }
+    }
+
+    async function updateStudioAiUsageFromUi(actionType) {
+      try {
+        let url = '/api/studio-ai-usage';
+        const headers = { 'Content-Type': 'application/json' };
+        if (IS_WORDPRESS) {
+          url = '/wp-json/bareun/v1/studio/ai-usage';
+          if (window.wpApiSettings && window.wpApiSettings.nonce) {
+            headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+          }
+        }
+        const body = actionType === 'reset_today'
+          ? { resetToday: true }
+          : { dailyFreeLimit: Math.max(1, parseInt(imState.dailyLimitInput, 10) || 50) };
+        const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+        const data = await res.json();
+        if (data && data.ok && data.usage) {
+          applyUsagePayload(data.usage);
+          renderImageMakerPane();
+          showStatus('ok', actionType === 'reset_today'
+            ? '✅ 오늘 아르곤 하이 무료 사용 횟수가 0회로 초기화되었습니다!'
+            : `✅ 아르곤 하이 일일 무료 기준 한도가 ${data.usage.dailyFreeLimit}회로 저장되었습니다!`);
+        }
+      } catch (err) {
+        showStatus('err', '사용량 설정 저장 오류: ' + err.message);
       }
     }
 
@@ -3292,8 +3808,10 @@
           maskedGeminiKey: data.maskedGeminiKey || '',
           maskedFalKey: data.maskedFalKey || ''
         };
+        if (data.usage) applyUsagePayload(data.usage);
         imState.apiKeyInput = '';
         imState.showKeyEditor = false;
+        renderHeaderArgonBadge();
         renderImageMakerPane();
         showStatus('ok', data.message || '✅ 아르곤 하이 2K 정품 엔진 키가 저장되었습니다!');
       } catch (err) {
@@ -3339,7 +3857,7 @@
         if (!file) return;
         imState.uploadingAngleKey = angleKey;
         renderImageMakerPane();
-        showStatus('working', `📷 [${slot.label}] 원장님 샘플 얼굴 사진을 등록하고 있습니다...`);
+        showStatus('working', `📷 [${slot.label}] 원장님 샘플 얼굴 사진을 정방향 자동 보정하여 등록하고 있습니다...`);
         try {
           const dataUrl = await new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -3367,7 +3885,7 @@
           }
           imState.uploadingAngleKey = '';
           renderImageMakerPane();
-          showStatus('ok', `✅ [${slot.label}] 각도 원장님 샘플 얼굴 사진이 등록되었습니다! 이제 해당 각도 합성 시 오차 없이 반영됩니다.`);
+          showStatus('ok', `✅ [${slot.label}] 각도 원장님 샘플 얼굴 사진이 정방향으로 등록되었습니다!`);
         } catch (err) {
           imState.uploadingAngleKey = '';
           renderImageMakerPane();
@@ -3377,20 +3895,74 @@
       inp.click();
     }
 
-    function readTargetCardPromptData(card, page, fieldOverride) {
-      if (!card) {
-        return { prompt: '', imageKey: '', hasDirectorFace: false };
-      }
-      const cp = window.BareunCardPrompts;
-      if (fieldOverride && (fieldOverride === 'beforeImg' || fieldOverride === 'afterImg' || fieldOverride === 'poster') && card[fieldOverride]) {
-        const key = cp ? cp.normalizeImgKey(card[fieldOverride]) : String(card[fieldOverride]).split('?')[0].split('/').pop();
-        if (cp && cp.CARD_IMAGE_PROMPT_MAP && cp.CARD_IMAGE_PROMPT_MAP[key]) {
-          return {
-            prompt: cp.CARD_IMAGE_PROMPT_MAP[key],
-            imageKey: key,
-            hasDirectorFace: Boolean(cp.DIRECTOR_FACE_IMAGES && cp.DIRECTOR_FACE_IMAGES.has(key))
-          };
+    function buildTargetSlotOptions(card) {
+      if (!card) return [{ key: 'main:0', slotType: 'main', slotIdx: 0, label: '📌 대표 메인 이미지 (imgSrc)' }];
+      const opts = [];
+      const t = card.type || 'clean-image';
+      if (t === 'runway-ba-scan') {
+        opts.push({ key: 'beforeImg:0', slotType: 'beforeImg', slotIdx: 0, label: '📌 시술 전 (BEFORE) 이미지' });
+        opts.push({ key: 'afterImg:0', slotType: 'afterImg', slotIdx: 0, label: '📌 시술 후 (AFTER) 이미지' });
+      } else if (t === 'clean-video' || t === 'diet-tele-video') {
+        opts.push({ key: 'poster:0', slotType: 'poster', slotIdx: 0, label: '📌 비디오 포스터 썸네일 (poster)' });
+      } else if (t === 'motion-story' || (t === 'diet-single-stage' && Array.isArray(card.frames) && card.frames.length > 0)) {
+        const frames = Array.isArray(card.frames) ? card.frames : [];
+        frames.forEach((fr, fIdx) => {
+          opts.push({ key: 'frame:' + fIdx, slotType: 'frame', slotIdx: fIdx, label: `🎞️ 모션 프레임 #${fIdx + 1} 교체 (${(fr || '').split('?')[0]})` });
+        });
+      } else if (t === 'gongjindan-panorama-archive') {
+        const pages = Array.isArray(card.pages) ? card.pages : [];
+        pages.forEach((pg, pIdx) => {
+          opts.push({ key: 'brochure:' + pIdx, slotType: 'brochure', slotIdx: pIdx, label: `📜 브로슈어 #${pIdx + 1} 교체 (${pg.title || ''})` });
+        });
+      } else {
+        opts.push({ key: 'main:0', slotType: 'main', slotIdx: 0, label: '📌 대표 메인 이미지 (imgSrc)' });
+        const thumbs = Array.isArray(card.thumbs) ? card.thumbs : [];
+        thumbs.forEach((th, thIdx) => {
+          opts.push({
+            key: 'thumb:' + thIdx,
+            slotType: 'thumb',
+            slotIdx: thIdx,
+            label: `🖼️ 서브 썸네일 #${thIdx + 1} 교체 — ${th.label || ('서브 ' + (thIdx + 1))}`
+          });
+        });
+        if (t !== 'home-bento-card') {
+          opts.push({
+            key: 'new_thumb:' + thumbs.length,
+            slotType: 'new_thumb',
+            slotIdx: thumbs.length,
+            label: `➕ 새 서브 썸네일 추가 제작 (현재 ${thumbs.length}개 → ${thumbs.length + 1}번째 추가)`
+          });
         }
+      }
+      return opts;
+    }
+
+    function getSlotCurrentRawImg(card, slotType, slotIdx) {
+      if (!card) return 'card_1_director.jpg';
+      if (slotType === 'thumb') {
+        const th = Array.isArray(card.thumbs) ? card.thumbs[slotIdx] : null;
+        return (th && th.img) || card.imgSrc || 'card_1_director.jpg';
+      }
+      if (slotType === 'new_thumb') {
+        return card.imgSrc || getCardPreviewRawPath(card);
+      }
+      if (slotType === 'frame') {
+        return (Array.isArray(card.frames) && card.frames[slotIdx]) || card.imgSrc || 'card_1_director.jpg';
+      }
+      if (slotType === 'brochure') {
+        return (Array.isArray(card.pages) && card.pages[slotIdx] && card.pages[slotIdx].img) || 'card_1_director.jpg';
+      }
+      if (slotType === 'beforeImg' || slotType === 'afterImg' || slotType === 'poster') {
+        return card[slotType] || getCardPreviewRawPath(card);
+      }
+      return card.imgSrc || getCardPreviewRawPath(card);
+    }
+
+    function readTargetSlotPromptData(card, page, slotType, slotIdx) {
+      if (!card) return { prompt: '', imageKey: '', hasDirectorFace: false, label: '' };
+      const cp = window.BareunCardPrompts;
+      if (cp && typeof cp.readSlotImagePrompt === 'function') {
+        return cp.readSlotImagePrompt(card, page, slotType, slotIdx);
       }
       if (cp && typeof cp.readCardImagePrompt === 'function') {
         return cp.readCardImagePrompt(card, page);
@@ -3399,8 +3971,9 @@
       const cleanSub = String(card.sub || '').trim();
       return {
         prompt: [cleanTitle, cleanSub].filter(Boolean).join(' — ') || '따뜻한 자연광이 비치는 한의원 원목 진료실 에디토리얼 실사 사진',
-        imageKey: getCardPreviewRawPath(card),
-        hasDirectorFace: false
+        imageKey: getSlotCurrentRawImg(card, slotType, slotIdx),
+        hasDirectorFace: false,
+        label: ''
       };
     }
 
@@ -3410,51 +3983,121 @@
       const safeIdx = Math.max(0, Math.min(page.plates.length - 1, Number(cardIdx) || 0));
       imState.targetCardIdx = safeIdx;
       const card = page.plates[safeIdx];
-      const info = readTargetCardPromptData(card, page, imState.targetField);
 
-      imState.workMode = 'edit_current';
-      imState.loadedCardPrompt = info.prompt || '';
-      imState.promptText = info.prompt || '';
-      imState.loadedImageKey = info.imageKey || getCardPreviewRawPath(card);
-      imState.useDirectorFace = Boolean(info.hasDirectorFace);
+      const validOpts = buildTargetSlotOptions(card);
+      const currKey = `${imState.targetSlotType}:${imState.targetSlotIdx}`;
+      if (!validOpts.some(o => o.key === currKey)) {
+        const firstOpt = validOpts[0] || { slotType: 'main', slotIdx: 0 };
+        imState.targetSlotType = firstOpt.slotType;
+        imState.targetSlotIdx = firstOpt.slotIdx;
+      }
+
+      const info = readTargetSlotPromptData(card, page, imState.targetSlotType, imState.targetSlotIdx);
+
+      if (imState.targetSlotType === 'new_thumb') {
+        const nextThumbNum = (Array.isArray(card.thumbs) ? card.thumbs.length : 0) + 1;
+        imState.workMode = 'write_new';
+        imState.loadedCardPrompt = info.prompt || '';
+        imState.promptText = '';
+        imState.useDirectorFace = false;
+        imState.useSourceImageRef = false;
+        imState.subThumbLabel = '서브 장면 ' + nextThumbNum;
+        imState.targetMode = 'add_sub_thumb';
+      } else {
+        imState.workMode = 'edit_current';
+        imState.loadedCardPrompt = info.prompt || '';
+        imState.promptText = info.prompt || '';
+        const noFace = detectNoFaceDirectiveUi(imState.promptText);
+        imState.useDirectorFace = noFace ? false : Boolean(info.hasDirectorFace);
+        imState.useSourceImageRef = false; // Always default to fresh reasoning unless explicitly checked!
+        if (imState.targetSlotType === 'thumb') {
+          const thObj = Array.isArray(card.thumbs) ? card.thumbs[imState.targetSlotIdx] : null;
+          imState.subThumbLabel = (thObj && thObj.label) || ('서브 장면 ' + (imState.targetSlotIdx + 1));
+        }
+        imState.targetMode = 'replace_card';
+      }
+
+      imState.loadedImageKey = info.imageKey || getSlotCurrentRawImg(card, imState.targetSlotType, imState.targetSlotIdx);
       imState.newCardTitle = card.title || '';
       imState.newCardSub = card.sub || '';
 
       if (notify) {
         renderImageMakerPane();
-        showStatus('ok', `📋 CARD ${String(safeIdx + 1).padStart(2, '0')} 현재 설정된 이미지의 원본 프롬프트를 정확히 불러왔습니다. 필요한 부분만 수정해 제작하세요!`);
+        showStatus('ok', `📋 선택한 슬롯의 원본 프롬프트를 정확히 불러왔습니다. (기존 이미지 구도 고착 방지를 위해 '새로 사고·촬영' 모드가 기본 적용됩니다)`);
       }
     }
 
-    function openImageMakerForCard(cardIdx, modeOrField) {
+    function openImageMakerForCard(cardIdx, slotTypeOrMode, subIdx) {
       const page = getCurrentPage();
       if (!page) return;
       const safeIdx = Math.max(0, Math.min((page.plates || []).length - 1, cardIdx || 0));
       imState.targetCardIdx = safeIdx;
+      const card = page.plates[safeIdx] || {};
 
-      if (modeOrField === 'sub_thumb') {
+      if (slotTypeOrMode === 'sub_thumb' || slotTypeOrMode === 'new_thumb') {
+        imState.targetSlotType = 'new_thumb';
+        imState.targetSlotIdx = Array.isArray(card.thumbs) ? card.thumbs.length : 0;
+        imState.targetField = 'imgSrc';
         imState.targetMode = 'add_sub_thumb';
+      } else if (slotTypeOrMode === 'thumb') {
+        imState.targetSlotType = 'thumb';
+        imState.targetSlotIdx = Number(subIdx) || 0;
         imState.targetField = 'imgSrc';
-      } else if (modeOrField === 'beforeImg' || modeOrField === 'afterImg' || modeOrField === 'poster') {
         imState.targetMode = 'replace_card';
-        imState.targetField = modeOrField;
+      } else if (slotTypeOrMode === 'frame') {
+        imState.targetSlotType = 'frame';
+        imState.targetSlotIdx = Number(subIdx) || 0;
+        imState.targetField = 'imgSrc';
+        imState.targetMode = 'replace_card';
+      } else if (slotTypeOrMode === 'brochure') {
+        imState.targetSlotType = 'brochure';
+        imState.targetSlotIdx = Number(subIdx) || 0;
+        imState.targetField = 'imgSrc';
+        imState.targetMode = 'replace_card';
+      } else if (slotTypeOrMode === 'beforeImg' || slotTypeOrMode === 'afterImg' || slotTypeOrMode === 'poster') {
+        imState.targetSlotType = slotTypeOrMode;
+        imState.targetSlotIdx = 0;
+        imState.targetField = slotTypeOrMode;
+        imState.targetMode = 'replace_card';
       } else {
-        imState.targetMode = 'replace_card';
+        imState.targetSlotType = 'main';
+        imState.targetSlotIdx = 0;
         imState.targetField = 'imgSrc';
+        imState.targetMode = 'replace_card';
       }
 
       syncImPromptFromCurrentCard(safeIdx, false);
       switchEditorTab('imagemaker');
-      const editorScroll = document.querySelector('.editor-scroll');
-      if (editorScroll) editorScroll.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectImTargetSlot(slotKey) {
+      const [sType, sIdxRaw] = String(slotKey || 'main:0').split(':');
+      imState.targetSlotType = sType || 'main';
+      imState.targetSlotIdx = parseInt(sIdxRaw || '0', 10) || 0;
+      if (sType === 'beforeImg' || sType === 'afterImg' || sType === 'poster') {
+        imState.targetField = sType;
+      } else {
+        imState.targetField = 'imgSrc';
+      }
+      syncImPromptFromCurrentCard(imState.targetCardIdx, false);
+      renderImageMakerPane();
     }
 
     function setImWorkMode(mode) {
       imState.workMode = mode === 'write_new' ? 'write_new' : 'edit_current';
       if (imState.workMode === 'edit_current') {
-        syncImPromptFromCurrentCard(imState.targetCardIdx, false);
+        const page = getCurrentPage();
+        const card = page && page.plates ? page.plates[imState.targetCardIdx] : null;
+        const info = readTargetSlotPromptData(card, page, imState.targetSlotType === 'new_thumb' ? 'main' : imState.targetSlotType, imState.targetSlotIdx);
+        imState.promptText = info.prompt || '';
+        const noFace = detectNoFaceDirectiveUi(imState.promptText);
+        imState.useDirectorFace = noFace ? false : Boolean(info.hasDirectorFace);
+        imState.useSourceImageRef = false;
       } else {
         imState.promptText = '';
+        imState.useDirectorFace = false;
+        imState.useSourceImageRef = false;
       }
       renderImageMakerPane();
       setTimeout(() => {
@@ -3464,13 +4107,50 @@
     }
 
     function toggleImDirectorFace(checked) {
+      if (checked && detectNoFaceDirectiveUi(imState.promptText)) {
+        alert('현재 입력된 프롬프트에 [얼굴 미노출 / 얼굴 없이] 지시가 포함되어 있어 대표원장 얼굴 합성을 동시에 켤 수 없습니다.\n원장님 얼굴을 노출하려면 프롬프트에서 (얼굴미노출) 문구를 먼저 지워주세요.');
+        imState.useDirectorFace = false;
+        renderImageMakerPane();
+        return;
+      }
       imState.useDirectorFace = Boolean(checked);
       renderImageMakerPane();
+    }
+
+    function toggleImSourceImageRef(checked) {
+      imState.useSourceImageRef = Boolean(checked);
+      renderImageMakerPane();
+    }
+
+    function onImPromptTextInput(val) {
+      imState.promptText = val;
+      const hasNoFace = detectNoFaceDirectiveUi(val);
+      const bannerEl = document.getElementById('imNoFaceGuardBanner');
+      if (bannerEl) {
+        bannerEl.classList.toggle('show', hasNoFace);
+      }
+      if (hasNoFace && imState.useDirectorFace) {
+        imState.useDirectorFace = false;
+        const dirChk = document.getElementById('imDirectorFaceCheckbox');
+        if (dirChk) dirChk.checked = false;
+        const dirBox = document.getElementById('imDirectorFaceBox');
+        if (dirBox) dirBox.classList.remove('active');
+        const dirGridWrap = document.getElementById('imDirectorAngleGridWrap');
+        if (dirGridWrap) dirGridWrap.style.display = 'none';
+        const dirStatus = document.getElementById('imDirectorFaceStatusText');
+        if (dirStatus) {
+          dirStatus.style.color = '#b45309';
+          dirStatus.textContent = '🚫 [얼굴 미노출] 지시 감지됨 — 원장님 얼굴 합성이 자동 해제(0%)되었습니다';
+        }
+      }
     }
 
     function updateImOption(key, val) {
       if (key === 'targetCardIdx') {
         imState.targetCardIdx = parseInt(val, 10) || 0;
+        imState.targetSlotType = 'main';
+        imState.targetSlotIdx = 0;
+        imState.targetField = 'imgSrc';
         syncImPromptFromCurrentCard(imState.targetCardIdx, false);
         renderImageMakerPane();
         return;
@@ -3481,222 +4161,6 @@
       }
     }
 
-    function pickBestAngleSampleForPrompt(promptStr) {
-      const t = String(promptStr || '').toLowerCase();
-      const findSlot = (k) => imState.angleSamples.find(s => s.key === k) || imState.angleSamples[0];
-      const isWarmOrSmile = /미소|웃음|눈웃음|따뜻|온화|친절|상담|설명|문진|경청|맞이|인사|브리핑|환자/i.test(t);
-      if (/좌측\s*측면|왼쪽\s*옆모습|왼쪽\s*측면|left\s*profile/i.test(t)) return findSlot('leftProfile');
-      if (/우측\s*측면|오른쪽\s*옆모습|오른쪽\s*측면|right\s*profile/i.test(t)) return findSlot('rightProfile');
-      if (/좌측\s*15|왼쪽\s*15/i.test(t) || (/좌측|왼쪽|left/i.test(t) && isWarmOrSmile)) return findSlot('left15Smile');
-      if (/우측\s*15|오른쪽\s*15/i.test(t) || (/우측|오른쪽|모니터|초음파|상담|문진|설명|브리핑/i.test(t) && isWarmOrSmile)) return findSlot('right15Smile');
-      if (/좌측|왼쪽|left\s*30|left\s*three/i.test(t)) return findSlot('left30');
-      if (/우측|오른쪽|진맥|맥진|right\s*30|three-quarter/i.test(t)) return findSlot('right30');
-      if (isWarmOrSmile) return findSlot('frontSmile');
-      return findSlot('front');
-    }
-
-    function preprocessKoMedicalPromptBrowser(rawPrompt) {
-      const rules = [
-        [/2\s*[,·ㆍ/\-]?\s*3\s*[,·ㆍ/\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/g, '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers gently side-by-side)'],
-        [/요골\s*동맥/g, '손목 엄지 아래쪽 요골동맥 부위(the radial artery on the inner thumb-side of the patient wrist)'],
-        [/진맥\s*쿠션/g, '전통 비단 진맥 쿠션(a beige woven-silk pulse diagnosis wrist cushion)'],
-        [/맥진|진맥/g, '전통 한의학 손목 맥진(traditional Korean medicine radial pulse diagnosis on the wrist)'],
-        [/복진/g, '진료 베드에 누운 환자의 복부를 손바닥으로 부드럽게 촉진하는 복진(gentle abdominal palpation diagnosis on an examination bed)'],
-        [/추나\s*요법|추나\s*교정|추나/g, '추나 교정 테이블에서 척추와 골반 정렬을 양손으로 정교하게 교정하는 수기 추나 치료(precise hands-on Chuna manual spinal and pelvic alignment therapy)'],
-        [/약침/g, '멸균 한방 약침 주사 시술(sterile herbal pharmacopuncture point therapy)'],
-        [/탕전실/g, '위생적인 유리 통창 원내 한약 탕전실(clean modern glass-walled clinic herbal decoction room)'],
-        [/황제\s*공진단|공진단/g, '24K 순금박으로 감싼 황제공진단 환약과 고급 원목 목함(24K pure gold-leaf wrapped Gongjindan herbal pills inside a dark walnut wooden box)'],
-        [/녹용\s*분골|러시아\s*녹용|녹용/g, '최상급 러시아산 녹용 분골 절편(top-grade sliced Russian velvet deer antler tips)'],
-        [/체열\s*진단기|적외선\s*체열/g, '전신 적외선 체열진단 열화상 모니터(medical infrared thermography body heat-map monitor)'],
-        [/초음파\s*진단기|초음파\s*모니터|초음파/g, '정밀 초음파 진단 프로브와 실시간 초음파 영상 모니터(medical diagnostic ultrasound transducer probe and live grayscale ultrasound monitor)']
-      ];
-      let text = String(rawPrompt || '').trim();
-      const tokens = [];
-      for (const [regex, replacement] of rules) {
-        text = text.replace(regex, () => {
-          const id = `__BMED_${tokens.length}__`;
-          tokens.push(replacement);
-          return id;
-        });
-      }
-      for (let i = 0; i < tokens.length; i++) {
-        text = text.split(`__BMED_${i}__`).join(tokens[i]);
-      }
-      return text;
-    }
-
-    async function translateKoToEnBrowser(rawPrompt, useDirectorFace) {
-      const prepped = preprocessKoMedicalPromptBrowser(rawPrompt);
-      let translated = prepped;
-      if (/[가-힣]/.test(prepped)) {
-        try {
-          const gUrl = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' + encodeURIComponent(prepped);
-          const res = await fetch(gUrl);
-          if (res.ok) {
-            const arr = await res.json();
-            if (Array.isArray(arr) && Array.isArray(arr[0])) {
-              translated = arr[0].map(seg => (Array.isArray(seg) ? seg[0] : '')).join('').trim() || prepped;
-            }
-          }
-        } catch (e) {}
-      }
-      const directorLead = useDirectorFace
-        ? 'Korean male medical director in his late 30s to early 40s with neat short black hair swept back cleanly revealing an open forehead (no bangs covering forehead), wearing thin gold-rimmed rectangular glasses and a crisp white medical coat over a blue-and-white striped dress shirt, warm trustworthy expression'
-        : '';
-      return [
-        'Authentic unretouched editorial photograph captured on Hasselblad X2D 100C with 80mm f/1.9 prime lens',
-        directorLead,
-        translated,
-        'refined warm Korean medicine clinic atmosphere with natural oak wood and soft Hanji daylight, realistic anatomical hands and fingers, authentic skin pores and natural fabric weave, cinematic shallow depth of field, ultra-clean composition, strictly NO text, NO logos, NO watermarks'
-      ].filter(Boolean).join(', ');
-    }
-
-    async function blobToCleanJpegDataUrl(blob, targetW = 1280, targetH = 800) {
-      const bmpUrl = URL.createObjectURL(blob);
-      try {
-        const img = await new Promise((resolve, reject) => {
-          const el = new Image();
-          el.crossOrigin = 'anonymous';
-          el.onload = () => resolve(el);
-          el.onerror = () => reject(new Error('생성 이미지 디코딩 실패'));
-          el.src = bmpUrl;
-        });
-        const canvas = document.createElement('canvas');
-        canvas.width = targetW;
-        canvas.height = targetH;
-        const ctx = canvas.getContext('2d');
-        const srcRatio = img.width / img.height;
-        const dstRatio = targetW / targetH;
-        let sx = 0, sy = 0, sw = img.width, sh = img.height;
-        if (srcRatio > dstRatio) {
-          sw = Math.round(img.height * dstRatio);
-          sx = Math.round((img.width - sw) / 2);
-        } else if (srcRatio < dstRatio) {
-          sh = Math.round(img.width / dstRatio);
-          sy = Math.round((img.height - sh) / 2);
-        }
-        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
-        return canvas.toDataURL('image/jpeg', 0.95);
-      } finally {
-        URL.revokeObjectURL(bmpUrl);
-      }
-    }
-
-    async function generateViaBrowserCloudFlux(enPrompt, useDirectorFace, seed, onStep) {
-      const { Client } = await import('https://cdn.jsdelivr.net/npm/@gradio/client/+esm');
-      let baseImgBlob = null;
-      let engineUsed = 'FLUX.1-dev (28-Step DSLR)';
-
-      let angleBlob = null;
-      let matchedSlot = null;
-      if (useDirectorFace) {
-        matchedSlot = pickBestAngleSampleForPrompt(imState.promptText);
-        if (matchedSlot && matchedSlot.fileName) {
-          try {
-            const refUrl = resolveStudioAssetUrl(matchedSlot.fileName);
-            const refRes = await fetch(refUrl);
-            if (refRes.ok) angleBlob = await refRes.blob();
-          } catch (e) {}
-        }
-      }
-
-      // 1) Try official Black Forest Labs FLUX.1-dev (28 steps, top photorealism, zero watermark)
-      try {
-        onStep('1/2 FLUX.1-dev 하이엔드 실사 스튜디오 촬영 중 (워터마크 ZERO)...');
-        const fluxDev = await Client.connect('black-forest-labs/FLUX.1-dev');
-        const devRes = await fluxDev.predict('/infer', {
-          prompt: enPrompt,
-          seed: seed % 2147483647,
-          randomize_seed: false,
-          width: 1280,
-          height: 800,
-          guidance_scale: 3.5,
-          num_inference_steps: 28
-        });
-        const outUrl = devRes?.data?.[0]?.url;
-        if (outUrl) {
-          baseImgBlob = await fetch(outUrl).then(r => r.blob());
-        }
-      } catch (e1) {
-        console.warn('[Cloud FLUX.1-dev busy, trying PuLID-FLUX / Schnell]:', e1);
-      }
-
-      // 2) If Director Face is ON and FLUX.1-dev was busy, try PuLID-FLUX directly with angle sample
-      if (!baseImgBlob && useDirectorFace && angleBlob) {
-        try {
-          onStep(`1/2 PuLID-FLUX 원장님 [${matchedSlot.label}] 얼굴 고정 촬영 중...`);
-          const pulid = await Client.connect('yanze/PuLID-FLUX');
-          const pRes = await pulid.predict('/generate_image', {
-            prompt: enPrompt,
-            id_image: angleBlob,
-            start_step: 0,
-            guidance: 4,
-            seed: String(seed % 2147483647),
-            true_cfg: 1,
-            width: 1280,
-            height: 800,
-            num_steps: 20,
-            id_weight: 1.08,
-            neg_prompt: 'watermark, logo, text, signature, cartoon, illustration, 3d render, plastic skin, bangs covering forehead, extra fingers',
-            timestep_to_start_cfg: 1,
-            max_sequence_length: 256
-          });
-          const pUrl = pRes?.data?.[0]?.url;
-          if (pUrl) {
-            baseImgBlob = await fetch(pUrl).then(r => r.blob());
-            engineUsed = `PuLID-FLUX (${matchedSlot.label} 인물고정)`;
-          }
-        } catch (e2) {
-          console.warn('[PuLID-FLUX fallback]:', e2);
-        }
-      }
-
-      // 3) Fallback to official Black Forest Labs FLUX.1-schnell (zero watermark)
-      if (!baseImgBlob) {
-        onStep('1/2 FLUX.1-schnell 고해상도 실사 촬영 중 (워터마크 ZERO)...');
-        const schnell = await Client.connect('black-forest-labs/FLUX.1-schnell');
-        const sRes = await schnell.predict('/infer', {
-          prompt: enPrompt,
-          seed: seed % 2147483647,
-          randomize_seed: false,
-          width: 1280,
-          height: 800,
-          num_inference_steps: 4
-        });
-        const sUrl = sRes?.data?.[0]?.url;
-        if (!sUrl) throw new Error('클라우드 FLUX 이미지 생성 응답 없음');
-        baseImgBlob = await fetch(sUrl).then(r => r.blob());
-        engineUsed = 'FLUX.1-schnell (고해상도 실사)';
-      }
-
-      // 4) If Director Face is ON, apply angle-matched ZeroGPU Face Lock synthesis
-      if (useDirectorFace && angleBlob) {
-        onStep(`2/2 원장님 [${matchedSlot.label}] 샘플링 얼굴 오차 ZERO 정밀 합성 중...`);
-        const swapSpaces = [
-          { space: 'Felixrosberg/face-swap', fn: '/run_inference', buildArgs: (src, dst) => ({ source: src, target: dst, slider: 100, adv_slider: 100, settings: [] }) },
-          { space: 'TonyAssi/Face-Swap', fn: '/swap_faces', buildArgs: (src, dst) => ({ src_img: src, dest_img: dst }) }
-        ];
-        for (const sp of swapSpaces) {
-          try {
-            const swClient = await Client.connect(sp.space);
-            const swRes = await swClient.predict(sp.fn, sp.buildArgs(angleBlob, baseImgBlob));
-            const swItem = Array.isArray(swRes?.data) ? swRes.data[0] : swRes?.data;
-            const swUrl = swItem?.url || (typeof swItem === 'string' ? swItem : '');
-            if (swUrl) {
-              baseImgBlob = await fetch(swUrl).then(r => r.blob());
-              engineUsed = `${engineUsed} + [${matchedSlot.label}] 얼굴 정밀 합성`;
-              break;
-            }
-          } catch (swErr) {
-            console.warn(`[Cloud FaceSwap ${sp.space} skipped]:`, swErr);
-          }
-        }
-      }
-
-      const cleanDataUrl = await blobToCleanJpegDataUrl(baseImgBlob, 1280, 800);
-      return { dataUrl: cleanDataUrl, engineLabel: engineUsed };
-    }
-
     async function generateSituationalImage() {
       if (imState.isGenerating) return;
       const page = getCurrentPage();
@@ -3704,27 +4168,34 @@
 
       const cleanPrompt = String(imState.promptText || '').trim();
       if (!cleanPrompt) {
-        alert('제작할 이미지 프롬프트를 입력하거나 [현재 카드 프롬프트 불러오기]를 눌러주세요.');
+        alert('제작할 이미지 프롬프트를 입력하거나 [현재 슬롯 프롬프트 불러오기]를 눌러주세요.');
         const ta = document.getElementById('imMainPromptTextarea');
         if (ta) ta.focus();
         return;
       }
 
+      const hasNoFace = detectNoFaceDirectiveUi(cleanPrompt);
+      if (hasNoFace) {
+        imState.useDirectorFace = false;
+      }
+      const effectiveUseDirectorFace = hasNoFace ? false : Boolean(imState.useDirectorFace);
+      const effectiveUseSourceRef = Boolean(imState.useSourceImageRef);
+
       const plates = page.plates || [];
       const targetCard = plates[imState.targetCardIdx] || {};
-      const currentRawImg = (imState.targetField && targetCard[imState.targetField])
-        ? targetCard[imState.targetField]
-        : getCardPreviewRawPath(targetCard);
+      const currentRawImg = getSlotCurrentRawImg(targetCard, imState.targetSlotType, imState.targetSlotIdx);
 
       const isArgonConnected = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
       imState.isGenerating = true;
-      if (isArgonConnected) {
-        imState.genStepText = imState.workMode === 'edit_current'
-          ? '아르곤 하이(Gemini 3 Pro Image · 2K) 정품 엔진이 원본 카드 사진을 참조하여 수정 프롬프트를 정밀 촬영 중입니다...'
-          : '아르곤 하이(Gemini 3 Pro Image · 2K) 정품 엔진이 최상급 DSLR 에디토리얼 실사를 촬영 중입니다...';
+      if (hasNoFace) {
+        imState.genStepText = '🚫 [얼굴 미노출 엄격 보호 모드] 얼굴 노출 0% · 프롬프트 지시 구도만으로 100% 새롭게 촬영 중입니다...';
+      } else if (effectiveUseDirectorFace) {
+        imState.genStepText = '👨‍⚕️ 안정위 대표원장님 정방향 다각도 얼굴 참조 + 새 프롬프트 정밀 촬영 중입니다...';
+      } else if (effectiveUseSourceRef) {
+        imState.genStepText = '🖼️ 기존 슬롯 이미지를 밑그림으로 참조하여 요청하신 수정 사항을 촬영 중입니다...';
       } else {
-        imState.genStepText = imState.useDirectorFace
-          ? '원장님 각도별 샘플 얼굴 매칭 및 하이엔드 DSLR 실사 촬영 준비 중...'
+        imState.genStepText = isArgonConnected
+          ? '✨ 아르곤 하이(Gemini 3 Pro Image · 2K) 엔진이 기존 이미지 구도를 완전히 비우고 오직 새 프롬프트만으로 사고·촬영 중입니다...'
           : '하이엔드 DSLR 에디토리얼 실사 이미지 촬영 중 (워터마크 ZERO)...';
       }
       renderImageMakerPane();
@@ -3735,18 +4206,18 @@
       const reqPayload = {
         userPrompt: cleanPrompt,
         prompt: cleanPrompt,
-        originalCardPrompt: imState.loadedCardPrompt || '',
-        workMode: imState.workMode,
-        sourceImage: imState.workMode === 'edit_current' ? currentRawImg : '',
-        useDirectorFace: imState.useDirectorFace,
+        originalCardPrompt: effectiveUseSourceRef ? (imState.loadedCardPrompt || '') : '',
+        workMode: effectiveUseSourceRef ? 'edit_current' : 'write_new',
+        useSourceImageRef: effectiveUseSourceRef,
+        sourceImage: effectiveUseSourceRef ? currentRawImg : '',
+        useDirectorFace: effectiveUseDirectorFace,
         width: 1280,
         height: 800,
         seed,
-        filePrefix: `${cleanSlug}_${seed}`
+        filePrefix: `${cleanSlug}_${imState.targetSlotType}_${seed}`
       };
 
       try {
-        // Path A: Local Custom Studio (serve.js + studio-ai-engine.js: Argon High 2K / Local Multi-Angle Face Lock)
         if (!IS_WORDPRESS) {
           const res = await fetch('/api/studio-generate-image', {
             method: 'POST',
@@ -3754,6 +4225,7 @@
             body: JSON.stringify(reqPayload)
           });
           const data = await res.json();
+          if (data && data.usage) applyUsagePayload(data.usage);
           if (!data || !data.ok || !(data.fileName || data.url)) {
             throw new Error((data && data.error) || '로컬 스튜디오 이미지 생성 실패');
           }
@@ -3762,7 +4234,6 @@
           return;
         }
 
-        // Path B: 24/7 Cloud WordPress Studio — Direct Server-Side Argon High 2K (Gemini 3 Pro Image / Nano Banana Pro + Original Card Reference + 0% Browser CORS)
         const headers = { 'Content-Type': 'application/json' };
         if (window.wpApiSettings && window.wpApiSettings.nonce) {
           headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
@@ -3773,6 +4244,7 @@
           body: JSON.stringify(reqPayload)
         });
         const wpData = await wpRes.json();
+        if (wpData && wpData.usage) applyUsagePayload(wpData.usage);
         if (wpData && wpData.ok && (wpData.url || wpData.fileName)) {
           const finalAsset = wpData.url || wpData.fileName;
           finishSituationalGeneration(finalAsset, wpData.fileName || finalAsset, wpData.engine || '아르곤 하이 2K 클라우드 스튜디오');
@@ -3782,6 +4254,7 @@
       } catch (err) {
         imState.isGenerating = false;
         imState.genStepText = '';
+        loadStudioAiKeyStatus();
         renderImageMakerPane();
         showStatus('err', '이미지 제작 실패: ' + err.message);
       }
@@ -3831,8 +4304,9 @@
       });
       saveImHistory();
 
+      renderHeaderArgonBadge();
       renderImageMakerPane();
-      showStatus('ok', `✨ [${engineLabel}] 워터마크 없는 최상급 2K 실사 이미지가 완성되었습니다! 아래 반영 버튼을 눌러 카드에 바로 적용하세요.`);
+      showStatus('ok', `✨ [${engineLabel}] 최상급 2K 실사 이미지가 완성되었습니다! 아래 반영 버튼을 눌러 대표 이미지 또는 서브 썸네일에 즉시 적용하세요.`);
     }
 
     function applyGeneratedImageToCard(modeOverride, customAssetPath) {
@@ -3845,8 +4319,38 @@
       if (!page) return;
       const mode = modeOverride || imState.targetMode;
       const idx = Math.max(0, Math.min((page.plates || []).length - 1, imState.targetCardIdx || 0));
+      const card = page.plates[idx];
 
       if (mode === 'add_new_card') {
+        if (isHomeStoryPage(page)) {
+          const firstBentoIdx = (page.plates || []).findIndex(c => c && c.type === 'home-bento-card');
+          const insertIdx = firstBentoIdx >= 0 ? firstBentoIdx : page.plates.length;
+          const newHomeCard = {
+            type: 'home-story-frame',
+            imgSrc: assetToUse,
+            chapter: (card && card.chapter) || 8,
+            title: imState.newCardTitle || '새로운 환자 스토리 장면',
+            sub: imState.newCardSub || '',
+            povBadge: '',
+            stepLabel: '',
+            mode: 5,
+            warmth: 1.08,
+            focal: [0.52, 0.50],
+            imagePrompt: imState.promptText,
+            imagePromptAsset: assetToUse,
+            imagePromptDirectorFace: imState.useDirectorFace,
+            thumbs: []
+          };
+          page.plates.splice(insertIdx, 0, newHomeCard);
+          expandedCards.add(insertIdx);
+          imState.targetCardIdx = insertIdx;
+          markDirty(true);
+          renderAll();
+          reloadPreviewIframe();
+          showStatus('ok', `➕ 메인 홈 시작 스토리에 새 장면(CARD ${String(insertIdx + 1).padStart(2, '0')})이 추가되었습니다!`);
+          return;
+        }
+
         const nextNum = (page.plates || []).length + 1;
         const newCard = {
           id: 'card_im_' + Date.now(),
@@ -3874,25 +4378,88 @@
         return;
       }
 
-      if (mode === 'add_sub_thumb') {
-        const card = page.plates[idx];
+      if (mode === 'replace_sub_thumb') {
+        if (!card) return;
         if (!Array.isArray(card.thumbs)) card.thumbs = [];
-        card.thumbs.push({
-          label: '추가 장면 ' + (card.thumbs.length + 1),
-          img: assetToUse
-        });
+        const thIdx = Math.max(0, Math.min(card.thumbs.length - 1, imState.targetSlotIdx || 0));
+        if (!card.thumbs[thIdx]) {
+          card.thumbs.push({ label: imState.subThumbLabel || '서브 장면 1', img: assetToUse, fit: 'cover' });
+        } else {
+          card.thumbs[thIdx].img = assetToUse;
+          if (imState.subThumbLabel) card.thumbs[thIdx].label = imState.subThumbLabel;
+          card.thumbs[thIdx].imagePrompt = imState.promptText;
+          card.thumbs[thIdx].imagePromptAsset = assetToUse;
+          card.thumbs[thIdx].imagePromptDirectorFace = imState.useDirectorFace;
+        }
         expandedCards.add(idx);
         markDirty(true);
         renderAll();
         reloadPreviewIframe();
-        showStatus('ok', `🖼️ CARD ${String(idx + 1).padStart(2, '0')}의 서브 썸네일 목록에 새 이미지가 추가되었습니다!`);
+        showStatus('ok', `🖼️ CARD ${String(idx + 1).padStart(2, '0')}의 서브 썸네일 #${thIdx + 1} 이미지가 교체되었습니다!`);
         return;
       }
 
-      // Default: replace_card
-      const card = page.plates[idx];
+      if (mode === 'add_sub_thumb') {
+        if (!card) return;
+        if (!Array.isArray(card.thumbs)) card.thumbs = [];
+        const newIdx = card.thumbs.length + 1;
+        card.thumbs.push({
+          label: (imState.subThumbLabel || '').trim() || ('추가 장면 ' + newIdx),
+          img: assetToUse,
+          fit: 'cover',
+          imagePrompt: imState.promptText,
+          imagePromptAsset: assetToUse,
+          imagePromptDirectorFace: imState.useDirectorFace
+        });
+        imState.targetSlotType = 'thumb';
+        imState.targetSlotIdx = card.thumbs.length - 1;
+        expandedCards.add(idx);
+        markDirty(true);
+        renderAll();
+        reloadPreviewIframe();
+        showStatus('ok', `🖼️ CARD ${String(idx + 1).padStart(2, '0')}의 서브 썸네일 #${card.thumbs.length}번으로 새 이미지가 추가되었습니다! (카드 하단 전환 독 자동 활성화)`);
+        return;
+      }
+
+      if (mode === 'replace_slot') {
+        if (!card) return;
+        if (imState.targetSlotType === 'thumb') {
+          return applyGeneratedImageToCard('replace_sub_thumb', assetToUse);
+        }
+        if (imState.targetSlotType === 'new_thumb') {
+          return applyGeneratedImageToCard('add_sub_thumb', assetToUse);
+        }
+        if (imState.targetSlotType === 'frame') {
+          if (!Array.isArray(card.frames)) card.frames = [];
+          card.frames[imState.targetSlotIdx] = assetToUse;
+          if (imState.targetSlotIdx === 0) card.imgSrc = assetToUse;
+          expandedCards.add(idx);
+          markDirty(true);
+          renderAll();
+          reloadPreviewIframe();
+          showStatus('ok', `🎞️ CARD ${String(idx + 1).padStart(2, '0')}의 모션 프레임 #${imState.targetSlotIdx + 1}이 교체되었습니다!`);
+          return;
+        }
+        if (imState.targetSlotType === 'brochure') {
+          if (Array.isArray(card.pages) && card.pages[imState.targetSlotIdx]) {
+            card.pages[imState.targetSlotIdx].img = assetToUse;
+            card.pages[imState.targetSlotIdx].imagePrompt = imState.promptText;
+            card.pages[imState.targetSlotIdx].imagePromptAsset = assetToUse;
+          }
+          expandedCards.add(idx);
+          markDirty(true);
+          renderAll();
+          reloadPreviewIframe();
+          showStatus('ok', `📜 CARD ${String(idx + 1).padStart(2, '0')}의 브로슈어 #${imState.targetSlotIdx + 1} 이미지가 교체되었습니다!`);
+          return;
+        }
+      }
+
+      // Default: replace_card main / beforeImg / afterImg / poster
       if (!card) return;
-      const field = imState.targetField || 'imgSrc';
+      const field = (imState.targetSlotType === 'beforeImg' || imState.targetSlotType === 'afterImg' || imState.targetSlotType === 'poster')
+        ? imState.targetSlotType
+        : 'imgSrc';
       card[field] = assetToUse;
       card.imagePrompt = imState.promptText;
       card.imagePromptAsset = assetToUse;
@@ -3901,7 +4468,7 @@
       markDirty(true);
       renderAll();
       reloadPreviewIframe();
-      showStatus('ok', `✅ CARD ${String(idx + 1).padStart(2, '0')}의 이미지가 새로 제작한 고화질 이미지로 교체되었습니다!`);
+      showStatus('ok', `✅ CARD ${String(idx + 1).padStart(2, '0')}의 대표 이미지가 새로 제작한 고화질 이미지로 즉시 교체되었습니다!`);
     }
 
     function renderImageMakerPane() {
@@ -3911,20 +4478,61 @@
       if (!page) return;
       const plates = page.plates || [];
       if (imState.targetCardIdx >= plates.length) imState.targetCardIdx = Math.max(0, plates.length - 1);
-      if (!imState.promptText && imState.workMode === 'edit_current' && plates.length > 0) {
-        syncImPromptFromCurrentCard(imState.targetCardIdx, false);
-      }
 
       const targetCard = plates[imState.targetCardIdx] || {};
-      const currentRawImg = (imState.targetField && targetCard[imState.targetField])
-        ? targetCard[imState.targetField]
-        : getCardPreviewRawPath(targetCard);
+      const slotOptions = buildTargetSlotOptions(targetCard);
+      const selectedSlotKey = `${imState.targetSlotType}:${imState.targetSlotIdx}`;
+      const activeSlotObj = slotOptions.find(o => o.key === selectedSlotKey) || slotOptions[0] || { key: 'main:0', slotType: 'main', slotIdx: 0, label: '대표 메인 이미지' };
+
+      const currentRawImg = getSlotCurrentRawImg(targetCard, imState.targetSlotType, imState.targetSlotIdx);
       const currentImgUrl = resolveStudioAssetUrl(currentRawImg);
       const generatedImgUrl = imState.lastGeneratedUrl ? resolveStudioAssetUrl(imState.lastGeneratedUrl) : '';
       const cardNumStr = String(imState.targetCardIdx + 1).padStart(2, '0');
 
       const isArgonActive = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
       const maskedActiveKey = imState.aiKeyState?.maskedGeminiKey || imState.aiKeyState?.maskedFalKey || '';
+      const hasNoFace = detectNoFaceDirectiveUi(imState.promptText);
+      if (hasNoFace && imState.useDirectorFace) {
+        imState.useDirectorFace = false;
+      }
+
+      const u = imState.aiUsage || {};
+      const limit = Math.max(1, Number(u.dailyFreeLimit) || 50);
+      const usedToday = Math.max(0, Number(u.argonHighTodayUsed) || 0);
+      const usedTotal = Math.max(0, Number(u.argonHighTotalUsed) || 0);
+      const freeRem = u.quotaExhaustedToday ? 0 : Math.max(0, limit - usedToday);
+      const quotaPct = Math.min(100, Math.round((usedToday / limit) * 100));
+
+      let primaryApplyBtnHtml = `
+        <button type="button" class="btn btn-deploy-one" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+          🔄 CARD ${cardNumStr} 대표 이미지로 즉시 교체
+        </button>
+      `;
+      if (imState.targetSlotType === 'thumb') {
+        primaryApplyBtnHtml = `
+          <button type="button" class="btn btn-deploy-one" onclick="applyGeneratedImageToCard('replace_sub_thumb')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+            🖼️ CARD ${cardNumStr} 서브 썸네일 #${imState.targetSlotIdx + 1} 즉시 교체
+          </button>
+          <button type="button" class="btn btn-save-one" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+            🔄 대표 이미지로 교체
+          </button>
+        `;
+      } else if (imState.targetSlotType === 'new_thumb') {
+        primaryApplyBtnHtml = `
+          <button type="button" class="btn btn-deploy-one" onclick="applyGeneratedImageToCard('add_sub_thumb')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+            🖼️ CARD ${cardNumStr} 새 서브 썸네일로 즉시 추가
+          </button>
+          <button type="button" class="btn btn-save-one" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+            🔄 대표 이미지로 교체
+          </button>
+        `;
+      } else if (imState.targetSlotType === 'frame' || imState.targetSlotType === 'brochure') {
+        primaryApplyBtnHtml = `
+          <button type="button" class="btn btn-deploy-one" onclick="applyGeneratedImageToCard('replace_slot')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+            🔄 선택한 슬롯(#${imState.targetSlotIdx + 1}) 즉시 교체
+          </button>
+        `;
+      }
 
       box.innerHTML = `
         <div class="im-studio-hero">
@@ -3932,39 +4540,64 @@
             <div>
               <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:${isArgonActive ? 'rgba(16,185,129,0.25)' : 'rgba(245,158,11,0.25)'}; border:1px solid ${isArgonActive ? 'rgba(52,211,153,0.65)' : 'rgba(251,191,36,0.65)'}; color:${isArgonActive ? '#a7f3d0' : '#fde68a'}; font-size:11px; font-weight:900; margin-bottom:6px;">
                 ${isArgonActive
-                  ? '🟢 아르곤 하이 정품 엔진 가동 중 (Gemini 3 Pro Image · 2K 원본참조 에디팅 · 워터마크 ZERO)'
-                  : '⚪ 기본 무료 엔진 모드 — [엔진 키 설정]에서 아르곤 하이(Gemini Pro Image) 키를 연결할 수 있습니다'}
+                  ? '🟢 아르곤 하이 정품 엔진 가동 중 (Gemini 3 Pro Image · 2K · 워터마크 ZERO · 새 구도 독립 사고)'
+                  : '⚪ 기본 무료 엔진 모드 — [엔진 키 & 사용량 관리]에서 아르곤 하이 키를 연결할 수 있습니다'}
               </span>
-              <h3>[${escHtml(page.label)}] 카드 프롬프트 직독·수정 &amp; 상황 이미지 제작</h3>
-              <p>좌측 기존 카드와 동일한 <strong>아르곤 하이(Gemini 3 Pro Image 2K)</strong> 엔진으로 원본 카드 사진을 직접 참조해 프롬프트 수정 사항을 오차 없이 반영합니다.</p>
+              <h3>[${escHtml(page.label)}] 대표카드 &amp; 서브 썸네일 AI 프롬프트 스튜디오</h3>
+              <p>기존 이미지 구도에 갇히지 않고 <strong>오직 프롬프트 지시만으로 100% 새롭게 사고·촬영</strong>하며, <code>(얼굴미노출)</code> 지시 완벽 준수 및 대표카드·서브 썸네일 전 슬롯 제작을 지원합니다.</p>
             </div>
-            <button type="button" class="mini-btn" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.24); color:#fdfaf3; padding:6px 11px;"
+            <button type="button" class="mini-btn" style="background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.28); color:#fdfaf3; padding:7px 12px;"
               onclick="toggleImKeyEditor()">
-              🔑 엔진 키 ${isArgonActive ? '관리' : '등록'} ${maskedActiveKey ? `(${escHtml(maskedActiveKey)})` : ''}
+              ⚡ 사용량 · 🔑 키 관리 ${maskedActiveKey ? `(${escHtml(maskedActiveKey)})` : ''}
             </button>
           </div>
 
-          ${(imState.showKeyEditor || !isArgonActive) ? `
-            <div style="margin-top:12px; padding:11px 13px; border-radius:8px; background:rgba(0,0,0,0.34); border:1px solid rgba(255,255,255,0.16); display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <span style="font-size:11.5px; color:#f3ead8; font-weight:700;">
-                🔑 Google AI Studio (<code>AIza...</code>) 또는 아르곤 하이 엔진 키:
+          <!-- Real-Time Argon High Free Quota Meter -->
+          <div style="margin-top:12px; padding:10px 14px; border-radius:10px; background:rgba(0,0,0,0.34); border:1px solid rgba(52,211,153,0.32); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span style="font-size:12.5px; font-weight:800; color:#ecfdf5;">
+                ⚡ 아르곤 하이 2K 무료 잔여: <strong style="font-size:15px; color:${freeRem <= 5 ? '#fca5a5' : '#6ee7b7'};">${freeRem}회 남음</strong>
               </span>
-              <input type="password" value="${escHtml(imState.apiKeyInput)}"
-                placeholder="새 API 키 입력 시 즉시 교체 저장 (Google AI Studio AIza... 지원)"
-                oninput="imState.apiKeyInput = this.value"
-                style="flex:1; min-width:240px; padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.25); background:#14110e; color:#fff; font-size:12px;" />
-              <button type="button" class="mini-btn gold-helper" onclick="saveStudioAiKeyFromUi()">💾 키 저장</button>
-              <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"
-                style="font-size:11px; color:#fcd34d; text-decoration:underline;">Google AI 키 발급 ↗</a>
+              <span style="font-size:12px; color:#cbd5e1;">
+                (오늘 사용 <strong>${usedToday}</strong> / ${limit}회 · 누적 총 ${usedTotal}회 생성${u.todayDate ? ` · 기준일 ${escHtml(u.todayDate)}` : ''})
+              </span>
+            </div>
+            <div style="width:180px; height:8px; border-radius:999px; background:rgba(255,255,255,0.14); overflow:hidden;">
+              <div style="width:${quotaPct}%; height:100%; background:${freeRem <= 5 ? '#ef4444' : 'linear-gradient(90deg, #10b981, #fbbf24)'}; transition:width 0.25s ease;"></div>
+            </div>
+          </div>
+
+          ${(imState.showKeyEditor || !isArgonActive) ? `
+            <div style="margin-top:10px; padding:12px 14px; border-radius:9px; background:rgba(0,0,0,0.42); border:1px solid rgba(255,255,255,0.18);">
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:9px;">
+                <span style="font-size:11.5px; color:#f3ead8; font-weight:700;">
+                  🔑 Google AI Studio (<code>AIza...</code>) 키 변경:
+                </span>
+                <input type="password" value="${escHtml(imState.apiKeyInput)}"
+                  placeholder="새 API 키 입력 시 즉시 교체 저장"
+                  oninput="imState.apiKeyInput = this.value"
+                  style="flex:1; min-width:220px; padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.25); background:#14110e; color:#fff; font-size:12px;" />
+                <button type="button" class="mini-btn gold-helper" onclick="saveStudioAiKeyFromUi()">💾 키 저장</button>
+                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"
+                  style="font-size:11px; color:#fcd34d; text-decoration:underline;">키 발급 ↗</a>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15);">
+                <span style="font-size:11.5px; color:#d1fae5; font-weight:700;">⚡ 일일 무료 제공 기준 횟수 설정:</span>
+                <input type="number" min="1" max="1000" value="${escHtml(imState.dailyLimitInput || limit)}"
+                  oninput="imState.dailyLimitInput = this.value"
+                  style="width:78px; padding:5px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.25); background:#14110e; color:#fff; font-size:12px;" />
+                <button type="button" class="mini-btn" onclick="updateStudioAiUsageFromUi('save_limit')">일일 한도 저장</button>
+                <button type="button" class="mini-btn" onclick="updateStudioAiUsageFromUi('reset_today')">↺ 오늘 카운트 0으로 초기화</button>
+              </div>
             </div>
           ` : ''}
         </div>
 
-        <!-- STEP 1: Target Card Selection -->
+        <!-- STEP 1: Target Card & Target Slot (Main vs Sub-Thumbnail #1..N vs Add New Sub-Thumb) -->
         <div class="panel-box" style="background:#fcfaf5; padding:14px; margin-bottom:14px;">
           <div class="grid-2" style="margin-bottom:0;">
             <div class="field" style="margin-bottom:0;">
-              <label>1️⃣ 작업할 대상 스토리 카드 선택 (${plates.length}장 중 선택 시 해당 이미지 프롬프트 자동 로드)</label>
+              <label>1️⃣ 작업할 대상 카드 선택 (${plates.length}장)</label>
               <select onchange="updateImOption('targetCardIdx', this.value)">
                 ${plates.map((c, cIdx) => `
                   <option value="${cIdx}" ${cIdx === imState.targetCardIdx ? 'selected' : ''}>
@@ -3974,117 +4607,137 @@
               </select>
             </div>
             <div class="field" style="margin-bottom:0;">
-              <label>제작 후 반영 방식</label>
-              <select onchange="updateImOption('targetMode', this.value)">
-                <option value="replace_card" ${imState.targetMode === 'replace_card' ? 'selected' : ''}>🔄 현재 CARD ${cardNumStr} 이미지 교체</option>
-                <option value="add_new_card" ${imState.targetMode === 'add_new_card' ? 'selected' : ''}>➕ 현재 페이지에 새 스토리 카드로 추가</option>
-                <option value="add_sub_thumb" ${imState.targetMode === 'add_sub_thumb' ? 'selected' : ''}>🖼️ 현재 CARD ${cardNumStr} 서브 썸네일로 추가</option>
+              <label>🎯 제작·교체할 세부 이미지 슬롯 (대표카드 / 서브 썸네일 선택)</label>
+              <select onchange="selectImTargetSlot(this.value)">
+                ${slotOptions.map(opt => `
+                  <option value="${escHtml(opt.key)}" ${opt.key === activeSlotObj.key ? 'selected' : ''}>
+                    ${escHtml(opt.label)}
+                  </option>
+                `).join('')}
               </select>
             </div>
           </div>
 
-          ${imState.targetMode === 'add_new_card' ? `
-            <div class="grid-2" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);">
-              <div class="field" style="margin-bottom:0;">
-                <label>새 카드 제목 (H2 · <code>'골드 강조'</code> 지원)</label>
-                <input type="text" value="${escHtml(imState.newCardTitle)}" placeholder="예: 손끝으로 읽어내는 '오장육부와 자율신경'의 파동"
-                  oninput="updateImOption('newCardTitle', this.value)" />
-              </div>
-              <div class="field" style="margin-bottom:0;">
-                <label>새 카드 본문 설명 (P)</label>
-                <input type="text" value="${escHtml(imState.newCardSub)}" placeholder="예: 증상 너머의 근본 원인을 정밀하게 살핍니다."
-                  oninput="updateImOption('newCardSub', this.value)" />
-              </div>
+          ${(imState.targetSlotType === 'thumb' || imState.targetSlotType === 'new_thumb') ? `
+            <div style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <span style="font-size:12px; font-weight:800; color:#065f46;">🖼️ 서브 썸네일 버튼 라벨명:</span>
+              <input type="text" value="${escHtml(imState.subThumbLabel || '')}" placeholder="예: 초음파 정밀진단 / 한약 탕전 / 치료 후"
+                oninput="imState.subThumbLabel = this.value"
+                style="max-width:260px; padding:6px 10px; border-radius:7px; border:1px solid #cbd5e1; font-size:12.5px;" />
+              <span style="font-size:11.5px; color:#64748b;">카드 하단 서브 썸네일 전환 독에 표시될 이름입니다.</span>
             </div>
           ` : ''}
         </div>
 
-        <!-- STEP 2: Director Multi-Angle Sampled Face Registration -->
-        <div class="im-director-box ${imState.useDirectorFace ? 'active' : ''}">
+        <!-- STEP 2: Director Multi-Angle Sampled Face Registration (with No-Face Auto-Lock Guard) -->
+        <div id="imDirectorFaceBox" class="im-director-box ${imState.useDirectorFace ? 'active' : ''}">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
             <label style="display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13.5px; font-weight:800; color:var(--ink); margin:0;">
-              <input type="checkbox" style="width:18px; height:18px; accent-color:#059669; cursor:pointer;"
+              <input type="checkbox" id="imDirectorFaceCheckbox" style="width:18px; height:18px; accent-color:#059669; cursor:pointer;"
                 ${imState.useDirectorFace ? 'checked' : ''}
                 onchange="toggleImDirectorFace(this.checked)" />
-              <span>👨‍⚕️ 안정위 대표원장님 얼굴 합성하기 (8종 각도·미소 샘플링 · 85mm 윤곽 보정 · 부종 ZERO)</span>
+              <span>👨‍⚕️ 안정위 대표원장님 실제 얼굴 정밀 합성 (정방향 보정 8각도·미소 인물 고정 · 금테 안경 · 흰 한의사 가운)</span>
             </label>
-            <span style="font-size:11.5px; color:${imState.useDirectorFace ? '#047857' : 'var(--text-muted)'}; font-weight:700;">
-              ${imState.useDirectorFace ? '✅ 활성화됨 · 프롬프트 각도 및 미소 표정에 맞춰 아래 8종 실제 얼굴이 정밀 합성됩니다' : '체크 해제 시 원장님 얼굴 없이 일반 진료·손동작·환자·약재 상황 실사로 생성됩니다'}
+            <span id="imDirectorFaceStatusText" style="font-size:11.5px; color:${hasNoFace ? '#b45309' : (imState.useDirectorFace ? '#047857' : 'var(--ink-sub)')}; font-weight:700;">
+              ${hasNoFace
+                ? '🚫 프롬프트 내 [얼굴 미노출] 지시 감지됨 — 얼굴 합성이 자동 차단(0%)되었습니다'
+                : (imState.useDirectorFace
+                  ? '✅ 활성화됨 · 정방향 보정된 원장님 3각도 실제 사진이 동시 투입되어 동일 인물로 촬영됩니다'
+                  : '체크 해제 시 원장님 얼굴 없이 손동작·진료기구·환자·약재 중심 실사로 촬영됩니다')}
             </span>
           </div>
 
-          ${imState.useDirectorFace ? `
-            <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #b7e4c7;">
-              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-                <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 8종 각도·미소 표정별 등록된 대표원장 샘플링 얼굴 사진 (클릭 시 확대 · 각 슬롯별 새 사진 교체 등록 가능)</span>
-                <span style="font-size:11px; color:#047857;">정면·온화한 미소·좌우 15° 진료 미소·좌우 30° 사선·좌우 45°+ 측면 (85mm 부종 보정 적용)</span>
-              </div>
-              <div class="im-angle-grid">
-                ${imState.angleSamples.map(slot => {
-                  const slotUrl = resolveStudioAssetUrl(slot.fileName);
-                  const isUploading = imState.uploadingAngleKey === slot.key;
-                  return `
-                    <div class="im-angle-slot">
-                      <img src="${escHtml(slotUrl)}" data-raw-path="${escHtml(slot.fileName)}" alt="${escHtml(slot.label)}"
-                        onclick="openImageLightbox('${escHtml(slot.fileName)}', '원장님 ${escHtml(slot.label)} 기준 샘플')"
-                        onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
-                      <div class="im-angle-label">${escHtml(slot.label)}</div>
-                      <div class="im-angle-desc">${escHtml(slot.desc)}</div>
-                      <button type="button" class="mini-btn" style="width:100%; justify-content:center; font-size:10.5px; padding:4px 6px;"
-                        onclick="triggerAngleSampleUpload('${slot.key}')" ${isUploading ? 'disabled' : ''}>
-                        ${isUploading ? '등록 중...' : '📷 사진 변경'}
-                      </button>
-                    </div>
-                  `;
-                }).join('')}
-              </div>
+          <div id="imDirectorAngleGridWrap" style="display:${imState.useDirectorFace ? 'block' : 'none'}; margin-top:10px; padding-top:10px; border-top:1px dashed #b7e4c7;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 정방향(Upright) 캘리브레이션 완료된 대표원장 8각도 얼굴 기준 샘플 (클릭 시 확대 · 슬롯별 변경 가능)</span>
+              <span style="font-size:11px; color:#047857;">정면 · 미소 · 좌우 15° · 좌우 30° · 좌우 측면</span>
             </div>
-          ` : ''}
+            <div class="im-angle-grid">
+              ${imState.angleSamples.map(slot => {
+                const slotUrl = resolveStudioAssetUrl(slot.fileName);
+                const isUploading = imState.uploadingAngleKey === slot.key;
+                return `
+                  <div class="im-angle-slot">
+                    <img src="${escHtml(slotUrl)}" data-raw-path="${escHtml(slot.fileName)}" alt="${escHtml(slot.label)}"
+                      onclick="openImageLightbox('${escHtml(slot.fileName)}', '원장님 ${escHtml(slot.label)} 기준 샘플')"
+                      onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                    <div class="im-angle-label">${escHtml(slot.label)}</div>
+                    <div class="im-angle-desc">${escHtml(slot.desc)}</div>
+                    <button type="button" class="mini-btn" style="width:100%; justify-content:center; font-size:10.5px; padding:4px 6px;"
+                      onclick="triggerAngleSampleUpload('${slot.key}')" ${isUploading ? 'disabled' : ''}>
+                      ${isUploading ? '등록 중...' : '📷 사진 변경'}
+                    </button>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
         </div>
 
-        <!-- STEP 3: Ultra-Simple Prompt Read/Modify or Direct Write + Example Guide -->
+        <!-- STEP 3: Prompt Editor + Independent Thinking vs Reference Toggle + No-Face Guard -->
         <div class="panel-box" style="padding:14px; margin-bottom:14px;">
           <div class="im-mode-switch">
             <button type="button" class="im-mode-btn ${imState.workMode === 'edit_current' ? 'active' : ''}" onclick="setImWorkMode('edit_current')">
-              <span>📋 현재 CARD ${cardNumStr} 이미지 프롬프트 불러와 수정</span>
-              <span class="sub">현재 카드에 설정된 이미지의 프롬프트를 읽어서 필요한 부분만 고쳐 새 작업</span>
+              <span>📋 현재 슬롯 프롬프트 불러와 편집</span>
+              <span class="sub">선택한 슬롯의 텍스트 프롬프트를 불러와 자유롭게 수정 (기존 사진 구도는 강제 복제하지 않음)</span>
             </button>
             <button type="button" class="im-mode-btn ${imState.workMode === 'write_new' ? 'active' : ''}" onclick="setImWorkMode('write_new')">
-              <span>✍️ 새 상황 이미지 프롬프트 직접 작성</span>
-              <span class="sub">빈 입력창에 원하는 진료·치료·환자·한약 장면을 처음부터 자유롭게 작성</span>
+              <span>✍️ 완전히 새로운 장면 프롬프트 직접 작성</span>
+              <span class="sub">기존 이미지 참고 0% · 백지 상태에서 새 프롬프트 내용만으로 100% 새롭게 구상·촬영</span>
             </button>
           </div>
 
-          <div class="field" style="margin-bottom:8px;">
+          <div class="field" style="margin-bottom:6px;">
             <label style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
               <span style="font-size:13px; font-weight:800;">
-                ${imState.workMode === 'edit_current'
-                  ? `📝 현재 CARD ${cardNumStr} (${escHtml(currentRawImg.split('?')[0])}) 이미지 프롬프트 확인 및 수정`
-                  : '📝 새로 제작할 상황 이미지 프롬프트 직접 입력'}
+                📝 ${imState.targetSlotType === 'thumb'
+                  ? `CARD ${cardNumStr} 서브 썸네일 #${imState.targetSlotIdx + 1} 프롬프트`
+                  : (imState.targetSlotType === 'new_thumb'
+                    ? `CARD ${cardNumStr}에 새로 추가할 서브 썸네일 프롬프트`
+                    : `CARD ${cardNumStr} (${escHtml(currentRawImg.split('?')[0])}) 프롬프트 입력`)}
               </span>
               <button type="button" class="mini-btn gold-helper" onclick="syncImPromptFromCurrentCard(imState.targetCardIdx, true)">
-                🔄 현재 카드 원본 프롬프트 다시 읽어오기
+                🔄 현재 슬롯 원본 프롬프트 다시 읽어오기
               </button>
             </label>
             <textarea id="imMainPromptTextarea" rows="4"
               style="font-size:13px; line-height:1.6; padding:11px 13px;"
-              placeholder="예: 따뜻한 한의원 원목 진료 책상 위 비단 진맥 쿠션에 놓인 환자 손목의 요골동맥 부위에 흰 가운을 입은 한의사가 2, 3, 4지 세 손가락을 나란히 얹어 정밀하게 맥을 짚는 클로즈업 실사 사진"
-              oninput="updateImOption('promptText', this.value)">${escHtml(imState.promptText)}</textarea>
+              placeholder="예: 따뜻한 한의원 상담실 원목 데스크에 있는 큰 모니터를 원장(얼굴미노출)이 환자와 함께 본다. 모니터에는 사상체질 체형 특징에 맞춰 태양인 소양인 태음인 소음인 4개로 고퀄리티로 분류되어 있다. 원장은 손가락으로 소음인을 지시하고 있다."
+              oninput="onImPromptTextInput(this.value)">${escHtml(imState.promptText)}</textarea>
           </div>
 
+          <!-- Strict No-Face Auto-Detection Banner -->
+          <div id="imNoFaceGuardBanner" class="im-noface-banner ${hasNoFace ? 'show' : ''}">
+            🚫 <strong>[얼굴 미노출 지시 자동 감지됨]</strong> 프롬프트에 <code>얼굴미노출 / 얼굴 없이</code> 지시가 포함되어 있어 대표원장 얼굴 합성이 <strong>100% 차단</strong>되었으며, 어깨·목 아래 크롭 또는 정후면 오버더숄더 구도로 얼굴 노출이 0%가 되도록 엄격히 촬영합니다.
+          </div>
+
+          <!-- Explicit Opt-In Toggle for Source Image Reference (Fixes Request #2!) -->
+          <label class="im-ref-toggle-box ${imState.useSourceImageRef ? 'active' : ''}" style="cursor:pointer;">
+            <input type="checkbox" style="width:17px; height:17px; margin-top:2px; accent-color:#4f46e5; cursor:pointer;"
+              ${imState.useSourceImageRef ? 'checked' : ''}
+              onchange="toggleImSourceImageRef(this.checked)" />
+            <div style="font-size:12px; line-height:1.5; color:#1e293b;">
+              <strong style="display:block; font-size:12.5px; color:${imState.useSourceImageRef ? '#3730a3' : '#0f172a'};">
+                🖼️ 기존 슬롯 이미지를 밑그림으로 함께 참조하기 ${imState.useSourceImageRef ? '(켜짐 — 부분 수정 모드)' : '(기본 해제 — 기존 이미지 무시 · 100% 새 구도 사고 모드)'}
+              </strong>
+              <span>
+                ${imState.useSourceImageRef
+                  ? '현재 좌측 이미지를 AI에 함께 전달하여 구도를 유지한 채 소품·디테일만 부분 수정합니다. 완전히 다른 장면을 원하시면 체크를 해제하세요!'
+                  : '✅ 기본 해제 상태에서는 기존 카드 사진을 AI에 절대 전달하지 않으므로, 이전 이미지와 비슷하게 나오는 현상 없이 오직 위 프롬프트만 읽고 100% 새로운 구도로 사고·촬영합니다.'}
+              </span>
+            </div>
+          </label>
+
           <div class="im-example-box">
-            <strong style="color:#78350f; font-size:12.5px;">💡 어떻게 적으면 되나요? (작업 예시 가이드)</strong>
+            <strong style="color:#78350f; font-size:12.5px;">💡 프롬프트 작성 팁 (얼굴 미노출 / 원장님 실사 / 서브 썸네일)</strong>
             <div class="im-example-item">
-              <strong>① 현재 카드 프롬프트를 수정할 때:</strong> 위 입력창에 자동으로 읽어온 문장에서 <u>동작·부위·소품만 원하는 대로 고쳐 적으세요.</u><br/>
-              <span style="color:#57534e;">예) <code>...진맥 쿠션 위 환자 손목의 요골동맥에 검지·중지·약지(2,3,4지) 세 손가락을 나란히 모아서 정밀하게 진맥하는 클로즈업 실사 사진</code></span>
+              <strong>① 얼굴 미노출 (손·모니터·진맥·시술 클로즈업):</strong> 문장에 <code>(얼굴미노출)</code> 또는 <code>얼굴 없이</code>를 적어주시면 얼굴 참조 사진이 완전히 배제되고 어깨 아래·등 뒤 오버더숄더 구도로 정확히 촬영됩니다.
             </div>
             <div class="im-example-item">
-              <strong>② 새 상황을 직접 작성할 때 (인물 없는 약재·손 클로즈업·환자 공감):</strong> <u>[공간/조명] + [핵심 장면] + [구도]</u>만 편하게 적어주세요.<br/>
-              <span style="color:#57534e;">예) <code>따뜻한 한지 조명이 비치는 원목 테이블 위에 순금박 황제공진단 목함과 러시아 녹용 분골 절편, 한약 찻잔이 정갈하게 놓인 클로즈업 실사 사진</code></span>
+              <strong>② 안정위 대표원장님 얼굴 등장 장면:</strong> 위 <code>[안정위 대표원장님 실제 얼굴 정밀 합성]</code>을 체크하고 <code>우측 15도 사선 미소로 환자에게 설명하는 안정위 대표원장님</code>처럼 원하는 각도를 적어주세요.
             </div>
             <div class="im-example-item">
-              <strong>③ 원장님 얼굴 합성 체크 시:</strong> 위 <code>[안정위 대표원장님 얼굴 합성하기]</code>를 켜고 <u>원하는 얼굴 각도(정면 / 좌·우 30° 사선 / 측면)</u>를 함께 적어주시면 오차 없이 매칭됩니다.<br/>
-              <span style="color:#57534e;">예) <code>진료실에서 우측 30도 사선 각도로 환자분께 초음파 모니터 화면을 가리키며 따뜻하게 설명하는 안정위 대표원장님</code></span>
+              <strong>③ 서브 썸네일 연속 제작:</strong> 상단 <code>[세부 이미지 슬롯]</code>에서 <code>서브 썸네일 #1..#N</code> 또는 <code>➕ 새 서브 썸네일 추가 제작</code>을 고르면 서브 썸네일도 대표카드와 똑같이 프롬프트로 무한 제작됩니다.
             </div>
           </div>
 
@@ -4093,26 +4746,24 @@
               onclick="generateSituationalImage()" ${imState.isGenerating ? 'disabled' : ''}>
               ${imState.isGenerating ? '⏳ 아르곤 하이 2K 실사 촬영 중입니다...' : '✨ 이 프롬프트로 최상급 실사 이미지 제작하기'}
             </button>
-            <span id="imLiveStepLabel" style="font-size:12px; color:var(--text-muted); font-weight:600;">
+            <span id="imLiveStepLabel" style="font-size:12px; color:var(--ink-sub); font-weight:700;">
               ${imState.isGenerating
                 ? escHtml(imState.genStepText)
-                : (isArgonActive
-                  ? `워터마크 ZERO · 아르곤 하이(Gemini 3 Pro Image) 2K(2752×1536) · ${imState.workMode === 'edit_current' ? '원본 카드 시각 참조 적용' : '새 상황 직촬'}`
-                  : '워터마크 ZERO · 에디토리얼 DSLR 화질 · 서버 자동 저장')}
+                : `워터마크 ZERO · 아르곤 하이 2K · ${imState.useSourceImageRef ? '기존 이미지 밑그림 참조' : '기존 이미지 참조 OFF (100% 새 장면 사고)'} · 무료 ${freeRem}회 남음`}
             </span>
           </div>
         </div>
 
         <!-- STEP 4: Side-by-Side Comparison & 1-Click Apply -->
         <div class="panel-box" style="padding:14px; margin-bottom:14px;">
-          <strong style="display:block; font-size:13.5px; margin-bottom:10px;">4️⃣ 현재 카드 이미지 vs 새로 제작된 이미지 비교 &amp; 즉시 반영</strong>
+          <strong style="display:block; font-size:13.5px; margin-bottom:10px;">4️⃣ 현재 슬롯 이미지 vs 새로 제작된 이미지 비교 &amp; 1클릭 반영</strong>
           <div class="grid-2">
             <div>
-              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--text-muted);">
-                📌 현재 CARD ${cardNumStr} 설정된 이미지 (${escHtml(currentRawImg)})
+              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--ink-sub);">
+                📌 현재 선택 슬롯 (${escHtml(activeSlotObj.label)}) — ${escHtml(currentRawImg)}
               </div>
-              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 CARD ${cardNumStr} 이미지')">
-                <img src="${escHtml(currentImgUrl)}" data-raw-path="${escHtml(currentRawImg)}" alt="Current Card Image"
+              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 슬롯 이미지')">
+                <img src="${escHtml(currentImgUrl)}" data-raw-path="${escHtml(currentRawImg)}" alt="Current Slot Image"
                   onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
               </div>
             </div>
@@ -4124,7 +4775,7 @@
                 ${imState.isGenerating ? `
                   <div class="im-empty">
                     <div style="font-size:28px; margin-bottom:8px;">⏳</div>
-                    <strong>기존 카드 수준의 고화질 DSLR 실사 이미지를 촬영하고 있습니다...</strong>
+                    <strong>프롬프트 지시에 맞춰 고화질 2K DSLR 실사 이미지를 촬영하고 있습니다...</strong>
                     <p style="margin:6px 0 0; font-size:11.5px; opacity:0.85;">${escHtml(imState.genStepText || '약 10~25초 내외 소요됩니다.')}</p>
                   </div>
                 ` : (generatedImgUrl ? `
@@ -4133,8 +4784,8 @@
                 ` : `
                   <div class="im-empty">
                     <div style="font-size:26px; margin-bottom:6px;">📸</div>
-                    <strong>위 프롬프트를 수정하거나 작성한 뒤 [제작하기] 버튼을 눌러주세요</strong>
-                    <p style="margin:4px 0 0; font-size:11.5px; opacity:0.75;">우측 하단 워터마크 없이 깨끗한 고화질 실사 이미지가 생성됩니다.</p>
+                    <strong>위 프롬프트를 입력한 뒤 [제작하기] 버튼을 눌러주세요</strong>
+                    <p style="margin:4px 0 0; font-size:11.5px; opacity:0.75;">기존 이미지 구도에 구애받지 않는 깨끗한 2K 실사 이미지가 생성됩니다.</p>
                   </div>
                 `)}
               </div>
@@ -4142,17 +4793,17 @@
           </div>
 
           <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-            <button type="button" class="btn gold" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
-              🔄 CARD ${cardNumStr} 이미지로 즉시 교체
-            </button>
-            <button type="button" class="btn primary" onclick="applyGeneratedImageToCard('add_new_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+            ${primaryApplyBtnHtml}
+            ${imState.targetSlotType !== 'new_thumb' && targetCard.type !== 'home-bento-card' ? `
+              <button type="button" class="btn btn-save-one" onclick="applyGeneratedImageToCard('add_sub_thumb')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+                🖼️ CARD ${cardNumStr} 새 서브 썸네일로 추가
+              </button>
+            ` : ''}
+            <button type="button" class="btn btn-ghost-dark" style="background:#1e293b; color:#fff;" onclick="applyGeneratedImageToCard('add_new_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
               ➕ 현재 페이지에 새 스토리 카드로 추가
             </button>
-            <button type="button" class="btn" onclick="applyGeneratedImageToCard('add_sub_thumb')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
-              🖼️ CARD ${cardNumStr} 서브 썸네일로 추가
-            </button>
             ${imState.lastGeneratedUrl ? `
-              <a href="${escHtml(generatedImgUrl)}" download="${escHtml(imState.lastGeneratedFileName || 'bareun_studio_image.jpg')}" target="_blank" class="btn" style="text-decoration:none;">
+              <a href="${escHtml(generatedImgUrl)}" download="${escHtml(imState.lastGeneratedFileName || 'bareun_studio_image.jpg')}" target="_blank" class="btn" style="background:#f1f5f9; border-color:#cbd5e1; color:#0f172a; text-decoration:none;">
                 💾 이미지 다운로드
               </a>
             ` : ''}
@@ -4163,7 +4814,7 @@
         ${imState.history.length > 0 ? `
           <div class="panel-box" style="padding:14px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <strong style="font-size:13px;">🗂️ 최근 제작한 이미지 보관함 (클릭 시 우측 미리보기 및 프롬프트 복원)</strong>
+              <strong style="font-size:13px;">🗂️ 최근 제작한 이미지 보관함 (클릭 시 우측 비교창 및 프롬프트 즉시 복원)</strong>
               <span class="tag-pill">${imState.history.length}장</span>
             </div>
             <div class="im-history-grid">
@@ -4185,9 +4836,10 @@
       if (!item) return;
       imState.lastGeneratedUrl = item.assetPath;
       imState.lastGeneratedFileName = item.fileName;
+      imState.lastEngineLabel = item.engineLabel || '';
       if (item.promptText) imState.promptText = item.promptText;
       renderImageMakerPane();
-      showStatus('ok', `보관함 이미지(${item.fileName})를 불러왔습니다. 원하는 반영 버튼을 눌러 카드에 적용하세요!`);
+      showStatus('ok', `보관함 이미지(${item.fileName})를 불러왔습니다. 대표 이미지 교체 또는 서브 썸네일 추가 버튼을 눌러 반영하세요!`);
     }
 
     function toggleStudioFullscreen() {
@@ -4230,7 +4882,7 @@
         renderAll();
         reloadPreviewIframe();
         markDirty(false);
-        showStatus('ok', '실서버 최신 설정으로 로컬 동기화 및 11개 페이지 재제작이 완료되었습니다!');
+        showStatus('ok', '실서버 최신 설정으로 로컬 동기화 및 전체 페이지 재제작이 완료되었습니다!');
       } catch (err) {
         showStatus('err', '실서버 동기화 실패: ' + err.message);
       }
@@ -4255,9 +4907,9 @@
 
       const workingMessages = {
         save_build_one: `[${page.label}] 로컬 상세페이지(.html) 및 워드프레스 번들을 생성 중입니다...`,
-        save_build_all: '11개 전 상세페이지(.html + wordpress-*.html)를 일괄 제작 중입니다...',
+        save_build_all: '전체 페이지(.html + wordpress-*.html)를 일괄 제작 중입니다...',
         deploy_one: `[${page.label}] 로컬 제작 후 카페24 실서버(${page.liveUrl})로 배포 중입니다 (약 15~35초 소요)...`,
-        deploy_all: '11개 모든 상세페이지를 로컬 제작 후 카페24 실서버에 일괄 배포 중입니다 (약 1~2분 소요)...',
+        deploy_all: '전체 페이지를 로컬 제작 후 카페24 실서버에 일괄 배포 중입니다 (약 1~2분 소요)...',
         reset_page: `[${page.label}] 페이지를 Sample A 초기 기본값으로 복원 중입니다...`
       };
       showStatus('working', workingMessages[action] || '처리 중입니다...');
@@ -4295,8 +4947,8 @@
       const workingMessages = {
         save_build_one: `[${page.label}] 변경사항을 실시간 컴파일하여 카페24 실서버에 즉시 배포 중입니다...`,
         deploy_one: `[${page.label}] 변경사항을 실시간 컴파일하여 카페24 실서버에 즉시 배포 중입니다...`,
-        save_build_all: '11개 전 상세페이지를 실시간 컴파일하여 카페24 실서버에 일괄 배포 중입니다...',
-        deploy_all: '11개 전 상세페이지를 실시간 컴파일하여 카페24 실서버에 일괄 배포 중입니다...',
+        save_build_all: '전체 페이지를 실시간 컴파일하여 카페24 실서버에 일괄 배포 중입니다...',
+        deploy_all: '전체 페이지를 실시간 컴파일하여 카페24 실서버에 일괄 배포 중입니다...',
         reset_page: `[${page.label}] 페이지를 Sample A 기본값으로 복원하고 실서버에 배포 중입니다...`
       };
       showStatus('working', workingMessages[action] || '실서버 반영 중입니다...');
@@ -4365,7 +5017,7 @@
           markDirty(false);
           renderAll();
           reloadPreviewIframe();
-          showStatus('ok', `11개 전 상세페이지가 카페24 실서버에 즉시 일괄 배포되었습니다! (${data.updatedCount || 11}개 페이지 갱신 완료)`);
+          showStatus('ok', `전체 페이지가 카페24 실서버에 즉시 일괄 배포되었습니다! (${data.updatedCount || 11}개 페이지 갱신 완료)`);
           return;
         }
 
@@ -4394,7 +5046,7 @@
     function confirmAndDeploy(action) {
       const page = getCurrentPage();
       const msg = action === 'deploy_all'
-        ? '11개 모든 상세페이지의 현재 설정을 로컬 제작 후 카페24 실서버(https://www.bareunhaniwon.com/)에 즉시 일괄 배포하시겠습니까?'
+        ? '전체 페이지의 현재 설정을 로컬 제작 후 카페24 실서버(https://www.bareunhaniwon.com/)에 즉시 일괄 배포하시겠습니까?'
         : `[${page.label}] 페이지를 카페24 실서버(${page.liveUrl})에 즉시 배포하시겠습니까?`;
       if (!confirm(msg)) return;
       runStudioAction(action);

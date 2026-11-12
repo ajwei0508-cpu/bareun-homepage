@@ -13753,6 +13753,7 @@ if (fs.existsSync(masterCfgPath)) {
 
 const cliPageArg = process.argv.find(a => a.startsWith('--page='));
 const targetPageFilter = cliPageArg ? cliPageArg.split('=')[1].trim() : null;
+const { buildPageHtml: compileUnifiedPageHtml } = require('./bareun-detail-compiler.js');
 
 pagesSource.forEach(p => {
   if (targetPageFilter && p.file !== targetPageFilter && p.slug !== targetPageFilter) {
@@ -13761,7 +13762,10 @@ pagesSource.forEach(p => {
   const mergedPage = Object.assign({}, p, {
     cardStyle: Object.assign({}, globalCardStyle || {}, p.cardStyle || {})
   });
-  const html = buildPageHtml(mergedPage);
+  const html = compileUnifiedPageHtml(mergedPage);
   fs.writeFileSync(path.join(outDir, p.file), html, 'utf8');
-  console.log('Generated Sample A detail page:', p.file, '(' + html.length + ' bytes)');
+  if (p.file === 'index.html') {
+    fs.writeFileSync(path.join(outDir, 'story-3d.html'), html, 'utf8');
+  }
+  console.log('Generated Sample A / Home Story page:', p.file, '(' + html.length + ' bytes)');
 });
