@@ -189,7 +189,7 @@ function readRawSettingsJson() {
 
 function getRawStudioAiKeys() {
   const s = readRawSettingsJson();
-  const geminiKey = String(s.geminiKey || process.env.GEMINI_API_KEY || '').trim();
+  const geminiKey = String(s.geminiKey || s.googleApiKey || process.env.GEMINI_API_KEY || '').trim();
   const falKey = String(s.falKey || process.env.FAL_KEY || '').trim();
   return { geminiKey, falKey };
 }
@@ -832,35 +832,25 @@ async function generateViaFalNanoBananaPro({ falKey, promptText, refImages = [],
 function preprocessKoreanMedicalTerms(koText) {
   let s = normalizeUserPromptDirectives(String(koText || '').trim());
   const rules = [
-    [/\(\s*배경\s*없이\s*\)|배경\s*없이|배경\s*미노출|무배경/g, 'clean solid-color out-of-focus studio backdrop with ZERO background windows, lattice frames, plants, or furniture'],
-    [/체성분\s*분석기|인바디/g, 'modern sleek white-and-silver metallic digital InBody body composition analyzer machine with a sharp LCD clinical screen (strictly modern medical device, NO wood material)'],
-    [/1\s*인칭\s*시점/g, 'first-person POV looking down at the screen (strictly maximum 2 hands holding the side electrodes, NO extra third hand pointing)'],
-    [/2\s*[,·ㆍ/.\-]?\s*3\s*[,·ㆍ/.\-]?\s*4\s*지\s*(손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/g, '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers side-by-side)'],
-    [/요골\s*동맥/g, '환자 손목 안쪽 요골동맥 맥자리(the radial artery pulse point on the inner wrist of the patient)'],
-    [/진맥\s*쿠션|맥진\s*쿠션/g, '아이보리 명주 손목 받침 쿠션(ivory silk wrist pulse cushion)'],
-    [/양손\s*맥진|양\s*손목\s*맥진|양손\s*진맥/g, '마주 앉은 환자의 양 손목 정밀 맥박 촉진(traditional pulse palpation on both wrists of the patient sitting opposite)'],
-    [/(?<!손목 받침 )(?:진맥|맥진)/g, '전통 한의학 손목 맥박 촉진(traditional Korean medicine radial pulse diagnosis)'],
-    [/복진/g, '진료 베드에 누운 환자의 복부 정밀 촉진(gentle clinical abdominal palpation on an examination bed)'],
-    [/추나\s*요법|수기\s*추나|추나/g, '수기 척추교정 치료(hands-on Chuna spinal alignment manual therapy)'],
-    [/약침/g, '정밀 한방 약침 시술(precise sterile Korean pharmacopuncture therapy)'],
-    [/황제\s*공진단|공진단/g, '24K 순금박을 입힌 전통 한방 환약과 원목 목함(traditional Korean Gongjindan herbal pill wrapped in pure 24k gold leaf in a walnut box)'],
-    [/녹용\s*분골|러시아\s*녹용|녹용/g, '최상급 녹용 분골 절편(premium sliced deer antler tip cross-sections)'],
-    [/원내\s*탕전실|무균\s*탕전실|탕전실/g, '유리 통창 원내 한약 조제실(clean glass-walled modern herbal medicine decoction lab)'],
-    [/초음파\s*진단기|초음파\s*모니터|초음파/g, '정밀 초음파 진단 프로브와 초음파 모니터(diagnostic ultrasound probe and live grayscale ultrasound monitor)'],
-    [/체열\s*진단기|적외선\s*체열/g, '적외선 체열진단 열화상 모니터(medical infrared thermography body heat-map monitor)']
+    [/체성분\s*(?:분석기|검사기|측정기)|인바디/g, 'sleek modern digital clinical body composition analyzer machine'],
+    [/2\s*[,·ㆍ/.\-]?\s*3\s*[,·ㆍ/.\-]?\s*4\s*지\s*(손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/g, 'index middle and ring fingers placed gently side-by-side'],
+    [/요골\s*동맥/g, 'inner wrist radial artery pulse point'],
+    [/진맥\s*쿠션|맥진\s*쿠션/g, 'ivory silk wrist pulse cushion'],
+    [/양손\s*맥진|양\s*손목\s*맥진|양손\s*진맥/g, 'traditional pulse palpation on both wrists of the patient sitting opposite'],
+    [/(?<!손목 받침 )(?:진맥|맥진)/g, 'traditional Korean medicine radial pulse diagnosis'],
+    [/복진/g, 'gentle clinical abdominal palpation on an examination bed'],
+    [/추나\s*요법|수기\s*추나|추나/g, 'hands-on Chuna spinal alignment manual therapy'],
+    [/약침/g, 'precise sterile Korean pharmacopuncture therapy'],
+    [/황제\s*공진단|공진단/g, 'traditional Korean Gongjindan herbal pill wrapped in pure 24k gold leaf in a walnut box'],
+    [/녹용\s*분골|러시아\s*녹용|녹용/g, 'premium sliced deer antler tip cross-sections'],
+    [/원내\s*탕전실|무균\s*탕전실|탕전실/g, 'clean glass-walled modern herbal medicine decoction lab'],
+    [/초음파\s*진단기|초음파\s*모니터|초음파/g, 'diagnostic ultrasound probe and live grayscale ultrasound monitor'],
+    [/체열\s*진단기|적외선\s*체열/g, 'medical infrared thermography body heat-map monitor']
   ];
-  const tokens = [];
   for (const [regex, replacement] of rules) {
-    s = s.replace(regex, () => {
-      const key = `__BMED_${tokens.length}__`;
-      tokens.push(replacement);
-      return key;
-    });
+    s = s.replace(regex, ` ${replacement} `);
   }
-  for (let i = 0; i < tokens.length; i++) {
-    s = s.split(`__BMED_${i}__`).join(tokens[i]);
-  }
-  return s;
+  return s.replace(/\s+/g, ' ').trim();
 }
 
 async function translateKoreanToEnglishSentence(text) {
@@ -869,6 +859,32 @@ async function translateKoreanToEnglishSentence(text) {
   if (!/[가-힣]/.test(raw)) return raw;
 
   const prepared = preprocessKoreanMedicalTerms(raw);
+  if (!/[가-힣]/.test(prepared)) return prepared;
+
+  try {
+    const c5Url =
+      'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=ko&tl=en&q=' +
+      encodeURIComponent(prepared);
+    const buf = await fetchBufferFollowRedirects(c5Url, 7000);
+    const parsed = JSON.parse(buf.toString('utf8'));
+    if (Array.isArray(parsed)) {
+      const chunks = [];
+      for (const item of parsed) {
+        if (typeof item === 'string') chunks.push(item);
+        else if (Array.isArray(item) && typeof item[0] === 'string') chunks.push(item[0]);
+      }
+      const joined = chunks.join(' ').trim();
+      if (joined && !/[가-힣]/.test(joined)) return joined;
+    }
+  } catch (e) {}
+
+  try {
+    const mmUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(prepared)}&langpair=ko|en`;
+    const buf = await fetchBufferFollowRedirects(mmUrl, 6000);
+    const parsed = JSON.parse(buf.toString('utf8'));
+    const cand = parsed?.responseData?.translatedText || '';
+    if (cand && !/MYMEMORY WARNING/i.test(cand) && !/[가-힣]/.test(cand)) return cand.trim();
+  } catch (e) {}
 
   try {
     const gtxUrl =
@@ -885,14 +901,6 @@ async function translateKoreanToEnglishSentence(text) {
     }
   } catch (e) {}
 
-  try {
-    const mmUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(prepared)}&langpair=ko|en`;
-    const buf = await fetchBufferFollowRedirects(mmUrl, 6000);
-    const parsed = JSON.parse(buf.toString('utf8'));
-    const cand = parsed?.responseData?.translatedText || '';
-    if (cand && !/MYMEMORY WARNING/i.test(cand)) return cand.trim();
-  } catch (e) {}
-
   return prepared;
 }
 
@@ -902,6 +910,14 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFa
   const effectiveNoBg = Boolean(noBackgroundDirective || detectNoBackgroundDirective(rawUser));
   const translatedScene = await translateKoreanToEnglishSentence(cleanUser);
   const sanitizedScene = translatedScene.replace(/\b(watermark|logo|text overlay)\b/gi, '').trim();
+
+  const extraGuards = [];
+  if (/1\s*인칭\s*시점/.test(rawUser)) {
+    extraGuards.push('first-person POV camera angle looking down from the standing patient perspective at the clinical LCD display while the patient two hands grip the left and right metallic side handle electrodes, strictly ZERO face visible in frame, strictly NO extra third hand pointing');
+  }
+  if (/체성분\s*(?:분석기|검사기|측정기)|인바디/i.test(rawUser)) {
+    extraGuards.push('modern sleek white-and-silver metallic unbranded digital body composition analyzer machine with a sharp clinical LCD screen displaying clear body fat reduction downward trend chart and muscle mass increase upward bar graph, strictly modern medical equipment with NO wood material');
+  }
 
   const needsTwoPersonPulseSeparation = /진맥|맥진|요골|손목|radial artery|pulse/i.test(rawUser + ' ' + sanitizedScene);
   const twoPersonClause = needsTwoPersonPulseSeparation
@@ -923,6 +939,7 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFa
       noBgClause,
       twoPersonClause,
       sanitizedScene,
+      ...extraGuards,
       'shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin pores and authentic micro-texture, accurate 5-finger hand anatomy (strictly maximum 2 hands per person), shallow depth of field, high-end medical editorial color grading, photorealistic, zero CGI, no text, no watermark, no signature'
     ]
       .filter(Boolean)
@@ -935,6 +952,7 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFa
     noBgClause,
     twoPersonClause,
     sanitizedScene,
+    ...extraGuards,
     'shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin texture and fine material detail, accurate anatomical hands and fingers (strictly maximum 2 hands per person, no extra third hand), shallow depth of field, warm natural color grading, photorealistic, zero CGI, no watermark, no logo'
   ]
     .filter(Boolean)

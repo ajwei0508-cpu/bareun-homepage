@@ -3846,7 +3846,11 @@ class Bareun_Custom_Studio_Engine_V4 {
                         return array('bin' => $bin, 'engine' => $m['label']);
                     }
                 } elseif ($http_code === 429 && $m['id'] === 'gemini-3-pro-image') {
-                    self::record_studio_ai_usage_php(false, $m['id'], true);
+                    if (stripos($body_str, 'spending cap') !== false) {
+                        self::record_studio_ai_usage_php(false, 'Google AI Studio 월간 한도(Spend Cap) 도달', true);
+                    } elseif (stripos($body_str, 'quota') !== false || stripos($body_str, 'RESOURCE_EXHAUSTED') !== false) {
+                        self::record_studio_ai_usage_php(false, $m['id'] . ' 일일 한도 초과', true);
+                    }
                 }
             }
         }
@@ -3923,45 +3927,92 @@ class Bareun_Custom_Studio_Engine_V4 {
     private static function translate_ko_medical_prompt_server($raw_prompt, $use_director_face, $no_face_directive = false, $no_bg_directive = false) {
         $effective_no_bg = $no_bg_directive || self::detect_no_background_directive_php($raw_prompt);
         $text = self::normalize_user_prompt_directives_php($raw_prompt);
-        $replacements = array(
-            '/얼굴\s*미노출|얼굴\s*비노출|얼굴\s*없이/u' => 'strictly faceless neck-down or over-the-shoulder from behind framing with ZERO face visible',
-            '/\(\s*배경\s*없이\s*\)|배경\s*없이|배경\s*미노출|무배경/u' => 'clean solid-color out-of-focus studio backdrop with ZERO background windows, lattice frames, plants, or furniture',
-            '/체성분\s*분석기|인바디/u' => 'modern sleek white-and-silver metallic digital InBody body composition analyzer machine with a sharp LCD clinical screen (strictly modern medical device, NO wood material)',
-            '/1\s*인칭\s*시점/u' => 'first-person POV looking down at the screen (strictly maximum 2 hands holding the side electrodes, NO extra third hand pointing)',
-            '/2\s*[,·ㆍ\/\.\-]?\s*3\s*[,·ㆍ\/\.\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/u' => '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers gently side-by-side)',
-            '/요골\s*동맥/u' => '환자 손목 안쪽 요골동맥 부위(the radial artery pulse point on the inner wrist of the patient)',
-            '/진맥\s*쿠션|맥진\s*쿠션/u' => '아이보리 명주 손목 받침 쿠션(ivory woven-silk wrist pulse cushion)',
-            '/진맥|맥진/u' => '전통 한의학 손목 맥진(traditional Korean medicine radial pulse diagnosis on the wrist)',
-            '/복진/u' => '진료 베드에 누운 환자의 복부를 부드럽게 촉진하는 복진(gentle clinical abdominal palpation on an examination bed)',
-            '/추나\s*요법|수기\s*추나|추나/u' => '수기 척추교정 추나 치료(precise hands-on Chuna spinal and pelvic manual therapy)',
-            '/약침/u' => '멸균 한방 약침 시술(precise sterile herbal pharmacopuncture therapy)',
-            '/탕전실/u' => '유리 통창 원내 한약 조제실(clean modern glass-walled clinic herbal decoction lab)',
-            '/황제\s*공진단|공진단/u' => '24K 순금박으로 감싼 황제공진단 환약과 원목 목함(24K pure gold-leaf wrapped Gongjindan herbal pills inside a dark walnut wooden box)',
-            '/녹용\s*분골|러시아\s*녹용|녹용/u' => '최상급 러시아 녹용 분골 절편(top-grade sliced Russian velvet deer antler tips)',
-            '/초음파\s*진단기|초음파\s*모니터|초음파/u' => '정밀 초음파 진단 프로브와 실시간 초음파 영상 모니터(medical ultrasound transducer probe and live grayscale ultrasound monitor)',
-            '/체열\s*진단기|적외선\s*체열/u' => '적외선 체열진단 열화상 모니터(medical infrared thermography body heat-map monitor)'
+
+        // Short inline glossary replacements (no periods/parentheses so sentence translation stays 100% intact)
+        $inline_glossary = array(
+            '/체성분\s*(?:분석기|검사기|측정기)|인바디/u' => 'sleek modern digital clinical body composition analyzer machine',
+            '/2\s*[,·ㆍ\/\.\-]?\s*3\s*[,·ㆍ\/\.\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/u' => 'index middle and ring fingers placed gently side-by-side',
+            '/요골\s*동맥/u' => 'inner wrist radial artery pulse point',
+            '/진맥\s*쿠션|맥진\s*쿠션/u' => 'ivory silk wrist pulse cushion',
+            '/진맥|맥진/u' => 'traditional Korean medicine wrist radial pulse diagnosis',
+            '/복진/u' => 'clinical abdominal palpation on an examination bed',
+            '/추나\s*요법|수기\s*추나|추나/u' => 'hands-on Chuna spinal and pelvic manual therapy',
+            '/약침/u' => 'sterile herbal pharmacopuncture therapy',
+            '/탕전실/u' => 'clean glass-walled clinic herbal decoction lab',
+            '/황제\s*공진단|공진단/u' => '24K gold-leaf wrapped Gongjindan herbal pills in a walnut wooden box',
+            '/녹용\s*분골|러시아\s*녹용|녹용/u' => 'top-grade sliced velvet deer antler tips',
+            '/초음파\s*진단기|초음파\s*모니터|초음파/u' => 'medical ultrasound probe and live grayscale ultrasound monitor',
+            '/체열\s*진단기|적외선\s*체열/u' => 'medical infrared thermography body heat-map monitor'
         );
-        foreach ($replacements as $pat => $rep) {
-            $text = preg_replace($pat, $rep, $text);
+        foreach ($inline_glossary as $pat => $rep) {
+            $text = preg_replace($pat, ' ' . $rep . ' ', $text);
         }
 
         $translated = $text;
         if (preg_match('/[가-힣]/u', $text)) {
-            $g_url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' . rawurlencode($text);
-            $g_res = wp_remote_get($g_url, array('timeout' => 8));
-            if (!is_wp_error($g_res) && wp_remote_retrieve_response_code($g_res) === 200) {
-                $arr = json_decode(wp_remote_retrieve_body($g_res), true);
-                if (is_array($arr) && !empty($arr[0]) && is_array($arr[0])) {
-                    $chunks = array();
-                    foreach ($arr[0] as $seg) {
-                        if (is_array($seg) && isset($seg[0])) {
-                            $chunks[] = (string)$seg[0];
+            $ua_headers = array(
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+            );
+
+            // 1) Reliable Google Chrome Dict endpoint
+            $c5_url = 'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=ko&tl=en&q=' . rawurlencode($text);
+            $c5_res = wp_remote_get($c5_url, array('timeout' => 8, 'headers' => $ua_headers));
+            if (!is_wp_error($c5_res) && wp_remote_retrieve_response_code($c5_res) === 200) {
+                $c5_arr = json_decode(wp_remote_retrieve_body($c5_res), true);
+                if (is_array($c5_arr)) {
+                    $c5_chunks = array();
+                    foreach ($c5_arr as $item) {
+                        if (is_string($item)) {
+                            $c5_chunks[] = $item;
+                        } elseif (is_array($item) && isset($item[0]) && is_string($item[0])) {
+                            $c5_chunks[] = $item[0];
                         }
                     }
-                    $joined = trim(implode('', $chunks));
-                    if ($joined !== '') $translated = $joined;
+                    $c5_joined = trim(implode(' ', $c5_chunks));
+                    if ($c5_joined !== '') {
+                        $translated = $c5_joined;
+                    }
                 }
             }
+
+            // 2) Fallback: MyMemory API
+            if (preg_match('/[가-힣]/u', $translated)) {
+                $mm_url = 'https://api.mymemory.translated.net/get?q=' . rawurlencode($text) . '&langpair=ko|en';
+                $mm_res = wp_remote_get($mm_url, array('timeout' => 8, 'headers' => $ua_headers));
+                if (!is_wp_error($mm_res) && wp_remote_retrieve_response_code($mm_res) === 200) {
+                    $mm_json = json_decode(wp_remote_retrieve_body($mm_res), true);
+                    if (!empty($mm_json['responseData']['translatedText']) && stripos($mm_json['responseData']['translatedText'], 'MYMEMORY WARNING') === false) {
+                        $translated = trim((string)$mm_json['responseData']['translatedText']);
+                    }
+                }
+            }
+
+            // 3) Fallback: GTX endpoint
+            if (preg_match('/[가-힣]/u', $translated)) {
+                $g_url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=' . rawurlencode($text);
+                $g_res = wp_remote_get($g_url, array('timeout' => 8, 'headers' => $ua_headers));
+                if (!is_wp_error($g_res) && wp_remote_retrieve_response_code($g_res) === 200) {
+                    $arr = json_decode(wp_remote_retrieve_body($g_res), true);
+                    if (is_array($arr) && !empty($arr[0]) && is_array($arr[0])) {
+                        $chunks = array();
+                        foreach ($arr[0] as $seg) {
+                            if (is_array($seg) && isset($seg[0])) {
+                                $chunks[] = (string)$seg[0];
+                            }
+                        }
+                        $joined = trim(implode('', $chunks));
+                        if ($joined !== '') $translated = $joined;
+                    }
+                }
+            }
+        }
+
+        $extra_guards = array();
+        if (preg_match('/1\s*인칭\s*시점/u', $raw_prompt)) {
+            $extra_guards[] = 'first-person POV camera angle looking down from the standing patient perspective at the clinical LCD display while the patient two hands grip the left and right metallic side handle electrodes, strictly ZERO face visible in frame, strictly NO extra third hand pointing';
+        }
+        if (preg_match('/체성분\s*(?:분석기|검사기|측정기)|인바디/u', $raw_prompt)) {
+            $extra_guards[] = 'modern sleek white-and-silver metallic unbranded digital body composition analyzer machine with a sharp clinical LCD screen displaying clear body fat reduction downward trend chart and muscle mass increase upward bar graph, strictly modern medical equipment with NO wood material';
         }
 
         $faceless_lead = $no_face_directive
@@ -3982,6 +4033,7 @@ class Bareun_Custom_Studio_Engine_V4 {
             $no_bg_lead,
             $director_lead,
             $translated,
+            implode(', ', $extra_guards),
             'ultra-realistic skin pores and natural fabric weave, accurate 5-finger hand anatomy (strictly maximum 2 hands per person, NO extra third hand), shallow depth of field, zero CGI, strictly NO watermarks'
         ));
 
