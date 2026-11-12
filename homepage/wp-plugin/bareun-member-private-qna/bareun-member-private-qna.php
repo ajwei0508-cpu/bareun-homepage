@@ -1830,13 +1830,25 @@ class Bareun_Master_SEO_Engine_V1 {
                     'value' => '211-91-10479'
                 );
             }
+            if (is_array($decoded) && isset($decoded['pages']) && is_array($decoded['pages'])) {
+                $opt_a_title = '바른한의원 대전본점 | 대덕구 비래동 추나·성장·다이어트·탈모·공진단·전립선';
+                $opt_a_desc  = '내 가족에게 처방·시술한 치료만 하는 아빠 한의사, 바른한의원 대전본점(안정위 대표원장)입니다. 추나요법, 허리·목디스크, 소아 키성장, 성장판검사, 성조숙증, 비염, 축농증, 식욕ZERO 다이어트, 내장지방, 남성·여성·원형탈모, 지루성두피염, 담적, 위염, 난임, 산후보약, 황제공진단, 전립선, 리프팅 맞춤 한방 치료.';
+                if (isset($decoded['pages']['home']) && is_array($decoded['pages']['home'])) {
+                    $decoded['pages']['home']['title'] = $opt_a_title;
+                    $decoded['pages']['home']['description'] = $opt_a_desc;
+                }
+                if (isset($decoded['pages']['story-3d']) && is_array($decoded['pages']['story-3d'])) {
+                    $decoded['pages']['story-3d']['title'] = $opt_a_title;
+                    $decoded['pages']['story-3d']['description'] = $opt_a_desc;
+                }
+            }
             self::$cached_cfg = is_array($decoded) ? $decoded : array();
         }
         return self::$cached_cfg;
     }
 
     public static function maybe_sync_htaccess_headers() {
-        if (get_option(self::OPT_HTACCESS_VER) === '7') {
+        if (get_option(self::OPT_HTACCESS_VER) === '8') {
             return;
         }
         // Ensure default verified Naver & Google tokens are stored in wp_options if empty
@@ -1883,7 +1895,7 @@ class Bareun_Master_SEO_Engine_V1 {
             @wp_cache_clean_cache(isset($file_prefix) ? $file_prefix : 'wp-cache-', true);
         }
 
-        update_option(self::OPT_HTACCESS_VER, '7');
+        update_option(self::OPT_HTACCESS_VER, '8');
     }
 
     private static function is_request_https() {
