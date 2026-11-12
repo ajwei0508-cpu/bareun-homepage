@@ -198,6 +198,29 @@ function buildHomeStoryHtml(page) {
   for (const [k, v] of Object.entries(tokenMap)) {
     out = out.split(k).join(v);
   }
+  const homeTimelineLegalHtml =
+    '      <div class="timeline-dots-row" id="timeline-dots-row"></div>\r\n' +
+    '    </div>\r\n' +
+    '    <div class="bareun-home-legal-strip" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:4px;font-size:10.5px;color:rgba(245,241,232,0.82);text-shadow:0 1px 4px rgba(0,0,0,0.85);letter-spacing:-0.01em;">\r\n' +
+    '      <span>상호명: <strong>바른한의원 대전본점</strong> · 대표원장: 안정위 · 사업자등록번호: <strong>211-91-10479</strong></span>\r\n' +
+    '      <span>소재지: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동) · 대표전화: 010-5631-1275</span>\r\n' +
+    '    </div>';
+  out = out.replace(
+    '      <div class="timeline-dots-row" id="timeline-dots-row"></div>\r\n    </div>',
+    homeTimelineLegalHtml
+  );
+  const drawerLegalHtml =
+    '      <div class="drawer-quick-links">\r\n' +
+    '        <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" style="grid-column: span 2;">📍 네이버 플레이스 빠른 예약 ↗</a>\r\n' +
+    '      </div>\r\n' +
+    '      <div class="bareun-drawer-legal-info" style="margin-top:8px;padding-top:12px;border-top:1px solid rgba(94,71,54,0.18);font-size:11px;line-height:1.55;color:var(--brand-brown-soft);word-break:keep-all;">\r\n' +
+    '        <strong>바른한의원 대전본점</strong> · 대표원장: 안정위 · 사업자등록번호: <strong>211-91-10479</strong><br>\r\n' +
+    '        소재지: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동) · 대표전화: 010-5631-1275\r\n' +
+    '      </div>';
+  out = out.replace(
+    '      <div class="drawer-quick-links">\r\n        <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noreferrer" style="grid-column: span 2;">📍 네이버 플레이스 빠른 예약 ↗</a>\r\n      </div>',
+    drawerLegalHtml
+  );
   return out;
 }
 
@@ -8463,6 +8486,10 @@ function buildPageHtml(page) {
             <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M7 17 17 7m0 0H8m9 0v9"/>
           </svg>
         </button>${extraLinkHtml}
+        <div class="bareun-detail-legal-info" style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(138,114,94,0.22);font-size:11px;line-height:1.55;color:#6E5D4F;word-break:keep-all;">
+          <strong>바른한의원 대전본점</strong> · 대표원장: 안정위 · 사업자등록번호: <strong>211-91-10479</strong><br>
+          소재지: 대전광역시 대덕구 비래동로7번길 1, 2층 (비래동) · 대표전화: 010-5631-1275
+        </div>
       </div>
     </aside>
 

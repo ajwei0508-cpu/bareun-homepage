@@ -17,6 +17,13 @@ const CLINIC_BASE_ORG = {
   logo: GH_RAW_BASE + 'webp/card_1_director.webp',
   image: DEFAULT_OG_IMAGE,
   telephone: '+82-10-5631-1275',
+  taxID: '211-91-10479',
+  vatID: '211-91-10479',
+  identifier: {
+    '@type': 'PropertyValue',
+    name: '사업자등록번호',
+    value: '211-91-10479'
+  },
   priceRange: '₩₩',
   address: {
     '@type': 'PostalAddress',

@@ -302,7 +302,7 @@ async function performWpLogin(page, loginUrl) {
       }
     }
     const masterCfgObj = JSON.parse(fs.readFileSync(path.join(__dirname, 'detail-pages-config.json'), 'utf8'));
-    const fullPluginPhp = fs.existsSync(phpBackendPath) ? fs.readFileSync(phpBackendPath, 'utf8') : '';
+    const fullPluginPhp = fs.existsSync(pluginPhpSource) ? fs.readFileSync(pluginPhpSource, 'utf8') : '';
     let localStudioAiKeys = {};
     try {
       const localSettingsPath = path.join(__dirname, '..', 'imagemaker', 'data', 'settings.json');
@@ -459,7 +459,7 @@ async function performWpLogin(page, loginUrl) {
       standaloneHtml: buildStandaloneWpPostHtml(FLAGSHIP_REPRESENTATIVE_POST)
     };
 
-    const allPostsToPublish = [flagshipPayload];
+    const allPostsToPublish = [flagshipPayload, ...buildAllHealthNoteWpPayloads()];
 
     const llmsTxtRaw = fs.existsSync(path.join(__dirname, 'llms.txt'))
       ? fs.readFileSync(path.join(__dirname, 'llms.txt'), 'utf8')

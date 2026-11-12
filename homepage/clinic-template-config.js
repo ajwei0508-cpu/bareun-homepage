@@ -12,6 +12,7 @@ window.CLINIC_TEMPLATE_CONFIG = {
   clinicNameEn: 'BAREUN KOREAN MEDICINE CLINIC DAEJEON',
   directorName: '안정위',
   directorTitle: '대표원장',
+  businessRegNo: '211-91-10479',
   careerYears: '15년',
   slogan: '바른 마음, 정직한 처방 · 평생 주치의 바른한의원 대전본점',
 

@@ -257,10 +257,13 @@ function buildBodyExplorerHtml() {
 
   const ssrHealthNotesDirectoryHtml = FLATTENED_SEED_NOTES.map(n => {
     const deepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
+    const standaloneUrl = `https://www.bareunhaniwon.com/health-note-${escAttrServer(n.id)}/`;
+    const checkItemsHtml = (n.check || []).map(c => `<li>${escAttrServer(c)}</li>`).join('');
     return `<article class="seo-health-note-ssr-item">
-          <h3><a href="${deepUrl}">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a></h3>
-          <p class="aeo-direct-answer">${escAttrServer((n.empathy || []).join(' '))} ${escAttrServer((n.truth || []).join(' '))} ${escAttrServer((n.myth && n.myth[1]) || '')}</p>
-          <p>${escAttrServer((n.check || []).join(' / '))}</p>
+          <h3><a href="${deepUrl}">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a> <a href="${standaloneUrl}" style="font-size:0.78rem;color:#967128;margin-left:6px;">[개별 칼럼 전문 ↗]</a></h3>
+          <p class="aeo-direct-answer"><strong>[핵심 의학 결론]</strong> ${escAttrServer((n.truth || []).join(' '))} ${escAttrServer((n.myth && n.myth[1]) || '')} (학술 근거: ${escAttrServer(n.academicBasis || '국제 SCI 학술지')})</p>
+          <p class="aeo-empathy-context">${escAttrServer((n.empathy || []).join(' '))}</p>
+          <ul class="aeo-check-list">${checkItemsHtml}</ul>
         </article>`;
   }).join('\n        ');
 
@@ -1807,6 +1810,15 @@ function buildBodyExplorerHtml() {
       .explore-floating-popup.open {
         transform: translateY(0);
       }
+      .bareun-explorer-legal-footer {
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 68px !important;
+        max-width: none !important;
+      }
+      .popup-open-mode .bareun-explorer-legal-footer {
+        display: none !important;
+      }
     }
   </style>
   <link rel="icon" href="data:,">
@@ -1869,14 +1881,23 @@ function buildBodyExplorerHtml() {
     <div id="encyclopedia-dynamic-content"></div>
   </section>
 
-  <!-- VISUALLY HIDDEN SEARCH ARCHIVE (HIDDEN FROM CONSUMERS) -->
-  <div class="seo-anatomy-summary-drawer" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;pointer-events:none;" aria-hidden="true">
-    <h2>전신 4대 해부 계통 및 9대 부위별 건강 가이드</h2>
-    <p>바른한의원 대전본점 풀스크린 3D 인체모형 포털은 전신 근육계, 자율·말초 신경계, 척추·사지 관절계, 심혈관 순환계의 입체적 상호작용을 실시간 3D 그래픽 모션으로 시각화하고 생활 건강 정보를 제공합니다.</p>
-    <div class="seo-health-notes-ssr-list">
-      ${ssrHealthNotesDirectoryHtml}
-    </div>
-  </div>
+  <!-- OFFICIAL BUSINESS REGISTRATION & SEMANTIC AEO/GEO ARCHIVE DRAWER (NO 1PX CLIP / NO ARIA-HIDDEN) -->
+  <footer class="bareun-explorer-legal-footer" aria-label="바른한의원 대전본점 사업자 정보 및 72선 건강백과 아카이브" style="position:fixed;left:18px;bottom:14px;z-index:112;max-width:min(420px,calc(100vw - 36px));font-family:'Pretendard',sans-serif;pointer-events:auto;">
+    <details class="seo-anatomy-summary-drawer" style="background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border:1px solid rgba(197,160,89,0.45);border-radius:12px;padding:6px 11px;box-shadow:0 6px 20px rgba(13,13,15,0.08);font-size:0.68rem;color:#3F3B36;line-height:1.45;">
+      <summary style="cursor:pointer;font-weight:700;color:#141416;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <span>바른한의원 대전본점 · 대표 안정위 · 사업자등록번호 <strong>211-91-10479</strong></span>
+        <span style="color:#967128;font-weight:800;white-space:nowrap;">건강글 72선 ▾</span>
+      </summary>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid #EAE3D5;max-height:42vh;overflow-y:auto;">
+        <p style="margin:0 0 6px;font-size:0.70rem;color:#57534E;">상호명: 바른한의원 대전본점 | 대표원장: 안정위 | 사업자등록번호: 211-91-10479 | 소재지: 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 대표전화: 010-5631-1275</p>
+        <h2 style="margin:6px 0 4px;font-size:0.76rem;font-weight:800;color:#0D0D0F;">전신 4대 해부 계통 및 9대 부위별 오늘의 건강 글(72선) 아카이브</h2>
+        <p style="margin:0 0 8px;font-size:0.70rem;color:#57534E;">바른한의원 대전본점 풀스크린 3D 인체모형 포털은 전신 근육계, 자율·말초 신경계, 척추·사지 관절계, 심혈관 순환계의 입체적 상호작용을 실시간 3D 그래픽 모션으로 시각화하고 해외 SCI 학술지 근거 기반 생활 건강 정보를 제공합니다.</p>
+        <div class="seo-health-notes-ssr-list" style="display:flex;flex-direction:column;gap:8px;">
+          ${ssrHealthNotesDirectoryHtml}
+        </div>
+      </div>
+    </details>
+  </footer>
 
   <script>
   (async function() {
@@ -2635,6 +2656,9 @@ function buildBodyExplorerHtml() {
 
       if (currentMenuTab === 0) {
         const displayNote = latestNote ? Object.assign({}, latestNote, { _isLatestRed: true }) : null;
+        if (displayNote && displayNote.title) {
+          document.title = '[' + (menuMeta.partLabel || '건강백과') + '] ' + displayNote.title + ' | 바른한의원 대전본점';
+        }
         activeBodyHtml = (displayNote
           ? buildStandardNoteBoxHtml(displayNote, 'window.closeInfoPopup()', '✕ 닫기', menuMeta)
           : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>') + recommendedBlogBlockHtml;
@@ -2763,6 +2787,9 @@ function buildBodyExplorerHtml() {
 
         if (pickedNote) {
           const pickedMeta = getMenuMeta(pickedNote.partId || currentPartId);
+          if (pickedNote.title) {
+            document.title = '[' + (pickedNote.partLabel || (pickedMeta && pickedMeta.partLabel) || '건강백과') + '] ' + pickedNote.title + ' | 바른한의원 대전본점';
+          }
           const isPickedLatest = latestNote && pickedNote.id === latestNote.id;
           const pickedWithRed = Object.assign({}, pickedNote, { _isLatestRed: isPickedLatest });
           activeBodyHtml =

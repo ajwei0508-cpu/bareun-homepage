@@ -1,6 +1,6 @@
 # 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon Main Branch) — SEO · AEO · GEO Official Knowledge Index
-> 주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 대표전화: 010-5631-1275 | 대표원장: 안정위 (한의사)
-> 진료시간: 평일(월~금) 09:00~19:00 · 토요일 및 공휴일 09:00~14:00 · 일요일 휴진
+> 상호명: 바른한의원 대전본점 | 대표원장: 안정위 (한의사) | 사업자등록번호: 211-91-10479 | 대표전화: 010-5631-1275
+> 주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 진료시간: 평일(월~금) 09:00~19:00 · 토요일 및 공휴일 09:00~14:00 · 일요일 휴진
 > 공식 도메인: https://www.bareunhaniwon.com/ | 3D 인체 백과사전 (오늘의 건강 글 72편 · 통합 1:1 Q&A): https://www.bareunhaniwon.com/body-explorer/
 > 해외 SCI 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews, European Heart Journal, JCEM, Human Reproduction Update, European Urology 등) 근거 기반 9대 정밀검진 · 6대 물리치료 · 맞춤 한약·추나·성장·다이어트·탈모·공진단·전립선 클리닉
 
@@ -9,6 +9,8 @@
 - Full AI Knowledge Base (Full-Text GEO): https://www.bareunhaniwon.com/llms-full.txt
 - XML Sitemap: https://www.bareunhaniwon.com/wp-sitemap.xml
 - RSS 2.0 Feed: https://www.bareunhaniwon.com/feed/
+- Clinic Name: 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon)
+- Business Registration Number (사업자등록번호): 211-91-10479
 - Chief Director: 안정위 대표원장 (Dr. Jung-Wi Ahn, KMD)
 - Address: 대전광역시 대덕구 비래동로7번길 1, 2층 (2F, 1, Biraedong-ro 7beon-gil, Daedeok-gu, Daejeon, 34417, Republic of Korea)
 - Telephone: 010-5631-1275 (+82-10-5631-1275)
