@@ -238,92 +238,40 @@ async function performWpLogin(page, loginUrl) {
       }
     }
 
-    // 1.5) Sync & Activate Bareun Member Auth, Private QnA & Master SEO Engine via WPCode PHP Snippet
-    const phpBackendPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna', 'bareun-member-private-qna.php');
-    if (fs.existsSync(phpBackendPath)) {
-      console.log('1.5) Syncing & Activating Bareun Backend + Master SEO Engine via WPCode ...');
-      const phpSnippetBody = fs.readFileSync(phpBackendPath, 'utf8').replace(/^<\?php\s*/, '').trim();
+    // 1.5) Ensure duplicate WPCode snippets are disabled (Official plugin handles backend via Step 1.4)
+    console.log('1.5) Ensuring duplicate WPCode snippets are disabled (Official plugin handles backend)...');
+    try {
       await page.goto(`${CANONICAL_ORIGIN}/wp-admin/admin.php?page=wpcode`, { waitUntil: 'networkidle2', timeout: 25000 });
-      const snippetRows = await page.evaluate(() => {
+      const duplicateSnippetHrefs = await page.evaluate(() => {
         return Array.from(document.querySelectorAll('table.wp-list-table tbody tr')).map(tr => {
           const editLink = tr.querySelector('a[href*="page=wpcode-snippet-manager&snippet_id="]');
-          const trashLink = tr.querySelector('a[href*="action=trash"]');
+          const text = tr.textContent;
           return {
-            title: editLink ? editLink.textContent.trim() : '',
-            editHref: editLink ? editLink.getAttribute('href') : '',
-            trashHref: trashLink ? trashLink.getAttribute('href') : ''
+            isMatch: text.includes('Bareun Member Auth') || text.includes('Private Disease QnA'),
+            editHref: editLink ? editLink.href : ''
           };
-        }).filter(r => r.title.includes('Bareun Member Auth') || r.title.includes('Private Disease QnA'));
+        }).filter(r => r.isMatch && r.editHref).map(r => r.editHref);
       });
-      // Trash older duplicate Bareun snippets if more than 1 exist
-      if (snippetRows.length > 1) {
-        for (const dup of snippetRows.slice(1)) {
-          if (dup.trashHref) {
-            const th = dup.trashHref.startsWith('http')
-              ? dup.trashHref.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)
-              : `${CANONICAL_ORIGIN}/wp-admin/` + dup.trashHref.replace(/^\//, '');
-            await page.goto(th, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+      for (const href of duplicateSnippetHrefs) {
+        await page.goto(href, { waitUntil: 'networkidle2', timeout: 20000 });
+        await page.evaluate(() => {
+          const activeChk = document.querySelector('#wpcode_active, input[name="wpcode_active"]');
+          if (activeChk && activeChk.checked) {
+            activeChk.click();
+            activeChk.dispatchEvent(new Event('change', { bubbles: true }));
           }
-        }
-      }
-      const existingMatch = snippetRows[0];
-      const targetUrl = existingMatch && existingMatch.editHref
-        ? (existingMatch.editHref.startsWith('http')
-            ? existingMatch.editHref.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)
-            : `${CANONICAL_ORIGIN}/wp-admin/` + existingMatch.editHref.replace(/^\//, ''))
-        : `${CANONICAL_ORIGIN}/wp-admin/admin.php?page=wpcode-snippet-manager&custom=1`;
-      await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 30000 });
-      await page.evaluate((codeStr) => {
-        const titleInput = document.querySelector('#wpcode_snippet_title, input[name="wpcode_snippet_title"]');
-        if (titleInput) titleInput.value = 'Bareun Member Auth & Private Disease QnA v5';
-        const typeSelect = document.querySelector('#wpcode_snippet_type, select[name="wpcode_snippet_type"]');
-        if (typeSelect) {
-          typeSelect.value = 'php';
-          typeSelect.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        const prioInput = document.querySelector('#wpcode_priority, input[name="wpcode_priority"]');
-        if (prioInput) prioInput.value = '1';
-        const codeTa = document.querySelector('#wpcode_snippet_code, textarea[name="wpcode_snippet_code"]');
-        if (codeTa) codeTa.value = codeStr;
-        const textTa = document.querySelector('#wpcode_snippet_text, textarea[name="wpcode_snippet_text"]');
-        if (textTa) textTa.value = codeStr;
-        document.querySelectorAll('.CodeMirror').forEach(cmEl => {
-          if (cmEl.CodeMirror) {
-            cmEl.CodeMirror.setValue(codeStr);
-            cmEl.CodeMirror.save();
-          }
-        });
-        if (window.wpcode_editor && window.wpcode_editor.codemirror) {
-          window.wpcode_editor.codemirror.setValue(codeStr);
-          window.wpcode_editor.codemirror.save();
-        }
-        const activeChk = document.querySelector('#wpcode_active, input[name="wpcode_active"]');
-        const toggleSlider = document.querySelector('.wpcode-checkbox-toggle-slider, label.wpcode-checkbox-toggle');
-        if (activeChk && !activeChk.checked) {
-          if (toggleSlider) toggleSlider.click();
-          activeChk.checked = true;
-          activeChk.value = '1';
-          activeChk.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      }, phpSnippetBody);
-      await new Promise(r => setTimeout(r, 350));
-      await Promise.all([
-        page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 30000 }).catch(() => {}),
-        page.evaluate(() => {
-          // IMPORTANT: Click ONLY the real Publish/Update button (name="button" value="publish"), NEVER #wpcode_execute_now!
           const btn = document.querySelector('button[name="button"][value="publish"], button[name="submit"], #publish');
           if (btn) btn.click();
           else {
             const f = document.querySelector('form#wpcode-snippet-manager-form, form[action*="wpcode"]');
             if (f) f.submit();
           }
-        })
-      ]);
-      const isSnippetActive = await page.evaluate(() => {
-        const activeChk = document.querySelector('#wpcode_active, input[name="wpcode_active"]');
-        return activeChk ? !!activeChk.checked : true;
-      });
-      console.log('   WPCode PHP Backend Snippet synced! Active:', isSnippetActive);
+        });
+        await new Promise(r => setTimeout(r, 1500));
+      }
+      console.log('   Duplicate WPCode snippets cleared/deactivated.');
+    } catch (wpcodeErr) {
+      console.warn('   WPCode cleanup note:', wpcodeErr.message);
     }
 
     // 2) Fetch WP REST Nonce
