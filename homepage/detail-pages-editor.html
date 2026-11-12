@@ -3661,6 +3661,11 @@
       return /얼굴미노출|얼굴비노출|얼굴없이|얼굴없는|얼굴안나오|얼굴안보이|얼굴제외|얼굴가리|얼굴크롭|얼굴생략|뒷모습만|손만클로즈업|손클로즈업만|목아래만|어깨아래만|noface|faceless|withoutface/i.test(t);
     }
 
+    function detectNoBackgroundDirectiveUi(rawText) {
+      const t = String(rawText || '').replace(/\s+/g, '');
+      return /배경없이|배경미노출|배경비노출|배경제거|배경생략|배경제외|무배경|단색배경|심플배경|누끼|nobackground|withoutbackground|cleanbackdrop/i.test(t);
+    }
+
     function applyUsagePayload(u) {
       if (!u || typeof u !== 'object') return;
       const limit = Math.max(1, Number(u.dailyFreeLimit) || 50);
@@ -4125,9 +4130,14 @@
     function onImPromptTextInput(val) {
       imState.promptText = val;
       const hasNoFace = detectNoFaceDirectiveUi(val);
+      const hasNoBg = detectNoBackgroundDirectiveUi(val);
       const bannerEl = document.getElementById('imNoFaceGuardBanner');
       if (bannerEl) {
         bannerEl.classList.toggle('show', hasNoFace);
+      }
+      const bgBannerEl = document.getElementById('imNoBgGuardBanner');
+      if (bgBannerEl) {
+        bgBannerEl.classList.toggle('show', hasNoBg);
       }
       if (hasNoFace && imState.useDirectorFace) {
         imState.useDirectorFace = false;
@@ -4492,6 +4502,7 @@
       const isArgonActive = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
       const maskedActiveKey = imState.aiKeyState?.maskedGeminiKey || imState.aiKeyState?.maskedFalKey || '';
       const hasNoFace = detectNoFaceDirectiveUi(imState.promptText);
+      const hasNoBg = detectNoBackgroundDirectiveUi(imState.promptText);
       if (hasNoFace && imState.useDirectorFace) {
         imState.useDirectorFace = false;
       }
@@ -4706,9 +4717,12 @@
               oninput="onImPromptTextInput(this.value)">${escHtml(imState.promptText)}</textarea>
           </div>
 
-          <!-- Strict No-Face Auto-Detection Banner -->
+          <!-- Strict No-Face & No-Background Auto-Detection Banners -->
           <div id="imNoFaceGuardBanner" class="im-noface-banner ${hasNoFace ? 'show' : ''}">
             🚫 <strong>[얼굴 미노출 지시 자동 감지됨]</strong> 프롬프트에 <code>얼굴미노출 / 얼굴 없이</code> 지시가 포함되어 있어 대표원장 얼굴 합성이 <strong>100% 차단</strong>되었으며, 어깨·목 아래 크롭 또는 정후면 오버더숄더 구도로 얼굴 노출이 0%가 되도록 엄격히 촬영합니다.
+          </div>
+          <div id="imNoBgGuardBanner" class="im-noface-banner ${hasNoBg ? 'show' : ''}" style="background:#eff6ff; border-color:#93c5fd; color:#1e3a8a;">
+            🎯 <strong>[(배경없이) 클린 스튜디오 가드 자동 감지됨]</strong> 한옥 창살·창문·블라인드·화분·가구 등 배경 구조물 생성이 <strong>100% 차단</strong>되며, 단색 웜톤/아웃포커싱 배경과 현대 의료기기 재질 고정·제3의 손 차단 규칙으로 촬영합니다.
           </div>
 
           <!-- Explicit Opt-In Toggle for Source Image Reference (Fixes Request #2!) -->

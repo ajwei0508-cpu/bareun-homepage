@@ -3395,6 +3395,24 @@ class Bareun_Custom_Studio_Engine_V4 {
         return (bool)preg_match('/얼굴미노출|얼굴비노출|얼굴없이|얼굴없는|얼굴안나오|얼굴안보이|얼굴제외|얼굴가리|얼굴크롭|얼굴생략|뒷모습만|손만클로즈업|손클로즈업만|목아래만|어깨아래만|noface|faceless|withoutface/iu', $compact);
     }
 
+    private static function detect_no_background_directive_php($raw_text) {
+        $compact = preg_replace('/\s+/u', '', (string)$raw_text);
+        if ($compact === '') return false;
+        return (bool)preg_match('/배경없이|배경미노출|배경비노출|배경제거|배경생략|배경제외|무배경|단색배경|심플배경|누끼|nobackground|withoutbackground|cleanbackdrop/iu', $compact);
+    }
+
+    private static function normalize_user_prompt_directives_php($raw_text) {
+        $s = trim((string)$raw_text);
+        if ($s === '') return '';
+        if (self::detect_no_background_directive_php($s)) {
+            $s = preg_replace('/공간에서\s*\(\s*배경\s*없이\s*\)\s*에서/u', '창문이나 배경 가구가 전혀 없는 깔끔한 단색 스튜디오 톤 배경에서', $s);
+            $s = preg_replace('/공간에서\s*배경\s*없이\s*에서/u', '창문이나 배경 가구가 전혀 없는 깔끔한 단색 스튜디오 톤 배경에서', $s);
+            $s = preg_replace('/\(\s*배경\s*없이\s*\)\s*에서/u', '창문·가구 등 배경 사물이 전혀 없는 깨끗한 단색 아웃포커싱 배경에서', $s);
+            $s = preg_replace('/\(\s*배경\s*없이\s*\)/u', '(창문·가구 등 실내 배경 사물 완전 배제, 깔끔한 단색 아웃포커싱 배경)', $s);
+        }
+        return $s;
+    }
+
     private static function guess_preferred_angle_key($prompt_text) {
         $s = mb_strtolower((string)$prompt_text, 'UTF-8');
         $is_warm = (bool)preg_match('/미소|웃음|눈웃음|따뜻|온화|친절|상담|설명|문진|경청|맞이|인사|브리핑|환자/u', $s);
@@ -3534,37 +3552,50 @@ class Bareun_Custom_Studio_Engine_V4 {
         return null;
     }
 
-    private static function build_argon_high_prompt_php($user_prompt, $orig_prompt, $has_source_ref, $use_director_face, $no_face_directive, $angle_label) {
-        $clean_user = trim((string)$user_prompt);
+    private static function build_argon_high_prompt_php($user_prompt, $orig_prompt, $has_source_ref, $use_director_face, $no_face_directive, $angle_label, $no_bg_directive = false) {
+        $raw_user   = trim((string)$user_prompt);
+        $clean_user = self::normalize_user_prompt_directives_php($raw_user);
         $clean_orig = trim((string)$orig_prompt);
+        $effective_no_bg = $no_bg_directive || self::detect_no_background_directive_php($raw_user);
         $lines = array();
 
         if ($has_source_ref) {
             $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 밑그림 참조 부분 수정 촬영]';
-            $lines[] = '사용자가 기존 슬롯 이미지를 밑그림으로 참조하기를 선택했습니다. 첫 번째 첨부된 장면 사진의 조명과 공간 톤앤매너를 참고하되, 아래 [최종 연출 프롬프트]에서 지시한 변경 사항을 최우선으로 반영하여 초고화질 DSLR 실사 사진으로 촬영해 주세요.';
-            if ($clean_orig !== '' && $clean_orig !== $clean_user) {
+            $lines[] = '사용자가 기존 슬롯 이미지를 밑그림으로 참조하기를 선택했습니다. 첫 번째 첨부된 장면 사진의 전체 구도와 조명 밸런스는 참고하되, 아래 [최종 연출 프롬프트]에서 지시한 동작·피사체·배경·소품 변경 사항을 100% 최우선으로 반영하여 초고화질 DSLR 실사 사진으로 촬영해 주세요.';
+            if ($clean_orig !== '' && $clean_orig !== $raw_user) {
                 $lines[] = '[기존 슬롯 설명 (참고용)]: ' . $clean_orig;
             }
             $lines[] = '[최종 연출 프롬프트 (최우선 반영 필수)]: ' . $clean_user;
         } else {
-            $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 백지 상태 100% 새 구도 독립 촬영]';
-            $lines[] = '이전 카드 이미지의 구도에 전혀 얽매이지 말고, 오직 아래 [장면 연출 지시] 문장 하나만을 근거로 카메라 앵글, 피사체 배치, 모니터/소품 구성, 손동작을 처음부터 새롭게 사고하여 촬영하세요.';
-            $lines[] = '따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원)의 실제 에디토리얼 화보 수준(Canon EOS R5, RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 모공과 원단 직조 질감)으로 표현하세요.';
+            $lines[] = '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 사용자 프롬프트 100% 정밀 구현 실사 촬영]';
+            $lines[] = '이전 카드 이미지나 정형화된 스톡 구도에 전혀 얽매이지 말고, 오직 아래 [장면 연출 지시] 문장에 적힌 공간·조명·피사체·시점(1인칭/3인칭)·행동만을 100% 있는 그대로 정확하게 구현하세요.';
+            $lines[] = '[임의 왜곡 절대 금지]: 사용자가 프롬프트에 직접 적지 않은 전통 한옥 창살(한지 격자 창문), 불필요한 원목 인테리어, 화분, 또는 지시하지 않은 과장된 손가락 가리키기 동작을 임의로 추가하지 마세요.';
+            $lines[] = '촬영 스펙: Canon EOS R5, RF 85mm f/1.8L USM 렌즈, 실제 피부 모공과 소재 본연의 질감이 살아있는 무보정 RAW 초고화질 실사 화보.';
             $lines[] = '[장면 연출 지시 (100% 정확히 구현 필수)]: ' . $clean_user;
         }
 
+        if ($effective_no_bg) {
+            $lines[] = '[절대 최우선 규칙 — 배경 사물·창문·가구 100% 완전 배제 (NO BACKGROUND / CLEAN STUDIO BACKDROP) 강제]: 사용자가 명시적으로 (배경없이)를 지시했습니다! 배경에 창문, 한옥 격자 창살(창호지 문), 블라인드, 커튼, 화분, 선반, 가구, 벽면 몰딩 등 어떠한 실내 건축 구조물이나 배경 소품도 절대 그리지 마십시오(배경 사물 노출 0%). 오직 프롬프트에서 지시한 조명 톤과 감성 색감만 부드럽게 감도는 매끄러운 무지(단색) 스튜디오 배경 또는 배경 사물이 완전히 사라진 깊은 아웃포커싱(보케)으로 처리하여, 시선이 오직 핵심 피사체(기기·모니터·인물)에만 100% 집중되도록 촬영하세요.';
+        }
+
         if ($no_face_directive) {
-            $lines[] = '[절대 최우선 규칙 — 얼굴 미노출(Faceless / Neck-down Crop / Over-the-Shoulder) 100% 준수]: 사용자가 명시적으로 얼굴 미노출을 지시했습니다! 한의사(원장)의 얼굴, 눈·코·입, 안경, 옆모습, 이마, 턱선, 심지어 모니터나 유리에 비친 반사상까지 어떠한 형태로도 절대 화면에 노출하지 마십시오(얼굴 노출 0%). 반드시 ① 목·어깨 아래 흰 한의사 가운과 팔·손가락 동작만 프레임에 담는 크롭 구도, 또는 ② 원장의 등 뒤 정후면 어깨너머(strictly from behind over-the-shoulder, head cropped out or pure back of shoulder)에서 모니터·진료 도구를 함께 바라보는 구도로만 촬영하세요.';
+            $lines[] = '[절대 최우선 규칙 — 얼굴 미노출(Faceless / Neck-down Crop / Over-the-Shoulder / POV) 100% 준수]: 사용자가 명시적으로 얼굴 미노출을 지시했습니다! 인물의 얼굴, 눈·코·입, 안경, 옆모습, 이마, 턱선, 심지어 모니터나 유리에 비친 반사상까지 어떠한 형태로도 절대 화면에 노출하지 마십시오(얼굴 노출 0%). 반드시 ① 목·어깨 아래 팔·손 동작만 프레임에 담는 크롭 구도, ② 1인칭 시점(POV), 또는 ③ 등 뒤 정후면 어깨너머에서 바라보는 구도로만 촬영하세요.';
         } elseif ($use_director_face) {
             $lines[] = '[안정위 대표원장 실제 인물 100% 동일 얼굴 고정]: 함께 첨부된 인물 참조 사진들(정방향 보정 완료된 안정위 대표원장 실제 포트레이트)은 모두 동일한 한 명의 한국인 남성 한의사입니다. 결과 사진 속 한의사는 반드시 1명만 등장하며, 권장 각도(' . $angle_label . ')에서 첨부된 참조 사진과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 안경, 앞머리로 이마를 가리지 않고 단정하게 넘긴 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 촬영하세요.';
             $lines[] = '[복장 및 85mm 인물 렌즈 비례 필수]: 원장님은 반드시 깨끗하고 단정한 순백색 한의사 가운(crisp plain white medical doctor coat)을 착용해야 합니다. 볼이나 하관이 붓거나 넓어 보이는 왜곡 없이 85mm 인물 단렌즈 압축 비율의 날렵하고 단정한 턱선과 자연스럽고 따뜻한 미소를 유지하세요.';
         }
 
-        if (preg_match('/진맥|맥진|요골\s*동맥|손목/u', $clean_user)) {
-            $lines[] = '[해부학 및 인물 배치 필수 규칙]: 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 일상복 소매의 환자 팔/손목, 반대쪽은 순백색 의사 가운 소매의 한의사 손)로 정확히 분리하여 표현하세요. 손가락 5개 해부학 비례를 정확히 지키세요.';
+        if (preg_match('/체성분\s*분석기|인바디|inbody|초음파|체열|엑스레이|모니터|태블릿|디스플레이|분석기|측정기|진단기|결과\s*데이터/iu', $raw_user)) {
+            $lines[] = '[현대 의료기기 재질 및 디지털 화면 정밀 구현 규칙]: 체성분 분석기(인바디)·초음파·모니터 등 의료기기는 절대로 나무(목재/원목) 재질로 만들지 마십시오! 반드시 실제 현대 메디컬 클리닉의 정밀 디지털 장비(깔끔한 매트 화이트·메탈릭 실버·다크그레이 강화플라스틱/알루미늄 바디와 선명한 고해상도 글래스 LCD 터치스크린 모니터)로 사실적으로 표현하세요.';
         }
 
-        $lines[] = '[화질 및 클린 마감 원칙]: 사진 모서리 워터마크, 브랜드 로고, 서명 텍스트를 넣지 마세요(단, 프롬프트에서 모니터 화면 속 사상체질 분류표 등 정보 화면을 지시한 경우에는 모니터 화면 내부 그래픽만 깔끔하고 선명하게 표현하세요). 3D 일러스트 느낌 없이 100% 실제 카메라로 촬영한 RAW 실사 사진이어야 합니다.';
+        $lines[] = '[인체 해부학 및 손 개수 엄격 제한 규칙 (제3의 손 환각 절대 금지)]: 한 사람의 팔과 손은 반드시 왼손·오른손 최대 2개만 존재해야 하며, 각 손은 해부학적으로 정확한 5개 손가락 비례를 가져야 합니다. 특히 1인칭 시점(POV)이나 체성분 분석기(인바디) 측정 장면에서 환자의 양손이 좌우 전극 손잡이를 잡고 있다면, 화면을 가리키는 제3의 손(여분의 손/팔)을 절대 추가로 그리지 마십시오! (양손으로 좌우 손잡이를 잡은 상태에서는 손가락으로 모니터를 찌르지 않고 양손은 손잡이에만 두고 시선으로 정면 모니터 화면을 바라보는 구도로 촬영하세요.)';
+
+        if (preg_match('/진맥|맥진|요골\s*동맥|손목/u', $raw_user)) {
+            $lines[] = '[맥진 인물 분리 필수 규칙]: 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 일상복 소매의 환자 팔/손목, 반대쪽은 순백색 의사 가운 소매의 한의사 손)로 정확히 분리하여 표현하세요. 손가락 5개 해부학 비례를 정확히 지키세요.';
+        }
+
+        $lines[] = '[화질 및 클린 마감 원칙]: 사진 모서리 워터마크, 브랜드 로고, 서명 텍스트를 넣지 마세요(단, 프롬프트에서 모니터 화면 속 결과 데이터 그래프나 사상체질 분류표 등 정보 화면을 지시한 경우에는 모니터 화면 내부 그래픽만 깔끔하고 선명하게 표현하세요). 3D 일러스트 느낌 없이 100% 실제 카메라로 촬영한 RAW 실사 사진이어야 합니다.';
 
         return implode("
 ", $lines);
@@ -3749,10 +3780,14 @@ class Bareun_Custom_Studio_Engine_V4 {
         return null;
     }
 
-    private static function translate_ko_medical_prompt_server($raw_prompt, $use_director_face, $no_face_directive = false) {
-        $text = trim((string)$raw_prompt);
+    private static function translate_ko_medical_prompt_server($raw_prompt, $use_director_face, $no_face_directive = false, $no_bg_directive = false) {
+        $effective_no_bg = $no_bg_directive || self::detect_no_background_directive_php($raw_prompt);
+        $text = self::normalize_user_prompt_directives_php($raw_prompt);
         $replacements = array(
             '/얼굴\s*미노출|얼굴\s*비노출|얼굴\s*없이/u' => 'strictly faceless neck-down or over-the-shoulder from behind framing with ZERO face visible',
+            '/\(\s*배경\s*없이\s*\)|배경\s*없이|배경\s*미노출|무배경/u' => 'clean solid-color out-of-focus studio backdrop with ZERO background windows, lattice frames, plants, or furniture',
+            '/체성분\s*분석기|인바디/u' => 'modern sleek white-and-silver metallic digital InBody body composition analyzer machine with a sharp LCD clinical screen (strictly modern medical device, NO wood material)',
+            '/1\s*인칭\s*시점/u' => 'first-person POV looking down at the screen (strictly maximum 2 hands holding the side electrodes, NO extra third hand pointing)',
             '/2\s*[,·ㆍ\/\.\-]?\s*3\s*[,·ㆍ\/\.\-]?\s*4\s*지(?:\s*손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/u' => '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers gently side-by-side)',
             '/요골\s*동맥/u' => '환자 손목 안쪽 요골동맥 부위(the radial artery pulse point on the inner wrist of the patient)',
             '/진맥\s*쿠션|맥진\s*쿠션/u' => '아이보리 명주 손목 받침 쿠션(ivory woven-silk wrist pulse cushion)',
@@ -3790,7 +3825,11 @@ class Bareun_Custom_Studio_Engine_V4 {
         }
 
         $faceless_lead = $no_face_directive
-            ? 'strictly faceless neck-down crop or over-the-shoulder shot from behind the doctor in a crisp white coat so ZERO doctor face, head, or side profile is visible in frame'
+            ? 'strictly faceless neck-down crop or first-person POV or over-the-shoulder shot from behind so ZERO face, head, or side profile is visible in frame'
+            : '';
+
+        $no_bg_lead = $effective_no_bg
+            ? 'strictly clean solid-color out-of-focus studio backdrop with ZERO background windows, ZERO wooden lattice frames, ZERO plants, and ZERO background furniture'
             : '';
 
         $director_lead = (!$no_face_directive && $use_director_face)
@@ -3800,9 +3839,10 @@ class Bareun_Custom_Studio_Engine_V4 {
         $parts = array_filter(array(
             'Authentic raw candid editorial photograph captured on Canon EOS R5 with RF 85mm f/1.8L USM lens',
             $faceless_lead,
+            $no_bg_lead,
             $director_lead,
             $translated,
-            'warm refined Korean medicine clinic interior with natural honey-oak wood and soft Hanji daylight, ultra-realistic skin pores and natural fabric weave, accurate 5-finger hand anatomy, shallow depth of field, zero CGI, strictly NO watermarks'
+            'ultra-realistic skin pores and natural fabric weave, accurate 5-finger hand anatomy (strictly maximum 2 hands per person, NO extra third hand), shallow depth of field, zero CGI, strictly NO watermarks'
         ));
 
         return implode(', ', $parts);
@@ -3858,6 +3898,7 @@ class Bareun_Custom_Studio_Engine_V4 {
         $source_image         = trim((string)($params['sourceImage'] ?? ''));
         $use_source_image_ref = !empty($params['useSourceImageRef']); // Default FALSE: never copy old image unless explicitly checked!
         $no_face_directive    = self::detect_no_face_directive_php($user_prompt);
+        $no_bg_directive      = self::detect_no_background_directive_php($user_prompt);
         $use_director_face    = $no_face_directive ? false : !empty($params['useDirectorFace']);
 
         $width      = isset($params['width']) ? max(512, min(1536, (int)(round(((int)$params['width']) / 32) * 32))) : 1280;
@@ -3925,12 +3966,16 @@ class Bareun_Custom_Studio_Engine_V4 {
                 $has_source_ref,
                 $use_director_face,
                 $no_face_directive,
-                $preferred_angle_label
+                $preferred_angle_label,
+                $no_bg_directive
             );
 
             $mode_suffix = $no_face_directive
                 ? ' · 얼굴미노출 엄격 보호(0%)'
                 : ($use_director_face ? ' + 정방향 원장님 다각도 인물 고정' : ' · 새 구도 독립 촬영');
+            if ($no_bg_directive) {
+                $mode_suffix .= ' · 배경배제(0%)';
+            }
 
             if ($ai_keys['geminiKey'] !== '') {
                 $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, $ref_images);
@@ -3951,7 +3996,7 @@ class Bareun_Custom_Studio_Engine_V4 {
 
         // 2) Fallback: Server-Translated Watermark-Free FLUX.1-dev -> FLUX.1-schnell
         if (!$bin) {
-            $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, $use_director_face, $no_face_directive);
+            $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, $use_director_face, $no_face_directive, $no_bg_directive);
             $out_img_url = self::call_hf_gradio_flux(
                 'https://black-forest-labs-flux-1-dev.hf.space',
                 array($en_prompt, $seed % 2147483647, false, $width, $height, 3.5, 28),

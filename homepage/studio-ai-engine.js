@@ -141,6 +141,25 @@ function detectNoFaceDirective(promptText) {
   return /얼굴\s*미노출|얼굴\s*비노출|얼굴\s*노출\s*(?:금지|없이|제외|안|불가|x)|얼굴\s*없이|얼굴이?\s*(?:안|보이지)\s*(?:보이|않|나오)|얼굴이?\s*나오지\s*않|얼굴\s*제외|얼굴\s*가리|얼굴\s*크롭|목\s*아래만|어깨\s*아래만|손만\s*클로즈업|뒷모습만|등\s*뒤에서만|no[\s_-]*face|faceless|without\s+face/i.test(s);
 }
 
+function detectNoBackgroundDirective(promptText) {
+  const s = String(promptText || '').trim();
+  if (!s) return false;
+  return /배경\s*없이|배경\s*미노출|배경\s*비노출|배경\s*제거|배경\s*생략|배경\s*제외|무배경|단색\s*배경|심플\s*배경|누끼|no[\s_-]*background|without\s+background|clean\s+backdrop/i.test(s);
+}
+
+function normalizeUserPromptDirectives(promptText) {
+  let s = String(promptText || '').trim();
+  if (!s) return '';
+  if (detectNoBackgroundDirective(s)) {
+    // '공간에서 (배경없이)에서' 처럼 공간 단어와 배경없이 지시가 충돌하는 문맥을 깔끔한 단색/아웃포커싱 배경 지시로 자동 교정
+    s = s.replace(/공간에서\s*\(\s*배경\s*없이\s*\)\s*에서/g, '창문이나 배경 가구가 전혀 없는 깔끔한 단색 스튜디오 톤 배경에서');
+    s = s.replace(/공간에서\s*배경\s*없이\s*에서/g, '창문이나 배경 가구가 전혀 없는 깔끔한 단색 스튜디오 톤 배경에서');
+    s = s.replace(/\(\s*배경\s*없이\s*\)\s*에서/g, '창문·가구 등 배경 사물이 전혀 없는 깨끗한 단색 아웃포커싱 배경에서');
+    s = s.replace(/\(\s*배경\s*없이\s*\)/g, '(창문·가구 등 실내 배경 사물 완전 배제, 깔끔한 단색 아웃포커싱 배경)');
+  }
+  return s;
+}
+
 const DEFAULT_ANGLE_SLOTS = [
   { key: 'front',        label: '정면 (0° · 기본)',     desc: '85mm 정면 · 단정한 기본',      defaultFile: 'director-angle-refs/angle_front.jpg' },
   { key: 'frontSmile',   label: '정면 미소 (0°)',       desc: '온화한 눈웃음 · 미소',          defaultFile: 'director-angle-refs/angle_front_smile.jpg' },
@@ -555,12 +574,15 @@ function buildArgonHighPrompt({
   workMode = 'edit_current',
   useDirectorFace = false,
   noFaceDirective = false,
+  noBackgroundDirective = false,
   hasSourceRef = false,
   preferredAngleLabel = '정면 미소 (0°)'
 }) {
-  const cleanUser = String(userPrompt || '').trim();
+  const rawUser = String(userPrompt || '').trim();
+  const cleanUser = normalizeUserPromptDirectives(rawUser);
   const cleanOrig = String(originalCardPrompt || '').trim();
-  const isPromptModified = Boolean(cleanOrig && cleanOrig !== cleanUser);
+  const isPromptModified = Boolean(cleanOrig && cleanOrig !== rawUser);
+  const effectiveNoBg = Boolean(noBackgroundDirective || detectNoBackgroundDirective(rawUser));
 
   const lines = [];
 
@@ -568,37 +590,57 @@ function buildArgonHighPrompt({
     if (isPromptModified) {
       lines.push(
         '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 참조 밑그림 기반 부분 수정 촬영]',
-        '첨부된 [참조 밑그림 사진]의 한의원 자연 채광과 공간 톤앤매너는 유지하되, 아래 [최종 연출 프롬프트]에서 지시한 동작·피사체·구도·소품 변경 사항을 최우선으로 정확히 반영하여 새롭게 촬영해 주세요.',
+        '첨부된 [참조 밑그림 사진]의 전체 구도와 조명 밸런스는 참고하되, 아래 [최종 연출 프롬프트]에서 지시한 동작·피사체·배경·소품 변경 사항을 100% 최우선으로 정확히 반영하여 새롭게 촬영해 주세요.',
         `[기존 장면 참고]: ${cleanOrig}`,
         `[최종 연출 프롬프트 (최우선 반영 필수)]: ${cleanUser}`
       );
     } else {
       lines.push(
         '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 참조 밑그림 품격 계승 재촬영]',
-        '첨부된 [참조 밑그림 사진]의 고급 한의원 조명·원목 질감·색감을 계승하면서, 아래 연출 지시를 초고화질 DSLR 실사 사진으로 촬영해 주세요.',
+        '첨부된 [참조 밑그림 사진]의 조명과 색감을 참고하면서, 아래 연출 지시를 초고화질 DSLR 실사 사진으로 촬영해 주세요.',
         `[장면 연출 지시]: ${cleanUser}`
       );
     }
   } else {
     lines.push(
-      '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 백지상태 신규 구도 기획 & 최상급 DSLR 실사 촬영]',
-      '이전 이미지나 정형화된 클리닉 스톡 구도에 전혀 얽매이지 말고, 아래 [장면 연출 지시] 문장의 상황·공간·피사체·시선·손동작을 처음부터 깊이 있게 해석하여 가장 설득력 있고 감각적인 에디토리얼 구도로 새롭게 촬영해 주세요.',
-      '촬영 스펙: 따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원(바른한의원), Canon EOS R5 + RF 85mm f/1.8L USM 렌즈, 자연스러운 얕은 피사계 심도, 실제 피부 결과 원단 직조 질감이 살아있는 무보정 RAW 실사 화보.',
+      '[역할: 하이엔드 메디컬 에디토리얼 포토그래퍼 — 사용자 프롬프트 100% 정밀 구현 실사 촬영]',
+      '이전 이미지나 정형화된 스톡 구도에 얽매이지 말고, 오직 아래 [장면 연출 지시] 문장에 적힌 공간·조명·피사체·시점(1인칭/3인칭)·행동만을 100% 있는 그대로 정확하게 구현하세요.',
+      '[임의 왜곡 절대 금지]: 사용자가 프롬프트에 직접 적지 않은 전통 한옥 창살(한지 격자 창문), 불필요한 원목 인테리어, 화분, 또는 지시하지 않은 과장된 손가락 가리키기 동작을 임의로 추가하지 마세요.',
+      '촬영 스펙: Canon EOS R5 + RF 85mm f/1.8L USM 렌즈, 실제 피부 결과 소재 본연의 질감이 살아있는 무보정 RAW 초고화질 실사 화보.',
       `[장면 연출 지시 (100% 정확히 구현 필수)]: ${cleanUser}`
+    );
+  }
+
+  // [최우선 규칙 0] 배경없이 지시 감지 시 창문·한옥 창살·화분·가구 등 실내 배경 구조물 100% 원천 차단
+  if (effectiveNoBg) {
+    lines.push(
+      '[절대 구도 규칙 — 배경 사물·창문·가구 100% 완전 배제 (NO BACKGROUND / CLEAN STUDIO BACKDROP) 강제]: 사용자가 명시적으로 (배경없이)를 지시했습니다! 배경에 창문, 한옥 격자 창살(창호지 문), 블라인드, 커튼, 화분, 선반, 가구, 벽면 몰딩 등 어떠한 실내 건축 구조물이나 배경 소품도 절대 그리지 마십시오(배경 사물 노출 0%). 오직 프롬프트에서 지시한 조명 톤과 감성 색감만 부드럽게 감도는 매끄러운 무지(단색) 스튜디오 배경 또는 배경 사물이 완전히 사라진 깊은 아웃포커싱(보케)으로 처리하여, 시선이 오직 핵심 피사체(기기·모니터·인물)에만 100% 집중되도록 촬영하세요.'
     );
   }
 
   // [최우선 규칙 1] 얼굴미노출 지시 감지 시 원장(의사) 얼굴 노출 0% 원천 차단
   if (noFaceDirective) {
     lines.push(
-      '[절대 구도 규칙 — 원장(의사) 얼굴 100% 완전 미노출(NO DOCTOR FACE) 강제]: 프롬프트에 의사(원장) 얼굴 미노출 지시가 포함되어 있습니다. 화면 어디에도 의사(원장)의 얼굴·눈·코·입·옆모습(측면 실루엣 포함)·턱선·모니터/유리 반사상이 단 1%도 노출되어서는 절대 안 됩니다! 반드시 카메라를 의사의 등·어깨 뒤편에서 모니터나 테이블을 내려다보는 오버더숄더(Over-the-shoulder from behind) 구도로 잡거나, 프레임을 의사의 어깨·목 아래(깔끔한 흰 의사 가운 소매와 팔·손·손가락 클로즈업)로 과감하게 크롭하여 촬영하세요.'
+      '[절대 구도 규칙 — 얼굴 100% 완전 미노출(NO FACE) 강제]: 프롬프트에 얼굴 미노출 지시가 포함되어 있습니다. 화면 어디에도 인물의 얼굴·눈·코·입·옆모습(측면 실루엣 포함)·턱선·모니터/유리 반사상이 단 1%도 노출되어서는 절대 안 됩니다! 반드시 카메라를 등·어깨 뒤편이나 1인칭 시점(POV)에서 내려다보는 구도로 잡거나, 프레임을 어깨·목 아래(팔·손 클로즈업)로 크롭하여 촬영하세요.'
     );
   }
 
-  // 진맥/맥진·상담 등 한의사와 환자가 함께 나오는 동작에서 자가 손목 잡기 오류 원천 차단
-  if (/진맥|맥진|요골\s*동맥|손목/.test(cleanUser)) {
+  // [현대 의료기기 재질 왜곡 방지 가드] 체성분 분석기(인바디)·초음파·모니터 등이 나무(목재)로 변질되는 현상 차단
+  if (/체성분\s*분석기|인바디|inbody|초음파|체열|엑스레이|모니터|태블릿|디스플레이|분석기|측정기|진단기|결과\s*데이터/i.test(rawUser)) {
     lines.push(
-      '[해부학 및 인물 배치 필수 규칙]: 반드시 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 편안한 일상복 소매의 환자 팔/손목, 반대쪽은 깔끔한 흰 의사 가운 소매의 한의사 손)로 정확히 분리하여 표현하세요. 절대로 한 사람이 자기 자신의 손목을 짚는 구도가 되어서는 안 됩니다. 손가락 개수(엄지~새끼손가락 5개 해부학 비례, 특히 2·3·4지 검지·중지·약지 지시 시 세 손가락을 나란히 가지런히 요골동맥 위에 얹는 정통 맥진 자세)를 100% 정확하게 표현하세요.'
+      '[현대 의료기기 재질 및 디지털 화면 정밀 구현 규칙]: 체성분 분석기(인바디)·초음파·모니터 등 의료기기는 절대로 나무(목재/원목) 재질로 만들지 마십시오! 반드시 실제 현대 메디컬 클리닉의 정밀 디지털 장비(깔끔한 매트 화이트·메탈릭 실버·다크그레이 강화플라스틱/알루미늄 바디와 선명한 고해상도 글래스 LCD 터치스크린 모니터)로 사실적으로 표현하세요.'
+    );
+  }
+
+  // [인체 해부학 및 손 개수 엄격 제한 규칙 — 제3의 손 환각 원천 차단]
+  lines.push(
+    '[인체 해부학 및 손 개수 엄격 제한 규칙 (제3의 손 환각 절대 금지)]: 한 사람의 팔과 손은 반드시 왼손·오른손 최대 2개만 존재해야 하며, 각 손은 해부학적으로 정확한 5개 손가락 비례를 가져야 합니다. 특히 1인칭 시점(POV)이나 체성분 분석기(인바디) 측정 장면에서 환자의 양손이 좌우 전극 손잡이를 잡고 있다면, 화면을 가리키는 제3의 손(여분의 손/팔)을 절대 추가로 그리지 마십시오! (양손으로 좌우 손잡이를 잡은 상태에서는 손가락으로 모니터를 찌르지 않고 양손은 손잡이에만 두고 시선으로 정면 모니터 화면을 바라보는 구도로 촬영하세요.)'
+  );
+
+  // 진맥/맥진·상담 등 한의사와 환자가 함께 나오는 동작에서 자가 손목 잡기 오류 원천 차단
+  if (/진맥|맥진|요골\s*동맥|손목/.test(rawUser)) {
+    lines.push(
+      '[맥진 인물 분리 필수 규칙]: 반드시 진료 책상을 사이에 두고 서로 마주 앉은 두 명의 독립된 인물(한쪽은 편안한 일상복 소매의 환자 팔/손목, 반대쪽은 깔끔한 흰 의사 가운 소매의 한의사 손)로 정확히 분리하여 표현하세요. 절대로 한 사람이 자기 자신의 손목을 짚는 구도가 되어서는 안 됩니다. 손가락 개수(엄지~새끼손가락 5개 해부학 비례, 특히 2·3·4지 검지·중지·약지 지시 시 세 손가락을 나란히 가지런히 요골동맥 위에 얹는 정통 맥진 자세)를 100% 정확하게 표현하세요.'
     );
   }
 
@@ -611,7 +653,7 @@ function buildArgonHighPrompt({
   }
 
   lines.push(
-    '[화질 및 클린 마감 절대 원칙]: 이미지 모서리의 워터마크, 브랜드 로고, 서명, 인위적인 자막 오버레이를 절대 넣지 마세요(단, 프롬프트에서 모니터·태블릿·차트 화면 안에 표시하도록 직접 지시한 의학 분류표나 그래픽 UI는 깨진 글자 없이 정갈하고 선명하게 표현하세요). 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 초고화질 에디토리얼 실사 사진이어야 합니다.'
+    '[화질 및 클린 마감 절대 원칙]: 이미지 모서리의 워터마크, 브랜드 로고, 서명, 인위적인 자막 오버레이를 절대 넣지 마세요(단, 프롬프트에서 모니터·태블릿·차트 화면 안에 표시하도록 직접 지시한 데이터 그래프나 의학 분류표 UI는 깨진 글자 없이 정갈하고 선명하게 표현하세요). 3D 그래픽이나 AI 일러스트 느낌 없이 100% 실제 카메라로 촬영한 초고화질 에디토리얼 실사 사진이어야 합니다.'
   );
 
   return lines.join('\n');
@@ -788,8 +830,11 @@ async function generateViaFalNanoBananaPro({ falKey, promptText, refImages = [],
  * 무료 폴백용: 한의학·해부학 전문 용어를 정확하게 전처리한 뒤 서버 사이드 Google GTX 번역 엔진으로 문장 전체를 영문화합니다.
  */
 function preprocessKoreanMedicalTerms(koText) {
-  let s = String(koText || '').trim();
+  let s = normalizeUserPromptDirectives(String(koText || '').trim());
   const rules = [
+    [/\(\s*배경\s*없이\s*\)|배경\s*없이|배경\s*미노출|무배경/g, 'clean solid-color out-of-focus studio backdrop with ZERO background windows, lattice frames, plants, or furniture'],
+    [/체성분\s*분석기|인바디/g, 'modern sleek white-and-silver metallic digital InBody body composition analyzer machine with a sharp LCD clinical screen (strictly modern medical device, NO wood material)'],
+    [/1\s*인칭\s*시점/g, 'first-person POV looking down at the screen (strictly maximum 2 hands holding the side electrodes, NO extra third hand pointing)'],
     [/2\s*[,·ㆍ/.\-]?\s*3\s*[,·ㆍ/.\-]?\s*4\s*지\s*(손가락)?|검지\s*[,·ㆍ]?\s*중지\s*[,·ㆍ]?\s*약지/g, '검지·중지·약지 세 손가락을 나란히 모아서(placing ONLY the index, middle, and ring fingers side-by-side)'],
     [/요골\s*동맥/g, '환자 손목 안쪽 요골동맥 맥자리(the radial artery pulse point on the inner wrist of the patient)'],
     [/진맥\s*쿠션|맥진\s*쿠션/g, '아이보리 명주 손목 받침 쿠션(ivory silk wrist pulse cushion)'],
@@ -851,17 +896,22 @@ async function translateKoreanToEnglishSentence(text) {
   return prepared;
 }
 
-async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFaceDirective = false } = {}) {
-  const cleanUser = String(userPrompt || '').trim();
+async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFaceDirective = false, noBackgroundDirective = false } = {}) {
+  const rawUser = String(userPrompt || '').trim();
+  const cleanUser = normalizeUserPromptDirectives(rawUser);
+  const effectiveNoBg = Boolean(noBackgroundDirective || detectNoBackgroundDirective(rawUser));
   const translatedScene = await translateKoreanToEnglishSentence(cleanUser);
   const sanitizedScene = translatedScene.replace(/\b(watermark|logo|text overlay)\b/gi, '').trim();
 
-  const needsTwoPersonPulseSeparation = /진맥|맥진|요골|손목|radial artery|pulse/i.test(cleanUser + ' ' + sanitizedScene);
+  const needsTwoPersonPulseSeparation = /진맥|맥진|요골|손목|radial artery|pulse/i.test(rawUser + ' ' + sanitizedScene);
   const twoPersonClause = needsTwoPersonPulseSeparation
-    ? 'two separate distinct people sitting across a warm walnut consultation table from opposite sides: a patient in dark navy knitwear extending their bare wrist from the left side onto an ivory silk cushion, and a Korean medicine doctor in a plain unembroidered crisp white coat over a blue-and-white striped dress shirt reaching from the right side to palpate the patient wrist'
+    ? 'two separate distinct people sitting across a consultation table from opposite sides: a patient extending their bare wrist from the left side onto an ivory silk cushion, and a Korean medicine doctor in a plain unembroidered crisp white coat reaching from the right side to palpate the patient wrist'
     : '';
   const noFaceClause = noFaceDirective
-    ? 'strictly faceless framing of the doctor from behind over-the-shoulder or cropped below the neck showing ONLY the crisp white medical coat sleeve forearm and pointing hand, zero doctor face visible anywhere'
+    ? 'strictly faceless framing from behind over-the-shoulder or first-person POV or cropped below the neck, zero face visible anywhere'
+    : '';
+  const noBgClause = effectiveNoBg
+    ? 'strictly clean solid-color out-of-focus studio backdrop with ZERO background windows, ZERO wooden lattice frames, ZERO plants, and ZERO background furniture'
     : '';
 
   if (useDirectorFace && !noFaceDirective) {
@@ -870,9 +920,10 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFa
     return [
       'Authentic raw candid editorial photograph',
       directorIdentityLead,
+      noBgClause,
       twoPersonClause,
       sanitizedScene,
-      'warm sunlit Korean medicine clinic interior with natural honey-oak wood and soft warm daylight, shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin pores and authentic micro-texture, accurate 5-finger hand anatomy, shallow depth of field, high-end medical editorial color grading, photorealistic, zero CGI, no text, no watermark, no signature'
+      'shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin pores and authentic micro-texture, accurate 5-finger hand anatomy (strictly maximum 2 hands per person), shallow depth of field, high-end medical editorial color grading, photorealistic, zero CGI, no text, no watermark, no signature'
     ]
       .filter(Boolean)
       .join(', ');
@@ -881,9 +932,10 @@ async function buildMasterFluxPrompt(userPrompt, { useDirectorFace = false, noFa
   return [
     'Authentic raw editorial photograph',
     noFaceClause,
+    noBgClause,
     twoPersonClause,
     sanitizedScene,
-    'warm refined Korean medicine clinic aesthetic, natural soft key lighting, shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin texture and fine material detail, accurate anatomical hands and fingers, shallow depth of field, warm natural color grading, photorealistic, zero CGI, no watermark, no logo'
+    'shot on Canon EOS R5 with RF 85mm f/1.8L USM lens, ultra-realistic natural human skin texture and fine material detail, accurate anatomical hands and fingers (strictly maximum 2 hands per person, no extra third hand), shallow depth of field, warm natural color grading, photorealistic, zero CGI, no watermark, no logo'
   ]
     .filter(Boolean)
     .join(', ');
@@ -1094,6 +1146,7 @@ async function generateStudioImageComplete({
   }
 
   const noFaceDirective = detectNoFaceDirective(cleanPrompt);
+  const noBackgroundDirective = detectNoBackgroundDirective(cleanPrompt);
   const effectiveUseDirectorFace = noFaceDirective ? false : Boolean(useDirectorFace);
   const effectiveUseSourceRef = Boolean(useSourceImageRef && sourceImage);
 
@@ -1155,6 +1208,7 @@ async function generateStudioImageComplete({
       workMode,
       useDirectorFace: effectiveUseDirectorFace,
       noFaceDirective,
+      noBackgroundDirective,
       hasSourceRef,
       preferredAngleLabel: preferredAngleObj ? preferredAngleObj.label : '정면 미소 (0°)'
     });
@@ -1261,7 +1315,8 @@ async function generateStudioImageComplete({
   // Fallback: Watermark-Free FLUX.1-dev + Local Multi-Angle Face Lock
   const masterPrompt = await buildMasterFluxPrompt(cleanPrompt, {
     useDirectorFace: effectiveUseDirectorFace,
-    noFaceDirective
+    noFaceDirective,
+    noBackgroundDirective
   });
   const stage1 = await generateWatermarkFreeFluxImage({
     masterPrompt,
@@ -1322,6 +1377,8 @@ async function generateStudioImageComplete({
 module.exports = {
   DEFAULT_ANGLE_SLOTS,
   detectNoFaceDirective,
+  detectNoBackgroundDirective,
+  normalizeUserPromptDirectives,
   getStudioAiUsage,
   updateStudioAiUsageConfig,
   recordStudioAiGeneration,
