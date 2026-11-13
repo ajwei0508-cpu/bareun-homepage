@@ -1798,7 +1798,8 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('post_thumbnail_html', '__return_empty_string', 99);
         add_filter('body_class', array(__CLASS__, 'filter_body_class'), 20);
 
-        // Clean XML Sitemap & AI-friendly robots.txt
+        // Clean XML Sitemap & AI-friendly robots.txt & Direct Body-Explorer Permalinks for Health Notes
+        add_filter('post_link', array(__CLASS__, 'filter_health_note_permalink'), 99, 2);
         add_filter('wp_sitemaps_add_provider', array(__CLASS__, 'filter_sitemap_providers'), 10, 2);
         add_filter('wp_sitemaps_posts_entry', array(__CLASS__, 'filter_sitemap_post_entry'), 10, 3);
         add_filter('robots_txt', array(__CLASS__, 'filter_robots_txt'), 99, 2);
@@ -1959,15 +1960,12 @@ class Bareun_Master_SEO_Engine_V1 {
         } elseif (preg_match('#^/(category|tag|health-notes|ask-doctor)(/.*)?$#i', $path)) {
             $target_path = '/body-explorer/';
         } elseif (preg_match('#^/health-note-([a-z0-9\-]+?)(/.*)?$#i', $path, $hn_m)) {
-            // Allow standalone /health-note-{id}/ post if published in wp_posts; fallback to /body-explorer/?part=...&note=... only if WP post does not exist
+            // Always 301 redirect standalone /health-note-{id}/ into unified /body-explorer/ inline [🔍 상세히] view so 100% of visitors enter the main 3D homepage
             $hn_id = strtolower($hn_m[1]);
-            $existing_hn_post = get_page_by_path('health-note-' . $hn_id, OBJECT, 'post');
-            if (!$existing_hn_post || $existing_hn_post->post_status !== 'publish') {
-                $hn_parts = explode('-', $hn_id);
-                $hn_part = !empty($hn_parts[0]) ? $hn_parts[0] : 'knee';
-                $target_path = '/body-explorer/';
-                $query = '?part=' . rawurlencode($hn_part) . '&note=' . rawurlencode($hn_id);
-            }
+            $hn_parts = explode('-', $hn_id);
+            $hn_part = !empty($hn_parts[0]) ? $hn_parts[0] : 'knee';
+            $target_path = '/body-explorer/';
+            $query = '?part=' . rawurlencode($hn_part) . '&note=' . rawurlencode($hn_id) . '&detail=1';
         }
 
         // Enforce 1-hop 301 redirect to https://www.bareunhaniwon.com + canonical path
@@ -2188,16 +2186,60 @@ class Bareun_Master_SEO_Engine_V1 {
                         $found_desc  = '';
                         $found_date  = '2026-10-28';
 
-                        // 1) Check published WordPress post health-note-{id}
+                        // 0) Check Live Custom Studio Health Notes Config (bareun_health_notes_cfg_v1) first
                         $found_og = $default_og;
-                        $hn_post = get_page_by_path('health-note-' . $req_note_id, OBJECT, 'post');
-                        if ($hn_post && $hn_post->post_status === 'publish') {
-                            $found_title = trim(wp_strip_all_tags(get_the_title($hn_post)));
-                            $found_desc  = trim(wp_strip_all_tags(has_excerpt($hn_post) ? get_the_excerpt($hn_post) : wp_trim_words($hn_post->post_content, 40, '')));
-                            $found_date  = get_the_date('Y-m-d', $hn_post);
-                            $hn_thumb_url = get_the_post_thumbnail_url($hn_post, 'full');
-                            if (!empty($hn_thumb_url)) {
-                                $found_og = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $hn_thumb_url);
+                        $studio_hn_cfg = get_option('bareun_health_notes_cfg_v1', array());
+                        if (is_array($studio_hn_cfg) && !empty($studio_hn_cfg['notes']) && is_array($studio_hn_cfg['notes'])) {
+                            foreach ($studio_hn_cfg['notes'] as $csn) {
+                                if (!is_array($csn)) continue;
+                                if (strtolower((string) ($csn['id'] ?? '')) === $req_note_id) {
+                                    $pl = trim((string) ($csn['partLabel'] ?? '건강백과'));
+                                    $kw = trim((string) ($csn['keyword'] ?? $pl));
+                                    $qt = trim((string) ($csn['questionTitle'] ?? $csn['title'] ?? ''));
+                                    if ($qt !== '') {
+                                        $found_title = $qt . ' [' . $pl . ' · ' . $kw . ' 건강백과]';
+                                    }
+                                    $tru = isset($csn['truthLines']) && is_array($csn['truthLines']) ? implode(' ', $csn['truthLines']) : '';
+                                    $dp0 = isset($csn['deepParagraphs'][0]) ? (string) $csn['deepParagraphs'][0] : '';
+                                    $found_desc = trim($tru . ' ' . $dp0);
+                                    if (!empty($csn['publishDate'])) {
+                                        $found_date = (string) $csn['publishDate'];
+                                    }
+                                    if (!empty($csn['partId'])) {
+                                        $req_part_id = (string) $csn['partId'];
+                                    }
+                                    if (!empty($csn['deepIllustImg'])) {
+                                        $raw_ill = trim((string) $csn['deepIllustImg']);
+                                        if (preg_match('#^https?://#i', $raw_ill)) {
+                                            $found_og = $raw_ill;
+                                        } elseif (strpos($raw_ill, '/wp-content/') === 0) {
+                                            $found_og = self::CANONICAL_ORIGIN . $raw_ill;
+                                        } else {
+                                            $clean_ill = ltrim($raw_ill, './');
+                                            if (stripos($clean_ill, 'webp/') === 0) {
+                                                $found_og = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/' . $clean_ill;
+                                            } else {
+                                                $webp_ill = preg_replace('/\.(png|jpe?g)$/i', '.webp', $clean_ill);
+                                                $found_og = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/' . $webp_ill;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+                        // 1) Check published WordPress post health-note-{id}
+                        if ($found_title === '') {
+                            $hn_post = get_page_by_path('health-note-' . $req_note_id, OBJECT, 'post');
+                            if ($hn_post && $hn_post->post_status === 'publish') {
+                                $found_title = trim(wp_strip_all_tags(get_the_title($hn_post)));
+                                $found_desc  = trim(wp_strip_all_tags(has_excerpt($hn_post) ? get_the_excerpt($hn_post) : wp_trim_words($hn_post->post_content, 40, '')));
+                                $found_date  = get_the_date('Y-m-d', $hn_post);
+                                $hn_thumb_url = get_the_post_thumbnail_url($hn_post, 'full');
+                                if (!empty($hn_thumb_url)) {
+                                    $found_og = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $hn_thumb_url);
+                                }
                             }
                         }
 
@@ -2613,6 +2655,12 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         $ld = self::build_json_ld($cfg);
         echo '<script type="application/ld+json">' . wp_json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+        if (strpos($path, '/body-explorer/') === 0) {
+            $live_hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
+            if (is_array($live_hn_cfg) && !empty($live_hn_cfg['notes'])) {
+                echo '<script>window.__BAREUN_LIVE_HEALTH_NOTES_CFG__ = ' . wp_json_encode($live_hn_cfg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";
+            }
+        }
         echo "<!-- /Bareun Master SEO & GEO Engine -->\n";
     }
 
@@ -2678,6 +2726,18 @@ class Bareun_Master_SEO_Engine_V1 {
             }
         }
         return $classes;
+    }
+
+    public static function filter_health_note_permalink($permalink, $post) {
+        if ($post && isset($post->post_type) && $post->post_type === 'post' && !empty($post->post_name)) {
+            if (preg_match('#^health-note-([a-z0-9\-]+)$#i', (string) $post->post_name, $m)) {
+                $hn_id = strtolower($m[1]);
+                $parts = explode('-', $hn_id);
+                $hn_part = !empty($parts[0]) ? $parts[0] : 'knee';
+                return self::CANONICAL_ORIGIN . '/body-explorer/?part=' . rawurlencode($hn_part) . '&note=' . rawurlencode($hn_id);
+            }
+        }
+        return $permalink;
     }
 
     public static function filter_sitemap_providers($provider, $name) {
@@ -2954,10 +3014,11 @@ endif;
 // ============================================================================
 if (!class_exists('Bareun_Custom_Studio_Engine_V4')) :
 class Bareun_Custom_Studio_Engine_V4 {
-    const OPT_DETAIL_CFG      = 'bareun_detail_pages_config_v1';
-    const OPT_ANGLE_SAMPLES   = 'bareun_director_angle_samples_v1';
-    const OPT_STUDIO_AI_KEYS  = 'bareun_studio_ai_keys_v1';
-    const OPT_STUDIO_AI_USAGE = 'bareun_studio_ai_usage_v1';
+    const OPT_DETAIL_CFG       = 'bareun_detail_pages_config_v1';
+    const OPT_HEALTH_NOTES_CFG = 'bareun_health_notes_cfg_v1';
+    const OPT_ANGLE_SAMPLES    = 'bareun_director_angle_samples_v1';
+    const OPT_STUDIO_AI_KEYS   = 'bareun_studio_ai_keys_v1';
+    const OPT_STUDIO_AI_USAGE  = 'bareun_studio_ai_usage_v1';
 
     // Official Page IDs on Cafe24 WordPress (https://www.bareunhaniwon.com)
     const PAGE_MAP = array(
@@ -2972,7 +3033,8 @@ class Bareun_Custom_Studio_Engine_V4 {
         'hairloss-female'     => 410,
         'hairloss-seborrheic' => 411,
         'gongjindan'          => 96,
-        'prostate'            => 133
+        'prostate'            => 133,
+        'body-explorer'       => 125
     );
 
     public static function init() {
@@ -3086,6 +3148,15 @@ class Bareun_Custom_Studio_Engine_V4 {
                 return current_user_can('manage_options');
             },
             'callback'            => array(__CLASS__, 'rest_handle_config')
+        ), true);
+
+        register_rest_route('bareun/v1', '/studio/health-notes', array(
+            'methods'             => array('GET', 'POST'),
+            'permission_callback' => function ($request) {
+                if ($request->get_method() === 'GET') return true;
+                return current_user_can('manage_options');
+            },
+            'callback'            => array(__CLASS__, 'rest_handle_health_notes')
         ), true);
 
         register_rest_route('bareun/v1', '/studio/save', array(
@@ -3380,11 +3451,99 @@ class Bareun_Custom_Studio_Engine_V4 {
             }
         }
 
+        $hn_cfg = self::load_health_notes_cfg_php(false);
+
         return new WP_REST_Response(array(
-            'ok'              => true,
-            'config'          => $cfg,
-            'availableImages' => $availableImages,
-            'availableVideos' => array()
+            'ok'                => true,
+            'config'            => $cfg,
+            'healthNotesConfig' => $hn_cfg,
+            'availableImages'   => $availableImages,
+            'availableVideos'   => array()
+        ), 200);
+    }
+
+    private static function flush_all_wp_caches() {
+        wp_cache_flush();
+        if (function_exists('wp_cache_clean_cache')) {
+            global $file_prefix;
+            @wp_cache_clean_cache(isset($file_prefix) ? $file_prefix : 'wp-cache-', true);
+        }
+        if (has_action('litespeed_purge_all')) {
+            do_action('litespeed_purge_all');
+        }
+    }
+
+    private static function load_health_notes_cfg_php($force_default = false) {
+        $upload_dir = wp_upload_dir();
+        $studio_dir = $upload_dir['basedir'] . '/bareun-studio';
+        if (!$force_default) {
+            $saved = get_option(self::OPT_HEALTH_NOTES_CFG, null);
+            if (is_array($saved) && !empty($saved['notes'])) {
+                return $saved;
+            }
+            $local_f = $studio_dir . '/health-notes-custom-config.json';
+            if (file_exists($local_f)) {
+                $dec = json_decode(file_get_contents($local_f), true);
+                if (is_array($dec) && !empty($dec['notes'])) {
+                    update_option(self::OPT_HEALTH_NOTES_CFG, $dec, false);
+                    return $dec;
+                }
+            }
+        }
+        $def_f = $studio_dir . '/health-notes-custom-config.default.json';
+        if (file_exists($def_f)) {
+            $dec = json_decode(file_get_contents($def_f), true);
+            if (is_array($dec) && !empty($dec['notes'])) {
+                return $dec;
+            }
+        }
+        $gh_url = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/' . ($force_default ? 'health-notes-custom-config.default.json' : 'health-notes-custom-config.json');
+        $res = wp_remote_get($gh_url, array('timeout' => 15));
+        if (!is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200) {
+            $dec = json_decode(wp_remote_retrieve_body($res), true);
+            if (is_array($dec) && !empty($dec['notes'])) {
+                if (!$force_default) {
+                    update_option(self::OPT_HEALTH_NOTES_CFG, $dec, false);
+                }
+                return $dec;
+            }
+        }
+        return null;
+    }
+
+    public static function rest_handle_health_notes($request) {
+        nocache_headers();
+        if ($request->get_method() === 'POST') {
+            $params = $request->get_json_params();
+            $hn_cfg = (is_array($params) && isset($params['healthNotesConfig']) && is_array($params['healthNotesConfig']))
+                ? $params['healthNotesConfig']
+                : $params;
+            if (!is_array($hn_cfg) || !isset($hn_cfg['notes']) || !is_array($hn_cfg['notes'])) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '유효한 healthNotesConfig 데이터가 없습니다.'), 400);
+            }
+            $hn_cfg['updatedAt'] = gmdate('c');
+            update_option(self::OPT_HEALTH_NOTES_CFG, $hn_cfg, false);
+
+            $upload_dir = wp_upload_dir();
+            $target_dir = $upload_dir['basedir'] . '/bareun-studio';
+            wp_mkdir_p($target_dir);
+            @file_put_contents($target_dir . '/health-notes-custom-config.json', wp_json_encode($hn_cfg, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+            self::flush_all_wp_caches();
+            return new WP_REST_Response(array(
+                'ok'                => true,
+                'deployed'          => true,
+                'liveUrl'           => home_url('/body-explorer/'),
+                'healthNotesConfig' => $hn_cfg,
+                'message'           => '3D 오늘의 건강 글(72선 요약 + 인라인 상세히 칼럼)이 카페24 실서버에 즉시 반영되었습니다!'
+            ), 200);
+        }
+
+        $is_def = ($request->get_param('default') === '1');
+        $hn_cfg = self::load_health_notes_cfg_php($is_def);
+        return new WP_REST_Response(array(
+            'ok'                => is_array($hn_cfg),
+            'healthNotesConfig' => $hn_cfg
         ), 200);
     }
 
@@ -3396,6 +3555,9 @@ class Bareun_Custom_Studio_Engine_V4 {
 
         if (!empty($params['config']) && is_array($params['config'])) {
             update_option(self::OPT_DETAIL_CFG, $params['config']);
+        }
+        if (!empty($params['healthNotesConfig']) && is_array($params['healthNotesConfig']) && isset($params['healthNotesConfig']['notes'])) {
+            update_option(self::OPT_HEALTH_NOTES_CFG, $params['healthNotesConfig'], false);
         }
 
         $slug = isset($params['targetSlug']) ? sanitize_title($params['targetSlug']) : '';
@@ -3443,6 +3605,9 @@ class Bareun_Custom_Studio_Engine_V4 {
 
         if (!empty($params['config']) && is_array($params['config'])) {
             update_option(self::OPT_DETAIL_CFG, $params['config']);
+        }
+        if (!empty($params['healthNotesConfig']) && is_array($params['healthNotesConfig']) && isset($params['healthNotesConfig']['notes'])) {
+            update_option(self::OPT_HEALTH_NOTES_CFG, $params['healthNotesConfig'], false);
         }
 
         $pages = isset($params['pages']) && is_array($params['pages']) ? $params['pages'] : array();
@@ -4419,6 +4584,13 @@ class Bareun_Custom_Studio_Engine_V4 {
         if (!empty($params['config']) && is_array($params['config'])) {
             update_option(self::OPT_DETAIL_CFG, $params['config']);
             file_put_contents($target_dir . '/detail-pages-config.json', json_encode($params['config'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
+        if (!empty($params['healthNotesConfig']) && is_array($params['healthNotesConfig']) && isset($params['healthNotesConfig']['notes'])) {
+            update_option(self::OPT_HEALTH_NOTES_CFG, $params['healthNotesConfig'], false);
+            file_put_contents($target_dir . '/health-notes-custom-config.json', json_encode($params['healthNotesConfig'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
+        if (!empty($params['healthNotesDefaultConfig']) && is_array($params['healthNotesDefaultConfig']) && isset($params['healthNotesDefaultConfig']['notes'])) {
+            file_put_contents($target_dir . '/health-notes-custom-config.default.json', json_encode($params['healthNotesDefaultConfig'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
 
         if (!empty($params['pluginPhp'])) {

@@ -303,6 +303,10 @@ async function performWpLogin(page, loginUrl) {
       }
     }
     const masterCfgObj = JSON.parse(fs.readFileSync(path.join(__dirname, 'detail-pages-config.json'), 'utf8'));
+    const hnCustomCfgPath = path.join(__dirname, 'health-notes-custom-config.json');
+    const hnDefaultCfgPath = path.join(__dirname, 'health-notes-custom-config.default.json');
+    const healthNotesCfgObj = fs.existsSync(hnCustomCfgPath) ? JSON.parse(fs.readFileSync(hnCustomCfgPath, 'utf8')) : null;
+    const healthNotesDefCfgObj = fs.existsSync(hnDefaultCfgPath) ? JSON.parse(fs.readFileSync(hnDefaultCfgPath, 'utf8')) : null;
     const fullPluginPhp = fs.existsSync(pluginPhpSource) ? fs.readFileSync(pluginPhpSource, 'utf8') : '';
     let localStudioAiKeys = {};
     try {
@@ -314,7 +318,7 @@ async function performWpLogin(page, loginUrl) {
       }
     } catch (e) {}
 
-    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp, localStudioAiKeys }) => {
+    const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, healthNotesCfgObj, healthNotesDefCfgObj, fullPluginPhp, localStudioAiKeys }) => {
       const res = await fetch('/wp-json/bareun/v1/studio/sync-studio-assets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
@@ -326,11 +330,13 @@ async function performWpLogin(page, loginUrl) {
           resetAngleSamples: true,
           studioAiKeys: localStudioAiKeys,
           pluginPhp: fullPluginPhp,
-          config: masterCfgObj
+          config: masterCfgObj,
+          healthNotesConfig: healthNotesCfgObj,
+          healthNotesDefaultConfig: healthNotesDefCfgObj
         })
       });
       return await res.json();
-    }, { wpNonce: nonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, fullPluginPhp, localStudioAiKeys });
+    }, { wpNonce: nonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, healthNotesCfgObj, healthNotesDefCfgObj, fullPluginPhp, localStudioAiKeys });
     console.log('   Studio Online Assets Synced:', studioSyncRes);
 
     // 2.2) Update Site Profile & Upload Official 1200x630 (<90KB) OG Card to Media Library
@@ -620,7 +626,9 @@ async function performWpLogin(page, loginUrl) {
             publishedMap[postItem.id] = {
               wpPostId: pubJson.id,
               slug: pubJson.slug || postItem.slug,
-              link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
+              link: postItem.canonicalPath
+                ? ('https://www.bareunhaniwon.com' + postItem.canonicalPath)
+                : ('https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/')
             };
           }
         }));

@@ -1515,7 +1515,41 @@
       return Boolean(page && (page.isHomeStory || page.slug === 'home' || page.file === 'index.html'));
     }
 
+    function isHealthNotesPage(page) {
+      return Boolean(page && (page.isHealthNotesPage || page.slug === 'body-explorer' || page.file === 'body-explorer.html'));
+    }
+
     let masterConfig = null;
+    let healthNotesConfig = null;
+    let hnSelectedPartId = 'knee';
+    let hnSelectedNoteId = '';
+    let hnSearchQuery = '';
+    let hnExpandedIds = new Set();
+    let hnPreviewDetailExpanded = true;
+
+    function ensureHealthNotesVirtualPage() {
+      if (!masterConfig || !Array.isArray(masterConfig.pages)) return;
+      masterConfig.pages = masterConfig.pages.filter(p => p && !p.isHealthNotesPage && p.slug !== 'body-explorer' && p.file !== 'body-explorer.html');
+      if (healthNotesConfig && Array.isArray(healthNotesConfig.notes)) {
+        masterConfig.pages.push({
+          isHealthNotesPage: true,
+          slug: 'body-explorer',
+          file: 'body-explorer.html',
+          wpFile: 'wordpress-body-explorer.html',
+          wpId: 125,
+          label: '🧬 12 · 3D 오늘의 건강 글',
+          liveUrl: 'https://www.bareunhaniwon.com/body-explorer/',
+          plates: []
+        });
+      }
+    }
+
+    function getPureMasterConfig() {
+      if (!masterConfig) return { pages: [] };
+      const clone = JSON.parse(JSON.stringify(masterConfig));
+      clone.pages = (clone.pages || []).filter(p => p && !p.isHealthNotesPage && p.slug !== 'body-explorer' && p.file !== 'body-explorer.html');
+      return clone;
+    }
     let currentPageIdx = 0;
     let expandedCards = new Set([0]);
     let isDirty = false;
@@ -1694,6 +1728,30 @@
           throw new Error(data.error || '설정 로드 실패');
         }
         masterConfig = data.config;
+        if (data.healthNotesConfig && Array.isArray(data.healthNotesConfig.notes)) {
+          healthNotesConfig = data.healthNotesConfig;
+        } else {
+          try {
+            const hnUrl = IS_WORDPRESS ? ('/wp-json/bareun/v1/studio/health-notes?t=' + Date.now()) : ('/health-notes-custom-config.json?t=' + Date.now());
+            const hnRes = await fetch(hnUrl, { headers });
+            if (hnRes.ok) {
+              const hnJson = await hnRes.json();
+              healthNotesConfig = (hnJson && hnJson.healthNotesConfig) ? hnJson.healthNotesConfig : (Array.isArray(hnJson && hnJson.notes) ? hnJson : null);
+            }
+          } catch (e) {}
+        }
+        ensureHealthNotesVirtualPage();
+        if (healthNotesConfig && Array.isArray(healthNotesConfig.notes) && healthNotesConfig.notes.length > 0) {
+          const initPartNotes = healthNotesConfig.notes
+            .filter(n => n && n.partId === hnSelectedPartId)
+            .sort((a, b) => String(b.publishDate || '').localeCompare(String(a.publishDate || '')));
+          const firstN = initPartNotes[0] || healthNotesConfig.notes[0];
+          if (firstN) {
+            hnSelectedPartId = firstN.partId || 'knee';
+            hnSelectedNoteId = firstN.id;
+            hnExpandedIds = new Set([firstN.id]);
+          }
+        }
         availableImages = data.availableImages || [];
         availableVideos = data.availableVideos || [];
         populateMediaDatalists();
@@ -1763,12 +1821,26 @@
       if (urlLbl) urlLbl.textContent = `/${page.file} (WP ID: ${page.wpId})`;
 
       const isHome = isHomeStoryPage(page);
+      const isHn = isHealthNotesPage(page);
       const tabCardsLbl = document.getElementById('tabCardsLabelText');
-      if (tabCardsLbl) tabCardsLbl.textContent = isHome ? '🏠 홈 시작 스토리 · 진료카드' : '📑 스토리 카드 편집';
+      if (tabCardsLbl) {
+        tabCardsLbl.textContent = isHn
+          ? '🧬 부위별 건강 글 · [🔍 상세히] 편집'
+          : (isHome ? '🏠 홈 시작 스토리 · 진료카드' : '📑 스토리 카드 편집');
+      }
       const tabLeftLbl = document.getElementById('tabLeftPanelLabelText');
-      if (tabLeftLbl) tabLeftLbl.textContent = isHome ? '🎬 오프닝 슬로건 · 8대 챕터 대사' : '📋 좌측 안내 패널 · 체크리스트';
+      if (tabLeftLbl) {
+        tabLeftLbl.textContent = isHn
+          ? '🔗 상세히 · BEST 2 · 유튜브/네이버/카톡 아이콘'
+          : (isHome ? '🎬 오프닝 슬로건 · 8대 챕터 대사' : '📋 좌측 안내 패널 · 체크리스트');
+      }
       const tabStyleBtn = document.getElementById('tabBtnStyle');
-      if (tabStyleBtn) tabStyleBtn.style.display = isHome ? 'none' : '';
+      if (tabStyleBtn) tabStyleBtn.style.display = (isHome || isHn) ? 'none' : '';
+      if ((isHome || isHn) && document.getElementById('pane-style')?.classList.contains('active')) {
+        switchEditorTab('cards');
+      }
+      const bmBox = document.getElementById('bodyModelEditorBox');
+      if (bmBox) bmBox.style.display = isHn ? 'none' : '';
 
       const totalCnt = (masterConfig && Array.isArray(masterConfig.pages)) ? masterConfig.pages.length : 12;
       const btnSaveAll = document.getElementById('btnSaveAll');
@@ -1788,6 +1860,17 @@
     function renderPageSwitcher() {
       const list = document.getElementById('pageSwitcherList');
       list.innerHTML = masterConfig.pages.map((p, idx) => {
+        if (isHealthNotesPage(p)) {
+          const hnCount = (healthNotesConfig && Array.isArray(healthNotesConfig.notes))
+            ? healthNotesConfig.notes.filter(n => n && n.enabled !== false).length
+            : 0;
+          return `
+            <button type="button" class="page-pill ${idx === currentPageIdx ? 'active' : ''}" onclick="selectPage(${idx})">
+              <span>${escHtml(p.label)}</span>
+              <span class="cnt">${hnCount}편</span>
+            </button>
+          `;
+        }
         const activeCount = (p.plates || []).filter(c => c.enabled !== false).length;
         return `
           <button type="button" class="page-pill ${idx === currentPageIdx ? 'active' : ''}" onclick="selectPage(${idx})">
@@ -1849,6 +1932,9 @@
 
     function renderStoryCardsPane() {
       const page = getCurrentPage();
+      if (isHealthNotesPage(page)) {
+        return renderHealthNotesCardsPane();
+      }
       const plates = page.plates || [];
       const isHome = isHomeStoryPage(page);
       const enabledCount = plates.filter(c => c.enabled !== false).length;
@@ -2643,6 +2729,9 @@
 
     function renderLeftPanelPane() {
       const page = getCurrentPage();
+      if (isHealthNotesPage(page)) {
+        return renderHealthNotesGlobalPane();
+      }
       const box = document.getElementById('leftPanelEditorBox');
       if (isHomeStoryPage(page)) {
         const hs = page.homeStory || (page.homeStory = {});
@@ -2876,6 +2965,15 @@
 
     function toggleExpandAllCards(expand) {
       const page = getCurrentPage();
+      if (isHealthNotesPage(page)) {
+        if (!expand) {
+          hnExpandedIds.clear();
+        } else {
+          getFilteredHealthNotes().forEach(n => hnExpandedIds.add(n.id));
+        }
+        renderHealthNotesCardsPane();
+        return;
+      }
       if (!expand) {
         expandedCards.clear();
       } else {
@@ -3126,6 +3224,9 @@
 
     function addNewStoryCard() {
       const page = getCurrentPage();
+      if (isHealthNotesPage(page)) {
+        return addNewHealthNote();
+      }
       if (!Array.isArray(page.plates)) page.plates = [];
       if (isHomeStoryPage(page)) {
         const firstBentoIdx = page.plates.findIndex(c => c && c.type === 'home-bento-card');
@@ -3433,6 +3534,32 @@
       const page = getCurrentPage();
       if (!page) return;
       const frame = document.getElementById('livePreviewFrame');
+
+      if (isHealthNotesPage(page)) {
+        const pId = (hnSelectedPartId && hnSelectedPartId !== 'all') ? hnSelectedPartId : 'knee';
+        let nId = hnSelectedNoteId || '';
+        if (!nId && healthNotesConfig && Array.isArray(healthNotesConfig.notes)) {
+          const pNotes = healthNotesConfig.notes
+            .filter(n => n && n.partId === pId && n.enabled !== false)
+            .sort((a, b) => String(b.publishDate || '').localeCompare(String(a.publishDate || '')));
+          if (pNotes[0]) nId = pNotes[0].id;
+        }
+        const baseHref = IS_WORDPRESS ? (page.liveUrl || '/body-explorer/') : ('/' + page.file);
+        const curSrc = frame.getAttribute('data-hn-loaded') || '';
+        if (curSrc === '1' && frame.contentWindow) {
+          syncHealthNoteLivePreview(false);
+          return;
+        }
+        frame.setAttribute('data-hn-loaded', '1');
+        frame.onload = function () {
+          setTimeout(() => syncHealthNoteLivePreview(true), 250);
+        };
+        frame.removeAttribute('srcdoc');
+        frame.src = `${baseHref}?part=${encodeURIComponent(pId)}${nId ? '&note=' + encodeURIComponent(nId) : ''}&detail=${hnPreviewDetailExpanded ? '1' : '0'}&studioPreview=1&t=${Date.now()}`;
+        return;
+      }
+      frame.removeAttribute('data-hn-loaded');
+      frame.onload = null;
       
       // Instant Client-side Live Preview if compiler is loaded
       if (window.BareunCompiler && typeof window.BareunCompiler.buildPageHtml === 'function') {
@@ -3504,6 +3631,14 @@
           }
         });
       }
+      if (healthNotesConfig) {
+        (healthNotesConfig.parts || []).forEach(pt => {
+          if (pt && pt.defaultIllustImg) set.add(String(pt.defaultIllustImg).split('?')[0].trim());
+        });
+        (healthNotesConfig.notes || []).forEach(nt => {
+          if (nt && nt.deepIllustImg) set.add(String(nt.deepIllustImg).split('?')[0].trim());
+        });
+      }
       return Array.from(set).filter(Boolean);
     }
 
@@ -3549,6 +3684,19 @@
       const { cardIdx, targetType, subIdx } = currentAssetPickerContext;
       const page = getCurrentPage();
       if (!page) return;
+
+      if (targetType === 'hnDeepIllust') {
+        const noteObj = findHealthNoteById(subIdx);
+        if (noteObj) {
+          noteObj.deepIllustImg = chosenAsset;
+          markDirty(true);
+          renderHealthNotesCardsPane();
+          syncHealthNoteLivePreview(false);
+          closeAssetPickerModal();
+          showStatus('ok', `보관함 이미지(${chosenAsset})가 건강 글 [🔍 상세히] 일러스트에 반영되었습니다!`);
+          return;
+        }
+      }
 
       if (targetType === 'bodyModelBg') {
         if (!page.bodyModelCard) page.bodyModelCard = {};
@@ -4327,6 +4475,20 @@
       }
       const page = getCurrentPage();
       if (!page) return;
+      if (isHealthNotesPage(page)) {
+        const targetNote = findHealthNoteById(hnSelectedNoteId) || (healthNotesConfig && healthNotesConfig.notes && healthNotesConfig.notes[0]);
+        if (!targetNote) return;
+        targetNote.deepIllustImg = assetToUse;
+        hnSelectedPartId = targetNote.partId || hnSelectedPartId;
+        hnSelectedNoteId = targetNote.id;
+        hnPreviewDetailExpanded = true;
+        hnExpandedIds.add(targetNote.id);
+        markDirty(true);
+        renderAll();
+        syncHealthNoteLivePreview(false);
+        showStatus('ok', `✅ [${targetNote.partLabel}] "${targetNote.questionTitle}"의 [🔍 상세히] 일러스트가 새 2K 이미지로 교체되었습니다!`);
+        return;
+      }
       const mode = modeOverride || imState.targetMode;
       const idx = Math.max(0, Math.min((page.plates || []).length - 1, imState.targetCardIdx || 0));
       const card = page.plates[idx];
@@ -4486,6 +4648,9 @@
       if (!box || !masterConfig) return;
       const page = getCurrentPage();
       if (!page) return;
+      if (isHealthNotesPage(page)) {
+        return renderHealthNotesImageMakerPane(box, page);
+      }
       const plates = page.plates || [];
       if (imState.targetCardIdx >= plates.length) imState.targetCardIdx = Math.max(0, plates.length - 1);
 
@@ -4893,6 +5058,10 @@
         const data = await res.json();
         if (!data.ok) throw new Error(data.error || '동기화 실패');
         if (data.config) masterConfig = data.config;
+        if (data.healthNotesConfig && Array.isArray(data.healthNotesConfig.notes)) {
+          healthNotesConfig = data.healthNotesConfig;
+        }
+        ensureHealthNotesVirtualPage();
         renderAll();
         reloadPreviewIframe();
         markDirty(false);
@@ -4935,7 +5104,8 @@
           body: JSON.stringify({
             action,
             targetPage: page.file,
-            config: masterConfig
+            config: getPureMasterConfig(),
+            healthNotesConfig
           })
         });
         const data = await res.json();
@@ -4943,6 +5113,10 @@
           throw new Error(data.error || '작업 처리 중 오류가 발생했습니다.');
         }
         if (data.config) masterConfig = data.config;
+        if (data.healthNotesConfig && Array.isArray(data.healthNotesConfig.notes)) {
+          healthNotesConfig = data.healthNotesConfig;
+        }
+        ensureHealthNotesVirtualPage();
         if (data.availableImages) availableImages = data.availableImages;
         if (data.availableVideos) availableVideos = data.availableVideos;
         populateMediaDatalists();
@@ -4973,6 +5147,24 @@
         if (nonce) headers['X-WP-Nonce'] = nonce;
 
         if (action === 'save_build_one' || action === 'deploy_one') {
+          if (isHealthNotesPage(page)) {
+            const res = await fetch('/wp-json/bareun/v1/studio/health-notes', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({
+                action: 'deploy_one',
+                healthNotesConfig
+              })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || '실서버 오늘의 건강 글 저장 중 오류가 발생했습니다.');
+            if (data.healthNotesConfig) healthNotesConfig = data.healthNotesConfig;
+            markDirty(false);
+            renderAll();
+            syncHealthNoteLivePreview(false);
+            showStatus('ok', `[${page.label}] 72선 요약 및 [🔍 상세히] 칼럼이 카페24 실서버(https://www.bareunhaniwon.com/body-explorer/)에 즉시 반영되었습니다!`);
+            return;
+          }
           if (!window.BareunCompiler || typeof window.BareunCompiler.buildCompleteWpPage !== 'function') {
             throw new Error('컴파일러 엔진(BareunCompiler)을 불러오지 못했습니다. 잠시 후 새로고침 후 다시 시도해 주세요.');
           }
@@ -4988,7 +5180,8 @@
               action: 'deploy_one',
               targetSlug: page.slug,
               targetPage: page.file,
-              config: masterConfig,
+              config: getPureMasterConfig(),
+              healthNotesConfig,
               compiledHtml: wpBlock
             })
           });
@@ -5006,9 +5199,10 @@
           if (!window.BareunCompiler || typeof window.BareunCompiler.buildCompleteWpPage !== 'function') {
             throw new Error('컴파일러 엔진(BareunCompiler)을 불러오지 못했습니다. 잠시 후 새로고침 후 다시 시도해 주세요.');
           }
-          const pagesPayload = masterConfig.pages.map(p => {
+          const pureCfg = getPureMasterConfig();
+          const pagesPayload = pureCfg.pages.map(p => {
             const merged = Object.assign({}, p, {
-              cardStyle: Object.assign({}, masterConfig.globalCardStyle || {}, p.cardStyle || {})
+              cardStyle: Object.assign({}, pureCfg.globalCardStyle || {}, p.cardStyle || {})
             });
             return {
               slug: p.slug,
@@ -5021,7 +5215,8 @@
             method: 'POST',
             headers,
             body: JSON.stringify({
-              config: masterConfig,
+              config: pureCfg,
+              healthNotesConfig,
               pages: pagesPayload
             })
           });
@@ -5031,11 +5226,28 @@
           markDirty(false);
           renderAll();
           reloadPreviewIframe();
-          showStatus('ok', `전체 페이지가 카페24 실서버에 즉시 일괄 배포되었습니다! (${data.updatedCount || 11}개 페이지 갱신 완료)`);
+          showStatus('ok', `오늘의 건강 글(72선) 포함 전체 페이지가 카페24 실서버에 즉시 일괄 배포되었습니다! (${data.updatedCount || 12}개 갱신 완료)`);
           return;
         }
 
         if (action === 'reset_page') {
+          if (isHealthNotesPage(page)) {
+            const defHnRes = await fetch('/wp-json/bareun/v1/studio/health-notes?default=1', { headers }).catch(() => null);
+            let defHn = null;
+            if (defHnRes && defHnRes.ok) {
+              const j = await defHnRes.json();
+              defHn = j && j.healthNotesConfig ? j.healthNotesConfig : null;
+            }
+            if (!defHn) {
+              const fbRes = await fetch('/health-notes-custom-config.default.json').catch(() => null);
+              if (fbRes && fbRes.ok) defHn = await fbRes.json();
+            }
+            if (defHn && Array.isArray(defHn.notes)) {
+              healthNotesConfig = defHn;
+              return runWpStudioAction('deploy_one', page);
+            }
+            throw new Error('오늘의 건강 글 기본 백업 설정을 찾을 수 없습니다.');
+          }
           const defRes = await fetch('/detail-pages-config.default.json').catch(() => null);
           let defCfg = null;
           if (defRes && defRes.ok) defCfg = await defRes.json();
@@ -5079,6 +5291,708 @@
         runStudioAction('save_build_one');
       }
     });
+
+    /* =========================================================================
+       🧬 3D 오늘의 건강 글 (72선 요약 + 인라인 [🔍 상세히] 심층 칼럼) 전용 커스텀 스튜디오 모듈
+       ========================================================================= */
+    function ensureHealthNotesConfigSafe() {
+      if (!healthNotesConfig || typeof healthNotesConfig !== 'object') {
+        healthNotesConfig = { version: '1.0', globalSettings: {}, parts: [], notes: [] };
+      }
+      if (!healthNotesConfig.globalSettings) healthNotesConfig.globalSettings = {};
+      const gs = healthNotesConfig.globalSettings;
+      if (gs.detailBtnLabel == null) gs.detailBtnLabel = '상세히';
+      if (gs.expandBarTitle == null) gs.expandBarTitle = '이 주제의 깊은 원리가 더 궁금하신가요?';
+      if (gs.expandBarSub == null) gs.expandBarSub = '해부학 일러스트 · 우리 몸 생리 원리 · 놓치기 쉬운 생활 신호 3가지';
+      if (gs.expandedBarTitle == null) gs.expandedBarTitle = '심층 건강 칼럼 열람 중';
+      if (gs.bestReadCount == null) gs.bestReadCount = 2;
+      if (gs.bestReadBadge == null) gs.bestReadBadge = '이어서 읽기 BEST 2';
+      if (gs.bestReadSub == null) gs.bestReadSub = '편 많이 읽은 글';
+      if (gs.channelBarLabel == null) gs.channelBarLabel = '더 많은 건강 이야기 · 편하게 물어보기';
+      if (!gs.channels) gs.channels = {};
+      if (!gs.channels.youtube) gs.channels.youtube = { enabled: true, label: '유튜브', url: 'https://www.youtube.com/@bareunhaniwon' };
+      if (!gs.channels.naver) gs.channels.naver = { enabled: true, label: '네이버', url: 'https://blog.naver.com/wei0508' };
+      if (!gs.channels.kakao) gs.channels.kakao = { enabled: true, label: '카카오톡', url: 'https://pf.kakao.com/_ykxcLK' };
+      if (!Array.isArray(healthNotesConfig.parts) || healthNotesConfig.parts.length === 0) {
+        healthNotesConfig.parts = [
+          { id: 'knee', partLabel: '무릎 성장판', defaultIllustImg: 'illust_knee_growth_care.jpg' },
+          { id: 'cervical', partLabel: '목뼈 · 두피 혈관', defaultIllustImg: 'illust_cervical_hairloss.jpg' },
+          { id: 'lumbar', partLabel: '허리 물렁뼈 · 골반', defaultIllustImg: 'illust_lumbar_pelvis.jpg' },
+          { id: 'gongjindan', partLabel: '뇌 · 심장 활력축', defaultIllustImg: 'illust_gongjindan_heart_brain.jpg' },
+          { id: 'syncope', partLabel: '뇌신경 · 자동조절 신경', defaultIllustImg: 'illust_syncope_autonomic.jpg' },
+          { id: 'digest', partLabel: '위장 · 식도 근육', defaultIllustImg: 'illust_gut_metabolism.jpg' },
+          { id: 'gut', partLabel: '복부 · 대사 순환', defaultIllustImg: 'diet_minimal_card4_stage2_core_lipolysis.jpg' },
+          { id: 'uterus', partLabel: '아랫배 · 골반 순환', defaultIllustImg: 'illust_uterus_fertility.jpg' },
+          { id: 'prostate', partLabel: '방광 · 골반 바닥근육', defaultIllustImg: 'illust_prostate_care.jpg' }
+        ];
+      }
+      if (!Array.isArray(healthNotesConfig.notes)) healthNotesConfig.notes = [];
+      return healthNotesConfig;
+    }
+
+    function findHealthNoteById(noteId) {
+      const cfg = ensureHealthNotesConfigSafe();
+      return cfg.notes.find(n => n && n.id === noteId) || null;
+    }
+
+    function getFilteredHealthNotes() {
+      const cfg = ensureHealthNotesConfigSafe();
+      const q = String(hnSearchQuery || '').trim().toLowerCase();
+      const list = cfg.notes.filter(n => {
+        if (!n) return false;
+        if (hnSelectedPartId && hnSelectedPartId !== 'all' && n.partId !== hnSelectedPartId) return false;
+        if (q) {
+          const hay = [
+            n.id, n.partLabel, n.keyword, n.theme, n.questionTitle, n.deepTitle,
+            ...(n.empathyLines || []), ...(n.truthLines || []), ...(n.deepParagraphs || [])
+          ].join(' ').toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+      list.sort((a, b) => {
+        const da = String(a.publishDate || '');
+        const db = String(b.publishDate || '');
+        if (db !== da) return db.localeCompare(da);
+        return String(b.id || '').localeCompare(String(a.id || ''));
+      });
+      return list;
+    }
+
+    let hnLiveSyncTimer = null;
+    function syncHealthNoteLivePreview(flyCamera = false) {
+      if (hnLiveSyncTimer) clearTimeout(hnLiveSyncTimer);
+      hnLiveSyncTimer = setTimeout(() => {
+        const frame = document.getElementById('livePreviewFrame');
+        if (!frame || !frame.contentWindow) return;
+        const cfg = ensureHealthNotesConfigSafe();
+        const noteObj = findHealthNoteById(hnSelectedNoteId);
+        const targetPart = (noteObj && noteObj.partId) || (hnSelectedPartId !== 'all' ? hnSelectedPartId : 'knee');
+        frame.contentWindow.postMessage({
+          type: 'SYNC_HEALTH_NOTE_PREVIEW',
+          healthNotesConfig: cfg,
+          partId: targetPart,
+          noteId: hnSelectedNoteId || '',
+          detailExpanded: hnPreviewDetailExpanded,
+          flyCamera: Boolean(flyCamera)
+        }, '*');
+      }, 70);
+    }
+
+    function selectHealthNotesPart(partId) {
+      hnSelectedPartId = partId || 'knee';
+      const filtered = getFilteredHealthNotes();
+      if (filtered[0]) {
+        hnSelectedNoteId = filtered[0].id;
+        hnExpandedIds = new Set([filtered[0].id]);
+      }
+      renderHealthNotesCardsPane();
+      syncHealthNoteLivePreview(true);
+    }
+
+    function setHnSearchQuery(val) {
+      hnSearchQuery = val || '';
+      renderHealthNotesCardsPane();
+    }
+
+    function toggleHealthNoteAccordion(noteId, ev) {
+      if (ev) ev.stopPropagation();
+      if (hnExpandedIds.has(noteId)) {
+        hnExpandedIds.delete(noteId);
+      } else {
+        hnExpandedIds.add(noteId);
+        const noteObj = findHealthNoteById(noteId);
+        if (noteObj) {
+          hnSelectedPartId = hnSelectedPartId === 'all' ? 'all' : (noteObj.partId || hnSelectedPartId);
+          hnSelectedNoteId = noteObj.id;
+          syncHealthNoteLivePreview(false);
+        }
+      }
+      renderHealthNotesCardsPane();
+    }
+
+    function previewHealthNoteInIframe(noteId, expandDetail, ev) {
+      if (ev) ev.stopPropagation();
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      hnSelectedNoteId = noteObj.id;
+      hnPreviewDetailExpanded = Boolean(expandDetail);
+      syncHealthNoteLivePreview(true);
+      showStatus('ok', `👁️ 우측 미리보기에서 [${noteObj.partLabel}] "${noteObj.questionTitle}" (${expandDetail ? '상세히 펼침' : '요약 기본'}) 화면을 표시합니다.`);
+    }
+
+    function jumpToHnImageMaker(noteId, ev) {
+      if (ev) ev.stopPropagation();
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      hnSelectedNoteId = noteObj.id;
+      hnPreviewDetailExpanded = true;
+      imState.promptText = `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 일러스트, ${noteObj.partLabel} (${noteObj.theme || noteObj.keyword || noteObj.questionTitle}) 관련 우리 몸 해부 생리 구조와 건강한 순환 원리를 직관적으로 보여주는 정갈한 아이보리·골드 톤 클린 메디컬 일러스트, 텍스트와 글자 완전 배제`;
+      imState.useDirectorFace = false;
+      imState.useSourceImageRef = false;
+      switchEditorTab('imagemaker');
+      syncHealthNoteLivePreview(false);
+    }
+
+    function updateHnField(noteId, key, val, refreshCards = false) {
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      noteObj[key] = val;
+      if (key === 'partId') {
+        const pt = ensureHealthNotesConfigSafe().parts.find(p => p.id === val);
+        if (pt) noteObj.partLabel = pt.partLabel;
+      }
+      hnSelectedNoteId = noteObj.id;
+      markDirty(true);
+      if (key === 'questionTitle') {
+        const headTitle = document.getElementById('hn-head-title-' + noteId);
+        if (headTitle) headTitle.textContent = val || '(제목 없음)';
+      }
+      if (key === 'deepIllustImg') {
+        const thumbA = document.getElementById('hn-head-thumb-' + noteId);
+        const thumbB = document.getElementById('hn-body-thumb-' + noteId);
+        updateImgElementSrc(thumbA, val);
+        updateImgElementSrc(thumbB, val);
+      }
+      if (refreshCards) {
+        renderPageSwitcher();
+        renderHealthNotesCardsPane();
+      }
+      syncHealthNoteLivePreview(false);
+    }
+
+    function updateHnLinesField(noteId, key, rawText, splitByBlankLine = false) {
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      if (splitByBlankLine) {
+        const chunks = String(rawText || '').split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean);
+        noteObj[key] = chunks.length > 0 ? chunks : String(rawText || '').split('\n').map(s => s.trim()).filter(Boolean);
+      } else {
+        noteObj[key] = String(rawText || '').split('\n').map(s => s.trim()).filter(Boolean);
+      }
+      hnSelectedNoteId = noteObj.id;
+      markDirty(true);
+      syncHealthNoteLivePreview(false);
+    }
+
+    function triggerHnIllustUpload(noteId) {
+      pickAndUploadFile(null, savedName => {
+        const noteObj = findHealthNoteById(noteId);
+        if (!noteObj) return;
+        noteObj.deepIllustImg = savedName;
+        hnSelectedNoteId = noteObj.id;
+        hnPreviewDetailExpanded = true;
+        renderHealthNotesCardsPane();
+        syncHealthNoteLivePreview(false);
+      });
+    }
+
+    function addNewHealthNote() {
+      const cfg = ensureHealthNotesConfigSafe();
+      const targetPart = (hnSelectedPartId && hnSelectedPartId !== 'all') ? hnSelectedPartId : 'knee';
+      const pt = cfg.parts.find(p => p.id === targetPart) || cfg.parts[0];
+      const todayStr = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+      const newId = `${targetPart}-${todayStr.replace(/-/g, '')}-${String(Date.now()).slice(-4)}`;
+      const newNote = {
+        id: newId,
+        partId: targetPart,
+        partLabel: pt ? pt.partLabel : '주요 부위',
+        enabled: true,
+        publishDate: todayStr,
+        theme: '생활 속 건강 습관 점검',
+        keyword: (pt ? pt.partLabel : '건강') + ' 생활 가이드',
+        questionTitle: `${pt ? pt.partLabel : '우리 몸'}, 평소 어떤 생활 신호를 먼저 살펴보면 좋을까요?`,
+        empathyLines: [
+          '일상 속에서 반복되는 작은 불편함이 단순 피로인지 몸이 보내는 신호인지 궁금할 때가 있습니다.',
+          '바쁜 하루 중에도 집에서 먼저 가볍게 돌아볼 수 있는 기준을 알고 싶으실 때가 많습니다.'
+        ],
+        truthLines: [
+          '우리 몸의 관절과 신경, 순환계는 무리한 자세나 수면 부족이 쌓일 때 가장 먼저 뻐근함이나 피로감으로 신호를 보냅니다.',
+          '초기 신호를 알아차리고 낮 활동과 밤 휴식 리듬을 함께 정돈해 주면 스스로 회복하는 힘을 지키는 데 큰 도움이 됩니다.'
+        ],
+        mythLines: [
+          '일시적인 불편함은 무조건 참거나 반대로 운동을 완전히 쉬어야만 좋아진다고 생각하기 쉽습니다.',
+          '하지만 통증이 없는 범위의 부드러운 움직임과 충분한 수분·수면 균형이 오히려 순환 회복을 훨씬 빠르게 돕습니다.'
+        ],
+        checkList: [
+          '아침에 일어났을 때와 저녁 무렵 중 언제 불편함이 더 뚜렷해지는지 하루 리듬을 가볍게 비교해 보세요.',
+          '평소 앉아 있는 자세나 잠들기 전 스마트폰 사용 시간이 몸의 긴장을 높이고 있지 않은지 1분만 점검해 보세요.'
+        ],
+        academicBasis: '국제 의학 학술지 및 통합생리학 연구 보고',
+        deepEnabled: true,
+        deepIllustImg: (pt && pt.defaultIllustImg) || 'illust_knee_growth_care.jpg',
+        deepIllustCaption: (pt && pt.defaultIllustCaption) || `${pt ? pt.partLabel : '해당 부위'}의 순환과 균형 원리를 나타낸 이해 도식`,
+        deepTitle: '생활 속 작은 신호, 우리 몸속에서는 어떤 변화가 일어날까요?',
+        deepParagraphs: [
+          '우리 몸은 낮 동안 중력과 움직임을 견디며 에너지를 쓰고, 밤사이 깊은 수면 구간에 미세혈류와 조직 탄력을 회복하는 정교한 일주기 리듬을 가지고 있습니다. 특정 부위에 긴장이 오래 머물면 주변 순환이 완만해지면서 묵직함이나 피로 신호가 먼저 나타나게 됩니다.',
+          '따라서 갑작스럽게 무리한 변화를 주기보다 낮 시간의 바른 체중 분산, 규칙적인 수분 섭취, 그리고 잠들기 전 이완 습관을 차분히 이어 주는 것이 일상 속 건강한 균형을 지키는 가장 든든한 출발점이 됩니다.'
+        ],
+        deepReference: '참고 문헌 · 국제 생리학 및 예방의학 가이드라인 종합',
+        deepSignalsTitle: '가정에서 함께 살펴보면 좋은 3가지 신호',
+        deepSignals: [
+          '같은 자세로 40분 이상 머문 뒤 일어설 때 첫 움직임이 유독 뻣뻣하거나 무겁지 않은지 살펴보세요.',
+          '충분히 잠을 잔 날에도 아침 피로감이나 부종이 쉽게 가시지 않는 날이 잦은지 확인해 보세요.',
+          '가벼운 산책이나 스트레칭 뒤에 몸이 한결 가벼워지는지 반응 변화를 체크해 보세요.'
+        ]
+      };
+      cfg.notes.unshift(newNote);
+      hnSelectedNoteId = newId;
+      hnPreviewDetailExpanded = true;
+      hnExpandedIds = new Set([newId]);
+      markDirty(true);
+      renderPageSwitcher();
+      renderHealthNotesCardsPane();
+      syncHealthNoteLivePreview(true);
+      showStatus('ok', `➕ [${newNote.partLabel}] 새 오늘의 건강 글이 추가되었습니다! 내용을 자유롭게 수정해 보세요.`);
+    }
+
+    function duplicateHealthNote(noteId, ev) {
+      if (ev) ev.stopPropagation();
+      const cfg = ensureHealthNotesConfigSafe();
+      const src = findHealthNoteById(noteId);
+      if (!src) return;
+      const copy = JSON.parse(JSON.stringify(src));
+      copy.id = `${src.partId}-${String(Date.now()).slice(-6)}`;
+      copy.questionTitle = (src.questionTitle || '') + ' (복사본)';
+      const idx = cfg.notes.findIndex(n => n && n.id === noteId);
+      cfg.notes.splice(idx >= 0 ? idx + 1 : 0, 0, copy);
+      hnSelectedNoteId = copy.id;
+      hnExpandedIds.add(copy.id);
+      markDirty(true);
+      renderPageSwitcher();
+      renderHealthNotesCardsPane();
+      syncHealthNoteLivePreview(false);
+      showStatus('ok', '선택한 건강 글이 복제되었습니다.');
+    }
+
+    function deleteHealthNote(noteId, ev) {
+      if (ev) ev.stopPropagation();
+      const cfg = ensureHealthNotesConfigSafe();
+      const src = findHealthNoteById(noteId);
+      if (!src) return;
+      if (cfg.notes.length <= 1) {
+        alert('최소 1편 이상의 건강 글이 필요합니다. 숨기려면 [표시] 체크를 해제해 주세요.');
+        return;
+      }
+      if (!confirm(`[${src.partLabel}] "${src.questionTitle}" 건강 글을 삭제하시겠습니까?`)) return;
+      cfg.notes = cfg.notes.filter(n => n && n.id !== noteId);
+      hnExpandedIds.delete(noteId);
+      const rem = getFilteredHealthNotes();
+      hnSelectedNoteId = rem[0] ? rem[0].id : (cfg.notes[0] ? cfg.notes[0].id : '');
+      markDirty(true);
+      renderPageSwitcher();
+      renderHealthNotesCardsPane();
+      syncHealthNoteLivePreview(false);
+      showStatus('ok', '건강 글이 삭제되었습니다.');
+    }
+
+    function renderHealthNotesCardsPane() {
+      const cfg = ensureHealthNotesConfigSafe();
+      const allEnabled = cfg.notes.filter(n => n && n.enabled !== false).length;
+      const filtered = getFilteredHealthNotes();
+
+      document.getElementById('tabCardCount').textContent = `${allEnabled}/${cfg.notes.length}편`;
+      document.getElementById('cardsPanelTitle').textContent = `[🧬 3D 오늘의 건강 글] 부위별 요약 4단 & [🔍 상세히] 인라인 심층 칼럼 편집 (${filtered.length}편 표시 중)`;
+
+      const container = document.getElementById('storyCardsContainer');
+      const partButtonsHtml = [
+        ...cfg.parts.map(pt => {
+          const cnt = cfg.notes.filter(n => n && n.partId === pt.id && n.enabled !== false).length;
+          const isAct = hnSelectedPartId === pt.id;
+          return `<button type="button" class="page-pill ${isAct ? 'active' : ''}" style="padding:6px 11px; font-size:12px;" onclick="selectHealthNotesPart('${escHtml(pt.id)}')">
+            <span>${escHtml(pt.partLabel)}</span>
+            <span class="cnt">${cnt}편</span>
+          </button>`;
+        }),
+        `<button type="button" class="page-pill ${hnSelectedPartId === 'all' ? 'active' : ''}" style="padding:6px 11px; font-size:12px;" onclick="selectHealthNotesPart('all')">
+          <span>전체 부위</span>
+          <span class="cnt">${allEnabled}편</span>
+        </button>`
+      ].join('');
+
+      const topFilterBarHtml = `
+        <div style="margin-bottom:14px; padding:14px; border-radius:12px; background:#fbf8f1; border:1px solid #dfd3bc;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+            <div style="font-size:12.5px; font-weight:800; color:#4b3b22;">
+              🎯 9대 부위별 필터 선택 · 우측 실시간 3D 팝업에서 <strong>기본 4단 요약</strong>과 <strong>[🔍 상세히] 펼침 화면</strong>을 즉시 확인하세요
+            </div>
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+              <button type="button" class="mini-btn ${!hnPreviewDetailExpanded ? 'gold-helper' : ''}" onclick="hnPreviewDetailExpanded=false; renderHealthNotesCardsPane(); syncHealthNoteLivePreview(false);">미리보기: 요약 기본</button>
+              <button type="button" class="mini-btn ${hnPreviewDetailExpanded ? 'gold-helper' : ''}" onclick="hnPreviewDetailExpanded=true; renderHealthNotesCardsPane(); syncHealthNoteLivePreview(false);">미리보기: 🔍 상세히 펼침</button>
+              <button type="button" class="mini-btn" onclick="switchEditorTab('leftpanel')">🔗 BEST 2 · 유튜브/네이버/카톡 아이콘 설정</button>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
+            ${partButtonsHtml}
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <input type="text" value="${escHtml(hnSearchQuery)}" placeholder="🔍 제목 · 키워드 · 본문 검색 (예: 성장통, 두피열, 공진단, 야간뇨...)"
+              oninput="setHnSearchQuery(this.value)"
+              style="flex:1; min-width:220px; padding:8px 12px; border-radius:8px; border:1px solid #d6cbb8; background:#fff; font-size:12.5px;" />
+            ${hnSearchQuery ? `<button type="button" class="mini-btn" onclick="setHnSearchQuery('')">초기화</button>` : ''}
+          </div>
+        </div>
+      `;
+
+      if (filtered.length === 0) {
+        container.innerHTML = topFilterBarHtml + `<div class="helper-note" style="padding:22px; text-align:center;">조건에 맞는 건강 글이 없습니다. 상단 [+ 새 카드 추가] 버튼을 눌러 새 건강 글을 추가해 보세요.</div>`;
+        return;
+      }
+
+      const cardsHtml = filtered.map((note, idx) => {
+        const isExpanded = hnExpandedIds.has(note.id);
+        const isEnabled = note.enabled !== false;
+        const isSelected = hnSelectedNoteId === note.id;
+        const ptDef = cfg.parts.find(p => p.id === note.partId) || {};
+        const rawThumb = note.deepIllustImg || ptDef.defaultIllustImg || 'illust_knee_growth_care.jpg';
+        const thumbUrl = resolveStudioAssetUrl(rawThumb);
+        const numStr = String(idx + 1).padStart(2, '0');
+
+        return `
+          <div class="card-accordion ${isEnabled ? '' : 'disabled-card'}" id="hn-card-${escHtml(note.id)}" style="${isSelected ? 'border-color:#c5a059; box-shadow:0 6px 18px rgba(197,160,89,0.16);' : ''}">
+            <div class="card-acc-head" onclick="toggleHealthNoteAccordion('${escHtml(note.id)}', event)">
+              <div class="card-acc-left">
+                <span class="card-num-chip">${numStr}</span>
+                <img id="hn-head-thumb-${escHtml(note.id)}" class="card-thumb-mini" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumb)}" alt="Illust"
+                  onclick="event.stopPropagation(); openImageLightbox(this.getAttribute('data-raw-path'), '심층 칼럼 일러스트')"
+                  onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                <div style="min-width:0;">
+                  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:2px;">
+                    <span class="card-type-chip">[${escHtml(note.partLabel || '')}]</span>
+                    <span style="font-size:11px; font-weight:800; color:#7c6f5b;">📅 ${escHtml(note.publishDate || '')}</span>
+                    <span style="font-size:11px; font-weight:800; color:${note.deepEnabled !== false ? '#047857' : '#9ca3af'};">${note.deepEnabled !== false ? '🔍 상세히 ON' : '상세히 OFF'}</span>
+                  </div>
+                  <div class="card-head-title" id="hn-head-title-${escHtml(note.id)}">${escHtml(note.questionTitle || '(제목 없음)')}</div>
+                </div>
+              </div>
+              <div class="card-acc-actions" onclick="event.stopPropagation()">
+                <label style="display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; cursor:pointer; margin-right:4px;">
+                  <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateHnField('${escHtml(note.id)}', 'enabled', this.checked, true)" />
+                  표시
+                </label>
+                <button type="button" class="mini-btn gold-helper" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', true, event)">👁️ 상세히 미리보기</button>
+                <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event)">📸 AI 일러스트</button>
+                <button type="button" class="mini-btn" onclick="duplicateHealthNote('${escHtml(note.id)}', event)">복제</button>
+                <button type="button" class="mini-btn danger" onclick="deleteHealthNote('${escHtml(note.id)}', event)">삭제</button>
+                <span style="font-size:12px; color:#8b7e6a; padding:0 4px;">${isExpanded ? '▲' : '▼'}</span>
+              </div>
+            </div>
+
+            <div class="card-acc-body" style="display:${isExpanded ? 'block' : 'none'};">
+              <!-- BOX A: 4-Section Summary -->
+              <div style="padding:12px 14px; border-radius:10px; background:#fcfbf8; border:1px solid #e6decb; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <strong style="font-size:13px; color:#1f1b16;">📌 1단계 · 기본 4단 요약 카드 (첫 화면 깔끔한 요약본)</strong>
+                  <button type="button" class="mini-btn" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', false, event)">👁️ 접힌 요약 화면 미리보기</button>
+                </div>
+                <div class="grid-3">
+                  <div class="field">
+                    <label>소속 인체 부위 (9대 부위)</label>
+                    <select onchange="updateHnField('${escHtml(note.id)}', 'partId', this.value, true)">
+                      ${cfg.parts.map(pt => `<option value="${escHtml(pt.id)}" ${note.partId === pt.id ? 'selected' : ''}>${escHtml(pt.partLabel)}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>공개 예정일 / 발행일 (YYYY-MM-DD)</label>
+                    <input type="date" value="${escHtml(note.publishDate || '')}" oninput="updateHnField('${escHtml(note.id)}', 'publishDate', this.value, false)" />
+                  </div>
+                  <div class="field">
+                    <label>핵심 주제어 (keyword)</label>
+                    <input type="text" value="${escHtml(note.keyword || '')}" oninput="updateHnField('${escHtml(note.id)}', 'keyword', this.value, false)" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>상단 질문형 메인 제목 (questionTitle)</label>
+                  <input type="text" value="${escHtml(note.questionTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'questionTitle', this.value, false)" />
+                </div>
+                <div class="grid-2">
+                  <div class="field">
+                    <label>🎒 1. 일상 속 공감 상황 (줄바꿈으로 문장 구분)</label>
+                    <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'empathyLines', this.value, false)">${escHtml((note.empathyLines || []).join('\n'))}</textarea>
+                  </div>
+                  <div class="field">
+                    <label>💡 2. 몸속 연골/신경이 알려주는 진실 (줄바꿈 구분)</label>
+                    <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'truthLines', this.value, false)">${escHtml((note.truthLines || []).join('\n'))}</textarea>
+                  </div>
+                  <div class="field">
+                    <label>❌ 3. 흔히 하는 오해 바로잡기 (1줄 통념 / 2줄 핵심)</label>
+                    <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'mythLines', this.value, false)">${escHtml((note.mythLines || []).join('\n'))}</textarea>
+                  </div>
+                  <div class="field">
+                    <label>🔍 4. 오늘 밤 집에서 해보는 1분 체크 (체크리스트)</label>
+                    <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'checkList', this.value, false)">${escHtml((note.checkList || []).join('\n'))}</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BOX B: [🔍 상세히] Inline Deep Column -->
+              <div style="padding:13px 14px; border-radius:10px; background:#fbf6ea; border:1px solid #dfc99b;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                  <strong style="font-size:13px; color:#5a3e1b;">🔍 2단계 · [상세히] 버튼 클릭 시 펼쳐지는 인라인 심층 칼럼 (순수 건강 정보)</strong>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; color:#5a3e1b; cursor:pointer;">
+                      <input type="checkbox" ${note.deepEnabled !== false ? 'checked' : ''} onchange="updateHnField('${escHtml(note.id)}', 'deepEnabled', this.checked, true)" />
+                      [🔍 상세히] 버튼 및 심층 칼럼 표시
+                    </label>
+                    <button type="button" class="mini-btn gold-helper" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', true, event)">👁️ 상세히 펼침 미리보기</button>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>심층 해부·생리 일러스트 이미지 (deepIllustImg)</label>
+                  <div class="list-row-inline">
+                    <img id="hn-body-thumb-${escHtml(note.id)}" class="sub-thumb-preview" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumb)}" alt="Deep Illust"
+                      onclick="openImageLightbox(this.getAttribute('data-raw-path'), '심층 일러스트 원본 보기')"
+                      onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                    <input type="text" list="existingImagesList" value="${escHtml(note.deepIllustImg || '')}" placeholder="예: illust_knee_growth_care.jpg"
+                      oninput="updateHnField('${escHtml(note.id)}', 'deepIllustImg', this.value, false)" />
+                    <button type="button" class="mini-btn gold-helper" onclick="triggerHnIllustUpload('${escHtml(note.id)}')">📁 내 PC 업로드</button>
+                    <button type="button" class="mini-btn" onclick="openAssetPickerModal(-1, 'hnDeepIllust', '${escHtml(note.id)}')">🖼️ 보관함 선택</button>
+                    <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event)">📸 AI 새 일러스트 제작</button>
+                  </div>
+                </div>
+
+                <div class="grid-2">
+                  <div class="field">
+                    <label>일러스트 하단 설명 캡션 (deepIllustCaption)</label>
+                    <input type="text" value="${escHtml(note.deepIllustCaption || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepIllustCaption', this.value, false)" />
+                  </div>
+                  <div class="field">
+                    <label>📖 심층 원리 소제목 (deepTitle)</label>
+                    <input type="text" value="${escHtml(note.deepTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepTitle', this.value, false)" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>📖 심층 생리 원리 &amp; 일상 관리 본문 (빈 줄 Enter 2번으로 문단 구분 · 광고성 단어 없이 순수 건강 정보)</label>
+                  <textarea rows="5" oninput="updateHnLinesField('${escHtml(note.id)}', 'deepParagraphs', this.value, true)">${escHtml((note.deepParagraphs || []).join('\n\n'))}</textarea>
+                </div>
+
+                <div class="grid-2">
+                  <div class="field">
+                    <label>참고 문헌 한 줄 표기 (deepReference)</label>
+                    <input type="text" value="${escHtml(note.deepReference || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepReference', this.value, false)" />
+                  </div>
+                  <div class="field">
+                    <label>🩺 생활 신호 섹션 소제목 (deepSignalsTitle)</label>
+                    <input type="text" value="${escHtml(note.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호')}" oninput="updateHnField('${escHtml(note.id)}', 'deepSignalsTitle', this.value, false)" />
+                  </div>
+                </div>
+
+                <div class="field" style="margin-bottom:0;">
+                  <label>🩺 가정에서 함께 살펴보면 좋은 신호 목록 (줄바꿈으로 1·2·3번 항목 구분)</label>
+                  <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'deepSignals', this.value, false)">${escHtml((note.deepSignals || []).join('\n'))}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = topFilterBarHtml + cardsHtml;
+    }
+
+    function updateHnGlobalField(key, val) {
+      const gs = ensureHealthNotesConfigSafe().globalSettings;
+      gs[key] = val;
+      markDirty(true);
+      syncHealthNoteLivePreview(false);
+    }
+
+    function updateHnChannelField(chKey, fieldKey, val) {
+      const gs = ensureHealthNotesConfigSafe().globalSettings;
+      if (!gs.channels) gs.channels = {};
+      if (!gs.channels[chKey]) gs.channels[chKey] = { enabled: true, label: '', url: '' };
+      gs.channels[chKey][fieldKey] = val;
+      markDirty(true);
+      syncHealthNoteLivePreview(false);
+    }
+
+    function renderHealthNotesGlobalPane() {
+      const cfg = ensureHealthNotesConfigSafe();
+      const gs = cfg.globalSettings;
+      const yt = gs.channels.youtube || {};
+      const nv = gs.channels.naver || {};
+      const kk = gs.channels.kakao || {};
+      const box = document.getElementById('leftPanelEditorBox');
+      if (!box) return;
+
+      box.innerHTML = `
+        <div class="panel-head">
+          <h2>🔗 [3D 오늘의 건강 글] 상세히 버튼 · 이어서 읽기 BEST 2 · 유튜브/네이버/카카오톡 아이콘 설정</h2>
+          <span class="tag-pill">body-explorer.html · WP ID: 125</span>
+        </div>
+
+        <div class="helper-note" style="margin-bottom:14px;">
+          이 탭에서 수정하시는 문구와 채널 URL은 <strong>72편 모든 『오늘의 건강 글』의 [🔍 상세히] 인라인 심층 칼럼</strong>에 공통으로 즉시 적용됩니다.
+        </div>
+
+        <h3 style="margin:0 0 10px; font-size:14.5px;">1) 상단 [🔍 상세히] 버튼 &amp; 하단 펼침 유도 바 문구</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>헤더 우측 캡슐 버튼명 (detailBtnLabel)</label>
+            <input type="text" value="${escHtml(gs.detailBtnLabel || '상세히')}" oninput="updateHnGlobalField('detailBtnLabel', this.value)" />
+          </div>
+          <div class="field">
+            <label>펼침 상태 안내 제목 (expandedBarTitle)</label>
+            <input type="text" value="${escHtml(gs.expandedBarTitle || '심층 건강 칼럼 열람 중')}" oninput="updateHnGlobalField('expandedBarTitle', this.value)" />
+          </div>
+          <div class="field">
+            <label>하단 펼침 바 메인 문구 (expandBarTitle)</label>
+            <input type="text" value="${escHtml(gs.expandBarTitle || '')}" oninput="updateHnGlobalField('expandBarTitle', this.value)" />
+          </div>
+          <div class="field">
+            <label>하단 펼침 바 보조 설명 (expandBarSub)</label>
+            <input type="text" value="${escHtml(gs.expandBarSub || '')}" oninput="updateHnGlobalField('expandBarSub', this.value)" />
+          </div>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        <h3 style="margin:0 0 10px; font-size:14.5px;">2) 심층 칼럼 하단 『이어서 읽기 BEST』 추천 글 설정</h3>
+        <div class="grid-3">
+          <div class="field">
+            <label>이어서 읽기 노출 개수 (bestReadCount)</label>
+            <select onchange="updateHnGlobalField('bestReadCount', parseInt(this.value, 10) || 0)">
+              <option value="0" ${Number(gs.bestReadCount) === 0 ? 'selected' : ''}>숨김 (0개)</option>
+              <option value="1" ${Number(gs.bestReadCount) === 1 ? 'selected' : ''}>BEST 1개 노출</option>
+              <option value="2" ${Number(gs.bestReadCount ?? 2) === 2 ? 'selected' : ''}>BEST 2개 노출 (권장 기본값)</option>
+              <option value="3" ${Number(gs.bestReadCount) === 3 ? 'selected' : ''}>BEST 3개 노출</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>좌측 블랙·골드 배지 문구 (bestReadBadge)</label>
+            <input type="text" value="${escHtml(gs.bestReadBadge || '이어서 읽기 BEST 2')}" oninput="updateHnGlobalField('bestReadBadge', this.value)" />
+          </div>
+          <div class="field">
+            <label>우측 부위명 뒤 보조 문구 (bestReadSub)</label>
+            <input type="text" value="${escHtml(gs.bestReadSub || '편 많이 읽은 글')}" oninput="updateHnGlobalField('bestReadSub', this.value)" />
+          </div>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        <h3 style="margin:0 0 10px; font-size:14.5px;">3) 유튜브 · 네이버 · 카카오톡 채널 아이콘 버튼 연결</h3>
+        <div class="field">
+          <label>아이콘 바 좌측 안내 문구 (channelBarLabel)</label>
+          <input type="text" value="${escHtml(gs.channelBarLabel || '더 많은 건강 이야기 · 편하게 물어보기')}" oninput="updateHnGlobalField('channelBarLabel', this.value)" />
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="padding:12px 14px; border-radius:10px; background:#fff5f5; border:1px solid #fecaca; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">
+            <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:#991b1b; cursor:pointer;">
+              <input type="checkbox" ${yt.enabled !== false ? 'checked' : ''} onchange="updateHnChannelField('youtube', 'enabled', this.checked)" />
+              ▶️ 유튜브 표시
+            </label>
+            <input type="text" value="${escHtml(yt.label || '유튜브')}" placeholder="버튼명" oninput="updateHnChannelField('youtube', 'label', this.value)" />
+            <input type="text" value="${escHtml(yt.url || '')}" placeholder="https://www.youtube.com/@bareunhaniwon" oninput="updateHnChannelField('youtube', 'url', this.value)" />
+          </div>
+
+          <div style="padding:12px 14px; border-radius:10px; background:#f0fdf4; border:1px solid #bbf7d0; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">
+            <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:#166534; cursor:pointer;">
+              <input type="checkbox" ${nv.enabled !== false ? 'checked' : ''} onchange="updateHnChannelField('naver', 'enabled', this.checked)" />
+              🟩 네이버 표시
+            </label>
+            <input type="text" value="${escHtml(nv.label || '네이버')}" placeholder="버튼명" oninput="updateHnChannelField('naver', 'label', this.value)" />
+            <input type="text" value="${escHtml(nv.url || '')}" placeholder="https://blog.naver.com/wei0508" oninput="updateHnChannelField('naver', 'url', this.value)" />
+          </div>
+
+          <div style="padding:12px 14px; border-radius:10px; background:#fefce8; border:1px solid #fde047; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">
+            <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:#854d0e; cursor:pointer;">
+              <input type="checkbox" ${kk.enabled !== false ? 'checked' : ''} onchange="updateHnChannelField('kakao', 'enabled', this.checked)" />
+              💬 카카오톡 표시
+            </label>
+            <input type="text" value="${escHtml(kk.label || '카카오톡')}" placeholder="버튼명" oninput="updateHnChannelField('kakao', 'label', this.value)" />
+            <input type="text" value="${escHtml(kk.url || '')}" placeholder="https://pf.kakao.com/_ykxcLK" oninput="updateHnChannelField('kakao', 'url', this.value)" />
+          </div>
+        </div>
+      `;
+    }
+
+    function selectHnImageMakerTarget(noteId) {
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      hnSelectedNoteId = noteObj.id;
+      hnPreviewDetailExpanded = true;
+      imState.promptText = `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 일러스트, ${noteObj.partLabel} (${noteObj.theme || noteObj.keyword || noteObj.questionTitle}) 관련 우리 몸 해부 생리 구조와 건강한 순환 원리를 직관적으로 보여주는 정갈한 아이보리·골드 톤 클린 메디컬 일러스트, 텍스트와 글자 완전 배제`;
+      renderImageMakerPane();
+      syncHealthNoteLivePreview(false);
+    }
+
+    function renderHealthNotesImageMakerPane(box, page) {
+      const cfg = ensureHealthNotesConfigSafe();
+      const filtered = getFilteredHealthNotes();
+      const activeNote = findHealthNoteById(hnSelectedNoteId) || filtered[0] || cfg.notes[0];
+      if (!activeNote) {
+        box.innerHTML = '<div class="helper-note">편집할 건강 글을 먼저 추가해 주세요.</div>';
+        return;
+      }
+      hnSelectedNoteId = activeNote.id;
+      if (!imState.promptText) {
+        imState.promptText = `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 일러스트, ${activeNote.partLabel} (${activeNote.theme || activeNote.keyword || ''}) 관련 해부 생리 구조와 건강한 순환 원리를 보여주는 아이보리·골드 톤 클린 메디컬 일러스트, 텍스트 배제`;
+      }
+      const ptDef = cfg.parts.find(p => p.id === activeNote.partId) || {};
+      const currentRawImg = activeNote.deepIllustImg || ptDef.defaultIllustImg || 'illust_knee_growth_care.jpg';
+      const currentImgUrl = resolveStudioAssetUrl(currentRawImg);
+      const generatedImgUrl = imState.lastGeneratedUrl ? resolveStudioAssetUrl(imState.lastGeneratedUrl) : '';
+      const isArgonActive = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
+      const u = imState.aiUsage || {};
+      const limit = Math.max(1, Number(u.dailyFreeLimit) || 50);
+      const usedToday = Math.max(0, Number(u.argonHighTodayUsed) || 0);
+      const freeRem = u.quotaExhaustedToday ? 0 : Math.max(0, limit - usedToday);
+
+      box.innerHTML = `
+        <div class="im-studio-hero" style="margin-bottom:14px;">
+          <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:rgba(16,185,129,0.25); border:1px solid rgba(52,211,153,0.65); color:#a7f3d0; font-size:11px; font-weight:900; margin-bottom:6px;">
+            ${isArgonActive ? `🟢 아르곤 하이 2K 가동 중 · 무료 잔여 ${freeRem}회` : '⚪ AI 일러스트 제작 스튜디오'}
+          </span>
+          <h3>[🧬 오늘의 건강 글] 심층 칼럼 해부·생리 일러스트 AI 제작</h3>
+          <p>선택한 건강 글의 <strong>[🔍 상세히] 영역 상단 일러스트</strong>를 프롬프트 지시만으로 깨끗한 2K 고해상도로 제작하여 1클릭 교체합니다.</p>
+        </div>
+
+        <div class="panel-box" style="padding:14px; margin-bottom:14px;">
+          <div class="field">
+            <label>1️⃣ 일러스트를 교체할 대상 건강 글 선택 (${cfg.notes.length}편)</label>
+            <select onchange="selectHnImageMakerTarget(this.value)">
+              ${cfg.notes.map(n => `<option value="${escHtml(n.id)}" ${n.id === activeNote.id ? 'selected' : ''}>[${escHtml(n.partLabel)}] ${escHtml(n.publishDate)} · ${escHtml(n.questionTitle)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>2️⃣ AI 제작 프롬프트 (원하는 해부·생리·생활 장면을 한글로 입력)</label>
+            <textarea rows="4" oninput="imState.promptText = this.value">${escHtml(imState.promptText || '')}</textarea>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <button type="button" class="btn btn-im-generate" onclick="generateSituationalImage()" ${imState.isGenerating ? 'disabled' : ''}>
+              ${imState.isGenerating ? '⏳ 2K 일러스트 생성 중...' : '✨ 이 프롬프트로 심층 일러스트 제작하기'}
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-box" style="padding:14px;">
+          <div class="grid-2">
+            <div>
+              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--ink-sub);">현재 [🔍 상세히] 일러스트 — ${escHtml(currentRawImg)}</div>
+              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 심층 일러스트')">
+                <img src="${escHtml(currentImgUrl)}" data-raw-path="${escHtml(currentRawImg)}" alt="Current" onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+              </div>
+            </div>
+            <div>
+              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:#047857;">새로 제작된 일러스트 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''}</div>
+              <div class="im-stage-box">
+                ${generatedImgUrl
+                  ? `<img src="${escHtml(generatedImgUrl)}" data-raw-path="${escHtml(imState.lastGeneratedUrl)}" alt="Generated" onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />`
+                  : `<div class="im-empty"><strong>위 [제작하기] 버튼을 누르면 2K 이미지가 생성됩니다</strong></div>`}
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-deploy-one" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
+              🔄 선택한 건강 글 [🔍 상세히] 일러스트로 즉시 적용
+            </button>
+          </div>
+        </div>
+      `;
+    }
 
     loadStudioConfig();
   </script>

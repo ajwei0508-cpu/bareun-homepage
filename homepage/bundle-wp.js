@@ -210,7 +210,7 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp("(src|before|after|beforeImg|afterImg):\\s*'(" + assetPrefix + "[^']+)'", 'g'), (_, k, p) => `${k}: '${toGhWebpOrRaw(p)}'`)
     .replace(new RegExp('"(src|before|after|beforeImg|afterImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(/"(illustration|illustImg|baBeforeImg|baAfterImg)":"((?:illust_|ba_)[^"]+)"/g, (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
-    .replace(new RegExp('"(heroImg|subImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
+    .replace(new RegExp('"(heroImg|subImg|deepIllustImg|defaultIllustImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(new RegExp('src=\\\\"(' + assetPrefix + '[^\\\\"]+)\\\\"', 'g'), (_, p) => 'src=\\"' + toGhWebpOrRaw(p) + '\\"')
     .replace(/setDecoderPath\('draco\/'\)/g, "setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')")
     .replace(/load\('((?:models\/|texture\/)[^']+)'\)/g, "load('" + ghBase + "$1')")

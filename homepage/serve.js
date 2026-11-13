@@ -398,16 +398,27 @@ const server = http.createServer((req, res) => {
           }
           const detailCfgPath = path.join(__dirname, 'detail-pages-config.json');
           fs.writeFileSync(detailCfgPath, JSON.stringify(json.config, null, 2) + '\n', 'utf8');
+          const hnCfgPath = path.join(__dirname, 'health-notes-custom-config.json');
+          if (json.healthNotesConfig && typeof json.healthNotesConfig === 'object' && Array.isArray(json.healthNotesConfig.notes)) {
+            fs.writeFileSync(hnCfgPath, JSON.stringify(json.healthNotesConfig, null, 2) + '\n', 'utf8');
+          }
 
           // Rebuild pages and WordPress bundle
           execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js')], { cwd: __dirname, timeout: 45000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'auto-blog-engine.js')], { cwd: __dirname, timeout: 35000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 35000 });
           execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
 
+          let savedHnCfg = null;
+          if (fs.existsSync(hnCfgPath)) {
+            try { savedHnCfg = JSON.parse(fs.readFileSync(hnCfgPath, 'utf8')); } catch (e) {}
+          }
           res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
           res.end(JSON.stringify({
             ok: true,
             config: json.config,
-            message: '카페24 실서버의 최신 설정을 로컬 파일로 성공적으로 동기화하고 11개 페이지를 재제작했습니다!'
+            healthNotesConfig: savedHnCfg,
+            message: '카페24 실서버의 최신 설정(오늘의 건강 글 72선 포함)을 로컬 파일로 동기화하고 전 페이지를 재제작했습니다!'
           }));
         } catch (err) {
           res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
@@ -646,6 +657,16 @@ const server = http.createServer((req, res) => {
   if (reqPath === '/api/detail-pages-config') {
     const detailCfgPath = path.join(__dirname, 'detail-pages-config.json');
     const detailDefPath = path.join(__dirname, 'detail-pages-config.default.json');
+    const hnCfgPath = path.join(__dirname, 'health-notes-custom-config.json');
+    const hnDefPath = path.join(__dirname, 'health-notes-custom-config.default.json');
+
+    const readHealthNotesCfg = () => {
+      const targetHn = fs.existsSync(hnCfgPath) ? hnCfgPath : hnDefPath;
+      if (fs.existsSync(targetHn)) {
+        try { return JSON.parse(fs.readFileSync(targetHn, 'utf8')); } catch (e) {}
+      }
+      return null;
+    };
 
     const listLocalMedia = () => {
       try {
@@ -672,12 +693,13 @@ const server = http.createServer((req, res) => {
           throw new Error('detail-pages-config.json 설정 파일을 찾을 수 없습니다.');
         }
         const cfg = JSON.parse(fs.readFileSync(targetRead, 'utf8'));
+        const healthNotesConfig = readHealthNotesCfg();
         const media = listLocalMedia();
         res.writeHead(200, {
           'Content-Type': 'application/json; charset=UTF-8',
           'Cache-Control': 'no-store, no-cache, must-revalidate'
         });
-        res.end(JSON.stringify({ ok: true, config: cfg, ...media }));
+        res.end(JSON.stringify({ ok: true, config: cfg, healthNotesConfig, ...media }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
         res.end(JSON.stringify({ ok: false, error: err.message }));
@@ -701,19 +723,44 @@ const server = http.createServer((req, res) => {
             }
             const defRaw = fs.readFileSync(detailDefPath, 'utf8');
             fs.writeFileSync(detailCfgPath, defRaw, 'utf8');
+            if (fs.existsSync(hnDefPath)) {
+              fs.writeFileSync(hnCfgPath, fs.readFileSync(hnDefPath, 'utf8'), 'utf8');
+            }
             execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js')], { cwd: __dirname, timeout: 45000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'auto-blog-engine.js')], { cwd: __dirname, timeout: 35000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 35000 });
             execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
             res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
             res.end(JSON.stringify({
               ok: true,
               config: JSON.parse(defRaw),
+              healthNotesConfig: readHealthNotesCfg(),
               ...listLocalMedia(),
-              message: '11개 모든 상세페이지가 Sample A 초기 설정으로 복원되고 재제작되었습니다.'
+              message: '오늘의 건강 글 72선 및 전체 상세페이지가 초기 설정으로 복원되고 재제작되었습니다.'
             }));
             return;
           }
 
           if (action === 'reset_page') {
+            if (targetPage === 'body-explorer.html' || targetPage === 'body-explorer') {
+              if (!fs.existsSync(hnDefPath)) {
+                throw new Error('기본 건강 글 백업(health-notes-custom-config.default.json) 파일이 없습니다.');
+              }
+              fs.writeFileSync(hnCfgPath, fs.readFileSync(hnDefPath, 'utf8'), 'utf8');
+              execFileSync(process.execPath, [path.join(__dirname, 'auto-blog-engine.js')], { cwd: __dirname, timeout: 35000 });
+              execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 35000 });
+              execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+              const curCfg = JSON.parse(fs.readFileSync(fs.existsSync(detailCfgPath) ? detailCfgPath : detailDefPath, 'utf8'));
+              res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+              res.end(JSON.stringify({
+                ok: true,
+                config: curCfg,
+                healthNotesConfig: readHealthNotesCfg(),
+                ...listLocalMedia(),
+                message: '[🧬 12 · 3D 오늘의 건강 글] 72선 데이터를 초기 상태로 복원하고 즉시 재제작했습니다.'
+              }));
+              return;
+            }
             if (!fs.existsSync(detailDefPath)) {
               throw new Error('기본 설정 백업(detail-pages-config.default.json) 파일이 없습니다.');
             }
@@ -736,6 +783,7 @@ const server = http.createServer((req, res) => {
             res.end(JSON.stringify({
               ok: true,
               config: curCfg,
+              healthNotesConfig: readHealthNotesCfg(),
               ...listLocalMedia(),
               message: `[${defPage.label}] 상세페이지를 Sample A 초기 상태로 복원하고 즉시 재제작했습니다.`
             }));
@@ -746,24 +794,42 @@ const server = http.createServer((req, res) => {
           if (!nextCfg || !Array.isArray(nextCfg.pages) || nextCfg.pages.length === 0) {
             throw new Error('유효한 상세페이지 설정 데이터(pages)가 없습니다.');
           }
+          nextCfg.pages = nextCfg.pages.filter(p => p && !p.isHealthNotesPage && p.file !== 'body-explorer.html' && p.slug !== 'body-explorer');
           nextCfg.updatedAt = new Date().toISOString();
           fs.writeFileSync(detailCfgPath, JSON.stringify(nextCfg, null, 2) + '\n', 'utf8');
 
+          if (payload.healthNotesConfig && typeof payload.healthNotesConfig === 'object' && Array.isArray(payload.healthNotesConfig.notes)) {
+            payload.healthNotesConfig.updatedAt = new Date().toISOString();
+            fs.writeFileSync(hnCfgPath, JSON.stringify(payload.healthNotesConfig, null, 2) + '\n', 'utf8');
+          }
+
+          const isBodyExplorerTarget = (targetPage === 'body-explorer.html' || targetPage === 'body-explorer');
           const buildSingleOnly = (action === 'save_build_one' || action === 'deploy_one') && Boolean(targetPage);
-          const buildArgs = [path.join(__dirname, 'build-story-detail-pages.js')];
-          if (buildSingleOnly) buildArgs.push(`--page=${targetPage}`);
 
-          execFileSync(process.execPath, buildArgs, { cwd: __dirname, timeout: 45000 });
-          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+          if (buildSingleOnly && isBodyExplorerTarget) {
+            execFileSync(process.execPath, [path.join(__dirname, 'auto-blog-engine.js')], { cwd: __dirname, timeout: 35000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 35000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+          } else if (buildSingleOnly) {
+            execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js'), `--page=${targetPage}`], { cwd: __dirname, timeout: 45000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+          } else {
+            execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js')], { cwd: __dirname, timeout: 45000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'auto-blog-engine.js')], { cwd: __dirname, timeout: 35000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'build-body-explorer.js')], { cwd: __dirname, timeout: 35000 });
+            execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+          }
 
-          const matchedPage = nextCfg.pages.find(p => p.file === targetPage || p.slug === targetPage) || nextCfg.pages[0];
+          const matchedPage = isBodyExplorerTarget
+            ? { slug: 'body-explorer', file: 'body-explorer.html', wpFile: 'wordpress-body-explorer.html', label: '🧬 12 · 3D 오늘의 건강 글', liveUrl: 'https://www.bareunhaniwon.com/body-explorer/' }
+            : (nextCfg.pages.find(p => p.file === targetPage || p.slug === targetPage) || nextCfg.pages[0]);
 
           if (action === 'deploy_one' || action === 'deploy_all') {
             const deployArgs = [
               path.join(__dirname, 'deploy-detail-page-fast.js'),
               action === 'deploy_all' ? '--all' : `--slug=${matchedPage.slug}`
             ];
-            const timeoutMs = action === 'deploy_all' ? 280000 : 120000;
+            const timeoutMs = action === 'deploy_all' ? 300000 : 120000;
             execFile(process.execPath, deployArgs, { cwd: __dirname, timeout: timeoutMs }, (depErr, stdout, stderr) => {
               if (depErr) {
                 res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
@@ -779,10 +845,11 @@ const server = http.createServer((req, res) => {
                 ok: true,
                 deployed: true,
                 config: nextCfg,
+                healthNotesConfig: readHealthNotesCfg(),
                 ...listLocalMedia(),
                 liveUrl: action === 'deploy_all' ? 'https://www.bareunhaniwon.com/' : matchedPage.liveUrl,
                 message: action === 'deploy_all'
-                  ? `메인 홈 포함 ${nextCfg.pages.length}개 전 페이지 로컬 제작 + 워드프레스 번들 + 카페24 실서버 일괄 배포가 완료되었습니다!`
+                  ? `메인 홈 · 오늘의 건강 글(72선) 포함 전 페이지 로컬 제작 + 워드프레스 번들 + 카페24 실서버 일괄 배포가 완료되었습니다!`
                   : `[${matchedPage.label}] 로컬 제작 및 카페24 실서버(${matchedPage.liveUrl}) 배포가 완료되었습니다!`
               }));
             });
@@ -794,10 +861,11 @@ const server = http.createServer((req, res) => {
             ok: true,
             deployed: false,
             config: nextCfg,
+            healthNotesConfig: readHealthNotesCfg(),
             ...listLocalMedia(),
             message: buildSingleOnly
               ? `[${matchedPage.label}] 수정 사항이 ${matchedPage.file} 및 ${matchedPage.wpFile}에 즉시 반영되었습니다!`
-              : `메인 홈 포함 ${nextCfg.pages.length}개 전체 페이지(.html + wordpress-*.html) 일괄 제작 반영이 완료되었습니다!`
+              : `메인 홈 · 오늘의 건강 글(72선) 포함 전체 페이지(.html + wordpress-*.html) 일괄 제작 반영이 완료되었습니다!`
           }));
         } catch (err) {
           if (prevBackup !== null) {

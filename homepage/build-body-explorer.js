@@ -73,7 +73,7 @@ if (ENABLED_MENUS.length === 0 && ALL_CONFIG_ITEMS.length > 0) {
 }
 const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
 
-    // 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행 + 실제 DB 조회수(noteViews) 연동
+    // 빌드 시점 보이지 않는 내부 3단계 자가 검수 게이트 실행 + 실제 DB 조회수(noteViews) 연동 + 커스텀 스튜디오 설정(health-notes-custom-config.json) 단일 진실 공급원 연동
     const LOCAL_DB_PATH = path.join(__dirname, 'private-qna-db.json');
     let SAVED_NOTE_VIEWS = {};
     if (fs.existsSync(LOCAL_DB_PATH)) {
@@ -85,31 +85,78 @@ const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
       } catch (e) {}
     }
 
-    const FLATTENED_SEED_NOTES = [];
-    for (const [partId, episodes] of Object.entries(BODY_3D_AUTO_NOTES)) {
-      const overridePartLabel = MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel;
-      episodes.forEach((ep) => {
-        const mergedEp = overridePartLabel ? { ...ep, partLabel: overridePartLabel } : ep;
-        const res = auditNoteThreeStage(mergedEp);
-        if (!res.passed) {
-          throw new Error(`[3-Stage Self-Correction Gate Failed] ${ep.id}: ${res.errors.join(' | ')}`);
+    const HEALTH_NOTES_CUSTOM_CFG_PATH = path.join(__dirname, 'health-notes-custom-config.json');
+    let CUSTOM_HEALTH_NOTES_CFG = null;
+    if (fs.existsSync(HEALTH_NOTES_CUSTOM_CFG_PATH)) {
+      try {
+        CUSTOM_HEALTH_NOTES_CFG = JSON.parse(fs.readFileSync(HEALTH_NOTES_CUSTOM_CFG_PATH, 'utf8'));
+      } catch (e) {
+        CUSTOM_HEALTH_NOTES_CFG = null;
+      }
+    }
+    if (!CUSTOM_HEALTH_NOTES_CFG || !Array.isArray(CUSTOM_HEALTH_NOTES_CFG.notes)) {
+      const { generateInitialHealthNotesConfig } = require('./init-health-notes-config.js');
+      CUSTOM_HEALTH_NOTES_CFG = generateInitialHealthNotesConfig();
+    }
+
+    const HEALTH_NOTE_GLOBAL_CFG = CUSTOM_HEALTH_NOTES_CFG.globalSettings || {
+      detailBtnLabel: '상세히',
+      expandBarTitle: '이 주제의 깊은 원리가 더 궁금하신가요?',
+      expandBarSub: '해부학 일러스트 · 우리 몸 생리 원리 · 놓치기 쉬운 생활 신호 3가지',
+      expandedBarTitle: '심층 건강 칼럼 열람 중',
+      bestReadCount: 2,
+      bestReadBadge: '이어서 읽기 BEST 2',
+      bestReadSub: '편 많이 읽은 글',
+      channelBarLabel: '더 많은 건강 이야기 · 편하게 물어보기',
+      channels: {
+        youtube: { enabled: true, label: '유튜브', url: 'https://www.youtube.com/@bareunhaniwon' },
+        naver: { enabled: true, label: '네이버', url: 'https://blog.naver.com/wei0508' },
+        kakao: { enabled: true, label: '카카오톡', url: 'https://pf.kakao.com/_ykxcLK' }
+      }
+    };
+
+    const HEALTH_NOTE_PART_DEFAULTS = {};
+    if (Array.isArray(CUSTOM_HEALTH_NOTES_CFG.parts)) {
+      for (const p of CUSTOM_HEALTH_NOTES_CFG.parts) {
+        if (p && p.id) {
+          HEALTH_NOTE_PART_DEFAULTS[p.id] = {
+            defaultIllustImg: p.defaultIllustImg || '',
+            defaultIllustCaption: p.defaultIllustCaption || ''
+          };
         }
-        FLATTENED_SEED_NOTES.push({
-          id: ep.id,
-          partId,
-          partLabel: mergedEp.partLabel,
-          theme: ep.theme || '',
-          keyword: ep.keyword,
-          academicBasis: ep.academicBasis || '국제 SCI 의학저널 및 통합생리학 가이드라인',
-          publishDate: ep.publishDate,
-          views: Number(SAVED_NOTE_VIEWS[ep.id]) || 0,
-          pinnedTop: false,
-          title: ep.questionTitle,
-          empathy: ep.empathyLines,
-          truth: ep.truthLines,
-          myth: ep.mythLines,
-          check: ep.checkList
-        });
+      }
+    }
+
+    const FLATTENED_SEED_NOTES = [];
+    for (const cn of CUSTOM_HEALTH_NOTES_CFG.notes) {
+      if (!cn || cn.enabled === false) continue;
+      const partId = cn.partId || 'knee';
+      const overridePartLabel = (MENU_CFG_BY_ID[partId] && MENU_CFG_BY_ID[partId].partLabel) || cn.partLabel || '주요 부위';
+      FLATTENED_SEED_NOTES.push({
+        id: cn.id,
+        partId,
+        partLabel: overridePartLabel,
+        enabled: cn.enabled !== false,
+        isStudioManaged: true,
+        theme: cn.theme || '',
+        keyword: cn.keyword || '',
+        academicBasis: cn.academicBasis || '국제 의학 학술지 및 통합생리학 연구 보고',
+        publishDate: cn.publishDate || '2026-10-27',
+        views: Number(SAVED_NOTE_VIEWS[cn.id]) || 0,
+        pinnedTop: Boolean(cn.pinnedTop),
+        title: cn.questionTitle || cn.title || '',
+        empathy: Array.isArray(cn.empathyLines) ? cn.empathyLines : (Array.isArray(cn.empathy) ? cn.empathy : []),
+        truth: Array.isArray(cn.truthLines) ? cn.truthLines : (Array.isArray(cn.truth) ? cn.truth : []),
+        myth: Array.isArray(cn.mythLines) ? cn.mythLines : (Array.isArray(cn.myth) ? cn.myth : []),
+        check: Array.isArray(cn.checkList) ? cn.checkList : (Array.isArray(cn.check) ? cn.check : []),
+        deepEnabled: cn.deepEnabled !== false,
+        deepIllustImg: cn.deepIllustImg || '',
+        deepIllustCaption: cn.deepIllustCaption || '',
+        deepTitle: cn.deepTitle || '',
+        deepParagraphs: Array.isArray(cn.deepParagraphs) ? cn.deepParagraphs : [],
+        deepReference: cn.deepReference || '',
+        deepSignalsTitle: cn.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호',
+        deepSignals: Array.isArray(cn.deepSignals) ? cn.deepSignals : []
       });
     }
 
@@ -256,14 +303,14 @@ function buildBodyExplorerHtml() {
   };
 
   const ssrHealthNotesDirectoryHtml = FLATTENED_SEED_NOTES.map(n => {
-    const deepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}`;
-    const standaloneUrl = `https://www.bareunhaniwon.com/health-note-${escAttrServer(n.id)}/`;
+    const deepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${escAttrServer(n.partId)}&amp;note=${escAttrServer(n.id)}&amp;detail=1`;
     const checkItemsHtml = (n.check || []).map(c => `<li>${escAttrServer(c)}</li>`).join('');
+    const deepBodyText = Array.isArray(n.deepParagraphs) ? n.deepParagraphs.join(' ') : '';
     return `<article class="seo-health-note-ssr-item">
-          <h3><a href="${deepUrl}">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a> <a href="${standaloneUrl}" style="font-size:0.78rem;color:#967128;margin-left:6px;">[개별 칼럼 전문 ↗]</a></h3>
-          <p class="aeo-direct-answer"><strong>[핵심 의학 결론]</strong> ${escAttrServer((n.truth || []).join(' '))} ${escAttrServer((n.myth && n.myth[1]) || '')} (학술 근거: ${escAttrServer(n.academicBasis || '국제 SCI 학술지')})</p>
-          <p class="aeo-empathy-context">${escAttrServer((n.empathy || []).join(' '))}</p>
-          <ul class="aeo-check-list">${checkItemsHtml}</ul>
+          <h3><a href="${deepUrl}">[${escAttrServer(n.partLabel)} · ${escAttrServer(n.keyword)}] ${escAttrServer(n.title)}</a></h3>
+          <p>${escAttrServer((n.truth || []).join(' '))} ${escAttrServer((n.myth && n.myth[1]) || '')}</p>
+          ${deepBodyText ? `<p>${escAttrServer(deepBodyText)}</p>` : ''}
+          <ul>${checkItemsHtml}</ul>
         </article>`;
   }).join('\n        ');
 
@@ -1097,6 +1144,345 @@ function buildBodyExplorerHtml() {
       border-color: var(--hip-accent);
     }
 
+    /* 6-B. INLINE [🔍 상세히] DEEP HEALTH EDITORIAL DRAWER & ICON CHANNELS (ONE-PAGE PURE INFO) */
+    .hip-header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .detail-toggle-pill {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #E5C67E 0%, #C5A059 100%);
+      color: #0D0D0F;
+      border: 1px solid #F2DFA8;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(197, 160, 89, 0.35);
+      transition: all 0.18s ease;
+    }
+    .detail-toggle-pill:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+    .detail-toggle-pill.is-open {
+      background: rgba(255, 255, 255, 0.14);
+      color: #E5C67E;
+      border-color: #C5A059;
+      box-shadow: none;
+    }
+    .detail-expand-bar {
+      margin: 0 15px 14px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #FBF7EE 0%, #F4EBDA 100%);
+      border: 1px solid #DFC99B;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .detail-expand-bar:hover {
+      border-color: #C5A059;
+      box-shadow: 0 4px 12px rgba(197, 160, 89, 0.16);
+    }
+    .deb-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+    .deb-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0D0D0F;
+      color: #E5C67E;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .deb-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+      text-align: left;
+    }
+    .deb-title {
+      font-size: 0.81rem;
+      font-weight: 800;
+      color: #0D0D0F;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+    .deb-sub {
+      font-size: 0.70rem;
+      font-weight: 600;
+      color: #6B6459;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+    .deb-btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #0D0D0F;
+      color: #E5C67E;
+      font-size: 0.73rem;
+      font-weight: 800;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .deep-editorial-drawer {
+      margin: 0 15px 15px;
+      padding-top: 14px;
+      border-top: 1px dashed #DFC99B;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .deep-editorial-drawer.open {
+      display: flex;
+      animation: hipFadeSlideIn 0.22s ease;
+    }
+    @keyframes hipFadeSlideIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .deep-illust-card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #E5DEC9;
+      background: #F8F6F1;
+      margin: 0;
+    }
+    .deep-illust-card img {
+      width: 100%;
+      height: auto;
+      max-height: 235px;
+      object-fit: cover;
+      display: block;
+    }
+    .deep-illust-cap {
+      padding: 8px 12px;
+      font-size: 0.72rem;
+      color: #5C564E;
+      background: #FCFBF8;
+      border-top: 1px solid #EFE9DA;
+      font-weight: 600;
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+    .deep-pure-block {
+      background: #FCFBF8;
+      border: 1px solid #EAE3D5;
+      border-radius: 12px;
+      padding: 14px 15px;
+    }
+    .dpb-heading {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #0D0D0F;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+    .dpb-p {
+      font-size: 0.81rem;
+      line-height: 1.72;
+      color: #2C2A26;
+      margin: 0 0 9px;
+      word-break: keep-all;
+    }
+    .dpb-p:last-child {
+      margin-bottom: 0;
+    }
+    .dpb-ref-note {
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px solid #EFEAE0;
+      font-size: 0.69rem;
+      color: #7D766B;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .signal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .signal-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.80rem;
+      line-height: 1.56;
+      color: #262522;
+      background: #FFFFFF;
+      padding: 9px 11px;
+      border-radius: 9px;
+      border: 1px solid #EDE7DA;
+      word-break: keep-all;
+    }
+    .sig-dot {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: #F6EFE0;
+      border: 1px solid #D9C08C;
+      color: #8A651B;
+      font-size: 0.68rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .best2-box {
+      background: #FFFFFF;
+      border: 1px solid #DFC99B;
+      border-radius: 12px;
+      padding: 12px 13px;
+    }
+    .best2-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+    .best2-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #0D0D0F;
+      color: #E5C67E;
+      font-size: 0.67rem;
+      font-weight: 800;
+    }
+    .best2-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .best2-item {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      font-family: 'Pretendard', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 9px;
+      padding: 9px 11px;
+      border-radius: 9px;
+      background: #FCFBF8;
+      border: 1px solid #EAE3D5;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .best2-item:hover {
+      border-color: #C5A059;
+      background: #FBF6EA;
+    }
+    .b2-meta {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #967128;
+      margin-bottom: 2px;
+    }
+    .b2-title {
+      font-size: 0.79rem;
+      font-weight: 700;
+      color: #141416;
+      line-height: 1.38;
+      word-break: keep-all;
+    }
+    .b2-arrow {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #967128;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .channel-icon-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: 12px;
+      background: #F8F6F1;
+      border: 1px solid #E5DEC9;
+      flex-wrap: wrap;
+    }
+    .cib-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #4A453E;
+    }
+    .cib-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ch-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px 6px 7px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.73rem;
+      font-weight: 800;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      background: #FFFFFF;
+      color: #18181B;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    .ch-icon-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+    }
+    .ch-sym {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .ch-yt .ch-sym { background: #FF0000; color: #FFFFFF; }
+    .ch-nv .ch-sym { background: #03C75A; color: #FFFFFF; font-weight: 900; font-size: 0.74rem; font-family: Arial, sans-serif; }
+    .ch-kk .ch-sym { background: #FEE500; color: #3C1E1E; }
+    @media (max-width: 640px) {
+      .detail-expand-bar { margin: 0 12px 12px; padding: 10px 12px; }
+      .deep-editorial-drawer { margin: 0 12px 13px; }
+      .channel-icon-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .cib-icons { width: 100%; justify-content: flex-start; }
+    }
+
     /* 7. HEAD-TO-TOE 12-REGION ANATOMY EXPLORER STYLES (WHITE · BLACK · GOLD) */
     .sys-region-bar {
       padding: 11px 14px 10px;
@@ -1905,6 +2291,63 @@ function buildBodyExplorerHtml() {
     const CLINIC_HEADER_CFG = ${JSON.stringify(MENU_CONFIG.header || {})};
     const CLINIC_MENUS = ${JSON.stringify(ENABLED_MENUS)};
     const SEED_NOTES = ${JSON.stringify(FLATTENED_SEED_NOTES)};
+    let HEALTH_NOTE_GLOBAL_CFG = ${JSON.stringify(HEALTH_NOTE_GLOBAL_CFG)};
+    let HEALTH_NOTE_PART_DEFAULTS = ${JSON.stringify(HEALTH_NOTE_PART_DEFAULTS)};
+    let expandedDetailNoteIds = {};
+    let isStudioPreviewMode = false;
+    let explicitRequestedNoteId = '';
+
+    function applyLiveHealthNotesConfig(liveCfg) {
+      if (!liveCfg || typeof liveCfg !== 'object') return;
+      if (liveCfg.globalSettings && typeof liveCfg.globalSettings === 'object') {
+        HEALTH_NOTE_GLOBAL_CFG = Object.assign({}, HEALTH_NOTE_GLOBAL_CFG, liveCfg.globalSettings);
+      }
+      if (Array.isArray(liveCfg.parts)) {
+        liveCfg.parts.forEach(p => {
+          if (p && p.id) {
+            HEALTH_NOTE_PART_DEFAULTS[p.id] = {
+              defaultIllustImg: p.defaultIllustImg || '',
+              defaultIllustCaption: p.defaultIllustCaption || ''
+            };
+          }
+        });
+      }
+      if (Array.isArray(liveCfg.notes)) {
+        const menuLabelById = {};
+        CLINIC_MENUS.forEach(m => { if (m && m.id) menuLabelById[m.id] = m.partLabel || m.shortLabel || '주요 부위'; });
+        SEED_NOTES.length = 0;
+        liveCfg.notes.forEach(cn => {
+          if (!cn || cn.enabled === false) return;
+          const pId = cn.partId || 'knee';
+          SEED_NOTES.push({
+            id: cn.id,
+            partId: pId,
+            partLabel: menuLabelById[pId] || cn.partLabel || '주요 부위',
+            enabled: cn.enabled !== false,
+            isStudioManaged: true,
+            theme: cn.theme || '',
+            keyword: cn.keyword || '',
+            academicBasis: cn.academicBasis || '국제 의학 학술지 및 통합생리학 연구 보고',
+            publishDate: cn.publishDate || '2026-10-27',
+            views: Number(noteViewsMap && noteViewsMap[cn.id] != null ? noteViewsMap[cn.id] : cn.views) || 0,
+            pinnedTop: Boolean(cn.pinnedTop),
+            title: cn.questionTitle || cn.title || '',
+            empathy: Array.isArray(cn.empathyLines) ? cn.empathyLines : (Array.isArray(cn.empathy) ? cn.empathy : []),
+            truth: Array.isArray(cn.truthLines) ? cn.truthLines : (Array.isArray(cn.truth) ? cn.truth : []),
+            myth: Array.isArray(cn.mythLines) ? cn.mythLines : (Array.isArray(cn.myth) ? cn.myth : []),
+            check: Array.isArray(cn.checkList) ? cn.checkList : (Array.isArray(cn.check) ? cn.check : []),
+            deepEnabled: cn.deepEnabled !== false,
+            deepIllustImg: cn.deepIllustImg || '',
+            deepIllustCaption: cn.deepIllustCaption || '',
+            deepTitle: cn.deepTitle || '',
+            deepParagraphs: Array.isArray(cn.deepParagraphs) ? cn.deepParagraphs : [],
+            deepReference: cn.deepReference || '',
+            deepSignalsTitle: cn.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호',
+            deepSignals: Array.isArray(cn.deepSignals) ? cn.deepSignals : []
+          });
+        });
+      }
+    }
     const FORBIDDEN_PROMO = ${JSON.stringify(FORBIDDEN_PROMO_WORDS)};
     const FORBIDDEN_JARGON = ${JSON.stringify(FORBIDDEN_JARGON_WORDS)};
     const SYSTEM_TABS = ${JSON.stringify(ANATOMY_SYSTEM_TABS)};
@@ -1957,7 +2400,8 @@ function buildBodyExplorerHtml() {
     }
 
     function passThreeStageGate(note) {
-      if (!note || !note.title || !String(note.title).trim()) return false;
+      if (!note || note.enabled === false || !note.title || !String(note.title).trim()) return false;
+      if (note.isStudioManaged) return true;
       if (note.isCustomLead || (Array.isArray(note.sections) && note.sections.length > 0)) {
         const secs = Array.isArray(note.sections) ? note.sections.filter(s => s && s.enabled !== false && Array.isArray(s.lines) && s.lines.some(l => String(l || '').trim())) : [];
         if (secs.length === 0) return false;
@@ -1985,6 +2429,9 @@ function buildBodyExplorerHtml() {
     let nextUpdateKst = computeNextUpdateKst(todayKst);
     let dynamicNotes = [];
     let noteViewsMap = {};
+    if (typeof window !== 'undefined' && window.__BAREUN_LIVE_HEALTH_NOTES_CFG__) {
+      applyLiveHealthNotesConfig(window.__BAREUN_LIVE_HEALTH_NOTES_CFG__);
+    }
     SEED_NOTES.forEach(n => {
       if (n && n.id) noteViewsMap[n.id] = Number(n.views) || 0;
     });
@@ -2098,14 +2545,19 @@ function buildBodyExplorerHtml() {
       for (const raw of dynamicNotes) {
         const n = normalizeDynamicNote(raw);
         if (n && passThreeStageGate(n)) {
-          mergedMap.set(n.id, Object.assign({}, n, {
-            views: Number(noteViewsMap[n.id] != null ? noteViewsMap[n.id] : n.views) || 0
-          }));
+          if (mergedMap.has(n.id)) {
+            const existing = mergedMap.get(n.id);
+            existing.views = Number(noteViewsMap[n.id] != null ? noteViewsMap[n.id] : (n.views || existing.views)) || 0;
+          } else {
+            mergedMap.set(n.id, Object.assign({}, n, {
+              views: Number(noteViewsMap[n.id] != null ? noteViewsMap[n.id] : n.views) || 0
+            }));
+          }
         }
       }
       const rawList = Array.from(mergedMap.values()).filter(n => {
         if (n.publishDate === '2026-10-28' || String(n.id || '').includes('20261028')) return false;
-        if (!n.pinnedTop && n.publishDate && n.publishDate > todayKst) return false;
+        if (!isStudioPreviewMode && n.id !== explicitRequestedNoteId && !n.pinnedTop && n.publishDate && n.publishDate > todayKst) return false;
         if (partFilter && partFilter !== 'all' && n.partId !== partFilter) return false;
         return true;
       });
@@ -2342,6 +2794,20 @@ function buildBodyExplorerHtml() {
         ? '<p class="hip-subtitle">' + escHtml(effSubTitle) + '</p>'
         : '';
       const closeBtnHtml = '<button type="button" class="hip-close-btn" onclick="' + closeActionJs + '">' + escHtml(closeLabel || '✕ 닫기') + '</button>';
+      const hasDeepContent = note && note.deepEnabled !== false && (
+        (Array.isArray(note.deepParagraphs) && note.deepParagraphs.some(p => String(p || '').trim())) ||
+        (note.deepIllustImg && String(note.deepIllustImg).trim()) ||
+        (Array.isArray(note.deepSignals) && note.deepSignals.some(s => String(s || '').trim()))
+      );
+      const isExpanded = Boolean(note && note.id && expandedDetailNoteIds[note.id]);
+      const gCfg = HEALTH_NOTE_GLOBAL_CFG || {};
+      const detailBtnBase = String(gCfg.detailBtnLabel || '상세히').trim() || '상세히';
+      const detailToggleBtnHtml = hasDeepContent
+        ? '<button type="button" class="detail-toggle-pill' + (isExpanded ? ' is-open' : '') + '" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')">' +
+            '<span>🔍 ' + escHtml(isExpanded ? (detailBtnBase + ' 닫기 ▲') : (detailBtnBase + ' ▼')) + '</span>' +
+          '</button>'
+        : '';
+      const headerRightActionsHtml = '<div class="hip-header-actions">' + detailToggleBtnHtml + closeBtnHtml + '</div>';
 
       let headerInnerHtml = '';
       if (hdrMode === 'stacked') {
@@ -2351,7 +2817,7 @@ function buildBodyExplorerHtml() {
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
               latestRedTagHtml +
             '</span>' +
-            closeBtnHtml +
+            headerRightActionsHtml +
           '</div>' +
           '<div class="hip-header-main">' +
             '<h2 class="hip-question-title">' + titleInner + '</h2>' +
@@ -2359,7 +2825,7 @@ function buildBodyExplorerHtml() {
           '</div>';
       } else if (hdrMode === 'centered') {
         headerInnerHtml =
-          closeBtnHtml +
+          headerRightActionsHtml +
           '<div class="hip-header-main">' +
             '<div class="hip-header-title-wrap">' +
               (showBadge ? '<span class="hip-part-bracket">[' + escHtml(badgeText) + ']</span>' : '') +
@@ -2378,7 +2844,7 @@ function buildBodyExplorerHtml() {
             '</div>' +
             subTitleHtml +
           '</div>' +
-          closeBtnHtml;
+          headerRightActionsHtml;
       }
 
       const secs = getNoteRenderSections(note, d);
@@ -2410,11 +2876,180 @@ function buildBodyExplorerHtml() {
         );
       }).join('');
 
+      const deepSectionHtml = hasDeepContent ? buildDeepEditorialSectionHtml(note, mMeta, isExpanded) : '';
+
       return (
         '<article class="' + boxClasses + '" style="' + inlineVars + '" aria-label="부위별 건강 정보 팝업">' +
           '<div class="hip-header">' + headerInnerHtml + '</div>' +
           '<div class="hip-sections">' + sectionsHtml + '</div>' +
+          deepSectionHtml +
         '</article>'
+      );
+    }
+
+    function resolveDeepIllustSrc(rawSrc, partId) {
+      let s = String(rawSrc || '').trim();
+      if (!s && HEALTH_NOTE_PART_DEFAULTS && HEALTH_NOTE_PART_DEFAULTS[partId]) {
+        s = String(HEALTH_NOTE_PART_DEFAULTS[partId].defaultIllustImg || '').trim();
+      }
+      if (!s) return '';
+      const low = s.toLowerCase();
+      if (low.startsWith('http://') || low.startsWith('https://') || low.startsWith('data:') || low.startsWith('blob:') || low.startsWith('/wp-content/')) {
+        return s;
+      }
+      let clean = s;
+      while (clean.startsWith('./') || clean.startsWith('/')) {
+        clean = clean.startsWith('./') ? clean.slice(2) : clean.slice(1);
+      }
+      const host = String(window.location.hostname || '');
+      if (host && host !== 'localhost' && host !== '127.0.0.1') {
+        const ghRoot = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+        if (clean.toLowerCase().startsWith('webp/')) {
+          return ghRoot + clean;
+        }
+        const webpName = clean.replace(/\\.(png|jpe?g)$/i, '.webp');
+        return ghRoot + 'webp/' + webpName;
+      }
+      return clean;
+    }
+
+    function buildDeepEditorialSectionHtml(note, mMeta, isExpanded) {
+      const gCfg = HEALTH_NOTE_GLOBAL_CFG || {};
+      const partId = note.partId || currentPartId || 'knee';
+      const partLabel = note.partLabel || (mMeta && mMeta.partLabel) || '주요 부위';
+      const partDef = (HEALTH_NOTE_PART_DEFAULTS && HEALTH_NOTE_PART_DEFAULTS[partId]) || {};
+
+      const expandBarTitle = isExpanded
+        ? (gCfg.expandedBarTitle || '심층 건강 칼럼 열람 중')
+        : (gCfg.expandBarTitle || '이 주제의 깊은 원리가 더 궁금하신가요?');
+      const expandBarSub = gCfg.expandBarSub || '해부학 일러스트 · 우리 몸 생리 원리 · 놓치기 쉬운 생활 신호 3가지';
+      const detailBtnBase = String(gCfg.detailBtnLabel || '상세히').trim() || '상세히';
+      const barRightLabel = isExpanded ? '접기 ▲' : ('🔍 ' + detailBtnBase + ' 보기 ▼');
+
+      const expandBarHtml =
+        '<div class="detail-expand-bar" role="button" tabindex="0" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')" onkeydown="if(event.key===\\'Enter\\'||event.key===\\' \\'){event.preventDefault();window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\');}">' +
+          '<div class="deb-left">' +
+            '<span class="deb-icon">🔍</span>' +
+            '<div class="deb-text">' +
+              '<span class="deb-title">' + escHtml(expandBarTitle) + '</span>' +
+              '<span class="deb-sub">' + escHtml(expandBarSub) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<span class="deb-btn">' + escHtml(barRightLabel) + '</span>' +
+        '</div>';
+
+      const illustSrc = resolveDeepIllustSrc(note.deepIllustImg, partId);
+      const illustCap = String(note.deepIllustCaption || partDef.defaultIllustCaption || '').trim();
+      const illustHtml = illustSrc
+        ? '<figure class="deep-illust-card">' +
+            '<img src="' + escHtml(illustSrc) + '" alt="' + escHtml((note.keyword || partLabel) + ' 해부 생리 일러스트') + '" decoding="async" />' +
+            (illustCap ? '<figcaption class="deep-illust-cap">▲ ' + escHtml(illustCap) + '</figcaption>' : '') +
+          '</figure>'
+        : '';
+
+      const deepHeading = String(note.deepTitle || ((note.theme || note.keyword || partLabel) + ', 우리 몸속에서는 어떤 변화가 일어날까요?')).trim();
+      const deepParas = (Array.isArray(note.deepParagraphs) ? note.deepParagraphs : []).map(p => String(p || '').trim()).filter(Boolean);
+      const deepRef = String(note.deepReference || (note.academicBasis ? ('참고 문헌 · ' + note.academicBasis) : '')).trim();
+      const pureBlockHtml = deepParas.length > 0
+        ? '<section class="deep-pure-block">' +
+            '<h3 class="dpb-heading">📖 ' + escHtml(deepHeading) + '</h3>' +
+            deepParas.map(p => '<p class="dpb-p">' + escHtml(p) + '</p>').join('') +
+            (deepRef ? '<div class="dpb-ref-note">' + escHtml(deepRef) + '</div>' : '') +
+          '</section>'
+        : '';
+
+      const sigTitle = String(note.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호').trim();
+      const sigList = (Array.isArray(note.deepSignals) ? note.deepSignals : []).map(s => String(s || '').trim()).filter(Boolean);
+      const signalsHtml = sigList.length > 0
+        ? '<section class="deep-pure-block">' +
+            '<h3 class="dpb-heading">🩺 ' + escHtml(sigTitle) + '</h3>' +
+            '<div class="signal-list">' +
+              sigList.map((s, idx) =>
+                '<div class="signal-row"><span class="sig-dot">' + (idx + 1) + '</span><span>' + escHtml(s) + '</span></div>'
+              ).join('') +
+            '</div>' +
+          '</section>'
+        : '';
+
+      const bestCount = Math.max(0, Math.min(3, gCfg.bestReadCount != null ? Number(gCfg.bestReadCount) : 2));
+      let bestBoxHtml = '';
+      if (bestCount > 0) {
+        const partPeerNotes = getPublishedNotes(partId).filter(n => n && n.id !== note.id);
+        partPeerNotes.sort((a, b) => {
+          const vDiff = (Number(b.views) || 0) - (Number(a.views) || 0);
+          if (vDiff !== 0) return vDiff;
+          return String(b.publishDate || '').localeCompare(String(a.publishDate || ''));
+        });
+        const pickedBest = partPeerNotes.slice(0, bestCount);
+        if (pickedBest.length > 0) {
+          const badgeTxt = gCfg.bestReadBadge || ('이어서 읽기 BEST ' + pickedBest.length);
+          const subTxt = '[' + partLabel + '] ' + (gCfg.bestReadSub || '편 많이 읽은 글');
+          bestBoxHtml =
+            '<section class="best2-box">' +
+              '<div class="best2-head">' +
+                '<span class="best2-badge">' + escHtml(badgeTxt) + '</span>' +
+                '<span style="font-size:0.71rem;font-weight:700;color:#7A7368;">' + escHtml(subTxt) + '</span>' +
+              '</div>' +
+              '<div class="best2-list">' +
+                pickedBest.map((bn, idx) =>
+                  '<button type="button" class="best2-item" onclick="window.openNoteFromBest(\\'' + escHtml(bn.id) + '\\')">' +
+                    '<div style="min-width:0;flex:1;">' +
+                      '<div class="b2-meta">BEST 0' + (idx + 1) + ' · ' + escHtml(bn.partLabel || partLabel) + '</div>' +
+                      '<div class="b2-title">&ldquo;' + escHtml(bn.title) + '&rdquo;</div>' +
+                    '</div>' +
+                    '<span class="b2-arrow">읽기 &rsaquo;</span>' +
+                  '</button>'
+                ).join('') +
+              '</div>' +
+            '</section>';
+        }
+      }
+
+      const chCfg = (gCfg && gCfg.channels) || {};
+      const yt = chCfg.youtube || { enabled: true, label: '유튜브', url: 'https://www.youtube.com/@bareunhaniwon' };
+      const nv = chCfg.naver || { enabled: true, label: '네이버', url: 'https://blog.naver.com/wei0508' };
+      const kk = chCfg.kakao || { enabled: true, label: '카카오톡', url: 'https://pf.kakao.com/_ykxcLK' };
+      const chBtns = [];
+      if (yt.enabled !== false && yt.url) {
+        chBtns.push(
+          '<a class="ch-icon-btn ch-yt" href="' + escHtml(yt.url) + '" target="_blank" rel="noopener noreferrer" aria-label="유튜브 건강 채널 바로가기">' +
+            '<span class="ch-sym"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>' +
+            '<span>' + escHtml(yt.label || '유튜브') + '</span>' +
+          '</a>'
+        );
+      }
+      if (nv.enabled !== false && nv.url) {
+        chBtns.push(
+          '<a class="ch-icon-btn ch-nv" href="' + escHtml(nv.url) + '" target="_blank" rel="noopener noreferrer" aria-label="네이버 블로그 바로가기">' +
+            '<span class="ch-sym">N</span>' +
+            '<span>' + escHtml(nv.label || '네이버') + '</span>' +
+          '</a>'
+        );
+      }
+      if (kk.enabled !== false && kk.url) {
+        chBtns.push(
+          '<a class="ch-icon-btn ch-kk" href="' + escHtml(kk.url) + '" target="_blank" rel="noopener noreferrer" aria-label="카카오톡 채널 연결하기">' +
+            '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.68 6.73l-.98 3.62c-.08.3.26.54.52.37l4.31-2.85c.48.07.97.13 1.47.13 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg></span>' +
+            '<span>' + escHtml(kk.label || '카카오톡') + '</span>' +
+          '</a>'
+        );
+      }
+      const channelBarHtml = chBtns.length > 0
+        ? '<div class="channel-icon-bar">' +
+            '<span class="cib-label">' + escHtml(gCfg.channelBarLabel || '더 많은 건강 이야기 · 편하게 물어보기') + '</span>' +
+            '<div class="cib-icons">' + chBtns.join('') + '</div>' +
+          '</div>'
+        : '';
+
+      return (
+        expandBarHtml +
+        '<div class="deep-editorial-drawer' + (isExpanded ? ' open' : '') + '" data-deep-drawer="' + escHtml(note.id) + '">' +
+          illustHtml +
+          pureBlockHtml +
+          signalsHtml +
+          bestBoxHtml +
+          channelBarHtml +
+        '</div>'
       );
     }
 
@@ -2616,52 +3251,14 @@ function buildBodyExplorerHtml() {
 
       let activeBodyHtml = '';
 
-      // 4. 오늘의 건강글 중 심층 임상 칼럼 3선은 작성된 오늘의 건강글 범위 안에서 조회수가 많은 순으로 나열
-      const topViewedNotes3 = [...partNotes]
-        .sort((a, b) => {
-          const vDiff = (Number(b.views) || 0) - (Number(a.views) || 0);
-          if (vDiff !== 0) return vDiff;
-          return String(b.publishDate || '').localeCompare(String(a.publishDate || ''));
-        })
-        .slice(0, 3);
-
-      const recommendedBlogBlockHtml = topViewedNotes3.length > 0
-        ? '<div class="rec-blog-strip" style="margin-top:10px;padding:12px 14px;border-radius:14px;background:#FFFFFF;border:1px solid #DFC99B;box-shadow:0 6px 18px rgba(13,13,15,0.06);">' +
-            '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">' +
-              '<div style="display:flex;align-items:center;gap:6px;">' +
-                '<span style="display:inline-flex;padding:2px 7px;border-radius:6px;background:#0D0D0F;color:#E5C67E;font-size:0.68rem;font-weight:800;">심층 임상 칼럼 3선</span>' +
-                '<strong style="font-size:0.82rem;font-weight:800;color:#0D0D0F;">[' + escHtml(menuMeta.partLabel) + '] 많이 읽은 건강글 BEST 3</strong>' +
-              '</div>' +
-              '<button type="button" onclick="window.switchPopupMenu(2)" style="border:none;background:transparent;cursor:pointer;font-size:0.72rem;font-weight:800;color:#967128;">전체 건강글 (' + partNotes.length + '편) &rarr;</button>' +
-            '</div>' +
-            '<div style="display:flex;flex-direction:column;gap:6px;">' +
-              topViewedNotes3.map((np, bIdx) => {
-                const isLatestItem = latestNote && np.id === latestNote.id;
-                return '<button type="button" onclick="window.openNoteFromTop3(\\'' + escHtml(np.id) + '\\')" style="width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:9px;background:#FCFBF8;border:1px solid ' + (isLatestItem ? '#FDA4AF' : '#EAE3D5') + ';color:#141416;transition:all 0.16s ease;">' +
-                  '<div style="min-width:0;flex:1;">' +
-                    '<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">' +
-                      '<span style="font-size:0.66rem;font-weight:800;color:#E11D48;">BEST 0' + (bIdx + 1) + '</span>' +
-                      '<span data-note-view-id="' + escHtml(np.id) + '" style="font-size:0.66rem;font-weight:700;color:#6E685F;">조회수 ' + Number(np.views || 0).toLocaleString() + '회</span>' +
-                      '<span style="font-size:0.66rem;font-weight:600;color:#8C857B;">· ' + fmtDotDate(np.publishDate) + '</span>' +
-                      (isLatestItem ? '<span class="latest-red-badge" style="padding:1px 5px;font-size:0.6rem;">최신</span>' : '') +
-                    '</div>' +
-                    '<div style="font-size:0.78rem;font-weight:700;color:#0D0D0F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">&ldquo;' + escHtml(np.title) + '&rdquo;</div>' +
-                  '</div>' +
-                  '<span style="font-size:0.72rem;font-weight:800;color:#967128;flex-shrink:0;">열람 &rsaquo;</span>' +
-                '</button>';
-              }).join('') +
-            '</div>' +
-          '</div>'
-        : '';
-
       if (currentMenuTab === 0) {
         const displayNote = latestNote ? Object.assign({}, latestNote, { _isLatestRed: true }) : null;
         if (displayNote && displayNote.title) {
           document.title = '[' + (menuMeta.partLabel || '건강백과') + '] ' + displayNote.title + ' | 바른한의원 대전본점';
         }
-        activeBodyHtml = (displayNote
+        activeBodyHtml = displayNote
           ? buildStandardNoteBoxHtml(displayNote, 'window.closeInfoPopup()', '✕ 닫기', menuMeta)
-          : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>') + recommendedBlogBlockHtml;
+          : '<div class="archive-menu-panel">등록된 건강 정보가 없습니다.</div>';
       } else if (currentMenuTab === 1) {
         const items = qnaCacheByPart['all'];
         if (!items) {
@@ -2883,6 +3480,42 @@ function buildBodyExplorerHtml() {
       currentMenuTab = 2;
       selectedArchiveNoteId = noteId;
       renderPopupPanel();
+    };
+
+    window.toggleHealthNoteDetail = function(noteId, forceState) {
+      const nid = String(noteId || '').trim();
+      if (!nid) return;
+      const prevScroll = popupDrawer ? popupDrawer.scrollTop : 0;
+      const nextOpen = typeof forceState === 'boolean' ? forceState : !Boolean(expandedDetailNoteIds[nid]);
+      expandedDetailNoteIds[nid] = nextOpen;
+      renderPopupPanel();
+      if (popupDrawer) {
+        popupDrawer.scrollTop = prevScroll;
+        if (nextOpen) {
+          setTimeout(() => {
+            const drawerEl = contentBox && contentBox.querySelector('[data-deep-drawer="' + nid + '"]');
+            if (drawerEl && typeof drawerEl.scrollIntoView === 'function') {
+              drawerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }, 40);
+        }
+      }
+    };
+
+    window.openNoteFromBest = function(noteId) {
+      const nid = String(noteId || '').trim();
+      if (!nid) return;
+      explicitRequestedNoteId = nid;
+      const pNotes = getPublishedNotes(currentPartId);
+      if (pNotes[0] && pNotes[0].id === nid) {
+        currentMenuTab = 0;
+        selectedArchiveNoteId = null;
+      } else {
+        currentMenuTab = 2;
+        selectedArchiveNoteId = nid;
+      }
+      renderPopupPanel();
+      if (popupDrawer) popupDrawer.scrollTop = 0;
     };
 
     window.toggleInlineQnaComposer = function(forceState) {
@@ -3161,7 +3794,7 @@ ${WEBGL_PART_A}
 
 ${WEBGL_PART_B}
 
-    // Live Preview Bridge for Clinic Menu Editable Table Studio (clinic-menu-editor.html)
+    // Live Preview Bridge for Unified Custom Studio (detail-pages-editor.html & clinic-menu-editor.html)
     window.addEventListener('message', (ev) => {
       const msg = ev && ev.data;
       if (!msg || typeof msg !== 'object') return;
@@ -3169,14 +3802,51 @@ ${WEBGL_PART_B}
         window.selectBodyPart(msg.partId, true);
       } else if (msg.type === 'BAREUN_PREVIEW_RESET') {
         window.closeInfoPopup();
+      } else if (msg.type === 'SYNC_HEALTH_NOTE_PREVIEW') {
+        isStudioPreviewMode = true;
+        if (msg.healthNotesConfig) {
+          applyLiveHealthNotesConfig(msg.healthNotesConfig);
+        }
+        const targetPart = msg.partId || currentPartId || 'knee';
+        const targetNote = msg.noteId || '';
+        if (targetNote) {
+          explicitRequestedNoteId = targetNote;
+          if (typeof msg.detailExpanded === 'boolean') {
+            expandedDetailNoteIds[targetNote] = msg.detailExpanded;
+          }
+        }
+        if (targetPart !== currentPartId || !isPopupOpen) {
+          window.selectBodyPart(targetPart, Boolean(msg.flyCamera));
+        }
+        if (targetNote) {
+          const pNotes = getPublishedNotes(targetPart);
+          if (pNotes[0] && pNotes[0].id === targetNote) {
+            currentMenuTab = 0;
+            selectedArchiveNoteId = null;
+          } else {
+            currentMenuTab = 2;
+            selectedArchiveNoteId = targetNote;
+          }
+        }
+        const prevScroll = popupDrawer ? popupDrawer.scrollTop : 0;
+        renderPopupPanel();
+        if (popupDrawer && !msg.resetScroll) popupDrawer.scrollTop = prevScroll;
       }
     });
 
     const urlSys = earlyParams.get('system');
     const urlPart = earlyParams.get('part');
     const urlNote = earlyParams.get('note');
+    const urlDetail = earlyParams.get('detail');
+    const urlStudioPreview = earlyParams.get('studioPreview');
     const urlTab = earlyParams.get('tab');
     const urlQnaId = earlyParams.get('qnaId');
+    if (urlStudioPreview === '1') {
+      isStudioPreviewMode = true;
+    }
+    if (urlNote) {
+      explicitRequestedNoteId = urlNote;
+    }
     if (urlSys && SYSTEM_TABS.some(s => s.id === urlSys)) {
       window.selectAnatomySystem(urlSys);
     } else if (urlTab === 'qna' || urlQnaId) {
@@ -3190,14 +3860,16 @@ ${WEBGL_PART_B}
     } else if (urlPart || urlNote) {
       const targetPart = urlPart || (urlNote ? String(urlNote).split('-')[0] : 'knee');
       window.selectBodyPart(targetPart, true);
-      if (urlNote) {
-        const pNotes = getPublishedNotes(targetPart);
-        if (!pNotes[0] || pNotes[0].id !== urlNote) {
-          currentMenuTab = 2;
-          selectedArchiveNoteId = urlNote;
-          renderPopupPanel();
-        }
+      const pNotes = getPublishedNotes(targetPart);
+      const resolvedNoteId = urlNote || (pNotes[0] && pNotes[0].id) || '';
+      if (urlDetail === '1' && resolvedNoteId) {
+        expandedDetailNoteIds[resolvedNoteId] = true;
       }
+      if (urlNote && (!pNotes[0] || pNotes[0].id !== urlNote)) {
+        currentMenuTab = 2;
+        selectedArchiveNoteId = urlNote;
+      }
+      renderPopupPanel();
     } else {
       window.resetDonginView();
       majorHotspotNodes.forEach(h => h.dom.classList.remove('active'));

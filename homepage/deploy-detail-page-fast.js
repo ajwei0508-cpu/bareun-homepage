@@ -34,7 +34,8 @@ const WP_DETAIL_PAGES = [
   { id: 410, slug: 'hairloss-female', file: 'hairloss-female.html', wpFile: 'wordpress-hairloss-female.html', title: '바른 여성탈모 · 가르마·볼륨', excerpt: '여성 상열하한(上熱下寒)과 영양 불균형을 다스려 넓어진 가르마와 정수리 볼륨을 복원합니다.' },
   { id: 411, slug: 'hairloss-seborrheic', file: 'hairloss-seborrheic.html', wpFile: 'wordpress-hairloss-seborrheic.html', title: '바른 지루성두피염 · 열독해독', excerpt: '반복되는 두피 홍반, 모낭염, 가려움과 각질을 청열해독 케어로 진정시키고 건강한 진피 장벽을 복원합니다.' },
   { id: 96, slug: 'gongjindan', file: 'gongjindan.html', wpFile: 'wordpress-gongjindan.html', title: '바른 황제공진단', excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
-  { id: 133, slug: 'prostate', file: 'prostate.html', wpFile: 'wordpress-prostate.html', title: '바른 전립선 · 남성활력', excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' }
+  { id: 133, slug: 'prostate', file: 'prostate.html', wpFile: 'wordpress-prostate.html', title: '바른 전립선 · 남성활력', excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' },
+  { id: 125, slug: 'body-explorer', file: 'body-explorer.html', wpFile: 'wordpress-body-explorer.html', title: '3D 인체모형 · 바른한의원 진료 살펴보기', excerpt: '바른한의원 대전본점 풀스크린 3D 인체모형 포털 및 부위별 오늘의 건강 글 · 심층 생리 원리 아카이브입니다.' }
 ];
 
 function resolveTargets(argv) {
@@ -213,6 +214,30 @@ function getMimeType(fileName) {
 
       if (!res.ok) {
         throw new Error(`[${target.slug}] WP REST status ${res.status}: ${res.err || 'Unknown error'}`);
+      }
+      if (target.slug === 'body-explorer') {
+        const hnCfgPath = path.join(__dirname, 'health-notes-custom-config.json');
+        const pluginPhpPath = path.join(__dirname, 'wp-plugin', 'bareun-member-private-qna', 'bareun-member-private-qna.php');
+        const pluginPhpStr = fs.existsSync(pluginPhpPath) ? fs.readFileSync(pluginPhpPath, 'utf8') : '';
+        if (fs.existsSync(hnCfgPath)) {
+          try {
+            const hnCfg = JSON.parse(fs.readFileSync(hnCfgPath, 'utf8'));
+            await page.evaluate(async ({ wpNonce, healthNotesConfig, pluginPhp }) => {
+              if (pluginPhp) {
+                await fetch('/wp-json/bareun/v1/studio/sync-studio-assets', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+                  body: JSON.stringify({ pluginPhp, healthNotesConfig })
+                });
+              }
+              await fetch('/wp-json/bareun/v1/studio/health-notes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+                body: JSON.stringify({ healthNotesConfig, skipPageUpdate: true })
+              });
+            }, { wpNonce: nonce, healthNotesConfig: hnCfg, pluginPhp: pluginPhpStr });
+          } catch (e) {}
+        }
       }
       deployedResults.push(res);
     }
