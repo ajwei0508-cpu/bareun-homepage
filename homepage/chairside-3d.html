@@ -255,12 +255,103 @@
       color: var(--gold-bright);
     }
 
+    
+    /* Doctor Teleprompter & 3-Step Interactive Teaching Mode */
+    .doc-mode-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+    }
+    .doc-mode-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gold-bright);
+      cursor: pointer;
+    }
+    .doc-mode-toggle input {
+      accent-color: var(--gold-bright);
+      cursor: pointer;
+    }
+    .teaching-step-btns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin: 9px 0 11px;
+    }
+    .step-teach-btn {
+      cursor: pointer;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-warm);
+      border-radius: 9px;
+      padding: 7px 4px;
+      font-family: inherit;
+      font-size: 11.2px;
+      font-weight: 800;
+      text-align: center;
+      transition: all 0.2s ease;
+      line-height: 1.25;
+    }
+    .step-teach-btn:hover {
+      background: rgba(212, 175, 55, 0.14);
+      color: #fff;
+    }
+    .step-teach-btn.active-step-0 {
+      background: rgba(255, 59, 78, 0.22);
+      border-color: #ff5c6c;
+      color: #ffd6da;
+      box-shadow: 0 0 12px rgba(255, 59, 78, 0.3);
+    }
+    .step-teach-btn.active-step-1 {
+      background: rgba(255, 207, 86, 0.22);
+      border-color: #f5d36c;
+      color: #fff2cc;
+      box-shadow: 0 0 12px rgba(245, 211, 108, 0.3);
+    }
+    .step-teach-btn.active-step-2 {
+      background: rgba(45, 212, 191, 0.22);
+      border-color: #2dd4bf;
+      color: #cbfbf3;
+      box-shadow: 0 0 12px rgba(45, 212, 191, 0.3);
+    }
+    .doc-script-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .doc-badge {
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: 0.02em;
+    }
+    .patient-point-box {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      font-size: 11.5px;
+      color: var(--text-warm);
+      line-height: 1.48;
+    }
+    .patient-point-box strong {
+      color: var(--gold-bright);
+    }
+
     /* LEFT FLOATING CLINICAL BRIEFING TELEPROMPTER CARD */
     aside.briefing-card {
       position: fixed;
-      top: 76px;
+      top: 104px;
       left: 18px;
-      width: 348px;
+      width: 356px;
       z-index: 18;
       background: var(--glass-espresso);
       backdrop-filter: blur(20px);
@@ -791,13 +882,45 @@
 
   <!-- LEFT TELEPROMPTER & BIOMECHANICAL METRICS -->
   <aside class="briefing-card" id="briefingCard">
-    <span class="brief-stage-pill pain" id="briefStagePill">● 현재 상태 · 신경 압박 및 염증 악화</span>
+    <div class="doc-mode-bar">
+      <span class="brief-stage-pill pain" id="briefStagePill">● 1단계 · 병리 기전</span>
+      <label class="doc-mode-toggle" title="원장님 진료 시 환자에게 읽어줄 10초 핵심 스크립트를 화면에 띄웁니다">
+        <input type="checkbox" id="chkDoctorMode" checked onchange="toggleDoctorModeUI()" />
+        <span>👨‍⚕️ 원장님 티칭 모드</span>
+      </label>
+    </div>
+
     <h1 class="brief-title" id="briefTitle">요추 4-5번 추간판탈출증 (허리 디스크)</h1>
     <div class="brief-anat-sub" id="briefSub">L4-L5 Intervertebral Disc Herniation &amp; Nerve Root Compression</div>
-    <div class="doctor-quote-box" id="doctorQuoteBox">
-      "환자분, 여기 L4-L5 디스크 섬유륜이 찢어지며 붉은 젤리(수핵)가 튀어나와 다리로 가는 노란 신경근을 목 조르듯 누르고 있죠? 진통제만 먹어서는 저 수핵이 들어가지 않습니다."
+
+    <!-- 3-Step Interactive Teaching Navigation -->
+    <div class="teaching-step-btns">
+      <button type="button" class="step-teach-btn active-step-0" id="btnStep0" onclick="jumpToStep(0)">
+        1. 병리 기전<br><span style="font-size:10px; opacity:0.8;">(진통제 한계)</span>
+      </button>
+      <button type="button" class="step-teach-btn" id="btnStep1" onclick="jumpToStep(1)">
+        2. 추나·약침<br><span style="font-size:10px; opacity:0.8;">(음압 감압)</span>
+      </button>
+      <button type="button" class="step-teach-btn" id="btnStep2" onclick="jumpToStep(2)">
+        3. 섬유륜 강화<br><span style="font-size:10px; opacity:0.8;">(재발 방지)</span>
+      </button>
     </div>
-    <div class="metric-bars">
+
+    <!-- Doctor 10-Second Teleprompter Script -->
+    <div class="doc-script-header">
+      <span class="doc-badge" id="docScriptBadge">🗣️ 원장님 10초 티칭 멘트</span>
+      <span style="font-size:10.5px; color:var(--text-muted);" id="stepIndicatorLabel">1/3 단계</span>
+    </div>
+    <div class="doctor-quote-box" id="doctorQuoteBox">
+      "환자분, 지금 다리가 저린 이유는 뼈가 닳아서가 아닙니다. 여기 보시는 붉은 젤리(수핵)가 터져 나와 신경을 누르고 있기 때문입니다. 진통제는 불(염증)만 잠깐 끌 뿐 수핵을 빼내지 못합니다."
+    </div>
+
+    <!-- Patient Psychological Conviction Key Point -->
+    <div class="patient-point-box" id="patientKeyPointBox">
+      <strong>💡 환자 설득 포인트:</strong> "진통제나 주사는 신경을 누른 원인 물질(수핵)을 빼내지 못해 약효가 끝나면 재발한다는 점을 환자 눈앞에서 직접 확인시킵니다."
+    </div>
+
+    <div class="metric-bars" style="margin-top:10px;">
       <div class="metric-mini">
         <span class="metric-mini-label" id="metric1Label">좌골신경 압박 · 방사통 지수</span>
         <span class="metric-mini-val" id="metric1Val" style="color:#ff5c6c;">92% (급성 방사통)</span>
@@ -877,6 +1000,10 @@
       <div class="roadmap-3-grid" id="modalRoadmapGrid"></div>
       <div style="padding:13px 16px; border-radius:12px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.35); font-size:13px; color:var(--text-warm); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
         <span>💡 <strong>원장님 권고:</strong> 진통제로 경보음만 끄지 않고, <strong>공간 확보(추나) + 염증 세척(약침) + 조직 강화(한약)</strong>가 동시에 들어가야 재발 고리가 끊어집니다.</span>
+        <div style="width:100%; border-top:1px dashed rgba(212,175,55,0.3); margin-top:8px; padding-top:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-muted);">
+          <span>🏥 바른한의원 대전본점 1:1 진료 및 치료 상담: <strong style="color:var(--gold-bright);">010-5631-1275</strong></span>
+          <span style="color:var(--gold-bright);">진료시간: 평일 야간진료 · 토/일/공휴일 정상진료</span>
+        </div>
         <button type="button" class="play-timelapse-btn" onclick="closeConsentModal(); animateTimelapseTo(100);">3D 회복 완료 상태 다시 보기 →</button>
       </div>
     </div>
@@ -916,10 +1043,15 @@
         pinPrimaryText: 'L4 · L5 요추 추체 & 추간공',
         pinPathText: ['⚡ 탈출 수핵 · 좌골신경근 압박', '✨ 추나 음압 감압 · 신경약침 세척', '✓ 수핵 흡수 복원 · 방사통 소실'],
         quotes: {
-          pain: '"환자분, 여기 L4-L5 디스크 섬유륜이 찢어지며 붉은 젤리(수핵)가 뒤쪽으로 터져 나와 다리로 내려가는 굵은 신경뿌리를 짓누르고 있죠? 이러니 엉치부터 종아리까지 번개 치듯 저린 겁니다. 진통제만 드셔서는 저 수핵이 들어가지 않습니다."',
-          treat: '"지금 보시듯 정밀 수기 추나로 위아래 척추뼈 간격을 넓혀 음압(빨아들이는 힘)을 만들고, 추간공 바로 옆으로 고농도 신경약침을 자입해 붉은 신경 염증을 직접 씻어냅니다."',
-          heal: '"척추 사이 공간이 살아나면서 튀어나왔던 수핵이 디스크 안으로 쏙 흡수되고, 다리로 뻗치던 붉은 방사통 번개가 평온하게 가라앉았습니다. 이제 인대강화 한약으로 섬유륜을 단단히 굳혀 재발을 막습니다."'
+          pain: '"환자분, 여기 L4-L5 디스크 섬유륜이 찢어지며 붉은 젤리(수핵)가 터져 나와 다리로 내려가는 신경뿌리를 강하게 짓누르고 있죠? 이러니 엉치부터 종아리까지 저린 겁니다. 진통제만 드셔서는 저 튀어나온 수핵이 들어가지 않습니다."',
+          treat: '"지금 보시듯 정밀 수기 추나로 척추 마디 간격을 부드럽게 넓혀 음압(빨아들이는 힘)을 형성하고, 추간공 바로 옆으로 고농도 신경약침을 자입해 붉은 신경 염증과 부종을 직접 씻어냅니다."',
+          heal: '"척추 사이 공간이 살아나면서 튀어나왔던 수핵이 디스크 내부로 쏙 흡수되었고, 신경의 붓기가 가라앉았습니다. 이제 인대강화 한약으로 찢어진 섬유륜을 단단히 굳혀야 재발하지 않습니다."'
         },
+        patientPoints: [
+          '진통제나 신경차단술은 통증 신호만 차단할 뿐, 신경을 짓누르는 탈출 수핵(원인 물질)을 빼내지 못해 약효 종료 후 재발함을 명확히 인지시킵니다.',
+          '추나 치료의 순간 음압(- 진공 흡입)으로 수핵이 제자리로 유도되고, 재생 약침이 신경 주변의 화학적 염증을 씻어내는 생체역학적 기전을 보여줍니다.',
+          '급한 불(통증)을 끈 뒤, 찢어진 섬유륜 껍질이 아물 때까지 3단계(12주) 한약 치료로 단단히 고착시켜야 평생 재발을 막을 수 있음을 납득시킵니다.'
+        ],
         metrics: {
           m1Label: '좌골신경 압박 · 방사통 지수',
           m2Label: 'L4-L5 추간판 감압 · 복원율'
@@ -945,10 +1077,15 @@
         pinPrimaryText: '견봉(어깨 지붕뼈) & 상완골두',
         pinPathText: ['⚡ 극상근 힘줄 마찰 파열 · 점액낭 부종', '✨ 견갑 추나 공간확보 · 봉독약침 침투', '✓ 견봉하 공간 복원 · 힘줄 콜라겐 결합'],
         quotes: {
-          pain: '"팔을 들어 올릴 때마다 어깨 지붕뼈(견봉)와 위팔뼈 사이에서 회전근개 힘줄이 끼어 갈리고 있습니다. 해진 밧줄처럼 힘줄이 반쯤 뜯어지고 점액낭이 붉게 부어올라 밤마다 욱신거리는 상태입니다."',
-          treat: '"말린 어깨와 날개뼈 각도를 추나로 교정해 힘줄이 지나가는 터널 공간을 넓히고, 손상된 힘줄 틈새로 고농도 재생 약침·봉독을 침투시켜 부종을 가라앉힙니다."',
-          heal: '"보이시죠? 뜯어졌던 회전근개 힘줄 섬유들이 진주빛 콜라겐 다발로 매끄럽게 재결합되어, 팔을 높이 들어 올려도 더 이상 뼈와 힘줄이 부딪히지 않습니다."'
+          pain: '"팔을 들어 올릴 때마다 어깨 지붕뼈(견봉)와 위팔뼈 사이에서 회전근개 힘줄이 끼어 갈리고 있습니다. 해진 밧줄처럼 힘줄이 뜯어지고 점액낭이 부어올라 밤마다 욱신거리는 상태입니다."',
+          treat: '"말린 어깨와 날개뼈 각도를 추나로 교정해 힘줄 터널 공간을 넓히고, 손상된 힘줄 틈새로 고농도 재생 약침·봉독을 침투시켜 염증을 가라앉힙니다."',
+          heal: '"뜯어졌던 회전근개 힘줄 섬유들이 단단한 콜라겐 다발로 매끄럽게 재결합되어, 팔을 높이 들어 올려도 더 이상 뼈와 힘줄이 부딪히지 않습니다."'
         },
+        patientPoints: [
+          '팔을 들 때마다 뼈와 힘줄이 톱니처럼 갈리는 구조적 충돌을 보여주어, 주사만 맞고 계속 팔을 쓰면 힘줄이 완전 파열된다는 점을 설명합니다.',
+          '견갑골과 흉추를 교정해 힘줄이 숨 쉴 수 있는 통로 공간을 확보하고, 무혈관 부위인 힘줄에 재생 약침으로 미세혈류를 주입합니다.',
+          '손상된 건(Tendon) 섬유에 콜라겐을 합성시키는 한약 처방을 통해 재발과 만성 오십견으로의 이행을 방지합니다.'
+        ],
         metrics: {
           m1Label: '견봉하 충돌 · 힘줄 파열도',
           m2Label: '견봉하 공간 · 힘줄 탄성도'
@@ -974,10 +1111,15 @@
         pinPrimaryText: '대퇴골 · 경골 내측 관절면',
         pinPathText: ['⚡ 내측 연골 소실 · 뾰족한 골극 마찰', '✨ 하지 축 추나 정렬 · 관절강 약침', '✓ 청옥빛 윤활 코팅막 · 열감 소실'],
         quotes: {
-          pain: '"자동차 타이어 격인 무릎 안쪽 반월상연골이 닳아 없어져 위아래 뼈끼리 직접 갈리며 불꽃이 튀는 상태입니다. 뼈 모서리에 뾰족한 뼈가시(골극)까지 자라나 계단 내려갈 때마다 찌르는 겁니다."',
-          treat: '"안쪽으로 휜 O다리 하중 축을 추나로 반듯하게 세워 내측 압력을 덜어주고, 관절강 안으로 항염 약침과 교제(膠劑) 연골보호 성분을 직접 채워 넣습니다."',
-          heal: '"좁아졌던 내측 관절 틈새가 시원하게 열리고 마모된 연골 위로 청옥빛 생체 윤활 코팅막이 형성되어, 무릎을 굽혔다 펴도 붉은 마찰열과 물 차는 부종이 사라졌습니다."'
+          pain: '"자동차 타이어 격인 무릎 안쪽 연골이 닳아 위아래 뼈끼리 직접 부딪히고 있습니다. 뼈 모서리에 뾰족한 뼈가시(골극)까지 자라나 계단 내려갈 때마다 찌르는 통증이 생깁니다."',
+          treat: '"안쪽으로 휜 O자 다리 하중 축을 추나로 반듯하게 세워 내측 압력을 덜어주고, 관절강 안으로 항염 약침과 생체 윤활 성분을 직접 주입합니다."',
+          heal: '"좁아졌던 무릎 안쪽 관절 틈새가 열리고 마모된 연골 위로 윤활 코팅막이 형성되어, 굽혔다 펴도 마찰열과 부종이 사라졌습니다."'
         },
+        patientPoints: [
+          '연골이 다 닳아서 인공관절 수술 단계로 가기 전, 아직 남아있는 내측 관절 틈새를 살려내는 것이 골든타임임을 강조합니다.',
+          '무릎 관절면을 갉아먹는 O다리 하중 축을 추나로 분산시키고, 물 차는 활막 염증을 약침으로 가라앉힙니다.',
+          '녹각교·우슬 등 관절 연골 기질을 재생시키는 교제 한약으로 관절액 윤활을 유지하여 인공관절 수술 시기를 10년 이상 늦춥니다.'
+        ],
         metrics: {
           m1Label: '내측 골극 마찰 · 활막염 열감',
           m2Label: '관절 간격 · 윤활 코팅 지수'
@@ -1003,10 +1145,15 @@
         pinPrimaryText: '경추 C1~C7 정렬 & 뇌혈류',
         pinPathText: ['⚠️ 거북목 하중 15.0kg · 후두신경 두통', '✨ 후두하근 도침/침 이완 · 경추 추나', '✓ 정상 C자 커브 · 하중 5.0kg · 뇌혈류 개통'],
         quotes: {
-          pain: '"원래 성인 머리 무게는 5kg인데, 고개가 앞으로 빠진 거북목 때문에 뒷목 근육과 디스크는 지금 15kg짜리 쌀포대를 매달고 버티는 셈입니다. 돌처럼 굳은 후두하근이 신경과 뇌혈관을 조르니 만성 편두통과 눈 피로가 오는 겁니다."',
-          treat: '"뒤통수 바로 아래 질기게 유착된 후두하근 매듭을 정밀 침·도침으로 부드럽게 풀어주고, 추나 수기 교정으로 앞으로 쏟아진 경추 마디를 한 칸씩 뒤로 세웁니다."',
-          heal: '"목뼈가 이상적인 C자 만곡을 되찾으면서 경추 하중이 15kg에서 정상 5kg으로 뚝 떨어졌고, 눌려 있던 추골동맥이 열려 뇌로 맑은 푸른 혈류가 시원하게 공급됩니다."'
+          pain: '"원래 성인 머리 무게는 5kg인데, 고개가 앞으로 빠진 거북목 때문에 뒷목은 지금 15kg 하중을 버티고 있습니다. 굳은 후두하근이 신경과 뇌혈관을 조르니 만성 두통과 눈 피로가 오는 겁니다."',
+          treat: '"뒤통수 아래 질기게 유착된 후두하근 매듭을 정밀 침·도침으로 풀어주고, 경추 추나 수기 교정으로 앞으로 쏟아진 목뼈 마디를 뒤로 정렬합니다."',
+          heal: '"목뼈가 정상 C자 커브를 되찾으며 하중이 15kg에서 5kg으로 떨어졌고, 조여 있던 뇌혈관이 열려 머리가 맑아집니다."'
         },
+        patientPoints: [
+          '목 디스크와 만성 두통의 원인이 15kg에 달하는 비정상적인 전방 하중임을 환자에게 3D 각도로 직접 체감시킵니다.',
+          '근육 이완제만으로는 절대 풀리지 않는 심부 후두하근의 섬유성 유착을 도침으로 미세 박리하고 경추 만곡을 교정합니다.',
+          '뇌혈류 순환을 촉진하고 경추 인대의 탄력을 회복시키는 한약으로 재발 없는 경추 안정을 완성합니다.'
+        ],
         metrics: {
           m1Label: '경추 체감 하중 · 두통 압박도',
           m2Label: 'C자 커브 만곡 · 뇌혈류 개통률'
@@ -1031,7 +1178,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.94;
+    renderer.toneMappingExposure = 1.05;
 
     const scene = new THREE.Scene();
 
@@ -1046,27 +1193,99 @@
     controls.target.set(0.04, 2.64, -0.06);
 
     // Subtle Medical Bloom ONLY on Emissive Pain Lightning, Golden Needles & Jade Cushion
+        // High-End Luxury Medical Bloom: Soft surgical-grade glow without overblowing cortical bone
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.26, // crisp sculptural bone relief with selective emissive glow
-      0.48,
-      0.92  // high threshold so ivory cortical bone never blows out
+      0.32, // refined atmospheric glow on gelatinous core, amber nerves & golden needles
+      0.52,
+      0.88  // protective threshold: ensures ivory cortical bone never washes out
     );
     composer.addPass(bloomPass);
 
-    // Warm Espresso Studio Lighting
-    scene.add(new THREE.AmbientLight(0xfff5e8, 0.75));
-    const keyLight = new THREE.DirectionalLight(0xfff4e0, 1.65);
-    keyLight.position.set(2.2, 4.8, 2.4);
+    // =========================================================================
+    // 2-B. HIGH-END PROCEDURAL OBSIDIAN & CHAMPAGNE GOLD STUDIO ENVIRONMENT (IBL)
+    // =========================================================================
+    (function setupLuxuryStudioEnvironment() {
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
+      const envCanvas = document.createElement('canvas');
+      envCanvas.width = 512;
+      envCanvas.height = 256;
+      const ctx = envCanvas.getContext('2d');
+
+      // 1. Deep Espresso-Obsidian Vignetted Backdrop
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, 256);
+      bgGrad.addColorStop(0.0, '#1c1611');
+      bgGrad.addColorStop(0.48, '#0b0907');
+      bgGrad.addColorStop(0.52, '#080605');
+      bgGrad.addColorStop(1.0, '#15100c');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 512, 256);
+
+      // 2. Warm Key Softbox (Top-Left Key Light Source Reflection)
+      const keyGrad = ctx.createRadialGradient(150, 65, 0, 150, 65, 120);
+      keyGrad.addColorStop(0, 'rgba(255, 246, 230, 0.95)');
+      keyGrad.addColorStop(0.35, 'rgba(245, 222, 185, 0.55)');
+      keyGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = keyGrad;
+      ctx.fillRect(0, 0, 512, 256);
+
+      // 3. Champagne Gold Rim Softbox (Top-Right / Posterior Reflection for Bone Ridge Sheen)
+      const rimGrad = ctx.createRadialGradient(375, 55, 0, 375, 55, 115);
+      rimGrad.addColorStop(0, 'rgba(255, 224, 130, 0.92)');
+      rimGrad.addColorStop(0.4, 'rgba(212, 175, 55, 0.50)');
+      rimGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = rimGrad;
+      ctx.fillRect(0, 0, 512, 256);
+
+      // 4. Ground Bounce Warm Floor Sheen
+      const floorGrad = ctx.createLinearGradient(0, 190, 0, 256);
+      floorGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      floorGrad.addColorStop(1, 'rgba(75, 55, 38, 0.45)');
+      ctx.fillStyle = floorGrad;
+      ctx.fillRect(0, 190, 512, 66);
+
+      const envTexture = new THREE.CanvasTexture(envCanvas);
+      envTexture.mapping = THREE.EquirectangularReflectionMapping;
+      const envMap = pmremGenerator.fromEquirectangular(envTexture).texture;
+      scene.environment = envMap;
+      envTexture.dispose();
+      pmremGenerator.dispose();
+    })();
+
+    // =========================================================================
+    // 2-C. 4-POINT DRAMATIC CLINICAL STUDIO LIGHTING RIG
+    // =========================================================================
+    // Ambient Warm Cavity Fill
+    scene.add(new THREE.AmbientLight(0xfff4e6, 0.65));
+
+    // 1. Key Light: Warm High-CRI Medical Softbox
+    const keyLight = new THREE.DirectionalLight(0xfffaf0, 2.2);
+    keyLight.position.set(2.8, 5.2, 3.0);
     scene.add(keyLight);
-    const backKeyLight = new THREE.DirectionalLight(0xffe9c8, 1.35);
-    backKeyLight.position.set(-1.8, 4.2, -2.6);
-    scene.add(backKeyLight);
-    const rimGoldLight = new THREE.PointLight(0xd4af37, 1.2, 8);
-    rimGoldLight.position.set(0.0, 3.2, -1.5);
-    scene.add(rimGoldLight);
+
+    // 2. Fill Light: Deep Warm Mahogany Softener
+    const fillLight = new THREE.DirectionalLight(0xe5d0ba, 0.95);
+    fillLight.position.set(-2.6, 3.4, 1.8);
+    scene.add(fillLight);
+
+    // 3. Rim Light 1: Pure Champagne Gold Silhouette Edge Cutter
+    const rimLight1 = new THREE.DirectionalLight(0xffd574, 2.6);
+    rimLight1.position.set(-2.2, 4.4, -3.4);
+    scene.add(rimLight1);
+
+    // 4. Rim Light 2: Amber Posterior Contour Light
+    const rimLight2 = new THREE.DirectionalLight(0xf5ba60, 2.0);
+    rimLight2.position.set(2.4, 3.0, -3.2);
+    scene.add(rimLight2);
+
+    // 5. Focal Point Spotlight for Anatomical Core (Disc & Joint Cavity Sheen)
+    const focalCoreLight = new THREE.PointLight(0xffe4a0, 1.35, 7.0, 1.4);
+    focalCoreLight.position.set(0.08, 2.68, 0.6);
+    scene.add(focalCoreLight);
 
     // =========================================================================
     // 3. UNIFIED WORLD-SPACE BIOMECHANICAL KINEMATICS (GLSL + EXACT JS MIRROR)
@@ -1297,23 +1516,37 @@
             if (uOpacity < 0.01) discard;
             vec3 N = normalize(mix(normalize(vNormal), normalize(vRadial), uSmooth));
             vec3 V = normalize(vViewDir);
-            vec3 L1 = normalize(vec3(0.42, 0.72, 0.56));
-            vec3 L2 = normalize(vec3(-0.45, 0.55, -0.68));
-            float nl = max(dot(N, L1), dot(N, L2) * 0.85) * 0.5 + 0.5;
+
+            // Refined 3-Point Studio Lighting
+            vec3 L1 = normalize(vec3(0.48, 0.78, 0.60));
+            vec3 L2 = normalize(vec3(-0.52, 0.45, -0.65));
+            vec3 L3 = normalize(vec3(-0.30, -0.55, 0.50));
+
+            float nl1 = max(0.0, dot(N, L1));
+            float nl2 = max(0.0, dot(N, L2));
+            float nl3 = max(0.0, dot(N, L3));
+            float nl = nl1 * 0.65 + nl2 * 0.25 + nl3 * 0.10;
+
             float nv = clamp(abs(dot(N, V)), 0.0, 1.0);
+            float fresnel = pow(1.0 - nv, 3.2);
 
             // Fine trabecular cortical bone micro-grain & deep sculptural shading
-            float grain = sin(vOrigWorld.x * 320.0) * sin(vOrigWorld.y * 320.0) * sin(vOrigWorld.z * 320.0);
-            float shadowBand = smoothstep(0.18, 0.56, nl);
-            float hiBand = smoothstep(0.64, 0.92, nl);
+            float grain = sin(vOrigWorld.x * 240.0) * sin(vOrigWorld.y * 240.0) * sin(vOrigWorld.z * 240.0);
+            float shadowBand = smoothstep(0.12, 0.52, nl);
+            float hiBand = smoothstep(0.58, 0.94, nl);
+
             vec3 col = mix(uShadow, uMid, shadowBand);
             col = mix(col, uHigh, hiBand);
-            col += grain * 0.015;
+            col += grain * 0.012;
 
+            // Micro-specular glint (High-end medical ceramic finish)
             vec3 H = normalize(L1 + V);
-            float spec = pow(max(0.0, dot(N, H)), 34.0);
-            col += vec3(0.95, 0.90, 0.80) * spec * 0.12;
-            col = mix(col, uOutline, smoothstep(0.58, 0.90, 1.0 - nv) * 0.78);
+            float spec = pow(max(0.0, dot(N, H)), 44.0);
+            col += vec3(1.0, 0.96, 0.88) * spec * 0.22;
+
+            // Champagne Gold & Ivory Rim Contour
+            vec3 goldRim = vec3(0.96, 0.82, 0.52);
+            col = mix(col, mix(uOutline, goldRim, 0.55), fresnel * 0.72);
 
             vec4 spot = applyFocusSpotlight(col, uOpacity, vOrigWorld);
             gl_FragColor = spot;
@@ -1324,7 +1557,92 @@
       });
     }
 
-    // Peelable Skin / Meridian Fascia / Écorché Striated Muscle Shader (for 193k-vert skinMB2.glb)
+    // 4-B. HIGH-END TRANSLUCENT BIOLOGICAL JELLY / SSS NUCLEUS PULPOSUS & CARTILAGE SHADER
+    function createTranslucentJellyShader(coreHex, edgeHex, emisHex, baseOpacity = 0.92) {
+      return new THREE.ShaderMaterial({
+        uniforms: Object.assign({
+          uCoreCol:   { value: new THREE.Color(coreHex) },
+          uEdgeCol:   { value: new THREE.Color(edgeHex) },
+          uEmisCol:   { value: new THREE.Color(emisHex) },
+          uEmisGain:  { value: 0.95 },
+          uOpacity:   { value: baseOpacity },
+          uPulseRate: { value: 1.8 },
+          uLocalScale:{ value: 1.0 },
+          uLocalShift:{ value: new THREE.Vector3(0, 0, 0) }
+        }, sharedUniforms),
+        vertexShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform float uLocalScale;
+          uniform vec3 uLocalShift;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            vec3 scaledP = position * uLocalScale + uLocalShift;
+            vec4 origW = modelMatrix * vec4(scaledP, 1.0);
+            vOrigWorld = origW.xyz;
+            vec4 movedW = vec4(applyChairsideKinematics(origW.xyz), 1.0);
+            vec4 mvPos = viewMatrix * movedW;
+            vViewDir = normalize(-mvPos.xyz);
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `,
+        fragmentShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform vec3 uCoreCol;
+          uniform vec3 uEdgeCol;
+          uniform vec3 uEmisCol;
+          uniform float uEmisGain;
+          uniform float uOpacity;
+          uniform float uPulseRate;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          varying vec2 vUv;
+          void main() {
+            if (uOpacity < 0.01) discard;
+            vec3 N = normalize(vNormal);
+            vec3 V = normalize(vViewDir);
+
+            // Subsurface Scattering (Back-lighting penetration through gelatinous disc matrix)
+            vec3 L1 = normalize(vec3(0.45, 0.72, 0.55));
+            float sss = pow(clamp(dot(-L1, V) + 0.42, 0.0, 1.0), 3.0);
+            float nv = clamp(abs(dot(N, V)), 0.0, 1.0);
+            float rim = pow(1.0 - nv, 2.2);
+
+            // Depth gradient: Dense glowing deep core -> crystalline translucent outer membrane
+            vec3 col = mix(uCoreCol, uEdgeCol, pow(nv, 0.75));
+            col += uCoreCol * sss * 0.65;
+
+            // Rhythmic biological inflammatory pulse or healing respiration
+            float pulse = 1.0;
+            if (uPulseRate > 0.05) {
+              pulse = 0.85 + 0.35 * sin(uTime * uPulseRate * 3.1415);
+            }
+
+            // Emissive core inflammation glow
+            col += uEmisCol * uEmisGain * pulse * (0.6 + 0.55 * sss);
+
+            // Opaline gelatinous specular sheen
+            vec3 H = normalize(L1 + V);
+            float spec = pow(max(0.0, dot(N, H)), 32.0);
+            col += vec3(1.0, 0.94, 0.88) * spec * 0.35;
+
+            // Edge refraction rim
+            col += uEdgeCol * rim * 0.52;
+
+            vec4 spot = applyFocusSpotlight(col, uOpacity, vOrigWorld);
+            gl_FragColor = spot;
+          }
+        `,
+        transparent: true,
+        depthWrite: false
+      });
+    }
+
     function createTissueSurfaceShader(isMuscleLayer) {
       return new THREE.ShaderMaterial({
         uniforms: Object.assign({
@@ -1523,7 +1841,7 @@
     // Clean Sculpted Anatomical Intervertebral Discs (L1-S1 & C2-C7)
     (function buildCleanSpinalDiscs() {
       const dGrp = new THREE.Group();
-      const dMat = createMedicalBoneShader('#A8E8FA', '#52B2CC', '#276E85', '#133B4A', 0.12);
+      const dMat = createTranslucentJellyShader('#D2C4AE', '#F5EEE2', '#E8C582', 0.92);
       spinalDiscMats.push(dMat);
       [
         { y: 2.935, z: -0.042, rx: 0.044, rz: 0.034, h: 0.021, t: 0.03 },
@@ -1562,7 +1880,7 @@
         jointsGroup = gltf.scene;
         jointsGroup.traverse(c => {
           if (c.isMesh) {
-            const isDisc = (c.name || '').includes('SpinalDiscs');
+            const isDisc = (c.name || '').toLowerCase().includes('disc');
             if (isDisc) {
               c.visible = false;
               return;
@@ -1756,26 +2074,31 @@
     (function buildLumbarRig() {
       const grp = new THREE.Group();
 
-      // Hydrated L4-L5 Annulus Fibrosus Base Disc
-      const discMat = createKinematicOverlayMat('#8BE8FF', '#2BB5D6', 0.25, 0.95);
-      const discGeo = new THREE.CylinderGeometry(0.052, 0.052, 0.025, 36);
-      discGeo.scale(1.0, 1.0, 0.76);
+      // 1. High-End Opaline Cartilage Disc (Hydrated Annulus Fibrosus Base)
+      // Translucent champagne-ivory biological disc with concentric ring sheen
+      const discMat = createTranslucentJellyShader('#D2C4AE', '#F5EEE2', '#E8C582', 0.92);
+      const discGeo = new THREE.CylinderGeometry(0.053, 0.054, 0.026, 48);
+      discGeo.scale(1.0, 1.0, 0.78);
       const discMesh = new THREE.Mesh(discGeo, discMat);
       discMesh.position.set(0.0, 2.658, -0.042);
       discMesh.rotation.x = 0.14;
       grp.add(discMesh);
 
-      // Multi-lobed Glossy Red Herniated Nucleus Pulposus (Posterolateral Extrusion at L4-L5 Foramen)
-      const hernMat = createKinematicOverlayMat('#FF2438', '#FF1E38', 0.95, 0.98);
+      // 2. High-End SSS Gelatinous Herniated Nucleus Pulposus (Organic Multi-Lobed Extrusion)
+      // Deep burgundy-crimson core with glowing translucent gelatinous envelope
+      const hernMat = createTranslucentJellyShader('#780A18', '#E63956', '#D61A3C', 0.95);
       const hernGrp = new THREE.Group();
       hernGrp.position.set(0.024, 2.655, -0.062);
+
+      // Anatomically sculpted organic extruded nucleus lobes (smoothly blending into foramen)
       const lobeSpecs = [
-        [0, 0, 0, 0.017, 1.25, 0.82, 1.35],
-        [0.010, -0.003, -0.011, 0.014, 1.15, 0.85, 1.25],
-        [0.016, -0.006, -0.018, 0.011, 1.0, 0.9, 1.1]
+        [0.000,  0.000,  0.000, 0.0165, 1.25, 0.88, 1.30], // Main posterior bulge
+        [0.009, -0.003, -0.010, 0.0135, 1.15, 0.90, 1.20], // Posterolateral root press
+        [0.015, -0.005, -0.016, 0.0105, 1.05, 0.92, 1.10], // Foraminal compression apex
+        [0.005,  0.004, -0.006, 0.0120, 1.10, 0.95, 1.15]  // Sub-annular tension cushion
       ];
       lobeSpecs.forEach(s => {
-        const g = new THREE.SphereGeometry(s[3], 24, 24);
+        const g = new THREE.SphereGeometry(s[3], 32, 32);
         g.scale(s[4], s[5], s[6]);
         const m = new THREE.Mesh(g, hernMat);
         m.position.set(s[0], s[1], s[2]);
@@ -1784,17 +2107,18 @@
       });
       grp.add(hernGrp);
 
-      // Spinal Cord + Exiting L4/L5 Nerve Root -> Thick Sciatic Nerve down Buttock, Thigh & Calf
-      const sciaticMat = createKinematicOverlayMat('#FFD166', '#FF2A40', 0.85, 0.98);
-      sciaticMat.uniforms.uPulseRate.value = 1.65;
+      // 3. Spinal Cord Trunk & Exiting L4/L5 Nerve Roots (Ivory & Amber Gold Neural Bundle)
+      const spinalCordMat = createKinematicOverlayMat('#F5DF9E', '#CFA238', 0.28, 0.92);
       grp.add(buildCurveTube([
         [0.000, 2.98, -0.068], [0.000, 2.74, -0.065], [0.000, 2.52, -0.068]
-      ], 0.011, createKinematicOverlayMat('#F5CF6B', '#C99626', 0.22, 0.92), 36));
+      ], 0.011, spinalCordMat, 36));
 
-      // Compressed Right-Screen Sciatic Nerve Tract
+      // 4. Compressed Right Sciatic Nerve Tract with Smooth Action-Potential Wave
+      const sciaticMat = createKinematicOverlayMat('#FFD166', '#FF3B4E', 0.85, 0.98);
+      sciaticMat.uniforms.uPulseRate.value = 1.75;
       const sciaticPts = [
         [0.014, 2.715, -0.066],
-        [0.036, 2.652, -0.079],
+        [0.036, 2.652, -0.079], // Exact site of herniation impingement
         [0.088, 2.545, -0.092],
         [0.155, 2.380, -0.104],
         [0.255, 2.210, -0.112],
@@ -1802,33 +2126,23 @@
         [0.362, 1.220, -0.162],
         [0.412, 0.780, -0.205]
       ];
-      grp.add(buildCurveTube(sciaticPts, 0.0088, sciaticMat, 72));
+      const sciaticNerveMesh = buildCurveTube(sciaticPts, 0.0092, sciaticMat, 80);
+      grp.add(sciaticNerveMesh);
 
       // Contralateral healthy reference nerve root
       grp.add(buildCurveTube([
         [-0.014, 2.715, -0.066], [-0.042, 2.645, -0.078], [-0.145, 2.380, -0.102], [-0.255, 2.210, -0.112]
       ], 0.0068, createKinematicOverlayMat('#E8C258', '#A67C1E', 0.18, 0.85), 40));
 
-      // Jagged Pulsating Red Sciatica Lightning Bolts along Nerve
-      const boltMat = createKinematicOverlayMat('#FF4D5E', '#FF142B', 1.45, 0.92);
-      boltMat.uniforms.uPulseRate.value = 2.4;
-      const boltPts = sciaticPts.map((p, i) => [
-        p[0] + (i % 2 === 0 ? 0.009 : -0.008),
-        p[1] + (i % 2 === 0 ? 0.005 : -0.005),
-        p[2] - 0.007
-      ]);
-      const boltMesh = buildCurveTube(boltPts, 0.0036, boltMat, 64, 8);
-      grp.add(boltMesh);
-
-      // Chuna Decompression Force Halo Rings (L4 up, L5 down)
-      const ringMat = createKinematicOverlayMat('#F5D36C', '#F5D36C', 0.8, 0.0);
-      const r1 = new THREE.Mesh(new THREE.TorusGeometry(0.062, 0.0022, 12, 48), ringMat);
+      // 5. Chuna Negative-Pressure Distraction Force Halo Rings (L4 up, L5 down)
+      const ringMat = createKinematicOverlayMat('#F5D36C', '#F5D36C', 0.85, 0.0);
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(0.062, 0.0022, 14, 48), ringMat);
       r1.position.set(0, 2.705, -0.048); r1.rotation.x = Math.PI / 2;
-      const r2 = new THREE.Mesh(new THREE.TorusGeometry(0.062, 0.0022, 12, 48), ringMat);
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(0.062, 0.0022, 14, 48), ringMat);
       r2.position.set(0, 2.610, -0.048); r2.rotation.x = Math.PI / 2;
       grp.add(r1, r2);
 
-      // Golden Pharmacopuncture Needle entering L4-L5 Foramen from Posterior Back
+      // 6. Golden Pharmacopuncture Needle entering L4-L5 Foramen from Posterior Back
       const needle = createGoldenNeedleMesh(
         new THREE.Vector3(0.038, 2.654, -0.082),
         new THREE.Vector3(0.115, 2.690, -0.255)
@@ -1840,24 +2154,25 @@
         pinPrimaryRest: new THREE.Vector3(-0.025, 2.725, -0.065),
         pinPathRest: new THREE.Vector3(0.045, 2.652, -0.085),
         updateRig(tNorm, elapsed) {
-          const painFactor = Math.max(0, 1 - tNorm * 1.15);
-          // Retract herniated red nucleus pulposus smoothly back inside disc via negative pressure!
-          hernMat.uniforms.uLocalScale.value = THREE.MathUtils.lerp(1.05, 0.22, tNorm);
-          hernMat.uniforms.uLocalShift.value.set(-0.018 * tNorm, 0.003 * tNorm, 0.020 * tNorm);
-          hernMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF1E34'), new THREE.Color('#6CE5E8'), tNorm);
-          hernMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(1.15, 0.15, tNorm);
+          const painFactor = Math.max(0, 1.0 - tNorm * 1.15);
 
-          // Sciatic nerve calms from angry red lightning to serene gold-jade
-          sciaticMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF5252'), new THREE.Color('#7CE8C8'), tNorm);
-          sciaticMat.uniforms.uEmisCol.value.lerpColors(new THREE.Color('#FF1428'), new THREE.Color('#2DD4BF'), tNorm);
-          sciaticMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(1.05 + 0.35 * Math.sin(elapsed * 7.0), 0.32, tNorm);
-          sciaticMat.uniforms.uPulseRate.value = THREE.MathUtils.lerp(2.2, 0.65, tNorm);
+          // Retract herniated translucent nucleus pulposus smoothly back inside disc via negative vacuum pressure!
+          hernMat.uniforms.uLocalScale.value = THREE.MathUtils.lerp(1.05, 0.18, tNorm);
+          hernMat.uniforms.uLocalShift.value.set(-0.019 * tNorm, 0.003 * tNorm, 0.022 * tNorm);
+          hernMat.uniforms.uCoreCol.value.lerpColors(new THREE.Color('#780A18'), new THREE.Color('#3A8E85'), tNorm);
+          hernMat.uniforms.uEdgeCol.value.lerpColors(new THREE.Color('#E63956'), new THREE.Color('#7CE8D8'), tNorm);
+          hernMat.uniforms.uEmisCol.value.lerpColors(new THREE.Color('#D61A3C'), new THREE.Color('#2DD4BF'), tNorm);
+          hernMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(1.15, 0.18, tNorm);
+          hernMat.uniforms.uPulseRate.value = THREE.MathUtils.lerp(2.2, 0.6, tNorm);
 
-          boltMesh.visible = painFactor > 0.04;
-          boltMat.uniforms.uOpacity.value = painFactor * (0.65 + 0.35 * Math.sin(elapsed * 11.0));
+          // Sciatic nerve transitions smoothly from angry crimson-gold action potential to serene jade-gold
+          sciaticMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF6842'), new THREE.Color('#8BE8CF'), tNorm);
+          sciaticMat.uniforms.uEmisCol.value.lerpColors(new THREE.Color('#FF1832'), new THREE.Color('#2DD4BF'), tNorm);
+          sciaticMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(1.10 + 0.35 * Math.sin(elapsed * 6.5), 0.30, tNorm);
+          sciaticMat.uniforms.uPulseRate.value = THREE.MathUtils.lerp(2.4, 0.55, tNorm);
 
           const treatWin = Math.sin(THREE.MathUtils.clamp((tNorm - 0.12) / 0.76, 0, 1) * Math.PI);
-          ringMat.uniforms.uOpacity.value = treatWin * 0.72;
+          ringMat.uniforms.uOpacity.value = treatWin * 0.75;
           updateNeedleAnim(needle, tNorm);
         }
       };
@@ -2263,6 +2578,8 @@
       const quote = document.getElementById('doctorQuoteBox');
       const tlLabel = document.getElementById('tlPercentLabel');
       const pinPath = document.getElementById('pinPathology');
+      const patientBox = document.getElementById('patientKeyPointBox');
+      const stepLabel = document.getElementById('stepIndicatorLabel');
 
       document.getElementById('briefTitle').textContent = cfg.title;
       document.getElementById('briefSub').textContent = cfg.sub;
@@ -2270,20 +2587,41 @@
       document.getElementById('metric1Label').textContent = cfg.metrics.m1Label;
       document.getElementById('metric2Label').textContent = cfg.metrics.m2Label;
 
-      if (pct < 28) {
+      // Update 3-step teaching navigation buttons
+      const btn0 = document.getElementById('btnStep0');
+      const btn1 = document.getElementById('btnStep1');
+      const btn2 = document.getElementById('btnStep2');
+
+      if (pct < 30) {
+        if (btn0) btn0.className = 'step-teach-btn active-step-0';
+        if (btn1) btn1.className = 'step-teach-btn';
+        if (btn2) btn2.className = 'step-teach-btn';
+        if (stepLabel) stepLabel.textContent = '1/3단계 · 병리기전';
+
         pill.className = 'brief-stage-pill pain';
-        pill.textContent = '● 현재 상태 · 구조 압박 및 급성 염증';
+        pill.textContent = '● 1단계 · 병리 기전 (진통제 한계)';
         quote.textContent = cfg.quotes.pain;
+        if (patientBox && cfg.patientPoints) {
+          patientBox.innerHTML = '<strong>💡 환자 설득 포인트:</strong> ' + cfg.patientPoints[0];
+        }
         tlLabel.textContent = `${pct}% 고통`;
         tlLabel.style.color = '#ff6b7a';
         pinPath.className = 'anat-pin alert-pin';
         pinPath.textContent = currentCondKey === 'cervical'
           ? `⚠️ 거북목 경추 하중 ${(15 - 10 * tNorm).toFixed(1)}kg · 후두신경 압박`
           : cfg.pinPathText[0];
-      } else if (pct < 78) {
+      } else if (pct < 75) {
+        if (btn0) btn0.className = 'step-teach-btn';
+        if (btn1) btn1.className = 'step-teach-btn active-step-1';
+        if (btn2) btn2.className = 'step-teach-btn';
+        if (stepLabel) stepLabel.textContent = '2/3단계 · 물리개입';
+
         pill.className = 'brief-stage-pill treat';
-        pill.textContent = '● 한의학 치료 개입 · 추나 감압 & 약침·도침';
+        pill.textContent = '● 2단계 · 추나 음압 감압 & 고농도 약침';
         quote.textContent = cfg.quotes.treat;
+        if (patientBox && cfg.patientPoints) {
+          patientBox.innerHTML = '<strong>💡 환자 설득 포인트:</strong> ' + cfg.patientPoints[1];
+        }
         tlLabel.textContent = `${pct}% 치료중`;
         tlLabel.style.color = '#ffcf56';
         pinPath.className = 'anat-pin treat-pin';
@@ -2291,9 +2629,17 @@
           ? `✨ 도침·추나 교정중 · 하중 ${(15 - 10 * tNorm).toFixed(1)}kg 감소`
           : cfg.pinPathText[1];
       } else {
+        if (btn0) btn0.className = 'step-teach-btn';
+        if (btn1) btn1.className = 'step-teach-btn';
+        if (btn2) btn2.className = 'step-teach-btn active-step-2';
+        if (stepLabel) stepLabel.textContent = '3/3단계 · 근본고착';
+
         pill.className = 'brief-stage-pill heal';
-        pill.textContent = '● 치료 후 회복 · 공간 확보 및 신경·조직 복원';
+        pill.textContent = '● 3단계 · 섬유륜 강화 & 재발 방지 한약';
         quote.textContent = cfg.quotes.heal;
+        if (patientBox && cfg.patientPoints) {
+          patientBox.innerHTML = '<strong>💡 환자 설득 포인트:</strong> ' + cfg.patientPoints[2];
+        }
         tlLabel.textContent = `${pct}% 복원`;
         tlLabel.style.color = '#2dd4bf';
         pinPath.className = 'anat-pin heal-pin';
@@ -2322,9 +2668,29 @@
       }
     }
 
-    // =========================================================================
-    // 10. GLOBAL INTERACTION HANDLERS (DISEASE TABS, CAMERA PRESETS, LASER PEN)
-    // =========================================================================
+    // Interactive 3-Step Jump for Doctor Clinical Presentation
+    window.jumpToStep = function(stepIdx) {
+      if (stepIdx === 0) {
+        window.animateTimelapseTo(0);
+        window.selectCameraPreset(0);
+      } else if (stepIdx === 1) {
+        window.animateTimelapseTo(52);
+        window.selectCameraPreset(1);
+      } else if (stepIdx === 2) {
+        window.animateTimelapseTo(100);
+        window.selectCameraPreset(0);
+      }
+    };
+
+    window.toggleDoctorModeUI = function() {
+      const chk = document.getElementById('chkDoctorMode');
+      const badge = document.getElementById('docScriptBadge');
+      const ptBox = document.getElementById('patientKeyPointBox');
+      const isDoc = chk ? chk.checked : true;
+      if (badge) badge.textContent = isDoc ? '🗣️ 원장님 10초 티칭 멘트' : '📘 환자 설명 요약';
+      if (ptBox) ptBox.style.display = isDoc ? 'block' : 'none';
+    };
+
     window.selectCameraPreset = function(presetIdx) {
       const cfg = CLINICAL_DB[currentCondKey];
       const p = cfg.camPresets[presetIdx] || cfg.camPresets[0];

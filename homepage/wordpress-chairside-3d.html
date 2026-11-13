@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" href="data:," />
+  <title>BAREUN CHAIRSIDE 3D | 비급여 치료 동의용 하이엔드 한의학 3D 타임랩스 티칭 뷰어</title>
+  <meta name="description" content="진료실 아이패드·모니터 전용 한의학 고해상도 3D 생체역학 티칭 뷰어. 6단계 조직 투시 심도 슬라이더와 병리 악화→추나·약침·도침 개입→정상 회복 타임랩스 시뮬레이션." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800&family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Legal Trade-Dress Shield: Signature Warm Espresso Obsidian & Champagne Gold (Zero Western Medical Blue) */
+      --bg-void: #070605;
+      --glass-espresso: rgba(22, 17, 13, 0.80);
+      --glass-espresso-strong: rgba(18, 14, 11, 0.93);
+      --gold-primary: #d4af37;
+      --gold-bright: #f5d36c;
+      --gold-soft: rgba(212, 175, 55, 0.22);
+      --gold-border: rgba(212, 175, 55, 0.44);
+      --pain-red: #ff3b4e;
+      --herb-gold: #ffcf56;
+      --heal-jade: #2dd4bf;
+      --text-ivory: #fdfbf7;
+      --text-warm: rgba(245, 238, 226, 0.84);
+      --text-muted: rgba(214, 202, 184, 0.56);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at 52% 45%, #211912 0%, #0b0907 58%, #040303 100%);
+      color: var(--text-ivory);
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      word-break: keep-all;
+    }
+
+    /* High-End Medical Scanner Loading Overlay */
+    #scannerLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: radial-gradient(circle at 50% 45%, #19130e 0%, #070605 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+    #scannerLoader.loaded {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .scanner-ring {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(212, 175, 55, 0.2);
+      border-top-color: var(--gold-bright);
+      animation: spinRing 0.9s linear infinite;
+      box-shadow: 0 0 24px rgba(212, 175, 55, 0.25);
+    }
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+    .scanner-load-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--gold-bright);
+    }
+    .scanner-load-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Spotlight Vignette & Subtle Medical Calibration Grid */
+    .spotlight-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background:
+        radial-gradient(circle at 53% 46%, transparent 34%, rgba(5, 4, 3, 0.68) 88%),
+        linear-gradient(180deg, rgba(8, 6, 5, 0.50) 0%, transparent 15%, transparent 80%, rgba(8, 6, 5, 0.85) 100%);
+    }
+
+    #webglCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: block;
+      touch-action: none;
+    }
+
+    /* Chairside iPad Laser Pen Annotation Canvas */
+    #drawCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
+      pointer-events: none;
+      touch-action: none;
+    }
+    #drawCanvas.drawing-active {
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+
+    /* TOP HEADER BAR */
+    header.chairside-top {
+      position: fixed;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+      flex-wrap: wrap;
+    }
+    .chairside-top > * {
+      pointer-events: auto;
+    }
+
+    .brand-capsule {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: var(--glass-espresso);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--gold-border);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    }
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold-bright);
+      box-shadow: 0 0 10px var(--gold-bright);
+    }
+    .brand-clinic-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-ivory);
+    }
+    .brand-sub-tag {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--gold-bright);
+      background: rgba(212, 175, 55, 0.16);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+
+    /* 4 Core Condition Selector Tabs */
+    .condition-tabs {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px;
+      border-radius: 999px;
+      background: var(--glass-espresso);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.52);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .cond-btn {
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-warm);
+      font-family: inherit;
+      font-size: 12.8px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cond-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .cond-btn.active {
+      background: linear-gradient(135deg, #f5d36c 0%, #b6852c 100%);
+      color: #15110c;
+      font-weight: 900;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+    }
+
+    /* Right Tool Actions */
+    .chairside-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tool-pill {
+      cursor: pointer;
+      border: 1px solid rgba(212, 175, 55, 0.34);
+      background: var(--glass-espresso);
+      backdrop-filter: blur(16px);
+      color: var(--text-ivory);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+    .tool-pill:hover {
+      border-color: var(--gold-bright);
+      background: rgba(212, 175, 55, 0.16);
+    }
+    .tool-pill.active-pen {
+      background: rgba(255, 59, 78, 0.24);
+      border-color: #ff5c6c;
+      color: #ffd6da;
+      box-shadow: 0 0 18px rgba(255, 59, 78, 0.35);
+    }
+    .tool-pill.gold-cta {
+      background: linear-gradient(135deg, rgba(245, 211, 108, 0.24), rgba(182, 133, 44, 0.36));
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+    }
+
+    
+    /* Doctor Teleprompter & 3-Step Interactive Teaching Mode */
+    .doc-mode-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+    }
+    .doc-mode-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gold-bright);
+      cursor: pointer;
+    }
+    .doc-mode-toggle input {
+      accent-color: var(--gold-bright);
+      cursor: pointer;
+    }
+    .teaching-step-btns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin: 9px 0 11px;
+    }
+    .step-teach-btn {
+      cursor: pointer;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-warm);
+      border-radius: 9px;
+      padding: 7px 4px;
+      font-family: inherit;
+      font-size: 11.2px;
+      font-weight: 800;
+      text-align: center;
+      transition: all 0.2s ease;
+      line-height: 1.25;
+    }
+    .step-teach-btn:hover {
+      background: rgba(212, 175, 55, 0.14);
+      color: #fff;
+    }
+    .step-teach-btn.active-step-0 {
+      background: rgba(255, 59, 78, 0.22);
+      border-color: #ff5c6c;
+      color: #ffd6da;
+      box-shadow: 0 0 12px rgba(255, 59, 78, 0.3);
+    }
+    .step-teach-btn.active-step-1 {
+      background: rgba(255, 207, 86, 0.22);
+      border-color: #f5d36c;
+      color: #fff2cc;
+      box-shadow: 0 0 12px rgba(245, 211, 108, 0.3);
+    }
+    .step-teach-btn.active-step-2 {
+      background: rgba(45, 212, 191, 0.22);
+      border-color: #2dd4bf;
+      color: #cbfbf3;
+      box-shadow: 0 0 12px rgba(45, 212, 191, 0.3);
+    }
+    .doc-script-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .doc-badge {
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: 0.02em;
+    }
+    .patient-point-box {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      font-size: 11.5px;
+      color: var(--text-warm);
+      line-height: 1.48;
+    }
+    .patient-point-box strong {
+      color: var(--gold-bright);
+    }
+
+    /* LEFT FLOATING CLINICAL BRIEFING TELEPROMPTER CARD */
+    aside.briefing-card {
+      position: fixed;
+      top: 104px;
+      left: 18px;
+      width: 356px;
+      z-index: 18;
+      background: var(--glass-espresso);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--gold-border);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.58);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    aside.briefing-card.hidden-panel {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-20px);
+    }
+    .brief-stage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      letter-spacing: 0.03em;
+    }
+    .brief-stage-pill.pain {
+      background: rgba(255, 59, 78, 0.18);
+      border: 1px solid rgba(255, 59, 78, 0.55);
+      color: #ff8a95;
+    }
+    .brief-stage-pill.treat {
+      background: rgba(255, 207, 86, 0.18);
+      border: 1px solid rgba(255, 207, 86, 0.55);
+      color: var(--herb-gold);
+    }
+    .brief-stage-pill.heal {
+      background: rgba(45, 212, 191, 0.18);
+      border: 1px solid rgba(45, 212, 191, 0.55);
+      color: #5eead4;
+    }
+    .brief-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 3px;
+      color: #fff;
+    }
+    .brief-anat-sub {
+      font-size: 11.5px;
+      color: var(--gold-bright);
+      font-weight: 700;
+      margin-bottom: 11px;
+    }
+    .doctor-quote-box {
+      background: rgba(10, 8, 6, 0.66);
+      border-left: 3px solid var(--gold-bright);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.56;
+      color: var(--text-ivory);
+      margin-bottom: 11px;
+    }
+    .metric-bars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .metric-mini {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .metric-mini-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      display: block;
+    }
+    .metric-mini-val {
+      font-size: 14.5px;
+      font-weight: 900;
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* RIGHT VERTICAL 6-LAYER TISSUE DEPTH DIAL (Distinct Korean Vertical Layout) */
+    aside.depth-rail-panel {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-52%);
+      z-index: 22;
+      background: var(--glass-espresso);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--gold-border);
+      border-radius: 20px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.62);
+      width: 132px;
+    }
+    .depth-rail-header {
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+      padding-bottom: 7px;
+      width: 100%;
+    }
+    .depth-rail-header strong {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: 0.04em;
+    }
+    .depth-rail-header span {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .depth-body-wrap {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+    }
+    .depth-buttons-col {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+    }
+    .depth-step-btn {
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-warm);
+      border-radius: 9px;
+      padding: 7px 6px;
+      font-size: 11.2px;
+      font-weight: 700;
+      font-family: inherit;
+      text-align: left;
+      transition: all 0.16s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .depth-step-btn:hover {
+      border-color: var(--gold-primary);
+      color: #fff;
+    }
+    .depth-step-btn.active-layer {
+      background: linear-gradient(135deg, rgba(245, 211, 108, 0.28), rgba(181, 133, 44, 0.38));
+      border-color: var(--gold-bright);
+      color: #fff;
+      font-weight: 800;
+    }
+    .depth-step-btn.peeled-away {
+      opacity: 0.34;
+      text-decoration: line-through;
+    }
+    .depth-vertical-slider-col {
+      width: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    #depthRangeInput {
+      writing-mode: vertical-lr;
+      direction: rtl;
+      appearance: slider-vertical;
+      width: 18px;
+      height: 196px;
+      accent-color: var(--gold-bright);
+      cursor: ns-resize;
+    }
+
+    /* CAMERA & FOCUS ISOLATION QUICK BAR (Above Timelapse Dock) */
+    .cam-preset-bar {
+      position: fixed;
+      bottom: 116px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 24;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(18, 14, 11, 0.84);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    }
+    .cam-chip {
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-warm);
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+    .cam-chip:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .cam-chip.active {
+      background: rgba(212, 175, 55, 0.22);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      font-weight: 800;
+    }
+    .cam-divider {
+      width: 1px;
+      height: 14px;
+      background: rgba(212, 175, 55, 0.25);
+      margin: 0 2px;
+    }
+
+    /* BOTTOM KILLER FEATURE: TIME-LAPSE TREATMENT & RECOVERY BAR */
+    section.timelapse-dock {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(880px, calc(100vw - 32px));
+      z-index: 25;
+      background: var(--glass-espresso-strong);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.5px solid var(--gold-border);
+      border-radius: 22px;
+      padding: 13px 22px 15px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75);
+    }
+    .tl-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .tl-phase-labels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      font-size: 12.2px;
+      font-weight: 800;
+    }
+    .tl-lbl-pain { color: #ff6b7a; cursor: pointer; }
+    .tl-lbl-treat { color: var(--herb-gold); cursor: pointer; }
+    .tl-lbl-heal { color: var(--heal-jade); cursor: pointer; }
+
+    .tl-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .play-timelapse-btn {
+      cursor: pointer;
+      border: 1px solid var(--gold-bright);
+      background: linear-gradient(135deg, #f5d36c 0%, #b5842c 100%);
+      color: #15110c;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 900;
+      padding: 9px 16px;
+      border-radius: 999px;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+    }
+
+    .tl-track-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    #timelapseSlider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff3b4e 0%, #ffcf56 50%, #2dd4bf 100%);
+      outline: none;
+      cursor: ew-resize;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
+    }
+    #timelapseSlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffffff, #f5d36c 65%, #9e7020 100%);
+      border: 2.5px solid #16120e;
+      box-shadow: 0 0 18px rgba(245, 211, 108, 0.9);
+      cursor: grab;
+    }
+    .tl-percent-pill {
+      min-width: 72px;
+      text-align: right;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--gold-bright);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 3D Floating Anatomical Callout Pins */
+    .anat-pin-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 12;
+    }
+    .anat-pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      padding: 5px 11px;
+      border-radius: 9px;
+      background: rgba(14, 11, 9, 0.88);
+      border: 1px solid rgba(212, 175, 55, 0.52);
+      color: #fdfbf7;
+      font-size: 11.5px;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      transition: opacity 0.2s ease;
+    }
+    .anat-pin::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      transform: translateX(-50%) rotate(45deg);
+      width: 8px;
+      height: 8px;
+      background: inherit;
+      border-right: inherit;
+      border-bottom: inherit;
+    }
+    .anat-pin.alert-pin {
+      border-color: rgba(255, 59, 78, 0.9);
+      color: #ffe0e4;
+      background: rgba(52, 10, 16, 0.92);
+      box-shadow: 0 0 20px rgba(255, 59, 78, 0.35);
+    }
+    .anat-pin.treat-pin {
+      border-color: rgba(245, 211, 108, 0.9);
+      color: #fff3c4;
+      background: rgba(46, 33, 10, 0.92);
+      box-shadow: 0 0 20px rgba(245, 211, 108, 0.32);
+    }
+    .anat-pin.heal-pin {
+      border-color: rgba(45, 212, 191, 0.9);
+      color: #ccfbf1;
+      background: rgba(8, 42, 38, 0.92);
+      box-shadow: 0 0 20px rgba(45, 212, 191, 0.32);
+    }
+
+    /* Legal Medical Disclaimer Footer (Korean Medical Law Art. 56 Shield) */
+    .medical-legal-notice {
+      position: fixed;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      font-size: 10.5px;
+      color: rgba(214, 202, 184, 0.44);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* Non-Covered Consent Roadmap Summary Modal */
+    .consent-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(4, 3, 2, 0.84);
+      backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .consent-modal-backdrop.open { display: flex; }
+    .consent-modal-card {
+      width: 100%;
+      max-width: 690px;
+      background: linear-gradient(165deg, #1f1914 0%, #120f0c 100%);
+      border: 1.5px solid var(--gold-bright);
+      border-radius: 22px;
+      padding: 28px 30px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.78);
+      color: var(--text-ivory);
+    }
+    .roadmap-3-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .rm-step-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.34);
+      border-radius: 14px;
+      padding: 15px;
+    }
+    .rm-step-box strong {
+      display: block;
+      color: var(--gold-bright);
+      font-size: 13.5px;
+      margin-bottom: 6px;
+    }
+    .rm-step-box p {
+      font-size: 12.5px;
+      color: var(--text-warm);
+      line-height: 1.52;
+    }
+
+    @media (max-width: 1380px) {
+      header.chairside-top { gap: 6px; left: 12px; right: 12px; }
+      .brand-capsule { padding: 6px 11px; gap: 7px; }
+      .brand-clinic-name { font-size: 12.5px; }
+      .brand-sub-tag { display: none; }
+      .cond-btn { font-size: 11.8px; padding: 6px 10px; }
+      .tool-pill { font-size: 11.2px; padding: 6px 10px; }
+    }
+    @media (max-width: 1100px) {
+      aside.briefing-card {
+        width: 286px;
+        top: 114px;
+        padding: 13px 15px;
+      }
+      .brief-title { font-size: 15.5px; }
+      .doctor-quote-box { font-size: 12px; padding: 9px 10px; }
+      aside.depth-rail-panel {
+        right: 10px;
+        width: 112px;
+        padding: 10px 8px;
+      }
+      .medical-legal-notice { display: none; }
+    }
+    @media (max-width: 720px) {
+      aside.briefing-card { display: none; }
+      .cam-preset-bar { bottom: 124px; max-width: calc(100vw - 24px); overflow-x: auto; }
+      .roadmap-3-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- High-Poly 3D Medical Scanner Loader -->
+  <div id="scannerLoader">
+    <div class="scanner-ring"></div>
+    <div class="scanner-load-title">BAREUN 3D ANATOMY ENGINE</div>
+    <div class="scanner-load-sub" id="scannerLoadText">24만 폴리곤 정밀 해부학 스캔 모델 초기화 중...</div>
+  </div>
+
+  <!-- Spotlight Dark Studio Vignette -->
+  <div class="spotlight-vignette"></div>
+
+  <!-- 3D WebGL Spotlight Stage -->
+  <canvas id="webglCanvas"></canvas>
+
+  <!-- Floating 3D Anatomical Callout Pins -->
+  <div class="anat-pin-layer" id="anatPinLayer">
+    <div class="anat-pin" id="pinPrimary">해부 구조물</div>
+    <div class="anat-pin alert-pin" id="pinPathology">병변 압박 부위</div>
+  </div>
+
+  <!-- Chairside iPad Laser Drawing Layer -->
+  <canvas id="drawCanvas"></canvas>
+
+  <!-- TOP HEADER: Clinic White-Label Brand + 4 Disease Tabs + Chairside Tools -->
+  <header class="chairside-top">
+    <div class="brand-capsule">
+      <span class="brand-dot"></span>
+      <span class="brand-clinic-name" id="clinicBrandTitle">바른한의원 대전본점</span>
+      <span class="brand-sub-tag">3D CHAIRSIDE STUDIO</span>
+    </div>
+
+    <nav class="condition-tabs" aria-label="4대 핵심 비급여 질환 선택">
+      <button type="button" class="cond-btn active" data-cond="lumbar" onclick="selectCondition('lumbar')">
+        🔴 요추 디스크 · 방사통
+      </button>
+      <button type="button" class="cond-btn" data-cond="shoulder" onclick="selectCondition('shoulder')">
+        🟠 회전근개 파열 · 충돌
+      </button>
+      <button type="button" class="cond-btn" data-cond="knee" onclick="selectCondition('knee')">
+        🟡 퇴행성 무릎관절염 · 골극
+      </button>
+      <button type="button" class="cond-btn" data-cond="cervical" onclick="selectCondition('cervical')">
+        🔵 일자목 · 거북목 (15kg 하중)
+      </button>
+    </nav>
+
+    <div class="chairside-tools">
+      <button type="button" class="tool-pill" id="btnTogglePen" onclick="toggleLaserPen()">
+        ✏️ 레이저 판서 펜
+      </button>
+      <button type="button" class="tool-pill" id="btnClearPen" style="display:none;" onclick="clearLaserCanvas()">
+        🧹 지우기
+      </button>
+      <button type="button" class="tool-pill" id="btnToggleScript" onclick="toggleBriefingPanel()">
+        💬 원장님 브리핑창
+      </button>
+      <button type="button" class="tool-pill gold-cta" onclick="openConsentModal()">
+        📋 맞춤 치료 동의서 제시
+      </button>
+    </div>
+  </header>
+
+  <!-- LEFT TELEPROMPTER & BIOMECHANICAL METRICS -->
+  <aside class="briefing-card" id="briefingCard">
+    <div class="doc-mode-bar">
+      <span class="brief-stage-pill pain" id="briefStagePill">● 1단계 · 병리 기전</span>
+      <label class="doc-mode-toggle" title="원장님 진료 시 환자에게 읽어줄 10초 핵심 스크립트를 화면에 띄웁니다">
+        <input type="checkbox" id="chkDoctorMode" checked onchange="toggleDoctorModeUI()" />
+        <span>👨‍⚕️ 원장님 티칭 모드</span>
+      </label>
+    </div>
+
+    <h1 class="brief-title" id="briefTitle">요추 4-5번 추간판탈출증 (허리 디스크)</h1>
+    <div class="brief-anat-sub" id="briefSub">L4-L5 Intervertebral Disc Herniation &amp; Nerve Root Compression</div>
+
+    <!-- 3-Step Interactive Teaching Navigation -->
+    <div class="teaching-step-btns">
+      <button type="button" class="step-teach-btn active-step-0" id="btnStep0" onclick="jumpToStep(0)">
+        1. 병리 기전<br><span style="font-size:10px; opacity:0.8;">(진통제 한계)</span>
+      </button>
+      <button type="button" class="step-teach-btn" id="btnStep1" onclick="jumpToStep(1)">
+        2. 추나·약침<br><span style="font-size:10px; opacity:0.8;">(음압 감압)</span>
+      </button>
+      <button type="button" class="step-teach-btn" id="btnStep2" onclick="jumpToStep(2)">
+        3. 섬유륜 강화<br><span style="font-size:10px; opacity:0.8;">(재발 방지)</span>
+      </button>
+    </div>
+
+    <!-- Doctor 10-Second Teleprompter Script -->
+    <div class="doc-script-header">
+      <span class="doc-badge" id="docScriptBadge">🗣️ 원장님 10초 티칭 멘트</span>
+      <span style="font-size:10.5px; color:var(--text-muted);" id="stepIndicatorLabel">1/3 단계</span>
+    </div>
+    <div class="doctor-quote-box" id="doctorQuoteBox">
+      "환자분, 지금 다리가 저린 이유는 뼈가 닳아서가 아닙니다. 여기 보시는 붉은 젤리(수핵)가 터져 나와 신경을 누르고 있기 때문입니다. 진통제는 불(염증)만 잠깐 끌 뿐 수핵을 빼내지 못합니다."
+    </div>
+
+    <!-- Patient Psychological Conviction Key Point -->
+    <div class="patient-point-box" id="patientKeyPointBox">
+      <strong>💡 환자 설득 포인트:</strong> "진통제나 주사는 신경을 누른 원인 물질(수핵)을 빼내지 못해 약효가 끝나면 재발한다는 점을 환자 눈앞에서 직접 확인시킵니다."
+    </div>
+
+    <div class="metric-bars" style="margin-top:10px;">
+      <div class="metric-mini">
+        <span class="metric-mini-label" id="metric1Label">좌골신경 압박 · 방사통 지수</span>
+        <span class="metric-mini-val" id="metric1Val" style="color:#ff5c6c;">92% (급성 방사통)</span>
+      </div>
+      <div class="metric-mini">
+        <span class="metric-mini-label" id="metric2Label">추간판 공간 감압 · 복원율</span>
+        <span class="metric-mini-val" id="metric2Val" style="color:#f5d36c;">12% (협착 진행)</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT VERTICAL 6-LAYER TISSUE DEPTH PEELER -->
+  <aside class="depth-rail-panel" aria-label="6단계 인체 조직 심도 조절">
+    <div class="depth-rail-header">
+      <strong>조직 투시 심도</strong>
+      <span id="depthStatusLabel">골격·신경 집중</span>
+    </div>
+    <div class="depth-body-wrap">
+      <div class="depth-buttons-col" id="depthButtonsCol">
+        <button type="button" class="depth-step-btn" data-depth="0" onclick="setTissueDepth(0)">01 표피·경혈</button>
+        <button type="button" class="depth-step-btn" data-depth="1" onclick="setTissueDepth(1)">02 천층 근막</button>
+        <button type="button" class="depth-step-btn" data-depth="2" onclick="setTissueDepth(2)">03 심부 근육</button>
+        <button type="button" class="depth-step-btn" data-depth="3" onclick="setTissueDepth(3)">04 인대·관절낭</button>
+        <button type="button" class="depth-step-btn" data-depth="4" onclick="setTissueDepth(4)">05 골격·연골</button>
+        <button type="button" class="depth-step-btn active-layer" data-depth="5" onclick="setTissueDepth(5)">06 신경·혈류</button>
+      </div>
+      <div class="depth-vertical-slider-col">
+        <input type="range" id="depthRangeInput" min="0" max="5" step="0.05" value="4.2" oninput="onDepthSliderInput(this.value)" title="위아래로 밀어 피부→근막→근육→인대→뼈→신경 순으로 벗겨냅니다" />
+      </div>
+    </div>
+  </aside>
+
+  <!-- CAMERA PRESETS & FOCUS ISOLATION TOGGLE -->
+  <div class="cam-preset-bar" aria-label="카메라 앵글 및 포커스 제어">
+    <button type="button" class="cam-chip active" id="camBtn0" onclick="selectCameraPreset(0)">🔍 병변 초근접</button>
+    <button type="button" class="cam-chip" id="camBtn1" onclick="selectCameraPreset(1)">📐 측면·역학 뷰</button>
+    <button type="button" class="cam-chip" id="camBtn2" onclick="selectCameraPreset(2)">🧍 전신 맥락·방사통 뷰</button>
+    <span class="cam-divider"></span>
+    <button type="button" class="cam-chip active" id="btnFocusIso" onclick="toggleFocusIsolation()">🔦 포커스 스포트라이트 ON</button>
+  </div>
+
+  <!-- BOTTOM KILLER FEATURE: TIME-LAPSE TREATMENT & RECOVERY SLIDER -->
+  <section class="timelapse-dock" aria-label="타임랩스 치료 시뮬레이션 제어바">
+    <div class="tl-top-row">
+      <div class="tl-phase-labels">
+        <span class="tl-lbl-pain" onclick="animateTimelapseTo(0)">🔴 현재의 고통 (병변 압박·염증)</span>
+        <span class="tl-lbl-treat" onclick="animateTimelapseTo(52)">🟡 추나 감압 · 고농도 약침 · 도침 개입</span>
+        <span class="tl-lbl-heal" onclick="animateTimelapseTo(100)">🟢 치료 후 구조 복원 (통증 소실)</span>
+      </div>
+    </div>
+    <div class="tl-slider-row">
+      <button type="button" class="play-timelapse-btn" id="btnPlayTimelapse" onclick="toggleAutoPlayTimelapse()">
+        ▶ 치료 타임랩스 재생
+      </button>
+      <div class="tl-track-wrap">
+        <input type="range" id="timelapseSlider" min="0" max="100" step="0.5" value="0" oninput="onTimelapseInput(this.value)" />
+      </div>
+      <span class="tl-percent-pill" id="tlPercentLabel">0% 고통</span>
+    </div>
+  </section>
+
+  <!-- Legal Shield Disclaimer -->
+  <div class="medical-legal-notice">
+    ※ 본 3D 생체역학 뷰어는 환자의 이해를 돕기 위한 독자 개발 의학 교육 시뮬레이션이며, 개인의 병변 상태와 체질에 따라 치료 기간 및 경과는 달라질 수 있습니다.
+  </div>
+
+  <!-- Non-Covered Treatment Consent Summary Modal -->
+  <div class="consent-modal-backdrop" id="consentModalBackdrop" onclick="closeConsentModal(event)">
+    <div class="consent-modal-card" onclick="event.stopPropagation();">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(212,175,55,0.3); padding-bottom:12px;">
+        <div>
+          <span style="font-size:11px; font-weight:800; color:var(--gold-bright);">CHAIRSIDE TREATMENT ROADMAP</span>
+          <h2 id="modalPlanTitle" style="font-size:21px; margin-top:2px;">요추 디스크 · 신경압박 3단계 비수술 복원 프로그램</h2>
+        </div>
+        <button type="button" class="tool-pill" onclick="closeConsentModal()">닫기 ✕</button>
+      </div>
+      <div class="roadmap-3-grid" id="modalRoadmapGrid"></div>
+      <div style="padding:13px 16px; border-radius:12px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.35); font-size:13px; color:var(--text-warm); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <span>💡 <strong>원장님 권고:</strong> 진통제로 경보음만 끄지 않고, <strong>공간 확보(추나) + 염증 세척(약침) + 조직 강화(한약)</strong>가 동시에 들어가야 재발 고리가 끊어집니다.</span>
+        <div style="width:100%; border-top:1px dashed rgba(212,175,55,0.3); margin-top:8px; padding-top:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-muted);">
+          <span>🏥 바른한의원 대전본점 1:1 진료 및 치료 상담: <strong style="color:var(--gold-bright);">010-5631-1275</strong></span>
+          <span style="color:var(--gold-bright);">진료시간: 평일 야간진료 · 토/일/공휴일 정상진료</span>
+        </div>
+        <button type="button" class="play-timelapse-btn" onclick="closeConsentModal(); animateTimelapseTo(100);">3D 회복 완료 상태 다시 보기 →</button>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    import * as THREE from 'https://esm.sh/three@0.166.0';
+    import { GLTFLoader } from 'https://esm.sh/three@0.166.0/examples/jsm/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'https://esm.sh/three@0.166.0/examples/jsm/loaders/DRACOLoader.js';
+    import { OrbitControls } from 'https://esm.sh/three@0.166.0/examples/jsm/controls/OrbitControls.js';
+    import { EffectComposer } from 'https://esm.sh/three@0.166.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://esm.sh/three@0.166.0/examples/jsm/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'https://esm.sh/three@0.166.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+    // White-label URL parameter support (?clinic=청담경희한의원&cond=cervical)
+    const urlParams = new URLSearchParams(window.location.search);
+    const customClinic = urlParams.get('clinic');
+    if (customClinic) {
+      document.getElementById('clinicBrandTitle').textContent = customClinic;
+    }
+
+    // =========================================================================
+    // 1. CLINICAL SCENARIOS, REAL ANATOMICAL COORDINATES & DOCTOR TELEPROMPTER
+    // =========================================================================
+    const CLINICAL_DB = {
+      lumbar: {
+        condId: 0,
+        title: '요추 4-5번 추간판탈출증 (허리 디스크)',
+        sub: 'L4-L5 Disc Herniation & Sciatic Nerve Root Compression',
+        defaultDepth: 4.35,
+        focusCenter: [0.04, 2.64, -0.06],
+        focusRadius: 0.44,
+        camPresets: [
+          { label: '🔍 L4-L5 신경근 초근접', pos: [0.62, 2.84, -0.78], target: [0.04, 2.64, -0.06] },
+          { label: '📐 요추 측면 감압 뷰', pos: [0.74, 2.68, -0.05], target: [0.00, 2.65, -0.05] },
+          { label: '🧍 좌골신경 하지 방사통 뷰', pos: [0.88, 2.02, -1.32], target: [0.14, 1.96, -0.10] }
+        ],
+        pinPrimaryText: 'L4 · L5 요추 추체 & 추간공',
+        pinPathText: ['⚡ 탈출 수핵 · 좌골신경근 압박', '✨ 추나 음압 감압 · 신경약침 세척', '✓ 수핵 흡수 복원 · 방사통 소실'],
+        quotes: {
+          pain: '"환자분, 여기 L4-L5 디스크 섬유륜이 찢어지며 붉은 젤리(수핵)가 터져 나와 다리로 내려가는 신경뿌리를 강하게 짓누르고 있죠? 이러니 엉치부터 종아리까지 저린 겁니다. 진통제만 드셔서는 저 튀어나온 수핵이 들어가지 않습니다."',
+          treat: '"지금 보시듯 정밀 수기 추나로 척추 마디 간격을 부드럽게 넓혀 음압(빨아들이는 힘)을 형성하고, 추간공 바로 옆으로 고농도 신경약침을 자입해 붉은 신경 염증과 부종을 직접 씻어냅니다."',
+          heal: '"척추 사이 공간이 살아나면서 튀어나왔던 수핵이 디스크 내부로 쏙 흡수되었고, 신경의 붓기가 가라앉았습니다. 이제 인대강화 한약으로 찢어진 섬유륜을 단단히 굳혀야 재발하지 않습니다."'
+        },
+        patientPoints: [
+          '진통제나 신경차단술은 통증 신호만 차단할 뿐, 신경을 짓누르는 탈출 수핵(원인 물질)을 빼내지 못해 약효 종료 후 재발함을 명확히 인지시킵니다.',
+          '추나 치료의 순간 음압(- 진공 흡입)으로 수핵이 제자리로 유도되고, 재생 약침이 신경 주변의 화학적 염증을 씻어내는 생체역학적 기전을 보여줍니다.',
+          '급한 불(통증)을 끈 뒤, 찢어진 섬유륜 껍질이 아물 때까지 3단계(12주) 한약 치료로 단단히 고착시켜야 평생 재발을 막을 수 있음을 납득시킵니다.'
+        ],
+        metrics: {
+          m1Label: '좌골신경 압박 · 방사통 지수',
+          m2Label: 'L4-L5 추간판 감압 · 복원율'
+        },
+        roadmap: [
+          { title: '1단계 · 추나 신연 감압', desc: '좁아진 L4-L5 추간판 간격을 물리적으로 넓혀 탈출 수핵을 흡입하는 음압 환경을 조성합니다.' },
+          { title: '2단계 · 고농도 신경약침', desc: '눌린 신경근 주위의 급성 화학적 염증 매개물질과 부종을 빠르게 세척·진정시킵니다.' },
+          { title: '3단계 · 디스크 인대보강 한약', desc: '찢어진 섬유륜 콜라겐 재생과 심부 다열근을 강화해 재탈출을 원천 방지합니다.' }
+        ]
+      },
+      shoulder: {
+        condId: 1,
+        title: '회전근개 파열 · 견봉하 충돌증후군',
+        sub: 'Subacromial Impingement & Supraspinatus Tendon Tear',
+        defaultDepth: 3.45,
+        focusCenter: [0.37, 3.55, -0.09],
+        focusRadius: 0.42,
+        camPresets: [
+          { label: '🔍 견봉하 힘줄 초근접', pos: [0.84, 3.72, 0.66], target: [0.36, 3.54, -0.08] },
+          { label: '📐 날개뼈·극상근 후면 뷰', pos: [0.76, 3.68, -0.68], target: [0.35, 3.55, -0.10] },
+          { label: '🧍 어깨 외전 역학 전체 뷰', pos: [0.48, 3.38, 1.28], target: [0.28, 3.42, -0.08] }
+        ],
+        pinPrimaryText: '견봉(어깨 지붕뼈) & 상완골두',
+        pinPathText: ['⚡ 극상근 힘줄 마찰 파열 · 점액낭 부종', '✨ 견갑 추나 공간확보 · 봉독약침 침투', '✓ 견봉하 공간 복원 · 힘줄 콜라겐 결합'],
+        quotes: {
+          pain: '"팔을 들어 올릴 때마다 어깨 지붕뼈(견봉)와 위팔뼈 사이에서 회전근개 힘줄이 끼어 갈리고 있습니다. 해진 밧줄처럼 힘줄이 뜯어지고 점액낭이 부어올라 밤마다 욱신거리는 상태입니다."',
+          treat: '"말린 어깨와 날개뼈 각도를 추나로 교정해 힘줄 터널 공간을 넓히고, 손상된 힘줄 틈새로 고농도 재생 약침·봉독을 침투시켜 염증을 가라앉힙니다."',
+          heal: '"뜯어졌던 회전근개 힘줄 섬유들이 단단한 콜라겐 다발로 매끄럽게 재결합되어, 팔을 높이 들어 올려도 더 이상 뼈와 힘줄이 부딪히지 않습니다."'
+        },
+        patientPoints: [
+          '팔을 들 때마다 뼈와 힘줄이 톱니처럼 갈리는 구조적 충돌을 보여주어, 주사만 맞고 계속 팔을 쓰면 힘줄이 완전 파열된다는 점을 설명합니다.',
+          '견갑골과 흉추를 교정해 힘줄이 숨 쉴 수 있는 통로 공간을 확보하고, 무혈관 부위인 힘줄에 재생 약침으로 미세혈류를 주입합니다.',
+          '손상된 건(Tendon) 섬유에 콜라겐을 합성시키는 한약 처방을 통해 재발과 만성 오십견으로의 이행을 방지합니다.'
+        ],
+        metrics: {
+          m1Label: '견봉하 충돌 · 힘줄 파열도',
+          m2Label: '견봉하 공간 · 힘줄 탄성도'
+        },
+        roadmap: [
+          { title: '1단계 · 경흉추·견갑 추나', desc: '앞으로 말린 견갑골과 견봉 각도를 교정해 힘줄이 갈리는 물리적 충돌 공간을 넓힙니다.' },
+          { title: '2단계 · 회전근개 재생 약침', desc: '견봉하 점액낭 부종을 제거하고 손상된 극상근 무혈성 부위에 미세혈류를 공급합니다.' },
+          { title: '3단계 · 건(腱) 콜라겐 한약', desc: '약해진 힘줄 섬유 조직에 영양을 채워 완전 파열 진행과 야간통을 차단합니다.' }
+        ]
+      },
+      knee: {
+        condId: 2,
+        title: '퇴행성 슬관절염 · 연골 마모 & 골극',
+        sub: 'Medial Knee Osteoarthritis, Meniscus Wear & Osteophytes',
+        defaultDepth: 4.15,
+        focusCenter: [0.35, 1.185, -0.17],
+        focusRadius: 0.36,
+        camPresets: [
+          { label: '🔍 내측 연골·골극 초근접', pos: [0.02, 1.19, 0.04], target: [0.35, 1.185, -0.165] },
+          { label: '📐 무릎 외측 굴신 뷰', pos: [0.82, 1.22, 0.14], target: [0.36, 1.185, -0.17] },
+          { label: '🧍 하지 O다리 정렬 전체 뷰', pos: [0.26, 1.18, 1.38], target: [0.24, 1.16, -0.15] }
+        ],
+        pinPrimaryText: '대퇴골 · 경골 내측 관절면',
+        pinPathText: ['⚡ 내측 연골 소실 · 뾰족한 골극 마찰', '✨ 하지 축 추나 정렬 · 관절강 약침', '✓ 청옥빛 윤활 코팅막 · 열감 소실'],
+        quotes: {
+          pain: '"자동차 타이어 격인 무릎 안쪽 연골이 닳아 위아래 뼈끼리 직접 부딪히고 있습니다. 뼈 모서리에 뾰족한 뼈가시(골극)까지 자라나 계단 내려갈 때마다 찌르는 통증이 생깁니다."',
+          treat: '"안쪽으로 휜 O자 다리 하중 축을 추나로 반듯하게 세워 내측 압력을 덜어주고, 관절강 안으로 항염 약침과 생체 윤활 성분을 직접 주입합니다."',
+          heal: '"좁아졌던 무릎 안쪽 관절 틈새가 열리고 마모된 연골 위로 윤활 코팅막이 형성되어, 굽혔다 펴도 마찰열과 부종이 사라졌습니다."'
+        },
+        patientPoints: [
+          '연골이 다 닳아서 인공관절 수술 단계로 가기 전, 아직 남아있는 내측 관절 틈새를 살려내는 것이 골든타임임을 강조합니다.',
+          '무릎 관절면을 갉아먹는 O다리 하중 축을 추나로 분산시키고, 물 차는 활막 염증을 약침으로 가라앉힙니다.',
+          '녹각교·우슬 등 관절 연골 기질을 재생시키는 교제 한약으로 관절액 윤활을 유지하여 인공관절 수술 시기를 10년 이상 늦춥니다.'
+        ],
+        metrics: {
+          m1Label: '내측 골극 마찰 · 활막염 열감',
+          m2Label: '관절 간격 · 윤활 코팅 지수'
+        },
+        roadmap: [
+          { title: '1단계 · 고관절·슬관절 축 교정', desc: '무릎 안쪽(내측 구획)에만 집중되던 체중 부하를 바깥쪽으로 고르게 분산시킵니다.' },
+          { title: '2단계 · 항염·윤활 관절약침', desc: '물이 차고 화끈거리는 활막 염증을 가라앉히고 관절면 마찰 계수를 낮춥니다.' },
+          { title: '3단계 · 연골보호 교제 한약', desc: '녹각교·우슬 등 학술 검증 약재로 남은 연골 기질을 보호하고 대퇴사두근 지지력을 높입니다.' }
+        ]
+      },
+      cervical: {
+        condId: 3,
+        title: '일자목 · 거북목 증후군 (15kg 경추 과부하)',
+        sub: 'Forward Head Posture, Loss of Lordosis & Occipital Neuralgia',
+        defaultDepth: 4.10,
+        focusCenter: [0.00, 3.96, -0.03],
+        focusRadius: 0.56,
+        camPresets: [
+          { label: '🔍 경추 C커브 측면 투시 뷰', pos: [1.14, 4.00, 0.24], target: [0.00, 3.96, -0.03] },
+          { label: '📐 후두하근·대후두신경 후면 뷰', pos: [0.46, 3.98, -0.74], target: [0.00, 3.93, -0.11] },
+          { label: '🧍 두경부·어깨 체형 비교 뷰', pos: [0.68, 3.78, 1.14], target: [0.00, 3.78, -0.03] }
+        ],
+        pinPrimaryText: '경추 C1~C7 정렬 & 뇌혈류',
+        pinPathText: ['⚠️ 거북목 하중 15.0kg · 후두신경 두통', '✨ 후두하근 도침/침 이완 · 경추 추나', '✓ 정상 C자 커브 · 하중 5.0kg · 뇌혈류 개통'],
+        quotes: {
+          pain: '"원래 성인 머리 무게는 5kg인데, 고개가 앞으로 빠진 거북목 때문에 뒷목은 지금 15kg 하중을 버티고 있습니다. 굳은 후두하근이 신경과 뇌혈관을 조르니 만성 두통과 눈 피로가 오는 겁니다."',
+          treat: '"뒤통수 아래 질기게 유착된 후두하근 매듭을 정밀 침·도침으로 풀어주고, 경추 추나 수기 교정으로 앞으로 쏟아진 목뼈 마디를 뒤로 정렬합니다."',
+          heal: '"목뼈가 정상 C자 커브를 되찾으며 하중이 15kg에서 5kg으로 떨어졌고, 조여 있던 뇌혈관이 열려 머리가 맑아집니다."'
+        },
+        patientPoints: [
+          '목 디스크와 만성 두통의 원인이 15kg에 달하는 비정상적인 전방 하중임을 환자에게 3D 각도로 직접 체감시킵니다.',
+          '근육 이완제만으로는 절대 풀리지 않는 심부 후두하근의 섬유성 유착을 도침으로 미세 박리하고 경추 만곡을 교정합니다.',
+          '뇌혈류 순환을 촉진하고 경추 인대의 탄력을 회복시키는 한약으로 재발 없는 경추 안정을 완성합니다.'
+        ],
+        metrics: {
+          m1Label: '경추 체감 하중 · 두통 압박도',
+          m2Label: 'C자 커브 만곡 · 뇌혈류 개통률'
+        },
+        roadmap: [
+          { title: '1단계 · 후두하근 도침·약침 이완', desc: '후두신경과 추골동맥을 조르는 심부 후두하근·경판상근의 만성 유착을 정밀하게 해소합니다.' },
+          { title: '2단계 · 상·하부 경추 C커브 추나', desc: '일자·역C자로 무너진 경추 정렬과 굽은 상위 흉추를 함께 바로잡아 머리 무게중심을 되돌립니다.' },
+          { title: '3단계 · 수승화강 뇌혈류 한약', desc: '머리에 울체된 상열감과 신경 피로를 내리고 경추 디스크·인대의 지지 탄력을 회복합니다.' }
+        ]
+      }
+    };
+
+    // =========================================================================
+    // 2. THREE.JS HIGH-PRECISION MEDICAL STUDIO & POST-PROCESSING
+    // =========================================================================
+    const canvas = document.getElementById('webglCanvas');
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.02, 50);
+    camera.position.set(0.62, 2.84, -0.78);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.minDistance = 0.24;
+    controls.maxDistance = 4.8;
+    controls.target.set(0.04, 2.64, -0.06);
+
+    // Subtle Medical Bloom ONLY on Emissive Pain Lightning, Golden Needles & Jade Cushion
+        // High-End Luxury Medical Bloom: Soft surgical-grade glow without overblowing cortical bone
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      0.32, // refined atmospheric glow on gelatinous core, amber nerves & golden needles
+      0.52,
+      0.88  // protective threshold: ensures ivory cortical bone never washes out
+    );
+    composer.addPass(bloomPass);
+
+    // =========================================================================
+    // 2-B. HIGH-END PROCEDURAL OBSIDIAN & CHAMPAGNE GOLD STUDIO ENVIRONMENT (IBL)
+    // =========================================================================
+    (function setupLuxuryStudioEnvironment() {
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
+      const envCanvas = document.createElement('canvas');
+      envCanvas.width = 512;
+      envCanvas.height = 256;
+      const ctx = envCanvas.getContext('2d');
+
+      // 1. Deep Espresso-Obsidian Vignetted Backdrop
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, 256);
+      bgGrad.addColorStop(0.0, '#1c1611');
+      bgGrad.addColorStop(0.48, '#0b0907');
+      bgGrad.addColorStop(0.52, '#080605');
+      bgGrad.addColorStop(1.0, '#15100c');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 512, 256);
+
+      // 2. Warm Key Softbox (Top-Left Key Light Source Reflection)
+      const keyGrad = ctx.createRadialGradient(150, 65, 0, 150, 65, 120);
+      keyGrad.addColorStop(0, 'rgba(255, 246, 230, 0.95)');
+      keyGrad.addColorStop(0.35, 'rgba(245, 222, 185, 0.55)');
+      keyGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = keyGrad;
+      ctx.fillRect(0, 0, 512, 256);
+
+      // 3. Champagne Gold Rim Softbox (Top-Right / Posterior Reflection for Bone Ridge Sheen)
+      const rimGrad = ctx.createRadialGradient(375, 55, 0, 375, 55, 115);
+      rimGrad.addColorStop(0, 'rgba(255, 224, 130, 0.92)');
+      rimGrad.addColorStop(0.4, 'rgba(212, 175, 55, 0.50)');
+      rimGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = rimGrad;
+      ctx.fillRect(0, 0, 512, 256);
+
+      // 4. Ground Bounce Warm Floor Sheen
+      const floorGrad = ctx.createLinearGradient(0, 190, 0, 256);
+      floorGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      floorGrad.addColorStop(1, 'rgba(75, 55, 38, 0.45)');
+      ctx.fillStyle = floorGrad;
+      ctx.fillRect(0, 190, 512, 66);
+
+      const envTexture = new THREE.CanvasTexture(envCanvas);
+      envTexture.mapping = THREE.EquirectangularReflectionMapping;
+      const envMap = pmremGenerator.fromEquirectangular(envTexture).texture;
+      scene.environment = envMap;
+      envTexture.dispose();
+      pmremGenerator.dispose();
+    })();
+
+    // =========================================================================
+    // 2-C. 4-POINT DRAMATIC CLINICAL STUDIO LIGHTING RIG
+    // =========================================================================
+    // Ambient Warm Cavity Fill
+    scene.add(new THREE.AmbientLight(0xfff4e6, 0.65));
+
+    // 1. Key Light: Warm High-CRI Medical Softbox
+    const keyLight = new THREE.DirectionalLight(0xfffaf0, 2.2);
+    keyLight.position.set(2.8, 5.2, 3.0);
+    scene.add(keyLight);
+
+    // 2. Fill Light: Deep Warm Mahogany Softener
+    const fillLight = new THREE.DirectionalLight(0xe5d0ba, 0.95);
+    fillLight.position.set(-2.6, 3.4, 1.8);
+    scene.add(fillLight);
+
+    // 3. Rim Light 1: Pure Champagne Gold Silhouette Edge Cutter
+    const rimLight1 = new THREE.DirectionalLight(0xffd574, 2.6);
+    rimLight1.position.set(-2.2, 4.4, -3.4);
+    scene.add(rimLight1);
+
+    // 4. Rim Light 2: Amber Posterior Contour Light
+    const rimLight2 = new THREE.DirectionalLight(0xf5ba60, 2.0);
+    rimLight2.position.set(2.4, 3.0, -3.2);
+    scene.add(rimLight2);
+
+    // 5. Focal Point Spotlight for Anatomical Core (Disc & Joint Cavity Sheen)
+    const focalCoreLight = new THREE.PointLight(0xffe4a0, 1.35, 7.0, 1.4);
+    focalCoreLight.position.set(0.08, 2.68, 0.6);
+    scene.add(focalCoreLight);
+
+    // =========================================================================
+    // 3. UNIFIED WORLD-SPACE BIOMECHANICAL KINEMATICS (GLSL + EXACT JS MIRROR)
+    // =========================================================================
+    const sharedUniforms = {
+      uTime:        { value: 0.0 },
+      uCondId:      { value: 0.0 }, // 0=lumbar, 1=shoulder, 2=knee, 3=cervical
+      uHeal:        { value: 0.0 }, // 0.0 (pain) -> 1.0 (healed)
+      uFocusCenter: { value: new THREE.Vector3(0.04, 2.63, -0.07) },
+      uFocusRadius: { value: 0.38 },
+      uIsoStrength: { value: 0.88 }
+    };
+
+    const GLSL_CHAIRSIDE_COMMON = `
+      uniform float uTime;
+      uniform float uCondId;
+      uniform float uHeal;
+      uniform vec3 uFocusCenter;
+      uniform float uFocusRadius;
+      uniform float uIsoStrength;
+
+      vec2 rot2d(vec2 v, float a) {
+        float c = cos(a);
+        float s = sin(a);
+        return vec2(v.x * c - v.y * s, v.x * s + v.y * c);
+      }
+
+      vec3 applyChairsideKinematics(vec3 wp) {
+        vec3 p = wp;
+        float absX = abs(p.x);
+
+        if (uCondId < 0.5) {
+          // 0. LUMBAR L4-L5 DECOMPRESSION & ANTALGIC TILT CORRECTION
+          float aboveL45 = smoothstep(2.642, 2.705, p.y);
+          float chunaLift = mix(-0.012, 0.015, uHeal) * aboveL45;
+          float listAng = (1.0 - uHeal) * 0.036 * aboveL45;
+          vec2 rel = vec2(p.x, p.y - 2.655);
+          rel = rot2d(rel, listAng);
+          p.x = rel.x;
+          p.y = 2.655 + rel.y + chunaLift;
+        } else if (uCondId < 1.5) {
+          // 1. SHOULDER ABDUCTION + SUBACROMIAL IMPINGEMENT -> CHUNA SPACE OPENING
+          float abWave = 0.5 - 0.5 * cos(uTime * 1.85);
+          if (p.x > 0.0) {
+            float innerArmX = mix(0.54, 0.405, clamp((p.y - 2.20) / 1.25, 0.0, 1.0));
+            float armMask = smoothstep(innerArmX, innerArmX + 0.055, p.x)
+                          * smoothstep(1.88, 2.00, p.y)
+                          * (1.0 - smoothstep(3.63, 3.76, p.y));
+            vec3 shPivot = vec3(0.43, 3.55, -0.10);
+            float abAng = abWave * (0.72 + 0.16 * uHeal) * armMask;
+            vec3 relS = p - shPivot;
+            relS.xy = rot2d(relS.xy, abAng);
+            p = shPivot + relS;
+            // Painful superior humeral head collision at uHeal=0 vs depressed clear glide at uHeal=1
+            p.y += (mix(0.013, -0.008, uHeal)) * armMask * (0.35 + 0.65 * abWave);
+
+            // Scapular / Acromial posture correction (rounded drooped -> retracted elevated roof)
+            float scapMask = smoothstep(0.14, 0.26, p.x) * (1.0 - armMask)
+                           * smoothstep(3.38, 3.52, p.y) * (1.0 - smoothstep(3.76, 3.88, p.y));
+            p.z += (1.0 - uHeal) * 0.016 * scapMask;
+            p.y += mix(-0.007, 0.009, uHeal) * scapMask;
+          }
+        } else if (uCondId < 2.5) {
+          // 2. KNEE VARUS BONE-ON-BONE GRINDING -> MECHANICAL AXIS & JOINT GAP RESTORATION
+          if (p.x > 0.04 && p.y < 2.32) {
+            float loadWave = 0.5 - 0.5 * cos(uTime * 2.15);
+            float tibMask = 1.0 - smoothstep(1.155, 1.205, p.y);
+            float femMask = smoothstep(1.175, 1.235, p.y) * (1.0 - smoothstep(2.10, 2.28, p.y));
+            vec3 kPivot = vec3(0.365, 1.185, -0.175);
+
+            // Varus bowleg tilt below knee at uHeal=0
+            float varusAng = -(1.0 - uHeal) * 0.058 * tibMask;
+            vec3 relK = p - kPivot;
+            relK.xy = rot2d(relK.xy, varusAng);
+            // Gentle flexion oscillation
+            relK.yz = rot2d(relK.yz, loadWave * 0.065 * tibMask);
+            p = kPivot + relK;
+
+            // Medial compartment compression vs Chuna distraction opening
+            float medialWeight = 1.0 - smoothstep(0.28, 0.41, wp.x);
+            p.y -= (1.0 - uHeal) * (0.009 + 0.004 * loadWave) * femMask * (0.5 + 0.5 * medialWeight);
+            p.y -= uHeal * 0.009 * tibMask;
+          }
+        } else {
+          // 3. CERVICAL TURTLE NECK (15KG FORWARD SHEAR) -> HEALTHY C-LORDOSIS (5KG)
+          float neckMask = smoothstep(3.53, 4.04, p.y) * (1.0 - smoothstep(0.24, 0.35, absX));
+          float headMask = smoothstep(3.96, 4.14, p.y);
+          float forwardShear = (1.0 - uHeal) * 0.096 * neckMask;
+          p.z += forwardShear;
+          p.y += mix(-0.022, 0.009, uHeal) * neckMask;
+
+          // Chin-poke hyperextension at uHeal=0
+          vec3 occPivot = vec3(0.0, 4.02, -0.06 + (1.0 - uHeal) * 0.092);
+          vec3 relH = p - occPivot;
+          relH.yz = rot2d(relH.yz, -(1.0 - uHeal) * 0.11 * headMask);
+          p = occPivot + relH;
+
+          // Restore anatomical C-shaped cervical lordosis arch at C3-C5 when uHeal -> 1
+          float cArch = exp(-pow((wp.y - 3.79) / 0.115, 2.0)) * (1.0 - smoothstep(0.13, 0.22, absX));
+          p.z += uHeal * 0.018 * cArch;
+        }
+        return p;
+      }
+
+      vec4 applyFocusSpotlight(vec3 col, float baseAlpha, vec3 origPos) {
+        if (uIsoStrength < 0.01) return vec4(col, baseAlpha);
+        float d = length(origPos - uFocusCenter);
+        float inFocus = 1.0 - smoothstep(uFocusRadius * 0.72, uFocusRadius * 1.72, d);
+        float scannerRing = exp(-pow((d - uFocusRadius * 1.02) / (uFocusRadius * 0.16), 2.0)) * 0.22;
+        vec3 dimCol = col * 0.16 + vec3(0.028, 0.020, 0.014);
+        vec3 finalCol = mix(dimCol, col, mix(1.0, inFocus, uIsoStrength));
+        finalCol += vec3(0.90, 0.72, 0.32) * scannerRing * uIsoStrength;
+        float finalAlpha = baseAlpha * mix(1.0, mix(0.22, 1.0, inFocus), uIsoStrength);
+        return vec4(finalCol, finalAlpha);
+      }
+    `;
+
+    // Matching JS Kinematics Evaluator for 3D Pins & Dynamic Overlays
+    function sstep(e0, e1, x) {
+      const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
+      return t * t * (3 - 2 * t);
+    }
+    function rot2JS(x, y, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [x * c - y * s, x * s + y * c];
+    }
+    function evalKinematicsJS(wx, wy, wz) {
+      let px = wx, py = wy, pz = wz;
+      const absX = Math.abs(px);
+      const cid = sharedUniforms.uCondId.value;
+      const heal = sharedUniforms.uHeal.value;
+      const t = sharedUniforms.uTime.value;
+
+      if (cid < 0.5) {
+        const above = sstep(2.642, 2.705, py);
+        const lift = (-0.012 + 0.027 * heal) * above;
+        const ang = (1 - heal) * 0.036 * above;
+        const [rx, ry] = rot2JS(px, py - 2.655, ang);
+        px = rx;
+        py = 2.655 + ry + lift;
+      } else if (cid < 1.5) {
+        const abWave = 0.5 - 0.5 * Math.cos(t * 1.85);
+        if (px > 0) {
+          const innerX = 0.54 + (0.405 - 0.54) * Math.max(0, Math.min(1, (py - 2.20) / 1.25));
+          const armMask = sstep(innerX, innerX + 0.055, px) * sstep(1.88, 2.00, py) * (1 - sstep(3.63, 3.76, py));
+          const abAng = abWave * (0.72 + 0.16 * heal) * armMask;
+          const [rx, ry] = rot2JS(px - 0.43, py - 3.55, abAng);
+          px = 0.43 + rx;
+          py = 3.55 + ry + (0.013 - 0.021 * heal) * armMask * (0.35 + 0.65 * abWave);
+          const scapMask = sstep(0.14, 0.26, wx) * (1 - armMask) * sstep(3.38, 3.52, wy) * (1 - sstep(3.76, 3.88, wy));
+          pz += (1 - heal) * 0.016 * scapMask;
+          py += (-0.007 + 0.016 * heal) * scapMask;
+        }
+      } else if (cid < 2.5) {
+        if (px > 0.04 && py < 2.32) {
+          const loadWave = 0.5 - 0.5 * Math.cos(t * 2.15);
+          const tibMask = 1 - sstep(1.155, 1.205, py);
+          const femMask = sstep(1.175, 1.235, py) * (1 - sstep(2.10, 2.28, py));
+          let rx = px - 0.365, ry = py - 1.185, rz = pz + 0.175;
+          [rx, ry] = rot2JS(rx, ry, -(1 - heal) * 0.058 * tibMask);
+          [ry, rz] = rot2JS(ry, rz, loadWave * 0.065 * tibMask);
+          px = 0.365 + rx; py = 1.185 + ry; pz = -0.175 + rz;
+          const medW = 1 - sstep(0.28, 0.41, wx);
+          py -= (1 - heal) * (0.009 + 0.004 * loadWave) * femMask * (0.5 + 0.5 * medW);
+          py -= heal * 0.009 * tibMask;
+        }
+      } else {
+        const neckMask = sstep(3.53, 4.04, py) * (1 - sstep(0.24, 0.35, absX));
+        const headMask = sstep(3.96, 4.14, py);
+        pz += (1 - heal) * 0.096 * neckMask;
+        py += (-0.022 + 0.031 * heal) * neckMask;
+        const oz = -0.06 + (1 - heal) * 0.092;
+        const [ry, rz] = rot2JS(py - 4.02, pz - oz, -(1 - heal) * 0.11 * headMask);
+        py = 4.02 + ry; pz = oz + rz;
+        const cArch = Math.exp(-Math.pow((wy - 3.79) / 0.115, 2)) * (1 - sstep(0.13, 0.22, absX));
+        pz += heal * 0.018 * cArch;
+      }
+      return new THREE.Vector3(px, py, pz);
+    }
+
+    // =========================================================================
+    // 4. HIGH-PRECISION MEDICAL SHADERS FOR REAL ANATOMICAL GLB ASSETS
+    // =========================================================================
+    function createMedicalBoneShader(hiHex, midHex, shdHex, rimHex, smoothAmt = 0.18) {
+      return new THREE.ShaderMaterial({
+        uniforms: Object.assign({
+          uHigh:    { value: new THREE.Color(hiHex) },
+          uMid:     { value: new THREE.Color(midHex) },
+          uShadow:  { value: new THREE.Color(shdHex) },
+          uOutline: { value: new THREE.Color(rimHex) },
+          uOpacity: { value: 0.98 },
+          uCenter:  { value: new THREE.Vector3() },
+          uSmooth:  { value: smoothAmt }
+        }, sharedUniforms),
+        vertexShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform vec3 uCenter;
+          varying vec3 vNormal;
+          varying vec3 vRadial;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          void main() {
+            vec4 origW = modelMatrix * vec4(position, 1.0);
+            vOrigWorld = origW.xyz;
+            vec4 movedW = vec4(applyChairsideKinematics(origW.xyz), 1.0);
+            vec4 mvPos = viewMatrix * movedW;
+            vViewDir = normalize(-mvPos.xyz);
+            vNormal = normalize(normalMatrix * normal);
+            vec3 rad = position - uCenter;
+            float rLen = length(rad);
+            vRadial = rLen > 0.0001 ? normalize(normalMatrix * (rad / rLen)) : vNormal;
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `,
+        fragmentShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform vec3 uHigh;
+          uniform vec3 uMid;
+          uniform vec3 uShadow;
+          uniform vec3 uOutline;
+          uniform float uOpacity;
+          uniform float uSmooth;
+          varying vec3 vNormal;
+          varying vec3 vRadial;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          void main() {
+            if (uOpacity < 0.01) discard;
+            vec3 N = normalize(mix(normalize(vNormal), normalize(vRadial), uSmooth));
+            vec3 V = normalize(vViewDir);
+
+            // Refined 3-Point Studio Lighting
+            vec3 L1 = normalize(vec3(0.48, 0.78, 0.60));
+            vec3 L2 = normalize(vec3(-0.52, 0.45, -0.65));
+            vec3 L3 = normalize(vec3(-0.30, -0.55, 0.50));
+
+            float nl1 = max(0.0, dot(N, L1));
+            float nl2 = max(0.0, dot(N, L2));
+            float nl3 = max(0.0, dot(N, L3));
+            float nl = nl1 * 0.65 + nl2 * 0.25 + nl3 * 0.10;
+
+            float nv = clamp(abs(dot(N, V)), 0.0, 1.0);
+            float fresnel = pow(1.0 - nv, 3.2);
+
+            // Fine trabecular cortical bone micro-grain & deep sculptural shading
+            float grain = sin(vOrigWorld.x * 240.0) * sin(vOrigWorld.y * 240.0) * sin(vOrigWorld.z * 240.0);
+            float shadowBand = smoothstep(0.12, 0.52, nl);
+            float hiBand = smoothstep(0.58, 0.94, nl);
+
+            vec3 col = mix(uShadow, uMid, shadowBand);
+            col = mix(col, uHigh, hiBand);
+            col += grain * 0.012;
+
+            // Micro-specular glint (High-end medical ceramic finish)
+            vec3 H = normalize(L1 + V);
+            float spec = pow(max(0.0, dot(N, H)), 44.0);
+            col += vec3(1.0, 0.96, 0.88) * spec * 0.22;
+
+            // Champagne Gold & Ivory Rim Contour
+            vec3 goldRim = vec3(0.96, 0.82, 0.52);
+            col = mix(col, mix(uOutline, goldRim, 0.55), fresnel * 0.72);
+
+            vec4 spot = applyFocusSpotlight(col, uOpacity, vOrigWorld);
+            gl_FragColor = spot;
+          }
+        `,
+        transparent: true,
+        depthWrite: true
+      });
+    }
+
+    // 4-B. HIGH-END TRANSLUCENT BIOLOGICAL JELLY / SSS NUCLEUS PULPOSUS & CARTILAGE SHADER
+    function createTranslucentJellyShader(coreHex, edgeHex, emisHex, baseOpacity = 0.92) {
+      return new THREE.ShaderMaterial({
+        uniforms: Object.assign({
+          uCoreCol:   { value: new THREE.Color(coreHex) },
+          uEdgeCol:   { value: new THREE.Color(edgeHex) },
+          uEmisCol:   { value: new THREE.Color(emisHex) },
+          uEmisGain:  { value: 0.95 },
+          uOpacity:   { value: baseOpacity },
+          uPulseRate: { value: 1.8 },
+          uLocalScale:{ value: 1.0 },
+          uLocalShift:{ value: new THREE.Vector3(0, 0, 0) }
+        }, sharedUniforms),
+        vertexShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform float uLocalScale;
+          uniform vec3 uLocalShift;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            vec3 scaledP = position * uLocalScale + uLocalShift;
+            vec4 origW = modelMatrix * vec4(scaledP, 1.0);
+            vOrigWorld = origW.xyz;
+            vec4 movedW = vec4(applyChairsideKinematics(origW.xyz), 1.0);
+            vec4 mvPos = viewMatrix * movedW;
+            vViewDir = normalize(-mvPos.xyz);
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `,
+        fragmentShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform vec3 uCoreCol;
+          uniform vec3 uEdgeCol;
+          uniform vec3 uEmisCol;
+          uniform float uEmisGain;
+          uniform float uOpacity;
+          uniform float uPulseRate;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          varying vec2 vUv;
+          void main() {
+            if (uOpacity < 0.01) discard;
+            vec3 N = normalize(vNormal);
+            vec3 V = normalize(vViewDir);
+
+            // Subsurface Scattering (Back-lighting penetration through gelatinous disc matrix)
+            vec3 L1 = normalize(vec3(0.45, 0.72, 0.55));
+            float sss = pow(clamp(dot(-L1, V) + 0.42, 0.0, 1.0), 3.0);
+            float nv = clamp(abs(dot(N, V)), 0.0, 1.0);
+            float rim = pow(1.0 - nv, 2.2);
+
+            // Depth gradient: Dense glowing deep core -> crystalline translucent outer membrane
+            vec3 col = mix(uCoreCol, uEdgeCol, pow(nv, 0.75));
+            col += uCoreCol * sss * 0.65;
+
+            // Rhythmic biological inflammatory pulse or healing respiration
+            float pulse = 1.0;
+            if (uPulseRate > 0.05) {
+              pulse = 0.85 + 0.35 * sin(uTime * uPulseRate * 3.1415);
+            }
+
+            // Emissive core inflammation glow
+            col += uEmisCol * uEmisGain * pulse * (0.6 + 0.55 * sss);
+
+            // Opaline gelatinous specular sheen
+            vec3 H = normalize(L1 + V);
+            float spec = pow(max(0.0, dot(N, H)), 32.0);
+            col += vec3(1.0, 0.94, 0.88) * spec * 0.35;
+
+            // Edge refraction rim
+            col += uEdgeCol * rim * 0.52;
+
+            vec4 spot = applyFocusSpotlight(col, uOpacity, vOrigWorld);
+            gl_FragColor = spot;
+          }
+        `,
+        transparent: true,
+        depthWrite: false
+      });
+    }
+
+    function createTissueSurfaceShader(isMuscleLayer) {
+      return new THREE.ShaderMaterial({
+        uniforms: Object.assign({
+          uLayerAlpha: { value: isMuscleLayer ? 0.0 : 0.0 },
+          uFasciaBlend: { value: 0.0 } // 0 = skin+acupoints, 1 = translucent golden fascia grid
+        }, sharedUniforms),
+        vertexShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          void main() {
+            vec3 localP = position ${isMuscleLayer ? '- normal * 0.0022' : ''};
+            vec4 origW = modelMatrix * vec4(localP, 1.0);
+            vOrigWorld = origW.xyz;
+            vec4 movedW = vec4(applyChairsideKinematics(origW.xyz), 1.0);
+            vec4 mvPos = viewMatrix * movedW;
+            vViewDir = normalize(-mvPos.xyz);
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `,
+        fragmentShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform float uLayerAlpha;
+          uniform float uFasciaBlend;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec3 vOrigWorld;
+          void main() {
+            if (uLayerAlpha < 0.01) discard;
+            vec3 N = normalize(vNormal);
+            vec3 V = normalize(vViewDir);
+            vec3 L1 = normalize(vec3(0.42, 0.74, 0.54));
+            vec3 L2 = normalize(vec3(-0.42, 0.55, -0.68));
+            float nl = max(dot(N, L1), dot(N, L2) * 0.85) * 0.5 + 0.5;
+            float rim = 1.0 - clamp(abs(dot(N, V)), 0.0, 1.0);
+
+            ${isMuscleLayer ? `
+              // Anatomical Écorché Striated Muscle + Silvery-Ivory Aponeurosis/Tendon
+              float absX = abs(vOrigWorld.x);
+              float striaCoord = vOrigWorld.x * 82.0 + vOrigWorld.z * 56.0 + sin(vOrigWorld.y * 14.0) * 1.4;
+              float fiber = mix(0.5 + 0.5 * sin(striaCoord), 0.5 + 0.5 * sin(striaCoord * 2.7), 0.38);
+              float lumbarFascia = (1.0 - smoothstep(0.03, 0.11, absX)) * (1.0 - smoothstep(-0.04, 0.01, vOrigWorld.z))
+                                 * smoothstep(2.32, 2.50, vOrigWorld.y) * (1.0 - smoothstep(2.95, 3.12, vOrigWorld.y));
+              float kneeTendon = smoothstep(1.04, 1.13, vOrigWorld.y) * (1.0 - smoothstep(1.26, 1.35, vOrigWorld.y));
+              float cuffTendon = smoothstep(0.35, 0.48, absX) * smoothstep(3.48, 3.64, vOrigWorld.y);
+              float tendonMask = clamp(lumbarFascia * 0.82 + kneeTendon * 0.74 + cuffTendon * 0.65, 0.0, 0.90);
+
+              vec3 mCol = mix(vec3(0.38, 0.09, 0.09), vec3(0.74, 0.23, 0.20), smoothstep(0.28, 0.58, nl));
+              mCol = mix(mCol, vec3(0.92, 0.44, 0.38), smoothstep(0.68, 0.88, nl));
+              mCol *= mix(0.82, 1.14, fiber);
+              vec3 tCol = mix(vec3(0.80, 0.74, 0.65), vec3(0.96, 0.93, 0.87), smoothstep(0.35, 0.72, nl));
+              vec3 col = mix(mCol, tCol, tendonMask);
+              col += vec3(0.25, 0.08, 0.06) * pow(rim, 2.2);
+              vec4 spot = applyFocusSpotlight(col, uLayerAlpha, vOrigWorld);
+              gl_FragColor = spot;
+            ` : `
+              // Layer 01 Skin + Meridian Lines & Layer 02 Translucent Myofascial Web
+              vec3 skinCol = mix(vec3(0.46, 0.35, 0.27), vec3(0.86, 0.74, 0.62), smoothstep(0.30, 0.78, nl));
+              float grid = max(
+                pow(0.5 + 0.5 * sin(vOrigWorld.y * 95.0), 14.0),
+                pow(0.5 + 0.5 * sin((vOrigWorld.x + vOrigWorld.z) * 95.0), 14.0)
+              );
+              vec3 fasciaCol = mix(vec3(0.22, 0.17, 0.12), vec3(0.92, 0.76, 0.42), grid * 0.65 + pow(rim, 2.0) * 0.55);
+              vec3 col = mix(skinCol, fasciaCol, uFasciaBlend);
+              float alpha = uLayerAlpha * mix(0.88, 0.52 + 0.42 * pow(rim, 1.4), uFasciaBlend);
+              vec4 spot = applyFocusSpotlight(col, alpha, vOrigWorld);
+              gl_FragColor = spot;
+            `}
+          }
+        `,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.FrontSide
+      });
+    }
+
+    function createVascularFlowShader(hiHex, midHex, shdHex, flowSign) {
+      return new THREE.ShaderMaterial({
+        uniforms: Object.assign({
+          uHigh:    { value: new THREE.Color(hiHex) },
+          uMid:     { value: new THREE.Color(midHex) },
+          uShadow:  { value: new THREE.Color(shdHex) },
+          uOpacity: { value: 0.85 },
+          uFlow:    { value: flowSign }
+        }, sharedUniforms),
+        vertexShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          varying vec3 vNormal;
+          varying vec3 vOrigWorld;
+          void main() {
+            vec4 origW = modelMatrix * vec4(position, 1.0);
+            vOrigWorld = origW.xyz;
+            vec4 movedW = vec4(applyChairsideKinematics(origW.xyz), 1.0);
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * viewMatrix * movedW;
+          }
+        `,
+        fragmentShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform vec3 uHigh;
+          uniform vec3 uMid;
+          uniform vec3 uShadow;
+          uniform float uOpacity;
+          uniform float uFlow;
+          varying vec3 vNormal;
+          varying vec3 vOrigWorld;
+          void main() {
+            if (uOpacity < 0.01) discard;
+            float nl = dot(normalize(vNormal), normalize(vec3(0.4, 0.75, 0.55))) * 0.5 + 0.5;
+            vec3 col = mix(uShadow, uMid, smoothstep(0.3, 0.6, nl));
+            col = mix(col, uHigh, smoothstep(0.65, 0.88, nl));
+            float wave = pow(0.5 + 0.5 * sin(vOrigWorld.y * 16.0 + uFlow * uTime * 5.5), 5.0);
+            vec3 pulseCol = uFlow < 0.0 ? vec3(1.0, 0.75, 0.52) : vec3(0.55, 0.92, 1.0);
+            col = mix(col, pulseCol, wave * (0.28 + 0.42 * uHeal));
+            gl_FragColor = applyFocusSpotlight(col, uOpacity, vOrigWorld);
+          }
+        `,
+        transparent: true,
+        depthWrite: false
+      });
+    }
+
+    // =========================================================================
+    // 5. LOAD REAL HIGH-POLY ANATOMICAL GLB MODELS (LOCAL + GH RAW FALLBACK)
+    // =========================================================================
+    const GH_MODEL_BASE = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+    const isRemoteHost = !/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname || '');
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath(isRemoteHost ? 'https://www.gstatic.com/draco/versioned/decoders/1.5.7/' : 'draco/');
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    function loadAnatGLB(relPath, onDone) {
+      const primary = isRemoteHost ? (GH_MODEL_BASE + relPath) : relPath;
+      const backup  = isRemoteHost ? relPath : (GH_MODEL_BASE + relPath);
+      gltfLoader.load(primary, onDone, undefined, () => {
+        gltfLoader.load(backup, onDone, undefined, () => onDone(null));
+      });
+    }
+
+    const boneMats = [];
+    const jointCapsuleMats = [];
+    const spinalDiscMats = [];
+    const skinFasciaMat = createTissueSurfaceShader(false);
+    const muscleEcorcheMat = createTissueSurfaceShader(true);
+    const artMat = createVascularFlowShader('#F06B62', '#C73832', '#7D1915', -1.0);
+    const venMat = createVascularFlowShader('#6BAEFF', '#3574C7', '#1B3F73',  1.0);
+    const brainMat = createMedicalBoneShader('#F5D3CA', '#D9A195', '#9E665B', '#4F2B24', 0.55);
+
+    let skinMeshGroup = null;
+    let muscleMeshGroup = null;
+    let skeletonGroup = null;
+    let jointsGroup = null;
+    let vascularGroup = null;
+    let brainGroup = null;
+
+    let loadedCount = 0;
+    const TOTAL_GLBS = 5;
+    function markAssetLoaded(label) {
+      loadedCount++;
+      const txt = document.getElementById('scannerLoadText');
+      if (txt) txt.textContent = `${label} 로드 완료 (${loadedCount}/${TOTAL_GLBS})`;
+      if (loadedCount >= 3) {
+        document.getElementById('scannerLoader').classList.add('loaded');
+      }
+    }
+    setTimeout(() => document.getElementById('scannerLoader').classList.add('loaded'), 3800);
+
+    // 5.1 Load 185k-vert Sculpted Human Skeleton
+    loadAnatGLB('models/Skeleton.glb', gltf => {
+      if (gltf) {
+        skeletonGroup = gltf.scene;
+        skeletonGroup.traverse(c => {
+          if (c.isMesh) {
+            c.geometry.computeBoundingBox();
+            const ctr = new THREE.Vector3();
+            c.geometry.boundingBox.getCenter(ctr);
+            const isGP = (c.name || '').includes('KneeGrowthPlate');
+            const m = isGP
+              ? createMedicalBoneShader('#8EDBC9', '#49A392', '#235E52', '#12332C', 0.10)
+              : createMedicalBoneShader('#EADBC3', '#C6AF8E', '#6B5339', '#261A0E', 0.05);
+            m.uniforms.uCenter.value.copy(ctr);
+            c.material = m;
+            c.renderOrder = 3;
+            boneMats.push(m);
+          }
+        });
+        scene.add(skeletonGroup);
+      }
+      applyDepthOpacity(currentDepthVal);
+      markAssetLoaded('골격계 스캔');
+    });
+
+    // Clean Sculpted Anatomical Intervertebral Discs (L1-S1 & C2-C7)
+    (function buildCleanSpinalDiscs() {
+      const dGrp = new THREE.Group();
+      const dMat = createTranslucentJellyShader('#D2C4AE', '#F5EEE2', '#E8C582', 0.92);
+      spinalDiscMats.push(dMat);
+      [
+        { y: 2.935, z: -0.042, rx: 0.044, rz: 0.034, h: 0.021, t: 0.03 },
+        { y: 2.845, z: -0.038, rx: 0.047, rz: 0.036, h: 0.023, t: 0.05 },
+        { y: 2.752, z: -0.035, rx: 0.050, rz: 0.038, h: 0.024, t: 0.08 },
+        { y: 2.572, z: -0.046, rx: 0.050, rz: 0.037, h: 0.023, t: 0.22 }
+      ].forEach(d => {
+        const g = new THREE.CylinderGeometry(d.rx, d.rx, d.h, 32);
+        g.scale(1, 1, d.rz / d.rx);
+        const m = new THREE.Mesh(g, dMat);
+        m.position.set(0, d.y, d.z);
+        m.rotation.x = d.t;
+        m.renderOrder = 4;
+        dGrp.add(m);
+      });
+      [
+        { y: 3.865, z: -0.072, r: 0.025, h: 0.014 },
+        { y: 3.795, z: -0.075, r: 0.027, h: 0.015 },
+        { y: 3.725, z: -0.078, r: 0.029, h: 0.015 },
+        { y: 3.655, z: -0.082, r: 0.031, h: 0.016 }
+      ].forEach(d => {
+        const g = new THREE.CylinderGeometry(d.r, d.r, d.h, 28);
+        g.scale(1, 1, 0.78);
+        const m = new THREE.Mesh(g, dMat);
+        m.position.set(0, d.y, d.z);
+        m.rotation.x = -0.06;
+        m.renderOrder = 4;
+        dGrp.add(m);
+      });
+      scene.add(dGrp);
+    })();
+
+    // 5.2 Load 54k-vert Sculpted Articular Cartilage & Menisci (Hide coarse SpinalDiscs ribbon)
+    loadAnatGLB('models/Joints.glb', gltf => {
+      if (gltf) {
+        jointsGroup = gltf.scene;
+        jointsGroup.traverse(c => {
+          if (c.isMesh) {
+            const isDisc = (c.name || '').toLowerCase().includes('disc');
+            if (isDisc) {
+              c.visible = false;
+              return;
+            }
+            c.geometry.computeBoundingBox();
+            const ctr = new THREE.Vector3();
+            c.geometry.boundingBox.getCenter(ctr);
+            const isKneeCart = (c.name || '').includes('KneeCartilage');
+            const m = isKneeCart
+              ? createMedicalBoneShader('#C9F0FA', '#76C2D6', '#387B8F', '#183E4A', 0.14)
+              : createMedicalBoneShader('#DFCBA0', '#B59454', '#705524', '#33240B', 0.14);
+            m.uniforms.uCenter.value.copy(ctr);
+            c.material = m;
+            c.renderOrder = 4;
+            jointCapsuleMats.push(m);
+          }
+        });
+        scene.add(jointsGroup);
+      }
+      applyDepthOpacity(currentDepthVal);
+      markAssetLoaded('추간판·연골·인대');
+    });
+
+    // 5.3 Load 193k-vert Human Body for Peelable Skin/Fascia + Écorché Muscle Layers
+    loadAnatGLB('models/skinMB2.glb', gltf => {
+      if (gltf) {
+        skinMeshGroup = gltf.scene;
+        muscleMeshGroup = gltf.scene.clone(true);
+        skinMeshGroup.traverse(c => {
+          if (c.isMesh) { c.material = skinFasciaMat; c.renderOrder = 12; }
+        });
+        muscleMeshGroup.traverse(c => {
+          if (c.isMesh) { c.material = muscleEcorcheMat; c.renderOrder = 10; }
+        });
+        scene.add(muscleMeshGroup);
+        scene.add(skinMeshGroup);
+      }
+      applyDepthOpacity(currentDepthVal);
+      markAssetLoaded('근육·근막·표피');
+    });
+
+    // 5.4 Load Whole-Body Arterial & Venous Tree
+    loadAnatGLB('models/Vascular.glb', gltf => {
+      if (gltf) {
+        vascularGroup = gltf.scene;
+        vascularGroup.traverse(c => {
+          if (c.isMesh) {
+            c.material = (c.name || '').includes('Venous') ? venMat : artMat;
+            c.renderOrder = 5;
+          }
+        });
+        scene.add(vascularGroup);
+      }
+      applyDepthOpacity(currentDepthVal);
+      markAssetLoaded('동·정맥 혈관망');
+    });
+
+    // 5.5 Load Sculpted Cerebral Cortex & Brainstem (for Cervical C-Curve & Cerebral Blood Flow)
+    loadAnatGLB('models/brain.glb', gltf => {
+      if (gltf) {
+        brainGroup = gltf.scene;
+        const root = brainGroup.children[0] || brainGroup;
+        root.scale.multiplyScalar(0.86);
+        root.position.y -= 0.042;
+        brainGroup.traverse(c => {
+          if (c.isMesh) {
+            c.geometry.computeBoundingBox();
+            const ctr = new THREE.Vector3();
+            c.geometry.boundingBox.getCenter(ctr);
+            brainMat.uniforms.uCenter.value.copy(ctr);
+            c.material = brainMat;
+            c.renderOrder = 4;
+          }
+        });
+        scene.add(brainGroup);
+      }
+      applyDepthOpacity(currentDepthVal);
+      markAssetLoaded('중추 뇌신경');
+    });
+
+    // =========================================================================
+    // 6. KINEMATIC-LOCKED SHADER FOR PATHOLOGY, NERVES & TREATMENT OVERLAYS
+    // =========================================================================
+    function createKinematicOverlayMat(baseHex, emisHex, emisIntensity = 0.5, opacity = 0.96) {
+      return new THREE.ShaderMaterial({
+        uniforms: Object.assign({
+          uBaseCol:   { value: new THREE.Color(baseHex) },
+          uEmisCol:   { value: new THREE.Color(emisHex) },
+          uEmisGain:  { value: emisIntensity },
+          uOpacity:   { value: opacity },
+          uPulseRate: { value: 0.0 },
+          uLocalScale:{ value: 1.0 },
+          uLocalShift:{ value: new THREE.Vector3(0, 0, 0) }
+        }, sharedUniforms),
+        vertexShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform float uLocalScale;
+          uniform vec3 uLocalShift;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            vec3 scaledP = position * uLocalScale + uLocalShift;
+            vec4 origW = modelMatrix * vec4(scaledP, 1.0);
+            vec4 movedW = vec4(applyChairsideKinematics(origW.xyz), 1.0);
+            vec4 mvPos = viewMatrix * movedW;
+            vViewDir = normalize(-mvPos.xyz);
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `,
+        fragmentShader: `
+          ${GLSL_CHAIRSIDE_COMMON}
+          uniform vec3 uBaseCol;
+          uniform vec3 uEmisCol;
+          uniform float uEmisGain;
+          uniform float uOpacity;
+          uniform float uPulseRate;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          varying vec2 vUv;
+          void main() {
+            if (uOpacity < 0.01) discard;
+            vec3 N = normalize(vNormal);
+            vec3 V = normalize(vViewDir);
+            float nl = dot(N, normalize(vec3(0.4, 0.75, 0.55))) * 0.5 + 0.5;
+            float rim = 1.0 - clamp(abs(dot(N, V)), 0.0, 1.0);
+            vec3 col = uBaseCol * mix(0.55, 1.12, nl);
+            float pulse = 1.0;
+            if (uPulseRate > 0.1) {
+              float travel = fract(vUv.x * 3.0 - uTime * uPulseRate);
+              pulse = 0.55 + 0.85 * exp(-pow((travel - 0.5) * 6.0, 2.0));
+            }
+            col += uEmisCol * uEmisGain * pulse * (0.75 + 0.55 * pow(rim, 1.5));
+            gl_FragColor = vec4(col, uOpacity);
+          }
+        `,
+        transparent: true,
+        depthWrite: opacity > 0.85
+      });
+    }
+
+    // Helper: Build Korean Medicine Golden Acupotomy / Pharmacopuncture Needle
+    function createGoldenNeedleMesh(tipPos, tailPos) {
+      const grp = new THREE.Group();
+      const dir = new THREE.Vector3().subVectors(tailPos, tipPos);
+      const len = dir.length();
+      const shaftMat = new THREE.MeshStandardMaterial({
+        color: 0xfbe28a, metalness: 0.92, roughness: 0.14,
+        emissive: 0xd4af37, emissiveIntensity: 0.35, transparent: true, opacity: 0
+      });
+      const handleMat = new THREE.MeshStandardMaterial({
+        color: 0xb88428, metalness: 0.88, roughness: 0.22,
+        emissive: 0xf5d36c, emissiveIntensity: 0.45, transparent: true, opacity: 0
+      });
+      const shaftGeo = new THREE.CylinderGeometry(0.0014, 0.0005, len * 0.68, 14);
+      shaftGeo.translate(0, len * 0.34, 0);
+      const handleGeo = new THREE.CylinderGeometry(0.0028, 0.0024, len * 0.34, 16);
+      handleGeo.translate(0, len * 0.83, 0);
+      grp.add(new THREE.Mesh(shaftGeo, shaftMat), new THREE.Mesh(handleGeo, handleMat));
+      grp.position.copy(tipPos);
+      grp.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+      grp.userData = { tipPos: tipPos.clone(), dirNorm: dir.clone().normalize(), mats: [shaftMat, handleMat] };
+      return grp;
+    }
+
+    function updateNeedleAnim(needleGrp, tNorm) {
+      const win = Math.sin(THREE.MathUtils.clamp((tNorm - 0.14) / 0.72, 0, 1) * Math.PI);
+      needleGrp.visible = win > 0.02;
+      needleGrp.userData.mats.forEach(m => { m.opacity = win * 0.96; });
+      const retract = (1 - win) * 0.045;
+      const baseTip = evalKinematicsJS(needleGrp.userData.tipPos.x, needleGrp.userData.tipPos.y, needleGrp.userData.tipPos.z);
+      needleGrp.position.copy(baseTip).addScaledVector(needleGrp.userData.dirNorm, retract);
+    }
+
+    // Helper: Tube from 3D control points
+    function buildCurveTube(pts, radius, mat, tubularSegs = 48, radialSegs = 12) {
+      const curve = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(p[0], p[1], p[2])));
+      const m = new THREE.Mesh(new THREE.TubeGeometry(curve, tubularSegs, radius, radialSegs, false), mat);
+      m.renderOrder = 8;
+      return m;
+    }
+
+    // =========================================================================
+    // 7. BUILD THE 4 ANATOMICAL PATHOLOGY & TREATMENT RIGS
+    // =========================================================================
+    const conditionGroups = {};
+
+    // --- 7.1 CONDITION 0: LUMBAR L4-L5 DISC HERNIATION & SCIATICA ---
+    (function buildLumbarRig() {
+      const grp = new THREE.Group();
+
+      // 1. High-End Opaline Cartilage Disc (Hydrated Annulus Fibrosus Base)
+      // Translucent champagne-ivory biological disc with concentric ring sheen
+      const discMat = createTranslucentJellyShader('#D2C4AE', '#F5EEE2', '#E8C582', 0.92);
+      const discGeo = new THREE.CylinderGeometry(0.053, 0.054, 0.026, 48);
+      discGeo.scale(1.0, 1.0, 0.78);
+      const discMesh = new THREE.Mesh(discGeo, discMat);
+      discMesh.position.set(0.0, 2.658, -0.042);
+      discMesh.rotation.x = 0.14;
+      grp.add(discMesh);
+
+      // 2. High-End SSS Gelatinous Herniated Nucleus Pulposus (Organic Multi-Lobed Extrusion)
+      // Deep burgundy-crimson core with glowing translucent gelatinous envelope
+      const hernMat = createTranslucentJellyShader('#780A18', '#E63956', '#D61A3C', 0.95);
+      const hernGrp = new THREE.Group();
+      hernGrp.position.set(0.024, 2.655, -0.062);
+
+      // Anatomically sculpted organic extruded nucleus lobes (smoothly blending into foramen)
+      const lobeSpecs = [
+        [0.000,  0.000,  0.000, 0.0165, 1.25, 0.88, 1.30], // Main posterior bulge
+        [0.009, -0.003, -0.010, 0.0135, 1.15, 0.90, 1.20], // Posterolateral root press
+        [0.015, -0.005, -0.016, 0.0105, 1.05, 0.92, 1.10], // Foraminal compression apex
+        [0.005,  0.004, -0.006, 0.0120, 1.10, 0.95, 1.15]  // Sub-annular tension cushion
+      ];
+      lobeSpecs.forEach(s => {
+        const g = new THREE.SphereGeometry(s[3], 32, 32);
+        g.scale(s[4], s[5], s[6]);
+        const m = new THREE.Mesh(g, hernMat);
+        m.position.set(s[0], s[1], s[2]);
+        m.renderOrder = 9;
+        hernGrp.add(m);
+      });
+      grp.add(hernGrp);
+
+      // 3. Spinal Cord Trunk & Exiting L4/L5 Nerve Roots (Ivory & Amber Gold Neural Bundle)
+      const spinalCordMat = createKinematicOverlayMat('#F5DF9E', '#CFA238', 0.28, 0.92);
+      grp.add(buildCurveTube([
+        [0.000, 2.98, -0.068], [0.000, 2.74, -0.065], [0.000, 2.52, -0.068]
+      ], 0.011, spinalCordMat, 36));
+
+      // 4. Compressed Right Sciatic Nerve Tract with Smooth Action-Potential Wave
+      const sciaticMat = createKinematicOverlayMat('#FFD166', '#FF3B4E', 0.85, 0.98);
+      sciaticMat.uniforms.uPulseRate.value = 1.75;
+      const sciaticPts = [
+        [0.014, 2.715, -0.066],
+        [0.036, 2.652, -0.079], // Exact site of herniation impingement
+        [0.088, 2.545, -0.092],
+        [0.155, 2.380, -0.104],
+        [0.255, 2.210, -0.112],
+        [0.325, 1.780, -0.122],
+        [0.362, 1.220, -0.162],
+        [0.412, 0.780, -0.205]
+      ];
+      const sciaticNerveMesh = buildCurveTube(sciaticPts, 0.0092, sciaticMat, 80);
+      grp.add(sciaticNerveMesh);
+
+      // Contralateral healthy reference nerve root
+      grp.add(buildCurveTube([
+        [-0.014, 2.715, -0.066], [-0.042, 2.645, -0.078], [-0.145, 2.380, -0.102], [-0.255, 2.210, -0.112]
+      ], 0.0068, createKinematicOverlayMat('#E8C258', '#A67C1E', 0.18, 0.85), 40));
+
+      // 5. Chuna Negative-Pressure Distraction Force Halo Rings (L4 up, L5 down)
+      const ringMat = createKinematicOverlayMat('#F5D36C', '#F5D36C', 0.85, 0.0);
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(0.062, 0.0022, 14, 48), ringMat);
+      r1.position.set(0, 2.705, -0.048); r1.rotation.x = Math.PI / 2;
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(0.062, 0.0022, 14, 48), ringMat);
+      r2.position.set(0, 2.610, -0.048); r2.rotation.x = Math.PI / 2;
+      grp.add(r1, r2);
+
+      // 6. Golden Pharmacopuncture Needle entering L4-L5 Foramen from Posterior Back
+      const needle = createGoldenNeedleMesh(
+        new THREE.Vector3(0.038, 2.654, -0.082),
+        new THREE.Vector3(0.115, 2.690, -0.255)
+      );
+      grp.add(needle);
+
+      grp.userData = {
+        particleRestOrigin: new THREE.Vector3(0.036, 2.654, -0.080),
+        pinPrimaryRest: new THREE.Vector3(-0.025, 2.725, -0.065),
+        pinPathRest: new THREE.Vector3(0.045, 2.652, -0.085),
+        updateRig(tNorm, elapsed) {
+          const painFactor = Math.max(0, 1.0 - tNorm * 1.15);
+
+          // Retract herniated translucent nucleus pulposus smoothly back inside disc via negative vacuum pressure!
+          hernMat.uniforms.uLocalScale.value = THREE.MathUtils.lerp(1.05, 0.18, tNorm);
+          hernMat.uniforms.uLocalShift.value.set(-0.019 * tNorm, 0.003 * tNorm, 0.022 * tNorm);
+          hernMat.uniforms.uCoreCol.value.lerpColors(new THREE.Color('#780A18'), new THREE.Color('#3A8E85'), tNorm);
+          hernMat.uniforms.uEdgeCol.value.lerpColors(new THREE.Color('#E63956'), new THREE.Color('#7CE8D8'), tNorm);
+          hernMat.uniforms.uEmisCol.value.lerpColors(new THREE.Color('#D61A3C'), new THREE.Color('#2DD4BF'), tNorm);
+          hernMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(1.15, 0.18, tNorm);
+          hernMat.uniforms.uPulseRate.value = THREE.MathUtils.lerp(2.2, 0.6, tNorm);
+
+          // Sciatic nerve transitions smoothly from angry crimson-gold action potential to serene jade-gold
+          sciaticMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF6842'), new THREE.Color('#8BE8CF'), tNorm);
+          sciaticMat.uniforms.uEmisCol.value.lerpColors(new THREE.Color('#FF1832'), new THREE.Color('#2DD4BF'), tNorm);
+          sciaticMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(1.10 + 0.35 * Math.sin(elapsed * 6.5), 0.30, tNorm);
+          sciaticMat.uniforms.uPulseRate.value = THREE.MathUtils.lerp(2.4, 0.55, tNorm);
+
+          const treatWin = Math.sin(THREE.MathUtils.clamp((tNorm - 0.12) / 0.76, 0, 1) * Math.PI);
+          ringMat.uniforms.uOpacity.value = treatWin * 0.75;
+          updateNeedleAnim(needle, tNorm);
+        }
+      };
+
+      scene.add(grp);
+      conditionGroups.lumbar = grp;
+    })();
+
+    // --- 7.2 CONDITION 1: SHOULDER ROTATOR CUFF TEAR & SUBACROMIAL IMPINGEMENT ---
+    (function buildShoulderRig() {
+      const grp = new THREE.Group();
+      grp.visible = false;
+
+      // 12 Sculpted Supraspinatus Tendon Collagen Fiber Strands (Scapula -> Greater Tuberosity)
+      const intactTendonMat = createKinematicOverlayMat('#F7EFE0', '#2DD4BF', 0.15, 0.96);
+      const tornTendonMat = createKinematicOverlayMat('#FF3B4E', '#FF1E38', 0.95, 0.98);
+      for (let i = 0; i < 12; i++) {
+        const zOff = (i - 5.5) * 0.0042;
+        const yOff = Math.sin((i / 11) * Math.PI) * 0.005;
+        const isTornCenter = (i >= 3 && i <= 8);
+        const pts = [
+          [0.235, 3.588 + yOff, -0.132 + zOff],
+          [0.335, 3.586 + yOff, -0.114 + zOff],
+          [0.415, 3.580 + yOff, -0.102 + zOff * 0.85],
+          [0.466, 3.558 + yOff * 0.5, -0.096 + zOff * 0.7]
+        ];
+        grp.add(buildCurveTube(pts, isTornCenter ? 0.0026 : 0.0032, isTornCenter ? tornTendonMat : intactTendonMat, 36, 8));
+      }
+
+      // Frayed Torn Rope Ends (Recoil & curl upward at tNorm=0, flatten & knit back at tNorm=1)
+      const frayMat = createKinematicOverlayMat('#FF2E44', '#FF142B', 1.15, 0.95);
+      const frayGroup = new THREE.Group();
+      for (let k = 0; k < 8; k++) {
+        const zf = (k - 3.5) * 0.004;
+        const dir = k % 2 === 0 ? 1 : -1;
+        frayGroup.add(buildCurveTube([
+          [0.408, 3.581, -0.102 + zf],
+          [0.422 + dir * 0.006, 3.592, -0.098 + zf * 1.2],
+          [0.430 + dir * 0.011, 3.601, -0.093 + zf * 1.4]
+        ], 0.0020, frayMat, 18, 6));
+      }
+      grp.add(frayGroup);
+
+      // Swollen Subacromial Bursa Cushion (Flashes angry red on impingement collision!)
+      const bursaMat = createKinematicOverlayMat('#FF243B', '#FF1028', 1.10, 0.82);
+      const bursaGeo = new THREE.SphereGeometry(0.026, 28, 24);
+      bursaGeo.scale(1.35, 0.52, 1.15);
+      const bursaMesh = new THREE.Mesh(bursaGeo, bursaMat);
+      bursaMesh.position.set(0.426, 3.590, -0.099);
+      bursaMesh.renderOrder = 9;
+      grp.add(bursaMesh);
+
+      // Brachial -> Suprascapular / Axillary Nerve Branch
+      const shNerveMat = createKinematicOverlayMat('#FFD166', '#FF9F1C', 0.45, 0.92);
+      grp.add(buildCurveTube([
+        [0.04, 3.74, -0.075], [0.22, 3.66, -0.088], [0.42, 3.53, -0.108], [0.54, 3.12, -0.115]
+      ], 0.0055, shNerveMat, 48));
+
+      // Precision Subacromial Pharmacopuncture / Bee-Venom Needle
+      const needle = createGoldenNeedleMesh(
+        new THREE.Vector3(0.430, 3.586, -0.096),
+        new THREE.Vector3(0.565, 3.675, 0.055)
+      );
+      grp.add(needle);
+
+      grp.userData = {
+        particleRestOrigin: new THREE.Vector3(0.428, 3.586, -0.098),
+        pinPrimaryRest: new THREE.Vector3(0.395, 3.635, -0.102),
+        pinPathRest: new THREE.Vector3(0.442, 3.582, -0.095),
+        updateRig(tNorm, elapsed) {
+          const abWave = 0.5 - 0.5 * Math.cos(elapsed * 1.85);
+          const pain = Math.max(0, 1 - tNorm * 1.15);
+
+          // Torn central fibers knit into pearlescent-jade healthy collagen strands
+          tornTendonMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF384C'), new THREE.Color('#FAF4E6'), tNorm);
+          tornTendonMat.uniforms.uEmisCol.value.lerpColors(new THREE.Color('#FF142B'), new THREE.Color('#2DD4BF'), tNorm);
+          tornTendonMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(0.85 + 0.45 * abWave, 0.24, tNorm);
+          intactTendonMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(0.08, 0.26, tNorm);
+
+          frayGroup.visible = pain > 0.04;
+          frayMat.uniforms.uOpacity.value = pain * 0.95;
+
+          bursaMesh.visible = tNorm < 0.94;
+          bursaMat.uniforms.uOpacity.value = (1 - tNorm) * (0.52 + 0.36 * abWave);
+          bursaMat.uniforms.uEmisGain.value = (1 - tNorm) * (0.75 + 0.75 * abWave);
+
+          updateNeedleAnim(needle, tNorm);
+        }
+      };
+
+      scene.add(grp);
+      conditionGroups.shoulder = grp;
+    })();
+
+    // --- 7.3 CONDITION 2: KNEE OSTEOARTHRITIS, MENISCUS WEAR & MEDIAL OSTEOPHYTES ---
+    (function buildKneeRig() {
+      const grp = new THREE.Group();
+      grp.visible = false;
+
+      // 7 Jagged Medial Osteophyte Bone Spurs along Medial Femoral & Tibial Condyles
+      const spurMat = createKinematicOverlayMat('#FFE0D6', '#FF263B', 0.85, 0.96);
+      const spurSpecs = [
+        [0.304, 1.202, -0.148, -0.9,  0.2],
+        [0.308, 1.200, -0.166, -1.0,  0.0],
+        [0.314, 1.198, -0.184, -0.85,-0.25],
+        [0.305, 1.169, -0.146, -1.1,  0.2],
+        [0.309, 1.170, -0.165, -1.15, 0.0],
+        [0.315, 1.171, -0.183, -0.95,-0.2],
+        [0.324, 1.204, -0.134, -0.65, 0.45]
+      ];
+      spurSpecs.forEach(s => {
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(0.0058, 0.017, 10), spurMat);
+        cone.position.set(s[0], s[1], s[2]);
+        cone.rotation.set(s[4], 0, s[3]);
+        cone.renderOrder = 9;
+        grp.add(cone);
+      });
+
+      // Medial Bone-on-Bone Grinding Friction Fire Disc & Synovitis Glow
+      const frictionMat = createKinematicOverlayMat('#FF2438', '#FF1024', 1.35, 0.86);
+      const fricGeo = new THREE.CylinderGeometry(0.032, 0.032, 0.008, 32);
+      fricGeo.scale(0.88, 1.0, 1.18);
+      const frictionMesh = new THREE.Mesh(fricGeo, frictionMat);
+      frictionMesh.position.set(0.326, 1.185, -0.164);
+      frictionMesh.renderOrder = 9;
+      grp.add(frictionMesh);
+
+      // Turquoise-Jade Chondro-Protective Herbal Gel Cushion (Meniscus + Articular Cartilage Coating)
+      const gelMat = createKinematicOverlayMat('#38F2D6', '#2DD4BF', 0.65, 0.0);
+      const medMeniscus = buildCurveTube([
+        [0.342, 1.185, -0.132],
+        [0.312, 1.185, -0.150],
+        [0.308, 1.185, -0.172],
+        [0.336, 1.185, -0.194]
+      ], 0.0082, gelMat, 36, 14);
+      const latMeniscus = buildCurveTube([
+        [0.382, 1.185, -0.136],
+        [0.412, 1.185, -0.156],
+        [0.410, 1.185, -0.182],
+        [0.380, 1.185, -0.196]
+      ], 0.0076, gelMat, 36, 14);
+      grp.add(medMeniscus, latMeniscus);
+
+      // Intra-Articular Pharmacopuncture Needle (Medial Joint Line / Neixiyan)
+      const needle = createGoldenNeedleMesh(
+        new THREE.Vector3(0.320, 1.185, -0.152),
+        new THREE.Vector3(0.205, 1.215, -0.025)
+      );
+      grp.add(needle);
+
+      grp.userData = {
+        particleRestOrigin: new THREE.Vector3(0.324, 1.185, -0.160),
+        pinPrimaryRest: new THREE.Vector3(0.368, 1.245, -0.150),
+        pinPathRest: new THREE.Vector3(0.306, 1.185, -0.158),
+        updateRig(tNorm, elapsed) {
+          const loadWave = 0.5 - 0.5 * Math.cos(elapsed * 2.15);
+          // Osteophyte spurs calm & retract sharp irritation as joint gap opens
+          spurMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(0.95 + 0.4 * loadWave, 0.05, tNorm);
+          spurMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF9E9E'), new THREE.Color('#E8DAC3'), tNorm);
+          spurMat.uniforms.uOpacity.value = THREE.MathUtils.lerp(0.98, 0.42, tNorm);
+
+          frictionMesh.visible = tNorm < 0.88;
+          frictionMat.uniforms.uOpacity.value = Math.max(0, 1 - tNorm * 1.15) * (0.62 + 0.34 * loadWave);
+
+          // Jade chondro-protective herbal coating expands smoothly over worn medial & lateral plateaus
+          const gelFactor = sstep(0.22, 0.95, tNorm);
+          gelMat.uniforms.uOpacity.value = gelFactor * 0.90;
+          gelMat.uniforms.uEmisGain.value = 0.38 + 0.25 * Math.sin(elapsed * 3.2);
+
+          updateNeedleAnim(needle, tNorm);
+        }
+      };
+
+      scene.add(grp);
+      conditionGroups.knee = grp;
+    })();
+
+    // --- 7.4 CONDITION 3: CERVICAL TURTLE NECK (15KG -> 5KG) & OCCIPITAL NEURALGIA ---
+    (function buildCervicalRig() {
+      const grp = new THREE.Group();
+      grp.visible = false;
+
+      // Hypertonic Bowstring Suboccipital & Splenius Capitis Muscle Bands
+      const spasticMat = createKinematicOverlayMat('#FF4757', '#FF1E38', 0.82, 0.92);
+      [-1, 1].forEach(dir => {
+        // Suboccipital rectus/obliquus bands (C1/C2 -> Occiput)
+        grp.add(buildCurveTube([
+          [dir * 0.018, 3.90, -0.155],
+          [dir * 0.032, 3.97, -0.168],
+          [dir * 0.044, 4.04, -0.178]
+        ], 0.0068, spasticMat, 24, 10));
+        // Long posterior splenius / semispinalis bands (C7 -> Occiput)
+        grp.add(buildCurveTube([
+          [dir * 0.024, 3.62, -0.165],
+          [dir * 0.036, 3.76, -0.162],
+          [dir * 0.042, 3.90, -0.165],
+          [dir * 0.048, 4.03, -0.175]
+        ], 0.0062, spasticMat, 36, 10));
+      });
+
+      // Greater Occipital Nerve Headache Lightning Arcs (Suboccipital C2 -> Posterior Skull -> Crown/Temple)
+      const headacheMat = createKinematicOverlayMat('#FF3B4E', '#FF1028', 1.45, 0.95);
+      headacheMat.uniforms.uPulseRate.value = 2.1;
+      const headacheGroup = new THREE.Group();
+      [-1, 1].forEach(dir => {
+        headacheGroup.add(buildCurveTube([
+          [dir * 0.025, 3.97, -0.158],
+          [dir * 0.055, 4.12, -0.215],
+          [dir * 0.068, 4.30, -0.205],
+          [dir * 0.058, 4.46, -0.075],
+          [dir * 0.065, 4.44,  0.075]
+        ], 0.0038, headacheMat, 48, 8));
+      });
+      grp.add(headacheGroup);
+
+      // Bilateral Vertebral Artery -> Brainstem Cerebral Blood Flow Channels (Surge bright blue as C-curve restores!)
+      const cerebralFlowMat = createKinematicOverlayMat('#38BDF8', '#22D3EE', 0.95, 0.35);
+      cerebralFlowMat.uniforms.uPulseRate.value = 1.4;
+      [-1, 1].forEach(dir => {
+        grp.add(buildCurveTube([
+          [dir * 0.028, 3.58, -0.105],
+          [dir * 0.026, 3.72, -0.098],
+          [dir * 0.025, 3.86, -0.094],
+          [dir * 0.022, 3.99, -0.086],
+          [dir * 0.010, 4.14, -0.048]
+        ], 0.0048, cerebralFlowMat, 44, 10));
+      });
+
+      // Ideal C-Lordosis Golden Guide Arc along Cervical Vertebral Bodies
+      const cGuideMat = createKinematicOverlayMat('#F5D36C', '#2DD4BF', 0.75, 0.0);
+      grp.add(buildCurveTube([
+        [0.0, 3.61, -0.085],
+        [0.0, 3.71, -0.072],
+        [0.0, 3.80, -0.066],
+        [0.0, 3.90, -0.072],
+        [0.0, 3.99, -0.084]
+      ], 0.0035, cGuideMat, 32, 8));
+
+      // Bilateral Fengchi (GB20) Suboccipital Acupotomy / Pharmacopuncture Needles
+      const needleR = createGoldenNeedleMesh(
+        new THREE.Vector3(0.036, 3.985, -0.165),
+        new THREE.Vector3(0.095, 3.940, -0.305)
+      );
+      const needleL = createGoldenNeedleMesh(
+        new THREE.Vector3(-0.036, 3.985, -0.165),
+        new THREE.Vector3(-0.095, 3.940, -0.305)
+      );
+      grp.add(needleR, needleL);
+
+      grp.userData = {
+        particleRestOrigin: new THREE.Vector3(0.0, 3.96, -0.162),
+        pinPrimaryRest: new THREE.Vector3(0.0, 3.78, -0.08),
+        pinPathRest: new THREE.Vector3(0.0, 4.32, 0.02),
+        updateRig(tNorm, elapsed) {
+          const pain = Math.max(0, 1 - tNorm * 1.18);
+          // Spastic red-white suboccipital cords soften into relaxed warm muscle
+          spasticMat.uniforms.uBaseCol.value.lerpColors(new THREE.Color('#FF4255'), new THREE.Color('#BA564E'), tNorm);
+          spasticMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(0.92, 0.08, tNorm);
+          spasticMat.uniforms.uOpacity.value = THREE.MathUtils.lerp(0.95, 0.55, tNorm);
+
+          headacheGroup.visible = pain > 0.04;
+          headacheMat.uniforms.uOpacity.value = pain * (0.68 + 0.32 * Math.sin(elapsed * 9.5));
+
+          // Cerebral arterial oxygenation surges brightly as 15kg -> 5kg C-lordosis opens
+          cerebralFlowMat.uniforms.uOpacity.value = THREE.MathUtils.lerp(0.24, 0.96, tNorm);
+          cerebralFlowMat.uniforms.uEmisGain.value = THREE.MathUtils.lerp(0.20, 1.15, tNorm);
+
+          cGuideMat.uniforms.uOpacity.value = sstep(0.45, 0.95, tNorm) * 0.85;
+
+          updateNeedleAnim(needleR, tNorm);
+          updateNeedleAnim(needleL, tNorm);
+        }
+      };
+
+      scene.add(grp);
+      conditionGroups.cervical = grp;
+    })();
+
+    // =========================================================================
+    // 8. GOLDEN PHARMACOPUNCTURE MICRO-PARTICLES (300 HEALING PARTICLES)
+    // =========================================================================
+    const PARTICLE_COUNT = 260;
+    const pGeo = new THREE.BufferGeometry();
+    const pPositions = new Float32Array(PARTICLE_COUNT * 3);
+    const pSeeds = new Float32Array(PARTICLE_COUNT * 3);
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      pSeeds[i * 3]     = (Math.random() - 0.5) * 2.0;
+      pSeeds[i * 3 + 1] = (Math.random() - 0.5) * 2.0;
+      pSeeds[i * 3 + 2] = (Math.random() - 0.5) * 2.0;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0xffdf78,
+      size: 0.0085,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const pharmaParticles = new THREE.Points(pGeo, pMat);
+    pharmaParticles.frustumCulled = false;
+    pharmaParticles.renderOrder = 15;
+    scene.add(pharmaParticles);
+
+    function updatePharmaParticles(restOrigin, tNorm, elapsed) {
+      const win = Math.sin(THREE.MathUtils.clamp((tNorm - 0.14) / 0.74, 0, 1) * Math.PI);
+      pMat.opacity = win * 0.92;
+      if (win < 0.02) return;
+      const worldOrg = evalKinematicsJS(restOrigin.x, restOrigin.y, restOrigin.z);
+      const arr = pGeo.attributes.position.array;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const ph = (elapsed * 0.85 + (i / PARTICLE_COUNT)) % 1.0;
+        const rad = ph * 0.085;
+        arr[i * 3]     = worldOrg.x + pSeeds[i * 3] * rad;
+        arr[i * 3 + 1] = worldOrg.y + pSeeds[i * 3 + 1] * rad + (0.5 - ph) * 0.025;
+        arr[i * 3 + 2] = worldOrg.z + pSeeds[i * 3 + 2] * rad;
+      }
+      pGeo.attributes.position.needsUpdate = true;
+    }
+
+    // =========================================================================
+    // 9. 6-LAYER VERTICAL TISSUE DEPTH PEELER & UI CONTROLLER
+    // =========================================================================
+    let currentCondKey = 'lumbar';
+    let currentDepthVal = 4.35;
+    let currentTimelapse = 0;
+    let targetTimelapse = null;
+    let autoPlayActive = false;
+    let activeCamPresetIdx = 0;
+    let focusIsoOn = true;
+    const camFlyGoal = { active: false, pos: new THREE.Vector3(), target: new THREE.Vector3() };
+
+    const DEPTH_NAMES = [
+      '01 표피·경혈 투시',
+      '02 천층 근막망',
+      '03 심부 골격근',
+      '04 인대·관절낭',
+      '05 골격·추간판',
+      '06 신경·혈류 집중'
+    ];
+
+    function applyDepthOpacity(val) {
+      currentDepthVal = THREE.MathUtils.clamp(parseFloat(val), 0, 5);
+      document.getElementById('depthRangeInput').value = currentDepthVal;
+      const activeIdx = Math.min(5, Math.round(currentDepthVal));
+      document.getElementById('depthStatusLabel').textContent = DEPTH_NAMES[activeIdx];
+
+      document.querySelectorAll('.depth-step-btn').forEach(btn => {
+        const idx = parseInt(btn.getAttribute('data-depth'), 10);
+        btn.classList.toggle('active-layer', idx === activeIdx);
+        btn.classList.toggle('peeled-away', idx < Math.floor(currentDepthVal));
+      });
+
+      // Layer 0 (0.0~1.0): Skin -> Layer 1 (1.0~2.0): Fascia Web -> peels off by 2.1
+      const skinFasciaAlpha = 1.0 - sstep(1.35, 2.15, currentDepthVal);
+      skinFasciaMat.uniforms.uLayerAlpha.value = skinFasciaAlpha;
+      skinFasciaMat.uniforms.uFasciaBlend.value = sstep(0.35, 1.15, currentDepthVal);
+      if (skinMeshGroup) skinMeshGroup.visible = skinFasciaAlpha > 0.015;
+
+      // Layer 2 (1.8~3.2): Anatomical Écorché Striated Muscle -> peels off by 3.45
+      const musIn = sstep(0.85, 1.75, currentDepthVal);
+      const musOut = 1.0 - sstep(2.45, 3.35, currentDepthVal);
+      const musAlpha = musIn * musOut * 0.94;
+      muscleEcorcheMat.uniforms.uLayerAlpha.value = musAlpha;
+      if (muscleMeshGroup) muscleMeshGroup.visible = musAlpha > 0.015;
+
+      // Layer 3 (3.0~4.2): Joint Capsules & Ligaments
+      const capAlpha = (1.0 - sstep(3.85, 4.65, currentDepthVal)) * 0.92;
+      jointCapsuleMats.forEach(m => {
+        m.uniforms.uOpacity.value = Math.max(0.14, capAlpha);
+        m.depthWrite = capAlpha > 0.55;
+      });
+
+      // Layer 4 (Bone & Discs): Crisp opaque at depth <= 4.3, translucent X-ray ghost at depth 5 (Nerve focus)
+      const boneAlpha = THREE.MathUtils.lerp(0.98, 0.34, sstep(4.35, 4.98, currentDepthVal));
+      boneMats.forEach(m => {
+        m.uniforms.uOpacity.value = boneAlpha;
+        m.depthWrite = boneAlpha > 0.60;
+      });
+      spinalDiscMats.forEach(m => {
+        m.uniforms.uOpacity.value = Math.max(0.55, boneAlpha);
+        m.depthWrite = boneAlpha > 0.60;
+      });
+
+      // Layer 5: Vascular & Brainstem visibility
+      const vascAlpha = sstep(2.8, 4.2, currentDepthVal) * (currentCondKey === 'cervical' ? 0.86 : 0.42);
+      artMat.uniforms.uOpacity.value = vascAlpha;
+      venMat.uniforms.uOpacity.value = vascAlpha * 0.85;
+      if (vascularGroup) vascularGroup.visible = vascAlpha > 0.02;
+      if (brainGroup) {
+        brainGroup.visible = (currentCondKey === 'cervical');
+        brainMat.uniforms.uOpacity.value = THREE.MathUtils.lerp(0.55, 0.92, sharedUniforms.uHeal.value);
+      }
+    }
+
+    function updateClinicalUI() {
+      const cfg = CLINICAL_DB[currentCondKey];
+      const pct = Math.round(currentTimelapse);
+      const tNorm = currentTimelapse / 100;
+      sharedUniforms.uHeal.value = tNorm;
+
+      const pill = document.getElementById('briefStagePill');
+      const quote = document.getElementById('doctorQuoteBox');
+      const tlLabel = document.getElementById('tlPercentLabel');
+      const pinPath = document.getElementById('pinPathology');
+      const patientBox = document.getElementById('patientKeyPointBox');
+      const stepLabel = document.getElementById('stepIndicatorLabel');
+
+      document.getElementById('briefTitle').textContent = cfg.title;
+      document.getElementById('briefSub').textContent = cfg.sub;
+      document.getElementById('pinPrimary').textContent = cfg.pinPrimaryText;
+      document.getElementById('metric1Label').textContent = cfg.metrics.m1Label;
+      document.getElementById('metric2Label').textContent = cfg.metrics.m2Label;
+
+      // Update 3-step teaching navigation buttons
+      const btn0 = document.getElementById('btnStep0');
+      const btn1 = document.getElementById('btnStep1');
+      const btn2 = document.getElementById('btnStep2');
+
+      if (pct < 30) {
+        if (btn0) btn0.className = 'step-teach-btn active-step-0';
+        if (btn1) btn1.className = 'step-teach-btn';
+        if (btn2) btn2.className = 'step-teach-btn';
+        if (stepLabel) stepLabel.textContent = '1/3단계 · 병리기전';
+
+        pill.className = 'brief-stage-pill pain';
+        pill.textContent = '● 1단계 · 병리 기전 (진통제 한계)';
+        quote.textContent = cfg.quotes.pain;
+        if (patientBox && cfg.patientPoints) {
+          patientBox.innerHTML = '<strong>💡 환자 설득 포인트:</strong> ' + cfg.patientPoints[0];
+        }
+        tlLabel.textContent = `${pct}% 고통`;
+        tlLabel.style.color = '#ff6b7a';
+        pinPath.className = 'anat-pin alert-pin';
+        pinPath.textContent = currentCondKey === 'cervical'
+          ? `⚠️ 거북목 경추 하중 ${(15 - 10 * tNorm).toFixed(1)}kg · 후두신경 압박`
+          : cfg.pinPathText[0];
+      } else if (pct < 75) {
+        if (btn0) btn0.className = 'step-teach-btn';
+        if (btn1) btn1.className = 'step-teach-btn active-step-1';
+        if (btn2) btn2.className = 'step-teach-btn';
+        if (stepLabel) stepLabel.textContent = '2/3단계 · 물리개입';
+
+        pill.className = 'brief-stage-pill treat';
+        pill.textContent = '● 2단계 · 추나 음압 감압 & 고농도 약침';
+        quote.textContent = cfg.quotes.treat;
+        if (patientBox && cfg.patientPoints) {
+          patientBox.innerHTML = '<strong>💡 환자 설득 포인트:</strong> ' + cfg.patientPoints[1];
+        }
+        tlLabel.textContent = `${pct}% 치료중`;
+        tlLabel.style.color = '#ffcf56';
+        pinPath.className = 'anat-pin treat-pin';
+        pinPath.textContent = currentCondKey === 'cervical'
+          ? `✨ 도침·추나 교정중 · 하중 ${(15 - 10 * tNorm).toFixed(1)}kg 감소`
+          : cfg.pinPathText[1];
+      } else {
+        if (btn0) btn0.className = 'step-teach-btn';
+        if (btn1) btn1.className = 'step-teach-btn';
+        if (btn2) btn2.className = 'step-teach-btn active-step-2';
+        if (stepLabel) stepLabel.textContent = '3/3단계 · 근본고착';
+
+        pill.className = 'brief-stage-pill heal';
+        pill.textContent = '● 3단계 · 섬유륜 강화 & 재발 방지 한약';
+        quote.textContent = cfg.quotes.heal;
+        if (patientBox && cfg.patientPoints) {
+          patientBox.innerHTML = '<strong>💡 환자 설득 포인트:</strong> ' + cfg.patientPoints[2];
+        }
+        tlLabel.textContent = `${pct}% 복원`;
+        tlLabel.style.color = '#2dd4bf';
+        pinPath.className = 'anat-pin heal-pin';
+        pinPath.textContent = currentCondKey === 'cervical'
+          ? `✓ 정상 C자 커브 복원 · 경추 하중 ${(15 - 10 * tNorm).toFixed(1)}kg`
+          : cfg.pinPathText[2];
+      }
+
+      const m1Val = document.getElementById('metric1Val');
+      const m2Val = document.getElementById('metric2Val');
+      if (currentCondKey === 'cervical') {
+        const kg = (15 - 10 * tNorm).toFixed(1);
+        m1Val.textContent = `${kg} kg (${tNorm > 0.7 ? '정상 부하' : '과부하'})`;
+        m1Val.style.color = tNorm > 0.7 ? '#2dd4bf' : (tNorm > 0.3 ? '#ffcf56' : '#ff5c6c');
+      } else {
+        const painScore = Math.round(94 - 86 * tNorm);
+        m1Val.textContent = `${painScore}% (${painScore > 60 ? '급성 압박' : (painScore > 25 ? '감압 진행' : '안정화')})`;
+        m1Val.style.color = painScore > 60 ? '#ff5c6c' : (painScore > 25 ? '#ffcf56' : '#2dd4bf');
+      }
+      const healScore = Math.round(12 + 86 * tNorm);
+      m2Val.textContent = `${healScore}% (${healScore > 75 ? '복원 완료' : '진행중'})`;
+      m2Val.style.color = healScore > 75 ? '#2dd4bf' : '#f5d36c';
+
+      if (brainGroup && currentCondKey === 'cervical') {
+        brainMat.uniforms.uOpacity.value = THREE.MathUtils.lerp(0.55, 0.92, tNorm);
+      }
+    }
+
+    // Interactive 3-Step Jump for Doctor Clinical Presentation
+    window.jumpToStep = function(stepIdx) {
+      if (stepIdx === 0) {
+        window.animateTimelapseTo(0);
+        window.selectCameraPreset(0);
+      } else if (stepIdx === 1) {
+        window.animateTimelapseTo(52);
+        window.selectCameraPreset(1);
+      } else if (stepIdx === 2) {
+        window.animateTimelapseTo(100);
+        window.selectCameraPreset(0);
+      }
+    };
+
+    window.toggleDoctorModeUI = function() {
+      const chk = document.getElementById('chkDoctorMode');
+      const badge = document.getElementById('docScriptBadge');
+      const ptBox = document.getElementById('patientKeyPointBox');
+      const isDoc = chk ? chk.checked : true;
+      if (badge) badge.textContent = isDoc ? '🗣️ 원장님 10초 티칭 멘트' : '📘 환자 설명 요약';
+      if (ptBox) ptBox.style.display = isDoc ? 'block' : 'none';
+    };
+
+    window.selectCameraPreset = function(presetIdx) {
+      const cfg = CLINICAL_DB[currentCondKey];
+      const p = cfg.camPresets[presetIdx] || cfg.camPresets[0];
+      activeCamPresetIdx = presetIdx;
+      [0, 1, 2].forEach(i => {
+        const el = document.getElementById('camBtn' + i);
+        if (el) {
+          el.textContent = cfg.camPresets[i].label;
+          el.classList.toggle('active', i === presetIdx);
+        }
+      });
+      camFlyGoal.pos.set(...p.pos);
+      camFlyGoal.target.set(...p.target);
+      camFlyGoal.active = true;
+    };
+
+    window.toggleFocusIsolation = function() {
+      focusIsoOn = !focusIsoOn;
+      sharedUniforms.uIsoStrength.value = focusIsoOn ? 0.88 : 0.0;
+      const btn = document.getElementById('btnFocusIso');
+      btn.classList.toggle('active', focusIsoOn);
+      btn.textContent = focusIsoOn ? '🔦 포커스 스포트라이트 ON' : '🧍 전신 밝게 보기';
+    };
+
+    window.selectCondition = function(condKey) {
+      if (!CLINICAL_DB[condKey]) return;
+      currentCondKey = condKey;
+      const cfg = CLINICAL_DB[condKey];
+      sharedUniforms.uCondId.value = cfg.condId;
+      sharedUniforms.uFocusCenter.value.set(...cfg.focusCenter);
+      sharedUniforms.uFocusRadius.value = cfg.focusRadius;
+
+      document.querySelectorAll('.cond-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-cond') === condKey);
+      });
+      Object.entries(conditionGroups).forEach(([k, grp]) => {
+        grp.visible = (k === condKey);
+      });
+
+      currentTimelapse = 0;
+      targetTimelapse = null;
+      autoPlayActive = false;
+      document.getElementById('btnPlayTimelapse').textContent = '▶ 치료 타임랩스 재생';
+      document.getElementById('timelapseSlider').value = 0;
+
+      applyDepthOpacity(cfg.defaultDepth);
+      updateClinicalUI();
+      clearLaserCanvas();
+      selectCameraPreset(0);
+    };
+
+    window.setTissueDepth = function(idx) { applyDepthOpacity(idx); };
+    window.onDepthSliderInput = function(val) { applyDepthOpacity(val); };
+
+    window.onTimelapseInput = function(val) {
+      autoPlayActive = false;
+      targetTimelapse = null;
+      document.getElementById('btnPlayTimelapse').textContent = '▶ 치료 타임랩스 재생';
+      currentTimelapse = parseFloat(val);
+      updateClinicalUI();
+    };
+
+    window.animateTimelapseTo = function(goalPct) {
+      autoPlayActive = false;
+      document.getElementById('btnPlayTimelapse').textContent = '▶ 치료 타임랩스 재생';
+      targetTimelapse = goalPct;
+    };
+
+    window.toggleAutoPlayTimelapse = function() {
+      autoPlayActive = !autoPlayActive;
+      targetTimelapse = null;
+      if (autoPlayActive && currentTimelapse >= 99) currentTimelapse = 0;
+      document.getElementById('btnPlayTimelapse').textContent = autoPlayActive ? '⏸ 일시정지' : '▶ 치료 타임랩스 재생';
+    };
+
+    window.toggleBriefingPanel = function() {
+      document.getElementById('briefingCard').classList.toggle('hidden-panel');
+    };
+
+    window.openConsentModal = function() {
+      const cfg = CLINICAL_DB[currentCondKey];
+      document.getElementById('modalPlanTitle').textContent = `${cfg.title} · 3단계 비수술 복원 로드맵`;
+      document.getElementById('modalRoadmapGrid').innerHTML = cfg.roadmap.map(step => `
+        <div class="rm-step-box">
+          <strong>${step.title}</strong>
+          <p>${step.desc}</p>
+        </div>
+      `).join('');
+      document.getElementById('consentModalBackdrop').classList.add('open');
+    };
+
+    window.closeConsentModal = function(ev) {
+      if (ev && ev.target !== document.getElementById('consentModalBackdrop')) return;
+      document.getElementById('consentModalBackdrop').classList.remove('open');
+    };
+
+    // Laser Pen Annotation Canvas
+    const drawCanvas = document.getElementById('drawCanvas');
+    const drawCtx = drawCanvas.getContext('2d');
+    let penMode = false;
+    let isDrawing = false;
+
+    function resizeDrawCanvas() {
+      drawCanvas.width = window.innerWidth;
+      drawCanvas.height = window.innerHeight;
+    }
+    resizeDrawCanvas();
+
+    window.toggleLaserPen = function() {
+      penMode = !penMode;
+      drawCanvas.classList.toggle('drawing-active', penMode);
+      document.getElementById('btnTogglePen').classList.toggle('active-pen', penMode);
+      document.getElementById('btnClearPen').style.display = penMode ? 'inline-flex' : 'none';
+      controls.enabled = !penMode;
+    };
+
+    window.clearLaserCanvas = function() {
+      drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+    };
+
+    drawCanvas.addEventListener('pointerdown', e => {
+      if (!penMode) return;
+      isDrawing = true;
+      drawCtx.strokeStyle = '#ff4d5e';
+      drawCtx.shadowColor = '#ff1e38';
+      drawCtx.shadowBlur = 14;
+      drawCtx.lineWidth = 3.5;
+      drawCtx.lineCap = 'round';
+      drawCtx.lineJoin = 'round';
+      drawCtx.beginPath();
+      drawCtx.moveTo(e.clientX, e.clientY);
+    });
+    drawCanvas.addEventListener('pointermove', e => {
+      if (!penMode || !isDrawing) return;
+      drawCtx.lineTo(e.clientX, e.clientY);
+      drawCtx.stroke();
+    });
+    window.addEventListener('pointerup', () => { isDrawing = false; });
+
+    // Cancel camera auto-fly if user grabs OrbitControls manually
+    canvas.addEventListener('pointerdown', () => { camFlyGoal.active = false; });
+
+    // =========================================================================
+    // 11. 60FPS RENDER LOOP & KINEMATIC 3D PIN PROJECTION
+    // =========================================================================
+    const clock = new THREE.Clock();
+    const projVec = new THREE.Vector3();
+
+    function projectWorldPin(restVec, domEl) {
+      const moved = evalKinematicsJS(restVec.x, restVec.y, restVec.z);
+      projVec.copy(moved).project(camera);
+      if (projVec.z > 1 || projVec.z < -1) {
+        domEl.style.opacity = '0';
+        return;
+      }
+      const x = (projVec.x * 0.5 + 0.5) * window.innerWidth;
+      const y = (-projVec.y * 0.5 + 0.5) * window.innerHeight;
+      const inBounds = x > 60 && x < window.innerWidth - 60 && y > 70 && y < window.innerHeight - 120;
+      domEl.style.opacity = inBounds ? '1' : '0';
+      domEl.style.left = `${x}px`;
+      domEl.style.top = `${y}px`;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const elapsed = clock.getElapsedTime();
+      sharedUniforms.uTime.value = elapsed;
+
+      if (autoPlayActive) {
+        currentTimelapse += dt * 16.0;
+        if (currentTimelapse >= 100) {
+          currentTimelapse = 100;
+          autoPlayActive = false;
+          document.getElementById('btnPlayTimelapse').textContent = '↺ 처음부터 다시 재생';
+        }
+        document.getElementById('timelapseSlider').value = currentTimelapse;
+        updateClinicalUI();
+      } else if (targetTimelapse !== null) {
+        const diff = targetTimelapse - currentTimelapse;
+        if (Math.abs(diff) < 0.35) {
+          currentTimelapse = targetTimelapse;
+          targetTimelapse = null;
+        } else {
+          currentTimelapse += diff * Math.min(1, dt * 6.5);
+        }
+        document.getElementById('timelapseSlider').value = currentTimelapse;
+        updateClinicalUI();
+      }
+
+      if (camFlyGoal.active) {
+        camera.position.lerp(camFlyGoal.pos, Math.min(1, dt * 6.0));
+        controls.target.lerp(camFlyGoal.target, Math.min(1, dt * 6.0));
+        if (camera.position.distanceTo(camFlyGoal.pos) < 0.004 && controls.target.distanceTo(camFlyGoal.target) < 0.004) {
+          camFlyGoal.active = false;
+        }
+      }
+
+      const activeRig = conditionGroups[currentCondKey];
+      if (activeRig && activeRig.visible) {
+        const tNorm = currentTimelapse / 100;
+        activeRig.userData.updateRig(tNorm, elapsed);
+        updatePharmaParticles(activeRig.userData.particleRestOrigin, tNorm, elapsed);
+        projectWorldPin(activeRig.userData.pinPrimaryRest, document.getElementById('pinPrimary'));
+        projectWorldPin(activeRig.userData.pinPathRest, document.getElementById('pinPathology'));
+      }
+
+      controls.update();
+      composer.render();
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+      resizeDrawCanvas();
+    });
+
+    // Boot default condition (or ?cond=... URL param)
+    const initCond = urlParams.get('cond');
+    selectCondition(CLINICAL_DB[initCond] ? initCond : 'lumbar');
+    // Support ?timelapse=50&depth=2 URL params for instant presets & QA
+    if (urlParams.get('depth') !== null) applyDepthOpacity(parseFloat(urlParams.get('depth')));
+    if (urlParams.get('timelapse') !== null) {
+      currentTimelapse = parseFloat(urlParams.get('timelapse'));
+      document.getElementById('timelapseSlider').value = currentTimelapse;
+      updateClinicalUI();
+    }
+    if (urlParams.get('preset') !== null) {
+      const pi = parseInt(urlParams.get('preset'), 10);
+      selectCameraPreset(pi);
+      camera.position.copy(camFlyGoal.pos);
+      controls.target.copy(camFlyGoal.target);
+      camFlyGoal.active = false;
+    } else {
+      camera.position.copy(camFlyGoal.pos);
+      controls.target.copy(camFlyGoal.target);
+      camFlyGoal.active = false;
+    }
+    animate();
+  </script>
+</body>
+</html>
