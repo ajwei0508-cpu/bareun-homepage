@@ -796,7 +796,7 @@ function buildPostJsonLdObject(post, category, siteOrigin) {
         'name': '바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon)',
         'alternateName': 'Daejeon Bareun Korean Medicine Clinic',
         'url': origin + '/',
-        'telephone': '+82-42-488-1075',
+        'telephone': '+82-10-5631-1275',
         'image': ghBase + 'card_1_director.jpg',
         'address': {
           '@type': 'PostalAddress',

@@ -17,15 +17,15 @@ window.BAREUN_PAY_CONFIG = {
   // 상점 법적 사업자 정보 (카드사 및 전자상거래법 필수 고시 규격)
   merchant: {
     name: '바른한의원 대전본점',
-    ceo: '대표원장 (한의학 박사)',
-    tel: '042-488-1075',
+    ceo: '안정위 대표원장 (한의사)',
+    tel: '010-5631-1275',
     email: 'bareunhaniwon@naver.com',
-    address: '대전광역시 서구 둔산로 123 (둔산동 중심상업지구)',
-    bizNumber: '305-XX-XXXXX',
-    mailOrderNumber: '제 2026-대전서구-0001 호',
+    address: '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동)',
+    bizNumber: '211-91-10479',
+    mailOrderNumber: '제 2026-대전대덕-0001 호',
     clinicLicenseNumber: '제 3680000-000-00000 호',
-    privacyOfficer: '대표원장 (bareunhaniwon@naver.com)',
-    postcode: '35242'
+    privacyOfficer: '안정위 대표원장 (bareunhaniwon@naver.com)',
+    postcode: '34417'
   },
 
   // 결제 수단별 PG 설정 (포트원에 등록된 PG 채널 설정)

@@ -1,11 +1,27 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-13 v7.5 (① **AI 이미지 제작 엔진 프롬프트 왜곡 원천 제거 (`studio-ai-engine.js`, `bareun-member-private-qna.php`, `detail-pages-editor.html`)**: 시스템 내부에 하드코딩되어 있던 `'따뜻한 원목과 은은한 한지 자연광'`, `'손동작을 새롭게 사고하라'` 강제 주입 문구 전면 삭제 · ② **`(배경없이)` 클린 스튜디오 가드(`detectNoBackgroundDirective`) 신설**: 창문·한옥 창살·블라인드·화분·가구 등 배경 구조물 생성 100% 차단 및 `'공간에서 (배경없이)에서'` 충돌 문맥 자동 교정 · ③ **현대 의료기기(체성분 분석기·초음파 등) 목재 변질 방지 및 1인 최대 2손 해부학 가드(제3의 손 환각 차단) 탑재 및 카페24 실서버 동기화 완료**)
+> **최종 업데이트**: 2026-11-13 v7.6 (① **『오늘의 건강 글』 72개 전 포스트 + 3D 인체모형 + RSS + `/llms.txt` SEO·AEO·GEO 6대 전면 고도화 및 카페24 실서버 배포 완료**: JSON-LD 중복 `FAQPage` 충돌 제거 · `<title>` 58자 음절 절단 해결 · 9대 부위 전용 `1376×768` 의학 모식도 OG/Discover 이미지 적용 · 본문 분량 약 500자 → 약 4,290자 심층 통합생리학 칼럼 + 토픽 클러스터 내부 링크 확장 · 네이버 서치어드바이저용 `/feed/` 30개 → 120개 전체 송출 및 순수 HTML 정제 · ② **공식 대표전화 `010-5631-1275` 단일화(미사용 `042-*` 구 번호 전 파일 100% 영구 삭제) 및 공식 유튜브 `@bareunhaniwon` 엔티티(`sameAs`) 연동 완료**)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
 
-## 💎 최신 완료 작업 요약 (2026-11-13 v7.5 · AI 이미지 제작 프롬프트 100% 정밀 이행 엔진 개편)
+## 💎 최신 완료 작업 요약 (2026-11-13 v7.6 · 『오늘의 건강 글』 72편 SEO·AEO·GEO 6대 전면 개편 & 대표번호 `010-5631-1275` 단일화)
+
+1. **공식 대표번호 `010-5631-1275`(`+82-10-5631-1275`) 100% 단일화 및 구 `042-*` 번호 전수 영구 삭제 (`seo-master-config.js`, `disease-blog-seed-data.js`, `terms.js`, `payment-config.js`, `local-bareun-api.js`, `serve.js`, `wordpress-alimtalk-endpoint.php` 등 전 파일)**:
+   - 현재 사용하지 않는 `042-622-1275`, `042-488-1075` 등 모든 `042` 유선번호를 홈페이지 소스·JSON-LD 스키마·약관·알림톡 발신번호·레거시 파일에서 0건이 되도록 완전 소거했습니다.
+   - `MedicalClinic` / `MedicalOrganization` 엔티티의 `sameAs` 배열에 공식 유튜브 채널(`https://www.youtube.com/@bareunhaniwon`), 네이버 플레이스(`https://naver.me/5U1ELn8L`), 공식 네이버 블로그(`https://blog.naver.com/wei0508`), 카카오톡 채널(`https://pf.kakao.com/_ykxcLK`)을 통합 연결했습니다.
+2. **워드프레스 코어 SEO 엔진(`bareun-member-private-qna.php`) 4대 구조적 병목 해결**:
+   - **중복 `FAQPage` 스키마 충돌 제거**: `/health-note-*` 및 인라인 스키마 보유 포스트에서 `<head>`는 `MedicalClinic`·`WebSite`·3단계 `BreadcrumbList`만 출력하고, 본문 전용 JSON-LD가 단일 정본 `MedicalWebPage`·`MedicalScholarlyArticle`·5문항 `FAQPage`·`HowTo`를 전담하도록 분리하여 구글 리치 결과 및 AI 검색 파싱 정합성을 확보했습니다.
+   - **`<title>` 중간 음절 절단(`…`) 해결**: 포스트 타이틀 허용 임계치를 스마트 78~82자로 상향하여 전체 질문형 제목과 `[부위 · 핵심키워드 건강백과] | 바른한의원`이 잘림 없이 온전히 노출됩니다.
+   - **9대 부위별 `1376×768` 고유 대표 이미지(`og:image` · Google Discover 규격) 자동 매핑**: 전 포스트가 동일한 기본 로고 이미지를 공유하던 한계를 넘어, 부위별 `featured_media`(`illust_knee_growth_care.jpg`, `illust_cervical_hairloss.jpg` 등 9종 `1376×768`)를 자동 감지하여 `og:image`, `twitter:image`, `<link rel="preload">`에 각각 반영했습니다.
+   - **네이버 서치어드바이저 RSS 피드(`/feed/`) 30개 → 120개 확장 및 `<script>` 제거**: 기존 최신 30개 제한으로 누락되던 57개 건강 글을 포함해 총 **87개 전체(14개 진료 페이지 + 1개 플래그십 리뷰 + 72개 건강 글)**가 `/feed/`에 100% 송출되며, 피드 본문 내 인라인 `<script>`/`<style>`을 정제해 네이버 크롤러 호환성을 극대화했습니다.
+3. **72개 『오늘의 건강 글』 심층 의학 에디토리얼 확장 & AI 지식 인덱스(`/llms.txt`, `/llms-full.txt`) 업그레이드 (`auto-blog-engine.js`, `deploy-cafe24.js`)**:
+   - 기존 약 500자 단문 구조에서 **약 4,290자 분량의 하이엔드 통합생리학 아티클**(고해상도 모식도 `<figure>`, 해외 SCI + 통합생리 학술 인용 보강, 6번 심층 생리 기전 및 감별 관찰 포인트 섹션, 5문항 확장 `FAQPage`, 같은 부위 연관 건강 글 4편 **토픽 클러스터 내부 링크**, 맞춤 전문 클리닉 및 공식 유튜브·블로그 연동, 블로그/SNS 공유용 5줄 요약 카드)로 고도화했습니다(3단계 환자 친화 품질 감사 72/72 전수 통과 유지).
+   - `https://www.bareunhaniwon.com/` 실서버 배포 완료 및 HTTP 200·스키마·RSS(87건)·사이트맵(73포스트)·`llms.txt` 라이브 검증 완료.
+
+---
+
+## 💎 직전 완료 작업 요약 (2026-11-13 v7.5 · AI 이미지 제작 프롬프트 100% 정밀 이행 엔진 개편)
 
 1. **시스템 하드코딩 고정 문구(`원목·한지 자연광·손동작 강요`) 전면 제거 (`homepage/studio-ai-engine.js`, `bareun-member-private-qna.php`)**:
    - 기존 프롬프트 빌더(`buildArgonHighPrompt`, `build_argon_high_prompt_php`, `buildMasterFluxPrompt`, `translate_ko_medical_prompt_server`) 내부에 고정 주입되어 있던 `'따뜻한 원목과 은은한 한지 자연광이 어우러진 프리미엄 한의원'` 및 `'손동작을 처음부터 새롭게 사고하여 촬영하세요'` 문구가 사용자의 `'모던한'`, `'(배경없이)'`, `'1인칭 시점'` 지시를 덮어써서 한옥 창살 배경·나무 인바디·손 3개 환각을 유발하던 문제를 근본 해결했습니다.

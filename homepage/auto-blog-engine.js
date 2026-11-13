@@ -23,6 +23,7 @@ const {
 } = require('./body-3d-auto-notes-data.js');
 
 const {
+  DISEASE_QNA_CATEGORIES,
   DISEASE_BLOG_CATEGORIES,
   INITIAL_DISEASE_BLOG_POSTS,
   FLAGSHIP_REPRESENTATIVE_POST
@@ -679,13 +680,187 @@ function escHtmlServer(str) {
 }
 
 /**
+ * 9대 부위별 고유 의학 일러스트(1376x768 · Google Discover/스마트블록 규격) 및 심층 통합생리학 임상 감별 메타데이터
+ */
+const GH_RAW_BASE_URL = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+
+const PART_SEO_CLINICAL_META = {
+  knee: {
+    heroFile: 'illust_knee_growth_care.jpg',
+    heroWebp: 'webp/illust_knee_growth_care.webp',
+    wpSlugHint: 'illust-knee-growth-care',
+    heroAlt: '바른한의원 대전본점 소아 무릎 성장판 연골세포 분열 및 야간 서파수면 성장호르몬 생리 일러스트',
+    heroCaption: '대퇴골·경골 골단판(성장판) 연골세포 증식과 야간 서파수면(N3)·비강 호흡·영양 대사 균형 모식도',
+    clinicLinks: [
+      { label: '바른 성장 · 성조숙증 클리닉 자세히 보기', url: 'https://www.bareunhaniwon.com/growth/' },
+      { label: '9대 무방사선 초음파 · 체열 · 성장판 검진 안내', url: 'https://www.bareunhaniwon.com/director/' }
+    ],
+    physioMechanism: '소아·청소년기 선형 성장은 대퇴골 원위부와 경골 근위부 성장판(Epiphyseal Plate) 내 연골모세포가 밤사이 분열·증식하며 골기질로 치환되는 생리 과정을 따릅니다. 특히 성장호르몬(GH-IGF-1 축)은 취침 후 초기 깊은 서파수면 단계에서 맥동성으로 집중 분비되므로, 야간 혈당·인슐린 상승이나 구강호흡에 의한 미세각성, 하지 정렬 불균형이 겹치면 같은 유전 조건에서도 성장 효율이 달라질 수 있습니다.',
+    clinicalCheckpoints: [
+      '야간 수면의 질 관찰: 코골이, 구강호흡, 잦은 뒤척임, 기상 직후 입마름이나 다크서클이 2주 이상 이어지는지 확인합니다.',
+      '체성분과 사춘기 리듬 점검: 키 증가 속도 대비 복부 체지방 증가가 빠르거나 또래보다 이차성징 신호가 이르게 나타나는지 주기적으로 기록합니다.',
+      '하지 생체역학 및 관절 피로 구분: 주로 저녁·밤에 양측 정강이·종아리가 뻐근한 성장기 근육 피로인지, 한쪽 관절 부종이나 보행 시 절뚝거림이 동반되는 구조적 통증인지 구별하여 살핍니다.'
+    ],
+    examGuide: '무방사선 초음파 성장판 정밀 관찰 · 체성분(체지방·골격근) 평가 · 비강/인후두 내시경 호흡 통로 점검'
+  },
+  cervical: {
+    heroFile: 'illust_cervical_hairloss.jpg',
+    heroWebp: 'webp/illust_cervical_hairloss.webp',
+    wpSlugHint: 'illust-cervical-hairloss',
+    heroAlt: '바른한의원 대전본점 경추 C자 정렬과 두피 모낭 모유두세포 미세혈류 순환 일러스트',
+    heroCaption: '경추 생체역학 하중 분산과 후두하근 이완을 통한 두피 진피층 모유두(Dermal Papilla) 미세혈류 및 열조절 기전',
+    clinicLinks: [
+      { label: '바른 탈모 · 모근재생 통합 클리닉', url: 'https://www.bareunhaniwon.com/hairloss/' },
+      { label: '남성 M자·정수리 탈모 클리닉', url: 'https://www.bareunhaniwon.com/hairloss-male/' },
+      { label: '여성 가르마·볼륨 탈모 클리닉', url: 'https://www.bareunhaniwon.com/hairloss-female/' },
+      { label: '원형탈모 면역복원 클리닉', url: 'https://www.bareunhaniwon.com/hairloss-alopecia/' },
+      { label: '지루성두피염 열독해독 클리닉', url: 'https://www.bareunhaniwon.com/hairloss-seborrheic/' },
+      { label: '바른 경추 추나 · 거북목 교정 클리닉', url: 'https://www.bareunhaniwon.com/chuna/' }
+    ],
+    physioMechanism: '두피 모낭 기저부의 모유두 세포(Dermal Papilla Cell)는 목과 후두부를 지나는 미세혈관망으로부터 산소와 아미노산·미네랄을 공급받아 모발 성장기(Anagen)를 유지합니다. 장시간 고개를 숙이는 전방두부자세(거북목)와 만성 교감신경 긴장이 지속되면 후두하근·승모근이 경직되어 두경부 정맥 환류가 정체되고, 두피 국소 열감과 피지 산화가 겹치며 모발이 가늘어지는 연모화(Miniaturization)가 촉진됩니다.',
+    clinicalCheckpoints: [
+      '모발 굵기 편차 비교: 뒷머리(후두부) 모발과 정수리·가르마·앞머리 모발을 손끝으로 함께 만졌을 때 굵기와 탄력 차이가 뚜렷해졌는지 점검합니다.',
+      '두피 미세환경 신호 확인: 오후 시간대 정수리 열감, 붉은 홍반, 뾰루지(모낭염), 샴푸 후에도 금방 기름지거나 각질이 일어나는 지루성 변화 유무를 살핍니다.',
+      '경추·견갑 긴장 동반 여부: 뒷목 뻐근함, 어깨 결림, 눈 피로, 긴장성 두통이 모발 탈락량 증가 시기와 맞물려 나타나는지 함께 관찰합니다.'
+    ],
+    examGuide: '두피 고배율 현미경 모낭 밀도·각질 관찰 · 적외선 체열진단(DITI 상열하한) · 모아레 경추·어깨 체형 평가 · 자율신경(HRV) 검사'
+  },
+  lumbar: {
+    heroFile: 'illust_lumbar_pelvis.jpg',
+    heroWebp: 'webp/illust_lumbar_pelvis.webp',
+    wpSlugHint: 'illust-lumbar-pelvis',
+    heroAlt: '바른한의원 대전본점 요추 추간판(디스크) 감압 및 골반 천장관절 균형 정렬 일러스트',
+    heroCaption: '요추 전만 커브·추간판 수핵 압력 분산과 골반 천장관절·이상근 신경 통로 생체역학 구조도',
+    clinicLinks: [
+      { label: '바른 추나 · 허리디스크 · 체형교정 클리닉', url: 'https://www.bareunhaniwon.com/chuna/' },
+      { label: '9대 초음파 · 모아레 체형 · 체열 정밀검진 안내', url: 'https://www.bareunhaniwon.com/director/' }
+    ],
+    physioMechanism: '요추 추간판(디스크)은 성인이 된 이후 자체 혈관이 거의 없어 척추 분절이 부드럽게 움직일 때 일어나는 삼투압 확산(Imbibition)을 통해 수분과 영양을 공급받습니다. 구부정한 좌식 자세나 다리 꼬기로 골반 경사와 천장관절 비대칭이 고착되면 특정 요추 마디(주로 L4-L5, L5-S1) 후방 섬유륜에 편측 압력이 집중되고, 심부 다열근 위축과 신경근 주위 염증성 통증이 반복되기 쉽습니다.',
+    clinicalCheckpoints: [
+      '자세 변화에 따른 통증 양상 구분: 허리를 앞으로 숙일 때(굴곡) 찌릿한 방사통이 심해지는지, 뒤로 젖힐 때(신전) 묵직한 관절 통증이 두드러지는지 관찰합니다.',
+      '신경근 압박 vs 근육 포착 감별: 기침·재채기처럼 복압이 올라갈 때 엉덩이·종아리까지 저림이 내려가는지, 의자에 오래 앉아 눌릴 때 둔부 국소 통증이 심해지는지 구분합니다.',
+      '주의해야 할 신경학적 신호 확인: 발목이나 엄지발가락에 힘이 빠지는 근력 저하, 감각 둔화 등이 동반될 때는 지체 없이 정밀 대면 진찰을 받아야 합니다.'
+    ],
+    examGuide: '근골격계 초음파 인대·연부조직 관찰 · 모아레 등고선 체형 비대칭 측정 · 적외선 체열진단(신경 방사통 온도차) 평가'
+  },
+  gongjindan: {
+    heroFile: 'illust_gongjindan_heart_brain.jpg',
+    heroWebp: 'webp/illust_gongjindan_heart_brain.webp',
+    wpSlugHint: 'illust-gongjindan-heart-brain',
+    heroAlt: '바른한의원 대전본점 뇌신경 에너지 대사 및 HPA 축 만성피로 회복 생리 일러스트',
+    heroCaption: '시상하부-뇌하수체-부신(HPA) 코르티솔 일주기 리듬과 심뇌혈관 미세순환·미토콘드리아 에너지 대사 모식도',
+    clinicLinks: [
+      { label: '바른 황제공진단 · 만성피로 클리닉 자세히 보기', url: 'https://www.bareunhaniwon.com/gongjindan/' },
+      { label: '자율신경(HRV) · 말초혈관(APG) · 간수치 정밀검진 안내', url: 'https://www.bareunhaniwon.com/director/' }
+    ],
+    physioMechanism: '충분히 쉬어도 풀리지 않는 만성 피로와 브레인포그는 단순한 체력 소모를 넘어 시상하부-뇌하수체-부신(HPA) 스트레스 조절축의 일주기 리듬 평탄화 및 세포 내 미토콘드리아 ATP 합성 저하와 밀접합니다. 아침에 깨어나기 힘들고 밤에는 오히려 뇌가 각성되어 얕은 잠을 자는 패턴이 누적되면 저등급 만성염증(Systemic Chronic Inflammation)과 산화 스트레스가 전신 회복 속도를 늦추게 됩니다.',
+    clinicalCheckpoints: [
+      '시간대별 피로 곡선 기록: 기상 직후 납처럼 무거운 피로감, 오후 3~4시 급격한 집중력 저하, 밤 11시 이후의 역설적 각성 패턴이 반복되는지 점검합니다.',
+      '카페인·단당류 의존도 확인: 커피나 에너지 음료 없이는 오전 업무 시작이 어렵고 오후마다 단 음식을 찾게 되는 대사 보상 신호가 있는지 살핍니다.',
+      '동반 회복 지연 징후 관찰: 구내염 재발, 안구 건조, 기억력·단어 인출 지연, 운동 후 근육통이 평소보다 오래 지속되는지 함께 체크합니다.'
+    ],
+    examGuide: '심박변이도(HRV) 자율신경 피로도 측정 · 말초혈관 탄력(APG) 검사 · 간·당 대사 안전성 혈액 지표 확인'
+  },
+  syncope: {
+    heroFile: 'illust_syncope_autonomic.jpg',
+    heroWebp: 'webp/illust_syncope_autonomic.webp',
+    wpSlugHint: 'illust-syncope-autonomic',
+    heroAlt: '바른한의원 대전본점 뇌간 미주신경 반사 및 자율신경 혈압·뇌혈류 조절 일러스트',
+    heroCaption: '교감·부교감 자율신경 균형과 미주신경 혈관반사(Vasovagal Reflex)·상부 경추 뇌혈류 조절 경로도',
+    clinicLinks: [
+      { label: '9대 자율신경(HRV) · 혈관 · 체열 정밀검진 클리닉', url: 'https://www.bareunhaniwon.com/director/' },
+      { label: '상부 경추 · 거북목 수기 추나 클리닉', url: 'https://www.bareunhaniwon.com/chuna/' }
+    ],
+    physioMechanism: '기립 시 중력에 의해 하체로 쏠리는 혈액을 심장과 뇌로 빠르게 되돌려 보내려면 교감신경 혈관 수축 반사와 종아리 근육 펌프가 즉각 작동해야 합니다. 수면 부족, 탈수, 장시간 기립, 밀폐된 고온 환경이나 극심한 긴장 상태에서 이 자율신경 조율이 흔들리면 역설적인 미주신경 과반사로 맥박과 혈압이 일시 저하되며 시야 아찔함, 식은땀, 이명, 편두통 등이 나타날 수 있습니다.',
+    clinicalCheckpoints: [
+      '전조 증상 발생 환경 파악: 오래 서 있거나 더운 공간, 공복·채혈·통증 직후에 눈앞이 하얘지거나 귀가 먹먹해지고 식은땀이 나는 전형적 유발 상황을 기록합니다.',
+      '기립 직후 시간차 어지럼 체크: 누웠다 일어선 뒤 수십 초 이내에 아찔해지는지, 고개를 특정 방향으로 돌릴 때 세상이 빙글 도는 회전성 현훈인지 구별합니다.',
+      '즉각 대처 안전 수칙 숙지: 전조가 느껴지는 즉시 무리해 버티지 말고 바닥에 앉거나 누워 다리를 높이고 허벅지·둔부 근육에 힘을 주는 물리적 대항압박법을 시행합니다.'
+    ],
+    examGuide: '심박변이도(HRV) 교감·부교감 활성도 검사 · 말초혈관 탄력도(APG) · 적외선 체열진단(DITI) · 상부 경추 정렬 평가'
+  },
+  digest: {
+    heroFile: 'illust_gut_metabolism.jpg',
+    heroWebp: 'webp/illust_gut_metabolism.webp',
+    wpSlugHint: 'illust-gut-metabolism',
+    heroAlt: '바른한의원 대전본점 위장 평활근 연동운동 및 장-뇌 미주신경 소화 리듬 일러스트',
+    heroCaption: '위장 외벽 평활근 배출 리듬(카할 간질세포)과 장-뇌 축(Gut-Brain Axis) 미주신경 소화 조율 모식도',
+    clinicLinks: [
+      { label: '9대 복부 초음파 · 체열 · 자율신경 정밀검진 안내', url: 'https://www.bareunhaniwon.com/director/' },
+      { label: '복부 순환 · 대사 해독 클리닉 보기', url: 'https://www.bareunhaniwon.com/diet-zero/' }
+    ],
+    physioMechanism: '위내시경에서 점막 궤양이나 종양이 없는데도 식후 더부룩함, 명치 압박감, 잦은 트림과 목 이물감이 이어진다면 위장 평활근의 연동운동 저하(위 배출 지연)와 내장 감각 과민성을 함께 살펴야 합니다. 긴장과 야식, 빠른 식사 속도는 미주신경 신호를 떨어뜨려 음식물이 위장에 오래 정체하게 만들고, 이때 발생한 가스 압력이 하부식도괄약근을 자극해 역류 불편감을 키우게 됩니다.',
+    clinicalCheckpoints: [
+      '식사 속도와 식후 팽만 시점 관찰: 한 끼 식사 시간이 15분 미만인지, 식후 즉시 윗배가 차오르는지(위저부 이완 저하) 혹은 2~3시간 뒤까지 내려가지 않는지 확인합니다.',
+      '야간 공복 시간 확보 점검: 잠들기 최소 3시간 전 식사를 마치고 밤사이 위장관 청소 운동(MMC)이 작동할 12시간 공복이 지켜지고 있는지 살핍니다.',
+      '주의해야 할 기질적 경고 증상 확인: 의도치 않은 급격한 체중 감소, 삼킴 곤란, 흑색변 등이 동반될 경우에는 지체 없이 내시경 등 정밀 검사를 우선 시행해야 합니다.'
+    ],
+    examGuide: '복부 초음파 위장관·복강 관찰 · 적외선 체열진단(복부 냉증·열 편차) · 인후두 내시경 · 자율신경(HRV) 평가'
+  },
+  gut: {
+    heroFile: 'diet_minimal_card4_stage2_core_lipolysis.jpg',
+    heroWebp: 'webp/diet_minimal_card4_stage2_core_lipolysis.webp',
+    wpSlugHint: 'diet-core-lipolysis-metabolism',
+    heroAlt: '바른한의원 대전본점 내장지방 연소 및 갈색지방 미토콘드리아 대사 균형 일러스트',
+    heroCaption: '골격근 보존·갈색지방 열생산(Thermogenesis) 활성화 및 식후 인슐린·혈당 완만화 대사 다이어그램',
+    clinicLinks: [
+      { label: '바른 다이어트 · 식욕ZERO 대사클리닉 자세히 보기', url: 'https://www.bareunhaniwon.com/diet-zero/' },
+      { label: '체성분(InBody) · 간·당 대사 · 혈관 정밀검진 안내', url: 'https://www.bareunhaniwon.com/director/' }
+    ],
+    physioMechanism: '체중 관리의 핵심은 단순 섭취 열량 축소가 아니라 기초대사량의 중심인 골격근과 갈색지방 열생산(Thermogenesis)을 보존하면서 식후 인슐린 과분비 고리를 끊는 데 있습니다. 극단적인 초절식을 반복하면 인체는 에너지 위기 상태로 인식해 대사율을 낮추는 적응성 열생산 저하(Adaptive Thermogenesis)를 일으키며, 이후 소량의 탄수화물에도 내장지방을 더 빠르게 축적하는 요요 체질로 변하기 쉽습니다.',
+    clinicalCheckpoints: [
+      '식후 혈당 스파이크 신호 점검: 점심 식사 직후 참기 힘든 식곤증(혈당 롤러코스터)이 오거나 식후 2시간 만에 단 간식이 강하게 당기는지 확인합니다.',
+      '체중계 숫자보다 허리둘레·부종 비교: 아침과 저녁 종아리·손가락 부종 차이가 큰지, 팔다리는 가는데 복부 둘레만 단단하게 늘어나는 내장지방형인지 살핍니다.',
+      '거꾸로 식사법과 수면 시간 체크: 식이섬유(채소) → 단백질 → 탄수화물 순서의 식사 습관과 식욕 호르몬(렙틴·그렐린)을 안정시키는 7시간 숙면이 유지되는지 점검합니다.'
+    ],
+    examGuide: '체성분(골격근량·내장지방 레벨·세포외수분비) 정밀 측정 · 간·당 대사 지표 확인 · 적외선 복부 체열진단'
+  },
+  uterus: {
+    heroFile: 'illust_uterus_fertility.jpg',
+    heroWebp: 'webp/illust_uterus_fertility.webp',
+    wpSlugHint: 'illust-uterus-fertility',
+    heroAlt: '바른한의원 대전본점 자궁 나선동맥 미세혈류 및 골반강 체온·내분비 균형 일러스트',
+    heroCaption: '자궁 내막 나선동맥 혈류 저항 완화와 골반 정렬·시상하부-난소 내분비 생체리듬 조율 모식도',
+    clinicLinks: [
+      { label: '9대 하복부 초음파 · 체열(DITI) · 자율신경 정밀검진 안내', url: 'https://www.bareunhaniwon.com/director/' },
+      { label: '산후·골반 균형 수기 추나 클리닉 보기', url: 'https://www.bareunhaniwon.com/chuna/' }
+    ],
+    physioMechanism: '여성의 월경 주기와 자궁 내막 수용성, 출산 후 회복 및 갱년기 체온 조절은 시상하부-뇌하수체-난소(HPO) 호르몬 축과 골반강 내 자궁 동맥 미세혈류가 정교하게 맞물려 작동합니다. 하복부 냉증과 골반 비대칭으로 정맥 울혈이 심해지면 월경 시 프로스타글란딘 과분비에 의한 평활근 과수축 통증이 심화될 수 있으며, 환경호르몬 노출과 수면 분절은 배란 및 황체기 리듬에 부담을 줄 수 있습니다.',
+    clinicalCheckpoints: [
+      '월경 주기와 생리혈 양상 기록: 주기 불규칙성(21일 미만 또는 35일 초과), 검붉은 덩어리 혈 증가, 진통제 복용 횟수 변화를 매달 기록해 비교합니다.',
+      '상열하한 및 말초 보온 상태 점검: 손발과 아랫배는 찬데 얼굴이나 가슴으로 열이 달아오르고 부종·피로감(PMS)이 동반되는지 확인합니다.',
+      '생활 속 내분비 교란 요인 차단: 뜨거운 음식을 플라스틱·일회용 용기에 담는 습관을 피하고, 꽉 끼는 하의 대신 골반 순환이 편안한 복장과 하복부 보온을 실천합니다.'
+    ],
+    examGuide: '하복부·골반 초음파 관찰 · 적외선 체열진단(DITI 하복부 온도 분포) · 말초혈관(APG) 및 자율신경(HRV) 검사'
+  },
+  prostate: {
+    heroFile: 'illust_prostate_care.jpg',
+    heroWebp: 'webp/illust_prostate_care.webp',
+    wpSlugHint: 'illust-prostate-care',
+    heroAlt: '바른한의원 대전본점 전립선·방광 괄약근 및 골반저근 미세혈류 순환 일러스트',
+    heroCaption: '전립선 주변 정맥총 울혈 완화와 방광 배뇨근·골반저근 이완을 통한 야간뇨·배뇨 리듬 회복 모식도',
+    clinicLinks: [
+      { label: '바른 전립선 · 요실금 · 남성활력 클리닉 자세히 보기', url: 'https://www.bareunhaniwon.com/prostate/' },
+      { label: '1:1 프라이빗 초음파 · 체열 · 혈관 정밀검진 안내', url: 'https://www.bareunhaniwon.com/director/' }
+    ],
+    physioMechanism: '방광 출구와 요도를 감싸는 전립선 및 골반저 근육군은 장시간 좌식 압박, 하초 냉증, 저녁 시간대 카페인·알코올 섭취에 매우 민감하게 반응합니다. 회음부와 골반강 내 정맥 울혈이 지속되면 세균 감염이 없더라도 묵직한 골반 불편감과 잔뇨감이 이어질 수 있으며, 방광 감각이 예민해져 잠든 뒤 새벽마다 깨어나는 야간뇨로 깊은 수면과 낮 시간 활력까지 함께 저하되기 쉽습니다.',
+    clinicalCheckpoints: [
+      '주간·야간 배뇨 일지 점검: 취침 후 기상 전까지 소변 때문에 깨는 횟수(야간뇨 1~2회 이상), 소변 줄기 세기 저하, 배뇨 후 잔뇨감 유무를 확인합니다.',
+      '좌식 압박 시간과 회음부 긴장 관리: 50분 이상 연속 착석 운전·업무 시 5분간 기립 보행으로 회음부 압박을 풀고 딱딱한 안장 접촉을 줄입니다.',
+      '저녁 수분·자극원 조절 실천: 취침 3시간 전 수분 과다 섭취와 방광 배뇨근을 자극하는 저녁 커피·맥주·매운 음식을 절제하고 미온수 좌욕으로 골반저를 이완합니다.'
+    ],
+    examGuide: '1:1 독립 진료실 하복부·방광 초음파 관찰 · 적외선 체열진단(하초 체열) · 말초혈관 탄력(APG) 및 자율신경 평가'
+  }
+};
+
+/**
  * 3) 72편 '오늘의 건강 글' 개별 SEO(구글·네이버) + AEO(답변엔진·스니펫·음성검색) + GEO(ChatGPT·Perplexity·Gemini 인용) 통합 워드프레스 포스트 빌더
  */
-function buildHealthNoteSeoAeoGeoPost(ep, partId) {
+function buildHealthNoteSeoAeoGeoPost(ep, partId, siblingEpisodes, partMediaUrlMap) {
   const slug = 'health-note-' + ep.id;
   const canonicalUrl = `https://www.bareunhaniwon.com/${slug}/`;
   const explorerDeepUrl = `https://www.bareunhaniwon.com/body-explorer/?part=${encodeURIComponent(partId)}&note=${encodeURIComponent(ep.id)}`;
-  const askDoctorUrl = `https://www.bareunhaniwon.com/ask-doctor/?tab=qna&part=all`;
+  const askDoctorUrl = `https://www.bareunhaniwon.com/body-explorer/?tab=qna&part=${encodeURIComponent(partId)}`;
   const partLabel = ep.partLabel || partId;
   const keyword = ep.keyword || partLabel;
   const theme = ep.theme || keyword;
@@ -695,8 +870,34 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
   const mythLines = Array.isArray(ep.mythLines) ? ep.mythLines : [];
   const checkList = Array.isArray(ep.checkList) ? ep.checkList : [];
 
+  const partMeta = PART_SEO_CLINICAL_META[partId] || PART_SEO_CLINICAL_META.lumbar;
+  const qnaCat = Array.isArray(DISEASE_QNA_CATEGORIES)
+    ? (DISEASE_QNA_CATEGORIES.find(c => c.partId === partId) || null)
+    : null;
+  const overseasPaper = qnaCat && Array.isArray(qnaCat.overseasPapers) && qnaCat.overseasPapers[0]
+    ? qnaCat.overseasPapers[0]
+    : null;
+  const integrativePaper = qnaCat && Array.isArray(qnaCat.integrativePapers) && qnaCat.integrativePapers[0]
+    ? qnaCat.integrativePapers[0]
+    : null;
+
+  const resolvedHeroImgUrl = (partMediaUrlMap && partMediaUrlMap[partId])
+    ? partMediaUrlMap[partId]
+    : (GH_RAW_BASE_URL + partMeta.heroWebp);
+
+  const siblings = Array.isArray(siblingEpisodes) ? siblingEpisodes : (BODY_3D_AUTO_NOTES[partId] || []);
+  const curIdx = siblings.findIndex(s => s && s.id === ep.id);
+  const clusterNotes = [];
+  if (siblings.length > 1) {
+    for (let offset = 1; offset < siblings.length && clusterNotes.length < 4; offset++) {
+      const cand = siblings[(Math.max(0, curIdx) + offset) % siblings.length];
+      if (cand && cand.id !== ep.id) clusterNotes.push(cand);
+    }
+  }
+
   const directAnswerSummary = `${truthLines.join(' ')} ${mythLines[1] || ''}`.trim();
   const postTitle = `${ep.questionTitle} [${partLabel} · ${keyword} 건강백과]`;
+  const modifiedDate = ep.publishDate && ep.publishDate > '2026-11-11' ? ep.publishDate : '2026-11-13';
 
   const schemaGraph = {
     '@context': 'https://schema.org',
@@ -705,12 +906,21 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
         '@type': 'MedicalWebPage',
         '@id': `${canonicalUrl}#webpage`,
         'url': canonicalUrl,
-        'name': postTitle,
+        'name': `${postTitle} | 바른한의원 대전본점`,
         'headline': ep.questionTitle,
         'description': directAnswerSummary,
+        'image': [resolvedHeroImgUrl],
+        'primaryImageOfPage': {
+          '@type': 'ImageObject',
+          'url': resolvedHeroImgUrl,
+          'width': 1376,
+          'height': 768,
+          'caption': `${partLabel} (${keyword}) — ${partMeta.heroCaption}`
+        },
         'inLanguage': 'ko-KR',
         'datePublished': ep.publishDate || '2026-10-27',
-        'dateModified': ep.publishDate || '2026-11-11',
+        'dateModified': modifiedDate,
+        'lastReviewed': modifiedDate,
         'isPartOf': { '@id': 'https://www.bareunhaniwon.com/#website' },
         'about': {
           '@type': 'AnatomicalStructure',
@@ -720,28 +930,37 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
           '@type': 'Person',
           '@id': 'https://www.bareunhaniwon.com/director/#physician',
           'name': '안정위',
-          'jobTitle': '바른한의원 대전본점 대표원장 (한의사)'
+          'jobTitle': '바른한의원 대전본점 대표원장 (한의사)',
+          'url': 'https://www.bareunhaniwon.com/director/'
         },
         'speakable': {
           '@type': 'SpeakableSpecification',
-          'cssSelector': ['.aeo-direct-answer', '.geo-fact-table', '.hn-truth-section']
+          'cssSelector': ['.aeo-direct-answer', '.geo-fact-table', '.hn-truth-section', '.hn-clinical-depth']
         }
       },
       {
         '@type': 'MedicalScholarlyArticle',
         '@id': `${canonicalUrl}#article`,
+        'mainEntityOfPage': { '@id': `${canonicalUrl}#webpage` },
         'headline': ep.questionTitle,
-        'alternativeHeadline': `${partLabel} · ${theme} (${keyword}) 의학 가이드`,
+        'alternativeHeadline': `${partLabel} · ${theme} (${keyword}) 통합생리학 의학 가이드`,
         'description': directAnswerSummary,
+        'image': [resolvedHeroImgUrl],
         'datePublished': ep.publishDate || '2026-10-27',
-        'dateModified': ep.publishDate || '2026-11-11',
+        'dateModified': modifiedDate,
         'inLanguage': 'ko-KR',
-        'keywords': `${keyword}, ${partLabel}, ${theme}, 바른한의원 대전본점, 오늘의 건강 글`,
-        'citation': academicBasis,
+        'articleSection': `${partLabel} · ${theme}`,
+        'keywords': `${keyword}, ${partLabel}, ${theme}, 대전 바른한의원, 바른한의원 대전본점, 안정위 원장, 오늘의 건강 글`,
+        'citation': [
+          academicBasis,
+          ...(overseasPaper ? [`${overseasPaper.journal} — ${overseasPaper.citation}`] : []),
+          ...(integrativePaper ? [`${integrativePaper.journal} — ${integrativePaper.citation}`] : [])
+        ],
         'author': {
           '@type': 'Person',
           '@id': 'https://www.bareunhaniwon.com/director/#physician',
-          'name': '안정위 대표원장 (바른한의원 대전본점)'
+          'name': '안정위 대표원장 (바른한의원 대전본점)',
+          'url': 'https://www.bareunhaniwon.com/director/'
         },
         'publisher': {
           '@type': 'MedicalOrganization',
@@ -750,7 +969,13 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
           'taxID': '211-91-10479',
           'vatID': '211-91-10479',
           'telephone': '+82-10-5631-1275',
-          'address': '대전광역시 대덕구 비래동로7번길 1, 2층'
+          'address': '대전광역시 대덕구 비래동로7번길 1, 2층',
+          'sameAs': [
+            'https://www.youtube.com/@bareunhaniwon',
+            'https://naver.me/5U1ELn8L',
+            'https://blog.naver.com/wei0508',
+            'https://pf.kakao.com/_ykxcLK'
+          ]
         }
       },
       {
@@ -788,6 +1013,14 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
               '@type': 'Answer',
               'text': `첫째, ${checkList[0] || ''} 둘째, ${checkList[1] || ''}`
             }
+          },
+          {
+            '@type': 'Question',
+            'name': `${partLabel}(${keyword}) 증상이 반복될 때 어떤 생리학적 기준으로 관찰하고 감별해야 하나요?`,
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': `${partMeta.physioMechanism} 주요 점검 항목으로는 ${partMeta.examGuide} 등이 활용됩니다.`
+            }
           }
         ]
       },
@@ -796,6 +1029,7 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
         '@id': `${canonicalUrl}#howto`,
         'name': `${partLabel} · ${keyword} 오늘 바로 해보는 1분 자가 체크`,
         'description': `집에서 1분 만에 점검하는 ${partLabel}(${keyword}) 생활 건강 체크리스트`,
+        'image': resolvedHeroImgUrl,
         'totalTime': 'PT1M',
         'step': checkList.map((chk, idx) => ({
           '@type': 'HowToStep',
@@ -807,61 +1041,111 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
     ]
   };
 
+  const clusterLinksHtml = clusterNotes.length > 0
+    ? clusterNotes.map(cn => `
+        <li style="margin-bottom:8px;">
+          <a href="https://www.bareunhaniwon.com/health-note-${escHtmlServer(cn.id)}/" style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:11px;background:#FFFFFF;border:1px solid #EAE3D5;color:#141416;text-decoration:none;font-size:0.9rem;font-weight:700;">
+            <span>&ldquo;${escHtmlServer(cn.questionTitle)}&rdquo; <small style="color:#967128;font-weight:800;margin-left:4px;">[${escHtmlServer(cn.keyword)}]</small></span>
+            <span style="font-size:0.78rem;color:#967128;white-space:nowrap;">칼럼 읽기 &rarr;</span>
+          </a>
+        </li>`).join('')
+    : '';
+
+  const clinicButtonsHtml = (partMeta.clinicLinks || []).map(cl =>
+    `<a href="${escHtmlServer(cl.url)}" style="display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;background:#FAF5EA;border:1px solid #C5A059;color:#0D0D0F;font-size:0.82rem;font-weight:800;text-decoration:none;">🏥 ${escHtmlServer(cl.label)} &rarr;</a>`
+  ).join('\n      ');
+
+  const overseasEvidenceHtml = (overseasPaper || integrativePaper)
+    ? `<div style="margin-top:10px;padding:12px 14px;border-radius:10px;background:#FFFFFF;border:1px dashed #DFC99B;font-size:0.83rem;color:#3F3B34;line-height:1.65;">
+        ${overseasPaper ? `<div style="margin-bottom:6px;"><strong>🌐 해외 학술지 연구 (${escHtmlServer(overseasPaper.journal)}):</strong> ${escHtmlServer(overseasPaper.finding)}</div>` : ''}
+        ${integrativePaper ? `<div><strong>🌿 통합생리·약리 연구 (${escHtmlServer(integrativePaper.journal)}):</strong> ${escHtmlServer(integrativePaper.finding)}</div>` : ''}
+      </div>`
+    : '';
+
   const standaloneHtml = `<!-- wp:html -->
 <script type="application/ld+json">${JSON.stringify(schemaGraph)}</script>
-<article class="bareun-health-note-seo-article" itemscope itemtype="https://schema.org/MedicalWebPage" style="max-width:860px;margin:0 auto;padding:36px 20px 64px;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;color:#171614;line-height:1.75;">
-  <header style="padding:28px 26px;border-radius:20px;background:#0D0D0F;color:#FFFFFF;border:2px solid #C5A059;margin-bottom:24px;box-shadow:0 16px 40px rgba(13,13,15,0.14);">
+<article class="bareun-health-note-seo-article" itemscope itemtype="https://schema.org/MedicalWebPage" style="max-width:860px;margin:0 auto;padding:36px 20px 64px;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;color:#171614;line-height:1.78;">
+  <nav aria-label="경로 안내" style="font-size:0.8rem;color:#57534E;font-weight:600;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+    <a href="https://www.bareunhaniwon.com/" style="color:#57534E;text-decoration:none;">바른한의원 대전본점 홈</a>
+    <span>&rsaquo;</span>
+    <a href="https://www.bareunhaniwon.com/body-explorer/?part=${encodeURIComponent(partId)}" style="color:#57534E;text-decoration:none;">3D 인체모형 · ${escHtmlServer(partLabel)} 건강백과</a>
+    <span>&rsaquo;</span>
+    <strong style="color:#967128;">${escHtmlServer(keyword)}</strong>
+  </nav>
+
+  <header style="padding:28px 26px;border-radius:20px;background:#0D0D0F;color:#FFFFFF;border:2px solid #C5A059;margin-bottom:22px;box-shadow:0 16px 40px rgba(13,13,15,0.14);">
     <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
       <span style="display:inline-flex;padding:4px 11px;border-radius:7px;background:#C5A059;color:#0D0D0F;font-size:0.78rem;font-weight:800;">[${escHtmlServer(partLabel)}] 오늘의 건강 글</span>
       <span style="display:inline-flex;padding:4px 10px;border-radius:7px;background:rgba(225,29,72,0.18);border:1px solid #FB7185;color:#FFE4E6;font-size:0.75rem;font-weight:800;">핵심 키워드: ${escHtmlServer(keyword)}</span>
-      <time datetime="${escHtmlServer(ep.publishDate)}" style="font-size:0.78rem;color:#D6D3CD;font-weight:600;">발행일: ${escHtmlServer(ep.publishDate)}</time>
+      <time datetime="${escHtmlServer(ep.publishDate)}" style="font-size:0.78rem;color:#D6D3CD;font-weight:600;">발행일: ${escHtmlServer(ep.publishDate)} · 최종검수: ${escHtmlServer(modifiedDate)}</time>
     </div>
-    <h1 itemprop="headline" style="margin:0 0 12px;font-family:'Noto Serif KR',serif;font-size:clamp(1.32rem,2.6vw,1.78rem);font-weight:800;color:#FFFFFF;line-height:1.42;word-break:keep-all;">&ldquo;${escHtmlServer(ep.questionTitle)}&rdquo;</h1>
-    <p style="margin:0;font-size:0.84rem;color:#E5C67E;font-weight:600;">의학 감수: 바른한의원 대전본점 안정위 대표원장 &middot; 학술 근거: ${escHtmlServer(academicBasis)}</p>
+    <h1 itemprop="headline" style="margin:0 0 12px;font-family:'Noto Serif KR',serif;font-size:clamp(1.34rem,2.6vw,1.8rem);font-weight:800;color:#FFFFFF;line-height:1.42;word-break:keep-all;">&ldquo;${escHtmlServer(ep.questionTitle)}&rdquo;</h1>
+    <p style="margin:0;font-size:0.84rem;color:#E5C67E;font-weight:600;">의학 감수: <a href="https://www.bareunhaniwon.com/director/" style="color:#E5C67E;text-decoration:underline;">바른한의원 대전본점 안정위 대표원장 (한의사)</a> &middot; 학술 근거: ${escHtmlServer(academicBasis)}</p>
   </header>
 
-  <!-- AEO (Answer Engine Optimization) 핵심 3문장 요약 답변 박스 (구글 스니펫 · 네이버 스마트블록/Cue: · 음성검색 최적화) -->
-  <section class="aeo-direct-answer" aria-label="핵심 의학 답변 요약" style="padding:20px 22px;border-radius:16px;background:#FAF5EA;border:1.5px solid #C5A059;border-left:5px solid #0D0D0F;margin-bottom:24px;">
-    <div style="font-size:0.76rem;font-weight:800;color:#967128;letter-spacing:0.02em;margin-bottom:6px;">⚡ AEO 핵심 답변 요약 (Direct Medical Answer)</div>
-    <p itemprop="description" style="margin:0;font-size:0.96rem;font-weight:700;color:#0D0D0F;line-height:1.68;word-break:keep-all;">
-      <strong>${escHtmlServer(ep.questionTitle)}</strong>에 대한 의학적 핵심은 다음과 같습니다. ${escHtmlServer(truthLines.join(' '))} 따라서 ${escHtmlServer(mythLines[1] || '')}
+  <!-- AEO (Answer Engine Optimization) 핵심 답변 요약 박스 (구글 AI Overview · 추천 스니펫 · 네이버 Cue:/스마트블록 최적화) -->
+  <section class="aeo-direct-answer" aria-label="핵심 의학 답변 요약" style="padding:20px 22px;border-radius:16px;background:#FAF5EA;border:1.5px solid #C5A059;border-left:5px solid #0D0D0F;margin-bottom:22px;">
+    <div style="font-size:0.76rem;font-weight:800;color:#967128;letter-spacing:0.02em;margin-bottom:6px;">⚡ AEO 핵심 의학 결론 요약 (Direct Medical Answer)</div>
+    <p itemprop="description" style="margin:0;font-size:0.97rem;font-weight:700;color:#0D0D0F;line-height:1.7;word-break:keep-all;">
+      <strong>${escHtmlServer(ep.questionTitle)}</strong>에 대한 의학·생리학적 핵심 답변입니다. ${escHtmlServer(truthLines.join(' '))} 따라서 ${escHtmlServer(mythLines[1] || '')}
     </p>
   </section>
 
-  <!-- 1~4단 오늘의 건강 글 본문 섹션 -->
+  <!-- 부위별 고유 의학 일러스트 (Google Discover 1200px+ & 네이버 이미지·스마트블록 최적화) -->
+  <figure style="margin:0 0 24px;border-radius:18px;overflow:hidden;border:1.5px solid #DFC99B;background:#0D0D0F;box-shadow:0 10px 26px rgba(13,13,15,0.08);">
+    <img src="${escHtmlServer(resolvedHeroImgUrl)}" alt="${escHtmlServer(partLabel)} ${escHtmlServer(keyword)} — ${escHtmlServer(partMeta.heroAlt)}" width="1376" height="768" fetchpriority="high" style="width:100%;height:auto;max-height:420px;object-fit:cover;display:block;" />
+    <figcaption style="padding:11px 16px;background:#FCFBF8;border-top:1px solid #EAE3D5;font-size:0.82rem;font-weight:700;color:#57534E;">
+      ▲ [${escHtmlServer(partLabel)} · ${escHtmlServer(keyword)}] ${escHtmlServer(partMeta.heroCaption)}
+    </figcaption>
+  </figure>
+
+  <!-- 1~5단 오늘의 건강 글 심층 본문 섹션 -->
   <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px;">
     <section style="padding:20px 22px;border-radius:15px;background:#FCFBF8;border:1px solid #EAE3D5;">
-      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">🎒 1. 일상 속 불편함 (${escHtmlServer(theme)})</h2>
-      ${empathyLines.map(l => `<p style="margin:0 0 8px;font-size:0.94rem;font-weight:600;color:#262522;word-break:keep-all;">${escHtmlServer(l)}</p>`).join('')}
+      <h2 style="margin:0 0 10px;font-size:1.04rem;font-weight:800;color:#0D0D0F;">🎒 1. 일상 속 불편함과 몸이 보내는 신호 (${escHtmlServer(theme)})</h2>
+      ${empathyLines.map(l => `<p style="margin:0 0 8px;font-size:0.95rem;font-weight:600;color:#262522;word-break:keep-all;">${escHtmlServer(l)}</p>`).join('')}
     </section>
 
     <section class="hn-truth-section" style="padding:20px 22px;border-radius:15px;background:#FFFDF7;border:1.5px solid #C5A059;border-left:4px solid #C5A059;">
-      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">💡 2. 의학적 진실 (해외 SCI 학술지 근거)</h2>
-      <ul style="margin:0 0 10px;padding-left:20px;font-size:0.94rem;font-weight:600;color:#141416;">
+      <h2 style="margin:0 0 10px;font-size:1.04rem;font-weight:800;color:#0D0D0F;">💡 2. 의학적 진실과 생리 기전 (해외 SCI 학술지 근거)</h2>
+      <ul style="margin:0 0 10px;padding-left:20px;font-size:0.95rem;font-weight:600;color:#141416;">
         ${truthLines.map(l => `<li style="margin-bottom:8px;word-break:keep-all;">${escHtmlServer(l)}</li>`).join('')}
       </ul>
-      <div style="padding:9px 13px;border-radius:9px;background:#FAF5EA;font-size:0.8rem;font-weight:700;color:#785A1E;">
+      <div style="padding:9px 13px;border-radius:9px;background:#FAF5EA;font-size:0.81rem;font-weight:700;color:#785A1E;">
         📚 <strong>참고 학술 근거 (Academic Basis):</strong> ${escHtmlServer(academicBasis)}
       </div>
+      ${overseasEvidenceHtml}
     </section>
 
     <section style="padding:20px 22px;border-radius:15px;background:#FCFBF8;border:1px solid #EAE3D5;">
-      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">❌ 3. 흔히 하는 오해 바로잡기</h2>
+      <h2 style="margin:0 0 10px;font-size:1.04rem;font-weight:800;color:#0D0D0F;">❌ 3. 흔히 하는 오해 바로잡기</h2>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="padding:10px 14px;border-radius:10px;background:#FFF1F2;border:1px solid #FECDD3;font-size:0.91rem;font-weight:700;color:#881337;">
+        <div style="padding:10px 14px;border-radius:10px;background:#FFF1F2;border:1px solid #FECDD3;font-size:0.92rem;font-weight:700;color:#881337;">
           <strong>[흔한 통념 · 01]</strong> ${escHtmlServer(mythLines[0] || '')}
         </div>
-        <div style="padding:10px 14px;border-radius:10px;background:#ECFDF5;border:1px solid #A7F3D0;font-size:0.91rem;font-weight:700;color:#065F46;">
+        <div style="padding:10px 14px;border-radius:10px;background:#ECFDF5;border:1px solid #A7F3D0;font-size:0.92rem;font-weight:700;color:#065F46;">
           <strong>[올바른 관리 · 02]</strong> ${escHtmlServer(mythLines[1] || '')}
         </div>
       </div>
     </section>
 
     <section style="padding:20px 22px;border-radius:15px;background:#FCFBF8;border:1px solid #EAE3D5;">
-      <h2 style="margin:0 0 10px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">🔍 4. 오늘 바로 해보는 1분 체크</h2>
-      <ul style="margin:0;padding-left:20px;font-size:0.94rem;font-weight:600;color:#262522;">
+      <h2 style="margin:0 0 10px;font-size:1.04rem;font-weight:800;color:#0D0D0F;">🔍 4. 오늘 바로 해보는 1분 자가 체크</h2>
+      <ul style="margin:0;padding-left:20px;font-size:0.95rem;font-weight:600;color:#262522;">
         ${checkList.map(l => `<li style="margin-bottom:8px;word-break:keep-all;">${escHtmlServer(l)}</li>`).join('')}
       </ul>
+    </section>
+
+    <section class="hn-clinical-depth" style="padding:22px 24px;border-radius:15px;background:#FFFFFF;border:1.5px solid #DFC99B;">
+      <h2 style="margin:0 0 10px;font-size:1.04rem;font-weight:800;color:#0D0D0F;">🩺 5. 통합생리학 임상 감별 포인트 &amp; 세밀 관찰 기준</h2>
+      <p style="margin:0 0 12px;font-size:0.93rem;font-weight:600;color:#262522;line-height:1.76;word-break:keep-all;">${escHtmlServer(partMeta.physioMechanism)}</p>
+      <div style="padding:14px 16px;border-radius:12px;background:#FCFBF8;border:1px solid #EAE3D5;margin-bottom:10px;">
+        <div style="font-size:0.82rem;font-weight:800;color:#967128;margin-bottom:8px;">✔ 진료실 감별 관찰 3대 체크포인트 (${escHtmlServer(partLabel)} · ${escHtmlServer(keyword)})</div>
+        <ul style="margin:0;padding-left:18px;font-size:0.9rem;font-weight:600;color:#262522;line-height:1.7;">
+          ${(partMeta.clinicalCheckpoints || []).map(cp => `<li style="margin-bottom:6px;word-break:keep-all;">${escHtmlServer(cp)}</li>`).join('')}
+        </ul>
+      </div>
+      <p style="margin:0;font-size:0.81rem;color:#57534E;font-weight:600;">※ 참고 객관적 검사 지표: ${escHtmlServer(partMeta.examGuide)} (개인의 정확한 상태 평가와 치료 계획은 의료진 대면 진료를 통해 결정됩니다.)</p>
     </section>
   </div>
 
@@ -878,7 +1162,7 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
           </tr>
           <tr style="border-bottom:1px solid #EAE3D5;">
             <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">핵심 검색 키워드</th>
-            <td style="padding:11px 14px;color:#262522;font-weight:700;">${escHtmlServer(keyword)}, ${escHtmlServer(partLabel)}, 대전 바른한의원</td>
+            <td style="padding:11px 14px;color:#262522;font-weight:700;">${escHtmlServer(keyword)}, ${escHtmlServer(partLabel)}, 대전 바른한의원, 바른한의원 대전본점</td>
           </tr>
           <tr style="border-bottom:1px solid #EAE3D5;">
             <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">해외 의학저널 근거</th>
@@ -892,14 +1176,41 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
             <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">생활 교정 핵심 원칙</th>
             <td style="padding:11px 14px;color:#262522;font-weight:600;">${escHtmlServer(mythLines[1] || '')}</td>
           </tr>
+          <tr style="border-bottom:1px solid #EAE3D5;">
+            <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">참고 정밀 검사 지표</th>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">${escHtmlServer(partMeta.examGuide)}</td>
+          </tr>
           <tr>
             <th scope="row" style="padding:11px 14px;background:#FAF5EA;font-weight:800;color:#0D0D0F;text-align:left;">감수 의료기관 정보</th>
-            <td style="padding:11px 14px;color:#262522;font-weight:600;">바른한의원 대전본점 (대표원장 안정위 &middot; 사업자등록번호: 211-91-10479 &middot; 대전 대덕구 비래동로7번길 1, 2층 &middot; 010-5631-1275)</td>
+            <td style="padding:11px 14px;color:#262522;font-weight:600;">바른한의원 대전본점 (대표원장 안정위 &middot; 사업자등록번호: 211-91-10479 &middot; 대전광역시 대덕구 비래동로7번길 1, 2층 &middot; 대표전화: 010-5631-1275)</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
+
+  <!-- Topic Cluster: 연관 전문 클리닉 · 공식 채널 · 같은 부위 추천 건강 칼럼 -->
+  <section style="padding:22px 24px;border-radius:16px;background:#FCFBF8;border:1px solid #DFC99B;margin-bottom:22px;">
+    <h2 style="margin:0 0 12px;font-size:1.02rem;font-weight:800;color:#0D0D0F;">🔗 6. [${escHtmlServer(partLabel)}] 연관 클리닉 안내 &amp; 함께 읽으면 좋은 건강 칼럼</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      ${clinicButtonsHtml}
+      <a href="https://www.youtube.com/@bareunhaniwon" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;background:#0D0D0F;border:1px solid #C5A059;color:#E5C67E;font-size:0.82rem;font-weight:800;text-decoration:none;">▶ 공식 유튜브 (@bareunhaniwon) 영상 보기 &nearr;</a>
+      <a href="https://blog.naver.com/wei0508" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;background:#FFFFFF;border:1px solid #EAE3D5;color:#141416;font-size:0.82rem;font-weight:800;text-decoration:none;">📝 공식 네이버 블로그 &nearr;</a>
+    </div>
+    ${clusterLinksHtml ? `<div style="font-size:0.82rem;font-weight:800;color:#57534E;margin-bottom:8px;">📚 같은 부위(${escHtmlServer(partLabel)}) 이어서 읽기</div><ul style="list-style:none;margin:0;padding:0;">${clusterLinksHtml}</ul>` : ''}
+  </section>
+
+  <!-- 블로그 · 쇼츠 · 가족 공유용 핵심 요약 카드 -->
+  <details style="margin-bottom:24px;padding:14px 18px;border-radius:14px;background:#FAF5EA;border:1px solid #DFC99B;">
+    <summary style="cursor:pointer;font-size:0.86rem;font-weight:800;color:#785A1E;">📋 가족 공유 · 건강 노트 핵심 5줄 요약 카드 펼치기</summary>
+    <div style="margin-top:12px;padding:14px 16px;border-radius:10px;background:#FFFFFF;border:1px solid #EAE3D5;font-size:0.86rem;color:#262522;line-height:1.72;">
+      <div><strong>• 질문:</strong> ${escHtmlServer(ep.questionTitle)}</div>
+      <div><strong>• 핵심 기전:</strong> ${escHtmlServer(truthLines[0] || '')}</div>
+      <div><strong>• 생활 원칙:</strong> ${escHtmlServer(mythLines[1] || '')}</div>
+      <div><strong>• 1분 체크:</strong> ① ${escHtmlServer(checkList[0] || '')} / ② ${escHtmlServer(checkList[1] || '')}</div>
+      <div><strong>• 원문 출처:</strong> 바른한의원 대전본점 (${escHtmlServer(canonicalUrl)} · 대표전화 010-5631-1275)</div>
+    </div>
+  </details>
 
   <!-- 3D 인체모형 & 1:1 통합 Q&A 바로가기 브릿지 -->
   <footer style="padding:22px 24px;border-radius:16px;background:#0D0D0F;color:#FFFFFF;border:1.5px solid #C5A059;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
@@ -934,16 +1245,17 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId) {
     title: postTitle,
     summary: directAnswerSummary,
     publishDate: ep.publishDate,
+    heroFile: partMeta.heroFile,
     standaloneHtml
   };
 }
 
-function buildAllHealthNoteWpPayloads() {
+function buildAllHealthNoteWpPayloads(partMediaUrlMap) {
   const payloads = [];
   for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES)) {
     if (!Array.isArray(eps)) continue;
     for (const ep of eps) {
-      payloads.push(buildHealthNoteSeoAeoGeoPost(ep, partId));
+      payloads.push(buildHealthNoteSeoAeoGeoPost(ep, partId, eps, partMediaUrlMap));
     }
   }
   return payloads;
@@ -956,12 +1268,12 @@ function generateLlmsTxtFiles() {
   const allHealthPayloads = buildAllHealthNoteWpPayloads();
   const headerLines = [
     '# 바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon Main Branch) — SEO · AEO · GEO Official Knowledge Index',
-    '> 상호명: 바른한의원 대전본점 | 대표원장: 안정위 (한의사) | 사업자등록번호: 211-91-10479 | 대표전화: 010-5631-1275',
+    '> 상호명: 바른한의원 대전본점 | 대표원장: 안정위 (한의사) | 사업자등록번호: 211-91-10479 | 단일 공식 대표전화: 010-5631-1275 (+82-10-5631-1275)',
     '> 주소: 대전광역시 대덕구 비래동로7번길 1, 2층 (우편번호 34417) | 진료시간: 평일(월~금) 09:00~19:00 · 토요일 및 공휴일 09:00~14:00 · 일요일 휴진',
-    '> 공식 도메인: https://www.bareunhaniwon.com/ | 3D 인체 백과사전 (오늘의 건강 글 72편 · 통합 1:1 Q&A): https://www.bareunhaniwon.com/body-explorer/',
+    '> 공식 도메인: https://www.bareunhaniwon.com/ | 공식 유튜브: https://www.youtube.com/@bareunhaniwon | 3D 인체 백과사전 (오늘의 건강 글 72편 · 통합 1:1 Q&A): https://www.bareunhaniwon.com/body-explorer/',
     '> 해외 SCI 의학 학술지(Nature Medicine, NEJM, The Lancet, JAMA, Physiological Reviews, European Heart Journal, JCEM, Human Reproduction Update, European Urology 등) 근거 기반 9대 정밀검진 · 6대 물리치료 · 맞춤 한약·추나·성장·다이어트·탈모·공진단·전립선 클리닉',
     '',
-    '## 1. Clinic Entity & Official Channels (기관 표준 정보)',
+    '## 1. Clinic Entity & Official Channels (기관 표준 정보 · NAP Single Source of Truth)',
     '- Official Website: https://www.bareunhaniwon.com/',
     '- Full AI Knowledge Base (Full-Text GEO): https://www.bareunhaniwon.com/llms-full.txt',
     '- XML Sitemap: https://www.bareunhaniwon.com/wp-sitemap.xml',
@@ -970,9 +1282,10 @@ function generateLlmsTxtFiles() {
     '- Business Registration Number (사업자등록번호): 211-91-10479',
     '- Chief Director: 안정위 대표원장 (Dr. Jung-Wi Ahn, KMD)',
     '- Address: 대전광역시 대덕구 비래동로7번길 1, 2층 (2F, 1, Biraedong-ro 7beon-gil, Daedeok-gu, Daejeon, 34417, Republic of Korea)',
-    '- Telephone: 010-5631-1275 (+82-10-5631-1275)',
+    '- Official Telephone (유일한 현재 공식 대표번호): 010-5631-1275 (+82-10-5631-1275) — 구 유선번호(042 계열)는 현재 사용하지 않음',
+    '- Official YouTube Channel: https://www.youtube.com/@bareunhaniwon',
     '- Naver Place: https://naver.me/5U1ELn8L',
-    '- Official Blog: https://blog.naver.com/wei0508',
+    '- Official Naver Blog: https://blog.naver.com/wei0508',
     '- KakaoTalk Consultation: https://pf.kakao.com/_ykxcLK',
     '',
     '## 2. Core Specialized Clinic Pages (핵심 클리닉 페이지)',
@@ -987,8 +1300,8 @@ function generateLlmsTxtFiles() {
     '- [바른 전립선 · 남성활력 클리닉](https://www.bareunhaniwon.com/prostate/): 만성 전립선염, 전립선비대증, 야간뇨, 과민성 방광, 골반저 순환 치료',
     '- [바른 매선 · 리프팅 윤곽진단](https://www.bareunhaniwon.com/lifting-compare/): 비수술 한방 안면 매선 리프팅 및 윤곽 대칭 교정',
     '',
-    '## 3. 3D Body Explorer — 72 "오늘의 건강 글" Index',
-    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/body-explorer/?part=${p.partId}&note=${p.id}): ${p.summary}`),
+    '## 3. 72 "오늘의 건강 글" Standalone & 3D Anatomy Medical Columns (SEO · AEO · GEO Index)',
+    ...allHealthPayloads.map(p => `- [${p.title}](https://www.bareunhaniwon.com/${p.slug}/) | [3D 모션 보기](https://www.bareunhaniwon.com/body-explorer/?part=${p.partId}&note=${p.id}): ${p.summary}`),
     '',
     '## 4. Representative Integrative Medicine Review',
     `- [${FLAGSHIP_REPRESENTATIVE_POST.title}](https://www.bareunhaniwon.com/${FLAGSHIP_REPRESENTATIVE_POST.slug}/): ${FLAGSHIP_REPRESENTATIVE_POST.summary}`
@@ -1007,16 +1320,19 @@ function generateLlmsTxtFiles() {
 
   for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES)) {
     if (!Array.isArray(eps)) continue;
+    const pMeta = PART_SEO_CLINICAL_META[partId] || PART_SEO_CLINICAL_META.lumbar;
     for (const ep of eps) {
       fullLines.push('');
       fullLines.push(`### [${ep.partLabel} · ${ep.keyword}] ${ep.questionTitle}`);
-      fullLines.push(`- Direct URL: https://www.bareunhaniwon.com/body-explorer/?part=${partId}&note=${ep.id}`);
+      fullLines.push(`- Standalone Article URL: https://www.bareunhaniwon.com/health-note-${ep.id}/`);
+      fullLines.push(`- 3D Anatomy Deep URL: https://www.bareunhaniwon.com/body-explorer/?part=${partId}&note=${ep.id}`);
       fullLines.push(`- Publish Date: ${ep.publishDate}`);
       fullLines.push(`- SCI Academic Basis: ${ep.academicBasis || '국제 SCI 의학저널 근거'}`);
       fullLines.push(`- 1. 일상 속 불편함: ${(ep.empathyLines || []).join(' ')}`);
       fullLines.push(`- 2. 의학적 진실 (Direct Answer): ${(ep.truthLines || []).join(' ')}`);
       fullLines.push(`- 3. 흔히 하는 오해와 진실: [오해] ${(ep.mythLines && ep.mythLines[0]) || ''} -> [진실] ${(ep.mythLines && ep.mythLines[1]) || ''}`);
       fullLines.push(`- 4. 오늘 바로 해보는 1분 체크: ① ${(ep.checkList && ep.checkList[0]) || ''} / ② ${(ep.checkList && ep.checkList[1]) || ''}`);
+      fullLines.push(`- 5. 통합생리 감별 기준: ${pMeta.physioMechanism} (참고 검사: ${pMeta.examGuide})`);
     }
   }
 
@@ -1057,6 +1373,7 @@ if (require.main === module) {
 
 module.exports = {
   NOVEMBER_AUTO_EPISODES,
+  PART_SEO_CLINICAL_META,
   syncNineDiseaseAutoNotes,
   startAutoBlogScheduler,
   buildHealthNoteSeoAeoGeoPost,

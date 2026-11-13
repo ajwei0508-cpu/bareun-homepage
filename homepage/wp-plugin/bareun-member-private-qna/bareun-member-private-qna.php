@@ -1803,8 +1803,8 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('wp_sitemaps_posts_entry', array(__CLASS__, 'filter_sitemap_post_entry'), 10, 3);
         add_filter('robots_txt', array(__CLASS__, 'filter_robots_txt'), 99, 2);
 
-        // RSS 2.0 Feed Optimization for Naver Search Advisor & Feed Readers
-        add_filter('option_posts_per_rss', function () { return 30; }, 99);
+        // RSS 2.0 Feed Optimization for Naver Search Advisor & Feed Readers (120 items covers all 14 clinic pages + flagship + 72+ health notes)
+        add_filter('option_posts_per_rss', function () { return 120; }, 99);
         add_action('pre_get_posts', array(__CLASS__, 'filter_rss_feed_query'));
         add_filter('the_guid', array(__CLASS__, 'filter_rss_canonical_url'), 99);
         add_filter('self_link', array(__CLASS__, 'filter_rss_self_link'), 99);
@@ -1822,6 +1822,16 @@ class Bareun_Master_SEO_Engine_V1 {
             $raw = base64_decode('eyJjYW5vbmljYWxPcmlnaW4iOiJodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbSIsImRlZmF1bHRPZ0ltYWdlIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vd3AtY29udGVudC91cGxvYWRzLzIwMjYvMTAvb2ctYmFyZXVuLTEyMDB4NjMwLTEuanBnIiwiY2xpbmljQmFzZU9yZyI6eyJAdHlwZSI6WyJNZWRpY2FsQ2xpbmljIiwiTWVkaWNhbE9yZ2FuaXphdGlvbiIsIkxvY2FsQnVzaW5lc3MiXSwiQGlkIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vI2NsaW5pYyIsIm5hbWUiOiLrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiYWx0ZXJuYXRlTmFtZSI6WyJCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uIiwi64yA7KCEIOuwlOuluO2VnOydmOybkCJdLCJ1cmwiOiJodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS8iLCJsb2dvIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9jYXJkXzFfZGlyZWN0b3Iud2VicCIsImltYWdlIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vd3AtY29udGVudC91cGxvYWRzLzIwMjYvMTAvb2ctYmFyZXVuLTEyMDB4NjMwLTEuanBnIiwidGVsZXBob25lIjoiKzgyLTEwLTU2MzEtMTI3NSIsInByaWNlUmFuZ2UiOiLigqnigqkiLCJhZGRyZXNzIjp7IkB0eXBlIjoiUG9zdGFsQWRkcmVzcyIsInN0cmVldEFkZHJlc3MiOiLruYTrnpjrj5nroZw367KI6ri4IDEsIDLsuLUiLCJhZGRyZXNzTG9jYWxpdHkiOiLrjIDrjZXqtawiLCJhZGRyZXNzUmVnaW9uIjoi64yA7KCE6rSR7Jet7IucIiwicG9zdGFsQ29kZSI6IjM0NDE3IiwiYWRkcmVzc0NvdW50cnkiOiJLUiJ9LCJnZW8iOnsiQHR5cGUiOiJHZW9Db29yZGluYXRlcyIsImxhdGl0dWRlIjozNi4zNTUzNiwibG9uZ2l0dWRlIjoxMjcuNDQ3Nzh9LCJvcGVuaW5nSG91cnNTcGVjaWZpY2F0aW9uIjpbeyJAdHlwZSI6Ik9wZW5pbmdIb3Vyc1NwZWNpZmljYXRpb24iLCJkYXlPZldlZWsiOlsiTW9uZGF5IiwiVHVlc2RheSIsIldlZG5lc2RheSIsIlRodXJzZGF5IiwiRnJpZGF5Il0sIm9wZW5zIjoiMDk6MDAiLCJjbG9zZXMiOiIxOTowMCJ9LHsiQHR5cGUiOiJPcGVuaW5nSG91cnNTcGVjaWZpY2F0aW9uIiwiZGF5T2ZXZWVrIjpbIlNhdHVyZGF5IiwiUHVibGljSG9saWRheXMiXSwib3BlbnMiOiIwOTowMCIsImNsb3NlcyI6IjE0OjAwIn1dLCJzYW1lQXMiOlsiaHR0cHM6Ly9uYXZlci5tZS81VTFFTG44TCIsImh0dHBzOi8vYmxvZy5uYXZlci5jb20vd2VpMDUwOCIsImh0dHBzOi8vcGYua2FrYW8uY29tL195a3hjTEsiXSwiZm91bmRlciI6eyJAdHlwZSI6IlBlcnNvbiIsIkBpZCI6Imh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpcmVjdG9yLyNwaHlzaWNpYW4iLCJuYW1lIjoi7JWI7KCV7JyEIiwiam9iVGl0bGUiOiLrjIDtkZzsm5DsnqUgKO2VnOydmOyCrCkifX0sIndlYnNpdGVOb2RlIjp7IkB0eXBlIjoiV2ViU2l0ZSIsIkBpZCI6Imh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyN3ZWJzaXRlIiwibmFtZSI6IuuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJ1cmwiOiJodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS8iLCJpbkxhbmd1YWdlIjoia28tS1IiLCJwdWJsaXNoZXIiOnsiQGlkIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vI2NsaW5pYyJ9fSwicGFnZXMiOnsiaG9tZSI6eyJmaWxlIjoiaW5kZXguaHRtbCIsInBhdGgiOiIvIiwidGl0bGUiOiLrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIHwg64yA642V6rWsIOu5hOuemOuPmSDstpTrgpjCt+yEseyepcK364uk7J207Ja07Yq4wrftg4jrqqjCt+qzteynhOuLqCIsImRlc2NyaXB0aW9uIjoi7KCV7IiY66as7Jes7ISx64Ko7ISx7JuQ7ZiV7YOI66qo67OR7JuQ7LmY66OM7ISx7J6l7YG066as64uJ7ISx7J6l7YyQ6rKA7IKs65GQ7Ya17YOI66qo7JW967mE64yA66m07ISx7KGw7IiZ7Kad7YKk7ISx7J6l64u07KCB7LaV64aN7Kad66as7ZSE7YyF64uk7J207Ja07Yq467GD7IK064K07J6l7KeA67Cp7JyE7Je864Kc7J6E7IKw7ZuE67O07JW96rO17KeE64uo64yA7KCE7KeE66el7ZS867aAIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2FyZF8xX2RpcmVjdG9yLndlYnAiLCJicmVhZGNydW1iTmFtZSI6Iu2ZiCJ9LCJzdG9yeS0zZCI6eyJmaWxlIjoic3RvcnktM2QuaHRtbCIsInBhdGgiOiIvIiwidGl0bGUiOiLrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIHwg64yA642V6rWsIOu5hOuemOuPmSDstpTrgpjCt+yEseyepcK364uk7J207Ja07Yq4wrftg4jrqqjCt+qzteynhOuLqCIsImRlc2NyaXB0aW9uIjoi7KCV7IiY66as7Jes7ISx64Ko7ISx7JuQ7ZiV7YOI66qo67OR7JuQ7LmY66OM7ISx7J6l7YG066as64uJ7ISx7J6l7YyQ6rKA7IKs65GQ7Ya17YOI66qo7JW967mE64yA66m07ISx7KGw7IiZ7Kad7YKk7ISx7J6l64u07KCB7LaV64aN7Kad66as7ZSE7YyF64uk7J207Ja07Yq467GD7IK064K07J6l7KeA67Cp7JyE7Je864Kc7J6E7IKw7ZuE67O07JW96rO17KeE64uo64yA7KCE7KeE66el7ZS867aAIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2FyZF8xX2RpcmVjdG9yLndlYnAiLCJicmVhZGNydW1iTmFtZSI6Iu2ZiCJ9LCJkaXJlY3RvciI6eyJmaWxlIjoiZGlyZWN0b3IuaHRtbCIsInBhdGgiOiIvZGlyZWN0b3IvIiwidGl0bGUiOiLslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIMK3IDnrjIAg7KCV67CA6rKA7KeEIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCDsgqzsg4HssrTsp4jCt+y0iOydjO2MjCIsImRlc2NyaXB0aW9uIjoi7LSI7J2M7YyMwrfssrTsl7Tsp4Tri6jCt+ydtOu5hOyduO2bhCDrgrTsi5zqsr3Ct+yCrOyDgeyytOyniMK37J6Q7Jyo7Iug6rK9KEhSVinCt+qwhOyImOy5mMK37ISx7J6l7YyQ6rmM7KeAIDnrjIAg7KCV67CA6rKA7KeE6rO8IOybkOuCtCDslYjsi6wg7YOV7KCEIOyLnOyKpO2FnOycvOuhnCDsp4jtmZjsnZgg67+M66as66W8IOywvuuKlCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIOyViOygleychCDrjIDtkZzsm5DsnqUg7KeE66OMIOyyoO2VmeydhCDshozqsJztlanri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2FyZF8xX2RpcmVjdG9yLndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuyViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4QiLCJpc1Byb2ZpbGUiOnRydWV9LCJjaHVuYSI6eyJmaWxlIjoiY2h1bmEuaHRtbCIsInBhdGgiOiIvY2h1bmEvIiwidGl0bGUiOiLrjIDsoIQg7LaU64KY7JqU67KVIMK3IO2XiOumrOuUlOyKpO2BrCDCtyDssrTtmJXqtZDsoJUg7YG066as64uJIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi7KeE7Ya17KCc66GcIO2GteymneunjCDqsIDrpqzsp4Ag7JWK6rOgIOuMgO2RnOybkOyepSAxOjEg7IiY6riwIOy2lOuCmOyZgCDslb3suajsnLzroZwg7YuA7Ja07KeEIOyymey2lMK36rOo67CYwrfqsbDrtoHrqqkg7KSR7Ius7LaV7J2EIOuwlOuhnOyeoeyKteuLiOuLpC4gSkFNQcK3TGFuY2V0IO2VmeyIoCDrhbzrrLgg6re86rGwIOq4sOuwmCDruYTsiJjsiKAg7LKZ7LaUwrfqtIDsoIgg7Ya17KadIOy5mOujjCDtgbTrpqzri4nsnoXri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvY2h1bmFfbWluaW1hbF9jYXJkMl9wYWlua2lsbGVyX2xpbWl0LndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluCDstpTrgpggwrcg7LKZ7LaU6rWQ7KCVIn0sImdyb3d0aCI6eyJmaWxlIjoiZ3Jvd3RoLmh0bWwiLCJwYXRoIjoiL2dyb3d0aC8iLCJ0aXRsZSI6IuuMgOyghCDshozslYQg7YKk7ISx7J6lIMK3IOyEseyhsOyImeymnSDCtyDruYTsl7wg7ISx7J6l7YG066as64uJIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg7KCV67CAIOqygOyCrOyZgCDqta3qsIDqs7Xsnbgg7JWI7IusIO2VnOyVveycvOuhnCDshLHtmLjrpbTrqqwg6rO87ZWt7KeEIOyXhuydtCDshLHsnqXtjJAg7Jew6rOoIOymneyLnSwg7IaM7JWE67mE66eMIOuMgOyCrCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOuptOyXreydhCDtlajqu5gg7YKk7Jqw64qUIOuMgOyghCDshozslYQg7ISx7J6lIO2BtOumrOuLieyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9ncm93dGgtZGlyZWN0b3Itc29uLWNvbXBhcmlzb24ud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0ifSwiZGlldC16ZXJvIjp7ImZpbGUiOiJkaWV0LXplcm8uaHRtbCIsInBhdGgiOiIvZGlldC16ZXJvLyIsInRpdGxlIjoi64yA7KCEIOuLpOydtOyWtO2KuCDtlZzsnZjsm5Agwrcg7Iud7JqVWkVSTyDqt7zsnKHri6TsnbTslrTtirggfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLrrLTsnpHsoJUg6rW264qUIOyalOyalCDsl4bsnbQg6riw7LSI64yA7IKs7JmAIOqwiOyDieyngOuwqSDsl7Dshozrpbwg6rmo7JuMIOq3vOycoeydgCDsp4DtgqTqs6Ag64K07J6l7KeA67CpwrfrtoDsooUg64+F7IaM66eMIOu5hOybjOuCtOuKlCDrsJTrpbgg7Iud7JqVWkVSTyDri6TsnbTslrTtirgg7ZWc7JW9LiDrjIDtkZzsm5DsnqUgMToxIOynhOunpSDrsI8g67mE64yA66m0IOyDgeuLtOydhCDsp4Dsm5Dtlanri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvZGlldF9taW5pbWFsX2NhcmQyX3N0YXJ2YXRpb25fbXVzY2xlX2xvc3Mud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOuLpOydtOyWtO2KuCDCtyDsi53smpVaRVJPIn0sImhhaXJsb3NzIjp7ImZpbGUiOiJoYWlybG9zcy5odG1sIiwicGF0aCI6Ii9oYWlybG9zcy8iLCJ0aXRsZSI6IuuMgOyghCDtg4jrqqgg7ZWc7J2Y7JuQIMK3IOuRkO2UvOyXtCDrqqjqt7zsnqzsg50gNOuMgCDtgbTrpqzri4kgfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLrqLjrpqzripQg65yo6rKB6rOgIOyGkOuwnOydgCDssKwg7IOB7Je07ZWY7ZWcIOuRkO2UvCDsgqzrp4ntmZTrpbwg7IiY7Iq57ZmU6rCVIOyyreyXtCDtlZzslb3Ct+qyvey2lCDstpTrgpjCt+uqqOuCrSDslb3suajsnLzroZwg64uk7Iqk66a964uI64ukLiDrgqjshLHCt+yXrOyEscK37JuQ7ZiV7YOI66qowrfsp4Dro6jshLHrkZDtlLzsl7wgNOuMgCDsnKDtmJXrs4Qg66ee7LakIOuqqOq3vOyerOyDnSDsuZjro4zrpbwg7Iuc7ZaJ7ZWp64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2RldGFpbF9oYWlyX3N0b3J5MV8zMGNtX3RlbnNpb24ud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IO2DiOuqqCDCtyDrqqjqt7zsnqzsg50ifSwiaGFpcmxvc3MtbWFsZSI6eyJmaWxlIjoiaGFpcmxvc3MtbWFsZS5odG1sIiwicGF0aCI6Ii9oYWlybG9zcy1tYWxlLyIsInRpdGxlIjoi64yA7KCEIOuCqOyEse2DiOuqqCDCtyBN7J6QIMK3IOygleyImOumrCDrqqjqt7zsnqzsg50gfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIO2DiOuqqCIsImRlc2NyaXB0aW9uIjoi7Zi466W066qsIOyWteygnCDrtoDri7TsnYQg642c6rOgIOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rGw67aB66qpIOqyvey2lCDstpTrgpgsIOygleygnCDrsJzrqqgg7JW97Lmo7Jy866GcIE3snpAg7J2066eI7JmAIOygleyImOumrCDqsIDripjslrTsp4Qg66qo6re87J2YIOyekOyDneugpeydhCDquajsmrDripQg64yA7KCEIOuCqOyEse2DiOuqqCDsp5HspJEg7YG066as64uJ7J6F64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2RldGFpbF9oYWlyX3N0b3J5MV8zMGNtX3RlbnNpb24ud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOuCqOyEse2DiOuqqCDCtyBN7J6QwrfsoJXsiJjrpqwifSwiaGFpcmxvc3MtYWxvcGVjaWEiOnsiZmlsZSI6ImhhaXJsb3NzLWFsb3BlY2lhLmh0bWwiLCJwYXRoIjoiL2hhaXJsb3NzLWFsb3BlY2lhLyIsInRpdGxlIjoi64yA7KCEIOybkO2Yle2DiOuqqCDCtyDsnpDqsIDrqbTsl60g65GQ7ZS8IOuzteybkCDtgbTrpqzri4kgfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLsiqTthYzroZzsnbTrk5wg7J2Y7KG06rO8IOyerOuwnCDqsbHsoJUg7JeG7J20IOyekOycqOyLoOqyvShIUlYpIOyViOygleqzvCDrqqjrgq0g7KO87JyEIOyekOqwgOuptOyXrSDqt6DtmJUg7ZqM67O17Jy866GcIOuPmeyghCDrqqjslpEg64uo67Cc7ISxwrfri6TrsJzshLHCt+yCrO2WieyEsSDsm5DtmJXtg4jrqqjsnZgg67+M66as66W8IOy5mOujjO2VmOuKlCDrqbTsl60g67O17JuQIO2BtOumrOuLieyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9kZXRhaWxfaGFpcl9mb2xsaWNsZV8zZC53ZWJwIiwiYnJlYWRjcnVtYk5hbWUiOiLrsJTrpbgg7JuQ7ZiV7YOI66qoIMK3IOuptOyXreuzteybkCJ9LCJoYWlybG9zcy1mZW1hbGUiOnsiZmlsZSI6ImhhaXJsb3NzLWZlbWFsZS5odG1sIiwicGF0aCI6Ii9oYWlybG9zcy1mZW1hbGUvIiwidGl0bGUiOiLrjIDsoIQg7Jes7ISx7YOI66qoIMK3IOygleyImOumrCDqsIDrpbTrp4gg67O866WoIO2BtOumrOuLiSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6Iuy2nOyCsMK36rCx64WE6riwwrfsiqTtirjroIjsiqTroZwg65GQ7ZS864qUIOucqOqygeqzoCDslYTrnqvrsLDripQg7LCsIOyXrOyEsSDsg4Hsl7TtlZjtlZzqs7wg7ZiI7ZeI66W8IOuLpOyKpOugpCDrhJPslrTsp4Qg6rCA66W066eIIOuwgOuPhOyZgCDsoJXsiJjrpqwg66qo67CcIOuzvOulqOydhCDqsbTqsJXtlZjqsowg65CY7IK066as64qUIOyXrOyEsSDrp57stqQg7YOI66qoIO2BtOumrOuLieyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9kZXRhaWxfaGFpcl9zdG9yeTFfZGF0ZV9ib3cud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOyXrOyEse2DiOuqqCDCtyDqsIDrpbTrp4jCt+uzvOulqCJ9LCJoYWlybG9zcy1zZWJvcnJoZWljIjp7ImZpbGUiOiJoYWlybG9zcy1zZWJvcnJoZWljLmh0bWwiLCJwYXRoIjoiL2hhaXJsb3NzLXNlYm9ycmhlaWMvIiwidGl0bGUiOiLrjIDsoIQg7KeA66Oo7ISx65GQ7ZS87Je8IMK3IOuRkO2UvCDtmY3rsJggwrcg66qo64Kt7Je8IO2VtOuPhSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6IuyDtO2RuMK37Jew6rOg66Gc64+EIOuwmOuzteuQmOuKlCDrkZDtlLwg7Je06rCQLCDrtonsnYAg7ZmN67CYLCDtmZTrho3shLEg66qo64Kt7Je8LCDqsIDroKTsm4Dqs7wg67mE65OsIOqwgeyniOydhCDsi6zrtoAg7LKt7Je07ZW064+FIO2VnOyVveqzvCDrkZDtlLwg7KeE7ZS8IOyepeuyvSDsvIDslrTroZwg7KeE7KCV7Iuc7YKk64qUIOyngOujqOyEseuRkO2UvOyXvCDtgbTrpqzri4nsnoXri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9handlaTA1MDgtY3B1L2JhcmV1bi1ob21lcGFnZS9tYWluL2hvbWVwYWdlL3dlYnAvZGV0YWlsX2hhaXJfdGhlcm1vZ3JhcGh5LndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluCDsp4Dro6jshLHrkZDtlLzsl7wgwrcg7Je064+F7ZW064+FIn0sImdvbmdqaW5kYW4iOnsiZmlsZSI6ImdvbmdqaW5kYW4uaHRtbCIsInBhdGgiOiIvZ29uZ2ppbmRhbi8iLCJ0aXRsZSI6IuuMgOyghCDqs7Xsp4Tri6ggwrcg7Iud7JW97LKYIOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi7Iud7JW97LKYIENJVEVTIOyduOymnSDsspzsl7Ag7IKs7ZalKEwtTXVzY29uZSnqs7wg65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57Jqp7J2EIOuMgO2RnOybkOyepeydtCDsoJXrsIAg6rOE65+JwrfsiJjsoJwg7KGw7KCc7ZWp64uI64ukLiDrp4zshLHtlLzroZzCt+uHjOyLoOqyvSDrs7TtmLjCt+uptOyXreugpcK37IiY7ZeY7IOdwrfrtoDrqqjri5gg6riw66ClIO2ajOuztSDrp57stqQg7LKY67CpLiIsInByZWxvYWRJbWciOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYWp3ZWkwNTA4LWNwdS9iYXJldW4taG9tZXBhZ2UvbWFpbi9ob21lcGFnZS93ZWJwL2dvbmdqaW5kYW5fbWluaW1hbF9jYXJkM19jaXJjdWxhdGlvbl9hLndlYnAiLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluCDtmansoJzqs7Xsp4Tri6gifSwicHJvc3RhdGUiOnsiZmlsZSI6InByb3N0YXRlLmh0bWwiLCJwYXRoIjoiL3Byb3N0YXRlLyIsInRpdGxlIjoi64yA7KCEIOyghOumveyEoOyXvCDCtyDsoITrpr3shKDruYTrjIAgwrcg7JW86rCE64eoIO2BtOumrOuLiSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6IuuwmOuzteuQmOuKlCDsnpTrh6jqsJAsIOyDiOuyvSDslbzqsITrh6gsIOqzqOuwmMK37ZqM7J2M67aAIO2GteymneydhCDsoITrpr3shKAg7Jq47ZiIIOqwkOyVlSDtlZzslb0sIOqzqOuwmCDqtZDsoJUg7LaU64KYLCDrsKnqtJHCt+yLoOyepSDsmKjslpEg7JW97Lmo7Jy866GcIOuLpOyKpOugpCDsi5zsm5DtlZwg67Cw64eo7JmAIOq5iuydgCDsiJnrqbTsnYQg65CY7LC+7JWEIOuTnOumveuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2Fqd2VpMDUwOC1jcHUvYmFyZXVuLWhvbWVwYWdlL21haW4vaG9tZXBhZ2Uvd2VicC9wcm9zdGF0ZV9taW5pbWFsX2NhcmQyX2FudGliaW90aWNfbGltaXQud2VicCIsImJyZWFkY3J1bWJOYW1lIjoi67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUifSwiYm9keS1leHBsb3JlciI6eyJmaWxlIjoiYm9keS1leHBsb3Jlci5odG1sIiwicGF0aCI6Ii9ib2R5LWV4cGxvcmVyLyIsInRpdGxlIjoiM0Qg7J247LK066qo7ZiVIO2VtOu2gO2VmSDqsIDsnbTrk5wgJiDsp4Tro4wg7IK07Y6067O06riwIHwg67CU66W47ZWc7J2Y7JuQIOuMgOyghOuzuOygkCIsImRlc2NyaXB0aW9uIjoi7ZKA7Iqk7YGs66awIDNEIOyduOyytOuqqO2YleycvOuhnCDrqLjrpqzrtoDthLAg67Cc64Gd6rmM7KeAIOq3vOycocK37Iug6rK9wrfqtIDsoIjCt+2YiOq0gCDqtazsobDsmYAgOeuMgCDrtoDsnITrs4Qg7IOd7ZmcIOqxtOqwlSDqtIDrpqzrspUsIO2VtOyZuCBTQ0kg7J2Y7ZWZIOuFvOusuCDsmpTslb3snYQg7ZWc64iI7JeQIO2DkOyDie2VmOuKlCDsnbjthLDrnpnti7DruIwg6rG06rCVIO2PrO2EuOyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vd3AtY29udGVudC91cGxvYWRzLzIwMjYvMTAvb2ctYmFyZXVuLTEyMDB4NjMwLTEuanBnIiwiYnJlYWRjcnVtYk5hbWUiOiIzRCDsnbjssrTrqqjtmJUg7KeE66OMIOyCtO2OtOuztOq4sCJ9LCJhc2stZG9jdG9yIjp7ImZpbGUiOiJhc2stZG9jdG9yLmh0bWwiLCJwYXRoIjoiL2Fzay1kb2N0b3IvIiwidGl0bGUiOiLthrXtlansnZjtlZkg7J247IKs7J207Yq4IOyggOuEkCAmIDE6MSDruYTqs7XqsJwg6rG06rCVIFEmQSB8IOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAiLCJkZXNjcmlwdGlvbiI6Ik5hdHVyZSBNZWRpY2luZcK3TkVKTcK3TGFuY2V0wrdKQU1BIOuTsSDtlbTsmbgg7J2Y7ZWZIOyggOuEkCDquLDrsJgg6rG06rCVIOy5vOufvOqzvCA564yAIOyniO2ZmCDsubTthYzqs6Drpqzrs4QgMTAwJSDruYTqs7XqsJwgMToxIOydmOujjOynhCDqsbTqsJUg7IOB64u0KOyGjOyFnCDqsITtjrgg66Gc6re47J24KSDqs7XqsITsnoXri4jri6QuIiwicHJlbG9hZEltZyI6Imh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDI2LzEwL29nLWJhcmV1bi0xMjAweDYzMC0xLmpwZyIsImJyZWFkY3J1bWJOYW1lIjoi7J2Y7ZWZIOyduOyCrOydtO2KuCAmIDE6MSDruYTqs7XqsJwgUSZBIiwiaGFzRmFxIjp0cnVlfSwibGlmdGluZy1jb21wYXJlIjp7ImZpbGUiOiJsaWZ0aW5nLWNvbXBhcmUuaHRtbCIsInBhdGgiOiIvbGlmdGluZy1jb21wYXJlLyIsInRpdGxlIjoi64yA7KCEIO2VnOuwqSDrpqztlITtjIUgwrcg67mE7IiY7IigIOyghO2bhCDsnKTqs73sp4Tri6ggfCDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIiwiZGVzY3JpcHRpb24iOiLsiJjsiKAg7JeG7J20IOyymOynhCDthLHshKDCt+2MlOyekMK37JWI66m0IOu5hOuMgOy5rSDtg4TroKXsnYQg67O17JuQ7ZWY64qUIOuwlOuluO2VnOydmOybkCDrjIDsoITrs7jsoJAg7ZWc67CpIOunpOyEoMK37JW97LmoIOumrO2UhO2MhSDtgbTrpqzri4kg67CPIDPsoJAg7KSR7Ius7LaVIOygleuwgCDsoITtm4Qg7Jyk6rO9IOu5hOq1kCDsp4Tri6gg7Iqk7Yqc65SU7Jik7J6F64uI64ukLiIsInByZWxvYWRJbWciOiJodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAyNi8xMC9vZy1iYXJldW4tMTIwMHg2MzAtMS5qcGciLCJicmVhZGNydW1iTmFtZSI6IuuwlOuluOumrO2UhO2MhSDsi5zsiKAg7KCE7ZuEIOycpOqzveynhOuLqCJ9LCJpbnRlZ3JhdGl2ZS1hdXRvbm9taWMtY2lyY2FkaWFuLWd1dC1zcGluZS1oZWFsdGgtcmV2aWV3Ijp7ImZpbGUiOm51bGwsInBhdGgiOiIvaW50ZWdyYXRpdmUtYXV0b25vbWljLWNpcmNhZGlhbi1ndXQtc3BpbmUtaGVhbHRoLXJldmlldy8iLCJ0aXRsZSI6IuunjOyEse2UvOuhnMK37IaM7ZmU7J6l7JWgwrfsspnstpTthrXspp0g7Ya17ZWp7IOd66as7ZWZIOqwgOydtOuTnCB8IOuwlOuluCDthrXtlansnZjtlZkg7KCA64SQIiwiZGVzY3JpcHRpb24iOiLrp4zshLEg7ZS866GcLCDshoztmZQg67aI65+JLCDsspnstpQg7Ya17Kad7J20IOyZnCDrj5nsi5zsl5Ag64KY7YOA64KY64qU7KeAIO2VtOyZuCBTQ0kg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgSkFNQSwgTGFuY2V0KSDqt7zqsbDroZwg7J6Q7Jyo7Iug6rK9wrfsnqUt64eMIOy2lcK37IOd7LK07Jet7ZWZIOyXsOqysOqzoOumrOulvCDrtoTshJ3tlZwg7J2Y7ZWZIOumrOu3sOyeheuLiOuLpC4iLCJwcmVsb2FkSW1nIjoiaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vd3AtY29udGVudC91cGxvYWRzLzIwMjYvMTAvb2ctYmFyZXVuLTEyMDB4NjMwLTEuanBnIiwiYnJlYWRjcnVtYk5hbWUiOiLrp4zshLHtlLzroZzCt+yGjO2ZlOyepeyVoMK37LKZ7LaU7Ya17KadIO2Gte2VqeyDneumrO2VmSDqsIDsnbTrk5wiLCJpc0FydGljbGUiOnRydWUsImRhdGVQdWJsaXNoZWQiOiIyMDI2LTEwLTI2IiwiZGF0ZU1vZGlmaWVkIjoiMjAyNi0xMC0yOCJ9fX0=');
             $decoded = json_decode($raw, true);
             if (is_array($decoded) && isset($decoded['clinicBaseOrg']) && is_array($decoded['clinicBaseOrg'])) {
+                $decoded['clinicBaseOrg']['telephone'] = '+82-10-5631-1275';
+                $decoded['clinicBaseOrg']['contactPoint'] = array(
+                    array(
+                        '@type'             => 'ContactPoint',
+                        'telephone'         => '+82-10-5631-1275',
+                        'contactType'       => 'customer service',
+                        'areaServed'        => 'KR',
+                        'availableLanguage' => array('Korean')
+                    )
+                );
                 $decoded['clinicBaseOrg']['taxID'] = '211-91-10479';
                 $decoded['clinicBaseOrg']['vatID'] = '211-91-10479';
                 $decoded['clinicBaseOrg']['identifier'] = array(
@@ -1829,6 +1839,12 @@ class Bareun_Master_SEO_Engine_V1 {
                     'name'  => '사업자등록번호',
                     'value' => '211-91-10479'
                 );
+                if (!isset($decoded['clinicBaseOrg']['sameAs']) || !is_array($decoded['clinicBaseOrg']['sameAs'])) {
+                    $decoded['clinicBaseOrg']['sameAs'] = array();
+                }
+                if (!in_array('https://www.youtube.com/@bareunhaniwon', $decoded['clinicBaseOrg']['sameAs'], true)) {
+                    array_unshift($decoded['clinicBaseOrg']['sameAs'], 'https://www.youtube.com/@bareunhaniwon');
+                }
             }
             if (is_array($decoded) && isset($decoded['pages']) && is_array($decoded['pages'])) {
                 $opt_a_title = '바른한의원 대전본점 | 대덕구 비래동 추나·성장·다이어트·탈모·공진단·전립선';
@@ -1848,7 +1864,7 @@ class Bareun_Master_SEO_Engine_V1 {
     }
 
     public static function maybe_sync_htaccess_headers() {
-        if (get_option(self::OPT_HTACCESS_VER) === '8') {
+        if (get_option(self::OPT_HTACCESS_VER) === '9') {
             return;
         }
         // Ensure default verified Naver & Google tokens are stored in wp_options if empty
@@ -1895,7 +1911,7 @@ class Bareun_Master_SEO_Engine_V1 {
             @wp_cache_clean_cache(isset($file_prefix) ? $file_prefix : 'wp-cache-', true);
         }
 
-        update_option(self::OPT_HTACCESS_VER, '8');
+        update_option(self::OPT_HTACCESS_VER, '9');
     }
 
     private static function is_request_https() {
@@ -2083,27 +2099,60 @@ class Bareun_Master_SEO_Engine_V1 {
                 return $cfg;
             }
             $rel_path = '/' . trim((string) wp_make_link_relative(get_permalink($post)), '/') . '/';
-            $raw_title = trim(wp_strip_all_tags(get_the_title($post))) . ' | 바른한의원 대전본점';
-            if (mb_strlen($raw_title, 'UTF-8') > 58) {
-                $raw_title = mb_substr($raw_title, 0, 57, 'UTF-8') . '…';
+            $clean_post_title = trim(wp_strip_all_tags(get_the_title($post)));
+            $raw_title = $clean_post_title . ' | 바른한의원 대전본점';
+            if (mb_strlen($raw_title, 'UTF-8') > 78) {
+                $raw_title = $clean_post_title . ' | 바른한의원';
+                if (mb_strlen($raw_title, 'UTF-8') > 82) {
+                    $base_q = preg_replace('/\s*\[[^\]]*\]\s*$/u', '', $clean_post_title);
+                    $raw_title = trim((string) $base_q) . ' | 바른한의원 대전본점';
+                    if (mb_strlen($raw_title, 'UTF-8') > 82) {
+                        $raw_title = mb_substr($raw_title, 0, 81, 'UTF-8') . '…';
+                    }
+                }
             }
-            $raw_desc = trim(wp_strip_all_tags(has_excerpt($post) ? get_the_excerpt($post) : wp_trim_words($post->post_content, 36, '')));
+            $raw_desc = trim(wp_strip_all_tags(has_excerpt($post) ? get_the_excerpt($post) : wp_trim_words($post->post_content, 42, '')));
             if ($raw_desc === '') {
                 $raw_desc = '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점(010-5631-1275) 안정위 대표원장 맞춤 진료 및 건강 정보 안내입니다.';
             }
-            if (mb_strlen($raw_desc, 'UTF-8') > 145) {
-                $raw_desc = mb_substr($raw_desc, 0, 144, 'UTF-8') . '…';
+            if (mb_strlen($raw_desc, 'UTF-8') > 155) {
+                $raw_desc = mb_substr($raw_desc, 0, 154, 'UTF-8') . '…';
             }
+
+            $post_og = $default_og;
+            $post_og_w = 1200;
+            $post_og_h = 630;
+            $thumb_id = (int) get_post_thumbnail_id($post);
+            if ($thumb_id > 0) {
+                $img_src = wp_get_attachment_image_src($thumb_id, 'full');
+                if (is_array($img_src) && !empty($img_src[0])) {
+                    $norm_thumb = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $img_src[0]);
+                    // If the post is a health-note-* post and has a dedicated illustration (or any non-default thumbnail), prefer its thumbnail
+                    if (strpos($slug, 'health-note-') === 0 || $norm_thumb !== '') {
+                        $post_og = $norm_thumb;
+                        if (!empty($img_src[1]) && !empty($img_src[2])) {
+                            $post_og_w = (int) $img_src[1];
+                            $post_og_h = (int) $img_src[2];
+                        }
+                    }
+                }
+            }
+
+            $has_inline_schema = ($post->post_type === 'post' && strpos((string) $post->post_content, 'application/ld+json') !== false);
+
             return array(
-                'path'           => $rel_path,
-                'title'          => $raw_title,
-                'description'    => $raw_desc,
-                'preloadImg'     => '',
-                'breadcrumbName' => trim(wp_strip_all_tags(get_the_title($post))),
-                'isArticle'      => ($post->post_type === 'post'),
-                'datePublished'  => get_the_date('Y-m-d', $post),
-                'dateModified'   => get_the_modified_date('Y-m-d', $post),
-                'ogImg'          => $default_og
+                'path'            => $rel_path,
+                'title'           => $raw_title,
+                'description'     => $raw_desc,
+                'preloadImg'      => (strpos($slug, 'health-note-') === 0) ? $post_og : '',
+                'breadcrumbName'  => $clean_post_title,
+                'isArticle'       => ($post->post_type === 'post'),
+                'hasInlineSchema' => $has_inline_schema,
+                'datePublished'   => get_the_date('Y-m-d', $post),
+                'dateModified'    => get_the_modified_date('Y-m-d', $post),
+                'ogImg'           => $post_og,
+                'ogImgW'          => $post_og_w,
+                'ogImgH'          => $post_og_h
             );
         }
 
@@ -2140,11 +2189,16 @@ class Bareun_Master_SEO_Engine_V1 {
                         $found_date  = '2026-10-28';
 
                         // 1) Check published WordPress post health-note-{id}
+                        $found_og = $default_og;
                         $hn_post = get_page_by_path('health-note-' . $req_note_id, OBJECT, 'post');
                         if ($hn_post && $hn_post->post_status === 'publish') {
                             $found_title = trim(wp_strip_all_tags(get_the_title($hn_post)));
                             $found_desc  = trim(wp_strip_all_tags(has_excerpt($hn_post) ? get_the_excerpt($hn_post) : wp_trim_words($hn_post->post_content, 40, '')));
                             $found_date  = get_the_date('Y-m-d', $hn_post);
+                            $hn_thumb_url = get_the_post_thumbnail_url($hn_post, 'full');
+                            if (!empty($hn_thumb_url)) {
+                                $found_og = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $hn_thumb_url);
+                            }
                         }
 
                         // 2) Fallback to OPT_BODY_NOTES option
@@ -2203,7 +2257,7 @@ class Bareun_Master_SEO_Engine_V1 {
                                 'isArticle'      => true,
                                 'datePublished'  => $found_date,
                                 'dateModified'   => $found_date,
-                                'ogImg'          => $default_og
+                                'ogImg'          => $found_og
                             );
                         }
                     } elseif (!empty($_GET['qnaId'])) {
@@ -2263,8 +2317,45 @@ class Bareun_Master_SEO_Engine_V1 {
         $og_img = !empty($cfg['ogImg']) ? $cfg['ogImg'] : $master['defaultOgImage'];
 
         $org = $master['clinicBaseOrg'];
-        $org['image'] = $og_img;
+        $org['image'] = !empty($master['defaultOgImage']) ? $master['defaultOgImage'] : $og_img;
         $ws = $master['websiteNode'];
+
+        // If a singular post (such as /health-note-* or clinical encyclopedia) already embeds its own authoritative MedicalWebPage + MedicalScholarlyArticle + FAQPage + HowTo JSON-LD in post_content,
+        // emit ONLY the site-level foundation graph (MedicalClinic + WebSite + 3-level BreadcrumbList) in <head> to prevent duplicate FAQPage / @id collisions!
+        if (!empty($cfg['hasInlineSchema']) || strpos($path, '/health-note-') === 0) {
+            $bc_items = array(
+                array(
+                    '@type'    => 'ListItem',
+                    'position' => 1,
+                    'name'     => '바른한의원 대전본점',
+                    'item'     => self::CANONICAL_ORIGIN . '/'
+                ),
+                array(
+                    '@type'    => 'ListItem',
+                    'position' => 2,
+                    'name'     => '3D 인체모형 · 오늘의 건강 글',
+                    'item'     => self::CANONICAL_ORIGIN . '/body-explorer/'
+                ),
+                array(
+                    '@type'    => 'ListItem',
+                    'position' => 3,
+                    'name'     => !empty($cfg['breadcrumbName']) ? $cfg['breadcrumbName'] : $cfg['title'],
+                    'item'     => $canonical_url
+                )
+            );
+            return array(
+                '@context' => 'https://schema.org',
+                '@graph'   => array(
+                    $org,
+                    $ws,
+                    array(
+                        '@type'           => 'BreadcrumbList',
+                        '@id'             => $canonical_url . '#breadcrumb',
+                        'itemListElement' => $bc_items
+                    )
+                )
+            );
+        }
 
         $web_page = array(
             '@type'       => 'MedicalWebPage',
@@ -2272,6 +2363,7 @@ class Bareun_Master_SEO_Engine_V1 {
             'url'         => $canonical_url,
             'name'        => $cfg['title'],
             'description' => $cfg['description'],
+            'image'       => array($og_img),
             'inLanguage'  => 'ko-KR',
             'isPartOf'    => array('@id' => self::CANONICAL_ORIGIN . '/#website'),
             'about'       => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
@@ -2281,8 +2373,14 @@ class Bareun_Master_SEO_Engine_V1 {
                 'name'     => '안정위',
                 'jobTitle' => '바른한의원 대전본점 대표원장 (한의사)'
             ),
-            'lastReviewed' => '2026-10-28'
+            'lastReviewed' => '2026-11-13'
         );
+        if ($path === '/body-explorer/') {
+            $web_page['speakable'] = array(
+                '@type'       => 'SpeakableSpecification',
+                'cssSelector' => array('.aeo-direct-answer', '.seo-health-note-ssr-item', '.seo-qna-ssr-item')
+            );
+        }
 
         $graph = array($org, $ws, $web_page);
 
@@ -2496,9 +2594,11 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         echo '<meta property="og:url" content="' . esc_url($canonical_url) . '">' . "\n";
         if ($og_img !== '') {
+            $og_w = !empty($cfg['ogImgW']) ? (int) $cfg['ogImgW'] : 1200;
+            $og_h = !empty($cfg['ogImgH']) ? (int) $cfg['ogImgH'] : 630;
             echo '<meta property="og:image" content="' . esc_url($og_img) . '">' . "\n";
-            echo '<meta property="og:image:width" content="1200">' . "\n";
-            echo '<meta property="og:image:height" content="630">' . "\n";
+            echo '<meta property="og:image:width" content="' . esc_attr((string) $og_w) . '">' . "\n";
+            echo '<meta property="og:image:height" content="' . esc_attr((string) $og_h) . '">' . "\n";
         }
         echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
         echo '<meta name="twitter:title" content="' . esc_attr($title) . '">' . "\n";
@@ -2627,7 +2727,7 @@ class Bareun_Master_SEO_Engine_V1 {
     public static function filter_rss_feed_query($query) {
         if (!is_admin() && $query->is_main_query() && $query->is_feed()) {
             $query->set('post_type', array('post', 'page'));
-            $query->set('posts_per_page', 30);
+            $query->set('posts_per_page', 120);
             $query->set('orderby', 'modified');
             $query->set('order', 'DESC');
         }
@@ -2671,6 +2771,11 @@ class Bareun_Master_SEO_Engine_V1 {
             if ($post->post_type === 'page') {
                 $desc = !empty($cfg['description']) ? $cfg['description'] : '';
                 return '<p>' . esc_html($desc) . '</p><p><a href="' . esc_url($url) . '">' . esc_html($cfg['title']) . ' 바로가기</a></p>';
+            }
+            if ($post->post_type === 'post') {
+                // Strip inline <script> (JSON-LD / view tracker) and <style> blocks so Naver Search Advisor RSS & feed readers ingest pure semantic HTML
+                $cleaned = preg_replace('#<(script|style)\b[^>]*>[\s\S]*?</\1>#i', '', (string) $content);
+                return trim((string) $cleaned);
             }
         }
         return $content;

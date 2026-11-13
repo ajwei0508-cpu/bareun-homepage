@@ -33,7 +33,7 @@ function dispatchQnaNotification(record, replyText) {
       const signature = crypto.createHmac('sha256', apiSecret).update(date + salt).digest('hex');
       const authHeader = `HMAC-SHA256 apiKey=${apiKey}, date=${date}, salt=${salt}, signature=${signature}`;
 
-      const smsText = `[바른한의원] ${record.memberName}님, 남겨주신 건강 질문에 안정위 대표원장님의 1:1 답변이 등록되었습니다.\n\n▶ 질문: ${record.title.slice(0, 30)}...\n▶ 답변 확인: https://www.bareunhaniwon.com/ask-doctor/?tab=qna&qnaId=${record.id}\n\n바른한의원 대전본점 042-825-1075`;
+      const smsText = `[바른한의원] ${record.memberName}님, 남겨주신 건강 질문에 안정위 대표원장님의 1:1 답변이 등록되었습니다.\n\n▶ 질문: ${record.title.slice(0, 30)}...\n▶ 답변 확인: https://www.bareunhaniwon.com/body-explorer/?tab=qna&qnaId=${record.id}\n\n바른한의원 대전본점 010-5631-1275`;
 
       const payload = JSON.stringify({
         message: {

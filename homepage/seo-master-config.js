@@ -17,6 +17,15 @@ const CLINIC_BASE_ORG = {
   logo: GH_RAW_BASE + 'webp/card_1_director.webp',
   image: DEFAULT_OG_IMAGE,
   telephone: '+82-10-5631-1275',
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: '+82-10-5631-1275',
+      contactType: 'customer service',
+      areaServed: 'KR',
+      availableLanguage: ['Korean']
+    }
+  ],
   taxID: '211-91-10479',
   vatID: '211-91-10479',
   identifier: {
@@ -53,6 +62,7 @@ const CLINIC_BASE_ORG = {
     }
   ],
   sameAs: [
+    'https://www.youtube.com/@bareunhaniwon',
     'https://naver.me/5U1ELn8L',
     'https://blog.naver.com/wei0508',
     'https://pf.kakao.com/_ykxcLK'

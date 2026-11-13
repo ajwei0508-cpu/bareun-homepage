@@ -10,6 +10,7 @@ const {
   buildStandaloneWpPostHtml
 } = require('./disease-blog-seed-data.js');
 const {
+  PART_SEO_CLINICAL_META,
   syncNineDiseaseAutoNotes,
   buildAllHealthNoteWpPayloads
 } = require('./auto-blog-engine.js');
@@ -446,9 +447,75 @@ async function performWpLogin(page, loginUrl) {
 
     const featuredMediaId = mediaSetup.ogMediaId || 51;
 
-    // 3) CLEAN UP EXTRA INDIVIDUAL POSTS & SYNC /llms.txt (All 72 Health Notes consolidated into 1 Standalone Page: /ask-doctor/)
+    // 2.3) Upload / Sync 9 Part-Specific 1376x768 Medical Illustrations for Google Discover, OG Cards & Rich Results
+    const partHeroSpecs = [];
+    for (const [partId, pMeta] of Object.entries(PART_SEO_CLINICAL_META || {})) {
+      const fPath = path.join(__dirname, pMeta.heroFile);
+      if (fs.existsSync(fPath)) {
+        const baseNoExt = path.basename(pMeta.heroFile, path.extname(pMeta.heroFile));
+        partHeroSpecs.push({
+          partId,
+          filename: pMeta.heroFile,
+          searchKey: baseNoExt,
+          altText: pMeta.heroAlt || `바른한의원 대전본점 ${partId} 의학 일러스트`,
+          title: `바른한의원 대전본점 [${partId}] 건강백과 대표 의학 일러스트`,
+          b64: fs.readFileSync(fPath).toString('base64')
+        });
+      }
+    }
+
+    const partMediaSetup = await page.evaluate(async ({ wpNonce, specs }) => {
+      const partMediaIdMap = {};
+      const partMediaUrlMap = {};
+      for (const sp of specs) {
+        try {
+          const sRes = await fetch(`/wp-json/wp/v2/media?search=${encodeURIComponent(sp.searchKey)}&per_page=10`, {
+            headers: { 'X-WP-Nonce': wpNonce }
+          });
+          const sArr = await sRes.json();
+          const normKey = sp.searchKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const found = Array.isArray(sArr)
+            ? sArr.find(m => {
+                const mSlug = String(m.slug || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const mSrc = String(m.source_url || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                return mSlug.includes(normKey) || mSrc.includes(normKey);
+              })
+            : null;
+          if (found && found.id) {
+            partMediaIdMap[sp.partId] = found.id;
+            partMediaUrlMap[sp.partId] = String(found.source_url || '').replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, 'https://www.bareunhaniwon.com');
+          } else if (sp.b64) {
+            const bin = Uint8Array.from(atob(sp.b64), c => c.charCodeAt(0));
+            const blob = new Blob([bin], { type: 'image/jpeg' });
+            const upRes = await fetch('/wp-json/wp/v2/media', {
+              method: 'POST',
+              headers: {
+                'X-WP-Nonce': wpNonce,
+                'Content-Disposition': `attachment; filename="${sp.filename}"`,
+                'Content-Type': 'image/jpeg'
+              },
+              body: blob
+            });
+            const upJson = await upRes.json();
+            if (upJson && upJson.id) {
+              partMediaIdMap[sp.partId] = upJson.id;
+              partMediaUrlMap[sp.partId] = String(upJson.source_url || '').replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, 'https://www.bareunhaniwon.com');
+              await fetch('/wp-json/wp/v2/media/' + upJson.id, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+                body: JSON.stringify({ alt_text: sp.altText, title: sp.title })
+              }).catch(() => {});
+            }
+          }
+        } catch (e) {}
+      }
+      return { partMediaIdMap, partMediaUrlMap };
+    }, { wpNonce: nonce, specs: partHeroSpecs });
+    console.log('2.3) 9 Part-Specific Medical Illustrations Synced:', partMediaSetup.partMediaIdMap);
+
+    // 3) SYNC FLAGSHIP REVIEW + ALL 72 SEO/AEO/GEO HEALTH NOTE POSTS + /llms.txt
     syncNineDiseaseAutoNotes();
-    console.log('3) Cleaning up extra individual posts & syncing 72 Health Notes into 1 Standalone Page (/ask-doctor/) + /llms.txt ...');
+    console.log('3) Syncing Flagship Review + 72 Rich SEO/AEO/GEO Health Note Posts + /llms.txt ...');
     const flagshipPayload = {
       id: FLAGSHIP_REPRESENTATIVE_POST.id,
       slug: FLAGSHIP_REPRESENTATIVE_POST.slug,
@@ -459,7 +526,7 @@ async function performWpLogin(page, loginUrl) {
       standaloneHtml: buildStandaloneWpPostHtml(FLAGSHIP_REPRESENTATIVE_POST)
     };
 
-    const allPostsToPublish = [flagshipPayload, ...buildAllHealthNoteWpPayloads()];
+    const allPostsToPublish = [flagshipPayload, ...buildAllHealthNoteWpPayloads(partMediaSetup.partMediaUrlMap)];
 
     const llmsTxtRaw = fs.existsSync(path.join(__dirname, 'llms.txt'))
       ? fs.readFileSync(path.join(__dirname, 'llms.txt'), 'utf8')
@@ -468,7 +535,7 @@ async function performWpLogin(page, loginUrl) {
       ? fs.readFileSync(path.join(__dirname, 'llms-full.txt'), 'utf8')
       : '';
 
-    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId, llmsTxt, llmsFullTxt }) => {
+    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId, partMediaIdMap, llmsTxt, llmsFullTxt }) => {
       if (llmsTxt || llmsFullTxt) {
         await fetch('/wp-json/bareun/v1/seo-verify', {
           method: 'POST',
@@ -521,35 +588,42 @@ async function performWpLogin(page, loginUrl) {
 
       const publishedMap = {};
       let publishedCount = 0;
+      const pubBatchSize = 6;
 
-      for (const postItem of postsToPublish) {
-        const matchId = existingBySlug[postItem.slug] || null;
-        const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
-        const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
-        const pubRes = await fetch(epUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-          body: JSON.stringify({
-            title: postItem.title,
-            slug: postItem.slug,
-            excerpt: postItem.summary,
-            content: postItem.standaloneHtml,
-            status: 'publish',
-            comment_status: 'closed',
-            ping_status: 'open',
-            featured_media: mediaId,
-            categories: cId ? [cId] : []
-          })
-        });
-        const pubJson = await pubRes.json();
-        if (pubJson && pubJson.id) {
-          publishedCount++;
-          publishedMap[postItem.id] = {
-            wpPostId: pubJson.id,
-            slug: pubJson.slug || postItem.slug,
-            link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
-          };
-        }
+      for (let i = 0; i < postsToPublish.length; i += pubBatchSize) {
+        const batch = postsToPublish.slice(i, i + pubBatchSize);
+        await Promise.all(batch.map(async (postItem) => {
+          const matchId = existingBySlug[postItem.slug] || null;
+          const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
+          const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
+          const resolvedMediaId = (postItem.slug !== 'integrative-autonomic-circadian-gut-spine-health-review' && postItem.partId && partMediaIdMap && partMediaIdMap[postItem.partId])
+            ? partMediaIdMap[postItem.partId]
+            : mediaId;
+          const pubRes = await fetch(epUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({
+              title: postItem.title,
+              slug: postItem.slug,
+              excerpt: postItem.summary,
+              content: postItem.standaloneHtml,
+              status: 'publish',
+              comment_status: 'closed',
+              ping_status: 'open',
+              featured_media: resolvedMediaId,
+              categories: cId ? [cId] : []
+            })
+          });
+          const pubJson = await pubRes.json();
+          if (pubJson && pubJson.id) {
+            publishedCount++;
+            publishedMap[postItem.id] = {
+              wpPostId: pubJson.id,
+              slug: pubJson.slug || postItem.slug,
+              link: 'https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/'
+            };
+          }
+        }));
       }
 
       return {
@@ -562,6 +636,7 @@ async function performWpLogin(page, loginUrl) {
       categoriesList: DISEASE_BLOG_CATEGORIES,
       postsToPublish: allPostsToPublish,
       mediaId: featuredMediaId,
+      partMediaIdMap: partMediaSetup.partMediaIdMap,
       llmsTxt: llmsTxtRaw,
       llmsFullTxt: llmsFullTxtRaw
     });
@@ -658,21 +733,32 @@ async function performWpLogin(page, loginUrl) {
     }).catch(() => {});
     await new Promise(r => setTimeout(r, 2000));
 
-    // 5.5) Warm all canonical HTTPS www URLs so WP Super Cache serves identical warm responses (C10 + ultra-fast TTFB)
-    const allLiveUrls = Array.from(new Set([
+    // 5.5) Warm canonical HTTPS www URLs & Ping IndexNow for ALL 87+ Pages + Health Notes
+    const publishedPostUrls = Object.values(blogCleanupAndSync.publishedMap || {})
+      .map(v => v && v.link)
+      .filter(Boolean);
+    const urlsToWarm = Array.from(new Set([
       `${CANONICAL_ORIGIN}/`,
       ...deployedPageUrls.map(u => u.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)),
-      ...(blogCleanupAndSync.flagshipLink ? [blogCleanupAndSync.flagshipLink] : [])
+      `${CANONICAL_ORIGIN}/integrative-autonomic-circadian-gut-spine-health-review/`,
+      `${CANONICAL_ORIGIN}/feed/`,
+      `${CANONICAL_ORIGIN}/llms.txt`,
+      ...publishedPostUrls.slice(-9)
     ]));
-    console.log(`5.5) Warming ${allLiveUrls.length} canonical HTTPS URLs in WP Super Cache ...`);
-    for (const u of allLiveUrls) {
+    console.log(`5.5) Warming ${urlsToWarm.length} core canonical HTTPS URLs in WP Super Cache ...`);
+    for (const u of urlsToWarm) {
       const st = await warmUrlOnce(u);
       console.log(`   [WARMED] ${u.padEnd(85)} -> HTTP ${st}`);
     }
 
-    // 6) Ping IndexNow
-    const indexNowStatus = await pingIndexNow(allLiveUrls);
-    console.log(`6) IndexNow Search Engine Ping sent for ${allLiveUrls.length} URLs (HTTP ${indexNowStatus})!`);
+    // 6) Ping IndexNow for ALL Pages + Flagship Review + All 72 Health Notes (up to 100 URLs)
+    const allIndexNowUrls = Array.from(new Set([
+      `${CANONICAL_ORIGIN}/`,
+      ...deployedPageUrls.map(u => u.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)),
+      ...publishedPostUrls
+    ]));
+    const indexNowStatus = await pingIndexNow(allIndexNowUrls);
+    console.log(`6) IndexNow Search Engine Ping sent for ${allIndexNowUrls.length} URLs (HTTP ${indexNowStatus})!`);
 
     console.log('✅ MASTER SEO + CANONICAL WWW DEPLOYMENT COMPLETE ON https://www.bareunhaniwon.com/ !');
   } catch (err) {

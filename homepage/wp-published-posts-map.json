@@ -1,63 +1,68 @@
 {
-  "flagship-integrative-medical-review-01": {
-    "wpPostId": 1674,
-    "slug": "integrative-autonomic-circadian-gut-spine-health-review",
-    "link": "https://www.bareunhaniwon.com/integrative-autonomic-circadian-gut-spine-health-review/"
-  },
   "knee-20261023": {
     "wpPostId": 2550,
     "slug": "health-note-knee-20261023",
     "link": "https://www.bareunhaniwon.com/health-note-knee-20261023/"
   },
-  "knee-20261025": {
-    "wpPostId": 2551,
-    "slug": "health-note-knee-20261025",
-    "link": "https://www.bareunhaniwon.com/health-note-knee-20261025/"
+  "flagship-integrative-medical-review-01": {
+    "wpPostId": 1674,
+    "slug": "integrative-autonomic-circadian-gut-spine-health-review",
+    "link": "https://www.bareunhaniwon.com/integrative-autonomic-circadian-gut-spine-health-review/"
   },
   "knee-20261027": {
     "wpPostId": 2552,
     "slug": "health-note-knee-20261027",
     "link": "https://www.bareunhaniwon.com/health-note-knee-20261027/"
   },
-  "knee-20261029": {
-    "wpPostId": 2553,
-    "slug": "health-note-knee-20261029",
-    "link": "https://www.bareunhaniwon.com/health-note-knee-20261029/"
+  "knee-20261025": {
+    "wpPostId": 2551,
+    "slug": "health-note-knee-20261025",
+    "link": "https://www.bareunhaniwon.com/health-note-knee-20261025/"
   },
   "knee-20261031": {
     "wpPostId": 2554,
     "slug": "health-note-knee-20261031",
     "link": "https://www.bareunhaniwon.com/health-note-knee-20261031/"
   },
-  "knee-20261102": {
-    "wpPostId": 2555,
-    "slug": "health-note-knee-20261102",
-    "link": "https://www.bareunhaniwon.com/health-note-knee-20261102/"
-  },
-  "knee-20261104": {
-    "wpPostId": 2556,
-    "slug": "health-note-knee-20261104",
-    "link": "https://www.bareunhaniwon.com/health-note-knee-20261104/"
+  "knee-20261029": {
+    "wpPostId": 2553,
+    "slug": "health-note-knee-20261029",
+    "link": "https://www.bareunhaniwon.com/health-note-knee-20261029/"
   },
   "knee-20261111": {
     "wpPostId": 2557,
     "slug": "health-note-knee-20261111",
     "link": "https://www.bareunhaniwon.com/health-note-knee-20261111/"
   },
-  "cervical-20261023": {
-    "wpPostId": 2558,
-    "slug": "health-note-cervical-20261023",
-    "link": "https://www.bareunhaniwon.com/health-note-cervical-20261023/"
+  "cervical-20261027": {
+    "wpPostId": 2560,
+    "slug": "health-note-cervical-20261027",
+    "link": "https://www.bareunhaniwon.com/health-note-cervical-20261027/"
   },
   "cervical-20261025": {
     "wpPostId": 2559,
     "slug": "health-note-cervical-20261025",
     "link": "https://www.bareunhaniwon.com/health-note-cervical-20261025/"
   },
-  "cervical-20261027": {
-    "wpPostId": 2560,
-    "slug": "health-note-cervical-20261027",
-    "link": "https://www.bareunhaniwon.com/health-note-cervical-20261027/"
+  "knee-20261104": {
+    "wpPostId": 2556,
+    "slug": "health-note-knee-20261104",
+    "link": "https://www.bareunhaniwon.com/health-note-knee-20261104/"
+  },
+  "cervical-20261023": {
+    "wpPostId": 2558,
+    "slug": "health-note-cervical-20261023",
+    "link": "https://www.bareunhaniwon.com/health-note-cervical-20261023/"
+  },
+  "knee-20261102": {
+    "wpPostId": 2555,
+    "slug": "health-note-knee-20261102",
+    "link": "https://www.bareunhaniwon.com/health-note-knee-20261102/"
+  },
+  "lumbar-20261023": {
+    "wpPostId": 2566,
+    "slug": "health-note-lumbar-20261023",
+    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261023/"
   },
   "cervical-20261029": {
     "wpPostId": 2561,
@@ -69,6 +74,11 @@
     "slug": "health-note-cervical-20261031",
     "link": "https://www.bareunhaniwon.com/health-note-cervical-20261031/"
   },
+  "cervical-20261111": {
+    "wpPostId": 2565,
+    "slug": "health-note-cervical-20261111",
+    "link": "https://www.bareunhaniwon.com/health-note-cervical-20261111/"
+  },
   "cervical-20261102": {
     "wpPostId": 2563,
     "slug": "health-note-cervical-20261102",
@@ -79,65 +89,45 @@
     "slug": "health-note-cervical-20261104",
     "link": "https://www.bareunhaniwon.com/health-note-cervical-20261104/"
   },
-  "cervical-20261111": {
-    "wpPostId": 2565,
-    "slug": "health-note-cervical-20261111",
-    "link": "https://www.bareunhaniwon.com/health-note-cervical-20261111/"
-  },
-  "lumbar-20261023": {
-    "wpPostId": 2566,
-    "slug": "health-note-lumbar-20261023",
-    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261023/"
-  },
   "lumbar-20261025": {
     "wpPostId": 2567,
     "slug": "health-note-lumbar-20261025",
     "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261025/"
-  },
-  "lumbar-20261027": {
-    "wpPostId": 2568,
-    "slug": "health-note-lumbar-20261027",
-    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261027/"
-  },
-  "lumbar-20261029": {
-    "wpPostId": 2569,
-    "slug": "health-note-lumbar-20261029",
-    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261029/"
   },
   "lumbar-20261031": {
     "wpPostId": 2570,
     "slug": "health-note-lumbar-20261031",
     "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261031/"
   },
-  "lumbar-20261102": {
-    "wpPostId": 2571,
-    "slug": "health-note-lumbar-20261102",
-    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261102/"
-  },
   "lumbar-20261104": {
     "wpPostId": 2572,
     "slug": "health-note-lumbar-20261104",
     "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261104/"
   },
-  "lumbar-20261111": {
-    "wpPostId": 2573,
-    "slug": "health-note-lumbar-20261111",
-    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261111/"
+  "lumbar-20261029": {
+    "wpPostId": 2569,
+    "slug": "health-note-lumbar-20261029",
+    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261029/"
+  },
+  "lumbar-20261102": {
+    "wpPostId": 2571,
+    "slug": "health-note-lumbar-20261102",
+    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261102/"
+  },
+  "lumbar-20261027": {
+    "wpPostId": 2568,
+    "slug": "health-note-lumbar-20261027",
+    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261027/"
   },
   "gongjindan-20261023": {
     "wpPostId": 2574,
     "slug": "health-note-gongjindan-20261023",
     "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261023/"
   },
-  "gongjindan-20261025": {
-    "wpPostId": 2575,
-    "slug": "health-note-gongjindan-20261025",
-    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261025/"
-  },
-  "gongjindan-20261027": {
-    "wpPostId": 2576,
-    "slug": "health-note-gongjindan-20261027",
-    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261027/"
+  "lumbar-20261111": {
+    "wpPostId": 2573,
+    "slug": "health-note-lumbar-20261111",
+    "link": "https://www.bareunhaniwon.com/health-note-lumbar-20261111/"
   },
   "gongjindan-20261029": {
     "wpPostId": 2577,
@@ -149,20 +139,20 @@
     "slug": "health-note-gongjindan-20261031",
     "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261031/"
   },
+  "gongjindan-20261025": {
+    "wpPostId": 2575,
+    "slug": "health-note-gongjindan-20261025",
+    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261025/"
+  },
+  "gongjindan-20261027": {
+    "wpPostId": 2576,
+    "slug": "health-note-gongjindan-20261027",
+    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261027/"
+  },
   "gongjindan-20261102": {
     "wpPostId": 2579,
     "slug": "health-note-gongjindan-20261102",
     "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261102/"
-  },
-  "gongjindan-20261104": {
-    "wpPostId": 2580,
-    "slug": "health-note-gongjindan-20261104",
-    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261104/"
-  },
-  "gongjindan-20261111": {
-    "wpPostId": 2581,
-    "slug": "health-note-gongjindan-20261111",
-    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261111/"
   },
   "syncope-20261023": {
     "wpPostId": 2582,
@@ -179,10 +169,25 @@
     "slug": "health-note-syncope-20261027",
     "link": "https://www.bareunhaniwon.com/health-note-syncope-20261027/"
   },
-  "syncope-20261029": {
-    "wpPostId": 2585,
-    "slug": "health-note-syncope-20261029",
-    "link": "https://www.bareunhaniwon.com/health-note-syncope-20261029/"
+  "gongjindan-20261111": {
+    "wpPostId": 2581,
+    "slug": "health-note-gongjindan-20261111",
+    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261111/"
+  },
+  "gongjindan-20261104": {
+    "wpPostId": 2580,
+    "slug": "health-note-gongjindan-20261104",
+    "link": "https://www.bareunhaniwon.com/health-note-gongjindan-20261104/"
+  },
+  "syncope-20261104": {
+    "wpPostId": 2588,
+    "slug": "health-note-syncope-20261104",
+    "link": "https://www.bareunhaniwon.com/health-note-syncope-20261104/"
+  },
+  "digest-20261023": {
+    "wpPostId": 2590,
+    "slug": "health-note-digest-20261023",
+    "link": "https://www.bareunhaniwon.com/health-note-digest-20261023/"
   },
   "syncope-20261031": {
     "wpPostId": 2586,
@@ -194,25 +199,15 @@
     "slug": "health-note-syncope-20261102",
     "link": "https://www.bareunhaniwon.com/health-note-syncope-20261102/"
   },
-  "syncope-20261104": {
-    "wpPostId": 2588,
-    "slug": "health-note-syncope-20261104",
-    "link": "https://www.bareunhaniwon.com/health-note-syncope-20261104/"
-  },
   "syncope-20261111": {
     "wpPostId": 2589,
     "slug": "health-note-syncope-20261111",
     "link": "https://www.bareunhaniwon.com/health-note-syncope-20261111/"
   },
-  "digest-20261023": {
-    "wpPostId": 2590,
-    "slug": "health-note-digest-20261023",
-    "link": "https://www.bareunhaniwon.com/health-note-digest-20261023/"
-  },
-  "digest-20261025": {
-    "wpPostId": 2591,
-    "slug": "health-note-digest-20261025",
-    "link": "https://www.bareunhaniwon.com/health-note-digest-20261025/"
+  "syncope-20261029": {
+    "wpPostId": 2585,
+    "slug": "health-note-syncope-20261029",
+    "link": "https://www.bareunhaniwon.com/health-note-syncope-20261029/"
   },
   "digest-20261027": {
     "wpPostId": 2592,
@@ -224,10 +219,10 @@
     "slug": "health-note-digest-20261029",
     "link": "https://www.bareunhaniwon.com/health-note-digest-20261029/"
   },
-  "digest-20261031": {
-    "wpPostId": 2594,
-    "slug": "health-note-digest-20261031",
-    "link": "https://www.bareunhaniwon.com/health-note-digest-20261031/"
+  "digest-20261025": {
+    "wpPostId": 2591,
+    "slug": "health-note-digest-20261025",
+    "link": "https://www.bareunhaniwon.com/health-note-digest-20261025/"
   },
   "digest-20261102": {
     "wpPostId": 2595,
@@ -239,65 +234,70 @@
     "slug": "health-note-digest-20261104",
     "link": "https://www.bareunhaniwon.com/health-note-digest-20261104/"
   },
-  "digest-20261111": {
-    "wpPostId": 2597,
-    "slug": "health-note-digest-20261111",
-    "link": "https://www.bareunhaniwon.com/health-note-digest-20261111/"
-  },
-  "gut-20261023": {
-    "wpPostId": 2598,
-    "slug": "health-note-gut-20261023",
-    "link": "https://www.bareunhaniwon.com/health-note-gut-20261023/"
-  },
-  "gut-20261025": {
-    "wpPostId": 2599,
-    "slug": "health-note-gut-20261025",
-    "link": "https://www.bareunhaniwon.com/health-note-gut-20261025/"
-  },
-  "gut-20261027": {
-    "wpPostId": 2600,
-    "slug": "health-note-gut-20261027",
-    "link": "https://www.bareunhaniwon.com/health-note-gut-20261027/"
+  "digest-20261031": {
+    "wpPostId": 2594,
+    "slug": "health-note-digest-20261031",
+    "link": "https://www.bareunhaniwon.com/health-note-digest-20261031/"
   },
   "gut-20261029": {
     "wpPostId": 2601,
     "slug": "health-note-gut-20261029",
     "link": "https://www.bareunhaniwon.com/health-note-gut-20261029/"
   },
+  "gut-20261025": {
+    "wpPostId": 2599,
+    "slug": "health-note-gut-20261025",
+    "link": "https://www.bareunhaniwon.com/health-note-gut-20261025/"
+  },
   "gut-20261031": {
     "wpPostId": 2602,
     "slug": "health-note-gut-20261031",
     "link": "https://www.bareunhaniwon.com/health-note-gut-20261031/"
+  },
+  "digest-20261111": {
+    "wpPostId": 2597,
+    "slug": "health-note-digest-20261111",
+    "link": "https://www.bareunhaniwon.com/health-note-digest-20261111/"
+  },
+  "gut-20261027": {
+    "wpPostId": 2600,
+    "slug": "health-note-gut-20261027",
+    "link": "https://www.bareunhaniwon.com/health-note-gut-20261027/"
+  },
+  "gut-20261023": {
+    "wpPostId": 2598,
+    "slug": "health-note-gut-20261023",
+    "link": "https://www.bareunhaniwon.com/health-note-gut-20261023/"
   },
   "gut-20261102": {
     "wpPostId": 2603,
     "slug": "health-note-gut-20261102",
     "link": "https://www.bareunhaniwon.com/health-note-gut-20261102/"
   },
+  "uterus-20261027": {
+    "wpPostId": 2608,
+    "slug": "health-note-uterus-20261027",
+    "link": "https://www.bareunhaniwon.com/health-note-uterus-20261027/"
+  },
   "gut-20261104": {
     "wpPostId": 2604,
     "slug": "health-note-gut-20261104",
     "link": "https://www.bareunhaniwon.com/health-note-gut-20261104/"
-  },
-  "gut-20261111": {
-    "wpPostId": 2605,
-    "slug": "health-note-gut-20261111",
-    "link": "https://www.bareunhaniwon.com/health-note-gut-20261111/"
   },
   "uterus-20261023": {
     "wpPostId": 2606,
     "slug": "health-note-uterus-20261023",
     "link": "https://www.bareunhaniwon.com/health-note-uterus-20261023/"
   },
+  "gut-20261111": {
+    "wpPostId": 2605,
+    "slug": "health-note-gut-20261111",
+    "link": "https://www.bareunhaniwon.com/health-note-gut-20261111/"
+  },
   "uterus-20261025": {
     "wpPostId": 2607,
     "slug": "health-note-uterus-20261025",
     "link": "https://www.bareunhaniwon.com/health-note-uterus-20261025/"
-  },
-  "uterus-20261027": {
-    "wpPostId": 2608,
-    "slug": "health-note-uterus-20261027",
-    "link": "https://www.bareunhaniwon.com/health-note-uterus-20261027/"
   },
   "uterus-20261029": {
     "wpPostId": 2609,
@@ -319,30 +319,20 @@
     "slug": "health-note-uterus-20261104",
     "link": "https://www.bareunhaniwon.com/health-note-uterus-20261104/"
   },
-  "uterus-20261111": {
-    "wpPostId": 2613,
-    "slug": "health-note-uterus-20261111",
-    "link": "https://www.bareunhaniwon.com/health-note-uterus-20261111/"
-  },
   "prostate-20261023": {
     "wpPostId": 2614,
     "slug": "health-note-prostate-20261023",
     "link": "https://www.bareunhaniwon.com/health-note-prostate-20261023/"
   },
-  "prostate-20261025": {
-    "wpPostId": 2615,
-    "slug": "health-note-prostate-20261025",
-    "link": "https://www.bareunhaniwon.com/health-note-prostate-20261025/"
+  "uterus-20261111": {
+    "wpPostId": 2613,
+    "slug": "health-note-uterus-20261111",
+    "link": "https://www.bareunhaniwon.com/health-note-uterus-20261111/"
   },
   "prostate-20261027": {
     "wpPostId": 2616,
     "slug": "health-note-prostate-20261027",
     "link": "https://www.bareunhaniwon.com/health-note-prostate-20261027/"
-  },
-  "prostate-20261029": {
-    "wpPostId": 2617,
-    "slug": "health-note-prostate-20261029",
-    "link": "https://www.bareunhaniwon.com/health-note-prostate-20261029/"
   },
   "prostate-20261031": {
     "wpPostId": 2618,
@@ -353,6 +343,16 @@
     "wpPostId": 2619,
     "slug": "health-note-prostate-20261102",
     "link": "https://www.bareunhaniwon.com/health-note-prostate-20261102/"
+  },
+  "prostate-20261025": {
+    "wpPostId": 2615,
+    "slug": "health-note-prostate-20261025",
+    "link": "https://www.bareunhaniwon.com/health-note-prostate-20261025/"
+  },
+  "prostate-20261029": {
+    "wpPostId": 2617,
+    "slug": "health-note-prostate-20261029",
+    "link": "https://www.bareunhaniwon.com/health-note-prostate-20261029/"
   },
   "prostate-20261104": {
     "wpPostId": 2620,

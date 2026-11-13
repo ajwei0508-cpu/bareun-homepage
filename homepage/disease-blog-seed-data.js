@@ -531,7 +531,7 @@ function buildFlagshipStandaloneWpPostHtml(post) {
       <div style="font-size:0.78rem;font-weight:800;color:#93C5FD;margin-bottom:4px;">PRIVATE MEDICAL Q&amp;A · 회원 전용 1:1 비공개 질환 상담</div>
       <div style="font-size:1.05rem;font-weight:800;">질환별 개인 증상 질문은 별도 전용 Q&amp;A 메뉴(비공개)에서 안전하게 남겨주세요.</div>
     </div>
-    <a href="/ask-doctor/?tab=qna" style="display:inline-block;padding:11px 20px;border-radius:999px;background:#3B82F6;color:#FFFFFF;font-weight:800;font-size:0.9rem;text-decoration:none;">🩺 질환별 1:1 비공개 Q&amp;A 바로가기 →</a>
+    <a href="/body-explorer/?tab=qna" style="display:inline-block;padding:11px 20px;border-radius:999px;background:#3B82F6;color:#FFFFFF;font-weight:800;font-size:0.9rem;text-decoration:none;">🩺 질환별 1:1 비공개 Q&amp;A 바로가기 →</a>
   </div>
 </article>
 <!-- /wp:html -->`;
@@ -3370,9 +3370,9 @@ function buildPostJsonLdObject(post, category, siteOrigin) {
         'publisher': { '@id': origin + '/#clinic' },
         'isPartOf': {
           '@type': 'Blog',
-          '@id': origin + '/ask-doctor/#blog',
-          'name': '바른한의원 대전본점 무엇이든 물어보세요 · 공식 의학백과 & 원장 Q&A 블로그',
-          'url': origin + '/ask-doctor/'
+          '@id': origin + '/body-explorer/#blog',
+          'name': '바른한의원 대전본점 3D 인체모형 · 공식 의학백과 & 원장 Q&A 블로그',
+          'url': origin + '/body-explorer/'
         }
       },
       {
@@ -3381,14 +3381,24 @@ function buildPostJsonLdObject(post, category, siteOrigin) {
         'name': '바른한의원 대전본점 (Bareun Korean Medicine Clinic Daejeon)',
         'alternateName': 'Daejeon Bareun Korean Medicine Clinic',
         'url': origin + '/',
-        'telephone': '+82-42-488-1075',
+        'telephone': '+82-10-5631-1275',
+        'taxID': '211-91-10479',
+        'vatID': '211-91-10479',
         'image': ghBase + 'card_1_director.jpg',
         'address': {
           '@type': 'PostalAddress',
-          'addressLocality': 'Daejeon',
-          'addressRegion': 'Daejeon',
+          'streetAddress': '비래동로7번길 1, 2층',
+          'addressLocality': '대덕구',
+          'addressRegion': '대전광역시',
+          'postalCode': '34417',
           'addressCountry': 'KR'
         },
+        'sameAs': [
+          'https://www.youtube.com/@bareunhaniwon',
+          'https://naver.me/5U1ELn8L',
+          'https://blog.naver.com/wei0508',
+          'https://pf.kakao.com/_ykxcLK'
+        ],
         'medicalSpecialty': [
           'Traditional Korean Medicine',
           'Musculoskeletal Chuna Therapy',
@@ -3416,7 +3426,7 @@ function buildPostJsonLdObject(post, category, siteOrigin) {
         '@type': 'BreadcrumbList',
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': '바른한의원 대전본점', 'item': origin + '/' },
-          { '@type': 'ListItem', 'position': 2, 'name': '무엇이든 물어보세요 (의학백과·Q&A)', 'item': origin + '/ask-doctor/?part=' + post.partId },
+          { '@type': 'ListItem', 'position': 2, 'name': '3D 인체모형 · 오늘의 건강 글 & Q&A', 'item': origin + '/body-explorer/?part=' + post.partId },
           { '@type': 'ListItem', 'position': 3, 'name': post.title, 'item': postUrl }
         ]
       }
@@ -3433,7 +3443,7 @@ function buildStandaloneWpPostHtml(post, category) {
   const ghBase = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
   const cat = category || DISEASE_BLOG_CATEGORIES.find(c => c.partId === post.partId) || {};
   const clinicHref = cat.clinicLink === 'gongjindan.html'
-    ? '/gongjindan-2/'
+    ? '/gongjindan/'
     : ('/' + String(cat.clinicLink || 'director.html').replace(/\.html$/, '') + '/');
 
   const bodyHtmlWithCdn = buildAiSeoArticleBodyHtml(post, cat)
@@ -3551,7 +3561,7 @@ function buildStandaloneWpPostHtml(post, category) {
     '  <nav class="bblog-wp-only-bar" aria-label="바른한의원 블로그 상단 바로가기">',
     '    <div style="font-size:0.9rem;font-weight:800;">👨‍⚕️ 바른한의원 대전본점 · 안정위 대표원장 공식 의학백과 & 문답</div>',
     '    <div class="bblog-wp-only-links">',
-    '      <a class="bblog-wp-only-btn emerald" href="/ask-doctor/?part=' + escAttr(post.partId) + '&post=' + escAttr(post.slug) + '">💬 무엇이든 물어보세요 허브</a>',
+    '      <a class="bblog-wp-only-btn emerald" href="/body-explorer/?tab=qna&part=' + escAttr(post.partId) + '">💬 무엇이든 물어보세요 허브</a>',
     '      <a class="bblog-wp-only-btn gold" href="/body-explorer/?part=' + escAttr(post.partId) + '">💡 3D 부위별 생활꿀팁</a>',
     '      <a class="bblog-wp-only-btn" href="' + clinicHref + '">🏥 클리닉 상세보기 →</a>',
     '    </div>',
@@ -3564,7 +3574,7 @@ function buildStandaloneWpPostHtml(post, category) {
     '    </div>',
     '    <div style="display:flex;gap:8px;flex-wrap:wrap;">',
     '      <a href="#respond" style="padding:10px 18px;border-radius:999px;background:#0F172A;color:#FFFFFF !important;font-size:0.86rem;font-weight:800;text-decoration:none !important;">✍️ 아래 답글로 바로 질문하기 ↓</a>',
-    '      <a href="/ask-doctor/?part=' + escAttr(post.partId) + '" style="padding:10px 18px;border-radius:999px;background:#FFFFFF;border:1.5px solid #0F172A;color:#0F172A !important;font-size:0.86rem;font-weight:800;text-decoration:none !important;">📚 전체 의학백과 · Q&A 보기</a>',
+    '      <a href="/body-explorer/?tab=qna&part=' + escAttr(post.partId) + '" style="padding:10px 18px;border-radius:999px;background:#FFFFFF;border:1.5px solid #0F172A;color:#0F172A !important;font-size:0.86rem;font-weight:800;text-decoration:none !important;">📚 전체 의학백과 · Q&A 보기</a>',
     '    </div>',
     '  </div>',
     '</div>',
