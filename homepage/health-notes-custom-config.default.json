@@ -18,8 +18,18 @@
       },
       "naver": {
         "enabled": true,
-        "label": "네이버",
-        "url": "https://blog.naver.com/wei0508"
+        "label": "네이버플레이스",
+        "url": "https://naver.me/5U1ELn8L"
+      },
+      "threads": {
+        "enabled": true,
+        "label": "스레드",
+        "url": "https://www.threads.net/@bareun_oriental"
+      },
+      "instagram": {
+        "enabled": true,
+        "label": "인스타그램",
+        "url": "https://www.instagram.com/bareun_oriental/"
       },
       "kakao": {
         "enabled": true,

@@ -5813,13 +5813,15 @@
       const gs = cfg.globalSettings;
       const yt = gs.channels.youtube || {};
       const nv = gs.channels.naver || {};
+      const th = gs.channels.threads || {};
+      const ig = gs.channels.instagram || {};
       const kk = gs.channels.kakao || {};
       const box = document.getElementById('leftPanelEditorBox');
       if (!box) return;
 
       box.innerHTML = `
         <div class="panel-head">
-          <h2>🔗 [3D 오늘의 건강 글] 상세히 버튼 · 이어서 읽기 BEST 2 · 유튜브/네이버/카카오톡 아이콘 설정</h2>
+          <h2>🔗 [3D 오늘의 건강 글] 상세히 버튼 · 이어서 읽기 BEST 2 · 공식 채널 아이콘 설정</h2>
           <span class="tag-pill">body-explorer.html · WP ID: 125</span>
         </div>
 
@@ -5872,7 +5874,7 @@
 
         <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-        <h3 style="margin:0 0 10px; font-size:14.5px;">3) 유튜브 · 네이버 · 카카오톡 채널 아이콘 버튼 연결</h3>
+        <h3 style="margin:0 0 10px; font-size:14.5px;">3) 유튜브 · 네이버플레이스 · 스레드 · 인스타그램 · 카카오톡 채널 아이콘 버튼 연결</h3>
         <div class="field">
           <label>아이콘 바 좌측 안내 문구 (channelBarLabel)</label>
           <input type="text" value="${escHtml(gs.channelBarLabel || '더 많은 건강 이야기 · 편하게 물어보기')}" oninput="updateHnGlobalField('channelBarLabel', this.value)" />
@@ -5891,10 +5893,28 @@
           <div style="padding:12px 14px; border-radius:10px; background:#f0fdf4; border:1px solid #bbf7d0; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">
             <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:#166534; cursor:pointer;">
               <input type="checkbox" ${nv.enabled !== false ? 'checked' : ''} onchange="updateHnChannelField('naver', 'enabled', this.checked)" />
-              🟩 네이버 표시
+              🟩 네이버플레이스
             </label>
-            <input type="text" value="${escHtml(nv.label || '네이버')}" placeholder="버튼명" oninput="updateHnChannelField('naver', 'label', this.value)" />
-            <input type="text" value="${escHtml(nv.url || '')}" placeholder="https://blog.naver.com/wei0508" oninput="updateHnChannelField('naver', 'url', this.value)" />
+            <input type="text" value="${escHtml(nv.label || '네이버플레이스')}" placeholder="버튼명" oninput="updateHnChannelField('naver', 'label', this.value)" />
+            <input type="text" value="${escHtml(nv.url || '')}" placeholder="https://naver.me/5U1ELn8L" oninput="updateHnChannelField('naver', 'url', this.value)" />
+          </div>
+
+          <div style="padding:12px 14px; border-radius:10px; background:#f4f4f5; border:1px solid #e4e4e7; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">
+            <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:#18181b; cursor:pointer;">
+              <input type="checkbox" ${th.enabled !== false ? 'checked' : ''} onchange="updateHnChannelField('threads', 'enabled', this.checked)" />
+              🧵 스레드 표시
+            </label>
+            <input type="text" value="${escHtml(th.label || '스레드')}" placeholder="버튼명" oninput="updateHnChannelField('threads', 'label', this.value)" />
+            <input type="text" value="${escHtml(th.url || '')}" placeholder="https://www.threads.net/@bareun_oriental" oninput="updateHnChannelField('threads', 'url', this.value)" />
+          </div>
+
+          <div style="padding:12px 14px; border-radius:10px; background:#fdf2f8; border:1px solid #fbcfe8; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">
+            <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; color:#9d174d; cursor:pointer;">
+              <input type="checkbox" ${ig.enabled !== false ? 'checked' : ''} onchange="updateHnChannelField('instagram', 'enabled', this.checked)" />
+              📸 인스타그램 표시
+            </label>
+            <input type="text" value="${escHtml(ig.label || '인스타그램')}" placeholder="버튼명" oninput="updateHnChannelField('instagram', 'label', this.value)" />
+            <input type="text" value="${escHtml(ig.url || '')}" placeholder="https://www.instagram.com/bareun_oriental/" oninput="updateHnChannelField('instagram', 'url', this.value)" />
           </div>
 
           <div style="padding:12px 14px; border-radius:10px; background:#fefce8; border:1px solid #fde047; display:grid; grid-template-columns:130px 160px 1fr; gap:10px; align-items:center;">

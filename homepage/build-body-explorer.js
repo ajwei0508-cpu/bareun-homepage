@@ -110,7 +110,9 @@ const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
       channelBarLabel: '더 많은 건강 이야기 · 편하게 물어보기',
       channels: {
         youtube: { enabled: true, label: '유튜브', url: 'https://www.youtube.com/@bareunhaniwon' },
-        naver: { enabled: true, label: '네이버', url: 'https://blog.naver.com/wei0508' },
+        naver: { enabled: true, label: '네이버플레이스', url: 'https://naver.me/5U1ELn8L' },
+        threads: { enabled: true, label: '스레드', url: 'https://www.threads.net/@bareun_oriental' },
+        instagram: { enabled: true, label: '인스타그램', url: 'https://www.instagram.com/bareun_oriental/' },
         kakao: { enabled: true, label: '카카오톡', url: 'https://pf.kakao.com/_ykxcLK' }
       }
     };
@@ -1475,6 +1477,8 @@ function buildBodyExplorerHtml() {
     }
     .ch-yt .ch-sym { background: #FF0000; color: #FFFFFF; }
     .ch-nv .ch-sym { background: #03C75A; color: #FFFFFF; font-weight: 900; font-size: 0.74rem; font-family: Arial, sans-serif; }
+    .ch-th .ch-sym { background: #000000; color: #FFFFFF; }
+    .ch-ig .ch-sym { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: #FFFFFF; }
     .ch-kk .ch-sym { background: #FEE500; color: #3C1E1E; }
     @media (max-width: 640px) {
       .detail-expand-bar { margin: 0 12px 12px; padding: 10px 12px; }
@@ -3000,7 +3004,9 @@ function buildBodyExplorerHtml() {
 
       const chCfg = (gCfg && gCfg.channels) || {};
       const yt = chCfg.youtube || { enabled: true, label: '유튜브', url: 'https://www.youtube.com/@bareunhaniwon' };
-      const nv = chCfg.naver || { enabled: true, label: '네이버', url: 'https://blog.naver.com/wei0508' };
+      const nv = chCfg.naver || { enabled: true, label: '네이버플레이스', url: 'https://naver.me/5U1ELn8L' };
+      const th = chCfg.threads || { enabled: true, label: '스레드', url: 'https://www.threads.net/@bareun_oriental' };
+      const ig = chCfg.instagram || { enabled: true, label: '인스타그램', url: 'https://www.instagram.com/bareun_oriental/' };
       const kk = chCfg.kakao || { enabled: true, label: '카카오톡', url: 'https://pf.kakao.com/_ykxcLK' };
       const chBtns = [];
       if (yt.enabled !== false && yt.url) {
@@ -3013,9 +3019,25 @@ function buildBodyExplorerHtml() {
       }
       if (nv.enabled !== false && nv.url) {
         chBtns.push(
-          '<a class="ch-icon-btn ch-nv" href="' + escHtml(nv.url) + '" target="_blank" rel="noopener noreferrer" aria-label="네이버 블로그 바로가기">' +
+          '<a class="ch-icon-btn ch-nv" href="' + escHtml(nv.url) + '" target="_blank" rel="noopener noreferrer" aria-label="네이버플레이스 지도·예약 바로가기">' +
             '<span class="ch-sym">N</span>' +
-            '<span>' + escHtml(nv.label || '네이버') + '</span>' +
+            '<span>' + escHtml(nv.label || '네이버플레이스') + '</span>' +
+          '</a>'
+        );
+      }
+      if (th.enabled !== false && th.url) {
+        chBtns.push(
+          '<a class="ch-icon-btn ch-th" href="' + escHtml(th.url) + '" target="_blank" rel="noopener noreferrer" aria-label="스레드 바로가기">' +
+            '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 192 192" fill="currentColor"><path d="M141.537 88.9883C140.71 88.5919 139.87 88.2104 139.019 87.8451C137.537 60.5382 122.616 44.905 97.4619 44.745C97.1824 44.7432 96.9018 44.7432 96.6213 44.745C75.2514 44.8824 59.9882 56.4026 54.0664 76.8407C50.6095 88.7712 51.5235 106.012 61.2721 117.847C69.0494 127.287 80.4912 132.846 93.3082 133.409C106.286 133.978 118.064 129.564 125.753 121.144C133.447 112.718 136.634 100.835 135.297 87.7126C134.792 82.756 133.468 78.0108 131.397 73.6158L121.758 78.1633C123.111 81.0347 123.979 84.1441 124.316 87.4398C125.323 97.3239 122.868 106.262 117.389 112.259C111.968 118.192 103.541 121.353 93.6845 120.92C83.8967 120.491 74.9684 116.275 69.0147 109.055C61.854 100.373 61.0844 87.0398 63.8447 77.4996C68.3971 61.7699 80.2016 52.8804 96.6433 52.7753C116.143 52.899 127.604 65.5786 128.796 87.9712C122.426 85.8078 115.398 84.6644 107.975 84.6644C81.8213 84.6644 67.2419 98.7183 67.2419 117.75C67.2419 133.003 78.4357 143.916 93.8166 143.916C108.971 143.916 120.598 136.142 126.963 123.82C130.697 131.547 136.962 137.697 144.975 141.488L149.917 131.905C141.678 127.994 135.539 120.315 133.434 110.021C137.491 103.526 140.407 96.2238 141.537 88.9883ZM93.8166 135.916C82.8809 135.916 75.2419 127.978 75.2419 117.75C75.2419 103.473 85.7483 92.6644 107.975 92.6644C113.681 92.6644 119.068 93.5358 124.035 95.1437C121.733 118.232 110.428 135.916 93.8166 135.916Z"/></svg></span>' +
+            '<span>' + escHtml(th.label || '스레드') + '</span>' +
+          '</a>'
+        );
+      }
+      if (ig.enabled !== false && ig.url) {
+        chBtns.push(
+          '<a class="ch-icon-btn ch-ig" href="' + escHtml(ig.url) + '" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 바로가기">' +
+            '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span>' +
+            '<span>' + escHtml(ig.label || '인스타그램') + '</span>' +
           '</a>'
         );
       }
