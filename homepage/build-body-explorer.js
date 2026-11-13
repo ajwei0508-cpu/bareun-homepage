@@ -2800,14 +2800,7 @@ function buildBodyExplorerHtml() {
         (Array.isArray(note.deepSignals) && note.deepSignals.some(s => String(s || '').trim()))
       );
       const isExpanded = Boolean(note && note.id && expandedDetailNoteIds[note.id]);
-      const gCfg = HEALTH_NOTE_GLOBAL_CFG || {};
-      const detailBtnBase = String(gCfg.detailBtnLabel || '상세히').trim() || '상세히';
-      const detailToggleBtnHtml = hasDeepContent
-        ? '<button type="button" class="detail-toggle-pill' + (isExpanded ? ' is-open' : '') + '" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')">' +
-            '<span>🔍 ' + escHtml(isExpanded ? (detailBtnBase + ' 닫기 ▲') : (detailBtnBase + ' ▼')) + '</span>' +
-          '</button>'
-        : '';
-      const headerRightActionsHtml = '<div class="hip-header-actions">' + detailToggleBtnHtml + closeBtnHtml + '</div>';
+      const headerRightActionsHtml = '<div class="hip-header-actions">' + closeBtnHtml + '</div>';
 
       let headerInnerHtml = '';
       if (hdrMode === 'stacked') {
