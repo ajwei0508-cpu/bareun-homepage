@@ -695,11 +695,18 @@ const server = http.createServer((req, res) => {
         const cfg = JSON.parse(fs.readFileSync(targetRead, 'utf8'));
         const healthNotesConfig = readHealthNotesCfg();
         const media = listLocalMedia();
+        let clinicGlobalInfo = null;
+        const cgiPath = path.join(__dirname, 'clinic-global-info.json');
+        const cgiDefPath = path.join(__dirname, 'clinic-global-info.default.json');
+        const cgiSrc = fs.existsSync(cgiPath) ? cgiPath : cgiDefPath;
+        if (fs.existsSync(cgiSrc)) {
+          try { clinicGlobalInfo = JSON.parse(fs.readFileSync(cgiSrc, 'utf8')); } catch (e) {}
+        }
         res.writeHead(200, {
           'Content-Type': 'application/json; charset=UTF-8',
           'Cache-Control': 'no-store, no-cache, must-revalidate'
         });
-        res.end(JSON.stringify({ ok: true, config: cfg, healthNotesConfig, ...media }));
+        res.end(JSON.stringify({ ok: true, config: cfg, healthNotesConfig, clinicGlobalInfo, ...media }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
         res.end(JSON.stringify({ ok: false, error: err.message }));
@@ -1406,6 +1413,180 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     }
   }
 
+  // Studio Clinic Global Info & Location / Non-Covered Fees Editor API
+  if (reqPath === '/api/clinic-global-info') {
+    const cgiPath = path.join(__dirname, 'clinic-global-info.json');
+    const cgiDefPath = path.join(__dirname, 'clinic-global-info.default.json');
+    if (req.method === 'GET') {
+      try {
+        const src = fs.existsSync(cgiPath) ? cgiPath : cgiDefPath;
+        const info = JSON.parse(fs.readFileSync(src, 'utf8'));
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8', 'Cache-Control': 'no-store' });
+        res.end(JSON.stringify({ ok: true, info }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+      return;
+    }
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', c => { body += c.toString(); });
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(body || '{}');
+          const action = payload.action || 'save_build';
+          if (action === 'reset_default' && fs.existsSync(cgiDefPath)) {
+            fs.copyFileSync(cgiDefPath, cgiPath);
+          } else {
+            const info = payload.info || payload;
+            if (!info || !info.clinicName) throw new Error('병원 상호명(clinicName) 데이터가 필요합니다.');
+            info.updatedAt = new Date().toISOString();
+            fs.writeFileSync(cgiPath, JSON.stringify(info, null, 2) + '\n', 'utf8');
+          }
+          execFileSync(process.execPath, [path.join(__dirname, 'build-location-page.js')], { cwd: __dirname, timeout: 20000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'sync-compiler-embeds.js')], { cwd: __dirname, timeout: 20000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 30000 });
+          const savedInfo = JSON.parse(fs.readFileSync(cgiPath, 'utf8'));
+
+          if (action === 'deploy_cafe24') {
+            execFile(
+              process.execPath,
+              [path.join(__dirname, 'deploy-detail-page-fast.js'), 'location'],
+              { cwd: __dirname, timeout: 95000 },
+              (depErr, stdout, stderr) => {
+                if (depErr) {
+                  res.writeHead(500, { 'Content-Type': 'application/json; charset=UTF-8' });
+                  res.end(JSON.stringify({
+                    ok: false,
+                    builtLocally: true,
+                    error: '로컬 오시는길 제작은 완료되었으나 실서버 배포 중 오류 발생: ' + (stderr || depErr.message)
+                  }));
+                  return;
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+                res.end(JSON.stringify({
+                  ok: true,
+                  deployed: true,
+                  info: savedInfo,
+                  liveUrl: 'https://www.bareunhaniwon.com/location/',
+                  localUrl: 'http://localhost:3000/location.html',
+                  message: '병원 기본정보 · 인사말 · 진료시간 · 비급여 수가표가 로컬 및 카페24 실서버(/location/)에 즉시 반영되었습니다!'
+                }));
+              }
+            );
+            return;
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({
+            ok: true,
+            deployed: false,
+            info: savedInfo,
+            localUrl: 'http://localhost:3000/location.html',
+            message: '병원 기본정보 · 오시는길 · 비급여 수가표 로컬 반영 및 번들 제작이 완료되었습니다!'
+          }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+      });
+      return;
+    }
+  }
+
+  // Studio Real-Time Medical Law Art. 56 Compliant AI Copy Polisher API
+  if (reqPath === '/api/studio-ai-legal-copy' && req.method === 'POST') {
+    let body = '';
+    req.on('data', c => { body += c.toString(); });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const origTitle = String(payload.title || '').trim();
+        const origSub = String(payload.sub || '').trim();
+        const rules = [
+          ['100% 완치', '근본적인 회복 관리'],
+          ['완치 보장', '세심한 회복 치료'],
+          ['완치', '호전 및 회복'],
+          ['무조건', '체계적으로'],
+          ['절대 안', '쉽게 재발하지 않도록'],
+          ['절대', '면밀히'],
+          ['최고의', '정성을 다하는'],
+          ['최고', '수준 높은'],
+          ['최초의', '특화된'],
+          ['최초', '선도적인'],
+          ['유일한', '차별화된'],
+          ['유일', '맞춤형'],
+          ['부작용 없는', '신체 부담을 낮춘'],
+          ['부작용 0%', '안전성을 고려한'],
+          ['100%', '체계적인'],
+          ['기적의', '밀도 높은'],
+          ['기적', '긍정적 변화'],
+          ['특효', '맞춤 처방'],
+          ['보장합니다', '도와드립니다'],
+          ['보장', '기대할 수 있는 관리']
+        ];
+        const detected = [];
+        let safeTitle = origTitle;
+        let safeSub = origSub;
+        for (const [bad, good] of rules) {
+          if (origTitle.includes(bad) || origSub.includes(bad)) detected.push(bad);
+          safeTitle = safeTitle.split(bad).join(good);
+          safeSub = safeSub.split(bad).join(good);
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({
+          ok: true,
+          detected,
+          title: safeTitle,
+          sub: safeSub
+        }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // Studio Unlimited Custom Disease Page Deletion API
+  if (reqPath === '/api/delete-custom-page' && req.method === 'POST') {
+    let body = '';
+    req.on('data', c => { body += c.toString(); });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const slug = String(payload.slug || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+        const protectedSlugs = new Set([
+          'home', 'index', 'story-3d', 'director', 'chuna', 'growth', 'diet-zero',
+          'hairloss', 'hairloss-male', 'hairloss-alopecia', 'hairloss-female', 'hairloss-seborrheic',
+          'gongjindan', 'prostate', 'body-explorer', 'location'
+        ]);
+        if (!slug || protectedSlugs.has(slug)) {
+          throw new Error('기본 핵심 페이지는 삭제할 수 없으며, 직접 추가 생성한 커스텀 질환 페이지만 삭제 가능합니다.');
+        }
+        const detailCfgPath = path.join(__dirname, 'detail-pages-config.json');
+        if (payload.config && Array.isArray(payload.config.pages)) {
+          fs.writeFileSync(detailCfgPath, JSON.stringify(payload.config, null, 2) + '\n', 'utf8');
+        } else if (fs.existsSync(detailCfgPath)) {
+          const cur = JSON.parse(fs.readFileSync(detailCfgPath, 'utf8'));
+          cur.pages = (cur.pages || []).filter(p => p.slug !== slug && p.file !== `${slug}.html`);
+          fs.writeFileSync(detailCfgPath, JSON.stringify(cur, null, 2) + '\n', 'utf8');
+        }
+        for (const f of [`${slug}.html`, `wordpress-${slug}.html`]) {
+          const fp = path.join(__dirname, f);
+          if (fs.existsSync(fp)) fs.unlinkSync(fp);
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: true, slug, message: `커스텀 페이지 [${slug}] 로컬 파일 및 설정이 삭제되었습니다.` }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
   // Standalone 7-Stage Health Note Canonical Route (/health-note-{id}/)
   const hnRouteMatch = reqPath.match(/^\/health-note-([a-z0-9-]+)\/?$/i);
   if (hnRouteMatch && req.method === 'GET') {
@@ -1417,6 +1598,15 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
       });
       res.end(renderedHtml);
       return;
+    }
+  }
+
+  // Clean Slug Route Support (/location/, /director/, /custom-slug/ -> <slug>.html)
+  const cleanSlugMatch = reqPath.match(/^\/([a-z0-9-]+)\/?$/i);
+  if (cleanSlugMatch && req.method === 'GET') {
+    const candidateHtml = path.join(__dirname, `${cleanSlugMatch[1].toLowerCase()}.html`);
+    if (fs.existsSync(candidateHtml)) {
+      reqPath = `/${cleanSlugMatch[1].toLowerCase()}.html`;
     }
   }
 

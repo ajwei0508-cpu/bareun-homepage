@@ -200,7 +200,15 @@ function stripOuterDocumentForWP(fullHtml) {
 
 function rewriteAssetsForWP(html, label) {
   const assetPrefix = '(?:brochure\\/|webp\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|diet-|diet_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|hairloss-|hairloss_|empathy-|empathy_|efficacy-|studio_|im_|custom_)';
-  const pageSlugUnion = '(ask-doctor|body-explorer|director|chuna|growth|diet-zero|hairloss|hairloss-male|hairloss-alopecia|hairloss-female|hairloss-seborrheic|gongjindan|prostate|lifting-compare)';
+  const extraSlugs = [];
+  try {
+    const dCfg = JSON.parse(fs.readFileSync(path.join(dir, 'detail-pages-config.json'), 'utf8'));
+    (dCfg.pages || []).forEach(p => {
+      if (p && p.slug && /^[a-z0-9-]+$/.test(p.slug) && p.slug !== 'home') extraSlugs.push(p.slug);
+    });
+  } catch (e) {}
+  const baseSlugs = ['ask-doctor','body-explorer','director','chuna','growth','diet-zero','hairloss','hairloss-male','hairloss-alopecia','hairloss-female','hairloss-seborrheic','gongjindan','prostate','lifting-compare','location'];
+  const pageSlugUnion = '(' + Array.from(new Set(baseSlugs.concat(extraSlugs))).join('|') + ')';
 
   let out = html
     // Inline local JS configs first so zero external raw.githubusercontent.com JS requests happen
@@ -278,8 +286,24 @@ const ALL_BUNDLES = [
   ['gongjindan.html', 'wordpress-gongjindan.html', 'gongjindan'],
   ['prostate.html', 'wordpress-prostate.html', 'prostate'],
   ['body-explorer.html', 'wordpress-body-explorer.html', 'body-explorer'],
-  ['lifting-compare.html', 'wordpress-lifting-compare.html', 'lifting-compare']
+  ['lifting-compare.html', 'wordpress-lifting-compare.html', 'lifting-compare'],
+  ['location.html', 'wordpress-location.html', 'location']
 ];
+
+try {
+  const dynCfgPath = path.join(dir, 'detail-pages-config.json');
+  if (fs.existsSync(dynCfgPath)) {
+    const dynCfg = JSON.parse(fs.readFileSync(dynCfgPath, 'utf8'));
+    const existingSrc = new Set(ALL_BUNDLES.map(b => b[0]));
+    (dynCfg.pages || []).forEach(p => {
+      if (p && p.file && !existingSrc.has(p.file) && p.slug && p.slug !== 'home') {
+        const outWp = p.wpFile || ('wordpress-' + p.slug + '.html');
+        ALL_BUNDLES.push([p.file, outWp, p.slug]);
+        existingSrc.add(p.file);
+      }
+    });
+  }
+} catch (e) {}
 
 for (const [srcFile, outFile, seoKey] of ALL_BUNDLES) {
   const fullSrc = path.join(dir, srcFile);

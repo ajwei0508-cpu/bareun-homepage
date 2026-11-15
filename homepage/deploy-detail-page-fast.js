@@ -35,8 +35,30 @@ const WP_DETAIL_PAGES = [
   { id: 411, slug: 'hairloss-seborrheic', file: 'hairloss-seborrheic.html', wpFile: 'wordpress-hairloss-seborrheic.html', title: '바른 지루성두피염 · 열독해독', excerpt: '반복되는 두피 홍반, 모낭염, 가려움과 각질을 청열해독 케어로 진정시키고 건강한 진피 장벽을 복원합니다.' },
   { id: 96, slug: 'gongjindan', file: 'gongjindan.html', wpFile: 'wordpress-gongjindan.html', title: '바른 황제공진단', excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
   { id: 133, slug: 'prostate', file: 'prostate.html', wpFile: 'wordpress-prostate.html', title: '바른 전립선 · 남성활력', excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' },
-  { id: 125, slug: 'body-explorer', file: 'body-explorer.html', wpFile: 'wordpress-body-explorer.html', title: '3D 인체모형 · 바른한의원 진료 살펴보기', excerpt: '바른한의원 대전본점 풀스크린 3D 인체모형 포털 및 부위별 오늘의 건강 글 · 심층 생리 원리 아카이브입니다.' }
+  { id: 125, slug: 'body-explorer', file: 'body-explorer.html', wpFile: 'wordpress-body-explorer.html', title: '3D 인체모형 · 바른한의원 진료 살펴보기', excerpt: '바른한의원 대전본점 풀스크린 3D 인체모형 포털 및 부위별 오늘의 건강 글 · 심층 생리 원리 아카이브입니다.' },
+  { id: 0, slug: 'location', file: 'location.html', wpFile: 'wordpress-location.html', title: '오시는길 · 진료시간 · 비급여 안내', excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 자동 길안내, 진료시간 및 비급여 안내표입니다.' }
 ];
+
+try {
+  const dynCfgPath = path.join(__dirname, 'detail-pages-config.json');
+  if (fs.existsSync(dynCfgPath)) {
+    const dynCfg = JSON.parse(fs.readFileSync(dynCfgPath, 'utf8'));
+    const known = new Set(WP_DETAIL_PAGES.map(x => x.slug));
+    (dynCfg.pages || []).forEach(p => {
+      if (p && p.slug && !known.has(p.slug)) {
+        WP_DETAIL_PAGES.push({
+          id: p.wpId || 0,
+          slug: p.slug,
+          file: p.file || (p.slug + '.html'),
+          wpFile: p.wpFile || ('wordpress-' + p.slug + '.html'),
+          title: (p.meta && p.meta.title) || String(p.label || p.slug).replace(/^[^\w가-힣]+/, '').trim(),
+          excerpt: (p.meta && Array.isArray(p.meta.desc) ? p.meta.desc.join(' ') : '') || '바른한의원 대전본점 맞춤 한방 치료 클리닉입니다.'
+        });
+        known.add(p.slug);
+      }
+    });
+  }
+} catch (e) {}
 
 function resolveTargets(argv) {
   const deployAll = argv.includes('--all');
@@ -182,7 +204,24 @@ function getMimeType(fileName) {
       }
 
       const blockContent = '<!-- wp:html -->\n' + rawHtml + '\n<!-- /wp:html -->';
-      const res = await page.evaluate(async ({ wpNonce, target, content, refInfo }) => {
+      const res = await page.evaluate(async ({ wpNonce, target, content, refInfo, clinicInfoObj }) => {
+        if (clinicInfoObj && target.slug === 'location') {
+          await fetch('/wp-json/bareun/v1/clinic-info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
+            body: JSON.stringify({ info: clinicInfoObj })
+          }).catch(() => {});
+        }
+        let targetId = Number(target.id) || 0;
+        if (!targetId) {
+          const lookRes = await fetch('/wp-json/wp/v2/pages?slug=' + encodeURIComponent(target.slug) + '&status=any', {
+            headers: { 'X-WP-Nonce': wpNonce }
+          });
+          const lookArr = await lookRes.json();
+          if (Array.isArray(lookArr) && lookArr[0] && lookArr[0].id) {
+            targetId = lookArr[0].id;
+          }
+        }
         const bodyObj = {
           title: target.title,
           slug: target.slug,
@@ -196,21 +235,30 @@ function getMimeType(fileName) {
         if (refInfo.meta) {
           bodyObj.meta = refInfo.meta;
         }
-        const r = await fetch(`/wp-json/wp/v2/pages/${target.id}`, {
+        const endpoint = targetId ? `/wp-json/wp/v2/pages/${targetId}` : '/wp-json/wp/v2/pages';
+        const r = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
           body: JSON.stringify(bodyObj)
         });
         const j = await r.json();
         return {
-          ok: r.status === 200,
+          ok: r.status === 200 || r.status === 201,
           status: r.status,
           slug: target.slug,
-          id: j.id || target.id,
+          id: j.id || targetId,
           link: j.link || (target.slug === 'home' ? 'https://www.bareunhaniwon.com/' : `https://www.bareunhaniwon.com/${target.slug}/`),
           err: j.message || null
         };
-      }, { wpNonce: nonce, target, content: blockContent, refInfo });
+      }, {
+        wpNonce: nonce,
+        target,
+        content: blockContent,
+        refInfo,
+        clinicInfoObj: (target.slug === 'location' && fs.existsSync(path.join(__dirname, 'clinic-global-info.json')))
+          ? JSON.parse(fs.readFileSync(path.join(__dirname, 'clinic-global-info.json'), 'utf8'))
+          : null
+      });
 
       if (!res.ok) {
         throw new Error(`[${target.slug}] WP REST status ${res.status}: ${res.err || 'Unknown error'}`);

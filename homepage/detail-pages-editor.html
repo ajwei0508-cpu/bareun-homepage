@@ -1269,6 +1269,9 @@
         <button type="button" class="editor-tab-btn" data-tab="leftpanel" onclick="switchEditorTab('leftpanel')">
           <span id="tabLeftPanelLabelText">📋 좌측 안내 패널 · 체크리스트</span>
         </button>
+        <button type="button" class="editor-tab-btn" data-tab="clinicinfo" onclick="switchEditorTab('clinicinfo')" style="background:rgba(45,90,67,0.08);border-color:rgba(45,90,67,0.35);color:#2D5A43;">
+          🏥 병원정보 · 오시는길 · 비급여
+        </button>
       </div>
 
       <!-- TAB 1: Story Cards Editor -->
@@ -1349,6 +1352,11 @@
       <!-- TAB 4: ImageMaker Situational Image Creator (상황별 이미지 추가 제작) -->
       <div id="pane-imagemaker" class="tab-pane">
         <div class="panel-box" id="imageMakerEditorBox"></div>
+      </div>
+
+      <!-- TAB 5: Clinic Global Info, Greeting, Auto-Nav Location & Non-Covered Fees -->
+      <div id="pane-clinicinfo" class="tab-pane">
+        <div class="panel-box" id="clinicInfoEditorBox"></div>
       </div>
     </section>
 
@@ -1728,6 +1736,18 @@
           throw new Error(data.error || '설정 로드 실패');
         }
         masterConfig = data.config;
+        if (data.clinicGlobalInfo && data.clinicGlobalInfo.clinicName) {
+          window.studioClinicGlobalInfo = data.clinicGlobalInfo;
+        } else {
+          try {
+            const ciUrl = IS_WORDPRESS ? ('/wp-json/bareun/v1/clinic-info?t=' + Date.now()) : ('/api/clinic-global-info?t=' + Date.now());
+            const ciRes = await fetch(ciUrl, { headers });
+            if (ciRes.ok) {
+              const ciJson = await ciRes.json();
+              if (ciJson && ciJson.info) window.studioClinicGlobalInfo = ciJson.info;
+            }
+          } catch (e) {}
+        }
         if (data.healthNotesConfig && Array.isArray(data.healthNotesConfig.notes)) {
           healthNotesConfig = data.healthNotesConfig;
         } else {
@@ -1803,6 +1823,7 @@
       });
       if (tabKey === 'style') updateStyleMockup();
       if (tabKey === 'imagemaker') renderImageMakerPane();
+      if (tabKey === 'clinicinfo') renderClinicInfoPane();
     }
 
     function renderAll() {
@@ -1855,6 +1876,7 @@
       renderStylePane();
       renderLeftPanelPane();
       renderImageMakerPane();
+      renderClinicInfoPane();
     }
 
     function renderPageSwitcher() {
@@ -1878,7 +1900,11 @@
             <span class="cnt">${activeCount}장</span>
           </button>
         `;
-      }).join('');
+      }).join('') + `
+        <button type="button" class="page-pill" style="border:1.5px dashed #2D5A43;color:#2D5A43;background:rgba(45,90,67,0.06);font-weight:900;" onclick="openCreateCustomPagePrompt()">
+          <span>➕ 새 질환 페이지 추가</span>
+        </button>
+      `;
     }
 
     function getCardPreviewRawPath(card) {
@@ -2100,8 +2126,13 @@
             <!-- Body Copy -->
             <div class="field">
               <label>하단 본문 설명 (P · 핵심 치료 설명 문구)</label>
-              <textarea rows="2" placeholder="하단 에디토리얼 영역에 들어갈 상세 설명 문구를 입력하세요."
+              <textarea rows="2" id="card-sub-input-${idx}" placeholder="하단 에디토리얼 영역에 들어갈 상세 설명 문구를 입력하세요."
                 oninput="updateCardField(${idx}, 'sub', this.value, false)">${escHtml(card.sub || '')}</textarea>
+            </div>
+
+            <!-- Real-Time Medical Law Art. 56 Filter + AI Legal Polish (05번) -->
+            <div id="medlaw-status-${idx}" style="margin:6px 0 12px;">
+              ${renderMedicalLawBarHtml(idx, card.title || '', card.sub || '')}
             </div>
 
             <!-- Type-Specific Media Controls -->
@@ -2826,10 +2857,15 @@
       const extraLink = meta.extraLink || { text: '', href: '' };
       const descText = Array.isArray(meta.desc) ? meta.desc.join('\n') : String(meta.desc || '');
       const checkItems = Array.isArray(meta.checklistItems) ? meta.checklistItems : [];
+      const showDirProf = (page.slug === 'director' || page.file === 'director.html' || (meta.directorProfile && meta.directorProfile.enabled !== false));
+      const dirProf = showDirProf ? ensureDirectorProfile(meta) : null;
       box.innerHTML = `
         <div class="panel-head">
           <h2>📋 [${escHtml(page.label)}] 좌측 고정 안내 패널 &amp; 자가진단 체크리스트</h2>
-          <span class="tag-pill">${escHtml(page.file)}</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="tag-pill">${escHtml(page.file)}</span>
+            ${page.isCustomPage ? `<button type="button" class="mini-btn danger" onclick="deleteCurrentCustomPage()">🗑️ 이 커스텀 질환 페이지 삭제</button>` : ''}
+          </div>
         </div>
 
         <div class="grid-2">
@@ -2852,6 +2888,29 @@
           <label>핵심 진료 철학 소개문 (줄바꿈으로 문단 구분)</label>
           <textarea rows="3" oninput="updateMetaDesc(this.value)">${escHtml(descText)}</textarea>
         </div>
+
+        ${dirProf ? `
+        <div style="margin:16px 0;padding:14px 16px;border-radius:14px;background:rgba(197,160,89,0.09);border:1px solid rgba(197,160,89,0.38);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <strong style="font-size:13.5px;color:#5E4736;">👨‍⚕️ 대표원장 공식 프로필 섹션 (약력 · 학술활동 · 진료철학)</strong>
+            <span class="tag-pill" style="background:#FEF3C7;color:#92400E;">14번 정식 프로필</span>
+          </div>
+          <div class="field">
+            <label>진료철학 한 줄 선언문 (philosophyQuote)</label>
+            <input type="text" value="${escHtml(dirProf.philosophyQuote || '')}" oninput="updateDirectorProfileField('philosophyQuote', this.value)" />
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label>주요 약력 목록 (한 줄에 1개씩 입력)</label>
+              <textarea rows="4" oninput="updateDirectorProfileLines('careerItems', this.value)">${escHtml((dirProf.careerItems || []).join('\n'))}</textarea>
+            </div>
+            <div class="field">
+              <label>학술 · 임상 연구 활동 (한 줄에 1개씩 입력)</label>
+              <textarea rows="4" oninput="updateDirectorProfileLines('academicItems', this.value)">${escHtml((dirProf.academicItems || []).join('\n'))}</textarea>
+            </div>
+          </div>
+        </div>
+        ` : ''}
 
         <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
@@ -2990,7 +3049,9 @@
         const titleSpan = itemEl.querySelector('.card-head-title');
         if (titleSpan) titleSpan.textContent = val || '(제목 없음)';
       }
+      refreshMedicalLawBarDom(idx);
       markDirty(true);
+      scheduleLivePreviewReload();
     }
 
     function wrapSelectedWithGoldQuote(idx) {
@@ -3095,6 +3156,9 @@
     function updateCardField(idx, key, val, rerenderRow) {
       const page = getCurrentPage();
       page.plates[idx][key] = val;
+      if (key === 'sub' || key === 'title') {
+        refreshMedicalLawBarDom(idx);
+      }
       markDirty(true);
       if (rerenderRow) {
         renderPageSwitcher();
@@ -6638,6 +6702,556 @@
           </div>
         </div>
       `;
+    }
+
+    /* =========================================================================
+       ⚖️ 05번 실시간 의료법 금지어 필터링 & 합법 AI 문구 자동 다듬기
+       ➕ 01번 새 질환 페이지 무제한 셀프 생성 / 삭제
+       👨‍⚕️ 14번 대표원장 공식 프로필 편집
+       🏥 15·18·19번 병원 기본정보 · 환영 인사말 · 오시는길 · 진료시간 · 비급여 셀프 스튜디오
+       ========================================================================= */
+    const MED_LAW_RESTRICTED_TERMS = [
+      '100%', '완치', '무조건', '최고', '최초', '유일', '부작용 없는', '부작용 0%', '절대', '특효', '기적', '보장'
+    ];
+
+    function scanMedicalLawViolations(titleText, subText) {
+      const merged = String(titleText || '') + ' ' + String(subText || '');
+      return MED_LAW_RESTRICTED_TERMS.filter(term => merged.includes(term));
+    }
+
+    function renderMedicalLawBarHtml(idx, titleText, subText) {
+      const hits = scanMedicalLawViolations(titleText, subText);
+      const hasWarn = hits.length > 0;
+      const bg = hasWarn ? '#FFFBEB' : '#ECFDF5';
+      const bd = hasWarn ? '#F59E0B' : '#A7F3D0';
+      const fg = hasWarn ? '#92400E' : '#065F46';
+      return `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 12px;border-radius:10px;background:${bg};border:1px solid ${bd};color:${fg};font-size:12px;">
+          <div style="font-weight:800;">
+            ${hasWarn
+              ? `⚠️ 의료법 제56조 주의 표현 감지 (${hits.map(h => `'${escHtml(h)}'`).join(', ')}) — 우측 버튼으로 안전하게 다듬어 보세요`
+              : `✅ 의료법 제56조 심의 기준 양호 (과장·단정 금지어 0건)`}
+          </div>
+          <button type="button" class="mini-btn gold-helper" onclick="polishCardWithAiLegal(${idx})">
+            ✨ 합법 AI 문구 자동 다듬기
+          </button>
+        </div>
+      `;
+    }
+
+    function refreshMedicalLawBarDom(idx) {
+      const page = getCurrentPage();
+      if (!page || !page.plates || !page.plates[idx]) return;
+      const box = document.getElementById('medlaw-status-' + idx);
+      if (!box) return;
+      const c = page.plates[idx];
+      box.innerHTML = renderMedicalLawBarHtml(idx, c.title || '', c.sub || '');
+    }
+
+    async function polishCardWithAiLegal(idx) {
+      const page = getCurrentPage();
+      if (!page || !page.plates || !page.plates[idx]) return;
+      const card = page.plates[idx];
+      showStatus('working', `✨ [CARD ${String(idx + 1).padStart(2, '0')}] 의료법 제56조 준수 및 환자 공감형 AI 문구로 다듬고 있습니다...`);
+      try {
+        const apiUrl = IS_WORDPRESS ? '/wp-json/bareun/v1/studio/ai-legal-copy' : '/api/studio-ai-legal-copy';
+        const headers = { 'Content-Type': 'application/json' };
+        if (IS_WORDPRESS && window.wpApiSettings && window.wpApiSettings.nonce) {
+          headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+        }
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            clinicTitle: (page.meta && page.meta.title) || page.label || '바른한의원 대전본점',
+            title: card.title || '',
+            sub: card.sub || ''
+          })
+        });
+        const data = await res.json();
+        if (!data || !data.ok) throw new Error((data && data.error) || 'AI 문구 다듬기 실패');
+        if (data.title) card.title = data.title;
+        if (data.sub != null) card.sub = data.sub;
+        markDirty(true);
+        renderStoryCardsPane();
+        scheduleLivePreviewReload();
+        showStatus('ok', `✅ 의료법 준수 공감 카피 적용 완료! (${data.engine || 'legal-ai'})`);
+      } catch (err) {
+        showStatus('err', '합법 AI 문구 다듬기 오류: ' + err.message);
+      }
+    }
+
+    function ensureDirectorProfile(meta) {
+      if (!meta.directorProfile || typeof meta.directorProfile !== 'object') {
+        meta.directorProfile = {
+          enabled: true,
+          badge: 'OFFICIAL PROFILE · 대표원장 약력 · 학술활동 · 진료철학',
+          philosophyQuote: '내 아내와 아이에게 직접 처방·시술할 수 있는 정직하고 안전한 치료만을 고집합니다.',
+          careerTitle: '주요 약력 및 진료 경력',
+          careerItems: [
+            '바른한의원 대전본점 대표원장 (한의사 면허 · 15년 이상 임상)',
+            '眞(진)장부맥학 · 사상체질의학 통합 진단 시스템 창안 및 전담 진료',
+            '초음파 · 적외선 체열 · 자율신경(HRV) · 성장판 9대 정밀검진 클리닉 운영',
+            '보건복지부 추나요법 급여 인증 한의사 · 식약처 인증 원내 안심 탕전 책임 원장'
+          ],
+          academicTitle: '학술 및 임상 연구 활동',
+          academicItems: [
+            '대한한의학회 · 사상체질의학회 · 척추신경추나의학회 정회원',
+            'SCI급 국제학술지(JAMA · The Lancet · Nature Medicine 등) 통합생리학 임상 근거 검수',
+            '한약 복용 전·후 간·신장 생화학 안전성(AST/ALT) 추적 관찰 임상 프로토콜 운영'
+          ]
+        };
+      }
+      return meta.directorProfile;
+    }
+
+    function updateDirectorProfileField(key, val) {
+      const page = getCurrentPage();
+      if (!page || !page.meta) return;
+      const dp = ensureDirectorProfile(page.meta);
+      dp[key] = val;
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    function updateDirectorProfileLines(key, raw) {
+      const page = getCurrentPage();
+      if (!page || !page.meta) return;
+      const dp = ensureDirectorProfile(page.meta);
+      dp[key] = String(raw || '').split('\n').map(s => s.trim()).filter(Boolean);
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    async function openCreateCustomPagePrompt() {
+      const korTitle = (prompt('새로 만들 질환 클리닉 이름을 입력해 주세요.\n(예: 바른 비염 · 축농증 클리닉, 교통사고 후유증 클리닉)', '바른 비염 · 호흡기 면역') || '').trim();
+      if (!korTitle) return;
+      const rawSlug = (prompt('페이지 영문 주소(슬러그)를 소문자 영문·숫자·하이픈(-)으로 입력해 주세요.\n(예: rhinitis, traffic-care, insomnia)', 'rhinitis') || '').trim().toLowerCase();
+      if (!rawSlug) return;
+      const cleanSlug = rawSlug.replace(/[^a-z0-9-]/g, '').replace(/^-+|-+$/g, '');
+      if (!cleanSlug || cleanSlug.length < 2) {
+        alert('영문 슬러그는 2글자 이상의 영문 소문자/숫자여야 합니다. (예: rhinitis)');
+        return;
+      }
+      const exists = (masterConfig.pages || []).some(p => p.slug === cleanSlug || p.file === cleanSlug + '.html');
+      if (exists) {
+        alert(`이미 [${cleanSlug}] 주소의 페이지가 존재합니다. 다른 영문 슬러그를 입력해 주세요.`);
+        return;
+      }
+
+      const templateBase = (masterConfig.pages || []).find(p => p.slug === 'chuna') || (masterConfig.pages || [])[1];
+      const newPage = {
+        slug: cleanSlug,
+        file: cleanSlug + '.html',
+        wpFile: 'wordpress-' + cleanSlug + '.html',
+        wpId: 0,
+        isCustomPage: true,
+        label: '✨ ' + korTitle,
+        liveUrl: 'https://www.bareunhaniwon.com/' + cleanSlug + '/',
+        theme: templateBase && templateBase.theme ? JSON.parse(JSON.stringify(templateBase.theme)) : {
+          bgDark: '#121716',
+          bgPanel: 'rgba(18, 23, 22, 0.96)',
+          accent: '#10B981',
+          accentLight: '#D1FAE5',
+          secondary: '#D4AF37',
+          glowA: 'rgba(16, 185, 129, 0.08)',
+          glowB: 'rgba(212, 175, 55, 0.05)'
+        },
+        cardStyle: JSON.parse(JSON.stringify(masterConfig.globalCardStyle || {})),
+        meta: {
+          eyebrow: 'BAREUN SPECIALIZED CLINIC · 바른한의원 대전본점 특화 클리닉',
+          title: korTitle,
+          subtitleEn: 'Evidence-Based Personalized Korean Medicine Care',
+          desc: [
+            `대표원장의 1:1 정밀 진맥과 과학적 검진을 통해 ${korTitle}의 표면 증상뿐 아니라 숨은 원인까지 체계적으로 다스립니다.`
+          ],
+          ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
+          ctaText: `${korTitle} 1:1 맞춤 상담 예약하기`,
+          reserveProgram: korTitle,
+          checklistTitle: `${korTitle} 자가진단 체크리스트`,
+          checklistSub: '해당되는 항목을 체크하시면 원장님의 1차 권고안이 안내됩니다.',
+          checklistItems: [
+            '[만성 반복 증상] 증상이 호전되었다가 피로하거나 계절이 바뀌면 다시 반복된다.',
+            '[일상 컨디션 저하] 수면의 질이나 집중력, 일상 활력까지 함께 떨어져 있다.',
+            '[근본 원인 치료 희망] 단순 대증 완화가 아닌 체질과 면역·순환 균형 회복을 원한다.'
+          ],
+          doctorAdvice: {
+            caution: '초기 균형 관리 권장',
+            severe: '집중 원인 치료 권장'
+          }
+        },
+        plates: [
+          {
+            id: 'custom_' + cleanSlug + '_1',
+            enabled: true,
+            type: 'clean-image',
+            fullscreen: true,
+            fit: 'cover',
+            stepLabel: 'STEP 01 · 근본 원인 진단',
+            title: `반복되는 불편함, '${korTitle}'의 진짜 뿌리부터 찾습니다`,
+            sub: '바른한의원 대전본점은 증상만 잠시 가리지 않고 자율신경·순환·장부 균형을 입체적으로 살펴 재발을 줄이는 치료를 지향합니다.',
+            imgSrc: 'card_1_director.jpg',
+            pillars: [],
+            tags: ['#바른한의원대전본점', '#' + korTitle.replace(/\s+/g, '')]
+          },
+          {
+            id: 'custom_' + cleanSlug + '_2',
+            enabled: true,
+            type: 'clean-image',
+            fullscreen: true,
+            fit: 'cover',
+            stepLabel: 'STEP 02 · 1:1 맞춤 치료 설계',
+            title: "체질과 증상 단계에 맞춘 '정밀 한약 · 약침 · 수기 치료'",
+            sub: '식약처 인증 GMP 청정 한약재와 정밀 시술로 신체 부담은 낮추고 자생 회복력을 건강하게 끌어올립니다.',
+            imgSrc: 'detail_director_story4_clean.jpg',
+            pillars: [],
+            tags: ['#대전한의원', '#맞춤처방']
+          }
+        ],
+        bodyModelCard: {
+          enabled: true,
+          href: 'body-explorer.html',
+          part: 'syncope',
+          partBadge: '3D 인체모형 · 오늘의 건강 글',
+          eyebrow: '3D HUMAN BODY PORTAL',
+          title: '3D 인체모형으로 내 몸의 원리 살펴보기',
+          desc: '부위별 3D 해부학 모형과 72편의 오늘의 건강 글을 한눈에 확인해 보세요.',
+          bg: 'illust_syncope_autonomic.jpg'
+        }
+      };
+
+      const hnIdx = masterConfig.pages.findIndex(p => isHealthNotesPage(p));
+      const insertAt = hnIdx >= 0 ? hnIdx : masterConfig.pages.length;
+      masterConfig.pages.splice(insertAt, 0, newPage);
+      currentPageIdx = insertAt;
+      expandedCards = new Set([0]);
+      markDirty(true);
+      renderAll();
+      await runStudioAction('save_build_one');
+    }
+
+    async function deleteCurrentCustomPage() {
+      const page = getCurrentPage();
+      if (!page || !page.isCustomPage) return;
+      if (!confirm(`정말 [${page.label}] (${page.file}) 커스텀 질환 페이지를 삭제하시겠습니까?`)) return;
+      showStatus('working', `[${page.label}] 커스텀 페이지를 삭제 중입니다...`);
+      try {
+        const apiUrl = IS_WORDPRESS ? '/wp-json/bareun/v1/studio/delete-page' : '/api/delete-custom-page';
+        const headers = { 'Content-Type': 'application/json' };
+        if (IS_WORDPRESS && window.wpApiSettings && window.wpApiSettings.nonce) {
+          headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+        }
+        masterConfig.pages = masterConfig.pages.filter(p => p.slug !== page.slug);
+        currentPageIdx = 0;
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            slug: page.slug,
+            config: getPureMasterConfig()
+          })
+        });
+        const data = await res.json();
+        if (!data || !data.ok) throw new Error((data && data.error) || '페이지 삭제 실패');
+        ensureHealthNotesVirtualPage();
+        markDirty(false);
+        renderAll();
+        reloadPreviewIframe();
+        showStatus('ok', `🗑️ [${page.label}] 커스텀 페이지가 깔끔하게 삭제되었습니다.`);
+      } catch (err) {
+        showStatus('err', '커스텀 페이지 삭제 오류: ' + err.message);
+      }
+    }
+
+    function ensureClinicGlobalInfo() {
+      if (!window.studioClinicGlobalInfo || typeof window.studioClinicGlobalInfo !== 'object') {
+        window.studioClinicGlobalInfo = {
+          clinicName: '바른한의원 대전본점',
+          directorName: '안정위',
+          directorTitle: '대표원장',
+          businessRegNo: '211-91-10479',
+          greetingEyebrow: "DIRECTOR'S WARM GREETING · 대표원장 환영 인사말",
+          greetingTitle: '먼 길 찾아주시는 소중한 발걸음, 내 가족을 돌보는 정직한 마음으로 맞이합니다',
+          greetingBody: '바른한의원 대전본점을 찾아주셔서 진심으로 감사합니다. 통증과 불편함 너머의 일상까지 깊이 경청하며, 제 가족과 아이에게 직접 처방·시술하는 검증된 치료만으로 한 분 한 분 정성껏 진료하겠습니다.',
+          greetingSign: '바른한의원 대전본점 대표원장 안정위 배상',
+          phone: '010-5631-1275',
+          kakaoUrl: 'https://pf.kakao.com/_ykxcLK',
+          naverBookingUrl: 'https://naver.me/5U1ELn8L',
+          address: '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)',
+          shortAddress: '대전 대덕구 비래동로7번길 1, 2층',
+          postalCode: '34417',
+          lat: 36.35536,
+          lng: 127.44778,
+          parkingGuide: '건물 전용 주차장 및 인근 공영주차장 이용 가능 (내원 시 접수처에 말씀해 주시면 상세히 안내해 드립니다.)',
+          transitGuide: '대전 대덕구 비래동로7번길 1, 2층 · 비래동 행정복지센터 및 비래삼거리 인근 도보 3분 거리 (복합터미널·송촌동 차량 5~8분)',
+          hours: [
+            { day: '평일 (월 ~ 금)', time: '09:00 ~ 19:00', note: '점심시간 12:30 ~ 14:00' },
+            { day: '토요일 · 공휴일', time: '09:00 ~ 14:00', note: '점심시간 없이 연속 진료' },
+            { day: '일요일', time: '정기 휴진', note: '사전 예약 문의는 카톡·네이버예약 가능' }
+          ],
+          holidayNotice: {
+            enabled: false,
+            badge: '진료 안내',
+            text: '토요일 및 공휴일은 오후 2시까지 점심시간 없이 정상 진료합니다.'
+          },
+          nonCoveredUpdatedDate: '2026-11-15',
+          nonCoveredFees: [
+            { category: '맞춤 한약', name: '사상체질 · 질환별 맞춤 탕약 (15일분)', spec: '1제 (30팩 · GMP 청정약재)', price: '250,000원 ~ 350,000원', note: '체질·약재 구성별 상이' },
+            { category: '소아·성장', name: '바른 키성장 · 면역 맞춤 한약 (1개월)', spec: '1개월분 (녹용/무녹용 선택)', price: '350,000원 ~ 550,000원', note: '초음파 성장판 검진 포함' },
+            { category: '다이어트', name: '식욕ZERO 근육보존 다이어트 한약', spec: '1개월 프로그램', price: '290,000원 ~ 450,000원', note: '체성분·대사 단계별 맞춤' },
+            { category: '보양·공진단', name: '식약처 정품 사향 황제공진단', spec: '10환 / 30환 (원방 사향)', price: '550,000원 ~ 1,500,000원', note: 'CITES 정품 사향 인증' },
+            { category: '약침 치료', name: '정제 한방 약침 / 봉약침 / 태반약침', spec: '1회 시술 (부위·용량별)', price: '10,000원 ~ 30,000원', note: '비급여 정제 약침액' },
+            { category: '제증명 수수료', name: '진단서 / 진료확인서 / 통원확인서', spec: '1통 기준', price: '3,000원 ~ 20,000원', note: '보건복지부 고시 기준 준수' }
+          ]
+        };
+      }
+      const ci = window.studioClinicGlobalInfo;
+      if (!Array.isArray(ci.hours)) ci.hours = [];
+      if (!Array.isArray(ci.nonCoveredFees)) ci.nonCoveredFees = [];
+      if (!ci.holidayNotice) ci.holidayNotice = { enabled: false, badge: '진료 안내', text: '' };
+      return ci;
+    }
+
+    function renderClinicInfoPane() {
+      const box = document.getElementById('clinicInfoEditorBox');
+      if (!box) return;
+      const ci = ensureClinicGlobalInfo();
+      const hn = ci.holidayNotice || {};
+      box.innerHTML = `
+        <div class="panel-head">
+          <div>
+            <h2>🏥 병원 기본정보 · 환영 인사말 · 오시는길 · 진료시간 · 비급여 셀프 수정</h2>
+            <div class="helper-note" style="margin-top:4px;">
+              이 탭에서 저장하면 <strong>오시는길 전용 페이지(<code>/location/</code>)</strong>와 전 페이지 공통 모달·하단 예약바에 즉시 연동됩니다. (네이버/구글/티맵/카카오맵 4대 길안내 좌표 자동 연동 · 승인된 <strong>전화/카톡/네이버예약 3종</strong> 적용)
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a class="mini-btn" href="${IS_WORDPRESS ? '/location/' : '/location.html'}" target="_blank" rel="noopener">📍 /location/ 새창 열기 ↗</a>
+            <button type="button" class="btn btn-deploy-one" onclick="saveAndDeployClinicInfo(true)">
+              ${IS_WORDPRESS ? '🌐 실서버 즉시 저장 · 반영' : '💾 로컬 저장 + 카페24 실서버 반영'}
+            </button>
+          </div>
+        </div>
+
+        <h3 style="margin:6px 0 10px;font-size:14.5px;color:#2D5A43;">1️⃣ 대표원장 따뜻한 환영 인사말 (오시는길 상단 &amp; 모달 표시)</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>인사말 상단 배지 (greetingEyebrow)</label>
+            <input type="text" value="${escHtml(ci.greetingEyebrow || '')}" oninput="updateClinicInfoField('greetingEyebrow', this.value)" />
+          </div>
+          <div class="field">
+            <label>인사말 하단 서명 (greetingSign)</label>
+            <input type="text" value="${escHtml(ci.greetingSign || '')}" oninput="updateClinicInfoField('greetingSign', this.value)" />
+          </div>
+        </div>
+        <div class="field">
+          <label>환영 인사말 메인 제목 (greetingTitle)</label>
+          <input type="text" value="${escHtml(ci.greetingTitle || '')}" oninput="updateClinicInfoField('greetingTitle', this.value)" />
+        </div>
+        <div class="field">
+          <label>환영 인사말 본문 (greetingBody)</label>
+          <textarea rows="3" oninput="updateClinicInfoField('greetingBody', this.value)">${escHtml(ci.greetingBody || '')}</textarea>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
+
+        <h3 style="margin:0 0 10px;font-size:14.5px;color:#2D5A43;">2️⃣ 승인된 3대 예약 채널(전화 · 카톡 · 네이버예약) &amp; 4대 지도 길안내 주소·좌표</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>대표 전화번호 (전화상담 버튼 직결)</label>
+            <input type="text" value="${escHtml(ci.phone || '')}" oninput="updateClinicInfoField('phone', this.value)" />
+          </div>
+          <div class="field">
+            <label>사업자등록번호 (의료법 푸터 표기)</label>
+            <input type="text" value="${escHtml(ci.businessRegNo || '')}" oninput="updateClinicInfoField('businessRegNo', this.value)" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>카카오톡 채널 상담 URL (카톡예약 버튼 직결)</label>
+            <input type="text" value="${escHtml(ci.kakaoUrl || '')}" oninput="updateClinicInfoField('kakaoUrl', this.value)" />
+          </div>
+          <div class="field">
+            <label>네이버 예약/플레이스 URL (네이버예약 버튼 직결)</label>
+            <input type="text" value="${escHtml(ci.naverBookingUrl || '')}" oninput="updateClinicInfoField('naverBookingUrl', this.value)" />
+          </div>
+        </div>
+        <div class="field">
+          <label>전체 도로명 주소 (네이버·구글·티맵·카카오맵 목적지 표기)</label>
+          <input type="text" value="${escHtml(ci.address || '')}" oninput="updateClinicInfoField('address', this.value)" />
+        </div>
+        <div class="grid-3">
+          <div class="field">
+            <label>우편번호</label>
+            <input type="text" value="${escHtml(ci.postalCode || '')}" oninput="updateClinicInfoField('postalCode', this.value)" />
+          </div>
+          <div class="field">
+            <label>위도 (Latitude · 길안내 좌표)</label>
+            <input type="number" step="0.00001" value="${escHtml(ci.lat || 36.35536)}" oninput="updateClinicInfoField('lat', parseFloat(this.value) || 36.35536)" />
+          </div>
+          <div class="field">
+            <label>경도 (Longitude · 길안내 좌표)</label>
+            <input type="number" step="0.00001" value="${escHtml(ci.lng || 127.44778)}" oninput="updateClinicInfoField('lng', parseFloat(this.value) || 127.44778)" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>🚗 자가용 · 주차 안내 문구</label>
+            <textarea rows="2" oninput="updateClinicInfoField('parkingGuide', this.value)">${escHtml(ci.parkingGuide || '')}</textarea>
+          </div>
+          <div class="field">
+            <label>🚌 대중교통 · 주변 이정표 안내 문구</label>
+            <textarea rows="2" oninput="updateClinicInfoField('transitGuide', this.value)">${escHtml(ci.transitGuide || '')}</textarea>
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:14.5px;color:#2D5A43;">3️⃣ 진료시간표 &amp; 임시 휴진/공지 배너 (19번 셀프 권한)</h3>
+          <button type="button" class="mini-btn gold-helper" onclick="addClinicHourRow()">+ 진료시간 행 추가</button>
+        </div>
+        <div style="padding:12px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;margin-bottom:12px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;color:#92400E;cursor:pointer;margin-bottom:8px;">
+            <input type="checkbox" ${hn.enabled ? 'checked' : ''} onchange="updateClinicHolidayField('enabled', this.checked)" />
+            📢 상단 임시 휴진 / 공휴일 특별 진료 강조 배너 켜기 (ON 시 황금색 주의 배너로 강조 표시)
+          </label>
+          <div class="grid-2">
+            <div class="field" style="margin-bottom:0;">
+              <label>배지 제목 (예: 추석 연휴 안내 / 임시 휴진 안내)</label>
+              <input type="text" value="${escHtml(hn.badge || '진료 안내')}" oninput="updateClinicHolidayField('badge', this.value)" />
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label>공지 상세 문구</label>
+              <input type="text" value="${escHtml(hn.text || '')}" oninput="updateClinicHolidayField('text', this.value)" />
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          ${(ci.hours || []).map((h, hIdx) => `
+            <div class="list-row-inline" style="display:grid;grid-template-columns:1.1fr 1fr 1.2fr auto;gap:6px;margin-bottom:6px;">
+              <input type="text" placeholder="요일 (예: 평일)" value="${escHtml(h.day || '')}" oninput="updateClinicHourRow(${hIdx}, 'day', this.value)" />
+              <input type="text" placeholder="시간 (예: 09:00 ~ 19:00)" value="${escHtml(h.time || '')}" oninput="updateClinicHourRow(${hIdx}, 'time', this.value)" />
+              <input type="text" placeholder="비고 (예: 점심 12:30~14:00)" value="${escHtml(h.note || '')}" oninput="updateClinicHourRow(${hIdx}, 'note', this.value)" />
+              <button type="button" class="mini-btn danger" onclick="removeClinicHourRow(${hIdx})">✕</button>
+            </div>
+          `).join('')}
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:14.5px;color:#2D5A43;">4️⃣ 의료법 제45조 비급여 진료비용 안내표 (${(ci.nonCoveredFees || []).length}개 항목)</h3>
+          <button type="button" class="mini-btn gold-helper" onclick="addClinicFeeRow()">+ 비급여 항목 추가</button>
+        </div>
+        <div class="field" style="max-width:260px;">
+          <label>비급여 최종 고지 기준일</label>
+          <input type="text" value="${escHtml(ci.nonCoveredUpdatedDate || '2026-11-15')}" oninput="updateClinicInfoField('nonCoveredUpdatedDate', this.value)" />
+        </div>
+        <div style="margin-bottom:16px;">
+          ${(ci.nonCoveredFees || []).map((f, fIdx) => `
+            <div style="display:grid;grid-template-columns:0.9fr 1.4fr 1fr 1.1fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center;">
+              <input type="text" placeholder="분류" value="${escHtml(f.category || '')}" oninput="updateClinicFeeRow(${fIdx}, 'category', this.value)" />
+              <input type="text" placeholder="비급여 항목명" value="${escHtml(f.name || '')}" oninput="updateClinicFeeRow(${fIdx}, 'name', this.value)" />
+              <input type="text" placeholder="규격/기준" value="${escHtml(f.spec || '')}" oninput="updateClinicFeeRow(${fIdx}, 'spec', this.value)" />
+              <input type="text" placeholder="비용 안내" value="${escHtml(f.price || '')}" oninput="updateClinicFeeRow(${fIdx}, 'price', this.value)" />
+              <input type="text" placeholder="비고" value="${escHtml(f.note || '')}" oninput="updateClinicFeeRow(${fIdx}, 'note', this.value)" />
+              <button type="button" class="mini-btn danger" onclick="removeClinicFeeRow(${fIdx})">✕</button>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--border);">
+          ${!IS_WORDPRESS ? `<button type="button" class="btn btn-save-one" onclick="saveAndDeployClinicInfo(false)">💾 로컬 저장 &amp; location.html 재제작</button>` : ''}
+          <button type="button" class="btn btn-deploy-one" onclick="saveAndDeployClinicInfo(true)">
+            🌐 ${IS_WORDPRESS ? '카페24 실서버 즉시 저장 · 반영 (/location/)' : '로컬 저장 + 카페24 실서버(/location/) 즉시 배포'}
+          </button>
+        </div>
+      `;
+    }
+
+    function updateClinicInfoField(key, val) {
+      const ci = ensureClinicGlobalInfo();
+      ci[key] = val;
+      markDirty(true);
+    }
+
+    function updateClinicHolidayField(key, val) {
+      const ci = ensureClinicGlobalInfo();
+      if (!ci.holidayNotice) ci.holidayNotice = { enabled: false, badge: '진료 안내', text: '' };
+      ci.holidayNotice[key] = val;
+      markDirty(true);
+      if (key === 'enabled') renderClinicInfoPane();
+    }
+
+    function addClinicHourRow() {
+      const ci = ensureClinicGlobalInfo();
+      ci.hours.push({ day: '추가 요일', time: '09:00 ~ 14:00', note: '' });
+      markDirty(true);
+      renderClinicInfoPane();
+    }
+
+    function updateClinicHourRow(idx, key, val) {
+      const ci = ensureClinicGlobalInfo();
+      if (ci.hours[idx]) ci.hours[idx][key] = val;
+      markDirty(true);
+    }
+
+    function removeClinicHourRow(idx) {
+      const ci = ensureClinicGlobalInfo();
+      ci.hours.splice(idx, 1);
+      markDirty(true);
+      renderClinicInfoPane();
+    }
+
+    function addClinicFeeRow() {
+      const ci = ensureClinicGlobalInfo();
+      ci.nonCoveredFees.push({ category: '기타 비급여', name: '새 비급여 항목', spec: '1회', price: '0원', note: '' });
+      markDirty(true);
+      renderClinicInfoPane();
+    }
+
+    function updateClinicFeeRow(idx, key, val) {
+      const ci = ensureClinicGlobalInfo();
+      if (ci.nonCoveredFees[idx]) ci.nonCoveredFees[idx][key] = val;
+      markDirty(true);
+    }
+
+    function removeClinicFeeRow(idx) {
+      const ci = ensureClinicGlobalInfo();
+      ci.nonCoveredFees.splice(idx, 1);
+      markDirty(true);
+      renderClinicInfoPane();
+    }
+
+    async function saveAndDeployClinicInfo(deployLive) {
+      const ci = ensureClinicGlobalInfo();
+      showStatus('working', deployLive
+        ? '🏥 병원 기본정보 · 인사말 · 진료시간 · 비급여 안내표를 저장하고 카페24 실서버(/location/)에 반영 중입니다...'
+        : '🏥 로컬 clinic-global-info.json 및 오시는길 페이지(location.html)를 재제작 중입니다...');
+      try {
+        const apiUrl = IS_WORDPRESS ? '/wp-json/bareun/v1/clinic-info' : '/api/clinic-global-info';
+        const headers = { 'Content-Type': 'application/json' };
+        if (IS_WORDPRESS && window.wpApiSettings && window.wpApiSettings.nonce) {
+          headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+        }
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            info: ci,
+            deployLive: Boolean(deployLive)
+          })
+        });
+        const data = await res.json();
+        if (!data || !data.ok) throw new Error((data && data.error) || '병원정보 저장 실패');
+        if (data.info) window.studioClinicGlobalInfo = data.info;
+        markDirty(false);
+        renderClinicInfoPane();
+        showStatus('ok', data.message || '✅ 병원 기본정보 · 오시는길 · 비급여 수가표 반영 완료!');
+      } catch (err) {
+        showStatus('err', '병원 기본정보 저장 오류: ' + err.message);
+      }
     }
 
     loadStudioConfig();

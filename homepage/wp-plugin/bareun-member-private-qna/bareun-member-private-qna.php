@@ -1173,6 +1173,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'gongjindan'         => '바른 황제공진단',
             'gongjindan-2'       => '바른 황제공진단',
             'prostate'           => '바른 전립선 · 남성활력',
+            'location'           => '오시는길 · 진료시간 · 비급여 안내',
             'lifting-compare'    => '리프팅 윤곽진단',
             'compare'            => '전·후 비교 스튜디오'
         );
@@ -1195,16 +1196,28 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         $vtable   = self::visits_table_name();
         $base_cnt = (int) get_option(self::OPT_VISIT_BASE, 14820);
 
-        $now_ts         = current_time('timestamp');
-        $today_date     = date('Y-m-d', $now_ts);
+        $now_ts     = current_time('timestamp');
+        $today_date = date('Y-m-d', $now_ts);
+        $total_db   = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$vtable}");
+        $today_pv   = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date = %s", $today_date));
+
+        // Consumer public mode: return ONLY todayPv & totalPv (strictly zero detailed analytics exposed)
+        if (!$include_master_logs) {
+            return array(
+                'ok'         => true,
+                'isMaster'   => false,
+                'todayPv'    => $today_pv,
+                'totalPv'    => $base_cnt + $total_db,
+                'serverTime' => current_time('mysql')
+            );
+        }
+
         $yesterday_date = date('Y-m-d', $now_ts - 86400);
         $week_ago_date  = date('Y-m-d', $now_ts - (6 * 86400));
         $month_ago_date = date('Y-m-d', $now_ts - (29 * 86400));
         $active_since   = date('Y-m-d H:i:s', $now_ts - 900);
 
-        $total_db       = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$vtable}");
         $total_uv_db    = (int) $wpdb->get_var("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable}");
-        $today_pv       = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date = %s", $today_date));
         $today_uv       = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable} WHERE visit_date = %s", $today_date));
         $yesterday_pv   = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vtable} WHERE visit_date = %s", $yesterday_date));
         $yesterday_uv   = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(DISTINCT visitor_hash) FROM {$vtable} WHERE visit_date = %s", $yesterday_date));
@@ -1280,6 +1293,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
         $summary = array(
             'ok'          => true,
+            'isMaster'    => true,
             'totalPv'     => $base_cnt + $total_db,
             'rawDbPv'     => $total_db,
             'baseOffset'  => $base_cnt,
@@ -2106,6 +2120,15 @@ class Bareun_Master_SEO_Engine_V1 {
                 if (isset($decoded['pages']['story-3d']) && is_array($decoded['pages']['story-3d'])) {
                     $decoded['pages']['story-3d']['title'] = $opt_a_title;
                     $decoded['pages']['story-3d']['description'] = $opt_a_desc;
+                }
+                if (!isset($decoded['pages']['location'])) {
+                    $decoded['pages']['location'] = array(
+                        'path'        => '/location/',
+                        'title'       => '오시는길 · 진료시간 · 주차 · 비급여 진료비 안내 | 바른한의원 대전본점',
+                        'description' => '바른한의원 대전본점(대전 대덕구 비래동로7번길 1, 2층 · 010-5631-1275) 대표원장 인사말, 네이버지도·구글지도·티맵·카카오맵 원클릭 자동 길안내, 진료시간, 주차 및 비급여 진료비용 안내표입니다.',
+                        'ogType'      => 'website',
+                        'schemaType'  => 'MedicalWebPage'
+                    );
                 }
             }
             self::$cached_cfg = is_array($decoded) ? $decoded : array();
@@ -3014,11 +3037,33 @@ class Bareun_Master_SEO_Engine_V1 {
             <a href="<?php echo esc_url($th_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#000000;color:#FFF;font-weight:900;font-size:0.8rem;">@</span><span>스레드</span></a>
             <a href="<?php echo esc_url($ig_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);color:#FFF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span><span>인스타그램</span></a>
             <a href="<?php echo esc_url($kk_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#FEE500;color:#191919;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C6.48 4 2 7.52 2 11.86c0 2.83 1.89 5.31 4.74 6.7-.15.54-.96 3.47-1 3.63-.05.21.08.21.17.15.07-.05 2.89-1.95 4.05-2.75.66.1 1.34.15 2.04.15 5.52 0 10-3.52 10-7.88C22 7.52 17.52 4 12 4z"/></svg></span><span>카카오톡</span></a>
+            <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/location/'); ?>" class="ch-pill"><span class="ch-icon" style="background:#2D5A43;color:#FFF;font-size:0.74rem;">📍</span><span>오시는길 · 비급여 안내</span></a>
           </div>
         </div>
       </section>
     </article>
   </main>
+  <style>
+    #hn-mobile-3btn-bar { display: none; }
+    @media (max-width: 900px) {
+      body { padding-bottom: 72px !important; }
+      #hn-mobile-3btn-bar {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+        background: rgba(23, 22, 20, 0.96); border-top: 1px solid rgba(197, 160, 89, 0.38);
+      }
+      #hn-mobile-3btn-bar a {
+        display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+        height: 42px; border-radius: 11px; font-size: 12.5px; font-weight: 900; text-decoration: none;
+      }
+    }
+  </style>
+  <nav id="hn-mobile-3btn-bar" aria-label="모바일 빠른 예약 바">
+    <a href="tel:01056311275" style="background:#FFFFFF;color:#171614;">📞 전화상담</a>
+    <a href="<?php echo esc_url($kk_url); ?>" target="_blank" rel="noopener noreferrer" style="background:#FEE500;color:#191919;">💬 카톡예약</a>
+    <a href="<?php echo esc_url($nv_url); ?>" target="_blank" rel="noopener noreferrer" style="background:#03C75A;color:#FFFFFF;">📍 네이버예약</a>
+  </nav>
   <div id="standaloneShareToast" role="status" aria-live="polite"></div>
   <script>
     (function() {
@@ -4076,6 +4121,7 @@ if (!class_exists('Bareun_Custom_Studio_Engine_V4')) :
 class Bareun_Custom_Studio_Engine_V4 {
     const OPT_DETAIL_CFG       = 'bareun_detail_pages_config_v1';
     const OPT_HEALTH_NOTES_CFG = 'bareun_health_notes_cfg_v1';
+    const OPT_CLINIC_INFO      = 'bareun_clinic_global_info_v1';
     const OPT_ANGLE_SAMPLES    = 'bareun_director_angle_samples_v1';
     const OPT_STUDIO_AI_KEYS   = 'bareun_studio_ai_keys_v1';
     const OPT_STUDIO_AI_USAGE  = 'bareun_studio_ai_usage_v1';
@@ -4280,6 +4326,27 @@ class Bareun_Custom_Studio_Engine_V4 {
             'methods'             => 'POST',
             'permission_callback' => function () { return current_user_can('manage_options'); },
             'callback'            => array(__CLASS__, 'rest_ensure_assets_from_github')
+        ), true);
+
+        register_rest_route('bareun/v1', '/clinic-info', array(
+            'methods'             => array('GET', 'POST'),
+            'permission_callback' => function ($request) {
+                if ($request->get_method() === 'GET') return true;
+                return current_user_can('manage_options');
+            },
+            'callback'            => array(__CLASS__, 'rest_handle_clinic_info')
+        ), true);
+
+        register_rest_route('bareun/v1', '/studio/ai-legal-copy', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_handle_ai_legal_copy')
+        ), true);
+
+        register_rest_route('bareun/v1', '/studio/delete-page', array(
+            'methods'             => 'POST',
+            'permission_callback' => function () { return current_user_can('manage_options'); },
+            'callback'            => array(__CLASS__, 'rest_handle_delete_page')
         ), true);
     }
 
@@ -4530,9 +4597,212 @@ class Bareun_Custom_Studio_Engine_V4 {
             'ok'                => true,
             'config'            => $cfg,
             'healthNotesConfig' => $hn_cfg,
+            'clinicGlobalInfo'  => self::load_clinic_info_php(),
             'availableImages'   => $availableImages,
             'availableVideos'   => array()
         ), 200);
+    }
+
+    public static function load_clinic_info_php() {
+        $saved = get_option(self::OPT_CLINIC_INFO, null);
+        if (is_array($saved) && !empty($saved['clinicName'])) {
+            return $saved;
+        }
+        $upload_dir = wp_upload_dir();
+        $disk_f = $upload_dir['basedir'] . '/bareun-studio/clinic-global-info.json';
+        if (file_exists($disk_f)) {
+            $dec = json_decode(file_get_contents($disk_f), true);
+            if (is_array($dec) && !empty($dec['clinicName'])) {
+                update_option(self::OPT_CLINIC_INFO, $dec, false);
+                return $dec;
+            }
+        }
+        return array(
+            'clinicName'        => '바른한의원 대전본점',
+            'directorName'      => '안정위',
+            'directorTitle'     => '대표원장',
+            'businessRegNo'     => '211-91-10479',
+            'greetingEyebrow'   => "DIRECTOR'S WARM GREETING · 대표원장 환영 인사말",
+            'greetingTitle'     => '먼 길 찾아주시는 소중한 발걸음, 내 가족을 돌보는 정직한 마음으로 맞이합니다',
+            'greetingBody'      => '바른한의원 대전본점을 찾아주셔서 진심으로 감사합니다. 통증과 불편함 너머의 일상까지 깊이 경청하며, 제 가족과 아이에게 직접 처방·시술하는 검증된 치료만으로 한 분 한 분 정성껏 진료하겠습니다.',
+            'greetingSign'      => '바른한의원 대전본점 대표원장 안정위 배상',
+            'phone'             => '010-5631-1275',
+            'kakaoUrl'          => 'https://pf.kakao.com/_ykxcLK',
+            'naverBookingUrl'   => 'https://naver.me/5U1ELn8L',
+            'address'           => '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)',
+            'shortAddress'      => '대전 대덕구 비래동로7번길 1, 2층',
+            'postalCode'        => '34417',
+            'lat'               => 36.35536,
+            'lng'               => 127.44778
+        );
+    }
+
+    public static function rest_handle_clinic_info($request) {
+        nocache_headers();
+        if ($request->get_method() === 'POST') {
+            $params = $request->get_json_params();
+            $info = (is_array($params) && isset($params['info']) && is_array($params['info'])) ? $params['info'] : $params;
+            if (!is_array($info) || empty($info['clinicName'])) {
+                return new WP_REST_Response(array('ok' => false, 'error' => '유효한 병원 정보(info) 데이터가 없습니다.'), 400);
+            }
+            $info['updatedAt'] = current_time('c');
+            update_option(self::OPT_CLINIC_INFO, $info, false);
+
+            $upload_dir = wp_upload_dir();
+            $target_dir = $upload_dir['basedir'] . '/bareun-studio';
+            wp_mkdir_p($target_dir);
+            @file_put_contents($target_dir . '/clinic-global-info.json', wp_json_encode($info, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+            if (!empty($params['compiledLocationHtml'])) {
+                self::upsert_wp_page_by_slug('location', '오시는길 · 진료시간 · 비급여 안내', (string)$params['compiledLocationHtml']);
+            }
+            self::flush_all_wp_caches();
+            return new WP_REST_Response(array(
+                'ok'      => true,
+                'info'    => $info,
+                'liveUrl' => home_url('/location/'),
+                'message' => '병원 기본정보 · 인사말 · 진료시간 · 비급여 수가표가 실서버에 반영되었습니다!'
+            ), 200);
+        }
+
+        return new WP_REST_Response(array(
+            'ok'   => true,
+            'info' => self::load_clinic_info_php()
+        ), 200);
+    }
+
+    public static function rest_handle_ai_legal_copy($request) {
+        nocache_headers();
+        $params = $request->get_json_params();
+        if (!is_array($params)) $params = array();
+        $title = isset($params['title']) ? trim((string)$params['title']) : '';
+        $sub   = isset($params['sub']) ? trim((string)$params['sub']) : '';
+
+        $replacements = array(
+            '100% 완치' => '근본적인 회복 관리',
+            '완치 보장' => '세심한 회복 치료',
+            '완치'      => '호전 및 회복',
+            '무조건'    => '체계적으로',
+            '절대 안'   => '쉽게 재발하지 않도록',
+            '절대'      => '면밀히',
+            '최고의'    => '정성을 다하는',
+            '최고'      => '수준 높은',
+            '최초의'    => '특화된',
+            '최초'      => '선도적인',
+            '유일한'    => '차별화된',
+            '유일'      => '맞춤형',
+            '부작용 없는' => '신체 부담을 낮춘',
+            '부작용 0%' => '안전성을 고려한',
+            '100%'      => '체계적인',
+            '기적의'    => '밀도 높은',
+            '기적'      => '긍정적 변화',
+            '특효'      => '맞춤 처방',
+            '보장합니다' => '도와드립니다',
+            '보장'      => '기대할 수 있는 관리'
+        );
+
+        $detected = array();
+        $combined = $title . ' ' . $sub;
+        foreach ($replacements as $bad => $good) {
+            if (mb_strpos($combined, $bad) !== false) {
+                $detected[] = $bad;
+            }
+        }
+
+        // Try Gemini 2.5 Flash medical law copywriter if key is configured
+        $keys = self::get_raw_ai_keys();
+        if (!empty($keys['geminiKey'])) {
+            $prompt = "당신은 대한민국 의료법 제56조(의료광고 금지 기준)를 엄격히 준수하는 한의원 전문 에디토리얼 카피라이터입니다.\n" .
+                "아래 카드 제목(title)과 본문(sub)에서 '100%, 완치, 무조건, 최고, 최초, 유일, 부작용 없는, 보장, 특효, 기적' 등 소비자를 현혹하거나 치료 효과를 단정하는 표현을 모두 순화하고, 환자 공감과 한의학적 진정성이 느껴지는 품격 있는 문장으로 다듬어 JSON 형식으로만 응답하세요.\n" .
+                "응답 형식: {\"title\":\"다듬은 제목\",\"sub\":\"다듬은 본문\"}\n\n" .
+                "[원본 제목]: " . $title . "\n[원본 본문]: " . $sub;
+            $g_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . rawurlencode($keys['geminiKey']);
+            $g_res = wp_remote_post($g_url, array(
+                'timeout' => 15,
+                'headers' => array('Content-Type' => 'application/json'),
+                'body'    => wp_json_encode(array(
+                    'contents' => array(array('parts' => array(array('text' => $prompt)))),
+                    'generationConfig' => array('temperature' => 0.35, 'responseMimeType' => 'application/json')
+                ))
+            ));
+            if (!is_wp_error($g_res) && wp_remote_retrieve_response_code($g_res) === 200) {
+                $g_body = json_decode(wp_remote_retrieve_body($g_res), true);
+                $txt = $g_body['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                $parsed = json_decode($txt, true);
+                if (is_array($parsed) && !empty($parsed['title'])) {
+                    return new WP_REST_Response(array(
+                        'ok'       => true,
+                        'engine'   => 'gemini-2.5-flash',
+                        'detected' => $detected,
+                        'title'    => trim((string)$parsed['title']),
+                        'sub'      => isset($parsed['sub']) ? trim((string)$parsed['sub']) : $sub
+                    ), 200);
+                }
+            }
+        }
+
+        $safe_title = strtr($title, $replacements);
+        $safe_sub   = strtr($sub, $replacements);
+        return new WP_REST_Response(array(
+            'ok'       => true,
+            'engine'   => 'medical-law-rule-polisher',
+            'detected' => $detected,
+            'title'    => $safe_title,
+            'sub'      => $safe_sub
+        ), 200);
+    }
+
+    public static function rest_handle_delete_page($request) {
+        nocache_headers();
+        $params = $request->get_json_params();
+        $slug = isset($params['slug']) ? sanitize_title($params['slug']) : '';
+        if (!$slug || isset(self::PAGE_MAP[$slug]) || $slug === 'location') {
+            return new WP_REST_Response(array('ok' => false, 'error' => '기본 핵심 페이지는 삭제할 수 없으며, 추가 생성한 커스텀 질환 페이지만 삭제 가능합니다.'), 400);
+        }
+        $existing = get_page_by_path($slug, OBJECT, 'page');
+        if ($existing && !empty($existing->ID)) {
+            wp_delete_post((int)$existing->ID, true);
+        }
+        if (!empty($params['config']) && is_array($params['config'])) {
+            update_option(self::OPT_DETAIL_CFG, $params['config']);
+        }
+        self::flush_all_wp_caches();
+        return new WP_REST_Response(array(
+            'ok'      => true,
+            'slug'    => $slug,
+            'message' => "커스텀 페이지 [{$slug}]가 삭제되었습니다."
+        ), 200);
+    }
+
+    private static function upsert_wp_page_by_slug($slug, $page_title, $compiled) {
+        if (isset(self::PAGE_MAP[$slug])) {
+            return wp_update_post(array(
+                'ID'           => self::PAGE_MAP[$slug],
+                'post_content' => $compiled
+            ), true);
+        }
+        $existing = get_page_by_path($slug, OBJECT, 'page');
+        if ($existing && !empty($existing->ID)) {
+            return wp_update_post(array(
+                'ID'           => (int)$existing->ID,
+                'post_status'  => 'publish',
+                'post_title'   => $page_title ?: $existing->post_title,
+                'post_content' => $compiled
+            ), true);
+        }
+        $new_id = wp_insert_post(array(
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'post_name'      => $slug,
+            'post_title'     => $page_title ?: $slug,
+            'post_content'   => $compiled,
+            'comment_status' => 'closed',
+            'ping_status'    => 'closed'
+        ), true);
+        if (!is_wp_error($new_id)) {
+            flush_rewrite_rules(false);
+        }
+        return $new_id;
     }
 
     private static function flush_all_wp_caches() {
@@ -4668,23 +4938,18 @@ class Bareun_Custom_Studio_Engine_V4 {
         }
 
         $compiled = isset($params['compiledHtml']) ? (string)$params['compiledHtml'] : '';
-        if (!empty($compiled) && isset(self::PAGE_MAP[$slug])) {
-            $page_id = self::PAGE_MAP[$slug];
-            $update_res = wp_update_post(array(
-                'ID'           => $page_id,
-                'post_content' => $compiled
-            ));
+        $page_title = isset($params['pageTitle']) ? sanitize_text_field($params['pageTitle']) : $slug;
+        if (!empty($compiled) && !empty($slug)) {
+            $update_res = self::upsert_wp_page_by_slug($slug, $page_title, $compiled);
             if (is_wp_error($update_res)) {
                 return new WP_REST_Response(array('ok' => false, 'error' => $update_res->get_error_message()), 500);
             }
-            wp_cache_flush();
-            if (has_action('litespeed_purge_all')) {
-                do_action('litespeed_purge_all');
-            }
+            self::flush_all_wp_caches();
             $live_url = ($slug === 'home') ? home_url('/') : home_url('/' . $slug . '/');
             return new WP_REST_Response(array(
                 'ok'       => true,
                 'deployed' => true,
+                'pageId'   => (int)$update_res,
                 'liveUrl'  => $live_url,
                 'message'  => "[{$slug}] 페이지가 카페24 실서버에 즉시 반영되었습니다!"
             ), 200);
@@ -4716,19 +4981,16 @@ class Bareun_Custom_Studio_Engine_V4 {
             $slug = isset($p['slug']) ? sanitize_title($p['slug']) : '';
             if ($slug === 'index' || $slug === 'story-3d') $slug = 'home';
             $compiled = isset($p['compiledHtml']) ? (string)$p['compiledHtml'] : '';
-            if ($slug && $compiled && isset(self::PAGE_MAP[$slug])) {
-                wp_update_post(array(
-                    'ID'           => self::PAGE_MAP[$slug],
-                    'post_content' => $compiled
-                ));
-                $updatedCount++;
+            $p_title  = isset($p['title']) ? sanitize_text_field($p['title']) : $slug;
+            if ($slug && $compiled) {
+                $r = self::upsert_wp_page_by_slug($slug, $p_title, $compiled);
+                if (!is_wp_error($r)) {
+                    $updatedCount++;
+                }
             }
         }
 
-        wp_cache_flush();
-        if (has_action('litespeed_purge_all')) {
-            do_action('litespeed_purge_all');
-        }
+        self::flush_all_wp_caches();
 
         return new WP_REST_Response(array(
             'ok'           => true,
@@ -5785,6 +6047,10 @@ class Bareun_Custom_Studio_Engine_V4 {
         if (!empty($params['healthNotesDefaultConfig']) && is_array($params['healthNotesDefaultConfig']) && isset($params['healthNotesDefaultConfig']['notes'])) {
             file_put_contents($target_dir . '/health-notes-custom-config.default.json', json_encode($params['healthNotesDefaultConfig'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
+        if (!empty($params['clinicGlobalInfo']) && is_array($params['clinicGlobalInfo']) && !empty($params['clinicGlobalInfo']['clinicName'])) {
+            update_option(self::OPT_CLINIC_INFO, $params['clinicGlobalInfo'], false);
+            file_put_contents($target_dir . '/clinic-global-info.json', json_encode($params['clinicGlobalInfo'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
 
         if (!empty($params['pluginPhp'])) {
             $installed_plugin_file = WP_PLUGIN_DIR . '/bareun-member-private-qna/bareun-member-private-qna.php';
@@ -5812,7 +6078,8 @@ class Bareun_Custom_Studio_Engine_V4 {
             'detail-pages-editor.html',
             'bareun-detail-compiler.js',
             'card-image-prompts.js',
-            'detail-pages-config.json'
+            'detail-pages-config.json',
+            'clinic-global-info.json'
         );
 
         $downloaded = array();

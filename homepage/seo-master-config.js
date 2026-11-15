@@ -217,6 +217,14 @@ const SEO_PAGES = {
     preloadImg: DEFAULT_OG_IMAGE,
     breadcrumbName: '바른리프팅 시술 전후 윤곽진단'
   },
+  location: {
+    file: 'location.html',
+    path: '/location/',
+    title: '오시는길 · 진료시간 · 주차 · 비급여 진료비 안내 | 바른한의원 대전본점',
+    description: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 평일·토요일·공휴일 진료시간, 주차 안내 및 의료법 제45조 비급여 진료비용 안내표입니다.',
+    preloadImg: DEFAULT_OG_IMAGE,
+    breadcrumbName: '오시는길 · 진료시간 · 비급여 안내'
+  },
   'integrative-autonomic-circadian-gut-spine-health-review': {
     file: null,
     path: '/integrative-autonomic-circadian-gut-spine-health-review/',
@@ -230,8 +238,35 @@ const SEO_PAGES = {
   }
 };
 
+function resolveSeoPageCfg(key) {
+  if (SEO_PAGES[key]) return SEO_PAGES[key];
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const cfgPath = path.join(__dirname, 'detail-pages-config.json');
+    if (fs.existsSync(cfgPath)) {
+      const parsed = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      const found = (parsed.pages || []).find(p => p && (p.slug === key || p.file === key));
+      if (found) {
+        const cleanSlug = String(found.slug || key).replace(/\.html$/i, '');
+        const korTitle = (found.meta && found.meta.title) || String(found.label || cleanSlug).replace(/^[^\w가-힣]+/, '').trim();
+        const descArr = (found.meta && Array.isArray(found.meta.desc)) ? found.meta.desc : [];
+        return {
+          file: found.file || (cleanSlug + '.html'),
+          path: '/' + cleanSlug + '/',
+          title: `${korTitle} | 바른한의원 대전본점`,
+          description: descArr.join(' ') || `바른한의원 대전본점 ${korTitle} 1:1 대표원장 맞춤 한방 치료 클리닉입니다.`,
+          preloadImg: DEFAULT_OG_IMAGE,
+          breadcrumbName: korTitle
+        };
+      }
+    }
+  } catch (e) {}
+  return SEO_PAGES.home;
+}
+
 function buildJsonLdForKey(key, customOgImg) {
-  const cfg = SEO_PAGES[key] || SEO_PAGES.home;
+  const cfg = resolveSeoPageCfg(key);
   const canonicalUrl = CANONICAL_ORIGIN + cfg.path;
   const ogImg = customOgImg || DEFAULT_OG_IMAGE;
 
@@ -349,7 +384,7 @@ function buildJsonLdForKey(key, customOgImg) {
 }
 
 function buildHeadSeoTagsHtml(key, customOgImg) {
-  const cfg = SEO_PAGES[key] || SEO_PAGES.home;
+  const cfg = resolveSeoPageCfg(key);
   const canonicalUrl = CANONICAL_ORIGIN + cfg.path;
   const ogImg = customOgImg || DEFAULT_OG_IMAGE;
   const ogType = cfg.isArticle ? 'article' : 'website';

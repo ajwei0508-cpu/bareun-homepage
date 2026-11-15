@@ -1772,6 +1772,27 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
       </section>
     </article>
   </main>
+  <style>
+    #hn-mobile-3btn-bar { display: none; }
+    @media (max-width: 900px) {
+      body { padding-bottom: 72px !important; }
+      #hn-mobile-3btn-bar {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+        background: rgba(23, 22, 20, 0.96); border-top: 1px solid rgba(197, 160, 89, 0.38);
+      }
+      #hn-mobile-3btn-bar a {
+        display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+        height: 42px; border-radius: 11px; font-size: 12.5px; font-weight: 900; text-decoration: none;
+      }
+    }
+  </style>
+  <nav id="hn-mobile-3btn-bar" aria-label="모바일 빠른 예약 바">
+    <a href="tel:01056311275" style="background:#FFFFFF;color:#171614;">📞 전화상담</a>
+    <a href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noopener noreferrer" style="background:#FEE500;color:#191919;">💬 카톡예약</a>
+    <a href="https://naver.me/5U1ELn8L" target="_blank" rel="noopener noreferrer" style="background:#03C75A;color:#FFFFFF;">📍 네이버예약</a>
+  </nav>
   <div id="standaloneShareToast" role="status" aria-live="polite"></div>
 
   <script>
@@ -1966,6 +1987,7 @@ function generateLlmsTxtFiles() {
     '- [바른 탈모 · 모근재생](https://www.bareunhaniwon.com/hairloss/): 두피열 하강, 경추 추나, 약침·모근 재생 ([남성탈모](https://www.bareunhaniwon.com/hairloss-male/), [여성탈모](https://www.bareunhaniwon.com/hairloss-female/), [원형탈모](https://www.bareunhaniwon.com/hairloss-alopecia/), [지루성두피염](https://www.bareunhaniwon.com/hairloss-seborrheic/))',
     '- [바른 황제공진단](https://www.bareunhaniwon.com/gongjindan/): 식약처 CITES 정품 사향(L-Muscone) 및 러시아산 녹용 원장 직접 조제',
     '- [바른 전립선 · 남성활력](https://www.bareunhaniwon.com/prostate/): 만성 전립선염, 전립선비대증, 야간뇨, 과민성 방광, 골반저 순환 관리',
+    '- [오시는길 · 진료시간 · 비급여 안내](https://www.bareunhaniwon.com/location/): 대표원장 인사말, 네이버지도·구글지도·티맵·카카오맵 자동 길안내, 진료시간 및 비급여 수가표',
     '- [바른 매선 · 리프팅 윤곽진단](https://www.bareunhaniwon.com/lifting-compare/): 비수술 한방 안면 매선 리프팅 및 윤곽 대칭 교정',
     '',
     '## 3. "오늘의 건강 글" 72 Standalone Medical Columns Index (Reviewed by Dr. Jung-Wi Ahn, KMD)',

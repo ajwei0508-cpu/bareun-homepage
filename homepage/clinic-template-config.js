@@ -2,70 +2,173 @@
  * ============================================================================
  * 🏛️ BAREUN KOREAN MEDICINE — B2B WHITE-LABEL MASTER TEMPLATE CONFIG
  * ============================================================================
- * 전국 한의원 템플릿 납품 시 아래 JSON 객체(CLINIC_TEMPLATE_CONFIG)만 수정하면
- * 메인 3D 시네마(index.html / story-3d.html) 및 6대 클리닉 상세페이지 전체의
- * 한의원명, 대표원장명, 연락처, 진료시간, 주소, 기본 테마/시안성 모드가 즉시 변경됩니다.
  */
 window.CLINIC_TEMPLATE_CONFIG = {
-  // 1. 한의원 기본 브랜드 정보
-  clinicName: '바른한의원 대전본점',
-  clinicNameEn: 'BAREUN KOREAN MEDICINE CLINIC DAEJEON',
-  directorName: '안정위',
-  directorTitle: '대표원장',
-  businessRegNo: '211-91-10479',
-  careerYears: '15년',
-  slogan: '바른 마음, 정직한 처방 · 평생 주치의 바른한의원 대전본점',
-
-  // 2. 연락처 및 예약 채널
-  phone: '010-5631-1275',
-  kakaoUrl: 'https://pf.kakao.com/_ykxcLK',
-  naverBookingUrl: 'https://naver.me/5U1ELn8L',
-  address: '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)',
-
-  // 3. 진료 시간 안내 (환자 신뢰 & 시안성 정보)
-  hours: [
-    { day: '평일 (월~금)', time: '09:00 ~ 19:00' },
-    { day: '토요일 · 공휴일', time: '09:00 ~ 14:00' },
-    { day: '정기휴진', time: '매주 일요일 휴진' }
+  "clinicName": "바른한의원 대전본점",
+  "clinicNameEn": "BAREUN KOREAN MEDICINE CLINIC DAEJEON",
+  "directorName": "안정위",
+  "directorTitle": "대표원장",
+  "businessRegNo": "211-91-10479",
+  "careerYears": "15년",
+  "slogan": "바른 마음, 정직한 처방 · 평생 주치의 바른한의원 대전본점",
+  "greetingEyebrow": "DIRECTOR'S WARM GREETING · 대표원장 환영 인사말",
+  "greetingTitle": "먼 길 찾아주시는 소중한 발걸음, 내 가족을 돌보는 정직한 마음으로 맞이합니다",
+  "greetingBody": "바른한의원 대전본점을 찾아주셔서 진심으로 감사합니다. 통증과 불편함 너머의 일상까지 깊이 경청하며, 제 가족과 아이에게 직접 처방·시술하는 검증된 치료만으로 한 분 한 분 정성껏 진료하겠습니다.",
+  "greetingSign": "바른한의원 대전본점 대표원장 안정위 배상",
+  "phone": "010-5631-1275",
+  "kakaoUrl": "https://pf.kakao.com/_ykxcLK",
+  "naverBookingUrl": "https://naver.me/5U1ELn8L",
+  "address": "대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)",
+  "shortAddress": "대전 대덕구 비래동로7번길 1, 2층",
+  "postalCode": "34417",
+  "lat": 36.35536,
+  "lng": 127.44778,
+  "parkingGuide": "건물 전용 주차 공간 및 비래동로7번길 인근 노상·공영 주차 무료 이용 가능 (초진·거동 불편 환자분은 내원 전 010-5631-1275로 전화 주시면 가장 편한 주차 위치를 바로 안내해 드립니다.)",
+  "transitGuide": "대전 복합터미널 차량 7분 거리 · 비래동 행정복지센터 및 비래삼호아파트 인근 도보 3분 (비래동로7번길 1, 2층)",
+  "hours": [
+    {
+      "day": "평일 (월 ~ 금)",
+      "time": "09:00 ~ 19:00",
+      "note": "초진·재진 예약 우선 진료"
+    },
+    {
+      "day": "토요일 · 공휴일",
+      "time": "09:00 ~ 14:00",
+      "note": "점심시간 없이 연속 진료"
+    },
+    {
+      "day": "점심시간 (평일)",
+      "time": "12:30 ~ 14:00",
+      "note": "토요일·공휴일 점심시간 없음"
+    },
+    {
+      "day": "정기 휴진",
+      "time": "매주 일요일 휴진",
+      "note": "임시 휴진 시 상단 배너 사전 공지"
+    }
   ],
-
-  // 4. 기본 테마 & 시안성 프리셋 ('warm-hanji' | 'dark-royal' | 'high-visibility')
-  defaultTheme: 'warm-hanji',
-
-  // 4-1. 바른한의원 5대 시그니처 브랜드 컬러 팔레트 (심리학 기반 하이엔드 컬러 시스템)
-  brandPalette: {
-    beige: { hex: '#F5F1E8', subHex: '#EFE9DC', meaning: '신뢰감 (Trust)', role: '웜 한지 에디토리얼 배경 및 공간 베이스' },
-    brown: { hex: '#4A3525', subHex: '#5E4736', meaning: '부드러움 (Softness)', role: '부드러운 프레임, 보더, 서브 타이틀 및 온기 있는 그림자' },
-    black: { hex: '#171614', subHex: '#23201C', meaning: '진실 (Truth)', role: '정직한 진료를 상징하는 고대비 본문·헤드라인 타이포그래피' },
-    white: { hex: '#FFFFFF', glass: 'rgba(255, 255, 255, 0.88)', meaning: '투명 (Transparency)', role: '투명한 탕전과 진료를 상징하는 글래스모피즘 카드·헤더' },
-    green: { hex: '#2D5A43', subHex: '#3D7357', tint: '#E8F2EC', meaning: '자연 (Nature)', role: '자연 치유력과 생명력을 상징하는 포인트·CTA·활성 배지' }
+  "holidayNotice": {
+    "enabled": false,
+    "badge": "진료 안내",
+    "text": "현재 예정된 임시 휴진일이 없습니다. 토요일 및 공휴일은 09:00 ~ 14:00 점심시간 없이 정상 진료합니다."
   },
-
-  // 5. 환자 안심 5대 임상 신뢰 지표 (Clinical Trust Stack)
-  trustMetrics: [
+  "nonCoveredUpdatedDate": "2026-11-15",
+  "nonCoveredFees": [
     {
-      badge: 'CERTIFIED 01 · 원장 1:1 책임 진료',
-      value: '15년+',
-      title: '대표원장 1:1 심층 맥진·문진',
-      desc: '3분 공장식 진료를 배제하고 초진 최소 15분 이상 양 손목 27맥상과 사상체질을 정밀 판독합니다.'
+      "category": "추나요법",
+      "name": "비급여 체형·턱관절 교정 추나요법",
+      "spec": "1회 기준 (건보 연 20회 초과/비급여 대상)",
+      "price": "30,000원 ~ 50,000원",
+      "note": "연간 20회 이내 단순·복잡추나는 건강보험 급여 적용"
     },
     {
-      badge: 'CERTIFIED 02 · 무해성 안전 검증',
-      value: '320종 ZERO',
-      title: '중금속·잔류농약 불검출 GMP 약재',
-      desc: '식약처 인증 규격 한약재만을 엄선하며 원내 10단계 정수·저온 무균 탕전 시스템에서 직접 달입니다.'
+      "category": "약침 시술",
+      "name": "정제 약침 (근골격·신경감압·면역)",
+      "spec": "1회 / 부위·용량별",
+      "price": "10,000원 ~ 30,000원",
+      "note": "시술 부위 및 정제 약침 성분에 따라 차등"
     },
     {
-      badge: 'CERTIFIED 03 · 간·신장 안전성 입증',
-      value: '99.4%',
-      title: '복용 전·후 간 기능(AST/ALT) 안전 유지',
-      desc: '혈액 생화학 지표 추적 관찰을 통해 어린아이부터 어르신까지 장기 복용 안전성을 데이터로 증명합니다.'
+      "category": "특수 약침·매선",
+      "name": "모낭재생 · 산삼비만 · 한방 리프팅 약침/매선",
+      "spec": "1회 / 집중 시술",
+      "price": "30,000원 ~ 150,000원",
+      "note": "두피·체형·윤곽 시술 범위 및 매선 수량별"
     },
     {
-      badge: 'CERTIFIED 04 · 보건복지부 급여 지정',
-      value: '건보 적용',
-      title: '연간 20회 추나요법 건강보험 급여 및 실손 적용',
-      desc: '비수술 척추·골반 1:1 수기 추나 치료 시 건강보험 급여 혜택으로 비용 부담을 낮추고 치료 효과를 높입니다.'
+      "category": "맞춤 탕약",
+      "name": "체질 맞춤 치료·보양 한약 (통증·소화·면역·전립선)",
+      "spec": "15일분 ~ 1개월분 (원내 직탕)",
+      "price": "220,000원 ~ 450,000원",
+      "note": "식약처 인증 GMP 한약재 · 녹용 등급 추가 시 변동"
+    },
+    {
+      "category": "특화 한약",
+      "name": "바른 소아 키성장 · 성조숙증 맞춤 한약",
+      "spec": "1개월분",
+      "price": "350,000원 ~ 550,000원",
+      "note": "초음파 성장판·체성분 분석 및 녹용 배합별"
+    },
+    {
+      "category": "특화 한약",
+      "name": "식욕ZERO 체지방 분해 다이어트 한약",
+      "spec": "1개월 프로그램",
+      "price": "250,000원 ~ 450,000원",
+      "note": "대사 단계 및 체성분 맞춤 1:1 단독 처방"
+    },
+    {
+      "category": "명품 환제",
+      "name": "식약처 CITES 인증 정품 사향 황제공진단",
+      "spec": "10환 / 30환",
+      "price": "500,000원 ~ 1,500,000원",
+      "note": "천연 사향·원용 분골 함량 및 환수별 차등"
+    },
+    {
+      "category": "제증명 수수료",
+      "name": "일반진단서 / 진료확인서·소견서 / 진료기록사본",
+      "spec": "1통 기준",
+      "price": "1,000원 ~ 20,000원",
+      "note": "보건복지부 의료기관 제증명수수료 기준 준수"
+    }
+  ],
+  "defaultTheme": "warm-hanji",
+  "brandPalette": {
+    "beige": {
+      "hex": "#F5F1E8",
+      "subHex": "#EFE9DC",
+      "meaning": "신뢰감 (Trust)",
+      "role": "웜 한지 에디토리얼 배경 및 공간 베이스"
+    },
+    "brown": {
+      "hex": "#4A3525",
+      "subHex": "#5E4736",
+      "meaning": "부드러움 (Softness)",
+      "role": "부드러운 프레임, 보더, 서브 타이틀 및 온기 있는 그림자"
+    },
+    "black": {
+      "hex": "#171614",
+      "subHex": "#23201C",
+      "meaning": "진실 (Truth)",
+      "role": "정직한 진료를 상징하는 고대비 본문·헤드라인 타이포그래피"
+    },
+    "white": {
+      "hex": "#FFFFFF",
+      "glass": "rgba(255, 255, 255, 0.88)",
+      "meaning": "투명 (Transparency)",
+      "role": "투명한 탕전과 진료를 상징하는 글래스모피즘 카드·헤더"
+    },
+    "green": {
+      "hex": "#2D5A43",
+      "subHex": "#3D7357",
+      "tint": "#E8F2EC",
+      "meaning": "자연 (Nature)",
+      "role": "자연 치유력과 생명력을 상징하는 포인트·CTA·활성 배지"
+    }
+  },
+  "trustMetrics": [
+    {
+      "badge": "CERTIFIED 01 · 원장 1:1 책임 진료",
+      "value": "15년+",
+      "title": "대표원장 1:1 심층 맥진·문진",
+      "desc": "3분 공장식 진료를 배제하고 초진 최소 15분 이상 양 손목 27맥상과 사상체질을 정밀 판독합니다."
+    },
+    {
+      "badge": "CERTIFIED 02 · 무해성 안전 검증",
+      "value": "320종 ZERO",
+      "title": "중금속·잔류농약 불검출 GMP 약재",
+      "desc": "식약처 인증 규격 한약재만을 엄선하며 원내 10단계 정수·저온 무균 탕전 시스템에서 직접 달입니다."
+    },
+    {
+      "badge": "CERTIFIED 03 · 간·신장 안전성 입증",
+      "value": "99.4%",
+      "title": "복용 전·후 간 기능(AST/ALT) 안전 유지",
+      "desc": "혈액 생화학 지표 추적 관찰을 통해 어린아이부터 어르신까지 장기 복용 안전성을 데이터로 증명합니다."
+    },
+    {
+      "badge": "CERTIFIED 04 · 보건복지부 급여 지정",
+      "value": "건보 적용",
+      "title": "연간 20회 추나요법 건강보험 급여 및 실손 적용",
+      "desc": "비수술 척추·골반 1:1 수기 추나 치료 시 건강보험 급여 혜택으로 비용 부담을 낮추고 치료 효과를 높입니다."
     }
   ]
 };

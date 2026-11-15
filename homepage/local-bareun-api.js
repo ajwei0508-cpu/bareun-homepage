@@ -377,15 +377,26 @@ function buildVisitSummary(db, includeMasterLogs) {
 
   const kstNow = Date.now() + 9 * 3600 * 1000;
   const todayDate = new Date(kstNow).toISOString().slice(0, 10);
+  const totalDb = visits.length;
+  const todayVisits = visits.filter(v => v.visitDate === todayDate);
+
+  // Consumer public mode: return ONLY todayPv & totalPv (strictly zero detailed analytics exposed)
+  if (!includeMasterLogs) {
+    return {
+      ok: true,
+      isMaster: false,
+      todayPv: todayVisits.length,
+      totalPv: baseOffset + totalDb,
+      serverTime: nowStr()
+    };
+  }
+
   const yesterdayDate = new Date(kstNow - 86400 * 1000).toISOString().slice(0, 10);
   const weekAgoDate = new Date(kstNow - 6 * 86400 * 1000).toISOString().slice(0, 10);
   const monthAgoDate = new Date(kstNow - 29 * 86400 * 1000).toISOString().slice(0, 10);
   const activeSinceStr = new Date(kstNow - 15 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19);
 
-  const totalDb = visits.length;
   const totalUvDb = new Set(visits.map(v => v.visitorHash)).size;
-
-  const todayVisits = visits.filter(v => v.visitDate === todayDate);
   const yesterdayVisits = visits.filter(v => v.visitDate === yesterdayDate);
   const weekVisits = visits.filter(v => v.visitDate >= weekAgoDate);
   const monthVisits = visits.filter(v => v.visitDate >= monthAgoDate);
@@ -446,6 +457,7 @@ function buildVisitSummary(db, includeMasterLogs) {
 
   const summary = {
     ok: true,
+    isMaster: true,
     totalPv: baseOffset + totalDb,
     rawDbPv: totalDb,
     baseOffset,
@@ -1015,6 +1027,32 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
   if (route === '/auto-blog/run' && req.method === 'POST') {
     const report = syncNineDiseaseAutoNotes();
     return sendJson(res, 200, { ok: true, report });
+  }
+
+  if (route === '/clinic-info' && req.method === 'GET') {
+    const infoPath = path.join(__dirname, 'clinic-global-info.json');
+    const defPath = path.join(__dirname, 'clinic-global-info.default.json');
+    const src = fs.existsSync(infoPath) ? infoPath : defPath;
+    if (fs.existsSync(src)) {
+      try {
+        return sendJson(res, 200, { ok: true, info: JSON.parse(fs.readFileSync(src, 'utf8')) });
+      } catch (e) {}
+    }
+    return sendJson(res, 200, { ok: true, info: null });
+  }
+
+  if (route === '/clinic-info' && req.method === 'POST') {
+    const body = await readJsonBody(req);
+    const info = (body && body.info && typeof body.info === 'object') ? body.info : body;
+    if (!info || !info.clinicName) {
+      return sendJson(res, 400, { ok: false, error: '유효한 병원 정보 데이터가 없습니다.' });
+    }
+    info.updatedAt = new Date().toISOString();
+    fs.writeFileSync(path.join(__dirname, 'clinic-global-info.json'), JSON.stringify(info, null, 2) + '\n', 'utf8');
+    try {
+      require('./build-location-page.js').run();
+    } catch (e) {}
+    return sendJson(res, 200, { ok: true, info, message: '병원 정보 및 오시는길 페이지가 반영되었습니다.' });
   }
 
   if (route === '/body-notes' && req.method === 'POST') {
