@@ -5,7 +5,7 @@ const path = require('path');
 const querystring = require('querystring');
 const { execFileSync, execFile } = require('child_process');
 const { handleBareunApi } = require('./local-bareun-api.js');
-const { startAutoBlogScheduler } = require('./auto-blog-engine.js');
+const { startAutoBlogScheduler, renderStandaloneHealthNoteFullPage } = require('./auto-blog-engine.js');
 
 // 서버 기동 시 9대 질환 블로그 & 3D 건강노트 자동화 엔진 스케줄러 즉시 시작
 startAutoBlogScheduler();
@@ -1402,6 +1402,20 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
           res.end(JSON.stringify({ ok: false, error: err.message }));
         }
       });
+      return;
+    }
+  }
+
+  // Standalone 7-Stage Health Note Canonical Route (/health-note-{id}/)
+  const hnRouteMatch = reqPath.match(/^\/health-note-([a-z0-9-]+)\/?$/i);
+  if (hnRouteMatch && req.method === 'GET') {
+    const renderedHtml = renderStandaloneHealthNoteFullPage(hnRouteMatch[1], { localMode: true });
+    if (renderedHtml) {
+      res.writeHead(200, {
+        'Content-Type': 'text/html; charset=UTF-8',
+        'Cache-Control': 'no-store, no-cache, must-revalidate'
+      });
+      res.end(renderedHtml);
       return;
     }
   }

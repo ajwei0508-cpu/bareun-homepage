@@ -65,6 +65,8 @@ const CLINIC_BASE_ORG = {
     'https://www.youtube.com/@bareunhaniwon',
     'https://naver.me/5U1ELn8L',
     'https://blog.naver.com/wei0508',
+    'https://www.threads.net/@bareun_oriental',
+    'https://www.instagram.com/bareun_oriental/',
     'https://pf.kakao.com/_ykxcLK'
   ],
   founder: {
@@ -291,7 +293,6 @@ function buildJsonLdForKey(key, customOgImg) {
     try {
       const { BODY_3D_AUTO_NOTES } = require('./body-3d-auto-notes-data.js');
       const all72 = [];
-      const latest9Faq = [];
       for (const [partId, eps] of Object.entries(BODY_3D_AUTO_NOTES || {})) {
         if (!Array.isArray(eps) || eps.length === 0) continue;
         eps.forEach(ep => {
@@ -302,24 +303,6 @@ function buildJsonLdForKey(key, customOgImg) {
             keyword: ep.keyword,
             title: ep.questionTitle
           });
-        });
-        const latestEp = eps[eps.length - 1];
-        if (latestEp) {
-          latest9Faq.push({
-            '@type': 'Question',
-            name: `[${latestEp.partLabel}] ${latestEp.questionTitle}`,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: `${(latestEp.truthLines || []).join(' ')} 올바른 관리: ${(latestEp.mythLines && latestEp.mythLines[1]) || ''} 1분 체크: ${(latestEp.checkList || []).join(' / ')} (학술 근거: ${latestEp.academicBasis || '국제 SCI 학술지'})`
-            }
-          });
-        }
-      }
-      if (latest9Faq.length > 0) {
-        graph.push({
-          '@type': 'FAQPage',
-          '@id': canonicalUrl + '#faq',
-          mainEntity: latest9Faq
         });
       }
       if (all72.length > 0) {
@@ -332,39 +315,16 @@ function buildJsonLdForKey(key, customOgImg) {
             '@type': 'ListItem',
             position: idx + 1,
             name: `[${n.partLabel} · ${n.keyword}] ${n.title}`,
-            url: `${CANONICAL_ORIGIN}/body-explorer/?part=${n.partId}&note=${n.id}`
+            url: `${CANONICAL_ORIGIN}/health-note-${n.id}/`
           }))
         });
       }
     } catch (e) {}
-  } else if (cfg.hasFaq) {
-    graph.push({
-      '@type': 'FAQPage',
-      '@id': canonicalUrl + '#faq',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '혈액검사와 내시경·MRI 결과가 정상인데도 왜 몸은 계속 피곤하고 아픈가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '일반 영상·혈액검사는 장기 조직의 구조적 손상을 찾는 데 최적화되어 있습니다. 자율신경 변이도 저하, 위 배출 지연, 저등급 만성염증, 골반·척추의 기능적 불균형은 구조 손상 이전의 기능적 조절 장애이므로 수면·식습관·생체역학 평가가 함께 이루어져야 원인을 파악할 수 있습니다.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: '바른한의원 대전본점의 위치와 진료시간은 어떻게 되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '대전광역시 대덕구 비래동로7번길 1, 2층(비래동)에 위치하고 있으며 대표전화는 010-5631-1275입니다. 평일(월~금)은 오전 9시부터 저녁 7시까지, 토요일 및 공휴일은 오전 9시부터 오후 2시까지 진료하며 일요일은 휴진입니다.'
-          }
-        }
-      ]
-    });
   }
 
   if (cfg.isArticle) {
     graph.push({
-      '@type': 'Article',
+      '@type': 'MedicalScholarlyArticle',
       '@id': canonicalUrl + '#article',
       headline: cfg.title,
       description: cfg.description,
@@ -374,32 +334,11 @@ function buildJsonLdForKey(key, customOgImg) {
       inLanguage: 'ko-KR',
       author: {
         '@type': 'Person',
-        name: '바른 통합의학 리서치 에디토리얼 (감수: 안정위 한의사)',
+        '@id': CANONICAL_ORIGIN + '/director/#physician',
+        name: '안정위',
         url: CANONICAL_ORIGIN + '/director/'
       },
       publisher: { '@id': CANONICAL_ORIGIN + '/#clinic' }
-    });
-    graph.push({
-      '@type': 'FAQPage',
-      '@id': canonicalUrl + '#faq',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '혈액검사와 내시경·MRI 결과가 정상인데도 왜 몸은 계속 피곤하고 아픈가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '일반 영상·혈액검사는 장기 조직의 파괴나 종양·궤양 같은 구조적 병변을 찾아내는 데 최적화되어 있습니다. 반면 자율신경 변이도 저하, 위 배출 속도 지연, 저등급 만성염증, 근막·골반의 기능적 불균형은 구조적 손상 이전 단계인 기능적 조절 장애(Functional Dysregulation)에 해당하므로 수면·식습관·생체역학 평가가 함께 이루어져야 원인을 파악할 수 있습니다.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: '만성 피로와 소화불량을 동시에 겪을 때 가장 먼저 바꾸어야 할 생활습관 한 가지는 무엇인가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '취침 3시간 전 금식(야간 12시간 공복 유지)과 일정한 시각의 아침 자연광 노출입니다. 밤사이 위장관이 비워져야 미주신경 회복과 깊은 서파수면이 이루어지며, 다음 날 아침 코르티솔·세로토닌 일주기 리듬이 정상화되어 피로와 소화력이 함께 개선됩니다.'
-          }
-        }
-      ]
     });
   }
 

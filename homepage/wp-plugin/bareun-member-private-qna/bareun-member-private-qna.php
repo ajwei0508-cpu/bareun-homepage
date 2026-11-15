@@ -1645,7 +1645,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (!is_array($params)) {
             $params = array();
         }
-        $note_id = sanitize_text_field($params['noteId'] ?? ($params['id'] ?? ''));
+        $note_id = strtolower(preg_replace('/[^a-z0-9\-]/i', '', (string) ($params['noteId'] ?? ($params['id'] ?? ''))));
         if ($note_id === '') {
             return new \WP_REST_Response(array('ok' => false, 'message' => 'noteId is required'), 400);
         }
@@ -1798,7 +1798,7 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('post_thumbnail_html', '__return_empty_string', 99);
         add_filter('body_class', array(__CLASS__, 'filter_body_class'), 20);
 
-        // Clean XML Sitemap & AI-friendly robots.txt & Direct Body-Explorer Permalinks for Health Notes
+        // Clean XML Sitemap & AI-friendly robots.txt & Standalone Canonical Permalinks (/health-note-{id}/) for Health Notes
         add_filter('post_link', array(__CLASS__, 'filter_health_note_permalink'), 99, 2);
         add_filter('wp_sitemaps_add_provider', array(__CLASS__, 'filter_sitemap_providers'), 10, 2);
         add_filter('wp_sitemaps_posts_entry', array(__CLASS__, 'filter_sitemap_post_entry'), 10, 3);
@@ -1843,8 +1843,18 @@ class Bareun_Master_SEO_Engine_V1 {
                 if (!isset($decoded['clinicBaseOrg']['sameAs']) || !is_array($decoded['clinicBaseOrg']['sameAs'])) {
                     $decoded['clinicBaseOrg']['sameAs'] = array();
                 }
-                if (!in_array('https://www.youtube.com/@bareunhaniwon', $decoded['clinicBaseOrg']['sameAs'], true)) {
-                    array_unshift($decoded['clinicBaseOrg']['sameAs'], 'https://www.youtube.com/@bareunhaniwon');
+                $official_same_as = array(
+                    'https://www.youtube.com/@bareunhaniwon',
+                    'https://naver.me/5U1ELn8L',
+                    'https://blog.naver.com/wei0508',
+                    'https://www.threads.net/@bareun_oriental',
+                    'https://www.instagram.com/bareun_oriental/',
+                    'https://pf.kakao.com/_ykxcLK'
+                );
+                foreach (array_reverse($official_same_as) as $sa_url) {
+                    if (!in_array($sa_url, $decoded['clinicBaseOrg']['sameAs'], true)) {
+                        array_unshift($decoded['clinicBaseOrg']['sameAs'], $sa_url);
+                    }
                 }
             }
             if (is_array($decoded) && isset($decoded['pages']) && is_array($decoded['pages'])) {
@@ -1881,9 +1891,18 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         update_option(self::OPT_VERIFY_CODES, $cur_v);
 
-        // 1) Write physical /llms.txt and IndexNow key .txt in ABSPATH so Nginx/OpenResty static handler serves 200 OK
+        // 1) Write physical /llms.txt (if custom not already stored) and IndexNow key .txt in ABSPATH so Nginx/OpenResty static handler serves 200 OK
         $llms_file = ABSPATH . 'llms.txt';
-        @file_put_contents($llms_file, base64_decode('IyDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uIE1haW4gQnJhbmNoKQo+IOuMgOyghOq0keyXreyLnCDrjIDrjZXqtawg67mE656Y64+Z66GcN+uyiOq4uCAxLCAy7Li1ICjsmrDtjrjrsojtmLggMzQ0MTcpIHwg64yA7ZGc67KI7Zi4OiAwMTAtNTYzMS0xMjc1IHwg64yA7ZGc7JuQ7J6lOiDslYjsoJXsnIQKPiDsp4Tro4zsi5zqsIQ6IO2PieydvCjsm5R+6riIKSAwOTowMH4xOTowMCDCtyDthqDsmpTsnbwg67CPIOqzte2ctOydvCAwOTowMH4xNDowMCDCtyDsnbzsmpTsnbwg7Zy07KeECj4g7ZW07Jm4IOuplOydtOyggCDsnZjtlZkg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgTkVKTSwgVGhlIExhbmNldCwgSkFNQSwgUGh5c2lvbG9naWNhbCBSZXZpZXdzLCBFdXJvcGVhbiBIZWFydCBKb3VybmFsLCBKQ0VNLCBIdW1hbiBSZXByb2R1Y3Rpb24gVXBkYXRlLCBFdXJvcGVhbiBVcm9sb2d5KSDrsI8g7Ya17ZWp7IOd66as7ZWZIOyXsOq1rCDqt7zqsbAg6riw67CYIDnrjIAg7KCV67CA6rKA7KeEIMK3IDE6MSDsgqzsg4HssrTsp4gg7ZWc7JW9IMK3IOyImOq4sCDstpTrgpggwrcg7IaM7JWEIO2CpOyEseyepSDCtyDsi53smpVaRVJPIOuLpOydtOyWtO2KuCDCtyDrkZDtlLzsl7Qg7YOI66qoIMK3IOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIMK3IOyghOumveyEoCDtgbTrpqzri4kgJiDtkoDsiqTtgazrprAgM0Qg7J247LK066qo7ZiVIOqxtOqwlSDtj6zthLguCgojIyBDbGluaWMgSW5mb3JtYXRpb24gKE5BUCAmIE9mZmljaWFsIENoYW5uZWxzKQotIE9mZmljaWFsIFdlYnNpdGU6IGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLwotIENsaW5pYyBOYW1lOiDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uKQotIENoaWVmIERpcmVjdG9yOiDslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIChEci4gSnVuZy1XaSBBaG4sIEtNRCkKLSBBZGRyZXNzOiDrjIDsoITqtJHsl63si5wg64yA642V6rWsIOu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSAoMkYsIDEsIEJpcmFlZG9uZy1ybyA3YmVvbi1naWwsIERhZWRlb2stZ3UsIERhZWplb24sIDM0NDE3LCBSZXB1YmxpYyBvZiBLb3JlYSkKLSBUZWxlcGhvbmU6IDAxMC01NjMxLTEyNzUgKCs4Mi0xMC01NjMxLTEyNzUpCi0gSG91cnM6IE1vbi1GcmkgMDk6MDAtMTk6MDAsIFNhdCAmIFB1YmxpYyBIb2xpZGF5cyAwOTowMC0xNDowMCwgQ2xvc2VkIG9uIFN1bmRheXMKLSBOYXZlciBQbGFjZTogaHR0cHM6Ly9uYXZlci5tZS81VTFFTG44TAotIE9mZmljaWFsIEJsb2c6IGh0dHBzOi8vYmxvZy5uYXZlci5jb20vd2VpMDUwOAotIEtha2FvVGFsayBDb25zdWx0YXRpb246IGh0dHBzOi8vcGYua2FrYW8uY29tL195a3hjTEsKCiMjIFNwZWNpYWxpemVkIENsaW5pY2FsIERpdmlzaW9ucwotIFvrqZTsnbggM0Qg7ZmY7J6QIOyKpO2GoOumrCDsh7zro7hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyk6IOyVhOu5oCDtlZzsnZjsgqzrpbwg7LC+64qUIO2ZmOyekCDsiqTthqDrpqwg67CPIDbrjIAg7KSR7KCQIO2BtOumrOuLiSDslYjrgrQuCi0gW+yViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4RdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpcmVjdG9yLyk6IOy0iOydjO2MjCwg7KCB7Jm47ISgIOyytOyXtOynhOuLqCwg7J2067mE7J247ZuEIOuCtOyLnOqyvSwg7IKs7IOB7LK07KeILCDssrTsp4DrsKkoSW5Cb2R5KSwg7J6Q7Jyo7Iug6rK9KEhSViksIOqwhMK364u5IOuMgOyCrCwg7ZiI6rSAIOuFuO2ZlCwg7ISx7J6l7YyQIOqygOyCrCDrsI8g7JuQ64K0IOustOq3oCDtg5XsoIQg7Iuc7Iqk7YWcLgotIFvrsJTrpbgg7LaU64KYIMK3IOyymey2lOq1kOyglSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2NodW5hLyk6IO2XiOumrOuUlOyKpO2BrCwg66qp65SU7Iqk7YGsLCDqsbDrtoHrqqksIOqzqOuwmCDrtojqt6DtmJUsIOyymey2lOq0gO2YkeywqeymnSDruYTsiJjsiKAg64yA7ZGc7JuQ7J6lIOyImOq4sCDstpTrgpjsmpTrspUg67CPIOyVvey5qC4KLSBb67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0g7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9ncm93dGgvKTog66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg67aE7ISdLCDshozslYTruYTrp4wg7LK07KeA67CpLe2CpCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOygkOuniSDrqbTsl60g67CPIOyEseyepSDtlZzslb0uCi0gW+uwlOuluCDri6TsnbTslrTtirggwrcg7Iud7JqVWkVSTyDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpZXQtemVyby8pOiDqsIjsg4nsp4DrsKkg64yA7IKsIO2ZnOyEse2ZlCwg6re87JyhIOuztOyhtCDssrTsp4DrsKkg6rCQ65+JLCDrtoDsooXCt+uPheyGjCDrsLDstpwg66ee7LakIO2VnOyVvSDrsI8g67mE64yA66m0IOynhOujjCDsp4Dsm5AuCi0gW+uwlOuluCDtg4jrqqggwrcg66qo6re87J6s7IOdIO2Gte2VqSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLyk6IOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rK97LaUIOy2lOuCmCwg7KCV7KCcIOuwnOuqqCDslb3suaguCiAgLSBb64Ko7ISx7YOI66qoIChN7J6QwrfsoJXsiJjrpqwpXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1tYWxlLykKICAtIFvsm5DtmJXtg4jrqqggKOyekOqwgOuptOyXrSDrs7Xsm5ApXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1hbG9wZWNpYS8pCiAgLSBb7Jes7ISx7YOI66qoICjqsIDrpbTrp4jCt+uzvOulqCldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLWZlbWFsZS8pCiAgLSBb7KeA66Oo7ISx65GQ7ZS87Je8ICjrkZDtlLwg7Je064+Fwrfrqqjrgq3sl7wg7ZW064+FKV0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vaGFpcmxvc3Mtc2Vib3JyaGVpYy8pCi0gW+uwlOuluCDtmansoJzqs7Xsp4Tri6gg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9nb25namluZGFuLyk6IOyLneyVveyymCBDSVRFUyDsnbjspp0g7KCV7ZKIIOyynOyXsCDsgqztlqUoTC1NdXNjb25lKSDrsI8g65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57JqpIOuMgO2RnOybkOyepSDsp4HsoJEg7IiY7KCcIOyhsOygnC4KLSBb67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9wcm9zdGF0ZS8pOiDrp4zshLEg7KCE66a97ISg7Je8LCDsoITrpr3shKDruYTrjIDspp0sIOyVvOqwhOuHqCwg6rO866+87ISxIOuwqeq0kSwg6rOo67CY7KCA6re8IOyauO2YiCDqsJDslZUg7LmY66OMLgotIFvrsJTrpbjrpqztlITtjIUg7Iuc7IigIOyghO2bhCDsnKTqs73sp4Tri6hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2xpZnRpbmctY29tcGFyZS8pOiDruYTsiJjsiKAg7ZWc67CpIOunpOyEoMK37JW97LmoIOyViOuptCDrpqztlITtjIUg67CPIDPsoJAg7KSR7Ius7LaVIOyghO2bhCDsnKTqs70g7KCV67CAIOu5hOq1kCDsiqTtipzrlJTsmKQuCgojIyBJbnRlcmFjdGl2ZSAzRCBBbmF0b215ICYgRXZpZGVuY2UtQmFzZWQgTWVkaWNhbCBKb3VybmFsCi0gW+2SgOyKpO2BrOumsCAzRCDsnbjssrTrqqjtmJUgwrcg7KeE66OMIOyCtO2OtOuztOq4sF0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vYm9keS1leHBsb3Jlci8pOiDsoITsi6Ag6re87Jyhwrfsi6Dqsr3Ct+q0gOygiMK37ZiI6rSAIDTrjIAg6rOE7Ya1IOyLpOyLnOqwhCAzRCDrqqjshZgg67CPIDnrjIAg67aA7JyE67OEIDLsnbwg7KO86riwIOyInOyImCDqsbTqsJUg7KCV67O0IOyVhOy5tOydtOu4jC4KLSBb7Ya17ZWp7J2Y7ZWZIOyduOyCrOydtO2KuCDsoIDrhJAgJiDsp4jtmZjrs4QgMToxIOu5hOqzteqwnCBRJkFdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2Fzay1kb2N0b3IvKTog7ZW07Jm4IFNDSSDtlZnsiKDsp4Ag6riw67CYIOydmO2VmSDrpqzrt7Ag67CPIO2ajOybkCDsoITsmqkgMTAwJSDruYTqs7XqsJwgMToxIOqxtOqwlSDsg4Hri7QuCi0gW+uMgO2RnCDtlZnsiKAg7Lm865+8OiDrp4zshLEg7ZS866GcwrfshoztmZQg7J6l7JWgwrfsspnstpQg7Ya17KadIO2Gte2VqeyDneumrO2VmSDqsIDsnbTrk5xdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2ludGVncmF0aXZlLWF1dG9ub21pYy1jaXJjYWRpYW4tZ3V0LXNwaW5lLWhlYWx0aC1yZXZpZXcvKTog7J6Q7Jyo7Iug6rK9LCDsnqUt64eMIOy2lShNaWNyb2Jpb3RhLUd1dC1CcmFpbiBBeGlzKSwg7LKZ7LaUIOyDneyytOyXre2VmeydmCDsg4HtmLjsnpHsmqkg66as67ewLgo='));
+        $stored_llms = (string) get_option(self::OPT_LLMS_TXT, '');
+        if ($stored_llms !== '') {
+            @file_put_contents($llms_file, $stored_llms);
+        } elseif (!file_exists($llms_file)) {
+            @file_put_contents($llms_file, base64_decode('IyDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uIE1haW4gQnJhbmNoKQo+IOuMgOyghOq0keyXreyLnCDrjIDrjZXqtawg67mE656Y64+Z66GcN+uyiOq4uCAxLCAy7Li1ICjsmrDtjrjrsojtmLggMzQ0MTcpIHwg64yA7ZGc67KI7Zi4OiAwMTAtNTYzMS0xMjc1IHwg64yA7ZGc7JuQ7J6lOiDslYjsoJXsnIQKPiDsp4Tro4zsi5zqsIQ6IO2PieydvCjsm5R+6riIKSAwOTowMH4xOTowMCDCtyDthqDsmpTsnbwg67CPIOqzte2ctOydvCAwOTowMH4xNDowMCDCtyDsnbzsmpTsnbwg7Zy07KeECj4g7ZW07Jm4IOuplOydtOyggCDsnZjtlZkg7ZWZ7Iig7KeAKE5hdHVyZSBNZWRpY2luZSwgTkVKTSwgVGhlIExhbmNldCwgSkFNQSwgUGh5c2lvbG9naWNhbCBSZXZpZXdzLCBFdXJvcGVhbiBIZWFydCBKb3VybmFsLCBKQ0VNLCBIdW1hbiBSZXByb2R1Y3Rpb24gVXBkYXRlLCBFdXJvcGVhbiBVcm9sb2d5KSDrsI8g7Ya17ZWp7IOd66as7ZWZIOyXsOq1rCDqt7zqsbAg6riw67CYIDnrjIAg7KCV67CA6rKA7KeEIMK3IDE6MSDsgqzsg4HssrTsp4gg7ZWc7JW9IMK3IOyImOq4sCDstpTrgpggwrcg7IaM7JWEIO2CpOyEseyepSDCtyDsi53smpVaRVJPIOuLpOydtOyWtO2KuCDCtyDrkZDtlLzsl7Qg7YOI66qoIMK3IOygle2SiCDsgqztlqUg7Zmp7KCc6rO17KeE64uoIMK3IOyghOumveyEoCDtgbTrpqzri4kgJiDtkoDsiqTtgazrprAgM0Qg7J247LK066qo7ZiVIOqxtOqwlSDtj6zthLguCgojIyBDbGluaWMgSW5mb3JtYXRpb24gKE5BUCAmIE9mZmljaWFsIENoYW5uZWxzKQotIE9mZmljaWFsIFdlYnNpdGU6IGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLwotIENsaW5pYyBOYW1lOiDrsJTrpbjtlZzsnZjsm5Ag64yA7KCE67O47KCQIChCYXJldW4gS29yZWFuIE1lZGljaW5lIENsaW5pYyBEYWVqZW9uKQotIENoaWVmIERpcmVjdG9yOiDslYjsoJXsnIQg64yA7ZGc7JuQ7J6lIChEci4gSnVuZy1XaSBBaG4sIEtNRCkKLSBBZGRyZXNzOiDrjIDsoITqtJHsl63si5wg64yA642V6rWsIOu5hOuemOuPmeuhnDfrsojquLggMSwgMuy4tSAoMkYsIDEsIEJpcmFlZG9uZy1ybyA3YmVvbi1naWwsIERhZWRlb2stZ3UsIERhZWplb24sIDM0NDE3LCBSZXB1YmxpYyBvZiBLb3JlYSkKLSBUZWxlcGhvbmU6IDAxMC01NjMxLTEyNzUgKCs4Mi0xMC01NjMxLTEyNzUpCi0gSG91cnM6IE1vbi1GcmkgMDk6MDAtMTk6MDAsIFNhdCAmIFB1YmxpYyBIb2xpZGF5cyAwOTowMC0xNDowMCwgQ2xvc2VkIG9uIFN1bmRheXMKLSBOYXZlciBQbGFjZTogaHR0cHM6Ly9uYXZlci5tZS81VTFFTG44TAotIE9mZmljaWFsIEJsb2c6IGh0dHBzOi8vYmxvZy5uYXZlci5jb20vd2VpMDUwOAotIEtha2FvVGFsayBDb25zdWx0YXRpb246IGh0dHBzOi8vcGYua2FrYW8uY29tL195a3hjTEsKCiMjIFNwZWNpYWxpemVkIENsaW5pY2FsIERpdmlzaW9ucwotIFvrqZTsnbggM0Qg7ZmY7J6QIOyKpO2GoOumrCDsh7zro7hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tLyk6IOyVhOu5oCDtlZzsnZjsgqzrpbwg7LC+64qUIO2ZmOyekCDsiqTthqDrpqwg67CPIDbrjIAg7KSR7KCQIO2BtOumrOuLiSDslYjrgrQuCi0gW+yViOygleychCDrjIDtkZzsm5DsnqUgwrcgOeuMgCDsoJXrsIDqsoDsp4RdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpcmVjdG9yLyk6IOy0iOydjO2MjCwg7KCB7Jm47ISgIOyytOyXtOynhOuLqCwg7J2067mE7J247ZuEIOuCtOyLnOqyvSwg7IKs7IOB7LK07KeILCDssrTsp4DrsKkoSW5Cb2R5KSwg7J6Q7Jyo7Iug6rK9KEhSViksIOqwhMK364u5IOuMgOyCrCwg7ZiI6rSAIOuFuO2ZlCwg7ISx7J6l7YyQIOqygOyCrCDrsI8g7JuQ64K0IOustOq3oCDtg5XsoIQg7Iuc7Iqk7YWcLgotIFvrsJTrpbgg7LaU64KYIMK3IOyymey2lOq1kOyglSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2NodW5hLyk6IO2XiOumrOuUlOyKpO2BrCwg66qp65SU7Iqk7YGsLCDqsbDrtoHrqqksIOqzqOuwmCDrtojqt6DtmJUsIOyymey2lOq0gO2YkeywqeymnSDruYTsiJjsiKAg64yA7ZGc7JuQ7J6lIOyImOq4sCDstpTrgpjsmpTrspUg67CPIOyVvey5qC4KLSBb67CU66W4IOyEseyepSDCtyDshLHsobDsiJnspp0g7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9ncm93dGgvKTog66y067Cp7IKs7ISgIOy0iOydjO2MjCDshLHsnqXtjJAg67aE7ISdLCDshozslYTruYTrp4wg7LK07KeA67CpLe2CpCDsoITtmZgsIOu5hOyXvMK36rWs6rCV7Zi47Z2hIOygkOuniSDrqbTsl60g67CPIOyEseyepSDtlZzslb0uCi0gW+uwlOuluCDri6TsnbTslrTtirggwrcg7Iud7JqVWkVSTyDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2RpZXQtemVyby8pOiDqsIjsg4nsp4DrsKkg64yA7IKsIO2ZnOyEse2ZlCwg6re87JyhIOuztOyhtCDssrTsp4DrsKkg6rCQ65+JLCDrtoDsooXCt+uPheyGjCDrsLDstpwg66ee7LakIO2VnOyVvSDrsI8g67mE64yA66m0IOynhOujjCDsp4Dsm5AuCi0gW+uwlOuluCDtg4jrqqggwrcg66qo6re87J6s7IOdIO2Gte2VqSDtgbTrpqzri4ldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLyk6IOyImOyKue2ZlOqwlSDrkZDtlLwg7LKt7Je0IO2VnOyVvSwg6rK97LaUIOy2lOuCmCwg7KCV7KCcIOuwnOuqqCDslb3suaguCiAgLSBb64Ko7ISx7YOI66qoIChN7J6QwrfsoJXsiJjrpqwpXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1tYWxlLykKICAtIFvsm5DtmJXtg4jrqqggKOyekOqwgOuptOyXrSDrs7Xsm5ApXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9oYWlybG9zcy1hbG9wZWNpYS8pCiAgLSBb7Jes7ISx7YOI66qoICjqsIDrpbTrp4jCt+uzvOulqCldKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2hhaXJsb3NzLWZlbWFsZS8pCiAgLSBb7KeA66Oo7ISx65GQ7ZS87Je8ICjrkZDtlLwg7Je064+Fwrfrqqjrgq3sl7wg7ZW064+FKV0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vaGFpcmxvc3Mtc2Vib3JyaGVpYy8pCi0gW+uwlOuluCDtmansoJzqs7Xsp4Tri6gg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9nb25namluZGFuLyk6IOyLneyVveyymCBDSVRFUyDsnbjspp0g7KCV7ZKIIOyynOyXsCDsgqztlqUoTC1NdXNjb25lKSDrsI8g65+s7Iuc7JWE7IKwIOybkOyaqSDrtoTqs6gg64W57JqpIOuMgO2RnOybkOyepSDsp4HsoJEg7IiY7KCcIOyhsOygnC4KLSBb67CU66W4IOyghOumveyEoCDCtyDrgqjshLHtmZzroKUg7YG066as64uJXShodHRwczovL3d3dy5iYXJldW5oYW5pd29uLmNvbS9wcm9zdGF0ZS8pOiDrp4zshLEg7KCE66a97ISg7Je8LCDsoITrpr3shKDruYTrjIDspp0sIOyVvOqwhOuHqCwg6rO866+87ISxIOuwqeq0kSwg6rOo67CY7KCA6re8IOyauO2YiCDqsJDslZUg7LmY66OMLgotIFvrsJTrpbjrpqztlITtjIUg7Iuc7IigIOyghO2bhCDsnKTqs73sp4Tri6hdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2xpZnRpbmctY29tcGFyZS8pOiDruYTsiJjsiKAg7ZWc67CpIOunpOyEoMK37JW97LmoIOyViOuptCDrpqztlITtjIUg67CPIDPsoJAg7KSR7Ius7LaVIOyghO2bhCDsnKTqs70g7KCV67CAIOu5hOq1kCDsiqTtipzrlJTsmKQuCgojIyBJbnRlcmFjdGl2ZSAzRCBBbmF0b215ICYgRXZpZGVuY2UtQmFzZWQgTWVkaWNhbCBKb3VybmFsCi0gW+2SgOyKpO2BrOumsCAzRCDsnbjssrTrqqjtmJUgwrcg7KeE66OMIOyCtO2OtOuztOq4sF0oaHR0cHM6Ly93d3cuYmFyZXVuaGFuaXdvbi5jb20vYm9keS1leHBsb3Jlci8pOiDsoITsi6Ag6re87Jyhwrfsi6Dqsr3Ct+q0gOygiMK37ZiI6rSAIDTrjIAg6rOE7Ya1IOyLpOyLnOqwhCAzRCDrqqjshZgg67CPIDnrjIAg67aA7JyE67OEIDLsnbwg7KO86riwIOyInOyImCDqsbTqsJUg7KCV67O0IOyVhOy5tOydtOu4jC4KLSBb7Ya17ZWp7J2Y7ZWZIOyduOyCrOydtO2KuCDsoIDrhJAgJiDsp4jtmZjrs4QgMToxIOu5hOqzteqwnCBRJkFdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2Fzay1kb2N0b3IvKTog7ZW07Jm4IFNDSSDtlZnsiKDsp4Ag6riw67CYIOydmO2VmSDrpqzrt7Ag67CPIO2ajOybkCDsoITsmqkgMTAwJSDruYTqs7XqsJwgMToxIOqxtOqwlSDsg4Hri7QuCi0gW+uMgO2RnCDtlZnsiKAg7Lm865+8OiDrp4zshLEg7ZS866GcwrfshoztmZQg7J6l7JWgwrfsspnstpQg7Ya17KadIO2Gte2VqeyDneumrO2VmSDqsIDsnbTrk5xdKGh0dHBzOi8vd3d3LmJhcmV1bmhhbml3b24uY29tL2ludGVncmF0aXZlLWF1dG9ub21pYy1jaXJjYWRpYW4tZ3V0LXNwaW5lLWhlYWx0aC1yZXZpZXcvKTog7J6Q7Jyo7Iug6rK9LCDsnqUt64eMIOy2lShNaWNyb2Jpb3RhLUd1dC1CcmFpbiBBeGlzKSwg7LKZ7LaUIOyDneyytOyXre2VmeydmCDsg4HtmLjsnpHsmqkg66as67ewLgo='));
+        }
+        $stored_llms_full = (string) get_option(self::OPT_LLMS_FULL_TXT, '');
+        if ($stored_llms_full !== '') {
+            @file_put_contents(ABSPATH . 'llms-full.txt', $stored_llms_full);
+        }
         $idx_file = ABSPATH . self::INDEXNOW_KEY . '.txt';
         @file_put_contents($idx_file, self::INDEXNOW_KEY);
 
@@ -1959,13 +1978,9 @@ class Bareun_Master_SEO_Engine_V1 {
             $target_path = '/director/';
         } elseif (preg_match('#^/(category|tag|health-notes|ask-doctor)(/.*)?$#i', $path)) {
             $target_path = '/body-explorer/';
-        } elseif (preg_match('#^/health-note-([a-z0-9\-]+?)(/.*)?$#i', $path, $hn_m)) {
-            // Always 301 redirect standalone /health-note-{id}/ into unified /body-explorer/ inline [🔍 상세히] view so 100% of visitors enter the main 3D homepage
-            $hn_id = strtolower($hn_m[1]);
-            $hn_parts = explode('-', $hn_id);
-            $hn_part = !empty($hn_parts[0]) ? $hn_parts[0] : 'knee';
-            $target_path = '/body-explorer/';
-            $query = '?part=' . rawurlencode($hn_part) . '&note=' . rawurlencode($hn_id) . '&detail=1';
+        } elseif (preg_match('#^/health-note-([a-z0-9\-]+)$#i', $path, $hn_m)) {
+            // Normalize missing trailing slash to canonical /health-note-{id}/ in 1 hop
+            $target_path = '/health-note-' . strtolower($hn_m[1]) . '/';
         }
 
         // Enforce 1-hop 301 redirect to https://www.bareunhaniwon.com + canonical path
@@ -1976,6 +1991,13 @@ class Bareun_Master_SEO_Engine_V1 {
             header('Cache-Control: no-store, no-cache, must-revalidate', true);
             header('Location: ' . self::CANONICAL_ORIGIN . $target_path . $query, true, 301);
             exit;
+        }
+
+        // Serve Standalone 7-Stage High-End Health Note SSR (/health-note-{id}/, HTTP 200 OK, 0% Astra chrome, 0% Studio Inspector/OSMU tabs)
+        if (preg_match('#^/health-note-([a-z0-9\-]+)/$#i', $path, $hn_serve_m)) {
+            if (self::render_standalone_health_note_ssr(strtolower($hn_serve_m[1]))) {
+                exit;
+            }
         }
 
         // Serve virtual /llms.txt & /llms-full.txt (AI GEO C7)
@@ -2029,6 +2051,782 @@ class Bareun_Master_SEO_Engine_V1 {
             echo self::INDEXNOW_KEY;
             exit;
         }
+    }
+
+    private static function format_hn_table_cell_php($raw) {
+        $s = trim((string) $raw);
+        if (strpos($s, '[권장]') === 0) {
+            return '<span class="row-badge-good">권장</span> ' . esc_html(trim(substr($s, strlen('[권장]'))));
+        }
+        if (strpos($s, '[주의]') === 0) {
+            return '<span class="row-badge-warn">주의</span> ' . esc_html(trim(substr($s, strlen('[주의]'))));
+        }
+        if (strpos($s, '[특징]') === 0) {
+            return '<span class="row-badge-good">특징</span> ' . esc_html(trim(substr($s, strlen('[특징]'))));
+        }
+        return esc_html($s);
+    }
+
+    private static function render_standalone_health_note_ssr($note_id) {
+        $clean_id = strtolower(preg_replace('/[^a-z0-9\-]/i', '', (string) $note_id));
+        if ($clean_id === '') {
+            return false;
+        }
+        $hn_cfg = class_exists('Bareun_Custom_Studio_Engine_V4')
+            ? Bareun_Custom_Studio_Engine_V4::load_health_notes_cfg_php(false)
+            : get_option('bareun_health_notes_cfg_v1', array());
+
+        if (!is_array($hn_cfg) || empty($hn_cfg['notes']) || !is_array($hn_cfg['notes'])) {
+            return false;
+        }
+
+        $target = null;
+        $siblings = array();
+        foreach ($hn_cfg['notes'] as $item) {
+            if (!is_array($item) || (isset($item['enabled']) && $item['enabled'] === false)) {
+                continue;
+            }
+            if (strtolower((string) ($item['id'] ?? '')) === $clean_id) {
+                $target = $item;
+                break;
+            }
+        }
+        if (!is_array($target)) {
+            return false;
+        }
+
+        $part_id = strtolower((string) ($target['partId'] ?? 'knee'));
+        foreach ($hn_cfg['notes'] as $item) {
+            if (!is_array($item) || (isset($item['enabled']) && $item['enabled'] === false)) {
+                continue;
+            }
+            if (strtolower((string) ($item['partId'] ?? '')) === $part_id) {
+                $siblings[] = $item;
+            }
+        }
+
+        $hub_map = array(
+            'knee'       => array('name' => '소아 성장 · 무릎 성장판', 'url' => self::CANONICAL_ORIGIN . '/growth/', 'btn' => '🌱 성장·성조숙증 클리닉', 'hero' => 'illust_knee_growth_care.jpg'),
+            'cervical'   => array('name' => '거북목 · 두피열 · 탈모', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'btn' => '🌿 탈모·모근재생 클리닉', 'hero' => 'illust_cervical_hairloss.jpg'),
+            'lumbar'     => array('name' => '허리 물렁뼈 · 골반 균형', 'url' => self::CANONICAL_ORIGIN . '/chuna/', 'btn' => '🦴 추나·척추교정 클리닉', 'hero' => 'illust_lumbar_pelvis.jpg'),
+            'gongjindan' => array('name' => '뇌 · 심장 활력 · 만성피로', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/', 'btn' => '✨ 황제공진단 클리닉', 'hero' => 'illust_gongjindan_heart_brain.jpg'),
+            'syncope'    => array('name' => '자율신경 · 어지럼 · 편두통', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '🧠 9대 자율신경 정밀검진', 'hero' => 'illust_syncope_autonomic.jpg'),
+            'digest'     => array('name' => '위장 · 식도 운동 · 소화', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '🩺 복부초음파·체열 정밀검진', 'hero' => 'illust_gut_metabolism.jpg'),
+            'gut'        => array('name' => '복부 대사 · 체지방 · 부종', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/', 'btn' => '⚖️ 다이어트·식욕ZERO 클리닉', 'hero' => 'diet_minimal_card4_stage2_core_lipolysis.jpg'),
+            'uterus'     => array('name' => '아랫배 · 골반 미세혈류 순환', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '🌸 하복부초음파·체열 검진', 'hero' => 'illust_uterus_fertility.jpg'),
+            'prostate'   => array('name' => '전립선 · 방광 · 골반저 순환', 'url' => self::CANONICAL_ORIGIN . '/prostate/', 'btn' => '🛡️ 전립선·남성활력 클리닉', 'hero' => 'illust_prostate_care.jpg')
+        );
+        $hub = isset($hub_map[$part_id]) ? $hub_map[$part_id] : $hub_map['lumbar'];
+
+        $part_label = trim((string) ($target['partLabel'] ?? $hub['name']));
+        $keyword    = trim((string) ($target['keyword'] ?? $part_label));
+        $theme      = trim((string) ($target['theme'] ?? $keyword));
+        $q_title    = trim((string) ($target['questionTitle'] ?? $target['title'] ?? ''));
+        $seo_base   = trim((string) ($target['seoTitle'] ?? ''));
+        if ($seo_base === '') {
+            $seo_base = $q_title . ' [' . $part_label . ' · ' . $keyword . ']';
+        }
+        $page_title = (strpos($seo_base, '바른한의원') !== false) ? $seo_base : ($seo_base . ' | 바른한의원 대전본점');
+
+        $empathy_lines = (isset($target['empathyLines']) && is_array($target['empathyLines'])) ? $target['empathyLines'] : array();
+        $truth_lines   = (isset($target['truthLines']) && is_array($target['truthLines'])) ? $target['truthLines'] : array();
+        $myth_lines    = (isset($target['mythLines']) && is_array($target['mythLines'])) ? $target['mythLines'] : array();
+        $check_list    = (isset($target['checkList']) && is_array($target['checkList'])) ? $target['checkList'] : array();
+
+        $direct_answer = trim((string) ($target['directAnswer'] ?? ''));
+        if ($direct_answer === '') {
+            $direct_answer = trim(implode(' ', $truth_lines) . ' ' . (string) ($myth_lines[1] ?? ''));
+        }
+        $meta_desc = $direct_answer;
+        if (mb_strlen($meta_desc, 'UTF-8') > 158) {
+            $meta_desc = mb_substr($meta_desc, 0, 157, 'UTF-8') . '…';
+        }
+
+        $gh_raw = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+        $raw_hero = trim((string) ($target['deepIllustImg'] ?? $hub['hero']));
+        if (preg_match('#^https?://#i', $raw_hero)) {
+            $og_img = $raw_hero;
+            $webp_hero = $raw_hero;
+        } elseif (strpos($raw_hero, '/wp-content/') === 0) {
+            $og_img = self::CANONICAL_ORIGIN . $raw_hero;
+            $webp_hero = $og_img;
+        } else {
+            $clean_hero = ltrim($raw_hero, './');
+            $og_img = $gh_raw . $clean_hero;
+            if (stripos($clean_hero, 'webp/') === 0) {
+                $webp_hero = $gh_raw . $clean_hero;
+            } else {
+                $webp_hero = $gh_raw . 'webp/' . preg_replace('/\.(png|jpe?g)$/i', '.webp', $clean_hero);
+            }
+        }
+        // Prefer official WP media URL if post has featured image
+        $hn_post = get_page_by_path('health-note-' . $clean_id, OBJECT, 'post');
+        if ($hn_post && $hn_post->post_status === 'publish') {
+            $thumb_u = get_the_post_thumbnail_url($hn_post, 'full');
+            if (!empty($thumb_u)) {
+                $og_img = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $thumb_u);
+            }
+        }
+
+        $pub_date = trim((string) ($target['publishDate'] ?? '2026-11-04'));
+        $rev_date = trim((string) ($target['lastReviewed'] ?? ($pub_date > '2026-11-11' ? $pub_date : '2026-11-15')));
+        $canonical_url = self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode($clean_id) . '/';
+        $explorer_part_url = self::CANONICAL_ORIGIN . '/body-explorer/?part=' . rawurlencode($part_id) . '&note=' . rawurlencode($clean_id);
+        $director_avatar = $gh_raw . 'webp/card_1_director.webp';
+
+        $deep_caption = trim((string) ($target['deepIllustCaption'] ?? ($part_label . ' 해부 생리 모식도')));
+        $deep_title   = trim((string) ($target['deepTitle'] ?? ($theme . ', 우리 몸속에서는 어떤 변화가 일어날까요?')));
+        $deep_paras   = (isset($target['deepParagraphs']) && is_array($target['deepParagraphs'])) ? $target['deepParagraphs'] : array();
+        $clin_obs     = trim((string) ($target['clinicalObservation'] ?? ''));
+        $comp_table   = (isset($target['comparisonTable']) && is_array($target['comparisonTable']) && !empty($target['comparisonTable']['headers']) && !empty($target['comparisonTable']['rows']))
+            ? $target['comparisonTable']
+            : null;
+        $self_checks  = (isset($target['selfCheckItems']) && is_array($target['selfCheckItems']) && !empty($target['selfCheckItems']))
+            ? $target['selfCheckItems']
+            : $check_list;
+        $deep_signals = (isset($target['deepSignals']) && is_array($target['deepSignals'])) ? $target['deepSignals'] : array();
+        $red_flags    = (isset($target['redFlags']) && is_array($target['redFlags'])) ? $target['redFlags'] : array();
+        $academic     = trim((string) ($target['academicBasis'] ?? '국제 의학 학술지 및 생리학 연구 보고'));
+        $deep_ref     = trim((string) ($target['deepReference'] ?? ('참고 문헌 · ' . $academic)));
+
+        // Unified Central View Counter (100% shared with /body-explorer/ via bareun_body_note_views_v1)
+        $note_views = get_option('bareun_body_note_views_v1', array());
+        if (!is_array($note_views)) {
+            $note_views = array();
+        }
+        $norm_views = array();
+        foreach ($note_views as $vk => $vv) {
+            $lvk = strtolower((string) $vk);
+            $norm_views[$lvk] = max(isset($norm_views[$lvk]) ? (int) $norm_views[$lvk] : 0, (int) $vv);
+        }
+        $cur_views = isset($norm_views[$clean_id]) ? (int) $norm_views[$clean_id] : 0;
+
+        // Sort sibling articles by unified popularity (views DESC -> publishDate DESC -> id DESC) matching /body-explorer/ BEST 2
+        $today_kst_str = current_time('Y-m-d');
+        $peer_candidates = array();
+        foreach ($siblings as $cand) {
+            if (!is_array($cand) || empty($cand['id'])) {
+                continue;
+            }
+            $cid = strtolower((string) $cand['id']);
+            if ($cid === $clean_id) {
+                continue;
+            }
+            $cpub = (string) ($cand['publishDate'] ?? '');
+            if ($cpub === '2026-10-28' || strpos($cid, '20261028') !== false) {
+                continue;
+            }
+            if ($cpub !== '' && $cpub > $today_kst_str && empty($cand['pinnedTop'])) {
+                continue;
+            }
+            $cand['_views'] = isset($norm_views[$cid]) ? (int) $norm_views[$cid] : 0;
+            $peer_candidates[] = $cand;
+        }
+        usort($peer_candidates, function ($a, $b) {
+            $va = isset($a['_views']) ? (int) $a['_views'] : 0;
+            $vb = isset($b['_views']) ? (int) $b['_views'] : 0;
+            if ($vb !== $va) {
+                return $vb - $va;
+            }
+            $da = (string) ($a['publishDate'] ?? '');
+            $db = (string) ($b['publishDate'] ?? '');
+            $dcmp = strcmp($db, $da);
+            if ($dcmp !== 0) {
+                return $dcmp;
+            }
+            return strcmp((string) ($b['id'] ?? ''), (string) ($a['id'] ?? ''));
+        });
+        $best2 = array_slice($peer_candidates, 0, 2);
+
+        // 5-Node Unified Authoritative JSON-LD Graph (Zero FAQPage)
+        $schema_graph = array(
+            '@context' => 'https://schema.org',
+            '@graph'   => array(
+                array(
+                    '@type'         => array('MedicalClinic', 'MedicalOrganization', 'LocalBusiness'),
+                    '@id'           => self::CANONICAL_ORIGIN . '/#clinic',
+                    'name'          => '바른한의원 대전본점',
+                    'alternateName' => array('Bareun Korean Medicine Clinic Daejeon', '대전 바른한의원'),
+                    'url'           => self::CANONICAL_ORIGIN . '/',
+                    'telephone'     => '+82-10-5631-1275',
+                    'taxID'         => '211-91-10479',
+                    'vatID'         => '211-91-10479',
+                    'priceRange'    => '₩₩',
+                    'address'       => array(
+                        '@type'           => 'PostalAddress',
+                        'streetAddress'   => '비래동로7번길 1, 2층',
+                        'addressLocality' => '대덕구',
+                        'addressRegion'   => '대전광역시',
+                        'postalCode'      => '34417',
+                        'addressCountry'  => 'KR'
+                    ),
+                    'geo'           => array(
+                        '@type'     => 'GeoCoordinates',
+                        'latitude'  => 36.35536,
+                        'longitude' => 127.44778
+                    ),
+                    'sameAs'        => array(
+                        'https://www.youtube.com/@bareunhaniwon',
+                        'https://naver.me/5U1ELn8L',
+                        'https://blog.naver.com/wei0508',
+                        'https://www.threads.net/@bareun_oriental',
+                        'https://www.instagram.com/bareun_oriental/',
+                        'https://pf.kakao.com/_ykxcLK'
+                    ),
+                    'founder'       => array('@id' => self::CANONICAL_ORIGIN . '/director/#physician')
+                ),
+                array(
+                    '@type'      => 'Person',
+                    '@id'        => self::CANONICAL_ORIGIN . '/director/#physician',
+                    'name'       => '안정위',
+                    'jobTitle'   => '대표원장 (한의사)',
+                    'url'        => self::CANONICAL_ORIGIN . '/director/',
+                    'worksFor'   => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
+                    'knowsAbout' => array('소아 키 성장', '성조숙증 예방', '초음파 성장판 관찰', '추나요법', '두피열 탈모', '자율신경 및 대사 기능의학')
+                ),
+                array(
+                    '@type'           => 'BreadcrumbList',
+                    '@id'             => $canonical_url . '#breadcrumb',
+                    'itemListElement' => array(
+                        array('@type' => 'ListItem', 'position' => 1, 'name' => '홈', 'item' => self::CANONICAL_ORIGIN . '/'),
+                        array('@type' => 'ListItem', 'position' => 2, 'name' => '3D 인체모형 · 오늘의 건강 글', 'item' => self::CANONICAL_ORIGIN . '/body-explorer/'),
+                        array('@type' => 'ListItem', 'position' => 3, 'name' => $hub['name'], 'item' => $hub['url']),
+                        array('@type' => 'ListItem', 'position' => 4, 'name' => $theme, 'item' => $canonical_url)
+                    )
+                ),
+                array(
+                    '@type'              => 'MedicalWebPage',
+                    '@id'                => $canonical_url . '#webpage',
+                    'url'                => $canonical_url,
+                    'name'               => $page_title,
+                    'headline'           => $q_title,
+                    'description'        => $direct_answer,
+                    'inLanguage'         => 'ko-KR',
+                    'datePublished'      => $pub_date,
+                    'dateModified'       => $rev_date,
+                    'lastReviewed'       => $rev_date,
+                    'reviewedBy'         => array('@id' => self::CANONICAL_ORIGIN . '/director/#physician'),
+                    'breadcrumb'         => array('@id' => $canonical_url . '#breadcrumb'),
+                    'primaryImageOfPage' => array(
+                        '@type'   => 'ImageObject',
+                        'url'     => $og_img,
+                        'width'   => 1376,
+                        'height'  => 768,
+                        'caption' => $part_label . ' (' . $keyword . ') — ' . $deep_caption
+                    ),
+                    'about'              => array('@type' => 'AnatomicalStructure', 'name' => $part_label),
+                    'speakable'          => array(
+                        '@type'       => 'SpeakableSpecification',
+                        'cssSelector' => array('.direct-answer-lead', '.clinical-observation-box')
+                    )
+                ),
+                array(
+                    '@type'            => 'MedicalScholarlyArticle',
+                    '@id'              => $canonical_url . '#article',
+                    'mainEntityOfPage' => array('@id' => $canonical_url . '#webpage'),
+                    'headline'         => $q_title,
+                    'description'      => $direct_answer,
+                    'image'            => array($og_img),
+                    'datePublished'    => $pub_date . 'T09:00:00+09:00',
+                    'dateModified'     => $rev_date . 'T10:30:00+09:00',
+                    'inLanguage'       => 'ko-KR',
+                    'author'           => array('@id' => self::CANONICAL_ORIGIN . '/director/#physician'),
+                    'publisher'        => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
+                    'articleSection'   => $part_label . ' · ' . $theme,
+                    'keywords'         => $keyword . ', ' . $part_label . ', ' . $theme . ', 오늘의 건강 글',
+                    'citation'         => array($academic)
+                )
+            )
+        );
+
+        // Channels config
+        $g_cfg = isset($hn_cfg['globalSettings']) && is_array($hn_cfg['globalSettings']) ? $hn_cfg['globalSettings'] : array();
+        $ch_cfg = isset($g_cfg['channels']) && is_array($g_cfg['channels']) ? $g_cfg['channels'] : array();
+        $yt_url = isset($ch_cfg['youtube']['url']) ? (string) $ch_cfg['youtube']['url'] : 'https://www.youtube.com/@bareunhaniwon';
+        $nv_url = is_string($ch_cfg['naver'] ?? null) ? $ch_cfg['naver'] : (isset($ch_cfg['naver']['url']) ? (string) $ch_cfg['naver']['url'] : 'https://naver.me/5U1ELn8L');
+        $th_url = isset($ch_cfg['threads']['url']) ? (string) $ch_cfg['threads']['url'] : 'https://www.threads.net/@bareun_oriental';
+        $ig_url = isset($ch_cfg['instagram']['url']) ? (string) $ch_cfg['instagram']['url'] : 'https://www.instagram.com/bareun_oriental/';
+        $kk_url = isset($ch_cfg['kakao']['url']) ? (string) $ch_cfg['kakao']['url'] : 'https://pf.kakao.com/_ykxcLK';
+
+        $verify_codes = get_option(self::OPT_VERIFY_CODES, array());
+        $naver_v  = !empty($verify_codes['naver']) ? (string) $verify_codes['naver'] : self::DEFAULT_NAVER_VERIFY;
+        $google_v = !empty($verify_codes['google']) ? (string) $verify_codes['google'] : self::DEFAULT_GOOGLE_VERIFY;
+
+        if (!defined('DONOTCACHEPAGE')) {
+            define('DONOTCACHEPAGE', true);
+        }
+        self::send_security_headers();
+        status_header(200);
+        header('Content-Type: text/html; charset=UTF-8', true);
+        header('Cache-Control: no-cache, must-revalidate, max-age=0', true);
+
+        echo "<!DOCTYPE html>\n<html lang=\"ko\">\n<head>\n";
+        echo '  <meta charset="UTF-8" />' . "\n";
+        echo '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />' . "\n";
+        echo '  <title>' . esc_html($page_title) . '</title>' . "\n";
+        echo '  <meta name="description" content="' . esc_attr($meta_desc) . '" />' . "\n";
+        echo '  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />' . "\n";
+        if ($naver_v !== '') {
+            echo '  <meta name="naver-site-verification" content="' . esc_attr($naver_v) . '" />' . "\n";
+        }
+        if ($google_v !== '') {
+            echo '  <meta name="google-site-verification" content="' . esc_attr($google_v) . '" />' . "\n";
+        }
+        echo '  <link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
+        echo '  <link rel="alternate" hreflang="ko-KR" href="' . esc_url($canonical_url) . '" />' . "\n";
+        echo '  <link rel="alternate" hreflang="x-default" href="' . esc_url($canonical_url) . '" />' . "\n";
+        echo '  <meta property="og:type" content="article" />' . "\n";
+        echo '  <meta property="og:site_name" content="바른한의원 대전본점" />' . "\n";
+        echo '  <meta property="og:locale" content="ko_KR" />' . "\n";
+        echo '  <meta property="og:title" content="' . esc_attr($page_title) . '" />' . "\n";
+        echo '  <meta property="og:description" content="' . esc_attr($meta_desc) . '" />' . "\n";
+        echo '  <meta property="og:url" content="' . esc_url($canonical_url) . '" />' . "\n";
+        echo '  <meta property="og:image" content="' . esc_url($og_img) . '" />' . "\n";
+        echo '  <meta property="og:image:width" content="1376" />' . "\n";
+        echo '  <meta property="og:image:height" content="768" />' . "\n";
+        echo '  <meta property="article:published_time" content="' . esc_attr($pub_date . 'T09:00:00+09:00') . '" />' . "\n";
+        echo '  <meta property="article:modified_time" content="' . esc_attr($rev_date . 'T10:30:00+09:00') . '" />' . "\n";
+        echo '  <meta property="article:section" content="' . esc_attr($part_label . ' · ' . $keyword) . '" />' . "\n";
+        echo '  <meta name="twitter:card" content="summary_large_image" />' . "\n";
+        echo '  <link rel="preload" as="image" href="' . esc_url($webp_hero) . '" />' . "\n";
+        echo '  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />' . "\n";
+        echo '  <link rel="preconnect" href="https://fonts.googleapis.com" />' . "\n";
+        echo '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
+        echo '  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />' . "\n";
+        echo '  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800&display=swap" rel="stylesheet" />' . "\n";
+        echo '  <script type="application/ld+json">' . wp_json_encode($schema_graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+        ?>
+  <style>
+    :root { --bg-paper:#FAF8F3; --bg-card:#FFFFFF; --bg-warm:#F4EFE4; --ink-900:#161412; --ink-700:#3A352F; --ink-500:#6B6359; --gold-600:#9E772B; --gold-500:#C5A059; --gold-200:#E7D7B4; --gold-50:#FDF9EE; --espresso:#14110F; --border-soft:#E8E1D3; --emerald-bg:#ECFDF5; --emerald-ink:#065F46; --rose-bg:#FFF1F2; --rose-ink:#9F1239; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg-paper); color:var(--ink-900); font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; line-height:1.78; -webkit-font-smoothing:antialiased; }
+    .clinic-top-header { background:#FFFFFF; border-bottom:1px solid var(--border-soft); padding:14px 20px; position:sticky; top:0; z-index:100; }
+    .clinic-top-inner { max-width:920px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .clinic-brand-link { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink-900); font-weight:800; font-size:0.98rem; }
+    .clinic-brand-mark { width:30px; height:30px; border-radius:8px; background:var(--espresso); color:var(--gold-500); display:inline-flex; align-items:center; justify-content:center; font-family:'Noto Serif KR',serif; font-weight:800; font-size:0.88rem; border:1px solid var(--gold-500); }
+    .clinic-header-actions { display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .header-action-link { display:inline-flex; align-items:center; gap:6px; padding:7px 13px; border-radius:999px; font-size:0.8rem; font-weight:700; text-decoration:none; transition:transform 0.15s ease; }
+    .header-action-link:hover { transform:translateY(-1px); }
+    .header-action-3d { background:var(--espresso); color:#F5DFB0; border:1px solid var(--gold-500); }
+    .header-action-home { background:var(--bg-warm); color:var(--ink-700); border:1px solid var(--border-soft); }
+    .header-action-share { appearance:none; font-family:inherit; cursor:pointer; background:linear-gradient(135deg,#E7C983 0%,#C59E50 100%); color:#14110F; border:1px solid #C5A059; box-shadow:0 2px 8px rgba(197,160,89,0.28); }
+    .header-action-share.is-copied, .ch-pill-share.is-copied { background:#065F46 !important; color:#FFFFFF !important; border-color:#34D399 !important; }
+    .view-count-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; background:#F4EFE4; border:1px solid var(--gold-200); color:var(--ink-700); font-size:0.75rem; font-weight:800; font-variant-numeric:tabular-nums; }
+    .ch-pill-share { appearance:none; font-family:inherit; cursor:pointer; background:linear-gradient(135deg,#161412 0%,#26211B 100%) !important; color:#F5DFB0 !important; border:1px solid #C5A059 !important; }
+    #standaloneShareToast { position:fixed; left:50%; bottom:32px; transform:translate(-50%,16px); z-index:9999; padding:11px 18px; border-radius:999px; background:rgba(20,17,15,0.96); color:#F7E5BA; border:1.5px solid #C5A059; box-shadow:0 12px 32px rgba(0,0,0,0.28); font-size:0.82rem; font-weight:800; white-space:nowrap; max-width:calc(100vw - 24px); overflow:hidden; text-overflow:ellipsis; opacity:0; visibility:hidden; pointer-events:none; transition:opacity 0.22s ease,transform 0.22s ease,visibility 0.22s ease; }
+    #standaloneShareToast.show { opacity:1; visibility:visible; transform:translate(-50%,0); }
+    .article-shell { max-width:820px; margin:0 auto; padding:30px 20px 76px; }
+    .breadcrumb-nav { display:flex; align-items:center; gap:7px; flex-wrap:wrap; font-size:0.79rem; color:var(--ink-500); margin-bottom:18px; }
+    .breadcrumb-nav a { color:var(--ink-500); text-decoration:none; font-weight:600; }
+    .breadcrumb-nav a:hover { color:var(--gold-600); text-decoration:underline; }
+    .editorial-header { background:var(--bg-card); border:1px solid var(--border-soft); border-top:4px solid var(--gold-500); border-radius:20px; padding:28px 28px 24px; box-shadow:0 10px 30px rgba(22,20,18,0.04); margin-bottom:22px; }
+    .topic-kicker-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .topic-chip { display:inline-flex; align-items:center; padding:4px 11px; border-radius:999px; background:var(--gold-50); border:1px solid var(--gold-200); color:var(--gold-600); font-size:0.77rem; font-weight:800; }
+    .read-meta { font-size:0.78rem; color:var(--ink-500); font-weight:600; }
+    h1.article-h1 { margin:0 0 20px; font-family:'Noto Serif KR',serif; font-size:clamp(1.42rem,2.8vw,1.92rem); line-height:1.42; font-weight:800; color:var(--ink-900); letter-spacing:-0.02em; word-break:keep-all; }
+    .ymyl-reviewer-bar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; border-radius:14px; background:var(--bg-paper); border:1px solid var(--border-soft); flex-wrap:wrap; }
+    .reviewer-profile { display:flex; align-items:center; gap:12px; }
+    .reviewer-avatar { width:48px; height:48px; border-radius:50%; object-fit:cover; object-position:center 18%; border:2px solid var(--gold-500); background:#E8E1D3; flex-shrink:0; }
+    .reviewer-info-title { font-size:0.86rem; font-weight:800; color:var(--ink-900); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .verified-pill { display:inline-flex; align-items:center; gap:3px; padding:2px 8px; border-radius:999px; background:#EBF5FF; color:#1D4ED8; font-size:0.7rem; font-weight:800; }
+    .reviewer-info-sub { font-size:0.77rem; color:var(--ink-500); margin-top:2px; }
+    .reviewer-info-sub a { color:var(--gold-600); font-weight:700; text-decoration:none; }
+    .direct-answer-lead { background:linear-gradient(180deg,#FFFDF8 0%,#FDF8EC 100%); border:1.5px solid var(--gold-500); border-left:5px solid var(--gold-600); border-radius:16px; padding:20px 22px; margin-bottom:24px; }
+    .direct-answer-label { display:inline-flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:800; color:var(--gold-600); margin-bottom:8px; }
+    .direct-answer-lead p { margin:0; font-size:0.98rem; font-weight:600; color:var(--ink-900); line-height:1.76; word-break:keep-all; }
+    .content-section { background:var(--bg-card); border:1px solid var(--border-soft); border-radius:18px; padding:26px 26px; margin-bottom:20px; }
+    .content-section h2 { margin:0 0 14px; font-family:'Noto Serif KR',serif; font-size:1.2rem; font-weight:800; color:var(--ink-900); line-height:1.45; word-break:keep-all; }
+    .content-section h3 { margin:20px 0 8px; font-size:1rem; font-weight:800; color:var(--ink-900); }
+    .content-section p { margin:0 0 14px; font-size:0.96rem; color:var(--ink-700); word-break:keep-all; }
+    .content-section p:last-child { margin-bottom:0; }
+    .myth-truth-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:16px; }
+    .mt-card { padding:15px 16px; border-radius:13px; font-size:0.9rem; line-height:1.66; word-break:keep-all; }
+    .mt-myth { background:var(--rose-bg); border:1px solid #FECDD3; color:var(--rose-ink); }
+    .mt-truth { background:var(--emerald-bg); border:1px solid #A7F3D0; color:var(--emerald-ink); }
+    .mt-tag { display:inline-block; font-size:0.76rem; font-weight:800; margin-bottom:5px; }
+    .medical-figure-wrap { margin:0 0 20px; background:var(--bg-card); border:1px solid var(--border-soft); border-radius:18px; overflow:hidden; }
+    .medical-figure-wrap img { width:100%; height:auto; max-height:410px; object-fit:cover; display:block; }
+    .medical-figcaption { padding:12px 18px; background:#F7F3E9; border-top:1px solid var(--border-soft); font-size:0.83rem; color:var(--ink-700); font-weight:600; }
+    .bridge-3d-banner { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; background:linear-gradient(135deg,#171310 0%,#261E18 100%); color:#FFFFFF; border-top:1px solid rgba(197,160,89,0.35); flex-wrap:wrap; }
+    .bridge-3d-text strong { display:block; font-size:0.95rem; color:#F4DFB0; margin-bottom:3px; }
+    .bridge-3d-text span { font-size:0.82rem; color:#D7CFC0; }
+    .bridge-3d-btn { display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:999px; background:linear-gradient(135deg,#D7B56D,#B58938); color:#14110F; font-size:0.85rem; font-weight:800; text-decoration:none; white-space:nowrap; box-shadow:0 4px 14px rgba(197,160,89,0.35); }
+    .clinical-observation-box { margin-top:16px; padding:18px 20px; border-radius:14px; background:#FAF6EC; border:1px solid var(--gold-200); }
+    .clinical-obs-header { font-size:0.85rem; font-weight:800; color:var(--gold-600); margin-bottom:7px; }
+    .table-scroll { overflow-x:auto; margin-top:14px; border-radius:13px; border:1px solid var(--border-soft); }
+    table.comparison-table { width:100%; border-collapse:collapse; min-width:600px; font-size:0.88rem; background:#FFFFFF; }
+    table.comparison-table th { background:#1D1916; color:#F5E3B8; text-align:left; padding:12px 14px; font-weight:800; font-size:0.82rem; }
+    table.comparison-table td { padding:13px 14px; border-top:1px solid var(--border-soft); color:var(--ink-700); vertical-align:top; line-height:1.6; }
+    table.comparison-table tr.recommended-row td { background:#FFFDF6; color:var(--ink-900); font-weight:600; }
+    .row-badge-good { display:inline-block; padding:2px 7px; border-radius:5px; background:#DCFCE7; color:#166534; font-size:0.72rem; font-weight:800; margin-right:4px; }
+    .row-badge-warn { display:inline-block; padding:2px 7px; border-radius:5px; background:#FFE4E6; color:#9F1239; font-size:0.72rem; font-weight:800; margin-right:4px; }
+    .check-list-interactive { display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+    .check-item-label { display:flex; align-items:flex-start; gap:12px; padding:13px 15px; border-radius:12px; border:1px solid var(--border-soft); background:var(--bg-paper); cursor:pointer; font-size:0.92rem; color:var(--ink-900); word-break:keep-all; }
+    .check-item-label.checked { border-color:var(--gold-600); background:#FDF8EC; font-weight:700; }
+    .check-item-label input[type="checkbox"] { width:19px; height:19px; margin-top:3px; accent-color:#9E772B; flex-shrink:0; cursor:pointer; }
+    .score-result-box { margin-top:16px; padding:18px 20px; border-radius:14px; background:#181512; color:#F8F5EE; border:1px solid var(--gold-500); }
+    .score-result-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; flex-wrap:wrap; }
+    .score-pill { padding:3px 10px; border-radius:999px; background:var(--gold-500); color:#14110F; font-size:0.76rem; font-weight:800; }
+    .score-result-desc { margin:0; font-size:0.9rem; color:#EAE3D5; line-height:1.68; }
+    .redflag-box { padding:18px 20px; border-radius:14px; background:#F8FAFC; border:1px solid #CBD5E1; border-left:4px solid #334155; margin-top:12px; }
+    .redflag-box ul { margin:8px 0 0; padding-left:18px; font-size:0.9rem; color:#334155; }
+    .redflag-box li { margin-bottom:6px; }
+    .references-box { margin-top:16px; padding:14px 18px; border-radius:12px; background:var(--bg-paper); border:1px solid var(--border-soft); font-size:0.81rem; color:var(--ink-500); }
+    .cluster-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:12px; }
+    .cluster-card { display:block; padding:14px 16px; border-radius:12px; background:var(--bg-paper); border:1px solid var(--border-soft); text-decoration:none; color:var(--ink-900); }
+    .cluster-card:hover { border-color:var(--gold-500); }
+    .cluster-kicker { font-size:0.73rem; font-weight:800; color:var(--gold-600); margin-bottom:4px; }
+    .cluster-title { font-size:0.89rem; font-weight:700; line-height:1.45; word-break:keep-all; }
+    .official-channels-bar { margin-top:22px; padding:18px 20px; border-radius:16px; background:#F4EFE4; border:1px solid #DFD3BC; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+    .channel-bar-copy strong { display:block; font-size:0.9rem; color:var(--ink-900); }
+    .channel-bar-copy span { font-size:0.78rem; color:var(--ink-500); }
+    .channel-pills { display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .ch-pill { display:inline-flex; align-items:center; gap:6px; padding:7px 13px 7px 8px; border-radius:999px; background:#FFFFFF; border:1px solid #E2DDD2; font-size:0.79rem; font-weight:800; color:#1A1A1E; text-decoration:none; }
+    .ch-icon { width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+    @media (max-width:720px) { .myth-truth-grid, .cluster-grid { grid-template-columns:1fr; } .editorial-header, .content-section { padding:20px 18px; } }
+  </style>
+</head>
+<body>
+  <header class="clinic-top-header">
+    <div class="clinic-top-inner">
+      <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/'); ?>" class="clinic-brand-link">
+        <span class="clinic-brand-mark">바</span>
+        <span>바른한의원 대전본점 · 오늘의 건강 글</span>
+      </a>
+      <div class="clinic-header-actions">
+        <button type="button" onclick="copyStandaloneShareLink(this)" class="header-action-link header-action-share" title="이 건강 글 링크 복사·퍼가기">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span data-share-label="1">링크 퍼가기</span>
+        </button>
+        <a href="<?php echo esc_url($explorer_part_url); ?>" class="header-action-link header-action-3d">🧬 3D 인체모형으로 <?php echo esc_html($part_label); ?> 입체 보기</a>
+        <a href="<?php echo esc_url($hub['url']); ?>" class="header-action-link header-action-home"><?php echo esc_html($hub['btn']); ?></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-shell">
+      <nav class="breadcrumb-nav" aria-label="경로 탐색">
+        <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/'); ?>">홈</a>
+        <span>›</span>
+        <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/body-explorer/'); ?>">3D 인체모형 · 오늘의 건강 글</a>
+        <span>›</span>
+        <a href="<?php echo esc_url($hub['url']); ?>"><?php echo esc_html($hub['name']); ?></a>
+        <span>›</span>
+        <strong style="color:var(--ink-900);"><?php echo esc_html($theme); ?></strong>
+      </nav>
+
+      <header class="editorial-header">
+        <div class="topic-kicker-row">
+          <span class="topic-chip"><?php echo esc_html($part_label . ' · ' . $keyword); ?></span>
+          <span class="view-count-chip" id="standalone-note-view-count" data-note-view-id="<?php echo esc_attr($clean_id); ?>">조회수 <?php echo number_format($cur_views); ?>회</span>
+          <span class="read-meta">발행 <?php echo esc_html(str_replace('-', '.', $pub_date)); ?> · 최종 의학 검토 <?php echo esc_html(str_replace('-', '.', $rev_date)); ?> · 읽는 시간 약 3분</span>
+        </div>
+        <h1 class="article-h1"><?php echo esc_html($q_title); ?></h1>
+        <div class="ymyl-reviewer-bar">
+          <div class="reviewer-profile">
+            <img src="<?php echo esc_url($director_avatar); ?>" alt="바른한의원 대전본점 안정위 대표원장" width="48" height="48" class="reviewer-avatar" />
+            <div>
+              <div class="reviewer-info-title">
+                <span>집필 · 의학 감수: 안정위 한의사</span>
+                <span class="verified-pill">✓ 한의사 면허 · 대표원장 직접 감수</span>
+              </div>
+              <div class="reviewer-info-sub">
+                바른한의원 대전본점 대표원장 · 의학 생리 문헌 교차 검토 · <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>">의료진 약력 및 9대 정밀검진 기준 보기 ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="direct-answer-lead" aria-label="핵심 의학 요약">
+        <div class="direct-answer-label">💡 바쁜 일상을 위한 30초 핵심 결론</div>
+        <p><?php echo esc_html($direct_answer); ?></p>
+      </section>
+
+      <section class="content-section">
+        <h2>일상 속 이런 모습이 반복되고 있나요?</h2>
+        <?php foreach ($empathy_lines as $el) : ?>
+          <p><?php echo esc_html((string) $el); ?></p>
+        <?php endforeach; ?>
+        <?php foreach ($truth_lines as $tl) : ?>
+          <p><?php echo esc_html((string) $tl); ?></p>
+        <?php endforeach; ?>
+        <div class="myth-truth-grid">
+          <div class="mt-card mt-myth">
+            <span class="mt-tag">❌ 흔히 하기 쉬운 오해</span><br />
+            &ldquo;<?php echo esc_html((string) ($myth_lines[0] ?? '')); ?>&rdquo;
+          </div>
+          <div class="mt-card mt-truth">
+            <span class="mt-tag">⭕ 우리 몸이 알려주는 진실</span><br />
+            <?php echo esc_html((string) ($myth_lines[1] ?? '')); ?>
+          </div>
+        </div>
+      </section>
+
+      <figure class="medical-figure-wrap">
+        <img src="<?php echo esc_url($webp_hero); ?>" alt="<?php echo esc_attr($part_label . ' — ' . $deep_caption); ?>" width="1376" height="768" />
+        <figcaption class="medical-figcaption">▲ <?php echo esc_html($deep_caption); ?></figcaption>
+        <div class="bridge-3d-banner">
+          <div class="bridge-3d-text">
+            <strong>🧬 방금 읽은 ‘<?php echo esc_html($part_label); ?>’ 구조, 입체로 직접 돌려 보시겠어요?</strong>
+            <span>바른한의원 3D 인체모형 뷰어에서 360° 회전하며 근육·신경·혈관 연결을 한눈에 살펴보실 수 있습니다.</span>
+          </div>
+          <a href="<?php echo esc_url($explorer_part_url); ?>" class="bridge-3d-btn">3D 인체모형 열기 →</a>
+        </div>
+      </figure>
+
+      <section class="content-section">
+        <h2>📖 <?php echo esc_html($deep_title); ?></h2>
+        <?php foreach ($deep_paras as $dp) : ?>
+          <p><?php echo esc_html((string) $dp); ?></p>
+        <?php endforeach; ?>
+        <?php if ($clin_obs !== '') : ?>
+          <div class="clinical-observation-box">
+            <div class="clinical-obs-header">🩺 진료실에서 살펴본 생활 리듬 관찰 포인트</div>
+            <p style="margin:0;font-size:0.93rem;color:var(--ink-900);"><?php echo esc_html($clin_obs); ?></p>
+          </div>
+        <?php endif; ?>
+      </section>
+
+      <?php if (is_array($comp_table)) : ?>
+      <section class="content-section">
+        <h2>📊 <?php echo esc_html((string) ($comp_table['heading'] ?? ($keyword . ' 생활 기준 한눈에 비교하기'))); ?></h2>
+        <?php if (!empty($comp_table['intro'])) : ?>
+          <p><?php echo esc_html((string) $comp_table['intro']); ?></p>
+        <?php endif; ?>
+        <div class="table-scroll">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <?php foreach ($comp_table['headers'] as $th_txt) : ?>
+                  <th><?php echo esc_html((string) $th_txt); ?></th>
+                <?php endforeach; ?>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $rec_idx = isset($comp_table['recommendedRowIndex']) ? (int) $comp_table['recommendedRowIndex'] : -1;
+              foreach ($comp_table['rows'] as $r_idx => $r_cells) :
+                  if (!is_array($r_cells)) continue;
+              ?>
+                <tr class="<?php echo ($r_idx === $rec_idx) ? 'recommended-row' : ''; ?>">
+                  <?php foreach ($r_cells as $c_idx => $c_val) : ?>
+                    <td><?php echo ($c_idx === 0) ? ('<strong>' . esc_html((string) $c_val) . '</strong>') : self::format_hn_table_cell_php($c_val); ?></td>
+                  <?php endforeach; ?>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <?php endif; ?>
+
+      <section class="content-section">
+        <h2>✅ 오늘 밤 직접 체크해 보는 5가지 <?php echo esc_html($keyword); ?> 리듬 신호</h2>
+        <p>최근 2주 동안의 모습에 해당하는 항목을 직접 눌러 체크해 보세요. 선택 개수에 맞춰 생활 속 우선순위를 정리해 드립니다.</p>
+        <div class="check-list-interactive" id="self-check-group">
+          <?php foreach ($self_checks as $sc_item) : ?>
+            <label class="check-item-label">
+              <input type="checkbox" onchange="updateSelfCheck()" />
+              <span><?php echo esc_html((string) $sc_item); ?></span>
+            </label>
+          <?php endforeach; ?>
+        </div>
+        <div class="score-result-box" id="score-result-card" aria-live="polite">
+          <div class="score-result-top">
+            <strong id="score-title">현재 선택: 0 / <?php echo count($self_checks); ?>개 해당 — 항목을 눌러 현재 몸의 리듬을 확인해 보세요</strong>
+            <span class="score-pill" id="score-badge">자가점검 대기 중</span>
+          </div>
+          <p class="score-result-desc" id="score-desc">해당 항목을 체크하시면 일상에서 먼저 실천해 볼 수 있는 맞춤 관리 기준을 바로 확인하실 수 있습니다.</p>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>생활 습관 조절과 함께 세심히 살펴야 할 기준은 무엇일까요?</h2>
+        <?php if (!empty($deep_signals)) : ?>
+          <p>평소 가정에서는 <strong><?php echo esc_html((string) ($deep_signals[0] ?? '')); ?></strong><?php if (!empty($deep_signals[1])) : ?> 또한 <strong><?php echo esc_html((string) $deep_signals[1]); ?></strong><?php endif; ?><?php if (!empty($deep_signals[2])) : ?> 아울러 <strong><?php echo esc_html((string) $deep_signals[2]); ?></strong><?php endif; ?></p>
+        <?php endif; ?>
+        <?php if (!empty($red_flags)) : ?>
+          <div class="redflag-box">
+            <strong style="font-size:0.9rem;color:#0F172A;">⚠️ 세심한 대면 확인을 권해 드리는 경우</strong>
+            <ul>
+              <?php foreach ($red_flags as $rf) : ?>
+                <li><?php echo esc_html((string) $rf); ?></li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        <?php endif; ?>
+        <div class="references-box">
+          <strong style="color:var(--ink-700);">📚 학술 참고 근거</strong> · <?php echo esc_html($deep_ref); ?>
+        </div>
+
+        <h3>함께 읽으면 연결되는 <?php echo esc_html($part_label); ?> 인기 가이드 (BEST 2)</h3>
+        <div class="cluster-grid">
+          <?php foreach ($best2 as $bidx => $bn) :
+              $bn_id_low = strtolower((string) ($bn['id'] ?? ''));
+              $bn_url = self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode((string) $bn['id']) . '/';
+              $bn_views = isset($bn['_views']) ? (int) $bn['_views'] : (isset($norm_views[$bn_id_low]) ? (int) $norm_views[$bn_id_low] : 0);
+          ?>
+            <a href="<?php echo esc_url($bn_url); ?>" class="cluster-card">
+              <div class="cluster-kicker">이어서 읽기 BEST 0<?php echo ($bidx + 1); ?> · <?php echo esc_html((string) ($bn['keyword'] ?? $part_label)); ?> · <span data-note-view-id="<?php echo esc_attr($bn_id_low); ?>">조회수 <?php echo number_format($bn_views); ?>회</span></div>
+              <div class="cluster-title">&ldquo;<?php echo esc_html((string) ($bn['questionTitle'] ?? $bn['title'] ?? '')); ?>&rdquo;</div>
+            </a>
+          <?php endforeach; ?>
+          <a href="<?php echo esc_url($hub['url']); ?>" class="cluster-card">
+            <div class="cluster-kicker">전문 진료 원리 안내</div>
+            <div class="cluster-title"><?php echo esc_html($hub['name']); ?> — 원인별 치료·회복 원리 자세히 살펴보기 →</div>
+          </a>
+          <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>" class="cluster-card">
+            <div class="cluster-kicker">정밀 검진 시스템 안내</div>
+            <div class="cluster-title">초음파 · 적외선 체열 · 자율신경 · 체성분 등 9대 정밀검진 과정 살펴보기 →</div>
+          </a>
+        </div>
+
+        <div class="official-channels-bar">
+          <div class="channel-bar-copy">
+            <strong>더 많은 생활 건강 이야기 · 진료 시간 및 위치 안내</strong>
+            <span>바른한의원 대전본점 (대전 대덕구 비래동로7번길 1, 2층 · 대표전화 010-5631-1275)</span>
+          </div>
+          <div class="channel-pills">
+            <button type="button" onclick="copyStandaloneShareLink(this)" class="ch-pill ch-pill-share" aria-label="이 건강 글 링크 복사·퍼가기"><span class="ch-icon" style="background:linear-gradient(135deg,#E7C983,#C59E50);color:#14110F;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span data-share-label="1">링크 퍼가기</span></button>
+            <a href="<?php echo esc_url($yt_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#FF0000;color:#FFF;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span>유튜브</span></a>
+            <a href="<?php echo esc_url($nv_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#03C75A;color:#FFF;font-family:Arial,sans-serif;font-weight:900;font-size:0.78rem;">N</span><span>네이버플레이스</span></a>
+            <a href="<?php echo esc_url($th_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#000000;color:#FFF;font-weight:900;font-size:0.8rem;">@</span><span>스레드</span></a>
+            <a href="<?php echo esc_url($ig_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);color:#FFF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span><span>인스타그램</span></a>
+            <a href="<?php echo esc_url($kk_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#FEE500;color:#191919;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C6.48 4 2 7.52 2 11.86c0 2.83 1.89 5.31 4.74 6.7-.15.54-.96 3.47-1 3.63-.05.21.08.21.17.15.07-.05 2.89-1.95 4.05-2.75.66.1 1.34.15 2.04.15 5.52 0 10-3.52 10-7.88C22 7.52 17.52 4 12 4z"/></svg></span><span>카카오톡</span></a>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+  <div id="standaloneShareToast" role="status" aria-live="polite"></div>
+  <script>
+    (function() {
+      var noteId = <?php echo wp_json_encode($clean_id); ?>;
+      var canonicalShareUrl = <?php echo wp_json_encode($canonical_url); ?>;
+      var partId = <?php echo wp_json_encode($part_id); ?>;
+      var toastTimer = null;
+
+      function applyViewsMap(noteViewsObj, fallbackSingle) {
+        var map = {};
+        if (noteViewsObj && typeof noteViewsObj === 'object') {
+          Object.keys(noteViewsObj).forEach(function(k) {
+            map[String(k).toLowerCase()] = Number(noteViewsObj[k]) || 0;
+          });
+        }
+        if (typeof fallbackSingle === 'number') {
+          map[noteId] = Math.max(map[noteId] || 0, fallbackSingle);
+        }
+        document.querySelectorAll('[data-note-view-id]').forEach(function(el) {
+          var tid = String(el.getAttribute('data-note-view-id') || '').toLowerCase();
+          if (tid && map[tid] != null) {
+            el.textContent = '조회수 ' + Number(map[tid]).toLocaleString() + '회';
+          }
+        });
+      }
+
+      window.copyStandaloneShareLink = function(btnEl) {
+        var doDone = function() {
+          if (btnEl) {
+            var lbl = btnEl.querySelector('[data-share-label="1"]');
+            var prev = lbl ? lbl.textContent : '';
+            btnEl.classList.add('is-copied');
+            if (lbl) lbl.textContent = '✓ 복사됨';
+            setTimeout(function() {
+              btnEl.classList.remove('is-copied');
+              if (lbl && prev) lbl.textContent = prev;
+            }, 2000);
+          }
+          var toast = document.getElementById('standaloneShareToast');
+          if (toast) {
+            toast.textContent = '🔗 건강 글 링크가 복사되었습니다! 카톡·블로그·스레드에 바로 붙여넣기 하세요';
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2800);
+          }
+        };
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(canonicalShareUrl).then(doDone).catch(function() {
+            fallbackCopy(canonicalShareUrl, doDone);
+          });
+        } else {
+          fallbackCopy(canonicalShareUrl, doDone);
+        }
+      };
+
+      function fallbackCopy(txt, cb) {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = txt;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          var ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (ok) cb();
+          else window.prompt('아래 건강 글 링크를 복사해 주세요:', txt);
+        } catch (e) {
+          window.prompt('아래 건강 글 링크를 복사해 주세요:', txt);
+        }
+      }
+
+      var ua = (navigator && navigator.userAgent) ? navigator.userAgent : '';
+      if (!/bot|crawl|spider|slurp|yeti|daumoa|lighthouse|pagespeed/i.test(ua)) {
+        var sKey = 'bareun_viewed_hn_' + noteId;
+        var alreadyViewed = false;
+        try { alreadyViewed = sessionStorage.getItem(sKey) === '1'; } catch (e) {}
+        if (!alreadyViewed) {
+          try { sessionStorage.setItem(sKey, '1'); } catch (e) {}
+          fetch('/wp-json/bareun/v1/body-notes/view', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ noteId: noteId })
+          }).then(function(r) { return r.ok ? r.json() : null; }).then(function(d) {
+            if (d && d.ok) applyViewsMap(d.noteViews, d.views);
+          }).catch(function() {});
+        } else {
+          fetch('/wp-json/bareun/v1/body-notes?part=' + encodeURIComponent(partId), { cache: 'no-store' })
+            .then(function(r) { return r.ok ? r.json() : null; })
+            .then(function(d) {
+              if (d && d.ok && d.noteViews) applyViewsMap(d.noteViews);
+            }).catch(function() {});
+        }
+      }
+    })();
+    function updateSelfCheck() {
+      var boxes = document.querySelectorAll('#self-check-group input[type="checkbox"]');
+      var total = boxes.length || 5;
+      var count = 0;
+      boxes.forEach(function(cb) {
+        var label = cb.closest('.check-item-label');
+        if (cb.checked) { count++; if (label) label.classList.add('checked'); }
+        else { if (label) label.classList.remove('checked'); }
+      });
+      var titleEl = document.getElementById('score-title');
+      var badgeEl = document.getElementById('score-badge');
+      var descEl = document.getElementById('score-desc');
+      if (count === 0) {
+        titleEl.textContent = '현재 선택: 0 / ' + total + '개 해당 — 비교적 안정적인 생활 리듬이 유지되고 있습니다';
+        badgeEl.textContent = '양호 · 현재 습관 유지';
+        descEl.textContent = '오늘 살펴본 비교표의 권장 루틴을 가볍게 이어 가시면서 충분한 수분 섭취와 숙면 시간을 지켜 주세요.';
+      } else if (count <= 2) {
+        titleEl.textContent = '현재 선택: ' + count + ' / ' + total + '개 해당 — 일상 속 작은 피로 신호가 시작되는 구간';
+        badgeEl.textContent = '생활 리듬 2주 조정 권장';
+        descEl.textContent = '위 비교표의 권장 실천법을 2주간 먼저 적용해 보세요. 자세·식사·수면 타이밍 한 가지만 바꾸어도 몸의 긴장이 한결 부드러워집니다.';
+      } else {
+        titleEl.textContent = '현재 선택: ' + count + ' / ' + total + '개 해당 — 누적된 생활 불균형 점검이 필요한 구간';
+        badgeEl.textContent = '생활 교정 + 세심한 상태 확인 권장';
+        descEl.textContent = '여러 생활 신호가 동시에 겹쳐 회복 탄력이 떨어져 있을 가능성이 큽니다. 생활 루틴 조정과 함께 불편감이 2~4주 이상 이어진다면 가까운 의료기관에서 정확한 상태를 확인해 보시길 권합니다.';
+      }
+    }
+  </script>
+</body>
+</html>
+        <?php
+        return true;
     }
 
     public static function setup_head_cleanup() {
@@ -2098,7 +2896,9 @@ class Bareun_Master_SEO_Engine_V1 {
             }
             $rel_path = '/' . trim((string) wp_make_link_relative(get_permalink($post)), '/') . '/';
             $clean_post_title = trim(wp_strip_all_tags(get_the_title($post)));
-            $raw_title = $clean_post_title . ' | 바른한의원 대전본점';
+            $raw_title = (strpos($clean_post_title, '바른한의원') !== false)
+                ? $clean_post_title
+                : ($clean_post_title . ' | 바른한의원 대전본점');
             if (mb_strlen($raw_title, 'UTF-8') > 78) {
                 $raw_title = $clean_post_title . ' | 바른한의원';
                 if (mb_strlen($raw_title, 'UTF-8') > 82) {
@@ -2196,12 +2996,20 @@ class Bareun_Master_SEO_Engine_V1 {
                                     $pl = trim((string) ($csn['partLabel'] ?? '건강백과'));
                                     $kw = trim((string) ($csn['keyword'] ?? $pl));
                                     $qt = trim((string) ($csn['questionTitle'] ?? $csn['title'] ?? ''));
-                                    if ($qt !== '') {
-                                        $found_title = $qt . ' [' . $pl . ' · ' . $kw . ' 건강백과]';
+                                    $seo_t = trim((string) ($csn['seoTitle'] ?? ''));
+                                    if ($seo_t !== '') {
+                                        $found_title = $seo_t;
+                                    } elseif ($qt !== '') {
+                                        $found_title = $qt . ' [' . $pl . ' · ' . $kw . ']';
                                     }
-                                    $tru = isset($csn['truthLines']) && is_array($csn['truthLines']) ? implode(' ', $csn['truthLines']) : '';
-                                    $dp0 = isset($csn['deepParagraphs'][0]) ? (string) $csn['deepParagraphs'][0] : '';
-                                    $found_desc = trim($tru . ' ' . $dp0);
+                                    $dir_ans = trim((string) ($csn['directAnswer'] ?? ''));
+                                    if ($dir_ans !== '') {
+                                        $found_desc = $dir_ans;
+                                    } else {
+                                        $tru = isset($csn['truthLines']) && is_array($csn['truthLines']) ? implode(' ', $csn['truthLines']) : '';
+                                        $dp0 = isset($csn['deepParagraphs'][0]) ? (string) $csn['deepParagraphs'][0] : '';
+                                        $found_desc = trim($tru . ' ' . $dp0);
+                                    }
                                     if (!empty($csn['publishDate'])) {
                                         $found_date = (string) $csn['publishDate'];
                                     }
@@ -2291,7 +3099,7 @@ class Bareun_Master_SEO_Engine_V1 {
                                 $found_desc = mb_substr($found_desc, 0, 154, 'UTF-8') . '…';
                             }
                             return array(
-                                'path'           => '/body-explorer/?part=' . rawurlencode($req_part_id) . '&note=' . rawurlencode($req_note_id),
+                                'path'           => '/health-note-' . rawurlencode($req_note_id) . '/',
                                 'title'          => $found_title,
                                 'description'    => $found_desc,
                                 'preloadImg'     => '',
@@ -2463,91 +3271,9 @@ class Bareun_Master_SEO_Engine_V1 {
             );
         }
 
-        // Dynamic Q&A SEO/AEO/GEO: On /body-explorer/, include all public answered Q&A items AND 72 Health Notes in JSON-LD
-        if ($path === '/body-explorer/') {
-            global $wpdb;
-            $qna_table = $wpdb->prefix . 'bareun_private_qna';
-            $public_qnas = $wpdb->get_results(
-                "SELECT id, part_id, title, content, master_reply FROM {$qna_table} WHERE is_secret = 0 AND status = 'answered' AND master_reply IS NOT NULL AND master_reply != '' ORDER BY id DESC LIMIT 50",
-                ARRAY_A
-            );
-            $faq_entities = array(
-                array(
-                    '@type' => 'Question',
-                    'name'  => '초3 여아 야간 구강호흡과 또래 대비 성장 속도 지연 관련 문의드립니다',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => '소아 내분비학 연구(JCEM)에 따르면 성장호르몬 일일 분비량의 약 70% 이상이 야간 깊은 서파수면(Slow-Wave Sleep) 단계에서 분비됩니다. 구강호흡은 야간 미세각성을 유발해 수면의 질을 떨어뜨리므로 실내 습도 50% 유지, 취침 2시간 전 당류 제한, 비강 호흡 환경 조성이 우선 권장됩니다.'
-                    )
-                ),
-                array(
-                    '@type' => 'Question',
-                    'name'  => '장시간 운전 후 반복되는 우측 둔부·종아리 당김 증상(디스크 방사통 vs 이상근 증후군)은 어떻게 구별하나요?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => 'The Lancet(2018) 및 JAMA 척추 가이드라인에서는 만성 요통·좌골신경통 평가 시 골반 경사와 이상근 긴장도를 함께 감별할 것을 권고합니다. 기침·배변 시 복압 상승으로 저림이 심해지면 요추 신경근 압박 가능성이 높고, 착석 압박 시 둔부 국소 통증이 두드러지면 이상근 긴장 가능성이 높습니다.'
-                    )
-                ),
-                array(
-                    '@type' => 'Question',
-                    'name'  => '위내시경 정상 소견 후에도 계속되는 식후 명치 팽만감과 목 이물감은 왜 생기나요?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => '소화기 신경생리학 리뷰(Physiological Reviews · Rome IV 기능성 소화불량 기준)에 따르면 위 점막 손상이 없더라도 위장 평활근의 배출 지연(Delayed Gastric Emptying)과 내장 과민성이 있으면 위 내 가스 압력이 상승해 하부식도괄약근을 자극합니다. 한 입 30회 저작, 식중 수분 제한, 취침 3시간 전 금식, 식후 15분 보행으로 위 배출 리듬부터 회복하는 것이 핵심입니다.'
-                    )
-                )
-            );
-            if (is_array($public_qnas)) {
-                foreach ($public_qnas as $qr) {
-                    $q_title = trim((string)($qr['title'] ?? ''));
-                    $q_reply = trim((string)($qr['master_reply'] ?? ''));
-                    if ($q_title !== '' && $q_reply !== '') {
-                        $faq_entities[] = array(
-                            '@type' => 'Question',
-                            'name'  => $q_title,
-                            'url'   => self::CANONICAL_ORIGIN . '/body-explorer/?tab=qna&qnaId=' . (int)$qr['id'],
-                            'acceptedAnswer' => array(
-                                '@type' => 'Answer',
-                                'text'  => $q_reply
-                            )
-                        );
-                    }
-                }
-            }
-            $graph[] = array(
-                '@type'      => 'FAQPage',
-                '@id'        => $canonical_url . '#faq',
-                'name'       => '바른한의원 대전본점 무엇이든 물어보세요 (1:1 건강 Q&A 질의응답)',
-                'mainEntity' => $faq_entities
-            );
-        } elseif (!empty($cfg['hasFaq'])) {
-            $graph[] = array(
-                '@type' => 'FAQPage',
-                '@id'   => $canonical_url . '#faq',
-                'mainEntity' => array(
-                    array(
-                        '@type' => 'Question',
-                        'name'  => '혈액검사와 내시경·MRI 결과가 정상인데도 왜 몸은 계속 피곤하고 아픈가요?',
-                        'acceptedAnswer' => array(
-                            '@type' => 'Answer',
-                            'text'  => '일반 영상·혈액검사는 장기 조직의 구조적 손상을 찾는 데 최적화되어 있습니다. 자율신경 변이도 저하, 위 배출 지연, 저등급 만성염증, 골반·척추의 기능적 불균형은 구조 손상 이전의 기능적 조절 장애이므로 수면·식습관·생체역학 평가가 함께 이루어져야 원인을 파악할 수 있습니다.'
-                        )
-                    ),
-                    array(
-                        '@type' => 'Question',
-                        'name'  => '바른한의원 대전본점의 위치와 진료시간은 어떻게 되나요?',
-                        'acceptedAnswer' => array(
-                            '@type' => 'Answer',
-                            'text'  => '대전광역시 대덕구 비래동로7번길 1, 2층(비래동)에 위치하고 있으며 대표전화는 010-5631-1275입니다. 평일(월~금)은 오전 9시부터 저녁 7시까지, 토요일 및 공휴일은 오전 9시부터 오후 2시까지 진료하며 일요일은 휴진입니다.'
-                        )
-                    )
-                )
-            );
-        }
-
         if (!empty($cfg['isArticle'])) {
             $graph[] = array(
-                '@type'         => 'Article',
+                '@type'         => 'MedicalScholarlyArticle',
                 '@id'           => $canonical_url . '#article',
                 'headline'      => $cfg['title'],
                 'description'   => $cfg['description'],
@@ -2557,32 +3283,11 @@ class Bareun_Master_SEO_Engine_V1 {
                 'inLanguage'    => 'ko-KR',
                 'author'        => array(
                     '@type' => 'Person',
-                    'name'  => '바른 통합의학 리서치 에디토리얼 (감수: 안정위 한의사)',
+                    '@id'   => self::CANONICAL_ORIGIN . '/director/#physician',
+                    'name'  => '안정위',
                     'url'   => self::CANONICAL_ORIGIN . '/director/'
                 ),
                 'publisher'     => array('@id' => self::CANONICAL_ORIGIN . '/#clinic')
-            );
-            $graph[] = array(
-                '@type' => 'FAQPage',
-                '@id'   => $canonical_url . '#faq',
-                'mainEntity' => array(
-                    array(
-                        '@type' => 'Question',
-                        'name'  => '혈액검사와 내시경·MRI 결과가 정상인데도 왜 몸은 계속 피곤하고 아픈가요?',
-                        'acceptedAnswer' => array(
-                            '@type' => 'Answer',
-                            'text'  => '일반 영상·혈액검사는 장기 조직의 파괴나 종양·궤양 같은 구조적 병변을 찾아내는 데 최적화되어 있습니다. 반면 자율신경 변이도 저하, 위 배출 속도 지연, 저등급 만성염증, 근막·골반의 기능적 불균형은 구조적 손상 이전 단계인 기능적 조절 장애(Functional Dysregulation)에 해당하므로 수면·식습관·생체역학 평가가 함께 이루어져야 원인을 파악할 수 있습니다.'
-                        )
-                    ),
-                    array(
-                        '@type' => 'Question',
-                        'name'  => '만성 피로와 소화불량을 동시에 겪을 때 가장 먼저 바꾸어야 할 생활습관 한 가지는 무엇인가요?',
-                        'acceptedAnswer' => array(
-                            '@type' => 'Answer',
-                            'text'  => '취침 3시간 전 금식(야간 12시간 공복 유지)과 일정한 시각의 아침 자연광 노출입니다. 밤사이 위장관이 비워져야 미주신경 회복과 깊은 서파수면이 이루어지며, 다음 날 아침 코르티솔·세로토닌 일주기 리듬이 정상화되어 피로와 소화력이 함께 개선됩니다.'
-                        )
-                    )
-                )
             );
         }
 
@@ -2655,7 +3360,8 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         $ld = self::build_json_ld($cfg);
         echo '<script type="application/ld+json">' . wp_json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
-        if (strpos($path, '/body-explorer/') === 0) {
+        $raw_req_uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
+        if (strpos($path, '/body-explorer/') === 0 || strpos($raw_req_uri, '/body-explorer') === 0) {
             $live_hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
             if (is_array($live_hn_cfg) && !empty($live_hn_cfg['notes'])) {
                 echo '<script>window.__BAREUN_LIVE_HEALTH_NOTES_CFG__ = ' . wp_json_encode($live_hn_cfg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";
@@ -2732,9 +3438,7 @@ class Bareun_Master_SEO_Engine_V1 {
         if ($post && isset($post->post_type) && $post->post_type === 'post' && !empty($post->post_name)) {
             if (preg_match('#^health-note-([a-z0-9\-]+)$#i', (string) $post->post_name, $m)) {
                 $hn_id = strtolower($m[1]);
-                $parts = explode('-', $hn_id);
-                $hn_part = !empty($parts[0]) ? $parts[0] : 'knee';
-                return self::CANONICAL_ORIGIN . '/body-explorer/?part=' . rawurlencode($hn_part) . '&note=' . rawurlencode($hn_id);
+                return self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode($hn_id) . '/';
             }
         }
         return $permalink;
@@ -2754,6 +3458,35 @@ class Bareun_Master_SEO_Engine_V1 {
         if (!empty($entry['loc'])) {
             $entry['loc'] = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $entry['loc']);
         }
+
+        static $hn_lastmod_map = null;
+        if ($hn_lastmod_map === null) {
+            $hn_lastmod_map = array();
+            $hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
+            if (is_array($hn_cfg) && !empty($hn_cfg['notes']) && is_array($hn_cfg['notes'])) {
+                foreach ($hn_cfg['notes'] as $hn_row) {
+                    if (!is_array($hn_row) || empty($hn_row['id'])) continue;
+                    $nid = strtolower(trim((string) $hn_row['id']));
+                    $rev_d = !empty($hn_row['lastReviewed'])
+                        ? trim((string) $hn_row['lastReviewed'])
+                        : (!empty($hn_row['publishDate']) ? trim((string) $hn_row['publishDate']) : '');
+                    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $rev_d)) {
+                        $hn_lastmod_map[$nid] = $rev_d . 'T10:30:00+09:00';
+                    }
+                }
+            }
+        }
+
+        $slug = ($post && !empty($post->post_name)) ? (string) $post->post_name : '';
+        if ($slug !== '' && preg_match('#^health-note-([a-z0-9\-]+)$#i', $slug, $hm)) {
+            $hn_id = strtolower($hm[1]);
+            $entry['loc'] = self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode($hn_id) . '/';
+            if (isset($hn_lastmod_map[$hn_id])) {
+                $entry['lastmod'] = $hn_lastmod_map[$hn_id];
+                return $entry;
+            }
+        }
+
         $milestone_dates = array(
             'integrative-autonomic-circadian-gut-spine-health-review' => '2026-10-26T14:30:00+09:00',
             'lifting-compare' => '2026-10-25T18:10:00+09:00',
@@ -2761,7 +3494,6 @@ class Bareun_Master_SEO_Engine_V1 {
             'ask-doctor'      => '2026-10-27T09:15:00+09:00',
             'body-explorer'   => '2026-10-28T12:00:00+09:00'
         );
-        $slug = ($post && !empty($post->post_name)) ? (string) $post->post_name : '';
         $mod_day = ($post && !empty($post->post_modified)) ? substr((string) $post->post_modified, 0, 10) : '';
         if ($slug !== '' && isset($milestone_dates[$slug]) && $mod_day <= '2026-10-28') {
             $entry['lastmod'] = $milestone_dates[$slug];
@@ -2860,6 +3592,9 @@ class Bareun_Master_SEO_Engine_V1 {
             'User-agent: Applebot',
             'Allow: /',
             '',
+            'User-agent: Applebot-Extended',
+            'Allow: /',
+            '',
             'User-agent: GPTBot',
             'Allow: /',
             '',
@@ -2870,6 +3605,12 @@ class Bareun_Master_SEO_Engine_V1 {
             'Allow: /',
             '',
             'User-agent: ClaudeBot',
+            'Allow: /',
+            '',
+            'User-agent: Claude-SearchBot',
+            'Allow: /',
+            '',
+            'User-agent: Claude-User',
             'Allow: /',
             '',
             'User-agent: Claude-Web',
@@ -3473,7 +4214,7 @@ class Bareun_Custom_Studio_Engine_V4 {
         }
     }
 
-    private static function load_health_notes_cfg_php($force_default = false) {
+    public static function load_health_notes_cfg_php($force_default = false) {
         $upload_dir = wp_upload_dir();
         $studio_dir = $upload_dir['basedir'] . '/bareun-studio';
         if (!$force_default) {
@@ -3530,12 +4271,38 @@ class Bareun_Custom_Studio_Engine_V4 {
             @file_put_contents($target_dir . '/health-notes-custom-config.json', wp_json_encode($hn_cfg, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
             self::flush_all_wp_caches();
+
+            // Non-blocking IndexNow ping for /body-explorer/ + active standalone /health-note-{id}/ URLs
+            $ping_urls = array('https://www.bareunhaniwon.com/body-explorer/');
+            foreach ($hn_cfg['notes'] as $n_item) {
+                if (!is_array($n_item) || empty($n_item['id'])) continue;
+                if (isset($n_item['enabled']) && !$n_item['enabled']) continue;
+                $clean_nid = strtolower(preg_replace('/[^a-z0-9\-]/i', '', (string) $n_item['id']));
+                if ($clean_nid !== '') {
+                    $ping_urls[] = 'https://www.bareunhaniwon.com/health-note-' . $clean_nid . '/';
+                }
+                if (count($ping_urls) >= 100) break;
+            }
+            $indexnow_key = Bareun_Master_SEO_Engine_V1::INDEXNOW_KEY;
+            wp_remote_post('https://api.indexnow.org/indexnow', array(
+                'timeout'  => 2,
+                'blocking' => false,
+                'headers'  => array('Content-Type' => 'application/json; charset=utf-8'),
+                'body'     => wp_json_encode(array(
+                    'host'        => 'www.bareunhaniwon.com',
+                    'key'         => $indexnow_key,
+                    'keyLocation' => 'https://www.bareunhaniwon.com/' . $indexnow_key . '.txt',
+                    'urlList'     => array_values(array_unique($ping_urls))
+                ), JSON_UNESCAPED_SLASHES)
+            ));
+
             return new WP_REST_Response(array(
                 'ok'                => true,
                 'deployed'          => true,
+                'indexNowCount'     => count($ping_urls),
                 'liveUrl'           => home_url('/body-explorer/'),
                 'healthNotesConfig' => $hn_cfg,
-                'message'           => '3D 오늘의 건강 글(72선 요약 + 인라인 상세히 칼럼)이 카페24 실서버에 즉시 반영되었습니다!'
+                'message'           => '3D 오늘의 건강 글(인라인 상세 서랍) 및 72편 독립 검색 정본(/health-note-{id}/)이 카페24 실서버에 동시 반영되고 IndexNow 색인 핑이 전송되었습니다!'
             ), 200);
         }
 

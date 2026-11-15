@@ -605,20 +605,25 @@ async function performWpLogin(page, loginUrl) {
           const resolvedMediaId = (postItem.slug !== 'integrative-autonomic-circadian-gut-spine-health-review' && postItem.partId && partMediaIdMap && partMediaIdMap[postItem.partId])
             ? partMediaIdMap[postItem.partId]
             : mediaId;
+          const postPayloadObj = {
+            title: postItem.title,
+            slug: postItem.slug,
+            excerpt: postItem.summary,
+            content: postItem.standaloneHtml,
+            status: 'publish',
+            comment_status: 'closed',
+            ping_status: 'open',
+            featured_media: resolvedMediaId,
+            categories: cId ? [cId] : []
+          };
+          const nowKstDay = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+          if (postItem.publishDate && /^\d{4}-\d{2}-\d{2}$/.test(postItem.publishDate) && postItem.publishDate <= nowKstDay) {
+            postPayloadObj.date = postItem.publishDate + 'T09:30:00';
+          }
           const pubRes = await fetch(epUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
-            body: JSON.stringify({
-              title: postItem.title,
-              slug: postItem.slug,
-              excerpt: postItem.summary,
-              content: postItem.standaloneHtml,
-              status: 'publish',
-              comment_status: 'closed',
-              ping_status: 'open',
-              featured_media: resolvedMediaId,
-              categories: cId ? [cId] : []
-            })
+            body: JSON.stringify(postPayloadObj)
           });
           const pubJson = await pubRes.json();
           if (pubJson && pubJson.id) {
@@ -751,6 +756,8 @@ async function performWpLogin(page, loginUrl) {
       `${CANONICAL_ORIGIN}/integrative-autonomic-circadian-gut-spine-health-review/`,
       `${CANONICAL_ORIGIN}/feed/`,
       `${CANONICAL_ORIGIN}/llms.txt`,
+      `${CANONICAL_ORIGIN}/llms-full.txt`,
+      `${CANONICAL_ORIGIN}/wp-sitemap-posts-post-1.xml`,
       ...publishedPostUrls.slice(-9)
     ]));
     console.log(`5.5) Warming ${urlsToWarm.length} core canonical HTTPS URLs in WP Super Cache ...`);

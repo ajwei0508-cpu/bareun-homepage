@@ -5162,7 +5162,7 @@
             markDirty(false);
             renderAll();
             syncHealthNoteLivePreview(false);
-            showStatus('ok', `[${page.label}] 72선 요약 및 [🔍 상세히] 칼럼이 카페24 실서버(https://www.bareunhaniwon.com/body-explorer/)에 즉시 반영되었습니다!`);
+            showStatus('ok', data.message || `[${page.label}] 3D 인라인 서랍 및 72편 독립 검색 정본(/health-note-{id}/)이 카페24 실서버에 동시 반영되었습니다!`);
             return;
           }
           if (!window.BareunCompiler || typeof window.BareunCompiler.buildCompleteWpPage !== 'function') {
@@ -5311,7 +5311,9 @@
       if (gs.channelBarLabel == null) gs.channelBarLabel = '더 많은 건강 이야기 · 편하게 물어보기';
       if (!gs.channels) gs.channels = {};
       if (!gs.channels.youtube) gs.channels.youtube = { enabled: true, label: '유튜브', url: 'https://www.youtube.com/@bareunhaniwon' };
-      if (!gs.channels.naver) gs.channels.naver = { enabled: true, label: '네이버', url: 'https://blog.naver.com/wei0508' };
+      if (!gs.channels.naver) gs.channels.naver = { enabled: true, label: '네이버플레이스', url: 'https://naver.me/5U1ELn8L' };
+      if (!gs.channels.threads) gs.channels.threads = { enabled: true, label: '스레드', url: 'https://www.threads.net/@bareun_oriental' };
+      if (!gs.channels.instagram) gs.channels.instagram = { enabled: true, label: '인스타그램', url: 'https://www.instagram.com/bareun_oriental/' };
       if (!gs.channels.kakao) gs.channels.kakao = { enabled: true, label: '카카오톡', url: 'https://pf.kakao.com/_ykxcLK' };
       if (!Array.isArray(healthNotesConfig.parts) || healthNotesConfig.parts.length === 0) {
         healthNotesConfig.parts = [
@@ -5457,6 +5459,8 @@
       if (refreshCards) {
         renderPageSwitcher();
         renderHealthNotesCardsPane();
+      } else {
+        refreshHnAdminPanels(noteId);
       }
       syncHealthNoteLivePreview(false);
     }
@@ -5472,7 +5476,406 @@
       }
       hnSelectedNoteId = noteObj.id;
       markDirty(true);
+      refreshHnAdminPanels(noteId);
       syncHealthNoteLivePreview(false);
+    }
+
+    const hnOsmuActiveTabByNote = {};
+    const HN_MEDICAL_LAW_BANNED_TERMS = ['완치', '100%', '최고', '최초', '유일', '특효', '무통', '보장', '할인', '이벤트', '무료'];
+
+    function openStandaloneHealthNoteUrl(noteId, ev) {
+      if (ev) ev.stopPropagation();
+      if (!noteId) return;
+      const cleanId = String(noteId).trim();
+      const targetHref = `/health-note-${encodeURIComponent(cleanId)}/`;
+      window.open(targetHref, '_blank', 'noopener');
+    }
+
+    function serializeComparisonRows(rows) {
+      if (!Array.isArray(rows) || rows.length === 0) return '';
+      return rows.map(r => Array.isArray(r) ? r.map(c => String(c || '').trim()).join(' | ') : '').filter(Boolean).join('\n');
+    }
+
+    function updateHnComparisonMeta(noteId, fieldKey, val) {
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      if (!noteObj.comparisonTable || typeof noteObj.comparisonTable !== 'object') {
+        noteObj.comparisonTable = {
+          heading: `${noteObj.keyword || noteObj.partLabel || '주요 신호'} 핵심 비교표`,
+          intro: '일상 속 흔한 오해와 실제 생리 기전, 오늘부터 실천할 수칙을 한눈에 비교해 보세요.',
+          headers: ['비교 기준', '흔한 오해 · 방치 습관', '우리 몸 실제 생리 반응', '오늘부터 실천할 회복 기준'],
+          rows: []
+        };
+      }
+      noteObj.comparisonTable[fieldKey] = val;
+      hnSelectedNoteId = noteObj.id;
+      markDirty(true);
+      refreshHnAdminPanels(noteId);
+      syncHealthNoteLivePreview(false);
+    }
+
+    function updateHnComparisonRows(noteId, rawText) {
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      if (!noteObj.comparisonTable || typeof noteObj.comparisonTable !== 'object') {
+        noteObj.comparisonTable = {
+          heading: `${noteObj.keyword || noteObj.partLabel || '주요 신호'} 핵심 비교표`,
+          intro: '일상 속 흔한 오해와 실제 생리 기전, 오늘부터 실천할 수칙을 한눈에 비교해 보세요.',
+          headers: ['비교 기준', '흔한 오해 · 방치 습관', '우리 몸 실제 생리 반응', '오늘부터 실천할 회복 기준'],
+          rows: []
+        };
+      }
+      if (!Array.isArray(noteObj.comparisonTable.headers) || noteObj.comparisonTable.headers.length < 4) {
+        noteObj.comparisonTable.headers = ['비교 기준', '흔한 오해 · 방치 습관', '우리 몸 실제 생리 반응', '오늘부터 실천할 회복 기준'];
+      }
+      const parsedRows = String(rawText || '')
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+          const cols = line.split('|').map(c => c.trim());
+          while (cols.length < 4) cols.push('');
+          return cols.slice(0, 4);
+        });
+      noteObj.comparisonTable.rows = parsedRows;
+      hnSelectedNoteId = noteObj.id;
+      markDirty(true);
+      refreshHnAdminPanels(noteId);
+      syncHealthNoteLivePreview(false);
+    }
+
+    function countKoreanWords(str) {
+      const cleaned = String(str || '').trim();
+      if (!cleaned) return 0;
+      return cleaned.split(/\s+/).filter(Boolean).length;
+    }
+
+    function computeHnSeoScore(note) {
+      if (!note) return { total: 0, checks: [], bannedFound: [] };
+      const seoTitle = String(note.seoTitle || '').trim();
+      const qTitle = String(note.questionTitle || '').trim();
+      const directAnswer = String(note.directAnswer || '').trim();
+      const daWords = countKoreanWords(directAnswer);
+      const compRows = (note.comparisonTable && Array.isArray(note.comparisonTable.rows)) ? note.comparisonTable.rows : [];
+      const validCompRows = compRows.filter(r => Array.isArray(r) && r.filter(Boolean).length >= 3).length;
+      const selfChecks = Array.isArray(note.selfCheckItems) ? note.selfCheckItems.filter(Boolean).length : 0;
+      const redFlags = Array.isArray(note.redFlags) ? note.redFlags.filter(Boolean).length : 0;
+      const hasClinicalObs = String(note.clinicalObservation || '').trim().length >= 30;
+      const hasRef = String(note.deepReference || note.academicBasis || '').trim().length >= 10;
+      const hasRevDate = /^\d{4}-\d{2}-\d{2}$/.test(String(note.lastReviewed || note.publishDate || '').trim());
+
+      const allTextCorpus = [
+        seoTitle, qTitle, directAnswer, note.clinicalObservation || '',
+        ...(note.empathyLines || []), ...(note.truthLines || []), ...(note.mythLines || []),
+        ...(note.checkList || []), ...(note.deepParagraphs || []), ...(note.deepSignals || []),
+        ...(note.selfCheckItems || []), ...(note.redFlags || []),
+        ...compRows.map(r => Array.isArray(r) ? r.join(' ') : '')
+      ].join(' ');
+      const bannedFound = HN_MEDICAL_LAW_BANNED_TERMS.filter(term => allTextCorpus.includes(term));
+
+      const s1 = (seoTitle.length >= 20 && seoTitle.length <= 74 ? 12 : (seoTitle.length > 0 ? 7 : 0)) + (qTitle.includes('?') ? 8 : 4);
+      const s2 = (daWords >= 28 && daWords <= 85) ? 25 : (daWords >= 15 ? 16 : (daWords > 0 ? 8 : 0));
+      const s3 = (validCompRows >= 4 ? 14 : (validCompRows >= 2 ? 9 : 0)) + (hasRef ? 6 : 0);
+      const s4 = (selfChecks >= 5 ? 8 : (selfChecks >= 3 ? 5 : 0)) + (hasClinicalObs ? 6 : 0) + (redFlags >= 2 ? 3 : 0) + (hasRevDate ? 3 : 0);
+      const s5 = bannedFound.length === 0 ? 15 : 0;
+
+      const total = Math.min(100, s1 + s2 + s3 + s4 + s5);
+      const checks = [
+        {
+          label: 'SEO 검색 정본 타이틀 & 의문형 H1',
+          score: `${s1}/20`,
+          ok: s1 >= 18,
+          detail: `정본 /health-note-${note.id}/ · 타이틀 ${seoTitle.length}자 · 질문형(${qTitle.includes('?') ? '포함' : '권장'})`
+        },
+        {
+          label: 'AEO 30초 즉답 정의문 (AI Overviews · Cue:)',
+          score: `${s2}/25`,
+          ok: s2 >= 22,
+          detail: `현재 ${daWords}어절 (최적 스니펫 권장: 30~80어절 완결형 결론)`
+        },
+        {
+          label: 'GEO 인용 자석 4열 비교표 & 학술 레퍼런스',
+          score: `${s3}/20`,
+          ok: s3 >= 18,
+          detail: `4열 비교표 ${validCompRows}행 구성 · 참고문헌 ${hasRef ? '확인됨' : '입력 권장'}`
+        },
+        {
+          label: 'SXO 5문항 자가점검 & E-E-A-T 진료실 관찰/주의신호',
+          score: `${s4}/20`,
+          ok: s4 >= 18,
+          detail: `체크리스트 ${selfChecks}문항 · 임상관찰 ${hasClinicalObs ? '충족' : '보강권장'} · 주의신호 ${redFlags}건 · 감수일 ${note.lastReviewed || note.publishDate || '-'}`
+        },
+        {
+          label: '의료법 제56조 클린 표현 실시간 감사',
+          score: `${s5}/15`,
+          ok: bannedFound.length === 0,
+          detail: bannedFound.length === 0 ? '과장·단정·유인 주의어 0건 (안전 통과)' : `주의어 감지: ${bannedFound.join(', ')}`
+        }
+      ];
+      return { total, checks, bannedFound, daWords, validCompRows, selfChecks };
+    }
+
+    function buildHnOsmuScripts(note) {
+      const kw = String(note.keyword || note.partLabel || '건강 신호').trim();
+      const partLabel = String(note.partLabel || '우리 몸').trim();
+      const qTitle = String(note.questionTitle || '').trim();
+      const emp0 = (note.empathyLines && note.empathyLines[0]) || `${partLabel} 불편함, 단순 피로라고 넘기고 계셨나요?`;
+      const myth0 = (note.mythLines && note.mythLines[0]) || '무조건 참거나 쉬면 저절로 좋아진다고 생각하기 쉽습니다.';
+      const myth1 = (note.mythLines && note.mythLines[1]) || '하지만 실제 몸속 생리 리듬은 초기 신호를 바로잡아 줄 때 가장 편안하게 회복됩니다.';
+      const truth0 = (note.truthLines && note.truthLines[0]) || '';
+      const truth1 = (note.truthLines && note.truthLines[1]) || '';
+      const directAns = String(note.directAnswer || `${truth0} ${truth1}`).trim();
+      const dp0 = (note.deepParagraphs && note.deepParagraphs[0]) || directAns;
+      const dp1 = (note.deepParagraphs && note.deepParagraphs[1]) || '';
+      const clinObs = String(note.clinicalObservation || '진료실에서 생활 리듬을 함께 살펴보면 낮 동안의 긴장 습관과 밤 수면 환경이 맞물려 있는 경우가 많습니다.').trim();
+      const compRows = (note.comparisonTable && Array.isArray(note.comparisonTable.rows)) ? note.comparisonTable.rows : [];
+      const checks = (Array.isArray(note.selfCheckItems) && note.selfCheckItems.length > 0)
+        ? note.selfCheckItems
+        : (note.checkList || []);
+      const signals = Array.isArray(note.deepSignals) ? note.deepSignals : [];
+      const reds = Array.isArray(note.redFlags) ? note.redFlags : [];
+      const refLine = String(note.deepReference || note.academicBasis || '국제 생리학 및 임상 가이드라인 종합').trim();
+      const canonicalUrl = `https://www.bareunhaniwon.com/health-note-${note.id}/`;
+
+      // 1) YouTube Shorts (VVSA >= 70%, APV >= 115% Infinite Loop Structure)
+      const shortsText = [
+        `🎬 [유튜브 쇼츠 알고리즘 맞춤 대본 · 목표 길이 38~44초 · 루프형 구조]`,
+        `• 알고리즘 핵심 타겟: 초반 3초 이탈 방어(VVSA 70%+) + 첫 문장 수미상관 무한루프(APV 115%+)`,
+        ``,
+        `[00:00~00:03 | 🔥 3초 인지 부조화 훅 — 화면 상단 굵은 노란 자막 고정]`,
+        `🎙️ 원장님 대사: "${myth0.replace(/\.$/, '')}? 사실 우리 [${partLabel}] 입장에서는 정반대일 수 있습니다."`,
+        `🎥 화면 연출: 안정위 원장님 클로즈업 + 손가락 X 제스처 → 해부 일러스트 빠른 줌인(0.8초 컷)`,
+        ``,
+        `[00:03~00:18 | 💡 몸속 생리 반전 팩트 — 3초마다 자료화면 B-roll 전환]`,
+        `🎙️ 원장님 대사: "${emp0} ${truth0}"`,
+        `🎙️ 이어서: "${myth1}"`,
+        `🎥 화면 연출: [${partLabel}] 도식 포인트 강조 자막 ("핵심 키워드: ${kw}")`,
+        ``,
+        `[00:18~00:36 | ✅ 오늘 밤 집에서 해보는 1분 체크 3가지]`,
+        ...checks.slice(0, 3).map((c, idx) => `🎙️ 체크 ${idx + 1}번: "${c}"`),
+        `🎥 화면 연출: 손가락 1·2·3 카운트 + 하단 간결 자막 바`,
+        ``,
+        `[00:36~00:42 | ♾️ APV 115% 무한 루프 브릿지 (끝 문장이 0초 첫 문장으로 자연 연결)]`,
+        `🎙️ 원장님 대사: "이 신호를 모른 채 넘기면 결국 처음 말씀드린 그 습관으로 돌아가게 됩니다. 왜냐하면..." (→ 00:00 첫 장면으로 자연 루프)`,
+        ``,
+        `📌 [고정 댓글 (세션 연장 + 댓글 가중치 부스터 — 업로드 즉시 등록)]`,
+        `오늘 말씀드린 [${kw}] 체크 항목 중 나는 몇 번에 가장 해당하시나요?`,
+        `1️⃣ 아침·첫 움직임이 유독 무겁다  2️⃣ 오후·저녁이 될수록 심해진다  3️⃣ 수면·식사 리듬까지 흔들린다`,
+        `댓글로 번호만 남겨주셔도 다음 건강 쇼츠 주제를 준비할 때 큰 참고가 됩니다 😊`,
+        `(더 자세한 도식과 5문항 자가점검표는 프로필 내 바른한의원 홈페이지 건강 노트에서 보실 수 있습니다)`
+      ].join('\n');
+
+      // 2) Naver Blog (D.I.A.+ / C-Rank 3-min Dwell Time, SmartEditor Quote Blocks, 5 Photo Slots, Place Map)
+      const compTextLines = compRows.length > 0
+        ? compRows.map((r, idx) => `  ${idx + 1}) [${r[0] || '기준'}]\n     • 흔히 하는 생각: ${r[1] || '-'}\n     • 실제 몸속 기전: ${r[2] || '-'}\n     • 권장 생활 수칙: ${r[3] || '-'}`).join('\n\n')
+        : signals.map((s, idx) => `  ${idx + 1}) ${s}`).join('\n');
+
+      const naverBlogText = [
+        `🟩 [네이버 블로그 D.I.A.+ · C-Rank 체류시간 3분+ 맞춤 원고]`,
+        `• 알고리즘 설계: 제목 핵심어 전진 배치 + 직접 찍은 실사 5장 슬롯(유사문서 회피) + 스마트에디터 인용구 구조화 + 하단 네이버플레이스 지도 연동`,
+        ``,
+        `[추천 제목 1 (질문·검색 유입형)] ${kw}, ${qTitle}`,
+        `[추천 제목 2 (정보·체류시간형)] ${partLabel} 신호 정리: ${kw} 원인과 집에서 해보는 1분 자가점검 (대전 바른한의원 건강칼럼)`,
+        ``,
+        `------------------------------------------------------------`,
+        `안녕하세요. 내 가족에게 처방·시술한 치료만 하는 아빠 한의사, 바른한의원 대전본점 대표원장 안정위입니다.`,
+        ``,
+        `[📸 실사 사진 슬롯 1 — 진료실 책상 위 차트·모형 또는 원장님 진료 준비 직접 촬영 컷 첨부]`,
+        ``,
+        `${emp0}`,
+        `${ (note.empathyLines && note.empathyLines[1]) || '' }`.trim(),
+        ``,
+        `오늘은 진료실에서 환자분들께서 자주 물어보시는 『${qTitle}』에 대해 우리 몸의 생리 원리와 일상 속 관리 기준을 알기 쉽게 정리해 드리겠습니다.`,
+        ``,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `💬 [스마트에디터 인용구 2번 적용]`,
+        `1. 30초 핵심 요약: 우리 몸속에서는 어떤 일이 일어나고 있을까요?`,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `${directAns}`,
+        ``,
+        `[📸 실사 사진 슬롯 2 — 해당 부위(${partLabel}) 해부 모형 또는 본 칼럼 일러스트 이미지 첨부]`,
+        ``,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `💬 [스마트에디터 인용구 2번 적용]`,
+        `2. 왜 단순 휴식만으로 개운해지지 않을 때가 있을까요?`,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `${dp0}`,
+        ``,
+        `${dp1}`,
+        ``,
+        `📌 진료실에서 함께 살펴보는 생활 리듬 관찰 포인트`,
+        `${clinObs}`,
+        ``,
+        `[📸 실사 사진 슬롯 3 — 원내 검사실/치료실 정돈된 환경 직접 촬영 사진 첨부]`,
+        ``,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `💬 [스마트에디터 인용구 2번 적용]`,
+        `3. 흔한 오해 vs 실제 생리 반응 한눈에 비교하기`,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `${compTextLines}`,
+        ``,
+        `[📸 실사 사진 슬롯 4 — 일상 스트레칭/차/온찜질 등 생활 관리 안내 사진 첨부]`,
+        ``,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `💬 [스마트에디터 인용구 2번 적용]`,
+        `4. 오늘 밤 집에서 해보는 1분 자가점검 체크리스트`,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        ...checks.map((c, idx) => `☑️ 체크 ${idx + 1}. ${c}`),
+        ``,
+        ...(reds.length > 0 ? [
+          `⚠️ 만약 아래 신호가 동반된다면 혼자 참기보다 가까운 의료기관에서 정확한 대면 확인을 받아보시는 것이 안전합니다.`,
+          ...reds.map(rf => `• ${rf}`),
+          ``
+        ] : []),
+        `📚 학술 참고 근거: ${refLine}`,
+        `🔎 3D 인체모형과 함께 보는 원문 건강 노트: ${canonicalUrl}`,
+        ``,
+        `[📸 실사 사진 슬롯 5 — 바른한의원 대전본점 외관/대기실 사진 + 아래 스마트에디터 '장소(지도)' 기능으로 플레이스 삽입]`,
+        `📍 네이버플레이스 지도 첨부 링크: https://naver.me/5U1ELn8L`,
+        `• 상호명: 바른한의원 대전본점 (대표원장 안정위)`,
+        `• 주소: 대전광역시 대덕구 비래동로7번길 1, 2층`,
+        `• 대표전화: 010-5631-1275`,
+        ``,
+        `#바른한의원대전본점 #대전한의원 #비래동한의원 #${kw.replace(/\s+/g, '')} #${partLabel.replace(/[^가-힣a-zA-Z0-9]/g, '')} #건강노트 #생활건강관리`
+      ].filter((v, i, a) => !(v === '' && a[i - 1] === '')).join('\n');
+
+      // 3) Meta Threads (Zero External Link in Post 1 + Saveable Cheat-Sheet Reply 2 + Conversation Trigger Reply 3)
+      const threadsRowSummary = compRows.slice(0, 3).map((r, i) => `${i + 1}. ${r[0]}: "${r[1]}" → 실제로는 ${r[3]}`).join('\n');
+      const threadsText = [
+        `🧵 [메타 스레드(Threads) 3단 타래 체인 · 외부 링크 감점 0% 완전 회피 설계]`,
+        `• 알고리즘 핵심: 1번 본문에 URL 링크를 넣으면 피드 노출이 급감하므로 본문은 순수 텍스트만 올리고, 2번·3번 답글로 저장(Bookmark)과 대댓글(Replies) 시그널을 유도합니다.`,
+        ``,
+        `━━━━━━━━ [1/3 첫 번째 본문 게시물 — URL 절대 금지] ━━━━━━━━`,
+        `"${myth0}"`,
+        ``,
+        `진료실에서 [${partLabel}] 때문에 오시는 분들과 이야기 나누다 보면 정말 많이 듣는 말입니다.`,
+        ``,
+        `그런데 우리 몸 생리학 기준으로 보면 조금 다릅니다.`,
+        `${truth0}`,
+        ``,
+        `그래서 무조건 참거나 반대로 아예 움직이지 않기보다, 낮의 압박 습관과 밤의 회복 리듬을 같이 봐주어야 몸이 훨씬 편안해집니다.`,
+        ``,
+        `오늘 밤 집에서 바로 대조해 보실 수 있는 1분 기준표를 바로 아래 답글에 이어 적어둘게요 👇`,
+        ``,
+        `━━━━━━━━ [2/3 첫 번째 답글(Reply) — 저장(북마크) 유도 요약 노트] ━━━━━━━━`,
+        `📌 저장해 두고 오늘 밤 1분만 체크해 보세요 [${kw} 핵심 정리]`,
+        ``,
+        threadsRowSummary || signals.slice(0, 3).map((s, i) => `${i + 1}. ${s}`).join('\n'),
+        ``,
+        `✅ 내 몸 체크 포인트`,
+        ...checks.slice(0, 3).map((c, idx) => `• (${idx + 1}번) ${c}`),
+        ``,
+        `━━━━━━━━ [3/3 두 번째 답글(Reply) — 대댓글 대화 유도 트리거] ━━━━━━━━`,
+        `위 체크 포인트 중에서 요즘 내 몸에 가장 먼저 나타나는 신호는 몇 번이신가요?`,
+        ``,
+        `1번 / 2번 / 3번 편하게 남겨주시면, 일상에서 무리 없이 실천할 수 있는 생활 팁을 답글로 더 나누어 보겠습니다 🙏`,
+        `(부위별 3D 인체모형 도식은 프로필 소개란의 바른한의원 홈페이지 건강 노트에서도 보실 수 있어요)`
+      ].join('\n');
+
+      return { shorts: shortsText, naver: naverBlogText, threads: threadsText };
+    }
+
+    function renderHnInspectorHtml(note) {
+      const res = computeHnSeoScore(note);
+      const badgeColor = res.total >= 92 ? '#065f46' : (res.total >= 75 ? '#92400e' : '#991b1b');
+      const badgeBg = res.total >= 92 ? '#d1fae5' : (res.total >= 75 ? '#fef3c7' : '#fee2e2');
+      return `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+          <div>
+            <span style="display:inline-block; padding:2px 8px; border-radius:999px; background:#1e293b; color:#f8fafc; font-size:10.5px; font-weight:800; margin-right:6px;">🔒 원장님 전용 · 고객 화면 비노출</span>
+            <strong style="font-size:13px; color:#0f172a;">🔬 실시간 SEO · AEO · GEO · 의료법 100점 검수기</strong>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="padding:4px 12px; border-radius:999px; background:${badgeBg}; color:${badgeColor}; font-size:12.5px; font-weight:900;">
+              종합 ${res.total} / 100점 ${res.total >= 95 ? '🏆 최상위 정본' : ''}
+            </span>
+            <button type="button" class="mini-btn" onclick="openStandaloneHealthNoteUrl('${escHtml(note.id)}', event)">📄 독립 정본 새창 확인 ↗</button>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px;">
+          ${res.checks.map(chk => `
+            <div style="padding:9px 11px; border-radius:8px; background:#ffffff; border:1px solid ${chk.ok ? '#bbf7d0' : '#fde68a'};">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:3px;">
+                <span style="font-size:11.5px; font-weight:800; color:#1e293b;">${chk.ok ? '✅' : '⚠️'} ${escHtml(chk.label)}</span>
+                <span style="font-size:11px; font-weight:900; color:${chk.ok ? '#047857' : '#b45309'};">${escHtml(chk.score)}</span>
+              </div>
+              <div style="font-size:11px; color:#64748b; line-height:1.4;">${escHtml(chk.detail)}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderHnOsmuHtml(note) {
+      const activeTab = hnOsmuActiveTabByNote[note.id] || 'shorts';
+      const scripts = buildHnOsmuScripts(note);
+      const currentText = scripts[activeTab] || scripts.shorts;
+      const tabMeta = {
+        shorts: { label: '▶️ 유튜브 쇼츠 대본 (VVSA·무한루프)', bg: '#fff1f2', border: '#fecdd3', color: '#9f1239' },
+        naver:  { label: '🟩 네이버 블로그 원고 (D.I.A.+·플레이스)', bg: '#f0fdf4', border: '#bbf7d0', color: '#166534' },
+        threads:{ label: '🧵 메타 스레드 3단 타래 (외부링크 0%)', bg: '#f4f4f5', border: '#d4d4d8', color: '#18181b' }
+      };
+      return `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+          <div>
+            <span style="display:inline-block; padding:2px 8px; border-radius:999px; background:#1e293b; color:#f8fafc; font-size:10.5px; font-weight:800; margin-right:6px;">🔒 원장님 전용 · 고객 화면 비노출</span>
+            <strong style="font-size:13px; color:#1e1b4b;">📣 쇼츠 · 네이버 블로그 · 스레드 3사 알고리즘 맞춤 원클릭 확산 패키지</strong>
+          </div>
+          <button type="button" class="mini-btn gold-helper" onclick="copyHnOsmuText('${escHtml(note.id)}', '${escHtml(activeTab)}', this)">📋 현재 채널 원고 전체 복사</button>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+          ${Object.entries(tabMeta).map(([k, m]) => `
+            <button type="button" class="mini-btn"
+              style="padding:6px 12px; font-weight:800; background:${activeTab === k ? m.bg : '#fff'}; border-color:${activeTab === k ? m.border : '#cbd5e1'}; color:${activeTab === k ? m.color : '#475569'};"
+              onclick="switchHnOsmuTab('${escHtml(note.id)}', '${k}')">${m.label}</button>
+          `).join('')}
+        </div>
+        <textarea readonly rows="12" id="hn-osmu-textarea-${escHtml(note.id)}"
+          style="width:100%; font-family:'Pretendard', monospace; font-size:12px; line-height:1.6; padding:11px 13px; border-radius:8px; border:1px solid #cbd5e1; background:#ffffff; color:#1e293b;">${escHtml(currentText)}</textarea>
+      `;
+    }
+
+    function switchHnOsmuTab(noteId, tabKey) {
+      hnOsmuActiveTabByNote[noteId] = tabKey;
+      refreshHnAdminPanels(noteId);
+    }
+
+    async function copyHnOsmuText(noteId, tabKey, btnEl) {
+      const note = findHealthNoteById(noteId);
+      if (!note) return;
+      const scripts = buildHnOsmuScripts(note);
+      const txt = scripts[tabKey] || scripts.shorts;
+      try {
+        await navigator.clipboard.writeText(txt);
+        if (btnEl) {
+          const prev = btnEl.textContent;
+          btnEl.textContent = '✅ 클립보드에 복사 완료!';
+          setTimeout(() => { btnEl.textContent = prev; }, 1800);
+        }
+        showStatus('ok', `📋 [${note.partLabel}] "${note.questionTitle}" ${tabKey === 'shorts' ? '유튜브 쇼츠 대본' : (tabKey === 'naver' ? '네이버 블로그 장문 원고' : '스레드 3단 타래')}이 복사되었습니다!`);
+      } catch (e) {
+        const ta = document.getElementById('hn-osmu-textarea-' + noteId);
+        if (ta) {
+          ta.select();
+          document.execCommand('copy');
+          showStatus('ok', '📋 원고가 클립보드에 복사되었습니다!');
+        }
+      }
+    }
+
+    function refreshHnAdminPanels(noteId) {
+      const note = findHealthNoteById(noteId);
+      if (!note) return;
+      const inspBox = document.getElementById('hn-inspector-box-' + noteId);
+      if (inspBox) inspBox.innerHTML = renderHnInspectorHtml(note);
+      const osmuBox = document.getElementById('hn-osmu-box-' + noteId);
+      if (osmuBox) osmuBox.innerHTML = renderHnOsmuHtml(note);
+      const daCountEl = document.getElementById('hn-da-wordcount-' + noteId);
+      if (daCountEl) {
+        const wc = countKoreanWords(note.directAnswer || '');
+        daCountEl.textContent = `${wc}어절 (권장 30~80어절)`;
+        daCountEl.style.color = (wc >= 28 && wc <= 85) ? '#047857' : '#b45309';
+      }
     }
 
     function triggerHnIllustUpload(noteId) {
@@ -5519,6 +5922,33 @@
           '평소 앉아 있는 자세나 잠들기 전 스마트폰 사용 시간이 몸의 긴장을 높이고 있지 않은지 1분만 점검해 보세요.'
         ],
         academicBasis: '국제 의학 학술지 및 통합생리학 연구 보고',
+        lastReviewed: todayStr,
+        seoTitle: `${pt ? pt.partLabel : '우리 몸'} 생활 신호 점검 가이드 | 바른한의원 대전본점`,
+        directAnswer: `${pt ? pt.partLabel : '우리 몸'}에서 반복되는 뻐근함과 피로 신호는 낮 동안 누적된 국소 압박과 야간 회복 리듬의 불균형에서 시작되는 경우가 많습니다. 통증이 없는 범위의 부드러운 이완과 일정한 수면·수분 습관을 먼저 정돈해 주면 일상 속 기초 회복력을 안정적으로 지키는 데 도움이 됩니다.`,
+        clinicalObservation: '진료실에서 하루 일과표를 함께 살펴보면 장시간 고정된 자세와 수면 직전 전자기기 사용이 겹칠 때 회복 속도가 완만해지는 경향이 자주 관찰됩니다.',
+        comparisonTable: {
+          heading: `${pt ? pt.partLabel : '주요 부위'} 일상 관리 핵심 비교표`,
+          intro: '흔히 오해하기 쉬운 대처법과 우리 몸의 실제 생리 반응을 비교해 보세요.',
+          headers: ['비교 기준', '흔한 오해 · 방치 습관', '우리 몸 실제 생리 반응', '오늘부터 실천할 회복 기준'],
+          rows: [
+            ['초기 뻐근함 대처', '피곤해서 그렇다며 계속 같은 자세 유지', '미세혈류 정체와 근막 긴장 누적', '40~50분마다 가벼운 체중 분산과 기지개'],
+            ['운동 강도 조절', '통증을 참으며 고강도 스트레칭 강행', '방어성 수축 반사로 주변 긴장 증가', '통증 없는 범위에서 호흡과 함께 천천히 이완'],
+            ['밤 시간 회복 환경', '늦은 야식·스마트폰 시청 후 취침', '자율신경 각성 지속으로 깊은 회복 지연', '취침 2시간 전 조도 낮추기 및 온수 이완'],
+            ['수분 섭취 리듬', '카페인 음료로 갈증과 피로 대체', '이뇨 작용으로 조직 수분도 저하', '낮 동안 미지근한 물 소량씩 나누어 마시기']
+          ]
+        },
+        selfCheckItems: [
+          '같은 자세로 40분 이상 앉아 있거나 서 있은 뒤 첫걸음이 유독 뻣뻣하다.',
+          '아침 기상 직후보다 오후·저녁 시간대에 묵직함이나 피로가 더 뚜렷해진다.',
+          '잠들기 직전까지 스마트폰을 보거나 수면 시간이 불규칙한 날이 주 3회 이상이다.',
+          '하루 순수 수분 섭취량이 적고 커피·차 위주로 마시는 편이다.',
+          '가벼운 산책이나 온찜질 뒤에 몸이 한결 편안해지는 변화를 느낀다.'
+        ],
+        redFlags: [
+          '안정 시에도 점점 심해지는 날카로운 통증이나 뚜렷한 열감·부종이 동반될 때',
+          '팔다리로 뻗치는 감각 저하·근력 약화가 며칠 이상 이어질 때',
+          '일상 보행이나 수면을 반복해서 깨울 정도로 불편함이 지속될 때'
+        ],
         deepEnabled: true,
         deepIllustImg: (pt && pt.defaultIllustImg) || 'illust_knee_growth_care.jpg',
         deepIllustCaption: (pt && pt.defaultIllustCaption) || `${pt ? pt.partLabel : '해당 부위'}의 순환과 균형 원리를 나타낸 이해 도식`,
@@ -5670,6 +6100,7 @@
                   <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateHnField('${escHtml(note.id)}', 'enabled', this.checked, true)" />
                   표시
                 </label>
+                <button type="button" class="mini-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1d4ed8;" onclick="openStandaloneHealthNoteUrl('${escHtml(note.id)}', event)">📄 독립 정본 ↗</button>
                 <button type="button" class="mini-btn gold-helper" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', true, event)">👁️ 상세히 미리보기</button>
                 <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event)">📸 AI 일러스트</button>
                 <button type="button" class="mini-btn" onclick="duplicateHealthNote('${escHtml(note.id)}', event)">복제</button>
@@ -5681,9 +6112,12 @@
             <div class="card-acc-body" style="display:${isExpanded ? 'block' : 'none'};">
               <!-- BOX A: 4-Section Summary -->
               <div style="padding:12px 14px; border-radius:10px; background:#fcfbf8; border:1px solid #e6decb; margin-bottom:14px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                  <strong style="font-size:13px; color:#1f1b16;">📌 1단계 · 기본 4단 요약 카드 (첫 화면 깔끔한 요약본)</strong>
-                  <button type="button" class="mini-btn" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', false, event)">👁️ 접힌 요약 화면 미리보기</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                  <strong style="font-size:13px; color:#1f1b16;">📌 1단계 · 기본 4단 요약 카드 (3D 인체모형 팝업 요약본)</strong>
+                  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button type="button" class="mini-btn" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', false, event)">👁️ 접힌 요약 화면 미리보기</button>
+                    <button type="button" class="mini-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1d4ed8;" onclick="openStandaloneHealthNoteUrl('${escHtml(note.id)}', event)">📄 /health-note-${escHtml(note.id)}/ 새창 열기 ↗</button>
+                  </div>
                 </div>
                 <div class="grid-3">
                   <div class="field">
@@ -5693,17 +6127,26 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label>공개 예정일 / 발행일 (YYYY-MM-DD)</label>
-                    <input type="date" value="${escHtml(note.publishDate || '')}" oninput="updateHnField('${escHtml(note.id)}', 'publishDate', this.value, false)" />
+                    <label>발행일 (publishDate) / 의학 감수일 (lastReviewed)</label>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                      <input type="date" title="최초 발행일" value="${escHtml(note.publishDate || '')}" oninput="updateHnField('${escHtml(note.id)}', 'publishDate', this.value, false)" />
+                      <input type="date" title="최신 의학 감수일" value="${escHtml(note.lastReviewed || note.publishDate || '')}" oninput="updateHnField('${escHtml(note.id)}', 'lastReviewed', this.value, false)" />
+                    </div>
                   </div>
                   <div class="field">
                     <label>핵심 주제어 (keyword)</label>
                     <input type="text" value="${escHtml(note.keyword || '')}" oninput="updateHnField('${escHtml(note.id)}', 'keyword', this.value, false)" />
                   </div>
                 </div>
-                <div class="field">
-                  <label>상단 질문형 메인 제목 (questionTitle)</label>
-                  <input type="text" value="${escHtml(note.questionTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'questionTitle', this.value, false)" />
+                <div class="grid-2">
+                  <div class="field">
+                    <label>상단 질문형 메인 제목 H1 (questionTitle)</label>
+                    <input type="text" value="${escHtml(note.questionTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'questionTitle', this.value, false)" />
+                  </div>
+                  <div class="field">
+                    <label>검색엔진 노출 타이틀 (seoTitle · 구글/네이버 검색 제목)</label>
+                    <input type="text" value="${escHtml(note.seoTitle || '')}" placeholder="예: 무릎 성장통 vs 관절통 구별 기준 | 바른한의원 대전본점" oninput="updateHnField('${escHtml(note.id)}', 'seoTitle', this.value, false)" />
+                  </div>
                 </div>
                 <div class="grid-2">
                   <div class="field">
@@ -5719,16 +6162,16 @@
                     <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'mythLines', this.value, false)">${escHtml((note.mythLines || []).join('\n'))}</textarea>
                   </div>
                   <div class="field">
-                    <label>🔍 4. 오늘 밤 집에서 해보는 1분 체크 (체크리스트)</label>
+                    <label>🔍 4. 오늘 밤 집에서 해보는 1분 체크 요약 (2문장)</label>
                     <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'checkList', this.value, false)">${escHtml((note.checkList || []).join('\n'))}</textarea>
                   </div>
                 </div>
               </div>
 
-              <!-- BOX B: [🔍 상세히] Inline Deep Column -->
-              <div style="padding:13px 14px; border-radius:10px; background:#fbf6ea; border:1px solid #dfc99b;">
+              <!-- BOX B: 7-Stage Unified Editorial Deep Column -->
+              <div style="padding:13px 14px; border-radius:10px; background:#fbf6ea; border:1px solid #dfc99b; margin-bottom:14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                  <strong style="font-size:13px; color:#5a3e1b;">🔍 2단계 · [상세히] 버튼 클릭 시 펼쳐지는 인라인 심층 칼럼 (순수 건강 정보)</strong>
+                  <strong style="font-size:13px; color:#5a3e1b;">🔍 2단계 · 7단계 하이엔드 통합 정본 심층 칼럼 ([상세히] 서랍 + 독립 URL 동시 연동)</strong>
                   <div style="display:flex; align-items:center; gap:8px;">
                     <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; color:#5a3e1b; cursor:pointer;">
                       <input type="checkbox" ${note.deepEnabled !== false ? 'checked' : ''} onchange="updateHnField('${escHtml(note.id)}', 'deepEnabled', this.checked, true)" />
@@ -5739,7 +6182,15 @@
                 </div>
 
                 <div class="field">
-                  <label>심층 해부·생리 일러스트 이미지 (deepIllustImg)</label>
+                  <label style="display:flex; justify-content:space-between; align-items:center;">
+                    <span>⚡ [Stage 1 · AEO 30초 핵심 결론] AI Overviews · 네이버 Cue: 즉답 정의문 (directAnswer)</span>
+                    <span id="hn-da-wordcount-${escHtml(note.id)}" style="font-size:11px; font-weight:800; color:#047857;">${countKoreanWords(note.directAnswer || '')}어절 (권장 30~80어절)</span>
+                  </label>
+                  <textarea rows="3" oninput="updateHnField('${escHtml(note.id)}', 'directAnswer', this.value, false)">${escHtml(note.directAnswer || '')}</textarea>
+                </div>
+
+                <div class="field">
+                  <label>🖼️ [Stage 2] 심층 해부·생리 일러스트 이미지 (deepIllustImg · 1376×768 권장)</label>
                   <div class="list-row-inline">
                     <img id="hn-body-thumb-${escHtml(note.id)}" class="sub-thumb-preview" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumb)}" alt="Deep Illust"
                       onclick="openImageLightbox(this.getAttribute('data-raw-path'), '심층 일러스트 원본 보기')"
@@ -5754,18 +6205,50 @@
 
                 <div class="grid-2">
                   <div class="field">
-                    <label>일러스트 하단 설명 캡션 (deepIllustCaption)</label>
+                    <label>일러스트 하단 고유 캡션 (deepIllustCaption)</label>
                     <input type="text" value="${escHtml(note.deepIllustCaption || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepIllustCaption', this.value, false)" />
                   </div>
                   <div class="field">
-                    <label>📖 심층 원리 소제목 (deepTitle)</label>
+                    <label>📖 [Stage 3] 심층 생리 원리 소제목 (deepTitle)</label>
                     <input type="text" value="${escHtml(note.deepTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepTitle', this.value, false)" />
                   </div>
                 </div>
 
                 <div class="field">
-                  <label>📖 심층 생리 원리 &amp; 일상 관리 본문 (빈 줄 Enter 2번으로 문단 구분 · 광고성 단어 없이 순수 건강 정보)</label>
+                  <label>📖 [Stage 3] 심층 생리 원리 &amp; 일상 관리 본문 (빈 줄 Enter 2번으로 문단 구분 · 순수 건강 정보)</label>
                   <textarea rows="5" oninput="updateHnLinesField('${escHtml(note.id)}', 'deepParagraphs', this.value, true)">${escHtml((note.deepParagraphs || []).join('\n\n'))}</textarea>
+                </div>
+
+                <div class="field">
+                  <label>🩺 [Stage 3 · E-E-A-T 경험 근거] 진료실 생활 리듬 관찰 포인트 (clinicalObservation)</label>
+                  <textarea rows="2" oninput="updateHnField('${escHtml(note.id)}', 'clinicalObservation', this.value, false)">${escHtml(note.clinicalObservation || '')}</textarea>
+                </div>
+
+                <div class="grid-2">
+                  <div class="field">
+                    <label>📊 [Stage 4 · GEO 인용 자석] 4열 비교표 제목 (comparisonTable.heading)</label>
+                    <input type="text" value="${escHtml((note.comparisonTable && note.comparisonTable.heading) || '')}" oninput="updateHnComparisonMeta('${escHtml(note.id)}', 'heading', this.value)" />
+                  </div>
+                  <div class="field">
+                    <label>비교표 한 줄 안내문 (comparisonTable.intro)</label>
+                    <input type="text" value="${escHtml((note.comparisonTable && note.comparisonTable.intro) || '')}" oninput="updateHnComparisonMeta('${escHtml(note.id)}', 'intro', this.value)" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>📊 [Stage 4] 4열 비교표 데이터 (한 줄에 1행씩, <code>|</code> 기호로 4칸 구분: <code>비교기준 | 흔한 오해 | 실제 생리기전 | 권장 생활수칙</code>)</label>
+                  <textarea rows="4" oninput="updateHnComparisonRows('${escHtml(note.id)}', this.value)">${escHtml(serializeComparisonRows(note.comparisonTable && note.comparisonTable.rows))}</textarea>
+                </div>
+
+                <div class="grid-2">
+                  <div class="field">
+                    <label>☑️ [Stage 5 · SXO 체류시간] 인터랙티브 1분 자가점검 5문항 (줄바꿈 구분)</label>
+                    <textarea rows="5" oninput="updateHnLinesField('${escHtml(note.id)}', 'selfCheckItems', this.value, false)">${escHtml((note.selfCheckItems || []).join('\n'))}</textarea>
+                  </div>
+                  <div class="field">
+                    <label>⚠️ [Stage 6 · YMYL 안전 기준] 대면 확인이 필요한 주의 신호 3가지 (redFlags)</label>
+                    <textarea rows="5" oninput="updateHnLinesField('${escHtml(note.id)}', 'redFlags', this.value, false)">${escHtml((note.redFlags || []).join('\n'))}</textarea>
+                  </div>
                 </div>
 
                 <div class="grid-2">
@@ -5783,6 +6266,16 @@
                   <label>🩺 가정에서 함께 살펴보면 좋은 신호 목록 (줄바꿈으로 1·2·3번 항목 구분)</label>
                   <textarea rows="3" oninput="updateHnLinesField('${escHtml(note.id)}', 'deepSignals', this.value, false)">${escHtml((note.deepSignals || []).join('\n'))}</textarea>
                 </div>
+              </div>
+
+              <!-- BOX C (ADMIN ONLY): 100-Point Live SEO/AEO/GEO/Medical Law Inspector -->
+              <div id="hn-inspector-box-${escHtml(note.id)}" style="padding:13px 14px; border-radius:10px; background:#f0f9ff; border:1px solid #bae6fd; margin-bottom:14px;">
+                ${renderHnInspectorHtml(note)}
+              </div>
+
+              <!-- BOX D (ADMIN ONLY): YouTube Shorts / Naver Blog / Meta Threads One-Click OSMU Generator -->
+              <div id="hn-osmu-box-${escHtml(note.id)}" style="padding:13px 14px; border-radius:10px; background:#eef2ff; border:1px solid #c7d2fe;">
+                ${renderHnOsmuHtml(note)}
               </div>
             </div>
           </div>

@@ -987,7 +987,7 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
 
   if (route === '/body-notes/view' && req.method === 'POST') {
     const body = await readJsonBody(req);
-    const noteId = String(body.noteId || body.id || '').trim();
+    const noteId = String(body.noteId || body.id || '').trim().toLowerCase();
     if (!noteId) return sendJson(res, 400, { ok: false, message: 'noteId is required' });
     if (!db.noteViews || typeof db.noteViews !== 'object') db.noteViews = {};
     db.noteViews[noteId] = (Number(db.noteViews[noteId]) || 0) + 1;

@@ -1,9 +1,50 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-13 v7.9 (① **『오늘의 건강 글』 전 72편 공식 채널 아이콘 5대 라인업 확장 및 네이버플레이스 링크 교체 완료**: 네이버 블로그 링크 → 공식 네이버플레이스 지도·예약(`https://naver.me/5U1ELn8L`)으로 100% 교체 완료 · 공식 스레드(`https://www.threads.net/@bareun_oriental`) & 인스타그램(`https://www.instagram.com/bareun_oriental/`) SVG 심볼 아이콘 캡슐 버튼 신설 · ② **통합 커스텀 스튜디오(`detail-pages-editor.html`) 5대 채널 개별 ON/OFF 및 커스텀 링크 관리 연동** · ③ **카페24 실서버 배포 및 브라우저 5종 아이콘 live 검증 100% 통과**)
+> **최종 업데이트**: 2026-11-15 v8.2 (① **`/health-note-{id}/` 독립 칼럼 & `/body-explorer/` 3D 인체모형 간 중앙 단일 조회수(`bareun_body_note_views_v1`) 및 『이어서 읽기 BEST 2』 인기글 랭킹 100% 실시간 통합 연동** · ② **`/body-explorer/` 상단 헤더·건강노트 카드 헤더·상세 감수 바·하단 채널 바·누적 목록 및 `/health-note-{id}/` 전 구간 원클릭 『🔗 링크 퍼가기』 아이콘 버튼 & 토스트 알림 탑재 완료** · ③ **`v8.1` 72편 7단계 SEO·AEO·GEO 정본화 및 원장님 전용 3사 확산 스튜디오 유지**)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
+
+## 💎 최신 완료 작업 요약 (2026-11-15 v8.2 · `/health-note-{id}/` ↔ `/body-explorer/` 통합 조회수·인기글 랭킹 단일화 & 원클릭 『🔗 링크 퍼가기』 아이콘 탑재)
+
+1. **양방향 단일 조회수 카운터 & 『이어서 읽기 BEST 2』 인기글 100% 실시간 동기화 (`bareun-member-private-qna.php`, `build-body-explorer.js`, `auto-blog-engine.js`, `local-bareun-api.js`)**:
+   - 워드프레스 중앙 옵션 DB(`bareun_body_note_views_v1`) 및 로컬 DB(`private-qna-db.json` → `noteViews`)를 단일 원천으로 묶어, 고객이 **`https://www.bareunhaniwon.com/health-note-{id}/`에서 읽든 `https://www.bareunhaniwon.com/body-explorer/`에서 읽든 동일한 카운터가 즉시 합산**됩니다.
+   - 동일 브라우저 세션 내 중복 집계를 막는 통합 키(`sessionStorage['bareun_viewed_hn_' + noteId]`) 및 검색봇 필터링을 적용해 한 고객이 독립 칼럼에서 `[🧬 3D 인체모형 열기 →]`로 이동해도 중복 카운트 없이 **양쪽 페이지에 100% 동일한 `조회수 N회`와 동일한 `이어서 읽기 BEST 01 · 02` 인기글 순위**가 노출됩니다.
+2. **`/body-explorer/` 및 `/health-note-{id}/` 원클릭 『🔗 링크 퍼가기』 아이콘 버튼 탑재**:
+   - **`/body-explorer/` 5곳 배치**: ① 상단 우측 헤더(`#vh-share-link-btn`), ② 모든 건강 글 팝업 카드 우측 상단(`.hip-share-link-btn`, `✕ 닫기` 옆), ③ `[🔍 상세히 보기]` 감수자 바(`.iyb-share-btn`), ④ 하단 채널 바 좌측 첫 버튼(`.ch-icon-btn.ch-copy`), ⑤ `03 · 더 궁금하세요?` 72편 아카이브 목록 각 행 우측(`.archive-share-mini-btn`).
+   - **`/health-note-{id}/` 2곳 배치**: 상단 고정 헤더(`.header-action-share`) 및 하단 공식 채널 바(`.ch-pill-share`).
+   - 퍼가기 클릭 시 카톡·네이버 블로그·카페·스레드·문자 어디에 붙여넣어도 **개별 글 전용 제목·요약·1376×768 의학 일러스트 OG 미리보기와 SEO 백링크 점수가 100% 정본으로 모이는 `https://www.bareunhaniwon.com/health-note-{id}/` 주소**가 클립보드에 즉시 복사되며 `✓ 복사됨` 상태 전환 및 샴페인 골드 토스트 알림이 표시됩니다.
+
+---
+
+## 💎 직전 완료 작업 요약 (2026-11-15 v8.1 · 『오늘의 건강 글』 72편 SEO·AEO·GEO 7단계 통합 정본화 & 관리자 전용 3사 알고리즘 확산 스튜디오 구축)
+
+1. **독립 검색 정본 URL(`/health-note-{id}/`, HTTP `200 OK`) 복원 & 3D 인체모형 인라인 서랍 단일 소스 동기화 (`bareun-member-private-qna.php`, `auto-blog-engine.js`, `build-body-explorer.js`, `serve.js`)**:
+   - 기존 `/health-note-{id}/` 접속 시 `/body-explorer/?part=...&note=...`로 301 리다이렉트되며 72개 개별 글 색인이 단일 페이지로 합쳐지던 구조 병목을 근본 해결했습니다.
+   - 이제 **`https://www.bareunhaniwon.com/health-note-{id}/` 전 72편이 독립된 `HTTP 200 OK` 정본 칼럼**으로 서빙되며, 본문 내 **`[🧬 3D 인체모형 열기 →]`** 배너로 3D 뷰어와 양방향 연결됩니다.
+   - `/body-explorer/?part=...&note={id}` 내 **`[🔍 상세히 보기 ▼]`** 서랍 역시 동일한 단일 설정(`health-notes-custom-config.json` / WP `bareun_health_notes_cfg_v1`)을 읽어 7단계 심층 칼럼을 즉시 표시하며, `<link rel="canonical">`을 `/health-note-{id}/`로 지정해 중복 문서 감점을 원천 차단했습니다.
+2. **72편 전수 고유 7단계 하이엔드 환자 친화 에디토리얼 데이터 완비 (`health-notes-custom-config.json`, `health-notes-custom-config.default.json`)**:
+   - 전 72편(9대 부위 × 8편) 모두 중복 문단 없이 고유한 **`seoTitle`**, **`directAnswer`(AEO 30초 핵심 결론)**, **`deepParagraphs`**, **`clinicalObservation`(진료실 생활 리듬 관찰 포인트)**, **`comparisonTable`(GEO 인용 자석 4×4 비교표)**, **`selfCheckItems`(SXO 인터랙티브 5문항 자가점검 스코어카드)**, **`redFlags`(대면 확인 주의 신호)**, **`lastReviewed`**를 구축 완료했습니다 (의료법 제56조 주의 금칙어 `0건`).
+   - 상업 의료기관 제한 대상인 `FAQPage` 스키마를 제거하고 `MedicalClinic` · `Person(#physician)` · `BreadcrumbList` · `MedicalWebPage` · `MedicalScholarlyArticle` 5노드 정본 JSON-LD 그래프로 정비했습니다.
+3. **고객 노출 경계 100% 분리 — 원장님 전용 관리자 스튜디오(`detail-pages-editor.html`) 전용 검수기 & 3사 확산 패키지 탑재**:
+   - 고객/검색봇이 보는 `/health-note-{id}/` 및 `/body-explorer/`에는 순수 7단계 건강 노트만 노출됩니다 (`hasAdminTabs: false` 검증 완료).
+   - 오직 원장님 전용 스튜디오(`http://localhost:3000/detail-pages-editor.html` 및 워드프레스 관리자 `bareun-custom-studio`) 내부 각 건강 글 편집창 하단에만 **BOX C (`🔬 실시간 SEO·AEO·GEO·의료법 100점 검수기`)**와 **BOX D (`📣 유튜브 쇼츠[VVSA·APV 무한루프] · 네이버 블로그[D.I.A.+·실사 5슬롯·네이버플레이스 지도] · 메타 스레드[외부링크 0% 3단 타래] 원클릭 복사 패키지`)**가 표시됩니다.
+4. **기술 SEO / GEO 인프라 정밀 교정 및 카페24 실서버 배포 검증 완료 (`seo-master-config.js`, `deploy-cafe24.js`)**:
+   - `robots.txt`에 `Claude-SearchBot`, `Claude-User`, `Applebot-Extended` 명시 허용 추가, `wp-sitemap-posts-post-1.xml` 내 72개 정본 `/health-note-{id}/` URL 및 실제 검토일 기준 분산 `<lastmod>` 적용, `/llms.txt` 및 `/llms-full.txt` 정본 URL 갱신 및 실서버 배포·브라우저 검증을 100% 완료했습니다.
+
+---
+
+## 💎 최신 완료 작업 요약 (2026-11-14 v8.0 · 체어사이드 3D(`chairside-3d.html`) 그래픽 품질 전면 개편)
+
+1. **렌더 파이프라인 교정**: HalfFloat + 4x MSAA 컴포저 타깃 + `OutputPass`(ACES→sRGB). 기존 raw linear 출력으로 인한 탁함·계단현상 제거. 에스프레소 라디얼 스튜디오 배경 적용.
+2. **셰이더 전면 업그레이드**: 뼈(프로시저럴 피질골 범프·AO·SSS·스튜디오 환경 반사), 디스크/수핵(젤 SSS·wet 스펙큘러, 흰색 번아웃 제거), 피부(모공 범프)·근막(유기적 콜라겐 섬유망)·근육(섬유 범프+광택), 혈관·신경 튜브(광택·림).
+3. **고스트 인체 실루엣**: 피부/근육 투시 시에도 해부학적 맥락 유지(`createGhostBodyShader`).
+4. **수핵 탈출 모델**: 구체 4개 → 단일 유기적 변형 메쉬(mergeVertices), x-ray(depthTest off)로 후궁 뒤에서도 식별.
+5. 포커스 스포트라이트 감쇠 완화(0.16→0.46), 요추·무릎 카메라 프리셋 구도 조정, 혈관 깊이쓰기 활성.
+- 백업: 개편 전 파일은 브레인 scratch 폴더 `chairside-3d.backup.html`. 미커밋 상태(원하시면 커밋·카페24 배포 진행).
+
+---
+
 
 ## 💎 최신 완료 작업 요약 (2026-11-13 v7.9 · 건강 글 네이버플레이스 링크 교체 & 스레드·인스타그램 채널 5종 연동)
 
@@ -564,3 +605,4 @@
   - **05. 바른 탈모 · 모근재생**: [http://localhost:3000/hairloss.html](http://localhost:3000/hairloss.html)
   - **06. 바른 황제공진단**: [http://localhost:3000/gongjindan.html](http://localhost:3000/gongjindan.html)
   - **리프팅 윤곽진단 스튜디오**: [http://localhost:3000/lifting-compare.html](http://localhost:3000/lifting-compare.html)
+
