@@ -18,15 +18,22 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     const OPT_VISIT_SEEDED = 'bareun_visit_stats_seeded_v2';
     const OPT_VISIT_BASE   = 'bareun_visit_base_count_v2';
     const OPT_OAUTH        = 'bareun_social_oauth_config_v1';
-    const OPT_BODY_NOTES   = 'bareun_body_3d_notes_v1';
-    const OPT_NOTE_VIEWS   = 'bareun_body_note_views_v1';
-    const OPT_NOTES_CFG    = 'bareun_body_3d_notes_cfg_v1';
-    const CRON_HOOK_NOTES  = 'bareun_cron_2day_body_notes';
+    const OPT_BODY_NOTES      = 'bareun_body_3d_notes_v1';
+    const OPT_NOTE_VIEWS      = 'bareun_body_note_views_v1';
+    const OPT_NOTES_CFG       = 'bareun_body_3d_notes_cfg_v1';
+    const OPT_VISIT_SCHEMA_V3 = 'bareun_visit_schema_v3';
+    const OPT_GEO_BOT_STATS   = 'bareun_geo_ai_bot_stats_v1';
+    const OPT_CONVERSION_LOGS = 'bareun_visit_conversions_v1';
+    const OPT_ANALYTICS_CFG   = 'bareun_external_analytics_cfg_v1';
+    const OPT_EXT_SYNC_CACHE  = 'bareun_ext_analytics_cache_v1';
+    const CRON_HOOK_NOTES     = 'bareun_cron_2day_body_notes';
 
     public static function init() {
         add_filter('cron_schedules', array(__CLASS__, 'register_two_day_cron_schedule'));
         add_action('init', array(__CLASS__, 'maybe_ensure_schema'));
+        add_action('init', array(__CLASS__, 'maybe_track_geo_ai_crawler'), 5);
         add_action('init', array(__CLASS__, 'maybe_schedule_body_notes_cron'));
+        add_action('wp_head', array(__CLASS__, 'render_external_analytics_head_tags'), 2);
         add_action(self::CRON_HOOK_NOTES, array(__CLASS__, 'run_scheduled_two_day_note_generation'));
         add_action('rest_api_init', array(__CLASS__, 'register_routes'));
     }
@@ -142,6 +149,41 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 self::seed_initial_visit_logs();
             }
             update_option(self::OPT_VISIT_SEEDED, '1');
+        }
+
+        if (get_option(self::OPT_VISIT_SCHEMA_V3) !== '1') {
+            $vtable = self::visits_table_name();
+            $vcols  = $wpdb->get_col("DESC {$vtable}", 0);
+            if (is_array($vcols) && !empty($vcols)) {
+                if (!in_array('raw_referrer', $vcols, true)) {
+                    $wpdb->query("ALTER TABLE {$vtable} ADD COLUMN raw_referrer TEXT NULL AFTER referrer");
+                }
+                if (!in_array('landing_query', $vcols, true)) {
+                    $wpdb->query("ALTER TABLE {$vtable} ADD COLUMN landing_query VARCHAR(255) NOT NULL DEFAULT '' AFTER raw_referrer");
+                }
+                if (!in_array('platform', $vcols, true)) {
+                    $wpdb->query("ALTER TABLE {$vtable} ADD COLUMN platform VARCHAR(80) NOT NULL DEFAULT '' AFTER landing_query");
+                    $wpdb->query("ALTER TABLE {$vtable} ADD INDEX idx_platform (platform)");
+                }
+                if (!in_array('ai_engine', $vcols, true)) {
+                    $wpdb->query("ALTER TABLE {$vtable} ADD COLUMN ai_engine VARCHAR(48) NOT NULL DEFAULT '' AFTER platform");
+                    $wpdb->query("ALTER TABLE {$vtable} ADD INDEX idx_ai_engine (ai_engine)");
+                }
+                if (!in_array('search_keyword', $vcols, true)) {
+                    $wpdb->query("ALTER TABLE {$vtable} ADD COLUMN search_keyword VARCHAR(160) NOT NULL DEFAULT '' AFTER ai_engine");
+                }
+                // Backfill existing legacy referrer labels into granular platform labels once
+                $wpdb->query("UPDATE {$vtable} SET platform = '🟢 네이버 통합검색' WHERE platform = '' AND referrer = '네이버 검색'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '🔍 구글 검색' WHERE platform = '' AND referrer = '구글 검색'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '💬 카카오톡 채팅 · 채널' WHERE platform = '' AND referrer = '카카오톡 채널'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '🟡 다음 · 카카오 검색' WHERE platform = '' AND referrer = '카카오·다음'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '📸 인스타그램' WHERE platform = '' AND referrer = '인스타그램/블로그'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '▶️ 유튜브' WHERE platform = '' AND referrer = 'SNS·유튜브'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '🏥 원내 페이지 연속탐색' WHERE platform = '' AND referrer = '원내 페이지 이동'");
+                $wpdb->query("UPDATE {$vtable} SET platform = '🔗 직접 접속 · 북마크' WHERE platform = '' AND (referrer = '직접 방문' OR referrer = 'direct' OR referrer = '')");
+                $wpdb->query("UPDATE {$vtable} SET platform = '🌐 외부 웹사이트 링크' WHERE platform = ''");
+                update_option(self::OPT_VISIT_SCHEMA_V3, '1');
+            }
         }
     }
 
@@ -555,6 +597,28 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'methods'             => 'POST',
             'callback'            => array(__CLASS__, 'handle_adjust_visits'),
             'permission_callback' => '__return_true'
+        ));
+        register_rest_route('bareun/v1', '/visits/event', array(
+            'methods'             => 'POST',
+            'callback'            => array(__CLASS__, 'handle_track_visit_event'),
+            'permission_callback' => '__return_true'
+        ));
+        register_rest_route('bareun/v1', '/analytics/public-config', array(
+            'methods'             => 'GET',
+            'callback'            => array(__CLASS__, 'handle_get_analytics_public_config'),
+            'permission_callback' => '__return_true'
+        ));
+        register_rest_route('bareun/v1', '/analytics/settings', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array(__CLASS__, 'handle_get_analytics_settings'),
+                'permission_callback' => '__return_true'
+            ),
+            array(
+                'methods'             => 'POST',
+                'callback'            => array(__CLASS__, 'handle_save_analytics_settings'),
+                'permission_callback' => '__return_true'
+            )
         ));
         register_rest_route('bareun/v1', '/body-notes', array(
             array(
@@ -1190,7 +1254,650 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         return $s;
     }
 
-    private static function build_visit_summary($include_master_logs = false) {
+    public static function detect_geo_ai_crawler($ua) {
+        $low = strtolower((string) $ua);
+        if ($low === '') return '';
+        if (strpos($low, 'oai-searchbot') !== false) return 'OAI-SearchBot (ChatGPT 검색)';
+        if (strpos($low, 'chatgpt-user') !== false) return 'ChatGPT-User (실시간 답변 열람)';
+        if (strpos($low, 'gptbot') !== false) return 'GPTBot (OpenAI 색인)';
+        if (strpos($low, 'perplexitybot') !== false) return 'PerplexityBot (퍼플렉시티 검색)';
+        if (strpos($low, 'perplexity-user') !== false) return 'Perplexity-User (실시간 인용)';
+        if (strpos($low, 'claude-searchbot') !== false) return 'Claude-SearchBot (클로드 검색)';
+        if (strpos($low, 'claude-user') !== false) return 'Claude-User (실시간 답변 열람)';
+        if (strpos($low, 'claudebot') !== false || strpos($low, 'anthropic-ai') !== false) return 'ClaudeBot (Anthropic)';
+        if (strpos($low, 'google-extended') !== false) return 'Google-Extended (Gemini·AI Overview)';
+        if (strpos($low, 'applebot-extended') !== false) return 'Applebot-Extended (Apple AI)';
+        if (strpos($low, 'cohere-ai') !== false) return 'Cohere-AI Bot';
+        if (strpos($low, 'youbot') !== false) return 'YouBot (You.com AI)';
+        if (strpos($low, 'meta-externalagent') !== false) return 'Meta AI Agent';
+        return '';
+    }
+
+    private static function record_geo_ai_crawler_hit($bot_label, $req_path, $ip) {
+        if ($bot_label === '') return;
+        $today = current_time('Y-m-d');
+        $now_str = current_time('mysql');
+        $stats = get_option(self::OPT_GEO_BOT_STATS, array());
+        if (!is_array($stats)) $stats = array();
+
+        $stats['totalHits'] = (int) ($stats['totalHits'] ?? 0) + 1;
+        if (empty($stats['dailyHits']) || !is_array($stats['dailyHits'])) {
+            $stats['dailyHits'] = array();
+        }
+        $stats['dailyHits'][$today] = (int) ($stats['dailyHits'][$today] ?? 0) + 1;
+        if (count($stats['dailyHits']) > 35) {
+            ksort($stats['dailyHits']);
+            $stats['dailyHits'] = array_slice($stats['dailyHits'], -30, null, true);
+        }
+
+        if (empty($stats['byBot']) || !is_array($stats['byBot'])) {
+            $stats['byBot'] = array();
+        }
+        $bcur = $stats['byBot'][$bot_label] ?? array('total' => 0, 'todayDate' => $today, 'today' => 0);
+        $bcur['total'] = (int) ($bcur['total'] ?? 0) + 1;
+        if (($bcur['todayDate'] ?? '') !== $today) {
+            $bcur['todayDate'] = $today;
+            $bcur['today'] = 1;
+        } else {
+            $bcur['today'] = (int) ($bcur['today'] ?? 0) + 1;
+        }
+        $bcur['lastSeen'] = $now_str;
+        $stats['byBot'][$bot_label] = $bcur;
+
+        $clean_path = '/' . ltrim((string) strtok((string) $req_path, '?'), '/');
+        if (strlen($clean_path) > 120) {
+            $clean_path = substr($clean_path, 0, 120);
+        }
+        if (empty($stats['byPath']) || !is_array($stats['byPath'])) {
+            $stats['byPath'] = array();
+        }
+        $stats['byPath'][$clean_path] = (int) ($stats['byPath'][$clean_path] ?? 0) + 1;
+        if (count($stats['byPath']) > 40) {
+            arsort($stats['byPath']);
+            $stats['byPath'] = array_slice($stats['byPath'], 0, 30, true);
+        }
+
+        if (empty($stats['recentHits']) || !is_array($stats['recentHits'])) {
+            $stats['recentHits'] = array();
+        }
+        array_unshift($stats['recentHits'], array(
+            'bot'       => $bot_label,
+            'path'      => $clean_path,
+            'ip'        => $ip,
+            'createdAt' => $now_str
+        ));
+        if (count($stats['recentHits']) > 50) {
+            $stats['recentHits'] = array_slice($stats['recentHits'], 0, 50);
+        }
+
+        update_option(self::OPT_GEO_BOT_STATS, $stats, false);
+    }
+
+    public static function maybe_track_geo_ai_crawler() {
+        if (is_admin() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_CRON') && DOING_CRON)) {
+            return;
+        }
+        $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $bot = self::detect_geo_ai_crawler($ua);
+        if ($bot === '') {
+            return;
+        }
+        $uri = $_SERVER['REQUEST_URI'] ?? '/';
+        $path_only = strtolower((string) strtok($uri, '?'));
+        if (strpos($path_only, '/wp-json/') === 0 || strpos($path_only, '/wp-admin') === 0 || strpos($path_only, '/wp-login') === 0) {
+            return;
+        }
+        if (preg_match('/\.(js|css|png|jpg|jpeg|webp|gif|svg|woff2?|ttf|ico|mp4|glb|wasm|map)$/i', $path_only)) {
+            return;
+        }
+        $ip = sanitize_text_field($_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'));
+        if (strpos($ip, ',') !== false) {
+            $ip = trim(explode(',', $ip)[0]);
+        }
+        self::record_geo_ai_crawler_hit($bot, $uri, $ip);
+    }
+
+    private static function extract_query_params_map($query_or_url) {
+        $str = trim((string) $query_or_url);
+        if ($str === '') return array();
+        $qpart = $str;
+        if (strpos($str, '://') !== false) {
+            $parsed = @parse_url($str, PHP_URL_QUERY);
+            $qpart = is_string($parsed) ? $parsed : '';
+        } else {
+            $qpart = ltrim($str, '?');
+        }
+        if ($qpart === '') return array();
+        $out = array();
+        parse_str($qpart, $out);
+        return is_array($out) ? $out : array();
+    }
+
+    public static function parse_visit_attribution($raw_ref, $ua, $landing_query = '', $client_hint = '') {
+        $ref_str   = trim((string) $raw_ref);
+        $ref_low   = strtolower($ref_str);
+        $ua_low    = strtolower((string) $ua);
+        $lq_params = self::extract_query_params_map($landing_query);
+        $rf_params = self::extract_query_params_map($ref_str);
+
+        $utm_src = strtolower(trim((string) ($lq_params['utm_source'] ?? ($rf_params['utm_source'] ?? ''))));
+        $utm_med = strtolower(trim((string) ($lq_params['utm_medium'] ?? ($rf_params['utm_medium'] ?? ''))));
+        $hint_low = strtolower(trim((string) $client_hint));
+        $ai_hay = $ref_low . ' ' . $utm_src . ' ' . $utm_med . ' ' . $hint_low;
+
+        $ai_engine = '';
+        if (strpos($ai_hay, 'chatgpt.com') !== false || strpos($ai_hay, 'chat.openai.com') !== false || strpos($ai_hay, 'openai.com') !== false || strpos($ai_hay, 'searchgpt') !== false || $utm_src === 'chatgpt') {
+            $ai_engine = 'ChatGPT (OpenAI)';
+        } elseif (strpos($ai_hay, 'perplexity.ai') !== false || strpos($ai_hay, 'perplexity') !== false) {
+            $ai_engine = 'Perplexity AI';
+        } elseif (strpos($ai_hay, 'gemini.google.com') !== false || strpos($ai_hay, 'bard.google.com') !== false || strpos($ai_hay, 'aistudio.google.com') !== false || $utm_src === 'gemini') {
+            $ai_engine = 'Google Gemini';
+        } elseif (strpos($ai_hay, 'claude.ai') !== false || strpos($ai_hay, 'anthropic.com') !== false || $utm_src === 'claude') {
+            $ai_engine = 'Claude AI';
+        } elseif (strpos($ai_hay, 'copilot.microsoft.com') !== false || strpos($ai_hay, 'edgeservices.bing.com') !== false || strpos($ai_hay, 'sydney.bing.com') !== false || $utm_src === 'copilot') {
+            $ai_engine = 'Microsoft Copilot';
+        } elseif (strpos($ai_hay, 'cue.search.naver.com') !== false || strpos($ai_hay, 'clova-x.naver.com') !== false || strpos($ai_hay, 'clovax') !== false || strpos($ai_hay, 'naver_cue') !== false) {
+            $ai_engine = '네이버 Cue: · CLOVA X';
+        } elseif (strpos($ai_hay, 'wrtn.ai') !== false || $utm_src === 'wrtn') {
+            $ai_engine = '뤼튼 (Wrtn AI)';
+        } elseif (strpos($ai_hay, 'getliner.com') !== false || strpos($ai_hay, 'liner.ai') !== false || $utm_src === 'liner') {
+            $ai_engine = '라이너 (Liner AI)';
+        } elseif (strpos($ai_hay, 'grok.com') !== false || strpos($ai_hay, 'x.ai') !== false || $utm_src === 'grok') {
+            $ai_engine = 'Grok (xAI)';
+        } elseif (strpos($ai_hay, 'felo.ai') !== false || strpos($ai_hay, 'genspark.ai') !== false || strpos($ai_hay, 'you.com') !== false || strpos($ai_hay, 'phind.com') !== false || strpos($ai_hay, 'kagi.com') !== false) {
+            $ai_engine = 'Felo · Genspark · 기타 AI';
+        }
+
+        // Extract search query keyword if available in landing URL or referrer URL
+        $kw_keys = array('query', 'q', 'acq', 'n_keyword', 'DMKW', 'utm_term', 'k', 'sword', 'keyword', 'search', 'p');
+        $search_kw = '';
+        foreach (array($lq_params, $rf_params) as $pmap) {
+            foreach ($kw_keys as $kk) {
+                if (!empty($pmap[$kk]) && is_string($pmap[$kk])) {
+                    $cand = trim(urldecode($pmap[$kk]));
+                    if ($cand !== '' && strlen($cand) >= 2 && strpos($cand, 'http://') === false && strpos($cand, 'https://') === false) {
+                        $search_kw = mb_substr(sanitize_text_field($cand), 0, 120);
+                        break 2;
+                    }
+                }
+            }
+        }
+
+        // Determine granular 14-channel platform
+        $platform = '🔗 직접 접속 · 북마크';
+        if ($ai_engine !== '') {
+            $platform = '🤖 GEO AI 검색';
+        } elseif (strpos($ref_low, 'place.naver.') !== false || strpos($ref_low, 'map.naver.') !== false || strpos($ref_low, 'naver.me') !== false || strpos($ref_low, 'booking.naver.') !== false || $utm_src === 'naver_place' || $utm_src === 'naver_map') {
+            $platform = '📍 네이버 플레이스 · 지도';
+        } elseif (strpos($ref_low, 'blog.naver.') !== false || strpos($ref_low, 'cafe.naver.') !== false || strpos($ref_low, 'in.naver.') !== false || strpos($ref_low, 'post.naver.') !== false || $utm_src === 'naver_blog') {
+            $platform = '📝 네이버 블로그 · 카페';
+        } elseif (strpos($ref_low, 'naver.') !== false || $ref_str === '네이버 검색' || $utm_src === 'naver') {
+            $platform = '🟢 네이버 통합검색';
+        } elseif (strpos($ua_low, 'naver(inapp') !== false) {
+            $platform = '📱 네이버 앱 (인앱·피드)';
+        } elseif (strpos($ref_low, 'google.') !== false || strpos($ref_low, 'android-app://com.google') !== false || $ref_str === '구글 검색' || $utm_src === 'google') {
+            $platform = '🔍 구글 검색';
+        } elseif (strpos($ua_low, 'kakaotalk') !== false || strpos($ref_low, 'pf.kakao.') !== false || strpos($ref_low, 'talk.kakao.') !== false || $ref_str === '카카오톡 채널' || $utm_src === 'kakao' || $utm_src === 'kakaotalk') {
+            $platform = '💬 카카오톡 채팅 · 채널';
+        } elseif (strpos($ref_low, 'daum.') !== false || strpos($ref_low, 'kakao.') !== false || strpos($ua_low, 'daumapps') !== false || $ref_str === '카카오·다음' || $utm_src === 'daum') {
+            $platform = '🟡 다음 · 카카오 검색';
+        } elseif (strpos($ref_low, 'threads.net') !== false || strpos($ref_low, 'threads.com') !== false || strpos($ua_low, 'barcelona') !== false || $utm_src === 'threads') {
+            $platform = '🧵 스레드 (Threads)';
+        } elseif (strpos($ref_low, 'instagram.') !== false || strpos($ua_low, 'instagram') !== false || $ref_str === '인스타그램/블로그' || $utm_src === 'instagram') {
+            $platform = '📸 인스타그램';
+        } elseif (strpos($ref_low, 'youtube.') !== false || strpos($ref_low, 'youtu.be') !== false || $ref_str === 'SNS·유튜브' || $utm_src === 'youtube') {
+            $platform = '▶️ 유튜브';
+        } elseif (strpos($ref_low, 'facebook.') !== false || strpos($ref_low, 'fb.com') !== false || strpos($ua_low, 'fban') !== false || strpos($ua_low, 'fbav') !== false || $utm_src === 'facebook') {
+            $platform = '📘 페이스북';
+        } elseif (strpos($ref_low, 'daangn.') !== false || strpos($ref_low, 'karrot') !== false || strpos($ua_low, 'karrot') !== false || $utm_src === 'daangn') {
+            $platform = '🥕 당근 · 지역커뮤니티';
+        } elseif (strpos($ref_low, 'bareunhaniwon.com') !== false || strpos($ref_low, 'localhost') !== false || strpos($ref_low, '127.0.0.1') !== false || $ref_str === '원내 페이지 이동') {
+            $platform = '🏥 원내 페이지 연속탐색';
+        } elseif ($ref_str !== '' && $ref_str !== '직접 방문' && $ref_low !== 'direct') {
+            $platform = '🌐 외부 웹사이트 링크';
+        }
+
+        $short_ref = $ai_engine !== '' ? ('🤖 ' . $ai_engine) : $platform;
+
+        return array(
+            'platform'      => $platform,
+            'aiEngine'      => $ai_engine,
+            'searchKeyword' => $search_kw,
+            'shortRef'      => $short_ref
+        );
+    }
+
+    private static function classify_clinical_cohort($slug) {
+        $s = strtolower((string) $slug);
+        if ($s === 'growth' || strpos($s, 'knee') !== false) {
+            return '🌱 소아 키성장 · 성조숙증 (30~40대 학부모층)';
+        }
+        if ($s === 'prostate' || $s === 'hairloss-male' || strpos($s, 'prostate') !== false) {
+            return '💪 남성탈모 · 전립선 활력 (30~60대 남성층)';
+        }
+        if ($s === 'diet-zero' || $s === 'hairloss-female' || $s === 'lifting-compare' || strpos($s, 'uterus') !== false || strpos($s, 'gut') !== false) {
+            return '🌸 다이어트 · 여성탈모 · 자궁 (20~50대 여성층)';
+        }
+        if ($s === 'chuna' || strpos($s, 'lumbar') !== false || strpos($s, 'cervical') !== false) {
+            return '🦴 추나 척추교정 · 통증 (직장인 · 중장년층)';
+        }
+        if ($s === 'gongjindan' || $s === 'director' || strpos($s, 'gongjindan') !== false || strpos($s, 'syncope') !== false || strpos($s, 'digest') !== false) {
+            return '👑 황제공진단 · 만성피로 · 소화 (수험생 · 중장년층)';
+        }
+        return '🌿 두피 · 종합 진료 · 오시는길 (전 연령 공통층)';
+    }
+
+    private static function base64url_encode_str($data) {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    private static function get_google_service_access_token($sa_json_str) {
+        $raw = trim((string) $sa_json_str);
+        if ($raw === '') {
+            return array('ok' => false, 'error' => '서비스 계정 JSON이 입력되지 않았습니다.');
+        }
+        $sa = json_decode($raw, true);
+        if (!is_array($sa) || empty($sa['client_email']) || empty($sa['private_key'])) {
+            return array('ok' => false, 'error' => '서비스 계정 JSON 형식이 올바르지 않습니다 (client_email / private_key 누락).');
+        }
+        $cache_key = 'bareun_gapi_tok_' . substr(md5($sa['client_email']), 0, 12);
+        $cached = get_transient($cache_key);
+        if (is_string($cached) && $cached !== '') {
+            return array('ok' => true, 'token' => $cached, 'email' => $sa['client_email']);
+        }
+        if (!function_exists('openssl_sign')) {
+            return array('ok' => false, 'error' => '서버 OpenSSL 서명 기능을 사용할 수 없습니다.');
+        }
+
+        $now = time();
+        $header = self::base64url_encode_str(wp_json_encode(array('alg' => 'RS256', 'typ' => 'JWT')));
+        $claim  = self::base64url_encode_str(wp_json_encode(array(
+            'iss'   => $sa['client_email'],
+            'scope' => 'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/webmasters.readonly',
+            'aud'   => 'https://oauth2.googleapis.com/token',
+            'iat'   => $now - 30,
+            'exp'   => $now + 3500
+        )));
+        $unsigned = $header . '.' . $claim;
+        $pkey = @openssl_pkey_get_private(str_replace('\\n', "\n", $sa['private_key']));
+        if (!$pkey) {
+            return array('ok' => false, 'error' => '서비스 계정 private_key 파싱에 실패했습니다.');
+        }
+        $signature = '';
+        $signed_ok = @openssl_sign($unsigned, $signature, $pkey, 'SHA256');
+        if (!$signed_ok) {
+            return array('ok' => false, 'error' => 'RS256 JWT 서명 생성에 실패했습니다.');
+        }
+        $jwt = $unsigned . '.' . self::base64url_encode_str($signature);
+
+        $resp = wp_remote_post('https://oauth2.googleapis.com/token', array(
+            'timeout' => 12,
+            'body'    => array(
+                'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+                'assertion'  => $jwt
+            )
+        ));
+        if (is_wp_error($resp)) {
+            return array('ok' => false, 'error' => '구글 인증 서버 통신 실패: ' . $resp->get_error_message());
+        }
+        $body = json_decode(wp_remote_retrieve_body($resp), true);
+        if (empty($body['access_token'])) {
+            $err_msg = isset($body['error_description']) ? $body['error_description'] : (isset($body['error']) ? wp_json_encode($body['error']) : '토큰 발급 응답 오류');
+            return array('ok' => false, 'error' => '구글 OAuth 토큰 발급 실패: ' . $err_msg);
+        }
+        set_transient($cache_key, $body['access_token'], 2700);
+        return array('ok' => true, 'token' => $body['access_token'], 'email' => $sa['client_email']);
+    }
+
+    public static function fetch_external_google_analytics_data($force_refresh = false) {
+        $cfg = get_option(self::OPT_ANALYTICS_CFG, array());
+        if (!is_array($cfg)) $cfg = array();
+
+        $ga4_mid  = trim((string) ($cfg['ga4MeasurementId'] ?? ''));
+        $ga4_pid  = preg_replace('/[^0-9]/', '', (string) ($cfg['ga4PropertyId'] ?? ''));
+        $naver_id = trim((string) ($cfg['naverAnalyticsId'] ?? ''));
+        $gsc_url  = trim((string) ($cfg['gscSiteUrl'] ?? ''));
+        $sa_json  = trim((string) ($cfg['googleServiceAccountJson'] ?? ''));
+
+        $sa_email = '';
+        if ($sa_json !== '') {
+            $sa_parsed = json_decode($sa_json, true);
+            if (is_array($sa_parsed) && !empty($sa_parsed['client_email'])) {
+                $sa_email = (string) $sa_parsed['client_email'];
+            }
+        }
+
+        $result = array(
+            'status' => array(
+                'hasGa4Tag'           => $ga4_mid !== '',
+                'ga4MeasurementId'    => $ga4_mid,
+                'ga4PropertyId'       => $ga4_pid,
+                'hasNaverTag'         => $naver_id !== '',
+                'naverAnalyticsId'    => $naver_id,
+                'hasServiceAccount'   => $sa_email !== '',
+                'serviceAccountEmail' => $sa_email,
+                'gscSiteUrl'          => $gsc_url,
+                'ga4ApiConnected'     => false,
+                'gscApiConnected'     => false,
+                'lastSyncedAt'        => '',
+                'lastSyncError'       => ''
+            ),
+            'ageGroups'   => array(),
+            'genders'     => array(),
+            'gscKeywords' => array()
+        );
+
+        if ($sa_json === '' || ($ga4_pid === '' && $gsc_url === '')) {
+            return $result;
+        }
+
+        if (!$force_refresh) {
+            $cached = get_option(self::OPT_EXT_SYNC_CACHE, null);
+            if (is_array($cached) && !empty($cached['expiresAt']) && (int) $cached['expiresAt'] > time() && isset($cached['payload'])) {
+                return $cached['payload'];
+            }
+        }
+
+        $tok_res = self::get_google_service_access_token($sa_json);
+        if (empty($tok_res['ok'])) {
+            $result['status']['lastSyncError'] = (string) ($tok_res['error'] ?? '인증 오류');
+            return $result;
+        }
+        $access_token = $tok_res['token'];
+        $errors = array();
+
+        // 1) GA4 Data API: Age & Gender Breakdown (Last 30 days)
+        if ($ga4_pid !== '') {
+            $ga_endpoint = 'https://analyticsdata.googleapis.com/v1beta/properties/' . rawurlencode($ga4_pid) . ':batchRunReports';
+            $batch_body = array(
+                'requests' => array(
+                    array(
+                        'dateRanges' => array(array('startDate' => '30daysAgo', 'endDate' => 'today')),
+                        'dimensions' => array(array('name' => 'userAgeBracket')),
+                        'metrics'    => array(array('name' => 'activeUsers'), array('name' => 'sessions'))
+                    ),
+                    array(
+                        'dateRanges' => array(array('startDate' => '30daysAgo', 'endDate' => 'today')),
+                        'dimensions' => array(array('name' => 'userGender')),
+                        'metrics'    => array(array('name' => 'activeUsers'), array('name' => 'sessions'))
+                    )
+                )
+            );
+            $ga_resp = wp_remote_post($ga_endpoint, array(
+                'timeout' => 12,
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $access_token,
+                    'Content-Type'  => 'application/json'
+                ),
+                'body' => wp_json_encode($batch_body)
+            ));
+            if (is_wp_error($ga_resp)) {
+                $errors[] = 'GA4 API 통신 오류: ' . $ga_resp->get_error_message();
+            } else {
+                $ga_code = wp_remote_retrieve_response_code($ga_resp);
+                $ga_json = json_decode(wp_remote_retrieve_body($ga_resp), true);
+                if ($ga_code === 200 && is_array($ga_json) && isset($ga_json['reports'])) {
+                    $result['status']['ga4ApiConnected'] = true;
+                    $age_label_map = array(
+                        '18-24'   => '18~24세 (20대 초반)',
+                        '25-34'   => '25~34세 (20대 후반·30대 초반)',
+                        '35-44'   => '35~44세 (30대 후반·40대 초반)',
+                        '45-54'   => '45~54세 (40대 후반·50대 초반)',
+                        '55-64'   => '55~64세 (50대 후반·60대 초반)',
+                        '65+'     => '65세 이상 (시니어)',
+                        'unknown' => '미분류 (비로그인·신호 미수집)'
+                    );
+                    $age_rows = $ga_json['reports'][0]['rows'] ?? array();
+                    foreach ((array) $age_rows as $ar) {
+                        $raw_b = $ar['dimensionValues'][0]['value'] ?? 'unknown';
+                        $users = (int) ($ar['metricValues'][0]['value'] ?? 0);
+                        $sess  = (int) ($ar['metricValues'][1]['value'] ?? 0);
+                        if ($raw_b === '(not set)' || $raw_b === '') $raw_b = 'unknown';
+                        $result['ageGroups'][] = array(
+                            'bracket'  => $raw_b,
+                            'label'    => $age_label_map[$raw_b] ?? $raw_b,
+                            'users'    => $users,
+                            'sessions' => $sess
+                        );
+                    }
+                    $gender_label_map = array(
+                        'female'  => '👩 여성 방문자',
+                        'male'    => '👨 남성 방문자',
+                        'unknown' => '👤 성별 미분류'
+                    );
+                    $gen_rows = $ga_json['reports'][1]['rows'] ?? array();
+                    foreach ((array) $gen_rows as $gr) {
+                        $raw_g = strtolower((string) ($gr['dimensionValues'][0]['value'] ?? 'unknown'));
+                        $users = (int) ($gr['metricValues'][0]['value'] ?? 0);
+                        $sess  = (int) ($gr['metricValues'][1]['value'] ?? 0);
+                        if ($raw_g === '(not set)' || $raw_g === '') $raw_g = 'unknown';
+                        $result['genders'][] = array(
+                            'gender'   => $raw_g,
+                            'label'    => $gender_label_map[$raw_g] ?? $raw_g,
+                            'users'    => $users,
+                            'sessions' => $sess
+                        );
+                    }
+                } else {
+                    $err_detail = $ga_json['error']['message'] ?? ('HTTP ' . $ga_code);
+                    $errors[] = 'GA4 속성(' . $ga4_pid . ') 조회 실패: ' . $err_detail;
+                }
+            }
+        }
+
+        // 2) Google Search Console API: Top Search Queries (Last 28 days)
+        if ($gsc_url !== '') {
+            $gsc_endpoint = 'https://www.googleapis.com/webmasters/v3/sites/' . rawurlencode($gsc_url) . '/searchAnalytics/query';
+            $now_ts = current_time('timestamp');
+            $gsc_body = array(
+                'startDate'  => date('Y-m-d', $now_ts - (28 * 86400)),
+                'endDate'    => date('Y-m-d', $now_ts),
+                'dimensions' => array('query'),
+                'rowLimit'   => 25
+            );
+            $gsc_resp = wp_remote_post($gsc_endpoint, array(
+                'timeout' => 12,
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $access_token,
+                    'Content-Type'  => 'application/json'
+                ),
+                'body' => wp_json_encode($gsc_body)
+            ));
+            if (is_wp_error($gsc_resp)) {
+                $errors[] = 'Search Console 통신 오류: ' . $gsc_resp->get_error_message();
+            } else {
+                $gsc_code = wp_remote_retrieve_response_code($gsc_resp);
+                $gsc_json = json_decode(wp_remote_retrieve_body($gsc_resp), true);
+                if ($gsc_code === 200 && is_array($gsc_json)) {
+                    $result['status']['gscApiConnected'] = true;
+                    foreach ((array) ($gsc_json['rows'] ?? array()) as $qr) {
+                        $kw = $qr['keys'][0] ?? '';
+                        if ($kw === '') continue;
+                        $result['gscKeywords'][] = array(
+                            'keyword'     => $kw,
+                            'clicks'      => (int) round((float) ($qr['clicks'] ?? 0)),
+                            'impressions' => (int) round((float) ($qr['impressions'] ?? 0)),
+                            'ctr'         => round(((float) ($qr['ctr'] ?? 0)) * 100, 1),
+                            'position'    => round((float) ($qr['position'] ?? 0), 1)
+                        );
+                    }
+                } else {
+                    $err_detail = $gsc_json['error']['message'] ?? ('HTTP ' . $gsc_code);
+                    $errors[] = '서치콘솔(' . $gsc_url . ') 조회 실패: ' . $err_detail;
+                }
+            }
+        }
+
+        $result['status']['lastSyncedAt']  = current_time('mysql');
+        $result['status']['lastSyncError'] = implode(' | ', $errors);
+
+        update_option(self::OPT_EXT_SYNC_CACHE, array(
+            'expiresAt' => time() + 900,
+            'payload'   => $result
+        ), false);
+
+        return $result;
+    }
+
+    public static function render_external_analytics_head_tags() {
+        if (is_admin()) return;
+        $cfg = get_option(self::OPT_ANALYTICS_CFG, array());
+        if (!is_array($cfg)) return;
+        $ga4_mid  = preg_replace('/[^A-Za-z0-9\-]/', '', (string) ($cfg['ga4MeasurementId'] ?? ''));
+        $naver_id = preg_replace('/[^A-Za-z0-9_\-]/', '', (string) ($cfg['naverAnalyticsId'] ?? ''));
+
+        if ($ga4_mid !== '') {
+            echo "\n<!-- Bareun Stage-2 Google Analytics 4 (GA4 + Google Signals Ready) -->\n";
+            echo '<script async src="https://www.googletagmanager.com/gtag/js?id=' . esc_attr($ga4_mid) . '"></script>' . "\n";
+            echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.__BAREUN_GA4_READY__="' . esc_js($ga4_mid) . '";gtag("js",new Date());gtag("config","' . esc_js($ga4_mid) . '",{allow_google_signals:true});</script>' . "\n";
+        }
+        if ($naver_id !== '') {
+            echo "\n<!-- Bareun Stage-2 Naver Analytics (WCS) -->\n";
+            echo '<script src="https://wcs.naver.net/wcslog.js"></script>' . "\n";
+            echo '<script>window.__BAREUN_NAVER_WCS_READY__="' . esc_js($naver_id) . '";if(!window.wcs_add)window.wcs_add={};window.wcs_add["wa"]="' . esc_js($naver_id) . '";if(window.wcs&&typeof window.wcs_do==="function"){window.wcs_do();}</script>' . "\n";
+        }
+    }
+
+    public static function handle_get_analytics_public_config(\WP_REST_Request $request) {
+        self::send_nocache();
+        $cfg = get_option(self::OPT_ANALYTICS_CFG, array());
+        if (!is_array($cfg)) $cfg = array();
+        return new \WP_REST_Response(array(
+            'ok'               => true,
+            'ga4MeasurementId' => sanitize_text_field($cfg['ga4MeasurementId'] ?? ''),
+            'naverAnalyticsId' => sanitize_text_field($cfg['naverAnalyticsId'] ?? '')
+        ), 200);
+    }
+
+    public static function handle_get_analytics_settings(\WP_REST_Request $request) {
+        self::send_nocache();
+        $actor = self::get_current_actor($request);
+        if (!$actor || empty($actor['isMaster'])) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '마스터 권한이 필요합니다.'), 403);
+        }
+        $cfg = get_option(self::OPT_ANALYTICS_CFG, array());
+        if (!is_array($cfg)) $cfg = array();
+        $ext = self::fetch_external_google_analytics_data(false);
+        return new \WP_REST_Response(array(
+            'ok'       => true,
+            'settings' => array(
+                'ga4MeasurementId'    => (string) ($cfg['ga4MeasurementId'] ?? ''),
+                'ga4PropertyId'       => (string) ($cfg['ga4PropertyId'] ?? ''),
+                'naverAnalyticsId'    => (string) ($cfg['naverAnalyticsId'] ?? ''),
+                'gscSiteUrl'          => (string) ($cfg['gscSiteUrl'] ?? 'https://www.bareunhaniwon.com/'),
+                'hasServiceAccount'   => !empty($ext['status']['hasServiceAccount']),
+                'serviceAccountEmail' => (string) ($ext['status']['serviceAccountEmail'] ?? '')
+            ),
+            'external' => $ext
+        ), 200);
+    }
+
+    public static function handle_save_analytics_settings(\WP_REST_Request $request) {
+        self::send_nocache();
+        $actor = self::get_current_actor($request);
+        if (!$actor || empty($actor['isMaster'])) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '마스터 권한이 필요합니다.'), 403);
+        }
+        $params = $request->get_json_params();
+        $prev   = get_option(self::OPT_ANALYTICS_CFG, array());
+        if (!is_array($prev)) $prev = array();
+
+        $next = array(
+            'ga4MeasurementId'         => isset($params['ga4MeasurementId']) ? sanitize_text_field($params['ga4MeasurementId']) : ($prev['ga4MeasurementId'] ?? ''),
+            'ga4PropertyId'            => isset($params['ga4PropertyId']) ? preg_replace('/[^0-9]/', '', (string) $params['ga4PropertyId']) : ($prev['ga4PropertyId'] ?? ''),
+            'naverAnalyticsId'         => isset($params['naverAnalyticsId']) ? sanitize_text_field($params['naverAnalyticsId']) : ($prev['naverAnalyticsId'] ?? ''),
+            'gscSiteUrl'               => isset($params['gscSiteUrl']) ? esc_url_raw(trim((string) $params['gscSiteUrl'])) : ($prev['gscSiteUrl'] ?? 'https://www.bareunhaniwon.com/'),
+            'googleServiceAccountJson' => $prev['googleServiceAccountJson'] ?? ''
+        );
+        // Support sc-domain:bareunhaniwon.com syntax in gscSiteUrl
+        if (isset($params['gscSiteUrl']) && strpos(trim((string) $params['gscSiteUrl']), 'sc-domain:') === 0) {
+            $next['gscSiteUrl'] = sanitize_text_field(trim((string) $params['gscSiteUrl']));
+        }
+        if (!empty($params['clearServiceAccount'])) {
+            $next['googleServiceAccountJson'] = '';
+        } elseif (isset($params['googleServiceAccountJson']) && trim((string) $params['googleServiceAccountJson']) !== '') {
+            $next['googleServiceAccountJson'] = trim((string) $params['googleServiceAccountJson']);
+        }
+
+        update_option(self::OPT_ANALYTICS_CFG, $next, false);
+        delete_option(self::OPT_EXT_SYNC_CACHE);
+
+        $ext = self::fetch_external_google_analytics_data(true);
+        return new \WP_REST_Response(array(
+            'ok'       => true,
+            'message'  => '외부 통계(GA4 · 서치콘솔 · 네이버 애널리틱스) 설정이 저장 및 동기화되었습니다.',
+            'external' => $ext,
+            'summary'  => self::build_visit_summary(true)
+        ), 200);
+    }
+
+    public static function handle_track_visit_event(\WP_REST_Request $request) {
+        self::send_nocache();
+        $params = $request->get_json_params();
+        $action = sanitize_key($params['action'] ?? '');
+        $allowed = array(
+            'tel_click'           => '📞 전화상담 연결 클릭',
+            'kakao_click'         => '💬 카카오톡 예약·상담 클릭',
+            'naver_booking_click' => '📍 네이버 예약 바로가기 클릭',
+            'nav_naver'           => '🧭 네이버지도 길안내 출발',
+            'nav_google'          => '🧭 구글지도 길안내 출발',
+            'nav_tmap'            => '🧭 티맵(TMAP) 길안내 출발',
+            'nav_kakao'           => '🧭 카카오맵 길안내 출발',
+            'consult_modal_open'  => '📝 간편 예약·자가진단 모달 열기'
+        );
+        if (!isset($allowed[$action])) {
+            return new \WP_REST_Response(array('ok' => false, 'message' => '알 수 없는 이벤트 코드입니다.'), 400);
+        }
+
+        $slug   = self::normalize_page_slug($params['pageSlug'] ?? 'home');
+        $device = sanitize_key($params['deviceType'] ?? 'desktop');
+        if (!in_array($device, array('mobile', 'tablet', 'desktop'), true)) $device = 'desktop';
+        $ua     = substr(sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 240);
+        $attr   = self::parse_visit_attribution(
+            $params['referrer'] ?? '',
+            $ua,
+            $params['landingSearch'] ?? '',
+            $params['aiHint'] ?? ''
+        );
+        if (!empty($params['sessionPlatform'])) {
+            $attr['platform'] = sanitize_text_field($params['sessionPlatform']);
+        }
+        if (!empty($params['sessionAiEngine'])) {
+            $attr['aiEngine'] = sanitize_text_field($params['sessionAiEngine']);
+        }
+
+        $now_ts = current_time('timestamp');
+        $today  = date('Y-m-d', $now_ts);
+        $hour   = (int) date('G', $now_ts);
+        $now_mysql = date('Y-m-d H:i:s', $now_ts);
+
+        $store = get_option(self::OPT_CONVERSION_LOGS, array());
+        if (!is_array($store)) $store = array();
+        $store['cumTotal'] = (int) ($store['cumTotal'] ?? 0) + 1;
+        if (empty($store['byAction']) || !is_array($store['byAction'])) $store['byAction'] = array();
+        $store['byAction'][$action] = (int) ($store['byAction'][$action] ?? 0) + 1;
+
+        if (empty($store['events']) || !is_array($store['events'])) $store['events'] = array();
+        array_unshift($store['events'], array(
+            'action'      => $action,
+            'actionLabel' => $allowed[$action],
+            'pageSlug'    => $slug,
+            'platform'    => $attr['platform'],
+            'aiEngine'    => $attr['aiEngine'],
+            'deviceType'  => $device,
+            'hour'        => $hour,
+            'visitDate'   => $today,
+            'createdAt'   => $now_mysql
+        ));
+        if (count($store['events']) > 500) {
+            $store['events'] = array_slice($store['events'], 0, 500);
+        }
+        update_option(self::OPT_CONVERSION_LOGS, $store, false);
+
+        return new \WP_REST_Response(array('ok' => true), 200);
+    }
+
+    private static function build_visit_summary($include_master_logs = false, $force_ext_refresh = false) {
         self::maybe_ensure_schema();
         global $wpdb;
         $vtable   = self::visits_table_name();
@@ -1228,7 +1935,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $active_now = 1;
         }
 
-        // Daily series (last 14 days)
+        // 1) Daily series (last 14 days)
         $daily_rows = $wpdb->get_results($wpdb->prepare(
             "SELECT visit_date, COUNT(*) as pv, COUNT(DISTINCT visitor_hash) as uv FROM {$vtable} WHERE visit_date >= %s GROUP BY visit_date ORDER BY visit_date ASC",
             date('Y-m-d', $now_ts - (13 * 86400))
@@ -1251,85 +1958,362 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             );
         }
 
-        // Top pages breakdown
-        $title_map = self::get_page_title_map();
-        $page_rows = $wpdb->get_results(
-            "SELECT page_slug, MAX(page_title) as page_title, COUNT(*) as pv, COUNT(DISTINCT visitor_hash) as uv,
-             SUM(CASE WHEN visit_date = '{$today_date}' THEN 1 ELSE 0 END) as today_pv
-             FROM {$vtable} GROUP BY page_slug ORDER BY pv DESC LIMIT 20",
+        // 2) Hourly distribution (00시 ~ 23시 KST) & Peak Hour
+        $hour_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT HOUR(created_at) as hr, COUNT(*) as pv, COUNT(DISTINCT visitor_hash) as uv,
+                 SUM(CASE WHEN visit_date = %s THEN 1 ELSE 0 END) as today_pv
+                 FROM {$vtable} GROUP BY HOUR(created_at) ORDER BY hr ASC",
+                $today_date
+            ),
             ARRAY_A
         );
-        $top_pages = array();
-        foreach ((array) $page_rows as $pr) {
-            $slug = $pr['page_slug'];
-            $top_pages[] = array(
-                'slug'    => $slug,
-                'title'   => isset($title_map[$slug]) ? $title_map[$slug] : ($pr['page_title'] ?: $slug),
-                'pv'      => (int) $pr['pv'],
-                'uv'      => (int) $pr['uv'],
-                'todayPv' => (int) $pr['today_pv']
+        $hour_map = array();
+        foreach ((array) $hour_rows as $hr) {
+            $h_idx = (int) $hr['hr'];
+            $hour_map[$h_idx] = array(
+                'pv'      => (int) $hr['pv'],
+                'uv'      => (int) $hr['uv'],
+                'todayPv' => (int) $hr['today_pv']
+            );
+        }
+        $hourly_series = array();
+        $peak_hour = array('hour' => 20, 'label' => '20시', 'pv' => 0);
+        $period_buckets = array('morning' => 0, 'afternoon' => 0, 'evening' => 0, 'night' => 0);
+        for ($h = 0; $h < 24; $h++) {
+            $hpv = isset($hour_map[$h]) ? $hour_map[$h]['pv'] : 0;
+            $huv = isset($hour_map[$h]) ? $hour_map[$h]['uv'] : 0;
+            $htd = isset($hour_map[$h]) ? $hour_map[$h]['todayPv'] : 0;
+            $lbl = sprintf('%02d시', $h);
+            $hourly_series[] = array(
+                'hour'    => $h,
+                'label'   => $lbl,
+                'pv'      => $hpv,
+                'uv'      => $huv,
+                'todayPv' => $htd
+            );
+            if ($hpv >= $peak_hour['pv']) {
+                $peak_hour = array('hour' => $h, 'label' => $lbl, 'pv' => $hpv);
+            }
+            if ($h >= 6 && $h < 12) $period_buckets['morning'] += $hpv;
+            elseif ($h >= 12 && $h < 18) $period_buckets['afternoon'] += $hpv;
+            elseif ($h >= 18 && $h <= 23) $period_buckets['evening'] += $hpv;
+            else $period_buckets['night'] += $hpv;
+        }
+
+        // 3) Day-of-week distribution (월 ~ 일)
+        $dow_rows = $wpdb->get_results("SELECT DAYOFWEEK(created_at) as dow, COUNT(*) as pv FROM {$vtable} GROUP BY DAYOFWEEK(created_at)", ARRAY_A);
+        $dow_map = array();
+        foreach ((array) $dow_rows as $dw) {
+            $dow_map[(int) $dw['dow']] = (int) $dw['pv'];
+        }
+        // MySQL DAYOFWEEK: 1=일, 2=월, 3=화, 4=수, 5=목, 6=금, 7=토
+        $dow_order = array(
+            array('dow' => 2, 'label' => '월요일'),
+            array('dow' => 3, 'label' => '화요일'),
+            array('dow' => 4, 'label' => '수요일'),
+            array('dow' => 5, 'label' => '목요일'),
+            array('dow' => 6, 'label' => '금요일'),
+            array('dow' => 7, 'label' => '토요일'),
+            array('dow' => 1, 'label' => '일요일')
+        );
+        $weekday_series = array();
+        foreach ($dow_order as $ditem) {
+            $weekday_series[] = array(
+                'label' => $ditem['label'],
+                'pv'    => isset($dow_map[$ditem['dow']]) ? $dow_map[$ditem['dow']] : 0
             );
         }
 
-        // Device breakdown
+        // 4) Top pages + Clinical Cohort Distribution
+        $title_map = self::get_page_title_map();
+        $page_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT page_slug, MAX(page_title) as page_title, COUNT(*) as pv, COUNT(DISTINCT visitor_hash) as uv,
+                 SUM(CASE WHEN visit_date = %s THEN 1 ELSE 0 END) as today_pv
+                 FROM {$vtable} GROUP BY page_slug ORDER BY pv DESC",
+                $today_date
+            ),
+            ARRAY_A
+        );
+        $top_pages   = array();
+        $cohort_sums = array();
+        foreach ((array) $page_rows as $idx => $pr) {
+            $slug = $pr['page_slug'];
+            $pv_c = (int) $pr['pv'];
+            if ($idx < 20) {
+                $top_pages[] = array(
+                    'slug'    => $slug,
+                    'title'   => isset($title_map[$slug]) ? $title_map[$slug] : ($pr['page_title'] ?: $slug),
+                    'pv'      => $pv_c,
+                    'uv'      => (int) $pr['uv'],
+                    'todayPv' => (int) $pr['today_pv']
+                );
+            }
+            $cohort_name = self::classify_clinical_cohort($slug);
+            $cohort_sums[$cohort_name] = (int) ($cohort_sums[$cohort_name] ?? 0) + $pv_c;
+        }
+        arsort($cohort_sums);
+        $clinical_cohorts = array();
+        $denom_db = max(1, $total_db);
+        foreach ($cohort_sums as $clabel => $ccnt) {
+            $clinical_cohorts[] = array(
+                'cohort' => $clabel,
+                'count'  => $ccnt,
+                'pct'    => round(($ccnt / $denom_db) * 100, 1)
+            );
+        }
+
+        // 5) Device breakdown
         $dev_rows = $wpdb->get_results("SELECT device_type, COUNT(*) as cnt FROM {$vtable} GROUP BY device_type ORDER BY cnt DESC", ARRAY_A);
         $devices = array();
         foreach ((array) $dev_rows as $dv) {
             $devices[] = array(
                 'device' => $dv['device_type'] ?: 'desktop',
-                'count'  => (int) $dv['cnt']
+                'count'  => (int) $dv['cnt'],
+                'pct'    => round((((int) $dv['cnt']) / $denom_db) * 100, 1)
             );
         }
 
-        // Referrer breakdown
-        $ref_rows = $wpdb->get_results("SELECT referrer, COUNT(*) as cnt FROM {$vtable} GROUP BY referrer ORDER BY cnt DESC LIMIT 8", ARRAY_A);
+        // 6) Granular 14-Channel Platform Breakdown
+        $plat_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT CASE WHEN platform != '' THEN platform ELSE referrer END as plat,
+                 COUNT(*) as cnt,
+                 SUM(CASE WHEN visit_date = %s THEN 1 ELSE 0 END) as today_cnt
+                 FROM {$vtable} GROUP BY plat ORDER BY cnt DESC LIMIT 20",
+                $today_date
+            ),
+            ARRAY_A
+        );
+        $platforms = array();
         $referrers = array();
-        foreach ((array) $ref_rows as $rf) {
+        foreach ((array) $plat_rows as $pr) {
+            $pl = $pr['plat'] ?: '🔗 직접 접속 · 북마크';
+            $cnt = (int) $pr['cnt'];
+            $tcnt = (int) $pr['today_cnt'];
+            $platforms[] = array(
+                'platform'   => $pl,
+                'count'      => $cnt,
+                'todayCount' => $tcnt,
+                'pct'        => round(($cnt / $denom_db) * 100, 1)
+            );
             $referrers[] = array(
-                'referrer' => $rf['referrer'] ?: '직접 방문',
-                'count'    => (int) $rf['cnt']
+                'referrer' => $pl,
+                'count'    => $cnt
+            );
+        }
+
+        // 7) Dedicated GEO AI Search Referral + AI Citation Bot Monitor
+        $ai_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT ai_engine, COUNT(*) as cnt,
+                 SUM(CASE WHEN visit_date = %s THEN 1 ELSE 0 END) as today_cnt
+                 FROM {$vtable} WHERE ai_engine != '' GROUP BY ai_engine ORDER BY cnt DESC",
+                $today_date
+            ),
+            ARRAY_A
+        );
+        $ai_total_human = 0;
+        $ai_today_human = 0;
+        $ai_by_engine   = array();
+        foreach ((array) $ai_rows as $ar) {
+            $c  = (int) $ar['cnt'];
+            $tc = (int) $ar['today_cnt'];
+            $ai_total_human += $c;
+            $ai_today_human += $tc;
+            $ai_by_engine[] = array(
+                'engine'     => $ar['ai_engine'],
+                'count'      => $c,
+                'todayCount' => $tc
+            );
+        }
+        $ai_page_rows = $wpdb->get_results(
+            "SELECT page_slug, MAX(page_title) as page_title, COUNT(*) as cnt FROM {$vtable} WHERE ai_engine != '' GROUP BY page_slug ORDER BY cnt DESC LIMIT 10",
+            ARRAY_A
+        );
+        $ai_landing_pages = array();
+        foreach ((array) $ai_page_rows as $apr) {
+            $ps = $apr['page_slug'];
+            $ai_landing_pages[] = array(
+                'slug'  => $ps,
+                'title' => isset($title_map[$ps]) ? $title_map[$ps] : ($apr['page_title'] ?: $ps),
+                'count' => (int) $apr['cnt']
+            );
+        }
+        $ai_recent_rows = $wpdb->get_results(
+            "SELECT id, page_slug, page_title, ai_engine, search_keyword, raw_referrer, client_ip, device_type, created_at FROM {$vtable} WHERE ai_engine != '' ORDER BY id DESC LIMIT 25",
+            ARRAY_A
+        );
+        $ai_recent_visits = array();
+        foreach ((array) $ai_recent_rows as $arr) {
+            $ps = $arr['page_slug'];
+            $ai_recent_visits[] = array(
+                'id'            => (int) $arr['id'],
+                'pageSlug'      => $ps,
+                'pageTitle'     => isset($title_map[$ps]) ? $title_map[$ps] : ($arr['page_title'] ?: $ps),
+                'aiEngine'      => $arr['ai_engine'],
+                'searchKeyword' => $arr['search_keyword'] ?? '',
+                'rawReferrer'   => $arr['raw_referrer'] ?? '',
+                'clientIp'      => $arr['client_ip'],
+                'deviceType'    => $arr['device_type'],
+                'createdAt'     => $arr['created_at']
+            );
+        }
+
+        $bot_raw = get_option(self::OPT_GEO_BOT_STATS, array());
+        if (!is_array($bot_raw)) $bot_raw = array();
+        $bot_list = array();
+        foreach ((array) ($bot_raw['byBot'] ?? array()) as $bname => $binfo) {
+            $bot_list[] = array(
+                'bot'        => $bname,
+                'total'      => (int) ($binfo['total'] ?? 0),
+                'todayCount' => (($binfo['todayDate'] ?? '') === $today_date) ? (int) ($binfo['today'] ?? 0) : 0,
+                'lastSeen'   => (string) ($binfo['lastSeen'] ?? '')
+            );
+        }
+        usort($bot_list, function ($a, $b) { return $b['total'] - $a['total']; });
+        $bot_paths = array();
+        foreach ((array) ($bot_raw['byPath'] ?? array()) as $bpath => $bcnt) {
+            $bot_paths[] = array('path' => $bpath, 'count' => (int) $bcnt);
+        }
+        usort($bot_paths, function ($a, $b) { return $b['count'] - $a['count']; });
+
+        $geo_ai = array(
+            'totalHumanVisits' => $ai_total_human,
+            'todayHumanVisits' => $ai_today_human,
+            'sharePct'         => round(($ai_total_human / $denom_db) * 100, 1),
+            'byEngine'         => $ai_by_engine,
+            'topLandingPages'  => $ai_landing_pages,
+            'recentAiVisits'   => $ai_recent_visits,
+            'botStats'         => array(
+                'totalHits'  => (int) ($bot_raw['totalHits'] ?? 0),
+                'todayHits'  => (int) ($bot_raw['dailyHits'][$today_date] ?? 0),
+                'byBot'      => $bot_list,
+                'topPaths'   => array_slice($bot_paths, 0, 12),
+                'recentHits' => array_slice((array) ($bot_raw['recentHits'] ?? array()), 0, 30)
+            )
+        );
+
+        // 8) First-party captured search keywords + Stage 2 Google Search Console & GA4 Demographics
+        $kw_rows = $wpdb->get_results(
+            "SELECT search_keyword, MAX(platform) as platform, COUNT(*) as cnt FROM {$vtable} WHERE search_keyword != '' GROUP BY search_keyword ORDER BY cnt DESC LIMIT 25",
+            ARRAY_A
+        );
+        $captured_keywords = array();
+        foreach ((array) $kw_rows as $kr) {
+            $captured_keywords[] = array(
+                'keyword'  => $kr['search_keyword'],
+                'platform' => $kr['platform'] ?: '검색 유입',
+                'count'    => (int) $kr['cnt']
+            );
+        }
+
+        $ext_data = self::fetch_external_google_analytics_data($force_ext_refresh);
+
+        // 9) Conversion Click Events Summary
+        $conv_store = get_option(self::OPT_CONVERSION_LOGS, array());
+        if (!is_array($conv_store)) $conv_store = array();
+        $conv_events = is_array($conv_store['events'] ?? null) ? $conv_store['events'] : array();
+        $conv_today  = 0;
+        $conv_by_plat = array();
+        foreach ($conv_events as $cev) {
+            if (($cev['visitDate'] ?? '') === $today_date) {
+                $conv_today++;
+            }
+            $cp = $cev['platform'] ?: '기타';
+            $conv_by_plat[$cp] = (int) ($conv_by_plat[$cp] ?? 0) + 1;
+        }
+        arsort($conv_by_plat);
+        $conv_plat_list = array();
+        foreach ($conv_by_plat as $cp_name => $cp_cnt) {
+            $conv_plat_list[] = array('platform' => $cp_name, 'count' => $cp_cnt);
+        }
+        $action_labels = array(
+            'tel_click'           => '📞 전화상담 연결',
+            'kakao_click'         => '💬 카카오톡 예약·상담',
+            'naver_booking_click' => '📍 네이버 예약 바로가기',
+            'nav_naver'           => '🧭 네이버지도 길안내',
+            'nav_google'          => '🧭 구글지도 길안내',
+            'nav_tmap'            => '🧭 티맵(TMAP) 길안내',
+            'nav_kakao'           => '🧭 카카오맵 길안내',
+            'consult_modal_open'  => '📝 간편 예약모달 오픈'
+        );
+        $conv_by_action = array();
+        foreach ($action_labels as $ac_key => $ac_lbl) {
+            $ac_cnt = (int) ($conv_store['byAction'][$ac_key] ?? 0);
+            $conv_by_action[] = array(
+                'action' => $ac_key,
+                'label'  => $ac_lbl,
+                'count'  => $ac_cnt
             );
         }
 
         $summary = array(
-            'ok'          => true,
-            'isMaster'    => true,
-            'totalPv'     => $base_cnt + $total_db,
-            'rawDbPv'     => $total_db,
-            'baseOffset'  => $base_cnt,
-            'totalUv'     => (int) round($base_cnt * 0.64) + $total_uv_db,
-            'todayPv'     => $today_pv,
-            'todayUv'     => $today_uv,
-            'yesterdayPv' => $yesterday_pv,
-            'yesterdayUv' => $yesterday_uv,
-            'weekPv'      => $week_pv,
-            'monthPv'     => $month_pv,
-            'activeNow'   => $active_now,
-            'dailySeries' => $daily_series,
-            'topPages'    => $top_pages,
-            'devices'     => $devices,
-            'referrers'   => $referrers,
-            'serverTime'  => current_time('mysql')
+            'ok'                   => true,
+            'isMaster'             => true,
+            'totalPv'              => $base_cnt + $total_db,
+            'rawDbPv'              => $total_db,
+            'baseOffset'           => $base_cnt,
+            'totalUv'              => (int) round($base_cnt * 0.64) + $total_uv_db,
+            'todayPv'              => $today_pv,
+            'todayUv'              => $today_uv,
+            'yesterdayPv'          => $yesterday_pv,
+            'yesterdayUv'          => $yesterday_uv,
+            'weekPv'               => $week_pv,
+            'monthPv'              => $month_pv,
+            'activeNow'            => $active_now,
+            'dailySeries'          => $daily_series,
+            'hourlySeries'         => $hourly_series,
+            'peakHour'             => $peak_hour,
+            'periodBuckets'        => $period_buckets,
+            'weekdaySeries'        => $weekday_series,
+            'topPages'             => $top_pages,
+            'devices'              => $devices,
+            'platforms'            => $platforms,
+            'referrers'            => array_slice($referrers, 0, 10),
+            'geoAi'                => $geo_ai,
+            'searchKeywords'       => array(
+                'capturedKeywords' => $captured_keywords,
+                'gscKeywords'      => $ext_data['gscKeywords']
+            ),
+            'demographics'         => array(
+                'ga4Connected'    => !empty($ext_data['status']['ga4ApiConnected']),
+                'ageGroups'       => $ext_data['ageGroups'],
+                'genders'         => $ext_data['genders'],
+                'clinicalCohorts' => $clinical_cohorts
+            ),
+            'conversions'          => array(
+                'todayTotal'   => $conv_today,
+                'cumTotal'     => (int) ($conv_store['cumTotal'] ?? 0),
+                'byAction'     => $conv_by_action,
+                'byPlatform'   => array_slice($conv_plat_list, 0, 10),
+                'recentEvents' => array_slice($conv_events, 0, 40)
+            ),
+            'externalConfigStatus' => $ext_data['status'],
+            'serverTime'           => current_time('mysql')
         );
 
-        if ($include_master_logs) {
-            $logs_raw = $wpdb->get_results("SELECT * FROM {$vtable} ORDER BY id DESC LIMIT 80", ARRAY_A);
-            $recent_logs = array();
-            foreach ((array) $logs_raw as $lr) {
-                $slug = $lr['page_slug'];
-                $recent_logs[] = array(
-                    'id'         => (int) $lr['id'],
-                    'pageSlug'   => $slug,
-                    'pageTitle'  => isset($title_map[$slug]) ? $title_map[$slug] : ($lr['page_title'] ?: $slug),
-                    'clientIp'   => $lr['client_ip'],
-                    'deviceType' => $lr['device_type'],
-                    'referrer'   => $lr['referrer'],
-                    'userAgent'  => $lr['user_agent'],
-                    'createdAt'  => $lr['created_at']
-                );
-            }
-            $summary['recentLogs'] = $recent_logs;
+        $logs_raw = $wpdb->get_results("SELECT * FROM {$vtable} ORDER BY id DESC LIMIT 80", ARRAY_A);
+        $recent_logs = array();
+        foreach ((array) $logs_raw as $lr) {
+            $slug = $lr['page_slug'];
+            $recent_logs[] = array(
+                'id'            => (int) $lr['id'],
+                'pageSlug'      => $slug,
+                'pageTitle'     => isset($title_map[$slug]) ? $title_map[$slug] : ($lr['page_title'] ?: $slug),
+                'clientIp'      => $lr['client_ip'],
+                'deviceType'    => $lr['device_type'],
+                'platform'      => !empty($lr['platform']) ? $lr['platform'] : $lr['referrer'],
+                'aiEngine'      => $lr['ai_engine'] ?? '',
+                'searchKeyword' => $lr['search_keyword'] ?? '',
+                'referrer'      => !empty($lr['platform']) ? $lr['platform'] : $lr['referrer'],
+                'rawReferrer'   => $lr['raw_referrer'] ?? '',
+                'userAgent'     => $lr['user_agent'],
+                'createdAt'     => $lr['created_at']
+            );
         }
+        $summary['recentLogs'] = $recent_logs;
 
         return $summary;
     }
@@ -1347,45 +2331,54 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         global $wpdb;
         $vtable = self::visits_table_name();
 
-        $params     = $request->get_json_params();
-        $slug       = self::normalize_page_slug($params['pageSlug'] ?? 'home');
-        $title_map  = self::get_page_title_map();
-        $page_title = isset($title_map[$slug]) ? $title_map[$slug] : sanitize_text_field($params['pageTitle'] ?? $slug);
-        $device     = sanitize_key($params['deviceType'] ?? 'desktop');
+        $params        = $request->get_json_params();
+        $slug          = self::normalize_page_slug($params['pageSlug'] ?? 'home');
+        $title_map     = self::get_page_title_map();
+        $page_title    = isset($title_map[$slug]) ? $title_map[$slug] : sanitize_text_field($params['pageTitle'] ?? $slug);
+        $device        = sanitize_key($params['deviceType'] ?? 'desktop');
         if (!in_array($device, array('mobile', 'tablet', 'desktop'), true)) {
             $device = 'desktop';
         }
-        $raw_ref = sanitize_text_field($params['referrer'] ?? '');
-        $ref_label = '직접 방문';
-        if (!empty($raw_ref)) {
-            $low = strtolower($raw_ref);
-            if (strpos($low, 'naver.') !== false) $ref_label = '네이버 검색';
-            elseif (strpos($low, 'google.') !== false) $ref_label = '구글 검색';
-            elseif (strpos($low, 'kakao') !== false || strpos($low, 'daum.') !== false) $ref_label = '카카오·다음';
-            elseif (strpos($low, 'instagram.') !== false || strpos($low, 'facebook.') !== false || strpos($low, 'youtube.') !== false) $ref_label = 'SNS·유튜브';
-            elseif (strpos($low, 'bareunhaniwon.com') !== false || strpos($low, 'localhost') !== false) $ref_label = '원내 페이지 이동';
-            else $ref_label = substr($raw_ref, 0, 80);
-        }
+        $raw_ref       = trim((string) ($params['referrer'] ?? ''));
+        $landing_query = substr(sanitize_text_field($params['landingSearch'] ?? ''), 0, 250);
+        $ai_hint       = sanitize_text_field($params['aiHint'] ?? '');
 
         $ip = sanitize_text_field($_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'));
         if (strpos($ip, ',') !== false) {
             $ip = trim(explode(',', $ip)[0]);
         }
         $ua = substr(sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 240);
+
+        // If an AI search crawler executes JS or hits this endpoint, log to GEO bot monitor without inflating human PV
+        $bot_name = self::detect_geo_ai_crawler($ua);
+        if ($bot_name !== '') {
+            self::record_geo_ai_crawler_hit($bot_name, '/' . $slug, $ip);
+            $actor = self::get_current_actor($request);
+            $is_master = $actor && !empty($actor['isMaster']);
+            return new \WP_REST_Response(self::build_visit_summary($is_master), 200);
+        }
+
+        $attr = self::parse_visit_attribution($raw_ref, $ua, $landing_query, $ai_hint);
+
         $vid = sanitize_text_field($params['visitorId'] ?? '');
         $today_date = current_time('Y-m-d');
         $vhash = substr(md5($today_date . '|' . $ip . '|' . ($vid ?: $ua)), 0, 16);
 
         $wpdb->insert($vtable, array(
-            'visit_date'   => $today_date,
-            'page_slug'    => $slug,
-            'page_title'   => $page_title,
-            'visitor_hash' => $vhash,
-            'client_ip'    => $ip,
-            'device_type'  => $device,
-            'referrer'     => $ref_label,
-            'user_agent'   => $ua,
-            'created_at'   => current_time('mysql')
+            'visit_date'     => $today_date,
+            'page_slug'      => $slug,
+            'page_title'     => $page_title,
+            'visitor_hash'   => $vhash,
+            'client_ip'      => $ip,
+            'device_type'    => $device,
+            'referrer'       => substr($attr['shortRef'], 0, 240),
+            'raw_referrer'   => substr($raw_ref, 0, 1000),
+            'landing_query'  => $landing_query,
+            'platform'       => $attr['platform'],
+            'ai_engine'      => $attr['aiEngine'],
+            'search_keyword' => $attr['searchKeyword'],
+            'user_agent'     => $ua,
+            'created_at'     => current_time('mysql')
         ));
 
         $actor = self::get_current_actor($request);
@@ -1399,7 +2392,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (!$actor || empty($actor['isMaster'])) {
             return new \WP_REST_Response(array('ok' => false, 'message' => '마스터 권한이 필요합니다.'), 403);
         }
-        return new \WP_REST_Response(self::build_visit_summary(true), 200);
+        $force = $request->get_param('forceRefresh') === '1';
+        return new \WP_REST_Response(self::build_visit_summary(true, $force), 200);
     }
 
     public static function handle_adjust_visits(\WP_REST_Request $request) {

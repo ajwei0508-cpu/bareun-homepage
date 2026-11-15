@@ -36,7 +36,7 @@ const WP_DETAIL_PAGES = [
   { id: 96, slug: 'gongjindan', file: 'gongjindan.html', wpFile: 'wordpress-gongjindan.html', title: '바른 황제공진단', excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
   { id: 133, slug: 'prostate', file: 'prostate.html', wpFile: 'wordpress-prostate.html', title: '바른 전립선 · 남성활력', excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' },
   { id: 125, slug: 'body-explorer', file: 'body-explorer.html', wpFile: 'wordpress-body-explorer.html', title: '3D 인체모형 · 바른한의원 진료 살펴보기', excerpt: '바른한의원 대전본점 풀스크린 3D 인체모형 포털 및 부위별 오늘의 건강 글 · 심층 생리 원리 아카이브입니다.' },
-  { id: 0, slug: 'location', file: 'location.html', wpFile: 'wordpress-location.html', title: '오시는길 · 진료시간 · 비급여 안내', excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 자동 길안내, 진료시간 및 비급여 안내표입니다.' }
+  { id: 3206, slug: 'location', file: 'location.html', wpFile: 'wordpress-location.html', title: '오시는길 · 진료시간 · 비급여 안내', excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 자동 길안내, 진료시간 및 비급여 안내표입니다.' }
 ];
 
 try {
@@ -65,10 +65,11 @@ function resolveTargets(argv) {
   if (deployAll) return WP_DETAIL_PAGES;
 
   const slugArg = argv.find(a => a.startsWith('--slug=') || a.startsWith('--page='));
-  if (!slugArg) {
+  const positional = argv.slice(2).find(a => a && !a.startsWith('-'));
+  if (!slugArg && !positional) {
     throw new Error('Usage: node deploy-detail-page-fast.js --slug=<slug|file> OR --all');
   }
-  const key = slugArg.split('=')[1].trim().replace(/^\//, '');
+  const key = (slugArg ? slugArg.split('=')[1] : positional).trim().replace(/^\//, '');
   const found = WP_DETAIL_PAGES.find(p => p.slug === key || p.file === key || p.wpFile === key);
   if (!found) {
     throw new Error('Unknown detail page target: ' + key);

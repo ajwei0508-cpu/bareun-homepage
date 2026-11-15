@@ -371,7 +371,382 @@ function getActor(req, db) {
   return db.users.find(u => u.id === decoded.uid) || null;
 }
 
-function buildVisitSummary(db, includeMasterLogs) {
+function detectGeoAiCrawler(ua) {
+  const low = String(ua || '').toLowerCase();
+  if (!low) return '';
+  if (low.includes('oai-searchbot')) return 'OAI-SearchBot (ChatGPT 검색)';
+  if (low.includes('chatgpt-user')) return 'ChatGPT-User (실시간 답변 열람)';
+  if (low.includes('gptbot')) return 'GPTBot (OpenAI 색인)';
+  if (low.includes('perplexitybot')) return 'PerplexityBot (퍼플렉시티 검색)';
+  if (low.includes('perplexity-user')) return 'Perplexity-User (실시간 인용)';
+  if (low.includes('claude-searchbot')) return 'Claude-SearchBot (클로드 검색)';
+  if (low.includes('claude-user')) return 'Claude-User (실시간 답변 열람)';
+  if (low.includes('claudebot') || low.includes('anthropic-ai')) return 'ClaudeBot (Anthropic)';
+  if (low.includes('google-extended')) return 'Google-Extended (Gemini·AI Overview)';
+  if (low.includes('applebot-extended')) return 'Applebot-Extended (Apple AI)';
+  if (low.includes('cohere-ai')) return 'Cohere-AI Bot';
+  if (low.includes('youbot')) return 'YouBot (You.com AI)';
+  if (low.includes('meta-externalagent')) return 'Meta AI Agent';
+  return '';
+}
+
+function recordGeoAiCrawlerHitToDb(db, botLabel, reqPath, ip) {
+  if (!botLabel) return;
+  const createdAt = nowStr();
+  const today = createdAt.slice(0, 10);
+  if (!db.geoBotStats || typeof db.geoBotStats !== 'object') {
+    db.geoBotStats = { totalHits: 0, dailyHits: {}, byBot: {}, byPath: {}, recentHits: [] };
+  }
+  const st = db.geoBotStats;
+  st.totalHits = (Number(st.totalHits) || 0) + 1;
+  if (!st.dailyHits) st.dailyHits = {};
+  st.dailyHits[today] = (Number(st.dailyHits[today]) || 0) + 1;
+
+  if (!st.byBot) st.byBot = {};
+  const bcur = st.byBot[botLabel] || { total: 0, todayDate: today, today: 0, lastSeen: '' };
+  bcur.total = (Number(bcur.total) || 0) + 1;
+  if (bcur.todayDate !== today) {
+    bcur.todayDate = today;
+    bcur.today = 1;
+  } else {
+    bcur.today = (Number(bcur.today) || 0) + 1;
+  }
+  bcur.lastSeen = createdAt;
+  st.byBot[botLabel] = bcur;
+
+  const cleanPath = ('/' + String(reqPath || '/').split('?')[0].replace(/^\/+/, '')).slice(0, 120);
+  if (!st.byPath) st.byPath = {};
+  st.byPath[cleanPath] = (Number(st.byPath[cleanPath]) || 0) + 1;
+
+  if (!Array.isArray(st.recentHits)) st.recentHits = [];
+  st.recentHits.unshift({ bot: botLabel, path: cleanPath, ip: ip || '127.0.0.1', createdAt });
+  if (st.recentHits.length > 50) st.recentHits = st.recentHits.slice(0, 50);
+}
+
+function maybeTrackGeoAiCrawler(req, reqPath) {
+  try {
+    const ua = req.headers['user-agent'] || '';
+    const bot = detectGeoAiCrawler(ua);
+    if (!bot) return;
+    const pathOnly = String(reqPath || '/').split('?')[0].toLowerCase();
+    if (pathOnly.startsWith('/wp-json/') || pathOnly.startsWith('/api/')) return;
+    if (/\.(js|css|png|jpg|jpeg|webp|gif|svg|woff2?|ttf|ico|mp4|glb|wasm|map)$/i.test(pathOnly)) return;
+    const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1').split(',')[0].trim();
+    const db = loadDb();
+    recordGeoAiCrawlerHitToDb(db, bot, reqPath, ip);
+    saveDb(db);
+  } catch (e) {}
+}
+
+function extractQueryParamsMap(strOrUrl) {
+  const s = String(strOrUrl || '').trim();
+  if (!s) return {};
+  try {
+    const qPart = s.includes('://') ? (new URL(s).search || '') : (s.startsWith('?') ? s : '?' + s);
+    const sp = new URLSearchParams(qPart);
+    const out = {};
+    for (const [k, v] of sp.entries()) out[k] = v;
+    return out;
+  } catch (e) {
+    return {};
+  }
+}
+
+function parseVisitAttribution(rawRef, ua, landingSearch, clientHint) {
+  const refStr = String(rawRef || '').trim();
+  const refLow = refStr.toLowerCase();
+  const uaLow = String(ua || '').toLowerCase();
+  const lqParams = extractQueryParamsMap(landingSearch);
+  const rfParams = extractQueryParamsMap(refStr);
+
+  const utmSrc = String(lqParams.utm_source || rfParams.utm_source || '').trim().toLowerCase();
+  const utmMed = String(lqParams.utm_medium || rfParams.utm_medium || '').trim().toLowerCase();
+  const hintLow = String(clientHint || '').trim().toLowerCase();
+  const aiHay = `${refLow} ${utmSrc} ${utmMed} ${hintLow}`;
+
+  let aiEngine = '';
+  if (aiHay.includes('chatgpt.com') || aiHay.includes('chat.openai.com') || aiHay.includes('openai.com') || aiHay.includes('searchgpt') || utmSrc === 'chatgpt') {
+    aiEngine = 'ChatGPT (OpenAI)';
+  } else if (aiHay.includes('perplexity.ai') || aiHay.includes('perplexity')) {
+    aiEngine = 'Perplexity AI';
+  } else if (aiHay.includes('gemini.google.com') || aiHay.includes('bard.google.com') || aiHay.includes('aistudio.google.com') || utmSrc === 'gemini') {
+    aiEngine = 'Google Gemini';
+  } else if (aiHay.includes('claude.ai') || aiHay.includes('anthropic.com') || utmSrc === 'claude') {
+    aiEngine = 'Claude AI';
+  } else if (aiHay.includes('copilot.microsoft.com') || aiHay.includes('edgeservices.bing.com') || aiHay.includes('sydney.bing.com') || utmSrc === 'copilot') {
+    aiEngine = 'Microsoft Copilot';
+  } else if (aiHay.includes('cue.search.naver.com') || aiHay.includes('clova-x.naver.com') || aiHay.includes('clovax') || aiHay.includes('naver_cue')) {
+    aiEngine = '네이버 Cue: · CLOVA X';
+  } else if (aiHay.includes('wrtn.ai') || utmSrc === 'wrtn') {
+    aiEngine = '뤼튼 (Wrtn AI)';
+  } else if (aiHay.includes('getliner.com') || aiHay.includes('liner.ai') || utmSrc === 'liner') {
+    aiEngine = '라이너 (Liner AI)';
+  } else if (aiHay.includes('grok.com') || aiHay.includes('x.ai') || utmSrc === 'grok') {
+    aiEngine = 'Grok (xAI)';
+  } else if (aiHay.includes('felo.ai') || aiHay.includes('genspark.ai') || aiHay.includes('you.com') || aiHay.includes('phind.com') || aiHay.includes('kagi.com')) {
+    aiEngine = 'Felo · Genspark · 기타 AI';
+  }
+
+  const kwKeys = ['query', 'q', 'acq', 'n_keyword', 'DMKW', 'utm_term', 'k', 'sword', 'keyword', 'search', 'p'];
+  let searchKeyword = '';
+  for (const pmap of [lqParams, rfParams]) {
+    for (const kk of kwKeys) {
+      if (pmap[kk]) {
+        const cand = String(pmap[kk]).trim();
+        if (cand.length >= 2 && !cand.includes('http://') && !cand.includes('https://')) {
+          searchKeyword = cand.slice(0, 120);
+          break;
+        }
+      }
+    }
+    if (searchKeyword) break;
+  }
+
+  let platform = '🔗 직접 접속 · 북마크';
+  if (aiEngine) {
+    platform = '🤖 GEO AI 검색';
+  } else if (refLow.includes('place.naver.') || refLow.includes('map.naver.') || refLow.includes('naver.me') || refLow.includes('booking.naver.') || utmSrc === 'naver_place' || utmSrc === 'naver_map') {
+    platform = '📍 네이버 플레이스 · 지도';
+  } else if (refLow.includes('blog.naver.') || refLow.includes('cafe.naver.') || refLow.includes('in.naver.') || refLow.includes('post.naver.') || utmSrc === 'naver_blog') {
+    platform = '📝 네이버 블로그 · 카페';
+  } else if (refLow.includes('naver.') || refStr === '네이버 검색' || refStr === '🟢 네이버 통합검색' || utmSrc === 'naver') {
+    platform = '🟢 네이버 통합검색';
+  } else if (uaLow.includes('naver(inapp')) {
+    platform = '📱 네이버 앱 (인앱·피드)';
+  } else if (refLow.includes('google.') || refLow.includes('android-app://com.google') || refStr === '구글 검색' || refStr === '🔍 구글 검색' || utmSrc === 'google') {
+    platform = '🔍 구글 검색';
+  } else if (uaLow.includes('kakaotalk') || refLow.includes('pf.kakao.') || refLow.includes('talk.kakao.') || refStr === '카카오톡 채널' || refStr === '💬 카카오톡 채팅 · 채널' || utmSrc === 'kakao' || utmSrc === 'kakaotalk') {
+    platform = '💬 카카오톡 채팅 · 채널';
+  } else if (refLow.includes('daum.') || refLow.includes('kakao.') || uaLow.includes('daumapps') || refStr === '카카오·다음' || refStr === '🟡 다음 · 카카오 검색' || utmSrc === 'daum') {
+    platform = '🟡 다음 · 카카오 검색';
+  } else if (refLow.includes('threads.net') || refLow.includes('threads.com') || uaLow.includes('barcelona') || utmSrc === 'threads') {
+    platform = '🧵 스레드 (Threads)';
+  } else if (refLow.includes('instagram.') || uaLow.includes('instagram') || refStr === '인스타그램/블로그' || refStr === '📸 인스타그램' || utmSrc === 'instagram') {
+    platform = '📸 인스타그램';
+  } else if (refLow.includes('youtube.') || refLow.includes('youtu.be') || refStr === 'SNS·유튜브' || refStr === '▶️ 유튜브' || utmSrc === 'youtube') {
+    platform = '▶️ 유튜브';
+  } else if (refLow.includes('facebook.') || refLow.includes('fb.com') || uaLow.includes('fban') || uaLow.includes('fbav') || utmSrc === 'facebook') {
+    platform = '📘 페이스북';
+  } else if (refLow.includes('daangn.') || refLow.includes('karrot') || uaLow.includes('karrot') || utmSrc === 'daangn') {
+    platform = '🥕 당근 · 지역커뮤니티';
+  } else if (refLow.includes('bareunhaniwon.com') || refLow.includes('localhost') || refLow.includes('127.0.0.1') || refStr === '원내 페이지 이동' || refStr === '🏥 원내 페이지 연속탐색') {
+    platform = '🏥 원내 페이지 연속탐색';
+  } else if (refStr && refStr !== '직접 방문' && refLow !== 'direct' && refStr !== '🔗 직접 접속 · 북마크') {
+    platform = refStr.startsWith('🟢') || refStr.startsWith('📍') || refStr.startsWith('📝') || refStr.startsWith('🔍') || refStr.startsWith('💬') || refStr.startsWith('🤖') ? refStr : '🌐 외부 웹사이트 링크';
+  }
+
+  return {
+    platform,
+    aiEngine,
+    searchKeyword,
+    shortRef: aiEngine ? `🤖 ${aiEngine}` : platform
+  };
+}
+
+function classifyClinicalCohort(slug) {
+  const s = String(slug || '').toLowerCase();
+  if (s === 'growth' || s.includes('knee')) return '🌱 소아 키성장 · 성조숙증 (30~40대 학부모층)';
+  if (s === 'prostate' || s === 'hairloss-male' || s.includes('prostate')) return '💪 남성탈모 · 전립선 활력 (30~60대 남성층)';
+  if (s === 'diet-zero' || s === 'hairloss-female' || s === 'lifting-compare' || s.includes('uterus') || s.includes('gut')) return '🌸 다이어트 · 여성탈모 · 자궁 (20~50대 여성층)';
+  if (s === 'chuna' || s.includes('lumbar') || s.includes('cervical')) return '🦴 추나 척추교정 · 통증 (직장인 · 중장년층)';
+  if (s === 'gongjindan' || s === 'director' || s.includes('gongjindan') || s.includes('syncope') || s.includes('digest')) return '👑 황제공진단 · 만성피로 · 소화 (수험생 · 중장년층)';
+  return '🌿 두피 · 종합 진료 · 오시는길 (전 연령 공통층)';
+}
+
+function httpsPostJson(urlStr, headers, bodyStr) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(urlStr);
+    const req = https.request({
+      hostname: u.hostname,
+      port: u.port || 443,
+      path: u.pathname + u.search,
+      method: 'POST',
+      timeout: 12000,
+      headers: {
+        ...headers,
+        'Content-Length': Buffer.byteLength(bodyStr)
+      }
+    }, (res) => {
+      let raw = '';
+      res.on('data', c => { raw += c; });
+      res.on('end', () => {
+        try {
+          resolve({ status: res.statusCode, json: JSON.parse(raw || '{}') });
+        } catch (e) {
+          resolve({ status: res.statusCode, json: {} });
+        }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Request timeout')); });
+    req.write(bodyStr);
+    req.end();
+  });
+}
+
+let localExtAnalyticsCache = { expiresAt: 0, payload: null };
+
+async function fetchExternalGoogleAnalyticsData(db, forceRefresh = false) {
+  const cfg = db.analyticsConfig || {};
+  const ga4Mid = String(cfg.ga4MeasurementId || '').trim();
+  const ga4Pid = String(cfg.ga4PropertyId || '').replace(/[^0-9]/g, '');
+  const naverId = String(cfg.naverAnalyticsId || '').trim();
+  const gscUrl = String(cfg.gscSiteUrl || '').trim();
+  const saJson = String(cfg.googleServiceAccountJson || '').trim();
+
+  let saEmail = '';
+  let saObj = null;
+  if (saJson) {
+    try {
+      saObj = JSON.parse(saJson);
+      if (saObj && saObj.client_email) saEmail = String(saObj.client_email);
+    } catch (e) {}
+  }
+
+  const baseResult = {
+    status: {
+      hasGa4Tag: Boolean(ga4Mid),
+      ga4MeasurementId: ga4Mid,
+      ga4PropertyId: ga4Pid,
+      hasNaverTag: Boolean(naverId),
+      naverAnalyticsId: naverId,
+      hasServiceAccount: Boolean(saEmail),
+      serviceAccountEmail: saEmail,
+      gscSiteUrl: gscUrl,
+      ga4ApiConnected: false,
+      gscApiConnected: false,
+      lastSyncedAt: '',
+      lastSyncError: ''
+    },
+    ageGroups: [],
+    genders: [],
+    gscKeywords: []
+  };
+
+  if (!saJson || (!ga4Pid && !gscUrl)) return baseResult;
+  if (!forceRefresh && localExtAnalyticsCache.payload && localExtAnalyticsCache.expiresAt > Date.now()) {
+    return localExtAnalyticsCache.payload;
+  }
+  if (!saObj || !saObj.client_email || !saObj.private_key) {
+    baseResult.status.lastSyncError = '서비스 계정 JSON 형식이 올바르지 않습니다 (client_email / private_key 확인).';
+    return baseResult;
+  }
+
+  try {
+    const now = Math.floor(Date.now() / 1000);
+    const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+    const claim = Buffer.from(JSON.stringify({
+      iss: saObj.client_email,
+      scope: 'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/webmasters.readonly',
+      aud: 'https://oauth2.googleapis.com/token',
+      iat: now - 30,
+      exp: now + 3500
+    })).toString('base64url');
+    const unsigned = `${header}.${claim}`;
+    const signer = crypto.createSign('RSA-SHA256');
+    signer.update(unsigned);
+    signer.end();
+    const sig = signer.sign(String(saObj.private_key).replace(/\\n/g, '\n')).toString('base64url');
+    const jwt = `${unsigned}.${sig}`;
+
+    const formBody = new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt
+    }).toString();
+    const tokRes = await httpsPostJson('https://oauth2.googleapis.com/token', { 'Content-Type': 'application/x-www-form-urlencoded' }, formBody);
+    if (!tokRes.json || !tokRes.json.access_token) {
+      baseResult.status.lastSyncError = '구글 OAuth 토큰 발급 실패: ' + (tokRes.json.error_description || JSON.stringify(tokRes.json.error || ''));
+      return baseResult;
+    }
+    const accessToken = tokRes.json.access_token;
+    const errors = [];
+
+    if (ga4Pid) {
+      const gaRes = await httpsPostJson(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${encodeURIComponent(ga4Pid)}:batchRunReports`,
+        { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        JSON.stringify({
+          requests: [
+            { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'userAgeBracket' }], metrics: [{ name: 'activeUsers' }, { name: 'sessions' }] },
+            { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'userGender' }], metrics: [{ name: 'activeUsers' }, { name: 'sessions' }] }
+          ]
+        })
+      );
+      if (gaRes.status === 200 && gaRes.json && Array.isArray(gaRes.json.reports)) {
+        baseResult.status.ga4ApiConnected = true;
+        const ageMap = {
+          '18-24': '18~24세 (20대 초반)',
+          '25-34': '25~34세 (20대 후반·30대 초반)',
+          '35-44': '35~44세 (30대 후반·40대 초반)',
+          '45-54': '45~54세 (40대 후반·50대 초반)',
+          '55-64': '55~64세 (50대 후반·60대 초반)',
+          '65+': '65세 이상 (시니어)',
+          'unknown': '미분류 (비로그인·신호 미수집)'
+        };
+        for (const r of (gaRes.json.reports[0]?.rows || [])) {
+          let b = r.dimensionValues?.[0]?.value || 'unknown';
+          if (b === '(not set)') b = 'unknown';
+          baseResult.ageGroups.push({
+            bracket: b,
+            label: ageMap[b] || b,
+            users: Number(r.metricValues?.[0]?.value) || 0,
+            sessions: Number(r.metricValues?.[1]?.value) || 0
+          });
+        }
+        const genMap = { female: '👩 여성 방문자', male: '👨 남성 방문자', unknown: '👤 성별 미분류' };
+        for (const r of (gaRes.json.reports[1]?.rows || [])) {
+          let g = String(r.dimensionValues?.[0]?.value || 'unknown').toLowerCase();
+          if (g === '(not set)') g = 'unknown';
+          baseResult.genders.push({
+            gender: g,
+            label: genMap[g] || g,
+            users: Number(r.metricValues?.[0]?.value) || 0,
+            sessions: Number(r.metricValues?.[1]?.value) || 0
+          });
+        }
+      } else {
+        errors.push(`GA4 속성(${ga4Pid}) 조회 실패: ${gaRes.json?.error?.message || ('HTTP ' + gaRes.status)}`);
+      }
+    }
+
+    if (gscUrl) {
+      const kstNow = Date.now() + 9 * 3600 * 1000;
+      const startDate = new Date(kstNow - 28 * 86400 * 1000).toISOString().slice(0, 10);
+      const endDate = new Date(kstNow).toISOString().slice(0, 10);
+      const gscRes = await httpsPostJson(
+        `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(gscUrl)}/searchAnalytics/query`,
+        { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        JSON.stringify({ startDate, endDate, dimensions: ['query'], rowLimit: 25 })
+      );
+      if (gscRes.status === 200 && gscRes.json) {
+        baseResult.status.gscApiConnected = true;
+        for (const qr of (gscRes.json.rows || [])) {
+          const kw = qr.keys?.[0] || '';
+          if (!kw) continue;
+          baseResult.gscKeywords.push({
+            keyword: kw,
+            clicks: Math.round(Number(qr.clicks) || 0),
+            impressions: Math.round(Number(qr.impressions) || 0),
+            ctr: Math.round((Number(qr.ctr) || 0) * 1000) / 10,
+            position: Math.round((Number(qr.position) || 0) * 10) / 10
+          });
+        }
+      } else {
+        errors.push(`서치콘솔(${gscUrl}) 조회 실패: ${gscRes.json?.error?.message || ('HTTP ' + gscRes.status)}`);
+      }
+    }
+
+    baseResult.status.lastSyncedAt = nowStr();
+    baseResult.status.lastSyncError = errors.join(' | ');
+    localExtAnalyticsCache = { expiresAt: Date.now() + 15 * 60 * 1000, payload: baseResult };
+    return baseResult;
+  } catch (err) {
+    baseResult.status.lastSyncError = '구글 외부 API 연동 오류: ' + err.message;
+    return baseResult;
+  }
+}
+
+function buildVisitSummary(db, includeMasterLogs, extDataOverride) {
   const visits = Array.isArray(db.visits) ? db.visits : [];
   const baseOffset = typeof db.visitBaseOffset === 'number' ? db.visitBaseOffset : 14820;
 
@@ -402,6 +777,7 @@ function buildVisitSummary(db, includeMasterLogs) {
   const monthVisits = visits.filter(v => v.visitDate >= monthAgoDate);
   const activeSet = new Set(visits.filter(v => v.createdAt >= activeSinceStr).map(v => v.visitorHash));
   const activeNow = Math.max(1, activeSet.size);
+  const denomDb = Math.max(1, totalDb);
 
   const dailySeries = [];
   for (let d = 13; d >= 0; d--) {
@@ -415,45 +791,202 @@ function buildVisitSummary(db, includeMasterLogs) {
     });
   }
 
+  // Hourly (00~23시) & Day-of-Week (월~일)
+  const hourBuckets = Array.from({ length: 24 }, (_, h) => ({
+    hour: h,
+    label: String(h).padStart(2, '0') + '시',
+    pv: 0,
+    uvSet: new Set(),
+    todayPv: 0
+  }));
+  const dowCounts = [0, 0, 0, 0, 0, 0, 0]; // 0=Sun..6=Sat
   const pageMap = {};
+  const cohortSums = {};
+  const devCounts = {};
+  const platMap = {};
+  const aiMap = {};
+  const aiPageMap = {};
+  const aiRecentVisits = [];
+  const kwMap = {};
+
   visits.forEach(v => {
     const slug = v.pageSlug || 'home';
+    const createdStr = String(v.createdAt || '');
+    const hrMatch = createdStr.match(/\s(\d{2}):/);
+    const hr = hrMatch ? Math.min(23, Math.max(0, parseInt(hrMatch[1], 10))) : 12;
+    hourBuckets[hr].pv++;
+    hourBuckets[hr].uvSet.add(v.visitorHash);
+    if (v.visitDate === todayDate) hourBuckets[hr].todayPv++;
+
+    if (v.visitDate) {
+      const dtObj = new Date(v.visitDate + 'T00:00:00Z');
+      if (!isNaN(dtObj.getTime())) dowCounts[dtObj.getUTCDay()]++;
+    }
+
     if (!pageMap[slug]) {
-      pageMap[slug] = {
-        slug,
-        title: PAGE_TITLE_MAP[slug] || v.pageTitle || slug,
-        pv: 0,
-        uvSet: new Set(),
-        todayPv: 0
-      };
+      pageMap[slug] = { slug, title: PAGE_TITLE_MAP[slug] || v.pageTitle || slug, pv: 0, uvSet: new Set(), todayPv: 0 };
     }
     pageMap[slug].pv++;
     pageMap[slug].uvSet.add(v.visitorHash);
     if (v.visitDate === todayDate) pageMap[slug].todayPv++;
+
+    const cohort = classifyClinicalCohort(slug);
+    cohortSums[cohort] = (cohortSums[cohort] || 0) + 1;
+
+    const dv = v.deviceType || 'desktop';
+    devCounts[dv] = (devCounts[dv] || 0) + 1;
+
+    const parsed = v.platform
+      ? { platform: v.platform, aiEngine: v.aiEngine || '', searchKeyword: v.searchKeyword || '' }
+      : parseVisitAttribution(v.rawReferrer || v.referrer || '', v.userAgent || '', v.landingQuery || '', '');
+
+    const plat = parsed.platform || '🔗 직접 접속 · 북마크';
+    if (!platMap[plat]) platMap[plat] = { count: 0, todayCount: 0 };
+    platMap[plat].count++;
+    if (v.visitDate === todayDate) platMap[plat].todayCount++;
+
+    if (parsed.aiEngine) {
+      if (!aiMap[parsed.aiEngine]) aiMap[parsed.aiEngine] = { count: 0, todayCount: 0 };
+      aiMap[parsed.aiEngine].count++;
+      if (v.visitDate === todayDate) aiMap[parsed.aiEngine].todayCount++;
+      aiPageMap[slug] = (aiPageMap[slug] || 0) + 1;
+      aiRecentVisits.push({
+        id: v.id,
+        pageSlug: slug,
+        pageTitle: PAGE_TITLE_MAP[slug] || v.pageTitle || slug,
+        aiEngine: parsed.aiEngine,
+        searchKeyword: parsed.searchKeyword || '',
+        rawReferrer: v.rawReferrer || v.referrer || '',
+        clientIp: v.clientIp,
+        deviceType: v.deviceType,
+        createdAt: v.createdAt
+      });
+    }
+
+    if (parsed.searchKeyword) {
+      if (!kwMap[parsed.searchKeyword]) kwMap[parsed.searchKeyword] = { count: 0, platform: plat };
+      kwMap[parsed.searchKeyword].count++;
+    }
   });
+
+  let peakHour = { hour: 20, label: '20시', pv: 0 };
+  const periodBuckets = { morning: 0, afternoon: 0, evening: 0, night: 0 };
+  const hourlySeries = hourBuckets.map(hb => {
+    if (hb.pv >= peakHour.pv) peakHour = { hour: hb.hour, label: hb.label, pv: hb.pv };
+    if (hb.hour >= 6 && hb.hour < 12) periodBuckets.morning += hb.pv;
+    else if (hb.hour >= 12 && hb.hour < 18) periodBuckets.afternoon += hb.pv;
+    else if (hb.hour >= 18 && hb.hour <= 23) periodBuckets.evening += hb.pv;
+    else periodBuckets.night += hb.pv;
+    return { hour: hb.hour, label: hb.label, pv: hb.pv, uv: hb.uvSet.size, todayPv: hb.todayPv };
+  });
+
+  const weekdaySeries = [
+    { label: '월요일', pv: dowCounts[1] },
+    { label: '화요일', pv: dowCounts[2] },
+    { label: '수요일', pv: dowCounts[3] },
+    { label: '목요일', pv: dowCounts[4] },
+    { label: '금요일', pv: dowCounts[5] },
+    { label: '토요일', pv: dowCounts[6] },
+    { label: '일요일', pv: dowCounts[0] }
+  ];
+
   const topPages = Object.values(pageMap)
     .map(p => ({ slug: p.slug, title: p.title, pv: p.pv, uv: p.uvSet.size, todayPv: p.todayPv }))
     .sort((a, b) => b.pv - a.pv)
     .slice(0, 20);
 
-  const devCounts = {};
-  visits.forEach(v => {
-    const dv = v.deviceType || 'desktop';
-    devCounts[dv] = (devCounts[dv] || 0) + 1;
-  });
-  const devices = Object.entries(devCounts)
-    .map(([device, count]) => ({ device, count }))
+  const clinicalCohorts = Object.entries(cohortSums)
+    .map(([cohort, count]) => ({ cohort, count, pct: Math.round((count / denomDb) * 1000) / 10 }))
     .sort((a, b) => b.count - a.count);
 
-  const refCounts = {};
-  visits.forEach(v => {
-    const rf = v.referrer || '직접 방문';
-    refCounts[rf] = (refCounts[rf] || 0) + 1;
-  });
-  const referrers = Object.entries(refCounts)
-    .map(([referrer, count]) => ({ referrer, count }))
+  const devices = Object.entries(devCounts)
+    .map(([device, count]) => ({ device, count, pct: Math.round((count / denomDb) * 1000) / 10 }))
+    .sort((a, b) => b.count - a.count);
+
+  const platforms = Object.entries(platMap)
+    .map(([platform, info]) => ({
+      platform,
+      count: info.count,
+      todayCount: info.todayCount,
+      pct: Math.round((info.count / denomDb) * 1000) / 10
+    }))
+    .sort((a, b) => b.count - a.count);
+
+  const referrers = platforms.slice(0, 10).map(p => ({ referrer: p.platform, count: p.count }));
+
+  const aiByEngine = Object.entries(aiMap)
+    .map(([engine, info]) => ({ engine, count: info.count, todayCount: info.todayCount }))
+    .sort((a, b) => b.count - a.count);
+  const aiTotalHuman = aiByEngine.reduce((s, x) => s + x.count, 0);
+  const aiTodayHuman = aiByEngine.reduce((s, x) => s + x.todayCount, 0);
+  const aiTopPages = Object.entries(aiPageMap)
+    .map(([slug, count]) => ({ slug, title: PAGE_TITLE_MAP[slug] || slug, count }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 8);
+    .slice(0, 10);
+
+  const botRaw = db.geoBotStats || {};
+  const botList = Object.entries(botRaw.byBot || {})
+    .map(([bot, info]) => ({
+      bot,
+      total: Number(info.total) || 0,
+      todayCount: info.todayDate === todayDate ? (Number(info.today) || 0) : 0,
+      lastSeen: info.lastSeen || ''
+    }))
+    .sort((a, b) => b.total - a.total);
+  const botPaths = Object.entries(botRaw.byPath || {})
+    .map(([p, count]) => ({ path: p, count: Number(count) || 0 }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 12);
+
+  const capturedKeywords = Object.entries(kwMap)
+    .map(([keyword, info]) => ({ keyword, platform: info.platform, count: info.count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 25);
+
+  const ext = extDataOverride || {
+    status: {
+      hasGa4Tag: Boolean(db.analyticsConfig?.ga4MeasurementId),
+      ga4MeasurementId: db.analyticsConfig?.ga4MeasurementId || '',
+      ga4PropertyId: db.analyticsConfig?.ga4PropertyId || '',
+      hasNaverTag: Boolean(db.analyticsConfig?.naverAnalyticsId),
+      naverAnalyticsId: db.analyticsConfig?.naverAnalyticsId || '',
+      hasServiceAccount: Boolean(db.analyticsConfig?.googleServiceAccountJson),
+      serviceAccountEmail: '',
+      gscSiteUrl: db.analyticsConfig?.gscSiteUrl || '',
+      ga4ApiConnected: false,
+      gscApiConnected: false,
+      lastSyncedAt: '',
+      lastSyncError: ''
+    },
+    ageGroups: [],
+    genders: [],
+    gscKeywords: []
+  };
+
+  const convStore = db.conversionLogs || { cumTotal: 0, byAction: {}, events: [] };
+  const convEvents = Array.isArray(convStore.events) ? convStore.events : [];
+  let convToday = 0;
+  const convPlatMap = {};
+  convEvents.forEach(cev => {
+    if (cev.visitDate === todayDate) convToday++;
+    const cp = cev.platform || '기타';
+    convPlatMap[cp] = (convPlatMap[cp] || 0) + 1;
+  });
+  const actionLabels = {
+    tel_click: '📞 전화상담 연결',
+    kakao_click: '💬 카카오톡 예약·상담',
+    naver_booking_click: '📍 네이버 예약 바로가기',
+    nav_naver: '🧭 네이버지도 길안내',
+    nav_google: '🧭 구글지도 길안내',
+    nav_tmap: '🧭 티맵(TMAP) 길안내',
+    nav_kakao: '🧭 카카오맵 길안내',
+    consult_modal_open: '📝 간편 예약모달 오픈'
+  };
+  const convByAction = Object.entries(actionLabels).map(([action, label]) => ({
+    action,
+    label,
+    count: Number(convStore.byAction?.[action]) || 0
+  }));
 
   const summary = {
     ok: true,
@@ -470,27 +1003,72 @@ function buildVisitSummary(db, includeMasterLogs) {
     monthPv: monthVisits.length,
     activeNow,
     dailySeries,
+    hourlySeries,
+    peakHour,
+    periodBuckets,
+    weekdaySeries,
     topPages,
     devices,
+    platforms,
     referrers,
+    geoAi: {
+      totalHumanVisits: aiTotalHuman,
+      todayHumanVisits: aiTodayHuman,
+      sharePct: Math.round((aiTotalHuman / denomDb) * 1000) / 10,
+      byEngine: aiByEngine,
+      topLandingPages: aiTopPages,
+      recentAiVisits: aiRecentVisits.sort((a, b) => b.id - a.id).slice(0, 25),
+      botStats: {
+        totalHits: Number(botRaw.totalHits) || 0,
+        todayHits: Number(botRaw.dailyHits?.[todayDate]) || 0,
+        byBot: botList,
+        topPaths: botPaths,
+        recentHits: Array.isArray(botRaw.recentHits) ? botRaw.recentHits.slice(0, 30) : []
+      }
+    },
+    searchKeywords: {
+      capturedKeywords,
+      gscKeywords: ext.gscKeywords || []
+    },
+    demographics: {
+      ga4Connected: Boolean(ext.status?.ga4ApiConnected),
+      ageGroups: ext.ageGroups || [],
+      genders: ext.genders || [],
+      clinicalCohorts
+    },
+    conversions: {
+      todayTotal: convToday,
+      cumTotal: Number(convStore.cumTotal) || 0,
+      byAction: convByAction,
+      byPlatform: Object.entries(convPlatMap).map(([platform, count]) => ({ platform, count })).sort((a, b) => b.count - a.count).slice(0, 10),
+      recentEvents: convEvents.slice(0, 40)
+    },
+    externalConfigStatus: ext.status,
     serverTime: nowStr()
   };
 
-  if (includeMasterLogs) {
-    summary.recentLogs = [...visits]
-      .sort((a, b) => b.id - a.id)
-      .slice(0, 80)
-      .map(v => ({
+  summary.recentLogs = [...visits]
+    .sort((a, b) => b.id - a.id)
+    .slice(0, 80)
+    .map(v => {
+      const parsed = v.platform
+        ? { platform: v.platform, aiEngine: v.aiEngine || '', searchKeyword: v.searchKeyword || '' }
+        : parseVisitAttribution(v.rawReferrer || v.referrer || '', v.userAgent || '', v.landingQuery || '', '');
+      return {
         id: v.id,
         pageSlug: v.pageSlug,
         pageTitle: PAGE_TITLE_MAP[v.pageSlug] || v.pageTitle || v.pageSlug,
         clientIp: v.clientIp,
         deviceType: v.deviceType,
-        referrer: v.referrer,
+        platform: parsed.platform,
+        aiEngine: parsed.aiEngine,
+        searchKeyword: parsed.searchKeyword,
+        referrer: parsed.platform,
+        rawReferrer: v.rawReferrer || '',
         userAgent: v.userAgent,
         createdAt: v.createdAt
-      }));
-  }
+      };
+    });
 
   return summary;
 }
@@ -894,7 +1472,8 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
   if (route === '/visits' && req.method === 'GET') {
     const actor = getActor(req, db);
     const isMaster = Boolean(actor && actor.isMaster);
-    return sendJson(res, 200, buildVisitSummary(db, isMaster));
+    const ext = isMaster ? await fetchExternalGoogleAnalyticsData(db, false) : null;
+    return sendJson(res, 200, buildVisitSummary(db, isMaster, ext));
   }
 
   if (route === '/visits' && req.method === 'POST') {
@@ -903,19 +1482,24 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
     const pageTitle = PAGE_TITLE_MAP[slug] || String(body.pageTitle || slug).trim();
     const deviceType = ['mobile', 'tablet', 'desktop'].includes(body.deviceType) ? body.deviceType : 'desktop';
     const rawRef = String(body.referrer || '').trim();
-    let referrer = '직접 방문';
-    if (rawRef) {
-      const low = rawRef.toLowerCase();
-      if (low.includes('naver.')) referrer = '네이버 검색';
-      else if (low.includes('google.')) referrer = '구글 검색';
-      else if (low.includes('kakao') || low.includes('daum.')) referrer = '카카오·다음';
-      else if (low.includes('instagram.') || low.includes('facebook.') || low.includes('youtube.')) referrer = 'SNS·유튜브';
-      else if (low.includes('bareunhaniwon.com') || low.includes('localhost')) referrer = '원내 페이지 이동';
-      else referrer = rawRef.slice(0, 80);
-    }
+    const landingQuery = String(body.landingSearch || '').trim().slice(0, 250);
+    const aiHint = String(body.aiHint || '').trim();
 
     const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1').split(',')[0].trim();
     const ua = String(req.headers['user-agent'] || '').slice(0, 240);
+
+    // Separate AI search crawlers from human visits
+    const botLabel = detectGeoAiCrawler(ua);
+    if (botLabel) {
+      recordGeoAiCrawlerHitToDb(db, botLabel, '/' + slug, ip);
+      saveDb(db);
+      const actor = getActor(req, db);
+      const isMaster = Boolean(actor && actor.isMaster);
+      const ext = isMaster ? await fetchExternalGoogleAnalyticsData(db, false) : null;
+      return sendJson(res, 200, buildVisitSummary(db, isMaster, ext));
+    }
+
+    const attr = parseVisitAttribution(rawRef, ua, landingQuery, aiHint);
     const vid = String(body.visitorId || '').trim();
     const createdAt = nowStr();
     const visitDate = createdAt.slice(0, 10);
@@ -932,7 +1516,12 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       visitorHash,
       clientIp: ip,
       deviceType,
-      referrer,
+      referrer: attr.shortRef,
+      rawReferrer: rawRef.slice(0, 1000),
+      landingQuery,
+      platform: attr.platform,
+      aiEngine: attr.aiEngine,
+      searchKeyword: attr.searchKeyword,
       userAgent: ua,
       createdAt
     });
@@ -940,13 +1529,123 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
 
     const actor = getActor(req, db);
     const isMaster = Boolean(actor && actor.isMaster);
-    return sendJson(res, 200, buildVisitSummary(db, isMaster));
+    const ext = isMaster ? await fetchExternalGoogleAnalyticsData(db, false) : null;
+    return sendJson(res, 200, buildVisitSummary(db, isMaster, ext));
+  }
+
+  if (route === '/visits/event' && req.method === 'POST') {
+    const body = await readJsonBody(req);
+    const action = String(body.action || '').trim();
+    const allowed = {
+      tel_click: '📞 전화상담 연결 클릭',
+      kakao_click: '💬 카카오톡 예약·상담 클릭',
+      naver_booking_click: '📍 네이버 예약 바로가기 클릭',
+      nav_naver: '🧭 네이버지도 길안내 출발',
+      nav_google: '🧭 구글지도 길안내 출발',
+      nav_tmap: '🧭 티맵(TMAP) 길안내 출발',
+      nav_kakao: '🧭 카카오맵 길안내 출발',
+      consult_modal_open: '📝 간편 예약·자가진단 모달 열기'
+    };
+    if (!allowed[action]) return sendJson(res, 400, { ok: false, message: '알 수 없는 이벤트 코드입니다.' });
+
+    const slug = normalizePageSlug(body.pageSlug || 'home');
+    const deviceType = ['mobile', 'tablet', 'desktop'].includes(body.deviceType) ? body.deviceType : 'desktop';
+    const ua = String(req.headers['user-agent'] || '').slice(0, 240);
+    const attr = parseVisitAttribution(body.referrer || '', ua, body.landingSearch || '', body.aiHint || '');
+    if (body.sessionPlatform) attr.platform = String(body.sessionPlatform).trim();
+    if (body.sessionAiEngine) attr.aiEngine = String(body.sessionAiEngine).trim();
+
+    const createdAt = nowStr();
+    const visitDate = createdAt.slice(0, 10);
+    const hrMatch = createdAt.match(/\s(\d{2}):/);
+    const hour = hrMatch ? parseInt(hrMatch[1], 10) : 12;
+
+    if (!db.conversionLogs || typeof db.conversionLogs !== 'object') {
+      db.conversionLogs = { cumTotal: 0, byAction: {}, events: [] };
+    }
+    db.conversionLogs.cumTotal = (Number(db.conversionLogs.cumTotal) || 0) + 1;
+    if (!db.conversionLogs.byAction) db.conversionLogs.byAction = {};
+    db.conversionLogs.byAction[action] = (Number(db.conversionLogs.byAction[action]) || 0) + 1;
+    if (!Array.isArray(db.conversionLogs.events)) db.conversionLogs.events = [];
+    db.conversionLogs.events.unshift({
+      action,
+      actionLabel: allowed[action],
+      pageSlug: slug,
+      platform: attr.platform,
+      aiEngine: attr.aiEngine,
+      deviceType,
+      hour,
+      visitDate,
+      createdAt
+    });
+    if (db.conversionLogs.events.length > 500) db.conversionLogs.events = db.conversionLogs.events.slice(0, 500);
+    saveDb(db);
+    return sendJson(res, 200, { ok: true });
+  }
+
+  if (route === '/analytics/public-config' && req.method === 'GET') {
+    const cfg = db.analyticsConfig || {};
+    return sendJson(res, 200, {
+      ok: true,
+      ga4MeasurementId: String(cfg.ga4MeasurementId || '').trim(),
+      naverAnalyticsId: String(cfg.naverAnalyticsId || '').trim()
+    });
+  }
+
+  if (route === '/analytics/settings' && req.method === 'GET') {
+    const actor = getActor(req, db);
+    if (!actor || !actor.isMaster) return sendJson(res, 403, { ok: false, message: '마스터 권한이 필요합니다.' });
+    const cfg = db.analyticsConfig || {};
+    const ext = await fetchExternalGoogleAnalyticsData(db, false);
+    return sendJson(res, 200, {
+      ok: true,
+      settings: {
+        ga4MeasurementId: String(cfg.ga4MeasurementId || ''),
+        ga4PropertyId: String(cfg.ga4PropertyId || ''),
+        naverAnalyticsId: String(cfg.naverAnalyticsId || ''),
+        gscSiteUrl: String(cfg.gscSiteUrl || 'https://www.bareunhaniwon.com/'),
+        hasServiceAccount: Boolean(ext.status?.hasServiceAccount),
+        serviceAccountEmail: String(ext.status?.serviceAccountEmail || '')
+      },
+      external: ext
+    });
+  }
+
+  if (route === '/analytics/settings' && req.method === 'POST') {
+    const actor = getActor(req, db);
+    if (!actor || !actor.isMaster) return sendJson(res, 403, { ok: false, message: '마스터 권한이 필요합니다.' });
+    const body = await readJsonBody(req);
+    const prev = db.analyticsConfig || {};
+    const next = {
+      ga4MeasurementId: typeof body.ga4MeasurementId === 'string' ? body.ga4MeasurementId.trim() : (prev.ga4MeasurementId || ''),
+      ga4PropertyId: typeof body.ga4PropertyId === 'string' ? body.ga4PropertyId.replace(/[^0-9]/g, '') : (prev.ga4PropertyId || ''),
+      naverAnalyticsId: typeof body.naverAnalyticsId === 'string' ? body.naverAnalyticsId.trim() : (prev.naverAnalyticsId || ''),
+      gscSiteUrl: typeof body.gscSiteUrl === 'string' ? body.gscSiteUrl.trim() : (prev.gscSiteUrl || 'https://www.bareunhaniwon.com/'),
+      googleServiceAccountJson: prev.googleServiceAccountJson || ''
+    };
+    if (body.clearServiceAccount) {
+      next.googleServiceAccountJson = '';
+    } else if (typeof body.googleServiceAccountJson === 'string' && body.googleServiceAccountJson.trim()) {
+      next.googleServiceAccountJson = body.googleServiceAccountJson.trim();
+    }
+    db.analyticsConfig = next;
+    saveDb(db);
+    localExtAnalyticsCache = { expiresAt: 0, payload: null };
+    const ext = await fetchExternalGoogleAnalyticsData(db, true);
+    return sendJson(res, 200, {
+      ok: true,
+      message: '외부 통계(GA4 · 서치콘솔 · 네이버 애널리틱스) 설정이 저장 및 동기화되었습니다.',
+      external: ext,
+      summary: buildVisitSummary(db, true, ext)
+    });
   }
 
   if (route === '/visits/master' && req.method === 'GET') {
     const actor = getActor(req, db);
     if (!actor || !actor.isMaster) return sendJson(res, 403, { ok: false, message: '마스터 권한이 필요합니다.' });
-    return sendJson(res, 200, buildVisitSummary(db, true));
+    const force = urlObj.searchParams.get('forceRefresh') === '1';
+    const ext = await fetchExternalGoogleAnalyticsData(db, force);
+    return sendJson(res, 200, buildVisitSummary(db, true, ext));
   }
 
   if (route === '/visits/adjust' && req.method === 'POST') {
@@ -957,7 +1656,8 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
       db.visitBaseOffset = Math.max(0, Number(body.baseOffset) || 0);
       saveDb(db);
     }
-    return sendJson(res, 200, buildVisitSummary(db, true));
+    const ext = await fetchExternalGoogleAnalyticsData(db, false);
+    return sendJson(res, 200, buildVisitSummary(db, true, ext));
   }
 
   if (route === '/body-notes' && req.method === 'GET') {
@@ -1120,4 +1820,4 @@ async function handleBareunApi(req, res, reqPath, urlObj) {
   return sendJson(res, 404, { ok: false, message: 'Not Found' });
 }
 
-module.exports = { handleBareunApi };
+module.exports = { handleBareunApi, maybeTrackGeoAiCrawler };

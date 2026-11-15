@@ -22,6 +22,84 @@
   let latestStats = null;
   let isMasterAuthenticated = false;
   let activeLocationTab = 'location';
+  let activeMasterTab = 'overview';
+  let sessionAttribution = { referrer: '', landingSearch: '', aiHint: '', platform: '', aiEngine: '' };
+
+  function initSessionAttribution() {
+    try {
+      const saved = sessionStorage.getItem('bareun_session_attr_v1');
+      if (saved) {
+        sessionAttribution = Object.assign(sessionAttribution, JSON.parse(saved));
+        return;
+      }
+    } catch (e) {}
+    const ref = document.referrer || '';
+    const lsearch = window.location.search || '';
+    const low = (ref + ' ' + lsearch).toLowerCase();
+    let aiHint = '';
+    if (low.includes('chatgpt.com') || low.includes('chat.openai.com') || low.includes('searchgpt') || low.includes('utm_source=chatgpt')) aiHint = 'chatgpt.com';
+    else if (low.includes('perplexity.ai') || low.includes('utm_source=perplexity')) aiHint = 'perplexity.ai';
+    else if (low.includes('gemini.google.com') || low.includes('bard.google.com') || low.includes('utm_source=gemini')) aiHint = 'gemini.google.com';
+    else if (low.includes('claude.ai') || low.includes('utm_source=claude')) aiHint = 'claude.ai';
+    else if (low.includes('copilot.microsoft.com') || low.includes('edgeservices.bing.com')) aiHint = 'copilot.microsoft.com';
+    else if (low.includes('cue.search.naver.com') || low.includes('clova-x.naver.com')) aiHint = 'cue.search.naver.com';
+    else if (low.includes('wrtn.ai')) aiHint = 'wrtn.ai';
+    else if (low.includes('getliner.com') || low.includes('liner.ai')) aiHint = 'getliner.com';
+    else if (low.includes('grok.com') || low.includes('x.ai')) aiHint = 'grok.com';
+
+    sessionAttribution = {
+      referrer: ref,
+      landingSearch: lsearch,
+      aiHint: aiHint,
+      platform: '',
+      aiEngine: ''
+    };
+    try {
+      sessionStorage.setItem('bareun_session_attr_v1', JSON.stringify(sessionAttribution));
+    } catch (e) {}
+  }
+  initSessionAttribution();
+
+  function trackBareunConversionEvent(action) {
+    if (isStudioEditor || !action) return;
+    const slug = detectPageSlug();
+    const payload = JSON.stringify({
+      action: action,
+      pageSlug: slug,
+      deviceType: detectDeviceType(),
+      referrer: document.referrer || sessionAttribution.referrer || '',
+      landingSearch: window.location.search || sessionAttribution.landingSearch || '',
+      aiHint: sessionAttribution.aiHint || '',
+      sessionPlatform: sessionAttribution.platform || '',
+      sessionAiEngine: sessionAttribution.aiEngine || ''
+    });
+
+    try {
+      if (navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: 'application/json' });
+        navigator.sendBeacon('/wp-json/bareun/v1/visits/event?_t=' + Date.now(), blob);
+      } else {
+        fetch('/wp-json/bareun/v1/visits/event?_t=' + Date.now(), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true
+        }).catch(function () {});
+      }
+    } catch (e) {}
+
+    // Fire Stage-2 GA4 custom conversion event if gtag is loaded
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'clinic_conversion_click', {
+          conversion_action: action,
+          page_slug: slug,
+          ai_engine: sessionAttribution.aiHint || 'none'
+        });
+      }
+    } catch (e) {}
+  }
+  window.trackBareunConversionEvent = trackBareunConversionEvent;
 
   const DEFAULT_CLINIC_INFO = {
     clinicName: '바른한의원 대전본점',
@@ -204,6 +282,8 @@
    * 4-App Individual Auto-Navigation Launcher (네이버지도 · 구글지도 · 티맵 · 카카오맵)
    */
   window.launchBareunMapNav = function (provider) {
+    const navActMap = { naver: 'nav_naver', google: 'nav_google', tmap: 'nav_tmap', kakao: 'nav_kakao' };
+    if (navActMap[provider]) trackBareunConversionEvent(navActMap[provider]);
     const lat = Number(clinicInfo.lat) || 36.35536;
     const lng = Number(clinicInfo.lng) || 127.44778;
     const name = clinicInfo.clinicName || '바른한의원 대전본점';
@@ -547,8 +627,8 @@
         display: flex;
       }
       .bv-modal-dialog {
-        width: min(1040px, 100%);
-        max-height: 91vh;
+        width: min(1140px, 100%);
+        max-height: 92vh;
         overflow-y: auto;
         background: #F8FAFC;
         border: 1.5px solid rgba(148, 163, 184, 0.35);
@@ -687,33 +767,41 @@
         flex-wrap: wrap;
       }
 
-      /* MASTER 5 KPI SUMMARY CARDS */
+      /* MASTER 6 KPI SUMMARY CARDS & 5 SUB-TABS */
       .bv-kpi-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
       }
-      @media (max-width: 900px) {
+      @media (max-width: 1020px) {
+        .bv-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+      @media (max-width: 600px) {
         .bv-kpi-grid { grid-template-columns: repeat(2, 1fr); }
       }
       .bv-kpi-card {
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 15px 16px;
+        border-radius: 16px;
+        padding: 13px 14px;
         box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 6px;
+        gap: 5px;
       }
       .bv-kpi-card.highlight {
         background: linear-gradient(135deg, #171614 0%, #2D5A43 100%);
         color: #FFFFFF;
         border-color: #2D5A43;
       }
+      .bv-kpi-card.geo-highlight {
+        background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+        color: #FFFFFF;
+        border-color: #3B82F6;
+      }
       .bv-kpi-label {
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 800;
         color: #64748B;
         display: flex;
@@ -721,15 +809,97 @@
         justify-content: space-between;
       }
       .bv-kpi-card.highlight .bv-kpi-label { color: #A7F3D0; }
+      .bv-kpi-card.geo-highlight .bv-kpi-label { color: #93C5FD; }
       .bv-kpi-value {
-        font-size: clamp(1.32rem, 2.1vw, 1.72rem);
+        font-size: clamp(1.22rem, 1.9vw, 1.56rem);
         font-weight: 900;
         color: #0F172A;
         font-variant-numeric: tabular-nums;
       }
       .bv-kpi-card.highlight .bv-kpi-value { color: #FEF08A; }
-      .bv-kpi-foot { font-size: 11.5px; font-weight: 600; color: #475569; }
-      .bv-kpi-card.highlight .bv-kpi-foot { color: #E2E8F0; }
+      .bv-kpi-card.geo-highlight .bv-kpi-value { color: #FDE68A; }
+      .bv-kpi-foot { font-size: 11px; font-weight: 600; color: #475569; }
+      .bv-kpi-card.highlight .bv-kpi-foot, .bv-kpi-card.geo-highlight .bv-kpi-foot { color: #E2E8F0; }
+
+      .bv-master-tabs {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+        background: #EEF2F6;
+        padding: 6px;
+        border-radius: 16px;
+        border: 1px solid #CBD5E1;
+      }
+      .bv-mtab-btn {
+        appearance: none;
+        flex: 1 1 auto;
+        padding: 9px 13px;
+        border-radius: 11px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #334155;
+        font-size: 12.5px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        white-space: nowrap;
+      }
+      .bv-mtab-btn:hover { background: rgba(255,255,255,0.7); }
+      .bv-mtab-btn.active {
+        background: #171614;
+        color: #FEF08A;
+        border-color: #2D5A43;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+      }
+
+      .bv-hour-bars {
+        display: grid;
+        grid-template-columns: repeat(24, 1fr);
+        align-items: end;
+        gap: 4px;
+        height: 148px;
+        padding-top: 16px;
+        border-bottom: 1px solid #E2E8F0;
+      }
+      @media (max-width: 720px) {
+        .bv-hour-bars { overflow-x: auto; min-width: 560px; }
+      }
+      .bv-hbar-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+        gap: 3px;
+      }
+      .bv-hbar-fill {
+        width: 100%;
+        max-width: 18px;
+        border-radius: 5px 5px 2px 2px;
+        background: linear-gradient(180deg, #64748B 0%, #334155 100%);
+        min-height: 4px;
+      }
+      .bv-hbar-col.is-peak .bv-hbar-fill {
+        background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+      }
+      .bv-hbar-lbl { font-size: 9.5px; font-weight: 700; color: #64748B; margin-top: 3px; }
+      .bv-data-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+      .bv-data-table th { background: #F1F5F9; color: #334155; padding: 8px 10px; font-weight: 800; border-bottom: 1px solid #CBD5E1; }
+      .bv-data-table td { padding: 8px 10px; border-bottom: 1px solid #F1F5F9; color: #0F172A; }
+      .bv-form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      @media (max-width: 760px) { .bv-form-grid { grid-template-columns: 1fr; } }
+      .bv-form-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #CBD5E1;
+        background: #FFFFFF;
+        font-size: 12.5px;
+        font-family: inherit;
+        color: #0F172A;
+      }
 
       .bv-mid-grid {
         display: grid;
@@ -1375,6 +1545,82 @@
     if (modal) modal.classList.remove('open');
   };
 
+  async function bootExternalAnalyticsTags() {
+    if (isStudioEditor) return;
+    try {
+      const res = await fetch('/wp-json/bareun/v1/analytics/public-config?_t=' + Math.floor(Date.now() / 60000), {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        credentials: 'same-origin'
+      });
+      if (!res.ok) return;
+      const cfg = await res.json();
+      if (!cfg || !cfg.ok) return;
+
+      const ga4Id = String(cfg.ga4MeasurementId || '').trim();
+      const naverId = String(cfg.naverAnalyticsId || '').trim();
+
+      if (ga4Id && !window.__BAREUN_GA4_READY__) {
+        window.__BAREUN_GA4_READY__ = ga4Id;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', ga4Id, { allow_google_signals: true });
+        const gs = document.createElement('script');
+        gs.async = true;
+        gs.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ga4Id);
+        document.head.appendChild(gs);
+      }
+
+      if (ga4Id && sessionAttribution.aiHint && !window.__BAREUN_GEO_GA4_SENT__) {
+        window.__BAREUN_GEO_GA4_SENT__ = true;
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'geo_ai_referral', {
+            ai_engine: sessionAttribution.aiHint,
+            landing_slug: detectPageSlug()
+          });
+        }
+      }
+
+      if (naverId && !window.__BAREUN_NAVER_WCS_READY__) {
+        window.__BAREUN_NAVER_WCS_READY__ = naverId;
+        const ns = document.createElement('script');
+        ns.async = true;
+        ns.src = 'https://wcs.naver.net/wcslog.js';
+        ns.onload = function () {
+          try {
+            if (!window.wcs_add) window.wcs_add = {};
+            window.wcs_add['wa'] = naverId;
+            if (window.wcs && typeof window.wcs_do === 'function') window.wcs_do();
+          } catch (e) {}
+        };
+        document.head.appendChild(ns);
+      }
+    } catch (e) {}
+  }
+
+  function bindGlobalConversionClickTelemetry() {
+    if (isStudioEditor || window.__BAREUN_CONV_BOUND__) return;
+    window.__BAREUN_CONV_BOUND__ = true;
+    document.addEventListener('click', function (ev) {
+      const target = ev.target && ev.target.closest ? ev.target.closest('a, button') : null;
+      if (!target) return;
+      const href = String(target.getAttribute('href') || '').toLowerCase();
+      const id = String(target.id || '').toLowerCase();
+      const onclickAttr = String(target.getAttribute('onclick') || '');
+
+      if (href.startsWith('tel:')) {
+        trackBareunConversionEvent('tel_click');
+      } else if (href.includes('pf.kakao.com') || onclickAttr.includes('handleBareunMobileKakaoReserve')) {
+        trackBareunConversionEvent('kakao_click');
+      } else if (href.includes('naver.me') || href.includes('booking.naver.com')) {
+        trackBareunConversionEvent('naver_booking_click');
+      } else if (id === 'btn-open-reserve' || onclickAttr.includes('openConsultModal')) {
+        trackBareunConversionEvent('consult_modal_open');
+      }
+    }, true);
+  }
+
   async function recordPageVisit() {
     if (isStudioEditor) return latestStats;
     const slug = detectPageSlug();
@@ -1396,7 +1642,9 @@
               pageSlug: slug,
               pageTitle: document.title || slug,
               deviceType: detectDeviceType(),
-              referrer: document.referrer || '',
+              referrer: document.referrer || sessionAttribution.referrer || '',
+              landingSearch: window.location.search || sessionAttribution.landingSearch || '',
+              aiHint: sessionAttribution.aiHint || '',
               visitorId: getVisitorId()
             })
       });
@@ -1420,15 +1668,15 @@
     return latestStats;
   }
 
-  async function fetchLatestVisitStats() {
+  async function fetchLatestVisitStats(forceRefresh) {
     const tok = getAuthToken();
     const headers = { 'Accept': 'application/json' };
     if (tok) headers['X-Bareun-Token'] = tok;
 
-    // If a Master token exists in storage, request Master full analytics endpoint first
     if (tok) {
       try {
-        const mRes = await fetch('/wp-json/bareun/v1/visits/master?_t=' + Date.now(), {
+        const q = forceRefresh ? '?forceRefresh=1&_t=' + Date.now() : '?_t=' + Date.now();
+        const mRes = await fetch('/wp-json/bareun/v1/visits/master' + q, {
           method: 'GET',
           headers: headers,
           credentials: 'same-origin'
@@ -1463,6 +1711,11 @@
     } catch (e) {}
     return latestStats;
   }
+
+  window.switchBareunMasterAnalyticsTab = function (tab) {
+    activeMasterTab = tab || 'overview';
+    renderVisitModalContent(latestStats);
+  };
 
   function renderVisitModalContent(stats) {
     const dialog = document.getElementById('bareun-visit-modal-dialog');
@@ -1508,12 +1761,12 @@
           '</div>' +
 
           '<div class="bv-consumer-LockNote">' +
-            '<span>🔒 일별 추이 · 페이지별 순위 · 유입 경로 · 기기 분포 · 접속 IP 상세 통계는 <strong>마스터(원장님) 전용</strong>입니다.</span>' +
+            '<span>🔒 플랫폼별 · GEO AI 검색 · 유입 키워드 · 연령/성별 · 시간대별 · 접속 IP 상세 통계는 <strong>마스터(원장님) 전용</strong>입니다.</span>' +
             '<button type="button" onclick="window.toggleBareunVisitMasterLogin()" style="background:#0F172A;color:#FDE68A;border:none;border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;cursor:pointer;">마스터 인증</button>' +
           '</div>' +
 
           '<div id="bv-master-login-drawer" style="display:none;background:#0F172A;color:#FFFFFF;border-radius:16px;padding:16px 20px;border:1px solid #F59E0B;">' +
-            '<div style="font-size:13px;font-weight:800;color:#FDE68A;margin-bottom:10px;">👑 마스터 관리자 인증 (상세 통계 및 실시간 유입 로그 열람)</div>' +
+            '<div style="font-size:13px;font-weight:800;color:#FDE68A;margin-bottom:10px;">👑 마스터 관리자 인증 (통합 상세 분석 대시보드 잠금해제)</div>' +
             '<form onsubmit="window.submitBareunVisitMasterLogin(event)" style="display:flex;gap:8px;flex-wrap:wrap;">' +
               '<input type="text" id="bv-master-id" placeholder="마스터 아이디" required autocomplete="username" style="flex:1;min-width:140px;padding:9px 12px;border-radius:10px;border:1px solid #334155;background:#1E293B;color:#FFF;font-size:12.5px;" />' +
               '<input type="password" id="bv-master-pw" placeholder="마스터 비밀번호" required autocomplete="current-password" style="flex:1;min-width:140px;padding:9px 12px;border-radius:10px;border:1px solid #334155;background:#1E293B;color:#FFF;font-size:12.5px;" />' +
@@ -1525,118 +1778,429 @@
     }
 
     // -------------------------------------------------------------------------
-    // MASTER VIEW: Full Detailed Analytics + IP Logs + Base Offset Control
+    // MASTER VIEW: 5-Tab Unified Analytics Suite (Stage 1 + Stage 2 + GEO AI)
     // -------------------------------------------------------------------------
-    const daily = Array.isArray(stats.dailySeries) ? stats.dailySeries : [];
-    const maxDailyPv = Math.max(10, ...daily.map(function (d) { return d.pv || 0; }));
-    const barsHtml = daily.map(function (d, idx) {
-      const isToday = idx === daily.length - 1;
-      const pct = Math.max(8, Math.round(((d.pv || 0) / maxDailyPv) * 100));
-      return (
-        '<div class="bv-bar-col' + (isToday ? ' is-today' : '') + '" title="' + escHtml(d.date) + ' : 조회 ' + fmtNum(d.pv) + '회 (순방문자 ' + fmtNum(d.uv) + '명)">' +
-          '<span class="bv-bar-num">' + fmtNum(d.pv) + '</span>' +
-          '<div class="bv-bar-fill" style="height:' + pct + '%;"></div>' +
-          '<span class="bv-bar-date">' + (isToday ? '오늘' : escHtml(d.label)) + '</span>' +
-        '</div>'
-      );
-    }).join('');
+    const geoAi = stats.geoAi || { totalHumanVisits: 0, todayHumanVisits: 0, sharePct: 0, byEngine: [], topLandingPages: [], recentAiVisits: [], botStats: { totalHits: 0, todayHits: 0, byBot: [], topPaths: [], recentHits: [] } };
+    const botStats = geoAi.botStats || { totalHits: 0, todayHits: 0, byBot: [], topPaths: [], recentHits: [] };
+    const conv = stats.conversions || { todayTotal: 0, cumTotal: 0, byAction: [], byPlatform: [], recentEvents: [] };
+    const peakHour = stats.peakHour || { hour: 20, label: '20시', pv: 0 };
+    const extCfg = stats.externalConfigStatus || {};
+    const demo = stats.demographics || { ga4Connected: false, ageGroups: [], genders: [], clinicalCohorts: [] };
+    const kwObj = stats.searchKeywords || { capturedKeywords: [], gscKeywords: [] };
 
-    const pages = Array.isArray(stats.topPages) ? stats.topPages.slice(0, 8) : [];
-    const maxPagePv = Math.max(1, ...pages.map(function (p) { return p.pv || 0; }));
-    const pagesHtml = pages.map(function (p, i) {
-      const w = Math.max(6, Math.round(((p.pv || 0) / maxPagePv) * 100));
-      return (
-        '<div class="bv-page-row">' +
-          '<div class="bv-page-top">' +
-            '<span><strong>' + (i + 1) + '위.</strong> ' + escHtml(p.title) + '</span>' +
-            '<span style="color:#047857;font-variant-numeric:tabular-nums;">총 ' + fmtNum(p.pv) + '회 <small style="color:#64748B;">(오늘 +' + fmtNum(p.todayPv || 0) + ')</small></span>' +
-          '</div>' +
-          '<div class="bv-page-track"><div class="bv-page-bar" style="width:' + w + '%;"></div></div>' +
-        '</div>'
-      );
-    }).join('');
-
-    const refs = Array.isArray(stats.referrers) ? stats.referrers : [];
-    const refsHtml = refs.map(function (r) {
-      return (
-        '<div class="bv-stat-chip">' +
-          '<span>🔗 ' + escHtml(r.referrer) + '</span>' +
-          '<strong style="color:#2D5A43;">' + fmtNum(r.count) + '건</strong>' +
-        '</div>'
-      );
-    }).join('');
-
-    const devs = Array.isArray(stats.devices) ? stats.devices : [];
-    const devLabelMap = { mobile: '📱 모바일(스마트폰)', desktop: '💻 데스크톱(PC)', tablet: '📟 태블릿' };
-    const devsHtml = devs.map(function (d) {
-      return (
-        '<div class="bv-stat-chip">' +
-          '<span>' + escHtml(devLabelMap[d.device] || d.device) + '</span>' +
-          '<strong style="color:#047857;">' + fmtNum(d.count) + '건</strong>' +
-        '</div>'
-      );
-    }).join('');
-
-    const rowsHtml = (Array.isArray(stats.recentLogs) ? stats.recentLogs : []).slice(0, 50).map(function (l) {
-      return (
-        '<tr>' +
-          '<td>#' + escHtml(l.id) + '</td>' +
-          '<td><strong>' + escHtml(l.pageTitle) + '</strong></td>' +
-          '<td style="color:#93C5FD;font-family:monospace;">' + escHtml(l.clientIp) + '</td>' +
-          '<td>' + escHtml(l.referrer) + '</td>' +
-          '<td>' + escHtml(l.deviceType) + '</td>' +
-          '<td style="color:#94A3B8;">' + escHtml(l.createdAt) + '</td>' +
-        '</tr>'
-      );
-    }).join('');
-
-    dialog.innerHTML =
-      '<div class="bv-modal-header">' +
-        '<div>' +
-          '<div class="bv-eyebrow"><span class="bareun-visit-live-dot"></span> 👑 MASTER ANALYTICS · 마스터 전용 상세 통계</div>' +
-          '<h2 class="bv-title">바른한의원 대전본점 마스터 통합 방문 분석 대시보드</h2>' +
-          '<div class="bv-sub">기준 시각: ' + escHtml(stats.serverTime || '실시간 연동중') + ' · 일반 방문자에게는 오늘/누적 숫자만 공개됩니다</div>' +
+    const kpiHtml =
+      '<div class="bv-kpi-grid">' +
+        '<div class="bv-kpi-card highlight">' +
+          '<div class="bv-kpi-label"><span>오늘 방문 조회수</span><span>🔥</span></div>' +
+          '<div class="bv-kpi-value">' + fmtNum(stats.todayPv) + ' <small style="font-size:12px;">회</small></div>' +
+          '<div class="bv-kpi-foot">오늘 순방문자: <strong>' + fmtNum(stats.todayUv) + '명</strong> (어제 ' + fmtNum(stats.yesterdayPv) + '회)</div>' +
         '</div>' +
-        '<div class="bv-header-actions">' +
-          '<button type="button" class="bv-btn" onclick="window.refreshBareunVisitModal()">↻ 실시간 새로고침</button>' +
-          '<button type="button" class="bv-btn gold" onclick="window.logoutBareunVisitMaster()">🔓 마스터 로그아웃</button>' +
-          '<button type="button" class="bv-btn close" onclick="window.closeBareunVisitModal()">✕ 닫기</button>' +
+        '<div class="bv-kpi-card geo-highlight">' +
+          '<div class="bv-kpi-label"><span>🤖 GEO AI 검색 유입</span><span>✨</span></div>' +
+          '<div class="bv-kpi-value">' + fmtNum(geoAi.totalHumanVisits) + ' <small style="font-size:12px;">건</small></div>' +
+          '<div class="bv-kpi-foot">오늘 +' + fmtNum(geoAi.todayHumanVisits) + '건 · AI봇 스캔 ' + fmtNum(botStats.totalHits) + '회</div>' +
         '</div>' +
-      '</div>' +
-      '<div class="bv-modal-body">' +
-        '<div class="bv-kpi-grid">' +
-          '<div class="bv-kpi-card highlight">' +
-            '<div class="bv-kpi-label"><span>오늘 방문 조회수</span><span>🔥</span></div>' +
-            '<div class="bv-kpi-value">' + fmtNum(stats.todayPv) + ' <small style="font-size:13px;">회</small></div>' +
-            '<div class="bv-kpi-foot">오늘 순방문자(UV): <strong>' + fmtNum(stats.todayUv) + '명</strong></div>' +
+        '<div class="bv-kpi-card">' +
+          '<div class="bv-kpi-label"><span>예약·길안내 클릭 전환</span><span>🎯</span></div>' +
+          '<div class="bv-kpi-value" style="color:#047857;">' + fmtNum(conv.cumTotal) + ' <small style="font-size:12px;">건</small></div>' +
+          '<div class="bv-kpi-foot">오늘 전환 클릭: <strong>+' + fmtNum(conv.todayTotal) + '건</strong></div>' +
+        '</div>' +
+        '<div class="bv-kpi-card">' +
+          '<div class="bv-kpi-label"><span>최다 방문 골든타임</span><span>🕒</span></div>' +
+          '<div class="bv-kpi-value" style="color:#B45309;">' + escHtml(peakHour.label || '20시') + '</div>' +
+          '<div class="bv-kpi-foot">해당 시간대 누적 <strong>' + fmtNum(peakHour.pv) + '회</strong> 집중</div>' +
+        '</div>' +
+        '<div class="bv-kpi-card">' +
+          '<div class="bv-kpi-label"><span>최근 7일 / 30일</span><span>📈</span></div>' +
+          '<div class="bv-kpi-value">' + fmtNum(stats.weekPv) + ' <small style="font-size:12px;color:#64748B;">회</small></div>' +
+          '<div class="bv-kpi-foot">최근 30일 합계: <strong>' + fmtNum(stats.monthPv) + '회</strong></div>' +
+        '</div>' +
+        '<div class="bv-kpi-card">' +
+          '<div class="bv-kpi-label"><span>누적 총 조회수</span><span class="bareun-visit-live-dot"></span></div>' +
+          '<div class="bv-kpi-value" style="color:#2D5A43;">' + fmtNum(stats.totalPv) + ' <small style="font-size:12px;">회</small></div>' +
+          '<div class="bv-kpi-foot">실시간 활성: <strong>' + fmtNum(stats.activeNow || 1) + '명</strong> · 누적UV ' + fmtNum(stats.totalUv) + '</div>' +
+        '</div>' +
+      '</div>';
+
+    const tabsNavHtml =
+      '<div class="bv-master-tabs">' +
+        '<button type="button" class="bv-mtab-btn' + (activeMasterTab === 'overview' ? ' active' : '') + '" onclick="window.switchBareunMasterAnalyticsTab(\'overview\')">📊 종합 · 시간대 · 플랫폼</button>' +
+        '<button type="button" class="bv-mtab-btn' + (activeMasterTab === 'geo_ai' ? ' active' : '') + '" onclick="window.switchBareunMasterAnalyticsTab(\'geo_ai\')">🤖 GEO AI 검색 · 봇 분석</button>' +
+        '<button type="button" class="bv-mtab-btn' + (activeMasterTab === 'keywords_demo' ? ' active' : '') + '" onclick="window.switchBareunMasterAnalyticsTab(\'keywords_demo\')">🔍 키워드 · 연령 · 성별</button>' +
+        '<button type="button" class="bv-mtab-btn' + (activeMasterTab === 'conversions_ip' ? ' active' : '') + '" onclick="window.switchBareunMasterAnalyticsTab(\'conversions_ip\')">🎯 예약 전환 · 실시간 IP</button>' +
+        '<button type="button" class="bv-mtab-btn' + (activeMasterTab === 'settings' ? ' active' : '') + '" onclick="window.switchBareunMasterAnalyticsTab(\'settings\')">⚙️ GA4 · 서치콘솔 · 네이버 연동</button>' +
+      '</div>';
+
+    let tabPaneHtml = '';
+
+    // =========================================================================
+    // TAB 1: OVERVIEW + 24H HOURLY + WEEKDAY + 14 PLATFORMS + DAILY + TOP PAGES
+    // =========================================================================
+    if (activeMasterTab === 'overview') {
+      const hourly = Array.isArray(stats.hourlySeries) ? stats.hourlySeries : [];
+      const maxHourPv = Math.max(5, ...hourly.map(function (h) { return h.pv || 0; }));
+      const hourBarsHtml = hourly.map(function (h) {
+        const isPeak = h.hour === peakHour.hour && (h.pv || 0) > 0;
+        const pct = Math.max(5, Math.round(((h.pv || 0) / maxHourPv) * 100));
+        return (
+          '<div class="bv-hbar-col' + (isPeak ? ' is-peak' : '') + '" title="' + escHtml(h.label) + ' : 누적 ' + fmtNum(h.pv) + '회 (오늘 +' + fmtNum(h.todayPv || 0) + ')">' +
+            '<span style="font-size:9px;font-weight:800;color:' + (isPeak ? '#D97706' : '#475569') + ';">' + fmtNum(h.pv) + '</span>' +
+            '<div class="bv-hbar-fill" style="height:' + pct + '%;"></div>' +
+            '<span class="bv-hbar-lbl">' + String(h.hour).padStart(2, '0') + '</span>' +
+          '</div>'
+        );
+      }).join('');
+
+      const pb = stats.periodBuckets || { morning: 0, afternoon: 0, evening: 0, night: 0 };
+      const pbTot = Math.max(1, (pb.morning || 0) + (pb.afternoon || 0) + (pb.evening || 0) + (pb.night || 0));
+
+      const plats = Array.isArray(stats.platforms) ? stats.platforms : [];
+      const maxPlatCnt = Math.max(1, ...plats.map(function (p) { return p.count || 0; }));
+      const platsHtml = plats.map(function (p, i) {
+        const w = Math.max(5, Math.round(((p.count || 0) / maxPlatCnt) * 100));
+        const isGeo = String(p.platform || '').includes('GEO AI');
+        return (
+          '<div class="bv-page-row">' +
+            '<div class="bv-page-top">' +
+              '<span><strong>' + (i + 1) + '.</strong> ' + escHtml(p.platform) + '</span>' +
+              '<span style="color:' + (isGeo ? '#1D4ED8' : '#047857') + ';font-variant-numeric:tabular-nums;">' + fmtNum(p.count) + '건 (' + escHtml(p.pct || 0) + '%) <small style="color:#64748B;">오늘 +' + fmtNum(p.todayCount || 0) + '</small></span>' +
+            '</div>' +
+            '<div class="bv-page-track"><div class="bv-page-bar" style="width:' + w + '%;' + (isGeo ? 'background:linear-gradient(90deg,#2563EB,#60A5FA);' : '') + '"></div></div>' +
+          '</div>'
+        );
+      }).join('') || '<div style="font-size:12.5px;color:#64748B;">집계된 플랫폼 유입 데이터가 없습니다.</div>';
+
+      const wdays = Array.isArray(stats.weekdaySeries) ? stats.weekdaySeries : [];
+      const wdaysHtml = wdays.map(function (w) {
+        return '<div class="bv-stat-chip" style="flex:1 1 calc(25% - 8px);min-width:105px;"><span>📅 ' + escHtml(w.label) + '</span><strong style="color:#2D5A43;">' + fmtNum(w.pv) + '회</strong></div>';
+      }).join('');
+
+      const devs = Array.isArray(stats.devices) ? stats.devices : [];
+      const devLabelMap = { mobile: '📱 모바일(스마트폰)', desktop: '💻 데스크톱(PC)', tablet: '📟 태블릿' };
+      const devsHtml = devs.map(function (d) {
+        return '<div class="bv-stat-chip"><span>' + escHtml(devLabelMap[d.device] || d.device) + '</span><strong style="color:#047857;">' + fmtNum(d.count) + '건 (' + escHtml(d.pct || 0) + '%)</strong></div>';
+      }).join('');
+
+      const daily = Array.isArray(stats.dailySeries) ? stats.dailySeries : [];
+      const maxDailyPv = Math.max(10, ...daily.map(function (d) { return d.pv || 0; }));
+      const barsHtml = daily.map(function (d, idx) {
+        const isToday = idx === daily.length - 1;
+        const pct = Math.max(8, Math.round(((d.pv || 0) / maxDailyPv) * 100));
+        return (
+          '<div class="bv-bar-col' + (isToday ? ' is-today' : '') + '" title="' + escHtml(d.date) + ' : 조회 ' + fmtNum(d.pv) + '회 (순방문자 ' + fmtNum(d.uv) + '명)">' +
+            '<span class="bv-bar-num">' + fmtNum(d.pv) + '</span>' +
+            '<div class="bv-bar-fill" style="height:' + pct + '%;"></div>' +
+            '<span class="bv-bar-date">' + (isToday ? '오늘' : escHtml(d.label)) + '</span>' +
+          '</div>'
+        );
+      }).join('');
+
+      const pages = Array.isArray(stats.topPages) ? stats.topPages.slice(0, 10) : [];
+      const maxPagePv = Math.max(1, ...pages.map(function (p) { return p.pv || 0; }));
+      const pagesHtml = pages.map(function (p, i) {
+        const w = Math.max(6, Math.round(((p.pv || 0) / maxPagePv) * 100));
+        return (
+          '<div class="bv-page-row">' +
+            '<div class="bv-page-top">' +
+              '<span><strong>' + (i + 1) + '위.</strong> ' + escHtml(p.title) + '</span>' +
+              '<span style="color:#047857;font-variant-numeric:tabular-nums;">총 ' + fmtNum(p.pv) + '회 <small style="color:#64748B;">(오늘 +' + fmtNum(p.todayPv || 0) + ')</small></span>' +
+            '</div>' +
+            '<div class="bv-page-track"><div class="bv-page-bar" style="width:' + w + '%;"></div></div>' +
+          '</div>'
+        );
+      }).join('');
+
+      tabPaneHtml =
+        '<div class="bv-panel">' +
+          '<div class="bv-panel-head">' +
+            '<span class="bv-panel-title">🕒 24시간 시간대별 유입 분포 (00시 ~ 23시 KST · 피크타임 자동 강조)</span>' +
+            '<span class="bv-panel-badge" style="background:#FEF3C7;color:#92400E;">골든타임: ' + escHtml(peakHour.label) + ' (' + fmtNum(peakHour.pv) + '회)</span>' +
           '</div>' +
-          '<div class="bv-kpi-card">' +
-            '<div class="bv-kpi-label"><span>어제 방문 조회수</span><span>📅</span></div>' +
-            '<div class="bv-kpi-value">' + fmtNum(stats.yesterdayPv) + ' <small style="font-size:13px;color:#64748B;">회</small></div>' +
-            '<div class="bv-kpi-foot">어제 순방문자: <strong>' + fmtNum(stats.yesterdayUv) + '명</strong></div>' +
+          '<div style="overflow-x:auto;"><div class="bv-hour-bars">' + hourBarsHtml + '</div></div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:12px;font-weight:700;color:#334155;">' +
+            '<span style="background:#F8FAFC;border:1px solid #E2E8F0;padding:5px 11px;border-radius:999px;">🌅 오전(06~12시): <strong>' + Math.round(((pb.morning || 0) / pbTot) * 100) + '%</strong> (' + fmtNum(pb.morning) + '회)</span>' +
+            '<span style="background:#F8FAFC;border:1px solid #E2E8F0;padding:5px 11px;border-radius:999px;">☀️ 오후(12~18시): <strong>' + Math.round(((pb.afternoon || 0) / pbTot) * 100) + '%</strong> (' + fmtNum(pb.afternoon) + '회)</span>' +
+            '<span style="background:#FFFBEB;border:1px solid #FDE68A;padding:5px 11px;border-radius:999px;color:#92400E;">🌙 저녁·야간(18~24시): <strong>' + Math.round(((pb.evening || 0) / pbTot) * 100) + '%</strong> (' + fmtNum(pb.evening) + '회)</span>' +
+            '<span style="background:#F8FAFC;border:1px solid #E2E8F0;padding:5px 11px;border-radius:999px;">🌌 심야·새벽(00~06시): <strong>' + Math.round(((pb.night || 0) / pbTot) * 100) + '%</strong> (' + fmtNum(pb.night) + '회)</span>' +
           '</div>' +
-          '<div class="bv-kpi-card">' +
-            '<div class="bv-kpi-label"><span>최근 7일 조회수</span><span>📈</span></div>' +
-            '<div class="bv-kpi-value">' + fmtNum(stats.weekPv) + ' <small style="font-size:13px;color:#64748B;">회</small></div>' +
-            '<div class="bv-kpi-foot">최근 30일 합계: <strong>' + fmtNum(stats.monthPv) + '회</strong></div>' +
+        '</div>' +
+
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🧭 세부 플랫폼별 유입 순위 (14대 채널 + GEO AI 정밀 분류)</span><span class="bv-panel-badge">실시간 1차 집계</span></div>' +
+            '<div class="bv-page-list" style="max-height:270px;">' + platsHtml + '</div>' +
           '</div>' +
-          '<div class="bv-kpi-card">' +
-            '<div class="bv-kpi-label"><span>누적 총 조회수</span><span>🏛️</span></div>' +
-            '<div class="bv-kpi-value" style="color:#2D5A43;">' + fmtNum(stats.totalPv) + ' <small style="font-size:13px;">회</small></div>' +
-            '<div class="bv-kpi-foot">누적 순방문자: <strong>' + fmtNum(stats.totalUv) + '명</strong></div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🏆 클리닉 · 3D · 건강노트 인기 조회 순위 TOP 10</span><span class="bv-panel-badge">마스터 전용</span></div>' +
+            '<div class="bv-page-list" style="max-height:270px;">' + pagesHtml + '</div>' +
           '</div>' +
-          '<div class="bv-kpi-card">' +
-            '<div class="bv-kpi-label"><span>현재 실시간 접속자</span><span class="bareun-visit-live-dot"></span></div>' +
-            '<div class="bv-kpi-value" style="color:#059669;">' + fmtNum(stats.activeNow || 1) + ' <small style="font-size:13px;">명</small></div>' +
-            '<div class="bv-kpi-foot">최근 15분 내 활성 세션</div>' +
+        '</div>' +
+
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">📊 최근 14일 일별 방문 조회수 추이</span><span class="bv-panel-badge">일별 추세</span></div>' +
+            '<div class="bv-chart-bars">' + barsHtml + '</div>' +
+          '</div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">📅 요일별 방문 분포 &amp; 📱 기기 비중</span><span class="bv-panel-badge">요일 · 디바이스</span></div>' +
+            '<div class="bv-chip-list" style="margin-bottom:12px;">' + wdaysHtml + '</div>' +
+            '<div class="bv-chip-list">' + devsHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    // =========================================================================
+    // TAB 2: DEDICATED GEO AI SEARCH INFLOW & AI CITATION BOT MONITOR
+    // =========================================================================
+    else if (activeMasterTab === 'geo_ai') {
+      const engines = Array.isArray(geoAi.byEngine) ? geoAi.byEngine : [];
+      const enginesHtml = engines.length
+        ? engines.map(function (e, idx) {
+            return (
+              '<div class="bv-stat-chip" style="background:#EFF6FF;border-color:#BFDBFE;">' +
+                '<span><strong>' + (idx + 1) + '.</strong> 🤖 ' + escHtml(e.engine) + '</span>' +
+                '<strong style="color:#1D4ED8;">총 ' + fmtNum(e.count) + '건 <small style="color:#475569;">(오늘 +' + fmtNum(e.todayCount || 0) + ')</small></strong>' +
+              '</div>'
+            );
+          }).join('')
+        : '<div style="padding:14px;background:#F8FAFC;border-radius:12px;border:1px dashed #CBD5E1;font-size:12.5px;color:#475569;">아직 기록된 GEO AI 직접 클릭 유입이 없습니다. ChatGPT · Perplexity · Gemini · Claude · Copilot · 네이버 Cue · 뤼튼 답변 내 바른한의원 출처 링크를 환자가 클릭하면 즉시 엔진별로 자동 분류됩니다!</div>';
+
+      const aiPages = Array.isArray(geoAi.topLandingPages) ? geoAi.topLandingPages : [];
+      const aiPagesHtml = aiPages.length
+        ? aiPages.map(function (p, i) {
+            return (
+              '<div class="bv-stat-chip">' +
+                '<span><strong>' + (i + 1) + '위.</strong> ' + escHtml(p.title) + '</span>' +
+                '<strong style="color:#1D4ED8;">' + fmtNum(p.count) + '건</strong>' +
+              '</div>'
+            );
+          }).join('')
+        : '<div style="font-size:12.5px;color:#64748B;">AI 답변을 통해 착지한 페이지 이력이 쌓이면 이곳에 순위가 표시됩니다.</div>';
+
+      const aiRecentHtml = (Array.isArray(geoAi.recentAiVisits) && geoAi.recentAiVisits.length)
+        ? geoAi.recentAiVisits.map(function (r) {
+            return (
+              '<tr>' +
+                '<td><strong style="color:#1D4ED8;">🤖 ' + escHtml(r.aiEngine) + '</strong></td>' +
+                '<td>' + escHtml(r.pageTitle) + '</td>' +
+                '<td>' + escHtml(r.searchKeyword || '-') + '</td>' +
+                '<td style="font-family:monospace;color:#475569;">' + escHtml(r.clientIp) + '</td>' +
+                '<td>' + escHtml(r.deviceType) + '</td>' +
+                '<td style="color:#64748B;">' + escHtml(r.createdAt) + '</td>' +
+              '</tr>'
+            );
+          }).join('')
+        : '<tr><td colspan="6" style="text-align:center;color:#64748B;padding:16px;">GEO AI 검색 클릭 유입 발생 시 실시간으로 기록됩니다.</td></tr>';
+
+      const botByHtml = (Array.isArray(botStats.byBot) && botStats.byBot.length)
+        ? botStats.byBot.map(function (b) {
+            return (
+              '<div class="bv-stat-chip" style="background:#0F172A;border-color:#334155;color:#F8FAFC;">' +
+                '<span>🛰️ ' + escHtml(b.bot) + '</span>' +
+                '<strong style="color:#38BDF8;">누적 ' + fmtNum(b.total) + '회 <small style="color:#94A3B8;">(오늘 +' + fmtNum(b.todayCount || 0) + ')</small></strong>' +
+              '</div>'
+            );
+          }).join('')
+        : '<div style="font-size:12.5px;color:#64748B;">OAI-SearchBot · PerplexityBot · ClaudeBot · Google-Extended 등 AI 검색봇이 홈페이지를 스캔하면 즉시 카운트됩니다 (환자 조회수에는 섞이지 않고 청정 분리 집계).</div>';
+
+      const botPathsHtml = (Array.isArray(botStats.topPaths) && botStats.topPaths.length)
+        ? botStats.topPaths.map(function (bp) {
+            return '<div class="bv-stat-chip"><span>📄 <code>' + escHtml(bp.path) + '</code></span><strong style="color:#0369A1;">' + fmtNum(bp.count) + '회 수집</strong></div>';
+          }).join('')
+        : '<div style="font-size:12.5px;color:#64748B;">AI 크롤러 수집 경로 대기중 (<code>/llms.txt</code>, <code>/health-note-*/</code> 등)</div>';
+
+      tabPaneHtml =
+        '<div style="background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 100%);color:#FFFFFF;border-radius:18px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">' +
+          '<div>' +
+            '<div style="font-size:11px;font-weight:800;color:#93C5FD;letter-spacing:0.05em;">GEO (GENERATIVE ENGINE OPTIMIZATION) · AI 검색 유입 &amp; 인용 관제</div>' +
+            '<div style="font-size:16px;font-weight:900;margin-top:3px;">ChatGPT · Perplexity · Gemini · Claude · Copilot · 네이버 Cue 유입 정밀 추적</div>' +
+            '<div style="font-size:12.5px;color:#DBEAFE;margin-top:4px;">환자가 AI 답변 출처를 눌러 방문한 <strong>실제 유입(' + fmtNum(geoAi.totalHumanVisits) + '건, 전체의 ' + escHtml(geoAi.sharePct || 0) + '%)</strong>과 AI 봇이 학습·인용을 위해 읽어간 <strong>크롤링 스캔(' + fmtNum(botStats.totalHits) + '회, 조회수 미포함)</strong>을 분리 집계합니다.</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🤖 AI 검색엔진별 실제 환자 유입 현황</span><span class="bv-panel-badge" style="background:#DBEAFE;color:#1E40AF;">Human Clicks</span></div>' +
+            '<div class="bv-chip-list">' + enginesHtml + '</div>' +
+          '</div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🎯 GEO AI 방문자가 가장 많이 찾은 페이지</span><span class="bv-panel-badge">착지 페이지 TOP</span></div>' +
+            '<div class="bv-chip-list">' + aiPagesHtml + '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bv-panel">' +
+          '<div class="bv-panel-head"><span class="bv-panel-title">📋 실시간 GEO AI 환자 유입 상세 로그 (최근 25건)</span><span class="bv-panel-badge">출처 AI · 착지 페이지</span></div>' +
+          '<div style="overflow-x:auto;max-height:220px;">' +
+            '<table class="bv-data-table">' +
+              '<thead><tr><th>유입 AI 엔진</th><th>착지 페이지</th><th>포착 질문/키워드</th><th>접속 IP</th><th>기기</th><th>유입 시각</th></tr></thead>' +
+              '<tbody>' + aiRecentHtml + '</tbody>' +
+            '</table>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🛰️ AI 검색 크롤러 봇 방문 카운터 (조회수 미포함 청정 분리)</span><span class="bv-panel-badge" style="background:#E0F2FE;color:#0369A1;">오늘 +' + fmtNum(botStats.todayHits) + '회 / 누적 ' + fmtNum(botStats.totalHits) + '회</span></div>' +
+            '<div class="bv-chip-list">' + botByHtml + '</div>' +
+          '</div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">📚 AI 봇이 가장 많이 인용·수집해 간 문서 경로</span><span class="bv-panel-badge">/llms.txt · 건강노트</span></div>' +
+            '<div class="bv-chip-list">' + botPathsHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    // =========================================================================
+    // TAB 3: SEARCH KEYWORDS + AGE & GENDER DEMOGRAPHICS + CLINICAL COHORTS
+    // =========================================================================
+    else if (activeMasterTab === 'keywords_demo') {
+      const capKw = Array.isArray(kwObj.capturedKeywords) ? kwObj.capturedKeywords : [];
+      const gscKw = Array.isArray(kwObj.gscKeywords) ? kwObj.gscKeywords : [];
+
+      const capKwHtml = capKw.length
+        ? capKw.map(function (k, i) {
+            return '<tr><td><strong>' + (i + 1) + '</strong></td><td><strong>' + escHtml(k.keyword) + '</strong></td><td>' + escHtml(k.platform) + '</td><td style="font-weight:800;color:#047857;">' + fmtNum(k.count) + '회</td></tr>';
+          }).join('')
+        : '<tr><td colspan="4" style="text-align:center;color:#64748B;padding:16px;">네이버 통합검색 쿼리 · 광고 파라미터(n_keyword, utm_term, query) 포함 유입 시 자동 누적됩니다.</td></tr>';
+
+      const gscKwHtml = gscKw.length
+        ? gscKw.map(function (g, i) {
+            return '<tr><td>' + (i + 1) + '</td><td><strong>' + escHtml(g.keyword) + '</strong></td><td style="font-weight:800;color:#1D4ED8;">' + fmtNum(g.clicks) + '회</td><td>' + fmtNum(g.impressions) + '회</td><td>' + escHtml(g.ctr) + '%</td><td>' + escHtml(g.position) + '위</td></tr>';
+          }).join('')
+        : '<tr><td colspan="6" style="text-align:center;color:#64748B;padding:16px;">' +
+            (extCfg.gscApiConnected
+              ? '최근 28일간 집계된 구글 검색어 데이터가 아직 없습니다.'
+              : '구글 검색어 암호화 정책상 공식 키워드 전체 열람은 <strong>Google Search Console API 연동</strong>이 필요합니다. <button type="button" onclick="window.switchBareunMasterAnalyticsTab(\'settings\')" style="margin-left:6px;padding:4px 10px;border-radius:999px;border:none;background:#171614;color:#FEF08A;font-size:11.5px;font-weight:800;cursor:pointer;">⚙️ 3분 연동하기 →</button>') +
+          '</td></tr>';
+
+      let ga4DemoHtml = '';
+      if (demo.ga4Connected && (demo.ageGroups.length || demo.genders.length)) {
+        const maxAgeU = Math.max(1, ...demo.ageGroups.map(function (a) { return a.users || 0; }));
+        const ageRows = demo.ageGroups.map(function (a) {
+          const w = Math.max(5, Math.round(((a.users || 0) / maxAgeU) * 100));
+          return (
+            '<div class="bv-page-row">' +
+              '<div class="bv-page-top"><span>🎂 ' + escHtml(a.label) + '</span><span style="color:#1D4ED8;">' + fmtNum(a.users) + '명 (세션 ' + fmtNum(a.sessions) + ')</span></div>' +
+              '<div class="bv-page-track"><div class="bv-page-bar" style="width:' + w + '%;background:linear-gradient(90deg,#1E40AF,#3B82F6);"></div></div>' +
+            '</div>'
+          );
+        }).join('');
+        const genChips = demo.genders.map(function (g) {
+          return '<div class="bv-stat-chip"><span>' + escHtml(g.label) + '</span><strong style="color:#1E40AF;">' + fmtNum(g.users) + '명 (세션 ' + fmtNum(g.sessions) + ')</strong></div>';
+        }).join('');
+        ga4DemoHtml =
+          '<div style="display:flex;flex-direction:column;gap:10px;">' +
+            '<div class="bv-chip-list">' + genChips + '</div>' +
+            '<div class="bv-page-list">' + ageRows + '</div>' +
+          '</div>';
+      } else {
+        ga4DemoHtml =
+          '<div style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;padding:16px;font-size:12.5px;color:#334155;line-height:1.65;">' +
+            '<div style="font-weight:900;color:#0F172A;margin-bottom:4px;">📡 Google GA4 · 네이버 애널리틱스 공식 연령·성별 연동 안내</div>' +
+            '개인정보보호법상 일반 웹사이트가 로그인 없이 방문자의 실제 나이·성별을 임의로 추적하는 것은 불가하며, <strong>구글 로그인 신호(GA4 Google Signals)</strong> 및 <strong>네이버 애널리틱스(WCS)</strong> 공식 통계 데이터를 연동하여 정직하게 표출합니다.<br>' +
+            '<button type="button" onclick="window.switchBareunMasterAnalyticsTab(\'settings\')" style="margin-top:10px;padding:8px 14px;border-radius:999px;border:none;background:#2D5A43;color:#FFFFFF;font-size:12px;font-weight:800;cursor:pointer;">⚙️ GA4 · 네이버 애널리틱스 ID 입력하러 가기 →</button>' +
+          '</div>';
+      }
+
+      const cohorts = Array.isArray(demo.clinicalCohorts) ? demo.clinicalCohorts : [];
+      const maxCohortCnt = Math.max(1, ...cohorts.map(function (c) { return c.count || 0; }));
+      const cohortsHtml = cohorts.map(function (c) {
+        const w = Math.max(6, Math.round(((c.count || 0) / maxCohortCnt) * 100));
+        return (
+          '<div class="bv-page-row">' +
+            '<div class="bv-page-top"><span>' + escHtml(c.cohort) + '</span><span style="color:#047857;">' + fmtNum(c.count) + '회 (' + escHtml(c.pct) + '%)</span></div>' +
+            '<div class="bv-page-track"><div class="bv-page-bar" style="width:' + w + '%;"></div></div>' +
+          '</div>'
+        );
+      }).join('');
+
+      tabPaneHtml =
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🔍 자체 포착 유입 검색 키워드 (네이버·캠페인 URL 추출)</span><span class="bv-panel-badge">1차 실시간 포착</span></div>' +
+            '<div style="overflow-x:auto;max-height:230px;">' +
+              '<table class="bv-data-table">' +
+                '<thead><tr><th>순위</th><th>포착 검색 키워드</th><th>유입 플랫폼</th><th>유입수</th></tr></thead>' +
+                '<tbody>' + capKwHtml + '</tbody>' +
+              '</table>' +
+            '</div>' +
+          '</div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🌐 Google Search Console 공식 유입 키워드 (최근 28일)</span><span class="bv-panel-badge" style="background:#DBEAFE;color:#1E40AF;">' + (extCfg.gscApiConnected ? '연동 완료' : '연동 대기') + '</span></div>' +
+            '<div style="overflow-x:auto;max-height:230px;">' +
+              '<table class="bv-data-table">' +
+                '<thead><tr><th>#</th><th>구글 검색어</th><th>클릭</th><th>노출</th><th>클릭률</th><th>평균순위</th></tr></thead>' +
+                '<tbody>' + gscKwHtml + '</tbody>' +
+              '</table>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">👥 방문자 연령대(20대~60대+) · 성별 분포 (GA4 공식 데이터)</span><span class="bv-panel-badge" style="background:' + (demo.ga4Connected ? '#DCFCE7;color:#166534;' : '#F1F5F9;color:#475569;') + '">' + (demo.ga4Connected ? '실시간 GA4 연동중' : 'GA4 연동 대기') + '</span></div>' +
+            ga4DemoHtml +
+          '</div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🏥 관심 진료군 기반 추정 연령·성별 타깃 코호트 (100% 상시 집계)</span><span class="bv-panel-badge">행동 데이터 분석</span></div>' +
+            '<div class="bv-page-list" style="max-height:260px;">' + cohortsHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    // =========================================================================
+    // TAB 4: CONVERSION CLICKS + REAL-TIME IP LOGS + BASE OFFSET
+    // =========================================================================
+    else if (activeMasterTab === 'conversions_ip') {
+      const actChipsHtml = (Array.isArray(conv.byAction) ? conv.byAction : []).map(function (a) {
+        return (
+          '<div class="bv-stat-chip">' +
+            '<span>' + escHtml(a.label) + '</span>' +
+            '<strong style="color:#047857;">' + fmtNum(a.count) + '건</strong>' +
+          '</div>'
+        );
+      }).join('');
+
+      const convPlatHtml = (Array.isArray(conv.byPlatform) && conv.byPlatform.length)
+        ? conv.byPlatform.map(function (p) {
+            return '<div class="bv-stat-chip"><span>🧭 ' + escHtml(p.platform) + '</span><strong style="color:#1D4ED8;">예약클릭 ' + fmtNum(p.count) + '건</strong></div>';
+          }).join('')
+        : '<div style="font-size:12.5px;color:#64748B;">전화상담 · 카카오톡 예약 · 네이버 예약 · 4대 지도 길안내 클릭이 발생하면 어느 플랫폼 유입 환자인지 즉시 집계됩니다.</div>';
+
+      const rowsHtml = (Array.isArray(stats.recentLogs) ? stats.recentLogs : []).slice(0, 80).map(function (l) {
+        const platBadge = l.aiEngine
+          ? '<strong style="color:#60A5FA;">🤖 ' + escHtml(l.aiEngine) + '</strong>'
+          : escHtml(l.platform || l.referrer);
+        return (
+          '<tr>' +
+            '<td>#' + escHtml(l.id) + '</td>' +
+            '<td><strong>' + escHtml(l.pageTitle) + '</strong></td>' +
+            '<td style="color:#93C5FD;font-family:monospace;">' + escHtml(l.clientIp) + '</td>' +
+            '<td>' + platBadge + (l.searchKeyword ? ' <span style="color:#FDE68A;">[' + escHtml(l.searchKeyword) + ']</span>' : '') + '</td>' +
+            '<td>' + escHtml(l.deviceType) + '</td>' +
+            '<td style="color:#94A3B8;">' + escHtml(l.createdAt) + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      tabPaneHtml =
+        '<div class="bv-mid-grid">' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🎯 예약 · 길안내 액션별 실제 클릭 전환수</span><span class="bv-panel-badge">오늘 +' + fmtNum(conv.todayTotal) + '건 / 누적 ' + fmtNum(conv.cumTotal) + '건</span></div>' +
+            '<div class="bv-chip-list">' + actChipsHtml + '</div>' +
+          '</div>' +
+          '<div class="bv-panel">' +
+            '<div class="bv-panel-head"><span class="bv-panel-title">🏆 예약 클릭을 가장 많이 일으킨 유입 플랫폼</span><span class="bv-panel-badge">전환 기여도</span></div>' +
+            '<div class="bv-chip-list">' + convPlatHtml + '</div>' +
           '</div>' +
         '</div>' +
 
         '<div class="bv-master-box">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">' +
             '<div>' +
-              '<div style="font-size:11px;font-weight:800;color:#FCD34D;">👑 MASTER REAL-TIME VISITOR LOGS &amp; BASE SETTING</div>' +
-              '<div style="font-size:14px;font-weight:800;margin-top:2px;">실시간 방문자 접속 IP · 유입경로 · 열람 페이지 상세 로그 (최근 50건)</div>' +
+              '<div style="font-size:11px;font-weight:800;color:#FCD34D;">👑 MASTER REAL-TIME VISITOR IP LOGS &amp; BASE OFFSET</div>' +
+              '<div style="font-size:14px;font-weight:800;margin-top:2px;">실시간 방문자 접속 IP · 세부 플랫폼 · GEO AI · 포착 검색어 상세 로그 (최근 80건)</div>' +
             '</div>' +
             '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
               '<span style="font-size:12px;color:#CBD5E1;">기본 누적 보정치:</span>' +
@@ -1644,44 +2208,156 @@
               '<button type="button" class="bv-btn gold" onclick="window.saveBareunVisitBaseOffset()">보정치 저장</button>' +
             '</div>' +
           '</div>' +
-          '<div class="bv-log-table-wrap">' +
+          '<div class="bv-log-table-wrap" style="max-height:300px;">' +
             '<table class="bv-log-table">' +
-              '<thead><tr><th>번호</th><th>열람 페이지</th><th>접속 IP</th><th>유입 경로</th><th>기기</th><th>접속 시각</th></tr></thead>' +
+              '<thead><tr><th>번호</th><th>열람 페이지</th><th>접속 IP</th><th>유입 플랫폼 / GEO AI / 키워드</th><th>기기</th><th>접속 시각</th></tr></thead>' +
               '<tbody>' + rowsHtml + '</tbody>' +
             '</table>' +
           '</div>' +
-        '</div>' +
+        '</div>';
+    }
 
-        '<div class="bv-mid-grid">' +
-          '<div class="bv-panel">' +
-            '<div class="bv-panel-head"><span class="bv-panel-title">📊 최근 14일 일별 방문 조회수 추이</span><span class="bv-panel-badge">마스터 전용</span></div>' +
-            '<div class="bv-chart-bars">' + barsHtml + '</div>' +
-          '</div>' +
-          '<div class="bv-panel">' +
-            '<div class="bv-panel-head"><span class="bv-panel-title">🏆 페이지 · 클리닉별 인기 조회 순위 TOP 8</span><span class="bv-panel-badge">마스터 전용</span></div>' +
-            '<div class="bv-page-list">' + pagesHtml + '</div>' +
-          '</div>' +
-        '</div>' +
+    // =========================================================================
+    // TAB 5: STAGE 2 EXTERNAL ANALYTICS (GA4 / GSC / NAVER WCS) SETTINGS
+    // =========================================================================
+    else if (activeMasterTab === 'settings') {
+      const badge = function (ok, txtOk, txtWait) {
+        return ok
+          ? '<span style="background:#DCFCE7;color:#166534;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;">✅ ' + txtOk + '</span>'
+          : '<span style="background:#F1F5F9;color:#475569;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;">⏳ ' + txtWait + '</span>';
+      };
 
-        '<div class="bv-bot-grid">' +
-          '<div class="bv-panel">' +
-            '<div class="bv-panel-head"><span class="bv-panel-title">🧭 방문자 유입 경로 (Referrer)</span><span class="bv-panel-badge">마스터 전용</span></div>' +
-            '<div class="bv-chip-list">' + refsHtml + '</div>' +
+      tabPaneHtml =
+        '<div class="bv-panel">' +
+          '<div class="bv-panel-head">' +
+            '<span class="bv-panel-title">⚙️ 2단계 공식 외부 통계 원클릭 연동 센터 (Google GA4 · Search Console · 네이버 애널리틱스)</span>' +
+            '<button type="button" onclick="window.refreshBareunVisitModal(true)" style="padding:6px 12px;border-radius:999px;border:1px solid #2D5A43;background:#E8F2EC;color:#2D5A43;font-size:11.5px;font-weight:800;cursor:pointer;">🔄 외부 API 즉시 재동기화</button>' +
           '</div>' +
-          '<div class="bv-panel">' +
-            '<div class="bv-panel-head"><span class="bv-panel-title">📱 접속 기기 분포 (Device)</span><span class="bv-panel-badge">마스터 전용</span></div>' +
-            '<div class="bv-chip-list">' + devsHtml + '</div>' +
+
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">' +
+            badge(extCfg.hasGa4Tag, 'GA4 자동 수집태그 활성 (' + escHtml(extCfg.ga4MeasurementId) + ')', 'GA4 측정 ID 미입력') +
+            badge(extCfg.hasNaverTag, '네이버 애널리틱스 태그 활성 (' + escHtml(extCfg.naverAnalyticsId) + ')', '네이버 애널리틱스 ID 미입력') +
+            badge(extCfg.ga4ApiConnected, 'GA4 연령·성별 실시간 API 연결됨', 'GA4 Data API 미연결') +
+            badge(extCfg.gscApiConnected, '구글 서치콘솔 키워드 API 연결됨', '서치콘솔 API 미연결') +
           '</div>' +
+
+          (extCfg.lastSyncError
+            ? '<div style="margin-bottom:14px;padding:11px 14px;border-radius:12px;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;font-size:12px;font-weight:700;">⚠️ 최근 동기화 점검 메시지: ' + escHtml(extCfg.lastSyncError) + '</div>'
+            : (extCfg.lastSyncedAt ? '<div style="margin-bottom:14px;padding:10px 14px;border-radius:12px;background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;font-size:12px;font-weight:700;">✅ 마지막 구글 API 실시간 동기화 시각: ' + escHtml(extCfg.lastSyncedAt) + '</div>' : '')) +
+
+          '<div class="bv-form-grid">' +
+            '<div>' +
+              '<label style="display:block;font-size:12px;font-weight:800;color:#1E293B;margin-bottom:5px;">1️⃣ Google GA4 측정 ID (입력 즉시 전 페이지 자동 삽입)</label>' +
+              '<input type="text" id="bv-cfg-ga4-mid" class="bv-form-input" placeholder="예: G-XXXXXXXXXX" value="' + escHtml(extCfg.ga4MeasurementId || '') + '" />' +
+              '<div style="font-size:11px;color:#64748B;margin-top:3px;">GA4 관리 → 데이터 스트림 → 측정 ID (Google 신호 데이터 활성화 권장)</div>' +
+            '</div>' +
+            '<div>' +
+              '<label style="display:block;font-size:12px;font-weight:800;color:#1E293B;margin-bottom:5px;">2️⃣ 네이버 애널리틱스 발급 ID (입력 즉시 전 페이지 자동 삽입)</label>' +
+              '<input type="text" id="bv-cfg-naver-id" class="bv-form-input" placeholder="예: s_1a2b3c4d5e6f" value="' + escHtml(extCfg.naverAnalyticsId || '') + '" />' +
+              '<div style="font-size:11px;color:#64748B;margin-top:3px;">analytics.naver.com 사이트 등록 후 발급되는 <code>s_...</code> 코드</div>' +
+            '</div>' +
+            '<div>' +
+              '<label style="display:block;font-size:12px;font-weight:800;color:#1E293B;margin-bottom:5px;">3️⃣ Google GA4 속성 ID (연령대 · 성별 차트 직접 불러오기용)</label>' +
+              '<input type="text" id="bv-cfg-ga4-pid" class="bv-form-input" placeholder="예: 412345678 (숫자만)" value="' + escHtml(extCfg.ga4PropertyId || '') + '" />' +
+              '<div style="font-size:11px;color:#64748B;margin-top:3px;">GA4 관리 → 속성 세부정보 우측 상단의 9자리 숫자 속성 ID</div>' +
+            '</div>' +
+            '<div>' +
+              '<label style="display:block;font-size:12px;font-weight:800;color:#1E293B;margin-bottom:5px;">4️⃣ Google Search Console 사이트 주소 (검색 키워드 불러오기용)</label>' +
+              '<input type="text" id="bv-cfg-gsc-url" class="bv-form-input" placeholder="https://www.bareunhaniwon.com/ 또는 sc-domain:bareunhaniwon.com" value="' + escHtml(extCfg.gscSiteUrl || 'https://www.bareunhaniwon.com/') + '" />' +
+              '<div style="font-size:11px;color:#64748B;margin-top:3px;">서치콘솔에 등록된 정확한 속성 URL 또는 <code>sc-domain:bareunhaniwon.com</code></div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="margin-top:14px;">' +
+            '<label style="display:block;font-size:12px;font-weight:800;color:#1E293B;margin-bottom:5px;">5️⃣ Google Cloud 서비스 계정 JSON 키 (GA4 연령·성별 + 서치콘솔 키워드 자동 조회용 보안키)</label>' +
+            (extCfg.hasServiceAccount
+              ? '<div style="font-size:12px;color:#047857;font-weight:800;margin-bottom:6px;">🔒 현재 등록된 서비스 계정: <code>' + escHtml(extCfg.serviceAccountEmail) + '</code> (변경 시에만 아래 칸에 새 JSON을 붙여넣으세요)</div>'
+              : '') +
+            '<textarea id="bv-cfg-sa-json" class="bv-form-input" rows="4" placeholder=\'{"type":"service_account","project_id":"...","private_key":"-----BEGIN PRIVATE KEY-----...","client_email":"...@....iam.gserviceaccount.com"}\'></textarea>' +
+            '<div style="font-size:11.5px;color:#475569;margin-top:6px;line-height:1.55;">' +
+              '💡 <strong>3분 연동 팁:</strong> ① Google Cloud에서 <code>Google Analytics Data API</code> 및 <code>Google Search Console API</code> 사용 설정 후 서비스 계정 JSON 키를 발급합니다. ② 해당 <code>client_email</code> 주소를 GA4 속성 및 서치콘솔의 <strong>[뷰어(Viewer) 사용자]</strong>로 추가한 뒤 여기에 붙여넣고 저장하면 마스터 창 안에서 나이·성별·구글 키워드가 자동 표출됩니다!' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">' +
+            '<button type="button" onclick="window.saveBareunExternalAnalyticsSettings()" style="padding:11px 22px;border-radius:999px;border:none;background:linear-gradient(135deg,#171614,#2D5A43);color:#FEF08A;font-size:13px;font-weight:900;cursor:pointer;">💾 연동 설정 저장 및 실시간 테스트</button>' +
+            '<a href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:800;color:#1D4ED8;text-decoration:underline;">구글 애널리틱스(GA4) 열기 ↗</a>' +
+            '<a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:800;color:#1D4ED8;text-decoration:underline;">구글 서치콘솔 열기 ↗</a>' +
+            '<a href="https://analytics.naver.com/" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:800;color:#047857;text-decoration:underline;">네이버 애널리틱스 열기 ↗</a>' +
+          '</div>' +
+        '</div>';
+    }
+
+    dialog.innerHTML =
+      '<div class="bv-modal-header">' +
+        '<div>' +
+          '<div class="bv-eyebrow"><span class="bareun-visit-live-dot"></span> 👑 MASTER ANALYTICS · 1·2단계 통합 &amp; GEO AI 관제</div>' +
+          '<h2 class="bv-title">바른한의원 대전본점 마스터 통합 방문 분석 대시보드</h2>' +
+          '<div class="bv-sub">기준 시각: ' + escHtml(stats.serverTime || '실시간 연동중') + ' · 일반 방문자에게는 오늘/누적 조회수 2개만 노출됩니다</div>' +
         '</div>' +
+        '<div class="bv-header-actions">' +
+          '<button type="button" class="bv-btn" onclick="window.refreshBareunVisitModal(true)">↻ 실시간 새로고침</button>' +
+          '<button type="button" class="bv-btn gold" onclick="window.logoutBareunVisitMaster()">🔓 마스터 로그아웃</button>' +
+          '<button type="button" class="bv-btn close" onclick="window.closeBareunVisitModal()">✕ 닫기</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="bv-modal-body">' +
+        kpiHtml +
+        tabsNavHtml +
+        tabPaneHtml +
       '</div>';
   }
+
+  window.saveBareunExternalAnalyticsSettings = async function () {
+    const tok = getAuthToken();
+    if (!tok) {
+      alert('마스터 인증 상태에서만 설정을 저장할 수 있습니다.');
+      return;
+    }
+    const payload = {
+      ga4MeasurementId: (document.getElementById('bv-cfg-ga4-mid') || {}).value || '',
+      naverAnalyticsId: (document.getElementById('bv-cfg-naver-id') || {}).value || '',
+      ga4PropertyId: (document.getElementById('bv-cfg-ga4-pid') || {}).value || '',
+      gscSiteUrl: (document.getElementById('bv-cfg-gsc-url') || {}).value || '',
+      googleServiceAccountJson: (document.getElementById('bv-cfg-sa-json') || {}).value || ''
+    };
+    try {
+      showBareunToast('⏳ 외부 통계 설정을 저장하고 실시간 연동을 점검 중입니다...');
+      const res = await fetch('/wp-json/bareun/v1/analytics/settings?_t=' + Date.now(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Bareun-Token': tok
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        if (data.summary) {
+          updateAllCounterPills(data.summary);
+          renderVisitModalContent(data.summary);
+        } else {
+          const fresh = await fetchLatestVisitStats(true);
+          renderVisitModalContent(fresh);
+        }
+        bootExternalAnalyticsTags();
+        showBareunToast('✅ GA4 · 서치콘솔 · 네이버 애널리틱스 설정이 저장되었습니다!');
+        return;
+      }
+      alert((data && data.message) || '설정 저장에 실패했습니다.');
+    } catch (e) {
+      alert('서버와 통신 중 오류가 발생했습니다.');
+    }
+  };
 
   window.openBareunVisitModal = async function () {
     mountHeaderAndFloatingButtons();
     const modal = document.getElementById('bareun-visit-modal-backdrop');
     if (modal) modal.classList.add('open');
     renderVisitModalContent(latestStats);
-    const fresh = await fetchLatestVisitStats();
+    const fresh = await fetchLatestVisitStats(false);
     if (fresh) renderVisitModalContent(fresh);
   };
 
@@ -1690,9 +2366,10 @@
     if (modal) modal.classList.remove('open');
   };
 
-  window.refreshBareunVisitModal = async function () {
-    const fresh = await fetchLatestVisitStats();
+  window.refreshBareunVisitModal = async function (forceExt) {
+    const fresh = await fetchLatestVisitStats(Boolean(forceExt));
     if (fresh) renderVisitModalContent(fresh);
+    if (forceExt) showBareunToast('🔄 최신 방문 통계 및 외부 연동 지표를 새로고침했습니다.');
   };
 
   window.toggleBareunVisitMasterLogin = function () {
@@ -1722,9 +2399,10 @@
       if (data && data.ok && data.token) {
         setAuthToken(data.token);
         isMasterAuthenticated = true;
-        const fresh = await fetchLatestVisitStats();
+        activeMasterTab = 'overview';
+        const fresh = await fetchLatestVisitStats(false);
         renderVisitModalContent(fresh);
-        showBareunToast('👑 마스터 상세 통계 모드가 활성화되었습니다.');
+        showBareunToast('👑 마스터 1·2단계 통합 & GEO AI 통계 대시보드가 열렸습니다.');
         return;
       }
       alert((data && data.message) || '마스터 계정 정보를 다시 확인해 주세요.');
@@ -1743,7 +2421,7 @@
       totalPv: latestStats ? latestStats.totalPv : 15738,
       serverTime: latestStats ? latestStats.serverTime : ''
     };
-    const fresh = await fetchLatestVisitStats();
+    const fresh = await fetchLatestVisitStats(false);
     renderVisitModalContent(fresh);
     showBareunToast('마스터 모드에서 로그아웃되었습니다.');
   };
@@ -1764,7 +2442,7 @@
       });
       const data = await res.json();
       if (data && data.ok) {
-        const fresh = await fetchLatestVisitStats();
+        const fresh = await fetchLatestVisitStats(false);
         renderVisitModalContent(fresh);
         showBareunToast('✅ 기본 누적 보정치가 저장되었습니다.');
         return;
@@ -1775,8 +2453,10 @@
 
   function bootVisitAnalytics() {
     mountHeaderAndFloatingButtons();
+    bindGlobalConversionClickTelemetry();
     recordPageVisit();
     fetchLiveClinicInfo();
+    bootExternalAnalyticsTags();
   }
 
   if (document.readyState === 'loading') {
