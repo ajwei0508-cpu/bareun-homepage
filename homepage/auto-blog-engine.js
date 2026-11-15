@@ -1008,6 +1008,16 @@ function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl
           'latitude': 36.35536,
           'longitude': 127.44778
         },
+        'areaServed': [
+          { '@type': 'AdministrativeArea', 'name': '대전광역시' },
+          { '@type': 'AdministrativeArea', 'name': '대덕구' },
+          { '@type': 'AdministrativeArea', 'name': '비래동' },
+          { '@type': 'AdministrativeArea', 'name': '송촌동' },
+          { '@type': 'AdministrativeArea', 'name': '중리동' },
+          { '@type': 'AdministrativeArea', 'name': '법동' },
+          { '@type': 'AdministrativeArea', 'name': '가양동' },
+          { '@type': 'AdministrativeArea', 'name': '용전동' }
+        ],
         'sameAs': [
           'https://www.youtube.com/@bareunhaniwon',
           'https://naver.me/5U1ELn8L',
@@ -1452,6 +1462,7 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
   <link rel="canonical" href="${escHtmlServer(canonicalUrl)}" />
   <link rel="alternate" hreflang="ko-KR" href="${escHtmlServer(canonicalUrl)}" />
   <link rel="alternate" hreflang="x-default" href="${escHtmlServer(canonicalUrl)}" />
+  <link rel="alternate" type="application/rss+xml" title="바른한의원 대전본점 RSS" href="https://www.bareunhaniwon.com/feed/" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="바른한의원 대전본점" />
   <meta property="og:locale" content="ko_KR" />

@@ -74,17 +74,11 @@ try {
   }
 } catch (e) {}
 
-function pingIndexNow(urls) {
+function pingSingleIndexNowHost(hostname, payload) {
   return new Promise((resolve) => {
     try {
-      const payload = JSON.stringify({
-        host: 'www.bareunhaniwon.com',
-        key: 'bareunhaniwon2026aiseokey849201',
-        keyLocation: 'https://www.bareunhaniwon.com/bareunhaniwon2026aiseokey849201.txt',
-        urlList: urls.slice(0, 100)
-      });
       const req = https.request({
-        hostname: 'api.indexnow.org',
+        hostname: hostname,
         port: 443,
         path: '/indexnow',
         method: 'POST',
@@ -103,6 +97,21 @@ function pingIndexNow(urls) {
       resolve(0);
     }
   });
+}
+
+async function pingIndexNow(urls) {
+  const indexNowKey = 'b4e02026a15e0ce0849201f7c3d9a5b2';
+  const payload = JSON.stringify({
+    host: 'www.bareunhaniwon.com',
+    key: indexNowKey,
+    keyLocation: 'https://www.bareunhaniwon.com/' + indexNowKey + '.txt',
+    urlList: urls.slice(0, 100)
+  });
+  const [naverStatus, globalStatus] = await Promise.all([
+    pingSingleIndexNowHost('searchadvisor.naver.com', payload),
+    pingSingleIndexNowHost('api.indexnow.org', payload)
+  ]);
+  return { naverStatus, globalStatus };
 }
 
 function warmUrlOnce(url) {
@@ -797,7 +806,7 @@ async function performWpLogin(page, loginUrl) {
       ...publishedPostUrls
     ]));
     const indexNowStatus = await pingIndexNow(allIndexNowUrls);
-    console.log(`6) IndexNow Search Engine Ping sent for ${allIndexNowUrls.length} URLs (HTTP ${indexNowStatus})!`);
+    console.log(`6) IndexNow Search Engine Ping sent for ${allIndexNowUrls.length} URLs (Naver Yeti HTTP ${indexNowStatus.naverStatus} | Global Bing/ChatGPT HTTP ${indexNowStatus.globalStatus})!`);
 
     console.log('✅ MASTER SEO + CANONICAL WWW DEPLOYMENT COMPLETE ON https://www.bareunhaniwon.com/ !');
   } catch (err) {

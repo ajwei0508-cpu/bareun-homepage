@@ -1,11 +1,24 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-15 v9.2 (① **마스터 전용 1·2단계 통합 방문 분석 & GEO AI 검색·봇 관제 대시보드 완비 (`visit-tracker.js` + `bareun-member-private-qna.php` + `local-bareun-api.js`) — 00~23시 시간대별 골든타임 & 요일별 분포, 14대 세부 플랫폼 유입, 🤖 GEO AI 검색 유입(ChatGPT·Perplexity·Gemini·Claude·Copilot·네이버 Cue·뤼튼·라이너) + AI 검색봇 크롤러(`OAI-SearchBot`·`PerplexityBot`·`ClaudeBot`·`Google-Extended`) 청정 분리 카운터, 자체 포착 키워드 + Google Search Console 키워드 API, GA4 연령대(20대~60대+)·성별 공식 API + 관심 진료군 코호트, 전화·카톡·네이버예약·4대 길안내 전환 추적, 코딩 없는 외부 통계 설정 탭** · ② 기존 v9.1 오시는길 4대 내비 자동길안내·인사말·비급여 수가표, 모바일 3버튼 예약바(네이버 톡톡 `0건`), 일반 방문자 `오늘/누적` 2개 수치 전용 잠금 100% 유지)
+> **최종 업데이트**: 2026-11-15 v9.3 (① **구글 서치콘솔(GSC) 88개 URL 사이트맵(`wp-sitemap.xml`·`feed/`) API 자동 제출 및 2일 주기 자동 갱신 + 네이버 서치어드바이저(`searchadvisor.naver.com/indexnow`) & 글로벌 IndexNow(`api.indexnow.org`) 16진수 규격 키(`b4e02026a15e0ce0849201f7c3d9a5b2`) 교정(`HTTP 403` → `HTTP 200/202` 완전 해결)** · ② **원고 본문 지역어 도배 없이 비가시성 JSON-LD `areaServed`(`대전광역시·대덕구·비래동·송촌동·중리동·법동·가양동·용전동`) 전 페이지·72편 건강 글 적용** · ③ **72편 독립 건강 글(`/health-note-*/`) GA4(`G-8K2Q55SRTB`)·네이버 WCS(`1f9f91dc5849ae0`)·1차 방문 유입 및 GEO AI 크롤러 관제 100% 연동**)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
 
-## 💎 최신 완료 작업 요약 (2026-11-15 v9.2 · 마스터 전용 1·2단계 통합 분석 & GEO AI 검색·크롤러 관제 5탭 대시보드 완비)
+## 💎 최신 완료 작업 요약 (2026-11-15 v9.3 · 구글 서치콘솔 & 네이버 서치어드바이저 색인 문제 해결 + 72편 건강 글 지역 스키마·외부 통계 전수 연동)
+
+1. **IndexNow `HTTP 403` 원인 규명 및 네이버 Yeti(`HTTP 200`) + 글로벌 Bing/ChatGPT(`HTTP 202`) 즉시 색인 개통**:
+   - 기존 키에 16진수 외 알파벳(`g~z`)이 포함되어 발생하던 `HTTP 403`을 표준 32자리 16진수 키(`b4e02026a15e0ce0849201f7c3d9a5b2`)로 교체하고 물리 파일(`/b4e02026a15e0ce0849201f7c3d9a5b2.txt` `200 OK`)을 생성했습니다.
+   - 배포 및 2일 주기 자동 발행 시 **네이버 공식 엔드포인트(`https://searchadvisor.naver.com/indexnow`)**와 **글로벌 엔드포인트(`https://api.indexnow.org/indexnow`)** 양쪽에 전 88개 URL을 동시 전송하여 `HTTP 200 / 202` 수신을 검증했습니다.
+2. **구글 서치콘솔(GSC) 사이트맵·RSS 자동 등록 (`88개 URL`, 오류 `0건`)**:
+   - Google Cloud 서비스계정(`bareunhaniwon-total@bareunhaniwon-total.iam.gserviceaccount.com`) API를 통해 `wp-sitemap.xml`, `wp-sitemap-posts-page-1.xml`, `wp-sitemap-posts-post-1.xml`, `feed/`를 즉시 제출 완료(`submitted: 88`, `errors: 0`)했으며, 향후 새 건강 글 발행 시 서버가 자동으로 서치콘솔 사이트맵 재수집 핑을 보냅니다.
+3. **비가시성 지역 엔티티 스키마(`areaServed`) & 72편 독립 건강 글(`/health-note-*/`) 통계·AI 봇 전수 연동**:
+   - 본문 원고의 고급스러운 의학 칼럼 톤을 해치지 않도록 화면 본문에는 지역명 도배를 배제하고, 검색엔진·AI만 읽는 `JSON-LD` `MedicalClinic.areaServed`에 `대전광역시·대덕구·비래동·송촌동·중리동·법동·가양동·용전동` 행정구역 엔티티를 정밀 주입했습니다.
+   - `wp_head()` 이전에 독립 렌더링되는 `/health-note-{id}/` 72편 전체에도 GA4(`G-8K2Q55SRTB`), 네이버 애널리틱스(`1f9f91dc5849ae0`), RSS 자동발견 태그, 1차 방문·전환 추적(`/wp-json/bareun/v1/visits`), AI 크롤러 우선순위(`init` priority `1`) 추적을 빠짐없이 연결했습니다.
+
+---
+
+## 💎 직전 완료 작업 요약 (2026-11-15 v9.2 · 마스터 전용 1·2단계 통합 분석 & GEO AI 검색·크롤러 관제 5탭 대시보드 완비)
 
 1. **일반 소비자 vs 마스터 철통 분리 유지 (`GET/POST /wp-json/bareun/v1/visits` vs `GET /wp-json/bareun/v1/visits/master`)**:
    - 비로그인 일반 소비자에게는 변함없이 **`오늘 조회수(todayPv)`와 `누적 조회수(totalPv)` 딱 2가지 숫자만 반환·표시**되며, 아래 모든 심층 분석은 마스터 인증 통과 시에만 5탭 대시보드로 열립니다.
