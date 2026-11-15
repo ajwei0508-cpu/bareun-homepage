@@ -1010,13 +1010,7 @@ function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl
         },
         'areaServed': [
           { '@type': 'AdministrativeArea', 'name': '대전광역시' },
-          { '@type': 'AdministrativeArea', 'name': '대덕구' },
-          { '@type': 'AdministrativeArea', 'name': '비래동' },
-          { '@type': 'AdministrativeArea', 'name': '송촌동' },
-          { '@type': 'AdministrativeArea', 'name': '중리동' },
-          { '@type': 'AdministrativeArea', 'name': '법동' },
-          { '@type': 'AdministrativeArea', 'name': '가양동' },
-          { '@type': 'AdministrativeArea', 'name': '용전동' }
+          { '@type': 'AdministrativeArea', 'name': '대덕구' }
         ],
         'sameAs': [
           'https://www.youtube.com/@bareunhaniwon',

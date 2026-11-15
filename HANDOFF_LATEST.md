@@ -1,6 +1,6 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-15 v9.3 (① **구글 서치콘솔(GSC) 88개 URL 사이트맵(`wp-sitemap.xml`·`feed/`) API 자동 제출 및 2일 주기 자동 갱신 + 네이버 서치어드바이저(`searchadvisor.naver.com/indexnow`) & 글로벌 IndexNow(`api.indexnow.org`) 16진수 규격 키(`b4e02026a15e0ce0849201f7c3d9a5b2`) 교정(`HTTP 403` → `HTTP 200/202` 완전 해결)** · ② **원고 본문 지역어 도배 없이 비가시성 JSON-LD `areaServed`(`대전광역시·대덕구·비래동·송촌동·중리동·법동·가양동·용전동`) 전 페이지·72편 건강 글 적용** · ③ **72편 독립 건강 글(`/health-note-*/`) GA4(`G-8K2Q55SRTB`)·네이버 WCS(`1f9f91dc5849ae0`)·1차 방문 유입 및 GEO AI 크롤러 관제 100% 연동**)
+> **최종 업데이트**: 2026-11-15 v9.3 (① **구글 서치콘솔(GSC) 88개 URL 사이트맵(`wp-sitemap.xml`·`feed/`) API 자동 제출 및 2일 주기 자동 갱신 + 네이버 서치어드바이저(`searchadvisor.naver.com/indexnow`) & 글로벌 IndexNow(`api.indexnow.org`) 16진수 규격 키(`b4e02026a15e0ce0849201f7c3d9a5b2`) 교정(`HTTP 403` → `HTTP 200/202` 완전 해결)** · ② **네이버·구글 스팸 가이드라인 100% 준수: 화면 표기 주소(`대전광역시·대덕구`)와 JSON-LD `areaServed` 1:1 완전 일치 적용(비가시성 타 지역·미표기 행정동 숨김 마크업 0건)** · ③ **72편 독립 건강 글(`/health-note-*/`) GA4(`G-8K2Q55SRTB`)·네이버 WCS(`1f9f91dc5849ae0`)·1차 방문 유입 및 GEO AI 크롤러 관제 100% 연동**)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
@@ -12,8 +12,8 @@
    - 배포 및 2일 주기 자동 발행 시 **네이버 공식 엔드포인트(`https://searchadvisor.naver.com/indexnow`)**와 **글로벌 엔드포인트(`https://api.indexnow.org/indexnow`)** 양쪽에 전 88개 URL을 동시 전송하여 `HTTP 200 / 202` 수신을 검증했습니다.
 2. **구글 서치콘솔(GSC) 사이트맵·RSS 자동 등록 (`88개 URL`, 오류 `0건`)**:
    - Google Cloud 서비스계정(`bareunhaniwon-total@bareunhaniwon-total.iam.gserviceaccount.com`) API를 통해 `wp-sitemap.xml`, `wp-sitemap-posts-page-1.xml`, `wp-sitemap-posts-post-1.xml`, `feed/`를 즉시 제출 완료(`submitted: 88`, `errors: 0`)했으며, 향후 새 건강 글 발행 시 서버가 자동으로 서치콘솔 사이트맵 재수집 핑을 보냅니다.
-3. **비가시성 지역 엔티티 스키마(`areaServed`) & 72편 독립 건강 글(`/health-note-*/`) 통계·AI 봇 전수 연동**:
-   - 본문 원고의 고급스러운 의학 칼럼 톤을 해치지 않도록 화면 본문에는 지역명 도배를 배제하고, 검색엔진·AI만 읽는 `JSON-LD` `MedicalClinic.areaServed`에 `대전광역시·대덕구·비래동·송촌동·중리동·법동·가양동·용전동` 행정구역 엔티티를 정밀 주입했습니다.
+3. **네이버·구글 구조화 데이터 가이드라인 1:1 일치(`areaServed`) & 72편 독립 건강 글(`/health-note-*/`) 통계·AI 봇 전수 연동**:
+   - 네이버 서치어드바이저 및 구글 검색 센터의 '화면 가시 텍스트 = 구조화 데이터 1:1 일치 원칙(숨김 지역명 스팸 방지)'에 맞춰, 화면 주소에 실제 표기된 `대전광역시·대덕구`만 `JSON-LD` `MedicalClinic.areaServed`에 엄격히 일치시켰습니다(미표기 동네·타 지역 숨김 마크업 0건).
    - `wp_head()` 이전에 독립 렌더링되는 `/health-note-{id}/` 72편 전체에도 GA4(`G-8K2Q55SRTB`), 네이버 애널리틱스(`1f9f91dc5849ae0`), RSS 자동발견 태그, 1차 방문·전환 추적(`/wp-json/bareun/v1/visits`), AI 크롤러 우선순위(`init` priority `1`) 추적을 빠짐없이 연결했습니다.
 
 ---

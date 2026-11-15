@@ -3151,13 +3151,7 @@ class Bareun_Master_SEO_Engine_V1 {
                 $decoded['clinicBaseOrg']['vatID'] = '211-91-10479';
                 $decoded['clinicBaseOrg']['areaServed'] = array(
                     array('@type' => 'AdministrativeArea', 'name' => '대전광역시'),
-                    array('@type' => 'AdministrativeArea', 'name' => '대덕구'),
-                    array('@type' => 'AdministrativeArea', 'name' => '비래동'),
-                    array('@type' => 'AdministrativeArea', 'name' => '송촌동'),
-                    array('@type' => 'AdministrativeArea', 'name' => '중리동'),
-                    array('@type' => 'AdministrativeArea', 'name' => '법동'),
-                    array('@type' => 'AdministrativeArea', 'name' => '가양동'),
-                    array('@type' => 'AdministrativeArea', 'name' => '용전동')
+                    array('@type' => 'AdministrativeArea', 'name' => '대덕구')
                 );
                 $decoded['clinicBaseOrg']['identifier'] = array(
                     '@type' => 'PropertyValue',
@@ -3696,13 +3690,7 @@ class Bareun_Master_SEO_Engine_V1 {
                     ),
                     'areaServed'    => array(
                         array('@type' => 'AdministrativeArea', 'name' => '대전광역시'),
-                        array('@type' => 'AdministrativeArea', 'name' => '대덕구'),
-                        array('@type' => 'AdministrativeArea', 'name' => '비래동'),
-                        array('@type' => 'AdministrativeArea', 'name' => '송촌동'),
-                        array('@type' => 'AdministrativeArea', 'name' => '중리동'),
-                        array('@type' => 'AdministrativeArea', 'name' => '법동'),
-                        array('@type' => 'AdministrativeArea', 'name' => '가양동'),
-                        array('@type' => 'AdministrativeArea', 'name' => '용전동')
+                        array('@type' => 'AdministrativeArea', 'name' => '대덕구')
                     ),
                     'sameAs'        => array(
                         'https://www.youtube.com/@bareunhaniwon',
