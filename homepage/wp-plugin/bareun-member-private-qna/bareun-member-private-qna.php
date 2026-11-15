@@ -1416,17 +1416,38 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         );
     }
 
+    private static function resolve_active_gemini_key() {
+        $cfg = get_option(self::OPT_NOTES_CFG, array());
+        $k = is_array($cfg) ? trim((string) ($cfg['geminiApiKey'] ?? '')) : '';
+        if ($k !== '') {
+            return $k;
+        }
+        $studio_keys = get_option('bareun_studio_ai_keys_v1', array());
+        if (is_array($studio_keys) && !empty($studio_keys['geminiKey'])) {
+            return trim((string) $studio_keys['geminiKey']);
+        }
+        return '';
+    }
+
     public static function validate_body_note_three_stage($note) {
         $errors = array();
         if (!is_array($note)) {
             return array('passed' => false, 'errors' => array('노트 데이터 형식이 올바르지 않습니다.'));
         }
-        $title   = trim((string) ($note['title'] ?? ''));
+        $title   = trim((string) ($note['questionTitle'] ?? ($note['title'] ?? '')));
         $keyword = trim((string) ($note['keyword'] ?? ''));
-        $empathy = isset($note['empathy']) && is_array($note['empathy']) ? array_values($note['empathy']) : array();
-        $truth   = isset($note['truth']) && is_array($note['truth']) ? array_values($note['truth']) : array();
-        $myth    = isset($note['myth']) && is_array($note['myth']) ? array_values($note['myth']) : array();
-        $check   = isset($note['check']) && is_array($note['check']) ? array_values($note['check']) : array();
+        $empathy = isset($note['empathyLines']) && is_array($note['empathyLines'])
+            ? array_values($note['empathyLines'])
+            : (isset($note['empathy']) && is_array($note['empathy']) ? array_values($note['empathy']) : array());
+        $truth   = isset($note['truthLines']) && is_array($note['truthLines'])
+            ? array_values($note['truthLines'])
+            : (isset($note['truth']) && is_array($note['truth']) ? array_values($note['truth']) : array());
+        $myth    = isset($note['mythLines']) && is_array($note['mythLines'])
+            ? array_values($note['mythLines'])
+            : (isset($note['myth']) && is_array($note['myth']) ? array_values($note['myth']) : array());
+        $check   = isset($note['checkItems']) && is_array($note['checkItems'])
+            ? array_values($note['checkItems'])
+            : (isset($note['check']) && is_array($note['check']) ? array_values($note['check']) : array());
 
         if ($title === '' || strpos($title, '?') === false) {
             $errors[] = '[1차·형식] 제목은 일상적인 질문형 문장(?)이어야 합니다.';
@@ -1435,7 +1456,33 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $errors[] = '[1차·형식] 1~4번 항목은 각각 정확히 2줄(관찰 기준 2가지)이어야 합니다.';
         }
 
-        $joined = implode(' ', array_merge(array($title), $empathy, $truth, $myth, $check));
+        $extra_chunks = array(
+            (string) ($note['seoTitle'] ?? ''),
+            (string) ($note['directAnswer'] ?? ''),
+            (string) ($note['empathyIllustCaption'] ?? ''),
+            (string) ($note['deepIllustCaption'] ?? ''),
+            (string) ($note['routineIllustCaption'] ?? '')
+        );
+        if (!empty($note['deepMechanism']) && is_array($note['deepMechanism'])) {
+            foreach ($note['deepMechanism'] as $dm) {
+                $extra_chunks[] = (string) $dm;
+            }
+        }
+        if (!empty($note['consumerKeywords']) && is_array($note['consumerKeywords'])) {
+            foreach ($note['consumerKeywords'] as $ckw) {
+                $extra_chunks[] = (string) $ckw;
+            }
+        }
+        if (!empty($note['faqItems']) && is_array($note['faqItems'])) {
+            foreach ($note['faqItems'] as $fq) {
+                if (is_array($fq)) {
+                    $extra_chunks[] = (string) ($fq['q'] ?? '');
+                    $extra_chunks[] = (string) ($fq['a'] ?? '');
+                }
+            }
+        }
+
+        $joined = implode(' ', array_merge(array($title), $empathy, $truth, $myth, $check, $extra_chunks));
 
         // 2차 검수: 의료법 제56조 및 상업적 CTA 완전 배제
         $forbidden_promo = array(
@@ -1471,8 +1518,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     }
 
     public static function generate_body_note_via_gemini($part_id, $theme_override = '') {
-        $cfg = get_option(self::OPT_NOTES_CFG, array());
-        $api_key = is_array($cfg) ? trim((string) ($cfg['geminiApiKey'] ?? '')) : '';
+        $api_key = self::resolve_active_gemini_key();
         if ($api_key === '') {
             return array('ok' => false, 'message' => 'Gemini API 키가 설정되지 않았습니다.');
         }
@@ -1489,108 +1535,306 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         $theme = $theme_override !== '' ? $theme_override : $selected['themes'][$day_slot % count($selected['themes'])];
 
         $base_prompt = "[역할 정의]\n"
-            . "너는 환자의 눈높이에서 일상 언어로 소통하는 한의사이자, 의학적 정확성을 엄격히 통제하는 수석 팩트체커야.\n"
-            . "의학적·학술적 팩트(소아내분비학, 소아정형학, 한방소아과학 및 관련 분과 논문 근거)를 기반으로 하되, 초보자도 1초 만에 이해할 수 있는 쉬운 일상 언어로 작성해야 해.\n\n"
-            . "[목적 및 환경]\n"
-            . "- 환경: 한의원 홈페이지 3D 인체 그래픽 '정보 팝업 패널'\n"
-            . "- 목적: 병원 홍보나 예약 유도(CTA)는 일절 배제하고, 환자가 유익한 건강 기준을 얻어가는 순수 정보형 콘텐츠 작성\n\n"
+            . "너는 환자의 일상 아픔에 깊이 공감하며 쉬운 언어로 소통하는 한의학 메디컬 에디터이자, 의학적 정확성과 의료법 제56조를 엄격히 통제하는 수석 팩트체커야.\n"
+            . "SCI급 의학·생리학 학술 논문을 기반으로 하되, 초등학생 학부모와 일반인도 단숨에 고개를 끄덕이는 따뜻한 일상 공감 문체로 작성해야 해.\n\n"
             . "[입력 변수]\n"
             . "- 클릭 부위: [" . $selected['partLabel'] . "]\n"
             . "- 테마: [" . $theme . "]\n"
             . "- 타깃 독자: " . $selected['targetReader'] . "\n\n"
-            . "[필수 반영 핵심 규칙]\n"
-            . "1. 제목(Hooking): 일상적인 질문형 문장(?)으로 시작할 것.\n"
-            . "2. 언어 순화: 해부학 전문 용어(대퇴골, 골단판, 아로마타제, 추간판, 수핵, 후두하근, 모유두, 나선동맥, 시상하부 등) 절대 사용 금지. 반드시 일상 언어(예: 성장 연골, 허벅지 뼈, 디스크 말랑 쿠션 등)로 순화.\n"
-            . "3. 학술 논문 팩트 매핑: 질환의 원리를 일상적인 비유로 쉽게 설명.\n"
-            . "4. 흔한 오해 바로잡기: 해당 테마에 맞는 통념 1가지를 명확히 짚어줄 것.\n"
-            . "5. 1분 홈 체크리스트: 집에서 오늘 밤 당장 확인 가능한 관찰 기준 2가지 제시.\n"
-            . "6. 홍보 금지: 내원 유도, 예약, 상담, 병원명, 원장, 완치, 100%, 최고 등 상업적·단정적 문구 절대 배제.\n"
-            . "7. 핵심 키워드 필수 포함: 조회수 높은 핵심 키워드 1개를 선정하여 문맥에 맞게 자연스럽게 1~2회 녹여낼 것.\n\n"
-            . "[출력 전 필수 수행: 3단계 연속 자가 검수]\n"
-            . "1차 의학 팩트 체크 → 2차 의료법 제56조 및 무홍보 점검 → 3차 맞춤법·일상어 순화 점검을 모두 통과한 최종본만 아래 순수 JSON 스키마로 출력해줘:\n"
-            . "{\"keyword\":\"핵심키워드\",\"title\":\"공감형 질문 타이틀?\",\"empathy\":[\"고민 대사 1줄\",\"고민 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"myth\":[\"통념 교정 1줄\",\"통념 교정 2줄\"],\"check\":[\"관찰 기준 1\",\"관찰 기준 2\"]}";
+            . "[필수 반영 핵심 규칙 — 풀세트(7단계 공감 본문 + 실생활 검색 키워드 5개 + 상·중·하 3단 멀티 화보 설계)]\n"
+            . "1. 질문형 제목(title): 독자가 겪는 생생한 상황으로 시작해 물음표(?)로 끝날 것.\n"
+            . "2. 소비자 실생활 검색 키워드(consumerKeywords): 환자들이 네이버·구글·AI 검색창에 실제로 자주 입력하는 구어체·증상형 키워드 정확히 5개 배열.\n"
+            . "3. 언어 순화: 어려운 해부학 용어(대퇴골, 골단판, 아로마타제, 추간판, 수핵, 후두하근, 모유두, 나선동맥, 시상하부, 내장지방세포, 배뇨근, 장상피화생) 절대 사용 금지. 반드시 쉬운 일상 비유(성장 연골판, 허벅지 뼈, 디스크 말랑 쿠션, 뒷목 깊은 근육 등)로 풀 것.\n"
+            . "4. 홍보·단정어 완전 금지: 완치, 100%, 최고, 최초, 유일, 특효, 무조건, 보장, 예약, 내원, 방문해, 상담받, 문의하, 바른한의원, 원장, 할인, 이벤트, 치료 프로그램, 처방받 절대 사용 금지.\n"
+            . "5. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
+            . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주).\n"
+            . "   - 슬롯 ②(mechanismPrompt): 본문 중단 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 우아하게 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
+            . "   - 슬롯 ③(routinePrompt): 하단 실천부 좌·우 분할(Before 나쁜 자세/습관 vs After 바른 실천 루틴) 비교 에디토리얼 화보 (글자·워터마크 0%).\n\n"
+            . "[출력 JSON 스키마 (순수 JSON 객체만 반환)]\n"
+            . "{\"keyword\":\"핵심대표키워드\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 요약 2~3문장\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유로 풀어낸 심층 생리 원리 1단락\",\"일상 회복 기전을 설명하는 심층 원리 2단락\"],\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 전·후 실천 루틴 화보 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"16:9 split-screen left-right comparison lifestyle editorial photo showing bad habit vs healthy evening routine, warm ivory tone, zero text\"}";
 
         $feedback = '';
+        $verified_candidate = null;
+        $verified_prompts   = array();
+
         for ($attempt = 1; $attempt <= 3; $attempt++) {
-            $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . rawurlencode($api_key);
-            $body_payload = wp_json_encode(array(
-                'contents' => array(
-                    array('parts' => array(array('text' => $base_prompt . $feedback)))
-                ),
-                'generationConfig' => array(
-                    'responseMimeType' => 'application/json',
-                    'temperature'      => 0.35
-                )
-            ));
-            $res = wp_remote_post($url, array(
-                'headers' => array('Content-Type' => 'application/json'),
-                'body'    => $body_payload,
-                'timeout' => 25
-            ));
-            if (is_wp_error($res)) {
-                return array('ok' => false, 'message' => $res->get_error_message());
+            $models_to_try = array('gemini-2.5-pro', 'gemini-2.5-flash');
+            $parsed = null;
+            $last_err = '';
+
+            foreach ($models_to_try as $m_id) {
+                $url = 'https://generativelanguage.googleapis.com/v1beta/models/' . $m_id . ':generateContent?key=' . rawurlencode($api_key);
+                $body_payload = wp_json_encode(array(
+                    'contents' => array(
+                        array('parts' => array(array('text' => $base_prompt . $feedback)))
+                    ),
+                    'generationConfig' => array(
+                        'responseMimeType' => 'application/json',
+                        'temperature'      => 0.35
+                    )
+                ));
+                $res = wp_remote_post($url, array(
+                    'headers' => array('Content-Type' => 'application/json'),
+                    'body'    => $body_payload,
+                    'timeout' => 45
+                ));
+                if (is_wp_error($res)) {
+                    $last_err = $res->get_error_message();
+                    continue;
+                }
+                if (wp_remote_retrieve_response_code($res) !== 200) {
+                    $last_err = 'HTTP ' . wp_remote_retrieve_response_code($res);
+                    continue;
+                }
+                $raw_json = json_decode(wp_remote_retrieve_body($res), true);
+                $text_out = $raw_json['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                $try_parsed = json_decode($text_out, true);
+                if (is_array($try_parsed)) {
+                    $parsed = $try_parsed;
+                    break;
+                }
             }
-            $raw_json = json_decode(wp_remote_retrieve_body($res), true);
-            $text_out = $raw_json['candidates'][0]['content']['parts'][0]['text'] ?? '';
-            $parsed   = json_decode($text_out, true);
+
             if (!is_array($parsed)) {
-                $feedback = "\n\n[재검수 요청] 유효한 JSON 객체만 반환해 주세요.";
+                if ($attempt === 3 && $last_err !== '') {
+                    return array('ok' => false, 'message' => $last_err);
+                }
+                $feedback = "\n\n[재검수 요청] 유효한 순수 JSON 객체만 반환해 주세요.";
                 continue;
             }
+
             $today_kst = current_time('Y-m-d');
+            $note_id   = $selected['partId'] . '-' . str_replace('-', '', $today_kst);
+            $q_title   = sanitize_text_field($parsed['title'] ?? '');
+            $seo_title = sanitize_text_field($parsed['seoTitle'] ?? $q_title);
+            $kw_main   = sanitize_text_field($parsed['keyword'] ?? $theme);
+            $cons_kws  = array_values(array_filter(array_map('sanitize_text_field', array_slice((array) ($parsed['consumerKeywords'] ?? array()), 0, 5))));
+            if (empty($cons_kws)) {
+                $cons_kws = array($kw_main, $selected['partLabel'] . ' 관리', $theme);
+            }
+            $emp_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['empathy'] ?? array()), 0, 2)));
+            $tru_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['truth'] ?? array()), 0, 2)));
+            $myt_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['myth'] ?? array()), 0, 2)));
+            $chk_items = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['check'] ?? array()), 0, 2)));
+            $deep_mech = array_values(array_filter(array_map('sanitize_textarea_field', array_slice((array) ($parsed['deepMechanism'] ?? array()), 0, 3))));
+            if (empty($deep_mech)) {
+                $deep_mech = $tru_lines;
+            }
+            $faq_clean = array();
+            if (!empty($parsed['faqItems']) && is_array($parsed['faqItems'])) {
+                foreach (array_slice($parsed['faqItems'], 0, 3) as $fq) {
+                    if (is_array($fq) && !empty($fq['q']) && !empty($fq['a'])) {
+                        $faq_clean[] = array(
+                            'q' => sanitize_text_field($fq['q']),
+                            'a' => sanitize_textarea_field($fq['a'])
+                        );
+                    }
+                }
+            }
+
             $candidate = array(
-                'id'           => $selected['partId'] . '-' . str_replace('-', '', $today_kst) . '-ai',
-                'partId'       => $selected['partId'],
-                'partLabel'    => $selected['partLabel'],
-                'theme'        => $theme,
-                'targetReader' => $selected['targetReader'],
-                'keyword'      => sanitize_text_field($parsed['keyword'] ?? $theme),
-                'publishDate'  => $today_kst,
-                'title'        => sanitize_text_field($parsed['title'] ?? ''),
-                'empathy'      => array_map('sanitize_text_field', array_slice((array) ($parsed['empathy'] ?? array()), 0, 2)),
-                'truth'        => array_map('sanitize_text_field', array_slice((array) ($parsed['truth'] ?? array()), 0, 2)),
-                'myth'         => array_map('sanitize_text_field', array_slice((array) ($parsed['myth'] ?? array()), 0, 2)),
-                'check'        => array_map('sanitize_text_field', array_slice((array) ($parsed['check'] ?? array()), 0, 2)),
-                'auditPassed'  => true,
-                'source'       => 'gemini-3stage-verified'
+                'id'                   => $note_id,
+                'enabled'              => true,
+                'partId'               => $selected['partId'],
+                'partLabel'            => $selected['partLabel'],
+                'theme'                => $theme,
+                'targetReader'         => $selected['targetReader'],
+                'keyword'              => $kw_main,
+                'consumerKeywords'     => $cons_kws,
+                'publishDate'          => $today_kst,
+                'title'                => $q_title,
+                'questionTitle'        => $q_title,
+                'seoTitle'             => $seo_title,
+                'directAnswer'         => sanitize_textarea_field($parsed['directAnswer'] ?? implode(' ', $tru_lines)),
+                'empathy'              => $emp_lines,
+                'empathyLines'         => $emp_lines,
+                'truth'                => $tru_lines,
+                'truthLines'           => $tru_lines,
+                'deepMechanism'        => $deep_mech,
+                'myth'                 => $myt_lines,
+                'mythLines'            => $myt_lines,
+                'check'                => $chk_items,
+                'checkItems'           => $chk_items,
+                'faqItems'             => $faq_clean,
+                'citation'             => sanitize_text_field($parsed['citation'] ?? 'SCI급 의학·생리학 학술 리뷰 기반'),
+                'empathyIllustCaption' => sanitize_text_field($parsed['empathyIllustCaption'] ?? ($selected['partLabel'] . ' 일상 공감 장면')),
+                'deepIllustCaption'    => sanitize_text_field($parsed['deepIllustCaption'] ?? ($selected['partLabel'] . ' 핵심 기전 도해')),
+                'routineIllustCaption' => sanitize_text_field($parsed['routineIllustCaption'] ?? ($selected['partLabel'] . ' 전·후 생활 실천 루틴')),
+                'auditPassed'          => true,
+                'source'               => 'gemini-fullset-3slot-verified'
             );
+
             $check_res = self::validate_body_note_three_stage($candidate);
             if ($check_res['passed']) {
-                return array('ok' => true, 'note' => $candidate);
+                $verified_candidate = $candidate;
+                $verified_prompts = array(
+                    'empathy'   => trim((string) ($parsed['empathyPrompt'] ?? '')),
+                    'mechanism' => trim((string) ($parsed['mechanismPrompt'] ?? '')),
+                    'routine'   => trim((string) ($parsed['routinePrompt'] ?? ''))
+                );
+                break;
             }
             $feedback = "\n\n[3단계 자가 검수 반려 사유 — 즉시 수정 후 재출력]: " . implode(' / ', $check_res['errors']);
         }
 
-        return array('ok' => false, 'message' => '3단계 자가 검수 기준을 통과하지 못해 발행을 보류했습니다.');
+        if (!$verified_candidate) {
+            return array('ok' => false, 'message' => '3단계 자가 검수 기준을 통과하지 못해 발행을 보류했습니다.');
+        }
+
+        // Generate 3 bespoke 16:9 images via Argon High / Studio Engine (with part flagship fallback)
+        $pid = $verified_candidate['partId'];
+        $emp_url = '';
+        $mec_url = '';
+        $rou_url = '';
+        if (class_exists('Bareun_Custom_Studio_Engine_V4')) {
+            if ($verified_prompts['empathy'] !== '') {
+                $emp_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['empathy'], $pid . '_emp', $api_key);
+            }
+            if ($verified_prompts['mechanism'] !== '') {
+                $mec_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['mechanism'], $pid . '_mec', $api_key);
+            }
+            if ($verified_prompts['routine'] !== '') {
+                $rou_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['routine'], $pid . '_rou', $api_key);
+            }
+        }
+
+        $verified_candidate['empathyIllustImg'] = $emp_url !== '' ? $emp_url : ('webp/hn_' . $pid . '_20261111_empathy.webp');
+        $verified_candidate['deepIllustImg']    = $mec_url !== '' ? $mec_url : ('hn_' . $pid . '_20261111_mechanism.jpg');
+        $verified_candidate['routineIllustImg'] = $rou_url !== '' ? $rou_url : ('webp/hn_' . $pid . '_20261111_routine.webp');
+
+        $kw_suffix = !empty($verified_candidate['consumerKeywords'][0]) ? (' — ' . $verified_candidate['consumerKeywords'][0]) : '';
+        $verified_candidate['empathyIllustAlt'] = $verified_candidate['empathyIllustCaption'] . $kw_suffix;
+        $verified_candidate['deepIllustAlt']    = $verified_candidate['deepIllustCaption'] . $kw_suffix;
+        $verified_candidate['routineIllustAlt'] = $verified_candidate['routineIllustCaption'] . $kw_suffix;
+
+        return array('ok' => true, 'note' => $verified_candidate);
     }
 
-    public static function run_scheduled_two_day_note_generation() {
-        $cfg = get_option(self::OPT_NOTES_CFG, array());
-        if (!is_array($cfg) || empty($cfg['geminiApiKey'])) {
+    /**
+     * Persist newly generated Full-Set 3-Slot Health Note across:
+     * 1) OPT_BODY_NOTES (/body-explorer/ dynamic feed)
+     * 2) bareun_health_notes_cfg_v1 (/health-note-{id}/ SSR & Online Studio)
+     * 3) WordPress 'post' (XML Sitemap + RSS 2.0 Feed)
+     * 4) IndexNow instant indexing ping
+     */
+    private static function persist_and_publish_fullset_health_note($new_note) {
+        if (!is_array($new_note) || empty($new_note['id'])) {
             return;
         }
+        $clean_nid = strtolower(preg_replace('/[^a-z0-9\-]/i', '', (string) $new_note['id']));
+        if ($clean_nid === '') {
+            return;
+        }
+        $new_note['id'] = $clean_nid;
+
+        // 1) Update OPT_BODY_NOTES
         $notes = get_option(self::OPT_BODY_NOTES, array());
         if (!is_array($notes)) {
             $notes = array();
         }
+        $notes = array_values(array_filter($notes, function ($x) use ($clean_nid) {
+            return is_array($x) && (($x['id'] ?? '') !== $clean_nid);
+        }));
+        array_unshift($notes, $new_note);
+        if (count($notes) > 300) {
+            $notes = array_slice($notes, 0, 300);
+        }
+        update_option(self::OPT_BODY_NOTES, $notes);
+
+        // 2) Update bareun_health_notes_cfg_v1 & studio JSON
+        if (class_exists('Bareun_Custom_Studio_Engine_V4')) {
+            $hn_cfg = Bareun_Custom_Studio_Engine_V4::load_health_notes_cfg_php(false);
+            if (!is_array($hn_cfg)) {
+                $hn_cfg = array('schemaVersion' => '9.0.0-fullset-3slot-empathy-seo', 'notes' => array());
+            }
+            if (empty($hn_cfg['notes']) || !is_array($hn_cfg['notes'])) {
+                $hn_cfg['notes'] = array();
+            }
+            $hn_cfg['notes'] = array_values(array_filter($hn_cfg['notes'], function ($x) use ($clean_nid) {
+                return is_array($x) && (($x['id'] ?? '') !== $clean_nid);
+            }));
+            array_unshift($hn_cfg['notes'], $new_note);
+            $hn_cfg['updatedAt'] = gmdate('c');
+            update_option('bareun_health_notes_cfg_v1', $hn_cfg, false);
+
+            $upload_dir = wp_upload_dir();
+            $target_dir = $upload_dir['basedir'] . '/bareun-studio';
+            wp_mkdir_p($target_dir);
+            @file_put_contents($target_dir . '/health-notes-custom-config.json', wp_json_encode($hn_cfg, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
+
+        // 3) Upsert published WordPress post so /wp-sitemap.xml and /feed/ expose /health-note-{id}/
+        $slug = 'health-note-' . $clean_nid;
+        $existing = get_page_by_path($slug, OBJECT, 'post');
+        $post_arr = array(
+            'post_type'    => 'post',
+            'post_name'    => $slug,
+            'post_title'   => (string) ($new_note['seoTitle'] ?? $new_note['title'] ?? $slug),
+            'post_excerpt' => (string) ($new_note['directAnswer'] ?? ''),
+            'post_content' => '<p>' . esc_html((string) ($new_note['directAnswer'] ?? '')) . '</p>',
+            'post_status'  => 'publish'
+        );
+        if ($existing && !empty($existing->ID)) {
+            $post_arr['ID'] = (int) $existing->ID;
+            wp_update_post($post_arr);
+        } else {
+            wp_insert_post($post_arr);
+        }
+
+        wp_cache_flush();
+
+        // 4) Non-blocking IndexNow ping
+        if (class_exists('Bareun_Master_SEO_Engine_V1')) {
+            $indexnow_key = Bareun_Master_SEO_Engine_V1::INDEXNOW_KEY;
+            wp_remote_post('https://api.indexnow.org/indexnow', array(
+                'timeout'  => 2,
+                'blocking' => false,
+                'headers'  => array('Content-Type' => 'application/json; charset=utf-8'),
+                'body'     => wp_json_encode(array(
+                    'host'        => 'www.bareunhaniwon.com',
+                    'key'         => $indexnow_key,
+                    'keyLocation' => 'https://www.bareunhaniwon.com/' . $indexnow_key . '.txt',
+                    'urlList'     => array(
+                        'https://www.bareunhaniwon.com/body-explorer/',
+                        'https://www.bareunhaniwon.com/health-note-' . $clean_nid . '/'
+                    )
+                ), JSON_UNESCAPED_SLASHES)
+            ));
+        }
+    }
+
+    public static function run_scheduled_two_day_note_generation() {
+        $api_key = self::resolve_active_gemini_key();
+        if ($api_key === '') {
+            return;
+        }
         $today_kst = current_time('Y-m-d');
         $yesterday_kst = date('Y-m-d', current_time('timestamp') - 86400);
-        foreach ($notes as $n) {
-            if (!empty($n['publishDate']) && ($n['publishDate'] === $today_kst || $n['publishDate'] === $yesterday_kst)) {
-                return; // Already updated within 2-day window
+
+        $notes = get_option(self::OPT_BODY_NOTES, array());
+        if (is_array($notes)) {
+            foreach ($notes as $n) {
+                if (!empty($n['publishDate']) && ($n['publishDate'] === $today_kst || $n['publishDate'] === $yesterday_kst)) {
+                    return; // Already updated within 2-day window
+                }
             }
         }
+        $hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
+        if (is_array($hn_cfg) && !empty($hn_cfg['notes']) && is_array($hn_cfg['notes'])) {
+            foreach ($hn_cfg['notes'] as $hn) {
+                if (!empty($hn['publishDate']) && ($hn['publishDate'] === $today_kst || $hn['publishDate'] === $yesterday_kst)) {
+                    return;
+                }
+            }
+        }
+
         $meta_list = self::get_body_part_meta_list();
         $slot = (int) floor(current_time('timestamp') / 172800);
         // Prioritize growth ('knee') frequently while rotating all 9 parts
         $part_id = ($slot % 2 === 0) ? 'knee' : $meta_list[$slot % count($meta_list)]['partId'];
         $gen = self::generate_body_note_via_gemini($part_id);
         if (!empty($gen['ok']) && !empty($gen['note'])) {
-            array_unshift($notes, $gen['note']);
-            if (count($notes) > 300) {
-                $notes = array_slice($notes, 0, 300);
-            }
-            update_option(self::OPT_BODY_NOTES, $notes);
+            self::persist_and_publish_fullset_health_note($gen['note']);
         }
     }
 
@@ -1627,13 +1871,12 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $n['views'] = ($nid !== '' && isset($note_views[$nid])) ? (int) $note_views[$nid] : 0;
             $published[] = $n;
         }
-        $cfg = get_option(self::OPT_NOTES_CFG, array());
         return new \WP_REST_Response(array(
             'ok'            => true,
             'todayKst'      => $today_kst,
             'nextUpdateKst' => self::compute_next_two_day_kst($today_kst),
             'cycleDays'     => 2,
-            'autoReady'     => is_array($cfg) && !empty($cfg['geminiApiKey']),
+            'autoReady'     => self::resolve_active_gemini_key() !== '',
             'noteViews'     => $note_views,
             'notes'         => $published
         ), 200);
@@ -1702,7 +1945,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         }
 
         if ($action === 'save_config') {
-            return new \WP_REST_Response(array('ok' => true, 'autoReady' => !empty($cfg['geminiApiKey'])), 200);
+            return new \WP_REST_Response(array('ok' => true, 'autoReady' => self::resolve_active_gemini_key() !== ''), 200);
         }
 
         if ($action === 'generate_now') {
@@ -1713,11 +1956,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 return new \WP_REST_Response($gen, 400);
             }
             $new_note = $gen['note'];
-            $notes = array_values(array_filter($notes, function($x) use ($new_note) {
-                return ($x['id'] ?? '') !== $new_note['id'];
-            }));
-            array_unshift($notes, $new_note);
-            update_option(self::OPT_BODY_NOTES, $notes);
+            self::persist_and_publish_fullset_health_note($new_note);
             return new \WP_REST_Response(array('ok' => true, 'note' => $new_note), 200);
         }
 
@@ -2143,28 +2382,58 @@ class Bareun_Master_SEO_Engine_V1 {
         }
 
         $gh_raw = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
+        $resolve_slot_fn = function ($raw_str) use ($gh_raw) {
+            $s = trim((string) $raw_str);
+            if ($s === '') {
+                return array('canonical' => '', 'display' => '');
+            }
+            if (preg_match('#^https?://#i', $s)) {
+                return array('canonical' => $s, 'display' => $s);
+            }
+            if (strpos($s, '/wp-content/') === 0) {
+                $abs = self::CANONICAL_ORIGIN . $s;
+                return array('canonical' => $abs, 'display' => $abs);
+            }
+            $clean = ltrim($s, './');
+            $canon = $gh_raw . $clean;
+            $disp  = (stripos($clean, 'webp/') === 0)
+                ? ($gh_raw . $clean)
+                : ($gh_raw . 'webp/' . preg_replace('/\.(png|jpe?g)$/i', '.webp', $clean));
+            return array('canonical' => $canon, 'display' => $disp);
+        };
+
         $raw_hero = trim((string) ($target['deepIllustImg'] ?? $hub['hero']));
-        if (preg_match('#^https?://#i', $raw_hero)) {
-            $og_img = $raw_hero;
-            $webp_hero = $raw_hero;
-        } elseif (strpos($raw_hero, '/wp-content/') === 0) {
-            $og_img = self::CANONICAL_ORIGIN . $raw_hero;
-            $webp_hero = $og_img;
-        } else {
-            $clean_hero = ltrim($raw_hero, './');
-            $og_img = $gh_raw . $clean_hero;
-            if (stripos($clean_hero, 'webp/') === 0) {
-                $webp_hero = $gh_raw . $clean_hero;
-            } else {
-                $webp_hero = $gh_raw . 'webp/' . preg_replace('/\.(png|jpe?g)$/i', '.webp', $clean_hero);
+        if ($raw_hero === '') {
+            $raw_hero = $hub['hero'];
+        }
+        $hero_urls = $resolve_slot_fn($raw_hero);
+        $og_img    = $hero_urls['canonical'];
+        $webp_hero = $hero_urls['display'];
+
+        // Only fall back to WP post thumbnail when note uses generic hub hero
+        if ($raw_hero === $hub['hero']) {
+            $hn_post = get_page_by_path('health-note-' . $clean_id, OBJECT, 'post');
+            if ($hn_post && $hn_post->post_status === 'publish') {
+                $thumb_u = get_the_post_thumbnail_url($hn_post, 'full');
+                if (!empty($thumb_u)) {
+                    $og_img = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $thumb_u);
+                }
             }
         }
-        // Prefer official WP media URL if post has featured image
-        $hn_post = get_page_by_path('health-note-' . $clean_id, OBJECT, 'post');
-        if ($hn_post && $hn_post->post_status === 'publish') {
-            $thumb_u = get_the_post_thumbnail_url($hn_post, 'full');
-            if (!empty($thumb_u)) {
-                $og_img = preg_replace('#^https?://(www\.)?bareunhaniwon\.com#i', self::CANONICAL_ORIGIN, (string) $thumb_u);
+
+        $empathy_urls    = $resolve_slot_fn($target['empathyIllustImg'] ?? '');
+        $routine_urls    = $resolve_slot_fn($target['routineIllustImg'] ?? '');
+        $empathy_caption = trim((string) ($target['empathyIllustCaption'] ?? ''));
+        $empathy_alt     = trim((string) ($target['empathyIllustAlt'] ?? ($part_label . ' 일상 공감 장면 — ' . ($empathy_caption !== '' ? $empathy_caption : $theme))));
+        $routine_caption = trim((string) ($target['routineIllustCaption'] ?? ''));
+        $routine_alt     = trim((string) ($target['routineIllustAlt'] ?? ($part_label . ' 전후 실천 루틴 비교 — ' . ($routine_caption !== '' ? $routine_caption : $theme))));
+        $consumer_kws    = array();
+        if (isset($target['consumerKeywords']) && is_array($target['consumerKeywords'])) {
+            foreach ($target['consumerKeywords'] as $ckw) {
+                $ckw_s = trim((string) $ckw);
+                if ($ckw_s !== '') {
+                    $consumer_kws[] = $ckw_s;
+                }
             }
         }
 
@@ -2175,6 +2444,22 @@ class Bareun_Master_SEO_Engine_V1 {
         $director_avatar = $gh_raw . 'webp/card_1_director.webp';
 
         $deep_caption = trim((string) ($target['deepIllustCaption'] ?? ($part_label . ' 해부 생리 모식도')));
+        $deep_alt     = trim((string) ($target['deepIllustAlt'] ?? ($part_label . ' — ' . $deep_caption)));
+        $merged_kws   = array_values(array_unique(array_filter(array_merge(
+            array($keyword, $part_label, $theme),
+            $consumer_kws,
+            array('오늘의 건강 글')
+        ))));
+        $merged_kw_str = implode(', ', $merged_kws);
+        $schema_imgs   = array_values(array_unique(array_filter(array(
+            $empathy_urls['canonical'],
+            $og_img,
+            $routine_urls['canonical']
+        ))));
+        if (empty($schema_imgs)) {
+            $schema_imgs = array($og_img);
+        }
+        $preload_lead_img = ($empathy_urls['display'] !== '') ? $empathy_urls['display'] : $webp_hero;
         $deep_title   = trim((string) ($target['deepTitle'] ?? ($theme . ', 우리 몸속에서는 어떤 변화가 일어날까요?')));
         $deep_paras   = (isset($target['deepParagraphs']) && is_array($target['deepParagraphs'])) ? $target['deepParagraphs'] : array();
         $clin_obs     = trim((string) ($target['clinicalObservation'] ?? ''));
@@ -2326,14 +2611,14 @@ class Bareun_Master_SEO_Engine_V1 {
                     'mainEntityOfPage' => array('@id' => $canonical_url . '#webpage'),
                     'headline'         => $q_title,
                     'description'      => $direct_answer,
-                    'image'            => array($og_img),
+                    'image'            => $schema_imgs,
                     'datePublished'    => $pub_date . 'T09:00:00+09:00',
                     'dateModified'     => $rev_date . 'T10:30:00+09:00',
                     'inLanguage'       => 'ko-KR',
                     'author'           => array('@id' => self::CANONICAL_ORIGIN . '/director/#physician'),
                     'publisher'        => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
                     'articleSection'   => $part_label . ' · ' . $theme,
-                    'keywords'         => $keyword . ', ' . $part_label . ', ' . $theme . ', 오늘의 건강 글',
+                    'keywords'         => $merged_kw_str,
                     'citation'         => array($academic)
                 )
             )
@@ -2365,6 +2650,7 @@ class Bareun_Master_SEO_Engine_V1 {
         echo '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />' . "\n";
         echo '  <title>' . esc_html($page_title) . '</title>' . "\n";
         echo '  <meta name="description" content="' . esc_attr($meta_desc) . '" />' . "\n";
+        echo '  <meta name="keywords" content="' . esc_attr($merged_kw_str) . '" />' . "\n";
         echo '  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />' . "\n";
         if ($naver_v !== '') {
             echo '  <meta name="naver-site-verification" content="' . esc_attr($naver_v) . '" />' . "\n";
@@ -2388,7 +2674,7 @@ class Bareun_Master_SEO_Engine_V1 {
         echo '  <meta property="article:modified_time" content="' . esc_attr($rev_date . 'T10:30:00+09:00') . '" />' . "\n";
         echo '  <meta property="article:section" content="' . esc_attr($part_label . ' · ' . $keyword) . '" />' . "\n";
         echo '  <meta name="twitter:card" content="summary_large_image" />' . "\n";
-        echo '  <link rel="preload" as="image" href="' . esc_url($webp_hero) . '" />' . "\n";
+        echo '  <link rel="preload" as="image" href="' . esc_url($preload_lead_img) . '" />' . "\n";
         echo '  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />' . "\n";
         echo '  <link rel="preconnect" href="https://fonts.googleapis.com" />' . "\n";
         echo '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
@@ -2444,9 +2730,16 @@ class Bareun_Master_SEO_Engine_V1 {
     .mt-myth { background:var(--rose-bg); border:1px solid #FECDD3; color:var(--rose-ink); }
     .mt-truth { background:var(--emerald-bg); border:1px solid #A7F3D0; color:var(--emerald-ink); }
     .mt-tag { display:inline-block; font-size:0.76rem; font-weight:800; margin-bottom:5px; }
-    .medical-figure-wrap { margin:0 0 20px; background:var(--bg-card); border:1px solid var(--border-soft); border-radius:18px; overflow:hidden; }
-    .medical-figure-wrap img { width:100%; height:auto; max-height:410px; object-fit:cover; display:block; }
-    .medical-figcaption { padding:12px 18px; background:#F7F3E9; border-top:1px solid var(--border-soft); font-size:0.83rem; color:var(--ink-700); font-weight:600; }
+    .medical-figure-wrap { margin:0 0 20px; background:var(--bg-card); border:1px solid var(--border-soft); border-radius:18px; overflow:hidden; box-shadow:0 8px 24px rgba(22,20,18,0.04); }
+    .medical-figure-wrap img { width:100%; height:auto; max-height:430px; object-fit:cover; display:block; }
+    .medical-figcaption { padding:12px 18px; background:#F7F3E9; border-top:1px solid var(--border-soft); font-size:0.83rem; color:var(--ink-700); font-weight:600; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .slot-badge { display:inline-flex; align-items:center; padding:2px 9px; border-radius:999px; font-size:0.71rem; font-weight:800; letter-spacing:-0.01em; flex-shrink:0; }
+    .slot-badge-empathy { background:var(--espresso); color:#F4DFB0; border:1px solid var(--gold-500); }
+    .slot-badge-mechanism { background:var(--gold-600); color:#FFFFFF; }
+    .slot-badge-routine { background:#065F46; color:#ECFDF5; }
+    .consumer-kw-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:12px; padding-top:12px; border-top:1px dashed var(--gold-200); }
+    .consumer-kw-label { font-size:0.75rem; font-weight:800; color:var(--gold-600); margin-right:2px; }
+    .consumer-kw-chip { display:inline-flex; align-items:center; padding:3px 10px; border-radius:999px; background:#FFFFFF; border:1px solid var(--gold-200); color:var(--ink-700); font-size:0.75rem; font-weight:700; }
     .bridge-3d-banner { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; background:linear-gradient(135deg,#171310 0%,#261E18 100%); color:#FFFFFF; border-top:1px solid rgba(197,160,89,0.35); flex-wrap:wrap; }
     .bridge-3d-text strong { display:block; font-size:0.95rem; color:#F4DFB0; margin-bottom:3px; }
     .bridge-3d-text span { font-size:0.82rem; color:#D7CFC0; }
@@ -2542,7 +2835,24 @@ class Bareun_Master_SEO_Engine_V1 {
       <section class="direct-answer-lead" aria-label="핵심 의학 요약">
         <div class="direct-answer-label">💡 바쁜 일상을 위한 30초 핵심 결론</div>
         <p><?php echo esc_html($direct_answer); ?></p>
+        <?php if (!empty($consumer_kws)) : ?>
+          <div class="consumer-kw-row" aria-label="자주 찾는 생활 건강 키워드">
+            <span class="consumer-kw-label">🔎 자주 찾는 일상 키워드</span>
+            <?php foreach ($consumer_kws as $ckw_item) : ?>
+              <span class="consumer-kw-chip">#<?php echo esc_html($ckw_item); ?></span>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
       </section>
+
+      <?php if ($empathy_urls['display'] !== '') : ?>
+      <figure class="medical-figure-wrap slot-empathy-figure">
+        <img src="<?php echo esc_url($empathy_urls['display']); ?>" alt="<?php echo esc_attr($empathy_alt); ?>" width="1376" height="768" fetchpriority="high" />
+        <?php if ($empathy_caption !== '') : ?>
+          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-empathy">일상 공감 01</span><span><?php echo esc_html($empathy_caption); ?></span></figcaption>
+        <?php endif; ?>
+      </figure>
+      <?php endif; ?>
 
       <section class="content-section">
         <h2>일상 속 이런 모습이 반복되고 있나요?</h2>
@@ -2564,9 +2874,9 @@ class Bareun_Master_SEO_Engine_V1 {
         </div>
       </section>
 
-      <figure class="medical-figure-wrap">
-        <img src="<?php echo esc_url($webp_hero); ?>" alt="<?php echo esc_attr($part_label . ' — ' . $deep_caption); ?>" width="1376" height="768" />
-        <figcaption class="medical-figcaption">▲ <?php echo esc_html($deep_caption); ?></figcaption>
+      <figure class="medical-figure-wrap slot-mechanism-figure">
+        <img src="<?php echo esc_url($webp_hero); ?>" alt="<?php echo esc_attr($deep_alt); ?>" width="1376" height="768" decoding="async" />
+        <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-mechanism">원리 도해 02</span><span><?php echo esc_html($deep_caption); ?></span></figcaption>
         <div class="bridge-3d-banner">
           <div class="bridge-3d-text">
             <strong>🧬 방금 읽은 ‘<?php echo esc_html($part_label); ?>’ 구조, 입체로 직접 돌려 보시겠어요?</strong>
@@ -2620,6 +2930,15 @@ class Bareun_Master_SEO_Engine_V1 {
           </table>
         </div>
       </section>
+      <?php endif; ?>
+
+      <?php if ($routine_urls['display'] !== '') : ?>
+      <figure class="medical-figure-wrap slot-routine-figure">
+        <img src="<?php echo esc_url($routine_urls['display']); ?>" alt="<?php echo esc_attr($routine_alt); ?>" width="1376" height="768" loading="lazy" decoding="async" />
+        <?php if ($routine_caption !== '') : ?>
+          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-routine">전·후 루틴 03</span><span><?php echo esc_html($routine_caption); ?></span></figcaption>
+        <?php endif; ?>
+      </figure>
       <?php endif; ?>
 
       <section class="content-section">
@@ -4193,6 +4512,19 @@ class Bareun_Custom_Studio_Engine_V4 {
         }
 
         $hn_cfg = self::load_health_notes_cfg_php(false);
+        if (is_array($hn_cfg) && !empty($hn_cfg['notes']) && is_array($hn_cfg['notes'])) {
+            foreach ($hn_cfg['notes'] as $hn_item) {
+                if (!is_array($hn_item)) continue;
+                foreach (array('empathyIllustImg', 'deepIllustImg', 'routineIllustImg') as $hk) {
+                    if (!empty($hn_item[$hk])) {
+                        $clean = explode('?', (string)$hn_item[$hk])[0];
+                        if ($clean && !in_array($clean, $availableImages, true)) {
+                            $availableImages[] = $clean;
+                        }
+                    }
+                }
+            }
+        }
 
         return new WP_REST_Response(array(
             'ok'                => true,
@@ -5302,6 +5634,100 @@ class Bareun_Custom_Studio_Engine_V4 {
             'usage'           => self::get_studio_ai_usage_php(),
             'message'         => '[' . $engine_used . '] 최상급 실사 이미지 생성 및 실서버 등록 완료!'
         ), 200);
+    }
+
+    /**
+     * Internal 16:9 editorial image generator for 2-day automated Health Note 3-slot publishing.
+     * Uses Argon High (Google Gemini 3 Pro Image -> Nano Banana Pro) with FLUX fallback and uploads to WP Media Library.
+     */
+    public static function generate_hn_slot_image_internal($user_prompt, $prefix = 'hn_auto', $fallback_api_key = '') {
+        $user_prompt = trim((string)$user_prompt);
+        if ($user_prompt === '') {
+            return '';
+        }
+        $prefix = preg_replace('/[^a-zA-Z0-9_-]/', '_', (string)$prefix);
+        if ($prefix === '') {
+            $prefix = 'hn_auto';
+        }
+        $seed = wp_rand(10000000, 99999999);
+        $bin  = null;
+
+        $ai_keys = self::get_raw_ai_keys();
+        if ($ai_keys['geminiKey'] === '' && $fallback_api_key !== '') {
+            $ai_keys['geminiKey'] = trim((string)$fallback_api_key);
+        }
+
+        $argon_prompt = self::build_argon_high_prompt_php(
+            $user_prompt . ' (16:9 가로 와이드 구도, 이미지 내 글자·숫자·로고·워터마크 0% 완전 배제, 따뜻한 캐시미어 아이보리 #FAF8F3 및 샴페인 골드 #C5A059 자연광 하이엔드 메디컬 에디토리얼 톤)',
+            '',
+            false,
+            false,
+            true,
+            '정면 (0°)',
+            false
+        );
+
+        if ($ai_keys['geminiKey'] !== '') {
+            $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, array());
+            if (is_array($g_out) && !empty($g_out['bin'])) {
+                $bin = $g_out['bin'];
+            }
+        }
+        if (!$bin && $ai_keys['falKey'] !== '') {
+            $f_out = self::call_fal_nano_banana_pro_php($ai_keys['falKey'], $argon_prompt, array(), false, $seed);
+            if (is_array($f_out) && !empty($f_out['bin'])) {
+                $bin = $f_out['bin'];
+            }
+        }
+        if (!$bin) {
+            $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, false, true, false);
+            $out_img_url = self::call_hf_gradio_flux(
+                'https://black-forest-labs-flux-1-schnell.hf.space',
+                array($en_prompt, $seed % 2147483647, false, 1344, 768, 4),
+                40
+            );
+            if ($out_img_url) {
+                $response = wp_remote_get($out_img_url, array(
+                    'timeout' => 40,
+                    'headers' => array('User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) BareunStudio/4.0')
+                ));
+                if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+                    $dl_bin = wp_remote_retrieve_body($response);
+                    if (strlen($dl_bin) >= 4000) {
+                        $bin = $dl_bin;
+                    }
+                }
+            }
+        }
+
+        if (!$bin) {
+            return '';
+        }
+
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $unique_name = 'bareun_hn_' . substr($prefix, 0, 28) . '_' . time() . '_' . wp_rand(100, 999) . '.jpg';
+        $upload = wp_upload_bits($unique_name, null, $bin);
+        if (!empty($upload['error']) || empty($upload['url'])) {
+            return '';
+        }
+
+        $attachment = array(
+            'guid'           => $upload['url'],
+            'post_mime_type' => 'image/jpeg',
+            'post_title'     => preg_replace('/\.[^.]+$/', '', $unique_name),
+            'post_content'   => $user_prompt,
+            'post_status'    => 'inherit'
+        );
+        $attach_id = wp_insert_attachment($attachment, $upload['file']);
+        if ($attach_id && function_exists('wp_generate_attachment_metadata')) {
+            $attach_data = wp_generate_attachment_metadata($attach_id, $upload['file']);
+            wp_update_attachment_metadata($attach_id, $attach_data);
+        }
+
+        return (string)$upload['url'];
     }
 
     public static function rest_sync_studio_assets($request) {

@@ -3636,7 +3636,10 @@
           if (pt && pt.defaultIllustImg) set.add(String(pt.defaultIllustImg).split('?')[0].trim());
         });
         (healthNotesConfig.notes || []).forEach(nt => {
-          if (nt && nt.deepIllustImg) set.add(String(nt.deepIllustImg).split('?')[0].trim());
+          if (!nt) return;
+          ['empathyIllustImg', 'deepIllustImg', 'routineIllustImg'].forEach(k => {
+            if (nt[k]) set.add(String(nt[k]).split('?')[0].trim());
+          });
         });
       }
       return Array.from(set).filter(Boolean);
@@ -3685,15 +3688,21 @@
       const page = getCurrentPage();
       if (!page) return;
 
-      if (targetType === 'hnDeepIllust') {
+      if (targetType === 'hnEmpathyIllust' || targetType === 'hnDeepIllust' || targetType === 'hnRoutineIllust') {
         const noteObj = findHealthNoteById(subIdx);
         if (noteObj) {
-          noteObj.deepIllustImg = chosenAsset;
+          const slotField = targetType === 'hnEmpathyIllust'
+            ? 'empathyIllustImg'
+            : (targetType === 'hnRoutineIllust' ? 'routineIllustImg' : 'deepIllustImg');
+          const slotLabel = targetType === 'hnEmpathyIllust'
+            ? '슬롯 ① 일상 공감 화보'
+            : (targetType === 'hnRoutineIllust' ? '슬롯 ③ 전·후 루틴 화보' : '슬롯 ② 원리 도해 일러스트');
+          noteObj[slotField] = chosenAsset;
           markDirty(true);
           renderHealthNotesCardsPane();
           syncHealthNoteLivePreview(false);
           closeAssetPickerModal();
-          showStatus('ok', `보관함 이미지(${chosenAsset})가 건강 글 [🔍 상세히] 일러스트에 반영되었습니다!`);
+          showStatus('ok', `보관함 이미지(${chosenAsset})가 건강 글 [${slotLabel}]에 반영되었습니다!`);
           return;
         }
       }
@@ -4478,7 +4487,13 @@
       if (isHealthNotesPage(page)) {
         const targetNote = findHealthNoteById(hnSelectedNoteId) || (healthNotesConfig && healthNotesConfig.notes && healthNotesConfig.notes[0]);
         if (!targetNote) return;
-        targetNote.deepIllustImg = assetToUse;
+        const slotKey = imState.hnSlotKey || 'deepIllustImg';
+        const slotLabelMap = {
+          empathyIllustImg: '슬롯 ① 상단 일상 공감 화보',
+          deepIllustImg: '슬롯 ② 본문 원리 도해 일러스트',
+          routineIllustImg: '슬롯 ③ 하단 전·후 루틴 화보'
+        };
+        targetNote[slotKey] = assetToUse;
         hnSelectedPartId = targetNote.partId || hnSelectedPartId;
         hnSelectedNoteId = targetNote.id;
         hnPreviewDetailExpanded = true;
@@ -4486,7 +4501,7 @@
         markDirty(true);
         renderAll();
         syncHealthNoteLivePreview(false);
-        showStatus('ok', `✅ [${targetNote.partLabel}] "${targetNote.questionTitle}"의 [🔍 상세히] 일러스트가 새 2K 이미지로 교체되었습니다!`);
+        showStatus('ok', `✅ [${targetNote.partLabel}] "${targetNote.questionTitle}"의 [${slotLabelMap[slotKey] || '슬롯 이미지'}]가 새 2K 이미지로 교체되었습니다!`);
         return;
       }
       const mode = modeOverride || imState.targetMode;
@@ -5423,13 +5438,26 @@
       showStatus('ok', `👁️ 우측 미리보기에서 [${noteObj.partLabel}] "${noteObj.questionTitle}" (${expandDetail ? '상세히 펼침' : '요약 기본'}) 화면을 표시합니다.`);
     }
 
-    function jumpToHnImageMaker(noteId, ev) {
+    function buildDefaultHnSlotPrompt(noteObj, slotKey) {
+      if (!noteObj) return '';
+      const topic = `${noteObj.partLabel || '주요 부위'} (${noteObj.theme || noteObj.keyword || noteObj.questionTitle || ''})`;
+      if (slotKey === 'empathyIllustImg') {
+        return `(얼굴미노출) 따뜻한 캐시미어 아이보리(#FAF8F3) 자연광 라이프스타일 에디토리얼 사진, ${topic} 관련 독자가 일상 속에서 불편함이나 고민을 느끼는 공감 순간을 뒷모습·측면·손동작 위주로 섬세하게 포착한 16:9 화보, 글자·워터마크 완전 배제`;
+      }
+      if (slotKey === 'routineIllustImg') {
+        return `(얼굴미노출) 16:9 좌·우 분할 비교(Before 나쁜 자세·생활 습관 vs After 편안한 저녁 이완·바른 실천 루틴) 하이엔드 라이프스타일 에디토리얼 화보, ${topic}, 따뜻한 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 조명, 글자·숫자·워터마크 완전 배제`;
+      }
+      return `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 3D 일러스트, ${topic} 관련 우리 몸 해부 생리 구조와 건강한 순환 원리를 직관적으로 보여주는 정갈한 캐시미어 아이보리(#FAF8F3)·샴페인 골드(#C5A059) 톤 16:9 클린 메디컬 일러스트, 텍스트와 글자 완전 배제`;
+    }
+
+    function jumpToHnImageMaker(noteId, ev, slotKey = 'deepIllustImg') {
       if (ev) ev.stopPropagation();
       const noteObj = findHealthNoteById(noteId);
       if (!noteObj) return;
       hnSelectedNoteId = noteObj.id;
       hnPreviewDetailExpanded = true;
-      imState.promptText = `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 일러스트, ${noteObj.partLabel} (${noteObj.theme || noteObj.keyword || noteObj.questionTitle}) 관련 우리 몸 해부 생리 구조와 건강한 순환 원리를 직관적으로 보여주는 정갈한 아이보리·골드 톤 클린 메디컬 일러스트, 텍스트와 글자 완전 배제`;
+      imState.hnSlotKey = slotKey || 'deepIllustImg';
+      imState.promptText = buildDefaultHnSlotPrompt(noteObj, imState.hnSlotKey);
       imState.useDirectorFace = false;
       imState.useSourceImageRef = false;
       switchEditorTab('imagemaker');
@@ -5450,11 +5478,17 @@
         const headTitle = document.getElementById('hn-head-title-' + noteId);
         if (headTitle) headTitle.textContent = val || '(제목 없음)';
       }
+      if (key === 'empathyIllustImg') {
+        updateImgElementSrc(document.getElementById('hn-emp-thumb-' + noteId), val);
+      }
       if (key === 'deepIllustImg') {
         const thumbA = document.getElementById('hn-head-thumb-' + noteId);
         const thumbB = document.getElementById('hn-body-thumb-' + noteId);
         updateImgElementSrc(thumbA, val);
         updateImgElementSrc(thumbB, val);
+      }
+      if (key === 'routineIllustImg') {
+        updateImgElementSrc(document.getElementById('hn-rou-thumb-' + noteId), val);
       }
       if (refreshCards) {
         renderPageSwitcher();
@@ -5462,6 +5496,19 @@
       } else {
         refreshHnAdminPanels(noteId);
       }
+      syncHealthNoteLivePreview(false);
+    }
+
+    function updateHnKeywordsField(noteId, rawText) {
+      const noteObj = findHealthNoteById(noteId);
+      if (!noteObj) return;
+      noteObj.consumerKeywords = String(rawText || '')
+        .split(/[,\n]/)
+        .map(s => s.replace(/^#/, '').trim())
+        .filter(Boolean);
+      hnSelectedNoteId = noteObj.id;
+      markDirty(true);
+      refreshHnAdminPanels(noteId);
       syncHealthNoteLivePreview(false);
     }
 
@@ -5878,11 +5925,11 @@
       }
     }
 
-    function triggerHnIllustUpload(noteId) {
+    function triggerHnIllustUpload(noteId, slotKey = 'deepIllustImg') {
       pickAndUploadFile(null, savedName => {
         const noteObj = findHealthNoteById(noteId);
         if (!noteObj) return;
-        noteObj.deepIllustImg = savedName;
+        noteObj[slotKey || 'deepIllustImg'] = savedName;
         hnSelectedNoteId = noteObj.id;
         hnPreviewDetailExpanded = true;
         renderHealthNotesCardsPane();
@@ -5896,15 +5943,23 @@
       const pt = cfg.parts.find(p => p.id === targetPart) || cfg.parts[0];
       const todayStr = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
       const newId = `${targetPart}-${todayStr.replace(/-/g, '')}-${String(Date.now()).slice(-4)}`;
+      const pLabel = pt ? pt.partLabel : '주요 부위';
       const newNote = {
         id: newId,
         partId: targetPart,
-        partLabel: pt ? pt.partLabel : '주요 부위',
+        partLabel: pLabel,
         enabled: true,
         publishDate: todayStr,
         theme: '생활 속 건강 습관 점검',
-        keyword: (pt ? pt.partLabel : '건강') + ' 생활 가이드',
-        questionTitle: `${pt ? pt.partLabel : '우리 몸'}, 평소 어떤 생활 신호를 먼저 살펴보면 좋을까요?`,
+        keyword: pLabel + ' 생활 가이드',
+        consumerKeywords: [
+          `${pLabel} 일상 관리법`,
+          `${pLabel} 뻐근할 때 스트레칭`,
+          `${pLabel} 밤마다 불편한 이유`,
+          `${pLabel} 자가점검 체크리스트`,
+          `${pLabel} 수면 회복 습관`
+        ],
+        questionTitle: `${pLabel}, 평소 어떤 생활 신호를 먼저 살펴보면 좋을까요?`,
         empathyLines: [
           '일상 속에서 반복되는 작은 불편함이 단순 피로인지 몸이 보내는 신호인지 궁금할 때가 있습니다.',
           '바쁜 하루 중에도 집에서 먼저 가볍게 돌아볼 수 있는 기준을 알고 싶으실 때가 많습니다.'
@@ -5914,7 +5969,7 @@
           '초기 신호를 알아차리고 낮 활동과 밤 휴식 리듬을 함께 정돈해 주면 스스로 회복하는 힘을 지키는 데 큰 도움이 됩니다.'
         ],
         mythLines: [
-          '일시적인 불편함은 무조건 참거나 반대로 운동을 완전히 쉬어야만 좋아진다고 생각하기 쉽습니다.',
+          '일시적인 불편함은 마냥 참거나 반대로 운동을 완전히 쉬어야만 좋아진다고 생각하기 쉽습니다.',
           '하지만 통증이 없는 범위의 부드러운 움직임과 충분한 수분·수면 균형이 오히려 순환 회복을 훨씬 빠르게 돕습니다.'
         ],
         checkList: [
@@ -5950,8 +6005,12 @@
           '일상 보행이나 수면을 반복해서 깨울 정도로 불편함이 지속될 때'
         ],
         deepEnabled: true,
-        deepIllustImg: (pt && pt.defaultIllustImg) || 'illust_knee_growth_care.jpg',
-        deepIllustCaption: (pt && pt.defaultIllustCaption) || `${pt ? pt.partLabel : '해당 부위'}의 순환과 균형 원리를 나타낸 이해 도식`,
+        empathyIllustImg: `webp/hn_${targetPart}_20261111_empathy.webp`,
+        empathyIllustCaption: `${pLabel}의 일상 속 작은 불편 신호를 돌아보는 공감 장면`,
+        deepIllustImg: `hn_${targetPart}_20261111_mechanism.jpg`,
+        deepIllustCaption: (pt && pt.defaultIllustCaption) || `${pLabel}의 순환과 균형 원리를 나타낸 이해 도식`,
+        routineIllustImg: `webp/hn_${targetPart}_20261111_routine.webp`,
+        routineIllustCaption: `낮 시간 바른 체중 분산과 취침 전 이완을 비교한 전·후 생활 실천 루틴`,
         deepTitle: '생활 속 작은 신호, 우리 몸속에서는 어떤 변화가 일어날까요?',
         deepParagraphs: [
           '우리 몸은 낮 동안 중력과 움직임을 견디며 에너지를 쓰고, 밤사이 깊은 수면 구간에 미세혈류와 조직 탄력을 회복하는 정교한 일주기 리듬을 가지고 있습니다. 특정 부위에 긴장이 오래 머물면 주변 순환이 완만해지면서 묵직함이나 피로 신호가 먼저 나타나게 됩니다.',
@@ -6074,8 +6133,12 @@
         const isEnabled = note.enabled !== false;
         const isSelected = hnSelectedNoteId === note.id;
         const ptDef = cfg.parts.find(p => p.id === note.partId) || {};
+        const rawEmpThumb = note.empathyIllustImg || `webp/hn_${note.partId || 'knee'}_20261111_empathy.webp`;
+        const empThumbUrl = resolveStudioAssetUrl(rawEmpThumb);
         const rawThumb = note.deepIllustImg || ptDef.defaultIllustImg || 'illust_knee_growth_care.jpg';
         const thumbUrl = resolveStudioAssetUrl(rawThumb);
+        const rawRouThumb = note.routineIllustImg || `webp/hn_${note.partId || 'knee'}_20261111_routine.webp`;
+        const rouThumbUrl = resolveStudioAssetUrl(rawRouThumb);
         const numStr = String(idx + 1).padStart(2, '0');
 
         return `
@@ -6148,6 +6211,10 @@
                     <input type="text" value="${escHtml(note.seoTitle || '')}" placeholder="예: 무릎 성장통 vs 관절통 구별 기준 | 바른한의원 대전본점" oninput="updateHnField('${escHtml(note.id)}', 'seoTitle', this.value, false)" />
                   </div>
                 </div>
+                <div class="field">
+                  <label>🔎 소비자 실생활 검색 키워드 5선 (consumerKeywords · 쉼표 구분 — 본문 해시태그 · 메타태그 · 이미지 Alt · JSON-LD 자동 반영)</label>
+                  <input type="text" value="${escHtml((note.consumerKeywords || []).join(', '))}" placeholder="예: 초등학생 무릎 통증, 아이 밤마다 다리 아파할 때, 성장통 관절통 구별법" oninput="updateHnKeywordsField('${escHtml(note.id)}', this.value)" />
+                </div>
                 <div class="grid-2">
                   <div class="field">
                     <label>🎒 1. 일상 속 공감 상황 (줄바꿈으로 문장 구분)</label>
@@ -6189,29 +6256,66 @@
                   <textarea rows="3" oninput="updateHnField('${escHtml(note.id)}', 'directAnswer', this.value, false)">${escHtml(note.directAnswer || '')}</textarea>
                 </div>
 
-                <div class="field">
-                  <label>🖼️ [Stage 2] 심층 해부·생리 일러스트 이미지 (deepIllustImg · 1376×768 권장)</label>
-                  <div class="list-row-inline">
-                    <img id="hn-body-thumb-${escHtml(note.id)}" class="sub-thumb-preview" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumb)}" alt="Deep Illust"
-                      onclick="openImageLightbox(this.getAttribute('data-raw-path'), '심층 일러스트 원본 보기')"
-                      onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
-                    <input type="text" list="existingImagesList" value="${escHtml(note.deepIllustImg || '')}" placeholder="예: illust_knee_growth_care.jpg"
-                      oninput="updateHnField('${escHtml(note.id)}', 'deepIllustImg', this.value, false)" />
-                    <button type="button" class="mini-btn gold-helper" onclick="triggerHnIllustUpload('${escHtml(note.id)}')">📁 내 PC 업로드</button>
-                    <button type="button" class="mini-btn" onclick="openAssetPickerModal(-1, 'hnDeepIllust', '${escHtml(note.id)}')">🖼️ 보관함 선택</button>
-                    <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event)">📸 AI 새 일러스트 제작</button>
+                <div style="padding:12px; border-radius:10px; background:#fffdf8; border:1px solid #e2cfa4; margin-bottom:12px;">
+                  <div style="font-size:12.5px; font-weight:900; color:#5a3e1b; margin-bottom:10px;">
+                    🖼️ [Stage 2 · 상·중·하 3단 멀티 화보 풀세트] 일상 공감 ① · 원리 도해 ② · 전·후 루틴 ③ (1376×768 16:9 권장)
+                  </div>
+
+                  <!-- Slot 1: Empathy -->
+                  <div class="field" style="padding:9px 10px; border-radius:8px; background:#fcfaf4; border:1px solid #ede3cb; margin-bottom:8px;">
+                    <label style="color:#78350f;">① 상단 도입부 · 일상 공감 01 화보 (empathyIllustImg &amp; 캡션)</label>
+                    <div class="list-row-inline" style="margin-bottom:6px;">
+                      <img id="hn-emp-thumb-${escHtml(note.id)}" class="sub-thumb-preview" src="${escHtml(empThumbUrl)}" data-raw-path="${escHtml(rawEmpThumb)}" alt="Empathy Illust"
+                        onclick="openImageLightbox(this.getAttribute('data-raw-path'), '슬롯 ① 일상 공감 화보 원본 보기')"
+                        onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                      <input type="text" list="existingImagesList" value="${escHtml(note.empathyIllustImg || '')}" placeholder="예: webp/hn_knee_20261111_empathy.webp"
+                        oninput="updateHnField('${escHtml(note.id)}', 'empathyIllustImg', this.value, false)" />
+                      <button type="button" class="mini-btn gold-helper" onclick="triggerHnIllustUpload('${escHtml(note.id)}', 'empathyIllustImg')">📁 PC 업로드</button>
+                      <button type="button" class="mini-btn" onclick="openAssetPickerModal(-1, 'hnEmpathyIllust', '${escHtml(note.id)}')">🖼️ 보관함</button>
+                      <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event, 'empathyIllustImg')">📸 AI 제작</button>
+                    </div>
+                    <input type="text" value="${escHtml(note.empathyIllustCaption || '')}" placeholder="슬롯 ① 일상 공감 화보 하단 한글 캡션"
+                      oninput="updateHnField('${escHtml(note.id)}', 'empathyIllustCaption', this.value, false)" />
+                  </div>
+
+                  <!-- Slot 2: Mechanism -->
+                  <div class="field" style="padding:9px 10px; border-radius:8px; background:#fcfaf4; border:1px solid #ede3cb; margin-bottom:8px;">
+                    <label style="color:#1e3a8a;">② 본문 중단 · 해부·생리 원리 도해 02 (deepIllustImg &amp; 캡션 · 대표 OG 썸네일 겸용)</label>
+                    <div class="list-row-inline" style="margin-bottom:6px;">
+                      <img id="hn-body-thumb-${escHtml(note.id)}" class="sub-thumb-preview" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumb)}" alt="Deep Illust"
+                        onclick="openImageLightbox(this.getAttribute('data-raw-path'), '슬롯 ② 심층 원리 일러스트 원본 보기')"
+                        onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                      <input type="text" list="existingImagesList" value="${escHtml(note.deepIllustImg || '')}" placeholder="예: hn_knee_20261111_mechanism.jpg"
+                        oninput="updateHnField('${escHtml(note.id)}', 'deepIllustImg', this.value, false)" />
+                      <button type="button" class="mini-btn gold-helper" onclick="triggerHnIllustUpload('${escHtml(note.id)}', 'deepIllustImg')">📁 PC 업로드</button>
+                      <button type="button" class="mini-btn" onclick="openAssetPickerModal(-1, 'hnDeepIllust', '${escHtml(note.id)}')">🖼️ 보관함</button>
+                      <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event, 'deepIllustImg')">📸 AI 제작</button>
+                    </div>
+                    <input type="text" value="${escHtml(note.deepIllustCaption || '')}" placeholder="슬롯 ② 심층 원리 도해 하단 한글 캡션"
+                      oninput="updateHnField('${escHtml(note.id)}', 'deepIllustCaption', this.value, false)" />
+                  </div>
+
+                  <!-- Slot 3: Routine -->
+                  <div class="field" style="padding:9px 10px; border-radius:8px; background:#fcfaf4; border:1px solid #ede3cb; margin-bottom:0;">
+                    <label style="color:#065f46;">③ 하단 실천부 · 전·후 생활 루틴 03 화보 (routineIllustImg &amp; 캡션)</label>
+                    <div class="list-row-inline" style="margin-bottom:6px;">
+                      <img id="hn-rou-thumb-${escHtml(note.id)}" class="sub-thumb-preview" src="${escHtml(rouThumbUrl)}" data-raw-path="${escHtml(rawRouThumb)}" alt="Routine Illust"
+                        onclick="openImageLightbox(this.getAttribute('data-raw-path'), '슬롯 ③ 전·후 루틴 화보 원본 보기')"
+                        onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
+                      <input type="text" list="existingImagesList" value="${escHtml(note.routineIllustImg || '')}" placeholder="예: webp/hn_knee_20261111_routine.webp"
+                        oninput="updateHnField('${escHtml(note.id)}', 'routineIllustImg', this.value, false)" />
+                      <button type="button" class="mini-btn gold-helper" onclick="triggerHnIllustUpload('${escHtml(note.id)}', 'routineIllustImg')">📁 PC 업로드</button>
+                      <button type="button" class="mini-btn" onclick="openAssetPickerModal(-1, 'hnRoutineIllust', '${escHtml(note.id)}')">🖼️ 보관함</button>
+                      <button type="button" class="mini-btn" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="jumpToHnImageMaker('${escHtml(note.id)}', event, 'routineIllustImg')">📸 AI 제작</button>
+                    </div>
+                    <input type="text" value="${escHtml(note.routineIllustCaption || '')}" placeholder="슬롯 ③ 전·후 실천 루틴 화보 하단 한글 캡션"
+                      oninput="updateHnField('${escHtml(note.id)}', 'routineIllustCaption', this.value, false)" />
                   </div>
                 </div>
 
-                <div class="grid-2">
-                  <div class="field">
-                    <label>일러스트 하단 고유 캡션 (deepIllustCaption)</label>
-                    <input type="text" value="${escHtml(note.deepIllustCaption || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepIllustCaption', this.value, false)" />
-                  </div>
-                  <div class="field">
-                    <label>📖 [Stage 3] 심층 생리 원리 소제목 (deepTitle)</label>
-                    <input type="text" value="${escHtml(note.deepTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepTitle', this.value, false)" />
-                  </div>
+                <div class="field">
+                  <label>📖 [Stage 3] 심층 생리 원리 소제목 (deepTitle)</label>
+                  <input type="text" value="${escHtml(note.deepTitle || '')}" oninput="updateHnField('${escHtml(note.id)}', 'deepTitle', this.value, false)" />
                 </div>
 
                 <div class="field">
@@ -6422,12 +6526,14 @@
       `;
     }
 
-    function selectHnImageMakerTarget(noteId) {
+    function selectHnImageMakerTarget(noteId, slotOverride) {
       const noteObj = findHealthNoteById(noteId);
       if (!noteObj) return;
       hnSelectedNoteId = noteObj.id;
       hnPreviewDetailExpanded = true;
-      imState.promptText = `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 일러스트, ${noteObj.partLabel} (${noteObj.theme || noteObj.keyword || noteObj.questionTitle}) 관련 우리 몸 해부 생리 구조와 건강한 순환 원리를 직관적으로 보여주는 정갈한 아이보리·골드 톤 클린 메디컬 일러스트, 텍스트와 글자 완전 배제`;
+      if (slotOverride) imState.hnSlotKey = slotOverride;
+      const activeSlot = imState.hnSlotKey || 'deepIllustImg';
+      imState.promptText = buildDefaultHnSlotPrompt(noteObj, activeSlot);
       renderImageMakerPane();
       syncHealthNoteLivePreview(false);
     }
@@ -6441,11 +6547,28 @@
         return;
       }
       hnSelectedNoteId = activeNote.id;
+      const activeSlot = imState.hnSlotKey || 'deepIllustImg';
+      imState.hnSlotKey = activeSlot;
       if (!imState.promptText) {
-        imState.promptText = `(얼굴미노출) 따뜻하고 고급스러운 의학 에디토리얼 일러스트, ${activeNote.partLabel} (${activeNote.theme || activeNote.keyword || ''}) 관련 해부 생리 구조와 건강한 순환 원리를 보여주는 아이보리·골드 톤 클린 메디컬 일러스트, 텍스트 배제`;
+        imState.promptText = buildDefaultHnSlotPrompt(activeNote, activeSlot);
       }
       const ptDef = cfg.parts.find(p => p.id === activeNote.partId) || {};
-      const currentRawImg = activeNote.deepIllustImg || ptDef.defaultIllustImg || 'illust_knee_growth_care.jpg';
+      const slotMetaMap = {
+        empathyIllustImg: {
+          label: '① 상단 도입부 · 일상 공감 01 화보',
+          raw: activeNote.empathyIllustImg || `webp/hn_${activeNote.partId || 'knee'}_20261111_empathy.webp`
+        },
+        deepIllustImg: {
+          label: '② 본문 중단 · 해부·생리 원리 도해 02',
+          raw: activeNote.deepIllustImg || ptDef.defaultIllustImg || 'illust_knee_growth_care.jpg'
+        },
+        routineIllustImg: {
+          label: '③ 하단 실천부 · 전·후 생활 루틴 03 화보',
+          raw: activeNote.routineIllustImg || `webp/hn_${activeNote.partId || 'knee'}_20261111_routine.webp`
+        }
+      };
+      const curSlotMeta = slotMetaMap[activeSlot] || slotMetaMap.deepIllustImg;
+      const currentRawImg = curSlotMeta.raw;
       const currentImgUrl = resolveStudioAssetUrl(currentRawImg);
       const generatedImgUrl = imState.lastGeneratedUrl ? resolveStudioAssetUrl(imState.lastGeneratedUrl) : '';
       const isArgonActive = Boolean(imState.aiKeyState && imState.aiKeyState.hasArgonEngine);
@@ -6457,26 +6580,36 @@
       box.innerHTML = `
         <div class="im-studio-hero" style="margin-bottom:14px;">
           <span style="display:inline-block; padding:3px 10px; border-radius:999px; background:rgba(16,185,129,0.25); border:1px solid rgba(52,211,153,0.65); color:#a7f3d0; font-size:11px; font-weight:900; margin-bottom:6px;">
-            ${isArgonActive ? `🟢 아르곤 하이 2K 가동 중 · 무료 잔여 ${freeRem}회` : '⚪ AI 일러스트 제작 스튜디오'}
+            ${isArgonActive ? `🟢 아르곤 하이 2K 가동 중 · 무료 잔여 ${freeRem}회` : '⚪ AI 3단 화보 제작 스튜디오'}
           </span>
-          <h3>[🧬 오늘의 건강 글] 심층 칼럼 해부·생리 일러스트 AI 제작</h3>
-          <p>선택한 건강 글의 <strong>[🔍 상세히] 영역 상단 일러스트</strong>를 프롬프트 지시만으로 깨끗한 2K 고해상도로 제작하여 1클릭 교체합니다.</p>
+          <h3>[🧬 오늘의 건강 글] 상·중·하 3단 멀티 화보 AI 제작</h3>
+          <p>선택한 건강 글의 <strong>① 일상 공감 · ② 원리 도해 · ③ 전·후 루틴</strong> 슬롯 중 원하는 위치를 골라 2K 고해상도로 제작·교체합니다.</p>
         </div>
 
         <div class="panel-box" style="padding:14px; margin-bottom:14px;">
-          <div class="field">
-            <label>1️⃣ 일러스트를 교체할 대상 건강 글 선택 (${cfg.notes.length}편)</label>
-            <select onchange="selectHnImageMakerTarget(this.value)">
-              ${cfg.notes.map(n => `<option value="${escHtml(n.id)}" ${n.id === activeNote.id ? 'selected' : ''}>[${escHtml(n.partLabel)}] ${escHtml(n.publishDate)} · ${escHtml(n.questionTitle)}</option>`).join('')}
-            </select>
+          <div class="grid-2">
+            <div class="field">
+              <label>1️⃣ 대상 건강 글 선택 (${cfg.notes.length}편)</label>
+              <select onchange="selectHnImageMakerTarget(this.value)">
+                ${cfg.notes.map(n => `<option value="${escHtml(n.id)}" ${n.id === activeNote.id ? 'selected' : ''}>[${escHtml(n.partLabel)}] ${escHtml(n.publishDate)} · ${escHtml(n.questionTitle)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label>2️⃣ 교체할 이미지 슬롯 위치 선택 (3단 풀세트)</label>
+              <select onchange="selectHnImageMakerTarget('${escHtml(activeNote.id)}', this.value)">
+                <option value="empathyIllustImg" ${activeSlot === 'empathyIllustImg' ? 'selected' : ''}>① 상단 도입부 · 일상 공감 01 화보</option>
+                <option value="deepIllustImg" ${activeSlot === 'deepIllustImg' ? 'selected' : ''}>② 본문 중단 · 해부·생리 원리 도해 02</option>
+                <option value="routineIllustImg" ${activeSlot === 'routineIllustImg' ? 'selected' : ''}>③ 하단 실천부 · 전·후 생활 루틴 03 화보</option>
+              </select>
+            </div>
           </div>
           <div class="field">
-            <label>2️⃣ AI 제작 프롬프트 (원하는 해부·생리·생활 장면을 한글로 입력)</label>
+            <label>3️⃣ AI 제작 프롬프트 (슬롯 성격에 맞춰 자동 추천되며 자유롭게 수정 가능)</label>
             <textarea rows="4" oninput="imState.promptText = this.value">${escHtml(imState.promptText || '')}</textarea>
           </div>
           <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <button type="button" class="btn btn-im-generate" onclick="generateSituationalImage()" ${imState.isGenerating ? 'disabled' : ''}>
-              ${imState.isGenerating ? '⏳ 2K 일러스트 생성 중...' : '✨ 이 프롬프트로 심층 일러스트 제작하기'}
+              ${imState.isGenerating ? '⏳ 2K 화보 생성 중...' : `✨ 이 프롬프트로 [${curSlotMeta.label}] 제작하기`}
             </button>
           </div>
         </div>
@@ -6484,13 +6617,13 @@
         <div class="panel-box" style="padding:14px;">
           <div class="grid-2">
             <div>
-              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--ink-sub);">현재 [🔍 상세히] 일러스트 — ${escHtml(currentRawImg)}</div>
-              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 심층 일러스트')">
+              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--ink-sub);">현재 [${escHtml(curSlotMeta.label)}] — ${escHtml(currentRawImg)}</div>
+              <div class="im-stage-box" onclick="openImageLightbox('${escHtml(currentRawImg)}', '현재 슬롯 화보')">
                 <img src="${escHtml(currentImgUrl)}" data-raw-path="${escHtml(currentRawImg)}" alt="Current" onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
               </div>
             </div>
             <div>
-              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:#047857;">새로 제작된 일러스트 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''}</div>
+              <div style="font-size:12px; font-weight:800; margin-bottom:6px; color:#047857;">새로 제작된 화보 ${imState.lastGeneratedFileName ? `(${escHtml(imState.lastGeneratedFileName)})` : ''}</div>
               <div class="im-stage-box">
                 ${generatedImgUrl
                   ? `<img src="${escHtml(generatedImgUrl)}" data-raw-path="${escHtml(imState.lastGeneratedUrl)}" alt="Generated" onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />`
@@ -6500,7 +6633,7 @@
           </div>
           <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
             <button type="button" class="btn btn-deploy-one" onclick="applyGeneratedImageToCard('replace_card')" ${!imState.lastGeneratedUrl ? 'disabled' : ''}>
-              🔄 선택한 건강 글 [🔍 상세히] 일러스트로 즉시 적용
+              🔄 선택한 건강 글 [${escHtml(curSlotMeta.label)}]로 즉시 적용
             </button>
           </div>
         </div>

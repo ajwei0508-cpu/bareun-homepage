@@ -152,8 +152,16 @@ const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
         myth: Array.isArray(cn.mythLines) ? cn.mythLines : (Array.isArray(cn.myth) ? cn.myth : []),
         check: Array.isArray(cn.checkList) ? cn.checkList : (Array.isArray(cn.check) ? cn.check : []),
         deepEnabled: cn.deepEnabled !== false,
+        empathyIllustImg: cn.empathyIllustImg || '',
+        empathyIllustCaption: cn.empathyIllustCaption || '',
+        empathyIllustAlt: cn.empathyIllustAlt || '',
         deepIllustImg: cn.deepIllustImg || '',
         deepIllustCaption: cn.deepIllustCaption || '',
+        deepIllustAlt: cn.deepIllustAlt || '',
+        routineIllustImg: cn.routineIllustImg || '',
+        routineIllustCaption: cn.routineIllustCaption || '',
+        routineIllustAlt: cn.routineIllustAlt || '',
+        consumerKeywords: Array.isArray(cn.consumerKeywords) ? cn.consumerKeywords : [],
         deepTitle: cn.deepTitle || '',
         deepParagraphs: Array.isArray(cn.deepParagraphs) ? cn.deepParagraphs : [],
         deepReference: cn.deepReference || '',
@@ -1440,6 +1448,72 @@ function buildBodyExplorerHtml() {
       line-height: 1.66;
       word-break: keep-all;
     }
+    .inline-consumer-kws {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+      padding-top: 8px;
+      border-top: 1px dashed #E5D4B0;
+    }
+    .ick-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #9E772B;
+      margin-right: 2px;
+    }
+    .ick-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #FFFFFF;
+      border: 1px solid #E5D4B0;
+      color: #4A4237;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .hip-empathy-hero-card {
+      margin: 12px 14px 2px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #E6DECB;
+      background: #FCFBF8;
+      box-shadow: 0 4px 14px rgba(18, 15, 12, 0.05);
+    }
+    .hip-empathy-hero-card img {
+      width: 100%;
+      height: auto;
+      max-height: 225px;
+      object-fit: cover;
+      display: block;
+    }
+    .hip-empathy-cap {
+      padding: 8px 11px;
+      background: #F8F4EA;
+      border-top: 1px solid #E6DECB;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #3A352F;
+      line-height: 1.48;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .slot-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 1.5px 7px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .spb-empathy { background: #14110F; color: #F4DFB0; border: 1px solid #C5A059; }
+    .spb-mechanism { background: #9E772B; color: #FFFFFF; }
+    .spb-routine { background: #065F46; color: #ECFDF5; }
     .inline-clinical-obs {
       margin-top: 10px;
       padding: 11px 13px;
@@ -2666,8 +2740,16 @@ function buildBodyExplorerHtml() {
             myth: Array.isArray(cn.mythLines) ? cn.mythLines : (Array.isArray(cn.myth) ? cn.myth : []),
             check: Array.isArray(cn.checkList) ? cn.checkList : (Array.isArray(cn.check) ? cn.check : []),
             deepEnabled: cn.deepEnabled !== false,
+            empathyIllustImg: cn.empathyIllustImg || '',
+            empathyIllustCaption: cn.empathyIllustCaption || '',
+            empathyIllustAlt: cn.empathyIllustAlt || '',
             deepIllustImg: cn.deepIllustImg || '',
             deepIllustCaption: cn.deepIllustCaption || '',
+            deepIllustAlt: cn.deepIllustAlt || '',
+            routineIllustImg: cn.routineIllustImg || '',
+            routineIllustCaption: cn.routineIllustCaption || '',
+            routineIllustAlt: cn.routineIllustAlt || '',
+            consumerKeywords: Array.isArray(cn.consumerKeywords) ? cn.consumerKeywords : [],
             deepTitle: cn.deepTitle || '',
             deepParagraphs: Array.isArray(cn.deepParagraphs) ? cn.deepParagraphs : [],
             deepReference: cn.deepReference || '',
@@ -2841,6 +2923,22 @@ function buildBodyExplorerHtml() {
         comparisonTable: raw.comparisonTable || null,
         selfCheckItems: Array.isArray(raw.selfCheckItems) ? raw.selfCheckItems : [],
         redFlags: Array.isArray(raw.redFlags) ? raw.redFlags : [],
+        empathyIllustImg: raw.empathyIllustImg || '',
+        empathyIllustCaption: raw.empathyIllustCaption || '',
+        empathyIllustAlt: raw.empathyIllustAlt || '',
+        deepIllustImg: raw.deepIllustImg || '',
+        deepIllustCaption: raw.deepIllustCaption || '',
+        deepIllustAlt: raw.deepIllustAlt || '',
+        routineIllustImg: raw.routineIllustImg || '',
+        routineIllustCaption: raw.routineIllustCaption || '',
+        routineIllustAlt: raw.routineIllustAlt || '',
+        consumerKeywords: Array.isArray(raw.consumerKeywords) ? raw.consumerKeywords : [],
+        deepTitle: raw.deepTitle || '',
+        deepParagraphs: Array.isArray(raw.deepParagraphs) ? raw.deepParagraphs : [],
+        deepReference: raw.deepReference || '',
+        deepSignalsTitle: raw.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호',
+        deepSignals: Array.isArray(raw.deepSignals) ? raw.deepSignals : [],
+        deepEnabled: raw.deepEnabled !== false,
         lastReviewed: raw.lastReviewed || raw.publishDate || todayKst
       };
     }
@@ -3341,20 +3439,32 @@ function buildBodyExplorerHtml() {
         );
       }).join('');
 
+      const pIdForHero = note.partId || currentPartId || 'knee';
+      const empSrc = resolveDeepIllustSrc(note.empathyIllustImg, pIdForHero, false);
+      const empCap = String(note.empathyIllustCaption || '').trim();
+      const empAlt = String(note.empathyIllustAlt || ((note.partLabel || '') + ' 일상 공감 장면')).trim();
+      const empathyHeroHtml = empSrc
+        ? '<figure class="hip-empathy-hero-card">' +
+            '<img src="' + escHtml(empSrc) + '" alt="' + escHtml(empAlt) + '" decoding="async" />' +
+            (empCap ? '<figcaption class="hip-empathy-cap"><span class="slot-pill-badge spb-empathy">일상 공감 01</span><span>' + escHtml(empCap) + '</span></figcaption>' : '') +
+          '</figure>'
+        : '';
+
       const deepSectionHtml = hasDeepContent ? buildDeepEditorialSectionHtml(note, mMeta, isExpanded) : '';
 
       return (
         '<article class="' + boxClasses + '" style="' + inlineVars + '" aria-label="부위별 건강 정보 팝업">' +
           '<div class="hip-header">' + headerInnerHtml + '</div>' +
+          empathyHeroHtml +
           '<div class="hip-sections">' + sectionsHtml + '</div>' +
           deepSectionHtml +
         '</article>'
       );
     }
 
-    function resolveDeepIllustSrc(rawSrc, partId) {
+    function resolveDeepIllustSrc(rawSrc, partId, allowPartFallback = true) {
       let s = String(rawSrc || '').trim();
-      if (!s && HEALTH_NOTE_PART_DEFAULTS && HEALTH_NOTE_PART_DEFAULTS[partId]) {
+      if (!s && allowPartFallback && HEALTH_NOTE_PART_DEFAULTS && HEALTH_NOTE_PART_DEFAULTS[partId]) {
         s = String(HEALTH_NOTE_PART_DEFAULTS[partId].defaultIllustImg || '').trim();
       }
       if (!s) return '';
@@ -3457,19 +3567,38 @@ function buildBodyExplorerHtml() {
         '</div>';
 
       const directAnsTxt = String(note.directAnswer || '').trim();
+      const cKws = (Array.isArray(note.consumerKeywords) ? note.consumerKeywords : []).map(k => String(k || '').trim()).filter(Boolean);
+      const cKwsHtml = cKws.length > 0
+        ? '<div class="inline-consumer-kws">' +
+            '<span class="ick-label">🔎 일상 키워드</span>' +
+            cKws.map(kw => '<span class="ick-chip">#' + escHtml(kw) + '</span>').join('') +
+          '</div>'
+        : '';
       const directAnswerHtml = directAnsTxt
         ? '<section class="inline-direct-answer">' +
             '<div class="ida-kicker">💡 바쁜 일상을 위한 30초 핵심 결론</div>' +
             '<p class="ida-body">' + escHtml(directAnsTxt) + '</p>' +
+            cKwsHtml +
           '</section>'
         : '';
 
-      const illustSrc = resolveDeepIllustSrc(note.deepIllustImg, partId);
+      const illustSrc = resolveDeepIllustSrc(note.deepIllustImg, partId, true);
       const illustCap = String(note.deepIllustCaption || partDef.defaultIllustCaption || '').trim();
+      const illustAlt = String(note.deepIllustAlt || ((note.keyword || partLabel) + ' 해부 생리 일러스트')).trim();
       const illustHtml = illustSrc
         ? '<figure class="deep-illust-card">' +
-            '<img src="' + escHtml(illustSrc) + '" alt="' + escHtml((note.keyword || partLabel) + ' 해부 생리 일러스트') + '" decoding="async" />' +
-            (illustCap ? '<figcaption class="deep-illust-cap">▲ ' + escHtml(illustCap) + '</figcaption>' : '') +
+            '<img src="' + escHtml(illustSrc) + '" alt="' + escHtml(illustAlt) + '" decoding="async" />' +
+            (illustCap ? '<figcaption class="deep-illust-cap" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="slot-pill-badge spb-mechanism">원리 도해 02</span><span>' + escHtml(illustCap) + '</span></figcaption>' : '') +
+          '</figure>'
+        : '';
+
+      const routineSrc = resolveDeepIllustSrc(note.routineIllustImg, partId, false);
+      const routineCap = String(note.routineIllustCaption || '').trim();
+      const routineAlt = String(note.routineIllustAlt || ((note.keyword || partLabel) + ' 전후 실천 루틴 비교')).trim();
+      const routineHtml = routineSrc
+        ? '<figure class="deep-illust-card routine-illust-card">' +
+            '<img src="' + escHtml(routineSrc) + '" alt="' + escHtml(routineAlt) + '" loading="lazy" decoding="async" />' +
+            (routineCap ? '<figcaption class="deep-illust-cap" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="slot-pill-badge spb-routine">전·후 루틴 03</span><span>' + escHtml(routineCap) + '</span></figcaption>' : '') +
           '</figure>'
         : '';
 
@@ -3658,6 +3787,7 @@ function buildBodyExplorerHtml() {
           illustHtml +
           pureBlockHtml +
           compTableHtml +
+          routineHtml +
           selfCheckHtml +
           signalsHtml +
           redFlagsHtml +

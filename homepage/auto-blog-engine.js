@@ -930,7 +930,30 @@ function buildOfficialFiveChannelsHtml(gCfg, includeShareBtn) {
   </div>`;
 }
 
-function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl) {
+function resolveHnSlotAssetUrls(rawFile, isLocal) {
+  const s = String(rawFile || '').trim();
+  if (!s) return { canonicalUrl: '', displayUrl: '' };
+  if (/^https?:\/\//i.test(s)) {
+    return { canonicalUrl: s, displayUrl: s };
+  }
+  if (s.startsWith('/wp-content/')) {
+    const absWp = 'https://www.bareunhaniwon.com' + s;
+    return { canonicalUrl: absWp, displayUrl: absWp };
+  }
+  const clean = s.replace(/^(?:\.\/|\/)+/, '');
+  const canonicalUrl = GH_RAW_BASE_URL + clean;
+  const webpRel = clean.toLowerCase().startsWith('webp/')
+    ? clean
+    : ('webp/' + clean.replace(/\.(png|jpe?g)$/i, '.webp'));
+  if (isLocal) {
+    const webpDisk = path.join(__dirname, webpRel);
+    const localRel = fs.existsSync(webpDisk) ? webpRel : clean;
+    return { canonicalUrl, displayUrl: '/' + localRel.replace(/^\/+/, '') };
+  }
+  return { canonicalUrl, displayUrl: GH_RAW_BASE_URL + webpRel };
+}
+
+function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl, extraImageUrls) {
   const partLabel = ep.partLabel || partId;
   const keyword = ep.keyword || partLabel;
   const theme = ep.theme || keyword;
@@ -945,6 +968,19 @@ function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl
   const pubDate = ep.publishDate || '2026-11-04';
   const revDate = ep.lastReviewed || (pubDate > '2026-11-11' ? pubDate : '2026-11-15');
   const academicBasis = ep.academicBasis || '국제 의학 학술지 및 생리학 연구 보고';
+  const consumerKws = Array.isArray(ep.consumerKeywords)
+    ? ep.consumerKeywords.map(k => String(k || '').trim()).filter(Boolean)
+    : [];
+  const mergedKeywords = Array.from(new Set([keyword, partLabel, theme, ...consumerKws, '오늘의 건강 글'].filter(Boolean)));
+  const imageList = Array.from(new Set(
+    [
+      ...(Array.isArray(extraImageUrls) ? extraImageUrls : []),
+      resolvedHeroImgUrl
+    ].map(u => String(u || '').trim()).filter(Boolean)
+  ));
+  if (imageList.length === 0 && resolvedHeroImgUrl) {
+    imageList.push(resolvedHeroImgUrl);
+  }
 
   return {
     '@context': 'https://schema.org',
@@ -1033,14 +1069,14 @@ function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl
         'mainEntityOfPage': { '@id': `${canonicalUrl}#webpage` },
         'headline': ep.questionTitle,
         'description': directAnswer,
-        'image': [resolvedHeroImgUrl],
+        'image': imageList,
         'datePublished': `${pubDate}T09:00:00+09:00`,
         'dateModified': `${revDate}T10:30:00+09:00`,
         'inLanguage': 'ko-KR',
         'author': { '@id': 'https://www.bareunhaniwon.com/director/#physician' },
         'publisher': { '@id': 'https://www.bareunhaniwon.com/#clinic' },
         'articleSection': `${partLabel} · ${theme}`,
-        'keywords': `${keyword}, ${partLabel}, ${theme}, 오늘의 건강 글`,
+        'keywords': mergedKeywords.join(', '),
         'citation': [academicBasis]
       }
     ]
@@ -1066,9 +1102,21 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId, siblingEpisodes, partMediaUrlM
   const partMeta = PART_SEO_CLINICAL_META[partId] || PART_SEO_CLINICAL_META.lumbar;
   const hub = PART_CLINIC_HUB_MAP[partId] || PART_CLINIC_HUB_MAP.lumbar;
   const rawHeroFile = ep.deepIllustImg || partMeta.heroFile;
+  const heroUrls = resolveHnSlotAssetUrls(rawHeroFile, false);
   const resolvedHeroImgUrl = (partMediaUrlMap && partMediaUrlMap[partId] && rawHeroFile === partMeta.heroFile)
     ? partMediaUrlMap[partId]
-    : (/^https?:\/\//i.test(rawHeroFile) ? rawHeroFile : (GH_RAW_BASE_URL + String(rawHeroFile).replace(/^\/+/, '')));
+    : heroUrls.canonicalUrl;
+  const displayHeroImgUrl = heroUrls.displayUrl || resolvedHeroImgUrl;
+
+  const empathyUrls = resolveHnSlotAssetUrls(ep.empathyIllustImg || '', false);
+  const routineUrls = resolveHnSlotAssetUrls(ep.routineIllustImg || '', false);
+  const empathyCaption = ep.empathyIllustCaption || '';
+  const empathyAlt = ep.empathyIllustAlt || `${partLabel} 일상 공감 장면 — ${empathyCaption || theme}`;
+  const routineCaption = ep.routineIllustCaption || '';
+  const routineAlt = ep.routineIllustAlt || `${partLabel} 전후 실천 루틴 비교 — ${routineCaption || theme}`;
+  const consumerKeywords = Array.isArray(ep.consumerKeywords)
+    ? ep.consumerKeywords.map(k => String(k || '').trim()).filter(Boolean)
+    : [];
 
   const gCfg = globalCfgOverride || {};
   const bestLimit = Math.max(0, Math.min(3, Number(gCfg.bestReadCount != null ? gCfg.bestReadCount : 2)));
@@ -1100,7 +1148,35 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId, siblingEpisodes, partMediaUrlM
 
   const directAnswerSummary = ep.directAnswer || `${truthLines.join(' ')} ${mythLines[1] || ''}`.trim();
   const postTitle = ep.seoTitle || `${ep.questionTitle} [${partLabel} · ${keyword}]`;
-  const schemaGraph = buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl);
+  const deepAlt = ep.deepIllustAlt || `${partLabel} 해부 생리 원리 도해 — ${deepCaption}`;
+  const schemaGraph = buildHealthNoteSchemaGraph(
+    ep,
+    partId,
+    canonicalUrl,
+    resolvedHeroImgUrl,
+    [empathyUrls.canonicalUrl, resolvedHeroImgUrl, routineUrls.canonicalUrl]
+  );
+
+  const empathyFigureHtml = empathyUrls.displayUrl
+    ? `<figure style="margin:0 0 16px;border-radius:18px;overflow:hidden;border:1px solid #E8E1D3;background:#FFFFFF;">
+        <img src="${escHtmlServer(empathyUrls.displayUrl)}" alt="${escHtmlServer(empathyAlt)}" width="1376" height="768" style="width:100%;height:auto;max-height:400px;object-fit:cover;display:block;" />
+        ${empathyCaption ? `<figcaption style="padding:11px 16px;background:#FBF8F1;border-top:1px solid #E8E1D3;font-size:0.82rem;font-weight:600;color:#3A352F;"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#161412;color:#F4DFB0;font-size:0.7rem;font-weight:800;margin-right:7px;">일상 공감 01</span>${escHtmlServer(empathyCaption)}</figcaption>` : ''}
+      </figure>`
+    : '';
+
+  const routineFigureHtml = routineUrls.displayUrl
+    ? `<figure style="margin:0 0 16px;border-radius:18px;overflow:hidden;border:1px solid #E8E1D3;background:#FFFFFF;">
+        <img src="${escHtmlServer(routineUrls.displayUrl)}" alt="${escHtmlServer(routineAlt)}" width="1376" height="768" loading="lazy" decoding="async" style="width:100%;height:auto;max-height:400px;object-fit:cover;display:block;" />
+        ${routineCaption ? `<figcaption style="padding:11px 16px;background:#F7F3E9;border-top:1px solid #E8E1D3;font-size:0.82rem;font-weight:600;color:#3A352F;"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#065F46;color:#ECFDF5;font-size:0.7rem;font-weight:800;margin-right:7px;">전·후 루틴 03</span>${escHtmlServer(routineCaption)}</figcaption>` : ''}
+      </figure>`
+    : '';
+
+  const consumerKwHtml = consumerKeywords.length > 0
+    ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px;">
+        <span style="font-size:0.75rem;font-weight:800;color:#9E772B;">🔎 자주 찾는 일상 키워드</span>
+        ${consumerKeywords.map(kw => `<span style="display:inline-flex;padding:3px 10px;border-radius:999px;background:#FAF6EC;border:1px solid #E7D7B4;color:#5A4B35;font-size:0.75rem;font-weight:700;">#${escHtmlServer(kw)}</span>`).join('')}
+      </div>`
+    : '';
 
   const compTableHtml = compTable
     ? `<section style="padding:22px 22px;border-radius:16px;background:#FFFFFF;border:1px solid #E8E1D3;margin-bottom:16px;">
@@ -1162,7 +1238,10 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId, siblingEpisodes, partMediaUrlM
   <section class="direct-answer-lead" style="padding:20px 22px;border-radius:16px;background:linear-gradient(180deg,#FFFDF8 0%,#FDF8EC 100%);border:1.5px solid #C5A059;border-left:5px solid #9E772B;margin-bottom:20px;">
     <div style="font-size:0.8rem;font-weight:800;color:#9E772B;margin-bottom:6px;">💡 바쁜 일상을 위한 30초 핵심 결론</div>
     <p style="margin:0;font-size:0.96rem;font-weight:600;color:#161412;word-break:keep-all;">${escHtmlServer(directAnswerSummary)}</p>
+    ${consumerKwHtml}
   </section>
+
+  ${empathyFigureHtml}
 
   <section style="padding:22px 22px;border-radius:16px;background:#FFFFFF;border:1px solid #E8E1D3;margin-bottom:16px;">
     <h2 style="margin:0 0 10px;font-family:'Noto Serif KR',serif;font-size:1.12rem;font-weight:800;color:#161412;">일상 속 이런 모습이 보이나요? · 흔한 오해 바로잡기</h2>
@@ -1174,8 +1253,8 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId, siblingEpisodes, partMediaUrlM
   </section>
 
   <figure style="margin:0 0 16px;border-radius:18px;overflow:hidden;border:1px solid #E8E1D3;background:#FFFFFF;">
-    <img src="${escHtmlServer(resolvedHeroImgUrl)}" alt="${escHtmlServer(deepCaption)}" width="1376" height="768" style="width:100%;height:auto;max-height:400px;object-fit:cover;display:block;" />
-    <figcaption style="padding:11px 16px;background:#F7F3E9;border-top:1px solid #E8E1D3;font-size:0.82rem;font-weight:600;color:#3A352F;">▲ ${escHtmlServer(deepCaption)}</figcaption>
+    <img src="${escHtmlServer(displayHeroImgUrl)}" alt="${escHtmlServer(deepAlt)}" width="1376" height="768" style="width:100%;height:auto;max-height:400px;object-fit:cover;display:block;" />
+    <figcaption style="padding:11px 16px;background:#F7F3E9;border-top:1px solid #E8E1D3;font-size:0.82rem;font-weight:600;color:#3A352F;"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#9E772B;color:#FFFFFF;font-size:0.7rem;font-weight:800;margin-right:7px;">원리 도해 02</span>${escHtmlServer(deepCaption)}</figcaption>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;background:linear-gradient(135deg,#171310 0%,#261E18 100%);color:#FFFFFF;flex-wrap:wrap;">
       <div>
         <strong style="display:block;font-size:0.92rem;color:#F4DFB0;">🧬 방금 읽은 ‘${escHtmlServer(partLabel)}’ 구조, 3D 인체모형으로 직접 돌려 보시겠어요?</strong>
@@ -1195,6 +1274,7 @@ function buildHealthNoteSeoAeoGeoPost(ep, partId, siblingEpisodes, partMediaUrlM
   </section>
 
   ${compTableHtml}
+  ${routineFigureHtml}
 
   <section style="padding:22px 22px;border-radius:16px;background:#FFFFFF;border:1px solid #E8E1D3;margin-bottom:16px;">
     <h2 style="margin:0 0 10px;font-family:'Noto Serif KR',serif;font-size:1.12rem;font-weight:800;color:#161412;">✅ 오늘 밤 직접 확인해 보는 5가지 생활 신호</h2>
@@ -1284,12 +1364,19 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
   const directorAvatarSrc = isLocal ? '/webp/card_1_director.webp' : 'https://www.bareunhaniwon.com/wp-content/uploads/bareun-3d-assets/webp/card_1_director.webp';
 
   const rawHeroFile = targetNote.deepIllustImg || partMeta.heroFile;
-  const ogImgUrl = /^https?:\/\//i.test(rawHeroFile)
-    ? rawHeroFile
-    : (GH_RAW_BASE_URL + String(rawHeroFile).replace(/^\/+/, ''));
-  const displayHeroSrc = isLocal
-    ? (hub.webpHero || ('/' + String(rawHeroFile).replace(/^\/+/, '')))
-    : ogImgUrl;
+  const heroResolved = resolveHnSlotAssetUrls(rawHeroFile, isLocal);
+  const ogImgUrl = heroResolved.canonicalUrl;
+  const displayHeroSrc = heroResolved.displayUrl || (isLocal ? (hub.webpHero || ('/' + String(rawHeroFile).replace(/^\/+/, ''))) : ogImgUrl);
+
+  const empathyResolved = resolveHnSlotAssetUrls(targetNote.empathyIllustImg || '', isLocal);
+  const routineResolved = resolveHnSlotAssetUrls(targetNote.routineIllustImg || '', isLocal);
+  const empathyCaption = targetNote.empathyIllustCaption || '';
+  const empathyAlt = targetNote.empathyIllustAlt || `${partLabel} 일상 공감 장면 — ${empathyCaption || theme}`;
+  const routineCaption = targetNote.routineIllustCaption || '';
+  const routineAlt = targetNote.routineIllustAlt || `${partLabel} 전후 실천 루틴 비교 — ${routineCaption || theme}`;
+  const consumerKeywords = Array.isArray(targetNote.consumerKeywords)
+    ? targetNote.consumerKeywords.map(k => String(k || '').trim()).filter(Boolean)
+    : [];
 
   const seoTitleBase = targetNote.seoTitle || `${targetNote.questionTitle} [${partLabel} · ${keyword}]`;
   const pageTitle = seoTitleBase.includes('바른한의원') ? seoTitleBase : `${seoTitleBase} | 바른한의원 대전본점`;
@@ -1342,7 +1429,16 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
   });
   const best2Notes = peerCandidates.slice(0, 2);
 
-  const schemaGraph = buildHealthNoteSchemaGraph(targetNote, partId, canonicalUrl, ogImgUrl);
+  const schemaGraph = buildHealthNoteSchemaGraph(
+    targetNote,
+    partId,
+    canonicalUrl,
+    ogImgUrl,
+    [empathyResolved.canonicalUrl, ogImgUrl, routineResolved.canonicalUrl]
+  );
+  const deepAlt = targetNote.deepIllustAlt || `${partLabel} — ${deepCaption}`;
+  const metaKeywordsStr = Array.from(new Set([keyword, partLabel, theme, ...consumerKeywords, '오늘의 건강 글'].filter(Boolean))).join(', ');
+  const preloadLeadImg = empathyResolved.displayUrl || displayHeroSrc;
 
   return `<!DOCTYPE html>
 <html lang="ko">
@@ -1351,6 +1447,7 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escHtmlServer(pageTitle)}</title>
   <meta name="description" content="${escHtmlServer(directAnswer)}" />
+  <meta name="keywords" content="${escHtmlServer(metaKeywordsStr)}" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <link rel="canonical" href="${escHtmlServer(canonicalUrl)}" />
   <link rel="alternate" hreflang="ko-KR" href="${escHtmlServer(canonicalUrl)}" />
@@ -1368,7 +1465,7 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
   <meta property="article:modified_time" content="${escHtmlServer(revDate)}T10:30:00+09:00" />
   <meta property="article:section" content="${escHtmlServer(partLabel + ' · ' + keyword)}" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preload" as="image" href="${escHtmlServer(displayHeroSrc)}" />
+  <link rel="preload" as="image" href="${escHtmlServer(preloadLeadImg)}" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1448,9 +1545,16 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
     .mt-myth { background: var(--rose-bg); border: 1px solid #FECDD3; color: var(--rose-ink); }
     .mt-truth { background: var(--emerald-bg); border: 1px solid #A7F3D0; color: var(--emerald-ink); }
     .mt-tag { display: inline-block; font-size: 0.76rem; font-weight: 800; margin-bottom: 5px; }
-    .medical-figure-wrap { margin: 0 0 20px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 18px; overflow: hidden; }
-    .medical-figure-wrap img { width: 100%; height: auto; max-height: 410px; object-fit: cover; display: block; }
-    .medical-figcaption { padding: 12px 18px; background: #F7F3E9; border-top: 1px solid var(--border-soft); font-size: 0.83rem; color: var(--ink-700); font-weight: 600; }
+    .medical-figure-wrap { margin: 0 0 20px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 18px; overflow: hidden; box-shadow: 0 8px 24px rgba(22, 20, 18, 0.04); }
+    .medical-figure-wrap img { width: 100%; height: auto; max-height: 430px; object-fit: cover; display: block; }
+    .medical-figcaption { padding: 12px 18px; background: #F7F3E9; border-top: 1px solid var(--border-soft); font-size: 0.83rem; color: var(--ink-700); font-weight: 600; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .slot-badge { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 999px; font-size: 0.71rem; font-weight: 800; letter-spacing: -0.01em; flex-shrink: 0; }
+    .slot-badge-empathy { background: var(--espresso); color: #F4DFB0; border: 1px solid var(--gold-500); }
+    .slot-badge-mechanism { background: var(--gold-600); color: #FFFFFF; }
+    .slot-badge-routine { background: #065F46; color: #ECFDF5; }
+    .consumer-kw-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--gold-200); }
+    .consumer-kw-label { font-size: 0.75rem; font-weight: 800; color: var(--gold-600); margin-right: 2px; }
+    .consumer-kw-chip { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid var(--gold-200); color: var(--ink-700); font-size: 0.75rem; font-weight: 700; }
     .bridge-3d-banner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; background: linear-gradient(135deg, #171310 0%, #261E18 100%); color: #FFFFFF; border-top: 1px solid rgba(197, 160, 89, 0.35); flex-wrap: wrap; }
     .bridge-3d-text strong { display: block; font-size: 0.95rem; color: #F4DFB0; margin-bottom: 3px; }
     .bridge-3d-text span { font-size: 0.82rem; color: #D7CFC0; }
@@ -1545,7 +1649,16 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
       <section class="direct-answer-lead" aria-label="핵심 의학 요약">
         <div class="direct-answer-label">💡 바쁜 일상을 위한 30초 핵심 결론</div>
         <p>${escHtmlServer(directAnswer)}</p>
+        ${consumerKeywords.length > 0 ? `<div class="consumer-kw-row" aria-label="자주 찾는 생활 건강 키워드">
+          <span class="consumer-kw-label">🔎 자주 찾는 일상 키워드</span>
+          ${consumerKeywords.map(kw => `<span class="consumer-kw-chip">#${escHtmlServer(kw)}</span>`).join('')}
+        </div>` : ''}
       </section>
+
+      ${empathyResolved.displayUrl ? `<figure class="medical-figure-wrap slot-empathy-figure">
+        <img src="${escHtmlServer(empathyResolved.displayUrl)}" alt="${escHtmlServer(empathyAlt)}" width="1376" height="768" fetchpriority="high" />
+        ${empathyCaption ? `<figcaption class="medical-figcaption"><span class="slot-badge slot-badge-empathy">일상 공감 01</span><span>${escHtmlServer(empathyCaption)}</span></figcaption>` : ''}
+      </figure>` : ''}
 
       <section class="content-section">
         <h2>일상 속 이런 모습이 반복되고 있나요?</h2>
@@ -1563,9 +1676,9 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
         </div>
       </section>
 
-      <figure class="medical-figure-wrap">
-        <img src="${escHtmlServer(displayHeroSrc)}" alt="${escHtmlServer(partLabel + ' — ' + deepCaption)}" width="1376" height="768" />
-        <figcaption class="medical-figcaption">▲ ${escHtmlServer(deepCaption)}</figcaption>
+      <figure class="medical-figure-wrap slot-mechanism-figure">
+        <img src="${escHtmlServer(displayHeroSrc)}" alt="${escHtmlServer(deepAlt)}" width="1376" height="768" decoding="async" />
+        <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-mechanism">원리 도해 02</span><span>${escHtmlServer(deepCaption)}</span></figcaption>
         <div class="bridge-3d-banner">
           <div class="bridge-3d-text">
             <strong>🧬 방금 읽은 ‘${escHtmlServer(partLabel)}’ 구조, 입체로 직접 돌려 보시겠어요?</strong>
@@ -1602,6 +1715,11 @@ function renderStandaloneHealthNoteFullPage(noteId, options) {
           </table>
         </div>
       </section>` : ''}
+
+      ${routineResolved.displayUrl ? `<figure class="medical-figure-wrap slot-routine-figure">
+        <img src="${escHtmlServer(routineResolved.displayUrl)}" alt="${escHtmlServer(routineAlt)}" width="1376" height="768" loading="lazy" decoding="async" />
+        ${routineCaption ? `<figcaption class="medical-figcaption"><span class="slot-badge slot-badge-routine">전·후 루틴 03</span><span>${escHtmlServer(routineCaption)}</span></figcaption>` : ''}
+      </figure>` : ''}
 
       <section class="content-section">
         <h2>✅ 오늘 밤 직접 체크해 보는 5가지 ${escHtmlServer(keyword)} 리듬 신호</h2>
@@ -1881,6 +1999,9 @@ function generateLlmsTxtFiles() {
     fullLines.push(`- Interactive 3D Anatomy URL: https://www.bareunhaniwon.com/body-explorer/?part=${ep.partId}&note=${ep.id}`);
     fullLines.push(`- Publish Date: ${ep.publishDate} | Last Medical Review: ${ep.lastReviewed || '2026-11-15'} (Reviewed by 안정위 한의사)`);
     fullLines.push(`- Academic Reference: ${ep.academicBasis || '국제 의학 학술지 보고'}`);
+    if (Array.isArray(ep.consumerKeywords) && ep.consumerKeywords.length > 0) {
+      fullLines.push(`- Consumer Search Queries: ${ep.consumerKeywords.join(' · ')}`);
+    }
     if (ep.directAnswer) {
       fullLines.push(`- [Direct Answer · 30초 핵심 결론]: ${ep.directAnswer}`);
     }

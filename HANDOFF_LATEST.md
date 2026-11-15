@@ -1,10 +1,24 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-15 v8.2 (① **`/health-note-{id}/` 독립 칼럼 & `/body-explorer/` 3D 인체모형 간 중앙 단일 조회수(`bareun_body_note_views_v1`) 및 『이어서 읽기 BEST 2』 인기글 랭킹 100% 실시간 통합 연동** · ② **`/body-explorer/` 상단 헤더·건강노트 카드 헤더·상세 감수 바·하단 채널 바·누적 목록 및 `/health-note-{id}/` 전 구간 원클릭 『🔗 링크 퍼가기』 아이콘 버튼 & 토스트 알림 탑재 완료** · ③ **`v8.1` 72편 7단계 SEO·AEO·GEO 정본화 및 원장님 전용 3사 확산 스튜디오 유지**)
+> **최종 업데이트**: 2026-11-15 v9.0 (① **『오늘의 건강 글』 72편 전수 상·중·하 3단 멀티 화보 풀세트(`일상 공감 01` · `원리 도해 02` · `전·후 루틴 03`, 총 216슬롯) + 소비자 실생활 검색 키워드 360개(`consumerKeywords`) 완비** · ② **2일 주기 자동 발행 엔진(`generate_body_note_via_gemini` & `run_scheduled_two_day_note_generation`) 3단 멀티 화보 + 실생활 키워드 + 독립 정본/사이트맵/IndexNow 전자동 연동** · ③ **온라인 스튜디오(`detail-pages-editor.html`) 3단 슬롯 개별 편집·AI 제작 완비**)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
 
+## 💎 최신 완료 작업 요약 (2026-11-15 v9.0 · 『오늘의 건강 글』 상·중·하 3단 멀티 화보 풀세트 + 소비자 실생활 검색 키워드 360개 + 2일 주기 자동 발행 엔진 풀세트 업그레이드)
+
+1. **9대 부위 플래그십 맞춤 27장 16:9 화보(`1376×768`) 신규 제작 & 전 72편(216개 슬롯) 3단 멀티 배치 완비 (`webp/hn_*_20261111_*.webp`, `hn_*_20261111_mechanism.jpg`, `health-notes-custom-config.json`)**:
+   - **슬롯 ① 도입부 (`일상 공감 01` · `empathyIllustImg`)**: 독자가 겪는 일상 속 불편 순간을 따뜻한 캐시미어 아이보리(`#FAF8F3`) 자연광으로 포착해 글 시작 3초 체류율을 극대화했습니다.
+   - **슬롯 ② 본문 중단 (`원리 도해 02` · `deepIllustImg`)**: 직관적인 3D 메디컬 일러스트와 **`[🧬 3D 인체모형 열기 →]`** 브릿지를 일체형으로 배치하고, 카카오톡·블로그 공유용 `1376×768` OG 대표 썸네일(`.jpg`)과 연동했습니다.
+   - **슬롯 ③ 하단 실천부 (`전·후 루틴 03` · `routineIllustImg`)**: `✅ 1분 자가점검` 직전에 나쁜 생활 자세(Before)와 편안한 저녁 회복 루틴(After) 비교 화보를 배치해 완독률과 실천 전환율을 높였습니다.
+   - 72편 × 3슬롯 = **216개 슬롯 전수 비중복 매핑 및 실물 파일 검증(`0 누락`)**을 완료했습니다.
+2. **소비자 실생활 검색 키워드 360개(`consumerKeywords` · 편당 5개) & SEO·AEO·GEO 스키마 고도화 (`auto-blog-engine.js`, `bareun-member-private-qna.php`, `build-body-explorer.js`)**:
+   - 환자들이 실제 검색창에 자주 입력하는 구어체·증상형 키워드 5개씩(총 360개)을 본문 해시태그 칩(`.consumer-kw-row` / `.inline-consumer-kws`), `<meta name="keywords">`, 3단 이미지 `alt`·`figcaption`, `/llms-full.txt`, 5노드 정본 JSON-LD `MedicalScholarlyArticle`(`image` 3장 배열 + 통합 `keywords`)에 자연스럽게 반영했습니다 (의료법 제56조 및 미순화 전문용어 3단계 감사 오류 `0건`).
+3. **2일 주기 자동 발행 엔진(`bareun-member-private-qna.php`) & 원장님 온라인 스튜디오(`detail-pages-editor.html`) 풀세트 연동**:
+   - 워드프레스 2일 주기 크론 실행 시 7단계 공감 원고 + 실생활 키워드 5개 + 상·중·하 3단 맞춤 화보를 자동 생성·업로드하고 `/body-explorer/`, `/health-note-{id}/` SSR, 사이트맵/피드, IndexNow 색인 핑까지 한 번에 처리합니다.
+   - 온라인 스튜디오(`detail-pages-editor.html`)에서도 `consumerKeywords` 입력란과 슬롯 ①·②·③ 각각의 업로드·보관함·AI 2K 화보 제작 패널을 완비했습니다.
+
+---
 ## 💎 최신 완료 작업 요약 (2026-11-15 v8.2 · `/health-note-{id}/` ↔ `/body-explorer/` 통합 조회수·인기글 랭킹 단일화 & 원클릭 『🔗 링크 퍼가기』 아이콘 탑재)
 
 1. **양방향 단일 조회수 카운터 & 『이어서 읽기 BEST 2』 인기글 100% 실시간 동기화 (`bareun-member-private-qna.php`, `build-body-explorer.js`, `auto-blog-engine.js`, `local-bareun-api.js`)**:
