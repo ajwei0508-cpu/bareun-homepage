@@ -116,8 +116,8 @@
     address: '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)',
     shortAddress: '대전 대덕구 비래동로7번길 1, 2층',
     postalCode: '34417',
-    lat: 36.35536,
-    lng: 127.44778,
+    lat: 36.354682,
+    lng: 127.4492455,
     hours: [
       { day: '평일 (월 ~ 금)', time: '09:00 ~ 19:00', note: '초진·재진 예약 우선 진료' },
       { day: '토요일 · 공휴일', time: '09:00 ~ 14:00', note: '점심시간 없이 연속 진료' },
@@ -284,8 +284,8 @@
   window.launchBareunMapNav = function (provider) {
     const navActMap = { naver: 'nav_naver', google: 'nav_google', tmap: 'nav_tmap', kakao: 'nav_kakao' };
     if (navActMap[provider]) trackBareunConversionEvent(navActMap[provider]);
-    const lat = Number(clinicInfo.lat) || 36.35536;
-    const lng = Number(clinicInfo.lng) || 127.44778;
+    const lat = Number(clinicInfo.lat) || 36.354682;
+    const lng = Number(clinicInfo.lng) || 127.4492455;
     const name = clinicInfo.clinicName || '바른한의원 대전본점';
     const addr = clinicInfo.address || '대전광역시 대덕구 비래동로7번길 1, 2층';
     const encName = encodeURIComponent(name);
@@ -309,8 +309,9 @@
     }
 
     if (provider === 'google') {
-      const googleDirUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng + '&travelmode=driving';
-      window.open(googleDirUrl, '_blank', 'noopener,noreferrer');
+      const googleQuery = encodeURIComponent(name + ' ' + (clinicInfo.shortAddress || '대전 대덕구 비래동로7번길 1'));
+      const googleUrl = 'https://www.google.com/maps/search/?api=1&query=' + googleQuery;
+      window.open(googleUrl, '_blank', 'noopener,noreferrer');
       return;
     }
 
@@ -1374,8 +1375,8 @@
     const dialog = document.getElementById('bareun-location-modal-dialog');
     if (!dialog) return;
 
-    const lat = Number(clinicInfo.lat) || 36.35536;
-    const lng = Number(clinicInfo.lng) || 127.44778;
+    const lat = Number(clinicInfo.lat) || 36.354682;
+    const lng = Number(clinicInfo.lng) || 127.4492455;
     const phone = clinicInfo.phone || '010-5631-1275';
     const cleanTel = 'tel:' + String(phone).replace(/[^0-9+]/g, '');
     const hours = Array.isArray(clinicInfo.hours) ? clinicInfo.hours : [];

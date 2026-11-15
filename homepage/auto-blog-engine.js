@@ -1005,8 +1005,8 @@ function buildHealthNoteSchemaGraph(ep, partId, canonicalUrl, resolvedHeroImgUrl
         },
         'geo': {
           '@type': 'GeoCoordinates',
-          'latitude': 36.35536,
-          'longitude': 127.44778
+          'latitude': 36.354682,
+          'longitude': 127.4492455
         },
         'areaServed': [
           { '@type': 'AdministrativeArea', 'name': '대전광역시' },

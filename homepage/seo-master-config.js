@@ -44,8 +44,8 @@ const CLINIC_BASE_ORG = {
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 36.35536,
-    longitude: 127.44778
+    latitude: 36.354682,
+    longitude: 127.4492455
   },
   openingHoursSpecification: [
     {

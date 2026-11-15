@@ -45,8 +45,8 @@ function syncClinicTemplateConfigJs(info) {
     address: info.address || '대전광역시 대덕구 비래동로7번길 1, 2층 (비래동, 바른한의원 대전본점)',
     shortAddress: info.shortAddress || '대전 대덕구 비래동로7번길 1, 2층',
     postalCode: info.postalCode || '34417',
-    lat: Number(info.lat) || 36.35536,
-    lng: Number(info.lng) || 127.44778,
+    lat: Number(info.lat) || 36.354682,
+    lng: Number(info.lng) || 127.4492455,
     parkingGuide: info.parkingGuide || '',
     transitGuide: info.transitGuide || '',
     regionalDirections: Array.isArray(info.regionalDirections) ? info.regionalDirections : [],
@@ -101,8 +101,8 @@ function syncClinicTemplateConfigJs(info) {
 }
 
 function buildLocationHtml(info) {
-  const lat = Number(info.lat) || 36.35536;
-  const lng = Number(info.lng) || 127.44778;
+  const lat = Number(info.lat) || 36.354682;
+  const lng = Number(info.lng) || 127.4492455;
   const phone = info.phone || '010-5631-1275';
   const telHref = 'tel:' + phone.replace(/[^0-9+]/g, '');
   const kakaoUrl = info.kakaoUrl || 'https://pf.kakao.com/_ykxcLK';
