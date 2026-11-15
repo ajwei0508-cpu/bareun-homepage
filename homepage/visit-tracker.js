@@ -2094,6 +2094,18 @@
             '<div class="bv-chip-list">' + genChips + '</div>' +
             '<div class="bv-page-list">' + ageRows + '</div>' +
           '</div>';
+      } else if (demo.ga4Connected) {
+        ga4DemoHtml =
+          '<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:16px;font-size:12.5px;color:#166534;line-height:1.65;">' +
+            '<div style="font-weight:900;color:#14532D;margin-bottom:4px;display:flex;align-items:center;gap:6px;">' +
+              '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16A34A;"></span>' +
+              'Google GA4 공식 API 통신 연동 완료 (데이터 누적 집계중)' +
+            '</div>' +
+            '구글 본사 API와 정상 통신 중입니다. 방금 신규 발급된 GA4 측정 속성은 <strong>구글의 개인정보보호 임계값(Thresholding) 정책</strong>에 따라 최초 방문자 표본이 수집된 후(약 24~48시간 누적) 연령대별 막대그래프와 성별 비율이 이곳에 자동으로 활성화됩니다.<br>' +
+            '<div style="margin-top:10px;padding:8px 12px;background:#DCFCE7;border-radius:8px;font-size:11.5px;color:#15803D;font-weight:700;">' +
+              '💡 우측의 [관심 진료군 기반 추정 코호트]는 지금 이 순간에도 100% 실시간 집계되고 있습니다.' +
+            '</div>' +
+          '</div>';
       } else {
         ga4DemoHtml =
           '<div style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;padding:16px;font-size:12.5px;color:#334155;line-height:1.65;">' +

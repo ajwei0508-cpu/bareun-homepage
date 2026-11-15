@@ -1686,8 +1686,18 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         }
 
         // 2) Google Search Console API: Top Search Queries (Last 28 days)
+        // Automatically check both https://, http://, and domain variants in GSC and merge them
         if ($gsc_url !== '') {
-            $gsc_endpoint = 'https://www.googleapis.com/webmasters/v3/sites/' . rawurlencode($gsc_url) . '/searchAnalytics/query';
+            $candidate_urls = array($gsc_url);
+            $clean_host = preg_replace('#^https?://#i', '', rtrim($gsc_url, '/'));
+            $clean_host_nowww = preg_replace('#^www.#i', '', $clean_host);
+            $candidate_urls[] = 'https://' . $clean_host . '/';
+            $candidate_urls[] = 'http://' . $clean_host . '/';
+            $candidate_urls[] = 'https://' . $clean_host_nowww . '/';
+            $candidate_urls[] = 'http://' . $clean_host_nowww . '/';
+            $candidate_urls[] = 'sc-domain:' . $clean_host_nowww;
+            $candidate_urls = array_values(array_unique($candidate_urls));
+
             $now_ts = current_time('timestamp');
             $gsc_body = array(
                 'startDate'  => date('Y-m-d', $now_ts - (28 * 86400)),
@@ -1695,36 +1705,68 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'dimensions' => array('query'),
                 'rowLimit'   => 25
             );
-            $gsc_resp = wp_remote_post($gsc_endpoint, array(
-                'timeout' => 12,
-                'headers' => array(
-                    'Authorization' => 'Bearer ' . $access_token,
-                    'Content-Type'  => 'application/json'
-                ),
-                'body' => wp_json_encode($gsc_body)
-            ));
-            if (is_wp_error($gsc_resp)) {
-                $errors[] = 'Search Console 통신 오류: ' . $gsc_resp->get_error_message();
-            } else {
-                $gsc_code = wp_remote_retrieve_response_code($gsc_resp);
-                $gsc_json = json_decode(wp_remote_retrieve_body($gsc_resp), true);
-                if ($gsc_code === 200 && is_array($gsc_json)) {
-                    $result['status']['gscApiConnected'] = true;
-                    foreach ((array) ($gsc_json['rows'] ?? array()) as $qr) {
-                        $kw = $qr['keys'][0] ?? '';
-                        if ($kw === '') continue;
-                        $result['gscKeywords'][] = array(
-                            'keyword'     => $kw,
-                            'clicks'      => (int) round((float) ($qr['clicks'] ?? 0)),
-                            'impressions' => (int) round((float) ($qr['impressions'] ?? 0)),
-                            'ctr'         => round(((float) ($qr['ctr'] ?? 0)) * 100, 1),
-                            'position'    => round((float) ($qr['position'] ?? 0), 1)
-                        );
+
+            $any_gsc_ok = false;
+            $merged_kw  = array();
+            $last_gsc_err = '';
+
+            foreach ($candidate_urls as $c_url) {
+                $gsc_endpoint = 'https://www.googleapis.com/webmasters/v3/sites/' . rawurlencode($c_url) . '/searchAnalytics/query';
+                $gsc_resp = wp_remote_post($gsc_endpoint, array(
+                    'timeout' => 10,
+                    'headers' => array(
+                        'Authorization' => 'Bearer ' . $access_token,
+                        'Content-Type'  => 'application/json'
+                    ),
+                    'body' => wp_json_encode($gsc_body)
+                ));
+                if (!is_wp_error($gsc_resp)) {
+                    $gsc_code = wp_remote_retrieve_response_code($gsc_resp);
+                    $gsc_json = json_decode(wp_remote_retrieve_body($gsc_resp), true);
+                    if ($gsc_code === 200 && is_array($gsc_json)) {
+                        $any_gsc_ok = true;
+                        foreach ((array) ($gsc_json['rows'] ?? array()) as $qr) {
+                            $kw = trim((string) ($qr['keys'][0] ?? ''));
+                            if ($kw === '') continue;
+                            if (!isset($merged_kw[$kw])) {
+                                $merged_kw[$kw] = array(
+                                    'keyword'     => $kw,
+                                    'clicks'      => 0,
+                                    'impressions' => 0,
+                                    'positions'   => array()
+                                );
+                            }
+                            $merged_kw[$kw]['clicks']      += (int) round((float) ($qr['clicks'] ?? 0));
+                            $merged_kw[$kw]['impressions'] += (int) round((float) ($qr['impressions'] ?? 0));
+                            $merged_kw[$kw]['positions'][]  = (float) ($qr['position'] ?? 1);
+                        }
+                    } elseif ($gsc_code === 403) {
+                        $last_gsc_err = (string) ($gsc_json['error']['message'] ?? '권한 없음');
                     }
-                } else {
-                    $err_detail = $gsc_json['error']['message'] ?? ('HTTP ' . $gsc_code);
-                    $errors[] = '서치콘솔(' . $gsc_url . ') 조회 실패: ' . $err_detail;
                 }
+            }
+
+            if ($any_gsc_ok) {
+                $result['status']['gscApiConnected'] = true;
+                $kw_list = array();
+                foreach ($merged_kw as $kw => $info) {
+                    $avg_pos = !empty($info['positions']) ? round(array_sum($info['positions']) / count($info['positions']), 1) : 1.0;
+                    $ctr = $info['impressions'] > 0 ? round(($info['clicks'] / $info['impressions']) * 100, 1) : 0.0;
+                    $kw_list[] = array(
+                        'keyword'     => $kw,
+                        'clicks'      => $info['clicks'],
+                        'impressions' => $info['impressions'],
+                        'ctr'         => $ctr,
+                        'position'    => $avg_pos
+                    );
+                }
+                usort($kw_list, function($a, $b) {
+                    if ($b['clicks'] !== $a['clicks']) return $b['clicks'] - $a['clicks'];
+                    return $b['impressions'] - $a['impressions'];
+                });
+                $result['gscKeywords'] = array_slice($kw_list, 0, 25);
+            } else {
+                $errors[] = '서치콘솔 조회 실패: ' . ($last_gsc_err ?: '사이트 권한을 확인해주세요.');
             }
         }
 
