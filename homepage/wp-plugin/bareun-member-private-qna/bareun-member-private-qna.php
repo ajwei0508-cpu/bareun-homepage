@@ -2620,24 +2620,58 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         $day_slot = (int) floor(current_time('timestamp') / 172800);
         $theme = $theme_override !== '' ? $theme_override : $selected['themes'][$day_slot % count($selected['themes'])];
 
+        // Collect already-published titles for this body part so 2-day auto-posting NEVER produces near-duplicate/spun content (Google Scaled Content Abuse & Naver 유사문서 0%)
+        $existing_titles = array();
+        $stored_notes = get_option(self::OPT_BODY_NOTES, array());
+        if (is_array($stored_notes)) {
+            foreach ($stored_notes as $sn) {
+                if (is_array($sn) && ($sn['partId'] ?? '') === $selected['partId']) {
+                    $st = trim((string) ($sn['questionTitle'] ?? ($sn['title'] ?? '')));
+                    if ($st !== '') {
+                        $existing_titles[] = $st;
+                    }
+                }
+            }
+        }
+        $hn_cfg_existing = get_option('bareun_health_notes_cfg_v1', array());
+        if (is_array($hn_cfg_existing) && !empty($hn_cfg_existing['notes']) && is_array($hn_cfg_existing['notes'])) {
+            foreach ($hn_cfg_existing['notes'] as $hn_ex) {
+                if (is_array($hn_ex) && ($hn_ex['partId'] ?? '') === $selected['partId']) {
+                    $ht = trim((string) ($hn_ex['questionTitle'] ?? ($hn_ex['title'] ?? '')));
+                    if ($ht !== '') {
+                        $existing_titles[] = $ht;
+                    }
+                }
+            }
+        }
+        $existing_titles = array_slice(array_values(array_unique($existing_titles)), 0, 24);
+        $dedup_block = '';
+        if (!empty($existing_titles)) {
+            $dedup_block = "[중복 절대 금지 — 이미 발행된 동일 부위 건강 글 제목 목록]\n"
+                . "- " . implode("\n- ", $existing_titles) . "\n"
+                . "→ 위 기발행 글들과 제목·세부 상황·비유·체크리스트가 절대 겹치지 않도록, 같은 부위 안에서도 완전히 새로운 계절·직업·수면·식습관·생활 동작 각도를 발굴해 독창적인 칼럼을 작성할 것.\n\n";
+        }
+
         $base_prompt = "[역할 정의]\n"
             . "너는 환자의 일상 아픔에 깊이 공감하며 쉬운 언어로 소통하는 한의학 메디컬 에디터이자, 의학적 정확성과 의료법 제56조를 엄격히 통제하는 수석 팩트체커야.\n"
             . "SCI급 의학·생리학 학술 논문을 기반으로 하되, 초등학생 학부모와 일반인도 단숨에 고개를 끄덕이는 따뜻한 일상 공감 문체로 작성해야 해.\n\n"
             . "[입력 변수]\n"
             . "- 클릭 부위: [" . $selected['partLabel'] . "]\n"
-            . "- 테마: [" . $theme . "]\n"
+            . "- 시드 테마 방향: [" . $theme . "] (단, 기발행 목록과 겹치면 더 구체적이고 새로운 세부 생활 상황으로 확장할 것)\n"
             . "- 타깃 독자: " . $selected['targetReader'] . "\n\n"
-            . "[필수 반영 핵심 규칙 — 풀세트(7단계 공감 본문 + 실생활 검색 키워드 5개 + 상·중·하 3단 멀티 화보 설계)]\n"
-            . "1. 질문형 제목(title): 독자가 겪는 생생한 상황으로 시작해 물음표(?)로 끝날 것.\n"
-            . "2. 소비자 실생활 검색 키워드(consumerKeywords): 환자들이 네이버·구글·AI 검색창에 실제로 자주 입력하는 구어체·증상형 키워드 정확히 5개 배열.\n"
+            . $dedup_block
+            . "[필수 반영 핵심 규칙 — 풀세트(7단계 심층 본문 + 실생활 검색 키워드 5개 + 자가점검 5항목 + 상·중·하 3단 멀티 화보 설계)]\n"
+            . "1. 질문형 제목(title): 독자가 겪는 생생한 상황으로 시작해 물음표(?)로 끝날 것. 지역명(대전, 서울 등)은 본문·제목·키워드에 절대 넣지 말 것.\n"
+            . "2. 소비자 실생활 검색 키워드(consumerKeywords): 환자들이 네이버·구글·AI 검색창에 실제로 자주 입력하는 구어체·증상형 키워드 정확히 5개 배열 (지역명 제외).\n"
             . "3. 언어 순화: 어려운 해부학 용어(대퇴골, 골단판, 아로마타제, 추간판, 수핵, 후두하근, 모유두, 나선동맥, 시상하부, 내장지방세포, 배뇨근, 장상피화생) 절대 사용 금지. 반드시 쉬운 일상 비유(성장 연골판, 허벅지 뼈, 디스크 말랑 쿠션, 뒷목 깊은 근육 등)로 풀 것.\n"
             . "4. 홍보·단정어 완전 금지: 완치, 100%, 최고, 최초, 유일, 특효, 무조건, 보장, 예약, 내원, 방문해, 상담받, 문의하, 바른한의원, 원장, 할인, 이벤트, 치료 프로그램, 처방받 절대 사용 금지.\n"
-            . "5. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
+            . "5. 심층 원리 본문(deepMechanism 3단락) + 생활 리듬 관찰 포인트(clinicalObservation) + 자가점검 5항목(selfCheckItems 5개) + 대면 확인 권고 신호(redFlags 2개)까지 풍성한 정보 밀도(Information Gain)를 갖출 것.\n"
+            . "6. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
             . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주).\n"
             . "   - 슬롯 ②(mechanismPrompt): 본문 중단 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 우아하게 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
             . "   - 슬롯 ③(routinePrompt): 하단 실천부 좌·우 분할(Before 나쁜 자세/습관 vs After 바른 실천 루틴) 비교 에디토리얼 화보 (글자·워터마크 0%).\n\n"
             . "[출력 JSON 스키마 (순수 JSON 객체만 반환)]\n"
-            . "{\"keyword\":\"핵심대표키워드\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 요약 2~3문장\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유로 풀어낸 심층 생리 원리 1단락\",\"일상 회복 기전을 설명하는 심층 원리 2단락\"],\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 전·후 실천 루틴 화보 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"16:9 split-screen left-right comparison lifestyle editorial photo showing bad habit vs healthy evening routine, warm ivory tone, zero text\"}";
+            . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 요약 2~3문장\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유로 풀어낸 심층 생리 원리 1단락 (3~4문장)\",\"일상 습관이 미치는 영향을 설명하는 심층 원리 2단락 (3~4문장)\",\"회복 리듬을 되살리는 생활 기전 3단락 (3~4문장)\"],\"clinicalObservation\":\"일상에서 흔히 관찰되는 몸의 신호와 실천 팁 2~3문장\",\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 전·후 실천 루틴 화보 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"16:9 split-screen left-right comparison lifestyle editorial photo showing bad habit vs healthy evening routine, warm ivory tone, zero text\"}";
 
         $feedback = '';
         $verified_candidate = null;
@@ -2718,16 +2752,29 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 }
             }
 
+            $spec_theme = sanitize_text_field($parsed['specificTheme'] ?? $theme);
+            if ($spec_theme === '') {
+                $spec_theme = $theme;
+            }
+            $self_checks_gen = array_values(array_filter(array_map('sanitize_text_field', array_slice((array) ($parsed['selfCheckItems'] ?? array()), 0, 5))));
+            if (count($self_checks_gen) < 3) {
+                $self_checks_gen = $chk_items;
+            }
+            $red_flags_gen = array_values(array_filter(array_map('sanitize_text_field', array_slice((array) ($parsed['redFlags'] ?? array()), 0, 3))));
+            $clin_obs_gen  = sanitize_textarea_field($parsed['clinicalObservation'] ?? '');
+            $acad_basis    = sanitize_text_field($parsed['citation'] ?? 'SCI급 의학·생리학 학술 리뷰 기반');
+
             $candidate = array(
                 'id'                   => $note_id,
                 'enabled'              => true,
                 'partId'               => $selected['partId'],
                 'partLabel'            => $selected['partLabel'],
-                'theme'                => $theme,
+                'theme'                => $spec_theme,
                 'targetReader'         => $selected['targetReader'],
                 'keyword'              => $kw_main,
                 'consumerKeywords'     => $cons_kws,
                 'publishDate'          => $today_kst,
+                'lastReviewed'         => $today_kst,
                 'title'                => $q_title,
                 'questionTitle'        => $q_title,
                 'seoTitle'             => $seo_title,
@@ -2737,12 +2784,19 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'truth'                => $tru_lines,
                 'truthLines'           => $tru_lines,
                 'deepMechanism'        => $deep_mech,
+                'deepParagraphs'       => $deep_mech,
+                'clinicalObservation'  => $clin_obs_gen,
                 'myth'                 => $myt_lines,
                 'mythLines'            => $myt_lines,
                 'check'                => $chk_items,
                 'checkItems'           => $chk_items,
+                'checkList'            => $chk_items,
+                'selfCheckItems'       => $self_checks_gen,
+                'redFlags'             => $red_flags_gen,
                 'faqItems'             => $faq_clean,
-                'citation'             => sanitize_text_field($parsed['citation'] ?? 'SCI급 의학·생리학 학술 리뷰 기반'),
+                'citation'             => $acad_basis,
+                'academicBasis'        => $acad_basis,
+                'deepReference'        => '참고 문헌 · ' . $acad_basis,
                 'empathyIllustCaption' => sanitize_text_field($parsed['empathyIllustCaption'] ?? ($selected['partLabel'] . ' 일상 공감 장면')),
                 'deepIllustCaption'    => sanitize_text_field($parsed['deepIllustCaption'] ?? ($selected['partLabel'] . ' 핵심 기전 도해')),
                 'routineIllustCaption' => sanitize_text_field($parsed['routineIllustCaption'] ?? ($selected['partLabel'] . ' 전·후 생활 실천 루틴')),
@@ -3118,8 +3172,9 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('wp_sitemaps_posts_entry', array(__CLASS__, 'filter_sitemap_post_entry'), 10, 3);
         add_filter('robots_txt', array(__CLASS__, 'filter_robots_txt'), 99, 2);
 
-        // RSS 2.0 Feed Optimization for Naver Search Advisor & Feed Readers (120 items covers all 14 clinic pages + flagship + 72+ health notes)
-        add_filter('option_posts_per_rss', function () { return 120; }, 99);
+        // RSS 2.0 Feed Optimization for Naver Search Advisor & Feed Readers (35 latest modified items keeps RSS < 550 KB forever while wp-sitemap.xml exposes 100% of URLs)
+        add_filter('option_posts_per_rss', function () { return 35; }, 99);
+        add_filter('wp_revisions_to_keep', function () { return 2; }, 99);
         add_action('pre_get_posts', array(__CLASS__, 'filter_rss_feed_query'));
         add_filter('the_guid', array(__CLASS__, 'filter_rss_canonical_url'), 99);
         add_filter('self_link', array(__CLASS__, 'filter_rss_self_link'), 99);
@@ -3190,7 +3245,7 @@ class Bareun_Master_SEO_Engine_V1 {
                     $decoded['pages']['location'] = array(
                         'path'        => '/location/',
                         'title'       => '오시는길 · 진료시간 · 주차 · 비급여 진료비 안내 | 바른한의원 대전본점',
-                        'description' => '바른한의원 대전본점(대전 대덕구 비래동로7번길 1, 2층 · 010-5631-1275) 대표원장 인사말, 네이버지도·구글지도·티맵·카카오맵 원클릭 자동 길안내, 진료시간, 주차 및 비급여 진료비용 안내표입니다.',
+                        'description' => '바른한의원 대전본점(대전 대덕구 비래동로7번길 1, 2층 · 경부고속도로 대전IC 3분 · 대전복합터미널 7분 · 대전역 동광장 택시 12분) 4대 내비 자동 길안내, 시내·광역·KTX 교통편, 진료시간 및 비급여 안내표입니다.',
                         'ogType'      => 'website',
                         'schemaType'  => 'MedicalWebPage'
                     );
@@ -4124,6 +4179,9 @@ class Bareun_Master_SEO_Engine_V1 {
         <?php endif; ?>
         <div class="references-box">
           <strong style="color:var(--ink-700);">📚 학술 참고 근거</strong> · <?php echo esc_html($deep_ref); ?>
+        </div>
+        <div class="references-box" style="margin-top:10px;background:#FAF8F3;border-color:rgba(74,53,37,0.14);font-size:0.84rem;color:#4B5563;line-height:1.65;">
+          <strong style="color:var(--ink-700);">📋 의학 감수 · AI 문헌 정리 보조 및 진료 안내</strong> · 본 건강 글은 학술 논문 요약 보조 도구를 활용해 생활 언어로 초안을 정리한 뒤, 바른한의원 대전본점 안정위 대표원장(한의사)이 직접 의학적 사실관계와 생활 수칙을 교차 검토·감수하여 발행했습니다. 본문 내용은 일상 건강 이해를 돕기 위한 일반 의학 정보이며, 개인별 정확한 진단과 치료 계획은 반드시 의료진의 대면 진찰을 통해 결정하시기 바랍니다.
         </div>
 
         <h3>함께 읽으면 연결되는 <?php echo esc_html($part_label); ?> 인기 가이드 (BEST 2)</h3>
@@ -5077,9 +5135,13 @@ class Bareun_Master_SEO_Engine_V1 {
     public static function filter_rss_feed_query($query) {
         if (!is_admin() && $query->is_main_query() && $query->is_feed()) {
             $query->set('post_type', array('post', 'page'));
-            $query->set('posts_per_page', 120);
+            $query->set('posts_per_page', 35);
             $query->set('orderby', 'modified');
             $query->set('order', 'DESC');
+            $dup_story = get_page_by_path('story-3d', OBJECT, 'page');
+            if ($dup_story && !empty($dup_story->ID)) {
+                $query->set('post__not_in', array((int) $dup_story->ID));
+            }
         }
     }
 

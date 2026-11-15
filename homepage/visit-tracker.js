@@ -1492,7 +1492,11 @@
               hoursHtml +
               '<div style="margin-top:10px;font-size:12px;color:#4B5563;line-height:1.55;">' +
                 '<strong>🚗 주차:</strong> ' + escHtml(clinicInfo.parkingGuide) + '<br>' +
-                '<strong>🚌 대중교통:</strong> ' + escHtml(clinicInfo.transitGuide) +
+                '<strong>🚌 대중교통·IC·KTX:</strong> ' + escHtml(clinicInfo.transitGuide) +
+              '</div>' +
+              '<div style="margin-top:10px;padding:10px 12px;border-radius:12px;background:#FAF8F3;border:1px solid rgba(74,53,37,0.14);font-size:11.5px;color:#374151;line-height:1.55;">' +
+                '<strong style="color:#2D5A43;">🚄 권역별 · 광역 오시는길 요약:</strong> 둔산동(18분)·유성(25분)·도안동(28분) / 세종·청주·계룡시·옥천·영동(경부고속도로 <strong>대전IC 진출 3분</strong> · 복합터미널 7분) / 서울역·천안아산역·대구역·부산역 KTX(<strong>대전역 동광장 택시 12분</strong>) ' +
+                '<a href="' + escHtml(getLocationPageHref()) + '#regional-directions" style="font-weight:900;color:#2D5A43;text-decoration:underline;margin-left:4px;">12개 권역별 상세 노선 보기 ↗</a>' +
               '</div>' +
             '</div>' +
           '</div>' +

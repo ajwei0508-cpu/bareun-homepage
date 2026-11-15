@@ -27,14 +27,6 @@
   <link rel="preload" as="image" href="https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","MedicalOrganization","LocalBusiness"],"@id":"https://www.bareunhaniwon.com/#clinic","name":"바른한의원 대전본점","alternateName":["Bareun Korean Medicine Clinic Daejeon","대전 바른한의원"],"url":"https://www.bareunhaniwon.com/","logo":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp","image":"https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg","telephone":"+82-10-5631-1275","contactPoint":[{"@type":"ContactPoint","telephone":"+82-10-5631-1275","contactType":"customer service","areaServed":"KR","availableLanguage":["Korean"]}],"taxID":"211-91-10479","vatID":"211-91-10479","identifier":{"@type":"PropertyValue","name":"사업자등록번호","value":"211-91-10479"},"priceRange":"₩₩","address":{"@type":"PostalAddress","streetAddress":"비래동로7번길 1, 2층","addressLocality":"대덕구","addressRegion":"대전광역시","postalCode":"34417","addressCountry":"KR"},"geo":{"@type":"GeoCoordinates","latitude":36.35536,"longitude":127.44778},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","PublicHolidays"],"opens":"09:00","closes":"14:00"}],"sameAs":["https://www.youtube.com/@bareunhaniwon","https://naver.me/5U1ELn8L","https://blog.naver.com/wei0508","https://www.threads.net/@bareun_oriental","https://www.instagram.com/bareun_oriental/","https://pf.kakao.com/_ykxcLK"],"founder":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"대표원장 (한의사)"}},{"@type":"WebSite","@id":"https://www.bareunhaniwon.com/#website","name":"바른한의원 대전본점","url":"https://www.bareunhaniwon.com/","inLanguage":"ko-KR","publisher":{"@id":"https://www.bareunhaniwon.com/#clinic"}},{"@type":"MedicalWebPage","@id":"https://www.bareunhaniwon.com/location/#webpage","url":"https://www.bareunhaniwon.com/location/","name":"오시는길 · 진료시간 · 주차 · 비급여 진료비 안내 | 바른한의원 대전본점","description":"대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 평일·토요일·공휴일 진료시간, 주차 안내 및 의료법 제45조 비급여 진료비용 안내표입니다.","inLanguage":"ko-KR","isPartOf":{"@id":"https://www.bareunhaniwon.com/#website"},"about":{"@id":"https://www.bareunhaniwon.com/#clinic"},"reviewedBy":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)"},"lastReviewed":"2026-10-28"},{"@type":"BreadcrumbList","@id":"https://www.bareunhaniwon.com/location/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"바른한의원 대전본점","item":"https://www.bareunhaniwon.com/"},{"@type":"ListItem","position":2,"name":"오시는길 · 진료시간 · 비급여 안내","item":"https://www.bareunhaniwon.com/location/"}]}]}</script>
 
-  
-
-  
-
-  
-
-  
-
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <script src="clinic-template-config.js"></script>
@@ -468,6 +460,188 @@
       color: #FFFFFF !important;
     }
 
+    /* Regional & KTX Multi-Origin Access Guide (100% Visible Semantic Cards, Zero Hidden Text) */
+    .hub-highlight-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 820px) {
+      .hub-highlight-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+    .hub-highlight-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1B1815 0%, #27201A 100%);
+      color: #FDFBF7;
+      border: 1px solid rgba(197, 160, 89, 0.36);
+    }
+    .hub-highlight-num {
+      padding: 6px 11px;
+      border-radius: 11px;
+      background: rgba(245, 211, 108, 0.16);
+      border: 1px solid rgba(245, 211, 108, 0.42);
+      color: #F5D36C;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .hub-highlight-copy strong {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #FFFFFF;
+    }
+    .hub-highlight-copy span {
+      display: block;
+      font-size: 11.5px;
+      color: rgba(253, 251, 247, 0.76);
+      margin-top: 2px;
+    }
+    .reg-jump-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .reg-jump-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--hanji-bg);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--brown);
+      transition: all 0.18s ease;
+    }
+    .reg-jump-pill:hover {
+      border-color: var(--green);
+      background: var(--green-soft);
+      color: var(--green);
+    }
+    .reg-group-block {
+      padding: 20px;
+      border-radius: 20px;
+      background: #FAF8F3;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+      scroll-margin-top: 84px;
+    }
+    .reg-group-block:last-child {
+      margin-bottom: 0;
+    }
+    .reg-group-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed rgba(74, 53, 37, 0.16);
+    }
+    .reg-group-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+    .reg-group-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: var(--espresso);
+      letter-spacing: -0.01em;
+    }
+    .reg-group-summary {
+      font-size: 12.5px;
+      color: #4B5563;
+      max-width: 520px;
+      line-height: 1.55;
+    }
+    .reg-route-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 820px) {
+      .reg-route-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .reg-route-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(74, 53, 37, 0.12);
+      border-radius: 16px;
+      padding: 15px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .reg-route-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .reg-origin-name {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: var(--espresso);
+    }
+    .reg-eta-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #FEF3C7;
+      color: #92400E;
+      font-size: 11.5px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .reg-route-row {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 12.5px;
+      color: #374151;
+      line-height: 1.58;
+    }
+    .reg-mode-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .reg-mode-car {
+      background: #EEF2FF;
+      color: #3730A3;
+    }
+    .reg-mode-transit {
+      background: #ECFDF5;
+      color: #065F46;
+    }
+
     /* Non-Covered Fee Schedule Table */
     .fee-table-wrap {
       overflow-x: auto;
@@ -540,6 +714,7 @@
       <a class="nav-pill" href="body-explorer.html" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;">💡 3D 인체모형 · 건강백과</a>
     </div>
     <div class="header-right">
+      <a class="nav-pill" href="#regional-directions">🚄 권역·KTX 오시는길</a>
       <a class="nav-pill" href="#non-covered-fees">📋 비급여 수가표</a>
       <a class="header-cta" href="https://naver.me/5U1ELn8L" target="_blank" rel="noopener noreferrer">📍 네이버 빠른예약 ↗</a>
     </div>
@@ -697,7 +872,7 @@
         </div>
         <div class="guide-box">
           <h3>🚌 대중교통 · 주변 랜드마크 안내</h3>
-          <p id="loc-transit-guide">대전 복합터미널 차량 7분 거리 · 비래동 행정복지센터 및 비래삼호아파트 인근 도보 3분 (비래동로7번길 1, 2층)</p>
+          <p id="loc-transit-guide">경부고속도로 대전IC 진출 후 차량 3분 · 대전복합터미널 차량 7분 · 대전역(KTX) 동광장 택시 12~15분 · 비래동 행정복지센터 인근 도보 3분</p>
         </div>
       </div>
 
@@ -707,6 +882,262 @@
         <a class="res-ch-btn res-ch-kakao" href="https://pf.kakao.com/_ykxcLK" target="_blank" rel="noopener noreferrer">💬 카카오톡 상담·예약</a>
         <a class="res-ch-btn res-ch-naver" href="https://naver.me/5U1ELn8L" target="_blank" rel="noopener noreferrer">📍 네이버 예약 바로가기</a>
       </div>
+    </section>
+
+    <!-- 2-B. Multi-Region & National KTX Access Guide (12 Major Origins, 100% Visible Genuine Transit Utility) -->
+    <section class="section-card" id="regional-directions" aria-label="권역별 및 광역 교통 오시는길 안내">
+      <div class="sec-head">
+        <div>
+          <div class="sec-kicker">REGIONAL &amp; KTX ACCESS GUIDE · 권역별 · 광역 IC · 고속철도 교통편 안내</div>
+          <h2 class="sec-title">대전 시내권 · 충청 인근 도시 · 전국 KTX 철도역에서 오시는 길</h2>
+        </div>
+        <span style="font-size:12px;font-weight:700;color:#6B7280;">대전IC 차량 3분 · 복합터미널 7분 · 대전역 동광장 12분</span>
+      </div>
+
+      <div class="hub-highlight-strip">
+        <div class="hub-highlight-item">
+          <span class="hub-highlight-num">차량 3분</span>
+          <div class="hub-highlight-copy">
+            <strong>경부고속도로 대전IC 진출 직결</strong>
+            <span>톨게이트 통과 후 비래동로 방면 약 1.3km</span>
+          </div>
+        </div>
+        <div class="hub-highlight-item">
+          <span class="hub-highlight-num">차량 7분</span>
+          <div class="hub-highlight-copy">
+            <strong>대전복합터미널 · 세종 BRT 정류장</strong>
+            <span>시외·고속버스 및 B1 BRT 하차 후 약 2.4km</span>
+          </div>
+        </div>
+        <div class="hub-highlight-item">
+          <span class="hub-highlight-num">택시 12분</span>
+          <div class="hub-highlight-copy">
+            <strong>대전역 (KTX · SRT 고속철도)</strong>
+            <span>대전역 『동광장』 택시 승강장 기준 약 5.2km</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="reg-jump-bar" aria-label="출발 권역 바로가기">
+        <a class="reg-jump-pill" href="#reg-daejeon-city">🏙️ 대전 시내권 (둔산동 · 유성 · 도안동)</a>
+        <a class="reg-jump-pill" href="#reg-chungcheong-ic">🛣️ 충청 · 인근 광역권 (세종 · 청주 · 계룡시 · 옥천 · 영동)</a>
+        <a class="reg-jump-pill" href="#reg-ktx-national">🚄 전국 KTX 철도역 (서울역 · 천안아산역 · 대구역 · 부산역)</a>
+      </nav>
+
+      <div id="loc-regional-groups">
+      <div class="reg-group-block" id="reg-daejeon-city">
+        <div class="reg-group-head">
+          <div>
+            <span class="reg-group-badge">대전 시내 주요 권역</span>
+            <h3 class="reg-group-title">둔산동 · 유성 · 도안동에서 오시는 길</h3>
+          </div>
+          <p class="reg-group-summary">한밭대로 · 동서대로 직결 동선으로 시내 주요 생활권에서 자차 및 간선버스로 편리하게 내원하실 수 있습니다.</p>
+        </div>
+        <div class="reg-route-grid">
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">둔산동 출발</strong>
+          <span class="reg-eta-pill">자차 약 18~22분 (약 8.5km)</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>한밭대로(시청·정부청사 방면) → 오정네거리·중리네거리 직진 → 동부네거리 인근 비래동로7번길 진입</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>도시철도 1호선 시청·정부청사역 → 대전역 환승 또는 둔산동 출발 복합터미널·비래동 방면 간선버스 이용</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">유성 출발</strong>
+          <span class="reg-eta-pill">자차 약 25~30분 (약 12.8km)</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>한밭대로 또는 갑천도시고속화도로(원촌교·오정 방면) → 중리네거리 경유 → 비래동로7번길 1, 2층</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>유성온천역 인근 102번 간선버스 탑승 → 복합터미널·비래동 정류장 하차 후 도보 이동</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">도안동 출발</strong>
+          <span class="reg-eta-pill">자차 약 28~35분 (약 14.2km)</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>도안대로 · 동서대로 직진 → 용문역·홍도육교 경유 → 동부네거리(복합터미널) 지나 비래동로7번길 진입</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>도안대로 간선버스 탑승 → 용문역·대전복합터미널 환승 후 비래동 방면 버스 이동</p>
+        </div>
+      </article>
+    </div>
+      </div>
+    
+      <div class="reg-group-block" id="reg-chungcheong-ic">
+        <div class="reg-group-head">
+          <div>
+            <span class="reg-group-badge">충청 · 인근 광역권 (대전IC 3분)</span>
+            <h3 class="reg-group-title">세종 · 청주 · 계룡시 · 옥천 · 영동에서 오시는 길</h3>
+          </div>
+          <p class="reg-group-summary">경부고속도로 대전IC 진출 후 차량 3분(약 1.3km), 대전복합터미널 하차 후 차량 7분 거리에 위치해 타 지역 내원이 매우 편리합니다.</p>
+        </div>
+        <div class="reg-route-grid">
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">세종 출발</strong>
+          <span class="reg-eta-pill">자차·BRT 약 30~35분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>세종로 · 구즉세종로 → 북유성·신탄진 경유 회덕JC → 경부고속도로 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>B1(구 1001번) BRT 탑승 → 대전복합터미널 정류장 하차 후 택시·시내버스 약 7분</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">청주 출발</strong>
+          <span class="reg-eta-pill">자차·시외버스 약 35~45분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 청주IC / 남청주IC 진입 → 회덕JC 경유 → 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>청주시외버스터미널 출발 → 대전복합터미널 하차 후 택시·시내버스 약 7분</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">계룡시 출발</strong>
+          <span class="reg-eta-pill">자차 약 35~40분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>계룡IC 진입 → 호남고속도로지선 → 회덕JC → 경부고속도로 대전IC 진출 후 3분 (또는 계백로 경유)</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>계룡역 열차(서대전역 하차) 또는 202번 좌석버스 탑승 후 복합터미널·비래동 방면 환승</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">옥천 출발</strong>
+          <span class="reg-eta-pill">자차 약 15~20분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 옥천IC 진입 → 대전IC 진출 후 3분 (또는 국도 4호선 옥천로 → 판암·비래동 직결)</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>607번 시내버스 이용 또는 옥천역 경부선 열차 → 대전역 하차 후 동광장 택시 약 12분</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">영동 출발</strong>
+          <span class="reg-eta-pill">자차·열차 약 35~40분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 영동IC / 황간IC 진입 → 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>영동역 무궁화호·ITX-새마을 탑승(약 30분) → 대전역 하차 후 동광장 택시 약 12분</p>
+        </div>
+      </article>
+    </div>
+      </div>
+    
+      <div class="reg-group-block" id="reg-ktx-national">
+        <div class="reg-group-head">
+          <div>
+            <span class="reg-group-badge">전국 KTX · SRT 고속철도 (대전역 환승)</span>
+            <h3 class="reg-group-title">서울역 · 천안아산역 · 대구역 · 부산역에서 오시는 길</h3>
+          </div>
+          <p class="reg-group-summary">대전역(KTX·SRT) 하차 후 『동광장』 택시 승강장을 이용하시면 약 12~15분(5.2km) 내에 병원 정문 앞에 도착합니다.</p>
+        </div>
+        <div class="reg-route-grid">
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">서울역 출발</strong>
+          <span class="reg-eta-pill">KTX 약 50~60분 + 택시 12분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 서울TG → 회덕JC → 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>서울역 KTX 탑승 → 대전역 하차 → 동광장 택시 약 12~15분 (또는 102·311·613번 버스)</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">천안아산역 출발</strong>
+          <span class="reg-eta-pill">KTX·SRT 약 22~25분 + 택시 12분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 천안IC · 목천IC → 회덕JC → 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>천안아산역 KTX·SRT 탑승 → 대전역 하차 → 동광장 택시 약 12~15분</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">대구역 · 동대구역 출발</strong>
+          <span class="reg-eta-pill">KTX 약 43~50분 + 택시 12분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 북대구IC · 동대구JC → 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>동대구역 KTX·SRT(약 45분) 또는 대구역 ITX·무궁화호 탑승 → 대전역 하차 → 동광장 택시 약 12~15분</p>
+        </div>
+      </article>
+    
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">부산역 출발</strong>
+          <span class="reg-eta-pill">KTX 약 1시간 30분 + 택시 12분</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>경부고속도로 구서IC · 양산JC → 대전IC 진출 후 3분</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>부산역 KTX·SRT 탑승 → 대전역 하차 → 동광장 택시 약 12~15분 (비래동로7번길 1, 2층)</p>
+        </div>
+      </article>
+    </div>
+      </div>
+    </div>
     </section>
 
     <!-- 3. Medical Law Article 45 Non-Covered Fee Schedule -->
@@ -853,6 +1284,24 @@
           if (tb) {
             tb.innerHTML = info.nonCoveredFees.map(function (f) {
               return '<tr><td><span class="fee-cat-pill">' + escH(f.category) + '</span></td><td><strong>' + escH(f.name) + '</strong></td><td>' + escH(f.spec || '-') + '</td><td class="fee-price-cell">' + escH(f.price) + '</td><td class="fee-note-cell">' + escH(f.note || '') + '</td></tr>';
+            }).join('');
+          }
+        }
+        if (Array.isArray(info.regionalDirections) && info.regionalDirections.length) {
+          var rg = document.getElementById('loc-regional-groups');
+          if (rg) {
+            rg.innerHTML = info.regionalDirections.map(function (g) {
+              var cards = (Array.isArray(g.routes) ? g.routes : []).map(function (r) {
+                return '<article class="reg-route-card">' +
+                  '<div class="reg-route-top"><strong class="reg-origin-name">' + escH(r.origin) + '</strong><span class="reg-eta-pill">' + escH(r.eta) + '</span></div>' +
+                  '<div class="reg-route-row"><span class="reg-mode-tag reg-mode-car">자가용·IC</span><p>' + escH(r.car) + '</p></div>' +
+                  '<div class="reg-route-row"><span class="reg-mode-tag reg-mode-transit">대중교통·철도</span><p>' + escH(r.transit) + '</p></div>' +
+                '</article>';
+              }).join('');
+              return '<div class="reg-group-block" id="reg-' + escH(g.groupId || 'group') + '">' +
+                '<div class="reg-group-head"><div><span class="reg-group-badge">' + escH(g.badge) + '</span><h3 class="reg-group-title">' + escH(g.title) + '</h3></div><p class="reg-group-summary">' + escH(g.summary || '') + '</p></div>' +
+                '<div class="reg-route-grid">' + cards + '</div>' +
+              '</div>';
             }).join('');
           }
         }

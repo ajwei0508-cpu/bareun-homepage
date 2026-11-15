@@ -49,6 +49,7 @@ function syncClinicTemplateConfigJs(info) {
     lng: Number(info.lng) || 127.44778,
     parkingGuide: info.parkingGuide || '',
     transitGuide: info.transitGuide || '',
+    regionalDirections: Array.isArray(info.regionalDirections) ? info.regionalDirections : [],
     hours: Array.isArray(info.hours) ? info.hours : [],
     holidayNotice: info.holidayNotice || { enabled: false, badge: '진료 안내', text: '' },
     nonCoveredUpdatedDate: info.nonCoveredUpdatedDate || '2026-11-15',
@@ -108,7 +109,40 @@ function buildLocationHtml(info) {
   const naverBookingUrl = info.naverBookingUrl || 'https://naver.me/5U1ELn8L';
   const hours = Array.isArray(info.hours) ? info.hours : [];
   const fees = Array.isArray(info.nonCoveredFees) ? info.nonCoveredFees : [];
+  const regionalGroups = Array.isArray(info.regionalDirections) ? info.regionalDirections : [];
   const hn = info.holidayNotice || { enabled: false, badge: '진료 안내', text: '' };
+
+  const regionalGroupsHtml = regionalGroups.map((g) => {
+    const routes = Array.isArray(g.routes) ? g.routes : [];
+    const cardsHtml = routes.map((r) => `
+      <article class="reg-route-card">
+        <div class="reg-route-top">
+          <strong class="reg-origin-name">${esc(r.origin)}</strong>
+          <span class="reg-eta-pill">${esc(r.eta)}</span>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-car">자가용·IC</span>
+          <p>${esc(r.car)}</p>
+        </div>
+        <div class="reg-route-row">
+          <span class="reg-mode-tag reg-mode-transit">대중교통·철도</span>
+          <p>${esc(r.transit)}</p>
+        </div>
+      </article>
+    `).join('');
+    return `
+      <div class="reg-group-block" id="reg-${esc(g.groupId || 'group')}">
+        <div class="reg-group-head">
+          <div>
+            <span class="reg-group-badge">${esc(g.badge)}</span>
+            <h3 class="reg-group-title">${esc(g.title)}</h3>
+          </div>
+          <p class="reg-group-summary">${esc(g.summary || '')}</p>
+        </div>
+        <div class="reg-route-grid">${cardsHtml}</div>
+      </div>
+    `;
+  }).join('');
 
   const hoursRowsHtml = hours.map((h) => `
     <div class="loc-hour-row">
@@ -569,6 +603,188 @@ function buildLocationHtml(info) {
       color: #FFFFFF !important;
     }
 
+    /* Regional & KTX Multi-Origin Access Guide (100% Visible Semantic Cards, Zero Hidden Text) */
+    .hub-highlight-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 820px) {
+      .hub-highlight-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+    .hub-highlight-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1B1815 0%, #27201A 100%);
+      color: #FDFBF7;
+      border: 1px solid rgba(197, 160, 89, 0.36);
+    }
+    .hub-highlight-num {
+      padding: 6px 11px;
+      border-radius: 11px;
+      background: rgba(245, 211, 108, 0.16);
+      border: 1px solid rgba(245, 211, 108, 0.42);
+      color: #F5D36C;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .hub-highlight-copy strong {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #FFFFFF;
+    }
+    .hub-highlight-copy span {
+      display: block;
+      font-size: 11.5px;
+      color: rgba(253, 251, 247, 0.76);
+      margin-top: 2px;
+    }
+    .reg-jump-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .reg-jump-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--hanji-bg);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--brown);
+      transition: all 0.18s ease;
+    }
+    .reg-jump-pill:hover {
+      border-color: var(--green);
+      background: var(--green-soft);
+      color: var(--green);
+    }
+    .reg-group-block {
+      padding: 20px;
+      border-radius: 20px;
+      background: #FAF8F3;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+      scroll-margin-top: 84px;
+    }
+    .reg-group-block:last-child {
+      margin-bottom: 0;
+    }
+    .reg-group-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed rgba(74, 53, 37, 0.16);
+    }
+    .reg-group-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+    .reg-group-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: var(--espresso);
+      letter-spacing: -0.01em;
+    }
+    .reg-group-summary {
+      font-size: 12.5px;
+      color: #4B5563;
+      max-width: 520px;
+      line-height: 1.55;
+    }
+    .reg-route-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 820px) {
+      .reg-route-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .reg-route-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(74, 53, 37, 0.12);
+      border-radius: 16px;
+      padding: 15px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .reg-route-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .reg-origin-name {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: var(--espresso);
+    }
+    .reg-eta-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #FEF3C7;
+      color: #92400E;
+      font-size: 11.5px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .reg-route-row {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 12.5px;
+      color: #374151;
+      line-height: 1.58;
+    }
+    .reg-mode-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .reg-mode-car {
+      background: #EEF2FF;
+      color: #3730A3;
+    }
+    .reg-mode-transit {
+      background: #ECFDF5;
+      color: #065F46;
+    }
+
     /* Non-Covered Fee Schedule Table */
     .fee-table-wrap {
       overflow-x: auto;
@@ -641,6 +857,7 @@ function buildLocationHtml(info) {
       <a class="nav-pill" href="body-explorer.html" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;">💡 3D 인체모형 · 건강백과</a>
     </div>
     <div class="header-right">
+      <a class="nav-pill" href="#regional-directions">🚄 권역·KTX 오시는길</a>
       <a class="nav-pill" href="#non-covered-fees">📋 비급여 수가표</a>
       <a class="header-cta" href="${esc(naverBookingUrl)}" target="_blank" rel="noopener noreferrer">📍 네이버 빠른예약 ↗</a>
     </div>
@@ -778,6 +995,49 @@ function buildLocationHtml(info) {
       </div>
     </section>
 
+    <!-- 2-B. Multi-Region & National KTX Access Guide (12 Major Origins, 100% Visible Genuine Transit Utility) -->
+    <section class="section-card" id="regional-directions" aria-label="권역별 및 광역 교통 오시는길 안내">
+      <div class="sec-head">
+        <div>
+          <div class="sec-kicker">REGIONAL &amp; KTX ACCESS GUIDE · 권역별 · 광역 IC · 고속철도 교통편 안내</div>
+          <h2 class="sec-title">대전 시내권 · 충청 인근 도시 · 전국 KTX 철도역에서 오시는 길</h2>
+        </div>
+        <span style="font-size:12px;font-weight:700;color:#6B7280;">대전IC 차량 3분 · 복합터미널 7분 · 대전역 동광장 12분</span>
+      </div>
+
+      <div class="hub-highlight-strip">
+        <div class="hub-highlight-item">
+          <span class="hub-highlight-num">차량 3분</span>
+          <div class="hub-highlight-copy">
+            <strong>경부고속도로 대전IC 진출 직결</strong>
+            <span>톨게이트 통과 후 비래동로 방면 약 1.3km</span>
+          </div>
+        </div>
+        <div class="hub-highlight-item">
+          <span class="hub-highlight-num">차량 7분</span>
+          <div class="hub-highlight-copy">
+            <strong>대전복합터미널 · 세종 BRT 정류장</strong>
+            <span>시외·고속버스 및 B1 BRT 하차 후 약 2.4km</span>
+          </div>
+        </div>
+        <div class="hub-highlight-item">
+          <span class="hub-highlight-num">택시 12분</span>
+          <div class="hub-highlight-copy">
+            <strong>대전역 (KTX · SRT 고속철도)</strong>
+            <span>대전역 『동광장』 택시 승강장 기준 약 5.2km</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="reg-jump-bar" aria-label="출발 권역 바로가기">
+        <a class="reg-jump-pill" href="#reg-daejeon-city">🏙️ 대전 시내권 (둔산동 · 유성 · 도안동)</a>
+        <a class="reg-jump-pill" href="#reg-chungcheong-ic">🛣️ 충청 · 인근 광역권 (세종 · 청주 · 계룡시 · 옥천 · 영동)</a>
+        <a class="reg-jump-pill" href="#reg-ktx-national">🚄 전국 KTX 철도역 (서울역 · 천안아산역 · 대구역 · 부산역)</a>
+      </nav>
+
+      <div id="loc-regional-groups">${regionalGroupsHtml}</div>
+    </section>
+
     <!-- 3. Medical Law Article 45 Non-Covered Fee Schedule -->
     <section class="section-card" id="non-covered-fees" aria-label="비급여 진료비용 안내">
       <div class="sec-head">
@@ -858,6 +1118,24 @@ function buildLocationHtml(info) {
           if (tb) {
             tb.innerHTML = info.nonCoveredFees.map(function (f) {
               return '<tr><td><span class="fee-cat-pill">' + escH(f.category) + '</span></td><td><strong>' + escH(f.name) + '</strong></td><td>' + escH(f.spec || '-') + '</td><td class="fee-price-cell">' + escH(f.price) + '</td><td class="fee-note-cell">' + escH(f.note || '') + '</td></tr>';
+            }).join('');
+          }
+        }
+        if (Array.isArray(info.regionalDirections) && info.regionalDirections.length) {
+          var rg = document.getElementById('loc-regional-groups');
+          if (rg) {
+            rg.innerHTML = info.regionalDirections.map(function (g) {
+              var cards = (Array.isArray(g.routes) ? g.routes : []).map(function (r) {
+                return '<article class="reg-route-card">' +
+                  '<div class="reg-route-top"><strong class="reg-origin-name">' + escH(r.origin) + '</strong><span class="reg-eta-pill">' + escH(r.eta) + '</span></div>' +
+                  '<div class="reg-route-row"><span class="reg-mode-tag reg-mode-car">자가용·IC</span><p>' + escH(r.car) + '</p></div>' +
+                  '<div class="reg-route-row"><span class="reg-mode-tag reg-mode-transit">대중교통·철도</span><p>' + escH(r.transit) + '</p></div>' +
+                '</article>';
+              }).join('');
+              return '<div class="reg-group-block" id="reg-' + escH(g.groupId || 'group') + '">' +
+                '<div class="reg-group-head"><div><span class="reg-group-badge">' + escH(g.badge) + '</span><h3 class="reg-group-title">' + escH(g.title) + '</h3></div><p class="reg-group-summary">' + escH(g.summary || '') + '</p></div>' +
+                '<div class="reg-route-grid">' + cards + '</div>' +
+              '</div>';
             }).join('');
           }
         }
