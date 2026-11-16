@@ -235,6 +235,33 @@ const SEO_PAGES = {
     isArticle: true,
     datePublished: '2026-10-26',
     dateModified: '2026-10-28'
+  },
+  sample: {
+    file: 'sample.html',
+    path: '/sample/',
+    title: '바른한의원 실제 홈페이지 작동 샘플 · 기능별 티어 마크 안내 | 바른 메디테크',
+    description: '실제 운영 중인 www.bareunhaniwon.com 화면에서 스토리보드, 3D 인체모형, 건강 칼럼, 자가진단 등 각 기능별 스탠다드(✕), 프로(△), 시그니처(○) 차이점을 직접 체험해 보세요.',
+    preloadImg: DEFAULT_OG_IMAGE,
+    breadcrumbName: '홈페이지 샘플',
+    robots: 'noindex, nofollow'
+  },
+  'sample-studio': {
+    file: 'sample-studio.html',
+    path: '/sample-studio/',
+    title: '원장님 전용 커스텀 스튜디오 체험판 (수정 TEST) | 바른 메디테크',
+    description: '스토리보드, 질환 카드, 건강 글 문구와 사진, 한의원 브랜드 대표 색상을 직접 변경해 보는 원장님 전용 실시간 커스텀 스튜디오 체험판입니다.',
+    preloadImg: DEFAULT_OG_IMAGE,
+    breadcrumbName: '커스텀 스튜디오 체험',
+    robots: 'noindex, nofollow'
+  },
+  'b2b-landing': {
+    file: 'b2b-landing.html',
+    path: '/b2b/',
+    title: '한의원 하이엔드 홈페이지 솔루션 · 스탠다드·프로·시그니처 비교 | 바른 메디테크',
+    description: '환자의 체류시간과 신환 전환율을 극대화하는 한의원 전용 하이엔드 반응형 홈페이지 솔루션. 실제 작동 샘플과 티어별 기능 비교를 확인하세요.',
+    preloadImg: DEFAULT_OG_IMAGE,
+    breadcrumbName: 'B2B 솔루션 안내',
+    robots: 'noindex, nofollow'
   }
 };
 

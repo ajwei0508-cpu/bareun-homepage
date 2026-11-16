@@ -287,7 +287,10 @@ const ALL_BUNDLES = [
   ['prostate.html', 'wordpress-prostate.html', 'prostate'],
   ['body-explorer.html', 'wordpress-body-explorer.html', 'body-explorer'],
   ['lifting-compare.html', 'wordpress-lifting-compare.html', 'lifting-compare'],
-  ['location.html', 'wordpress-location.html', 'location']
+  ['location.html', 'wordpress-location.html', 'location'],
+  ['sample.html', 'wordpress-sample.html', 'sample'],
+  ['sample-studio.html', 'wordpress-sample-studio.html', 'sample-studio'],
+  ['b2b-landing.html', 'wordpress-b2b-landing.html', 'b2b-landing']
 ];
 
 try {

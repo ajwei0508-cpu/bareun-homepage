@@ -51,7 +51,10 @@ const PAGES_TO_DEPLOY = [
   { id: 96,   slug: 'gongjindan',          title: '바른 황제공진단',                                         file: 'wordpress-gongjindan.html',          excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
   { id: 133,  slug: 'prostate',            title: '바른 전립선 · 남성활력',                                  file: 'wordpress-prostate.html',            excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' },
   { id: 134,  slug: 'lifting-compare',     title: '바른리프팅 시술 전후 윤곽진단',                            file: 'wordpress-lifting-compare.html',     excerpt: '비수술 한방 리프팅 전후 윤곽 비교 진단 시스템입니다.' },
-  { id: 3206, slug: 'location',            title: '오시는길 · 진료시간 · 비급여 안내',                        file: 'wordpress-location.html',            excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 진료시간 및 비급여 진료비용 안내표입니다.' }
+  { id: 3206, slug: 'location',            title: '오시는길 · 진료시간 · 비급여 안내',                        file: 'wordpress-location.html',            excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 진료시간 및 비급여 진료비용 안내표입니다.' },
+  {           slug: 'sample',              title: '바른한의원 실제 홈페이지 작동 샘플 (티어 마크)',            file: 'wordpress-sample.html',              excerpt: '실제 운영 중인 www.bareunhaniwon.com 화면에서 스토리보드, 3D 인체모형, 건강 칼럼 등 각 기능별 스탠다드(✕), 프로(△), 시그니처(○) 차이점을 직접 체험해 보세요.' },
+  {           slug: 'sample-studio',       title: '원장님 전용 커스텀 스튜디오 체험판 (수정 TEST)',           file: 'wordpress-sample-studio.html',       excerpt: '스토리보드, 질환 카드, 건강 글 문구와 사진, 한의원 브랜드 대표 색상을 직접 변경해 보는 원장님 전용 실시간 커스텀 스튜디오 체험판입니다.' },
+  {           slug: 'b2b',                 title: '한의원 하이엔드 홈페이지 솔루션 (스탠다드·프로·시그니처)',   file: 'wordpress-b2b-landing.html',         excerpt: '환자의 체류시간과 신환 전환율을 극대화하는 한의원 전용 하이엔드 반응형 홈페이지 솔루션. 실제 작동 샘플과 티어별 기능 비교를 확인하세요.' }
 ];
 
 try {
