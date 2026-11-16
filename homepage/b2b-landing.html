@@ -345,6 +345,49 @@
     .mtx tr.pick td{background:#F2FAF5}.mtx tr.pick.bad td:not(:first-child):not(:nth-child(2)).n{background:#FFF1EE}
     .mx-res{margin-top:16px;padding:16px 18px;border-radius:16px;background:#fff;color:#14392A;font-size:.96rem;line-height:1.7}.mx-res b{color:var(--green)}.mx-res .bad{color:var(--red);font-weight:800}
     .mx-go{margin-top:14px;text-align:center}
+
+    /* ===== v9.7 추가 스타일 ===== */
+    .vs{margin-top:38px;padding:28px;border-radius:24px;background:rgba(255,255,255,.06);border:1px solid rgba(143,224,176,.4)}
+    .vs>h3{font-size:1.2rem;color:#fff;margin-bottom:6px}.vs-lead{color:rgba(253,251,247,.82);font-size:.97rem;margin-bottom:18px}
+    .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:760px){.vs-grid{grid-template-columns:1fr}}
+    .vs-card{padding:20px;border-radius:18px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05)}.vs-card.full{border-color:var(--gold-hi);background:linear-gradient(160deg,rgba(143,224,176,.18),rgba(255,255,255,.05))}
+    .vs-card h4{color:#fff;font-size:1.05rem}.vs-card h4 small{display:block;font-size:.8rem;font-weight:700;color:var(--gold-hi);margin-top:2px}
+    .vs-steps{list-style:none;margin-top:12px}.vs-steps li{padding:8px 10px 8px 34px;position:relative;font-size:.9rem;color:rgba(253,251,247,.88);border-radius:10px;margin-bottom:6px;background:rgba(255,255,255,.05)}.vs-steps li b{display:block;color:#fff;font-size:.88rem}
+    .vs-steps li:before{position:absolute;left:10px;top:9px;font-weight:900}.vs-steps li.ok:before{content:"✓";color:var(--gold-hi)}.vs-steps li.no:before{content:"✕";color:#FF9C7E}.vs-steps li.no{background:rgba(180,65,47,.22)}
+    .vs-q{margin-top:20px;text-align:center;font-size:1.05rem;color:#fff}.vs-btns{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .vs-btns button{font-family:inherit;font-weight:900;font-size:15px;padding:12px 30px;border-radius:999px;border:1.5px solid var(--gold-hi);background:transparent;color:#fff;cursor:pointer}.vs-btns button:hover{background:var(--gold-hi);color:#0B2418}
+    .vs-res{margin-top:14px;padding:14px 18px;border-radius:14px;background:rgba(143,224,176,.16);border:1px solid var(--gold-hi);font-size:.95rem;font-weight:700;color:#fff;text-align:left}
+    .aiex{margin:30px 0 0;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 18px 44px rgba(15,42,30,.12);background:#fff}.aiex img{width:100%;display:block}.aiex figcaption{padding:12px 16px;font-size:.84rem;color:#5F7468;background:#F6FAF7}
+    .aiph{min-height:260px;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:repeating-linear-gradient(45deg,#F2F7F3,#F2F7F3 12px,#E8F2EC 12px,#E8F2EC 24px);color:#2D5A43;text-align:center;padding:30px}.aiph span{font-size:.85rem;opacity:.8}
+    .ai3{margin-top:24px}
+    .gapviz{margin-top:30px;padding:26px;border-radius:22px;background:#fff;border:1px solid var(--line)}.gapviz>h3{font-size:1.08rem;margin-bottom:14px}.gapviz>h3 small{font-weight:600;color:#5F7468;font-size:.82rem}
+    .gv-row{display:grid;grid-template-columns:64px 1fr;gap:6px 10px;margin-bottom:12px;align-items:center}.gv-row .gv-t{grid-row:span 2;font-weight:900;font-size:.88rem;color:var(--brown)}
+    .gb{position:relative;height:24px;background:#F2F7F3;border-radius:999px;overflow:hidden}.gb i{display:block;height:100%;width:0;border-radius:999px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+    .gb i.us{background:linear-gradient(90deg,#3FAE78,#2D5A43)}.gb i.no{background:#B4412F}
+    .gapviz.in .gb i{width:var(--w)}.gb b{position:absolute;left:12px;top:0;line-height:24px;font-size:.78rem;color:#0B2418;text-shadow:0 0 6px #fff}
+    .gb i.us+b{color:#fff;text-shadow:none}
+    .gv-leg{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:#3B4A42;margin-top:6px}.gv-leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}.gv-leg i.us{background:#3FAE78}.gv-leg i.no{background:#B4412F}
+    .gv-cap{margin-top:14px;padding:14px 16px;border-radius:14px;background:var(--green-soft);border:1px solid #B9D7C6;color:#14392A;font-size:.95rem}
+    .out em{display:block;font-style:normal;font-size:.76rem;color:#5F7468;margin-top:2px}
+    .vitems{margin-top:16px;display:grid;gap:8px}.vi{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:#FAFCFB;border:1px solid var(--line);cursor:pointer}.vi input{accent-color:var(--green);width:18px;height:18px;flex:none}
+    .vi .vn{flex:1;font-weight:800;font-size:.93rem}.vi .vn small{display:block;font-weight:500;font-size:.78rem;color:#5F7468}.vi b{font-variant-numeric:tabular-nums;font-size:.95rem;white-space:nowrap}
+    .vbars{margin-top:20px;display:grid;gap:10px}.vb{display:grid;grid-template-columns:150px 1fr 120px;gap:10px;align-items:center;font-size:.88rem;font-weight:800}@media(max-width:640px){.vb{grid-template-columns:1fr}}
+    .vb small{font-weight:600;color:#5F7468}.vbar{height:22px;background:#EEF2EF;border-radius:999px;overflow:hidden}.vbar i{display:block;height:100%;border-radius:999px;background:#B4412F;transition:width .6s}.vb.us .vbar i{background:linear-gradient(90deg,#3FAE78,#2D5A43)}.vb b{text-align:right;font-variant-numeric:tabular-nums}
+    .vmine{margin-top:18px;padding:16px 18px;border-radius:16px;background:#F6FAF7;border:1px dashed #9CC5AD;font-size:.93rem}.vm-row{display:flex;align-items:center;gap:8px;margin-top:8px}.vm-row input{width:140px;padding:10px 12px;border-radius:10px;border:1px solid #CFE0D5;font-family:inherit;font-size:15px}.vm-res{margin-top:10px;font-weight:700;color:#14392A}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.lg{padding:8px 16px;border-radius:999px;font-size:.86rem;font-weight:900}.lg small{font-weight:600;opacity:.75;margin-left:4px}
+    .lg.t0{background:#E8F2EC;color:#2D5A43}.lg.t1{background:#FEF3C7;color:#92400E}.lg.t2{background:linear-gradient(135deg,#0B2418,#1F5A3F);color:#8FE0B0;border:1px solid #8FE0B0}
+    .tc .tn{font-size:.84rem;color:rgba(255,255,255,.8);margin:0 0 4px}
+    .imgpick{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.imgpick button{width:64px;height:48px;border-radius:10px;border:2px solid transparent;background-size:cover;background-position:center;cursor:pointer}.imgpick button.on{border-color:var(--green);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--green)}
+    .sd-pane select{width:100%;margin-top:5px;padding:11px 13px;border-radius:12px;border:1px solid #CFE0D5;font-family:inherit;font-size:14px;background:#FAFCFB}
+    #cCks input{margin-top:6px}
+    .pv-card{display:grid;grid-template-columns:1fr 1fr;background:#fff}@media(max-width:560px){.pv-card{grid-template-columns:1fr}}
+    .pc-left{padding:16px 14px}.pc-left small{font-size:9.5px;font-weight:900;letter-spacing:.06em;color:var(--green)}.pc-left h4{font-size:1.15rem;line-height:1.3;margin:4px 0 2px;color:#0B2418}.pc-left em{display:block;font-style:italic;font-size:.74rem;color:#6F8378;margin-bottom:8px}.pc-left p{font-size:.78rem;color:#3B4A42;line-height:1.55;margin-bottom:10px}
+    .pc-ck{display:grid;gap:5px;margin-bottom:10px}.pc-ck div{display:flex;gap:7px;align-items:flex-start;padding:7px 8px;border-radius:9px;background:#F6FAF7;border:1px solid #E3EEE6;font-size:.7rem;font-weight:700;color:#1F2B25;line-height:1.4}.pc-ck div:before{content:"";flex:none;width:11px;height:11px;border-radius:3px;border:1.5px solid #9CC5AD;margin-top:1px;background:#fff}
+    .pc-cta{background:var(--green);color:#fff;font-weight:800;font-size:.74rem;padding:10px 12px;border-radius:999px;text-align:center}
+    .pc-right{position:relative;min-height:260px;background-size:cover;background-position:center}.pc-cap{position:absolute;left:0;right:0;bottom:0;padding:14px;background:linear-gradient(180deg,transparent,rgba(11,36,24,.92));color:#fff;font-size:.8rem;font-weight:800;line-height:1.4}
+    .sd-pane label small{font-weight:600}
+    .pv-card[hidden],.pv-body[hidden]{display:none}
+    .aiex-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;align-items:start}@media(max-width:860px){.aiex-grid{grid-template-columns:1fr}}.aiex-grid .aiex{margin:0;position:relative}.aiex figcaption b{color:#14392A}.aibadge{position:absolute;left:12px;top:12px;z-index:2;background:linear-gradient(135deg,#8FE0B0,#3FAE78);color:#0B2418;font-weight:900;font-size:12.5px;padding:6px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.2)}.aibadge.b2{background:#fff;border:1.5px solid #3FAE78}
   </style>
 </head>
 <body>
@@ -355,7 +398,7 @@
     <nav class="hn">
       <a href="#why">왜 필요한가</a><a href="#noncovered">비급여</a><a href="#cost">안 하면</a><a href="#migrate">이전</a><a href="#samples">샘플</a><a href="#plans">가격</a><a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-gold btn-sm" href="#apply">무료 시안 받아보기</a>
+    <a class="btn btn-gold btn-sm" href="#apply">상담 신청하기</a>
   </div>
 </header>
 
@@ -385,7 +428,7 @@
       <div class="doubt rv"><q>블로그랑 플레이스 있는데 홈페이지가 또 필요한가요?</q><p>블로그와 플레이스는 환자가 <b>처음 만나는 입구</b>입니다. 그런데 비용이 큰 진료(보약·성장·다이어트·시술)는 입구에서 바로 결정하지 않고, <b>원장님이 누구인지, 어떤 장비·철학으로 진료하는지 한 번 더 확인</b>하려 합니다. 그 확인 자리가 홈페이지입니다.</p></div>
       <div class="doubt rv"><q>요즘 환자들이 홈페이지까지 보나요?</q><p>모든 환자가 보지는 않습니다. 하지만 <b>비싼 진료일수록, 신환일수록, 의심이 많을수록</b> 확인하러 들어옵니다. 그리고 확인하러 온 분들은 사실상 “결제 직전”인 분들이라, 이 분들을 놓치면 가장 아까운 환자를 놓치는 셈입니다.</p></div>
       <div class="doubt rv"><q>지금도 환자가 오는데 굳이 돈 들일 이유가 있나요?</q><p>지금 오는 환자는 <b>과거에 쌓아 둔 신뢰와 입소문의 결과</b>입니다. 인근 한의원들이 온라인 콘텐츠를 계속 쌓는 동안 가만히 있으면, 몇 달 뒤 달라지는 건 오늘이 아니라 <b>“내년에 들어올 신환”</b>입니다. 아래 ‘안 하면 어떻게 되나’에서 자세히 설명합니다.</p></div>
-      <div class="doubt rv"><q>비싼 것 같은데, 돈값을 할까요?</q><p>그래서 견적서를 같이 놓고 계산해 드립니다. 아래 <b>1년 총비용 비교</b>와 <b>“신환 몇 명이면 본전인가”</b> 계산기에 원장님 숫자를 넣어 보세요. 정직하게 안 맞으면 안 하셔도 됩니다.</p></div>
+      <div class="doubt rv"><q>비싼 것 같은데, 돈값을 할까요?</q><p>그래서 견적서를 같이 놓고 계산해 드립니다. 아래 <b>가성비 계산기</b>와 <b>“신환 몇 명이면 본전인가”</b> 계산기에 원장님 숫자를 넣어 보세요. 정직하게 안 맞으면 안 하셔도 됩니다.</p></div>
     </div>
   </div>
 </section>
@@ -415,7 +458,7 @@
       <div class="w6 rv"><div class="ic">🧾</div><h3>가격을 숨기면 의심, 공개하면 신뢰</h3><p>비급여 진료비는 의료법상 고지 대상(제45조)이며, 환자가 전화하기 전에 가장 궁금해하는 정보입니다. 수가표를 홈페이지에 정리해 두면 “비싸게 부르면 어쩌지” 하는 불안이 사라지고 문의 문턱이 낮아집니다.</p></div>
       <div class="w6 rv"><div class="ic">🧠</div><h3>비싼 진료일수록 ‘설명할 공간’이 필요합니다</h3><p>한약 한 제, 시술 코스는 “왜 필요한가”가 설명되어야 팔립니다. 블로그 글 한 편으로는 부족하고, 체크포인트·칼럼·3D 인체모형처럼 환자가 스스로 이해하는 동선이 필요합니다.</p></div>
       <div class="w6 rv"><div class="ic">🔎</div><h3>검색으로 온 환자는 신뢰 0에서 시작합니다</h3><p>지인 소개로 오는 환자는 이미 믿고 옵니다. 하지만 검색·플레이스로 처음 만나는 환자는 아무것도 모릅니다. 비급여 신환을 늘리고 싶다면 바로 이 분들을 설득할 장소가 있어야 합니다.</p></div>
-      <div class="w6 rv"><div class="ic">💰</div><h3>환자 한 분의 값이 큽니다</h3><p>예: 운영 중인 바른한의원 비급여 안내표 기준 맞춤 탕약 22만~45만 원, 키 성장 한약 35만~55만 원. 시그니처 월 구독료 99,000원은 신환 한 분이 결제하는 한약 한 제의 일부입니다. <small>(원장님 단가에 맞춘 계산은 아래 쉬운 계산기에서)</small></p></div>
+      <div class="w6 rv"><div class="ic">💰</div><h3>환자 한 분의 값이 큽니다</h3><p>전국 한의원에서 흔히 보는 가격대는 일반 치료 한약 15일분(1제)이 <b>20만~35만 원대</b>, 녹용 등 고가 약재가 들어가면 <b>35만~60만 원 이상</b>입니다. 시그니처 월 구독료 99,000원은 신환 한 분이 결제하는 한약 한 제의 <b>절반 이하</b>입니다. <small>※ 한의원마다 편차가 큰 참고용 가격대이며, 원장님 단가에 맞춘 계산은 아래 쉬운 계산기에서 해 보세요.</small></p></div>
       <div class="w6 rv"><div class="ic">📈</div><h3>내 힘으로 키울 수 있는 매출 축입니다</h3><p>급여는 수가를 국가가 정하지만, 비급여는 설명과 신뢰로 선택받는 영역입니다. 광고비는 멈추면 끝나지만 홈페이지와 칼럼은 쌓여서 남는 자산입니다.</p></div>
     </div>
 
@@ -439,14 +482,66 @@
   <div class="wrap">
     <span class="eyebrow rv">THE PSYCHOLOGY OF PATIENTS · 환자의 마음은 이 순서로 움직입니다</span>
     <h2 class="title rv">“환자는 바보가 아닙니다.<br>블로그 글 하나만 보고 <span class="gold">100만 원짜리 보약</span>을 결제하지 않습니다.”</h2>
-    <p class="lead rv">환자가 한의원을 정하는 과정은 대체로 네 걸음입니다. 이 중 어디에서 멈추는지가 곧 원장님의 신환 수입니다.</p>
+    <p class="lead rv">환자가 한의원을 정하는 과정은 대체로 네 걸음입니다. 이 중 어디에서 멈추는지가 곧 원장님의 신환 수입입니다.</p>
     <div class="flow">
       <div class="step rv"><small>STEP 1 · 발견</small><h3>검색하다 우연히 발견</h3><p>네이버·구글·AI 검색에서 증상을 검색하다 블로그, 플레이스, 칼럼을 보게 됩니다.</p></div>
       <div class="step rv"><small>STEP 2 · 의심</small><h3>“여기, 믿을 만한가?”</h3><p>좋은 글이어도 의심은 남습니다. 후기가 진짜인지, 원장님이 실제로 어떤 분인지 궁금해집니다.</p></div>
       <div class="step hot rv"><small>STEP 3 · 확인 ★</small><h3>홈페이지로 들어와 확인</h3><p>학력·임상 철학·검진 장비·탕전 과정·비급여 수가·오시는 길을 한곳에서 확인합니다. <b>이때 신뢰를 주지 못하면 조용히 뒤로 가기를 누릅니다.</b></p></div>
       <div class="step rv"><small>STEP 4 · 결정</small><h3>전화·카톡·네이버 예약</h3><p>신뢰가 쌓인 환자만 예약 버튼을 누릅니다.</p></div>
     </div>
+
+    <div class="vs rv">
+      <h3>🧭 이렇게 생각해 보세요 — 같은 동네에 한의원이 두 곳 있습니다</h3>
+      <p class="vs-lead">증상을 검색한 환자가 두 한의원을 모두 찾아냈습니다. 네 걸음 중 <b>한 곳은 2가지만</b>, <b>한 곳은 4가지가 모두</b> 세팅되어 있습니다.</p>
+      <div class="vs-grid">
+        <div class="vs-card half"><h4>한의원 가 <small>네 걸음 중 2가지만 세팅</small></h4>
+          <ol class="vs-steps">
+            <li class="ok"><b>① 발견</b> 블로그·플레이스에 보입니다</li>
+            <li class="ok"><b>② 의심 해소</b> 후기가 몇 개 있습니다</li>
+            <li class="no"><b>③ 확인</b> 홈페이지가 없거나 몇 년째 그대로입니다</li>
+            <li class="no"><b>④ 결정</b> 예약 길이 흩어져 있어 한참 헤맵니다</li></ol></div>
+        <div class="vs-card full"><h4>한의원 나 <small>네 걸음 4가지 모두 세팅</small></h4>
+          <ol class="vs-steps">
+            <li class="ok"><b>① 발견</b> 블로그·플레이스·AI 검색에 보입니다</li>
+            <li class="ok"><b>② 의심 해소</b> 후기와 원장 소개가 이어집니다</li>
+            <li class="ok"><b>③ 확인</b> 약력·수가표·3D·칼럼이 한곳에 정리되어 있습니다</li>
+            <li class="ok"><b>④ 결정</b> 전화·카톡·네이버 예약이 항상 눈앞에 있습니다</li></ol></div>
+      </div>
+      <div class="vs-q">
+        <b>❓ 100만 원짜리 보약을 결제하려는 환자라면, 어디로 갈까요?</b>
+        <div class="vs-btns"><button type="button" data-pick="a">한의원 가</button><button type="button" data-pick="b">한의원 나</button></div>
+        <div class="vs-res" id="vsRes" hidden></div>
+      </div>
+    </div>
+
     <div class="bighook rv">블로그는 환자를 만나는 <span class="gold">입구</span>,<br>홈페이지는 환자가 <span class="gold">결정을 내리는 응접실</span>입니다.<br>입구만 번듯하고 응접실이 비어 있으면, 손님은 문 앞에서 돌아갑니다.</div>
+  </div>
+</section>
+
+<!-- ③-2 AI 검색 노출 예시 -->
+<section class="alt" id="aisearch">
+  <div class="wrap">
+    <span class="eyebrow rv">AI SEARCH · 요즘 환자는 AI에게 먼저 물어봅니다</span>
+    <h2 class="title rv">AI에게 물어봤을 때,<br><mark>홈페이지가 탄탄한 한의원</mark>이 먼저 소개됩니다</h2>
+    <p class="lead rv">ChatGPT·네이버 AI 브리핑·Gemini 같은 AI 검색은 <b>정리된 정보와 출처가 분명한 사이트</b>를 근거로 답변합니다. 아래는 <b>Google AI 모드</b>에 같은 주제를 두 가지 표현으로 물어본 <b>실제 캡처 화면</b>입니다. 첫 번째 질문에서는 <b>바른한의원이 1번째로</b>, 두 번째 질문에서도 <b>추천 목록에 포함</b>되어 소개됩니다. (다른 한의원은 모자이크 처리했습니다. 이미지를 누르면 크게 볼 수 있습니다)</p>
+    <div class="aiex-grid rv">
+      <figure class="aiex">
+        <span class="aibadge">바른한의원 1번째 소개</span>
+        <a href="b2b-assets/ai-search-example.jpg" target="_blank" rel="noopener"><img src="b2b-assets/ai-search-example.jpg" alt="Google AI 모드에 '대전에서 성장클리닉하는 한의원'을 물었을 때 바른한의원이 1번째로 소개된 화면 (다른 한의원 모자이크 처리)" loading="lazy"></a>
+        <figcaption><b>질문: “대전에서 성장클리닉하는 한의원”</b><br>답변 첫 문장과 ‘주요 성장클리닉 진료 한의원’ 목록 모두에서 바른한의원이 먼저 소개됩니다.</figcaption>
+      </figure>
+      <figure class="aiex">
+        <span class="aibadge b2">추천 목록에 포함</span>
+        <a href="b2b-assets/ai-search-example-2.jpg" target="_blank" rel="noopener"><img src="b2b-assets/ai-search-example-2.jpg" alt="Google AI 모드에 '대전 성장 클리닉한의원 추천'을 물었을 때 바른한의원이 추천 목록에 포함된 화면 (다른 한의원 모자이크 처리)" loading="lazy"></a>
+        <figcaption><b>질문: “대전 성장 클리닉한의원 추천”</b><br>질문 표현이 달라지면 순서는 달라지지만, 권역별 추천 목록에 바른한의원이 포함되어 소개됩니다.</figcaption>
+      </figure>
+    </div>
+    <div class="why6 ai3">
+      <div class="w6 rv"><div class="ic">🧩</div><h3>정리된 글이 AI의 ‘근거’가 됩니다</h3><p>칼럼·체크포인트·비급여 안내가 구조적으로 정리된 홈페이지는 AI가 인용하기 쉽습니다.</p></div>
+      <div class="w6 rv"><div class="ic">🔗</div><h3>출처가 있어야 소개됩니다</h3><p>AI는 답변마다 출처를 붙입니다. 출처가 될 홈페이지가 없으면 소개될 기회 자체가 줄어듭니다.</p></div>
+      <div class="w6 rv"><div class="ic">⏳</div><h3>쌓일수록 유리합니다</h3><p>칼럼이 꾸준히 쌓인 곳이 더 자주 근거로 선택됩니다. 시작이 빠를수록 격차가 큽니다.</p></div>
+    </div>
+    <p class="fine rv">※ AI 답변은 질문·시점·AI 종류에 따라 달라지며, 노출이나 순위를 보장하지 않습니다. 위 화면은 캡처 시점의 실제 예시입니다.</p>
   </div>
 </section>
 
@@ -454,13 +549,23 @@
 <section id="cost">
   <div class="wrap">
     <span class="eyebrow rv">IF YOU DON'T · 안 하면 천천히 벌어지는 일</span>
-    <h2 class="title rv">안 한다고 오늘 당장 큰일이 나지는 않습니다.<br>다만 <mark>시간이 갈수록 격차</mark>가 벌어집니다</h2>
+    <h2 class="title rv">안 한다고 오늘 당장 큰일이 나지는 않습니다.<br>다만 <mark>시간이 갈수록 격차</mark>가 벌어지고,<br>세팅된 인근 한의원이 환자를 <mark>조금씩 가져갑니다</mark></h2>
     <p class="lead rv">아래는 “반드시 이렇게 된다”가 아니라, 온라인 콘텐츠가 쌓이는 구조상 <b>그렇게 되기 쉬운 흐름</b>입니다.</p>
     <div class="time-grid">
       <div class="tm rv"><span class="when">지금 ~ 1개월</span><h3>티가 거의 안 납니다</h3><p>기존 환자와 입소문으로 평소와 비슷합니다. 그래서 대부분 “아직 괜찮다”며 미룹니다. 바로 이 점이 함정입니다.</p></div>
-      <div class="tm rv"><span class="when">6개월 후</span><h3>격차가 숫자로 쌓입니다</h3><p>2일에 한 번 글을 올리는 곳은 약 <b>90편</b>, 멈춰 있는 곳은 0편. 검색엔진은 꾸준히 갱신되는 곳을 더 자주 확인합니다.</p></div>
+      <div class="tm rv"><span class="when">6개월 후</span><h3>격차가 숫자로 쌓입니다</h3><p>2일에 한 번 글을 올리는 인근 한의원은 약 <b>90편</b>, 멈춰 있는 곳은 0편. 검색엔진은 꾸준히 갱신되는 곳을 더 자주 확인합니다.</p></div>
       <div class="tm rv"><span class="when">1년 후</span><h3>신환 입구가 좁아집니다</h3><p>같은 증상을 검색한 환자에게 보이는 쪽은 약 <b>180편</b>을 쌓은 곳입니다. 확인하러 온 환자도 최신 정보가 있는 곳을 더 믿습니다.</p></div>
       <div class="tm rv"><span class="when">3년 후</span><h3>따라잡기 가장 어렵습니다</h3><p>콘텐츠는 시간이 쌓아 주는 자산이라 돈으로 단기간에 메우기 어렵습니다. 늦게 시작할수록 같은 효과에 더 많은 시간과 비용이 듭니다.</p></div>
+    </div>
+
+    <div class="gapviz rv">
+      <h3>같은 동네, 두 한의원의 칼럼 누적 편수 <small>(2일에 1편 발행 기준)</small></h3>
+      <div class="gv-row"><span class="gv-t">1개월</span><div class="gb"><i class="us" style="--w:3%"></i><b style="left:44px;color:#0B2418;text-shadow:none">15편</b></div><div class="gb"><i class="no" style="--w:0.6%"></i><b>0편</b></div></div>
+      <div class="gv-row"><span class="gv-t">6개월</span><div class="gb"><i class="us" style="--w:17%"></i><b>90편</b></div><div class="gb"><i class="no" style="--w:0.6%"></i><b>0편</b></div></div>
+      <div class="gv-row"><span class="gv-t">1년</span><div class="gb"><i class="us" style="--w:33%"></i><b>180편</b></div><div class="gb"><i class="no" style="--w:0.6%"></i><b>0편</b></div></div>
+      <div class="gv-row"><span class="gv-t">3년</span><div class="gb"><i class="us" style="--w:100%"></i><b>540편</b></div><div class="gb"><i class="no" style="--w:0.6%"></i><b>0편</b></div></div>
+      <div class="gv-leg"><span><i class="us"></i> 세팅된 인근 한의원</span><span><i class="no"></i> 멈춰 있는 우리 한의원</span></div>
+      <p class="gv-cap">환자는 어느 날 갑자기 사라지지 않습니다. <b>검색할 때마다 조금씩, 확인이 되는 인근 한의원 쪽으로 옮겨 갑니다.</b> 그래서 격차는 조용히, 그러나 꾸준히 벌어집니다.</p>
     </div>
 
     <div class="two">
@@ -478,12 +583,14 @@
       <h3>🙋 우리 한의원은 한 달에 얼마나 놓치고 있을까요? <span style="font-weight:700;font-size:.85rem;color:#5F7468">(쉬운 계산기)</span></h3>
       <p class="fine" style="margin-top:0">정확한 예측이 아니라 <b>“이 정도만 놓쳐도 이만큼입니다”</b>를 보여 드리는 계산입니다. 잘 모르시면 처음 숫자 그대로 두셔도 됩니다.</p>
       <div class="ctl"><div class="ctl-top"><span>① 한 달에 새로 오시는 환자(초진)는 몇 분인가요?</span><b><span id="sPat">30</span>명</b></div><input type="range" id="rPat" min="5" max="150" step="5" value="30"></div>
-      <div class="ctl"><div class="ctl-top"><span>② 새 환자 한 분이 첫 달에 쓰시는 돈은 평균 얼마인가요?<br><small style="font-weight:600;color:#5F7468">한약·시술 모두 합쳐서. 예) 보약 한 제 22~45만 원</small></span><b><span id="sRev">30</span>만 원</b></div><input type="range" id="rRev" min="5" max="150" step="5" value="30"></div>
-      <div class="ctl"><div class="ctl-top"><span>③ 새 환자 10명이 우리 한의원 이름을 인터넷에 검색해 봅니다.<br>그중 몇 명이 <u>“홈페이지가 허술하네… 다른 데 가볼까?”</u> 하고 마음을 바꿀까요?</span><b>10명 중 <span id="sLoss">1</span>명</b></div><input type="range" id="rLoss" min="0" max="5" step="1" value="1">
+      <div class="ctl"><div class="ctl-top"><span>② 보험(급여) 진료 객단가<br><small style="font-weight:600;color:#5F7468">새 환자 한 분이 첫 달 보험 진료로 쓰시는 금액 (여러 번 오셔도 합쳐서, 본인부담+공단청구)</small></span><b><span id="sIns">10</span>만 원</b></div><input type="range" id="rIns" min="2" max="30" step="1" value="10"></div>
+      <div class="ctl"><div class="ctl-top"><span>③ 비급여 진료 객단가<br><small style="font-weight:600;color:#5F7468">한약·약침·시술을 결제하시는 환자 한 분이 쓰시는 금액 (참고: 한약 15일분은 일반적으로 20만~35만 원대)</small></span><b><span id="sNon">30</span>만 원</b></div><input type="range" id="rNon" min="5" max="150" step="5" value="30"></div>
+      <div class="ctl"><div class="ctl-top"><span>④ 새 환자 10명 중, 비급여(한약·시술)까지 결제하시는 분은 몇 명인가요?</span><b>10명 중 <span id="sRatio">3</span>명</b></div><input type="range" id="rRatio" min="0" max="10" step="1" value="3"></div>
+      <div class="ctl"><div class="ctl-top"><span>⑤ 새 환자 10명이 우리 한의원 이름을 인터넷에 검색해 봅니다.<br>그중 몇 명이 <u>“홈페이지가 허술하네… 다른 데 가볼까?”</u> 하고 마음을 바꿀까요?</span><b>10명 중 <span id="sLoss">1</span>명</b></div><input type="range" id="rLoss" min="0" max="10" step="1" value="1">
         <div class="ctl-hint" id="lossHint"></div></div>
       <div class="out-grid">
         <div class="out red"><small>한 달에 놓치는 환자</small><b id="oLost">—</b></div>
-        <div class="out red"><small>한 달에 놓치는 진료비</small><b id="oMonth">—</b></div>
+        <div class="out red"><small>한 달에 놓치는 진료비</small><b id="oMonth">—</b><em id="oSplit"></em></div>
         <div class="out red"><small>그대로 1년이면</small><b id="oYear">—</b></div>
       </div>
       <div class="save" style="margin-top:16px">시그니처 1년 총비용 <b>3,267,000원</b> <span style="opacity:.8">(구축 2,079,000원 + 마스터 케어 월 99,000원 × 12개월)</span>은,<br>새 환자 <b id="oNeed">—</b>을 더 만나시면 회수됩니다. <span id="oNeedSub" style="opacity:.85"></span></div>
@@ -557,25 +664,29 @@
     </div>
 
     <div class="copy rv" style="margin-top:26px">
-      <p>저희는 같은 구성의 결과물을 <b>이미 만들어 운영하고 있어서</b> 처음부터 개발하는 비용이 들지 않습니다. 그래서 같은 구성을 훨씬 낮은 가격으로 드릴 수 있습니다. 숫자는 아래에서 직접 비교해 보세요.</p>
+      <p>저희는 같은 구성의 결과물을 <b>이미 만들어 운영하고 있어서</b> 처음부터 개발하는 비용이 들지 않습니다. 그래서 같은 구성을 훨씬 낮은 가격으로 드릴 수 있습니다. 숫자는 아래 가성비 계산기에서 직접 비교해 보세요.</p>
     </div>
 
     <div class="calc rv" id="calc">
-      <h3>🧮 1년 총비용 비교 계산기</h3>
-      <p class="fine" style="margin-top:0">딱 <b>1년</b>만 비교합니다. 바른 월 구독은 약정이 없어 언제든 해지할 수 있으므로, 1년은 ‘비교를 위한 기준 기간’일 뿐 1년을 결제해야 한다는 뜻이 아닙니다.</p>
-      <div class="presets">
-        <button type="button" class="pre" data-q="979">A사 견적 979만 원</button>
-        <button type="button" class="pre" data-q="2046">B사 견적 2,046만 원</button>
+      <h3>🧮 가성비 계산기 — 같은 기능을 따로 사면 얼마일까요?</h3>
+      <p class="fine" style="margin-top:0">견적을 받아 보지 않으셨어도 괜찮습니다. 아래 금액은 위 <b>실제 견적서에 적혀 있던 항목 단가</b>(VAT 포함으로 환산)입니다. 필요한 항목에 체크하면 ‘따로 샀을 때’ 합계가 쌓이고, 바른 시그니처 1년 비용과 바로 비교됩니다.</p>
+      <div class="vitems" id="vitems">
+        <label class="vi"><input type="checkbox" checked data-p="6490000"><span class="vn">10페이지 홈페이지 제작 <small>반응형 · 게시판 5개 · 관리자 페이지 · 카카오 연동 (A사 견적 항목)</small></span><b>6,490,000원</b></label>
+        <label class="vi"><input type="checkbox" checked data-p="3300000"><span class="vn">3D 인터랙션(3D 모델링) <small>A사 견적 항목</small></span><b>3,300,000원</b></label>
+        <label class="vi"><input type="checkbox" checked data-p="1320000"><span class="vn">회원 관리 시스템 <small>B사 견적 항목</small></span><b>1,320,000원</b></label>
+        <label class="vi"><input type="checkbox" checked data-p="1650000"><span class="vn">실시간 방문 통계 <small>B사 견적 항목</small></span><b>1,650,000원</b></label>
+        <label class="vi"><input type="checkbox" checked data-p="330000"><span class="vn">자가진단 체크리스트 <small>B사 견적 항목</small></span><b>330,000원</b></label>
+        <label class="vi"><input type="checkbox" checked data-p="1980000"><span class="vn">질환 카드 페이지 6개 추가 <small>A사 단가 1개 30만 원 × 6 (VAT 포함)</small></span><b>1,980,000원</b></label>
+        <label class="vi"><input type="checkbox" checked data-p="9000000"><span class="vn">건강 칼럼 외주 1년 <small>월 15건 × 건당 5만 원 × 12개월 (시중 포스팅 대행 가정)</small></span><b>9,000,000원</b></label>
       </div>
-      <div class="ctl"><div class="ctl-top"><span>원장님이 받으신 제작 견적 <small style="font-weight:600;color:#5F7468">(VAT 포함)</small></span><b><span id="quoteOut">979</span>만 원</b></div><input type="range" id="quote" min="900" max="2100" step="1" value="979"></div>
-      <div class="cmp">
-        <div class="cmp-box"><h4>일반 제작 견적 + 글 외주 (1년)</h4><div class="num" id="gen3">—</div>
-          <ul><li>제작 견적: <b id="genQ">—</b></li><li>글 외주 1년: <b id="genP">—</b> <span style="opacity:.7">(월 15건 × 건당 5만 원 × 12개월)</span></li><li style="opacity:.7">※ 의료법 검수·검색 등록 관리는 별도</li></ul></div>
-        <div class="cmp-box us"><h4>바른 시그니처 (구축 + AI 마스터 케어, 1년)</h4><div class="num" id="us3">—</div>
-          <ul><li>구축 오픈 특가: <b>2,079,000원</b> <span style="opacity:.7">(VAT 포함)</span></li><li>마스터 케어 1년: <b>1,188,000원</b> <span style="opacity:.7">(월 99,000원 × 12)</span></li><li>월 15건 글 + 이미지 · 의료법 검수 · 검색 등록 포함</li></ul></div>
+      <div class="vbars">
+        <div class="vb"><span>따로 구매하면 <small>(1년)</small></span><div class="vbar"><i id="vbMarket" style="width:100%"></i></div><b id="vMarket">—</b></div>
+        <div class="vb us"><span>바른 시그니처 <small>(구축 + 케어 1년)</small></span><div class="vbar"><i id="vbUs"></i></div><b>3,267,000원</b></div>
       </div>
-      <div class="save">같은 1년 기준, 원장님 견적과 비교하면 <b id="saveAmt">—</b> 차이가 납니다. <span id="ratioTxt"></span></div>
-      <p class="fine">※ 단순 비교용입니다. 견적서가 VAT 별도로 표기된 경우 VAT 포함으로 환산해 입력해 주세요(A사 9,790,000원 · B사 20,460,000원으로 반영). 타사 견적의 유지비·포함 범위는 견적서로 직접 확인해 주세요. 글 외주 단가(건당 5만 원)는 시중 포스팅 대행 가정이며, 연 결제 시 마스터 케어 10% 할인(1년 1,069,200원)이 추가됩니다.</p>
+      <div class="save" id="vSave">—</div>
+      <div class="vmine"><b>이미 홈페이지를 만드셨거나 견적을 받으셨나요?</b> 지불하신(받으신) 금액을 넣어 보세요.
+        <div class="vm-row"><input type="number" id="vMine" min="0" step="10" placeholder="예: 500"><span>만 원</span></div><div id="vMineRes" class="vm-res"></div></div>
+      <p class="fine">※ 단가는 견적서 원문(VAT 별도)에 10%를 더해 환산한 값입니다. 바른 시그니처 1년 비용에는 월 15건 칼럼·의료법 검수·검색 등록·3D·통계가 모두 포함됩니다. 월 구독은 약정이 없어 언제든 해지할 수 있으며, 연 결제 시 마스터 케어 10% 할인(1년 1,069,200원)이 추가됩니다.</p>
     </div>
   </div>
 </section>
@@ -620,33 +731,6 @@
         <li>디자인 · 레이아웃 (새 틀 규격으로 통일)</li><li>메뉴 구조 · 예약 연동 3버튼</li><li>게시판 · Q&amp;A (구조는 새로, 기존 글은 수동 이전 가능)</li><li>3D 인체모형 · 체크포인트 · 통계 (신규 탑재)</li></ul></div>
       <div class="mg chk rv"><h3>⚠️ 먼저 확인해야 하는 것</h3><ul>
         <li><b>도메인 명의</b> — 제작사 명의면 이전 요청이 필요합니다</li><li><b>사진 저작권</b> — 제작사가 산 스톡 이미지는 그대로 쓰면 안 됩니다</li><li><b>호스팅·계약 만료일</b></li><li><b>의료광고 표현</b> — 옛 문구에 금지어가 있는지 재검수</li></ul></div>
-    </div>
-
-    <h3 class="rv" style="margin:38px 0 6px;font-size:1.15rem">🧭 이전은 이렇게 진행됩니다 — 기존 사이트는 마지막까지 그대로 운영됩니다</h3>
-    <div class="mflow">
-      <div class="mf rv"><small>STEP 1</small><h4>현재 상태 확인</h4><p>도메인 명의·호스팅 만료일·사진 출처를 함께 확인합니다.</p></div>
-      <div class="mf rv"><small>STEP 2</small><h4>내용 수집</h4><p>공개된 기존 페이지의 글·사진 목록을 정리합니다. 원장님은 확인만 해 주세요.</p></div>
-      <div class="mf rv"><small>STEP 3</small><h4>새 틀에 삽입 + 검수</h4><p>같은 구조의 새 틀에 내용을 담고 의료법 금지어를 걸러냅니다.</p></div>
-      <div class="mf rv"><small>STEP 4</small><h4>임시 주소에서 비교</h4><p>기존 사이트와 새 시안을 나란히 보고 결정하세요. 결제 전 무료 시안입니다.</p></div>
-      <div class="mf rv"><small>STEP 5</small><h4>전환 + 검색 유입 유지</h4><p>마음에 들면 도메인을 연결하고, 옛 주소는 새 주소로 안내(301)해 검색 유입을 이어 갑니다.</p></div>
-    </div>
-
-    <h3 class="rv" style="margin:40px 0 6px;font-size:1.15rem">🗣️ 상황별로 이렇게 말씀드립니다 <span style="font-size:.85rem;font-weight:600;color:#5F7468">(원장님을 설득하는 방법)</span></h3>
-    <div class="sit3">
-      <div class="st3 rv"><b>① 운영은 하는데 사실상 방치 중이라면</b><p>“지금 사이트를 지우자는 게 아닙니다. 내용만 새 틀에 얹어 <b>시안으로 나란히 비교</b>해 보세요. 마음에 안 들면 그대로 쓰시면 됩니다.” 오래된 사이트일수록 최신 글·검수·검색 등록이 비어 있습니다. 그 빈칸을 월 구독이 채웁니다.</p></div>
-      <div class="st3 rv"><b>② 한창 제작 중이라면</b><p>진행 중인 작업을 멈추라고 권하지 않습니다. 먼저 <b>계약서의 중도 해지·환불 조항</b>을 확인하시고, 중도금 지급 전이라면 같은 구조의 시안을 먼저 비교해 보세요. 이미 지급한 금액은 계약대로 정산됩니다.</p></div>
-      <div class="st3 rv"><b>③ 견적만 받아 보신 단계라면</b><p>가장 비용 부담이 적은 시점입니다. 위의 실제 견적서 2건과 아래 계산기로 비교해 보시고, 시안을 먼저 확인하세요.</p></div>
-    </div>
-
-    <div class="calc rv" id="migCheck">
-      <h3>🔍 우리 한의원은 이전이 쉬울까요? 30초 점검</h3>
-      <div class="mq"><b>① 지금 홈페이지 도메인(주소)은 누구 명의인가요?</b>
-        <label><input type="radio" name="q1" value="mine"> 제(한의원) 명의</label><label><input type="radio" name="q1" value="vendor"> 제작 업체 명의</label><label><input type="radio" name="q1" value="unk"> 잘 모르겠다</label></div>
-      <div class="mq"><b>② 홈페이지 사진은 어디서 왔나요?</b>
-        <label><input type="radio" name="q2" value="mine"> 직접 촬영한 사진</label><label><input type="radio" name="q2" value="stock"> 제작사가 구해 준 사진(스톡 등)</label><label><input type="radio" name="q2" value="unk"> 잘 모르겠다</label></div>
-      <div class="mq"><b>③ 지금 상황은 어느 쪽인가요?</b>
-        <label><input type="radio" name="q3" value="run"> 운영 중</label><label><input type="radio" name="q3" value="build"> 제작 진행 중(계약금 지급)</label><label><input type="radio" name="q3" value="quote"> 견적만 받아 봄</label></div>
-      <div class="mres" id="mRes" hidden></div>
     </div>
     <p class="fine rv">※ 이전 가능 여부는 계약서·저작권·도메인 상태에 따라 달라집니다. 타 업체가 만든 소스 코드·디자인은 가져오지 않으며, 원장님 소유의 내용만 옮깁니다.</p>
   </div>
@@ -697,22 +781,34 @@
 <section id="studio">
   <div class="wrap">
     <span class="eyebrow rv">CUSTOM STUDIO · 직접 고치는 홈페이지</span>
-    <h2 class="title rv">수정할 때마다 업체에 연락하지 않으셔도 됩니다<br>지금 여기서 <mark>직접 고쳐 보세요</mark></h2>
-    <p class="lead rv">진료시간이 바뀌었을 때, 휴진 공지를 올릴 때, 비급여 수가를 고칠 때. 원장님 또는 직원분이 관리 화면에서 직접 수정하고 바로 반영합니다. 아래는 <b>실제 스튜디오와 같은 방식으로 움직이는 체험판</b>입니다.</p>
-
-    <figure class="shot rv">
-      <img src="b2b-assets/studio-real.png" alt="실제 운영 중인 셀프 스튜디오(질환 페이지 커스텀 스튜디오) 화면 캡처" loading="lazy" onerror="this.closest('figure').style.display='none'">
-      <figcaption>▲ 실제 운영 중인 셀프 스튜디오 화면 캡처 · <a href="detail-pages-editor.html" target="_blank" rel="noopener">실물 스튜디오 직접 열어 보기 ↗</a></figcaption>
-    </figure>
+    <h2 class="title rv">언제든 원하는 구성으로<br><mark>셀프로 변경</mark>하세요</h2>
+    <p class="lead rv">질환별 상세 페이지의 <b>‘첫 장’</b>을 원장님이 직접 고칩니다. 제목·소개 문구·자가진단 문항·버튼 문구·대표 이미지를 바꿔 보세요. 수정하면 오른쪽 화면이 바로 바뀝니다. <span style="opacity:.75">(체험용 · 저장되지 않습니다)</span></p>
 
     <div class="sdemo rv" id="sdemo">
       <div class="sd-left">
         <div class="sd-tabs" role="tablist">
-          <button type="button" class="on" data-tab="t1">🕒 진료시간·휴진</button>
+          <button type="button" class="on" data-tab="t0">🧩 질환 카드 첫장</button>
+          <button type="button" data-tab="t1">🕒 진료시간·휴진</button>
           <button type="button" data-tab="t2">🧾 비급여 수가표</button>
-          <button type="button" data-tab="t3">✨ 문구·카드</button>
+          <button type="button" data-tab="t3">✨ 홍보 문구 AI</button>
         </div>
-        <div class="sd-pane on" id="t1">
+        <div class="sd-pane on" id="t0">
+          <label>수정할 질환 카드
+            <select id="cSel"><option value="chuna">추나 · 척추교정</option><option value="growth">키 성장</option><option value="diet">다이어트</option><option value="hair">탈모</option><option value="gong">공진단</option></select></label>
+          <label>질환명 (제목)<input id="cTitle"></label>
+          <label>영문 부제<input id="cSub"></label>
+          <label>소개 문구<textarea id="cDesc" rows="3"></textarea></label>
+          <label>자가진단 체크리스트 (5문항)</label>
+          <div id="cCks"></div>
+          <label>상담 버튼 문구<input id="cCta"></label>
+          <label>대표 이미지 <small style="font-weight:600;color:#5F7468">(눌러서 교체)</small></label>
+          <div class="imgpick" id="cImgs"></div>
+          <label>이미지 아래 설명 문구<input id="cCap"></label>
+          <button type="button" class="mini" id="cardAdd">＋ 새 질환 카드 추가 <em>시그니처 전용</em></button>
+          <div class="cardmsg" id="cardMsg" hidden></div>
+          <p class="fine">✓ 카드 첫장 수정은 모든 단계에서 가능 · 카드 개수 무제한 증설은 시그니처 전용</p>
+        </div>
+        <div class="sd-pane" id="t1">
           <label>평일 진료시간<input id="dWk" value="09:00 ~ 18:30"></label>
           <label>점심시간<input id="dLunch" value="13:00 ~ 14:00"></label>
           <label>토요일<input id="dSat" value="09:00 ~ 14:00"></label>
@@ -726,35 +822,35 @@
           <p class="fine">✓ 비급여 수가표(의료법 제45조 고지)는 모든 단계에서 직접 수정 가능</p>
         </div>
         <div class="sd-pane" id="t3">
-          <label>홍보 문구를 써 보세요 <small>(프로부터: 금지어 경고)</small>
+          <label>홍보 문구를 써 보세요 <small>(프로 전용: 금지어 경고 · 시그니처 전용: 합법 문구 자동 다듬기)</small>
             <textarea id="dLaw" rows="3">이 한약을 드시면 100% 완치됩니다. 우리 한의원이 최고입니다.</textarea></label>
           <div class="lawbox" id="lawBox"></div>
-          <button type="button" class="mini gold" id="lawFix">✨ 합법 문구로 자동 다듬기 · 1회 무료 체험 <em>시그니처</em></button>
+          <button type="button" class="mini gold" id="lawFix">✨ 합법 문구로 자동 다듬기 · 2회 체험 <em>시그니처 전용</em></button>
           <div class="lawout" id="lawOut" hidden></div>
-          <hr>
-          <div class="cardline"><b>질환 카드</b> <span id="cardCnt">6</span>개 <button type="button" class="mini" id="cardAdd">＋ 새 질환 카드 추가</button></div>
-          <div class="cardmsg" id="cardMsg" hidden></div>
         </div>
       </div>
       <div class="sd-right">
         <div class="sd-prev">
           <div class="pv-banner" id="pvBanner"></div>
           <div class="pv-head"><i></i><b>○○한의원 대전본점</b><span>예약·상담 ↗</span></div>
-          <div class="pv-body">
+          <div class="pv-card" id="pvCard">
+            <div class="pc-left"><small id="pcEye"></small><h4 id="pcTitle"></h4><em id="pcSub"></em><p id="pcDesc"></p><div class="pc-ck" id="pcCk"></div><div class="pc-cta" id="pcCta"></div></div>
+            <div class="pc-right" id="pcImg"><div class="pc-cap" id="pcCap"></div></div>
+          </div>
+          <div class="pv-body" id="pvInfo" hidden>
             <div class="pv-box"><h5>🕒 진료시간</h5><table class="tb2" id="pvHours"></table></div>
             <div class="pv-box"><h5>🧾 비급여 진료비용 안내</h5><table class="tb2" id="pvFees"></table></div>
-            <div class="pv-box"><h5>✦ 진료 카드</h5><div class="pv-cards" id="pvCards"></div></div>
           </div>
         </div>
-        <p class="fine" style="text-align:center">▲ 왼쪽에서 고치면 오른쪽 화면이 바로 바뀝니다 (체험용 · 저장되지 않습니다)</p>
+        <p class="fine" style="text-align:center">▲ 왼쪽에서 고치면 오른쪽 화면이 바로 바뀝니다</p>
       </div>
     </div>
 
     <div class="studio">
       <div class="box rv"><h3>✏️ 전 단계에서 직접 수정</h3><ul style="list-style:none">
-        <li style="padding:5px 0">· 진료시간·점심시간·휴진일</li><li style="padding:5px 0">· 임시 휴진·명절 공지 배너</li><li style="padding:5px 0">· 비급여 수가표(의료법 제45조 고지)</li><li style="padding:5px 0">· 인사말·주차·오시는 길 안내</li></ul></div>
+        <li style="padding:5px 0">· 질환 카드 첫장(제목·소개·체크리스트·이미지)</li><li style="padding:5px 0">· 진료시간·점심시간·휴진일 · 임시 휴진 배너</li><li style="padding:5px 0">· 비급여 수가표(의료법 제45조 고지)</li><li style="padding:5px 0">· 인사말·주차·오시는 길 안내</li></ul></div>
       <div class="box rv"><h3>🎛️ 단계가 올라갈수록 넓어지는 범위</h3><ul style="list-style:none">
-        <li style="padding:5px 0"><b>프로</b> · 계절별 팝업·배너 템플릿, AI 금지어 경고</li><li style="padding:5px 0"><b>시그니처</b> · 질환 카드 페이지 무제한 직접 증설</li><li style="padding:5px 0"><b>시그니처</b> · 의료법에 맞는 대체 문구를 AI가 자동 작성</li><li style="padding:5px 0"><b>시그니처</b> · 원장님 사진 기반 화보 생성</li></ul></div>
+        <li style="padding:5px 0"><b>프로 전용</b> · 계절별 팝업·배너 템플릿, AI 금지어 경고</li><li style="padding:5px 0"><b>시그니처 전용</b> · 질환 카드 페이지 무제한 직접 증설</li><li style="padding:5px 0"><b>시그니처 전용</b> · 의료법에 맞는 대체 문구를 AI가 자동 작성</li><li style="padding:5px 0"><b>시그니처 전용</b> · 원장님 사진 기반 화보 생성</li></ul></div>
     </div>
   </div>
 </section>
@@ -795,18 +891,25 @@
   </div>
 </section>
 
-<!-- ⑫-2 단계별 샘플 + 필요 기능 체크 -->
+<!-- ⑫-2 전체 둘러보기 샘플 + 필요 기능 체크 -->
 <section class="dark" id="samples">
   <div class="wrap">
-    <span class="eyebrow rv">TIER SAMPLES · 단계별 실제 샘플 페이지</span>
-    <h2 class="title rv">세 단계를 <span class="gold">직접 눌러 보고</span> 비교하세요<br>같은 구조, 다른 기능입니다</h2>
-    <p class="lead rv">세 샘플 모두 www.bareunhaniwon.com과 <b>같은 구조</b>(스토리 → 6대 진료카드 → 원장 → 체크포인트 → 3D → 칼럼 → Q&amp;A → 오시는길·비급여)입니다. 다만 단계에 포함되지 않은 기능은 <b>🔒 “사용하실 수 없습니다”</b>로 표시됩니다. 눌러서 직접 확인해 보세요.</p>
+    <span class="eyebrow rv">FULL TOUR · 처음부터 끝까지 직접 써 보는 샘플</span>
+    <h2 class="title rv">홈페이지 전체를 둘러보며<br><span class="gold">모든 기능을 직접 써 보세요</span></h2>
+    <p class="lead rv">한 페이지에 우리 홈페이지의 <b>모든 기능이 열려 있습니다.</b> 각 기능에는 <b>기본 포함 · 프로 전용 · 시그니처 전용</b> 표시가 붙어 있어, 어디부터 상위 단계인지 한눈에 구분됩니다. 템플릿 구조가 정해져 있어 한의원 이름 시안은 따로 만들지 않고, 이 샘플로 직접 확인하시면 됩니다.</p>
+
+    <div class="legend rv">
+      <span class="lg t0">✓ 기본 포함 <small>스탠다드부터</small></span>
+      <span class="lg t1">★ 프로 전용 <small>프로페셔널부터</small></span>
+      <span class="lg t2">✦ 시그니처 전용 <small>시그니처만</small></span>
+    </div>
 
     <div class="tcards">
-      <a class="tc rv" href="sample-standard.html" target="_blank" rel="noopener"><small>STANDARD</small><h3>스탠다드 샘플</h3><div class="tp">790,000원 <em>VAT 별도</em></div><p>월 베이직 케어 19,900원</p><div class="tl">🔒 사용 못 하는 기능 <b>10개</b></div><span class="tgo">샘플 열어 보기 →</span></a>
-      <a class="tc rv" href="sample-professional.html" target="_blank" rel="noopener"><small>PROFESSIONAL</small><h3>프로페셔널 샘플</h3><div class="tp">1,490,000원 <em>VAT 별도</em></div><p>월 AI 그로스 케어 55,000원</p><div class="tl">🔒 사용 못 하는 기능 <b>7개</b></div><span class="tgo">샘플 열어 보기 →</span></a>
-      <a class="tc sigc rv" href="sample-signature.html" target="_blank" rel="noopener"><small>SIGNATURE · 추천</small><h3>시그니처 샘플</h3><div class="tp">1,890,000원 <em>VAT 별도</em></div><p>월 AI 마스터 케어 99,000원</p><div class="tl ok">✅ 모든 기능 사용 가능</div><span class="tgo">샘플 열어 보기 →</span></a>
+      <a class="tc rv" href="sample.html?view=standard" target="_blank" rel="noopener"><small>STANDARD</small><h3>스탠다드 범위로 보기</h3><div class="tp">790,000원 <em>VAT 별도</em></div><p>월 베이직 케어 19,900원</p><p class="tn">프로·시그니처 전용 기능에 🔒 표시가 붙습니다. 그래도 샘플에서는 모두 체험할 수 있어요.</p><span class="tgo">이 범위로 둘러보기 →</span></a>
+      <a class="tc rv" href="sample.html?view=professional" target="_blank" rel="noopener"><small>PROFESSIONAL</small><h3>프로페셔널 범위로 보기</h3><div class="tp">1,490,000원 <em>VAT 별도</em></div><p>월 AI 그로스 케어 55,000원</p><p class="tn">시그니처 전용 기능(3D·통계·카드 무제한 등)에 🔒 표시가 붙습니다.</p><span class="tgo">이 범위로 둘러보기 →</span></a>
+      <a class="tc sigc rv" href="sample.html?view=signature" target="_blank" rel="noopener"><small>SIGNATURE · 추천</small><h3>시그니처 범위로 보기</h3><div class="tp">1,890,000원 <em>VAT 별도</em></div><p>월 AI 마스터 케어 99,000원</p><p class="tn">모든 기능이 포함됩니다. 막힘 없이 처음부터 끝까지 둘러보세요.</p><span class="tgo">이 범위로 둘러보기 →</span></a>
     </div>
+    <div style="text-align:center;margin-top:20px" class="rv"><a class="btn btn-gold" href="sample.html" target="_blank" rel="noopener">전체 샘플 열어 보기 →</a></div>
 
     <div class="matrix rv" id="matrix">
       <h3>✅ 내게 필요한 기능에 체크해 보세요 <span>→ 어느 단계가 맞는지 바로 알려 드립니다</span></h3>
@@ -816,12 +919,12 @@
           <tbody>
             <tr data-min="0"><td><input type="checkbox"></td><td>반응형 홈페이지 · 원장소개 · 오시는길 · 4대 내비</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="0"><td><input type="checkbox"></td><td>전화·카톡·네이버예약 고정 바</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
-            <tr data-min="0"><td><input type="checkbox"></td><td>비급여 수가표 고지 + 진료시간·휴진 셀프 수정</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="0"><td><input type="checkbox"></td><td>비급여 수가표 고지 + 진료시간·휴진·질환 카드 첫장 셀프 수정</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>환자 스토리보드 12컷 오프닝</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>질환별 체크포인트(5문항 자가진단)</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>1:1 “무엇이든 물어보세요” Q&amp;A 게시판</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>AI 자동 칼럼 월 8건 (텍스트)</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
-            <tr data-min="1"><td><input type="checkbox"></td><td>AI 의료법 금지어 경고</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="1"><td><input type="checkbox"></td><td>AI 의료법 금지어 경고 · 계절 팝업 템플릿</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>월 15건 칼럼 + 맞춤 3단 화보(월 최대 45장)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>풀스크린 3D 인체모형 포털</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>질환 카드 페이지 무제한 증설 (증설비 0원)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
@@ -833,7 +936,7 @@
         </table>
       </div>
       <div class="mx-res" id="mxRes">필요한 기능을 체크해 보세요. 고르신 기능이 어느 단계에서 가능한지 바로 보여 드립니다.</div>
-      <div class="mx-go"><a class="btn btn-gold" href="#apply" id="mxGo">이 조합으로 무료 시안 신청하기 →</a></div>
+      <div class="mx-go"><a class="btn btn-gold" href="#apply" id="mxGo">이 조합으로 상담 신청하기 →</a></div>
     </div>
   </div>
 </section>
@@ -845,11 +948,11 @@
     <h2 class="title rv">하지 않을 약속과 <span class="green">반드시 지킬 약속</span></h2>
     <div class="honest">
       <div class="no rv"><h3>하지 않는 약속</h3><ul><li>“상위노출 100% 보장”</li><li>“월 매출 몇 배 상승”</li><li>“클릭·조회수를 인위적으로 늘려 드립니다”</li><li>“검수 없이 글만 대량으로 찍어 드립니다”</li></ul></div>
-      <div class="yes rv"><h3>지키는 약속</h3><ul><li>실제 운영 중인 구조 그대로 제공</li><li>의료법 금지어 검수를 거친 글만 발행</li><li>숨김 키워드·가짜 지역 페이지 없이 정석대로 등록</li><li>결제 전에 <b>무료 시안</b>으로 먼저 확인</li></ul></div>
+      <div class="yes rv"><h3>지키는 약속</h3><ul><li>실제 운영 중인 구조 그대로 제공</li><li>의료법 금지어 검수를 거친 글만 발행</li><li>숨김 키워드·가짜 지역 페이지 없이 정석대로 등록</li><li>결제 전에 <b>샘플에서 모든 기능을 먼저 체험</b></li></ul></div>
     </div>
     <h3 class="rv" style="margin-top:34px;font-size:1.15rem">📜 계약 조건은 이렇게 정했습니다 <span style="font-size:.85rem;font-weight:600;color:#5F7468">(결정하기 편하시라고 미리 공개합니다)</span></h3>
     <div class="policy">
-      <div class="pol rv"><small>① 결제 전</small><h3>시안이 마음에 안 들면 결제하지 않습니다</h3><p>한의원 이름이 들어간 무료 시안을 먼저 보시고, 마음이 설 때만 결제하십시오.</p></div>
+      <div class="pol rv"><small>① 결제 전</small><h3>샘플로 먼저 써 보고 결정하세요</h3><p>샘플 페이지에서 모든 기능을 직접 체험해 보시고, 마음이 설 때만 결제하십시오. 템플릿 구조가 정해져 있어 한의원 이름이 들어간 시안은 따로 제작하지 않습니다.</p></div>
       <div class="pol rv"><small>② 구축비</small><h3>작업 착수 전이면 전액 환불</h3><p>결제 후 작업이 시작되기 전에는 전액 환불합니다. 착수 후 중단하시면 이미 투입된 작업분을 계약서의 정산 기준표대로 공제한 뒤 정산합니다.</p></div>
       <div class="pol rv"><small>③ 월 구독</small><h3>약정 없음, 위약금 없음</h3><p>월 단위로 이용하시고 다음 결제일 전에는 언제든 해지할 수 있습니다. 연 결제는 이용 기간을 월 정가로 정산한 뒤 잔액을 돌려드립니다.</p></div>
       <div class="pol rv"><small>④ 해지 후</small><h3>원장님의 자료는 가져가실 수 있습니다</h3><p>홈페이지는 해지 후 30일간 보관하고, 원장님이 작성하신 글·사진은 백업 파일로 제공합니다. 3D·자동 발행·통계는 구독 중에만 가동됩니다.</p></div>
@@ -882,7 +985,7 @@
         <div class="price">1,890,000원 <small>(2,079,000원)</small></div>
         <div class="sub-fee">월 AI 마스터 케어 99,000원 (VAT 포함) · 연 결제 10% 할인</div>
         <ul><li>스탠다드·프로 전 기능 포함</li><li>풀스크린 3D 인체모형 포털 + 진료실 브리핑용</li><li>질환 카드 페이지 무제한 (증설비 0원)</li><li>월 15건 글 + 맞춤 이미지(월 최대 45장) 자동 발행</li><li>의료법 AI: 경고 + 합법 대체 문구 자동 작성</li><li>마스터 전용 상세 통계 센터</li><li>대기실 QR 자가진단 POP · VIP 최우선 착수</li></ul>
-        <a class="btn btn-gold" href="#apply">시그니처 무료 시안 받기</a>
+        <a class="btn btn-gold" href="#apply">시그니처 상담 신청</a>
       </div>
       <div class="plan rv">
         <h3>프로페셔널</h3><div class="who">신환 유입에 집중하는 실속형 원장님</div>
@@ -910,7 +1013,7 @@
       <details class="rv"><summary>같은 동네에 이 홈페이지를 쓰는 한의원이 또 생기면요?</summary><p>상권 독점은 드리지 않습니다. 반경 1km 안에 한의원이 여러 곳인 경우가 많아 독점 제한이 오히려 원장님께 불리하다고 판단했습니다. 같은 틀이어도 원장님의 철학·사진·글로 채워지기 때문에 결과물은 서로 다릅니다.</p></details>
       <details class="rv"><summary>홈페이지가 있어도 광고는 계속해야 하나요?</summary><p>광고와 홈페이지는 경쟁이 아니라 짝입니다. 광고는 환자를 데려오고, 홈페이지는 그 환자를 설득합니다. 광고를 하신다면 도착지가 탄탄해져 같은 광고비의 효율이 올라갑니다.</p></details>
       <details class="rv"><summary>이미 홈페이지가 있는데, 내용만 옮겨서 쓸 수 있나요?</summary><p>네. 원장 약력·진료 설명·진료시간·비급여 수가·원장님이 직접 찍은 사진·기존 글(텍스트)은 같은 구조의 새 틀에 옮겨 담을 수 있습니다. 다만 디자인과 기능은 새 틀 규격으로 통일되고, 도메인 명의·사진 저작권·계약 조건은 먼저 확인해야 합니다. 기존 사이트는 전환 당일까지 그대로 운영됩니다. 자세한 내용은 위 ‘이전’ 안내를 참고해 주세요.</p></details>
-      <details class="rv"><summary>결정하기 전에 먼저 볼 수 있나요?</summary><p>네. 아래 신청서에 한의원명과 원장님 성함만 남겨 주시면, 계약 전에 한의원 이름이 들어간 <b>무료 시안</b>을 먼저 보여 드립니다.</p></details>
+      <details class="rv"><summary>결정하기 전에 먼저 볼 수 있나요?</summary><p>네. 위 <b>샘플 페이지</b>에서 홈페이지의 모든 기능을 처음부터 끝까지 직접 써 보실 수 있습니다. 템플릿 구조(www.bareunhaniwon.com과 동일)가 정해져 있어 한의원 이름을 입힌 별도 시안은 제작하지 않으며, 샘플이 실제 결과물과 같은 구조입니다.</p></details>
     </div>
   </div>
 </section>
@@ -919,8 +1022,8 @@
 <section class="dark final" id="apply">
   <div class="wrap">
     <span class="eyebrow">YOUR NEXT STEP</span>
-    <h2>고민하는 시간만 길어지고 있다면,<br><span class="gold">시안부터 보고 결정하세요</span></h2>
-    <p class="lead" style="margin:0 auto">결제를 먼저 요구하지 않습니다. 한의원 이름이 들어간 시안을 보시고 마음이 설 때 결정하세요.</p>
+    <h2>고민하는 시간만 길어지고 있다면,<br><span class="gold">샘플부터 직접 써 보고 결정하세요</span></h2>
+    <p class="lead" style="margin:0 auto">결제를 먼저 요구하지 않습니다. 샘플에서 모든 기능을 먼저 써 보시고, 마음이 설 때 상담을 신청하세요.</p>
     <div class="direct">
       <a href="tel:01088770508">📞 010-8877-0508 전화</a>
       <a href="sms:01088770508">✉️ 문자 보내기</a>
@@ -932,7 +1035,7 @@
       <label for="fPhone">연락처</label><input id="fPhone" type="tel" placeholder="010-0000-0000" required>
       <label for="fPlan">관심 단계</label>
       <select id="fPlan"><option>시그니처 (추천)</option><option>프로페셔널</option><option>스탠다드</option><option>아직 모르겠어요 · 상담 후 결정</option></select>
-      <button class="btn btn-gold" type="submit">무료 시안 신청하기 →</button>
+      <button class="btn btn-gold" type="submit">도입 상담 신청하기 →</button>
       <small>신청 내용이 복사되고 문자·전화로 바로 연결할 수 있는 버튼이 나타납니다.</small>
       <div class="done" id="done"><b>신청 내용이 복사되었습니다.</b><br>아래 버튼으로 붙여넣기만 하시면 접수됩니다.
         <div class="direct"><a id="smsGo" href="sms:01088770508">✉️ 문자로 보내기</a><a href="tel:01088770508">📞 전화하기</a></div></div>
@@ -947,8 +1050,8 @@
 </footer>
 
 <div class="sticky"><div class="in">
-  <span><b>전국 100곳 한정</b> · 스탠다드 79만 원부터 · 무료 시안 먼저</span>
-  <div class="btns"><a class="btn btn-line btn-sm" href="tel:01088770508">📞 전화</a><a class="btn btn-gold btn-sm" href="#apply">무료 시안</a></div>
+  <span><b>전국 100곳 한정</b> · 스탠다드 79만 원부터 · 샘플 먼저 체험</span>
+  <div class="btns"><a class="btn btn-line btn-sm" href="tel:01088770508">📞 전화</a><a class="btn btn-gold btn-sm" href="#apply">상담 신청</a></div>
 </div></div>
 
 <script>
@@ -967,120 +1070,162 @@
 
   function won(n){ return Math.round(n).toLocaleString('ko-KR')+'원'; }
 
-  /* 1-year compare (VAT 포함) — 36개월 약정 느낌을 피하기 위해 12개월 기준으로 비교 */
-  var US_BUILD=2079000, US_SUB=99000, MONTHS=12, US_TOTAL=US_BUILD+US_SUB*MONTHS, POST_1Y=15*50000*MONTHS;
-  var q=document.getElementById('quote');
-  function calc(){
-    var quote=Number(q.value)*10000, gen=quote+POST_1Y;
-    document.getElementById('quoteOut').textContent=Number(q.value).toLocaleString('ko-KR');
-    document.getElementById('genQ').textContent=won(quote);
-    document.getElementById('genP').textContent=won(POST_1Y);
-    document.getElementById('gen3').textContent=won(gen);
-    document.getElementById('us3').textContent=won(US_TOTAL);
-    document.getElementById('saveAmt').textContent=won(gen-US_TOTAL);
-    document.getElementById('ratioTxt').textContent='(제작비만 놓고 봐도 구축 비용은 견적의 약 '+Math.round(US_BUILD/quote*100)+'% 수준입니다.)';
-    document.querySelectorAll('.pre').forEach(function(b){ b.classList.toggle('on', Number(b.getAttribute('data-q'))===Number(q.value)); });
-  }
-  q.addEventListener('input',calc); calc();
-  document.querySelectorAll('.pre').forEach(function(b){ b.addEventListener('click',function(){ q.value=b.getAttribute('data-q'); calc(); }); });
+  /* 한의원 가 / 나 비유 */
+  (function(){
+    var res=document.getElementById('vsRes'); if(!res) return;
+    document.querySelectorAll('[data-pick]').forEach(function(b){ b.addEventListener('click',function(){
+      res.hidden=false;
+      res.textContent = b.getAttribute('data-pick')==='a'
+        ? '“가”를 고르셨군요. 괜찮습니다. 다만 결제 전에 확인할 곳이 없으면, 많은 환자는 마지막에 확인이 되는 “나” 쪽으로 마음을 옮깁니다.'
+        : '많은 환자가 “나”를 고릅니다. 비싼 결제일수록 확인이 되는 곳에서 하고 싶은 마음은 자연스럽습니다. 문제는 “가”가 오늘도 문 앞에서 환자를 놓치고 있다는 점입니다.';
+    }); });
+  })();
+  /* 격차 막대 애니메이션 */
+  (function(){
+    var g=document.querySelector('.gapviz'); if(!g) return;
+    var io2=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ g.classList.add('in'); io2.disconnect(); } }); },{threshold:.25});
+    io2.observe(g);
+  })();
 
-  /* 쉬운 계산기: 새 환자 10명 중 몇 명을 놓칠까 */
-  var rP=document.getElementById('rPat'), rR=document.getElementById('rRev'), rL=document.getElementById('rLoss');
-  var LOSS_HINT=['0명 — 놓치는 환자가 없다고 가정합니다.','1명 — 가장 보수적으로 잡은 값입니다. (10명 중 1명)','2명 — 보통 수준으로 가정합니다.','3명 — 주변에 한의원이 많은 지역이라면 가능한 가정입니다.','4명 — 경쟁이 매우 치열한 지역이라고 가정합니다.','5명 — 가장 큰 가정입니다. 실제는 이보다 낮을 수 있습니다.'];
+  /* 가성비 계산기: 따로 사면 vs 바른 시그니처 1년 */
+  var US_BUILD=2079000, US_SUB=99000, MONTHS=12, US_TOTAL=US_BUILD+US_SUB*MONTHS;
+  (function(){
+    var box=document.getElementById('vitems'); if(!box) return;
+    var cbs=[].slice.call(box.querySelectorAll('input[type=checkbox]'));
+    function upd(){
+      var sum=0; cbs.forEach(function(c){ if(c.checked) sum+=Number(c.getAttribute('data-p')); });
+      document.getElementById('vMarket').textContent=won(sum);
+      document.getElementById('vbMarket').style.width = sum>0 ? '100%' : '0%';
+      document.getElementById('vbUs').style.width = sum>0 ? Math.max(3,Math.min(100,US_TOTAL/sum*100))+'%' : '100%';
+      var s=document.getElementById('vSave');
+      if(sum<=0){ s.innerHTML='필요한 항목에 체크해 보세요.'; return; }
+      var ratio=Math.round(US_TOTAL/sum*100);
+      if(US_TOTAL>=sum){ s.innerHTML='고르신 항목만 보면 따로 사는 쪽이 더 저렴할 수 있습니다. 다만 바른 시그니처에는 나머지 기능이 모두 포함되어 있습니다.'; }
+      else { s.innerHTML='같은 구성을 따로 사면 약 <b>'+won(sum)+'</b>, 바른 시그니처는 1년 <b>'+won(US_TOTAL)+'</b>입니다. 시중가의 <b>약 '+ratio+'%</b>, 약 <b>'+won(sum-US_TOTAL)+'</b> 차이입니다.'; }
+    }
+    cbs.forEach(function(c){ c.addEventListener('change',upd); }); upd();
+    var mine=document.getElementById('vMine'), mr=document.getElementById('vMineRes');
+    mine.addEventListener('input',function(){
+      var v=Number(mine.value)*10000; if(!(v>0)){ mr.textContent=''; return; }
+      var x=v/US_BUILD;
+      mr.innerHTML = v>=US_BUILD
+        ? '입력하신 금액은 바른 시그니처 <b>구축비(2,079,000원)의 약 '+(Math.round(x*10)/10)+'배</b>입니다. 게다가 월 칼럼·의료법 검수·검색 등록은 그 금액에 빠져 있었을 수 있습니다.'
+        : '입력하신 금액이 구축비보다 적다면, 포함 범위(월 칼럼·의료법 검수·검색 등록·3D·통계)를 함께 비교해 보세요.';
+    });
+  })();
+
+  /* 쉬운 계산기: 보험/비급여 객단가 분리 · 10명 중 0~10명 */
+  var rP=document.getElementById('rPat'), rI=document.getElementById('rIns'), rN=document.getElementById('rNon'), rRa=document.getElementById('rRatio'), rL=document.getElementById('rLoss');
+  var LOSS_HINT=['0명 — 놓치는 환자가 없다고 가정합니다.','1명 — 가장 보수적으로 잡은 값입니다. (10명 중 1명)','2명 — 보통 수준으로 가정합니다.','3명 — 주변에 한의원이 많은 지역이라면 가능한 가정입니다.','4명 — 경쟁이 매우 치열한 지역이라고 가정합니다.','5명 — 10명 중 절반이 마음을 바꾼다고 가정합니다.','6명 — 홈페이지가 거의 없다시피 한 경우를 가정합니다.','7명 — 매우 큰 가정입니다. 실제는 이보다 낮을 수 있습니다.','8명 — 극단적인 가정입니다.','9명 — 극단적인 가정입니다.','10명 — 모든 환자가 마음을 바꾼다는 가장 극단적인 가정입니다.'];
   function fmt1(n){ return (Math.round(n*10)/10).toString().replace(/\.0$/,''); }
   function sim(){
-    var pat=Number(rP.value), rev=Number(rR.value)*10000, lossN=Number(rL.value);
+    var pat=Number(rP.value), ins=Number(rI.value)*10000, non=Number(rN.value)*10000, ratio=Number(rRa.value), lossN=Number(rL.value);
     document.getElementById('sPat').textContent=pat;
-    document.getElementById('sRev').textContent=rR.value;
+    document.getElementById('sIns').textContent=rI.value;
+    document.getElementById('sNon').textContent=rN.value;
+    document.getElementById('sRatio').textContent=ratio;
     document.getElementById('sLoss').textContent=lossN;
     document.getElementById('lossHint').textContent=LOSS_HINT[lossN];
-    var lost=pat*lossN/10, month=lost*rev;
+    var lost=pat*lossN/10, mIns=lost*ins, mNon=lost*(ratio/10)*non, month=mIns+mNon;
     document.getElementById('oLost').textContent=fmt1(lost)+'명';
     document.getElementById('oMonth').textContent=won(month);
+    document.getElementById('oSplit').textContent='보험 '+won(mIns)+' + 비급여 '+won(mNon);
     document.getElementById('oYear').textContent=won(month*12);
-    var need=Math.ceil(US_TOTAL/rev), per=need/12;
+    var per=ins+non*ratio/10, need=Math.ceil(US_TOTAL/per), perMonth=need/12;
     document.getElementById('oNeed').textContent='1년에 '+need+'명';
-    document.getElementById('oNeedSub').textContent= per<=1 ? '(한 달에 1명도 안 되는 숫자입니다)' : '(한 달에 약 '+fmt1(per)+'명)';
+    document.getElementById('oNeedSub').textContent= perMonth<=1 ? '(한 달에 1명도 안 되는 숫자입니다)' : '(한 달에 약 '+fmt1(perMonth)+'명)';
   }
-  [rP,rR,rL].forEach(function(el){ el.addEventListener('input',sim); }); sim();
-
-  /* 이전 가능성 30초 점검 */
-  (function(){
-    var res=document.getElementById('mRes'); if(!res) return;
-    function val(n){ var e=document.querySelector('input[name="'+n+'"]:checked'); return e?e.value:null; }
-    function upd(){
-      var a=val('q1'), b=val('q2'), c=val('q3'); if(!a&&!b&&!c){ res.hidden=true; return; }
-      var li=[];
-      if(a==='mine') li.push('<li>도메인이 원장님 명의라 <b>주소를 그대로 새 홈페이지에 연결</b>할 수 있습니다.</li>');
-      if(a==='vendor') li.push('<li class="w">도메인이 제작사 명의입니다. 먼저 <b>명의 이전(또는 네임서버 변경) 요청</b>을 하셔야 합니다. 요청 방법은 함께 안내해 드립니다.</li>');
-      if(a==='unk') li.push('<li class="w">도메인 명의는 조회로 확인할 수 있습니다. 주소만 알려 주시면 <b>함께 확인</b>해 드립니다.</li>');
-      if(b==='mine') li.push('<li>직접 찍은 사진은 <b>그대로 새 틀에 사용</b>할 수 있습니다.</li>');
-      if(b==='stock') li.push('<li class="w">제작사가 구한 스톡 사진은 <b>저작권 문제로 그대로 쓰면 안 됩니다.</b> 새 사진 또는 원장님 화보(시그니처)로 교체를 권합니다.</li>');
-      if(b==='unk') li.push('<li class="w">사진 출처를 모르시면 안전하게 <b>원장님이 촬영하신 사진만</b> 옮기고 나머지는 새로 구성합니다.</li>');
-      if(c==='run') li.push('<li>운영 중이라면 <b>기존 사이트는 전환 당일까지 그대로 운영</b>하면서 새 시안을 나란히 비교하실 수 있습니다.</li>');
-      if(c==='build') li.push('<li class="w">제작 진행 중이라면 <b>계약서의 중도 해지·환불 조항을 먼저 확인</b>하세요. 진행 중인 작업을 멈추라고 권하지 않으며, 시안만 먼저 비교해 보셔도 됩니다.</li>');
-      if(c==='quote') li.push('<li>견적만 받으신 단계라면 <b>가장 비용 부담이 적은 시점</b>입니다. 위 견적 비교와 계산기를 참고하세요.</li>');
-      res.innerHTML='<ul>'+li.join('')+'</ul>'; res.hidden=false;
-    }
-    document.querySelectorAll('#migCheck input[type=radio]').forEach(function(r){ r.addEventListener('change',upd); });
-  })();
+  [rP,rI,rN,rRa,rL].forEach(function(el){ el.addEventListener('input',sim); }); sim();
 
   /* 셀프 스튜디오 체험 */
   (function(){
     var root=document.getElementById('sdemo'); if(!root) return;
     function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+    var IMGS=['card_2_chuna.jpg','card_3_growth.jpg','card_4_diet.jpg','card_5_hairloss.jpg','card_6_gongjindan.jpg'];
+    var PRE={
+      chuna:{eye:'SPINAL REALIGNMENT · 척추 교정',title:'바른 추나 · 척추교정',sub:'Manual Chuna & Spinal Care',desc:'진통제로 통증만 가리지 않고, 원장이 직접 수기로 틀어진 척추·골반의 균형을 살펴봅니다.',ck:['[재발 통증] 진통제를 맞아도 며칠 뒤 통증이 다시 시작된다','[체형 비대칭] 거울을 보면 양쪽 어깨 높이가 다르다','[저림] 허리·뒷목이 뻐근하고 다리·팔이 저릿하다','[거북목] 스마트폰 사용 후 뒷목이 굳고 두통이 온다','[비수술 선호] 수술 없이 치료받고 싶다'],cta:'내 체형에 맞는 계획 원장님과 상담하기',cap:'수술 없이 틀어진 균형을 살피는 정밀 수기 추나',img:0},
+      growth:{eye:'GROWTH CARE · 성장 관리',title:'바른 키 성장',sub:'Growth Care for Children',desc:'성장 시기를 놓치지 않도록 성장판·체성분·생활 습관을 함께 살펴봅니다.',ck:['[성장 속도] 또래보다 1년에 자라는 키가 적은 편이다','[잦은 감기] 감기·비염으로 자주 컨디션이 떨어진다','[식습관] 편식이 심하거나 입이 짧다','[수면] 밤 10시 이후에 잠드는 날이 많다','[사춘기] 사춘기 시작 시기가 걱정된다'],cta:'우리 아이 성장 상담 받아보기',cap:'성장 골든타임, 지금 상담이 필요한 시기',img:1},
+      diet:{eye:'DIET CARE · 체중 관리',title:'바른 다이어트',sub:'Metabolic Diet Care',desc:'굶는 다이어트가 아니라 체질과 대사 상태에 맞춘 1:1 관리를 안내합니다.',ck:['[요요] 감량 후 금방 다시 체중이 돌아온다','[식욕] 저녁이나 밤에 식욕 조절이 어렵다','[붓기] 아침에 얼굴·다리가 자주 붓는다','[피로] 식사량을 줄이면 쉽게 지친다','[체형] 복부·하체 살이 유독 잘 빠지지 않는다'],cta:'내 체질 맞춤 상담 받아보기',cap:'체질에 맞춘 1:1 맞춤 관리',img:2},
+      hair:{eye:'HAIR & SCALP CARE · 두피 관리',title:'바른 탈모 케어',sub:'Hair & Scalp Care',desc:'두피 상태와 생활 습관, 체질을 함께 살펴 맞춤 관리 방향을 안내합니다.',ck:['[빠짐] 머리를 감을 때 빠지는 양이 늘었다','[가려움] 두피가 자주 가렵거나 기름진다','[정수리] 정수리·이마 라인이 얇아 보인다','[스트레스] 최근 수면·스트레스 문제가 있다','[가족력] 가족 중 탈모가 있다'],cta:'내 두피 상태 상담 받아보기',cap:'두피와 체질을 함께 보는 맞춤 관리',img:3},
+      gong:{eye:'TRADITIONAL FORMULA · 한방 환제',title:'정성 공진단',sub:'Gongjindan',desc:'원내에서 직접 만드는 환제의 약재와 제조 과정을 투명하게 안내합니다.',ck:['[원료] 약재 원산지와 인증을 확인하고 싶다','[제조] 어디서 어떻게 만드는지 알고 싶다','[복용] 복용 시기와 방법이 궁금하다','[체질] 내 체질에 맞는지 상담받고 싶다','[가격] 구성별 가격을 투명하게 알고 싶다'],cta:'공진단 상담 받아보기',cap:'정성으로 빚는 원내 제조 환제',img:4}
+    };
+    var cur=null, imgIdx=0;
+    var sel=document.getElementById('cSel'), eCards=document.getElementById('cCks'), imgBox=document.getElementById('cImgs');
+    IMGS.forEach(function(src,i){ var b=document.createElement('button'); b.type='button'; b.style.backgroundImage="url('"+src+"')"; b.setAttribute('aria-label','이미지 '+(i+1)); b.addEventListener('click',function(){ imgIdx=i; drawCard(); }); imgBox.appendChild(b); });
+    var ckInputs=[]; for(var i=0;i<5;i++){ (function(i){ var inp=document.createElement('input'); inp.setAttribute('aria-label','체크리스트 '+(i+1)); inp.addEventListener('input',drawCard); eCards.appendChild(inp); ckInputs.push(inp); })(i); }
+    function load(k){
+      var p=PRE[k]; cur=k; imgIdx=p.img;
+      document.getElementById('cTitle').value=p.title; document.getElementById('cSub').value=p.sub; document.getElementById('cDesc').value=p.desc;
+      document.getElementById('cCta').value=p.cta; document.getElementById('cCap').value=p.cap;
+      ckInputs.forEach(function(inp,i){ inp.value=p.ck[i]; }); root._eye=p.eye; drawCard();
+    }
+    function drawCard(){
+      document.getElementById('pcEye').textContent=root._eye||'';
+      document.getElementById('pcTitle').textContent=document.getElementById('cTitle').value;
+      document.getElementById('pcSub').textContent=document.getElementById('cSub').value;
+      document.getElementById('pcDesc').textContent=document.getElementById('cDesc').value;
+      document.getElementById('pcCk').innerHTML=ckInputs.map(function(inp){ return '<div>'+esc(inp.value)+'</div>'; }).join('');
+      document.getElementById('pcCta').textContent=document.getElementById('cCta').value;
+      document.getElementById('pcCap').textContent=document.getElementById('cCap').value;
+      document.getElementById('pcImg').style.backgroundImage="url('"+IMGS[imgIdx]+"')";
+      [].slice.call(imgBox.children).forEach(function(b,i){ b.classList.toggle('on',i===imgIdx); });
+    }
+    ['cTitle','cSub','cDesc','cCta','cCap'].forEach(function(id){ document.getElementById(id).addEventListener('input',drawCard); });
+    sel.addEventListener('change',function(){ load(sel.value); });
+    document.getElementById('cardAdd').addEventListener('click',function(){
+      var m=document.getElementById('cardMsg'); m.hidden=false;
+      m.innerHTML='🔒 <b>시그니처 전용 기능입니다.</b> 카드 첫장 수정은 모든 단계에서 가능하지만, 새 질환 카드를 <b>무제한(증설비 0원)</b>으로 직접 추가하는 것은 시그니처에서만 가능합니다.';
+    });
+    /* 탭 */
+    var panes={t0:'card',t1:'info',t2:'info',t3:'card'};
     root.querySelectorAll('.sd-tabs button').forEach(function(b){ b.addEventListener('click',function(){
       root.querySelectorAll('.sd-tabs button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-      root.querySelectorAll('.sd-pane').forEach(function(p){ p.classList.toggle('on', p.id===b.getAttribute('data-tab')); });
+      var id=b.getAttribute('data-tab');
+      root.querySelectorAll('.sd-pane').forEach(function(p){ p.classList.toggle('on', p.id===id); });
+      document.getElementById('pvCard').hidden = panes[id]!=='card';
+      document.getElementById('pvInfo').hidden = panes[id]!=='info';
     }); });
-    var fees=[{n:'맞춤 탕약 (15일~1개월)',p:'220,000 ~ 450,000원'},{n:'정제 약침 (1회)',p:'10,000 ~ 30,000원'},{n:'키 성장 맞춤 한약 (1개월)',p:'350,000 ~ 550,000원'}];
-    var cards=['원장 소개','추나·통증','키 성장','다이어트','탈모','공진단'];
+    /* 진료시간 · 수가표 */
+    var fees=[{n:'맞춤 탕약 (15일분)',p:'200,000 ~ 350,000원'},{n:'정제 약침 (1회)',p:'10,000 ~ 30,000원'},{n:'키 성장 맞춤 한약 (1개월)',p:'350,000 ~ 550,000원'}];
     function drawFeeRows(){
       var box=document.getElementById('feeRows'); box.innerHTML='';
       fees.forEach(function(f,i){
         var d=document.createElement('div'); d.className='feerow';
         d.innerHTML='<input value="'+esc(f.n)+'" aria-label="항목"><input value="'+esc(f.p)+'" aria-label="금액">';
         var ins=d.querySelectorAll('input');
-        ins[0].addEventListener('input',function(){ fees[i].n=ins[0].value; draw(); });
-        ins[1].addEventListener('input',function(){ fees[i].p=ins[1].value; draw(); });
+        ins[0].addEventListener('input',function(){ fees[i].n=ins[0].value; drawInfo(); });
+        ins[1].addEventListener('input',function(){ fees[i].p=ins[1].value; drawInfo(); });
         box.appendChild(d);
       });
     }
-    function draw(){
+    function drawInfo(){
       var wk=document.getElementById('dWk').value, lu=document.getElementById('dLunch').value, sa=document.getElementById('dSat').value;
       document.getElementById('pvHours').innerHTML='<tr><td>평일</td><td>'+esc(wk)+'</td></tr><tr><td>점심</td><td>'+esc(lu)+'</td></tr><tr><td>토요일</td><td>'+esc(sa)+'</td></tr>';
       var bn=document.getElementById('pvBanner'), on=document.getElementById('dBannerOn').checked, txt=document.getElementById('dBanner').value.trim();
       if(on&&txt){ bn.hidden=false; bn.textContent='📢 '+txt; } else { bn.hidden=true; }
       document.getElementById('pvFees').innerHTML=fees.map(function(f){ return '<tr><td>'+esc(f.n)+'</td><td>'+esc(f.p)+'</td></tr>'; }).join('');
-      document.getElementById('pvCards').innerHTML=cards.map(function(c,i){ return '<span'+(i>=6?' class="new"':'')+'>'+esc(c)+'</span>'; }).join('');
-      document.getElementById('cardCnt').textContent=cards.length;
     }
-    ['dWk','dLunch','dSat','dBanner'].forEach(function(id){ document.getElementById(id).addEventListener('input',draw); });
-    document.getElementById('dBannerOn').addEventListener('change',draw);
-    document.getElementById('feeAdd').addEventListener('click',function(){ if(fees.length>=6) return; fees.push({n:'새 항목',p:'0원'}); drawFeeRows(); draw(); });
-    /* 금지어 경고 (프로 기능) */
+    ['dWk','dLunch','dSat','dBanner'].forEach(function(id){ document.getElementById(id).addEventListener('input',drawInfo); });
+    document.getElementById('dBannerOn').addEventListener('change',drawInfo);
+    document.getElementById('feeAdd').addEventListener('click',function(){ if(fees.length>=6) return; fees.push({n:'새 항목',p:'0원'}); drawFeeRows(); drawInfo(); });
+    /* 금지어 경고 (프로) + 합법 문구 (시그니처, 2회 체험) */
     var BAD=/(완치|100\s?%|최고|유일|보장|특효|무조건|부작용\s?없|1위|할인|이벤트)/g;
-    var law=document.getElementById('dLaw'), box=document.getElementById('lawBox');
+    var law=document.getElementById('dLaw'), lbox=document.getElementById('lawBox');
     function checkLaw(){
       var t=law.value, hits=t.match(BAD);
-      if(hits&&hits.length){ box.className='lawbox bad'; box.innerHTML='⚠️ 의료법 제56조 위반 소지 표현 <b>'+hits.length+'개</b> 감지<br>'+esc(t).replace(BAD,'<mark>$1</mark>'); }
-      else { box.className='lawbox'; box.innerHTML='✅ 감지된 금지어가 없습니다.'; }
+      if(hits&&hits.length){ lbox.className='lawbox bad'; lbox.innerHTML='⚠️ 의료법 제56조 위반 소지 표현 <b>'+hits.length+'개</b> 감지<br>'+esc(t).replace(BAD,'<mark>$1</mark>'); }
+      else { lbox.className='lawbox'; lbox.innerHTML='✅ 감지된 금지어가 없습니다.'; }
     }
     law.addEventListener('input',checkLaw); checkLaw();
-    var used=false;
+    var used=0, MAXU=2;
     document.getElementById('lawFix').addEventListener('click',function(){
-      var out=document.getElementById('lawOut');
-      if(used){ out.hidden=false; out.innerHTML='🔒 1회 체험이 끝났습니다. 시그니처에서는 <b>횟수 제한 없이</b> 문장 전체를 의료법에 맞게 AI가 다시 써 드립니다.'; return; }
-      used=true;
+      var out=document.getElementById('lawOut'); out.hidden=false;
+      if(used>=MAXU){ out.innerHTML='🔒 '+MAXU+'회 체험이 끝났습니다. 시그니처에서는 <b>횟수 제한 없이</b> 문장 전체를 의료법에 맞게 AI가 다시 써 드립니다.'; return; }
+      used++;
       var t=law.value.replace(/완치/g,'증상 개선에 도움').replace(/100\s?%/g,'개인차가 있으며').replace(/최고/g,'정성을 다하는').replace(/유일/g,'').replace(/보장/g,'기대').replace(/특효/g,'도움이 될 수 있는').replace(/무조건/g,'상황에 따라').replace(/부작용\s?없/g,'이상 반응을 확인하며 처방').replace(/1위/g,'').replace(/할인/g,'안내').replace(/이벤트/g,'안내');
-      out.hidden=false; out.innerHTML='✨ <b>합법 문구 제안</b><br>'+esc(t)+'<br><small style="opacity:.7">※ 체험용 간이 규칙입니다. 실제 시그니처 AI는 문장 전체를 새로 씁니다. 최종 책임은 원장님 감수에 있습니다.</small>';
+      out.innerHTML='✨ <b>합법 문구 제안 ('+used+'/'+MAXU+'회 체험 · 남은 체험 '+(MAXU-used)+'회)</b><br>'+esc(t)+'<br><small style="opacity:.7">※ 체험용 간이 규칙입니다. 실제 시그니처 AI는 문장 전체를 새로 씁니다. 최종 책임은 원장님 감수에 있습니다.</small>';
     });
-    document.getElementById('cardAdd').addEventListener('click',function(){
-      var m=document.getElementById('cardMsg');
-      if(cards.length>=6){ m.hidden=false; m.innerHTML='🔒 <b>7번째 카드부터는 시그니처 전용입니다.</b> 스탠다드·프로는 카드 증설이 별도로 필요하고, 시그니처는 <b>무제한(증설비 0원)</b>으로 직접 추가합니다.'; return; }
-      cards.push('새 카드'); draw();
-    });
-    drawFeeRows(); draw();
+    load('chuna'); drawFeeRows(); drawInfo();
   })();
 
   /* 필요 기능 체크 → 단계 추천 */
@@ -1097,7 +1242,7 @@
       var html='고르신 기능 <b>'+n+'개</b> 중 — 스탠다드로는 <b>'+s+'개</b>, 프로페셔널로는 <b>'+p+'개</b>, 시그니처로는 <b>'+n+'개 전부</b> 사용할 수 있습니다.<br>';
       if(maxMin===2) html+='<span class="bad">🔒 스탠다드에서 못 쓰는 기능 '+(n-s)+'개 · 프로에서 못 쓰는 기능 '+(n-p)+'개</span> → 원하시는 기능을 모두 쓰려면 <b>시그니처</b>가 필요합니다.';
       else if(maxMin===1) html+='<span class="bad">🔒 스탠다드에서 못 쓰는 기능 '+(n-s)+'개</span> → <b>프로페셔널 이상</b>이 필요합니다. 시그니처로 올리면 3D·통계·카드 무제한까지 함께 열립니다.';
-      else html+='고르신 기능은 <b>스탠다드</b>로 충분합니다. 이후 필요가 생기면 상위 단계 샘플도 한번 확인해 보세요.';
+      else html+='고르신 기능은 <b>스탠다드</b>로 충분합니다. 이후 필요가 생기면 상위 단계 기능도 샘플에서 한번 확인해 보세요.';
       res.innerHTML=html;
       go.setAttribute('data-plan',name);
     }
@@ -1114,7 +1259,7 @@
     ev.preventDefault();
     var c=document.getElementById('fClinic').value.trim(), n=document.getElementById('fName').value.trim(), p=document.getElementById('fPhone').value.trim(), pl=document.getElementById('fPlan').value;
     if(!c||!n||!p){ alert('한의원 이름, 원장님 성함, 연락처를 모두 입력해 주세요.'); return; }
-    var msg='[무료 시안 신청]\n한의원: '+c+'\n원장님: '+n+'\n연락처: '+p+'\n관심 단계: '+pl;
+    var msg='[도입 상담 신청]\n한의원: '+c+'\n원장님: '+n+'\n연락처: '+p+'\n관심 단계: '+pl;
     document.getElementById('smsGo').href='sms:01088770508?body='+encodeURIComponent(msg);
     document.getElementById('done').style.display='block';
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(msg).catch(function(){ window.prompt('아래 내용을 복사해 문자로 보내 주세요:',msg); }); }
