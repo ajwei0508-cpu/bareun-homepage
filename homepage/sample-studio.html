@@ -31,6 +31,16 @@
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 :root {
@@ -255,8 +265,8 @@ body {
   display: inline-block; font-size: 11px; font-weight: 900; padding: 4px 12px; border-radius: 999px;
   background: rgba(143,224,176,.2); border: 1px solid var(--pv-accent); color: var(--pv-accent); margin-bottom: 14px;
 }
-.sb-title { font-size: clamp(1.4rem, 2.8vw, 2.2rem); font-weight: 900; line-height: 1.35; margin-bottom: 16px; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
-.sb-desc { font-size: clamp(.88rem, 1.4vw, 1.05rem); color: rgba(255,255,255,.9); line-height: 1.6; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.sb-title { font-size: clamp(1.4rem, 2.8vw, 2.2rem); font-weight: 900; color: #fff !important; line-height: 1.35; margin-bottom: 16px; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+.sb-desc { font-size: clamp(.88rem, 1.4vw, 1.05rem); color: rgba(255,255,255,.9) !important; line-height: 1.6; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
 .sb-cta {
   margin-top: 26px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800;
   padding: 10px 20px; border-radius: 999px; background: var(--pv-accent); color: #071911;
@@ -274,7 +284,7 @@ body {
 .cd-media img { width: 100%; height: 100%; object-fit: cover; }
 .cd-body { padding: 24px 22px; }
 .cd-sub { font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--pv-main); }
-.cd-title { font-size: 1.4rem; font-weight: 900; color: var(--pv-sub); margin: 4px 0 10px; }
+.cd-title { font-size: 1.4rem; font-weight: 900; color: var(--pv-sub) !important; margin: 4px 0 10px; }
 .cd-desc { font-size: 13.5px; color: #3F5247; line-height: 1.6; margin-bottom: 18px; }
 .cd-check-box {
   background: var(--pv-tint); border: 1px solid rgba(45,90,67,.2); border-radius: 12px; padding: 14px;
@@ -293,7 +303,7 @@ body {
   display: inline-block; font-size: 11px; font-weight: 900; color: var(--pv-main); background: var(--pv-tint);
   border: 1px solid var(--pv-main); padding: 3px 10px; border-radius: 6px; margin-bottom: 12px;
 }
-.cl-title { font-size: 1.35rem; font-weight: 900; color: #0C1E15; line-height: 1.4; margin-bottom: 16px; }
+.cl-title { font-size: 1.35rem; font-weight: 900; color: #0C1E15 !important; line-height: 1.4; margin-bottom: 16px; }
 .cl-lead {
   font-size: 14px; color: #2D473B; line-height: 1.65; padding: 14px; border-left: 3.5px solid var(--pv-main);
   background: var(--pv-tint); border-radius: 0 10px 10px 0; margin-bottom: 18px;
@@ -392,16 +402,16 @@ body {
         </div>
         <div class="thumb-picker" id="sb-thumbs">
           <div class="thumb-item active" data-src="life_1d_growth_short.jpg">
-            <img src="life_1d_growth_short.jpg" alt="교실의 아이들" width="1280" height="714" fetchpriority="high"><span>선택</span>
+            <img src="life_1d_growth_short.jpg" alt="교실의 아이들" width="1280" height="714" fetchpriority="high" decoding="async" loading="eager"><span>선택</span>
           </div>
           <div class="thumb-item" data-src="life_1c_clinic_exam.jpg">
-            <img src="life_1c_clinic_exam.jpg" alt="가족 상담" width="1280" height="714"><span>상담</span>
+            <img src="life_1c_clinic_exam.jpg" alt="가족 상담" width="1280" height="714" decoding="async" loading="eager"><span>상담</span>
           </div>
           <div class="thumb-item" data-src="life_1d_growth_clinic.jpg">
-            <img src="life_1d_growth_clinic.jpg" alt="성장 클리닉" width="1280" height="714"><span>성장</span>
+            <img src="life_1d_growth_clinic.jpg" alt="성장 클리닉" width="1280" height="714" decoding="async" loading="eager"><span>성장</span>
           </div>
           <div class="thumb-item" data-src="webp/card_1_director.webp">
-            <img src="webp/card_1_director.webp" alt="대표원장" width="1280" height="714"><span>원장</span>
+            <img src="webp/card_1_director.webp" alt="대표원장" width="1280" height="714" decoding="async" loading="eager"><span>원장</span>
           </div>
         </div>
       </div>
@@ -455,16 +465,16 @@ body {
         </div>
         <div class="thumb-picker" id="cd-thumbs">
           <div class="thumb-item active" data-src="chuna_minimal_card1_core_align_a.jpg">
-            <img src="chuna_minimal_card1_core_align_a.jpg" alt="추나 척추" width="1280" height="714"><span>추나</span>
+            <img src="chuna_minimal_card1_core_align_a.jpg" alt="추나 척추" width="1280" height="714" decoding="async" loading="eager"><span>추나</span>
           </div>
           <div class="thumb-item" data-src="life_1d_growth_clinic.jpg">
-            <img src="life_1d_growth_clinic.jpg" alt="소아 성장" width="1280" height="714"><span>성장</span>
+            <img src="life_1d_growth_clinic.jpg" alt="소아 성장" width="1280" height="714" decoding="async" loading="eager"><span>성장</span>
           </div>
           <div class="thumb-item" data-src="diet_minimal_card1_muscle_burn_a.jpg">
-            <img src="diet_minimal_card1_muscle_burn_a.jpg" alt="다이어트" width="1280" height="714"><span>다이어트</span>
+            <img src="diet_minimal_card1_muscle_burn_a.jpg" alt="다이어트" width="1280" height="714" decoding="async" loading="eager"><span>다이어트</span>
           </div>
           <div class="thumb-item" data-src="card_5_hairloss.jpg">
-            <img src="card_5_hairloss.jpg" alt="탈모 케어" width="1280" height="714"><span>탈모</span>
+            <img src="card_5_hairloss.jpg" alt="탈모 케어" width="1280" height="714" decoding="async" loading="eager"><span>탈모</span>
           </div>
         </div>
       </div>
@@ -541,7 +551,7 @@ body {
         <div class="cd-preview-stage" id="pv-stage-cd" style="display:none;">
           <div class="cd-card">
             <div class="cd-media">
-              <img id="pv-cd-img" src="chuna_minimal_card1_core_align_a.jpg" alt="질환 대표 이미지" width="1280" height="714">
+              <img id="pv-cd-img" src="chuna_minimal_card1_core_align_a.jpg" alt="질환 대표 이미지" width="1280" height="714" decoding="async" loading="eager">
             </div>
             <div class="cd-body">
               <div class="cd-sub" id="pv-cd-sub">CHUNA SPINAL REALIGNMENT · 학술 논문 검증</div>

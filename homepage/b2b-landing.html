@@ -30,6 +30,16 @@
   
 
   
+
+  
+
+  
+
+  
+
+  
+
+  
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <style>
@@ -42,7 +52,8 @@
     html{scroll-behavior:smooth}
     body{font-family:'Pretendard',-apple-system,system-ui,sans-serif;background:var(--hanji);color:var(--ink);line-height:1.75;word-break:keep-all;padding-bottom:84px;overflow-x:clip}
     .wrap{width:100%}
-    .stage3d{overflow:hidden}
+    #solution{overflow-x:clip}
+    .dark h1,.dark h2,.dark h3,.dark h4{color:#FDFBF7 !important}
     @media(max-width:520px){
       .hero-cta{flex-direction:column}.hero-cta .btn{width:100%}
       .eyebrow{display:block;line-height:1.5}
@@ -551,12 +562,12 @@
     <div class="aiex-grid rv">
       <figure class="aiex">
         <span class="aibadge">바른한의원 1번째 소개</span>
-        <a href="b2b-assets/ai-search-example.jpg" target="_blank" rel="noopener"><img src="b2b-assets/ai-search-example.jpg" alt="Google AI 모드에 '대전에서 성장클리닉하는 한의원'을 물었을 때 바른한의원이 1번째로 소개된 화면 (다른 한의원 모자이크 처리)" width="800" height="600" fetchpriority="high"></a>
+        <a href="b2b-assets/ai-search-example.jpg" target="_blank" rel="noopener"><img src="b2b-assets/ai-search-example.jpg" alt="Google AI 모드에 '대전에서 성장클리닉하는 한의원'을 물었을 때 바른한의원이 1번째로 소개된 화면 (다른 한의원 모자이크 처리)" width="800" height="600" fetchpriority="high" decoding="async" loading="eager"></a>
         <figcaption><b>질문: “대전에서 성장클리닉하는 한의원”</b><br>답변 첫 문장과 ‘주요 성장클리닉 진료 한의원’ 목록 모두에서 바른한의원이 먼저 소개됩니다.</figcaption>
       </figure>
       <figure class="aiex">
         <span class="aibadge b2">추천 목록에 포함</span>
-        <a href="b2b-assets/ai-search-example-2.jpg" target="_blank" rel="noopener"><img src="b2b-assets/ai-search-example-2.jpg" alt="Google AI 모드에 '대전 성장 클리닉한의원 추천'을 물었을 때 바른한의원이 추천 목록에 포함된 화면 (다른 한의원 모자이크 처리)" loading="lazy" width="800" height="600"></a>
+        <a href="b2b-assets/ai-search-example-2.jpg" target="_blank" rel="noopener"><img src="b2b-assets/ai-search-example-2.jpg" alt="Google AI 모드에 '대전 성장 클리닉한의원 추천'을 물었을 때 바른한의원이 추천 목록에 포함된 화면 (다른 한의원 모자이크 처리)" width="800" height="600" decoding="async" loading="eager"></a>
         <figcaption><b>질문: “대전 성장 클리닉한의원 추천”</b><br>질문 표현이 달라지면 순서는 달라지지만, 권역별 추천 목록에 바른한의원이 포함되어 소개됩니다.</figcaption>
       </figure>
     </div>
@@ -1051,8 +1062,8 @@
     <h2>고민하는 시간만 길어지고 있다면,<br><span class="gold">샘플부터 직접 써 보고 결정하세요</span></h2>
     <p class="lead" style="margin:0 auto">결제를 먼저 요구하지 않습니다. 샘플에서 모든 기능을 먼저 써 보시고, 마음이 설 때 상담을 신청하세요.</p>
     <div class="direct">
-      <a href="tel:01088770508">📞 010-8877-0508 전화</a>
-      <a href="sms:01088770508">✉️ 문자 보내기</a>
+      <a href="tel:01056311275">📞 010-5631-1275 전화</a>
+      <a href="sms:01056311275">✉️ 문자 보내기</a>
       <a href="#" id="kakaoBtn" style="display:none" target="_blank" rel="noopener">💬 카카오톡 상담</a>
     </div>
     <form class="form" id="applyForm" novalidate>
@@ -1064,27 +1075,27 @@
       <button class="btn btn-gold" type="submit">도입 상담 신청하기 →</button>
       <small>신청 내용이 복사되고 문자·전화로 바로 연결할 수 있는 버튼이 나타납니다.</small>
       <div class="done" id="done"><b>신청 내용이 복사되었습니다.</b><br>아래 버튼으로 붙여넣기만 하시면 접수됩니다.
-        <div class="direct"><a id="smsGo" href="sms:01088770508">✉️ 문자로 보내기</a><a href="tel:01088770508">📞 전화하기</a></div></div>
+        <div class="direct"><a id="smsGo" href="sms:01056311275">✉️ 문자로 보내기</a><a href="tel:01056311275">📞 전화하기</a></div></div>
     </form>
   </div>
 </section>
 
 <footer>
-  바른 메디테크 · 문의 010-8877-0508<br>
+  바른 메디테크 · 문의 010-5631-1275<br>
   운영 레퍼런스: 바른한의원 대전본점 (대전광역시 대덕구 비래동로7번길 1, 2층) · 대표원장 안정위<br>
   표기된 비교·시뮬레이션 수치는 단순 참고용이며 실제 성과를 보장하지 않습니다. 제작·운영 범위와 정산 기준은 계약서 기준으로 확정됩니다.
 </footer>
 
 <div class="sticky"><div class="in">
   <span><b>전국 100곳 한정</b> · 스탠다드 79만 원부터 · 샘플 먼저 체험</span>
-  <div class="btns"><a class="btn btn-line btn-sm" href="tel:01088770508">📞 전화</a><a class="btn btn-gold btn-sm" href="#apply">상담 신청</a></div>
+  <div class="btns"><a class="btn btn-line btn-sm" href="tel:01056311275">📞 전화</a><a class="btn btn-gold btn-sm" href="#apply">상담 신청</a></div>
 </div></div>
 
 <script src="soften-ko.js"></script>
 <script>
 (function(){
   /* ── 설정 ── */
-  var CONTACT_PHONE = '010-8877-0508';
+  var CONTACT_PHONE = '010-5631-1275';
   var KAKAO_URL = null;                 // 카카오톡 채널/오픈채팅 URL을 넣으면 '카카오톡 상담' 버튼이 나타납니다.
   var BATCH = { total: null, remaining: null }; // 1차 특가 N곳 확정 시 숫자 입력 (null이면 숨김: 허위 카운터 방지)
 

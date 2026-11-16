@@ -31,6 +31,16 @@
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -71,7 +81,7 @@ iframe{display:block;width:100%;height:calc(100vh - 48px);border:0;background:#F
     <span>시그니처 <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.3" fill="none" stroke="#2E9A62" stroke-width="2"/></svg></span>
   </span>
 </div>
-<iframe id="frame" src="index.html?sample=1" title="바른한의원 실제 홈페이지 샘플" allow="fullscreen"></iframe>
+<iframe id="frame" src="about:blank" title="바른한의원 실제 홈페이지 샘플" allow="fullscreen"></iframe>
 <div class="toast" id="toast" hidden></div>
 <script>
 var isOnline = (location.hostname.indexOf('bareunhaniwon.com') !== -1);
@@ -236,13 +246,35 @@ function showDiff(d, idx, anchorR, vw, vh) {
 
 function applySampleCustomizations(d) {
   if (!d || !d.body) return;
+  // 0) 가로 런웨이 카드 내 이미지 지연 로딩 해제 (즉시 로드 보장)
+  var lazyImgs = d.querySelectorAll('img[loading="lazy"]');
+  for (var m = 0; m < lazyImgs.length; m++) {
+    lazyImgs[m].loading = 'eager';
+  }
+
   // 1) 3D 인체 모형: 근육/신경/관절/혈관 메뉴 탭 숨김
-  var layerEls = d.querySelectorAll('.layer-btn, .organ-layer-btn, [data-layer="muscle"], [data-layer="nerve"], [data-layer="joint"], [data-layer="vessel"], #vh-layer-selector, .vh-layer-selector');
+  var layerEls = d.querySelectorAll('.sys-mode-btn, .layer-btn, .organ-layer-btn, [data-sys="muscle"], [data-sys="nerve"], [data-sys="joint"], [data-sys="vessel"], [data-layer="muscle"], [data-layer="nerve"], [data-layer="joint"], [data-layer="vessel"], #vh-layer-selector, .vh-layer-selector');
   for (var i = 0; i < layerEls.length; i++) {
     layerEls[i].style.setProperty('display', 'none', 'important');
   }
+  var topLbl = d.getElementById('stage-active-part-label');
+  if (topLbl && topLbl.textContent.indexOf('근육·신경·관절·혈관') !== -1) {
+    topLbl.textContent = '우측 진료 살펴보기 메뉴 또는 부위별 포인트를 선택해 보세요';
+  }
 
   // 2) 오늘의 건강 글: 1, 2, 3 번 카드만 노출 (4번째 이후 숨김)
+  var partChips = d.querySelectorAll('.vh-part-chip');
+  if (partChips.length > 3) {
+    for (var p = 3; p < partChips.length; p++) {
+      partChips[p].style.setProperty('display', 'none', 'important');
+    }
+  }
+  var archiveBtns = d.querySelectorAll('.archive-card-btn');
+  if (archiveBtns.length > 3) {
+    for (var a = 3; a < archiveBtns.length; a++) {
+      archiveBtns[a].style.setProperty('display', 'none', 'important');
+    }
+  }
   var postCards = d.querySelectorAll('.health-post-card, .encyclopedia-card, .today-post-item, .health-article-card');
   if (postCards.length > 3) {
     for (var j = 3; j < postCards.length; j++) {
@@ -267,10 +299,12 @@ function tick() {
         e.stopPropagation(); e.preventDefault();
         var idx = +t.getAttribute('data-idx');
         showDiff(d, idx, t.getBoundingClientRect(), vw, vh);
-      } else if (!e.target.closest('#smk-diff-box')) {
+      } else if (e.target.closest('.smk') || e.target.closest('#smk-diff-box')) {
+        e.stopPropagation();
+      } else {
         var old = d.getElementById('smk-diff-box'); if (old) old.remove();
       }
-    });
+    }, true);
   }
   var placed = [];
   MARKS.forEach(function(m, i) {

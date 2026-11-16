@@ -29,6 +29,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     const CRON_HOOK_NOTES     = 'bareun_cron_2day_body_notes';
 
     public static function init() {
+        add_filter('wp_lazy_loading_enabled', '__return_false');
         add_filter('cron_schedules', array(__CLASS__, 'register_two_day_cron_schedule'));
         add_action('init', array(__CLASS__, 'maybe_ensure_schema'));
         add_action('init', array(__CLASS__, 'maybe_track_geo_ai_crawler'), 1);
@@ -637,6 +638,96 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'callback'            => array(__CLASS__, 'handle_increment_body_note_view'),
             'permission_callback' => '__return_true'
         ));
+        register_rest_route('bareun/v1', '/deploy-page', array(
+            'methods'             => 'POST',
+            'callback'            => array(__CLASS__, 'handle_deploy_page'),
+            'permission_callback' => function() { return current_user_can('edit_pages'); }
+        ));
+    }
+
+    public static function handle_deploy_page(\WP_REST_Request $request) {
+        @ini_set('memory_limit', '512M');
+        @set_time_limit(120);
+        global $wpdb;
+        $params = $request->get_json_params();
+        $id = isset($params['id']) ? (int) $params['id'] : 0;
+        $slug = sanitize_title($params['slug'] ?? '');
+        $title = sanitize_text_field($params['title'] ?? '');
+        $excerpt = (string) ($params['excerpt'] ?? '');
+        $content = (string) ($params['content'] ?? '');
+        $template = sanitize_text_field($params['template'] ?? '');
+        $featured_media = isset($params['featured_media']) ? (int) $params['featured_media'] : 0;
+        $meta = isset($params['meta']) && is_array($params['meta']) ? $params['meta'] : array();
+
+        if ($id <= 0 && $slug !== '') {
+            $found_id = (int) $wpdb->get_var($wpdb->prepare(
+                "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = 'page' AND post_status IN ('publish','draft','private') LIMIT 1",
+                $slug
+            ));
+            if ($found_id > 0) $id = $found_id;
+        }
+
+        $now = current_time('mysql');
+        $now_gmt = current_time('mysql', 1);
+
+        if ($id > 0) {
+            $wpdb->delete($wpdb->posts, array('post_parent' => $id, 'post_type' => 'revision'));
+            $wpdb->update(
+                $wpdb->posts,
+                array(
+                    'post_title'        => $title,
+                    'post_name'         => $slug,
+                    'post_excerpt'      => $excerpt,
+                    'post_content'      => $content,
+                    'post_status'       => 'publish',
+                    'comment_status'    => 'closed',
+                    'post_modified'     => $now,
+                    'post_modified_gmt' => $now_gmt
+                ),
+                array('ID' => $id)
+            );
+        } else {
+            remove_action('post_updated', 'wp_save_post_revision');
+            kses_remove_filters();
+            $id = wp_insert_post(array(
+                'post_type'      => 'page',
+                'post_title'     => $title,
+                'post_name'      => $slug,
+                'post_excerpt'   => $excerpt,
+                'post_content'   => '',
+                'post_status'    => 'publish',
+                'comment_status' => 'closed'
+            ));
+            if ($id > 0) {
+                $wpdb->update(
+                    $wpdb->posts,
+                    array('post_content' => $content),
+                    array('ID' => $id)
+                );
+            }
+        }
+
+        if ($id > 0) {
+            if ($template !== '') {
+                update_post_meta($id, '_wp_page_template', $template);
+            }
+            if ($featured_media > 0) {
+                update_post_meta($id, '_thumbnail_id', $featured_media);
+            }
+            foreach ($meta as $mk => $mv) {
+                if (is_string($mk) && $mk !== '') {
+                    update_post_meta($id, $mk, $mv);
+                }
+            }
+            clean_post_cache($id);
+        }
+
+        return new \WP_REST_Response(array(
+            'status' => 200,
+            'id'     => $id,
+            'slug'   => $slug,
+            'link'   => $id > 0 ? get_permalink($id) : ''
+        ), 200);
     }
 
     public static function handle_me(\WP_REST_Request $request) {

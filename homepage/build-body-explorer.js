@@ -254,15 +254,13 @@ function buildBodyExplorerHtml() {
     : '2일 주기 신규 글 업데이트';
   const rightHeaderSubStyle = headerCfg.subMode === 'hidden' ? ' style="display:none;"' : '';
 
-  const rightCompactButtonsHtml = ENABLED_MENUS.map((m, idx) => {
+  const rightCompactButtonsHtml = ENABLED_MENUS.slice(0, 3).map((m, idx) => {
     const num = String(idx + 1).padStart(2, '0');
     const shortTitle = m.shortLabel || m.partLabel || m.id;
     return `<button type="button" class="vh-part-chip" data-part="${escAttrServer(m.id)}" title="${escAttrServer(m.menuTitle || shortTitle)} (${escAttrServer(m.partLabel || shortTitle)})"><span class="rcm-num">${num}</span><span class="rcm-label">${escAttrServer(shortTitle)}</span><span class="rcm-arrow">&rsaquo;</span></button>`;
   }).join('\n      ');
 
-  const bottomSystemButtonsHtml = ANATOMY_SYSTEM_TABS.map(sys =>
-    `<button type="button" class="stage-ctrl-btn sys-mode-btn" id="btn-sys-${sys.id}" data-sys="${sys.id}" onclick="window.selectAnatomySystem('${sys.id}')">${sys.label}</button>`
-  ).join('\n    ');
+  const bottomSystemButtonsHtml = '';
 
   // SEO · AEO · GEO 통합 구조화 데이터 (Schema.org @graph: MedicalWebPage + SpeakableSpecification + ItemList → 72편 독립 정본 허브)
   const explorerSchemaGraph = {
@@ -2629,7 +2627,7 @@ function buildBodyExplorerHtml() {
   <!-- CENTER STATUS PILL -->
   <div class="stage-top-badge">
     <span class="stage-top-dot"></span>
-    <span class="stage-top-text" id="stage-active-part-label">하단 [근육·신경·관절·혈관] 또는 우측 진료 살펴보기 메뉴를 선택해 보세요</span>
+    <span class="stage-top-text" id="stage-active-part-label">우측 진료 살펴보기 메뉴 또는 부위별 포인트를 선택해 보세요</span>
   </div>
 
   <!-- COMPACT RIGHT-SIDE VERTICAL MENU (우측 소형 나열 · WHITE · BLACK · GOLD · EDITABLE CONFIG DRIVEN) -->
@@ -2654,12 +2652,10 @@ function buildBodyExplorerHtml() {
     </section>
   </main>
 
-  <!-- BOTTOM-CENTER 3D CONTROLS + 4-SYSTEM ANATOMY DOCK (근육 · 신경 · 관절 · 혈관) -->
-  <div class="stage-bottom-bar" role="toolbar" aria-label="3D 인체 체형 및 근육·신경·관절·혈관 해부 계통 선택">
+  <!-- BOTTOM-CENTER 3D CONTROLS -->
+  <div class="stage-bottom-bar" role="toolbar" aria-label="3D 인체 체형 선택">
     <button type="button" class="stage-ctrl-btn active" id="btn-gender-male" onclick="window.setDonginGender('male')">남성 체형</button>
     <button type="button" class="stage-ctrl-btn" id="btn-gender-female" onclick="window.setDonginGender('female')">여성 체형</button>
-    <span class="stage-bar-sep" aria-hidden="true"></span>
-    ${bottomSystemButtonsHtml}
     <span class="stage-bar-sep" aria-hidden="true"></span>
     <button type="button" class="stage-ctrl-btn reset-btn" id="btn-cam-reset" onclick="window.closeInfoPopup()">&#8634; 전체 보기</button>
   </div>
@@ -3845,7 +3841,7 @@ function buildBodyExplorerHtml() {
       quickNavButtons.forEach(btn => btn.classList.remove('active'));
       syncBottomSystemButtons();
       if (stageLabelEl) {
-        stageLabelEl.textContent = '하단 [근육·신경·관절·혈관] 또는 우측 진료 살펴보기 메뉴를 선택해 보세요';
+        stageLabelEl.textContent = '우측 진료 살펴보기 메뉴 또는 부위별 포인트를 선택해 보세요';
       }
       applyRightHeaderSubText();
       applyCameraFraming();
@@ -4139,7 +4135,7 @@ function buildBodyExplorerHtml() {
             '</div>' +
             buildStandardNoteBoxHtml(pickedWithRed, 'window.backToArchiveList()', '✕ 목록으로', pickedMeta);
         } else {
-          const rowsHtml = targetList.map((n, idx) => {
+          const rowsHtml = targetList.slice(0, 3).map((n, idx) => {
             const isRowLatest = (idx === 0 && archiveScope === 'part') || (latestNote && n.id === latestNote.id);
             return '<div role="button" tabindex="0" class="archive-card-btn" onclick="window.openArchivedNote(\\'' + n.id + '\\')" onkeydown="if(event.key===\\'Enter\\'||event.key===\\' \\'){event.preventDefault();window.openArchivedNote(\\'' + n.id + '\\');}">' +
               '<div style="min-width:0;flex:1;">' +

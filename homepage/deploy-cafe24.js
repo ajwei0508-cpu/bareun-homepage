@@ -731,8 +731,8 @@ async function performWpLogin(page, loginUrl) {
       }
 
       const res = await page.evaluate(async ({ wpNonce, id, slug, title, excerpt, featuredMedia, content, meta, template }) => {
-        const endpoint = id ? ('/wp-json/wp/v2/pages/' + id) : '/wp-json/wp/v2/pages';
         const bodyObj = {
+          id: id || 0,
           title,
           slug,
           status: 'publish',
@@ -744,7 +744,7 @@ async function performWpLogin(page, loginUrl) {
         if (featuredMedia) bodyObj.featured_media = featuredMedia;
         if (meta && Object.keys(meta).length > 0) bodyObj.meta = meta;
 
-        const r = await fetch(endpoint, {
+        const r = await fetch('/wp-json/bareun/v1/deploy-page', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpNonce },
           body: JSON.stringify(bodyObj)

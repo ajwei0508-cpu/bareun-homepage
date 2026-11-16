@@ -13,13 +13,17 @@ const visitTrackerCode = fs.existsSync(path.join(dir, 'visit-tracker.js'))
 const clinicConfigCode = fs.existsSync(path.join(dir, 'clinic-template-config.js'))
   ? fs.readFileSync(path.join(dir, 'clinic-template-config.js'), 'utf8')
   : '';
+const softenKoCode = fs.existsSync(path.join(dir, 'soften-ko.js'))
+  ? fs.readFileSync(path.join(dir, 'soften-ko.js'), 'utf8')
+  : '';
 
 const wpReset = [
   '',
   '/* WORDPRESS & ASTRA THEME CONTAINER RESET */',
   '.site-header, .site-footer, #masthead, #colophon, .entry-header, .ast-breadcrumbs-wrapper, .post-thumb, .post-thumb-img-content, .ast-single-post-order, #ast-scroll-top { display: none !important; }',
   '.entry-content a, .ast-container a, .site-content a { text-decoration: none !important; }',
-  '#page, #content, #primary, #main, .entry-content, .ast-container, .site-content, article.page, .ast-plain-container,',
+  '.dark h1, .dark h2, .dark h3, .dark h4, .sb-title { color: #FDFBF7 !important; }',
+  '#page, #content, #primary, #main, .entry-content, .ast-container, .site-content, article.page, .ast-plain-container,',,
   '.elementor, .elementor-section-wrap, .wp-block-group {',
   '  padding: 0 !important;',
   '  margin: 0 !important;',
@@ -120,9 +124,13 @@ function enrichStandaloneHtml(rawHtml, seoKey, srcFile) {
       if (!/\bheight\s*=/i.test(newAttrs)) newAttrs += ` height="${h}"`;
     }
     const isRealPhoto = srcMatch && srcMatch[1] && !srcMatch[1].startsWith('data:');
+    newAttrs = newAttrs.replace(/\s*\bloading\s*=\s*["'][^"']*["']/gi, '');
+    newAttrs += ' loading="eager"';
+    if (!/\bdecoding\s*=/i.test(newAttrs)) {
+      newAttrs += ' decoding="async"';
+    }
     if (isRealPhoto && !markedFirstHeroImg) {
       markedFirstHeroImg = true;
-      newAttrs = newAttrs.replace(/\s*\bloading\s*=\s*["']lazy["']/gi, '');
       if (!/\bfetchpriority\s*=/i.test(newAttrs)) {
         newAttrs += ' fetchpriority="high"';
       }
@@ -199,7 +207,7 @@ function stripOuterDocumentForWP(fullHtml) {
 }
 
 function rewriteAssetsForWP(html, label) {
-  const assetPrefix = '(?:brochure\\/|webp\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|diet-|diet_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|hairloss-|hairloss_|empathy-|empathy_|efficacy-|studio_|im_|custom_)';
+  const assetPrefix = '(?:b2b-assets\\/|brochure\\/|webp\\/|ba_|illust_|prev_life_|life_|bareun_|card_|detail_|director_exam_|director_|diet_minimal_|diet-|diet_|chuna_minimal_|chuna-|chuna_|gongjindan|prostate_minimal_|prostate-|prostate_|growth-|growth_|hairloss-|hairloss_|empathy-|empathy_|efficacy-|studio_|im_|custom_)';
   const extraSlugs = [];
   try {
     const dCfg = JSON.parse(fs.readFileSync(path.join(dir, 'detail-pages-config.json'), 'utf8'));
@@ -214,11 +222,13 @@ function rewriteAssetsForWP(html, label) {
     // Inline local JS configs first so zero external raw.githubusercontent.com JS requests happen
     .replace(/<script\s+src="clinic-template-config\.js"><\/script>/gi, () => clinicConfigCode ? `<script>\n${clinicConfigCode}\n</script>` : '')
     .replace(/<script\s+src="visit-tracker\.js"><\/script>/gi, () => visitTrackerCode ? `<script>\n${visitTrackerCode}\n</script>` : '')
+    .replace(/<script\s+src="soften-ko\.js"><\/script>/gi, () => softenKoCode ? `<script>\n${softenKoCode}\n</script>` : '')
     // Rewrite image & asset paths to compressed <92KB WebP on GitHub Raw CDN
-    .replace(new RegExp("(src|before|after|beforeImg|afterImg):\\s*'(" + assetPrefix + "[^']+)'", 'g'), (_, k, p) => `${k}: '${toGhWebpOrRaw(p)}'`)
-    .replace(new RegExp('"(src|before|after|beforeImg|afterImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
+    .replace(new RegExp("(src|img|before|after|beforeImg|afterImg):\\s*'(" + assetPrefix + "[^']+)'", 'g'), (_, k, p) => `${k}: '${toGhWebpOrRaw(p)}'`)
+    .replace(new RegExp('"(src|img|before|after|beforeImg|afterImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(/"(illustration|illustImg|baBeforeImg|baAfterImg)":"((?:illust_|ba_)[^"]+)"/g, (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
     .replace(new RegExp('"(heroImg|subImg|deepIllustImg|defaultIllustImg)":"(' + assetPrefix + '[^"]+)"', 'g'), (_, k, p) => `"${k}":"${toGhWebpOrRaw(p)}"`)
+    .replace(new RegExp("'((?:chuna_minimal_card|diet_minimal_card|prostate_minimal_card|life_1|card_5_|webp\\/)[^']+\\.(?:jpg|webp|png))'", 'g'), (_, p) => `'${toGhWebpOrRaw(p)}'`)
     .replace(new RegExp('src=\\\\"(' + assetPrefix + '[^\\\\"]+)\\\\"', 'g'), (_, p) => 'src=\\"' + toGhWebpOrRaw(p) + '\\"')
     .replace(/setDecoderPath\('draco\/'\)/g, "setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')")
     .replace(/load\('((?:models\/|texture\/)[^']+)'\)/g, "load('" + ghBase + "$1')")
@@ -226,10 +236,11 @@ function rewriteAssetsForWP(html, label) {
     .replace(new RegExp("load\\('(" + assetPrefix + "[^']+)'\\)", 'g'), (_, p) => `load('${toGhWebpOrRaw(p)}')`)
     .replace(/file:\s*'((?:models\/|texture\/)[^']+)'/g, "file: '" + ghBase + "$1'")
     .replace(new RegExp("url\\('(" + assetPrefix + "[^']+)'\\)", 'g'), (_, p) => `url('${toGhWebpOrRaw(p)}')`)
-    .replace(new RegExp("loadLinearTex\\('(" + assetPrefix + "[^']+)'\\)", 'g'), "loadLinearTex('" + ghBase + "$1')")
+    .replace(new RegExp("loadLinearTex\\('(" + assetPrefix + "[^']+)'\\)", 'g'), (_, p) => `loadLinearTex('${toGhWebpOrRaw(p)}')`)
     .replace(new RegExp("openCleanLightbox\\('(" + assetPrefix + "[^']+)'\\)", 'g'), (_, p) => `openCleanLightbox('${toGhWebpOrRaw(p)}')`)
     .replace(new RegExp("handleGjdSlideClick\\((\\d+),\\s*'(" + assetPrefix + "[^']+)'\\)", 'g'), (_, idx, p) => `handleGjdSlideClick(${idx}, '${toGhWebpOrRaw(p)}')`)
     .replace(new RegExp('src="(' + assetPrefix + '[^"]*)"', 'g'), (_, p) => `src="${toGhWebpOrRaw(p)}"`)
+    .replace(new RegExp('data-src="(' + assetPrefix + '[^"]+)"', 'g'), (_, p) => `data-src="${toGhWebpOrRaw(p)}"`)
     .replace(new RegExp('data-img="(' + assetPrefix + '[^"]+)"', 'g'), (_, p) => `data-img="${toGhWebpOrRaw(p)}"`)
     .replace(new RegExp('poster="(' + assetPrefix + '[^"]+)"', 'g'), (_, p) => `poster="${toGhWebpOrRaw(p)}"`)
     // Rewrite internal navigation links to canonical slugs (including /gongjindan/)
@@ -265,7 +276,7 @@ function rewriteAssetsForWP(html, label) {
       throw err;
     }
     const b64 = Buffer.from(trimmed, 'utf8').toString('base64');
-    return `<script>new Function(new TextDecoder().decode(Uint8Array.from(atob("${b64}"),function(c){return c.charCodeAt(0)})))();</script>`;
+    return `<script>(0,eval)(new TextDecoder().decode(Uint8Array.from(atob("${b64}"),function(c){return c.charCodeAt(0)})));</script>`;
   });
 
   return out;
