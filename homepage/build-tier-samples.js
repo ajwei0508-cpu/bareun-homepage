@@ -80,9 +80,9 @@ var MARKS = [
     sel: '#encyclopedia-scroll-panel',
     pos: 'left',
     when: '#qna-kw-input',
-    lv: ['x', 'o', 'o'],
+    lv: ['x', 't', 'o'],
     diff: {
-      pro: '프로(○): 1:1 비공개 상담 게시판 기본 제공',
+      pro: '프로(△): 1:1 비공개 상담 게시판 제공',
       sig: '시그니처(○): 1:1 상담 게시판 + AI 대표원장 답변 초안 자동 작성 연동',
       cost: '비급여 진료 문의 문턱을 대폭 낮추어 전화 부담 환자를 신환으로 전환'
     }
@@ -90,9 +90,9 @@ var MARKS = [
   {
     name: '질환별 자가진단 체크포인트',
     sel: '.empathy-checklist-card,#empathy-checklist-list',
-    lv: ['x', 'o', 'o'],
+    lv: ['x', 't', 'o'],
     diff: {
-      pro: '프로(○): 5문항 인터랙티브 자가진단 체크리스트 제공',
+      pro: '프로(△): 5문항 인터랙티브 자가진단 체크리스트 제공',
       sig: '시그니처(○): 5문항 자가진단 + 결과 화면 VIP 상담 우선 연동',
       cost: '“내 증상 맞네” 확신을 주고 망설이는 환자를 예약 직전까지 리드'
     }
@@ -245,7 +245,7 @@ window.addEventListener('message', function(e) {
 });
 `;
 
-const legend = `<span>${ICON_O}포함</span><span>${ICON_T}일부 (클릭 시 차이 안내)</span><span>${ICON_X}미포함</span>`;
+const legend = `<span>스탠다드 ${ICON_X}</span><span>프로 ${ICON_T} (클릭 시 차이 안내)</span><span>시그니처 ${ICON_O}</span>`;
 
 const html = `<!DOCTYPE html>
 <html lang="ko">
