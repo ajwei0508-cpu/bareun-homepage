@@ -1690,7 +1690,9 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
       }
       let outContent = content;
       // 샘플 모드(?sample=1): 방문 통계·Q&A 등 쓰기 요청을 막고 읽기 전용으로 보여 줍니다 (b2b 샘플 페이지용)
-      if (ext === '.html' && /(?:\?|&)sample=1(?:&|$)/.test(req.url || '')) {
+      // 샘플 셸(sample.html) 안의 iframe에서 링크를 따라 이동한 페이지도 읽기 전용 유지
+      const inSampleFrame = (req.headers['sec-fetch-dest'] === 'iframe') && /(?:^|;\s*)bareun_sample=1(?:;|$)/.test(req.headers.cookie || '');
+      if (ext === '.html' && (/(?:\?|&)sample=1(?:&|$)/.test(req.url || '') || inSampleFrame)) {
         const guard = '<script>(function(){window.__BAREUN_VISIT_TRACKER_LOADED__=true;window.__BAREUN_SAMPLE_MODE__=true;' +
           'var of=window.fetch;window.fetch=function(u,o){var m=((o&&o.method)||"GET").toUpperCase();if(m!=="GET"&&m!=="HEAD"){try{parent.postMessage({bareunSample:"blocked"},"*")}catch(e){}return Promise.resolve(new Response(JSON.stringify({ok:true,sample:true}),{status:200,headers:{"Content-Type":"application/json"}}));}return of.apply(this,arguments)};' +
           'try{navigator.sendBeacon=function(){return true}}catch(e){}})();</script>';
