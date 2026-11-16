@@ -1052,6 +1052,7 @@
   <div class="btns"><a class="btn btn-line btn-sm" href="tel:01088770508">📞 전화</a><a class="btn btn-gold btn-sm" href="#apply">상담 신청</a></div>
 </div></div>
 
+<script src="soften-ko.js"></script>
 <script>
 (function(){
   /* ── 설정 ── */
@@ -1215,7 +1216,7 @@
       var out=document.getElementById('lawOut'); out.hidden=false;
       if(used>=MAXU){ out.innerHTML='🔒 '+MAXU+'회 체험이 끝났습니다. 시그니처에서는 <b>횟수 제한 없이</b> 문장 전체를 의료법에 맞게 AI가 다시 써 드립니다.'; return; }
       used++;
-      var t=law.value.replace(/완치/g,'증상 개선에 도움').replace(/100\s?%/g,'개인차가 있으며').replace(/최고/g,'정성을 다하는').replace(/유일/g,'').replace(/보장/g,'기대').replace(/특효/g,'도움이 될 수 있는').replace(/무조건/g,'상황에 따라').replace(/부작용\s?없/g,'이상 반응을 확인하며 처방').replace(/1위/g,'').replace(/할인/g,'안내').replace(/이벤트/g,'안내');
+      var rs=softenKo(law.value), t=rs.changed?rs.text:'고칠 표현이 없어 그대로 사용하실 수 있습니다. '+law.value;
       out.innerHTML='✨ <b>합법 문구 제안 ('+used+'/'+MAXU+'회 체험 · 남은 체험 '+(MAXU-used)+'회)</b><br>'+esc(t)+'<br><small style="opacity:.7">※ 체험용 간이 규칙입니다. 실제 시그니처 AI는 문장 전체를 새로 씁니다. 최종 책임은 원장님 감수에 있습니다.</small>';
     });
     load('chuna'); drawFeeRows(); drawInfo();
