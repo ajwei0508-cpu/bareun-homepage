@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>과연 우리 한의원에 홈페이지가 필요할까? | 바른 메디테크 — 현직 한의사가 만든 홈페이지 + 월 구독 케어</title>
-  <meta name="description" content="한의원 홈페이지, 해야 할까요? 안 하면 무슨 일이 생길까요? 초보 원장님도 이해할 수 있게 설명합니다. www.bareunhaniwon.com 동일 구성 견적 1,000만~1,800만 원 → 구축 189만 원부터 + 월 구독 케어. 전국 100곳 한정.">
+  <meta name="description" content="한의원 홈페이지, 해야 할까요? 안 하면 무슨 일이 생길까요? 초보 원장님도 이해할 수 있게 설명합니다. www.bareunhaniwon.com 동일 구성으로 실제 받은 견적 979만 원·2,046만 원 → 구축 79만 원부터 + 월 구독 케어. 전국 100곳 한정.">
   <meta name="robots" content="index, follow">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <style>
     :root{
-      --ink:#171614; --hanji:#F5F1E8; --hanji2:#EFE9DC; --brown:#4A3525;
-      --green:#2D5A43; --green-soft:#E8F2EC; --gold:#C5A059; --gold-hi:#F5D36C; --red:#B4412F;
-      --line:rgba(74,53,37,.14);
+      --ink:#0B2418; --hanji:#F2F7F3; --hanji2:#E6F0E9; --brown:#1E4332;
+      --green:#2D5A43; --green-soft:#E8F2EC; --gold:#3FAE78; --gold-hi:#8FE0B0; --red:#B4412F;
+      --line:rgba(30,67,50,.14);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
@@ -32,37 +32,37 @@
     .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--green);margin-bottom:12px}
     .dark .eyebrow{color:var(--gold-hi)}
     h2.title{font-size:clamp(1.55rem,3.6vw,2.35rem);font-weight:900;line-height:1.38;letter-spacing:-.025em;margin-bottom:18px}
-    .lead{font-size:clamp(1rem,1.7vw,1.12rem);color:#4B4540;max-width:780px}
+    .lead{font-size:clamp(1rem,1.7vw,1.12rem);color:#3B4A42;max-width:780px}
     .dark .lead{color:rgba(253,251,247,.82)}
     .gold{color:var(--gold-hi)} .green{color:var(--green)} .red{color:var(--red)}
-    mark{background:linear-gradient(transparent 62%,rgba(197,160,89,.45) 62%);color:inherit;padding:0 2px}
-    .dark{background:linear-gradient(160deg,#171614 0%,#241C16 60%,#1C3328 100%);color:#FDFBF7}
+    mark{background:linear-gradient(transparent 62%,rgba(111,200,150,.45) 62%);color:inherit;padding:0 2px}
+    .dark{background:linear-gradient(160deg,#0B2418 0%,#123624 60%,#1A4A33 100%);color:#FDFBF7}
     .alt{background:var(--hanji2)}
-    .fine{font-size:12px;color:#7A7167;margin-top:12px;line-height:1.6}
+    .fine{font-size:12px;color:#5F7468;margin-top:12px;line-height:1.6}
     .dark .fine{color:rgba(253,251,247,.55)}
 
-    header{position:sticky;top:0;z-index:50;background:rgba(23,22,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(197,160,89,.28)}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,36,24,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(111,200,150,.28)}
     .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:12px}
     .logo{font-weight:900;color:#fff;font-size:15px;display:flex;align-items:center;gap:9px}
-    .logo i{width:9px;height:9px;border-radius:50%;background:var(--gold-hi);box-shadow:0 0 0 4px rgba(245,211,108,.2)}
+    .logo i{width:9px;height:9px;border-radius:50%;background:var(--gold-hi);box-shadow:0 0 0 4px rgba(143,224,176,.2)}
     nav.hn{display:flex;gap:18px}
     nav.hn a{color:rgba(255,255,255,.72);font-size:13px;font-weight:700}
     nav.hn a:hover{color:var(--gold-hi)}
     @media(max-width:900px){nav.hn{display:none}}
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:900;font-size:15px;border:0;cursor:pointer;transition:transform .2s,box-shadow .2s;font-family:inherit}
     .btn:hover{transform:translateY(-2px)}
-    .btn-gold{background:linear-gradient(135deg,#F5D36C,#C5A059);color:#171614;box-shadow:0 10px 28px rgba(197,160,89,.35)}
+    .btn-gold{background:linear-gradient(135deg,#8FE0B0,#3FAE78);color:#0B2418;box-shadow:0 10px 28px rgba(111,200,150,.35)}
     .btn-sm{padding:9px 18px;font-size:13px}
     .btn-line{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
     .btn-green{background:var(--green);color:#fff;box-shadow:0 10px 24px rgba(45,90,67,.3)}
 
     .hero{padding:96px 0 84px;position:relative;overflow:hidden}
-    .hero:before{content:"";position:absolute;inset:-20% -10% auto auto;width:560px;height:560px;background:radial-gradient(circle,rgba(245,211,108,.16),transparent 65%)}
+    .hero:before{content:"";position:absolute;inset:-20% -10% auto auto;width:560px;height:560px;background:radial-gradient(circle,rgba(143,224,176,.16),transparent 65%)}
     .hero h1{font-size:clamp(1.9rem,5.2vw,3.5rem);font-weight:900;line-height:1.28;letter-spacing:-.03em;margin-bottom:22px}
     .hero .sub{font-size:clamp(1.02rem,1.9vw,1.22rem);color:rgba(253,251,247,.84);max-width:740px;margin-bottom:30px}
     .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:30px}
     .chips{display:flex;gap:12px;flex-wrap:wrap}
-    .chip{display:inline-flex;flex-direction:column;padding:12px 18px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(197,160,89,.4)}
+    .chip{display:inline-flex;flex-direction:column;padding:12px 18px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(111,200,150,.4)}
     .chip b{font-size:1.2rem;color:var(--gold-hi);font-variant-numeric:tabular-nums}
     .chip span{font-size:12.5px;color:rgba(253,251,247,.72)}
 
@@ -75,18 +75,18 @@
     .doubt{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
     .doubt q{display:block;font-weight:900;font-size:1.08rem;margin-bottom:10px;quotes:none;color:var(--brown)}
     .doubt q:before{content:"“"} .doubt q:after{content:"”"}
-    .doubt p{font-size:.96rem;color:#4B4540}
+    .doubt p{font-size:.96rem;color:#3B4A42}
 
     /* psychology flow */
     .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px;position:relative}
     @media(max-width:900px){.flow{grid-template-columns:1fr 1fr}}
     @media(max-width:520px){.flow{grid-template-columns:1fr}}
-    .step{padding:22px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(197,160,89,.3);position:relative}
+    .step{padding:22px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(111,200,150,.3);position:relative}
     .step small{color:var(--gold-hi);font-weight:900;font-size:12px}
     .step h3{font-size:1.05rem;margin:6px 0;color:#fff}
     .step p{font-size:.92rem;color:rgba(253,251,247,.78)}
-    .step.hot{background:linear-gradient(160deg,rgba(245,211,108,.18),rgba(255,255,255,.05));border-color:var(--gold-hi)}
-    .bighook{margin-top:36px;padding:28px;border-radius:22px;border:1px dashed rgba(245,211,108,.6);font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:800;line-height:1.55;text-align:center}
+    .step.hot{background:linear-gradient(160deg,rgba(143,224,176,.18),rgba(255,255,255,.05));border-color:var(--gold-hi)}
+    .bighook{margin-top:36px;padding:28px;border-radius:22px;border:1px dashed rgba(143,224,176,.6);font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:800;line-height:1.55;text-align:center}
 
     /* consequences */
     .time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}
@@ -94,14 +94,14 @@
     @media(max-width:520px){.time-grid{grid-template-columns:1fr}}
     .tm{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
     .tm .when{display:inline-block;font-size:12px;font-weight:900;color:#fff;background:var(--red);padding:4px 12px;border-radius:999px;margin-bottom:10px}
-    .tm:nth-child(2) .when{background:#C2701F}.tm:nth-child(3) .when{background:#8B5A2B}.tm:nth-child(4) .when{background:#3A2A20}
+    .tm:nth-child(2) .when{background:#C2701F}.tm:nth-child(3) .when{background:#A0661C}.tm:nth-child(4) .when{background:#1F3A2D}
     .tm h3{font-size:1.02rem;margin-bottom:6px}
-    .tm p{font-size:.92rem;color:#4B4540}
+    .tm p{font-size:.92rem;color:#3B4A42}
     .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
     @media(max-width:760px){.two{grid-template-columns:1fr}}
     .box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px}
     .box h3{font-size:1.08rem;margin-bottom:10px}
-    .box p,.box li{font-size:.97rem;color:#3F3A34}
+    .box p,.box li{font-size:.97rem;color:#2F3E37}
     .box ul{list-style:none}
     .box li{padding:5px 0 5px 24px;position:relative}
     .box.rent li:before{content:"↘";position:absolute;left:0;color:var(--red);font-weight:900}
@@ -109,7 +109,7 @@
     .box.own{border-color:var(--green);background:var(--green-soft)}
 
     /* sim + calc cards */
-    .calc{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:32px;box-shadow:0 22px 54px rgba(23,22,20,.09)}
+    .calc{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:32px;box-shadow:0 22px 54px rgba(11,36,24,.09)}
     .calc h3{font-size:1.15rem;margin-bottom:4px}
     .ctl{margin:16px 0 4px}
     .ctl-top{display:flex;justify-content:space-between;gap:10px;font-weight:800;font-size:13.5px;color:var(--brown)}
@@ -117,14 +117,14 @@
     input[type=range]{width:100%;accent-color:var(--green);margin:8px 0 6px}
     .out-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
     @media(max-width:760px){.out-grid{grid-template-columns:1fr}}
-    .out{padding:18px;border-radius:16px;background:#FAF8F3;border:1px solid var(--line)}
-    .out small{display:block;font-size:12px;font-weight:800;color:#7A7167;margin-bottom:4px}
+    .out{padding:18px;border-radius:16px;background:#F6FAF7;border:1px solid var(--line)}
+    .out small{display:block;font-size:12px;font-weight:800;color:#5F7468;margin-bottom:4px}
     .out b{font-size:1.45rem;font-variant-numeric:tabular-nums}
     .out.red b{color:var(--red)} .out.grn{background:var(--green-soft);border-color:#B9D7C6}.out.grn b{color:var(--green)}
     .cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
     @media(max-width:760px){.cmp{grid-template-columns:1fr}}
-    .cmp-box{border-radius:18px;padding:22px;border:1.5px solid var(--line);background:#FAF8F3}
-    .cmp-box.us{background:linear-gradient(160deg,#1B1815,#1E3B2D);color:#fff;border-color:var(--gold)}
+    .cmp-box{border-radius:18px;padding:22px;border:1.5px solid var(--line);background:#F6FAF7}
+    .cmp-box.us{background:linear-gradient(160deg,#0B2418,#1F5A3F);color:#fff;border-color:var(--gold)}
     .cmp-box h4{font-size:13px;font-weight:800;letter-spacing:.05em;opacity:.75;margin-bottom:6px}
     .cmp-box .num{font-size:1.9rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.2}
     .cmp-box ul{list-style:none;margin-top:12px;font-size:13.5px;opacity:.92}
@@ -138,35 +138,35 @@
     summary::-webkit-details-marker{display:none}
     summary:after{content:"+";font-size:1.3rem;color:var(--green)}
     details[open] summary:after{content:"–"}
-    details p{margin-top:12px;color:#4B4540;font-size:.97rem}
+    details p{margin-top:12px;color:#3B4A42;font-size:.97rem}
     .gloss{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin-top:28px}
     @media(max-width:760px){.gloss{grid-template-columns:1fr}}
 
     /* receipt */
     .receipt-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:34px;align-items:center;margin-top:36px}
     @media(max-width:860px){.receipt-grid{grid-template-columns:1fr}}
-    .receipt{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 18px 44px rgba(23,22,20,.08);position:relative;transform:rotate(-1.2deg)}
-    .receipt h3{font-size:13px;letter-spacing:.06em;color:#8A8178;margin-bottom:14px;line-height:1.5}
-    .receipt .row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px dashed #D9D2C5;font-size:15px}
+    .receipt{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 18px 44px rgba(11,36,24,.08);position:relative;transform:rotate(-1.2deg)}
+    .receipt h3{font-size:13px;letter-spacing:.06em;color:#6F8378;margin-bottom:14px;line-height:1.5}
+    .receipt .row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px dashed #CFE0D5;font-size:15px}
     .receipt .row:last-of-type{border:0}
     .receipt .total{margin-top:14px;padding-top:16px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
     .receipt .total b{font-size:1.5rem;color:var(--red)}
     .stamp{position:absolute;right:18px;top:-16px;background:var(--red);color:#fff;font-weight:900;font-size:12px;padding:6px 12px;border-radius:8px;transform:rotate(4deg)}
-    .copy p{margin-bottom:16px;font-size:1.04rem;color:#3A352F}
+    .copy p{margin-bottom:16px;font-size:1.04rem;color:#2A3832}
 
     /* difference */
     .four{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}
     @media(max-width:960px){.four{grid-template-columns:1fr 1fr}}
     @media(max-width:520px){.four{grid-template-columns:1fr}}
-    .fcard{padding:24px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(197,160,89,.32)}
+    .fcard{padding:24px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(111,200,150,.32)}
     .fcard .ic{font-size:26px;margin-bottom:8px}
     .fcard h3{font-size:1.06rem;color:#fff;margin-bottom:8px}
     .fcard p{font-size:.92rem;color:rgba(253,251,247,.78)}
     .tbl-wrap{overflow-x:auto;margin-top:30px;border-radius:18px;border:1px solid var(--line);background:#fff}
     table.cmpt{width:100%;border-collapse:collapse;min-width:720px;font-size:.93rem}
-    .cmpt th,.cmpt td{padding:14px 16px;text-align:left;border-bottom:1px solid #EEE7DA;vertical-align:top}
-    .cmpt th{background:#171614;color:var(--gold-hi);font-size:.85rem}
-    .cmpt td{color:#2B2620}
+    .cmpt th,.cmpt td{padding:14px 16px;text-align:left;border-bottom:1px solid #E3EEE6;vertical-align:top}
+    .cmpt th{background:#0B2418;color:var(--gold-hi);font-size:.85rem}
+    .cmpt td{color:#1F2B25}
     .cmpt td:first-child{font-weight:800;color:var(--brown);white-space:nowrap}
     .cmpt td.us{background:var(--green-soft);font-weight:700;color:#14392A}
     .cmpt th.us{background:var(--green);color:#fff}
@@ -176,7 +176,7 @@
     .ring{position:relative;width:200px;height:230px;transform-style:preserve-3d;animation:spin 22s linear infinite}
     .stage3d:hover .ring{animation-play-state:paused}
     @keyframes spin{from{transform:rotateX(-6deg) rotateY(0)}to{transform:rotateX(-6deg) rotateY(360deg)}}
-    .face{position:absolute;inset:0;border-radius:20px;padding:20px 18px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid rgba(245,211,108,.55);backdrop-filter:blur(4px);box-shadow:0 18px 40px rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:space-between}
+    .face{position:absolute;inset:0;border-radius:20px;padding:20px 18px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid rgba(143,224,176,.55);backdrop-filter:blur(4px);box-shadow:0 18px 40px rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:space-between}
     .face:nth-child(1){transform:rotateY(0deg) translateZ(150px)}
     .face:nth-child(2){transform:rotateY(72deg) translateZ(150px)}
     .face:nth-child(3){transform:rotateY(144deg) translateZ(150px)}
@@ -189,8 +189,8 @@
     @media(prefers-reduced-motion:reduce){.ring{animation:none}.rv{transition:none}}
     .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
     @media(max-width:860px){.pillars{grid-template-columns:1fr}}
-    .pillar{padding:26px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(197,160,89,.3)}
-    .pillar.dark{background:linear-gradient(160deg,#171614 0%,#241C16 60%,#1C3328 100%);box-shadow:0 14px 34px rgba(23,22,20,.18)}
+    .pillar{padding:26px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(111,200,150,.3)}
+    .pillar.dark{background:linear-gradient(160deg,#0B2418 0%,#123624 60%,#1A4A33 100%);box-shadow:0 14px 34px rgba(11,36,24,.18)}
     .pillar .ic{font-size:26px;margin-bottom:10px}
     .pillar h3{font-size:1.1rem;margin-bottom:8px;color:#fff}
     .pillar p{font-size:.95rem;color:rgba(253,251,247,.78)}
@@ -202,9 +202,9 @@
     .fn{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
     .fn small{font-weight:900;color:var(--green);font-size:12px}
     .fn h3{font-size:1.05rem;margin:6px 0}
-    .fn p{font-size:.92rem;color:#4B4540}
+    .fn p{font-size:.92rem;color:#3B4A42}
     .fn em{display:inline-block;margin-top:10px;font-style:normal;font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--green-soft);color:var(--green)}
-    .goal{margin-top:16px;padding:22px;border-radius:20px;background:linear-gradient(135deg,#1B1815,#1E3B2D);color:#fff;text-align:center;font-weight:800;font-size:1.1rem}
+    .goal{margin-top:16px;padding:22px;border-radius:20px;background:linear-gradient(135deg,#0B2418,#1F5A3F);color:#fff;text-align:center;font-weight:800;font-size:1.1rem}
     .goal span{display:block;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.72);margin-top:4px}
 
     /* studio */
@@ -224,7 +224,7 @@
     .proof{padding:24px;border-radius:20px;background:#fff;border:1px solid var(--line)}
     .proof .n{font-size:2.2rem;font-weight:900;color:var(--green)}
     .proof h3{font-size:1.02rem;margin:6px 0 6px}
-    .proof p{font-size:.93rem;color:#5A534C}
+    .proof p{font-size:.93rem;color:#4A5B52}
     .live-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
     .live-links a{padding:10px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:800;font-size:13px;color:var(--brown)}
     .live-links a:hover{border-color:var(--green);color:var(--green)}
@@ -243,8 +243,8 @@
     .pol{padding:22px;border-radius:18px;background:#fff;border:1px solid var(--line)}
     .pol small{font-weight:900;color:var(--green);font-size:12px}
     .pol h3{font-size:1.02rem;margin:4px 0 6px}
-    .pol p{font-size:.92rem;color:#4B4540}
-    .cap{margin-top:26px;padding:24px;border-radius:20px;background:linear-gradient(135deg,#1B1815,#27201A);color:#fff;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+    .pol p{font-size:.92rem;color:#3B4A42}
+    .cap{margin-top:26px;padding:24px;border-radius:20px;background:linear-gradient(135deg,#0B2418,#143727);color:#fff;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
     .cap b.n{font-size:2.6rem;color:var(--gold-hi);font-variant-numeric:tabular-nums;line-height:1}
     .cap p{flex:1;min-width:240px;font-size:.96rem;color:rgba(255,255,255,.82)}
 
@@ -252,9 +252,9 @@
     .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:stretch}
     @media(max-width:900px){.plans{grid-template-columns:1fr}}
     .plan{background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:30px 26px;display:flex;flex-direction:column;position:relative}
-    .plan.sig{background:linear-gradient(165deg,#1B1815,#203A2C);color:#fff;border-color:var(--gold);box-shadow:0 26px 60px rgba(23,22,20,.28);transform:translateY(-10px)}
+    .plan.sig{background:linear-gradient(165deg,#0B2418,#1F5A3F);color:#fff;border-color:var(--gold);box-shadow:0 26px 60px rgba(11,36,24,.28);transform:translateY(-10px)}
     @media(max-width:900px){.plan.sig{transform:none}}
-    .plan .tag{position:absolute;top:-13px;left:26px;background:linear-gradient(135deg,#F5D36C,#C5A059);color:#171614;font-size:12px;font-weight:900;padding:5px 14px;border-radius:999px}
+    .plan .tag{position:absolute;top:-13px;left:26px;background:linear-gradient(135deg,#8FE0B0,#3FAE78);color:#0B2418;font-size:12px;font-weight:900;padding:5px 14px;border-radius:999px}
     .plan h3{font-size:1.2rem;font-weight:900}
     .plan .who{font-size:.9rem;opacity:.75;margin:4px 0 16px}
     .plan .price{font-size:2rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.2}
@@ -274,23 +274,77 @@
 
     .final{text-align:center;padding-bottom:120px}
     .final h2{font-size:clamp(1.7rem,4.4vw,2.8rem);font-weight:900;line-height:1.38;margin-bottom:18px}
-    .form{max-width:560px;margin:34px auto 0;background:rgba(255,255,255,.07);border:1px solid rgba(197,160,89,.4);border-radius:24px;padding:28px;text-align:left}
+    .form{max-width:560px;margin:34px auto 0;background:rgba(255,255,255,.07);border:1px solid rgba(111,200,150,.4);border-radius:24px;padding:28px;text-align:left}
     .form label{display:block;font-size:12.5px;font-weight:800;color:var(--gold-hi);margin:12px 0 6px}
     .form input,.form select{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.95);font-size:15px;font-family:inherit}
     .form .btn{width:100%;margin-top:20px}
     .form small{display:block;margin-top:12px;font-size:12px;color:rgba(253,251,247,.65);text-align:center}
     .direct{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px}
-    .direct a{padding:12px 20px;border-radius:999px;border:1.5px solid rgba(245,211,108,.6);color:#fff;font-weight:800;font-size:14px}
-    .done{display:none;margin-top:18px;padding:18px;border-radius:16px;background:rgba(245,211,108,.12);border:1px solid var(--gold-hi);text-align:center;font-size:.95rem}
+    .direct a{padding:12px 20px;border-radius:999px;border:1.5px solid rgba(143,224,176,.6);color:#fff;font-weight:800;font-size:14px}
+    .done{display:none;margin-top:18px;padding:18px;border-radius:16px;background:rgba(143,224,176,.12);border:1px solid var(--gold-hi);text-align:center;font-size:.95rem}
     .done .direct{margin-top:12px}
-    footer{padding:34px 0;text-align:center;font-size:12.5px;color:#6E5D4F;line-height:1.8}
+    footer{padding:34px 0;text-align:center;font-size:12.5px;color:#5F7468;line-height:1.8}
 
-    .sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(23,22,20,.96);border-top:1px solid rgba(197,160,89,.4);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+    .sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(11,36,24,.96);border-top:1px solid rgba(111,200,150,.4);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
     .sticky .in{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
     .sticky span{color:#fff;font-size:13.5px;font-weight:700}
     .sticky span b{color:var(--gold-hi)}
     .sticky .btns{display:flex;gap:8px}
     @media(max-width:600px){.sticky span{font-size:12px}.hd .btn-sm{display:none}}
+
+    /* ===== v9.6 추가 스타일 ===== */
+    .why6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+    @media(max-width:900px){.why6{grid-template-columns:1fr 1fr}}@media(max-width:560px){.why6{grid-template-columns:1fr}}
+    .w6{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}.w6 .ic{font-size:26px;margin-bottom:6px}.w6 h3{font-size:1.02rem;margin-bottom:6px;color:var(--brown)}.w6 p{font-size:.92rem;color:#3B4A42}
+    .ctl-hint{font-size:12.5px;color:#3E7B58;font-weight:700;margin-top:2px;min-height:18px}
+    .qcards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}@media(max-width:860px){.qcards{grid-template-columns:1fr}}
+    .qc{background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px 24px 22px;position:relative;box-shadow:0 18px 44px rgba(15,42,30,.08)}
+    .qc .stamp{right:16px;top:-14px;background:var(--green)}
+    .qc h3{font-size:1.1rem;margin-bottom:10px}.qc h3 small{display:block;font-size:.88rem;font-weight:700;color:#5F7468;margin-top:2px}
+    .qt{width:100%;border-collapse:collapse;font-size:.9rem}.qt td{padding:9px 4px;border-bottom:1px dashed #CFE0D5;vertical-align:top}.qt td:last-child{text-align:right;white-space:nowrap;font-weight:800;font-variant-numeric:tabular-nums}
+    .qt td small{display:block;font-size:.76rem;font-weight:500;color:#5F7468;line-height:1.5;margin-top:2px}
+    .qt tr.sub td{font-size:.84rem;color:#5F7468}.qt tr.tot td{border-top:2px solid var(--ink);border-bottom:0;font-size:1.05rem;color:var(--red)}
+    .qn{list-style:none;margin-top:12px;font-size:.84rem;color:#3B4A42}.qn li{padding:3px 0 3px 16px;position:relative}.qn li:before{content:"•";position:absolute;left:2px;color:var(--green)}
+    .insight{margin-top:34px;padding:26px;border-radius:22px;background:var(--green-soft);border:1px solid #B9D7C6}.insight>h3{font-size:1.1rem;margin-bottom:14px;color:#14392A}
+    .ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:760px){.ins-grid{grid-template-columns:1fr}}
+    .ins-grid>div{background:#fff;border-radius:16px;padding:16px 18px;border:1px solid #CFE0D5}.ins-grid b{display:block;margin-bottom:4px;color:var(--green)}.ins-grid p{font-size:.92rem;color:#3B4A42}
+    .presets{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}.pre{font-family:inherit;border:1.5px solid var(--green);background:#fff;color:var(--green);font-weight:800;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer}.pre:hover,.pre.on{background:var(--green);color:#fff}
+    .mig3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}@media(max-width:900px){.mig3{grid-template-columns:1fr}}
+    .mg{border-radius:20px;padding:22px;background:#fff;border:1px solid var(--line)}.mg h3{font-size:1.02rem;margin-bottom:8px}.mg ul{list-style:none}.mg li{padding:4px 0 4px 18px;position:relative;font-size:.92rem;color:#3B4A42}.mg li:before{content:"•";position:absolute;left:3px;color:var(--green);font-weight:900}
+    .mg.ok{background:var(--green-soft);border-color:#B9D7C6}.mg.chk{background:#FFF8EC;border-color:#EBCF9E}.mg.chk li:before{color:#C2701F}
+    .mflow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}@media(max-width:960px){.mflow{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mflow{grid-template-columns:1fr}}
+    .mf{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}.mf small{font-weight:900;color:var(--green);font-size:11.5px}.mf h4{font-size:.98rem;margin:3px 0}.mf p{font-size:.86rem;color:#3B4A42}
+    .sit3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}@media(max-width:900px){.sit3{grid-template-columns:1fr}}
+    .st3{background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:16px;padding:18px}.st3 b{display:block;margin-bottom:6px}.st3 p{font-size:.92rem;color:#3B4A42}
+    .mq{margin-top:16px}.mq b{display:block;font-size:.95rem;margin-bottom:6px}.mq label{display:inline-flex;align-items:center;gap:6px;margin:0 14px 6px 0;font-size:.93rem;cursor:pointer}.mq input{accent-color:var(--green)}
+    .mres{margin-top:18px;padding:18px 20px;border-radius:16px;background:var(--green-soft);border:1px solid #B9D7C6;font-size:.95rem;color:#14392A}.mres ul{list-style:none}.mres li{padding:5px 0 5px 22px;position:relative}.mres li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:900}.mres li.w:before{content:"!";color:#C2701F}
+    .shot{margin:30px 0 0;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 18px 44px rgba(15,42,30,.1);background:#fff}.shot img{width:100%;display:block}.shot figcaption{padding:12px 16px;font-size:.84rem;color:#5F7468;background:#F6FAF7}.shot a{color:var(--green);font-weight:800}
+    .sdemo{display:grid;grid-template-columns:1fr 1.05fr;gap:18px;margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:0 22px 54px rgba(15,42,30,.1)}@media(max-width:900px){.sdemo{grid-template-columns:1fr}}
+    .sd-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.sd-tabs button{font-family:inherit;border:1.5px solid var(--line);background:#fff;font-weight:800;font-size:13px;padding:9px 14px;border-radius:999px;cursor:pointer;color:var(--brown)}.sd-tabs button.on{background:var(--green);color:#fff;border-color:var(--green)}
+    .sd-pane{display:none}.sd-pane.on{display:block}.sd-pane label{display:block;font-size:12.5px;font-weight:800;color:var(--brown);margin:10px 0 0}
+    .sd-pane input:not([type=checkbox]),.sd-pane textarea{width:100%;margin-top:5px;padding:11px 13px;border-radius:12px;border:1px solid #CFE0D5;font-family:inherit;font-size:14px;background:#FAFCFB}
+    .sd-pane label.chk{display:flex;gap:8px;align-items:center;font-weight:700}
+    .mini{font-family:inherit;margin-top:10px;border:1.5px solid var(--green);background:#fff;color:var(--green);font-weight:800;font-size:12.5px;padding:8px 14px;border-radius:999px;cursor:pointer}.mini.gold{background:linear-gradient(135deg,#8FE0B0,#3FAE78);border-color:transparent;color:#0B2418}.mini em{font-style:normal;background:#0B2418;color:#8FE0B0;border-radius:999px;padding:1px 8px;margin-left:4px;font-size:11px}
+    .feerow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .lawbox{margin-top:8px;padding:10px 12px;border-radius:12px;font-size:.88rem;background:#F6FAF7;border:1px solid #CFE0D5;min-height:42px}.lawbox.bad{background:#FFF1EE;border-color:#EBC5BB}.lawbox mark{background:#FFC9BC;color:#8A2B18;border-radius:4px;padding:0 3px}
+    .lawout{margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--green-soft);border:1px solid #B9D7C6;font-size:.9rem;color:#14392A}
+    .cardline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.95rem}.cardline .mini{margin-top:0}.cardmsg{margin-top:10px;padding:12px 14px;border-radius:12px;background:#FFF1EE;border:1px solid #EBC5BB;font-size:.9rem;color:#7A2616}
+    .sd-pane hr{border:0;border-top:1px dashed #CFE0D5;margin:16px 0}
+    .sd-prev{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#F2F7F3}.pv-banner{background:#C2701F;color:#fff;text-align:center;font-weight:800;font-size:.86rem;padding:9px 12px}.pv-banner[hidden]{display:none}
+    .pv-head{display:flex;align-items:center;gap:8px;padding:12px 14px;background:#fff;border-bottom:1px solid var(--line)}.pv-head i{width:9px;height:9px;border-radius:50%;background:var(--green)}.pv-head b{flex:1;font-size:.92rem}.pv-head span{font-size:11.5px;font-weight:800;background:var(--green);color:#fff;padding:6px 12px;border-radius:999px}
+    .pv-body{padding:14px;display:grid;gap:10px}.pv-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}.pv-box h5{font-size:.88rem;margin-bottom:6px;color:var(--green)}
+    .tb2{width:100%;border-collapse:collapse;font-size:.84rem}.tb2 td{padding:6px 2px;border-bottom:1px solid #E3EEE6}.tb2 td:last-child{text-align:right;font-weight:700}
+    .pv-cards{display:flex;gap:6px;flex-wrap:wrap}.pv-cards span{font-size:.78rem;font-weight:800;background:var(--green-soft);border:1px solid #B9D7C6;color:var(--green);padding:6px 10px;border-radius:999px}.pv-cards span.new{background:#fff;border-style:dashed}
+    .tcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}@media(max-width:900px){.tcards{grid-template-columns:1fr}}
+    .tc{display:block;padding:26px;border-radius:22px;background:rgba(255,255,255,.07);border:1px solid rgba(143,224,176,.35);transition:transform .2s}.tc:hover{transform:translateY(-4px)}
+    .tc small{font-weight:900;font-size:11.5px;color:var(--gold-hi);letter-spacing:.08em}.tc h3{font-size:1.2rem;color:#fff;margin:4px 0}.tp{font-size:1.5rem;font-weight:900;color:#fff}.tp em{font-style:normal;font-size:.78rem;opacity:.7;font-weight:600}.tc p{font-size:.88rem;color:rgba(255,255,255,.75);margin:2px 0 12px}
+    .tl{display:inline-block;padding:7px 14px;border-radius:999px;background:rgba(180,65,47,.3);border:1px solid #F3A28F;font-size:.85rem;font-weight:800;color:#fff}.tl b{color:#FFC9BC;font-size:1.05rem}.tl.ok{background:rgba(63,174,120,.3);border-color:var(--gold-hi)}
+    .tgo{display:block;margin-top:14px;font-weight:900;color:var(--gold-hi)}.tc.sigc{border-color:var(--gold-hi);background:linear-gradient(160deg,rgba(143,224,176,.2),rgba(255,255,255,.05))}
+    .matrix{margin-top:38px;padding:26px;border-radius:24px;background:rgba(255,255,255,.07);border:1px solid rgba(143,224,176,.35)}.matrix>h3{font-size:1.1rem;color:#fff;margin-bottom:14px}.matrix>h3 span{font-size:.85rem;font-weight:600;opacity:.75}
+    .mtx{min-width:640px}.mtx td.y{color:var(--green);font-weight:900;text-align:center}.mtx td.n{text-align:center;color:var(--red)}.mtx th{text-align:center}.mtx th:nth-child(2){text-align:left}.mtx td:first-child{width:44px;text-align:center;white-space:normal}.mtx input{accent-color:var(--green);width:18px;height:18px}
+    .mtx tr.pick td{background:#F2FAF5}.mtx tr.pick.bad td:not(:first-child):not(:nth-child(2)).n{background:#FFF1EE}
+    .mx-res{margin-top:16px;padding:16px 18px;border-radius:16px;background:#fff;color:#14392A;font-size:.96rem;line-height:1.7}.mx-res b{color:var(--green)}.mx-res .bad{color:var(--red);font-weight:800}
+    .mx-go{margin-top:14px;text-align:center}
   </style>
 </head>
 <body>
@@ -299,7 +353,7 @@
   <div class="wrap hd">
     <a class="logo" href="#top"><i></i>BAREUN MEDI-TECH</a>
     <nav class="hn">
-      <a href="#why">왜 필요한가</a><a href="#cost">안 하면</a><a href="#diff">차별점</a><a href="#plans">가격</a><a href="#faq">FAQ</a>
+      <a href="#why">왜 필요한가</a><a href="#noncovered">비급여</a><a href="#cost">안 하면</a><a href="#migrate">이전</a><a href="#samples">샘플</a><a href="#plans">가격</a><a href="#faq">FAQ</a>
     </nav>
     <a class="btn btn-gold btn-sm" href="#apply">무료 시안 받아보기</a>
   </div>
@@ -316,7 +370,7 @@
       <a class="btn btn-line" href="https://www.bareunhaniwon.com/" target="_blank" rel="noopener">실제 운영 중인 홈페이지 ↗</a>
     </div>
     <div class="chips rv">
-      <div class="chip"><b>1,000만 ~ 1,800만 원</b><span>www.bareunhaniwon.com과 동일 구성으로 요청해 받은 제작 견적</span></div>
+      <div class="chip"><b>979만 · 2,046만 원</b><span>www.bareunhaniwon.com과 동일 구성으로 요청해 실제 받은 견적 2건 (VAT 포함)</span></div>
       <div class="chip"><b>전국 100곳 한정</b><span>한 곳 한 곳 직접 챙길 수 있는 규모로만 운영</span></div>
     </div>
   </div>
@@ -331,8 +385,52 @@
       <div class="doubt rv"><q>블로그랑 플레이스 있는데 홈페이지가 또 필요한가요?</q><p>블로그와 플레이스는 환자가 <b>처음 만나는 입구</b>입니다. 그런데 비용이 큰 진료(보약·성장·다이어트·시술)는 입구에서 바로 결정하지 않고, <b>원장님이 누구인지, 어떤 장비·철학으로 진료하는지 한 번 더 확인</b>하려 합니다. 그 확인 자리가 홈페이지입니다.</p></div>
       <div class="doubt rv"><q>요즘 환자들이 홈페이지까지 보나요?</q><p>모든 환자가 보지는 않습니다. 하지만 <b>비싼 진료일수록, 신환일수록, 의심이 많을수록</b> 확인하러 들어옵니다. 그리고 확인하러 온 분들은 사실상 “결제 직전”인 분들이라, 이 분들을 놓치면 가장 아까운 환자를 놓치는 셈입니다.</p></div>
       <div class="doubt rv"><q>지금도 환자가 오는데 굳이 돈 들일 이유가 있나요?</q><p>지금 오는 환자는 <b>과거에 쌓아 둔 신뢰와 입소문의 결과</b>입니다. 인근 한의원들이 온라인 콘텐츠를 계속 쌓는 동안 가만히 있으면, 몇 달 뒤 달라지는 건 오늘이 아니라 <b>“내년에 들어올 신환”</b>입니다. 아래 ‘안 하면 어떻게 되나’에서 자세히 설명합니다.</p></div>
-      <div class="doubt rv"><q>비싼 것 같은데, 돈값을 할까요?</q><p>그래서 견적서를 같이 놓고 계산해 드립니다. 아래 <b>3년 총비용 비교</b>와 <b>“신환 몇 명이면 본전인가”</b> 계산기에 원장님 숫자를 넣어 보세요. 정직하게 안 맞으면 안 하셔도 됩니다.</p></div>
+      <div class="doubt rv"><q>비싼 것 같은데, 돈값을 할까요?</q><p>그래서 견적서를 같이 놓고 계산해 드립니다. 아래 <b>1년 총비용 비교</b>와 <b>“신환 몇 명이면 본전인가”</b> 계산기에 원장님 숫자를 넣어 보세요. 정직하게 안 맞으면 안 하셔도 됩니다.</p></div>
     </div>
+  </div>
+</section>
+
+<!-- ②-2 비급여 매출 설득 -->
+<section class="alt" id="noncovered">
+  <div class="wrap">
+    <span class="eyebrow rv">WHY NON-COVERED · 비급여 매출을 만들고 싶은 한의원이라면</span>
+    <h2 class="title rv">비급여는 “싸서”가 아니라 <mark>“믿어서”</mark> 결제합니다.<br>그래서 믿음을 쌓는 공간이 매출을 좌우합니다</h2>
+    <p class="lead rv">보약·약침·키 성장·다이어트·탈모·공진단처럼 환자가 <b>전액 자기 돈으로 결제하는 진료</b>는, 급여 진료와 환자가 고르는 방식 자체가 다릅니다. 아래 표를 보시면 왜 홈페이지가 ‘있으면 좋은 것’이 아니라 ‘비급여 매출의 전제 조건’인지 이해되실 겁니다.</p>
+
+    <div class="tbl-wrap rv">
+      <table class="cmpt">
+        <thead><tr><th></th><th>급여 진료 환자</th><th class="us">비급여 진료 환자</th></tr></thead>
+        <tbody>
+          <tr><td>무엇으로 고르나</td><td>가까운 곳 · 보험 적용 여부</td><td class="us">원장님이 누구인지 · 설명이 납득되는지 · 가격이 투명한지</td></tr>
+          <tr><td>결제 전 행동</td><td>대체로 바로 내원</td><td class="us">검색 → 후기 → <b>홈페이지에서 확인</b> → 문의</td></tr>
+          <tr><td>돈이 나가는 방식</td><td>보험이 일부 부담</td><td class="us">전액 환자 자부담 → 더 꼼꼼히 비교</td></tr>
+          <tr><td>원장님이 올릴 수 있는 것</td><td>수가가 정해져 있어 한계</td><td class="us">설명·신뢰·콘텐츠로 선택받는 영역</td></tr>
+          <tr><td>홈페이지의 역할</td><td>있으면 편한 안내판</td><td class="us"><b>결제를 결정하는 응접실</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="why6">
+      <div class="w6 rv"><div class="ic">💳</div><h3>전액 내 돈이라 더 꼼꼼히 봅니다</h3><p>건강보험이 일부를 보전해 주는 급여와 달리, 비급여는 환자가 전액 부담합니다. 지출이 클수록 사람은 결제 전에 “한 번 더 확인”하려 합니다. 그 확인 장소가 홈페이지입니다.</p></div>
+      <div class="w6 rv"><div class="ic">🧾</div><h3>가격을 숨기면 의심, 공개하면 신뢰</h3><p>비급여 진료비는 의료법상 고지 대상(제45조)이며, 환자가 전화하기 전에 가장 궁금해하는 정보입니다. 수가표를 홈페이지에 정리해 두면 “비싸게 부르면 어쩌지” 하는 불안이 사라지고 문의 문턱이 낮아집니다.</p></div>
+      <div class="w6 rv"><div class="ic">🧠</div><h3>비싼 진료일수록 ‘설명할 공간’이 필요합니다</h3><p>한약 한 제, 시술 코스는 “왜 필요한가”가 설명되어야 팔립니다. 블로그 글 한 편으로는 부족하고, 체크포인트·칼럼·3D 인체모형처럼 환자가 스스로 이해하는 동선이 필요합니다.</p></div>
+      <div class="w6 rv"><div class="ic">🔎</div><h3>검색으로 온 환자는 신뢰 0에서 시작합니다</h3><p>지인 소개로 오는 환자는 이미 믿고 옵니다. 하지만 검색·플레이스로 처음 만나는 환자는 아무것도 모릅니다. 비급여 신환을 늘리고 싶다면 바로 이 분들을 설득할 장소가 있어야 합니다.</p></div>
+      <div class="w6 rv"><div class="ic">💰</div><h3>환자 한 분의 값이 큽니다</h3><p>예: 운영 중인 바른한의원 비급여 안내표 기준 맞춤 탕약 22만~45만 원, 키 성장 한약 35만~55만 원. 시그니처 월 구독료 99,000원은 신환 한 분이 결제하는 한약 한 제의 일부입니다. <small>(원장님 단가에 맞춘 계산은 아래 쉬운 계산기에서)</small></p></div>
+      <div class="w6 rv"><div class="ic">📈</div><h3>내 힘으로 키울 수 있는 매출 축입니다</h3><p>급여는 수가를 국가가 정하지만, 비급여는 설명과 신뢰로 선택받는 영역입니다. 광고비는 멈추면 끝나지만 홈페이지와 칼럼은 쌓여서 남는 자산입니다.</p></div>
+    </div>
+
+    <div class="two">
+      <div class="box own rv"><h3>🟢 이런 원장님께 특히 맞습니다</h3><ul>
+        <li>한약·약침·성장·다이어트·탈모·공진단 등 <b>비급여 비중을 키우고 싶다</b></li>
+        <li>초진 환자 대부분이 검색·네이버 플레이스로 온다</li>
+        <li>원장님의 철학·장비·탕전 과정을 제대로 보여 주고 싶다</li>
+        <li>블로그는 있는데 정리된 ‘응접실’이 없다</li></ul></div>
+      <div class="box rent rv"><h3>⚪ 솔직히 이런 경우엔 필요 없을 수 있습니다</h3><ul>
+        <li>환자의 거의 전부가 지인 소개이고, 더 늘릴 계획이 없다</li>
+        <li>급여 진료만으로 충분하고 비급여 확대 계획이 없다</li>
+        <li>이미 충분히 만든 홈페이지와 칼럼을 꾸준히 운영 중이다 <span style="opacity:.7">(이 경우 아래 ‘이전’ 안내를 참고하세요)</span></li></ul></div>
+    </div>
+    <p class="fine rv">※ 비급여 진료 안내도 의료법 제56조(의료광고 제한)의 적용을 받습니다. 그래서 바른 메디테크는 금지어 검수를 기본으로 둡니다. 효과·순위·매출은 보장하지 않습니다.</p>
   </div>
 </section>
 
@@ -377,17 +475,19 @@
     </div>
 
     <div class="calc rv" id="sim">
-      <h3>📉 “안 하면 얼마나 놓칠 수 있나” 가정 시뮬레이션</h3>
-      <p class="fine" style="margin-top:0">원장님 숫자를 직접 넣어 보세요. 아래 ‘놓치는 비율’은 제가 정한 값이 아니라 <b>원장님이 가정해 보는 값</b>입니다. 실제 결과를 약속하는 숫자가 아닙니다.</p>
-      <div class="ctl"><div class="ctl-top"><span>한 달 신규 환자 수</span><b><span id="sPat">30</span>명</b></div><input type="range" id="rPat" min="5" max="150" step="5" value="30"></div>
-      <div class="ctl"><div class="ctl-top"><span>신환 1명당 첫 결제 평균 (한약·시술 포함)</span><b><span id="sRev">30</span>만 원</b></div><input type="range" id="rRev" min="5" max="150" step="5" value="30"></div>
-      <div class="ctl"><div class="ctl-top"><span>홈페이지·콘텐츠가 부실해서 확인 단계에서 놓친다고 가정하는 비율</span><b><span id="sLoss">10</span>%</b></div><input type="range" id="rLoss" min="1" max="30" step="1" value="10"></div>
+      <h3>🙋 우리 한의원은 한 달에 얼마나 놓치고 있을까요? <span style="font-weight:700;font-size:.85rem;color:#5F7468">(쉬운 계산기)</span></h3>
+      <p class="fine" style="margin-top:0">정확한 예측이 아니라 <b>“이 정도만 놓쳐도 이만큼입니다”</b>를 보여 드리는 계산입니다. 잘 모르시면 처음 숫자 그대로 두셔도 됩니다.</p>
+      <div class="ctl"><div class="ctl-top"><span>① 한 달에 새로 오시는 환자(초진)는 몇 분인가요?</span><b><span id="sPat">30</span>명</b></div><input type="range" id="rPat" min="5" max="150" step="5" value="30"></div>
+      <div class="ctl"><div class="ctl-top"><span>② 새 환자 한 분이 첫 달에 쓰시는 돈은 평균 얼마인가요?<br><small style="font-weight:600;color:#5F7468">한약·시술 모두 합쳐서. 예) 보약 한 제 22~45만 원</small></span><b><span id="sRev">30</span>만 원</b></div><input type="range" id="rRev" min="5" max="150" step="5" value="30"></div>
+      <div class="ctl"><div class="ctl-top"><span>③ 새 환자 10명이 우리 한의원 이름을 인터넷에 검색해 봅니다.<br>그중 몇 명이 <u>“홈페이지가 허술하네… 다른 데 가볼까?”</u> 하고 마음을 바꿀까요?</span><b>10명 중 <span id="sLoss">1</span>명</b></div><input type="range" id="rLoss" min="0" max="5" step="1" value="1">
+        <div class="ctl-hint" id="lossHint"></div></div>
       <div class="out-grid">
-        <div class="out red"><small>가정 시 월 놓치는 매출</small><b id="oMonth">—</b></div>
-        <div class="out red"><small>가정 시 연간 놓치는 매출</small><b id="oYear">—</b></div>
-        <div class="out grn"><small>시그니처 3년 평균 월 비용</small><b id="oCost">156,750원</b></div>
+        <div class="out red"><small>한 달에 놓치는 환자</small><b id="oLost">—</b></div>
+        <div class="out red"><small>한 달에 놓치는 진료비</small><b id="oMonth">—</b></div>
+        <div class="out red"><small>그대로 1년이면</small><b id="oYear">—</b></div>
       </div>
-      <div class="save" style="margin-top:16px">시그니처 비용(월 평균 156,750원)을 회수하려면 <b id="oBE">—</b>이면 됩니다. <span style="opacity:.8">(구축 2,079,000원 + 마스터 케어 3,564,000원 ÷ 36개월)</span></div>
+      <div class="save" style="margin-top:16px">시그니처 1년 총비용 <b>3,267,000원</b> <span style="opacity:.8">(구축 2,079,000원 + 마스터 케어 월 99,000원 × 12개월)</span>은,<br>새 환자 <b id="oNeed">—</b>을 더 만나시면 회수됩니다. <span id="oNeedSub" style="opacity:.85"></span></div>
+      <p class="fine">※ ‘10명 중 몇 명’은 제가 정한 값이 아니라 원장님이 가정해 보시는 값이며, 실제 결과를 약속하는 숫자가 아닙니다.</p>
     </div>
   </div>
 </section>
@@ -415,37 +515,67 @@
 <!-- ⑥ 견적 -->
 <section>
   <div class="wrap">
-    <span class="eyebrow rv">THE QUOTE · 견적서의 진짜 의미</span>
-    <h2 class="title rv">“저 홈페이지와 똑같이 만들어 주세요”<br>그랬더니 견적은 <mark>1,000만 ~ 1,800만 원</mark>이었습니다</h2>
-    <div class="receipt-grid">
-      <div class="receipt rv">
-        <span class="stamp">실제 수령 견적</span>
-        <h3>요청 조건: 현재 운영 중인 www.bareunhaniwon.com과 동일한 구성</h3>
-        <div class="row"><span>최저 견적</span><b>10,000,000원</b></div>
-        <div class="row"><span>최고 견적</span><b>18,000,000원</b></div>
-        <div class="row"><span>오픈 후 매달 올릴 글은?</span><b>별도 문제</b></div>
-        <div class="row"><span>의료법 금지어 검수는?</span><b>별도 문제</b></div>
-        <div class="row"><span>검색 등록·색인 관리는?</span><b>별도 문제</b></div>
-        <div class="total"><span>만들고 나서 남는 숙제</span><b>원장님 몫</b></div>
+    <span class="eyebrow rv">THE QUOTE · 실제로 받아 본 견적서 2건</span>
+    <h2 class="title rv">“저 홈페이지와 똑같이 만들어 주세요”<br>그랬더니 견적은 <mark>979만 원 · 2,046만 원</mark>이었습니다</h2>
+    <p class="lead rv">2026년 10월 말, 현재 운영 중인 www.bareunhaniwon.com과 동일한 구성으로 요청해 서로 다른 두 곳에서 받은 <b>실제 견적서</b>입니다. (업체명·담당자·연락처는 가렸습니다.)</p>
+
+    <div class="qcards">
+      <div class="qc rv">
+        <span class="stamp">실제 수령 견적 A사 · 2026.10.29</span>
+        <h3>A사 웹에이전시 <small>합계 <b class="red">9,790,000원</b> (VAT 포함)</small></h3>
+        <table class="qt">
+          <tr><td>고급형 홈페이지 제작 <small>10페이지 · 게시판 5개 · 반응형 · 카카오 지도/채널 연동 · 맞춤 관리자 페이지 · 1년 하자보수 · 제작 7주</small></td><td>5,900,000원</td></tr>
+          <tr><td>고급 인터랙션 (3D 모델링) <small>별도 항목</small></td><td>3,000,000원</td></tr>
+          <tr class="sub"><td>공급가 합계</td><td>8,900,000원</td></tr>
+          <tr class="sub"><td>부가세 (10%)</td><td>890,000원</td></tr>
+          <tr class="tot"><td>VAT 포함 합계</td><td>9,790,000원</td></tr>
+        </table>
+        <ul class="qn"><li>결제 방식: 착수금 30% · 중도금 40% · 잔금 30%</li><li>비고: <b>페이지 1개 추가 시 300,000원 (부가세 별도)</b></li></ul>
       </div>
-      <div class="copy rv">
-        <p>이 견적은 <b>만드는 값</b>입니다. 홈페이지는 열었다고 끝나지 않고, 열고 난 다음 날부터 “무엇을 올리고, 누가 검수하고, 어떻게 검색에 등록할 것인가”가 진짜 일입니다.</p>
-        <p>저희는 같은 구성의 결과물을 <b>이미 만들어 운영하고 있어서</b>, 처음부터 개발하는 비용이 들지 않습니다. 그래서 같은 것을 훨씬 낮은 가격으로 드릴 수 있습니다.</p>
-        <p>숫자는 아래에서 직접 비교해 보세요.</p>
+      <div class="qc rv">
+        <span class="stamp">실제 수령 견적 B사 · 2026.10.30</span>
+        <h3>B사 웹에이전시 <small>합계 <b class="red">20,460,000원</b> (VAT 포함)</small></h3>
+        <table class="qt">
+          <tr><td>프로젝트 기획 &amp; 관리</td><td>2,000,000원</td></tr>
+          <tr><td>디자인 <small>메인·서브 가이드·메뉴·콘텐츠 디자인 30p·반응형 코딩 30p</small></td><td>11,400,000원</td></tr>
+          <tr><td>PHP 프로그램 개발 <small>게시판/폼 4 · 회원관리 · 실시간 방문 통계 · 자가진단 체크리스트 · 관리자 · 자바스크립트</small></td><td>5,200,000원</td></tr>
+          <tr class="sub"><td>제안가 (VAT 별도)</td><td>18,600,000원</td></tr>
+          <tr class="tot"><td>VAT 포함 합계</td><td>20,460,000원</td></tr>
+        </table>
+        <ul class="qn"><li>지불 조건: 현금 결제</li><li>무상 제공 항목: 영상 기획·편집, AI 이미지/애니메이션, 스톡 이미지 5컷, 클립아트</li></ul>
       </div>
     </div>
 
-    <div class="calc rv" id="calc">
-      <h3>🧮 3년 총비용 비교 계산기</h3>
-      <div class="ctl"><div class="ctl-top"><span>원장님이 받으신 제작 견적</span><b><span id="quoteOut">1,400</span>만 원</b></div><input type="range" id="quote" min="1000" max="1800" step="50" value="1400"></div>
-      <div class="cmp">
-        <div class="cmp-box"><h4>일반 제작 견적 + 글 외주</h4><div class="num" id="gen3">—</div>
-          <ul><li>제작 견적: <b id="genQ">—</b></li><li>글 외주 3년: <b id="genP">—</b> <span style="opacity:.7">(월 15건 × 건당 5만 원)</span></li><li style="opacity:.7">※ 의료법 검수·검색 등록 관리는 별도</li></ul></div>
-        <div class="cmp-box us"><h4>바른 시그니처 (구축 + AI 마스터 케어)</h4><div class="num" id="us3">—</div>
-          <ul><li>구축 오픈 특가: <b>2,079,000원</b> <span style="opacity:.7">(VAT 포함)</span></li><li>마스터 케어 3년: <b>3,564,000원</b> <span style="opacity:.7">(월 99,000원 × 36)</span></li><li>월 15건 글 + 이미지 · 의료법 검수 · 검색 등록 포함</li></ul></div>
+    <div class="insight rv">
+      <h3>두 견적서를 나란히 놓고 보면 보이는 것</h3>
+      <div class="ins-grid">
+        <div><b>① 둘 다 “만드는 값”입니다</b><p>월 칼럼 발행, 의료법 금지어 검수, 검색 등록·색인 관리 항목은 <b>두 견적서 어디에도 없습니다.</b> 오픈하는 날 숙제가 시작되는 구조입니다.</p></div>
+        <div><b>② 페이지를 늘릴 때마다 돈이 듭니다</b><p>A사는 페이지 1개 추가에 30만 원(VAT 별도)입니다. 새 진료를 시작할 때마다 카드 페이지가 필요한 비급여 한의원에는 부담입니다. 바른 시그니처는 <b>질환 카드 무제한, 증설비 0원</b>입니다.</p></div>
+        <div><b>③ ‘기능’만 따로 떼어도 큰돈입니다</b><p>B사 견적에서 바른 시그니처에 기본 포함된 것과 같은 기능 — 게시판 4개(90만) + 회원관리(120만) + 실시간 방문 통계(150만) + 자가진단 체크리스트(30만) — 개발비만 <b>390만 원(VAT 별도)</b>입니다.</p></div>
+        <div><b>④ 3D는 별도 청구됩니다</b><p>A사는 3D 모델링만 300만 원(VAT 별도)입니다. 바른 시그니처는 풀스크린 3D 인체모형이 포함되어 있습니다.</p></div>
       </div>
-      <div class="save">같은 3년 기준 원장님 견적과 비교하면 <b id="saveAmt">—</b> 차이가 납니다. <span id="ratioTxt"></span></div>
-      <p class="fine">※ 단순 비교용입니다. 타사 견적의 VAT·유지비·포함 범위는 견적서로 직접 확인해 주세요. 글 외주 단가(건당 5만 원)는 시중 포스팅 대행 가정이며, 연 결제 시 마스터 케어 10% 할인(월 환산 89,100원)이 추가됩니다.</p>
+    </div>
+
+    <div class="copy rv" style="margin-top:26px">
+      <p>저희는 같은 구성의 결과물을 <b>이미 만들어 운영하고 있어서</b> 처음부터 개발하는 비용이 들지 않습니다. 그래서 같은 구성을 훨씬 낮은 가격으로 드릴 수 있습니다. 숫자는 아래에서 직접 비교해 보세요.</p>
+    </div>
+
+    <div class="calc rv" id="calc">
+      <h3>🧮 1년 총비용 비교 계산기</h3>
+      <p class="fine" style="margin-top:0">딱 <b>1년</b>만 비교합니다. 바른 월 구독은 약정이 없어 언제든 해지할 수 있으므로, 1년은 ‘비교를 위한 기준 기간’일 뿐 1년을 결제해야 한다는 뜻이 아닙니다.</p>
+      <div class="presets">
+        <button type="button" class="pre" data-q="979">A사 견적 979만 원</button>
+        <button type="button" class="pre" data-q="2046">B사 견적 2,046만 원</button>
+      </div>
+      <div class="ctl"><div class="ctl-top"><span>원장님이 받으신 제작 견적 <small style="font-weight:600;color:#5F7468">(VAT 포함)</small></span><b><span id="quoteOut">979</span>만 원</b></div><input type="range" id="quote" min="900" max="2100" step="1" value="979"></div>
+      <div class="cmp">
+        <div class="cmp-box"><h4>일반 제작 견적 + 글 외주 (1년)</h4><div class="num" id="gen3">—</div>
+          <ul><li>제작 견적: <b id="genQ">—</b></li><li>글 외주 1년: <b id="genP">—</b> <span style="opacity:.7">(월 15건 × 건당 5만 원 × 12개월)</span></li><li style="opacity:.7">※ 의료법 검수·검색 등록 관리는 별도</li></ul></div>
+        <div class="cmp-box us"><h4>바른 시그니처 (구축 + AI 마스터 케어, 1년)</h4><div class="num" id="us3">—</div>
+          <ul><li>구축 오픈 특가: <b>2,079,000원</b> <span style="opacity:.7">(VAT 포함)</span></li><li>마스터 케어 1년: <b>1,188,000원</b> <span style="opacity:.7">(월 99,000원 × 12)</span></li><li>월 15건 글 + 이미지 · 의료법 검수 · 검색 등록 포함</li></ul></div>
+      </div>
+      <div class="save">같은 1년 기준, 원장님 견적과 비교하면 <b id="saveAmt">—</b> 차이가 납니다. <span id="ratioTxt"></span></div>
+      <p class="fine">※ 단순 비교용입니다. 견적서가 VAT 별도로 표기된 경우 VAT 포함으로 환산해 입력해 주세요(A사 9,790,000원 · B사 20,460,000원으로 반영). 타사 견적의 유지비·포함 범위는 견적서로 직접 확인해 주세요. 글 외주 단가(건당 5만 원)는 시중 포스팅 대행 가정이며, 연 결제 시 마스터 케어 10% 할인(1년 1,069,200원)이 추가됩니다.</p>
     </div>
   </div>
 </section>
@@ -473,6 +603,52 @@
         <tr><td>비주얼</td><td>템플릿 위주</td><td>이미지·글 위주</td><td class="us">3D 인체모형·모션 인터랙션</td></tr>
       </tbody></table></div>
     <p class="fine">※ 일반적인 경우를 기준으로 한 비교이며 업체마다 다를 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- ⑦-2 이미 홈페이지가 있는 원장님께 -->
+<section id="migrate">
+  <div class="wrap">
+    <span class="eyebrow rv">ALREADY HAVE A SITE · 이미 홈페이지가 있거나 만들고 계신 원장님께</span>
+    <h2 class="title rv">“지금 사이트는 어떡하죠?”<br>버리는 게 아니라 <mark>내용만 옮겨 오는</mark> 방법이 있습니다</h2>
+    <p class="lead rv"><b>결론부터 말씀드립니다.</b> 기존 홈페이지의 <b>내용(글·사진·진료 정보)</b>은 새 틀에 옮겨 담을 수 있습니다. 다만 <b>디자인·기능은 옮기지 않고</b>, www.bareunhaniwon.com과 같은 구조의 새 틀을 그대로 씁니다. 구조(메뉴·섹션 배치)는 바뀌지 않으므로 원장님이 레이아웃을 새로 고민하실 일이 없습니다.</p>
+
+    <div class="mig3">
+      <div class="mg ok rv"><h3>✅ 그대로 가져올 수 있는 것</h3><ul>
+        <li>원장 약력 · 인사말 · 진료 철학</li><li>진료 과목 설명 문구 (의료법 재검수 후 적용)</li><li>진료시간 · 오시는 길 · 비급여 수가</li><li>원장님이 직접 찍은 사진</li><li>기존 블로그·칼럼 글(텍스트)</li><li>도메인 주소 (명의 확인 후 그대로 연결)</li></ul></div>
+      <div class="mg new rv"><h3>🔄 새 틀에 맞춰 다시 만드는 것</h3><ul>
+        <li>디자인 · 레이아웃 (새 틀 규격으로 통일)</li><li>메뉴 구조 · 예약 연동 3버튼</li><li>게시판 · Q&amp;A (구조는 새로, 기존 글은 수동 이전 가능)</li><li>3D 인체모형 · 체크포인트 · 통계 (신규 탑재)</li></ul></div>
+      <div class="mg chk rv"><h3>⚠️ 먼저 확인해야 하는 것</h3><ul>
+        <li><b>도메인 명의</b> — 제작사 명의면 이전 요청이 필요합니다</li><li><b>사진 저작권</b> — 제작사가 산 스톡 이미지는 그대로 쓰면 안 됩니다</li><li><b>호스팅·계약 만료일</b></li><li><b>의료광고 표현</b> — 옛 문구에 금지어가 있는지 재검수</li></ul></div>
+    </div>
+
+    <h3 class="rv" style="margin:38px 0 6px;font-size:1.15rem">🧭 이전은 이렇게 진행됩니다 — 기존 사이트는 마지막까지 그대로 운영됩니다</h3>
+    <div class="mflow">
+      <div class="mf rv"><small>STEP 1</small><h4>현재 상태 확인</h4><p>도메인 명의·호스팅 만료일·사진 출처를 함께 확인합니다.</p></div>
+      <div class="mf rv"><small>STEP 2</small><h4>내용 수집</h4><p>공개된 기존 페이지의 글·사진 목록을 정리합니다. 원장님은 확인만 해 주세요.</p></div>
+      <div class="mf rv"><small>STEP 3</small><h4>새 틀에 삽입 + 검수</h4><p>같은 구조의 새 틀에 내용을 담고 의료법 금지어를 걸러냅니다.</p></div>
+      <div class="mf rv"><small>STEP 4</small><h4>임시 주소에서 비교</h4><p>기존 사이트와 새 시안을 나란히 보고 결정하세요. 결제 전 무료 시안입니다.</p></div>
+      <div class="mf rv"><small>STEP 5</small><h4>전환 + 검색 유입 유지</h4><p>마음에 들면 도메인을 연결하고, 옛 주소는 새 주소로 안내(301)해 검색 유입을 이어 갑니다.</p></div>
+    </div>
+
+    <h3 class="rv" style="margin:40px 0 6px;font-size:1.15rem">🗣️ 상황별로 이렇게 말씀드립니다 <span style="font-size:.85rem;font-weight:600;color:#5F7468">(원장님을 설득하는 방법)</span></h3>
+    <div class="sit3">
+      <div class="st3 rv"><b>① 운영은 하는데 사실상 방치 중이라면</b><p>“지금 사이트를 지우자는 게 아닙니다. 내용만 새 틀에 얹어 <b>시안으로 나란히 비교</b>해 보세요. 마음에 안 들면 그대로 쓰시면 됩니다.” 오래된 사이트일수록 최신 글·검수·검색 등록이 비어 있습니다. 그 빈칸을 월 구독이 채웁니다.</p></div>
+      <div class="st3 rv"><b>② 한창 제작 중이라면</b><p>진행 중인 작업을 멈추라고 권하지 않습니다. 먼저 <b>계약서의 중도 해지·환불 조항</b>을 확인하시고, 중도금 지급 전이라면 같은 구조의 시안을 먼저 비교해 보세요. 이미 지급한 금액은 계약대로 정산됩니다.</p></div>
+      <div class="st3 rv"><b>③ 견적만 받아 보신 단계라면</b><p>가장 비용 부담이 적은 시점입니다. 위의 실제 견적서 2건과 아래 계산기로 비교해 보시고, 시안을 먼저 확인하세요.</p></div>
+    </div>
+
+    <div class="calc rv" id="migCheck">
+      <h3>🔍 우리 한의원은 이전이 쉬울까요? 30초 점검</h3>
+      <div class="mq"><b>① 지금 홈페이지 도메인(주소)은 누구 명의인가요?</b>
+        <label><input type="radio" name="q1" value="mine"> 제(한의원) 명의</label><label><input type="radio" name="q1" value="vendor"> 제작 업체 명의</label><label><input type="radio" name="q1" value="unk"> 잘 모르겠다</label></div>
+      <div class="mq"><b>② 홈페이지 사진은 어디서 왔나요?</b>
+        <label><input type="radio" name="q2" value="mine"> 직접 촬영한 사진</label><label><input type="radio" name="q2" value="stock"> 제작사가 구해 준 사진(스톡 등)</label><label><input type="radio" name="q2" value="unk"> 잘 모르겠다</label></div>
+      <div class="mq"><b>③ 지금 상황은 어느 쪽인가요?</b>
+        <label><input type="radio" name="q3" value="run"> 운영 중</label><label><input type="radio" name="q3" value="build"> 제작 진행 중(계약금 지급)</label><label><input type="radio" name="q3" value="quote"> 견적만 받아 봄</label></div>
+      <div class="mres" id="mRes" hidden></div>
+    </div>
+    <p class="fine rv">※ 이전 가능 여부는 계약서·저작권·도메인 상태에 따라 달라집니다. 타 업체가 만든 소스 코드·디자인은 가져오지 않으며, 원장님 소유의 내용만 옮깁니다.</p>
   </div>
 </section>
 
@@ -518,11 +694,62 @@
 </section>
 
 <!-- ⑩ 셀프 스튜디오 -->
-<section>
+<section id="studio">
   <div class="wrap">
     <span class="eyebrow rv">CUSTOM STUDIO · 직접 고치는 홈페이지</span>
-    <h2 class="title rv">수정할 때마다 업체에 연락하지 않으셔도 됩니다<br><mark>커스텀 스튜디오 모드</mark>로 직접 고치세요</h2>
-    <p class="lead rv">진료시간이 바뀌었을 때, 휴진 공지를 올릴 때, 비급여 수가를 고칠 때. 원장님 또는 직원분이 관리 화면에서 직접 수정하고 바로 반영합니다.</p>
+    <h2 class="title rv">수정할 때마다 업체에 연락하지 않으셔도 됩니다<br>지금 여기서 <mark>직접 고쳐 보세요</mark></h2>
+    <p class="lead rv">진료시간이 바뀌었을 때, 휴진 공지를 올릴 때, 비급여 수가를 고칠 때. 원장님 또는 직원분이 관리 화면에서 직접 수정하고 바로 반영합니다. 아래는 <b>실제 스튜디오와 같은 방식으로 움직이는 체험판</b>입니다.</p>
+
+    <figure class="shot rv">
+      <img src="b2b-assets/studio-real.png" alt="실제 운영 중인 셀프 스튜디오(질환 페이지 커스텀 스튜디오) 화면 캡처" loading="lazy" onerror="this.closest('figure').style.display='none'">
+      <figcaption>▲ 실제 운영 중인 셀프 스튜디오 화면 캡처 · <a href="detail-pages-editor.html" target="_blank" rel="noopener">실물 스튜디오 직접 열어 보기 ↗</a></figcaption>
+    </figure>
+
+    <div class="sdemo rv" id="sdemo">
+      <div class="sd-left">
+        <div class="sd-tabs" role="tablist">
+          <button type="button" class="on" data-tab="t1">🕒 진료시간·휴진</button>
+          <button type="button" data-tab="t2">🧾 비급여 수가표</button>
+          <button type="button" data-tab="t3">✨ 문구·카드</button>
+        </div>
+        <div class="sd-pane on" id="t1">
+          <label>평일 진료시간<input id="dWk" value="09:00 ~ 18:30"></label>
+          <label>점심시간<input id="dLunch" value="13:00 ~ 14:00"></label>
+          <label>토요일<input id="dSat" value="09:00 ~ 14:00"></label>
+          <label>임시 휴진·명절 공지 배너<input id="dBanner" value="11/20(목) 학회 참석으로 휴진합니다"></label>
+          <label class="chk"><input type="checkbox" id="dBannerOn" checked> 배너를 화면 상단에 표시</label>
+          <p class="fine">✓ 모든 단계에서 직접 수정 가능</p>
+        </div>
+        <div class="sd-pane" id="t2">
+          <div id="feeRows"></div>
+          <button type="button" class="mini" id="feeAdd">＋ 행 추가</button>
+          <p class="fine">✓ 비급여 수가표(의료법 제45조 고지)는 모든 단계에서 직접 수정 가능</p>
+        </div>
+        <div class="sd-pane" id="t3">
+          <label>홍보 문구를 써 보세요 <small>(프로부터: 금지어 경고)</small>
+            <textarea id="dLaw" rows="3">이 한약을 드시면 100% 완치됩니다. 우리 한의원이 최고입니다.</textarea></label>
+          <div class="lawbox" id="lawBox"></div>
+          <button type="button" class="mini gold" id="lawFix">✨ 합법 문구로 자동 다듬기 · 1회 무료 체험 <em>시그니처</em></button>
+          <div class="lawout" id="lawOut" hidden></div>
+          <hr>
+          <div class="cardline"><b>질환 카드</b> <span id="cardCnt">6</span>개 <button type="button" class="mini" id="cardAdd">＋ 새 질환 카드 추가</button></div>
+          <div class="cardmsg" id="cardMsg" hidden></div>
+        </div>
+      </div>
+      <div class="sd-right">
+        <div class="sd-prev">
+          <div class="pv-banner" id="pvBanner"></div>
+          <div class="pv-head"><i></i><b>○○한의원 대전본점</b><span>예약·상담 ↗</span></div>
+          <div class="pv-body">
+            <div class="pv-box"><h5>🕒 진료시간</h5><table class="tb2" id="pvHours"></table></div>
+            <div class="pv-box"><h5>🧾 비급여 진료비용 안내</h5><table class="tb2" id="pvFees"></table></div>
+            <div class="pv-box"><h5>✦ 진료 카드</h5><div class="pv-cards" id="pvCards"></div></div>
+          </div>
+        </div>
+        <p class="fine" style="text-align:center">▲ 왼쪽에서 고치면 오른쪽 화면이 바로 바뀝니다 (체험용 · 저장되지 않습니다)</p>
+      </div>
+    </div>
+
     <div class="studio">
       <div class="box rv"><h3>✏️ 전 단계에서 직접 수정</h3><ul style="list-style:none">
         <li style="padding:5px 0">· 진료시간·점심시간·휴진일</li><li style="padding:5px 0">· 임시 휴진·명절 공지 배너</li><li style="padding:5px 0">· 비급여 수가표(의료법 제45조 고지)</li><li style="padding:5px 0">· 인사말·주차·오시는 길 안내</li></ul></div>
@@ -538,10 +765,10 @@
     <span class="eyebrow rv">MONTHLY CARE · 왜 구독이 원장님께 이득인가</span>
     <h2 class="title rv">“외주 대행사에 건당 5만 원씩 주던 포스팅,<br><span class="gold">월 구독료 한 번으로 끝냅니다</span>”</h2>
     <div class="roi">
-      <div class="box rent rv" style="background:#fff;color:#171614"><h3>🔴 외주 포스팅을 맡길 때</h3>
+      <div class="box rent rv" style="background:#fff;color:#0B2418"><h3>🔴 외주 포스팅을 맡길 때</h3>
         <div class="big-num red">월 750,000원~</div><p style="font-size:.85rem;margin-bottom:10px">월 15건 × 건당 5만 원 가정 (업체마다 상이)</p>
         <ul><li>작성자가 의학 지식이 부족하면 원장님이 매번 고쳐야 합니다.</li><li>의료법 금지어 검수가 포함되지 않는 경우가 많습니다.</li><li>글만 올릴 뿐 홈페이지·검색 등록은 별도입니다.</li></ul></div>
-      <div class="box own rv" style="color:#171614"><h3>🟢 바른 AI 마스터 케어</h3>
+      <div class="box own rv" style="color:#0B2418"><h3>🟢 바른 AI 마스터 케어</h3>
         <div class="big-num green">월 99,000원</div><p style="font-size:.85rem;margin-bottom:10px">VAT 포함 · 연 결제 시 월 89,100원 · 외주 단가의 약 13% 수준</p>
         <ul><li>월 15건 학술 근거 기반 칼럼 + 맞춤 이미지 자동 발행 (병원 맞춤 주제)</li><li>원장님 사진 기반 인물 고정 화보 탑재</li><li>네이버 서치어드바이저·구글 서치콘솔 연동 및 등록 관리</li><li>비급여 수가표·명절·휴진 공지 무제한 수정</li><li>마스터 전용 상세 통계 센터(유입·시간대·예약 전환)</li></ul></div>
     </div>
@@ -568,6 +795,49 @@
   </div>
 </section>
 
+<!-- ⑫-2 단계별 샘플 + 필요 기능 체크 -->
+<section class="dark" id="samples">
+  <div class="wrap">
+    <span class="eyebrow rv">TIER SAMPLES · 단계별 실제 샘플 페이지</span>
+    <h2 class="title rv">세 단계를 <span class="gold">직접 눌러 보고</span> 비교하세요<br>같은 구조, 다른 기능입니다</h2>
+    <p class="lead rv">세 샘플 모두 www.bareunhaniwon.com과 <b>같은 구조</b>(스토리 → 6대 진료카드 → 원장 → 체크포인트 → 3D → 칼럼 → Q&amp;A → 오시는길·비급여)입니다. 다만 단계에 포함되지 않은 기능은 <b>🔒 “사용하실 수 없습니다”</b>로 표시됩니다. 눌러서 직접 확인해 보세요.</p>
+
+    <div class="tcards">
+      <a class="tc rv" href="sample-standard.html" target="_blank" rel="noopener"><small>STANDARD</small><h3>스탠다드 샘플</h3><div class="tp">790,000원 <em>VAT 별도</em></div><p>월 베이직 케어 19,900원</p><div class="tl">🔒 사용 못 하는 기능 <b>10개</b></div><span class="tgo">샘플 열어 보기 →</span></a>
+      <a class="tc rv" href="sample-professional.html" target="_blank" rel="noopener"><small>PROFESSIONAL</small><h3>프로페셔널 샘플</h3><div class="tp">1,490,000원 <em>VAT 별도</em></div><p>월 AI 그로스 케어 55,000원</p><div class="tl">🔒 사용 못 하는 기능 <b>7개</b></div><span class="tgo">샘플 열어 보기 →</span></a>
+      <a class="tc sigc rv" href="sample-signature.html" target="_blank" rel="noopener"><small>SIGNATURE · 추천</small><h3>시그니처 샘플</h3><div class="tp">1,890,000원 <em>VAT 별도</em></div><p>월 AI 마스터 케어 99,000원</p><div class="tl ok">✅ 모든 기능 사용 가능</div><span class="tgo">샘플 열어 보기 →</span></a>
+    </div>
+
+    <div class="matrix rv" id="matrix">
+      <h3>✅ 내게 필요한 기능에 체크해 보세요 <span>→ 어느 단계가 맞는지 바로 알려 드립니다</span></h3>
+      <div class="tbl-wrap" style="background:rgba(255,255,255,.96)">
+        <table class="cmpt mtx">
+          <thead><tr><th style="width:44px">필요</th><th>기능</th><th>스탠다드</th><th>프로</th><th class="us">시그니처</th></tr></thead>
+          <tbody>
+            <tr data-min="0"><td><input type="checkbox"></td><td>반응형 홈페이지 · 원장소개 · 오시는길 · 4대 내비</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="0"><td><input type="checkbox"></td><td>전화·카톡·네이버예약 고정 바</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="0"><td><input type="checkbox"></td><td>비급여 수가표 고지 + 진료시간·휴진 셀프 수정</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="1"><td><input type="checkbox"></td><td>환자 스토리보드 12컷 오프닝</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="1"><td><input type="checkbox"></td><td>질환별 체크포인트(5문항 자가진단)</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="1"><td><input type="checkbox"></td><td>1:1 “무엇이든 물어보세요” Q&amp;A 게시판</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="1"><td><input type="checkbox"></td><td>AI 자동 칼럼 월 8건 (텍스트)</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="1"><td><input type="checkbox"></td><td>AI 의료법 금지어 경고</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>월 15건 칼럼 + 맞춤 3단 화보(월 최대 45장)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>풀스크린 3D 인체모형 포털</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>질환 카드 페이지 무제한 증설 (증설비 0원)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>의료법 AI 합법 대체 문구 자동 작성</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>마스터 전용 상세 통계 센터 (유입·시간대·예약 전환)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>원장님 사진 기반 인물 고정 화보 생성</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>대기실 QR 자가진단 POP · VIP 최우선 착수</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mx-res" id="mxRes">필요한 기능을 체크해 보세요. 고르신 기능이 어느 단계에서 가능한지 바로 보여 드립니다.</div>
+      <div class="mx-go"><a class="btn btn-gold" href="#apply" id="mxGo">이 조합으로 무료 시안 신청하기 →</a></div>
+    </div>
+  </div>
+</section>
+
 <!-- ⑬ 약속·정책 -->
 <section class="alt">
   <div class="wrap">
@@ -577,7 +847,7 @@
       <div class="no rv"><h3>하지 않는 약속</h3><ul><li>“상위노출 100% 보장”</li><li>“월 매출 몇 배 상승”</li><li>“클릭·조회수를 인위적으로 늘려 드립니다”</li><li>“검수 없이 글만 대량으로 찍어 드립니다”</li></ul></div>
       <div class="yes rv"><h3>지키는 약속</h3><ul><li>실제 운영 중인 구조 그대로 제공</li><li>의료법 금지어 검수를 거친 글만 발행</li><li>숨김 키워드·가짜 지역 페이지 없이 정석대로 등록</li><li>결제 전에 <b>무료 시안</b>으로 먼저 확인</li></ul></div>
     </div>
-    <h3 class="rv" style="margin-top:34px;font-size:1.15rem">📜 계약 조건은 이렇게 정했습니다 <span style="font-size:.85rem;font-weight:600;color:#7A7167">(결정하기 편하시라고 미리 공개합니다)</span></h3>
+    <h3 class="rv" style="margin-top:34px;font-size:1.15rem">📜 계약 조건은 이렇게 정했습니다 <span style="font-size:.85rem;font-weight:600;color:#5F7468">(결정하기 편하시라고 미리 공개합니다)</span></h3>
     <div class="policy">
       <div class="pol rv"><small>① 결제 전</small><h3>시안이 마음에 안 들면 결제하지 않습니다</h3><p>한의원 이름이 들어간 무료 시안을 먼저 보시고, 마음이 설 때만 결제하십시오.</p></div>
       <div class="pol rv"><small>② 구축비</small><h3>작업 착수 전이면 전액 환불</h3><p>결제 후 작업이 시작되기 전에는 전액 환불합니다. 착수 후 중단하시면 이미 투입된 작업분을 계약서의 정산 기준표대로 공제한 뒤 정산합니다.</p></div>
@@ -594,7 +864,7 @@
 <section id="plans">
   <div class="wrap">
     <span class="eyebrow rv">PACKAGES · 원장님 상황에 맞는 3단계</span>
-    <h2 class="title rv">견적 1,000만~1,800만 원짜리 작업을<br><mark>189만 원부터</mark> 시작하실 수 있습니다</h2>
+    <h2 class="title rv">견적 979만~2,046만 원짜리 작업을<br><mark>스탠다드 79만 원 · 시그니처도 189만 원</mark>부터 시작하실 수 있습니다</h2>
     <p class="lead rv">구축(1회) + 월 구독 케어를 1:1로 묶은 정찰제입니다. 금액은 VAT 별도 기준이며, 괄호 안은 VAT 포함 금액입니다.</p>
     <div class="plans">
       <div class="plan rv">
@@ -633,12 +903,13 @@
     <span class="eyebrow rv">BEFORE YOU DECIDE · 결정 전에 가장 많이 물으시는 것</span>
     <h2 class="title rv">망설이시는 이유, 먼저 답해 드립니다</h2>
     <div class="faq">
-      <details class="rv"><summary>견적 1,000만 원짜리 홈페이지와 무엇이 다른가요?</summary><p>같은 구성의 결과물을 이미 운영 중이라 처음부터 개발하는 비용이 없고, 만든 뒤의 칼럼·검수·검색 등록까지 월 구독으로 이어진다는 점이 다릅니다.</p></details>
+      <details class="rv"><summary>견적 979만~2,046만 원짜리 홈페이지와 무엇이 다른가요?</summary><p>같은 구성의 결과물을 이미 운영 중이라 처음부터 개발하는 비용이 없고, 만든 뒤의 칼럼·검수·검색 등록까지 월 구독으로 이어진다는 점이 다릅니다.</p></details>
       <details class="rv"><summary>AI가 쓴 글, 의료법이나 검색 페널티 위험은 없나요?</summary><p>글은 의료법 금지어, 전문용어, 질문형 구조의 3단계 검수를 통과해야 발행되고, 기발행 주제와 겹치지 않도록 이력을 대조합니다. 구글·네이버 모두 AI 사용 자체가 아니라 “독창적 가치 없이 대량 양산하는 행위”를 제재합니다. 본문에는 AI 보조 및 의료인 감수 사실도 표기합니다. 다만 최종 책임은 원장님의 감수에 있음을 먼저 말씀드립니다.</p></details>
       <details class="rv"><summary>정말 노출이 늘어나나요? 보장되나요?</summary><p>순위나 매출은 보장하지 않습니다. 정직하게 보장할 수 있는 업체는 없습니다. 대신 노출의 전제 조건인 검색 등록, 정식 구조, 꾸준한 고품질 콘텐츠를 빠짐없이 갖춰 드립니다.</p></details>
       <details class="rv"><summary>구독 없이 홈페이지만 쓸 수는 없나요?</summary><p>시그니처의 3D·무제한 카드·통계·자동 발행은 월 케어가 가동되어야 제 성능을 냅니다. 그래서 구축과 구독을 1:1로 묶었습니다. 대신 구독료는 같은 글을 외주로 맡길 때의 약 13% 수준입니다.</p></details>
       <details class="rv"><summary>같은 동네에 이 홈페이지를 쓰는 한의원이 또 생기면요?</summary><p>상권 독점은 드리지 않습니다. 반경 1km 안에 한의원이 여러 곳인 경우가 많아 독점 제한이 오히려 원장님께 불리하다고 판단했습니다. 같은 틀이어도 원장님의 철학·사진·글로 채워지기 때문에 결과물은 서로 다릅니다.</p></details>
       <details class="rv"><summary>홈페이지가 있어도 광고는 계속해야 하나요?</summary><p>광고와 홈페이지는 경쟁이 아니라 짝입니다. 광고는 환자를 데려오고, 홈페이지는 그 환자를 설득합니다. 광고를 하신다면 도착지가 탄탄해져 같은 광고비의 효율이 올라갑니다.</p></details>
+      <details class="rv"><summary>이미 홈페이지가 있는데, 내용만 옮겨서 쓸 수 있나요?</summary><p>네. 원장 약력·진료 설명·진료시간·비급여 수가·원장님이 직접 찍은 사진·기존 글(텍스트)은 같은 구조의 새 틀에 옮겨 담을 수 있습니다. 다만 디자인과 기능은 새 틀 규격으로 통일되고, 도메인 명의·사진 저작권·계약 조건은 먼저 확인해야 합니다. 기존 사이트는 전환 당일까지 그대로 운영됩니다. 자세한 내용은 위 ‘이전’ 안내를 참고해 주세요.</p></details>
       <details class="rv"><summary>결정하기 전에 먼저 볼 수 있나요?</summary><p>네. 아래 신청서에 한의원명과 원장님 성함만 남겨 주시면, 계약 전에 한의원 이름이 들어간 <b>무료 시안</b>을 먼저 보여 드립니다.</p></details>
     </div>
   </div>
@@ -676,7 +947,7 @@
 </footer>
 
 <div class="sticky"><div class="in">
-  <span><b>전국 100곳 한정</b> · 시그니처 189만 원부터 · 무료 시안 먼저</span>
+  <span><b>전국 100곳 한정</b> · 스탠다드 79만 원부터 · 무료 시안 먼저</span>
   <div class="btns"><a class="btn btn-line btn-sm" href="tel:01088770508">📞 전화</a><a class="btn btn-gold btn-sm" href="#apply">무료 시안</a></div>
 </div></div>
 
@@ -696,36 +967,147 @@
 
   function won(n){ return Math.round(n).toLocaleString('ko-KR')+'원'; }
 
-  /* 3-year compare (VAT 포함) */
-  var US_BUILD=2079000, US_SUB=99000, MONTHS=36, US_TOTAL=US_BUILD+US_SUB*MONTHS, POST_3Y=15*50000*MONTHS;
+  /* 1-year compare (VAT 포함) — 36개월 약정 느낌을 피하기 위해 12개월 기준으로 비교 */
+  var US_BUILD=2079000, US_SUB=99000, MONTHS=12, US_TOTAL=US_BUILD+US_SUB*MONTHS, POST_1Y=15*50000*MONTHS;
   var q=document.getElementById('quote');
   function calc(){
-    var quote=Number(q.value)*10000, gen=quote+POST_3Y;
+    var quote=Number(q.value)*10000, gen=quote+POST_1Y;
     document.getElementById('quoteOut').textContent=Number(q.value).toLocaleString('ko-KR');
     document.getElementById('genQ').textContent=won(quote);
-    document.getElementById('genP').textContent=won(POST_3Y);
+    document.getElementById('genP').textContent=won(POST_1Y);
     document.getElementById('gen3').textContent=won(gen);
     document.getElementById('us3').textContent=won(US_TOTAL);
     document.getElementById('saveAmt').textContent=won(gen-US_TOTAL);
     document.getElementById('ratioTxt').textContent='(제작비만 놓고 봐도 구축 비용은 견적의 약 '+Math.round(US_BUILD/quote*100)+'% 수준입니다.)';
+    document.querySelectorAll('.pre').forEach(function(b){ b.classList.toggle('on', Number(b.getAttribute('data-q'))===Number(q.value)); });
   }
   q.addEventListener('input',calc); calc();
+  document.querySelectorAll('.pre').forEach(function(b){ b.addEventListener('click',function(){ q.value=b.getAttribute('data-q'); calc(); }); });
 
-  /* what-if loss simulator + break-even */
-  var AVG_COST = US_TOTAL/MONTHS; // 156,750
+  /* 쉬운 계산기: 새 환자 10명 중 몇 명을 놓칠까 */
   var rP=document.getElementById('rPat'), rR=document.getElementById('rRev'), rL=document.getElementById('rLoss');
+  var LOSS_HINT=['0명 — 놓치는 환자가 없다고 가정합니다.','1명 — 가장 보수적으로 잡은 값입니다. (10명 중 1명)','2명 — 보통 수준으로 가정합니다.','3명 — 주변에 한의원이 많은 지역이라면 가능한 가정입니다.','4명 — 경쟁이 매우 치열한 지역이라고 가정합니다.','5명 — 가장 큰 가정입니다. 실제는 이보다 낮을 수 있습니다.'];
+  function fmt1(n){ return (Math.round(n*10)/10).toString().replace(/\.0$/,''); }
   function sim(){
-    var pat=Number(rP.value), rev=Number(rR.value)*10000, loss=Number(rL.value)/100;
+    var pat=Number(rP.value), rev=Number(rR.value)*10000, lossN=Number(rL.value);
     document.getElementById('sPat').textContent=pat;
     document.getElementById('sRev').textContent=rR.value;
-    document.getElementById('sLoss').textContent=rL.value;
-    var month=pat*rev*loss;
+    document.getElementById('sLoss').textContent=lossN;
+    document.getElementById('lossHint').textContent=LOSS_HINT[lossN];
+    var lost=pat*lossN/10, month=lost*rev;
+    document.getElementById('oLost').textContent=fmt1(lost)+'명';
     document.getElementById('oMonth').textContent=won(month);
     document.getElementById('oYear').textContent=won(month*12);
-    var be=AVG_COST/rev;
-    document.getElementById('oBE').textContent = be<=1 ? '한 달에 신환 1명만 더 확보하시는 것' : ('한 달에 신환 약 '+Math.ceil(be)+'명을 더 확보하시는 것');
+    var need=Math.ceil(US_TOTAL/rev), per=need/12;
+    document.getElementById('oNeed').textContent='1년에 '+need+'명';
+    document.getElementById('oNeedSub').textContent= per<=1 ? '(한 달에 1명도 안 되는 숫자입니다)' : '(한 달에 약 '+fmt1(per)+'명)';
   }
   [rP,rR,rL].forEach(function(el){ el.addEventListener('input',sim); }); sim();
+
+  /* 이전 가능성 30초 점검 */
+  (function(){
+    var res=document.getElementById('mRes'); if(!res) return;
+    function val(n){ var e=document.querySelector('input[name="'+n+'"]:checked'); return e?e.value:null; }
+    function upd(){
+      var a=val('q1'), b=val('q2'), c=val('q3'); if(!a&&!b&&!c){ res.hidden=true; return; }
+      var li=[];
+      if(a==='mine') li.push('<li>도메인이 원장님 명의라 <b>주소를 그대로 새 홈페이지에 연결</b>할 수 있습니다.</li>');
+      if(a==='vendor') li.push('<li class="w">도메인이 제작사 명의입니다. 먼저 <b>명의 이전(또는 네임서버 변경) 요청</b>을 하셔야 합니다. 요청 방법은 함께 안내해 드립니다.</li>');
+      if(a==='unk') li.push('<li class="w">도메인 명의는 조회로 확인할 수 있습니다. 주소만 알려 주시면 <b>함께 확인</b>해 드립니다.</li>');
+      if(b==='mine') li.push('<li>직접 찍은 사진은 <b>그대로 새 틀에 사용</b>할 수 있습니다.</li>');
+      if(b==='stock') li.push('<li class="w">제작사가 구한 스톡 사진은 <b>저작권 문제로 그대로 쓰면 안 됩니다.</b> 새 사진 또는 원장님 화보(시그니처)로 교체를 권합니다.</li>');
+      if(b==='unk') li.push('<li class="w">사진 출처를 모르시면 안전하게 <b>원장님이 촬영하신 사진만</b> 옮기고 나머지는 새로 구성합니다.</li>');
+      if(c==='run') li.push('<li>운영 중이라면 <b>기존 사이트는 전환 당일까지 그대로 운영</b>하면서 새 시안을 나란히 비교하실 수 있습니다.</li>');
+      if(c==='build') li.push('<li class="w">제작 진행 중이라면 <b>계약서의 중도 해지·환불 조항을 먼저 확인</b>하세요. 진행 중인 작업을 멈추라고 권하지 않으며, 시안만 먼저 비교해 보셔도 됩니다.</li>');
+      if(c==='quote') li.push('<li>견적만 받으신 단계라면 <b>가장 비용 부담이 적은 시점</b>입니다. 위 견적 비교와 계산기를 참고하세요.</li>');
+      res.innerHTML='<ul>'+li.join('')+'</ul>'; res.hidden=false;
+    }
+    document.querySelectorAll('#migCheck input[type=radio]').forEach(function(r){ r.addEventListener('change',upd); });
+  })();
+
+  /* 셀프 스튜디오 체험 */
+  (function(){
+    var root=document.getElementById('sdemo'); if(!root) return;
+    function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+    root.querySelectorAll('.sd-tabs button').forEach(function(b){ b.addEventListener('click',function(){
+      root.querySelectorAll('.sd-tabs button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+      root.querySelectorAll('.sd-pane').forEach(function(p){ p.classList.toggle('on', p.id===b.getAttribute('data-tab')); });
+    }); });
+    var fees=[{n:'맞춤 탕약 (15일~1개월)',p:'220,000 ~ 450,000원'},{n:'정제 약침 (1회)',p:'10,000 ~ 30,000원'},{n:'키 성장 맞춤 한약 (1개월)',p:'350,000 ~ 550,000원'}];
+    var cards=['원장 소개','추나·통증','키 성장','다이어트','탈모','공진단'];
+    function drawFeeRows(){
+      var box=document.getElementById('feeRows'); box.innerHTML='';
+      fees.forEach(function(f,i){
+        var d=document.createElement('div'); d.className='feerow';
+        d.innerHTML='<input value="'+esc(f.n)+'" aria-label="항목"><input value="'+esc(f.p)+'" aria-label="금액">';
+        var ins=d.querySelectorAll('input');
+        ins[0].addEventListener('input',function(){ fees[i].n=ins[0].value; draw(); });
+        ins[1].addEventListener('input',function(){ fees[i].p=ins[1].value; draw(); });
+        box.appendChild(d);
+      });
+    }
+    function draw(){
+      var wk=document.getElementById('dWk').value, lu=document.getElementById('dLunch').value, sa=document.getElementById('dSat').value;
+      document.getElementById('pvHours').innerHTML='<tr><td>평일</td><td>'+esc(wk)+'</td></tr><tr><td>점심</td><td>'+esc(lu)+'</td></tr><tr><td>토요일</td><td>'+esc(sa)+'</td></tr>';
+      var bn=document.getElementById('pvBanner'), on=document.getElementById('dBannerOn').checked, txt=document.getElementById('dBanner').value.trim();
+      if(on&&txt){ bn.hidden=false; bn.textContent='📢 '+txt; } else { bn.hidden=true; }
+      document.getElementById('pvFees').innerHTML=fees.map(function(f){ return '<tr><td>'+esc(f.n)+'</td><td>'+esc(f.p)+'</td></tr>'; }).join('');
+      document.getElementById('pvCards').innerHTML=cards.map(function(c,i){ return '<span'+(i>=6?' class="new"':'')+'>'+esc(c)+'</span>'; }).join('');
+      document.getElementById('cardCnt').textContent=cards.length;
+    }
+    ['dWk','dLunch','dSat','dBanner'].forEach(function(id){ document.getElementById(id).addEventListener('input',draw); });
+    document.getElementById('dBannerOn').addEventListener('change',draw);
+    document.getElementById('feeAdd').addEventListener('click',function(){ if(fees.length>=6) return; fees.push({n:'새 항목',p:'0원'}); drawFeeRows(); draw(); });
+    /* 금지어 경고 (프로 기능) */
+    var BAD=/(완치|100\s?%|최고|유일|보장|특효|무조건|부작용\s?없|1위|할인|이벤트)/g;
+    var law=document.getElementById('dLaw'), box=document.getElementById('lawBox');
+    function checkLaw(){
+      var t=law.value, hits=t.match(BAD);
+      if(hits&&hits.length){ box.className='lawbox bad'; box.innerHTML='⚠️ 의료법 제56조 위반 소지 표현 <b>'+hits.length+'개</b> 감지<br>'+esc(t).replace(BAD,'<mark>$1</mark>'); }
+      else { box.className='lawbox'; box.innerHTML='✅ 감지된 금지어가 없습니다.'; }
+    }
+    law.addEventListener('input',checkLaw); checkLaw();
+    var used=false;
+    document.getElementById('lawFix').addEventListener('click',function(){
+      var out=document.getElementById('lawOut');
+      if(used){ out.hidden=false; out.innerHTML='🔒 1회 체험이 끝났습니다. 시그니처에서는 <b>횟수 제한 없이</b> 문장 전체를 의료법에 맞게 AI가 다시 써 드립니다.'; return; }
+      used=true;
+      var t=law.value.replace(/완치/g,'증상 개선에 도움').replace(/100\s?%/g,'개인차가 있으며').replace(/최고/g,'정성을 다하는').replace(/유일/g,'').replace(/보장/g,'기대').replace(/특효/g,'도움이 될 수 있는').replace(/무조건/g,'상황에 따라').replace(/부작용\s?없/g,'이상 반응을 확인하며 처방').replace(/1위/g,'').replace(/할인/g,'안내').replace(/이벤트/g,'안내');
+      out.hidden=false; out.innerHTML='✨ <b>합법 문구 제안</b><br>'+esc(t)+'<br><small style="opacity:.7">※ 체험용 간이 규칙입니다. 실제 시그니처 AI는 문장 전체를 새로 씁니다. 최종 책임은 원장님 감수에 있습니다.</small>';
+    });
+    document.getElementById('cardAdd').addEventListener('click',function(){
+      var m=document.getElementById('cardMsg');
+      if(cards.length>=6){ m.hidden=false; m.innerHTML='🔒 <b>7번째 카드부터는 시그니처 전용입니다.</b> 스탠다드·프로는 카드 증설이 별도로 필요하고, 시그니처는 <b>무제한(증설비 0원)</b>으로 직접 추가합니다.'; return; }
+      cards.push('새 카드'); draw();
+    });
+    drawFeeRows(); draw();
+  })();
+
+  /* 필요 기능 체크 → 단계 추천 */
+  (function(){
+    var m=document.getElementById('matrix'); if(!m) return;
+    var rows=[].slice.call(m.querySelectorAll('tbody tr')), res=document.getElementById('mxRes'), go=document.getElementById('mxGo');
+    function upd(){
+      var picked=rows.filter(function(r){ return r.querySelector('input').checked; });
+      rows.forEach(function(r){ r.classList.toggle('pick', r.querySelector('input').checked); });
+      if(!picked.length){ res.innerHTML='필요한 기능을 체크해 보세요. 고르신 기능이 어느 단계에서 가능한지 바로 보여 드립니다.'; return; }
+      var n=picked.length, s=picked.filter(function(r){ return +r.dataset.min<=0; }).length, p=picked.filter(function(r){ return +r.dataset.min<=1; }).length;
+      var maxMin=Math.max.apply(null,picked.map(function(r){ return +r.dataset.min; }));
+      var name=['스탠다드','프로페셔널','시그니처'][maxMin];
+      var html='고르신 기능 <b>'+n+'개</b> 중 — 스탠다드로는 <b>'+s+'개</b>, 프로페셔널로는 <b>'+p+'개</b>, 시그니처로는 <b>'+n+'개 전부</b> 사용할 수 있습니다.<br>';
+      if(maxMin===2) html+='<span class="bad">🔒 스탠다드에서 못 쓰는 기능 '+(n-s)+'개 · 프로에서 못 쓰는 기능 '+(n-p)+'개</span> → 원하시는 기능을 모두 쓰려면 <b>시그니처</b>가 필요합니다.';
+      else if(maxMin===1) html+='<span class="bad">🔒 스탠다드에서 못 쓰는 기능 '+(n-s)+'개</span> → <b>프로페셔널 이상</b>이 필요합니다. 시그니처로 올리면 3D·통계·카드 무제한까지 함께 열립니다.';
+      else html+='고르신 기능은 <b>스탠다드</b>로 충분합니다. 이후 필요가 생기면 상위 단계 샘플도 한번 확인해 보세요.';
+      res.innerHTML=html;
+      go.setAttribute('data-plan',name);
+    }
+    rows.forEach(function(r){ r.querySelector('input').addEventListener('change',upd); });
+    go.addEventListener('click',function(){
+      var plan=go.getAttribute('data-plan'), sel=document.getElementById('fPlan'); if(!plan||!sel) return;
+      for(var i=0;i<sel.options.length;i++){ if(sel.options[i].text.indexOf(plan)===0){ sel.selectedIndex=i; break; } }
+    });
+    upd();
+  })();
 
   /* apply form */
   document.getElementById('applyForm').addEventListener('submit',function(ev){

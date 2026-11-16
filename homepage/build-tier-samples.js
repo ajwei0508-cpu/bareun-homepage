@@ -1,0 +1,477 @@
+/**
+ * 바른 메디테크 — 3단계(스탠다드 / 프로페셔널 / 시그니처) 샘플 페이지 생성기
+ * 기준: www.bareunhaniwon.com 구조(상단 내비 · 스토리 · 6대 진료카드 · 원장 · 체크포인트 · 3D · 칼럼 · Q&A · 오시는길/비급여 · 고정 예약바)
+ * 실행: node build-tier-samples.js  →  sample-standard.html / sample-professional.html / sample-signature.html
+ * 구조(섹션 배치)는 3단계 모두 동일하며, 단계에 포함되지 않은 기능만 🔒 잠금 처리됩니다.
+ */
+const fs = require('fs');
+const path = require('path');
+
+const TIERS = [
+  { key: 'standard', file: 'sample-standard.html', name: '스탠다드', en: 'STANDARD', price: '790,000원', care: '월 베이직 케어 19,900원', build: 1890000 - 1100000, mo: 19900 },
+  { key: 'professional', file: 'sample-professional.html', name: '프로페셔널', en: 'PROFESSIONAL', price: '1,490,000원', care: '월 AI 그로스 케어 55,000원', build: 1490000, mo: 55000 },
+  { key: 'signature', file: 'sample-signature.html', name: '시그니처', en: 'SIGNATURE', price: '1,890,000원', care: '월 AI 마스터 케어 99,000원', build: 1890000, mo: 99000 },
+];
+const SIG = { build: 1890000, mo: 99000 };
+
+/* 기능 정의 — min: 사용 가능한 최소 단계(0=스탠다드,1=프로,2=시그니처) */
+const F = {
+  storyboard: { min: 1, name: '환자 스토리보드 12컷', short: '오프닝 스토리 12컷', why: '검색으로 들어온 환자가 “아, 내 얘기네” 하고 끝까지 스크롤하게 만드는 오프닝입니다. 체류 시간이 길어질수록 예약 버튼까지 가는 환자가 늘어납니다.' },
+  checkpoint: { min: 1, name: '질환별 체크포인트(자가진단)', short: '5문항 자가진단', why: '“내 증상이 여기 해당하나?” 5문항 체크 후 결과 화면에서 바로 상담으로 이어집니다. 망설이는 환자를 예약 직전까지 데려가는 가장 강력한 장치입니다.' },
+  qna: { min: 1, name: '1:1 “무엇이든 물어보세요” Q&A', short: 'Q&A 게시판', why: '전화하기 부담스러운 환자가 비공개로 질문을 남기고, 답변이 쌓여 다른 환자의 의심까지 풀어 줍니다. 비급여 진료일수록 이 “질문 창구”가 신환 전환의 열쇠입니다.' },
+  columnsAuto: { min: 1, name: 'AI 자동 포스팅 (건강 칼럼)', short: '건강 칼럼 자동 발행', why: '원장님이 글을 쓰지 않아도 2일마다 의료법 검수를 거친 칼럼이 올라옵니다. 검색에 걸리는 “입구”가 매달 늘어납니다.' },
+  columnsFull: { min: 2, name: '월 15건 + 맞춤 이미지(월 최대 45장)', short: '월 15건 · 3단 화보 이미지', why: '글 8건(텍스트)에서 15건 + 상·중·하 3단 맞춤 화보로 확장됩니다. 글이 많고 그림이 있을수록 검색·AI 답변에서 출처로 선택될 기회가 커집니다.' },
+  body3d: { min: 2, name: '풀스크린 3D 인체모형 포털', short: '3D 인체모형', why: '환자가 아픈 부위를 직접 돌려 보며 이해하는 체험형 화면입니다. “3분 공장식 진료가 아닌 원장 1:1 심층 진료”라는 인상을 눈으로 전달해 비급여 진료의 가치를 설득합니다.' },
+  stats: { min: 2, name: '마스터 전용 상세 통계 센터', short: '유입·시간대·예약 전환 통계', why: '어느 플랫폼에서, 몇 시에, 어떤 페이지를 보고, 어떤 예약 버튼을 눌렀는지 한눈에 봅니다. 광고비를 어디에 쓸지 감이 아니라 숫자로 결정하게 됩니다.' },
+  cardsUnlimited: { min: 2, name: '질환 카드 페이지 무제한 증설', short: '질환 카드 무제한 (증설비 0원)', why: '새 진료(탈모·다이어트·성장·공진단…)를 시작할 때마다 원장님이 직접 카드 페이지를 추가합니다. 추가 제작비·대기 시간이 없습니다.' },
+  aiLaw: { min: 2, name: '의료법 AI 합법 대체 문구 자동 작성', short: '합법 문구 자동 다듬기', why: '금지어를 감지(프로)하는 데서 그치지 않고, 의료법에 맞는 문장으로 AI가 바로 고쳐 줍니다. 과태료·신고 걱정 없이 비급여 홍보 문구를 쓸 수 있습니다.' },
+  photo: { min: 2, name: '원장님 사진 기반 인물 고정 화보 생성', short: '원장님 화보 AI 생성', why: '원장님 얼굴이 일관되게 들어간 고급 화보를 칼럼·카드에 직접 만듭니다. 촬영 스튜디오 비용 없이 “이 원장님이 직접 진료한다”는 신뢰를 줍니다.' },
+  qrPop: { min: 2, name: '대기실 QR 자가진단 POP · VIP 최우선 착수', short: '대기실 QR POP', why: '대기실 포스터의 QR로 환자가 기다리는 동안 자가진단을 하고, 추가 진료 상담으로 이어집니다. 이미 내원한 환자의 “추가 비급여” 문의를 만드는 장치입니다.' },
+};
+
+const TIER_NAME = ['스탠다드', '프로페셔널', '시그니처'];
+
+function diffText(tierIdx) {
+  if (tierIdx >= 2) return '';
+  const base = TIERS[tierIdx];
+  const buildDiff = SIG.build - base.build;
+  const moDiff = SIG.mo - base.mo;
+  const day = Math.round(moDiff / 30);
+  return `스탠다드 대비가 아니라 지금 보고 계신 ${base.name} 기준으로, 시그니처는 구축비 +${buildDiff.toLocaleString('ko-KR')}원(VAT 별도), 월 케어 +${moDiff.toLocaleString('ko-KR')}원(VAT 포함) — 하루 약 ${day.toLocaleString('ko-KR')}원 차이입니다.`;
+}
+
+function lockedList(tierIdx) {
+  const out = [];
+  Object.keys(F).forEach((k) => { if (F[k].min > tierIdx) out.push(k); });
+  // 프로 샘플은 칼럼 자동발행이 열려 있으므로 columnsAuto 제외 / 스탠다드는 columnsFull 별도 표기 없이 columnsAuto 하나로 갈음
+  return out.filter((k) => !(tierIdx === 0 && k === 'columnsFull'));
+}
+
+function render(t, idx) {
+  const locked = lockedList(idx);
+  const can = (k) => F[k].min <= idx;
+
+  /* 잠금 래퍼: 잠기면 블러 + 오버레이 */
+  const wrap = (key, html, id) => {
+    if (can(key)) return `<div class="feat open" id="${id || key}">${html}</div>`;
+    const f = F[key];
+    return `<div class="feat locked" id="${id || key}" data-feat="${key}">
+      <div class="feat-body" aria-hidden="true">${html}</div>
+      <button type="button" class="lock-ov" data-open-lock="${key}">
+        <span class="lock-ic">🔒</span>
+        <b>${TIER_NAME[idx]}에서는 사용하실 수 없는 기능입니다</b>
+        <span class="lock-sub">${f.name} · ${TIER_NAME[f.min]}부터 사용 가능</span>
+        <span class="lock-cta">엇, 이거 필요한데? → 자세히 보기</span>
+      </button>
+    </div>`;
+  };
+  const navLock = (key) => (can(key) ? '' : `<span class="nl" title="${TIER_NAME[idx]}에서는 사용 불가">🔒</span>`);
+
+  const colImg = (n, kind) => `webp/hn_${n}_20261111_${kind}.webp`;
+  const cols = [
+    { n: 'knee', t: '계단 내려갈 때 무릎이 시큰거린다면, 먼저 확인할 3가지', d: '무릎 통증이 생기는 구조와 일상에서 바로 점검할 수 있는 습관을 정리했습니다.' },
+    { n: 'lumbar', t: '오래 앉아 있으면 허리가 뻐근한 이유와 1분 자가점검', d: '허리가 보내는 신호를 구분하고, 진료를 받아야 하는 시점을 알려드립니다.' },
+    { n: 'cervical', t: '아침마다 목이 뻣뻣하다면 베개보다 먼저 볼 것', d: '목·어깨 긴장이 쌓이는 흐름과 생활 속 회복 루틴을 소개합니다.' },
+  ];
+  const colCount = idx === 0 ? 0 : idx === 1 ? 8 : 15;
+  const colList = (full) => cols.map((c, i) => `
+      <article class="col-card">
+        ${full ? `<div class="col-imgs"><img loading="lazy" src="${colImg(c.n, 'empathy')}" alt=""><img loading="lazy" src="${colImg(c.n, 'mechanism')}" alt=""><img loading="lazy" src="${colImg(c.n, 'routine')}" alt=""></div>` : `<div class="col-noimg">텍스트 전용<br><small>이미지 없음</small></div>`}
+        <div class="col-tx"><small>${full ? '상·중·하 3단 화보 포함' : '텍스트 칼럼'} · 의료인 감수 표기 · ${i === 0 ? '오늘' : (i * 2) + '일 전'}</small><h4>${c.t}</h4><p>${c.d}</p></div>
+      </article>`).join('');
+
+  /* ───── 섹션 HTML ───── */
+  const storyboard = `
+    <section class="sec" id="sec-story">
+      <div class="wrap">
+        <span class="eyebrow">PATIENT STORY · 환자 스토리 오프닝</span>
+        <h2>“아빠 한의사를 찾는 환자”의 하루, 12컷 스토리보드</h2>
+        <p class="lead">스크롤을 내리면 환자의 마음이 한 컷씩 움직이고, 마지막에 6대 진료 카드가 펼쳐집니다.</p>
+        <div class="sb">${Array.from({ length: 12 }).map((_, i) => `<div class="sb-cut"><b>${String(i + 1).padStart(2, '0')}</b><span>${['아침, 무릎이 시큰', '검색창에 증상을', '블로그를 읽어 본다', '“여긴 믿을 만할까?”', '홈페이지로 들어온다', '원장 약력을 확인', '비급여 수가를 확인', '3D로 내 몸을 이해', '자가진단 5문항', '궁금한 걸 질문 남기기', '마음이 선다', '예약 버튼 한 번'][i]}</span></div>`).join('')}</div>
+      </div>
+    </section>`;
+
+  const cardsData = [
+    ['card_1_director.jpg', '원장 소개', '내 가족에게 처방한 치료만 합니다'],
+    ['card_2_chuna.jpg', '추나 · 통증', '원장 직접 수기 추나·감압'],
+    ['card_3_growth.jpg', '키 성장', '성장 골든타임 맞춤 진료'],
+    ['card_4_diet.jpg', '다이어트', '체질·대사 맞춤 1:1 처방'],
+    ['card_5_hairloss.jpg', '탈모', '두피·모낭 맞춤 관리'],
+    ['card_6_gongjindan.jpg', '공진단', '정품 약재 · 원내 제조'],
+  ];
+  const cards = `
+    <section class="sec alt" id="sec-cards">
+      <div class="wrap">
+        <span class="eyebrow">6 CLINICS · 6대 핵심 진료 카드</span>
+        <h2>카드를 누르면 질환별 상세 페이지로 이어집니다</h2>
+        <div class="cards">
+          ${cardsData.map((c) => `<a class="ccard" href="#sec-loc" onclick="return false"><div class="cimg" style="background-image:url('${c[0]}')"></div><div class="cin"><b>${c[1]}</b><span>${c[2]}</span><em>상세페이지 보기 →</em></div></a>`).join('')}
+          ${wrap('cardsUnlimited', `<div class="ccard add"><div class="cin" style="padding:34px 18px;text-align:center"><b style="font-size:1.6rem">＋</b><b>새 진료 카드 추가</b><span>7번째, 8번째 … 원장님이 직접 무제한 증설</span><em>${can('cardsUnlimited') ? '증설비 0원' : ''}</em></div></div>`, 'cardsUnlimited')}
+        </div>
+        ${!can('cardsUnlimited') ? `<p class="fine">※ ${TIER_NAME[idx]}는 기본 6개 카드 구성입니다. 카드를 더 늘리려면 증설이 필요합니다.</p>` : `<p class="fine">※ 시그니처는 카드 페이지를 직접 무제한으로 만들 수 있습니다(증설비 0원).</p>`}
+      </div>
+    </section>`;
+
+  const director = `
+    <section class="sec" id="sec-director">
+      <div class="wrap two">
+        <div class="dimg" style="background-image:url('card_1_director.jpg')"></div>
+        <div>
+          <span class="eyebrow">DIRECTOR · 대표원장 소개</span>
+          <h2>모든 환자를 내 가족처럼 진료합니다</h2>
+          <p class="lead">○○한의원 대표원장 홍길동 · 한의학 박사 · 임상 15년. 초진 15분 이상 1:1 문진, 처방 근거를 환자가 이해할 때까지 설명합니다. <small>(샘플 문구 · 실제 내용은 원장님 약력으로 채웁니다)</small></p>
+          <ul class="ticks"><li>공식 약력 · 학술 활동 · 진료 철학</li><li>원장 인사말 + 대표원장 이미지</li><li>의료법 필수 기재사항(사업자·면허) 자동 표기</li></ul>
+        </div>
+      </div>
+    </section>`;
+
+  const checkpoint = wrap('checkpoint', `
+    <section class="sec alt" id="sec-check">
+      <div class="wrap">
+        <span class="eyebrow">CHECKPOINT · 질환별 자가진단</span>
+        <h2>내 무릎 통증, 진료가 필요한 단계일까요?</h2>
+        <div class="check" id="ckBox">
+          ${['계단을 내려갈 때 무릎이 시큰거린다', '아침에 일어나면 무릎이 뻣뻣하다', '앉았다 일어날 때 소리가 난다', '무릎 주변이 붓거나 열감이 있다', '최근 걷는 거리가 눈에 띄게 줄었다'].map((q, i) => `<label><input type="checkbox" data-ck><span>${i + 1}. ${q}</span></label>`).join('')}
+          <button type="button" class="btn" id="ckBtn">결과 보기</button>
+          <div class="ck-res" id="ckRes" hidden></div>
+        </div>
+      </div>
+    </section>`, 'checkpoint');
+
+  const body3d = wrap('body3d', `
+    <section class="sec dark" id="sec-3d">
+      <div class="wrap two">
+        <div>
+          <span class="eyebrow">3D BODY EXPLORER · 3D 인체모형</span>
+          <h2>아픈 부위를 눌러 보세요</h2>
+          <p class="lead">환자가 직접 몸을 돌려 보며 “왜 아픈지”를 이해합니다. 아래 점을 눌러 체험해 보세요.</p>
+          <div class="hot-info" id="hotInfo"><b>목</b><span>거북목·긴장성 두통의 구조를 3D로 보여 줍니다.</span></div>
+        </div>
+        <div class="body3d" id="body3d">
+          <svg viewBox="0 0 200 340" width="220" height="374" aria-label="3D 인체모형 샘플">
+            <defs><linearGradient id="bg" x1="0" x2="1"><stop offset="0" stop-color="#8FE0B0" stop-opacity=".9"/><stop offset="1" stop-color="#2D5A43" stop-opacity=".9"/></linearGradient></defs>
+            <circle cx="100" cy="36" r="24" fill="url(#bg)"/>
+            <rect x="88" y="58" width="24" height="18" rx="8" fill="url(#bg)"/>
+            <path d="M52 84 Q100 70 148 84 L158 190 Q150 202 140 194 L134 120 L134 220 L126 330 L106 330 L100 230 L94 330 L74 330 L66 220 L66 120 L60 194 Q50 202 42 190 Z" fill="url(#bg)" opacity=".92"/>
+            <g class="hot" data-h="neck" data-t="목" data-d="거북목·긴장성 두통의 구조를 3D로 보여 줍니다."><circle cx="100" cy="68" r="7"/></g>
+            <g class="hot" data-h="shoulder" data-t="어깨" data-d="오십견·회전근개 문제를 단계별로 설명합니다."><circle cx="68" cy="92" r="7"/></g>
+            <g class="hot" data-h="lumbar" data-t="허리" data-d="디스크·협착의 위치와 추나 치료 원리를 보여 줍니다."><circle cx="100" cy="150" r="7"/></g>
+            <g class="hot" data-h="knee" data-t="무릎" data-d="관절 연골·통증 구조와 생활 속 관리법을 설명합니다."><circle cx="86" cy="262" r="7"/></g>
+          </svg>
+        </div>
+      </div>
+    </section>`, 'body3d');
+
+  const columns = `
+    <section class="sec" id="sec-col">
+      <div class="wrap">
+        <span class="eyebrow">HEALTH COLUMN · 오늘의 건강 칼럼</span>
+        <h2>${idx === 0 ? '건강 칼럼 (자동 발행 미지원)' : `원장님 대신 ${colCount}건/월 칼럼이 올라갑니다`}</h2>
+        <p class="lead">${idx === 0 ? '스탠다드는 칼럼을 원장님이 직접 작성해 올리는 방식입니다. 자동 발행·의료법 검수·검색 등록은 포함되지 않습니다.' : (idx === 1 ? '프로페셔널은 월 8건의 텍스트 칼럼이 자동 발행됩니다. 이미지·월 15건 확장은 시그니처에서 열립니다.' : '시그니처는 월 15건 칼럼 + 상·중·하 3단 맞춤 화보가 자동 발행됩니다.')}</p>
+        ${idx === 0
+          ? wrap('columnsAuto', `<div class="col-grid">${colList(true)}</div>`, 'columnsAuto')
+          : (idx === 1
+            ? `<div class="feat open" id="columnsAuto"><div class="col-grid">${colList(false)}</div></div>
+               ${wrap('columnsFull', `<div class="col-grid">${colList(true)}</div>`, 'columnsFull')}`
+            : `<div class="feat open" id="columnsFull"><div class="col-grid">${colList(true)}</div></div>`)}
+      </div>
+    </section>`;
+
+  const qna = wrap('qna', `
+    <section class="sec alt" id="sec-qna">
+      <div class="wrap">
+        <span class="eyebrow">Q&A · 무엇이든 물어보세요</span>
+        <h2>망설이는 환자가 질문을 남기는 곳</h2>
+        <div class="qa">
+          <div class="qa-list">
+            <div class="qa-i"><b>Q. 성장판이 열려 있는지 어떻게 아나요?</b><span>A. 초음파 성장판 검사로 확인합니다. 원장이 직접 상담해 드립니다. <i>비공개 질문</i></span></div>
+            <div class="qa-i"><b>Q. 한약이 간에 무리가 가지 않나요?</b><span>A. 복용 전·후 간 기능 지표를 함께 확인하며 처방합니다. <i>비공개 질문</i></span></div>
+          </div>
+          <form class="qa-form" onsubmit="event.preventDefault();toast('샘플입니다. 실제 사이트에서는 원장님께 비공개로 전달됩니다.')">
+            <input placeholder="궁금하신 점을 남겨 주세요 (비공개)"><button class="btn">질문 남기기</button>
+          </form>
+        </div>
+      </div>
+    </section>`, 'qna');
+
+  const bars = [34, 41, 38, 52, 47, 63, 58, 71, 66, 80, 76, 92, 88, 104];
+  const stats = wrap('stats', `
+    <section class="sec dark" id="sec-stats">
+      <div class="wrap">
+        <span class="eyebrow">MASTER STATS · 마스터 전용 상세 통계 센터</span>
+        <h2>누가, 언제, 어디서 들어와 무엇을 눌렀는지</h2>
+        <div class="stat-grid">
+          <div class="st"><small>14일 방문 추이 (샘플 데이터)</small><div class="bars">${bars.map((b) => `<i style="height:${b}%"></i>`).join('')}</div></div>
+          <div class="st"><small>유입 경로</small><ul><li>네이버 검색 <b>46%</b></li><li>네이버 플레이스 <b>24%</b></li><li>AI 검색(GEO) <b>9%</b></li><li>인스타그램 <b>8%</b></li></ul></div>
+          <div class="st"><small>예약 클릭 전환</small><ul><li>전화 상담 <b>31건</b></li><li>카톡 예약 <b>18건</b></li><li>네이버 예약 <b>22건</b></li><li>길안내 <b>40건</b></li></ul></div>
+        </div>
+        <p class="fine">※ 샘플 화면의 숫자는 이해를 돕기 위한 예시이며 실제 성과가 아닙니다.</p>
+      </div>
+    </section>`, 'stats');
+
+  const location = `
+    <section class="sec" id="sec-loc">
+      <div class="wrap">
+        <span class="eyebrow">LOCATION · 오시는 길 · 진료시간 · 비급여 안내</span>
+        <h2>찾아오는 길과 비급여 수가를 한곳에서</h2>
+        <div class="loc-grid">
+          <div class="box"><h3>🕒 진료시간</h3><table class="tb"><tr><td>평일</td><td>09:00 ~ 18:30</td></tr><tr><td>점심</td><td>13:00 ~ 14:00</td></tr><tr><td>토요일</td><td>09:00 ~ 14:00</td></tr><tr><td>일·공휴일</td><td>휴진</td></tr></table></div>
+          <div class="box"><h3>📍 4대 내비 원클릭 길안내</h3><div class="navs"><span>네이버지도</span><span>구글지도</span><span>티맵</span><span>카카오맵</span></div><p class="fine">버튼을 누르면 모바일 앱이 열리고 한의원으로 바로 안내됩니다.</p></div>
+          <div class="box wide"><h3>🧾 비급여 진료비용 안내표 <small>(의료법 제45조 고지)</small></h3>
+            <table class="tb"><tr><th>구분</th><th>항목</th><th>금액(예시)</th></tr>
+              <tr><td>맞춤 탕약</td><td>체질 맞춤 치료 한약 · 15일~1개월</td><td>220,000 ~ 450,000원</td></tr>
+              <tr><td>약침</td><td>정제 약침 · 1회</td><td>10,000 ~ 30,000원</td></tr>
+              <tr><td>특화 한약</td><td>키 성장 맞춤 한약 · 1개월</td><td>350,000 ~ 550,000원</td></tr>
+            </table>
+            <p class="fine">※ 샘플 금액입니다. 실제 수가는 원장님이 셀프 스튜디오에서 직접 입력·수정합니다.</p></div>
+        </div>
+      </div>
+    </section>`;
+
+  /* 셀프 수정 범위 */
+  const editRows = [
+    ['진료시간 · 점심시간 · 휴진일 직접 수정', 0],
+    ['임시 휴진 · 명절 공지 배너', 0],
+    ['비급여 수가표 직접 수정', 0],
+    ['계절별 팝업 · 배너 템플릿', 1],
+    ['AI 의료법 금지어 경고', 1],
+    ['질환 카드 페이지 직접 무제한 증설', 2],
+    ['의료법에 맞는 대체 문구 AI 자동 작성', 2],
+    ['원장님 사진 기반 화보 생성', 2],
+  ];
+  const editScope = `
+    <section class="sec alt" id="sec-edit">
+      <div class="wrap">
+        <span class="eyebrow">SELF STUDIO · 직접 수정 범위</span>
+        <h2>${TIER_NAME[idx]}에서 원장님이 직접 고칠 수 있는 것</h2>
+        <div class="edit">
+          ${editRows.map((r) => `<div class="er ${r[1] <= idx ? 'ok' : 'no'}"><span>${r[1] <= idx ? '✓' : '🔒'}</span><b>${r[0]}</b><em>${r[1] <= idx ? '사용 가능' : TIER_NAME[r[1]] + '부터'}</em></div>`).join('')}
+          ${can('qrPop') ? '' : `<div class="er no"><span>🔒</span><b>대기실 QR 자가진단 POP · VIP 최우선 착수</b><em>시그니처 전용</em></div>`}
+          ${can('qrPop') ? `<div class="er ok"><span>✓</span><b>대기실 QR 자가진단 POP · VIP 최우선 착수</b><em>사용 가능</em></div>` : ''}
+        </div>
+      </div>
+    </section>`;
+
+  /* 업셀 CTA */
+  const upsell = idx >= 2 ? `
+    <section class="sec dark cta" id="sec-cta">
+      <div class="wrap center">
+        <h2>시그니처에서는 모든 기능이 열려 있습니다</h2>
+        <p class="lead">이 화면 그대로, 원장님 한의원 이름으로 만든 무료 시안을 먼저 보여 드립니다.</p>
+        <a class="btn gold" href="b2b-landing.html#apply">시그니처 무료 시안 받기</a>
+        <p class="fine">※ 결제 전에 시안을 먼저 확인하실 수 있습니다.</p>
+      </div>
+    </section>` : `
+    <section class="sec dark cta" id="sec-cta">
+      <div class="wrap center">
+        <span class="eyebrow">LOCKED FEATURES · 이 샘플에서 사용하지 못한 기능 ${locked.length}개</span>
+        <h2>“어, 이거 내가 필요한 건데?” 싶은 기능이 있으셨나요?</h2>
+        <div class="lock-chips">${locked.map((k) => `<button type="button" class="lc" data-open-lock="${k}">🔒 ${F[k].short}</button>`).join('')}</div>
+        <p class="lead">${diffText(idx)}</p>
+        <div class="cta-row"><a class="btn gold" href="sample-signature.html">시그니처 샘플에서 전부 써보기 →</a><a class="btn line" href="b2b-landing.html#apply">시그니처 무료 시안 받기</a></div>
+        <p class="fine">※ 금액은 b2b 안내 페이지의 정찰가 기준(구축비 VAT 별도, 월 케어 VAT 포함)입니다.</p>
+      </div>
+    </section>`;
+
+  const tierBar = `
+  <div class="tierbar">
+    <div class="tb-in">
+      <span class="tb-badge t${idx}">SAMPLE · ${t.name}</span>
+      <nav class="tb-sw">
+        ${TIERS.map((x, i) => `<a href="${x.file}" class="${i === idx ? 'on' : ''}">${x.name}</a>`).join('')}
+      </nav>
+      ${idx < 2 ? `<button class="tb-lock" type="button" id="lockSum">🔒 사용 못 하는 기능 <b>${locked.length}</b>개</button>` : `<span class="tb-all">✅ 모든 기능 사용 가능</span>`}
+      <a class="tb-back" href="b2b-landing.html#plans">← 가격표로</a>
+    </div>
+  </div>`;
+
+  const header = `
+  <header class="site">
+    <div class="wrap hd">
+      <a class="brand" href="#top"><i></i><span>○○한의원 대전본점 <small>(샘플)</small></span></a>
+      <div class="hn">
+        <a class="pill amber ${can('body3d') ? '' : 'dim'}" href="${can('body3d') ? '#sec-3d' : '#sec-3d'}">💡 3D 진료 살펴보기 ${navLock('body3d')}</a>
+        <a class="pill ink ${can('qna') ? '' : 'dim'}" href="#sec-qna">💬 무엇이든 물어보세요 ${navLock('qna')}</a>
+        <a class="pill" href="#sec-cards">✦ 6대 진료카드</a>
+        <a class="pill solid" href="#sec-loc">예약·상담 ↗</a>
+      </div>
+    </div>
+  </header>`;
+
+  const hero = `
+  <section class="hero" id="top">
+    <div class="wrap">
+      <span class="eyebrow">FATHER DOCTOR PHILOSOPHY · 내 가족에게 처방하고 시술한 치료만 합니다</span>
+      <h1>아빠 한의사 · ○○한의원 대전본점</h1>
+      <p class="lead">내 가족에게 처방하고 시술한 치료만 하는, 내 가족 주치의. <small>(샘플 문구)</small></p>
+      <div class="hero-cta"><a class="btn" href="#sec-loc" onclick="toast('샘플입니다. 실제 사이트에서는 전화 연결됩니다.');return false">📞 전화 상담</a><a class="btn ghost" href="#" onclick="toast('샘플입니다. 실제 사이트에서는 카카오톡 채널로 연결됩니다.');return false">💬 카톡 예약</a><a class="btn ghost" href="#" onclick="toast('샘플입니다. 실제 사이트에서는 네이버 예약으로 연결됩니다.');return false">📍 네이버 예약</a></div>
+    </div>
+  </section>`;
+
+  const modal = `
+  <div class="modal" id="modal" hidden>
+    <div class="m-card" role="dialog" aria-modal="true">
+      <button type="button" class="m-x" id="mX" aria-label="닫기">✕</button>
+      <div class="m-ic">🔒</div>
+      <small id="mTier"></small>
+      <h3 id="mTitle"></h3>
+      <p id="mWhy"></p>
+      <div class="m-diff" id="mDiff"></div>
+      <div class="m-btns"><a class="btn gold" id="mTry" href="sample-signature.html">시그니처 샘플에서 직접 써보기</a><a class="btn line" href="b2b-landing.html#apply">시그니처 무료 시안 받기</a></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" hidden></div>`;
+
+  const fbar = `<div class="fbar"><span>📞 전화상담</span><span>💬 카톡예약</span><span>📍 네이버예약</span></div>`;
+
+  const css = `
+  :root{--g:#2D5A43;--g2:#3D7357;--tint:#E8F2EC;--mint:#8FE0B0;--ink:#12261C;--hanji:#F5F1E8;--hanji2:#EFE9DC;--line:rgba(45,90,67,.16);--red:#B4412F}
+  *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+  body{font-family:'Pretendard',-apple-system,system-ui,sans-serif;background:var(--hanji);color:var(--ink);line-height:1.7;word-break:keep-all;padding-bottom:76px}
+  a{color:inherit;text-decoration:none}.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .tierbar{position:sticky;top:0;z-index:90;background:#0B2418;color:#fff;border-bottom:1px solid rgba(143,224,176,.35)}
+  .tb-in{max-width:1080px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .tb-badge{font-size:11.5px;font-weight:900;letter-spacing:.06em;padding:5px 12px;border-radius:999px;background:#fff;color:#0B2418}
+  .tb-badge.t2{background:linear-gradient(135deg,#8FE0B0,#3FAE78)}
+  .tb-sw{display:flex;gap:4px;background:rgba(255,255,255,.08);padding:3px;border-radius:999px}
+  .tb-sw a{font-size:12.5px;font-weight:800;padding:5px 14px;border-radius:999px;color:rgba(255,255,255,.75)}
+  .tb-sw a.on{background:var(--mint);color:#0B2418}
+  .tb-lock{margin-left:auto;font-family:inherit;border:1px solid #F3A28F;background:rgba(180,65,47,.25);color:#fff;font-size:12.5px;font-weight:800;padding:6px 14px;border-radius:999px;cursor:pointer}
+  .tb-lock b{color:#FFC9BC;font-size:15px}.tb-all{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--mint)}
+  .tb-back{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.7);margin-left:6px}
+  header.site{background:rgba(245,241,232,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);position:sticky;top:46px;z-index:80}
+  .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 22px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:900}.brand i{width:10px;height:10px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px rgba(45,90,67,.18)}
+  .brand small{font-weight:600;color:#6B7D72}.hn{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{font-size:12.5px;font-weight:800;padding:8px 14px;border-radius:999px;border:1px solid rgba(74,53,37,.3);background:#fff;color:#4A3525;position:relative}
+  .pill.amber{background:#FEF3C7;border-color:#F59E0B;color:#92400E}.pill.ink{background:#0F172A;border-color:#0F172A;color:#fff}.pill.solid{background:var(--g);border-color:var(--g);color:#fff}
+  .pill.dim{opacity:.62}.nl{margin-left:4px}
+  .hero{padding:84px 0 70px;background:linear-gradient(160deg,#0B2418 0%,#14452F 70%,#1F5A3F 100%);color:#fff}
+  .hero h1{font-size:clamp(1.9rem,5vw,3.2rem);font-weight:900;line-height:1.3;margin:10px 0 14px}.hero .lead{color:rgba(255,255,255,.85)}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .eyebrow{display:inline-block;font-size:11.5px;font-weight:900;letter-spacing:.08em;color:var(--g)}.hero .eyebrow,.dark .eyebrow{color:var(--mint)}
+  .sec{padding:70px 0}.sec.alt{background:var(--hanji2)}.sec.dark{background:linear-gradient(160deg,#0B2418,#14452F);color:#fff}
+  .sec h2{font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:900;line-height:1.38;margin:6px 0 12px}
+  .lead{font-size:1.04rem;color:#41524A;max-width:760px}.dark .lead{color:rgba(255,255,255,.82)}
+  .fine{font-size:12px;color:#6B7D72;margin-top:12px}.dark .fine{color:rgba(255,255,255,.6)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;font-family:inherit;font-weight:900;font-size:14.5px;padding:13px 24px;border-radius:999px;background:var(--g);color:#fff}
+  .btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.5)}.btn.gold{background:linear-gradient(135deg,#8FE0B0,#3FAE78);color:#0B2418}
+  .btn.line{background:transparent;border:1.5px solid rgba(255,255,255,.6);color:#fff}
+  .sb{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+  @media(max-width:860px){.sb{grid-template-columns:repeat(3,1fr)}}
+  .sb-cut{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;min-height:90px}.sb-cut b{display:block;color:var(--g);font-size:12px}.sb-cut span{font-size:.86rem;font-weight:700}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}@media(max-width:860px){.cards{grid-template-columns:1fr 1fr}}@media(max-width:520px){.cards{grid-template-columns:1fr}}
+  .ccard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:block}.cimg{height:130px;background-size:cover;background-position:center}
+  .cin{padding:14px 16px}.cin b{display:block;font-size:1.02rem}.cin span{display:block;font-size:.86rem;color:#51635A}.cin em{display:inline-block;margin-top:8px;font-style:normal;font-size:12px;font-weight:800;color:var(--g)}
+  .ccard.add{border:2px dashed var(--g2);background:var(--tint)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center}@media(max-width:760px){.two{grid-template-columns:1fr}}
+  .dimg{height:320px;border-radius:22px;background-size:cover;background-position:center 20%;box-shadow:0 18px 40px rgba(18,38,28,.15)}
+  .ticks{list-style:none;margin-top:14px}.ticks li{padding:4px 0 4px 24px;position:relative;font-size:.95rem}.ticks li:before{content:"✓";position:absolute;left:0;color:var(--g);font-weight:900}
+  .check{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;max-width:640px}.check label{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);cursor:pointer;font-size:.97rem}.check input{accent-color:var(--g);width:18px;height:18px;margin-top:3px}
+  .check .btn{margin-top:14px}.ck-res{margin-top:14px;padding:14px 16px;border-radius:14px;background:var(--tint);border:1px solid #B9D7C6;font-weight:700}
+  .body3d{display:flex;justify-content:center;perspective:900px}.body3d svg{transform-style:preserve-3d;transition:transform .15s;filter:drop-shadow(0 20px 30px rgba(0,0,0,.4))}
+  .hot circle{fill:#fff;stroke:#FF8A6B;stroke-width:3;cursor:pointer;animation:pulse 1.6s infinite}.hot.on circle{fill:#FF8A6B}
+  @keyframes pulse{0%,100%{r:6}50%{r:9}}.hot-info{margin-top:16px;padding:16px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(143,224,176,.45)}.hot-info b{display:block;color:var(--mint)}
+  .col-grid{display:grid;gap:14px;margin-top:20px}.col-card{display:grid;grid-template-columns:260px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;align-items:center}
+  @media(max-width:700px){.col-card{grid-template-columns:1fr}}
+  .col-imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.col-imgs img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px}
+  .col-noimg{height:70px;border-radius:12px;background:#EEF2EF;color:#7C8C83;text-align:center;font-weight:800;font-size:.85rem;padding-top:14px}
+  .col-tx small{color:var(--g);font-weight:800;font-size:11.5px}.col-tx h4{font-size:1.04rem;margin:3px 0}.col-tx p{font-size:.9rem;color:#51635A}
+  .qa{max-width:720px;margin-top:20px}.qa-i{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}.qa-i b{display:block}.qa-i span{font-size:.92rem;color:#51635A}.qa-i i{font-style:normal;font-size:11px;font-weight:800;background:var(--tint);color:var(--g);padding:2px 8px;border-radius:999px;margin-left:6px}
+  .qa-form{display:flex;gap:8px;margin-top:12px}.qa-form input{flex:1;padding:13px 16px;border-radius:999px;border:1px solid var(--line);font-family:inherit}
+  .stat-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;margin-top:22px}@media(max-width:860px){.stat-grid{grid-template-columns:1fr}}
+  .st{background:rgba(255,255,255,.07);border:1px solid rgba(143,224,176,.35);border-radius:16px;padding:16px}.st small{color:var(--mint);font-weight:800}.st ul{list-style:none;margin-top:8px}.st li{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,.18);font-size:.92rem}
+  .bars{display:flex;align-items:flex-end;gap:5px;height:130px;margin-top:12px}.bars i{flex:1;background:linear-gradient(180deg,#8FE0B0,#2D5A43);border-radius:4px 4px 0 0}
+  .loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}@media(max-width:760px){.loc-grid{grid-template-columns:1fr}}.loc-grid .wide{grid-column:1/-1}
+  .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}.box h3{font-size:1.04rem;margin-bottom:10px}.box h3 small{font-weight:600;color:#6B7D72}
+  .tb{width:100%;border-collapse:collapse;font-size:.92rem}.tb td,.tb th{padding:9px 6px;border-bottom:1px solid #E3ECE6;text-align:left}.tb th{color:var(--g);font-size:.8rem}
+  .navs{display:flex;gap:8px;flex-wrap:wrap}.navs span{padding:9px 14px;border-radius:999px;background:var(--tint);border:1px solid #B9D7C6;font-weight:800;font-size:.85rem;color:var(--g)}
+  .edit{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}@media(max-width:760px){.edit{grid-template-columns:1fr}}
+  .er{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}.er span{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:900;flex:none}
+  .er.ok span{background:var(--tint);color:var(--g)}.er.no{background:#FBF1EE;border-color:#EBC5BB}.er.no span{background:#fff}.er b{flex:1;font-size:.92rem}.er em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--g)}.er.no em{color:var(--red)}
+  .cta{padding:84px 0}.center{text-align:center}.center .lead{margin:0 auto}
+  .lock-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0}.lc{font-family:inherit;border:1px solid #F3A28F;background:rgba(180,65,47,.22);color:#fff;font-weight:800;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer}
+  .cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+  /* 잠금 */
+  .feat{position:relative}
+  .feat.locked{overflow:hidden}
+  .feat.locked .feat-body{filter:blur(3.5px) saturate(.7);pointer-events:none;user-select:none}
+  .feat.locked .sec{padding:56px 0}
+  .lock-ov{position:absolute;inset:0;width:100%;border:0;cursor:pointer;font-family:inherit;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;background:linear-gradient(180deg,rgba(11,36,24,.55),rgba(11,36,24,.78))}
+  .lock-ic{font-size:2.2rem}.lock-ov b{font-size:clamp(1.05rem,2.4vw,1.4rem)}.lock-sub{font-size:.9rem;color:rgba(255,255,255,.8)}
+  .lock-cta{margin-top:6px;padding:10px 20px;border-radius:999px;background:linear-gradient(135deg,#FF9C7E,#E2603F);font-weight:900;font-size:.9rem}
+  .ccard.add .feat-body{}
+  .feat.locked .ccard.add{min-height:150px}
+  .cards .feat.locked{border-radius:18px;min-height:150px}
+  .cards .feat.locked .lock-ov b{font-size:.95rem}.cards .feat.locked .lock-ic{font-size:1.5rem}.cards .feat.locked .lock-sub{display:none}.cards .feat.locked .lock-cta{font-size:.78rem;padding:7px 12px}
+  /* 모달 */
+  .modal{position:fixed;inset:0;z-index:200;background:rgba(5,18,12,.7);display:grid;place-items:center;padding:20px}.modal[hidden]{display:none}
+  .m-card{position:relative;background:#fff;border-radius:24px;max-width:520px;width:100%;padding:30px 28px;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+  .m-x{position:absolute;right:14px;top:12px;border:0;background:none;font-size:20px;cursor:pointer}.m-ic{font-size:2rem}.m-card small{font-weight:900;color:var(--red);font-size:12px}
+  .m-card h3{font-size:1.3rem;margin:4px 0 8px}.m-card p{color:#41524A;font-size:.97rem}
+  .m-diff{margin:14px 0;padding:12px 14px;border-radius:12px;background:var(--tint);border:1px solid #B9D7C6;font-size:.88rem;color:#14392A}
+  .m-btns{display:flex;gap:8px;flex-wrap:wrap}.m-card .btn.line{border-color:var(--g);color:var(--g)}
+  .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#0B2418;color:#fff;padding:12px 20px;border-radius:999px;z-index:300;font-size:.9rem;font-weight:700;max-width:92vw}.toast[hidden]{display:none}
+  .fbar{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(11,36,24,.96);display:flex;gap:8px;justify-content:center;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
+  .fbar span{flex:1;max-width:220px;text-align:center;padding:11px 8px;border-radius:999px;background:var(--mint);color:#0B2418;font-weight:900;font-size:.88rem}
+  `;
+
+  const js = `
+  var LOCK=${JSON.stringify(Object.fromEntries(Object.keys(F).map((k) => [k, { n: F[k].name, why: F[k].why, min: TIER_NAME[F[k].min] }])))};
+  var CUR=${idx}, CURN=${JSON.stringify(TIER_NAME[idx])}, DIFF=${JSON.stringify(diffText(idx))};
+  var modal=document.getElementById('modal');
+  function openLock(k){var f=LOCK[k];if(!f)return;
+    document.getElementById('mTier').textContent=CURN+'에서는 사용 불가 · '+f.min+'부터 사용 가능';
+    document.getElementById('mTitle').textContent=f.n;
+    document.getElementById('mWhy').textContent=f.why;
+    document.getElementById('mDiff').textContent=DIFF;
+    document.getElementById('mTry').href='sample-signature.html#'+({columnsFull:'columnsFull',columnsAuto:'columnsFull',cardsUnlimited:'cardsUnlimited',body3d:'body3d',stats:'stats',qna:'qna',checkpoint:'checkpoint',storyboard:'sec-story',aiLaw:'sec-edit',photo:'sec-edit',qrPop:'sec-edit'}[k]||'top');
+    modal.hidden=false;}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-open-lock]');if(b){openLock(b.getAttribute('data-open-lock'));return;}if(e.target===modal||e.target.id==='mX')modal.hidden=true;});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')modal.hidden=true;});
+  var ls=document.getElementById('lockSum');if(ls)ls.addEventListener('click',function(){document.getElementById('sec-cta').scrollIntoView({behavior:'smooth'});});
+  var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true;},2600);}
+  window.toast=toast;
+  var ckBtn=document.getElementById('ckBtn');if(ckBtn)ckBtn.addEventListener('click',function(){var n=document.querySelectorAll('[data-ck]:checked').length,r=document.getElementById('ckRes');r.hidden=false;r.textContent=n>=3?('체크 '+n+'개 · 진료 상담을 권해 드리는 단계입니다. 아래 버튼으로 바로 상담을 이어가세요. (샘플 안내)'):('체크 '+n+'개 · 우선 생활 습관을 점검해 보세요. 불편이 이어지면 상담을 권해 드립니다. (샘플 안내)');});
+  document.querySelectorAll('.hot').forEach(function(h){h.addEventListener('click',function(){document.querySelectorAll('.hot').forEach(function(x){x.classList.remove('on');});h.classList.add('on');document.getElementById('hotInfo').innerHTML='<b>'+h.dataset.t+'</b><span>'+h.dataset.d+'</span>';});});
+  var b3=document.getElementById('body3d');if(b3){var sv=b3.querySelector('svg');b3.addEventListener('mousemove',function(e){var r=b3.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5;sv.style.transform='rotateY('+(x*36)+'deg)';});b3.addEventListener('mouseleave',function(){sv.style.transform='';});}
+  `;
+
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>[샘플] ${t.name} 단계 — www.bareunhaniwon.com 구조 | 바른 메디테크</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>${css}</style>
+</head>
+<body>
+${tierBar}
+${header}
+${hero}
+${wrap('storyboard', storyboard, 'storyboard')}
+${cards}
+${director}
+${checkpoint}
+${body3d}
+${columns}
+${qna}
+${stats}
+${location}
+${editScope}
+${upsell}
+${fbar}
+${modal}
+<script>${js}</script>
+</body>
+</html>
+`;
+}
+
+TIERS.forEach((t, i) => {
+  const out = path.join(__dirname, t.file);
+  fs.writeFileSync(out, render(t, i), 'utf8');
+  console.log('✔', t.file, '(잠금 기능 ' + lockedList(i).length + '개)');
+});
