@@ -1688,8 +1688,16 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
       if (ext === '.html' || ext === '.json') {
         headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
       }
+      let outContent = content;
+      // 샘플 모드(?sample=1): 방문 통계·Q&A 등 쓰기 요청을 막고 읽기 전용으로 보여 줍니다 (b2b 샘플 페이지용)
+      if (ext === '.html' && /(?:\?|&)sample=1(?:&|$)/.test(req.url || '')) {
+        const guard = '<script>(function(){window.__BAREUN_VISIT_TRACKER_LOADED__=true;window.__BAREUN_SAMPLE_MODE__=true;' +
+          'var of=window.fetch;window.fetch=function(u,o){var m=((o&&o.method)||"GET").toUpperCase();if(m!=="GET"&&m!=="HEAD"){try{parent.postMessage({bareunSample:"blocked"},"*")}catch(e){}return Promise.resolve(new Response(JSON.stringify({ok:true,sample:true}),{status:200,headers:{"Content-Type":"application/json"}}));}return of.apply(this,arguments)};' +
+          'try{navigator.sendBeacon=function(){return true}}catch(e){}})();</script>';
+        outContent = Buffer.from(content.toString('utf8').replace(/<head[^>]*>/i, (m) => m + guard), 'utf8');
+      }
       res.writeHead(200, headers);
-      res.end(content);
+      res.end(outContent);
     }
   });
 });
