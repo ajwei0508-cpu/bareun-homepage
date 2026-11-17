@@ -2891,6 +2891,94 @@ function buildPageHtml(page) {
   if (cardStyle.showNumBadge === false) bodyExtraClasses.push('hide-card-num-badge');
   if (cardStyle.showExamHud === true) bodyExtraClasses.push('show-exam-hud');
 
+  const customLayoutColorsCss = (() => {
+    const lc = page.theme && page.theme.layoutColors;
+    if (!lc || !lc.enabled) return '';
+    const pickText = (hex, darkTxt, lightTxt) => {
+      const m = String(hex || '').trim().match(/^#?([0-9a-f]{6})$/i);
+      if (!m) return darkTxt;
+      const n = parseInt(m[1], 16);
+      const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+      const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      return lum > 0.56 ? darkTxt : lightTxt;
+    };
+    const bannerBg = lc.bannerBg || '#2D5A43';
+    const headerBg = lc.headerBg || '#FFFFFF';
+    const bodyBg   = lc.bodyBg   || '#FFFFFF';
+    const checkBg  = lc.checkBg  || '#F5F1E8';
+    const accentBg = lc.accentBg || '#2D5A43';
+
+    const bannerFg = pickText(bannerBg, '#171614', '#FFFFFF');
+    const headerFg = pickText(headerBg, '#171614', '#FFFFFF');
+    const bodyFg   = pickText(bodyBg,   '#171614', '#F8FAFC');
+    const bodySub  = pickText(bodyBg,   '#5E4736', 'rgba(248,250,252,0.78)');
+    const checkFg  = pickText(checkBg,  '#171614', '#F8FAFC');
+    const accentFg = pickText(accentBg, '#0B1F16', '#FFFFFF');
+
+    return `
+    /* Studio Per-Layout Custom Color Overrides */
+    body.theme-hanji .cta-nudge-msg,
+    body.theme-hanji .daddy-doc-promise-card {
+      background: ${bannerBg} !important;
+      color: ${bannerFg} !important;
+      border-color: rgba(0,0,0,0.12) !important;
+    }
+    body.theme-hanji .daddy-doc-promise-badge,
+    body.theme-hanji .daddy-doc-promise-text {
+      color: ${bannerFg} !important;
+    }
+    body.theme-hanji #header {
+      background: ${headerBg} !important;
+      border-bottom-color: rgba(128,128,128,0.22) !important;
+    }
+    body.theme-hanji .brand-logo {
+      color: ${headerFg} !important;
+    }
+    body.theme-hanji .back-pill-btn,
+    body.theme-hanji .clinic-tab:not(.active) {
+      color: ${headerFg} !important;
+      background: rgba(128,128,128,0.12) !important;
+    }
+    body.theme-hanji #project-details-meta {
+      background: ${bodyBg} !important;
+      color: ${bodyFg} !important;
+    }
+    body.theme-hanji #project-details-title {
+      color: ${bodyFg} !important;
+    }
+    body.theme-hanji #project-details-desc p:first-child,
+    body.theme-hanji .meta-subtitle-en {
+      color: ${bodySub} !important;
+    }
+    body.theme-hanji .empathy-checklist-card,
+    body.theme-hanji .empathy-check-item:not(.checked) {
+      background: ${checkBg} !important;
+      border-color: rgba(128,128,128,0.22) !important;
+    }
+    body.theme-hanji .empathy-check-text,
+    body.theme-hanji .docent-active-caption {
+      color: ${checkFg} !important;
+    }
+    body.theme-hanji .brand-logo-mark,
+    body.theme-hanji .clinic-tab.active,
+    body.theme-hanji .header-talk-btn,
+    body.theme-hanji #project-details-launch-cta,
+    body.theme-hanji .empathy-check-item.checked .empathy-check-box,
+    body.theme-hanji .modal-submit-btn {
+      background: ${accentBg} !important;
+      border-color: ${accentBg} !important;
+      color: ${accentFg} !important;
+    }
+    body.theme-hanji .meta-eyebrow,
+    body.theme-hanji .empathy-checklist-title,
+    body.theme-hanji .detail-trust-seal-num {
+      color: ${pickText(bodyBg, accentBg, '#8FE0B0')} !important;
+    }
+    body.theme-hanji .project-details-item.is-active-plate {
+      border-color: ${accentBg} !important;
+    }`;
+  })();
+
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6563,7 +6651,7 @@ function buildPageHtml(page) {
       background: #2D5A43;
       border-color: #2D5A43;
       color: #FFFFFF;
-    }
+    }${customLayoutColorsCss}
 
     /* High-Visibility Large Text Mode for Detail Pages */
     body.high-visibility-mode #project-details-meta {

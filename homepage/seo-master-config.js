@@ -245,15 +245,6 @@ const SEO_PAGES = {
     breadcrumbName: '홈페이지 샘플',
     robots: 'noindex, nofollow'
   },
-  'sample-studio': {
-    file: 'sample-studio.html',
-    path: '/sample-studio/',
-    title: '원장님 전용 커스텀 스튜디오 체험판 (수정 TEST) | 바른 메디테크',
-    description: '스토리보드, 질환 카드, 건강 글 문구와 사진, 한의원 브랜드 대표 색상을 직접 변경해 보는 원장님 전용 실시간 커스텀 스튜디오 체험판입니다.',
-    preloadImg: DEFAULT_OG_IMAGE,
-    breadcrumbName: '커스텀 스튜디오 체험',
-    robots: 'noindex, nofollow'
-  },
   'b2b-landing': {
     file: 'b2b-landing.html',
     path: '/b2b/',

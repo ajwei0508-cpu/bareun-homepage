@@ -10,4 +10,4 @@ const path = require('path');
 
 const srcHtml = fs.readFileSync(path.join(__dirname, 'sample.html'), 'utf8');
 fs.writeFileSync(path.join(__dirname, 'sample.html'), srcHtml, 'utf8');
-console.log('✔ sample.html (기능 이름 표시 + 프로 세모 클릭 시 차이점 안내창 + 온라인/로컬 연동) 동기화 완료');
+console.log('✔ sample.html (순수 홈페이지 전용 샘플 · 커스텀 메뉴 제거 · 프로 세모 차이점 안내창) 동기화 완료');

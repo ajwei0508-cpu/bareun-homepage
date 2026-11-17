@@ -40,6 +40,10 @@
   
 
   
+
+  
+
+  
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <style>
@@ -423,6 +427,167 @@
     .sd-pane label small{font-weight:600}
     .pv-card[hidden],.pv-body[hidden]{display:none}
     .aiex-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;align-items:start}@media(max-width:860px){.aiex-grid{grid-template-columns:1fr}}.aiex-grid .aiex{margin:0;position:relative}.aiex figcaption b{color:#14392A}.aibadge{position:absolute;left:12px;top:12px;z-index:2;background:linear-gradient(135deg,#8FE0B0,#3FAE78);color:#0B2418;font-weight:900;font-size:12.5px;padding:6px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.2)}.aibadge.b2{background:#fff;border:1.5px solid #3FAE78}
+
+    /* ===== v9.16 최종 정본: 1회 노출 쇼케이스 + 5대 레이아웃별 색감 커스텀 + 고객호감 AI + 무료 디자인 배급 ===== */
+    .tour-duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+    @media(max-width:820px){.tour-duo{grid-template-columns:1fr}}
+    .tour-card{padding:28px 26px;border-radius:22px;background:rgba(255,255,255,.06);border:1.5px solid rgba(143,224,176,.36);display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+    .tour-card.sample-hl{background:linear-gradient(160deg,rgba(143,224,176,.18),rgba(255,255,255,.05));border-color:var(--gold-hi)}
+    .tour-card .tc-badge{display:inline-block;width:fit-content;font-size:11.5px;font-weight:900;letter-spacing:.04em;padding:4px 11px;border-radius:999px;background:rgba(143,224,176,.18);color:var(--gold-hi);margin-bottom:8px}
+    .tour-card h3{font-size:1.22rem;font-weight:900;color:#fff;margin-bottom:6px}
+    .tour-card p{font-size:.93rem;color:rgba(253,251,247,.82);line-height:1.65}
+    .tour-card .btn{width:100%}
+    .proof-dark .proof{background:rgba(255,255,255,.06);border-color:rgba(143,224,176,.3)}
+    .proof-dark .proof .n{color:var(--gold-hi)}
+    .proof-dark .proof h3{color:#fff}
+    .proof-dark .proof p{color:rgba(253,251,247,.78)}
+    .bridge-next{margin-top:30px;padding:18px 22px;border-radius:18px;background:rgba(255,255,255,.08);border:1px dashed rgba(143,224,176,.55);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .bridge-next span{font-size:.96rem;font-weight:700;color:#fff}
+
+    /* 스튜디오 5대 레이아웃별 동적 색상 변수 */
+    #sdemo{
+      --ly-banner-bg:#2D5A43;
+      --ly-banner-fg:#FFFFFF;
+      --ly-header-bg:#0B2418;
+      --ly-header-fg:#FFFFFF;
+      --ly-body-bg:#FAF7F0;
+      --ly-body-fg:#0B2418;
+      --ly-body-sub:#425249;
+      --ly-check-bg:#EBF4EF;
+      --ly-check-fg:#152A1F;
+      --ly-accent-bg:#2D5A43;
+      --ly-accent-fg:#FFFFFF;
+      --ly-eyebrow-fg:#2D5A43;
+      align-items:start;
+      grid-template-columns:1fr 1.08fr;
+    }
+    @media(max-width:920px){#sdemo{grid-template-columns:1fr}}
+
+    /* 5대 레이아웃별 색감 커스텀 바 */
+    .theme-studio-bar{margin-top:24px;background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:20px 22px;box-shadow:0 14px 36px rgba(15,42,30,.07)}
+    .tsb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .tsb-title{display:flex;align-items:center;gap:8px;font-size:1.04rem;font-weight:900;color:var(--ink)}
+    .tsb-title small{font-size:11.5px;font-weight:800;color:var(--green);background:var(--green-soft);padding:3px 10px;border-radius:999px}
+    .tsb-reset{border:1px solid #CFE0D5;background:#F6FAF7;color:#2D5A43;font-family:inherit;font-size:12px;font-weight:800;padding:6px 13px;border-radius:999px;cursor:pointer}
+    .tsb-reset:hover{background:var(--green);color:#fff;border-color:var(--green)}
+    .tsb-swatches{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+    .swatch-btn{font-family:inherit;display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;border:1.5px solid #D5E3DA;background:#fff;color:#1F3529;font-size:12px;font-weight:800;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+    .swatch-btn:hover{transform:translateY(-1px);border-color:var(--green)}
+    .swatch-btn[aria-pressed="true"]{border-color:var(--ink);background:#F2F7F4;box-shadow:0 4px 12px rgba(11,36,24,.1)}
+    .swatch-dots{display:inline-flex;align-items:center}
+    .swatch-dot{width:13px;height:13px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.18);forced-color-adjust:none}
+    .swatch-dot+.swatch-dot{margin-left:-4px}
+    .swatch-chk{font-size:11px;font-weight:900;display:none}
+    .swatch-btn[aria-pressed="true"] .swatch-chk{display:inline}
+
+    /* 5개 구역별 개별 컬러 피커 그리드 */
+    .layout-zones-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding-top:12px;border-top:1px dashed #DCE8E0}
+    @media(max-width:960px){.layout-zones-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){.layout-zones-grid{grid-template-columns:1fr 1fr}}
+    .lz-item{background:#F7FAF8;border:1.5px solid #D5E4DC;border-radius:14px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:6px;transition:border-color .15s,box-shadow .15s}
+    .lz-item:hover,.lz-item:focus-within{border-color:var(--green);background:#fff;box-shadow:0 6px 16px rgba(45,90,67,.12)}
+    .lz-label{font-size:11.5px;font-weight:900;color:#163526;display:flex;align-items:center;gap:4px;white-space:nowrap}
+    .lz-sub{font-size:10.5px;color:#5E7468;font-weight:600}
+    .lz-ctrl{display:flex;align-items:center;gap:6px}
+    .lz-wheel{width:28px;height:28px;border:2px solid #fff;border-radius:8px;padding:0;background:none;cursor:pointer;box-shadow:0 0 0 1px #9CC5AD;flex:none;forced-color-adjust:none}
+    .lz-hex{width:100%;min-width:0;padding:5px 6px;border-radius:7px;border:1px solid #CFE0D5;font-family:ui-monospace,Consolas,monospace;font-size:11.5px;font-weight:800;color:var(--ink);text-transform:uppercase;background:#fff}
+    .tsb-tip{margin-top:12px;padding-top:10px;border-top:1px dashed #DCE8E0;font-size:12.5px;color:#3B4A42;line-height:1.6}
+    .tsb-tip b{color:var(--green)}
+
+    /* 구역 하이라이트 효과 */
+    .zone-pulse{outline:3px solid #F59E0B !important;outline-offset:-3px;transition:outline .15s}
+
+    /* 탭 스크롤러 (단일 행 유지 + aria-selected 밑줄 도형 표시) */
+    .sd-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #E3EEE6;scroll-snap-type:inline proximity;-webkit-overflow-scrolling:touch}
+    .sd-tabs::-webkit-scrollbar{height:4px}
+    .sd-tabs::-webkit-scrollbar-thumb{background:#CFE0D5;border-radius:999px}
+    .sd-tabs button{flex:none;scroll-snap-align:start;position:relative;font-family:inherit;border:1.5px solid var(--line);background:#fff;font-weight:800;font-size:12.5px;padding:9px 13px;border-radius:12px;cursor:pointer;color:var(--brown);white-space:nowrap}
+    .sd-tabs button[aria-selected="true"]{background:var(--green);color:#fff;border-color:var(--green)}
+    .sd-tabs button[aria-selected="true"]::after{content:"";position:absolute;inset:auto 10px -7px;border-block-end:3px solid var(--green);border-radius:3px}
+
+    /* 각 탭 상단 수정 목적 & 작성 팁 코칭 카드 */
+    .purpose-tip-box{background:linear-gradient(160deg,#F4FAF6,#EBF5EE);border:1px solid #B9D7C6;border-left:4px solid var(--green);border-radius:14px;padding:13px 15px;margin-bottom:14px;font-size:12.5px;line-height:1.6;color:#1D382B}
+    .ptb-row{margin-bottom:6px}
+    .ptb-row:last-child{margin-bottom:0}
+    .ptb-badge{display:inline-block;font-size:11px;font-weight:900;padding:2px 8px;border-radius:6px;background:var(--green);color:#fff;margin-right:6px;vertical-align:1px}
+    .ptb-badge.tip{background:#0B2418;color:#8FE0B0}
+    .ptb-ex{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+    .ptb-ex button{font-family:inherit;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;border:1px solid #9CC5AD;background:#fff;color:#1A4730;cursor:pointer}
+    .ptb-ex button:hover{background:var(--green);color:#fff;border-color:var(--green)}
+
+    /* 직접 사진 업로드 버튼 & 무제한 카드 바 */
+    .direct-upload-row{display:flex;gap:8px;align-items:center;margin:8px 0}
+    .btn-direct-up{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px 12px;border-radius:11px;border:1.5px dashed var(--green);background:#F2FAF5;color:var(--green);font-size:12.5px;font-weight:800;cursor:pointer;transition:background .15s}
+    .btn-direct-up:hover{background:#E3F3E9}
+    .sig-card-bar{background:#F6FAF7;border:1px solid #CFE0D5;border-radius:13px;padding:10px 12px;margin-bottom:10px}
+    .scb-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+    .scb-tag{font-size:11px;font-weight:900;background:#0B2418;color:#8FE0B0;padding:3px 9px;border-radius:999px}
+    .scb-chips{display:flex;gap:6px;flex-wrap:wrap}
+    .scb-chip{font-family:inherit;font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:8px;border:1px solid #C8DDD0;background:#fff;color:#213D2E;cursor:pointer}
+    .scb-chip.on{background:var(--green);color:#fff;border-color:var(--green)}
+    .scb-chip.added{border-color:#D99A18;background:#FFFBEB;color:#854D0E}
+    .scb-chip.added.on{background:#D99A18;color:#fff;border-color:#D99A18}
+
+    /* 우측 프리뷰 5대 레이아웃별 동적 색감 & 정돈된 비율 (스크린샷 피드백 완벽 반영) */
+    .sd-right{position:sticky;top:74px}
+    @media(max-width:920px){.sd-right{position:static}}
+    .sd-prev{border:2px solid var(--ly-accent-bg);border-radius:20px;overflow:hidden;background:var(--ly-body-bg);box-shadow:0 18px 42px rgba(11,36,24,.14);transition:background .2s,border-color .2s}
+    .pv-banner{background:var(--ly-banner-bg);color:var(--ly-banner-fg);text-align:center;font-weight:800;font-size:.82rem;line-height:1.45;padding:9px 14px;transition:background .2s,color .2s}
+    .pv-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:var(--ly-header-bg);color:var(--ly-header-fg);border-bottom:1px solid rgba(128,128,128,.16);transition:background .2s,color .2s}
+    .pv-head-brand{display:flex;align-items:center;gap:8px;min-width:0}
+    .pv-head i{width:9px;height:9px;border-radius:50%;background:var(--ly-accent-bg);box-shadow:0 0 0 3px rgba(255,255,255,.18);flex:none;forced-color-adjust:none}
+    .pv-head b{font-size:.92rem;color:var(--ly-header-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pv-head span{font-size:11.5px;font-weight:800;background:var(--ly-accent-bg);color:var(--ly-accent-fg);padding:6px 13px;border-radius:999px;white-space:nowrap;flex:none;border:1px solid rgba(255,255,255,.22);transition:background .2s,color .2s}
+
+    .pv-card{display:grid;grid-template-columns:1.14fr .86fr;background:var(--ly-body-bg);transition:background .2s}
+    @media(max-width:560px){.pv-card{grid-template-columns:1fr}}
+    .pc-left{padding:18px 16px;background:var(--ly-body-bg);color:var(--ly-body-fg);display:flex;flex-direction:column;justify-content:space-between;transition:background .2s,color .2s}
+    .pc-left small{display:block;font-size:10.5px;font-weight:900;letter-spacing:.04em;color:var(--ly-eyebrow-fg);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pc-left h4{font-size:1.2rem;font-weight:900;line-height:1.3;margin:0 0 3px;color:var(--ly-body-fg)}
+    .pc-left em{display:block;font-style:italic;font-size:.73rem;color:var(--ly-body-sub);opacity:.88;margin-bottom:9px}
+    .pc-left p{font-size:.8rem;color:var(--ly-body-sub);line-height:1.58;margin-bottom:11px}
+    .pc-ck{display:grid;gap:6px;margin-bottom:12px}
+    .pc-ck div{display:flex;gap:7px;align-items:flex-start;padding:7px 9px;border-radius:10px;background:var(--ly-check-bg);border:1px solid rgba(128,128,128,.16);font-size:.72rem;font-weight:700;color:var(--ly-check-fg);line-height:1.42;cursor:pointer;transition:background .2s,color .2s,border-color .15s}
+    .pc-ck div:before{content:"";flex:none;width:12px;height:12px;border-radius:3.5px;border:1.5px solid var(--ly-accent-bg);margin-top:2px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#fff}
+    .pc-ck div.is-checked{border-color:var(--ly-accent-bg)}
+    .pc-ck div.is-checked:before{content:"✓";background:var(--ly-accent-bg);color:var(--ly-accent-fg)}
+    .pc-cta{background:var(--ly-accent-bg);color:var(--ly-accent-fg);font-weight:900;font-size:.78rem;line-height:1.35;padding:11px 14px;border-radius:999px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.12);transition:background .2s,color .2s}
+    .pc-right{position:relative;min-height:340px;background-size:cover;background-position:center top}
+    .pc-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 13px 13px;background:linear-gradient(180deg,transparent,rgba(8,20,14,.9));color:#fff;font-size:.76rem;font-weight:800;line-height:1.45}
+
+    .pv-body{padding:15px;display:grid;gap:10px;background:var(--ly-body-bg);transition:background .2s}
+    .pv-box{background:var(--ly-check-bg);color:var(--ly-check-fg);border:1px solid rgba(128,128,128,.18);border-radius:14px;padding:13px 15px;transition:background .2s,color .2s}
+    .pv-box h5{font-size:.88rem;margin-bottom:6px;color:var(--ly-eyebrow-fg)}
+    .tb2 td{border-bottom:1px solid rgba(128,128,128,.16);color:var(--ly-check-fg)}
+
+    /* 스토리보드 오프닝 프리뷰 스테이지 */
+    .pv-story{position:relative;min-height:360px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;text-align:center;padding:34px 22px;color:#fff}
+    .pv-story[hidden]{display:none}
+    .pv-story::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,22,16,.52),rgba(8,22,16,.84))}
+    .pv-story-in{position:relative;z-index:1;max-width:440px}
+    .pv-story-badge{display:inline-block;font-size:11px;font-weight:900;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.45);color:#fff;margin-bottom:12px}
+    .pv-story-in h4{font-size:1.38rem;font-weight:900;line-height:1.35;margin-bottom:10px;color:#fff !important;text-shadow:0 2px 10px rgba(0,0,0,.45)}
+    .pv-story-in p{font-size:.88rem;line-height:1.65;color:rgba(255,255,255,.92);margin-bottom:18px}
+    .pv-story-cta{display:inline-block;padding:10px 20px;border-radius:999px;background:var(--ly-accent-bg);color:var(--ly-accent-fg);font-size:12.5px;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.28)}
+
+    /* 홍보 문구 AI 비교 카드 */
+    .ai-preset-chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 6px}
+    .ai-preset-chips button{font-family:inherit;font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:999px;border:1px solid #CFE0D5;background:#F6FAF7;color:#1D3B2B;cursor:pointer}
+    .ai-preset-chips button:hover{border-color:var(--green);background:#E6F2EB}
+    .lawout-diff{display:grid;gap:8px;margin-top:8px}
+    .lawout-before{padding:9px 11px;border-radius:10px;background:rgba(255,255,255,.7);border:1px dashed #B9D7C6;font-size:.83rem;color:#4E6358}
+    .lawout-after{padding:11px 13px;border-radius:10px;background:#fff;border:1.5px solid var(--green);font-size:.92rem;font-weight:700;color:#0B2418;line-height:1.6}
+    .lawout-why{font-size:.8rem;color:#28543C;font-weight:700}
+
+    /* 구독자 전용 무료 디자인·템플릿 배급 배너 */
+    .free-dist-banner{margin-top:26px;padding:24px 26px;border-radius:22px;background:linear-gradient(135deg,rgba(143,224,176,.2),rgba(255,255,255,.06));border:1.5px solid var(--gold-hi);display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+    @media(max-width:680px){.free-dist-banner{grid-template-columns:1fr}}
+    .fdb-icon{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#8FE0B0,#3FAE78);color:#0B2418;font-size:28px;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 10px 24px rgba(63,174,120,.3)}
+    .fdb-body h3{font-size:1.14rem;font-weight:900;color:#fff;margin-bottom:6px}
+    .fdb-body p{font-size:.93rem;color:rgba(253,251,247,.86);line-height:1.65}
+    .fdb-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .fdb-tags span{font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:999px;background:rgba(11,36,24,.65);border:1px solid rgba(143,224,176,.45);color:var(--gold-hi)}
+
   </style>
 </head>
 <body>
@@ -431,7 +596,7 @@
   <div class="wrap hd">
     <a class="logo" href="#top"><i></i>BAREUN MEDI-TECH</a>
     <nav class="hn">
-      <a href="#why">왜 필요한가</a><a href="#noncovered">비급여</a><a href="#cost">안 하면</a><a href="#migrate">이전</a><a href="#samples">샘플</a><a href="#plans">가격</a><a href="#faq">FAQ</a>
+      <a href="#why">왜 필요한가</a><a href="#noncovered">비급여</a><a href="#cost">안 하면</a><a href="#migrate">이전</a><a href="#samples">홈페이지·샘플</a><a href="#studio">커스텀 체험</a><a href="#plans">가격</a><a href="#faq">FAQ</a>
     </nav>
     <a class="btn btn-gold btn-sm" href="#apply">상담 신청하기</a>
   </div>
@@ -445,7 +610,7 @@
     <p class="sub rv">네이버 플레이스도 있고, 블로그도 있고, 환자분도 오고 계신데요.<br>그 질문이 드는 게 당연합니다. 그래서 <b>“해야 하는 이유”와 “안 하면 천천히 벌어지는 일”을 초보 원장님 눈높이로 전부 풀어 썼습니다.</b> 읽어 보시고 필요 없다고 판단되시면 닫으셔도 됩니다.</p>
     <div class="hero-cta rv">
       <a class="btn btn-gold" href="#why">필요한지 3분 만에 판단하기 ↓</a>
-      <a class="btn btn-line" href="https://www.bareunhaniwon.com/" target="_blank" rel="noopener">실제 운영 중인 홈페이지 ↗</a>
+      <a class="btn btn-line" href="#samples">실제 화면 · 커스텀 체험 바로가기 ↓</a>
     </div>
     <div class="chips rv">
       <div class="chip"><b>979만 · 2,046만 원</b><span>www.bareunhaniwon.com과 동일 구성으로 요청해 실제 받은 견적 2건 (VAT 포함)</span></div>
@@ -747,6 +912,7 @@
         <tr><td>환자 동선 설계</td><td>디자인 중심</td><td>유입 중심</td><td class="us">체크포인트→칼럼→Q&amp;A→예약</td></tr>
         <tr><td>직접 수정</td><td>업체에 요청</td><td>해당 없음</td><td class="us">셀프 스튜디오로 직접 수정</td></tr>
         <tr><td>비주얼</td><td>템플릿 위주</td><td>이미지·글 위주</td><td class="us">3D 인체모형·모션 인터랙션</td></tr>
+        <tr><td>디자인 리뉴얼</td><td>2~3년 뒤 수백만 원 재제작 비용 발생</td><td>해당 없음</td><td class="us"><b>향후 업데이트된 신규 디자인·템플릿 무료 배급</b> (구독자 혜택)</td></tr>
       </tbody></table></div>
     <p class="fine">※ 일반적인 경우를 기준으로 한 비교이며 업체마다 다를 수 있습니다.</p>
   </div>
@@ -812,140 +978,37 @@
   </div>
 </section>
 
-<!-- ⑩ 셀프 스튜디오 -->
-<section id="studio">
-  <div class="wrap">
-    <span class="eyebrow rv">CUSTOM STUDIO · 직접 고치는 홈페이지</span>
-    <h2 class="title rv">언제든 원하는 구성으로<br><mark>셀프로 변경</mark>하세요</h2>
-    <p class="lead rv">질환별 상세 페이지의 <b>‘첫 장’</b>(예: 추나·척추교정 카드)을 원장님이 직접 고칩니다. 제목·소개 문구·자가진단 문항·버튼 문구·대표 이미지를 바꿔 보세요. 수정하면 오른쪽 화면이 바로 바뀝니다. <span style="opacity:.75">(체험용 · 저장되지 않습니다)</span></p>
-
-    <div class="sdemo rv" id="sdemo">
-      <div class="sd-left">
-        <div class="sd-tabs" role="tablist">
-          <button type="button" class="on" data-tab="t0">🧩 질환 카드 첫장 (추나·척추교정)</button>
-          <button type="button" data-tab="t1">🕒 진료시간·휴진</button>
-          <button type="button" data-tab="t2">🧾 비급여 수가표</button>
-          <button type="button" data-tab="t3">✨ 홍보 문구 AI</button>
-        </div>
-        <div class="sd-pane on" id="t0">
-          <label>질환명 (제목)<input id="cTitle"></label>
-          <label>영문 부제<input id="cSub"></label>
-          <label>소개 문구<textarea id="cDesc" rows="3"></textarea></label>
-          <label>자가진단 체크리스트 (5문항)</label>
-          <div id="cCks"></div>
-          <label>상담 버튼 문구<input id="cCta"></label>
-          <label>대표 이미지 <small style="font-weight:600;color:#5F7468">(눌러서 교체)</small></label>
-          <div class="imgpick" id="cImgs"></div>
-          <label>이미지 아래 설명 문구<input id="cCap"></label>
-          <button type="button" class="mini" id="cardAdd">＋ 새 질환 카드 추가 <em>시그니처 전용</em></button>
-          <div class="cardmsg" id="cardMsg" hidden></div>
-          <p class="fine">✓ 카드 첫장 수정은 모든 단계에서 가능 · 카드 개수 무제한 증설은 시그니처 전용</p>
-        </div>
-        <div class="sd-pane" id="t1">
-          <label>평일 진료시간<input id="dWk" value="09:00 ~ 18:30"></label>
-          <label>점심시간<input id="dLunch" value="13:00 ~ 14:00"></label>
-          <label>토요일<input id="dSat" value="09:00 ~ 14:00"></label>
-          <label>임시 휴진·명절 공지 배너<input id="dBanner" value="11/20(목) 학회 참석으로 휴진합니다"></label>
-          <label class="chk"><input type="checkbox" id="dBannerOn" checked> 배너를 화면 상단에 표시</label>
-          <p class="fine">✓ 모든 단계에서 직접 수정 가능</p>
-        </div>
-        <div class="sd-pane" id="t2">
-          <div id="feeRows"></div>
-          <button type="button" class="mini" id="feeAdd">＋ 행 추가</button>
-          <p class="fine">✓ 비급여 수가표(의료법 제45조 고지)는 모든 단계에서 직접 수정 가능</p>
-        </div>
-        <div class="sd-pane" id="t3">
-          <label>홍보 문구를 써 보세요 <small>(프로 전용: 금지어 경고 · 시그니처 전용: 합법 문구 자동 다듬기)</small>
-            <textarea id="dLaw" rows="3">이 한약을 드시면 100% 완치됩니다. 우리 한의원이 최고입니다.</textarea></label>
-          <div class="lawbox" id="lawBox"></div>
-          <button type="button" class="mini gold" id="lawFix">✨ 합법 문구로 자동 다듬기 · 2회 체험 <em>시그니처 전용</em></button>
-          <div class="lawout" id="lawOut" hidden></div>
-        </div>
-      </div>
-      <div class="sd-right">
-        <div class="sd-prev">
-          <div class="pv-banner" id="pvBanner"></div>
-          <div class="pv-head"><i></i><b>○○한의원 대전본점</b><span>예약·상담 ↗</span></div>
-          <div class="pv-card" id="pvCard">
-            <div class="pc-left"><small id="pcEye"></small><h4 id="pcTitle"></h4><em id="pcSub"></em><p id="pcDesc"></p><div class="pc-ck" id="pcCk"></div><div class="pc-cta" id="pcCta"></div></div>
-            <div class="pc-right" id="pcImg"><div class="pc-cap" id="pcCap"></div></div>
-          </div>
-          <div class="pv-body" id="pvInfo" hidden>
-            <div class="pv-box"><h5>🕒 진료시간</h5><table class="tb2" id="pvHours"></table></div>
-            <div class="pv-box"><h5>🧾 비급여 진료비용 안내</h5><table class="tb2" id="pvFees"></table></div>
-          </div>
-        </div>
-        <p class="fine" style="text-align:center">▲ 왼쪽에서 고치면 오른쪽 화면이 바로 바뀝니다</p>
-      </div>
-    </div>
-
-    <div class="studio">
-      <div class="box rv"><h3>✏️ 전 단계에서 직접 수정</h3><ul style="list-style:none">
-        <li style="padding:5px 0">· 질환 카드 첫장(제목·소개·체크리스트·이미지)</li><li style="padding:5px 0">· 진료시간·점심시간·휴진일 · 임시 휴진 배너</li><li style="padding:5px 0">· 비급여 수가표(의료법 제45조 고지)</li><li style="padding:5px 0">· 인사말·주차·오시는 길 안내</li></ul></div>
-      <div class="box rv"><h3>🎛️ 단계가 올라갈수록 넓어지는 범위</h3><ul style="list-style:none">
-        <li style="padding:5px 0"><b>프로 전용</b> · 계절별 팝업·배너 템플릿, AI 금지어 경고</li><li style="padding:5px 0"><b>시그니처 전용</b> · 질환 카드 페이지 무제한 직접 증설</li><li style="padding:5px 0"><b>시그니처 전용</b> · 의료법에 맞는 대체 문구를 AI가 자동 작성</li><li style="padding:5px 0"><b>시그니처 전용</b> · 원장님 사진 기반 화보 생성</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- ⑪ 구독 ROI (SECTION 5) -->
-<section class="dark">
-  <div class="wrap">
-    <span class="eyebrow rv">MONTHLY CARE · 왜 구독이 원장님께 이득인가</span>
-    <h2 class="title rv">“외주 대행사에 건당 5만 원씩 주던 포스팅,<br><span class="gold">월 구독료 한 번으로 끝냅니다</span>”</h2>
-    <div class="roi">
-      <div class="box rent rv" style="background:#fff;color:#0B2418"><h3>🔴 외주 포스팅을 맡길 때</h3>
-        <div class="big-num red">월 750,000원~</div><p style="font-size:.85rem;margin-bottom:10px">월 15건 × 건당 5만 원 가정 (업체마다 상이)</p>
-        <ul><li>작성자가 의학 지식이 부족하면 원장님이 매번 고쳐야 합니다.</li><li>의료법 금지어 검수가 포함되지 않는 경우가 많습니다.</li><li>글만 올릴 뿐 홈페이지·검색 등록은 별도입니다.</li></ul></div>
-      <div class="box own rv" style="color:#0B2418"><h3>🟢 바른 AI 마스터 케어</h3>
-        <div class="big-num green">월 99,000원</div><p style="font-size:.85rem;margin-bottom:10px">VAT 포함 · 연 결제 시 월 89,100원 · 외주 단가의 약 13% 수준</p>
-        <ul><li>월 15건 학술 근거 기반 칼럼 + 맞춤 이미지 자동 발행 (병원 맞춤 주제)</li><li>원장님 사진 기반 인물 고정 화보 탑재</li><li>네이버 서치어드바이저·구글 서치콘솔 연동 및 등록 관리</li><li>비급여 수가표·명절·휴진 공지 무제한 수정</li><li>마스터 전용 상세 통계 센터(유입·시간대·예약 전환)</li></ul></div>
-    </div>
-    <p class="fine" style="margin-top:16px">※ 시그니처 기준입니다. 프로 케어는 월 55,000원에 월 8건(텍스트), 베이직 케어는 월 19,900원에 홈페이지 유지 중심입니다.</p>
-  </div>
-</section>
-
-<!-- ⑫ 증거 -->
-<section>
-  <div class="wrap">
-    <span class="eyebrow rv">LIVE PROOF · 말이 아니라 지금 작동하는 결과물</span>
-    <h2 class="title rv">샘플이 아닙니다.<br><mark>지금 환자가 들어오는</mark> 운영 서버입니다</h2>
-    <div class="proof-grid">
-      <div class="proof rv"><div class="n">72편</div><h3>독립 건강 칼럼 운영</h3><p>2일 1회 자동 발행 구조. 기발행 주제와 겹치지 않도록 이력을 대조합니다.</p></div>
-      <div class="proof rv"><div class="n">4대</div><h3>내비 원클릭 길안내</h3><p>네이버·구글·티맵·카카오맵, 시내·충청권·KTX역 출발지별 오시는 길 안내.</p></div>
-      <div class="proof rv"><div class="n">3단계</div><h3>의료법 자동 검수</h3><p>질문형 구조 → 금지어 → 전문용어 순화. 통과한 글만 발행.</p></div>
-    </div>
-    <div class="live-links rv">
-      <a href="https://www.bareunhaniwon.com/" target="_blank" rel="noopener">🏠 메인 홈페이지 ↗</a>
-      <a href="https://www.bareunhaniwon.com/body-explorer/" target="_blank" rel="noopener">🧬 풀스크린 3D 인체모형 ↗</a>
-      <a href="https://www.bareunhaniwon.com/location/" target="_blank" rel="noopener">📍 오시는길·비급여 안내 ↗</a>
-      <a href="https://www.bareunhaniwon.com/director/" target="_blank" rel="noopener">👨‍⚕️ 원장 소개·정밀검진 ↗</a>
-    </div>
-  </div>
-</section>
-
-<!-- ⑫-2 전체 둘러보기 샘플 + 필요 기능 체크 -->
+<!-- ⑩ 실제 운영 홈페이지 & 단계별 샘플 안내 (먼저 제시 · 각각 1회만 깔끔하게 배치) -->
 <section class="dark" id="samples">
   <div class="wrap">
-    <span class="eyebrow rv">FULL TOUR · 실제 www.bareunhaniwon.com 화면 그대로</span>
-    <h2 class="title rv">실제로 작동하는 홈페이지를 둘러보며<br><span class="gold">기능마다 붙은 마크</span>로 단계를 구분하세요</h2>
-    <p class="lead rv">운영 중인 <b>www.bareunhaniwon.com의 실제 화면</b>을 그대로 띄워, 스토리보드·3D 인체모형·건강 칼럼·Q&amp;A·체크포인트가 <b>실제로 작동하는 모습</b>을 보여 드립니다. 화면 위에 <b>기본 포함 · 프로 전용 · 시그니처 전용</b> 마크가 기능마다 붙어 있습니다. 예를 들어 <b>스토리보드는 프로·시그니처 마크</b>, <b>3D 인체모형은 시그니처 마크</b>가 표시됩니다. 템플릿 구조가 정해져 있어 한의원 이름 시안은 따로 만들지 않습니다.</p>
+    <span class="eyebrow rv">LIVE HOMEPAGE &amp; SAMPLE · 먼저 완성된 결과물부터 직접 확인하세요</span>
+    <h2 class="title rv">말로만 설명하지 않습니다.<br><span class="gold">지금 환자가 들어오는 실제 홈페이지</span>와<br>단계별 기능 마크 샘플을 먼저 둘러보세요</h2>
+    <p class="lead rv">템플릿 구조가 검증되어 있어 별도 시안 없이도 완성 후 어떤 홈페이지가 나오는지 100% 미리 확인하실 수 있습니다. 혼란스럽지 않도록 <b>실제 운영 홈페이지</b>와 <b>기능별 단계 표시 샘플</b>을 아래에 <b>딱 하나씩</b>만 준비했습니다.</p>
 
-    <div class="legend rv">
-      <span class="lg t0">✓ 기본 포함 <small>스탠다드부터</small></span>
-      <span class="lg t1">★ 프로 전용 <small>프로페셔널부터</small></span>
-      <span class="lg t2">✦ 시그니처 전용 <small>시그니처만</small></span>
+    <div class="proof-grid proof-dark">
+      <div class="proof rv"><div class="n">72편+</div><h3>독립 건강 칼럼 운영</h3><p>2일 1회 자동 발행 구조. 기발행 주제와 겹치지 않도록 이력을 대조합니다.</p></div>
+      <div class="proof rv"><div class="n">4대</div><h3>내비 원클릭 길안내</h3><p>네이버·구글·티맵·카카오맵 및 시내·광역 출발지별 오시는 길 연동.</p></div>
+      <div class="proof rv"><div class="n">3단계</div><h3>의료법 자동 검수</h3><p>질문형 구조 → 금지어 점검 → 전문용어 순화를 거친 글만 발행.</p></div>
     </div>
 
-    <div class="tcards">
-      <a class="tc rv" href="sample.html?view=standard" target="_blank" rel="noopener"><small>STANDARD</small><h3>스탠다드 범위로 보기</h3><div class="tp">790,000원 <em>VAT 별도</em></div><p>월 베이직 케어 19,900원</p><p class="tn">프로·시그니처 전용 기능의 마크가 🔒로 바뀝니다. 그래도 실제 화면은 모두 체험할 수 있어요.</p><span class="tgo">이 범위로 둘러보기 →</span></a>
-      <a class="tc rv" href="sample.html?view=professional" target="_blank" rel="noopener"><small>PROFESSIONAL</small><h3>프로페셔널 범위로 보기</h3><div class="tp">1,490,000원 <em>VAT 별도</em></div><p>월 AI 그로스 케어 55,000원</p><p class="tn">시그니처 전용 기능(3D·통계·카드 무제한 등)에 🔒 표시가 붙습니다.</p><span class="tgo">이 범위로 둘러보기 →</span></a>
-      <a class="tc sigc rv" href="sample.html?view=signature" target="_blank" rel="noopener"><small>SIGNATURE · 추천</small><h3>시그니처 범위로 보기</h3><div class="tp">1,890,000원 <em>VAT 별도</em></div><p>월 AI 마스터 케어 99,000원</p><p class="tn">모든 기능이 포함됩니다. 막힘 없이 처음부터 끝까지 둘러보세요.</p><span class="tgo">이 범위로 둘러보기 →</span></a>
-    </div>
-    <div style="display:flex;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap" class="rv">
-      <a class="btn btn-gold b2b-lnk-sample" href="sample.html" target="_blank" rel="noopener">🌐 실제 화면으로 전체 샘플 열기 →</a>
-      <a class="btn btn-ghost b2b-lnk-studio" href="sample-studio.html" target="_blank" rel="noopener" style="border:1.5px solid var(--gold);color:var(--gold);">🛠️ 커스텀 스튜디오 직접 수정 체험 →</a>
-      <a class="btn btn-ghost b2b-lnk-online" href="https://www.bareunhaniwon.com/sample/" target="_blank" rel="noopener" style="border:1.5px solid #8FE0B0;color:#8FE0B0;">🚀 온라인 실서버 라이브 보기 ↗</a>
+    <div class="tour-duo">
+      <div class="tour-card rv">
+        <div>
+          <span class="tc-badge">LIVE · 실제 환자용 운영 사이트</span>
+          <h3>🏠 실제 운영 중인 홈페이지</h3>
+          <p>현재 바른한의원 대전본점에서 실제 환자들이 검색해 들어와 스토리보드·3D 인체모형·건강 칼럼·비급여 수가표를 보고 예약하는 운영 서버 그대로입니다.</p>
+        </div>
+        <a class="btn btn-line" href="https://www.bareunhaniwon.com/" target="_blank" rel="noopener">실제 운영 홈페이지 열기 ↗</a>
+      </div>
+
+      <div class="tour-card sample-hl rv">
+        <div>
+          <span class="tc-badge">SAMPLE · 단계별 포함 기능 안내</span>
+          <h3>🌐 기능별 티어 마크(✕·△·○) 샘플</h3>
+          <p>실제 홈페이지 화면 위에 <b>스탠다드(✕) · 프로(△ 클릭 시 차이 안내) · 시그니처(○)</b> 마크만 깔끔하게 표시해, 어느 단계에 어떤 기능이 들어가는지 직접 눌러 보며 비교하실 수 있습니다.</p>
+        </div>
+        <a class="btn btn-gold b2b-lnk-sample" href="sample.html" target="_blank" rel="noopener">기능별 마크 샘플 페이지 열기 →</a>
+      </div>
     </div>
 
     <div class="matrix rv" id="matrix">
@@ -956,7 +1019,8 @@
           <tbody>
             <tr data-min="0"><td><input type="checkbox"></td><td>반응형 홈페이지 · 원장소개 · 오시는길 · 4대 내비</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="0"><td><input type="checkbox"></td><td>전화·카톡·네이버예약 고정 바</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
-            <tr data-min="0"><td><input type="checkbox"></td><td>비급여 수가표 고지 + 진료시간·휴진·질환 카드 첫장 셀프 수정</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="0"><td><input type="checkbox"></td><td>비급여 수가표 고지 + 진료시간·휴진·레이아웃별 색감·질환 카드 첫장 셀프 수정</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="0"><td><input type="checkbox"></td><td><b>향후 업데이트되는 신규 홈페이지 디자인·템플릿 무료 배급</b> (구독자 혜택)</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>환자 스토리보드 12컷 오프닝</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>질환별 체크포인트(5문항 자가진단)</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>1:1 “무엇이든 물어보세요” Q&amp;A 게시판</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
@@ -965,7 +1029,7 @@
             <tr data-min="2"><td><input type="checkbox"></td><td>월 15건 칼럼 + 맞춤 3단 화보(월 최대 45장)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>풀스크린 3D 인체모형 포털</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>질환 카드 페이지 무제한 증설 (증설비 0원)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
-            <tr data-min="2"><td><input type="checkbox"></td><td>의료법 AI 합법 대체 문구 자동 작성</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
+            <tr data-min="2"><td><input type="checkbox"></td><td>고객 호감형 + 의료법 합법 AI 문구 자동 다듬기 (금지어 없어도 윤문)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>마스터 전용 상세 통계 센터 (유입·시간대·예약 전환)</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>원장님 사진 기반 인물 고정 화보 생성</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
             <tr data-min="2"><td><input type="checkbox"></td><td>VIP 전담 우선 제작 착수 혜택</td><td class="n">🔒</td><td class="n">🔒</td><td class="us y">✓</td></tr>
@@ -975,6 +1039,314 @@
       <div class="mx-res" id="mxRes">필요한 기능을 체크해 보세요. 고르신 기능이 어느 단계에서 가능한지 바로 보여 드립니다.</div>
       <div class="mx-go"><a class="btn btn-gold" href="#apply" id="mxGo">이 조합으로 상담 신청하기 →</a></div>
     </div>
+
+    <div class="bridge-next rv">
+      <span>👇 실제 홈페이지 구조를 보셨다면, 이제 <b>원장님이 직접 레이아웃별 색감과 문구를 바꾸는 모습</b>을 바로 아래에서 체험해 보세요.</span>
+      <a class="btn btn-gold btn-sm" href="#studio">실시간 커스텀 체험 내려가기 ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑪ 실시간 커스텀 스튜디오 체험 (실제 홈페이지 안내 바로 다음으로 자연스럽게 연결) -->
+<section id="studio">
+  <div class="wrap">
+    <span class="eyebrow rv">CUSTOM STUDIO · 위에서 보신 홈페이지를 원장님이 직접 고칩니다</span>
+    <h2 class="title rv">레이아웃별 색감부터 문구·사진·AI 카피까지<br><mark>원하는 대로 실시간 변경</mark>해 보세요</h2>
+    <p class="lead rv">외주 업체에 연락하고 며칠씩 기다릴 필요가 없습니다. <b>공지 배너 · 상단 헤더바 · 본문 바탕 배경 · 체크리스트 박스 · 상담 버튼</b> 각 레이아웃의 색감을 자유롭게 바꾸고, 수정 목적과 작성 팁을 보며 직접 고쳐 보세요. <span style="opacity:.75">(실시간 체험용 · 실제 스튜디오에도 동일하게 적용되어 있습니다)</span></p>
+
+    <!-- 🎨 5대 레이아웃별 색감 교체 & 자유 컬러 피커 -->
+    <div class="theme-studio-bar rv">
+      <div class="tsb-top">
+        <div class="tsb-title">
+          🎨 5대 레이아웃별 색감 커스텀 체험 <small>구역별 자유 지정 + 글자 명도 자동 보정</small>
+        </div>
+        <button type="button" class="tsb-reset" id="lyColorReset">↺ 기본 한지·딥그린 복원</button>
+      </div>
+
+      <div class="tsb-swatches" role="group" aria-label="추천 레이아웃 배색 조합">
+        <button type="button" class="swatch-btn" aria-pressed="true" data-preset="hanji-green">
+          <span class="swatch-dots"><span class="swatch-dot" style="background:#0B2418"></span><span class="swatch-dot" style="background:#FAF7F0"></span><span class="swatch-dot" style="background:#2D5A43"></span></span>
+          <span class="swatch-chk">✓</span>한지 &amp; 딥그린
+        </button>
+        <button type="button" class="swatch-btn" aria-pressed="false" data-preset="royal-navy">
+          <span class="swatch-dots"><span class="swatch-dot" style="background:#0C1B33"></span><span class="swatch-dot" style="background:#FFFFFF"></span><span class="swatch-dot" style="background:#1B365D"></span></span>
+          <span class="swatch-chk">✓</span>화이트 &amp; 로열네이비
+        </button>
+        <button type="button" class="swatch-btn" aria-pressed="false" data-preset="warm-brown">
+          <span class="swatch-dots"><span class="swatch-dot" style="background:#261810"></span><span class="swatch-dot" style="background:#F7F2E9"></span><span class="swatch-dot" style="background:#6E472B"></span></span>
+          <span class="swatch-chk">✓</span>전통 한방 웜브라운
+        </button>
+        <button type="button" class="swatch-btn" aria-pressed="false" data-preset="dark-gold">
+          <span class="swatch-dots"><span class="swatch-dot" style="background:#0F1412"></span><span class="swatch-dot" style="background:#18201C"></span><span class="swatch-dot" style="background:#D4AF37"></span></span>
+          <span class="swatch-chk">✓</span>다크 에스프레소 골드
+        </button>
+        <button type="button" class="swatch-btn" aria-pressed="false" data-preset="burgundy">
+          <span class="swatch-dots"><span class="swatch-dot" style="background:#2E0D15"></span><span class="swatch-dot" style="background:#FDF9FA"></span><span class="swatch-dot" style="background:#7A283B"></span></span>
+          <span class="swatch-chk">✓</span>노블 버건디 로즈
+        </button>
+        <button type="button" class="swatch-btn" aria-pressed="false" data-preset="sage-olive">
+          <span class="swatch-dots"><span class="swatch-dot" style="background:#1A3329"></span><span class="swatch-dot" style="background:#F4F8F5"></span><span class="swatch-dot" style="background:#2E5E4A"></span></span>
+          <span class="swatch-chk">✓</span>소프트 세이지
+        </button>
+      </div>
+
+      <div class="layout-zones-grid" aria-label="레이아웃 구역별 색상 직접 선택">
+        <div class="lz-item" data-zone-target="pvBanner">
+          <span class="lz-label">① 공지 배너</span>
+          <span class="lz-sub">상단 휴진·안내 바</span>
+          <div class="lz-ctrl">
+            <input type="color" id="lyBannerColor" class="lz-wheel" value="#2D5A43" aria-label="공지 배너 색상">
+            <input type="text" id="lyBannerHex" class="lz-hex" value="#2D5A43" maxlength="7" aria-label="공지 배너 HEX">
+          </div>
+        </div>
+        <div class="lz-item" data-zone-target="pvHead">
+          <span class="lz-label">② 상단 헤더바</span>
+          <span class="lz-sub">한의원명 · 상단 네비</span>
+          <div class="lz-ctrl">
+            <input type="color" id="lyHeaderColor" class="lz-wheel" value="#0B2418" aria-label="상단 헤더바 색상">
+            <input type="text" id="lyHeaderHex" class="lz-hex" value="#0B2418" maxlength="7" aria-label="상단 헤더바 HEX">
+          </div>
+        </div>
+        <div class="lz-item" data-zone-target="pcLeft">
+          <span class="lz-label">③ 본문 바탕 배경</span>
+          <span class="lz-sub">카드·패널 전체 바탕</span>
+          <div class="lz-ctrl">
+            <input type="color" id="lyBodyColor" class="lz-wheel" value="#FAF7F0" aria-label="본문 바탕 배경 색상">
+            <input type="text" id="lyBodyHex" class="lz-hex" value="#FAF7F0" maxlength="7" aria-label="본문 바탕 HEX">
+          </div>
+        </div>
+        <div class="lz-item" data-zone-target="pcCk">
+          <span class="lz-label">④ 체크리스트 박스</span>
+          <span class="lz-sub">자가진단·안내 카드</span>
+          <div class="lz-ctrl">
+            <input type="color" id="lyCheckColor" class="lz-wheel" value="#EBF4EF" aria-label="체크리스트 박스 색상">
+            <input type="text" id="lyCheckHex" class="lz-hex" value="#EBF4EF" maxlength="7" aria-label="체크리스트 HEX">
+          </div>
+        </div>
+        <div class="lz-item" data-zone-target="pcCta">
+          <span class="lz-label">⑤ 상담 버튼·포인트</span>
+          <span class="lz-sub">하단 예약 버튼·강조</span>
+          <div class="lz-ctrl">
+            <input type="color" id="lyAccentColor" class="lz-wheel" value="#2D5A43" aria-label="상담 버튼 및 포인트 색상">
+            <input type="text" id="lyAccentHex" class="lz-hex" value="#2D5A43" maxlength="7" aria-label="상담 버튼 HEX">
+          </div>
+        </div>
+      </div>
+
+      <div class="tsb-tip">
+        <b>🎯 레이아웃별 색감 변경 목적 &amp; 팁:</b> 위 프리셋으로 전체 톤을 맞춘 뒤, ①~⑤번 컬러 피커를 눌러 <b>각 레이아웃 구역(배너·헤더·본문 바탕·체크리스트·상담 버튼)마다 원하는 색감을 자유롭게</b> 입혀 보세요. 본문 바탕을 어두운 색으로 바꿔도 글자 가독성(명도 대비)이 자동으로 맞춰집니다.
+      </div>
+    </div>
+
+    <!-- 좌측 편집기 + 우측 실시간 프리뷰 -->
+    <div class="sdemo rv" id="sdemo">
+      <div class="sd-left">
+        <div class="sd-tabs" role="tablist" aria-label="커스텀 스튜디오 체험 항목">
+          <button type="button" role="tab" id="tab-btn-t0" aria-selected="true" data-tab="t0">🧩 질환 카드 첫장</button>
+          <button type="button" role="tab" id="tab-btn-tsb" aria-selected="false" data-tab="tsb">🎬 스토리보드 오프닝</button>
+          <button type="button" role="tab" id="tab-btn-t1" aria-selected="false" data-tab="t1">🕒 진료시간·휴진</button>
+          <button type="button" role="tab" id="tab-btn-t2" aria-selected="false" data-tab="t2">🧾 비급여 수가표</button>
+          <button type="button" role="tab" id="tab-btn-ai" aria-selected="false" data-tab="t3">✨ 홍보 문구 AI</button>
+        </div>
+
+        <!-- 탭 1: 질환 카드 첫장 -->
+        <div class="sd-pane on" id="t0" role="tabpanel" aria-labelledby="tab-btn-t0">
+          <div class="purpose-tip-box">
+            <div class="ptb-row"><span class="ptb-badge">🎯 수정 목적</span>비급여 진료를 고민하는 환자가 <b>“이 원장님은 내 증상의 진짜 원인을 아시는구나”</b> 하고 상담을 결심하게 만드는 핵심 설득 화면입니다.</div>
+            <div class="ptb-row"><span class="ptb-badge tip">✍️ 작성 팁</span>치료법 이름만 나열하기보다 <b>① 환자가 겪는 일상 속 불편함 공감 → ② 원장님만의 원인 진단 기준</b> 순서로 적으세요. 자가진단 문항은 의학 용어 대신 <i>“바지나 치마가 한쪽으로 돌아간다”</i>처럼 구체적인 생활 증상으로 적을수록 상담 전환율이 올라갑니다.</div>
+          </div>
+
+          <div class="sig-card-bar">
+            <div class="scb-head">
+              <span class="scb-tag">✦ 시그니처 체험 · 증설비 0원 무제한 카드</span>
+              <button type="button" class="mini" id="cardAdd" style="margin-top:0;padding:5px 12px;font-size:11.5px">＋ 새 질환 카드 추가 체험</button>
+            </div>
+            <div class="scb-chips" id="cardChips">
+              <button type="button" class="scb-chip on" data-card="chuna">1. 추나·척추</button>
+              <button type="button" class="scb-chip" data-card="growth">2. 소아 성장</button>
+              <button type="button" class="scb-chip" data-card="diet">3. 다이어트</button>
+            </div>
+            <div class="cardmsg" id="cardMsg" hidden style="background:#EBF4EF;border-color:#B9D7C6;color:#14392A"></div>
+          </div>
+
+          <label>질환명 (카드 메인 제목)<input id="cTitle"></label>
+          <label>상단 영문·전문 서브타이틀<input id="cSub"></label>
+          <label>소개 문구 (원장님 진료 철학 2문장)<textarea id="cDesc" rows="3"></textarea></label>
+          <label>자가진단 체크리스트 (환자가 직접 눌러 보는 5문항)</label>
+          <div id="cCks"></div>
+          <label>하단 상담 유도 버튼 문구<input id="cCta"></label>
+          <label>대표 이미지 <small style="font-weight:600;color:#5F7468">(샘플 선택 또는 내 사진 직접 업로드)</small></label>
+          <div class="direct-upload-row">
+            <label class="btn-direct-up">
+              📷 내 컴퓨터·스마트폰 진료실 사진 직접 올려보기 (체험)
+              <input type="file" id="cFileInput" accept="image/*" style="display:none">
+            </label>
+          </div>
+          <div class="imgpick" id="cImgs"></div>
+          <label>이미지 아래 핵심 한 줄 설명<input id="cCap"></label>
+          <p class="fine">✓ 카드 첫장 수정은 전 단계 공통 가능 · 새 질환 카드 무제한 직접 증설(증설비 0원)은 시그니처 전용</p>
+        </div>
+
+        <!-- 탭 2: 스토리보드 오프닝 -->
+        <div class="sd-pane" id="tsb" role="tabpanel" aria-labelledby="tab-btn-tsb" hidden>
+          <div class="purpose-tip-box">
+            <div class="ptb-row"><span class="ptb-badge">🎯 수정 목적</span>홈페이지 방문 후 <b>첫 3초 동안 이탈을 막고 시선을 사로잡는 영화 같은 오프닝</b>입니다. 봄·방학에는 ‘성장’, 환절기에는 ‘면역·보약’, 평소에는 ‘추나·통증’ 등 주력 계절 테마로 언제든 교체할 수 있습니다.</div>
+            <div class="ptb-row"><span class="ptb-badge tip">✍️ 작성 팁</span><i>“정성을 다하는 ○○한의원”</i> 같은 평범한 인사말보다, <b>환자나 보호자가 밤마다 검색창에 쳐 보는 걱정거리</b>를 질문 형태로 던지면 끝까지 읽는 비율이 크게 높아집니다.</div>
+            <div class="ptb-ex">
+              <button type="button" data-sb-preset="growth">예시 적용: 소아 성장 오프닝</button>
+              <button type="button" data-sb-preset="pain">예시 적용: 만성 통증·추나 오프닝</button>
+              <button type="button" data-sb-preset="fatigue">예시 적용: 만성피로·보약 오프닝</button>
+            </div>
+          </div>
+
+          <label>오프닝 메인 질문 (큰 제목)<input id="sbTitle" value="친구보다 너무 작은 우리 아이, 괜찮을까요?"></label>
+          <label>공감 서브 문구 (2~3문장)<textarea id="sbDesc" rows="3">새 학기가 시작될 때마다 키 번호 1번, 맨 앞자리에 앉는 아이를 보며 부모의 마음은 타들어갑니다. 성장판이 닫히기 전, 지금 우리 아이의 숨은 성장 잠재력을 확인해 보세요.</textarea></label>
+          <label>다음 장면 안내 버튼 문구<input id="sbCta" value="우리 아이 성장 신호 살펴보기 →"></label>
+          <label>배경 화보 선택 <small style="font-weight:600;color:#5F7468">(클릭 또는 직접 사진 업로드)</small></label>
+          <div class="direct-upload-row">
+            <label class="btn-direct-up">
+              📷 내 컴퓨터·스마트폰 사진으로 배경 바꿔보기 (체험)
+              <input type="file" id="sbFileInput" accept="image/*" style="display:none">
+            </label>
+          </div>
+          <div class="imgpick" id="sbImgs"></div>
+          <p class="fine">✓ 프로(12컷) · 시그니처(24컷 풀스토리 + 시즌별 무제한 개편) 제공</p>
+        </div>
+
+        <!-- 탭 3: 진료시간 · 휴진 배너 -->
+        <div class="sd-pane" id="t1" role="tabpanel" aria-labelledby="tab-btn-t1" hidden>
+          <div class="purpose-tip-box">
+            <div class="ptb-row"><span class="ptb-badge">🎯 수정 목적</span>명절·학회·임시 휴진이나 야간진료 변경을 외주 업체 기다릴 필요 없이 <b>10초 만에 상단 배너로 띄워 환자의 헛걸음 불만을 예방</b>합니다.</div>
+            <div class="ptb-row"><span class="ptb-badge tip">✍️ 작성 팁</span>단순히 <i>“11/20 휴진”</i>이라고만 쓰기보다 <b>휴진 사유(학술대회 참석·원내 약재 점검 등)와 정상 진료 재개일</b>을 함께 적으면 원장님의 전문성과 배려가 함께 전달됩니다.</div>
+          </div>
+
+          <label>평일 진료시간<input id="dWk" value="09:00 ~ 19:00 (화·목 야간 20:30)"></label>
+          <label>점심시간<input id="dLunch" value="13:00 ~ 14:00"></label>
+          <label>토요일 · 공휴일<input id="dSat" value="09:00 ~ 14:00 (점심시간 없이 진료)"></label>
+          <label>상단 긴급 공지·휴진 배너 문구<input id="dBanner" value="11/20(목) 대한한의학회 추계 학술대회 참석으로 휴진합니다 · 11/21(금) 정상 진료"></label>
+          <label class="chk"><input type="checkbox" id="dBannerOn" checked> 홈페이지 최상단에 공지 배너 즉시 노출하기</label>
+          <p class="fine">✓ 전 단계 공통으로 원장님이 스마트폰·PC에서 즉시 수정 가능</p>
+        </div>
+
+        <!-- 탭 4: 비급여 수가표 -->
+        <div class="sd-pane" id="t2" role="tabpanel" aria-labelledby="tab-btn-t2" hidden>
+          <div class="purpose-tip-box">
+            <div class="ptb-row"><span class="ptb-badge">🎯 수정 목적</span>의료법 제45조 비급여 진료비용 고지 의무를 준수함과 동시에, 환자가 전화하기 전 가장 망설이는 <b>“생각보다 너무 비싸면 어쩌지?” 하는 가격 불안감을 해소</b>해 실제 예약 문의율을 높입니다.</div>
+            <div class="ptb-row"><span class="ptb-badge tip">✍️ 작성 팁</span>금액만 적기보다 <b>처방 기준 단위(15일분 / 1개월 / 1회)</b>와 약재·진단 특징을 괄호로 함께 적으면 가격 저항이 줄어들고 신뢰도가 올라갑니다.</div>
+          </div>
+
+          <div id="feeRows"></div>
+          <button type="button" class="mini" id="feeAdd">＋ 비급여 항목 행 추가</button>
+          <p class="fine">✓ 비급여 수가표(의료법 제45조 고지)는 전 단계에서 횟수 제한 없이 직접 수정 가능</p>
+        </div>
+
+        <!-- 탭 5: 홍보 문구 AI (금지어 경고가 없어도 고객 호감 문장으로 자동 다듬기) -->
+        <div class="sd-pane" id="t3" role="tabpanel" aria-labelledby="tab-btn-ai" hidden>
+          <div class="purpose-tip-box">
+            <div class="ptb-row"><span class="ptb-badge">🎯 수정 목적</span>무심코 쓴 과장·단정 표현(의료법 제56조 리스크)을 걸러 줄 뿐 아니라, <b>금지어가 전혀 없는 평범하고 딱딱한 설명문이라도 환자가 읽자마자 호감과 안심을 느끼는 따뜻한 문장으로 자동 업그레이드</b>해 드립니다.</div>
+            <div class="ptb-row"><span class="ptb-badge tip">✍️ 작성 팁</span>처음부터 멋진 문장을 쓰려고 고민하지 마세요. <i>“허리 통증 추나와 약침으로 진료합니다”</i>처럼 핵심 진료 내용만 편하게 적고 아래 버튼을 눌러 보세요!</div>
+          </div>
+
+          <label style="margin-top:0">빠른 비교 테스트 <small style="color:#5F7468">(금지어 있는 문장과 없는 평범한 문장을 모두 눌러 테스트해 보세요)</small></label>
+          <div class="ai-preset-chips">
+            <button type="button" data-ai-sample="이 한약을 드시면 100% 완치됩니다. 우리 한의원이 최고입니다.">① 금지어 포함 문구 예시</button>
+            <button type="button" data-ai-sample="허리 통증과 디스크를 추나요법과 약침으로 진료합니다.">② 금지어 없는 평범한 통증 문구</button>
+            <button type="button" data-ai-sample="소아 성장 클리닉을 운영하며 체질별 성장 한약을 처방합니다.">③ 금지어 없는 건조한 성장 문구</button>
+            <button type="button" data-ai-sample="다이어트 한약 처방과 체형 교정 프로그램을 진행합니다.">④ 금지어 없는 다이어트 문구</button>
+          </div>
+
+          <label>다듬고 싶은 원장님 문구를 자유롭게 적어 보세요
+            <textarea id="dLaw" rows="3">허리 통증과 디스크를 추나요법과 약침으로 진료합니다.</textarea>
+          </label>
+          <div class="lawbox" id="lawBox"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button type="button" class="mini gold" id="lawFix">✨ 고객 호감·합법 문구로 자동 다듬기 <em>시그니처 AI</em></button>
+            <button type="button" class="mini" id="lawApplyToCard" hidden>↗ 다듬은 문구를 질환 카드 소개글에 바로 넣어보기</button>
+          </div>
+          <div class="lawout" id="lawOut" hidden></div>
+        </div>
+      </div>
+
+      <!-- 우측 실시간 라이브 프리뷰 (스크린샷 레이아웃 정밀 보정 + 5대 구역 색감 연동) -->
+      <div class="sd-right">
+        <div class="sd-prev" id="sdPrev">
+          <div class="pv-banner" id="pvBanner"></div>
+          <div class="pv-head" id="pvHead">
+            <div class="pv-head-brand"><i></i><b>○○한의원 대전본점</b></div>
+            <span>예약·상담 ↗</span>
+          </div>
+
+          <!-- 스토리보드 오프닝 프리뷰 -->
+          <div class="pv-story" id="pvStory" hidden style="background-image:url('life_1d_growth_short.jpg')">
+            <div class="pv-story-in">
+              <span class="pv-story-badge">✦ 환자 공감 스토리보드 오프닝</span>
+              <h4 id="psTitle">친구보다 너무 작은 우리 아이, 괜찮을까요?</h4>
+              <p id="psDesc">새 학기가 시작될 때마다 키 번호 1번, 맨 앞자리에 앉는 아이를 보며 부모의 마음은 타들어갑니다. 성장판이 닫히기 전, 지금 우리 아이의 숨은 성장 잠재력을 확인해 보세요.</p>
+              <span class="pv-story-cta" id="psCta">우리 아이 성장 신호 살펴보기 →</span>
+            </div>
+          </div>
+
+          <!-- 질환 카드 프리뷰 -->
+          <div class="pv-card" id="pvCard">
+            <div class="pc-left" id="pcLeft">
+              <div>
+                <small id="pcEye"></small>
+                <h4 id="pcTitle"></h4>
+                <em id="pcSub"></em>
+                <p id="pcDesc"></p>
+                <div class="pc-ck" id="pcCk"></div>
+              </div>
+              <div class="pc-cta" id="pcCta"></div>
+            </div>
+            <div class="pc-right" id="pcImg"><div class="pc-cap" id="pcCap"></div></div>
+          </div>
+
+          <!-- 진료시간 & 수가표 프리뷰 -->
+          <div class="pv-body" id="pvInfo" hidden>
+            <div class="pv-box"><h5>🕒 진료시간 안내</h5><table class="tb2" id="pvHours"></table></div>
+            <div class="pv-box"><h5>🧾 비급여 진료비용 안내 (의료법 제45조)</h5><table class="tb2" id="pvFees"></table></div>
+          </div>
+        </div>
+        <p class="fine" style="text-align:center">▲ 위 ①~⑤ 레이아웃 색상과 왼쪽 문구·사진을 바꾸면 오른쪽 화면이 구역별로 즉시 바뀝니다</p>
+      </div>
+    </div>
+
+    <div class="studio">
+      <div class="box rv"><h3>✏️ 전 단계 기본 제공 셀프 편집</h3><ul style="list-style:none">
+        <li style="padding:5px 0">· 5대 레이아웃별(배너·헤더·본문 바탕·체크리스트·상담 버튼) 색감 지정</li><li style="padding:5px 0">· 질환 카드 첫장(제목·소개·체크리스트·실사 업로드)</li><li style="padding:5px 0">· 진료시간·점심시간·휴진일 · 상단 긴급 공지 배너</li><li style="padding:5px 0">· 비급여 수가표(의료법 제45조 고지) · 인사말 · 오시는 길</li></ul></div>
+      <div class="box rv"><h3>🎛️ 상위 단계에서 열리는 프리미엄 스튜디오</h3><ul style="list-style:none">
+        <li style="padding:5px 0"><b>프로 이상</b> · 스토리보드 오프닝 편집, AI 의료법 금지어 실시간 경고</li><li style="padding:5px 0"><b>시그니처 전용</b> · 새 질환 카드 페이지 무제한 직접 증설 (증설비 0원)</li><li style="padding:5px 0"><b>시그니처 전용</b> · 금지어 없어도 고객 호감형 언어로 다듬는 AI 카피라이터 무제한</li><li style="padding:5px 0"><b>시그니처 전용</b> · 원장님 실사 기반 2K 맞춤 진료 화보 생성 스튜디오</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑫ 구독 ROI & 신규 디자인·템플릿 무료 배급 혜택 -->
+<section class="dark" id="care-benefit">
+  <div class="wrap">
+    <span class="eyebrow rv">MONTHLY CARE · 왜 구독이 원장님께 이득인가</span>
+    <h2 class="title rv">“외주 대행사에 건당 5만 원씩 주던 포스팅,<br><span class="gold">월 구독료 한 번으로 끝냅니다</span>”</h2>
+    <div class="roi">
+      <div class="box rent rv" style="background:#fff;color:#0B2418"><h3>🔴 외주 포스팅 · 일반 홈페이지</h3>
+        <div class="big-num red">월 750,000원~</div><p style="font-size:.85rem;margin-bottom:10px">월 15건 × 건당 5만 원 가정 + 2~3년 뒤 리뉴얼 목돈 별도</p>
+        <ul><li>작성자가 의학 지식이 부족하면 원장님이 매번 고쳐야 합니다.</li><li>의료법 금지어 검수가 포함되지 않는 경우가 많습니다.</li><li>2~3년 뒤 디자인이 올드해지면 수백만 원을 들여 새로 제작해야 합니다.</li></ul></div>
+      <div class="box own rv" style="color:#0B2418"><h3>🟢 바른 AI 마스터 케어</h3>
+        <div class="big-num green">월 99,000원</div><p style="font-size:.85rem;margin-bottom:10px">VAT 포함 · 연 결제 시 월 89,100원 · 외주 단가의 약 13% 수준</p>
+        <ul><li>월 15건 학술 근거 기반 칼럼 + 맞춤 이미지 자동 발행 (병원 맞춤 주제)</li><li>원장님 사진 기반 인물 고정 화보 탑재</li><li>네이버 서치어드바이저·구글 서치콘솔 연동 및 등록 관리</li><li>비급여 수가표·명절·휴진·레이아웃별 색감 무제한 셀프 수정</li><li>마스터 전용 상세 통계 센터(유입·시간대·예약 전환)</li><li><b>🎁 향후 업데이트되는 신규 홈페이지 디자인·템플릿 무료 배급</b></li></ul></div>
+    </div>
+
+    <div class="free-dist-banner rv">
+      <div class="fdb-icon" aria-hidden="true">🎁</div>
+      <div class="fdb-body">
+        <h3>구독 원장님 전원 혜택 — 향후 업데이트된 홈페이지 디자인 &amp; 신규 템플릿 <span class="gold">무료 배급</span></h3>
+        <p>일반 외주 홈페이지는 2~3년만 지나도 디자인이 유행에 뒤처져 수백만 원을 들여 다시 리뉴얼해야 합니다. 바른 메디테크는 <b>구독을 유지하시는 원장님께 앞으로 지속 개발·업그레이드되는 최신 홈페이지 디자인 스킨과 신규 템플릿을 추가 제작비 0원(무료)으로 배급</b>해 드립니다. 한 번 도입하시면 시간이 갈수록 더 세련된 홈페이지로 진화합니다.</p>
+        <div class="fdb-tags">
+          <span>✓ 리뉴얼 재제작비 0원</span>
+          <span>✓ 신규 디자인 스킨 무상 보급</span>
+          <span>✓ 스탠다드·프로·시그니처 전 구독자 공통 제공</span>
+        </div>
+      </div>
+    </div>
+    <p class="fine" style="margin-top:16px">※ 위 월 99,000원 구성은 시그니처 기준이며(프로 케어 월 55,000원 / 베이직 케어 월 19,900원), <b>향후 업데이트되는 신규 디자인·템플릿 무료 배급 혜택은 전 단계 구독자께 해당 단계 범위 내에서 무료로 제공</b>됩니다.</p>
   </div>
 </section>
 
@@ -1012,7 +1384,7 @@
         <div class="was">평생 지정가 <s>1,190,000원</s></div>
         <div class="price">790,000원 <small>(869,000원)</small></div>
         <div class="sub-fee">월 베이직 케어 19,900원 (VAT 포함)</div>
-        <ul><li>PC·모바일 반응형 웹</li><li>원장 소개 · 오시는길 · 4대 내비</li><li>전화·카톡·네이버예약 고정 바</li><li>의료법 필수 기재 · 비급여 고지</li><li>셀프 수정(진료시간·휴진일)</li><li class="x">AI 자동 포스팅</li><li class="x">체크포인트 · Q&amp;A</li></ul>
+        <ul><li>PC·모바일 반응형 웹</li><li>원장 소개 · 오시는길 · 4대 내비</li><li>전화·카톡·네이버예약 고정 바</li><li>의료법 필수 기재 · 비급여 고지</li><li>셀프 수정(진료시간·휴진·레이아웃별 색감)</li><li><b>향후 신규 디자인·템플릿 무료 배급</b> (구독 시)</li><li class="x">AI 자동 포스팅</li><li class="x">체크포인트 · Q&amp;A</li></ul>
         <a class="btn btn-green" href="#apply">스탠다드 상담</a>
       </div>
       <div class="plan sig rv">
@@ -1021,7 +1393,7 @@
         <div class="was">평생 지정가 <s>2,490,000원</s></div>
         <div class="price">1,890,000원 <small>(2,079,000원)</small></div>
         <div class="sub-fee">월 AI 마스터 케어 99,000원 (VAT 포함) · 연 결제 10% 할인</div>
-        <ul><li>스탠다드·프로 전 기능 포함</li><li>풀스크린 3D 인체모형 포털 + 진료실 브리핑용</li><li>질환 카드 페이지 무제한 (증설비 0원)</li><li>월 15건 글 + 맞춤 이미지(월 최대 45장) 자동 발행</li><li>의료법 AI: 경고 + 합법 대체 문구 자동 작성</li><li>마스터 전용 상세 통계 센터</li><li>VIP 전담 우선 제작 착수 혜택</li></ul>
+        <ul><li>스탠다드·프로 전 기능 포함</li><li>풀스크린 3D 인체모형 포털 + 진료실 브리핑용</li><li>질환 카드 페이지 무제한 (증설비 0원)</li><li>월 15건 글 + 맞춤 이미지(월 최대 45장) 자동 발행</li><li>고객 호감형 + 의료법 합법 AI 문구 자동 다듬기</li><li>마스터 전용 상세 통계 센터</li><li><b>향후 신규 디자인·템플릿 무료 배급</b> (구독 시)</li><li>VIP 전담 우선 제작 착수 혜택</li></ul>
         <a class="btn btn-gold" href="#apply">시그니처 상담 신청</a>
       </div>
       <div class="plan rv">
@@ -1029,7 +1401,7 @@
         <div class="was">평생 지정가 <s>1,890,000원</s></div>
         <div class="price">1,490,000원 <small>(1,639,000원)</small></div>
         <div class="sub-fee">월 AI 그로스 케어 55,000원 (VAT 포함) · 연 결제 5% 할인</div>
-        <ul><li>스탠다드 전 기능 포함</li><li>질환별 체크포인트(자가진단) · 스토리보드 12컷</li><li>1:1 Q&amp;A 게시판</li><li>월 8건 글(텍스트) 자동 발행</li><li>의료법 AI 금지어 경고</li><li class="x">3D 인체모형 · 마스터 통계</li></ul>
+        <ul><li>스탠다드 전 기능 포함</li><li>질환별 체크포인트(자가진단) · 스토리보드 12컷</li><li>1:1 Q&amp;A 게시판</li><li>월 8건 글(텍스트) 자동 발행</li><li>의료법 AI 금지어 경고</li><li><b>향후 신규 디자인·템플릿 무료 배급</b> (구독 시)</li><li class="x">3D 인체모형 · 마스터 통계</li></ul>
         <a class="btn btn-green" href="#apply">프로 상담</a>
       </div>
     </div>
@@ -1046,6 +1418,7 @@
       <details class="rv"><summary>견적 979만~2,046만 원짜리 홈페이지와 무엇이 다른가요?</summary><p>같은 구성의 결과물을 이미 운영 중이라 처음부터 개발하는 비용이 없고, 만든 뒤의 칼럼·검수·검색 등록까지 월 구독으로 이어진다는 점이 다릅니다.</p></details>
       <details class="rv"><summary>AI가 쓴 글, 의료법이나 검색 페널티 위험은 없나요?</summary><p>글은 의료법 금지어, 전문용어, 질문형 구조의 3단계 검수를 통과해야 발행되고, 기발행 주제와 겹치지 않도록 이력을 대조합니다. 구글·네이버 모두 AI 사용 자체가 아니라 “독창적 가치 없이 대량 양산하는 행위”를 제재합니다. 본문에는 AI 보조 및 의료인 감수 사실도 표기합니다. 다만 최종 책임은 원장님의 감수에 있음을 먼저 말씀드립니다.</p></details>
       <details class="rv"><summary>정말 노출이 늘어나나요? 보장되나요?</summary><p>순위나 매출은 보장하지 않습니다. 정직하게 보장할 수 있는 업체는 없습니다. 대신 노출의 전제 조건인 검색 등록, 정식 구조, 꾸준한 고품질 콘텐츠를 빠짐없이 갖춰 드립니다.</p></details>
+      <details class="rv"><summary>몇 년 쓰다 디자인이 유행에 뒤처지면 또 목돈을 들여 리뉴얼해야 하나요?</summary><p>아닙니다. 월 구독 케어를 유지하시는 원장님께는 <b>향후 새롭게 출시·업데이트되는 홈페이지 디자인 스킨과 신규 템플릿을 추가 구축비 없이 무료로 배급</b>해 드립니다. 일반 외주처럼 2~3년마다 수백만 원을 들여 재제작하실 필요 없이 언제나 세련된 최신 홈페이지를 유지하실 수 있습니다.</p></details>
       <details class="rv"><summary>구독 없이 홈페이지만 쓸 수는 없나요?</summary><p>시그니처의 3D·무제한 카드·통계·자동 발행은 월 케어가 가동되어야 제 성능을 냅니다. 그래서 구축과 구독을 1:1로 묶었습니다. 대신 구독료는 같은 글을 외주로 맡길 때의 약 13% 수준입니다.</p></details>
       <details class="rv"><summary>같은 동네에 이 홈페이지를 쓰는 한의원이 또 생기면요?</summary><p>상권 독점은 드리지 않습니다. 반경 1km 안에 한의원이 여러 곳인 경우가 많아 독점 제한이 오히려 원장님께 불리하다고 판단했습니다. 같은 틀이어도 원장님의 철학·사진·글로 채워지기 때문에 결과물은 서로 다릅니다.</p></details>
       <details class="rv"><summary>홈페이지가 있어도 광고는 계속해야 하나요?</summary><p>광고와 홈페이지는 경쟁이 아니라 짝입니다. 광고는 환자를 데려오고, 홈페이지는 그 환자를 설득합니다. 광고를 하신다면 도착지가 탄탄해져 같은 광고비의 효율이 올라갑니다.</p></details>
@@ -1175,56 +1548,299 @@
   }
   [rP,rI,rN,rRa,rL].forEach(function(el){ el.addEventListener('input',sim); }); sim();
 
-  /* 셀프 스튜디오 체험 */
+  /* 셀프 스튜디오 통합 체험 (5대 레이아웃별 색감 커스텀 + 스토리보드/질환카드/진료시간/수가표 + 고객호감 AI 다듬기) */
   (function(){
     var root=document.getElementById('sdemo'); if(!root) return;
     function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-    var IMGS=['chuna_minimal_card1_core_align_a.jpg','chuna_minimal_card1_core_align_b.jpg','chuna_minimal_card2_painkiller_limit.jpg','chuna_minimal_card3_pelvis_tilted_a.jpg','chuna_minimal_card3_pelvis_aligned_c.jpg'];
-    var PRE={
-      chuna:{eye:'CHUNA SPINAL REALIGNMENT · 척추 교정',title:'바른 추나 · 척추교정',sub:'Evidence-Based Manual Chuna & Spinal Care',desc:'진통제로 통증만 가리지 않고, 대표원장이 직접 수기 추나로 틀어진 척추·골반의 중심축을 바로잡습니다.',ck:['[만성 재발 통증] 진통제·주사를 맞아도 며칠 뒤 목·허리 통증이 다시 시작된다','[체형 비대칭] 거울을 보면 양쪽 어깨 높이가 다르고 바지나 치마가 돌아간다','[디스크·방사통] 허리와 뒷목이 뻐근하고 엉덩이·다리·팔까지 저릿한 증상이 있다','[거북목·두통] 컴퓨터·스마트폰 사용 후 뒷목이 굳고 만성 두통과 눈 피로가 온다','[비수술 근본 교정] 수술 없이 학술적으로 검증된 추나로 치료받고 싶다'],cta:'내 체형에 맞는 교정 계획 원장님과 상담하기',cap:'수술 없이 틀어진 척추·골반 중심축을 바로잡는 교정 — ‘정밀 수기 추나’',img:0}
+
+    /* A. 5대 레이아웃 구역별 색감 엔진 (WCAG 상대 휘도 기반 구역별 글자색 자동 보정) */
+    function hexToRgb(hex){
+      var m=String(hex||'').trim().match(/^#?([0-9a-f]{6})$/i);
+      if(!m) return null;
+      var n=parseInt(m[1],16);
+      return {r:(n>>16)&255, g:(n>>8)&255, b:n&255};
+    }
+    function normHex(hex, fallback){
+      var rgb=hexToRgb(hex);
+      if(!rgb) return fallback;
+      return '#'+[rgb.r,rgb.g,rgb.b].map(function(x){ var h=x.toString(16); return h.length<2?'0'+h:h; }).join('').toUpperCase();
+    }
+    function lumOf(hex){
+      var rgb=hexToRgb(hex)||{r:255,g:255,b:255};
+      return (0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b)/255;
+    }
+
+    var PRESETS={
+      'hanji-green': { banner:'#2D5A43', header:'#0B2418', body:'#FAF7F0', check:'#EBF4EF', accent:'#2D5A43' },
+      'royal-navy':  { banner:'#1B365D', header:'#0C1B33', body:'#FFFFFF', check:'#EEF3FA', accent:'#1B365D' },
+      'warm-brown':  { banner:'#5A3E2B', header:'#261810', body:'#F7F2E9', check:'#EDE3D2', accent:'#6E472B' },
+      'dark-gold':   { banner:'#C59B27', header:'#0F1412', body:'#18201C', check:'#232E28', accent:'#D4AF37' },
+      'burgundy':    { banner:'#6B2433', header:'#2E0D15', body:'#FDF9FA', check:'#F7EBEF', accent:'#7A283B' },
+      'sage-olive':  { banner:'#3D6B58', header:'#1A3329', body:'#F4F8F5', check:'#E3EFE8', accent:'#2E5E4A' }
     };
-    var cur=null, imgIdx=0;
-    var eCards=document.getElementById('cCks'), imgBox=document.getElementById('cImgs');
-    IMGS.forEach(function(src,i){ var b=document.createElement('button'); b.type='button'; b.style.backgroundImage="url('"+src+"')"; b.setAttribute('aria-label','이미지 '+(i+1)); b.addEventListener('click',function(){ imgIdx=i; drawCard(); }); imgBox.appendChild(b); });
-    var ckInputs=[]; for(var i=0;i<5;i++){ (function(i){ var inp=document.createElement('input'); inp.setAttribute('aria-label','체크리스트 '+(i+1)); inp.addEventListener('input',drawCard); eCards.appendChild(inp); ckInputs.push(inp); })(i); }
-    function load(k){
-      var p=PRE[k]; cur=k; imgIdx=p.img;
-      document.getElementById('cTitle').value=p.title; document.getElementById('cSub').value=p.sub; document.getElementById('cDesc').value=p.desc;
-      document.getElementById('cCta').value=p.cta; document.getElementById('cCap').value=p.cap;
-      ckInputs.forEach(function(inp,i){ inp.value=p.ck[i]; }); root._eye=p.eye; drawCard();
+
+    var curColors = { banner:'#2D5A43', header:'#0B2418', body:'#FAF7F0', check:'#EBF4EF', accent:'#2D5A43' };
+
+    var ZONES = [
+      { key:'banner', picker:'lyBannerColor', hex:'lyBannerHex' },
+      { key:'header', picker:'lyHeaderColor', hex:'lyHeaderHex' },
+      { key:'body',   picker:'lyBodyColor',   hex:'lyBodyHex'   },
+      { key:'check',  picker:'lyCheckColor',  hex:'lyCheckHex'  },
+      { key:'accent', picker:'lyAccentColor', hex:'lyAccentHex' }
+    ];
+
+    function syncLayoutColors(fromPreset){
+      var bBg=normHex(curColors.banner,'#2D5A43');
+      var hBg=normHex(curColors.header,'#0B2418');
+      var bdBg=normHex(curColors.body,'#FAF7F0');
+      var ckBg=normHex(curColors.check,'#EBF4EF');
+      var acBg=normHex(curColors.accent,'#2D5A43');
+
+      var bdLight = lumOf(bdBg) > 0.55;
+      root.style.setProperty('--ly-banner-bg', bBg);
+      root.style.setProperty('--ly-banner-fg', lumOf(bBg) > 0.58 ? '#0B2418' : '#FFFFFF');
+      root.style.setProperty('--ly-header-bg', hBg);
+      root.style.setProperty('--ly-header-fg', lumOf(hBg) > 0.58 ? '#0B2418' : '#FFFFFF');
+      root.style.setProperty('--ly-body-bg', bdBg);
+      root.style.setProperty('--ly-body-fg', bdLight ? '#0B2418' : '#F8FAFC');
+      root.style.setProperty('--ly-body-sub', bdLight ? '#425249' : 'rgba(248,250,252,0.82)');
+      root.style.setProperty('--ly-check-bg', ckBg);
+      root.style.setProperty('--ly-check-fg', lumOf(ckBg) > 0.56 ? '#152A1F' : '#F8FAFC');
+      root.style.setProperty('--ly-accent-bg', acBg);
+      root.style.setProperty('--ly-accent-fg', lumOf(acBg) > 0.58 ? '#0B2418' : '#FFFFFF');
+      root.style.setProperty('--ly-eyebrow-fg', bdLight ? (lumOf(acBg) > 0.65 ? '#2D5A43' : acBg) : (lumOf(acBg) < 0.35 ? '#8FE0B0' : acBg));
+
+      ZONES.forEach(function(z){
+        var pEl=document.getElementById(z.picker), hEl=document.getElementById(z.hex), val=normHex(curColors[z.key],'#2D5A43');
+        if(pEl) pEl.value=val;
+        if(hEl && document.activeElement!==hEl) hEl.value=val;
+      });
+
+      if(!fromPreset){
+        document.querySelectorAll('.swatch-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+      }
+    }
+
+    document.querySelectorAll('.swatch-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var pr=PRESETS[btn.getAttribute('data-preset')]; if(!pr) return;
+        document.querySelectorAll('.swatch-btn').forEach(function(b){ b.setAttribute('aria-pressed', b===btn?'true':'false'); });
+        curColors={ banner:pr.banner, header:pr.header, body:pr.body, check:pr.check, accent:pr.accent };
+        syncLayoutColors(true);
+      });
+    });
+
+    ZONES.forEach(function(z){
+      var pEl=document.getElementById(z.picker), hEl=document.getElementById(z.hex);
+      if(pEl){
+        pEl.addEventListener('input',function(){ curColors[z.key]=pEl.value; syncLayoutColors(false); });
+      }
+      if(hEl){
+        hEl.addEventListener('input',function(){
+          var v=hEl.value.trim();
+          if(/^#?[0-9a-f]{6}$/i.test(v)){ curColors[z.key]=v.charAt(0)==='#'?v:'#'+v; syncLayoutColors(false); }
+        });
+      }
+    });
+
+    var resetBtn=document.getElementById('lyColorReset');
+    if(resetBtn){
+      resetBtn.addEventListener('click',function(){
+        var first=document.querySelector('.swatch-btn[data-preset="hanji-green"]');
+        if(first) first.click();
+      });
+    }
+
+    /* 레이아웃 구역 포커스/호버 시 우측 미리보기 해당 구역 하이라이트 표시 */
+    var pulseTimer=null;
+    document.querySelectorAll('.lz-item[data-zone-target]').forEach(function(item){
+      function hi(on){
+        var tid=item.getAttribute('data-zone-target');
+        var el=document.getElementById(tid);
+        if(!el) return;
+        el.classList.toggle('zone-pulse', on);
+      }
+      item.addEventListener('mouseenter',function(){ hi(true); });
+      item.addEventListener('mouseleave',function(){ hi(false); });
+      item.addEventListener('focusin',function(){
+        hi(true);
+        clearTimeout(pulseTimer);
+        pulseTimer=setTimeout(function(){ hi(false); }, 1400);
+      });
+    });
+
+    /* B. 질환 카드 데이터 + 시그니처 무제한 증설 체험 + 직접 사진 업로드 */
+    var IMGS=['chuna_minimal_card1_core_align_a.jpg','life_1d_growth_clinic.jpg','diet_minimal_card1_muscle_burn_a.jpg','card_5_hairloss.jpg','chuna_minimal_card3_pelvis_aligned_c.jpg'];
+    var PRE={
+      chuna:{eye:'CHUNA · 척추·골반 교정',title:'바른 추나 · 척추교정',sub:'Evidence-Based Manual Chuna & Spinal Care',desc:'진통제로 통증만 가리지 않고, 대표원장이 직접 수기 추나로 틀어진 척추·골반의 중심축을 바로잡습니다.',ck:['[만성 재발 통증] 진통제·주사를 맞아도 며칠 뒤 목·허리 통증이 다시 시작된다','[체형 비대칭] 거울을 보면 양쪽 어깨 높이가 다르고 바지나 치마가 돌아간다','[디스크·방사통] 허리와 뒷목이 뻐근하고 엉덩이·다리·팔까지 저릿한 증상이 있다','[거북목·두통] 컴퓨터·스마트폰 사용 후 뒷목이 굳고 만성 두통과 눈 피로가 온다','[비수술 근본 교정] 수술 없이 학술적으로 검증된 추나로 치료받고 싶다'],cta:'내 체형에 맞는 교정 계획 원장님과 상담하기',cap:'수술 없이 틀어진 척추·골반 중심축을 바로잡는 교정 — ‘정밀 수기 추나’',img:0},
+      growth:{eye:'GROWTH · 소아 성장 클리닉',title:'숨은 키를 깨우는 바른 성장',sub:'Growth Plate & Constitutional Care',desc:'무조건 살만 찌우는 보약이 아니라, 수면·소화 흡수력과 성장판 시기를 정밀히 분석해 아이 체질에 맞는 건강한 성장을 돕습니다.',ck:['[또래보다 작은 키] 반에서 키 번호가 늘 앞쪽이라 새 학기마다 마음이 쓰인다','[얕은 잠·입호흡] 밤새 뒤척이거나 입을 벌리고 자서 아침에 쉽게 일어나지 못한다','[식욕 부진·편식] 밥 먹는 시간이 전쟁이고 조금만 먹어도 배가 아프다고 한다','[사춘기 조기 신호] 또래보다 2차 성징이 빨리 시작되는 것 같아 성장판이 걱정된다','[체력 저하] 학원·학교 일정을 소화하면 쉽게 지치고 잔병치레가 잦다'],cta:'우리 아이 성장 잠재력 상담 예약하기',cap:'성장판 시기·수면·소화를 함께 살피는 1:1 맞춤 성장 케어',img:1},
+      diet:{eye:'METABOLIC DIET · 체질 다이어트',title:'굶지 않고 비우는 체질 다이어트',sub:'Healthy Metabolic Reset Program',desc:'무작정 굶어 근육과 수분만 빠지는 감량이 아닌, 체지방 대사를 깨우고 부종과 식욕 리듬을 편안하게 바로잡습니다.',ck:['[요요 반복] 적게 먹어도 예전처럼 살이 잘 빠지지 않고 금방 되돌아온다','[만성 부종] 아침마다 얼굴·손발이 붓고 저녁이면 다리가 무겁다','[스트레스 폭식] 퇴근 후 야식이나 단 음식을 참기가 너무 힘들다','[체력 저하형 감량] 다이어트만 시작하면 어지럽고 손발이 차가워진다','[산후·체형 변화] 출산이나 나잇살로 복부·하체 라인이 무너졌다'],cta:'내 체질에 맞는 건강한 감량 상담하기',cap:'일상 컨디션을 지키며 건강하게 비우는 1:1 체질 맞춤 감량',img:2}
+    };
+    var EXTRA_CARDS=[
+      {key:'women',label:'4. 산후·여성 보약 (✦추가됨)',data:{eye:'WOMEN CARE · 산후·여성 클리닉',title:'산후풍과 기혈을 돌보는 여성 보약',sub:'Postpartum Recovery & Hormone Balance',desc:'출산 후 시린 관절과 깊은 피로, 시기를 놓치지 않고 어혈을 비워내며 엄마의 건강한 몸 상태를 세심히 회복합니다.',ck:['출산 후 손목·무릎·발목 마디마디가 시리고 바람이 들어오는 듯하다','조금만 움직여도 식은땀이 나고 출산 전 체력으로 돌아오지 않는다','생리 주기가 불규칙하거나 아랫배가 늘 차갑고 통증이 심하다','갱년기 열감·불면·가슴 두근거림으로 일상이 지친다','모유 수유 중에도 안심하고 복용할 수 있는 맞춤 한약을 찾고 있다'],cta:'여성·산후 1:1 맞춤 회복 상담하기',cap:'엄마의 몸과 마음까지 따뜻하게 채우는 단계별 산후·여성 케어',img:4}},
+      {key:'rhinitis',label:'5. 비염·호흡기 (✦추가됨)',data:{eye:'RESPIRATORY · 비염·호흡기 클리닉',title:'코막힘과 면역을 함께 잡는 비염 케어',sub:'Nasal Mucosa & Mucosal Immunity Care',desc:'항히스타민제로 잠시 말리는 대신, 건조하고 부어오른 코점막 자생력과 호흡기 면역력을 함께 끌어올립니다.',ck:['환절기마다 맑은 콧물·재채기·코막힘으로 집중하기 어렵다','밤마다 코가 막혀 입을 벌리고 자고 아침에 목이 따갑다','비염 약을 먹을 때만 잠시 괜찮고 끊으면 바로 다시 시작된다','아이 코막힘 때문에 학업 집중력과 수면의 질이 떨어졌다','잦은 감기와 부비동 불편함이 한 달 이상 길게 이어진다'],cta:'숨쉬기 편안한 호흡기 상담 예약하기',cap:'코점막 회복과 호흡기 면역을 동시에 살피는 맞춤 비염 치료',img:1}},
+      {key:'exam',label:'6. 수험생 총명 클리닉 (✦추가됨)',data:{eye:'STUDENT CARE · 수험생 클리닉',title:'지치지 않는 수험생 체력·집중 케어',sub:'Student Stamina, Sleep & Neck Tension Care',desc:'오래 앉아 굳어진 뒷목·어깨 긴장을 풀고 소화 부담 없이 두뇌 컨디션과 깊은 숙면을 유지하도록 돕습니다.',ck:['책상에 오래 앉아 있으면 뒷목·어깨가 돌처럼 굳고 두통이 온다','잠자리에 들어도 생각이 많아 쉽게 잠들지 못하고 아침에 무겁다','시험이 다가올수록 속이 더부룩하고 긴장성 복통이 잦다','오후만 되면 체력이 급격히 떨어져 집중력이 흐트러진다','카페인 음료 대신 건강하게 체력을 뒷받침해 줄 처방이 필요하다'],cta:'수험생 맞춤 총명·체력 상담하기',cap:'체력·숙면·목어깨 긴장을 함께 돌보는 수험생 집중 케어',img:0}}
+    ];
+    var addedIdx=0, imgIdx=0, customCardImg=null;
+    var eCards=document.getElementById('cCks'), imgBox=document.getElementById('cImgs'), chipBox=document.getElementById('cardChips');
+
+    IMGS.forEach(function(src,i){
+      var b=document.createElement('button'); b.type='button'; b.style.backgroundImage="url('"+src+"')";
+      b.setAttribute('aria-label','질환 카드 샘플 이미지 '+(i+1));
+      b.addEventListener('click',function(){ customCardImg=null; imgIdx=i; drawCard(); });
+      imgBox.appendChild(b);
+    });
+    var ckInputs=[];
+    for(var i=0;i<5;i++){
+      (function(i){
+        var inp=document.createElement('input'); inp.setAttribute('aria-label','자가진단 체크리스트 '+(i+1));
+        inp.addEventListener('input',drawCard); eCards.appendChild(inp); ckInputs.push(inp);
+      })(i);
+    }
+
+    function loadCard(k){
+      var p=PRE[k]; if(!p) return;
+      customCardImg=null; imgIdx=p.img;
+      document.getElementById('cTitle').value=p.title;
+      document.getElementById('cSub').value=p.sub;
+      document.getElementById('cDesc').value=p.desc;
+      document.getElementById('cCta').value=p.cta;
+      document.getElementById('cCap').value=p.cap;
+      ckInputs.forEach(function(inp,i){ inp.value=p.ck[i]||''; });
+      root._eye=p.eye;
+      [].slice.call(chipBox.querySelectorAll('.scb-chip')).forEach(function(c){ c.classList.toggle('on', c.getAttribute('data-card')===k); });
+      drawCard();
     }
     function drawCard(){
       document.getElementById('pcEye').textContent=root._eye||'';
       document.getElementById('pcTitle').textContent=document.getElementById('cTitle').value;
       document.getElementById('pcSub').textContent=document.getElementById('cSub').value;
       document.getElementById('pcDesc').textContent=document.getElementById('cDesc').value;
-      document.getElementById('pcCk').innerHTML=ckInputs.map(function(inp){ return '<div>'+esc(inp.value)+'</div>'; }).join('');
+      var ckHtml=ckInputs.map(function(inp, idx){
+        return '<div class="'+(idx===0?'is-checked':'')+'">'+esc(inp.value)+'</div>';
+      }).join('');
+      var pcCk=document.getElementById('pcCk');
+      pcCk.innerHTML=ckHtml;
+      [].slice.call(pcCk.children).forEach(function(row){
+        row.addEventListener('click',function(){ row.classList.toggle('is-checked'); });
+      });
       document.getElementById('pcCta').textContent=document.getElementById('cCta').value;
       document.getElementById('pcCap').textContent=document.getElementById('cCap').value;
-      document.getElementById('pcImg').style.backgroundImage="url('"+IMGS[imgIdx]+"')";
-      [].slice.call(imgBox.children).forEach(function(b,i){ b.classList.toggle('on',i===imgIdx); });
+      var bgUrl = customCardImg ? customCardImg : IMGS[imgIdx];
+      document.getElementById('pcImg').style.backgroundImage='url("'+bgUrl+'")';
+      [].slice.call(imgBox.children).forEach(function(b,i){ b.classList.toggle('on', !customCardImg && i===imgIdx); });
     }
     ['cTitle','cSub','cDesc','cCta','cCap'].forEach(function(id){ document.getElementById(id).addEventListener('input',drawCard); });
+
+    chipBox.querySelectorAll('.scb-chip').forEach(function(ch){
+      ch.addEventListener('click',function(){ loadCard(ch.getAttribute('data-card')); });
+    });
+
     document.getElementById('cardAdd').addEventListener('click',function(){
       var m=document.getElementById('cardMsg'); m.hidden=false;
-      m.innerHTML='🔒 <b>시그니처 전용 기능입니다.</b> 카드 첫장 수정은 모든 단계에서 가능하지만, 새 질환 카드를 <b>무제한(증설비 0원)</b>으로 직접 추가하는 것은 시그니처에서만 가능합니다.';
+      if(addedIdx < EXTRA_CARDS.length){
+        var item=EXTRA_CARDS[addedIdx++];
+        PRE[item.key]=item.data;
+        var nb=document.createElement('button');
+        nb.type='button'; nb.className='scb-chip added'; nb.setAttribute('data-card',item.key); nb.textContent=item.label;
+        nb.addEventListener('click',function(){ loadCard(item.key); });
+        chipBox.appendChild(nb);
+        loadCard(item.key);
+        m.innerHTML='✨ <b>['+esc(item.label)+'] 페이지가 즉시 생성되었습니다!</b> 일반 제작사는 페이지 추가마다 30만 원을 청구하지만, 바른 시그니처는 계절·신규 클리닉 카드를 <b>증설비 0원 무제한</b>으로 직접 늘리실 수 있습니다.';
+      } else {
+        m.innerHTML='✦ 체험용 추가 카드 3종을 모두 열어 보셨습니다! 실제 시그니처 스튜디오에서는 <b>개수 제한 없이 무제한(증설비 0원)</b>으로 새 질환 페이지를 만드실 수 있습니다.';
+      }
     });
-    /* 탭 */
-    var panes={t0:'card',t1:'info',t2:'info',t3:'card'};
-    root.querySelectorAll('.sd-tabs button').forEach(function(b){ b.addEventListener('click',function(){
-      root.querySelectorAll('.sd-tabs button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+
+    var cFileInput=document.getElementById('cFileInput');
+    if(cFileInput){
+      cFileInput.addEventListener('change',function(e){
+        var f=e.target.files&&e.target.files[0]; if(!f) return;
+        var rd=new FileReader();
+        rd.onload=function(ev){ customCardImg=ev.target.result; drawCard(); };
+        rd.readAsDataURL(f);
+      });
+    }
+
+    /* C. 스토리보드 오프닝 실시간 편집 + 프리셋 + 직접 사진 업로드 */
+    var SB_IMGS=['life_1d_growth_short.jpg','life_1c_clinic_exam.jpg','chuna_minimal_card1_core_align_a.jpg','webp/card_1_director.webp'];
+    var SB_PRESETS={
+      growth:{title:'친구보다 너무 작은 우리 아이, 괜찮을까요?',desc:'새 학기가 시작될 때마다 키 번호 1번, 맨 앞자리에 앉는 아이를 보며 부모의 마음은 타들어갑니다. 성장판이 닫히기 전, 지금 우리 아이의 숨은 성장 잠재력을 확인해 보세요.',cta:'우리 아이 성장 신호 살펴보기 →',img:0},
+      pain:{title:'진통제를 먹어도 3일 뒤 다시 뻐근한 허리, 왜 그럴까요?',desc:'통증은 몸이 보내는 구조적 신호입니다. 아픈 부위만 잠시 가리는 치료를 넘어, 무너진 척추·골반의 중심축을 대표원장이 수기 추나로 정밀하게 바로잡습니다.',cta:'척추·골반 불균형 자가진단 해보기 →',img:2},
+      fatigue:{title:'주말 내내 쉬어도 월요일 아침이 천근만근이신가요?',desc:'단순한 수면 부족이 아니라 몸속 기혈과 자율신경 리듬이 소진되었다는 신호일 수 있습니다. 정밀 진맥과 엄선된 안심 약재로 내 몸에 꼭 맞는 회복을 시작하세요.',cta:'1:1 체질 맞춤 보약 상담하기 →',img:1}
+    };
+    var sbImgIdx=0, customSbImg=null, sbImgBox=document.getElementById('sbImgs');
+    SB_IMGS.forEach(function(src,i){
+      var b=document.createElement('button'); b.type='button'; b.style.backgroundImage="url('"+src+"')";
+      b.setAttribute('aria-label','스토리보드 배경 샘플 '+(i+1));
+      b.addEventListener('click',function(){ customSbImg=null; sbImgIdx=i; drawStory(); });
+      sbImgBox.appendChild(b);
+    });
+    function drawStory(){
+      document.getElementById('psTitle').textContent=document.getElementById('sbTitle').value;
+      document.getElementById('psDesc').textContent=document.getElementById('sbDesc').value;
+      document.getElementById('psCta').textContent=document.getElementById('sbCta').value;
+      var bg = customSbImg ? customSbImg : SB_IMGS[sbImgIdx];
+      document.getElementById('pvStory').style.backgroundImage='url("'+bg+'")';
+      [].slice.call(sbImgBox.children).forEach(function(b,i){ b.classList.toggle('on', !customSbImg && i===sbImgIdx); });
+    }
+    ['sbTitle','sbDesc','sbCta'].forEach(function(id){ document.getElementById(id).addEventListener('input',drawStory); });
+    document.querySelectorAll('[data-sb-preset]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var p=SB_PRESETS[btn.getAttribute('data-sb-preset')]; if(!p) return;
+        customSbImg=null; sbImgIdx=p.img;
+        document.getElementById('sbTitle').value=p.title;
+        document.getElementById('sbDesc').value=p.desc;
+        document.getElementById('sbCta').value=p.cta;
+        drawStory();
+      });
+    });
+    var sbFileInput=document.getElementById('sbFileInput');
+    if(sbFileInput){
+      sbFileInput.addEventListener('change',function(e){
+        var f=e.target.files&&e.target.files[0]; if(!f) return;
+        var rd=new FileReader();
+        rd.onload=function(ev){ customSbImg=ev.target.result; drawStory(); };
+        rd.readAsDataURL(f);
+      });
+    }
+
+    /* D. 접근성 탭 전환 (단일 행 스크롤 + aria-selected) */
+    var panes={t0:'card',tsb:'story',t1:'info',t2:'info',t3:'card'};
+    var tabBtns=[].slice.call(root.querySelectorAll('.sd-tabs button'));
+    function activateStudioTab(b){
       var id=b.getAttribute('data-tab');
-      root.querySelectorAll('.sd-pane').forEach(function(p){ p.classList.toggle('on', p.id===id); });
-      document.getElementById('pvCard').hidden = panes[id]!=='card';
-      document.getElementById('pvInfo').hidden = panes[id]!=='info';
-    }); });
-    /* 진료시간 · 수가표 */
-    var fees=[{n:'맞춤 탕약 (15일분)',p:'200,000 ~ 350,000원'},{n:'정제 약침 (1회)',p:'10,000 ~ 30,000원'},{n:'키 성장 맞춤 한약 (1개월)',p:'350,000 ~ 550,000원'}];
+      tabBtns.forEach(function(x){
+        var sel=(x===b);
+        x.setAttribute('aria-selected', sel?'true':'false');
+        x.classList.toggle('on', sel);
+      });
+      if(b.scrollIntoView){
+        try{ b.scrollIntoView({block:'nearest',inline:'nearest',container:'nearest'}); }catch(e){ b.scrollIntoView({block:'nearest',inline:'nearest'}); }
+      }
+      root.querySelectorAll('.sd-pane').forEach(function(p){
+        var match=(p.id===id);
+        p.classList.toggle('on', match);
+        p.hidden=!match;
+      });
+      var mode=panes[id]||'card';
+      document.getElementById('pvCard').hidden = (mode!=='card');
+      document.getElementById('pvStory').hidden = (mode!=='story');
+      document.getElementById('pvInfo').hidden = (mode!=='info');
+    }
+    tabBtns.forEach(function(b){ b.addEventListener('click',function(){ activateStudioTab(b); }); });
+
+    /* E. 진료시간 · 수가표 */
+    var fees=[
+      {n:'맞춤 치료 탕약 (15일분 · 진맥·체질처방)',p:'200,000 ~ 350,000원'},
+      {n:'고농도 정제 약침 (1회 · 통증 부위별)',p:'10,000 ~ 30,000원'},
+      {n:'소아 키 성장 맞춤 한약 (1개월)',p:'350,000 ~ 550,000원'}
+    ];
     function drawFeeRows(){
       var box=document.getElementById('feeRows'); box.innerHTML='';
       fees.forEach(function(f,i){
         var d=document.createElement('div'); d.className='feerow';
-        d.innerHTML='<input value="'+esc(f.n)+'" aria-label="항목"><input value="'+esc(f.p)+'" aria-label="금액">';
+        d.innerHTML='<input value="'+esc(f.n)+'" aria-label="비급여 항목명"><input value="'+esc(f.p)+'" aria-label="비급여 금액">';
         var ins=d.querySelectorAll('input');
         ins[0].addEventListener('input',function(){ fees[i].n=ins[0].value; drawInfo(); });
         ins[1].addEventListener('input',function(){ fees[i].p=ins[1].value; drawInfo(); });
@@ -1233,32 +1849,77 @@
     }
     function drawInfo(){
       var wk=document.getElementById('dWk').value, lu=document.getElementById('dLunch').value, sa=document.getElementById('dSat').value;
-      document.getElementById('pvHours').innerHTML='<tr><td>평일</td><td>'+esc(wk)+'</td></tr><tr><td>점심</td><td>'+esc(lu)+'</td></tr><tr><td>토요일</td><td>'+esc(sa)+'</td></tr>';
+      document.getElementById('pvHours').innerHTML='<tr><td>평일</td><td>'+esc(wk)+'</td></tr><tr><td>점심시간</td><td>'+esc(lu)+'</td></tr><tr><td>토요일·공휴일</td><td>'+esc(sa)+'</td></tr>';
       var bn=document.getElementById('pvBanner'), on=document.getElementById('dBannerOn').checked, txt=document.getElementById('dBanner').value.trim();
       if(on&&txt){ bn.hidden=false; bn.textContent='📢 '+txt; } else { bn.hidden=true; }
       document.getElementById('pvFees').innerHTML=fees.map(function(f){ return '<tr><td>'+esc(f.n)+'</td><td>'+esc(f.p)+'</td></tr>'; }).join('');
     }
     ['dWk','dLunch','dSat','dBanner'].forEach(function(id){ document.getElementById(id).addEventListener('input',drawInfo); });
     document.getElementById('dBannerOn').addEventListener('change',drawInfo);
-    document.getElementById('feeAdd').addEventListener('click',function(){ if(fees.length>=6) return; fees.push({n:'새 항목',p:'0원'}); drawFeeRows(); drawInfo(); });
-    /* 금지어 경고 (프로) + 합법 문구 (시그니처, 2회 체험) */
-    var BAD=/(완치|100\s?%|최고|유일|보장|특효|무조건|부작용\s?없|1위|할인|이벤트)/g;
-    var law=document.getElementById('dLaw'), lbox=document.getElementById('lawBox');
+    document.getElementById('feeAdd').addEventListener('click',function(){ if(fees.length>=7) return; fees.push({n:'원내 조제 공진단 (10환)',p:'450,000원'}); drawFeeRows(); drawInfo(); });
+
+    /* F. 홍보 문구 AI: 금지어 경고가 없더라도 고객이 좋아하는 공감·신뢰 언어로 자동 다듬기 */
+    var BAD=/(완치|100\s?%|백\s?%|최고|최상|최강|제일|1등|1위|유일|최초|보장|특효|기적|무조건|절대|무통|부작용\s?(?:없|0%)|할인|이벤트)/g;
+    var law=document.getElementById('dLaw'), lbox=document.getElementById('lawBox'), outBox=document.getElementById('lawOut'), applyBtn=document.getElementById('lawApplyToCard');
+    var lastPolished='';
+
     function checkLaw(){
       var t=law.value, hits=t.match(BAD);
-      if(hits&&hits.length){ lbox.className='lawbox bad'; lbox.innerHTML='⚠️ 의료법 제56조 위반 소지 표현 <b>'+hits.length+'개</b> 감지<br>'+esc(t).replace(BAD,'<mark>$1</mark>'); }
-      else { lbox.className='lawbox'; lbox.innerHTML='✅ 감지된 금지어가 없습니다.'; }
+      if(hits&&hits.length){
+        lbox.className='lawbox bad';
+        lbox.innerHTML='⚠️ 의료법 제56조 주의 표현 <b>'+hits.length+'개</b> 감지 — 아래 버튼을 누르면 안전하고 따뜻한 환자 공감형 문장으로 바꿔 드립니다.<br>'+esc(t).replace(BAD,'<mark>$1</mark>');
+      } else {
+        lbox.className='lawbox';
+        lbox.innerHTML='✅ 감지된 의료법 금지어가 없습니다! <b>금지어가 없더라도 아래 버튼을 누르면 환자가 읽자마자 호감을 느끼는 따뜻한 표현으로 다듬어 드립니다.</b>';
+      }
     }
-    law.addEventListener('input',checkLaw); checkLaw();
-    var used=0, MAXU=2;
-    document.getElementById('lawFix').addEventListener('click',function(){
-      var out=document.getElementById('lawOut'); out.hidden=false;
-      if(used>=MAXU){ out.innerHTML='🔒 '+MAXU+'회 체험이 끝났습니다. 시그니처에서는 <b>횟수 제한 없이</b> 문장 전체를 의료법에 맞게 AI가 다시 써 드립니다.'; return; }
-      used++;
-      var rs=softenKo(law.value), t=rs.changed?rs.text:'고칠 표현이 없어 그대로 사용하실 수 있습니다. '+law.value;
-      out.innerHTML='✨ <b>합법 문구 제안 ('+used+'/'+MAXU+'회 체험 · 남은 체험 '+(MAXU-used)+'회)</b><br>'+esc(t)+'<br><small style="opacity:.7">※ 체험용 간이 규칙입니다. 실제 시그니처 AI는 문장 전체를 새로 씁니다. 최종 책임은 원장님 감수에 있습니다.</small>';
+    law.addEventListener('input',checkLaw);
+
+    document.querySelectorAll('[data-ai-sample]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        law.value=btn.getAttribute('data-ai-sample');
+        checkLaw();
+        outBox.hidden=true;
+        applyBtn.hidden=true;
+      });
     });
-    load('chuna'); drawFeeRows(); drawInfo();
+
+    var used=0, MAXU=6;
+    document.getElementById('lawFix').addEventListener('click',function(){
+      outBox.hidden=false;
+      if(!law.value.trim()){
+        outBox.innerHTML='다듬고 싶은 문구를 먼저 입력해 주세요.';
+        return;
+      }
+      if(used>=MAXU){
+        outBox.innerHTML='🔒 '+MAXU+'회 체험이 완료되었습니다. 실제 시그니처 스튜디오에서는 <b>횟수 제한 없이 무제한</b>으로 금지어 순화와 고객 호감형 카피 다듬기를 지원합니다.';
+        return;
+      }
+      used++;
+      var rs=softenKo(law.value);
+      lastPolished=rs.text;
+      applyBtn.hidden=false;
+      var badgeLabel = rs.lawHits > 0
+        ? '⚖️ 의료법 순화 + 고객 공감 윤문 완료'
+        : '💖 무금지어 문장 → 고객 호감·신뢰 표현 업그레이드 완료';
+      outBox.innerHTML=
+        '<div><b>✨ '+badgeLabel+' ('+used+'/'+MAXU+'회 체험)</b></div>'+
+        '<div class="lawout-diff">'+
+          '<div class="lawout-before"><b>다듬기 전:</b> '+esc(law.value)+'</div>'+
+          '<div class="lawout-after"><b>다듬은 후 (환자 호감형):</b><br>'+esc(rs.text)+'</div>'+
+          '<div class="lawout-why">💡 '+esc(rs.note||'')+'</div>'+
+        '</div>'+
+        '<small style="display:block;margin-top:6px;opacity:.75">※ 실제 스튜디오(시그니처)에서도 동일하게 금지어가 없어도 고객이 좋아하는 공감 언어로 자동 다듬어 주며, 최종 게시는 원장님 확인 후 반영됩니다.</small>';
+    });
+
+    applyBtn.addEventListener('click',function(){
+      if(!lastPolished) return;
+      document.getElementById('cDesc').value=lastPolished;
+      drawCard();
+      activateStudioTab(document.getElementById('tab-btn-t0'));
+    });
+
+    syncLayoutColors(true); loadCard('chuna'); drawStory(); drawFeeRows(); drawInfo(); checkLaw();
   })();
 
   /* 필요 기능 체크 → 단계 추천 */
@@ -1306,11 +1967,7 @@
       var qs = href.indexOf('?') !== -1 ? href.slice(href.indexOf('?')) : '';
       a.href = '/sample/' + qs;
     });
-    document.querySelectorAll('.b2b-lnk-studio, a[href^="sample-studio.html"]').forEach(function(a) {
-      var href = a.getAttribute('href') || '';
-      var qs = href.indexOf('?') !== -1 ? href.slice(href.indexOf('?')) : '';
-      a.href = '/sample-studio/' + qs;
-    });
+    /* 불필요한 별도 샘플 스튜디오 링크 삭제 완료 */
   }
 })();
 </script>

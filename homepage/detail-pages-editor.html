@@ -2986,14 +2986,14 @@
 
         <div class="grid-3">
           <div class="field">
-            <label>페이지 배경 다크 톤 (theme.bgDark)</label>
+            <label>다크모드 보조 배경 (theme.bgDark)</label>
             <div class="color-input-row">
               <input type="color" value="${hexForPicker(theme.bgDark, '#1a1411')}" onchange="updateThemeField('bgDark', this.value)" />
               <input type="text" value="${escHtml(theme.bgDark || '#1a1411')}" oninput="updateThemeField('bgDark', this.value)" />
             </div>
           </div>
           <div class="field">
-            <label>페이지 대표 포인트 컬러 (theme.accent)</label>
+            <label>다크모드 대표 포인트 (theme.accent)</label>
             <div class="color-input-row">
               <input type="color" value="${hexForPicker(theme.accent, '#D4AF37')}" onchange="updateThemeField('accent', this.value)" />
               <input type="text" value="${escHtml(theme.accent || '#D4AF37')}" oninput="updateThemeField('accent', this.value)" />
@@ -3007,6 +3007,10 @@
             </div>
           </div>
         </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        ${renderLayoutColorsControlHtml(theme)}
       `;
     }
 
@@ -3491,6 +3495,138 @@
       if (!page.theme) page.theme = {};
       page.theme[key] = val;
       markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    const LAYOUT_COLOR_PRESETS = {
+      'hanji-green': { label: '한지 & 딥그린 (기본)', bannerBg: '#2D5A43', headerBg: '#FFFFFF', bodyBg: '#FFFFFF', checkBg: '#F5F1E8', accentBg: '#2D5A43' },
+      'royal-navy':  { label: '화이트 & 로열네이비', bannerBg: '#1B365D', headerBg: '#0C1B33', bodyBg: '#FFFFFF', checkBg: '#EEF3FA', accentBg: '#1B365D' },
+      'warm-brown':  { label: '전통 한방 웜브라운', bannerBg: '#5A3E2B', headerBg: '#261810', bodyBg: '#FAF6EE', checkBg: '#EDE3D2', accentBg: '#6E472B' },
+      'dark-gold':   { label: '다크 에스프레소 골드', bannerBg: '#C59B27', headerBg: '#0F1412', bodyBg: '#18201C', checkBg: '#232E28', accentBg: '#D4AF37' },
+      'burgundy':    { label: '노블 버건디 로즈', bannerBg: '#6B2433', headerBg: '#2E0D15', bodyBg: '#FDF9FA', checkBg: '#F7EBEF', accentBg: '#7A283B' },
+      'sage-olive':  { label: '소프트 세이지 보타니컬', bannerBg: '#3D6B58', headerBg: '#1A3329', bodyBg: '#F4F8F5', checkBg: '#E3EFE8', accentBg: '#2E5E4A' }
+    };
+
+    function ensureLayoutColors(theme) {
+      if (!theme.layoutColors || typeof theme.layoutColors !== 'object') {
+        theme.layoutColors = {
+          enabled: false,
+          bannerBg: '#2D5A43',
+          headerBg: '#FFFFFF',
+          bodyBg: '#FFFFFF',
+          checkBg: '#F5F1E8',
+          accentBg: '#2D5A43'
+        };
+      }
+      return theme.layoutColors;
+    }
+
+    function renderLayoutColorsControlHtml(theme) {
+      const lc = ensureLayoutColors(theme);
+      const zones = [
+        { key: 'bannerBg', label: '① 상단 공지·안내 배너 배경', def: '#2D5A43' },
+        { key: 'headerBg', label: '② 상단 헤더바 배경', def: '#FFFFFF' },
+        { key: 'bodyBg',   label: '③ 좌측 본문 바탕 배경', def: '#FFFFFF' },
+        { key: 'checkBg',  label: '④ 체크리스트 박스 배경', def: '#F5F1E8' },
+        { key: 'accentBg', label: '⑤ 상담 버튼 · 포인트 색', def: '#2D5A43' }
+      ];
+      return `
+        <div style="padding:14px;border-radius:14px;background:rgba(45,90,67,0.06);border:1px solid rgba(45,90,67,0.24);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <div>
+              <h3 style="margin:0;font-size:15px;color:#14532D;">🎨 5대 레이아웃별 개별 색감 커스텀 ${lc.enabled ? '<span style="font-size:11px;background:#059669;color:#fff;padding:2px 8px;border-radius:999px;margin-left:6px;">커스텀 색감 적용 중</span>' : '<span style="font-size:11px;background:#E5E7EB;color:#374151;padding:2px 8px;border-radius:999px;margin-left:6px;">기본 한지 테마 유지 중</span>'}</h3>
+              <div style="font-size:12px;color:#4B5563;margin-top:3px;">배너 · 상단 헤더 · 본문 바탕 · 체크리스트 · 상담 버튼 각 레이아웃 구역의 색감을 개별 지정할 수 있으며 글자 명도 대비는 자동 보정됩니다.</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="mini-btn gold-helper" onclick="copyLayoutColorsToAllPages()">✨ 전체 상세페이지에 이 배색 일괄 복사</button>
+              <button type="button" class="mini-btn" onclick="resetLayoutColors()">↺ 기본 한지 색감 복원</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+            ${Object.entries(LAYOUT_COLOR_PRESETS).map(([k, p]) => `
+              <button type="button" class="mini-btn" onclick="applyLayoutColorPreset('${k}')" style="display:inline-flex;align-items:center;gap:6px;">
+                <span style="width:12px;height:12px;border-radius:50%;background:${p.accentBg};border:1px solid rgba(0,0,0,0.2);display:inline-block;"></span>
+                ${escHtml(p.label)}
+              </button>
+            `).join('')}
+          </div>
+          <div class="grid-3">
+            ${zones.map(z => `
+              <div class="field" style="margin-bottom:8px;">
+                <label>${z.label}</label>
+                <div class="color-input-row">
+                  <input type="color" value="${hexForPicker(lc[z.key], z.def)}" onchange="updateLayoutColorField('${z.key}', this.value)" />
+                  <input type="text" value="${escHtml(lc[z.key] || z.def)}" oninput="updateLayoutColorField('${z.key}', this.value)" />
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function updateLayoutColorField(key, val) {
+      const page = getCurrentPage();
+      if (!page) return;
+      if (!page.theme) page.theme = {};
+      const lc = ensureLayoutColors(page.theme);
+      lc[key] = val;
+      lc.enabled = true;
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+    }
+
+    function applyLayoutColorPreset(presetKey) {
+      const pr = LAYOUT_COLOR_PRESETS[presetKey];
+      const page = getCurrentPage();
+      if (!pr || !page) return;
+      if (!page.theme) page.theme = {};
+      page.theme.layoutColors = {
+        enabled: true,
+        bannerBg: pr.bannerBg,
+        headerBg: pr.headerBg,
+        bodyBg: pr.bodyBg,
+        checkBg: pr.checkBg,
+        accentBg: pr.accentBg
+      };
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+    }
+
+    function resetLayoutColors() {
+      const page = getCurrentPage();
+      if (!page || !page.theme) return;
+      page.theme.layoutColors = {
+        enabled: false,
+        bannerBg: '#2D5A43',
+        headerBg: '#FFFFFF',
+        bodyBg: '#FFFFFF',
+        checkBg: '#F5F1E8',
+        accentBg: '#2D5A43'
+      };
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+      showStatus('ok', '현재 페이지의 레이아웃별 커스텀 색감을 해제하고 기본 한지 테마로 복원했습니다.');
+    }
+
+    function copyLayoutColorsToAllPages() {
+      const page = getCurrentPage();
+      if (!page || !page.theme) return;
+      const src = JSON.parse(JSON.stringify(ensureLayoutColors(page.theme)));
+      src.enabled = true;
+      page.theme.layoutColors = JSON.parse(JSON.stringify(src));
+      (masterConfig.pages || []).forEach(p => {
+        if (!p || p.slug === 'home' || p.isHealthNotesPage) return;
+        if (!p.theme) p.theme = {};
+        p.theme.layoutColors = JSON.parse(JSON.stringify(src));
+      });
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+      showStatus('ok', '현재 설정한 5대 레이아웃별 색감을 전체 상세페이지에 동일하게 복사했습니다! 상단 [✨ 전체 일괄 반영]을 누르면 실서버에 즉시 적용됩니다.');
     }
 
     /* === PC File Upload Helpers === */
@@ -6729,11 +6865,11 @@
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 12px;border-radius:10px;background:${bg};border:1px solid ${bd};color:${fg};font-size:12px;">
           <div style="font-weight:800;">
             ${hasWarn
-              ? `⚠️ 의료법 제56조 주의 표현 감지 (${hits.map(h => `'${escHtml(h)}'`).join(', ')}) — 우측 버튼으로 안전하게 다듬어 보세요`
-              : `✅ 의료법 제56조 심의 기준 양호 (과장·단정 금지어 0건)`}
+              ? `⚠️ 의료법 제56조 주의 표현 감지 (${hits.map(h => `'${escHtml(h)}'`).join(', ')}) — 우측 버튼으로 안전하고 따뜻한 문장으로 다듬어 보세요`
+              : `✅ 의료법 금지어 0건 · 우측 버튼을 누르면 고객이 호감을 느끼는 따뜻한 공감·신뢰 표현으로 자동 다듬어 드립니다`}
           </div>
           <button type="button" class="mini-btn gold-helper" onclick="polishCardWithAiLegal(${idx})">
-            ✨ 합법 AI 문구 자동 다듬기
+            ✨ 고객 호감·합법 AI 문구 자동 다듬기
           </button>
         </div>
       `;

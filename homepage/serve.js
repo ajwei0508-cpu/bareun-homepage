@@ -1498,7 +1498,7 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     }
   }
 
-  // Studio Real-Time Medical Law Art. 56 Compliant AI Copy Polisher API
+  // Studio Real-Time Medical Law Art. 56 Compliant & Patient-Empathy AI Copy Polisher API
   if (reqPath === '/api/studio-ai-legal-copy' && req.method === 'POST') {
     let body = '';
     req.on('data', c => { body += c.toString(); });
@@ -1507,42 +1507,23 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
         const payload = JSON.parse(body || '{}');
         const origTitle = String(payload.title || '').trim();
         const origSub = String(payload.sub || '').trim();
+        const softenEngine = require(path.join(__dirname, 'soften-ko.js'));
         const rules = [
-          ['100% 완치', '근본적인 회복 관리'],
-          ['완치 보장', '세심한 회복 치료'],
-          ['완치', '호전 및 회복'],
-          ['무조건', '체계적으로'],
-          ['절대 안', '쉽게 재발하지 않도록'],
-          ['절대', '면밀히'],
-          ['최고의', '정성을 다하는'],
-          ['최고', '수준 높은'],
-          ['최초의', '특화된'],
-          ['최초', '선도적인'],
-          ['유일한', '차별화된'],
-          ['유일', '맞춤형'],
-          ['부작용 없는', '신체 부담을 낮춘'],
-          ['부작용 0%', '안전성을 고려한'],
-          ['100%', '체계적인'],
-          ['기적의', '밀도 높은'],
-          ['기적', '긍정적 변화'],
-          ['특효', '맞춤 처방'],
-          ['보장합니다', '도와드립니다'],
-          ['보장', '기대할 수 있는 관리']
+          '100% 완치', '완치 보장', '완치', '무조건', '절대 안', '절대',
+          '최고의', '최고', '최초의', '최초', '유일한', '유일',
+          '부작용 없는', '부작용 0%', '100%', '기적의', '기적',
+          '특효', '보장합니다', '보장', '할인', '이벤트'
         ];
-        const detected = [];
-        let safeTitle = origTitle;
-        let safeSub = origSub;
-        for (const [bad, good] of rules) {
-          if (origTitle.includes(bad) || origSub.includes(bad)) detected.push(bad);
-          safeTitle = safeTitle.split(bad).join(good);
-          safeSub = safeSub.split(bad).join(good);
-        }
+        const detected = rules.filter(bad => origTitle.includes(bad) || origSub.includes(bad));
+        const polished = softenEngine.polishClinicPair(origTitle, origSub);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
         res.end(JSON.stringify({
           ok: true,
+          engine: 'empathy-legal-polisher-v2',
           detected,
-          title: safeTitle,
-          sub: safeSub
+          title: polished.title || origTitle,
+          sub: polished.sub || origSub,
+          note: polished.note || ''
         }));
       } catch (err) {
         res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });

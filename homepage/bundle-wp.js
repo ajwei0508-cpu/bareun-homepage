@@ -300,7 +300,6 @@ const ALL_BUNDLES = [
   ['lifting-compare.html', 'wordpress-lifting-compare.html', 'lifting-compare'],
   ['location.html', 'wordpress-location.html', 'location'],
   ['sample.html', 'wordpress-sample.html', 'sample'],
-  ['sample-studio.html', 'wordpress-sample-studio.html', 'sample-studio'],
   ['b2b-landing.html', 'wordpress-b2b-landing.html', 'b2b-landing']
 ];
 

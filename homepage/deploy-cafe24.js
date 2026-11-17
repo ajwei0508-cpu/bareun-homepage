@@ -53,7 +53,6 @@ const PAGES_TO_DEPLOY = [
   { id: 134,  slug: 'lifting-compare',     title: '바른리프팅 시술 전후 윤곽진단',                            file: 'wordpress-lifting-compare.html',     excerpt: '비수술 한방 리프팅 전후 윤곽 비교 진단 시스템입니다.' },
   { id: 3206, slug: 'location',            title: '오시는길 · 진료시간 · 비급여 안내',                        file: 'wordpress-location.html',            excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 진료시간 및 비급여 진료비용 안내표입니다.' },
   {           slug: 'sample',              title: '바른한의원 실제 홈페이지 작동 샘플 (티어 마크)',            file: 'wordpress-sample.html',              excerpt: '실제 운영 중인 www.bareunhaniwon.com 화면에서 스토리보드, 3D 인체모형, 건강 칼럼 등 각 기능별 스탠다드(✕), 프로(△), 시그니처(○) 차이점을 직접 체험해 보세요.' },
-  {           slug: 'sample-studio',       title: '원장님 전용 커스텀 스튜디오 체험판 (수정 TEST)',           file: 'wordpress-sample-studio.html',       excerpt: '스토리보드, 질환 카드, 건강 글 문구와 사진, 한의원 브랜드 대표 색상을 직접 변경해 보는 원장님 전용 실시간 커스텀 스튜디오 체험판입니다.' },
   {           slug: 'b2b',                 title: '한의원 하이엔드 홈페이지 솔루션 (스탠다드·프로·시그니처)',   file: 'wordpress-b2b-landing.html',         excerpt: '환자의 체류시간과 신환 전환율을 극대화하는 한의원 전용 하이엔드 반응형 홈페이지 솔루션. 실제 작동 샘플과 티어별 기능 비교를 확인하세요.' }
 ];
 
@@ -319,6 +318,26 @@ async function performWpLogin(page, loginUrl) {
     });
     if (!nonce) throw new Error('Failed to get WP REST Nonce');
     console.log('   REST Nonce ->', nonce);
+
+    // 2.0) Remove deprecated /sample-studio/ page if present on WordPress
+    try {
+      await page.evaluate(async (wpNonce) => {
+        const r = await fetch('/wp-json/wp/v2/pages?slug=sample-studio&status=any', {
+          headers: { 'X-WP-Nonce': wpNonce }
+        });
+        const list = await r.json();
+        if (Array.isArray(list)) {
+          for (const p of list) {
+            if (p && p.id) {
+              await fetch('/wp-json/wp/v2/pages/' + p.id + '?force=true', {
+                method: 'DELETE',
+                headers: { 'X-WP-Nonce': wpNonce }
+              });
+            }
+          }
+        }
+      }, nonce);
+    } catch (_) {}
 
     // 2.1) Sync 24/7 Online Custom Studio Engine Assets (HTML, Compiler JS, Card Prompts JS, Angle Samples & Config JSON) to WordPress Uploads
     console.log('2.1) Syncing 24/7 Online Custom Studio Engine Assets to Cafe24 WordPress ...');

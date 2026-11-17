@@ -6056,11 +6056,13 @@ class Bareun_Custom_Studio_Engine_V4 {
             }
         }
 
-        // Try Gemini 2.5 Flash medical law copywriter if key is configured
+        // Try Gemini 2.5 Flash medical law + patient empathy copywriter if key is configured
         $keys = self::get_raw_ai_keys();
         if (!empty($keys['geminiKey'])) {
-            $prompt = "당신은 대한민국 의료법 제56조(의료광고 금지 기준)를 엄격히 준수하는 한의원 전문 에디토리얼 카피라이터입니다.\n" .
-                "아래 카드 제목(title)과 본문(sub)에서 '100%, 완치, 무조건, 최고, 최초, 유일, 부작용 없는, 보장, 특효, 기적' 등 소비자를 현혹하거나 치료 효과를 단정하는 표현을 모두 순화하고, 환자 공감과 한의학적 진정성이 느껴지는 품격 있는 문장으로 다듬어 JSON 형식으로만 응답하세요.\n" .
+            $prompt = "당신은 대한민국 의료법 제56조(의료광고 금지 기준)를 엄격히 준수하면서도 환자의 마음을 따뜻하게 움직이는 하이엔드 한의원 전문 에디토리얼 카피라이터입니다.\n" .
+                "1) 만약 원본에 '100%, 완치, 무조건, 최고, 최초, 유일, 부작용 없는, 보장, 특효, 기적, 할인, 이벤트' 등 과장·단정·유인 표현이 있다면 안전하게 순화하세요.\n" .
+                "2) 금지어가 전혀 없는 평범하거나 딱딱한 병원 중심 설명문이라 할지라도 그대로 돌려주지 말고, 반드시 환자가 읽었을 때 '내 불편함을 이해해 주는구나' 하고 안심과 호감을 느끼는 따뜻하고 세련된 환자 중심 문장으로 새롭게 다듬어 주세요.\n" .
+                "3) 제목(title)은 간결하고 품격 있게, 본문(sub)은 환자 공감 도입 + 세심한 맞춤 진료 방향이 자연스럽게 이어지도록 작성하여 JSON 형식으로만 응답하세요.\n" .
                 "응답 형식: {\"title\":\"다듬은 제목\",\"sub\":\"다듬은 본문\"}\n\n" .
                 "[원본 제목]: " . $title . "\n[원본 본문]: " . $sub;
             $g_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . rawurlencode($keys['geminiKey']);
@@ -6069,19 +6071,19 @@ class Bareun_Custom_Studio_Engine_V4 {
                 'headers' => array('Content-Type' => 'application/json'),
                 'body'    => wp_json_encode(array(
                     'contents' => array(array('parts' => array(array('text' => $prompt)))),
-                    'generationConfig' => array('temperature' => 0.35, 'responseMimeType' => 'application/json')
+                    'generationConfig' => array('temperature' => 0.42, 'responseMimeType' => 'application/json')
                 ))
             ));
             if (!is_wp_error($g_res) && wp_remote_retrieve_response_code($g_res) === 200) {
                 $g_body = json_decode(wp_remote_retrieve_body($g_res), true);
                 $txt = $g_body['candidates'][0]['content']['parts'][0]['text'] ?? '';
                 $parsed = json_decode($txt, true);
-                if (is_array($parsed) && !empty($parsed['title'])) {
+                if (is_array($parsed) && (!empty($parsed['title']) || !empty($parsed['sub']))) {
                     return new WP_REST_Response(array(
                         'ok'       => true,
-                        'engine'   => 'gemini-2.5-flash',
+                        'engine'   => 'gemini-2.5-flash-empathy',
                         'detected' => $detected,
-                        'title'    => trim((string)$parsed['title']),
+                        'title'    => !empty($parsed['title']) ? trim((string)$parsed['title']) : $title,
                         'sub'      => isset($parsed['sub']) ? trim((string)$parsed['sub']) : $sub
                     ), 200);
                 }
@@ -6090,9 +6092,31 @@ class Bareun_Custom_Studio_Engine_V4 {
 
         $safe_title = strtr($title, $replacements);
         $safe_sub   = strtr($sub, $replacements);
+
+        // 금지어가 없을 때에도 고객이 좋아하는 따뜻한 환자 공감형 문장으로 자동 윤문 (폴백 엔진)
+        if (empty($detected)) {
+            if ($safe_title !== '' && mb_strlen($safe_title, 'UTF-8') < 26 && !preg_match('/[—·:?]/u', $safe_title)) {
+                if (preg_match('/(추나|척추|골반|허리|목|통증)/u', $safe_title)) $safe_title = '통증의 중심축을 바로잡는 ' . $safe_title;
+                elseif (preg_match('/(성장|소아|아이)/u', $safe_title)) $safe_title = '아이의 바른 성장을 함께하는 ' . $safe_title;
+                elseif (preg_match('/(다이어트|체형|비만)/u', $safe_title)) $safe_title = '체질부터 건강하게 비우는 ' . $safe_title;
+                elseif (preg_match('/(탈모|두피)/u', $safe_title)) $safe_title = '뿌리부터 건강하게 돌보는 ' . $safe_title;
+                elseif (preg_match('/(공진단|보약|녹용)/u', $safe_title)) $safe_title = '정성과 진맥으로 빚어내는 ' . $safe_title;
+                else $safe_title = '마음까지 세심히 살피는 ' . $safe_title;
+            }
+            if ($safe_sub !== '' && !preg_match('/(함께합니다|일상 회복을 돕습니다|귀 기울이며|정성을 다해)/u', $safe_sub)) {
+                $safe_sub = preg_replace('/진료합니다\.?$/u', '원인과 체형 균형까지 세심하게 살펴 돌봐 드립니다.', $safe_sub);
+                $safe_sub = preg_replace('/치료합니다\.?$/u', '불편함의 원인을 차근차근 짚어 편안한 일상 회복을 돕습니다.', $safe_sub);
+                $safe_sub = preg_replace('/처방합니다\.?$/u', '생활 리듬과 몸 상태를 꼼꼼히 살펴 정성껏 처방해 드립니다.', $safe_sub);
+                $safe_sub = preg_replace('/진행합니다\.?$/u', '충분한 설명과 공감을 바탕으로 차근차근 진행해 드립니다.', $safe_sub);
+                if ($safe_sub === $sub) {
+                    $safe_sub = '환자분의 작은 불편함에도 깊이 귀 기울입니다. ' . rtrim($safe_sub, '.!?') . '. 충분한 설명과 1:1 맞춤 진료로 편안한 회복 과정을 함께합니다.';
+                }
+            }
+        }
+
         return new WP_REST_Response(array(
             'ok'       => true,
-            'engine'   => 'medical-law-rule-polisher',
+            'engine'   => 'empathy-legal-rule-polisher',
             'detected' => $detected,
             'title'    => $safe_title,
             'sub'      => $safe_sub
