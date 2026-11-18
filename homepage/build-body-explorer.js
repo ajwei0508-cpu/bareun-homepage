@@ -748,26 +748,39 @@ function buildBodyExplorerHtml() {
     }
     .body-3d-hotspot {
       position: absolute;
-      transform: translate(-50%, -50%);
+      transform: translate(-11px, -50%);
       pointer-events: auto;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      padding: 6px 4px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
+    .body-3d-hotspot.align-left {
+      flex-direction: row-reverse;
+      transform: translate(calc(-100% + 15px), -50%);
+    }
     .hotspot-pulse-ring {
-      width: 19px;
-      height: 19px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.96);
-      border: 1.5px solid var(--lux-gold);
-      box-shadow: 0 3px 10px rgba(13, 13, 15, 0.14);
+      background: rgba(255, 255, 255, 0.97);
+      border: 1.8px solid var(--lux-gold);
+      box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.22), 0 4px 12px rgba(13, 13, 15, 0.20);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1.5px;
+      flex-shrink: 0;
+      animation: hotspotRingPulse 2.2s ease-in-out infinite;
       transition: all 0.2s ease;
+    }
+    @keyframes hotspotRingPulse {
+      0%, 100% { box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.18), 0 4px 12px rgba(13, 13, 15, 0.18); }
+      50% { box-shadow: 0 0 0 6px rgba(197, 160, 89, 0.34), 0 4px 14px rgba(13, 13, 15, 0.24); }
     }
     .hotspot-core-dot {
       width: 3px;
@@ -775,17 +788,75 @@ function buildBodyExplorerHtml() {
       border-radius: 50%;
       background: var(--lux-black);
     }
-    .body-3d-hotspot:hover .hotspot-pulse-ring {
-      transform: scale(1.14);
+    .body-3d-hotspot:hover .hotspot-pulse-ring,
+    .body-3d-hotspot:active .hotspot-pulse-ring {
+      transform: scale(1.16);
       border-color: var(--lux-black);
     }
     .body-3d-hotspot.active .hotspot-pulse-ring {
       background: var(--lux-black);
       border-color: var(--lux-gold-bright);
-      box-shadow: 0 0 0 5px rgba(197, 160, 89, 0.30), 0 4px 14px rgba(13, 13, 15, 0.34);
+      box-shadow: 0 0 0 6px rgba(197, 160, 89, 0.38), 0 4px 16px rgba(13, 13, 15, 0.38);
     }
     .body-3d-hotspot.active .hotspot-core-dot { background: var(--lux-gold-bright); }
-    .hotspot-tag-pill { display: none; }
+    .hotspot-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(13, 13, 15, 0.84);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(229, 198, 126, 0.68);
+      color: #FAF6EC;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(13, 13, 15, 0.22);
+      transition: all 0.18s ease;
+    }
+    .body-3d-hotspot:hover .hotspot-tag-pill,
+    .body-3d-hotspot.active .hotspot-tag-pill {
+      background: linear-gradient(135deg, #E7C983 0%, #C59E50 100%);
+      color: #0D0D0F;
+      border-color: #FFFDF7;
+    }
+    #motion-link-banner {
+      position: fixed;
+      top: 58px;
+      left: 50%;
+      transform: translate(-50%, -10px) scale(0.96);
+      z-index: 265;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: rgba(13, 13, 15, 0.94);
+      border: 1.5px solid #E5C67E;
+      color: #FAF6EC;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      max-width: calc(100vw - 24px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.30);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.2s ease;
+    }
+    #motion-link-banner.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0) scale(1);
+    }
+    .mobile-3d-touch-hint {
+      display: none;
+    }
+    .mobile-back-3d-strip {
+      display: none;
+    }
 
     /* System 12 Head-to-Toe Numbered 3D Markers */
     .hotspot-pulse-ring.sys-ring {
@@ -1876,9 +1947,111 @@ function buildBodyExplorerHtml() {
       visibility: visible;
       transform: translate(-50%, 0);
     }
+    .hip-quick-detail-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 15px;
+      background: linear-gradient(90deg, #FBF6EA 0%, #F5EBDA 100%);
+      border-bottom: 1px solid #E5D6B5;
+    }
+    .hqd-caption {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #5C5346;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+    .hqd-btn {
+      appearance: none;
+      border: 1px solid #C5A059;
+      background: #0D0D0F;
+      color: #E5C67E;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      touch-action: manipulation;
+      transition: all 0.16s ease;
+    }
+    .hqd-btn:hover,
+    .hqd-btn:active {
+      background: #C5A059;
+      color: #0D0D0F;
+    }
     @media (max-width: 640px) {
-      .detail-expand-bar { margin: 0 12px 12px; padding: 10px 12px; }
-      .deep-editorial-drawer { margin: 0 12px 13px; }
+      .hip-header,
+      .health-info-popup-box.hdr-centered .hip-header,
+      .health-info-popup-box.hdr-inline .hip-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        text-align: left !important;
+        padding: 12px 13px !important;
+        gap: 8px !important;
+      }
+      .health-info-popup-box.hdr-centered .hip-header-main {
+        align-items: flex-start !important;
+        padding: 0 !important;
+      }
+      .health-info-popup-box.hdr-centered .hip-header-title-wrap {
+        justify-content: flex-start !important;
+        flex-direction: row !important;
+      }
+      .health-info-popup-box.hdr-centered .hip-header-actions {
+        position: static !important;
+        align-self: flex-end;
+      }
+      .hip-header-actions {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 6px;
+      }
+      .hip-share-link-btn,
+      .hip-close-btn {
+        min-height: 34px;
+        padding: 6px 11px;
+        touch-action: manipulation;
+      }
+      .hip-quick-detail-strip {
+        padding: 8px 12px;
+      }
+      .hqd-btn {
+        min-height: 36px;
+        padding: 7px 13px;
+        font-size: 0.74rem;
+      }
+      .detail-expand-bar {
+        margin: 2px 12px 16px;
+        padding: 12px 13px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 9px;
+        position: relative;
+        z-index: 6;
+        touch-action: manipulation;
+      }
+      .deb-btn {
+        width: 100%;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.80rem;
+        border-radius: 10px;
+      }
+      .deep-editorial-drawer { margin: 0 12px 16px; }
+      .inline-ymyl-bar { flex-direction: column; align-items: stretch; gap: 7px; }
+      .iyb-full-link {
+        width: 100%;
+        min-height: 38px;
+        justify-content: center;
+        font-size: 0.74rem;
+      }
       .channel-icon-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
       .cib-icons { width: 100%; justify-content: flex-start; }
     }
@@ -2549,62 +2722,226 @@ function buildBodyExplorerHtml() {
     }
 
     @media (max-width: 960px) {
-      .vibrant-header { padding: 10px 12px; }
-      .vh-brand-title { font-size: 0.76rem; }
-      .vh-pill-btn { padding: 5px 10px; font-size: 0.71rem; }
-      .right-compact-menu {
-        right: 10px;
-        width: 146px;
-        padding: 5px;
-        gap: 3px;
+      .vibrant-header {
+        padding: 8px 10px;
+        gap: 6px;
+        flex-wrap: nowrap;
       }
-      .rcm-head { padding: 6px 8px; }
-      .rcm-head-title { font-size: 0.65rem; word-break: keep-all; white-space: nowrap; }
-      .rcm-head-sub { display: none; }
-      .vh-part-chip {
-        padding: 6px 7px;
-        font-size: 0.69rem;
+      .vh-brand {
+        padding: 4px 10px 4px 5px;
+        gap: 6px;
+        min-width: 0;
+        flex-shrink: 1;
       }
-      .vh-part-chip .rcm-num { display: none; }
-      .stage-bottom-bar {
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        transform: none;
-        border-radius: 14px;
-        flex-wrap: wrap;
-        justify-content: center;
+      .vh-brand-mark { width: 22px; height: 22px; font-size: 0.63rem; flex-shrink: 0; }
+      .vh-brand-title {
+        font-size: 0.72rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .vh-right-actions {
+        flex-wrap: nowrap;
         gap: 4px;
-        padding: 6px;
+        flex-shrink: 0;
+      }
+      html body header.vibrant-header .bareun-visit-pill-btn {
+        display: none !important;
+      }
+      html body header.vibrant-header .bareun-loc-pill-btn,
+      .vh-pill-btn {
+        padding: 5px 9px !important;
+        font-size: 0.68rem !important;
+        min-height: 30px;
+      }
+      #motion-link-banner {
+        top: 50px;
+        font-size: 0.72rem;
+        padding: 7px 13px;
+      }
+      .mobile-3d-touch-hint {
+        position: fixed;
+        top: 48px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 210;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 11px;
+        border-radius: 999px;
+        background: rgba(13, 13, 15, 0.76);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(229, 198, 126, 0.58);
+        color: #FAF6EC;
+        font-size: 0.66rem;
+        font-weight: 800;
+        white-space: nowrap;
+        pointer-events: none;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+      }
+      body.in-sample-frame .mobile-3d-touch-hint {
+        top: 84px;
+      }
+      .hotspot-pulse-ring {
+        width: 22px;
+        height: 22px;
+      }
+      .hotspot-tag-pill {
+        font-size: 0.64rem;
+        padding: 2.5px 7px;
+      }
+      /* Convert right menu into sleek horizontal bottom-docked part chips so 3D body fills 100% of mobile screen */
+      .right-compact-menu {
+        left: 8px;
+        right: 8px;
+        top: auto;
+        bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+        transform: none;
+        width: auto;
+        flex-direction: row;
+        align-items: center;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        padding: 5px 7px;
+        gap: 5px;
+        border-radius: 999px;
+        z-index: 215;
+      }
+      .right-compact-menu::-webkit-scrollbar { display: none; }
+      .rcm-head { display: none; }
+      .vh-part-chip {
+        width: auto;
+        flex: 0 0 auto;
+        padding: 6px 11px;
+        border-radius: 999px;
+        font-size: 0.71rem;
+        gap: 4px;
+        touch-action: manipulation;
+      }
+      .vh-part-chip:hover,
+      .vh-part-chip.active {
+        transform: none;
+      }
+      .vh-part-chip .rcm-num { display: inline; font-size: 0.62rem; }
+      .stage-bottom-bar {
+        bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+        left: auto;
+        right: 8px;
+        transform: none;
+        border-radius: 999px;
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 3px;
+        padding: 4px 6px;
+        z-index: 214;
       }
       .stage-bar-sep { display: none; }
       .stage-ctrl-btn,
       .stage-ctrl-btn.sys-mode-btn {
-        padding: 5px 9px;
-        font-size: 0.70rem;
+        padding: 4px 8px;
+        font-size: 0.66rem;
+        touch-action: manipulation;
+      }
+      .bareun-explorer-legal-footer {
+        left: 8px !important;
+        right: auto !important;
+        bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+        max-width: calc(100vw - 205px) !important;
+        z-index: 213 !important;
+      }
+      .bareun-explorer-legal-footer details.seo-anatomy-summary-drawer:not([open]) {
+        padding: 4px 9px !important;
+        border-radius: 999px !important;
+        font-size: 0.60rem !important;
+      }
+      .bareun-explorer-legal-footer details.seo-anatomy-summary-drawer:not([open]) summary > span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 92px;
+      }
+      .bareun-explorer-legal-footer details.seo-anatomy-summary-drawer[open] {
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+        z-index: 14600;
+      }
+      /* When Health Article / Q&A Popup is open on mobile: ZERO overlapping background menus! */
+      body.popup-open-mode .right-compact-menu,
+      body.popup-open-mode .stage-bottom-bar,
+      body.popup-open-mode .bareun-explorer-legal-footer,
+      body.popup-open-mode .mobile-3d-touch-hint,
+      body.popup-open-mode #hotspot-overlay-layer {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
       }
       .explore-floating-popup {
-        left: 10px;
-        right: 10px;
+        left: 8px;
+        right: 8px;
         top: auto;
-        bottom: 10px;
-        width: auto;
-        max-height: 75dvh;
-        z-index: 235;
-        transform: translateY(14px);
+        bottom: calc(66px + env(safe-area-inset-bottom, 0px)) !important;
+        width: auto !important;
+        max-height: calc(100dvh - 166px - env(safe-area-inset-bottom, 0px));
+        z-index: 14500;
+        padding-bottom: 8px;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        transform: translateY(18px);
+      }
+      .explore-floating-popup.detail-expanded {
+        max-height: calc(100dvh - 120px - env(safe-area-inset-bottom, 0px));
+      }
+      body.in-sample-frame .explore-floating-popup.detail-expanded {
+        max-height: calc(100dvh - 142px - env(safe-area-inset-bottom, 0px));
       }
       .explore-floating-popup.open {
         transform: translateY(0);
       }
-      .bareun-explorer-legal-footer {
-        left: 10px !important;
-        right: 10px !important;
-        bottom: 68px !important;
-        max-width: none !important;
+      .mobile-back-3d-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 6px 11px;
+        border-radius: 999px;
+        background: rgba(13, 13, 15, 0.90);
+        border: 1px solid #C5A059;
+        color: #FAF6EC;
+        font-size: 0.71rem;
+        font-weight: 800;
       }
-      .popup-open-mode .bareun-explorer-legal-footer {
-        display: none !important;
+      .mobile-back-3d-btn {
+        appearance: none;
+        border: 1px solid #E5C67E;
+        background: linear-gradient(135deg, #E7C983 0%, #C59E50 100%);
+        color: #0D0D0F;
+        font-family: 'Pretendard', sans-serif;
+        font-size: 0.70rem;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        white-space: nowrap;
+        touch-action: manipulation;
       }
+      .three-menu-nav {
+        gap: 4px;
+        padding: 4px;
+      }
+      .three-menu-btn {
+        min-height: 44px;
+        padding: 6px 4px;
+        touch-action: manipulation;
+      }
+      .tmb-step { font-size: 0.58rem; }
+      .tmb-label { font-size: 0.74rem; }
     }
   </style>
   <link rel="icon" href="data:,">
@@ -2623,6 +2960,9 @@ function buildBodyExplorerHtml() {
       <a href="story-3d.html" class="vh-pill-btn">&larr; 메인 홈</a>
     </div>
   </header>
+
+  <div class="mobile-3d-touch-hint" id="mobile-3d-touch-hint">👆 움직이는 3D 아픈 부위를 터치하면 건강글로 연결됩니다</div>
+  <div id="motion-link-banner" role="status" aria-live="polite"></div>
 
   <!-- CENTER STATUS PILL -->
   <div class="stage-top-badge">
@@ -3446,11 +3786,21 @@ function buildBodyExplorerHtml() {
           '</figure>'
         : '';
 
+      const quickDetailBarHtml = (hasDeepContent && note && note.id)
+        ? '<div class="hip-quick-detail-strip">' +
+            '<span class="hqd-caption">📖 해부 원리 · 일러스트 · 생활 비교표 ' + (isExpanded ? '열람 중' : '바로 보기') + '</span>' +
+            '<button type="button" class="hqd-btn" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')">' +
+              (isExpanded ? '심층 칼럼 접기 ▲' : '🔍 상세히 보기 ▼') +
+            '</button>' +
+          '</div>'
+        : '';
+
       const deepSectionHtml = hasDeepContent ? buildDeepEditorialSectionHtml(note, mMeta, isExpanded) : '';
 
       return (
         '<article class="' + boxClasses + '" style="' + inlineVars + '" aria-label="부위별 건강 정보 팝업">' +
           '<div class="hip-header">' + headerInnerHtml + '</div>' +
+          quickDetailBarHtml +
           empathyHeroHtml +
           '<div class="hip-sections">' + sectionsHtml + '</div>' +
           deepSectionHtml +
@@ -4179,8 +4529,19 @@ function buildBodyExplorerHtml() {
       const tab01StepText = (pDesign.tab01Step && String(pDesign.tab01Step).trim()) ? pDesign.tab01Step : '01 · 최신 글 1편';
       const tab01LabelText = (pDesign.tab01Label && String(pDesign.tab01Label).trim()) ? pDesign.tab01Label : '오늘의 건강 글';
 
+      const activeNoteForExpandCheck = (currentMenuTab === 0)
+        ? latestNote
+        : (currentMenuTab === 2 && selectedArchiveNoteId ? (allNotes.find(n => n.id === selectedArchiveNoteId) || null) : null);
+      if (popupDrawer) {
+        popupDrawer.classList.toggle('detail-expanded', Boolean(activeNoteForExpandCheck && expandedDetailNoteIds[activeNoteForExpandCheck.id]));
+      }
+
       contentBox.innerHTML =
         '<div class="popup-shell-wrap">' +
+          '<div class="mobile-back-3d-strip">' +
+            '<span>✨ <strong>[' + escHtml(menuMeta.partLabel || menuMeta.shortLabel || '주요 부위') + ']</strong> 3D 모션 포커스</span>' +
+            '<button type="button" class="mobile-back-3d-btn" onclick="window.closeInfoPopup()">&#8634; 3D 전신 모션 보기</button>' +
+          '</div>' +
           '<nav class="three-menu-nav" role="tablist" aria-label="정보 팝업 3대 메뉴">' +
             '<button type="button" class="three-menu-btn' + (currentMenuTab === 0 ? ' active' : '') + '" onclick="window.switchPopupMenu(0)">' +
               '<span class="tmb-step" style="display:inline-flex;align-items:center;gap:4px;"><span class="latest-red-dot"></span><span style="color:#E11D48;font-weight:900;">' + escHtml(tab01StepText) + '</span></span>' +
@@ -4427,8 +4788,32 @@ function buildBodyExplorerHtml() {
       }
     };
 
+    let isMotionFocusing = false;
+    let motionLinkTimer = null;
+    const motionBannerEl = document.getElementById('motion-link-banner');
+    if (window.self !== window.top) {
+      document.body.classList.add('in-sample-frame');
+    }
+
+    function showMotionLinkBanner(text) {
+      if (!motionBannerEl) return;
+      motionBannerEl.textContent = text;
+      motionBannerEl.classList.add('show');
+    }
+    function hideMotionLinkBanner() {
+      if (!motionBannerEl) return;
+      motionBannerEl.classList.remove('show');
+    }
+
     window.closeInfoPopup = function() {
+      if (motionLinkTimer) {
+        clearTimeout(motionLinkTimer);
+        motionLinkTimer = null;
+      }
+      isMotionFocusing = false;
+      hideMotionLinkBanner();
       selectedArchiveNoteId = null;
+      if (popupDrawer) popupDrawer.classList.remove('detail-expanded');
       renderIdleState();
       if (typeof window.resetDonginView === 'function') {
         window.resetDonginView();
@@ -4458,7 +4843,7 @@ function buildBodyExplorerHtml() {
           if (isPopupOpen) {
             if (currentSystemMode) renderSystemAnatomyPanel();
             else renderPopupPanel();
-          } else {
+          } else if (!isMotionFocusing) {
             renderIdleState();
           }
         }
@@ -4468,7 +4853,7 @@ function buildBodyExplorerHtml() {
     if (earlyParams.get('system')) {
       currentSystemMode = earlyParams.get('system');
       renderSystemAnatomyPanel();
-    } else if (earlyParams.get('part')) {
+    } else if (earlyParams.get('note') || earlyParams.get('studioPreview') === '1') {
       renderPopupPanel();
     } else {
       renderIdleState();
@@ -4481,24 +4866,38 @@ function buildBodyExplorerHtml() {
 
 ${WEBGL_PART_A}
 
-    // 풀스크린 전 해상도에서 머리끝~발끝 전신이 한눈에 들어오도록 수직 시야각(vFOV) 및 좌우 프레이밍 제어
+    // 풀스크린 전 해상도(모바일 세로 풀스크린 포함)에서 머리끝~발끝 3D 모션이 꽉 차게 들어오도록 시야각·오프셋 제어
     camera.setFocalLength = function() {
-      const w = Math.max(320, stageEl ? (stageEl.clientWidth || window.innerWidth) : window.innerWidth);
-      const h = Math.max(320, stageEl ? (stageEl.clientHeight || window.innerHeight) : window.innerHeight);
+      const w = Math.max(300, stageEl ? (stageEl.clientWidth || window.innerWidth) : window.innerWidth);
+      const h = Math.max(300, stageEl ? (stageEl.clientHeight || window.innerHeight) : window.innerHeight);
       const aspect = w / Math.max(1, h);
       this.aspect = aspect;
-      this.fov = aspect < 0.65 ? Math.min(68, 55 * (0.65 / Math.max(0.42, aspect)) * 0.90) : 55;
-      if (isPopupOpen && w > 960) {
-        let shiftRatio = 0.19;
-        if (!currentSystemMode) {
-          const d = getPopupDesign(getMenuMeta(currentPartId));
-          if (d.widthMode === 'compact') shiftRatio = 0.16;
-          else if (d.widthMode === 'wide') shiftRatio = 0.22;
-          else if (d.widthMode === 'ultrawide') shiftRatio = 0.25;
+
+      if (w <= 960) {
+        // 모바일 세로형: 3D 인체모형이 화면 중앙을 크고 역동적으로 꽉 채우도록 정밀 계산된 vFOV
+        const tanHalfV = Math.max(0.515, 0.205 / Math.max(0.40, aspect));
+        this.fov = Math.min(62, (Math.atan(tanHalfV) * 2 * 180) / Math.PI);
+        if (isPopupOpen) {
+          // 건강글 시트가 올라왔을 때 상단 열린 3D 창 중앙에 확대된 부위가 선명하게 위치하도록 상향 오프셋
+          this.setViewOffset(w, h, 0, Math.round(h * 0.25), w, h);
+        } else {
+          // 풀스크린 3D 감상 모드: 하단 칩 도크 위로 발끝까지 시원하게 보이도록 미세 상향 오프셋
+          this.setViewOffset(w, h, 0, Math.round(h * 0.045), w, h);
         }
-        this.setViewOffset(w, h, Math.round(w * shiftRatio), 0, w, h);
       } else {
-        this.clearViewOffset();
+        this.fov = aspect < 0.65 ? Math.min(64, 54 * (0.65 / Math.max(0.42, aspect)) * 0.90) : 54;
+        if (isPopupOpen) {
+          let shiftRatio = 0.19;
+          if (!currentSystemMode) {
+            const d = getPopupDesign(getMenuMeta(currentPartId));
+            if (d.widthMode === 'compact') shiftRatio = 0.16;
+            else if (d.widthMode === 'wide') shiftRatio = 0.22;
+            else if (d.widthMode === 'ultrawide') shiftRatio = 0.25;
+          }
+          this.setViewOffset(w, h, Math.round(w * shiftRatio), 0, w, h);
+        } else {
+          this.clearViewOffset();
+        }
       }
       this.updateProjectionMatrix();
     };
@@ -4508,7 +4907,11 @@ ${WEBGL_PART_A}
       camera.setFocalLength(38);
     };
 
-    window.selectBodyPart = function(partId, shouldFlyCamera = true) {
+    window.selectBodyPart = function(partId, shouldFlyCamera = true, options = {}) {
+      if (motionLinkTimer) {
+        clearTimeout(motionLinkTimer);
+        motionLinkTimer = null;
+      }
       currentSystemMode = null;
       currentSystemRegionId = 'all';
       syncBottomSystemButtons();
@@ -4517,7 +4920,6 @@ ${WEBGL_PART_A}
       currentMenuTab = 0;
       archiveScope = 'part';
       selectedArchiveNoteId = null;
-      renderPopupPanel();
 
       if (menuMeta && menuMeta.autoGender === 'female') {
         window.setDonginGender('female');
@@ -4535,8 +4937,39 @@ ${WEBGL_PART_A}
       majorHotspotNodes.forEach(h => {
         h.dom.classList.toggle('active', h.id === currentPartId);
       });
+      quickNavButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-part') === currentPartId);
+      });
 
+      const instantOpen = Boolean(options && options.instant) || isStudioPreviewMode || !shouldFlyCamera;
+      if (instantOpen) {
+        isMotionFocusing = false;
+        hideMotionLinkBanner();
+        renderPopupPanel();
+        updateAnatomyHighlight();
+        return;
+      }
+
+      // 1단계: 풀스크린 3D 부위 확대 모션 & 내부 장기/척추 X-Ray 골드 포커스 연출 후 → 2단계: 건강글 시트 슬라이드업 연계
+      isPopupOpen = false;
+      isMotionFocusing = true;
+      document.body.classList.remove('popup-open-mode');
+      if (popupDrawer) {
+        popupDrawer.classList.remove('open', 'detail-expanded');
+      }
+      const pLabel = (menuMeta && (menuMeta.partLabel || menuMeta.shortLabel)) || '선택 부위';
+      showMotionLinkBanner('✨ [' + pLabel + '] 3D 모션 포커스 · 건강 글로 이동합니다');
+      applyCameraFraming();
       updateAnatomyHighlight();
+
+      motionLinkTimer = setTimeout(() => {
+        motionLinkTimer = null;
+        isMotionFocusing = false;
+        hideMotionLinkBanner();
+        renderPopupPanel();
+        if (popupDrawer) popupDrawer.scrollTop = 0;
+        updateAnatomyHighlight();
+      }, 480);
     };
 
 ${WEBGL_PART_B}
@@ -4563,7 +4996,7 @@ ${WEBGL_PART_B}
           }
         }
         if (targetPart !== currentPartId || !isPopupOpen) {
-          window.selectBodyPart(targetPart, Boolean(msg.flyCamera));
+          window.selectBodyPart(targetPart, Boolean(msg.flyCamera), { instant: true });
         }
         if (targetNote) {
           const pNotes = getPublishedNotes(targetPart);
@@ -4606,17 +5039,21 @@ ${WEBGL_PART_B}
       renderPopupPanel();
     } else if (urlPart || urlNote) {
       const targetPart = urlPart || (urlNote ? String(urlNote).split('-')[0] : 'knee');
-      window.selectBodyPart(targetPart, true);
       const pNotes = getPublishedNotes(targetPart);
       const resolvedNoteId = urlNote || (pNotes[0] && pNotes[0].id) || '';
       if (urlDetail === '1' && resolvedNoteId) {
         expandedDetailNoteIds[resolvedNoteId] = true;
       }
-      if (urlNote && (!pNotes[0] || pNotes[0].id !== urlNote)) {
-        currentMenuTab = 2;
-        selectedArchiveNoteId = urlNote;
+      if (urlNote || urlDetail === '1' || isStudioPreviewMode) {
+        window.selectBodyPart(targetPart, true, { instant: true });
+        if (urlNote && (!pNotes[0] || pNotes[0].id !== urlNote)) {
+          currentMenuTab = 2;
+          selectedArchiveNoteId = urlNote;
+        }
+        renderPopupPanel();
+      } else {
+        window.selectBodyPart(targetPart, true);
       }
-      renderPopupPanel();
     } else {
       window.resetDonginView();
       majorHotspotNodes.forEach(h => h.dom.classList.remove('active'));

@@ -601,7 +601,7 @@
         .skt-finale-stage {
           padding-bottom: 84px !important;
         }
-        body:not(.is-home-3d) {
+        body:not(.is-home-3d):not(.is-body-explorer-page) {
           padding-bottom: 72px !important;
         }
       }
@@ -1254,7 +1254,7 @@
     if (currentSlug === 'home') {
       document.body.classList.add('is-home-3d');
     }
-    if (window.location.pathname.includes('body-explorer')) {
+    if (window.location.pathname.includes('body-explorer') || document.getElementById('vibrant-3d-stage')) {
       document.body.classList.add('is-body-explorer-page');
     }
 
@@ -1270,6 +1270,7 @@
 
     navTargets.forEach(function (container) {
       if (!container) return;
+      const isSpatialMobile = (window.innerWidth <= 900) && container.closest && Boolean(container.closest('.spatial-top-nav'));
       if (currentSlug !== 'location' && !container.querySelector('.bareun-loc-pill-btn')) {
         const locBtn = document.createElement('button');
         locBtn.type = 'button';
@@ -1277,7 +1278,8 @@
         locBtn.title = '오시는길 · 자동 길안내(네이버/구글/티맵/카카오) · 진료시간 · 비급여 안내';
         locBtn.innerHTML = '📍 오시는길';
         locBtn.onclick = function () { window.openBareunLocationModal('location'); };
-        container.insertBefore(locBtn, container.firstChild);
+        if (isSpatialMobile) container.appendChild(locBtn);
+        else container.insertBefore(locBtn, container.firstChild);
       }
       if (!container.querySelector('.bareun-visit-pill-btn')) {
         const btn = document.createElement('button');
@@ -1286,7 +1288,8 @@
         btn.title = '홈페이지 오늘 및 누적 방문 조회수 확인';
         btn.innerHTML = createCounterButtonHtml(latestStats);
         btn.onclick = function () { window.openBareunVisitModal(); };
-        container.insertBefore(btn, container.firstChild);
+        if (isSpatialMobile) container.appendChild(btn);
+        else container.insertBefore(btn, container.firstChild);
       }
     });
 

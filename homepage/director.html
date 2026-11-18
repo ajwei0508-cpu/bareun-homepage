@@ -60,6 +60,10 @@
   
 
   
+
+  
+
+  
   
 
   
@@ -8797,8 +8801,13 @@
 
       (function initLocalStudioQuickLink() {
         const h = window.location.hostname;
+        const isSampleCtx = (window.self !== window.top) || /[?&]sample=1\b/.test(window.location.search || '') || (document.cookie && document.cookie.indexOf('bareun_sample=1') !== -1);
+        const stBtn = document.getElementById('btn-open-detail-studio');
+        if (isSampleCtx) {
+          if (stBtn) stBtn.remove();
+          return;
+        }
         if (h === 'localhost' || h === '127.0.0.1') {
-          const stBtn = document.getElementById('btn-open-detail-studio');
           if (stBtn) stBtn.style.display = 'inline-flex';
         }
       })();

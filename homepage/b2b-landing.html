@@ -52,6 +52,10 @@
   
 
   
+
+  
+
+  
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <style>
@@ -755,6 +759,33 @@
     .trust-bar-strip a{font-size:12.5px;font-weight:900;color:var(--green);background:var(--green-soft);padding:6px 13px;border-radius:999px;border:1px solid #B9D7C6}
     .trust-bar-strip a:hover{background:var(--green);color:#fff}
 
+    /* 커스텀 스튜디오 원장님 요청 지속 업데이트 공간 하이라이트 카드 */
+    .studio-evolve-banner{
+      margin-top:22px;padding:24px 26px;border-radius:22px;
+      background:linear-gradient(145deg,#0B2418 0%,#163D2A 100%);
+      border:1.5px solid rgba(252,211,77,.55);color:#FDFBF7;
+      display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;
+      box-shadow:0 18px 40px rgba(11,36,24,.18);
+    }
+    @media(max-width:680px){.studio-evolve-banner{grid-template-columns:1fr;padding:20px 18px;gap:12px}}
+    .seb-icon{
+      width:58px;height:58px;border-radius:18px;
+      background:rgba(252,211,77,.14);border:1px solid rgba(252,211,77,.48);
+      display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;
+    }
+    .seb-kicker{
+      display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;
+      background:rgba(143,224,176,.18);border:1px solid rgba(143,224,176,.4);
+      color:#A7F3D0;font-size:11px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;
+    }
+    .seb-body h3{font-size:clamp(1.05rem,1.9vw,1.25rem);font-weight:900;line-height:1.4;margin-bottom:7px;color:#fff !important}
+    .seb-body p{font-size:.91rem;line-height:1.65;color:rgba(253,251,247,.88);margin-bottom:12px}
+    .seb-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .seb-tags span{
+      font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;
+      background:rgba(255,255,255,.09);border:1px solid rgba(252,211,77,.38);color:#FDE68A;
+    }
+
     #apply{border-top:1px solid rgba(143,224,176,.22)}
 
     /* ===== ?compare=1 동시화면 비교 스튜디오 오버레이 ===== */
@@ -1255,6 +1286,20 @@
       <div class="box rv"><h3>🎛️ 상위 단계에서 열리는 프리미엄 스튜디오</h3><ul style="list-style:none">
         <li style="padding:5px 0"><b>프로 이상</b> · 스토리보드 오프닝 편집, AI 의료법 금지어 실시간 경고</li><li style="padding:5px 0"><b>시그니처 전용</b> · 새 질환 카드 페이지 무제한 직접 증설 (증설비 0원)</li><li style="padding:5px 0"><b>시그니처 전용</b> · 금지어 없어도 고객 호감형 언어로 다듬는 AI 카피라이터 무제한</li><li style="padding:5px 0"><b>시그니처 전용</b> · 원장님 실사 기반 2K 맞춤 진료 화보 생성 스튜디오</li></ul></div>
     </div>
+
+    <div class="studio-evolve-banner rv">
+      <div class="seb-icon" aria-hidden="true">🛠️</div>
+      <div class="seb-body">
+        <span class="seb-kicker">VOICE OF DOCTORS · 원장님 참여형 스튜디오 진화 약속</span>
+        <h3>스튜디오 기능은 원장님들의 요청에 따라 지속적인 업데이트를 할 수 있는 <span class="gold">전용 공간을 마련</span>하여, <span class="gold">사용성을 극대화</span>시켜 드립니다</h3>
+        <p>한 번 만들어 두고 끝나는 고정형 관리자 페이지가 아닙니다. 진료 현장에서 직접 스튜디오를 써 보시면서 <b>“이런 편의 기능도 있으면 좋겠다”, “이 영역도 클릭 한 번으로 고치고 싶다”</b> 하시는 의견을 언제든 남기실 수 있는 <b>원장님 전용 기능 요청 창구</b>를 스튜디오 안에 마련합니다. 현장의 목소리를 정기 업데이트로 계속 반영하여 원장님 손에 가장 편한 도구로 끝없이 진화시킵니다.</p>
+        <div class="seb-tags">
+          <span>✓ 스튜디오 내 ‘원장님 기능 요청 공간’ 상설 운영</span>
+          <span>✓ 진료 현장 피드백 기반 지속 기능 업그레이드</span>
+          <span>✓ 전 구독 원장님 추가 비용 없이 사용성 극대화 혜택 자동 적용</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1274,7 +1319,7 @@
             <tr data-min="0"><td><input type="checkbox"></td><td>반응형 홈페이지 · 원장소개 · 오시는길 · 4대 내비</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="0"><td><input type="checkbox"></td><td>전화·카톡·네이버예약 고정 바</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="0"><td><input type="checkbox"></td><td>비급여 수가표 고지 + 진료시간·휴진·레이아웃별 색감·질환 카드 첫장 셀프 수정</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
-            <tr data-min="0"><td><input type="checkbox"></td><td><b>향후 업데이트되는 신규 홈페이지 디자인·템플릿 무료 배급</b> (구독자 혜택)</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
+            <tr data-min="0"><td><input type="checkbox"></td><td><b>향후 업데이트되는 신규 홈페이지 디자인·템플릿 무료 배급</b> + 원장님 요청 기반 스튜디오 기능 지속 업데이트</td><td class="y">✓</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>환자 스토리보드 12컷 오프닝</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>질환별 체크포인트(5문항 자가진단)</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
             <tr data-min="1"><td><input type="checkbox"></td><td>1:1 “무엇이든 물어보세요” Q&amp;A 게시판</td><td class="n">🔒</td><td class="y">✓</td><td class="us y">✓</td></tr>
@@ -1601,7 +1646,7 @@
         <ul><li>작성자가 의학 지식이 부족하면 원장님이 매번 고쳐야 합니다.</li><li>의료법 금지어 검수가 포함되지 않는 경우가 많습니다.</li><li>2~3년 뒤 디자인이 올드해지면 수백만 원을 들여 새로 제작해야 합니다.</li></ul></div>
       <div class="box own rv" style="color:#0B2418"><h3>🟢 바른 AI 마스터 케어</h3>
         <div class="big-num green">월 99,000원</div><p style="font-size:.85rem;margin-bottom:10px">VAT 포함 · 연 결제 시 월 89,100원 · 외주 단가의 약 13% 수준</p>
-        <ul><li>월 15건 학술 근거 기반 칼럼 + 맞춤 이미지 자동 발행 (병원 맞춤 주제)</li><li>원장님 사진 기반 인물 고정 화보 탑재</li><li>네이버 서치어드바이저·구글 서치콘솔 연동 및 등록 관리</li><li>비급여 수가표·명절·휴진·레이아웃별 색감 무제한 셀프 수정</li><li>마스터 전용 상세 통계 센터(유입·시간대·예약 전환)</li><li><b>🎁 향후 업데이트되는 신규 홈페이지 디자인·템플릿 무료 배급</b></li></ul></div>
+        <ul><li>월 15건 학술 근거 기반 칼럼 + 맞춤 이미지 자동 발행 (병원 맞춤 주제)</li><li>원장님 사진 기반 인물 고정 화보 탑재</li><li>네이버 서치어드바이저·구글 서치콘솔 연동 및 등록 관리</li><li>비급여 수가표·명절·휴진·레이아웃별 색감 무제한 셀프 수정</li><li><b>🛠️ 원장님 요청 전용 공간을 통한 스튜디오 편의 기능 지속 업데이트</b></li><li>마스터 전용 상세 통계 센터(유입·시간대·예약 전환)</li><li><b>🎁 향후 업데이트되는 신규 홈페이지 디자인·템플릿 무료 배급</b></li></ul></div>
     </div>
 
     <div class="free-dist-banner rv">
@@ -1723,7 +1768,7 @@
       <div>
         <details class="rv"><summary>구독 케어란?</summary><p>홈페이지를 만든 뒤 매달 자동 발행되는 칼럼, 의료법 검수, 검색 등록 관리, 서버 유지를 월 정액으로 맡기는 것입니다. 한 번 만들고 방치되는 홈페이지가 되지 않게 해 줍니다.</p></details>
         <details class="rv"><summary>의료법 제56조는 왜 중요한가요?</summary><p>의료광고에서 과장·단정·치료 효과 보장 같은 표현을 제한하는 규정입니다. 홈페이지와 블로그 글도 광고로 볼 수 있어, 원장님이 직접 쓰지 않은 글일수록 사전에 걸러 주는 단계가 필요합니다.</p></details>
-        <details class="rv"><summary>셀프 스튜디오란?</summary><p>코딩을 몰라도 진료시간·휴진 공지·비급여 수가표·레이아웃별 색감을 원장님이 직접 고칠 수 있는 관리 화면입니다. 수정할 때마다 업체에 연락할 필요가 없습니다.</p></details>
+        <details class="rv"><summary>셀프 스튜디오란?</summary><p>코딩을 몰라도 진료시간·휴진 공지·비급여 수가표·레이아웃별 색감을 원장님이 직접 고칠 수 있는 관리 화면입니다. 수정할 때마다 업체에 연락할 필요가 없으며, <b>원장님들의 요청을 접수하는 전용 공간을 통해 편의 기능을 지속적으로 업데이트하여 사용성을 극대화</b>해 드립니다.</p></details>
       </div>
     </div>
 
