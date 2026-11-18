@@ -154,7 +154,15 @@ function enrichStandaloneHtml(rawHtml, seoKey, srcFile) {
   return html;
 }
 
-function stripOuterDocumentForWP(fullHtml) {
+function minifyCssSafe(cssText) {
+  return String(cssText || '')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\r?\n\s+/g, '\n')
+    .replace(/\n{2,}/g, '\n')
+    .trim();
+}
+
+function stripOuterDocumentForWP(fullHtml, slug) {
   const headMatch = fullHtml.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
   const bodyMatch = fullHtml.match(/<body([^>]*)>([\s\S]*?)<\/body>/i);
   if (!headMatch || !bodyMatch) {
@@ -181,19 +189,21 @@ function stripOuterDocumentForWP(fullHtml) {
     preservedHeadParts.push(scr);
   }
 
-  // Keep <style> blocks and inject wpReset into the first one
+  // Keep <style> blocks (minified to reduce byte offset before semantic content) and inject wpReset into the first one
   const headStyles = headInner.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || [];
   let injectedReset = false;
   for (const st of headStyles) {
+    const innerCss = st.replace(/^<style[^>]*>/i, '').replace(/<\/style>$/i, '');
+    const minCss = minifyCssSafe(innerCss);
     if (!injectedReset) {
       injectedReset = true;
-      preservedHeadParts.push(st.replace(/<style([^>]*)>/i, '<style$1>' + wpReset));
+      preservedHeadParts.push(`<style>${minifyCssSafe(wpReset)}\n${minCss}</style>`);
     } else {
-      preservedHeadParts.push(st);
+      preservedHeadParts.push(`<style>${minCss}</style>`);
     }
   }
   if (!injectedReset) {
-    preservedHeadParts.push(`<style>${wpReset}</style>`);
+    preservedHeadParts.push(`<style>${minifyCssSafe(wpReset)}</style>`);
   }
 
   // Preserve body class (e.g. theme-hanji) immediately on document.body
@@ -203,7 +213,15 @@ function stripOuterDocumentForWP(fullHtml) {
     preservedHeadParts.push(`<script>document.body.classList.add(${classes.map(c => JSON.stringify(c)).join(',')});</script>`);
   }
 
-  return preservedHeadParts.join('\n') + '\n' + bodyInner;
+  // Prepend Top-of-DOM Semantic GEO/AEO Entity Dossier (<h2>, .aeo-direct-answer, <table>, Disambiguation, 3 Q&As) at byte 0 of .entry-content (before <style> so AI crawlers read it in the first 15KB)
+  let cleanBodyInner = bodyInner.replace(/<section id="bareun-geo-ssr-top-dossier"[\s\S]*?<\/section>\s*/i, '');
+  let geoDossierTop = '';
+  try {
+    const { buildGeoEntityDossierHtml } = require('./geo-entity-dossier.js');
+    geoDossierTop = buildGeoEntityDossierHtml(slug || 'home');
+  } catch (e) {}
+
+  return (geoDossierTop ? geoDossierTop + '\n' : '') + preservedHeadParts.join('\n') + '\n' + cleanBodyInner;
 }
 
 function rewriteAssetsForWP(html, label) {
@@ -263,7 +281,7 @@ function rewriteAssetsForWP(html, label) {
     });
 
   // Strip outer <!DOCTYPE html><html><head><body> wrapper so WP theme owns the sole valid <head> & <body>
-  out = stripOuterDocumentForWP(out);
+  out = stripOuterDocumentForWP(out, label);
 
   // Protect inline executable <script> blocks against WordPress wptexturize / wpautop
   out = out.replace(/<script(?![^>]*\bsrc=)(?![^>]*type=["'](?:importmap|application\/ld\+json)["'])([^>]*)>([\s\S]*?)<\/script>/gi, (full, attrs, jsCode) => {

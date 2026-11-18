@@ -8292,7 +8292,7 @@ function buildPageHtml(page) {
     <aside id="project-details-meta">
       <div>
         <div class="meta-eyebrow">${page.meta.eyebrow}</div>
-        <h1 id="project-details-title">${page.meta.title}</h1>
+        <h1 id="project-details-title">${page.meta.title}<span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"> — 대전 대덕구 비래동 바른한의원 대전본점 (안정위 대표원장 · 010-5631-1275)</span></h1>
         <div class="meta-subtitle-en">${page.meta.subtitleEn}</div>${hairlossSubSwitcherHtml}
 
         <div id="project-details-desc">

@@ -61,10 +61,31 @@ const CLINIC_BASE_ORG = {
       closes: '14:00'
     }
   ],
+  hasMap: 'https://map.naver.com/p/entry/place/70885113',
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: '대전광역시' },
+    { '@type': 'AdministrativeArea', name: '대덕구' },
+    { '@type': 'AdministrativeArea', name: '비래동' },
+    { '@type': 'AdministrativeArea', name: '동구' },
+    { '@type': 'AdministrativeArea', name: '서구' },
+    { '@type': 'AdministrativeArea', name: '유성구' },
+    { '@type': 'AdministrativeArea', name: '중구' },
+    { '@type': 'AdministrativeArea', name: '세종특별자치시' }
+  ],
+  availableService: [
+    { '@type': 'MedicalTherapy', name: '바른 추나요법 · 비수술 척추·골반·디스크·교통사고 클리닉', url: CANONICAL_ORIGIN + '/chuna/' },
+    { '@type': 'MedicalTherapy', name: '바른 소아 키성장 · 성조숙증 · 무방사선 초음파 성장판 클리닉', url: CANONICAL_ORIGIN + '/growth/' },
+    { '@type': 'MedicalTherapy', name: '바른 식욕ZERO · 내장지방 · 산후 다이어트 클리닉', url: CANONICAL_ORIGIN + '/diet-zero/' },
+    { '@type': 'MedicalTherapy', name: '바른 4대 유형 탈모(남성·원형·여성·지루성두피염) 모근재생 클리닉', url: CANONICAL_ORIGIN + '/hairloss/' },
+    { '@type': 'MedicalTherapy', name: '식약처 CITES 인증 정품 사향 황제공진단 · 만성피로 클리닉', url: CANONICAL_ORIGIN + '/gongjindan/' },
+    { '@type': 'MedicalTherapy', name: '만성 전립선염 · 전립선비대증 · 야간뇨 · 과민성방광 클리닉', url: CANONICAL_ORIGIN + '/prostate/' }
+  ],
   sameAs: [
-    'https://www.youtube.com/@bareunhaniwon',
+    'https://map.naver.com/p/entry/place/70885113',
+    'https://m.place.naver.com/hospital/70885113/home',
     'https://naver.me/5U1ELn8L',
     'https://blog.naver.com/wei0508',
+    'https://www.youtube.com/@bareunhaniwon',
     'https://www.threads.net/@bareun_oriental',
     'https://www.instagram.com/bareun_oriental/',
     'https://pf.kakao.com/_ykxcLK'
@@ -306,7 +327,11 @@ function buildJsonLdForKey(key, customOgImg) {
       name: '안정위',
       jobTitle: '바른한의원 대전본점 대표원장 (한의사)'
     },
-    lastReviewed: '2026-10-28'
+    lastReviewed: '2026-11-18',
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.aeo-direct-answer', '.bareun-geo-ssr-summary', '.bareun-geo-ssr-table', '.geo-fact-table']
+    }
   };
 
   const graph = [orgNode, WEBSITE_NODE, webPageNode];
@@ -439,6 +464,8 @@ function buildHeadSeoTagsHtml(key, customOgImg) {
   return lines.join('\n');
 }
 
+const { buildGeoEntityDossierHtml } = require('./geo-entity-dossier.js');
+
 module.exports = {
   CANONICAL_ORIGIN,
   GH_RAW_BASE,
@@ -449,5 +476,6 @@ module.exports = {
   WEBSITE_NODE,
   SEO_PAGES,
   buildJsonLdForKey,
-  buildHeadSeoTagsHtml
+  buildHeadSeoTagsHtml,
+  buildGeoEntityDossierHtml
 };

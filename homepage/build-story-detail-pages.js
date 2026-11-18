@@ -13847,15 +13847,24 @@ if (fs.existsSync(masterCfgPath)) {
 const cliPageArg = process.argv.find(a => a.startsWith('--page='));
 const targetPageFilter = cliPageArg ? cliPageArg.split('=')[1].trim() : null;
 const { buildPageHtml: compileUnifiedPageHtml } = require('./bareun-detail-compiler.js');
+const { buildGeoEntityDossierHtml } = require('./geo-entity-dossier.js');
 
 pagesSource.forEach(p => {
+  if (!targetPageFilter && (p.file === 'index.html' || p.slug === 'home')) {
+    return;
+  }
   if (targetPageFilter && p.file !== targetPageFilter && p.slug !== targetPageFilter) {
     return;
   }
   const mergedPage = Object.assign({}, p, {
     cardStyle: Object.assign({}, globalCardStyle || {}, p.cardStyle || {})
   });
-  const html = compileUnifiedPageHtml(mergedPage);
+  let html = compileUnifiedPageHtml(mergedPage);
+  const slugKey = p.slug || String(p.file || '').replace(/\.html$/i, '');
+  const dossier = buildGeoEntityDossierHtml(slugKey);
+  if (dossier && !/id=["']bareun-geo-ssr-top-dossier["']/i.test(html)) {
+    html = html.replace(/(<body[^>]*>)/i, '$1\n  ' + dossier);
+  }
   fs.writeFileSync(path.join(outDir, p.file), html, 'utf8');
   if (p.file === 'index.html') {
     fs.writeFileSync(path.join(outDir, 'story-3d.html'), html, 'utf8');

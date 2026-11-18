@@ -1361,6 +1361,8 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (strpos($low, 'cohere-ai') !== false) return 'Cohere-AI Bot';
         if (strpos($low, 'youbot') !== false) return 'YouBot (You.com AI)';
         if (strpos($low, 'meta-externalagent') !== false) return 'Meta AI Agent';
+        if (strpos($low, 'bingbot') !== false) return 'Bingbot (ChatGPT·Copilot 검색색인)';
+        if (strpos($low, 'yeti') !== false || strpos($low, 'naverbot') !== false) return 'Yeti (네이버 검색·AI 브리핑)';
         return '';
     }
 
@@ -3249,6 +3251,8 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('wp_robots', array(__CLASS__, 'filter_wp_robots'), 99);
         add_filter('pre_get_document_title', array(__CLASS__, 'filter_document_title'), 99);
         add_action('wp_head', array(__CLASS__, 'render_head_seo'), 1);
+        add_action('wp_enqueue_scripts', array(__CLASS__, 'dequeue_unused_theme_head_bloat'), 9999);
+        add_filter('the_content', array(__CLASS__, 'filter_optimize_body_explorer_head_cfg'), 5);
         add_action('wp_footer', array(__CLASS__, 'render_footer_qna_ssr'), 99);
 
         // Eliminate Astra theme duplicate H1 & oversized featured thumbnail in DOM
@@ -3295,9 +3299,24 @@ class Bareun_Master_SEO_Engine_V1 {
                 );
                 $decoded['clinicBaseOrg']['taxID'] = '211-91-10479';
                 $decoded['clinicBaseOrg']['vatID'] = '211-91-10479';
+                $decoded['clinicBaseOrg']['hasMap'] = 'https://map.naver.com/p/entry/place/70885113';
                 $decoded['clinicBaseOrg']['areaServed'] = array(
                     array('@type' => 'AdministrativeArea', 'name' => '대전광역시'),
-                    array('@type' => 'AdministrativeArea', 'name' => '대덕구')
+                    array('@type' => 'AdministrativeArea', 'name' => '대덕구'),
+                    array('@type' => 'AdministrativeArea', 'name' => '비래동'),
+                    array('@type' => 'AdministrativeArea', 'name' => '동구'),
+                    array('@type' => 'AdministrativeArea', 'name' => '서구'),
+                    array('@type' => 'AdministrativeArea', 'name' => '유성구'),
+                    array('@type' => 'AdministrativeArea', 'name' => '중구'),
+                    array('@type' => 'AdministrativeArea', 'name' => '세종특별자치시')
+                );
+                $decoded['clinicBaseOrg']['availableService'] = array(
+                    array('@type' => 'MedicalTherapy', 'name' => '바른 추나요법 · 비수술 척추·골반·디스크·교통사고 클리닉', 'url' => self::CANONICAL_ORIGIN . '/chuna/'),
+                    array('@type' => 'MedicalTherapy', 'name' => '바른 소아 키성장 · 성조숙증 · 무방사선 초음파 성장판 클리닉', 'url' => self::CANONICAL_ORIGIN . '/growth/'),
+                    array('@type' => 'MedicalTherapy', 'name' => '바른 식욕ZERO · 내장지방 · 산후 다이어트 클리닉', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/'),
+                    array('@type' => 'MedicalTherapy', 'name' => '바른 4대 유형 탈모(남성·원형·여성·지루성두피염) 모근재생 클리닉', 'url' => self::CANONICAL_ORIGIN . '/hairloss/'),
+                    array('@type' => 'MedicalTherapy', 'name' => '식약처 CITES 인증 정품 사향 황제공진단 · 만성피로 클리닉', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/'),
+                    array('@type' => 'MedicalTherapy', 'name' => '만성 전립선염 · 전립선비대증 · 야간뇨 · 과민성방광 클리닉', 'url' => self::CANONICAL_ORIGIN . '/prostate/')
                 );
                 $decoded['clinicBaseOrg']['identifier'] = array(
                     '@type' => 'PropertyValue',
@@ -3308,9 +3327,11 @@ class Bareun_Master_SEO_Engine_V1 {
                     $decoded['clinicBaseOrg']['sameAs'] = array();
                 }
                 $official_same_as = array(
-                    'https://www.youtube.com/@bareunhaniwon',
+                    'https://map.naver.com/p/entry/place/70885113',
+                    'https://m.place.naver.com/hospital/70885113/home',
                     'https://naver.me/5U1ELn8L',
                     'https://blog.naver.com/wei0508',
+                    'https://www.youtube.com/@bareunhaniwon',
                     'https://www.threads.net/@bareun_oriental',
                     'https://www.instagram.com/bareun_oriental/',
                     'https://pf.kakao.com/_ykxcLK'
@@ -3388,8 +3409,84 @@ class Bareun_Master_SEO_Engine_V1 {
         }
     }
 
+    public static function build_flat_xml_sitemap_string($mode = 'all') {
+        $now_iso = gmdate('Y-m-d\TH:i:s+00:00');
+        $core_pages = array(
+            array('loc' => self::CANONICAL_ORIGIN . '/',                    'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/growth/',             'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/chuna/',              'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/diet-zero/',          'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/hairloss/',           'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/hairloss-male/',      'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/hairloss-alopecia/',  'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/hairloss-female/',    'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/hairloss-seborrheic/','lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/gongjindan/',         'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/prostate/',           'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/director/',           'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/body-explorer/',      'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/location/',           'lastmod' => '2026-11-18T12:00:00+09:00'),
+            array('loc' => self::CANONICAL_ORIGIN . '/lifting-compare/',    'lastmod' => '2026-11-18T12:00:00+09:00')
+        );
+
+        $post_items = array(
+            array('loc' => self::CANONICAL_ORIGIN . '/integrative-autonomic-circadian-gut-spine-health-review/', 'lastmod' => '2026-11-15T10:30:00+09:00')
+        );
+        $seen_locs = array();
+        foreach ($core_pages as $cp) {
+            $seen_locs[$cp['loc']] = true;
+        }
+        foreach ($post_items as $pi) {
+            $seen_locs[$pi['loc']] = true;
+        }
+
+        $hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
+        if (is_array($hn_cfg) && !empty($hn_cfg['notes']) && is_array($hn_cfg['notes'])) {
+            foreach ($hn_cfg['notes'] as $hn) {
+                if (!is_array($hn) || (isset($hn['enabled']) && $hn['enabled'] === false) || empty($hn['id'])) {
+                    continue;
+                }
+                $nid = strtolower(preg_replace('/[^a-z0-9\-]/i', '', (string) $hn['id']));
+                if ($nid === '') continue;
+                $loc = self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode($nid) . '/';
+                if (isset($seen_locs[$loc])) continue;
+                $seen_locs[$loc] = true;
+                $rev_d = !empty($hn['lastReviewed']) ? trim((string) $hn['lastReviewed']) : (!empty($hn['publishDate']) ? trim((string) $hn['publishDate']) : '2026-11-15');
+                $lastmod = preg_match('/^\d{4}-\d{2}-\d{2}$/', $rev_d) ? ($rev_d . 'T10:30:00+09:00') : $now_iso;
+                $post_items[] = array('loc' => $loc, 'lastmod' => $lastmod);
+            }
+        }
+
+        $entries = array();
+        if ($mode === 'pages') {
+            $entries = $core_pages;
+        } elseif ($mode === 'posts') {
+            $entries = $post_items;
+        } else {
+            $entries = array_merge($core_pages, $post_items);
+        }
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        foreach ($entries as $ent) {
+            $xml .= '  <url><loc>' . esc_url($ent['loc']) . '</loc><lastmod>' . esc_html($ent['lastmod']) . '</lastmod></url>' . "\n";
+        }
+        $xml .= '</urlset>' . "\n";
+        return $xml;
+    }
+
+    public static function sync_physical_xml_sitemaps() {
+        $all_xml   = self::build_flat_xml_sitemap_string('all');
+        $pages_xml = self::build_flat_xml_sitemap_string('pages');
+        $posts_xml = self::build_flat_xml_sitemap_string('posts');
+        @file_put_contents(ABSPATH . 'wp-sitemap.xml', $all_xml);
+        @file_put_contents(ABSPATH . 'sitemap.xml', $all_xml);
+        @file_put_contents(ABSPATH . 'wp-sitemap-posts-page-1.xml', $pages_xml);
+        @file_put_contents(ABSPATH . 'wp-sitemap-posts-post-1.xml', $posts_xml);
+    }
+
     public static function maybe_sync_htaccess_headers() {
-        if (get_option(self::OPT_HTACCESS_VER) === '10') {
+        if (get_option(self::OPT_HTACCESS_VER) === '11') {
             return;
         }
         // Ensure default verified Naver & Google tokens are stored in wp_options if empty
@@ -3443,13 +3540,14 @@ class Bareun_Master_SEO_Engine_V1 {
             }
         }
 
-        // 3) Wipe stale WP Super Cache across both bareunhaniwon.com and www.bareunhaniwon.com
+        // 3) Sync physical zero-404 XML sitemaps on disk + wipe stale WP Super Cache
+        self::sync_physical_xml_sitemaps();
         if (function_exists('wp_cache_clean_cache')) {
             global $file_prefix;
             @wp_cache_clean_cache(isset($file_prefix) ? $file_prefix : 'wp-cache-', true);
         }
 
-        update_option(self::OPT_HTACCESS_VER, '10');
+        update_option(self::OPT_HTACCESS_VER, '11');
     }
 
     private static function is_request_https() {
@@ -3514,6 +3612,25 @@ class Bareun_Master_SEO_Engine_V1 {
         // Record GEO AI crawler hits before virtual endpoints or standalone SSR exit
         if (class_exists('Bareun_Member_Private_QnA_V6_Plugin')) {
             Bareun_Member_Private_QnA_V6_Plugin::maybe_track_geo_ai_crawler();
+        }
+
+        // Serve Zero-404 Direct <urlset> XML Sitemaps (/wp-sitemap.xml, /sitemap.xml, /wp-sitemap-posts-page-1.xml, /wp-sitemap-posts-post-1.xml)
+        if (in_array($path, array('/wp-sitemap.xml', '/sitemap.xml', '/sitemap_index.xml', '/wp-sitemap-posts-page-1.xml', '/wp-sitemap-posts-post-1.xml'), true)) {
+            if (!defined('DONOTCACHEPAGE')) {
+                define('DONOTCACHEPAGE', true);
+            }
+            self::send_security_headers();
+            status_header(200);
+            header('Content-Type: application/xml; charset=utf-8', true);
+            header('Cache-Control: public, max-age=1800', true);
+            $sm_mode = 'all';
+            if ($path === '/wp-sitemap-posts-page-1.xml') {
+                $sm_mode = 'pages';
+            } elseif ($path === '/wp-sitemap-posts-post-1.xml') {
+                $sm_mode = 'posts';
+            }
+            echo self::build_flat_xml_sitemap_string($sm_mode);
+            exit;
         }
 
         // Serve Standalone 7-Stage High-End Health Note SSR (/health-note-{id}/, HTTP 200 OK, 0% Astra chrome, 0% Studio Inspector/OSMU tabs)
@@ -4542,6 +4659,40 @@ class Bareun_Master_SEO_Engine_V1 {
         remove_action('wp_head', 'wp_robots', 1);
     }
 
+    public static function dequeue_unused_theme_head_bloat() {
+        if (is_admin()) {
+            return;
+        }
+        if (is_front_page() || is_home() || is_singular('page')) {
+            wp_dequeue_style('astra-theme-css');
+            wp_deregister_style('astra-theme-css');
+            wp_dequeue_style('wp-block-library');
+            wp_dequeue_style('wp-block-library-theme');
+            wp_dequeue_style('global-styles');
+            wp_dequeue_style('classic-theme-styles');
+        }
+    }
+
+    public static function filter_optimize_body_explorer_head_cfg($content) {
+        if (is_admin() || !is_singular('page')) {
+            return $content;
+        }
+        $post = get_queried_object();
+        if (!$post || ($post->post_name !== 'body-explorer' && $post->post_name !== 'ask-doctor')) {
+            return $content;
+        }
+        $live_hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
+        if (!is_array($live_hn_cfg) || empty($live_hn_cfg['notes'])) {
+            return $content;
+        }
+        $cfg_script = '<script>window.__BAREUN_LIVE_HEALTH_NOTES_CFG__ = ' . wp_json_encode($live_hn_cfg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";
+        $pos = stripos($content, '<script>(0,eval)');
+        if ($pos !== false) {
+            return substr($content, 0, $pos) . $cfg_script . substr($content, $pos);
+        }
+        return $content . "\n" . $cfg_script;
+    }
+
     public static function send_security_headers() {
         if (headers_sent()) {
             return;
@@ -4930,14 +5081,12 @@ class Bareun_Master_SEO_Engine_V1 {
                 'name'     => '안정위',
                 'jobTitle' => '바른한의원 대전본점 대표원장 (한의사)'
             ),
-            'lastReviewed' => '2026-11-13'
-        );
-        if ($path === '/body-explorer/') {
-            $web_page['speakable'] = array(
+            'lastReviewed' => '2026-11-18',
+            'speakable'   => array(
                 '@type'       => 'SpeakableSpecification',
-                'cssSelector' => array('.aeo-direct-answer', '.seo-health-note-ssr-item', '.seo-qna-ssr-item')
-            );
-        }
+                'cssSelector' => array('.aeo-direct-answer', '.bareun-geo-ssr-summary', '.bareun-geo-ssr-table', '.geo-fact-table', '.seo-health-note-ssr-item', '.seo-qna-ssr-item')
+            )
+        );
 
         $graph = array($org, $ws, $web_page);
 
@@ -5067,13 +5216,6 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         $ld = self::build_json_ld($cfg);
         echo '<script type="application/ld+json">' . wp_json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
-        $raw_req_uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
-        if (strpos($path, '/body-explorer/') === 0 || strpos($raw_req_uri, '/body-explorer') === 0) {
-            $live_hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
-            if (is_array($live_hn_cfg) && !empty($live_hn_cfg['notes'])) {
-                echo '<script>window.__BAREUN_LIVE_HEALTH_NOTES_CFG__ = ' . wp_json_encode($live_hn_cfg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";
-            }
-        }
         echo "<!-- /Bareun Master SEO & GEO Engine -->\n";
     }
 
@@ -5330,6 +5472,12 @@ class Bareun_Master_SEO_Engine_V1 {
             'User-agent: PerplexityBot',
             'Allow: /',
             '',
+            'User-agent: Perplexity-User',
+            'Allow: /',
+            '',
+            'User-agent: Naverbot',
+            'Allow: /',
+            '',
             'User-agent: Google-Extended',
             'Allow: /',
             '',
@@ -5337,6 +5485,7 @@ class Bareun_Master_SEO_Engine_V1 {
             'Allow: /',
             '',
             'Sitemap: ' . self::CANONICAL_ORIGIN . '/wp-sitemap.xml',
+            'Sitemap: ' . self::CANONICAL_ORIGIN . '/sitemap.xml',
             '# AI / LLM Generative Engine Optimization (GEO) Knowledge Index',
             '# ' . self::CANONICAL_ORIGIN . '/llms.txt',
             '# ' . self::CANONICAL_ORIGIN . '/llms-full.txt',
