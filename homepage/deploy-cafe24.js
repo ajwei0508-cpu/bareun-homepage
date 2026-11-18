@@ -815,10 +815,14 @@ async function performWpLogin(page, loginUrl) {
       `${CANONICAL_ORIGIN}/wp-sitemap-posts-post-1.xml`,
       ...publishedPostUrls.slice(-9)
     ]));
-    console.log(`5.5) Warming ${urlsToWarm.length} core canonical HTTPS URLs in WP Super Cache ...`);
-    for (const u of urlsToWarm) {
-      const st = await warmUrlOnce(u);
-      console.log(`   [WARMED] ${u.padEnd(85)} -> HTTP ${st}`);
+    if (process.argv.includes('--warm')) {
+      console.log(`5.5) Warming ${urlsToWarm.length} core canonical HTTPS URLs in WP Super Cache ...`);
+      for (const u of urlsToWarm) {
+        const st = await warmUrlOnce(u);
+        console.log(`   [WARMED] ${u.padEnd(85)} -> HTTP ${st}`);
+      }
+    } else {
+      console.log('5.5) Skipping bulk 31-URL cache download to conserve Cafe24 daily hosting traffic (pass --warm to force).');
     }
 
     // 6) Ping IndexNow for ALL Pages + Flagship Review + All 72 Health Notes (up to 100 URLs)
