@@ -28,6 +28,13 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","MedicalOrganization","LocalBusiness"],"@id":"https://www.bareunhaniwon.com/#clinic","name":"바른한의원 대전본점","alternateName":["Bareun Korean Medicine Clinic Daejeon","대전 바른한의원"],"url":"https://www.bareunhaniwon.com/","logo":"https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/webp/card_1_director.webp","image":"https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg","telephone":"+82-10-5631-1275","contactPoint":[{"@type":"ContactPoint","telephone":"+82-10-5631-1275","contactType":"customer service","areaServed":"KR","availableLanguage":["Korean"]}],"taxID":"211-91-10479","vatID":"211-91-10479","identifier":{"@type":"PropertyValue","name":"사업자등록번호","value":"211-91-10479"},"priceRange":"₩₩","address":{"@type":"PostalAddress","streetAddress":"비래동로7번길 1, 2층","addressLocality":"대덕구","addressRegion":"대전광역시","postalCode":"34417","addressCountry":"KR"},"geo":{"@type":"GeoCoordinates","latitude":36.354682,"longitude":127.4492455},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","PublicHolidays"],"opens":"09:00","closes":"14:00"}],"hasMap":"https://map.naver.com/p/entry/place/70885113","areaServed":[{"@type":"AdministrativeArea","name":"대전광역시"},{"@type":"AdministrativeArea","name":"대덕구"},{"@type":"AdministrativeArea","name":"비래동"},{"@type":"AdministrativeArea","name":"동구"},{"@type":"AdministrativeArea","name":"서구"},{"@type":"AdministrativeArea","name":"유성구"},{"@type":"AdministrativeArea","name":"중구"},{"@type":"AdministrativeArea","name":"세종특별자치시"}],"availableService":[{"@type":"MedicalTherapy","name":"바른 추나요법 · 비수술 척추·골반·디스크·교통사고 클리닉","url":"https://www.bareunhaniwon.com/chuna/"},{"@type":"MedicalTherapy","name":"바른 소아 키성장 · 성조숙증 · 무방사선 초음파 성장판 클리닉","url":"https://www.bareunhaniwon.com/growth/"},{"@type":"MedicalTherapy","name":"바른 식욕ZERO · 내장지방 · 산후 다이어트 클리닉","url":"https://www.bareunhaniwon.com/diet-zero/"},{"@type":"MedicalTherapy","name":"바른 4대 유형 탈모(남성·원형·여성·지루성두피염) 모근재생 클리닉","url":"https://www.bareunhaniwon.com/hairloss/"},{"@type":"MedicalTherapy","name":"식약처 CITES 인증 정품 사향 황제공진단 · 만성피로 클리닉","url":"https://www.bareunhaniwon.com/gongjindan/"},{"@type":"MedicalTherapy","name":"만성 전립선염 · 전립선비대증 · 야간뇨 · 과민성방광 클리닉","url":"https://www.bareunhaniwon.com/prostate/"}],"sameAs":["https://map.naver.com/p/entry/place/70885113","https://m.place.naver.com/hospital/70885113/home","https://naver.me/5U1ELn8L","https://blog.naver.com/wei0508","https://www.youtube.com/@bareunhaniwon","https://www.threads.net/@bareun_oriental","https://www.instagram.com/bareun_oriental/","https://pf.kakao.com/_ykxcLK"],"founder":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"대표원장 (한의사)"}},{"@type":"WebSite","@id":"https://www.bareunhaniwon.com/#website","name":"바른한의원 대전본점","url":"https://www.bareunhaniwon.com/","inLanguage":"ko-KR","publisher":{"@id":"https://www.bareunhaniwon.com/#clinic"}},{"@type":"MedicalWebPage","@id":"https://www.bareunhaniwon.com/#webpage","url":"https://www.bareunhaniwon.com/","name":"바른한의원 대전본점 | 대덕구 비래동 추나·성장·다이어트·탈모·공진단·전립선","description":"내 가족에게 처방·시술한 치료만 하는 아빠 한의사, 바른한의원 대전본점(안정위 대표원장)입니다. 추나요법, 허리·목디스크, 소아 키성장, 성장판검사, 성조숙증, 비염, 축농증, 식욕ZERO 다이어트, 내장지방, 남성·여성·원형탈모, 지루성두피염, 담적, 위염, 난임, 산후보약, 황제공진단, 전립선, 리프팅 맞춤 한방 치료.","inLanguage":"ko-KR","isPartOf":{"@id":"https://www.bareunhaniwon.com/#website"},"about":{"@id":"https://www.bareunhaniwon.com/#clinic"},"reviewedBy":{"@type":"Person","@id":"https://www.bareunhaniwon.com/director/#physician","name":"안정위","jobTitle":"바른한의원 대전본점 대표원장 (한의사)"},"lastReviewed":"2026-11-18","speakable":{"@type":"SpeakableSpecification","cssSelector":[".aeo-direct-answer",".bareun-geo-ssr-summary",".bareun-geo-ssr-table",".geo-fact-table"]}}]}</script>
 
   
+  
+
+  
+
+  
+
+  
 
   
 
@@ -1981,6 +1988,15 @@
         height: 106px;
       }
     }
+  
+    /* 모바일 메인 스토리보드 이미지 전환 시 하단 퀵바 완전 숨김 가드 */
+    #bareun-mobile-quick-bar {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      opacity: 0 !important;
+    }
+
   </style>
 </head>
 <body>
@@ -2040,8 +2056,6 @@
         <h2 class="skt-finale-main-title">모든 환자를 내 가족처럼 진료하는 ‘아빠 한의사’ 6대 클리닉</h2>
       </div>
       <div class="skt-finale-controls">
-        <a href="body-explorer.html" class="skt-ctrl-btn" style="background: #FEF3C7; border-color: #F59E0B; color: #92400E; text-decoration: none; font-weight: 800;">💡 3D 부위별 생활꿀팁 창고 ↗</a>
-        <a href="body-explorer.html?tab=qna" class="skt-ctrl-btn" style="background: #0F172A; border-color: #0F172A; color: #FFFFFF; text-decoration: none; font-weight: 800;">💬 무엇이든 물어보세요 ↗</a>
         <button type="button" class="skt-ctrl-btn" id="btn-replay-skt-flip">↺ 카드 펼침 모션 다시보기</button>
         <button type="button" class="skt-ctrl-btn" id="btn-back-to-story">↑ 환자 스토리 다시 보기</button>
       </div>

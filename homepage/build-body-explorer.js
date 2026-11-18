@@ -3909,7 +3909,6 @@ function buildBodyExplorerHtml() {
       const ymylBarHtml =
         '<div class="inline-ymyl-bar">' +
           '<div class="iyb-left"><strong>집필·감수: 안정위 한의사</strong> · 검토 ' + escHtml(revDateStr) + '</div>' +
-          '<a class="iyb-full-link" href="' + escHtml(fullArticleHref) + '" target="_blank" rel="noopener">📄 독립 전체화면으로 읽기 &nearr;</a>' +
         '</div>';
 
       const directAnsTxt = String(note.directAnswer || '').trim();

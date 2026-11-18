@@ -1305,16 +1305,7 @@
       el.appendChild(row);
     });
 
-    const finaleControls = document.querySelector('.skt-finale-controls');
-    if (finaleControls && !finaleControls.querySelector('[data-bareun-loc-finale]')) {
-      const wrap = document.createElement('div');
-      wrap.setAttribute('data-bareun-loc-finale', '1');
-      wrap.style.cssText = 'display:flex;gap:8px;justify-content:center;flex-wrap:wrap;width:100%;margin-top:8px;';
-      wrap.innerHTML =
-        '<button type="button" class="bareun-legal-util-btn" style="padding:9px 15px;font-size:12.5px;" onclick="window.openBareunLocationModal(\'location\')">📍 오시는길 · 4대 내비 자동길안내 · 진료시간</button>' +
-        '<button type="button" class="bareun-legal-util-btn" style="padding:9px 15px;font-size:12.5px;" onclick="window.openBareunLocationModal(\'fees\')">📋 비급여 진료비용 안내표</button>';
-      finaleControls.appendChild(wrap);
-    }
+    // 6대 카드 진료 섹션(.skt-finale-controls) 상단에는 불필요한 컨트롤을 추가하지 않고 본질인 카드 모션만 유지
 
     // 3) Compact floating bottom-left counter badge on desktop
     if (!document.getElementById('bareun-floating-visit-dock')) {
@@ -1331,7 +1322,17 @@
     }
 
     // 4) Mobile Sticky 3-Button Quick Reservation Bar (전화 / 카톡 / 네이버예약 ONLY — ZERO TalkTalk)
-    if (!document.getElementById('bareun-mobile-quick-bar')) {
+    // NOTE: 메인 스토리보드 화면(.spatial-viewport, .story-dialogue-stage, #skt-bento-grid 등)에서는 이미지 전환 화면을 가리지 않도록 완전 제외!
+    const isMainStoryboard = !!(
+      document.querySelector('.spatial-viewport') ||
+      document.querySelector('.story-dialogue-stage') ||
+      document.querySelector('#skt-bento-grid') ||
+      document.body.classList.contains('spatial-story-page') ||
+      window.location.pathname.endsWith('story-3d.html') ||
+      window.location.pathname.endsWith('index.html') ||
+      (window.location.pathname === '/' && !document.querySelector('.bareun-detail-content-wrap'))
+    );
+    if (!isMainStoryboard && !document.getElementById('bareun-mobile-quick-bar')) {
       const cleanTel = 'tel:' + String(clinicInfo.phone || '010-5631-1275').replace(/[^0-9+]/g, '');
       const bar = document.createElement('nav');
       bar.id = 'bareun-mobile-quick-bar';
