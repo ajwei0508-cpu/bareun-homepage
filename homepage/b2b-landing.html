@@ -52,6 +52,10 @@
   
 
   
+
+  
+
+  
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <style>
@@ -596,26 +600,373 @@
     .fdb-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .fdb-tags span{font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:999px;background:rgba(11,36,24,.65);border:1px solid rgba(143,224,176,.45);color:var(--gold-hi)}
 
+    /* ===== v9.18 듀얼 리딩 모드: ⚡ 3분 핵심 요약 vs 📖 상세 원리 전체 ===== */
+    .visually-hidden:where(:not(:focus-within,:active)){
+      position:absolute !important;
+      clip-path:inset(50%) !important;
+      overflow:hidden !important;
+      width:1px !important;
+      height:1px !important;
+      margin:-1px !important;
+      padding:0 !important;
+      border:0 !important;
+      white-space:nowrap !important;
+    }
+
+    /* hidden="until-found" 슬롯: 자체 여백·배경·테두리 0 유지 (레이아웃 잔상 방지) */
+    .detail-slot{margin:0;padding:0;border:0;background:none}
+
+    /* 상단 고정 헤더 내 듀얼 모드 토글 */
+    .hd{gap:10px}
+    .hd-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    nav.hn{gap:14px}
+    nav.hn a[hidden]{display:none !important}
+    @media(max-width:1060px){nav.hn{display:none}}
+
+    .rm-seg{
+      display:inline-flex;
+      align-items:center;
+      gap:3px;
+      padding:3px;
+      border-radius:999px;
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(143,224,176,.38);
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.25);
+    }
+    .rm-seg-btn{
+      font-family:inherit;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      min-block-size:34px;
+      padding:6px 13px;
+      border:0;
+      border-radius:999px;
+      background:transparent;
+      color:rgba(253,251,247,.82);
+      font-size:12.5px;
+      font-weight:800;
+      letter-spacing:-.01em;
+      cursor:pointer;
+      white-space:nowrap;
+      touch-action:manipulation;
+      transition:background-color .18s,color .18s,box-shadow .18s;
+    }
+    .rm-seg-btn:hover{color:#fff;background:rgba(255,255,255,.08)}
+    .rm-seg-btn[aria-pressed="true"]{
+      background:linear-gradient(135deg,#8FE0B0,#3FAE78);
+      color:#0B2418;
+      font-weight:900;
+      box-shadow:0 4px 14px rgba(63,174,120,.38);
+    }
+    .rm-txt-short{display:none}
+    @media(pointer:coarse){
+      .rm-seg-btn{min-block-size:38px}
+    }
+    @media(max-width:680px){
+      .hd .hd-apply-btn{display:none}
+      .logo{font-size:13.5px;gap:7px}
+      .rm-txt-full{display:none}
+      .rm-txt-short{display:inline}
+      .rm-seg-btn{padding:6px 11px;font-size:12px}
+    }
+    @media(max-width:380px){
+      .logo{font-size:12.5px}
+      .rm-seg-btn{padding:5px 9px;font-size:11.5px}
+    }
+
+    /* 히어로 메인 모드 선택 카드 */
+    .hero-mode-card{
+      max-width:780px;
+      margin:0 0 28px;
+      padding:18px 20px;
+      border-radius:22px;
+      background:rgba(255,255,255,.07);
+      border:1.5px solid rgba(143,224,176,.45);
+      backdrop-filter:blur(10px);
+      box-shadow:0 18px 42px rgba(0,0,0,.22);
+    }
+    .hmc-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:13px;
+    }
+    .hmc-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 12px;
+      border-radius:999px;
+      background:rgba(143,224,176,.2);
+      border:1px solid rgba(143,224,176,.55);
+      color:var(--gold-hi);
+      font-size:12px;
+      font-weight:900;
+    }
+    .hmc-meta{
+      font-size:12.5px;
+      color:rgba(253,251,247,.8);
+      font-weight:600;
+    }
+    .hmc-btns{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    @media(max-width:640px){
+      .hmc-btns{grid-template-columns:1fr}
+      .hero-mode-card{padding:15px 16px}
+    }
+    .hmc-btn{
+      font-family:inherit;
+      text-align:left;
+      padding:13px 16px;
+      border-radius:16px;
+      border:1.5px solid rgba(255,255,255,.2);
+      background:rgba(11,36,24,.55);
+      color:#FDFBF7;
+      cursor:pointer;
+      touch-action:manipulation;
+      transition:border-color .18s,background-color .18s,box-shadow .18s;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .hmc-btn:hover{
+      border-color:rgba(143,224,176,.7);
+      background:rgba(20,58,40,.75);
+    }
+    .hmc-btn strong{
+      font-size:14.5px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .hmc-btn strong::after{
+      content:"선택 가능";
+      font-size:11px;
+      font-weight:800;
+      padding:2px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.1);
+      color:rgba(253,251,247,.75);
+    }
+    .hmc-btn small{
+      font-size:12px;
+      color:rgba(253,251,247,.74);
+      line-height:1.45;
+      font-weight:500;
+    }
+    .hmc-btn[aria-pressed="true"]{
+      background:linear-gradient(145deg,rgba(143,224,176,.26),rgba(63,174,120,.16));
+      border-color:var(--gold-hi);
+      box-shadow:0 10px 26px rgba(0,0,0,.22),inset 0 0 0 1px rgba(143,224,176,.35);
+    }
+    .hmc-btn[aria-pressed="true"] strong{color:#fff}
+    .hmc-btn[aria-pressed="true"] strong::after{
+      content:"✓ 현재 켜짐";
+      background:var(--gold-hi);
+      color:#0B2418;
+      font-weight:900;
+    }
+    .hmc-btn[aria-pressed="true"] small{color:rgba(253,251,247,.92)}
+
+    /* 요약 모드 전용 인라인 원리 펼치기 브릿지 */
+    .summary-bridge{
+      margin-top:26px;
+      padding:16px 20px;
+      border-radius:18px;
+      background:#fff;
+      border:1.5px dashed #8BB89E;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      box-shadow:0 8px 22px rgba(15,42,30,.05);
+    }
+    .summary-bridge[hidden],.summary-trust-strip[hidden]{display:none !important}
+    .summary-bridge.dark-bridge{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(143,224,176,.48);
+      box-shadow:none;
+    }
+    .sb-text{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:1;
+      min-width:240px;
+      font-size:.92rem;
+      color:#213A2D;
+      line-height:1.55;
+    }
+    .summary-bridge.dark-bridge .sb-text{color:rgba(253,251,247,.9)}
+    .sb-pill{
+      flex:none;
+      font-size:11px;
+      font-weight:900;
+      padding:4px 10px;
+      border-radius:999px;
+      background:var(--green-soft);
+      color:var(--green);
+      border:1px solid #B9D7C6;
+    }
+    .summary-bridge.dark-bridge .sb-pill{
+      background:rgba(143,224,176,.18);
+      color:var(--gold-hi);
+      border-color:rgba(143,224,176,.4);
+    }
+    .sb-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .sb-expand-btn{
+      font-family:inherit;
+      min-block-size:38px;
+      padding:8px 15px;
+      border-radius:999px;
+      border:1.5px solid var(--green);
+      background:var(--green);
+      color:#fff;
+      font-size:12.5px;
+      font-weight:800;
+      cursor:pointer;
+      touch-action:manipulation;
+      transition:background-color .15s,color .15s,border-color .15s;
+    }
+    .sb-expand-btn:hover{background:#1E4332;border-color:#1E4332}
+    .sb-expand-btn.alt-btn{background:#fff;color:var(--green)}
+    .sb-expand-btn.alt-btn:hover{background:var(--green-soft)}
+    .sb-expand-btn.gold-btn{
+      background:linear-gradient(135deg,#8FE0B0,#3FAE78);
+      border-color:transparent;
+      color:#0B2418;
+      font-weight:900;
+    }
+    .sb-expand-btn.line-btn{
+      background:transparent;
+      border-color:rgba(143,224,176,.65);
+      color:#fff;
+    }
+    .sb-expand-btn.line-btn:hover{background:rgba(143,224,176,.16)}
+    @media(max-width:600px){
+      .sb-actions{width:100%}
+      .sb-expand-btn{flex:1;text-align:center;justify-content:center}
+    }
+
+    /* 가격표 상단 4대 계약 안심 요약 스트립 (요약 모드 전용) */
+    .summary-trust-strip{
+      margin-top:24px;
+      padding:15px 18px;
+      border-radius:18px;
+      background:#fff;
+      border:1.5px solid #B9D7C6;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .sts-badges{display:flex;gap:8px 14px;flex-wrap:wrap;font-size:13px;font-weight:800;color:#14392A}
+    .sts-badges span{display:inline-flex;align-items:center;gap:4px}
+    .sts-link{
+      font-family:inherit;
+      border:0;
+      background:var(--green-soft);
+      color:var(--green);
+      font-size:12px;
+      font-weight:900;
+      padding:7px 13px;
+      border-radius:999px;
+      cursor:pointer;
+      min-block-size:34px;
+      touch-action:manipulation;
+    }
+    .sts-link:hover{background:var(--green);color:#fff}
+
+    .faq-jump-link{color:var(--green);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+
+    /* 다크 섹션 연속 시 층위 구분선 보강 */
+    #b2bMain[data-read-mode="summary"] #samples{
+      border-top:1px solid rgba(143,224,176,.24);
+      background:linear-gradient(160deg,#0E2D1E 0%,#153E2A 58%,#0B2418 100%);
+    }
+    #care-benefit,#apply{border-top:1px solid rgba(143,224,176,.2)}
+
+    /* 키보드 포커스 링 & 프로그래매틱 포커스 타깃 */
+    :where(.rm-seg-btn,.hmc-btn,.sb-expand-btn,.sts-link):focus-visible{
+      outline:3px solid #F59E0B;
+      outline-offset:2px;
+    }
+    [tabindex="-1"]:focus{outline:none}
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) {
+        animation: none !important;
+      }
+    }
+
   </style>
 </head>
 <body>
 
-<header>
+<header id="b2bHeader" data-read-mode="summary">
   <div class="wrap hd">
     <a class="logo" href="#top"><i></i>BAREUN MEDI-TECH</a>
-    <nav class="hn">
-      <a href="#why">왜 필요한가</a><a href="#noncovered">비급여</a><a href="#cost">안 하면</a><a href="#migrate">이전</a><a href="#samples">홈페이지·샘플</a><a href="#studio">커스텀 체험</a><a href="#plans">가격</a><a href="#faq">FAQ</a>
+    <nav class="hn" aria-label="주요 섹션 이동">
+      <a href="#why">왜 필요한가</a>
+      <a href="#noncovered" data-nav-detail hidden>비급여</a>
+      <a href="#cost" data-nav-detail hidden>안 하면</a>
+      <a href="#quote">실제 견적</a>
+      <a href="#migrate" data-nav-detail hidden>이전</a>
+      <a href="#samples">샘플·체험</a>
+      <a href="#plans">가격</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-gold btn-sm" href="#apply">상담 신청하기</a>
+    <div class="hd-right">
+      <div class="rm-seg" role="group" aria-label="설명 깊이 모드 선택">
+        <button type="button" class="rm-seg-btn" id="hdrModeSummary" data-set-mode="summary" aria-pressed="true">
+          <span aria-hidden="true">⚡</span><span class="rm-txt-full">3분 핵심 요약</span><span class="rm-txt-short">핵심 요약</span>
+        </button>
+        <button type="button" class="rm-seg-btn" id="hdrModeDetail" data-set-mode="detail" aria-pressed="false">
+          <span aria-hidden="true">📖</span><span class="rm-txt-full">상세 원리 전체</span><span class="rm-txt-short">상세 원리</span>
+        </button>
+      </div>
+      <a class="btn btn-gold btn-sm hd-apply-btn" href="#apply">상담 신청</a>
+    </div>
   </div>
 </header>
+<div id="modeLiveStatus" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+<main id="b2bMain" data-read-mode="summary">
 
 <!-- ① HERO -->
 <section class="dark hero" id="top">
   <div class="wrap">
     <span class="eyebrow rv">한의원 원장님께</span>
     <h1 class="rv">“과연 우리 한의원에<br>홈페이지가 <span class="gold">필요할까?</span>”</h1>
-    <p class="sub rv">네이버 플레이스도 있고, 블로그도 있고, 환자분도 오고 계신데요.<br>그 질문이 드는 게 당연합니다. 그래서 <b>“해야 하는 이유”와 “안 하면 천천히 벌어지는 일”을 초보 원장님 눈높이로 전부 풀어 썼습니다.</b> 읽어 보시고 필요 없다고 판단되시면 닫으셔도 됩니다.</p>
+    <p class="sub rv">네이버 플레이스도 있고, 블로그도 있고, 지금도 환자분이 오고 계신데요.<br>바쁘신 원장님은 <b>[⚡ 3분 핵심 요약 모드]</b>로 핵심 증거·실시간 체험·가격만 빠르게 살펴보시고, 알고리즘 원리와 손실·가성비 계산기까지 꼼꼼히 따져보실 원장님은 <b>[📖 상세 원리 전체 모드]</b>를 켜서 확인해 보세요.</p>
+    <div class="hero-mode-card rv" role="group" aria-label="페이지 읽기 깊이 선택">
+      <div class="hmc-top">
+        <span class="hmc-badge" id="heroModeBadge">⚡ 현재 보기 · 3분 핵심 요약 모드</span>
+        <span class="hmc-meta" id="heroModeMeta">핵심 결론 · 실물 체험 · 가격만 남겼습니다 (체감 스크롤 55% 단축)</span>
+      </div>
+      <div class="hmc-btns">
+        <button type="button" class="hmc-btn" data-set-mode="summary" aria-pressed="true">
+          <strong>⚡ 3분 핵심 요약 모드</strong>
+          <small>중복 설명 없이 핵심 증거 · 샘플 · 커스텀 체험 · 가격만 쾌속 확인</small>
+        </button>
+        <button type="button" class="hmc-btn" data-set-mode="detail" aria-pressed="false">
+          <strong>📖 상세 원리 전체 모드</strong>
+          <small>비급여 환자 심리 · 3년 격차 · 손실/가성비 계산기 · 사이트 이전까지 전부 열람</small>
+        </button>
+      </div>
+    </div>
     <div class="hero-cta rv">
       <a class="btn btn-gold" href="#why">필요한지 3분 만에 판단하기 ↓</a>
       <a class="btn btn-line" href="#samples">실제 화면 · 커스텀 체험 바로가기 ↓</a>
@@ -641,11 +992,12 @@
   </div>
 </section>
 
+<div class="detail-slot" data-detail-only hidden="until-found">
 <!-- ②-2 비급여 매출 설득 -->
 <section class="alt" id="noncovered">
   <div class="wrap">
     <span class="eyebrow rv">WHY NON-COVERED · 비급여 매출을 만들고 싶은 한의원이라면</span>
-    <h2 class="title rv">비급여는 “싸서”가 아니라 <mark>“믿어서”</mark> 결제합니다.<br>그래서 믿음을 쌓는 공간이 매출을 좌우합니다</h2>
+    <h2 class="title rv" id="noncoveredHeading" tabindex="-1">비급여는 “싸서”가 아니라 <mark>“믿어서”</mark> 결제합니다.<br>그래서 믿음을 쌓는 공간이 매출을 좌우합니다</h2>
     <p class="lead rv">보약·약침·키 성장·다이어트·탈모·공진단처럼 환자가 <b>전액 자기 돈으로 결제하는 진료</b>는, 급여 진료와 환자가 고르는 방식 자체가 다릅니다. 아래 표를 보시면 왜 홈페이지가 ‘있으면 좋은 것’이 아니라 ‘비급여 매출의 전제 조건’인지 이해되실 겁니다.</p>
 
     <div class="tbl-wrap rv">
@@ -725,6 +1077,7 @@
     <div class="bighook rv">블로그는 환자를 만나는 <span class="gold">입구</span>,<br>홈페이지는 환자가 <span class="gold">결정을 내리는 응접실</span>입니다.<br>입구만 번듯하고 응접실이 비어 있으면, 손님은 문 앞에서 돌아갑니다.</div>
   </div>
 </section>
+</div>
 
 <!-- ③-2 AI 검색 노출 예시 -->
 <section class="alt" id="aisearch">
@@ -744,20 +1097,33 @@
         <figcaption><b>질문: “대전 성장 클리닉한의원 추천”</b><br>질문 표현이 달라지면 순서는 달라지지만, 권역별 추천 목록에 바른한의원이 포함되어 소개됩니다.</figcaption>
       </figure>
     </div>
-    <div class="why6 ai3">
-      <div class="w6 rv"><div class="ic">🧩</div><h3>정리된 글이 AI의 ‘근거’가 됩니다</h3><p>칼럼·체크포인트·비급여 안내가 구조적으로 정리된 홈페이지는 AI가 인용하기 쉽습니다.</p></div>
-      <div class="w6 rv"><div class="ic">🔗</div><h3>출처가 있어야 소개됩니다</h3><p>AI는 답변마다 출처를 붙입니다. 출처가 될 홈페이지가 없으면 소개될 기회 자체가 줄어듭니다.</p></div>
-      <div class="w6 rv"><div class="ic">⏳</div><h3>쌓일수록 유리합니다</h3><p>칼럼이 꾸준히 쌓인 곳이 더 자주 근거로 선택됩니다. 시작이 빠를수록 격차가 큽니다.</p></div>
+    <div class="detail-slot" data-detail-only hidden="until-found">
+      <div class="why6 ai3">
+        <div class="w6 rv"><div class="ic">🧩</div><h3>정리된 글이 AI의 ‘근거’가 됩니다</h3><p>칼럼·체크포인트·비급여 안내가 구조적으로 정리된 홈페이지는 AI가 인용하기 쉽습니다.</p></div>
+        <div class="w6 rv"><div class="ic">🔗</div><h3>출처가 있어야 소개됩니다</h3><p>AI는 답변마다 출처를 붙입니다. 출처가 될 홈페이지가 없으면 소개될 기회 자체가 줄어듭니다.</p></div>
+        <div class="w6 rv"><div class="ic">⏳</div><h3>쌓일수록 유리합니다</h3><p>칼럼이 꾸준히 쌓인 곳이 더 자주 근거로 선택됩니다. 시작이 빠를수록 격차가 큽니다.</p></div>
+      </div>
     </div>
     <p class="fine rv">※ AI 답변은 질문·시점·AI 종류에 따라 달라지며, 노출이나 순위를 보장하지 않습니다. 위 화면은 캡처 시점의 실제 예시입니다.</p>
+    <div class="summary-bridge rv" data-summary-only>
+      <div class="sb-text">
+        <span class="sb-pill">심층 원리 · 계산기</span>
+        <span><b>비급여 환자의 4단계 결제 심리</b>와 미뤘을 때 <b>3년 뒤 벌어지는 칼럼 격차 · 우리 한의원 손실 계산기</b>도 살펴보시겠어요?</span>
+      </div>
+      <div class="sb-actions">
+        <button type="button" class="sb-expand-btn" data-open-detail="#noncovered">📖 비급여 환자 심리 보기 →</button>
+        <button type="button" class="sb-expand-btn alt-btn" data-open-detail="#sim">🧮 놓치는 진료비 계산기 열기 →</button>
+      </div>
+    </div>
   </div>
 </section>
 
+<div class="detail-slot" data-detail-only hidden="until-found">
 <!-- ④ 안 하면 어떻게 되나 -->
 <section id="cost">
   <div class="wrap">
     <span class="eyebrow rv">IF YOU DON'T · 안 하면 천천히 벌어지는 일</span>
-    <h2 class="title rv">안 한다고 오늘 당장 큰일이 나지는 않습니다.<br>다만 <mark>시간이 갈수록 격차</mark>가 벌어지고,<br>세팅된 인근 한의원이 환자를 <mark>조금씩 가져갑니다</mark></h2>
+    <h2 class="title rv" id="costHeading" tabindex="-1">안 한다고 오늘 당장 큰일이 나지는 않습니다.<br>다만 <mark>시간이 갈수록 격차</mark>가 벌어지고,<br>세팅된 인근 한의원이 환자를 <mark>조금씩 가져갑니다</mark></h2>
     <p class="lead rv">아래는 “반드시 이렇게 된다”가 아니라, 온라인 콘텐츠가 쌓이는 구조상 <b>그렇게 되기 쉬운 흐름</b>입니다.</p>
     <div class="time-grid">
       <div class="tm rv"><span class="when">지금 ~ 1개월</span><h3>티가 거의 안 납니다</h3><p>기존 환자와 입소문으로 평소와 비슷합니다. 그래서 대부분 “아직 괜찮다”며 미룹니다. 바로 이 점이 함정입니다.</p></div>
@@ -788,7 +1154,7 @@
     </div>
 
     <div class="calc rv" id="sim">
-      <h3>🙋 우리 한의원은 한 달에 얼마나 놓치고 있을까요? <span style="font-weight:700;font-size:.85rem;color:#5F7468">(쉬운 계산기)</span></h3>
+      <h3 id="simHeading" tabindex="-1">🙋 우리 한의원은 한 달에 얼마나 놓치고 있을까요? <span style="font-weight:700;font-size:.85rem;color:#5F7468">(쉬운 계산기)</span></h3>
       <p class="fine" style="margin-top:0">정확한 예측이 아니라 <b>“이 정도만 놓쳐도 이만큼입니다”</b>를 보여 드리는 계산입니다. 잘 모르시면 처음 숫자 그대로 두셔도 됩니다.</p>
       <div class="ctl"><div class="ctl-top"><span>① 한 달에 새로 오시는 환자(초진)는 몇 분인가요?</span><b><span id="sPat">30</span>명</b></div><input type="range" id="rPat" min="5" max="150" step="5" value="30"></div>
       <div class="ctl"><div class="ctl-top"><span>② 보험(급여) 진료 객단가<br><small style="font-weight:600;color:#5F7468">새 환자 한 분이 첫 달 보험 진료로 쓰시는 금액 (여러 번 오셔도 합쳐서, 본인부담+공단청구)</small></span><b><span id="sIns">10</span>만 원</b></div><input type="range" id="rIns" min="2" max="30" step="1" value="10"></div>
@@ -806,11 +1172,10 @@
     </div>
   </div>
 </section>
-
-
+</div>
 
 <!-- ⑥ 견적 -->
-<section>
+<section id="quote">
   <div class="wrap">
     <span class="eyebrow rv">THE QUOTE · 실제로 받아 본 견적서 2건</span>
     <h2 class="title rv">“저 홈페이지와 똑같이 만들어 주세요”<br>그랬더니 견적은 <mark>979만 원 · 2,046만 원</mark>이었습니다</h2>
@@ -843,8 +1208,9 @@
       </div>
     </div>
 
+    <div class="detail-slot" data-detail-only hidden="until-found">
     <div class="insight rv">
-      <h3>두 견적서를 나란히 놓고 보면 보이는 것</h3>
+      <h3 tabindex="-1">두 견적서를 나란히 놓고 보면 보이는 것</h3>
       <div class="ins-grid">
         <div><b>① 둘 다 “만드는 값”입니다</b><p>월 칼럼 발행, 의료법 금지어 검수, 검색 등록·색인 관리 항목은 <b>두 견적서 어디에도 없습니다.</b> 오픈하는 날 숙제가 시작되는 구조입니다.</p></div>
         <div><b>② 페이지를 늘릴 때마다 돈이 듭니다</b><p>A사는 페이지 1개 추가에 30만 원(VAT 별도)입니다. 새 진료를 시작할 때마다 카드 페이지가 필요한 비급여 한의원에는 부담입니다. 바른 시그니처는 <b>질환 카드 무제한, 증설비 0원</b>입니다.</p></div>
@@ -858,7 +1224,7 @@
     </div>
 
     <div class="calc rv" id="calc">
-      <h3>🧮 가성비 계산기 — 같은 기능을 따로 사면 얼마일까요?</h3>
+      <h3 id="calcHeading" tabindex="-1">🧮 가성비 계산기 — 같은 기능을 따로 사면 얼마일까요?</h3>
       <p class="fine" style="margin-top:0">견적을 받아 보지 않으셨어도 괜찮습니다. 아래 금액은 위 <b>실제 견적서에 적혀 있던 항목 단가</b>(VAT 포함으로 환산)입니다. 필요한 항목에 체크하면 ‘따로 샀을 때’ 합계가 쌓이고, 바른 시그니처 1년 비용과 바로 비교됩니다.</p>
       <div class="vitems" id="vitems">
         <label class="vi"><input type="checkbox" checked data-p="6490000"><span class="vn">10페이지 홈페이지 제작 <small>반응형 · 게시판 5개 · 관리자 페이지 · 카카오 연동 (A사 견적 항목)</small></span><b>6,490,000원</b></label>
@@ -878,6 +1244,16 @@
         <div class="vm-row"><input type="number" id="vMine" min="0" step="10" placeholder="예: 500"><span>만 원</span></div><div id="vMineRes" class="vm-res"></div></div>
       <p class="fine">※ 단가는 견적서 원문(VAT 별도)에 10%를 더해 환산한 값입니다. 바른 시그니처 1년 비용에는 월 15건 칼럼·의료법 검수·검색 등록·3D·통계가 모두 포함됩니다. 월 구독은 약정이 없어 언제든 해지할 수 있으며, 연 결제 시 마스터 케어 10% 할인(1년 1,069,200원)이 추가됩니다.</p>
     </div>
+    </div>
+    <div class="summary-bridge rv" data-summary-only>
+      <div class="sb-text">
+        <span class="sb-pill">가성비 계산기</span>
+        <span><b>같은 구성(홈페이지+3D+통계+칼럼 1년)을 따로 살 때 약 2,407만 원</b> vs <b>바른 시그니처 1년 326만 원(약 14% 수준)</b> — 필요한 항목만 직접 체크해 비교해 보시겠어요?</span>
+      </div>
+      <div class="sb-actions">
+        <button type="button" class="sb-expand-btn" data-open-detail="#calc">🧮 항목별 가성비 계산기 펼쳐보기 →</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -886,11 +1262,13 @@
   <div class="wrap">
     <span class="eyebrow rv">WHAT'S DIFFERENT · 다른 홈페이지 업체와 무엇이 다른가</span>
     <h2 class="title rv">홈페이지 제작사는 <span class="gold">“만들어 주고” 끝납니다.</span><br>저희는 <span class="gold">한의사가 만들고, 마케팅까지 합니다</span></h2>
+    <div class="detail-slot" data-detail-only hidden="until-found">
     <div class="four">
       <div class="fcard rv"><div class="ic">📣</div><h3>① 만들고 끝이 아니라, 마케팅을 해 드립니다</h3><p>월 구독으로 칼럼 발행·검색 등록(사이트맵·RSS·IndexNow)·통계 확인까지 이어집니다. 홈페이지가 환자를 데려오는 구조로 운영됩니다.</p></div>
       <div class="fcard rv"><div class="ic">🩺</div><h3>② 의료인이 직접 만들었습니다</h3><p>개발자가 상상으로 만든 화면이 아니라, 현직 한의사가 진료실에서 필요했던 기능을 직접 설계해 지금도 운영하는 홈페이지입니다.</p></div>
       <div class="fcard rv"><div class="ic">🧑‍🤝‍🧑</div><h3>③ 환자 입장에서 설계했습니다</h3><p>환자가 무엇을 의심하고 어디서 망설이는지를 기준으로, 자가 체크 → 칼럼 → Q&amp;A → 예약으로 이어지는 동선을 짰습니다.</p></div>
       <div class="fcard rv"><div class="ic">🛡️</div><h3>④ 의학적 신뢰를 강하게 줍니다</h3><p>실명 한의사 감수 표기, 학술 근거 표기, 최종 검토일, 대면 진료 안내 문구까지. 의료 정보 사이트로서 갖춰야 할 요소를 기본으로 넣었습니다.</p></div>
+    </div>
     </div>
     <div class="tbl-wrap rv"><table class="cmpt">
       <thead><tr><th></th><th>일반 홈페이지 제작사</th><th>일반 마케팅 대행사</th><th class="us">바른 메디테크</th></tr></thead>
@@ -905,14 +1283,25 @@
         <tr><td>디자인 리뉴얼</td><td>2~3년 뒤 수백만 원 재제작 비용 발생</td><td>해당 없음</td><td class="us"><b>향후 업데이트된 신규 디자인·템플릿 무료 배급</b> (구독자 혜택)</td></tr>
       </tbody></table></div>
     <p class="fine">※ 일반적인 경우를 기준으로 한 비교이며 업체마다 다를 수 있습니다.</p>
+    <div class="summary-bridge dark-bridge rv" data-summary-only>
+      <div class="sb-text">
+        <span class="sb-pill">이전 · 자동화 원리</span>
+        <span><b>이미 운영 중인 기존 홈페이지</b>가 있으시거나, <b>2일 1회 칼럼 자동 발행 · 4갈래 예약 유도 동선</b>도 자세히 보시겠어요?</span>
+      </div>
+      <div class="sb-actions">
+        <button type="button" class="sb-expand-btn gold-btn" data-open-detail="#migrate">🔄 기존 홈페이지 이전 가이드 보기 →</button>
+        <button type="button" class="sb-expand-btn line-btn" data-open-detail="#solution">⚙️ 자동 발행 · 예약 동선 보기 →</button>
+      </div>
+    </div>
   </div>
 </section>
 
+<div class="detail-slot" data-detail-only hidden="until-found">
 <!-- ⑦-2 이미 홈페이지가 있는 원장님께 -->
 <section id="migrate">
   <div class="wrap">
     <span class="eyebrow rv">ALREADY HAVE A SITE · 이미 홈페이지가 있거나 만들고 계신 원장님께</span>
-    <h2 class="title rv">“지금 사이트는 어떡하죠?”<br>버리는 게 아니라 <mark>내용만 옮겨 오는</mark> 방법이 있습니다</h2>
+    <h2 class="title rv" id="migrateHeading" tabindex="-1">“지금 사이트는 어떡하죠?”<br>버리는 게 아니라 <mark>내용만 옮겨 오는</mark> 방법이 있습니다</h2>
     <p class="lead rv"><b>결론부터 말씀드립니다.</b> 기존 홈페이지의 <b>내용(글·사진·진료 정보)</b>은 새 틀에 옮겨 담을 수 있습니다. 다만 <b>디자인·기능은 옮기지 않고</b>, www.bareunhaniwon.com과 같은 구조의 새 틀을 그대로 씁니다. 구조(메뉴·섹션 배치)는 바뀌지 않으므로 원장님이 레이아웃을 새로 고민하실 일이 없습니다.</p>
 
     <div class="mig3">
@@ -931,7 +1320,7 @@
 <section id="solution">
   <div class="wrap">
     <span class="eyebrow rv">THE SOLUTION · 원장님은 진료실만 지키십시오</span>
-    <h2 class="title rv">코딩 몰라도, 글 쓸 시간 없어도 괜찮습니다.<br><mark>홈페이지가 2일마다 새 칼럼을 올립니다</mark></h2>
+    <h2 class="title rv" id="solutionHeading" tabindex="-1">코딩 몰라도, 글 쓸 시간 없어도 괜찮습니다.<br><mark>홈페이지가 2일마다 새 칼럼을 올립니다</mark></h2>
     <p class="lead rv">원장님이 하실 일은 올라온 글을 감수하시는 것뿐입니다. 아래 3D 카드는 직접 마우스를 올리면 멈춥니다.</p>
 
     <div class="dark" style="border-radius:28px;margin-top:34px;padding:10px 0 30px">
@@ -967,6 +1356,7 @@
     <div class="goal rv">📞 전화 상담 · 💬 카카오톡 · 📍 네이버 예약<span>모든 길의 도착지는 하나, “예약”입니다.</span></div>
   </div>
 </section>
+</div>
 
 <!-- ⑩ 단계별 기능 마크 샘플 안내 -->
 <section class="dark" id="samples">
@@ -1263,11 +1653,13 @@
       </div>
     </div>
 
+    <div class="detail-slot" data-detail-only hidden="until-found">
     <div class="studio">
       <div class="box rv"><h3>✏️ 전 단계 기본 제공 셀프 편집</h3><ul style="list-style:none">
         <li style="padding:5px 0">· 5대 레이아웃별(배너·헤더·본문 바탕·체크리스트·상담 버튼) 색감 지정</li><li style="padding:5px 0">· 질환 카드 첫장(제목·소개·체크리스트·실사 업로드)</li><li style="padding:5px 0">· 진료시간·점심시간·휴진일 · 상단 긴급 공지 배너</li><li style="padding:5px 0">· 비급여 수가표(의료법 제45조 고지) · 인사말 · 오시는 길</li></ul></div>
       <div class="box rv"><h3>🎛️ 상위 단계에서 열리는 프리미엄 스튜디오</h3><ul style="list-style:none">
         <li style="padding:5px 0"><b>프로 이상</b> · 스토리보드 오프닝 편집, AI 의료법 금지어 실시간 경고</li><li style="padding:5px 0"><b>시그니처 전용</b> · 새 질환 카드 페이지 무제한 직접 증설 (증설비 0원)</li><li style="padding:5px 0"><b>시그니처 전용</b> · 금지어 없어도 고객 호감형 언어로 다듬는 AI 카피라이터 무제한</li><li style="padding:5px 0"><b>시그니처 전용</b> · 원장님 실사 기반 2K 맞춤 진료 화보 생성 스튜디오</li></ul></div>
+    </div>
     </div>
   </div>
 </section>
@@ -1341,11 +1733,12 @@
   </div>
 </section>
 
+<div class="detail-slot" data-detail-only hidden="until-found">
 <!-- ⑬ 약속·정책 -->
-<section class="alt">
+<section class="alt" id="promise">
   <div class="wrap">
     <span class="eyebrow rv">OUR PROMISE · 계약 전에 먼저 약속드립니다</span>
-    <h2 class="title rv">하지 않을 약속과 <span class="green">반드시 지킬 약속</span></h2>
+    <h2 class="title rv" id="promiseHeading" tabindex="-1">하지 않을 약속과 <span class="green">반드시 지킬 약속</span></h2>
     <div class="honest">
       <div class="no rv"><h3>하지 않는 약속</h3><ul><li>“상위노출 100% 보장”</li><li>“월 매출 몇 배 상승”</li><li>“클릭·조회수를 인위적으로 늘려 드립니다”</li><li>“검수 없이 글만 대량으로 찍어 드립니다”</li></ul></div>
       <div class="yes rv"><h3>지키는 약속</h3><ul><li>실제 운영 중인 구조 그대로 제공</li><li>의료법 금지어 검수를 거친 글만 발행</li><li>숨김 키워드·가짜 지역 페이지 없이 정석대로 등록</li><li>결제 전에 <b>샘플에서 모든 기능을 먼저 체험</b></li></ul></div>
@@ -1362,6 +1755,7 @@
     <div class="cap rv"><b class="n">100곳</b><p><b>전국 100개 한의원까지만</b> 진행합니다. 한 곳 한 곳의 칼럼 감수와 운영을 직접 챙길 수 있는 규모로 제한했습니다. 상권 독점은 드리지 않지만, 먼저 시작하신 원장님께는 가장 낮은 가격을 평생 고정으로 적용합니다.</p></div>
   </div>
 </section>
+</div>
 
 <!-- ⑭ 가격 -->
 <section id="plans">
@@ -1369,6 +1763,15 @@
     <span class="eyebrow rv">PACKAGES · 원장님 상황에 맞는 3단계</span>
     <h2 class="title rv">견적 979만~2,046만 원짜리 작업을<br><mark>스탠다드 79만 원 · 시그니처도 189만 원</mark>부터 시작하실 수 있습니다</h2>
     <p class="lead rv">구축(1회) + 월 구독 케어를 1:1로 묶은 정찰제입니다. 금액은 VAT 별도 기준이며, 괄호 안은 VAT 포함 금액입니다.</p>
+    <div class="summary-trust-strip rv" data-summary-only>
+      <div class="sts-badges">
+        <span>🛡️ 작업 착수 전 100% 전액 환불</span>
+        <span>🔓 월 구독 무약정 · 위약금 0원</span>
+        <span>📦 해지 시 원장님 글·사진 백업 제공</span>
+        <span>🏛️ 전국 100곳 한정 · 평생 지정가</span>
+      </div>
+      <button type="button" class="sts-link" data-open-detail="#promise">계약 원칙 · 환불 기준 전문 보기 →</button>
+    </div>
     <div class="plans">
       <div class="plan rv">
         <h3>스탠다드</h3><div class="who">신규 개원 · 가볍게 시작하는 원장님</div>
@@ -1403,20 +1806,36 @@
 <!-- ⑮ 용어 풀이 & FAQ (궁금증 해소) -->
 <section class="alt" id="faq">
   <div class="wrap">
-    <!-- 용어 풀이 (FAQ 상단 배치) -->
-    <span class="eyebrow rv">GLOSSARY &amp; FAQ · 처음 들으시는 원장님을 위한 용어 풀이와 자주 묻는 질문</span>
-    <h2 class="title rv">어려운 말은 <mark>쉬운 말</mark>로 풀어 드리고,<br>망설이시는 이유에 <mark>먼저 답해 드립니다</mark></h2>
-    
-    <div class="gloss" style="margin-bottom:48px">
-      <div>
-        <details class="rv"><summary>검색 노출 (SEO)</summary><p>환자가 “허리 통증 원인”처럼 검색했을 때 우리 글·페이지가 검색 결과에 보이도록 정리하는 일입니다. 간판을 큰길가에 다는 것과 비슷합니다.</p></details>
-        <details class="rv"><summary>색인 · 사이트맵 · IndexNow</summary><p>색인은 검색엔진이 우리 글을 “도서관 목록”에 등록하는 것, 사이트맵은 그 목록 초안, IndexNow는 “새 글 올렸어요!” 하고 즉시 알리는 신호입니다. 새 글이 빨리 등록되도록 자동으로 처리합니다.</p></details>
-        <details class="rv"><summary>AI 검색 (GEO)</summary><p>ChatGPT나 네이버 AI 브리핑처럼 AI가 답을 정리해 주는 검색입니다. 정리된 정보와 출처가 분명한 사이트가 답변의 출처로 소개될 기회가 커집니다.</p></details>
+    <span class="eyebrow rv">BEFORE YOU DECIDE · 결정 전에 가장 많이 물으시는 질문</span>
+    <h2 class="title rv">망설이시는 이유에 <mark>먼저 답해 드립니다</mark></h2>
+
+    <!-- 용어 풀이 (상세 원리 모드 전용 + 요약 모드 원클릭 펼침 지원) -->
+    <div class="detail-slot" data-detail-only hidden="until-found">
+      <div id="glossarySection" style="margin:26px 0 44px">
+        <h3 id="glossaryTitle" tabindex="-1" style="font-size:1.18rem;font-weight:900;color:var(--brown);margin-bottom:6px">📘 처음 들으시는 원장님을 위한 쉬운 용어 풀이</h3>
+        <p class="fine" style="margin-top:0">어려운 마케팅·IT 용어를 진료실 언어로 쉽게 풀어 정리했습니다.</p>
+        <div class="gloss" style="margin-top:16px">
+          <div>
+            <details class="rv"><summary>검색 노출 (SEO)</summary><p>환자가 “허리 통증 원인”처럼 검색했을 때 우리 글·페이지가 검색 결과에 보이도록 정리하는 일입니다. 간판을 큰길가에 다는 것과 비슷합니다.</p></details>
+            <details class="rv"><summary>색인 · 사이트맵 · IndexNow</summary><p>색인은 검색엔진이 우리 글을 “도서관 목록”에 등록하는 것, 사이트맵은 그 목록 초안, IndexNow는 “새 글 올렸어요!” 하고 즉시 알리는 신호입니다. 새 글이 빨리 등록되도록 자동으로 처리합니다.</p></details>
+            <details class="rv"><summary>AI 검색 (GEO)</summary><p>ChatGPT나 네이버 AI 브리핑처럼 AI가 답을 정리해 주는 검색입니다. 정리된 정보와 출처가 분명한 사이트가 답변의 출처로 소개될 기회가 커집니다.</p></details>
+          </div>
+          <div>
+            <details class="rv"><summary>구독 케어란?</summary><p>홈페이지를 만든 뒤 매달 자동 발행되는 칼럼, 의료법 검수, 검색 등록 관리, 서버 유지를 월 정액으로 맡기는 것입니다. 한 번 만들고 방치되는 홈페이지가 되지 않게 해 줍니다.</p></details>
+            <details class="rv"><summary>의료법 제56조는 왜 중요한가요?</summary><p>의료광고에서 과장·단정·치료 효과 보장 같은 표현을 제한하는 규정입니다. 홈페이지와 블로그 글도 광고로 볼 수 있어, 원장님이 직접 쓰지 않은 글일수록 사전에 걸러 주는 단계가 필요합니다.</p></details>
+            <details class="rv"><summary>셀프 스튜디오란?</summary><p>코딩을 몰라도 진료시간·휴진 공지·비급여 수가표·레이아웃별 색감을 원장님이 직접 고칠 수 있는 관리 화면입니다. 수정할 때마다 업체에 연락할 필요가 없습니다.</p></details>
+          </div>
+        </div>
       </div>
-      <div>
-        <details class="rv"><summary>구독 케어란?</summary><p>홈페이지를 만든 뒤 매달 자동 발행되는 칼럼, 의료법 검수, 검색 등록 관리, 서버 유지를 월 정액으로 맡기는 것입니다. 한 번 만들고 방치되는 홈페이지가 되지 않게 해 줍니다.</p></details>
-        <details class="rv"><summary>의료법 제56조는 왜 중요한가요?</summary><p>의료광고에서 과장·단정·치료 효과 보장 같은 표현을 제한하는 규정입니다. 홈페이지와 블로그 글도 광고로 볼 수 있어, 원장님이 직접 쓰지 않은 글일수록 사전에 걸러 주는 단계가 필요합니다.</p></details>
-        <details class="rv"><summary>셀프 스튜디오란?</summary><p>코딩을 몰라도 진료시간·휴진 공지·비급여 수가표·레이아웃별 색감을 원장님이 직접 고칠 수 있는 관리 화면입니다. 수정할 때마다 업체에 연락할 필요가 없습니다.</p></details>
+    </div>
+
+    <div class="summary-bridge rv" data-summary-only style="margin:20px 0 28px">
+      <div class="sb-text">
+        <span class="sb-pill">초보 용어 풀이</span>
+        <span><b>SEO · 색인 · IndexNow · AI 검색(GEO) · 의료법 제56조</b> 등 생소한 용어를 쉬운 말로 먼저 보시겠어요?</span>
+      </div>
+      <div class="sb-actions">
+        <button type="button" class="sb-expand-btn alt-btn" data-open-detail="#glossaryTitle">📘 쉬운 용어 풀이 6가지 펼치기 →</button>
       </div>
     </div>
 
@@ -1450,7 +1869,7 @@
       </details>
       <details class="rv">
         <summary>이미 홈페이지가 있는데, 내용만 옮겨서 쓸 수 있나요?</summary>
-        <p>네. 원장 약력·진료 설명·진료시간·비급여 수가·원장님이 직접 찍은 사진·기존 글(텍스트)은 같은 구조의 새 틀에 옮겨 담을 수 있습니다. 다만 디자인과 기능은 새 틀 규격으로 통일되고, 도메인 명의·사진 저작권·계약 조건은 먼저 확인해야 합니다. 기존 사이트는 전환 당일까지 그대로 운영됩니다. 자세한 내용은 위 ‘이전’ 안내를 참고해 주세요.</p>
+        <p>네. 원장 약력·진료 설명·진료시간·비급여 수가·원장님이 직접 찍은 사진·기존 글(텍스트)은 같은 구조의 새 틀에 옮겨 담을 수 있습니다. 다만 디자인과 기능은 새 틀 규격으로 통일되고, 도메인 명의·사진 저작권·계약 조건은 먼저 확인해야 합니다. 기존 사이트는 전환 당일까지 그대로 운영됩니다. 자세한 내용은 <a href="#migrate" class="faq-jump-link">위 ‘기존 홈페이지 내용 이전’ 안내 바로가기 ↑</a>에서 확인하실 수 있습니다.</p>
       </details>
       <details class="rv">
         <summary>결정하기 전에 먼저 볼 수 있나요?</summary>
@@ -1507,6 +1926,7 @@
     </form>
   </div>
 </section>
+</main>
 
 <footer>
   바른 메디테크 · 문의 010-5631-1275<br>
@@ -1535,6 +1955,194 @@
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 
   function won(n){ return Math.round(n).toLocaleString('ko-KR')+'원'; }
+
+  /* ── 듀얼 리딩 모드 컨트롤러 (⚡ 3분 핵심 요약 vs 📖 상세 원리 전체) ── */
+  (function(){
+    var mainEl = document.getElementById('b2bMain');
+    var hdrEl = document.getElementById('b2bHeader');
+    var liveEl = document.getElementById('modeLiveStatus');
+    var heroBadge = document.getElementById('heroModeBadge');
+    var heroMeta = document.getElementById('heroModeMeta');
+    if (!mainEl) return;
+
+    var detailSlots = [].slice.call(document.querySelectorAll('[data-detail-only]'));
+    var summarySlots = [].slice.call(document.querySelectorAll('[data-summary-only]'));
+    var navDetailLinks = [].slice.call(document.querySelectorAll('[data-nav-detail]'));
+    var modeBtns = [].slice.call(document.querySelectorAll('[data-set-mode]'));
+    var reducedMotionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    var currentMode = 'summary';
+
+    function revealVisibleAnimations() {
+      detailSlots.forEach(function(slot) {
+        slot.querySelectorAll('.rv').forEach(function(el) {
+          var rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 1.15 && rect.bottom > -50) {
+            el.classList.add('in');
+          } else {
+            io.observe(el);
+          }
+        });
+      });
+      var g = document.querySelector('.gapviz');
+      if (g) {
+        var gr = g.getBoundingClientRect();
+        if (gr.top < window.innerHeight && gr.bottom > 0) g.classList.add('in');
+      }
+    }
+
+    function updateModeDOM(mode) {
+      currentMode = mode;
+      mainEl.setAttribute('data-read-mode', mode);
+      if (hdrEl) hdrEl.setAttribute('data-read-mode', mode);
+
+      var isDetail = (mode === 'detail');
+      detailSlots.forEach(function(slot) {
+        if (isDetail) {
+          slot.removeAttribute('hidden');
+        } else {
+          slot.setAttribute('hidden', 'until-found');
+        }
+      });
+
+      summarySlots.forEach(function(box) {
+        box.hidden = isDetail;
+      });
+
+      navDetailLinks.forEach(function(lnk) {
+        lnk.hidden = !isDetail;
+      });
+
+      modeBtns.forEach(function(btn) {
+        var active = (btn.getAttribute('data-set-mode') === mode);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      if (heroBadge && heroMeta) {
+        if (isDetail) {
+          heroBadge.textContent = '📖 현재 보기 · 상세 원리 전체 모드';
+          heroMeta.textContent = '비급여 환자 심리 · 3년 격차 · 손실/가성비 계산기 · 사이트 이전 · 용어 풀이까지 전체 열람 중입니다';
+        } else {
+          heroBadge.textContent = '⚡ 현재 보기 · 3분 핵심 요약 모드';
+          heroMeta.textContent = '핵심 결론 · 실물 체험 · 가격만 남겼습니다 (체감 스크롤 55% 단축)';
+        }
+      }
+
+      if (isDetail) {
+        revealVisibleAnimations();
+      }
+    }
+
+    function routeFocusAndScroll(mode, opts) {
+      opts = opts || {};
+      if (opts.targetSelector) {
+        var target = document.querySelector(opts.targetSelector);
+        if (target) {
+          target.scrollIntoView({ behavior: reducedMotionQuery.matches ? 'auto' : 'smooth', block: 'start' });
+          var focusTarget = target.matches('h1,h2,h3,[tabindex]') ? target : target.querySelector('h2,h3,[tabindex="-1"]');
+          if (focusTarget) {
+            if (!focusTarget.hasAttribute('tabindex')) focusTarget.setAttribute('tabindex', '-1');
+            focusTarget.focus({ preventScroll: true });
+          }
+          return;
+        }
+      }
+      if (mode === 'summary') {
+        var active = document.activeElement;
+        if (active && (active.closest('[data-detail-only]') || active.hasAttribute('data-nav-detail'))) {
+          var hdrSummaryBtn = document.getElementById('hdrModeSummary');
+          if (hdrSummaryBtn) hdrSummaryBtn.focus({ preventScroll: true });
+        }
+      }
+    }
+
+    function setReadMode(mode, opts) {
+      opts = opts || {};
+      if (mode !== 'summary' && mode !== 'detail') return;
+      if (mode === currentMode && !opts.force && !opts.targetSelector) return;
+
+      var canTransition = !opts.skipTransition &&
+        typeof document.startViewTransition === 'function' &&
+        !reducedMotionQuery.matches &&
+        mode !== currentMode;
+
+      if (canTransition) {
+        var vt = document.startViewTransition(function() {
+          updateModeDOM(mode);
+        });
+        vt.finished.finally(function() {
+          routeFocusAndScroll(mode, opts);
+        });
+      } else {
+        updateModeDOM(mode);
+        routeFocusAndScroll(mode, opts);
+      }
+
+      if (opts.announce && liveEl) {
+        liveEl.textContent = (mode === 'detail')
+          ? '상세 원리 전체 모드로 전환되었습니다. 모든 원리 설명과 계산기가 펼쳐졌습니다.'
+          : '3분 핵심 요약 모드로 전환되었습니다. 핵심 내용만 간추려 표시합니다.';
+      }
+    }
+
+    modeBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetMode = btn.getAttribute('data-set-mode');
+        setReadMode(targetMode, { announce: true });
+      });
+    });
+
+    document.querySelectorAll('[data-open-detail]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var sel = btn.getAttribute('data-open-detail');
+        setReadMode('detail', { targetSelector: sel, announce: true });
+      });
+    });
+
+    /* 페이지 내 검색(Ctrl+F) 또는 텍스트 프래그먼트 매칭 시 UI 상태 자동 동기화 */
+    document.addEventListener('beforematch', function(e) {
+      if (e.target && e.target.closest && e.target.closest('[data-detail-only]')) {
+        setReadMode('detail', { skipTransition: true, announce: true, force: true });
+      }
+    });
+
+    /* 해시(#migrate, #sim, #calc 등) 링크 클릭 또는 진입 시 상세 모드 자동 해제 후 이동 */
+    function checkHashNeedsDetail(hashStr) {
+      if (!hashStr || hashStr.length < 2 || hashStr === '#') return null;
+      var id = decodeURIComponent(hashStr.slice(1));
+      var el = document.getElementById(id);
+      if (el && el.closest('[data-detail-only]')) return '#' + CSS.escape(id);
+      return null;
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      var sel = checkHashNeedsDetail(href);
+      if (sel && currentMode === 'summary') {
+        e.preventDefault();
+        if (history.pushState) history.pushState(null, '', href);
+        setReadMode('detail', { targetSelector: sel, announce: true });
+      }
+    });
+
+    window.addEventListener('hashchange', function() {
+      var sel = checkHashNeedsDetail(location.hash);
+      if (sel && currentMode === 'summary') {
+        setReadMode('detail', { targetSelector: sel, skipTransition: true, announce: true });
+      }
+    });
+
+    /* 초기 진입 시 ?mode=detail 또는 상세 섹션 해시가 있으면 상세 모드로 시작, 기본은 3분 핵심 요약 모드 */
+    var initDetailByQuery = /[?&]mode=detail(?:&|$)/i.test(location.search);
+    var initHashSel = checkHashNeedsDetail(location.hash);
+    if (initDetailByQuery || initHashSel) {
+      setReadMode('detail', { targetSelector: initHashSel, skipTransition: true, force: true });
+    } else {
+      updateModeDOM('summary');
+    }
+  })();
+
 
   /* 한의원 가 / 나 비유 */
   (function(){
