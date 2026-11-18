@@ -56,6 +56,10 @@
   
 
   
+
+  
+
+  
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <style>
@@ -786,6 +790,96 @@
       background:rgba(255,255,255,.09);border:1px solid rgba(252,211,77,.38);color:#FDE68A;
     }
 
+    /* 상용화 총 작업일자 · 장인 준비 기록 쇼케이스 (#craftsmanship) */
+    .hero-craft-strip{
+      margin-top:20px;padding:11px 18px;border-radius:999px;
+      display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
+      background:rgba(252,211,77,.10);border:1px solid rgba(252,211,77,.42);
+      color:rgba(253,251,247,.94);font-size:13px;font-weight:700;line-height:1.45;
+    }
+    @media(max-width:680px){.hero-craft-strip{border-radius:16px;padding:11px 14px;font-size:12px}}
+    .hero-craft-strip b{color:var(--gold-hi);font-weight:900;font-variant-numeric:tabular-nums}
+    .hero-craft-strip a{
+      padding:3px 10px;border-radius:999px;background:rgba(252,211,77,.2);
+      border:1px solid rgba(252,211,77,.5);color:#FDE68A;font-size:11.5px;font-weight:900;white-space:nowrap;
+    }
+    .hero-craft-strip a:hover{background:var(--gold-hi);color:#0B2418}
+
+    .craft-board{
+      margin:34px 0 32px;padding:30px 28px 26px;border-radius:26px;
+      background:linear-gradient(155deg,rgba(7,24,16,.94) 0%,rgba(19,56,38,.92) 100%);
+      border:1.5px solid rgba(252,211,77,.52);
+      box-shadow:0 24px 54px rgba(0,0,0,.26);
+      container-type:inline-size;
+    }
+    @media(max-width:680px){.craft-board{padding:22px 18px 20px;border-radius:20px}}
+    .craft-top{
+      display:grid;grid-template-columns:minmax(250px,.92fr) 1.35fr;gap:24px;align-items:stretch;
+    }
+    @media(max-width:860px){.craft-top{grid-template-columns:1fr;gap:18px}}
+    .craft-counter-box{
+      padding:24px 22px;border-radius:20px;
+      background:radial-gradient(circle at 30% 20%,rgba(252,211,77,.16),rgba(9,30,20,.88) 72%);
+      border:1px solid rgba(252,211,77,.42);
+      display:flex;flex-direction:column;justify-content:center;gap:8px;
+    }
+    .craft-kicker{
+      display:inline-flex;align-items:center;gap:6px;width:fit-content;
+      padding:4px 11px;border-radius:999px;
+      background:rgba(252,211,77,.16);border:1px solid rgba(252,211,77,.45);
+      color:#FDE68A;font-size:11px;font-weight:900;letter-spacing:.04em;
+    }
+    .craft-days-num{
+      font-size:clamp(2.25rem,6vw,3.65rem);
+      font-weight:900;line-height:1.08;color:var(--gold-hi);
+      font-variant-numeric:tabular-nums;letter-spacing:-.03em;
+    }
+    @supports (font-size:1cqi){
+      .craft-days-num{font-size:clamp(2.25rem,5.5cqi,3.65rem)}
+    }
+    .craft-days-num small{font-size:clamp(1rem,2vw,1.3rem);color:#A7F3D0;font-weight:800;margin-left:6px}
+    .craft-period{
+      font-size:12.5px;font-weight:800;color:rgba(253,251,247,.84);
+      font-variant-numeric:tabular-nums;
+    }
+    .craft-mini-kpis{
+      margin-top:8px;padding-top:12px;border-top:1px dashed rgba(252,211,77,.28);
+      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    }
+    .craft-mk{display:flex;flex-direction:column;gap:2px}
+    .craft-mk b{font-size:1.05rem;font-weight:900;color:#fff;font-variant-numeric:tabular-nums}
+    .craft-mk span{font-size:11px;color:rgba(253,251,247,.72);line-height:1.3}
+
+    .craft-story{display:flex;flex-direction:column;justify-content:center;gap:12px}
+    .craft-title{
+      font-size:clamp(1.2rem,2.3vw,1.58rem);font-weight:900;line-height:1.36;
+      color:#fff !important;text-wrap:balance;
+    }
+    .craft-lead{
+      font-size:.93rem;line-height:1.7;color:rgba(253,251,247,.88);text-wrap:pretty;
+    }
+    .craft-phases{
+      margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+    }
+    @media(max-width:960px){.craft-phases{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.craft-phases{grid-template-columns:1fr}}
+    .craft-phase{
+      padding:16px 15px;border-radius:16px;
+      background:rgba(255,255,255,.055);border:1px solid rgba(143,224,176,.26);
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .cp-head{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+    .cp-step{font-size:10.5px;font-weight:900;padding:2px 8px;border-radius:999px;background:#8FE0B0;color:#071911}
+    .cp-days{font-size:11px;font-weight:800;color:#FDE68A;font-variant-numeric:tabular-nums}
+    .craft-phase h4{font-size:.92rem;font-weight:900;color:#fff !important;line-height:1.35}
+    .craft-phase p{font-size:.81rem;line-height:1.56;color:rgba(253,251,247,.8);text-wrap:pretty}
+    .craft-takeaway{
+      margin-top:16px;padding:13px 16px;border-radius:14px;
+      background:rgba(143,224,176,.13);border:1px solid rgba(143,224,176,.38);
+      font-size:.88rem;font-weight:700;color:#E6FAEF;line-height:1.55;text-wrap:pretty;
+    }
+    .craft-takeaway b{color:var(--gold-hi)}
+
     #apply{border-top:1px solid rgba(143,224,176,.22)}
 
     /* ===== ?compare=1 동시화면 비교 스튜디오 오버레이 ===== */
@@ -899,6 +993,10 @@
     <div class="hero-cta rv">
       <a class="btn btn-gold" href="#samples">실제 샘플 · 커스텀 체험 먼저 해보기 ↓</a>
       <a class="btn btn-line" href="#why">왜 필요한지 핵심부터 보기 ↓</a>
+    </div>
+    <div class="hero-craft-strip rv">
+      <span>🕰️ 며칠 만에 급조한 공장형 템플릿이 아닙니다 · 상용화까지 <b data-prep-days-text="1">총 232일</b>(<span data-prep-range="1">2026.04.01 ~ 2026.11.18</span>) · <b>305회+</b> 실전 고도화로 완성했습니다</span>
+      <a href="#craftsmanship">232일 준비 기록 보기 ↓</a>
     </div>
     <div class="hero-kpi-grid rv">
       <article class="kpi-card">
@@ -1401,7 +1499,7 @@
     </div>
 
     <div class="copy rv" style="margin-top:26px">
-      <p>저희는 같은 구성의 결과물을 <b>이미 만들어 운영하고 있어서</b> 처음부터 개발하는 비용이 들지 않습니다. 그래서 같은 구성을 훨씬 낮은 가격으로 드릴 수 있습니다. 숫자는 아래 가성비 계산기에서 직접 비교해 보세요.</p>
+      <p>저희는 현직 한의사가 자기 한의원에 실제로 쓰기 위해 <b>총 <span data-prep-days-num="1">232</span>일(약 8개월) 동안 305회 이상 직접 깎고 다듬어 이미 운영 중인 완성본</b>을 나누어 드리기 때문에, 처음부터 맨땅에 개발하는 수천만 원의 비용과 반년 이상의 시행착오가 들지 않습니다. 숫자는 아래 가성비 계산기에서 직접 비교해 보세요.</p>
     </div>
 
     <div class="calc rv" id="calc">
@@ -1578,6 +1676,54 @@
       <div class="fcard rv"><div class="ic">🧑‍🤝‍🧑</div><h3>③ 환자 입장에서 설계했습니다</h3><p>환자가 무엇을 의심하고 어디서 망설이는지를 기준으로, 자가 체크 → 칼럼 → Q&amp;A → 예약으로 이어지는 동선을 짰습니다.</p></div>
       <div class="fcard rv"><div class="ic">🛡️</div><h3>④ 의학적 신뢰를 강하게 줍니다</h3><p>실명 한의사 감수 표기, 학술 근거 표기, 최종 검토일, 대면 진료 안내 문구까지. 의료 정보 사이트로서 갖춰야 할 요소를 기본으로 넣었습니다.</p></div>
     </div>
+
+    <!-- 상용화까지 총 232일 준비 작업일자 & 4단계 치밀한 임상 검증 기록 보드 -->
+    <div class="craft-board rv" id="craftsmanship">
+      <div class="craft-top">
+        <div class="craft-counter-box">
+          <span class="craft-kicker">🕰️ CRAFTSMANSHIP LOG · 상용화 준비 기록</span>
+          <div class="craft-days-num"><span id="prepDaysCounter" data-target="232">232</span>일<small>약 8개월</small></div>
+          <div class="craft-period">기획 착수 <span data-prep-start="1">2026.04.01</span> → 상용 완성 <span data-prep-launch="1">2026.11.18</span></div>
+          <div class="craft-mini-kpis">
+            <div class="craft-mk"><b>305회+</b><span>누적 코드·동선<br>정밀 고도화</span></div>
+            <div class="craft-mk"><b>72편+</b><span>SCI 학술 근거<br>칼럼 사전 검수</span></div>
+            <div class="craft-mk"><b>24컷·9부위</b><span>스토리보드 및<br>3D 해부 모형</span></div>
+          </div>
+        </div>
+        <div class="craft-story">
+          <h3 class="craft-title">외주 업체가 2~3일 만에 찍어 내는 양산형 홈페이지가 아닙니다.<br><span class="gold">총 232일 동안 제 한의원에 먼저 입히고 부딪히며 완성했습니다</span></h3>
+          <p class="craft-lead">낮에는 진료실에서 환자를 만나고, 진료가 끝난 밤에는 “초진 환자가 어느 문장에서 망설이는지”, “모바일에서 어느 버튼이 불편한지”, “AI 검색엔진이 어떤 글 구조를 인용하는지” 하나하나 직접 고치고 테스트했습니다. 처음부터 다른 병원에 팔기 위해 급조한 상품이 아니라, <b>내 한의원 비급여 매출과 환자 신뢰를 지키기 위해 8개월 가까이 집요하게 다듬은 실전 시스템</b>입니다.</p>
+        </div>
+      </div>
+
+      <div class="craft-phases">
+        <article class="craft-phase">
+          <div class="cp-head"><span class="cp-step">STEP 01</span><span class="cp-days">D+01 ~ D+150</span></div>
+          <h4>환자 결제 심리 &amp; 의료법 기준 설계</h4>
+          <p>비급여 진료 전 환자가 실제로 던지는 의문 수집, 24컷 공감 스토리보드 기획 및 의료법 제45조(수가 고지)·제56조(의료광고 제한) 준수 설계</p>
+        </article>
+        <article class="craft-phase">
+          <div class="cp-head"><span class="cp-step">STEP 02</span><span class="cp-days">D+151 ~ D+182</span></div>
+          <h4>하이엔드 한지 UI &amp; 풀스크린 3D 구축</h4>
+          <p>6대 주력 클리닉 런웨이 아키텍처와 전신 골격·장기·혈관·신경이 살아 움직이는 실시간 WebGL 3D 인체모형 엔진 독자 개발</p>
+        </article>
+        <article class="craft-phase">
+          <div class="cp-head"><span class="cp-step">STEP 03</span><span class="cp-days">D+183 ~ D+213</span></div>
+          <h4>자동 칼럼 엔진 &amp; 노코드 스튜디오 완성</h4>
+          <p>9대 부위 72편 학술 칼럼 감수, 2일 주기 중복 방지 자동 발행기, 3단계 금지어 검수기 및 5구역 색감·AI 윤문 셀프 스튜디오 구축 (190회+ 개선)</p>
+        </article>
+        <article class="craft-phase">
+          <div class="cp-head"><span class="cp-step">STEP 04</span><span class="cp-days">D+214 ~ D+232</span></div>
+          <h4>실서버 환자 유입 · AI 노출 상용 검증</h4>
+          <p>바른한의원 대전본점 실서버 가동, Google AI 1번째 추천 확인, 네이버·구글·IndexNow 자동 색인 및 전 기종 모바일 최적화 검증 완료</p>
+        </article>
+      </div>
+
+      <div class="craft-takeaway">
+        💡 <b>원장님이 얻으시는 가장 큰 이득:</b> 원장님께서 직접 기획하고 외주 개발사와 씨름했다면 꼬박 <b>8개월(232일)과 수천만 원이 걸렸을 시행착오를 단 하루도 겪지 않고</b>, 이미 임상 현장 검증이 끝난 완성본 그대로 시작하실 수 있습니다.
+      </div>
+    </div>
+
     <div class="tbl-wrap rv"><table class="cmpt">
       <thead><tr><th></th><th>일반 홈페이지 제작사</th><th>일반 마케팅 대행사</th><th class="us">바른 메디테크</th></tr></thead>
       <tbody>
@@ -1952,6 +2098,11 @@
         label: '⑧ 계약·이전·FAQ 안심구간 + 최종 LIVE',
         left: '#migrate', right: '#promise',
         desc: '<b>[흐름 방해 요소 하단 정돈]</b> 본문 허리를 끊던 <b>기존 사이트 내용 이전 안내(#migrate)</b>와 계약 세부 조건을 가격표 아래 안심 구간으로 모으고, 마지막은 <b>LIVE 실제 운영 홈페이지 확인</b>으로 마무리했습니다.'
+      },
+      {
+        label: '⑨ ★ 총 232일 상용 준비 기록 보드',
+        left: '#diff', right: '#craftsmanship',
+        desc: '<b>[신뢰 장인 기록 신설]</b> 2026.04.01 첫 설계부터 상용화까지 <b>총 232일(약 8개월) · 305회+ 정밀 고도화 · 4단계 임상 검증 타임라인</b>을 시각 보드로 세팅해 양산형 템플릿과의 압도적 정성·신뢰 격차를 증명합니다.'
       }
     ];
 
@@ -2596,6 +2747,45 @@
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(msg).catch(function(){ window.prompt('아래 내용을 복사해 문자로 보내 주세요:',msg); }); }
     else{ window.prompt('아래 내용을 복사해 문자로 보내 주세요:',msg); }
   });
+
+  /* 상용화까지 총 작업일자 세팅 & 숫자 카운트업 연출 (단일 설정값으로 전 구간 동기화) */
+  (function(){
+    var BAREUN_PREP_CONFIG = {
+      startDate: '2026.04.01',
+      launchDate: '2026.11.18',
+      prepDays: 232 // 2026-04-01 최초 설계 착수 ~ 2026-11-18 상용 오픈 총 작업일자 (원하시는 기준일자로 언제든 변경 가능)
+    };
+    document.querySelectorAll('[data-prep-days-text]').forEach(function(el){ el.textContent = '총 ' + BAREUN_PREP_CONFIG.prepDays.toLocaleString('ko-KR') + '일'; });
+    document.querySelectorAll('[data-prep-days-num]').forEach(function(el){ el.textContent = BAREUN_PREP_CONFIG.prepDays.toLocaleString('ko-KR'); });
+    document.querySelectorAll('[data-prep-range]').forEach(function(el){ el.textContent = BAREUN_PREP_CONFIG.startDate + ' ~ ' + BAREUN_PREP_CONFIG.launchDate; });
+    document.querySelectorAll('[data-prep-start]').forEach(function(el){ el.textContent = BAREUN_PREP_CONFIG.startDate; });
+    document.querySelectorAll('[data-prep-launch]').forEach(function(el){ el.textContent = BAREUN_PREP_CONFIG.launchDate; });
+
+    var cntEl = document.getElementById('prepDaysCounter');
+    if (!cntEl) return;
+    cntEl.textContent = BAREUN_PREP_CONFIG.prepDays.toLocaleString('ko-KR');
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+    var played = false;
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (!entry.isIntersecting || played) return;
+        played = true;
+        obs.disconnect();
+        var goal = BAREUN_PREP_CONFIG.prepDays;
+        var dur = 1100;
+        var t0 = performance.now();
+        function step(now){
+          var p = Math.min(1, (now - t0) / dur);
+          var ease = 1 - Math.pow(1 - p, 3);
+          cntEl.textContent = Math.round(goal * ease).toLocaleString('ko-KR');
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.35 });
+    obs.observe(cntEl);
+  })();
 
   /* 온라인 실서버 환경 감지 및 링크 자동 보정 */
   if (location.hostname.indexOf('bareunhaniwon.com') !== -1) {
