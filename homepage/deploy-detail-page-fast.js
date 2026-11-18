@@ -26,7 +26,7 @@ const WP_DETAIL_PAGES = [
   { id: 46, slug: 'home', file: 'index.html', wpFile: 'wordpress-main-home.html', title: '바른한의원 대전본점', excerpt: '내 가족에게 처방·시술한 치료만 하는 아빠 한의사, 바른한의원 대전본점(안정위 대표원장)입니다. 추나요법, 허리·목디스크, 소아 키성장, 성장판검사, 성조숙증, 비염, 축농증, 식욕ZERO 다이어트, 내장지방, 남성·여성·원형탈모, 지루성두피염, 담적, 위염, 난임, 산후보약, 황제공진단, 전립선, 리프팅 맞춤 한방 치료.' },
   { id: 126, slug: 'director', file: 'director.html', wpFile: 'wordpress-director.html', title: '안정위 대표원장 · 9대 정밀검진', excerpt: '초음파·체열진단·이비인후 내시경·사상체질·체지방·자율신경·간/당 수치·혈관·성장 검사까지 9대 정밀 검진 시스템을 운영합니다.' },
   { id: 127, slug: 'chuna', file: 'chuna.html', wpFile: 'wordpress-chuna.html', title: '바른 추나 · 척추교정', excerpt: 'The Lancet · JAMA 등 국제 학술 논문을 검수하여 유효성이 입증된 비수술 추나로 틀어진 척추·골반 중심축을 바로잡습니다.' },
-  { id: 105, slug: 'growth', file: 'growth.html', wpFile: 'wordpress-growth.html', title: '바른 성장 · 성조숙증', excerpt: '소아내분비학 및 약리학 학술 논문 근거를 바탕으로 성장판 연골 증식과 호흡기 면역을 함께 돌봅니다.' },
+  { id: 105, slug: 'growth', file: 'growth.html', wpFile: 'wordpress-growth.html', title: '바른 성장 · 성조숙증', excerpt: '소아내분비학 및 약리학 학술 논문 근거를 바탕으로 성장기 골격 발달과 호흡기 면역을 함께 돌봅니다.' },
   { id: 66, slug: 'diet-zero', file: 'diet-zero.html', wpFile: 'wordpress-diet.html', title: '바른 다이어트 · 식욕ZERO', excerpt: '갈색지방 열생산 및 대사 생리학 연구를 바탕으로 무리한 절식 없이 내장지방을 건강하게 비워냅니다.' },
   { id: 130, slug: 'hairloss', file: 'hairloss.html', wpFile: 'wordpress-hairloss.html', title: '바른 탈모 · 모근재생', excerpt: '수승화강 두피 열조절과 경추 순환 개선으로 모유두 세포 미세혈류와 모근 자생력을 회복합니다.' },
   { id: 408, slug: 'hairloss-male', file: 'hairloss-male.html', wpFile: 'wordpress-hairloss-male.html', title: '바른 남성탈모 · M자·정수리', excerpt: '호르몬 억제 부담 없는 두피 청열과 경추 추나로 M자·정수리 남성탈모 모근 자생력을 깨웁니다.' },

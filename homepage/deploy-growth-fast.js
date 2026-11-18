@@ -82,7 +82,7 @@ const puppeteer = loadPuppeteer();
         slug: 'growth',
         status: 'publish',
         comment_status: 'closed',
-        excerpt: '소아내분비학 및 약리학 학술 논문 근거를 바탕으로 성장판 연골 증식과 호흡기 면역을 함께 돌봅니다.',
+        excerpt: '소아내분비학 및 약리학 학술 논문 근거를 바탕으로 성장기 골격 발달과 호흡기 면역을 함께 돌봅니다.',
         content,
         featured_media: 1875,
         template: (ref46 && ref46.template) ? ref46.template : ''

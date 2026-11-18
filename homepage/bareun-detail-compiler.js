@@ -164,10 +164,10 @@ function buildPageHtml(page) {
         ? `"${p.letterParagraphs.join('<br><br>\n                  ')}"`
         : `"아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.<br><br>
                   잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.<br>
-                  체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."`;
+                  체질을 바로잡고 면역을 보강하며 꾸준히 관리한 끝에 <strong>몰라보게 든든하고 바른 체격으로 건강하게 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."`;
       const sonChips = (Array.isArray(p.chips) && p.chips.length > 0) ? p.chips : [
         { label: '기초 면역 리셋', value: '비염 개선 · 소화 흡수 정상화' },
-        { label: '성장판 골든타임', value: '최상급 원용 분골 · 연골 증식' },
+        { label: '성장 관리 적기', value: '최상급 원용 분골 · 연골 증식' },
         { label: '탄탄한 피지컬 완성', value: '성호르몬 균형 · 바른 골격 완성' }
       ];
       const sonSignPrefix = p.signPrefix || '아빠같은 한의사';
@@ -393,13 +393,13 @@ function buildPageHtml(page) {
             <div class="efficacy-visual-frame growth-tall-frame is-full-stage-frame is-growth-tall-motion">
               <div class="growth-tall-seq-stage">
                 <img class="growth-tall-seq-img seq-1" src="${s4Frames[0]}" alt="또래보다 작던 키 (성장 전)" loading="lazy" draggable="false">
-                <img class="growth-tall-seq-img seq-2" src="${s4Frames[1]}" alt="성장판 연골 증식으로 키가 자라는 중" loading="lazy" draggable="false">
+                <img class="growth-tall-seq-img seq-2" src="${s4Frames[1]}" alt="성장기 골격 발달으로 키가 자라는 중" loading="lazy" draggable="false">
                 <img class="growth-tall-seq-img seq-3" src="${s4Frames[2]}" alt="위로 쑥쑥 폭풍 키 성장 완료" loading="lazy" draggable="false">
               </div>
               <div class="growth-tall-boost-layer" aria-hidden="true">
                 <div class="growth-epiphyseal-glow"></div>
                 <div class="growth-height-laser-bar">
-                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>${p.laserBadge || '▲ 성장판 연골 증식 · 수직 폭풍 성장 UP'}</span>
+                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>${p.laserBadge || '▲ 성장기 골격 발달 · 균형 성장 관리'}</span>
                 </div>
                 <svg class="growth-upward-arrows-svg" viewBox="0 0 280 240" fill="none">
                   <path class="growth-up-arrow g-arr-1" d="M88 188 L88 54 M76 70 L88 54 L100 70" />
@@ -1079,7 +1079,7 @@ function buildPageHtml(page) {
               <circle cx="465" cy="212" r="7" fill="#6EE7B7" filter="url(#examGlow9)"/>
               <g transform="translate(465, 178)">
                 <rect x="-88" y="-13" width="176" height="26" rx="13" fill="rgba(10,18,16,0.86)" stroke="#6EE7B7" stroke-width="1.3"/>
-                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">🌱 성장판 연골 증식 골든타임</text>
+                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">🌱 소아·청소년 성장 관리 적기</text>
               </g>
               <g transform="translate(790, 108)">
                 <circle cx="0" cy="0" r="16" fill="rgba(253,230,138,0.28)" class="exam-doppler-pulse"/>
@@ -8292,7 +8292,7 @@ function buildPageHtml(page) {
     <aside id="project-details-meta">
       <div>
         <div class="meta-eyebrow">${page.meta.eyebrow}</div>
-        <h1 id="project-details-title">${page.meta.title}<span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"> — 대전 대덕구 비래동 바른한의원 대전본점 (안정위 대표원장 · 010-5631-1275)</span></h1>
+        <h1 id="project-details-title">${page.meta.title}<span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"> — ${page.slug === 'growth' || page.file === 'growth.html' ? '대전 소아·청소년 성장 상담 및 성장관리 · ' : ''}대전 대덕구 비래동 바른한의원 대전본점 (안정위 대표원장 · 010-5631-1275)</span></h1>
         <div class="meta-subtitle-en">${page.meta.subtitleEn}</div>${hairlossSubSwitcherHtml}
 
         <div id="project-details-desc">
@@ -8432,25 +8432,25 @@ function buildPageHtml(page) {
       <div class="urgent-shockwave-ring ring-2"></div>
 
       <div class="urgent-slam-stage-1">
-        <span class="urgent-top-badge">🚨 DOCTOR'S URGENT WARNING · 5가지 핵심 증상 100% 모두 해당</span>
+        <span class="urgent-top-badge">📋 CLINICAL CHECKLIST SUMMARY · 5가지 주요 체크 항목 확인</span>
       </div>
 
       <div class="urgent-slam-stage-2">
         <div class="urgent-stamp-box">
           <h2 class="urgent-main-headline" id="urgent-main-headline">
-            “더이상 방치하지말고
-            <em>당장 진료받으세요”</em>
+            “체크하신 증상을 바탕으로
+            <em>세심한 1:1 진료 상담을 권장합니다”</em>
           </h2>
         </div>
       </div>
 
       <p class="urgent-sub-desc">
-        체크리스트 <strong>5가지 항목이 모두 일치</strong>합니다. 이미 신체 균형과 회복력이 한계치(100%)에 도달한 상태이므로, 더 이상 미루지 마시고 <strong>안정위 대표원장의 1:1 정밀 진맥과 근본 치료</strong>를 즉시 시작하셔야 합니다.
+        체크리스트의 <strong>5가지 주요 항목이 모두 확인</strong>되었습니다. 현재 증상과 체질, 생활습관을 종합적으로 점검하기 위해 <strong>안정위 대표원장의 1:1 진맥 및 진료 상담</strong>을 받아보시길 권장합니다.
       </p>
 
       <div class="urgent-actions-row">
         <button type="button" class="urgent-btn-primary" onclick="window.closeUrgent5CheckModal(); window.openConsultModal();">
-          🚨 지금 바로 대표원장 진료 예약하기 ↗
+          📅 대표원장 1:1 진료 상담 예약하기 ↗
         </button>
       </div>
 
@@ -9081,8 +9081,8 @@ function buildPageHtml(page) {
           }
           if (docCommentPill) docCommentPill.textContent = '5개 모두 체크 · 100% 긴급';
           if (docCommentBarFill) docCommentBarFill.style.width = '100%';
-          if (docCommentTitle) docCommentTitle.textContent = '“더이상 방치하지말고 당장 진료받으세요”';
-          if (docCommentDesc) docCommentDesc.textContent = '5가지 핵심 증상이 모두 해당됩니다! 더이상 방치하지말고 당장 진료받으세요. 지금 즉시 대표원장 1:1 정밀 진맥과 근본 치료를 시작하셔야 합니다.';
+          if (docCommentTitle) docCommentTitle.textContent = '“세심한 1:1 진맥 및 진료 상담을 권장합니다”';
+          if (docCommentDesc) docCommentDesc.textContent = '체크하신 5가지 주요 항목이 모두 확인되었습니다. 현재 증상과 체질, 생활습관을 종합적으로 점검하기 위해 안정위 대표원장과의 1:1 진맥 및 진료 상담을 받아보시길 권장합니다.';
           if (justChecked) {
             window.triggerUrgent5CheckAlert();
           }
@@ -9823,7 +9823,7 @@ function buildPageHtml(page) {
           ctx.stroke();
           ctx.fillStyle = '#FDE68A';
           ctx.font = '800 13px Pretendard, sans-serif';
-          ctx.fillText('▲ 성장판 연골 증식 · 학술 검증 성장 치료', rulerX - 28, topY - 10);
+          ctx.fillText('▲ 성장기 골격 발달 · 맞춤형 한방 성장관리', rulerX - 28, topY - 10);
 
           if (cycleNorm > 0.55) {
             const starAlpha = Math.min(1, (cycleNorm - 0.55) / 0.35);

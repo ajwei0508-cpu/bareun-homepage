@@ -89,7 +89,7 @@ cards.forEach((c, idx) => {
     Object.assign(base, {
       type: 'diet-single-stage',
       stage: 4,
-      laserBadge: c.laserBadge || '▲ 성장판 연골 증식 · 수직 폭풍 성장 UP',
+      laserBadge: c.laserBadge || '▲ 성장기 골격 발달 · 균형 성장 관리',
       frames: c.seqImages || [
         'growth_minimal_card4_short_before.jpg?v=grw4v3',
         'growth_minimal_card4_growing_mid.jpg?v=grw4v3',

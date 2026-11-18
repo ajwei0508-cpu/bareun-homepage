@@ -23,7 +23,7 @@ const PAGES = [
       title: '안정위 대표원장',
       subtitleEn: 'Dr. Ahn Jung-wi · Evidence-Based Sasang & Integrative Korean Medicine',
       desc: [
-        '깊이 있는 맥진과 국가인증 정품 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 검사와 안전성이 입증된 치료법만을 시행합니다.'
+        '깊이 있는 맥진과 국가인증 정품 한약으로 보이지 않는 질환의 뿌리를 다스립니다. 국내외 학술 논문을 정밀 검수하여 의학적 검사와 식약처 GMP 인증 규격 한약재 기반의 치료법만을 시행합니다.'
       ],
       ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
       ctaText: '내 체질에 맞는 치료 방향 상담하기',
@@ -89,7 +89,7 @@ const PAGES = [
         type: 'clean-image',
         stepLabel: 'STORY · SCI급 학술 논문 검수 완료',
         title: "실제 논문 검수로 안전성과 기전이 입증된 '맞춤 현대 한의학'",
-        sub: '학술 논문연구를 통한 안전성이 입증된 한약만을 처방합니다.',
+        sub: '학술 논문연구를 통한 식약처 GMP 인증 규격 한약재 기반의 한약만을 처방합니다.',
         caption: '[학술 논문 검수] 국제 학술지 연구를 통해 한약 투여 후 간·신장 기능 안전성 및 항산화·자율신경 회복 기전이 검증되었습니다.',
         imgSrc: 'detail_director_story5_no_director.jpg?v=dir1only',
         thumbs: [
@@ -190,7 +190,7 @@ const PAGES = [
         fullscreen: true,
         fx: 'exam-retina-shader-9',
         title: "성장판 개방도부터 골연령 · 최종예상키까지 예측하는 — '소아 · 청소년 성장 검사'",
-        sub: '무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 골든타임을 찾아냅니다.',
+        sub: '무방사선 성장판 초음파와 뼈나이(골연령)·뼈길이 계측, 체형 불균형·성조숙증 징후를 종합 검사하여 우리 아이의 숨은 키와 성장 관리 적기을 찾아냅니다.',
         caption: '[성장 검사 · 성장판 & 최종예상키] 성장판 개방 상태, 골연령, 뼈길이, 최종예상키를 종합 검사하여 우리 아이 맞춤 성장 솔루션을 설계합니다.',
         imgSrc: 'director_exam_card9_growth_check.jpg?v=dir1only'
       }
@@ -374,9 +374,9 @@ const PAGES = [
       keyword: '아이 키성장 궁금해?',
       eyebrow: 'NEXT STORY · 소아 성장 클리닉',
       title: '바른 성장 · 성조숙증',
-      desc: '학술 논문으로 검증된 성장판 연골 증식 처방과 호흡기 면역 치료로 아이의 건강한 성장을 돕습니다.',
+      desc: '학술 논문으로 검증된 성장기 골격 발달 처방과 호흡기 면역 치료로 아이의 건강한 성장을 돕습니다.',
       bg: 'detail_growth_portal_bg.jpg?v=uniq1',
-      caption: '[다음 클리닉 · 소아 성장] 학술 논문으로 검증된 성장판 연골 증식 처방으로 아이의 건강한 성장을 돕는 스토리로 이동합니다.'
+      caption: '[다음 클리닉 · 소아 성장] 학술 논문으로 검증된 성장기 골격 발달 처방으로 아이의 건강한 성장을 돕는 스토리로 이동합니다.'
     }
   },
 
@@ -401,7 +401,7 @@ const PAGES = [
       title: '바른 성장 · 성조숙증',
       subtitleEn: 'Evidence-Based Epiphyseal Chondrocyte & Pediatric Immunity Care',
       desc: [
-        '성호르몬 과항진 자극 없이 성장판 연골 증식과 호흡기·소화기 면역을 함께 깨웁니다. 학술 논문을 정밀 검수하여 안전성이 입증된 한방 성장 치료법을 시행합니다.'
+        '소아·청소년의 성장 발달, 연간 성장 속도, 식욕·수면·비염 및 체성분 상태를 다각도로 평가합니다. 식약처 GMP 인증 규격 한약재를 원내에서 직접 탕전하여 개인별 체질에 맞춘 한방 성장관리를 시행합니다.'
       ],
       ctaNudge: '📝 체크한 항목을 바탕으로 원장님이 직접 우리 아이의 성장 계획표를 브리핑해 드립니다.',
       ctaText: '우리 아이 맞춤 성장 계획 원장님과 상담하기',
@@ -436,8 +436,8 @@ const PAGES = [
         type: 'clean-image',
         fullscreen: true,
         title: "단순 칼슘·영양제만으로는 '닫혀가는 성장판과 면역 누수'를 막지 못합니다",
-        sub: '잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장판 연골 증식으로 에너지가 도달하지 못합니다.',
-        caption: '[에너지 누수 차단 핵심] 비염·소화불량으로 새는 면역 에너지를 막고 성장판 연골 증식에 집중시키는 것이 핵심입니다.',
+        sub: '잦은 감기·비염·소화불량으로 새는 면역 에너지를 방치한 채 영양제만 먹여서는 성장기 골격 발달으로 에너지가 도달하지 못합니다.',
+        caption: '[에너지 누수 차단 핵심] 비염·소화불량으로 새는 면역 에너지를 막고 성장기 골격 발달에 집중시키는 것이 핵심입니다.',
         imgSrc: 'detail_growth_story2_supplements_limit.jpg?v=grw2'
       },
       {
@@ -451,7 +451,7 @@ const PAGES = [
           'growth_minimal_card3_obese_to_tall_c.jpg?v=grw3v2'
         ],
         title: "소아비만 체지방 감량 & 숨은 키 성장 — '살이 키로 가는 대사 전환으로 날씬해지면서 쑥쑥 크는 전신'",
-        sub: '성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장판 연골 증식에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.',
+        sub: '성호르몬 조기 분비를 자극하는 소아비만 체지방과 습담(노폐물)을 비워내고 성장기 골격 발달에 에너지를 집중시켜, 통통하던 소아비만 아이가 날씬해지면서 위로 훤칠하게 자라납니다.',
         caption: '[소아비만 감량 & 키 성장 모션] 성장판을 닫히게 하는 과도한 체지방은 줄이고 날씬해지면서 위로 쑥쑥 자라나게 만듭니다.'
       },
       {
@@ -464,17 +464,17 @@ const PAGES = [
           'growth_minimal_card4_growing_mid.jpg?v=grw4v3',
           'growth_minimal_card4_tall_after.jpg?v=grw4v3'
         ],
-        title: "성장판 연골 증식 & 수직 골격 성장 — '또래보다 작던 키에서 위로 쑥쑥 자라나는 폭풍 성장'",
-        sub: '성호르몬 과항진 자극 없이 무릎·척추 성장판 연골모세포 분열과 골 기질 생성을 촉진하여, 키가 작던 아이가 위로 훤칠하고 탄탄하게 성장합니다.',
-        caption: '[수직 골격 성장 & 키 성장 완성] 닫혀가던 성장판 연골 증식을 깨워 작은 키에서 위로 훤칠하게 성장시킵니다.'
+        title: "성장기 골격 발달 & 바른 체형 관리 — '또래보다 작던 키에서 바르고 탄탄하게 자라나는 건강한 성장'",
+        sub: '성호르몬 과자극 우려 없이 균형 잡힌 영양 흡수와 수면·체형 관리를 통해 무릎·척추 성장기 골격 발달을 도와 건강하고 탄탄한 성장을 지원합니다.',
+        caption: '[성장기 골격 발달 & 바른 체형 관리] 성장 방해 요인을 줄이고 전신 영양·수면 균형을 맞춰 바르고 탄탄한 성장을 돕습니다.'
       },
       {
         type: 'diet-single-stage',
         stage: 1,
         fullscreen: true,
         imgSrc: 'growth-child-sleep.jpg',
-        title: "성조숙증 호르몬 안정 & 깊은 성장 숙면 — '성호르몬 과항진 차단과 밤사이 성장호르몬 분비 극대화'",
-        sub: '과열된 사춘기 성호르몬 신호와 야간 구강호흡·자율신경 긴장을 안정시켜 조기 골화를 늦추고 밤사이 성장호르몬 분비를 극대화합니다.',
+        title: "사춘기 성숙 속도 관리 & 깊은 성장 숙면 — '조기 성숙 부담 완화와 건강한 야간 수면 리듬 조성'",
+        sub: '사춘기 조기 성숙 우려 요인(소아 과체중·수면 부족 등)과 야간 구강호흡·자율신경 긴장을 완화하여 안정적인 성장 기간 확보와 깊은 숙면을 돕습니다.',
         caption: '[성조숙증 안정 & 성장 숙면] 사춘기 성호르몬 과항진을 진정시키고 깊은 숙면을 유도해 야간 성장호르몬 분비를 높입니다.'
       },
       {
@@ -488,16 +488,16 @@ const PAGES = [
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "방사선 노출 성장 엑스레이 검사는 이제 그만 - '안전한 초음파 검사'",
-        sub: '걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측',
-        caption: '[방사선 노출 성장 엑스레이 검사는 이제 그만 - 안전한 초음파 검사] 걱정되는 우리아이 성장 최종예상키 측정, 성장판 나이 측정, 뼈 길이 측정, 초경 예측을 진행합니다.',
+        title: "무방사선 초음파 성장판 참고 평가 & 체성분·성장속도 종합 분석",
+        sub: '신장·체중 성장도표 백분위, 체성분(InBody), 무방사선 초음파 성장판 연골 상태 참고 평가 및 사춘기 성숙도 점검 (※ 초음파 검사는 X-ray 골연령 검사와 검사 목적·평가 범위가 다릅니다)',
+        caption: '[방사선 노출 성장 엑스레이 검사는 이제 그만 - 안전한 초음파 검사] 신장·체중 성장도표 백분위, 체성분(InBody), 무방사선 초음파 성장판 연골 상태 참고 평가 및 사춘기 성숙도 점검 (※ 초음파 검사는 X-ray 골연령 검사와 검사 목적·평가 범위가 다릅니다)을 진행합니다.',
         imgSrc: 'growth_minimal_card7_ultrasound_noface.jpg?v=grw7v2'
       },
       {
         type: 'clean-image',
         fullscreen: true,
-        title: "골든타임에 완성하는 '또래보다 훤칠하고 탄탄한 성장 피지컬'",
-        sub: '호흡기·소화기 면역이 살아나고 성장판 연골 증식이 활발해지면 사춘기 끝까지 흔들림 없이 훤칠하고 바른 체격으로 자라납니다.',
+        title: "성장 관리 적기에 돕는 '건강하고 균형 잡힌 성장 발달'",
+        sub: '호흡기·소화기 기능이 안정되고 수면·영양·체형 균형이 잡히면 성장기 동안 건강하고 바른 체격으로 자라나는 데 도움이 됩니다.',
         caption: '[성장 피지컬 완성] 면역력과 성장판 활성으로 또래보다 훤칠하고 반듯한 체격을 완성합니다.',
         imgSrc: 'detail_growth_story5_tall_basketball.jpg?v=grw2'
       },
@@ -506,7 +506,7 @@ const PAGES = [
         fullscreen: true,
         hideTopBar: true,
         title: "교실 맨 앞줄 작은 키 · 밤새 코 막힌 구강호흡 · 밥 안 먹는 편식 — '참 곤란하다'",
-        sub: '새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 골든타임이 흘러가 가장 애타고 곤란한 순간입니다.',
+        sub: '새 학기마다 교실 맨 앞줄에 서는 작은 키, 비염과 코막힘으로 밤새 입을 벌리고 뒤척이는 수면 부족, 아무리 챙겨줘도 입을 다무는 식욕 부진까지 — 성장 관리 적기이 흘러가 가장 애타고 곤란한 순간입니다.',
         caption: '[성장 정체로 곤란한 3대 상황] 또래보다 작은 키 · 비염 구강호흡 · 식욕 부진으로 부모님 마음이 가장 곤란한 순간입니다.',
         frames: [
           'detail_growth_story1_wall_chart.jpg?v=grw1',
@@ -525,11 +525,11 @@ const PAGES = [
       partBadge: '무릎 성장판 · 감기면역 인체모형',
       eyebrow: '3D HUMAN BODY MODEL · GROWTH HONEY-TIP WAREHOUSE',
       title: "알아두면 키가 더 잘 크는 '성장 꿀팁 창고'",
-      desc: '성장판 연골 증식과 야간 성장호르몬 분비를 극대화하는 대표원장 실전 생활 꿀팁입니다.',
+      desc: '성장기 골격 발달과 야간 깊은 숙면 습관 형성을 돕는 대표원장 실전 생활 관리법입니다.',
       bg: 'illust_knee_growth_care.jpg',
       extraInfoItems: [
         {
-          badge: '꿀팁 01 · 밤 10시 숙면 골든타임',
+          badge: '꿀팁 01 · 밤 10시 깊은 숙면 시간대',
           title: '밤 10시~새벽 2시 깊은 숙면으로 성장호르몬 깨우기',
           desc: '성장호르몬은 깊은 비렘수면 단계에서 가장 왕성하게 분비되므로 밤 10시 이전 취침 습관이 핵심입니다.'
         },
@@ -541,7 +541,7 @@ const PAGES = [
         {
           badge: '꿀팁 03 · 성장판 점프 자극',
           title: '하루 15분 가벼운 줄넘기·농구로 성장판 자극',
-          desc: '무릎과 발목 성장판에 적당한 수직 압력 자극을 주면 연골모세포 분열과 골 기질 형성이 활발해집니다.'
+          desc: '무릎과 발목 주변에 적당한 탄력 운동 자극을 주면 하지 혈류 순환과 건강한 골격 발달에 도움이 됩니다.'
         },
         {
           badge: '꿀팁 04 · 성조숙증 식습관 관리',
@@ -717,7 +717,7 @@ const PAGES = [
           desc: '식이섬유와 단백질을 먼저 드시면 혈당 스파이크와 인슐린 뱃살 축적을 막고 근합성을 돕습니다.'
         },
         {
-          badge: '꿀팁 03 · 7시간 숙면 골든타임',
+          badge: '꿀팁 03 · 7시간 깊은 숙면 시간대',
           title: '밤 11시~새벽 3시 깊은 수면으로 지방 분해',
           desc: '숙면 중 분비되는 성장·대사 호르몬이 식욕 중추를 안정시키고 복부 내장지방을 스스로 태웁니다.'
         },
@@ -1864,10 +1864,10 @@ function buildPageHtml(page) {
         ? `"${p.letterParagraphs.join('<br><br>\n                  ')}"`
         : `"아들의 키 성장은 저에게 단순한 진료가 아닌, 평생의 아버지이자 임상의로서의 가장 엄격한 약속이었습니다.<br><br>
                   잔병치레로 밥을 잘 먹지 못하고 또래보다 작고 여렸던 제 아들을 위해, 매일 새벽 탕전실에서 직접 최상급 러시아 원용 분골과 청정 약재를 선별해 정성껏 달여 먹였습니다.<br>
-                  체질을 바로잡고 면역을 보강하며 꾸준히 복용한 끝에 <strong>몰라보게 든든하고 바른 체격으로 폭풍 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."`;
+                  체질을 바로잡고 면역을 보강하며 꾸준히 관리한 끝에 <strong>몰라보게 든든하고 바른 체격으로 건강하게 성장</strong>했습니다. 내 아이가 마시는 탕약과 조금의 차이도 없이 동일한 최상급 청정 규격 한약재로 우리 아이들을 진료합니다."`;
       const sonChips = (Array.isArray(p.chips) && p.chips.length > 0) ? p.chips : [
         { label: '기초 면역 리셋', value: '비염 개선 · 소화 흡수 정상화' },
-        { label: '성장판 골든타임', value: '최상급 원용 분골 · 연골 증식' },
+        { label: '성장 관리 적기', value: '최상급 원용 분골 · 연골 증식' },
         { label: '탄탄한 피지컬 완성', value: '성호르몬 균형 · 바른 골격 완성' }
       ];
       const sonSignPrefix = p.signPrefix || '아빠같은 한의사';
@@ -2093,13 +2093,13 @@ function buildPageHtml(page) {
             <div class="efficacy-visual-frame growth-tall-frame is-full-stage-frame is-growth-tall-motion">
               <div class="growth-tall-seq-stage">
                 <img class="growth-tall-seq-img seq-1" src="${s4Frames[0]}" alt="또래보다 작던 키 (성장 전)" loading="lazy" draggable="false">
-                <img class="growth-tall-seq-img seq-2" src="${s4Frames[1]}" alt="성장판 연골 증식으로 키가 자라는 중" loading="lazy" draggable="false">
+                <img class="growth-tall-seq-img seq-2" src="${s4Frames[1]}" alt="성장기 골격 발달으로 키가 자라는 중" loading="lazy" draggable="false">
                 <img class="growth-tall-seq-img seq-3" src="${s4Frames[2]}" alt="위로 쑥쑥 폭풍 키 성장 완료" loading="lazy" draggable="false">
               </div>
               <div class="growth-tall-boost-layer" aria-hidden="true">
                 <div class="growth-epiphyseal-glow"></div>
                 <div class="growth-height-laser-bar">
-                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>${p.laserBadge || '▲ 성장판 연골 증식 · 수직 폭풍 성장 UP'}</span>
+                  <span class="growth-height-laser-pill"><span class="laser-dot"></span>${p.laserBadge || '▲ 성장기 골격 발달 · 균형 성장 관리'}</span>
                 </div>
                 <svg class="growth-upward-arrows-svg" viewBox="0 0 280 240" fill="none">
                   <path class="growth-up-arrow g-arr-1" d="M88 188 L88 54 M76 70 L88 54 L100 70" />
@@ -2779,7 +2779,7 @@ function buildPageHtml(page) {
               <circle cx="465" cy="212" r="7" fill="#6EE7B7" filter="url(#examGlow9)"/>
               <g transform="translate(465, 178)">
                 <rect x="-88" y="-13" width="176" height="26" rx="13" fill="rgba(10,18,16,0.86)" stroke="#6EE7B7" stroke-width="1.3"/>
-                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">🌱 성장판 연골 증식 골든타임</text>
+                <text x="0" y="4" text-anchor="middle" fill="#A7F3D0" font-size="10.5" font-weight="800" font-family="Pretendard, sans-serif">🌱 소아·청소년 성장 관리 적기</text>
               </g>
               <g transform="translate(790, 108)">
                 <circle cx="0" cy="0" r="16" fill="rgba(253,230,138,0.28)" class="exam-doppler-pulse"/>
@@ -10132,14 +10132,14 @@ function buildPageHtml(page) {
       <div class="urgent-shockwave-ring ring-2"></div>
 
       <div class="urgent-slam-stage-1">
-        <span class="urgent-top-badge">🚨 DOCTOR'S URGENT WARNING · 5가지 핵심 증상 100% 모두 해당</span>
+        <span class="urgent-top-badge">📋 CLINICAL CHECKLIST SUMMARY · 5가지 주요 체크 항목 확인</span>
       </div>
 
       <div class="urgent-slam-stage-2">
         <div class="urgent-stamp-box">
           <h2 class="urgent-main-headline" id="urgent-main-headline">
-            “더이상 방치하지말고
-            <em>당장 진료받으세요”</em>
+            “체크하신 증상을 바탕으로
+            <em>세심한 1:1 진료 상담을 권장합니다”</em>
           </h2>
         </div>
       </div>
@@ -10781,8 +10781,8 @@ function buildPageHtml(page) {
           }
           if (docCommentPill) docCommentPill.textContent = '5개 모두 체크 · 100% 긴급';
           if (docCommentBarFill) docCommentBarFill.style.width = '100%';
-          if (docCommentTitle) docCommentTitle.textContent = '“더이상 방치하지말고 당장 진료받으세요”';
-          if (docCommentDesc) docCommentDesc.textContent = '5가지 핵심 증상이 모두 해당됩니다! 더이상 방치하지말고 당장 진료받으세요. 지금 즉시 대표원장 1:1 정밀 진맥과 근본 치료를 시작하셔야 합니다.';
+          if (docCommentTitle) docCommentTitle.textContent = '“세심한 1:1 진맥 및 진료 상담을 권장합니다”';
+          if (docCommentDesc) docCommentDesc.textContent = '체크하신 5가지 주요 항목이 모두 확인되었습니다. 현재 증상과 체질, 생활습관을 종합적으로 점검하기 위해 안정위 대표원장과의 1:1 진맥 및 진료 상담을 받아보시길 권장합니다.';
           if (justChecked) {
             window.triggerUrgent5CheckAlert();
           }
@@ -11523,7 +11523,7 @@ function buildPageHtml(page) {
           ctx.stroke();
           ctx.fillStyle = '#FDE68A';
           ctx.font = '800 13px Pretendard, sans-serif';
-          ctx.fillText('▲ 성장판 연골 증식 · 학술 검증 성장 치료', rulerX - 28, topY - 10);
+          ctx.fillText('▲ 성장기 골격 발달 · 맞춤형 한방 성장관리', rulerX - 28, topY - 10);
 
           if (cycleNorm > 0.55) {
             const starAlpha = Math.min(1, (cycleNorm - 0.55) / 0.35);
