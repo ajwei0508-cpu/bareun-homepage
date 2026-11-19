@@ -26,3 +26,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
     - **무릎(`?part=knee`) 클릭 시 소아 키 성장·성조숙증 심층 백과**: 성장 저해 5대 원인, **감기·비염이 잦은 아이 부모님 실전 6단계 관리 프로토콜**, 약선 음식 vs 금기 식품, 수면·점프·경혈(독비·족삼리·양릉천) 루틴, 전세계 SCI/PubMed 논문 레퍼런스 완벽 수록.
   - **전국 한의사 대상 B2B 템플릿 화이트라벨(`clinic-template-config.js`) & 3단 시안성 모드(`다크 로얄` / `온기 한지 화이트` / `큰글씨 고시안성`) 탑재 완료**.
   - 상세 인수인계 내역은 `D:\bareun-homepage\HANDOFF_LATEST.md`에 기록되어 있습니다.
+
+# 🚨 CRITICAL FREEZE & ISOLATION RULES (2026-11-19 · 절대 준수)
+1. **AEO · SEO · GEO · 자동포스팅 코드 절대 임의 수정 금지 (사전 강력 경고장 + 문제점 상세 안내 + 명시적 승인 필수)**:
+   - `seo-master-config.js`, `geo-entity-dossier.js`, `auto-blog-engine.js`, `disease-blog-seed-data.js`, `body-3d-auto-notes-data.js`, `llms.txt`, `llms-full.txt`, `bareun-member-private-qna.php`(SEO/Sitemap/RSS/Robots/IndexNow/2일 크론 구간), `deploy-cafe24.js`(포스트/IndexNow 구간)는 향후 절대 임의 수정 금지.
+   - 수정이 필요할 때는 **반드시 수정 전 🔴 강력 경고장**을 출력하고, 수정 시 나타날 수 있는 모든 부작용·순위 변동·크롤링/색인 문제점을 상세히 설명한 뒤 사용자의 명시적 승인을 받아야 함.
+2. **B2B 상세페이지 및 샘플 페이지 완전 독립 분리**:
+   - `b2b-landing.html`, `sample.html`, `sales-pitch.html` 등 B2B·샘플 관련 코드는 한의원 공식 홈페이지(`www.bareunhaniwon.com`)의 코드·SEO·RSS·사이트맵·번들·배포 파이프라인과 **절대로 연결해서 잡지 말고 완전 별도로 분리** 관리함.
