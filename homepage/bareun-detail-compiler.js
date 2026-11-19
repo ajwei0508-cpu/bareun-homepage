@@ -1061,7 +1061,7 @@ function buildPageHtml(page) {
         { strong: '1:1 전담 케어', span: '감량 후 요요방지 밀착 코칭' }
       ];
       const ctaTextLabel = p.ctaLabel || '📞 비대면 전화처방 바로 신청 ↗';
-      const teleVideoUrl = p.videoSrc || 'https://bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4#t=0.1';
+      const teleVideoUrl = String(p.videoSrc || 'https://www.bareunhaniwon.com/wp-content/uploads/2026/09/%EB%8B%A4%EC%9D%B4%EC%96%B4%ED%8A%B8_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%95%88%EB%82%B4_%EC%98%81%EC%83%81_%EC%A0%9C%EC%9E%91_20260921140439.mp4#t=0.1').replace(/^https?:\/\/bareunhaniwon\.com\//i, 'https://www.bareunhaniwon.com/');
       return `
         <!-- PLATE ${numStr}: Non-Face-to-Face Telemedicine & Express Delivery Video Suite -->
         <article class="project-details-item is-diet-tele-plate is-clean-plate${idx === 0 ? ' is-active-plate' : ''}" data-fullscreen>
@@ -1099,7 +1099,7 @@ function buildPageHtml(page) {
                   id="diet-tele-video-el"
                   controls
                   playsinline
-                  preload="metadata"
+                  preload="none"
                   onplay="this.closest('.concierge-video-frame')?.classList.add('is-playing')"
                   onpause="this.closest('.concierge-video-frame')?.classList.remove('is-playing')"
                   onended="this.closest('.concierge-video-frame')?.classList.remove('is-playing')">

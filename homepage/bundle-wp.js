@@ -106,7 +106,7 @@ function enrichStandaloneHtml(rawHtml, seoKey, srcFile) {
     return token;
   });
 
-  let markedFirstHeroImg = false;
+  let realPhotoIdx = 0;
   masked = masked.replace(/<img\b([^>]*)>/gi, (full, attrs) => {
     let newAttrs = attrs;
     const srcMatch = newAttrs.match(/\bsrc\s*=\s*["']([^"']*)["']/i);
@@ -123,17 +123,23 @@ function enrichStandaloneHtml(rawHtml, seoKey, srcFile) {
       if (!/\bwidth\s*=/i.test(newAttrs)) newAttrs += ` width="${w}"`;
       if (!/\bheight\s*=/i.test(newAttrs)) newAttrs += ` height="${h}"`;
     }
-    const isRealPhoto = srcMatch && srcMatch[1] && !srcMatch[1].startsWith('data:');
+    const isRealPhoto = Boolean(srcMatch && srcMatch[1] && !srcMatch[1].startsWith('data:'));
     newAttrs = newAttrs.replace(/\s*\bloading\s*=\s*["'][^"']*["']/gi, '');
-    newAttrs += ' loading="eager"';
+    if (isRealPhoto) {
+      realPhotoIdx += 1;
+      if (realPhotoIdx <= 3) {
+        newAttrs += ' loading="eager"';
+        if (realPhotoIdx === 1 && !/\bfetchpriority\s*=/i.test(newAttrs)) {
+          newAttrs += ' fetchpriority="high"';
+        }
+      } else {
+        newAttrs += ' loading="lazy"';
+      }
+    } else {
+      newAttrs += ' loading="lazy"';
+    }
     if (!/\bdecoding\s*=/i.test(newAttrs)) {
       newAttrs += ' decoding="async"';
-    }
-    if (isRealPhoto && !markedFirstHeroImg) {
-      markedFirstHeroImg = true;
-      if (!/\bfetchpriority\s*=/i.test(newAttrs)) {
-        newAttrs += ' fetchpriority="high"';
-      }
     }
     return `<img${newAttrs.replace(/\s*\/\s*$/, '')}>`;
   });

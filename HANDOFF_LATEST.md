@@ -1,11 +1,29 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-19 v9.24 (① **옵션 A 최종 1회 SEO·GEO·자동포스팅 정상화 및 영구 동결(Freeze) 전환** · ② **B2B(`/b2b/`)·샘플(`/sample/`) 코드·빌드·배포 완전 분리(`b2b-standalone/bundle-and-deploy-b2b.js`) 및 `noindex, nofollow` + `X-Robots-Tag` 격리** · ③ **카페24 트래픽 폭탄 진화(`59.2MB` 공진단 영상 지연로딩 + RSS `post` 전용 초경량화 + `deploy-cafe24.js` 73포스트 덮어쓰기/삭제·90URL IndexNow 폭격 제거)**) · 2026-11-19 v9.23 (11대 전 질환 상세카드페이지 고검색량 인터랙티브 FAQ 카드 66문항 구축)
+> **최종 업데이트**: 2026-11-19 v9.25 (**최종 마스터 세팅 v2.0 단 1회 완결 및 영구 동결(Master Freeze)** — ① 4번 카드 이후 이미지 `loading="lazy"` 전환 · ② `/health-note-*` 1시간 정적 캐시(`public, max-age=3600`) · ③ RSS `/feed/` 20건·`≤120KB` 초경량 요약 피드 · ④ `/body-explorer/`·`/ask-doctor/` 중복 `758KB` 인라인 JSON 제거 + `diet` non-www 영상 링크 통일 · ⑤ **2일 자동포스팅 v2.0 롱폼(`1,600~2,400자`) 임상관찰 경험 + 4행 비교표 + 3장 중 3번 슬롯 ‘스튜디오 등록 안정위 대표원장 실제 얼굴 고정(Identity-Lock)’ 자동 생성 & 402/429 즉시 중단 가드** · ⑥ 선택적 Bing `msvalidate.01` 슬롯 탑재) · 2026-11-19 v9.24 (옵션 A SEO·GEO 정상화 + B2B·샘플 완전 격리 + 공진단 59.2MB 영상 지연로딩) · 2026-11-19 v9.23 (11대 전 질환 상세카드페이지 고검색량 인터랙티브 FAQ 카드 66문항 구축)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
 
-## 🚀 최신 (2026-11-19 v9.24 · 옵션 A SEO·GEO·포스팅 최종 1회 정상화 후 영구 동결 + B2B·샘플 완전 독립 분리 + 카페24 트래픽 폭탄 진화)
+## 🚀 최신 (2026-11-19 v9.25 · 최종 마스터 세팅 v2.0 완결 · 스튜디오 원장님 얼굴 샘플링 자동포스팅 연동 · 영구 동결)
+
+1. **스튜디오 등록 원장님 얼굴 샘플링(Identity-Lock) 기반 2일 자동포스팅 v2.0 완성 (`bareun-member-private-qna.php`)**:
+   - **3단 멀티 화보 중 3번 슬롯(`routineIllustImg` · 임상 가이드 03)**에 `Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal(..., $use_director_face = true)`를 연동하여, 스튜디오에 등록된 **안정위 대표원장 8각도 정방향 얼굴 샘플(`OPT_ANGLE_SAMPLES` + `director-angle-refs/`)** 중 상황에 가장 어울리는 3각도를 자동 선별해 매 포스팅 주제에 맞는 현대 한의원 진료실 실사 화보를 자동 생성.
+   - **제3자 얼굴 환각 0% 가드(Zero-Stranger-Face Guard)**: `$use_director_face = true`일 때는 텍스트 전용 무료 FLUX 폴백을 원천 차단하고, 일시적 API 한도 초과 시 부위별 원내 실사 검증 자산(`director_exam_card1_ultrasound.webp`, `detail_director_consult.webp`, `detail_director_herbs.webp`, `detail_director_pulse.webp` 등)으로 안전 폴백.
+   - **네이버 AI 브리핑 · 구글 E-E-A-T v2.0 롱폼 프롬프트**: 순수 고유 본문 `1,600~2,400자`(`deepMechanism` 4단락 + 정량 기준 수치 3개+ + 4행 `comparisonTable` + 익명화된 15년 임상 관찰 노트 `clinicalObservation` + 3문항 FAQ), KST 오전 `09:10~11:45` 자연 분산 스케줄, HTTP `402/429` 선불 크레딧·월간 한도 초과 시 연쇄 재시도 즉시 중단(Short-Circuit) 가드 탑재.
+2. **Core Web Vitals · 카페24 트래픽 · 크롤링 응답속도 최종 마스터 세팅**:
+   - `bundle-wp.js`: 1~3번 대표 이미지만 `loading="eager"`(1번 `fetchpriority="high"`), 4번 이후 전 이미지 `loading="lazy" decoding="async"` 전환 + `wp_lazy_loading_enabled` 차단 해제.
+   - `/health-note-*` 72편+: `DONOTCACHEPAGE` 및 `no-cache` 제거 → `Cache-Control: public, max-age=3600, stale-while-revalidate=86400` 적용(조회수는 실시간 비동기 API 유지).
+   - RSS `/feed/`: `option_posts_per_rss`와 `posts_per_page`를 **20건**으로 통일하고 초경량 핵심 요약 + 정본 URL 링크 구조로 전환(`982KB → ≤120KB` raw / `~25KB` gzip).
+   - `/body-explorer/` & `/ask-doctor/`: 일반 방문자/크롤러 응답에서 중복 `758KB` 인라인 `notes` JSON 주입 제거(`?studioPreview=1` 스튜디오 미리보기 시에만 풀 로드).
+   - `bareun-detail-compiler.js` / `detail-pages-config.json`: 잔여 non-www `https://bareunhaniwon.com/` 영상 URL을 `https://www.bareunhaniwon.com/` 정본으로 통일 + 다이어트 안내 영상 `preload="none"` 적용.
+   - 선택적 Bing `msvalidate.01` 메타 슬롯(WP 관리자 설정 + REST API) 지원(GSC 원클릭 연동 시 미입력 유지).
+3. **AEO · SEO · GEO · 자동포스팅 영구 동결(Freeze) 전환**:
+   - 본 v9.25 단 1회 배포 완료 후 특별한 플랫폼 공식 공지가 없는 이상 관련 코드를 영구 동결하고 2~3주간 순위 안정화 운영.
+
+---
+
+## 🚀 직전 (2026-11-19 v9.24 · 옵션 A SEO·GEO·포스팅 최종 1회 정상화 후 영구 동결 + B2B·샘플 완전 독립 분리 + 카페24 트래픽 폭탄 진화)
 
 1. **1~5단계 SEO/GEO/자동포스팅 최종 1회 정상화 (이후 AEO·SEO·GEO·포스팅 코드 영구 동결)**:
    - `geo-entity-dossier.js`: `1px × 1px / opacity: 0.01 / z-index: -1` 숨김 CSS 완전 폐기 → 100% 정상 가시성 네이티브 `<details>` 아코디언 전환.

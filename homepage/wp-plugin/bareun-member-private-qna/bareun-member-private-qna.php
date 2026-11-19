@@ -29,7 +29,6 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     const CRON_HOOK_NOTES     = 'bareun_cron_2day_body_notes';
 
     public static function init() {
-        add_filter('wp_lazy_loading_enabled', '__return_false');
         add_filter('cron_schedules', array(__CLASS__, 'register_two_day_cron_schedule'));
         add_action('init', array(__CLASS__, 'maybe_ensure_schema'));
         add_action('init', array(__CLASS__, 'maybe_track_geo_ai_crawler'), 1);
@@ -51,7 +50,16 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
     public static function maybe_schedule_body_notes_cron() {
         if (!wp_next_scheduled(self::CRON_HOOK_NOTES)) {
-            wp_schedule_event(time() + 3600, 'bareun_every_two_days', self::CRON_HOOK_NOTES);
+            // Schedule within natural KST morning publishing window (09:10 ~ 11:45 KST) instead of a fixed robotic timestamp
+            $now_utc = time();
+            $kst_now = $now_utc + 32400;
+            $kst_day_start_utc = ((int) floor($kst_now / 86400)) * 86400 - 32400;
+            $jitter_sec = wp_rand(600, 9900); // 09:10 ~ 11:45 KST offset from 09:00 KST
+            $target_utc = $kst_day_start_utc + (9 * 3600) + $jitter_sec;
+            if ($target_utc <= $now_utc + 300) {
+                $target_utc += 86400;
+            }
+            wp_schedule_event($target_utc, 'bareun_every_two_days', self::CRON_HOOK_NOTES);
         }
     }
 
@@ -2638,6 +2646,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         $extra_chunks = array(
             (string) ($note['seoTitle'] ?? ''),
             (string) ($note['directAnswer'] ?? ''),
+            (string) ($note['clinicalObservation'] ?? ''),
             (string) ($note['empathyIllustCaption'] ?? ''),
             (string) ($note['deepIllustCaption'] ?? ''),
             (string) ($note['routineIllustCaption'] ?? '')
@@ -2746,25 +2755,29 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         }
 
         $base_prompt = "[역할 정의]\n"
-            . "너는 환자의 일상 아픔에 깊이 공감하며 쉬운 언어로 소통하는 한의학 메디컬 에디터이자, 의학적 정확성과 의료법 제56조를 엄격히 통제하는 수석 팩트체커야.\n"
-            . "SCI급 의학·생리학 학술 논문을 기반으로 하되, 초등학생 학부모와 일반인도 단숨에 고개를 끄덕이는 따뜻한 일상 공감 문체로 작성해야 해.\n\n"
+            . "너는 15년 이상 임상 현장에서 환자를 살펴온 한의학 수석 메디컬 에디터이자, 의학적 정확성과 의료법 제56조를 엄격히 통제하는 수석 팩트체커야.\n"
+            . "SCI급 의학·생리학 학술 논문을 기반으로 하되, 초등학생 학부모와 일반인도 단숨에 고개를 끄덕이는 따뜻한 일상 공감 문체로 **순수 고유 본문 1,600~2,400자 분량의 심층 의학 칼럼**을 작성해야 해.\n\n"
             . "[입력 변수]\n"
             . "- 클릭 부위: [" . $selected['partLabel'] . "]\n"
             . "- 시드 테마 방향: [" . $theme . "] (단, 기발행 목록과 겹치면 더 구체적이고 새로운 세부 생활 상황으로 확장할 것)\n"
             . "- 타깃 독자: " . $selected['targetReader'] . "\n\n"
             . $dedup_block
-            . "[필수 반영 핵심 규칙 — 풀세트(7단계 심층 본문 + 실생활 검색 키워드 5개 + 자가점검 5항목 + 상·중·하 3단 멀티 화보 설계)]\n"
+            . "[필수 반영 핵심 규칙 — v2.0 롱폼 심층 본문 + 임상 관찰 경험(Experience) + 정량 수치 + 4행 비교표 + 3단 화보(3번 슬롯 대표원장 실사 연동)]\n"
             . "1. 질문형 제목(title): 독자가 겪는 생생한 상황으로 시작해 물음표(?)로 끝날 것. 지역명(대전, 서울 등)은 본문·제목·키워드에 절대 넣지 말 것.\n"
             . "2. 소비자 실생활 검색 키워드(consumerKeywords): 환자들이 네이버·구글·AI 검색창에 실제로 자주 입력하는 구어체·증상형 키워드 정확히 5개 배열 (지역명 제외).\n"
             . "3. 언어 순화: 어려운 해부학 용어(대퇴골, 골단판, 아로마타제, 추간판, 수핵, 후두하근, 모유두, 나선동맥, 시상하부, 내장지방세포, 배뇨근, 장상피화생) 절대 사용 금지. 반드시 쉬운 일상 비유(성장 연골판, 허벅지 뼈, 디스크 말랑 쿠션, 뒷목 깊은 근육 등)로 풀 것.\n"
-            . "4. 홍보·단정어 완전 금지: 완치, 100%, 최고, 최초, 유일, 특효, 무조건, 보장, 예약, 내원, 방문해, 상담받, 문의하, 바른한의원, 원장, 할인, 이벤트, 치료 프로그램, 처방받 절대 사용 금지.\n"
-            . "5. 심층 원리 본문(deepMechanism 3단락) + 생활 리듬 관찰 포인트(clinicalObservation) + 자가점검 5항목(selfCheckItems 5개) + 대면 확인 권고 신호(redFlags 2개)까지 풍성한 정보 밀도(Information Gain)를 갖출 것.\n"
-            . "6. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
-            . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주).\n"
+            . "4. 홍보·단정어 완전 금지: 완치, 100%, 최고, 최초, 유일, 특효, 무조건, 보장, 예약, 내원, 방문해, 상담받, 문의하, 바른한의원, 원장, 할인, 이벤트, 치료 프로그램, 처방받 절대 사용 금지 (단, 이미지 생성 전용 routinePrompt 안에서만 의료진 인물 연출 묘사 허용).\n"
+            . "5. 심층 롱폼 본문(deepMechanism 4단락) & 정량 기준: 각 단락은 4~5문장(단락당 250~380자)으로 깊이 있게 서술하고, 글 전체에 **구체적인 정량 기준 수치(시간·온도·각도·횟수·비율·기간 등)를 최소 3개 이상** 자연스럽게 포함할 것.\n"
+            . "6. 진료실 임상 관찰 노트(clinicalObservation): 네이버 AI 브리핑과 구글 E-E-A-T의 직접 경험(Experience) 기준을 충족하도록, '진료 현장에서 오랜 기간 다양한 연령대의 생활 리듬을 관찰해 보면~' 형식으로 **익명·일반화된 실제 임상 관찰 패턴과 생활 개선 포인트 4~5문장(280~420자)**을 구체적으로 작성할 것(금지어 '원장·바른한의원·내원·예약' 절대 사용 금지).\n"
+            . "7. 한눈에 비교하는 생활 기준표(comparisonTable): 독자와 AI 검색엔진이 즉시 비교할 수 있도록 3~4열 × 정확히 4행의 실용 비교표(부담이 쌓이는 습관 vs 권장 실천 기준 vs 몸의 반응)를 작성하고 권장 행 번호(recommendedRowIndex, 0~3)를 지정할 것.\n"
+            . "8. 자가점검 5항목(selfCheckItems 5개) + 대면 확인 권고 신호(redFlags 2~3개) + 독자 핵심 질문 FAQ 3개(faqItems 3개)를 충실히 작성할 것.\n"
+            . "9. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
+            . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주, 글자 0%).\n"
             . "   - 슬롯 ②(mechanismPrompt): 본문 중단 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 우아하게 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
-            . "   - 슬롯 ③(routinePrompt): 하단 실천부 좌·우 분할(Before 나쁜 자세/습관 vs After 바른 실천 루틴) 비교 에디토리얼 화보 (글자·워터마크 0%).\n\n"
+            . "   - 슬롯 ③(routinePrompt — 스튜디오 등록 대표원장 실제 얼굴 고정 실사): **반드시 한글로 작성**하며, 순백색 한의사 가운을 입은 한국인 남성 한의사가 이번 글의 핵심 주제(예: 초음파·체열 모니터 설명, 바른 자세 시범, 태블릿으로 수면·식습관 생활 리듬 브리핑 등)에 꼭 맞는 깔끔하고 세련된 현대 한의원 진료실(따뜻한 아이보리·우드 톤, 자연광, 정돈된 책상)에서 온화한 우측 15° 미소로 차분히 설명하는 16:9 인물 실사 화보 장면을 구체적으로 지시할 것 (인물 1명 단독, 워터마크·글자 0%).\n"
+            . "   - routineIllustCaption: '진료실에서 ~ 생활 관리 기준을 차분히 안내하는 한의사'처럼 금지어('원장·바른한의원') 없이 자연스러운 한글 캡션 작성.\n\n"
             . "[출력 JSON 스키마 (순수 JSON 객체만 반환)]\n"
-            . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 요약 2~3문장\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유로 풀어낸 심층 생리 원리 1단락 (3~4문장)\",\"일상 습관이 미치는 영향을 설명하는 심층 원리 2단락 (3~4문장)\",\"회복 리듬을 되살리는 생활 기전 3단락 (3~4문장)\"],\"clinicalObservation\":\"일상에서 흔히 관찰되는 몸의 신호와 실천 팁 2~3문장\",\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 전·후 실천 루틴 화보 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"16:9 split-screen left-right comparison lifestyle editorial photo showing bad habit vs healthy evening routine, warm ivory tone, zero text\"}";
+            . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 직답 요약 3~4문장 (정량 기준 포함)\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유와 정량 수치를 담은 심층 생리 원리 1단락 (4~5문장)\",\"일상 습관이 부위별 순환·신경·근육에 미치는 영향 2단락 (4~5문장)\",\"증상이 누적되는 악순환 고리와 신호 3단락 (4~5문장)\",\"회복 리듬을 되살리는 구체적 생활 기전과 실천 기준 4단락 (4~5문장)\"],\"clinicalObservation\":\"진료 현장에서 오랜 기간 관찰되는 실제 생활 패턴과 체크 포인트 4~5문장 (금지어 제외)\",\"comparisonTable\":{\"heading\":\"핵심 생활 습관 한눈에 비교하기\",\"intro\":\"비교표 핵심 안내 1문장\",\"headers\":[\"구분\",\"부담이 쌓이는 습관\",\"권장 생활 기준\",\"기대되는 몸의 변화\"],\"rows\":[[\"항목1\",\"피해야 할 습관\",\"구체적 수치 포함 권장 기준\",\"긍정적 변화\"],[\"항목2\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목3\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목4\",\"피해야 할 습관\",\"권장 기준\",\"변화\"]],\"recommendedRowIndex\":0},\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\",\"대면 확인이 필요한 증상 신호 3\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"정량 기준을 포함한 친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"},{\"q\":\"독자가 자주 혼동하는 질문 3?\",\"a\":\"친절하고 명확한 답변 3\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 진료실 생활 관리 가이드 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"깔끔하고 세련된 현대 한의원 진료실 자연광 아래, 순백색 한의사 가운을 입은 한국인 남성 한의사가 우측 15° 온화한 미소로 주제에 맞는 생활 건강 기준을 설명하는 85mm 상반신 인물 실사 화보\"}";
 
         $feedback = '';
         $verified_candidate = null;
@@ -2774,6 +2787,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $models_to_try = array('gemini-2.5-pro', 'gemini-2.5-flash');
             $parsed = null;
             $last_err = '';
+            $billing_halted = false;
 
             foreach ($models_to_try as $m_id) {
                 $url = 'https://generativelanguage.googleapis.com/v1beta/models/' . $m_id . ':generateContent?key=' . rawurlencode($api_key);
@@ -2789,23 +2803,39 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 $res = wp_remote_post($url, array(
                     'headers' => array('Content-Type' => 'application/json'),
                     'body'    => $body_payload,
-                    'timeout' => 45
+                    'timeout' => 55
                 ));
                 if (is_wp_error($res)) {
                     $last_err = $res->get_error_message();
                     continue;
                 }
-                if (wp_remote_retrieve_response_code($res) !== 200) {
-                    $last_err = 'HTTP ' . wp_remote_retrieve_response_code($res);
+                $http_code = wp_remote_retrieve_response_code($res);
+                $raw_body  = wp_remote_retrieve_body($res);
+                if ($http_code !== 200) {
+                    $last_err = 'HTTP ' . $http_code;
+                    if ($http_code === 402 || stripos($raw_body, 'prepayment credits') !== false || stripos($raw_body, 'credits are depleted') !== false) {
+                        $last_err = 'HTTP 402 — Google AI Studio 선불 크레딧 소진(충전 필요)';
+                        $billing_halted = true;
+                        break;
+                    }
+                    if ($http_code === 429 && (stripos($raw_body, 'spending cap') !== false || stripos($raw_body, 'billing') !== false)) {
+                        $last_err = 'HTTP 429 — Google AI Studio 월간 사용 한도(Spend Cap) 도달';
+                        $billing_halted = true;
+                        break;
+                    }
                     continue;
                 }
-                $raw_json = json_decode(wp_remote_retrieve_body($res), true);
+                $raw_json = json_decode($raw_body, true);
                 $text_out = $raw_json['candidates'][0]['content']['parts'][0]['text'] ?? '';
                 $try_parsed = json_decode($text_out, true);
                 if (is_array($try_parsed)) {
                     $parsed = $try_parsed;
                     break;
                 }
+            }
+
+            if ($billing_halted) {
+                return array('ok' => false, 'message' => $last_err);
             }
 
             if (!is_array($parsed)) {
@@ -2829,7 +2859,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $tru_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['truth'] ?? array()), 0, 2)));
             $myt_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['myth'] ?? array()), 0, 2)));
             $chk_items = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['check'] ?? array()), 0, 2)));
-            $deep_mech = array_values(array_filter(array_map('sanitize_textarea_field', array_slice((array) ($parsed['deepMechanism'] ?? array()), 0, 3))));
+            $deep_mech = array_values(array_filter(array_map('sanitize_textarea_field', array_slice((array) ($parsed['deepMechanism'] ?? array()), 0, 4))));
             if (empty($deep_mech)) {
                 $deep_mech = $tru_lines;
             }
@@ -2842,6 +2872,33 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                             'a' => sanitize_textarea_field($fq['a'])
                         );
                     }
+                }
+            }
+
+            $comp_table_clean = null;
+            if (!empty($parsed['comparisonTable']) && is_array($parsed['comparisonTable'])) {
+                $ct_raw = $parsed['comparisonTable'];
+                $ct_headers = array_values(array_filter(array_map('sanitize_text_field', array_slice((array) ($ct_raw['headers'] ?? array()), 0, 4))));
+                $ct_rows = array();
+                if (!empty($ct_raw['rows']) && is_array($ct_raw['rows'])) {
+                    foreach (array_slice($ct_raw['rows'], 0, 5) as $r_item) {
+                        if (is_array($r_item) && count($r_item) >= 2) {
+                            $ct_rows[] = array_values(array_map('sanitize_text_field', array_slice($r_item, 0, count($ct_headers) ?: 4)));
+                        }
+                    }
+                }
+                if (count($ct_headers) >= 2 && count($ct_rows) >= 2) {
+                    $rec_row_idx = isset($ct_raw['recommendedRowIndex']) ? (int) $ct_raw['recommendedRowIndex'] : 0;
+                    if ($rec_row_idx < 0 || $rec_row_idx >= count($ct_rows)) {
+                        $rec_row_idx = 0;
+                    }
+                    $comp_table_clean = array(
+                        'heading'             => sanitize_text_field($ct_raw['heading'] ?? ($kw_main . ' 생활 기준 한눈에 비교하기')),
+                        'intro'               => sanitize_textarea_field($ct_raw['intro'] ?? ''),
+                        'headers'             => $ct_headers,
+                        'rows'                => $ct_rows,
+                        'recommendedRowIndex' => $rec_row_idx
+                    );
                 }
             }
 
@@ -2879,6 +2936,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'deepMechanism'        => $deep_mech,
                 'deepParagraphs'       => $deep_mech,
                 'clinicalObservation'  => $clin_obs_gen,
+                'comparisonTable'      => $comp_table_clean,
                 'myth'                 => $myt_lines,
                 'mythLines'            => $myt_lines,
                 'check'                => $chk_items,
@@ -2892,9 +2950,9 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'deepReference'        => '참고 문헌 · ' . $acad_basis,
                 'empathyIllustCaption' => sanitize_text_field($parsed['empathyIllustCaption'] ?? ($selected['partLabel'] . ' 일상 공감 장면')),
                 'deepIllustCaption'    => sanitize_text_field($parsed['deepIllustCaption'] ?? ($selected['partLabel'] . ' 핵심 기전 도해')),
-                'routineIllustCaption' => sanitize_text_field($parsed['routineIllustCaption'] ?? ($selected['partLabel'] . ' 전·후 생활 실천 루틴')),
+                'routineIllustCaption' => sanitize_text_field($parsed['routineIllustCaption'] ?? ($selected['partLabel'] . ' 진료실 생활 관리 가이드')),
                 'auditPassed'          => true,
-                'source'               => 'gemini-fullset-3slot-verified'
+                'source'               => 'gemini-fullset-3slot-v2-director'
             );
 
             $check_res = self::validate_body_note_three_stage($candidate);
@@ -2914,26 +2972,43 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             return array('ok' => false, 'message' => '3단계 자가 검수 기준을 통과하지 못해 발행을 보류했습니다.');
         }
 
-        // Generate 3 bespoke 16:9 images via Argon High / Studio Engine (with part flagship fallback)
+        // Generate 3 bespoke 16:9 images:
+        // Slot 1 (empathy)   -> Faceless lifestyle editorial photo
+        // Slot 2 (mechanism) -> 3D cashmere ivory + gold medical editorial illustration
+        // Slot 3 (routine)   -> Studio-registered Director Ahn Identity-Lock Clinic Editorial Photo!
         $pid = $verified_candidate['partId'];
         $emp_url = '';
         $mec_url = '';
         $rou_url = '';
         if (class_exists('Bareun_Custom_Studio_Engine_V4')) {
             if ($verified_prompts['empathy'] !== '') {
-                $emp_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['empathy'], $pid . '_emp', $api_key);
+                $emp_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['empathy'], $pid . '_emp', $api_key, false);
             }
             if ($verified_prompts['mechanism'] !== '') {
-                $mec_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['mechanism'], $pid . '_mec', $api_key);
+                $mec_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['mechanism'], $pid . '_mec', $api_key, false);
             }
             if ($verified_prompts['routine'] !== '') {
-                $rou_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['routine'], $pid . '_rou', $api_key);
+                $rou_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($verified_prompts['routine'], $pid . '_dir', $api_key, true);
             }
         }
 
+        // Curated real clinic Director Ahn photos per body part (zero stranger-face fallback guarantee)
+        $director_real_fallbacks = array(
+            'knee'       => 'webp/director_exam_card1_ultrasound.webp',
+            'cervical'   => 'webp/detail_director_consult.webp',
+            'lumbar'     => 'webp/detail_director_consult.webp',
+            'gongjindan' => 'webp/detail_director_herbs.webp',
+            'syncope'    => 'webp/detail_director_pulse.webp',
+            'digest'     => 'webp/detail_director_pulse.webp',
+            'gut'        => 'webp/director_exam_card5_bodyfat_inbody.webp',
+            'uterus'     => 'webp/detail_director_pulse.webp',
+            'prostate'   => 'webp/card_1_director.webp'
+        );
+        $dir_fallback = isset($director_real_fallbacks[$pid]) ? $director_real_fallbacks[$pid] : 'webp/detail_director_consult.webp';
+
         $verified_candidate['empathyIllustImg'] = $emp_url !== '' ? $emp_url : ('webp/hn_' . $pid . '_20261111_empathy.webp');
         $verified_candidate['deepIllustImg']    = $mec_url !== '' ? $mec_url : ('hn_' . $pid . '_20261111_mechanism.jpg');
-        $verified_candidate['routineIllustImg'] = $rou_url !== '' ? $rou_url : ('webp/hn_' . $pid . '_20261111_routine.webp');
+        $verified_candidate['routineIllustImg'] = $rou_url !== '' ? $rou_url : $dir_fallback;
 
         $kw_suffix = !empty($verified_candidate['consumerKeywords'][0]) ? (' — ' . $verified_candidate['consumerKeywords'][0]) : '';
         $verified_candidate['empathyIllustAlt'] = $verified_candidate['empathyIllustCaption'] . $kw_suffix;
@@ -3286,8 +3361,8 @@ class Bareun_Master_SEO_Engine_V1 {
         add_filter('wp_sitemaps_posts_entry', array(__CLASS__, 'filter_sitemap_post_entry'), 10, 3);
         add_filter('robots_txt', array(__CLASS__, 'filter_robots_txt'), 99, 2);
 
-        // RSS 2.0 Feed Optimization for Naver Search Advisor & Feed Readers (35 latest modified items keeps RSS < 550 KB forever while wp-sitemap.xml exposes 100% of URLs)
-        add_filter('option_posts_per_rss', function () { return 35; }, 99);
+        // RSS 2.0 Feed Optimization for Naver Search Advisor & Feed Readers (20 latest slim medical posts keeps RSS <= 120 KB raw / ~25 KB gzip & <0.3s forever while wp-sitemap.xml exposes 100% of URLs)
+        add_filter('option_posts_per_rss', function () { return 20; }, 99);
         add_filter('wp_revisions_to_keep', function () { return 2; }, 99);
         add_action('pre_get_posts', array(__CLASS__, 'filter_rss_feed_query'));
         add_filter('the_guid', array(__CLASS__, 'filter_rss_canonical_url'), 99);
@@ -4061,14 +4136,13 @@ class Bareun_Master_SEO_Engine_V1 {
         $verify_codes = get_option(self::OPT_VERIFY_CODES, array());
         $naver_v  = !empty($verify_codes['naver']) ? (string) $verify_codes['naver'] : self::DEFAULT_NAVER_VERIFY;
         $google_v = !empty($verify_codes['google']) ? (string) $verify_codes['google'] : self::DEFAULT_GOOGLE_VERIFY;
+        $bing_v   = !empty($verify_codes['bing']) ? trim((string) $verify_codes['bing']) : '';
 
-        if (!defined('DONOTCACHEPAGE')) {
-            define('DONOTCACHEPAGE', true);
-        }
         self::send_security_headers();
         status_header(200);
         header('Content-Type: text/html; charset=UTF-8', true);
-        header('Cache-Control: no-cache, must-revalidate, max-age=0', true);
+        header('Cache-Control: public, max-age=3600, stale-while-revalidate=86400', true);
+        header('Vary: Accept-Encoding', true);
 
         echo "<!DOCTYPE html>\n<html lang=\"ko\">\n<head>\n";
         echo '  <meta charset="UTF-8" />' . "\n";
@@ -4082,6 +4156,9 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         if ($google_v !== '') {
             echo '  <meta name="google-site-verification" content="' . esc_attr($google_v) . '" />' . "\n";
+        }
+        if ($bing_v !== '') {
+            echo '  <meta name="msvalidate.01" content="' . esc_attr($bing_v) . '" />' . "\n";
         }
         echo '  <link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
         echo '  <link rel="alternate" hreflang="ko-KR" href="' . esc_url($canonical_url) . '" />' . "\n";
@@ -4304,7 +4381,7 @@ class Bareun_Master_SEO_Engine_V1 {
       </section>
 
       <figure class="medical-figure-wrap slot-mechanism-figure">
-        <img src="<?php echo esc_url($webp_hero); ?>" alt="<?php echo esc_attr($deep_alt); ?>" width="1376" height="768" decoding="async" />
+        <img src="<?php echo esc_url($webp_hero); ?>" alt="<?php echo esc_attr($deep_alt); ?>" width="1376" height="768" loading="lazy" decoding="async" />
         <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-mechanism">원리 도해 02</span><span><?php echo esc_html($deep_caption); ?></span></figcaption>
         <div class="bridge-3d-banner">
           <div class="bridge-3d-text">
@@ -4364,8 +4441,10 @@ class Bareun_Master_SEO_Engine_V1 {
       <?php if ($routine_urls['display'] !== '') : ?>
       <figure class="medical-figure-wrap slot-routine-figure">
         <img src="<?php echo esc_url($routine_urls['display']); ?>" alt="<?php echo esc_attr($routine_alt); ?>" width="1376" height="768" loading="lazy" decoding="async" />
-        <?php if ($routine_caption !== '') : ?>
-          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-routine">전·후 루틴 03</span><span><?php echo esc_html($routine_caption); ?></span></figcaption>
+        <?php if ($routine_caption !== '') :
+            $slot3_badge_label = (isset($target['source']) && strpos((string) $target['source'], 'director') !== false) ? '임상 가이드 03' : '전·후 루틴 03';
+        ?>
+          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-routine"><?php echo esc_html($slot3_badge_label); ?></span><span><?php echo esc_html($routine_caption); ?></span></figcaption>
         <?php endif; ?>
       </figure>
       <?php endif; ?>
@@ -4698,14 +4777,31 @@ class Bareun_Master_SEO_Engine_V1 {
             return $content;
         }
         $post = get_queried_object();
-        if (!$post || ($post->post_name !== 'body-explorer' && $post->post_name !== 'ask-doctor')) {
+        if (!$post || $post->post_name !== 'body-explorer') {
             return $content;
         }
         $live_hn_cfg = get_option('bareun_health_notes_cfg_v1', null);
-        if (!is_array($live_hn_cfg) || empty($live_hn_cfg['notes'])) {
+        if (!is_array($live_hn_cfg) || empty($live_hn_cfg)) {
             return $content;
         }
-        $cfg_script = '<script>window.__BAREUN_LIVE_HEALTH_NOTES_CFG__ = ' . wp_json_encode($live_hn_cfg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";
+        // Full 758KB notes payload ONLY during explicit Studio live preview (?studioPreview=1).
+        // Normal visitors & crawlers already receive baked SEED_NOTES + live delta sync via /wp-json/bareun/v1/body-notes (cuts -758KB HTML bloat).
+        $is_studio_preview = (isset($_GET['studioPreview']) && (string) $_GET['studioPreview'] === '1');
+        if ($is_studio_preview) {
+            $payload = $live_hn_cfg;
+        } else {
+            $payload = array();
+            if (isset($live_hn_cfg['globalSettings']) && is_array($live_hn_cfg['globalSettings'])) {
+                $payload['globalSettings'] = $live_hn_cfg['globalSettings'];
+            }
+            if (isset($live_hn_cfg['parts']) && is_array($live_hn_cfg['parts'])) {
+                $payload['parts'] = $live_hn_cfg['parts'];
+            }
+            if (empty($payload)) {
+                return $content;
+            }
+        }
+        $cfg_script = '<script>window.__BAREUN_LIVE_HEALTH_NOTES_CFG__ = ' . wp_json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";
         $pos = stripos($content, '<script>(0,eval)');
         if ($pos !== false) {
             return substr($content, 0, $pos) . $cfg_script . substr($content, $pos);
@@ -5209,6 +5305,7 @@ class Bareun_Master_SEO_Engine_V1 {
         $verify = get_option(self::OPT_VERIFY_CODES, array());
         $naver_code  = (is_array($verify) && !empty($verify['naver'])) ? trim((string) $verify['naver']) : self::DEFAULT_NAVER_VERIFY;
         $google_code = (is_array($verify) && !empty($verify['google'])) ? trim((string) $verify['google']) : self::DEFAULT_GOOGLE_VERIFY;
+        $bing_code   = (is_array($verify) && !empty($verify['bing'])) ? trim((string) $verify['bing']) : '';
 
         echo "\n<!-- Bareun Master SEO & GEO Engine -->\n";
         if (self::is_b2b_or_sample_page()) {
@@ -5229,6 +5326,9 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         if ($google_code !== '') {
             echo '<meta name="google-site-verification" content="' . esc_attr($google_code) . '">' . "\n";
+        }
+        if ($bing_code !== '') {
+            echo '<meta name="msvalidate.01" content="' . esc_attr($bing_code) . '">' . "\n";
         }
         echo '<link rel="canonical" href="' . esc_url($canonical_url) . '">' . "\n";
         echo '<link rel="alternate" hreflang="ko-KR" href="' . esc_url($canonical_url) . '">' . "\n";
@@ -5412,9 +5512,9 @@ class Bareun_Master_SEO_Engine_V1 {
 
     public static function filter_rss_feed_query($query) {
         if (!is_admin() && $query->is_main_query() && $query->is_feed()) {
-            // Pure medical posts ONLY (exclude heavy pages, /b2b/, /sample/) -> drops RSS latency from 11s to <0.2s & saves Cafe24 traffic
+            // Pure medical posts ONLY (exclude heavy pages, /b2b/, /sample/) -> ultra-fast slim RSS (<=120KB raw, <0.3s)
             $query->set('post_type', 'post');
-            $query->set('posts_per_page', 25);
+            $query->set('posts_per_page', 20);
             $query->set('orderby', 'date');
             $query->set('order', 'DESC');
         }
@@ -5460,9 +5560,21 @@ class Bareun_Master_SEO_Engine_V1 {
                 return '<p>' . esc_html($desc) . '</p><p><a href="' . esc_url($url) . '">' . esc_html($cfg['title']) . ' 바로가기</a></p>';
             }
             if ($post->post_type === 'post') {
-                // Strip inline <script> (JSON-LD / view tracker) and <style> blocks so Naver Search Advisor RSS & feed readers ingest pure semantic HTML
-                $cleaned = preg_replace('#<(script|style)\b[^>]*>[\s\S]*?</\1>#i', '', (string) $content);
-                return trim((string) $cleaned);
+                // Slim semantic summary for Naver Yeti & feed readers (keeps total 20-item RSS <=120KB raw / ~25KB gzip)
+                $desc = !empty($cfg['description']) ? trim((string) $cfg['description']) : '';
+                $cleaned = preg_replace('#<(script|style|svg|noscript|iframe|table|figure)\b[^>]*>[\s\S]*?</\1>#i', ' ', (string) $content);
+                $plain   = trim(preg_replace('/\s+/u', ' ', wp_strip_all_tags((string) $cleaned)));
+                if ($desc !== '' && mb_strpos($plain, mb_substr($desc, 0, 28, 'UTF-8'), 0, 'UTF-8') === 0) {
+                    $excerpt_body = $plain;
+                } else {
+                    $excerpt_body = trim($desc . ($desc !== '' && $plain !== '' ? ' ' : '') . $plain);
+                }
+                if (mb_strlen($excerpt_body, 'UTF-8') > 650) {
+                    $excerpt_body = rtrim(mb_substr($excerpt_body, 0, 650, 'UTF-8')) . '…';
+                }
+                $out = '<p>' . esc_html($excerpt_body) . '</p>';
+                $out .= '<p><a href="' . esc_url($url) . '">바른한의원 대전본점 정본 칼럼 · 3D 인체모형 · 자가점검 전문 보기 →</a></p>';
+                return $out;
             }
         }
         return $content;
@@ -5564,20 +5676,23 @@ class Bareun_Master_SEO_Engine_V1 {
         if (isset($_POST['bareun_seo_verify_nonce']) && wp_verify_nonce($_POST['bareun_seo_verify_nonce'], 'save_bareun_seo_verify')) {
             $naver  = isset($_POST['naver_verify_code']) ? self::extract_verification_token($_POST['naver_verify_code']) : '';
             $google = isset($_POST['google_verify_code']) ? self::extract_verification_token($_POST['google_verify_code']) : '';
+            $bing   = isset($_POST['bing_verify_code']) ? self::extract_verification_token($_POST['bing_verify_code']) : '';
             update_option(self::OPT_VERIFY_CODES, array(
                 'naver'  => $naver,
-                'google' => $google
+                'google' => $google,
+                'bing'   => $bing
             ));
             $saved = true;
         }
         $verify = get_option(self::OPT_VERIFY_CODES, array());
         $naver_val  = (is_array($verify) && !empty($verify['naver'])) ? $verify['naver'] : self::DEFAULT_NAVER_VERIFY;
         $google_val = (is_array($verify) && !empty($verify['google'])) ? $verify['google'] : self::DEFAULT_GOOGLE_VERIFY;
+        $bing_val   = (is_array($verify) && !empty($verify['bing'])) ? $verify['bing'] : '';
 
         echo '<div class="wrap" style="max-width:780px;">';
-        echo '<h1>🔍 바른한의원 대전본점 — 네이버 서치어드바이저 · 구글 서치콘솔 인증코드 등록</h1>';
+        echo '<h1>🔍 바른한의원 대전본점 — 네이버 · 구글 · Bing 검색등록 인증코드 관리</h1>';
         if ($saved) {
-            echo '<div class="notice notice-success is-dismissible"><p><strong>저장 완료!</strong> 홈페이지 <code>&lt;head&gt;</code>에 소유권 확인 메타태그가 즉시 적용되었습니다. 이제 네이버/구글 화면에서 [소유확인] 버튼을 누르시면 됩니다. (캐시 플러그인 사용 시 상단 캐시 삭제 권장)</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p><strong>저장 완료!</strong> 홈페이지 <code>&lt;head&gt;</code>에 소유권 확인 메타태그가 즉시 적용되었습니다. 이제 네이버/구글/Bing 화면에서 [소유확인] 버튼을 누르시면 됩니다. (캐시 플러그인 사용 시 상단 캐시 삭제 권장)</p></div>';
         }
         echo '<p style="font-size:14px;line-height:1.7;color:#334155;">네이버 서치어드바이저 또는 구글 서치콘솔에서 <strong>[HTML 태그]</strong> 방식을 선택하신 뒤,<br><code>&lt;meta name="naver-site-verification" content="..." /&gt;</code> <strong>태그 전체를 그대로 붙여넣으시거나</strong> <code>content</code> 안의 영문·숫자 코드만 입력하셔도 자동으로 인식됩니다.</p>';
         echo '<form method="post" style="background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;margin-top:16px;">';
@@ -5590,6 +5705,10 @@ class Bareun_Master_SEO_Engine_V1 {
         echo '<tr><th scope="row"><label for="google_verify_code">구글 서치콘솔<br><small style="color:#64748b;">(google-site-verification)</small></label></th><td>';
         echo '<input name="google_verify_code" type="text" id="google_verify_code" value="' . esc_attr($google_val) . '" class="large-text code" placeholder="예: AbCdEfGhIjK... 또는 meta 태그 전체 붙여넣기">';
         echo '<p class="description">발급처: <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">https://search.google.com/search-console</a> → URL 접두어(<code>https://www.bareunhaniwon.com</code>) → HTML 태그</p>';
+        echo '</td></tr>';
+        echo '<tr><th scope="row"><label for="bing_verify_code">Bing 웹마스터 도구 (선택)<br><small style="color:#64748b;">(msvalidate.01)</small></label></th><td>';
+        echo '<input name="bing_verify_code" type="text" id="bing_verify_code" value="' . esc_attr($bing_val) . '" class="large-text code" placeholder="(선택) 구글 서치콘솔 원클릭 가져오기로 연동 시 비워 두셔도 됩니다">';
+        echo '<p class="description">발급처: <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener noreferrer">https://www.bing.com/webmasters</a> → 구글 서치콘솔(GSC) 원클릭 가져오기 사용 시 수동 입력 불필요</p>';
         echo '</td></tr>';
         echo '</table>';
         submit_button('인증코드 저장 및 즉시 적용');
@@ -5618,6 +5737,9 @@ class Bareun_Master_SEO_Engine_V1 {
                 }
                 if (isset($params['google'])) {
                     $cur['google'] = self::extract_verification_token($params['google']);
+                }
+                if (isset($params['bing'])) {
+                    $cur['bing'] = self::extract_verification_token($params['bing']);
                 }
                 update_option(self::OPT_VERIFY_CODES, $cur);
                 if (!empty($params['ogImageUrl'])) {
@@ -5662,6 +5784,8 @@ class Bareun_Custom_Studio_Engine_V4 {
     const OPT_ANGLE_SAMPLES    = 'bareun_director_angle_samples_v1';
     const OPT_STUDIO_AI_KEYS   = 'bareun_studio_ai_keys_v1';
     const OPT_STUDIO_AI_USAGE  = 'bareun_studio_ai_usage_v1';
+
+    private static $gemini_billing_blocked = false;
 
     // Official Page IDs on Cafe24 WordPress (https://www.bareunhaniwon.com)
     const PAGE_MAP = array(
@@ -6959,6 +7083,9 @@ class Bareun_Custom_Studio_Engine_V4 {
     }
 
     private static function call_google_gemini_direct_php($gemini_key, $prompt_text, $ref_images) {
+        if (self::$gemini_billing_blocked) {
+            return null;
+        }
         $models = array(
             array('id' => 'gemini-3-pro-image',     'label' => 'Google Gemini 3 Pro Image (아르곤 하이 정품 2K)', 'size' => true,  'argon' => true),
             array('id' => 'gemini-nano-banana-2.1', 'label' => 'Google Gemini Nano Banana 2.1 (아르곤 하이 2K)',  'size' => true,  'argon' => true),
@@ -7026,10 +7153,17 @@ class Bareun_Custom_Studio_Engine_V4 {
                         self::record_studio_ai_usage_php(!empty($m['argon']), $m['id'], false);
                         return array('bin' => $bin, 'engine' => $m['label']);
                     }
-                } elseif ($http_code === 429 && $m['id'] === 'gemini-3-pro-image') {
-                    if (stripos($body_str, 'spending cap') !== false) {
+                } elseif ($http_code === 402 || stripos($body_str, 'prepayment credits') !== false || stripos($body_str, 'credits are depleted') !== false) {
+                    // Account-level prepayment credits depleted -> short-circuit immediately (zero wasted retries!)
+                    self::$gemini_billing_blocked = true;
+                    self::record_studio_ai_usage_php(false, 'Google AI Studio 선불 크레딧 소진(HTTP 402)', true);
+                    return null;
+                } elseif ($http_code === 429) {
+                    if (stripos($body_str, 'spending cap') !== false || stripos($body_str, 'billing') !== false) {
+                        self::$gemini_billing_blocked = true;
                         self::record_studio_ai_usage_php(false, 'Google AI Studio 월간 한도(Spend Cap) 도달', true);
-                    } elseif (stripos($body_str, 'quota') !== false || stripos($body_str, 'RESOURCE_EXHAUSTED') !== false) {
+                        return null;
+                    } elseif ($m['id'] === 'gemini-3-pro-image' && (stripos($body_str, 'quota') !== false || stripos($body_str, 'RESOURCE_EXHAUSTED') !== false)) {
                         self::record_studio_ai_usage_php(false, $m['id'] . ' 일일 한도 초과', true);
                     }
                 }
@@ -7450,9 +7584,10 @@ class Bareun_Custom_Studio_Engine_V4 {
 
     /**
      * Internal 16:9 editorial image generator for 2-day automated Health Note 3-slot publishing.
-     * Uses Argon High (Google Gemini 3 Pro Image -> Nano Banana Pro) with FLUX fallback and uploads to WP Media Library.
+     * Supports optional Studio-registered Director Ahn Identity-Lock multi-angle face sampling ($use_director_face = true)
+     * using OPT_ANGLE_SAMPLES + /bareun-studio/director-angle-refs/ with strict Zero-Stranger-Face guard.
      */
-    public static function generate_hn_slot_image_internal($user_prompt, $prefix = 'hn_auto', $fallback_api_key = '') {
+    public static function generate_hn_slot_image_internal($user_prompt, $prefix = 'hn_auto', $fallback_api_key = '', $use_director_face = false) {
         $user_prompt = trim((string)$user_prompt);
         if ($user_prompt === '') {
             return '';
@@ -7469,29 +7604,79 @@ class Bareun_Custom_Studio_Engine_V4 {
             $ai_keys['geminiKey'] = trim((string)$fallback_api_key);
         }
 
-        $argon_prompt = self::build_argon_high_prompt_php(
-            $user_prompt . ' (16:9 가로 와이드 구도, 이미지 내 글자·숫자·로고·워터마크 0% 완전 배제, 따뜻한 캐시미어 아이보리 #FAF8F3 및 샴페인 골드 #C5A059 자연광 하이엔드 메디컬 에디토리얼 톤)',
-            '',
-            false,
-            false,
-            true,
-            '정면 (0°)',
-            false
-        );
+        $ref_images = array();
+        $preferred_angle_label = '우측 15° 미소';
+        $dir_face_active = false;
+
+        if ($use_director_face) {
+            $slots = self::get_default_angle_slots();
+            $saved_angles = get_option(self::OPT_ANGLE_SAMPLES, array());
+            if (!is_array($saved_angles)) {
+                $saved_angles = array();
+            }
+
+            $upload_dir = wp_upload_dir();
+            $studio_angle_dir = $upload_dir['basedir'] . '/bareun-studio/director-angle-refs';
+            $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
+            $gh_angle_base    = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
+
+            $ordered_slots = self::order_director_slots_for_prompt($user_prompt, $slots);
+            if (!empty($ordered_slots[0]['label'])) {
+                $preferred_angle_label = $ordered_slots[0]['label'];
+            }
+
+            foreach ($ordered_slots as $sl) {
+                $k = $sl['key'];
+                $default_ref = file_exists($studio_angle_dir . '/' . $sl['file'])
+                    ? ($studio_angle_url . '/' . $sl['file'])
+                    : ($gh_angle_base . '/' . $sl['file']);
+                $slot_url = !empty($saved_angles[$k]['fileName']) ? $saved_angles[$k]['fileName'] : $default_ref;
+                $ang_ref = self::resolve_wp_studio_ref_image($slot_url);
+                if ($ang_ref) {
+                    $ang_ref['role']  = 'director';
+                    $ang_ref['label'] = $sl['label'];
+                    $ref_images[] = $ang_ref;
+                }
+            }
+            $dir_face_active = !empty($ref_images);
+        }
+
+        if ($dir_face_active) {
+            $argon_prompt = self::build_argon_high_prompt_php(
+                $user_prompt . ' (16:9 가로 와이드 현대 메디컬 클리닉 진료실 자연광 실사 화보, 이미지 내 글자·숫자·로고·워터마크 0%, 안정위 대표원장 단독 출연, 순백색 단정한 한의사 가운, 깔끔하고 정돈된 아이보리·우드 톤 진료실 배경)',
+                '',
+                false,
+                true,
+                false,
+                $preferred_angle_label,
+                false
+            );
+        } else {
+            $argon_prompt = self::build_argon_high_prompt_php(
+                $user_prompt . ' (16:9 가로 와이드 구도, 이미지 내 글자·숫자·로고·워터마크 0% 완전 배제, 따뜻한 캐시미어 아이보리 #FAF8F3 및 샴페인 골드 #C5A059 자연광 하이엔드 메디컬 에디토리얼 톤)',
+                '',
+                false,
+                false,
+                true,
+                '정면 (0°)',
+                false
+            );
+        }
 
         if ($ai_keys['geminiKey'] !== '') {
-            $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, array());
+            $g_out = self::call_google_gemini_direct_php($ai_keys['geminiKey'], $argon_prompt, $ref_images);
             if (is_array($g_out) && !empty($g_out['bin'])) {
                 $bin = $g_out['bin'];
             }
         }
         if (!$bin && $ai_keys['falKey'] !== '') {
-            $f_out = self::call_fal_nano_banana_pro_php($ai_keys['falKey'], $argon_prompt, array(), false, $seed);
+            $f_out = self::call_fal_nano_banana_pro_php($ai_keys['falKey'], $argon_prompt, $ref_images, false, $seed);
             if (is_array($f_out) && !empty($f_out['bin'])) {
                 $bin = $f_out['bin'];
             }
         }
-        if (!$bin) {
+        // Strict Zero-Stranger-Face Guard: NEVER fall back to faceless text-only FLUX when generating a Director Ahn portrait!
+        if (!$bin && !$use_director_face) {
             $en_prompt = self::translate_ko_medical_prompt_server($user_prompt, false, true, false);
             $out_img_url = self::call_hf_gradio_flux(
                 'https://black-forest-labs-flux-1-schnell.hf.space',
