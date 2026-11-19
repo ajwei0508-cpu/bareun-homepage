@@ -369,6 +369,12 @@ async function performWpLogin(page, loginUrl) {
         if (rawSet.geminiKey) localStudioAiKeys.geminiKey = String(rawSet.geminiKey).trim();
         if (rawSet.falKey) localStudioAiKeys.falKey = String(rawSet.falKey).trim();
       }
+      const homepageKeyPath = path.join(__dirname, 'homepage-ai-keys.json');
+      if (fs.existsSync(homepageKeyPath)) {
+        const hpSet = JSON.parse(fs.readFileSync(homepageKeyPath, 'utf8')) || {};
+        if (hpSet.geminiKey) localStudioAiKeys.geminiKey = String(hpSet.geminiKey).trim();
+        if (hpSet.falKey) localStudioAiKeys.falKey = String(hpSet.falKey).trim();
+      }
     } catch (e) {}
 
     const studioSyncRes = await page.evaluate(async ({ wpNonce, studioHtml, compilerJs, cardPromptsJs, angleRefs, masterCfgObj, healthNotesCfgObj, healthNotesDefCfgObj, clinicGlobalInfoObj, fullPluginPhp, localStudioAiKeys }) => {

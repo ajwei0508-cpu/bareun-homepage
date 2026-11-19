@@ -28,3 +28,4 @@ imagemaker/__pycache__/
 *.pyc
 *.npz
 homepage/studio-ai-usage.json
+homepage/homepage-ai-keys.json

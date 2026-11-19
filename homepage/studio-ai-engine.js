@@ -9,6 +9,7 @@ const { pathToFileURL } = require('url');
 
 const HOMEPAGE_DIR = __dirname;
 const IMAGEMAKER_DIR = path.resolve(__dirname, '..', 'imagemaker');
+const HOMEPAGE_AI_KEYS_PATH = path.join(HOMEPAGE_DIR, 'homepage-ai-keys.json');
 const SETTINGS_JSON_PATH = path.join(IMAGEMAKER_DIR, 'data', 'settings.json');
 const STUDIO_USAGE_JSON_PATH = path.join(HOMEPAGE_DIR, 'studio-ai-usage.json');
 const ANGLE_REFS_DIR = path.join(HOMEPAGE_DIR, 'director-angle-refs');
@@ -189,8 +190,14 @@ function readRawSettingsJson() {
 
 function getRawStudioAiKeys() {
   const s = readRawSettingsJson();
-  const geminiKey = String(s.geminiKey || s.googleApiKey || process.env.GEMINI_API_KEY || '').trim();
-  const falKey = String(s.falKey || process.env.FAL_KEY || '').trim();
+  let hp = {};
+  try {
+    if (fs.existsSync(HOMEPAGE_AI_KEYS_PATH)) {
+      hp = JSON.parse(fs.readFileSync(HOMEPAGE_AI_KEYS_PATH, 'utf8')) || {};
+    }
+  } catch (e) {}
+  const geminiKey = String(hp.geminiKey || s.geminiKey || s.googleApiKey || process.env.GEMINI_API_KEY || '').trim();
+  const falKey = String(hp.falKey || s.falKey || process.env.FAL_KEY || '').trim();
   return { geminiKey, falKey };
 }
 
