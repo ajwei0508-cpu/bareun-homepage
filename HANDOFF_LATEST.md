@@ -1,11 +1,27 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-19 v9.23 (① **11대 전 질환 상세카드페이지 마지막 카드 직전 ‘고검색량 인터랙티브 질환별 FAQ 카드(총 66문항)’ 신규 구축** · ② **질문 클릭 시 즉시 답변 펼침 + 키워드 퀵점프 + 전체 펼치기/접기 + 한지 베이지/다크/모바일 완벽 대응** · ③ **`wordpress-*.html` 번들 동기화 & 카페24 실서버 자동 배포 완료**) · 2026-11-18 v9.22 (① **스토리보드 마지막 장면 클릭 시 질환 상세페이지 직행 차단 & 카드 펼침 모션 연계** · ② **워드프레스 카페24 실서버 배포 완료**)
+> **최종 업데이트**: 2026-11-19 v9.24 (① **옵션 A 최종 1회 SEO·GEO·자동포스팅 정상화 및 영구 동결(Freeze) 전환** · ② **B2B(`/b2b/`)·샘플(`/sample/`) 코드·빌드·배포 완전 분리(`b2b-standalone/bundle-and-deploy-b2b.js`) 및 `noindex, nofollow` + `X-Robots-Tag` 격리** · ③ **카페24 트래픽 폭탄 진화(`59.2MB` 공진단 영상 지연로딩 + RSS `post` 전용 초경량화 + `deploy-cafe24.js` 73포스트 덮어쓰기/삭제·90URL IndexNow 폭격 제거)**) · 2026-11-19 v9.23 (11대 전 질환 상세카드페이지 고검색량 인터랙티브 FAQ 카드 66문항 구축)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
 
-## 🚀 최신 (2026-11-19 v9.23 · 11대 전 질환 상세카드페이지 마지막 카드 직전 ‘고검색량 인터랙티브 질환별 FAQ 카드’ 신규 구축 & 카페24 실서버 배포)
+## 🚀 최신 (2026-11-19 v9.24 · 옵션 A SEO·GEO·포스팅 최종 1회 정상화 후 영구 동결 + B2B·샘플 완전 독립 분리 + 카페24 트래픽 폭탄 진화)
+
+1. **1~5단계 SEO/GEO/자동포스팅 최종 1회 정상화 (이후 AEO·SEO·GEO·포스팅 코드 영구 동결)**:
+   - `geo-entity-dossier.js`: `1px × 1px / opacity: 0.01 / z-index: -1` 숨김 CSS 완전 폐기 → 100% 정상 가시성 네이티브 `<details>` 아코디언 전환.
+   - `seo-master-config.js` & `bareun-member-private-qna.php`: 구버전 Base64 메타·8개 타지역 `areaServed`를 `대전광역시 · 대덕구` 단일화 및 YMYL 정제 타이틀·디스크립션과 100% 동기화, `robots.txt` 중복 `sitemap.xml` 제거(`wp-sitemap.xml` 단일 등록), 사이트맵 `lastmod` 실제 발행일 복원.
+   - `bareun-member-private-qna.php`: RSS `/feed/`를 `post_type = 'post'`(순수 건강 칼럼 25건) 전용으로 전환해 응답 지연(11초) 및 페이지 혼입 원천 제거 + `.htaccess` `mod_deflate` gzip 추가 + 2일 자동포스팅 크론 진단 로그(`bareun_cron_2day_last_log`) 탑재.
+   - `deploy-cafe24.js`: 기존 실서버 포스트 강제 삭제(`DELETE`) 및 73개 포스트 `modified` 일괄 덮어쓰기 제거, 90개 URL IndexNow 일괄 폭격 제거(신규/변경 URL만 선택 핑).
+2. **B2B(`/b2b/`) & 샘플(`/sample/`) 완전 독립·격리**:
+   - `seo-master-config.js`, `bundle-wp.js`, `deploy-cafe24.js`, RSS, 사이트맵에서 `b2b`/`sample` 100% 절단.
+   - `bareun-member-private-qna.php`에서 `/b2b/`, `/sample/` 요청 시 `X-Robots-Tag: noindex, nofollow` + `<meta name="robots" content="noindex, nofollow">` 강제 및 한의원 `MedicalClinic` JSON-LD 미출력.
+   - 전용 독립 스크립트 `homepage/b2b-standalone/bundle-and-deploy-b2b.js` 신설.
+3. **카페24 트래픽 초과 주범 진화**:
+   - `/gongjindan/`의 `59.2MB` MP4 영상(`preload="auto" autoplay`)을 `preload="none"` + `IntersectionObserver` 뷰포트 진입 시 지연 로딩(`bareun-lazy-video`)으로 전환해 미열람 방문자 트래픽 `59.2MB → 0MB` 절감.
+
+---
+
+## 🚀 직전 (2026-11-19 v9.23 · 11대 전 질환 상세카드페이지 마지막 카드 직전 ‘고검색량 인터랙티브 질환별 FAQ 카드’ 신규 구축 & 카페24 실서버 배포)
 
 1. **11대 전 질환 상세카드페이지 마지막 카드(`#project-details-preview · 3D 인체모형 꿀팁 창고`) 직전에 FAQ 카드 신규 배치**:
    - 적용 대상(11개 전 상세페이지): `director`, `chuna`, `growth`, `diet-zero`, `hairloss`, `hairloss-male`, `hairloss-alopecia`, `hairloss-female`, `hairloss-seborrheic`, `gongjindan`, `prostate`.

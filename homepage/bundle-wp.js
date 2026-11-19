@@ -316,10 +316,9 @@ const ALL_BUNDLES = [
   ['prostate.html', 'wordpress-prostate.html', 'prostate'],
   ['body-explorer.html', 'wordpress-body-explorer.html', 'body-explorer'],
   ['lifting-compare.html', 'wordpress-lifting-compare.html', 'lifting-compare'],
-  ['location.html', 'wordpress-location.html', 'location'],
-  ['sample.html', 'wordpress-sample.html', 'sample'],
-  ['b2b-landing.html', 'wordpress-b2b-landing.html', 'b2b-landing']
+  ['location.html', 'wordpress-location.html', 'location']
 ];
+// NOTE: B2B (b2b-landing.html) & Sample (sample.html) are strictly isolated in b2b-standalone/bundle-and-deploy-b2b.js
 
 try {
   const dynCfgPath = path.join(dir, 'detail-pages-config.json');

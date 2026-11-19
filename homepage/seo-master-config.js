@@ -65,13 +65,7 @@ const CLINIC_BASE_ORG = {
   hasMap: 'https://map.naver.com/p/entry/place/70885113',
   areaServed: [
     { '@type': 'AdministrativeArea', name: '대전광역시' },
-    { '@type': 'AdministrativeArea', name: '대덕구' },
-    { '@type': 'AdministrativeArea', name: '비래동' },
-    { '@type': 'AdministrativeArea', name: '동구' },
-    { '@type': 'AdministrativeArea', name: '서구' },
-    { '@type': 'AdministrativeArea', name: '유성구' },
-    { '@type': 'AdministrativeArea', name: '중구' },
-    { '@type': 'AdministrativeArea', name: '세종특별자치시' }
+    { '@type': 'AdministrativeArea', name: '대덕구' }
   ],
   availableService: [
     { '@type': 'MedicalTherapy', name: '바른 추나요법 · 비수술 척추·골반·디스크·교통사고 클리닉', url: CANONICAL_ORIGIN + '/chuna/' },
@@ -257,24 +251,6 @@ const SEO_PAGES = {
     isArticle: true,
     datePublished: '2026-10-26',
     dateModified: '2026-10-28'
-  },
-  sample: {
-    file: 'sample.html',
-    path: '/sample/',
-    title: '바른한의원 실제 홈페이지 작동 샘플 · 기능별 티어 마크 안내 | 바른 메디테크',
-    description: '실제 운영 중인 www.bareunhaniwon.com 화면에서 스토리보드, 3D 인체모형, 건강 칼럼, 자가진단 등 각 기능별 스탠다드(✕), 프로(△), 시그니처(○) 차이점을 직접 체험해 보세요.',
-    preloadImg: DEFAULT_OG_IMAGE,
-    breadcrumbName: '홈페이지 샘플',
-    robots: 'noindex, nofollow'
-  },
-  'b2b-landing': {
-    file: 'b2b-landing.html',
-    path: '/b2b/',
-    title: '한의원 하이엔드 홈페이지 솔루션 · 스탠다드·프로·시그니처 비교 | 바른 메디테크',
-    description: '환자의 체류시간과 신환 전환율을 극대화하는 한의원 전용 하이엔드 반응형 홈페이지 솔루션. 실제 작동 샘플과 티어별 기능 비교를 확인하세요.',
-    preloadImg: DEFAULT_OG_IMAGE,
-    breadcrumbName: 'B2B 솔루션 안내',
-    robots: 'noindex, nofollow'
   }
 };
 
@@ -435,10 +411,11 @@ function buildHeadSeoTagsHtml(key, customOgImg) {
   const ldJson = JSON.stringify(buildJsonLdForKey(key, ogImg));
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+  const robotsContent = cfg.robots || 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
   const lines = [
     `  <title>${esc(cfg.title)}</title>`,
     `  <meta name="description" content="${esc(cfg.description)}">`,
-    `  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">`,
+    `  <meta name="robots" content="${esc(robotsContent)}">`,
     `  <meta name="naver-site-verification" content="${esc(NAVER_SITE_VERIFICATION)}">`,
     `  <meta name="google-site-verification" content="${esc(GOOGLE_SITE_VERIFICATION)}">`,
     `  <link rel="canonical" href="${esc(canonicalUrl)}">`,

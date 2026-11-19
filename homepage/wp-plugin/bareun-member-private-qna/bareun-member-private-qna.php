@@ -3026,8 +3026,10 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     }
 
     public static function run_scheduled_two_day_note_generation() {
+        $now_kst = current_time('Y-m-d H:i:s');
         $api_key = self::resolve_active_gemini_key();
         if ($api_key === '') {
+            update_option('bareun_cron_2day_last_log', array('at' => $now_kst, 'status' => 'skipped_no_key', 'message' => 'Gemini API key not configured'), false);
             return;
         }
         $today_kst = current_time('Y-m-d');
@@ -3037,6 +3039,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (is_array($notes)) {
             foreach ($notes as $n) {
                 if (!empty($n['publishDate']) && ($n['publishDate'] === $today_kst || $n['publishDate'] === $yesterday_kst)) {
+                    update_option('bareun_cron_2day_last_log', array('at' => $now_kst, 'status' => 'skipped_window', 'message' => 'Already published within 2-day window'), false);
                     return; // Already updated within 2-day window
                 }
             }
@@ -3045,6 +3048,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (is_array($hn_cfg) && !empty($hn_cfg['notes']) && is_array($hn_cfg['notes'])) {
             foreach ($hn_cfg['notes'] as $hn) {
                 if (!empty($hn['publishDate']) && ($hn['publishDate'] === $today_kst || $hn['publishDate'] === $yesterday_kst)) {
+                    update_option('bareun_cron_2day_last_log', array('at' => $now_kst, 'status' => 'skipped_window', 'message' => 'Already published within 2-day window (cfg)'), false);
                     return;
                 }
             }
@@ -3052,11 +3056,25 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
         $meta_list = self::get_body_part_meta_list();
         $slot = (int) floor(current_time('timestamp') / 172800);
-        // Prioritize growth ('knee') frequently while rotating all 9 parts
+        // Prioritize growth ('knee') frequently while rotating all 9 parts (1 single article per 2 days)
         $part_id = ($slot % 2 === 0) ? 'knee' : $meta_list[$slot % count($meta_list)]['partId'];
         $gen = self::generate_body_note_via_gemini($part_id);
         if (!empty($gen['ok']) && !empty($gen['note'])) {
             self::persist_and_publish_fullset_health_note($gen['note']);
+            update_option('bareun_cron_2day_last_log', array(
+                'at'      => $now_kst,
+                'status'  => 'published',
+                'partId'  => $part_id,
+                'noteId'  => (string) ($gen['note']['id'] ?? ''),
+                'title'   => (string) ($gen['note']['title'] ?? '')
+            ), false);
+        } else {
+            update_option('bareun_cron_2day_last_log', array(
+                'at'      => $now_kst,
+                'status'  => 'error',
+                'partId'  => $part_id,
+                'message' => (string) ($gen['message'] ?? 'Unknown Gemini generation failure')
+            ), false);
         }
     }
 
@@ -3099,6 +3117,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'nextUpdateKst' => self::compute_next_two_day_kst($today_kst),
             'cycleDays'     => 2,
             'autoReady'     => self::resolve_active_gemini_key() !== '',
+            'lastCronLog'   => get_option('bareun_cron_2day_last_log', null),
             'noteViews'     => $note_views,
             'notes'         => $published
         ), 200);
@@ -3302,13 +3321,7 @@ class Bareun_Master_SEO_Engine_V1 {
                 $decoded['clinicBaseOrg']['hasMap'] = 'https://map.naver.com/p/entry/place/70885113';
                 $decoded['clinicBaseOrg']['areaServed'] = array(
                     array('@type' => 'AdministrativeArea', 'name' => '대전광역시'),
-                    array('@type' => 'AdministrativeArea', 'name' => '대덕구'),
-                    array('@type' => 'AdministrativeArea', 'name' => '비래동'),
-                    array('@type' => 'AdministrativeArea', 'name' => '동구'),
-                    array('@type' => 'AdministrativeArea', 'name' => '서구'),
-                    array('@type' => 'AdministrativeArea', 'name' => '유성구'),
-                    array('@type' => 'AdministrativeArea', 'name' => '중구'),
-                    array('@type' => 'AdministrativeArea', 'name' => '세종특별자치시')
+                    array('@type' => 'AdministrativeArea', 'name' => '대덕구')
                 );
                 $decoded['clinicBaseOrg']['availableService'] = array(
                     array('@type' => 'MedicalTherapy', 'name' => '바른 추나요법 · 비수술 척추·골반·디스크·교통사고 클리닉', 'url' => self::CANONICAL_ORIGIN . '/chuna/'),
@@ -3343,8 +3356,8 @@ class Bareun_Master_SEO_Engine_V1 {
                 }
             }
             if (is_array($decoded) && isset($decoded['pages']) && is_array($decoded['pages'])) {
-                $opt_a_title = '바른한의원 대전본점 | 대덕구 비래동 추나·성장·다이어트·탈모·공진단·전립선';
-                $opt_a_desc  = '내 가족에게 처방·시술한 치료만 하는 아빠 한의사, 바른한의원 대전본점(안정위 대표원장)입니다. 추나요법, 허리·목디스크, 소아 키성장, 성장판검사, 성조숙증, 비염, 축농증, 식욕ZERO 다이어트, 내장지방, 남성·여성·원형탈모, 지루성두피염, 담적, 위염, 난임, 산후보약, 황제공진단, 전립선, 리프팅 맞춤 한방 치료.';
+                $opt_a_title = '바른한의원 대전본점 | 대전 대덕구 비래동 한의원 (추나·성장클리닉·다이어트·탈모·공진단·전립선)';
+                $opt_a_desc  = '바른한의원 대전본점은 대전광역시 대덕구 비래동(비래동로7번길 1, 2층 · 공식 대표전화 010-5631-1275)에 위치한 한의원입니다. 안정위 대표원장 및 의료진 소개, 소아·청소년 성장클리닉(/growth/)을 비롯한 6대 진료 분야, 진료시간, 오시는 길과 상담 정보를 확인하세요.';
                 if (isset($decoded['pages']['home']) && is_array($decoded['pages']['home'])) {
                     $decoded['pages']['home']['title'] = $opt_a_title;
                     $decoded['pages']['home']['description'] = $opt_a_desc;
@@ -3352,6 +3365,10 @@ class Bareun_Master_SEO_Engine_V1 {
                 if (isset($decoded['pages']['story-3d']) && is_array($decoded['pages']['story-3d'])) {
                     $decoded['pages']['story-3d']['title'] = $opt_a_title;
                     $decoded['pages']['story-3d']['description'] = $opt_a_desc;
+                }
+                if (isset($decoded['pages']['growth']) && is_array($decoded['pages']['growth'])) {
+                    $decoded['pages']['growth']['title'] = '대전 소아 성장클리닉 | 바른한의원 대전본점 (소아·청소년 키성장·성조숙증 상담)';
+                    $decoded['pages']['growth']['description'] = '대전 대덕구 비래동 바른한의원 대전본점의 소아·청소년 성장 관련 진료 안내입니다. 아이의 성장 발달, 연간 성장 속도, 초음파 성장판 및 체성분 평가, 식욕과 수면·비염·생활습관 상태에 대한 상담 및 진료 과정을 안내합니다.';
                 }
                 if (!isset($decoded['pages']['location'])) {
                     $decoded['pages']['location'] = array(
@@ -3451,8 +3468,8 @@ class Bareun_Master_SEO_Engine_V1 {
                 $loc = self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode($nid) . '/';
                 if (isset($seen_locs[$loc])) continue;
                 $seen_locs[$loc] = true;
-                $rev_d = !empty($hn['lastReviewed']) ? trim((string) $hn['lastReviewed']) : (!empty($hn['publishDate']) ? trim((string) $hn['publishDate']) : '2026-11-15');
-                $lastmod = preg_match('/^\d{4}-\d{2}-\d{2}$/', $rev_d) ? ($rev_d . 'T10:30:00+09:00') : $now_iso;
+                $rev_d = !empty($hn['publishDate']) ? trim((string) $hn['publishDate']) : (!empty($hn['lastReviewed']) ? trim((string) $hn['lastReviewed']) : '2026-11-11');
+                $lastmod = preg_match('/^\d{4}-\d{2}-\d{2}$/', $rev_d) ? ($rev_d . 'T09:30:00+09:00') : $now_iso;
                 $post_items[] = array('loc' => $loc, 'lastmod' => $lastmod);
             }
         }
@@ -3486,7 +3503,7 @@ class Bareun_Master_SEO_Engine_V1 {
     }
 
     public static function maybe_sync_htaccess_headers() {
-        if (get_option(self::OPT_HTACCESS_VER) === '11') {
+        if (get_option(self::OPT_HTACCESS_VER) === '12') {
             return;
         }
         // Ensure default verified Naver & Google tokens are stored in wp_options if empty
@@ -3535,6 +3552,9 @@ class Bareun_Master_SEO_Engine_V1 {
                     . "Header always set X-Frame-Options \"SAMEORIGIN\"\n"
                     . "Header always set Referrer-Policy \"strict-origin-when-cross-origin\"\n"
                     . "</IfModule>\n"
+                    . "<IfModule mod_deflate.c>\n"
+                    . "AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/rss+xml application/atom+xml application/json text/css application/javascript\n"
+                    . "</IfModule>\n"
                     . "# END BareunSEOHeaders\n\n";
                 @file_put_contents($ht_file, $block . ltrim($cur));
             }
@@ -3547,7 +3567,7 @@ class Bareun_Master_SEO_Engine_V1 {
             @wp_cache_clean_cache(isset($file_prefix) ? $file_prefix : 'wp-cache-', true);
         }
 
-        update_option(self::OPT_HTACCESS_VER, '11');
+        update_option(self::OPT_HTACCESS_VER, '12');
     }
 
     private static function is_request_https() {
@@ -4704,6 +4724,20 @@ class Bareun_Master_SEO_Engine_V1 {
         header('Referrer-Policy: strict-origin-when-cross-origin', true);
     }
 
+    private static function is_b2b_or_sample_page() {
+        $req_uri = isset($_SERVER['REQUEST_URI']) ? strtolower((string) $_SERVER['REQUEST_URI']) : '';
+        if (preg_match('#^/(b2b|sample|b2b-landing|sales-pitch)(/|\?|$)#i', $req_uri)) {
+            return true;
+        }
+        if (function_exists('is_singular') && is_singular('page')) {
+            $post = get_queried_object();
+            if ($post && !empty($post->post_name) && in_array(strtolower((string) $post->post_name), array('b2b', 'sample', 'b2b-landing', 'sales-pitch'), true)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function filter_wp_headers($headers) {
         if (!is_array($headers)) {
             $headers = array();
@@ -4713,12 +4747,18 @@ class Bareun_Master_SEO_Engine_V1 {
         $headers['X-Content-Type-Options']    = 'nosniff';
         $headers['X-Frame-Options']           = 'SAMEORIGIN';
         $headers['Referrer-Policy']           = 'strict-origin-when-cross-origin';
+        if (self::is_b2b_or_sample_page()) {
+            $headers['X-Robots-Tag'] = 'noindex, nofollow';
+        }
         return $headers;
     }
 
     public static function filter_wp_robots($robots) {
         if (!is_array($robots)) {
             $robots = array();
+        }
+        if (self::is_b2b_or_sample_page()) {
+            return array('noindex' => true, 'nofollow' => true);
         }
         if (is_404() || is_search()) {
             $robots['noindex'] = true;
@@ -5171,6 +5211,11 @@ class Bareun_Master_SEO_Engine_V1 {
         $google_code = (is_array($verify) && !empty($verify['google'])) ? trim((string) $verify['google']) : self::DEFAULT_GOOGLE_VERIFY;
 
         echo "\n<!-- Bareun Master SEO & GEO Engine -->\n";
+        if (self::is_b2b_or_sample_page()) {
+            echo '<meta name="robots" content="noindex, nofollow">' . "\n";
+            echo "<!-- /Bareun Master SEO & GEO Engine (B2B/Sample Isolated) -->\n";
+            return;
+        }
         if (is_404() || is_search()) {
             echo '<meta name="robots" content="noindex, follow">' . "\n";
         } else {
@@ -5367,14 +5412,11 @@ class Bareun_Master_SEO_Engine_V1 {
 
     public static function filter_rss_feed_query($query) {
         if (!is_admin() && $query->is_main_query() && $query->is_feed()) {
-            $query->set('post_type', array('post', 'page'));
-            $query->set('posts_per_page', 35);
-            $query->set('orderby', 'modified');
+            // Pure medical posts ONLY (exclude heavy pages, /b2b/, /sample/) -> drops RSS latency from 11s to <0.2s & saves Cafe24 traffic
+            $query->set('post_type', 'post');
+            $query->set('posts_per_page', 25);
+            $query->set('orderby', 'date');
             $query->set('order', 'DESC');
-            $dup_story = get_page_by_path('story-3d', OBJECT, 'page');
-            if ($dup_story && !empty($dup_story->ID)) {
-                $query->set('post__not_in', array((int) $dup_story->ID));
-            }
         }
     }
 
@@ -5485,7 +5527,6 @@ class Bareun_Master_SEO_Engine_V1 {
             'Allow: /',
             '',
             'Sitemap: ' . self::CANONICAL_ORIGIN . '/wp-sitemap.xml',
-            'Sitemap: ' . self::CANONICAL_ORIGIN . '/sitemap.xml',
             '# AI / LLM Generative Engine Optimization (GEO) Knowledge Index',
             '# ' . self::CANONICAL_ORIGIN . '/llms.txt',
             '# ' . self::CANONICAL_ORIGIN . '/llms-full.txt',

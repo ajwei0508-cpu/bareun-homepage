@@ -51,10 +51,9 @@ const PAGES_TO_DEPLOY = [
   { id: 96,   slug: 'gongjindan',          title: '바른 황제공진단',                                         file: 'wordpress-gongjindan.html',          excerpt: '신경약리학 학술 논문으로 뇌신경 보호와 피로 회복 기전이 보고된 식약처 CITES 인증 정품 사향 황제공진단입니다.' },
   { id: 133,  slug: 'prostate',            title: '바른 전립선 · 남성활력',                                  file: 'wordpress-prostate.html',            excerpt: '전립선 울혈 감압 및 방광·골반저근 기능 강화로 야간뇨 없는 편안한 배뇨와 숙면을 돕습니다.' },
   { id: 134,  slug: 'lifting-compare',     title: '바른리프팅 시술 전후 윤곽진단',                            file: 'wordpress-lifting-compare.html',     excerpt: '비수술 한방 리프팅 전후 윤곽 비교 진단 시스템입니다.' },
-  { id: 3206, slug: 'location',            title: '오시는길 · 진료시간 · 비급여 안내',                        file: 'wordpress-location.html',            excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 진료시간 및 비급여 진료비용 안내표입니다.' },
-  {           slug: 'sample',              title: '바른한의원 실제 홈페이지 작동 샘플 (티어 마크)',            file: 'wordpress-sample.html',              excerpt: '실제 운영 중인 www.bareunhaniwon.com 화면에서 스토리보드, 3D 인체모형, 건강 칼럼 등 각 기능별 스탠다드(✕), 프로(△), 시그니처(○) 차이점을 직접 체험해 보세요.' },
-  {           slug: 'b2b',                 title: '한의원 하이엔드 홈페이지 솔루션 (스탠다드·프로·시그니처)',   file: 'wordpress-b2b-landing.html',         excerpt: '환자의 체류시간과 신환 전환율을 극대화하는 한의원 전용 하이엔드 반응형 홈페이지 솔루션. 실제 작동 샘플과 티어별 기능 비교를 확인하세요.' }
+  { id: 3206, slug: 'location',            title: '오시는길 · 진료시간 · 비급여 안내',                        file: 'wordpress-location.html',            excerpt: '대전 대덕구 비래동로7번길 1, 2층 바른한의원 대전본점 오시는길, 네이버·구글·티맵·카카오맵 원클릭 자동 길안내, 진료시간 및 비급여 진료비용 안내표입니다.' }
 ];
+// NOTE: B2B (/b2b/) & Sample (/sample/) are strictly isolated from clinic homepage deployment (see b2b-standalone/bundle-and-deploy-b2b.js)
 
 try {
   const dynCfgPath = path.join(__dirname, 'detail-pages-config.json');
@@ -596,7 +595,7 @@ async function performWpLogin(page, loginUrl) {
       ? fs.readFileSync(path.join(__dirname, 'llms-full.txt'), 'utf8')
       : '';
 
-    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId, partMediaIdMap, llmsTxt, llmsFullTxt }) => {
+    const blogCleanupAndSync = await page.evaluate(async ({ wpNonce, categoriesList, postsToPublish, mediaId, partMediaIdMap, llmsTxt, llmsFullTxt, syncExistingPostsFlag }) => {
       if (llmsTxt || llmsFullTxt) {
         await fetch('/wp-json/bareun/v1/seo-verify', {
           method: 'POST',
@@ -627,34 +626,38 @@ async function performWpLogin(page, loginUrl) {
         if (arr.length < 100) break;
       }
 
-      const keepSlugs = new Set(postsToPublish.map(p => p.slug));
-      const toDelete = allExistingPosts.filter(ep => ep && !keepSlugs.has(ep.slug));
-      let deletedPostsCount = 0;
-      const delBatch = 8;
-      for (let i = 0; i < toDelete.length; i += delBatch) {
-        const chunk = toDelete.slice(i, i + delBatch);
-        await Promise.all(chunk.map(async (ep) => {
-          const dr = await fetch(`/wp-json/wp/v2/posts/${ep.id}?force=true`, {
-            method: 'DELETE',
-            headers: { 'X-WP-Nonce': wpNonce }
-          });
-          if (dr.ok) deletedPostsCount++;
-        }));
-      }
+      const forceSyncPosts = Boolean(syncExistingPostsFlag);
+      // NEVER delete live WordPress posts created by 2-day cron (non-destructive sync!)
+      const deletedPostsCount = 0;
 
       const existingBySlug = {};
       for (const ep of allExistingPosts) {
-        if (ep && ep.slug && keepSlugs.has(ep.slug)) existingBySlug[ep.slug] = ep.id;
+        if (ep && ep.slug) existingBySlug[ep.slug] = ep;
       }
 
       const publishedMap = {};
       let publishedCount = 0;
+      let skippedExistingCount = 0;
+      const newlyCreatedUrls = [];
       const pubBatchSize = 6;
 
       for (let i = 0; i < postsToPublish.length; i += pubBatchSize) {
         const batch = postsToPublish.slice(i, i + pubBatchSize);
         await Promise.all(batch.map(async (postItem) => {
-          const matchId = existingBySlug[postItem.slug] || null;
+          const existingPost = existingBySlug[postItem.slug] || null;
+          const matchId = existingPost ? existingPost.id : null;
+          // Preserve existing post modified timestamps unless --sync-posts is explicitly passed
+          if (matchId && !forceSyncPosts) {
+            skippedExistingCount++;
+            publishedMap[postItem.id] = {
+              wpPostId: matchId,
+              slug: existingPost.slug || postItem.slug,
+              link: postItem.canonicalPath
+                ? ('https://www.bareunhaniwon.com' + postItem.canonicalPath)
+                : ('https://www.bareunhaniwon.com/' + (existingPost.slug || postItem.slug) + '/')
+            };
+            return;
+          }
           const epUrl = matchId ? ('/wp-json/wp/v2/posts/' + matchId) : '/wp-json/wp/v2/posts';
           const cId = catIdMap[postItem.categorySlug] || Object.values(catIdMap)[0] || null;
           const resolvedMediaId = (postItem.slug !== 'integrative-autonomic-circadian-gut-spine-health-review' && postItem.partId && partMediaIdMap && partMediaIdMap[postItem.partId])
@@ -683,12 +686,14 @@ async function performWpLogin(page, loginUrl) {
           const pubJson = await pubRes.json();
           if (pubJson && pubJson.id) {
             publishedCount++;
+            const finalLink = postItem.canonicalPath
+              ? ('https://www.bareunhaniwon.com' + postItem.canonicalPath)
+              : ('https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/');
+            if (!matchId) newlyCreatedUrls.push(finalLink);
             publishedMap[postItem.id] = {
               wpPostId: pubJson.id,
               slug: pubJson.slug || postItem.slug,
-              link: postItem.canonicalPath
-                ? ('https://www.bareunhaniwon.com' + postItem.canonicalPath)
-                : ('https://www.bareunhaniwon.com/' + (pubJson.slug || postItem.slug) + '/')
+              link: finalLink
             };
           }
         }));
@@ -697,6 +702,8 @@ async function performWpLogin(page, loginUrl) {
       return {
         deletedPostsCount,
         publishedCount,
+        skippedExistingCount,
+        newlyCreatedUrls,
         publishedMap
       };
     }, {
@@ -706,12 +713,14 @@ async function performWpLogin(page, loginUrl) {
       mediaId: featuredMediaId,
       partMediaIdMap: partMediaSetup.partMediaIdMap,
       llmsTxt: llmsTxtRaw,
-      llmsFullTxt: llmsFullTxtRaw
+      llmsFullTxt: llmsFullTxtRaw,
+      syncExistingPostsFlag: process.argv.includes('--sync-posts')
     });
 
-    console.log('   [STANDALONE CONSOLIDATION & CLEANUP RESULT]:', {
+    console.log('   [NON-DESTRUCTIVE POST SYNC RESULT]:', {
       deletedExtraPostsCount: blogCleanupAndSync.deletedPostsCount,
-      remainingFlagshipPosts: blogCleanupAndSync.publishedCount
+      newlyPublishedOrSynced: blogCleanupAndSync.publishedCount,
+      preservedUnchangedPosts: blogCleanupAndSync.skippedExistingCount
     });
 
     fs.writeFileSync(
@@ -825,14 +834,18 @@ async function performWpLogin(page, loginUrl) {
       console.log('5.5) Skipping bulk 31-URL cache download to conserve Cafe24 daily hosting traffic (pass --warm to force).');
     }
 
-    // 6) Ping IndexNow for ALL Pages + Flagship Review + All 72 Health Notes (up to 100 URLs)
-    const allIndexNowUrls = Array.from(new Set([
-      `${CANONICAL_ORIGIN}/`,
-      ...deployedPageUrls.map(u => u.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)),
-      ...publishedPostUrls
-    ]));
-    const indexNowStatus = await pingIndexNow(allIndexNowUrls);
-    console.log(`6) IndexNow Search Engine Ping sent for ${allIndexNowUrls.length} URLs (Naver Yeti HTTP ${indexNowStatus.naverStatus} | Global Bing/ChatGPT HTTP ${indexNowStatus.globalStatus})!`);
+    // 6) Selective IndexNow Ping (NEVER blast all 90 URLs on every deploy — prevents Freshness Manipulation & Cafe24 bot traffic spikes)
+    const changedUrlsForPing = Array.from(new Set([
+      ...(Array.isArray(blogCleanupAndSync.newlyCreatedUrls) ? blogCleanupAndSync.newlyCreatedUrls : []),
+      ...(process.argv.includes('--ping-pages') ? deployedPageUrls.map(u => u.replace(/^https?:\/\/(www\.)?bareunhaniwon\.com/i, CANONICAL_ORIGIN)) : [])
+    ])).filter(u => !/\/(b2b|sample)\//i.test(u));
+
+    if (changedUrlsForPing.length > 0) {
+      const indexNowStatus = await pingIndexNow(changedUrlsForPing);
+      console.log(`6) Selective IndexNow Ping sent for ${changedUrlsForPing.length} URLs (Naver Yeti HTTP ${indexNowStatus.naverStatus} | Global Bing/ChatGPT HTTP ${indexNowStatus.globalStatus})!`);
+    } else {
+      console.log('6) Skipping bulk 90-URL IndexNow blast (0 new posts; pass --ping-pages only after major page restructure to protect rankings & Cafe24 traffic).');
+    }
 
     console.log('✅ MASTER SEO + CANONICAL WWW DEPLOYMENT COMPLETE ON https://www.bareunhaniwon.com/ !');
   } catch (err) {

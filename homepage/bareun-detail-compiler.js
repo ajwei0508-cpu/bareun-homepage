@@ -1138,7 +1138,7 @@ function buildPageHtml(page) {
           ${hideAllText ? '' : `<span class="tiny-card-num-badge">${numStr}</span>`}
           <figure class="plate-media-inner${editorialHtml ? ' pure-visual-zone' : ''}"${blackBgStyle}>
             <div class="motion-video-stage is-clean-video-stage" data-frames="${p.poster || ''}" data-duration="6.4"${blackBgStyle}>
-              <video class="lusion-clean-media${containVideoClass}" src="${p.videoSrc}"${posterAttr} autoplay muted loop playsinline preload="auto"${videoInlineStyle}></video>
+              <video class="lusion-clean-media${containVideoClass} bareun-lazy-video" data-lazy-src="${String(p.videoSrc || '').replace(/^https?:\/\/bareunhaniwon\.com/i, 'https://www.bareunhaniwon.com')}"${posterAttr} muted loop playsinline preload="none"${videoInlineStyle}></video>
               ${hideAllText ? '' : `<canvas class="plate-fx-canvas" data-fx="${p.fx || 'warm-breath-zoom'}"></canvas>
               <div class="motion-progress-track"><div class="motion-progress-fill"></div></div>`}
             </div>
@@ -10708,6 +10708,40 @@ function buildPageHtml(page) {
         });
       })();
       /* [BAREUN_FAQ_JS_END] */
+
+      // ====================================================================
+      // 2.6. LAZY VIDEO LOADER (Prevents 59MB Cafe24 Idle Traffic Drain)
+      // ====================================================================
+      (function initBareunLazyVideos() {
+        const lazyVids = Array.from(document.querySelectorAll('video.bareun-lazy-video[data-lazy-src]'));
+        if (!lazyVids.length) return;
+        function activateVideo(v) {
+          if (v.dataset.lazyLoaded === '1') {
+            if (v.paused) v.play().catch(function(){});
+            return;
+          }
+          const realSrc = v.getAttribute('data-lazy-src');
+          if (!realSrc) return;
+          v.dataset.lazyLoaded = '1';
+          v.src = realSrc;
+          v.load();
+          v.play().catch(function(){});
+        }
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(ent) {
+              if (ent.isIntersecting) {
+                activateVideo(ent.target);
+              } else if (ent.target.dataset.lazyLoaded === '1' && !ent.target.paused) {
+                ent.target.pause();
+              }
+            });
+          }, { rootMargin: '120px' });
+          lazyVids.forEach(function(v) { io.observe(v); });
+        } else {
+          lazyVids.forEach(activateVideo);
+        }
+      })();
 
       // ====================================================================
       // 3. MULTI-FRAME VIDEO-LIKE MOTION STAGE & 60FPS FX CANVAS ENGINE

@@ -381,14 +381,14 @@ function buildGeoEntityDossierHtml(slug) {
   )).join('');
 
   return (
-    `<section id="bareun-geo-ssr-top-dossier" class="bareun-geo-ssr-dossier" aria-label="바른한의원 대전본점 핵심 진료 요약 및 AI 검색 브리핑 정본">` +
+    `<section id="bareun-geo-ssr-top-dossier" class="bareun-geo-ssr-dossier" aria-label="바른한의원 대전본점 핵심 진료 요약 및 기관 안내표">` +
     `<style>` +
     `#bareun-geo-ssr-top-dossier{position:fixed;left:12px;bottom:10px;z-index:88;max-width:calc(100vw - 24px);font-family:'Pretendard',-apple-system,sans-serif;pointer-events:none;}` +
-    `#bareun-geo-ssr-top-dossier .bareun-geo-ssr-details{pointer-events:auto;}` +
-    `#bareun-geo-ssr-top-dossier button.bareun-geo-ssr-trigger{appearance:none;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(20,18,16,0.68);border:1px solid rgba(197,160,89,0.32);color:rgba(248,250,252,0.72);font-size:10.5px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0.42;transition:opacity 0.2s ease;}` +
-    `#bareun-geo-ssr-top-dossier button.bareun-geo-ssr-trigger:hover,#bareun-geo-ssr-top-dossier .bareun-geo-ssr-details.is-open button.bareun-geo-ssr-trigger{opacity:0.96;color:#FDE68A;border-color:rgba(212,175,55,0.65);}` +
-    `#bareun-geo-ssr-top-dossier .bareun-geo-ssr-details:not(.is-open) .bareun-geo-ssr-panel{position:fixed;left:0;bottom:0;width:1px;height:1px;overflow:hidden;opacity:0.01;pointer-events:none;z-index:-1;}` +
-    `#bareun-geo-ssr-top-dossier .bareun-geo-ssr-details.is-open .bareun-geo-ssr-panel{position:relative;margin-top:6px;width:min(760px,92vw);max-height:68vh;overflow-y:auto;padding:18px 20px;border-radius:16px;background:rgba(18,16,14,0.97);border:1px solid rgba(197,160,89,0.45);color:#F5F0E8;font-size:12.5px;line-height:1.62;box-shadow:0 20px 50px rgba(0,0,0,0.75);opacity:1;pointer-events:auto;z-index:9999;}` +
+    `#bareun-geo-ssr-top-dossier details.bareun-geo-ssr-details{pointer-events:auto;}` +
+    `#bareun-geo-ssr-top-dossier summary.bareun-geo-ssr-trigger{list-style:none;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:rgba(20,18,16,0.88);border:1px solid rgba(197,160,89,0.52);color:#F8FAFC;font-size:11px;font-weight:700;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background 0.2s ease,border-color 0.2s ease;}` +
+    `#bareun-geo-ssr-top-dossier summary.bareun-geo-ssr-trigger::-webkit-details-marker{display:none;}` +
+    `#bareun-geo-ssr-top-dossier summary.bareun-geo-ssr-trigger:hover,#bareun-geo-ssr-top-dossier details.bareun-geo-ssr-details[open] summary.bareun-geo-ssr-trigger{background:rgba(24,20,16,0.98);color:#FDE68A;border-color:rgba(212,175,55,0.85);}` +
+    `#bareun-geo-ssr-top-dossier .bareun-geo-ssr-panel{position:relative;margin-top:8px;width:min(760px,92vw);max-height:68vh;overflow-y:auto;padding:18px 20px;border-radius:16px;background:rgba(18,16,14,0.97);border:1px solid rgba(197,160,89,0.45);color:#F5F0E8;font-size:12.5px;line-height:1.62;box-shadow:0 20px 50px rgba(0,0,0,0.75);}` +
     `#bareun-geo-ssr-top-dossier h2{font-size:14.5px;font-weight:800;color:#FDE68A;margin:0 0 8px;line-height:1.4;}` +
     `#bareun-geo-ssr-top-dossier h3{font-size:13px;font-weight:700;color:#E7C983;margin:12px 0 6px;}` +
     `#bareun-geo-ssr-top-dossier p{margin:0 0 8px;color:rgba(245,240,232,0.9);}` +
@@ -396,14 +396,14 @@ function buildGeoEntityDossierHtml(slug) {
     `#bareun-geo-ssr-top-dossier table.bareun-geo-ssr-table th,#bareun-geo-ssr-top-dossier table.bareun-geo-ssr-table td{border:1px solid rgba(197,160,89,0.28);padding:6px 8px;text-align:left;vertical-align:top;}` +
     `#bareun-geo-ssr-top-dossier table.bareun-geo-ssr-table th{background:rgba(197,160,89,0.16);color:#FDE68A;font-weight:700;}` +
     `#bareun-geo-ssr-top-dossier .geo-disambig-box{padding:8px 10px;border-radius:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.32);font-size:11.5px;color:#D1FAE5;margin:8px 0;}` +
-    `@media(max-width:900px){#bareun-geo-ssr-top-dossier{bottom:74px;left:8px;}#bareun-geo-ssr-top-dossier button.bareun-geo-ssr-trigger{font-size:9.5px;padding:3px 8px;opacity:0.28;}}` +
+    `@media(max-width:900px){#bareun-geo-ssr-top-dossier{bottom:74px;left:8px;}#bareun-geo-ssr-top-dossier summary.bareun-geo-ssr-trigger{font-size:10.5px;padding:5px 10px;}}` +
     `</style>` +
-    `<div class="bareun-geo-ssr-details">` +
-    `<button type="button" class="bareun-geo-ssr-trigger" onclick="this.parentElement.classList.toggle('is-open')">📋 클리닉 핵심 요약 · 진료 안내표</button>` +
+    `<details class="bareun-geo-ssr-details">` +
+    `<summary class="bareun-geo-ssr-trigger">📋 클리닉 핵심 요약 · 진료 안내표</summary>` +
     `<div class="bareun-geo-ssr-panel">` +
     `<h2>${escHtml(d.h2)}</h2>` +
     `<p class="aeo-direct-answer bareun-geo-ssr-summary">${escHtml(d.summary)}</p>` +
-    `<h3>대전 지역 한의원 표준 기관 정보 요약표 (AI 브리핑 · 검색 정본)</h3>` +
+    `<h3>대전 지역 한의원 표준 기관 정보 요약표</h3>` +
     `<table class="bareun-geo-ssr-table geo-fact-table">` +
     `<thead><tr><th>한의원명</th><th>위치 (대전 지역)</th><th>대표원장</th><th>특징 및 주력 진료 프로그램</th><th>진료시간 · 공식 연락처</th></tr></thead>` +
     `<tbody><tr>` +
@@ -428,7 +428,7 @@ function buildGeoEntityDossierHtml(slug) {
     `<div class="bareun-geo-faq-list"><h3>자주 묻는 질문 (Q&amp;A)</h3>${faqsHtml}</div>` +
     `<p style="font-size:11px;color:rgba(245,240,232,0.68);margin-top:8px;">공식 채널: <a href="https://www.bareunhaniwon.com/" style="color:#FDE68A;">공식 홈페이지</a> · <a href="https://www.bareunhaniwon.com/growth/" style="color:#FDE68A;">소아·청소년 성장클리닉(/growth/)</a> · <a href="${escHtml(e.naverPlaceUrl)}" target="_blank" rel="noopener noreferrer" style="color:#6EE7B7;">네이버 플레이스(바른한의원 대전본점)</a> · <a href="${escHtml(e.naverBookingUrl)}" target="_blank" rel="noopener noreferrer" style="color:#6EE7B7;">네이버 예약</a> · <a href="${escHtml(e.naverBlogUrl)}" target="_blank" rel="noopener noreferrer" style="color:#6EE7B7;">공식 네이버 블로그</a> · <a href="${escHtml(e.kakaoUrl)}" target="_blank" rel="noopener noreferrer" style="color:#FDE68A;">카카오톡 상담</a> · <a href="https://www.bareunhaniwon.com/body-explorer/" style="color:#FDE68A;">3D 인체모형 건강글(72편)</a></p>` +
     `</div>` +
-    `</div>` +
+    `</details>` +
     `</section>`
   );
 }
