@@ -222,20 +222,23 @@
       color: var(--lux-gold-bright) !important;
     }
 
-    /* 3. COMPACT RIGHT-SIDE VERTICAL MENU STACK (우측 소형 나열 · WHITE · BLACK · GOLD) */
+    /* 3. COMPACT RIGHT-SIDE VERTICAL MENU STACK (우측 소형 나열 · 9대 전 질환 오픈 · WHITE · BLACK · GOLD) */
     .right-compact-menu {
       position: fixed;
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 215;
-      width: 178px;
+      width: 184px;
+      max-height: calc(100vh - 96px);
+      overflow-y: auto;
+      scrollbar-width: thin;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3.5px;
       padding: 7px;
       border-radius: 15px;
-      background: rgba(255, 255, 255, 0.93);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--lux-gold-border);
@@ -2366,6 +2369,10 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
     }
     .archive-card-btn {
       appearance: none;
@@ -2687,6 +2694,12 @@
     <button type="button" class="vh-part-chip" data-part="knee" title="소아 성장 · 소아비만 · 면역 · 편식  (성장판)"><span class="rcm-num">01</span><span class="rcm-label">성장 · 성조숙증</span><span class="rcm-arrow">&rsaquo;</span></button>
       <button type="button" class="vh-part-chip" data-part="cervical" title="거북목 · 일자목 (목뼈 · 어깨)"><span class="rcm-num">02</span><span class="rcm-label">뒷목 · 목 디스크</span><span class="rcm-arrow">&rsaquo;</span></button>
       <button type="button" class="vh-part-chip" data-part="lumbar" title="목·허리 통증 · 골반 균형 (허리 물렁뼈 · 골반)"><span class="rcm-num">03</span><span class="rcm-label">허리 디스크 · 골반</span><span class="rcm-arrow">&rsaquo;</span></button>
+      <button type="button" class="vh-part-chip" data-part="gongjindan" title="만성 피로 · 집중력 · 기력 (뇌 · 심장 활력축)"><span class="rcm-num">04</span><span class="rcm-label">황제 공진단</span><span class="rcm-arrow">&rsaquo;</span></button>
+      <button type="button" class="vh-part-chip" data-part="syncope" title="어지럼 · 편두통 · 수면 (뇌신경 · 자율신경 조절)"><span class="rcm-num">05</span><span class="rcm-label">미주신경성 실신</span><span class="rcm-arrow">&rsaquo;</span></button>
+      <button type="button" class="vh-part-chip" data-part="digest" title="소화불량 · 명치 답답함 · 속쓰림 (위장 · 식도 근육)"><span class="rcm-num">06</span><span class="rcm-label">신경성 위염 · 담적</span><span class="rcm-arrow">&rsaquo;</span></button>
+      <button type="button" class="vh-part-chip" data-part="gut" title="복부 비만 · 부종 · 식욕 조절 (복부 · 대사 순환)"><span class="rcm-num">07</span><span class="rcm-label">과민성 장 · 해독</span><span class="rcm-arrow">&rsaquo;</span></button>
+      <button type="button" class="vh-part-chip" data-part="uterus" title="생리통 · 임신 준비 · 여성 건강 (아랫배 · 골반 순환)"><span class="rcm-num">08</span><span class="rcm-label">자궁 · 난소 · 착상</span><span class="rcm-arrow">&rsaquo;</span></button>
+      <button type="button" class="vh-part-chip" data-part="prostate" title="야간 소변 · 잔뇨감 · 전립선 건강 (방광 · 골반 바닥근육)"><span class="rcm-num">09</span><span class="rcm-label">전립선 · 배뇨 기능</span><span class="rcm-arrow">&rsaquo;</span></button>
   </aside>
 
   <!-- FULLSCREEN 100vw × 100vh 3D HUMAN BODY WORKSPACE -->
@@ -3344,6 +3357,7 @@
         deepSignalsTitle: raw.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호',
         deepSignals: Array.isArray(raw.deepSignals) ? raw.deepSignals : [],
         deepEnabled: raw.deepEnabled !== false,
+        source: raw.source || '',
         lastReviewed: raw.lastReviewed || raw.publishDate || todayKst
       };
     }
@@ -4553,7 +4567,8 @@
             '</div>' +
             buildStandardNoteBoxHtml(pickedWithRed, 'window.backToArchiveList()', '✕ 목록으로', pickedMeta);
         } else {
-          const rowsHtml = targetList.slice(0, 3).map((n, idx) => {
+          // Open ALL published articles for this part / all 9 parts (zero 3-item cap!)
+          const rowsHtml = targetList.map((n, idx) => {
             const isRowLatest = (idx === 0 && archiveScope === 'part') || (latestNote && n.id === latestNote.id);
             return '<div role="button" tabindex="0" class="archive-card-btn" onclick="window.openArchivedNote(\'' + n.id + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();window.openArchivedNote(\'' + n.id + '\');}">' +
               '<div style="min-width:0;flex:1;">' +

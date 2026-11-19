@@ -45,21 +45,31 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'display'  => 'Every 2 Days (Bareun 3D Body Popup Auto-Note)'
             );
         }
+        if (!isset($schedules['bareun_every_6_hours'])) {
+            $schedules['bareun_every_6_hours'] = array(
+                'interval' => 21600,
+                'display'  => 'Every 6 Hours (Bareun 2-Day Window Guarded Auto-Note Check)'
+            );
+        }
         return $schedules;
     }
 
     public static function maybe_schedule_body_notes_cron() {
+        $ev = function_exists('wp_get_scheduled_event') ? wp_get_scheduled_event(self::CRON_HOOK_NOTES) : null;
+        if ($ev && isset($ev->schedule) && $ev->schedule !== 'bareun_every_6_hours') {
+            wp_clear_scheduled_hook(self::CRON_HOOK_NOTES);
+        }
         if (!wp_next_scheduled(self::CRON_HOOK_NOTES)) {
-            // Schedule within natural KST morning publishing window (09:10 ~ 11:45 KST) instead of a fixed robotic timestamp
+            // Poll every 6 hours; run_scheduled_two_day_note_generation() strictly enforces KST 09:00~21:00 + 1 article per 2 days so no cycle is ever missed!
             $now_utc = time();
             $kst_now = $now_utc + 32400;
             $kst_day_start_utc = ((int) floor($kst_now / 86400)) * 86400 - 32400;
             $jitter_sec = wp_rand(600, 9900); // 09:10 ~ 11:45 KST offset from 09:00 KST
             $target_utc = $kst_day_start_utc + (9 * 3600) + $jitter_sec;
             if ($target_utc <= $now_utc + 300) {
-                $target_utc += 86400;
+                $target_utc += 21600;
             }
-            wp_schedule_event($target_utc, 'bareun_every_two_days', self::CRON_HOOK_NOTES);
+            wp_schedule_event($target_utc, 'bareun_every_6_hours', self::CRON_HOOK_NOTES);
         }
     }
 
@@ -2774,7 +2784,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             . "9. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
             . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주, 글자 0%).\n"
             . "   - 슬롯 ②(mechanismPrompt): 본문 중단 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 우아하게 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
-            . "   - 슬롯 ③(routinePrompt — 스튜디오 등록 대표원장 실제 얼굴 고정 실사): **반드시 한글로 작성**하며, 순백색 한의사 가운을 입은 한국인 남성 한의사가 이번 글의 핵심 주제(예: 초음파·체열 모니터 설명, 바른 자세 시범, 태블릿으로 수면·식습관 생활 리듬 브리핑 등)에 꼭 맞는 깔끔하고 세련된 현대 한의원 진료실(따뜻한 아이보리·우드 톤, 자연광, 정돈된 책상)에서 온화한 우측 15° 미소로 차분히 설명하는 16:9 인물 실사 화보 장면을 구체적으로 지시할 것 (인물 1명 단독, 워터마크·글자 0%).\n"
+            . "   - 슬롯 ③(routinePrompt — 스튜디오 등록 대표원장 실제 얼굴 고정 실사): **반드시 한글로 작성**하며, 순백색 한의사 가운(명찰·로고·글씨 0%)을 입은 한국인 남성 한의사가 이번 글의 핵심 주제(예: 초음파·체열 모니터 설명, 바른 자세 시범, 태블릿으로 수면·식습관 생활 리듬 브리핑 등)에 꼭 맞는 깔끔하고 세련된 현대 한의원 진료실(따뜻한 아이보리·우드 톤, 자연광, 정돈된 책상)에서 온화한 우측 15° 미소로 차분히 설명하는 16:9 인물 실사 화보 장면을 구체적으로 지시할 것 (인물 1명 단독, 태블릿·모니터 화면도 글자 없는 순수 그래픽 도해만, 워터마크·글자 0%).\n"
             . "   - routineIllustCaption: '진료실에서 ~ 생활 관리 기준을 차분히 안내하는 한의사'처럼 금지어('원장·바른한의원') 없이 자연스러운 한글 캡션 작성.\n\n"
             . "[출력 JSON 스키마 (순수 JSON 객체만 반환)]\n"
             . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 직답 요약 3~4문장 (정량 기준 포함)\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유와 정량 수치를 담은 심층 생리 원리 1단락 (4~5문장)\",\"일상 습관이 부위별 순환·신경·근육에 미치는 영향 2단락 (4~5문장)\",\"증상이 누적되는 악순환 고리와 신호 3단락 (4~5문장)\",\"회복 리듬을 되살리는 구체적 생활 기전과 실천 기준 4단락 (4~5문장)\"],\"clinicalObservation\":\"진료 현장에서 오랜 기간 관찰되는 실제 생활 패턴과 체크 포인트 4~5문장 (금지어 제외)\",\"comparisonTable\":{\"heading\":\"핵심 생활 습관 한눈에 비교하기\",\"intro\":\"비교표 핵심 안내 1문장\",\"headers\":[\"구분\",\"부담이 쌓이는 습관\",\"권장 생활 기준\",\"기대되는 몸의 변화\"],\"rows\":[[\"항목1\",\"피해야 할 습관\",\"구체적 수치 포함 권장 기준\",\"긍정적 변화\"],[\"항목2\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목3\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목4\",\"피해야 할 습관\",\"권장 기준\",\"변화\"]],\"recommendedRowIndex\":0},\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\",\"대면 확인이 필요한 증상 신호 3\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"정량 기준을 포함한 친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"},{\"q\":\"독자가 자주 혼동하는 질문 3?\",\"a\":\"친절하고 명확한 답변 3\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 진료실 생활 관리 가이드 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"깔끔하고 세련된 현대 한의원 진료실 자연광 아래, 순백색 한의사 가운을 입은 한국인 남성 한의사가 우측 15° 온화한 미소로 주제에 맞는 생활 건강 기준을 설명하는 85mm 상반신 인물 실사 화보\"}";
@@ -2784,7 +2794,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         $verified_prompts   = array();
 
         for ($attempt = 1; $attempt <= 3; $attempt++) {
-            $models_to_try = array('gemini-2.5-pro', 'gemini-2.5-flash');
+            $models_to_try = array('gemini-3.8-flash', 'gemini-3.1-pro-preview', 'gemini-2.5-flash');
             $parsed = null;
             $last_err = '';
             $billing_halted = false;
@@ -2797,22 +2807,23 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                     ),
                     'generationConfig' => array(
                         'responseMimeType' => 'application/json',
-                        'temperature'      => 0.35
+                        'temperature'      => 0.35,
+                        'maxOutputTokens'  => 8192
                     )
                 ));
                 $res = wp_remote_post($url, array(
                     'headers' => array('Content-Type' => 'application/json'),
                     'body'    => $body_payload,
-                    'timeout' => 55
+                    'timeout' => 90
                 ));
                 if (is_wp_error($res)) {
-                    $last_err = $res->get_error_message();
+                    $last_err = $m_id . ': ' . $res->get_error_message();
                     continue;
                 }
                 $http_code = wp_remote_retrieve_response_code($res);
                 $raw_body  = wp_remote_retrieve_body($res);
                 if ($http_code !== 200) {
-                    $last_err = 'HTTP ' . $http_code;
+                    $last_err = $m_id . ' HTTP ' . $http_code;
                     if ($http_code === 402 || stripos($raw_body, 'prepayment credits') !== false || stripos($raw_body, 'credits are depleted') !== false) {
                         $last_err = 'HTTP 402 — Google AI Studio 선불 크레딧 소진(충전 필요)';
                         $billing_halted = true;
@@ -2826,12 +2837,27 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                     continue;
                 }
                 $raw_json = json_decode($raw_body, true);
-                $text_out = $raw_json['candidates'][0]['content']['parts'][0]['text'] ?? '';
-                $try_parsed = json_decode($text_out, true);
+                $parts_arr = $raw_json['candidates'][0]['content']['parts'] ?? array();
+                $text_out  = '';
+                if (is_array($parts_arr)) {
+                    foreach ($parts_arr as $pt) {
+                        if (is_array($pt) && empty($pt['thought']) && !empty($pt['text'])) {
+                            $text_out = (string) $pt['text'];
+                            break;
+                        }
+                    }
+                    if ($text_out === '' && !empty($parts_arr)) {
+                        $last_pt = end($parts_arr);
+                        $text_out = is_array($last_pt) ? (string) ($last_pt['text'] ?? '') : '';
+                    }
+                }
+                $clean_json_txt = trim(preg_replace('/^```(?:json)?\s*|\s*```$/i', '', trim($text_out)));
+                $try_parsed = json_decode($clean_json_txt, true);
                 if (is_array($try_parsed)) {
                     $parsed = $try_parsed;
                     break;
                 }
+                $last_err = $m_id . ' JSON parse failed (len=' . strlen($clean_json_txt) . ')';
             }
 
             if ($billing_halted) {
@@ -3091,8 +3117,9 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
         wp_cache_flush();
 
-        // 4) Non-blocking Dual IndexNow (Naver Search Advisor + Global Bing/ChatGPT) + GSC Sitemap Ping
+        // 4) Refresh physical /wp-sitemap.xml immediately so new 2-day auto-post is discoverable before pinging!
         if (class_exists('Bareun_Master_SEO_Engine_V1')) {
+            Bareun_Master_SEO_Engine_V1::sync_physical_xml_sitemaps();
             Bareun_Master_SEO_Engine_V1::ping_all_search_engines(array(
                 'https://www.bareunhaniwon.com/body-explorer/',
                 'https://www.bareunhaniwon.com/health-note-' . $clean_nid . '/'
@@ -3101,11 +3128,16 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     }
 
     public static function run_scheduled_two_day_note_generation() {
+        @set_time_limit(300);
         $now_kst = current_time('Y-m-d H:i:s');
         $api_key = self::resolve_active_gemini_key();
         if ($api_key === '') {
             update_option('bareun_cron_2day_last_log', array('at' => $now_kst, 'status' => 'skipped_no_key', 'message' => 'Gemini API key not configured'), false);
             return;
+        }
+        $kst_hour = (int) current_time('G');
+        if ($kst_hour < 9 || $kst_hour >= 21) {
+            return; // Publish only within natural daytime KST window (09:00 ~ 21:00)
         }
         $today_kst = current_time('Y-m-d');
         $yesterday_kst = date('Y-m-d', current_time('timestamp') - 86400);
@@ -3129,19 +3161,26 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             }
         }
 
-        $meta_list = self::get_body_part_meta_list();
-        $slot = (int) floor(current_time('timestamp') / 172800);
-        // Prioritize growth ('knee') frequently while rotating all 9 parts (1 single article per 2 days)
-        $part_id = ($slot % 2 === 0) ? 'knee' : $meta_list[$slot % count($meta_list)]['partId'];
+        // Balanced 1:1 round-robin rotation across ALL 9 disease parts (zero bias toward any single clinic)
+        $meta_list  = self::get_body_part_meta_list();
+        $part_count = count($meta_list);
+        $rot_idx    = (int) get_option('bareun_cron_2day_rotation_idx', 0);
+        if ($rot_idx < 0) {
+            $rot_idx = 0;
+        }
+        $part_id = $meta_list[$rot_idx % $part_count]['partId'];
+
         $gen = self::generate_body_note_via_gemini($part_id);
         if (!empty($gen['ok']) && !empty($gen['note'])) {
             self::persist_and_publish_fullset_health_note($gen['note']);
+            update_option('bareun_cron_2day_rotation_idx', ($rot_idx + 1) % $part_count, false);
             update_option('bareun_cron_2day_last_log', array(
-                'at'      => $now_kst,
-                'status'  => 'published',
-                'partId'  => $part_id,
-                'noteId'  => (string) ($gen['note']['id'] ?? ''),
-                'title'   => (string) ($gen['note']['title'] ?? '')
+                'at'          => $now_kst,
+                'status'      => 'published',
+                'partId'      => $part_id,
+                'nextPartId'  => $meta_list[($rot_idx + 1) % $part_count]['partId'],
+                'noteId'      => (string) ($gen['note']['id'] ?? ''),
+                'title'       => (string) ($gen['note']['title'] ?? '')
             ), false);
         } else {
             update_option('bareun_cron_2day_last_log', array(
@@ -3154,6 +3193,22 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     }
 
     private static function compute_next_two_day_kst($today_kst) {
+        $latest_pub = '';
+        $stored = get_option(self::OPT_BODY_NOTES, array());
+        if (is_array($stored)) {
+            foreach ($stored as $n) {
+                $pd = (string) ($n['publishDate'] ?? '');
+                if ($pd !== '' && $pd <= $today_kst && $pd > $latest_pub) {
+                    $latest_pub = $pd;
+                }
+            }
+        }
+        if ($latest_pub !== '') {
+            $next_from_latest = date('Y-m-d', strtotime($latest_pub . ' 00:00:00') + (2 * 86400));
+            if ($next_from_latest > $today_kst) {
+                return $next_from_latest;
+            }
+        }
         $anchor = strtotime('2026-10-23 00:00:00');
         $cur    = strtotime($today_kst . ' 00:00:00');
         if ($cur < $anchor) {
@@ -3265,15 +3320,39 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         }
 
         if ($action === 'generate_now') {
-            $part_id = sanitize_key($params['partId'] ?? 'knee');
-            $theme   = sanitize_text_field($params['theme'] ?? '');
-            $gen     = self::generate_body_note_via_gemini($part_id, $theme);
+            @set_time_limit(300);
+            $meta_list  = self::get_body_part_meta_list();
+            $part_count = count($meta_list);
+            $rot_idx    = (int) get_option('bareun_cron_2day_rotation_idx', 0);
+            $part_id    = sanitize_key($params['partId'] ?? $meta_list[$rot_idx % $part_count]['partId']);
+            $theme      = sanitize_text_field($params['theme'] ?? '');
+            $gen        = self::generate_body_note_via_gemini($part_id, $theme);
             if (empty($gen['ok'])) {
                 return new \WP_REST_Response($gen, 400);
             }
             $new_note = $gen['note'];
             self::persist_and_publish_fullset_health_note($new_note);
-            return new \WP_REST_Response(array('ok' => true, 'note' => $new_note), 200);
+            $next_idx = ($rot_idx + 1) % $part_count;
+            foreach ($meta_list as $mi => $mm) {
+                if ($mm['partId'] === $part_id) {
+                    $next_idx = ($mi + 1) % $part_count;
+                    break;
+                }
+            }
+            update_option('bareun_cron_2day_rotation_idx', $next_idx, false);
+            update_option('bareun_cron_2day_last_log', array(
+                'at'         => current_time('Y-m-d H:i:s'),
+                'status'     => 'published_manual_start',
+                'partId'     => $part_id,
+                'nextPartId' => $meta_list[$next_idx]['partId'],
+                'noteId'     => (string) ($new_note['id'] ?? ''),
+                'title'      => (string) ($new_note['title'] ?? '')
+            ), false);
+            return new \WP_REST_Response(array(
+                'ok'         => true,
+                'nextPartId' => $meta_list[$next_idx]['partId'],
+                'note'       => $new_note
+            ), 200);
         }
 
         $raw_note = isset($params['note']) && is_array($params['note']) ? $params['note'] : $params;
@@ -7711,6 +7790,18 @@ class Bareun_Custom_Studio_Engine_V4 {
             return '';
         }
 
+        // Optimize 2K raw Gemini images down to crisp 1376x768 JPEG q=86 (~140~220KB instead of 3.5MB) to protect Cafe24 hosting traffic!
+        if (function_exists('wp_get_image_editor') && !empty($upload['file']) && file_exists($upload['file'])) {
+            $editor = wp_get_image_editor($upload['file']);
+            if (!is_wp_error($editor)) {
+                $editor->resize(1376, 768, false);
+                if (method_exists($editor, 'set_quality')) {
+                    $editor->set_quality(86);
+                }
+                $editor->save($upload['file'], 'image/jpeg');
+            }
+        }
+
         $attachment = array(
             'guid'           => $upload['url'],
             'post_mime_type' => 'image/jpeg',
@@ -7792,6 +7883,9 @@ class Bareun_Custom_Studio_Engine_V4 {
             if (file_exists($installed_plugin_file) && is_writable($installed_plugin_file)) {
                 @file_put_contents($installed_plugin_file, (string)$params['pluginPhp']);
             }
+        }
+        if (!empty($params['syncSitemaps']) && class_exists('Bareun_Master_SEO_Engine_V1')) {
+            Bareun_Master_SEO_Engine_V1::sync_physical_xml_sitemaps();
         }
 
         return new WP_REST_Response(array(

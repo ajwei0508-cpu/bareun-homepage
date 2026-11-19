@@ -254,7 +254,8 @@ function buildBodyExplorerHtml() {
     : '2일 주기 신규 글 업데이트';
   const rightHeaderSubStyle = headerCfg.subMode === 'hidden' ? ' style="display:none;"' : '';
 
-  const rightCompactButtonsHtml = ENABLED_MENUS.slice(0, 3).map((m, idx) => {
+  // Open ALL enabled disease parts (all 9 clinical areas) in the right-side quicknav & mobile chip dock
+  const rightCompactButtonsHtml = ENABLED_MENUS.map((m, idx) => {
     const num = String(idx + 1).padStart(2, '0');
     const shortTitle = m.shortLabel || m.partLabel || m.id;
     return `<button type="button" class="vh-part-chip" data-part="${escAttrServer(m.id)}" title="${escAttrServer(m.menuTitle || shortTitle)} (${escAttrServer(m.partLabel || shortTitle)})"><span class="rcm-num">${num}</span><span class="rcm-label">${escAttrServer(shortTitle)}</span><span class="rcm-arrow">&rsaquo;</span></button>`;
@@ -514,20 +515,23 @@ function buildBodyExplorerHtml() {
       color: var(--lux-gold-bright) !important;
     }
 
-    /* 3. COMPACT RIGHT-SIDE VERTICAL MENU STACK (우측 소형 나열 · WHITE · BLACK · GOLD) */
+    /* 3. COMPACT RIGHT-SIDE VERTICAL MENU STACK (우측 소형 나열 · 9대 전 질환 오픈 · WHITE · BLACK · GOLD) */
     .right-compact-menu {
       position: fixed;
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 215;
-      width: 178px;
+      width: 184px;
+      max-height: calc(100vh - 96px);
+      overflow-y: auto;
+      scrollbar-width: thin;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3.5px;
       padding: 7px;
       border-radius: 15px;
-      background: rgba(255, 255, 255, 0.93);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--lux-gold-border);
@@ -2658,6 +2662,10 @@ function buildBodyExplorerHtml() {
       display: flex;
       flex-direction: column;
       gap: 7px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
     }
     .archive-card-btn {
       appearance: none;
@@ -3275,6 +3283,7 @@ function buildBodyExplorerHtml() {
         deepSignalsTitle: raw.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호',
         deepSignals: Array.isArray(raw.deepSignals) ? raw.deepSignals : [],
         deepEnabled: raw.deepEnabled !== false,
+        source: raw.source || '',
         lastReviewed: raw.lastReviewed || raw.publishDate || todayKst
       };
     }
@@ -4484,7 +4493,8 @@ function buildBodyExplorerHtml() {
             '</div>' +
             buildStandardNoteBoxHtml(pickedWithRed, 'window.backToArchiveList()', '✕ 목록으로', pickedMeta);
         } else {
-          const rowsHtml = targetList.slice(0, 3).map((n, idx) => {
+          // Open ALL published articles for this part / all 9 parts (zero 3-item cap!)
+          const rowsHtml = targetList.map((n, idx) => {
             const isRowLatest = (idx === 0 && archiveScope === 'part') || (latestNote && n.id === latestNote.id);
             return '<div role="button" tabindex="0" class="archive-card-btn" onclick="window.openArchivedNote(\\'' + n.id + '\\')" onkeydown="if(event.key===\\'Enter\\'||event.key===\\' \\'){event.preventDefault();window.openArchivedNote(\\'' + n.id + '\\');}">' +
               '<div style="min-width:0;flex:1;">' +
