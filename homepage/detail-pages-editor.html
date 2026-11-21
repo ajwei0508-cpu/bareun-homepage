@@ -1656,9 +1656,75 @@
       align-items: center;
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
+    .fee-row-card {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+    .fee-row-card input {
+      min-width: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 7px 8px !important;
+      font-size: 12px !important;
+    }
     .fee-row-card:focus-within {
       border-color: var(--gold);
       box-shadow: 0 0 0 2px rgba(181, 137, 58, 0.16);
+    }
+
+    /* ============================================================================
+     * MATCHING NUMBER PIN BADGES (LEFT EDITOR <-> RIGHT LIVE PREVIEW)
+     * ============================================================================ */
+    .studio-num-pin {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1b1815 0%, #342c24 100%);
+      color: #fde68a;
+      border: 1.5px solid #d4af37;
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(27, 24, 21, 0.22);
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .studio-num-pin.is-sub {
+      min-width: 28px;
+      height: 19px;
+      font-size: 10px;
+      background: #fffbeb;
+      color: #92400e;
+      border: 1.5px solid #e0ad48;
+      box-shadow: none;
+    }
+    .is-guide-active .studio-num-pin,
+    .is-guide-active > .studio-num-pin,
+    .studio-num-pin.is-active {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+      color: #ffffff !important;
+      border-color: #6ee7b7 !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.24) !important;
+    }
+    [data-guide-sel].is-guide-active,
+    [data-guide-home-frame].is-guide-active,
+    [data-guide-bento-idx].is-guide-active {
+      outline: 2px solid rgba(16, 185, 129, 0.55);
+      outline-offset: 2px;
+      border-radius: 9px;
+      background-color: rgba(209, 250, 229, 0.22) !important;
+    }
+    .story-card-item.is-guide-active {
+      border: 2px solid #10b981 !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18), 0 8px 22px rgba(16, 185, 129, 0.14) !important;
+      outline: none !important;
+      background-color: #ffffff !important;
     }
   </style>
 </head>
@@ -1672,8 +1738,8 @@
       <span id="dirtyBadge" class="dirty-indicator">● 미저장</span>
     </div>
     <div class="header-actions">
-      <button type="button" id="btnToggleVisualSelect" class="btn btn-visual-select active" onclick="toggleVisualSelectMode()" title="우측 실제 페이지에서 수정 가능한 영역에 마우스를 올리면 활성화 표시, 클릭 시 좌측 수정 메뉴 즉시 활성화">
-        🎯 커스텀 연동 ON
+      <button type="button" id="btnToggleVisualSelect" class="btn btn-visual-select active" onclick="toggleVisualSelectMode()" title="좌측 커스텀 항목 선택 시 우측 실제 페이지의 같은 번호 위치로 자동 이동·강조">
+        🔢 번호 가이드 ON
       </button>
       <button type="button" id="btnToggleDevMode" class="btn btn-dev-toggle" onclick="toggleDevMode()" title="개발자 모드 ON/OFF — 항목별 즉석 커스텀 기능·CSS/HTML/JS/JSON 편집">
         ⚡ 개발자 모드 OFF
@@ -1887,9 +1953,9 @@
             <button type="button" class="vp-btn active" id="vpDesktopBtn" onclick="setPreviewViewport('desktop')">🖥️ 데스크톱</button>
             <button type="button" class="vp-btn" id="vpMobileBtn" onclick="setPreviewViewport('mobile')">📱 모바일 390px</button>
           </div>
-          <div class="viewport-switch" title="커스텀 편집 모드(클릭 시 수정 메뉴 활성화) ↔ 일반 탐색 모드 전환">
-            <button type="button" class="vp-btn active is-inspect-on" id="vpInspectOnBtn" onclick="setVisualSelectMode(true)">🎯 커스텀 편집</button>
-            <button type="button" class="vp-btn" id="vpInspectOffBtn" onclick="setVisualSelectMode(false)">🖱️ 일반 탐색</button>
+          <div class="viewport-switch" title="좌측 수정 항목 번호와 우측 실제 홈페이지 번호 매칭·자동이동 표시 ON/OFF">
+            <button type="button" class="vp-btn active is-inspect-on" id="vpInspectOnBtn" onclick="setVisualSelectMode(true)">🔢 번호·자동이동 ON</button>
+            <button type="button" class="vp-btn" id="vpInspectOffBtn" onclick="setVisualSelectMode(false)">👁️ 깔끔 보기</button>
           </div>
           <span id="previewUrlLabel" style="font-size:12px; color:#cbbfae;">/chuna.html</span>
         </div>
@@ -1902,9 +1968,9 @@
       <div class="preview-inspect-bar is-on" id="previewInspectBar">
         <div class="pib-left">
           <span class="pib-live-dot"></span>
-          <span id="previewInspectHintText">우측 페이지에서 수정할 영역에 마우스를 올리고 클릭하면 좌측 수정 메뉴가 열립니다</span>
+          <span id="previewInspectHintText">좌측 커스텀 항목을 선택하면 우측 실제 페이지의 같은 번호 위치로 자동 이동·강조됩니다</span>
         </div>
-        <span class="pib-target-pill" id="previewInspectTargetPill">🎯 대기 중 · 영역에 마우스를 올려보세요</span>
+        <span class="pib-target-pill" id="previewInspectTargetPill">🔢 번호 매칭 활성화 · 좌측 항목을 클릭해 보세요</span>
       </div>
       <div class="preview-stage" id="previewStage">
         <iframe id="livePreviewFrame" title="상세페이지 실시간 미리보기" src="about:blank"></iframe>
@@ -2406,6 +2472,11 @@
       if (tabKey === 'style') updateStyleMockup();
       if (tabKey === 'imagemaker') renderImageMakerPane();
       if (tabKey === 'clinicinfo') renderClinicInfoPane();
+      if (typeof syncStudioNumberPinsToIframe === 'function') {
+        setTimeout(() => {
+          syncStudioNumberPinsToIframe(true);
+        }, 60);
+      }
     }
 
     function renderAll() {
@@ -2603,7 +2674,33 @@
       container.innerHTML = homeQuickBarHtml + indexedPlates.map(({ card, idx }, displayIdx) => {
         const isExpanded = expandedCards.has(idx);
         const isEnabled = card.enabled !== false;
-        const numStr = String((isStoryboardCh || isFinaleCh ? displayIdx : idx) + 1).padStart(2, '0');
+        const displayNum = (isStoryboardCh || isFinaleCh ? displayIdx : idx) + 1;
+        const numStr = String(displayNum).padStart(2, '0');
+        const guideCardAttr = isStoryboardCh
+          ? `data-guide-num="${displayNum}" data-guide-label="스토리 컷 #${displayNum}" data-guide-home-frame="${displayIdx}"`
+          : (isFinaleCh
+              ? `data-guide-num="${displayNum}" data-guide-label="피날레 카드 #${displayNum} · ${escHtml(card.title || '')}" data-guide-bento-idx="${displayIdx}"`
+              : `data-guide-num="${displayNum}" data-guide-label="CARD ${numStr} 전체" data-guide-sel="article[data-plate-orig-idx='${idx}']"`);
+        const guideTitleAttr = isStoryboardCh
+          ? `data-guide-num="${displayNum}-1" data-guide-label="스토리 컷 #${displayNum} · 메인 대사" data-guide-home-frame="${displayIdx}" data-guide-sub-sel="#dialogue-main-quote, #story-dialogue-stage"`
+          : (isFinaleCh
+              ? `data-guide-num="${displayNum}-1" data-guide-label="피날레 카드 #${displayNum} · 카드 제목" data-guide-bento-idx="${displayIdx}"`
+              : `data-guide-num="${displayNum}-1" data-guide-label="CARD ${numStr} · 메인 제목(H2)" data-guide-sel="article[data-plate-orig-idx='${idx}'] .editorial-headline, article[data-plate-orig-idx='${idx}'] .son-hero-main-title, article[data-plate-orig-idx='${idx}']"`);
+        const guideSubAttr = isStoryboardCh
+          ? `data-guide-num="${displayNum}-2" data-guide-label="스토리 컷 #${displayNum} · 보조 문구" data-guide-home-frame="${displayIdx}" data-guide-sub-sel="#dialogue-sub-whisper, #story-dialogue-stage"`
+          : (isFinaleCh
+              ? `data-guide-num="${displayNum}-2" data-guide-label="피날레 카드 #${displayNum} · 카드 설명" data-guide-bento-idx="${displayIdx}"`
+              : `data-guide-num="${displayNum}-2" data-guide-label="CARD ${numStr} · 본문 설명(P)" data-guide-sel="article[data-plate-orig-idx='${idx}'] .editorial-body-copy, article[data-plate-orig-idx='${idx}'] .son-hero-main-sub, article[data-plate-orig-idx='${idx}']"`);
+        const guideMediaAttr = isStoryboardCh
+          ? `data-guide-num="${displayNum}-3" data-guide-label="스토리 컷 #${displayNum} · 배경 씬 미디어" data-guide-home-frame="${displayIdx}" data-guide-sub-sel="#story-dialogue-stage"`
+          : (isFinaleCh
+              ? `data-guide-num="${displayNum}-3" data-guide-label="피날레 카드 #${displayNum} · 배경 이미지" data-guide-bento-idx="${displayIdx}"`
+              : `data-guide-num="${displayNum}-3" data-guide-label="CARD ${numStr} · 이미지·미디어" data-guide-sel="article[data-plate-orig-idx='${idx}'] .plate-media-inner, article[data-plate-orig-idx='${idx}']"`);
+        const guideOptAttr = isStoryboardCh
+          ? `data-guide-num="${displayNum}-4" data-guide-label="스토리 컷 #${displayNum} · 선택 옵션" data-guide-home-frame="${displayIdx}" data-guide-sub-sel="#story-dialogue-stage"`
+          : (isFinaleCh
+              ? `data-guide-num="${displayNum}-4" data-guide-label="피날레 카드 #${displayNum} · 선택 옵션" data-guide-bento-idx="${displayIdx}"`
+              : `data-guide-num="${displayNum}-4" data-guide-label="CARD ${numStr} · STEP·포인트·태그" data-guide-sel="article[data-plate-orig-idx='${idx}'] .editorial-text-zone, article[data-plate-orig-idx='${idx}']"`);
         const rawThumbPath = getCardPreviewRawPath(card);
         const thumbUrl = resolveStudioAssetUrl(rawThumbPath);
         const isHomeStoryCard = card.type === 'home-story-frame';
@@ -2720,9 +2817,9 @@
             </div>
 
             <!-- Headline + Gold Highlight Helper -->
-            <div class="field">
+            <div class="field" ${guideTitleAttr}>
               <label>
-                <span>하단 메인 제목 (H2 · <code>'작은따옴표'</code> 구간 골드 하이라이트)</span>
+                <span><span class="studio-num-pin is-sub">${displayNum}-1</span>하단 메인 제목 (H2 · <code>'작은따옴표'</code> 구간 골드 하이라이트)</span>
                 <button type="button" class="mini-btn gold-helper" onclick="wrapSelectedWithGoldQuote(${idx})">✨ 선택한 단어 '골드 강조' 감싸기</button>
               </label>
               <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
@@ -2731,8 +2828,8 @@
             </div>
 
             <!-- Body Copy -->
-            <div class="field">
-              <label>하단 본문 설명 (P · 핵심 치료 설명 문구)</label>
+            <div class="field" ${guideSubAttr}>
+              <label><span class="studio-num-pin is-sub">${displayNum}-2</span>하단 본문 설명 (P · 핵심 치료 설명 문구)</label>
               <textarea rows="2" id="card-sub-input-${idx}" placeholder="하단 에디토리얼 영역에 들어갈 상세 설명 문구를 입력하세요."
                 oninput="updateCardField(${idx}, 'sub', this.value, false)">${escHtml(card.sub || '')}</textarea>
             </div>
@@ -2743,14 +2840,17 @@
             </div>
 
             <!-- Type-Specific Media Controls -->
-            <div id="card-media-box-${idx}">${renderCardMediaControls(card, idx)}</div>
+            <div id="card-media-box-${idx}" ${guideMediaAttr}>
+              <div style="font-size:11.5px;font-weight:800;color:var(--ink-sub);margin-bottom:5px;"><span class="studio-num-pin is-sub">${displayNum}-3</span>상단 비주얼 이미지 · 영상 미디어 영역</div>
+              ${renderCardMediaControls(card, idx)}
+            </div>
 
             ${card.type === 'growth-son-main-hero' ? renderGrowthSonSpecialControls(card, idx) : ''}
             ${card.type === 'gongjindan-panorama-archive' ? renderGongjindanPanoramaControls(card, idx) : ''}
 
             <!-- Optional Advanced Drawer (STEP badge, 3 Pillars, #Tags) -->
-            <details class="optional-drawer" id="card-optional-drawer-${idx}">
-              <summary>⚙️ 선택 옵션 입력 (STEP 카테고리 배지 · 하단 3칸 포인트 · #해시태그 — 표시 ON 시 노출)</summary>
+            <details class="optional-drawer" id="card-optional-drawer-${idx}" ${guideOptAttr}>
+              <summary><span class="studio-num-pin is-sub">${displayNum}-4</span>⚙️ 선택 옵션 입력 (STEP 카테고리 배지 · 하단 3칸 포인트 · #해시태그)</summary>
               <div style="margin-top:12px;">
                 <div class="grid-2">
                   <div class="field">
@@ -2786,9 +2886,10 @@
 
         return `
           ${sectionDividerHtml}
-          <div class="story-card-item ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled-card'}" id="card-item-${idx}">
+          <div class="story-card-item ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled-card'}" id="card-item-${idx}" ${guideCardAttr}>
             <div class="story-card-head" onclick="toggleCardAccordion(${idx}, event)">
               <div class="story-card-head-left">
+                <span class="studio-num-pin">${displayNum}</span>
                 <img id="card-head-thumb-${idx}" class="card-thumb-mini" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumbPath)}" alt="Card ${numStr}"
                   onclick="event.stopPropagation(); openImageLightbox(this.getAttribute('data-raw-path'), 'CARD ${numStr} 미리보기')"
                   onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
@@ -3134,9 +3235,13 @@
       const bmEnabled = bm.enabled !== false;
       const bgRaw = bm.bg || 'illust_lumbar_pelvis.jpg';
 
+      const bmNum = ((page.plates || []).filter(p => p && p.enabled !== false).length) + 1;
+      box.setAttribute('data-guide-num', String(bmNum));
+      box.setAttribute('data-guide-label', '마지막 카드 · 3D 인체모형');
+      box.setAttribute('data-guide-sel', '#project-details-preview');
       box.innerHTML = `
         <div class="panel-head">
-          <h3>🦴 마지막 카드 · 3D 인체모형 의학정보 연결 카드</h3>
+          <h3><span class="studio-num-pin">${bmNum}</span>🦴 마지막 카드 · 3D 인체모형 의학정보 연결 카드</h3>
           <label style="display:inline-flex; align-items:center; gap:6px; font-weight:800; cursor:pointer;">
             <input type="checkbox" ${bmEnabled ? 'checked' : ''} onchange="updateBodyModelField('enabled', this.checked)" />
             마지막 카드로 표시
@@ -3389,25 +3494,25 @@
               <button type="button" class="mini-btn gold-helper" onclick="previewTriggerHomeBento()">👁️ 우측 6대 카드 펼치기</button>
             </div>
             <div class="grid-2" id="home-finale-section">
-              <div class="field">
-                <label>피날레 인트로 헤드라인 (finaleHeadline)</label>
+              <div class="field" data-guide-num="1" data-guide-label="피날레 인트로 헤드라인" data-guide-sel=".skt-hero-headline, .skt-headline-text">
+                <label><span class="studio-num-pin">1</span>피날레 인트로 헤드라인 (finaleHeadline)</label>
                 <input type="text" value="${escHtml(hs.finaleHeadline || '')}"
                   oninput="updateHomeStoryField('finaleHeadline', this.value)" />
               </div>
-              <div class="field">
-                <label>피날레 인트로 서브문구 (finaleHeadlineSub)</label>
+              <div class="field" data-guide-num="1-2" data-guide-label="피날레 인트로 서브문구" data-guide-sel=".skt-headline-sub, .skt-hero-headline">
+                <label><span class="studio-num-pin is-sub">1-2</span>피날레 인트로 서브문구 (finaleHeadlineSub)</label>
                 <input type="text" value="${escHtml(hs.finaleHeadlineSub || '')}"
                   oninput="updateHomeStoryField('finaleHeadlineSub', this.value)" />
               </div>
             </div>
             <div class="grid-2">
-              <div class="field">
-                <label>벤토 그리드 상단 영문/철학 라벨 (finaleEyebrow)</label>
+              <div class="field" data-guide-num="2" data-guide-label="벤토 상단 철학 라벨" data-guide-sel=".skt-finale-eyebrow">
+                <label><span class="studio-num-pin">2</span>벤토 그리드 상단 영문/철학 라벨 (finaleEyebrow)</label>
                 <input type="text" value="${escHtml(hs.finaleEyebrow || '')}"
                   oninput="updateHomeStoryField('finaleEyebrow', this.value)" />
               </div>
-              <div class="field">
-                <label>벤토 그리드 메인 타이틀 (finaleMainTitle)</label>
+              <div class="field" data-guide-num="3" data-guide-label="벤토 메인 타이틀" data-guide-sel=".skt-finale-main-title">
+                <label><span class="studio-num-pin">3</span>벤토 그리드 메인 타이틀 (finaleMainTitle)</label>
                 <input type="text" id="home-finale-title-input" value="${escHtml(hs.finaleMainTitle || '')}"
                   oninput="updateHomeStoryField('finaleMainTitle', this.value)" />
               </div>
@@ -3422,8 +3527,8 @@
             <span class="tag-pill">index.html</span>
           </div>
 
-          <h3 style="margin:0 0 10px; font-size:14.5px;">1) 홈페이지 첫 진입 시네마틱 오프닝 타이포그래피</h3>
-          <div class="grid-2">
+          <h3 style="margin:0 0 10px; font-size:14.5px;"><span class="studio-num-pin">1</span>홈페이지 첫 진입 시네마틱 오프닝 타이포그래피</h3>
+          <div class="grid-2" data-guide-num="1" data-guide-label="오프닝 슬로건" data-guide-sel="#daddy-intro-slogan, #story-dialogue-stage">
             <div class="field">
               <label>오프닝 슬로건 1줄 (골드 포인트 시작 문구)</label>
               <input type="text" id="home-intro-line1-input" value="${escHtml(hs.introLine1 || '')}" placeholder="예: 아빠 한의사를 찾는"
@@ -3436,28 +3541,28 @@
             </div>
           </div>
 
-          <h3 style="margin:16px 0 10px; font-size:14.5px;">2) 상단 네비게이션 브랜드 로고 &amp; 스토리 상단 철학 캡슐</h3>
+          <h3 style="margin:16px 0 10px; font-size:14.5px;">상단 브랜드 로고 &amp; 스토리 상단 철학 캡슐</h3>
           <div class="grid-2">
-            <div class="field">
-              <label>상단 로고 한의원명 (brandTitle)</label>
+            <div class="field" data-guide-num="2" data-guide-label="상단 브랜드 로고" data-guide-sel=".nav-brand-logo">
+              <label><span class="studio-num-pin">2</span>상단 로고 한의원명 (brandTitle)</label>
               <input type="text" id="home-brand-title-input" value="${escHtml(hs.brandTitle || '')}"
                 oninput="updateHomeStoryField('brandTitle', this.value)" />
             </div>
-            <div class="field">
+            <div class="field" data-guide-num="2" data-guide-label="상단 로고 보조 슬로건" data-guide-sel=".nav-brand-logo">
               <label>상단 로고 보조 슬로건 (brandSub)</label>
               <input type="text" value="${escHtml(hs.brandSub || '')}"
                 oninput="updateHomeStoryField('brandSub', this.value)" />
             </div>
           </div>
-          <div class="field">
-            <label>스토리 대사 상단 철학 캡슐 배지 (conceptPill)</label>
+          <div class="field" data-guide-num="3" data-guide-label="스토리 상단 철학 캡슐" data-guide-sel="#dialogue-daddy-concept-pill">
+            <label><span class="studio-num-pin">3</span>스토리 대사 상단 철학 캡슐 배지 (conceptPill)</label>
             <input type="text" id="home-concept-pill-input" value="${escHtml(hs.conceptPill || '')}"
               oninput="updateHomeStoryField('conceptPill', this.value)" />
           </div>
 
           <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-          <h3 id="home-chapters-section" style="margin:0 0 10px; font-size:14.5px;">3) 8대 생애주기 스토리 챕터 상단 라벨 &amp; 대표 대사</h3>
+          <h3 id="home-chapters-section" style="margin:0 0 10px; font-size:14.5px;" data-guide-num="4" data-guide-label="8대 생애주기 챕터 라벨·대사" data-guide-sel="#dialogue-chapter-num"><span class="studio-num-pin">4</span>8대 생애주기 스토리 챕터 상단 라벨 &amp; 대표 대사</h3>
           <div style="margin-bottom:14px;">
             ${chapters.map((ch, cIdx) => `
               <div class="list-row-inline" style="margin-bottom:8px;">
@@ -3521,30 +3626,30 @@
         </div>
 
         <div class="grid-2">
-          <div class="field">
-            <label>상단 영문/학술 아이브로우 (eyebrow)</label>
+          <div class="field" data-guide-num="1" data-guide-label="상단 영문 아이브로우" data-guide-sel="#project-details-meta .meta-eyebrow">
+            <label><span class="studio-num-pin">1</span>상단 영문/학술 아이브로우 (eyebrow)</label>
             <input type="text" id="meta-eyebrow-input" value="${escHtml(meta.eyebrow || '')}" oninput="updateMetaField('eyebrow', this.value)" />
           </div>
-          <div class="field">
-            <label>진료과목 메인 대제목 (title)</label>
+          <div class="field" data-guide-num="2" data-guide-label="진료과목 메인 대제목" data-guide-sel="#project-details-title">
+            <label><span class="studio-num-pin">2</span>진료과목 메인 대제목 (title)</label>
             <input type="text" id="meta-title-input" value="${escHtml(meta.title || '')}" oninput="updateMetaField('title', this.value)" />
           </div>
         </div>
 
-        <div class="field">
-          <label>영문 서브타이틀 (subtitleEn)</label>
+        <div class="field" data-guide-num="3" data-guide-label="영문 서브타이틀" data-guide-sel="#project-details-meta .meta-subtitle-en">
+          <label><span class="studio-num-pin">3</span>영문 서브타이틀 (subtitleEn)</label>
           <input type="text" id="meta-subtitle-input" value="${escHtml(meta.subtitleEn || '')}" oninput="updateMetaField('subtitleEn', this.value)" />
         </div>
 
-        <div class="field">
-          <label>핵심 진료 철학 소개문 (줄바꿈으로 문단 구분)</label>
+        <div class="field" data-guide-num="4" data-guide-label="핵심 진료 철학 소개문" data-guide-sel="#project-details-desc">
+          <label><span class="studio-num-pin">4</span>핵심 진료 철학 소개문 (줄바꿈으로 문단 구분)</label>
           <textarea id="meta-desc-input" rows="3" oninput="updateMetaDesc(this.value)">${escHtml(descText)}</textarea>
         </div>
 
         ${dirProf ? `
-        <div id="meta-director-profile-box" style="margin:16px 0;padding:14px 16px;border-radius:14px;background:rgba(197,160,89,0.09);border:1px solid rgba(197,160,89,0.38);">
+        <div id="meta-director-profile-box" data-guide-num="4-1" data-guide-label="대표원장 공식 프로필" data-guide-sel="#project-details-desc" style="margin:16px 0;padding:14px 16px;border-radius:14px;background:rgba(197,160,89,0.09);border:1px solid rgba(197,160,89,0.38);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <strong style="font-size:13.5px;color:#5E4736;">👨‍⚕️ 대표원장 공식 프로필 섹션 (약력 · 학술활동 · 진료철학)</strong>
+            <strong style="font-size:13.5px;color:#5E4736;"><span class="studio-num-pin is-sub">4-1</span>👨‍⚕️ 대표원장 공식 프로필 섹션 (약력 · 학술활동 · 진료철학)</strong>
             <span class="tag-pill" style="background:#FEF3C7;color:#92400E;">14번 정식 프로필</span>
           </div>
           <div class="field">
@@ -3566,17 +3671,17 @@
 
         <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-        <div id="meta-checklist-section" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <h3 style="margin:0; font-size:15px;">✅ 환자 자가진단 체크리스트 문항 편집 (${checkItems.length}개)</h3>
+        <div id="meta-checklist-section" data-guide-num="5" data-guide-label="환자 자가진단 체크리스트" data-guide-sel=".empathy-checklist-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="margin:0; font-size:15px;"><span class="studio-num-pin">5</span>✅ 환자 자가진단 체크리스트 문항 편집 (${checkItems.length}개)</h3>
           <button type="button" class="mini-btn gold-helper" onclick="addChecklistItem()">+ 체크 문항 추가</button>
         </div>
 
         <div class="grid-2">
-          <div class="field">
+          <div class="field" data-guide-num="5" data-guide-label="체크리스트 박스 제목" data-guide-sel=".empathy-checklist-header, .empathy-checklist-card">
             <label>체크리스트 박스 제목 (checklistTitle)</label>
             <input type="text" id="meta-checklist-title-input" value="${escHtml(meta.checklistTitle || '')}" oninput="updateMetaField('checklistTitle', this.value)" />
           </div>
-          <div class="field">
+          <div class="field" data-guide-num="5" data-guide-label="체크리스트 보조 안내문" data-guide-sel=".empathy-checklist-sub, .empathy-checklist-card">
             <label>체크리스트 보조 안내문 (checklistSub)</label>
             <input type="text" value="${escHtml(meta.checklistSub || '')}" oninput="updateMetaField('checklistSub', this.value)" />
           </div>
@@ -3584,8 +3689,8 @@
 
         <div style="margin-bottom:12px;">
           ${checkItems.map((item, cIdx) => `
-            <div class="list-row-inline" id="meta-checklist-row-${cIdx}">
-              <span class="tag-pill">${cIdx + 1}</span>
+            <div class="list-row-inline" id="meta-checklist-row-${cIdx}" data-guide-num="5-${cIdx + 1}" data-guide-label="체크 문항 5-${cIdx + 1}" data-guide-sel=".empathy-check-item[data-idx='${cIdx}']">
+              <span class="studio-num-pin is-sub">5-${cIdx + 1}</span>
               <input type="text" id="meta-checklist-input-${cIdx}" value="${escHtml(item)}" oninput="updateChecklistItem(${cIdx}, this.value)" />
               <button type="button" class="mini-btn" onclick="moveChecklistItem(${cIdx}, -1)">▲</button>
               <button type="button" class="mini-btn" onclick="moveChecklistItem(${cIdx}, 1)">▼</button>
@@ -3609,17 +3714,17 @@
 
         <h3 id="meta-cta-section" style="margin:0 0 10px; font-size:15px;">📞 하단 진료예약 버튼 &amp; 페이지 테마 색상</h3>
         <div class="grid-2">
-          <div class="field">
-            <label>예약 버튼 메인 문구 (ctaText)</label>
+          <div class="field" data-guide-num="6" data-guide-label="하단 진료예약 버튼" data-guide-sel="#project-details-launch-cta">
+            <label><span class="studio-num-pin">6</span>예약 버튼 메인 문구 (ctaText)</label>
             <input type="text" id="meta-cta-text-input" value="${escHtml(meta.ctaText || '')}" oninput="updateMetaField('ctaText', this.value)" />
           </div>
-          <div class="field">
+          <div class="field" data-guide-num="6" data-guide-label="예약 프로그램명" data-guide-sel="#project-details-launch-cta">
             <label>예약 모달 자동 선택 프로그램명 (reserveProgram)</label>
             <input type="text" id="meta-reserve-prog-input" value="${escHtml(meta.reserveProgram || '')}" oninput="updateMetaField('reserveProgram', this.value)" />
           </div>
         </div>
-        <div class="field">
-          <label>예약 버튼 위 안내 문구 (ctaNudge)</label>
+        <div class="field" data-guide-num="6-1" data-guide-label="예약 모달 안내 문구" data-guide-sel="#project-details-launch-cta">
+          <label><span class="studio-num-pin is-sub">6-1</span>예약 모달 안내 문구 (ctaNudge)</label>
           <input type="text" id="meta-cta-nudge-input" value="${escHtml(meta.ctaNudge || '')}" oninput="updateMetaField('ctaNudge', this.value)" />
         </div>
 
@@ -3683,13 +3788,18 @@
     /* === Mutation Helpers === */
     function toggleCardAccordion(idx, ev) {
       if (ev) ev.stopPropagation();
-      if (expandedCards.has(idx)) {
-        expandedCards.delete(idx);
-      } else {
+      const willExpand = !expandedCards.has(idx);
+      if (willExpand) {
         expandedCards.add(idx);
-        syncHomePreviewToCard(idx);
+      } else {
+        expandedCards.delete(idx);
       }
       renderStoryCardsPane();
+      if (willExpand && typeof focusPreviewFromCardIdx === 'function') {
+        setTimeout(() => focusPreviewFromCardIdx(idx), 40);
+      } else if (typeof syncStudioNumberPinsToIframe === 'function') {
+        setTimeout(() => syncStudioNumberPinsToIframe(false), 40);
+      }
     }
 
     function toggleExpandAllCards(expand) {
@@ -7095,7 +7205,7 @@
           <div class="card-accordion ${isEnabled ? '' : 'disabled-card'}" id="hn-card-${escHtml(note.id)}" style="${isSelected ? 'border-color:#c5a059; box-shadow:0 6px 18px rgba(197,160,89,0.16);' : ''}">
             <div class="card-acc-head" onclick="toggleHealthNoteAccordion('${escHtml(note.id)}', event)">
               <div class="card-acc-left">
-                <span class="card-num-chip">${numStr}</span>
+                <span class="studio-num-pin">${idx + 1}</span>
                 <img id="hn-head-thumb-${escHtml(note.id)}" class="card-thumb-mini" src="${escHtml(thumbUrl)}" data-raw-path="${escHtml(rawThumb)}" alt="Illust"
                   onclick="event.stopPropagation(); openImageLightbox(this.getAttribute('data-raw-path'), '심층 칼럼 일러스트')"
                   onerror="handleStudioImgError(this, this.getAttribute('data-raw-path'))" />
@@ -7124,9 +7234,9 @@
 
             <div class="card-acc-body" style="display:${isExpanded ? 'block' : 'none'};">
               <!-- BOX A: 4-Section Summary -->
-              <div style="padding:12px 14px; border-radius:10px; background:#fcfbf8; border:1px solid #e6decb; margin-bottom:14px;">
+              <div data-guide-num="1" data-guide-label="기본 4단 요약 카드" data-guide-sel=".hip-header, .hip-sections" style="padding:12px 14px; border-radius:10px; background:#fcfbf8; border:1px solid #e6decb; margin-bottom:14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                  <strong style="font-size:13px; color:#1f1b16;">📌 1단계 · 기본 4단 요약 카드 (3D 인체모형 팝업 요약본)</strong>
+                  <strong style="font-size:13px; color:#1f1b16;"><span class="studio-num-pin">1</span>📌 1단계 · 기본 4단 요약 카드 (3D 인체모형 팝업 요약본)</strong>
                   <div style="display:flex; gap:6px; flex-wrap:wrap;">
                     <button type="button" class="mini-btn" onclick="previewHealthNoteInIframe('${escHtml(note.id)}', false, event)">👁️ 접힌 요약 화면 미리보기</button>
                     <button type="button" class="mini-btn" style="background:#eff6ff; border-color:#93c5fd; color:#1d4ed8;" onclick="openStandaloneHealthNoteUrl('${escHtml(note.id)}', event)">📄 /health-note-${escHtml(note.id)}/ 새창 열기 ↗</button>
@@ -7970,17 +8080,18 @@
             </div>
           </div>
 
-          <div class="field" style="max-width:260px; margin-bottom:14px;">
-            <label>비급여 최종 고지 기준일</label>
+          <div class="field" style="max-width:280px; margin-bottom:14px;" data-guide-num="0" data-guide-label="비급여 최종 고지 기준일" data-guide-sel="#loc-fee-updated">
+            <label><span class="studio-num-pin">0</span>비급여 최종 고지 기준일</label>
             <input type="text" id="ci-fee-date-input" value="${escHtml(ci.nonCoveredUpdatedDate || '2026-11-15')}" oninput="updateClinicInfoField('nonCoveredUpdatedDate', this.value)" />
           </div>
 
-          <div style="display:grid;grid-template-columns:0.85fr 1.35fr 1fr 0.95fr 1fr 34px;gap:6px;padding:0 8px 6px;font-size:11px;font-weight:800;color:var(--ink-sub);">
-            <span>분류</span><span>비급여 항목명</span><span>규격/기준</span><span>비용 안내</span><span>비고</span><span></span>
+          <div style="display:grid;grid-template-columns:30px minmax(0,0.85fr) minmax(0,1.45fr) minmax(0,0.95fr) minmax(0,0.65fr) minmax(0,0.95fr) 30px;gap:6px;padding:0 10px 6px;font-size:11px;font-weight:800;color:var(--ink-sub);">
+            <span>번호</span><span>분류</span><span>비급여 항목명</span><span>규격/기준</span><span>비용</span><span>비고</span><span></span>
           </div>
           <div id="clinic-fees-list" style="margin-bottom:16px;">
             ${(ci.nonCoveredFees || []).map((f, fIdx) => `
-              <div class="fee-row-card" id="fee-row-${fIdx}">
+              <div class="fee-row-card" id="fee-row-${fIdx}" style="grid-template-columns:30px minmax(0,0.85fr) minmax(0,1.45fr) minmax(0,0.95fr) minmax(0,0.65fr) minmax(0,0.95fr) 30px;" data-guide-num="${fIdx + 1}" data-guide-label="비급여 #${fIdx + 1} · ${escHtml(f.name || '')}" data-guide-sel="#loc-fee-tbody tr:nth-child(${fIdx + 1})">
+                <span class="studio-num-pin" style="margin-right:0;">${fIdx + 1}</span>
                 <input type="text" placeholder="분류" value="${escHtml(f.category || '')}" oninput="updateClinicFeeRow(${fIdx}, 'category', this.value)" />
                 <input type="text" id="fee-name-input-${fIdx}" placeholder="비급여 항목명" value="${escHtml(f.name || '')}" oninput="updateClinicFeeRow(${fIdx}, 'name', this.value)" />
                 <input type="text" placeholder="규격/기준" value="${escHtml(f.spec || '')}" oninput="updateClinicFeeRow(${fIdx}, 'spec', this.value)" />
@@ -8026,12 +8137,12 @@
             <input type="text" value="${escHtml(ci.greetingSign || '')}" oninput="updateClinicInfoField('greetingSign', this.value)" />
           </div>
         </div>
-        <div class="field">
-          <label>환영 인사말 메인 제목 (greetingTitle)</label>
+        <div class="field" data-guide-num="1" data-guide-label="대표원장 환영 인사말 제목" data-guide-sel="#loc-greeting-title">
+          <label><span class="studio-num-pin">1</span>환영 인사말 메인 제목 (greetingTitle)</label>
           <input type="text" id="ci-greeting-title" value="${escHtml(ci.greetingTitle || '')}" oninput="updateClinicInfoField('greetingTitle', this.value)" />
         </div>
-        <div class="field">
-          <label>환영 인사말 본문 (greetingBody)</label>
+        <div class="field" data-guide-num="2" data-guide-label="대표원장 환영 인사말 본문" data-guide-sel="#loc-greeting-body">
+          <label><span class="studio-num-pin">2</span>환영 인사말 본문 (greetingBody)</label>
           <textarea id="ci-greeting-body" rows="3" oninput="updateClinicInfoField('greetingBody', this.value)">${escHtml(ci.greetingBody || '')}</textarea>
         </div>
 
@@ -8058,8 +8169,8 @@
             <input type="text" value="${escHtml(ci.naverBookingUrl || '')}" oninput="updateClinicInfoField('naverBookingUrl', this.value)" />
           </div>
         </div>
-        <div class="field">
-          <label>전체 도로명 주소</label>
+        <div class="field" data-guide-num="3" data-guide-label="도로명 주소 · 길안내 목적지" data-guide-sel="#loc-address-text">
+          <label><span class="studio-num-pin">3</span>전체 도로명 주소</label>
           <input type="text" id="ci-address-input" value="${escHtml(ci.address || '')}" oninput="updateClinicInfoField('address', this.value)" />
         </div>
         <div class="grid-3">
@@ -8077,23 +8188,24 @@
           </div>
         </div>
         <div class="grid-2">
-          <div class="field">
-            <label>🚗 자가용 · 주차 안내 문구</label>
+          <div class="field" data-guide-num="4" data-guide-label="자가용 · 주차 안내" data-guide-sel="#loc-parking-guide">
+            <label><span class="studio-num-pin">4</span>🚗 자가용 · 주차 안내 문구</label>
             <textarea id="ci-parking-input" rows="2" oninput="updateClinicInfoField('parkingGuide', this.value)">${escHtml(ci.parkingGuide || '')}</textarea>
           </div>
-          <div class="field">
-            <label>🚌 대중교통 · 주변 이정표 안내 문구</label>
+          <div class="field" data-guide-num="5" data-guide-label="대중교통 · 주변 이정표 안내" data-guide-sel="#loc-transit-guide">
+            <label><span class="studio-num-pin">5</span>🚌 대중교통 · 주변 이정표 안내 문구</label>
             <textarea id="ci-transit-input" rows="2" oninput="updateClinicInfoField('transitGuide', this.value)">${escHtml(ci.transitGuide || '')}</textarea>
           </div>
         </div>
 
         <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
 
-        <div id="clinic-info-hours-box" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <h3 style="margin:0;font-size:14.5px;color:#2D5A43;">3️⃣ 진료시간표 &amp; 임시 휴진/공지 배너</h3>
+        <div id="clinic-info-hours-box" data-guide-num="7" data-guide-label="진료시간표" data-guide-sel="#loc-hours-list" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:14.5px;color:#2D5A43;"><span class="studio-num-pin">7</span>진료시간표 &amp; 임시 휴진/공지 배너</h3>
           <button type="button" class="mini-btn gold-helper" onclick="addClinicHourRow()">+ 진료시간 행 추가</button>
         </div>
-        <div id="clinic-info-holiday-box" style="padding:12px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;margin-bottom:12px;">
+        <div id="clinic-info-holiday-box" data-guide-num="6" data-guide-label="임시 휴진 · 공지 배너" data-guide-sel="#loc-holiday-banner" style="padding:12px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;margin-bottom:12px;">
+          <div style="font-size:11.5px;font-weight:800;color:#92400e;margin-bottom:6px;"><span class="studio-num-pin">6</span>상단 공지 배너</div>
           <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;color:#92400E;cursor:pointer;margin-bottom:8px;">
             <input type="checkbox" ${hn.enabled ? 'checked' : ''} onchange="updateClinicHolidayField('enabled', this.checked)" />
             📢 상단 임시 휴진 / 공휴일 특별 진료 강조 배너 켜기
@@ -8109,7 +8221,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom:14px;">
+        <div style="margin-bottom:14px;" data-guide-num="7" data-guide-label="진료시간표" data-guide-sel="#loc-hours-list">
           ${(ci.hours || []).map((h, hIdx) => `
             <div class="list-row-inline" style="display:grid;grid-template-columns:1.1fr 1fr 1.2fr auto;gap:6px;margin-bottom:6px;">
               <input type="text" placeholder="요일" value="${escHtml(h.day || '')}" oninput="updateClinicHourRow(${hIdx}, 'day', this.value)" />
@@ -8573,8 +8685,8 @@
       const isEnabled = faq.enabled !== false;
       const items = faq.items || [];
       return `
-        <div class="panel-head" id="faq-editor-section" style="margin-bottom:10px;">
-          <h3 style="margin:0; font-size:15px;">❓ 질환별 인터랙티브 FAQ 카드 편집기 (${items.length}문항)</h3>
+        <div class="panel-head" id="faq-editor-section" data-guide-num="7" data-guide-label="질환별 FAQ 카드" data-guide-sel="#clinic-faq-card" style="margin-bottom:10px;">
+          <h3 style="margin:0; font-size:15px;"><span class="studio-num-pin">7</span>❓ 질환별 인터랙티브 FAQ 카드 편집기 (${items.length}문항)</h3>
           <div style="display:flex; gap:8px; align-items:center;">
             <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; cursor:pointer;">
               <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateFaqMetaField('enabled', this.checked)" />
@@ -8585,7 +8697,7 @@
         </div>
         <div class="grid-2">
           <div class="field"><label>상단 아이브로우</label><input type="text" value="${escHtml(faq.eyebrow || '')}" oninput="updateFaqMetaField('eyebrow', this.value)" /></div>
-          <div class="field"><label>FAQ 메인 제목 ('작은따옴표' 골드 강조)</label><input type="text" id="faq-title-input" value="${escHtml(faq.title || '')}" oninput="updateFaqMetaField('title', this.value)" /></div>
+          <div class="field" data-guide-num="7" data-guide-label="FAQ 메인 제목" data-guide-sel="#clinic-faq-heading, #clinic-faq-card"><label>FAQ 메인 제목 ('작은따옴표' 골드 강조)</label><input type="text" id="faq-title-input" value="${escHtml(faq.title || '')}" oninput="updateFaqMetaField('title', this.value)" /></div>
         </div>
         <div class="grid-2">
           <div class="field"><label>안내 부제목</label><input type="text" value="${escHtml(faq.sub || '')}" oninput="updateFaqMetaField('sub', this.value)" /></div>
@@ -8593,9 +8705,9 @@
         </div>
         <div style="margin-top:8px;">
           ${items.map((item, qIdx) => `
-            <div class="faq-editor-card" id="faq-editor-item-${qIdx}">
+            <div class="faq-editor-card" id="faq-editor-item-${qIdx}" data-guide-num="7-${qIdx + 1}" data-guide-label="FAQ Q${qIdx + 1} 질문·답변" data-guide-sel="#clinic-faq-card details.clinic-faq-item[data-faq-idx='${qIdx}']">
               <div class="faq-editor-head">
-                <strong style="font-size:12.5px; color:var(--accent-dark);">Q${qIdx + 1} · ${escHtml(item.tag || '질문')}</strong>
+                <strong style="font-size:12.5px; color:var(--accent-dark);"><span class="studio-num-pin is-sub">7-${qIdx + 1}</span>Q${qIdx + 1} · ${escHtml(item.tag || '질문')}</strong>
                 <div style="display:flex; gap:4px;">
                   <button type="button" class="mini-btn" onclick="moveFaqItem(${qIdx}, -1)">▲</button>
                   <button type="button" class="mini-btn" onclick="moveFaqItem(${qIdx}, 1)">▼</button>
@@ -8631,8 +8743,8 @@
     function renderNextClinicEditorSection(page) {
       const nc = ensureNextClinic(page);
       return `
-        <div class="panel-head" id="next-clinic-editor-section" style="margin-bottom:8px;">
-          <h3 style="margin:0; font-size:15px;">➡️ 좌측 패널 하단 · 다음 연계 클리닉 추천 카드</h3>
+        <div class="panel-head" id="next-clinic-editor-section" data-guide-num="8" data-guide-label="다음 연계 클리닉 카드" data-guide-sel=".studio-next-clinic-card, #project-details-launch-cta" style="margin-bottom:8px;">
+          <h3 style="margin:0; font-size:15px;"><span class="studio-num-pin">8</span>➡️ 좌측 패널 하단 · 다음 연계 클리닉 추천 카드</h3>
           <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; cursor:pointer;">
             <input type="checkbox" ${nc.enabled === true ? 'checked' : ''} onchange="updateNextClinicField('enabled', this.checked)" />
             추천 카드 노출
@@ -9243,7 +9355,8 @@
     }
 
     /* ============================================================================
-     * 5. REAL-TIME VISUAL INTERACTIVE CUSTOM MODE (우측 실제 페이지 호버/클릭 연동)
+     * 5. LEFT → RIGHT NUMBERED GUIDE & AUTO-SCROLL SPOTLIGHT ENGINE
+     * (좌측 커스텀 항목 선택 시 우측 실제 홈페이지의 같은 번호 위치로 자동 이동 · 강조)
      * ============================================================================ */
     let isVisualSelectMode = true;
     try {
@@ -9253,13 +9366,18 @@
 
     let lastPreviewScrollState = null;
     let currentVisualSelectedTarget = null;
-    let lastLinkedCardIdx = null;
+
+    function getActiveLeftTabKey() {
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') return 'clinicinfo';
+      const activeBtn = document.querySelector('.editor-tab-btn.active');
+      return activeBtn ? (activeBtn.getAttribute('data-tab') || 'cards') : 'cards';
+    }
 
     function applyVisualSelectModeUi() {
       const topBtn = document.getElementById('btnToggleVisualSelect');
       if (topBtn) {
         topBtn.classList.toggle('active', isVisualSelectMode);
-        topBtn.textContent = isVisualSelectMode ? '🎯 커스텀 연동 ON' : '🖱️ 일반 탐색';
+        topBtn.textContent = isVisualSelectMode ? '🔢 번호 가이드 ON' : '🔢 번호 가이드 OFF';
       }
       const onBtn = document.getElementById('vpInspectOnBtn');
       const offBtn = document.getElementById('vpInspectOffBtn');
@@ -9276,15 +9394,20 @@
       if (bar) bar.classList.toggle('is-on', isVisualSelectMode);
       if (hint) {
         hint.textContent = isVisualSelectMode
-          ? '커스텀 연동 활성화 · 우측 화면의 수정 가능한 영역에 마우스를 올리고 클릭하면 좌측 수정 메뉴가 즉시 열립니다 (Alt+클릭은 일반 동작)'
-          : '일반 탐색 모드 · 실제 링크 이동, 모달, 슬라이더를 그대로 테스트할 수 있습니다';
+          ? '좌측 커스텀 항목을 선택하면 우측 실제 페이지의 같은 번호 위치로 자동 이동·강조됩니다'
+          : '깔끔 미리보기 모드 · 번호 핀 없이 실제 홈페이지 화면만 확인합니다';
       }
       if (pill && !isVisualSelectMode) {
         pill.classList.remove('is-selected');
-        pill.textContent = '🖱️ 일반 탐색 중';
-      } else if (pill && isVisualSelectMode && !currentVisualSelectedTarget) {
-        pill.classList.remove('is-selected');
-        pill.textContent = '🎯 대기 중 · 영역에 마우스를 올려보세요';
+        pill.textContent = '👁️ 번호 핀 숨김';
+      } else if (pill && isVisualSelectMode) {
+        if (currentVisualSelectedTarget && currentVisualSelectedTarget.num) {
+          pill.classList.add('is-selected');
+          pill.textContent = `📍 현재 수정 · [#${currentVisualSelectedTarget.num}] ${currentVisualSelectedTarget.label || ''}`;
+        } else {
+          pill.classList.remove('is-selected');
+          pill.textContent = '🔢 번호 매칭 활성화 · 좌측 항목을 클릭해 보세요';
+        }
       }
       syncVisualSelectModeToIframe();
     }
@@ -9294,8 +9417,8 @@
       try { localStorage.setItem('bareun_studio_visual_select_mode', isVisualSelectMode ? '1' : '0'); } catch (e) {}
       applyVisualSelectModeUi();
       showStatus(isVisualSelectMode ? 'ok' : 'working', isVisualSelectMode
-        ? '🎯 커스텀 모드 연동 ON — 우측 실제 홈페이지에서 수정 가능한 부분에 마우스를 올리고 클릭하면 해당 수정 메뉴가 즉시 활성화됩니다!'
-        : '🖱️ 일반 탐색 모드로 전환했습니다. 우측 미리보기에서 링크와 팝업을 자유롭게 테스트하세요.');
+        ? '🔢 번호 가이드 & 자동 이동 ON — 좌측 수정 항목을 선택하면 우측 홈페이지의 같은 번호 위치로 바로 이동하여 강조합니다!'
+        : '👁️ 번호 가이드를 숨기고 깨끗한 실제 미리보기 화면으로 전환했습니다.');
     }
 
     function toggleVisualSelectMode() {
@@ -9306,30 +9429,12 @@
       const frame = document.getElementById('livePreviewFrame');
       if (frame && frame.contentWindow) {
         frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
-        showStatus('ok', '🃏 메인 홈 6대 핵심 진료카드를 펼쳤습니다. 수정할 카드를 직접 클릭해 보세요!');
+        setTimeout(() => syncStudioNumberPinsToIframe(false), 320);
       }
     }
 
     function previewFocusDetailPlate(plateOrigIdx) {
-      const frame = document.getElementById('livePreviewFrame');
-      if (!frame || !frame.contentWindow || !frame.contentDocument) return;
-      try {
-        const sel = `article[data-plate-orig-idx="${plateOrigIdx}"]`;
-        if (frame.contentWindow.__BAREUN_RUNWAY_API__) {
-          frame.contentWindow.__BAREUN_RUNWAY_API__.scrollToSelector(sel);
-        } else {
-          const el = frame.contentDocument.querySelector(sel);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-        }
-        if (frame.contentWindow.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__) {
-          const numStr = String(plateOrigIdx + 1).padStart(2, '0');
-          setTimeout(() => {
-            try {
-              frame.contentWindow.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__(sel, `📑 CARD ${numStr} · 스토리 카드`);
-            } catch (_) {}
-          }, 220);
-        }
-      } catch (e) {}
+      focusPreviewFromCardIdx(plateOrigIdx);
     }
 
     function capturePreviewScrollState(frame, page) {
@@ -9341,7 +9446,6 @@
         const prevSlug = doc.documentElement.getAttribute('data-studio-page-slug') || '';
         if (prevSlug && prevSlug !== page.slug) {
           lastPreviewScrollState = null;
-          currentVisualSelectedTarget = null;
           return;
         }
         const runwayX = (win.__BAREUN_RUNWAY_API__ && typeof win.__BAREUN_RUNWAY_API__.getX === 'function')
@@ -9361,31 +9465,33 @@
     }
 
     function restorePreviewScrollState(frame, page) {
-      if (!lastPreviewScrollState || !page || lastPreviewScrollState.pageSlug !== page.slug) return;
-      const saved = lastPreviewScrollState;
-      const win = frame.contentWindow;
-      const doc = frame.contentDocument;
+      const win = frame && frame.contentWindow;
+      const doc = frame && frame.contentDocument;
       if (!win || !doc) return;
+      const saved = (lastPreviewScrollState && page && lastPreviewScrollState.pageSlug === page.slug) ? lastPreviewScrollState : null;
       setTimeout(() => {
         try {
-          if (saved.runwayX > 2 && win.__BAREUN_RUNWAY_API__) {
-            win.__BAREUN_RUNWAY_API__.setX(saved.runwayX, true);
+          if (saved) {
+            if (saved.runwayX > 2 && win.__BAREUN_RUNWAY_API__) {
+              win.__BAREUN_RUNWAY_API__.setX(saved.runwayX, true);
+            }
+            if (saved.scrollY > 2) {
+              win.scrollTo(0, saved.scrollY);
+            }
+            const metaEl = doc.getElementById('project-details-meta');
+            if (metaEl && saved.metaScrollTop > 2) {
+              metaEl.scrollTop = saved.metaScrollTop;
+            }
           }
-          if (saved.scrollY > 2) {
-            win.scrollTo(0, saved.scrollY);
-          }
-          const metaEl = doc.getElementById('project-details-meta');
-          if (metaEl && saved.metaScrollTop > 2) {
-            metaEl.scrollTop = saved.metaScrollTop;
-          }
-          if ((saved.homeFinaleActive || currentStudioChapter === 'finale') && isHomeStoryPage(page)) {
+          if (((saved && saved.homeFinaleActive) || currentStudioChapter === 'finale') && page && isHomeStoryPage(page)) {
             win.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
           }
-          if (currentVisualSelectedTarget && currentVisualSelectedTarget.selector && win.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__) {
-            win.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__(currentVisualSelectedTarget.selector, currentVisualSelectedTarget.label);
+          syncStudioNumberPinsToIframe(false);
+          if (currentVisualSelectedTarget) {
+            applySpotlightToIframe(currentVisualSelectedTarget, false);
           }
         } catch (e) {}
-      }, 140);
+      }, 180);
     }
 
     function syncVisualSelectModeToIframe() {
@@ -9395,438 +9501,304 @@
         const win = frame.contentWindow;
         const doc = frame.contentDocument;
         if (!win || !doc || !doc.documentElement) return;
-        win.__BAREUN_STUDIO_INSPECT_ON__ = isVisualSelectMode;
-        doc.documentElement.classList.toggle('bareun-studio-inspect-active', isVisualSelectMode);
-        if (!isVisualSelectMode) {
-          const hb = doc.getElementById('bsi-hover-box');
-          const ab = doc.getElementById('bsi-active-box');
-          if (hb) hb.style.opacity = '0';
-          if (ab) ab.style.opacity = '0';
+        win.__BAREUN_STUDIO_INSPECT_ON__ = false; // Right preview stays 100% natively interactive!
+        const layer = doc.getElementById('bsp-pin-layer');
+        const spot = doc.getElementById('bsp-spotlight-box');
+        if (layer) layer.style.display = isVisualSelectMode ? 'block' : 'none';
+        if (spot && !isVisualSelectMode) spot.style.opacity = '0';
+        if (isVisualSelectMode) syncStudioNumberPinsToIframe(false);
+      } catch (e) {}
+    }
+
+    function collectActiveChapterPins() {
+      const ch = currentStudioChapter;
+      const tab = getActiveLeftTabKey();
+      const page = getCurrentPage();
+      const pins = [];
+
+      // Chapter 05: Non-Covered Fees (/location.html#non-covered-fees)
+      if (ch === 'fees') {
+        pins.push({ num: '0', label: '최종 고지 기준일', selector: '#loc-fee-updated' });
+        const fees = (window.studioClinicGlobalInfo && Array.isArray(window.studioClinicGlobalInfo.nonCoveredFees))
+          ? window.studioClinicGlobalInfo.nonCoveredFees : [];
+        fees.forEach((f, idx) => {
+          pins.push({ num: String(idx + 1), label: (f && f.name) ? f.name : ('비급여 #' + (idx + 1)), selector: `#loc-fee-tbody tr:nth-child(${idx + 1})` });
+        });
+        return pins;
+      }
+
+      // Chapter 06: Location (/location.html)
+      if (ch === 'location') {
+        return [
+          { num: '1', label: '환영 인사말 제목', selector: '#loc-greeting-title' },
+          { num: '2', label: '환영 인사말 본문', selector: '#loc-greeting-body' },
+          { num: '3', label: '도로명 주소', selector: '#loc-address-text' },
+          { num: '4', label: '주차 안내', selector: '#loc-parking-guide' },
+          { num: '5', label: '대중교통 안내', selector: '#loc-transit-guide' },
+          { num: '6', label: '임시 휴진·공지 배너', selector: '#loc-holiday-banner' },
+          { num: '7', label: '진료시간표', selector: '#loc-hours-list' }
+        ];
+      }
+
+      // Chapter 04: Health Notes (/body-explorer.html)
+      if (ch === 'healthnotes') {
+        return [
+          { num: '1', label: '건강글 제목·요약 헤더', selector: '.hip-header' },
+          { num: '2', label: '일상 공감 일러스트', selector: '.hip-empathy-hero-card' },
+          { num: '3', label: '핵심 4단 요약 카드', selector: '.hip-sections' },
+          { num: '4', label: '심층 칼럼 상세 영역', selector: '.deep-editorial-drawer.open, .hip-quick-detail-strip' }
+        ];
+      }
+
+      // Chapter 01: Home Storyboard
+      if (ch === 'storyboard') {
+        if (tab === 'leftpanel') {
+          return [
+            { num: '1', label: '오프닝 슬로건', selector: '#daddy-intro-slogan, #story-dialogue-stage' },
+            { num: '2', label: '상단 브랜드 로고', selector: '.nav-brand-logo' },
+            { num: '3', label: '스토리 철학 캡슐', selector: '#dialogue-daddy-concept-pill' },
+            { num: '4', label: '8대 챕터 라벨·대사', selector: '#dialogue-chapter-num' }
+          ];
+        }
+        const activeNum = (currentVisualSelectedTarget && currentVisualSelectedTarget.num) || '1';
+        return [
+          { num: String(activeNum).split('-')[0], label: '현재 편집 스토리 컷', selector: '#story-dialogue-stage' }
+        ];
+      }
+
+      // Chapter 02: Home Finale Bento Cards
+      if (ch === 'finale') {
+        if (tab === 'leftpanel') {
+          return [
+            { num: '1', label: '피날레 인트로 헤드라인', selector: '.skt-hero-headline' },
+            { num: '2', label: '벤토 상단 철학 라벨', selector: '.skt-finale-eyebrow' },
+            { num: '3', label: '벤토 메인 타이틀', selector: '.skt-finale-main-title' }
+          ];
+        }
+        const bentos = ((page && page.plates) || []).filter(p => p && p.type === 'home-bento-card' && p.enabled !== false);
+        bentos.forEach((b, bIdx) => {
+          pins.push({ num: String(bIdx + 1), label: b.title || ('피날레 카드 #' + (bIdx + 1)), selector: `.skt-card-item[data-card-idx="${bIdx}"]` });
+        });
+        return pins;
+      }
+
+      // Chapter 03: Detail Pages
+      if (ch === 'detail' && page) {
+        if (tab === 'leftpanel') {
+          pins.push({ num: '1', label: '상단 아이브로우', selector: '#project-details-meta .meta-eyebrow' });
+          pins.push({ num: '2', label: '메인 대제목', selector: '#project-details-title' });
+          pins.push({ num: '3', label: '영문 서브타이틀', selector: '#project-details-meta .meta-subtitle-en' });
+          pins.push({ num: '4', label: '진료 철학 소개문', selector: '#project-details-desc' });
+          pins.push({ num: '5', label: '자가진단 체크리스트', selector: '.empathy-checklist-card' });
+          const cItems = (page.meta && Array.isArray(page.meta.checklistItems)) ? page.meta.checklistItems : [];
+          cItems.forEach((_, cIdx) => {
+            pins.push({ num: '5-' + (cIdx + 1), label: '체크 문항', selector: `.empathy-check-item[data-idx="${cIdx}"]`, isSub: true });
+          });
+          pins.push({ num: '6', label: '하단 진료예약 버튼', selector: '#project-details-launch-cta' });
+          pins.push({ num: '7', label: '질환별 FAQ 카드', selector: '#clinic-faq-card' });
+          const faqItems = (page.faqCard && Array.isArray(page.faqCard.items)) ? page.faqCard.items : [];
+          const faqCount = faqItems.length || 6;
+          for (let qIdx = 0; qIdx < faqCount; qIdx++) {
+            pins.push({ num: '7-' + (qIdx + 1), label: 'FAQ Q' + (qIdx + 1), selector: `#clinic-faq-card details.clinic-faq-item[data-faq-idx="${qIdx}"]`, isSub: true });
+          }
+          pins.push({ num: '8', label: '다음 연계 클리닉', selector: '.studio-next-clinic-card' });
+          return pins;
+        }
+
+        // Story Cards tab (or Style tab)
+        const plates = page.plates || [];
+        let displayNum = 0;
+        plates.forEach((p, origIdx) => {
+          if (!p || p.enabled === false) return;
+          displayNum++;
+          const numStr = String(displayNum);
+          pins.push({ num: numStr, label: 'CARD ' + numStr.padStart(2, '0'), selector: `article[data-plate-orig-idx="${origIdx}"]` });
+          if (expandedCards.has(origIdx)) {
+            pins.push({ num: numStr + '-1', label: '메인 제목(H2)', selector: `article[data-plate-orig-idx="${origIdx}"] .editorial-headline, article[data-plate-orig-idx="${origIdx}"] .son-hero-main-title`, isSub: true });
+            pins.push({ num: numStr + '-2', label: '본문 설명(P)', selector: `article[data-plate-orig-idx="${origIdx}"] .editorial-body-copy, article[data-plate-orig-idx="${origIdx}"] .son-hero-main-sub`, isSub: true });
+            pins.push({ num: numStr + '-3', label: '이미지·미디어', selector: `article[data-plate-orig-idx="${origIdx}"] .plate-media-inner`, isSub: true });
+          }
+        });
+        pins.push({ num: String(displayNum + 1), label: '3D 인체모형 카드', selector: '#project-details-preview' });
+        return pins;
+      }
+
+      return pins;
+    }
+
+    function syncStudioNumberPinsToIframe(autoScrollFirst) {
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame || !frame.contentWindow) return;
+      try {
+        const pins = collectActiveChapterPins();
+        if (typeof frame.contentWindow.__BAREUN_STUDIO_SET_PINS__ === 'function') {
+          frame.contentWindow.__BAREUN_STUDIO_SET_PINS__(pins, isVisualSelectMode);
+        }
+        if (autoScrollFirst && isVisualSelectMode && pins.length > 0) {
+          const tab = getActiveLeftTabKey();
+          if (currentStudioChapter === 'detail' && tab === 'leftpanel') {
+            applySpotlightToIframe({ num: '2', label: '진료과목 메인 대제목', selector: '#project-details-title' }, true);
+          } else if (currentStudioChapter === 'detail' && tab === 'cards') {
+            const firstExp = Array.from(expandedCards)[0];
+            if (typeof firstExp === 'number' && firstExp >= 0) {
+              focusPreviewFromCardIdx(firstExp);
+            }
+          } else if (currentStudioChapter === 'finale' && tab === 'leftpanel') {
+            applySpotlightToIframe({ num: '3', label: '벤토 메인 타이틀', selector: '.skt-finale-main-title' }, true);
+          }
         }
       } catch (e) {}
     }
 
-    function updateInspectToolbarPill(label, isSelected) {
-      const pill = document.getElementById('previewInspectTargetPill');
-      if (!pill || !isVisualSelectMode) return;
-      if (!label) {
-        if (currentVisualSelectedTarget && currentVisualSelectedTarget.label) {
-          pill.classList.add('is-selected');
-          pill.textContent = '✓ 편집 중 · ' + currentVisualSelectedTarget.label;
-        } else {
-          pill.classList.remove('is-selected');
-          pill.textContent = '🎯 대기 중 · 영역에 마우스를 올려보세요';
-        }
-        return;
-      }
-      pill.classList.toggle('is-selected', Boolean(isSelected));
-      pill.textContent = (isSelected ? '✓ 편집 중 · ' : '✏️ 수정 가능 · ') + label;
-    }
-
-    function flashAndFocusEditorEl(sectionEl, focusEl) {
-      const scrollEl = sectionEl || focusEl;
-      if (scrollEl) {
-        scrollEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        scrollEl.classList.remove('studio-target-flash');
-        void scrollEl.offsetWidth;
-        scrollEl.classList.add('studio-target-flash');
-        setTimeout(() => scrollEl.classList.remove('studio-target-flash'), 1550);
-      }
-      if (focusEl && typeof focusEl.focus === 'function') {
-        setTimeout(() => {
-          try {
-            focusEl.focus({ preventScroll: true });
-            if (focusEl.tagName === 'INPUT' && typeof focusEl.select === 'function') {
-              // keep cursor ready at end without losing visibility
-            }
-          } catch (_) {}
-        }, 260);
-      }
-    }
-
-    function activateStudioEditTarget(target) {
+    function applySpotlightToIframe(target, shouldScroll) {
       if (!target) return;
       currentVisualSelectedTarget = target;
-      updateInspectToolbarPill(target.label, true);
-
-      // Highlight linked card marker cleanup
-      document.querySelectorAll('.story-card-item.is-visual-linked').forEach(el => el.classList.remove('is-visual-linked'));
-      lastLinkedCardIdx = null;
-
-      if (target.action === 'openNavModal') {
-        openPageManagerModal('nav');
-        showStatus('ok', `🎯 [${target.label}] 수정 메뉴를 열었습니다!`);
-        return;
+      const pill = document.getElementById('previewInspectTargetPill');
+      if (pill && isVisualSelectMode) {
+        pill.classList.add('is-selected');
+        pill.textContent = `📍 현재 수정 · [#${target.num || ''}] ${target.label || ''}`;
       }
-
-      // Smart cross-chapter routing!
-      if (target.chapter === 'fees' || target.chapter === 'location') {
-        if (currentStudioChapter !== target.chapter) {
-          selectStudioChapter(target.chapter, true);
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame || !frame.contentWindow) return;
+      try {
+        if (typeof frame.contentWindow.__BAREUN_STUDIO_SPOTLIGHT__ === 'function') {
+          frame.contentWindow.__BAREUN_STUDIO_SPOTLIGHT__(target, Boolean(shouldScroll), isVisualSelectMode);
         }
+      } catch (e) {}
+    }
+
+    function focusPreviewFromCardIdx(plateOrigIdx) {
+      const page = getCurrentPage();
+      if (!page) return;
+      const plates = page.plates || [];
+      const card = plates[plateOrigIdx];
+      if (!card) return;
+
+      const cardDom = document.getElementById('card-item-' + plateOrigIdx);
+      if (cardDom) markActiveLeftGuideEl(cardDom);
+
+      // Storyboard Chapter 01
+      if (isHomeStoryPage(page) && currentStudioChapter === 'storyboard') {
+        let frameIdx = 0;
+        for (let i = 0; i < plateOrigIdx; i++) {
+          if (plates[i] && plates[i].type !== 'home-bento-card') frameIdx++;
+        }
+        const frame = document.getElementById('livePreviewFrame');
+        if (frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SYNC_FRAME', frameIndex: frameIdx }, '*');
+        }
+        const num = String(frameIdx + 1);
+        const target = { num, label: `스토리 컷 #${num} · ${(card.title || '').slice(0, 18)}`, selector: '#story-dialogue-stage' };
+        currentVisualSelectedTarget = target;
         setTimeout(() => {
-          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
-          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
-          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('clinicInfoEditorBox'), focEl);
-        }, 80);
-        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+          syncStudioNumberPinsToIframe(false);
+          applySpotlightToIframe(target, false);
+        }, 140);
         return;
       }
-      if (target.tab === 'clinicinfo') {
-        selectStudioChapter('location', false);
+
+      // Finale Bento Chapter 02
+      if (isHomeStoryPage(page) && currentStudioChapter === 'finale') {
+        let bentoIdx = 0;
+        for (let i = 0; i < plateOrigIdx; i++) {
+          if (plates[i] && plates[i].type === 'home-bento-card' && plates[i].enabled !== false) bentoIdx++;
+        }
+        const frame = document.getElementById('livePreviewFrame');
+        if (frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
+        }
+        const num = String(bentoIdx + 1);
+        const target = { num, label: `피날레 카드 #${num} · ${card.title || ''}`, selector: `.skt-card-item[data-card-idx="${bentoIdx}"]` };
         setTimeout(() => {
-          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
-          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
-          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('clinicInfoEditorBox'), focEl);
+          syncStudioNumberPinsToIframe(false);
+          applySpotlightToIframe(target, true);
+        }, 160);
+        return;
+      }
+
+      // Detail Pages Chapter 03
+      let displayNum = 0;
+      for (let i = 0; i <= plateOrigIdx; i++) {
+        if (plates[i] && plates[i].enabled !== false) displayNum++;
+      }
+      const numStr = String(displayNum);
+      const target = {
+        num: numStr,
+        label: `CARD ${numStr.padStart(2, '0')} · ${(card.title || '스토리 카드').slice(0, 20)}`,
+        selector: `article[data-plate-orig-idx="${plateOrigIdx}"]`
+      };
+      syncStudioNumberPinsToIframe(false);
+      applySpotlightToIframe(target, true);
+    }
+
+    function markActiveLeftGuideEl(guideEl) {
+      document.querySelectorAll('.is-guide-active').forEach(el => el.classList.remove('is-guide-active'));
+      if (guideEl) guideEl.classList.add('is-guide-active');
+    }
+
+    function handleLeftEditorGuideTrigger(rawTarget) {
+      if (!rawTarget || !isVisualSelectMode) return;
+      const guideEl = rawTarget.closest && rawTarget.closest('[data-guide-sel], [data-guide-home-frame], [data-guide-bento-idx]');
+      if (!guideEl) return;
+
+      markActiveLeftGuideEl(guideEl);
+
+      const num = guideEl.getAttribute('data-guide-num') || '';
+      const label = guideEl.getAttribute('data-guide-label') || '';
+      const subSel = guideEl.getAttribute('data-guide-sub-sel') || '';
+
+      // 1) Home Storyboard Cut
+      if (guideEl.hasAttribute('data-guide-home-frame')) {
+        const frameIdx = parseInt(guideEl.getAttribute('data-guide-home-frame') || '0', 10) || 0;
+        const frame = document.getElementById('livePreviewFrame');
+        if (frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SYNC_FRAME', frameIndex: frameIdx }, '*');
+        }
+        const target = { num, label, selector: subSel || '#story-dialogue-stage' };
+        currentVisualSelectedTarget = target;
+        setTimeout(() => {
+          syncStudioNumberPinsToIframe(false);
+          applySpotlightToIframe(target, false);
         }, 120);
-        showStatus('ok', `🎯 [06 · 오시는길] ${target.label} 수정 메뉴로 이동했습니다!`);
         return;
       }
-      if (isHomeStoryPage(getCurrentPage()) && typeof target.cardIdx === 'number') {
-        const clickedCard = (getCurrentPage().plates || [])[target.cardIdx];
-        if (clickedCard) {
-          const wantCh = clickedCard.type === 'home-bento-card' ? 'finale' : 'storyboard';
-          if (currentStudioChapter !== wantCh) {
-            currentStudioChapter = wantCh;
-            applyChapterTabVisibility();
-            updateChapterBarUi();
-            renderStoryCardsPane();
-            renderLeftPanelPane();
-          }
+
+      // 2) Home Finale Bento Card
+      if (guideEl.hasAttribute('data-guide-bento-idx')) {
+        const bentoIdx = parseInt(guideEl.getAttribute('data-guide-bento-idx') || '0', 10) || 0;
+        const frame = document.getElementById('livePreviewFrame');
+        if (frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
         }
-      }
-
-      const tabKey = target.tab || 'cards';
-      switchEditorTab(tabKey);
-
-      if (tabKey === 'cards' && typeof target.cardIdx === 'number' && target.cardIdx >= 0) {
-        const idx = target.cardIdx;
-        lastLinkedCardIdx = idx;
-        if (!expandedCards.has(idx)) {
-          expandedCards.add(idx);
-          renderStoryCardsPane();
-        }
+        const target = { num, label, selector: subSel || `.skt-card-item[data-card-idx="${bentoIdx}"]` };
         setTimeout(() => {
-          const cardEl = document.getElementById('card-item-' + idx);
-          if (cardEl) cardEl.classList.add('is-visual-linked');
-          let sectionEl = cardEl;
-          let focusEl = null;
-
-          if (target.sub === 'title') {
-            focusEl = document.getElementById('card-title-input-' + idx);
-            sectionEl = focusEl ? focusEl.closest('.field') || cardEl : cardEl;
-          } else if (target.sub === 'sub') {
-            focusEl = document.getElementById('card-sub-input-' + idx);
-            sectionEl = focusEl ? focusEl.closest('.field') || cardEl : cardEl;
-          } else if (target.sub === 'media') {
-            sectionEl = document.getElementById('card-media-box-' + idx) || cardEl;
-            focusEl = sectionEl ? sectionEl.querySelector('input[type="text"], button') : null;
-          } else if (target.sub === 'options') {
-            const drawer = document.getElementById('card-optional-drawer-' + idx);
-            if (drawer) {
-              drawer.open = true;
-              sectionEl = drawer;
-              focusEl = drawer.querySelector('input[type="text"]');
-            }
-          } else {
-            focusEl = document.getElementById('card-title-input-' + idx);
-          }
-
-          flashAndFocusEditorEl(sectionEl, focusEl);
-        }, 60);
-        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+          syncStudioNumberPinsToIframe(false);
+          applySpotlightToIframe(target, true);
+        }, 140);
         return;
       }
 
-      if (tabKey === 'cards' && target.sectionId === 'bodyModelEditorBox') {
-        setTimeout(() => {
-          const bm = document.getElementById('bodyModelEditorBox');
-          const firstInp = bm ? bm.querySelector('input[type="text"]') : null;
-          flashAndFocusEditorEl(bm, firstInp);
-        }, 60);
-        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
-        return;
-      }
-
-      if (tabKey === 'leftpanel') {
-        setTimeout(() => {
-          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
-          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
-          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('leftPanelEditorBox'), focEl);
-        }, 60);
-        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
-        return;
-      }
-
-      if (tabKey === 'clinicinfo') {
-        setTimeout(() => {
-          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
-          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
-          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('clinicInfoEditorBox'), focEl);
-        }, 60);
-        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
-        return;
-      }
-
-      if (tabKey === 'style') {
-        setTimeout(() => {
-          flashAndFocusEditorEl(document.getElementById('pane-style'), null);
-        }, 60);
-        showStatus('ok', `🎯 [${target.label}] 디자인 설정 메뉴가 활성화되었습니다!`);
-      }
+      // 3) Standard CSS selector target (Detail / Location / Fees / HealthNotes / Home Header)
+      const sel = guideEl.getAttribute('data-guide-sel') || '';
+      if (!sel) return;
+      syncStudioNumberPinsToIframe(false);
+      applySpotlightToIframe({ num, label, selector: sel }, true);
     }
 
-    function resolvePlateIdxForHomeBento(page, bentoDomIdx) {
-      const plates = (page && page.plates) || [];
-      let seen = 0;
-      for (let i = 0; i < plates.length; i++) {
-        if (plates[i] && plates[i].type === 'home-bento-card' && plates[i].enabled !== false) {
-          if (seen === bentoDomIdx) return i;
-          seen++;
-        }
-      }
-      return -1;
-    }
+    // Bind SINGLE clean delegated listener on the left editor column (Left -> Right Auto-Navigation!)
+    (function bindLeftToRightEditorSync() {
+      const editorCol = document.querySelector('.editor-column');
+      if (!editorCol || editorCol.__bareunGuideBound) return;
+      editorCol.__bareunGuideBound = true;
 
-    function resolvePlateIdxForHomeStoryQuote(page, quoteText) {
-      const plates = (page && page.plates) || [];
-      const normQ = String(quoteText || '').replace(/\s+/g, '').trim();
-      if (normQ) {
-        for (let i = 0; i < plates.length; i++) {
-          if (plates[i] && plates[i].type === 'home-story-frame') {
-            const pNorm = String(plates[i].title || '').replace(/\s+/g, '').trim();
-            if (pNorm && (pNorm === normQ || normQ.includes(pNorm) || pNorm.includes(normQ))) {
-              return i;
-            }
-          }
-        }
-      }
-      const firstStory = plates.findIndex(p => p && p.type === 'home-story-frame');
-      return firstStory >= 0 ? firstStory : 0;
-    }
-
-    function resolveEditableInIframe(rawEl, doc, page) {
-      if (!rawEl || !doc) return null;
-      if (rawEl.id === 'bsi-hover-box' || rawEl.id === 'bsi-active-box' || rawEl.closest('#bsi-hover-box, #bsi-active-box')) return null;
-
-      // Exempt controls that should keep working natively even in Custom Mode
-      if (rawEl.closest('#floating-hanji-mode-btn, #btn-show-skt-cards, #btn-back-to-story, #btn-replay-skt-flip, #dialogue-tap-next-pill, #btn-open-detail-studio, .plate-step-btn, .clinic-faq-toggle-all, #bareun-location-modal-backdrop, #bareun-visit-modal-backdrop, #consult-modal-overlay, #detail-hairloss-modal, #plate-lightbox')) {
-        return null;
-      }
-
-      // 0) Location & Non-Covered Fees Page (/location.html) targets
-      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location' || doc.getElementById('non-covered-fees')) {
-        const feeTr = rawEl.closest('#loc-fee-tbody tr');
-        if (feeTr) {
-          const allTrs = Array.from(doc.querySelectorAll('#loc-fee-tbody tr'));
-          const fIdx = Math.max(0, allTrs.indexOf(feeTr));
-          return { el: feeTr, selector: `#loc-fee-tbody tr:nth-child(${fIdx + 1})`, chapter: 'fees', sectionId: 'fee-row-' + fIdx, focusId: 'fee-price-input-' + fIdx, label: `💳 비급여 항목 #${fIdx + 1} 비용 수정` };
-        }
-        const feeSec = rawEl.closest('#non-covered-fees');
-        if (feeSec) return { el: feeSec, selector: '#non-covered-fees', chapter: 'fees', sectionId: 'clinic-fees-list', focusId: 'ci-fee-date-input', label: '💳 비급여 진료비용 안내표' };
-
-        const greetEl = rawEl.closest('#loc-greeting-title, #loc-greeting-body, #loc-greeting-eyebrow, #loc-greeting-sign, .greeting-card');
-        if (greetEl) return { el: greetEl, selector: '#loc-greeting-title', chapter: 'location', sectionId: 'clinic-info-brand-box', focusId: 'ci-greeting-title', label: '👋 대표원장 환영 인사말' };
-
-        const holEl = rawEl.closest('#loc-holiday-banner');
-        if (holEl) return { el: holEl, selector: '#loc-holiday-banner', chapter: 'location', sectionId: 'clinic-info-holiday-box', focusId: 'ci-holiday-text-input', label: '📢 임시 휴진 · 공지 배너' };
-
-        const addrEl = rawEl.closest('#loc-address-text');
-        if (addrEl) return { el: addrEl, selector: '#loc-address-text', chapter: 'location', sectionId: 'clinic-info-location-box', focusId: 'ci-address-input', label: '📍 도로명 주소 · 지도 좌표' };
-
-        const hoursEl = rawEl.closest('#loc-hours-list');
-        if (hoursEl) return { el: hoursEl, selector: '#loc-hours-list', chapter: 'location', sectionId: 'clinic-info-hours-box', label: '⏰ 진료시간표 편집' };
-
-        const parkEl = rawEl.closest('#loc-parking-guide');
-        if (parkEl) return { el: parkEl, selector: '#loc-parking-guide', chapter: 'location', sectionId: 'clinic-info-location-box', focusId: 'ci-parking-input', label: '🚗 주차 안내 문구' };
-
-        const tranEl = rawEl.closest('#loc-transit-guide');
-        if (tranEl) return { el: tranEl, selector: '#loc-transit-guide', chapter: 'location', sectionId: 'clinic-info-location-box', focusId: 'ci-transit-input', label: '🚌 대중교통 안내 문구' };
-
-        if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') return null;
-      }
-
-      if (!page) return null;
-      const isHome = isHomeStoryPage(page);
-      const isHn = isHealthNotesPage(page);
-
-      // 1) Main Home 3D Cinema Page targets
-      if (isHome) {
-        const brandEl = rawEl.closest('.nav-brand-logo');
-        if (brandEl) return { el: brandEl, selector: '.nav-brand-logo', tab: 'leftpanel', focusId: 'home-brand-title-input', label: '🏠 상단 브랜드 로고' };
-
-        const locBtn = rawEl.closest('.bareun-loc-pill-btn');
-        if (locBtn) return { el: locBtn, selector: '.bareun-loc-pill-btn', tab: 'clinicinfo', sectionId: 'clinic-info-location-box', focusId: 'ci-address-input', label: '📍 오시는길 · 병원 정보' };
-
-        const bentoCard = rawEl.closest('.skt-card-item');
-        if (bentoCard) {
-          const bIdx = parseInt(bentoCard.getAttribute('data-card-idx') || '0', 10) || 0;
-          const plateIdx = resolvePlateIdxForHomeBento(page, bIdx);
-          const titleTxt = (bentoCard.querySelector('.skt-card-title')?.textContent || '').trim();
-          const numStr = String(plateIdx + 1).padStart(2, '0');
-          return {
-            el: bentoCard,
-            selector: `.skt-card-item[data-card-idx="${bIdx}"]`,
-            tab: 'cards',
-            cardIdx: plateIdx >= 0 ? plateIdx : 0,
-            sub: 'title',
-            label: `🃏 피날레 진료카드 · ${titleTxt || ('CARD ' + numStr)}`
-          };
-        }
-
-        const finaleHead = rawEl.closest('.skt-finale-heading-group, .skt-finale-header, .skt-hero-headline');
-        if (finaleHead) return { el: finaleHead, selector: '.skt-finale-heading-group', tab: 'leftpanel', sectionId: 'home-finale-section', focusId: 'home-finale-title-input', label: '✨ 6대 클리닉 피날레 타이틀' };
-
-        const conceptPill = rawEl.closest('#dialogue-daddy-concept-pill');
-        if (conceptPill) return { el: conceptPill, selector: '#dialogue-daddy-concept-pill', tab: 'leftpanel', focusId: 'home-concept-pill-input', label: '💎 스토리 상단 철학 캡슐' };
-
-        const chNum = rawEl.closest('#dialogue-chapter-num, .dialogue-meta-row');
-        if (chNum) return { el: chNum, selector: '#dialogue-chapter-num', tab: 'leftpanel', sectionId: 'home-chapters-section', label: '📖 8대 생애주기 챕터 대사' };
-
-        const storyQuote = rawEl.closest('#dialogue-main-quote, #dialogue-sub-whisper, #story-dialogue-stage');
-        if (storyQuote) {
-          const qText = (doc.getElementById('dialogue-main-quote')?.textContent || '').trim();
-          const plateIdx = resolvePlateIdxForHomeStoryQuote(page, qText);
-          const numStr = String(plateIdx + 1).padStart(2, '0');
-          return {
-            el: storyQuote,
-            selector: '#story-dialogue-stage',
-            tab: 'cards',
-            cardIdx: plateIdx,
-            sub: 'title',
-            label: `🎬 스토리 컷 CARD ${numStr} · 대사/이미지`
-          };
-        }
-
-        const introEl = rawEl.closest('#daddy-intro-slogan, #daddy-intro-stage');
-        if (introEl) return { el: introEl, selector: '#daddy-intro-slogan', tab: 'leftpanel', focusId: 'home-intro-line1-input', label: '🎬 오프닝 시네마 슬로건' };
-
-        return null;
-      }
-
-      // 2) 3D Health Notes Page targets
-      if (isHn) {
-        const hnPanel = rawEl.closest('.hn-detail-modal, .note-card, .info-drawer, #part-info-panel');
-        if (hnPanel) return { el: hnPanel, selector: '', tab: 'cards', label: '🧬 3D 부위별 건강 글 편집' };
-        return null;
-      }
-
-      // 3) Detail Pages (11+ Clinic Pages) targets
-      // 3a. Top Header
-      const brandLogo = rawEl.closest('#header .brand-logo');
-      if (brandLogo) return { el: brandLogo, selector: '#header .brand-logo', tab: 'clinicinfo', sectionId: 'clinic-info-brand-box', focusId: 'ci-greeting-title', label: '🏥 병원명 · 대표원장 인사말' };
-
-      const navTabs = rawEl.closest('#header .clinic-quick-tabs, #header .header-center');
-      if (navTabs) return { el: navTabs, selector: '#header .clinic-quick-tabs', action: 'openNavModal', label: '🧭 상단 클리닉 메뉴(NAV) 관리' };
-
-      const locBtn = rawEl.closest('#header .bareun-loc-pill-btn');
-      if (locBtn) return { el: locBtn, selector: '#header .bareun-loc-pill-btn', tab: 'clinicinfo', sectionId: 'clinic-info-location-box', focusId: 'ci-address-input', label: '📍 오시는길 · 진료시간 · 비급여' };
-
-      const talkBtn = rawEl.closest('#header .header-talk-btn');
-      if (talkBtn) return { el: talkBtn, selector: '#header .header-talk-btn', tab: 'leftpanel', sectionId: 'meta-cta-section', focusId: 'meta-cta-text-input', label: '📞 맞춤 진료예약 · 예약 프로그램' };
-
-      const bodyExpLink = rawEl.closest('#header #header-body-explorer-link');
-      if (bodyExpLink) return { el: bodyExpLink, selector: '#header #header-body-explorer-link', tab: 'cards', sectionId: 'bodyModelEditorBox', label: '💡 3D 생활꿀팁 링크 · 인체모형 카드' };
-
-      // 3b. Left Sticky Guide Panel (#project-details-meta)
-      const eyebrowEl = rawEl.closest('#project-details-meta .meta-eyebrow');
-      if (eyebrowEl) return { el: eyebrowEl, selector: '#project-details-meta .meta-eyebrow', tab: 'leftpanel', focusId: 'meta-eyebrow-input', label: '🏷️ 상단 영문 아이브로우' };
-
-      const titleEl = rawEl.closest('#project-details-title');
-      if (titleEl) return { el: titleEl, selector: '#project-details-title', tab: 'leftpanel', focusId: 'meta-title-input', label: '📝 진료과목 메인 대제목' };
-
-      const subEnEl = rawEl.closest('#project-details-meta .meta-subtitle-en');
-      if (subEnEl) return { el: subEnEl, selector: '#project-details-meta .meta-subtitle-en', tab: 'leftpanel', focusId: 'meta-subtitle-input', label: '🔤 영문 서브타이틀' };
-
-      const descEl = rawEl.closest('#project-details-desc');
-      if (descEl) return { el: descEl, selector: '#project-details-desc', tab: 'leftpanel', focusId: 'meta-desc-input', label: '📄 핵심 진료 철학 소개문' };
-
-      const dirProfEl = rawEl.closest('.director-official-profile-card, .director-profile-box');
-      if (dirProfEl) return { el: dirProfEl, selector: '.director-official-profile-card', tab: 'leftpanel', sectionId: 'meta-director-profile-box', focusId: 'meta-director-quote-input', label: '👨‍⚕️ 대표원장 공식 프로필(약력·철학)' };
-
-      const checkItemEl = rawEl.closest('.empathy-check-item');
-      if (checkItemEl) {
-        const cIdx = parseInt(checkItemEl.getAttribute('data-idx') || '0', 10) || 0;
-        return {
-          el: checkItemEl,
-          selector: `.empathy-check-item[data-idx="${cIdx}"]`,
-          tab: 'leftpanel',
-          sectionId: 'meta-checklist-row-' + cIdx,
-          focusId: 'meta-checklist-input-' + cIdx,
-          label: `✅ 자가진단 체크 문항 #${cIdx + 1}`
-        };
-      }
-
-      const checkCardEl = rawEl.closest('.empathy-checklist-card');
-      if (checkCardEl) return { el: checkCardEl, selector: '.empathy-checklist-card', tab: 'leftpanel', sectionId: 'meta-checklist-section', focusId: 'meta-checklist-title-input', label: '✅ 환자 자가진단 체크리스트' };
-
-      const nudgeEl = rawEl.closest('.cta-nudge-msg');
-      if (nudgeEl) return { el: nudgeEl, selector: '.cta-nudge-msg', tab: 'leftpanel', sectionId: 'meta-cta-section', focusId: 'meta-cta-nudge-input', label: '💬 예약 버튼 위 안내 문구' };
-
-      const launchCtaEl = rawEl.closest('#project-details-launch-cta');
-      if (launchCtaEl) return { el: launchCtaEl, selector: '#project-details-launch-cta', tab: 'leftpanel', sectionId: 'meta-cta-section', focusId: 'meta-cta-text-input', label: '📞 하단 진료예약 버튼' };
-
-      const nextClinicEl = rawEl.closest('.studio-next-clinic-card');
-      if (nextClinicEl) return { el: nextClinicEl, selector: '.studio-next-clinic-card', tab: 'leftpanel', sectionId: 'next-clinic-editor-section', label: '➡️ 다음 연계 클리닉 추천 카드' };
-
-      const metaAsideEl = rawEl.closest('#project-details-meta');
-      if (metaAsideEl) return { el: metaAsideEl, selector: '#project-details-meta', tab: 'leftpanel', sectionId: 'leftPanelEditorBox', focusId: 'meta-title-input', label: '📋 좌측 안내 패널 · 페이지 색상' };
-
-      // 3c. FAQ Card (#clinic-faq-card)
-      const faqItemEl = rawEl.closest('#clinic-faq-card details.clinic-faq-item');
-      if (faqItemEl) {
-        const qIdx = parseInt(faqItemEl.getAttribute('data-faq-idx') || '0', 10) || 0;
-        return {
-          el: faqItemEl,
-          selector: `#clinic-faq-card details.clinic-faq-item[data-faq-idx="${qIdx}"]`,
-          tab: 'leftpanel',
-          sectionId: 'faq-editor-item-' + qIdx,
-          focusId: 'faq-q-input-' + qIdx,
-          label: `❓ FAQ Q${qIdx + 1} 질문·답변`
-        };
-      }
-      const faqCardEl = rawEl.closest('#clinic-faq-card');
-      if (faqCardEl) return { el: faqCardEl, selector: '#clinic-faq-card', tab: 'leftpanel', sectionId: 'faq-editor-section', focusId: 'faq-title-input', label: '❓ 질환 핵심 FAQ 카드' };
-
-      // 3d. Last Card: 3D Body Model Card (#project-details-preview)
-      const bodyModelEl = rawEl.closest('#project-details-preview');
-      if (bodyModelEl) return { el: bodyModelEl, selector: '#project-details-preview', tab: 'cards', sectionId: 'bodyModelEditorBox', label: '🧬 마지막 카드 · 3D 인체모형' };
-
-      // 3e. Story Cards (article.project-details-item)
-      const plateArticle = rawEl.closest('article.project-details-item');
-      if (plateArticle) {
-        let origIdx = parseInt(plateArticle.getAttribute('data-plate-orig-idx') || '', 10);
-        if (isNaN(origIdx)) {
-          const allPlates = Array.from(doc.querySelectorAll('article.project-details-item:not(#clinic-faq-card)'));
-          origIdx = Math.max(0, allPlates.indexOf(plateArticle));
-        }
-        const numStr = String(origIdx + 1).padStart(2, '0');
-        const baseSel = `article[data-plate-orig-idx="${origIdx}"]`;
-
-        const h2El = rawEl.closest('.editorial-headline, .son-pledge-headline');
-        if (h2El) return { el: h2El, selector: baseSel + ' .editorial-headline', tab: 'cards', cardIdx: origIdx, sub: 'title', label: `✍️ CARD ${numStr} · 메인 제목(H2)` };
-
-        const bodyEl = rawEl.closest('.editorial-body-copy, .son-pledge-body');
-        if (bodyEl) return { el: bodyEl, selector: baseSel + ' .editorial-body-copy', tab: 'cards', cardIdx: origIdx, sub: 'sub', label: `📝 CARD ${numStr} · 본문 설명` };
-
-        const optEl = rawEl.closest('.editorial-top-meta, .clinical-pillars, .seo-keyword-footer');
-        if (optEl) return { el: optEl, selector: baseSel + ' .editorial-text-zone', tab: 'cards', cardIdx: origIdx, sub: 'options', label: `⚙️ CARD ${numStr} · STEP·포인트·태그` };
-
-        const mediaEl = rawEl.closest('.plate-media-inner');
-        if (mediaEl) return { el: mediaEl, selector: baseSel + ' .plate-media-inner', tab: 'cards', cardIdx: origIdx, sub: 'media', label: `🖼️ CARD ${numStr} · 이미지·미디어` };
-
-        const edZone = rawEl.closest('.editorial-text-zone');
-        if (edZone) return { el: edZone, selector: baseSel + ' .editorial-text-zone', tab: 'cards', cardIdx: origIdx, sub: 'title', label: `📑 CARD ${numStr} · 에디토리얼 문구` };
-
-        return { el: plateArticle, selector: baseSel, tab: 'cards', cardIdx: origIdx, sub: 'card', label: `📑 CARD ${numStr} · 스토리 카드` };
-      }
-
-      // 3f. Legal / Clinic Info Footer
-      const legalFooter = rawEl.closest('.bareun-detail-legal-info');
-      if (legalFooter) return { el: legalFooter, selector: '.bareun-detail-legal-info', tab: 'clinicinfo', sectionId: 'clinic-info-location-box', label: '🏥 병원정보 · 오시는길 · 비급여' };
-
-      return null;
-    }
+      editorCol.addEventListener('focusin', function (e) {
+        handleLeftEditorGuideTrigger(e.target);
+      });
+      editorCol.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('button.danger, .story-card-head')) return;
+        handleLeftEditorGuideTrigger(e.target);
+      });
+    })();
 
     function installStudioVisualInspector(frame) {
       if (!frame) return;
@@ -9836,252 +9808,356 @@
         const doc = frame.contentDocument;
         if (!win || !doc || !doc.head || !doc.body) return;
         if (page) doc.documentElement.setAttribute('data-studio-page-slug', page.slug || '');
+        win.__BAREUN_STUDIO_INSPECT_ON__ = false; // Right preview stays 100% natively interactive!
 
-        win.__BAREUN_STUDIO_INSPECT_ON__ = isVisualSelectMode;
-        doc.documentElement.classList.toggle('bareun-studio-inspect-active', isVisualSelectMode);
-
-        // Hide nested "🎨 커스텀" button inside preview iframe so user doesn't nest studio inside studio
-        if (!doc.getElementById('bareun-studio-visual-css')) {
+        if (!doc.getElementById('bareun-studio-pins-css')) {
           const st = doc.createElement('style');
-          st.id = 'bareun-studio-visual-css';
+          st.id = 'bareun-studio-pins-css';
           st.textContent = `
             #btn-open-detail-studio { display: none !important; }
-            html.bareun-studio-inspect-active [data-plate-orig-idx],
-            html.bareun-studio-inspect-active #project-details-meta,
-            html.bareun-studio-inspect-active #clinic-faq-card,
-            html.bareun-studio-inspect-active #project-details-preview,
-            html.bareun-studio-inspect-active .skt-card-item {
-              cursor: pointer;
+            #bsp-pin-layer {
+              position: fixed !important;
+              inset: 0 !important;
+              pointer-events: none !important;
+              z-index: 2147482900 !important;
+              overflow: hidden !important;
             }
-            #bsi-hover-box, #bsi-active-box {
+            .bsp-pin {
               position: fixed !important;
               pointer-events: none !important;
-              border-radius: 10px !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              gap: 4px !important;
+              min-width: 24px !important;
+              height: 24px !important;
+              padding: 0 7px !important;
+              border-radius: 999px !important;
+              background: rgba(20, 17, 14, 0.92) !important;
+              color: #FDE68A !important;
+              border: 1.8px solid #D4AF37 !important;
+              font-family: 'Pretendard', -apple-system, sans-serif !important;
+              font-size: 11.5px !important;
+              font-weight: 900 !important;
+              line-height: 1 !important;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.38) !important;
+              opacity: 0;
+              transition: opacity 120ms ease, transform 160ms ease !important;
+            }
+            .bsp-pin.is-sub-pin {
+              min-width: 30px !important;
+              height: 20px !important;
+              padding: 0 6px !important;
+              font-size: 10px !important;
+              background: rgba(255, 251, 235, 0.96) !important;
+              color: #92400E !important;
+              border: 1.5px solid #D97706 !important;
+            }
+            .bsp-pin.is-active-pin {
+              background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+              color: #FFFFFF !important;
+              border: 2px solid #A7F3D0 !important;
+              box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3), 0 6px 18px rgba(4, 120, 87, 0.5) !important;
+              transform: scale(1.12) !important;
+              z-index: 2147482995 !important;
+            }
+            #bsp-spotlight-box {
+              position: fixed !important;
+              pointer-events: none !important;
+              z-index: 2147482950 !important;
+              border: 3px solid #10B981 !important;
+              border-radius: 11px !important;
+              background: rgba(16, 185, 129, 0.08) !important;
+              box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 6px rgba(16, 185, 129, 0.22), 0 0 28px rgba(212, 175, 55, 0.42) !important;
               box-sizing: border-box !important;
               opacity: 0;
               left: 0; top: 0; width: 0; height: 0;
-              transition: left 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                          top 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                          width 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                          height 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                          opacity 130ms ease !important;
+              transition: opacity 140ms ease !important;
             }
-            #bsi-hover-box {
-              z-index: 2147483000 !important;
-              border: 2.5px solid #D4AF37 !important;
-              background: rgba(212, 175, 55, 0.11) !important;
-              box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88), 0 0 22px rgba(212, 175, 55, 0.45) !important;
-            }
-            #bsi-active-box {
-              z-index: 2147482999 !important;
-              border: 2.5px solid #10B981 !important;
-              background: rgba(16, 185, 129, 0.07) !important;
-              box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.28), 0 0 24px rgba(16, 185, 129, 0.36) !important;
-            }
-            .bsi-badge {
+            .bsp-spot-badge {
               position: absolute !important;
               left: -2px !important;
-              top: -31px !important;
+              top: -32px !important;
               display: inline-flex !important;
               align-items: center !important;
               gap: 6px !important;
-              padding: 4px 10px !important;
-              border-radius: 7px !important;
+              padding: 4px 11px !important;
+              border-radius: 999px !important;
+              background: linear-gradient(135deg, #065F46 0%, #047857 100%) !important;
+              color: #FFFFFF !important;
+              border: 1.5px solid #A7F3D0 !important;
               font-family: 'Pretendard', -apple-system, sans-serif !important;
               font-size: 11.5px !important;
               font-weight: 800 !important;
-              line-height: 1.2 !important;
               white-space: nowrap !important;
-              letter-spacing: -0.01em !important;
-              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.38) !important;
-              pointer-events: none !important;
+              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
             }
-            .bsi-badge.is-inside-top {
+            .bsp-spot-badge.is-inside-top {
               top: 6px !important;
               left: 6px !important;
             }
-            #bsi-hover-box .bsi-badge {
-              background: rgba(20, 17, 14, 0.95) !important;
-              color: #FEF08A !important;
-              border: 1px solid #D4AF37 !important;
-            }
-            #bsi-active-box .bsi-badge {
-              background: linear-gradient(135deg, #065f46, #047857) !important;
-              color: #FFFFFF !important;
-              border: 1px solid #6EE7B7 !important;
-            }
-            .bsi-dot {
-              width: 7px !important;
-              height: 7px !important;
-              border-radius: 50% !important;
-              background: #F59E0B !important;
-              box-shadow: 0 0 8px #F59E0B !important;
-              flex-shrink: 0 !important;
-            }
-            #bsi-active-box .bsi-dot {
-              background: #34D399 !important;
-              box-shadow: 0 0 8px #34D399 !important;
+            .bsp-spot-num {
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              min-width: 19px !important;
+              height: 19px !important;
+              padding: 0 5px !important;
+              border-radius: 999px !important;
+              background: #FEF08A !important;
+              color: #161310 !important;
+              font-size: 11px !important;
+              font-weight: 900 !important;
             }
           `;
           doc.head.appendChild(st);
         }
 
-        if (win.__BAREUN_STUDIO_INSPECTOR_BOUND__) {
+        if (win.__BAREUN_STUDIO_PINS_BOUND__) {
+          syncStudioNumberPinsToIframe(false);
           restorePreviewScrollState(frame, page);
           return;
         }
-        win.__BAREUN_STUDIO_INSPECTOR_BOUND__ = true;
+        win.__BAREUN_STUDIO_PINS_BOUND__ = true;
 
-        const hoverBox = doc.createElement('div');
-        hoverBox.id = 'bsi-hover-box';
-        hoverBox.innerHTML = '<div class="bsi-badge"><span class="bsi-dot"></span><span class="bsi-text"></span></div>';
-        doc.body.appendChild(hoverBox);
+        const pinLayer = doc.createElement('div');
+        pinLayer.id = 'bsp-pin-layer';
+        doc.body.appendChild(pinLayer);
 
-        const activeBox = doc.createElement('div');
-        activeBox.id = 'bsi-active-box';
-        activeBox.innerHTML = '<div class="bsi-badge"><span class="bsi-dot"></span><span class="bsi-text"></span></div>';
-        doc.body.appendChild(activeBox);
+        const spotBox = doc.createElement('div');
+        spotBox.id = 'bsp-spotlight-box';
+        spotBox.innerHTML = '<div class="bsp-spot-badge"><span class="bsp-spot-num"></span><span class="bsp-spot-label"></span></div>';
+        doc.body.appendChild(spotBox);
 
-        let hoveredTarget = null;
-        let activeEl = null;
-        let activeLabel = '';
-        let pointerDownPos = null;
+        let pinRegistry = []; // [{ num, label, selector, isSub, domPin }]
+        let activeSpot = null; // { num, label, selector }
 
-        function positionOverlayBox(box, el, labelText) {
-          if (!box || !el || !doc.body.contains(el)) {
-            if (box) box.style.opacity = '0';
-            return;
+        function findFirstVisibleEl(selector) {
+          if (!selector) return null;
+          const parts = String(selector).split(',').map(s => s.trim()).filter(Boolean);
+          for (let i = 0; i < parts.length; i++) {
+            try {
+              const el = doc.querySelector(parts[i]);
+              if (el) {
+                const r = el.getBoundingClientRect();
+                if (r.width > 0 && r.height > 0) return el;
+              }
+            } catch (_) {}
           }
-          const r = el.getBoundingClientRect();
-          if (r.width < 4 || r.height < 4 || r.bottom < 0 || r.top > win.innerHeight || r.right < 0 || r.left > win.innerWidth) {
-            box.style.opacity = '0';
-            return;
-          }
-          const left = Math.max(2, r.left);
-          const top = Math.max(2, r.top);
-          const right = Math.min(win.innerWidth - 2, r.right);
-          const bottom = Math.min(win.innerHeight - 2, r.bottom);
-          box.style.left = left + 'px';
-          box.style.top = top + 'px';
-          box.style.width = Math.max(12, right - left) + 'px';
-          box.style.height = Math.max(12, bottom - top) + 'px';
-          box.style.opacity = '1';
-
-          const badge = box.querySelector('.bsi-badge');
-          const txt = box.querySelector('.bsi-text');
-          if (txt && labelText) txt.textContent = labelText;
-          if (badge) {
-            badge.classList.toggle('is-inside-top', top < 36);
-          }
+          try { return doc.querySelector(parts[0]); } catch (_) { return null; }
         }
 
-        function pickTargetAtPoint(clientX, clientY, fallbackEl) {
-          const curPage = getCurrentPage();
-          let els = [];
-          try { els = doc.elementsFromPoint(clientX, clientY) || []; } catch (_) {}
-          for (let i = 0; i < els.length; i++) {
-            const candidate = els[i];
-            if (!candidate || candidate === hoverBox || candidate === activeBox) continue;
-            if (candidate.closest && candidate.closest('#bsi-hover-box, #bsi-active-box')) continue;
-            const resolved = resolveEditableInIframe(candidate, doc, curPage);
-            if (resolved) return resolved;
-            // If we hit an exempted native button directly, stop searching underneath
-            if (candidate.closest && candidate.closest('#floating-hanji-mode-btn, #btn-show-skt-cards, #btn-back-to-story, #btn-replay-skt-flip, #dialogue-tap-next-pill, .plate-step-btn, .clinic-faq-toggle-all')) {
-              return null;
+        function getStickyHeaderBottom() {
+          try {
+            const h = doc.querySelector('#header, header, .loc-header, .top-nav, nav.fixed-top');
+            if (!h) return 6;
+            const hr = h.getBoundingClientRect();
+            const pos = win.getComputedStyle(h).position;
+            if ((pos === 'fixed' || pos === 'sticky') && hr.top <= 10 && hr.bottom > 24 && hr.height < 160) {
+              return Math.ceil(hr.bottom) + 6;
+            }
+          } catch (_) {}
+          return 6;
+        }
+
+        function scrollElementIntoPreview(el, selector) {
+          if (!el) return;
+          // Auto-open FAQ <details> if targeting a specific FAQ question!
+          const det = el.tagName === 'DETAILS' ? el : (el.closest && el.closest('details.clinic-faq-item'));
+          if (det && !det.open) {
+            det.open = true;
+          }
+
+          // Case A: Detail page desktop horizontal runway (> 1024px)
+          const inRunway = Boolean(el.closest && el.closest('#project-details-items-wrapper'));
+          if (inRunway && win.innerWidth > 1024 && win.__BAREUN_RUNWAY_API__) {
+            const cardEl = el.closest('article.project-details-item, #clinic-faq-card, #project-details-preview') || el;
+            const cardSel = cardEl.id ? ('#' + cardEl.id) : (cardEl.getAttribute('data-plate-orig-idx') != null ? `article[data-plate-orig-idx="${cardEl.getAttribute('data-plate-orig-idx')}"]` : selector);
+            win.__BAREUN_RUNWAY_API__.scrollToSelector(cardSel);
+            const faqScroll = el.closest && el.closest('.clinic-faq-scroll-body');
+            if (faqScroll) {
+              setTimeout(() => {
+                try {
+                  const targetTop = Math.max(0, el.offsetTop - faqScroll.offsetTop - 16);
+                  faqScroll.scrollTo({ top: targetTop, behavior: 'auto' });
+                } catch (_) {}
+              }, 160);
+            }
+            return;
+          }
+
+          // Case B: Detail page desktop sticky left panel (#project-details-meta)
+          const metaAside = el.closest && el.closest('#project-details-meta');
+          if (metaAside && win.innerWidth > 1024 && metaAside.scrollHeight > metaAside.clientHeight + 10) {
+            const r = el.getBoundingClientRect();
+            const mr = metaAside.getBoundingClientRect();
+            const desiredTop = metaAside.scrollTop + (r.top - mr.top) - Math.max(24, (mr.height - r.height) * 0.35);
+            metaAside.scrollTo({ top: Math.max(0, desiredTop), behavior: 'smooth' });
+            return;
+          }
+
+          // Case C: Health Notes encyclopedia scroll panel
+          const encScroll = el.closest && el.closest('#encyclopedia-scroll-panel');
+          if (encScroll && encScroll.scrollHeight > encScroll.clientHeight + 10) {
+            const r = el.getBoundingClientRect();
+            const er = encScroll.getBoundingClientRect();
+            const desiredTop = encScroll.scrollTop + (r.top - er.top) - 24;
+            encScroll.scrollTo({ top: Math.max(0, desiredTop), behavior: 'auto' });
+            return;
+          }
+
+          // Case D: Vertical document flow (Split-screen / Mobile / Location / Fees / Home Finale)
+          // Use scrollIntoView({ behavior: 'auto', block: 'center' }) so nested scroll containers (html/body/faq-scroll)
+          // and 6,000px+ jumps ALWAYS reach the exact element immediately without stalling!
+          function snapVerticalToCenter() {
+            try {
+              const safeTop = getStickyHeaderBottom();
+              const faqScroll = el.closest && el.closest('.clinic-faq-scroll-body');
+              if (faqScroll && faqScroll.scrollHeight > faqScroll.clientHeight + 10) {
+                const targetTop = Math.max(0, el.offsetTop - faqScroll.offsetTop - 20);
+                faqScroll.scrollTop = targetTop;
+              }
+              el.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'nearest' });
+              const rAfter = el.getBoundingClientRect();
+              if (rAfter.top < safeTop + 34) {
+                const delta = rAfter.top - (safeTop + 40);
+                if (doc.body && doc.body.scrollTop > 0 && win.scrollY === 0) {
+                  doc.body.scrollTop = Math.max(0, doc.body.scrollTop + delta);
+                } else {
+                  win.scrollBy(0, delta);
+                }
+              }
+            } catch (_) {}
+          }
+          snapVerticalToCenter();
+          // Re-align once after lazy images / <details> expand finish layout settling
+          setTimeout(() => {
+            try {
+              const cur = findFirstVisibleEl(selector) || el;
+              if (!cur) return;
+              const safeTop = getStickyHeaderBottom();
+              const vh = win.innerHeight || 800;
+              const r = cur.getBoundingClientRect();
+              if (r.top < safeTop + 10 || r.top > vh - 80 || r.bottom < safeTop + 40) {
+                snapVerticalToCenter();
+              }
+            } catch (_) {}
+          }, 180);
+        }
+
+        function refreshPinAndSpotlightCoords() {
+          const vh = win.innerHeight || 800;
+          const vw = win.innerWidth || 1000;
+          const safeTop = getStickyHeaderBottom();
+
+          if (pinLayer.style.display !== 'none') {
+            for (let i = 0; i < pinRegistry.length; i++) {
+              const item = pinRegistry[i];
+              const el = findFirstVisibleEl(item.selector);
+              if (!el) {
+                item.domPin.style.opacity = '0';
+                continue;
+              }
+              const r = el.getBoundingClientRect();
+              if (r.width < 6 || r.height < 6 || r.bottom < safeTop + 16 || r.top > vh - 10 || r.right < 4 || r.left > vw - 4) {
+                item.domPin.style.opacity = '0';
+                continue;
+              }
+              // Small rows (fee rows, FAQ rows, checklist items, headlines) hide once scrolled under sticky header
+              if (r.height < 140 && r.top < safeTop - 4) {
+                item.domPin.style.opacity = '0';
+                continue;
+              }
+              // Tall cards whose visible remainder below sticky header is too narrow also hide
+              if (r.height >= 140 && r.top < safeTop && r.bottom < safeTop + 56) {
+                item.domPin.style.opacity = '0';
+                continue;
+              }
+              const isAct = Boolean(activeSpot && activeSpot.num === item.num);
+              item.domPin.classList.toggle('is-active-pin', isAct);
+              // Main pins sit cleanly at top-left; sub-pins (e.g. 3-1, 5-2, 7-3) align cleanly at top-right to prevent overlap!
+              const rawPx = item.isSub ? (r.right - 44) : (r.left + 8);
+              const px = Math.min(vw - 44, Math.max(6, rawPx));
+              const py = Math.min(vh - 28, Math.max(safeTop + 4, r.top + (item.isSub ? 5 : 8)));
+              item.domPin.style.left = px + 'px';
+              item.domPin.style.top = py + 'px';
+              item.domPin.style.opacity = isAct ? '0' : '1'; // Active spotlight badge shows the number prominently
             }
           }
-          if (fallbackEl) return resolveEditableInIframe(fallbackEl, doc, curPage);
-          return null;
-        }
 
-        win.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__ = function (selector, label) {
-          if (!isVisualSelectMode || !selector) return;
-          const el = doc.querySelector(selector);
-          if (!el) return;
-          activeEl = el;
-          activeLabel = '✓ 편집 중 · ' + (label || '선택된 영역');
-          positionOverlayBox(activeBox, activeEl, activeLabel);
+          if (activeSpot && pinLayer.style.display !== 'none') {
+            const el = findFirstVisibleEl(activeSpot.selector);
+            if (!el) {
+              spotBox.style.opacity = '0';
+            } else {
+              const r = el.getBoundingClientRect();
+              if (r.width < 4 || r.height < 4 || r.bottom < safeTop + 8 || r.top > vh || r.right < 0 || r.left > vw) {
+                spotBox.style.opacity = '0';
+              } else {
+                const left = Math.max(3, r.left - 2);
+                const top = Math.max(safeTop + 2, r.top - 2);
+                const right = Math.min(vw - 3, r.right + 2);
+                const bottom = Math.min(vh - 3, r.bottom + 2);
+                if (bottom - top < 12) {
+                  spotBox.style.opacity = '0';
+                } else {
+                  spotBox.style.left = left + 'px';
+                  spotBox.style.top = top + 'px';
+                  spotBox.style.width = Math.max(18, right - left) + 'px';
+                  spotBox.style.height = Math.max(18, bottom - top) + 'px';
+                  spotBox.style.opacity = '1';
+
+                  const badge = spotBox.querySelector('.bsp-spot-badge');
+                  const numEl = spotBox.querySelector('.bsp-spot-num');
+                  const lblEl = spotBox.querySelector('.bsp-spot-label');
+                  if (numEl) numEl.textContent = activeSpot.num || '✓';
+                  if (lblEl) lblEl.textContent = (activeSpot.label || '수정 중') + ' · 수정 중';
+                  if (badge) badge.classList.toggle('is-inside-top', top < safeTop + 36);
+                }
+              }
+            }
+          } else {
+            spotBox.style.opacity = '0';
+          }
+          win.requestAnimationFrame(refreshPinAndSpotlightCoords);
+        }
+        win.requestAnimationFrame(refreshPinAndSpotlightCoords);
+
+        win.__BAREUN_STUDIO_SET_PINS__ = function (pins, enabled) {
+          pinLayer.style.display = enabled ? 'block' : 'none';
+          pinLayer.innerHTML = '';
+          pinRegistry = (Array.isArray(pins) ? pins : []).map(p => {
+            const d = doc.createElement('div');
+            d.className = 'bsp-pin' + (p.isSub ? ' is-sub-pin' : '');
+            d.setAttribute('data-pin-num', p.num);
+            d.textContent = p.num;
+            pinLayer.appendChild(d);
+            return Object.assign({}, p, { domPin: d });
+          });
         };
 
-        // Keep activeBox & hoverBox smoothly aligned during runway / vertical scroll
-        let trackingRaf = null;
-        function syncBoxPositionsLoop() {
-          if (isVisualSelectMode) {
-            if (activeEl && activeBox.style.opacity !== '0') {
-              positionOverlayBox(activeBox, activeEl, activeLabel);
-            }
-            if (hoveredTarget && hoveredTarget.el && hoverBox.style.opacity !== '0') {
-              positionOverlayBox(hoverBox, hoveredTarget.el, hoveredTarget.label + ' · 클릭하여 수정');
-            }
-          }
-          trackingRaf = win.requestAnimationFrame(syncBoxPositionsLoop);
-        }
-        trackingRaf = win.requestAnimationFrame(syncBoxPositionsLoop);
-
-        doc.addEventListener('pointerdown', function (e) {
-          pointerDownPos = { x: e.clientX, y: e.clientY };
-        }, true);
-
-        doc.addEventListener('mousemove', function (e) {
-          if (!isVisualSelectMode) {
-            hoverBox.style.opacity = '0';
+        win.__BAREUN_STUDIO_SPOTLIGHT__ = function (target, shouldScroll, enabled) {
+          if (!enabled) {
+            activeSpot = null;
+            spotBox.style.opacity = '0';
             return;
           }
-          const resolved = pickTargetAtPoint(e.clientX, e.clientY, e.target);
-          hoveredTarget = resolved;
-          if (resolved && resolved.el) {
-            positionOverlayBox(hoverBox, resolved.el, resolved.label + ' · 클릭하여 수정');
-            updateInspectToolbarPill(resolved.label, false);
-          } else {
-            hoverBox.style.opacity = '0';
-            updateInspectToolbarPill('', false);
+          activeSpot = target;
+          const el = findFirstVisibleEl(target.selector);
+          if (el && shouldScroll) {
+            scrollElementIntoPreview(el, target.selector);
           }
-        }, true);
+        };
 
-        doc.addEventListener('mouseleave', function () {
-          hoveredTarget = null;
-          hoverBox.style.opacity = '0';
-          updateInspectToolbarPill('', false);
-        }, true);
-
-        doc.addEventListener('click', function (e) {
-          if (!isVisualSelectMode || e.altKey) return;
-          if (pointerDownPos) {
-            const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
-            if (dist > 7) return; // Allow drag scrolling without accidental click-edit
-          }
-          const resolved = pickTargetAtPoint(e.clientX, e.clientY, e.target);
-          if (!resolved || !resolved.el) return;
-
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-
-          activeEl = resolved.el;
-          activeLabel = '✓ 편집 중 · ' + resolved.label;
-          positionOverlayBox(activeBox, activeEl, activeLabel);
-          hoverBox.style.opacity = '0';
-
-          activateStudioEditTarget({
-            tab: resolved.tab,
-            action: resolved.action,
-            cardIdx: resolved.cardIdx,
-            sub: resolved.sub,
-            sectionId: resolved.sectionId,
-            focusId: resolved.focusId,
-            selector: resolved.selector,
-            label: resolved.label
-          });
-        }, true);
-
-        if (currentStudioChapter === 'finale' && isHomeStoryPage(page)) {
+        if (currentStudioChapter === 'finale' && page && isHomeStoryPage(page)) {
           setTimeout(() => {
             try { win.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*'); } catch (_) {}
-          }, 260);
+          }, 240);
         }
+        syncStudioNumberPinsToIframe(false);
         restorePreviewScrollState(frame, page);
       } catch (err) {
-        console.warn('[StudioVisualInspector]', err);
+        console.warn('[StudioNumberSpotlight]', err);
       }
     }
 
@@ -10208,11 +10284,15 @@
       }
       renderAll();
 
+      document.querySelectorAll('.is-guide-active').forEach(el => el.classList.remove('is-guide-active'));
+      applyVisualSelectModeUi();
+
       // If switching between Storyboard <-> Finale on same loaded home iframe, switch smoothly!
       if (!skipReload) {
         const frame = document.getElementById('livePreviewFrame');
         if ((prevChapter === 'storyboard' && chapterKey === 'finale') && frame && frame.contentWindow) {
           frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
+          setTimeout(() => syncStudioNumberPinsToIframe(false), 320);
         } else {
           reloadPreviewIframe();
         }
