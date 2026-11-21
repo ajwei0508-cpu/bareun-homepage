@@ -3161,20 +3161,108 @@ function buildPageHtml(page) {
     #header .header-center {
       min-width: 0;
       flex: 1 1 auto;
+      display: flex;
       justify-content: center;
-      overflow-x: auto;
-      scrollbar-width: none;
+      overflow: visible;
     }
-    #header .header-center::-webkit-scrollbar { display: none; }
+    .clinic-quick-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      flex-wrap: nowrap;
+    }
     #header .back-pill-btn,
     #header .clinic-tab,
     #header .header-studio-btn,
-    #header .header-vis-btn,
     #header .header-talk-btn {
       white-space: nowrap !important;
       flex-shrink: 0 !important;
     }
+    .floating-hanji-btn {
+      position: fixed;
+      right: 20px;
+      bottom: 24px;
+      z-index: 9998;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(23, 22, 20, 0.88);
+      color: #F5EFE4;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .floating-hanji-btn .hanji-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .floating-hanji-btn .hanji-tooltip {
+      position: absolute;
+      right: 52px;
+      top: 50%;
+      transform: translateY(-50%) translateX(6px);
+      opacity: 0;
+      pointer-events: none;
+      background: #171614;
+      color: #F5EFE4;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      transition: all 0.2s ease;
+    }
+    .floating-hanji-btn:hover {
+      transform: scale(1.08);
+      border-color: #D4AF37;
+      background: #2D5A43;
+      box-shadow: 0 6px 22px rgba(212, 175, 55, 0.4);
+    }
+    .floating-hanji-btn:hover .hanji-tooltip {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+    body.theme-hanji .floating-hanji-btn {
+      background: rgba(247, 243, 235, 0.94);
+      color: #2D251E;
+      border: 1px solid rgba(139, 107, 73, 0.35);
+      box-shadow: 0 4px 16px rgba(139, 107, 73, 0.2);
+    }
+    body.theme-hanji .floating-hanji-btn .hanji-tooltip {
+      background: #FAF7F2;
+      color: #2D251E;
+      border-color: rgba(139, 107, 73, 0.35);
+    }
     @media (max-width: 1560px) and (min-width: 1025px) {
+      #header { padding-left: 14px !important; padding-right: 14px !important; gap: 8px !important; }
+      #header .back-pill-btn { padding: 5px 9px !important; font-size: 0.72rem !important; }
+      #header .clinic-tab { padding: 5px 8px !important; font-size: 0.72rem !important; }
+      #header .header-studio-btn,
+      #header .header-talk-btn { padding: 5px 10px !important; font-size: 0.72rem !important; }
+    }
+    @media (max-width: 1360px) and (min-width: 1025px) {
+      #header { padding-left: 10px !important; padding-right: 10px !important; gap: 6px !important; }
+      .brand-logo { font-size: 0.88rem !important; }
+      #header .back-pill-btn { padding: 4px 7px !important; font-size: 0.70rem !important; gap: 4px !important; }
+      .clinic-quick-tabs { gap: 3px !important; }
+      #header .clinic-tab { padding: 4px 6px !important; font-size: 0.70rem !important; }
+    }
+    @media (max-width: 1200px) and (min-width: 1025px) {
+      #header { padding-left: 8px !important; padding-right: 8px !important; gap: 4px !important; }
+      .brand-logo { font-size: 0.84rem !important; }
+      #header .back-pill-btn { padding: 3px 6px !important; font-size: 0.68rem !important; gap: 3px !important; }
+      .clinic-quick-tabs { gap: 2px !important; }
+      #header .clinic-tab { padding: 3px 5px !important; font-size: 0.68rem !important; }
+    }    @media (max-width: 1560px) and (min-width: 1025px) {
       #header { padding-left: 16px !important; padding-right: 16px !important; gap: 8px !important; }
       #header .back-pill-btn { padding: 6px 10px !important; font-size: 0.74rem !important; }
       #header .clinic-tab { padding: 5px 9px !important; font-size: 0.73rem !important; }
@@ -9962,9 +10050,6 @@ function buildPageHtml(page) {
       <a class="back-pill-btn" id="header-body-explorer-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href : 'body-explorer.html'}" style="background:#FEF3C7;border-color:#F59E0B;color:#92400E;font-weight:800;">
         <span>💡 3D 생활꿀팁 ↗</span>
       </a>
-      <a class="back-pill-btn" id="header-ask-doctor-link" href="${page.bodyModelCard && page.bodyModelCard.href ? page.bodyModelCard.href.replace('body-explorer.html?part=', 'ask-doctor.html?tab=qna&part=') : 'ask-doctor.html?tab=qna'}" style="background:#0F172A;border-color:#0F172A;color:#FFFFFF;font-weight:800;">
-        <span>🩺 질환별 비공개 Q&amp;A ↗</span>
-      </a>
     </div>
 
     <div class="header-center">
@@ -9975,9 +10060,6 @@ function buildPageHtml(page) {
 
     <div class="header-right" style="display:flex;align-items:center;gap:8px;">
       <a id="btn-open-detail-studio" class="header-studio-btn" href="detail-pages-editor.html?page=${page.file}" title="현재 상세페이지 카드·문구·디자인 커스텀 스튜디오 열기">🎨 커스텀</a>
-      <button type="button" class="header-vis-btn" id="btn-toggle-detail-visibility" onclick="window.cycleDetailVisibilityMode()" title="환자 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)">
-        <span id="vis-mode-label">한지 베이지 (ON)</span>
-      </button>
       <button class="header-talk-btn" onclick="window.openConsultModal()">
         <span>맞춤 진료예약</span>
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -13822,6 +13904,11 @@ function buildPageHtml(page) {
       requestAnimationFrame(animateAll);
     })();
   </script>
+  <!-- Floating Visibility Mode Small Icon Button (Bottom-Right) -->
+  <button type="button" id="floating-hanji-mode-btn" class="floating-hanji-btn" onclick="window.cycleDetailVisibilityMode()" title="화면 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)" aria-label="화면 모드 전환">
+    <span class="hanji-icon">📜</span>
+    <span class="hanji-tooltip" id="vis-mode-label">한지 베이지 (ON)</span>
+  </button>
   <script src="visit-tracker.js"></script>
 </body>
 </html>`;
@@ -13831,6 +13918,8 @@ const outDir = __dirname;
 const masterCfgPath = path.join(outDir, 'detail-pages-config.json');
 let pagesSource = PAGES;
 let globalCardStyle = null;
+let globalNavTabs = null;
+let globalDevCustom = null;
 
 if (fs.existsSync(masterCfgPath)) {
   try {
@@ -13838,6 +13927,8 @@ if (fs.existsSync(masterCfgPath)) {
     if (parsedCfg && Array.isArray(parsedCfg.pages) && parsedCfg.pages.length > 0) {
       pagesSource = parsedCfg.pages;
       globalCardStyle = parsedCfg.globalCardStyle || null;
+      globalNavTabs = Array.isArray(parsedCfg.headerNavTabs) && parsedCfg.headerNavTabs.length > 0 ? parsedCfg.headerNavTabs : null;
+      globalDevCustom = parsedCfg.globalDevCustom || null;
     }
   } catch (err) {
     console.warn('[WARN] Failed to parse detail-pages-config.json, falling back to PAGES:', err.message);
@@ -13847,17 +13938,31 @@ if (fs.existsSync(masterCfgPath)) {
 const cliPageArg = process.argv.find(a => a.startsWith('--page='));
 const targetPageFilter = cliPageArg ? cliPageArg.split('=')[1].trim() : null;
 const { buildPageHtml: compileUnifiedPageHtml } = require('./bareun-detail-compiler.js');
+const { compileHomeStoryHtml } = require('./home-story-compiler.js');
 const { buildGeoEntityDossierHtml } = require('./geo-entity-dossier.js');
 
 pagesSource.forEach(p => {
-  if (!targetPageFilter && (p.file === 'index.html' || p.slug === 'home')) {
+  const isHome = Boolean(p.isHomeStory || p.file === 'index.html' || p.slug === 'home');
+  if (targetPageFilter && p.file !== targetPageFilter && p.slug !== targetPageFilter && !(isHome && targetPageFilter === 'story-3d.html')) {
     return;
   }
-  if (targetPageFilter && p.file !== targetPageFilter && p.slug !== targetPageFilter) {
+  if (isHome) {
+    const story3dPath = path.join(outDir, 'story-3d.html');
+    const indexPath = path.join(outDir, 'index.html');
+    const templatePath = fs.existsSync(story3dPath) ? story3dPath : indexPath;
+    if (fs.existsSync(templatePath)) {
+      const baseHtml = fs.readFileSync(templatePath, 'utf8');
+      const homeHtml = compileHomeStoryHtml(Object.assign({}, p, { _globalDevCustom: globalDevCustom }), baseHtml);
+      fs.writeFileSync(indexPath, homeHtml, 'utf8');
+      fs.writeFileSync(story3dPath, homeHtml, 'utf8');
+      console.log('Synced Home 3D Cinema page: index.html & story-3d.html (' + homeHtml.length + ' bytes)');
+    }
     return;
   }
   const mergedPage = Object.assign({}, p, {
-    cardStyle: Object.assign({}, globalCardStyle || {}, p.cardStyle || {})
+    cardStyle: Object.assign({}, globalCardStyle || {}, p.cardStyle || {}),
+    _globalNavTabs: globalNavTabs,
+    _globalDevCustom: globalDevCustom
   });
   let html = compileUnifiedPageHtml(mergedPage);
   const slugKey = p.slug || String(p.file || '').replace(/\.html$/i, '');
@@ -13866,8 +13971,5 @@ pagesSource.forEach(p => {
     html = html.replace(/(<body[^>]*>)/i, '$1\n  ' + dossier);
   }
   fs.writeFileSync(path.join(outDir, p.file), html, 'utf8');
-  if (p.file === 'index.html') {
-    fs.writeFileSync(path.join(outDir, 'story-3d.html'), html, 'utf8');
-  }
   console.log('Generated Sample A / Home Story page:', p.file, '(' + html.length + ' bytes)');
 });

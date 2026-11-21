@@ -11,7 +11,7 @@ const { startAutoBlogScheduler, renderStandaloneHealthNoteFullPage } = require('
 startAutoBlogScheduler();
 const studioAiEngine = require('./studio-ai-engine.js');
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const MIME_TYPES = {
   '.html': 'text/html; charset=UTF-8',
   '.css': 'text/css',
@@ -1533,6 +1533,34 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
     return;
   }
 
+  // Studio Developer Mode Instant Feature & Schema Mutation API
+  if (reqPath === '/api/studio-dev-command' && req.method === 'POST') {
+    const chunks = [];
+    req.on('data', c => chunks.push(c));
+    req.on('end', async () => {
+      try {
+        const payload = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+        const devEngine = require(path.join(__dirname, 'studio-dev-engine.js'));
+        const keys = studioAiEngine.getRawStudioAiKeys();
+        const result = await devEngine.executeStudioDevCommand({
+          instruction: payload.instruction,
+          itemType: payload.itemType || 'plate',
+          itemId: payload.itemId || 'item-0',
+          itemData: payload.itemData || {},
+          pageSlug: payload.pageSlug || '',
+          geminiKey: keys.geminiKey || '',
+          useAi: payload.useAi !== false
+        });
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify(result));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=UTF-8' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
   // Studio Unlimited Custom Disease Page Deletion API
   if (reqPath === '/api/delete-custom-page' && req.method === 'POST') {
     let body = '';
@@ -1551,16 +1579,26 @@ ${record.parentMemo ? `• 메모: ${record.parentMemo}\n` : ''}• 접수시간
         }
         const detailCfgPath = path.join(__dirname, 'detail-pages-config.json');
         if (payload.config && Array.isArray(payload.config.pages)) {
+          if (Array.isArray(payload.config.headerNavTabs)) {
+            payload.config.headerNavTabs = payload.config.headerNavTabs.filter(t => t && t.href !== `${slug}.html`);
+          }
           fs.writeFileSync(detailCfgPath, JSON.stringify(payload.config, null, 2) + '\n', 'utf8');
         } else if (fs.existsSync(detailCfgPath)) {
           const cur = JSON.parse(fs.readFileSync(detailCfgPath, 'utf8'));
           cur.pages = (cur.pages || []).filter(p => p.slug !== slug && p.file !== `${slug}.html`);
+          if (Array.isArray(cur.headerNavTabs)) {
+            cur.headerNavTabs = cur.headerNavTabs.filter(t => t && t.href !== `${slug}.html`);
+          }
           fs.writeFileSync(detailCfgPath, JSON.stringify(cur, null, 2) + '\n', 'utf8');
         }
         for (const f of [`${slug}.html`, `wordpress-${slug}.html`]) {
           const fp = path.join(__dirname, f);
           if (fs.existsSync(fp)) fs.unlinkSync(fp);
         }
+        try {
+          execFileSync(process.execPath, [path.join(__dirname, 'build-story-detail-pages.js')], { cwd: __dirname, timeout: 45000 });
+          execFileSync(process.execPath, [path.join(__dirname, 'bundle-wp.js')], { cwd: __dirname, timeout: 35000 });
+        } catch (e) {}
         res.writeHead(200, { 'Content-Type': 'application/json; charset=UTF-8' });
         res.end(JSON.stringify({ ok: true, slug, message: `커스텀 페이지 [${slug}] 로컬 파일 및 설정이 삭제되었습니다.` }));
       } catch (err) {

@@ -133,14 +133,14 @@
     transitGuide: '대전 복합터미널 차량 7분 거리 · 비래동 행정복지센터 및 비래삼호아파트 인근 도보 3분 (비래동로7번길 1, 2층)',
     nonCoveredUpdatedDate: '2026-11-15',
     nonCoveredFees: [
-      { category: '추나요법', name: '비급여 체형·턱관절 교정 추나요법', spec: '1회 기준 (건보 연 20회 초과/비급여 대상)', price: '30,000원 ~ 50,000원', note: '연간 20회 이내 단순·복잡추나는 건강보험 급여 적용' },
-      { category: '약침 시술', name: '정제 약침 (근골격·신경감압·면역)', spec: '1회 / 부위·용량별', price: '10,000원 ~ 30,000원', note: '시술 부위 및 정제 약침 성분에 따라 차등' },
-      { category: '특수 약침·매선', name: '모낭재생 · 산삼비만 · 한방 리프팅 약침/매선', spec: '1회 / 집중 시술', price: '30,000원 ~ 150,000원', note: '두피·체형·윤곽 시술 범위 및 매선 수량별' },
-      { category: '맞춤 탕약', name: '체질 맞춤 치료·보양 한약 (통증·소화·면역·전립선)', spec: '15일분 ~ 1개월분 (원내 직탕)', price: '220,000원 ~ 450,000원', note: '식약처 인증 GMP 한약재 · 녹용 등급 추가 시 변동' },
-      { category: '특화 한약', name: '바른 소아 키성장 · 성조숙증 맞춤 한약', spec: '1개월분', price: '350,000원 ~ 550,000원', note: '초음파 성장판·체성분 분석 및 녹용 배합별' },
-      { category: '특화 한약', name: '식욕ZERO 체지방 분해 다이어트 한약', spec: '1개월 프로그램', price: '250,000원 ~ 450,000원', note: '대사 단계 및 체성분 맞춤 1:1 단독 처방' },
-      { category: '명품 환제', name: '식약처 CITES 인증 정품 사향 황제공진단', spec: '10환 / 30환', price: '500,000원 ~ 1,500,000원', note: '천연 사향·원용 분골 함량 및 환수별 차등' },
-      { category: '제증명 수수료', name: '일반진단서 / 진료확인서·소견서 / 진료기록사본', spec: '1통 기준', price: '1,000원 ~ 20,000원', note: '보건복지부 의료기관 제증명수수료 기준 준수' }
+      { category: '추나요법', name: '비급여 체형·턱관절 교정 추나요법', spec: '1회 기준 (건보 연 20회 초과/비급여 대상)', price: '0원', note: '연간 20회 이내 단순·복잡추나는 건강보험 급여 적용' },
+      { category: '약침 시술', name: '정제 약침 (근골격·신경감압·면역)', spec: '1회 / 부위·용량별', price: '0원', note: '시술 부위 및 정제 약침 성분에 따라 차등' },
+      { category: '특수 약침·매선', name: '모낭재생 · 산삼비만 · 한방 리프팅 약침/매선', spec: '1회 / 집중 시술', price: '0원', note: '두피·체형·윤곽 시술 범위 및 매선 수량별' },
+      { category: '맞춤 탕약', name: '체질 맞춤 치료·보양 한약 (통증·소화·면역·전립선)', spec: '15일분 ~ 1개월분 (원내 직탕)', price: '0원', note: '식약처 인증 GMP 한약재 · 녹용 등급 추가 시 변동' },
+      { category: '특화 한약', name: '바른 소아 키성장 · 성조숙증 맞춤 한약', spec: '1개월분', price: '0원', note: '초음파 성장판·체성분 분석 및 녹용 배합별' },
+      { category: '특화 한약', name: '식욕ZERO 체지방 분해 다이어트 한약', spec: '1개월 프로그램', price: '0원', note: '대사 단계 및 체성분 맞춤 1:1 단독 처방' },
+      { category: '명품 환제', name: '식약처 CITES 인증 정품 사향 황제공진단', spec: '10환 / 30환', price: '0원', note: '천연 사향·원용 분골 함량 및 환수별 차등' },
+      { category: '제증명 수수료', name: '일반진단서 / 진료확인서·소견서 / 진료기록사본', spec: '1통 기준', price: '0원', note: '보건복지부 의료기관 제증명수수료 기준 준수' }
     ]
   };
 
@@ -488,10 +488,69 @@
         font-variant-numeric: tabular-nums;
       }
 
-      /* FLOATING BOTTOM-LEFT COMPACT COUNTER BADGE */
+      /* FLOATING BOTTOM-RIGHT COMPACT COUNTER BADGE */
+      .spatial-top-nav .bareun-visit-pill-btn,
+      #header .bareun-visit-pill-btn,
+      .vibrant-header .bareun-visit-pill-btn,
+      .journal-gnb .bareun-visit-pill-btn,
+      .app-header .bareun-visit-pill-btn {
+        display: none !important;
+      }
+      .spatial-top-nav .nav-right-actions > a,
+      .spatial-top-nav .nav-right-actions > button,
+      .spatial-top-nav .bareun-loc-pill-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        height: 36px !important;
+        padding: 0 15px !important;
+        border-radius: 999px !important;
+        font-size: 12.5px !important;
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+      }
+      @media (max-width: 1180px) {
+        .spatial-top-nav .nav-right-actions > a,
+        .spatial-top-nav .nav-right-actions > button,
+        .spatial-top-nav .bareun-loc-pill-btn {
+          height: 33px !important;
+          padding: 0 11px !important;
+          font-size: 11.5px !important;
+        }
+      }
+      @media (max-width: 900px) {
+        .spatial-top-nav .nav-right-actions {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          justify-content: center !important;
+          align-items: center !important;
+          gap: 5px !important;
+          overflow: visible !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 0 !important;
+        }
+        .spatial-top-nav .nav-right-actions > a,
+        .spatial-top-nav .nav-right-actions > button,
+        .spatial-top-nav .bareun-loc-pill-btn {
+          height: 29px !important;
+          padding: 0 10px !important;
+          font-size: 10.5px !important;
+          gap: 4px !important;
+        }
+      }
+      /* STANDALONE FLOATING DOCK ONLY ON HOME 3D CINEMA — HIDDEN ON DETAIL PAGES */
+      body:not(.is-home-3d) #bareun-floating-visit-dock {
+        display: none !important;
+      }
       #bareun-floating-visit-dock {
         position: fixed;
-        left: 20px;
+        right: 20px;
+        left: auto;
         bottom: 18px;
         z-index: 9990;
         display: flex;
@@ -500,22 +559,63 @@
         pointer-events: auto;
       }
       body.is-body-explorer-page #bareun-floating-visit-dock {
-        display: none;
+        display: none !important;
+      }
+      #header .bareun-loc-pill-btn {
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 12px !important;
+        border-radius: 999px !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        box-sizing: border-box !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        color: #FAF7F2 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+      }
+      body.theme-hanji #header .bareun-loc-pill-btn {
+        background: #FAF7F2 !important;
+        border: 1px solid rgba(94, 71, 54, 0.22) !important;
+        color: #171614 !important;
+      }
+      @media (max-width: 1024px) {
+        #header .bareun-loc-pill-btn {
+          height: 32px !important;
+          min-height: 32px !important;
+          max-height: 32px !important;
+          padding: 0 8px !important;
+          font-size: 10.5px !important;
+          gap: 3px !important;
+        }
       }
       @media (max-width: 1024px) {
         .bareun-visit-pill-btn {
-          padding: 5px 9px;
+          padding: 5px 10px;
           font-size: 10.5px;
           gap: 5px;
           flex-shrink: 0;
         }
         .bareun-loc-pill-btn {
-          padding: 5px 9px;
+          padding: 5px 10px;
           font-size: 10.5px;
           flex-shrink: 0;
         }
         #bareun-floating-visit-dock {
-          display: none !important;
+          right: 12px;
+          left: auto;
+          bottom: 72px;
+        }
+        body.is-home-3d #bareun-floating-visit-dock {
+          bottom: 58px;
         }
       }
       @media (max-width: 520px) {
@@ -1281,16 +1381,6 @@
         if (isSpatialMobile) container.appendChild(locBtn);
         else container.insertBefore(locBtn, container.firstChild);
       }
-      if (!container.querySelector('.bareun-visit-pill-btn')) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'bareun-visit-pill-btn';
-        btn.title = '홈페이지 오늘 및 누적 방문 조회수 확인';
-        btn.innerHTML = createCounterButtonHtml(latestStats);
-        btn.onclick = function () { window.openBareunVisitModal(); };
-        if (isSpatialMobile) container.appendChild(btn);
-        else container.insertBefore(btn, container.firstChild);
-      }
     });
 
     // 2) Inject [📍 오시는길 · 진료시간] & [📋 비급여 진료비 안내] into detail legal footers & main finale
@@ -1300,17 +1390,20 @@
       row.className = 'bareun-legal-utility-row';
       row.innerHTML =
         '<button type="button" class="bareun-legal-util-btn" onclick="window.openBareunLocationModal(\'location\')">📍 오시는길 · 자동 길안내 · 진료시간</button>' +
-        '<button type="button" class="bareun-legal-util-btn" onclick="window.openBareunLocationModal(\'fees\')">📋 비급여 진료비용 안내표</button>' +
-        '<a class="bareun-legal-util-btn" href="' + escHtml(getLocationPageHref()) + '">🗺️ 오시는길 전용 페이지 ↗</a>';
+        '<button type="button" class="bareun-legal-util-btn" onclick="window.openBareunLocationModal(\'fees\')">📋 비급여 진료비용 안내표</button>';
       el.appendChild(row);
     });
 
     // 6대 카드 진료 섹션(.skt-finale-controls) 상단에는 불필요한 컨트롤을 추가하지 않고 본질인 카드 모션만 유지
 
-    // 3) Compact floating bottom-left counter badge on desktop
-    if (!document.getElementById('bareun-floating-visit-dock')) {
+    // 3) Compact floating bottom-right counter badge
+    if (currentSlug === 'home' && !document.getElementById('bareun-floating-visit-dock')) {
       const dock = document.createElement('div');
       dock.id = 'bareun-floating-visit-dock';
+      if (document.getElementById('floating-hanji-mode-btn')) {
+        dock.style.right = '74px';
+        dock.style.bottom = window.innerWidth <= 1024 ? '72px' : '26px';
+      }
       const fbtn = document.createElement('button');
       fbtn.type = 'button';
       fbtn.className = 'bareun-visit-pill-btn';
@@ -1441,9 +1534,8 @@
             '<div style="font-size:11px;font-weight:800;color:#A7F3D0;letter-spacing:0.05em;margin-bottom:6px;">' + escHtml(clinicInfo.greetingEyebrow) + '</div>' +
             '<div style="font-size:16.5px;font-weight:900;line-height:1.4;margin-bottom:8px;">' + escHtml(clinicInfo.greetingTitle) + '</div>' +
             '<div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.68;">' + escHtml(clinicInfo.greetingBody) + '</div>' +
-            '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12.5px;color:#F5D36C;font-weight:800;">' +
+            '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.14);font-size:12.5px;color:#F5D36C;font-weight:800;">' +
               '<span>' + escHtml(clinicInfo.greetingSign) + '</span>' +
-              '<a href="' + escHtml(getLocationPageHref()) + '" style="color:#FFFFFF;text-decoration:underline;">오시는길 전용 페이지 전체보기 ↗</a>' +
             '</div>' +
           '</div>' +
 
@@ -1522,7 +1614,6 @@
           '<h2 class="bv-title">' + escHtml(clinicInfo.clinicName) + ' 내원 및 진료 안내</h2>' +
         '</div>' +
         '<div class="bv-header-actions">' +
-          '<a class="bv-btn" href="' + escHtml(getLocationPageHref()) + '" style="text-decoration:none;">전용 페이지 열기 ↗</a>' +
           '<button type="button" class="bv-btn close" onclick="window.closeBareunLocationModal()">✕ 닫기</button>' +
         '</div>' +
       '</div>' +
@@ -2473,6 +2564,7 @@
   };
 
   function bootVisitAnalytics() {
+    updateAllCounterPills(latestStats || buildClientBaselineStats());
     mountHeaderAndFloatingButtons();
     bindGlobalConversionClickTelemetry();
     recordPageVisit();

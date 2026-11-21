@@ -1186,60 +1186,582 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    /* === Developer Mode & Complete Studio v10 Styles === */
+    .btn-dev-toggle {
+      background: linear-gradient(135deg, #1e1b2e 0%, #31254f 100%);
+      color: #e9d5ff;
+      border: 1.5px solid rgba(168, 85, 247, 0.55);
+      font-weight: 800;
+    }
+    .btn-dev-toggle.active {
+      background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
+      color: #ffffff;
+      border-color: #f5d0fe;
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.5);
+    }
+    body.dev-mode-on .studio-header {
+      border-bottom: 2px solid #a855f7;
+    }
+    .dev-drawer-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #151320 0%, #1d182d 100%);
+      border: 1.5px solid rgba(168, 85, 247, 0.5);
+      color: #f3e8ff;
+    }
+    .dev-drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .dev-drawer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.25);
+      border: 1px solid rgba(216, 180, 254, 0.5);
+      color: #f5d0fe;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .dev-cmd-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      margin-bottom: 8px;
+    }
+    .dev-cmd-row input,
+    .dev-cmd-row textarea {
+      flex: 1;
+      background: #0d0b14;
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      color: #fff;
+      border-radius: 8px;
+      padding: 8px 11px;
+      font-size: 12.5px;
+      font-family: inherit;
+    }
+    .dev-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .dev-quick-chip {
+      appearance: none;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(216, 180, 254, 0.35);
+      color: #e9d5ff;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .dev-quick-chip:hover {
+      background: rgba(168, 85, 247, 0.35);
+      color: #fff;
+    }
+    .dev-custom-fields-wrap {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px dashed rgba(216, 180, 254, 0.35);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .dev-cf-row {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+    }
+    .dev-cf-row label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #f5d0fe;
+      margin-bottom: 5px;
+    }
+    .dev-cf-row input[type="text"],
+    .dev-cf-row input[type="url"],
+    .dev-cf-row input[type="number"],
+    .dev-cf-row textarea,
+    .dev-cf-row select {
+      width: 100%;
+      background: #0d0b14;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 6px;
+      padding: 6px 9px;
+      font-size: 12px;
+    }
+    .dev-code-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .dev-code-tab {
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #d8b4fe;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .dev-code-tab.active {
+      background: #9333ea;
+      color: #fff;
+      border-color: #f5d0fe;
+    }
+    .dev-code-area {
+      width: 100%;
+      background: #0a0910;
+      color: #a7f3d0;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+    .pm-tab-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .pm-tab-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--ink);
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .pm-tab-btn.active {
+      background: var(--surface-dark);
+      color: #f8d88c;
+      border-color: var(--gold);
+    }
+    .faq-editor-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: var(--surface-soft);
+    }
+    .faq-editor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    /* ============================================================================
+     * REAL-TIME VISUAL INTERACTIVE CUSTOM MODE STYLES
+     * ============================================================================ */
+    .btn-visual-select {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e7e1d8;
+      border-color: rgba(212, 175, 55, 0.38);
+    }
+    .btn-visual-select.active {
+      background: linear-gradient(135deg, #065f46 0%, #047857 52%, #b5893a 100%);
+      color: #ffffff;
+      border-color: #fde68a;
+      box-shadow: 0 0 0 2px rgba(253, 230, 138, 0.22), 0 4px 14px rgba(16, 185, 129, 0.32);
+    }
+    .preview-inspect-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 7px 14px;
+      background: linear-gradient(90deg, #1b1815 0%, #241f18 100%);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.28);
+      color: #efe7da;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .preview-inspect-bar.is-on {
+      background: linear-gradient(90deg, #11241c 0%, #1d2016 60%, #282114 100%);
+      border-bottom-color: rgba(52, 211, 153, 0.42);
+    }
+    .pib-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+    .pib-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #9ca3af;
+      flex-shrink: 0;
+    }
+    .preview-inspect-bar.is-on .pib-live-dot {
+      background: #34d399;
+      box-shadow: 0 0 10px #34d399;
+      animation: pibPulse 1.6s infinite ease-in-out;
+    }
+    @keyframes pibPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.32); opacity: 0.55; }
+    }
+    .pib-target-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(234, 185, 92, 0.45);
+      color: #fde68a;
+      font-size: 11px;
+      font-weight: 800;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pib-target-pill.is-selected {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: rgba(52, 211, 153, 0.65);
+      color: #a7f3d0;
+    }
+    .vp-btn.is-inspect-on {
+      background: linear-gradient(135deg, #059669, #b5893a) !important;
+      color: #fff !important;
+      border-color: #fde68a !important;
+    }
+    .story-card-item.is-visual-linked {
+      border: 2px solid #d4af37 !important;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.22), 0 10px 26px rgba(181, 137, 58, 0.18) !important;
+    }
+    .studio-target-flash {
+      animation: studioGoldPulse 1.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes studioGoldPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.78), inset 0 0 0 2px #d4af37;
+        background-color: rgba(254, 243, 199, 0.62);
+      }
+      45% {
+        box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.22), inset 0 0 0 2px #10b981;
+        background-color: rgba(209, 250, 229, 0.38);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0), inset 0 0 0 0 transparent;
+      }
+    }
+
+    /* ============================================================================
+     * MINIMALIST ESSENTIAL HEADER + 6-CHAPTER STUDIO NAVIGATION ARCHITECTURE
+     * ============================================================================ */
+    header.studio-header {
+      padding: 10px 20px !important;
+      flex-wrap: nowrap !important;
+      min-height: 54px;
+    }
+    .studio-header .header-actions {
+      flex-wrap: nowrap !important;
+      gap: 7px !important;
+    }
+    .studio-more-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    .studio-more-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      width: 248px;
+      background: #1b1815;
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
+      z-index: 400;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .studio-more-dropdown.open {
+      display: flex;
+    }
+    .studio-more-item {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #f0e8dc;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.14s ease, color 0.14s ease;
+    }
+    .studio-more-item:hover {
+      background: rgba(212, 175, 55, 0.16);
+      color: #fde68a;
+    }
+    .studio-more-item.is-danger:hover {
+      background: rgba(185, 28, 28, 0.25);
+      color: #fecaca;
+    }
+    .studio-more-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 4px 6px;
+    }
+
+    /* 6-Chapter Primary Navigation Bar */
+    .chapter-nav-wrap {
+      background: #1e1a16;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.24);
+      position: sticky;
+      top: 54px;
+      z-index: 190;
+    }
+    .chapter-primary-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .chapter-tab-btn {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.04);
+      color: #dfd7cb;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .chapter-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(234, 185, 92, 0.4);
+      color: #fff;
+    }
+    .chapter-tab-btn.active {
+      background: linear-gradient(135deg, #f3d792 0%, #c8963e 100%);
+      color: #161310;
+      border-color: #fde68a;
+      box-shadow: 0 4px 14px rgba(200, 150, 62, 0.34);
+    }
+    .chapter-num-tag {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #e8decb;
+    }
+    .chapter-tab-btn.active .chapter-num-tag {
+      background: rgba(22, 19, 16, 0.18);
+      color: #161310;
+    }
+    .chapter-cnt-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      opacity: 0.78;
+    }
+
+    /* Contextual Detail Pages Sub-Bar (Visible ONLY in Chapter 03 상세페이지) */
+    .detail-sub-bar {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 20px 9px;
+      background: #27221d;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .detail-sub-bar.visible {
+      display: flex;
+    }
+    .detail-sub-bar .page-pill {
+      padding: 5px 11px;
+      font-size: 11.5px;
+    }
+    .detail-add-pill {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px dashed rgba(234, 185, 92, 0.55);
+      background: rgba(234, 185, 92, 0.1);
+      color: #fde68a;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .detail-add-pill:hover {
+      background: rgba(234, 185, 92, 0.22);
+      border-style: solid;
+    }
+
+    /* Dedicated Fee & Location Chapter Cards */
+    .fee-row-card {
+      display: grid;
+      grid-template-columns: 0.85fr 1.35fr 1fr 0.95fr 1fr auto;
+      gap: 6px;
+      padding: 8px;
+      margin-bottom: 7px;
+      border-radius: 9px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      align-items: center;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .fee-row-card:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(181, 137, 58, 0.16);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Sticky Header -->
+  <!-- Ultra-Clean Top Sticky Header (Essential Controls Only) -->
   <header class="studio-header">
     <div class="brand-left">
-      <span class="studio-badge">BAREUN STUDIO · ALL-IN-ONE</span>
-      <h1 class="studio-title">메인 홈 &amp; 상세페이지 통합 커스텀 스튜디오</h1>
-      <span id="dirtyBadge" class="dirty-indicator">● 미저장 변경사항 있음</span>
+      <span class="studio-badge">BAREUN STUDIO</span>
+      <h1 class="studio-title">커스텀 스튜디오</h1>
+      <span id="dirtyBadge" class="dirty-indicator">● 미저장</span>
     </div>
     <div class="header-actions">
-      <button type="button" id="headerArgonQuotaBadge" class="argon-quota-pill" onclick="openArgonQuotaSettings()" title="아르곤 하이(Gemini 3 Pro Image 2K) 오늘 사용량 및 무료 잔여 횟수 · 클릭 시 상세 관리">
-        ⚡ 아르곤 하이 2K · 무료 잔여 확인중...
+      <button type="button" id="btnToggleVisualSelect" class="btn btn-visual-select active" onclick="toggleVisualSelectMode()" title="우측 실제 페이지에서 수정 가능한 영역에 마우스를 올리면 활성화 표시, 클릭 시 좌측 수정 메뉴 즉시 활성화">
+        🎯 커스텀 연동 ON
       </button>
-      <button type="button" class="btn btn-deploy-all" onclick="switchEditorTab('imagemaker')" title="대표카드 및 서브 썸네일 이미지를 프롬프트로 즉시 제작합니다">
-        📸 상황별 이미지메이커
+      <button type="button" id="btnToggleDevMode" class="btn btn-dev-toggle" onclick="toggleDevMode()" title="개발자 모드 ON/OFF — 항목별 즉석 커스텀 기능·CSS/HTML/JS/JSON 편집">
+        ⚡ 개발자 모드 OFF
       </button>
-      <button type="button" class="btn btn-save-one" id="btnSaveOne" onclick="runStudioAction('save_build_one')">
-        💾 현재 페이지 즉시 반영
+      <button type="button" class="btn btn-save-one" id="btnSaveOne" onclick="handleChapterSaveAction()">
+        💾 저장·반영
       </button>
-      <button type="button" class="btn btn-save-all" id="btnSaveAll" onclick="runStudioAction('save_build_all')">
-        ✨ 전체 페이지 일괄 반영
+      <button type="button" class="btn btn-deploy-one" id="btnDeployOne" onclick="handleChapterDeployAction()">
+        🚀 실서버 배포
       </button>
-      <button type="button" class="btn btn-deploy-one" id="btnDeployOne" onclick="confirmAndDeploy('deploy_one')">
-        🚀 현재 페이지 카페24 배포
-      </button>
-      <button type="button" class="btn btn-deploy-all" id="btnDeployAll" onclick="confirmAndDeploy('deploy_all')">
-        🌐 전체 페이지 카페24 배포
-      </button>
-      <button type="button" class="btn btn-ghost-dark" id="btnSyncWp" onclick="syncFromWpLive()" title="카페24 실서버의 최신 설정을 로컬로 가져옵니다">
-        🔄 실서버 설정 가져오기
-      </button>
-      <button type="button" class="btn btn-ghost-dark" id="btnDownloadJson" onclick="downloadConfigJson()" title="현재 설정을 JSON 백업 파일로 다운로드합니다">
-        📥 JSON 백업
-      </button>
-      <button type="button" class="btn btn-ghost-dark" onclick="confirmResetPage()">
-        ↺ 현재 페이지 초기화
-      </button>
-      <button type="button" class="btn btn-ghost-dark" id="btnToggleFs" onclick="toggleStudioFullscreen()" title="전체화면 몰입 모드">
-        ⛶ 전체화면
-      </button>
-      <a class="btn btn-ghost-dark" id="btnOpenPageNewTab" href="/chuna.html" target="_blank" rel="noopener">
-        ↗ 새 창 열기
-      </a>
-      <a class="btn btn-ghost-dark" id="btnOpenMainHome" href="/index.html" target="_blank" rel="noopener">
-        🏠 메인 홈
-      </a>
+      <div class="studio-more-wrap">
+        <button type="button" id="btnStudioMoreMenu" class="btn btn-ghost-dark" onclick="toggleStudioMoreMenu(event)" title="전체 반영 · 백업 · 페이지 추가/교체 · AI 키 등 추가 도구">
+          ⋯ 도구 ▾
+        </button>
+        <div id="studioMoreDropdown" class="studio-more-dropdown" onclick="event.stopPropagation()">
+          <button type="button" class="studio-more-item" onclick="closeStudioMoreMenu(); openPageManagerModal('create');">
+            <span>📄 페이지 추가 · 교체 · 메뉴 관리</span>
+          </button>
+          <button type="button" class="studio-more-item" id="btnSaveAll" onclick="closeStudioMoreMenu(); runStudioAction('save_build_all');">
+            <span>✨ 전체 페이지 일괄 반영</span>
+          </button>
+          <button type="button" class="studio-more-item" id="btnDeployAll" onclick="closeStudioMoreMenu(); confirmAndDeploy('deploy_all');">
+            <span>🌐 전체 페이지 카페24 배포</span>
+          </button>
+          <div class="studio-more-divider"></div>
+          <button type="button" class="studio-more-item" id="headerArgonQuotaBadge" onclick="closeStudioMoreMenu(); openArgonQuotaSettings();">
+            <span>🔑 AI 이미지 키 · 아르곤 하이 설정</span>
+          </button>
+          <button type="button" class="studio-more-item" id="btnSyncWp" onclick="closeStudioMoreMenu(); syncFromWpLive();">
+            <span>🔄 실서버 설정 가져오기</span>
+          </button>
+          <button type="button" class="studio-more-item" id="btnDownloadJson" onclick="closeStudioMoreMenu(); downloadConfigJson();">
+            <span>📥 JSON 백업 다운로드</span>
+          </button>
+          <button type="button" class="studio-more-item is-danger" onclick="closeStudioMoreMenu(); confirmResetPage();">
+            <span>↺ 현재 페이지 초기화</span>
+          </button>
+          <div class="studio-more-divider"></div>
+          <button type="button" class="studio-more-item" id="btnToggleFs" onclick="closeStudioMoreMenu(); toggleStudioFullscreen();">
+            <span>⛶ 전체화면 전환</span>
+          </button>
+          <a class="studio-more-item" id="btnOpenPageNewTab" href="/chuna.html" target="_blank" rel="noopener" onclick="closeStudioMoreMenu();">
+            <span>↗ 현재 페이지 새 창 열기</span>
+          </a>
+          <a class="studio-more-item" id="btnOpenMainHome" href="/index.html" target="_blank" rel="noopener" onclick="closeStudioMoreMenu();">
+            <span>🏠 메인 홈 새 창 열기</span>
+          </a>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- 11 Detail Pages Switcher -->
-  <nav class="page-switcher-wrap" aria-label="11개 상세페이지 선택">
-    <div class="page-switcher-list" id="pageSwitcherList"></div>
+  <!-- 6-Chapter Primary Navigation + Contextual Detail Page Sub-Bar -->
+  <nav class="chapter-nav-wrap" aria-label="커스텀 스튜디오 6대 챕터 분류">
+    <div class="chapter-primary-bar" id="studioChapterBar">
+      <button type="button" class="chapter-tab-btn" data-chapter="storyboard" onclick="selectStudioChapter('storyboard')">
+        <span class="chapter-num-tag">01</span>
+        <span>🎬 스토리 보드</span>
+        <span class="chapter-cnt-tag" id="chCntStoryboard"></span>
+      </button>
+      <button type="button" class="chapter-tab-btn" data-chapter="finale" onclick="selectStudioChapter('finale')">
+        <span class="chapter-num-tag">02</span>
+        <span>🃏 피날레 카드 모음</span>
+        <span class="chapter-cnt-tag" id="chCntFinale"></span>
+      </button>
+      <button type="button" class="chapter-tab-btn" data-chapter="detail" onclick="selectStudioChapter('detail')">
+        <span class="chapter-num-tag">03</span>
+        <span>📑 상세페이지</span>
+        <span class="chapter-cnt-tag" id="chCntDetail"></span>
+      </button>
+      <button type="button" class="chapter-tab-btn" data-chapter="healthnotes" onclick="selectStudioChapter('healthnotes')">
+        <span class="chapter-num-tag">04</span>
+        <span>🧬 건강글</span>
+        <span class="chapter-cnt-tag" id="chCntHealthnotes"></span>
+      </button>
+      <button type="button" class="chapter-tab-btn" data-chapter="fees" onclick="selectStudioChapter('fees')">
+        <span class="chapter-num-tag">05</span>
+        <span>💳 비급여</span>
+        <span class="chapter-cnt-tag" id="chCntFees"></span>
+      </button>
+      <button type="button" class="chapter-tab-btn" data-chapter="location" onclick="selectStudioChapter('location')">
+        <span class="chapter-num-tag">06</span>
+        <span>📍 오시는길</span>
+      </button>
+    </div>
+    <div class="detail-sub-bar" id="detailPageSubBar">
+      <div class="page-switcher-list" id="pageSwitcherList"></div>
+    </div>
   </nav>
 
   <!-- Status Banner -->
@@ -1256,21 +1778,18 @@
   <main class="studio-workspace">
     <!-- Left Editor Column -->
     <section class="editor-column">
-      <div class="editor-tabs">
+      <div class="editor-tabs" id="editorTabsBar">
         <button type="button" class="editor-tab-btn active" data-tab="cards" onclick="switchEditorTab('cards')">
           <span id="tabCardsLabelText">📑 스토리 카드 편집</span> <span id="tabCardCount" class="tag-pill">0장</span>
         </button>
-        <button type="button" class="editor-tab-btn tab-imagemaker" data-tab="imagemaker" onclick="switchEditorTab('imagemaker')">
-          📸 이미지메이커 · 프롬프트 제작
+        <button type="button" class="editor-tab-btn" data-tab="leftpanel" onclick="switchEditorTab('leftpanel')">
+          <span id="tabLeftPanelLabelText">📋 좌측 안내 · 체크리스트 · FAQ</span>
         </button>
         <button type="button" class="editor-tab-btn" data-tab="style" id="tabBtnStyle" onclick="switchEditorTab('style')">
-          🎨 Sample A 디자인 · 표시 항목
+          🎨 디자인 · 표시 항목
         </button>
-        <button type="button" class="editor-tab-btn" data-tab="leftpanel" onclick="switchEditorTab('leftpanel')">
-          <span id="tabLeftPanelLabelText">📋 좌측 안내 패널 · 체크리스트</span>
-        </button>
-        <button type="button" class="editor-tab-btn" data-tab="clinicinfo" onclick="switchEditorTab('clinicinfo')" style="background:rgba(45,90,67,0.08);border-color:rgba(45,90,67,0.35);color:#2D5A43;">
-          🏥 병원정보 · 오시는길 · 비급여
+        <button type="button" class="editor-tab-btn tab-imagemaker" data-tab="imagemaker" onclick="switchEditorTab('imagemaker')">
+          📸 이미지메이커
         </button>
       </div>
 
@@ -1368,12 +1887,24 @@
             <button type="button" class="vp-btn active" id="vpDesktopBtn" onclick="setPreviewViewport('desktop')">🖥️ 데스크톱</button>
             <button type="button" class="vp-btn" id="vpMobileBtn" onclick="setPreviewViewport('mobile')">📱 모바일 390px</button>
           </div>
+          <div class="viewport-switch" title="커스텀 편집 모드(클릭 시 수정 메뉴 활성화) ↔ 일반 탐색 모드 전환">
+            <button type="button" class="vp-btn active is-inspect-on" id="vpInspectOnBtn" onclick="setVisualSelectMode(true)">🎯 커스텀 편집</button>
+            <button type="button" class="vp-btn" id="vpInspectOffBtn" onclick="setVisualSelectMode(false)">🖱️ 일반 탐색</button>
+          </div>
           <span id="previewUrlLabel" style="font-size:12px; color:#cbbfae;">/chuna.html</span>
         </div>
-        <div style="display:flex; gap:6px;">
+        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+          <button type="button" class="mini-btn gold-helper" id="btnPreviewShowHomeBento" style="display:none;" onclick="previewTriggerHomeBento()" title="메인 홈 우측 미리보기에서 6대 클리닉 카드를 펼쳐 바로 클릭 편집">🃏 6대 카드 펼치기</button>
           <button type="button" class="mini-btn" onclick="reloadPreviewIframe()">🔄 새로고침</button>
-          <button type="button" class="mini-btn gold-helper" onclick="runStudioAction('save_build_one')">💾 저장·반영</button>
+          <button type="button" class="mini-btn gold-helper" onclick="handleChapterSaveAction()">💾 저장·반영</button>
         </div>
+      </div>
+      <div class="preview-inspect-bar is-on" id="previewInspectBar">
+        <div class="pib-left">
+          <span class="pib-live-dot"></span>
+          <span id="previewInspectHintText">우측 페이지에서 수정할 영역에 마우스를 올리고 클릭하면 좌측 수정 메뉴가 열립니다</span>
+        </div>
+        <span class="pib-target-pill" id="previewInspectTargetPill">🎯 대기 중 · 영역에 마우스를 올려보세요</span>
       </div>
       <div class="preview-stage" id="previewStage">
         <iframe id="livePreviewFrame" title="상세페이지 실시간 미리보기" src="about:blank"></iframe>
@@ -1402,6 +1933,20 @@
     </div>
   </div>
 
+  <!-- Page Manager Modal (Add / Clone / Replace / Reorder / Header Nav Tabs) -->
+  <div id="pageManagerModal" class="studio-modal-backdrop" onclick="if(event.target===this) closePageManagerModal()">
+    <div class="studio-modal-box">
+      <div class="studio-modal-head">
+        <div>
+          <strong style="font-size:15px; color:#f8d88c;">📄 페이지 추가 · 복제 · 교체 · 상단 메뉴 통합 관리</strong>
+          <div style="font-size:11.5px; color:#cbbfae; margin-top:2px;">새 질환 페이지 생성, 기존 페이지 덮어쓰기 교체, 순서 변경 및 상단 헤더 메뉴를 한곳에서 제어합니다.</div>
+        </div>
+        <button type="button" class="mini-btn" onclick="closePageManagerModal()">✕ 닫기</button>
+      </div>
+      <div class="studio-modal-body" id="pageManagerModalBody"></div>
+    </div>
+  </div>
+
   <!-- Full-Size Image Lightbox Preview Modal -->
   <div id="imageLightboxModal" class="studio-modal-backdrop" onclick="if(event.target===this) closeImageLightbox()">
     <div class="studio-modal-box" style="max-width:860px; background:#141210; border-color:var(--gold);">
@@ -1417,6 +1962,7 @@
 
   <!-- Client-side Fast Compiler Engine & Exact Card Image Prompts Map (Supports Local & WordPress Online) -->
   <script src="bareun-detail-compiler.js"></script>
+  <script src="home-story-compiler.js"></script>
   <script>
     if (!window.BareunCompiler) {
       document.write('<script src="/wp-content/uploads/bareun-studio/bareun-detail-compiler.js"><\\/script>');
@@ -1779,17 +2325,44 @@
 
         const params = new URLSearchParams(window.location.search);
         const targetParam = (params.get('page') || '').trim();
+        const chapterParam = (params.get('chapter') || '').trim().toLowerCase();
         if (targetParam) {
           const idx = masterConfig.pages.findIndex(p => p.file === targetParam || p.slug === targetParam);
           if (idx >= 0) currentPageIdx = idx;
         }
 
-        expandedCards = new Set([0]);
+        // Resolve initial 6-Chapter state
+        const validChapters = ['storyboard', 'finale', 'detail', 'healthnotes', 'fees', 'location'];
+        if (validChapters.includes(chapterParam)) {
+          currentStudioChapter = chapterParam;
+        } else {
+          const curP = getCurrentPage();
+          if (isHealthNotesPage(curP)) currentStudioChapter = 'healthnotes';
+          else if (isHomeStoryPage(curP)) currentStudioChapter = 'storyboard';
+          else currentStudioChapter = 'detail';
+        }
+        if (currentStudioChapter === 'storyboard' || currentStudioChapter === 'finale') {
+          const hIdx = masterConfig.pages.findIndex(p => isHomeStoryPage(p));
+          if (hIdx >= 0) currentPageIdx = hIdx;
+        } else if (currentStudioChapter === 'healthnotes') {
+          const hnIdx = masterConfig.pages.findIndex(p => isHealthNotesPage(p));
+          if (hnIdx >= 0) currentPageIdx = hnIdx;
+        } else if (currentStudioChapter === 'detail') {
+          const curP = getCurrentPage();
+          if (!curP || isHomeStoryPage(curP) || isHealthNotesPage(curP)) {
+            const firstDetIdx = masterConfig.pages.findIndex(p => p && !isHomeStoryPage(p) && !isHealthNotesPage(p));
+            if (firstDetIdx >= 0) currentPageIdx = firstDetIdx;
+          }
+          lastDetailPageIdx = currentPageIdx;
+        }
+
+        expandedCards = new Set([getInitialExpandedIdxForChapter()]);
         await Promise.all([
           loadDirectorAngleSamples(),
           loadStudioAiKeyStatus()
         ]);
         syncImPromptFromCurrentCard(0);
+        applyChapterTabVisibility();
         renderAll();
         reloadPreviewIframe();
         markDirty(false);
@@ -1800,16 +2373,25 @@
     }
 
     function selectPage(idx) {
-      if (idx === currentPageIdx) return;
+      const targetPage = masterConfig && masterConfig.pages && masterConfig.pages[idx];
+      if (!targetPage) return;
+      if (isHealthNotesPage(targetPage)) {
+        return selectStudioChapter('healthnotes');
+      }
+      if (isHomeStoryPage(targetPage)) {
+        return selectStudioChapter(currentStudioChapter === 'finale' ? 'finale' : 'storyboard');
+      }
+      currentStudioChapter = 'detail';
       currentPageIdx = idx;
+      lastDetailPageIdx = idx;
       expandedCards = new Set([0]);
       syncImPromptFromCurrentCard(0);
-      const page = getCurrentPage();
-      if (page) {
-        const nextUrl = new URL(window.location.href);
-        nextUrl.searchParams.set('page', page.file);
-        window.history.replaceState({}, '', nextUrl.toString());
-      }
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set('chapter', 'detail');
+      nextUrl.searchParams.set('page', targetPage.file);
+      window.history.replaceState({}, '', nextUrl.toString());
+      applyChapterTabVisibility();
+      switchEditorTab('cards');
       renderAll();
       reloadPreviewIframe();
     }
@@ -1843,25 +2425,37 @@
 
       const isHome = isHomeStoryPage(page);
       const isHn = isHealthNotesPage(page);
+      const ch = currentStudioChapter || 'detail';
+
       const tabCardsLbl = document.getElementById('tabCardsLabelText');
       if (tabCardsLbl) {
-        tabCardsLbl.textContent = isHn
-          ? '🧬 부위별 건강 글 · [🔍 상세히] 편집'
-          : (isHome ? '🏠 홈 시작 스토리 · 진료카드' : '📑 스토리 카드 편집');
+        if (ch === 'storyboard') tabCardsLbl.textContent = '🎞️ 스토리 보드 컷 목록';
+        else if (ch === 'finale') tabCardsLbl.textContent = '🃏 피날레 진료카드 목록';
+        else if (ch === 'healthnotes' || isHn) tabCardsLbl.textContent = '🧬 부위별 건강 글 편집';
+        else tabCardsLbl.textContent = '📑 스토리 카드 편집';
       }
       const tabLeftLbl = document.getElementById('tabLeftPanelLabelText');
       if (tabLeftLbl) {
-        tabLeftLbl.textContent = isHn
-          ? '🔗 상세히 · BEST 2 · 유튜브/네이버/카톡 아이콘'
-          : (isHome ? '🎬 오프닝 슬로건 · 8대 챕터 대사' : '📋 좌측 안내 패널 · 체크리스트');
+        if (ch === 'storyboard') tabLeftLbl.textContent = '🎬 오프닝 슬로건 · 8대 챕터 대사';
+        else if (ch === 'finale') tabLeftLbl.textContent = '✨ 피날레 섹션 타이틀';
+        else if (ch === 'healthnotes' || isHn) tabLeftLbl.textContent = '🔗 상세히 · BEST 2 · 채널 아이콘';
+        else tabLeftLbl.textContent = '📋 좌측 안내 · 체크리스트 · FAQ';
       }
       const tabStyleBtn = document.getElementById('tabBtnStyle');
-      if (tabStyleBtn) tabStyleBtn.style.display = (isHome || isHn) ? 'none' : '';
-      if ((isHome || isHn) && document.getElementById('pane-style')?.classList.contains('active')) {
+      if (tabStyleBtn) tabStyleBtn.style.display = (ch === 'detail') ? '' : 'none';
+      if (ch !== 'detail' && document.getElementById('pane-style')?.classList.contains('active')) {
         switchEditorTab('cards');
       }
       const bmBox = document.getElementById('bodyModelEditorBox');
-      if (bmBox) bmBox.style.display = isHn ? 'none' : '';
+      if (bmBox) bmBox.style.display = (ch === 'detail') ? '' : 'none';
+      const homeBentoBtn = document.getElementById('btnPreviewShowHomeBento');
+      if (homeBentoBtn) homeBentoBtn.style.display = (ch === 'storyboard' || ch === 'finale') ? 'inline-flex' : 'none';
+
+      if (ch === 'fees' || ch === 'location') {
+        if (urlLbl) urlLbl.textContent = ch === 'fees' ? '/location.html#non-covered-fees (비급여)' : '/location.html (오시는길)';
+        if (openBtn) openBtn.href = IS_WORDPRESS ? '/location/' : (ch === 'fees' ? '/location.html#non-covered-fees' : '/location.html');
+      }
+      updateChapterBarUi();
 
       const totalCnt = (masterConfig && Array.isArray(masterConfig.pages)) ? masterConfig.pages.length : 12;
       const btnSaveAll = document.getElementById('btnSaveAll');
@@ -1881,30 +2475,22 @@
 
     function renderPageSwitcher() {
       const list = document.getElementById('pageSwitcherList');
-      list.innerHTML = masterConfig.pages.map((p, idx) => {
-        if (isHealthNotesPage(p)) {
-          const hnCount = (healthNotesConfig && Array.isArray(healthNotesConfig.notes))
-            ? healthNotesConfig.notes.filter(n => n && n.enabled !== false).length
-            : 0;
-          return `
-            <button type="button" class="page-pill ${idx === currentPageIdx ? 'active' : ''}" onclick="selectPage(${idx})">
-              <span>${escHtml(p.label)}</span>
-              <span class="cnt">${hnCount}편</span>
-            </button>
-          `;
-        }
-        const activeCount = (p.plates || []).filter(c => c.enabled !== false).length;
+      if (!list || !masterConfig || !Array.isArray(masterConfig.pages)) return;
+      const detailPills = masterConfig.pages.map((p, idx) => {
+        if (!p || isHomeStoryPage(p) || isHealthNotesPage(p)) return '';
+        const enabledCnt = (p.plates || []).filter(c => c.enabled !== false).length;
+        const cleanLabel = String(p.label || p.slug).replace(/^[0-9]+\s*·\s*/, '');
         return `
-          <button type="button" class="page-pill ${idx === currentPageIdx ? 'active' : ''}" onclick="selectPage(${idx})">
-            <span>${escHtml(p.label)}</span>
-            <span class="cnt">${activeCount}장</span>
+          <button type="button" class="page-pill ${currentStudioChapter === 'detail' && idx === currentPageIdx ? 'active' : ''}" onclick="selectPage(${idx})">
+            <span>${escHtml(cleanLabel)}</span>
+            <span class="cnt">${enabledCnt}장</span>
           </button>
         `;
-      }).join('') + `
-        <button type="button" class="page-pill" style="border:1.5px dashed #2D5A43;color:#2D5A43;background:rgba(45,90,67,0.06);font-weight:900;" onclick="openCreateCustomPagePrompt()">
-          <span>➕ 새 질환 페이지 추가</span>
-        </button>
-      `;
+      }).filter(Boolean).join('');
+      list.innerHTML = detailPills + `
+        <button type="button" class="detail-add-pill" onclick="openPageManagerModal('create')" title="새 상세페이지 추가 · 기존 페이지 교체 · 상단 메뉴 관리">
+          + 페이지 추가·교체
+        </button>`;
     }
 
     function getCardPreviewRawPath(card) {
@@ -1963,40 +2549,61 @@
       }
       const plates = page.plates || [];
       const isHome = isHomeStoryPage(page);
-      const enabledCount = plates.filter(c => c.enabled !== false).length;
+      const isStoryboardCh = isHome && currentStudioChapter === 'storyboard';
+      const isFinaleCh = isHome && currentStudioChapter === 'finale';
 
-      document.getElementById('tabCardCount').textContent = `${enabledCount}/${plates.length}장`;
-      document.getElementById('cardsPanelTitle').textContent = isHome
-        ? `[🏠 메인 홈 시작 스토리] 오프닝 3D 환자 스토리 컷 & 피날레 진료카드 편집 (${enabledCount}장)`
-        : `[${page.label}] 가로 스토리 카드 편집 (${enabledCount}장 표시 중)`;
+      const indexedPlates = plates.map((card, idx) => ({ card, idx })).filter(({ card }) => {
+        if (!card) return false;
+        if (isStoryboardCh) return card.type !== 'home-bento-card';
+        if (isFinaleCh) return card.type === 'home-bento-card';
+        return true;
+      });
+      const enabledCount = indexedPlates.filter(({ card }) => card.enabled !== false).length;
+
+      document.getElementById('tabCardCount').textContent = isStoryboardCh
+        ? `${enabledCount}컷`
+        : (isFinaleCh ? `${enabledCount}장` : `${enabledCount}/${indexedPlates.length}장`);
+      document.getElementById('cardsPanelTitle').textContent = isStoryboardCh
+        ? `[01 · 스토리 보드] 메인 홈 3D 환자 스토리 장면 편집 (${enabledCount}컷)`
+        : (isFinaleCh
+            ? `[02 · 피날레 카드 모음] 6대 핵심 진료 벤토 카드 편집 (${enabledCount}장)`
+            : `[${page.label}] 가로 스토리 카드 편집 (${enabledCount}장 표시 중)`);
 
       const container = document.getElementById('storyCardsContainer');
-      if (plates.length === 0) {
-        container.innerHTML = `<div class="helper-note" style="padding:20px; text-align:center;">등록된 카드가 없습니다. [+ 새 카드 추가] 버튼을 눌러 카드를 생성하세요.</div>`;
+      if (indexedPlates.length === 0) {
+        container.innerHTML = `<div class="helper-note" style="padding:20px; text-align:center;">등록된 항목이 없습니다. [+ 새 카드 추가] 버튼을 눌러 추가하세요.</div>`;
         return;
       }
 
-      const storyFrameCount = isHome ? plates.filter(c => c.type !== 'home-bento-card').length : 0;
-      const bentoCardCount = isHome ? plates.filter(c => c.type === 'home-bento-card').length : 0;
       const chaptersList = (page.homeStory && Array.isArray(page.homeStory.chapters)) ? page.homeStory.chapters : [];
 
-      const homeQuickBarHtml = isHome ? `
+      const homeQuickBarHtml = isStoryboardCh ? `
         <div class="home-quick-bar">
           <div style="font-size:12.5px; font-weight:800; color:#5a3e1b;">
-            🏠 홈페이지 시작 스토리 장면 <strong>${storyFrameCount}컷</strong> + 피날레 핵심 진료카드 <strong>${bentoCardCount}장</strong>
+            🎬 스토리 보드 전용 편집 · 메인 홈 오프닝 3D 환자 스토리 <strong>${enabledCount}컷</strong>
           </div>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <button type="button" class="mini-btn gold-helper" onclick="switchEditorTab('leftpanel')">🎬 오프닝 슬로건 · 8대 챕터 대사 편집</button>
-            <button type="button" class="mini-btn" onclick="scrollEditorToBentoSection()">🃏 피날레 진료카드(${bentoCardCount}장)로 이동</button>
+            <button type="button" class="mini-btn gold-helper" onclick="switchEditorTab('leftpanel')">🎬 오프닝 슬로건 · 8대 챕터</button>
+            <button type="button" class="mini-btn" onclick="selectStudioChapter('finale')">🃏 02. 피날레 카드 모음 →</button>
           </div>
         </div>
-      ` : '';
+      ` : (isFinaleCh ? `
+        <div class="home-quick-bar">
+          <div style="font-size:12.5px; font-weight:800; color:#5a3e1b;">
+            🃏 피날레 카드 모음 전용 편집 · 스토리 완주 후 펼쳐지는 핵심 진료카드 <strong>${enabledCount}장</strong>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="mini-btn gold-helper" onclick="previewTriggerHomeBento()">👁️ 우측에서 6대 카드 펼치기</button>
+            <button type="button" class="mini-btn" onclick="switchEditorTab('leftpanel')">✨ 피날레 타이틀 편집</button>
+          </div>
+        </div>
+      ` : '');
 
-      let seenFirstBento = false;
-      container.innerHTML = homeQuickBarHtml + plates.map((card, idx) => {
+      let seenFirstBento = true;
+      container.innerHTML = homeQuickBarHtml + indexedPlates.map(({ card, idx }, displayIdx) => {
         const isExpanded = expandedCards.has(idx);
         const isEnabled = card.enabled !== false;
-        const numStr = String(idx + 1).padStart(2, '0');
+        const numStr = String((isStoryboardCh || isFinaleCh ? displayIdx : idx) + 1).padStart(2, '0');
         const rawThumbPath = getCardPreviewRawPath(card);
         const thumbUrl = resolveStudioAssetUrl(rawThumbPath);
         const isHomeStoryCard = card.type === 'home-story-frame';
@@ -2136,10 +2743,13 @@
             </div>
 
             <!-- Type-Specific Media Controls -->
-            ${renderCardMediaControls(card, idx)}
+            <div id="card-media-box-${idx}">${renderCardMediaControls(card, idx)}</div>
+
+            ${card.type === 'growth-son-main-hero' ? renderGrowthSonSpecialControls(card, idx) : ''}
+            ${card.type === 'gongjindan-panorama-archive' ? renderGongjindanPanoramaControls(card, idx) : ''}
 
             <!-- Optional Advanced Drawer (STEP badge, 3 Pillars, #Tags) -->
-            <details class="optional-drawer">
+            <details class="optional-drawer" id="card-optional-drawer-${idx}">
               <summary>⚙️ 선택 옵션 입력 (STEP 카테고리 배지 · 하단 3칸 포인트 · #해시태그 — 표시 ON 시 노출)</summary>
               <div style="margin-top:12px;">
                 <div class="grid-2">
@@ -2188,6 +2798,7 @@
               </div>
               <div class="story-card-actions" onclick="event.stopPropagation();">
                 ${isHome ? `<button type="button" class="mini-btn" title="우측 미리보기에서 바로 확인" onclick="syncHomePreviewToCard(${idx})">👁️</button>` : `
+                  <button type="button" class="mini-btn" title="우측 실시간 미리보기에서 이 카드로 바로 이동·하이라이트" onclick="previewFocusDetailPlate(${idx})">👁️</button>
                   <label style="display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; margin-right:4px; cursor:pointer;">
                     <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateCardField(${idx}, 'enabled', this.checked, true)" />
                     표시
@@ -2204,6 +2815,7 @@
 
             <div class="story-card-body">
               ${bodyInnerHtml}
+              ${renderDevModePanelHtml('plate', 'plate-' + idx, card, idx)}
             </div>
           </div>
         `;
@@ -2563,6 +3175,7 @@
             <button type="button" class="mini-btn" onclick="openAssetPickerModal(-1, 'bodyModelBg')">🖼️ 보관함 선택</button>
           </div>
         </div>
+        ${renderDevModePanelHtml('bodyModelCard', 'body-model-card', bm, -1)}
       `;
     }
 
@@ -2693,6 +3306,8 @@
             <input type="text" value="${escHtml(cs.dividerColor)}" oninput="updateCardStyleField('dividerColor', this.value)" />
           </div>
         </div>
+        ${renderDevModePanelHtml('page', 'page-root', page, -2)}
+        ${renderDevModePanelHtml('global', 'global-root', masterConfig, -3)}
       `;
 
       updateStyleMockup();
@@ -2767,17 +3382,51 @@
       if (isHomeStoryPage(page)) {
         const hs = page.homeStory || (page.homeStory = {});
         const chapters = Array.isArray(hs.chapters) ? hs.chapters : [];
+        if (currentStudioChapter === 'finale') {
+          box.innerHTML = `
+            <div class="panel-head">
+              <h2>✨ [02 · 피날레 카드 모음] 피날레 섹션 타이틀 &amp; 헤드라인 편집</h2>
+              <button type="button" class="mini-btn gold-helper" onclick="previewTriggerHomeBento()">👁️ 우측 6대 카드 펼치기</button>
+            </div>
+            <div class="grid-2" id="home-finale-section">
+              <div class="field">
+                <label>피날레 인트로 헤드라인 (finaleHeadline)</label>
+                <input type="text" value="${escHtml(hs.finaleHeadline || '')}"
+                  oninput="updateHomeStoryField('finaleHeadline', this.value)" />
+              </div>
+              <div class="field">
+                <label>피날레 인트로 서브문구 (finaleHeadlineSub)</label>
+                <input type="text" value="${escHtml(hs.finaleHeadlineSub || '')}"
+                  oninput="updateHomeStoryField('finaleHeadlineSub', this.value)" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>벤토 그리드 상단 영문/철학 라벨 (finaleEyebrow)</label>
+                <input type="text" value="${escHtml(hs.finaleEyebrow || '')}"
+                  oninput="updateHomeStoryField('finaleEyebrow', this.value)" />
+              </div>
+              <div class="field">
+                <label>벤토 그리드 메인 타이틀 (finaleMainTitle)</label>
+                <input type="text" id="home-finale-title-input" value="${escHtml(hs.finaleMainTitle || '')}"
+                  oninput="updateHomeStoryField('finaleMainTitle', this.value)" />
+              </div>
+            </div>
+            ${renderDevModePanelHtml('page', 'page-root', page, -2)}
+          `;
+          return;
+        }
         box.innerHTML = `
           <div class="panel-head">
-            <h2>🎬 [메인 홈 시작 스토리] 첫 화면 오프닝 슬로건 · 상단 헤더 · 8대 챕터 대사 편집</h2>
-            <span class="tag-pill">index.html · WP ID: 46</span>
+            <h2>🎬 [01 · 스토리 보드] 오프닝 슬로건 · 상단 헤더 · 8대 챕터 대사 편집</h2>
+            <span class="tag-pill">index.html</span>
           </div>
 
           <h3 style="margin:0 0 10px; font-size:14.5px;">1) 홈페이지 첫 진입 시네마틱 오프닝 타이포그래피</h3>
           <div class="grid-2">
             <div class="field">
               <label>오프닝 슬로건 1줄 (골드 포인트 시작 문구)</label>
-              <input type="text" value="${escHtml(hs.introLine1 || '')}" placeholder="예: 아빠 한의사를 찾는"
+              <input type="text" id="home-intro-line1-input" value="${escHtml(hs.introLine1 || '')}" placeholder="예: 아빠 한의사를 찾는"
                 oninput="updateHomeStoryField('introLine1', this.value)" />
             </div>
             <div class="field">
@@ -2791,7 +3440,7 @@
           <div class="grid-2">
             <div class="field">
               <label>상단 로고 한의원명 (brandTitle)</label>
-              <input type="text" value="${escHtml(hs.brandTitle || '')}"
+              <input type="text" id="home-brand-title-input" value="${escHtml(hs.brandTitle || '')}"
                 oninput="updateHomeStoryField('brandTitle', this.value)" />
             </div>
             <div class="field">
@@ -2802,13 +3451,13 @@
           </div>
           <div class="field">
             <label>스토리 대사 상단 철학 캡슐 배지 (conceptPill)</label>
-            <input type="text" value="${escHtml(hs.conceptPill || '')}"
+            <input type="text" id="home-concept-pill-input" value="${escHtml(hs.conceptPill || '')}"
               oninput="updateHomeStoryField('conceptPill', this.value)" />
           </div>
 
           <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-          <h3 style="margin:0 0 10px; font-size:14.5px;">3) 8대 생애주기 스토리 챕터 상단 라벨 &amp; 대표 대사</h3>
+          <h3 id="home-chapters-section" style="margin:0 0 10px; font-size:14.5px;">3) 8대 생애주기 스토리 챕터 상단 라벨 &amp; 대표 대사</h3>
           <div style="margin-bottom:14px;">
             ${chapters.map((ch, cIdx) => `
               <div class="list-row-inline" style="margin-bottom:8px;">
@@ -2823,7 +3472,7 @@
 
           <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-          <h3 style="margin:0 0 10px; font-size:14.5px;">4) 스토리 완주 후 피날레 진료카드 섹션 타이틀</h3>
+          <h3 id="home-finale-section" style="margin:0 0 10px; font-size:14.5px;">4) 스토리 완주 후 피날레 진료카드 섹션 타이틀</h3>
           <div class="grid-2">
             <div class="field">
               <label>피날레 인트로 헤드라인 (finaleHeadline)</label>
@@ -2844,10 +3493,13 @@
             </div>
             <div class="field">
               <label>벤토 그리드 메인 타이틀 (finaleMainTitle)</label>
-              <input type="text" value="${escHtml(hs.finaleMainTitle || '')}"
+              <input type="text" id="home-finale-title-input" value="${escHtml(hs.finaleMainTitle || '')}"
                 oninput="updateHomeStoryField('finaleMainTitle', this.value)" />
             </div>
           </div>
+          <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+          ${renderSeoEditorSection(page)}
+          ${renderDevModePanelHtml('page', 'page-root', page, -2)}
         `;
         return;
       }
@@ -2871,33 +3523,33 @@
         <div class="grid-2">
           <div class="field">
             <label>상단 영문/학술 아이브로우 (eyebrow)</label>
-            <input type="text" value="${escHtml(meta.eyebrow || '')}" oninput="updateMetaField('eyebrow', this.value)" />
+            <input type="text" id="meta-eyebrow-input" value="${escHtml(meta.eyebrow || '')}" oninput="updateMetaField('eyebrow', this.value)" />
           </div>
           <div class="field">
             <label>진료과목 메인 대제목 (title)</label>
-            <input type="text" value="${escHtml(meta.title || '')}" oninput="updateMetaField('title', this.value)" />
+            <input type="text" id="meta-title-input" value="${escHtml(meta.title || '')}" oninput="updateMetaField('title', this.value)" />
           </div>
         </div>
 
         <div class="field">
           <label>영문 서브타이틀 (subtitleEn)</label>
-          <input type="text" value="${escHtml(meta.subtitleEn || '')}" oninput="updateMetaField('subtitleEn', this.value)" />
+          <input type="text" id="meta-subtitle-input" value="${escHtml(meta.subtitleEn || '')}" oninput="updateMetaField('subtitleEn', this.value)" />
         </div>
 
         <div class="field">
           <label>핵심 진료 철학 소개문 (줄바꿈으로 문단 구분)</label>
-          <textarea rows="3" oninput="updateMetaDesc(this.value)">${escHtml(descText)}</textarea>
+          <textarea id="meta-desc-input" rows="3" oninput="updateMetaDesc(this.value)">${escHtml(descText)}</textarea>
         </div>
 
         ${dirProf ? `
-        <div style="margin:16px 0;padding:14px 16px;border-radius:14px;background:rgba(197,160,89,0.09);border:1px solid rgba(197,160,89,0.38);">
+        <div id="meta-director-profile-box" style="margin:16px 0;padding:14px 16px;border-radius:14px;background:rgba(197,160,89,0.09);border:1px solid rgba(197,160,89,0.38);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <strong style="font-size:13.5px;color:#5E4736;">👨‍⚕️ 대표원장 공식 프로필 섹션 (약력 · 학술활동 · 진료철학)</strong>
             <span class="tag-pill" style="background:#FEF3C7;color:#92400E;">14번 정식 프로필</span>
           </div>
           <div class="field">
             <label>진료철학 한 줄 선언문 (philosophyQuote)</label>
-            <input type="text" value="${escHtml(dirProf.philosophyQuote || '')}" oninput="updateDirectorProfileField('philosophyQuote', this.value)" />
+            <input type="text" id="meta-director-quote-input" value="${escHtml(dirProf.philosophyQuote || '')}" oninput="updateDirectorProfileField('philosophyQuote', this.value)" />
           </div>
           <div class="grid-2">
             <div class="field">
@@ -2914,7 +3566,7 @@
 
         <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <div id="meta-checklist-section" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <h3 style="margin:0; font-size:15px;">✅ 환자 자가진단 체크리스트 문항 편집 (${checkItems.length}개)</h3>
           <button type="button" class="mini-btn gold-helper" onclick="addChecklistItem()">+ 체크 문항 추가</button>
         </div>
@@ -2922,7 +3574,7 @@
         <div class="grid-2">
           <div class="field">
             <label>체크리스트 박스 제목 (checklistTitle)</label>
-            <input type="text" value="${escHtml(meta.checklistTitle || '')}" oninput="updateMetaField('checklistTitle', this.value)" />
+            <input type="text" id="meta-checklist-title-input" value="${escHtml(meta.checklistTitle || '')}" oninput="updateMetaField('checklistTitle', this.value)" />
           </div>
           <div class="field">
             <label>체크리스트 보조 안내문 (checklistSub)</label>
@@ -2932,9 +3584,9 @@
 
         <div style="margin-bottom:12px;">
           ${checkItems.map((item, cIdx) => `
-            <div class="list-row-inline">
+            <div class="list-row-inline" id="meta-checklist-row-${cIdx}">
               <span class="tag-pill">${cIdx + 1}</span>
-              <input type="text" value="${escHtml(item)}" oninput="updateChecklistItem(${cIdx}, this.value)" />
+              <input type="text" id="meta-checklist-input-${cIdx}" value="${escHtml(item)}" oninput="updateChecklistItem(${cIdx}, this.value)" />
               <button type="button" class="mini-btn" onclick="moveChecklistItem(${cIdx}, -1)">▲</button>
               <button type="button" class="mini-btn" onclick="moveChecklistItem(${cIdx}, 1)">▼</button>
               <button type="button" class="mini-btn danger" onclick="removeChecklistItem(${cIdx})">✕</button>
@@ -2955,20 +3607,20 @@
 
         <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
-        <h3 style="margin:0 0 10px; font-size:15px;">📞 하단 진료예약 버튼 &amp; 페이지 테마 색상</h3>
+        <h3 id="meta-cta-section" style="margin:0 0 10px; font-size:15px;">📞 하단 진료예약 버튼 &amp; 페이지 테마 색상</h3>
         <div class="grid-2">
           <div class="field">
             <label>예약 버튼 메인 문구 (ctaText)</label>
-            <input type="text" value="${escHtml(meta.ctaText || '')}" oninput="updateMetaField('ctaText', this.value)" />
+            <input type="text" id="meta-cta-text-input" value="${escHtml(meta.ctaText || '')}" oninput="updateMetaField('ctaText', this.value)" />
           </div>
           <div class="field">
             <label>예약 모달 자동 선택 프로그램명 (reserveProgram)</label>
-            <input type="text" value="${escHtml(meta.reserveProgram || '')}" oninput="updateMetaField('reserveProgram', this.value)" />
+            <input type="text" id="meta-reserve-prog-input" value="${escHtml(meta.reserveProgram || '')}" oninput="updateMetaField('reserveProgram', this.value)" />
           </div>
         </div>
         <div class="field">
           <label>예약 버튼 위 안내 문구 (ctaNudge)</label>
-          <input type="text" value="${escHtml(meta.ctaNudge || '')}" oninput="updateMetaField('ctaNudge', this.value)" />
+          <input type="text" id="meta-cta-nudge-input" value="${escHtml(meta.ctaNudge || '')}" oninput="updateMetaField('ctaNudge', this.value)" />
         </div>
 
         <div class="grid-2">
@@ -3011,6 +3663,20 @@
         <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
 
         ${renderLayoutColorsControlHtml(theme)}
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        ${renderSeoEditorSection(page)}
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        ${renderFaqEditorSection(page)}
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+        ${renderNextClinicEditorSection(page)}
+
+        ${renderDevModePanelHtml('meta', 'left-panel', meta, -4)}
       `;
     }
 
@@ -3297,6 +3963,30 @@
       }
       if (!Array.isArray(page.plates)) page.plates = [];
       if (isHomeStoryPage(page)) {
+        if (currentStudioChapter === 'finale') {
+          const newBento = {
+            id: 'bento_custom_' + Date.now(),
+            enabled: true,
+            type: 'home-bento-card',
+            title: '새 진료 클리닉',
+            sub: '내 가족처럼 정직하게 진료하는 바른한의원 맞춤 클리닉',
+            linkHref: 'director.html',
+            dataLink: 'director.html',
+            chipLabel: '상세페이지 보기 →',
+            bgPos: 'center center',
+            imgSrc: 'card_1_director.jpg',
+            chapter: 2,
+            rot: 0
+          };
+          page.plates.push(newBento);
+          expandedCards.add(page.plates.length - 1);
+          markDirty(true);
+          renderPageSwitcher();
+          renderStoryCardsPane();
+          updateChapterBarUi();
+          reloadPreviewIframe();
+          return;
+        }
         const firstBentoIdx = page.plates.findIndex(c => c && c.type === 'home-bento-card');
         const insertIdx = firstBentoIdx >= 0 ? firstBentoIdx : page.plates.length;
         const newHomeFrame = {
@@ -3731,9 +4421,34 @@
     }
 
     function reloadPreviewIframe() {
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame) return;
+
+      // Chapter 05 (비급여) & Chapter 06 (오시는길): load live location.html directly!
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
+        frame.removeAttribute('data-hn-loaded');
+        frame.removeAttribute('srcdoc');
+        const targetChapter = currentStudioChapter;
+        frame.onload = function () {
+          setTimeout(() => {
+            syncClinicInfoToPreviewIframe();
+            installStudioVisualInspector(frame);
+            if (targetChapter === 'fees') {
+              try {
+                const feeSec = frame.contentDocument && frame.contentDocument.getElementById('non-covered-fees');
+                if (feeSec) feeSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              } catch (e) {}
+            }
+          }, 180);
+        };
+        const locBase = IS_WORDPRESS ? '/location/' : '/location.html';
+        frame.src = locBase + '?studioPreview=1&ch=' + targetChapter + '&t=' + Date.now() + (targetChapter === 'fees' ? '#non-covered-fees' : '');
+        return;
+      }
+
       const page = getCurrentPage();
       if (!page) return;
-      const frame = document.getElementById('livePreviewFrame');
+      capturePreviewScrollState(frame, page);
 
       if (isHealthNotesPage(page)) {
         const pId = (hnSelectedPartId && hnSelectedPartId !== 'all') ? hnSelectedPartId : 'knee';
@@ -3752,20 +4467,52 @@
         }
         frame.setAttribute('data-hn-loaded', '1');
         frame.onload = function () {
-          setTimeout(() => syncHealthNoteLivePreview(true), 250);
+          setTimeout(() => {
+            syncHealthNoteLivePreview(true);
+            installStudioVisualInspector(frame);
+          }, 260);
         };
         frame.removeAttribute('srcdoc');
         frame.src = `${baseHref}?part=${encodeURIComponent(pId)}${nId ? '&note=' + encodeURIComponent(nId) : ''}&detail=${hnPreviewDetailExpanded ? '1' : '0'}&studioPreview=1&t=${Date.now()}`;
         return;
       }
       frame.removeAttribute('data-hn-loaded');
-      frame.onload = null;
+      frame.onload = function () {
+        installStudioVisualInspector(frame);
+      };
       
-      // Instant Client-side Live Preview if compiler is loaded
+      // Instant Client-side Live Preview for Home Story (index.html / story-3d.html)
+      if (isHomeStoryPage(page) && window.BareunHomeCompiler && typeof window.BareunHomeCompiler.compileHomeStoryHtml === 'function') {
+        (async () => {
+          try {
+            if (!window.__BAREUN_HOME_TEMPLATE_CACHE__) {
+              const tplUrl = IS_WORDPRESS ? '/' : '/story-3d.html';
+              const res = await fetch(tplUrl + '?_tpl=' + Date.now());
+              if (res.ok) window.__BAREUN_HOME_TEMPLATE_CACHE__ = await res.text();
+            }
+            if (window.__BAREUN_HOME_TEMPLATE_CACHE__) {
+              const compiledHome = window.BareunHomeCompiler.compileHomeStoryHtml(
+                Object.assign({}, page, { _globalDevCustom: masterConfig.globalDevCustom || null }),
+                window.__BAREUN_HOME_TEMPLATE_CACHE__
+              );
+              frame.srcdoc = compiledHome;
+              return;
+            }
+          } catch (e) {
+            console.warn('[Home preview compiler fallback]:', e);
+          }
+          frame.src = (IS_WORDPRESS ? '/' : '/story-3d.html') + '?studioPreview=' + Date.now();
+        })();
+        return;
+      }
+
+      // Instant Client-side Live Preview for Detail Pages
       if (window.BareunCompiler && typeof window.BareunCompiler.buildPageHtml === 'function') {
         try {
           const mergedPage = Object.assign({}, page, {
-            cardStyle: Object.assign({}, masterConfig.globalCardStyle || {}, page.cardStyle || {})
+            cardStyle: Object.assign({}, masterConfig.globalCardStyle || {}, page.cardStyle || {}),
+            _globalNavTabs: Array.isArray(masterConfig.headerNavTabs) && masterConfig.headerNavTabs.length > 0 ? masterConfig.headerNavTabs : null,
+            _globalDevCustom: masterConfig.globalDevCustom || null
           });
           let html = window.BareunCompiler.buildPageHtml(mergedPage);
           if (IS_WORDPRESS) {
@@ -4070,6 +4817,9 @@
     }
 
     function openArgonQuotaSettings() {
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
+        selectStudioChapter('detail', true);
+      }
       imState.showKeyEditor = true;
       switchEditorTab('imagemaker');
       renderImageMakerPane();
@@ -7148,7 +7898,239 @@
       return ci;
     }
 
+    function setAllClinicFeesZero() {
+      if (!confirm('모든 비급여 진료비용을 "0원"으로 일괄 변경하시겠습니까?')) return;
+      const ci = ensureClinicGlobalInfo();
+      (ci.nonCoveredFees || []).forEach(f => { if (f) f.price = '0원'; });
+      markDirty(true);
+      renderClinicInfoPane();
+      syncClinicInfoToPreviewIframe();
+      showStatus('ok', '💳 모든 비급여 항목 비용이 0원으로 일괄 변경되었습니다. [저장·반영]을 눌러 확정하세요.');
+    }
+
+    function syncClinicInfoToPreviewIframe() {
+      if (currentStudioChapter !== 'fees' && currentStudioChapter !== 'location') return;
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame || !frame.contentDocument) return;
+      try {
+        const doc = frame.contentDocument;
+        const ci = ensureClinicGlobalInfo();
+        const setTxt = (id, v) => { const el = doc.getElementById(id); if (el) el.textContent = v || ''; };
+        setTxt('loc-greeting-eyebrow', ci.greetingEyebrow);
+        setTxt('loc-greeting-title', ci.greetingTitle);
+        setTxt('loc-greeting-body', ci.greetingBody);
+        setTxt('loc-greeting-sign', ci.greetingSign);
+        setTxt('loc-address-text', ci.address);
+        setTxt('loc-parking-guide', ci.parkingGuide);
+        setTxt('loc-transit-guide', ci.transitGuide);
+        setTxt('loc-fee-updated', '최종 고지 기준일: ' + (ci.nonCoveredUpdatedDate || '2026-11-15'));
+
+        const hn = ci.holidayNotice || {};
+        const hBan = doc.getElementById('loc-holiday-banner');
+        if (hBan) hBan.classList.toggle('active', Boolean(hn.enabled));
+        setTxt('loc-holiday-badge', hn.badge || '진료 안내');
+        setTxt('loc-holiday-text', hn.text || '');
+
+        const hList = doc.getElementById('loc-hours-list');
+        if (hList && Array.isArray(ci.hours)) {
+          hList.innerHTML = ci.hours.map(h =>
+            '<div class="hour-row"><span class="hour-day">' + escHtml(h.day || '') + '</span><span class="hour-time">' + escHtml(h.time || '') + '</span><span class="hour-note">' + escHtml(h.note || '') + '</span></div>'
+          ).join('');
+        }
+
+        const fBody = doc.getElementById('loc-fee-tbody');
+        if (fBody && Array.isArray(ci.nonCoveredFees)) {
+          fBody.innerHTML = ci.nonCoveredFees.map((f, idx) =>
+            '<tr data-fee-idx="' + idx + '"><td>' + escHtml(f.category || '') + '</td><td><strong>' + escHtml(f.name || '') + '</strong></td><td>' + escHtml(f.spec || '') + '</td><td class="fee-price">' + escHtml(f.price || '') + '</td><td>' + escHtml(f.note || '') + '</td></tr>'
+          ).join('');
+        }
+      } catch (e) {}
+    }
+
     function renderClinicInfoPane() {
+      const box = document.getElementById('clinicInfoEditorBox');
+      if (!box) return;
+      const ci = ensureClinicGlobalInfo();
+      const hn = ci.holidayNotice || {};
+      const ch = currentStudioChapter;
+
+      // Chapter 05: Dedicated Non-Covered Fees Editor (비급여 전용)
+      if (ch === 'fees') {
+        box.innerHTML = `
+          <div class="panel-head">
+            <div>
+              <h2>💳 [05 · 비급여] 의료법 제45조 비급여 진료비용 안내표 (${(ci.nonCoveredFees || []).length}개 항목)</h2>
+              <div class="helper-note" style="margin-top:4px;">
+                비급여 항목과 금액을 수정하면 우측 미리보기에 즉시 반영되며, 저장 시 전 페이지 공통 모달과 <code>/location/</code>에 일괄 적용됩니다.
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="mini-btn" onclick="setAllClinicFeesZero()">0원 일괄 적용</button>
+              <button type="button" class="mini-btn gold-helper" onclick="addClinicFeeRow()">+ 비급여 항목 추가</button>
+            </div>
+          </div>
+
+          <div class="field" style="max-width:260px; margin-bottom:14px;">
+            <label>비급여 최종 고지 기준일</label>
+            <input type="text" id="ci-fee-date-input" value="${escHtml(ci.nonCoveredUpdatedDate || '2026-11-15')}" oninput="updateClinicInfoField('nonCoveredUpdatedDate', this.value)" />
+          </div>
+
+          <div style="display:grid;grid-template-columns:0.85fr 1.35fr 1fr 0.95fr 1fr 34px;gap:6px;padding:0 8px 6px;font-size:11px;font-weight:800;color:var(--ink-sub);">
+            <span>분류</span><span>비급여 항목명</span><span>규격/기준</span><span>비용 안내</span><span>비고</span><span></span>
+          </div>
+          <div id="clinic-fees-list" style="margin-bottom:16px;">
+            ${(ci.nonCoveredFees || []).map((f, fIdx) => `
+              <div class="fee-row-card" id="fee-row-${fIdx}">
+                <input type="text" placeholder="분류" value="${escHtml(f.category || '')}" oninput="updateClinicFeeRow(${fIdx}, 'category', this.value)" />
+                <input type="text" id="fee-name-input-${fIdx}" placeholder="비급여 항목명" value="${escHtml(f.name || '')}" oninput="updateClinicFeeRow(${fIdx}, 'name', this.value)" />
+                <input type="text" placeholder="규격/기준" value="${escHtml(f.spec || '')}" oninput="updateClinicFeeRow(${fIdx}, 'spec', this.value)" />
+                <input type="text" id="fee-price-input-${fIdx}" placeholder="비용 (예: 0원)" value="${escHtml(f.price || '')}" oninput="updateClinicFeeRow(${fIdx}, 'price', this.value)" />
+                <input type="text" placeholder="비고" value="${escHtml(f.note || '')}" oninput="updateClinicFeeRow(${fIdx}, 'note', this.value)" />
+                <button type="button" class="mini-btn danger" onclick="removeClinicFeeRow(${fIdx})">✕</button>
+              </div>
+            `).join('')}
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--border);">
+            ${!IS_WORDPRESS ? `<button type="button" class="btn btn-save-one" onclick="saveAndDeployClinicInfo(false)">💾 비급여 저장·반영</button>` : ''}
+            <button type="button" class="btn btn-deploy-one" onclick="saveAndDeployClinicInfo(true)">
+              🚀 실서버 즉시 반영
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // Chapter 06: Dedicated Location, Greeting, Hours & Reservation Channels Editor (오시는길 전용)
+      box.innerHTML = `
+        <div class="panel-head">
+          <div>
+            <h2>📍 [06 · 오시는길] 대표원장 인사말 · 주소/길안내 · 진료시간 · 예약 채널</h2>
+            <div class="helper-note" style="margin-top:4px;">
+              수정 내용이 우측 <code>/location.html</code> 미리보기에 실시간 반영되며, 저장 시 전 페이지 공통 오시는길 모달과 하단 예약바에 일괄 연동됩니다.
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="mini-btn" onclick="selectStudioChapter('fees')">💳 비급여 표 편집 →</button>
+          </div>
+        </div>
+
+        <h3 id="clinic-info-brand-box" style="margin:6px 0 10px;font-size:14.5px;color:#2D5A43;">1️⃣ 대표원장 따뜻한 환영 인사말</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>인사말 상단 배지 (greetingEyebrow)</label>
+            <input type="text" value="${escHtml(ci.greetingEyebrow || '')}" oninput="updateClinicInfoField('greetingEyebrow', this.value)" />
+          </div>
+          <div class="field">
+            <label>인사말 하단 서명 (greetingSign)</label>
+            <input type="text" value="${escHtml(ci.greetingSign || '')}" oninput="updateClinicInfoField('greetingSign', this.value)" />
+          </div>
+        </div>
+        <div class="field">
+          <label>환영 인사말 메인 제목 (greetingTitle)</label>
+          <input type="text" id="ci-greeting-title" value="${escHtml(ci.greetingTitle || '')}" oninput="updateClinicInfoField('greetingTitle', this.value)" />
+        </div>
+        <div class="field">
+          <label>환영 인사말 본문 (greetingBody)</label>
+          <textarea id="ci-greeting-body" rows="3" oninput="updateClinicInfoField('greetingBody', this.value)">${escHtml(ci.greetingBody || '')}</textarea>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
+
+        <h3 id="clinic-info-location-box" style="margin:0 0 10px;font-size:14.5px;color:#2D5A43;">2️⃣ 3대 예약 채널(전화 · 카톡 · 네이버예약) &amp; 4대 지도 길안내 주소·좌표</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>대표 전화번호</label>
+            <input type="text" value="${escHtml(ci.phone || '')}" oninput="updateClinicInfoField('phone', this.value)" />
+          </div>
+          <div class="field">
+            <label>사업자등록번호</label>
+            <input type="text" value="${escHtml(ci.businessRegNo || '')}" oninput="updateClinicInfoField('businessRegNo', this.value)" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>카카오톡 채널 상담 URL</label>
+            <input type="text" value="${escHtml(ci.kakaoUrl || '')}" oninput="updateClinicInfoField('kakaoUrl', this.value)" />
+          </div>
+          <div class="field">
+            <label>네이버 예약/플레이스 URL</label>
+            <input type="text" value="${escHtml(ci.naverBookingUrl || '')}" oninput="updateClinicInfoField('naverBookingUrl', this.value)" />
+          </div>
+        </div>
+        <div class="field">
+          <label>전체 도로명 주소</label>
+          <input type="text" id="ci-address-input" value="${escHtml(ci.address || '')}" oninput="updateClinicInfoField('address', this.value)" />
+        </div>
+        <div class="grid-3">
+          <div class="field">
+            <label>우편번호</label>
+            <input type="text" value="${escHtml(ci.postalCode || '')}" oninput="updateClinicInfoField('postalCode', this.value)" />
+          </div>
+          <div class="field">
+            <label>위도 (Latitude)</label>
+            <input type="number" step="0.00001" value="${escHtml(ci.lat || 36.35536)}" oninput="updateClinicInfoField('lat', parseFloat(this.value) || 36.35536)" />
+          </div>
+          <div class="field">
+            <label>경도 (Longitude)</label>
+            <input type="number" step="0.00001" value="${escHtml(ci.lng || 127.44778)}" oninput="updateClinicInfoField('lng', parseFloat(this.value) || 127.44778)" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>🚗 자가용 · 주차 안내 문구</label>
+            <textarea id="ci-parking-input" rows="2" oninput="updateClinicInfoField('parkingGuide', this.value)">${escHtml(ci.parkingGuide || '')}</textarea>
+          </div>
+          <div class="field">
+            <label>🚌 대중교통 · 주변 이정표 안내 문구</label>
+            <textarea id="ci-transit-input" rows="2" oninput="updateClinicInfoField('transitGuide', this.value)">${escHtml(ci.transitGuide || '')}</textarea>
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
+
+        <div id="clinic-info-hours-box" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:14.5px;color:#2D5A43;">3️⃣ 진료시간표 &amp; 임시 휴진/공지 배너</h3>
+          <button type="button" class="mini-btn gold-helper" onclick="addClinicHourRow()">+ 진료시간 행 추가</button>
+        </div>
+        <div id="clinic-info-holiday-box" style="padding:12px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;margin-bottom:12px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;color:#92400E;cursor:pointer;margin-bottom:8px;">
+            <input type="checkbox" ${hn.enabled ? 'checked' : ''} onchange="updateClinicHolidayField('enabled', this.checked)" />
+            📢 상단 임시 휴진 / 공휴일 특별 진료 강조 배너 켜기
+          </label>
+          <div class="grid-2">
+            <div class="field" style="margin-bottom:0;">
+              <label>배지 제목</label>
+              <input type="text" id="ci-holiday-badge-input" value="${escHtml(hn.badge || '진료 안내')}" oninput="updateClinicHolidayField('badge', this.value)" />
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label>공지 상세 문구</label>
+              <input type="text" id="ci-holiday-text-input" value="${escHtml(hn.text || '')}" oninput="updateClinicHolidayField('text', this.value)" />
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          ${(ci.hours || []).map((h, hIdx) => `
+            <div class="list-row-inline" style="display:grid;grid-template-columns:1.1fr 1fr 1.2fr auto;gap:6px;margin-bottom:6px;">
+              <input type="text" placeholder="요일" value="${escHtml(h.day || '')}" oninput="updateClinicHourRow(${hIdx}, 'day', this.value)" />
+              <input type="text" placeholder="시간" value="${escHtml(h.time || '')}" oninput="updateClinicHourRow(${hIdx}, 'time', this.value)" />
+              <input type="text" placeholder="비고" value="${escHtml(h.note || '')}" oninput="updateClinicHourRow(${hIdx}, 'note', this.value)" />
+              <button type="button" class="mini-btn danger" onclick="removeClinicHourRow(${hIdx})">✕</button>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--border);">
+          ${!IS_WORDPRESS ? `<button type="button" class="btn btn-save-one" onclick="saveAndDeployClinicInfo(false)">💾 오시는길 저장·반영</button>` : ''}
+          <button type="button" class="btn btn-deploy-one" onclick="saveAndDeployClinicInfo(true)">
+            🚀 실서버 즉시 반영
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    function _legacyUnusedClinicInfoRenderer() {
       const box = document.getElementById('clinicInfoEditorBox');
       if (!box) return;
       const ci = ensureClinicGlobalInfo();
@@ -7169,7 +8151,7 @@
           </div>
         </div>
 
-        <h3 style="margin:6px 0 10px;font-size:14.5px;color:#2D5A43;">1️⃣ 대표원장 따뜻한 환영 인사말 (오시는길 상단 &amp; 모달 표시)</h3>
+        <h3 id="clinic-info-brand-box" style="margin:6px 0 10px;font-size:14.5px;color:#2D5A43;">1️⃣ 대표원장 따뜻한 환영 인사말 (오시는길 상단 &amp; 모달 표시)</h3>
         <div class="grid-2">
           <div class="field">
             <label>인사말 상단 배지 (greetingEyebrow)</label>
@@ -7182,7 +8164,7 @@
         </div>
         <div class="field">
           <label>환영 인사말 메인 제목 (greetingTitle)</label>
-          <input type="text" value="${escHtml(ci.greetingTitle || '')}" oninput="updateClinicInfoField('greetingTitle', this.value)" />
+          <input type="text" id="ci-greeting-title" value="${escHtml(ci.greetingTitle || '')}" oninput="updateClinicInfoField('greetingTitle', this.value)" />
         </div>
         <div class="field">
           <label>환영 인사말 본문 (greetingBody)</label>
@@ -7191,7 +8173,7 @@
 
         <hr style="border:none;border-top:1px solid var(--border);margin:18px 0;" />
 
-        <h3 style="margin:0 0 10px;font-size:14.5px;color:#2D5A43;">2️⃣ 승인된 3대 예약 채널(전화 · 카톡 · 네이버예약) &amp; 4대 지도 길안내 주소·좌표</h3>
+        <h3 id="clinic-info-location-box" style="margin:0 0 10px;font-size:14.5px;color:#2D5A43;">2️⃣ 승인된 3대 예약 채널(전화 · 카톡 · 네이버예약) &amp; 4대 지도 길안내 주소·좌표</h3>
         <div class="grid-2">
           <div class="field">
             <label>대표 전화번호 (전화상담 버튼 직결)</label>
@@ -7214,7 +8196,7 @@
         </div>
         <div class="field">
           <label>전체 도로명 주소 (네이버·구글·티맵·카카오맵 목적지 표기)</label>
-          <input type="text" value="${escHtml(ci.address || '')}" oninput="updateClinicInfoField('address', this.value)" />
+          <input type="text" id="ci-address-input" value="${escHtml(ci.address || '')}" oninput="updateClinicInfoField('address', this.value)" />
         </div>
         <div class="grid-3">
           <div class="field">
@@ -7310,6 +8292,7 @@
       const ci = ensureClinicGlobalInfo();
       ci[key] = val;
       markDirty(true);
+      syncClinicInfoToPreviewIframe();
     }
 
     function updateClinicHolidayField(key, val) {
@@ -7318,6 +8301,7 @@
       ci.holidayNotice[key] = val;
       markDirty(true);
       if (key === 'enabled') renderClinicInfoPane();
+      syncClinicInfoToPreviewIframe();
     }
 
     function addClinicHourRow() {
@@ -7331,6 +8315,7 @@
       const ci = ensureClinicGlobalInfo();
       if (ci.hours[idx]) ci.hours[idx][key] = val;
       markDirty(true);
+      syncClinicInfoToPreviewIframe();
     }
 
     function removeClinicHourRow(idx) {
@@ -7345,12 +8330,15 @@
       ci.nonCoveredFees.push({ category: '기타 비급여', name: '새 비급여 항목', spec: '1회', price: '0원', note: '' });
       markDirty(true);
       renderClinicInfoPane();
+      updateChapterBarUi();
+      syncClinicInfoToPreviewIframe();
     }
 
     function updateClinicFeeRow(idx, key, val) {
       const ci = ensureClinicGlobalInfo();
       if (ci.nonCoveredFees[idx]) ci.nonCoveredFees[idx][key] = val;
       markDirty(true);
+      syncClinicInfoToPreviewIframe();
     }
 
     function removeClinicFeeRow(idx) {
@@ -7358,6 +8346,8 @@
       ci.nonCoveredFees.splice(idx, 1);
       markDirty(true);
       renderClinicInfoPane();
+      updateChapterBarUi();
+      syncClinicInfoToPreviewIframe();
     }
 
     async function saveAndDeployClinicInfo(deployLive) {
@@ -7390,6 +8380,1847 @@
       }
     }
 
+
+    /* ============================================================================
+     * 1. SPECIALIZED CARD EDITORS (Growth Son Hero & Gongjindan Panorama)
+     * ============================================================================ */
+    function renderGrowthSonSpecialControls(card, idx) {
+      const paras = Array.isArray(card.letterParagraphs) ? card.letterParagraphs.join('\n\n') : '';
+      return `
+        <details class="optional-drawer" style="margin-top:10px;" open>
+          <summary>👨‍👦 성장 친아들 손편지 히어로 카드 상세 문구 편집</summary>
+          <div style="margin-top:10px;">
+            <div class="grid-2">
+              <div class="field"><label>상단 배지 (badge)</label><input type="text" value="${escHtml(card.badge || '')}" oninput="updateCardField(${idx}, 'badge', this.value, false)" /></div>
+              <div class="field"><label>편지 영문 아이브로우 (letterEyebrow)</label><input type="text" value="${escHtml(card.letterEyebrow || '')}" oninput="updateCardField(${idx}, 'letterEyebrow', this.value, false)" /></div>
+              <div class="field"><label>손편지 헤드라인 1줄</label><input type="text" value="${escHtml(card.letterHeadlineLine1 || '')}" oninput="updateCardField(${idx}, 'letterHeadlineLine1', this.value, false)" /></div>
+              <div class="field"><label>손편지 헤드라인 2줄</label><input type="text" value="${escHtml(card.letterHeadlineLine2 || '')}" oninput="updateCardField(${idx}, 'letterHeadlineLine2', this.value, false)" /></div>
+            </div>
+            <div class="field">
+              <label>손편지 본문 문단 (빈 줄로 문단 구분)</label>
+              <textarea rows="4" oninput="updateCardLinesField(${idx}, 'letterParagraphs', this.value)">${escHtml(paras)}</textarea>
+            </div>
+            <div class="grid-3">
+              <div class="field"><label>서명 접두 (signPrefix)</label><input type="text" value="${escHtml(card.signPrefix || '아빠같은 한의사')}" oninput="updateCardField(${idx}, 'signPrefix', this.value, false)" /></div>
+              <div class="field"><label>원장 성함 (signName)</label><input type="text" value="${escHtml(card.signName || '안 정 위')}" oninput="updateCardField(${idx}, 'signName', this.value, false)" /></div>
+              <div class="field"><label>서명 접미 (signSuffix)</label><input type="text" value="${escHtml(card.signSuffix || '대표원장 배상')}" oninput="updateCardField(${idx}, 'signSuffix', this.value, false)" /></div>
+            </div>
+            <div class="grid-2">
+              <div class="field"><label>원문 버튼 문구</label><input type="text" value="${escHtml(card.blogBtnText || '')}" oninput="updateCardField(${idx}, 'blogBtnText', this.value, false)" /></div>
+              <div class="field"><label>원문 블로그 URL</label><input type="url" value="${escHtml(card.blogUrl || '')}" oninput="updateCardField(${idx}, 'blogUrl', this.value, false)" /></div>
+            </div>
+          </div>
+        </details>`;
+    }
+
+    function renderGongjindanPanoramaControls(card, idx) {
+      const pagesList = Array.isArray(card.pages) ? card.pages : [];
+      return `
+        <details class="optional-drawer" style="margin-top:10px;">
+          <summary>📖 황제공진단 브로슈어 슬라이드 목록 편집 (${pagesList.length}장)</summary>
+          <div style="margin-top:10px;">
+            <div class="grid-2">
+              <div class="field"><label>갤러리 제목 (galleryTitle)</label><input type="text" value="${escHtml(card.galleryTitle || '')}" oninput="updateCardField(${idx}, 'galleryTitle', this.value, false)" /></div>
+              <div class="field"><label>갤러리 부제목 (gallerySub)</label><input type="text" value="${escHtml(card.gallerySub || '')}" oninput="updateCardField(${idx}, 'gallerySub', this.value, false)" /></div>
+            </div>
+            ${pagesList.map((pg, pIdx) => `
+              <div class="list-row-inline" style="margin-bottom:6px;">
+                <span class="tag-pill">${escHtml(pg.short || ('0' + (pIdx + 1) + 'P'))}</span>
+                <input type="text" value="${escHtml(pg.title || '')}" placeholder="슬라이드 제목" oninput="updateCardBrochureItem(${idx}, ${pIdx}, 'title', this.value)" />
+                <input type="text" list="existingImagesList" value="${escHtml(pg.img || '')}" placeholder="이미지 파일" oninput="updateBrochurePageLive(${idx}, ${pIdx}, this.value)" />
+              </div>`).join('')}
+          </div>
+        </details>`;
+    }
+
+    function updateCardLinesField(idx, key, raw) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      card[key] = String(raw || '').split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    function updateCardBrochureItem(idx, pIdx, key, val) {
+      const page = getCurrentPage();
+      const card = page.plates[idx];
+      if (card.pages && card.pages[pIdx]) {
+        card.pages[pIdx][key] = val;
+        markDirty(true);
+        scheduleLivePreviewReload();
+      }
+    }
+
+    /* ============================================================================
+     * 2. SEO / FAQ / NEXT CLINIC EDITORS (TAB 3 COMPLETE PRECISION EDITING)
+     * ============================================================================ */
+    function ensurePageSeo(page) {
+      if (!page.seo || typeof page.seo !== 'object') {
+        page.seo = { title: '', description: '', keywords: '', ogImage: '' };
+      }
+      return page.seo;
+    }
+
+    function updateSeoField(key, val) {
+      const page = getCurrentPage();
+      const seo = ensurePageSeo(page);
+      seo[key] = val;
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    function renderSeoEditorSection(page) {
+      const seo = ensurePageSeo(page);
+      const tLen = (seo.title || '').length;
+      const dLen = (seo.description || '').length;
+      return `
+        <div class="panel-head" style="margin-bottom:8px;">
+          <h3 style="margin:0; font-size:15px;">🔍 페이지별 SEO · 메타데이터 &amp; 검색 스니펫 정밀 설정</h3>
+          <span class="tag-pill">검색엔진 제목 ${tLen}자 · 설명 ${dLen}자</span>
+        </div>
+        <div class="helper-note" style="margin-bottom:10px;">비워두면 기본 제목/설명이 자동 적용되며, 입력 시 구글·네이버 검색 결과 제목(title)과 설명(meta description)을 정밀하게 덮어씁니다.</div>
+        <div class="field">
+          <label>브라우저 &amp; 검색결과 제목 (&lt;title&gt; · 권장 35~60자)</label>
+          <input type="text" value="${escHtml(seo.title || '')}" placeholder="예: ${escHtml((page.meta && page.meta.title) || page.label)} — 바른한의원 대전본점" oninput="updateSeoField('title', this.value)" />
+        </div>
+        <div class="field">
+          <label>검색결과 요약 설명 (&lt;meta name="description"&gt; · 권장 80~150자)</label>
+          <textarea rows="2" placeholder="검색결과 아래 표시될 핵심 진료 설명을 입력하세요." oninput="updateSeoField('description', this.value)">${escHtml(seo.description || '')}</textarea>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>핵심 키워드 (&lt;meta name="keywords"&gt; · 쉼표 구분)</label>
+            <input type="text" value="${escHtml(seo.keywords || '')}" placeholder="예: 대전한의원, 대덕구한의원, 추나요법" oninput="updateSeoField('keywords', this.value)" />
+          </div>
+          <div class="field">
+            <label>공유 대표 썸네일 이미지 (og:image)</label>
+            <input type="text" list="existingImagesList" value="${escHtml(seo.ogImage || '')}" placeholder="예: bareun_step4_pain_chuna_healing.jpg" oninput="updateSeoField('ogImage', this.value)" />
+          </div>
+        </div>`;
+    }
+
+    function ensurePageFaqCard(page) {
+      if (!page.faqCard || !Array.isArray(page.faqCard.items)) {
+        const defaults = window.BareunCompiler && window.BareunCompiler.DEFAULT_CLINIC_FAQ_CARDS;
+        const seed = (defaults && defaults[page.slug]) ? JSON.parse(JSON.stringify(defaults[page.slug])) : {
+          enabled: true,
+          eyebrow: 'CLINIC FAQ · 자주 묻는 질문',
+          title: `${(page.meta && page.meta.title) || page.label}, '자주 묻는 질문'`,
+          sub: '질문을 클릭하시면 원장님 기준 상세 답변을 바로 확인하실 수 있습니다.',
+          keywords: ['초진 상담', '치료 원리', '주의사항'],
+          items: []
+        };
+        page.faqCard = Object.assign({ enabled: true }, seed);
+      }
+      return page.faqCard;
+    }
+
+    function updateFaqMetaField(key, val) {
+      const page = getCurrentPage();
+      const faq = ensurePageFaqCard(page);
+      if (key === 'keywords') {
+        faq.keywords = String(val || '').split(',').map(s => s.trim()).filter(Boolean);
+      } else {
+        faq[key] = val;
+      }
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    function updateFaqItemField(qIdx, key, val) {
+      const page = getCurrentPage();
+      const faq = ensurePageFaqCard(page);
+      if (faq.items && faq.items[qIdx]) {
+        faq.items[qIdx][key] = val;
+        markDirty(true);
+        scheduleLivePreviewReload();
+      }
+    }
+
+    function addFaqItem() {
+      const page = getCurrentPage();
+      const faq = ensurePageFaqCard(page);
+      faq.items.push({ tag: '진료 안내', q: '새로운 질문을 입력해 주세요.', lead: '핵심 요약 답변 한 줄', a: '환자분께 안내할 상세 의학 설명을 입력해 주세요.' });
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+    }
+
+    function moveFaqItem(qIdx, dir) {
+      const page = getCurrentPage();
+      const faq = ensurePageFaqCard(page);
+      const next = qIdx + dir;
+      if (next < 0 || next >= faq.items.length) return;
+      const tmp = faq.items[qIdx];
+      faq.items[qIdx] = faq.items[next];
+      faq.items[next] = tmp;
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+    }
+
+    function deleteFaqItem(qIdx) {
+      const page = getCurrentPage();
+      const faq = ensurePageFaqCard(page);
+      faq.items.splice(qIdx, 1);
+      markDirty(true);
+      renderLeftPanelPane();
+      scheduleLivePreviewReload();
+    }
+
+    function renderFaqEditorSection(page) {
+      const faq = ensurePageFaqCard(page);
+      const isEnabled = faq.enabled !== false;
+      const items = faq.items || [];
+      return `
+        <div class="panel-head" id="faq-editor-section" style="margin-bottom:10px;">
+          <h3 style="margin:0; font-size:15px;">❓ 질환별 인터랙티브 FAQ 카드 편집기 (${items.length}문항)</h3>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; cursor:pointer;">
+              <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="updateFaqMetaField('enabled', this.checked)" />
+              FAQ 카드 표시
+            </label>
+            <button type="button" class="mini-btn gold-helper" onclick="addFaqItem()">+ 질문 추가</button>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>상단 아이브로우</label><input type="text" value="${escHtml(faq.eyebrow || '')}" oninput="updateFaqMetaField('eyebrow', this.value)" /></div>
+          <div class="field"><label>FAQ 메인 제목 ('작은따옴표' 골드 강조)</label><input type="text" id="faq-title-input" value="${escHtml(faq.title || '')}" oninput="updateFaqMetaField('title', this.value)" /></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>안내 부제목</label><input type="text" value="${escHtml(faq.sub || '')}" oninput="updateFaqMetaField('sub', this.value)" /></div>
+          <div class="field"><label>빠른 이동 키워드 칩 (쉼표 구분)</label><input type="text" value="${escHtml((faq.keywords || []).join(', '))}" oninput="updateFaqMetaField('keywords', this.value)" /></div>
+        </div>
+        <div style="margin-top:8px;">
+          ${items.map((item, qIdx) => `
+            <div class="faq-editor-card" id="faq-editor-item-${qIdx}">
+              <div class="faq-editor-head">
+                <strong style="font-size:12.5px; color:var(--accent-dark);">Q${qIdx + 1} · ${escHtml(item.tag || '질문')}</strong>
+                <div style="display:flex; gap:4px;">
+                  <button type="button" class="mini-btn" onclick="moveFaqItem(${qIdx}, -1)">▲</button>
+                  <button type="button" class="mini-btn" onclick="moveFaqItem(${qIdx}, 1)">▼</button>
+                  <button type="button" class="mini-btn danger" onclick="deleteFaqItem(${qIdx})">삭제</button>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="field"><label>카테고리 태그</label><input type="text" value="${escHtml(item.tag || '')}" oninput="updateFaqItemField(${qIdx}, 'tag', this.value)" /></div>
+                <div class="field"><label>질문 제목 (Q)</label><input type="text" id="faq-q-input-${qIdx}" value="${escHtml(item.q || '')}" oninput="updateFaqItemField(${qIdx}, 'q', this.value)" /></div>
+              </div>
+              <div class="field"><label>핵심 결론 리드 답변 (한 줄 강조)</label><input type="text" value="${escHtml(item.lead || '')}" oninput="updateFaqItemField(${qIdx}, 'lead', this.value)" /></div>
+              <div class="field"><label>상세 의학 설명 (A)</label><textarea rows="2" oninput="updateFaqItemField(${qIdx}, 'a', this.value)">${escHtml(item.a || '')}</textarea></div>
+            </div>`).join('')}
+        </div>
+        ${renderDevModePanelHtml('faqCard', 'faq-card', faq, -5)}`;
+    }
+
+    function ensureNextClinic(page) {
+      if (!page.nextClinic || typeof page.nextClinic !== 'object') {
+        page.nextClinic = { enabled: false, href: 'growth.html', eyebrow: 'NEXT CLINIC', title: '연계 클리닉 보기', desc: '' };
+      }
+      return page.nextClinic;
+    }
+
+    function updateNextClinicField(key, val) {
+      const page = getCurrentPage();
+      const nc = ensureNextClinic(page);
+      nc[key] = val;
+      markDirty(true);
+      scheduleLivePreviewReload();
+    }
+
+    function renderNextClinicEditorSection(page) {
+      const nc = ensureNextClinic(page);
+      return `
+        <div class="panel-head" id="next-clinic-editor-section" style="margin-bottom:8px;">
+          <h3 style="margin:0; font-size:15px;">➡️ 좌측 패널 하단 · 다음 연계 클리닉 추천 카드</h3>
+          <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; cursor:pointer;">
+            <input type="checkbox" ${nc.enabled === true ? 'checked' : ''} onchange="updateNextClinicField('enabled', this.checked)" />
+            추천 카드 노출
+          </label>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label>상단 라벨 (eyebrow)</label><input type="text" value="${escHtml(nc.eyebrow || '')}" oninput="updateNextClinicField('eyebrow', this.value)" /></div>
+          <div class="field"><label>추천 클리닉 제목</label><input type="text" value="${escHtml(nc.title || '')}" oninput="updateNextClinicField('title', this.value)" /></div>
+          <div class="field"><label>이동 주소 (href)</label><input type="text" value="${escHtml(nc.href || '')}" placeholder="예: growth.html" oninput="updateNextClinicField('href', this.value)" /></div>
+        </div>
+        <div class="field"><label>추천 설명</label><input type="text" value="${escHtml(nc.desc || '')}" oninput="updateNextClinicField('desc', this.value)" /></div>`;
+    }
+
+    /* ============================================================================
+     * 3. DEVELOPER MODE ENGINE (즉석 커스텀 기능 추가 & 구성 실시간 수정)
+     * ============================================================================ */
+    let isDevMode = false;
+    try { isDevMode = localStorage.getItem('bareun_studio_dev_mode') === '1'; } catch (e) {}
+    const devCodeTabState = {};
+
+    function applyDevModeUi() {
+      const btn = document.getElementById('btnToggleDevMode');
+      if (btn) {
+        btn.classList.toggle('active', isDevMode);
+        btn.textContent = isDevMode ? '⚡ 개발자 모드 ON' : '⚡ 개발자 모드 OFF';
+      }
+      document.body.classList.toggle('dev-mode-on', isDevMode);
+    }
+
+    function toggleDevMode() {
+      isDevMode = !isDevMode;
+      try { localStorage.setItem('bareun_studio_dev_mode', isDevMode ? '1' : '0'); } catch (e) {}
+      applyDevModeUi();
+      renderAll();
+      showStatus(isDevMode ? 'ok' : 'working', isDevMode
+        ? '⚡ 개발자 모드가 활성화되었습니다! 이제 모든 커스텀 항목에서 즉석 기능 추가·스키마 수정·CSS/HTML/JS/JSON 편집이 가능합니다.'
+        : '일반 스튜디오 모드로 전환했습니다.');
+    }
+
+    function resolveTargetByRef(targetRef) {
+      const page = getCurrentPage();
+      if (targetRef >= 0) return page.plates[targetRef];
+      if (targetRef === -1) return page.bodyModelCard;
+      if (targetRef === -2) return page;
+      if (targetRef === -3) return masterConfig;
+      if (targetRef === -4) return page.meta;
+      if (targetRef === -5) return ensurePageFaqCard(page);
+      return null;
+    }
+
+    function getDevPropKey(targetRef) {
+      return targetRef === -3 ? 'globalDevCustom' : 'devCustom';
+    }
+
+    function ensureDevCustom(targetRef) {
+      const obj = resolveTargetByRef(targetRef);
+      if (!obj) return null;
+      const pk = getDevPropKey(targetRef);
+      if (!obj[pk] || typeof obj[pk] !== 'object') {
+        obj[pk] = { enabled: true, customFields: [], customCss: '', customHtmlBefore: '', customHtmlAfter: '', customJs: '' };
+      }
+      if (!Array.isArray(obj[pk].customFields)) obj[pk].customFields = [];
+      return obj[pk];
+    }
+
+    function renderDevModePanelHtml(itemType, itemId, itemObj, targetRef) {
+      if (!isDevMode || !itemObj) return '';
+      const pk = getDevPropKey(targetRef);
+      const dc = (itemObj[pk] && typeof itemObj[pk] === 'object') ? itemObj[pk] : { enabled: true, customFields: [], customCss: '', customHtmlBefore: '', customHtmlAfter: '', customJs: '' };
+      const fields = Array.isArray(dc.customFields) ? dc.customFields : [];
+      const activeTab = devCodeTabState[targetRef] || 'css';
+      const titleLabel = targetRef === -3 ? '전역(Global) 사이트' : (targetRef === -2 ? '현재 페이지 전체' : itemId);
+
+      const fieldsHtml = fields.length === 0
+        ? '<div style="font-size:11.5px;opacity:0.68;">아직 추가된 즉석 커스텀 필드가 없습니다. 위 명령창에 원하는 기능을 입력하거나 [+ 필드 직접 추가]를 눌러 스튜디오 입력란을 생성해 보세요.</div>'
+        : fields.map((f, fIdx) => `
+            <div class="dev-cf-row">
+              <label>
+                <span>⚙️ ${escHtml(f.label || f.id)} <code style="opacity:0.7;font-size:10px;">{{${escHtml(f.id)}}} · ${escHtml(f.slot || 'afterBody')}</code></span>
+                <button type="button" class="mini-btn danger" style="padding:2px 6px;font-size:10px;" onclick="removeDevCustomField(${targetRef}, ${fIdx})">삭제</button>
+              </label>
+              ${f.type === 'textarea' || f.type === 'html'
+                ? `<textarea rows="2" oninput="updateDevCustomFieldVal(${targetRef}, ${fIdx}, this.value)">${escHtml(f.value || '')}</textarea>`
+                : (f.type === 'toggle'
+                    ? `<label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" ${f.value ? 'checked' : ''} onchange="updateDevCustomFieldVal(${targetRef}, ${fIdx}, this.checked)" /> 활성화 (ON/OFF)</label>`
+                    : (f.type === 'color'
+                        ? `<div class="color-input-row"><input type="color" value="${hexForPicker(f.value, '#D4AF37')}" onchange="updateDevCustomFieldVal(${targetRef}, ${fIdx}, this.value)" /><input type="text" value="${escHtml(f.value || '')}" oninput="updateDevCustomFieldVal(${targetRef}, ${fIdx}, this.value)" /></div>`
+                        : `<input type="${f.type === 'url' ? 'url' : (f.type === 'number' ? 'number' : 'text')}" value="${escHtml(f.value || '')}" oninput="updateDevCustomFieldVal(${targetRef}, ${fIdx}, this.value)" />`))}
+            </div>`).join('');
+
+      let codeContentHtml = '';
+      if (activeTab === 'css') {
+        codeContentHtml = `<textarea class="dev-code-area" rows="4" placeholder="{{SELF}} 선택자로 현재 항목 전용 CSS 작성 (예: {{SELF}} { border: 2px solid #D4AF37; })" oninput="updateDevCodeProp(${targetRef}, 'customCss', this.value)">${escHtml(dc.customCss || '')}</textarea>`;
+      } else if (activeTab === 'htmlAfter') {
+        codeContentHtml = `<textarea class="dev-code-area" rows="4" placeholder="항목 하단 커스텀 HTML ({{field_id}} 변수 사용 가능)" oninput="updateDevCodeProp(${targetRef}, 'customHtmlAfter', this.value)">${escHtml(dc.customHtmlAfter || '')}</textarea>`;
+      } else if (activeTab === 'htmlBefore') {
+        codeContentHtml = `<textarea class="dev-code-area" rows="3" placeholder="항목 상단/헤드 커스텀 HTML" oninput="updateDevCodeProp(${targetRef}, '${targetRef === -2 || targetRef === -3 ? 'customHeadHtml' : 'customHtmlBefore'}', this.value)">${escHtml((targetRef === -2 || targetRef === -3 ? dc.customHeadHtml : dc.customHtmlBefore) || '')}</textarea>`;
+      } else if (activeTab === 'js') {
+        codeContentHtml = `<textarea class="dev-code-area" rows="4" placeholder="root 엘리먼트와 fields 객체를 사용한 JS 인터랙션 코드" oninput="updateDevCodeProp(${targetRef}, 'customJs', this.value)">${escHtml(dc.customJs || '')}</textarea>`;
+      } else if (activeTab === 'json') {
+        const cleanJson = JSON.stringify(itemObj, null, 2);
+        codeContentHtml = `
+          <textarea class="dev-code-area" id="dev-json-editor-${targetRef}" rows="8">${escHtml(cleanJson)}</textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:6px;">
+            <button type="button" class="mini-btn gold-helper" onclick="applyDevRawJson(${targetRef})">⚡ Raw JSON 즉시 적용</button>
+          </div>`;
+      }
+
+      return `
+        <div class="dev-drawer-box" onclick="event.stopPropagation();">
+          <div class="dev-drawer-head">
+            <span class="dev-drawer-badge">⚡ 개발자 모드 · [${escHtml(titleLabel)}] 즉석 구성 수정</span>
+            <div style="display:flex;gap:6px;">
+              <button type="button" class="mini-btn" style="background:#2e1065;color:#f5d0fe;border-color:#a855f7;" onclick="addManualDevField(${targetRef})">+ 커스텀 필드 직접 추가</button>
+              <button type="button" class="mini-btn danger" onclick="clearDevCustomItem(${targetRef})">초기화</button>
+            </div>
+          </div>
+          <div class="dev-cmd-row">
+            <input type="text" id="dev-cmd-input-${targetRef}" placeholder="즉석 커스텀 명령 입력 (예: '상담 버튼 문구·링크 추가해줘', '2열 비교표 넣어줘', '배경색 #FAF7F2 골드 테두리 적용해줘')"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();runInstantDevCommand(${targetRef}, '${itemType}', '${itemId}');}" />
+            <button type="button" class="btn btn-dev-toggle active" style="padding:7px 14px;" onclick="runInstantDevCommand(${targetRef}, '${itemType}', '${itemId}')">⚡ 즉석 적용</button>
+          </div>
+          <div class="dev-quick-chips">
+            <button type="button" class="dev-quick-chip" onclick="quickRunDevCmd(${targetRef}, '${itemType}', '${itemId}', '커스텀 CTA 상담 버튼 추가해줘')">+ CTA 버튼</button>
+            <button type="button" class="dev-quick-chip" onclick="quickRunDevCmd(${targetRef}, '${itemType}', '${itemId}', '2열 비교표 위젯 추가해줘')">+ 2열 비교표</button>
+            <button type="button" class="dev-quick-chip" onclick="quickRunDevCmd(${targetRef}, '${itemType}', '${itemId}', '핵심 안내 콜아웃 박스 추가해줘')">+ 콜아웃 박스</button>
+            <button type="button" class="dev-quick-chip" onclick="quickRunDevCmd(${targetRef}, '${itemType}', '${itemId}', '유튜브 동영상 임베드 추가해줘')">+ 유튜브 영상</button>
+            <button type="button" class="dev-quick-chip" onclick="quickRunDevCmd(${targetRef}, '${itemType}', '${itemId}', '핵심 수치 통계 배지 추가해줘')">+ 수치 지표</button>
+            <button type="button" class="dev-quick-chip" onclick="quickRunDevCmd(${targetRef}, '${itemType}', '${itemId}', '골드 테두리 및 입체 그림자 스타일 적용해줘')">🎨 골드 테두리</button>
+          </div>
+          <div class="dev-custom-fields-wrap">
+            <div style="font-size:11px;font-weight:800;color:#d8b4fe;margin-bottom:6px;">🧩 이 항목에 동적으로 추가된 커스텀 입력란 (${fields.length}개)</div>
+            ${fieldsHtml}
+          </div>
+          <div class="dev-code-tabs">
+            <button type="button" class="dev-code-tab ${activeTab === 'css' ? 'active' : ''}" onclick="switchDevCodeTab(${targetRef}, 'css')">🎨 CSS</button>
+            <button type="button" class="dev-code-tab ${activeTab === 'htmlAfter' ? 'active' : ''}" onclick="switchDevCodeTab(${targetRef}, 'htmlAfter')">🧩 하단 HTML</button>
+            <button type="button" class="dev-code-tab ${activeTab === 'htmlBefore' ? 'active' : ''}" onclick="switchDevCodeTab(${targetRef}, 'htmlBefore')">${targetRef === -2 || targetRef === -3 ? '🏷️ &lt;head&gt; 코드' : '⬆️ 상단 HTML'}</button>
+            <button type="button" class="dev-code-tab ${activeTab === 'js' ? 'active' : ''}" onclick="switchDevCodeTab(${targetRef}, 'js')">⚙️ JS 훅</button>
+            <button type="button" class="dev-code-tab ${activeTab === 'json' ? 'active' : ''}" onclick="switchDevCodeTab(${targetRef}, 'json')">{} Raw JSON</button>
+          </div>
+          ${codeContentHtml}
+        </div>`;
+    }
+
+    function switchDevCodeTab(targetRef, tabKey) {
+      devCodeTabState[targetRef] = tabKey;
+      renderAll();
+    }
+
+    function updateDevCustomFieldVal(targetRef, fIdx, val) {
+      const dc = ensureDevCustom(targetRef);
+      if (dc && dc.customFields[fIdx]) {
+        dc.customFields[fIdx].value = val;
+        markDirty(true);
+        scheduleLivePreviewReload();
+      }
+    }
+
+    function removeDevCustomField(targetRef, fIdx) {
+      const dc = ensureDevCustom(targetRef);
+      if (dc) {
+        dc.customFields.splice(fIdx, 1);
+        markDirty(true);
+        renderAll();
+        scheduleLivePreviewReload();
+      }
+    }
+
+    function updateDevCodeProp(targetRef, propKey, val) {
+      const dc = ensureDevCustom(targetRef);
+      if (dc) {
+        dc[propKey] = val;
+        markDirty(true);
+        scheduleLivePreviewReload();
+      }
+    }
+
+    function clearDevCustomItem(targetRef) {
+      if (!confirm('이 항목에 추가된 개발자 모드 커스텀 설정을 초기화하시겠습니까?')) return;
+      const obj = resolveTargetByRef(targetRef);
+      if (obj) {
+        delete obj[getDevPropKey(targetRef)];
+        markDirty(true);
+        renderAll();
+        scheduleLivePreviewReload();
+      }
+    }
+
+    function addManualDevField(targetRef) {
+      const label = (prompt('새 커스텀 입력란 이름을 입력하세요 (예: 강조 배지, 상담 링크, 안내 문구)', '커스텀 강조 문구') || '').trim();
+      if (!label) return;
+      const typeInput = (prompt('입력란 유형을 입력하세요: text / textarea / color / url / toggle / html / youtube', 'text') || 'text').trim().toLowerCase();
+      const slotInput = (prompt('표시 위치(슬롯)를 입력하세요: callout / badge / cta / metrics / afterBody / beforeTitle / rawHtml', 'callout') || 'callout').trim();
+      const defVal = (prompt('초기 기본값을 입력하세요', '') || '').trim();
+      const dc = ensureDevCustom(targetRef);
+      if (dc) {
+        dc.customFields.push({
+          id: 'fld_' + Date.now().toString(36).slice(-5),
+          label,
+          type: ['text', 'textarea', 'color', 'url', 'number', 'toggle', 'html', 'youtube'].includes(typeInput) ? typeInput : 'text',
+          value: typeInput === 'toggle' ? true : defVal,
+          slot: slotInput
+        });
+        markDirty(true);
+        renderAll();
+        scheduleLivePreviewReload();
+      }
+    }
+
+    function applyDevRawJson(targetRef) {
+      const ta = document.getElementById('dev-json-editor-' + targetRef);
+      if (!ta) return;
+      try {
+        const parsed = JSON.parse(ta.value);
+        const page = getCurrentPage();
+        if (targetRef >= 0) page.plates[targetRef] = parsed;
+        else if (targetRef === -1) page.bodyModelCard = parsed;
+        else if (targetRef === -2) masterConfig.pages[currentPageIdx] = parsed;
+        else if (targetRef === -3) masterConfig = parsed;
+        else if (targetRef === -4) page.meta = parsed;
+        else if (targetRef === -5) page.faqCard = parsed;
+        markDirty(true);
+        renderAll();
+        reloadPreviewIframe();
+        showStatus('ok', '✅ Raw JSON 수정사항이 스튜디오 구성 및 미리보기에 즉시 적용되었습니다!');
+      } catch (err) {
+        alert('JSON 문법 오류가 있습니다:\n' + err.message);
+      }
+    }
+
+    function quickRunDevCmd(targetRef, itemType, itemId, cmdText) {
+      const inp = document.getElementById('dev-cmd-input-' + targetRef);
+      if (inp) inp.value = cmdText;
+      runInstantDevCommand(targetRef, itemType, itemId);
+    }
+
+    async function runInstantDevCommand(targetRef, itemType, itemId) {
+      const inp = document.getElementById('dev-cmd-input-' + targetRef);
+      const instruction = inp ? inp.value.trim() : '';
+      if (!instruction) {
+        alert('즉석 적용할 커스텀 기능 명령을 입력해 주세요.');
+        return;
+      }
+      const targetObj = resolveTargetByRef(targetRef);
+      const page = getCurrentPage();
+      showStatus('working', `⚡ 개발자 모드 명령 분석 및 커스텀 구성 수정 중: "${instruction}"`);
+      try {
+        let data = null;
+        if (!IS_WORDPRESS) {
+          const res = await fetch('/api/studio-dev-command', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              instruction,
+              itemType,
+              itemId,
+              itemData: targetObj,
+              pageSlug: page ? page.slug : '',
+              useAi: true
+            })
+          });
+          data = await res.json();
+        } else {
+          // Client-side instant fallback when running standalone inside WordPress
+          data = {
+            ok: true,
+            engine: 'wp-client-instant',
+            mutation: {
+              addFields: [{ id: 'wp_fld_' + Date.now().toString(36).slice(-4), label: instruction.slice(0, 24), type: 'textarea', value: instruction, slot: 'callout' }],
+              patchProps: {},
+              appendCss: '',
+              appendHtmlBefore: '',
+              appendHtmlAfter: ''
+            },
+            summary: '즉석 커스텀 필드가 추가되었습니다.'
+          };
+        }
+        if (!data || !data.ok) throw new Error((data && data.error) || '개발자 명령 실행 실패');
+        const m = data.mutation || {};
+        if (m.patchProps && typeof m.patchProps === 'object' && targetObj) {
+          Object.assign(targetObj, m.patchProps);
+        }
+        const dc = ensureDevCustom(targetRef);
+        if (dc) {
+          if (Array.isArray(m.addFields)) {
+            m.addFields.forEach(nf => {
+              if (nf && nf.id && !dc.customFields.some(x => x.id === nf.id)) {
+                dc.customFields.push(nf);
+              }
+            });
+          }
+          if (m.appendCss) dc.customCss = ((dc.customCss || '') + '\n' + m.appendCss).trim();
+          if (m.appendHtmlBefore) {
+            if (targetRef === -2 || targetRef === -3) dc.customHeadHtml = ((dc.customHeadHtml || '') + '\n' + m.appendHtmlBefore).trim();
+            else dc.customHtmlBefore = ((dc.customHtmlBefore || '') + '\n' + m.appendHtmlBefore).trim();
+          }
+          if (m.appendHtmlAfter) dc.customHtmlAfter = ((dc.customHtmlAfter || '') + '\n' + m.appendHtmlAfter).trim();
+          if (m.appendJs) dc.customJs = ((dc.customJs || '') + '\n' + m.appendJs).trim();
+        }
+        if (inp) inp.value = '';
+        markDirty(true);
+        renderAll();
+        reloadPreviewIframe();
+        showStatus('ok', `⚡ [${data.engine}] ${data.summary}`);
+      } catch (err) {
+        showStatus('err', '개발자 명령 오류: ' + err.message);
+      }
+    }
+
+    /* ============================================================================
+     * 4. UNIFIED PAGE MANAGER (ADD / CLONE / REPLACE / ORDER / HEADER NAV TABS)
+     * ============================================================================ */
+    let activePmTab = 'create';
+
+    function openPageManagerModal(tabKey = 'create') {
+      activePmTab = tabKey || 'create';
+      const modal = document.getElementById('pageManagerModal');
+      if (modal) modal.classList.add('open');
+      renderPageManagerModalBody();
+    }
+
+    function closePageManagerModal() {
+      const modal = document.getElementById('pageManagerModal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function getHeaderNavTabsList() {
+      if (!Array.isArray(masterConfig.headerNavTabs) || masterConfig.headerNavTabs.length === 0) {
+        const defTabs = (window.BareunCompiler && window.BareunCompiler.NAV_TABS) || [];
+        masterConfig.headerNavTabs = JSON.parse(JSON.stringify(defTabs));
+      }
+      return masterConfig.headerNavTabs;
+    }
+
+    function renderPageManagerModalBody() {
+      const body = document.getElementById('pageManagerModalBody');
+      if (!body) return;
+      const curPage = getCurrentPage();
+      const nonHnPages = (masterConfig.pages || []).filter(p => p && !isHealthNotesPage(p));
+      const navTabs = getHeaderNavTabsList();
+
+      let inner = '';
+      if (activePmTab === 'create') {
+        inner = `
+          <div class="grid-2">
+            <div class="field"><label>새 페이지 한글 제목 (예: 바른 비염 · 축농증 클리닉)</label><input type="text" id="pmNewTitle" placeholder="예: 바른 비염 클리닉" /></div>
+            <div class="field"><label>영문 주소 슬러그 (예: rhinitis, sleep, traffic)</label><input type="text" id="pmNewSlug" placeholder="예: rhinitis" /></div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label>복제할 기준 템플릿 페이지 선택</label>
+              <select id="pmNewTemplateSlug">
+                <option value="__blank__">📄 깔끔한 기본 2카드 템플릿으로 새로 시작</option>
+                ${nonHnPages.filter(p => !isHomeStoryPage(p)).map(p => `<option value="${escHtml(p.slug)}">🧬 [${escHtml(p.label)}] 구성·카드·FAQ 그대로 복제</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label>대표 포인트 컬러</label>
+              <div class="color-input-row">
+                <input type="color" id="pmNewAccentColor" value="#10B981" />
+                <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer;">
+                  <input type="checkbox" id="pmAddToHeaderNav" checked /> 상단 네비게이션 메뉴에도 바로 추가
+                </label>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
+            <button type="button" class="btn btn-save-one" onclick="executeCreatePageFromModal()">✨ 새 페이지 즉시 생성 &amp; 빌드</button>
+          </div>`;
+      } else if (activePmTab === 'replace') {
+        inner = `
+          <div class="helper-note" style="margin-bottom:12px;">현재 선택된 페이지 <strong>[${escHtml(curPage ? curPage.label : '')}]</strong>의 구성을 다른 페이지 템플릿이나 JSON 백업으로 통째로 또는 부분 교체할 수 있습니다.</div>
+          <div class="grid-2">
+            <div class="field">
+              <label>교체 원본 페이지 선택</label>
+              <select id="pmReplaceSourceSlug">
+                ${nonHnPages.filter(p => !isHomeStoryPage(p) && p.slug !== (curPage && curPage.slug)).map(p => `<option value="${escHtml(p.slug)}">${escHtml(p.label)} (${(p.plates || []).length}장)</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label>교체 범위 선택</label>
+              <select id="pmReplaceScope">
+                <option value="all">🔄 전체 구성 교체 (스토리 카드 + 좌측 패널 + FAQ + 테마)</option>
+                <option value="plates">📑 스토리 카드 목록만 교체</option>
+                <option value="faq">❓ FAQ 6문항만 교체</option>
+                <option value="theme">🎨 테마 컬러·디자인만 교체</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap;">
+            <div>
+              <label class="mini-btn" style="cursor:pointer;">
+                📂 JSON 파일로 현재 페이지 교체하기
+                <input type="file" accept=".json" style="display:none;" onchange="importJsonToReplaceCurrentPage(this)" />
+              </label>
+            </div>
+            <button type="button" class="btn btn-deploy-one" onclick="executeReplaceCurrentPage()">⚡ 선택한 구성으로 현재 페이지 즉시 교체</button>
+          </div>`;
+      } else if (activePmTab === 'nav') {
+        inner = `
+          <div class="helper-note" style="margin-bottom:10px;">상단 헤더 중앙에 표시되는 <strong>클리닉 바로가기 메뉴 탭</strong>을 추가·수정·순서변경·삭제할 수 있습니다.</div>
+          ${navTabs.map((t, i) => `
+            <div class="list-row-inline" style="margin-bottom:6px;">
+              <span class="tag-pill">0${i + 1}</span>
+              <input type="text" value="${escHtml(t.label)}" placeholder="메뉴 이름" oninput="updateHeaderNavTab(${i}, 'label', this.value)" />
+              <input type="text" value="${escHtml(t.href)}" placeholder="이동 주소 (예: growth.html)" oninput="updateHeaderNavTab(${i}, 'href', this.value)" />
+              <button type="button" class="mini-btn" onclick="moveHeaderNavTab(${i}, -1)">▲</button>
+              <button type="button" class="mini-btn" onclick="moveHeaderNavTab(${i}, 1)">▼</button>
+              <button type="button" class="mini-btn danger" onclick="removeHeaderNavTab(${i})">삭제</button>
+            </div>`).join('')}
+          <div style="display:flex;justify-content:space-between;margin-top:12px;">
+            <button type="button" class="mini-btn gold-helper" onclick="addHeaderNavTab()">+ 상단 메뉴 탭 추가</button>
+            <button type="button" class="btn btn-save-all" onclick="closePageManagerModal(); runStudioAction('save_build_all')">💾 메뉴 변경사항 전 페이지 일괄 반영</button>
+          </div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
+          <h4 style="margin:0 0 8px;">📑 전체 등록 페이지 목록 (${nonHnPages.length}개)</h4>
+          ${(masterConfig.pages || []).map((p, idx) => {
+            if (isHealthNotesPage(p)) return '';
+            return `
+              <div class="list-row-inline" style="margin-bottom:5px;">
+                <span class="tag-pill">${escHtml(p.slug)}</span>
+                <input type="text" value="${escHtml(p.label)}" oninput="masterConfig.pages[${idx}].label=this.value;markDirty(true);renderPageSwitcher();" />
+                <button type="button" class="mini-btn" onclick="movePageOrder(${idx}, -1)">▲</button>
+                <button type="button" class="mini-btn" onclick="movePageOrder(${idx}, 1)">▼</button>
+                ${p.isCustomPage ? `<button type="button" class="mini-btn danger" onclick="selectPage(${idx});closePageManagerModal();deleteCurrentCustomPage();">삭제</button>` : '<span class="tag-pill">기본</span>'}
+              </div>`;
+          }).join('')}`;
+      }
+
+      body.innerHTML = `
+        <div class="pm-tab-bar">
+          <button type="button" class="pm-tab-btn ${activePmTab === 'create' ? 'active' : ''}" onclick="openPageManagerModal('create')">➕ 새 페이지 추가 · 복제</button>
+          <button type="button" class="pm-tab-btn ${activePmTab === 'replace' ? 'active' : ''}" onclick="openPageManagerModal('replace')">🔄 현재 페이지 교체 · JSON 덮어쓰기</button>
+          <button type="button" class="pm-tab-btn ${activePmTab === 'nav' ? 'active' : ''}" onclick="openPageManagerModal('nav')">🧭 상단 메뉴(NAV) &amp; 페이지 순서 관리</button>
+        </div>
+        ${inner}`;
+    }
+
+    async function executeCreatePageFromModal() {
+      const korTitle = (document.getElementById('pmNewTitle')?.value || '').trim();
+      const rawSlug = (document.getElementById('pmNewSlug')?.value || '').trim().toLowerCase();
+      const tplSlug = document.getElementById('pmNewTemplateSlug')?.value || '__blank__';
+      const accentColor = document.getElementById('pmNewAccentColor')?.value || '#10B981';
+      const addToNav = Boolean(document.getElementById('pmAddToHeaderNav')?.checked);
+
+      if (!korTitle) { alert('새 페이지 한글 제목을 입력해 주세요.'); return; }
+      const cleanSlug = rawSlug.replace(/[^a-z0-9-]/g, '').replace(/^-+|-+$/g, '');
+      if (!cleanSlug || cleanSlug.length < 2) { alert('영문 슬러그를 2자 이상 입력해 주세요 (예: rhinitis).'); return; }
+      if ((masterConfig.pages || []).some(p => p.slug === cleanSlug || p.file === cleanSlug + '.html')) {
+        alert(`이미 [${cleanSlug}] 페이지가 존재합니다.`);
+        return;
+      }
+
+      const baseTpl = tplSlug !== '__blank__' ? (masterConfig.pages || []).find(p => p.slug === tplSlug) : null;
+      let newPage;
+      if (baseTpl) {
+        newPage = JSON.parse(JSON.stringify(baseTpl));
+        newPage.slug = cleanSlug;
+        newPage.file = cleanSlug + '.html';
+        newPage.wpFile = 'wordpress-' + cleanSlug + '.html';
+        newPage.wpId = 0;
+        newPage.isCustomPage = true;
+        newPage.label = '✨ ' + korTitle;
+        newPage.liveUrl = 'https://www.bareunhaniwon.com/' + cleanSlug + '/';
+        if (newPage.meta) newPage.meta.title = korTitle;
+        if (newPage.theme) newPage.theme.accent = accentColor;
+      } else {
+        newPage = {
+          slug: cleanSlug,
+          file: cleanSlug + '.html',
+          wpFile: 'wordpress-' + cleanSlug + '.html',
+          wpId: 0,
+          isCustomPage: true,
+          label: '✨ ' + korTitle,
+          liveUrl: 'https://www.bareunhaniwon.com/' + cleanSlug + '/',
+          theme: { bgDark: '#121716', bgPanel: 'rgba(18, 23, 22, 0.96)', accent: accentColor, accentLight: '#D1FAE5', secondary: '#D4AF37', glowA: 'rgba(16, 185, 129, 0.08)', glowB: 'rgba(212, 175, 55, 0.05)' },
+          cardStyle: JSON.parse(JSON.stringify(masterConfig.globalCardStyle || {})),
+          meta: {
+            eyebrow: 'BAREUN SPECIALIZED CLINIC · 바른한의원 대전본점',
+            title: korTitle,
+            subtitleEn: 'Evidence-Based Personalized Korean Medicine Care',
+            desc: [`안정위 대표원장의 1:1 정밀 진맥과 과학적 검진을 통해 ${korTitle}의 근본 원인을 세심하게 다스립니다.`],
+            ctaNudge: '📝 체크한 증상을 바탕으로 원장님이 직접 치료 계획을 브리핑해 드립니다.',
+            ctaText: `${korTitle} 1:1 맞춤 상담 예약하기`,
+            reserveProgram: korTitle,
+            checklistTitle: `${korTitle} 자가진단 체크리스트`,
+            checklistItems: ['[반복 증상] 피로하거나 환절기가 되면 증상이 반복된다.', '[생활 불편] 수면·집중력·일상 컨디션이 함께 저하된다.', '[근본 치료 희망] 체질과 면역·순환 균형 회복을 원한다.'],
+            doctorAdvice: { caution: '초기 균형 관리 권장', severe: '집중 원인 치료 권장' }
+          },
+          plates: [
+            { id: 'custom_' + cleanSlug + '_1', enabled: true, type: 'clean-image', fullscreen: true, fit: 'cover', stepLabel: 'STEP 01 · 원인 진단', title: `반복되는 불편함, '${korTitle}'의 근본 원인부터 살핍니다`, sub: '자율신경·순환·장부 균형을 입체적으로 진단하여 건강한 회복을 돕습니다.', imgSrc: 'card_1_director.jpg', pillars: [], tags: ['#바른한의원대전본점'] },
+            { id: 'custom_' + cleanSlug + '_2', enabled: true, type: 'clean-image', fullscreen: true, fit: 'cover', stepLabel: 'STEP 02 · 맞춤 치료', title: "체질과 증상에 맞춘 '정밀 한약 · 약침 · 추나 치료'", sub: '식약처 인증 GMP 청정 약재와 정밀 시술로 자생 회복력을 높입니다.', imgSrc: 'detail_director_story4_clean.jpg', pillars: [], tags: ['#맞춤처방'] }
+          ],
+          bodyModelCard: { enabled: true, href: 'body-explorer.html', part: 'syncope', partBadge: '3D 인체모형', eyebrow: '3D HUMAN BODY', title: '3D 인체모형으로 내 몸의 원리 살펴보기', desc: '부위별 3D 해부학 모형과 건강 칼럼을 확인해 보세요.', bg: 'illust_syncope_autonomic.jpg' }
+        };
+      }
+
+      if (addToNav) {
+        const navTabs = getHeaderNavTabsList();
+        if (!navTabs.some(t => t.href === newPage.file)) {
+          navTabs.push({ href: newPage.file, label: korTitle.replace(/^✨\s*/, '').slice(0, 10) });
+        }
+      }
+
+      const hnIdx = masterConfig.pages.findIndex(p => isHealthNotesPage(p));
+      const insertAt = hnIdx >= 0 ? hnIdx : masterConfig.pages.length;
+      masterConfig.pages.splice(insertAt, 0, newPage);
+      currentPageIdx = insertAt;
+      expandedCards = new Set([0]);
+      closePageManagerModal();
+      markDirty(true);
+      renderAll();
+      await runStudioAction(addToNav ? 'save_build_all' : 'save_build_one');
+    }
+
+    async function executeReplaceCurrentPage() {
+      const cur = getCurrentPage();
+      const srcSlug = document.getElementById('pmReplaceSourceSlug')?.value;
+      const scope = document.getElementById('pmReplaceScope')?.value || 'all';
+      const src = (masterConfig.pages || []).find(p => p.slug === srcSlug);
+      if (!cur || !src) return;
+      if (!confirm(`정말 [${cur.label}]의 ${scope === 'all' ? '전체 구성' : scope}을 [${src.label}]의 구성으로 교체하시겠습니까?`)) return;
+
+      const copy = JSON.parse(JSON.stringify(src));
+      if (scope === 'all') {
+        cur.plates = copy.plates || [];
+        cur.meta = copy.meta || cur.meta;
+        cur.theme = copy.theme || cur.theme;
+        cur.cardStyle = copy.cardStyle || cur.cardStyle;
+        if (copy.faqCard) cur.faqCard = copy.faqCard;
+        if (copy.bodyModelCard) cur.bodyModelCard = copy.bodyModelCard;
+      } else if (scope === 'plates') {
+        cur.plates = copy.plates || [];
+      } else if (scope === 'faq') {
+        cur.faqCard = copy.faqCard || ensurePageFaqCard(src);
+      } else if (scope === 'theme') {
+        cur.theme = copy.theme || cur.theme;
+        cur.cardStyle = copy.cardStyle || cur.cardStyle;
+      }
+      closePageManagerModal();
+      markDirty(true);
+      renderAll();
+      reloadPreviewIframe();
+      showStatus('ok', `🔄 [${cur.label}]의 구성이 [${src.label}] 기준으로 즉시 교체되었습니다! (저장 버튼을 누르면 파일에 반영됩니다)`);
+    }
+
+    function importJsonToReplaceCurrentPage(inputEl) {
+      const file = inputEl.files && inputEl.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          const cur = getCurrentPage();
+          const importedPage = Array.isArray(parsed.pages) ? parsed.pages.find(p => p.slug === cur.slug) || parsed.pages[0] : parsed;
+          if (!importedPage || !Array.isArray(importedPage.plates)) throw new Error('유효한 페이지 JSON 구조(plates 배열)가 아닙니다.');
+          cur.plates = importedPage.plates;
+          if (importedPage.meta) cur.meta = importedPage.meta;
+          if (importedPage.theme) cur.theme = importedPage.theme;
+          if (importedPage.faqCard) cur.faqCard = importedPage.faqCard;
+          if (importedPage.seo) cur.seo = importedPage.seo;
+          closePageManagerModal();
+          markDirty(true);
+          renderAll();
+          reloadPreviewIframe();
+          showStatus('ok', '📂 JSON 파일로 현재 페이지 구성을 성공적으로 교체했습니다!');
+        } catch (err) {
+          alert('JSON 가져오기 실패: ' + err.message);
+        }
+      };
+      reader.readAsText(file, 'utf8');
+    }
+
+    function updateHeaderNavTab(idx, key, val) {
+      const tabs = getHeaderNavTabsList();
+      if (tabs[idx]) { tabs[idx][key] = val; markDirty(true); scheduleLivePreviewReload(); }
+    }
+    function addHeaderNavTab() {
+      getHeaderNavTabsList().push({ href: 'director.html', label: '새 메뉴' });
+      markDirty(true);
+      renderPageManagerModalBody();
+    }
+    function moveHeaderNavTab(idx, dir) {
+      const tabs = getHeaderNavTabsList();
+      const n = idx + dir;
+      if (n < 0 || n >= tabs.length) return;
+      const t = tabs[idx]; tabs[idx] = tabs[n]; tabs[n] = t;
+      markDirty(true);
+      renderPageManagerModalBody();
+    }
+    function removeHeaderNavTab(idx) {
+      getHeaderNavTabsList().splice(idx, 1);
+      markDirty(true);
+      renderPageManagerModalBody();
+    }
+    function movePageOrder(idx, dir) {
+      const pages = masterConfig.pages || [];
+      const n = idx + dir;
+      if (n < 0 || n >= pages.length) return;
+      if (isHealthNotesPage(pages[idx]) || isHealthNotesPage(pages[n])) return;
+      const t = pages[idx]; pages[idx] = pages[n]; pages[n] = t;
+      if (currentPageIdx === idx) currentPageIdx = n;
+      else if (currentPageIdx === n) currentPageIdx = idx;
+      markDirty(true);
+      renderPageSwitcher();
+      renderPageManagerModalBody();
+    }
+
+    /* ============================================================================
+     * 5. REAL-TIME VISUAL INTERACTIVE CUSTOM MODE (우측 실제 페이지 호버/클릭 연동)
+     * ============================================================================ */
+    let isVisualSelectMode = true;
+    try {
+      const savedVs = localStorage.getItem('bareun_studio_visual_select_mode');
+      if (savedVs === '0') isVisualSelectMode = false;
+    } catch (e) {}
+
+    let lastPreviewScrollState = null;
+    let currentVisualSelectedTarget = null;
+    let lastLinkedCardIdx = null;
+
+    function applyVisualSelectModeUi() {
+      const topBtn = document.getElementById('btnToggleVisualSelect');
+      if (topBtn) {
+        topBtn.classList.toggle('active', isVisualSelectMode);
+        topBtn.textContent = isVisualSelectMode ? '🎯 커스텀 연동 ON' : '🖱️ 일반 탐색';
+      }
+      const onBtn = document.getElementById('vpInspectOnBtn');
+      const offBtn = document.getElementById('vpInspectOffBtn');
+      if (onBtn) {
+        onBtn.classList.toggle('active', isVisualSelectMode);
+        onBtn.classList.toggle('is-inspect-on', isVisualSelectMode);
+      }
+      if (offBtn) {
+        offBtn.classList.toggle('active', !isVisualSelectMode);
+      }
+      const bar = document.getElementById('previewInspectBar');
+      const hint = document.getElementById('previewInspectHintText');
+      const pill = document.getElementById('previewInspectTargetPill');
+      if (bar) bar.classList.toggle('is-on', isVisualSelectMode);
+      if (hint) {
+        hint.textContent = isVisualSelectMode
+          ? '커스텀 연동 활성화 · 우측 화면의 수정 가능한 영역에 마우스를 올리고 클릭하면 좌측 수정 메뉴가 즉시 열립니다 (Alt+클릭은 일반 동작)'
+          : '일반 탐색 모드 · 실제 링크 이동, 모달, 슬라이더를 그대로 테스트할 수 있습니다';
+      }
+      if (pill && !isVisualSelectMode) {
+        pill.classList.remove('is-selected');
+        pill.textContent = '🖱️ 일반 탐색 중';
+      } else if (pill && isVisualSelectMode && !currentVisualSelectedTarget) {
+        pill.classList.remove('is-selected');
+        pill.textContent = '🎯 대기 중 · 영역에 마우스를 올려보세요';
+      }
+      syncVisualSelectModeToIframe();
+    }
+
+    function setVisualSelectMode(enabled) {
+      isVisualSelectMode = Boolean(enabled);
+      try { localStorage.setItem('bareun_studio_visual_select_mode', isVisualSelectMode ? '1' : '0'); } catch (e) {}
+      applyVisualSelectModeUi();
+      showStatus(isVisualSelectMode ? 'ok' : 'working', isVisualSelectMode
+        ? '🎯 커스텀 모드 연동 ON — 우측 실제 홈페이지에서 수정 가능한 부분에 마우스를 올리고 클릭하면 해당 수정 메뉴가 즉시 활성화됩니다!'
+        : '🖱️ 일반 탐색 모드로 전환했습니다. 우측 미리보기에서 링크와 팝업을 자유롭게 테스트하세요.');
+    }
+
+    function toggleVisualSelectMode() {
+      setVisualSelectMode(!isVisualSelectMode);
+    }
+
+    function previewTriggerHomeBento() {
+      const frame = document.getElementById('livePreviewFrame');
+      if (frame && frame.contentWindow) {
+        frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
+        showStatus('ok', '🃏 메인 홈 6대 핵심 진료카드를 펼쳤습니다. 수정할 카드를 직접 클릭해 보세요!');
+      }
+    }
+
+    function previewFocusDetailPlate(plateOrigIdx) {
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame || !frame.contentWindow || !frame.contentDocument) return;
+      try {
+        const sel = `article[data-plate-orig-idx="${plateOrigIdx}"]`;
+        if (frame.contentWindow.__BAREUN_RUNWAY_API__) {
+          frame.contentWindow.__BAREUN_RUNWAY_API__.scrollToSelector(sel);
+        } else {
+          const el = frame.contentDocument.querySelector(sel);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
+        if (frame.contentWindow.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__) {
+          const numStr = String(plateOrigIdx + 1).padStart(2, '0');
+          setTimeout(() => {
+            try {
+              frame.contentWindow.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__(sel, `📑 CARD ${numStr} · 스토리 카드`);
+            } catch (_) {}
+          }, 220);
+        }
+      } catch (e) {}
+    }
+
+    function capturePreviewScrollState(frame, page) {
+      if (!frame || !page) return;
+      try {
+        const win = frame.contentWindow;
+        const doc = frame.contentDocument;
+        if (!win || !doc || !doc.body) return;
+        const prevSlug = doc.documentElement.getAttribute('data-studio-page-slug') || '';
+        if (prevSlug && prevSlug !== page.slug) {
+          lastPreviewScrollState = null;
+          currentVisualSelectedTarget = null;
+          return;
+        }
+        const runwayX = (win.__BAREUN_RUNWAY_API__ && typeof win.__BAREUN_RUNWAY_API__.getX === 'function')
+          ? win.__BAREUN_RUNWAY_API__.getX()
+          : 0;
+        const metaEl = doc.getElementById('project-details-meta');
+        const finaleEl = doc.getElementById('skt-finale-stage');
+        const homeFinaleActive = Boolean(finaleEl && (finaleEl.classList.contains('active') || finaleEl.classList.contains('spread') || parseFloat(win.getComputedStyle(finaleEl).opacity || '0') > 0.5));
+        lastPreviewScrollState = {
+          pageSlug: page.slug,
+          scrollY: win.scrollY || doc.documentElement.scrollTop || 0,
+          runwayX: runwayX || 0,
+          metaScrollTop: metaEl ? metaEl.scrollTop : 0,
+          homeFinaleActive
+        };
+      } catch (e) {}
+    }
+
+    function restorePreviewScrollState(frame, page) {
+      if (!lastPreviewScrollState || !page || lastPreviewScrollState.pageSlug !== page.slug) return;
+      const saved = lastPreviewScrollState;
+      const win = frame.contentWindow;
+      const doc = frame.contentDocument;
+      if (!win || !doc) return;
+      setTimeout(() => {
+        try {
+          if (saved.runwayX > 2 && win.__BAREUN_RUNWAY_API__) {
+            win.__BAREUN_RUNWAY_API__.setX(saved.runwayX, true);
+          }
+          if (saved.scrollY > 2) {
+            win.scrollTo(0, saved.scrollY);
+          }
+          const metaEl = doc.getElementById('project-details-meta');
+          if (metaEl && saved.metaScrollTop > 2) {
+            metaEl.scrollTop = saved.metaScrollTop;
+          }
+          if ((saved.homeFinaleActive || currentStudioChapter === 'finale') && isHomeStoryPage(page)) {
+            win.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
+          }
+          if (currentVisualSelectedTarget && currentVisualSelectedTarget.selector && win.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__) {
+            win.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__(currentVisualSelectedTarget.selector, currentVisualSelectedTarget.label);
+          }
+        } catch (e) {}
+      }, 140);
+    }
+
+    function syncVisualSelectModeToIframe() {
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame) return;
+      try {
+        const win = frame.contentWindow;
+        const doc = frame.contentDocument;
+        if (!win || !doc || !doc.documentElement) return;
+        win.__BAREUN_STUDIO_INSPECT_ON__ = isVisualSelectMode;
+        doc.documentElement.classList.toggle('bareun-studio-inspect-active', isVisualSelectMode);
+        if (!isVisualSelectMode) {
+          const hb = doc.getElementById('bsi-hover-box');
+          const ab = doc.getElementById('bsi-active-box');
+          if (hb) hb.style.opacity = '0';
+          if (ab) ab.style.opacity = '0';
+        }
+      } catch (e) {}
+    }
+
+    function updateInspectToolbarPill(label, isSelected) {
+      const pill = document.getElementById('previewInspectTargetPill');
+      if (!pill || !isVisualSelectMode) return;
+      if (!label) {
+        if (currentVisualSelectedTarget && currentVisualSelectedTarget.label) {
+          pill.classList.add('is-selected');
+          pill.textContent = '✓ 편집 중 · ' + currentVisualSelectedTarget.label;
+        } else {
+          pill.classList.remove('is-selected');
+          pill.textContent = '🎯 대기 중 · 영역에 마우스를 올려보세요';
+        }
+        return;
+      }
+      pill.classList.toggle('is-selected', Boolean(isSelected));
+      pill.textContent = (isSelected ? '✓ 편집 중 · ' : '✏️ 수정 가능 · ') + label;
+    }
+
+    function flashAndFocusEditorEl(sectionEl, focusEl) {
+      const scrollEl = sectionEl || focusEl;
+      if (scrollEl) {
+        scrollEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        scrollEl.classList.remove('studio-target-flash');
+        void scrollEl.offsetWidth;
+        scrollEl.classList.add('studio-target-flash');
+        setTimeout(() => scrollEl.classList.remove('studio-target-flash'), 1550);
+      }
+      if (focusEl && typeof focusEl.focus === 'function') {
+        setTimeout(() => {
+          try {
+            focusEl.focus({ preventScroll: true });
+            if (focusEl.tagName === 'INPUT' && typeof focusEl.select === 'function') {
+              // keep cursor ready at end without losing visibility
+            }
+          } catch (_) {}
+        }, 260);
+      }
+    }
+
+    function activateStudioEditTarget(target) {
+      if (!target) return;
+      currentVisualSelectedTarget = target;
+      updateInspectToolbarPill(target.label, true);
+
+      // Highlight linked card marker cleanup
+      document.querySelectorAll('.story-card-item.is-visual-linked').forEach(el => el.classList.remove('is-visual-linked'));
+      lastLinkedCardIdx = null;
+
+      if (target.action === 'openNavModal') {
+        openPageManagerModal('nav');
+        showStatus('ok', `🎯 [${target.label}] 수정 메뉴를 열었습니다!`);
+        return;
+      }
+
+      // Smart cross-chapter routing!
+      if (target.chapter === 'fees' || target.chapter === 'location') {
+        if (currentStudioChapter !== target.chapter) {
+          selectStudioChapter(target.chapter, true);
+        }
+        setTimeout(() => {
+          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
+          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
+          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('clinicInfoEditorBox'), focEl);
+        }, 80);
+        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+        return;
+      }
+      if (target.tab === 'clinicinfo') {
+        selectStudioChapter('location', false);
+        setTimeout(() => {
+          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
+          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
+          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('clinicInfoEditorBox'), focEl);
+        }, 120);
+        showStatus('ok', `🎯 [06 · 오시는길] ${target.label} 수정 메뉴로 이동했습니다!`);
+        return;
+      }
+      if (isHomeStoryPage(getCurrentPage()) && typeof target.cardIdx === 'number') {
+        const clickedCard = (getCurrentPage().plates || [])[target.cardIdx];
+        if (clickedCard) {
+          const wantCh = clickedCard.type === 'home-bento-card' ? 'finale' : 'storyboard';
+          if (currentStudioChapter !== wantCh) {
+            currentStudioChapter = wantCh;
+            applyChapterTabVisibility();
+            updateChapterBarUi();
+            renderStoryCardsPane();
+            renderLeftPanelPane();
+          }
+        }
+      }
+
+      const tabKey = target.tab || 'cards';
+      switchEditorTab(tabKey);
+
+      if (tabKey === 'cards' && typeof target.cardIdx === 'number' && target.cardIdx >= 0) {
+        const idx = target.cardIdx;
+        lastLinkedCardIdx = idx;
+        if (!expandedCards.has(idx)) {
+          expandedCards.add(idx);
+          renderStoryCardsPane();
+        }
+        setTimeout(() => {
+          const cardEl = document.getElementById('card-item-' + idx);
+          if (cardEl) cardEl.classList.add('is-visual-linked');
+          let sectionEl = cardEl;
+          let focusEl = null;
+
+          if (target.sub === 'title') {
+            focusEl = document.getElementById('card-title-input-' + idx);
+            sectionEl = focusEl ? focusEl.closest('.field') || cardEl : cardEl;
+          } else if (target.sub === 'sub') {
+            focusEl = document.getElementById('card-sub-input-' + idx);
+            sectionEl = focusEl ? focusEl.closest('.field') || cardEl : cardEl;
+          } else if (target.sub === 'media') {
+            sectionEl = document.getElementById('card-media-box-' + idx) || cardEl;
+            focusEl = sectionEl ? sectionEl.querySelector('input[type="text"], button') : null;
+          } else if (target.sub === 'options') {
+            const drawer = document.getElementById('card-optional-drawer-' + idx);
+            if (drawer) {
+              drawer.open = true;
+              sectionEl = drawer;
+              focusEl = drawer.querySelector('input[type="text"]');
+            }
+          } else {
+            focusEl = document.getElementById('card-title-input-' + idx);
+          }
+
+          flashAndFocusEditorEl(sectionEl, focusEl);
+        }, 60);
+        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+        return;
+      }
+
+      if (tabKey === 'cards' && target.sectionId === 'bodyModelEditorBox') {
+        setTimeout(() => {
+          const bm = document.getElementById('bodyModelEditorBox');
+          const firstInp = bm ? bm.querySelector('input[type="text"]') : null;
+          flashAndFocusEditorEl(bm, firstInp);
+        }, 60);
+        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+        return;
+      }
+
+      if (tabKey === 'leftpanel') {
+        setTimeout(() => {
+          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
+          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
+          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('leftPanelEditorBox'), focEl);
+        }, 60);
+        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+        return;
+      }
+
+      if (tabKey === 'clinicinfo') {
+        setTimeout(() => {
+          const secEl = target.sectionId ? document.getElementById(target.sectionId) : null;
+          const focEl = target.focusId ? document.getElementById(target.focusId) : null;
+          flashAndFocusEditorEl(secEl || (focEl && focEl.closest('.field')) || document.getElementById('clinicInfoEditorBox'), focEl);
+        }, 60);
+        showStatus('ok', `🎯 [${target.label}] 수정 메뉴가 활성화되었습니다!`);
+        return;
+      }
+
+      if (tabKey === 'style') {
+        setTimeout(() => {
+          flashAndFocusEditorEl(document.getElementById('pane-style'), null);
+        }, 60);
+        showStatus('ok', `🎯 [${target.label}] 디자인 설정 메뉴가 활성화되었습니다!`);
+      }
+    }
+
+    function resolvePlateIdxForHomeBento(page, bentoDomIdx) {
+      const plates = (page && page.plates) || [];
+      let seen = 0;
+      for (let i = 0; i < plates.length; i++) {
+        if (plates[i] && plates[i].type === 'home-bento-card' && plates[i].enabled !== false) {
+          if (seen === bentoDomIdx) return i;
+          seen++;
+        }
+      }
+      return -1;
+    }
+
+    function resolvePlateIdxForHomeStoryQuote(page, quoteText) {
+      const plates = (page && page.plates) || [];
+      const normQ = String(quoteText || '').replace(/\s+/g, '').trim();
+      if (normQ) {
+        for (let i = 0; i < plates.length; i++) {
+          if (plates[i] && plates[i].type === 'home-story-frame') {
+            const pNorm = String(plates[i].title || '').replace(/\s+/g, '').trim();
+            if (pNorm && (pNorm === normQ || normQ.includes(pNorm) || pNorm.includes(normQ))) {
+              return i;
+            }
+          }
+        }
+      }
+      const firstStory = plates.findIndex(p => p && p.type === 'home-story-frame');
+      return firstStory >= 0 ? firstStory : 0;
+    }
+
+    function resolveEditableInIframe(rawEl, doc, page) {
+      if (!rawEl || !doc) return null;
+      if (rawEl.id === 'bsi-hover-box' || rawEl.id === 'bsi-active-box' || rawEl.closest('#bsi-hover-box, #bsi-active-box')) return null;
+
+      // Exempt controls that should keep working natively even in Custom Mode
+      if (rawEl.closest('#floating-hanji-mode-btn, #btn-show-skt-cards, #btn-back-to-story, #btn-replay-skt-flip, #dialogue-tap-next-pill, #btn-open-detail-studio, .plate-step-btn, .clinic-faq-toggle-all, #bareun-location-modal-backdrop, #bareun-visit-modal-backdrop, #consult-modal-overlay, #detail-hairloss-modal, #plate-lightbox')) {
+        return null;
+      }
+
+      // 0) Location & Non-Covered Fees Page (/location.html) targets
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location' || doc.getElementById('non-covered-fees')) {
+        const feeTr = rawEl.closest('#loc-fee-tbody tr');
+        if (feeTr) {
+          const allTrs = Array.from(doc.querySelectorAll('#loc-fee-tbody tr'));
+          const fIdx = Math.max(0, allTrs.indexOf(feeTr));
+          return { el: feeTr, selector: `#loc-fee-tbody tr:nth-child(${fIdx + 1})`, chapter: 'fees', sectionId: 'fee-row-' + fIdx, focusId: 'fee-price-input-' + fIdx, label: `💳 비급여 항목 #${fIdx + 1} 비용 수정` };
+        }
+        const feeSec = rawEl.closest('#non-covered-fees');
+        if (feeSec) return { el: feeSec, selector: '#non-covered-fees', chapter: 'fees', sectionId: 'clinic-fees-list', focusId: 'ci-fee-date-input', label: '💳 비급여 진료비용 안내표' };
+
+        const greetEl = rawEl.closest('#loc-greeting-title, #loc-greeting-body, #loc-greeting-eyebrow, #loc-greeting-sign, .greeting-card');
+        if (greetEl) return { el: greetEl, selector: '#loc-greeting-title', chapter: 'location', sectionId: 'clinic-info-brand-box', focusId: 'ci-greeting-title', label: '👋 대표원장 환영 인사말' };
+
+        const holEl = rawEl.closest('#loc-holiday-banner');
+        if (holEl) return { el: holEl, selector: '#loc-holiday-banner', chapter: 'location', sectionId: 'clinic-info-holiday-box', focusId: 'ci-holiday-text-input', label: '📢 임시 휴진 · 공지 배너' };
+
+        const addrEl = rawEl.closest('#loc-address-text');
+        if (addrEl) return { el: addrEl, selector: '#loc-address-text', chapter: 'location', sectionId: 'clinic-info-location-box', focusId: 'ci-address-input', label: '📍 도로명 주소 · 지도 좌표' };
+
+        const hoursEl = rawEl.closest('#loc-hours-list');
+        if (hoursEl) return { el: hoursEl, selector: '#loc-hours-list', chapter: 'location', sectionId: 'clinic-info-hours-box', label: '⏰ 진료시간표 편집' };
+
+        const parkEl = rawEl.closest('#loc-parking-guide');
+        if (parkEl) return { el: parkEl, selector: '#loc-parking-guide', chapter: 'location', sectionId: 'clinic-info-location-box', focusId: 'ci-parking-input', label: '🚗 주차 안내 문구' };
+
+        const tranEl = rawEl.closest('#loc-transit-guide');
+        if (tranEl) return { el: tranEl, selector: '#loc-transit-guide', chapter: 'location', sectionId: 'clinic-info-location-box', focusId: 'ci-transit-input', label: '🚌 대중교통 안내 문구' };
+
+        if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') return null;
+      }
+
+      if (!page) return null;
+      const isHome = isHomeStoryPage(page);
+      const isHn = isHealthNotesPage(page);
+
+      // 1) Main Home 3D Cinema Page targets
+      if (isHome) {
+        const brandEl = rawEl.closest('.nav-brand-logo');
+        if (brandEl) return { el: brandEl, selector: '.nav-brand-logo', tab: 'leftpanel', focusId: 'home-brand-title-input', label: '🏠 상단 브랜드 로고' };
+
+        const locBtn = rawEl.closest('.bareun-loc-pill-btn');
+        if (locBtn) return { el: locBtn, selector: '.bareun-loc-pill-btn', tab: 'clinicinfo', sectionId: 'clinic-info-location-box', focusId: 'ci-address-input', label: '📍 오시는길 · 병원 정보' };
+
+        const bentoCard = rawEl.closest('.skt-card-item');
+        if (bentoCard) {
+          const bIdx = parseInt(bentoCard.getAttribute('data-card-idx') || '0', 10) || 0;
+          const plateIdx = resolvePlateIdxForHomeBento(page, bIdx);
+          const titleTxt = (bentoCard.querySelector('.skt-card-title')?.textContent || '').trim();
+          const numStr = String(plateIdx + 1).padStart(2, '0');
+          return {
+            el: bentoCard,
+            selector: `.skt-card-item[data-card-idx="${bIdx}"]`,
+            tab: 'cards',
+            cardIdx: plateIdx >= 0 ? plateIdx : 0,
+            sub: 'title',
+            label: `🃏 피날레 진료카드 · ${titleTxt || ('CARD ' + numStr)}`
+          };
+        }
+
+        const finaleHead = rawEl.closest('.skt-finale-heading-group, .skt-finale-header, .skt-hero-headline');
+        if (finaleHead) return { el: finaleHead, selector: '.skt-finale-heading-group', tab: 'leftpanel', sectionId: 'home-finale-section', focusId: 'home-finale-title-input', label: '✨ 6대 클리닉 피날레 타이틀' };
+
+        const conceptPill = rawEl.closest('#dialogue-daddy-concept-pill');
+        if (conceptPill) return { el: conceptPill, selector: '#dialogue-daddy-concept-pill', tab: 'leftpanel', focusId: 'home-concept-pill-input', label: '💎 스토리 상단 철학 캡슐' };
+
+        const chNum = rawEl.closest('#dialogue-chapter-num, .dialogue-meta-row');
+        if (chNum) return { el: chNum, selector: '#dialogue-chapter-num', tab: 'leftpanel', sectionId: 'home-chapters-section', label: '📖 8대 생애주기 챕터 대사' };
+
+        const storyQuote = rawEl.closest('#dialogue-main-quote, #dialogue-sub-whisper, #story-dialogue-stage');
+        if (storyQuote) {
+          const qText = (doc.getElementById('dialogue-main-quote')?.textContent || '').trim();
+          const plateIdx = resolvePlateIdxForHomeStoryQuote(page, qText);
+          const numStr = String(plateIdx + 1).padStart(2, '0');
+          return {
+            el: storyQuote,
+            selector: '#story-dialogue-stage',
+            tab: 'cards',
+            cardIdx: plateIdx,
+            sub: 'title',
+            label: `🎬 스토리 컷 CARD ${numStr} · 대사/이미지`
+          };
+        }
+
+        const introEl = rawEl.closest('#daddy-intro-slogan, #daddy-intro-stage');
+        if (introEl) return { el: introEl, selector: '#daddy-intro-slogan', tab: 'leftpanel', focusId: 'home-intro-line1-input', label: '🎬 오프닝 시네마 슬로건' };
+
+        return null;
+      }
+
+      // 2) 3D Health Notes Page targets
+      if (isHn) {
+        const hnPanel = rawEl.closest('.hn-detail-modal, .note-card, .info-drawer, #part-info-panel');
+        if (hnPanel) return { el: hnPanel, selector: '', tab: 'cards', label: '🧬 3D 부위별 건강 글 편집' };
+        return null;
+      }
+
+      // 3) Detail Pages (11+ Clinic Pages) targets
+      // 3a. Top Header
+      const brandLogo = rawEl.closest('#header .brand-logo');
+      if (brandLogo) return { el: brandLogo, selector: '#header .brand-logo', tab: 'clinicinfo', sectionId: 'clinic-info-brand-box', focusId: 'ci-greeting-title', label: '🏥 병원명 · 대표원장 인사말' };
+
+      const navTabs = rawEl.closest('#header .clinic-quick-tabs, #header .header-center');
+      if (navTabs) return { el: navTabs, selector: '#header .clinic-quick-tabs', action: 'openNavModal', label: '🧭 상단 클리닉 메뉴(NAV) 관리' };
+
+      const locBtn = rawEl.closest('#header .bareun-loc-pill-btn');
+      if (locBtn) return { el: locBtn, selector: '#header .bareun-loc-pill-btn', tab: 'clinicinfo', sectionId: 'clinic-info-location-box', focusId: 'ci-address-input', label: '📍 오시는길 · 진료시간 · 비급여' };
+
+      const talkBtn = rawEl.closest('#header .header-talk-btn');
+      if (talkBtn) return { el: talkBtn, selector: '#header .header-talk-btn', tab: 'leftpanel', sectionId: 'meta-cta-section', focusId: 'meta-cta-text-input', label: '📞 맞춤 진료예약 · 예약 프로그램' };
+
+      const bodyExpLink = rawEl.closest('#header #header-body-explorer-link');
+      if (bodyExpLink) return { el: bodyExpLink, selector: '#header #header-body-explorer-link', tab: 'cards', sectionId: 'bodyModelEditorBox', label: '💡 3D 생활꿀팁 링크 · 인체모형 카드' };
+
+      // 3b. Left Sticky Guide Panel (#project-details-meta)
+      const eyebrowEl = rawEl.closest('#project-details-meta .meta-eyebrow');
+      if (eyebrowEl) return { el: eyebrowEl, selector: '#project-details-meta .meta-eyebrow', tab: 'leftpanel', focusId: 'meta-eyebrow-input', label: '🏷️ 상단 영문 아이브로우' };
+
+      const titleEl = rawEl.closest('#project-details-title');
+      if (titleEl) return { el: titleEl, selector: '#project-details-title', tab: 'leftpanel', focusId: 'meta-title-input', label: '📝 진료과목 메인 대제목' };
+
+      const subEnEl = rawEl.closest('#project-details-meta .meta-subtitle-en');
+      if (subEnEl) return { el: subEnEl, selector: '#project-details-meta .meta-subtitle-en', tab: 'leftpanel', focusId: 'meta-subtitle-input', label: '🔤 영문 서브타이틀' };
+
+      const descEl = rawEl.closest('#project-details-desc');
+      if (descEl) return { el: descEl, selector: '#project-details-desc', tab: 'leftpanel', focusId: 'meta-desc-input', label: '📄 핵심 진료 철학 소개문' };
+
+      const dirProfEl = rawEl.closest('.director-official-profile-card, .director-profile-box');
+      if (dirProfEl) return { el: dirProfEl, selector: '.director-official-profile-card', tab: 'leftpanel', sectionId: 'meta-director-profile-box', focusId: 'meta-director-quote-input', label: '👨‍⚕️ 대표원장 공식 프로필(약력·철학)' };
+
+      const checkItemEl = rawEl.closest('.empathy-check-item');
+      if (checkItemEl) {
+        const cIdx = parseInt(checkItemEl.getAttribute('data-idx') || '0', 10) || 0;
+        return {
+          el: checkItemEl,
+          selector: `.empathy-check-item[data-idx="${cIdx}"]`,
+          tab: 'leftpanel',
+          sectionId: 'meta-checklist-row-' + cIdx,
+          focusId: 'meta-checklist-input-' + cIdx,
+          label: `✅ 자가진단 체크 문항 #${cIdx + 1}`
+        };
+      }
+
+      const checkCardEl = rawEl.closest('.empathy-checklist-card');
+      if (checkCardEl) return { el: checkCardEl, selector: '.empathy-checklist-card', tab: 'leftpanel', sectionId: 'meta-checklist-section', focusId: 'meta-checklist-title-input', label: '✅ 환자 자가진단 체크리스트' };
+
+      const nudgeEl = rawEl.closest('.cta-nudge-msg');
+      if (nudgeEl) return { el: nudgeEl, selector: '.cta-nudge-msg', tab: 'leftpanel', sectionId: 'meta-cta-section', focusId: 'meta-cta-nudge-input', label: '💬 예약 버튼 위 안내 문구' };
+
+      const launchCtaEl = rawEl.closest('#project-details-launch-cta');
+      if (launchCtaEl) return { el: launchCtaEl, selector: '#project-details-launch-cta', tab: 'leftpanel', sectionId: 'meta-cta-section', focusId: 'meta-cta-text-input', label: '📞 하단 진료예약 버튼' };
+
+      const nextClinicEl = rawEl.closest('.studio-next-clinic-card');
+      if (nextClinicEl) return { el: nextClinicEl, selector: '.studio-next-clinic-card', tab: 'leftpanel', sectionId: 'next-clinic-editor-section', label: '➡️ 다음 연계 클리닉 추천 카드' };
+
+      const metaAsideEl = rawEl.closest('#project-details-meta');
+      if (metaAsideEl) return { el: metaAsideEl, selector: '#project-details-meta', tab: 'leftpanel', sectionId: 'leftPanelEditorBox', focusId: 'meta-title-input', label: '📋 좌측 안내 패널 · 페이지 색상' };
+
+      // 3c. FAQ Card (#clinic-faq-card)
+      const faqItemEl = rawEl.closest('#clinic-faq-card details.clinic-faq-item');
+      if (faqItemEl) {
+        const qIdx = parseInt(faqItemEl.getAttribute('data-faq-idx') || '0', 10) || 0;
+        return {
+          el: faqItemEl,
+          selector: `#clinic-faq-card details.clinic-faq-item[data-faq-idx="${qIdx}"]`,
+          tab: 'leftpanel',
+          sectionId: 'faq-editor-item-' + qIdx,
+          focusId: 'faq-q-input-' + qIdx,
+          label: `❓ FAQ Q${qIdx + 1} 질문·답변`
+        };
+      }
+      const faqCardEl = rawEl.closest('#clinic-faq-card');
+      if (faqCardEl) return { el: faqCardEl, selector: '#clinic-faq-card', tab: 'leftpanel', sectionId: 'faq-editor-section', focusId: 'faq-title-input', label: '❓ 질환 핵심 FAQ 카드' };
+
+      // 3d. Last Card: 3D Body Model Card (#project-details-preview)
+      const bodyModelEl = rawEl.closest('#project-details-preview');
+      if (bodyModelEl) return { el: bodyModelEl, selector: '#project-details-preview', tab: 'cards', sectionId: 'bodyModelEditorBox', label: '🧬 마지막 카드 · 3D 인체모형' };
+
+      // 3e. Story Cards (article.project-details-item)
+      const plateArticle = rawEl.closest('article.project-details-item');
+      if (plateArticle) {
+        let origIdx = parseInt(plateArticle.getAttribute('data-plate-orig-idx') || '', 10);
+        if (isNaN(origIdx)) {
+          const allPlates = Array.from(doc.querySelectorAll('article.project-details-item:not(#clinic-faq-card)'));
+          origIdx = Math.max(0, allPlates.indexOf(plateArticle));
+        }
+        const numStr = String(origIdx + 1).padStart(2, '0');
+        const baseSel = `article[data-plate-orig-idx="${origIdx}"]`;
+
+        const h2El = rawEl.closest('.editorial-headline, .son-pledge-headline');
+        if (h2El) return { el: h2El, selector: baseSel + ' .editorial-headline', tab: 'cards', cardIdx: origIdx, sub: 'title', label: `✍️ CARD ${numStr} · 메인 제목(H2)` };
+
+        const bodyEl = rawEl.closest('.editorial-body-copy, .son-pledge-body');
+        if (bodyEl) return { el: bodyEl, selector: baseSel + ' .editorial-body-copy', tab: 'cards', cardIdx: origIdx, sub: 'sub', label: `📝 CARD ${numStr} · 본문 설명` };
+
+        const optEl = rawEl.closest('.editorial-top-meta, .clinical-pillars, .seo-keyword-footer');
+        if (optEl) return { el: optEl, selector: baseSel + ' .editorial-text-zone', tab: 'cards', cardIdx: origIdx, sub: 'options', label: `⚙️ CARD ${numStr} · STEP·포인트·태그` };
+
+        const mediaEl = rawEl.closest('.plate-media-inner');
+        if (mediaEl) return { el: mediaEl, selector: baseSel + ' .plate-media-inner', tab: 'cards', cardIdx: origIdx, sub: 'media', label: `🖼️ CARD ${numStr} · 이미지·미디어` };
+
+        const edZone = rawEl.closest('.editorial-text-zone');
+        if (edZone) return { el: edZone, selector: baseSel + ' .editorial-text-zone', tab: 'cards', cardIdx: origIdx, sub: 'title', label: `📑 CARD ${numStr} · 에디토리얼 문구` };
+
+        return { el: plateArticle, selector: baseSel, tab: 'cards', cardIdx: origIdx, sub: 'card', label: `📑 CARD ${numStr} · 스토리 카드` };
+      }
+
+      // 3f. Legal / Clinic Info Footer
+      const legalFooter = rawEl.closest('.bareun-detail-legal-info');
+      if (legalFooter) return { el: legalFooter, selector: '.bareun-detail-legal-info', tab: 'clinicinfo', sectionId: 'clinic-info-location-box', label: '🏥 병원정보 · 오시는길 · 비급여' };
+
+      return null;
+    }
+
+    function installStudioVisualInspector(frame) {
+      if (!frame) return;
+      const page = getCurrentPage();
+      try {
+        const win = frame.contentWindow;
+        const doc = frame.contentDocument;
+        if (!win || !doc || !doc.head || !doc.body) return;
+        if (page) doc.documentElement.setAttribute('data-studio-page-slug', page.slug || '');
+
+        win.__BAREUN_STUDIO_INSPECT_ON__ = isVisualSelectMode;
+        doc.documentElement.classList.toggle('bareun-studio-inspect-active', isVisualSelectMode);
+
+        // Hide nested "🎨 커스텀" button inside preview iframe so user doesn't nest studio inside studio
+        if (!doc.getElementById('bareun-studio-visual-css')) {
+          const st = doc.createElement('style');
+          st.id = 'bareun-studio-visual-css';
+          st.textContent = `
+            #btn-open-detail-studio { display: none !important; }
+            html.bareun-studio-inspect-active [data-plate-orig-idx],
+            html.bareun-studio-inspect-active #project-details-meta,
+            html.bareun-studio-inspect-active #clinic-faq-card,
+            html.bareun-studio-inspect-active #project-details-preview,
+            html.bareun-studio-inspect-active .skt-card-item {
+              cursor: pointer;
+            }
+            #bsi-hover-box, #bsi-active-box {
+              position: fixed !important;
+              pointer-events: none !important;
+              border-radius: 10px !important;
+              box-sizing: border-box !important;
+              opacity: 0;
+              left: 0; top: 0; width: 0; height: 0;
+              transition: left 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                          top 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                          width 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                          height 90ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                          opacity 130ms ease !important;
+            }
+            #bsi-hover-box {
+              z-index: 2147483000 !important;
+              border: 2.5px solid #D4AF37 !important;
+              background: rgba(212, 175, 55, 0.11) !important;
+              box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88), 0 0 22px rgba(212, 175, 55, 0.45) !important;
+            }
+            #bsi-active-box {
+              z-index: 2147482999 !important;
+              border: 2.5px solid #10B981 !important;
+              background: rgba(16, 185, 129, 0.07) !important;
+              box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.28), 0 0 24px rgba(16, 185, 129, 0.36) !important;
+            }
+            .bsi-badge {
+              position: absolute !important;
+              left: -2px !important;
+              top: -31px !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              gap: 6px !important;
+              padding: 4px 10px !important;
+              border-radius: 7px !important;
+              font-family: 'Pretendard', -apple-system, sans-serif !important;
+              font-size: 11.5px !important;
+              font-weight: 800 !important;
+              line-height: 1.2 !important;
+              white-space: nowrap !important;
+              letter-spacing: -0.01em !important;
+              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.38) !important;
+              pointer-events: none !important;
+            }
+            .bsi-badge.is-inside-top {
+              top: 6px !important;
+              left: 6px !important;
+            }
+            #bsi-hover-box .bsi-badge {
+              background: rgba(20, 17, 14, 0.95) !important;
+              color: #FEF08A !important;
+              border: 1px solid #D4AF37 !important;
+            }
+            #bsi-active-box .bsi-badge {
+              background: linear-gradient(135deg, #065f46, #047857) !important;
+              color: #FFFFFF !important;
+              border: 1px solid #6EE7B7 !important;
+            }
+            .bsi-dot {
+              width: 7px !important;
+              height: 7px !important;
+              border-radius: 50% !important;
+              background: #F59E0B !important;
+              box-shadow: 0 0 8px #F59E0B !important;
+              flex-shrink: 0 !important;
+            }
+            #bsi-active-box .bsi-dot {
+              background: #34D399 !important;
+              box-shadow: 0 0 8px #34D399 !important;
+            }
+          `;
+          doc.head.appendChild(st);
+        }
+
+        if (win.__BAREUN_STUDIO_INSPECTOR_BOUND__) {
+          restorePreviewScrollState(frame, page);
+          return;
+        }
+        win.__BAREUN_STUDIO_INSPECTOR_BOUND__ = true;
+
+        const hoverBox = doc.createElement('div');
+        hoverBox.id = 'bsi-hover-box';
+        hoverBox.innerHTML = '<div class="bsi-badge"><span class="bsi-dot"></span><span class="bsi-text"></span></div>';
+        doc.body.appendChild(hoverBox);
+
+        const activeBox = doc.createElement('div');
+        activeBox.id = 'bsi-active-box';
+        activeBox.innerHTML = '<div class="bsi-badge"><span class="bsi-dot"></span><span class="bsi-text"></span></div>';
+        doc.body.appendChild(activeBox);
+
+        let hoveredTarget = null;
+        let activeEl = null;
+        let activeLabel = '';
+        let pointerDownPos = null;
+
+        function positionOverlayBox(box, el, labelText) {
+          if (!box || !el || !doc.body.contains(el)) {
+            if (box) box.style.opacity = '0';
+            return;
+          }
+          const r = el.getBoundingClientRect();
+          if (r.width < 4 || r.height < 4 || r.bottom < 0 || r.top > win.innerHeight || r.right < 0 || r.left > win.innerWidth) {
+            box.style.opacity = '0';
+            return;
+          }
+          const left = Math.max(2, r.left);
+          const top = Math.max(2, r.top);
+          const right = Math.min(win.innerWidth - 2, r.right);
+          const bottom = Math.min(win.innerHeight - 2, r.bottom);
+          box.style.left = left + 'px';
+          box.style.top = top + 'px';
+          box.style.width = Math.max(12, right - left) + 'px';
+          box.style.height = Math.max(12, bottom - top) + 'px';
+          box.style.opacity = '1';
+
+          const badge = box.querySelector('.bsi-badge');
+          const txt = box.querySelector('.bsi-text');
+          if (txt && labelText) txt.textContent = labelText;
+          if (badge) {
+            badge.classList.toggle('is-inside-top', top < 36);
+          }
+        }
+
+        function pickTargetAtPoint(clientX, clientY, fallbackEl) {
+          const curPage = getCurrentPage();
+          let els = [];
+          try { els = doc.elementsFromPoint(clientX, clientY) || []; } catch (_) {}
+          for (let i = 0; i < els.length; i++) {
+            const candidate = els[i];
+            if (!candidate || candidate === hoverBox || candidate === activeBox) continue;
+            if (candidate.closest && candidate.closest('#bsi-hover-box, #bsi-active-box')) continue;
+            const resolved = resolveEditableInIframe(candidate, doc, curPage);
+            if (resolved) return resolved;
+            // If we hit an exempted native button directly, stop searching underneath
+            if (candidate.closest && candidate.closest('#floating-hanji-mode-btn, #btn-show-skt-cards, #btn-back-to-story, #btn-replay-skt-flip, #dialogue-tap-next-pill, .plate-step-btn, .clinic-faq-toggle-all')) {
+              return null;
+            }
+          }
+          if (fallbackEl) return resolveEditableInIframe(fallbackEl, doc, curPage);
+          return null;
+        }
+
+        win.__BAREUN_STUDIO_HIGHLIGHT_SELECTOR__ = function (selector, label) {
+          if (!isVisualSelectMode || !selector) return;
+          const el = doc.querySelector(selector);
+          if (!el) return;
+          activeEl = el;
+          activeLabel = '✓ 편집 중 · ' + (label || '선택된 영역');
+          positionOverlayBox(activeBox, activeEl, activeLabel);
+        };
+
+        // Keep activeBox & hoverBox smoothly aligned during runway / vertical scroll
+        let trackingRaf = null;
+        function syncBoxPositionsLoop() {
+          if (isVisualSelectMode) {
+            if (activeEl && activeBox.style.opacity !== '0') {
+              positionOverlayBox(activeBox, activeEl, activeLabel);
+            }
+            if (hoveredTarget && hoveredTarget.el && hoverBox.style.opacity !== '0') {
+              positionOverlayBox(hoverBox, hoveredTarget.el, hoveredTarget.label + ' · 클릭하여 수정');
+            }
+          }
+          trackingRaf = win.requestAnimationFrame(syncBoxPositionsLoop);
+        }
+        trackingRaf = win.requestAnimationFrame(syncBoxPositionsLoop);
+
+        doc.addEventListener('pointerdown', function (e) {
+          pointerDownPos = { x: e.clientX, y: e.clientY };
+        }, true);
+
+        doc.addEventListener('mousemove', function (e) {
+          if (!isVisualSelectMode) {
+            hoverBox.style.opacity = '0';
+            return;
+          }
+          const resolved = pickTargetAtPoint(e.clientX, e.clientY, e.target);
+          hoveredTarget = resolved;
+          if (resolved && resolved.el) {
+            positionOverlayBox(hoverBox, resolved.el, resolved.label + ' · 클릭하여 수정');
+            updateInspectToolbarPill(resolved.label, false);
+          } else {
+            hoverBox.style.opacity = '0';
+            updateInspectToolbarPill('', false);
+          }
+        }, true);
+
+        doc.addEventListener('mouseleave', function () {
+          hoveredTarget = null;
+          hoverBox.style.opacity = '0';
+          updateInspectToolbarPill('', false);
+        }, true);
+
+        doc.addEventListener('click', function (e) {
+          if (!isVisualSelectMode || e.altKey) return;
+          if (pointerDownPos) {
+            const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+            if (dist > 7) return; // Allow drag scrolling without accidental click-edit
+          }
+          const resolved = pickTargetAtPoint(e.clientX, e.clientY, e.target);
+          if (!resolved || !resolved.el) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+
+          activeEl = resolved.el;
+          activeLabel = '✓ 편집 중 · ' + resolved.label;
+          positionOverlayBox(activeBox, activeEl, activeLabel);
+          hoverBox.style.opacity = '0';
+
+          activateStudioEditTarget({
+            tab: resolved.tab,
+            action: resolved.action,
+            cardIdx: resolved.cardIdx,
+            sub: resolved.sub,
+            sectionId: resolved.sectionId,
+            focusId: resolved.focusId,
+            selector: resolved.selector,
+            label: resolved.label
+          });
+        }, true);
+
+        if (currentStudioChapter === 'finale' && isHomeStoryPage(page)) {
+          setTimeout(() => {
+            try { win.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*'); } catch (_) {}
+          }, 260);
+        }
+        restorePreviewScrollState(frame, page);
+      } catch (err) {
+        console.warn('[StudioVisualInspector]', err);
+      }
+    }
+
+    /* ============================================================================
+     * 6. 6-CHAPTER STUDIO CONTROLLER & MINIMALIST HEADER TOOLS MENU
+     * ============================================================================ */
+    let currentStudioChapter = 'detail'; // 'storyboard' | 'finale' | 'detail' | 'healthnotes' | 'fees' | 'location'
+    let lastDetailPageIdx = 1;
+
+    function toggleStudioMoreMenu(ev) {
+      if (ev) ev.stopPropagation();
+      const dd = document.getElementById('studioMoreDropdown');
+      if (dd) dd.classList.toggle('open');
+    }
+
+    function closeStudioMoreMenu() {
+      const dd = document.getElementById('studioMoreDropdown');
+      if (dd) dd.classList.remove('open');
+    }
+
+    document.addEventListener('click', function () {
+      closeStudioMoreMenu();
+    });
+
+    function handleChapterSaveAction() {
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
+        return saveAndDeployClinicInfo(false);
+      }
+      return runStudioAction('save_build_one');
+    }
+
+    function handleChapterDeployAction() {
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
+        return saveAndDeployClinicInfo(true);
+      }
+      return confirmAndDeploy('deploy_one');
+    }
+
+    function getInitialExpandedIdxForChapter() {
+      const page = getCurrentPage();
+      if (!page || !Array.isArray(page.plates)) return 0;
+      if (currentStudioChapter === 'finale') {
+        const bIdx = page.plates.findIndex(c => c && c.type === 'home-bento-card');
+        return bIdx >= 0 ? bIdx : 0;
+      }
+      return 0;
+    }
+
+    function applyChapterTabVisibility() {
+      const tabsBar = document.getElementById('editorTabsBar');
+      const subBar = document.getElementById('detailPageSubBar');
+      const isDirectClinicChapter = (currentStudioChapter === 'fees' || currentStudioChapter === 'location');
+      if (tabsBar) tabsBar.style.display = isDirectClinicChapter ? 'none' : '';
+      if (subBar) subBar.classList.toggle('visible', currentStudioChapter === 'detail');
+
+      if (isDirectClinicChapter) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'pane-clinicinfo'));
+      } else if (document.getElementById('pane-clinicinfo')?.classList.contains('active')) {
+        switchEditorTab('cards');
+      }
+    }
+
+    function updateChapterBarUi() {
+      document.querySelectorAll('#studioChapterBar .chapter-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-chapter') === currentStudioChapter);
+      });
+      const subBar = document.getElementById('detailPageSubBar');
+      if (subBar) subBar.classList.toggle('visible', currentStudioChapter === 'detail');
+
+      if (masterConfig && Array.isArray(masterConfig.pages)) {
+        const homePage = masterConfig.pages.find(p => isHomeStoryPage(p));
+        const storyCnt = homePage ? (homePage.plates || []).filter(c => c && c.type !== 'home-bento-card' && c.enabled !== false).length : 0;
+        const finaleCnt = homePage ? (homePage.plates || []).filter(c => c && c.type === 'home-bento-card' && c.enabled !== false).length : 0;
+        const detailCnt = masterConfig.pages.filter(p => p && !isHomeStoryPage(p) && !isHealthNotesPage(p)).length;
+        const hnCnt = (healthNotesConfig && Array.isArray(healthNotesConfig.notes))
+          ? healthNotesConfig.notes.filter(n => n && n.enabled !== false).length : 0;
+        const feesCnt = (window.studioClinicGlobalInfo && Array.isArray(window.studioClinicGlobalInfo.nonCoveredFees))
+          ? window.studioClinicGlobalInfo.nonCoveredFees.length : 0;
+
+        const setEl = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+        setEl('chCntStoryboard', storyCnt ? storyCnt + '컷' : '');
+        setEl('chCntFinale', finaleCnt ? finaleCnt + '장' : '');
+        setEl('chCntDetail', detailCnt ? detailCnt + '개' : '');
+        setEl('chCntHealthnotes', hnCnt ? hnCnt + '편' : '');
+        setEl('chCntFees', feesCnt ? feesCnt + '항목' : '');
+      }
+    }
+
+    function selectStudioChapter(chapterKey, skipReload) {
+      if (!masterConfig || !Array.isArray(masterConfig.pages)) return;
+      const prevChapter = currentStudioChapter;
+      currentStudioChapter = chapterKey;
+      currentVisualSelectedTarget = null;
+      lastPreviewScrollState = null;
+
+      if (chapterKey === 'storyboard' || chapterKey === 'finale') {
+        const hIdx = masterConfig.pages.findIndex(p => isHomeStoryPage(p));
+        if (hIdx >= 0) currentPageIdx = hIdx;
+      } else if (chapterKey === 'detail') {
+        const curP = masterConfig.pages[currentPageIdx];
+        if (!curP || isHomeStoryPage(curP) || isHealthNotesPage(curP)) {
+          const fallbackDet = (masterConfig.pages[lastDetailPageIdx] && !isHomeStoryPage(masterConfig.pages[lastDetailPageIdx]) && !isHealthNotesPage(masterConfig.pages[lastDetailPageIdx]))
+            ? lastDetailPageIdx
+            : masterConfig.pages.findIndex(p => p && !isHomeStoryPage(p) && !isHealthNotesPage(p));
+          if (fallbackDet >= 0) currentPageIdx = fallbackDet;
+        }
+        lastDetailPageIdx = currentPageIdx;
+      } else if (chapterKey === 'healthnotes') {
+        const hnIdx = masterConfig.pages.findIndex(p => isHealthNotesPage(p));
+        if (hnIdx >= 0) currentPageIdx = hnIdx;
+      }
+
+      expandedCards = new Set([getInitialExpandedIdxForChapter()]);
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set('chapter', chapterKey);
+      const curP = getCurrentPage();
+      if (chapterKey === 'detail' && curP) nextUrl.searchParams.set('page', curP.file);
+      else nextUrl.searchParams.delete('page');
+      window.history.replaceState({}, '', nextUrl.toString());
+
+      applyChapterTabVisibility();
+      if (chapterKey !== 'fees' && chapterKey !== 'location') {
+        switchEditorTab('cards');
+      }
+      renderAll();
+
+      // If switching between Storyboard <-> Finale on same loaded home iframe, switch smoothly!
+      if (!skipReload) {
+        const frame = document.getElementById('livePreviewFrame');
+        if ((prevChapter === 'storyboard' && chapterKey === 'finale') && frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*');
+        } else {
+          reloadPreviewIframe();
+        }
+      }
+    }
+
+    applyVisualSelectModeUi();
+    applyDevModeUi();
     loadStudioConfig();
   </script>
 </body>

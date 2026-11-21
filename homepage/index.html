@@ -40,6 +40,30 @@
   
 
   
+  
+  
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -406,12 +430,13 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 68px;
+      height: 66px;
       z-index: 50;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      padding: 0 28px;
+      gap: 14px;
       background: rgba(245, 241, 232, 0.88);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -422,14 +447,16 @@
 
     .nav-brand-logo {
       font-family: var(--font-serif);
-      font-size: 18px;
+      font-size: 17.5px;
       font-weight: 900;
       color: var(--brand-black);
       text-decoration: none;
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .nav-brand-logo .logo-gem {
@@ -438,21 +465,18 @@
       background: var(--brand-green);
       transform: rotate(45deg);
       box-shadow: 0 0 10px rgba(45, 90, 67, 0.45);
+      flex-shrink: 0;
     }
 
     .nav-brand-sub {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--brand-brown-soft);
-      letter-spacing: 0.12em;
-      margin-left: 4px;
+      display: none !important;
     }
 
     .nav-right-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: nowrap;
     }
 
     .btn-bgm-toggle {
@@ -524,19 +548,25 @@
     .btn-reserve-minimal {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 5px;
+      height: 36px;
+      padding: 0 15px;
       background: var(--brand-white-glass);
       border: 1px solid rgba(94, 71, 54, 0.26);
       color: var(--brand-black);
-      padding: 8px 18px;
       border-radius: 999px;
       font-family: var(--font-sans);
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 12.5px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      flex-shrink: 0;
       cursor: pointer;
       text-decoration: none;
       backdrop-filter: blur(12px);
       transition: all 0.25s ease;
+      box-sizing: border-box;
     }
 
     .btn-reserve-minimal:hover {
@@ -544,6 +574,16 @@
       color: var(--brand-white);
       border-color: var(--brand-green);
       box-shadow: 0 6px 18px rgba(45, 90, 67, 0.24);
+    }
+
+    #btn-show-skt-cards {
+      border-color: rgba(94, 71, 54, 0.35);
+      color: var(--brand-brown);
+    }
+    #btn-show-skt-cards:hover {
+      background: var(--brand-green);
+      border-color: var(--brand-green);
+      color: var(--brand-white);
     }
 
     #btn-open-reserve {
@@ -1317,19 +1357,24 @@
         display: none !important;
       }
       .spatial-top-nav {
-        padding: 0 10px;
-        height: 52px;
-        gap: 6px;
+        padding: 6px 8px;
+        height: auto;
+        min-height: 54px;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 5px;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        overflow: hidden;
+        overflow: visible;
       }
       .nav-brand-logo {
-        font-size: 12.5px;
-        gap: 5px;
+        font-size: 13.5px;
+        gap: 6px;
         white-space: nowrap;
         flex-shrink: 0;
+        justify-content: center;
       }
       .nav-brand-logo .logo-gem {
         width: 7px;
@@ -1341,24 +1386,22 @@
         display: none !important;
       }
       .nav-right-actions {
-        gap: 4px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        flex: 1 1 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        overflow: visible;
+        flex: 0 0 auto;
+        width: 100%;
         min-width: 0;
         max-width: 100%;
-        justify-content: flex-start;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
-        padding: 2px 0;
-      }
-      .nav-right-actions::-webkit-scrollbar {
-        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
       }
       .btn-reserve-minimal {
-        padding: 5px 8px;
-        font-size: 10px;
+        height: 29px;
+        padding: 0 10px;
+        font-size: 10.5px;
         white-space: nowrap;
         flex-shrink: 0;
       }
@@ -1382,7 +1425,7 @@
         bottom: 12px;
       }
       .skt-finale-stage {
-        padding: 58px 10px 24px !important;
+        padding: 104px 10px 28px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -2070,13 +2113,12 @@
     <a href="index.html" class="nav-brand-logo">
       <span class="logo-gem"></span>
       <span>바른한의원 대전본점</span>
-      <span class="nav-brand-sub">👨‍👧‍👦 아빠 한의사 · 내 가족에게 처방·시술한 치료만 합니다</span>
     </a>
 
     <div class="nav-right-actions">
       <a href="body-explorer.html" class="btn-reserve-minimal" style="background: #FEF3C7; border-color: #F59E0B; color: #92400E;" title="3D 인체모형 · 바른한의원 진료 살펴보기">💡 3D 진료 살펴보기</a>
       <a href="body-explorer.html?tab=qna" class="btn-reserve-minimal" style="background: #0F172A; border-color: #0F172A; color: #FFFFFF;" title="회원 전용 질환별 1:1 비공개 Q&A 상담">💬 무엇이든 물어보세요</a>
-      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" style="border-color: rgba(94, 71, 54, 0.35); color: var(--brand-brown);" title="6대 핵심 진료 카드 펼침 보기">✦ 6대 진료카드</button>
+      <button type="button" class="btn-reserve-minimal" id="btn-show-skt-cards" title="6대 핵심 진료 카드 펼침 보기">✦ 6대 진료카드</button>
       <button type="button" class="btn-reserve-minimal" id="btn-open-reserve">예약·상담 ↗</button>
     </div>
   </header>
@@ -2106,62 +2148,72 @@
     </div>
 
     <div class="skt-bento-grid" id="skt-bento-grid">
-      <a href="director.html" class="skt-card-item" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
+
+      <a href="director.html" class="skt-card-item" data-dev-item-id="home-bento-0" data-card-idx="0" data-rot="0" data-link="director.html" data-reserve="난임·착상·임신준비 클리닉" data-chapter="2">
         <div class="skt-img-box" style="background-image: url('card_1_director.jpg?v=card1'); background-position: center 20%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">안정위원장 · 아빠 한의사</p>
             <p class="skt-card-desc">내 가족에게 처방한 정품 한약 · 모든 환자를 내 가족처럼 진료하는 주치의</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
+            
           </div>
         </div>
       </a>
 
-      <a href="chuna.html" class="skt-card-item" data-card-idx="1" data-rot="5" data-link="chuna.html" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
+      <a href="chuna.html" class="skt-card-item" data-dev-item-id="home-bento-1" data-card-idx="1" data-rot="5" data-link="chuna.html" data-reserve="추나 척추·전신통증 클리닉" data-chapter="6">
         <div class="skt-img-box" style="background-image: url('card_2_chuna.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">추나</p>
             <p class="skt-card-desc">내 가족의 척추를 바로잡는 마음 · 원장 직접 수기 추나·디스크 감압</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
+            
           </div>
         </div>
       </a>
 
-      <a href="growth.html" class="skt-card-item" data-card-idx="2" data-rot="7" data-link="growth.html" data-reserve="소아·청소년 키성장 클리닉" data-chapter="3">
+      <a href="growth.html" class="skt-card-item" data-dev-item-id="home-bento-2" data-card-idx="2" data-rot="7" data-link="growth.html" data-reserve="소아·청소년 키성장 클리닉" data-chapter="3">
         <div class="skt-img-box" style="background-image: url('card_3_growth.jpg?v=card1'); background-position: center 22%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">성장</p>
-            <p class="skt-card-desc">실제 원장님 아들이 복용한 성장한약 · 키성장 골든타임 &amp; 비염면역</p>
+            <p class="skt-card-desc">실제 원장님 아들이 복용한 성장한약 · 키성장 관리 적기 &amp; 비염면역</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
+            
           </div>
         </div>
       </a>
 
-      <a href="diet-zero.html" class="skt-card-item" data-card-idx="3" data-rot="-7" data-link="diet-zero.html" data-reserve="성인 비만·다이어트 클리닉" data-chapter="4">
+      <a href="diet-zero.html" class="skt-card-item" data-dev-item-id="home-bento-3" data-card-idx="3" data-rot="-7" data-link="diet-zero.html" data-reserve="성인 비만·다이어트 클리닉" data-chapter="4">
         <div class="skt-img-box" style="background-image: url('card_4_diet.jpg?v=card1'); background-position: center 25%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">다이어트</p>
             <p class="skt-card-desc">내 가족도 안심하는 무부작용 대사 리셋 · 내장지방·독소 해독 감량</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
+            
           </div>
         </div>
       </a>
 
-      <a href="#hairloss-select" class="skt-card-item" data-card-idx="4" data-rot="-5" data-link="hairloss-modal" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
+      <a href="#hairloss-select" class="skt-card-item" data-dev-item-id="home-bento-4" data-card-idx="4" data-rot="-5" data-link="hairloss-modal" data-reserve="30대 탈모·모근재생 클리닉" data-chapter="5">
         <div class="skt-img-box" style="background-image: url('card_5_hairloss.jpg?v=pov12'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">탈모 · 4대 유형 맞춤</p>
             <p class="skt-card-desc">내 가족에게 시술한 두피열 쿨링 · 남성/원형/여성/지루성두피염 선택</p>
             <div class="skt-card-actions-row" style="flex-wrap:wrap;gap:5px;">
@@ -2171,32 +2223,37 @@
               <span class="skt-card-chip secondary" data-action="custom-link" data-href="hairloss-female.html">여성탈모</span>
               <span class="skt-card-chip secondary" data-action="custom-link" data-href="hairloss-seborrheic.html">지루성두피염</span>
             </div>
+            
           </div>
         </div>
       </a>
 
-      <a href="gongjindan.html" class="skt-card-item" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
+      <a href="gongjindan.html" class="skt-card-item" data-dev-item-id="home-bento-5" data-card-idx="5" data-rot="4" data-link="gongjindan.html" data-reserve="황제공진단·기력보강 클리닉" data-chapter="7">
         <div class="skt-img-box" style="background-image: url('card_6_gongjindan.jpg?v=card1'); background-position: center center;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">황제공진단</p>
             <p class="skt-card-desc">내 부모님께 드리는 CITES 정품 사향 · 뇌·심장 원기 회복 &amp; 만성 번아웃</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
+            
           </div>
         </div>
       </a>
 
-      <a href="prostate.html" class="skt-card-item" data-card-idx="6" data-rot="-4" data-link="prostate.html" data-reserve="전립선·배뇨·남성활력 클리닉" data-chapter="7">
+      <a href="prostate.html" class="skt-card-item" data-dev-item-id="home-bento-6" data-card-idx="6" data-rot="-4" data-link="prostate.html" data-reserve="전립선·배뇨·남성활력 클리닉" data-chapter="7">
         <div class="skt-img-box" style="background-image: url('card_7_prostate.jpg?v=card1'); background-position: center 22%;"></div>
         <div class="skt-card-box">
           <div class="skt-card-bottom-info" style="flex-direction:column;align-items:flex-start;gap:6px;">
+            
             <p class="skt-card-title">전립선 · 남성활력</p>
             <p class="skt-card-desc">반복되는 야간뇨·잔뇨감·회음부 통증 · 전립선 울혈 감압 &amp; 신장·방광 온양</p>
             <div class="skt-card-actions-row">
               <span class="skt-card-chip" data-action="link">상세페이지 보기 →</span>
             </div>
+            
           </div>
         </div>
       </a>
@@ -2415,42 +2472,389 @@
       // 1. THE 8 STORY DIALOGUE CHAPTERS (User's Exact 8 Lines)
       // ======================================================================
       const DIALOGUE_CHAPTERS = [
-        { id: 1, numLabel: 'STORY 01 / 08 · 바른 난임·착상 치료', quote: '임신이 되지 않아 힘들게 얻은 선물' },
-        { id: 2, numLabel: 'STORY 02 / 08 · 바른 소아 면역강화 치료', quote: '사랑하는 아이가 건강하기를 바라면서' },
-        { id: 3, numLabel: 'STORY 03 / 08 · 바른 성장판·키성장 치료', quote: '멋지게 성장하는 꿈을 꾸며' },
-        { id: 4, numLabel: 'STORY 04 / 08 · 바른 성인 비만·체형 치료', quote: '날씬하고 건강해서 예쁘게' },
-        { id: 5, numLabel: 'STORY 05 / 08 · 바른 30대 탈모·모근 치료', quote: '사회에서 인정받기 위해 탈모' },
-        { id: 6, numLabel: 'STORY 06 / 08 · 바른 추나 척추·전신 통증치료', quote: '열심히 근무하면서 생긴 통증' },
-        { id: 7, numLabel: 'STORY 07 / 08 · 바른 황제공진단 기력보강', quote: '약해진 기력을 보강해야할 나이가 오고' },
-        { id: 8, numLabel: 'STORY 08 / 08 · 평생 주치의 바른한의원 대전본점', quote: '건강한 인생이 될 수 있게 도와드립니다.' }
-      ];
+        {
+                "id": 1,
+                "numLabel": "STORY 01 / 08 · 바른 난임·착상 치료",
+                "quote": "임신이 되지 않아 힘들게 얻은 선물"
+        },
+        {
+                "id": 2,
+                "numLabel": "STORY 02 / 08 · 바른 소아 면역강화 치료",
+                "quote": "사랑하는 아이가 건강하기를 바라면서"
+        },
+        {
+                "id": 3,
+                "numLabel": "STORY 03 / 08 · 바른 성장판·키성장 치료",
+                "quote": "멋지게 성장하는 꿈을 꾸며"
+        },
+        {
+                "id": 4,
+                "numLabel": "STORY 04 / 08 · 바른 성인 비만·체형 치료",
+                "quote": "날씬하고 건강해서 예쁘게"
+        },
+        {
+                "id": 5,
+                "numLabel": "STORY 05 / 08 · 바른 30대 탈모·모근 치료",
+                "quote": "사회에서 인정받기 위해 탈모"
+        },
+        {
+                "id": 6,
+                "numLabel": "STORY 06 / 08 · 바른 추나 척추·전신 통증치료",
+                "quote": "열심히 근무하면서 생긴 통증"
+        },
+        {
+                "id": 7,
+                "numLabel": "STORY 07 / 08 · 바른 황제공진단 기력보강",
+                "quote": "약해진 기력을 보강해야할 나이가 오고"
+        },
+        {
+                "id": 8,
+                "numLabel": "STORY 08 / 08 · 평생 주치의 바른한의원 대전본점",
+                "quote": "건강한 인생이 될 수 있게 도와드립니다."
+        }
+];
 
       const FRAMES = [
-        { src: 'life_1a0_infertility_before.jpg?v=pov11', chapter: 1, quote: '간절한 기다림', povBadge: '', stepLabel: '', mode: 0, warmth: 1.06, focal: [0.52, 0.56], whisper: '' },
-        { src: 'life_1a1_infertility_treatment.jpg?v=pov7', chapter: 1, quote: '난임으로 찾게 된 한의원', povBadge: '', stepLabel: '', mode: 5, warmth: 1.1, focal: [0.52, 0.48], whisper: '' },
-        { src: 'life_1a_fertilization.jpg?v=pov11', chapter: 1, quote: '힘들게 얻은 선물', povBadge: '', stepLabel: '', mode: 6, warmth: 1.08, focal: [0.52, 0.5], whisper: '' },
-        { src: 'life_1b_birth.jpg?v=pov7', chapter: 1, quote: '소중한 탄생', povBadge: '', stepLabel: '', mode: 7, warmth: 1.12, focal: [0.52, 0.54], whisper: '' },
-        { src: 'life_1c_cold_before.jpg?v=pov7', chapter: 2, quote: '자꾸만 아픈 우리 아이', povBadge: '', stepLabel: '', mode: 0, warmth: 1.04, focal: [0.52, 0.52], whisper: '' },
-        { src: 'life_1c_clinic_exam.jpg?v=pov15', chapter: 2, quote: '다시 찾은 한의원', povBadge: '', stepLabel: '', mode: 5, warmth: 1.06, focal: [0.5, 0.45], whisper: '' },
-        { src: 'life_1c_immunity.jpg?v=pov7', chapter: 2, quote: '으랏차차', povBadge: '', stepLabel: '', mode: 6, warmth: 1.1, focal: [0.54, 0.48], whisper: '' },
-        { src: 'life_1d_growth_short.jpg?v=pov7', chapter: 3, quote: '친구보다 너무 작은 우리 아이', povBadge: '', stepLabel: '', mode: 7, warmth: 1.08, focal: [0.53, 0.48], whisper: '' },
-        { src: 'life_1d_growth_clinic.jpg?v=pov7', chapter: 3, quote: '성장클리닉을 하다', povBadge: '', stepLabel: '', mode: 1, warmth: 1.09, focal: [0.52, 0.48], whisper: '' },
-        { src: 'life_1d_growth_peers.jpg?v=pov7', chapter: 3, quote: '쑥쑥 자란 우리 아이', povBadge: '', stepLabel: '', mode: 6, warmth: 1.1, focal: [0.5, 0.36], whisper: '', specialRole: 'growth_tall' },
-        { src: 'life_2a_obesity.jpg?v=pov7', chapter: 4, quote: '육아로 뱃살만...', povBadge: '', stepLabel: '', mode: 0, warmth: 1.05, focal: [0.52, 0.5], whisper: '' },
-        { src: 'life_2a_treatment.jpg?v=pov7', chapter: 4, quote: '결심했어!!', povBadge: '', stepLabel: '', mode: 2, warmth: 1.09, focal: [0.5, 0.52], whisper: '' },
-        { src: 'life_2b_slim_therapy.jpg?v=pov11', chapter: 4, quote: '늘씬한 내가 되자', povBadge: '', stepLabel: '', mode: 7, warmth: 1.05, focal: [0.58, 0.42], whisper: '' },
-        { src: 'life_3a_hairloss.jpg?v=pov12', chapter: 5, quote: '심해진 탈모', povBadge: '', stepLabel: '', mode: 6, warmth: 1.03, focal: [0.5, 0.38], whisper: '' },
-        { src: 'life_3a_treatment.jpg?v=pov12', chapter: 5, quote: '한의원에서 탈모검사 중', povBadge: '', stepLabel: '', mode: 4, warmth: 1.08, focal: [0.455, 0.33], whisper: '' },
-        { src: 'life_3a_follicle_zoom.jpg?v=pov7', chapter: 5, quote: '탈모 두피 치료', povBadge: '', stepLabel: '', mode: 5, warmth: 1.06, focal: [0.5, 0.5], whisper: '' },
-        { src: 'life_3b_hair_restored.jpg?v=pov12', chapter: 5, quote: '자신감 회복', povBadge: '', stepLabel: '', mode: 7, warmth: 1.03, focal: [0.5, 0.36], whisper: '' },
-        { src: 'life_4a_work_spine_pain.jpg?v=pov7', chapter: 6, quote: '일하면서 온몸이 아파진 나', povBadge: '', stepLabel: '', mode: 3, warmth: 1.04, focal: [0.54, 0.52], whisper: '', specialRole: 'ch6_pain_start' },
-        { src: 'life_4a_treatment.jpg?v=pov8', chapter: 6, quote: '한의원에서 추나 치료', povBadge: '', stepLabel: '', mode: 6, warmth: 1.08, focal: [0.52, 0.52], whisper: '' },
-        { src: 'life_4a2_ankle_acupuncture.jpg?v=pov8', chapter: 6, quote: '통증 치료', povBadge: '', stepLabel: '', mode: 5, warmth: 1.09, focal: [0.5, 0.54], whisper: '' },
-        { src: 'life_4b_chuna_recovery.jpg?v=pov7', chapter: 6, quote: '관절 튼튼 회복', povBadge: '', stepLabel: '', mode: 0, warmth: 1.1, focal: [0.54, 0.5], whisper: '', specialRole: 'ch6_recovered' },
-        { src: 'life_5a_aging_fatigue.jpg?v=pov7', chapter: 7, quote: '어느새 기력이 쇠약해지고', povBadge: '', stepLabel: '', mode: 7, warmth: 1.06, focal: [0.58, 0.46], whisper: '' },
-        { src: 'life_5b_gongjindan_vitality.jpg?v=pov14', chapter: 7, quote: '황제공진단으로 기력충전', povBadge: '', stepLabel: '', mode: 5, warmth: 1.14, focal: [0.58, 0.46], whisper: '' },
-        { src: 'life_5c_graceful_elder.jpg?v=pov7', chapter: 8, quote: '건강한 백세 인생', povBadge: '', stepLabel: '', mode: 5, warmth: 1.15, focal: [0.58, 0.45], whisper: '' }
-      ];
+        {
+                "src": "life_1a0_infertility_before.jpg?v=pov11",
+                "chapter": 1,
+                "quote": "간절한 기다림",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 0,
+                "warmth": 1.06,
+                "focal": [
+                        0.52,
+                        0.56
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1a1_infertility_treatment.jpg?v=pov7",
+                "chapter": 1,
+                "quote": "난임으로 찾게 된 한의원",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 5,
+                "warmth": 1.1,
+                "focal": [
+                        0.52,
+                        0.48
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1a_fertilization.jpg?v=pov11",
+                "chapter": 1,
+                "quote": "힘들게 얻은 선물",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 6,
+                "warmth": 1.08,
+                "focal": [
+                        0.52,
+                        0.5
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1b_birth.jpg?v=pov7",
+                "chapter": 1,
+                "quote": "소중한 탄생",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 7,
+                "warmth": 1.12,
+                "focal": [
+                        0.52,
+                        0.54
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1c_cold_before.jpg?v=pov7",
+                "chapter": 2,
+                "quote": "자꾸만 아픈 우리 아이",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 0,
+                "warmth": 1.04,
+                "focal": [
+                        0.52,
+                        0.52
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1c_clinic_exam.jpg?v=pov15",
+                "chapter": 2,
+                "quote": "다시 찾은 한의원",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 5,
+                "warmth": 1.06,
+                "focal": [
+                        0.5,
+                        0.45
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1c_immunity.jpg?v=pov7",
+                "chapter": 2,
+                "quote": "으랏차차",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 6,
+                "warmth": 1.1,
+                "focal": [
+                        0.54,
+                        0.48
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1d_growth_short.jpg?v=pov7",
+                "chapter": 3,
+                "quote": "친구보다 너무 작은 우리 아이",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 7,
+                "warmth": 1.08,
+                "focal": [
+                        0.53,
+                        0.48
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1d_growth_clinic.jpg?v=pov7",
+                "chapter": 3,
+                "quote": "성장클리닉을 하다",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 1,
+                "warmth": 1.09,
+                "focal": [
+                        0.52,
+                        0.48
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_1d_growth_peers.jpg?v=pov7",
+                "chapter": 3,
+                "quote": "쑥쑥 자란 우리 아이",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 6,
+                "warmth": 1.1,
+                "focal": [
+                        0.5,
+                        0.36
+                ],
+                "whisper": "",
+                "specialRole": "growth_tall"
+        },
+        {
+                "src": "life_2a_obesity.jpg?v=pov7",
+                "chapter": 4,
+                "quote": "육아로 뱃살만...",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 0,
+                "warmth": 1.05,
+                "focal": [
+                        0.52,
+                        0.5
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_2a_treatment.jpg?v=pov7",
+                "chapter": 4,
+                "quote": "결심했어!!",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 2,
+                "warmth": 1.09,
+                "focal": [
+                        0.5,
+                        0.52
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_2b_slim_therapy.jpg?v=pov11",
+                "chapter": 4,
+                "quote": "늘씬한 내가 되자",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 7,
+                "warmth": 1.05,
+                "focal": [
+                        0.58,
+                        0.42
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_3a_hairloss.jpg?v=pov12",
+                "chapter": 5,
+                "quote": "심해진 탈모",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 6,
+                "warmth": 1.03,
+                "focal": [
+                        0.5,
+                        0.38
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_3a_treatment.jpg?v=pov12",
+                "chapter": 5,
+                "quote": "한의원에서 탈모검사 중",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 4,
+                "warmth": 1.08,
+                "focal": [
+                        0.455,
+                        0.33
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_3a_follicle_zoom.jpg?v=pov7",
+                "chapter": 5,
+                "quote": "탈모 두피 치료",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 5,
+                "warmth": 1.06,
+                "focal": [
+                        0.5,
+                        0.5
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_3b_hair_restored.jpg?v=pov12",
+                "chapter": 5,
+                "quote": "자신감 회복",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 7,
+                "warmth": 1.03,
+                "focal": [
+                        0.5,
+                        0.36
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_4a_work_spine_pain.jpg?v=pov7",
+                "chapter": 6,
+                "quote": "일하면서 온몸이 아파진 나",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 3,
+                "warmth": 1.04,
+                "focal": [
+                        0.54,
+                        0.52
+                ],
+                "whisper": "",
+                "specialRole": "ch6_pain_start"
+        },
+        {
+                "src": "life_4a_treatment.jpg?v=pov8",
+                "chapter": 6,
+                "quote": "한의원에서 추나 치료",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 6,
+                "warmth": 1.08,
+                "focal": [
+                        0.52,
+                        0.52
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_4a2_ankle_acupuncture.jpg?v=pov8",
+                "chapter": 6,
+                "quote": "통증 치료",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 5,
+                "warmth": 1.09,
+                "focal": [
+                        0.5,
+                        0.54
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_4b_chuna_recovery.jpg?v=pov7",
+                "chapter": 6,
+                "quote": "관절 튼튼 회복",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 0,
+                "warmth": 1.1,
+                "focal": [
+                        0.54,
+                        0.5
+                ],
+                "whisper": "",
+                "specialRole": "ch6_recovered"
+        },
+        {
+                "src": "life_5a_aging_fatigue.jpg?v=pov7",
+                "chapter": 7,
+                "quote": "어느새 기력이 쇠약해지고",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 7,
+                "warmth": 1.06,
+                "focal": [
+                        0.58,
+                        0.46
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_5b_gongjindan_vitality.jpg?v=pov14",
+                "chapter": 7,
+                "quote": "황제공진단으로 기력충전",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 5,
+                "warmth": 1.14,
+                "focal": [
+                        0.58,
+                        0.46
+                ],
+                "whisper": ""
+        },
+        {
+                "src": "life_5c_graceful_elder.jpg?v=pov7",
+                "chapter": 8,
+                "quote": "건강한 백세 인생",
+                "povBadge": "",
+                "stepLabel": "",
+                "mode": 5,
+                "warmth": 1.15,
+                "focal": [
+                        0.58,
+                        0.45
+                ],
+                "whisper": ""
+        }
+];
 
       // ======================================================================
       // 3. ART'S SIGNATURE 8-MODE HIGH-END 3D EDITORIAL & CINEMA SHADER
