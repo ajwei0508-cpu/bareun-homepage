@@ -1825,21 +1825,25 @@ function buildBodyExplorerHtml() {
     .ch-icon-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 11px 6px 7px;
-      border-radius: 999px;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 50%;
       text-decoration: none;
       font-size: 0.73rem;
       font-weight: 800;
       border: 1px solid rgba(0, 0, 0, 0.08);
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
       background: #FFFFFF;
       color: #18181B;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      flex-shrink: 0;
     }
     .ch-icon-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      border-color: #C5A059;
     }
     .ch-sym {
       width: 22px;
@@ -4121,15 +4125,13 @@ function buildBodyExplorerHtml() {
         chBtns.push(
           '<button type="button" class="ch-icon-btn ch-copy" onclick="window.copyHealthNoteShareLink(\\'' + escHtml(note.id) + '\\', this, event)" aria-label="이 건강 글 링크 복사·퍼가기">' +
             '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>' +
-            '<span data-share-label="1">링크 퍼가기</span>' +
-          '</button>'
+            '</button>'
         );
       }
       if (yt.enabled !== false && yt.url) {
         chBtns.push(
           '<a class="ch-icon-btn ch-yt" href="' + escHtml(yt.url) + '" target="_blank" rel="noopener noreferrer" aria-label="유튜브 건강 채널 바로가기">' +
             '<span class="ch-sym"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>' +
-            '<span>' + escHtml(yt.label || '유튜브') + '</span>' +
           '</a>'
         );
       }
@@ -4137,32 +4139,28 @@ function buildBodyExplorerHtml() {
         chBtns.push(
           '<a class="ch-icon-btn ch-nv" href="' + escHtml(nv.url) + '" target="_blank" rel="noopener noreferrer" aria-label="네이버플레이스 지도·위치 바로가기">' +
             '<span class="ch-sym">N</span>' +
-            '<span>' + escHtml(nv.label || '네이버플레이스') + '</span>' +
-          '</a>'
+            '</a>'
         );
       }
       if (th.enabled !== false && th.url) {
         chBtns.push(
           '<a class="ch-icon-btn ch-th" href="' + escHtml(th.url) + '" target="_blank" rel="noopener noreferrer" aria-label="스레드 바로가기">' +
             '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 192 192" fill="currentColor"><path d="M141.537 88.9883C140.71 88.5919 139.87 88.2104 139.019 87.8451C137.537 60.5382 122.616 44.905 97.4619 44.745C97.1824 44.7432 96.9018 44.7432 96.6213 44.745C75.2514 44.8824 59.9882 56.4026 54.0664 76.8407C50.6095 88.7712 51.5235 106.012 61.2721 117.847C69.0494 127.287 80.4912 132.846 93.3082 133.409C106.286 133.978 118.064 129.564 125.753 121.144C133.447 112.718 136.634 100.835 135.297 87.7126C134.792 82.756 133.468 78.0108 131.397 73.6158L121.758 78.1633C123.111 81.0347 123.979 84.1441 124.316 87.4398C125.323 97.3239 122.868 106.262 117.389 112.259C111.968 118.192 103.541 121.353 93.6845 120.92C83.8967 120.491 74.9684 116.275 69.0147 109.055C61.854 100.373 61.0844 87.0398 63.8447 77.4996C68.3971 61.7699 80.2016 52.8804 96.6433 52.7753C116.143 52.899 127.604 65.5786 128.796 87.9712C122.426 85.8078 115.398 84.6644 107.975 84.6644C81.8213 84.6644 67.2419 98.7183 67.2419 117.75C67.2419 133.003 78.4357 143.916 93.8166 143.916C108.971 143.916 120.598 136.142 126.963 123.82C130.697 131.547 136.962 137.697 144.975 141.488L149.917 131.905C141.678 127.994 135.539 120.315 133.434 110.021C137.491 103.526 140.407 96.2238 141.537 88.9883ZM93.8166 135.916C82.8809 135.916 75.2419 127.978 75.2419 117.75C75.2419 103.473 85.7483 92.6644 107.975 92.6644C113.681 92.6644 119.068 93.5358 124.035 95.1437C121.733 118.232 110.428 135.916 93.8166 135.916Z"/></svg></span>' +
-            '<span>' + escHtml(th.label || '스레드') + '</span>' +
-          '</a>'
+            '</a>'
         );
       }
       if (ig.enabled !== false && ig.url) {
         chBtns.push(
           '<a class="ch-icon-btn ch-ig" href="' + escHtml(ig.url) + '" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 바로가기">' +
             '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span>' +
-            '<span>' + escHtml(ig.label || '인스타그램') + '</span>' +
-          '</a>'
+            '</a>'
         );
       }
       if (kk.enabled !== false && kk.url) {
         chBtns.push(
           '<a class="ch-icon-btn ch-kk" href="' + escHtml(kk.url) + '" target="_blank" rel="noopener noreferrer" aria-label="카카오톡 채널 연결하기">' +
             '<span class="ch-sym"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.68 6.73l-.98 3.62c-.08.3.26.54.52.37l4.31-2.85c.48.07.97.13 1.47.13 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg></span>' +
-            '<span>' + escHtml(kk.label || '카카오톡') + '</span>' +
-          '</a>'
+            '</a>'
         );
       }
       const channelBarHtml = chBtns.length > 0
