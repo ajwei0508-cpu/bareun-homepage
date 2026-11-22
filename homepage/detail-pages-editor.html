@@ -1741,9 +1741,6 @@
       <button type="button" id="btnToggleVisualSelect" class="btn btn-visual-select active" onclick="toggleVisualSelectMode()" title="좌측 커스텀 항목 선택 시 우측 실제 페이지의 같은 번호 위치로 자동 이동·강조">
         🔢 번호 가이드 ON
       </button>
-      <button type="button" id="btnToggleDevMode" class="btn btn-dev-toggle" onclick="toggleDevMode()" title="개발자 모드 ON/OFF — 항목별 즉석 커스텀 기능·CSS/HTML/JS/JSON 편집">
-        ⚡ 개발자 모드 OFF
-      </button>
       <button type="button" class="btn btn-save-one" id="btnSaveOne" onclick="handleChapterSaveAction()">
         💾 저장·반영
       </button>
@@ -1765,6 +1762,9 @@
             <span>🌐 전체 페이지 카페24 배포</span>
           </button>
           <div class="studio-more-divider"></div>
+          <button type="button" class="studio-more-item" id="btnToggleDevMode" onclick="closeStudioMoreMenu(); toggleDevMode();" title="개발자 모드 ON/OFF — 항목별 즉석 커스텀 기능·CSS/HTML/JS/JSON 편집">
+            <span>⚡ 개발자 모드: OFF</span>
+          </button>
           <button type="button" class="studio-more-item" id="headerArgonQuotaBadge" onclick="closeStudioMoreMenu(); openArgonQuotaSettings();">
             <span>🔑 AI 이미지 키 · 아르곤 하이 설정</span>
           </button>
@@ -8775,7 +8775,12 @@
       const btn = document.getElementById('btnToggleDevMode');
       if (btn) {
         btn.classList.toggle('active', isDevMode);
-        btn.textContent = isDevMode ? '⚡ 개발자 모드 ON' : '⚡ 개발자 모드 OFF';
+        const span = btn.querySelector('span');
+        if (span) {
+          span.innerHTML = isDevMode ? '⚡ 개발자 모드: <strong style="color:#c084fc;">ON</strong>' : '⚡ 개발자 모드: OFF';
+        } else {
+          btn.textContent = isDevMode ? '⚡ 개발자 모드 ON' : '⚡ 개발자 모드 OFF';
+        }
       }
       document.body.classList.toggle('dev-mode-on', isDevMode);
     }
