@@ -312,7 +312,8 @@ function getDirectorAngleSamples() {
 }
 
 function updateDirectorAngleSample(angleKey, dataUrl, origName = 'angle.jpg') {
-  const validSlot = DEFAULT_ANGLE_SLOTS.find((s) => s.key === angleKey);
+  const applyToAll = angleKey === 'all';
+  const validSlot = applyToAll ? DEFAULT_ANGLE_SLOTS[0] : DEFAULT_ANGLE_SLOTS.find((s) => s.key === angleKey);
   if (!validSlot) {
     throw new Error('유효하지 않은 각도 슬롯입니다: ' + angleKey);
   }
@@ -330,7 +331,7 @@ function updateDirectorAngleSample(angleKey, dataUrl, origName = 'angle.jpg') {
   if (!fs.existsSync(ANGLE_REFS_DIR)) {
     fs.mkdirSync(ANGLE_REFS_DIR, { recursive: true });
   }
-  const outName = `angle_${angleKey}_custom_${Date.now()}${ext}`;
+  const outName = `angle_${applyToAll ? 'primary_all' : angleKey}_custom_${Date.now()}${ext}`;
   const outRel = `director-angle-refs/${outName}`;
   const outFull = path.join(ANGLE_REFS_DIR, outName);
   fs.writeFileSync(outFull, buf);
@@ -356,14 +357,30 @@ function updateDirectorAngleSample(angleKey, dataUrl, origName = 'angle.jpg') {
   } catch (e) {}
 
   const manifest = ensureAngleManifest();
-  manifest.angles[angleKey] = {
-    key: angleKey,
-    label: validSlot.label,
-    desc: validSlot.desc,
-    fileName: outRel,
-    sourceRef: origName,
-    updatedAt: new Date().toISOString()
-  };
+  const nowIso = new Date().toISOString();
+  if (applyToAll) {
+    for (const slot of DEFAULT_ANGLE_SLOTS) {
+      manifest.angles[slot.key] = {
+        key: slot.key,
+        label: slot.label,
+        desc: slot.desc,
+        fileName: outRel,
+        sourceRef: origName,
+        isCustom: true,
+        updatedAt: nowIso
+      };
+    }
+  } else {
+    manifest.angles[angleKey] = {
+      key: angleKey,
+      label: validSlot.label,
+      desc: validSlot.desc,
+      fileName: outRel,
+      sourceRef: origName,
+      isCustom: true,
+      updatedAt: nowIso
+    };
+  }
   fs.writeFileSync(ANGLE_MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
   return getDirectorAngleSamples();
 }
@@ -541,29 +558,41 @@ function guessPreferredAngleKeyFromPrompt(promptText) {
   return 'front';
 }
 
-function orderDirectorSlotsForPrompt(promptText, allAngles = [], maxCount = 3) {
+function orderDirectorSlotsForPrompt(promptText, allAngles = [], maxCount = 4) {
   const prefKey = guessPreferredAngleKeyFromPrompt(promptText);
+  // If any angle slot was custom-uploaded by a B2B buyer (_custom_ in fileName), strictly isolate to custom-uploaded slots!
+  const customUploaded = allAngles.filter((a) => a && a.fileName && /_custom_|director_angle_/i.test(String(a.fileName)));
+  const pool = customUploaded.length > 0 ? customUploaded : allAngles;
+
   const byKey = {};
-  for (const a of allAngles) {
+  for (const a of pool) {
     if (a && a.key) byKey[a.key] = a;
   }
+  // ALWAYS place 'front' (wide-open eyes, white coat, primary facial bone & glasses frame anchor) as Slot #1!
   const priorityMap = {
-    front:        ['front', 'frontSmile', 'right15Smile', 'left15Smile', 'right30', 'left30'],
-    frontSmile:   ['frontSmile', 'front', 'right15Smile', 'left15Smile', 'right30', 'left30'],
-    left15Smile:  ['left15Smile', 'frontSmile', 'front', 'left30', 'leftProfile', 'right15Smile'],
-    right15Smile: ['right15Smile', 'frontSmile', 'front', 'right30', 'rightProfile', 'left15Smile'],
-    left30:       ['left30', 'left15Smile', 'front', 'frontSmile', 'leftProfile', 'right30'],
-    right30:      ['right30', 'right15Smile', 'front', 'frontSmile', 'rightProfile', 'left30'],
-    leftProfile:  ['leftProfile', 'left30', 'front', 'left15Smile', 'frontSmile', 'right30'],
-    rightProfile: ['rightProfile', 'right30', 'front', 'right15Smile', 'frontSmile', 'left30']
+    front:        ['front', 'right15Smile', 'left15Smile', 'right30', 'left30'],
+    frontSmile:   ['front', 'right15Smile', 'left15Smile', 'frontSmile', 'right30'],
+    left15Smile:  ['front', 'left15Smile', 'left30', 'right15Smile', 'leftProfile'],
+    right15Smile: ['front', 'right15Smile', 'right30', 'left15Smile', 'rightProfile'],
+    left30:       ['front', 'left30', 'left15Smile', 'right15Smile', 'leftProfile'],
+    right30:      ['front', 'right30', 'right15Smile', 'left15Smile', 'rightProfile'],
+    leftProfile:  ['front', 'leftProfile', 'left30', 'left15Smile', 'right30'],
+    rightProfile: ['front', 'rightProfile', 'right30', 'right15Smile', 'left30']
   };
-  const orderKeys = priorityMap[prefKey] || priorityMap.frontSmile;
+  const orderKeys = priorityMap[prefKey] || priorityMap.right15Smile;
   const result = [];
+  const seenFiles = new Set();
   for (const k of orderKeys) {
-    if (byKey[k] && !result.includes(byKey[k])) result.push(byKey[k]);
+    if (byKey[k] && !seenFiles.has(byKey[k].fileName)) {
+      seenFiles.add(byKey[k].fileName);
+      result.push(byKey[k]);
+    }
   }
-  for (const a of allAngles) {
-    if (a && !result.includes(a)) result.push(a);
+  for (const a of pool) {
+    if (a && !seenFiles.has(a.fileName)) {
+      seenFiles.add(a.fileName);
+      result.push(a);
+    }
   }
   return result.slice(0, Math.max(1, maxCount));
 }
@@ -653,9 +682,9 @@ function buildArgonHighPrompt({
 
   if (useDirectorFace && !noFaceDirective) {
     lines.push(
-      `[안정위 대표원장 실제 인물 사진 1:1 동일 인물 고정 (IDENTITY LOCK)]: 첨부된 [참조 인물 사진 #1~#3]은 모두 오늘 촬영할 주인공인 '안정위 대표원장(30대 후반~40대 초반 한국인 남성 한의사)' 동일 인물의 실제 정방향 얼굴 사진입니다. 임의의 다른 남성 의사 얼굴을 생성하지 말고, 반드시 첨부된 참조 인물 사진 속 안정위 원장 본인의 얼굴 골격, 부드러우면서 또렷한 눈매와 눈웃음, 콧대, 입매, 피부톤, 얇은 샴페인 골드 다각형/직사각 메탈 안경테, 앞머리로 이마를 가리지 않고 깔끔하게 가르마 타서 넘긴 단정한 검은 생머리 헤어스타일을 장면 각도(권장 기준: ${preferredAngleLabel})에 맞춰 100% 동일 인물로 정밀하게 재현하세요.`,
-      '[의상 및 체형 필수 지시]: 참조 인물 사진에서 입고 있는 검은색 외투/사복을 그대로 입히지 말고, 한의원 진료 상황에 맞게 반드시 깨끗하고 품격 있는 순백색 한의사 진료 가운(안에 단정한 셔츠 착용, 가슴에 깨진 글자·명찰 없는 무지 화이트 가운)을 착용한 모습으로 촬영하세요. 결과 사진에는 대표원장 1명만 등장시켜야 합니다(동일 얼굴 복제 금지).',
-      '[85mm 망원 렌즈 윤곽 고정 · 부종 ZERO]: 광각 왜곡으로 볼이나 하관이 넓어지거나 붓지 않도록 85mm~105mm 인물 망원 단렌즈 비례를 적용하여 참조 인물 사진처럼 날렵하고 단정한 턱선과 자연스럽고 따뜻한 미소를 표현하세요.'
+      `[최우선 절대 명령 — 커스텀 스튜디오 등록 셀카 1:1 동일 인물 픽셀 고정 (STRICT FACE IDENTITY LOCK · 제3자 얼굴 창작 절대 금지)]: 첨부된 [참조 인물 사진 #1(정면 마스터 기준)] 및 다각도 참조 사진들은 이 한의원 대표원장이 커스텀 스튜디오에 직접 등록한 본인 실제 셀카(포트레이트)입니다. 임의의 다른 의사나 배우 얼굴을 생성하지 말고, 반드시 첨부된 참조 셀카 속 인물의 실제 성별, 나이대, 얼굴 골격(이마·광대·턱선), 또렷하게 뜬 눈매와 쌍꺼풀/눈동자, 눈썹 모양과 각도, 콧대, 입매, 피부톤, 헤어스타일(가르마·이마 라인)을 100% 동일한 한 사람으로 정밀하게 재현하세요.`,
+      '[안경 형태 1:1 기하학적 일치 필수 (동그란 원형 안경 변형 절대 금지)]: 참조 셀카(#1) 속 인물이 착용한 안경테의 정확한 형태(예: 참조 사진이 각진 다각형/직사각 골드 메탈 프레임이면 100% 동일한 각진 다각형/직사각 골드 프레임으로 표현할 것 — 절대로 임의의 동그란 원형 철테나 뿔테로 바꾸지 말 것! 만약 참조 셀카에 안경이 없는 원장님이라면 안경을 씌우지 말 것)까지 참조 사진과 1:1로 일치시키세요.',
+      `[구도 및 의상 필수 지시]: 몸통을 옆으로 90° 돌린 채 고개만 카메라로 돌리는 측면 프로필 포즈는 얼굴 왜곡을 유발하므로 절대 금지합니다! 상체와 얼굴이 카메라 정면(0°~15° 이내, 권장 각도: ${preferredAngleLabel})을 자연스럽게 향하고 얼굴이 화면 중심에 선명하게 잡히는 85mm 가슴 위 상반신 클로즈업으로 촬영하세요. 참조 셀카의 사복/외투 대신 깨끗하고 품격 있는 순백색 한의사 진료 가운(명찰·글자·로고 0%)을 착용시키세요.`
     );
   }
 
@@ -1214,13 +1243,15 @@ async function generateStudioImageComplete({
     }
 
     if (effectiveUseDirectorFace) {
-      // Attach top 3 upright calibrated portraits with interleaved text labels so Gemini 3 Pro Image locks exact identity
-      const orderedSlots = orderDirectorSlotsForPrompt(cleanPrompt, angleState.angles, 3);
+      // Attach top 4 upright calibrated portraits (front Master Anchor #1 + 3 open-eye angles) so Gemini locks 1:1 identity
+      const orderedSlots = orderDirectorSlotsForPrompt(cleanPrompt, angleState.angles, 4);
       let refIdx = 1;
       for (const slot of orderedSlots) {
         const aRef = await resolveReferenceImageInput(slot.fileName);
         if (aRef) {
-          aRef.roleLabel = `[참조 인물 사진 #${refIdx} — 안정위 대표원장 (${slot.label}) 실제 정방향 얼굴 골격·안경·가르마 기준]`;
+          aRef.roleLabel = refIdx === 1
+            ? `[최우선 정면 얼굴 마스터 기준 셀카 #1 (${slot.label}) — 커스텀 스튜디오 등록 원장님 실제 셀카: 성별·얼굴 골격·또렷한 눈매·눈썹·콧대·입매·안경테의 정확한 형태(각진 직사각/다각형 골드 프레임 vs 무안경 등 참조 사진 그대로, 동그란 원형 안경 변형 금지)를 이 셀카 속 인물과 1:1 동일 인물로 그대로 복제할 것]`
+            : `[동일 원장님 다각도 얼굴 참조 셀카 #${refIdx} (${slot.label}) — #1 마스터 셀카와 동일 인물의 다각도 골격 기준]`;
           refImages.push(aRef);
           refIdx++;
         }

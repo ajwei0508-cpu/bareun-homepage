@@ -5069,7 +5069,8 @@
     }
 
     function triggerAngleSampleUpload(angleKey) {
-      const slot = imState.angleSamples.find(s => s.key === angleKey);
+      const isAll = angleKey === 'all';
+      const slot = isAll ? { key: 'all', label: '내 대표 셀카 전체 일괄 기준' } : imState.angleSamples.find(s => s.key === angleKey);
       if (!slot) return;
       const inp = document.createElement('input');
       inp.type = 'file';
@@ -5079,7 +5080,7 @@
         if (!file) return;
         imState.uploadingAngleKey = angleKey;
         renderImageMakerPane();
-        showStatus('working', `📷 [${slot.label}] 원장님 샘플 얼굴 사진을 정방향 자동 보정하여 등록하고 있습니다...`);
+        showStatus('working', `📷 [${slot.label}] 원장님 본인 셀카를 정방향 자동 보정하여 등록하고 있습니다...`);
         try {
           const dataUrl = await new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -5098,7 +5099,7 @@
           const res = await fetch(url, {
             method: 'POST',
             headers,
-            body: JSON.stringify({ angleKey, fileName: file.name, dataUrl })
+            body: JSON.stringify({ angleKey, applyToAll: isAll, fileName: file.name, dataUrl })
           });
           const data = await res.json();
           if (!data || !data.ok) throw new Error((data && data.error) || '각도 샘플 등록 실패');
@@ -5107,7 +5108,9 @@
           }
           imState.uploadingAngleKey = '';
           renderImageMakerPane();
-          showStatus('ok', `✅ [${slot.label}] 각도 원장님 샘플 얼굴 사진이 정방향으로 등록되었습니다!`);
+          showStatus('ok', isAll
+            ? '✅ 원장님 대표 셀카가 전체 기준 슬롯에 일괄 등록되었습니다! 이제 모든 AI 실사 및 자동 칼럼 화보가 원장님 본인 얼굴로 생성됩니다.'
+            : `✅ [${slot.label}] 각도 원장님 샘플 얼굴 사진이 정방향으로 등록되었습니다!`);
         } catch (err) {
           imState.uploadingAngleKey = '';
           renderImageMakerPane();
@@ -5899,9 +5902,12 @@
           </div>
 
           <div id="imDirectorAngleGridWrap" style="display:${imState.useDirectorFace ? 'block' : 'none'}; margin-top:10px; padding-top:10px; border-top:1px dashed #b7e4c7;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-              <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 정방향(Upright) 캘리브레이션 완료된 대표원장 8각도 얼굴 기준 샘플 (클릭 시 확대 · 슬롯별 변경 가능)</span>
-              <span style="font-size:11px; color:#047857;">정면 · 미소 · 좌우 15° · 좌우 30° · 좌우 측면</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+              <span style="font-size:12px; font-weight:800; color:#064e3b;">📐 대표원장 본인 셀카 기준 샘플 (내 셀카 저장 시 모든 카드 &amp; 자동 칼럼 화보에 1:1 본인 얼굴 고정)</span>
+              <button type="button" class="mini-btn" style="background:linear-gradient(135deg,#059669,#047857); color:#fff; border:none; font-weight:800; padding:5px 11px; font-size:11.5px;"
+                onclick="triggerAngleSampleUpload('all')" ${imState.uploadingAngleKey === 'all' ? 'disabled' : ''}>
+                ${imState.uploadingAngleKey === 'all' ? '일괄 등록 중...' : '📸 내 대표 셀카 1장으로 전 슬롯 일괄 등록'}
+              </button>
             </div>
             <div class="im-angle-grid">
               ${imState.angleSamples.map(slot => {

@@ -2774,7 +2774,9 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
     private static function auto_sanitize_text_recursive($val, $replacements) {
         if (is_string($val)) {
-            return strtr($val, $replacements);
+            $cleaned = strtr($val, $replacements);
+            $cleaned = preg_replace('/[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]/u', '', $cleaned);
+            return trim(preg_replace('/\s{2,}/u', ' ', $cleaned));
         }
         if (is_array($val)) {
             foreach ($val as $k => $v) {
@@ -2968,13 +2970,13 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             . "6. 진료실 임상 관찰 노트(clinicalObservation): 네이버 AI 브리핑과 구글 E-E-A-T의 직접 경험(Experience) 기준을 충족하도록, '진료 현장에서 오랜 기간 다양한 연령대의 생활 리듬을 관찰해 보면~' 형식으로 **익명·일반화된 실제 임상 관찰 패턴과 생활 개선 포인트 4~5문장(280~420자)**을 구체적으로 작성할 것(금지어 '원장·바른한의원·내원·예약' 절대 사용 금지).\n"
             . "7. 한눈에 비교하는 생활 기준표(comparisonTable): 독자와 AI 검색엔진이 즉시 비교할 수 있도록 3~4열 × 정확히 4행의 실용 비교표(부담이 쌓이는 습관 vs 권장 실천 기준 vs 몸의 반응)를 작성하고 권장 행 번호(recommendedRowIndex, 0~3)를 지정할 것.\n"
             . "8. 자가점검 5항목(selfCheckItems 5개) + 대면 확인 권고 신호(redFlags 2~3개) + 독자 핵심 질문 FAQ 3개(faqItems 3개)를 충실히 작성할 것.\n"
-            . "9. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성:\n"
+            . "9. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성 (본문·표·제목 어디에도 유니코드 AI 이모티콘[💡, 🩺, 📊, ✅, ⚠️ 등] 절대 사용 금지):\n"
             . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주, 글자 0%).\n"
             . "   - 슬롯 ②(mechanismPrompt): 본문 중단 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 우아하게 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
-            . "   - 슬롯 ③(routinePrompt — 스튜디오 등록 대표원장 실제 얼굴 고정 · 단색 무지 벽지 실사): **반드시 한글로 작성**하며, 창문·가구·책상·장비·선반·화분 등 일체의 배경 소품이 전혀 없는 **깔끔한 단일색상 무지 매트 벽지(따뜻한 캐시미어 아이보리 #F5F1E8 또는 소프트 웜그레이)** 배경 앞에서, 순백색 한의사 가운(명찰·로고·글씨 0%)을 입은 한국인 남성 한의사 1명이 이번 글의 핵심 생활 동작(예: 턱 당기기·어깨 펴기 스트레칭 시범, 복식호흡 손 위치 시범, 바른 앉은 자세 시범, 온화한 손동작 설명 등)을 시연하며 **오직 인물과 동작·표정에만 100% 집중**되는 16:9 85mm 인물 실사 화보 장면을 구체적으로 지시할 것 (태블릿·모니터·배경 사물·글자·워터마크 0%).\n"
-            . "   - routineIllustCaption: '깔끔한 스튜디오 배경에서 ~ 바른 생활 동작과 관리 기준을 직접 시연하는 한의사'처럼 금지어('원장·바른한의원') 없이 자연스러운 한글 캡션 작성.\n\n"
+            . "   - 슬롯 ③(routinePrompt — 커스텀 스튜디오 등록 원장님 셀카 1:1 동일 얼굴 고정 · 85mm 정면~15° 상반신 클로즈업 실사): **반드시 한글로 작성**하며, 따뜻한 캐시미어 아이보리 톤의 깔끔한 아웃포커싱 배경 앞에서, 순백색 한의사 가운(명찰·로고·글씨 0%)을 입은 커스텀 스튜디오 등록 셀카와 100% 동일한 한의사 1명이 **상체와 얼굴을 카메라 정면(0°~15° 이내, 몸을 옆으로 90° 돌리는 측면 포즈 절대 금지)**으로 향한 채, 이번 글의 핵심 건강 관리 포인트(예: 목·어깨 긴장 완화 자세 안내, 복식호흡 손 위치 안내, 바른 수면·식습관 리듬 설명 등)를 온화한 표정과 자연스러운 손짓으로 안내하며 **얼굴과 상반신이 화면 중심에 큼직하고 또렷하게 잡히는 16:9 85mm 가슴 위 상반신 미디엄 클로즈업 실사 포트레이트**를 구체적으로 지시할 것 (글자·워터마크 0%).\n"
+            . "   - routineIllustCaption: '진료 가이드 — ~ 바른 생활 리듬과 관리 기준을 안내하는 한의사'처럼 금지어('원장·바른한의원') 없이 자연스러운 한글 캡션 작성.\n\n"
             . "[출력 JSON 스키마 (순수 JSON 객체만 반환)]\n"
-            . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 직답 요약 3~4문장 (정량 기준 포함)\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유와 정량 수치를 담은 심층 생리 원리 1단락 (4~5문장)\",\"일상 습관이 부위별 순환·신경·근육에 미치는 영향 2단락 (4~5문장)\",\"증상이 누적되는 악순환 고리와 신호 3단락 (4~5문장)\",\"회복 리듬을 되살리는 구체적 생활 기전과 실천 기준 4단락 (4~5문장)\"],\"clinicalObservation\":\"진료 현장에서 오랜 기간 관찰되는 실제 생활 패턴과 체크 포인트 4~5문장 (금지어 제외)\",\"comparisonTable\":{\"heading\":\"핵심 생활 습관 한눈에 비교하기\",\"intro\":\"비교표 핵심 안내 1문장\",\"headers\":[\"구분\",\"부담이 쌓이는 습관\",\"권장 생활 기준\",\"기대되는 몸의 변화\"],\"rows\":[[\"항목1\",\"피해야 할 습관\",\"구체적 수치 포함 권장 기준\",\"긍정적 변화\"],[\"항목2\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목3\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목4\",\"피해야 할 습관\",\"권장 기준\",\"변화\"]],\"recommendedRowIndex\":0},\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\",\"대면 확인이 필요한 증상 신호 3\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"정량 기준을 포함한 친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"},{\"q\":\"독자가 자주 혼동하는 질문 3?\",\"a\":\"친절하고 명확한 답변 3\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 바른 생활 동작 시연 가이드 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"배경없이 따뜻한 캐시미어 아이보리 단일색상 무지 벽지 앞에서, 순백색 한의사 가운을 입은 한국인 남성 한의사가 우측 15° 온화한 미소로 가슴을 펴고 바른 자세·호흡 동작을 시연하며 인물과 동작에 100% 집중한 85mm 상반신 인물 실사 화보\"}";
+            . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 직답 요약 3~4문장 (정량 기준 포함)\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유와 정량 수치를 담은 심층 생리 원리 1단락 (4~5문장)\",\"일상 습관이 부위별 순환·신경·근육에 미치는 영향 2단락 (4~5문장)\",\"증상이 누적되는 악순환 고리와 신호 3단락 (4~5문장)\",\"회복 리듬을 되살리는 구체적 생활 기전과 실천 기준 4단락 (4~5문장)\"],\"clinicalObservation\":\"진료 현장에서 오랜 기간 관찰되는 실제 생활 패턴과 체크 포인트 4~5문장 (금지어 제외)\",\"comparisonTable\":{\"heading\":\"핵심 생활 습관 한눈에 비교하기\",\"intro\":\"비교표 핵심 안내 1문장\",\"headers\":[\"구분\",\"부담이 쌓이는 습관\",\"권장 생활 기준\",\"기대되는 몸의 변화\"],\"rows\":[[\"항목1\",\"피해야 할 습관\",\"구체적 수치 포함 권장 기준\",\"긍정적 변화\"],[\"항목2\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목3\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목4\",\"피해야 할 습관\",\"권장 기준\",\"변화\"]],\"recommendedRowIndex\":0},\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\",\"대면 확인이 필요한 증상 신호 3\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"정량 기준을 포함한 친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"},{\"q\":\"독자가 자주 혼동하는 질문 3?\",\"a\":\"친절하고 명확한 답변 3\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 바른 생활 동작 시연 가이드 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"따뜻한 캐시미어 아이보리 톤의 깔끔한 아웃포커싱 배경 앞에서, 순백색 한의사 가운을 입은 한의사가 상체와 얼굴을 카메라 정면 15° 이내로 향한 채 온화한 미소와 단정한 손짓으로 호흡과 자세 회복 기준을 차분히 안내하는 85mm 가슴 위 상반신 클로즈업 인물 실사 포트레이트\"}";
 
         $feedback = '';
         $verified_candidate = null;
@@ -3384,6 +3386,45 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
     public static function handle_cron_tick(\WP_REST_Request $request) {
         self::send_nocache();
+        $regen_nid = strtolower(preg_replace('/[^a-z0-9\-]/i', '', (string) $request->get_param('regenSlot3')));
+        if ($regen_nid !== '' && class_exists('Bareun_Custom_Studio_Engine_V4')) {
+            @set_time_limit(180);
+            $api_key = self::resolve_active_gemini_key();
+            $prompt  = '따뜻하고 정갈한 캐시미어 아이보리 톤 현대 한의원 진료실 아웃포커싱 배경 앞에서, 순백색 한의사 가운을 입은 대표원장이 상체와 얼굴을 카메라 정면(0°~15° 이내, 몸을 옆으로 돌리는 측면 구도 금지)으로 향한 채, 온화하고 신뢰감 있는 미소와 단정한 손짓으로 어지럼증·자율신경 뇌혈류 안정을 위한 호흡과 목·어깨 이완 기준을 차분히 안내하는 85mm 가슴 위 상반신 클로즈업 인물 실사 포트레이트';
+            $new_url = Bareun_Custom_Studio_Engine_V4::generate_hn_slot_image_internal($prompt, 'syncope_dir_v2', $api_key, true);
+            if ($new_url !== '') {
+                $notes = get_option(self::OPT_BODY_NOTES, array());
+                if (is_array($notes)) {
+                    foreach ($notes as $idx => $n) {
+                        if (is_array($n) && strtolower((string) ($n['id'] ?? '')) === $regen_nid) {
+                            $notes[$idx]['routineIllustImg']     = $new_url;
+                            $notes[$idx]['routineIllustCaption'] = '진료 가이드 — 자율신경 안정과 뇌혈류 순환을 돕는 바른 자세·호흡 리듬을 안내하는 한의사';
+                            break;
+                        }
+                    }
+                    update_option(self::OPT_BODY_NOTES, $notes);
+                }
+                $hn_cfg = Bareun_Custom_Studio_Engine_V4::load_health_notes_cfg_php(false);
+                if (is_array($hn_cfg) && !empty($hn_cfg['notes']) && is_array($hn_cfg['notes'])) {
+                    foreach ($hn_cfg['notes'] as $idx => $n) {
+                        if (is_array($n) && strtolower((string) ($n['id'] ?? '')) === $regen_nid) {
+                            $hn_cfg['notes'][$idx]['routineIllustImg']     = $new_url;
+                            $hn_cfg['notes'][$idx]['routineIllustCaption'] = '진료 가이드 — 자율신경 안정과 뇌혈류 순환을 돕는 바른 자세·호흡 리듬을 안내하는 한의사';
+                            break;
+                        }
+                    }
+                    update_option('bareun_health_notes_cfg_v1', $hn_cfg, false);
+                    $upload_dir = wp_upload_dir();
+                    $target_dir = $upload_dir['basedir'] . '/bareun-studio';
+                    wp_mkdir_p($target_dir);
+                    @file_put_contents($target_dir . '/health-notes-custom-config.json', wp_json_encode($hn_cfg, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+                }
+                wp_cache_flush();
+                return new \WP_REST_Response(array('ok' => true, 'regeneratedNoteId' => $regen_nid, 'newRoutineImg' => $new_url), 200);
+            }
+            return new \WP_REST_Response(array('ok' => false, 'regeneratedNoteId' => $regen_nid, 'error' => 'Image generation returned empty'), 500);
+        }
+
         $due     = self::is_two_day_note_due_now();
         $running = (bool) get_transient('bareun_cron_2day_running_lock');
         if ($due && !$running && $request->get_param('sync') === '1') {
@@ -4170,8 +4211,36 @@ class Bareun_Master_SEO_Engine_V1 {
         }
     }
 
+    private static function strip_ai_emojis_php($raw) {
+        $s = preg_replace('/[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE0F}]/u', '', (string) $raw);
+        return trim(preg_replace('/\s{2,}/u', ' ', $s));
+    }
+
+    private static function render_bespoke_emblem_svg($key) {
+        $svgs = array(
+            '3d'        => '<span class="bareun-emblem bareun-emblem-gold" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><polyline points="3,7 12,12 21,7" stroke="currentColor" stroke-width="1.7"/><line x1="12" y1="12" x2="12" y2="22" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.1" fill="currentColor"/></svg></span>',
+            'clinic'    => '<span class="bareun-emblem bareun-emblem-warm" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.9"/><path d="M12 7.5v9M7.5 12h9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg></span>',
+            'verified'  => '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;" aria-hidden="true"><path d="M12 2L19 5.2V11.4C19 16.3 15.9 20.5 12 22C8.1 20.5 5 16.3 5 11.4V5.2L12 2Z" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/><path d="M8.8 12.2L11 14.4L15.5 9.8" stroke="#1D4ED8" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+            'insight'   => '<span class="bareun-emblem bareun-emblem-gold" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.3" fill="currentColor"/></svg></span>',
+            'keyword'   => '<span class="bareun-emblem bareun-emblem-soft" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg></span>',
+            'myth'      => '<span class="bareun-emblem bareun-emblem-rose" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polygon points="7.8,2 16.2,2 22,7.8 22,16.2 16.2,22 7.8,22 2,16.2 2,7.8" stroke="currentColor" stroke-width="2"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>',
+            'truth'     => '<span class="bareun-emblem bareun-emblem-emerald" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.5L19.5 5.8V11.8C19.5 16.8 16.2 20.8 12 22.2C7.8 20.8 4.5 16.8 4.5 11.8V5.8L12 2.5Z" stroke="currentColor" stroke-width="2"/><path d="M8.5 12.3L11 14.8L15.8 9.8" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+            'mechanism' => '<span class="bareun-emblem bareun-emblem-espresso" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.4 4.9 3.5 6 3.5H11C12.1 3.5 13 4.4 13 5.5V19.5C13 18.7 12.1 18 11 18H6C4.9 18 4 18.7 4 19.5V5.5Z" stroke="currentColor" stroke-width="1.9"/><path d="M20 5.5C20 4.4 19.1 3.5 18 3.5H13C11.9 3.5 11 4.4 11 5.5V19.5C11 18.7 11.9 18 13 18H18C19.1 18 20 18.7 20 19.5V5.5Z" stroke="currentColor" stroke-width="1.9"/><circle cx="8.5" cy="9.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="9.5" r="1.3" fill="currentColor"/></svg></span>',
+            'clinical'  => '<span class="bareun-emblem bareun-emblem-gold" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 12H8L10.2 7.5L13.5 16.5L15.8 10.5L17.2 12H19.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+            'matrix'    => '<span class="bareun-emblem bareun-emblem-espresso" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.9"/><line x1="3" y1="9.5" x2="21" y2="9.5" stroke="currentColor" stroke-width="1.8"/><line x1="10" y1="9.5" x2="10" y2="20" stroke="currentColor" stroke-width="1.8"/><circle cx="6.5" cy="6.8" r="1.1" fill="currentColor"/><circle cx="13.5" cy="14.5" r="1.4" fill="currentColor"/></svg></span>',
+            'check'     => '<span class="bareun-emblem bareun-emblem-emerald" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="6.8" stroke="currentColor" stroke-width="1.1" stroke-dasharray="2 2"/><path d="M8.6 12.2L11 14.6L15.6 9.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+            'guard'     => '<span class="bareun-emblem bareun-emblem-slate" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><polygon points="12,2.2 21.8,12 12,21.8 2.2,12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><line x1="12" y1="7.8" x2="12" y2="13.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="16.4" r="1.2" fill="currentColor"/></svg></span>',
+            'archive'   => '<span class="bareun-emblem bareun-emblem-soft" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3L21 7.5L12 12L3 7.5L12 3Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M5 11.2V16.5C5 18.4 8.1 20 12 20C15.9 20 19 18.4 19 16.5V11.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>',
+            'editorial' => '<span class="bareun-emblem bareun-emblem-soft" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.5L14.8 5H18.5V8.7L21 11.5L18.5 14.3V18H14.8L12 20.5L9.2 18H5.5V14.3L3 11.5L5.5 8.7V5H9.2L12 2.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.8 11.7L11 13.9L15.4 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+            'pin'       => '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>',
+            'phone'     => '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+            'chat'      => '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.84 1.87 5.33 4.68 6.73l-.98 3.62c-.08.3.26.54.52.37l4.31-2.85c.48.07.97.13 1.47.13 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>'
+        );
+        return isset($svgs[$key]) ? $svgs[$key] : $svgs['insight'];
+    }
+
     private static function format_hn_table_cell_php($raw) {
-        $s = trim((string) $raw);
+        $s = self::strip_ai_emojis_php($raw);
         if (strpos($s, '[권장]') === 0) {
             return '<span class="row-badge-good">권장</span> ' . esc_html(trim(substr($s, strlen('[권장]'))));
         }
@@ -4223,15 +4292,15 @@ class Bareun_Master_SEO_Engine_V1 {
         }
 
         $hub_map = array(
-            'knee'       => array('name' => '소아 성장 · 무릎 성장판', 'url' => self::CANONICAL_ORIGIN . '/growth/', 'btn' => '🌱 성장·성조숙증 클리닉', 'hero' => 'illust_knee_growth_care.jpg'),
-            'cervical'   => array('name' => '거북목 · 두피열 · 탈모', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'btn' => '🌿 탈모·모근재생 클리닉', 'hero' => 'illust_cervical_hairloss.jpg'),
-            'lumbar'     => array('name' => '허리 물렁뼈 · 골반 균형', 'url' => self::CANONICAL_ORIGIN . '/chuna/', 'btn' => '🦴 추나·척추교정 클리닉', 'hero' => 'illust_lumbar_pelvis.jpg'),
-            'gongjindan' => array('name' => '뇌 · 심장 활력 · 만성피로', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/', 'btn' => '✨ 황제공진단 클리닉', 'hero' => 'illust_gongjindan_heart_brain.jpg'),
-            'syncope'    => array('name' => '자율신경 · 어지럼 · 편두통', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '🧠 9대 자율신경 정밀검진', 'hero' => 'illust_syncope_autonomic.jpg'),
-            'digest'     => array('name' => '위장 · 식도 운동 · 소화', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '🩺 복부초음파·체열 정밀검진', 'hero' => 'illust_gut_metabolism.jpg'),
-            'gut'        => array('name' => '복부 대사 · 체지방 · 부종', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/', 'btn' => '⚖️ 다이어트·식욕ZERO 클리닉', 'hero' => 'diet_minimal_card4_stage2_core_lipolysis.jpg'),
-            'uterus'     => array('name' => '아랫배 · 골반 미세혈류 순환', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '🌸 하복부초음파·체열 검진', 'hero' => 'illust_uterus_fertility.jpg'),
-            'prostate'   => array('name' => '전립선 · 방광 · 골반저 순환', 'url' => self::CANONICAL_ORIGIN . '/prostate/', 'btn' => '🛡️ 전립선·남성활력 클리닉', 'hero' => 'illust_prostate_care.jpg')
+            'knee'       => array('name' => '소아 성장 · 무릎 성장판', 'url' => self::CANONICAL_ORIGIN . '/growth/', 'btn' => '성장·성조숙증 클리닉', 'hero' => 'illust_knee_growth_care.jpg'),
+            'cervical'   => array('name' => '거북목 · 두피열 · 탈모', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'btn' => '탈모·모근재생 클리닉', 'hero' => 'illust_cervical_hairloss.jpg'),
+            'lumbar'     => array('name' => '허리 물렁뼈 · 골반 균형', 'url' => self::CANONICAL_ORIGIN . '/chuna/', 'btn' => '추나·척추교정 클리닉', 'hero' => 'illust_lumbar_pelvis.jpg'),
+            'gongjindan' => array('name' => '뇌 · 심장 활력 · 만성피로', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/', 'btn' => '황제공진단 클리닉', 'hero' => 'illust_gongjindan_heart_brain.jpg'),
+            'syncope'    => array('name' => '자율신경 · 어지럼 · 편두통', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '9대 자율신경 정밀검진', 'hero' => 'illust_syncope_autonomic.jpg'),
+            'digest'     => array('name' => '위장 · 식도 운동 · 소화', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '복부초음파·체열 정밀검진', 'hero' => 'illust_gut_metabolism.jpg'),
+            'gut'        => array('name' => '복부 대사 · 체지방 · 부종', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/', 'btn' => '다이어트·식욕ZERO 클리닉', 'hero' => 'diet_minimal_card4_stage2_core_lipolysis.jpg'),
+            'uterus'     => array('name' => '아랫배 · 골반 미세혈류 순환', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '하복부초음파·체열 검진', 'hero' => 'illust_uterus_fertility.jpg'),
+            'prostate'   => array('name' => '전립선 · 방광 · 골반저 순환', 'url' => self::CANONICAL_ORIGIN . '/prostate/', 'btn' => '전립선·남성활력 클리닉', 'hero' => 'illust_prostate_care.jpg')
         );
         $hub = isset($hub_map[$part_id]) ? $hub_map[$part_id] : $hub_map['lumbar'];
 
@@ -4664,6 +4733,16 @@ class Bareun_Master_SEO_Engine_V1 {
     .channel-pills { display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap; }
     .ch-pill { display:inline-flex; align-items:center; gap:6px; padding:7px 13px 7px 8px; border-radius:999px; background:#FFFFFF; border:1px solid #E2DDD2; font-size:0.79rem; font-weight:800; color:#1A1A1E; text-decoration:none; }
     .ch-icon { width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .bareun-emblem { width:25px; height:25px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; box-shadow:0 2px 6px rgba(20,17,15,0.08); }
+    .bareun-emblem-gold { background:linear-gradient(135deg,#1D1814 0%,#2E251D 100%); color:#E9C97E; border:1px solid #C5A059; }
+    .bareun-emblem-espresso { background:linear-gradient(135deg,#FAF6EC 0%,#EFE5CE 100%); color:#7C5A1A; border:1px solid #D8C08E; }
+    .bareun-emblem-warm { background:#F5EFE2; color:#7A591D; border:1px solid #DEC89A; }
+    .bareun-emblem-soft { background:#F7F3E9; color:#8C6822; border:1px solid #E2D2AF; width:22px; height:22px; border-radius:6px; }
+    .bareun-emblem-emerald { background:linear-gradient(135deg,#065F46 0%,#047857 100%); color:#ECFDF5; border:1px solid #34D399; }
+    .bareun-emblem-rose { background:linear-gradient(135deg,#9F1239 0%,#BE123C 100%); color:#FFF1F2; border:1px solid #FDA4AF; }
+    .bareun-emblem-slate { background:linear-gradient(135deg,#1E293B 0%,#334155 100%); color:#F8FAFC; border:1px solid #94A3B8; }
+    .content-section h2, .clinical-obs-header, .mt-tag, .redflag-title, .ref-box-lead { display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+    .ref-box-lead { display:inline-flex; gap:6px; vertical-align:middle; }
     @media (max-width:720px) { .myth-truth-grid, .cluster-grid { grid-template-columns:1fr; } .editorial-header, .content-section { padding:20px 18px; } }
   </style>
 </head>
@@ -4679,8 +4758,8 @@ class Bareun_Master_SEO_Engine_V1 {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
           <span data-share-label="1">링크 퍼가기</span>
         </button>
-        <a href="<?php echo esc_url($explorer_part_url); ?>" class="header-action-link header-action-3d">🧬 3D 인체모형으로 <?php echo esc_html($part_label); ?> 입체 보기</a>
-        <a href="<?php echo esc_url($hub['url']); ?>" class="header-action-link header-action-home"><?php echo esc_html($hub['btn']); ?></a>
+        <a href="<?php echo esc_url($explorer_part_url); ?>" class="header-action-link header-action-3d"><?php echo self::render_bespoke_emblem_svg('3d'); ?><span>3D 인체모형으로 <?php echo esc_html($part_label); ?> 입체 보기</span></a>
+        <a href="<?php echo esc_url($hub['url']); ?>" class="header-action-link header-action-home"><?php echo self::render_bespoke_emblem_svg('clinic'); ?><span><?php echo esc_html(self::strip_ai_emojis_php($hub['btn'])); ?></span></a>
       </div>
     </div>
   </header>
@@ -4694,23 +4773,23 @@ class Bareun_Master_SEO_Engine_V1 {
         <span>›</span>
         <a href="<?php echo esc_url($hub['url']); ?>"><?php echo esc_html($hub['name']); ?></a>
         <span>›</span>
-        <strong style="color:var(--ink-900);"><?php echo esc_html($theme); ?></strong>
+        <strong style="color:var(--ink-900);"><?php echo esc_html(self::strip_ai_emojis_php($theme)); ?></strong>
       </nav>
 
       <header class="editorial-header">
         <div class="topic-kicker-row">
-          <span class="topic-chip"><?php echo esc_html($part_label . ' · ' . $keyword); ?></span>
+          <span class="topic-chip"><?php echo esc_html(self::strip_ai_emojis_php($part_label . ' · ' . $keyword)); ?></span>
           <span class="view-count-chip" id="standalone-note-view-count" data-note-view-id="<?php echo esc_attr($clean_id); ?>">조회수 <?php echo number_format($cur_views); ?>회</span>
           <span class="read-meta">발행 <?php echo esc_html(str_replace('-', '.', $pub_date)); ?> · 최종 의학 검토 <?php echo esc_html(str_replace('-', '.', $rev_date)); ?> · 읽는 시간 약 3분</span>
         </div>
-        <h1 class="article-h1"><?php echo esc_html($q_title); ?></h1>
+        <h1 class="article-h1"><?php echo esc_html(self::strip_ai_emojis_php($q_title)); ?></h1>
         <div class="ymyl-reviewer-bar">
           <div class="reviewer-profile">
             <img src="<?php echo esc_url($director_avatar); ?>" alt="바른한의원 대전본점 안정위 대표원장" width="48" height="48" class="reviewer-avatar" />
             <div>
               <div class="reviewer-info-title">
                 <span>집필 · 의학 감수: 안정위 한의사</span>
-                <span class="verified-pill">✓ 한의사 면허 · 대표원장 직접 감수</span>
+                <span class="verified-pill"><?php echo self::render_bespoke_emblem_svg('verified'); ?><span>한의사 면허 · 대표원장 직접 감수</span></span>
               </div>
               <div class="reviewer-info-sub">
                 바른한의원 대전본점 대표원장 · 의학 생리 문헌 교차 검토 · <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>">의료진 약력 및 9대 정밀검진 기준 보기 ↗</a>
@@ -4721,13 +4800,13 @@ class Bareun_Master_SEO_Engine_V1 {
       </header>
 
       <section class="direct-answer-lead" aria-label="핵심 의학 요약">
-        <div class="direct-answer-label">💡 바쁜 일상을 위한 30초 핵심 결론</div>
-        <p><?php echo esc_html($direct_answer); ?></p>
+        <div class="direct-answer-label"><?php echo self::render_bespoke_emblem_svg('insight'); ?><span>바쁜 일상을 위한 30초 핵심 결론</span></div>
+        <p><?php echo esc_html(self::strip_ai_emojis_php($direct_answer)); ?></p>
         <?php if (!empty($consumer_kws)) : ?>
           <div class="consumer-kw-row" aria-label="자주 찾는 생활 건강 키워드">
-            <span class="consumer-kw-label">🔎 자주 찾는 일상 키워드</span>
+            <span class="consumer-kw-label" style="display:inline-flex;align-items:center;gap:6px;"><?php echo self::render_bespoke_emblem_svg('keyword'); ?><span>자주 찾는 일상 키워드</span></span>
             <?php foreach ($consumer_kws as $ckw_item) : ?>
-              <span class="consumer-kw-chip">#<?php echo esc_html($ckw_item); ?></span>
+              <span class="consumer-kw-chip">#<?php echo esc_html(self::strip_ai_emojis_php($ckw_item)); ?></span>
             <?php endforeach; ?>
           </div>
         <?php endif; ?>
@@ -4737,7 +4816,7 @@ class Bareun_Master_SEO_Engine_V1 {
       <figure class="medical-figure-wrap slot-empathy-figure">
         <img src="<?php echo esc_url($empathy_urls['display']); ?>" alt="<?php echo esc_attr($empathy_alt); ?>" width="1376" height="768" fetchpriority="high" />
         <?php if ($empathy_caption !== '') : ?>
-          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-empathy">일상 공감 01</span><span><?php echo esc_html($empathy_caption); ?></span></figcaption>
+          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-empathy">일상 공감 01</span><span><?php echo esc_html(self::strip_ai_emojis_php($empathy_caption)); ?></span></figcaption>
         <?php endif; ?>
       </figure>
       <?php endif; ?>
@@ -4745,29 +4824,29 @@ class Bareun_Master_SEO_Engine_V1 {
       <section class="content-section">
         <h2>일상 속 이런 모습이 반복되고 있나요?</h2>
         <?php foreach ($empathy_lines as $el) : ?>
-          <p><?php echo esc_html((string) $el); ?></p>
+          <p><?php echo esc_html(self::strip_ai_emojis_php((string) $el)); ?></p>
         <?php endforeach; ?>
         <?php foreach ($truth_lines as $tl) : ?>
-          <p><?php echo esc_html((string) $tl); ?></p>
+          <p><?php echo esc_html(self::strip_ai_emojis_php((string) $tl)); ?></p>
         <?php endforeach; ?>
         <div class="myth-truth-grid">
           <div class="mt-card mt-myth">
-            <span class="mt-tag">❌ 흔히 하기 쉬운 오해</span><br />
-            &ldquo;<?php echo esc_html((string) ($myth_lines[0] ?? '')); ?>&rdquo;
+            <span class="mt-tag"><?php echo self::render_bespoke_emblem_svg('myth'); ?><span>흔히 하기 쉬운 오해</span></span>
+            &ldquo;<?php echo esc_html(self::strip_ai_emojis_php((string) ($myth_lines[0] ?? ''))); ?>&rdquo;
           </div>
           <div class="mt-card mt-truth">
-            <span class="mt-tag">⭕ 우리 몸이 알려주는 진실</span><br />
-            <?php echo esc_html((string) ($myth_lines[1] ?? '')); ?>
+            <span class="mt-tag"><?php echo self::render_bespoke_emblem_svg('truth'); ?><span>우리 몸이 알려주는 진실</span></span>
+            <?php echo esc_html(self::strip_ai_emojis_php((string) ($myth_lines[1] ?? ''))); ?>
           </div>
         </div>
       </section>
 
       <figure class="medical-figure-wrap slot-mechanism-figure">
         <img src="<?php echo esc_url($webp_hero); ?>" alt="<?php echo esc_attr($deep_alt); ?>" width="1376" height="768" loading="lazy" decoding="async" />
-        <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-mechanism">원리 도해 02</span><span><?php echo esc_html($deep_caption); ?></span></figcaption>
+        <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-mechanism">원리 도해 02</span><span><?php echo esc_html(self::strip_ai_emojis_php($deep_caption)); ?></span></figcaption>
         <div class="bridge-3d-banner">
           <div class="bridge-3d-text">
-            <strong>🧬 방금 읽은 ‘<?php echo esc_html($part_label); ?>’ 구조, 입체로 직접 돌려 보시겠어요?</strong>
+            <strong style="display:flex;align-items:center;gap:8px;"><?php echo self::render_bespoke_emblem_svg('3d'); ?><span>방금 읽은 ‘<?php echo esc_html($part_label); ?>’ 구조, 입체로 직접 돌려 보시겠어요?</span></strong>
             <span>바른한의원 3D 인체모형 뷰어에서 360° 회전하며 근육·신경·혈관 연결을 한눈에 살펴보실 수 있습니다.</span>
           </div>
           <a href="<?php echo esc_url($explorer_part_url); ?>" class="bridge-3d-btn">3D 인체모형 열기 →</a>
@@ -4775,30 +4854,30 @@ class Bareun_Master_SEO_Engine_V1 {
       </figure>
 
       <section class="content-section">
-        <h2>📖 <?php echo esc_html($deep_title); ?></h2>
+        <h2><?php echo self::render_bespoke_emblem_svg('mechanism'); ?><span><?php echo esc_html(self::strip_ai_emojis_php($deep_title)); ?></span></h2>
         <?php foreach ($deep_paras as $dp) : ?>
-          <p><?php echo esc_html((string) $dp); ?></p>
+          <p><?php echo esc_html(self::strip_ai_emojis_php((string) $dp)); ?></p>
         <?php endforeach; ?>
         <?php if ($clin_obs !== '') : ?>
           <div class="clinical-observation-box">
-            <div class="clinical-obs-header">🩺 진료실에서 살펴본 생활 리듬 관찰 포인트</div>
-            <p style="margin:0;font-size:0.93rem;color:var(--ink-900);"><?php echo esc_html($clin_obs); ?></p>
+            <div class="clinical-obs-header"><?php echo self::render_bespoke_emblem_svg('clinical'); ?><span>진료실에서 살펴본 생활 리듬 관찰 포인트</span></div>
+            <p style="margin:0;font-size:0.93rem;color:var(--ink-900);"><?php echo esc_html(self::strip_ai_emojis_php($clin_obs)); ?></p>
           </div>
         <?php endif; ?>
       </section>
 
       <?php if (is_array($comp_table)) : ?>
       <section class="content-section">
-        <h2>📊 <?php echo esc_html((string) ($comp_table['heading'] ?? ($keyword . ' 생활 기준 한눈에 비교하기'))); ?></h2>
+        <h2><?php echo self::render_bespoke_emblem_svg('matrix'); ?><span><?php echo esc_html(self::strip_ai_emojis_php((string) ($comp_table['heading'] ?? ($keyword . ' 생활 기준 한눈에 비교하기')))); ?></span></h2>
         <?php if (!empty($comp_table['intro'])) : ?>
-          <p><?php echo esc_html((string) $comp_table['intro']); ?></p>
+          <p><?php echo esc_html(self::strip_ai_emojis_php((string) $comp_table['intro'])); ?></p>
         <?php endif; ?>
         <div class="table-scroll">
           <table class="comparison-table">
             <thead>
               <tr>
                 <?php foreach ($comp_table['headers'] as $th_txt) : ?>
-                  <th><?php echo esc_html((string) $th_txt); ?></th>
+                  <th><?php echo esc_html(self::strip_ai_emojis_php((string) $th_txt)); ?></th>
                 <?php endforeach; ?>
               </tr>
             </thead>
@@ -4810,7 +4889,7 @@ class Bareun_Master_SEO_Engine_V1 {
               ?>
                 <tr class="<?php echo ($r_idx === $rec_idx) ? 'recommended-row' : ''; ?>">
                   <?php foreach ($r_cells as $c_idx => $c_val) : ?>
-                    <td><?php echo ($c_idx === 0) ? ('<strong>' . esc_html((string) $c_val) . '</strong>') : self::format_hn_table_cell_php($c_val); ?></td>
+                    <td><?php echo ($c_idx === 0) ? ('<strong>' . esc_html(self::strip_ai_emojis_php((string) $c_val)) . '</strong>') : self::format_hn_table_cell_php($c_val); ?></td>
                   <?php endforeach; ?>
                 </tr>
               <?php endforeach; ?>
@@ -4826,19 +4905,19 @@ class Bareun_Master_SEO_Engine_V1 {
         <?php if ($routine_caption !== '') :
             $slot3_badge_label = (isset($target['source']) && strpos((string) $target['source'], 'director') !== false) ? '임상 가이드 03' : '전·후 루틴 03';
         ?>
-          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-routine"><?php echo esc_html($slot3_badge_label); ?></span><span><?php echo esc_html($routine_caption); ?></span></figcaption>
+          <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-routine"><?php echo esc_html($slot3_badge_label); ?></span><span><?php echo esc_html(self::strip_ai_emojis_php($routine_caption)); ?></span></figcaption>
         <?php endif; ?>
       </figure>
       <?php endif; ?>
 
       <section class="content-section">
-        <h2>✅ 오늘 밤 직접 체크해 보는 5가지 <?php echo esc_html($keyword); ?> 리듬 신호</h2>
+        <h2><?php echo self::render_bespoke_emblem_svg('check'); ?><span>오늘 밤 직접 체크해 보는 5가지 <?php echo esc_html(self::strip_ai_emojis_php($keyword)); ?> 리듬 신호</span></h2>
         <p>최근 2주 동안의 모습에 해당하는 항목을 직접 눌러 체크해 보세요. 선택 개수에 맞춰 생활 속 우선순위를 정리해 드립니다.</p>
         <div class="check-list-interactive" id="self-check-group">
           <?php foreach ($self_checks as $sc_item) : ?>
             <label class="check-item-label">
               <input type="checkbox" onchange="updateSelfCheck()" />
-              <span><?php echo esc_html((string) $sc_item); ?></span>
+              <span><?php echo esc_html(self::strip_ai_emojis_php((string) $sc_item)); ?></span>
             </label>
           <?php endforeach; ?>
         </div>
@@ -4854,23 +4933,23 @@ class Bareun_Master_SEO_Engine_V1 {
       <section class="content-section">
         <h2>생활 습관 조절과 함께 세심히 살펴야 할 기준은 무엇일까요?</h2>
         <?php if (!empty($deep_signals)) : ?>
-          <p>평소 가정에서는 <strong><?php echo esc_html((string) ($deep_signals[0] ?? '')); ?></strong><?php if (!empty($deep_signals[1])) : ?> 또한 <strong><?php echo esc_html((string) $deep_signals[1]); ?></strong><?php endif; ?><?php if (!empty($deep_signals[2])) : ?> 아울러 <strong><?php echo esc_html((string) $deep_signals[2]); ?></strong><?php endif; ?></p>
+          <p>평소 가정에서는 <strong><?php echo esc_html(self::strip_ai_emojis_php((string) ($deep_signals[0] ?? ''))); ?></strong><?php if (!empty($deep_signals[1])) : ?> 또한 <strong><?php echo esc_html(self::strip_ai_emojis_php((string) $deep_signals[1])); ?></strong><?php endif; ?><?php if (!empty($deep_signals[2])) : ?> 아울러 <strong><?php echo esc_html(self::strip_ai_emojis_php((string) $deep_signals[2])); ?></strong><?php endif; ?></p>
         <?php endif; ?>
         <?php if (!empty($red_flags)) : ?>
           <div class="redflag-box">
-            <strong style="font-size:0.9rem;color:#0F172A;">⚠️ 세심한 대면 확인을 권해 드리는 경우</strong>
+            <strong class="redflag-title" style="font-size:0.9rem;color:#0F172A;"><?php echo self::render_bespoke_emblem_svg('guard'); ?><span>세심한 대면 확인을 권해 드리는 경우</span></strong>
             <ul>
               <?php foreach ($red_flags as $rf) : ?>
-                <li><?php echo esc_html((string) $rf); ?></li>
+                <li><?php echo esc_html(self::strip_ai_emojis_php((string) $rf)); ?></li>
               <?php endforeach; ?>
             </ul>
           </div>
         <?php endif; ?>
         <div class="references-box">
-          <strong style="color:var(--ink-700);">📚 학술 참고 근거</strong> · <?php echo esc_html($deep_ref); ?>
+          <strong class="ref-box-lead" style="color:var(--ink-700);"><?php echo self::render_bespoke_emblem_svg('archive'); ?><span>학술 참고 근거</span></strong> · <?php echo esc_html(self::strip_ai_emojis_php($deep_ref)); ?>
         </div>
         <div class="references-box" style="margin-top:10px;background:#FAF8F3;border-color:rgba(74,53,37,0.14);font-size:0.84rem;color:#4B5563;line-height:1.65;">
-          <strong style="color:var(--ink-700);">📋 의학 감수 · AI 문헌 정리 보조 및 진료 안내</strong> · 본 건강 글은 학술 논문 요약 보조 도구를 활용해 생활 언어로 초안을 정리한 뒤, 바른한의원 대전본점 안정위 대표원장(한의사)이 직접 의학적 사실관계와 생활 수칙을 교차 검토·감수하여 발행했습니다. 본문 내용은 일상 건강 이해를 돕기 위한 일반 의학 정보이며, 개인별 정확한 진단과 치료 계획은 반드시 의료진의 대면 진찰을 통해 결정하시기 바랍니다.
+          <strong class="ref-box-lead" style="color:var(--ink-700);"><?php echo self::render_bespoke_emblem_svg('editorial'); ?><span>의학 감수 · AI 문헌 정리 보조 및 진료 안내</span></strong> · 본 건강 글은 학술 논문 요약 보조 도구를 활용해 생활 언어로 초안을 정리한 뒤, 바른한의원 대전본점 안정위 대표원장(한의사)이 직접 의학적 사실관계와 생활 수칙을 교차 검토·감수하여 발행했습니다. 본문 내용은 일상 건강 이해를 돕기 위한 일반 의학 정보이며, 개인별 정확한 진단과 치료 계획은 반드시 의료진의 대면 진찰을 통해 결정하시기 바랍니다.
         </div>
 
         <h3>함께 읽으면 연결되는 <?php echo esc_html($part_label); ?> 인기 가이드 (BEST 2)</h3>
@@ -4881,8 +4960,8 @@ class Bareun_Master_SEO_Engine_V1 {
               $bn_views = isset($bn['_views']) ? (int) $bn['_views'] : (isset($norm_views[$bn_id_low]) ? (int) $norm_views[$bn_id_low] : 0);
           ?>
             <a href="<?php echo esc_url($bn_url); ?>" class="cluster-card">
-              <div class="cluster-kicker">이어서 읽기 BEST 0<?php echo ($bidx + 1); ?> · <?php echo esc_html((string) ($bn['keyword'] ?? $part_label)); ?> · <span data-note-view-id="<?php echo esc_attr($bn_id_low); ?>">조회수 <?php echo number_format($bn_views); ?>회</span></div>
-              <div class="cluster-title">&ldquo;<?php echo esc_html((string) ($bn['questionTitle'] ?? $bn['title'] ?? '')); ?>&rdquo;</div>
+              <div class="cluster-kicker">이어서 읽기 BEST 0<?php echo ($bidx + 1); ?> · <?php echo esc_html(self::strip_ai_emojis_php((string) ($bn['keyword'] ?? $part_label))); ?> · <span data-note-view-id="<?php echo esc_attr($bn_id_low); ?>">조회수 <?php echo number_format($bn_views); ?>회</span></div>
+              <div class="cluster-title">&ldquo;<?php echo esc_html(self::strip_ai_emojis_php((string) ($bn['questionTitle'] ?? $bn['title'] ?? ''))); ?>&rdquo;</div>
             </a>
           <?php endforeach; ?>
           <a href="<?php echo esc_url($hub['url']); ?>" class="cluster-card">
@@ -4907,7 +4986,7 @@ class Bareun_Master_SEO_Engine_V1 {
             <a href="<?php echo esc_url($th_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#000000;color:#FFF;font-weight:900;font-size:0.8rem;">@</span><span>스레드</span></a>
             <a href="<?php echo esc_url($ig_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);color:#FFF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span><span>인스타그램</span></a>
             <a href="<?php echo esc_url($kk_url); ?>" target="_blank" rel="noopener noreferrer" class="ch-pill"><span class="ch-icon" style="background:#FEE500;color:#191919;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C6.48 4 2 7.52 2 11.86c0 2.83 1.89 5.31 4.74 6.7-.15.54-.96 3.47-1 3.63-.05.21.08.21.17.15.07-.05 2.89-1.95 4.05-2.75.66.1 1.34.15 2.04.15 5.52 0 10-3.52 10-7.88C22 7.52 17.52 4 12 4z"/></svg></span><span>카카오톡</span></a>
-            <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/location/'); ?>" class="ch-pill"><span class="ch-icon" style="background:#2D5A43;color:#FFF;font-size:0.74rem;">📍</span><span>오시는길 · 비급여 안내</span></a>
+            <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/location/'); ?>" class="ch-pill"><span class="ch-icon" style="background:#2D5A43;color:#FFF;"><?php echo self::render_bespoke_emblem_svg('pin'); ?></span><span>오시는길 · 비급여 안내</span></a>
           </div>
         </div>
       </section>
@@ -4930,9 +5009,9 @@ class Bareun_Master_SEO_Engine_V1 {
     }
   </style>
   <nav id="hn-mobile-3btn-bar" aria-label="모바일 빠른 예약 바">
-    <a href="tel:01056311275" style="background:#FFFFFF;color:#171614;">📞 전화상담</a>
-    <a href="<?php echo esc_url($kk_url); ?>" target="_blank" rel="noopener noreferrer" style="background:#FEE500;color:#191919;">💬 카톡예약</a>
-    <a href="<?php echo esc_url($nv_url); ?>" target="_blank" rel="noopener noreferrer" style="background:#03C75A;color:#FFFFFF;">📍 네이버예약</a>
+    <a href="tel:01056311275" style="background:#FFFFFF;color:#171614;"><?php echo self::render_bespoke_emblem_svg('phone'); ?><span>전화상담</span></a>
+    <a href="<?php echo esc_url($kk_url); ?>" target="_blank" rel="noopener noreferrer" style="background:#FEE500;color:#191919;"><?php echo self::render_bespoke_emblem_svg('chat'); ?><span>카톡예약</span></a>
+    <a href="<?php echo esc_url($nv_url); ?>" target="_blank" rel="noopener noreferrer" style="background:#03C75A;color:#FFFFFF;"><?php echo self::render_bespoke_emblem_svg('pin'); ?><span>네이버예약</span></a>
   </nav>
   <div id="standaloneShareToast" role="status" aria-live="polite"></div>
   <script>
@@ -4966,7 +5045,7 @@ class Bareun_Master_SEO_Engine_V1 {
             var lbl = btnEl.querySelector('[data-share-label="1"]');
             var prev = lbl ? lbl.textContent : '';
             btnEl.classList.add('is-copied');
-            if (lbl) lbl.textContent = '✓ 복사됨';
+            if (lbl) lbl.textContent = '복사 완료';
             setTimeout(function() {
               btnEl.classList.remove('is-copied');
               if (lbl && prev) lbl.textContent = prev;
@@ -4974,7 +5053,7 @@ class Bareun_Master_SEO_Engine_V1 {
           }
           var toast = document.getElementById('standaloneShareToast');
           if (toast) {
-            toast.textContent = '🔗 건강 글 링크가 복사되었습니다! 카톡·블로그·스레드에 바로 붙여넣기 하세요';
+            toast.textContent = '건강 글 링크가 복사되었습니다. 카톡·블로그·스레드에 바로 붙여넣기 하세요.';
             toast.classList.add('show');
             if (toastTimer) clearTimeout(toastTimer);
             toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2800);
@@ -7123,6 +7202,14 @@ class Bareun_Custom_Studio_Engine_V4 {
         );
     }
 
+    public static function get_configured_director_name_php() {
+        $cinfo = get_option(self::OPT_CLINIC_INFO, array());
+        if (is_array($cinfo) && !empty($cinfo['directorName'])) {
+            return trim((string)$cinfo['directorName']);
+        }
+        return '안정위 대표원장';
+    }
+
     public static function rest_handle_angle_samples($request) {
         $slots = self::get_default_angle_slots();
         $saved = get_option(self::OPT_ANGLE_SAMPLES, array());
@@ -7132,59 +7219,77 @@ class Bareun_Custom_Studio_Engine_V4 {
 
         if ($request->get_method() === 'POST') {
             $params = $request->get_json_params();
-            if (!is_array($params) || empty($params['angleKey']) || empty($params['dataUrl'])) {
-                return new WP_REST_Response(array('ok' => false, 'error' => '각도 키(angleKey)와 사진 데이터(dataUrl)가 필요합니다.'), 400);
-            }
-            $angle_key = sanitize_text_field((string)$params['angleKey']);
-            $valid = false;
-            foreach ($slots as $sl) {
-                if ($sl['key'] === $angle_key) {
-                    $valid = true;
-                    break;
+            if (is_array($params) && !empty($params['resetDefault'])) {
+                delete_option(self::OPT_ANGLE_SAMPLES);
+                $saved = array();
+            } else {
+                if (!is_array($params) || empty($params['angleKey']) || empty($params['dataUrl'])) {
+                    return new WP_REST_Response(array('ok' => false, 'error' => '각도 키(angleKey)와 사진 데이터(dataUrl)가 필요합니다.'), 400);
                 }
-            }
-            if (!$valid) {
-                return new WP_REST_Response(array('ok' => false, 'error' => '유효하지 않은 각도 슬롯입니다.'), 400);
-            }
-
-            $data_url = (string)$params['dataUrl'];
-            if (!preg_match('/^data:(image\/(?:jpeg|jpg|png|webp));base64,(.+)$/i', $data_url, $m)) {
-                return new WP_REST_Response(array('ok' => false, 'error' => 'JPG, PNG, WEBP 형식의 얼굴 사진을 선택해 주세요.'), 400);
-            }
-            $mime = strtolower($m[1]);
-            $bin  = base64_decode($m[2]);
-            if ($bin === false || strlen($bin) < 1024) {
-                return new WP_REST_Response(array('ok' => false, 'error' => '유효한 이미지 데이터가 아닙니다.'), 400);
-            }
-
-            require_once ABSPATH . 'wp-admin/includes/file.php';
-            require_once ABSPATH . 'wp-admin/includes/media.php';
-            require_once ABSPATH . 'wp-admin/includes/image.php';
-
-            $ext = strpos($mime, 'png') !== false ? 'png' : (strpos($mime, 'webp') !== false ? 'webp' : 'jpg');
-            $unique_name = 'director_angle_' . strtolower($angle_key) . '_' . time() . '.' . $ext;
-            $upload = wp_upload_bits($unique_name, null, $bin);
-            if (!empty($upload['error'])) {
-                return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
-            }
-
-            // Auto-orient EXIF & normalize <=1024px so smartphone portraits are NEVER sideways!
-            if (function_exists('wp_get_image_editor')) {
-                $editor = wp_get_image_editor($upload['file']);
-                if (!is_wp_error($editor)) {
-                    if (method_exists($editor, 'maybe_exif_rotate')) {
-                        $editor->maybe_exif_rotate();
+                $angle_key = sanitize_text_field((string)$params['angleKey']);
+                $apply_all = ($angle_key === 'all') || !empty($params['applyToAll']);
+                $valid = $apply_all;
+                if (!$valid) {
+                    foreach ($slots as $sl) {
+                        if ($sl['key'] === $angle_key) {
+                            $valid = true;
+                            break;
+                        }
                     }
-                    $editor->resize(1024, 1024, false);
-                    $editor->save($upload['file']);
                 }
-            }
+                if (!$valid) {
+                    return new WP_REST_Response(array('ok' => false, 'error' => '유효하지 않은 각도 슬롯입니다.'), 400);
+                }
 
-            $saved[$angle_key] = array(
-                'fileName'  => $upload['url'],
-                'updatedAt' => current_time('c')
-            );
-            update_option(self::OPT_ANGLE_SAMPLES, $saved);
+                $data_url = (string)$params['dataUrl'];
+                if (!preg_match('/^data:(image\/(?:jpeg|jpg|png|webp));base64,(.+)$/i', $data_url, $m)) {
+                    return new WP_REST_Response(array('ok' => false, 'error' => 'JPG, PNG, WEBP 형식의 얼굴 사진을 선택해 주세요.'), 400);
+                }
+                $mime = strtolower($m[1]);
+                $bin  = base64_decode($m[2]);
+                if ($bin === false || strlen($bin) < 1024) {
+                    return new WP_REST_Response(array('ok' => false, 'error' => '유효한 이미지 데이터가 아닙니다.'), 400);
+                }
+
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                require_once ABSPATH . 'wp-admin/includes/media.php';
+                require_once ABSPATH . 'wp-admin/includes/image.php';
+
+                $ext = strpos($mime, 'png') !== false ? 'png' : (strpos($mime, 'webp') !== false ? 'webp' : 'jpg');
+                $unique_name = 'director_angle_' . strtolower($apply_all ? 'primary_all' : $angle_key) . '_' . time() . '.' . $ext;
+                $upload = wp_upload_bits($unique_name, null, $bin);
+                if (!empty($upload['error'])) {
+                    return new WP_REST_Response(array('ok' => false, 'error' => $upload['error']), 500);
+                }
+
+                // Auto-orient EXIF & normalize <=1024px so smartphone portraits are NEVER sideways!
+                if (function_exists('wp_get_image_editor')) {
+                    $editor = wp_get_image_editor($upload['file']);
+                    if (!is_wp_error($editor)) {
+                        if (method_exists($editor, 'maybe_exif_rotate')) {
+                            $editor->maybe_exif_rotate();
+                        }
+                        $editor->resize(1024, 1024, false);
+                        $editor->save($upload['file']);
+                    }
+                }
+
+                $now_iso = current_time('c');
+                if ($apply_all) {
+                    foreach ($slots as $sl) {
+                        $saved[$sl['key']] = array(
+                            'fileName'  => $upload['url'],
+                            'updatedAt' => $now_iso
+                        );
+                    }
+                } else {
+                    $saved[$angle_key] = array(
+                        'fileName'  => $upload['url'],
+                        'updatedAt' => $now_iso
+                    );
+                }
+                update_option(self::OPT_ANGLE_SAMPLES, $saved);
+            }
         }
 
         $upload_dir = wp_upload_dir();
@@ -7192,27 +7297,47 @@ class Bareun_Custom_Studio_Engine_V4 {
         $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
         $gh_angle_base = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
 
+        // If clinic owner uploaded at least 1 custom selfie, fallback any un-uploaded slots to their primary custom selfie (NEVER mix another doctor's default photos!)
+        $primary_custom_url = '';
+        $primary_custom_at  = null;
+        if (!empty($saved['front']['fileName'])) {
+            $primary_custom_url = $saved['front']['fileName'];
+            $primary_custom_at  = isset($saved['front']['updatedAt']) ? $saved['front']['updatedAt'] : null;
+        } else {
+            foreach ($saved as $sv) {
+                if (is_array($sv) && !empty($sv['fileName'])) {
+                    $primary_custom_url = $sv['fileName'];
+                    $primary_custom_at  = isset($sv['updatedAt']) ? $sv['updatedAt'] : null;
+                    break;
+                }
+            }
+        }
+
         $out_angles = array();
         foreach ($slots as $sl) {
             $k = $sl['key'];
             $default_url = file_exists($studio_angle_dir . '/' . $sl['file'])
                 ? ($studio_angle_url . '/' . $sl['file'])
                 : ($gh_angle_base . '/' . $sl['file']);
-            $custom_url = (!empty($saved[$k]['fileName'])) ? $saved[$k]['fileName'] : $default_url;
+            $custom_url = (!empty($saved[$k]['fileName']))
+                ? $saved[$k]['fileName']
+                : ($primary_custom_url !== '' ? $primary_custom_url : $default_url);
             $out_angles[] = array(
                 'key'       => $k,
                 'label'     => $sl['label'],
                 'desc'      => $sl['desc'],
                 'fileName'  => $custom_url,
-                'updatedAt' => isset($saved[$k]['updatedAt']) ? $saved[$k]['updatedAt'] : null
+                'isCustom'  => (!empty($saved[$k]['fileName']) || $primary_custom_url !== ''),
+                'updatedAt' => isset($saved[$k]['updatedAt']) ? $saved[$k]['updatedAt'] : $primary_custom_at
             );
         }
 
         return new WP_REST_Response(array(
-            'ok'        => true,
-            'profileId' => 'director_ahn',
-            'name'      => '안정위 대표원장',
-            'angles'    => $out_angles
+            'ok'              => true,
+            'profileId'       => 'director_custom',
+            'name'            => self::get_configured_director_name_php(),
+            'hasCustomSelfie' => ($primary_custom_url !== ''),
+            'angles'          => $out_angles
         ), 200);
     }
 
@@ -7259,24 +7384,109 @@ class Bareun_Custom_Studio_Engine_V4 {
         foreach ($slots as $sl) {
             $by_key[$sl['key']] = $sl;
         }
+        // ALWAYS include 'front' (wide-open eyes, white coat, primary facial bone & glasses anchor) first,
+        // paired with open-eye multi-angle portraits (avoiding eyes-closed frontSmile unless explicitly requested)
         $priority_map = array(
-            'front'        => array('front', 'frontSmile', 'right15Smile'),
-            'frontSmile'   => array('frontSmile', 'front', 'right15Smile'),
-            'left15Smile'  => array('left15Smile', 'frontSmile', 'left30'),
-            'right15Smile' => array('right15Smile', 'frontSmile', 'right30'),
-            'left30'       => array('left30', 'left15Smile', 'front'),
-            'right30'      => array('right30', 'right15Smile', 'front'),
-            'leftProfile'  => array('leftProfile', 'left30', 'front'),
-            'rightProfile' => array('rightProfile', 'right30', 'front')
+            'front'        => array('front', 'right15Smile', 'left15Smile', 'right30'),
+            'frontSmile'   => array('front', 'right15Smile', 'left15Smile', 'frontSmile'),
+            'left15Smile'  => array('front', 'left15Smile', 'left30', 'right15Smile'),
+            'right15Smile' => array('front', 'right15Smile', 'right30', 'left15Smile'),
+            'left30'       => array('front', 'left30', 'left15Smile', 'right15Smile'),
+            'right30'      => array('front', 'right30', 'right15Smile', 'left15Smile'),
+            'leftProfile'  => array('front', 'leftProfile', 'left30', 'left15Smile'),
+            'rightProfile' => array('front', 'rightProfile', 'right30', 'right15Smile')
         );
-        $order_keys = isset($priority_map[$pref]) ? $priority_map[$pref] : $priority_map['frontSmile'];
+        $order_keys = isset($priority_map[$pref]) ? $priority_map[$pref] : $priority_map['right15Smile'];
         $ordered = array();
         foreach ($order_keys as $k) {
             if (isset($by_key[$k])) {
                 $ordered[] = $by_key[$k];
             }
         }
-        return array_slice($ordered, 0, 3);
+        return array_slice($ordered, 0, 4);
+    }
+
+    /**
+     * Universal Studio Selfie Collector:
+     * - If the clinic owner (or B2B buyer) uploaded any custom selfie(s) in Custom Studio (OPT_ANGLE_SAMPLES),
+     *   uses 100% ONLY their custom-uploaded selfie(s) so another person's default photos are NEVER mixed in.
+     * - Always places the primary front open-eye anchor portrait first (#1) + up to 3 multi-angle portraits.
+     */
+    private static function collect_director_reference_images_php($user_prompt) {
+        $slots = self::get_default_angle_slots();
+        $saved_angles = get_option(self::OPT_ANGLE_SAMPLES, array());
+        if (!is_array($saved_angles)) {
+            $saved_angles = array();
+        }
+
+        $upload_dir       = wp_upload_dir();
+        $studio_angle_dir = $upload_dir['basedir'] . '/bareun-studio/director-angle-refs';
+        $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
+        $gh_angle_base    = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
+
+        $ordered_slots = self::order_director_slots_for_prompt($user_prompt, $slots);
+        $preferred_angle_label = !empty($ordered_slots[1]['label'])
+            ? $ordered_slots[1]['label']
+            : (!empty($ordered_slots[0]['label']) ? $ordered_slots[0]['label'] : '정면~15° 미소');
+
+        // Check if the clinic owner has registered any custom selfie in Custom Studio
+        $custom_urls = array();
+        if (!empty($saved_angles['front']['fileName'])) {
+            $custom_urls['front'] = array('url' => $saved_angles['front']['fileName'], 'label' => '정면 마스터 기준 셀카');
+        }
+        foreach ($ordered_slots as $sl) {
+            $k = $sl['key'];
+            if (!empty($saved_angles[$k]['fileName']) && !isset($custom_urls[$k])) {
+                $custom_urls[$k] = array('url' => $saved_angles[$k]['fileName'], 'label' => $sl['label']);
+            }
+        }
+        foreach ($saved_angles as $k => $sv) {
+            if (is_array($sv) && !empty($sv['fileName']) && !isset($custom_urls[$k])) {
+                $custom_urls[$k] = array('url' => $sv['fileName'], 'label' => $k);
+            }
+        }
+
+        $ref_images = array();
+        $seen_hashes = array();
+
+        if (!empty($custom_urls)) {
+            // B2B Buyer / Custom Studio Selfie Mode: strictly use ONLY the clinic owner's uploaded selfies!
+            foreach ($custom_urls as $item) {
+                $ang_ref = self::resolve_wp_studio_ref_image($item['url']);
+                if ($ang_ref && !empty($ang_ref['base64'])) {
+                    $h = md5(substr($ang_ref['base64'], 0, 2048));
+                    if (!isset($seen_hashes[$h])) {
+                        $seen_hashes[$h]  = true;
+                        $ang_ref['role']  = 'director';
+                        $ang_ref['label'] = $item['label'];
+                        $ref_images[]     = $ang_ref;
+                    }
+                    if (count($ref_images) >= 4) {
+                        break;
+                    }
+                }
+            }
+        } else {
+            // Default Clinic Angle Bank Mode (front Master Anchor #1 + 3 open-eye multi-angle references)
+            foreach ($ordered_slots as $sl) {
+                $disk_file = $studio_angle_dir . '/' . $sl['file'];
+                $slot_url  = file_exists($disk_file)
+                    ? $disk_file
+                    : ($gh_angle_base . '/' . $sl['file']);
+                $ang_ref = self::resolve_wp_studio_ref_image($slot_url);
+                if ($ang_ref && !empty($ang_ref['base64'])) {
+                    $ang_ref['role']  = 'director';
+                    $ang_ref['label'] = $sl['label'];
+                    $ref_images[]     = $ang_ref;
+                }
+            }
+        }
+
+        return array(
+            'refImages'           => $ref_images,
+            'preferredAngleLabel' => $preferred_angle_label,
+            'hasCustomSelfie'     => !empty($custom_urls)
+        );
     }
 
     private static function resolve_wp_studio_ref_image($raw_ref) {
@@ -7302,8 +7512,24 @@ class Bareun_Custom_Studio_Engine_V4 {
         $baseurl = $upload_dir['baseurl'];
         $gh_raw  = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
 
-        if (stripos($clean, $baseurl . '/') === 0) {
-            $rel = substr($clean, strlen($baseurl . '/'));
+        // 1) Direct local filesystem path check
+        if (file_exists($clean) && is_file($clean)) {
+            $bin = @file_get_contents($clean);
+            if ($bin && strlen($bin) > 512) {
+                $mime = preg_match('/\.png$/i', $clean) ? 'image/png' : (preg_match('/\.webp$/i', $clean) ? 'image/webp' : 'image/jpeg');
+                $b64  = base64_encode($bin);
+                return array(
+                    'mimeType'  => $mime,
+                    'base64'    => $b64,
+                    'dataUri'   => 'data:' . $mime . ';base64,' . $b64,
+                    'publicUrl' => str_replace($basedir, $baseurl, $clean)
+                );
+            }
+        }
+
+        // 2) Any /wp-content/uploads/... URL (regardless of http/https or www/non-www) -> read directly from local disk!
+        if (preg_match('#/wp-content/uploads/(.+)$#i', $clean, $um)) {
+            $rel = ltrim($um[1], '/');
             $disk_path = $basedir . '/' . $rel;
             if (file_exists($disk_path) && is_file($disk_path)) {
                 $bin = @file_get_contents($disk_path);
@@ -7408,8 +7634,10 @@ class Bareun_Custom_Studio_Engine_V4 {
         if ($no_face_directive) {
             $lines[] = '[절대 최우선 규칙 — 얼굴 미노출(Faceless / Neck-down Crop / Over-the-Shoulder / POV) 100% 준수]: 사용자가 명시적으로 얼굴 미노출을 지시했습니다! 인물의 얼굴, 눈·코·입, 안경, 옆모습, 이마, 턱선, 심지어 모니터나 유리에 비친 반사상까지 어떠한 형태로도 절대 화면에 노출하지 마십시오(얼굴 노출 0%). 반드시 ① 목·어깨 아래 팔·손 동작만 프레임에 담는 크롭 구도, ② 1인칭 시점(POV), 또는 ③ 등 뒤 정후면 어깨너머에서 바라보는 구도로만 촬영하세요.';
         } elseif ($use_director_face) {
-            $lines[] = '[안정위 대표원장 실제 인물 100% 동일 얼굴 고정]: 함께 첨부된 인물 참조 사진들(정방향 보정 완료된 안정위 대표원장 실제 포트레이트)은 모두 동일한 한 명의 한국인 남성 한의사입니다. 결과 사진 속 한의사는 반드시 1명만 등장하며, 권장 각도(' . $angle_label . ')에서 첨부된 참조 사진과 얼굴 골격, 눈매, 콧대, 입매, 피부톤, 얇은 금테 안경, 앞머리로 이마를 가리지 않고 단정하게 넘긴 검은 헤어스타일이 100% 동일 인물로 보이도록 정밀하게 촬영하세요.';
-            $lines[] = '[복장 및 85mm 인물 렌즈 비례 필수]: 원장님은 반드시 깨끗하고 단정한 순백색 한의사 가운(crisp plain white medical doctor coat)을 착용해야 합니다. 볼이나 하관이 붓거나 넓어 보이는 왜곡 없이 85mm 인물 단렌즈 압축 비율의 날렵하고 단정한 턱선과 자연스럽고 따뜻한 미소를 유지하세요.';
+            $dir_name = self::get_configured_director_name_php();
+            $lines[] = '[최우선 절대 명령 — 커스텀 스튜디오 등록 셀카 1:1 동일 인물 픽셀 고정 (STRICT FACE IDENTITY LOCK · 제3자 얼굴 창작 절대 금지)]: 함께 첨부된 [참조 인물 사진 #1(정면 마스터 기준)] 및 다각도 참조 사진들은 이 한의원 대표원장(' . $dir_name . ') 본인이 커스텀 스튜디오에 직접 등록한 실제 셀카(포트레이트)입니다. 절대로 임의의 배우나 다른 사람의 얼굴을 새로 창작하지 마십시오! 결과 사진 속 한의사는 반드시 1명만 등장하며, 첨부된 참조 셀카 속 인물의 실제 성별, 나이대, 얼굴형과 골격(이마·광대·턱선), 또렷하게 뜬 눈매와 쌍꺼풀/눈동자, 눈썹 모양과 각도, 콧대와 코끝, 입매와 피부톤, 헤어스타일(가르마·이마 라인)을 100% 동일한 한 사람으로 정밀하게 복제하세요.';
+            $lines[] = '[안경 형태 1:1 기하학적 일치 필수 (동그란 원형 안경 변형 절대 금지)]: 참조 셀카(#1) 속 인물이 착용한 안경테의 정확한 형태(예: 참조 사진이 각진 다각형/직사각 골드 메탈 프레임이면 100% 동일한 각진 다각형/직사각 골드 프레임으로 표현할 것 — 절대로 임의의 동그란 원형 철테나 뿔테로 바꾸지 말 것! 만약 참조 셀카에 안경이 없는 원장님이라면 안경을 씌우지 말 것)까지 참조 사진과 1:1로 일치시키세요.';
+            $lines[] = '[구도 및 카메라 앵글 필수 — 85mm 정면~15° 상반신 미디엄 클로즈업 & 순백색 가운]: 몸통을 옆으로 90° 돌린 채 고개만 카메라로 돌리는 측면 프로필 포즈는 얼굴 왜곡을 유발하므로 절대 금지합니다! 반드시 원장님의 상체와 얼굴이 카메라 정면(0°~15° 이내, 권장 각도: ' . $angle_label . ')을 자연스럽게 향하고, 얼굴과 상반신이 화면 중심에 큼직하고 선명하게 잡히는 85mm 가슴 위 상반신 클로즈업(Medium Close-Up) 구도로 촬영하세요. 참조 셀카의 사복/검은 외투 대신 깨끗하고 단정한 순백색 한의사 가운(crisp plain white medical doctor coat, 명찰·글자·로고 0%)을 착용시키세요.';
         }
 
         if (preg_match('/체성분\s*분석기|인바디|inbody|초음파|체열|엑스레이|모니터|태블릿|디스플레이|분석기|측정기|진단기|결과\s*데이터/iu', $raw_user)) {
@@ -7489,9 +7717,12 @@ class Bareun_Custom_Studio_Engine_V4 {
                 } elseif ($role === 'director') {
                     $dir_idx++;
                     $lbl = !empty($rf['label']) ? $rf['label'] : ('각도 #' . $dir_idx);
+                    $anchor_tag = ($dir_idx === 1)
+                        ? '[최우선 정면 얼굴 마스터 기준 셀카 #1 (' . $lbl . ')]'
+                        : '[동일 원장님 다각도 얼굴 참조 셀카 #' . $dir_idx . ' (' . $lbl . ')]';
                     $input_blocks[] = array(
                         'type' => 'text',
-                        'text' => '[참조 인물 사진 #' . $dir_idx . ' — 안정위 대표원장 실제 정방향 얼굴 (' . $lbl . '): 결과 사진 속 한의사의 얼굴 골격·눈매·콧대·금테 안경·이마가 드러나는 단정한 검은 머리 스타일을 이 인물과 100% 동일 인물로 촬영하세요]'
+                        'text' => $anchor_tag . ' — 커스텀 스튜디오에 등록된 실제 원장님 본인 셀카입니다. 결과 사진 속 한의사의 성별·얼굴형·골격·눈매(또렷하게 뜬 눈)·눈썹 각도·콧대·입매·헤어스타일·안경테의 정확한 형태(참조 사진이 각진 다각형/직사각 골드 프레임이면 100% 동일한 각진 다각형/직사각 골드 프레임으로 그릴 것, 절대 동그란 원형 안경으로 변형 금지!)를 이 셀카 속 인물과 1:1 동일 인물로 그대로 복제하세요.'
                     );
                 }
                 $input_blocks[] = array(
@@ -7820,32 +8051,12 @@ class Bareun_Custom_Studio_Engine_V4 {
             $preferred_angle_label = '정면 (0°)';
 
             if ($use_director_face && !$no_face_directive) {
-                $slots = self::get_default_angle_slots();
-                $saved_angles = get_option(self::OPT_ANGLE_SAMPLES, array());
-                if (!is_array($saved_angles)) $saved_angles = array();
-
-                $upload_dir = wp_upload_dir();
-                $studio_angle_dir = $upload_dir['basedir'] . '/bareun-studio/director-angle-refs';
-                $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
-                $gh_angle_base    = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
-
-                $ordered_slots = self::order_director_slots_for_prompt($user_prompt, $slots);
-                if (!empty($ordered_slots[0]['label'])) {
-                    $preferred_angle_label = $ordered_slots[0]['label'];
+                $collected = self::collect_director_reference_images_php($user_prompt);
+                if (!empty($collected['preferredAngleLabel'])) {
+                    $preferred_angle_label = $collected['preferredAngleLabel'];
                 }
-
-                foreach ($ordered_slots as $sl) {
-                    $k = $sl['key'];
-                    $default_ref = file_exists($studio_angle_dir . '/' . $sl['file'])
-                        ? ($studio_angle_url . '/' . $sl['file'])
-                        : ($gh_angle_base . '/' . $sl['file']);
-                    $slot_url = !empty($saved_angles[$k]['fileName']) ? $saved_angles[$k]['fileName'] : $default_ref;
-                    $ang_ref = self::resolve_wp_studio_ref_image($slot_url);
-                    if ($ang_ref) {
-                        $ang_ref['role'] = 'director';
-                        $ang_ref['label'] = $sl['label'];
-                        $ref_images[] = $ang_ref;
-                    }
+                foreach ($collected['refImages'] as $ang_ref) {
+                    $ref_images[] = $ang_ref;
                 }
             }
 
@@ -7991,47 +8202,23 @@ class Bareun_Custom_Studio_Engine_V4 {
         $dir_face_active = false;
 
         if ($use_director_face) {
-            $slots = self::get_default_angle_slots();
-            $saved_angles = get_option(self::OPT_ANGLE_SAMPLES, array());
-            if (!is_array($saved_angles)) {
-                $saved_angles = array();
+            $collected = self::collect_director_reference_images_php($user_prompt);
+            if (!empty($collected['preferredAngleLabel'])) {
+                $preferred_angle_label = $collected['preferredAngleLabel'];
             }
-
-            $upload_dir = wp_upload_dir();
-            $studio_angle_dir = $upload_dir['basedir'] . '/bareun-studio/director-angle-refs';
-            $studio_angle_url = $upload_dir['baseurl'] . '/bareun-studio/director-angle-refs';
-            $gh_angle_base    = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/director-angle-refs';
-
-            $ordered_slots = self::order_director_slots_for_prompt($user_prompt, $slots);
-            if (!empty($ordered_slots[0]['label'])) {
-                $preferred_angle_label = $ordered_slots[0]['label'];
-            }
-
-            foreach ($ordered_slots as $sl) {
-                $k = $sl['key'];
-                $default_ref = file_exists($studio_angle_dir . '/' . $sl['file'])
-                    ? ($studio_angle_url . '/' . $sl['file'])
-                    : ($gh_angle_base . '/' . $sl['file']);
-                $slot_url = !empty($saved_angles[$k]['fileName']) ? $saved_angles[$k]['fileName'] : $default_ref;
-                $ang_ref = self::resolve_wp_studio_ref_image($slot_url);
-                if ($ang_ref) {
-                    $ang_ref['role']  = 'director';
-                    $ang_ref['label'] = $sl['label'];
-                    $ref_images[] = $ang_ref;
-                }
-            }
+            $ref_images = $collected['refImages'];
             $dir_face_active = !empty($ref_images);
         }
 
         if ($dir_face_active) {
             $argon_prompt = self::build_argon_high_prompt_php(
-                $user_prompt . ' (배경없이, 16:9 가로 와이드 스튜디오 인물 실사 화보, 배경은 창문·가구·의료기기·책상·선반·몰딩·액자·화분·소품이 일절 없는 100% 깔끔한 단일색상 무지 매트 벽지[따뜻한 캐시미어 아이보리 #F5F1E8 또는 소프트 웜그레이]로만 구성, 오직 순백색 단정한 한의사 가운[명찰·자수·로고 0%]을 입은 안정위 대표원장 단독 인물과 핵심 동작·제스처·온화한 표정에만 100% 집중, 이미지 내 글자·숫자·워터마크 0%)',
+                $user_prompt . ' (16:9 가로 와이드 85mm 가슴 위 상반신 클로즈업 인물 실사 포트레이트, 상체와 얼굴이 카메라 정면 0°~15° 이내를 자연스럽게 향하고 얼굴이 화면 중심에 큼직하고 선명하게 잡히는 구도, 몸통을 옆으로 90° 돌리는 측면 포즈 절대 금지, 커스텀 스튜디오 등록 셀카와 성별·얼굴 골격·또렷한 눈매·눈썹·코·입매·안경테의 정확한 형태[각진 직사각/다각형 골드 프레임 vs 무안경 등 참조 사진 그대로, 동그란 원형 안경 변형 금지]가 100% 동일한 대표원장 1명 단독 출연, 순백색 단정한 한의사 가운[명찰·자수·로고 0%], 따뜻하고 정갈한 캐시미어 아이보리 톤 아웃포커싱 배경, 이미지 내 글자·숫자·워터마크 0%)',
                 '',
                 false,
                 true,
                 false,
                 $preferred_angle_label,
-                true
+                false
             );
         } else {
             $argon_prompt = self::build_argon_high_prompt_php(

@@ -3760,16 +3760,14 @@ function buildBodyExplorerHtml() {
         const isHi = sec.type === 'highlight';
         const spanCls = sec.spanFull ? ' span-full' : '';
         const hiCls = isHi ? ' sec-highlight' : '';
-        const iconSpan = (sec.icon && String(sec.icon).trim())
-          ? '<span class="hip-sec-icon">' + escHtml(String(sec.icon).trim()) + '</span>'
-          : '';
+        const iconSpan = renderBespokeNoteEmblem(sec.icon, idx);
         const bodyContent = buildSectionBodyHtml(sec);
         if (secLayout === 'accordion') {
           const openAttr = idx < 2 ? ' open' : '';
           return (
             '<details class="hip-sec-card hip-acc-card' + hiCls + spanCls + '"' + openAttr + '>' +
               '<summary class="hip-sec-heading">' +
-                '<span style="display:inline-flex;align-items:center;gap:6px;">' + iconSpan + '<span>' + escHtml(sec.heading || '') + '</span></span>' +
+                '<span style="display:inline-flex;align-items:center;gap:7px;">' + iconSpan + '<span>' + escHtml(stripAiEmojisJs(sec.heading || '')) + '</span></span>' +
                 '<span class="hip-acc-chevron">&#9662;</span>' +
               '</summary>' +
               '<div class="hip-acc-body">' + bodyContent + '</div>' +
@@ -3778,7 +3776,7 @@ function buildBodyExplorerHtml() {
         }
         return (
           '<section class="hip-sec-card' + hiCls + spanCls + '">' +
-            (sec.heading ? '<div class="hip-sec-heading">' + iconSpan + '<span>' + escHtml(sec.heading) + '</span></div>' : '') +
+            (sec.heading ? '<div class="hip-sec-heading" style="display:flex;align-items:center;gap:7px;">' + iconSpan + '<span>' + escHtml(stripAiEmojisJs(sec.heading)) + '</span></div>' : '') +
             bodyContent +
           '</section>'
         );
@@ -3786,8 +3784,8 @@ function buildBodyExplorerHtml() {
 
       const pIdForHero = note.partId || currentPartId || 'knee';
       const empSrc = resolveDeepIllustSrc(note.empathyIllustImg, pIdForHero, false);
-      const empCap = String(note.empathyIllustCaption || '').trim();
-      const empAlt = String(note.empathyIllustAlt || ((note.partLabel || '') + ' 일상 공감 장면')).trim();
+      const empCap = stripAiEmojisJs(note.empathyIllustCaption || '');
+      const empAlt = stripAiEmojisJs(note.empathyIllustAlt || ((note.partLabel || '') + ' 일상 공감 장면'));
       const empathyHeroHtml = empSrc
         ? '<figure class="hip-empathy-hero-card">' +
             '<img src="' + escHtml(empSrc) + '" alt="' + escHtml(empAlt) + '" decoding="async" />' +
@@ -3797,9 +3795,9 @@ function buildBodyExplorerHtml() {
 
       const quickDetailBarHtml = (hasDeepContent && note && note.id)
         ? '<div class="hip-quick-detail-strip">' +
-            '<span class="hqd-caption">📖 해부 원리 · 일러스트 · 생활 비교표 ' + (isExpanded ? '열람 중' : '바로 보기') + '</span>' +
-            '<button type="button" class="hqd-btn" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')">' +
-              (isExpanded ? '심층 칼럼 접기 ▲' : '🔍 상세히 보기 ▼') +
+            '<span class="hqd-caption" style="display:inline-flex;align-items:center;gap:6px;">' + renderBespokeNoteEmblem('mechanism') + '<span>해부 원리 · 일러스트 · 생활 비교표 ' + (isExpanded ? '열람 중' : '바로 보기') + '</span></span>' +
+            '<button type="button" class="hqd-btn" style="display:inline-flex;align-items:center;gap:5px;" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')">' +
+              (isExpanded ? '<span>심층 칼럼 접기 ▲</span>' : (renderBespokeNoteEmblem('scan') + '<span>상세히 보기 ▼</span>')) +
             '</button>' +
           '</div>'
         : '';
@@ -3815,6 +3813,47 @@ function buildBodyExplorerHtml() {
           deepSectionHtml +
         '</article>'
       );
+    }
+
+    function stripAiEmojisJs(raw) {
+      return String(raw == null ? '' : raw)
+        .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+    }
+
+    function renderBespokeNoteEmblem(iconOrKey, secIdx) {
+      const raw = String(iconOrKey || '').trim();
+      let key = 'insight';
+      if (raw === 'empathy' || raw === '🎒' || (secIdx === 0 && (!raw || /[\u{1F300}-\u{1FAFF}]/u.test(raw)))) key = 'empathy';
+      else if (raw === 'truth' || raw === '⭕' || (secIdx === 1 && (!raw || raw === '💡'))) key = 'truth';
+      else if (raw === 'myth' || raw === '❌' || secIdx === 2) key = 'myth';
+      else if (raw === 'scan' || raw === '🔍' || secIdx === 3) key = 'scan';
+      else if (raw === 'insight' || raw === '💡') key = 'insight';
+      else if (raw === 'keyword' || raw === '🔎') key = 'keyword';
+      else if (raw === 'mechanism' || raw === '📖') key = 'mechanism';
+      else if (raw === 'clinical' || raw === '🩺') key = 'clinical';
+      else if (raw === 'matrix' || raw === '📊') key = 'matrix';
+      else if (raw === 'check' || raw === '✅') key = 'check';
+      else if (raw === 'guard' || raw === '⚠️' || raw === '⚠') key = 'guard';
+      else if (raw === 'archive' || raw === '📚') key = 'archive';
+
+      const baseStyle = 'width:21px;height:21px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;vertical-align:middle;';
+      const map = {
+        empathy:   '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#1D1814,#2E251D);color:#E9C97E;border:1px solid #C5A059;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></span>',
+        truth:     '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#065F46,#047857);color:#ECFDF5;border:1px solid #34D399;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2.5L19.5 5.8V11.8C19.5 16.8 16.2 20.8 12 22.2C7.8 20.8 4.5 16.8 4.5 11.8V5.8L12 2.5Z" stroke="currentColor" stroke-width="2"/><path d="M8.5 12.3L11 14.8L15.8 9.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+        myth:      '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#9F1239,#BE123C);color:#FFF1F2;border:1px solid #FDA4AF;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="7.8,2 16.2,2 22,7.8 22,16.2 16.2,22 7.8,22 2,16.2 2,7.8" stroke="currentColor" stroke-width="2"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>',
+        scan:      '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:#F5EFE2;color:#7A591D;border:1px solid #DEC89A;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></span>',
+        insight:   '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#1D1814,#2E251D);color:#E9C97E;border:1px solid #C5A059;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.1" fill="currentColor"/></svg></span>',
+        keyword:   '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:#F7F3E9;color:#8C6822;border:1px solid #E2D2AF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg></span>',
+        mechanism: '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#FAF6EC,#EFE5CE);color:#7C5A1A;border:1px solid #D8C08E;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.4 4.9 3.5 6 3.5H11C12.1 3.5 13 4.4 13 5.5V19.5C13 18.7 12.1 18 11 18H6C4.9 18 4 18.7 4 19.5V5.5Z" stroke="currentColor" stroke-width="1.9"/><path d="M20 5.5C20 4.4 19.1 3.5 18 3.5H13C11.9 3.5 11 4.4 11 5.5V19.5C11 18.7 11.9 18 13 18H18C19.1 18 20 18.7 20 19.5V5.5Z" stroke="currentColor" stroke-width="1.9"/></svg></span>',
+        clinical:  '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#1D1814,#2E251D);color:#E9C97E;border:1px solid #C5A059;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 12H8L10.2 7.5L13.5 16.5L15.8 10.5L17.2 12H19.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+        matrix:    '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#FAF6EC,#EFE5CE);color:#7C5A1A;border:1px solid #D8C08E;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.9"/><line x1="3" y1="9.5" x2="21" y2="9.5" stroke="currentColor" stroke-width="1.8"/><line x1="10" y1="9.5" x2="10" y2="20" stroke="currentColor" stroke-width="1.8"/></svg></span>',
+        check:     '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#065F46,#047857);color:#ECFDF5;border:1px solid #34D399;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.9"/><path d="M8.6 12.2L11 14.6L15.6 9.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+        guard:     '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:linear-gradient(135deg,#1E293B,#334155);color:#F8FAFC;border:1px solid #94A3B8;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12,2.2 21.8,12 12,21.8 2.2,12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><line x1="12" y1="7.8" x2="12" y2="13.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="16.4" r="1.2" fill="currentColor"/></svg></span>',
+        archive:   '<span class="hip-bespoke-emblem" style="' + baseStyle + 'background:#F7F3E9;color:#8C6822;border:1px solid #E2D2AF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3L21 7.5L12 12L3 7.5L12 3Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M5 11.2V16.5C5 18.4 8.1 20 12 20C15.9 20 19 18.4 19 16.5V11.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>'
+      };
+      return map[key] || map.insight;
     }
 
     function resolveDeepIllustSrc(rawSrc, partId, allowPartFallback = true) {
@@ -3894,15 +3933,15 @@ function buildBodyExplorerHtml() {
         : (gCfg.expandBarTitle || '이 주제의 깊은 원리가 더 궁금하신가요?');
       const expandBarSub = gCfg.expandBarSub || '30초 핵심 결론 · 해부학 일러스트 · 생활 비교표 · 1분 자가점검';
       const detailBtnBase = String(gCfg.detailBtnLabel || '상세히').trim() || '상세히';
-      const barRightLabel = isExpanded ? '접기 ▲' : ('🔍 ' + detailBtnBase + ' 보기 ▼');
+      const barRightLabel = isExpanded ? '접기 ▲' : (detailBtnBase + ' 보기 ▼');
 
       const expandBarHtml =
         '<div class="detail-expand-bar" role="button" tabindex="0" onclick="window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\')" onkeydown="if(event.key===\\'Enter\\'||event.key===\\' \\'){event.preventDefault();window.toggleHealthNoteDetail(\\'' + escHtml(note.id) + '\\');}">' +
           '<div class="deb-left">' +
-            '<span class="deb-icon">🔍</span>' +
+            renderBespokeNoteEmblem('scan') +
             '<div class="deb-text">' +
-              '<span class="deb-title">' + escHtml(expandBarTitle) + '</span>' +
-              '<span class="deb-sub">' + escHtml(expandBarSub) + '</span>' +
+              '<span class="deb-title">' + escHtml(stripAiEmojisJs(expandBarTitle)) + '</span>' +
+              '<span class="deb-sub">' + escHtml(stripAiEmojisJs(expandBarSub)) + '</span>' +
             '</div>' +
           '</div>' +
           '<span class="deb-btn">' + escHtml(barRightLabel) + '</span>' +
@@ -3920,25 +3959,25 @@ function buildBodyExplorerHtml() {
           '<div class="iyb-left"><strong>집필·감수: 안정위 한의사</strong> · 검토 ' + escHtml(revDateStr) + '</div>' +
         '</div>';
 
-      const directAnsTxt = String(note.directAnswer || '').trim();
-      const cKws = (Array.isArray(note.consumerKeywords) ? note.consumerKeywords : []).map(k => String(k || '').trim()).filter(Boolean);
+      const directAnsTxt = stripAiEmojisJs(note.directAnswer || '');
+      const cKws = (Array.isArray(note.consumerKeywords) ? note.consumerKeywords : []).map(k => stripAiEmojisJs(k || '')).filter(Boolean);
       const cKwsHtml = cKws.length > 0
         ? '<div class="inline-consumer-kws">' +
-            '<span class="ick-label">🔎 일상 키워드</span>' +
+            '<span class="ick-label" style="display:inline-flex;align-items:center;gap:5px;">' + renderBespokeNoteEmblem('keyword') + '<span>일상 키워드</span></span>' +
             cKws.map(kw => '<span class="ick-chip">#' + escHtml(kw) + '</span>').join('') +
           '</div>'
         : '';
       const directAnswerHtml = directAnsTxt
         ? '<section class="inline-direct-answer">' +
-            '<div class="ida-kicker">💡 바쁜 일상을 위한 30초 핵심 결론</div>' +
+            '<div class="ida-kicker" style="display:inline-flex;align-items:center;gap:6px;">' + renderBespokeNoteEmblem('insight') + '<span>바쁜 일상을 위한 30초 핵심 결론</span></div>' +
             '<p class="ida-body">' + escHtml(directAnsTxt) + '</p>' +
             cKwsHtml +
           '</section>'
         : '';
 
       const illustSrc = resolveDeepIllustSrc(note.deepIllustImg, partId, true);
-      const illustCap = String(note.deepIllustCaption || partDef.defaultIllustCaption || '').trim();
-      const illustAlt = String(note.deepIllustAlt || ((note.keyword || partLabel) + ' 해부 생리 일러스트')).trim();
+      const illustCap = stripAiEmojisJs(note.deepIllustCaption || partDef.defaultIllustCaption || '');
+      const illustAlt = stripAiEmojisJs(note.deepIllustAlt || ((note.keyword || partLabel) + ' 해부 생리 일러스트'));
       const illustHtml = illustSrc
         ? '<figure class="deep-illust-card">' +
             '<img src="' + escHtml(illustSrc) + '" alt="' + escHtml(illustAlt) + '" decoding="async" />' +
@@ -3947,46 +3986,46 @@ function buildBodyExplorerHtml() {
         : '';
 
       const routineSrc = resolveDeepIllustSrc(note.routineIllustImg, partId, false);
-      const routineCap = String(note.routineIllustCaption || '').trim();
-      const routineAlt = String(note.routineIllustAlt || ((note.keyword || partLabel) + ' 전후 실천 루틴 비교')).trim();
+      const routineCap = stripAiEmojisJs(note.routineIllustCaption || '');
+      const routineAlt = stripAiEmojisJs(note.routineIllustAlt || ((note.keyword || partLabel) + ' 전후 실천 루틴 비교'));
       const routineHtml = routineSrc
         ? '<figure class="deep-illust-card routine-illust-card">' +
             '<img src="' + escHtml(routineSrc) + '" alt="' + escHtml(routineAlt) + '" loading="lazy" decoding="async" />' +
-            (routineCap ? '<figcaption class="deep-illust-cap" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="slot-pill-badge spb-routine">전·후 루틴 03</span><span>' + escHtml(routineCap) + '</span></figcaption>' : '') +
+            (routineCap ? '<figcaption class="deep-illust-cap" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="slot-pill-badge spb-routine">임상 가이드 03</span><span>' + escHtml(routineCap) + '</span></figcaption>' : '') +
           '</figure>'
         : '';
 
-      const deepHeading = String(note.deepTitle || ((note.theme || note.keyword || partLabel) + ', 우리 몸속에서는 어떤 변화가 일어날까요?')).trim();
-      const deepParas = (Array.isArray(note.deepParagraphs) ? note.deepParagraphs : []).map(p => String(p || '').trim()).filter(Boolean);
-      const clinObs = String(note.clinicalObservation || '').trim();
-      const deepRef = String(note.deepReference || (note.academicBasis ? ('참고 문헌 · ' + note.academicBasis) : '')).trim();
+      const deepHeading = stripAiEmojisJs(note.deepTitle || ((note.theme || note.keyword || partLabel) + ', 우리 몸속에서는 어떤 변화가 일어날까요?'));
+      const deepParas = (Array.isArray(note.deepParagraphs) ? note.deepParagraphs : []).map(p => stripAiEmojisJs(p || '')).filter(Boolean);
+      const clinObs = stripAiEmojisJs(note.clinicalObservation || '');
+      const deepRef = stripAiEmojisJs(note.deepReference || (note.academicBasis ? ('참고 문헌 · ' + note.academicBasis) : ''));
       const pureBlockHtml = (deepParas.length > 0 || clinObs)
         ? '<section class="deep-pure-block">' +
-            '<h3 class="dpb-heading">📖 ' + escHtml(deepHeading) + '</h3>' +
+            '<h3 class="dpb-heading" style="display:flex;align-items:center;gap:7px;">' + renderBespokeNoteEmblem('mechanism') + '<span>' + escHtml(deepHeading) + '</span></h3>' +
             deepParas.map(p => '<p class="dpb-p">' + escHtml(p) + '</p>').join('') +
             (clinObs
               ? '<div class="inline-clinical-obs">' +
-                  '<div class="ico-title">🩺 진료실 생활 리듬 관찰 포인트</div>' +
+                  '<div class="ico-title" style="display:flex;align-items:center;gap:6px;">' + renderBespokeNoteEmblem('clinical') + '<span>진료실 생활 리듬 관찰 포인트</span></div>' +
                   '<p class="ico-text">' + escHtml(clinObs) + '</p>' +
                 '</div>'
               : '') +
-            (deepRef ? '<div class="dpb-ref-note">📚 ' + escHtml(deepRef) + '</div>' : '') +
+            (deepRef ? '<div class="dpb-ref-note" style="display:flex;align-items:center;gap:6px;">' + renderBespokeNoteEmblem('archive') + '<span>' + escHtml(deepRef) + '</span></div>' : '') +
           '</section>'
         : '';
 
       const ct = note.comparisonTable;
       const compTableHtml = (ct && Array.isArray(ct.headers) && Array.isArray(ct.rows) && ct.rows.length > 0)
         ? '<section class="deep-pure-block">' +
-            '<h3 class="dpb-heading">📊 ' + escHtml(ct.heading || ((note.keyword || partLabel) + ' 생활 기준 한눈에 비교하기')) + '</h3>' +
-            (ct.intro ? '<p class="dpb-p">' + escHtml(ct.intro) + '</p>' : '') +
+            '<h3 class="dpb-heading" style="display:flex;align-items:center;gap:7px;">' + renderBespokeNoteEmblem('matrix') + '<span>' + escHtml(stripAiEmojisJs(ct.heading || ((note.keyword || partLabel) + ' 생활 기준 한눈에 비교하기'))) + '</span></h3>' +
+            (ct.intro ? '<p class="dpb-p">' + escHtml(stripAiEmojisJs(ct.intro)) + '</p>' : '') +
             '<div class="inline-comp-table-wrap">' +
               '<table class="inline-comp-table">' +
-                '<thead><tr>' + ct.headers.map(h => '<th>' + escHtml(h) + '</th>').join('') + '</tr></thead>' +
+                '<thead><tr>' + ct.headers.map(h => '<th>' + escHtml(stripAiEmojisJs(h)) + '</th>').join('') + '</tr></thead>' +
                 '<tbody>' +
                   ct.rows.map((row, rIdx) =>
                     '<tr class="' + (rIdx === ct.recommendedRowIndex ? 'rec-row' : '') + '">' +
                       (Array.isArray(row) ? row : []).map((cell, cIdx) =>
-                        '<td>' + (cIdx === 0 ? ('<strong>' + escHtml(cell) + '</strong>') : formatInlineTableCell(cell)) + '</td>'
+                        '<td>' + (cIdx === 0 ? ('<strong>' + escHtml(stripAiEmojisJs(cell)) + '</strong>') : formatInlineTableCell(stripAiEmojisJs(cell))) + '</td>'
                       ).join('') +
                     '</tr>'
                   ).join('') +
@@ -3997,11 +4036,11 @@ function buildBodyExplorerHtml() {
         : '';
 
       const scItems = (Array.isArray(note.selfCheckItems) && note.selfCheckItems.length > 0)
-        ? note.selfCheckItems.map(x => String(x || '').trim()).filter(Boolean)
+        ? note.selfCheckItems.map(x => stripAiEmojisJs(x || '')).filter(Boolean)
         : [];
       const selfCheckHtml = scItems.length > 0
         ? '<section class="deep-pure-block" data-inline-sc-wrap="' + escHtml(note.id) + '">' +
-            '<h3 class="dpb-heading">✅ 1분 자가점검 스코어카드 (' + scItems.length + '문항)</h3>' +
+            '<h3 class="dpb-heading" style="display:flex;align-items:center;gap:7px;">' + renderBespokeNoteEmblem('check') + '<span>1분 자가점검 스코어카드 (' + scItems.length + '문항)</span></h3>' +
             '<div class="inline-selfcheck-list">' +
               scItems.map(item =>
                 '<label class="inline-sc-item">' +
@@ -4014,11 +4053,11 @@ function buildBodyExplorerHtml() {
           '</section>'
         : '';
 
-      const sigTitle = String(note.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호').trim();
-      const sigList = (Array.isArray(note.deepSignals) ? note.deepSignals : []).map(s => String(s || '').trim()).filter(Boolean);
+      const sigTitle = stripAiEmojisJs(note.deepSignalsTitle || '가정에서 함께 살펴보면 좋은 3가지 신호');
+      const sigList = (Array.isArray(note.deepSignals) ? note.deepSignals : []).map(s => stripAiEmojisJs(s || '')).filter(Boolean);
       const signalsHtml = sigList.length > 0
         ? '<section class="deep-pure-block">' +
-            '<h3 class="dpb-heading">🔍 ' + escHtml(sigTitle) + '</h3>' +
+            '<h3 class="dpb-heading" style="display:flex;align-items:center;gap:7px;">' + renderBespokeNoteEmblem('scan') + '<span>' + escHtml(sigTitle) + '</span></h3>' +
             '<div class="signal-list">' +
               sigList.map((s, idx) =>
                 '<div class="signal-row"><span class="sig-dot">' + (idx + 1) + '</span><span>' + escHtml(s) + '</span></div>'
@@ -4027,10 +4066,10 @@ function buildBodyExplorerHtml() {
           '</section>'
         : '';
 
-      const redFlagsList = (Array.isArray(note.redFlags) ? note.redFlags : []).map(r => String(r || '').trim()).filter(Boolean);
+      const redFlagsList = (Array.isArray(note.redFlags) ? note.redFlags : []).map(r => stripAiEmojisJs(r || '')).filter(Boolean);
       const redFlagsHtml = redFlagsList.length > 0
         ? '<div class="inline-redflag-box">' +
-            '<strong style="font-size:0.78rem;color:#0F172A;">⚠️ 세심한 대면 확인을 권해 드리는 경우</strong>' +
+            '<strong style="font-size:0.78rem;color:#0F172A;display:flex;align-items:center;gap:6px;">' + renderBespokeNoteEmblem('guard') + '<span>세심한 대면 확인을 권해 드리는 경우</span></strong>' +
             '<ul>' + redFlagsList.map(rf => '<li>' + escHtml(rf) + '</li>').join('') + '</ul>' +
           '</div>'
         : '';
