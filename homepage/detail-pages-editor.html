@@ -7987,7 +7987,7 @@
           parkingGuide: '건물 전용 주차장 및 인근 공영주차장 이용 가능 (내원 시 접수처에 말씀해 주시면 상세히 안내해 드립니다.)',
           transitGuide: '대전 대덕구 비래동로7번길 1, 2층 · 비래동 행정복지센터 및 비래삼거리 인근 도보 3분 거리 (복합터미널·송촌동 차량 5~8분)',
           hours: [
-            { day: '평일 (월 ~ 금)', time: '09:00 ~ 19:00', note: '점심시간 12:30 ~ 14:00' },
+            { day: '평일 (월 ~ 금)', time: '09:00 ~ 19:00', note: '점심시간 13:00 ~ 14:00' },
             { day: '토요일 · 공휴일', time: '09:00 ~ 14:00', note: '점심시간 없이 연속 진료' },
             { day: '일요일', time: '정기 휴진', note: '사전 예약 문의는 카톡·네이버예약 가능' }
           ],
@@ -8368,7 +8368,7 @@
             <div class="list-row-inline" style="display:grid;grid-template-columns:1.1fr 1fr 1.2fr auto;gap:6px;margin-bottom:6px;">
               <input type="text" placeholder="요일 (예: 평일)" value="${escHtml(h.day || '')}" oninput="updateClinicHourRow(${hIdx}, 'day', this.value)" />
               <input type="text" placeholder="시간 (예: 09:00 ~ 19:00)" value="${escHtml(h.time || '')}" oninput="updateClinicHourRow(${hIdx}, 'time', this.value)" />
-              <input type="text" placeholder="비고 (예: 점심 12:30~14:00)" value="${escHtml(h.note || '')}" oninput="updateClinicHourRow(${hIdx}, 'note', this.value)" />
+              <input type="text" placeholder="비고 (예: 점심 13:00~14:00)" value="${escHtml(h.note || '')}" oninput="updateClinicHourRow(${hIdx}, 'note', this.value)" />
               <button type="button" class="mini-btn danger" onclick="removeClinicHourRow(${hIdx})">✕</button>
             </div>
           `).join('')}
