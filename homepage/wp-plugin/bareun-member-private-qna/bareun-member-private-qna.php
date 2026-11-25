@@ -26,6 +26,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     const OPT_CONVERSION_LOGS = 'bareun_visit_conversions_v1';
     const OPT_ANALYTICS_CFG   = 'bareun_external_analytics_cfg_v1';
     const OPT_EXT_SYNC_CACHE  = 'bareun_ext_analytics_cache_v1';
+    const OPT_DRAFT_QUEUE     = 'bareun_cron_2day_draft_queue_v3';
     const CRON_HOOK_NOTES     = 'bareun_cron_2day_body_notes';
 
     public static function init() {
@@ -660,6 +661,11 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             'methods'             => array('GET', 'POST'),
             'callback'            => array(__CLASS__, 'handle_cron_tick'),
             'permission_callback' => '__return_true'
+        ));
+        register_rest_route('bareun/v1', '/autopost-queue', array(
+            'methods'             => array('GET', 'POST'),
+            'callback'            => array(__CLASS__, 'handle_autopost_queue_api'),
+            'permission_callback' => function() { return current_user_can('manage_options'); }
         ));
         register_rest_route('bareun/v1', '/deploy-page', array(
             'methods'             => 'POST',
@@ -1679,9 +1685,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         if (empty($tok['ok']) || empty($tok['token'])) return;
         $access_token = $tok['token'];
         $sites = array(
-            'https://www.bareunhaniwon.com/',
-            'https://bareunhaniwon.com/',
-            'http://www.bareunhaniwon.com/'
+            'https://www.bareunhaniwon.com/'
         );
         foreach ($sites as $s_url) {
             $base_origin = rtrim($s_url, '/');
@@ -2607,16 +2611,243 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
     private static function get_body_part_meta_list() {
         return array(
-            array('partId' => 'knee',       'partLabel' => '무릎 성장판',      'targetReader' => '초등학생 자녀를 둔 학부모',   'themes' => array('소아 비만', '성조숙증 예방과 야식', '성장호르몬과 밤중 입호흡', '줄넘기 운동과 성장통 구별')),
-            array('partId' => 'cervical',   'partLabel' => '뒷목 · 두피 혈관', 'targetReader' => '머리카락이 가늘어진 직장인',  'themes' => array('두피 열감과 정수리 탈모', '거북목과 뒷목 뻐근함', '저녁 머리 감기와 수면 재생')),
-            array('partId' => 'lumbar',     'partLabel' => '허리 · 골반 마디', 'targetReader' => '오래 앉아 일하는 직장인',     'themes' => array('허리 통증과 다리 저림', '다리 꼬기와 골반 틀어짐', '아침 기상 직후 급성 허리 뻐근함')),
-            array('partId' => 'gongjindan', 'partLabel' => '심장 · 뇌 활력축', 'targetReader' => '만성 피로에 지친 현대인',     'themes' => array('자도 안 풀리는 만성 피로', '오후 멍함과 집중력 저하', '수험생 · 직장인 체력 고갈')),
-            array('partId' => 'syncope',    'partLabel' => '자율신경 · 뇌혈류','targetReader' => '어지럼과 불면을 겪는 성인',   'themes' => array('갑자기 눈앞이 아찔한 어지럼증', '새벽에 자꾸 깨는 얕은 잠', '관자놀이 지끈거리는 편두통')),
-            array('partId' => 'digest',     'partLabel' => '위장 · 식도 근육', 'targetReader' => '식후 더부룩함이 잦은 성인',   'themes' => array('검사상 정상인데 막히는 소화불량', '목 이물감과 신물 역류', '급하게 먹는 습관과 배 가스')),
-            array('partId' => 'gut',        'partLabel' => '복부 · 대사 순환', 'targetReader' => '체중 감량 정체기를 겪는 성인','themes' => array('굶어도 안 빠지는 나잇살', '저녁 가짜 배고픔과 단 음식 유혹', '저녁마다 붓는 종아리 부종')),
-            array('partId' => 'uterus',     'partLabel' => '아랫배 · 골반 순환','targetReader' => '생리통과 임신을 준비하는 여성','themes' => array('손발 · 아랫배 냉증과 생리통', '임신 준비기 골반 순환과 수면', '출산 후 손목 · 발목 시림')),
-            array('partId' => 'prostate',   'partLabel' => '방광 · 골반 바닥근','targetReader' => '야간 소변으로 잠을 설치는 중장년','themes' => array('새벽 잠 깨우는 야간뇨', '오래 앉은 뒤 묵직한 잔뇨감', '기침할 때 새는 민감한 방광'))
+            array(
+                'partId'       => 'knee',
+                'partLabel'    => '무릎 성장판',
+                'targetReader' => '초등학생 자녀를 둔 학부모',
+                'medicalTerms' => '성장 연골판(골단판), 허벅지 뼈(대퇴골), 성장호르몬(GH), 성호르몬 전환 효소(아로마타제)',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 소아·청소년 표준 성장도표 및 성장 발달 기준',
+                    '대한한의학회 · 소아 성장 및 수면·호흡기 생활 관리 임상 기준',
+                    '세계보건기구(WHO) · 소아·청소년 신체활동 및 수면 권고 가이드라인'
+                ),
+                'themes'       => array(
+                    '초등학생 가슴멍울·성조숙증 구별 기준과 뼈나이 관리',
+                    '초경 후 키 성장 가능 기간과 남은 성장판 관리법',
+                    '초등학생 소아비만·살이 키로 간다는 오해와 사춘기 속도',
+                    '밤중 입호흡·코막힘이 성장호르몬과 깊은 수면에 미치는 영향',
+                    '어린이 성장통 vs 무릎 관절 통증 1분 구별과 줄넘기 운동 기준',
+                    '잠들기 전 야식·과일과 아침 결식이 키 성장 속도에 주는 차이'
+                ),
+                'seasonMap'    => array(1 => 2, 2 => 0, 3 => 3, 4 => 4, 5 => 0, 6 => 5, 7 => 1, 8 => 5, 9 => 3, 10 => 4, 11 => 0, 12 => 2)
+            ),
+            array(
+                'partId'       => 'cervical',
+                'partLabel'    => '뒷목 · 두피 혈관',
+                'targetReader' => '머리 빠짐·정수리 열감·거북목을 겪는 30~50대 성인',
+                'medicalTerms' => '뒷목 깊은 근육(후두하근), 모근 뿌리 세포(모유두), 두피 피지샘, 경추 굽이(경추 전만)',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 탈모증 및 지루피부염 생활 관리 기준',
+                    '대한한의학회 · 경추부 근긴장 및 두피 열감·모발 건강 임상 기준',
+                    '국민건강보험공단 건강정보 · 두피 위생 및 모발 주기 관리 안내'
+                ),
+                'themes'       => array(
+                    '정수리 열감·두피열과 가르마 탈모 초기 신호 구별',
+                    '거북목·뒷목 뻐근함이 두피 혈류와 모발 가늘어짐에 미치는 영향',
+                    '지루성 두피 가려움·각질과 저녁 머리 감기·드라이 기준',
+                    '다이어트 후·출산 후 3개월 급격한 여성 탈모 회복 기준',
+                    '탈모샴푸·검은콩 오해와 모근 영양·수면 재생 황금 시간',
+                    '환절기·스트레스 원형·휴지기 탈모 정상 개수 자가점검'
+                ),
+                'seasonMap'    => array(1 => 1, 2 => 2, 3 => 1, 4 => 2, 5 => 3, 6 => 0, 7 => 0, 8 => 4, 9 => 5, 10 => 0, 11 => 1, 12 => 2)
+            ),
+            array(
+                'partId'       => 'lumbar',
+                'partLabel'    => '허리 · 골반 마디',
+                'targetReader' => '오래 앉아 일하는 직장인 및 허리·골반 통증 성인',
+                'medicalTerms' => '허리 물렁뼈(추간판), 디스크 중심 말랑층(수핵), 좌골신경, 골반 균형(천장관절)',
+                'trustedCitations' => array(
+                    '대한한의학회 표준임상진료지침 · 요통 및 추나요법 생활 관리 기준',
+                    '질병관리청 국가건강정보포털 · 요추 추간판 탈출증 및 자세 관리 안내',
+                    '국민건강보험공단 · 추나요법 건강보험 급여(연 20회) 및 척추 건강 기준'
+                ),
+                'themes'       => array(
+                    '아침 기상 직후 허리 뻐근함, 근육통 vs 허리디스크 초기 구별',
+                    '엉덩이 찌릿함·다리 저림, 허리디스크 vs 좌골신경·이상근 구별',
+                    '추나요법 건강보험 연 20회·실비 적용 기준과 자세 교정 원리',
+                    '다리 꼬기·짝다리 습관과 골반 틀어짐 자가점검 3가지',
+                    '출산 후 골반 통증·허리 묵직함 회복 시기와 안전한 생활 자세',
+                    '오래 앉아 일하는 직장인 일자허리·소파 자세와 허리 부담 줄이기'
+                ),
+                'seasonMap'    => array(1 => 0, 2 => 5, 3 => 3, 4 => 2, 5 => 4, 6 => 5, 7 => 1, 8 => 3, 9 => 1, 10 => 2, 11 => 0, 12 => 5)
+            ),
+            array(
+                'partId'       => 'gongjindan',
+                'partLabel'    => '심장 · 뇌 활력축',
+                'targetReader' => '만성 피로 직장인·수험생 학부모·기력 저하 중장년',
+                'medicalTerms' => '뇌 자율신경 중추(시상하부), 부교감신경 회복, 혈당 변동성, 일주기 생체리듬',
+                'trustedCitations' => array(
+                    '대한한의학회 · 만성 피로 및 한방 보익·생활 리듬 관리 기준',
+                    '질병관리청 국가건강정보포털 · 만성피로 및 수면 위생 관리 안내',
+                    '미국수면재단(NSF) · 성인 및 청소년 권장 수면·회복 리듬 가이드라인'
+                ),
+                'themes'       => array(
+                    '공진단 먹는 시간(아침 공복)과 씹어 녹여 먹는 올바른 복용 기준',
+                    '공진단 vs 경옥고 차이, 피로 유형과 체질에 맞는 기력 관리',
+                    '열 많은 체질·위장 약한 사람의 공진단 복용 전 확인 기준',
+                    '수험생 시험 2주 전 집중력·체력 관리와 카페인·공진단 기준',
+                    '검사상 정상인데 자도 안 풀리는 만성피로·오후 3시 방전 원인',
+                    '머리 멍함(브레인 포그)·가슴 답답함과 주말 몰아자기 피로 고리'
+                ),
+                'seasonMap'    => array(1 => 1, 2 => 4, 3 => 4, 4 => 5, 5 => 2, 6 => 5, 7 => 4, 8 => 0, 9 => 1, 10 => 3, 11 => 3, 12 => 0)
+            ),
+            array(
+                'partId'       => 'syncope',
+                'partLabel'    => '자율신경 · 뇌혈류',
+                'targetReader' => '원인 모를 어지럼증·두근거림·편두통·불면을 겪는 성인',
+                'medicalTerms' => '자율신경계(교감·부교감신경), 미주신경 반사, 기립성 혈압 조절, 뇌 자율신경 중추(시상하부)',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 어지럼증·기립성 저혈압 및 불면증 안내',
+                    '대한한의학회 · 자율신경 불균형·두통·수면장애 임상 관리 기준',
+                    '미국수면재단(NSF) · 야간 각성 및 일주기 수면 위생 권고 기준'
+                ),
+                'themes'       => array(
+                    '검사상 정상인데 계속되는 어지럼증과 자율신경실조증 자가점검',
+                    '앉았다 일어설 때 핑 도는 기립성 어지럼증 vs 빈혈·이석증 구별',
+                    '만원 지하철·사우나 식은땀과 미주신경성 실신 전조 10초 대처법',
+                    '몸은 피곤한데 새벽 2~3시마다 깨는 불면증과 자율신경 수면 리듬',
+                    '가만히 있을 때 심장 두근거림·가슴 답답함과 교감신경 안정 호흡',
+                    '진통제 늘어가게 만드는 관자놀이 편두통과 턱·안면 긴장 유발 요인'
+                ),
+                'seasonMap'    => array(1 => 3, 2 => 0, 3 => 0, 4 => 5, 5 => 4, 6 => 2, 7 => 3, 8 => 1, 9 => 5, 10 => 0, 11 => 4, 12 => 3)
+            ),
+            array(
+                'partId'       => 'digest',
+                'partLabel'    => '위장 · 식도 근육',
+                'targetReader' => '만성 소화불량·목이물감·역류성식도염을 겪는 성인',
+                'medicalTerms' => '하부식도괄약근, 기능성 소화불량, 위 점막 만성 변화(장상피화생), 인후두 역류(매핵기)',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 위식도역류질환 및 기능성 소화불량 관리 기준',
+                    '대한한의학회 표준임상진료지침 · 기능성 소화불량(담적) 생활 관리 기준',
+                    '국민건강보험공단 건강정보 · 식습관·야간 역류 예방 수칙'
+                ),
+                'themes'       => array(
+                    '위내시경 정상인데 명치 답답함·가스, 담적 증상 자가점검 기준',
+                    '역류성식도염 약 먹어도 안 낫는 목이물감(매핵기)과 헛기침 원인',
+                    '아침 빈속 커피·탄산음료와 가슴 타는 속쓰림·신물 역류 대처',
+                    '역류성식도염 수면 자세(왼쪽 눕기·상체 각도)와 야식 공백 3시간',
+                    '식후 더부룩함·잦은 트림·두통이 함께 오는 소화 기능 저하 고리',
+                    '국물 말아 먹기·급식 습관과 만성 소화불량 20분 저작 회복법'
+                ),
+                'seasonMap'    => array(1 => 3, 2 => 0, 3 => 4, 4 => 5, 5 => 2, 6 => 2, 7 => 5, 8 => 2, 9 => 0, 10 => 4, 11 => 1, 12 => 3)
+            ),
+            array(
+                'partId'       => 'gut',
+                'partLabel'    => '복부 · 대사 순환',
+                'targetReader' => '체중 정체기·복부비만·하체 붓기를 겪는 30~50대 성인',
+                'medicalTerms' => '복부 안쪽 지방(내장지방세포), 식후 혈당 변동(혈당 스파이크), 기초대사율, 림프 순환 부종',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 비만·복부비만 및 혈당 관리 생활 기준',
+                    '대한한의학회 · 체지방 대사 및 부종 관리 임상 기준',
+                    '세계보건기구(WHO) · 성인 식이·신체활동 및 대사 건강 권고 기준'
+                ),
+                'themes'       => array(
+                    '물만 마셔도 붓는 체질, 저녁 다리 붓기와 실제 체지방 살 구별법',
+                    '식사 후 쏟아지는 식곤증·혈당 스파이크와 뱃살 줄이는 식사 순서',
+                    '굶어도 안 빠지는 40~50대 나잇살·갱년기 뱃살과 기초대사 회복',
+                    '다이어트 정체기 원인(수면·스트레스·부종)과 요요 없는 돌파 기준',
+                    '밤마다 당기는 가짜 배고픔·야식 유혹 구별과 12시간 야간 공복',
+                    '밥보다 뱃살로 가는 액체 당분·믹스커피·짠 국물과 복부 순환'
+                ),
+                'seasonMap'    => array(1 => 1, 2 => 2, 3 => 0, 4 => 3, 5 => 3, 6 => 5, 7 => 0, 8 => 5, 9 => 4, 10 => 2, 11 => 1, 12 => 4)
+            ),
+            array(
+                'partId'       => 'uterus',
+                'partLabel'    => '아랫배 · 골반 순환',
+                'targetReader' => '생리통·임신 준비·산후 회복·갱년기를 겪는 20~50대 여성',
+                'medicalTerms' => '자궁 내막 미세혈관(나선동맥), 골반저 순환, 프로스타글란딘, 자율신경 체온 조절',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 월경통·산후 관리 및 갱년기 건강 안내',
+                    '대한한의학회 표준임상진료지침 · 월경통 및 여성 하복부 냉증 관리 기준',
+                    '국민건강보험공단 건강정보 · 여성 생애주기별 건강 관리 수칙'
+                ),
+                'themes'       => array(
+                    '아랫배 냉증·수족냉증이 매달 생리통과 덩어리혈을 키우는 이유',
+                    '생리통 진통제 복용 타이밍과 내성 오해, 아랫배 온열 관리 기준',
+                    '생리 일주일 전 붓기·폭식·감정 기복(생리전증후군) 완화 루틴',
+                    '임신 준비기 아랫배 보온·골반 혈류와 밤 11시 수면 리듬 기준',
+                    '출산 후 손목·발목 시림(산후풍) 초기 신호와 계절별 보온 수칙',
+                    '들쭉날쭉 생리불순 주기와 갱년기 열감·안면 혈류 조절 기준'
+                ),
+                'seasonMap'    => array(1 => 0, 2 => 1, 3 => 2, 4 => 3, 5 => 3, 6 => 0, 7 => 2, 8 => 1, 9 => 4, 10 => 4, 11 => 0, 12 => 5)
+            ),
+            array(
+                'partId'       => 'prostate',
+                'partLabel'    => '전립선 · 방광 순환',
+                'targetReader' => '야간뇨·잔뇨감·과민성 방광으로 불편을 겪는 40~70대 성인',
+                'medicalTerms' => '방광 벽 수축 근육(배뇨근), 전립선 골반 울혈, 골반 바닥 근육(골반저근), 항이뇨 리듬',
+                'trustedCitations' => array(
+                    '질병관리청 국가건강정보포털 · 전립선비대증 및 과민성 방광 생활 수칙',
+                    '대한한의학회 · 배뇨 기능 및 골반 하부 순환 관리 임상 기준',
+                    '국민건강보험공단 건강정보 · 중장년 전립선·야간뇨 예방 가이드'
+                ),
+                'themes'       => array(
+                    '새벽 잠 깨우는 야간뇨, 하루 몇 번부터 전립선·방광 신호일까',
+                    '소변 봐도 찝찝한 잔뇨감과 소변 줄기 약해짐, 전립선비대증 자가점검',
+                    '오래 앉아 일하는 남성의 회음부 뻐근함과 만성 전립선 불편 관리',
+                    '외출만 하면 화장실 찾는 과민성 방광, 하루 정상 배뇨 횟수와 훈련',
+                    '전립선 온좌욕 적정 온도·시간과 겨울철 감기약·음주 배뇨 주의',
+                    '기침·웃을 때 새는 소변과 올바른 골반 바닥 근육(케겔) 운동 기준'
+                ),
+                'seasonMap'    => array(1 => 4, 2 => 0, 3 => 3, 4 => 2, 5 => 1, 6 => 3, 7 => 2, 8 => 3, 9 => 1, 10 => 2, 11 => 0, 12 => 4)
+            )
         );
+    }
+
+    private static function calc_korean_bigram_similarity($a, $b) {
+        $na = preg_replace('/[^\p{Hangul}a-zA-Z0-9]+/u', '', mb_strtolower((string) $a, 'UTF-8'));
+        $nb = preg_replace('/[^\p{Hangul}a-zA-Z0-9]+/u', '', mb_strtolower((string) $b, 'UTF-8'));
+        $la = mb_strlen($na, 'UTF-8');
+        $lb = mb_strlen($nb, 'UTF-8');
+        if ($la < 2 || $lb < 2) return 0.0;
+        $ga = array();
+        for ($i = 0; $i < $la - 1; $i++) {
+            $ga[mb_substr($na, $i, 2, 'UTF-8')] = true;
+        }
+        $gb = array();
+        for ($i = 0; $i < $lb - 1; $i++) {
+            $gb[mb_substr($nb, $i, 2, 'UTF-8')] = true;
+        }
+        $inter = count(array_intersect_key($ga, $gb));
+        $union = count($ga) + count($gb) - $inter;
+        return $union > 0 ? ($inter / $union) : 0.0;
+    }
+
+    private static function pick_seasonal_theme_for_part($selected, $existing_titles) {
+        $themes = (isset($selected['themes']) && is_array($selected['themes'])) ? array_values($selected['themes']) : array();
+        if (empty($themes)) return '';
+        $month = (int) current_time('n');
+        $pref_idx = (isset($selected['seasonMap'][$month])) ? (int) $selected['seasonMap'][$month] : 0;
+        $ordered = array();
+        if (isset($themes[$pref_idx])) {
+            $ordered[] = $themes[$pref_idx];
+        }
+        $day_slot = (int) floor(current_time('timestamp') / 172800);
+        $cnt = count($themes);
+        for ($i = 0; $i < $cnt; $i++) {
+            $cand = $themes[($pref_idx + 1 + (($day_slot + $i) % $cnt)) % $cnt];
+            if (!in_array($cand, $ordered, true)) {
+                $ordered[] = $cand;
+            }
+        }
+        // Pick first theme with lowest overlap against existing titles
+        $best_theme = $ordered[0];
+        $best_max_sim = 9.9;
+        foreach ($ordered as $th) {
+            $max_sim = 0.0;
+            foreach ($existing_titles as $et) {
+                $sim = self::calc_korean_bigram_similarity($th, $et);
+                if ($sim > $max_sim) $max_sim = $sim;
+            }
+            if ($max_sim < 0.24) {
+                return $th;
+            }
+            if ($max_sim < $best_max_sim) {
+                $best_max_sim = $max_sim;
+                $best_theme = $th;
+            }
+        }
+        return $best_theme;
     }
 
     private static function resolve_active_gemini_key() {
@@ -2661,15 +2892,33 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
         $extra_chunks = array(
             (string) ($note['seoTitle'] ?? ''),
+            (string) ($note['metaDescription'] ?? ''),
+            (string) ($note['empathyHeading'] ?? ''),
+            (string) ($note['deepTitle'] ?? ''),
+            (string) ($note['checkHeading'] ?? ''),
+            (string) ($note['faqHeading'] ?? ''),
             (string) ($note['directAnswer'] ?? ''),
             (string) ($note['clinicalObservation'] ?? ''),
             (string) ($note['empathyIllustCaption'] ?? ''),
             (string) ($note['deepIllustCaption'] ?? ''),
             (string) ($note['routineIllustCaption'] ?? '')
         );
+        if (!empty($note['deepSections']) && is_array($note['deepSections'])) {
+            foreach ($note['deepSections'] as $ds) {
+                if (is_array($ds)) {
+                    $extra_chunks[] = (string) ($ds['h3'] ?? '');
+                    $extra_chunks[] = (string) ($ds['body'] ?? '');
+                }
+            }
+        }
         if (!empty($note['deepMechanism']) && is_array($note['deepMechanism'])) {
             foreach ($note['deepMechanism'] as $dm) {
-                $extra_chunks[] = (string) $dm;
+                if (is_array($dm)) {
+                    $extra_chunks[] = (string) ($dm['h3'] ?? '');
+                    $extra_chunks[] = (string) ($dm['body'] ?? '');
+                } else {
+                    $extra_chunks[] = (string) $dm;
+                }
             }
         }
         if (!empty($note['consumerKeywords']) && is_array($note['consumerKeywords'])) {
@@ -2711,11 +2960,13 @@ class Bareun_Member_Private_QnA_V6_Plugin {
 
         $joined = implode(' ', array_merge(array($title), $empathy, $truth, $myth, $check, $extra_chunks));
 
-        // 2차 검수: 의료법 제56조 및 상업적 CTA 완전 배제
+        // 2차 검수: 의료법 제56조 및 상업적·단정적 표현 100% 배제 (v3.0 강화)
         $forbidden_promo = array(
             '완치', '100%', '최고', '최초', '유일', '특효', '무조건', '보장',
             '예약', '내원', '방문해', '상담받', '문의하', '바른한의원', '원장',
-            '할인', '이벤트', '치료 프로그램', '처방받'
+            '할인', '이벤트', '치료 프로그램', '처방받',
+            '부작용 없', '부작용 0', '근본 치료', '기적', '재발 없',
+            '확실한 효과', '탁월한 효과', '즉각적', '국내 최초', '무료 체험', '치료 후기', '전후 사진'
         );
         foreach ($forbidden_promo as $word) {
             if (strpos($joined, $word) !== false) {
@@ -2723,14 +2974,16 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             }
         }
 
-        // 3차 검수: 어려운 전문 용어 순화 점검 및 핵심 키워드 자연 포함 확인
+        // 3차 검수 (v3.0 AEO·GEO): 표준 의학 용어를 괄호 병기("쉬운 일상어(표준 의학 용어)")로 쓰면 통과!
+        // 단, 괄호 설명 없이 단독으로 툭 튀어나온 미순화 전문 용어만 반려하여 가독성과 AI 의학 전문성을 동시 확보.
+        $joined_without_parens = preg_replace('/\([^()]{1,40}\)/u', '', $joined);
         $forbidden_jargon = array(
             '대퇴골', '골단판', '아로마타제', '추간판', '수핵', '후두하근',
             '모유두', '나선동맥', '시상하부', '내장지방세포', '배뇨근', '장상피화생'
         );
         foreach ($forbidden_jargon as $jargon) {
-            if (strpos($joined, $jargon) !== false) {
-                $errors[] = '[3차·어휘순화] 미순화 전문 용어 검출: ' . $jargon;
+            if (strpos($joined_without_parens, $jargon) !== false) {
+                $errors[] = '[3차·어휘순화] 괄호 설명 없는 단독 전문 용어 검출: ' . $jargon;
             }
         }
 
@@ -2772,23 +3025,36 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         );
     }
 
-    private static function auto_sanitize_text_recursive($val, $replacements) {
+    private static function auto_sanitize_text_recursive($val, $replacements, $jargon_pair_map = array()) {
         if (is_string($val)) {
             $cleaned = strtr($val, $replacements);
+            // Convert bare medical jargon OUTSIDE parentheses into "쉬운 일상어(표준 의학 용어)" so readability & AI medical authority both win
+            if (!empty($jargon_pair_map)) {
+                $parts = preg_split('/(\([^()]{1,40}\))/u', $cleaned, -1, PREG_SPLIT_DELIM_CAPTURE);
+                if (is_array($parts)) {
+                    foreach ($parts as $pi => $seg) {
+                        if ($seg !== '' && $seg[0] === '(') {
+                            continue; // Already inside parentheses — preserve medical entity pairing!
+                        }
+                        $parts[$pi] = strtr($seg, $jargon_pair_map);
+                    }
+                    $cleaned = implode('', $parts);
+                }
+            }
             $cleaned = preg_replace('/[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]/u', '', $cleaned);
             return trim(preg_replace('/\s{2,}/u', ' ', $cleaned));
         }
         if (is_array($val)) {
             foreach ($val as $k => $v) {
-                $val[$k] = self::auto_sanitize_text_recursive($v, $replacements);
+                $val[$k] = self::auto_sanitize_text_recursive($v, $replacements, $jargon_pair_map);
             }
         }
         return $val;
     }
 
     /**
-     * Self-healing sanitizer: safely replaces medical-law / unsoftened jargon traps & aligns format/keyword
-     * so unattended 2-day auto-posting NEVER stalls while still passing 100% of strict 3-stage checks.
+     * Self-healing sanitizer (v3.0): safely replaces medical-law / commercial traps & pairs bare jargon into
+     * "쉬운 일상어(표준 의학 용어)" so unattended 2-day auto-posting NEVER stalls while maximizing AEO/GEO medical authority.
      */
     private static function auto_sanitize_body_note_candidate($note, $fallback_theme = '') {
         if (!is_array($note)) {
@@ -2798,6 +3064,22 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             // 2차 의료법·상업어 안전 순화 치환 (긴 어구 우선)
             '치료 프로그램' => '생활 관리 과정',
             '바른한의원'    => '진료 현장',
+            '확실한 효과'   => '긍정적인 변화',
+            '탁월한 효과'   => '유익한 도움',
+            '근본 치료'     => '체계적인 관리',
+            '부작용 없이'   => '부담을 줄이며',
+            '부작용 없는'   => '부담이 적은',
+            '부작용 없'     => '부담이 적',
+            '부작용 0'      => '부담 최소화',
+            '재발 없'       => '재발을 줄이',
+            '국내 최초'     => '대표적인',
+            '무료 체험'     => '생활 점검',
+            '치료 후기'     => '임상 관찰',
+            '전후 사진'     => '변화 기록',
+            '즉각적인'      => '빠른',
+            '즉각적'        => '신속한',
+            '기적적인'      => '눈에 띄는',
+            '기적'          => '변화',
             '상담받아'      => '점검해 보아',
             '상담받'        => '살펴보',
             '방문해서'      => '점검해서',
@@ -2818,28 +3100,30 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             '내원'          => '대면 확인',
             '원장'          => '의료진',
             '할인'          => '부담 완화',
-            '이벤트'        => '안내',
-            // 3차 어려운 전문 해부학 용어 -> 쉬운 일상 표현 순화 치환
-            '내장지방세포'  => '복부 안쪽 내장지방',
-            '장상피화생'    => '위 점막 만성 변성',
-            '아로마타제'    => '성호르몬 전환 효소',
-            '후두하근'      => '뒷목 깊은 속근육',
-            '나선동맥'      => '자궁 내막 미세혈관',
-            '시상하부'      => '뇌 자율신경·체온 조절 중추',
-            '대퇴골'        => '허벅지 뼈',
-            '골단판'        => '성장 연골판',
-            '추간판'        => '척추 디스크 쿠션',
-            '수핵'          => '디스크 중심 말랑한 젤리층',
-            '모유두'        => '모근 뿌리 영양세포',
-            '배뇨근'        => '방광 벽 수축 근육'
+            '이벤트'        => '안내'
+        );
+        // 3차 괄호 밖 단독 전문 용어 -> 쉬운 일상어(표준 의학 용어) 자동 병기 치환
+        $jargon_pair_map = array(
+            '내장지방세포'  => '복부 안쪽 내장지방(내장지방세포)',
+            '장상피화생'    => '위 점막 만성 변화(장상피화생)',
+            '아로마타제'    => '성호르몬 전환 효소(아로마타제)',
+            '후두하근'      => '뒷목 깊은 속근육(후두하근)',
+            '나선동맥'      => '자궁 내막 미세혈관(나선동맥)',
+            '시상하부'      => '뇌 자율신경 중추(시상하부)',
+            '대퇴골'        => '허벅지 뼈(대퇴골)',
+            '골단판'        => '성장 연골판(골단판)',
+            '추간판'        => '허리 물렁뼈(추간판)',
+            '수핵'          => '디스크 중심 말랑층(수핵)',
+            '모유두'        => '모근 뿌리 세포(모유두)',
+            '배뇨근'        => '방광 벽 수축 근육(배뇨근)'
         );
 
-        $skip_keys = array('id', 'enabled', 'partId', 'publishDate', 'lastReviewed', 'auditPassed', 'source');
+        $skip_keys = array('id', 'enabled', 'partId', 'publishDate', 'lastReviewed', 'auditPassed', 'source', 'schemaVersion', 'topicSlug', 'reviewedByDirector');
         foreach ($note as $k => $v) {
             if (in_array($k, $skip_keys, true)) {
                 continue;
             }
-            $note[$k] = self::auto_sanitize_text_recursive($v, $safe_replacements);
+            $note[$k] = self::auto_sanitize_text_recursive($v, $safe_replacements, $jargon_pair_map);
         }
 
         // 1차 형식 보정: 질문형 제목(?) 보장
@@ -2870,10 +3154,14 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             }
         }
 
-        // 3차 키워드 보정: 만약 keyword가 본문에 매칭되지 않으면 본문에 실제 등장한 consumerKeywords 또는 제목 핵심 어절로 정렬
+        // 3차 키워드 보정
         $chk = self::validate_body_note_three_stage($note);
         if (!$chk['passed']) {
-            $joined_test = $t . ' ' . implode(' ', (array) ($note['deepMechanism'] ?? array())) . ' ' . (string) ($note['directAnswer'] ?? '');
+            $dm_flat = array();
+            foreach ((array) ($note['deepMechanism'] ?? array()) as $dm_it) {
+                $dm_flat[] = is_array($dm_it) ? (($dm_it['h3'] ?? '') . ' ' . ($dm_it['body'] ?? '')) : (string) $dm_it;
+            }
+            $joined_test = $t . ' ' . implode(' ', $dm_flat) . ' ' . (string) ($note['directAnswer'] ?? '');
             $replaced_kw = '';
             if (!empty($note['consumerKeywords']) && is_array($note['consumerKeywords'])) {
                 foreach ($note['consumerKeywords'] as $ckw) {
@@ -2918,19 +3206,15 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 break;
             }
         }
-        $day_slot = (int) floor(current_time('timestamp') / 172800);
-        $theme = $theme_override !== '' ? $theme_override : $selected['themes'][$day_slot % count($selected['themes'])];
 
-        // Collect already-published titles for this body part so 2-day auto-posting NEVER produces near-duplicate/spun content (Google Scaled Content Abuse & Naver 유사문서 0%)
+        // Collect ALL already-published titles for this body part (ZERO cap -> prevents cannibalization forever!)
         $existing_titles = array();
         $stored_notes = get_option(self::OPT_BODY_NOTES, array());
         if (is_array($stored_notes)) {
             foreach ($stored_notes as $sn) {
                 if (is_array($sn) && ($sn['partId'] ?? '') === $selected['partId']) {
                     $st = trim((string) ($sn['questionTitle'] ?? ($sn['title'] ?? '')));
-                    if ($st !== '') {
-                        $existing_titles[] = $st;
-                    }
+                    if ($st !== '') $existing_titles[] = $st;
                 }
             }
         }
@@ -2939,44 +3223,60 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             foreach ($hn_cfg_existing['notes'] as $hn_ex) {
                 if (is_array($hn_ex) && ($hn_ex['partId'] ?? '') === $selected['partId']) {
                     $ht = trim((string) ($hn_ex['questionTitle'] ?? ($hn_ex['title'] ?? '')));
-                    if ($ht !== '') {
-                        $existing_titles[] = $ht;
-                    }
+                    if ($ht !== '') $existing_titles[] = $ht;
                 }
             }
         }
-        $existing_titles = array_slice(array_values(array_unique($existing_titles)), 0, 24);
+        $existing_titles = array_values(array_unique($existing_titles));
+        $theme = $theme_override !== '' ? $theme_override : self::pick_seasonal_theme_for_part($selected, $existing_titles);
+
+        $prompt_existing = array_slice($existing_titles, 0, 60);
         $dedup_block = '';
-        if (!empty($existing_titles)) {
-            $dedup_block = "[중복 절대 금지 — 이미 발행된 동일 부위 건강 글 제목 목록]\n"
-                . "- " . implode("\n- ", $existing_titles) . "\n"
-                . "→ 위 기발행 글들과 제목·세부 상황·비유·체크리스트가 절대 겹치지 않도록, 같은 부위 안에서도 완전히 새로운 계절·직업·수면·식습관·생활 동작 각도를 발굴해 독창적인 칼럼을 작성할 것.\n\n";
+        if (!empty($prompt_existing)) {
+            $dedup_block = "[중복 절대 금지 — 이미 발행된 동일 부위 건강 글 전체 목록 (" . count($existing_titles) . "편)]\n"
+                . "- " . implode("\n- ", $prompt_existing) . "\n"
+                . "→ 위 기발행 글들과 제목·세부 상황·비유·체크리스트가 절대 겹치지 않도록, 같은 부위 안에서도 완전히 새로운 계절·직업·시간대·증상 비교 각도를 발굴해 독창적인 칼럼을 작성할 것.\n\n";
         }
 
-        $base_prompt = "[역할 정의]\n"
-            . "너는 15년 이상 임상 현장에서 환자를 살펴온 한의학 수석 메디컬 에디터이자, 의학적 정확성과 의료법 제56조를 엄격히 통제하는 수석 팩트체커야.\n"
-            . "SCI급 의학·생리학 학술 논문을 기반으로 하되, 초등학생 학부모와 일반인도 단숨에 고개를 끄덕이는 따뜻한 일상 공감 문체로 **순수 고유 본문 1,600~2,400자 분량의 심층 의학 칼럼**을 작성해야 해.\n\n"
+        $cur_month_kr = (int) current_time('n') . '월';
+        $trusted_cites_str = !empty($selected['trustedCitations']) ? implode(' / ', $selected['trustedCitations']) : '질병관리청 국가건강정보포털 / 대한한의학회 표준임상진료지침';
+        $med_terms_str = !empty($selected['medicalTerms']) ? (string) $selected['medicalTerms'] : '쉬운 일상어(표준 의학 용어)';
+
+        $base_prompt = "[역할 정의 — 마스터 세팅 v3.0 (AEO · GEO · SEO · 소비자 검색 심리 최상위 설계)]\n"
+            . "너는 15년 이상 임상 현장에서 환자를 살펴온 한의학 수석 메디컬 에디터이자, 구글 AI 개요·네이버 AI 브리핑·챗GPT 검색 인용과 대한민국 의료법 제56조를 완벽히 준수하는 수석 팩트체커야.\n"
+            . "일반 소비자가 네이버·구글·챗GPT에 실제로 손가락으로 치는 구어체 검색 문장을 정조준하여 **순수 고유 본문 2,000~2,500자 분량의 심층 건강 칼럼**을 작성해야 해.\n\n"
             . "[입력 변수]\n"
-            . "- 클릭 부위: [" . $selected['partLabel'] . "]\n"
-            . "- 시드 테마 방향: [" . $theme . "] (단, 기발행 목록과 겹치면 더 구체적이고 새로운 세부 생활 상황으로 확장할 것)\n"
-            . "- 타깃 독자: " . $selected['targetReader'] . "\n\n"
+            . "- 클릭 부위: [" . $selected['partLabel'] . "] (발행 시즌: " . $cur_month_kr . ")\n"
+            . "- 선정 시드 테마: [" . $theme . "] (기발행과 겹치면 더 구체적인 상황·시간·비교 각도로 확장할 것)\n"
+            . "- 타깃 독자: " . $selected['targetReader'] . "\n"
+            . "- 권장 의학 용어 괄호 병기 예시: " . $med_terms_str . "\n"
+            . "- 검증된 공신력 출처 화이트리스트(이 중에서만 citation 선택, 미확인 논문/통계 창작 절대 금지): " . $trusted_cites_str . "\n\n"
             . $dedup_block
-            . "[필수 반영 핵심 규칙 — v2.0 롱폼 심층 본문 + 임상 관찰 경험(Experience) + 정량 수치 + 4행 비교표 + 3단 화보(3번 슬롯 대표원장 실사 연동)]\n"
-            . "1. 질문형 제목(title): 독자가 겪는 생생한 상황으로 시작해 물음표(?)로 끝날 것. 지역명(대전, 서울 등)은 본문·제목·키워드에 절대 넣지 말 것.\n"
-            . "2. 소비자 실생활 검색 키워드(consumerKeywords): 환자들이 네이버·구글·AI 검색창에 실제로 자주 입력하는 구어체·증상형 키워드 정확히 5개 배열 (지역명 제외).\n"
-            . "3. 언어 순화: 어려운 해부학 용어(대퇴골, 골단판, 아로마타제, 추간판, 수핵, 후두하근, 모유두, 나선동맥, 시상하부, 내장지방세포, 배뇨근, 장상피화생) 절대 사용 금지. 반드시 쉬운 일상 비유(성장 연골판, 허벅지 뼈, 디스크 말랑 쿠션, 뒷목 깊은 근육 등)로 풀 것.\n"
-            . "4. 홍보·단정어 완전 금지: 완치, 100%, 최고, 최초, 유일, 특효, 무조건, 보장, 예약, 내원, 방문해, 상담받, 문의하, 바른한의원, 원장, 할인, 이벤트, 치료 프로그램, 처방받 절대 사용 금지 (단, 이미지 생성 전용 routinePrompt 안에서만 의료진 인물 연출 묘사 허용).\n"
-            . "5. 심층 롱폼 본문(deepMechanism 4단락) & 정량 기준: 각 단락은 4~5문장(단락당 250~380자)으로 깊이 있게 서술하고, 글 전체에 **구체적인 정량 기준 수치(시간·온도·각도·횟수·비율·기간 등)를 최소 3개 이상** 자연스럽게 포함할 것.\n"
-            . "6. 진료실 임상 관찰 노트(clinicalObservation): 네이버 AI 브리핑과 구글 E-E-A-T의 직접 경험(Experience) 기준을 충족하도록, '진료 현장에서 오랜 기간 다양한 연령대의 생활 리듬을 관찰해 보면~' 형식으로 **익명·일반화된 실제 임상 관찰 패턴과 생활 개선 포인트 4~5문장(280~420자)**을 구체적으로 작성할 것(금지어 '원장·바른한의원·내원·예약' 절대 사용 금지).\n"
-            . "7. 한눈에 비교하는 생활 기준표(comparisonTable): 독자와 AI 검색엔진이 즉시 비교할 수 있도록 3~4열 × 정확히 4행의 실용 비교표(부담이 쌓이는 습관 vs 권장 실천 기준 vs 몸의 반응)를 작성하고 권장 행 번호(recommendedRowIndex, 0~3)를 지정할 것.\n"
-            . "8. 자가점검 5항목(selfCheckItems 5개) + 대면 확인 권고 신호(redFlags 2~3개) + 독자 핵심 질문 FAQ 3개(faqItems 3개)를 충실히 작성할 것.\n"
-            . "9. 상·중·하 3단 멀티 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성 (본문·표·제목 어디에도 유니코드 AI 이모티콘[💡, 🩺, 📊, ✅, ⚠️ 등] 절대 사용 금지):\n"
-            . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 속 불편/고민 순간을 따뜻하게 포착한 자연광 라이프스타일 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 뒷모습·측면·손·체형 위주, 글자 0%).\n"
-            . "   - 슬롯 ②(mechanismPrompt): 본문 중단 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 우아하게 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
-            . "   - 슬롯 ③(routinePrompt — 커스텀 스튜디오 등록 원장님 셀카 1:1 동일 얼굴 고정 · 85mm 정면~15° 상반신 클로즈업 실사): **반드시 한글로 작성**하며, 따뜻한 캐시미어 아이보리 톤의 깔끔한 아웃포커싱 배경 앞에서, 순백색 한의사 가운(명찰·로고·글씨 0%)을 입은 커스텀 스튜디오 등록 셀카와 100% 동일한 한의사 1명이 **상체와 얼굴을 카메라 정면(0°~15° 이내, 몸을 옆으로 90° 돌리는 측면 포즈 절대 금지)**으로 향한 채, 이번 글의 핵심 건강 관리 포인트(예: 목·어깨 긴장 완화 자세 안내, 복식호흡 손 위치 안내, 바른 수면·식습관 리듬 설명 등)를 온화한 표정과 자연스러운 손짓으로 안내하며 **얼굴과 상반신이 화면 중심에 큼직하고 또렷하게 잡히는 16:9 85mm 가슴 위 상반신 미디엄 클로즈업 실사 포트레이트**를 구체적으로 지시할 것 (글자·워터마크 0%).\n"
-            . "   - routineIllustCaption: '진료 가이드 — ~ 바른 생활 리듬과 관리 기준을 안내하는 한의사'처럼 금지어('원장·바른한의원') 없이 자연스러운 한글 캡션 작성.\n\n"
+            . "[필수 반영 핵심 규칙 — 마스터 세팅 v3.0]\n"
+            . "1. 소비자 검색 직격 제목 투트랙 (Front-Loading + 4대 황금 공식 중 1택):\n"
+            . "   - 4대 공식: ①시간·상황 직격형 ②A vs B 구별·판단형 ③검사 정상인데 아픈 회색지대형 ④구체적 숫자·기준 명시형\n"
+            . "   - title (본문 H1, 32~42자): 반드시 **앞 20자 이내**에 소비자가 검색창에 실제로 치는 핵심 증상/질환어를 배치하고 물음표(?)로 끝낼 것 (라디오 사연 같은 긴 수식어로 시작 금지, 지역명 절대 금지).\n"
+            . "   - seoTitle (검색창 <title>, 26~35자): title의 핵심 검색어를 **맨 앞 15자 이내**에 배치하고 뒤에 '구별 기준 / 자가진단 / 수치 해결법'을 붙여 클릭률(CTR) 극대화 (뒤에 '| 바른한의원'이 붙어 전체 46자 이내 유지).\n"
+            . "   - metaDescription (110~145자): 검색 미리보기용 완결 2문장(정량 수치 1개 이상 포함, 말줄임 없이 자연스럽게 마침표로 끝낼 것).\n"
+            . "   - topicSlug: 주제를 대표하는 영문 소문자+하이픈 2~3단어 (예: night-reflux, bone-age-check, prostate-nocturia).\n"
+            . "2. 첫 3줄 핵심 결론 (directAnswer, 180~250자 · 정확히 2~3문장): **첫 1문장(65~90자)**에서 질문에 대한 결론+핵심 숫자 1개를 바로 답하고, 둘째 문장에서 쉬운 비유+(표준 의학 용어) 원리, 셋째 문장에서 오늘 바로 실천할 정량 기준을 제시.\n"
+            . "3. 소비자 실생활 검색어 (consumerKeywords 5개): 1~2번은 핵심 중형 증상어, 3~4번은 구어체 롱테일 질문어, 5번은 한방/생활 관리 탐색어 (지역명 제외).\n"
+            . "4. 쉬운 말 + 표준 의학 용어 괄호 병기 (2~4회): 어려운 해부학 용어를 단독으로 쓰지 말고 반드시 **`쉬운 일상어(표준 의학 용어)`** 형태로 괄호 병기해 환자 가독성과 AI 의학 전문성을 동시에 확보할 것 (예: 성장 연골판(골단판), 허리 물렁뼈(추간판), 뒷목 깊은 속근육(후두하근), 방광 벽 수축 근육(배뇨근)).\n"
+            . "5. 의료법 제56조·상업 홍보어 0% 완전 차단: 완치, 100%, 최고, 최초, 유일, 특효, 무조건, 보장, 예약, 내원, 방문해, 상담받, 문의하, 바른한의원, 원장, 할인, 이벤트, 치료 프로그램, 처방받, 부작용 없, 근본 치료, 기적, 재발 없, 확실한 효과, 탁월한 효과, 즉각적, 국내 최초, 무료 체험, 치료 후기, 전후 사진 절대 사용 금지 (단, 이미지 생성용 routinePrompt 안에서만 한의사 인물 연출 허용).\n"
+            . "6. 고정 소제목 0% — 5개 동적 질문형 H2 + 4개 독립 H3 청킹(deepMechanism):\n"
+            . "   - empathyHeading(H2-1): 일상 증상 공감을 소비자 검색 문장으로 만든 고유 질문형 H2\n"
+            . "   - deepTitle(H2-2): 몸속 원인을 묻는 고유 질문형 H2\n"
+            . "   - deepMechanism: **정확히 4개의 독립 객체 배열 `[{\"h3\":\"구체 질문/핵심 소제목\",\"body\":\"첫 문장에서 소제목에 바로 직답하는 220~320자(3~4문장)\"}]`**로 작성 (1번: 핵심 생리 원리 / 2번: 일상 습관 영향 / 3번: 방치 시 악순환 / 4번: 회복 생활 기준). 글 전체에 **구체적 정량 수치(시간·온도·각도·횟수·기간) 최소 5개 이상** 자연 포함(허위 통계 % 창작 금지).\n"
+            . "   - checkHeading(H2-4) & faqHeading(H2-5): 핵심 키워드가 들어간 고유 H2.\n"
+            . "7. 진료실 임상 관찰 노트 (clinicalObservation, 260~360자 · 정확히 4문장): '진료 현장에서 ~'로 시작해 익명·일반화된 임상 패턴, 동반 증상, 2주 생활 조절 시 변화, 통합 관점을 4문장으로 작성(금지어 0%).\n"
+            . "8. 비교표 (comparisonTable): 4열(`[\"관리 항목\",\"부담이 쌓이는 습관\",\"권장 생활 기준 (수치)\",\"기대되는 몸의 변화\"]`) × 정확히 4행(시간 / 자세·동작 / 식습관·온도 / 수면·회복), 최소 3행의 권장 기준에 구체적 숫자+단위 포함, 셀당 15~38자 간결 작성.\n"
+            . "9. 자가점검 5항목(selfCheckItems, 구체적 빈도·시간 표현 포함) + 대면 확인 신호 3개(redFlags, 구체적 기간·위험 징후) + 독자 자주 묻는 질문 3개(faqItems — Q1: 수치·기준형 / Q2: 비교·구별형 / Q3: 진찰 시점형, 각 답변 120~190자 2~3문장).\n"
+            . "10. 3단 화보 프롬프트(empathyPrompt, mechanismPrompt, routinePrompt) 및 한글 캡션 3개 작성 (유니코드 이모티콘 0%):\n"
+            . "   - 슬롯 ①(empathyPrompt): 도입부 독자의 일상 불편 순간을 자연광으로 포착한 에디토리얼 사진 (얼굴 정면 클로즈업 배제, 글자 0%).\n"
+            . "   - 슬롯 ②(mechanismPrompt): 해부·생리 원리를 캐시미어 아이보리(#FAF8F3)와 샴페인 골드(#C5A059) 톤으로 시각화한 3D 메디컬 일러스트 (글자·라벨 0%).\n"
+            . "   - 슬롯 ③(routinePrompt — 커스텀 스튜디오 등록 셀카 1:1 동일 얼굴 고정 · 85mm 정면~15° 상반신 클로즈업 실사): **반드시 한글로 작성**하며, 따뜻한 캐시미어 아이보리 톤의 깔끔한 아웃포커싱 배경 앞에서 순백색 한의사 가운(명찰·로고·글씨 0%)을 입은 커스텀 스튜디오 등록 셀카와 100% 동일한 한의사 1명이 **상체와 얼굴을 카메라 정면(0°~15° 이내, 측면 90° 금지)**으로 향한 채 이번 글의 핵심 생활 관리 기준을 온화한 표정과 단정한 손짓으로 안내하는 16:9 85mm 가슴 위 상반신 클로즈업 실사 포트레이트 (글자·워터마크 0%).\n\n"
             . "[출력 JSON 스키마 (순수 JSON 객체만 반환)]\n"
-            . "{\"keyword\":\"핵심대표키워드\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"실생활검색어1\",\"실생활검색어2\",\"실생활검색어3\",\"실생활검색어4\",\"실생활검색어5\"],\"title\":\"공감형 질문 타이틀?\",\"seoTitle\":\"검색 최적화 타이틀 (38~50자)\",\"directAnswer\":\"핵심 결론 직답 요약 3~4문장 (정량 기준 포함)\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[\"쉬운 비유와 정량 수치를 담은 심층 생리 원리 1단락 (4~5문장)\",\"일상 습관이 부위별 순환·신경·근육에 미치는 영향 2단락 (4~5문장)\",\"증상이 누적되는 악순환 고리와 신호 3단락 (4~5문장)\",\"회복 리듬을 되살리는 구체적 생활 기전과 실천 기준 4단락 (4~5문장)\"],\"clinicalObservation\":\"진료 현장에서 오랜 기간 관찰되는 실제 생활 패턴과 체크 포인트 4~5문장 (금지어 제외)\",\"comparisonTable\":{\"heading\":\"핵심 생활 습관 한눈에 비교하기\",\"intro\":\"비교표 핵심 안내 1문장\",\"headers\":[\"구분\",\"부담이 쌓이는 습관\",\"권장 생활 기준\",\"기대되는 몸의 변화\"],\"rows\":[[\"항목1\",\"피해야 할 습관\",\"구체적 수치 포함 권장 기준\",\"긍정적 변화\"],[\"항목2\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목3\",\"피해야 할 습관\",\"권장 기준\",\"변화\"],[\"항목4\",\"피해야 할 습관\",\"권장 기준\",\"변화\"]],\"recommendedRowIndex\":0},\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"최근 2주 자가점검 문항 1\",\"자가점검 문항 2\",\"자가점검 문항 3\",\"자가점검 문항 4\",\"자가점검 문항 5\"],\"redFlags\":[\"세심한 대면 확인이 필요한 증상 신호 1\",\"대면 확인이 필요한 증상 신호 2\",\"대면 확인이 필요한 증상 신호 3\"],\"faqItems\":[{\"q\":\"독자가 가장 궁금해하는 질문 1?\",\"a\":\"정량 기준을 포함한 친절하고 명확한 답변 1\"},{\"q\":\"독자가 자주 묻는 생활 질문 2?\",\"a\":\"친절하고 명확한 답변 2\"},{\"q\":\"독자가 자주 혼동하는 질문 3?\",\"a\":\"친절하고 명확한 답변 3\"}],\"citation\":\"관련 국제 학술지(예: Nature Medicine · JAMA · Sleep 등) 리뷰 근거 요약\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 바른 생활 동작 시연 가이드 한글 캡션\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"따뜻한 캐시미어 아이보리 톤의 깔끔한 아웃포커싱 배경 앞에서, 순백색 한의사 가운을 입은 한의사가 상체와 얼굴을 카메라 정면 15° 이내로 향한 채 온화한 미소와 단정한 손짓으로 호흡과 자세 회복 기준을 차분히 안내하는 85mm 가슴 위 상반신 클로즈업 인물 실사 포트레이트\"}";
+            . "{\"keyword\":\"핵심대표키워드\",\"topicSlug\":\"english-kebab-slug\",\"specificTheme\":\"구체화된 세부 생활 주제명\",\"consumerKeywords\":[\"핵심증상어1\",\"핵심증상어2\",\"구어체질문어3\",\"구어체질문어4\",\"관리탐색어5\"],\"title\":\"앞20자핵심증상어 포함 공감 질문 타이틀(32~42자)?\",\"seoTitle\":\"앞15자핵심증상어 검색 최적화 타이틀(26~35자)\",\"metaDescription\":\"완결 2문장 검색 요약(110~145자, 숫자1개이상).\",\"directAnswer\":\"첫문장 결론+수치 포함 2~3문장 핵심 직답(180~250자).\",\"empathyHeading\":\"소비자 검색 문장형 도입 H2?\",\"deepTitle\":\"몸속 원인을 묻는 고유 질문형 H2?\",\"checkHeading\":\"핵심키워드 포함 최근 2주 자가점검 H2\",\"faqHeading\":\"핵심키워드 자주 묻는 질문 (FAQ)\",\"empathy\":[\"일상 공감 대사 1줄\",\"일상 공감 대사 2줄\"],\"truth\":[\"핵심 원인 1줄\",\"핵심 원인 2줄\"],\"deepMechanism\":[{\"h3\":\"1번 원리 질문형 소제목?\",\"body\":\"첫 문장 직답 + 쉬운말(의학용어) + 정량수치 포함 220~320자 3~4문장\"},{\"h3\":\"2번 일상 습관 소제목?\",\"body\":\"일상 습관 영향 220~320자 3~4문장\"},{\"h3\":\"3번 악순환 신호 소제목?\",\"body\":\"누적 악순환 220~320자 3~4문장\"},{\"h3\":\"4번 회복 실천 기준 소제목?\",\"body\":\"구체적 회복 기준 220~320자 3~4문장\"}],\"clinicalObservation\":\"진료 현장에서 관찰되는 패턴·동반신호·2주 변화·통합기준 4문장(260~360자, 금지어 0%)\",\"comparisonTable\":{\"heading\":\"핵심키워드 부담 습관 vs 권장 생활 기준 한눈에 비교\",\"intro\":\"비교표 핵심 요약 1문장\",\"headers\":[\"관리 항목\",\"부담이 쌓이는 습관\",\"권장 생활 기준 (수치)\",\"기대되는 몸의 변화\"],\"rows\":[[\"시간 기준\",\"피할 습관\",\"구체적 수치 포함 권장 기준\",\"몸의 변화\"],[\"자세·동작\",\"피할 습관\",\"구체적 수치 포함 권장 기준\",\"몸의 변화\"],[\"식습관·온도\",\"피할 습관\",\"구체적 수치 포함 권장 기준\",\"몸의 변화\"],[\"수면·회복\",\"피할 습관\",\"구체적 수치 포함 권장 기준\",\"몸의 변화\"]],\"recommendedRowIndex\":0},\"myth\":[\"흔한 오해 바로잡기 1줄\",\"올바른 생활 기준 2줄\"],\"check\":[\"오늘 밤 1분 관찰 기준 1\",\"오늘 밤 1분 관찰 기준 2\"],\"selfCheckItems\":[\"빈도·시간 포함 자가점검 1\",\"자가점검 2\",\"자가점검 3\",\"자가점검 4\",\"자가점검 5\"],\"redFlags\":[\"구체 기간·위험신호 1\",\"대면 확인 신호 2\",\"대면 확인 신호 3\"],\"faqItems\":[{\"q\":\"수치·기준을 묻는 소비자 질문 1?\",\"a\":\"정량 기준 포함 명확한 직답 120~190자\"},{\"q\":\"비교·구별을 묻는 소비자 질문 2?\",\"a\":\"명확한 구별 직답 120~190자\"},{\"q\":\"대처·진찰 시점을 묻는 질문 3?\",\"a\":\"2~4주 기준·주의신호 포함 직답 120~190자\"}],\"citation\":\"위 화이트리스트 중 가장 부합하는 검증 공신력 기관 기준 1개\",\"empathyIllustCaption\":\"슬롯 ① 일상 공감 화보 한글 캡션\",\"deepIllustCaption\":\"슬롯 ② 원리 도해 화보 한글 캡션\",\"routineIllustCaption\":\"슬롯 ③ 바른 생활 관리 기준을 안내하는 한의사\",\"empathyPrompt\":\"16:9 warm cashmere ivory #FAF8F3 lifestyle editorial photo prompt without any text or face closeup\",\"mechanismPrompt\":\"16:9 clean 3D medical editorial illustration on warm ivory #FAF8F3 with champagne gold #C5A059 accents, zero text\",\"routinePrompt\":\"따뜻한 캐시미어 아이보리 톤의 깔끔한 아웃포커싱 배경 앞에서, 순백색 한의사 가운을 입은 한의사가 상체와 얼굴을 카메라 정면 15° 이내로 향한 채 온화한 미소와 단정한 손짓으로 바른 생활 리듬과 관리 기준을 차분히 안내하는 85mm 가슴 위 상반신 클로즈업 인물 실사 포트레이트\"}";
 
         $feedback = '';
         $verified_candidate = null;
@@ -3063,10 +3363,32 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             }
 
             $today_kst = current_time('Y-m-d');
-            $note_id   = $selected['partId'] . '-' . str_replace('-', '', $today_kst);
+            $raw_slug  = strtolower(preg_replace('/[^a-z0-9\-]+/', '-', trim((string) ($parsed['topicSlug'] ?? ''))));
+            $raw_slug  = trim(preg_replace('/-+/', '-', $raw_slug), '-');
+            if (strlen($raw_slug) > 26) {
+                $raw_slug = trim(substr($raw_slug, 0, 26), '-');
+            }
+            $note_id   = $selected['partId'] . ($raw_slug !== '' ? ('-' . $raw_slug) : '') . '-' . str_replace('-', '', $today_kst);
             $q_title   = sanitize_text_field($parsed['title'] ?? '');
             $seo_title = sanitize_text_field($parsed['seoTitle'] ?? $q_title);
+            $meta_desc = sanitize_textarea_field($parsed['metaDescription'] ?? '');
             $kw_main   = sanitize_text_field($parsed['keyword'] ?? $theme);
+
+            // Bigram similarity duplicate title guard (reject > 48% overlap on attempts 1-2)
+            $dup_too_close = '';
+            if ($attempt < 3 && $q_title !== '') {
+                foreach ($existing_titles as $et_check) {
+                    if (self::calc_korean_bigram_similarity($q_title, $et_check) >= 0.48) {
+                        $dup_too_close = $et_check;
+                        break;
+                    }
+                }
+            }
+            if ($dup_too_close !== '') {
+                $feedback = "\n\n[중복 제목 반려] 생성된 제목이 기발행 글('{$dup_too_close}')과 유사합니다. 완전히 다른 상황·비교 각도로 새 제목과 본문을 작성하세요.";
+                continue;
+            }
+
             $cons_kws  = array_values(array_filter(array_map('sanitize_text_field', array_slice((array) ($parsed['consumerKeywords'] ?? array()), 0, 5))));
             if (empty($cons_kws)) {
                 $cons_kws = array($kw_main, $selected['partLabel'] . ' 관리', $theme);
@@ -3075,10 +3397,28 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             $tru_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['truth'] ?? array()), 0, 2)));
             $myt_lines = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['myth'] ?? array()), 0, 2)));
             $chk_items = array_values(array_map('sanitize_text_field', array_slice((array) ($parsed['check'] ?? array()), 0, 2)));
-            $deep_mech = array_values(array_filter(array_map('sanitize_textarea_field', array_slice((array) ($parsed['deepMechanism'] ?? array()), 0, 4))));
+
+            // Parse deepMechanism: store structured [{h3, body}] in deepSections for v3.0 SSR H3 chunking,
+            // AND keep plain string array in deepMechanism/deepParagraphs for 100% compatibility with /body-explorer/ & Studio!
+            $deep_sections = array();
+            $deep_mech     = array();
+            if (!empty($parsed['deepMechanism']) && is_array($parsed['deepMechanism'])) {
+                foreach (array_slice($parsed['deepMechanism'], 0, 4) as $dm_item) {
+                    if (is_array($dm_item) && !empty($dm_item['body'])) {
+                        $h3_clean   = sanitize_text_field($dm_item['h3'] ?? '');
+                        $body_clean = sanitize_textarea_field($dm_item['body']);
+                        $deep_sections[] = array('h3' => $h3_clean, 'body' => $body_clean);
+                        $deep_mech[]     = ($h3_clean !== '' ? ($h3_clean . ' — ') : '') . $body_clean;
+                    } elseif (is_string($dm_item) && trim($dm_item) !== '') {
+                        $body_clean = sanitize_textarea_field($dm_item);
+                        $deep_mech[] = $body_clean;
+                    }
+                }
+            }
             if (empty($deep_mech)) {
                 $deep_mech = $tru_lines;
             }
+
             $faq_clean = array();
             if (!empty($parsed['faqItems']) && is_array($parsed['faqItems'])) {
                 foreach (array_slice($parsed['faqItems'], 0, 3) as $fq) {
@@ -3128,10 +3468,23 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             }
             $red_flags_gen = array_values(array_filter(array_map('sanitize_text_field', array_slice((array) ($parsed['redFlags'] ?? array()), 0, 3))));
             $clin_obs_gen  = sanitize_textarea_field($parsed['clinicalObservation'] ?? '');
-            $acad_basis    = sanitize_text_field($parsed['citation'] ?? 'SCI급 의학·생리학 학술 리뷰 기반');
+
+            // Enforce verified authoritative citation whitelist (zero hallucinated journal names)
+            $default_cite  = !empty($selected['trustedCitations'][0]) ? $selected['trustedCitations'][0] : '질병관리청 국가건강정보포털 · 대한한의학회 표준임상진료지침';
+            $raw_cite      = sanitize_text_field($parsed['citation'] ?? '');
+            $cite_ok       = false;
+            foreach (array('질병관리청', '대한한의학회', '국민건강보험공단', '세계보건기구', 'WHO', '미국수면재단', 'NSF') as $ok_org) {
+                if ($raw_cite !== '' && stripos($raw_cite, $ok_org) !== false) {
+                    $cite_ok = true;
+                    break;
+                }
+            }
+            $acad_basis = $cite_ok ? $raw_cite : $default_cite;
 
             $candidate = array(
                 'id'                   => $note_id,
+                'schemaVersion'        => 'v3.0-aeo-geo-seo-master',
+                'topicSlug'            => $raw_slug,
                 'enabled'              => true,
                 'partId'               => $selected['partId'],
                 'partLabel'            => $selected['partLabel'],
@@ -3141,14 +3494,21 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'consumerKeywords'     => $cons_kws,
                 'publishDate'          => $today_kst,
                 'lastReviewed'         => $today_kst,
+                'reviewedByDirector'   => false,
                 'title'                => $q_title,
                 'questionTitle'        => $q_title,
                 'seoTitle'             => $seo_title,
+                'metaDescription'      => $meta_desc,
+                'empathyHeading'       => sanitize_text_field($parsed['empathyHeading'] ?? ''),
+                'deepTitle'            => sanitize_text_field($parsed['deepTitle'] ?? ''),
+                'checkHeading'         => sanitize_text_field($parsed['checkHeading'] ?? ''),
+                'faqHeading'           => sanitize_text_field($parsed['faqHeading'] ?? ($kw_main . ' 자주 묻는 질문 (FAQ)')),
                 'directAnswer'         => sanitize_textarea_field($parsed['directAnswer'] ?? implode(' ', $tru_lines)),
                 'empathy'              => $emp_lines,
                 'empathyLines'         => $emp_lines,
                 'truth'                => $tru_lines,
                 'truthLines'           => $tru_lines,
+                'deepSections'         => $deep_sections,
                 'deepMechanism'        => $deep_mech,
                 'deepParagraphs'       => $deep_mech,
                 'clinicalObservation'  => $clin_obs_gen,
@@ -3163,12 +3523,12 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 'faqItems'             => $faq_clean,
                 'citation'             => $acad_basis,
                 'academicBasis'        => $acad_basis,
-                'deepReference'        => '참고 문헌 · ' . $acad_basis,
+                'deepReference'        => '참고 기준 · ' . $acad_basis,
                 'empathyIllustCaption' => sanitize_text_field($parsed['empathyIllustCaption'] ?? ($selected['partLabel'] . ' 일상 공감 장면')),
                 'deepIllustCaption'    => sanitize_text_field($parsed['deepIllustCaption'] ?? ($selected['partLabel'] . ' 핵심 기전 도해')),
-                'routineIllustCaption' => sanitize_text_field($parsed['routineIllustCaption'] ?? ($selected['partLabel'] . ' 진료실 생활 관리 가이드')),
+                'routineIllustCaption' => sanitize_text_field($parsed['routineIllustCaption'] ?? ($selected['partLabel'] . ' 바른 생활 관리 기준을 안내하는 한의사')),
                 'auditPassed'          => true,
-                'source'               => 'gemini-fullset-3slot-v2-director'
+                'source'               => 'gemini-master-v3-director'
             );
 
             $check_res = self::validate_body_note_three_stage($candidate);
@@ -3177,7 +3537,7 @@ class Bareun_Member_Private_QnA_V6_Plugin {
                 $healed_check     = self::validate_body_note_three_stage($healed_candidate);
                 if ($healed_check['passed']) {
                     $candidate = $healed_candidate;
-                    $candidate['source'] = 'gemini-fullset-3slot-v2-director-healed';
+                    $candidate['source'] = 'gemini-master-v3-director-healed';
                     $check_res = $healed_check;
                 }
             }
@@ -3246,11 +3606,11 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     }
 
     /**
-     * Persist newly generated Full-Set 3-Slot Health Note across:
+     * Persist newly generated Full-Set 3-Slot Health Note across (v3.0 Scalable):
      * 1) OPT_BODY_NOTES (/body-explorer/ dynamic feed)
      * 2) bareun_health_notes_cfg_v1 (/health-note-{id}/ SSR & Online Studio)
-     * 3) WordPress 'post' (XML Sitemap + RSS 2.0 Feed)
-     * 4) IndexNow instant indexing ping
+     * 3) WordPress 'post' + post_meta '_bareun_note_payload_v3' (Scalable forever + Rich 650-char RSS)
+     * 4) Selective cache clear (NO site-wide wp_cache_flush blast!) + Sitemap & IndexNow ping
      */
     private static function persist_and_publish_fullset_health_note($new_note) {
         if (!is_array($new_note) || empty($new_note['id'])) {
@@ -3298,27 +3658,64 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             @file_put_contents($target_dir . '/health-notes-custom-config.json', wp_json_encode($hn_cfg, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
 
-        // 3) Upsert published WordPress post so /wp-sitemap.xml and /feed/ expose /health-note-{id}/
+        // 3) Upsert published WordPress post with rich 650-char semantic content for Naver Yeti RSS + scalable post_meta backup
         $slug = 'health-note-' . $clean_nid;
         $existing = get_page_by_path($slug, OBJECT, 'post');
+        $rss_html_parts = array();
+        $da_txt = trim((string) ($new_note['directAnswer'] ?? ''));
+        if ($da_txt !== '') {
+            $rss_html_parts[] = '<p>' . esc_html($da_txt) . '</p>';
+        }
+        $rss_source_deep = (!empty($new_note['deepSections']) && is_array($new_note['deepSections'])) ? $new_note['deepSections'] : ($new_note['deepMechanism'] ?? array());
+        if (!empty($rss_source_deep) && is_array($rss_source_deep)) {
+            foreach (array_slice($rss_source_deep, 0, 2) as $dm_it) {
+                if (is_array($dm_it)) {
+                    if (!empty($dm_it['h3'])) $rss_html_parts[] = '<h3>' . esc_html((string) $dm_it['h3']) . '</h3>';
+                    if (!empty($dm_it['body'])) $rss_html_parts[] = '<p>' . esc_html((string) $dm_it['body']) . '</p>';
+                } elseif (is_string($dm_it) && trim($dm_it) !== '') {
+                    $rss_html_parts[] = '<p>' . esc_html($dm_it) . '</p>';
+                }
+            }
+        }
+        if (!empty($new_note['clinicalObservation'])) {
+            $rss_html_parts[] = '<p>' . esc_html((string) $new_note['clinicalObservation']) . '</p>';
+        }
+        $rich_post_content = implode("\n", $rss_html_parts);
+        $meta_excerpt = trim((string) ($new_note['metaDescription'] ?? ''));
+        if ($meta_excerpt === '') {
+            $meta_excerpt = $da_txt;
+        }
         $post_arr = array(
             'post_type'    => 'post',
             'post_name'    => $slug,
             'post_title'   => (string) ($new_note['seoTitle'] ?? $new_note['title'] ?? $slug),
-            'post_excerpt' => (string) ($new_note['directAnswer'] ?? ''),
-            'post_content' => '<p>' . esc_html((string) ($new_note['directAnswer'] ?? '')) . '</p>',
+            'post_excerpt' => $meta_excerpt,
+            'post_content' => $rich_post_content !== '' ? $rich_post_content : ('<p>' . esc_html($da_txt) . '</p>'),
             'post_status'  => 'publish'
         );
+        $saved_post_id = 0;
         if ($existing && !empty($existing->ID)) {
             $post_arr['ID'] = (int) $existing->ID;
-            wp_update_post($post_arr);
+            $saved_post_id = (int) wp_update_post($post_arr);
         } else {
-            wp_insert_post($post_arr);
+            $saved_post_id = (int) wp_insert_post($post_arr);
+        }
+        if ($saved_post_id > 0) {
+            // Scalable per-post payload storage (survives forever even beyond 300+ articles!)
+            update_post_meta($saved_post_id, '_bareun_note_payload_v3', wp_json_encode($new_note, JSON_UNESCAPED_UNICODE));
+            if (function_exists('clean_post_cache')) {
+                clean_post_cache($saved_post_id);
+            }
         }
 
-        wp_cache_flush();
+        // Selective page cache purge ONLY for /body-explorer/ & this note (avoids site-wide TTFB spike!)
+        if (function_exists('wpsc_delete_url_cache')) {
+            @wpsc_delete_url_cache(self::CANONICAL_ORIGIN . '/body-explorer/');
+            @wpsc_delete_url_cache(self::CANONICAL_ORIGIN . '/health-note-' . $clean_nid . '/');
+            @wpsc_delete_url_cache(self::CANONICAL_ORIGIN . '/feed/');
+        }
 
-        // 4) Refresh physical /wp-sitemap.xml immediately so new 2-day auto-post is discoverable before pinging!
+        // 4) Refresh physical /wp-sitemap.xml immediately so new auto-post is discoverable before pinging!
         if (class_exists('Bareun_Master_SEO_Engine_V1')) {
             Bareun_Master_SEO_Engine_V1::sync_physical_xml_sitemaps();
             Bareun_Master_SEO_Engine_V1::ping_all_search_engines(array(
@@ -3329,6 +3726,10 @@ class Bareun_Member_Private_QnA_V6_Plugin {
     }
 
     private static function is_two_day_note_due_now() {
+        $queue = get_option(self::OPT_DRAFT_QUEUE, array());
+        if (is_array($queue) && !empty($queue['hold'])) {
+            return false;
+        }
         $kst_hour = (int) current_time('G');
         if ($kst_hour < 9 || $kst_hour >= 21) {
             return false;
@@ -3433,15 +3834,237 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             delete_transient('bareun_cron_2day_poke_lock_v2');
             self::maybe_poke_overdue_two_day_cron_async();
         }
+        $queue_state = get_option(self::OPT_DRAFT_QUEUE, array());
         return new \WP_REST_Response(array(
             'ok'                => true,
-            'autoEngineVersion' => 'v2.1-self-healing-fpm',
+            'autoEngineVersion' => 'v3.0-aeo-geo-seo-hybrid',
+            'cycleMode'         => '2-day-hybrid-default-auto',
             'todayKst'          => current_time('Y-m-d H:i:s'),
             'dueNow'            => self::is_two_day_note_due_now(),
             'runningLock'       => (bool) get_transient('bareun_cron_2day_running_lock'),
             'rotationIdx'       => (int) get_option('bareun_cron_2day_rotation_idx', 0),
+            'draftQueueStatus'  => is_array($queue_state) ? ($queue_state['status'] ?? 'empty') : 'empty',
+            'directorHold'      => is_array($queue_state) && !empty($queue_state['hold']),
             'lastCronLog'       => get_option('bareun_cron_2day_last_log', null)
         ), 200);
+    }
+
+    public static function handle_autopost_queue_api(\WP_REST_Request $request) {
+        self::send_nocache();
+        $meta_list  = self::get_body_part_meta_list();
+        $part_count = count($meta_list);
+        $rot_idx    = max(0, (int) get_option('bareun_cron_2day_rotation_idx', 0));
+        $next_part  = $meta_list[$rot_idx % $part_count];
+        $queue      = get_option(self::OPT_DRAFT_QUEUE, array());
+        if (!is_array($queue)) $queue = array();
+
+        if ($request->get_method() === 'POST') {
+            $body   = $request->get_json_params();
+            if (!is_array($body)) $body = $request->get_params();
+            $action = sanitize_key($body['action'] ?? '');
+
+            if ($action === 'set_hold') {
+                $queue['hold'] = !empty($body['hold']);
+                $queue['updatedAt'] = current_time('Y-m-d H:i:s');
+                update_option(self::OPT_DRAFT_QUEUE, $queue, false);
+                return new \WP_REST_Response(array('ok' => true, 'queue' => $queue), 200);
+            }
+            if ($action === 'set_hint') {
+                $queue['themeHint'] = sanitize_text_field($body['themeHint'] ?? '');
+                $queue['updatedAt'] = current_time('Y-m-d H:i:s');
+                update_option(self::OPT_DRAFT_QUEUE, $queue, false);
+                return new \WP_REST_Response(array('ok' => true, 'queue' => $queue), 200);
+            }
+            if ($action === 'generate_draft') {
+                @set_time_limit(240);
+                $req_part = sanitize_key($body['partId'] ?? $next_part['partId']);
+                $req_hint = sanitize_text_field($body['themeHint'] ?? ($queue['themeHint'] ?? ''));
+                $gen = self::generate_body_note_via_gemini($req_part, $req_hint);
+                if (empty($gen['ok']) || empty($gen['note'])) {
+                    return new \WP_REST_Response(array('ok' => false, 'message' => $gen['message'] ?? '초안 생성 실패'), 500);
+                }
+                $queue['status']    = 'pending_review';
+                $queue['note']      = $gen['note'];
+                $queue['partId']    = $req_part;
+                $queue['themeHint'] = $req_hint;
+                $queue['createdAt'] = current_time('Y-m-d H:i:s');
+                $queue['updatedAt'] = current_time('Y-m-d H:i:s');
+                update_option(self::OPT_DRAFT_QUEUE, $queue, false);
+                return new \WP_REST_Response(array('ok' => true, 'queue' => $queue), 200);
+            }
+            if ($action === 'approve_draft') {
+                if (empty($queue['note']) || !is_array($queue['note'])) {
+                    return new \WP_REST_Response(array('ok' => false, 'message' => '승인할 초안이 없습니다.'), 400);
+                }
+                if (isset($body['title'])) {
+                    $t = sanitize_text_field($body['title']);
+                    if ($t !== '') {
+                        $queue['note']['title'] = $t;
+                        $queue['note']['questionTitle'] = $t;
+                    }
+                }
+                if (isset($body['seoTitle'])) {
+                    $st = sanitize_text_field($body['seoTitle']);
+                    if ($st !== '') $queue['note']['seoTitle'] = $st;
+                }
+                if (isset($body['directAnswer'])) {
+                    $da = sanitize_textarea_field($body['directAnswer']);
+                    if ($da !== '') $queue['note']['directAnswer'] = $da;
+                }
+                if (isset($body['clinicalObservation'])) {
+                    $co = sanitize_textarea_field($body['clinicalObservation']);
+                    if ($co !== '') $queue['note']['clinicalObservation'] = $co;
+                }
+                $queue['note']['reviewedByDirector'] = true;
+                $queue['status']    = 'approved';
+                $queue['hold']      = false;
+                $queue['updatedAt'] = current_time('Y-m-d H:i:s');
+                update_option(self::OPT_DRAFT_QUEUE, $queue, false);
+                return new \WP_REST_Response(array('ok' => true, 'queue' => $queue), 200);
+            }
+            if ($action === 'discard_draft') {
+                unset($queue['note']);
+                $queue['status']    = 'empty';
+                $queue['updatedAt'] = current_time('Y-m-d H:i:s');
+                update_option(self::OPT_DRAFT_QUEUE, $queue, false);
+                return new \WP_REST_Response(array('ok' => true, 'queue' => $queue), 200);
+            }
+            if ($action === 'publish_now') {
+                if (empty($queue['note']) || !is_array($queue['note'])) {
+                    return new \WP_REST_Response(array('ok' => false, 'message' => '발행할 초안이 없습니다.'), 400);
+                }
+                $today_kst = current_time('Y-m-d');
+                $pub_note = $queue['note'];
+                $pub_note['publishDate']        = $today_kst;
+                $pub_note['lastReviewed']       = $today_kst;
+                $pub_note['reviewedByDirector'] = true;
+                self::persist_and_publish_fullset_health_note($pub_note);
+                update_option('bareun_cron_2day_rotation_idx', ($rot_idx + 1) % $part_count, false);
+                update_option('bareun_cron_2day_last_log', array(
+                    'at'         => current_time('Y-m-d H:i:s'),
+                    'status'     => 'published_director_now',
+                    'partId'     => (string) ($pub_note['partId'] ?? $next_part['partId']),
+                    'nextPartId' => $meta_list[($rot_idx + 1) % $part_count]['partId'],
+                    'noteId'     => (string) ($pub_note['id'] ?? ''),
+                    'title'      => (string) ($pub_note['title'] ?? '')
+                ), false);
+                delete_option(self::OPT_DRAFT_QUEUE);
+                return new \WP_REST_Response(array(
+                    'ok'  => true,
+                    'url' => 'https://www.bareunhaniwon.com/health-note-' . rawurlencode((string) $pub_note['id']) . '/'
+                ), 200);
+            }
+        }
+
+        return new \WP_REST_Response(array(
+            'ok'            => true,
+            'nextPart'      => $next_part,
+            'nextUpdateKst' => self::compute_next_two_day_kst(current_time('Y-m-d')),
+            'cycleDays'     => 2,
+            'queue'         => $queue,
+            'lastCronLog'   => get_option('bareun_cron_2day_last_log', null)
+        ), 200);
+    }
+
+    public static function render_admin_autopost_queue_page() {
+        if (!current_user_can('manage_options')) return;
+        $meta_list  = self::get_body_part_meta_list();
+        $rot_idx    = max(0, (int) get_option('bareun_cron_2day_rotation_idx', 0));
+        $next_part  = $meta_list[$rot_idx % count($meta_list)];
+        $queue      = get_option(self::OPT_DRAFT_QUEUE, array());
+        if (!is_array($queue)) $queue = array();
+        $is_hold    = !empty($queue['hold']);
+        $draft      = (!empty($queue['note']) && is_array($queue['note'])) ? $queue['note'] : null;
+        $status     = (string) ($queue['status'] ?? 'empty');
+        $hint       = (string) ($queue['themeHint'] ?? '');
+        $next_date  = self::compute_next_two_day_kst(current_time('Y-m-d'));
+        $last_log   = get_option('bareun_cron_2day_last_log', null);
+        $nonce      = wp_create_nonce('wp_rest');
+        ?>
+        <div class="wrap" style="max-width:980px;margin:20px auto;font-family:-apple-system,BlinkMacSystemFont,'Pretendard',sans-serif;">
+          <div style="background:#161412;color:#FAF8F3;padding:22px 26px;border-radius:16px;border:1px solid #C5A059;margin-bottom:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+              <div>
+                <div style="font-size:12px;color:#E7C983;font-weight:700;letter-spacing:0.04em;">MASTER SETTING v3.0 · 2일 1회 하이브리드 엔진</div>
+                <h1 style="color:#FFF;margin:4px 0 6px;font-size:22px;">바른한의원 건강칼럼 자동발행 큐 (① 자동 + ② 선택 사전검토)</h1>
+                <p style="margin:0;color:#D6CEC0;font-size:13px;">별도의 지시(보류/대기 초안)가 없으면 <strong>2일 1회 오전(09~21시)</strong>에 <strong>v3.0 최상위 로직으로 완전 자동 발행</strong>됩니다. 원하실 때만 아래에서 미리 초안을 뽑아 5분 검토·수정해 둘 수 있습니다.</p>
+              </div>
+              <div style="text-align:right;">
+                <span style="display:inline-block;padding:6px 14px;border-radius:999px;font-weight:800;font-size:12px;background:<?php echo $is_hold ? '#9F1239' : '#065F46'; ?>;color:#FFF;">
+                  <?php echo $is_hold ? '⏸ 일시 보류 중 (수동 해제 필요)' : '✅ 자동 발행 정상 가동 중 (별도 지시 시 우선 반영)'; ?>
+                </span>
+                <div style="font-size:12px;color:#E7C983;margin-top:6px;">차기 예정: <strong><?php echo esc_html($next_date); ?></strong> · 순번: <strong><?php echo esc_html($next_part['partLabel']); ?></strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div style="background:#FFF;border:1px solid #E5DFD3;border-radius:14px;padding:18px 20px;">
+              <h2 style="margin:0 0 10px;font-size:15px;">1. 자동발행 제어 &amp; 주제 힌트 (선택)</h2>
+              <label style="display:block;font-size:12px;font-weight:700;color:#4B443C;margin-bottom:6px;">다음 글에 꼭 다루고 싶은 주제 힌트 (비워두면 54개 계절 뱅크 자동 선택)</label>
+              <div style="display:flex;gap:8px;margin-bottom:14px;">
+                <input type="text" id="bareunHintInput" value="<?php echo esc_attr($hint); ?>" placeholder="예: 겨울방학 초등학생 뼈나이 확인 시기" style="flex:1;padding:8px 10px;border:1px solid #D5CEC0;border-radius:8px;" />
+                <button type="button" class="button button-secondary" onclick="bareunQueueAction('set_hint', {themeHint: document.getElementById('bareunHintInput').value})">힌트 저장</button>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="button button-primary" style="background:#9E772B;border-color:#85621E;" onclick="bareunQueueAction('generate_draft', {partId:'<?php echo esc_js($next_part['partId']); ?>', themeHint: document.getElementById('bareunHintInput').value})">✨ 다음 예정 초안 미리 생성 (검토용)</button>
+                <button type="button" class="button" onclick="bareunQueueAction('set_hold', {hold: <?php echo $is_hold ? 'false' : 'true'; ?>})"><?php echo $is_hold ? '▶ 보류 해제 (자동발행 재개)' : '⏸ 자동발행 일시 보류'; ?></button>
+              </div>
+            </div>
+            <div style="background:#FFF;border:1px solid #E5DFD3;border-radius:14px;padding:18px 20px;">
+              <h2 style="margin:0 0 10px;font-size:15px;">2. 최근 자동발행 엔진 실행 기록</h2>
+              <pre style="background:#FAF8F3;padding:12px;border-radius:8px;font-size:12px;overflow:auto;max-height:115px;margin:0;"><?php echo esc_html(wp_json_encode($last_log, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
+            </div>
+          </div>
+
+          <?php if ($draft) : ?>
+          <div style="background:#FFFDF8;border:2px solid #C5A059;border-radius:16px;padding:22px 24px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+              <h2 style="margin:0;font-size:17px;">📝 사전 검토 대기 초안 (상태: <?php echo $status === 'approved' ? '✅ 원장님 승인 완료 — 차기 주기에 이 글 자동 발행' : '👀 검토 대기 중 — 승인 전에도 별도 보류 없으면 자동 발행'; ?>)</h2>
+              <button type="button" class="button" style="color:#9F1239;" onclick="if(confirm('대기 초안을 삭제하고 완전 자동 발행으로 되돌리시겠습니까?')) bareunQueueAction('discard_draft', {})">초안 폐기</button>
+            </div>
+            <div style="display:grid;gap:12px;">
+              <div>
+                <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;">본문 대제목 (H1 · 질문형)</label>
+                <input type="text" id="dqTitle" value="<?php echo esc_attr((string) ($draft['title'] ?? '')); ?>" style="width:100%;padding:9px 12px;border:1px solid #D5CEC0;border-radius:8px;font-weight:700;" />
+              </div>
+              <div>
+                <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;">구글·네이버 검색창 제목 (seoTitle · 앞 15자 핵심 증상어)</label>
+                <input type="text" id="dqSeoTitle" value="<?php echo esc_attr((string) ($draft['seoTitle'] ?? '')); ?>" style="width:100%;padding:9px 12px;border:1px solid #D5CEC0;border-radius:8px;" />
+              </div>
+              <div>
+                <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;">첫 3줄 핵심 결론 (directAnswer · AI 검색 1순위 인용)</label>
+                <textarea id="dqDirect" rows="3" style="width:100%;padding:9px 12px;border:1px solid #D5CEC0;border-radius:8px;"><?php echo esc_textarea((string) ($draft['directAnswer'] ?? '')); ?></textarea>
+              </div>
+              <div>
+                <label style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;">원장님 진료실 임상 관찰 노트 (실명 인용 박스)</label>
+                <textarea id="dqClin" rows="4" style="width:100%;padding:9px 12px;border:1px solid #D5CEC0;border-radius:8px;"><?php echo esc_textarea((string) ($draft['clinicalObservation'] ?? '')); ?></textarea>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:6px;">
+                <button type="button" class="button button-primary" style="background:#065F46;border-color:#047857;padding:4px 16px;" onclick="bareunQueueAction('approve_draft', {title:dqTitle.value, seoTitle:dqSeoTitle.value, directAnswer:dqDirect.value, clinicalObservation:dqClin.value})">✅ 수정 저장 및 차기 주기 승인 예약</button>
+                <button type="button" class="button button-secondary" onclick="if(confirm('수정된 내용으로 지금 바로 실서버에 발행하시겠습니까?')) bareunQueueAction('approve_draft', {title:dqTitle.value, seoTitle:dqSeoTitle.value, directAnswer:dqDirect.value, clinicalObservation:dqClin.value}).then(function(){ bareunQueueAction('publish_now', {}); })">🚀 지금 즉시 실서버 발행</button>
+              </div>
+            </div>
+          </div>
+          <?php endif; ?>
+          <div id="bareunQueueMsg" style="margin-top:14px;font-weight:700;color:#065F46;"></div>
+        </div>
+        <script>
+        function bareunQueueAction(action, payload) {
+          var msg = document.getElementById('bareunQueueMsg');
+          if (msg) msg.textContent = '처리 중입니다... (초안 생성 시 3단 화보 포함 약 20~40초 소요)';
+          return fetch(<?php echo wp_json_encode(esc_url_raw(rest_url('bareun/v1/autopost-queue'))); ?>, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': <?php echo wp_json_encode($nonce); ?> },
+            body: JSON.stringify(Object.assign({ action: action }, payload || {}))
+          }).then(function(r){ return r.json(); }).then(function(d){
+            if (!d || !d.ok) { alert((d && d.message) || '요청 처리에 실패했습니다.'); if (msg) msg.textContent = ''; return; }
+            if (d.url) { alert('발행 완료!\n' + d.url); }
+            location.reload();
+          }).catch(function(e){ alert('통신 오류: ' + e); if (msg) msg.textContent = ''; });
+        }
+        </script>
+        <?php
     }
 
     public static function run_scheduled_two_day_note_generation() {
@@ -3464,6 +4087,17 @@ class Bareun_Member_Private_QnA_V6_Plugin {
             delete_transient('bareun_cron_2day_running_lock');
             return; // Publish only within natural daytime KST window (09:00 ~ 21:00)
         }
+
+        // Hybrid Mode (① Auto + ② Optional Director Review):
+        // Respect explicit director hold; otherwise if approved draft exists publish it, else run full automatic v3.0 generation!
+        $queue = get_option(self::OPT_DRAFT_QUEUE, array());
+        if (is_array($queue) && !empty($queue['hold'])) {
+            update_option('bareun_cron_2day_last_log', array('at' => $now_kst, 'status' => 'skipped_director_hold', 'message' => 'Paused by explicit director hold instruction'), false);
+            set_transient('bareun_cron_2day_poke_lock_v2', 'director_hold', 3600);
+            delete_transient('bareun_cron_2day_running_lock');
+            return;
+        }
+
         $today_kst = current_time('Y-m-d');
         $yesterday_kst = date('Y-m-d', current_time('timestamp') - 86400);
 
@@ -3499,13 +4133,40 @@ class Bareun_Member_Private_QnA_V6_Plugin {
         }
         $part_id = $meta_list[$rot_idx % $part_count]['partId'];
 
-        $gen = self::generate_body_note_via_gemini($part_id);
+        // If director explicitly reviewed & approved a queued draft, publish it first; otherwise run automatic v3.0 generation!
+        if (is_array($queue) && ($queue['status'] ?? '') === 'approved' && !empty($queue['note']) && is_array($queue['note'])) {
+            $approved_note = $queue['note'];
+            $approved_note['publishDate']        = $today_kst;
+            $approved_note['lastReviewed']       = $today_kst;
+            $approved_note['reviewedByDirector'] = true;
+            self::persist_and_publish_fullset_health_note($approved_note);
+            delete_option(self::OPT_DRAFT_QUEUE);
+            update_option('bareun_cron_2day_rotation_idx', ($rot_idx + 1) % $part_count, false);
+            update_option('bareun_cron_2day_last_log', array(
+                'at'         => $now_kst,
+                'status'     => 'published_approved_draft',
+                'partId'     => (string) ($approved_note['partId'] ?? $part_id),
+                'nextPartId' => $meta_list[($rot_idx + 1) % $part_count]['partId'],
+                'noteId'     => (string) ($approved_note['id'] ?? ''),
+                'title'      => (string) ($approved_note['title'] ?? '')
+            ), false);
+            set_transient('bareun_cron_2day_poke_lock_v2', 'published_today', 21600);
+            delete_transient('bareun_cron_2day_running_lock');
+            return;
+        }
+
+        $theme_hint = (is_array($queue) && !empty($queue['themeHint'])) ? (string) $queue['themeHint'] : '';
+        $gen = self::generate_body_note_via_gemini($part_id, $theme_hint);
         if (!empty($gen['ok']) && !empty($gen['note'])) {
             self::persist_and_publish_fullset_health_note($gen['note']);
+            if ($theme_hint !== '' && is_array($queue)) {
+                unset($queue['themeHint']);
+                update_option(self::OPT_DRAFT_QUEUE, $queue, false);
+            }
             update_option('bareun_cron_2day_rotation_idx', ($rot_idx + 1) % $part_count, false);
             update_option('bareun_cron_2day_last_log', array(
                 'at'          => $now_kst,
-                'status'      => 'published',
+                'status'      => 'published_auto_v3',
                 'partId'      => $part_id,
                 'nextPartId'  => $meta_list[($rot_idx + 1) % $part_count]['partId'],
                 'noteId'      => (string) ($gen['note']['id'] ?? ''),
@@ -4278,6 +4939,19 @@ class Bareun_Master_SEO_Engine_V1 {
             }
         }
         if (!is_array($target)) {
+            // Scalable v3.0 fallback: load directly from WP post_meta if archived beyond wp_options cap
+            $fallback_post = get_page_by_path('health-note-' . $clean_id, OBJECT, 'post');
+            if ($fallback_post && !empty($fallback_post->ID)) {
+                $raw_meta = get_post_meta((int) $fallback_post->ID, '_bareun_note_payload_v3', true);
+                if (is_string($raw_meta) && $raw_meta !== '') {
+                    $dec_meta = json_decode($raw_meta, true);
+                    if (is_array($dec_meta)) {
+                        $target = $dec_meta;
+                    }
+                }
+            }
+        }
+        if (!is_array($target)) {
             return false;
         }
 
@@ -4291,19 +4965,89 @@ class Bareun_Master_SEO_Engine_V1 {
             }
         }
 
+        // 11-Clinic 100% Internal Link Coverage Hub Router (v3.0 — Zero Orphan Clinics!)
         $hub_map = array(
-            'knee'       => array('name' => '소아 성장 · 무릎 성장판', 'url' => self::CANONICAL_ORIGIN . '/growth/', 'btn' => '성장·성조숙증 클리닉', 'hero' => 'illust_knee_growth_care.jpg'),
-            'cervical'   => array('name' => '거북목 · 두피열 · 탈모', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'btn' => '탈모·모근재생 클리닉', 'hero' => 'illust_cervical_hairloss.jpg'),
-            'lumbar'     => array('name' => '허리 물렁뼈 · 골반 균형', 'url' => self::CANONICAL_ORIGIN . '/chuna/', 'btn' => '추나·척추교정 클리닉', 'hero' => 'illust_lumbar_pelvis.jpg'),
-            'gongjindan' => array('name' => '뇌 · 심장 활력 · 만성피로', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/', 'btn' => '황제공진단 클리닉', 'hero' => 'illust_gongjindan_heart_brain.jpg'),
-            'syncope'    => array('name' => '자율신경 · 어지럼 · 편두통', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '9대 자율신경 정밀검진', 'hero' => 'illust_syncope_autonomic.jpg'),
-            'digest'     => array('name' => '위장 · 식도 운동 · 소화', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '복부초음파·체열 정밀검진', 'hero' => 'illust_gut_metabolism.jpg'),
-            'gut'        => array('name' => '복부 대사 · 체지방 · 부종', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/', 'btn' => '다이어트·식욕ZERO 클리닉', 'hero' => 'diet_minimal_card4_stage2_core_lipolysis.jpg'),
-            'uterus'     => array('name' => '아랫배 · 골반 미세혈류 순환', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '하복부초음파·체열 검진', 'hero' => 'illust_uterus_fertility.jpg'),
-            'prostate'   => array('name' => '전립선 · 방광 · 골반저 순환', 'url' => self::CANONICAL_ORIGIN . '/prostate/', 'btn' => '전립선·남성활력 클리닉', 'hero' => 'illust_prostate_care.jpg')
+            'knee'       => array('name' => '소아 성장 · 무릎 성장판', 'url' => self::CANONICAL_ORIGIN . '/growth/', 'btn' => '성장·성조숙증 클리닉', 'hero' => 'illust_knee_growth_care.jpg', 'anchor' => '소아 키성장·초음파 성장판 평가 및 성조숙증 관리 기준'),
+            'cervical'   => array('name' => '거북목 · 두피열 · 탈모', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'btn' => '탈모·모근재생 클리닉', 'hero' => 'illust_cervical_hairloss.jpg', 'anchor' => '두피열 조절과 4대 유형별 모근재생 관리 원리'),
+            'lumbar'     => array('name' => '허리 물렁뼈 · 골반 균형', 'url' => self::CANONICAL_ORIGIN . '/chuna/', 'btn' => '추나·척추교정 클리닉', 'hero' => 'illust_lumbar_pelvis.jpg', 'anchor' => '비수술 수기 추나요법과 척추·골반 정렬 기준'),
+            'gongjindan' => array('name' => '뇌 · 심장 활력 · 만성피로', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/', 'btn' => '황제공진단 클리닉', 'hero' => 'illust_gongjindan_heart_brain.jpg', 'anchor' => '만성피로·기력 회복과 정품 사향 황제공진단 기준'),
+            'syncope'    => array('name' => '자율신경 · 어지럼 · 편두통', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '자율신경·HRV 정밀검진', 'hero' => 'illust_syncope_autonomic.jpg', 'anchor' => '자율신경 변이도(HRV)·적외선 체열 정밀검진 기준'),
+            'digest'     => array('name' => '위장 · 식도 운동 · 소화', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '복부초음파·체열 위장검진', 'hero' => 'illust_gut_metabolism.jpg', 'anchor' => '복부 초음파·적외선 체열 기반 소화기·담적 검진 기준'),
+            'gut'        => array('name' => '복부 대사 · 체지방 · 부종', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/', 'btn' => '다이어트·식욕ZERO 클리닉', 'hero' => 'diet_minimal_card4_stage2_core_lipolysis.jpg', 'anchor' => '근손실을 줄이는 식욕ZERO 대사·체지방 관리 원리'),
+            'uterus'     => array('name' => '아랫배 · 골반 미세혈류 순환', 'url' => self::CANONICAL_ORIGIN . '/director/', 'btn' => '하복부 체열·골반 검진', 'hero' => 'illust_uterus_fertility.jpg', 'anchor' => '하복부 적외선 체열과 골반 미세혈류 순환 검진 기준'),
+            'prostate'   => array('name' => '전립선 · 방광 · 골반저 순환', 'url' => self::CANONICAL_ORIGIN . '/prostate/', 'btn' => '전립선·남성활력 클리닉', 'hero' => 'illust_prostate_care.jpg', 'anchor' => '전립선 울혈 감압과 야간뇨·배뇨 리듬 회복 기준')
         );
         $hub = isset($hub_map[$part_id]) ? $hub_map[$part_id] : $hub_map['lumbar'];
+        $secondary_hub = array('name' => '정밀 검진 시스템 안내', 'url' => self::CANONICAL_ORIGIN . '/director/', 'title' => '초음파 · 적외선 체열 · 자율신경 · 체성분 등 9대 정밀검진 과정 살펴보기 →');
 
+        // Topic-aware sub-clinic routing so all 11 core clinic pages (incl. 4 hairloss subtypes & lifting-compare) receive active links
+        $topic_blob = mb_strtolower(
+            (string) ($target['title'] ?? '') . ' ' . (string) ($target['theme'] ?? '') . ' ' . (string) ($target['keyword'] ?? ''),
+            'UTF-8'
+        );
+        if ($part_id === 'cervical') {
+            if (preg_match('/거북목|뒷목|어금니|목\s*디스크|어깨\s*결림|경추/u', $topic_blob) && !preg_match('/탈모|가르마|지루성|모발|비듬/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/chuna/';
+                $hub['btn']    = '추나·경추교정 클리닉';
+                $hub['anchor'] = '경추 추나요법과 뒷목·어깨 긴장 완화 기준';
+            } elseif (preg_match('/지루성|각질|비듬|가려움|홍반|모낭염/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/hairloss-seborrheic/';
+                $hub['btn']    = '지루성두피염 클리닉';
+                $hub['anchor'] = '지루성 두피염·두피 열감 진정과 진피 장벽 관리 기준';
+                $secondary_hub = array('name' => '4대 탈모 통합 안내', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'title' => '두피열·모근재생 4대 유형별 탈모 클리닉 전체 살펴보기 →');
+            } elseif (preg_match('/원형\s*탈모|동전\s*모양|면역\s*탈모/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/hairloss-alopecia/';
+                $hub['btn']    = '원형탈모 클리닉';
+                $hub['anchor'] = '스트레스·자가면역 원형탈모 회복과 자율신경 안정 기준';
+                $secondary_hub = array('name' => '4대 탈모 통합 안내', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'title' => '두피열·모근재생 4대 유형별 탈모 클리닉 전체 살펴보기 →');
+            } elseif (preg_match('/여성|가르마|출산|산후|다이어트/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/hairloss-female/';
+                $hub['btn']    = '여성탈모 클리닉';
+                $hub['anchor'] = '여성 정수리 가르마·산후 탈모와 상열하한 회복 원리';
+                $secondary_hub = array('name' => '4대 탈모 통합 안내', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'title' => '두피열·모근재생 4대 유형별 탈모 클리닉 전체 살펴보기 →');
+            } elseif (preg_match('/남성|m자|정수리\s*탈모|모발\s*가늘/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/hairloss-male/';
+                $hub['btn']    = '남성탈모 클리닉';
+                $hub['anchor'] = '남성 M자·정수리 탈모의 두피 청열·모근 순환 기준';
+                $secondary_hub = array('name' => '4대 탈모 통합 안내', 'url' => self::CANONICAL_ORIGIN . '/hairloss/', 'title' => '두피열·모근재생 4대 유형별 탈모 클리닉 전체 살펴보기 →');
+            }
+        } elseif ($part_id === 'syncope') {
+            if (preg_match('/턱|안면|비대칭|윤곽|탄력/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/lifting-compare/';
+                $hub['btn']    = '한방 리프팅·윤곽진단';
+                $hub['anchor'] = '안면 근막 균형과 비수술 한방 리프팅 윤곽 기준';
+            } elseif (preg_match('/편두통|뒷목|거북목/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/chuna/';
+                $hub['btn']    = '경추 추나·두통 클리닉';
+                $hub['anchor'] = '경추부 긴장 완화와 편두통·뇌혈류 순환 기준';
+            } elseif (preg_match('/피로|기력|방전|수면|불면/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/gongjindan/';
+                $hub['btn']    = '황제공진단·활력 클리닉';
+                $hub['anchor'] = '자율신경 피로 회복과 수면·기력 리듬 관리 기준';
+            }
+        } elseif ($part_id === 'digest') {
+            if (preg_match('/식곤증|야식|복부\s*팽만|대사|체중/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/diet-zero/';
+                $hub['btn']    = '대사·다이어트 클리닉';
+                $hub['anchor'] = '식후 혈당·대사 순환과 복부 부담 완화 관리 기준';
+            }
+        } elseif ($part_id === 'uterus') {
+            if (preg_match('/안면|갱년기|탄력|열감/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/lifting-compare/';
+                $hub['btn']    = '한방 리프팅·안면혈류';
+                $hub['anchor'] = '갱년기·여성 안면 혈류 순환과 윤곽 탄력 관리 기준';
+            } elseif (preg_match('/산후\s*부종|붓기|체중|폭식/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/diet-zero/';
+                $hub['btn']    = '산후·부종 다이어트 클리닉';
+                $hub['anchor'] = '산후·생리전 부종 완화와 대사 순환 회복 원리';
+            } elseif (preg_match('/골반\s*틀어|골반\s*통증/u', $topic_blob)) {
+                $hub['url']    = self::CANONICAL_ORIGIN . '/chuna/';
+                $hub['btn']    = '골반교정 추나 클리닉';
+                $hub['anchor'] = '출산 후·여성 골반 정렬과 하복부 순환 추나 기준';
+            }
+        }
+
+        $is_v3_note = (!empty($target['schemaVersion']) && strpos((string) $target['schemaVersion'], 'v3.') === 0);
         $part_label = trim((string) ($target['partLabel'] ?? $hub['name']));
         $keyword    = trim((string) ($target['keyword'] ?? $part_label));
         $theme      = trim((string) ($target['theme'] ?? $keyword));
@@ -4312,7 +5056,8 @@ class Bareun_Master_SEO_Engine_V1 {
         if ($seo_base === '') {
             $seo_base = $q_title . ' [' . $part_label . ' · ' . $keyword . ']';
         }
-        $page_title = (strpos($seo_base, '바른한의원') !== false) ? $seo_base : ($seo_base . ' | 바른한의원 대전본점');
+        $brand_suffix = $is_v3_note ? ' | 바른한의원' : ' | 바른한의원 대전본점';
+        $page_title   = (strpos($seo_base, '바른한의원') !== false) ? $seo_base : ($seo_base . $brand_suffix);
 
         $empathy_lines = (isset($target['empathyLines']) && is_array($target['empathyLines'])) ? $target['empathyLines'] : array();
         $truth_lines   = (isset($target['truthLines']) && is_array($target['truthLines'])) ? $target['truthLines'] : array();
@@ -4323,9 +5068,12 @@ class Bareun_Master_SEO_Engine_V1 {
         if ($direct_answer === '') {
             $direct_answer = trim(implode(' ', $truth_lines) . ' ' . (string) ($myth_lines[1] ?? ''));
         }
-        $meta_desc = $direct_answer;
-        if (mb_strlen($meta_desc, 'UTF-8') > 158) {
-            $meta_desc = mb_substr($meta_desc, 0, 157, 'UTF-8') . '…';
+        $meta_desc = trim((string) ($target['metaDescription'] ?? ''));
+        if ($meta_desc === '') {
+            $meta_desc = $direct_answer;
+            if (mb_strlen($meta_desc, 'UTF-8') > 158) {
+                $meta_desc = mb_substr($meta_desc, 0, 157, 'UTF-8') . '…';
+            }
         }
 
         $gh_raw = 'https://raw.githubusercontent.com/ajwei0508-cpu/bareun-homepage/main/homepage/';
@@ -4407,8 +5155,25 @@ class Bareun_Master_SEO_Engine_V1 {
             $schema_imgs = array($og_img);
         }
         $preload_lead_img = ($empathy_urls['display'] !== '') ? $empathy_urls['display'] : $webp_hero;
-        $deep_title   = trim((string) ($target['deepTitle'] ?? ($theme . ', 우리 몸속에서는 어떤 변화가 일어날까요?')));
-        $deep_paras   = (isset($target['deepParagraphs']) && is_array($target['deepParagraphs'])) ? $target['deepParagraphs'] : array();
+        $empathy_heading = trim((string) ($target['empathyHeading'] ?? ''));
+        if ($empathy_heading === '') {
+            $empathy_heading = '일상 속 이런 모습이 반복되고 있나요?';
+        }
+        $deep_title   = trim((string) ($target['deepTitle'] ?? ''));
+        if ($deep_title === '') {
+            $deep_title = $theme . ', 우리 몸속에서는 어떤 변화가 일어날까요?';
+        }
+        $check_heading = trim((string) ($target['checkHeading'] ?? ''));
+        if ($check_heading === '') {
+            $check_heading = '오늘 밤 직접 체크해 보는 5가지 ' . $keyword . ' 리듬 신호';
+        }
+        $faq_heading = trim((string) ($target['faqHeading'] ?? ''));
+        if ($faq_heading === '') {
+            $faq_heading = $keyword . ' 자주 묻는 질문 (FAQ)';
+        }
+        $deep_paras   = (!empty($target['deepSections']) && is_array($target['deepSections']))
+            ? $target['deepSections']
+            : ((isset($target['deepParagraphs']) && is_array($target['deepParagraphs'])) ? $target['deepParagraphs'] : ((isset($target['deepMechanism']) && is_array($target['deepMechanism'])) ? $target['deepMechanism'] : array()));
         $clin_obs     = trim((string) ($target['clinicalObservation'] ?? ''));
         $comp_table   = (isset($target['comparisonTable']) && is_array($target['comparisonTable']) && !empty($target['comparisonTable']['headers']) && !empty($target['comparisonTable']['rows']))
             ? $target['comparisonTable']
@@ -4418,8 +5183,10 @@ class Bareun_Master_SEO_Engine_V1 {
             : $check_list;
         $deep_signals = (isset($target['deepSignals']) && is_array($target['deepSignals'])) ? $target['deepSignals'] : array();
         $red_flags    = (isset($target['redFlags']) && is_array($target['redFlags'])) ? $target['redFlags'] : array();
-        $academic     = trim((string) ($target['academicBasis'] ?? '국제 의학 학술지 및 생리학 연구 보고'));
-        $deep_ref     = trim((string) ($target['deepReference'] ?? ('참고 문헌 · ' . $academic)));
+        $faq_items    = (isset($target['faqItems']) && is_array($target['faqItems'])) ? array_values(array_filter($target['faqItems'], function($f){ return is_array($f) && !empty($f['q']) && !empty($f['a']); })) : array();
+        $reviewed_by_director = !empty($target['reviewedByDirector']);
+        $academic     = trim((string) ($target['academicBasis'] ?? '질병관리청 국가건강정보포털 · 대한한의학회 표준임상진료지침'));
+        $deep_ref     = trim((string) ($target['deepReference'] ?? ('참고 기준 · ' . $academic)));
 
         // Unified Central View Counter (100% shared with /body-explorer/ via bareun_body_note_views_v1)
         $note_views = get_option('bareun_body_note_views_v1', array());
@@ -4433,7 +5200,8 @@ class Bareun_Master_SEO_Engine_V1 {
         }
         $cur_views = isset($norm_views[$clean_id]) ? (int) $norm_views[$clean_id] : 0;
 
-        // Sort sibling articles by unified popularity (views DESC -> publishDate DESC -> id DESC) matching /body-explorer/ BEST 2
+        // Hybrid Related Chain (v3.0 — prevents new articles from ever becoming orphan pages!):
+        // Slot 1 = Top-viewed sibling (authority anchor), Slot 2 = Latest other sibling by publishDate DESC (fresh chain)
         $today_kst_str = current_time('Y-m-d');
         $peer_candidates = array();
         foreach ($siblings as $cand) {
@@ -4454,23 +5222,40 @@ class Bareun_Master_SEO_Engine_V1 {
             $cand['_views'] = isset($norm_views[$cid]) ? (int) $norm_views[$cid] : 0;
             $peer_candidates[] = $cand;
         }
-        usort($peer_candidates, function ($a, $b) {
+        $by_views = $peer_candidates;
+        usort($by_views, function ($a, $b) {
             $va = isset($a['_views']) ? (int) $a['_views'] : 0;
             $vb = isset($b['_views']) ? (int) $b['_views'] : 0;
-            if ($vb !== $va) {
-                return $vb - $va;
-            }
-            $da = (string) ($a['publishDate'] ?? '');
-            $db = (string) ($b['publishDate'] ?? '');
-            $dcmp = strcmp($db, $da);
-            if ($dcmp !== 0) {
-                return $dcmp;
-            }
+            if ($vb !== $va) return $vb - $va;
+            return strcmp((string) ($b['publishDate'] ?? ''), (string) ($a['publishDate'] ?? ''));
+        });
+        $by_recent = $peer_candidates;
+        usort($by_recent, function ($a, $b) {
+            $dcmp = strcmp((string) ($b['publishDate'] ?? ''), (string) ($a['publishDate'] ?? ''));
+            if ($dcmp !== 0) return $dcmp;
             return strcmp((string) ($b['id'] ?? ''), (string) ($a['id'] ?? ''));
         });
-        $best2 = array_slice($peer_candidates, 0, 2);
+        $best2 = array();
+        if (!empty($by_views[0])) {
+            $by_views[0]['_chainLabel'] = '인기 대표 가이드';
+            $best2[] = $by_views[0];
+        }
+        foreach ($by_recent as $rc) {
+            $rc_id = strtolower((string) ($rc['id'] ?? ''));
+            $first_id = !empty($best2[0]['id']) ? strtolower((string) $best2[0]['id']) : '';
+            if ($rc_id !== '' && $rc_id !== $first_id) {
+                $rc['_chainLabel'] = '최신 연관 가이드';
+                $best2[] = $rc;
+                break;
+            }
+        }
+        if (count($best2) < 2 && !empty($by_views[1])) {
+            $by_views[1]['_chainLabel'] = '이어서 읽기 BEST 02';
+            $best2[] = $by_views[1];
+        }
 
-        // 5-Node Unified Authoritative JSON-LD Graph (Zero FAQPage)
+        // 6-Node Fully Synced Authoritative JSON-LD Graph (v3.0 — 100% Clinic Parity + Article + Zero FAQPage)
+        $mod_iso_time = ($rev_date === $pub_date) ? ($pub_date . 'T09:00:00+09:00') : ($rev_date . 'T09:00:00+09:00');
         $schema_graph = array(
             '@context' => 'https://schema.org',
             '@graph'   => array(
@@ -4480,10 +5265,27 @@ class Bareun_Master_SEO_Engine_V1 {
                     'name'          => '바른한의원 대전본점',
                     'alternateName' => array('Bareun Korean Medicine Clinic Daejeon', '대전 바른한의원'),
                     'url'           => self::CANONICAL_ORIGIN . '/',
+                    'logo'          => $director_avatar,
+                    'image'         => 'https://www.bareunhaniwon.com/wp-content/uploads/2026/10/og-bareun-1200x630-1.jpg',
                     'telephone'     => '+82-10-5631-1275',
+                    'contactPoint'  => array(
+                        array(
+                            '@type'             => 'ContactPoint',
+                            'telephone'         => '+82-10-5631-1275',
+                            'contactType'       => 'customer service',
+                            'areaServed'        => 'KR',
+                            'availableLanguage' => array('Korean')
+                        )
+                    ),
                     'taxID'         => '211-91-10479',
                     'vatID'         => '211-91-10479',
+                    'identifier'    => array('@type' => 'PropertyValue', 'name' => '사업자등록번호', 'value' => '211-91-10479'),
                     'priceRange'    => '₩₩',
+                    'hasMap'        => 'https://map.naver.com/p/entry/place/70885113',
+                    'openingHoursSpecification' => array(
+                        array('@type' => 'OpeningHoursSpecification', 'dayOfWeek' => array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'), 'opens' => '09:00', 'closes' => '19:00'),
+                        array('@type' => 'OpeningHoursSpecification', 'dayOfWeek' => array('Saturday', 'PublicHolidays'), 'opens' => '09:00', 'closes' => '14:00')
+                    ),
                     'address'       => array(
                         '@type'           => 'PostalAddress',
                         'streetAddress'   => '비래동로7번길 1, 2층',
@@ -4501,10 +5303,20 @@ class Bareun_Master_SEO_Engine_V1 {
                         array('@type' => 'AdministrativeArea', 'name' => '대전광역시'),
                         array('@type' => 'AdministrativeArea', 'name' => '대덕구')
                     ),
+                    'availableService' => array(
+                        array('@type' => 'MedicalTherapy', 'name' => '바른 추나요법 · 비수술 척추·골반·디스크·교통사고 클리닉', 'url' => self::CANONICAL_ORIGIN . '/chuna/'),
+                        array('@type' => 'MedicalTherapy', 'name' => '바른 소아 키성장 · 성조숙증 · 무방사선 초음파 성장판 클리닉', 'url' => self::CANONICAL_ORIGIN . '/growth/'),
+                        array('@type' => 'MedicalTherapy', 'name' => '바른 식욕ZERO · 내장지방 · 산후 다이어트 클리닉', 'url' => self::CANONICAL_ORIGIN . '/diet-zero/'),
+                        array('@type' => 'MedicalTherapy', 'name' => '바른 4대 유형 탈모(남성·원형·여성·지루성두피염) 모근재생 클리닉', 'url' => self::CANONICAL_ORIGIN . '/hairloss/'),
+                        array('@type' => 'MedicalTherapy', 'name' => '식약처 CITES 인증 정품 사향 황제공진단 · 만성피로 클리닉', 'url' => self::CANONICAL_ORIGIN . '/gongjindan/'),
+                        array('@type' => 'MedicalTherapy', 'name' => '만성 전립선염 · 전립선비대증 · 야간뇨 · 과민성방광 클리닉', 'url' => self::CANONICAL_ORIGIN . '/prostate/')
+                    ),
                     'sameAs'        => array(
-                        'https://www.youtube.com/@bareunhaniwon',
+                        'https://map.naver.com/p/entry/place/70885113',
+                        'https://m.place.naver.com/hospital/70885113/home',
                         'https://naver.me/5U1ELn8L',
                         'https://blog.naver.com/wei0508',
+                        'https://www.youtube.com/@bareunhaniwon',
                         'https://www.threads.net/@bareun_oriental',
                         'https://www.instagram.com/bareun_oriental/',
                         'https://pf.kakao.com/_ykxcLK'
@@ -4512,13 +5324,24 @@ class Bareun_Master_SEO_Engine_V1 {
                     'founder'       => array('@id' => self::CANONICAL_ORIGIN . '/director/#physician')
                 ),
                 array(
-                    '@type'      => 'Person',
-                    '@id'        => self::CANONICAL_ORIGIN . '/director/#physician',
-                    'name'       => '안정위',
-                    'jobTitle'   => '대표원장 (한의사)',
-                    'url'        => self::CANONICAL_ORIGIN . '/director/',
-                    'worksFor'   => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
-                    'knowsAbout' => array('소아 키 성장', '성조숙증 예방', '초음파 성장판 관찰', '추나요법', '두피열 탈모', '자율신경 및 대사 기능의학')
+                    '@type'      => 'WebSite',
+                    '@id'        => self::CANONICAL_ORIGIN . '/#website',
+                    'name'       => '바른한의원 대전본점',
+                    'url'        => self::CANONICAL_ORIGIN . '/',
+                    'inLanguage' => 'ko-KR',
+                    'publisher'  => array('@id' => self::CANONICAL_ORIGIN . '/#clinic')
+                ),
+                array(
+                    '@type'         => 'Person',
+                    '@id'           => self::CANONICAL_ORIGIN . '/director/#physician',
+                    'name'          => '안정위',
+                    'jobTitle'      => '바른한의원 대전본점 대표원장 (한의사)',
+                    'hasCredential' => '대한민국 보건복지부 면허 한의사',
+                    'image'         => $director_avatar,
+                    'url'           => self::CANONICAL_ORIGIN . '/director/',
+                    'worksFor'      => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
+                    'knowsAbout'    => array('소아 키 성장', '성조숙증 예방', '초음파 성장판 관찰', '추나요법', '두피열 탈모', '황제공진단 만성피로', '자율신경 어지럼·수면', '기능성 소화불량·담적·역류성식도염', '체지방·부종 대사관리', '여성 하복부 냉증·생리통', '전립선·야간뇨 배뇨관리'),
+                    'sameAs'        => array('https://www.youtube.com/@bareunhaniwon', 'https://blog.naver.com/wei0508')
                 ),
                 array(
                     '@type'           => 'BreadcrumbList',
@@ -4534,10 +5357,12 @@ class Bareun_Master_SEO_Engine_V1 {
                     '@type'              => 'MedicalWebPage',
                     '@id'                => $canonical_url . '#webpage',
                     'url'                => $canonical_url,
+                    'isPartOf'           => array('@id' => self::CANONICAL_ORIGIN . '/#website'),
                     'name'               => $page_title,
                     'headline'           => $q_title,
-                    'description'        => $direct_answer,
+                    'description'        => $meta_desc,
                     'inLanguage'         => 'ko-KR',
+                    'medicalAudience'    => array('@type' => 'Patient'),
                     'datePublished'      => $pub_date,
                     'dateModified'       => $rev_date,
                     'lastReviewed'       => $rev_date,
@@ -4553,18 +5378,18 @@ class Bareun_Master_SEO_Engine_V1 {
                     'about'              => array('@type' => 'AnatomicalStructure', 'name' => $part_label),
                     'speakable'          => array(
                         '@type'       => 'SpeakableSpecification',
-                        'cssSelector' => array('.direct-answer-lead', '.clinical-observation-box')
+                        'cssSelector' => array('.direct-answer-capsule', '.clinical-observation-box blockquote')
                     )
                 ),
                 array(
-                    '@type'            => 'MedicalScholarlyArticle',
+                    '@type'            => 'Article',
                     '@id'              => $canonical_url . '#article',
                     'mainEntityOfPage' => array('@id' => $canonical_url . '#webpage'),
                     'headline'         => $q_title,
-                    'description'      => $direct_answer,
+                    'description'      => $meta_desc,
                     'image'            => $schema_imgs,
                     'datePublished'    => $pub_date . 'T09:00:00+09:00',
-                    'dateModified'     => $rev_date . 'T10:30:00+09:00',
+                    'dateModified'     => $mod_iso_time,
                     'inLanguage'       => 'ko-KR',
                     'author'           => array('@id' => self::CANONICAL_ORIGIN . '/director/#physician'),
                     'publisher'        => array('@id' => self::CANONICAL_ORIGIN . '/#clinic'),
@@ -4600,8 +5425,11 @@ class Bareun_Master_SEO_Engine_V1 {
         echo '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />' . "\n";
         echo '  <title>' . esc_html($page_title) . '</title>' . "\n";
         echo '  <meta name="description" content="' . esc_attr($meta_desc) . '" />' . "\n";
-        echo '  <meta name="keywords" content="' . esc_attr($merged_kw_str) . '" />' . "\n";
+        if (!$is_v3_note) {
+            echo '  <meta name="keywords" content="' . esc_attr($merged_kw_str) . '" />' . "\n";
+        }
         echo '  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />' . "\n";
+        echo '  <link rel="author" href="' . esc_url(self::CANONICAL_ORIGIN . '/director/') . '" />' . "\n";
         if ($naver_v !== '') {
             echo '  <meta name="naver-site-verification" content="' . esc_attr($naver_v) . '" />' . "\n";
         }
@@ -4625,7 +5453,7 @@ class Bareun_Master_SEO_Engine_V1 {
         echo '  <meta property="og:image:width" content="1376" />' . "\n";
         echo '  <meta property="og:image:height" content="768" />' . "\n";
         echo '  <meta property="article:published_time" content="' . esc_attr($pub_date . 'T09:00:00+09:00') . '" />' . "\n";
-        echo '  <meta property="article:modified_time" content="' . esc_attr($rev_date . 'T10:30:00+09:00') . '" />' . "\n";
+        echo '  <meta property="article:modified_time" content="' . esc_attr($mod_iso_time) . '" />' . "\n";
         echo '  <meta property="article:section" content="' . esc_attr($part_label . ' · ' . $keyword) . '" />' . "\n";
         echo '  <meta name="twitter:card" content="summary_large_image" />' . "\n";
         echo '  <link rel="preload" as="image" href="' . esc_url($preload_lead_img) . '" />' . "\n";
@@ -4701,8 +5529,30 @@ class Bareun_Master_SEO_Engine_V1 {
     .bridge-3d-text strong { display:block; font-size:0.95rem; color:#F4DFB0; margin-bottom:3px; }
     .bridge-3d-text span { font-size:0.82rem; color:#D7CFC0; }
     .bridge-3d-btn { display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:999px; background:linear-gradient(135deg,#D7B56D,#B58938); color:#14110F; font-size:0.85rem; font-weight:800; text-decoration:none; white-space:nowrap; box-shadow:0 4px 14px rgba(197,160,89,0.35); }
-    .clinical-observation-box { margin-top:16px; padding:18px 20px; border-radius:14px; background:#FAF6EC; border:1px solid var(--gold-200); }
-    .clinical-obs-header { font-size:0.85rem; font-weight:800; color:var(--gold-600); margin-bottom:7px; }
+    .clinical-observation-box { margin:18px 0 0; padding:18px 20px; border-radius:14px; background:#FAF6EC; border:1px solid var(--gold-200); border-left:4px solid var(--gold-600); }
+    .clinical-obs-header { font-size:0.85rem; font-weight:800; color:var(--gold-600); margin-bottom:8px; }
+    .clinical-observation-box blockquote { margin:0; padding:0; }
+    .clinical-observation-box blockquote p { margin:0; font-size:0.94rem; color:var(--ink-900); line-height:1.75; }
+    .clinical-obs-cite { margin-top:10px; padding-top:8px; border-top:1px dashed var(--gold-200); font-size:0.8rem; color:var(--ink-500); font-weight:700; }
+    .clinical-obs-cite a { color:var(--gold-600); text-decoration:none; font-weight:800; }
+    .clinical-obs-cite a:hover { text-decoration:underline; }
+    .context-clinic-link { margin-top:14px; padding:12px 16px; border-radius:12px; background:#F8F4EA; border:1px solid var(--border-soft); font-size:0.86rem; color:var(--ink-700); display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .context-clinic-link a { color:var(--gold-600); font-weight:800; text-decoration:none; }
+    .context-clinic-link a:hover { text-decoration:underline; }
+    .deep-chunk { margin-bottom:18px; padding-bottom:16px; border-bottom:1px dashed var(--border-soft); }
+    .deep-chunk:last-of-type { margin-bottom:0; padding-bottom:0; border-bottom:none; }
+    .deep-chunk h3 { margin:0 0 8px; font-size:1.03rem; font-weight:800; color:var(--ink-900); line-height:1.48; word-break:keep-all; }
+    .faq-qa-list { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+    .faq-qa-card { padding:16px 18px; border-radius:14px; background:var(--bg-paper); border:1px solid var(--border-soft); }
+    .faq-qa-card h3 { margin:0 0 8px; font-size:0.98rem; font-weight:800; color:var(--ink-900); line-height:1.48; word-break:keep-all; display:flex; align-items:flex-start; gap:8px; }
+    .faq-q-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; background:var(--espresso); color:#F4DFB0; font-size:0.74rem; font-weight:900; flex-shrink:0; margin-top:2px; }
+    .faq-qa-card p { margin:0; font-size:0.92rem; color:var(--ink-700); line-height:1.72; word-break:keep-all; }
+    .score-action-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .score-action-btn { display:inline-flex; align-items:center; gap:6px; padding:9px 14px; border-radius:999px; font-size:0.82rem; font-weight:800; text-decoration:none; cursor:pointer; border:1px solid transparent; transition:transform 0.15s ease; }
+    .score-action-btn:hover { transform:translateY(-1px); }
+    .score-btn-gold { background:linear-gradient(135deg,#E7C983,#C59E50); color:#14110F; }
+    .score-btn-outline { background:rgba(255,255,255,0.08); color:#F7E5BA; border-color:rgba(197,160,89,0.55); }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
     .table-scroll { overflow-x:auto; margin-top:14px; border-radius:13px; border:1px solid var(--border-soft); }
     table.comparison-table { width:100%; border-collapse:collapse; min-width:600px; font-size:0.88rem; background:#FFFFFF; }
     table.comparison-table th { background:#1D1916; color:#F5E3B8; text-align:left; padding:12px 14px; font-weight:800; font-size:0.82rem; }
@@ -4792,11 +5642,11 @@ class Bareun_Master_SEO_Engine_V1 {
             <img src="<?php echo esc_url($director_avatar); ?>" alt="바른한의원 대전본점 안정위 대표원장" width="48" height="48" class="reviewer-avatar" />
             <div>
               <div class="reviewer-info-title">
-                <span>집필 · 의학 감수: 안정위 한의사</span>
-                <span class="verified-pill"><?php echo self::render_bespoke_emblem_svg('verified'); ?><span>한의사 면허 · 대표원장 직접 감수</span></span>
+                <span>집필 · 의학 감수: <a rel="author" href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>" style="color:inherit;text-decoration:none;">안정위 한의사</a></span>
+                <span class="verified-pill"><?php echo self::render_bespoke_emblem_svg('verified'); ?><span><?php echo $reviewed_by_director ? '한의사 면허 · 대표원장 직접 검토 완료' : '한의사 면허 · 바른한의원 표준 임상 기준'; ?></span></span>
               </div>
               <div class="reviewer-info-sub">
-                바른한의원 대전본점 대표원장 · 의학 생리 문헌 교차 검토 · <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>">의료진 약력 및 9대 정밀검진 기준 보기 ↗</a>
+                바른한의원 대전본점 대표원장 · 의학 생리 문헌 교차 검토 · <a rel="author" href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>">의료진 약력 및 9대 정밀검진 기준 보기 ↗</a>
               </div>
             </div>
           </div>
@@ -4805,15 +5655,7 @@ class Bareun_Master_SEO_Engine_V1 {
 
       <section class="direct-answer-lead" aria-label="핵심 의학 요약">
         <div class="direct-answer-label"><?php echo self::render_bespoke_emblem_svg('insight'); ?><span>바쁜 일상을 위한 30초 핵심 결론</span></div>
-        <p><?php echo esc_html(self::strip_ai_emojis_php($direct_answer)); ?></p>
-        <?php if (!empty($consumer_kws)) : ?>
-          <div class="consumer-kw-row" aria-label="자주 찾는 생활 건강 키워드">
-            <span class="consumer-kw-label" style="display:inline-flex;align-items:center;gap:6px;"><?php echo self::render_bespoke_emblem_svg('keyword'); ?><span>자주 찾는 일상 키워드</span></span>
-            <?php foreach ($consumer_kws as $ckw_item) : ?>
-              <span class="consumer-kw-chip">#<?php echo esc_html(self::strip_ai_emojis_php($ckw_item)); ?></span>
-            <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
+        <p class="direct-answer-capsule"><?php echo esc_html(self::strip_ai_emojis_php($direct_answer)); ?></p>
       </section>
 
       <?php if ($empathy_urls['display'] !== '') : ?>
@@ -4826,7 +5668,7 @@ class Bareun_Master_SEO_Engine_V1 {
       <?php endif; ?>
 
       <section class="content-section">
-        <h2>일상 속 이런 모습이 반복되고 있나요?</h2>
+        <h2><?php echo esc_html(self::strip_ai_emojis_php($empathy_heading)); ?></h2>
         <?php foreach ($empathy_lines as $el) : ?>
           <p><?php echo esc_html(self::strip_ai_emojis_php((string) $el)); ?></p>
         <?php endforeach; ?>
@@ -4850,8 +5692,8 @@ class Bareun_Master_SEO_Engine_V1 {
         <figcaption class="medical-figcaption"><span class="slot-badge slot-badge-mechanism">원리 도해 02</span><span><?php echo esc_html(self::strip_ai_emojis_php($deep_caption)); ?></span></figcaption>
         <div class="bridge-3d-banner">
           <div class="bridge-3d-text">
-            <strong style="display:flex;align-items:center;gap:8px;"><?php echo self::render_bespoke_emblem_svg('3d'); ?><span>방금 읽은 ‘<?php echo esc_html($part_label); ?>’ 구조, 입체로 직접 돌려 보시겠어요?</span></strong>
-            <span>바른한의원 3D 인체모형 뷰어에서 360° 회전하며 근육·신경·혈관 연결을 한눈에 살펴보실 수 있습니다.</span>
+            <strong style="display:flex;align-items:center;gap:8px;"><?php echo self::render_bespoke_emblem_svg('3d'); ?><span>지금 읽은 ‘<?php echo esc_html($keyword); ?>’ 증상이 ‘<?php echo esc_html($part_label); ?>’와 어떻게 연결되는지 3D로 볼까요?</span></strong>
+            <span>바른한의원 3D 인체모형 뷰어에서 360° 회전하며 근육·신경·혈관 연결을 10초 만에 입체로 확인하실 수 있습니다.</span>
           </div>
           <a href="<?php echo esc_url($explorer_part_url); ?>" class="bridge-3d-btn">3D 인체모형 열기 →</a>
         </div>
@@ -4860,14 +5702,30 @@ class Bareun_Master_SEO_Engine_V1 {
       <section class="content-section">
         <h2><?php echo self::render_bespoke_emblem_svg('mechanism'); ?><span><?php echo esc_html(self::strip_ai_emojis_php($deep_title)); ?></span></h2>
         <?php foreach ($deep_paras as $dp) : ?>
-          <p><?php echo esc_html(self::strip_ai_emojis_php((string) $dp)); ?></p>
+          <?php if (is_array($dp) && !empty($dp['body'])) : ?>
+            <div class="deep-chunk">
+              <?php if (!empty($dp['h3'])) : ?>
+                <h3><?php echo esc_html(self::strip_ai_emojis_php((string) $dp['h3'])); ?></h3>
+              <?php endif; ?>
+              <p><?php echo esc_html(self::strip_ai_emojis_php((string) $dp['body'])); ?></p>
+            </div>
+          <?php else : ?>
+            <p><?php echo esc_html(self::strip_ai_emojis_php((string) $dp)); ?></p>
+          <?php endif; ?>
         <?php endforeach; ?>
         <?php if ($clin_obs !== '') : ?>
-          <div class="clinical-observation-box">
-            <div class="clinical-obs-header"><?php echo self::render_bespoke_emblem_svg('clinical'); ?><span>진료실에서 살펴본 생활 리듬 관찰 포인트</span></div>
-            <p style="margin:0;font-size:0.93rem;color:var(--ink-900);"><?php echo esc_html(self::strip_ai_emojis_php($clin_obs)); ?></p>
-          </div>
+          <figure class="clinical-observation-box">
+            <div class="clinical-obs-header"><?php echo self::render_bespoke_emblem_svg('clinical'); ?><span>진료실 임상 관찰 포인트</span></div>
+            <blockquote>
+              <p><?php echo esc_html(self::strip_ai_emojis_php($clin_obs)); ?></p>
+            </blockquote>
+            <figcaption class="clinical-obs-cite">— 임상 관찰·의학 감수: <a rel="author" href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>">안정위 한의사</a> (바른한의원 대전본점 대표원장)</figcaption>
+          </figure>
         <?php endif; ?>
+        <div class="context-clinic-link">
+          <span>관련 의학·정밀 검진 기준 더 살펴보기</span>
+          <a href="<?php echo esc_url($hub['url']); ?>"><?php echo esc_html(self::strip_ai_emojis_php($hub['anchor'])); ?> →</a>
+        </div>
       </section>
 
       <?php if (is_array($comp_table)) : ?>
@@ -4878,10 +5736,11 @@ class Bareun_Master_SEO_Engine_V1 {
         <?php endif; ?>
         <div class="table-scroll">
           <table class="comparison-table">
+            <caption class="sr-only"><?php echo esc_html(self::strip_ai_emojis_php((string) ($comp_table['heading'] ?? ($keyword . ' 생활 기준 비교표')))); ?></caption>
             <thead>
               <tr>
                 <?php foreach ($comp_table['headers'] as $th_txt) : ?>
-                  <th><?php echo esc_html(self::strip_ai_emojis_php((string) $th_txt)); ?></th>
+                  <th scope="col"><?php echo esc_html(self::strip_ai_emojis_php((string) $th_txt)); ?></th>
                 <?php endforeach; ?>
               </tr>
             </thead>
@@ -4893,7 +5752,11 @@ class Bareun_Master_SEO_Engine_V1 {
               ?>
                 <tr class="<?php echo ($r_idx === $rec_idx) ? 'recommended-row' : ''; ?>">
                   <?php foreach ($r_cells as $c_idx => $c_val) : ?>
-                    <td><?php echo ($c_idx === 0) ? ('<strong>' . esc_html(self::strip_ai_emojis_php((string) $c_val)) . '</strong>') : self::format_hn_table_cell_php($c_val); ?></td>
+                    <?php if ($c_idx === 0) : ?>
+                      <th scope="row" style="text-align:left;background:inherit;color:var(--ink-900);padding:13px 14px;border-top:1px solid var(--border-soft);font-weight:800;"><?php echo esc_html(self::strip_ai_emojis_php((string) $c_val)); ?></th>
+                    <?php else : ?>
+                      <td><?php echo self::format_hn_table_cell_php($c_val); ?></td>
+                    <?php endif; ?>
                   <?php endforeach; ?>
                 </tr>
               <?php endforeach; ?>
@@ -4915,7 +5778,7 @@ class Bareun_Master_SEO_Engine_V1 {
       <?php endif; ?>
 
       <section class="content-section">
-        <h2><?php echo self::render_bespoke_emblem_svg('check'); ?><span>오늘 밤 직접 체크해 보는 5가지 <?php echo esc_html(self::strip_ai_emojis_php($keyword)); ?> 리듬 신호</span></h2>
+        <h2><?php echo self::render_bespoke_emblem_svg('check'); ?><span><?php echo esc_html(self::strip_ai_emojis_php($check_heading)); ?></span></h2>
         <p>최근 2주 동안의 모습에 해당하는 항목을 직접 눌러 체크해 보세요. 선택 개수에 맞춰 생활 속 우선순위를 정리해 드립니다.</p>
         <div class="check-list-interactive" id="self-check-group">
           <?php foreach ($self_checks as $sc_item) : ?>
@@ -4931,11 +5794,26 @@ class Bareun_Master_SEO_Engine_V1 {
             <span class="score-pill" id="score-badge">자가점검 대기 중</span>
           </div>
           <p class="score-result-desc" id="score-desc">해당 항목을 체크하시면 일상에서 먼저 실천해 볼 수 있는 맞춤 관리 기준을 바로 확인하실 수 있습니다.</p>
+          <div class="score-action-row" id="score-action-row"></div>
         </div>
       </section>
 
+      <?php if (!empty($faq_items)) : ?>
+      <section class="content-section faq-section" aria-label="자주 묻는 질문">
+        <h2><?php echo self::render_bespoke_emblem_svg('insight'); ?><span><?php echo esc_html(self::strip_ai_emojis_php($faq_heading)); ?></span></h2>
+        <div class="faq-qa-list">
+          <?php foreach ($faq_items as $fq_it) : ?>
+            <div class="faq-qa-card">
+              <h3><span class="faq-q-badge">Q</span><span><?php echo esc_html(self::strip_ai_emojis_php((string) $fq_it['q'])); ?></span></h3>
+              <p><?php echo esc_html(self::strip_ai_emojis_php((string) $fq_it['a'])); ?></p>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </section>
+      <?php endif; ?>
+
       <section class="content-section">
-        <h2>생활 습관 조절과 함께 세심히 살펴야 할 기준은 무엇일까요?</h2>
+        <h2><?php echo esc_html(self::strip_ai_emojis_php($keyword)); ?> 관리 시 세심히 살펴야 할 대면 확인 기준은?</h2>
         <?php if (!empty($deep_signals)) : ?>
           <p>평소 가정에서는 <strong><?php echo esc_html(self::strip_ai_emojis_php((string) ($deep_signals[0] ?? ''))); ?></strong><?php if (!empty($deep_signals[1])) : ?> 또한 <strong><?php echo esc_html(self::strip_ai_emojis_php((string) $deep_signals[1])); ?></strong><?php endif; ?><?php if (!empty($deep_signals[2])) : ?> 아울러 <strong><?php echo esc_html(self::strip_ai_emojis_php((string) $deep_signals[2])); ?></strong><?php endif; ?></p>
         <?php endif; ?>
@@ -4950,38 +5828,48 @@ class Bareun_Master_SEO_Engine_V1 {
           </div>
         <?php endif; ?>
         <div class="references-box">
-          <strong class="ref-box-lead" style="color:var(--ink-700);"><?php echo self::render_bespoke_emblem_svg('archive'); ?><span>학술 참고 근거</span></strong> · <?php echo esc_html(self::strip_ai_emojis_php($deep_ref)); ?>
+          <strong class="ref-box-lead" style="color:var(--ink-700);"><?php echo self::render_bespoke_emblem_svg('archive'); ?><span>공신력 의학 참고 기준</span></strong> · <?php echo esc_html(self::strip_ai_emojis_php($deep_ref)); ?>
         </div>
         <div class="references-box" style="margin-top:10px;background:#FAF8F3;border-color:rgba(74,53,37,0.14);font-size:0.84rem;color:#4B5563;line-height:1.65;">
-          <strong class="ref-box-lead" style="color:var(--ink-700);"><?php echo self::render_bespoke_emblem_svg('editorial'); ?><span>의학 감수 · AI 문헌 정리 보조 및 진료 안내</span></strong> · 본 건강 글은 학술 논문 요약 보조 도구를 활용해 생활 언어로 초안을 정리한 뒤, 바른한의원 대전본점 안정위 대표원장(한의사)이 직접 의학적 사실관계와 생활 수칙을 교차 검토·감수하여 발행했습니다. 본문 내용은 일상 건강 이해를 돕기 위한 일반 의학 정보이며, 개인별 정확한 진단과 치료 계획은 반드시 의료진의 대면 진찰을 통해 결정하시기 바랍니다.
+          <strong class="ref-box-lead" style="color:var(--ink-700);"><?php echo self::render_bespoke_emblem_svg('editorial'); ?><span>의학 감수 · 진료 안내</span></strong> · <?php if ($reviewed_by_director) : ?>본 건강 글은 검증된 의학·생리학 문헌 근거(AI 문헌 정리 보조 활용)를 바탕으로 바른한의원 대전본점 안정위 대표원장(한의사)이 직접 의학적 사실관계와 생활 수칙을 검토·감수하여 발행한 일반 건강 정보입니다.<?php else : ?>본 건강 글은 검증된 의학·생리학 문헌 기준(AI 문헌 정리 보조 활용)과 바른한의원 대전본점 안정위 대표원장(한의사)의 표준 임상 기준을 바탕으로 정리된 일반 건강 정보입니다.<?php endif; ?> 개인별 정확한 진단과 치료 계획은 반드시 의료진의 대면 진찰을 통해 결정하시기 바랍니다.
         </div>
 
-        <h3>함께 읽으면 연결되는 <?php echo esc_html($part_label); ?> 인기 가이드 (BEST 2)</h3>
+        <?php if (!empty($consumer_kws)) : ?>
+          <div class="consumer-kw-row" aria-label="관련 일상 건강 키워드" style="margin-top:16px;">
+            <span class="consumer-kw-label" style="display:inline-flex;align-items:center;gap:6px;"><?php echo self::render_bespoke_emblem_svg('keyword'); ?><span>관련 건강 키워드</span></span>
+            <?php foreach ($consumer_kws as $ckw_item) : ?>
+              <span class="consumer-kw-chip">#<?php echo esc_html(self::strip_ai_emojis_php($ckw_item)); ?></span>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
+        <h3 id="related-guides-heading">함께 읽으면 연결되는 <?php echo esc_html($part_label); ?> 핵심 가이드</h3>
         <div class="cluster-grid">
           <?php foreach ($best2 as $bidx => $bn) :
               $bn_id_low = strtolower((string) ($bn['id'] ?? ''));
               $bn_url = self::CANONICAL_ORIGIN . '/health-note-' . rawurlencode((string) $bn['id']) . '/';
               $bn_views = isset($bn['_views']) ? (int) $bn['_views'] : (isset($norm_views[$bn_id_low]) ? (int) $norm_views[$bn_id_low] : 0);
+              $bn_lbl = !empty($bn['_chainLabel']) ? (string) $bn['_chainLabel'] : ('이어서 읽기 BEST 0' . ($bidx + 1));
           ?>
             <a href="<?php echo esc_url($bn_url); ?>" class="cluster-card">
-              <div class="cluster-kicker">이어서 읽기 BEST 0<?php echo ($bidx + 1); ?> · <?php echo esc_html(self::strip_ai_emojis_php((string) ($bn['keyword'] ?? $part_label))); ?> · <span data-note-view-id="<?php echo esc_attr($bn_id_low); ?>">조회수 <?php echo number_format($bn_views); ?>회</span></div>
+              <div class="cluster-kicker"><?php echo esc_html($bn_lbl); ?> · <?php echo esc_html(self::strip_ai_emojis_php((string) ($bn['keyword'] ?? $part_label))); ?> · <span data-note-view-id="<?php echo esc_attr($bn_id_low); ?>">조회수 <?php echo number_format($bn_views); ?>회</span></div>
               <div class="cluster-title">&ldquo;<?php echo esc_html(self::strip_ai_emojis_php((string) ($bn['questionTitle'] ?? $bn['title'] ?? ''))); ?>&rdquo;</div>
             </a>
           <?php endforeach; ?>
           <a href="<?php echo esc_url($hub['url']); ?>" class="cluster-card">
-            <div class="cluster-kicker">전문 진료 원리 안내</div>
-            <div class="cluster-title"><?php echo esc_html($hub['name']); ?> — 원인별 치료·회복 원리 자세히 살펴보기 →</div>
+            <div class="cluster-kicker">바른한의원 대전본점 · <?php echo esc_html(self::strip_ai_emojis_php($hub['btn'])); ?></div>
+            <div class="cluster-title"><?php echo esc_html(self::strip_ai_emojis_php($hub['anchor'])); ?> →</div>
           </a>
-          <a href="<?php echo esc_url(self::CANONICAL_ORIGIN . '/director/'); ?>" class="cluster-card">
-            <div class="cluster-kicker">정밀 검진 시스템 안내</div>
-            <div class="cluster-title">초음파 · 적외선 체열 · 자율신경 · 체성분 등 9대 정밀검진 과정 살펴보기 →</div>
+          <a href="<?php echo esc_url($secondary_hub['url']); ?>" class="cluster-card">
+            <div class="cluster-kicker"><?php echo esc_html($secondary_hub['name']); ?></div>
+            <div class="cluster-title"><?php echo esc_html($secondary_hub['title']); ?></div>
           </a>
         </div>
 
         <div class="official-channels-bar">
           <div class="channel-bar-copy">
-            <strong>더 많은 생활 건강 이야기 · 진료 시간 및 위치 안내</strong>
-            <span>바른한의원 대전본점 (대전 대덕구 비래동로7번길 1, 2층 · 대표전화 010-5631-1275)</span>
+            <strong>대전·세종·충청 거주 중이신가요? 정밀 검진 기준과 진료 안내를 확인해 보세요</strong>
+            <span>바른한의원 대전본점 · 대전 대덕구 비래동로7번길 1, 2층 (대전IC 3분 · 전용 주차 · 초음파·체열·자율신경 9대 정밀검진) · 대표전화 010-5631-1275</span>
           </div>
           <div class="channel-pills">
             <button type="button" onclick="copyStandaloneShareLink(this)" class="ch-pill ch-pill-share" aria-label="이 건강 글 링크 복사·퍼가기" title="이 건강 글 링크 복사·퍼가기"><span class="ch-icon" style="background:linear-gradient(135deg,#E7C983,#C59E50);color:#14110F;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span></button>
@@ -5184,6 +6072,12 @@ class Bareun_Master_SEO_Engine_V1 {
         }, true);
       }
     })();
+    var bareunSelfCheckUrls = {
+      hubUrl: <?php echo wp_json_encode($hub['url']); ?>,
+      hubBtn: <?php echo wp_json_encode(self::strip_ai_emojis_php($hub['btn'])); ?>,
+      explorerUrl: <?php echo wp_json_encode($explorer_part_url); ?>,
+      qnaUrl: <?php echo wp_json_encode(self::CANONICAL_ORIGIN . '/body-explorer/?tab=qna'); ?>
+    };
     function updateSelfCheck() {
       var boxes = document.querySelectorAll('#self-check-group input[type="checkbox"]');
       var total = boxes.length || 5;
@@ -5196,18 +6090,28 @@ class Bareun_Master_SEO_Engine_V1 {
       var titleEl = document.getElementById('score-title');
       var badgeEl = document.getElementById('score-badge');
       var descEl = document.getElementById('score-desc');
+      var actRow = document.getElementById('score-action-row');
       if (count === 0) {
         titleEl.textContent = '현재 선택: 0 / ' + total + '개 해당 — 비교적 안정적인 생활 리듬이 유지되고 있습니다';
         badgeEl.textContent = '양호 · 현재 습관 유지';
         descEl.textContent = '오늘 살펴본 비교표의 권장 루틴을 가볍게 이어 가시면서 충분한 수분 섭취와 숙면 시간을 지켜 주세요.';
+        if (actRow) {
+          actRow.innerHTML = '<button type="button" class="score-action-btn score-btn-gold" onclick="copyStandaloneShareLink(this)">가족·지인에게 이 글 공유하기</button><a class="score-action-btn score-btn-outline" href="' + bareunSelfCheckUrls.explorerUrl + '">3D 인체모형으로 미리 구조 보기 →</a>';
+        }
       } else if (count <= 2) {
         titleEl.textContent = '현재 선택: ' + count + ' / ' + total + '개 해당 — 일상 속 작은 피로 신호가 시작되는 구간';
         badgeEl.textContent = '생활 리듬 2주 조정 권장';
         descEl.textContent = '위 비교표의 권장 실천법을 2주간 먼저 적용해 보세요. 자세·식사·수면 타이밍 한 가지만 바꾸어도 몸의 긴장이 한결 부드러워집니다.';
+        if (actRow) {
+          actRow.innerHTML = '<a class="score-action-btn score-btn-gold" href="' + bareunSelfCheckUrls.explorerUrl + '">3D 인체모형에서 내 부위 360° 보기 →</a><a class="score-action-btn score-btn-outline" href="#related-guides-heading">이 부위 연관 가이드 이어 읽기 ↓</a>';
+        }
       } else {
         titleEl.textContent = '현재 선택: ' + count + ' / ' + total + '개 해당 — 누적된 생활 불균형 점검이 필요한 구간';
-        badgeEl.textContent = '생활 교정 + 세심한 상태 확인 권장';
-        descEl.textContent = '여러 생활 신호가 동시에 겹쳐 회복 탄력이 떨어져 있을 가능성이 큽니다. 생활 루틴 조정과 함께 불편감이 2~4주 이상 이어진다면 가까운 의료기관에서 정확한 상태를 확인해 보시길 권합니다.';
+        badgeEl.textContent = '생활 교정 + 객관적 정밀검진 권장';
+        descEl.textContent = '여러 신호가 동시에 겹칠 때는 혼자 추측하기보다 초음파·체열·자율신경 등 객관적인 정밀 검진 기준부터 확인해 보시는 것이 훨씬 빠릅니다.';
+        if (actRow) {
+          actRow.innerHTML = '<a class="score-action-btn score-btn-gold" href="' + bareunSelfCheckUrls.hubUrl + '">' + bareunSelfCheckUrls.hubBtn + ' · 정밀검진 기준 보기 →</a><a class="score-action-btn score-btn-outline" href="' + bareunSelfCheckUrls.qnaUrl + '">비공개 1:1 질문 남기기 (부담 제로) →</a>';
+        }
       }
     }
   </script>
@@ -6295,6 +7199,14 @@ class Bareun_Custom_Studio_Engine_V4 {
             array(__CLASS__, 'render_admin_studio_page'),
             'dashicons-art',
             2
+        );
+        add_submenu_page(
+            'bareun-custom-studio',
+            '칼럼 자동발행 큐 (v3.0)',
+            '📝 칼럼 자동발행 큐 (v3.0)',
+            'manage_options',
+            'bareun-autopost-queue',
+            array('Bareun_Member_Private_QnA_V6_Plugin', 'render_admin_autopost_queue_page')
         );
     }
 
