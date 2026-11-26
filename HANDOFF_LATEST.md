@@ -1,11 +1,31 @@
 # 📋 [3d진료] 바른한의원 풀스크린 3D 인체모형(우측 『진료 살펴보기』 대표 건강 글 제목·구조·본문·레이아웃·색감 전체 메뉴 일괄 적용 스튜디오 + 4대 계통 실시간 모션) — 작업 인수인계서 (HANDOFF_LATEST)
 
-> **최종 업데이트**: 2026-11-26 v9.34 (**커스텀 스튜디오 UX v4.0 — 「깜빡임 0% · 0.01초 제로-리셋 직관 편집」 5대 혁신 기능 완결**: ① 48개 리로드 지점 → 0.01초 부분 DOM 치환 엔진 전환(스크롤·모션 리셋 0%) ② 화면 위 더블클릭 워드·노션식 바로 타자 치기 ③ 클릭 요소 위 미니 플로팅 퀵 툴바 ④ 사진 파일 드래그&드롭 0.01초 즉시 교체 ⑤ `[👀 원본 비교]` 0ms 전후 비교 + 브라우저 자동 임시저장 복구 안전금고 · 로컬/카페24 실서버 스튜디오 동기화 완료) · 2026-11-26 v9.33 (홈 보조문구 버그 완치 & 전 요소 테두리/아이콘/폰트/색감 꾸미기 UX v3.0)
+> **최종 업데이트**: 2026-11-26 v9.35 (**커스텀 스튜디오 전 챕터(6대 영역 · 18개 항목) 전수 정밀 검수 & 11건 실전 반영 버그 완치**: ① 홈 메인 문구(`.dialogue-char.lit`/`.gold-accent`) 색감·트랜지션 멈춤 현상 완치 ② 홈 피날레 6대 카드 제목·설명·버튼 정밀 선택자 분리 ③ `body.theme-hanji` & `visit-tracker.js` 오시는길 버튼까지 100% 제압하는 `html:not(#_) body:not(#_)` 최고 우선순위 CSS 엔진 적용 ④ 상세페이지 카드 스타일 토글(단계 배지 `indexPill` 폴백 포함)·FAQ(`Q1` 번호 보존)·체크리스트 실시간 치환 클래스 정합화 ⑤ 오시는길/비급여 조기 인스펙터 부착(`attachInspectorWhenReady`) & 실제 클래스 보존 ⑥ 3D 건강글(`body-explorer.html`) 비주얼 오버라이드 영구 저장·컴파일 연동 · 18/18 전수 100% PASS, `pageErrors: 0` · 로컬/카페24 실서버 스튜디오 동기화 완료) · 2026-11-26 v9.34 (0.01초 제로-리셋 직관 편집 UX v4.0)
 > **작성자**: 하이엔드 홈페이지 총괄 디렉터 **아트 (Art)**
 
 ---
 
-## 🚀 최신 (2026-11-26 v9.34 · 커스텀 스튜디오 UX v4.0 — 0.01초 제로-리셋 편집 · 더블클릭 인라인 타자 · 미니 퀵 툴바 · 사진 드래그&드롭 · 원본 비교 & 자동 임시저장)
+## 🚀 최신 (2026-11-26 v9.35 · 커스텀 스튜디오 전 챕터 18개 항목 전수 정밀 검수 & 색감·폰트·테두리·실시간 치환 버그 11건 일괄 완치)
+
+1. **홈 첫 화면 메인 문구(`#dialogue-main-quote`) & 보조 문구(`#dialogue-sub-whisper`) 색감·폰트 미반영 완치 (`detail-pages-editor.html`, `home-story-compiler.js`)**:
+   - **원인**: ① 클릭 시 `#dialogue-main-quote` 대신 바깥 `#story-dialogue-stage`가 잡히던 선택자 오차 ② 글자별 `<span class="dialogue-char lit">`·`.gold-accent` 자식 태그가 부모 색상을 덮어쓰고, 60fps 모션 중 `transition: color 0.2s`가 크롬에서 멈춰 색이 흰색으로 고정되던 현상.
+   - **해결**: `#dialogue-main-quote`/`#dialogue-sub-whisper` 정확 선택자 분리 + `.dialogue-char`/`.dialogue-char.lit`/`.dialogue-char.gold-accent` 강제 상속 + 라이브 편집 시 `transition: none !important` 0ms 즉시 스냅 적용.
+2. **홈 피날레 6대 진료카드 · 비급여 테이블 행 · `visit-tracker.js` 오시는길 버튼 색감·폰트·배경 100% 우선순위 보장 (`detail-pages-editor.html`, `home-story-compiler.js`, `bareun-detail-compiler.js`)**:
+   - **원인**: `body.theme-hanji #header .bareun-loc-pill-btn`과 `td`/`strong`/`.skt-card-title` 자식 규칙이 일반 선택자보다 CSS 우선순위가 높아 색감·폰트 변경을 무시하던 문제.
+   - **해결**: 모든 비주얼 오버라이드 선택자를 `html:not(#_) body:not(#_)` 최고 우선순위로 승격하고 `<style id="bareun-studio-vo-css">`를 `<head>` 최하단으로 강제 배치 + `font-family`/`color`/`font-size`/`font-weight` 자식 전파 + 단색 배경 시 기존 그라데이션 제거(`background-image: none !important`) + `:root:root` 강조색 변수 일괄 승격 + `TR/TABLE/SECTION/ARTICLE` 텍스트 덮어쓰기 안전 가드.
+3. **상세페이지 카드 스타일·FAQ·체크리스트·테두리 UX 정밀 수정 (`detail-pages-editor.html`, `bareun-detail-compiler.js`)**:
+   - **FAQ 실시간 수정 시 `Q1` 번호 덮어쓰기 버그 수정**: 실제 클래스(`.clinic-faq-q-text`/`.clinic-faq-q-tag`/`.clinic-faq-a-lead`/`.clinic-faq-a-detail`)에 정확 바인딩하여 `Q1` 배지 100% 보존.
+   - **카드 스타일 토글 정합화**: 실제 클래스(`.tiny-card-num-badge`, `.editorial-top-meta`, `.clinical-pillars`, `.seo-keyword-footer`) 매핑 + `showStepBadge` 시 `stepLabel` 미기재 카드도 `indexPill`/`metricPill` 자동 폴백 + 구조 토글 시 자동 미리보기 재컴파일.
+   - **체크리스트**: `.empathy-check-text` 정확 치환 + 항목 추가/삭제/이동 즉시 반영.
+   - **테두리 UX**: 테두리 굵기가 `0px`인 상태에서 테두리 색이나 모양만 골라도 자동으로 `2px 실선`이 켜지도록 개선 + 페이지 전체 바탕 배경색 스와치 추가.
+4. **오시는길·비급여 & 3D 건강글(`body-explorer.html`) 전수 연동 (`detail-pages-editor.html`, `build-body-explorer.js`)**:
+   - **오시는길/비급여**: 외부 지도 스크립트 로딩 전에도 클릭 편집이 즉시 붙는 `attachInspectorWhenReady` 도입 + `syncClinicInfoToPreviewIframe` 실제 CSS 클래스(`.loc-hour-row`, `.fee-cat-pill`, `.fee-price-cell`, `.fee-note-cell`) 100% 보존.
+   - **3D 인체모형·건강글**: 기존에 저장 시 버려지던 `healthnotes` 비주얼 오버라이드를 `healthNotesConfig` 영구 저장소로 연결하고 `build-body-explorer.js` 빌드 시 자동 주입되도록 완결.
+5. **헤드리스 크롬 3대 회귀 검증 100% PASS**: `audit_every_part.js` **18/18 PASS**, `verify_studio_ux4.js` **5대 혁신 100% PASS**, `verify_studio_ux3.js` **전 항목 100% PASS**, `pageErrors: 0`.
+
+---
+
+## 🚀 직전 (2026-11-26 v9.34 · 커스텀 스튜디오 UX v4.0 — 0.01초 제로-리셋 편집 · 더블클릭 인라인 타자 · 미니 퀵 툴바 · 사진 드래그&드롭 · 원본 비교 & 자동 임시저장)
 
 1. **① 제로-리셋 0.01초 부분 치환 엔진 (`livePatchPreviewDom`)**:
    - 카드 제목·설명·사진·스타일 프리셋·좌측 안내·자가진단 체크리스트·FAQ·3D 모델·연계 클리닉·레이아웃 5대 색감·홈 로고/철학문구/피날레 제목/6대 진료카드 수정 시 `frame.srcdoc` 전체 새로고침 없이 **바뀐 딱 1곳의 DOM/CSS만 0.01초 만에 직접 치환**(깜빡임 0% · 스크롤 튐 0% · 리셋 0%).

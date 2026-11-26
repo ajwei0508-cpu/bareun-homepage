@@ -5429,10 +5429,10 @@
             .editorial-headline { display: ${cs.showTitle !== false ? 'block' : 'none'} !important; color: ${cs.titleColor || '#fdfbf7'} !important; font-size: ${tSizeMap[cs.titleSize || 'md'] || '1.22rem'} !important; }
             .editorial-headline em, .editorial-headline .hl-gold, .editorial-headline .title-key-em { color: ${cs.hlColor || '#f5d36c'} !important; }
             .editorial-body-copy { display: ${cs.showBody !== false ? 'block' : 'none'} !important; color: ${cs.bodyColor || 'rgba(245,240,232,0.84)'} !important; font-size: ${bSizeMap[cs.bodySize || 'md'] || '0.92rem'} !important; }
-            .plate-num-badge { display: ${cs.showNumBadge !== false ? 'flex' : 'none'} !important; }
-            .editorial-step-badge { display: ${cs.showStepBadge ? 'inline-block' : 'none'} !important; }
-            .editorial-pillars-grid { display: ${cs.showPillars ? 'grid' : 'none'} !important; }
-            .editorial-tags-row { display: ${cs.showTags ? 'flex' : 'none'} !important; }
+            .tiny-card-num-badge, .plate-num-badge { display: ${cs.showNumBadge !== false ? 'flex' : 'none'} !important; }
+            .editorial-top-meta, .editorial-step-badge { display: ${cs.showStepBadge ? 'flex' : 'none'} !important; }
+            .clinical-pillars, .editorial-pillars-grid { display: ${cs.showPillars ? 'grid' : 'none'} !important; }
+            .seo-keyword-footer, .editorial-tags-row { display: ${cs.showTags ? 'flex' : 'none'} !important; }
           `;
           return true;
         }
@@ -5473,7 +5473,7 @@
           const { cIdx, val } = payload;
           const item = doc.querySelector(`.empathy-check-item[data-idx="${cIdx}"]`);
           if (item) {
-            const txt = item.querySelector('.check-text, span:last-child') || item;
+            const txt = item.querySelector('.empathy-check-text, .check-text, span:last-child') || item;
             rememberOrigNode(txt, 'text', txt.textContent);
             txt.textContent = val;
             return true;
@@ -5488,7 +5488,7 @@
             if (h) { rememberOrigNode(h, 'html', h.innerHTML); h.innerHTML = formatGoldQuotedHtml(val); return true; }
           } else if (key === 'eyebrow') {
             const e = doc.querySelector('#clinic-faq-card .clinic-faq-eyebrow');
-            if (e) { rememberOrigNode(e, 'text', e.textContent); e.textContent = val; return true; }
+            if (e) { rememberOrigNode(e, 'text', e.textContent); e.textContent = '✦ ' + val; return true; }
           } else if (key === 'sub') {
             const s = doc.querySelector('#clinic-faq-card .clinic-faq-sub');
             if (s) { rememberOrigNode(s, 'text', s.textContent); s.textContent = val; return true; }
@@ -5504,16 +5504,16 @@
           const det = doc.querySelector(`#clinic-faq-card details.clinic-faq-item[data-faq-idx="${qIdx}"]`);
           if (!det) return false;
           if (key === 'q') {
-            const qEl = det.querySelector('.faq-q-text, summary span:not(.faq-tag-chip):not(.faq-q-num):not(.faq-toggle-ico)');
+            const qEl = det.querySelector('.clinic-faq-q-text, .faq-q-text');
             if (qEl) { rememberOrigNode(qEl, 'text', qEl.textContent); qEl.textContent = val; return true; }
           } else if (key === 'tag') {
-            const tEl = det.querySelector('.faq-tag-chip');
+            const tEl = det.querySelector('.clinic-faq-q-tag, .faq-tag-chip');
             if (tEl) { rememberOrigNode(tEl, 'text', tEl.textContent); tEl.textContent = val; return true; }
           } else if (key === 'lead') {
-            const lEl = det.querySelector('.faq-lead-text, .faq-answer-lead');
+            const lEl = det.querySelector('.clinic-faq-a-lead, .faq-lead-text');
             if (lEl) { rememberOrigNode(lEl, 'text', lEl.textContent); lEl.textContent = val; return true; }
           } else if (key === 'a') {
-            const aEl = det.querySelector('.faq-answer-body, .faq-answer-text');
+            const aEl = det.querySelector('.clinic-faq-a-detail, .faq-answer-body');
             if (aEl) { rememberOrigNode(aEl, 'text', aEl.textContent); aEl.textContent = val; return true; }
           }
           return false;
@@ -5993,6 +5993,9 @@
       markDirty(true);
       renderStylePane();
       livePatchPreviewDom('cardStyle', { cs });
+      if (['showStepBadge', 'showPillars', 'showTags', 'showExamHud', 'showTitle', 'showBody'].includes(key)) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function applyStylePreset(presetKey) {
@@ -6054,6 +6057,7 @@
       page.meta.checklistItems.push('[새 체크 항목] 증상 문구를 입력해 주세요.');
       markDirty(true);
       renderLeftPanelPane();
+      scheduleLivePreviewReload();
     }
 
     function removeChecklistItem(cIdx) {
@@ -6061,6 +6065,7 @@
       page.meta.checklistItems.splice(cIdx, 1);
       markDirty(true);
       renderLeftPanelPane();
+      scheduleLivePreviewReload();
     }
 
     function moveChecklistItem(cIdx, delta) {
@@ -6073,6 +6078,7 @@
       arr[t] = tmp;
       markDirty(true);
       renderLeftPanelPane();
+      scheduleLivePreviewReload();
     }
 
     function updateAdviceField(key, val) {
@@ -6332,6 +6338,27 @@
       stage.classList.toggle('mobile-mode', mode === 'mobile');
     }
 
+    let inspectorPollTimer = null;
+    function attachInspectorWhenReady(frame, cb) {
+      if (inspectorPollTimer) clearInterval(inspectorPollTimer);
+      let tries = 0;
+      inspectorPollTimer = setInterval(() => {
+        tries++;
+        if (tries > 40) { clearInterval(inspectorPollTimer); inspectorPollTimer = null; return; }
+        try {
+          const doc = frame && frame.contentDocument;
+          const loc = doc && doc.location && doc.location.pathname;
+          if (doc && doc.body && doc.body.children.length > 0 && loc && loc !== 'blank' && loc !== '/blank') {
+            cb();
+            if (doc.readyState === 'complete') {
+              clearInterval(inspectorPollTimer);
+              inspectorPollTimer = null;
+            }
+          }
+        } catch (e) {}
+      }, 140);
+    }
+
     function reloadPreviewIframe() {
       const frame = document.getElementById('livePreviewFrame');
       if (!frame) return;
@@ -6341,22 +6368,27 @@
         frame.removeAttribute('data-hn-loaded');
         frame.removeAttribute('srcdoc');
         const targetChapter = currentStudioChapter;
-        frame.onload = function () {
+        const bindLocFrame = () => {
           installStudioVisualInspector(frame);
           syncClinicInfoToPreviewIframe();
+          applyAllVisualOverridesToIframe();
+        };
+        frame.onload = function () {
+          bindLocFrame();
           setTimeout(() => {
-            syncClinicInfoToPreviewIframe();
-            installStudioVisualInspector(frame);
+            bindLocFrame();
             if (targetChapter === 'fees') {
               try {
                 const feeSec = frame.contentDocument && frame.contentDocument.getElementById('non-covered-fees');
                 if (feeSec) feeSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
               } catch (e) {}
             }
-          }, 180);
+          }, 220);
+          setTimeout(bindLocFrame, 900);
         };
         const locBase = IS_WORDPRESS ? '/location/' : '/location.html';
         frame.src = locBase + '?studioPreview=1&ch=' + targetChapter + '&t=' + Date.now() + (targetChapter === 'fees' ? '#non-covered-fees' : '');
+        attachInspectorWhenReady(frame, bindLocFrame);
         return;
       }
 
@@ -6380,15 +6412,21 @@
           return;
         }
         frame.setAttribute('data-hn-loaded', '1');
-        frame.onload = function () {
+        const bindHnFrame = () => {
           installStudioVisualInspector(frame);
+          applyAllVisualOverridesToIframe();
+        };
+        frame.onload = function () {
+          bindHnFrame();
           setTimeout(() => {
             syncHealthNoteLivePreview(true);
-            installStudioVisualInspector(frame);
+            bindHnFrame();
           }, 260);
+          setTimeout(bindHnFrame, 900);
         };
         frame.removeAttribute('srcdoc');
         frame.src = `${baseHref}?part=${encodeURIComponent(pId)}${nId ? '&note=' + encodeURIComponent(nId) : ''}&detail=${hnPreviewDetailExpanded ? '1' : '0'}&studioPreview=1&t=${Date.now()}`;
+        attachInspectorWhenReady(frame, bindHnFrame);
         return;
       }
       frame.removeAttribute('data-hn-loaded');
@@ -9893,16 +9931,17 @@
         const hList = doc.getElementById('loc-hours-list');
         if (hList && Array.isArray(ci.hours)) {
           hList.innerHTML = ci.hours.map(h =>
-            '<div class="hour-row"><span class="hour-day">' + escHtml(h.day || '') + '</span><span class="hour-time">' + escHtml(h.time || '') + '</span><span class="hour-note">' + escHtml(h.note || '') + '</span></div>'
+            '<div class="loc-hour-row"><div class="loc-hour-day">' + escHtml(h.day || '') + '</div><div class="loc-hour-right"><strong class="loc-hour-time">' + escHtml(h.time || '') + '</strong>' + (h.note ? '<span class="loc-hour-note">' + escHtml(h.note) + '</span>' : '') + '</div></div>'
           ).join('');
         }
 
         const fBody = doc.getElementById('loc-fee-tbody');
         if (fBody && Array.isArray(ci.nonCoveredFees)) {
           fBody.innerHTML = ci.nonCoveredFees.map((f, idx) =>
-            '<tr data-fee-idx="' + idx + '"><td>' + escHtml(f.category || '') + '</td><td><strong>' + escHtml(f.name || '') + '</strong></td><td>' + escHtml(f.spec || '') + '</td><td class="fee-price">' + escHtml(f.price || '') + '</td><td>' + escHtml(f.note || '') + '</td></tr>'
+            '<tr data-fee-idx="' + idx + '"><td><span class="fee-cat-pill">' + escHtml(f.category || '') + '</span></td><td><strong>' + escHtml(f.name || '') + '</strong></td><td>' + escHtml(f.spec || '-') + '</td><td class="fee-price-cell">' + escHtml(f.price || '') + '</td><td class="fee-note-cell">' + escHtml(f.note || '') + '</td></tr>'
           ).join('');
         }
+        applyAllVisualOverridesToIframe();
       } catch (e) {}
     }
 
@@ -11783,6 +11822,14 @@
         return ci;
       }
       const page = getCurrentPage();
+      if (currentStudioChapter === 'healthnotes' || (page && isHealthNotesPage(page))) {
+        if (!healthNotesConfig || typeof healthNotesConfig !== 'object') {
+          healthNotesConfig = { notes: [], parts: [], globalSettings: {} };
+        }
+        if (!healthNotesConfig.elementOverrides || typeof healthNotesConfig.elementOverrides !== 'object') healthNotesConfig.elementOverrides = {};
+        if (!healthNotesConfig.pageThemeOverride || typeof healthNotesConfig.pageThemeOverride !== 'object') healthNotesConfig.pageThemeOverride = {};
+        return healthNotesConfig;
+      }
       if (!page) return { elementOverrides: {}, pageThemeOverride: {} };
       if (!page.elementOverrides || typeof page.elementOverrides !== 'object') page.elementOverrides = {};
       if (!page.pageThemeOverride || typeof page.pageThemeOverride !== 'object') page.pageThemeOverride = {};
@@ -11823,10 +11870,13 @@
           Object.keys(VO_GOOGLE_FONTS).forEach(k => { if (String(fam).includes(k)) usedFonts.add(k); });
         };
 
-        if (pt.headingFont) { trackFont(pt.headingFont); cssRules.push(`h1, h2, h3, .dialogue-main-quote, .skt-finale-main-title, .editorial-headline, #project-details-title { font-family: ${pt.headingFont} !important; }`); }
-        if (pt.bodyFont) { trackFont(pt.bodyFont); cssRules.push(`body, p, button, a, .editorial-body-copy, .dialogue-sub-whisper, #project-details-desc { font-family: ${pt.bodyFont} !important; }`); }
-        if (pt.pageBg) cssRules.push(`html, body, body.theme-hanji { background-color: ${pt.pageBg} !important; }`);
-        if (pt.accentColor) cssRules.push(`:root { --accent: ${pt.accentColor}; --gold: ${pt.accentColor}; --sa-hl-color: ${pt.accentColor}; }`);
+        if (pt.headingFont) { trackFont(pt.headingFont); cssRules.push(`html:not(#_) body:not(#_) h1, html:not(#_) body:not(#_) h2, html:not(#_) body:not(#_) h3, html:not(#_) body:not(#_) .dialogue-main-quote, html:not(#_) body:not(#_) .dialogue-main-quote *, html:not(#_) body:not(#_) .skt-finale-main-title, html:not(#_) body:not(#_) .editorial-headline, html:not(#_) body:not(#_) #project-details-title, html:not(#_) body:not(#_) .greeting-title { font-family: ${pt.headingFont} !important; }`); }
+        if (pt.bodyFont) { trackFont(pt.bodyFont); cssRules.push(`html:not(#_) body:not(#_), html:not(#_) body:not(#_) p, html:not(#_) body:not(#_) button, html:not(#_) body:not(#_) a, html:not(#_) body:not(#_) .editorial-body-copy, html:not(#_) body:not(#_) .dialogue-sub-whisper, html:not(#_) body:not(#_) #project-details-desc { font-family: ${pt.bodyFont} !important; }`); }
+        if (pt.pageBg) cssRules.push(`html:not(#_), html:not(#_) body:not(#_), html:not(#_) body.theme-hanji:not(#_), html:not(#_) body:not(#_) #project-details-meta { background-color: ${pt.pageBg} !important; }`);
+        if (pt.accentColor) {
+          cssRules.push(`:root:root { --accent: ${pt.accentColor} !important; --gold: ${pt.accentColor} !important; --green: ${pt.accentColor} !important; --brand-green: ${pt.accentColor} !important; --sa-hl-color: ${pt.accentColor} !important; }`);
+          cssRules.push(`html:not(#_) body:not(#_) .editorial-headline .hl-gold, html:not(#_) body:not(#_) .editorial-headline .title-key-em { color: ${pt.accentColor} !important; }`);
+        }
 
         const gradMap = {
           gold: 'linear-gradient(135deg, #f3d280 0%, #b88428 100%)',
@@ -11849,31 +11899,55 @@
           strong: '0 4px 22px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.9)'
         };
 
+        const boostSel = (rawSel) => String(rawSel).split(',').map(part => {
+          const t = part.trim();
+          if (!t) return '';
+          return /^(html|body)\b/i.test(t) ? t : `html:not(#_) body:not(#_) ${t}`;
+        }).filter(Boolean).join(', ');
+
         Object.entries(ovMap).forEach(([sel, ov]) => {
           if (!sel || !ov || typeof ov !== 'object') return;
+          const bSel = boostSel(sel);
           const d = [];
           if (ov.hidden === true) d.push('display: none !important');
-          if (ov.fontFamily) { trackFont(ov.fontFamily); d.push(`font-family: ${ov.fontFamily} !important`); }
-          if (ov.fontSize != null && ov.fontSize !== '') d.push(`font-size: ${Number(ov.fontSize)}px !important`);
-          if (ov.fontWeight) d.push(`font-weight: ${ov.fontWeight} !important`);
+          if (ov.fontFamily) {
+            trackFont(ov.fontFamily);
+            d.push(`font-family: ${ov.fontFamily} !important`);
+            cssRules.push(`${bSel}, ${bSel} * { font-family: ${ov.fontFamily} !important; }`);
+          }
+          if (ov.fontSize != null && ov.fontSize !== '') {
+            d.push(`font-size: ${Number(ov.fontSize)}px !important`);
+            cssRules.push(`${bSel} .dialogue-char, ${bSel} > td, ${bSel} > th { font-size: ${Number(ov.fontSize)}px !important; }`);
+          }
+          if (ov.fontWeight) {
+            d.push(`font-weight: ${ov.fontWeight} !important`);
+            cssRules.push(`${bSel} .dialogue-char, ${bSel} > td, ${bSel} > th { font-weight: ${ov.fontWeight} !important; }`);
+          }
           if (ov.lineHeight != null && ov.lineHeight !== '') d.push(`line-height: ${ov.lineHeight} !important`);
           if (ov.letterSpacing != null && ov.letterSpacing !== '') d.push(`letter-spacing: ${ov.letterSpacing}em !important`);
           if (ov.textAlign) d.push(`text-align: ${ov.textAlign} !important`);
-          if (ov.textShadow && tshMap[ov.textShadow]) d.push(`text-shadow: ${tshMap[ov.textShadow]} !important`);
-          if (ov.color) d.push(`color: ${ov.color} !important`);
+          if (ov.textShadow && tshMap[ov.textShadow]) {
+            d.push(`text-shadow: ${tshMap[ov.textShadow]} !important`);
+            cssRules.push(`${bSel} .dialogue-char, ${bSel} .dialogue-char.lit { text-shadow: ${tshMap[ov.textShadow]} !important; }`);
+          }
+          if (ov.color) {
+            d.push(`color: ${ov.color} !important`);
+            cssRules.push(`${bSel} .dialogue-char, ${bSel} .dialogue-char.lit, ${bSel} .dialogue-char.gold-accent, ${bSel} > p, ${bSel} > strong, ${bSel} > td, ${bSel} > td strong, ${bSel} > th, ${bSel} .skt-card-title, ${bSel} .skt-card-desc, ${bSel} > span:not(.hl-gold):not(.title-key-em):not(.logo-gem):not(.concept-dot):not(.tap-pill-arrow):not(.brand-logo-mark) { color: ${ov.color} !important; transition: none !important; }`);
+          }
           if (ov.bgGradient && gradMap[ov.bgGradient]) {
             d.push(`background: ${gradMap[ov.bgGradient]} !important`);
             if (ov.bgGradient === 'glass') d.push('backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important');
           } else if (ov.bgColor) {
-            if (ov.bgColor === 'transparent') d.push('background: transparent !important');
+            if (ov.bgColor === 'transparent') d.push('background: transparent !important; background-image: none !important; background-color: transparent !important');
             else {
               const al = (ov.bgOpacity != null && ov.bgOpacity !== '') ? Math.max(0, Math.min(1, Number(ov.bgOpacity) / 100)) : 1;
-              d.push(`background: ${al < 1 ? voHexToRgba(ov.bgColor, al.toFixed(2)) : ov.bgColor} !important`);
+              const colStr = al < 1 ? voHexToRgba(ov.bgColor, al.toFixed(2)) : ov.bgColor;
+              d.push(`background-image: none !important; background-color: ${colStr} !important; background: ${colStr} !important`);
             }
           }
           if (ov.borderStyle === 'none') d.push('border: none !important');
           else if ((ov.borderWidth != null && ov.borderWidth !== '') || ov.borderColor || ov.borderStyle) {
-            const bw = (ov.borderWidth != null && ov.borderWidth !== '') ? Number(ov.borderWidth) : 1;
+            const bw = (ov.borderWidth != null && ov.borderWidth !== '' && Number(ov.borderWidth) > 0) ? Number(ov.borderWidth) : 2;
             d.push(`border: ${bw}px ${ov.borderStyle || 'solid'} ${ov.borderColor || '#D4AF37'} !important`);
           }
           if (ov.borderRadius != null && ov.borderRadius !== '') d.push(`border-radius: ${Number(ov.borderRadius)}px !important`);
@@ -11884,9 +11958,13 @@
           if (ov.opacity != null && ov.opacity !== '' && Number(ov.opacity) < 100) {
             d.push(`opacity: ${(Math.max(5, Math.min(100, Number(ov.opacity))) / 100).toFixed(2)} !important`);
           }
-          if (d.length) cssRules.push(`${sel} { ${d.join('; ')}; }`);
+          if (d.length) {
+            // Instant 0ms visual feedback in live studio preview (prevents stuck CSS transitions on .dialogue-char / pill buttons)
+            d.push('transition: none !important');
+            cssRules.push(`${bSel} { ${d.join('; ')}; }`);
+          }
 
-          // Apply live DOM content overrides (text, icon, href, imgSrc)
+          // Apply live DOM content overrides safely (never clobber multi-cell TR/TABLE/SECTION/ARTICLE containers)
           if (ov.text !== undefined || ov.icon !== undefined || ov.href !== undefined || ov.imgSrc !== undefined) {
             try {
               const el = doc.querySelector(sel);
@@ -11897,7 +11975,8 @@
                   if (el.tagName === 'IMG') el.setAttribute('src', resUrl);
                   else el.style.backgroundImage = `url('${resUrl}')`;
                 }
-                if (ov.text !== undefined || ov.icon !== undefined) {
+                const unsafeContainer = ['TR', 'TABLE', 'TBODY', 'THEAD', 'SECTION', 'ARTICLE', 'HEADER', 'FOOTER', 'NAV', 'UL', 'OL'].includes(el.tagName);
+                if (!unsafeContainer && (ov.text !== undefined || ov.icon !== undefined)) {
                   const baseText = ov.text !== undefined ? String(ov.text) : voStripLeadingIcon(el.textContent);
                   const prefix = (ov.icon && ov.icon !== '__none__') ? (ov.icon + ' ') : '';
                   const combined = (prefix + baseText).trim();
@@ -11932,9 +12011,10 @@
         if (!styleEl) {
           styleEl = doc.createElement('style');
           styleEl.id = 'bareun-studio-vo-css';
-          doc.head.appendChild(styleEl);
         }
         styleEl.textContent = cssRules.join('\n');
+        // Always move to the VERY END of <head> so it beats visit-tracker.js and body.theme-hanji!
+        doc.head.appendChild(styleEl);
       } catch (e) {}
     }
 
@@ -11989,10 +12069,16 @@
       if (!store[activeVisualSelector]) {
         store[activeVisualSelector] = { label: (activeVisualMeta && activeVisualMeta.label) || activeVisualSelector };
       }
+      const cur = store[activeVisualSelector];
       if (val === '' || val === undefined || val === null) {
-        delete store[activeVisualSelector][key];
+        delete cur[key];
       } else {
-        store[activeVisualSelector][key] = val;
+        cur[key] = val;
+        // Auto-activate visible 2px border if user picks a border color or style while width is unset/0
+        if ((key === 'borderColor' || (key === 'borderStyle' && val !== 'none')) && (!cur.borderWidth || Number(cur.borderWidth) === 0)) {
+          cur.borderWidth = 2;
+          if (!cur.borderStyle) cur.borderStyle = 'solid';
+        }
       }
       markDirty(true);
       applyAllVisualOverridesToIframe();
@@ -12359,6 +12445,17 @@
             <select onchange="updatePageThemeProp('bodyFont', this.value)">
               ${VO_FONT_OPTIONS.map(f => `<option value="${escHtml(f.value)}" ${(pt.bodyFont || '') === f.value ? 'selected' : ''}>${escHtml(f.label)}</option>`).join('')}
             </select>
+          </div>
+          <div class="field">
+            <label>페이지 전체 바탕 배경색</label>
+            <div class="vo-swatch-row">
+              ${[['#FFFFFF','순백'],['#FAF7F2','웜 한지'],['#F3EDE0','크림 베이지'],['#F4F8F5','세이지 화이트'],['#1B1815','에스프레소 다크'],['#0F172A','딥 네이비']].map(([hx, nm]) => `
+                <button type="button" class="vo-swatch ${(pt.pageBg || '').toUpperCase() === hx ? 'active' : ''}"
+                  style="background:${hx};" title="${nm}"
+                  onclick="updatePageThemeProp('pageBg', '${hx}')"></button>
+              `).join('')}
+              <button type="button" class="mini-btn" onclick="updatePageThemeProp('pageBg', '')">초기화</button>
+            </div>
           </div>
           <div class="field" style="margin-bottom:0;">
             <label>페이지 대표 강조 색상</label>
@@ -13163,10 +13260,16 @@
           const nextClinic = raw.closest && raw.closest('.studio-next-clinic-card');
           if (nextClinic) return { el: nextClinic, chapter: 'detail', tab: 'leftpanel', scrollId: 'next-clinic-editor-section', icon: '➡️', label: '다음 추천 진료과목 고치기', selector: '.studio-next-clinic-card' };
 
-          // 3. Home 6-Clinic Finale Bento Cards & Headlines
+          // 3. Home 6-Clinic Finale Bento Cards & Headlines (exact child selectors for title/desc/chip!)
           const bentoCard = raw.closest && raw.closest('.skt-card-item[data-card-idx]');
           if (bentoCard) {
             const bIdx = parseInt(bentoCard.getAttribute('data-card-idx'), 10) || 0;
+            const bTitle = raw.closest('.skt-card-title');
+            if (bTitle) return { el: bTitle, chapter: 'finale', tab: 'cards', bentoIdx: bIdx, field: 'title', icon: '🃏', label: `6대 진료카드 #${bIdx + 1} 제목 고치기`, selector: `.skt-card-item[data-card-idx="${bIdx}"] .skt-card-title` };
+            const bDesc = raw.closest('.skt-card-desc');
+            if (bDesc) return { el: bDesc, chapter: 'finale', tab: 'cards', bentoIdx: bIdx, field: 'sub', icon: '🃏', label: `6대 진료카드 #${bIdx + 1} 설명 고치기`, selector: `.skt-card-item[data-card-idx="${bIdx}"] .skt-card-desc` };
+            const bChip = raw.closest('.skt-card-chip');
+            if (bChip) return { el: bChip, chapter: 'finale', tab: 'cards', bentoIdx: bIdx, field: 'title', icon: '🃏', label: `6대 진료카드 #${bIdx + 1} 버튼 꾸미기`, selector: `.skt-card-item[data-card-idx="${bIdx}"] .skt-card-chip` };
             return { el: bentoCard, chapter: 'finale', tab: 'cards', bentoIdx: bIdx, field: 'title', icon: '🃏', label: `6대 진료카드 #${bIdx + 1} 고치기`, selector: `.skt-card-item[data-card-idx="${bIdx}"]` };
           }
           const finHead = raw.closest && raw.closest('.skt-hero-headline, .skt-finale-main-title, .skt-finale-eyebrow');
@@ -13191,12 +13294,24 @@
             return { el: tapNextPill, tab: 'visual', icon: '✨', label: '다음 장면 버튼 꾸미기', selector: '#dialogue-tap-next-pill', visualMeta: vMeta };
           }
 
-          const storyStage = raw.closest && raw.closest('#dialogue-main-quote, #dialogue-sub-whisper, #story-dialogue-stage');
+          const mainQuoteEl = raw.closest && raw.closest('#dialogue-main-quote');
+          if (mainQuoteEl) {
+            const quoteText = mainQuoteEl.textContent.trim();
+            return { el: mainQuoteEl, chapter: 'storyboard', tab: 'cards', homeFrameIdx: 0, quoteText, field: 'title', icon: '🎬', label: '메인 이야기 문구 고치기', selector: '#dialogue-main-quote' };
+          }
+
+          const subWhisperEl = raw.closest && raw.closest('#dialogue-sub-whisper');
+          if (subWhisperEl) {
+            const qEl = doc.getElementById('dialogue-main-quote');
+            const quoteText = qEl ? qEl.textContent.trim() : '';
+            return { el: subWhisperEl, chapter: 'storyboard', tab: 'cards', homeFrameIdx: 0, quoteText, field: 'sub', icon: '🎬', label: '아래 보조 문구 고치기', selector: '#dialogue-sub-whisper' };
+          }
+
+          const storyStage = raw.closest && raw.closest('#story-dialogue-stage');
           if (storyStage) {
             const qEl = doc.getElementById('dialogue-main-quote');
             const quoteText = qEl ? qEl.textContent.trim() : '';
-            const isSub = Boolean(raw.closest('#dialogue-sub-whisper'));
-            return { el: storyStage, chapter: 'storyboard', tab: 'cards', homeFrameIdx: 0, quoteText, field: isSub ? 'sub' : 'title', icon: '🎬', label: isSub ? '아래 보조 문구 고치기' : '이 이야기 장면 문구·사진 고치기', selector: '#story-dialogue-stage' };
+            return { el: qEl || storyStage, chapter: 'storyboard', tab: 'cards', homeFrameIdx: 0, quoteText, field: 'title', icon: '🎬', label: '이 이야기 장면 문구·사진 고치기', selector: '#dialogue-main-quote' };
           }
 
           // 5. Location & Non-Covered Fees (/location.html)

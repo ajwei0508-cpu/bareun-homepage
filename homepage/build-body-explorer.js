@@ -99,6 +99,14 @@ const MENU_CFG_BY_ID = Object.fromEntries(ALL_CONFIG_ITEMS.map(m => [m.id, m]));
       CUSTOM_HEALTH_NOTES_CFG = generateInitialHealthNotesConfig();
     }
 
+    let BE_VISUAL_OV = { headHtml: '', bodyHtml: '' };
+    try {
+      const hsc = require('./home-story-compiler.js');
+      if (hsc && typeof hsc.buildVisualOverridesBundle === 'function') {
+        BE_VISUAL_OV = hsc.buildVisualOverridesBundle(CUSTOM_HEALTH_NOTES_CFG.elementOverrides, CUSTOM_HEALTH_NOTES_CFG.pageThemeOverride);
+      }
+    } catch (e) {}
+
     const HEALTH_NOTE_GLOBAL_CFG = CUSTOM_HEALTH_NOTES_CFG.globalSettings || {
       detailBtnLabel: '상세히',
       expandBarTitle: '이 주제의 깊은 원리가 더 궁금하신가요?',
@@ -2957,6 +2965,7 @@ function buildBodyExplorerHtml() {
     }
   </style>
   <link rel="icon" href="data:,">
+  ${BE_VISUAL_OV.headHtml || ''}
 </head>
 <body>
 
@@ -5110,6 +5119,7 @@ ${WEBGL_PART_B}
   })();
   </script>
   <script src="visit-tracker.js"></script>
+  ${BE_VISUAL_OV.bodyHtml || ''}
 </body>
 </html>`;
 }

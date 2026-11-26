@@ -110,17 +110,17 @@
 
     if (pt.headingFont) {
       trackFont(pt.headingFont);
-      cssRules.push(`h1, h2, h3, .dialogue-main-quote, .skt-finale-main-title, .editorial-headline, #project-details-title { font-family: ${pt.headingFont} !important; }`);
+      cssRules.push(`html:not(#_) body:not(#_) h1, html:not(#_) body:not(#_) h2, html:not(#_) body:not(#_) h3, html:not(#_) body:not(#_) .dialogue-main-quote, html:not(#_) body:not(#_) .dialogue-main-quote *, html:not(#_) body:not(#_) .skt-finale-main-title, html:not(#_) body:not(#_) .editorial-headline, html:not(#_) body:not(#_) #project-details-title, html:not(#_) body:not(#_) .greeting-title { font-family: ${pt.headingFont} !important; }`);
     }
     if (pt.bodyFont) {
       trackFont(pt.bodyFont);
-      cssRules.push(`body, p, button, a, input, .editorial-body-copy, .dialogue-sub-whisper { font-family: ${pt.bodyFont} !important; }`);
+      cssRules.push(`html:not(#_) body:not(#_), html:not(#_) body:not(#_) p, html:not(#_) body:not(#_) button, html:not(#_) body:not(#_) a, html:not(#_) body:not(#_) input, html:not(#_) body:not(#_) .editorial-body-copy, html:not(#_) body:not(#_) .dialogue-sub-whisper { font-family: ${pt.bodyFont} !important; }`);
     }
     if (pt.pageBg) {
-      cssRules.push(`html, body { background-color: ${pt.pageBg} !important; }`);
+      cssRules.push(`html:not(#_), html:not(#_) body:not(#_), html:not(#_) body.theme-hanji:not(#_) { background-color: ${pt.pageBg} !important; }`);
     }
     if (pt.accentColor) {
-      cssRules.push(`:root { --accent: ${pt.accentColor}; --gold: ${pt.accentColor}; --sa-hl-color: ${pt.accentColor}; }`);
+      cssRules.push(`:root:root { --accent: ${pt.accentColor} !important; --gold: ${pt.accentColor} !important; --green: ${pt.accentColor} !important; --brand-green: ${pt.accentColor} !important; --sa-hl-color: ${pt.accentColor} !important; }`);
     }
 
     const gradPresets = {
@@ -144,33 +144,57 @@
       strong: '0 4px 22px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.9)'
     };
 
+    const boostSel = (rawSel) => String(rawSel).split(',').map(part => {
+      const t = part.trim();
+      if (!t) return '';
+      return /^(html|body)\b/i.test(t) ? t : `html:not(#_) body:not(#_) ${t}`;
+    }).filter(Boolean).join(', ');
+
     Object.entries(ovMap).forEach(([sel, ov]) => {
       if (!sel || !ov || typeof ov !== 'object') return;
+      const bSel = boostSel(sel);
       const decls = [];
       if (ov.hidden === true) decls.push('display: none !important');
-      if (ov.fontFamily) { trackFont(ov.fontFamily); decls.push(`font-family: ${ov.fontFamily} !important`); }
-      if (ov.fontSize != null && ov.fontSize !== '') decls.push(`font-size: ${Number(ov.fontSize)}px !important`);
-      if (ov.fontWeight) decls.push(`font-weight: ${ov.fontWeight} !important`);
+      if (ov.fontFamily) {
+        trackFont(ov.fontFamily);
+        decls.push(`font-family: ${ov.fontFamily} !important`);
+        cssRules.push(`${bSel}, ${bSel} * { font-family: ${ov.fontFamily} !important; }`);
+      }
+      if (ov.fontSize != null && ov.fontSize !== '') {
+        decls.push(`font-size: ${Number(ov.fontSize)}px !important`);
+        cssRules.push(`${bSel} .dialogue-char, ${bSel} > td, ${bSel} > th { font-size: ${Number(ov.fontSize)}px !important; }`);
+      }
+      if (ov.fontWeight) {
+        decls.push(`font-weight: ${ov.fontWeight} !important`);
+        cssRules.push(`${bSel} .dialogue-char, ${bSel} > td, ${bSel} > th { font-weight: ${ov.fontWeight} !important; }`);
+      }
       if (ov.lineHeight != null && ov.lineHeight !== '') decls.push(`line-height: ${ov.lineHeight} !important`);
       if (ov.letterSpacing != null && ov.letterSpacing !== '') decls.push(`letter-spacing: ${ov.letterSpacing}em !important`);
       if (ov.textAlign) decls.push(`text-align: ${ov.textAlign} !important`);
-      if (ov.textShadow && textShadowPresets[ov.textShadow]) decls.push(`text-shadow: ${textShadowPresets[ov.textShadow]} !important`);
-      if (ov.color) decls.push(`color: ${ov.color} !important`);
+      if (ov.textShadow && textShadowPresets[ov.textShadow]) {
+        decls.push(`text-shadow: ${textShadowPresets[ov.textShadow]} !important`);
+        cssRules.push(`${bSel} .dialogue-char, ${bSel} .dialogue-char.lit { text-shadow: ${textShadowPresets[ov.textShadow]} !important; }`);
+      }
+      if (ov.color) {
+        decls.push(`color: ${ov.color} !important`);
+        cssRules.push(`${bSel} .dialogue-char, ${bSel} .dialogue-char.lit, ${bSel} .dialogue-char.gold-accent, ${bSel} > p, ${bSel} > strong, ${bSel} > td, ${bSel} > td strong, ${bSel} > th, ${bSel} .skt-card-title, ${bSel} .skt-card-desc, ${bSel} > span:not(.hl-gold):not(.title-key-em):not(.logo-gem):not(.concept-dot):not(.tap-pill-arrow):not(.brand-logo-mark) { color: ${ov.color} !important; transition: none !important; }`);
+      }
       if (ov.bgGradient && gradPresets[ov.bgGradient]) {
         decls.push(`background: ${gradPresets[ov.bgGradient]} !important`);
         if (ov.bgGradient === 'glass') decls.push('backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important');
       } else if (ov.bgColor) {
         if (ov.bgColor === 'transparent') {
-          decls.push('background: transparent !important');
+          decls.push('background: transparent !important; background-image: none !important; background-color: transparent !important');
         } else {
           const alpha = (ov.bgOpacity != null && ov.bgOpacity !== '') ? Math.max(0, Math.min(1, Number(ov.bgOpacity) / 100)) : 1;
-          decls.push(`background: ${alpha < 1 ? hexToRgba(ov.bgColor, alpha.toFixed(2)) : ov.bgColor} !important`);
+          const colStr = alpha < 1 ? hexToRgba(ov.bgColor, alpha.toFixed(2)) : ov.bgColor;
+          decls.push(`background-image: none !important; background-color: ${colStr} !important; background: ${colStr} !important`);
         }
       }
       if (ov.borderStyle === 'none') {
         decls.push('border: none !important');
-      } else if (ov.borderWidth != null && ov.borderWidth !== '' || ov.borderColor || ov.borderStyle) {
-        const bw = (ov.borderWidth != null && ov.borderWidth !== '') ? Number(ov.borderWidth) : 1;
+      } else if ((ov.borderWidth != null && ov.borderWidth !== '') || ov.borderColor || ov.borderStyle) {
+        const bw = (ov.borderWidth != null && ov.borderWidth !== '' && Number(ov.borderWidth) > 0) ? Number(ov.borderWidth) : 2;
         const bs = ov.borderStyle || 'solid';
         const bc = ov.borderColor || '#D4AF37';
         decls.push(`border: ${bw}px ${bs} ${bc} !important`);
@@ -186,7 +210,7 @@
         decls.push(`opacity: ${(Math.max(5, Math.min(100, Number(ov.opacity))) / 100).toFixed(2)} !important`);
       }
       if (decls.length > 0) {
-        cssRules.push(`${sel} { ${decls.join('; ')}; }`);
+        cssRules.push(`${bSel} { ${decls.join('; ')}; }`);
       }
       if (ov.text !== undefined || ov.icon !== undefined || ov.href !== undefined || ov.imgSrc !== undefined) {
         domOps.push({
@@ -222,7 +246,8 @@
           if (el.tagName === 'IMG') el.setAttribute('src', op.imgSrc);
           else el.style.backgroundImage = "url('" + op.imgSrc + "')";
         }
-        if (op.text !== undefined || op.icon !== undefined) {
+        var unsafe = ['TR','TABLE','TBODY','THEAD','SECTION','ARTICLE','HEADER','FOOTER','NAV','UL','OL'].indexOf(el.tagName) !== -1;
+        if (!unsafe && (op.text !== undefined || op.icon !== undefined)) {
           var baseText = op.text !== undefined ? String(op.text) : stripLeadingIcon(el.textContent);
           var prefix = (op.icon && op.icon !== '__none__') ? (op.icon + ' ') : '';
           var combined = (prefix + baseText).trim();
@@ -230,7 +255,7 @@
           if (leaf) leaf.textContent = combined;
           else if (el.children.length === 0) el.textContent = combined;
           else {
-            var spanTarget = el.querySelector(':scope > span:not(.logo-gem):not(.concept-dot):not(.tap-pill-arrow)');
+            var spanTarget = el.querySelector(':scope > span:not(.logo-gem):not(.concept-dot):not(.tap-pill-arrow):not(.brand-logo-mark)');
             if (spanTarget) spanTarget.textContent = combined;
             else el.textContent = combined;
           }
