@@ -2568,6 +2568,165 @@
       margin-bottom: 6px;
       font-size: 12px;
     }
+
+    /* ============================================================================
+     * UX v4.0 — FLOATING QUICK TOOLBAR · ORIGINAL COMPARE · AUTO-DRAFT BANNER
+     * ============================================================================ */
+    .btn-compare-top {
+      height: 36px;
+      padding: 0 11px !important;
+      border-radius: 9px !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #fde68a !important;
+      border: 1px solid rgba(234, 185, 92, 0.34) !important;
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      user-select: none;
+    }
+    .btn-compare-top:hover:not(:disabled) {
+      background: rgba(234, 185, 92, 0.2) !important;
+      border-color: #fde68a !important;
+    }
+    .btn-compare-top.is-comparing {
+      background: linear-gradient(135deg, #059669, #047857) !important;
+      color: #ffffff !important;
+      border-color: #6ee7b7 !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+    }
+    .btn-compare-top:disabled {
+      opacity: 0.35 !important;
+      cursor: not-allowed !important;
+    }
+
+    .compare-mode-banner {
+      display: none;
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 340;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(6, 95, 70, 0.94);
+      color: #ecfdf5;
+      border: 1.5px solid #6ee7b7;
+      font-size: 12.5px;
+      font-weight: 900;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    body.is-comparing-original .compare-mode-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .autodraft-recovery-bar {
+      display: none;
+      position: fixed;
+      top: 66px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 480;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: 12px;
+      background: #1b1713;
+      color: #fdf6e7;
+      border: 1.5px solid #eab95c;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.42);
+      font-size: 12.5px;
+      font-weight: 800;
+      max-width: 92vw;
+    }
+    .autodraft-recovery-bar.show {
+      display: inline-flex;
+    }
+
+    /* Figma/Notion-Style Floating Quick Toolbar Above Clicked Element */
+    .studio-quick-toolbar {
+      display: none;
+      position: fixed;
+      z-index: 330;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 7px;
+      border-radius: 12px;
+      background: rgba(22, 18, 15, 0.96);
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(234, 185, 92, 0.56);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.44);
+      color: #fdf8ee;
+      font-size: 11.5px;
+      font-weight: 800;
+      max-width: 92vw;
+    }
+    .studio-quick-toolbar.open {
+      display: inline-flex;
+    }
+    .sqt-btn {
+      cursor: pointer;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      color: #f6efe4;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: all 0.12s ease;
+    }
+    .sqt-btn:hover {
+      background: rgba(234, 185, 92, 0.22);
+      border-color: #fde68a;
+      color: #fde68a;
+    }
+    .sqt-btn.is-accent {
+      background: linear-gradient(135deg, #f3d280, #c08a2d);
+      color: #17130f;
+      border-color: #fde68a;
+    }
+    .sqt-select {
+      height: 28px;
+      padding: 0 6px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #27211c;
+      color: #fff;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      max-width: 108px;
+      cursor: pointer;
+    }
+    .sqt-sep {
+      width: 1px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.16);
+      margin: 0 2px;
+    }
+    .sqt-popover {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 7px);
+      padding: 8px;
+      border-radius: 10px;
+      background: #1b1713;
+      border: 1px solid rgba(234, 185, 92, 0.48);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+      min-width: 210px;
+      z-index: 350;
+    }
+    .sqt-popover.open { display: block; }
+    .sqt-rel { position: relative; display: inline-flex; }
   </style>
 </head>
 <body>
@@ -2616,6 +2775,14 @@
       <!-- 4. 20-Step Undo Safety Net -->
       <button type="button" id="btnStudioUndo" class="btn btn-undo-top" onclick="undoStudioChange()" disabled title="방금 수정한 내용을 한 단계 되돌립니다 (Ctrl+Z)">
         ↩ 되돌리기 <span id="undoCountBadge" class="undo-cnt-badge" style="display:none;">0</span>
+      </button>
+
+      <!-- 4.5 Hold-to-Compare Original Screen (0ms Instant Before/After) -->
+      <button type="button" id="btnCompareOriginal" class="btn btn-compare-top" disabled
+        onmousedown="startCompareOriginal()" onmouseup="stopCompareOriginal()" onmouseleave="stopCompareOriginal()"
+        ontouchstart="startCompareOriginal()" ontouchend="stopCompareOriginal()"
+        title="누르고 있는 동안 수정 전 원본 화면을 0.01초 만에 비교해 봅니다">
+        👀 원본 비교
       </button>
 
       <!-- 5. Unified All-Tools Menu -->
@@ -2693,10 +2860,72 @@
     <div id="detailPageSubBar"><div id="pageSwitcherList"></div></div>
   </nav>
 
+  <!-- Auto-Draft Unsaved Recovery Bar -->
+  <div id="autoDraftRecoveryBar" class="autodraft-recovery-bar" role="alert">
+    <span id="autoDraftRecoveryText">💾 아까 저장하지 못한 수정 내용이 있습니다.</span>
+    <button type="button" class="canvas-guide-ctx-btn" onclick="restoreAutoSavedDraft()">↩ 이어서 복구하기</button>
+    <button type="button" class="canvas-guide-dismiss" onclick="discardAutoSavedDraft()" title="임시저장 버리기">✕</button>
+  </div>
+
   <!-- Floating Status Toast -->
   <div id="statusBanner" class="status-banner" role="status">
     <span id="statusText">준비 완료</span>
     <button type="button" class="mini-btn" onclick="hideStatus()">닫기</button>
+  </div>
+
+  <!-- Figma/Notion-Style Floating Quick Toolbar Above Clicked Element -->
+  <div id="studioQuickToolbar" class="studio-quick-toolbar" onclick="event.stopPropagation()">
+    <button type="button" class="sqt-btn is-accent" id="sqtBtnInlineEdit" onclick="triggerInlineEditForActive()" title="화면 위 그 자리에서 바로 타자 쳐서 수정합니다 (더블클릭과 동일)">⌨️ 바로 쓰기</button>
+    <span class="sqt-sep"></span>
+    <div class="sqt-rel">
+      <button type="button" class="sqt-btn" onclick="toggleQuickToolbarSub('sqtPopColor')" title="글자 색 바꾸기">🎨 글자색</button>
+      <div id="sqtPopColor" class="sqt-popover">
+        <div style="font-size:11px;color:#cbb894;margin-bottom:6px;">글자 색상 바로 적용</div>
+        <div class="vo-swatch-row" id="sqtColorSwatches"></div>
+      </div>
+    </div>
+    <div class="sqt-rel">
+      <button type="button" class="sqt-btn" onclick="toggleQuickToolbarSub('sqtPopBg')" title="배경 색 바꾸기">🪣 배경</button>
+      <div id="sqtPopBg" class="sqt-popover">
+        <div style="font-size:11px;color:#cbb894;margin-bottom:6px;">배경 색상 바로 적용</div>
+        <div class="vo-swatch-row" id="sqtBgSwatches"></div>
+      </div>
+    </div>
+    <div class="sqt-rel">
+      <button type="button" class="sqt-btn" onclick="toggleQuickToolbarSub('sqtPopBorder')" title="테두리 바로 적용">▢ 테두리</button>
+      <div id="sqtPopBorder" class="sqt-popover" style="min-width:230px;">
+        <div style="font-size:11px;color:#cbb894;margin-bottom:6px;">테두리 원클릭 적용</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button type="button" class="sqt-btn" onclick="applyQuickBorderPreset('none')">없음</button>
+          <button type="button" class="sqt-btn" onclick="applyQuickBorderPreset('gold1')">골드 1px</button>
+          <button type="button" class="sqt-btn" onclick="applyQuickBorderPreset('gold2')">골드 2px</button>
+          <button type="button" class="sqt-btn" onclick="applyQuickBorderPreset('green2')">딥그린 2px</button>
+          <button type="button" class="sqt-btn" onclick="applyQuickBorderPreset('white2')">화이트 2px</button>
+          <button type="button" class="sqt-btn" onclick="applyQuickBorderPreset('pill')">💊 알약 둥글기</button>
+        </div>
+      </div>
+    </div>
+    <select id="sqtFontSelect" class="sqt-select" onchange="applyQuickFont(this.value)" title="글꼴 바로 바꾸기">
+      <option value="">폰트 유지</option>
+      <option value="'Pretendard Variable', Pretendard, sans-serif">프리텐다드</option>
+      <option value="'Noto Serif KR', serif">노토 명조</option>
+      <option value="'Gowun Batang', serif">고운 바탕</option>
+      <option value="'Gowun Dodum', sans-serif">고운 돋움</option>
+      <option value="'Nanum Myeongjo', serif">나눔 명조</option>
+      <option value="'Black Han Sans', sans-serif">검은고딕</option>
+    </select>
+    <button type="button" class="sqt-btn" onclick="stepQuickFontSize(-2)" title="글자 2px 작게">A-</button>
+    <button type="button" class="sqt-btn" onclick="stepQuickFontSize(2)" title="글자 2px 크게">A+</button>
+    <div class="sqt-rel">
+      <button type="button" class="sqt-btn" onclick="toggleQuickToolbarSub('sqtPopIcon')" title="아이콘 바로 넣기">✦ 아이콘</button>
+      <div id="sqtPopIcon" class="sqt-popover" style="min-width:250px;">
+        <div style="font-size:11px;color:#cbb894;margin-bottom:6px;">앞쪽 아이콘 원클릭 교체</div>
+        <div class="vo-icon-grid" id="sqtIconGrid" style="grid-template-columns:repeat(7,1fr);"></div>
+      </div>
+    </div>
+    <span class="sqt-sep"></span>
+    <button type="button" class="sqt-btn" onclick="openDrawerFromQuickToolbar()" title="우측 상세 편집 서랍 열기">⚙️ 상세</button>
+    <button type="button" class="sqt-btn" onclick="hideQuickToolbar()" title="툴바 닫기">✕</button>
   </div>
 
   <!-- Shared Datalists for Existing Clinic Assets -->
@@ -2707,9 +2936,14 @@
   <main class="studio-workspace">
     <!-- 100% Live Website Canvas (Always Primary View) -->
     <aside class="preview-sticky">
+      <!-- Original Compare Active Indicator -->
+      <div id="compareModeBanner" class="compare-mode-banner">
+        👀 수정 전 원본 화면 보는 중 · 손을 떼면 수정 화면으로 돌아갑니다
+      </div>
+
       <!-- Gentle Dismissible Floating Helper Pill -->
       <div id="canvasGuidePill" class="canvas-guide-pill">
-        <span id="canvasGuideText">👆 홈페이지에서 고치고 싶은 글자·사진·메뉴를 클릭하면 바로 수정 창이 열립니다</span>
+        <span id="canvasGuideText">👆 클릭하면 빠른 꾸미기 · 더블클릭하면 그 자리에서 바로 글자 수정 · 사진은 끌어다 놓으세요</span>
         <button type="button" id="btnCanvasHomeSwitch" class="canvas-guide-ctx-btn" style="display:none;" onclick="toggleHomeStoryAndFinaleView()">🃏 6대 진료카드 보기</button>
         <button type="button" class="canvas-guide-dismiss" onclick="dismissCanvasGuidePill()" title="안내 닫기">✕</button>
       </div>
@@ -3198,7 +3432,86 @@
       return '현재 페이지';
     }
 
-    function markDirty(flag = true) {
+    const STUDIO_AUTODRAFT_KEY = 'bareun_studio_autodraft_v1';
+    let autoDraftTimer = null;
+    let pendingRecoveredDraft = null;
+
+    function updateCompareButtonUi() {
+      const cmpBtn = document.getElementById('btnCompareOriginal');
+      if (cmpBtn) cmpBtn.disabled = (!isDirty && studioUndoStack.length === 0);
+    }
+
+    function scheduleAutoDraftSave() {
+      if (autoDraftTimer) clearTimeout(autoDraftTimer);
+      autoDraftTimer = setTimeout(() => {
+        try {
+          if (!isDirty || !masterConfig) return;
+          const payload = {
+            savedAt: Date.now(),
+            chapter: currentStudioChapter,
+            pageSlug: (getCurrentPage() && getCurrentPage().slug) || '',
+            masterConfig: getPureMasterConfig(),
+            clinicGlobalInfo: window.studioClinicGlobalInfo || null,
+            healthNotesConfig: healthNotesConfig || null
+          };
+          localStorage.setItem(STUDIO_AUTODRAFT_KEY, JSON.stringify(payload));
+        } catch (e) {}
+      }, 1200);
+    }
+
+    function clearAutoSavedDraft() {
+      if (autoDraftTimer) { clearTimeout(autoDraftTimer); autoDraftTimer = null; }
+      try { localStorage.removeItem(STUDIO_AUTODRAFT_KEY); } catch (e) {}
+      const bar = document.getElementById('autoDraftRecoveryBar');
+      if (bar) bar.classList.remove('show');
+    }
+
+    function checkAutoSavedDraftOnLoad() {
+      try {
+        const raw = localStorage.getItem(STUDIO_AUTODRAFT_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.savedAt || !parsed.masterConfig) return;
+        if (Date.now() - parsed.savedAt > 48 * 60 * 60 * 1000) {
+          localStorage.removeItem(STUDIO_AUTODRAFT_KEY);
+          return;
+        }
+        pendingRecoveredDraft = parsed;
+        const dt = new Date(parsed.savedAt);
+        const hh = String(dt.getHours()).padStart(2, '0');
+        const mm = String(dt.getMinutes()).padStart(2, '0');
+        const txt = document.getElementById('autoDraftRecoveryText');
+        if (txt) txt.textContent = `💾 아까 저장하지 못한 수정 내역이 있습니다 (${hh}:${mm} 임시저장)`;
+        const bar = document.getElementById('autoDraftRecoveryBar');
+        if (bar) bar.classList.add('show');
+      } catch (e) {}
+    }
+
+    function restoreAutoSavedDraft() {
+      if (!pendingRecoveredDraft) return;
+      try {
+        if (pendingRecoveredDraft.masterConfig) masterConfig = pendingRecoveredDraft.masterConfig;
+        if (pendingRecoveredDraft.clinicGlobalInfo) window.studioClinicGlobalInfo = pendingRecoveredDraft.clinicGlobalInfo;
+        if (pendingRecoveredDraft.healthNotesConfig) healthNotesConfig = pendingRecoveredDraft.healthNotesConfig;
+        ensureHealthNotesVirtualPage();
+        pendingRecoveredDraft = null;
+        const bar = document.getElementById('autoDraftRecoveryBar');
+        if (bar) bar.classList.remove('show');
+        renderAll();
+        reloadPreviewIframe();
+        markDirty(true);
+        showStatus('ok', '↩ 임시저장된 수정 내역을 그대로 복구했습니다!');
+      } catch (e) {
+        showStatus('err', '임시저장 복구 실패: ' + e.message);
+      }
+    }
+
+    function discardAutoSavedDraft() {
+      pendingRecoveredDraft = null;
+      clearAutoSavedDraft();
+    }
+
+    function markDirty(flag = true, preserveAutoDraft = false) {
       isDirty = flag;
       const badge = document.getElementById('dirtyBadge');
       if (badge) {
@@ -3206,6 +3519,7 @@
         badge.classList.toggle('active', isDirty);
         badge.textContent = isDirty ? '● 수정됨' : '✓ 저장됨';
       }
+      updateCompareButtonUi();
       if (!flag) {
         if (pendingUndoCommitTimer) {
           clearTimeout(pendingUndoCommitTimer);
@@ -3213,6 +3527,7 @@
         }
         lastCommittedSnapshot = captureCurrentStudioState();
         recentModifiedSections.clear();
+        if (!preserveAutoDraft) clearAutoSavedDraft();
         return;
       }
       if (isRestoringUndoSnapshot) return;
@@ -3226,12 +3541,14 @@
           studioUndoStack.shift();
         }
         updateUndoButtonUi();
+        updateCompareButtonUi();
       }
       if (pendingUndoCommitTimer) clearTimeout(pendingUndoCommitTimer);
       pendingUndoCommitTimer = setTimeout(() => {
         lastCommittedSnapshot = captureCurrentStudioState();
         pendingUndoCommitTimer = null;
       }, 850);
+      scheduleAutoDraftSave();
     }
 
     function undoStudioChange() {
@@ -3455,7 +3772,8 @@
         renderAll();
         reloadPreviewIframe();
         initStudioUndoBaseline();
-        markDirty(false);
+        markDirty(false, true);
+        checkAutoSavedDraftOnLoad();
         hideStatus();
       } catch (err) {
         showStatus('err', '설정 불러오기 오류: ' + err.message);
@@ -3871,7 +4189,7 @@
                 </div>
               </label>
               <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
-                oninput="updateCardTitleLive(${idx}, this.value); scheduleLivePreviewReload();" />
+                oninput="updateCardTitleLive(${idx}, this.value)" />
             </div>
             <div class="field" ${guideSubAttr}>
               <label>② 카드 설명 글</label>
@@ -4569,17 +4887,7 @@
       if (!page.homeStory) page.homeStory = {};
       page.homeStory[key] = val;
       markDirty(true);
-      if (key === 'conceptPill') {
-        const frame = document.getElementById('livePreviewFrame');
-        if (frame && frame.contentWindow) {
-          frame.contentWindow.postMessage({ type: 'SYNC_LIVE_CONCEPT_PILL', text: val }, '*');
-          try {
-            const sp = frame.contentDocument && frame.contentDocument.querySelector('#dialogue-daddy-concept-pill span:last-child');
-            if (sp) sp.textContent = val;
-          } catch (e) {}
-          return;
-        }
-      }
+      if (livePatchPreviewDom('homeStory', { key, val })) return;
       scheduleLivePreviewReload();
     }
 
@@ -4964,6 +5272,339 @@
       renderStoryCardsPane();
     }
 
+    /* ============================================================================
+     * UX v4.0 — ZERO-RESET 0.01s LIVE DOM PATCH ENGINE
+     * (글자·사진·색감·체크리스트·FAQ·카드 디자인 수정 시 화면 리셋/깜빡임 0%!)
+     * ============================================================================ */
+    function formatGoldQuotedHtml(raw) {
+      return escHtml(raw || '').replace(/'([^']+)'/g, '<span class="title-key-em hl-gold">\'$1\'</span>');
+    }
+
+    function rememberOrigNode(el, attrName, currentVal) {
+      if (!el || !el.getAttribute) return;
+      const k = 'data-bareun-orig-' + attrName;
+      if (!el.hasAttribute(k)) {
+        el.setAttribute(k, currentVal == null ? '' : String(currentVal));
+      }
+    }
+
+    function getBentoDisplayIdx(page, plateOrigIdx) {
+      const plates = (page && page.plates) || [];
+      let bIdx = 0;
+      for (let i = 0; i < plateOrigIdx; i++) {
+        if (plates[i] && plates[i].type === 'home-bento-card' && plates[i].enabled !== false) bIdx++;
+      }
+      return bIdx;
+    }
+
+    function livePatchPreviewDom(kind, payload) {
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame) return false;
+      try {
+        const doc = frame.contentDocument;
+        const win = frame.contentWindow;
+        if (!doc || !doc.body) return false;
+        const page = getCurrentPage();
+
+        if (kind === 'cardTitle') {
+          const { idx, val } = payload;
+          const card = page && page.plates && page.plates[idx];
+          if (!card) return false;
+          if (card.type === 'home-story-frame') {
+            updateHomeStoryLiveField(idx, 'title', val);
+            return true;
+          }
+          if (card.type === 'home-bento-card') {
+            const bIdx = getBentoDisplayIdx(page, idx);
+            const tEl = doc.querySelector(`.skt-card-item[data-card-idx="${bIdx}"] .skt-card-title`);
+            if (tEl) { rememberOrigNode(tEl, 'text', tEl.textContent); tEl.textContent = val; return true; }
+            return false;
+          }
+          const hl = doc.querySelector(`article[data-plate-orig-idx="${idx}"] .editorial-headline, article[data-plate-orig-idx="${idx}"] .son-hero-main-title`);
+          if (hl) { rememberOrigNode(hl, 'html', hl.innerHTML); hl.innerHTML = formatGoldQuotedHtml(val); return true; }
+          return false;
+        }
+
+        if (kind === 'cardField') {
+          const { idx, key, val } = payload;
+          const card = page && page.plates && page.plates[idx];
+          if (!card) return false;
+          if (card.type === 'home-story-frame' && (key === 'sub' || key === 'title')) {
+            updateHomeStoryLiveField(idx, key, val);
+            return true;
+          }
+          if (card.type === 'home-bento-card') {
+            const bIdx = getBentoDisplayIdx(page, idx);
+            const item = doc.querySelector(`.skt-card-item[data-card-idx="${bIdx}"]`);
+            if (!item) return false;
+            if (key === 'sub') {
+              const d = item.querySelector('.skt-card-desc');
+              if (d) { rememberOrigNode(d, 'text', d.textContent); d.textContent = val; return true; }
+            } else if (key === 'chipLabel') {
+              const ch = item.querySelector('.skt-card-chip');
+              if (ch) { rememberOrigNode(ch, 'text', ch.textContent); ch.textContent = val; return true; }
+            } else if (key === 'bgPos') {
+              const bx = item.querySelector('.skt-img-box');
+              if (bx) { rememberOrigNode(bx, 'bgpos', bx.style.backgroundPosition); bx.style.backgroundPosition = val || 'center center'; return true; }
+            } else if (key === 'linkHref' || key === 'dataLink') {
+              item.setAttribute('href', val || '#');
+              return true;
+            }
+            return false;
+          }
+          const art = doc.querySelector(`article[data-plate-orig-idx="${idx}"]`);
+          if (!art) return false;
+          if (key === 'sub') {
+            const cp = art.querySelector('.editorial-body-copy, .son-hero-main-sub');
+            if (cp) { rememberOrigNode(cp, 'text', cp.textContent); cp.textContent = val; return true; }
+          } else if (key === 'stepLabel') {
+            const st = art.querySelector('.editorial-step-badge, .step-badge');
+            if (st) { rememberOrigNode(st, 'text', st.textContent); st.textContent = val; return true; }
+          } else if (key === 'fit') {
+            art.querySelectorAll('.plate-media-inner img').forEach(im => {
+              rememberOrigNode(im, 'fit', im.style.objectFit);
+              im.style.objectFit = val || 'cover';
+            });
+            return true;
+          } else if (key === 'badge') {
+            const bd = art.querySelector('.son-hero-badge, .plate-badge');
+            if (bd) { rememberOrigNode(bd, 'text', bd.textContent); bd.textContent = val; return true; }
+          }
+          return false;
+        }
+
+        if (kind === 'cardImage') {
+          const { idx, key, val, frameIdx } = payload;
+          const card = page && page.plates && page.plates[idx];
+          if (!card) return false;
+          const url = resolveStudioAssetUrl(val);
+          if (card.type === 'home-bento-card') {
+            const bIdx = getBentoDisplayIdx(page, idx);
+            const bx = doc.querySelector(`.skt-card-item[data-card-idx="${bIdx}"] .skt-img-box`);
+            if (bx) { rememberOrigNode(bx, 'bgimg', bx.style.backgroundImage); bx.style.backgroundImage = `url('${url}')`; return true; }
+            return false;
+          }
+          if (card.type === 'home-story-frame') return false; // WebGL texture needs reload
+          const art = doc.querySelector(`article[data-plate-orig-idx="${idx}"]`);
+          if (!art) return false;
+          if (key === 'beforeImg') {
+            const im = art.querySelector('.ba-before img, img[data-role="before"]');
+            if (im) { rememberOrigNode(im, 'src', im.src); im.src = url; return true; }
+          } else if (key === 'afterImg') {
+            const im = art.querySelector('.ba-after img, img[data-role="after"]');
+            if (im) { rememberOrigNode(im, 'src', im.src); im.src = url; return true; }
+          } else if (key === 'frame' && typeof frameIdx === 'number') {
+            const ims = art.querySelectorAll('.motion-frame-img, .plate-media-inner img');
+            if (ims[frameIdx]) { rememberOrigNode(ims[frameIdx], 'src', ims[frameIdx].src); ims[frameIdx].src = url; return true; }
+          } else {
+            const im = art.querySelector('.plate-media-inner img, img');
+            if (im) { rememberOrigNode(im, 'src', im.src); im.src = url; return true; }
+          }
+          return false;
+        }
+
+        if (kind === 'cardStyle') {
+          const cs = payload.cs;
+          if (!cs) return false;
+          let st = doc.getElementById('bareun-live-cardstyle-patch');
+          if (!st) {
+            st = doc.createElement('style');
+            st.id = 'bareun-live-cardstyle-patch';
+            doc.head.appendChild(st);
+          }
+          const tSizeMap = { sm: '1.05rem', md: '1.22rem', lg: '1.42rem' };
+          const bSizeMap = { sm: '0.82rem', md: '0.92rem', lg: '1.04rem' };
+          st.textContent = `
+            :root {
+              --sa-bg-top: ${cs.bgTop || '#1b1815'} !important;
+              --sa-bg-bot: ${cs.bgBot || '#13110f'} !important;
+              --sa-border: ${cs.borderColor || 'rgba(197,160,89,0.44)'} !important;
+              --sa-divider: ${cs.dividerColor || 'rgba(212,175,55,0.36)'} !important;
+              --sa-title-color: ${cs.titleColor || '#fdfbf7'} !important;
+              --sa-hl-color: ${cs.hlColor || '#f5d36c'} !important;
+              --sa-body-color: ${cs.bodyColor || 'rgba(245,240,232,0.84)'} !important;
+            }
+            .editorial-text-zone { background: linear-gradient(180deg, ${cs.bgTop || '#1b1815'} 0%, ${cs.bgBot || '#13110f'} 100%) !important; border-top-color: ${cs.dividerColor || 'rgba(212,175,55,0.36)'} !important; }
+            article.project-details-item { border-color: ${cs.borderColor || 'rgba(197,160,89,0.44)'} !important; }
+            .editorial-headline { display: ${cs.showTitle !== false ? 'block' : 'none'} !important; color: ${cs.titleColor || '#fdfbf7'} !important; font-size: ${tSizeMap[cs.titleSize || 'md'] || '1.22rem'} !important; }
+            .editorial-headline em, .editorial-headline .hl-gold, .editorial-headline .title-key-em { color: ${cs.hlColor || '#f5d36c'} !important; }
+            .editorial-body-copy { display: ${cs.showBody !== false ? 'block' : 'none'} !important; color: ${cs.bodyColor || 'rgba(245,240,232,0.84)'} !important; font-size: ${bSizeMap[cs.bodySize || 'md'] || '0.92rem'} !important; }
+            .plate-num-badge { display: ${cs.showNumBadge !== false ? 'flex' : 'none'} !important; }
+            .editorial-step-badge { display: ${cs.showStepBadge ? 'inline-block' : 'none'} !important; }
+            .editorial-pillars-grid { display: ${cs.showPillars ? 'grid' : 'none'} !important; }
+            .editorial-tags-row { display: ${cs.showTags ? 'flex' : 'none'} !important; }
+          `;
+          return true;
+        }
+
+        if (kind === 'meta') {
+          const { key, val } = payload;
+          const map = {
+            eyebrow: '#project-details-meta .meta-eyebrow',
+            title: '#project-details-title',
+            subtitleEn: '#project-details-meta .meta-subtitle-en',
+            checklistTitle: '.empathy-checklist-title, .empathy-checklist-header strong, .empathy-checklist-header span:first-child',
+            checklistSub: '.empathy-checklist-sub'
+          };
+          if (key === 'desc') {
+            const el = doc.getElementById('project-details-desc');
+            if (el) {
+              rememberOrigNode(el, 'html', el.innerHTML);
+              const lines = Array.isArray(val) ? val : String(val || '').split('\n').filter(Boolean);
+              el.innerHTML = lines.map(l => `<p>${escHtml(l)}</p>`).join('');
+              return true;
+            }
+          } else if (key === 'ctaText') {
+            const btn = doc.getElementById('project-details-launch-cta');
+            if (btn) {
+              const sp = btn.querySelector('span:not(.cta-arrow)') || btn;
+              rememberOrigNode(sp, 'text', sp.textContent);
+              sp.textContent = val;
+              return true;
+            }
+          } else if (map[key]) {
+            const el = doc.querySelector(map[key]);
+            if (el) { rememberOrigNode(el, 'text', el.textContent); el.textContent = val; return true; }
+          }
+          return false;
+        }
+
+        if (kind === 'checklistItem') {
+          const { cIdx, val } = payload;
+          const item = doc.querySelector(`.empathy-check-item[data-idx="${cIdx}"]`);
+          if (item) {
+            const txt = item.querySelector('.check-text, span:last-child') || item;
+            rememberOrigNode(txt, 'text', txt.textContent);
+            txt.textContent = val;
+            return true;
+          }
+          return false;
+        }
+
+        if (kind === 'faqMeta') {
+          const { key, val } = payload;
+          if (key === 'title') {
+            const h = doc.getElementById('clinic-faq-heading');
+            if (h) { rememberOrigNode(h, 'html', h.innerHTML); h.innerHTML = formatGoldQuotedHtml(val); return true; }
+          } else if (key === 'eyebrow') {
+            const e = doc.querySelector('#clinic-faq-card .clinic-faq-eyebrow');
+            if (e) { rememberOrigNode(e, 'text', e.textContent); e.textContent = val; return true; }
+          } else if (key === 'sub') {
+            const s = doc.querySelector('#clinic-faq-card .clinic-faq-sub');
+            if (s) { rememberOrigNode(s, 'text', s.textContent); s.textContent = val; return true; }
+          } else if (key === 'enabled') {
+            const c = doc.getElementById('clinic-faq-card');
+            if (c) { c.style.display = val ? '' : 'none'; return true; }
+          }
+          return false;
+        }
+
+        if (kind === 'faqItem') {
+          const { qIdx, key, val } = payload;
+          const det = doc.querySelector(`#clinic-faq-card details.clinic-faq-item[data-faq-idx="${qIdx}"]`);
+          if (!det) return false;
+          if (key === 'q') {
+            const qEl = det.querySelector('.faq-q-text, summary span:not(.faq-tag-chip):not(.faq-q-num):not(.faq-toggle-ico)');
+            if (qEl) { rememberOrigNode(qEl, 'text', qEl.textContent); qEl.textContent = val; return true; }
+          } else if (key === 'tag') {
+            const tEl = det.querySelector('.faq-tag-chip');
+            if (tEl) { rememberOrigNode(tEl, 'text', tEl.textContent); tEl.textContent = val; return true; }
+          } else if (key === 'lead') {
+            const lEl = det.querySelector('.faq-lead-text, .faq-answer-lead');
+            if (lEl) { rememberOrigNode(lEl, 'text', lEl.textContent); lEl.textContent = val; return true; }
+          } else if (key === 'a') {
+            const aEl = det.querySelector('.faq-answer-body, .faq-answer-text');
+            if (aEl) { rememberOrigNode(aEl, 'text', aEl.textContent); aEl.textContent = val; return true; }
+          }
+          return false;
+        }
+
+        if (kind === 'homeStory') {
+          const { key, val } = payload;
+          if (key === 'conceptPill') {
+            if (win) win.postMessage({ type: 'SYNC_LIVE_CONCEPT_PILL', text: val }, '*');
+            const sp = doc.querySelector('#dialogue-daddy-concept-pill span:last-child');
+            if (sp) { rememberOrigNode(sp, 'text', sp.textContent); sp.textContent = val; return true; }
+          } else if (key === 'brandTitle') {
+            const sp = doc.querySelector('.nav-brand-logo span:not(.logo-gem):not(.nav-brand-sub)');
+            if (sp) { rememberOrigNode(sp, 'text', sp.textContent); sp.textContent = val; return true; }
+          } else if (key === 'finaleHeadline') {
+            const el = doc.querySelector('.skt-headline-text');
+            if (el) { rememberOrigNode(el, 'text', el.textContent); el.textContent = val; return true; }
+          } else if (key === 'finaleHeadlineSub') {
+            const el = doc.querySelector('.skt-headline-sub');
+            if (el) { rememberOrigNode(el, 'text', el.textContent); el.textContent = val; return true; }
+          } else if (key === 'finaleEyebrow') {
+            const el = doc.querySelector('.skt-finale-eyebrow');
+            if (el) { rememberOrigNode(el, 'text', el.textContent); el.textContent = val; return true; }
+          } else if (key === 'finaleMainTitle') {
+            const el = doc.querySelector('.skt-finale-main-title');
+            if (el) { rememberOrigNode(el, 'text', el.textContent); el.textContent = val; return true; }
+          }
+          return false;
+        }
+
+        if (kind === 'bodyModel') {
+          const { key, val } = payload;
+          const card = doc.getElementById('project-details-preview');
+          if (!card) return false;
+          if (key === 'bg') {
+            const im = card.querySelector('img');
+            const url = resolveStudioAssetUrl(val);
+            if (im) { rememberOrigNode(im, 'src', im.src); im.src = url; return true; }
+          } else if (key === 'title') {
+            const h = card.querySelector('h2, h3, .bm-title');
+            if (h) { rememberOrigNode(h, 'text', h.textContent); h.textContent = val; return true; }
+          } else if (key === 'desc') {
+            const p = card.querySelector('p, .bm-desc');
+            if (p) { rememberOrigNode(p, 'text', p.textContent); p.textContent = val; return true; }
+          } else if (key === 'enabled') {
+            card.style.display = val ? '' : 'none';
+            return true;
+          }
+          return false;
+        }
+
+        if (kind === 'nextClinic') {
+          const { key, val } = payload;
+          const nc = doc.querySelector('.studio-next-clinic-card');
+          if (!nc) return false;
+          if (key === 'eyebrow') { const e = nc.querySelector('.snc-eyebrow'); if (e) { e.textContent = val; return true; } }
+          if (key === 'title') { const e = nc.querySelector('.snc-title'); if (e) { e.textContent = val; return true; } }
+          if (key === 'desc') { const e = nc.querySelector('.snc-desc'); if (e) { e.textContent = val; return true; } }
+          if (key === 'enabled') { nc.style.display = val ? '' : 'none'; return true; }
+          return false;
+        }
+
+        if (kind === 'layoutColors') {
+          const lc = payload.lc;
+          let st = doc.getElementById('bareun-live-layoutcolors-patch');
+          if (!st) {
+            st = doc.createElement('style');
+            st.id = 'bareun-live-layoutcolors-patch';
+            doc.head.appendChild(st);
+          }
+          if (!lc || !lc.enabled) {
+            st.textContent = '';
+            return true;
+          }
+          st.textContent = `
+            #header, body.theme-hanji #header { background: ${lc.headerBg || '#FFFFFF'} !important; }
+            #project-details-meta, body.theme-hanji #project-details-meta { background: ${lc.bodyBg || '#FFFFFF'} !important; }
+            .empathy-checklist-card, body.theme-hanji .empathy-checklist-card { background: ${lc.checkBg || '#F5F1E8'} !important; }
+            #project-details-launch-cta, body.theme-hanji #project-details-launch-cta { background: ${lc.accentBg || '#2D5A43'} !important; }
+          `;
+          return true;
+        }
+
+        if (kind === 'seo') {
+          if (payload.key === 'title' && payload.val) doc.title = payload.val;
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
     function updateCardTitleLive(idx, val) {
       const page = getCurrentPage();
       page.plates[idx].title = val;
@@ -4974,7 +5615,9 @@
       }
       refreshMedicalLawBarDom(idx);
       markDirty(true);
-      scheduleLivePreviewReload();
+      if (!livePatchPreviewDom('cardTitle', { idx, val })) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function wrapSelectedWithGoldQuote(idx) {
@@ -5023,7 +5666,9 @@
       const headThumb = document.getElementById('card-head-thumb-' + idx);
       updateImgElementSrc(headThumb, getCardPreviewRawPath(card));
 
-      scheduleLivePreviewReload();
+      if (!livePatchPreviewDom('cardImage', { idx, key, val })) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function updateCardFrameLive(idx, fIdx, val) {
@@ -5039,7 +5684,9 @@
       const headThumb = document.getElementById('card-head-thumb-' + idx);
       updateImgElementSrc(headThumb, getCardPreviewRawPath(card));
 
-      scheduleLivePreviewReload();
+      if (!livePatchPreviewDom('cardImage', { idx, key: 'frame', val, frameIdx: fIdx })) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function updateCardThumbLive(idx, thIdx, val) {
@@ -5073,7 +5720,9 @@
       const bmImg = document.getElementById('bm-bg-preview');
       updateImgElementSrc(bmImg, val);
 
-      scheduleLivePreviewReload();
+      if (!livePatchPreviewDom('bodyModel', { key: 'bg', val })) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function updateCardField(idx, key, val, rerenderRow) {
@@ -5087,7 +5736,9 @@
         renderPageSwitcher();
         renderStoryCardsPane();
       }
-      scheduleLivePreviewReload();
+      if (!livePatchPreviewDom('cardField', { idx, key, val })) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function changeCardType(idx, nextType) {
@@ -5328,6 +5979,7 @@
       if (!page.bodyModelCard) page.bodyModelCard = {};
       page.bodyModelCard[key] = val;
       markDirty(true);
+      livePatchPreviewDom('bodyModel', { key, val });
     }
 
     /* === Style Tab Helpers === */
@@ -5340,6 +5992,7 @@
       }
       markDirty(true);
       renderStylePane();
+      livePatchPreviewDom('cardStyle', { cs });
     }
 
     function applyStylePreset(presetKey) {
@@ -5357,6 +6010,7 @@
       cs.bodyColor = pr.bodyColor;
       markDirty(true);
       renderStylePane();
+      livePatchPreviewDom('cardStyle', { cs });
     }
 
     function applyStyleToAllPages() {
@@ -5367,7 +6021,8 @@
         p.cardStyle = JSON.parse(JSON.stringify(sourceStyle));
       });
       markDirty(true);
-      showStatus('ok', '현재 Sample A 카드 디자인 및 표시 항목 설정을 전체 페이지에 동일하게 복사했습니다! 상단의 [✨ 11개 전체 일괄 반영]을 누르면 모든 페이지 파일에 적용됩니다.');
+      livePatchPreviewDom('cardStyle', { cs: sourceStyle });
+      showStatus('ok', '현재 카드 디자인 및 표시 설정을 전체 진료 페이지에 똑같이 적용했습니다!');
     }
 
     /* === Left Panel Helpers === */
@@ -5375,18 +6030,22 @@
       const page = getCurrentPage();
       page.meta[key] = val;
       markDirty(true);
+      livePatchPreviewDom('meta', { key, val });
     }
 
     function updateMetaDesc(raw) {
       const page = getCurrentPage();
-      page.meta.desc = raw.split('\n').map(s => s.trim()).filter(Boolean);
+      const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
+      page.meta.desc = lines;
       markDirty(true);
+      livePatchPreviewDom('meta', { key: 'desc', val: lines });
     }
 
     function updateChecklistItem(cIdx, val) {
       const page = getCurrentPage();
       page.meta.checklistItems[cIdx] = val;
       markDirty(true);
+      livePatchPreviewDom('checklistItem', { cIdx, val });
     }
 
     function addChecklistItem() {
@@ -5517,7 +6176,7 @@
       lc.enabled = true;
       markDirty(true);
       renderLeftPanelPane();
-      scheduleLivePreviewReload();
+      livePatchPreviewDom('layoutColors', { lc });
     }
 
     function applyLayoutColorPreset(presetKey) {
@@ -5535,7 +6194,7 @@
       };
       markDirty(true);
       renderLeftPanelPane();
-      scheduleLivePreviewReload();
+      livePatchPreviewDom('layoutColors', { lc: page.theme.layoutColors });
     }
 
     function resetLayoutColors() {
@@ -5551,7 +6210,7 @@
       };
       markDirty(true);
       renderLeftPanelPane();
-      scheduleLivePreviewReload();
+      livePatchPreviewDom('layoutColors', { lc: page.theme.layoutColors });
       showStatus('ok', '현재 페이지의 레이아웃별 커스텀 색감을 해제하고 기본 한지 테마로 복원했습니다.');
     }
 
@@ -9758,7 +10417,7 @@
       const seo = ensurePageSeo(page);
       seo[key] = val;
       markDirty(true);
-      scheduleLivePreviewReload();
+      livePatchPreviewDom('seo', { key, val });
     }
 
     function renderSeoEditorSection(page) {
@@ -9816,7 +10475,9 @@
         faq[key] = val;
       }
       markDirty(true);
-      scheduleLivePreviewReload();
+      if (!livePatchPreviewDom('faqMeta', { key, val })) {
+        scheduleLivePreviewReload();
+      }
     }
 
     function updateFaqItemField(qIdx, key, val) {
@@ -9825,7 +10486,9 @@
       if (faq.items && faq.items[qIdx]) {
         faq.items[qIdx][key] = val;
         markDirty(true);
-        scheduleLivePreviewReload();
+        if (!livePatchPreviewDom('faqItem', { qIdx, key, val })) {
+          scheduleLivePreviewReload();
+        }
       }
     }
 
@@ -10577,6 +11240,7 @@
 
     function closeEditorDrawer(silent) {
       document.body.classList.remove('drawer-open');
+      if (typeof hideQuickToolbar === 'function') hideQuickToolbar();
       if (!silent) {
         currentVisualSelectedTarget = null;
         try {
@@ -11734,12 +12398,354 @@
       box.innerHTML = elementSectionHtml + pageThemeHtml + customListHtml;
     }
 
-    // Core UX v2.0 + v3.0 Callback: Live Website Click -> Focused Slide-In Drawer!
+    /* ============================================================================
+     * UX v4.0 — FLOATING QUICK TOOLBAR · DOUBLE-CLICK INLINE EDIT · PHOTO DROP · 0ms COMPARE
+     * ============================================================================ */
+    let activeQuickHit = null;
+    let isComparingOriginalNow = false;
+
+    function initQuickToolbarPopovers() {
+      const cWrap = document.getElementById('sqtColorSwatches');
+      const bWrap = document.getElementById('sqtBgSwatches');
+      const iWrap = document.getElementById('sqtIconGrid');
+      if (cWrap && !cWrap.children.length) {
+        cWrap.innerHTML = VO_LUXURY_SWATCHES.map(sw => `
+          <button type="button" class="vo-swatch" style="background:${sw.hex};" title="${sw.name}"
+            onclick="updateVisualElementProp('color','${sw.hex}',true); closeAllQuickSubPopovers();"></button>
+        `).join('');
+      }
+      if (bWrap && !bWrap.children.length) {
+        bWrap.innerHTML = `<button type="button" class="vo-swatch is-transparent" title="투명" onclick="updateVisualElementProp('bgGradient','',false);updateVisualElementProp('bgColor','transparent',true);closeAllQuickSubPopovers();"></button>` +
+          VO_LUXURY_SWATCHES.map(sw => `
+            <button type="button" class="vo-swatch" style="background:${sw.hex};" title="${sw.name}"
+              onclick="updateVisualElementProp('bgGradient','',false);updateVisualElementProp('bgColor','${sw.hex}',true);closeAllQuickSubPopovers();"></button>
+          `).join('');
+      }
+      if (iWrap && !iWrap.children.length) {
+        iWrap.innerHTML = VO_ICON_LIST.slice(0, 21).map(ic => `
+          <button type="button" class="vo-icon-btn" title="${ic === '__none__' ? '없음' : ic}"
+            onclick="updateVisualElementProp('icon','${ic}',true); closeAllQuickSubPopovers();">
+            ${ic === '__none__' ? '<span style="font-size:10px;font-weight:900;">없음</span>' : ic}
+          </button>
+        `).join('');
+      }
+    }
+
+    function closeAllQuickSubPopovers() {
+      document.querySelectorAll('#studioQuickToolbar .sqt-popover.open').forEach(p => p.classList.remove('open'));
+    }
+
+    function toggleQuickToolbarSub(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const wasOpen = el.classList.contains('open');
+      closeAllQuickSubPopovers();
+      if (!wasOpen) el.classList.add('open');
+    }
+
+    function showQuickToolbarForHit(hit, elRect) {
+      const tb = document.getElementById('studioQuickToolbar');
+      const frame = document.getElementById('livePreviewFrame');
+      if (!tb || !frame || !elRect) return;
+      initQuickToolbarPopovers();
+      activeQuickHit = hit;
+      closeAllQuickSubPopovers();
+
+      const ov = (activeVisualSelector && getCurrentVisualOverridesStore()[activeVisualSelector]) || {};
+      const fSel = document.getElementById('sqtFontSelect');
+      if (fSel) fSel.value = ov.fontFamily || '';
+
+      tb.classList.add('open');
+      const fr = frame.getBoundingClientRect();
+      const tbW = Math.min(tb.offsetWidth || 560, window.innerWidth - 24);
+      const tbH = tb.offsetHeight || 42;
+      let top = fr.top + elRect.top - tbH - 12;
+      if (top < 64) top = Math.min(window.innerHeight - tbH - 16, fr.top + elRect.bottom + 10);
+      let left = fr.left + elRect.left;
+      const maxLeft = (document.body.classList.contains('drawer-open') && window.innerWidth > 1180)
+        ? (window.innerWidth - 510 - tbW)
+        : (window.innerWidth - tbW - 14);
+      left = Math.max(12, Math.min(Math.max(12, maxLeft), left));
+      tb.style.top = Math.round(top) + 'px';
+      tb.style.left = Math.round(left) + 'px';
+    }
+
+    function hideQuickToolbar() {
+      closeAllQuickSubPopovers();
+      const tb = document.getElementById('studioQuickToolbar');
+      if (tb) tb.classList.remove('open');
+    }
+
+    function applyQuickFont(val) {
+      updateVisualElementProp('fontFamily', val, true);
+    }
+
+    function stepQuickFontSize(delta) {
+      if (!activeVisualSelector) return;
+      const store = getCurrentVisualOverridesStore();
+      const cur = (store[activeVisualSelector] && store[activeVisualSelector].fontSize)
+        || (activeVisualMeta && activeVisualMeta.computedFontSize) || 16;
+      const next = Math.max(10, Math.min(72, Number(cur) + delta));
+      updateVisualElementProp('fontSize', next, true);
+    }
+
+    function applyQuickBorderPreset(preset) {
+      if (!activeVisualSelector) return;
+      if (preset === 'none') {
+        updateVisualElementProp('borderStyle', 'none', false);
+        updateVisualElementProp('borderWidth', 0, true);
+      } else if (preset === 'gold1') {
+        updateVisualElementProp('borderStyle', 'solid', false);
+        updateVisualElementProp('borderWidth', 1, false);
+        updateVisualElementProp('borderColor', '#D4AF37', true);
+      } else if (preset === 'gold2') {
+        updateVisualElementProp('borderStyle', 'solid', false);
+        updateVisualElementProp('borderWidth', 2, false);
+        updateVisualElementProp('borderColor', '#F5D36C', true);
+      } else if (preset === 'green2') {
+        updateVisualElementProp('borderStyle', 'solid', false);
+        updateVisualElementProp('borderWidth', 2, false);
+        updateVisualElementProp('borderColor', '#10B981', true);
+      } else if (preset === 'white2') {
+        updateVisualElementProp('borderStyle', 'solid', false);
+        updateVisualElementProp('borderWidth', 2, false);
+        updateVisualElementProp('borderColor', '#FFFFFF', true);
+      } else if (preset === 'pill') {
+        updateVisualElementProp('borderRadius', 999, true);
+      }
+      closeAllQuickSubPopovers();
+    }
+
+    function triggerInlineEditForActive() {
+      if (!activeVisualSelector) return;
+      try {
+        const frame = document.getElementById('livePreviewFrame');
+        if (frame && frame.contentWindow && typeof frame.contentWindow.__BAREUN_STUDIO_START_INLINE_EDIT__ === 'function') {
+          frame.contentWindow.__BAREUN_STUDIO_START_INLINE_EDIT__(activeVisualSelector, activeQuickHit);
+          hideQuickToolbar();
+        }
+      } catch (e) {}
+    }
+
+    function openDrawerFromQuickToolbar() {
+      openEditorDrawer('✨', activeVisualMeta ? `${activeVisualMeta.label} 꾸미기` : '항목 상세 수정');
+    }
+
+    // Pillar 2 Callback: Live Direct Inline Typing on Screen -> Sync Model & Drawer at 60fps!
+    window.__BAREUN_STUDIO_ON_INLINE_TEXT__ = function (hit, newText) {
+      if (!hit) return;
+      const page = getCurrentPage();
+      const val = String(newText || '').replace(/\r?\n/g, ' ').trim();
+
+      if (hit.tab === 'cards' && typeof hit.origIdx === 'number' && page && page.plates && page.plates[hit.origIdx]) {
+        const field = hit.field === 'sub' ? 'sub' : 'title';
+        page.plates[hit.origIdx][field] = val;
+        const inp = document.getElementById(field === 'sub' ? ('card-sub-input-' + hit.origIdx) : ('card-title-input-' + hit.origIdx));
+        if (inp) inp.value = val;
+        markDirty(true);
+        return;
+      }
+      if (hit.tab === 'cards' && typeof hit.bentoIdx === 'number' && page && Array.isArray(page.plates)) {
+        const bentos = page.plates.map((c, i) => ({ c, i })).filter(x => x.c && x.c.type === 'home-bento-card' && x.c.enabled !== false);
+        const target = bentos[hit.bentoIdx];
+        if (target) {
+          const field = hit.field === 'sub' ? 'sub' : 'title';
+          target.c[field] = val;
+          const inp = document.getElementById(field === 'sub' ? ('card-sub-input-' + target.i) : ('card-title-input-' + target.i));
+          if (inp) inp.value = val;
+          markDirty(true);
+          return;
+        }
+      }
+      if (hit.tab === 'cards' && typeof hit.homeFrameIdx === 'number' && page && Array.isArray(page.plates)) {
+        const stories = page.plates.map((c, i) => ({ c, i })).filter(x => x.c && x.c.type !== 'home-bento-card');
+        const target = stories[hit.homeFrameIdx] || stories[0];
+        if (target) {
+          const field = hit.field === 'sub' ? 'sub' : 'title';
+          target.c[field] = val;
+          const inp = document.getElementById(field === 'sub' ? ('card-sub-input-' + target.i) : ('card-title-input-' + target.i));
+          if (inp) inp.value = val;
+          markDirty(true);
+          return;
+        }
+      }
+      if (hit.tab === 'leftpanel' && hit.focusId && page) {
+        const inp = document.getElementById(hit.focusId);
+        if (inp) inp.value = val;
+        if (hit.focusId === 'meta-title-input' && page.meta) page.meta.title = val;
+        else if (hit.focusId === 'meta-eyebrow-input' && page.meta) page.meta.eyebrow = val;
+        else if (hit.focusId === 'meta-subtitle-input' && page.meta) page.meta.subtitleEn = val;
+        else if (hit.focusId === 'meta-cta-text-input' && page.meta) page.meta.ctaText = val;
+        else if (hit.focusId === 'home-brand-title-input' && page.homeStory) page.homeStory.brandTitle = val;
+        else if (hit.focusId === 'home-concept-pill-input' && page.homeStory) page.homeStory.conceptPill = val;
+        else if (hit.focusId === 'home-finale-title-input' && page.homeStory) page.homeStory.finaleMainTitle = val;
+        else if (hit.focusId.startsWith('meta-checklist-input-') && page.meta && Array.isArray(page.meta.checklistItems)) {
+          const cIdx = parseInt(hit.focusId.replace('meta-checklist-input-', ''), 10);
+          if (!isNaN(cIdx)) page.meta.checklistItems[cIdx] = val;
+        }
+        markDirty(true);
+        return;
+      }
+      if (hit.tab === 'clinicinfo' && hit.focusId) {
+        const ci = ensureClinicGlobalInfo();
+        const inp = document.getElementById(hit.focusId);
+        if (inp) inp.value = val;
+        if (hit.focusId === 'ci-greeting-title') ci.greetingTitle = val;
+        else if (hit.focusId === 'ci-greeting-body') ci.greetingBody = val;
+        else if (hit.focusId === 'ci-address-input') ci.address = val;
+        else if (hit.focusId === 'ci-parking-input') ci.parkingGuide = val;
+        else if (hit.focusId === 'ci-transit-input') ci.transitGuide = val;
+        markDirty(true);
+        return;
+      }
+      // Universal Visual Override fallback
+      const sel = (hit.visualMeta && hit.visualMeta.selector) || (hit.selector && String(hit.selector).split(',')[0].trim());
+      if (sel) {
+        const store = getCurrentVisualOverridesStore();
+        if (!store[sel]) store[sel] = { label: hit.label || sel };
+        store[sel].text = voStripLeadingIcon(val);
+        const voInp = document.getElementById('vo-text-input');
+        if (voInp && activeVisualSelector === sel) voInp.value = store[sel].text;
+        markDirty(true);
+      }
+    };
+
+    // Pillar 4 Callback: Instant Photo Drag & Drop on Live Website (0.01s preview + background upload!)
+    window.__BAREUN_STUDIO_ON_PHOTO_DROP__ = async function (hit, fileName, dataUrl) {
+      if (!hit || !dataUrl) return;
+      const page = getCurrentPage();
+
+      // 1) Instant 0.01s visual preview inside iframe with ZERO reload!
+      if (typeof hit.origIdx === 'number' && page && page.plates && page.plates[hit.origIdx]) {
+        livePatchPreviewDom('cardImage', { idx: hit.origIdx, key: 'imgSrc', val: dataUrl });
+      } else if (typeof hit.bentoIdx === 'number' && page && Array.isArray(page.plates)) {
+        const bentos = page.plates.map((c, i) => ({ c, i })).filter(x => x.c && x.c.type === 'home-bento-card' && x.c.enabled !== false);
+        if (bentos[hit.bentoIdx]) livePatchPreviewDom('cardImage', { idx: bentos[hit.bentoIdx].i, key: 'imgSrc', val: dataUrl });
+      } else if (hit.selector) {
+        try {
+          const doc = document.getElementById('livePreviewFrame')?.contentDocument;
+          const el = doc && doc.querySelector(String(hit.selector).split(',')[0]);
+          if (el) {
+            if (el.tagName === 'IMG') { rememberOrigNode(el, 'src', el.src); el.src = dataUrl; }
+            else { rememberOrigNode(el, 'bgimg', el.style.backgroundImage); el.style.backgroundImage = `url('${dataUrl}')`; }
+          }
+        } catch (e) {}
+      }
+      showStatus('working', `📸 [${fileName}] 바로 적용됨 · 서버에 사진 저장 중...`);
+
+      // 2) Upload cleanly in background & persist permanent asset path
+      try {
+        let uploadUrl = '/api/upload-detail-image';
+        const headers = { 'Content-Type': 'application/json' };
+        if (IS_WORDPRESS) {
+          uploadUrl = '/wp-json/bareun/v1/studio/upload';
+          if (window.wpApiSettings && window.wpApiSettings.nonce) headers['X-WP-Nonce'] = window.wpApiSettings.nonce;
+        }
+        const res = await fetch(uploadUrl, { method: 'POST', headers, body: JSON.stringify({ fileName, dataUrl }) });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '사진 업로드 실패');
+        const savedAsset = data.url || data.fileName;
+        if (!availableImages.includes(savedAsset)) availableImages.unshift(savedAsset);
+        populateMediaDatalists();
+
+        if (typeof hit.origIdx === 'number' && page && page.plates && page.plates[hit.origIdx]) {
+          page.plates[hit.origIdx].imgSrc = savedAsset;
+          livePatchPreviewDom('cardImage', { idx: hit.origIdx, key: 'imgSrc', val: savedAsset });
+          renderStoryCardsPane();
+        } else if (typeof hit.bentoIdx === 'number' && page && Array.isArray(page.plates)) {
+          const bentos = page.plates.map((c, i) => ({ c, i })).filter(x => x.c && x.c.type === 'home-bento-card' && x.c.enabled !== false);
+          if (bentos[hit.bentoIdx]) {
+            bentos[hit.bentoIdx].c.imgSrc = savedAsset;
+            livePatchPreviewDom('cardImage', { idx: bentos[hit.bentoIdx].i, key: 'imgSrc', val: savedAsset });
+            renderStoryCardsPane();
+          }
+        } else if (hit.selector) {
+          const sel = String(hit.selector).split(',')[0].trim();
+          const store = getCurrentVisualOverridesStore();
+          if (!store[sel]) store[sel] = { label: hit.label || '사진' };
+          store[sel].imgSrc = savedAsset;
+          applyAllVisualOverridesToIframe();
+          renderVisualElementPane();
+        }
+        markDirty(true);
+        showStatus('ok', `✅ [${fileName}] 사진이 화면에 바로 교체되었습니다!`);
+      } catch (err) {
+        showStatus('err', '사진 저장 오류: ' + err.message);
+      }
+    };
+
+    // Pillar 5: 0ms Hold-to-Compare Original Screen (Zero Reload!)
+    function startCompareOriginal() {
+      const btn = document.getElementById('btnCompareOriginal');
+      if (!btn || btn.disabled || isComparingOriginalNow) return;
+      isComparingOriginalNow = true;
+      btn.classList.add('is-comparing');
+      document.body.classList.add('is-comparing-original');
+      hideQuickToolbar();
+      try {
+        const doc = document.getElementById('livePreviewFrame')?.contentDocument;
+        if (!doc) return;
+        ['bareun-studio-vo-css', 'bareun-live-cardstyle-patch', 'bareun-live-layoutcolors-patch'].forEach(id => {
+          const st = doc.getElementById(id);
+          if (st) st.disabled = true;
+        });
+        doc.querySelectorAll('[data-bareun-orig-html]').forEach(el => {
+          el.setAttribute('data-bareun-cur-html', el.innerHTML);
+          el.innerHTML = el.getAttribute('data-bareun-orig-html');
+        });
+        doc.querySelectorAll('[data-bareun-orig-text]').forEach(el => {
+          el.setAttribute('data-bareun-cur-text', el.textContent);
+          el.textContent = el.getAttribute('data-bareun-orig-text');
+        });
+        doc.querySelectorAll('[data-bareun-orig-src]').forEach(el => {
+          el.setAttribute('data-bareun-cur-src', el.src);
+          el.src = el.getAttribute('data-bareun-orig-src');
+        });
+        doc.querySelectorAll('[data-bareun-orig-bgimg]').forEach(el => {
+          el.setAttribute('data-bareun-cur-bgimg', el.style.backgroundImage);
+          el.style.backgroundImage = el.getAttribute('data-bareun-orig-bgimg');
+        });
+      } catch (e) {}
+    }
+
+    function stopCompareOriginal() {
+      if (!isComparingOriginalNow) return;
+      isComparingOriginalNow = false;
+      const btn = document.getElementById('btnCompareOriginal');
+      if (btn) btn.classList.remove('is-comparing');
+      document.body.classList.remove('is-comparing-original');
+      try {
+        const doc = document.getElementById('livePreviewFrame')?.contentDocument;
+        if (!doc) return;
+        ['bareun-studio-vo-css', 'bareun-live-cardstyle-patch', 'bareun-live-layoutcolors-patch'].forEach(id => {
+          const st = doc.getElementById(id);
+          if (st) st.disabled = false;
+        });
+        doc.querySelectorAll('[data-bareun-cur-html]').forEach(el => {
+          el.innerHTML = el.getAttribute('data-bareun-cur-html');
+          el.removeAttribute('data-bareun-cur-html');
+        });
+        doc.querySelectorAll('[data-bareun-cur-text]').forEach(el => {
+          el.textContent = el.getAttribute('data-bareun-cur-text');
+          el.removeAttribute('data-bareun-cur-text');
+        });
+        doc.querySelectorAll('[data-bareun-cur-src]').forEach(el => {
+          el.src = el.getAttribute('data-bareun-cur-src');
+          el.removeAttribute('data-bareun-cur-src');
+        });
+        doc.querySelectorAll('[data-bareun-cur-bgimg]').forEach(el => {
+          el.style.backgroundImage = el.getAttribute('data-bareun-cur-bgimg');
+          el.removeAttribute('data-bareun-cur-bgimg');
+        });
+      } catch (e) {}
+    }
+
+    // Core UX v2.0 + v3.0 + v4.0 Callback: Live Website Click -> Floating Quick Toolbar + Focused Slide-In Drawer!
     window.__BAREUN_STUDIO_ON_CANVAS_CLICK__ = function (hit) {
       if (!hit || !isVisualSelectMode) return;
       const page = getCurrentPage();
 
-      // Always track clicked element selector & computed snapshot so [✨ 요소 꾸미기] tab is preloaded!
+      // Always track clicked element selector & computed snapshot so [✨ 요소 꾸미기] & Quick Toolbar are preloaded!
       if (hit.visualMeta && hit.visualMeta.selector) {
         activeVisualSelector = hit.visualMeta.selector;
         activeVisualMeta = hit.visualMeta;
@@ -11756,6 +12762,9 @@
           computedFontSize: hit.computedFontSize || 16,
           computedRadius: hit.computedRadius || 0
         };
+      }
+      if (hit.rect) {
+        setTimeout(() => showQuickToolbarForHit(hit, hit.rect), 30);
       }
 
       // Universal Tier-2 Element Click -> Open Visual & Content Designer directly!
@@ -12011,12 +13020,39 @@
               top: 6px !important;
               left: 6px !important;
             }
+            .bareun-inline-editing {
+              outline: 2.5px dashed #F5D36C !important;
+              outline-offset: 4px !important;
+              border-radius: 6px !important;
+              background: rgba(16, 185, 129, 0.14) !important;
+              cursor: text !important;
+              min-width: 24px !important;
+            }
+            #bsp-drop-overlay {
+              position: fixed !important;
+              pointer-events: none !important;
+              z-index: 2147482960 !important;
+              border: 3px dashed #F5D36C !important;
+              border-radius: 14px !important;
+              background: rgba(20, 17, 14, 0.62) !important;
+              color: #FEF08A !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              font-family: 'Pretendard', -apple-system, sans-serif !important;
+              font-size: 14px !important;
+              font-weight: 900 !important;
+              opacity: 0;
+              left: 0; top: 0; width: 0; height: 0;
+              transition: opacity 90ms ease !important;
+            }
           `;
           doc.head.appendChild(st);
         }
 
         if (win.__BAREUN_STUDIO_PINS_BOUND__) {
           syncVisualSelectModeToIframe();
+          applyAllVisualOverridesToIframe();
           restorePreviewScrollState(frame, page);
           return;
         }
@@ -12032,8 +13068,14 @@
         spotBox.innerHTML = '<div class="bsp-spot-badge"><span class="bsp-spot-label"></span></div>';
         doc.body.appendChild(spotBox);
 
+        const dropOverlay = doc.createElement('div');
+        dropOverlay.id = 'bsp-drop-overlay';
+        dropOverlay.textContent = '📥 여기에 사진을 놓으면 바로 교체됩니다!';
+        doc.body.appendChild(dropOverlay);
+
         let activeSpot = null;
         let lastHoverEl = null;
+        let currentInlineEl = null;
 
         function findFirstVisibleEl(selector) {
           if (!selector) return null;
@@ -12357,25 +13399,158 @@
           lastHoverEl = null;
         });
 
-        // Capture click -> Open focused slide-in editor drawer!
+        // Capture click -> Open Quick Toolbar + Focused slide-in editor drawer!
         doc.addEventListener('click', function (e) {
           if (!win.__BAREUN_STUDIO_INSPECT_ON__) return;
+          if (currentInlineEl && (e.target === currentInlineEl || currentInlineEl.contains(e.target))) return;
           const hit = resolveEditableTarget(e.target);
           if (!hit) return;
           e.preventDefault();
           e.stopPropagation();
           hoverBox.style.opacity = '0';
           activeSpot = { label: hit.label, selector: hit.selector };
-          positionOverlayBox(spotBox, hit.el, '.bsp-spot-badge', `✓ ${hit.label.replace(/\s*고치기$|\s*바꾸기$/, '')} 수정 중`);
+          positionOverlayBox(spotBox, hit.el, '.bsp-spot-badge', `✓ ${hit.label.replace(/\s*고치기$|\s*바꾸기$|\s*꾸미기$/, '')} 수정 중`);
           try {
             if (win.parent && typeof win.parent.__BAREUN_STUDIO_ON_CANVAS_CLICK__ === 'function') {
-              const payload = Object.assign({}, hit);
+              const r = hit.el.getBoundingClientRect();
+              const payload = Object.assign({}, hit, {
+                rect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height }
+              });
               delete payload.el;
               win.parent.__BAREUN_STUDIO_ON_CANVAS_CLICK__(payload);
             }
           } catch (err) {
             console.warn('[ClickToEdit]', err);
           }
+        }, true);
+
+        // Pillar 2: Direct Double-Click Inline Typing right on the Live Website!
+        function startInlineEditingElement(el, hitPayload) {
+          if (!el || el.tagName === 'IMG' || el.tagName === 'VIDEO' || el.tagName === 'CANVAS') return;
+          if (currentInlineEl && currentInlineEl !== el) {
+            currentInlineEl.contentEditable = 'false';
+            currentInlineEl.classList.remove('bareun-inline-editing');
+          }
+          currentInlineEl = el;
+          if (!el.hasAttribute('data-bareun-orig-text')) {
+            el.setAttribute('data-bareun-orig-text', el.textContent || '');
+          }
+          el.contentEditable = 'true';
+          el.classList.add('bareun-inline-editing');
+          el.focus();
+          try {
+            const range = doc.createRange();
+            range.selectNodeContents(el);
+            const sel = win.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          } catch (_) {}
+
+          const onInput = function () {
+            try {
+              if (win.parent && typeof win.parent.__BAREUN_STUDIO_ON_INLINE_TEXT__ === 'function') {
+                win.parent.__BAREUN_STUDIO_ON_INLINE_TEXT__(hitPayload, el.textContent || '');
+              }
+            } catch (_) {}
+          };
+          const finishInline = function () {
+            el.contentEditable = 'false';
+            el.classList.remove('bareun-inline-editing');
+            el.removeEventListener('input', onInput);
+            el.removeEventListener('blur', finishInline);
+            el.removeEventListener('keydown', onKey);
+            if (currentInlineEl === el) currentInlineEl = null;
+          };
+          const onKey = function (ke) {
+            if (ke.key === 'Escape') {
+              ke.preventDefault();
+              finishInline();
+            } else if (ke.key === 'Enter' && !ke.shiftKey && el.tagName !== 'TEXTAREA' && el.tagName !== 'P') {
+              ke.preventDefault();
+              finishInline();
+            }
+          };
+          el.addEventListener('input', onInput);
+          el.addEventListener('blur', finishInline);
+          el.addEventListener('keydown', onKey);
+        }
+
+        doc.addEventListener('dblclick', function (e) {
+          if (!win.__BAREUN_STUDIO_INSPECT_ON__) return;
+          const hit = resolveEditableTarget(e.target);
+          if (!hit || !hit.el || hit.el.tagName === 'IMG' || hit.el.tagName === 'VIDEO') return;
+          e.preventDefault();
+          e.stopPropagation();
+          const payload = Object.assign({}, hit);
+          delete payload.el;
+          startInlineEditingElement(hit.el, payload);
+        }, true);
+
+        win.__BAREUN_STUDIO_START_INLINE_EDIT__ = function (selector, hitPayload) {
+          const el = findFirstVisibleEl(selector);
+          if (el) {
+            const fallbackHit = hitPayload || { selector, tab: 'visual', visualMeta: readElementSnapshot(el, selector, detectFriendlyElementName(el)) };
+            startInlineEditingElement(el, fallbackHit);
+          }
+        };
+
+        // Pillar 4: Direct Photo Drag & Drop onto any Image / Card on the Live Website!
+        function resolvePhotoDropTarget(raw) {
+          if (!raw || raw.nodeType !== 1) return null;
+          const plate = raw.closest && raw.closest('article[data-plate-orig-idx]');
+          if (plate) {
+            const origIdx = parseInt(plate.getAttribute('data-plate-orig-idx'), 10);
+            if (!isNaN(origIdx)) return { el: plate.querySelector('.plate-media-inner') || plate, origIdx, label: `카드 ${origIdx + 1} 사진`, selector: `article[data-plate-orig-idx="${origIdx}"] .plate-media-inner img` };
+          }
+          const bento = raw.closest && raw.closest('.skt-card-item[data-card-idx]');
+          if (bento) {
+            const bentoIdx = parseInt(bento.getAttribute('data-card-idx'), 10) || 0;
+            return { el: bento, bentoIdx, label: `6대 진료카드 #${bentoIdx + 1} 사진`, selector: `.skt-card-item[data-card-idx="${bentoIdx}"] .skt-img-box` };
+          }
+          const img = raw.tagName === 'IMG' ? raw : (raw.closest && raw.closest('img'));
+          if (img) {
+            const sel = computeStableElementSelector(img);
+            return { el: img, selector: sel, label: '선택한 사진' };
+          }
+          return null;
+        }
+
+        doc.addEventListener('dragover', function (e) {
+          if (!win.__BAREUN_STUDIO_INSPECT_ON__) return;
+          const dt = resolvePhotoDropTarget(e.target);
+          if (!dt || !dt.el) { dropOverlay.style.opacity = '0'; return; }
+          e.preventDefault();
+          const r = dt.el.getBoundingClientRect();
+          dropOverlay.style.left = Math.max(4, r.left) + 'px';
+          dropOverlay.style.top = Math.max(4, r.top) + 'px';
+          dropOverlay.style.width = Math.max(80, r.width) + 'px';
+          dropOverlay.style.height = Math.max(50, r.height) + 'px';
+          dropOverlay.style.opacity = '1';
+        }, true);
+
+        doc.addEventListener('dragleave', function (e) {
+          if (e.target === doc.documentElement || e.target === doc.body) dropOverlay.style.opacity = '0';
+        }, true);
+
+        doc.addEventListener('drop', function (e) {
+          dropOverlay.style.opacity = '0';
+          if (!win.__BAREUN_STUDIO_INSPECT_ON__) return;
+          const dt = resolvePhotoDropTarget(e.target);
+          const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (!dt || !file || !file.type.startsWith('image/')) return;
+          e.preventDefault();
+          e.stopPropagation();
+          const reader = new FileReader();
+          reader.onload = function () {
+            try {
+              if (win.parent && typeof win.parent.__BAREUN_STUDIO_ON_PHOTO_DROP__ === 'function') {
+                const payload = Object.assign({}, dt);
+                delete payload.el;
+                win.parent.__BAREUN_STUDIO_ON_PHOTO_DROP__(payload, file.name, reader.result);
+              }
+            } catch (_) {}
+          };
+          reader.readAsDataURL(file);
         }, true);
 
         function scrollElementIntoPreview(el, selector) {
@@ -12461,6 +13636,7 @@
     document.addEventListener('click', function () {
       closeStudioMoreMenu();
       closePagePickerPopover();
+      if (typeof closeAllQuickSubPopovers === 'function') closeAllQuickSubPopovers();
     });
 
     function handleChapterSaveAction() {
