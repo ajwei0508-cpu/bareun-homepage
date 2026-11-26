@@ -12013,7 +12013,7 @@
           styleEl.id = 'bareun-studio-vo-css';
         }
         styleEl.textContent = cssRules.join('\n');
-        // Always move to the VERY END of <head> so it beats visit-tracker.js and body.theme-hanji!
+        // Always move to the VERY END of doc.head so it beats visit-tracker.js and body.theme-hanji!
         doc.head.appendChild(styleEl);
       } catch (e) {}
     }
