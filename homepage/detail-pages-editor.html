@@ -2404,6 +2404,170 @@
       .top-seg-btn { padding: 0 8px; font-size: 11.5px; }
       .studio-page-picker-btn { max-width: 155px; padding: 0 9px; font-size: 12px; }
     }
+
+    /* ============================================================================
+     * UX v3.0 — UNIVERSAL ELEMENT-LEVEL VISUAL DESIGNER CONTROLS
+     * (테두리 · 아이콘 · 글 · 색감 · 폰트 · 그림자 · 여백 초정밀 편집 UI)
+     * ============================================================================ */
+    .vo-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin-bottom: 11px;
+    }
+    .vo-card-title {
+      font-size: 12.5px;
+      font-weight: 900;
+      color: var(--ink);
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .vo-target-banner {
+      background: linear-gradient(135deg, #1b1713 0%, #2b231b 100%);
+      color: #fdf8ee;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 12px;
+      padding: 11px 13px;
+      margin-bottom: 11px;
+    }
+    .vo-target-name {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #fde68a;
+      word-break: keep-all;
+    }
+    .vo-target-sel {
+      font-size: 10.5px;
+      color: rgba(255, 255, 255, 0.58);
+      font-family: ui-monospace, monospace;
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .vo-target-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 9px;
+      flex-wrap: wrap;
+    }
+    .vo-mini-dark {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+    .vo-mini-dark:hover { background: rgba(234, 185, 92, 0.24); border-color: #fde68a; color: #fde68a; }
+    .vo-mini-dark.is-danger:hover { background: rgba(185, 28, 28, 0.35); border-color: #fca5a5; color: #fecaca; }
+
+    .vo-swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+    .vo-swatch {
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      border: 1.5px solid rgba(0, 0, 0, 0.18);
+      padding: 0;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .vo-swatch:hover { transform: scale(1.12); }
+    .vo-swatch.active { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #b5893a; transform: scale(1.08); }
+    .vo-swatch.is-transparent {
+      background: repeating-conic-gradient(#d6d3d1 0% 25%, #fff 0% 50%) 50% / 10px 10px;
+    }
+
+    .vo-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .vo-icon-btn {
+      cursor: pointer;
+      height: 31px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.12s ease;
+    }
+    .vo-icon-btn:hover { background: #fef3c7; border-color: #d4af37; transform: scale(1.08); }
+    .vo-icon-btn.active { background: #1b1713; border-color: #d4af37; color: #fde68a; box-shadow: 0 2px 8px rgba(0,0,0,0.22); }
+
+    .vo-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .vo-slider-row input[type="range"] {
+      flex: 1;
+      accent-color: #b5893a;
+      cursor: pointer;
+      margin: 0;
+    }
+    .vo-slider-val {
+      min-width: 48px;
+      text-align: right;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .vo-seg-row {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .vo-seg-btn {
+      cursor: pointer;
+      flex: 1 1 auto;
+      min-width: 52px;
+      padding: 6px 8px;
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-soft);
+      color: var(--ink-sub);
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-align: center;
+      transition: all 0.13s ease;
+    }
+    .vo-seg-btn:hover { border-color: var(--gold); color: var(--ink); }
+    .vo-seg-btn.active { background: #1b1713; color: #fde68a; border-color: #1b1713; }
+
+    .vo-list-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -2461,6 +2625,12 @@
         </button>
         <div id="studioMoreDropdown" class="studio-more-dropdown" onclick="event.stopPropagation()">
           <div class="studio-more-group-lbl">이 페이지 편집 메뉴</div>
+          <button type="button" class="studio-more-item" onclick="closeStudioMoreMenu(); openDrawerSection('visual', false);">
+            <span>✨ 화면 요소 테두리·폰트·아이콘 꾸미기</span>
+          </button>
+          <button type="button" class="studio-more-item" onclick="closeStudioMoreMenu(); openPageThemeStyler();">
+            <span>🌐 페이지 전체 글꼴 · 색감 한 번에 바꾸기</span>
+          </button>
           <button type="button" class="studio-more-item" onclick="closeStudioMoreMenu(); openDrawerSection('cards', true);">
             <span>📑 이 페이지 전체 항목 보기</span>
           </button>
@@ -2569,11 +2739,14 @@
         <button type="button" class="editor-tab-btn active" data-tab="cards" onclick="switchEditorTab('cards')">
           <span id="tabCardsLabelText">📑 카드 편집</span> <span id="tabCardCount" class="tag-pill">0장</span>
         </button>
+        <button type="button" class="editor-tab-btn" data-tab="visual" id="tabBtnVisual" onclick="switchEditorTab('visual')">
+          ✨ 요소 꾸미기
+        </button>
         <button type="button" class="editor-tab-btn" data-tab="leftpanel" onclick="switchEditorTab('leftpanel')">
           <span id="tabLeftPanelLabelText">📋 안내 · FAQ</span>
         </button>
         <button type="button" class="editor-tab-btn" data-tab="style" id="tabBtnStyle" onclick="switchEditorTab('style')">
-          🎨 디자인
+          🎨 카드 디자인
         </button>
         <button type="button" class="editor-tab-btn tab-imagemaker" data-tab="imagemaker" onclick="switchEditorTab('imagemaker')">
           📸 AI 사진관
@@ -2664,6 +2837,11 @@
         <div id="pane-clinicinfo" class="tab-pane">
           <div class="panel-box" id="clinicInfoEditorBox"></div>
         </div>
+
+        <!-- TAB 6: Universal Element-Level Visual & Content Designer (테두리 · 아이콘 · 글 · 색감 · 폰트) -->
+        <div id="pane-visual" class="tab-pane">
+          <div id="visualElementEditorBox"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -2733,6 +2911,16 @@
   <!-- Client-side Fast Compiler Engine & Exact Card Image Prompts Map (Supports Local & WordPress Online) -->
   <script src="bareun-detail-compiler.js"></script>
   <script src="home-story-compiler.js"></script>
+  <script>
+    if (!window.BareunHomeCompiler) {
+      document.write('<script src="/wp-content/uploads/bareun-studio/home-story-compiler.js"><\\/script>');
+    }
+  </script>
+  <script>
+    if (!window.BareunHomeCompiler) {
+      document.write('<script src="https://cdn.jsdelivr.net/gh/ajwei0508-cpu/bareun-homepage@main/homepage/home-story-compiler.js"><\\/script>');
+    }
+  </script>
   <script>
     if (!window.BareunCompiler) {
       document.write('<script src="/wp-content/uploads/bareun-studio/bareun-detail-compiler.js"><\\/script>');
@@ -3066,11 +3254,14 @@
         renderAll();
         if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
           syncClinicInfoToPreviewIframe();
+          applyAllVisualOverridesToIframe();
         } else if (currentStudioChapter === 'healthnotes') {
           syncHealthNoteLivePreview(false);
+          applyAllVisualOverridesToIframe();
         } else {
           reloadPreviewIframe();
         }
+        if (typeof renderVisualElementPane === 'function') renderVisualElementPane();
         isDirty = studioUndoStack.length > 0;
         const badge = document.getElementById('dirtyBadge');
         if (badge) {
@@ -3307,6 +3498,7 @@
       if (tabKey === 'style') updateStyleMockup();
       if (tabKey === 'imagemaker') renderImageMakerPane();
       if (tabKey === 'clinicinfo') renderClinicInfoPane();
+      if (tabKey === 'visual' && typeof renderVisualElementPane === 'function') renderVisualElementPane();
       if (typeof syncStudioNumberPinsToIframe === 'function') {
         setTimeout(() => {
           syncStudioNumberPinsToIframe(true);
@@ -3624,17 +3816,24 @@
             <div class="field" ${guideTitleAttr}>
               <label>
                 <span>① 화면 가운데 메인 문구</span>
-                <button type="button" class="mini-btn" onclick="syncHomePreviewToCard(${idx})">👁️ 이 장면 보기</button>
+                <div style="display:flex;gap:4px;">
+                  <button type="button" class="mini-btn" onclick="syncHomePreviewToCard(${idx})">👁️ 이 장면 보기</button>
+                  <button type="button" class="mini-btn gold-helper" onclick="openVisualDesignerForSelector('#dialogue-main-quote', '첫 화면 메인 문구')">✨ 색감·폰트</button>
+                </div>
               </label>
               <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
                 placeholder="예: 간절한 기다림 / 난임으로 찾게 된 한의원"
-                oninput="updateCardTitleLive(${idx}, this.value); scheduleLivePreviewReload();" />
+                oninput="updateHomeStoryLiveField(${idx}, 'title', this.value)" />
             </div>
             <div class="field" ${guideSubAttr}>
-              <label>② 아래 짧은 보조 문구 (비워두면 메인 문구만 깔끔하게 표시)</label>
+              <label>
+                <span>② 아래 짧은 보조 문구 (큰 문구 바로 아래 표시)</span>
+                <button type="button" class="mini-btn gold-helper" onclick="openVisualDesignerForSelector('#dialogue-sub-whisper', '아래 짧은 보조 문구')">✨ 색감·테두리</button>
+              </label>
               <input type="text" id="card-sub-input-${idx}" value="${escHtml(card.sub || '')}"
-                placeholder="선택 입력: 메인 문구 아래에 잔잔하게 들어갈 설명"
-                oninput="updateCardField(${idx}, 'sub', this.value, false)" />
+                placeholder="입력하면 화면 큰 문구 바로 아래에 실시간 표시됩니다 (비워두면 숨김)"
+                oninput="updateHomeStoryLiveField(${idx}, 'sub', this.value)" />
+              <div style="font-size:11px;color:#059669;font-weight:700;margin-top:4px;">📍 큰 문구 바로 아래에 바로 표시되며, [✨ 색감·테두리]로 글꼴·색상·테두리까지 꾸밀 수 있습니다.</div>
             </div>
             <div id="card-media-box-${idx}" ${guideMediaAttr}>
               <div style="font-size:12px;font-weight:800;color:var(--ink);margin-bottom:6px;">③ 배경 사진 바꾸기</div>
@@ -3666,7 +3865,10 @@
             <div class="field" ${guideTitleAttr}>
               <label>
                 <span>① 카드 제목 (예: 추나 / 성장 / 다이어트)</span>
-                <button type="button" class="mini-btn" onclick="syncHomePreviewToCard(${idx})">👁️ 이 카드 보기</button>
+                <div style="display:flex;gap:4px;">
+                  <button type="button" class="mini-btn" onclick="syncHomePreviewToCard(${idx})">👁️ 이 카드 보기</button>
+                  <button type="button" class="mini-btn gold-helper" onclick="openVisualDesignerForSelector('.skt-card-item[data-card-idx=\\'${displayIdx}\\']', '6대 진료카드 #${displayNum}')">✨ 테두리·색감</button>
+                </div>
               </label>
               <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
                 oninput="updateCardTitleLive(${idx}, this.value); scheduleLivePreviewReload();" />
@@ -3705,7 +3907,10 @@
             <div class="field" ${guideTitleAttr}>
               <label>
                 <span>① 카드 제목 (<code>'작은따옴표'</code> 구간 골드 강조)</span>
-                <button type="button" class="mini-btn gold-helper" onclick="wrapSelectedWithGoldQuote(${idx})">✨ 골드 강조</button>
+                <div style="display:flex;gap:4px;">
+                  <button type="button" class="mini-btn gold-helper" onclick="wrapSelectedWithGoldQuote(${idx})">✨ 골드 강조</button>
+                  <button type="button" class="mini-btn" onclick="openVisualDesignerForSelector('article[data-plate-orig-idx=\\'${idx}\\'] .editorial-headline', '카드 ${numStr} 제목')">🎨 폰트·색감</button>
+                </div>
               </label>
               <input type="text" id="card-title-input-${idx}" value="${escHtml(card.title || '')}"
                 placeholder="예: 수술 없이 틀어진 척추를 바로잡는 '정밀 수기 추나'"
@@ -3714,7 +3919,10 @@
 
             <!-- Core 2: Body Copy -->
             <div class="field" ${guideSubAttr}>
-              <label>② 카드 설명 글</label>
+              <label>
+                <span>② 카드 설명 글</span>
+                <button type="button" class="mini-btn" onclick="openVisualDesignerForSelector('article[data-plate-orig-idx=\\'${idx}\\']', '카드 ${numStr} 전체 박스')">🖼️ 카드 테두리·배경</button>
+              </label>
               <textarea rows="3" id="card-sub-input-${idx}" placeholder="환자분께 보여줄 핵심 치료 설명을 편하게 적어주세요."
                 oninput="updateCardField(${idx}, 'sub', this.value, false)">${escHtml(card.sub || '')}</textarea>
             </div>
@@ -4361,7 +4569,59 @@
       if (!page.homeStory) page.homeStory = {};
       page.homeStory[key] = val;
       markDirty(true);
+      if (key === 'conceptPill') {
+        const frame = document.getElementById('livePreviewFrame');
+        if (frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SYNC_LIVE_CONCEPT_PILL', text: val }, '*');
+          try {
+            const sp = frame.contentDocument && frame.contentDocument.querySelector('#dialogue-daddy-concept-pill span:last-child');
+            if (sp) sp.textContent = val;
+          } catch (e) {}
+          return;
+        }
+      }
       scheduleLivePreviewReload();
+    }
+
+    function updateHomeStoryLiveField(idx, field, val) {
+      const page = getCurrentPage();
+      if (!page || !Array.isArray(page.plates) || !page.plates[idx]) return;
+      const card = page.plates[idx];
+      card[field] = val;
+      if (field === 'title') {
+        const itemEl = document.getElementById('card-item-' + idx);
+        if (itemEl) {
+          const titleSpan = itemEl.querySelector('.card-head-title');
+          if (titleSpan) titleSpan.textContent = val || '(제목 없음)';
+        }
+      }
+      markDirty(true);
+      // Instant 60fps live DOM patch inside Home Storyboard iframe (zero WebGL reload flicker!)
+      let storyFrameIdx = 0;
+      for (let i = 0; i < idx; i++) {
+        if (page.plates[i] && page.plates[i].type !== 'home-bento-card') storyFrameIdx++;
+      }
+      const frame = document.getElementById('livePreviewFrame');
+      if (frame && frame.contentWindow) {
+        try {
+          frame.contentWindow.postMessage({
+            type: 'SYNC_LIVE_STORY_FRAME',
+            frameIndex: storyFrameIdx,
+            quote: card.title || '',
+            whisper: card.sub || ''
+          }, '*');
+          const doc = frame.contentDocument;
+          if (doc) {
+            if (field === 'sub') {
+              const wEl = doc.getElementById('dialogue-sub-whisper');
+              if (wEl) {
+                wEl.textContent = val;
+                wEl.style.display = val.trim() ? 'block' : '';
+              }
+            }
+          }
+        } catch (e) {}
+      }
     }
 
     function updateHomeChapterField(chIdx, key, val) {
@@ -10341,6 +10601,14 @@
       if (showAll) {
         focusedCardOrigIdx = null;
       }
+      if (tabKey === 'visual') {
+        const tabsBar = document.getElementById('editorTabsBar');
+        if (tabsBar) tabsBar.style.display = '';
+        switchEditorTab('visual');
+        renderVisualElementPane();
+        openEditorDrawer('✨', activeVisualMeta ? `${activeVisualMeta.label} 꾸미기` : '화면 요소 꾸미기');
+        return;
+      }
       if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
         applyChapterTabVisibility();
         renderClinicInfoPane();
@@ -10353,11 +10621,12 @@
       renderBodyModelBox();
       const titleMap = {
         cards: getCurrentSectionFriendlyName() + ' 전체 목록',
+        visual: '화면 요소 테두리·폰트·아이콘 꾸미기',
         leftpanel: '페이지 상단 소개 · 체크리스트 · FAQ',
         style: '카드 색감 · 글자 크기 디자인',
         imagemaker: '원장님 AI 사진 만들기'
       };
-      const iconMap = { cards: '📑', leftpanel: '📋', style: '🎨', imagemaker: '📸' };
+      const iconMap = { cards: '📑', visual: '✨', leftpanel: '📋', style: '🎨', imagemaker: '📸' };
       openEditorDrawer(iconMap[tabKey] || '✏️', titleMap[tabKey] || '항목 수정');
       const sb = document.getElementById('drawerScrollBody');
       if (sb) sb.scrollTo({ top: 0, behavior: 'smooth' });
@@ -10795,10 +11064,709 @@
       });
     })();
 
-    // Core UX v2.0 Callback: Live Website Click -> Focused Slide-In Drawer!
+    /* ============================================================================
+     * UX v3.0 — UNIVERSAL ELEMENT VISUAL & CONTENT DESIGNER ENGINE
+     * (보이는 화면의 모든 요소를 클릭해서 테두리·아이콘·글·색감·폰트·여백·그림자까지 초정밀 수정)
+     * ============================================================================ */
+    const VO_FONT_OPTIONS = [
+      { value: '', label: '기본 글꼴 유지' },
+      { value: "'Pretendard Variable', Pretendard, sans-serif", label: '프리텐다드 (깔끔한 현대 고딕)' },
+      { value: "'Noto Serif KR', serif", label: '노토 명조 (품격 한의원 세리프)' },
+      { value: "'Gowun Batang', serif", label: '고운 바탕 (따뜻하고 감성적인 명조)' },
+      { value: "'Gowun Dodum', sans-serif", label: '고운 돋움 (부드럽고 친근한 돋움)' },
+      { value: "'Nanum Myeongjo', serif", label: '나눔 명조 (정통 클래식 명조)' },
+      { value: "'Noto Sans KR', sans-serif", label: '노토 산스 (단정한 표준 고딕)' },
+      { value: "'Black Han Sans', sans-serif", label: '검은고딕 (강렬한 강조 제목용)' }
+    ];
+
+    const VO_GOOGLE_FONTS = {
+      'Noto Serif KR': 'Noto+Serif+KR:wght@400;600;700;900',
+      'Gowun Batang': 'Gowun+Batang:wght@400;700',
+      'Gowun Dodum': 'Gowun+Dodum',
+      'Nanum Myeongjo': 'Nanum+Myeongjo:wght@400;700;800',
+      'Noto Sans KR': 'Noto+Sans+KR:wght@300;400;500;700;900',
+      'Black Han Sans': 'Black+Han+Sans'
+    };
+
+    const VO_LUXURY_SWATCHES = [
+      { hex: '#FFFFFF', name: '순백 화이트' },
+      { hex: '#FAF7F2', name: '웜 아이보리' },
+      { hex: '#F5D36C', name: '샴페인 골드' },
+      { hex: '#B5893A', name: '딥 골드' },
+      { hex: '#10B981', name: '에메랄드 그린' },
+      { hex: '#1F4D3A', name: '한방 딥그린' },
+      { hex: '#1B1815', name: '에스프레소 다크' },
+      { hex: '#5E4736', name: '웜 브라운' },
+      { hex: '#E11D48', name: '로즈 포인트' },
+      { hex: '#0F172A', name: '딥 네이비' }
+    ];
+
+    const VO_ICON_LIST = [
+      '__none__', '✦', '❖', '🩺', '🌿', '📍', '📞', '💬', '📅',
+      '✨', '👑', '❤️', '🛡️', '🦴', '🧬', '🔥', '💡', '✅',
+      '⭐', '→', '↗', '🏆', '🏥', '⏰', '💳', '👨‍⚕️', '📋',
+      '🔍', '🎯', '💎', '🌱', '☀️', '🌙', '📌', '🔔', '🎁'
+    ];
+
+    let activeVisualSelector = '';
+    let activeVisualMeta = null; // { selector, label, tag, origText, origHref, origImg, computedFontSize, computedColor, computedBg, computedRadius }
+
+    function getCurrentVisualTargetHost() {
+      if (currentStudioChapter === 'fees' || currentStudioChapter === 'location') {
+        const ci = ensureClinicGlobalInfo();
+        if (!ci.elementOverrides || typeof ci.elementOverrides !== 'object') ci.elementOverrides = {};
+        if (!ci.pageThemeOverride || typeof ci.pageThemeOverride !== 'object') ci.pageThemeOverride = {};
+        return ci;
+      }
+      const page = getCurrentPage();
+      if (!page) return { elementOverrides: {}, pageThemeOverride: {} };
+      if (!page.elementOverrides || typeof page.elementOverrides !== 'object') page.elementOverrides = {};
+      if (!page.pageThemeOverride || typeof page.pageThemeOverride !== 'object') page.pageThemeOverride = {};
+      return page;
+    }
+
+    function getCurrentVisualOverridesStore() {
+      return getCurrentVisualTargetHost().elementOverrides;
+    }
+
+    function getCurrentPageThemeStore() {
+      return getCurrentVisualTargetHost().pageThemeOverride;
+    }
+
+    function voHexToRgba(hex, alpha) {
+      const c = String(hex || '').replace('#', '').trim();
+      if (!/^[0-9a-fA-F]{6}$/.test(c)) return hex;
+      return `rgba(${parseInt(c.slice(0,2),16)}, ${parseInt(c.slice(2,4),16)}, ${parseInt(c.slice(4,6),16)}, ${alpha})`;
+    }
+
+    function voStripLeadingIcon(s) {
+      return String(s || '').replace(/^[\u{1F300}-\u{1FAFF}\u2600-\u27BF✦❖★☆✓✔→↗➤•◆◇▶▷📍📞💬📅✨👑❤️🛡️🦴🧬🔥💡✅⭐🏆🏥⏰💳📋🔍🎯💎🌱☀️🌙📌🔔🎁]+\s*/u, '').trim();
+    }
+
+    function applyAllVisualOverridesToIframe() {
+      const frame = document.getElementById('livePreviewFrame');
+      if (!frame) return;
+      try {
+        const doc = frame.contentDocument;
+        if (!doc || !doc.head || !doc.body) return;
+        const ovMap = getCurrentVisualOverridesStore();
+        const pt = getCurrentPageThemeStore();
+        const cssRules = [];
+        const usedFonts = new Set();
+
+        const trackFont = (fam) => {
+          if (!fam) return;
+          Object.keys(VO_GOOGLE_FONTS).forEach(k => { if (String(fam).includes(k)) usedFonts.add(k); });
+        };
+
+        if (pt.headingFont) { trackFont(pt.headingFont); cssRules.push(`h1, h2, h3, .dialogue-main-quote, .skt-finale-main-title, .editorial-headline, #project-details-title { font-family: ${pt.headingFont} !important; }`); }
+        if (pt.bodyFont) { trackFont(pt.bodyFont); cssRules.push(`body, p, button, a, .editorial-body-copy, .dialogue-sub-whisper, #project-details-desc { font-family: ${pt.bodyFont} !important; }`); }
+        if (pt.pageBg) cssRules.push(`html, body, body.theme-hanji { background-color: ${pt.pageBg} !important; }`);
+        if (pt.accentColor) cssRules.push(`:root { --accent: ${pt.accentColor}; --gold: ${pt.accentColor}; --sa-hl-color: ${pt.accentColor}; }`);
+
+        const gradMap = {
+          gold: 'linear-gradient(135deg, #f3d280 0%, #b88428 100%)',
+          emerald: 'linear-gradient(135deg, #10b981 0%, #065f46 100%)',
+          espresso: 'linear-gradient(135deg, #27211b 0%, #14110e 100%)',
+          ivory: 'linear-gradient(135deg, #fdfbf7 0%, #efe6d5 100%)',
+          glass: 'rgba(20, 17, 14, 0.42)'
+        };
+        const shMap = {
+          none: 'none',
+          soft: '0 4px 14px rgba(0, 0, 0, 0.12)',
+          card: '0 14px 34px rgba(0, 0, 0, 0.24)',
+          gold: '0 0 0 2px rgba(212, 175, 55, 0.35), 0 10px 28px rgba(181, 137, 58, 0.34)',
+          strong: '0 22px 52px rgba(0, 0, 0, 0.42)'
+        };
+        const tshMap = {
+          none: 'none',
+          soft: '0 2px 8px rgba(0, 0, 0, 0.38)',
+          crisp: '0 2px 14px rgba(0, 0, 0, 0.78)',
+          strong: '0 4px 22px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.9)'
+        };
+
+        Object.entries(ovMap).forEach(([sel, ov]) => {
+          if (!sel || !ov || typeof ov !== 'object') return;
+          const d = [];
+          if (ov.hidden === true) d.push('display: none !important');
+          if (ov.fontFamily) { trackFont(ov.fontFamily); d.push(`font-family: ${ov.fontFamily} !important`); }
+          if (ov.fontSize != null && ov.fontSize !== '') d.push(`font-size: ${Number(ov.fontSize)}px !important`);
+          if (ov.fontWeight) d.push(`font-weight: ${ov.fontWeight} !important`);
+          if (ov.lineHeight != null && ov.lineHeight !== '') d.push(`line-height: ${ov.lineHeight} !important`);
+          if (ov.letterSpacing != null && ov.letterSpacing !== '') d.push(`letter-spacing: ${ov.letterSpacing}em !important`);
+          if (ov.textAlign) d.push(`text-align: ${ov.textAlign} !important`);
+          if (ov.textShadow && tshMap[ov.textShadow]) d.push(`text-shadow: ${tshMap[ov.textShadow]} !important`);
+          if (ov.color) d.push(`color: ${ov.color} !important`);
+          if (ov.bgGradient && gradMap[ov.bgGradient]) {
+            d.push(`background: ${gradMap[ov.bgGradient]} !important`);
+            if (ov.bgGradient === 'glass') d.push('backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important');
+          } else if (ov.bgColor) {
+            if (ov.bgColor === 'transparent') d.push('background: transparent !important');
+            else {
+              const al = (ov.bgOpacity != null && ov.bgOpacity !== '') ? Math.max(0, Math.min(1, Number(ov.bgOpacity) / 100)) : 1;
+              d.push(`background: ${al < 1 ? voHexToRgba(ov.bgColor, al.toFixed(2)) : ov.bgColor} !important`);
+            }
+          }
+          if (ov.borderStyle === 'none') d.push('border: none !important');
+          else if ((ov.borderWidth != null && ov.borderWidth !== '') || ov.borderColor || ov.borderStyle) {
+            const bw = (ov.borderWidth != null && ov.borderWidth !== '') ? Number(ov.borderWidth) : 1;
+            d.push(`border: ${bw}px ${ov.borderStyle || 'solid'} ${ov.borderColor || '#D4AF37'} !important`);
+          }
+          if (ov.borderRadius != null && ov.borderRadius !== '') d.push(`border-radius: ${Number(ov.borderRadius)}px !important`);
+          if (ov.boxShadow && shMap[ov.boxShadow]) d.push(`box-shadow: ${shMap[ov.boxShadow]} !important`);
+          if ((ov.padY != null && ov.padY !== '') || (ov.padX != null && ov.padX !== '')) {
+            d.push(`padding: ${ov.padY != null && ov.padY !== '' ? Number(ov.padY) + 'px' : 'inherit'} ${ov.padX != null && ov.padX !== '' ? Number(ov.padX) + 'px' : 'inherit'} !important`);
+          }
+          if (ov.opacity != null && ov.opacity !== '' && Number(ov.opacity) < 100) {
+            d.push(`opacity: ${(Math.max(5, Math.min(100, Number(ov.opacity))) / 100).toFixed(2)} !important`);
+          }
+          if (d.length) cssRules.push(`${sel} { ${d.join('; ')}; }`);
+
+          // Apply live DOM content overrides (text, icon, href, imgSrc)
+          if (ov.text !== undefined || ov.icon !== undefined || ov.href !== undefined || ov.imgSrc !== undefined) {
+            try {
+              const el = doc.querySelector(sel);
+              if (el) {
+                if (ov.href && el.tagName === 'A') el.setAttribute('href', ov.href);
+                if (ov.imgSrc) {
+                  const resUrl = resolveStudioAssetUrl(ov.imgSrc);
+                  if (el.tagName === 'IMG') el.setAttribute('src', resUrl);
+                  else el.style.backgroundImage = `url('${resUrl}')`;
+                }
+                if (ov.text !== undefined || ov.icon !== undefined) {
+                  const baseText = ov.text !== undefined ? String(ov.text) : voStripLeadingIcon(el.textContent);
+                  const prefix = (ov.icon && ov.icon !== '__none__') ? (ov.icon + ' ') : '';
+                  const combined = (prefix + baseText).trim();
+                  const leaf = (el.children.length === 1 && el.children[0].tagName === 'SPAN' && !el.children[0].children.length) ? el.children[0] : null;
+                  if (leaf) leaf.textContent = combined;
+                  else if (el.children.length === 0) el.textContent = combined;
+                  else {
+                    const spanT = el.querySelector(':scope > span:not(.logo-gem):not(.concept-dot):not(.tap-pill-arrow):not(.brand-logo-mark)');
+                    if (spanT) spanT.textContent = combined;
+                    else el.textContent = combined;
+                  }
+                }
+              }
+            } catch (e) {}
+          }
+        });
+
+        // Inject Google Fonts dynamically inside iframe
+        usedFonts.forEach(f => {
+          const linkId = 'bareun-vo-font-' + f.replace(/\s+/g, '-').toLowerCase();
+          if (!doc.getElementById(linkId)) {
+            const lk = doc.createElement('link');
+            lk.id = linkId;
+            lk.rel = 'stylesheet';
+            lk.setAttribute('data-bareun-vo-font', '1');
+            lk.href = `https://fonts.googleapis.com/css2?family=${VO_GOOGLE_FONTS[f]}&display=swap`;
+            doc.head.appendChild(lk);
+          }
+        });
+
+        let styleEl = doc.getElementById('bareun-studio-vo-css');
+        if (!styleEl) {
+          styleEl = doc.createElement('style');
+          styleEl.id = 'bareun-studio-vo-css';
+          doc.head.appendChild(styleEl);
+        }
+        styleEl.textContent = cssRules.join('\n');
+      } catch (e) {}
+    }
+
+    function openVisualDesignerForSelector(selector, friendlyLabel) {
+      activeVisualSelector = selector;
+      let snap = { selector, label: friendlyLabel || selector, tag: 'DIV', origText: '', origHref: '', origImg: '', computedFontSize: 16 };
+      try {
+        const frame = document.getElementById('livePreviewFrame');
+        const doc = frame && frame.contentDocument;
+        const win = frame && frame.contentWindow;
+        const el = doc && doc.querySelector(selector);
+        if (el && win) {
+          const cs = win.getComputedStyle(el);
+          snap = {
+            selector,
+            label: friendlyLabel || el.textContent.trim().slice(0, 24) || el.tagName,
+            tag: el.tagName,
+            origText: voStripLeadingIcon(el.textContent || ''),
+            origHref: el.tagName === 'A' ? (el.getAttribute('href') || '') : '',
+            origImg: el.tagName === 'IMG' ? (el.getAttribute('src') || '') : '',
+            hasBgImg: Boolean(cs.backgroundImage && cs.backgroundImage !== 'none'),
+            computedFontSize: Math.round(parseFloat(cs.fontSize) || 16),
+            computedRadius: Math.round(parseFloat(cs.borderRadius) || 0)
+          };
+          applySpotlightToIframe({ label: snap.label, selector }, true);
+        }
+      } catch (e) {}
+      activeVisualMeta = snap;
+      // Make sure visual tab is accessible even on location/fees
+      const tabsBar = document.getElementById('editorTabsBar');
+      if (tabsBar) tabsBar.style.display = '';
+      switchEditorTab('visual');
+      renderVisualElementPane();
+      openEditorDrawer('✨', `${snap.label} 꾸미기`);
+    }
+
+    function openPageThemeStyler() {
+      const tabsBar = document.getElementById('editorTabsBar');
+      if (tabsBar) tabsBar.style.display = '';
+      switchEditorTab('visual');
+      renderVisualElementPane();
+      openEditorDrawer('🌐', '이 페이지 전체 글꼴 · 색감');
+      setTimeout(() => {
+        const el = document.getElementById('vo-page-theme-card');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 90);
+    }
+
+    function updateVisualElementProp(key, val, rerender) {
+      if (!activeVisualSelector) return;
+      const store = getCurrentVisualOverridesStore();
+      if (!store[activeVisualSelector]) {
+        store[activeVisualSelector] = { label: (activeVisualMeta && activeVisualMeta.label) || activeVisualSelector };
+      }
+      if (val === '' || val === undefined || val === null) {
+        delete store[activeVisualSelector][key];
+      } else {
+        store[activeVisualSelector][key] = val;
+      }
+      markDirty(true);
+      applyAllVisualOverridesToIframe();
+      if (rerender) renderVisualElementPane();
+    }
+
+    function updatePageThemeProp(key, val) {
+      const pt = getCurrentPageThemeStore();
+      if (!val) delete pt[key];
+      else pt[key] = val;
+      markDirty(true);
+      applyAllVisualOverridesToIframe();
+      renderVisualElementPane();
+    }
+
+    function resetVisualElementOverride(targetSel) {
+      const sel = targetSel || activeVisualSelector;
+      if (!sel) return;
+      const store = getCurrentVisualOverridesStore();
+      delete store[sel];
+      markDirty(true);
+      applyAllVisualOverridesToIframe();
+      reloadPreviewIframe();
+      renderVisualElementPane();
+      showStatus('ok', '↺ 선택한 요소의 꾸미기를 원래 상태로 되돌렸습니다.');
+    }
+
+    function selectVisualParentElement() {
+      if (!activeVisualSelector) return;
+      try {
+        const frame = document.getElementById('livePreviewFrame');
+        const win = frame && frame.contentWindow;
+        if (win && typeof win.__BAREUN_STUDIO_SELECT_PARENT__ === 'function') {
+          const parentInfo = win.__BAREUN_STUDIO_SELECT_PARENT__(activeVisualSelector);
+          if (parentInfo && parentInfo.selector) {
+            activeVisualSelector = parentInfo.selector;
+            activeVisualMeta = parentInfo;
+            renderVisualElementPane();
+            openEditorDrawer('📦', `${parentInfo.label} 꾸미기`);
+            return;
+          }
+        }
+      } catch (e) {}
+      showStatus('working', '더 이상 상위 상자가 없습니다.');
+    }
+
+    function triggerVisualImgUpload() {
+      pickAndUploadFile(null, savedName => {
+        updateVisualElementProp('imgSrc', savedName, true);
+      });
+    }
+
+    function renderVisualElementPane() {
+      const box = document.getElementById('visualElementEditorBox');
+      if (!box) return;
+      const store = getCurrentVisualOverridesStore();
+      const pt = getCurrentPageThemeStore();
+      const ov = (activeVisualSelector && store[activeVisualSelector]) ? store[activeVisualSelector] : {};
+      const meta = activeVisualMeta || { selector: activeVisualSelector, label: ov.label || '선택된 요소 없음', tag: 'DIV', origText: '', origHref: '', computedFontSize: 16, computedRadius: 0 };
+      const allCustomKeys = Object.keys(store);
+
+      const fontSizeVal = (ov.fontSize != null && ov.fontSize !== '') ? Number(ov.fontSize) : (meta.computedFontSize || 16);
+      const lineHeightVal = (ov.lineHeight != null && ov.lineHeight !== '') ? Number(ov.lineHeight) : 1.45;
+      const letterSpVal = (ov.letterSpacing != null && ov.letterSpacing !== '') ? Number(ov.letterSpacing) : 0;
+      const bgOpVal = (ov.bgOpacity != null && ov.bgOpacity !== '') ? Number(ov.bgOpacity) : 100;
+      const borderWVal = (ov.borderWidth != null && ov.borderWidth !== '') ? Number(ov.borderWidth) : 0;
+      const radiusVal = (ov.borderRadius != null && ov.borderRadius !== '') ? Number(ov.borderRadius) : (meta.computedRadius || 0);
+      const padYVal = (ov.padY != null && ov.padY !== '') ? Number(ov.padY) : 0;
+      const padXVal = (ov.padX != null && ov.padX !== '') ? Number(ov.padX) : 0;
+      const opacityVal = (ov.opacity != null && ov.opacity !== '') ? Number(ov.opacity) : 100;
+      const displayTextVal = ov.text !== undefined ? ov.text : (meta.origText || '');
+
+      const elementSectionHtml = !activeVisualSelector ? `
+        <div class="vo-card" style="text-align:center;padding:24px 16px;background:#faf6ee;border-style:dashed;border-color:#d4af37;">
+          <div style="font-size:28px;margin-bottom:6px;">👆</div>
+          <strong style="font-size:14px;color:var(--ink);">왼쪽 홈페이지에서 꾸미고 싶은 곳을 클릭해 주세요</strong>
+          <p style="font-size:12px;color:var(--ink-sub);margin:6px 0 0;line-height:1.55;">
+            상단 버튼, 로고, 제목, 문구, 카드 테두리, 아이콘, 하단 정보 등<br/>
+            <strong>화면에 보이는 모든 요소</strong>를 눌러서 글자·아이콘·색감·폰트·테두리까지 디테일하게 바꿀 수 있습니다.
+          </p>
+        </div>
+      ` : `
+        <div class="vo-target-banner">
+          <div class="vo-target-name">🎯 ${escHtml(meta.label || activeVisualSelector)}</div>
+          <div class="vo-target-sel">${escHtml(activeVisualSelector)}</div>
+          <div class="vo-target-actions">
+            <button type="button" class="vo-mini-dark" onclick="selectVisualParentElement()" title="방금 누른 글자나 아이콘을 감싸고 있는 바깥 버튼·카드 상자를 선택합니다">⬆️ 바깥 상자 선택</button>
+            <button type="button" class="vo-mini-dark is-danger" onclick="resetVisualElementOverride()">↺ 이 요소 원래대로</button>
+          </div>
+        </div>
+
+        <!-- 1. Content · Icon · Link · Photo · Visibility -->
+        <div class="vo-card">
+          <div class="vo-card-title">
+            <span>① 글자 내용 · 아이콘 · 링크 · 표시</span>
+            <label style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;cursor:pointer;color:var(--ink-sub);">
+              <input type="checkbox" ${ov.hidden !== true ? 'checked' : ''} onchange="updateVisualElementProp('hidden', this.checked ? '' : true, true)" />
+              화면에 보이기
+            </label>
+          </div>
+
+          ${meta.tag !== 'IMG' ? `
+          <div class="field">
+            <label>보이는 글자 직접 고치기</label>
+            <input type="text" id="vo-text-input" value="${escHtml(displayTextVal)}" placeholder="글자를 입력하면 화면에 바로 바뀝니다"
+              oninput="updateVisualElementProp('text', this.value, false)" />
+          </div>
+
+          <div class="field">
+            <label>앞쪽 아이콘 고르기 (원클릭 교체)</label>
+            <div class="vo-icon-grid">
+              ${VO_ICON_LIST.map(ic => `
+                <button type="button" class="vo-icon-btn ${(ov.icon === ic) ? 'active' : ''}"
+                  title="${ic === '__none__' ? '아이콘 없애기' : ic}"
+                  onclick="updateVisualElementProp('icon', '${ic}', true)">
+                  ${ic === '__none__' ? '<span style="font-size:10px;font-weight:900;">없음</span>' : ic}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
+          ${meta.tag === 'A' ? `
+          <div class="field">
+            <label>클릭했을 때 이동할 주소 (링크)</label>
+            <input type="text" value="${escHtml(ov.href !== undefined ? ov.href : (meta.origHref || ''))}" placeholder="예: chuna.html 또는 https://..."
+              oninput="updateVisualElementProp('href', this.value, false)" />
+          </div>
+          ` : ''}
+
+          ${(meta.tag === 'IMG' || meta.hasBgImg) ? `
+          <div class="field">
+            <label>사진 / 배경 이미지 바꾸기</label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
+              <button type="button" class="mini-btn gold-helper" onclick="triggerVisualImgUpload()">📁 내 PC 사진 올리기</button>
+            </div>
+            <input type="text" list="existingImagesList" value="${escHtml(ov.imgSrc || meta.origImg || '')}" placeholder="사진 파일명 또는 URL"
+              oninput="updateVisualElementProp('imgSrc', this.value, false)" />
+          </div>
+          ` : ''}
+        </div>
+
+        <!-- 2. Typography: Font Family · Size · Weight · LineHeight · Spacing · Align -->
+        <div class="vo-card">
+          <div class="vo-card-title"><span>② 폰트(글꼴) · 글자 크기 · 굵기 · 정렬</span></div>
+
+          <div class="field">
+            <label>한글 프리미엄 글꼴 선택</label>
+            <select id="vo-font-select" onchange="updateVisualElementProp('fontFamily', this.value, true)">
+              ${VO_FONT_OPTIONS.map(f => `<option value="${escHtml(f.value)}" ${(ov.fontFamily || '') === f.value ? 'selected' : ''}>${escHtml(f.label)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>글자 크기</label>
+            <div class="vo-slider-row">
+              <input type="range" min="10" max="72" step="1" value="${fontSizeVal}"
+                oninput="document.getElementById('vo-fs-val').textContent=this.value+'px'; updateVisualElementProp('fontSize', Number(this.value), false);" />
+              <span id="vo-fs-val" class="vo-slider-val">${fontSizeVal}px</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>글자 굵기</label>
+            <div class="vo-seg-row">
+              ${[['300','가늘게'],['400','보통'],['500','중간'],['700','굵게'],['900','최대']].map(([w, lbl]) => `
+                <button type="button" class="vo-seg-btn ${String(ov.fontWeight || '') === w ? 'active' : ''}"
+                  onclick="updateVisualElementProp('fontWeight', '${w}', true)">${lbl}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="field">
+            <label>줄 간격 · 글자 사이 간격(자간)</label>
+            <div class="vo-slider-row" style="margin-bottom:6px;">
+              <span style="font-size:11px;color:var(--ink-sub);width:44px;">줄간격</span>
+              <input type="range" min="1.0" max="2.4" step="0.05" value="${lineHeightVal}"
+                oninput="document.getElementById('vo-lh-val').textContent=this.value; updateVisualElementProp('lineHeight', Number(this.value), false);" />
+              <span id="vo-lh-val" class="vo-slider-val">${lineHeightVal}</span>
+            </div>
+            <div class="vo-slider-row">
+              <span style="font-size:11px;color:var(--ink-sub);width:44px;">자간</span>
+              <input type="range" min="-0.08" max="0.20" step="0.01" value="${letterSpVal}"
+                oninput="document.getElementById('vo-ls-val').textContent=this.value+'em'; updateVisualElementProp('letterSpacing', Number(this.value), false);" />
+              <span id="vo-ls-val" class="vo-slider-val">${letterSpVal}em</span>
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:0;">
+            <label>정렬 · 글자 그림자</label>
+            <div class="vo-seg-row" style="margin-bottom:6px;">
+              ${[['left','왼쪽'],['center','가운데'],['right','오른쪽']].map(([al, lbl]) => `
+                <button type="button" class="vo-seg-btn ${ov.textAlign === al ? 'active' : ''}"
+                  onclick="updateVisualElementProp('textAlign', '${al}', true)">${lbl}</button>
+              `).join('')}
+            </div>
+            <div class="vo-seg-row">
+              ${[['none','그림자 없음'],['soft','은은하게'],['crisp','또렷하게'],['strong','강하게']].map(([ts, lbl]) => `
+                <button type="button" class="vo-seg-btn ${ov.textShadow === ts ? 'active' : ''}"
+                  onclick="updateVisualElementProp('textShadow', '${ts}', true)">${lbl}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Colors & Background & Gradient & Transparency -->
+        <div class="vo-card">
+          <div class="vo-card-title"><span>③ 글자 색감 · 배경 색 · 투명도 · 그라데이션</span></div>
+
+          <div class="field">
+            <label>글자 색상</label>
+            <div class="color-input-row">
+              <input type="color" id="vo-color-picker" value="${hexForPicker(ov.color, '#FFFFFF')}"
+                oninput="updateVisualElementProp('color', this.value, false)" onchange="updateVisualElementProp('color', this.value, true)" />
+              <input type="text" value="${escHtml(ov.color || '')}" placeholder="예: #FFFFFF"
+                oninput="updateVisualElementProp('color', this.value, false)" />
+            </div>
+            <div class="vo-swatch-row">
+              ${VO_LUXURY_SWATCHES.map(sw => `
+                <button type="button" class="vo-swatch ${(ov.color || '').toUpperCase() === sw.hex ? 'active' : ''}"
+                  style="background:${sw.hex};" title="${sw.name}"
+                  onclick="updateVisualElementProp('color', '${sw.hex}', true)"></button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="field">
+            <label>배경 색상</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(ov.bgColor, '#1B1815')}"
+                oninput="updateVisualElementProp('bgGradient', '', false); updateVisualElementProp('bgColor', this.value, false)"
+                onchange="updateVisualElementProp('bgGradient', '', false); updateVisualElementProp('bgColor', this.value, true)" />
+              <input type="text" value="${escHtml(ov.bgColor || '')}" placeholder="예: #1B1815 또는 transparent"
+                oninput="updateVisualElementProp('bgGradient', '', false); updateVisualElementProp('bgColor', this.value, false)" />
+            </div>
+            <div class="vo-swatch-row">
+              <button type="button" class="vo-swatch is-transparent ${ov.bgColor === 'transparent' ? 'active' : ''}" title="배경 투명하게"
+                onclick="updateVisualElementProp('bgGradient', '', false); updateVisualElementProp('bgColor', 'transparent', true)"></button>
+              ${VO_LUXURY_SWATCHES.map(sw => `
+                <button type="button" class="vo-swatch ${(ov.bgColor || '').toUpperCase() === sw.hex && !ov.bgGradient ? 'active' : ''}"
+                  style="background:${sw.hex};" title="${sw.name}"
+                  onclick="updateVisualElementProp('bgGradient', '', false); updateVisualElementProp('bgColor', '${sw.hex}', true)"></button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="field">
+            <label>배경 투명도 (반투명 조절)</label>
+            <div class="vo-slider-row">
+              <input type="range" min="0" max="100" step="5" value="${bgOpVal}"
+                oninput="document.getElementById('vo-bgop-val').textContent=this.value+'%'; updateVisualElementProp('bgOpacity', Number(this.value), false);" />
+              <span id="vo-bgop-val" class="vo-slider-val">${bgOpVal}%</span>
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:0;">
+            <label>고급 배경 그라데이션 · 유리 질감 프리셋</label>
+            <div class="vo-seg-row">
+              ${[['','기본'],['gold','골드'],['emerald','에메랄드'],['espresso','다크'],['ivory','아이보리'],['glass','반투명 유리']].map(([g, lbl]) => `
+                <button type="button" class="vo-seg-btn ${(ov.bgGradient || '') === g ? 'active' : ''}"
+                  onclick="updateVisualElementProp('bgGradient', '${g}', true)">${lbl}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Border · Radius · Shadow · Padding · Opacity -->
+        <div class="vo-card">
+          <div class="vo-card-title"><span>④ 테두리 · 모서리 둥글기 · 그림자 · 여백</span></div>
+
+          <div class="field">
+            <label>테두리 굵기</label>
+            <div class="vo-slider-row">
+              <input type="range" id="vo-border-width" min="0" max="8" step="1" value="${borderWVal}"
+                oninput="document.getElementById('vo-bw-val').textContent=this.value+'px'; updateVisualElementProp('borderWidth', Number(this.value), false);" />
+              <span id="vo-bw-val" class="vo-slider-val">${borderWVal}px</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>테두리 모양</label>
+            <div class="vo-seg-row">
+              ${[['none','없음'],['solid','실선'],['dashed','점선'],['dotted','도트'],['double','이중선']].map(([bs, lbl]) => `
+                <button type="button" class="vo-seg-btn ${ov.borderStyle === bs ? 'active' : ''}"
+                  onclick="updateVisualElementProp('borderStyle', '${bs}', true)">${lbl}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="field">
+            <label>테두리 색상</label>
+            <div class="color-input-row">
+              <input type="color" value="${hexForPicker(ov.borderColor, '#D4AF37')}"
+                oninput="updateVisualElementProp('borderColor', this.value, false)" onchange="updateVisualElementProp('borderColor', this.value, true)" />
+              <input type="text" value="${escHtml(ov.borderColor || '')}" placeholder="예: #D4AF37"
+                oninput="updateVisualElementProp('borderColor', this.value, false)" />
+            </div>
+            <div class="vo-swatch-row">
+              ${VO_LUXURY_SWATCHES.slice(0, 8).map(sw => `
+                <button type="button" class="vo-swatch ${(ov.borderColor || '').toUpperCase() === sw.hex ? 'active' : ''}"
+                  style="background:${sw.hex};" title="${sw.name}"
+                  onclick="updateVisualElementProp('borderColor', '${sw.hex}', true)"></button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span>모서리 둥글기</span>
+              <button type="button" class="mini-btn" onclick="updateVisualElementProp('borderRadius', 999, true)">💊 알약형(완전 둥글게)</button>
+            </label>
+            <div class="vo-slider-row">
+              <input type="range" min="0" max="48" step="1" value="${Math.min(48, radiusVal)}"
+                oninput="document.getElementById('vo-rad-val').textContent=this.value+'px'; updateVisualElementProp('borderRadius', Number(this.value), false);" />
+              <span id="vo-rad-val" class="vo-slider-val">${radiusVal}px</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>입체 그림자 효과</label>
+            <div class="vo-seg-row">
+              ${[['none','없음'],['soft','은은한'],['card','입체 카드'],['gold','골드 빛'],['strong','강한 입체']].map(([sh, lbl]) => `
+                <button type="button" class="vo-seg-btn ${ov.boxShadow === sh ? 'active' : ''}"
+                  onclick="updateVisualElementProp('boxShadow', '${sh}', true)">${lbl}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:0;">
+            <label>안쪽 여백(패딩) · 전체 투명도</label>
+            <div class="vo-slider-row" style="margin-bottom:6px;">
+              <span style="font-size:11px;color:var(--ink-sub);width:48px;">위아래</span>
+              <input type="range" min="0" max="48" step="1" value="${padYVal}"
+                oninput="document.getElementById('vo-py-val').textContent=this.value+'px'; updateVisualElementProp('padY', Number(this.value), false);" />
+              <span id="vo-py-val" class="vo-slider-val">${padYVal}px</span>
+            </div>
+            <div class="vo-slider-row" style="margin-bottom:6px;">
+              <span style="font-size:11px;color:var(--ink-sub);width:48px;">좌우</span>
+              <input type="range" min="0" max="64" step="1" value="${padXVal}"
+                oninput="document.getElementById('vo-px-val').textContent=this.value+'px'; updateVisualElementProp('padX', Number(this.value), false);" />
+              <span id="vo-px-val" class="vo-slider-val">${padXVal}px</span>
+            </div>
+            <div class="vo-slider-row">
+              <span style="font-size:11px;color:var(--ink-sub);width:48px;">투명도</span>
+              <input type="range" min="10" max="100" step="5" value="${opacityVal}"
+                oninput="document.getElementById('vo-op-val').textContent=this.value+'%'; updateVisualElementProp('opacity', Number(this.value), false);" />
+              <span id="vo-op-val" class="vo-slider-val">${opacityVal}%</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const pageThemeHtml = `
+        <div class="vo-card" id="vo-page-theme-card">
+          <div class="vo-card-title"><span>🌐 이 페이지 전체 글꼴 · 색감 한 번에 바꾸기</span></div>
+          <div class="field">
+            <label>제목 전체 글꼴</label>
+            <select onchange="updatePageThemeProp('headingFont', this.value)">
+              ${VO_FONT_OPTIONS.map(f => `<option value="${escHtml(f.value)}" ${(pt.headingFont || '') === f.value ? 'selected' : ''}>${escHtml(f.label)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>본문 전체 글꼴</label>
+            <select onchange="updatePageThemeProp('bodyFont', this.value)">
+              ${VO_FONT_OPTIONS.map(f => `<option value="${escHtml(f.value)}" ${(pt.bodyFont || '') === f.value ? 'selected' : ''}>${escHtml(f.label)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>페이지 대표 강조 색상</label>
+            <div class="vo-swatch-row">
+              ${VO_LUXURY_SWATCHES.slice(2, 9).map(sw => `
+                <button type="button" class="vo-swatch ${(pt.accentColor || '').toUpperCase() === sw.hex ? 'active' : ''}"
+                  style="background:${sw.hex};" title="${sw.name}"
+                  onclick="updatePageThemeProp('accentColor', '${sw.hex}')"></button>
+              `).join('')}
+              <button type="button" class="mini-btn" onclick="updatePageThemeProp('accentColor', '')">초기화</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const customListHtml = allCustomKeys.length > 0 ? `
+        <div class="vo-card">
+          <div class="vo-card-title"><span>📋 내가 꾸민 화면 요소 목록 (${allCustomKeys.length}개)</span></div>
+          ${allCustomKeys.map(sel => {
+            const item = store[sel] || {};
+            return `
+              <div class="vo-list-row">
+                <div style="min-width:0;flex:1;">
+                  <strong style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(item.label || sel)}</strong>
+                  <span style="font-size:10.5px;color:var(--ink-sub);">${escHtml(sel)}</span>
+                </div>
+                <div style="display:flex;gap:4px;flex-shrink:0;">
+                  <button type="button" class="mini-btn" onclick="openVisualDesignerForSelector('${escHtml(sel).replace(/'/g, "\\'")}', '${escHtml(item.label || sel).replace(/'/g, "\\'")}')">수정</button>
+                  <button type="button" class="mini-btn danger" onclick="resetVisualElementOverride('${escHtml(sel).replace(/'/g, "\\'")}')">초기화</button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : '';
+
+      box.innerHTML = elementSectionHtml + pageThemeHtml + customListHtml;
+    }
+
+    // Core UX v2.0 + v3.0 Callback: Live Website Click -> Focused Slide-In Drawer!
     window.__BAREUN_STUDIO_ON_CANVAS_CLICK__ = function (hit) {
       if (!hit || !isVisualSelectMode) return;
       const page = getCurrentPage();
+
+      // Always track clicked element selector & computed snapshot so [✨ 요소 꾸미기] tab is preloaded!
+      if (hit.visualMeta && hit.visualMeta.selector) {
+        activeVisualSelector = hit.visualMeta.selector;
+        activeVisualMeta = hit.visualMeta;
+      } else if (hit.selector) {
+        activeVisualSelector = String(hit.selector).split(',')[0].trim();
+        activeVisualMeta = {
+          selector: activeVisualSelector,
+          label: hit.label || activeVisualSelector,
+          tag: hit.tag || 'DIV',
+          origText: hit.origText || '',
+          origHref: hit.origHref || '',
+          origImg: hit.origImg || '',
+          hasBgImg: Boolean(hit.hasBgImg),
+          computedFontSize: hit.computedFontSize || 16,
+          computedRadius: hit.computedRadius || 0
+        };
+      }
+
+      // Universal Tier-2 Element Click -> Open Visual & Content Designer directly!
+      if (hit.tab === 'visual') {
+        const tabsBar = document.getElementById('editorTabsBar');
+        if (tabsBar) tabsBar.style.display = '';
+        switchEditorTab('visual');
+        renderVisualElementPane();
+        openEditorDrawer(hit.icon || '✨', (hit.label || '선택 요소').replace(/\s*꾸미기$|\s*고치기$/, '') + ' 꾸미기');
+        return;
+      }
 
       // Switch chapter seamlessly if clicked Fees vs Location or Storyboard vs Finale on same page
       if (hit.chapter && hit.chapter !== currentStudioChapter) {
@@ -11175,6 +12143,12 @@
           const chapterNum = raw.closest && raw.closest('#dialogue-chapter-num');
           if (chapterNum) return { el: chapterNum, chapter: 'storyboard', tab: 'leftpanel', scrollId: 'home-chapters-section', icon: '🎬', label: '이야기 순서 제목 고치기', selector: '#dialogue-chapter-num' };
 
+          const tapNextPill = raw.closest && raw.closest('#dialogue-tap-next-pill');
+          if (tapNextPill) {
+            const vMeta = readElementSnapshot(tapNextPill, '#dialogue-tap-next-pill', '다음 장면 버튼');
+            return { el: tapNextPill, tab: 'visual', icon: '✨', label: '다음 장면 버튼 꾸미기', selector: '#dialogue-tap-next-pill', visualMeta: vMeta };
+          }
+
           const storyStage = raw.closest && raw.closest('#dialogue-main-quote, #dialogue-sub-whisper, #story-dialogue-stage');
           if (storyStage) {
             const qEl = doc.getElementById('dialogue-main-quote');
@@ -11218,8 +12192,114 @@
           const hnPart = raw.closest && raw.closest('.hip-header, .hip-empathy-hero-card, .hip-sections, .deep-editorial-drawer, .hip-quick-detail-strip');
           if (hnPart) return { el: hnPart, chapter: 'healthnotes', tab: 'cards', icon: '🧬', label: '이 건강 글 고치기', selector: '.hip-header' };
 
-          return null;
+          // 7. UNIVERSAL TIER-2 FALLBACK: Every single remaining visible UI element on screen!
+          // (Top header buttons, 오시는길, 3D 진료 살펴보기, 무엇이든 물어보세요, 예약·상담, legal footer, timeline, badges, icons, sections, boxes!)
+          let targetEl = raw;
+          if (targetEl.tagName === 'SVG' || targetEl.closest && targetEl.closest('svg')) {
+            const svgWrap = targetEl.closest('a, button, [id]') || targetEl.closest('svg');
+            if (svgWrap) targetEl = svgWrap;
+          }
+          if (targetEl.tagName === 'SPAN' || targetEl.tagName === 'STRONG' || targetEl.tagName === 'EM' || targetEl.tagName === 'B') {
+            const interactiveParent = targetEl.closest('a, button');
+            if (interactiveParent) targetEl = interactiveParent;
+          }
+          if (!targetEl || targetEl === doc.body || targetEl === doc.documentElement) return null;
+          if (targetEl.tagName === 'CANVAS') return null;
+
+          const stableSel = computeStableElementSelector(targetEl);
+          if (!stableSel) return null;
+          const fName = detectFriendlyElementName(targetEl);
+          const vMeta = readElementSnapshot(targetEl, stableSel, fName);
+          return {
+            el: targetEl,
+            tab: 'visual',
+            icon: '✨',
+            label: `${fName} 꾸미기`,
+            selector: stableSel,
+            visualMeta: vMeta
+          };
         }
+
+        function computeStableElementSelector(el) {
+          if (!el || el.nodeType !== 1 || el === doc.body || el === doc.documentElement) return '';
+          if (el.id && /^[a-zA-Z][\w-]*$/.test(el.id)) {
+            const idSel = '#' + el.id;
+            try { if (doc.querySelectorAll(idSel).length === 1) return idSel; } catch (_) {}
+          }
+          const parts = [];
+          let cur = el;
+          let depth = 0;
+          while (cur && cur.nodeType === 1 && cur !== doc.body && depth < 6) {
+            if (cur.id && /^[a-zA-Z][\w-]*$/.test(cur.id)) {
+              parts.unshift('#' + cur.id);
+              break;
+            }
+            const tag = cur.tagName.toLowerCase();
+            let seg = tag;
+            const cls = Array.from(cur.classList || []).filter(c => c && !c.startsWith('bsp-') && !c.startsWith('bareun-click-') && !c.startsWith('is-') && c.length < 36);
+            if (cls.length > 0) seg += '.' + cls[0];
+            const parent = cur.parentElement;
+            if (parent) {
+              const sameTagSibs = Array.from(parent.children).filter(ch => ch.tagName === cur.tagName);
+              if (sameTagSibs.length > 1) {
+                seg += `:nth-of-type(${sameTagSibs.indexOf(cur) + 1})`;
+              }
+            }
+            parts.unshift(seg);
+            cur = parent;
+            depth++;
+          }
+          const finalSel = parts.join(' > ');
+          try {
+            if (finalSel && doc.querySelector(finalSel)) return finalSel;
+          } catch (_) {}
+          return '';
+        }
+
+        function detectFriendlyElementName(el) {
+          const tag = (el.tagName || '').toUpperCase();
+          const txt = String(el.textContent || '').replace(/\s+/g, ' ').trim();
+          const shortTxt = txt.length > 18 ? (txt.slice(0, 18) + '…') : txt;
+          if (tag === 'A' || tag === 'BUTTON') return shortTxt ? `"${shortTxt}" 버튼` : '버튼';
+          if (tag === 'IMG') return el.getAttribute('alt') ? `사진(${el.getAttribute('alt').slice(0, 14)})` : '사진';
+          if (tag === 'HEADER' || tag === 'NAV') return '상단 메뉴바';
+          if (tag === 'FOOTER') return '하단 안내 영역';
+          if (/^H[1-6]$/.test(tag)) return shortTxt ? `"${shortTxt}" 제목` : '제목';
+          if (tag === 'P' || tag === 'SPAN' || tag === 'STRONG') return shortTxt ? `"${shortTxt}" 문구` : '글자 문구';
+          return shortTxt ? `"${shortTxt}" 영역` : '화면 상자';
+        }
+
+        function readElementSnapshot(el, sel, lbl) {
+          let cs = {};
+          try { cs = win.getComputedStyle(el) || {}; } catch (_) {}
+          return {
+            selector: sel,
+            label: lbl || detectFriendlyElementName(el),
+            tag: (el.tagName || 'DIV').toUpperCase(),
+            origText: String(el.textContent || '').replace(/\s+/g, ' ').trim(),
+            origHref: el.tagName === 'A' ? (el.getAttribute('href') || '') : '',
+            origImg: el.tagName === 'IMG' ? (el.getAttribute('src') || '') : '',
+            hasBgImg: Boolean(cs.backgroundImage && cs.backgroundImage !== 'none'),
+            computedFontSize: Math.round(parseFloat(cs.fontSize) || 16),
+            computedRadius: Math.round(parseFloat(cs.borderRadius) || 0)
+          };
+        }
+
+        win.__BAREUN_STUDIO_SELECT_PARENT__ = function (childSel) {
+          try {
+            const cur = doc.querySelector(childSel);
+            if (!cur || !cur.parentElement || cur.parentElement === doc.body || cur.parentElement === doc.documentElement) return null;
+            const par = cur.parentElement;
+            const pSel = computeStableElementSelector(par);
+            if (!pSel) return null;
+            const pLbl = detectFriendlyElementName(par);
+            activeSpot = { label: pLbl, selector: pSel };
+            positionOverlayBox(spotBox, par, '.bsp-spot-badge', `✓ ${pLbl} 수정 중`);
+            return readElementSnapshot(par, pSel, pLbl);
+          } catch (_) {
+            return null;
+          }
+        };
 
         function positionOverlayBox(boxEl, targetEl, badgeSelector, labelText) {
           if (!boxEl || !targetEl) {
@@ -11353,6 +12433,7 @@
             try { win.postMessage({ type: 'SHOW_BENTO_CARDS' }, '*'); } catch (_) {}
           }, 240);
         }
+        applyAllVisualOverridesToIframe();
         restorePreviewScrollState(frame, page);
       } catch (err) {
         console.warn('[StudioClickToEdit]', err);

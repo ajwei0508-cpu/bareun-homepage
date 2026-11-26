@@ -589,6 +589,102 @@ function buildPageHtml(page) {
   const collectedDevCss = [];
   const collectedDevJs = [];
 
+  const visualOvBundle = (function compileDetailVisualOverrides() {
+    const ovMap = (page.elementOverrides && typeof page.elementOverrides === 'object') ? page.elementOverrides : {};
+    const pt = (page.pageThemeOverride && typeof page.pageThemeOverride === 'object') ? page.pageThemeOverride : {};
+    const fontMap = {
+      'Noto Serif KR': 'Noto+Serif+KR:wght@400;600;700;900',
+      'Gowun Batang': 'Gowun+Batang:wght@400;700',
+      'Gowun Dodum': 'Gowun+Dodum',
+      'Nanum Myeongjo': 'Nanum+Myeongjo:wght@400;700;800',
+      'Noto Sans KR': 'Noto+Sans+KR:wght@300;400;500;700;900',
+      'Black Han Sans': 'Black+Han+Sans'
+    };
+    const hexRgba = (hex, a) => {
+      const c = String(hex || '').replace('#', '').trim();
+      if (!/^[0-9a-fA-F]{6}$/.test(c)) return hex;
+      return `rgba(${parseInt(c.slice(0,2),16)}, ${parseInt(c.slice(2,4),16)}, ${parseInt(c.slice(4,6),16)}, ${a})`;
+    };
+    const cssRules = [];
+    const domOps = [];
+    const usedFonts = new Set();
+    const trackFont = (fam) => {
+      if (!fam) return;
+      Object.keys(fontMap).forEach(k => { if (String(fam).includes(k)) usedFonts.add(k); });
+    };
+    if (pt.headingFont) { trackFont(pt.headingFont); cssRules.push(`h1, h2, h3, .editorial-headline, #project-details-title { font-family: ${pt.headingFont} !important; }`); }
+    if (pt.bodyFont) { trackFont(pt.bodyFont); cssRules.push(`body, p, button, a, .editorial-body-copy, #project-details-desc { font-family: ${pt.bodyFont} !important; }`); }
+    if (pt.pageBg) cssRules.push(`html, body, body.theme-hanji { background-color: ${pt.pageBg} !important; }`);
+    if (pt.accentColor) cssRules.push(`:root { --accent: ${pt.accentColor}; --sa-hl-color: ${pt.accentColor}; }`);
+
+    const gradMap = {
+      gold: 'linear-gradient(135deg, #f3d280 0%, #b88428 100%)',
+      emerald: 'linear-gradient(135deg, #10b981 0%, #065f46 100%)',
+      espresso: 'linear-gradient(135deg, #27211b 0%, #14110e 100%)',
+      ivory: 'linear-gradient(135deg, #fdfbf7 0%, #efe6d5 100%)',
+      glass: 'rgba(20, 17, 14, 0.42)'
+    };
+    const shMap = {
+      none: 'none',
+      soft: '0 4px 14px rgba(0, 0, 0, 0.12)',
+      card: '0 14px 34px rgba(0, 0, 0, 0.24)',
+      gold: '0 0 0 2px rgba(212, 175, 55, 0.35), 0 10px 28px rgba(181, 137, 58, 0.34)',
+      strong: '0 22px 52px rgba(0, 0, 0, 0.42)'
+    };
+    const tshMap = {
+      none: 'none',
+      soft: '0 2px 8px rgba(0, 0, 0, 0.38)',
+      crisp: '0 2px 14px rgba(0, 0, 0, 0.78)',
+      strong: '0 4px 22px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.9)'
+    };
+
+    Object.entries(ovMap).forEach(([sel, ov]) => {
+      if (!sel || !ov || typeof ov !== 'object') return;
+      const d = [];
+      if (ov.hidden === true) d.push('display: none !important');
+      if (ov.fontFamily) { trackFont(ov.fontFamily); d.push(`font-family: ${ov.fontFamily} !important`); }
+      if (ov.fontSize != null && ov.fontSize !== '') d.push(`font-size: ${Number(ov.fontSize)}px !important`);
+      if (ov.fontWeight) d.push(`font-weight: ${ov.fontWeight} !important`);
+      if (ov.lineHeight != null && ov.lineHeight !== '') d.push(`line-height: ${ov.lineHeight} !important`);
+      if (ov.letterSpacing != null && ov.letterSpacing !== '') d.push(`letter-spacing: ${ov.letterSpacing}em !important`);
+      if (ov.textAlign) d.push(`text-align: ${ov.textAlign} !important`);
+      if (ov.textShadow && tshMap[ov.textShadow]) d.push(`text-shadow: ${tshMap[ov.textShadow]} !important`);
+      if (ov.color) d.push(`color: ${ov.color} !important`);
+      if (ov.bgGradient && gradMap[ov.bgGradient]) {
+        d.push(`background: ${gradMap[ov.bgGradient]} !important`);
+        if (ov.bgGradient === 'glass') d.push('backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important');
+      } else if (ov.bgColor) {
+        if (ov.bgColor === 'transparent') d.push('background: transparent !important');
+        else {
+          const al = (ov.bgOpacity != null && ov.bgOpacity !== '') ? Math.max(0, Math.min(1, Number(ov.bgOpacity) / 100)) : 1;
+          d.push(`background: ${al < 1 ? hexRgba(ov.bgColor, al.toFixed(2)) : ov.bgColor} !important`);
+        }
+      }
+      if (ov.borderStyle === 'none') d.push('border: none !important');
+      else if ((ov.borderWidth != null && ov.borderWidth !== '') || ov.borderColor || ov.borderStyle) {
+        const bw = (ov.borderWidth != null && ov.borderWidth !== '') ? Number(ov.borderWidth) : 1;
+        d.push(`border: ${bw}px ${ov.borderStyle || 'solid'} ${ov.borderColor || '#D4AF37'} !important`);
+      }
+      if (ov.borderRadius != null && ov.borderRadius !== '') d.push(`border-radius: ${Number(ov.borderRadius)}px !important`);
+      if (ov.boxShadow && shMap[ov.boxShadow]) d.push(`box-shadow: ${shMap[ov.boxShadow]} !important`);
+      if ((ov.padY != null && ov.padY !== '') || (ov.padX != null && ov.padX !== '')) {
+        d.push(`padding: ${ov.padY != null && ov.padY !== '' ? Number(ov.padY) + 'px' : 'inherit'} ${ov.padX != null && ov.padX !== '' ? Number(ov.padX) + 'px' : 'inherit'} !important`);
+      }
+      if (ov.opacity != null && ov.opacity !== '' && Number(ov.opacity) < 100) {
+        d.push(`opacity: ${(Math.max(5, Math.min(100, Number(ov.opacity))) / 100).toFixed(2)} !important`);
+      }
+      if (d.length) cssRules.push(`${sel} { ${d.join('; ')}; }`);
+      if (ov.text !== undefined || ov.icon !== undefined || ov.href !== undefined || ov.imgSrc !== undefined) {
+        domOps.push({ sel, text: ov.text, icon: ov.icon, href: ov.href, imgSrc: ov.imgSrc });
+      }
+    });
+
+    const fontLinks = Array.from(usedFonts).map(f => `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${fontMap[f]}&display=swap" data-bareun-vo-font="1" />`).join('\n  ');
+    const headHtml = [fontLinks, cssRules.length ? `<style id="bareun-studio-vo-css">\n${cssRules.join('\n')}\n  </style>` : ''].filter(Boolean).join('\n  ');
+    const bodyHtml = domOps.length ? `<script id="bareun-studio-vo-js">(function(){var ops=${JSON.stringify(domOps)};function stripI(s){return String(s||'').replace(/^[\\u{1F300}-\\u{1FAFF}\\u2600-\\u27BF✦❖★☆✓✔→↗➤•◆◇▶▷📍📞💬📅✨👑❤️🛡️🦴🧬🔥💡✅⭐🏆🏥⏰💳📋🔍🎯💎🌱☀️🌙📌🔔🎁]+\\s*/u,'').trim();}function run(){ops.forEach(function(op){try{var el=document.querySelector(op.sel);if(!el)return;if(op.href&&el.tagName==='A')el.setAttribute('href',op.href);if(op.imgSrc){if(el.tagName==='IMG')el.setAttribute('src',op.imgSrc);else el.style.backgroundImage="url('"+op.imgSrc+"')";}if(op.text!==undefined||op.icon!==undefined){var bt=op.text!==undefined?String(op.text):stripI(el.textContent);var pf=(op.icon&&op.icon!=='__none__')?(op.icon+' '):'';var cm=(pf+bt).trim();var sp=el.querySelector(':scope > span:not(.brand-logo-mark)');if(sp&&el.children.length<=2)sp.textContent=cm;else el.textContent=cm;}}catch(e){}});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();setTimeout(run,350);})();</script>` : '';
+    return { headHtml, bodyHtml };
+  })();
+
   function escapeDevHtml(val) {
     return String(val == null ? '' : val)
       .replace(/&/g, '&amp;')
@@ -9849,6 +9945,7 @@ function buildPageHtml(page) {
     body.theme-hanji .studio-next-clinic-card .snc-title { color: #171614; }
     .studio-next-clinic-card .snc-desc { font-size: 0.78rem; opacity: 0.78; line-height: 1.45; }
   </style>
+  ${visualOvBundle.headHtml || ''}
   ${collectedDevCss.length ? `<style id="bareun-dev-custom-css">
 ${collectedDevCss.join('\n')}
   </style>` : ''}
@@ -13898,6 +13995,7 @@ ${collectedDevCss.join('\n')}
   <button type="button" id="floating-hanji-mode-btn" class="floating-hanji-btn" onclick="window.cycleDetailVisibilityMode()" title="화면 시안성 모드 전환 (한지 베이지 / 다크 / 큰글씨)" aria-label="화면 모드 전환">
     <span class="hanji-icon">📜</span>
   </button>
+  ${visualOvBundle.bodyHtml || ''}
   ${pageRootDev.afterHtml || ''}${globalRootDev.afterHtml || ''}
   ${collectedDevJs.length ? `<script id="bareun-dev-custom-js">
 ${collectedDevJs.join('\n')}

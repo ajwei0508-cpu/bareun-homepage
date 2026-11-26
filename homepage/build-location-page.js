@@ -1148,6 +1148,16 @@ function buildLocationHtml(info) {
         .catch(function () {});
     })();
   </script>
+  ${(function () {
+    try {
+      const hsc = require('./home-story-compiler.js');
+      if (hsc && typeof hsc.buildVisualOverridesBundle === 'function') {
+        const vo = hsc.buildVisualOverridesBundle(info.elementOverrides, info.pageThemeOverride);
+        return (vo.headHtml || '') + '\n  ' + (vo.bodyHtml || '');
+      }
+    } catch (e) {}
+    return '';
+  })()}
   <script src="visit-tracker.js"></script>
 </body>
 </html>

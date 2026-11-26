@@ -662,10 +662,32 @@
     }
 
     .dialogue-meta-row,
-    .dialogue-sub-whisper,
     .dialogue-phase-steps,
     .timeline-top-meta {
       display: none !important;
+    }
+
+    .dialogue-sub-whisper:empty {
+      display: none !important;
+    }
+
+    .dialogue-sub-whisper {
+      display: block;
+      margin: -8px 0 18px;
+      width: fit-content; max-width: min(660px, 92vw);
+      font-family: var(--font-sans);
+      font-size: clamp(14.5px, 1.35vw, 18.5px);
+      font-weight: 500;
+      line-height: 1.6;
+      letter-spacing: -0.015em;
+      color: rgba(253, 250, 243, 0.94);
+      text-shadow: 0 2px 14px rgba(15, 13, 11, 0.92);
+      background: rgba(20, 17, 14, 0.36);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 3px solid rgba(212, 175, 55, 0.82);
+      padding: 8px 14px;
+      border-radius: 0 10px 10px 0;
     }
 
     /* Story 4 Scroll-Reactive Weight Loss Counter */
@@ -2378,6 +2400,7 @@
     </div>
     
     <p class="dialogue-main-quote" id="dialogue-main-quote">바른한의원 대전본점</p>
+    <p class="dialogue-sub-whisper" id="dialogue-sub-whisper"></p>
     <div class="dialogue-progress-brush">
       <div class="dialogue-progress-fill" id="dialogue-progress-fill"></div>
     </div>
@@ -2389,7 +2412,6 @@
       <span class="weight-live-num" id="weight-live-num">68.5 kg</span>
       <span class="weight-diff-badge" id="weight-diff-badge">▼ -0.0 kg 감량</span>
     </div>
-    <p class="dialogue-sub-whisper" id="dialogue-sub-whisper"></p>
     <div class="dialogue-phase-steps" id="dialogue-phase-steps"></div>
   </main>
 
@@ -4131,6 +4153,21 @@
             sktCardFlipController.deactivate();
           }
           scrollToNormalized(frameFloatToFullNorm(e.data.frameIndex));
+        } else if (e.data.type === 'SYNC_LIVE_STORY_FRAME' && typeof e.data.frameIndex === 'number') {
+          const fIdx = Math.max(0, Math.min(FRAMES.length - 1, e.data.frameIndex));
+          if (FRAMES[fIdx]) {
+            if (typeof e.data.quote === 'string') FRAMES[fIdx].quote = e.data.quote;
+            if (typeof e.data.whisper === 'string') FRAMES[fIdx].whisper = e.data.whisper;
+          }
+          finishDaddyIntro(true);
+          if (typeof sktCardFlipController !== 'undefined' && sktCardFlipController && sktCardFlipController.isActive()) sktCardFlipController.deactivate();
+          scrollToNormalized(frameFloatToFullNorm(fIdx), true);
+          if (typeof e.data.quote === 'string' && typeof buildDialogueCharacters === 'function') buildDialogueCharacters(e.data.quote || '');
+          const wEl = document.getElementById('dialogue-sub-whisper');
+          if (wEl && typeof e.data.whisper === 'string') wEl.textContent = e.data.whisper;
+        } else if (e.data.type === 'SYNC_LIVE_CONCEPT_PILL' && typeof e.data.text === 'string') {
+          const pillSpan = document.querySelector('#dialogue-daddy-concept-pill span:last-child');
+          if (pillSpan) pillSpan.textContent = e.data.text;
         }
       });
 
